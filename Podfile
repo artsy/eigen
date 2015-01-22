@@ -53,12 +53,18 @@ pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView', :c
 pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout', :commit => '2ee871f509806af147d0529a36f791906997d4b7'
 pod 'ARGenericTableViewController', '1.0.2'
 pod 'FLKAutoLayout', '0.1.1'
+
+# Artsy Spec repo stuff
 pod 'Artsy+UILabels', '1.1.0'
 pod 'Artsy+UIColors'
-pod 'Artsy+UIFonts'
 pod 'Artsy-UIButtons', :head
 pod 'UIView+BooleanAnimations'
 
+if ["orta", "ash", "artsy", "Laura"].include? ENV['USER']
+    pod 'Artsy+UIFonts'
+else
+    pod 'Artsy+OSSUIFonts'
+end
 
 # Auth
 pod 'Facebook-iOS-SDK', '3.14.1'
