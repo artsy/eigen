@@ -33,7 +33,7 @@ Obtain a certificate for iOS development:
 
 Connect a device.
 
-XCode will prompt you to join a team, then to enable the device for development. When prompted, choose the uppercase *ART.SY INC.* team.
+Xcode will prompt you to join a team, then to enable the device for development. When prompted, choose the uppercase *ART.SY INC.* team.
 
 Choose Preferences, Accounts, which should list your Apple ID and membership.
 
