@@ -1,0 +1,240 @@
+#import "ARFairViewController.h"
+#import "ARNavigationButtonsViewController.h"
+#import "MTLModel+JSON.h"
+#import "Fair.h"
+#import "Profile.h"
+#import "ARSearchFieldButton.h"
+#import "ARFairSearchViewController.h"
+#import "ARSearchViewController+Private.h"
+
+@interface ARFairViewController (Testing)
+
+@property (nonatomic, strong) ARSearchFieldButton *searchButton;
+@property (nonatomic, strong) ARFairSearchViewController *searchVC;
+
+@property (nonatomic, assign) BOOL hasMap;
+@property (nonatomic, strong) ORStackScrollView *stackView;
+
+@property (nonatomic, assign) BOOL displayingSearch;
+
+@property (nonatomic, assign) BOOL hidesBackButton;
+
+@property (nonatomic, strong) ARNavigationButtonsViewController *primaryNavigationVC;
+
+- (void)searchFieldButtonWasPressed:(ARSearchFieldButton *)sender;
+- (BOOL)hasSufficientDataForParallaxHeader;
+
+@end
+
+@interface ARFairSearchViewController (Testing)
+@property(nonatomic, readwrite, assign) BOOL shouldAnimate;
+@end
+
+SpecBegin(ARFairViewController)
+
+it(@"maps bindings correctly", ^{
+    ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:nil];
+    
+    expect(viewController.displayingSearch).to.beFalsy();
+    expect(viewController.hidesBackButton).to.beFalsy();
+
+    viewController.searchVC = [[ARFairSearchViewController alloc] initWithFair:nil];
+    
+    expect(viewController.displayingSearch).to.beTruthy();
+    expect(viewController.hidesBackButton).to.beTruthy();
+});
+
+__block Fair *bannerlessFair;
+__block Fair *bannerFair;
+__block Profile *bannerlessProfile;
+__block Profile *bannerProfile;
+
+before(^{
+    bannerlessFair = [[Fair alloc] initWithFairID:@"a-fair-affair"];
+    bannerFair = [Fair modelWithJSON:@{
+    @"id" : @"fair-id",
+    @"image_url" : @"http://static1.artsy.net/fairs/52617c6c8b3b81f094000013/9/:version.jpg",
+    @"image_versions" : @[
+            @"square",
+            @"large_rectangle",
+            @"wide"
+        ]
+    }];
+    bannerlessProfile = [[Profile alloc] initWithProfileID:@"profile-id"];
+    bannerProfile = [Profile modelWithJSON:@{
+        @"id" : @"profile-id",
+        @"default_icon_version" : @"square",
+        @"icon" : @{
+            @"image_url" : @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/:version.jpg",
+            @"image_versions" : @[
+                @"circle",
+                @"square"
+            ]
+        }
+    }];
+});
+
+describe(@"without enough information for a parallax header", ^{
+    it(@"doesn't use a parallax header", ^{
+        ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:bannerlessFair andProfile:bannerlessProfile];
+        expect([viewController hasSufficientDataForParallaxHeader]).to.beFalsy();
+    });
+});
+describe(@"with some information", ^{
+    it(@"uses a parallax header", ^{
+        ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:bannerFair andProfile:bannerlessProfile];
+        expect([viewController hasSufficientDataForParallaxHeader]).to.beTruthy();
+    });
+    
+    it(@"uses a parallax header", ^{
+        ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:bannerlessFair andProfile:bannerProfile];
+        expect([viewController hasSufficientDataForParallaxHeader]).to.beTruthy();
+    });
+});
+
+describe(@"with all available information", ^{
+    it(@"uses a parallax header", ^{
+        ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:bannerFair andProfile:bannerProfile];
+        expect([viewController hasSufficientDataForParallaxHeader]).to.beTruthy();
+    });
+});
+
+context(@"with no map", ^{
+    __block ARFairViewController *fairVC = nil;
+    
+    beforeEach(^{
+        Fair *fair = [[Fair alloc] initWithFairID:@"a-fair-affair"];
+    
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/a-fair-affair" withResponse:@{
+            @"id" : @"a-fair-affair",
+            @"name" : @"The Fair Affair",
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
+        }];
+        
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@[
+           @{
+            @"description": @"",
+            @"display_on_mobile": @(1),
+            @"id": @"set-id",
+            @"internal_name": @"The Armory Show 2014 Primary Features",
+            @"item_type": @"FeaturedLink",
+            @"key": @"primary",
+            @"name": @"The Armory Show 2014 Primary Features",
+            @"published": @(1),
+        }
+        ]];
+        
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/set/set-id/items" withResponse:@[
+            @{ @"id": @"one", @"href": @"/post/moby-my-highlights-from-art-los-angeles-contemporary", @"title" : @"Moby" },
+        ]];
+        
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/maps" withResponse:@[]];
+        
+        fairVC = [[ARFairViewController alloc] initWithFair:fair];
+        fairVC.animatesSearchBehavior = NO;
+    });
+    
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+    });
+    
+    context(@"without a profile", ^{
+        it(@"sets fair title and dates", ^{
+            expect(fairVC.view.subviews.count).will.equal(2);
+            expect(fairVC.stackView).to.beKindOf(ORStackScrollView.class);
+
+            expect(fairVC.fair.name).will.equal(@"The Fair Affair");
+
+            ORStackView *stackView = ((ORStackScrollView *) fairVC.stackView).stackView;
+            expect(stackView.subviews.count).will.beGreaterThan(0);
+
+            UIView *titleView = stackView.subviews[0];
+            expect(titleView).to.beKindOf([UILabel class]);
+            expect(((UILabel *) titleView).text).to.equal(@"The Fair Affair");
+
+            UIView *subtitleView = stackView.subviews[1];
+            expect(subtitleView).to.beKindOf([UILabel class]);
+            expect(((UILabel *) subtitleView).text).to.equal(@"Jan 30th - Feb 2nd, 1976");
+        });
+    });
+    
+    context(@"view is loaded", ^{
+        beforeEach(^{
+            expect(fairVC.view).toNot.beNil();
+        });
+        
+        it(@"has no map", ^{
+            expect(fairVC.hasMap).will.beFalsy();
+        });
+    });
+});
+
+context(@"with a map", ^{
+    __block ARFairViewController *fairVC = nil;
+    
+    beforeEach(^{
+        Fair *fair = [[Fair alloc] initWithFairID:@"a-fair-affair"];
+    
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/a-fair-affair" withResponse:@{
+            @"id" : @"a-fair-affair",
+            @"name" : @"The Fair Affair",
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
+        }];
+        
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@[
+           @{
+            @"description": @"",
+            @"display_on_mobile": @(1),
+            @"id": @"set-id",
+            @"internal_name": @"The Armory Show 2014 Primary Features",
+            @"item_type": @"FeaturedLink",
+            @"key": @"primary",
+            @"name": @"The Armory Show 2014 Primary Features",
+            @"published": @(1),
+        }
+        ]];
+        
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/set/set-id/items" withResponse:@[
+            @{ @"id": @"one", @"href": @"/post/moby-my-highlights-from-art-los-angeles-contemporary", @"title" : @"Moby" },
+        ]];
+        
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/maps" withResponse:@[
+            @{
+                @"id": @"map-id",
+            }
+        ]];
+        
+        fairVC = [[ARFairViewController alloc] initWithFair:fair];
+        fairVC.animatesSearchBehavior = NO;
+        fairVC.view.frame = [[UIScreen mainScreen] bounds];
+
+    });
+
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+    });
+
+    it(@"has a map", ^{
+        expect(fairVC.hasMap).will.beTruthy();
+    });
+    
+    it(@"has a map button", ^{
+        expect(fairVC.primaryNavigationVC).willNot.beNil();
+        expect(fairVC.primaryNavigationVC.buttonDescriptions.count).will.beGreaterThan(0);
+        expect([fairVC.primaryNavigationVC.buttonDescriptions detect:^BOOL(NSDictionary *button) {
+            return [button[@"ARNavigationButtonPropertiesKey"][@"title"] isEqualToString:@"Map"];
+        }]).willNot.beNil();
+    });
+    
+    it(@"search view looks correct", ^{
+        [fairVC searchFieldButtonWasPressed:nil];
+        fairVC.searchVC.shouldAnimate = NO;
+        [fairVC.searchVC beginAppearanceTransition:YES animated:NO];
+        [fairVC.searchVC endAppearanceTransition];
+        expect(fairVC.view).to.haveValidSnapshot();
+    });
+});
+
+SpecEnd

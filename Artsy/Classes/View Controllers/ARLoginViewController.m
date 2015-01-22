@@ -1,0 +1,519 @@
+#import "ARLoginViewController.h"
+#import "ARUserManager.h"
+#import "AROnboardingNavBarView.h"
+#import "ARAuthProviders.h"
+#import "UIViewController+FullScreenLoading.h"
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import "ARTextFieldWithPlaceholder.h"
+#import "ARSecureTextFieldWithPlaceholder.h"
+#import "UIView+HitTestExpansion.h"
+
+#define SPINNER_TAG 0x555
+
+@interface ARLoginViewController () <UITextFieldDelegate>
+@property (nonatomic, strong) AROnboardingNavBarView *navView;
+@property (nonatomic, strong) UIButton *testBotButton;
+@property (nonatomic, strong) ARUppercaseButton *loginButton;
+@property (nonatomic, strong) NSString *email;
+
+@property (nonatomic, strong) ORStackView *containerView;
+@property (nonatomic, strong) ARTextFieldWithPlaceholder *emailTextField;
+@property (nonatomic, strong) ARSecureTextFieldWithPlaceholder *passwordTextField;
+@property (nonatomic, strong) UIButton *forgotPasswordButton;
+@property (nonatomic, strong) ARWhiteFlatButton *facebookLoginButton;
+@property (nonatomic, strong) ARWhiteFlatButton *twitterLoginButton;
+
+@property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
+@end
+
+@implementation ARLoginViewController
+
+- (instancetype)initWithEmail:(NSString *)email
+{
+    self = [super init];
+    if (self) {
+        _email = email;
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    self.view.backgroundColor = [UIColor clearColor];
+    UITapGestureRecognizer *keyboardCancelTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
+    [self.view addGestureRecognizer:keyboardCancelTap];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+    self.navView = [self createNav];
+    self.loginButton = self.navView.forward;
+    [self.view addSubview:self.navView];
+
+    self.containerView = [[ORStackView alloc] init];
+    [self.view addSubview:self.containerView];
+    [self.containerView alignCenterXWithView:self.view predicate:nil];
+    [self.containerView constrainWidth:@"280"];
+
+    self.emailTextField = [[ARTextFieldWithPlaceholder alloc] initWithFrame:CGRectZero];
+    self.emailTextField.placeholder = @"Email";
+    self.emailTextField.delegate = self;
+    self.emailTextField.returnKeyType = UIReturnKeyNext;
+    self.emailTextField.keyboardType = UIKeyboardTypeEmailAddress;
+    self.emailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.emailTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.emailTextField.keyboardAppearance = UIKeyboardAppearanceDark;
+
+    [self.containerView addSubview:self.emailTextField withTopMargin:@"0" sideMargin:nil];
+
+    self.passwordTextField = [[ARSecureTextFieldWithPlaceholder alloc] init];
+    self.passwordTextField.delegate = self;
+    self.passwordTextField.returnKeyType = UIReturnKeyDone;
+    self.passwordTextField.placeholder = @"Password";
+    [self.containerView addSubview:self.passwordTextField withTopMargin:@"10" sideMargin:nil];
+
+    if (self.email) {
+        self.emailTextField.text = self.email;
+        [self.passwordTextField becomeFirstResponder];
+    }
+
+    for (UITextField *textField in @[self.emailTextField, self.passwordTextField]) {
+        if ([textField respondsToSelector:@selector(setAutocorrectionType:)]) { textField.autocorrectionType = UITextAutocorrectionTypeNo; }
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.textColor = [UIColor whiteColor];
+        textField.keyboardAppearance = UIKeyboardAppearanceDark;
+        textField.keyboardType = UIKeyboardTypeEmailAddress;
+        textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        [textField ar_extendHitTestSizeByWidth:0 andHeight:10];
+    }
+
+    self.forgotPasswordButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [self.forgotPasswordButton setTitle:@"FORGOT PASSWORD?" forState:UIControlStateNormal];
+    [self.containerView addSubview:self.forgotPasswordButton withTopMargin:@"10"];
+    [self.forgotPasswordButton alignTrailingEdgeWithView:self.containerView predicate:@"-15"];
+    [self.forgotPasswordButton addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
+    self.forgotPasswordButton.titleLabel.font = [UIFont sansSerifFontWithSize:10];
+
+    self.facebookLoginButton = [[ARWhiteFlatButton alloc] initWithFrame:CGRectZero];
+    [self.facebookLoginButton setTitle:@"Connect With Facebook" forState:UIControlStateNormal];
+    [self.containerView addSubview:self.facebookLoginButton withTopMargin:@"29" sideMargin:nil];
+    [self.facebookLoginButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
+
+
+    self.twitterLoginButton = [[ARWhiteFlatButton alloc] initWithFrame:CGRectZero];
+    [self.twitterLoginButton setTitle:@"Connect With Twitter" forState:UIControlStateNormal];
+    [self.containerView addSubview:self.twitterLoginButton withTopMargin:@"10" sideMargin:nil];
+    [self.twitterLoginButton addTarget:self action:@selector(twitter:) forControlEvents:UIControlEventTouchUpInside];
+
+    if ([UIDevice isPad]) {
+        [self.containerView alignCenterYWithView:self.view predicate:@"0@750"];
+        self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
+    } else {
+        [self.containerView alignBottomEdgeWithView:self.view predicate:@"<=-56"];
+        self.keyboardConstraint = [[self.forgotPasswordButton alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
+    }
+
+    [super viewDidLoad];
+}
+
+- (void)hideKeyboard
+{
+    [self.view endEditing:YES];
+}
+
+- (AROnboardingNavBarView *)createNav
+{
+    AROnboardingNavBarView *navView = [[AROnboardingNavBarView alloc] init];
+    [navView.title setText:@"Welcome Back"];
+
+    [navView.back setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
+    [navView.back setImage:[UIImage imageNamed:@"BackArrow_Highlighted"] forState:UIControlStateHighlighted];
+    [navView.back addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+
+    [navView.forward setTitle:@"LOG IN" forState:UIControlStateNormal];
+    [navView.forward addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
+    return navView;
+}
+
+- (void)twitter:(id)sender
+{
+    [self hideKeyboard];
+    @weakify(self);
+
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
+
+    [ARAuthProviders getReverseAuthTokenForTwitter:^(NSString *token, NSString *secret) {
+        [[ARUserManager sharedManager] loginWithTwitterToken:token
+            secret:secret
+            successWithCredentials:nil
+            gotUser:^(User *currentUser) {
+                @strongify(self);
+                [self loggedInWithType:ARLoginViewControllerLoginTypeTwitter user:currentUser];
+            } authenticationFailure:^(NSError *error) {
+                @strongify(self);
+                [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                [self twitterError];
+
+            } networkFailure:^(NSError *error) {
+                @strongify(self);
+                [self failedToLoginToTwitter];
+            }];
+
+         } failure:^(NSError *error) {
+             @strongify(self);
+             [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+             [self twitterError];
+         }];
+}
+
+- (void)loggedInWithType:(ARLoginViewControllerLoginType)type user:(User *)currentUser
+{
+    [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+    [self loggedInWithUser:currentUser];
+}
+
+- (void)failedToLoginToTwitter
+{
+    [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+    [self presentErrorMessage:@"Network Error"];
+    self.loginButton.alpha = 1;
+}
+
+- (void)fb:(id)sender
+{
+    [self hideKeyboard];
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
+
+    @weakify(self);
+    [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
+        [[ARUserManager sharedManager] loginWithFacebookToken:token
+           successWithCredentials:nil gotUser:^(User *currentUser) {
+               @strongify(self);
+                [self loggedInWithType:ARLoginViewControllerLoginTypeFacebook user:currentUser];
+           } authenticationFailure:^(NSError *error) {
+               @strongify(self);
+
+               [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+
+               NSString * reason = error.userInfo[@"com.facebook.sdk:ErrorLoginFailedReason"];
+               if (![reason isEqualToString:@"com.facebook.sdk:UserLoginCancelled"]) {
+                   [self fbError];
+               } else if ([error.userInfo[@"AFNetworkingOperationFailingURLResponseErrorKey"] statusCode] == 401) {
+                   // This case handles a 401 from Artsy's server, which means the Facebook account is not associated with a user.
+                   [self fbNoUser];
+               }
+
+           } networkFailure:^(NSError *error) {
+               @strongify(self);
+               [self failedToLoginToFacebook];
+           }];
+    } failure:^(NSError *error) {
+        @strongify(self);
+
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        [self fbError];
+    }];
+}
+
+- (void)failedToLoginToFacebook
+{
+    [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+    [self presentErrorMessage:@"Network Error"];
+    self.loginButton.alpha = 1;
+}
+
+- (void)fbError
+{
+    [UIAlertView showWithTitle:@"Couldn’t get Facebook credentials"
+                       message:@"Couldn’t get Facebook credentials. If you continue having trouble, please email Artsy support at support@artsy.net"
+             cancelButtonTitle:@"OK"
+             otherButtonTitles:nil
+                      tapBlock:nil];
+}
+
+- (void)fbNoUser
+{
+    [UIAlertView showWithTitle:@"Account not found"
+                       message:@"We couldn't find an Artsy account associated with your Facebook profile. You can link your Facebook account in your settings on artsy.net. If you continue having trouble, please email Artsy support at support@artsy.net"
+             cancelButtonTitle:@"OK"
+             otherButtonTitles:nil
+                      tapBlock:nil];
+}
+
+- (void)twitterError
+{
+    [UIAlertView showWithTitle:@"Couldn’t get Twitter credentials"
+                       message:@"Couldn’t get Twitter credentials. Please link a Twitter account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
+             cancelButtonTitle:@"OK"
+             otherButtonTitles:nil
+                      tapBlock:nil];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+
+    // In iOS 7 in Landscape orientation, the keyboard's length and width values are as though the orientation was Portrait.
+    // This is fixed in iOS 8, but we must account for both possibilities. We will therefore assume the actual height to be the smaller of the two dimensions.
+    // See http://stackoverflow.com/questions/24314222/change-in-metrics-for-the-new-ios-simulator-in-xcode-6
+    CGFloat height = MIN(keyboardSize.width, keyboardSize.height);
+
+    self.keyboardConstraint.constant = -height - ([UIDevice isPad] ? 20 : 10);
+    [UIView animateIf:YES duration:duration :^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+
+    self.keyboardConstraint.constant = 0;
+    [UIView animateIf:YES duration:duration :^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.emailTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [self.passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+
+    self.testBotButton.titleLabel.font = [ARTheme defaultTheme].fonts[@"ButtonFont"];
+    self.loginButton.titleLabel.font = [ARTheme defaultTheme].fonts[@"ButtonFont"];
+
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+#if (AR_SHOW_ALL_DEBUG)
+    [self showAutoLoginButtons];
+    [self setupDefaultUsernameAndPassword];
+    [self textFieldDidChange:nil];
+#endif
+
+    [super viewDidAppear:animated];
+}
+
+- (void)autoLogIn:(id)sender
+{
+    // this won't leak passwords into the build unless you've
+    // somehow got a simulator only build, which is only
+    // really possible if you grab a dev's laptop
+
+    // ... in which case you've got the source, so who'd bother running strings?
+
+#if (AR_SHOW_ALL_DEBUG)
+    NSString *username, *password;
+
+    username = @"energytestbot@artsymail.com";
+    password = @"wy-rhu-hoki-tha-whil";
+
+    self.emailTextField.text = username;
+    self.passwordTextField.text = password;
+
+    [self login:nil];
+#endif
+}
+
+- (void)showAutoLoginButtons
+{
+    self.testBotButton.hidden = NO;
+    self.testBotButton.enabled = YES;
+}
+
+- (void)login:(id)sender
+{
+    if ([self validates]) {
+        [self loginWithUsername:_emailTextField.text andPassword:_passwordTextField.text];
+    }
+}
+
+- (void)forgotPassword:(id)sender
+{
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Forgot Password"
+                          message:@"Please enter your email address and we’ll send you a reset link."
+                          delegate:nil
+                          cancelButtonTitle:@"Cancel"
+                          otherButtonTitles:@"Send Link", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [[alert textFieldAtIndex:0] setKeyboardAppearance:UIKeyboardAppearanceDark];
+    alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == alertView.firstOtherButtonIndex) {
+            NSString *email = [[alertView textFieldAtIndex:0] text];
+            if (!email.length || ![email containsString:@"@"]) {
+                [self passwordResetError:@"Please check your email address"];
+            } else {
+                [self showSpinner];
+                [self sendPasswordResetEmail:email];
+            }
+        }
+    };
+    [self hideKeyboard];
+    [alert show];
+}
+
+- (void)sendPasswordResetEmail:(NSString *)email
+{
+    [[ARUserManager sharedManager] sendPasswordResetForEmail:email success:^{
+        [self passwordResetSent];
+        ARActionLog(@"Sent password reset request for %@", email);
+    } failure:^(NSError *error) {
+        ARErrorLog(@"Password reset failed for %@. Error: %@", email, error.localizedDescription);
+        [self passwordResetError:@"Couldn’t send reset password link. Please try again, or contact support@artsy.net"];
+    }];
+}
+
+- (BOOL)validates
+{
+    return self.emailTextField.text.length && self.passwordTextField.text.length;
+}
+
+- (void)loginWithUsername:(NSString *)username andPassword:(NSString *)password
+{
+    if ([username isEqualToString:@"orta"]) {
+        username = @"orta.therox@gmail.com";
+    }
+
+    self.loginButton.alpha = 0.5;
+
+    @weakify(self);
+    [[ARUserManager sharedManager] loginWithUsername:username
+                                            password:password
+                              successWithCredentials:nil
+    gotUser:^(User *currentUser) {
+        @strongify(self);
+        [self loggedInWithType:ARLoginViewControllerLoginTypeEmail user:currentUser];
+    }
+
+    authenticationFailure:^(NSError *error) {
+        @strongify(self);
+        [self authenticationFailure];
+    }
+
+    networkFailure:^(NSError *error) {
+        @strongify(self);
+        [self networkFailure:error];
+    }];
+}
+
+- (void)authenticationFailure
+{
+    [self resetForm];
+    [self presentErrorMessage:@"Please check your email and password"];
+}
+
+- (void)networkFailure:(NSError *)error
+{
+    [self presentErrorMessage:@"There is an issue connecting to Artsy"];
+    self.loginButton.alpha = 1;
+}
+
+- (void)presentErrorMessage:(NSString *)message
+{
+    [UIAlertView showWithTitle:@"Couldn’t Log In"
+                       message:message
+             cancelButtonTitle:@"Dismiss"
+             otherButtonTitles:nil
+                      tapBlock:nil];
+}
+
+- (void)loggedInWithUser:(User *)user
+{
+    [self.delegate dismissOnboardingWithVoidAnimation:YES];
+}
+
+- (void)resetForm
+{
+    self.passwordTextField.text = @"";
+    self.loginButton.alpha = 1;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField isEqual:self.emailTextField]) {
+        [self.passwordTextField becomeFirstResponder];
+    } else {
+        [self login:nil];
+    }
+    return YES;
+}
+
+- (void)textFieldDidChange:(UITextView *)textView;
+{
+    [self.loginButton setEnabled:[self validates] animated:YES];
+}
+
+- (void)setupDefaultUsernameAndPassword
+{
+    if (([ARDeveloperOptions options][@"username"] && [ARDeveloperOptions options][@"password"]) && self.hideDefaultValues == NO) {
+        self.emailTextField.text = [ARDeveloperOptions options][@"username"];
+        self.passwordTextField.text = [ARDeveloperOptions options][@"password"];
+        [self.passwordTextField sendActionsForControlEvents:UIControlEventEditingDidEnd];
+    }
+}
+
+- (void)back:(id)sender
+{
+    // If self.email is set, we got dropped off here from SSO
+    // so we wanna go back to the splash instead.
+
+    if (self.email) {
+        [self.delegate slideshowDone];
+    }
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)showSpinner
+{
+    UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
+    view.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [view addSubview:spinner];
+    spinner.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+    [spinner startAnimating];
+
+    UILabel *label = [[UILabel alloc] init];
+    label.font = [UIFont serifFontWithSize:16];
+    label.textColor = [UIColor whiteColor];
+    [label sizeToFit];
+    label.center = CGPointMake(spinner.center.x, spinner.center.y + 50);
+    [view addSubview:label];
+    [self.view addSubview:view];
+    view.tag = SPINNER_TAG;
+
+    //we dont want the keyboard to shoot up while we're spinning
+    [self hideKeyboard];
+}
+
+- (void)hideSpinner
+{
+    UIView *view = [self.view viewWithTag:SPINNER_TAG];
+    [view removeFromSuperview];
+}
+
+- (void)passwordResetError:(NSString *)message
+{
+    [self hideSpinner];
+    [UIAlertView showWithTitle:@"Couldn’t Reset Password"
+                       message:message
+             cancelButtonTitle:@"OK"
+             otherButtonTitles:nil
+                      tapBlock:nil];
+}
+
+- (void)passwordResetSent
+{
+    [self hideSpinner];
+    [UIAlertView showWithTitle:@"Please Check Your Email"
+                       message:@"We have sent you an email with a link to reset your password"
+             cancelButtonTitle:@"OK"
+             otherButtonTitles:nil
+                      tapBlock:nil];
+}
+
+@end

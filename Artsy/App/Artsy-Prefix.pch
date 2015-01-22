@@ -1,0 +1,79 @@
+//
+//  Artsy-Prefix.pch
+//  Artsy
+//
+//  Created by Orta Therox on 07/31/2013.
+//  Copyright (c) 2013 Artsy. All rights reserved.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 4.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import <SystemConfiguration/SystemConfiguration.h>
+    #import <MobileCoreServices/MobileCoreServices.h>
+
+    #import "Constants.h"
+
+    #import <AFNetworking/AFNetworking.h>
+    #import <AFHTTPRequestOperationLogger/AFHTTPRequestOperationLogger.h>
+    #import <Mantle/Mantle.h>
+    #import <ObjectiveSugar/ObjectiveSugar.h>
+    #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+    #import <CocoaLumberjack/DDLog.h>
+    #import <ORStackView/ORStackScrollView.h>
+    #import <ORStackView/ORTagBasedAutoStackView.h>
+    #import <ReactiveCocoa/ReactiveCocoa.h>
+    #import <NAMapKit/NAMapView.h>
+    #import <EDColor/UIColor+Hex.h>
+    #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+
+    #import "ArtsyAPI.h"
+    #import "Models.h"
+    #import "Categories.h"
+    #import "StyledSubclasses.h"
+    #import "AROptions.h"
+    #import "ARTheme.h"
+    #import "ARSwitchBoard.h"
+    #import "ARNetworkErrorManager.h"
+    #import "ARTrialController.h"
+    #import "ARTopMenuViewController.h"
+    #import "ARScrollNavigationChief.h"
+    #import "ARSystemTime.h"
+    #import "NSString+ObjectiveSugar.h"
+    #import "ARDispatchManager.h"
+    #import "ARDeveloperOptions.h"
+
+    #import <libextobjc/EXTKeyPathCoding.h>
+    #import <libextobjc/EXTScope.h>
+
+    #ifdef DEBUG
+    static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+    static const int httpLogLevel = AFLoggerLevelInfo;
+    #else
+    static const int ddLogLevel = LOG_LEVEL_WARN;
+    static const int httpLogLevel = AFLoggerLevelError;
+    #endif
+
+    #ifdef DEMO_MODE
+    static const BOOL ARIsRunningInDemoMode = YES;
+    #else
+    static const BOOL ARIsRunningInDemoMode = NO;
+    #endif
+
+    #import "ARLogger.h"
+
+#endif
+
+#ifndef __FEATURES
+#define __FEATURES
+
+// define here all the features you want on
+//#define STUBBED_FEED
+
+#endif

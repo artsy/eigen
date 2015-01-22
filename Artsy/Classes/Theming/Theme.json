@@ -1,0 +1,103 @@
+[{
+    "name": "default",
+
+    "content": {
+
+        "DefaultNavigationAnimationDuration": 0.3,
+        "DefaultNavigationAnimationYMovement": 16,
+        "DefaultNavigationAnimationXMovement": 8,
+        "DefaultNavigationAnimationAlphaTarget": 0.2,
+
+        "LoginForm" : "Garamond@17",
+        "LoginMessage" : "Avant@16",
+        "LoginError" : "Garamond@17",
+
+        "FeedSectionTitle" : "Avant@13",
+        "FeedHeaderTitle": "Garamond@21",
+        "FeedHeaderSubtitle": "Garamond@15",
+
+        "ViewHeader" : "Avant@18",
+        "ViewSubHeader" : "Avant@16",
+        "AltViewHeader" : "Garamond@21",
+        "AltViewSubHeader" : "Garamond@18",
+
+        "ViewHeaderTopMargin" : "20",
+        "ViewHeaderSideMargin" : "120",
+
+        "ButtonFont": "Avant@14",
+        "BodyText": "Garamond@16",
+
+        "Error":"#ca0814",
+
+        "FeedSectionTitleVerticalMargin" :  "15",
+        "FeedSectionTitleVerticalOffset" : "0",
+
+        "FeedItemTopMargin": "20",
+
+        "FeedItemSeperatorHeight": "1",
+        "FeedItemSeperatorHorizontalMargin": "-40",
+        "FeedItemSeperatorXOffset": "0",
+        "FeedItemSeperatorBottomMargin": "0",
+        "FeedItemSeperatorBackgroundColor": "#E5E5E5",
+ 
+        "LinkItemTitle": "Garamond@18",
+        "LinkItemSubtitle": "Avant@10"
+    }
+},
+{
+    "name": "InquireForm",
+
+    "content": {
+        "BackgroundTitle" : "Avant@14",
+        "BackgroundAlpha" : 0.6
+    }
+},
+{
+    "name": "ShowFeed",
+
+    "content": {
+        "ShowFeedItemPartnerNameHorizontalMargin" : "40",
+        "ShowFeedItemPartnerNameXOffset" : "0",
+
+        "ShowFeedItemShowTitleTopMargin": "4",
+        "ShowFeedItemShowTitleHorizontalMargin": "40",
+        "ShowFeedItemShowTitleXOffset": "0",
+
+        "ShowFeedItemSubtitleTopMargin": "4",
+        "ShowFeedItemSubtitleHorizontalMargin": "40",
+        "ShowFeedItemSubtitleXOffset": "0",
+
+        "ShowFeedItemArtworksTopMargin": "20",
+        "ShowFeedItemArtworksHorizontalMargin": "0",
+        "ShowFeedItemArtworksXOffset": "0",
+        "ShowFeedItemArtworksHeight": "255",
+
+        "FeedItemSeperatorHeight": "6",
+        "FeedItemSeperatorHorizontalMargin": "0",
+        "FeedItemSeperatorXOffset": "0",
+        "FeedItemSeperatorBottomMargin": "0"
+    }
+ },
+ {
+     "name": "InquirePopover",
+
+     "content": {
+        "BorderColor": "#E5E5E5"
+     }
+ },
+ {
+    "name": "Artist",
+
+    "content": {
+        "Title": "Avant@18",
+        "Bio": "Garamond@18"
+    }
+ },
+ {
+     "name": "Artwork",
+
+     "content": {
+         "ButtonMargin": "-8"
+     }
+}
+]

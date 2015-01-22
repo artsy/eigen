@@ -1,0 +1,31 @@
+# Xcode
+.DS_Store
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+!default.xcworkspace
+xcuserdata
+profile
+*.moved-aside
+DerivedData
+.idea/
+Pods
+.pt
+.build
+tmtags
+tmtagsHistory
+config/releasenotes.txt
+.bundle
+Artsy.xcodeproj/xcshareddata/xcschemes/Artsy.xcscheme
+/Classes/View\ Controllers/ARTopMenuViewController+DeveloperExtras.m
+Podfile.local
+chairs/
+.github
+Artsy.xcodeproj/project.xcworkspace/xcshareddata/
+vendor/

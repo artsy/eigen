@@ -1,0 +1,3 @@
+@interface ARDemoSplashViewController : UIViewController
+
+@end

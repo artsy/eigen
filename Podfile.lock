@@ -1,0 +1,244 @@
+PODS:
+  - AFHTTPRequestOperationLogger (1.0.0):
+    - AFNetworking (~> 1.0)
+  - AFNetworking (1.3.4)
+  - AFOAuth1Client (0.3.3):
+    - AFNetworking (~> 1.3)
+  - ALPValidator (0.0.3)
+  - ARAnalytics/CoreIOS (2.5.0)
+  - ARAnalytics/DSL (2.5.0):
+    - ReactiveCocoa (= 2.3)
+    - RSSwizzle (= 0.1.0)
+  - ARAnalytics/HockeyApp (2.5.0):
+    - ARAnalytics/CoreIOS
+    - HockeySDK
+  - ARAnalytics/Mixpanel (2.5.0):
+    - ARAnalytics/CoreIOS
+    - Mixpanel
+  - ARASCIISwizzle (1.1.0)
+  - ARCollectionViewMasonryLayout (2.0.0)
+  - ARGenericTableViewController (1.0.2)
+  - ARTiledImageView (1.2):
+    - SDWebImage/Core
+  - Artsy+UIColors (1.0.0):
+    - EDColor (~> 0.4)
+  - Artsy+UIFonts (1.0.0)
+  - Artsy+UILabels (1.1.0):
+    - Artsy+UIColors
+    - Artsy+UIFonts
+  - Artsy-UIButtons (HEAD based on 1.3.0):
+    - Artsy+UIColors
+    - UIView+BooleanAnimations
+  - Bolts (1.1.3)
+  - CocoaLumberjack (1.8.1):
+    - CocoaLumberjack/Extensions (= 1.8.1)
+  - CocoaLumberjack/Core (1.8.1)
+  - CocoaLumberjack/Extensions (1.8.1):
+    - CocoaLumberjack/Core
+  - DHCShakeNotifier (0.2.0)
+  - DRKonamiCode (1.1.0)
+  - EDColor (0.4.0)
+  - Expecta (0.3.0)
+  - Expecta+Snapshots (1.3.0):
+    - Expecta
+    - FBSnapshotTestCase
+  - Facebook-iOS-SDK (3.14.1):
+    - Bolts
+  - FBSnapshotTestCase (1.4)
+  - FLKAutoLayout (0.1.1)
+  - FODFormKit (0.1.1)
+  - FXBlurView (1.6.1)
+  - HockeySDK (3.5.0)
+  - iRate (1.10.2)
+  - ISO8601DateFormatter (0.7)
+  - JLRoutes (1.5)
+  - JSDecoupledAppDelegate (1.0.1)
+  - KSDeferred (0.2.0)
+  - libextobjc/EXTKeyPathCoding (0.4):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTScope (0.4):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/RuntimeExtensions (0.4)
+  - Mantle (1.5.3):
+    - Mantle/extobjc (= 1.5.3)
+  - Mantle/extobjc (1.5.3)
+  - Mixpanel (2.3.1)
+  - MMMarkdown (0.3)
+  - MultiDelegate (0.0.2)
+  - NAMapKit (3.1.1):
+    - ARTiledImageView
+    - SDWebImage
+  - ObjectiveSugar (1.1.0)
+  - OCMock (2.2.4)
+  - OHHTTPStubs (3.1.2)
+  - ORKeyboardReactingApplication (0.5.3)
+  - ORStackView (HEAD based on 2.0.0):
+    - FLKAutoLayout (~> 0.1)
+  - ReactiveCocoa (2.3):
+    - ReactiveCocoa/UI (= 2.3)
+  - ReactiveCocoa/Core (2.3):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.3)
+  - ReactiveCocoa/UI (2.3):
+    - ReactiveCocoa/Core
+  - RSSwizzle (0.1.0)
+  - SDWebImage (3.7.1):
+    - SDWebImage/Core (= 3.7.1)
+  - SDWebImage/Core (3.7.1)
+  - Specta (0.3.0.beta1)
+  - TSMiniWebBrowser@dblock (HEAD based on 1.1)
+  - UIAlertView+Blocks (0.8)
+  - UICKeyChainStore (1.0.5)
+  - UIView+BooleanAnimations (1.0.2)
+  - VCRURLConnection (0.2.0)
+  - XCTest+OHHTTPStubSuiteCleanUp (1.0.0):
+    - OHHTTPStubs
+
+DEPENDENCIES:
+  - AFHTTPRequestOperationLogger (= 1.0.0)
+  - AFNetworking (= 1.3.4)
+  - AFOAuth1Client (= 0.3.3)
+  - ALPValidator (= 0.0.3)
+  - ARAnalytics/DSL (from `https://github.com/orta/ARAnalytics`, commit `6f1a1c314894437e7e5c09572c276e644dbfb64b`)
+  - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics`, commit `6f1a1c314894437e7e5c09572c276e644dbfb64b`)
+  - ARAnalytics/Mixpanel (from `https://github.com/orta/ARAnalytics`, commit `6f1a1c314894437e7e5c09572c276e644dbfb64b`)
+  - ARASCIISwizzle (= 1.1.0)
+  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`, commit `2ee871f509806af147d0529a36f791906997d4b7`)
+  - ARGenericTableViewController (= 1.0.2)
+  - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
+  - Artsy+UIColors
+  - Artsy+UIFonts
+  - Artsy+UILabels (= 1.1.0)
+  - Artsy-UIButtons (HEAD)
+  - CocoaLumberjack (= 1.8.1)
+  - DHCShakeNotifier (= 0.2.0)
+  - DRKonamiCode (= 1.1.0)
+  - Expecta (= 0.3.0)
+  - Expecta+Snapshots (~> 1.2)
+  - Facebook-iOS-SDK (= 3.14.1)
+  - FBSnapshotTestCase (= 1.4)
+  - FLKAutoLayout (= 0.1.1)
+  - FODFormKit (from `https://github.com/1aurabrown/FODFormKit.git`)
+  - FXBlurView (= 1.6.1)
+  - HockeySDK (= 3.5.0)
+  - iRate (= 1.10.2)
+  - ISO8601DateFormatter (= 0.7)
+  - JLRoutes (= 1.5)
+  - JSDecoupledAppDelegate (= 1.0.1)
+  - KSDeferred (= 0.2.0)
+  - libextobjc/EXTKeyPathCoding (= 0.4)
+  - libextobjc/EXTScope (= 0.4)
+  - Mantle (= 1.5.3)
+  - Mixpanel (= 2.3.1)
+  - MMMarkdown (= 0.3)
+  - MultiDelegate (= 0.0.2)
+  - NAMapKit (from `https://github.com/neilang/NAMapKit`, commit `62275386978db91b0e7ed8de755d15cef3e793b4`)
+  - ObjectiveSugar (= 1.1.0)
+  - OCMock (= 2.2.4)
+  - OHHTTPStubs (= 3.1.2)
+  - ORKeyboardReactingApplication (= 0.5.3)
+  - ORStackView (HEAD)
+  - ReactiveCocoa (= 2.3)
+  - SDWebImage (= 3.7.1)
+  - Specta (from `https://github.com/specta/specta.git`, tag `v0.3.0.beta1`)
+  - TSMiniWebBrowser@dblock (HEAD)
+  - UIAlertView+Blocks (= 0.8)
+  - UICKeyChainStore (= 1.0.5)
+  - UIView+BooleanAnimations
+  - VCRURLConnection (= 0.2.0)
+  - XCTest+OHHTTPStubSuiteCleanUp (= 1.0.0)
+
+EXTERNAL SOURCES:
+  ARAnalytics:
+    :commit: 6f1a1c314894437e7e5c09572c276e644dbfb64b
+    :git: https://github.com/orta/ARAnalytics
+  ARCollectionViewMasonryLayout:
+    :commit: 2ee871f509806af147d0529a36f791906997d4b7
+    :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
+  ARTiledImageView:
+    :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
+    :git: https://github.com/dblock/ARTiledImageView
+  FODFormKit:
+    :git: https://github.com/1aurabrown/FODFormKit.git
+  NAMapKit:
+    :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
+    :git: https://github.com/neilang/NAMapKit
+  Specta:
+    :git: https://github.com/specta/specta.git
+    :tag: v0.3.0.beta1
+
+CHECKOUT OPTIONS:
+  ARAnalytics:
+    :commit: 6f1a1c314894437e7e5c09572c276e644dbfb64b
+    :git: https://github.com/orta/ARAnalytics
+  ARCollectionViewMasonryLayout:
+    :commit: 2ee871f509806af147d0529a36f791906997d4b7
+    :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
+  ARTiledImageView:
+    :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
+    :git: https://github.com/dblock/ARTiledImageView
+  FODFormKit:
+    :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
+    :git: https://github.com/1aurabrown/FODFormKit.git
+  NAMapKit:
+    :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
+    :git: https://github.com/neilang/NAMapKit
+  Specta:
+    :git: https://github.com/specta/specta.git
+    :tag: v0.3.0.beta1
+
+SPEC CHECKSUMS:
+  AFHTTPRequestOperationLogger: 890afab1adb178314d33c4de9d2aa5a42cc594b9
+  AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
+  AFOAuth1Client: 53c76d9cadd73142a9f73854456d5d970bdc147a
+  ALPValidator: 33ec78108e2389b903f066179973dbb1679d82c1
+  ARAnalytics: 4626cd58b4ab08ca4857da8ecf02e47c6f6bdefa
+  ARASCIISwizzle: 01fc71ffac975f18079a249b0608c9769a9fc4b6
+  ARCollectionViewMasonryLayout: 164b82010cf8ec99bc7a38cffe59a179d7e5a116
+  ARGenericTableViewController: f40b437b8abb2e2de7c98f1f35f0487ec9087ead
+  ARTiledImageView: 000af4093f9bdcd0f754e6ebd964c90641389f90
+  Artsy+UIColors: d1d5e084a0e542d310c507acb5446bae6a322241
+  Artsy+UIFonts: fb0a70f93ca888d45a3af751707701fe8cbeae2a
+  Artsy+UILabels: 83b261e0a9ee1f113ad9443f80bafe3a870bcfa9
+  Artsy-UIButtons: be101574d2d61d310620319252c56ec98d5181c3
+  Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
+  CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427
+  DHCShakeNotifier: d5e1130243096e9488e0ecce8e6e268647357b4b
+  DRKonamiCode: 17a4e3a8bf527b62c245c511656e4f4e70bcf518
+  EDColor: bcdb8600b7a456f4408ce1d7e7fc001588919254
+  Expecta: ce8a51b9fad15a2cd573b291cb2909aaed865350
+  Expecta+Snapshots: 0ec8bd543329a3944f5e5dc2a5cb220c3dde4ab0
+  Facebook-iOS-SDK: e9b3d5ac54ee3e5e693f4eef470b97911b3d076d
+  FBSnapshotTestCase: f9f225b5ba11c8d8c09075590490df16314e4d62
+  FLKAutoLayout: 9fa39aac2903b274fbeed6be74154cdb937a04fc
+  FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
+  FXBlurView: 1d01b96076d65027314d1be024c7506c292392aa
+  HockeySDK: 85c058a5300638a2e4fc98658f90b76df96c9f46
+  iRate: 7d204971bab2f727195b868e32e05216fe257681
+  ISO8601DateFormatter: 59731cd880cf87e71b4fa95f0d6b713dcbc4cbce
+  JLRoutes: 1a32dbc34b8af9c2a0174c4799afdc72ad5fe447
+  JSDecoupledAppDelegate: cff5663e495456300b1ca2c9479d13d44f43e3e0
+  KSDeferred: 33361e3e63ebe90210ea94d7f6469c1c2b874763
+  libextobjc: ba42e4111f433273a886cd54f0ddaddb7f62f82f
+  Mantle: 8d84cacd6c2a69ff6fbce985a2b51298a5495de3
+  Mixpanel: 9cc470a58346f60da8ce2982096bcc72b5a7372b
+  MMMarkdown: 95af8920c647512d1efa2ac8ac1932baf3266e2c
+  MultiDelegate: 30ea47d00d916390e7b53ba8dc240b8751d19107
+  NAMapKit: 4f57bea305c1795d2d6b8a6d6b31c59b1a08114f
+  ObjectiveSugar: f48793f5902c77cfc02a4ce46d2e8ecddcad4dc2
+  OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
+  OHHTTPStubs: c1c2007839687eaf9b80f061ce84440515080ebb
+  ORKeyboardReactingApplication: 9e9543372960d3a4994f0ee12ebf125d0ffb2012
+  ORStackView: b6ccb2d7a1730548631a8a2749ba3c1bf12168db
+  ReactiveCocoa: 2066583826c17dde8e90c41e489f682048cc57c9
+  RSSwizzle: ab39962b7ec56d19c2318ec1127e253797121363
+  SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
+  Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
+  TSMiniWebBrowser@dblock: 4e73ee955fcf2e9f5d98f7a17460454ac059bc37
+  UIAlertView+Blocks: 90d7f6b2853404277c94f6284c2b8c16028272e6
+  UICKeyChainStore: 4f9719600cc70025064e26f28f1210bcfc3b0c35
+  UIView+BooleanAnimations: 48cc98d5469ced7f7654310bff47c8ddba72c8f4
+  VCRURLConnection: ad8bfbd376ad44a7f5c48358f3ee96a40d4e683e
+  XCTest+OHHTTPStubSuiteCleanUp: 16f0278ca4d489896745e6f4f71b8b3efa93cba8
+
+COCOAPODS: 0.36.0.beta.1

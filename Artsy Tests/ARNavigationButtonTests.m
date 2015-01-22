@@ -1,0 +1,78 @@
+#import "ARNavigationButton.h"
+
+SpecBegin(ARNavigationButtonSpec)
+
+__block ARNavigationButton * _view;
+CGRect frame = CGRectMake(0, 0, 280, 60);
+
+describe(@"ARNavigationButton", ^{
+    describe(@"default border", ^{
+        beforeEach(^{
+            _view = [[ARNavigationButton alloc] initWithFrame:frame];
+        });
+
+        it(@"title", ^{
+            _view.title = @"Hello World";
+            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitle");
+        });
+
+        it(@"title and subtitle", ^{
+            _view.title = @"Title";
+            _view.subtitle = @"Subtitle";
+            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAndSubtitle");
+        });
+    });
+
+    describe(@"thick border", ^{
+        beforeEach(^{
+            _view = [[ARNavigationButton alloc] initWithFrame:frame withBorder:5];
+        });
+
+        it(@"title", ^{
+            _view.title = @"Hello World";
+            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAnd5pxBorder");
+        });
+
+        it(@"title and subtitle", ^{
+            _view.title = @"Title";
+            _view.subtitle = @"Subtitle";
+            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAndSubtitleAnd5pxBorder");
+        });
+    });
+
+    describe(@"no border", ^{
+        beforeEach(^{
+            _view = [[ARNavigationButton alloc] initWithFrame:frame withBorder:0];
+        });
+
+        it(@"title", ^{
+            _view.title = @"Hello World";
+            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAndNoBorder");
+        });
+
+        it(@"title and subtitle", ^{
+            _view.title = @"Title";
+            _view.subtitle = @"Subtitle";
+            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAndSubtitleAndNoBorder");
+        });
+    });
+});
+
+describe(@"ARSerifNavigationButton", ^{
+    beforeEach(^{
+        _view = [[ARSerifNavigationButton alloc] initWithFrame:frame];
+    });
+
+    it(@"title", ^{
+        _view.title = @"Hello World";
+        expect(_view).to.haveValidSnapshotNamed(@"serifNavigationButtonWithTitle");
+    });
+
+    it(@"title and subtitle", ^{
+        _view.title = @"Title";
+        _view.subtitle = @"Subtitle";
+        expect(_view).to.haveValidSnapshotNamed(@"serifNavigationButtonWithTitleAndSubtitle");
+    });
+});
+
+SpecEnd
