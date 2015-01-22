@@ -2,7 +2,7 @@
 
 ## Artsy Eigen
 
-[![Build Status](https://magnum.travis-ci.com/artsy/eigen.svg)](https://magnum.travis-ci.com/artsy/eigen)
+[![Build Status](https://travis-ci.org/artsy/eigen.svg)](https://magnum.travis-ci.com/artsy/eigen)
 
 I'm in your phone letting you browse the arts.
 
