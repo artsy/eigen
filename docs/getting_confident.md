@@ -15,10 +15,6 @@ AppCode is Xcode but with a lot of extra goodies because they don't have to say 
 
 My install settings are open source at [orta/AppCode](https://github.com/orta/AppCode). They are a mix of TextMate + Xcode. Also check out the [QuickStart Guide](http://www.jetbrains.com/objc/quickstart/).
 
-Use Base & Chairs
----------------
-Core Data is nice to introspect as it's just a sqlite database, use this to your advantage by installing my gem _chairs_ to open the app's build folder then you can look in the Documents folder and open the DB in [Base](http://menial.co.uk) (or similar) for inspection.
-
 Use Dash
 ---------------
 Documentation is essential. Having quick access is even more useful. With Dash I partially type the class then guess the method name after pressing space. [Dash](http://kapeli.com) makes this very very fast.

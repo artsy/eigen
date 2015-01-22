@@ -19,7 +19,7 @@ CHANGELOG_SHORT = CHANGELOG_SHORT.md
 IPA = Artsy.ipa
 DSYM = Artsy.app.dSYM.zip
 
-.PHONY: all build ci clean pods test lint
+.PHONY: all build ci prepare_ci clean pods test lint oss
 
 all: ci
 
@@ -35,9 +35,7 @@ test:
 lint:
 	bundle exec fui --path Artsy find
 
-ci: CONFIGURATION = Debug
-ci: build
-ci:
+prepare_ci:
 	bundle exec pod keys set "ArtsyAPIClientSecret" "-" Artsy
 	bundle exec pod keys set "ArtsyAPIClientKey" "-"
 	bundle exec pod keys set "HockeyProductionSecret" "-"
@@ -50,8 +48,27 @@ ci:
 	bundle exec pod keys set "ArtsyTwitterKey" "-"
 	bundle exec pod keys set "ArtsyTwitterSecret" "-"
 	bundle exec pod keys set "ArtsyTwitterStagingKey" "-"
+	bundle exec pod keys set "ArtsyTwitterStagingSecret" "-"
+
+
+oss:
+	bundle exec pod keys set "ArtsyAPIClientSecret" "SECRET" Artsy
+	bundle exec pod keys set "ArtsyAPIClientKey" ""
+	bundle exec pod keys set "HockeyProductionSecret" "-"
+	bundle exec pod keys set "HockeyBetaSecret" "-"
+	bundle exec pod keys set "MixpanelProductionAPIClientKey" "-"
+	bundle exec pod keys set "MixpanelStagingAPIClientKey" "-"
+	bundle exec pod keys set "MixpanelDevAPIClientKey" "-"
+	bundle exec pod keys set "MixpanelInStoreAPIClientKey" "-"
+	bundle exec pod keys set "ArtsyFacebookAppID" "-"
+	bundle exec pod keys set "ArtsyTwitterKey" "-"
+	bundle exec pod keys set "ArtsyTwitterSecret" "-"
+	bundle exec pod keys set "ArtsyTwitterStagingKey" "-"
 	bundle exec pod keys set "ArtsyTwitterStagingSecret "-"
-	
+
+
+ci: CONFIGURATION = Debug
+ci: build	
 
 remove_debug_pods:
 	rm -rf Pods
