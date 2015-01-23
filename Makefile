@@ -19,7 +19,7 @@ CHANGELOG_SHORT = CHANGELOG_SHORT.md
 IPA = Artsy.ipa
 DSYM = Artsy.app.dSYM.zip
 
-.PHONY: all build ci prepare_ci clean pods test lint oss
+.PHONY: all build ci clean pods test lint oss
 
 all: ci
 
@@ -35,9 +35,9 @@ test:
 lint:
 	bundle exec fui --path Artsy find
 
-prepare_ci:
-	bundle exec pod keys set "ArtsyAPIClientSecret" "-" Artsy
-	bundle exec pod keys set "ArtsyAPIClientKey" "-"
+oss:
+	bundle exec pod keys set "ArtsyAPIClientSecret" "1ef4f2c9d0b8fe7872e2837cd3d32394" Artsy
+	bundle exec pod keys set "ArtsyAPIClientKey" "47ac83ba1572052cc0ac"
 	bundle exec pod keys set "HockeyProductionSecret" "-"
 	bundle exec pod keys set "HockeyBetaSecret" "-"
 	bundle exec pod keys set "MixpanelProductionAPIClientKey" "-"
@@ -51,34 +51,14 @@ prepare_ci:
 	bundle exec pod keys set "ArtsyTwitterStagingSecret" "-"
 
 
-oss:
-	bundle exec pod keys set "ArtsyAPIClientSecret" "SECRET" Artsy
-	bundle exec pod keys set "ArtsyAPIClientKey" ""
-	bundle exec pod keys set "HockeyProductionSecret" "-"
-	bundle exec pod keys set "HockeyBetaSecret" "-"
-	bundle exec pod keys set "MixpanelProductionAPIClientKey" "-"
-	bundle exec pod keys set "MixpanelStagingAPIClientKey" "-"
-	bundle exec pod keys set "MixpanelDevAPIClientKey" "-"
-	bundle exec pod keys set "MixpanelInStoreAPIClientKey" "-"
-	bundle exec pod keys set "ArtsyFacebookAppID" "-"
-	bundle exec pod keys set "ArtsyTwitterKey" "-"
-	bundle exec pod keys set "ArtsyTwitterSecret" "-"
-	bundle exec pod keys set "ArtsyTwitterStagingKey" "-"
-	bundle exec pod keys set "ArtsyTwitterStagingSecret "-"
-
-
 ci: CONFIGURATION = Debug
 ci: build	
 
 remove_debug_pods:
-	rm -rf Pods
 	perl -pi -w -e "s{^pod 'Reveal-iOS-SDK'}{# pod 'Reveal-iOS-SDK'}g" Podfile
-	bundle exec pod install
 
 add_debug_pods:
-	rm -rf Pods
 	perl -pi -w -e "s{^# pod 'Reveal-iOS-SDK'}{pod 'Reveal-iOS-SDK'}g" Podfile
-	bundle exec pod install
 
 update_bundle_version:
 	@printf 'What is the new human-readable release version? '; \
@@ -90,9 +70,6 @@ pods: remove_debug_pods
 bundler:
 	gem install bundler
 	bundle install
-
-pod:
-	pod update
 
 ipa: set_git_properties change_version_to_date
 	$(PLIST_BUDDY) -c "Set CFBundleDisplayName $(BUNDLE_NAME)" $(APP_PLIST)

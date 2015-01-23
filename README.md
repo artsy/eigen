@@ -10,8 +10,21 @@
 
 I'm in your phone letting you browse the arts.
 
+### Docs
+
 Get setup [here](docs/getting_started.md). Further documentation can be found in the [documentation folder](docs#readme).
 
-Want API documentation, go through this [guide in gravity](https://github.com/artsy/gravity/blob/master/doc/Api.md#playing-with-the-api) replacing `localhost:4000` with `artsy.net`.
+### OSS Quick Start
+
+Want to get the app running as an OSS project? Run this in your shell:
+
+```sh
+git clone https://github.com/artsy/eigen.git
+cd eigen
+make oss
+open Artsy.xcworkspace
+```
+
+This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Build > Run`. 
 
 **Copyright**: 2012-2015, Artsy

@@ -16,13 +16,14 @@ before_install:
   - pod repo add artsy https://github.com/artsy/Specs.git
 
 before_script:
-  - make pods
   - make ci
   
 install:
   - bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
-  - make prepare_ci
+  - make oss
+  - make remove_debug_pods
   - bundle exec pod install
+  - xcodebuild -workspace Artsy.xcworkspace -list
 
 script:
   - make test
