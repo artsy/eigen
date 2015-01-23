@@ -2,7 +2,7 @@
 
 ## Artsy Eigen
 
-[![Build Status](https://travis-ci.org/artsy/eigen.svg)](https://magnum.travis-ci.com/artsy/eigen)
+[![Build Status](https://travis-ci.org/artsy/eigen.svg)](https://travis-ci.org/artsy/eigen)
 
 
 <img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg">
