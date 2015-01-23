@@ -22,7 +22,6 @@ tmtags
 tmtagsHistory
 config/releasenotes.txt
 .bundle
-Artsy.xcodeproj/xcshareddata/xcschemes/Artsy.xcscheme
 /Classes/View\ Controllers/ARTopMenuViewController+DeveloperExtras.m
 Podfile.local
 chairs/

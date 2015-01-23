@@ -23,9 +23,8 @@ PODS:
   - Artsy+UIColors (1.0.0):
     - EDColor (~> 0.4)
   - Artsy+UIFonts (1.0.0)
-  - Artsy+UILabels (1.1.0):
+  - Artsy+UILabels (1.3.1):
     - Artsy+UIColors
-    - Artsy+UIFonts
   - Artsy-UIButtons (HEAD based on 1.3.0):
     - Artsy+UIColors
     - UIView+BooleanAnimations
@@ -108,7 +107,7 @@ DEPENDENCIES:
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
   - Artsy+UIColors
   - Artsy+UIFonts
-  - Artsy+UILabels (= 1.1.0)
+  - Artsy+UILabels (= 1.3.1)
   - Artsy-UIButtons (HEAD)
   - CocoaLumberjack (= 1.8.1)
   - DHCShakeNotifier (= 0.2.0)
@@ -199,7 +198,7 @@ SPEC CHECKSUMS:
   ARTiledImageView: 000af4093f9bdcd0f754e6ebd964c90641389f90
   Artsy+UIColors: d1d5e084a0e542d310c507acb5446bae6a322241
   Artsy+UIFonts: fb0a70f93ca888d45a3af751707701fe8cbeae2a
-  Artsy+UILabels: 83b261e0a9ee1f113ad9443f80bafe3a870bcfa9
+  Artsy+UILabels: a7c713069e3d10144a3dc8e377bef8b2253cd766
   Artsy-UIButtons: be101574d2d61d310620319252c56ec98d5181c3
   Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
   CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427

@@ -1,32 +1,32 @@
 osx_image: xcode61
 language: objective-c
+
 env:
   global:
-    secure: "WCW/8qlLgH94wxvF86DrfBgzhAKFRtMIEBfj3bDWk8I1GUNkzUpU6Mya4zIgKS/WRVT31j5sVj4Do/9z2ffREnlAcWZPIurzyOm6IcJygVQN6uRlbI6m9J2L2WLu8W2XXQyYGIoEWMvznYZ9raY12QFnM+3LIvYFBckNZFhBUZA="
+    secure: "nNOR1HgbuY1Z1SgsHyn2p2EtcC7N8HMJvv3BrQwnY7Fzg6dkIFWISAZYzzijXaqN0BJ+lvKHSO8F4HjWRL64x868bPSMdf3xlqG2VR5yvKsFfpjwqxoyDsBYc68VPsH+tcZqQt4SC2wAqGSkOOF3Pn/4yGyoCGZWWq05cN05las="
+
 cache:
   - bundler
-  - cocoapods
-env:
-  - UPLOAD_IOS_SNAPSHOT_BUCKET_NAME=eigen-ci UPLOAD_IOS_SNAPSHOT_BUCKET_PREFIX=snapshots
 
 before_install:
   - 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
-  
   - echo "machine github.com login $GITHUB_API_KEY" > ~/.netrc
-  - chmod 600 .netrc
+  - chmod 600 ~/.netrc
   - pod repo add artsy https://github.com/artsy/Specs.git
-
-install:
-  - bundle install
-  - make pods
 
 before_script:
   - make ci
+  
+install:
+  - bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
+  - make oss
+  - make remove_debug_pods
+  - bundle exec pod install
 
 script:
   - make test
   - make lint
 
 notifications:
-  slack: 
+  slack:
     secure: "fXmNnx6XW5OvT/j2jSSHYd3mHwbL+GzUSUSWmZVT0Vx/Ga5jXINTOYRY/9PYgJMqdL8a/L0Mf/18ZZ+tliPlWQ/DnfTz1a3Q/Pf94hfYSGhSGlQC/eXYcpOm/dNOKYQ3sr4tqXtTPylPUDXHeiM2D59ggdlUvVwcALGgHizajPQ="
