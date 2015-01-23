@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/artsy/eigen.svg)](https://travis-ci.org/artsy/eigen)
 
 
-<img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg">
+<a href="http://iphone.artsy.net"><img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg"></a>
 
 
 I'm in your [phone](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) letting you browse the arts.
