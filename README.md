@@ -21,7 +21,9 @@ Want to get the app running as an OSS project? Run this in your shell:
 ```sh
 git clone https://github.com/artsy/eigen.git
 cd eigen
+bundle install
 make oss
+bundle exec pod install
 open Artsy.xcworkspace
 ```
 
