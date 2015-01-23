@@ -8,7 +8,7 @@
 <img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg">
 
 
-I'm in your phone letting you browse the arts.
+I'm in your [phone](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) letting you browse the arts.
 
 Get setup [here](docs/getting_started.md). Further documentation can be found in the [documentation folder](docs#readme).
 
