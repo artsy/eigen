@@ -7,7 +7,6 @@ env:
 
 cache:
   - bundler
-  - cocoapods
 
 before_install:
   - 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
@@ -23,7 +22,6 @@ install:
   - make oss
   - make remove_debug_pods
   - bundle exec pod install
-  - xcodebuild -workspace Artsy.xcworkspace -list
 
 script:
   - make test

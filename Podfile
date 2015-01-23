@@ -55,15 +55,15 @@ pod 'ARGenericTableViewController', '1.0.2'
 pod 'FLKAutoLayout', '0.1.1'
 
 # Artsy Spec repo stuff
-pod 'Artsy+UILabels', '1.1.0'
+pod 'Artsy+UILabels', '1.3.1'
 pod 'Artsy+UIColors'
 pod 'Artsy-UIButtons', :head
 pod 'UIView+BooleanAnimations'
 
-if ["orta", "ash", "artsy", "Laura"].include? ENV['USER']
-    pod 'Artsy+UIFonts'
+if ENV['USER'] == "orta" || ENV['USER'] == "ash" || ENV['USER'] == "artsy" || ENV['USER'] == "Laura" || ENV['CI'] == "true"
+  pod 'Artsy+UIFonts'
 else
-    pod 'Artsy+OSSUIFonts'
+  pod 'Artsy+OSSUIFonts'
 end
 
 # Auth
