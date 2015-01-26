@@ -19,7 +19,7 @@ CHANGELOG_SHORT = CHANGELOG_SHORT.md
 IPA = Artsy.ipa
 DSYM = Artsy.app.dSYM.zip
 
-.PHONY: all build ci clean pods test lint oss
+.PHONY: all build ci clean pods test lint oss pr
 
 all: ci
 
@@ -127,6 +127,12 @@ alpha: stamp_date deploy
 beta: BUNDLE_NAME = 'Artsy β'
 beta: NOTIFY = 1
 beta: stamp_date deploy
+
+
+BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+
+pr: 
+	if [ "$(BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push upstream "$(BRANCH)"; open -a "Google Chrome" "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi
 
 setup:
 	mkdir -p .git/hooks
