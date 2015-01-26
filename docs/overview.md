@@ -1,6 +1,5 @@
 Overview of Eigen
 ==========
-##### Orta Therox - Wed 28 Jan 2014
 
 #### App wide View Controller Hierarchy
 
@@ -14,7 +13,7 @@ The control of menu buttons like the back / menu button are controlled in the `A
 
 #### Switchboard
 
-The switchboard is an abstraction that passes data between view controllers, it can deal with paths like the artsy website or be given an object and a class and it will push the corrosponding view controller on to the nav stack.
+The switchboard is an abstraction that passes data between view controllers, it can deal with paths like the artsy website or be given an object and a class and it will push the corrosponding view controller on to the nav stack. Most functions take a `fair:` parameter so that we can ensure that when you're inside a fairs navigation structure, you stay inside.
 
 #### ARRouter
 
@@ -46,10 +45,9 @@ The app as it currently is is a mix of three design patterns for networking. Thi
 
 * Raw access of `[ArtsyAPI getBlah]`. Happens around the app in places like `ARFavoritesArtistViewController`. Ideally these should be moved into network-models like `ARGeneArtworkCollection`.
 
-* Model based network abstractions are just an abstraction on the raw API access inside of the model instead of in a view controller or elsewhere.
+* Model based network abstractions are just an abstraction on the raw API access inside of the model instead of in a view controller or elsewhere. These should ideally be protocols so that testing is really easy.
 
 Ideally most of of our network interaction should be moved into network-models.
-
 
 #### ScrollNavigationChief
 
