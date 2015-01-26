@@ -36,8 +36,8 @@ lint:
 	bundle exec fui --path Artsy find
 
 oss:
-	bundle exec pod keys set "ArtsyAPIClientSecret" "1ef4f2c9d0b8fe7872e2837cd3d32394" Artsy
-	bundle exec pod keys set "ArtsyAPIClientKey" "47ac83ba1572052cc0ac"
+	bundle exec pod keys set "ArtsyAPIClientSecret" "e750db60ac506978fc70" Artsy
+	bundle exec pod keys set "ArtsyAPIClientKey" "3a33d2085cbd1176153f99781bbce7c6"
 	bundle exec pod keys set "HockeyProductionSecret" "-"
 	bundle exec pod keys set "HockeyBetaSecret" "-"
 	bundle exec pod keys set "MixpanelProductionAPIClientKey" "-"
