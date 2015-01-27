@@ -12,4 +12,9 @@
     }
 }
 
+-(UIViewContentMode)contentMode
+{
+    return UIViewContentModeScaleAspectFit;
+}
+
 @end
