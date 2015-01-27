@@ -27,8 +27,7 @@
 
     for(NSInteger i = 0; i < self.posts.count; i++) {
         ARPostFeedItem *post = self.posts[i];
-        ARPostFeedItemLinkView * postLinkView = [[ARPostFeedItemLinkView alloc] init];
-        [postLinkView updateWithPostFeedItem:post];
+        ARPostFeedItemLinkView * postLinkView = [[ARPostFeedItemLinkView alloc] initWithPostFeedItem:post];
         [self.view addSubview:postLinkView withTopMargin:nil sideMargin:nil];
     }
 }

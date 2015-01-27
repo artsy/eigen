@@ -7,11 +7,8 @@ __block ARPostFeedItemLinkView *view = nil;
 __block ARPostFeedItem *postFeedItem = nil;
 
 beforeEach(^{
-    view = [[ARPostFeedItemLinkView alloc] init];
-    postFeedItem = [ARPostFeedItem modelWithJSON:@{
-        @"id" : @"post_id"
-    }];
-    [view updateWithPostFeedItem:postFeedItem];
+    postFeedItem = [ARPostFeedItem modelWithJSON:@{ @"id" : @"post_id" }];
+    view = [[ARPostFeedItemLinkView alloc] initWithPostFeedItem:postFeedItem];
 });
 
 it(@"targetURL", ^{

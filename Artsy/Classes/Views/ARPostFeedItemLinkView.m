@@ -4,22 +4,13 @@
 
 @implementation ARPostFeedItemLinkView
 
-- (id)init
+- (id)initWithPostFeedItem:(ARPostFeedItem *)postFeedItem
 {
     self = [super init];
-    if (self) {
-        [self addTarget:nil action:@selector(tappedPostFeedItemLinkView:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return self;
-}
+    if (!self) { return nil; }
 
-- (void)updateWithPostFeedItem:(ARPostFeedItem *)postFeedItem
-{
-    [self updateWithPostFeedItem:postFeedItem withSeparator:YES];
-}
+    [self addTarget:nil action:@selector(tappedPostFeedItemLinkView:) forControlEvents:UIControlEventTouchUpInside];
 
-- (void)updateWithPostFeedItem:(ARPostFeedItem *)postFeedItem withSeparator:(BOOL)withSeparator
-{
     ARSeparatorView *separatorView = [[ARSeparatorView alloc] init];
     [self addSubview:separatorView];
 
@@ -44,27 +35,26 @@
     [labelContainer addSubview:postTitleLabel];
 
     // Auto Layout
-
     [separatorView alignTop:nil leading:@"10" bottom:@"0" trailing:@"-10" toView:self];
 
     [imageView constrainWidth:@"120"];
-
     [imageView alignLeadingEdgeWithView:self predicate:@"10"];
     [imageView alignTopEdgeWithView:self predicate:@"20"];
-    [imageView setContentMode:UIViewContentModeScaleAspectFit];
 
     [imageFiller constrainTopSpaceToView:imageView predicate:@"0"];
 
     [labelContainer constrainLeadingSpaceToView:imageView predicate:@"20"];
-
     [labelContainer alignTopEdgeWithView:imageView predicate:@"0"];
     [labelContainer alignTrailingEdgeWithView:self predicate:@"-10"];
-    [postTitleLabel alignTopEdgeWithView:labelContainer predicate:@"0"];\
+
+    [postTitleLabel alignTopEdgeWithView:labelContainer predicate:@"0"];
 
     if (postFeedItem.profile.profileName) {
         UILabel *postAuthorLabel = [ARThemedFactory labelForLinkItemSubtitles];
         postAuthorLabel.text = [postFeedItem.profile.profileName uppercaseString];
+
         [labelContainer addSubview:postAuthorLabel];
+
         [postAuthorLabel constrainTopSpaceToView:postTitleLabel predicate:@"5"];
         [labelContainer alignBottomEdgeWithView:postAuthorLabel predicate:@"0"];
         [UIView alignLeadingAndTrailingEdgesOfViews:@[postTitleLabel, postAuthorLabel, labelContainer]];
@@ -80,13 +70,13 @@
 
     _targetPath = NSStringWithFormat(@"/post/%@", postFeedItem.postID);
 
-    // Layout the view to calculate bounds and frame for the image view before adding the image.
-    [self layoutIfNeeded];
     NSURL *imageUrl = [NSURL URLWithString:postFeedItem.imageURL];
     [imageView ar_setImageWithURL:imageUrl completed:(SDWebImageCompletionBlock)^{
         [self setNeedsLayout];
         [self layoutIfNeeded];
     }];
+
+    return self;
 }
 
 @end
