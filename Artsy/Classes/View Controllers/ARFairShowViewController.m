@@ -11,6 +11,7 @@
 #import "ARFairMapPreview.h"
 #import "ARArtworkSetViewController.h"
 #import "ARShowNetworkModel.h"
+#import "ORStackView+ArtsyViews.h"
 
 NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewHeader = 1,
@@ -95,7 +96,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     self.view.delegate = [ARScrollNavigationChief chief];
 }
 
-- (void)fairDidLoad
+- (void)showDidLoad
 {
     [self addImagePagingViewToStack];
     [self getShowHeaderImages];
@@ -113,6 +114,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     [self.view.stackView constrainHeight:heightConstraint];
 
     [self setConstraintConstantsForOrientation:[UIApplication sharedApplication].statusBarOrientation];
+
+    CGFloat parentHeight = CGRectGetHeight(self.parentViewController.view.bounds) ?: CGRectGetHeight([UIScreen mainScreen].bounds);
+    [self.view.stackView ensureScrollingWithHeight:parentHeight];
 }
 
 - (void)addActionButtonsToStack
@@ -214,11 +218,11 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             self->_fair = show.fair;
         }
 
-        [self fairDidLoad];
+        [self showDidLoad];
     } failure:^(NSError *error) {
         @strongify(self);
 
-        [self fairDidLoad];
+        [self showDidLoad];
     }];
 }
 
