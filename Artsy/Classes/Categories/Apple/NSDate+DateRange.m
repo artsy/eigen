@@ -32,9 +32,9 @@ static NSDateFormatter *ARMonthFormatter;
         dateString = [NSString stringWithFormat:@"%@ %@%@ - %@%@",
                               [ARMonthFormatter stringFromDate:self],
                               @(startsComponents.day),
-                              [self ordinalForDay:startsComponents.day],
+                              [self.class ordinalForDay:startsComponents.day],
                               @(endsComponents.day),
-                              [self ordinalForDay:endsComponents.day]];
+                              [self.class ordinalForDay:endsComponents.day]];
 
         if (shouldShowYear) {
             dateString = [NSString stringWithFormat:@"%@, %@", dateString, @(endsComponents.year)];
@@ -45,10 +45,10 @@ static NSDateFormatter *ARMonthFormatter;
         dateString = [NSString stringWithFormat:@"%@ %@%@ - %@ %@%@",
                               [ARMonthFormatter stringFromDate:self],
                               @(startsComponents.day),
-                              [self ordinalForDay:startsComponents.day],
+                              [self.class ordinalForDay:startsComponents.day],
                               [ARMonthFormatter stringFromDate:endDate],
                               @(endsComponents.day),
-                              [self ordinalForDay:endsComponents.day]];
+                              [self.class ordinalForDay:endsComponents.day]];
         if (shouldShowYear) {
             dateString = [NSString stringWithFormat:@"%@, %@",dateString, @(endsComponents.year)];
         }
@@ -68,18 +68,24 @@ static NSDateFormatter *ARMonthFormatter;
 }
 
 // returns the bit after the number e.g. st, nd, th
-- (NSString *)ordinalForDay:(NSInteger)integer
++ (NSString *)ordinalForDay:(NSInteger)integer
 {
+    // This ended up better than my implementation
+    // http://stackoverflow.com/questions/1283045/ordinal-month-day-suffix-option-for-nsdateformatter-setdateformat
+
     switch (integer) {
-        case 0:
-            return @"";
         case 1:
-            return @"st";
+        case 21:
+        case 31: return @"st";
+
         case 2:
-            return @"nd";
-        default:
-            return @"th";
+        case 22: return @"nd";
+
+        case 3:
+        case 23: return @"rd";
+        default: return @"th";
     }
+
 }
 
 @end
