@@ -96,7 +96,7 @@
 - (void)tappedBuyButton:(ARButton *)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextAuctionBid fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextArtworkOrder fromTarget:self selector:_cmd];
         return;
     }
 
