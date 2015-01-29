@@ -19,6 +19,7 @@
 
 - (void)hideCallOut;
 - (void)hideScreenContents;
+- (void)tappedOnMap:(UITapGestureRecognizer *)gestureRecogniser;
 
 @property (nonatomic, strong, readonly) ARFairSearchViewController *searchVC;
 
@@ -151,6 +152,16 @@ describe(@"on init", ^{
         it(@"when showing partner shows", ^{
             [[apiMock stub] getShowInfo:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY];
             [mockVC selectedPartnerShow:nil];
+        });
+    });
+
+    describe(@"interactions", ^{
+        it(@"hides the callout when tapped", ^{
+            id mockVC = [OCMockObject partialMockForObject:vc];
+            [[mockVC expect] hideCallOut];
+
+            [vc tappedOnMap:nil];
+            [mockVC verify];
         });
     });
     

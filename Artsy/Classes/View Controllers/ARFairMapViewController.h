@@ -1,6 +1,6 @@
 #import "ARMenuAwareViewController.h"
 
-@class ARTiledImageDataSourceWithImage, ARFairMapZoomManager, ARFairShowMapper;
+@class ARTiledImageDataSourceWithImage, ARFairMapZoomManager, ARFairShowMapper, ARFairMapAnnotation;
 
 @interface ARFairMapViewController : UIViewController<ARMenuAwareViewController>
 
@@ -16,6 +16,14 @@
 
 @property (nonatomic, assign) BOOL titleHidden;
 
+/// Centers the map, with a height to base the logic off ( allowing for parallax )
 - (void)centerMap:(CGFloat)heightRatio inFrameOfHeight:(CGFloat)height animated:(BOOL)animated;
+
+/// Shows a callout on the map
+- (void)showCalloutForAnnotation:(ARFairMapAnnotation *)annotation animated:(BOOL)animated;
+
+/// Hides an existing callout
+- (void)hideCallOut;
+
 
 @end
