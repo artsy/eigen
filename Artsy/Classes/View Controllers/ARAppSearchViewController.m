@@ -26,7 +26,7 @@
 
     UIButton *clearButton = [[UIButton alloc] init];
     clearButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.textField addSubview:clearButton];
+    [self.view addSubview:clearButton];
     self.textField.clipsToBounds = NO;
     [clearButton ar_extendHitTestSizeByWidth:6 andHeight:16];
     [clearButton alignTrailingEdgeWithView:self.textField predicate:nil];
@@ -51,19 +51,14 @@
     [bottomBorder constrainTopSpaceToView:self.searchBoxView predicate:@"2"];
 }
 
-- (void)viewDidLayoutSubviews
-{
-    [self.textField bringSubviewToFront:self.clearButton];
-}
-
 - (void)clearTapped:(id)sender
 {
-    [self clearSearch];
+    [self clearSearchAnimated:YES];
 }
 
-- (void)searchText:(NSString *)text
+- (void)setSearchQuery:(NSString *)text animated:(BOOL)animated;
 {
-    [super searchText:text];
+    [super setSearchQuery:text animated:animated];
     self.clearButton.hidden = self.textField.text.length == 0;
 }
 

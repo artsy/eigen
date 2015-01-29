@@ -12,16 +12,6 @@
     return self;
 }
 
-- (id)initWithSearchResults:(NSOrderedSet *)searchResults
-{
-    self = [self init];
-    if (!self) { return nil; }
-
-    _searchResults = searchResults;
-
-    return self;
-}
-
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
 {
     return self.searchResults.count;
@@ -43,12 +33,12 @@
 
     @weakify(cell);
     [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:self.placeholderImage
-                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                       @strongify(cell);
-                                       cell.imageView.image = image;
-                                       [cell layoutSubviews];
+    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+       @strongify(cell);
+       cell.imageView.image = image;
+       [cell layoutSubviews];
 
-                                   } failure:nil];
+    } failure:nil];
 
     return cell;
 }
