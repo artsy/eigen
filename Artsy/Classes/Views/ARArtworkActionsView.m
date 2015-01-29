@@ -76,7 +76,7 @@
         shownPrice = YES;
     } else if ([self showPriceLabel]) {
         self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
-        [self.priceView updateWithArtwork:self.artwork];
+        [self.priceView updateWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
         [self addSubview:self.priceView withTopMargin:@"4" sideMargin:@"0"];
         shownPrice = YES;
     }

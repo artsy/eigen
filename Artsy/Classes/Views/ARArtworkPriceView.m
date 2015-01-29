@@ -28,17 +28,22 @@
         row.messageLabel.textColor = [UIColor artsyRed];
         row.messageLabel.font = [UIFont sansSerifFontWithSize:row.messageLabel.font.pointSize];
         row.messageLabel.text = @"SOLD";
-    } else if (saleArtwork != nil) {
-        row.messageLabel.text = @"Buy Now Price:";
     } else {
-        row.messageLabel.text = @"Price:";
+        if (saleArtwork != nil) {
+            row.messageLabel.text = @"Buy Now Price:";
+        } else {
+            row.messageLabel.text = @"Price:";
+        }
+    }
+
+    if (saleArtwork != nil) {
+        row.priceLabel.font = [UIFont sansSerifFontWithSize:24];
     }
 
     if (artwork.availability == ARArtworkAvailabilityForSale && artwork.isPriceHidden.boolValue) {
         row.priceLabel.font = [UIFont serifItalicFontWithSize:row.priceLabel.font.pointSize];
         row.priceLabel.text = @"Contact for Price";
     } else {
-        row.priceLabel.font = [UIFont sansSerifFontWithSize:24];
         row.priceLabel.text = artwork.price;
     }
 
