@@ -3,7 +3,7 @@
 ### TODOs for anyone before deploying
 
 1. Check out eigen Artsy master.
-1. Run `make appstore`. This removes Reveal, runs `pod install` and prompts for a release version number.
+1. Run `make appstore`. This runs `pod install` and prompts for a release version number.
 1. Update CHANGELOG with the release number.
 1. Add and commit the changed files, typically with `-m "Preparing for the next release, version X.Y.Z."`.
 
@@ -50,6 +50,6 @@ See [certs.md](certs.md) for more info on certificates.
 
 ### Prepare for the Next Release
 
-1. Run `make next`. This re-adds Reveal, runs `pod install` and prompts for the next version number.
+1. Run `make next`. This runs `pod install` and prompts for the next version number.
 1. Add a new section to CHANGELOG called _Next_.
 1. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
