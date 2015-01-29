@@ -19,7 +19,7 @@ CHANGELOG_SHORT = CHANGELOG_SHORT.md
 IPA = Artsy.ipa
 DSYM = Artsy.app.dSYM.zip
 
-.PHONY: all build ci clean pods test lint oss pr
+.PHONY: all build ci clean test lint oss pr
 
 all: ci
 
@@ -54,18 +54,10 @@ oss:
 ci: CONFIGURATION = Debug
 ci: build	
 
-remove_debug_pods:
-	perl -pi -w -e "s{^pod 'Reveal-iOS-SDK'}{# pod 'Reveal-iOS-SDK'}g" Podfile
-
-add_debug_pods:
-	perl -pi -w -e "s{^# pod 'Reveal-iOS-SDK'}{pod 'Reveal-iOS-SDK'}g" Podfile
-
 update_bundle_version:
 	@printf 'What is the new human-readable release version? '; \
 		read HUMAN_VERSION; \
 		$(PLIST_BUDDY) -c "Set CFBundleShortVersionString $$HUMAN_VERSION" $(APP_PLIST)
-
-pods: remove_debug_pods
 
 bundler:
 	gem install bundler
@@ -107,18 +99,18 @@ distribute:
 	 | grep -v "errors"
 
 appstore: TARGETED_DEVICE_FAMILY = 1
-appstore: remove_debug_pods update_bundle_version set_git_properties change_version_to_date set_targeted_device_family
+appstore: update_bundle_version set_git_properties change_version_to_date set_targeted_device_family
 
 appledemo: TARGETED_DEVICE_FAMILY = 1
 appledemo: NOTIFY = 0
 appledemo: CONFIGURATION = "Apple Demo"
-appledemo: set_git_properties change_version_to_date remove_debug_pods set_targeted_device_family
-appledemo: pods ipa distribute
+appledemo: set_git_properties change_version_to_date set_targeted_device_family
+appledemo: ipa distribute
 
 next: TARGETED_DEVICE_FAMILY = \"1,2\"
-next: add_debug_pods update_bundle_version set_git_properties change_version_to_date remove_debug_pods set_targeted_device_family
+next: update_bundle_version set_git_properties change_version_to_date set_targeted_device_family
 
-deploy: pods ipa distribute
+deploy: ipa distribute
 
 alpha: BUNDLE_NAME = 'Artsy α'
 alpha: NOTIFY = 0

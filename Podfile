@@ -96,7 +96,6 @@ pod 'UICKeyChainStore', '1.0.5'
 pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit', :commit => '62275386978db91b0e7ed8de755d15cef3e793b4'
 
 # Developer Pods
-# pod 'Reveal-iOS-SDK'
 pod 'VCRURLConnection', '0.2.0'
 pod 'DHCShakeNotifier', '0.2.0'
 
