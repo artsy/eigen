@@ -834,13 +834,16 @@ static NSSet *artsyHosts = nil;
     return [staticHTTPClient requestWithMethod:@"GET" path:ARSystemTimeURL parameters:nil];
 }
 
-+ (NSURLRequest *)newPendingOrderWithArtworkID:(NSString *)artworkID
++ (NSURLRequest *)newPendingOrderWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID
 {
-    NSDictionary *params = @{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
       @"artwork_id": artworkID,
       @"replace_order": @YES,
       @"session_id": [[NSUUID UUID] UUIDString] // TODO: preserve across session?
-    };
+    }];
+    if (editionSetID != nil) {
+        [params addEntriesFromDictionary:@{@"edition_set_id": editionSetID}];
+    }
 
     return [staticHTTPClient requestWithMethod:@"POST" path:ARCreatePendingOrderURL parameters:params];
 }
