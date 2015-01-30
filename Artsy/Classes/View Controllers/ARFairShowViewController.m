@@ -11,6 +11,7 @@
 #import "ARFairMapPreview.h"
 #import "ARArtworkSetViewController.h"
 #import "ARShowNetworkModel.h"
+#import "ORStackView+ArtsyViews.h"
 
 NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewHeader = 1,
@@ -46,11 +47,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 + (CGFloat)followButtonWidthForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
-        return 315;
-    } else {
-        return 281;
-    }
+    return UIInterfaceOrientationIsPortrait(interfaceOrientation) ? 315 : 281;
 }
 
 + (CGFloat)headerImageHeightForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -58,11 +55,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     if ([UIDevice isPhone]) {
         return 213;
     } else {
-        if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
-            return 413;
-        } else {
-            return 511;
-        }
+        return UIInterfaceOrientationIsPortrait(interfaceOrientation) ? 413 : 511;
     }
 }
 
@@ -98,11 +91,12 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 - (void)loadView
 {
     self.view = [[ORStackScrollView alloc] initWithStackViewClass:[ORTagBasedAutoStackView class]];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
+    self.view.stackView.backgroundColor = [UIColor whiteColor];
     self.view.delegate = [ARScrollNavigationChief chief];
 }
 
-- (void)fairDidLoad
+- (void)showDidLoad
 {
     [self addImagePagingViewToStack];
     [self getShowHeaderImages];
@@ -120,6 +114,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     [self.view.stackView constrainHeight:heightConstraint];
 
     [self setConstraintConstantsForOrientation:[UIApplication sharedApplication].statusBarOrientation];
+
+    CGFloat parentHeight = CGRectGetHeight(self.parentViewController.view.bounds) ?: CGRectGetHeight([UIScreen mainScreen].bounds);
+    [self.view.stackView ensureScrollingWithHeight:parentHeight];
 }
 
 - (void)addActionButtonsToStack
@@ -152,12 +149,12 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 {
     @weakify(self);
     return @{
-         ARActionButtonImageKey: @"MapButtonAction",
-         ARActionButtonHandlerKey: ^(ARCircularActionButton *sender) {
+        ARActionButtonImageKey: @"MapButtonAction",
+        ARActionButtonHandlerKey: ^(ARCircularActionButton *sender) {
             @strongify(self);
             [self handleMapButtonPress:sender];
-         }
-     };
+        }
+    };
 }
 
 - (void)handleMapButtonPress:(ARCircularActionButton *)sender
@@ -221,11 +218,11 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             self->_fair = show.fair;
         }
 
-        [self fairDidLoad];
+        [self showDidLoad];
     } failure:^(NSError *error) {
         @strongify(self);
 
-        [self fairDidLoad];
+        [self showDidLoad];
     }];
 }
 

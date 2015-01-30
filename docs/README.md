@@ -26,4 +26,4 @@ Specific Problems
 * [App Store Deployment](deploy_to_app_store.md)
 * [Beta Deployment](deploy_to_beta.md)
 * [Certificates & Code Signing](certs.md)
-* [Notifications](notifications/notifications.md)
+* [Notifications](notifications.md)

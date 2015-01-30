@@ -21,6 +21,12 @@ describe(@"ARNavigationButton", ^{
             _view.subtitle = @"Subtitle";
             expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAndSubtitle");
         });
+
+        it(@"really long title and subtitle", ^{
+            _view.title = @"Title and Title and Title and Title and Title and ";
+            _view.subtitle = @"Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and";
+            expect(_view).to.haveValidSnapshot();
+        });
     });
 
     describe(@"thick border", ^{
@@ -73,6 +79,14 @@ describe(@"ARSerifNavigationButton", ^{
         _view.subtitle = @"Subtitle";
         expect(_view).to.haveValidSnapshotNamed(@"serifNavigationButtonWithTitleAndSubtitle");
     });
+
+
+    it(@"really long title and subtitle", ^{
+        _view.title = @"Title and Title and Title and Title and Title and ";
+        _view.subtitle = @"Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and";
+        expect(_view).to.haveValidSnapshot();
+    });
+
 });
 
 SpecEnd

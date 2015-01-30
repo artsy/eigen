@@ -2,13 +2,13 @@
 
 ## Artsy Eigen
 
-[![Build Status](https://travis-ci.org/artsy/eigen.svg)](https://magnum.travis-ci.com/artsy/eigen)
+[![Build Status](https://travis-ci.org/artsy/eigen.svg)](https://travis-ci.org/artsy/eigen)
 
 
-<img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg">
+<a href="http://iphone.artsy.net"><img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg"></a>
 
 
-I'm in your phone letting you browse the arts.
+I'm in your [phone](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) letting you browse the arts.
 
 ### Docs
 
@@ -21,7 +21,9 @@ Want to get the app running as an OSS project? Run this in your shell:
 ```sh
 git clone https://github.com/artsy/eigen.git
 cd eigen
+bundle install
 make oss
+bundle exec pod install
 open Artsy.xcworkspace
 ```
 

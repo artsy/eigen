@@ -9,7 +9,7 @@
 
 ### Provisioning Profiles
 
-Open the project in XCode, click on the Artsy project.
+Open the project in Xcode, click on the Artsy project.
 
 1. Change iOS Deployment Target to "iPhone only" in Info, Deployment Target.
 2. Verify that the provisioning profiles under Code Signing are displayed as below in Build Settings.
@@ -22,7 +22,7 @@ The provisioning profile should be _"Artsy Mobile - App Store DistrProfile"_ and
 
 If you don't see the "Artsy Mobile - App Store DistrProfile" in the options above, import the Dev/Apple/Artsy AppStore Identities from the Artsy Engineering Operations 1Password vault.
 
-If you cannot set Code Signing Identity to "Automatic", under which you'll find "iPhone Distribution: Artsy Inc.", open XCode Preferences and add it@artsymail.com as an apple account. Also, choose the it@artsymail.com apple ID, click "Artsy Inc." and then refresh until you see two iOS Distribution signing identities, one that says "iOS Distribution (2)".
+If you cannot set Code Signing Identity to "Automatic", under which you'll find "iPhone Distribution: Artsy Inc.", open Xcode Preferences and add it@artsymail.com as an apple account. Also, choose the it@artsymail.com apple ID, click "Artsy Inc." and then refresh until you see two iOS Distribution signing identities, one that says "iOS Distribution (2)".
 
 See [certs.md](certs.md) for more info on certificates.
 
@@ -37,7 +37,7 @@ See [certs.md](certs.md) for more info on certificates.
 ### Release to AppStore
 
 1. Install HockeyApp from http://hockeyapp.net/apps and run it.
-1. In XCode, change the target device to _iOS Device_.
+1. In Xcode, change the target device to _iOS Device_.
 1. In Xcode, hold alt (`⌥`) and go to the menu, hit _Product_ and then _Archive..._.
 1. Check that the Build Configuration is set to _Store_.
 1. Hit _Archive_.

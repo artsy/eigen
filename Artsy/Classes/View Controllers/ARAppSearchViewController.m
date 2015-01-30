@@ -93,7 +93,6 @@
 
 - (void)closeSearch:(id)sender
 {
-    [super closeSearch:sender];
     [[ARTopMenuViewController sharedController] returnToPreviousTab];
 }
 

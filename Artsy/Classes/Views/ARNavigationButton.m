@@ -38,6 +38,7 @@
     [self addSubview:self.primaryTitleLabel];
     [self.primaryTitleLabel constrainTopSpaceToView:self.topBorder predicate:@"10"];
     [self.primaryTitleLabel alignLeadingEdgeWithView:self predicate:nil];
+    [self.primaryTitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
 
     _subtitleLabel = [[UILabel alloc] init];
     self.subtitleLabel.backgroundColor = [UIColor clearColor];
@@ -46,6 +47,7 @@
     [self addSubview:self.subtitleLabel];
     [self.subtitleLabel constrainTopSpaceToView:self.primaryTitleLabel predicate:nil];
     [self.subtitleLabel alignLeadingEdgeWithView:self predicate:nil];
+    [self.subtitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
 
     _arrowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MoreArrow"]];
     self.arrowView.backgroundColor = [UIColor clearColor];

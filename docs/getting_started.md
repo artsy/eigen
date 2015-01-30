@@ -12,12 +12,6 @@ Install the CocoaPods ruby gem.
 bundle install
 ```
 
-Add the Artsy podspec repo.
-
-```
-pod repo add artsy https://github.com/artsy/Specs.git
-```
-
 Now run `bundle exec pod install` in the root directory. This will grab all our external libraries.
 
 Once the `pod install` is complete, it will create the `Artsy.xcworkspace` file that you should open in Xcode.
@@ -39,7 +33,7 @@ Obtain a certificate for iOS development:
 
 Connect a device.
 
-XCode will prompt you to join a team, then to enable the device for development. When prompted, choose the uppercase *ART.SY INC.* team.
+Xcode will prompt you to join a team, then to enable the device for development. When prompted, choose the uppercase *ART.SY INC.* team.
 
 Choose Preferences, Accounts, which should list your Apple ID and membership.
 
