@@ -34,7 +34,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.7.0</string>
+	<string>1.6.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -63,15 +63,15 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2015.01.05</string>
+	<string>2015.01.30</string>
 	<key>FacebookAppID</key>
 	<string>308278682573501</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>GITCommitRev</key>
-	<string>c419a33</string>
+	<string>a658a3a</string>
 	<key>GITCommitSha</key>
-	<string>c419a33b2834bac57daaff33f52b52416d53037b</string>
+	<string>a658a3ab30b598735b3572ac89cd7586fff02edf</string>
 	<key>GITRemoteOriginURL</key>
 	<string>https://github.com/1aurabrown/eigen.git</string>
 	<key>LSRequiresIPhoneOS</key>
