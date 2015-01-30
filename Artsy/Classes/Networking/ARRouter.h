@@ -134,5 +134,5 @@
 
 + (NSURLRequest *)newSystemTimeRequest;
 
-+ (NSURLRequest *)newPendingOrderWithArtworkID:(NSString *)artworkID;
++ (NSURLRequest *)newPendingOrderWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID;
 @end

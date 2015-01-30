@@ -100,8 +100,21 @@
         return;
     }
 
+    // We currently don't have a UI for a user to select from multiple editions. Instead, send the user
+    // to the inquiry form.
+    if (self.artwork.hasMultipleEditions) {
+        [self tappedContactGallery:sender];
+        return;
+    }
+
+    // If the artwork has only 1 edition, use that edition id. Otherwise our POST request will fail.
+    NSString *editionSetID = nil;
+    if (self.artwork.editionSets.count > 0) {
+        editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
+    }
+
     // create a new order
-    NSURLRequest *request = [ARRouter newPendingOrderWithArtworkID:self.artwork.artworkID];
+    NSURLRequest *request = [ARRouter newPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID];
 
     @weakify(self);
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
