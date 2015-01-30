@@ -254,7 +254,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
         [controller popToRootViewControllerAnimated:NO];
         ARSearchViewController *searchViewController = (id)controller.topViewController;
-        [searchViewController clearSearch];
+        [searchViewController clearSearchAnimated:NO];
     }
 }
 

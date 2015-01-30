@@ -17,25 +17,20 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
-        _searchDataSource = [[ARSearchResultsDataSource alloc] init];
-        _fontSize = 16;
-        _noResultsInfoLabelText = @"No results found.";
-        _shouldAnimate = YES;
-    }
+    if (!self) return nil;
+
+    _searchDataSource = [[ARSearchResultsDataSource alloc] init];
+    _fontSize = 16;
+    _noResultsInfoLabelText = @"No results found.";
+    _shouldAnimate = YES;
+
     return self;
 }
 
 - (void)viewDidLoad
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
     self.view.backgroundColor = [UIColor blackColor];
 
@@ -56,7 +51,9 @@
     [searchIcon alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:searchIcon predicate:nil];
 
     // input text field
-    UITextField * textField = [[UITextField alloc] initWithFrame:CGRectZero];
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    [searchBoxView addSubview:textField];
+
     textField.textColor = [UIColor whiteColor];
     textField.font = [UIFont serifFontWithSize:self.fontSize];
     textField.tintColor = [UIColor whiteColor];
@@ -64,13 +61,12 @@
     textField.opaque = NO;
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.returnKeyType = UIReturnKeySearch;
-    [searchBoxView addSubview:textField];
     [textField alignTop:@"0" bottom:@"0" toView:self.searchBoxView];
     [textField constrainLeadingSpaceToView:searchIcon predicate:@"4"];
     _textField = textField;
     textField.delegate = self;
-    [textField addTarget:self action:@selector(search:) forControlEvents:UIControlEventEditingChanged];
     [textField ar_extendHitTestSizeByWidth:6 andHeight:16];
+    [textField addTarget:self action:@selector(searchTextFieldChanged:) forControlEvents:UIControlEventEditingChanged];
 
     UIButton *closeButton = [[UIButton alloc] init];
     [closeButton setTitle:@"CLOSE" forState:UIControlStateNormal];
@@ -119,6 +115,7 @@
 {
     [self.view layoutSubviews];
     [super viewDidAppear:animated];
+
     [self.textField becomeFirstResponder];
 }
 
@@ -198,25 +195,28 @@
         userInfo:nil];
 }
 
-- (void)searchText:(NSString *)text
+- (void)setSearchQuery:(NSString *)text
 {
-    if (self.searchRequest) {
-        [self.searchRequest cancel];
-    }
+    [self setSearchQuery:text animated:self.shouldAnimate];
+}
+
+- (void)setSearchQuery:(NSString *)text animated:(BOOL)animated
+{
+    if (self.searchRequest) { [self.searchRequest cancel]; }
 
     if (text.length == 0) {
         [self stopSearching];
         [self resetResults];
         [self setDefaultInfoLabelText];
         if ([self.textField isFirstResponder]) {
-            [self updateInfoLabel:self.shouldAnimate];
+            [self updateInfoLabel:animated];
         } else {
             [self.textField becomeFirstResponder];
         }
     } else {
         [self startSearching];
         [self fetchSearchResults:text];
-        [self updateInfoLabel:self.shouldAnimate];
+        [self updateInfoLabel:animated];
     }
 }
 
@@ -275,19 +275,20 @@
     return self.searchDataSource.searchResults;
 }
 
-- (void)search:(UITextField *)textField
+- (void)searchTextFieldChanged:(UITextField *)textField
 {
-    [self searchText:textField.text];
+    [self setSearchQuery:textField.text animated:YES];
 }
 
 - (void)closeSearch:(id)sender
 {
-    [self clearSearch];
+    [self clearSearchAnimated:YES];
 }
 
-- (void)clearSearch {
+- (void)clearSearchAnimated:(BOOL)animated
+{
     self.textField.text = @"";
-    [self searchText:@""];
+    [self setSearchQuery:@"" animated:animated];
 }
 
 - (void)removeResultsViewAnimated:(BOOL)animated
