@@ -74,6 +74,9 @@
     self.calloutView.hidden = YES;
     [self.mapView addSubview:self.calloutView];
 
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedOnMap:)];
+    [self.mapView addGestureRecognizer:tapGesture];
+
     // Prioritise the double tap gesture over the single tap for buttons
     self.mapView.doubleTapGesture.delaysTouchesBegan = YES;
 
@@ -180,6 +183,11 @@
     [self.mapShowMapper mapZoomLevelChanged:level];
 }
 
+- (void)tappedOnMap:(UITapGestureRecognizer *)gestureRecogniser
+{
+    [self hideCallOut];
+}
+
 + (NSSet *)keyPathsForValuesAffectingHidesBackButton
 {
     return [NSSet setWithObjects:@"searchVC.menuState", nil];
@@ -205,6 +213,7 @@
     [self hideCallOut];
 
     [self.mapView centerOnPoint:annotation.point animated:animated];
+    [(ARFairMapAnnotationView *)annotation.view reduceToPoint];
 
     if (!annotation.title) {
         return;
@@ -227,7 +236,7 @@
 {
     self.calloutView.annotation.highlighted = self.calloutAnnotationHighlighted;
     ARFairMapAnnotationView *annotationView = (ARFairMapAnnotationView *)self.calloutView.annotation.view;
-    [annotationView reduceToPoint];
+    [annotationView expandToFull];
     self.calloutView.hidden = YES;
 }
 

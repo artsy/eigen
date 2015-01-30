@@ -41,7 +41,7 @@
 
 - (void)addShow:(PartnerShow *)show animated:(BOOL)animated
 {
-    [self addShows:[NSArray arrayWithObject:show] animated:animated];
+    [self addShows:@[show] animated:animated];
 }
 
 - (CGSize)intrinsicContentSize
