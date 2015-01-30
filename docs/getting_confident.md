@@ -1,17 +1,19 @@
-Getting Confident
-================
-##### Orta Therox - Wed 28 Jan 2014
+### Getting Confident
 
 Once you've got a feel for the language, and some of the patterns here's some advice to start speeding you up in getting around the systems.
 
 
 Use Reveal
 ----------------
-[Reveal](http://revealapp.com) is a tool for inspecting the view hierarchy. Folio is _featured_ on their website as an example of how pretty it looks. You should have Reveal installed, and when our app is loaded you select the simulator type in the top left of Reveal. It should come in automatically through CocoaPods.
+[Reveal](http://revealapp.com) is a tool for inspecting the view hierarchy. Folio is _featured_ on their website as an example of how pretty it looks. You should have Reveal installed, and when our app is loaded you select the simulator type in the top left of Reveal. See this [gist](https://gist.github.com/raven/8553761) for getting started, or be lazy: quit Xcode and run:
+
+```
+mkdir -p ~/Library/Developer/Xcode/UserData/xcdebugger && curl https://gist.githubusercontent.com/raven/8553761/raw/Breakpoints_v2.xcbkptlist -o ~/Library/Developer/Xcode/UserData/xcdebugger/Breakpoints_v2.xcbkptlist
+```
 
 Use AppCode
 ---------------
-AppCode is Xcode but with a lot of extra goodies because they don't have to say no to everything. It's a Java app and I _orta_ can understand when you wince but I can promise you that the 1%ers use it. You should too.
+AppCode is Xcode but with a lot of extra goodies because they don't have to say no to everything. It's a Java app and I understand when you wince but I can promise you that a lot of smart people _deal with it_. You should too.
 
 My install settings are open source at [orta/AppCode](https://github.com/orta/AppCode). They are a mix of TextMate + Xcode. Also check out the [QuickStart Guide](http://www.jetbrains.com/objc/quickstart/).
 
@@ -21,7 +23,7 @@ Documentation is essential. Having quick access is even more useful. With Dash I
 
 If you insist on using Xcode
 ---------------
-I kinda understand, it's worth the switch. Anyway.
+I understand, it's worth the switch. Anyway.
 
 * Use Xcode Plugins. The Git & FuzzyAutoComplete ones especially. Get [Alcatraz](https://github.com/mneorr/Alcatraz/) for this.
 * Make "Open Quickly" `cmd + t` in Xcode to quickly open files like TextMate
