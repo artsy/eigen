@@ -60,7 +60,7 @@ pod 'Artsy+UIColors'
 pod 'Artsy-UIButtons', :head
 pod 'UIView+BooleanAnimations'
 
-if ENV['USER'] == "orta" || ENV['USER'] == "ash" || ENV['USER'] == "artsy" || ENV['USER'] == "Laura" || ENV['CI'] == "true"
+if ENV['USER'] == "orta" || ENV['USER'] == "ash" || ENV['USER'] == "artsy" || ENV['USER'] == "laura" || ENV['CI'] == "true"
   pod 'Artsy+UIFonts'
 else
   pod 'Artsy+OSSUIFonts'
