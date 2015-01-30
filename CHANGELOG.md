@@ -1,3 +1,21 @@
+## 1.6.2 (30/01/2015)
+
+* Fix iOS7 Search crash - orta
+* Fix artwork view crash  - orta
+* Set correct sign up context for purchasable works - 1aurabrown
+* Tapping a map can hide a callout - orta
+* Fix our usages of th/nd/st in dates - orta
+* Reset search when you leave the navigation tab - orta
+* Buy Now artworks with Editions will see inquiry forms instead of a failed order then the inquiry - 1aurabrown
+
+--- Open Sourced Jan 22 2015 ---
+
+
+## 1.6.1 (16/01/2015)
+
+* Facebook Auth Fixes - 1aurabrown
+
+
 ## 1.6.0 (05/01/2015)
 
 * New Fair Guide view - ashfurrow
