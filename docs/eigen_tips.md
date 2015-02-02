@@ -13,7 +13,7 @@ Authentication is a lot easier when you don't type so much, create a file in you
 
 ```
 username:ash@artsymail.com
-password:*****************
+password:this_is_not_my_actual_password
 ```
 
 Use the developer springboard function
