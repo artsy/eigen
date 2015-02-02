@@ -180,8 +180,8 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
         ARFairMapPreview *mapPreview = [[ARFairMapPreview alloc] initWithFairMap:map andFrame:frame];
         [mapViewContainer addSubview:mapPreview];
         [mapPreview alignToView:mapViewContainer];
-        [mapPreview setZoomScale:mapPreview.minimumZoomScale animated:self.shouldAnimate];
-        [mapPreview addShows:self.partnerShows animated:self.shouldAnimate];
+        [mapPreview setZoomScale:mapPreview.minimumZoomScale animated:NO];
+        [mapPreview addShows:self.partnerShows animated:NO];
         [mapViewContainer addTarget:self action:@selector(mapButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self.view.stackView addSubview:mapViewContainer withTopMargin:@"0" sideMargin:@"40"];
     }];
