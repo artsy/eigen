@@ -14,7 +14,7 @@
     [super setup];
 
     [self setBackgroundColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self setBorderColor:[UIColor artsyMediumGrey] forState:UIControlStateNormal];;
+    [self setBorderColor:[UIColor artsyMediumGrey] forState:UIControlStateNormal];
     self.toFollowTitle = @"Follow";
     self.toUnfollowTitle = @"Following";
 
