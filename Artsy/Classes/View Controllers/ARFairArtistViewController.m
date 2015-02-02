@@ -98,7 +98,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
         self->_partnerShows = shows;
 
-        [self addMapAndMapButton];
+        [self addMapButton];
         [self addFollowButton];
         [self addArtistOnArtsyButton];
 
@@ -163,7 +163,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     }
 }
 
-- (void)addMapAndMapButton
+- (void)addMapButton
 {
     @weakify(self);
     [self.fair getFairMaps:^(NSArray *maps) {
@@ -172,23 +172,18 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
         Map *map = maps.firstObject;
         if (!map) { return; }
 
-        ARCircularActionButton *mapButton = [[ARCircularActionButton alloc] initWithImageName:@"MapButtonAction"];
-        [mapButton addTarget:self action:@selector(mapButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.headerView addSubview:mapButton];
-        [mapButton alignCenterYWithView:self.headerView predicate:nil];
-        [mapButton alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeTrailing ofView:self.headerView predicate:nil];
-
-        UIButton *mapViewContainer = [[UIButton alloc] init];
+        ARClearFlatButton *mapViewContainer = [[ARClearFlatButton alloc] init];
+        [mapViewContainer setBorderColor:[UIColor artsyMediumGrey] forState:UIControlStateNormal];
         mapViewContainer.tag = ARFairArtistMapPreview;
-        [mapViewContainer constrainHeight:@"150"];
-        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 150);
+        [mapViewContainer constrainHeight:@"85"];
+        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 85);
         ARFairMapPreview *mapPreview = [[ARFairMapPreview alloc] initWithFairMap:map andFrame:frame];
         [mapViewContainer addSubview:mapPreview];
         [mapPreview alignToView:mapViewContainer];
         [mapPreview setZoomScale:mapPreview.minimumZoomScale animated:self.shouldAnimate];
         [mapPreview addShows:self.partnerShows animated:self.shouldAnimate];
         [mapViewContainer addTarget:self action:@selector(mapButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view.stackView addSubview:mapViewContainer withTopMargin:@"0" sideMargin:@"20"];
+        [self.view.stackView addSubview:mapViewContainer withTopMargin:@"0" sideMargin:@"40"];
     }];
 }
 
