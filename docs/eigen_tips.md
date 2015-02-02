@@ -9,7 +9,12 @@ Quickly load any type of our primitives ( shows / artworks / artists etc ) by pr
 Use your `.eigen` file
 -----------------------
 
-Authentication is a lot easier when you don't type so much, create a file in your home directory called `.eigen` and it takes a collection of `key:value` lines to have the username and password set for you in the `ARLoginViewController`.  You can use the `ARDeveloperOptions` class to react to the key value store.
+Authentication is a lot easier when you don't type so much, create a file in your home directory called `.eigen` and it takes a collection of `key:value` lines to have the username and password set for you in the `ARLoginViewController`.  You can use the `ARDeveloperOptions` class to react to the key value store. For example:
+
+```
+username:ash@artsymail.com
+password:*****************
+```
 
 Use the developer springboard function
 --------------------------------------
