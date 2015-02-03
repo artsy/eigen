@@ -12,7 +12,7 @@
 
 NS_ENUM(NSInteger, ARFairArtistViewIndex){
     ARFairArtistTitle = 1,
-    ARFairArtistHeader,
+    ARFairArtistSubtitle,
     ARFairArtistMapPreview,
     ARFairArtistFollow,
     ARFairArtistShows,
@@ -26,7 +26,6 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 @property (nonatomic, strong, readonly) NSArray *partnerShows;
 @property (nonatomic, strong, readwrite) Fair *fair;
 @property (nonatomic, strong, readonly) NSString *header;
-@property (nonatomic, strong, readonly) UIView *headerView;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
@@ -82,12 +81,6 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     _header = NSStringWithFormat(@"%@ at %@", self.artist.name, self.fair.name);
 
     [self.view.stackView addPageTitleWithString:self.header tag:ARFairArtistTitle];
-
-    UIView *headerView = [[UIView alloc] init];
-    headerView.tag = ARFairArtistHeader;
-    [self.view.stackView addSubview:headerView withTopMargin:@"20" sideMargin:@"40"];
-    [headerView constrainHeight:@"80"];
-    _headerView = headerView;
 
     [self addTitle];
 
@@ -152,14 +145,13 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
 - (void)addTitle
 {
-    if (self.artist.nationality.length && self.artist.years.length) {
+    if (self.artist.nationality.length && self.artist.birthday.length) {
         UILabel *titleLabel = [[ARSerifLabel alloc] init];
-        titleLabel.textColor = [UIColor blackColor];
-        titleLabel.preferredMaxLayoutWidth = 220;
-        titleLabel.text = [NSString stringWithFormat:@"%@, %@", self.artist.nationality, self.artist.years];
-        [self.headerView addSubview:titleLabel];
-        [titleLabel alignCenterYWithView:self.headerView predicate:nil];
-        [titleLabel alignLeadingEdgeWithView:self.headerView predicate:nil];
+        titleLabel.tag = ARFairArtistSubtitle;
+        titleLabel.textColor = [UIColor artsyHeavyGrey];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.text = [NSString stringWithFormat:@"%@ Born %@", self.artist.nationality, self.artist.birthday];
+        [self.view.stackView addSubview:titleLabel withTopMargin:@"10" sideMargin:@"40"];
     }
 }
 
@@ -183,7 +175,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
         [mapPreview setZoomScale:mapPreview.minimumZoomScale animated:NO];
         [mapPreview addShows:self.partnerShows animated:NO];
         [mapViewContainer addTarget:self action:@selector(mapButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view.stackView addSubview:mapViewContainer withTopMargin:@"0" sideMargin:@"40"];
+        [self.view.stackView addSubview:mapViewContainer withTopMargin:@"30" sideMargin:@"40"];
     }];
 }
 

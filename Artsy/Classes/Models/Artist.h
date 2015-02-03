@@ -8,6 +8,7 @@
 @property (readonly, nonatomic, copy) NSString *artistID;
 @property (readonly, nonatomic, copy) NSString *name;
 @property (readonly, nonatomic, copy) NSString *years;
+@property (readonly, nonatomic, copy) NSString *birthday;
 @property (readonly, nonatomic, copy) NSString *nationality;
 @property (readonly, nonatomic, copy) NSString *blurb;
 @property (readonly, nonatomic, copy) NSNumber *publishedArtworksCount;
