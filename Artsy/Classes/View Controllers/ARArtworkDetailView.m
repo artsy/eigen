@@ -3,6 +3,7 @@
 
 NS_ENUM(NSInteger, ARDetailSubViewOrder){
     ARDetailArtistName = 1,
+    ARDetailArtworkLotNumber,
     ARDetailArtworkTitle,
     ARDetailArtworkMedium,
     ARDetailDimensionInches,
@@ -67,6 +68,11 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
 
         case ARDetailArtistName: {
             view = [[ARSansSerifLabelWithChevron alloc] init];
+            break;
+        }
+
+        case ARDetailArtworkLotNumber: {
+            view = [[ARSansSerifLabel alloc] init];
             break;
         }
 
@@ -256,6 +262,14 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
         ARSerifLabel *auctionLabel = [self viewFor:ARDetailArtworkAuctionEstimate];
         auctionLabel.text = saleArtwork.estimateString;
         [self addSubview:auctionLabel withTopMargin:@"12" sideMargin:@"0"];
+        [self.delegate didUpdateArtworkDetailView:self];
+    }
+
+    if (saleArtwork.lotNumber) {
+        ARSerifLabel *lotLabel = [self viewFor:ARDetailArtworkLotNumber];
+        lotLabel.text = [NSString stringWithFormat:@"LOT %@", saleArtwork.lotNumber];
+        lotLabel.font = [lotLabel.font fontWithSize:12];
+        [self addSubview:lotLabel withTopMargin:@"12" sideMargin:@"0"];
         [self.delegate didUpdateArtworkDetailView:self];
     }
 }
