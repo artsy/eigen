@@ -2,8 +2,7 @@
 
 @interface SearchResult : MTLModel <MTLJSONSerializing>
 
-@property (readonly, nonatomic, copy) Class model;
-
+@property (readonly, nonatomic, copy) NSString *modelString;
 @property (readonly, nonatomic, copy) NSString *modelID;
 @property (readonly, nonatomic, copy) NSString *displayText;
 @property (readonly, nonatomic, copy) NSString *label;
@@ -12,4 +11,5 @@
 
 + (BOOL)searchResultIsSupported:(NSDictionary *)dict;
 - (NSURLRequest *)imageRequest;
+- (Class)model;
 @end

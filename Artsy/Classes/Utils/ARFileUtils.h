@@ -2,20 +2,21 @@
 
 @interface ARFileUtils : NSObject
 
-// user documents
+/// user documents
 
 + (NSString *)userDocumentsFolder;
 
 + (NSString *)userDocumentsPathWithFile:(NSString *)fileName;
 
-+ (NSString *)userDocumentsPathWithFolder:(NSString *)folderName
-                                 filename:(NSString *)fileName;
++ (NSString *)userDocumentsPathWithFolder:(NSString *)folderName filename:(NSString *)fileName;
 
-// caches
+/// caches
 
 + (NSString *)cachesFolder;
 
-+ (NSString *)cachesPathWithFolder:(NSString *)folderName
-                          filename:(NSString *)fileName;
++ (NSString *)cachesPathWithFolder:(NSString *)folderName filename:(NSString *)fileName;
+
+/// App documents
++ (NSString *)appDocumentsPathWithFolder:(NSString *)folderName filename:(NSString *)fileName;
 
 @end

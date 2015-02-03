@@ -2,13 +2,14 @@
 #import "ARContentViewControllers.h"
 #import "SearchResult.h"
 #import "ARSearchTableViewCell.h"
+#import "ARFileUtils.h"
 
 @interface ARQuicksilverViewController ()
 
-@property (nonatomic, assign) NSInteger selectedIndex;
-@property (nonatomic, copy) NSArray *searchResults;
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
-@property (nonatomic, strong) AFJSONRequestOperation *searchRequest;
+@property (nonatomic, assign, readwrite) NSInteger selectedIndex;
+@property (nonatomic, copy, readwrite) NSArray *searchResults;
+@property (nonatomic, copy, readonly) NSArray *resultsHistory;
+@property (nonatomic, strong, readonly) AFJSONRequestOperation *searchRequest;
 
 @end
 
@@ -16,21 +17,37 @@
 
 #pragma mark - ARMenuAwareViewController
 
-- (BOOL)hidesBackButton {
+- (BOOL)hidesBackButton
+{
     return YES;
 }
 
-- (BOOL)hidesToolbarMenu {
+- (BOOL)hidesToolbarMenu
+{
     return YES;
 }
 
 #pragma mark - UIViewController
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    NSString *path = [ARFileUtils appDocumentsPathWithFolder:@"dev" filename:@"quicksilver_history"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    _resultsHistory = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+    if (!self.resultsHistory) {
+        _resultsHistory = @[];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
+    [self.searchDisplayController.searchResultsTableView reloadData];
     [self.searchBar becomeFirstResponder];
+    [self setHighlight:YES forCellAtIndex:self.selectedIndex];
 }
 
 - (void)searchBarDownPressed:(ARQuicksilverSearchBar *)searchBar
@@ -38,7 +55,7 @@
     [self setHighlight:NO forCellAtIndex:self.selectedIndex];
 
     NSInteger nextIndex = self.selectedIndex + 1;
-    self.selectedIndex = MIN(nextIndex, self.searchResults.count);
+    self.selectedIndex = MIN(nextIndex, self.contentArray.count);
 
     [self setHighlight:YES forCellAtIndex:self.selectedIndex];
 }
@@ -79,8 +96,22 @@
     [self tableView:tableView didSelectRowAtIndexPath:path];
 }
 
-- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-    return self.searchResults.count;
+- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.contentArray.count;
+}
+
+- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller
+{
+    controller.searchResultsTableView.hidden = NO;
+}
+
+-(void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
+
+    // We need to prevent the resultsTable from hiding if the search is still active
+    if (self.searchDisplayController.active == YES) {
+        tableView.hidden = NO;
+    }
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView
@@ -103,7 +134,7 @@
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
         @weakify(self);
-        self.searchRequest = [ArtsyAPI searchWithQuery:query success:^(NSArray *results) {
+        _searchRequest = [ArtsyAPI searchWithQuery:query success:^(NSArray *results) {
             @strongify(self);
             self.searchResults = [results copy];
             self.selectedIndex = 0;
@@ -125,7 +156,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell"];
-    SearchResult *result = self.searchResults[indexPath.row];
+    SearchResult *result = self.contentArray[indexPath.row];
 
     BOOL published = result.isPublished.boolValue;
     if (!published) {
@@ -152,9 +183,20 @@
     return cell;
 }
 
+- (NSArray *)contentArray
+{
+   return (self.searchBar.text.length == 0) ? self.resultsHistory : self.searchResults;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SearchResult *result = self.searchResults[indexPath.row];
+    SearchResult *result = self.contentArray[indexPath.row];
+    _resultsHistory = [self.resultsHistory arrayByAddingObject:result];
+
+    NSString *path = [ARFileUtils appDocumentsPathWithFolder:@"dev" filename:@"quicksilver_history"];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.resultsHistory];
+    [data writeToFile:path atomically:YES];
+
     UIViewController *controller = nil;
 
     if (result.model == [Artwork class]) {
