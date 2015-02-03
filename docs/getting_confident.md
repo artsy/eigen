@@ -5,7 +5,7 @@ Once you've got a feel for the language, and some of the patterns here's some ad
 
 Use Reveal
 ----------------
-[Reveal](http://revealapp.com) is a tool for inspecting the view hierarchy. Folio is _featured_ on their website as an example of how pretty it looks. You should have Reveal installed, and when our app is loaded you select the simulator type in the top left of Reveal. See this [gist](https://gist.github.com/raven/8553761) for getting started, or be lazy: quit Xcode and run:
+[Reveal](http://revealapp.com) is a tool for inspecting the view hierarchy. Folio was _featured_ on their website as an example of how pretty it looks. You should have Reveal installed, and when our app is loaded you select the simulator type in the top left of Reveal. See this [gist](https://gist.github.com/raven/8553761) for getting started, or be lazy: quit Xcode and run:
 
 ```
 mkdir -p ~/Library/Developer/Xcode/UserData/xcdebugger && curl https://gist.githubusercontent.com/raven/8553761/raw/Breakpoints_v2.xcbkptlist -o ~/Library/Developer/Xcode/UserData/xcdebugger/Breakpoints_v2.xcbkptlist
