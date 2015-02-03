@@ -130,7 +130,7 @@
 
     if ([self showInquireButton]) {
         ARInquireButton *specialist = [[ARInquireButton alloc] init];
-        [specialist setTitle:@"Ask an Artsy Specialist" forState:UIControlStateNormal];
+        [specialist setTitle:@"Ask a Specialist" forState:UIControlStateNormal];
         [specialist addTarget:nil action:@selector(tappedContactRepresentative:) forControlEvents:UIControlEventTouchUpInside];
 
         BOOL hasAnotherButton = ([self showContactButton] || [self showBuyButton]);
