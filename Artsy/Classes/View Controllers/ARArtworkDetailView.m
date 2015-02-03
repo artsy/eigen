@@ -54,9 +54,7 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
 - (id)viewFor:(enum ARDetailSubViewOrder)viewType
 {
     UIView *view = [self viewWithTag:viewType];
-    if (view) {
-        return view;
-    }
+    if (view) { return view; }
 
     switch (viewType) {
 

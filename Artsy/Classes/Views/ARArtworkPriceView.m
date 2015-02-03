@@ -52,9 +52,9 @@
     [row alignLeadingEdgeWithView:self predicate:nil];
 }
 
-- (void)layoutSubviews
+- (void)setBounds:(CGRect)bounds
 {
-    [super layoutSubviews];
+    [super setBounds:bounds];
     [self drawDottedBorders];
 }
 
