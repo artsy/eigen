@@ -4,4 +4,6 @@
 
 @interface ARQuicksilverViewController : UIViewController <ARMenuAwareViewController, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, ARQuicksilverSearchBarDelegate>
 
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+
 @end

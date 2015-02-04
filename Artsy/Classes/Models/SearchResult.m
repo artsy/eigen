@@ -10,6 +10,11 @@ static NSDictionary *classMap;
     return [[classMap allKeys] containsObject:dict[@"model"]];
 }
 
++ (NSInteger)version
+{
+    return 1;
+}
+
 + (void)initialize
 {
     classMap = @{
@@ -30,18 +35,16 @@ static NSDictionary *classMap;
     return @{
         @"modelID" : @"id",
         @"displayText" : @"display",
-        @"model" : @"model",
+        @"modelString" : @"model",
         @"label" : @"label",
         @"searchDetail" : @"search_detail",
         @"isPublished" : @"published",
     };
 }
 
-+ (NSValueTransformer *)modelJSONTransformer
+- (Class)model
 {
-    return [MTLValueTransformer transformerWithBlock:^(NSString *str) {
-        return classMap[str];
-    }];
+    return classMap[self.modelString];
 }
 
 - (NSURLRequest *)imageRequest
@@ -63,5 +66,29 @@ static NSDictionary *classMap;
     return NSStringWithFormat(@"%@:%@", self.model, self.modelID).hash;
 }
 
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.modelID forKey:@"id"];
+    [encoder encodeObject:self.displayText forKey:@"display"];
+    [encoder encodeObject:self.modelString forKey:@"model"];
+    [encoder encodeObject:self.label forKey:@"label"];
+    [encoder encodeObject:self.searchDetail forKey:@"search_detail"];
+    [encoder encodeObject:self.isPublished forKey:@"published"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    self = [super init];
+    if (!self) { return nil; }
+
+    _modelID = [decoder decodeObjectForKey:@"id"];
+    _displayText = [decoder decodeObjectForKey:@"display"];
+    _modelString = [decoder decodeObjectForKey:@"model"];
+    _label = [decoder decodeObjectForKey:@"label"];
+    _searchDetail = [decoder decodeObjectForKey:@"search_detail"];
+    _isPublished = [decoder decodeObjectForKey:@"published"];
+
+    return self;
+}
 
 @end
