@@ -164,6 +164,15 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
         Map *map = maps.firstObject;
         if (!map) { return; }
 
+        // Reset follow button to have a top-margin of just 10 now that there will be a map.
+        for (UIView *stackEntry in self.view.stackView.subviews) {
+          if (stackEntry.tag == ARFairArtistFollow) {
+            [self.view.stackView removeSubview:stackEntry];
+            [self.view.stackView addSubview:stackEntry withTopMargin:@"10" sideMargin:@"40"];
+            break;
+          }
+        }
+
         ARClearFlatButton *mapViewContainer = [[ARClearFlatButton alloc] init];
         [mapViewContainer setBorderColor:[UIColor artsyMediumGrey] forState:UIControlStateNormal];
         mapViewContainer.tag = ARFairArtistMapPreview;
@@ -195,7 +204,8 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     followButton.tag = ARFairArtistFollow;
     followButton.toFollowTitle = @"Follow Artist";
     followButton.toUnfollowTitle = @"Following Artist";
-    [self.view.stackView addSubview:followButton withTopMargin:@"10" sideMargin:@"40"];
+    // The top-margin will get reduced to just 10 if and when a map gets added in `addMapButton`.
+    [self.view.stackView addSubview:followButton withTopMargin:@"30" sideMargin:@"40"];
     [followButton addTarget:self action:@selector(toggleFollowArtist:) forControlEvents:UIControlEventTouchUpInside];
 
     _followableNetwork = [[ARFollowableNetworkModel alloc] initWithFollowableObject:self.artist];
