@@ -11,7 +11,7 @@ __block ARFairArtistViewController *fairArtistVC = nil;
 __block Fair *fair = nil;
 
 beforeEach(^{
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/some-artist" withResponse:@{ @"id" : @"some-artist", @"name" : @"Some Artist" }];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/some-artist" withResponse:@{ @"id" : @"some-artist", @"name" : @"Some Artist", @"birthday" : @"1999", @"nationality" : @"Chinese" }];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/fair-id/shows" withParams:@{@"artist" : @"some-artist"} withResponse:@[]];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/artists" withParams:@{@"artists[]" : @"some-artist"} withResponse:@[]];
     fair = [Fair modelWithJSON:@{ @"id" : @"fair-id", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];

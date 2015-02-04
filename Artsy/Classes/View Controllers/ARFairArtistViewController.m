@@ -82,7 +82,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
     [self.view.stackView addPageTitleWithString:self.header tag:ARFairArtistTitle];
 
-    [self addTitle];
+    [self addSubtitle];
 
     @weakify(self);
     [ArtsyAPI getShowsForArtistID:self.artist.artistID inFairID:self.fair.fairID success:^(NSArray *shows) {
@@ -143,7 +143,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     [self.view.stackView addSubview:button withTopMargin:@"0" sideMargin:@"40"];
 }
 
-- (void)addTitle
+- (void)addSubtitle
 {
     if (self.artist.nationality.length && self.artist.birthday.length) {
         UILabel *titleLabel = [[ARSerifLabel alloc] init];
