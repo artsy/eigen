@@ -62,6 +62,7 @@
     partnerLocation.textColor = [UIColor artsyMediumGrey];
     partnerLocation.backgroundColor = [UIColor clearColor];
     partnerLocation.numberOfLines = 1;
+    partnerLocation.font = [partnerLocation.font fontWithSize:12];
     partnerLocation.lineBreakMode = NSLineBreakByTruncatingHead;
     [labelView addSubview:partnerLocation];
     _partnerLocation = partnerLocation;
