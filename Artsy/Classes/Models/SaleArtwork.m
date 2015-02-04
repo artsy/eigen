@@ -27,7 +27,8 @@ static NSNumberFormatter *dollarFormatter;
         @"artworkNumPositions" : @"bidder_positions_count",
         @"lowEstimateCents" : @"low_estimate_cents",
         @"highEstimateCents" : @"high_estimate_cents",
-        @"reserveStatus" : @"reserve_status"
+        @"reserveStatus" : @"reserve_status",
+        @"lotNumber" : @"lot_number"
     };
 }
 

@@ -18,6 +18,13 @@
 @property(readonly, nonatomic, strong) Artwork *artwork;
 @property(readonly, nonatomic, strong) Fair *fair;
 - (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair;
+
+/// Update the view with fair details
 - (void)updateWithFair:(Fair *)fair;
+
+/// Update the view with Artwork Details
 - (void)updateWithArtwork:(Artwork *)artwork;
+
+/// Update the view with aSale Artwork
+- (void)updateWithSaleArtwork:(SaleArtwork *)saleArtwork;
 @end

@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, ARReserveStatus) {
 @property (nonatomic, strong) NSNumber *minimumNextBidCents;
 @property (nonatomic, strong) NSNumber *lowEstimateCents;
 @property (nonatomic, strong) NSNumber *highEstimateCents;
+@property (nonatomic, copy, readonly) NSNumber *lotNumber;
 @property (nonatomic, assign, readonly) ARAuctionState auctionState;
 @property (nonatomic, assign) ARReserveStatus reserveStatus;
 
