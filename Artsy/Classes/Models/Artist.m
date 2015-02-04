@@ -14,6 +14,7 @@
         @"artistID" : @"id",
         @"name" : @"name",
         @"years" : @"years",
+        @"birthday" : @"birthday",
         @"nationality" : @"nationality",
         @"blurb": @"blurb",
         @"publishedArtworksCount": @"published_artworks_count",

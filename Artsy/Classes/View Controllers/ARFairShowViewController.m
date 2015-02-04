@@ -386,7 +386,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         [mapViewContainer constrainHeight:@"150"];
 
         [mapPreview setZoomScale:mapPreview.minimumZoomScale animated:self.shouldAnimate];
-        [mapPreview addShow:self.show animated:self.shouldAnimate];
+        [mapPreview addHighlightedShow:self.show animated:self.shouldAnimate];
         [mapViewContainer addTarget:self action:@selector(handleMapButtonPress:) forControlEvents:UIControlEventTouchUpInside];
         [self.view.stackView addSubview:mapViewContainer withTopMargin:@"20" sideMargin:@"20"];
     }];

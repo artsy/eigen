@@ -12,7 +12,7 @@
 
 NS_ENUM(NSInteger, ARFairArtistViewIndex){
     ARFairArtistTitle = 1,
-    ARFairArtistHeader,
+    ARFairArtistSubtitle,
     ARFairArtistMapPreview,
     ARFairArtistFollow,
     ARFairArtistShows,
@@ -26,7 +26,6 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 @property (nonatomic, strong, readonly) NSArray *partnerShows;
 @property (nonatomic, strong, readwrite) Fair *fair;
 @property (nonatomic, strong, readonly) NSString *header;
-@property (nonatomic, strong, readonly) UIView *headerView;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
@@ -83,13 +82,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
     [self.view.stackView addPageTitleWithString:self.header tag:ARFairArtistTitle];
 
-    UIView *headerView = [[UIView alloc] init];
-    headerView.tag = ARFairArtistHeader;
-    [self.view.stackView addSubview:headerView withTopMargin:@"20" sideMargin:@"40"];
-    [headerView constrainHeight:@"80"];
-    _headerView = headerView;
-
-    [self addTitle];
+    [self addSubtitle];
 
     @weakify(self);
     [ArtsyAPI getShowsForArtistID:self.artist.artistID inFairID:self.fair.fairID success:^(NSArray *shows) {
@@ -98,7 +91,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
         self->_partnerShows = shows;
 
-        [self addMapAndMapButton];
+        [self addMapButton];
         [self addFollowButton];
         [self addArtistOnArtsyButton];
 
@@ -150,20 +143,19 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     [self.view.stackView addSubview:button withTopMargin:@"0" sideMargin:@"40"];
 }
 
-- (void)addTitle
+- (void)addSubtitle
 {
-    if (self.artist.nationality.length && self.artist.years.length) {
+    if (self.artist.nationality.length && self.artist.birthday.length) {
         UILabel *titleLabel = [[ARSerifLabel alloc] init];
-        titleLabel.textColor = [UIColor blackColor];
-        titleLabel.preferredMaxLayoutWidth = 220;
-        titleLabel.text = [NSString stringWithFormat:@"%@, %@", self.artist.nationality, self.artist.years];
-        [self.headerView addSubview:titleLabel];
-        [titleLabel alignCenterYWithView:self.headerView predicate:nil];
-        [titleLabel alignLeadingEdgeWithView:self.headerView predicate:nil];
+        titleLabel.tag = ARFairArtistSubtitle;
+        titleLabel.textColor = [UIColor artsyHeavyGrey];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.text = [NSString stringWithFormat:@"%@ Born %@", self.artist.nationality, self.artist.birthday];
+        [self.view.stackView addSubview:titleLabel withTopMargin:@"10" sideMargin:@"40"];
     }
 }
 
-- (void)addMapAndMapButton
+- (void)addMapButton
 {
     @weakify(self);
     [self.fair getFairMaps:^(NSArray *maps) {
@@ -172,23 +164,27 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
         Map *map = maps.firstObject;
         if (!map) { return; }
 
-        ARCircularActionButton *mapButton = [[ARCircularActionButton alloc] initWithImageName:@"MapButtonAction"];
-        [mapButton addTarget:self action:@selector(mapButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.headerView addSubview:mapButton];
-        [mapButton alignCenterYWithView:self.headerView predicate:nil];
-        [mapButton alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeTrailing ofView:self.headerView predicate:nil];
+        // Reset follow button to have a top-margin of just 10 now that there will be a map.
+        for (UIView *stackEntry in self.view.stackView.subviews) {
+          if (stackEntry.tag == ARFairArtistFollow) {
+            [self.view.stackView removeSubview:stackEntry];
+            [self.view.stackView addSubview:stackEntry withTopMargin:@"10" sideMargin:@"40"];
+            break;
+          }
+        }
 
-        UIButton *mapViewContainer = [[UIButton alloc] init];
+        ARClearFlatButton *mapViewContainer = [[ARClearFlatButton alloc] init];
+        [mapViewContainer setBorderColor:[UIColor artsyMediumGrey] forState:UIControlStateNormal];
         mapViewContainer.tag = ARFairArtistMapPreview;
-        [mapViewContainer constrainHeight:@"150"];
-        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 150);
+        [mapViewContainer constrainHeight:@"85"];
+        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 85);
         ARFairMapPreview *mapPreview = [[ARFairMapPreview alloc] initWithFairMap:map andFrame:frame];
         [mapViewContainer addSubview:mapPreview];
         [mapPreview alignToView:mapViewContainer];
-        [mapPreview setZoomScale:mapPreview.minimumZoomScale animated:self.shouldAnimate];
-        [mapPreview addShows:self.partnerShows animated:self.shouldAnimate];
+        [mapPreview setZoomScale:mapPreview.minimumZoomScale animated:NO];
+        [mapPreview addShows:self.partnerShows animated:NO];
         [mapViewContainer addTarget:self action:@selector(mapButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view.stackView addSubview:mapViewContainer withTopMargin:@"0" sideMargin:@"20"];
+        [self.view.stackView addSubview:mapViewContainer withTopMargin:@"30" sideMargin:@"40"];
     }];
 }
 
@@ -208,7 +204,8 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     followButton.tag = ARFairArtistFollow;
     followButton.toFollowTitle = @"Follow Artist";
     followButton.toUnfollowTitle = @"Following Artist";
-    [self.view.stackView addSubview:followButton withTopMargin:@"10" sideMargin:@"40"];
+    // The top-margin will get reduced to just 10 if and when a map gets added in `addMapButton`.
+    [self.view.stackView addSubview:followButton withTopMargin:@"30" sideMargin:@"40"];
     [followButton addTarget:self action:@selector(toggleFollowArtist:) forControlEvents:UIControlEventTouchUpInside];
 
     _followableNetwork = [[ARFollowableNetworkModel alloc] initWithFollowableObject:self.artist];

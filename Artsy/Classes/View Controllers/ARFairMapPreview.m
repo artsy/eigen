@@ -39,9 +39,13 @@
     [self.showMapper selectPartnerShows:shows animated:animated];
 }
 
-- (void)addShow:(PartnerShow *)show animated:(BOOL)animated
+- (void)addHighlightedShow:(PartnerShow *)show animated:(BOOL)animated
 {
-    [self addShows:@[show] animated:animated];
+    NSArray *shows = @[show];
+    [self addShows:shows animated:animated];
+    [[self.showMapper mapFeatureViewsForShows:shows] each:^(ARFairMapAnnotationView *annotation) {
+        [annotation setHighlighted:YES];
+    }];
 }
 
 - (CGSize)intrinsicContentSize
