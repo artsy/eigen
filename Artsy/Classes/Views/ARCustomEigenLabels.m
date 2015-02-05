@@ -49,3 +49,14 @@
 }
 
 @end
+
+@implementation ARWarningView
+
+- (void)setup
+{
+    [super setup];
+    self.textAlignment = NSTextAlignmentCenter;
+    self.backgroundColor = [UIColor artsyAttention];
+}
+
+@end
