@@ -50,7 +50,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
 
-    [searchButton setImage:[UIImage imageNamed:@"SearchIcon_HeavyGrey"] forState:UIControlStateNormal];
+    [searchButton setImage:[UIImage imageNamed:@"SearchIcon_LightGrey"] forState:UIControlStateNormal];
     [searchButton setImage:[UIImage imageNamed:@"SearchIcon_White"] forState:UIControlStateSelected];
     [searchButton.imageView constrainWidth:@"16" height:@"16"];
     searchButton.adjustsImageWhenHighlighted = NO;
