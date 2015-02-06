@@ -48,7 +48,7 @@
 
 - (void)dealloc
 {
-    [self.embeddedItemsVC.collectionView setDelegate:nil];
+    [self.collectionView setDelegate:nil];
     [self resumePageQueue];
 }
 
@@ -96,7 +96,7 @@
     [self ar_addModernChildViewController:self.embeddedItemsVC];
     [self.embeddedItemsVC.view alignToView:self.view];
 
-    self.embeddedItemsVC.collectionView.showsVerticalScrollIndicator = YES;
+    self.collectionView.showsVerticalScrollIndicator = YES;
 
     if (!self.artworkPageQueue) {
         self.artworkPageQueue = dispatch_queue_create("Favorite Artworks Pages", NULL);
@@ -120,9 +120,14 @@
 
     [self setModuleItemSizesForOrientation:[UIApplication sharedApplication].statusBarOrientation];
     [self.embeddedItemsVC.headerView updateConstraints];
-    self.embeddedItemsVC.collectionView.scrollsToTop = YES;
+    self.collectionView.scrollsToTop = YES;
 
     [super viewDidLoad];
+}
+
+- (UICollectionView *)collectionView
+{
+    return self.embeddedItemsVC.collectionView;
 }
 
 - (CGFloat)headerHeight
@@ -244,7 +249,7 @@
 {
     BOOL allDownloaded = self.activeNetworkModel.allDownloaded;
     self.embeddedItemsVC.showTrailingLoadingIndicator = !allDownloaded;
-    [self.embeddedItemsVC.collectionView reloadData];
+    [self.collectionView reloadData];
     if (!allDownloaded) {
         [self checkContentSize];
     } else if (self.embeddedItemsVC.activeModule.items.count <= 0){
@@ -254,8 +259,8 @@
 
 - (void)checkContentSize
 {
-    CGFloat contentHeight = self.embeddedItemsVC.collectionView.contentSize.height;
-    CGFloat frameHeight = self.embeddedItemsVC.collectionView.frame.size.height;
+    CGFloat contentHeight = self.collectionView.contentSize.height;
+    CGFloat frameHeight = self.collectionView.frame.size.height;
     // This will only be true the first time a tab is loaded. Get enough items to fill the height of the view.
     if (contentHeight < frameHeight){
         [self getNextItemSet];
