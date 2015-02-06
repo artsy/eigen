@@ -76,7 +76,9 @@ describe(@"login view controller", ^{
                 expect([ARUserManager sharedManager].currentUser).to.beNil();
 
                 controller.emailTextField.text = [ARUserManager stubUserEmail];
+                controller.passwordTextField.secureTextEntry = YES;
                 controller.passwordTextField.text = [ARUserManager stubUserPassword];
+                controller.passwordTextField.secureTextEntry = NO;
                 [controller login:nil];
                 expect([ARUserManager sharedManager].currentUser).willNot.beNil();
 
@@ -90,7 +92,9 @@ describe(@"login view controller", ^{
                 [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"error": @"invalid_client", @"error_description": @"missing client_id" } andStatusCode:401];
 
                 controller.emailTextField.text = [ARUserManager stubUserEmail];
+                controller.passwordTextField.secureTextEntry = YES;
                 controller.passwordTextField.text = [ARUserManager stubUserPassword];
+                controller.passwordTextField.secureTextEntry = NO;
 
                 id mockAlertView = [OCMockObject mockForClass:[UIAlertView class]];
                 [[mockAlertView expect] setAlertViewStyle:UIAlertViewStyleDefault];

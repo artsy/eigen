@@ -451,8 +451,9 @@
 {
     if (([ARDeveloperOptions options][@"username"] && [ARDeveloperOptions options][@"password"]) && self.hideDefaultValues == NO) {
         self.emailTextField.text = [ARDeveloperOptions options][@"username"];
+        self.passwordTextField.secureTextEntry = YES;
         self.passwordTextField.text = [ARDeveloperOptions options][@"password"];
-        [self.passwordTextField sendActionsForControlEvents:UIControlEventEditingDidEnd];
+        self.passwordTextField.secureTextEntry = NO;
     }
 }
 

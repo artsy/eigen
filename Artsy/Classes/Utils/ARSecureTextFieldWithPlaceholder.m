@@ -2,7 +2,6 @@
 
 @interface ARSecureTextFieldWithPlaceholder ()
 @property (nonatomic, strong) NSString *actualText;
-@property (nonatomic) BOOL secure;
 @end
 
 @implementation ARSecureTextFieldWithPlaceholder
@@ -31,18 +30,16 @@
 
 - (NSString *)text
 {
-    if (self.editing || self.secure == NO) {
+    if (self.isSecureTextEntry) {
         return [super text];
     } else {
         return self.actualText;
     }
 }
 
-
 - (void)editingDidBegin
 {
     self.secureTextEntry = YES;
-    self.text = self.actualText;
 }
 
 - (void)editingDidChange
@@ -53,8 +50,17 @@
 - (void)editingDidFinish
 {
     self.secureTextEntry = NO;
-    self.actualText = self.text;
-    self.text = [self dotPlaceholder];
+}
+
+- (void)setSecureTextEntry:(BOOL)secureTextEntry
+{
+    if (secureTextEntry) {
+        self.text = self.actualText;
+    } else {
+        self.actualText = self.text;
+        self.text = [self dotPlaceholder];
+    }
+    [super setSecureTextEntry:secureTextEntry];
 }
 
 - (NSString *)dotPlaceholder
