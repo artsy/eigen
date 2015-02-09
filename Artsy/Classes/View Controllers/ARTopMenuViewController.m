@@ -262,8 +262,20 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 {
     if (index == _selectedTabIndex) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
-        if (index == ARTopTabControllerIndexSearch && controller.viewControllers.count == 1) {
-            [tabContentView returnToPreviousViewIndex];
+        if (controller.viewControllers.count == 1) {
+            if (index == ARTopTabControllerIndexSearch) {
+                [tabContentView returnToPreviousViewIndex];
+            } else {
+                UIScrollView *scrollView = nil;
+                if (index == ARTopTabControllerIndexFeed) {
+                    scrollView = [(ARShowFeedViewController *)[controller.childViewControllers objectAtIndex:0] tableView];
+                } else if (index == ARTopTabControllerIndexBrowse) {
+                    scrollView = [(ARBrowseViewController *)[controller.childViewControllers objectAtIndex:0] view];
+                } else if (index == ARTopTabControllerIndexFavorites) {
+                    scrollView = [(ARFavoritesViewController *)[controller.childViewControllers objectAtIndex:0] collectionView];
+                }
+                [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x, -scrollView.contentInset.top) animated:YES];
+            }
         } else {
             [controller popToRootViewControllerAnimated:YES];
         }

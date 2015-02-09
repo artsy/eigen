@@ -5,7 +5,6 @@
 
 @interface ARBrowseViewController () <ARBrowseFeaturedLinksCollectionViewDelegate>
 
-@property (nonatomic, strong) ORStackScrollView *view;
 @property (nonatomic, strong) NSMutableArray *collectionViews;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
