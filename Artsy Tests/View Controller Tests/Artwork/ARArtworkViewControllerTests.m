@@ -108,7 +108,7 @@ describe(@"buy button", ^{
         [[vcMock expect] tappedContactGallery:OCMOCK_ANY];
 
         [[[[routerMock expect] andForwardToRealObject]classMethod] newPendingOrderWithArtworkID:OCMOCK_ANY editionSetID:OCMOCK_ANY];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[] andStatusCode:400];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/order/pending/items" withResponse:@[] andStatusCode:400];
 
         [vc tappedBuyButton:nil];
         [routerMock verify];
