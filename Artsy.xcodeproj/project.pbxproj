@@ -290,6 +290,7 @@
 		605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */; };
 		605B11B217CFD78400334196 /* AROnboardingWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B11B117CFD78400334196 /* AROnboardingWebViewController.m */; };
 		605B11B517CFE7CC00334196 /* ARTermsAndConditionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */; };
+		60647C2E1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */; };
 		60745DEA165802D9006CE156 /* ARUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60745DE9165802D9006CE156 /* ARUserManager.m */; };
 		607D754A17C239E700CA1D41 /* ArtsyAPI+Following.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D754917C239E700CA1D41 /* ArtsyAPI+Following.m */; };
 		607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D756A17C3816600CA1D41 /* ArtsyAPI+ListCollection.m */; };
@@ -1029,6 +1030,8 @@
 		605B11B117CFD78400334196 /* AROnboardingWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingWebViewController.m; sourceTree = "<group>"; };
 		605B11B317CFE7CC00334196 /* ARTermsAndConditionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTermsAndConditionsView.h; sourceTree = "<group>"; };
 		605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTermsAndConditionsView.m; sourceTree = "<group>"; };
+		60647C2C1A89721800A45247 /* AROHHTTPNoStubAssertionBot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROHHTTPNoStubAssertionBot.h; sourceTree = "<group>"; };
+		60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROHHTTPNoStubAssertionBot.m; sourceTree = "<group>"; };
 		60745DE8165802D9006CE156 /* ARUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserManager.h; sourceTree = "<group>"; };
 		60745DE9165802D9006CE156 /* ARUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserManager.m; sourceTree = "<group>"; };
 		607861A1165E47470010FAA2 /* EXTConcreteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTConcreteProtocol.h; path = Artsy/Resources/EXTConcreteProtocol.h; sourceTree = "<group>"; };
@@ -1729,6 +1732,8 @@
 				608EE3DA19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m */,
 				E61E772419A5477300C55E14 /* ARExpectaExtensions.h */,
 				E61E772519A5477300C55E14 /* ARExpectaExtensions.m */,
+				60647C2C1A89721800A45247 /* AROHHTTPNoStubAssertionBot.h */,
+				60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -4056,6 +4061,7 @@
 				E6EC246118F7069300C89192 /* PartnerTests.m in Sources */,
 				3CD3679F189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m in Sources */,
 				3CA55D8918BFF8F800B44CD3 /* MapFeatureTests.m in Sources */,
+				60647C2E1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m in Sources */,
 				3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */,
 				3CA1E8231884663E003C622D /* Bid+Extensions.m in Sources */,
 				E6718310194A3D1E001A5566 /* ARHeroUnitTests.m in Sources */,
