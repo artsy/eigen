@@ -1,5 +1,6 @@
 #import "ARFairMapViewController.h"
 #import "ARTiledImageDataSourceWithImage.h"
+#import "ARFairMapView.h"
 #import "ARFairMapZoomManager.h"
 #import "ARFairShowMapper.h"
 #import "ARFairShowViewController.h"
@@ -12,7 +13,7 @@
 
 @interface ARFairMapViewController () <NAMapViewDelegate, ARFairSearchViewControllerDelegate, ARSearchFieldButtonDelegate>
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong, readwrite) NATiledImageMapView *mapView;
+@property (nonatomic, strong, readwrite) ARFairMapView *mapView;
 @property (nonatomic, strong) ARSearchFieldButton *searchButton;
 @property (nonatomic, strong, readwrite) ARTiledImageDataSourceWithImage *mapDataSource;
 @property (nonatomic, strong, readwrite) ARFairSearchViewController *searchVC;
@@ -60,7 +61,7 @@
 
 - (void)viewDidLoad
 {
-    NATiledImageMapView *mapView = [[NATiledImageMapView alloc] initWithFrame:self.view.frame tiledImageDataSource:self.mapDataSource];
+    ARFairMapView *mapView = [[ARFairMapView alloc] initWithFrame:self.view.frame tiledImageDataSource:self.mapDataSource];
     mapView.mapViewDelegate = self;
     mapView.zoomStep = 2.5;
     mapView.showsVerticalScrollIndicator = NO;
