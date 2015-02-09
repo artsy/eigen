@@ -256,6 +256,32 @@ describe(@"with related artworks", ^{
 
 });
 
+it(@"shows an upublished banner", ^{
+    window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+    NSDictionary *artworkDict = @{
+        @"id" : @"artwork-id",
+        @"title" : @"Artwork Title",
+        @"published" : @NO,
+    };
+    Artwork *artwork = [Artwork modelWithJSON:artworkDict];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/artwork-id" withResponse:artworkDict];
+
+    vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+    vc.shouldAnimate = NO;
+
+    window.rootViewController = vc;
+    expect(vc.view).willNot.beNil();
+    [window makeKeyAndVisible];
+    [vc setHasFinishedScrolling];
+    [artwork updateArtwork];
+
+    activelyWaitFor(0.1, ^{
+        expect(vc.view).will.haveValidSnapshot();
+    });
+});
+
+
 describe(@"at a closed auction", ^{
     before(^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
@@ -293,16 +319,25 @@ describe(@"at a closed auction", ^{
     });
     
     it(@"displays artwork on iPhone", ^{
-        window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-        vc.shouldAnimate = NO;
+        waitUntil(^(DoneCallback done) {
 
-        [vc.imageView removeFromSuperview];
-        window.rootViewController = vc;
-        expect(vc.view).willNot.beNil();
-        [window makeKeyAndVisible];
-        [vc setHasFinishedScrolling];
-        expect(vc.view).will.haveValidSnapshot();
+            [ARTestContext stubDevice:ARDeviceTypePhone4];
+            window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+            vc.shouldAnimate = NO;
+
+            [vc.imageView removeFromSuperview];
+            window.rootViewController = vc;
+            expect(vc.view).willNot.beNil();
+            [window makeKeyAndVisible];
+            [vc setHasFinishedScrolling];
+
+            activelyWaitFor(0.5, ^{
+                expect(vc.view).will.haveValidSnapshot();
+                [ARTestContext stopStubbing];
+                done();
+            });
+        });
     });
 
     it(@"displays artwork on iPad", ^{

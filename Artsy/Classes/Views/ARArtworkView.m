@@ -94,7 +94,8 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     };
 
     [self.artwork onArtworkUpdate:^{
-        if (self.artwork.isPublished.boolValue == NO) {
+        // A nil value shouldn't be classed as unpublished
+        if (self.artwork.isPublished && self.artwork.isPublished.boolValue == NO) {
             [self addUnpublishedBanner];
         }
 

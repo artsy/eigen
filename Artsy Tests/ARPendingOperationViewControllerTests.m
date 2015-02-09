@@ -14,7 +14,7 @@ it(@"has a valid snapshot", ^{
     ARPendingOperationViewController *viewController = [[ARPendingOperationViewController alloc] init];
     viewController.view.frame = [[UIScreen mainScreen] bounds];
     [viewController.spinner.layer removeAllAnimations];
-    
+
     expect(viewController).to.haveValidSnapshot();
 });
 
