@@ -42,7 +42,7 @@ Choose Window, Organizer, which should list your device. The provisioning profil
 ### Run Tests
 
 In Xcode/AppCode:
-Tap `cmd + u` to run all tests, use `ctrl + alt + cmd + g` to run the last set you clicked on via the GUI.
+Tap `cmd + u` to run all tests, use `ctrl + alt + cmd + g` to run the last set you clicked on via the GUI. Tests _need_ to be ran on an iPhone 4s in iOS 7.
 
 Command line:
 ```
