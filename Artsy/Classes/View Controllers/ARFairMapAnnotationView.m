@@ -111,7 +111,7 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
         return;
     }
 
-    if (self.mapFeatureType != ARMapFeatureTypeDefault) {
+    if (self.isHighlighted || self.mapFeatureType != ARMapFeatureTypeDefault) {
         self.primaryTitleLabel.hidden = YES;
     } else {
         self.hidden = YES;
