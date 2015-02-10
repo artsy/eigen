@@ -80,8 +80,11 @@ describe(@"", ^{
         });
 
         it(@"looks correct", ^{
+            [ARTestContext stubDevice:ARDeviceTypePhone4];
             [viewController ar_presentWithFrame:CGRectMake(0, 0, 320, 480)];
             expect(viewController.view).will.haveValidSnapshot();
+            [ARTestContext stopStubbing];
+
         });
     });
 
@@ -91,7 +94,7 @@ describe(@"", ^{
             waitUntil(^(DoneCallback done) {
                 [ARTestContext stubDevice:ARDeviceTypePad];
                 [viewController ar_presentWithFrame:CGRectMake(0, 0, 768, 1024)];
-                activelyWaitFor(0.5, ^{
+                activelyWaitFor(0.3, ^{
                     expect(viewController.view).will.haveValidSnapshot();
                     [ARTestContext stopStubbing];
                     done();
