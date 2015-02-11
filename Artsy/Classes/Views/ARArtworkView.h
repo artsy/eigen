@@ -6,6 +6,7 @@
 
 NS_ENUM(NSInteger, ARArtworkViewIndex){
     ARArtworkBanner = 1,
+    ARArtworkUnpublishedWarning,
     ARArtworkPreview,
     ARArtworkBlurb,
     ARArtworkSpinner,

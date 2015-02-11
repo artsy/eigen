@@ -6,3 +6,6 @@
 
 @interface ARSansSerifHeaderLabel : ARLabel
 @end
+
+@interface ARWarningView : ARSerifLabel
+@end

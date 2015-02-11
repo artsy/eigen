@@ -25,6 +25,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     _artwork = artwork;
     _fair = fair;
     _parentViewController = parentViewController;
+
     self.scrollsToTop = NO;
     self.scrollEnabled = YES;
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -93,6 +94,11 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     };
 
     [self.artwork onArtworkUpdate:^{
+        // A nil value shouldn't be classed as unpublished
+        if (self.artwork.isPublished && self.artwork.isPublished.boolValue == NO) {
+            [self addUnpublishedBanner];
+        }
+
         completion();
     } failure:^(NSError *error) {
         completion();
@@ -134,6 +140,15 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
         [self setUpCallbacks];
         [self createHeightConstraints];
     }
+}
+
+- (void)addUnpublishedBanner
+{
+    UILabel *warning = [[ARWarningView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), 88)];
+    warning.text = @"Artwork is unpublished.";
+    warning.tag = ARArtworkUnpublishedWarning;
+    [warning constrainHeight:@"44"];
+    [self.stackView addSubview:warning withTopMargin:@"0" sideMargin:@"0"];
 }
 
 @end

@@ -5,6 +5,7 @@
 #import "ARLogger.h"
 #import "ARAppDelegate+Testing.h"
 #import "ARDispatchManager.h"
+#import "AROHHTTPNoStubAssertionBot.h"
 
 @implementation ARAppDelegate (Testing)
 
@@ -43,6 +44,7 @@
 {
     [ARRouter setup];
     [ARDispatchManager sharedManager].useSyncronousDispatches = YES;
+//    [AROHHTTPNoStubAssertionBot assertOnFailForGlobalOHHTTPStubs];
     return YES;
 }
 

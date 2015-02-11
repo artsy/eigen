@@ -40,9 +40,7 @@ static const NSInteger ARArtworkIndex = 0;
 {
     CGFloat bottomMargin = 12;
     UIView *container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 88 + bottomMargin)];
-    UILabel *warning = [[ARSerifLabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 88)];
-    warning.textAlignment = NSTextAlignmentCenter;
-    warning.backgroundColor = [UIColor artsyAttention];
+    UILabel *warning = [[ARWarningView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 88)];
     warning.text = @"Note: Auction results are an \nexperimental feature with\n limited data.";
     [container addSubview:warning];
     [warning alignToView:container];
