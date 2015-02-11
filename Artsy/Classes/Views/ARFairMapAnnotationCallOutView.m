@@ -42,12 +42,32 @@
     [partnerImage alignCenterYWithView:container predicate:@"0"];
     [partnerImage alignLeadingEdgeWithView:container predicate:@"10"];
 
+    UIImageView *arrowImage = [[UIImageView alloc] init];
+    [arrowImage setImage:[UIImage imageNamed:@"MapAnnotationCallout_Arrow"]];
+    [container addSubview:arrowImage];
+    _arrowImage = arrowImage;
+    [arrowImage alignCenterYWithView:container predicate:@"0"];
+    [arrowImage alignTrailingEdgeWithView:container predicate:@"-14"];
+    [arrowImage setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [arrowImage setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+
+    UIView *separator = [[UIView alloc] init];
+    separator.backgroundColor = [UIColor artsyLightGrey];
+    [container addSubview:separator];
+    _verticalSeparator = separator;
+    [separator alignAttribute:NSLayoutAttributeRight toAttribute:NSLayoutAttributeLeft ofView:arrowImage predicate:@"-13"];
+    [separator constrainWidth:@"1"];
+    [separator alignTopEdgeWithView:container predicate:@"10"];
+    [separator alignBottomEdgeWithView:container predicate:@"-10"];
+
     UIView *labelView = [[UIView alloc] init];
     [container addSubview:labelView];
     [labelView alignCenterYWithView:container predicate:@"0"];
-    [labelView alignAttribute:NSLayoutAttributeLeading toAttribute:NSLayoutAttributeTrailing ofView:partnerImage predicate:@"10"];
+    [labelView alignAttribute:NSLayoutAttributeLeft toAttribute:NSLayoutAttributeRight ofView:partnerImage predicate:@"10"];
+    [labelView alignAttribute:NSLayoutAttributeRight toAttribute:NSLayoutAttributeLeft ofView:separator predicate:@"-13"];
 
     UILabel *partnerName = [ARThemedFactory labelForLinkItemTitles];
+    partnerName.font = [partnerName.font fontWithSize:14];
     partnerName.textColor = [UIColor whiteColor];
     partnerName.backgroundColor = [UIColor clearColor];
     partnerName.numberOfLines = 1;
@@ -62,7 +82,7 @@
     partnerLocation.textColor = [UIColor artsyMediumGrey];
     partnerLocation.backgroundColor = [UIColor clearColor];
     partnerLocation.numberOfLines = 1;
-    partnerLocation.font = [partnerLocation.font fontWithSize:12];
+    partnerLocation.font = [partnerLocation.font fontWithSize:11];
     partnerLocation.lineBreakMode = NSLineBreakByTruncatingHead;
     [labelView addSubview:partnerLocation];
     _partnerLocation = partnerLocation;
@@ -71,25 +91,6 @@
     [partnerLocation alignTrailingEdgeWithView:labelView predicate:@"0"];
 
     [labelView alignBottomEdgeWithView:partnerLocation predicate:@"0"];
-
-    UIView *separator = [[UIView alloc] init];
-    separator.backgroundColor = [UIColor artsyLightGrey];
-    [container addSubview:separator];
-    _verticalSeparator = separator;
-    [separator alignAttribute:NSLayoutAttributeLeft toAttribute:NSLayoutAttributeRight ofView:labelView predicate:@"10"];
-    [separator constrainWidth:@"1"];
-    [separator alignTopEdgeWithView:container predicate:@"10"];
-    [separator alignBottomEdgeWithView:container predicate:@"-10"];
-
-    UIImageView *arrowImage = [[UIImageView alloc] init];
-    arrowImage.contentMode = UIViewContentModeScaleAspectFit;
-    [arrowImage setImage:[UIImage imageNamed:@"MapAnnotationCallout_Arrow"]];
-    [container addSubview:arrowImage];
-    _arrowImage = arrowImage;
-    [arrowImage alignAttribute:NSLayoutAttributeLeft toAttribute:NSLayoutAttributeRight ofView:separator predicate:@"20"];
-    [arrowImage alignCenterYWithView:container predicate:@"0"];
-    [arrowImage alignTrailingEdgeWithView:container predicate:@"-20"];
-    [arrowImage setContentHuggingPriority:500 forAxis:UILayoutConstraintAxisHorizontal];
 
     UIImageView *anchorImage = [[UIImageView alloc] init];
     anchorImage.contentMode = UIViewContentModeScaleAspectFit;
