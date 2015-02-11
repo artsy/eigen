@@ -91,6 +91,14 @@
         self.bidButton = bidButton;
         buttonMargin = @"8";
 
+        if ([self showBuyersPremium]) {
+            ARInquireButton *premium = [[ARInquireButton alloc] init];
+            premium.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            [premium setAttributedTitle:[self.class buyersPremiumAttributedString] forState:UIControlStateNormal];
+            [premium addTarget:nil action:@selector(tappedBuyersPremium:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:premium withTopMargin:@"8" sideMargin:nil];
+        }
+
         if ([self showBuyButton]) {
             self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
             [self.priceView updateWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
@@ -243,6 +251,19 @@
 - (BOOL)showMoreInfoButton
 {
     return self.artwork.hasMoreInfo;
+}
+
+- (BOOL)showBuyersPremium
+{
+    return self.saleArtwork.auction.hasBuyersPremium;
+}
+
++ (NSAttributedString *)buyersPremiumAttributedString
+{
+    NSMutableAttributedString *attributedMessage = [[NSMutableAttributedString alloc] initWithString:@"This work has a Buyer's Premium"];
+    [attributedMessage addAttribute:NSForegroundColorAttributeName value:[UIColor artsyHeavyGrey] range:NSMakeRange(0, 31)];
+    [attributedMessage addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(16, 15)];
+    return attributedMessage.copy;
 }
 
 #pragma mark ARContactViewDelegate

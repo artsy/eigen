@@ -73,15 +73,15 @@ describe(@"buy button", ^{
 
     it(@"displays inquiry form if artwork has multiple sets", ^{
         Artwork *artwork = [Artwork modelWithJSON:@{
-                                                    @"id" : @"artwork-id",
-                                                    @"title" : @"Artwork Title",
-                                                    @"availability" : @"for sale",
-                                                    @"acquireable" : @YES,
-                                                    @"edition_sets" : @[
-                                                            @{ @"id": @"set-1"},
-                                                            @{ @"id": @"set-2"}
-                                                            ]
-                                                    }];
+            @"id" : @"artwork-id",
+            @"title" : @"Artwork Title",
+            @"availability" : @"for sale",
+            @"acquireable" : @YES,
+            @"edition_sets" : @[
+                @{ @"id": @"set-1"},
+                @{ @"id": @"set-2"}
+            ]
+        }];
 
         vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
         vcMock = [OCMockObject partialMockForObject:vc];

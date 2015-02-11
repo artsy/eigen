@@ -62,6 +62,7 @@
 
 /// Load a path relative to the baseURL through the router
 - (UIViewController *)loadPath:(NSString *)path;
+- (UIViewController *)loadPath:(NSString *)path fair:(Fair *)fair;
 
 /// Send an URL through the router
 - (UIViewController *)loadURL:(NSURL *)url;

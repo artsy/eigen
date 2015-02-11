@@ -5,9 +5,9 @@
 #import "ARArtworkAuctionPriceView.h"
 
 @interface ARArtworkActionsView ()
-@property(nonatomic, strong) Artwork *artwork;
-@property(nonatomic, strong) SaleArtwork *saleArtwork;
-@property(nonatomic, strong) ARBorderLabel *bidderStatusLabel;
+@property (nonatomic, strong) Artwork *artwork;
+@property (nonatomic, strong) SaleArtwork *saleArtwork;
+@property (nonatomic, strong) ARBorderLabel *bidderStatusLabel;
 @property (nonatomic, strong) ARArtworkPriceView *priceView;
 @property (nonatomic, strong) ARArtworkAuctionPriceView *auctionPriceView;
 - (void)updateUI;
@@ -105,6 +105,30 @@ it(@"displays both bid and buy when artwork is in auction and is acquireable", ^
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
     expect(view).to.haveValidSnapshotNamed(@"acquireableAtAuction");
 });
+
+it(@"shows a buyers premium notice", ^{
+    view.artwork = [Artwork modelWithJSON:@{
+        @"id" : @"artwork-id",
+        @"title" : @"Artwork Title",
+        @"availability" : @"for sale",
+        @"price" : @"$5,000",
+        @"sold" : @NO,
+        @"acquireable" : @YES
+    }];
+    view.saleArtwork = [SaleArtwork modelWithJSON:@{
+        @"high_estimate_cents" : @20000,
+        @"low_estimate_cents" : @10000
+    }];
+    view.saleArtwork.auction = [Sale modelWithJSON:@{
+        @"start_at" : @"1-12-30 00:00:00",
+        @"end_at" : @"4001-01-01 00:00:00",
+        @"buyers_premium" : @{ }
+    }];
+    [view updateUI];
+    [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    expect(view).to.haveValidSnapshot();
+});
+
 
 it(@"displays sold when artwork is in auction and has been acquired", ^{
     view.artwork = [Artwork modelWithJSON:@{
