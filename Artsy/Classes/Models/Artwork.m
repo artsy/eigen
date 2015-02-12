@@ -26,12 +26,12 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
+        @keypath(Artwork.new, additionalInfo)        : @"additional_information",
         @keypath(Artwork.new, artworkID)             : @"id",
         @keypath(Artwork.new, auctionResultCount)    : @"comparables_count",
         @keypath(Artwork.new, canShareImage)         : @"can_share_image",
         @keypath(Artwork.new, collectingInstitution) : @"collecting_institution",
         @keypath(Artwork.new, defaultImage)          : @"images",
-        @keypath(Artwork.new, additionalInfo)        : @"additional_information",
         @keypath(Artwork.new, dimensionsCM)          : @"dimensions.cm",
         @keypath(Artwork.new, dimensionsInches)      : @"dimensions.in",
         @keypath(Artwork.new, displayTitle)          : @"display",
@@ -244,6 +244,11 @@
 - (BOOL)hasMultipleEditions
 {
     return (self.editionSets.count > 1);
+}
+
+- (KSDeferred *)deferredArtworkUpdate
+{
+    return _artworkUpdateDeferred;
 }
 
 - (void)updateArtwork

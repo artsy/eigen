@@ -108,7 +108,7 @@ target 'Artsy Tests', :exclusive => true do
   pod 'Expecta+Snapshots', '~> 1.2'
   pod 'OHHTTPStubs', '3.1.2'
   pod 'XCTest+OHHTTPStubSuiteCleanUp', '1.0.0'
-  pod 'Specta', :git => 'https://github.com/specta/specta.git', :tag => "v0.3.0.beta1"
-  pod 'Expecta', '0.3.0'
+  pod 'Specta', '0.3.2'
+  pod 'Expecta', '0.3.2'
   pod 'OCMock', '2.2.4'
 end
