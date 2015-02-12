@@ -36,4 +36,19 @@ describe(@"future auction", ^{
     });
 });
 
+describe(@"propertiess", ^{
+    __block Sale *auction;
+
+    it(@"has a buyers premium", ^{
+        auction = [Sale saleWithBuyersPremium];
+        expect([auction hasBuyersPremium]).to.beTruthy();
+    });
+
+    it(@"has a buyers premium", ^{
+        auction = [Sale modelWithJSON:@{}];
+        expect([auction hasBuyersPremium]).to.beFalsy();
+    });
+});
+
+
 SpecEnd

@@ -1,4 +1,5 @@
 #import "ARStandardDateFormatter.h"
+#import "BuyersPremium.h"
 
 @implementation Sale
 
@@ -8,7 +9,8 @@
         @"saleID" : @"id",
         @"isAuction" : @"is_auction",
         @"startDate": @"start_at",
-        @"endDate" : @"end_at"
+        @"endDate" : @"end_at",
+        @"buyersPremium" : @"buyers_premium"
     };
 }
 
@@ -20,6 +22,11 @@
 + (NSValueTransformer *)endDateJSONTransformer
 {
     return [ARStandardDateFormatter sharedFormatter].stringTransformer;
+}
+
++ (NSValueTransformer *)highestBidJSONTransformer
+{
+    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:BuyersPremium.class];
 }
 
 - (BOOL)isCurrentlyActive
@@ -42,6 +49,11 @@
 - (NSUInteger)hash
 {
     return self.saleID.hash;
+}
+
+- (BOOL)hasBuyersPremium
+{
+    return self.buyersPremium != nil;
 }
 
 @end
