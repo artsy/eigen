@@ -59,7 +59,7 @@ describe(@"", ^{
 
     describe(@"iphone", ^{
 
-        it(@"presents featured categories and genes", ^{
+        pending(@"presents featured categories and genes", ^{
             expect(viewController.view).to.beKindOf([ORStackScrollView class]);
             ORStackView *stackView = ((ORStackScrollView *)viewController.view).stackView;
             expect(stackView).toNot.beNil();
@@ -79,7 +79,7 @@ describe(@"", ^{
             expect(stackView.subviews[5]).to.beKindOf([ARBrowseFeaturedLinksCollectionView class]);
         });
 
-        it(@"looks correct", ^{
+        pending(@"looks correct", ^{
             [ARTestContext stubDevice:ARDeviceTypePhone4];
             [viewController ar_presentWithFrame:CGRectMake(0, 0, 320, 480)];
             expect(viewController.view).after(1).to.haveValidSnapshot();

@@ -23,7 +23,7 @@ afterEach(^{
     [OHHTTPStubs removeAllStubs];
 });
 
-it(@"ignores artworks without a partner", ^{
+pending(@"ignores artworks without a partner", ^{
     waitUntil(^(DoneCallback done) {
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks"
                                  withParams:@{ @"fair_id" : @"fair-id",
@@ -53,7 +53,7 @@ it(@"ignores artworks without a partner", ^{
     });
 });
 
-describe(@"when downloading exhibitor data", ^{
+pending(@"when downloading exhibitor data", ^{
     __block PartnerShow *partnerShow;
     __block id apiMock;
     __block id fairMock;

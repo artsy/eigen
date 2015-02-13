@@ -20,7 +20,7 @@ afterEach(^{
   [OHHTTPStubs removeAllStubs];
 });
 
-describe(@"with subtitle", ^{
+pending(@"with subtitle", ^{
   beforeEach(^{
       [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/some-artist" withResponse:@{ @"id" : @"some-artist", @"name" : @"Some Artist", @"birthday" : @"1999", @"nationality" : @"Chinese" }];
   });
@@ -32,7 +32,7 @@ describe(@"with subtitle", ^{
           [fairArtistVC ar_presentWithFrame:CGRectMake(0, 0, 320, 480)];
       });
 
-      it(@"displays artist title", ^{
+      pending(@"displays artist title", ^{
           expect(fairArtistVC.view).will.haveValidSnapshot();
       });
   });
@@ -44,13 +44,13 @@ describe(@"with subtitle", ^{
           [fairArtistVC ar_presentWithFrame:CGRectMake(0, 0, 320, 480)];
       });
 
-      it(@"displays artist title and map button", ^{
+      pending(@"displays artist title and map button", ^{
           expect(fairArtistVC.view).will.haveValidSnapshot();
       });
   });
 });
 
-describe(@"without subtitle", ^{
+pending(@"without subtitle", ^{
   beforeEach(^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/maps" withParams:@{ @"fair_id" : @"fair-id" } withResponse:@[@{ @"id" : @"map-id" }]];
   });
