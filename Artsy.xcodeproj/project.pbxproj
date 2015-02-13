@@ -293,6 +293,7 @@
 		605B11B517CFE7CC00334196 /* ARTermsAndConditionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */; };
 		60647C2E1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */; };
 		60647C6A1A8C07CF00A45247 /* FakeArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C691A8C07CF00A45247 /* FakeArtwork.m */; };
+		60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C661A8BB9AE00A45247 /* BuyersPremium.m */; };
 		60745DEA165802D9006CE156 /* ARUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60745DE9165802D9006CE156 /* ARUserManager.m */; };
 		607D754A17C239E700CA1D41 /* ArtsyAPI+Following.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D754917C239E700CA1D41 /* ArtsyAPI+Following.m */; };
 		607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D756A17C3816600CA1D41 /* ArtsyAPI+ListCollection.m */; };
@@ -1037,6 +1038,8 @@
 		60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROHHTTPNoStubAssertionBot.m; sourceTree = "<group>"; };
 		60647C681A8C07CF00A45247 /* FakeArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeArtwork.h; sourceTree = "<group>"; };
 		60647C691A8C07CF00A45247 /* FakeArtwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeArtwork.m; sourceTree = "<group>"; };
+		60647C651A8BB9AE00A45247 /* BuyersPremium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyersPremium.h; sourceTree = "<group>"; };
+		60647C661A8BB9AE00A45247 /* BuyersPremium.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyersPremium.m; sourceTree = "<group>"; };
 		60745DE8165802D9006CE156 /* ARUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserManager.h; sourceTree = "<group>"; };
 		60745DE9165802D9006CE156 /* ARUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserManager.m; sourceTree = "<group>"; };
 		607861A1165E47470010FAA2 /* EXTConcreteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTConcreteProtocol.h; path = Artsy/Resources/EXTConcreteProtocol.h; sourceTree = "<group>"; };
@@ -3314,13 +3317,15 @@
 				B375E5F218121EEA005FC680 /* Sale.h */,
 				B375E5F318121EEA005FC680 /* Sale.m */,
 				B3EFC6371815B41C00F23540 /* BidderPosition.h */,
+				B3EFC6381815B41C00F23540 /* BidderPosition.m */,
 				CBB469CE181F1F1200B5692B /* Bid.h */,
 				CBB469CF181F1F1200B5692B /* Bid.m */,
-				B3EFC6381815B41C00F23540 /* BidderPosition.m */,
 				B316E2F218170DF40086CCDB /* SaleArtwork.h */,
 				B316E2F318170DF40086CCDB /* SaleArtwork.m */,
 				B316E2F5181713110086CCDB /* Bidder.h */,
 				B316E2F6181713110086CCDB /* Bidder.m */,
+				60647C651A8BB9AE00A45247 /* BuyersPremium.h */,
+				60647C661A8BB9AE00A45247 /* BuyersPremium.m */,
 			);
 			name = Auctions;
 			sourceTree = "<group>";
@@ -3763,6 +3768,7 @@
 				49473F3617C1907F004BF082 /* ARCreateAccountViewController.m in Sources */,
 				6029E9F51993D726002D42C3 /* ARAppSearchViewController.m in Sources */,
 				49473F3917C192AE004BF082 /* ARTextFieldWithPlaceholder.m in Sources */,
+				60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */,
 				3CCCC8A51899B6F9008015DD /* FairOrganizer.m in Sources */,
 				60D90A0817C2182F0073D5B9 /* ARExternalWebBrowserViewController.m in Sources */,
 				E61B703919904D9F00260D29 /* ARTopTapThroughTableView.m in Sources */,

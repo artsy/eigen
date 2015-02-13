@@ -153,9 +153,14 @@
     [super viewDidAppear:animated];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (BOOL)shouldAutorotate
 {
-    [self.mapZoomManager setMaxMinZoomScalesForCurrentBounds];
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)setTitleHidden:(BOOL)titleHidden

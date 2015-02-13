@@ -282,7 +282,12 @@
 
 - (UIViewController *)loadPath:(NSString *)path
 {
-    return [self loadURL:[self resolveRelativeUrl:path]];
+    return [self loadPath:path fair:nil];
+}
+
+- (UIViewController *)loadPath:(NSString *)path fair:(Fair *)fair
+{
+    return [self loadURL:[self resolveRelativeUrl:path] fair:fair];
 }
 
 - (UIViewController *)loadURL:(NSURL *)url
