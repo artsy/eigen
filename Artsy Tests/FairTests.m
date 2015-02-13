@@ -154,22 +154,29 @@ describe(@"getting shows", ^{
 });
 
 describe(@"getting image URL string", ^{
-    it(@"gets nil for empty raw string", ^{
+    it(@"gets nil for no image urls", ^{
         Fair *fair = [Fair modelFromDictionary:@{ @"fairID" : @"fair-id" }];
         expect([fair bannerAddress]).to.beNil();
     });
     
-    it (@"gets nil for non-existent version", ^{
-        Fair *fair = [Fair modelFromDictionary:@{ @"fairID" : @"fair-id", @"rawImageURLString": @"http://something/:version.jpg", @"imageVersions": @[
-            @"something_that_we_do_not_support"
-        ]}];
+    it (@"gets nil for non-existent image version", ^{
+        Fair *fair = [Fair modelFromDictionary:@{
+            @"fairID" : @"fair-id",
+            @"imageURLs": @{
+                @"something_that_we_do_not_support" : @"http://something/something_that_we_do_not_support.jpg"
+            }
+        }];
         expect([fair bannerAddress]).to.beNil();
     });
     
     it (@"gets wide if availble", ^{
-        Fair *fair = [Fair modelFromDictionary:@{ @"fairID" : @"fair-id", @"rawImageURLString": @"http://something/:version.jpg", @"imageVersions": @[
-            @"wide", @"square"
-        ]}];
+        Fair *fair = [Fair modelFromDictionary:@{
+            @"fairID" : @"fair-id",
+            @"imageURLs": @{
+                @"wide": @"http://something/wide.jpg",
+                @"square" : @"http://something/square.jpg"
+            }
+        }];
         expect([fair bannerAddress]).to.equal(@"http://something/wide.jpg");
     });
 });

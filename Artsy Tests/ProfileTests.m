@@ -108,4 +108,61 @@ describe(@"Partner", ^{
     });
 });
 
+describe(@"imageURL", ^{
+    __block Profile *profile;
+    describe(@"without a default image", ^{
+        before(^{
+            profile = [Profile modelWithJSON:@{
+                @"id" : @"profile-id",
+                @"icon" : @{
+                    @"image_urls" : @{
+                        @"square" : @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square.png",
+                        @"large" : @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/large.png",
+                    }
+                }
+            }];
+        });
+
+        it(@"uses the first available icon version", ^{
+            expect(profile.iconURL).to.equal(@"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square.png");
+        });
+    });
+
+    describe(@"with a default image", ^{
+        before(^{
+            profile = [Profile modelWithJSON:@{
+                @"id" : @"profile-id",
+                @"default_icon_version" : @"large",
+                @"icon" : @{
+                    @"image_urls" : @{
+                        @"square" : @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square.png",
+                        @"large" : @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/large.png"
+                    }
+                }
+            }];
+        });
+
+        it(@"uses the specified icon version", ^{
+            expect(profile.iconURL).to.equal(@"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/large.png");
+        });
+    });
+
+    describe(@"with no image", ^{
+        before(^{
+            profile = [Profile modelWithJSON:@{
+                @"id" : @"profile-id",
+                @"default_icon_version" : @"large",
+                @"icon" : @{
+                    @"image_urls" : @{
+                    }
+                }
+            }];
+        });
+        
+        it(@"uses the specified icon version", ^{
+            expect(profile.iconURL).to.beNil();
+        });
+    });
+});
+
 SpecEnd

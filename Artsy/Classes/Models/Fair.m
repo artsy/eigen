@@ -14,8 +14,7 @@
 @property (nonatomic, copy) NSArray *maps;
 // Note: *must* be strong and not copy, because copy will make a non-mutable copy.
 @property (nonatomic, strong) NSMutableSet *shows;
-@property (nonatomic, copy) NSString *rawImageURLString;
-@property (nonatomic, copy) NSArray *imageVersions;
+@property (nonatomic, copy) NSDictionary *imageURLs;
 
 @end
 
@@ -31,9 +30,7 @@
         @keypath(Fair.new, endDate) : @"end_at",
         @keypath(Fair.new, city) : @"location.city",
         @keypath(Fair.new, state) : @"location.state",
-        @keypath(Fair.new, rawImageURLString): @"image_url",
-        @keypath(Fair.new, imageVersions): @"image_versions",
-
+        @keypath(Fair.new, imageURLs): @"image_urls",
         @keypath(Fair.new, partnersCount) : @"partners_count",
 
         // Hide these from Mantle
@@ -318,21 +315,16 @@
 
 - (NSString *)bannerAddress
 {
-    if (self.rawImageURLString.length == 0) {
-        return nil;
+    NSString *url = nil;
+    if (self.imageURLs.count > 0) {
+
+        // In order of preference
+        NSArray *desiredVersions = @[@"wide", @"large_rectange", @"square"];
+
+        NSArray *possibleVersions = [desiredVersions intersectionWithArray:[self.imageURLs allKeys]];
+        url = [self.imageURLs objectForKey:possibleVersions.firstObject];
     }
-
-    // In order of preference
-    NSArray *desiredVersions = @[@"wide", @"large_rectange", @"square"];
-
-    NSArray *possibleVersions = [desiredVersions intersectionWithArray:self.imageVersions];
-    NSString *version = possibleVersions.firstObject;
-
-    if (version.length == 0) {
-        return nil;
-    }
-
-    return [self.rawImageURLString stringByReplacingOccurrencesOfString:@":version" withString:version];
+    return url;
 }
 
 @end

@@ -85,18 +85,11 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
     CGFloat bannerHeight = [self hasBannerImage] ? ARParallaxHeaderViewBannerImageHeight : ARParallaxHeaderViewBannerImageMissingImageHeight;
     NSString *heightPredicate = [NSString stringWithFormat:@"%@", @(bannerHeight + ARParallaxHeaderViewBottomWhitespaceHeight)];
     [self.view constrainHeight:heightPredicate];
-    
-    if ([self hasIconImage]) {
-        [self.iconImageView alignBottomEdgeWithView:self.view predicate:@"0"];
-        [self.iconImageView alignLeadingEdgeWithView:self.view predicate:@"20"];
-        [self.iconImageView constrainWidth:@"80"];
-        [self.iconImageView constrainHeight:@"80"];
-        
-        [self.titleLabel constrainLeadingSpaceToView:self.iconImageView predicate:@"20"];
-    } else {
+
+    if (![self hasIconImage]) {
         [self.titleLabel alignLeadingEdgeWithView:self.view predicate:@"20"];
     }
-    
+
     [self.titleLabel alignTrailingEdgeWithView:self.view predicate:@"-20"];
     [self.titleLabel constrainTopSpaceToView:self.bannerImageView predicate:@"24"];
     
@@ -122,10 +115,20 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
     if ([self hasIconImage]) {
         @weakify(self);
         [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:[self.profile iconURL]] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            @strongify(self);
             if (image) {
-                @strongify(self);
+                [self.iconImageView alignBottomEdgeWithView:self.view predicate:@"0"];
+                [self.iconImageView alignLeadingEdgeWithView:self.view predicate:@"20"];
+                [self.iconImageView constrainWidth:@"80"];
+                [self.iconImageView constrainHeight:@"80"];
+
+                [self.titleLabel constrainLeadingSpaceToView:self.iconImageView predicate:@"20"];
+
                 // Necessary, since the icons will sometimes be transparent GIFs
                 self.iconImageView.backgroundColor = [UIColor whiteColor];
+            } else {
+                [self.titleLabel alignLeadingEdgeWithView:self.view predicate:@"20"];
+                [self.iconImageView removeFromSuperview];
             }
         }];
     }
