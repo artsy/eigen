@@ -11,6 +11,7 @@ typedef NS_ENUM(NSInteger, ARLogContext) {
 /// Call this ASAP to get logging up and running
 - (void)startLogging;
 - (void)stopLogging;
++ (BOOL)shouldLogNetworkRequests;
 + (instancetype)sharedLogger;
 @end
 

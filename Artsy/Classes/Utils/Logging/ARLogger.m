@@ -6,6 +6,11 @@
 
 @implementation ARLogger
 
++ (BOOL)shouldLogNetworkRequests;
+{
+    return ![ARDeveloperOptions options][@"suppress_network_logs"];
+}
+
 + (instancetype)sharedLogger {
     static ARLogger *_sharedLogger = nil;
     static dispatch_once_t onceToken;
@@ -34,7 +39,7 @@
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
     [self addDDFileLogger];
 
-    if (![ARDeveloperOptions options][@"suppress_network_logs"]) {
+    if ([self.class shouldLogNetworkRequests]) {
         [[ARHTTPRequestOperationLogger sharedLogger] startLogging];
     }
 }
