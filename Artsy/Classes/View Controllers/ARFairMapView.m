@@ -1,7 +1,36 @@
 #import "ARFairMapView.h"
+#import "ARFairMapAnnotationCallOutView.h"
+
+// This is to work around an issue on iOS 8 where the first time the callout would be shown
+// its center gets reset back to the position that would place its origin at 0,0.
+//
+// Until we figure out the exact cause for that layout issue, this is an acceptable stopgap.
+//
+@interface ARFairMapContentView : UIView
+@property (nonatomic, strong) ARFairMapAnnotationCallOutView *calloutView;
+@end
+
+@implementation ARFairMapContentView
+
+- (void)addSubview:(UIView *)subview;
+{
+  [super addSubview:subview];
+  if ([subview isKindOfClass:[ARFairMapAnnotationCallOutView class]]) {
+    self.calloutView = (ARFairMapAnnotationCallOutView *)subview;
+  }
+}
+
+- (void)layoutSubviews;
+{
+  CGPoint center = self.calloutView.center;
+  [super layoutSubviews];
+  self.calloutView.center = center;
+}
+
+@end
 
 @interface ARFairMapView ()
-@property (nonatomic, readonly) UIView *contentView;
+@property (nonatomic, readonly) ARFairMapContentView *contentView;
 @end
 
 @implementation ARFairMapView
@@ -11,7 +40,7 @@
 - (UIView *)contentView;
 {
     if (!_contentView) {
-        _contentView = [[UIView alloc] initWithFrame:self.bounds];
+        _contentView = [[ARFairMapContentView alloc] initWithFrame:self.bounds];
         [super addSubview:_contentView];
     }
     return _contentView;
