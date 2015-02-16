@@ -7,6 +7,5 @@
 @property (nonatomic, strong, readonly) NSArray *maps;
 
 @property (nonatomic, strong, readwrite) NSArray *imagesForBoothHeader;
-@property (nonatomic, strong, readwrite) NSArray *artworksForBoothHeader;
 
 @end

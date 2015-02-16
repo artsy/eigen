@@ -62,38 +62,11 @@
     }];
 }
 
-- (void)getFairBoothArtworksAndInstallShots:(PartnerShow *)show
-                           gotInstallImages:(void (^)(NSArray *images))gotInstallImages
-                                gotArtworks:(void (^)(NSArray *images))gotArtworkImages
-                                   noImages:(void (^)(void))noImages;
+- (void)getFairBoothArtworksAndInstallShots:(PartnerShow *)show gotInstallImages:(void (^)(NSArray *images))gotInstallImages noImages:(void (^)(void))noImages
 {
     [ArtsyAPI getImagesForShow:show atPage:1 success:^(NSArray *images) {
         if (images.count) {
             gotInstallImages(images);
-
-        } else {
-            [self downloadArtworksForShow:show gotArtworks:gotArtworkImages noImages:noImages];
-        }
-
-
-    } failure:^(NSError *error) {
-        [self downloadArtworksForShow:show gotArtworks:gotArtworkImages noImages:noImages];
-    }];
-}
-
-- (void)downloadArtworksForShow:(PartnerShow *)show gotArtworks:(void (^)(NSArray *images))gotArtworkImages noImages:(void (^)(void))noImages;
-{
-    [ArtsyAPI getArtworksForShow:show atPage:1 success:^(NSArray *artworks) {
-
-        NSArray *artworkImages = [[artworks reject:^BOOL(Artwork *artwork) {
-            return !artwork.isPublished.boolValue;
-
-        }] map:^id(Artwork *artwork) {
-            return artwork.defaultImage;
-        }];
-
-        if (artworkImages.count) {
-            gotArtworkImages(artworkImages);
 
         } else {
             noImages();
@@ -103,6 +76,5 @@
         noImages();
     }];
 }
-
 
 @end

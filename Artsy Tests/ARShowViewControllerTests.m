@@ -11,7 +11,7 @@
 
 @end
 
-SpecBegin(ARFairShowViewController)
+SpecBegin(ARShowViewController)
 
 __block ARShowViewController *fairShowVC = nil;
 __block Fair *fair = nil;

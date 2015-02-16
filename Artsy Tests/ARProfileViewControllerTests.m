@@ -80,7 +80,7 @@ describe(@"loadProfile", ^{
         [apiMock stopMocking];
     });
     
-    it(@"loads martsy view on failure", ^{
+    pending(@"loads martsy view on failure", ^{
         id apiMock = [OCMockObject mockForClass:[ArtsyAPI class]];
         
         id viewControllerMock = [OCMockObject partialMockForObject:viewController];
