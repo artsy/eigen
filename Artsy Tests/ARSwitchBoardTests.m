@@ -13,7 +13,7 @@
 #import "ARGeneViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARProfileViewController.h"
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 #import "ARFairViewController.h"
 #import "ARFairArtistViewController.h"
 #import "ARFairGuideContainerViewController.h"
@@ -227,7 +227,7 @@ describe(@"ARSwitchboard", ^{
                 });
 
                 it(@"routes shows", ^{
-                    [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARFairShowViewController class]]];
+                    [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARShowViewController class]]];
                     id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/show/show-id"] fair:nil];
                     expect(viewController).to.beNil();
                 });
@@ -252,7 +252,7 @@ describe(@"ARSwitchboard", ^{
                     expect(viewController.fair).to.equal(fair);
                 });
             });
-            
+
             context(@"on ipad", ^{
                 before(^{
                     [ARTestContext stubDevice:ARDeviceTypePad];
@@ -334,12 +334,12 @@ describe(@"ARSwitchboard", ^{
                                                                                                     @"owner": @{ @"default_fair_id" : @"armory-show-2013" },
                                                                                                     @"owner_type" : @"FairOrganizer" }];
             });
-            
+
             it(@"does not load martsy", ^{
                 [[mockProfileVC reject] showViewController:[OCMArg checkForClass:[ARInternalMobileWebViewController class]]];
                 [switchboard routeProfileWithID:@"myfairprofile"];
             });
-            
+
             it(@"routes fair profiles specially", ^{
                 [[mockProfileVC expect] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
                 [switchboard routeProfileWithID:@"myfairprofile"];

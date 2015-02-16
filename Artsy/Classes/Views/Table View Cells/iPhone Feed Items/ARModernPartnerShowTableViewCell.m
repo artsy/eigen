@@ -181,7 +181,7 @@ static CGFloat ARPartnerShowCellSideMargin;
 
 - (void)openShow:(UITapGestureRecognizer *)gesture
 {
-    ARFairShowViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:self.show];
+    ARShowViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:self.show];
     [self.delegate modernPartnerShowTableViewCell:self shouldShowViewController:(id)viewController];
 }
 

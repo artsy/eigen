@@ -1,4 +1,4 @@
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 #import "ARImagePageViewController.h"
 #import "ARFollowableNetworkModel.h"
 #import "ARFollowableButton.h"
@@ -28,7 +28,7 @@ NS_ENUM(NSInteger, ARFairShowViewIndex){
 
 static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
-@interface ARFairShowViewController () <AREmbeddedModelsDelegate, ARArtworkMasonryLayoutProvider>
+@interface ARShowViewController () <AREmbeddedModelsDelegate, ARArtworkMasonryLayoutProvider>
 @property (nonatomic, strong, readonly) ORStackScrollView *view;
 @property (nonatomic, strong, readonly) ARImagePageViewController *imagePageViewController;
 @property (nonatomic, strong, readonly) ARFollowableNetworkModel *followableNetwork;
@@ -43,7 +43,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 @end
 
-@implementation ARFairShowViewController
+@implementation ARShowViewController
 
 + (CGFloat)followButtonWidthForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
