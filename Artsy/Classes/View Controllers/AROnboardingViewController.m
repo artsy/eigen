@@ -51,7 +51,6 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     self = [super init];
     if (!self) { return nil; }
 
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     self.navigationBarHidden = YES;
     self.delegate = self;
     switch (state) {
@@ -117,6 +116,8 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
     [self createBackgroundImageView];
 
     if (self.state == AROnboardingStageSlideshow) {
