@@ -60,11 +60,11 @@ describe(@"when downloading exhibitor data", ^{
     
     beforeEach(^{
         partnerShow = [PartnerShow modelWithJSON:@{
-                                                   @"id" : @"show-id",
-                                                   @"fair_location" : @{ @"display" : @"Pier 1, Booth 2, Section 3, Floor 5" },
-                                                   @"partner" : @{ @"id" : @"leila-heller", @"name" : @"Leila Heller Gallery in New York City" }
-                                                   }];
-        
+            @"id" : @"show-id",
+            @"fair_location" : @{ @"display" : @"Pier 1, Booth 2, Section 3, Floor 5" },
+            @"partner" : @{ @"id" : @"leila-heller", @"name" : @"Leila Heller Gallery in New York City" }
+        }];
+
         apiMock = [OCMockObject mockForClass:[ArtsyAPI class]];
         fairMock = [OCMockObject partialMockForObject:fair];
         
