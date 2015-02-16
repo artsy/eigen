@@ -138,10 +138,6 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         }
     }];
 
-    if (self.show.hasMapLocation && self.fair) {
-        [descriptions addObject:self.descriptionForMapButton];
-    }
-
     self.actionButtonsView.actionButtonDescriptions = descriptions;
 }
 
