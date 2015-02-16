@@ -28,7 +28,7 @@
 
 - (NSURL *)largeImageURL
 {
-    return [NSURL URLWithString:[self.urlFormatString stringByReplacingOccurrencesOfString:@":version" withString:@"square"]];
+    return [NSURL URLWithString:[self.urlFormatString stringByReplacingOccurrencesOfString:@":version" withString:@"square500"]];
 }
 
 - (NSURL *)smallImageURL
