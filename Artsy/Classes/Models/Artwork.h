@@ -45,7 +45,6 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 - (Fair *) fair;
 
 // we're just gonna leave these as dictionaries for now
-// I think?
 @property (nonatomic, copy) NSArray *editionSets;
 
 @property (nonatomic, assign) enum ARArtworkAvailability availability;

@@ -37,7 +37,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (0.4.0)
-  - Expecta (0.3.0)
+  - Expecta (0.3.2)
   - Expecta+Snapshots (1.3.0):
     - Expecta
     - FBSnapshotTestCase
@@ -84,7 +84,7 @@ PODS:
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
-  - Specta (0.3.0.beta1)
+  - Specta (0.3.2)
   - TSMiniWebBrowser@dblock (HEAD based on 1.1)
   - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
@@ -112,7 +112,7 @@ DEPENDENCIES:
   - CocoaLumberjack (= 1.8.1)
   - DHCShakeNotifier (= 0.2.0)
   - DRKonamiCode (= 1.1.0)
-  - Expecta (= 0.3.0)
+  - Expecta (= 0.3.2)
   - Expecta+Snapshots (~> 1.2)
   - Facebook-iOS-SDK (= 3.14.1)
   - FBSnapshotTestCase (= 1.4)
@@ -139,7 +139,7 @@ DEPENDENCIES:
   - ORStackView (HEAD)
   - ReactiveCocoa (= 2.3)
   - SDWebImage (= 3.7.1)
-  - Specta (from `https://github.com/specta/specta.git`, tag `v0.3.0.beta1`)
+  - Specta (= 0.3.2)
   - TSMiniWebBrowser@dblock (HEAD)
   - UIAlertView+Blocks (= 0.8)
   - UICKeyChainStore (= 1.0.5)
@@ -162,9 +162,6 @@ EXTERNAL SOURCES:
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
-  Specta:
-    :git: https://github.com/specta/specta.git
-    :tag: v0.3.0.beta1
 
 CHECKOUT OPTIONS:
   ARAnalytics:
@@ -182,9 +179,6 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
-  Specta:
-    :git: https://github.com/specta/specta.git
-    :tag: v0.3.0.beta1
 
 SPEC CHECKSUMS:
   AFHTTPRequestOperationLogger: 890afab1adb178314d33c4de9d2aa5a42cc594b9
@@ -205,7 +199,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: d5e1130243096e9488e0ecce8e6e268647357b4b
   DRKonamiCode: 17a4e3a8bf527b62c245c511656e4f4e70bcf518
   EDColor: bcdb8600b7a456f4408ce1d7e7fc001588919254
-  Expecta: ce8a51b9fad15a2cd573b291cb2909aaed865350
+  Expecta: ee641011fe10aa1855d487b40e4976dac50ec342
   Expecta+Snapshots: 0ec8bd543329a3944f5e5dc2a5cb220c3dde4ab0
   Facebook-iOS-SDK: e9b3d5ac54ee3e5e693f4eef470b97911b3d076d
   FBSnapshotTestCase: f9f225b5ba11c8d8c09075590490df16314e4d62
@@ -232,7 +226,7 @@ SPEC CHECKSUMS:
   ReactiveCocoa: 2066583826c17dde8e90c41e489f682048cc57c9
   RSSwizzle: ab39962b7ec56d19c2318ec1127e253797121363
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
-  Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
+  Specta: 698a58ffa5ec948327d3b92eab50ca58d7f4fbe8
   TSMiniWebBrowser@dblock: 4e73ee955fcf2e9f5d98f7a17460454ac059bc37
   UIAlertView+Blocks: 90d7f6b2853404277c94f6284c2b8c16028272e6
   UICKeyChainStore: 4f9719600cc70025064e26f28f1210bcfc3b0c35

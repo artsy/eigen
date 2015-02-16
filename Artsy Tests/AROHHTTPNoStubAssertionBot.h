@@ -3,5 +3,6 @@
 @interface AROHHTTPNoStubAssertionBot : NSObject
 
 + (BOOL)assertOnFailForGlobalOHHTTPStubs;
++ (BOOL)logOnFailForGlobalOHHTTPStubs;
 
 @end

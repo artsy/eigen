@@ -44,7 +44,7 @@
 {
     [ARRouter setup];
     [ARDispatchManager sharedManager].useSyncronousDispatches = YES;
-//    [AROHHTTPNoStubAssertionBot assertOnFailForGlobalOHHTTPStubs];
+    [AROHHTTPNoStubAssertionBot logOnFailForGlobalOHHTTPStubs];
     return YES;
 }
 

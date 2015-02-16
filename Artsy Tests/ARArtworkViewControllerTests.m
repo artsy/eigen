@@ -1,6 +1,7 @@
 #import "ARArtworkViewController.h"
 #import "ARArtworkView.h"
 #import "ARRouter.h"
+#import "FakeArtwork.h"
 
 @interface ARArtworkViewController (Tests)
 - (void)tappedBuyButton:(UIButton *)sender;
@@ -30,7 +31,7 @@ describe(@"buy button", ^{
     });
 
     it(@"posts order if artwork has no edition sets", ^{
-        Artwork *artwork = [Artwork modelWithJSON:@{
+        Artwork *artwork = [FakeArtwork modelWithJSON:@{
             @"id" : @"artwork-id",
             @"title" : @"Artwork Title",
             @"availability" : @"for sale",
@@ -49,7 +50,7 @@ describe(@"buy button", ^{
     });
 
     it(@"posts order if artwork has 1 edition set", ^{
-        Artwork *artwork = [Artwork modelWithJSON:@{
+        Artwork *artwork = [FakeArtwork modelWithJSON:@{
             @"id" : @"artwork-id",
             @"title" : @"Artwork Title",
             @"availability" : @"for sale",
@@ -72,7 +73,7 @@ describe(@"buy button", ^{
     });
 
     it(@"displays inquiry form if artwork has multiple sets", ^{
-        Artwork *artwork = [Artwork modelWithJSON:@{
+        Artwork *artwork = [FakeArtwork modelWithJSON:@{
             @"id" : @"artwork-id",
             @"title" : @"Artwork Title",
             @"availability" : @"for sale",
@@ -96,7 +97,7 @@ describe(@"buy button", ^{
     });
 
     it(@"displays inquiry form if request fails", ^{
-        Artwork *artwork = [Artwork modelWithJSON:@{
+        Artwork *artwork = [FakeArtwork modelWithJSON:@{
             @"id" : @"artwork-id",
             @"title" : @"Artwork Title",
             @"availability" : @"for sale",
@@ -266,6 +267,9 @@ it(@"shows an upublished banner", ^{
     };
     Artwork *artwork = [Artwork modelWithJSON:artworkDict];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/artwork-id" withResponse:artworkDict];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
 
     vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
     vc.shouldAnimate = NO;
@@ -318,7 +322,7 @@ describe(@"at a closed auction", ^{
             withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
     });
     
-    it(@"displays artwork on iPhone", ^{
+    pending(@"displays artwork on iPhone", ^{
         waitUntil(^(DoneCallback done) {
 
             [ARTestContext stubDevice:ARDeviceTypePhone4];
@@ -332,7 +336,7 @@ describe(@"at a closed auction", ^{
             [window makeKeyAndVisible];
             [vc setHasFinishedScrolling];
 
-            activelyWaitFor(0.5, ^{
+            activelyWaitFor(0.3, ^{
                 expect(vc.view).will.haveValidSnapshot();
                 [ARTestContext stopStubbing];
                 done();
@@ -340,11 +344,12 @@ describe(@"at a closed auction", ^{
         });
     });
 
-    it(@"displays artwork on iPad", ^{
+    pending(@"displays artwork on iPad", ^{
         waitUntil(^(DoneCallback done) {
 
             [ARTestContext stubDevice:ARDeviceTypePad];
             window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             vc.shouldAnimate = NO;
 
@@ -352,7 +357,7 @@ describe(@"at a closed auction", ^{
             expect(vc.view).willNot.beNil();
             [window makeKeyAndVisible];
             [vc setHasFinishedScrolling];
-            activelyWaitFor(0.5, ^{
+            activelyWaitFor(0.3, ^{
                 expect(vc.view).will.haveValidSnapshot();
                 [ARTestContext stopStubbing];
                 done();
