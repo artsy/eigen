@@ -121,7 +121,7 @@
 		3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CB60418ABC7BB008DFE3B /* UserTests.m */; };
 		3C6CB60918ABD8D2008DFE3B /* ARPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CB60818ABD8D2008DFE3B /* ARPostsViewController.m */; };
 		3C6CB61018ABFB8D008DFE3B /* ARRelatedArtistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CB60F18ABFB8D008DFE3B /* ARRelatedArtistsViewController.m */; };
-		3C7294CC196C3E660073663D /* ARFairShowViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7294CB196C3E660073663D /* ARFairShowViewControllerTests.m */; };
+		3C7294CC196C3E660073663D /* ARShowViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7294CB196C3E660073663D /* ARShowViewControllerTests.m */; };
 		3C7880BC18B9081C00595E30 /* ARNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7880BB18B9081C00595E30 /* ARNotificationView.m */; };
 		3C7A7FA718C6EDAB00E8D336 /* ArtworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7A7FA618C6EDAB00E8D336 /* ArtworkTests.m */; };
 		3C8A916718A299BF0038A5B2 /* ARFairSectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8A916618A299BF0038A5B2 /* ARFairSectionViewController.m */; };
@@ -696,7 +696,7 @@
 		3C6CB60818ABD8D2008DFE3B /* ARPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPostsViewController.m; sourceTree = "<group>"; };
 		3C6CB60E18ABFB8D008DFE3B /* ARRelatedArtistsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARRelatedArtistsViewController.h; path = "../View Controllers/ARRelatedArtistsViewController.h"; sourceTree = "<group>"; };
 		3C6CB60F18ABFB8D008DFE3B /* ARRelatedArtistsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARRelatedArtistsViewController.m; path = "../View Controllers/ARRelatedArtistsViewController.m"; sourceTree = "<group>"; };
-		3C7294CB196C3E660073663D /* ARFairShowViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairShowViewControllerTests.m; sourceTree = "<group>"; };
+		3C7294CB196C3E660073663D /* ARShowViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShowViewControllerTests.m; sourceTree = "<group>"; };
 		3C7880BA18B9081C00595E30 /* ARNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNotificationView.h; sourceTree = "<group>"; };
 		3C7880BB18B9081C00595E30 /* ARNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNotificationView.m; sourceTree = "<group>"; };
 		3C7A7FA618C6EDAB00E8D336 /* ArtworkTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtworkTests.m; sourceTree = "<group>"; };
@@ -1959,7 +1959,7 @@
 				3C1266F018BE6CC700B5AE72 /* ARFairGuideViewControllerTests.m */,
 				3CBB03A7192BA94C00689F89 /* ARFairArtistViewControllerTests.m */,
 				5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */,
-				3C7294CB196C3E660073663D /* ARFairShowViewControllerTests.m */,
+				3C7294CB196C3E660073663D /* ARShowViewControllerTests.m */,
 				5EBDC95219794DF10082C514 /* ARPendingOperationViewControllerTests.m */,
 				5EB33E73197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m */,
 				5EB33E75197EBFEB00706EB1 /* wide.jpg */,
@@ -4083,7 +4083,7 @@
 				5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */,
 				3CFBE33618C5848900C781D0 /* ARFileUtilsTests.m in Sources */,
 				60327DD21987BA830075B399 /* ARDeveloperOptionsSpec.m in Sources */,
-				3C7294CC196C3E660073663D /* ARFairShowViewControllerTests.m in Sources */,
+				3C7294CC196C3E660073663D /* ARShowViewControllerTests.m in Sources */,
 				E6BC2C3E197EDC950063ED3C /* ARBrowseViewControllerTests.m in Sources */,
 				3CBB03A8192BA94C00689F89 /* ARFairArtistViewControllerTests.m in Sources */,
 				3CF144B618E4802400B1A764 /* ARSystemTimeTests.m in Sources */,

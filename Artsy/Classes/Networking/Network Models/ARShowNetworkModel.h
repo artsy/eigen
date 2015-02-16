@@ -13,9 +13,6 @@
 
 - (void)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
 
-- (void)getFairBoothArtworksAndInstallShots:(PartnerShow *)show
-                           gotInstallImages:(void (^)(NSArray *images))gotInstallImages
-                                gotArtworks:(void (^)(NSArray *images))gotArtworkImages
-                                   noImages:(void (^)(void))noImages;
+- (void)getFairBoothArtworksAndInstallShots:(PartnerShow *)show gotInstallImages:(void (^)(NSArray *images))gotInstallImages noImages:(void (^)(void))noImages;
 
 @end

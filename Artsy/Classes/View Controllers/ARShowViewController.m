@@ -51,8 +51,10 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     return UIInterfaceOrientationIsPortrait(interfaceOrientation) ? 315 : 281;
 }
 
-+ (CGFloat)headerImageHeightForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (CGFloat)headerImageHeightForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    if (self.imagePageViewController.images.count == 0) { return 0; }
+
     if ([UIDevice isPhone]) {
         return 213;
     } else {
@@ -60,7 +62,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     }
 }
 
--(instancetype)init
+- (instancetype)init
 {
     self = [super init];
     if (!self) { return nil; }
@@ -128,7 +130,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
     NSMutableArray *descriptions = [NSMutableArray array];
 
-    [descriptions addObject:@{
+    [descriptions addObject: @{
         ARActionButtonImageKey: @"Artwork_Icon_Share",
         ARActionButtonHandlerKey: ^(ARCircularActionButton *sender) {
             NSURL *imageURL = nil;
@@ -172,12 +174,11 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     if ([UIDevice isPhone]) {
         [self.view.stackView addSubview:partnerLabel withTopMargin:@"0" sideMargin:[self sideMarginPredicate]];
         if (followButton) {
-            [self.view.stackView addSubview:followButton withTopMargin:@"32" sideMargin:[self sideMarginPredicate]];
+            [self.view.stackView addSubview:followButton withTopMargin:@"20" sideMargin:[self sideMarginPredicate]];
         }
     } else {
         UIView *containerView = [[UIView alloc] init];
         containerView.tag = ARFairShowViewPartnerLabelFollowButton;
-
 
         [containerView addSubview:partnerLabel];
         [containerView addSubview:followButton];
@@ -231,8 +232,8 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 - (void)setConstraintConstantsForOrientation:(UIInterfaceOrientation)orientation
 {
-    self.followButtonWidthConstraint.constant = [[self class] followButtonWidthForInterfaceOrientation:orientation];
-    self.headerImageHeightConstraint.constant = [[self class] headerImageHeightForInterfaceOrientation:orientation];
+    self.followButtonWidthConstraint.constant = [self.class followButtonWidthForInterfaceOrientation:orientation];
+    self.headerImageHeightConstraint.constant = [self headerImageHeightForInterfaceOrientation:orientation];
 }
 
 - (UILabel *)partnerLabel
@@ -264,7 +265,8 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     partnerName.text = self.show.fair ? self.show.fair.name : self.show.name;
     [self.view.stackView addSubview:partnerName withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
 
-    if (self.show.fair && !self.fair){
+    BOOL isNotCurrentFairContext = self.show.fair && !self.fair;
+    if (isNotCurrentFairContext) {
         partnerName.userInteractionEnabled = YES;
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openShowFair:)];
         [partnerName addGestureRecognizer:tapGesture];
@@ -275,9 +277,16 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
     ARSerifLabel *boothLocation = [[ARSerifLabel alloc] init];
     boothLocation.tag = ARFairShowViewBoothLocation;
-    boothLocation.textColor = [UIColor blackColor];
+    boothLocation.textColor = [UIColor artsyHeavyGrey];
     boothLocation.font = [UIFont serifFontWithSize:14];
-    boothLocation.text = self.show.ausstellungsdauerAndLocation;
+
+    // We don't care about the fairs opening / closing if
+    if (isNotCurrentFairContext) {
+        boothLocation.text = self.show.ausstellungsdauerAndLocation;
+    } else {
+        boothLocation.text = self.show.locationInFair;
+    }
+
     [self.view.stackView addSubview:boothLocation withTopMargin:@"6" sideMargin:[self sideMarginPredicate]];
 }
 
@@ -398,12 +407,19 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     self.imagePageViewController.imageContentMode = UIViewContentModeScaleAspectFill;
     self.imagePageViewController.view.tag = ARFairShowViewHeader;
     [self.view.stackView addSubview:self.imagePageViewController.view withTopMargin:@"0" sideMargin:@"0"];
-    CGFloat headerImageHeight = [[self class] headerImageHeightForInterfaceOrientation:self.interfaceOrientation];
+
+    CGFloat headerImageHeight = [self headerImageHeightForInterfaceOrientation:self.interfaceOrientation];
     self.headerImageHeightConstraint = [[self.imagePageViewController.view constrainHeight:@(headerImageHeight).stringValue] firstObject];
 }
 
 - (void)getShowHeaderImages
 {
+    dispatch_block_t sharedResize = ^{
+        self.headerImageHeightConstraint.constant = [self headerImageHeightForInterfaceOrientation:self.interfaceOrientation];
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    };
+
     [self.showNetworkModel getFairBoothArtworksAndInstallShots:self.show gotInstallImages:^(NSArray *images) {
         if (images.count == 1) {
             [self setSingleInstallShot:images.firstObject];
@@ -411,13 +427,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             self.imagePageViewController.images = [images take:ARFairShowMaximumNumberOfHeadlineImages];
         }
 
-    } gotArtworks:^(NSArray *images) {
-        if (self.imagePageViewController.images.count) return;
-        [self setSingleInstallShot:images.firstObject];
-
+        sharedResize();
     } noImages:^{
-        Image *blankImage = [Image modelWithJSON:@{ @"image_url" : @"" }];
-        [self setSingleInstallShot:blankImage];
+        sharedResize();
     }];
 }
 
