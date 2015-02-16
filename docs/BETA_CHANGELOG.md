@@ -1,5 +1,6 @@
 ## 2014.12.24
 
+* Fixes Fixes blinking map on fair guide - ash
 * Allow for more textual content in fair map callout view. - alloy
 * Only allow the portrait orientation for the fair map view on iPhone. - alloy
 * Fix fair map annotation view disappearing once selected. - alloy
