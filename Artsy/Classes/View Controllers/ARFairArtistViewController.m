@@ -1,7 +1,7 @@
 #import "ARFairArtistViewController.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARNavigationButton.h"
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 #import "AREmbeddedModelsViewController.h"
 #import "ARFollowableNetworkModel.h"
 #import "ARFollowableButton.h"

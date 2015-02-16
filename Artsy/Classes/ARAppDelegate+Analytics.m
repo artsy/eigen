@@ -9,7 +9,7 @@
 // View Controllers
 #import "ARFairGuideViewController.h"
 #import "ARFairArtistViewController.h"
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 #import "ARProfileViewController.h"
 #import "ARAppSearchViewController.h"
 #import "AROnboardingGeneTableController.h"
@@ -138,26 +138,26 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARFairShowViewController.class,
+                    ARAnalyticsClass: ARShowViewController.class,
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: ARAnalyticsPartnerShowView,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairShowViewController *controller, RACTuple *_) {
+                            ARAnalyticsEventProperties: ^NSDictionary*(ARShowViewController *controller, RACTuple *_) {
                                 return controller.dictionaryForAnalytics;
                             }
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(handleMapButtonPress:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairShowViewController *controller, RACTuple *_) {
+                            ARAnalyticsEventProperties: ^NSDictionary*(ARShowViewController *controller, RACTuple *_) {
                                 return controller.dictionaryForAnalytics;
                             }
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsProfileFollow,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowShow:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairShowViewController *controller, RACTuple *_) {
+                            ARAnalyticsEventProperties: ^NSDictionary*(ARShowViewController *controller, RACTuple *_) {
                                 return @{
                                     @"followed": controller.isFollowing ? @"yes" : @"no",
                                     @"profile_id" : controller.show.partner.profileID ?: @"",

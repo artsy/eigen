@@ -1,5 +1,5 @@
 #import "ARFairMapAnnotationCallOutView.h"
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 
 @interface ARFairMapAnnotationCallOutView ()
 
@@ -150,7 +150,7 @@
     id representedObject = self.annotation.representedObject;
     if([representedObject isKindOfClass:PartnerShow.class]) {
         PartnerShow *partnerShow = (PartnerShow *) representedObject;
-        ARFairShowViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:partnerShow fair:self.fair];
+        ARShowViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:partnerShow fair:self.fair];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
     } else if (self.annotation.href) {
         [[ARSwitchBoard sharedInstance] loadPath:self.annotation.href];
