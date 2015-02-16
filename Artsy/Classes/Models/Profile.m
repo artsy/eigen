@@ -2,9 +2,8 @@
     BOOL _followed;
 }
 
-@property (nonatomic, copy) NSString *iconAddress;
+@property (nonatomic, copy) NSDictionary *iconURLs;
 @property (nonatomic, copy) NSString *iconVersion;
-@property (nonatomic, copy) NSArray *iconImageVersions;
 @property (nonatomic, strong) NSString *ownerClassString;
 @property (nonatomic, copy) NSDictionary *ownerJSON;
 @end
@@ -22,9 +21,8 @@
         @"ownerJSON"         : @"owner",
         @"ownerClassString"  : @"owner_type",
         @"followCount"       : @"follow_count",
-        @"iconAddress"       : @"icon.image_url",
         @"iconVersion"       : @"default_icon_version",
-        @"iconImageVersions" : @"icon.image_versions"
+        @"iconURLs"          : @"icon.image_urls",
     };
 }
 
@@ -75,18 +73,18 @@
 
 - (NSString *)iconURL
 {
-    NSString *iconFormat = nil;
-    if (self.iconImageVersions.count > 0){
-        if (self.iconVersion && [self.iconImageVersions includes:self.iconVersion]) {
-            iconFormat = self.iconVersion;
+    NSString *iconURL = nil;
+    if (self.iconURLs.count > 0){
+        if (self.iconVersion && [self.iconURLs objectForKey:self.iconVersion]) {
+            iconURL  = [self.iconURLs objectForKey:self.iconVersion];
         } else {
-            iconFormat = self.iconImageVersions[0];
+            NSArray *values = [self.iconURLs allValues];
+            iconURL = [values objectAtIndex:0];;
         }
+        return iconURL;
     } else {
         return nil;
     }
-    NSString *format = [NSString stringWithFormat:@"%@.png", iconFormat];
-    return [self.iconAddress stringByReplacingOccurrencesOfString:@":version.jpg" withString:format];
 }
 
 - (NSString *)description

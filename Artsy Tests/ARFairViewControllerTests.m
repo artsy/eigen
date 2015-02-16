@@ -53,23 +53,21 @@ before(^{
     bannerlessFair = [[Fair alloc] initWithFairID:@"a-fair-affair"];
     bannerFair = [Fair modelWithJSON:@{
     @"id" : @"fair-id",
-    @"image_url" : @"http://static1.artsy.net/fairs/52617c6c8b3b81f094000013/9/:version.jpg",
-    @"image_versions" : @[
-            @"square",
-            @"large_rectangle",
-            @"wide"
-        ]
+    @"image_urls" : @{
+            @"square" : @"http://static1.artsy.net/fairs/52617c6c8b3b81f094000013/9/square.jpg",
+            @"large_rectangle" : @"http://static1.artsy.net/fairs/52617c6c8b3b81f094000013/9/large_rectangle",
+            @"wide" : @"http://static1.artsy.net/fairs/52617c6c8b3b81f094000013/9/wide"
+        }
     }];
     bannerlessProfile = [[Profile alloc] initWithProfileID:@"profile-id"];
     bannerProfile = [Profile modelWithJSON:@{
         @"id" : @"profile-id",
-        @"default_icon_version" : @"square",
+        @"default_image_version" : @"square",
         @"icon" : @{
-            @"image_url" : @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/:version.jpg",
-            @"image_versions" : @[
-                @"circle",
-                @"square"
-            ]
+            @"image_urls" : @{
+                @"circle" : @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/circle.jpg",
+                @"square" : @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square.jpg"
+            }
         }
     }];
 });
