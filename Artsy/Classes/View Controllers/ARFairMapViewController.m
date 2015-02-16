@@ -17,7 +17,7 @@
 @property (nonatomic, strong) ARSearchFieldButton *searchButton;
 @property (nonatomic, strong, readwrite) ARTiledImageDataSourceWithImage *mapDataSource;
 @property (nonatomic, strong, readwrite) ARFairSearchViewController *searchVC;
-@property (nonatomic, readonly, assign) BOOL calloutAnnotationHighlighted;
+@property (nonatomic, assign, readwrite) BOOL calloutAnnotationHighlighted;
 @property (nonatomic, readonly, strong) ARFairMapAnnotationCallOutView *calloutView;
 @property (nonatomic, readonly, strong) NSArray *selectedPartnerShows;
 @property (nonatomic, readonly, strong) NSString *selectedTitle;
@@ -199,7 +199,6 @@
     return [NSSet setWithObjects:@"searchVC.menuState", nil];
 }
 
-
 - (BOOL)hidesBackButton
 {
     if (self.searchVC) {
@@ -219,6 +218,11 @@
     [self hideCallOut];
 
     [self.mapView centerOnPoint:annotation.point animated:animated];
+
+    // The annotation should be highlighted before reduceToPoint is called or it will not get its
+    // title label hidden but instead will be completely hidden.
+    BOOL wasAnnotationHighlighted = annotation.highlighted;
+    annotation.highlighted = YES;
     [(ARFairMapAnnotationView *)annotation.view reduceToPoint];
 
     if (!annotation.title) {
@@ -226,8 +230,7 @@
     }
 
     self.calloutView.annotation = annotation;
-    _calloutAnnotationHighlighted = annotation.highlighted;
-    annotation.highlighted = YES;
+    self.calloutAnnotationHighlighted = wasAnnotationHighlighted;
 
     self.calloutView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.4f, 0.4f);
     [self.mapView bringSubviewToFront:self.calloutView];
