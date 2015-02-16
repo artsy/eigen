@@ -4,7 +4,7 @@
 
 // View Controllers
 #import "ARArtworkSetViewController.h"
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 #import "ARFairArtistViewController.h"
 #import "ARGeneViewController.h"
 #import "ARArtworkInfoViewController.h"
@@ -95,7 +95,7 @@
     if (![UIDevice isPad]) {
         [self.routes addRoute:@"/show/:id" handler:^BOOL(NSDictionary *parameters) {
             @strongify(self)
-            ARFairShowViewController *viewController = [self loadShowWithID:parameters[@"id"]];
+            ARShowViewController *viewController = [self loadShowWithID:parameters[@"id"]];
             [[ARTopMenuViewController sharedController] pushViewController:viewController];
             return YES;
         }];
@@ -190,24 +190,24 @@
     return viewController;
 }
 
-- (ARFairShowViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair
+- (ARShowViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair
 {
-    ARFairShowViewController *viewController = [[ARFairShowViewController alloc] initWithShow:show fair:fair];
+    ARShowViewController *viewController = [[ARShowViewController alloc] initWithShow:show fair:fair];
     return viewController;
 }
 
-- (ARFairShowViewController *)loadShow:(PartnerShow *)show
+- (ARShowViewController *)loadShow:(PartnerShow *)show
 {
     return [self loadShow:show fair:nil];
 }
 
-- (ARFairShowViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair
+- (ARShowViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair
 {
-    ARFairShowViewController *viewController = [[ARFairShowViewController alloc] initWithShowID:showID fair:fair];
+    ARShowViewController *viewController = [[ARShowViewController alloc] initWithShowID:showID fair:fair];
     return viewController;
 }
 
-- (ARFairShowViewController *)loadShowWithID:(NSString *)showID
+- (ARShowViewController *)loadShowWithID:(NSString *)showID
 {
     return [self loadShowWithID:showID fair:nil];
 }

@@ -122,7 +122,7 @@ beta: stamp_date deploy
 
 
 LOCAL_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
-BRANCH := $(shell whoami)-$(shell git rev-parse --abbrev-ref HEAD)
+BRANCH := $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
 
 pr: 
 	if [ "$(BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push upstream "$(LOCAL_BRANCH):$(BRANCH)"; open -a "Google Chrome" "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi
@@ -132,8 +132,3 @@ push:
 
 fpush: 
 	if [ "$(BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH) --force; fi
-
-setup:
-	mkdir -p .git/hooks
-	cp config/githooks/* .git/hooks/
-	chmod +x .git/hooks/*

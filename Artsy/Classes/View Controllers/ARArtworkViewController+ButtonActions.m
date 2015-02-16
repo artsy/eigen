@@ -5,7 +5,7 @@
 #import "ARViewInRoomViewController.h"
 #import "ARSharingController.h"
 #import "ARArtworkPreviewImageView.h"
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 #import "ARHeartButton.h"
 #import "ARFairViewController.h"
 #import <ARAnalytics/ARAnalytics.h>

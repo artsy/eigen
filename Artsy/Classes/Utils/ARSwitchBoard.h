@@ -6,7 +6,7 @@
 // View Controller Forward Declarations
 
 @class ARArtworkSetViewController;
-@class ARFairShowViewController;
+@class ARShowViewController;
 @class ARFairArtistViewController;
 @class ARArtistViewController;
 @class ARArtworkInfoViewController;
@@ -55,10 +55,10 @@
 - (ARGeneViewController *)loadGeneWithID:(NSString *)geneID;
 
 /// Load a fair booth
-- (ARFairShowViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair;
-- (ARFairShowViewController *)loadShow:(PartnerShow *)show;
-- (ARFairShowViewController *)loadShowWithID:(NSString *)showID;
-- (ARFairShowViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair;
+- (ARShowViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair;
+- (ARShowViewController *)loadShow:(PartnerShow *)show;
+- (ARShowViewController *)loadShowWithID:(NSString *)showID;
+- (ARShowViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair;
 
 /// Load a path relative to the baseURL through the router
 - (UIViewController *)loadPath:(NSString *)path;

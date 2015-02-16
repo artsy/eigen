@@ -1,4 +1,4 @@
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 #import "ARImagePageViewController.h"
 #import "ARFollowableNetworkModel.h"
 #import "ARFollowableButton.h"
@@ -12,6 +12,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARShowNetworkModel.h"
 #import "ORStackView+ArtsyViews.h"
+#import "ARFairMapPreviewButton.h"
 
 NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewHeader = 1,
@@ -28,7 +29,7 @@ NS_ENUM(NSInteger, ARFairShowViewIndex){
 
 static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
-@interface ARFairShowViewController () <AREmbeddedModelsDelegate, ARArtworkMasonryLayoutProvider>
+@interface ARShowViewController () <AREmbeddedModelsDelegate, ARArtworkMasonryLayoutProvider>
 @property (nonatomic, strong, readonly) ORStackScrollView *view;
 @property (nonatomic, strong, readonly) ARImagePageViewController *imagePageViewController;
 @property (nonatomic, strong, readonly) ARFollowableNetworkModel *followableNetwork;
@@ -43,15 +44,17 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 @end
 
-@implementation ARFairShowViewController
+@implementation ARShowViewController
 
 + (CGFloat)followButtonWidthForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return UIInterfaceOrientationIsPortrait(interfaceOrientation) ? 315 : 281;
 }
 
-+ (CGFloat)headerImageHeightForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (CGFloat)headerImageHeightForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    if (self.imagePageViewController.images.count == 0) { return 0; }
+
     if ([UIDevice isPhone]) {
         return 213;
     } else {
@@ -59,7 +62,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     }
 }
 
--(instancetype)init
+- (instancetype)init
 {
     self = [super init];
     if (!self) { return nil; }
@@ -127,7 +130,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
     NSMutableArray *descriptions = [NSMutableArray array];
 
-    [descriptions addObject:@{
+    [descriptions addObject: @{
         ARActionButtonImageKey: @"Artwork_Icon_Share",
         ARActionButtonHandlerKey: ^(ARCircularActionButton *sender) {
             NSURL *imageURL = nil;
@@ -137,10 +140,6 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             [ARSharingController shareObject:self.show withThumbnailImageURL:imageURL];
         }
     }];
-
-    if (self.show.hasMapLocation && self.fair) {
-        [descriptions addObject:self.descriptionForMapButton];
-    }
 
     self.actionButtonsView.actionButtonDescriptions = descriptions;
 }
@@ -175,12 +174,11 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     if ([UIDevice isPhone]) {
         [self.view.stackView addSubview:partnerLabel withTopMargin:@"0" sideMargin:[self sideMarginPredicate]];
         if (followButton) {
-            [self.view.stackView addSubview:followButton withTopMargin:@"32" sideMargin:[self sideMarginPredicate]];
+            [self.view.stackView addSubview:followButton withTopMargin:@"20" sideMargin:[self sideMarginPredicate]];
         }
     } else {
         UIView *containerView = [[UIView alloc] init];
         containerView.tag = ARFairShowViewPartnerLabelFollowButton;
-
 
         [containerView addSubview:partnerLabel];
         [containerView addSubview:followButton];
@@ -234,8 +232,8 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 - (void)setConstraintConstantsForOrientation:(UIInterfaceOrientation)orientation
 {
-    self.followButtonWidthConstraint.constant = [[self class] followButtonWidthForInterfaceOrientation:orientation];
-    self.headerImageHeightConstraint.constant = [[self class] headerImageHeightForInterfaceOrientation:orientation];
+    self.followButtonWidthConstraint.constant = [self.class followButtonWidthForInterfaceOrientation:orientation];
+    self.headerImageHeightConstraint.constant = [self headerImageHeightForInterfaceOrientation:orientation];
 }
 
 - (UILabel *)partnerLabel
@@ -267,7 +265,8 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     partnerName.text = self.show.fair ? self.show.fair.name : self.show.name;
     [self.view.stackView addSubview:partnerName withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
 
-    if (self.show.fair && !self.fair){
+    BOOL isNotCurrentFairContext = self.show.fair && !self.fair;
+    if (isNotCurrentFairContext) {
         partnerName.userInteractionEnabled = YES;
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openShowFair:)];
         [partnerName addGestureRecognizer:tapGesture];
@@ -278,9 +277,16 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
     ARSerifLabel *boothLocation = [[ARSerifLabel alloc] init];
     boothLocation.tag = ARFairShowViewBoothLocation;
-    boothLocation.textColor = [UIColor blackColor];
+    boothLocation.textColor = [UIColor artsyHeavyGrey];
     boothLocation.font = [UIFont serifFontWithSize:14];
-    boothLocation.text = self.show.ausstellungsdauerAndLocation;
+
+    // We don't care about the fairs opening / closing if
+    if (isNotCurrentFairContext) {
+        boothLocation.text = self.show.ausstellungsdauerAndLocation;
+    } else {
+        boothLocation.text = self.show.locationInFair;
+    }
+
     [self.view.stackView addSubview:boothLocation withTopMargin:@"6" sideMargin:[self sideMarginPredicate]];
 }
 
@@ -376,19 +382,12 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         Map *map = maps.firstObject;
         if (!map) { return; }
 
-        UIButton *mapViewContainer = [[UIButton alloc] init];
-        mapViewContainer.tag = ARFairShowViewMapPreview;
-        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 150);
-
-        ARFairMapPreview *mapPreview = [[ARFairMapPreview alloc] initWithFairMap:map andFrame:frame];
-        [mapViewContainer addSubview:mapPreview];
-        [mapPreview alignToView:mapViewContainer];
-        [mapViewContainer constrainHeight:@"150"];
-
-        [mapPreview setZoomScale:mapPreview.minimumZoomScale animated:self.shouldAnimate];
-        [mapPreview addHighlightedShow:self.show animated:self.shouldAnimate];
-        [mapViewContainer addTarget:self action:@selector(handleMapButtonPress:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view.stackView addSubview:mapViewContainer withTopMargin:@"20" sideMargin:@"20"];
+        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 85);
+        ARFairMapPreviewButton *mapButton = [[ARFairMapPreviewButton alloc] initWithFrame:frame map:map];
+        mapButton.tag = ARFairShowViewMapPreview;
+        [mapButton.mapPreview addHighlightedShow:self.show animated:NO];
+        [mapButton addTarget:self action:@selector(handleMapButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view.stackView addSubview:mapButton withTopMargin:@"30" sideMargin:@"40"];
     }];
 }
 
@@ -408,12 +407,19 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     self.imagePageViewController.imageContentMode = UIViewContentModeScaleAspectFill;
     self.imagePageViewController.view.tag = ARFairShowViewHeader;
     [self.view.stackView addSubview:self.imagePageViewController.view withTopMargin:@"0" sideMargin:@"0"];
-    CGFloat headerImageHeight = [[self class] headerImageHeightForInterfaceOrientation:self.interfaceOrientation];
+
+    CGFloat headerImageHeight = [self headerImageHeightForInterfaceOrientation:self.interfaceOrientation];
     self.headerImageHeightConstraint = [[self.imagePageViewController.view constrainHeight:@(headerImageHeight).stringValue] firstObject];
 }
 
 - (void)getShowHeaderImages
 {
+    dispatch_block_t sharedResize = ^{
+        self.headerImageHeightConstraint.constant = [self headerImageHeightForInterfaceOrientation:self.interfaceOrientation];
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    };
+
     [self.showNetworkModel getFairBoothArtworksAndInstallShots:self.show gotInstallImages:^(NSArray *images) {
         if (images.count == 1) {
             [self setSingleInstallShot:images.firstObject];
@@ -421,13 +427,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             self.imagePageViewController.images = [images take:ARFairShowMaximumNumberOfHeadlineImages];
         }
 
-    } gotArtworks:^(NSArray *images) {
-        if (self.imagePageViewController.images.count) return;
-        [self setSingleInstallShot:images.firstObject];
-
+        sharedResize();
     } noImages:^{
-        Image *blankImage = [Image modelWithJSON:@{ @"image_url" : @"" }];
-        [self setSingleInstallShot:blankImage];
+        sharedResize();
     }];
 }
 

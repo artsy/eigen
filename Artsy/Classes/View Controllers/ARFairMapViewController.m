@@ -3,7 +3,7 @@
 #import "ARFairMapView.h"
 #import "ARFairMapZoomManager.h"
 #import "ARFairShowMapper.h"
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 #import "ARFairSearchViewController.h"
 #import "UIViewController+SimpleChildren.h"
 #import "ARFairMapAnnotationCallOutView.h"

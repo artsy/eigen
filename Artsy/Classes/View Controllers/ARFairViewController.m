@@ -10,7 +10,7 @@
 #import "ARFairSearchViewController.h"
 #import "ARSearchFieldButton.h"
 #import "UIViewController+SimpleChildren.h"
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARGeneViewController.h"
 #import "ARParallaxHeaderViewController.h"

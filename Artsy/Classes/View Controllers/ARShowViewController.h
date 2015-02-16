@@ -1,4 +1,4 @@
-@interface ARFairShowViewController : UIViewController
+@interface ARShowViewController : UIViewController
 
 - (id)initWithShow:(PartnerShow *)show fair:(Fair *)fair;
 - (id)initWithShowID:(NSString *)showID fair:(Fair *)fair;

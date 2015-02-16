@@ -12,9 +12,9 @@
 {
     self = [super initWithFair:fair show:show];
     if (self == nil) { return nil; }
-    
+
     _maps = maps;
-    
+
     return self;
 }
 
@@ -34,23 +34,13 @@
     success(@[]);
 }
 
-
-- (void)getFairBoothArtworksAndInstallShots:(PartnerShow *)show
-                           gotInstallImages:(void (^)(NSArray *images))gotInstallImages
-                                gotArtworks:(void (^)(NSArray *images))gotArtworkImages
-                                   noImages:(void (^)(void))noImages
+- (void)getFairBoothArtworksAndInstallShots:(PartnerShow *)show gotInstallImages:(void (^)(NSArray *images))gotInstallImages noImages:(void (^)(void))noImages
 {
     if (self.imagesForBoothHeader.count) {
         gotInstallImages(self.imagesForBoothHeader);
     }
-    
-    if (self.artworksForBoothHeader.count) {
-        gotArtworkImages([self.artworksForBoothHeader map:^id(Artwork *artwork) {
-            return artwork.defaultImage;
-        }]);
-    }
-    
-    if (self.imagesForBoothHeader.count == 0 && self.artworksForBoothHeader.count == 0) {
+
+    if (self.imagesForBoothHeader.count == 0) {
         noImages();
     }
 }

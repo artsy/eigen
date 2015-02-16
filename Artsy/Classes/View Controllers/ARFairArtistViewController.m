@@ -1,7 +1,7 @@
 #import "ARFairArtistViewController.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARNavigationButton.h"
-#import "ARFairShowViewController.h"
+#import "ARShowViewController.h"
 #import "AREmbeddedModelsViewController.h"
 #import "ARFollowableNetworkModel.h"
 #import "ARFollowableButton.h"
@@ -9,6 +9,7 @@
 #import "ARFairShowMapper.h"
 #import "ARFairMapPreview.h"
 #import "ARArtworkSetViewController.h"
+#import "ARFairMapPreviewButton.h"
 
 NS_ENUM(NSInteger, ARFairArtistViewIndex){
     ARFairArtistTitle = 1,
@@ -173,18 +174,12 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
           }
         }
 
-        ARClearFlatButton *mapViewContainer = [[ARClearFlatButton alloc] init];
-        [mapViewContainer setBorderColor:[UIColor artsyMediumGrey] forState:UIControlStateNormal];
-        mapViewContainer.tag = ARFairArtistMapPreview;
-        [mapViewContainer constrainHeight:@"85"];
         CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 85);
-        ARFairMapPreview *mapPreview = [[ARFairMapPreview alloc] initWithFairMap:map andFrame:frame];
-        [mapViewContainer addSubview:mapPreview];
-        [mapPreview alignToView:mapViewContainer];
-        [mapPreview setZoomScale:mapPreview.minimumZoomScale animated:NO];
-        [mapPreview addShows:self.partnerShows animated:NO];
-        [mapViewContainer addTarget:self action:@selector(mapButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view.stackView addSubview:mapViewContainer withTopMargin:@"30" sideMargin:@"40"];
+        ARFairMapPreviewButton *mapButton = [[ARFairMapPreviewButton alloc] initWithFrame:frame map:map];
+        mapButton.tag = ARFairArtistMapPreview;
+        [mapButton.mapPreview addShows:self.partnerShows animated:NO];
+        [mapButton addTarget:self action:@selector(mapButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view.stackView addSubview:mapButton withTopMargin:@"30" sideMargin:@"40"];
     }];
 }
 
