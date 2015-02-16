@@ -132,8 +132,3 @@ push:
 
 fpush: 
 	if [ "$(BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH) --force; fi
-
-setup:
-	mkdir -p .git/hooks
-	cp config/githooks/* .git/hooks/
-	chmod +x .git/hooks/*
