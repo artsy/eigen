@@ -1,6 +1,5 @@
 ## 1.6.2 (30/01/2015)
 
-* Fix iOS 8 status bar in onboarding - ash
 * Fix iOS7 Search crash - orta
 * Fix artwork view crash  - orta
 * Set correct sign up context for purchasable works - 1aurabrown
