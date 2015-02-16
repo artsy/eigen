@@ -243,10 +243,14 @@
 
 - (void)hideCallOut
 {
-    self.calloutView.annotation.highlighted = self.calloutAnnotationHighlighted;
-    ARFairMapAnnotationView *annotationView = (ARFairMapAnnotationView *)self.calloutView.annotation.view;
-    [annotationView expandToFull];
-    self.calloutView.hidden = YES;
+    ARFairMapAnnotation *annotation = self.calloutView.annotation;
+    if (annotation) {
+        annotation.highlighted = self.calloutAnnotationHighlighted;
+        [(ARFairMapAnnotationView *)annotation.view expandToFull];
+        self.calloutView.hidden = YES;
+        self.calloutView.annotation = nil;
+        self.calloutAnnotationHighlighted = NO;
+    }
 }
 
 - (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query
