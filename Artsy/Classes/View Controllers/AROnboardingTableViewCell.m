@@ -7,25 +7,28 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat width = CGRectGetWidth(screenRect);
+
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        self.textLabel.font = [UIFont serifFontWithSize:24];
-        self.textLabel.textColor = [UIColor whiteColor];
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.backgroundColor = [UIColor clearColor];
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        CGRect frame = self.contentView.frame;
-        frame.size.height += 10;
-        self.contentView.frame = frame;
+    if (!self) return nil;
 
-        CALayer *sep = [CALayer layer];
-        sep.frame = CGRectMake(15, self.contentView.bounds.size.height - .5, 290, .5);
-        sep.backgroundColor = [UIColor artsyHeavyGrey].CGColor;
-        [self.layer addSublayer:sep];
-        _centerFixed = NO;
+    self.textLabel.font = [UIFont serifFontWithSize:24];
+    self.textLabel.textColor = [UIColor whiteColor];
+    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    self.contentView.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor clearColor];
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    CGRect frame = self.contentView.frame;
+    frame.size.height += 10;
+    self.contentView.frame = frame;
 
-    }
+    CALayer *sep = [CALayer layer];
+    sep.frame = CGRectMake(15, self.contentView.bounds.size.height - .5, width - 30, .5);
+    sep.backgroundColor = [UIColor artsyHeavyGrey].CGColor;
+    [self.layer addSublayer:sep];
+    _centerFixed = NO;
+
     return self;
 }
 
@@ -33,6 +36,7 @@
 {
     self.centerFixed = NO;
 }
+
 //ick, but this frame is CGRectZero in init, so...
 - (void)layoutSubviews
 {

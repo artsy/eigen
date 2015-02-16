@@ -50,11 +50,11 @@
 
     [self.view addSubview:tableView];
     CALayer *sep = [CALayer layer];
-    sep.frame = CGRectMake(15, 0, 290, .5);
+    sep.frame = CGRectMake(15, 0, CGRectGetWidth(self.view.bounds) - 30, .5);
     sep.backgroundColor = [UIColor artsyHeavyGrey].CGColor;
     [tableView.layer addSublayer:sep];
 
-    UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, 280, 30)];
+    UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, CGRectGetWidth(self.view.bounds) - 40, 30)];
     header.textColor = [UIColor whiteColor];
     header.font = [UIFont serifFontWithSize:24];
     header.text = @"What’s your price range?";

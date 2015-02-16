@@ -9,4 +9,5 @@
 * Remove open map button from fair artist view - alloy
 * Update birth place/year subtitle on fair artist view - alloy
 * Show auction lot on the artwork view - orta
+* Added Support for iPhone 6 and 6+ throughout the app - orta
 * Facebook auth fix - 1aurabrown

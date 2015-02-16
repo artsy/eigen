@@ -20,7 +20,7 @@
     self.label = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
     self.label.backgroundColor = [UIColor clearColor];
     self.label.opaque = NO;
-    self.label.frame = CGRectMake(20, 30, 280, 120);
+    self.label.frame = CGRectMake(20, 30, CGRectGetWidth(self.view.bounds) - 40, 120);
     self.label.font = [UIFont serifFontWithSize:24];
     self.label.textColor = [UIColor whiteColor];
     self.label.numberOfLines = 0;
@@ -66,7 +66,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 280, 30)];
+    UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, CGRectGetWidth(self.view.bounds) - 40, 30)];
     header.textColor = [UIColor whiteColor];
     header.font = [UIFont serifFontWithSize:24];
     header.text = @"Do you buy art?";
@@ -80,7 +80,7 @@
     [wrapper addSubview:header];
 
     CALayer *separator = [CALayer layer];
-    separator.frame = CGRectMake(15, wrapper.bounds.size.height - .5, 290, .5);
+    separator.frame = CGRectMake(15, wrapper.bounds.size.height - .5, CGRectGetWidth(self.view.bounds) - 30, .5);
     separator.backgroundColor = [UIColor artsyHeavyGrey].CGColor;
     [wrapper.layer addSublayer:separator];
     return wrapper;

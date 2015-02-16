@@ -10,18 +10,21 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = [UIColor clearColor];
-        self.font = [UIFont serifFontWithSize:20];
-        self.textColor = [UIColor artsyLightGrey];
-        CALayer *baseline = [CALayer layer];
-        baseline.backgroundColor = [UIColor artsyHeavyGrey].CGColor;
-        baseline.frame = CGRectMake(0, self.frame.size.height - 1, 320, 1);
-        self.clipsToBounds = NO;
-        [self.layer addSublayer:baseline];
+    if (!self) return nil;
 
-        self.clearButtonMode = UITextFieldViewModeWhileEditing;
-    }
+    self.backgroundColor = [UIColor clearColor];
+    self.font = [UIFont serifFontWithSize:20];
+
+    self.textColor = [UIColor artsyLightGrey];
+    CALayer *baseline = [CALayer layer];
+    baseline.backgroundColor = [UIColor artsyHeavyGrey].CGColor;
+    baseline.frame = CGRectMake(0, CGRectGetHeight(self.frame) - 1, CGRectGetWidth(self.bounds), 1);
+
+    self.clipsToBounds = NO;
+    [self.layer addSublayer:baseline];
+
+    self.clearButtonMode = UITextFieldViewModeWhileEditing;
+
     return self;
 }
 
