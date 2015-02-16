@@ -242,16 +242,15 @@ const CGFloat kClosedMapHeight = 180.0f;
         [self.view setNeedsLayout];
     };
 
-    // Collapsing
-    if (oldTopHeight > 0 && self.topHeight < kClosedMapHeight) {
+    if (oldTopHeight > 0 && self.topHeight < kClosedMapHeight) { // Collapsing to map preview
         CGFloat heightRatio = ((1.0 - self.topHeight/kClosedMapHeight) + 1.0) / 2.0;
         [self.fairMapViewController centerMap:heightRatio inFrameOfHeight:kClosedMapHeight animated:NO];
         self.fairBackgroundViewTopLayoutConstraint.constant = self.topHeight;
         updateConstraints();
         scrollView.contentOffset = contentOffset.y > 0 ? CGPointZero : contentOffset;
 
-        // Expanding
-    } else if (contentOffset.y < 0) {
+    } else if (contentOffset.y < 0 && oldTopHeight != 0) { // Expanding to fullscreen map
+        // We check for oldTopHeight != 0 to prevent the controller from executing this branch when beginning to scroll down from contentOffset.y ~= 0. 
         CGFloat heightRatio = ((contentOffset.y + kClosedMapHeight)/kClosedMapHeight) / 2.0;
         [self.fairMapViewController centerMap:heightRatio inFrameOfHeight:kClosedMapHeight animated:NO];
         self.fairBackgroundViewTopLayoutConstraint.constant = fabsf(contentOffset.y) + kClosedMapHeight;
