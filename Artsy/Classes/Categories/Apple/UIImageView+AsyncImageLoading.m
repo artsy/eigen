@@ -27,7 +27,7 @@
             objc_setAssociatedObject(self, ARAsyncImageLoadingStartDate, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             if (error) {
                 // SDWebImage uses -[NSError code] to communicate the HTTP status code.
-                int status = NSURLErrorUnknown;
+                long status = NSURLErrorUnknown;
                 if (error.domain == NSURLErrorDomain) {
                     if (error.code == NSURLErrorFileDoesNotExist) {
                         // SDWebImage's cache feature will try to load the image from disk, but if
@@ -39,7 +39,7 @@
                         status = error.code;
                     }
                 }
-                ARHTTPRequestOperationFailureLog(@"[Error] %d '%@' [%.04f s]: %@", status, imageURL, elapsedTime, error);
+                ARHTTPRequestOperationFailureLog(@"[Error] %@ '%@' [%.04f s]: %@", @(status), imageURL, elapsedTime, error);
             } else {
                 // This might actually be another 2xx status code, but let's assume 200 for now.
                 ARHTTPRequestOperationSuccessLog(@"[Success] 200 '%@' [%.04f s]", imageURL, elapsedTime);
