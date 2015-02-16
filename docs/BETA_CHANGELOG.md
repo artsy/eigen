@@ -1,5 +1,7 @@
 ## 2014.12.24
 
+* Revised UI for Show Views to match Artist in Fair - orta
+* Support Logged In only Featured links on the main feed - orta
 * Allow for more textual content in fair map callout view. - alloy
 * Only allow the portrait orientation for the fair map view on iPhone. - alloy
 * Fix fair map annotation view disappearing once selected. - alloy

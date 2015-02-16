@@ -15,44 +15,39 @@
         return;
     }
 
-    __block BOOL feedLinks = NO;
-    __block BOOL betaFeedLinks = NO;
-
-    void (^completionCheck)() = ^(){
-        if (feedLinks && betaFeedLinks) {
-            completion();
-        }
-    };
-
     @weakify(self);
 
     // edit set here: http://admin.artsy.net/set/52277573c9dc24da5b00020c
     [ArtsyAPI getOrderedSetItemsWithKey:@"eigen:feed-links" success:^(NSArray *items) {
         @strongify(self);
         [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:items]];
-
-        feedLinks = YES;
-        completionCheck();
+        completion();
     } failure:^(NSError *error) {
-        feedLinks = YES;
-        completionCheck();
+        completion();
     }];
+
+    // edit set here: https://admin.artsy.net/set/54e255e9726169752bbb1b00
+    if ([User currentUser]) {
+        [ArtsyAPI getOrderedSetItemsWithKey:@"eigen:logged-in-feed-links" success:^(NSArray *items) {
+            @strongify(self);
+            [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:items]];
+            completion();
+        } failure:^(NSError *error) {
+            completion();
+        }];
+    }
 
     NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
     if ([bundleID containsString:@".dev"] || [bundleID containsString:@".beta"]) {
+
         // edit set here: http://admin.artsy.net/set/5308e7be9c18db75fd000343
         [ArtsyAPI getOrderedSetItemsWithKey:@"eigen:beta-feed-links" success:^(NSArray *items) {
             @strongify(self);
             [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:items]];
-            betaFeedLinks = YES;
-            completionCheck();
+            completion();
         } failure:^(NSError *error) {
-            betaFeedLinks = YES;
-            completionCheck();
+            completion();
         }];
-    } else {
-        betaFeedLinks = YES;
-        completionCheck();
     }
 }
 
