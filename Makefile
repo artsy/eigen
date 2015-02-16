@@ -128,10 +128,10 @@ pr:
 	if [ "$(BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push upstream "$(LOCAL_BRANCH):$(BRANCH)"; open -a "Google Chrome" "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi
 
 push: 
-	if [ "$(BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream "$(LOCAL_BRANCH):$(BRANCH)";
+	if [ "$(BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH); fi
 
 fpush: 
-	if [ "$(BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream "$(LOCAL_BRANCH)::$(BRANCH)" --force;
+	if [ "$(BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH) --force; fi
 
 setup:
 	mkdir -p .git/hooks
