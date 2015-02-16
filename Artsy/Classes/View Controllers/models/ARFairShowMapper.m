@@ -8,12 +8,11 @@
 @property (nonatomic, strong) NSMapTable *objectsToAnnotations;
 @property (nonatomic, readonly, assign) CGSize imageSize;
 @property (nonatomic, readonly, strong) NSMapTable *partnerToShowsMap;
-@property (nonatomic, readonly, assign) CGFloat annotationZoomScaleThreshold;
 @end
 
 @implementation ARFairShowMapper
 
-- (id)initWithMapView:(NATiledImageMapView *)mapView map:(Map *)map imageSize:(CGSize)imageSize
+- (id)initWithMapView:(ARAnnotatedMapView *)mapView map:(Map *)map imageSize:(CGSize)imageSize
 {
     self = [super init];
     if (!self) { return nil; }
@@ -24,7 +23,6 @@
     _annotationsToAnnotationViews = [NSMapTable strongToStrongObjectsMapTable];
     _objectsToAnnotations = [NSMapTable strongToStrongObjectsMapTable];
     _imageSize = imageSize;
-    _annotationZoomScaleThreshold = self.mapView.minimumZoomScale + (self.mapView.maximumZoomScale - self.mapView.minimumZoomScale)/2;
     _expandAnnotations = YES;
 
     return self;
@@ -66,7 +64,7 @@
 
 - (void)mapZoomLevelChanged:(CGFloat)zoomLevel
 {
-    if (self.mapView.zoomScale >= self.annotationZoomScaleThreshold && self.expandAnnotations) {
+    if (self.mapView.zoomScale >= self.mapView.annotationZoomScaleThreshold && self.expandAnnotations) {
         [self expandAllAnnotations:zoomLevel];
     } else {
         [self reduceAllAnnotations:zoomLevel];
@@ -75,7 +73,7 @@
 
 - (void)expandOrReduceAllAnnotations
 {
-    if (self.mapView.zoomScale >= self.annotationZoomScaleThreshold) {
+    if (self.mapView.zoomScale >= self.mapView.annotationZoomScaleThreshold) {
         [self expandAllAnnotations];
     } else {
         [self reduceAllAnnotations];

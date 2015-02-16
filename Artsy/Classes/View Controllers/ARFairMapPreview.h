@@ -1,6 +1,6 @@
-#import <NAMapKit/NATiledImageMapView.h>
+#import "ARAnnotatedMapView.h"
 
-@interface ARFairMapPreview : NATiledImageMapView
+@interface ARFairMapPreview : ARAnnotatedMapView
 
 - (id)initWithFairMap:(Map *)map andFrame:(CGRect)frame;
 

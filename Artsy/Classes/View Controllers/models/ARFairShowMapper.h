@@ -1,11 +1,11 @@
-#import <NAMapKit/NATiledImageMapView.h>
+#import "ARAnnotatedMapView.h"
 #import "ARFairMapAnnotationView.h"
 
 @interface ARFairShowMapper : NSObject
 
-- (id)initWithMapView:(NATiledImageMapView *)mapView map:(Map *)map imageSize:(CGSize)imageSize;
+- (id)initWithMapView:(ARAnnotatedMapView *)mapView map:(Map *)map imageSize:(CGSize)imageSize;
 
-@property (readonly, nonatomic, strong) NATiledImageMapView *mapView;
+@property (readonly, nonatomic, strong) ARAnnotatedMapView *mapView;
 @property (readonly, nonatomic, copy) NSSet *shows;
 @property (readonly, nonatomic, strong) Map *map;
 @property (readwrite, nonatomic, copy) NSSet *favoritedPartnerIDs;
