@@ -8,23 +8,33 @@ SpecBegin(ARFairMapAnnotationView)
 
 __block ARFairMapAnnotationView *annotationView = nil;
 
-describe(@"reduceToPoint, on a default feature", ^{
-    beforeEach(^{
-      annotationView = [ARFairMapAnnotationView new];
-      annotationView.mapFeatureType = ARMapFeatureTypeDefault;
-      annotationView.displayTitle = @"Jackson Pollock";
+beforeEach(^{
+    annotationView = [ARFairMapAnnotationView new];
+    annotationView.displayTitle = @"Jackson Pollock";
+});
+
+describe(@"reduceToPoint", ^{
+    it(@"hides the complete annotation on a default feature", ^{
+        annotationView.mapFeatureType = ARMapFeatureTypeDefault;
+        [annotationView reduceToPoint];
+        expect(annotationView.isHidden).to.equal(YES);
     });
 
-    it(@"hides the complete annotation", ^{
-      [annotationView reduceToPoint];
-      expect(annotationView.isHidden).to.equal(YES);
+    it(@"only hides the annotation’s label on a highlighted feature", ^{
+        annotationView.mapFeatureType = ARMapFeatureTypeHighlighted;
+        [annotationView reduceToPoint];
+        expect(annotationView.isHidden).to.equal(NO);
+        expect(annotationView.primaryTitleLabel.isHidden).to.equal(YES);
     });
+});
 
-    it(@"only hides the annotation’s label", ^{
-      annotationView.highlighted = YES;
-      [annotationView reduceToPoint];
-      expect(annotationView.isHidden).to.equal(NO);
-      expect(annotationView.primaryTitleLabel.isHidden).to.equal(YES);
+describe(@"expandToFull", ^{
+    it(@"always makes every element visible", ^{
+        annotationView.hidden = YES;
+        annotationView.primaryTitleLabel.hidden = YES;
+        [annotationView expandToFull];
+        expect(annotationView.isHidden).to.equal(NO);
+        expect(annotationView.primaryTitleLabel.isHidden).to.equal(NO);
     });
 });
 

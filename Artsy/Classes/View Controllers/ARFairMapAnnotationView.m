@@ -107,29 +107,20 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
 
 - (void)reduceToPoint
 {
-    if (self.mapFeatureType == ARMapFeatureTypeHighlighted) {
-        return;
-    }
-
-    if (self.isHighlighted || self.mapFeatureType != ARMapFeatureTypeDefault) {
+    if (self.mapFeatureType == ARMapFeatureTypeHighlighted || self.mapFeatureType != ARMapFeatureTypeDefault) {
         self.primaryTitleLabel.hidden = YES;
     } else {
         self.hidden = YES;
     }
-
-    _reducedToPoint = YES;
+    self.reducedToPoint = YES;
 }
 
 - (void)expandToFull
 {
     self.frame = self.boundingFrame;
-    if (self.mapFeatureType && self.mapFeatureType != ARMapFeatureTypeDefault) {
-        self.primaryTitleLabel.hidden = NO;
-    } else {
-        self.hidden = NO;
-    }
-
-    _reducedToPoint = NO;
+    self.hidden = NO;
+    self.primaryTitleLabel.hidden = NO;
+    self.reducedToPoint = NO;
 }
 
 - (BOOL)hasLabel
