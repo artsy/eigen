@@ -12,6 +12,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARShowNetworkModel.h"
 #import "ORStackView+ArtsyViews.h"
+#import "ARFairMapPreviewButton.h"
 
 NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewHeader = 1,
@@ -372,19 +373,12 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         Map *map = maps.firstObject;
         if (!map) { return; }
 
-        UIButton *mapViewContainer = [[UIButton alloc] init];
-        mapViewContainer.tag = ARFairShowViewMapPreview;
-        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 150);
-
-        ARFairMapPreview *mapPreview = [[ARFairMapPreview alloc] initWithFairMap:map andFrame:frame];
-        [mapViewContainer addSubview:mapPreview];
-        [mapPreview alignToView:mapViewContainer];
-        [mapViewContainer constrainHeight:@"150"];
-
-        [mapPreview setZoomScale:mapPreview.minimumZoomScale animated:self.shouldAnimate];
-        [mapPreview addHighlightedShow:self.show animated:self.shouldAnimate];
-        [mapViewContainer addTarget:self action:@selector(handleMapButtonPress:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view.stackView addSubview:mapViewContainer withTopMargin:@"20" sideMargin:@"20"];
+        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 85);
+        ARFairMapPreviewButton *mapButton = [[ARFairMapPreviewButton alloc] initWithFrame:frame map:map];
+        mapButton.tag = ARFairShowViewMapPreview;
+        [mapButton.mapPreview addHighlightedShow:self.show animated:NO];
+        [mapButton addTarget:self action:@selector(handleMapButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view.stackView addSubview:mapButton withTopMargin:@"30" sideMargin:@"40"];
     }];
 }
 
