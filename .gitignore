@@ -28,3 +28,5 @@ chairs/
 .github
 Artsy.xcodeproj/project.xcworkspace/xcshareddata/
 vendor/
+fastlane/screenshots
+fastlane/report.xml
