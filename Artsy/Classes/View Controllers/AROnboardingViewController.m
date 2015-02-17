@@ -69,6 +69,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     self.view.backgroundColor = [UIColor blackColor];
     self.view.tintColor = [UIColor artsyPurple];
 
+
     self.screenSwipeGesture = [[UIScreenEdgePanGestureRecognizer alloc]  initWithTarget:self action:@selector(edgeSwiped:)];
     self.screenSwipeGesture.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:self.screenSwipeGesture];

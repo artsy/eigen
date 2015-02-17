@@ -21,6 +21,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 //Search table view is controlled by this VC because it interacts more with the search bar
 @property (nonatomic) UITableView *artistTableView, *geneTableView, *searchTableView;
 @property (nonatomic) UIView *searchView;
+@property (nonatomic) UILabel *titleLabel;
 @property (nonatomic) AROnboardingSearchField *searchBar;
 @property (nonatomic) UILabel *followedArtistsLabel;
 @property (nonatomic) UIButton *cancelButton;
@@ -39,10 +40,10 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     if (self) {
         _searchResults = [NSMutableArray array];
         if (!genes || genes.count == 0) {
-            NSArray *fallabackGenes = @[@"Photography", @"Bauhaus", @"Dada", @"Glitch Aesthetic", @"Computer Art", @"Op Art", @"Minimalism"];
+            NSArray *fallbackGenes = @[@"Photography", @"Bauhaus", @"Dada", @"Glitch Aesthetic", @"Computer Art", @"Op Art", @"Minimalism"];
             ARActionLog(@"Using fallback genes in 'Personalize'");
             // Convert names to Gene Objects
-            _genesToFollow = [fallabackGenes map:^id(NSString *name) {
+            _genesToFollow = [fallbackGenes map:^id(NSString *name) {
                 NSString *geneID = [[name stringByReplacingOccurrencesOfString:@" " withString:@"-"]
                                     lowercaseString];
                 Gene *gene = [Gene modelWithJSON:@{
@@ -77,19 +78,20 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.view addSubview:self.scrollView];
 
     CGSize screenSize = self.scrollView.bounds.size;
-    UILabel *headline = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, 280, 40)];
+    UILabel *headline = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, screenSize.width - 40, 40)];
     headline.font = [UIFont serifFontWithSize:24];
     headline.text = @"What interests you?";
     headline.textColor = [UIColor whiteColor];
+    self.titleLabel = headline;
     [self.scrollView addSubview:headline];
 
-    UILabel *followArtists = [[UILabel alloc] initWithFrame:CGRectMake(20, 80, 280, 20)];
+    UILabel *followArtists = [[UILabel alloc] initWithFrame:CGRectMake(20, 80, screenSize.width - 40, 20)];
     followArtists.font = [UIFont sansSerifFontWithSize:14];
     followArtists.textColor = [UIColor whiteColor];
     followArtists.text = [@"Enter your favorite artists" uppercaseString];
     [self.scrollView addSubview:followArtists];
 
-    self.searchBar = [[AROnboardingSearchField alloc] initWithFrame:CGRectMake(20, 105, 210, 40)];
+    self.searchBar = [[AROnboardingSearchField alloc] initWithFrame:CGRectMake(20, 105, screenSize.width - 110, 40)];
     self.searchBar.placeholder = @"Search artists…";
     self.searchBar.delegate = self;
     self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeWords;
@@ -173,7 +175,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 
     self.searchResults = @[];
 
-    self.scrollView.contentSize = CGSizeMake(320, CGRectGetMaxY(self.geneTableView.frame) + 44);
+    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetMaxY(self.geneTableView.frame) + 44);
     self.continueButton = [[ARWhiteFlatButton alloc] initWithFrame:CGRectMake(0, screenSize.height - 44, screenSize.width, 44)];
     [self.continueButton addTarget:self action:@selector(continueTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.continueButton setTitle:@"Continue" forState:UIControlStateNormal];
@@ -289,7 +291,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [UIView animateSpringIf:animated duration:0.3 delay:0 damping:10 velocity:5 :^{
         self.artistTableView.frame = aFrame;
         self.geneTableView.frame = gFrame;
-        self.scrollView.contentSize = CGSizeMake(320, CGRectGetMaxY(self.geneTableView.frame) + 44);
+        self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetMaxY(self.geneTableView.frame) + 44);
     } completion:^(BOOL finished) {
         [self.artistTableView reloadData];
     }];
@@ -317,6 +319,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
             self.cancelButton.alpha = 1;
             [self.scrollView bringSubviewToFront:self.cancelButton];
             self.scrollView.scrollEnabled = NO;
+            self.titleLabel.alpha = 0;
         } completion:nil];
     }];
 
@@ -328,10 +331,13 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     self.searchBar.text = @"";
     [self updateArtistTableViewAnimated:NO];
     self.scrollView.scrollEnabled = YES;
+
     [UIView animateWithDuration:.35 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:2.5 options:0 animations:^{
         self.scrollView.contentOffset = CGPointZero;
+
         self.cancelButton.alpha = 0;
         self.searchView.alpha = 0;
+        self.titleLabel.alpha = 1;
 
     } completion:nil];
 }
@@ -342,6 +348,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     self.followedThisSession = 0;
     self.followedArtistsLabel.alpha = 0;
     self.searchTableView.alpha = 0;
+
     [UIView animateWithDuration:.3 animations:^{
         self.searchView.alpha = 1;
     }];

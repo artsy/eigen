@@ -25,6 +25,9 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
 
 + (CGFloat)heightForImageWithOrientation:(UIInterfaceOrientation)orientation
 {
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat width = CGRectGetWidth(screenRect);
+
     if ([UIDevice isPad]) {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
             return 184;
@@ -32,12 +35,15 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
             return 134;
         }
     } else {
-        return 90;
+        return width/2 - 70;
     }
 }
 
 + (CGFloat)widthForCellWithOrientation:(UIInterfaceOrientation)orientation
 {
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat width = CGRectGetWidth(screenRect);
+
     if ([UIDevice isPad]) {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
             return 276;
@@ -45,7 +51,7 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
             return 201;
         }
     } else {
-        return 130;
+        return width/2 - 30;
     }
 }
 

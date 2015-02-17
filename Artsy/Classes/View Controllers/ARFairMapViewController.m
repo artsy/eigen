@@ -98,7 +98,9 @@
         [self.view addSubview:self.searchButton];
         [self.searchButton constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"17"];
         [self.searchButton alignTrailingEdgeWithView:self.view predicate:@"-20"];
-        [self.searchButton constrainWidth:@"240"];
+
+        CGFloat width = CGRectGetWidth(self.view.bounds) - 80;
+        [self.searchButton constrainWidth:[@(width) stringValue]];
 
     } else {
         self.titleLabel = [[ARSansSerifHeaderLabel alloc] init];
