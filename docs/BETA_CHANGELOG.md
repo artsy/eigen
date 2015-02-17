@@ -1,7 +1,7 @@
 ## 2014.12.24
 
 * Fix iOS 8 status bar in onboarding - ash
-* Fixes Fixes blinking map on fair guide - ash
+* Fixes blinking map on fair guide - ash
 * Revised UI for Show Views to match Artist in Fair - orta
 * Support Logged In only Featured links on the main feed - orta
 * Allow for more textual content in fair map callout view. - alloy
