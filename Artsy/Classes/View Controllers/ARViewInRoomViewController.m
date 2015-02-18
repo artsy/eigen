@@ -1,5 +1,6 @@
 #import "ARViewInRoomViewController.h"
 #import "ARFeedImageLoader.h"
+#import "UIDevice-Hardware.h"
 
 #define DEBUG_VIEW_IN_ROOM 0
 
@@ -149,6 +150,14 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 
         CGRect backgroundFrame = self.view.bounds;
         backgroundFrame.origin.y += LandscapeOrientationBackgroundNegativeBottomMargin;
+
+        UIDevicePlatform deviceType = [UIDevice currentDevice].platformType;
+        if (deviceType == UIDevice6iPhone) {
+            backgroundFrame.origin.y -= 11;
+        }
+        if (deviceType == UIDevice6PlusiPhone) {
+            backgroundFrame.origin.y -= 19;
+        }
         self.backgroundImageView.frame = backgroundFrame;
 
     } else {
