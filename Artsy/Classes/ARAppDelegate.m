@@ -35,9 +35,12 @@
 #import "ARDemoSplashViewController.h"
 #import "ARShowFeedViewController.h"
 
+#import "ARFairContentPreloader.h"
+
 @interface ARAppDelegate()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
+@property (strong, nonatomic, readwrite) ARFairContentPreloader *fairContentPreloader;
 @end
 
 @implementation ARAppDelegate
@@ -68,6 +71,9 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [ARDefaults setup];
     [ARRouter setup];
+
+    self.fairContentPreloader = [ARFairContentPreloader new];
+    [self.fairContentPreloader discoverFairService];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [ARTopMenuViewController sharedController];
