@@ -19,7 +19,6 @@
 #import "ARAnalyticsConstants.h"
 #import "ARTopTapThroughTableView.h"
 
-
 static CGFloat ARShowFeedHeaderLabelMarginPad = 20;
 static CGFloat ARShowFeedHeaderLabelHeightPad = 55;
 
