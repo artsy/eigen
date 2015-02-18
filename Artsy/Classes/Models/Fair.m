@@ -35,7 +35,7 @@
         @keypath(Fair.new, city) : @"location.city",
         @keypath(Fair.new, state) : @"location.state",
         @keypath(Fair.new, imageURLs): @"image_urls",
-        @keypath(Fair.new, bannerURLs): @"banner_urls",
+        @keypath(Fair.new, bannerURLs): @"banner_image_urls",
         @keypath(Fair.new, partnersCount) : @"partners_count",
 
         // Hide these from Mantle
