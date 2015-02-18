@@ -294,6 +294,7 @@
 		60647C2E1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */; };
 		60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C661A8BB9AE00A45247 /* BuyersPremium.m */; };
 		60647C701A92512600A45247 /* ARFairMapPreviewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C6F1A92512600A45247 /* ARFairMapPreviewButton.m */; };
+		60647C751A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C741A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m */; };
 		60745DEA165802D9006CE156 /* ARUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60745DE9165802D9006CE156 /* ARUserManager.m */; };
 		607D754A17C239E700CA1D41 /* ArtsyAPI+Following.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D754917C239E700CA1D41 /* ArtsyAPI+Following.m */; };
 		607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D756A17C3816600CA1D41 /* ArtsyAPI+ListCollection.m */; };
@@ -1041,6 +1042,8 @@
 		60647C661A8BB9AE00A45247 /* BuyersPremium.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyersPremium.m; sourceTree = "<group>"; };
 		60647C6E1A92512600A45247 /* ARFairMapPreviewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapPreviewButton.h; sourceTree = "<group>"; };
 		60647C6F1A92512600A45247 /* ARFairMapPreviewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapPreviewButton.m; sourceTree = "<group>"; };
+		60647C731A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREndOfLineInternalMobileWebViewController.h; sourceTree = "<group>"; };
+		60647C741A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREndOfLineInternalMobileWebViewController.m; sourceTree = "<group>"; };
 		60745DE8165802D9006CE156 /* ARUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserManager.h; sourceTree = "<group>"; };
 		60745DE9165802D9006CE156 /* ARUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserManager.m; sourceTree = "<group>"; };
 		607861A1165E47470010FAA2 /* EXTConcreteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTConcreteProtocol.h; path = Artsy/Resources/EXTConcreteProtocol.h; sourceTree = "<group>"; };
@@ -3106,6 +3109,8 @@
 				60D90A0717C2182F0073D5B9 /* ARExternalWebBrowserViewController.m */,
 				60D90A0917C218930073D5B9 /* ARInternalMobileWebViewController.h */,
 				60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */,
+				60647C731A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.h */,
+				60647C741A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m */,
 			);
 			name = "Web Browsing";
 			sourceTree = "<group>";
@@ -3764,6 +3769,7 @@
 				3C7880BC18B9081C00595E30 /* ARNotificationView.m in Sources */,
 				B3DDE9C118313C7C0012819F /* ARArtworkAuctionPriceView.m in Sources */,
 				54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */,
+				60647C751A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m in Sources */,
 				60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */,
 				60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */,
 				49EC62181778AF100020D648 /* PartnerShow.m in Sources */,
