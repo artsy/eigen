@@ -22,15 +22,19 @@
 
 - (void)setupSubviews
 {
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat width = CGRectGetWidth(screenRect);
+    CGFloat xOffset = (width - 320) / 2;
+
     self.bounds = (CGRect) { CGPointZero, [self intrinsicContentSize] };
-    UILabel *headingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kARCountdownViewWidth, 14)];
+    UILabel *headingLabel = [[UILabel alloc] initWithFrame:CGRectMake(xOffset, 0, kARCountdownViewWidth, 14)];
     headingLabel.textAlignment = NSTextAlignmentCenter;
     headingLabel.font = [UIFont smallCapsSerifFontWithSize:14];
     headingLabel.textColor = [UIColor blackColor];
     [self addSubview:headingLabel];
     self.headingLabel = headingLabel;
 
-    self.countdown = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, kARCountdownViewWidth, 30)];
+    self.countdown = [[UILabel alloc] initWithFrame:CGRectMake(xOffset, 10, kARCountdownViewWidth, 30)];
     self.countdown.font = [UIFont sansSerifFontWithSize:20];
     self.countdown.textColor = [UIColor blackColor];
     self.countdown.text = [self countdownString];
@@ -38,7 +42,7 @@
     [self addSubview:self.countdown];
 
     [@[@"Days", @"Hrs", @"Min", @"Sec"] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5 + idx * 38, 38, 38, 10)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(xOffset + 5 + idx * 38, 38, 38, 10)];
         label.text = [obj uppercaseString];
         label.textColor = [UIColor artsyHeavyGrey];
         label.font = [UIFont sansSerifFontWithSize:8];
