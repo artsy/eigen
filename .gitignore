@@ -31,3 +31,5 @@ vendor/
 Artsy.app.dSYM.zip
 Artsy.ipa
 CHANGELOG_SHORT.md
+fastlane/screenshots
+fastlane/report.xml
