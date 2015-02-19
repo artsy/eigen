@@ -106,7 +106,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
     [self.artwork onFairUpdate:^(Fair *fair) {
         @strongify(self);
-        if (!self) return;
+        if (!self || !fair) return;
 
         [self.metadataView updateWithFair:fair];
         [self.stackView layoutIfNeeded];

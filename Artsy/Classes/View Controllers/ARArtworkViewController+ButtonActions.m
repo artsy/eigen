@@ -185,8 +185,9 @@
 
 - (void)tappedOpenFair:(id)sender
 {
-    Fair *fair = self.fair? : self.artwork.fair;
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance routeProfileWithID:fair.organizer.profileID];
+    Fair *fair = self.fair ?: self.artwork.fair;
+    NSString *fairID = fair.defaultProfileID ?: fair.organizer.profileID;
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance routeProfileWithID:fairID];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 - (void)tappedOpenArtworkArtist:(id)sender

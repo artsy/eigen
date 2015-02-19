@@ -25,6 +25,7 @@
 - (NSString *)bannerAddress;
 
 @property (nonatomic, copy, readonly) NSString *name;
+@property (nonatomic, copy, readonly) NSString *defaultProfileID;
 @property (nonatomic, copy, readonly) NSString *fairID;
 @property (nonatomic, copy, readonly) NSArray *maps;
 @property (nonatomic, strong, readonly) NSSet *shows;

@@ -18,7 +18,6 @@
     ARArtworkSetViewController *artworkController = (id)fromVC;
     ARZoomArtworkImageViewController *zoomController = (id)toVC;
 
-
     NSAssert([artworkController isKindOfClass:[ARArtworkSetViewController class]], @"FromVC is not an ArtworkVC");
     NSAssert([zoomController isKindOfClass:[ARZoomArtworkImageViewController class]], @"ToVC is not a ViewInRoomVC");
 
