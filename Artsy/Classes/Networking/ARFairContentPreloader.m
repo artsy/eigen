@@ -10,6 +10,19 @@
 
 @implementation ARFairContentPreloader
 
++ (instancetype)contentPreloader;
+{
+  return [[self alloc] initWithServiceName:@"Artsy-FairEnough-Server"];
+}
+
+- (instancetype)initWithServiceName:(NSString *)serviceName;
+{
+   if ((self = [super init])) {
+     _serviceName = [serviceName copy];
+   }
+   return self;
+}
+
 - (void)discoverFairService;
 {
   self.serviceBrowser = [NSNetServiceBrowser new];
@@ -22,7 +35,7 @@
                moreComing:(BOOL)moreServicesComing;
 {
   NSLog(@"SERVICE: %@ MORE: %@", service, @(moreServicesComing));
-  if ([service.name isEqualToString:@"Artsy-FairEnough-Server"]) {
+  if ([service.name isEqualToString:self.serviceName]) {
     self.service = service;
     if (service.addresses.count > 0) {
       [self connectToService];
