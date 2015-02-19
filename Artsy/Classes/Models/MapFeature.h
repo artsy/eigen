@@ -1,4 +1,4 @@
-NS_ENUM(NSInteger , ARMapFeatureType){
+ NS_ENUM(NSInteger , ARMapFeatureType){
     ARMapFeatureTypeDefault,
     ARMapFeatureTypeArtsy,
     ARMapFeatureTypeDrink,

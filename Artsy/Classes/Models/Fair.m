@@ -25,6 +25,7 @@
     return @{
         @keypath(Fair.new, name) : @"name",
         @keypath(Fair.new, fairID) : @"id",
+        @keypath(Fair.new, defaultProfileID) : @"default_profile_id",
         @keypath(Fair.new, organizer) : @"organizer",
         @keypath(Fair.new, startDate): @"start_at",
         @keypath(Fair.new, endDate) : @"end_at",

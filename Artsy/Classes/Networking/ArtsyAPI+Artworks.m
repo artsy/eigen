@@ -101,9 +101,11 @@
     return [self getRequest:request
         parseIntoAnArrayOfClass:[Fair class]
         success:^(NSArray *fairs) {
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"organizer.profileID!=nil"];
-            fairs = [fairs filteredArrayUsingPredicate:predicate];
-            success(fairs);
+            success([fairs select:^BOOL(Fair *fair) {
+                return fair.defaultProfileID != nil
+                       || fair.organizer.fairOrganizerID != nil
+                       || fair.organizer.profileID != nil;
+            }]);
         }
         failure:failure];
 }
