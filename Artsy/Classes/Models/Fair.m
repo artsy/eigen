@@ -12,9 +12,13 @@
 
 @property (readwrite, nonatomic, strong) KSDeferred *showsDeferred;
 @property (nonatomic, copy) NSArray *maps;
+
 // Note: *must* be strong and not copy, because copy will make a non-mutable copy.
 @property (nonatomic, strong) NSMutableSet *shows;
+
 @property (nonatomic, copy) NSDictionary *imageURLs;
+@property (nonatomic, copy) NSDictionary *bannerURLs;
+
 
 @end
 
@@ -32,6 +36,7 @@
         @keypath(Fair.new, city) : @"location.city",
         @keypath(Fair.new, state) : @"location.state",
         @keypath(Fair.new, imageURLs): @"image_urls",
+        @keypath(Fair.new, bannerURLs): @"banner_image_urls",
         @keypath(Fair.new, partnersCount) : @"partners_count",
 
         // Hide these from Mantle
@@ -317,15 +322,23 @@
 - (NSString *)bannerAddress
 {
     NSString *url = nil;
-    if (self.imageURLs.count > 0) {
+    NSArray *desiredVersions = @[@"wide", @"large_rectange", @"square"];
 
-        // In order of preference
-        NSArray *desiredVersions = @[@"wide", @"large_rectange", @"square"];
+    if (!url) {
+        NSArray *possibleVersions = [desiredVersions intersectionWithArray:[self.bannerURLs allKeys]];
+        url = [self.bannerURLs objectForKey:possibleVersions.firstObject];
+    }
 
+    if (!url) {
         NSArray *possibleVersions = [desiredVersions intersectionWithArray:[self.imageURLs allKeys]];
         url = [self.imageURLs objectForKey:possibleVersions.firstObject];
     }
     return url;
+}
+
+- (BOOL)usesBrandedBanners
+{
+    return self.bannerURLs.allKeys.count > 0;
 }
 
 @end

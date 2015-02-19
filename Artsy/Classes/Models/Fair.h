@@ -20,6 +20,8 @@
 
 - (NSString *)ausstellungsdauer;
 - (NSString *)location;
+
+- (BOOL)usesBrandedBanners;
 - (NSString *)bannerAddress;
 
 @property (nonatomic, copy, readonly) NSString *name;

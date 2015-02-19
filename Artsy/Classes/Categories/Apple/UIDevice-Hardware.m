@@ -152,6 +152,10 @@
     if ([platform hasPrefix:@"iPhone3"])            return UIDevice4iPhone;
     if ([platform hasPrefix:@"iPhone4"])            return UIDevice4SiPhone;
     if ([platform hasPrefix:@"iPhone5"])            return UIDevice5iPhone;
+    if ([platform hasPrefix:@"iPhone6"])            return UIDevice5SiPhone;
+
+    if ([platform isEqualToString:@"iPhone7,1"])    return UIDevice6PlusiPhone;
+    if ([platform isEqualToString:@"iPhone7,2"])    return UIDevice6iPhone;
 
     // iPod
     if ([platform hasPrefix:@"iPod1"])              return UIDevice1GiPod;
@@ -318,6 +322,7 @@ if ([btclass respondsToSelector:@selector(bluetoothStatus)])
     if ([platform hasPrefix:@"iPod"]) { return @"iPod"; }
     if ([platform hasPrefix:@"iPad"]) { return @"iPad"; }
     if ([platform hasPrefix:@"AppleTV"]) { return @"AppleTV"; }
+
     return @"Unknown";
 }
 

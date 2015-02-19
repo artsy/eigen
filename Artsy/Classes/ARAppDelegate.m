@@ -24,6 +24,7 @@
 #import "FBSettings.h"
 #import "FBAppCall.h"
 #import <CocoaPods-Keys/ArtsyKeys.h>
+#import "AREndOfLineInternalMobileWebViewController.h"
 
 #if ADMIN_MENU_ENABLED
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
@@ -113,7 +114,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
         // Start doing the network calls to grab the feed
         [topVC refreshFeedItems];
-
+        [self checkForiOS7Deprecation];
     }];
 
     return YES;
@@ -198,6 +199,7 @@ static ARAppDelegate *_sharedInstance = nil;
         // You can add your app-specific url handling code here if needed
 
         return wasHandled;
+
     } else if ([url isFileURL]) {
         // AirDrop receipt
         NSData *fileData = [NSData dataWithContentsOfURL:url];
@@ -250,7 +252,33 @@ static ARAppDelegate *_sharedInstance = nil;
 
     ARQuicksilverViewController *adminSettings = [[ARQuicksilverViewController alloc] init];
     [navigationController pushViewController:adminSettings animated:YES];
+}
 
+- (void)checkForiOS7Deprecation
+{
+    // To totally deprecate all iOS7 devices
+    // set the "iOS7 Redirection URL" featured link's HREF to something like /404/ios7
+    // https://admin.artsy.net/set/54e4aab97261692d085a1c00
+
+    // This was added in iOS8
+    if (&UIApplicationOpenSettingsURLString != NULL) { return; }
+
+    [ArtsyAPI getOrderedSetWithKey:@"eigen-ios-deprecation-featured-links" success:^(OrderedSet *set) {
+        [set getItems:^(NSArray *items) {
+            FeaturedLink *link = [items detect:^BOOL(FeaturedLink *link) {
+                return [link.title isEqualToString:@"iOS7 Redirection URL"];
+            }];
+
+            // By default it be 0 length
+            if (link.href.length) {
+                UINavigationController *navigationController = ARTopMenuViewController.sharedController.rootNavigationController;
+                NSURL *url = [NSURL URLWithString:link.href relativeToURL:[ARRouter baseWebURL]];
+                UIViewController *martsyWarning = [[AREndOfLineInternalMobileWebViewController alloc] initWithURL:url];
+                [navigationController setViewControllers:@[martsyWarning] animated:NO];
+            }
+
+        }];
+    } failure:nil];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

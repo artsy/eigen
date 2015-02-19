@@ -139,13 +139,9 @@ describe(@"getting shows", ^{
     it(@"return a fair's shows", ^{
         __block NSArray *shows = nil;
 
-        [fair
-            onShowsUpdate:^(NSArray *result) {
+        [fair onShowsUpdate:^(NSArray *result) {
                 shows = result;
-            }
-            failure:^(NSError *error) {
-
-            }];
+        } failure:^(NSError *error) { }];
 
         expect(shows).willNot.beNil();
         expect(shows).will.haveCountOf(1);
@@ -158,7 +154,12 @@ describe(@"getting image URL string", ^{
         Fair *fair = [Fair modelFromDictionary:@{ @"fairID" : @"fair-id" }];
         expect([fair bannerAddress]).to.beNil();
     });
-    
+
+    it(@"says it doesnt have a new banner format without banner URLs", ^{
+        Fair *fair = [Fair modelFromDictionary:@{ @"fairID" : @"fair-id" }];
+        expect([fair usesBrandedBanners]).to.beFalsy();
+    });
+
     it (@"gets nil for non-existent image version", ^{
         Fair *fair = [Fair modelFromDictionary:@{
             @"fairID" : @"fair-id",
@@ -179,6 +180,31 @@ describe(@"getting image URL string", ^{
         }];
         expect([fair bannerAddress]).to.equal(@"http://something/wide.jpg");
     });
+
+    it (@"prioritises banners if availble", ^{
+        Fair *fair = [Fair modelFromDictionary:@{
+             @"fairID" : @"fair-id",
+             @"imageURLs": @{
+                 @"wide": @"http://something/wide.jpg",
+                 @"square" : @"http://something/square.jpg"
+             },
+             @"bannerURLs": @{
+                 @"wide": @"http://something/banner_wide.jpg",
+             }
+         }];
+        expect([fair bannerAddress]).to.equal(@"http://something/banner_wide.jpg");
+    });
+
+    it (@"can work with just banners", ^{
+        Fair *fair = [Fair modelFromDictionary:@{
+            @"fairID" : @"fair-id",
+            @"bannerURLs": @{
+                @"wide": @"http://something/banner_wide.jpg",
+            }
+        }];
+        expect([fair bannerAddress]).to.equal(@"http://something/banner_wide.jpg");
+    });
+
 });
 
 SpecEnd

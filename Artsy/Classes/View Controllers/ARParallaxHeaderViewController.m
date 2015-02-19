@@ -112,9 +112,9 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
         [self.bannerImageView sd_setImageWithURL:[NSURL URLWithString:[self.fair bannerAddress]]];
     }
     
-    if ([self hasIconImage]) {
+    if (![self hasNewStyledBanner] && [self hasIconImage]) {
         @weakify(self);
-        [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:[self.profile iconURL]] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [self.iconImageView ar_setImageWithURL:[NSURL URLWithString:[self.profile iconURL]] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             @strongify(self);
             if (image) {
                 [self.iconImageView alignBottomEdgeWithView:self.view predicate:@"0"];
@@ -132,6 +132,15 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
             }
         }];
     }
+
+    if ([self hasNewStyledBanner]) {
+        [self.titleLabel alignLeadingEdgeWithView:self.view predicate:@"20"];
+    }
+}
+
+- (BOOL)hasNewStyledBanner
+{
+    return self.fair.usesBrandedBanners;
 }
 
 - (BOOL)hasBannerImage
