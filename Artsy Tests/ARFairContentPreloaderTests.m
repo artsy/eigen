@@ -21,6 +21,14 @@ describe(@"with a published Bonjour service", ^{
         // pending
     });
 
+    it(@"is able to download a package", ^{
+        // pending
+    });
+
+    it(@"is able to resume a download", ^{
+        // pending
+    });
+
     // These are probably more for e.g. the application delegate
 
     it(@"asks the user if they wish to immediately jump to the fair content", ^{
@@ -38,6 +46,10 @@ describe(@"before downloading", ^{
     });
 
     it(@"checks if the device has enough free space for the package to be downloaded and unpacked", ^{
+        // pending
+    });
+
+    it(@"checks if a package has been partially downloaded and needs resuming", ^{
         // pending
     });
 });
