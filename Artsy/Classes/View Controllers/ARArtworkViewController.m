@@ -85,6 +85,11 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    self.view.delegate = self;
+    self.view.metadataView.delegate = self;
+    self.view.artworkBlurbView.delegate = self;
+    self.postsVC.delegate = self;
+  
     // When we get back from zoom / VIR allow the preview to do trigger zoom
     self.view.metadataView.userInteractionEnabled = YES;
     [super viewDidAppear:self.shouldAnimate && animated];
@@ -95,6 +100,13 @@
     [self.view.relatedArtworksView cancel];
     self.view.scrollsToTop = NO;
 
+    // See https://github.com/artsy/eigen/issues/103
+    self.view.delegate = nil;
+    // And nill-ify these as well, for good measure.
+    self.view.metadataView.delegate = nil;
+    self.view.artworkBlurbView.delegate = nil;
+    self.postsVC.delegate = nil;
+  
     [super viewDidDisappear:self.shouldAnimate && animated];
 }
 
