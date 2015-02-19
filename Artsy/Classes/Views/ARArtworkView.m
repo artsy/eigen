@@ -105,9 +105,9 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     }];
 
     [self.artwork onFairUpdate:^(Fair *fair) {
+        @strongify(self);
         if (!self) return;
 
-        @strongify(self);
         [self.metadataView updateWithFair:fair];
         [self.stackView layoutIfNeeded];
     } failure:nil];
