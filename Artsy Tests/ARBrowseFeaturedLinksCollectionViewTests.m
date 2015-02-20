@@ -101,42 +101,6 @@ describe(@"initWithStyle", ^{
 
         itBehavesLike(@"general view setup", nil);
     });
-
-    describe(@"with ARFeaturedLinkLayoutSinglePaging", ^{
-        ARFeaturedLinkStyle style = ARFeaturedLinkLayoutSinglePaging;
-
-        beforeEach(^{
-            collectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:style];
-        });
-
-        it(@"sets the style", ^{
-            expect(collectionView.style).to.equal(style);
-        });
-
-        it(@"sets up the secondary scroll", ^{
-            expect(collectionView.secondaryScroll).notTo.beNil();
-        });
-
-        pending(@"looks correct", ^{
-            // This view renders correctly in the app, but it isn't represented accurately in a snapshot.
-            // We do some weird things with inset and offset, and they do not look right in the snapshot.
-            collectionView.featuredLinks = @[
-                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil]
-             ];
-            
-            UIViewController *viewController = [[UIViewController alloc] init];
-            viewController.view = collectionView;
-            [viewController ar_presentWithFrame:CGRectMake(0, 0, 768, 1024)];
-            expect(collectionView).will.haveValidSnapshot();
-        });
-
-        itBehavesLike(@"general view setup", nil);
-    });
 });
 
 describe(@"setupPaging", ^{
@@ -161,21 +125,6 @@ describe(@"setupPaging", ^{
         expect(collectionView.subviews ).to.contain(scrollView);
         expect(collectionView.panGestureRecognizer.enabled).to.beFalsy();
         expect(collectionView.gestureRecognizers).to.contain(scrollView.panGestureRecognizer);
-    });
-});
-
-describe(@"scrollViewDidScroll", ^{
-    it(@"uses secondary scroll offset if available", ^{
-        collectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:ARFeaturedLinkLayoutSinglePaging];
-        collectionView.contentOffset = CGPointMake(0, 0);
-        collectionView.secondaryScroll.contentOffset = CGPointMake(200, 0);
-        collectionView.contentInset = UIEdgeInsetsMake(0, 100, 0, 0);
-
-        UIWindow *window = [UIWindow new];
-        [window addSubview:collectionView];
-
-        [collectionView scrollViewDidScroll:collectionView.secondaryScroll];
-        expect(collectionView.contentOffset).to.equal(CGPointMake(100, 0));
     });
 });
 
@@ -215,17 +164,6 @@ describe(@"setFeaturedLinks", ^{
         collectionView.featuredLinks = links;
         expect(collectionView.featuredLinks).to.equal(links.copy);
     });
-
-    it(@"sets secondary scroll size for paging", ^{
-        collectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:ARFeaturedLinkLayoutSinglePaging];
-        collectionView.featuredLinks = links;
-
-        CGSize contentSize = [collectionView.collectionViewLayout collectionViewContentSize];
-        UIScrollView *scrollView = collectionView.secondaryScroll;
-
-        expect(scrollView.contentSize).to.equal(contentSize);
-        expect(scrollView.contentOffset).to.equal(CGPointMake(208, 0));
-    });
 });
 
 describe(@"didSelectItemAtIndexPath", ^{
@@ -244,11 +182,7 @@ describe(@"didSelectItemAtIndexPath", ^{
 });
 
 describe(@"reuseIdentifier", ^{
-    it(@"returns inset cell for paging style", ^{
-        collectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:ARFeaturedLinkLayoutSinglePaging];
-        expect([collectionView reuseIdentifier]).to.equal([ARBrowseFeaturedLinkInsetCell reuseID]);
-    });
-    it(@"returns normal cell otherwise", ^{
+    it(@"returns normal cell", ^{
         collectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:ARFeaturedLinkLayoutSingleRow];
         expect([collectionView reuseIdentifier]).to.equal([ARBrowseFeaturedLinksCollectionViewCell reuseID]);
     });

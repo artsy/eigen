@@ -121,11 +121,6 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
     self.primaryNavigationVC.view.hidden = YES;
     [self.stackView.stackView addSubview:self.primaryNavigationVC.view withTopMargin:@"12" sideMargin:@"20"];
 
-    self.categoryCollectionVC = [[ARFairSectionViewController alloc] initWithFair:_fair];
-    ARBrowseFeaturedLinksCollectionView *categoryCollectionBrowseView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:ARFeaturedLinkLayoutSinglePaging];
-    categoryCollectionBrowseView.selectionDelegate = self;
-    [self.stackView.stackView addSubview:self.categoryCollectionVC.view withTopMargin:@"60" sideMargin:@"20"];
-
     self.curatorVC = [[ARNavigationButtonsViewController alloc] init];
     [(ORStackView *)self.curatorVC.view addPageTitleWithString:@"Insider's Picks"];
     [(ORStackView *)self.curatorVC.view addGenericSeparatorWithSideMargin: @"20"];
@@ -164,17 +159,6 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 
                 break;
             };
-
-            for (OrderedSet *exploreGenesSet in orderedSets[@"explore"]) {
-                [exploreGenesSet getItems:^(NSArray *items) {
-                    @strongify(self);
-                    [self.categoryCollectionVC addPageTitleWithString:exploreGenesSet.name];
-                    [self.categoryCollectionVC addGenericSeparatorWithSideMargin:@"20"];
-                    [self.categoryCollectionVC addSubview:categoryCollectionBrowseView withTopMargin:@"20" sideMargin:@"-20"];
-                    categoryCollectionBrowseView.featuredLinks = [items select:displayOnMobile];
-                }];
-                break;
-            }
 
             for (OrderedSet *curatorSet in orderedSets[@"curator"]) {
                 [curatorSet getItems:^(NSArray *items) {

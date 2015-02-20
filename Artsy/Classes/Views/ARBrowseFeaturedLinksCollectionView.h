@@ -1,7 +1,6 @@
 typedef NS_ENUM(NSInteger, ARFeaturedLinkStyle){
     ARFeaturedLinkLayoutSingleRow,
     ARFeaturedLinkLayoutDoubleRow,
-    ARFeaturedLinkLayoutSinglePaging,
 };
 
 @class ARBrowseFeaturedLinksCollectionView;
