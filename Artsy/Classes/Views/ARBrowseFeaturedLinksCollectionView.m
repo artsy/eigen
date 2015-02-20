@@ -2,13 +2,7 @@
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
 #import "ARBrowseFeaturedLinkInsetCell.h"
 
-static CGFloat const ARPagingStyleDimension = 195;
-static CGFloat const ARPagingStyleSpacing = 13;
 static CGFloat const ARDoubleRowStyleSpacing = 11;
-
-@interface ARBrowseFeaturedLinksCollectionView()
-@property (nonatomic, strong) UIScrollView *secondaryScroll;
-@end
 
 @implementation ARBrowseFeaturedLinksCollectionView
 
@@ -28,52 +22,9 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
     self.delegate = self;
     self.showsHorizontalScrollIndicator = NO;
 
-    if (style == ARFeaturedLinkLayoutSinglePaging) {
-        flowLayout.minimumLineSpacing = ARPagingStyleSpacing;
-        [self setupPaging];
-        [self registerClass:ARBrowseFeaturedLinkInsetCell.class forCellWithReuseIdentifier:self.reuseIdentifier];
-
-    } else {
-        [self registerClass:ARBrowseFeaturedLinksCollectionViewCell.class forCellWithReuseIdentifier:self.reuseIdentifier];
-    }
+    [self registerClass:ARBrowseFeaturedLinksCollectionViewCell.class forCellWithReuseIdentifier:self.reuseIdentifier];
 
     return self;
-}
-
-- (void)setupPaging
-{
-    // Create a second scroll view which pages and is the size of a collection
-    // view cell. Then move the scrollviews pan gesture to the collectionview.
-
-    // Works, bit cray.
-    // http://khanlou.com/2013/04/paging-a-overflowing-collection-view/
-
-    CGFloat totalPageWidth = ARPagingStyleDimension + ARPagingStyleSpacing;
-    CGFloat margin = (CGRectGetWidth(self.frame) - totalPageWidth)/ 2;
-    self.contentInset = UIEdgeInsetsMake(0, margin, 0, 0);
-
-    _secondaryScroll = [[UIScrollView alloc] initWithFrame:self.frame];
-    _secondaryScroll.bounds = CGRectMake(0, 0, totalPageWidth, ARPagingStyleDimension);
-    _secondaryScroll.clipsToBounds = NO;
-    _secondaryScroll.delegate = self;
-    _secondaryScroll.hidden = YES;
-    _secondaryScroll.pagingEnabled = YES;
-
-    [self addSubview:_secondaryScroll];
-
-    [self addGestureRecognizer:_secondaryScroll.panGestureRecognizer];
-    self.panGestureRecognizer.enabled = NO;
-    self.scrollEnabled = NO;
-}
-
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView == self.secondaryScroll) {
-        // Ignore collection view scrolling callbacks
-        CGPoint contentOffset = scrollView.contentOffset;
-        contentOffset.x = contentOffset.x - self.contentInset.left;
-        self.contentOffset = contentOffset;
-    }
 }
 
 - (CGSize)intrinsicContentSize
@@ -102,8 +53,6 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
             } else {
                 return 226;
             }
-        case ARFeaturedLinkLayoutSinglePaging:
-            return ARPagingStyleDimension;
 
         case ARFeaturedLinkLayoutDoubleRow:
             if ([UIDevice isPhone]) {
@@ -127,8 +76,6 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
             } else {
                 return 328;
             }
-        case ARFeaturedLinkLayoutSinglePaging:
-            return ARPagingStyleDimension;
 
         case ARFeaturedLinkLayoutDoubleRow:
             if ([UIDevice isPhone]) {
@@ -154,9 +101,7 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     CGFloat inset;
-    if (self.style == ARFeaturedLinkLayoutSinglePaging){
-        inset = ARPagingStyleSpacing / 2;
-    } else if ([UIDevice isPhone]) {
+    if ([UIDevice isPhone]) {
         inset = 20;
     } else {
         inset = 50;
@@ -179,9 +124,6 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
         case ARFeaturedLinkLayoutSingleRow:
             imageURL = link.largeImageURL;
             break;
-        case ARFeaturedLinkLayoutSinglePaging:
-            imageURL = link.largeImageURL;
-            break;
         case ARFeaturedLinkLayoutDoubleRow:
             imageURL = link.smallImageURL;
             break;
@@ -196,10 +138,6 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 {
     _featuredLinks = featuredLinks.copy;
     [self reloadData];
-    if (self.secondaryScroll){
-        self.secondaryScroll.contentSize = [self.collectionViewLayout collectionViewContentSize];
-        self.secondaryScroll.contentOffset = CGPointMake(ARPagingStyleDimension + ARPagingStyleSpacing, 0);
-    };
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -210,10 +148,6 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 
 - (NSString *)reuseIdentifier
 {
-    if (self.style == ARFeaturedLinkLayoutSinglePaging) {
-      return [ARBrowseFeaturedLinkInsetCell reuseID];
-    }
-
     return [ARBrowseFeaturedLinksCollectionViewCell reuseID];
 }
 
