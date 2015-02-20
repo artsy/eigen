@@ -6,6 +6,7 @@
 @property (nonatomic, strong) NSNetServiceBrowser *serviceBrowser;
 @property (nonatomic, strong) NSNetService *service;
 @property (nonatomic, strong) NSString *address;
+@property (nonatomic, assign) BOOL isResolvingService;
 @end
 
 @implementation ARFairContentPreloader
@@ -25,6 +26,7 @@
 
 - (void)discoverFairService;
 {
+  self.isResolvingService = YES;
   self.serviceBrowser = [NSNetServiceBrowser new];
   self.serviceBrowser.delegate = self;
   [self.serviceBrowser searchForServicesOfType:@"_http._tcp" inDomain:@""];
@@ -38,7 +40,7 @@
   if ([service.name isEqualToString:self.serviceName]) {
     self.service = service;
     if (service.addresses.count > 0) {
-      [self connectToService];
+      // [self connectToService];
     } else {
       self.service.delegate = self;
       [self.service resolveWithTimeout:10];
@@ -50,6 +52,7 @@
     DDLogDebug(@"Unable to find a Artsy-FairEnough-Server Bonjour service.");
     [self.serviceBrowser stop];
     // TODO Tell delegate to release this object.
+    self.isResolvingService = NO;
   }
 }
 
@@ -57,13 +60,21 @@
 {
   if (service.addresses.count > 0) {
     [service stop];
-    [self connectToService];
+    // [self connectToService];
   }
+}
+
+- (BOOL)hasResolvedService;
+{
+  return self.service.addresses.count > 0;
 }
 
 - (void)netServiceDidStop:(NSNetService *)service;
 {
-  NSLog(@"STOPPED/TIMED OUT!");
+  self.isResolvingService = NO;
+  if (!self.hasResolvedService) {
+    NSLog(@"FAILED TO RESOLVE SERVICE!");
+  }
 }
 
 - (void)connectToService;

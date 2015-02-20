@@ -2,6 +2,8 @@
 
 @interface ARFairContentPreloader : NSObject
 
+@property (nonatomic, readonly) BOOL isResolvingService;
+@property (nonatomic, readonly) BOOL hasResolvedService;
 @property (nonatomic, readonly) NSString *serviceName;
 
 + (instancetype)contentPreloader;
