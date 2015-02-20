@@ -106,6 +106,7 @@
     [self.twitterLoginButton addTarget:self action:@selector(twitter:) forControlEvents:UIControlEventTouchUpInside];
 
     if ([UIDevice isPad]) {
+        [self.emailTextField becomeFirstResponder];
         [self.containerView alignCenterYWithView:self.view predicate:@"0@750"];
         self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
     } else {
