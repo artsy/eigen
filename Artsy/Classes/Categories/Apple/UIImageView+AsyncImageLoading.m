@@ -13,6 +13,12 @@
       placeholder = [UIImage imageFromColor:[UIColor artsyLightGrey]];
     }
 
+// This will save a lot of async calls sometime, this exists in Energy.
+//    if ([ARDispatchManager sharedManager].useSyncronousDispatches) {
+//        self.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+//        return;
+//    }
+
     if ([ARLogger shouldLogNetworkRequests]) {
         // SDWebImage might not call the callback in case an image view is deallocated in the
         // meantime, so associate the start date to it so the date's lifetime will be tied to the
@@ -58,15 +64,15 @@
     [self ar_setImageWithURL:url placeholderImage:nil completed:nil];
 }
 
+- (void)ar_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder
+{
+    [self ar_setImageWithURL:url placeholderImage:placeholder completed:nil];
+}
+
 - (void)ar_setImageWithURL:(NSURL *)url completed:(SDWebImageCompletionBlock)completionBlock
 {
     [self ar_setImageWithURL:url placeholderImage:nil completed:completionBlock];
 }
 
-- (void)ar_setImageWithURL:(NSURL *)url
-          placeholderImage:(UIImage *)placeholder
-{
-    [self ar_setImageWithURL:url placeholderImage:placeholder completed:nil];
-}
 
 @end

@@ -295,6 +295,9 @@
 		60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C661A8BB9AE00A45247 /* BuyersPremium.m */; };
 		60647C701A92512600A45247 /* ARFairMapPreviewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C6F1A92512600A45247 /* ARFairMapPreviewButton.m */; };
 		60647C751A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C741A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m */; };
+		60647C791A95095800A45247 /* ARFairPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C771A95095800A45247 /* ARFairPopupViewController.m */; };
+		60647C7A1A95095800A45247 /* ARFairPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60647C781A95095800A45247 /* ARFairPopupViewController.xib */; };
+		60647C7C1A951F2A00A45247 /* ARFairPopupViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C7B1A951F2A00A45247 /* ARFairPopupViewControllerTests.m */; };
 		60745DEA165802D9006CE156 /* ARUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60745DE9165802D9006CE156 /* ARUserManager.m */; };
 		607D754A17C239E700CA1D41 /* ArtsyAPI+Following.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D754917C239E700CA1D41 /* ArtsyAPI+Following.m */; };
 		607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D756A17C3816600CA1D41 /* ArtsyAPI+ListCollection.m */; };
@@ -1044,6 +1047,10 @@
 		60647C6F1A92512600A45247 /* ARFairMapPreviewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapPreviewButton.m; sourceTree = "<group>"; };
 		60647C731A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREndOfLineInternalMobileWebViewController.h; sourceTree = "<group>"; };
 		60647C741A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREndOfLineInternalMobileWebViewController.m; sourceTree = "<group>"; };
+		60647C761A95095800A45247 /* ARFairPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairPopupViewController.h; sourceTree = "<group>"; };
+		60647C771A95095800A45247 /* ARFairPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairPopupViewController.m; sourceTree = "<group>"; };
+		60647C781A95095800A45247 /* ARFairPopupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARFairPopupViewController.xib; sourceTree = "<group>"; };
+		60647C7B1A951F2A00A45247 /* ARFairPopupViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairPopupViewControllerTests.m; sourceTree = "<group>"; };
 		60745DE8165802D9006CE156 /* ARUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserManager.h; sourceTree = "<group>"; };
 		60745DE9165802D9006CE156 /* ARUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserManager.m; sourceTree = "<group>"; };
 		607861A1165E47470010FAA2 /* EXTConcreteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTConcreteProtocol.h; path = Artsy/Resources/EXTConcreteProtocol.h; sourceTree = "<group>"; };
@@ -1973,6 +1980,7 @@
 				5EB33E75197EBFEB00706EB1 /* wide.jpg */,
 				5EB33E76197EBFEB00706EB1 /* square.png */,
 				5122D6991A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m */,
+				60647C7B1A951F2A00A45247 /* ARFairPopupViewControllerTests.m */,
 			);
 			name = Fair;
 			sourceTree = "<group>";
@@ -3247,6 +3255,9 @@
 				342F9B2B2ACEAEDFADE3E0B2 /* ARShowViewController.h */,
 				5EFF52BC197916C800E2A563 /* ARPendingOperationViewController.h */,
 				5EFF52BD197916C800E2A563 /* ARPendingOperationViewController.m */,
+				60647C761A95095800A45247 /* ARFairPopupViewController.h */,
+				60647C771A95095800A45247 /* ARFairPopupViewController.m */,
+				60647C781A95095800A45247 /* ARFairPopupViewController.xib */,
 			);
 			name = Fair;
 			sourceTree = "<group>";
@@ -3572,6 +3583,7 @@
 				3C4AE97C19094DAA009C0E8B /* MapAnnotation_Artsy@2x.png in Resources */,
 				608B707917D4A1C80088A56C /* FollowCheckmark.png in Resources */,
 				E6FFEAB119C7925600A0D7DE /* onboard_2@2x~ipad.jpg in Resources */,
+				60647C7A1A95095800A45247 /* ARFairPopupViewController.xib in Resources */,
 				E6FFEABA19C7925600A0D7DE /* splash_3@2x~iphone.jpg in Resources */,
 				3C4AE98119094DAA009C0E8B /* MapAnnotation_Highlighted@2x.png in Resources */,
 				605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */,
@@ -3818,6 +3830,7 @@
 				60431FB818042A1E000118D7 /* ARAppNotificationsDelegate.m in Sources */,
 				5E0AEB7819B9EA43009F34DE /* ARShowNetworkModel.m in Sources */,
 				E616B2481911664900D1CBC6 /* ARArtworkView.m in Sources */,
+				60647C791A95095800A45247 /* ARFairPopupViewController.m in Sources */,
 				CB61F13117C2D83F003DB8A9 /* AROnboardingTableViewCell.m in Sources */,
 				E676A62B18F3421600B9AF2C /* ARSeparatorViews.m in Sources */,
 				607E2E7E17C8CA4D00396120 /* ARZoomArtworkImageViewController.m in Sources */,
@@ -4096,6 +4109,7 @@
 				3CAED17C188026AC00840608 /* ARUserManagerTests.m in Sources */,
 				3C5C7E4018970E8B003823BB /* UIApplicationStateEnumTests.m in Sources */,
 				5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */,
+				60647C7C1A951F2A00A45247 /* ARFairPopupViewControllerTests.m in Sources */,
 				3CFBE33618C5848900C781D0 /* ARFileUtilsTests.m in Sources */,
 				60327DD21987BA830075B399 /* ARDeveloperOptionsSpec.m in Sources */,
 				3C7294CC196C3E660073663D /* ARShowViewControllerTests.m in Sources */,
