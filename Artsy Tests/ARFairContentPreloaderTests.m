@@ -1,4 +1,5 @@
 #import "ARFairContentPreloader.h"
+#import "OHHTTPStubsResponse+JSON.h"
 
 
 @interface ARFairContentPreloaderTestServiceDelegate : NSObject <NSNetServiceDelegate>
@@ -24,6 +25,10 @@
 @end
 
 
+@interface ARFairContentPreloader (Testing)
+@end
+
+
 SpecBegin(ARFairContentPreloader)
 
 it(@"uses a default service name", ^{
@@ -41,22 +46,22 @@ describe(@"with a published Bonjour service", ^{
 
       [service publish];
       while (!delegate.hasResponse) {
-        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+          CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
       }
 
       if (!delegate.isPublished) {
-        [service stop];
-        service = nil;
-        // TODO how can we best fail all the test cases in this group?
+          [service stop];
+          service = nil;
+          // TODO how can we best fail all the test cases in this group?
       } else {
-        NSLog(@"SERVICE STARTED!");
+          NSLog(@"SERVICE STARTED!");
       }
     });
 
     afterAll(^{
-      // TODO leads to a segfault... :?
-      // [service stop];
-      service = nil;
+        // TODO leads to a segfault... :?
+        // [service stop];
+        service = nil;
     });
 
     __block ARFairContentPreloader *preloader = nil;
@@ -65,45 +70,95 @@ describe(@"with a published Bonjour service", ^{
         preloader = [[ARFairContentPreloader alloc] initWithServiceName:service.name];
         [preloader discoverFairService];
         while (preloader.isResolvingService) {
-          CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
         }
+
         if (!preloader.hasResolvedService) {
-          preloader = nil;
-          // TODO how can we best fail all the test cases in this group?
+            preloader = nil;
+            // TODO how can we best fail all the test cases in this group?
         } else {
-          NSLog(@"PRELOADER FOUND SERVICE!");
+
         }
     });
 
-    it(@"fetches the manifest and yields once completed", ^{
-        //[preloader fetchManifest:^{
-        //}];
+    describe(@"concerning fetch failures", ^{
+        //it(@"reports a request error", ^{
+            //[OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                //return [request.URL isEqual:preloader.manifestURL];
+            //} withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
+                //return [OHHTTPStubsResponse responseWithJSONObject:@{}
+                                                        //statusCode:500
+                                                           //headers:@{ @"Content-Type":@"application/json" }];
+            //}];
+            //__block NSError *error = nil;
+            //[preloader fetchManifest:^(NSError *e) { NSLog(@"ERROR: %@", e); error = e; }];
+            //while (error == nil) {
+                //CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+            //}
+        //});
+
+        it(@"reports a JSON error", ^{
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return [request.URL isEqual:preloader.manifestURL];
+            } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
+                return [OHHTTPStubsResponse responseWithData:[NSData data]
+                                                  statusCode:200
+                                                     headers:@{ @"Content-Type":@"application/json" }];
+            }];
+            __block NSError *error = nil;
+            __block BOOL fetched = NO;
+            [preloader fetchManifest:^(NSError *e) { error = e; fetched = YES; }];
+            while (!fetched) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+            }
+            expect(error).notTo.equal(nil);
+        });
     });
 
-    it(@"reports that it's at a fair", ^{
-        // pending
-    });
+    describe(@"after fetching the manifest", ^{
+        beforeEach(^{
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return [request.URL isEqual:preloader.manifestURL];
+            } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
+                return [OHHTTPStubsResponse responseWithJSONObject:@{ @"fair":@"Armory 2015", @"package-size":@(42) }
+                                                        statusCode:200
+                                                           headers:@{ @"Content-Type":@"application/json" }];
+            }];
 
-    it(@"reports at which fair it is", ^{
-        // pending
-    });
+            __block BOOL fetched = NO;
+            [preloader fetchManifest:^(id _) { fetched = YES; }];
+            while (!fetched) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+            }
+        });
 
-    it(@"is able to download a package", ^{
-        // pending
-    });
+        it(@"reports that it's at a fair", ^{
+            // pending
+            // TODO it should just report this because it can't find the bonjour service?
+        });
 
-    it(@"is able to resume a download", ^{
-        // pending
-    });
+        // TODO should this maybe be a fair model ID?
+        it(@"reports at which fair it is", ^{
+            expect(preloader.fairName).to.equal(@"Armory 2015");
+        });
 
-    // These are probably more for e.g. the application delegate
+        it(@"is able to download a package", ^{
+            // pending
+        });
 
-    it(@"asks the user if they wish to immediately jump to the fair content", ^{
-        // pending
-    });
+        it(@"is able to resume a download", ^{
+            // pending
+        });
 
-    it(@"starts preloading the fair content if the device has enough free space", ^{
-        // pending
+        // These are probably more for e.g. the application delegate
+
+        it(@"asks the user if they wish to immediately jump to the fair content", ^{
+            // pending
+        });
+
+        it(@"starts preloading the fair content if the device has enough free space", ^{
+            // pending
+        });
     });
 });
 

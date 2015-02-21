@@ -5,7 +5,8 @@
 @interface ARFairContentPreloader () <NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 @property (nonatomic, strong) NSNetServiceBrowser *serviceBrowser;
 @property (nonatomic, strong) NSNetService *service;
-@property (nonatomic, strong) NSString *address;
+@property (nonatomic, strong) NSURL *serviceURL;
+@property (nonatomic, strong) NSDictionary *manifest;
 @property (nonatomic, assign) BOOL isResolvingService;
 @end
 
@@ -40,7 +41,7 @@
   if ([service.name isEqualToString:self.serviceName]) {
     self.service = service;
     if (service.addresses.count > 0) {
-      // [self connectToService];
+      [self resolveAddress];
     } else {
       self.service.delegate = self;
       [self.service resolveWithTimeout:10];
@@ -60,7 +61,7 @@
 {
   if (service.addresses.count > 0) {
     [service stop];
-    // [self connectToService];
+    [self resolveAddress];
   }
 }
 
@@ -77,15 +78,14 @@
   }
 }
 
-- (void)connectToService;
+- (void)resolveAddress;
 {
   for (NSData *addressData in self.service.addresses) {
     const struct sockaddr *address = (const struct sockaddr *)addressData.bytes;
     // IPv4
     if (address->sa_family == AF_INET) {
-      self.address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)address)->sin_addr)];
-      NSLog(@"Found IPv4 address: %@", self.address);
-      [self fetchManifest];
+      self.serviceURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%s:%ld", inet_ntoa(((struct sockaddr_in *)address)->sin_addr), (long)self.service.port]];
+      NSLog(@"Found IPv4 address: %@", self.serviceURL);
     } else if (address->sa_family == AF_INET6) {
       // TODO?
       // NSLog(@"Found IPv6 address");
@@ -95,36 +95,40 @@
   }
 }
 
-- (void)fetchManifest;
+- (void)fetchManifest:(void(^)(NSError *))completionBlock;
 {
+  @weakify(self);
   NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:self.manifestURL
                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    @strongify(self);
+    if (!self) return;
+
     if (data) {
       NSError *jsonError = nil;
-      NSDictionary *manifest = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-      if (manifest) {
-        NSLog(@"MANIFEST: %@", manifest);
+      self.manifest = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+      if (self.manifest) {
+        NSLog(@"MANIFEST: %@", self.manifest);
+        completionBlock(nil);
       } else {
         NSLog(@"FAILED TO DESERIALIZE JSON: %@", jsonError);
+        completionBlock(jsonError);
       }
     } else {
       NSLog(@"FAILED TO FETCH MANIFEST: %@", error);
+      completionBlock(error);
     }
   }];
   [task resume];
 }
 
-- (NSURL *)serviceURL;
-{
-  if (self.address) {
-    return [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%ld", self.address, (long)self.service.port]];
-  }
-  return nil;
-}
-
 - (NSURL *)manifestURL;
 {
   return [self.serviceURL URLByAppendingPathComponent:@"/fair/manifest"];
+}
+
+- (NSString *)fairName;
+{
+  return self.manifest[@"fair"];
 }
 
 @end

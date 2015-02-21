@@ -37,7 +37,7 @@ App = Rack::Builder.new do
       [
         '200',
         { 'Content-Type' => 'application/json' },
-        [{ 'fair' => 'Armory 2015', 'package-size' => '42' }.to_json]
+        [{ 'fair' => 'Armory 2015', 'package-size' => 42 }.to_json]
       ]
     end)
   end
