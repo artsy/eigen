@@ -47,6 +47,7 @@
     [super viewDidAppear:animated];
     [self.searchDisplayController.searchResultsTableView reloadData];
     [self.searchBar becomeFirstResponder];
+
     [self setHighlight:YES forCellAtIndex:self.selectedIndex];
 }
 
@@ -87,6 +88,12 @@
 - (void)searchBarReturnPressed:(ARQuicksilverSearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
+
+    if ([searchBar.text hasPrefix:@"/"]) {
+        id controller = [ARSwitchBoard.sharedInstance loadPath:searchBar.text];
+        [self.navigationController pushViewController:controller animated:YES];
+        return;
+    }
 
     UITableView *tableView = self.searchDisplayController.searchResultsTableView;
     NSIndexPath *path = [NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
