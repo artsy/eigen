@@ -103,18 +103,21 @@
     @strongify(self);
     if (!self) return;
 
-    if (data) {
+    NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+    if (statusCode < 200 || statusCode >= 300) {
+      DDLogError(@"Unexpected response from FairEnough HTTP server: %@", response);
+      completionBlock([NSError errorWithDomain:@"ARFairContentPreloaderErrorDomain"
+                                          code:statusCode
+                                      userInfo:@{ NSLocalizedDescriptionKey:@"Unexpected HTTP status code." }]);
+    } else if (data) {
       NSError *jsonError = nil;
       self.manifest = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
       if (self.manifest) {
-        NSLog(@"MANIFEST: %@", self.manifest);
         completionBlock(nil);
       } else {
-        NSLog(@"FAILED TO DESERIALIZE JSON: %@", jsonError);
         completionBlock(jsonError);
       }
     } else {
-      NSLog(@"FAILED TO FETCH MANIFEST: %@", error);
       completionBlock(error);
     }
   }];

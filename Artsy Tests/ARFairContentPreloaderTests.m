@@ -82,20 +82,20 @@ describe(@"with a published Bonjour service", ^{
     });
 
     describe(@"concerning fetch failures", ^{
-        //it(@"reports a request error", ^{
-            //[OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                //return [request.URL isEqual:preloader.manifestURL];
-            //} withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
-                //return [OHHTTPStubsResponse responseWithJSONObject:@{}
-                                                        //statusCode:500
-                                                           //headers:@{ @"Content-Type":@"application/json" }];
-            //}];
-            //__block NSError *error = nil;
-            //[preloader fetchManifest:^(NSError *e) { NSLog(@"ERROR: %@", e); error = e; }];
-            //while (error == nil) {
-                //CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
-            //}
-        //});
+        it(@"reports a request error", ^{
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return [request.URL isEqual:preloader.manifestURL];
+            } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
+                return [OHHTTPStubsResponse responseWithJSONObject:@{}
+                                                        statusCode:500
+                                                           headers:@{ @"Content-Type":@"application/json" }];
+            }];
+            __block NSError *error = nil;
+            [preloader fetchManifest:^(NSError *e) { NSLog(@"ERROR: %@", e); error = e; }];
+            while (error == nil) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+            }
+        });
 
         it(@"reports a JSON error", ^{
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
