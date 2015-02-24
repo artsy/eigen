@@ -362,8 +362,10 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
     ARFollowableButton *followButton = [[ARFollowableButton alloc] init];
     followButton.tag = ARFairShowViewFollowPartner;
-    followButton.toFollowTitle = @"Follow Gallery";
-    followButton.toUnfollowTitle = @"Following Gallery";
+    if (self.show.partner.type == ARPartnerTypeGallery){
+        followButton.toFollowTitle = @"Follow Gallery";
+        followButton.toUnfollowTitle = @"Following Gallery";
+    }
     [followButton addTarget:self action:@selector(toggleFollowShow:) forControlEvents:UIControlEventTouchUpInside];
 
     Profile *profile = [[Profile alloc] initWithProfileID:self.show.partner.profileID];

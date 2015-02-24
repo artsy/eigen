@@ -13,7 +13,7 @@
 
 SpecBegin(ARShowViewController)
 
-__block ARShowViewController *fairShowVC = nil;
+__block ARShowViewController *showVC = nil;
 __block Fair *fair = nil;
 __block PartnerShow *show = nil;
 __block ARStubbedShowNetworkModel *stubbedNetworkModel;
@@ -53,10 +53,10 @@ describe(@"with map", ^{
     });
 
     itHasSnapshotsForDevices(@"displays show title, map, and map button", ^{
-        fairShowVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
-        fairShowVC.showNetworkModel = stubbedNetworkModel;
-        [fairShowVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-        return fairShowVC;
+        showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
+        showVC.showNetworkModel = stubbedNetworkModel;
+        [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        return showVC;
     });
 });
 
@@ -79,27 +79,27 @@ describe(@"without map", ^{
     });
 
     itHasSnapshotsForDevices(@"displays show title", ^{
-        fairShowVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
-        fairShowVC.showNetworkModel = stubbedNetworkModel;
-        [fairShowVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-        return fairShowVC;
+        showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
+        showVC.showNetworkModel = stubbedNetworkModel;
+        [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        return showVC;
     });
 
     itHasSnapshotsForDevices(@"displays show images with 1 install image", ^{
-        fairShowVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
+        showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
 
         NSString *stubbedImagePath = OHPathForFileInBundle(@"stub.jpg", nil);
         stubbedNetworkModel.imagesForBoothHeader = [Image arrayOfModelsWithJSON:@[
             @{ @"image_url" : stubbedImagePath, @"image_versions" : @[@"large"] }
         ]];
 
-        fairShowVC.showNetworkModel = stubbedNetworkModel;
-        [fairShowVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-        return fairShowVC;
+        showVC.showNetworkModel = stubbedNetworkModel;
+        [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        return showVC;
     });
 
     itHasSnapshotsForDevices(@"displays show images with multiple install images", ^{
-        fairShowVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
+        showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
 
         NSString *stubbedImagePath = OHPathForFileInBundle(@"stub.jpg", nil);
 
@@ -108,9 +108,56 @@ describe(@"without map", ^{
             @{ @"image_url" : stubbedImagePath,  @"image_versions" : @[@"large"] }
         ]];
 
-        fairShowVC.showNetworkModel = stubbedNetworkModel;
-        [fairShowVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-        return fairShowVC;
+        showVC.showNetworkModel = stubbedNetworkModel;
+        [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        return showVC;
+    });
+});
+
+describe(@"partner is a gallery", ^{
+    beforeEach(^{
+        show = [PartnerShow modelWithJSON:@{
+            @"id": @"some-show",
+            @"name": @"Some Show",
+            @"partner": @{
+                @"id" : @"some-partner",
+                @"type" : @"Gallery",
+                @"default_profile_public" : @(YES)
+            }
+        }];
+
+
+        stubbedNetworkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show maps:nil];
+    });
+
+    itHasSnapshotsForDevices(@"gallery", ^{
+        showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
+        showVC.showNetworkModel = stubbedNetworkModel;
+        [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        return showVC;
+    });
+});
+
+describe(@"partner is not a gallery", ^{
+    beforeEach(^{
+        show = [PartnerShow modelWithJSON:@{
+            @"id": @"some-show",
+            @"name": @"Some Show",
+            @"partner": @{
+                @"id" : @"some-partner",
+                @"type" : @"Museum",
+                @"default_profile_public" : @(YES)
+            }
+        }];
+
+        stubbedNetworkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show maps:nil];
+    });
+
+    itHasSnapshotsForDevices(@"not gallery", ^{
+        showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
+        showVC.showNetworkModel = stubbedNetworkModel;
+        [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        return showVC;
     });
 });
 
