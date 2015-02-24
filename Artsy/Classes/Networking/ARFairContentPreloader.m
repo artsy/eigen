@@ -134,4 +134,27 @@
   return self.manifest[@"fair"];
 }
 
+- (NSUInteger)packageSize;
+{
+  return [self.manifest[@"package-size"] unsignedIntegerValue];
+}
+
+- (NSUInteger)unpackedSize;
+{
+  return [self.manifest[@"unpacked-size"] unsignedIntegerValue];
+}
+
+- (NSUInteger)requiredDiskSpace;
+{
+  return self.packageSize + self.unpackedSize;
+}
+
+- (BOOL)hasEnoughFreeDiskSpace;
+{
+  NSError *error = nil;
+  NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory()
+                                                                                     error:&error];
+  return [attributes[NSFileSystemFreeSize] unsignedIntegerValue] >= self.requiredDiskSpace;
+}
+
 @end

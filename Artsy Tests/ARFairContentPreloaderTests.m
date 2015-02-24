@@ -1,5 +1,6 @@
 #import "ARFairContentPreloader.h"
-#import "OHHTTPStubsResponse+JSON.h"
+#import <OHHTTPStubs/OHHTTPStubsResponse+JSON.h>
+#import <OCMock/OCMock.h>
 
 
 @interface ARFairContentPreloaderTestServiceDelegate : NSObject <NSNetServiceDelegate>
@@ -26,6 +27,11 @@
 
 
 @interface ARFairContentPreloader (Testing)
+@property (nonatomic, readonly) NSURL *manifestURL;
+@property (nonatomic, readonly) NSUInteger packageSize;
+@property (nonatomic, readonly) NSUInteger unpackedSize;
+@property (nonatomic, readonly) NSUInteger requiredDiskSpace;
+@property (nonatomic, readonly) BOOL hasEnoughFreeDiskSpace;
 @end
 
 
@@ -120,7 +126,7 @@ describe(@"with a published Bonjour service", ^{
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return [request.URL isEqual:preloader.manifestURL];
             } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithJSONObject:@{ @"fair":@"Armory 2015", @"package-size":@(42) }
+                return [OHHTTPStubsResponse responseWithJSONObject:@{ @"fair":@"Armory 2015", @"package-size":@(42), @"unpacked-size":@(84) }
                                                         statusCode:200
                                                            headers:@{ @"Content-Type":@"application/json" }];
             }];
@@ -142,7 +148,39 @@ describe(@"with a published Bonjour service", ^{
             expect(preloader.fairName).to.equal(@"Armory 2015");
         });
 
-        it(@"is able to download a package", ^{
+        it(@"reports the amount of required disk space in bytes", ^{
+            expect(preloader.packageSize).to.equal(42);
+            expect(preloader.unpackedSize).to.equal(84);
+            expect(preloader.requiredDiskSpace).to.equal(42+84);
+        });
+
+        describe(@"when checking for free space", ^{
+            __block id fileManagerMock = nil;
+
+            beforeEach(^{
+                fileManagerMock = [OCMockObject mockForClass:[NSFileManager class]];
+                [[[fileManagerMock stub] andReturn:fileManagerMock] defaultManager];
+            });
+
+            afterEach(^{
+                // TODO Specta issue? https://github.com/erikdoe/ocmock/issues/136
+                [fileManagerMock stopMocking];
+            });
+
+            it(@"reports that enough space is left", ^{
+                [[[fileManagerMock stub] andReturn:@{ NSFileSystemFreeSize:@(preloader.requiredDiskSpace) }]
+                     attributesOfFileSystemForPath:NSHomeDirectory()
+                                             error:(NSError __autoreleasing **)[OCMArg anyPointer]];
+                expect(preloader.hasEnoughFreeDiskSpace).to.equal(YES);
+            });
+
+            it(@"reports that not enough free space is left", ^{
+                [[[fileManagerMock stub] andReturn:@{ NSFileSystemFreeSize:@(preloader.requiredDiskSpace-1) }]
+                     attributesOfFileSystemForPath:NSHomeDirectory()
+                                             error:(NSError __autoreleasing **)[OCMArg anyPointer]];
+                expect(preloader.hasEnoughFreeDiskSpace).to.equal(NO);
+            });
+        });        it(@"is able to download a package", ^{
             // pending
         });
 
