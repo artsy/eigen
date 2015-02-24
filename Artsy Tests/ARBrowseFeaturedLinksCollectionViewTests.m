@@ -16,8 +16,6 @@
 @end
 
 @interface ARBrowseFeaturedLinksCollectionView(Testing)
-- (UIScrollView *)secondaryScroll;
-- (void)setupPaging;
 - (NSString *)reuseIdentifier;
 @end
 
@@ -56,11 +54,6 @@ describe(@"initWithStyle", ^{
             expect(collectionView.style).to.equal(style);
         });
 
-        it(@"does not set secondary scroll", ^{
-            expect([collectionView secondaryScroll]).to.beNil();
-        });
-
-
         it(@"looks correct", ^{
             collectionView.featuredLinks = @[
                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
@@ -83,10 +76,6 @@ describe(@"initWithStyle", ^{
             expect(collectionView.style).to.equal(style);
         });
 
-        it(@"does not set secondary scroll", ^{
-            expect([collectionView secondaryScroll]).to.beNil();
-        });
-
         it(@"looks correct", ^{
             collectionView.featuredLinks = @[
                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
@@ -100,31 +89,6 @@ describe(@"initWithStyle", ^{
         });
 
         itBehavesLike(@"general view setup", nil);
-    });
-});
-
-describe(@"setupPaging", ^{
-    __block UIScrollView *scrollView = nil;
-    beforeEach(^{
-        CGRect frame = CGRectMake(0, 0, 320, 200);
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        collectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithFrame:frame collectionViewLayout:layout];
-        [collectionView setupPaging];
-        scrollView = collectionView.secondaryScroll;
-    });
-
-    it(@"sets up the scroll view", ^{
-        expect(scrollView.bounds).to.equal(CGRectMake(0, 0, 208, 195));
-        expect(scrollView.clipsToBounds).to.beFalsy();
-        expect(scrollView.delegate).to.equal(collectionView);
-        expect(scrollView.hidden).to.beTruthy();
-        expect(scrollView.pagingEnabled).to.beTruthy();
-    });
-
-    it(@"updates its subviews and gestures", ^{
-        expect(collectionView.subviews ).to.contain(scrollView);
-        expect(collectionView.panGestureRecognizer.enabled).to.beFalsy();
-        expect(collectionView.gestureRecognizers).to.contain(scrollView.panGestureRecognizer);
     });
 });
 
