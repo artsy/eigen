@@ -251,8 +251,11 @@ typedef NS_ENUM(NSInteger, ARFairGuideSelectedTab) {
 
 - (void)addUserContent
 {
+
     [self.fairFavorites getFavoritesForNavigationsButtonsForFair:self.fair
-        artwork:^(NSArray *workArray) {
+        artworks:^(NSArray *workArray) {
+            [self.workViewController addButtonDescriptions:workArray unique:YES];
+        } artworksByArtists:^(NSArray *workArray) {
             [self.workViewController addButtonDescriptions:workArray unique:YES];
         } exhibitors:^(NSArray *exhibitorsArray) {
             [self.exhibitorsViewController addButtonDescriptions:exhibitorsArray unique:YES];

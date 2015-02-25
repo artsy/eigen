@@ -11,12 +11,11 @@
 @interface ARFairFavoritesNetworkModel : NSObject
 
 - (void)getFavoritesForNavigationsButtonsForFair:(Fair *)fair
-                                         artwork:(void (^)(NSArray *artworks))work
-                                      exhibitors:(void (^)(NSArray *exhibitorsArray))exhibitors
-                                         artists:(void (^)(NSArray *artistsArray))artists
+                                        artworks:(void (^)(NSArray *artworks))artworksBlock
+                               artworksByArtists:(void (^)(NSArray *artworks))appendArtistArtworksBlock
+                                      exhibitors:(void (^)(NSArray *exhibitors))exhibitorsBlock
+                                         artists:(void (^)(NSArray *artists))artistsBlock
                                          failure:(void (^)(NSError *error))failure;
-
-@property (readonly, nonatomic, assign) BOOL isDownloading;
 
 @property (nonatomic, weak) id<ARFairFavoritesNetworkModelDelegate> delegate;
 
