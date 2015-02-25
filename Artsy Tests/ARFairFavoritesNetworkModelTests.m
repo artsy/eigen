@@ -44,12 +44,10 @@ it(@"ignores artworks without a partner", ^{
         ];
         
         ARFairFavoritesNetworkModel *favoritesNetworkModel = [[ARFairFavoritesNetworkModel alloc] init];
-        [favoritesNetworkModel getFavoritesForNavigationsButtonsForFair:fair artwork:^(NSArray *work) {
+        [favoritesNetworkModel getFavoritesForNavigationsButtonsForFair:fair artworks:^(NSArray *work) {
             expect(work.count).to.equal(2);
             done();
-        } exhibitors:^(NSArray *exhibitors) {
-        } artists:^(NSArray *artists) {
-        } failure:nil];
+        } artworksByArtists:nil exhibitors:nil artists:nil failure:nil];
     });
 });
 
@@ -91,15 +89,13 @@ describe(@"when downloading exhibitor data", ^{
             }] failure:OCMOCK_ANY];
             
             ARFairFavoritesNetworkModel *favoritesNetworkModel = [[ARFairFavoritesNetworkModel alloc] init];
-            [favoritesNetworkModel getFavoritesForNavigationsButtonsForFair:fairMock artwork:^(NSArray *work) {
-            } exhibitors:^(NSArray *exhibitors) {
+            [favoritesNetworkModel getFavoritesForNavigationsButtonsForFair:fairMock artworks:nil artworksByArtists:nil exhibitors:^(NSArray *exhibitors) {
                 expect(exhibitors.count).to.equal(1);
                 NSDictionary *button = exhibitors.firstObject;
                 expect(button[@"ARNavigationButtonPropertiesKey"][@"title"]).to.equal(@"Leila Heller Gallery in New York City");
                 expect(button[@"ARNavigationButtonPropertiesKey"][@"subtitle"]).to.equal(@"Pier 1, Booth 2, Section 3, Floor 5");
                 done();
-            } artists:^(NSArray *artists) {
-            } failure:nil];
+            } artists:nil failure:nil];
         });
     });
     
@@ -129,15 +125,13 @@ describe(@"when downloading exhibitor data", ^{
             }] failure:OCMOCK_ANY];
             
             ARFairFavoritesNetworkModel *favoritesNetworkModel = [[ARFairFavoritesNetworkModel alloc] init];
-            [favoritesNetworkModel getFavoritesForNavigationsButtonsForFair:fairMock artwork:^(NSArray *work) {
-            } exhibitors:^(NSArray *exhibitors) {
+            [favoritesNetworkModel getFavoritesForNavigationsButtonsForFair:fairMock artworks:nil artworksByArtists:nil exhibitors:^(NSArray *exhibitors) {
                 expect(exhibitors.count).to.equal(1);
                 NSDictionary *button = exhibitors.firstObject;
                 expect(button[@"ARNavigationButtonPropertiesKey"][@"title"]).to.equal(@"Leila Heller Gallery in New York City");
                 expect(button[@"ARNavigationButtonPropertiesKey"][@"subtitle"]).to.equal(@"Pier 1, Booth 2, Section 3, Floor 5");
                 done();
-            } artists:^(NSArray *artists) {
-            } failure:nil];
+            } artists:nil failure:nil];
         });
     });
 });

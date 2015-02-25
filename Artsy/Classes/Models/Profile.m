@@ -159,7 +159,7 @@
     }
 
     [ArtsyAPI checkFollowProfile:self success:^(BOOL status) {
-        success(ARHeartStatusYes);
+        success(status);
     } failure:failure];
 }
 

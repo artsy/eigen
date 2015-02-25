@@ -11,115 +11,98 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 @implementation ARFairFavoritesNetworkModel
 
 - (void)getFavoritesForNavigationsButtonsForFair:(Fair *)fair
-                                            artwork:(void (^)(NSArray *artworks))work
-                                      exhibitors:(void (^)(NSArray *exhibitors))exhibitors
-                                         artists:(void (^)(NSArray *artists))artists
+                                        artworks:(void (^)(NSArray *artworks))artworksBlock
+                               artworksByArtists:(void (^)(NSArray *artworks))appendArtistArtworksBlock
+                                      exhibitors:(void (^)(NSArray *exhibitors))exhibitorsBlock
+                                         artists:(void (^)(NSArray *artists))artistsBlock
                                          failure:(void (^)(NSError *error))failure
 {
-    _isDownloading = YES;
-    __block BOOL artworkFavorites = NO;
-    __block BOOL profileFollows = NO;
-    __block BOOL artistFollows = NO;
+    if(artworksBlock){
+        // "Work" tab
+        [ArtsyAPI getArtworkFavoritesForFair:fair success:^(NSArray *artworks) {
+            NSArray *buttons = [artworks map:^id(Artwork *artwork) {
+                return [self navigationButtonForArtwork:artwork inFair:fair];
+            }];
 
-    @weakify(self);
+            artworksBlock(buttons);
 
-    void (^completionCheck)() = ^(){
-        @strongify(self);
-        if (!self) { return; }
-
-        if (artworkFavorites && profileFollows && artistFollows) {
-            self->_isDownloading = NO;
-        }
-    };
-
-    // "Work" tab
-    [ArtsyAPI getArtworkFavoritesForFair:fair success:^(NSArray *artworks) {
-        NSArray *buttons = [artworks map:^id(Artwork *artwork) {
-            return [self navigationButtonForArtwork:artwork inFair:fair];
-        }];
-
-        if(work){
-            work(buttons);
-        }
-
-        artworkFavorites = YES;
-        completionCheck();
-    } failure:^(NSError *error) {
-        artworkFavorites = YES;
-        completionCheck();
-        if(failure) {
-            failure(error);
-        }
-    }];
+        } failure:failure];
+    }
 
     // "Exhibitors" tab
-    [ArtsyAPI getProfileFollowsForFair:fair success:^(NSArray *follows) {
-        // Create a subject that'll receive partners from either of our two code paths, below
-        RACSubject *partnerSubject = [[RACSubject subject] setNameWithFormat:@"getProfileFollowsForFair:success:"];
+    if (exhibitorsBlock) {
 
-        [[RACSignal
-            combineLatest:@[[[RACObserve(fair, shows) ignore:nil] take:1], partnerSubject]
-            reduce:^id(NSSet *shows, NSArray *partnersArray) {
-               return partnersArray;
-            }] subscribeNext:^(NSArray *partnersArray) {
-                NSArray *buttons = [partnersArray map:^id(Partner *partner) {
-                    return [self navigationButtonForPartner:partner inFair:fair];
+        [ArtsyAPI getProfileFollowsForFair:fair success:^(NSArray *follows) {
+            // Create a subject that'll receive partners from either of our two code paths, below
+            RACSubject *partnerSubject = [[RACSubject subject] setNameWithFormat:@"getProfileFollowsForFair:success:"];
+
+            [[RACSignal
+                combineLatest:@[[[RACObserve(fair, shows) ignore:nil] take:1], partnerSubject]
+                reduce:^id(NSSet *shows, NSArray *exhibitors) {
+                   return exhibitors;
+                }] subscribeNext:^(NSArray *partnersArray) {
+                    NSArray *buttons = [partnersArray map:^id(Partner *partner) {
+                        return [self navigationButtonForPartner:partner inFair:fair];
+                    }];
+
+                    exhibitorsBlock(buttons);
                 }];
 
-                if (exhibitors) {
-                    exhibitors(buttons);
+            if (follows.count == 0) {
+                // No content returned from API – just use random content generated once the shows property has been set
+                [[[RACObserve(fair, shows) ignore:nil] take:1] subscribeNext:^(NSSet *shows) {
+                    [partnerSubject sendNext:[[shows.allObjects take:ARFairFavoritesNetworkModelMaxRandomExhibitors] map:^id(PartnerShow *show) {
+                        return show.partner;
+                    }]];
+                }];
+            } else {
+                // Content returned from API – filter out non-partner owners and return the owners, sending to our subject
+                [partnerSubject sendNext:[[follows select:^BOOL(Follow *follow) {
+                    Profile *profile = follow.profile;
+                    return [profile.profileOwner isKindOfClass:[Partner class]];
+                }] map:^id(Follow *follow) {
+                    return follow.profile.profileOwner;
+                }]];
+            }
+
+            if (!fair.shows) {
+                [fair downloadShows];
+            }
+        } failure:failure];
+    }
+
+    if (artistsBlock || appendArtistArtworksBlock) {
+        // "Artists" Tab
+        [ArtsyAPI getArtistFollowsForFair:fair success:^(NSArray *follows) {
+            NSArray *artists = [follows map:^id(Follow *follow) {
+                return follow.artist;
+            }];
+
+            if (artists.count > 0) {
+                if (artistsBlock) {
+                    NSArray *buttons = [artists map:^id(Artist *artist) {
+                        return [self navigationButtonForArtist:artist inFair:fair];
+                    }];
+                    artistsBlock(buttons);
                 }
 
-                profileFollows = YES;
-                completionCheck();
-            }];
-
-        if (follows.count == 0) {
-            // No content returned from API – just use random content generated once the shows property has been set
-            [[[RACObserve(fair, shows) ignore:nil] take:1] subscribeNext:^(NSSet *shows) {
-                [partnerSubject sendNext:[[shows.allObjects take:ARFairFavoritesNetworkModelMaxRandomExhibitors] map:^id(PartnerShow *show) {
-                    return show.partner;
-                }]];
-            }];
-        } else {
-            // Content returned from API – filter out non-partner owners and return the owners, sending to our subject
-            [partnerSubject sendNext:[[follows select:^BOOL(Follow *follow) {
-                Profile *profile = follow.profile;
-                return [profile.profileOwner isKindOfClass:[Partner class]];
-            }] map:^id(Follow *follow) {
-                return follow.profile.profileOwner;
-            }]];
-        }
-
-        if (!fair.shows) {
-            [fair downloadShows];
-        }
-    } failure:^(NSError *error) {
-        profileFollows = YES;
-        completionCheck();
-        if(failure) {
-            failure(error);
-        }
-    }];
-
-    // "Artists" Tab
-    [ArtsyAPI getArtistFollowsForFair:fair success:^(NSArray *follows) {
-        NSArray *buttons = [follows map:^id(Follow *follow) {
-            return [self navigationButtonForArtist:follow.artist inFair:fair];
-        }];
-
-        if (artists) {
-            artists(buttons);
-        }
-        artistFollows = YES;
-        completionCheck();
-    } failure:^(NSError *error) {
-        artistFollows = YES;
-        completionCheck();
-        if(failure) {
-            failure(error);
-        }
-    }];
+                if (appendArtistArtworksBlock) {
+                    for (Artist *artist in artists) {
+                        [ArtsyAPI getShowsForArtistID:artist.artistID inFairID:fair.fairID success:^(NSArray *shows) {
+                            for (PartnerShow *show in shows) {
+                                NSArray *buttons = [show.artworks map:^id(Artwork *artwork) {
+                                    return [self navigationButtonForArtwork:artwork inFair:fair];
+                                }];
+                                appendArtistArtworksBlock (buttons);
+                            }
+                        } failure:^(NSError *error) {
+                            if (failure) { failure (error); };
+                        }];
+                    }
+                }
+            }
+        } failure:failure];
+    }
 }
 
 // Partner = sanserif title, serif subtitle // name | location
