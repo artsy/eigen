@@ -124,9 +124,31 @@
   [task resume];
 }
 
+- (void)fetchPackage:(void(^)(NSError *))completionBlock;
+{
+  NSURLSessionDownloadTask *task = [[NSURLSession sharedSession] downloadTaskWithURL:self.packageURL
+                                                                   completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+    NSLog(@"%@", location);
+    [[NSFileManager defaultManager] moveItemAtURL:location toURL:self.temporaryLocalPackageURL error:&error];
+    completionBlock(nil);
+  }];
+  [task resume];
+}
+
 - (NSURL *)manifestURL;
 {
-  return [self.serviceURL URLByAppendingPathComponent:@"/fair/manifest"];
+  return [self.serviceURL URLByAppendingPathComponent:@"/fair/manifest.json"];
+}
+
+- (NSURL *)packageURL;
+{
+  return [self.serviceURL URLByAppendingPathComponent:@"/fair/package.zip"];
+}
+
+- (NSURL *)temporaryLocalPackageURL;
+{
+  NSString *filename = [self.fairName stringByAppendingPathExtension:@"zip"];
+  return [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filename]];
 }
 
 - (NSString *)fairName;

@@ -28,11 +28,21 @@
 
 @interface ARFairContentPreloader (Testing)
 @property (nonatomic, readonly) NSURL *manifestURL;
+@property (nonatomic, readonly) NSURL *packageURL;
+@property (nonatomic, readonly) NSURL *temporaryLocalPackageURL;
 @property (nonatomic, readonly) NSUInteger packageSize;
 @property (nonatomic, readonly) NSUInteger unpackedSize;
 @property (nonatomic, readonly) NSUInteger requiredDiskSpace;
 @property (nonatomic, readonly) BOOL hasEnoughFreeDiskSpace;
 @end
+
+
+// TODO make a global test helper?
+static NSString *
+ARTestFixture(NSString *pathname) {
+  NSBundle *testBundle = [NSBundle bundleForClass:[ARFairContentPreloaderTestServiceDelegate class]];
+  return [testBundle.resourcePath stringByAppendingPathComponent:pathname];
+}
 
 
 SpecBegin(ARFairContentPreloader)
@@ -97,7 +107,7 @@ describe(@"with a published Bonjour service", ^{
                                                            headers:@{ @"Content-Type":@"application/json" }];
             }];
             __block NSError *error = nil;
-            [preloader fetchManifest:^(NSError *e) { NSLog(@"ERROR: %@", e); error = e; }];
+            [preloader fetchManifest:^(NSError *e) { error = e; }];
             while (error == nil) {
                 CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
             }
@@ -126,7 +136,9 @@ describe(@"with a published Bonjour service", ^{
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return [request.URL isEqual:preloader.manifestURL];
             } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithJSONObject:@{ @"fair":@"Armory 2015", @"package-size":@(42), @"unpacked-size":@(84) }
+                return [OHHTTPStubsResponse responseWithJSONObject:@{ @"fair":@"Armory 2015",
+                                                                      @"package-size":@(42),
+                                                                      @"unpacked-size":@(84) }
                                                         statusCode:200
                                                            headers:@{ @"Content-Type":@"application/json" }];
             }];
@@ -180,22 +192,47 @@ describe(@"with a published Bonjour service", ^{
                                              error:(NSError __autoreleasing **)[OCMArg anyPointer]];
                 expect(preloader.hasEnoughFreeDiskSpace).to.equal(NO);
             });
-        });        it(@"is able to download a package", ^{
-            // pending
         });
 
-        it(@"is able to resume a download", ^{
-            // pending
-        });
+        describe(@"concerning downloading", ^{
+            NSString *packageName = @"fair-content-preloader-package.zip";
 
-        // These are probably more for e.g. the application delegate
+            afterEach(^{
+              [[NSFileManager defaultManager] removeItemAtURL:preloader.temporaryLocalPackageURL error:nil];
+            });
 
-        it(@"asks the user if they wish to immediately jump to the fair content", ^{
-            // pending
-        });
+            it(@"is able to download a package", ^{
+                [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return [request.URL isEqual:preloader.packageURL];
+                } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithFileAtPath:ARTestFixture(packageName)
+                                                            statusCode:200
+                                                               headers:@{ @"Content-Type":@"application/zip" }];
+                }];
 
-        it(@"starts preloading the fair content if the device has enough free space", ^{
-            // pending
+                __block BOOL yielded = NO;
+                [preloader fetchPackage:^(id _) { yielded = YES; }];
+                while (!yielded) {
+                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+                }
+
+                NSString *path = preloader.temporaryLocalPackageURL.path;
+                expect([[NSFileManager defaultManager] fileExistsAtPath:path]).to.equal(YES);
+            });
+
+            it(@"is able to resume a download", ^{
+                // pending
+            });
+
+            // These are probably more for e.g. the application delegate
+
+            it(@"asks the user if they wish to immediately jump to the fair content", ^{
+                // pending
+            });
+
+            it(@"starts preloading the fair content if the device has enough free space", ^{
+                // pending
+            });
         });
     });
 });
