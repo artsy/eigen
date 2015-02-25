@@ -1,3 +1,7 @@
+## Master
+
+* Fix a crash when swiping between artworks. - alloy
+
 ## 2014.12.24
 
 * Fix iOS 8 status bar in onboarding - ash
