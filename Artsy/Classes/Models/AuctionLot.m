@@ -13,13 +13,9 @@
         @"dates" : @"dates_text",
         @"auctionDate" : @"auction_date",
         @"auctionDateText" : @"auction_dates_text",
-        @"imageURL" : @"image_url",
+        @"imageURLs" : @"image_urls",
         @"externalURL" : @"external_url",
     };
-}
-
-+ (NSValueTransformer *)imageURLJSONTransformer {
-    return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
 }
 
 + (NSValueTransformer *)externalURLJSONTransformer {
@@ -44,6 +40,15 @@
 - (NSUInteger)hash
 {
     return self.auctionLotID.hash;
+}
+
+- (NSURL *)imageURL
+{
+    if (self.imageURLs.count == 0) { return nil; }
+
+    NSString *thumbnailURL = [self.imageURLs objectForKey:@"thumbnail"];
+    NSString *imageURL = thumbnailURL ?: [[self.imageURLs allValues] objectAtIndex:0];
+    return [NSURL URLWithString:imageURL];
 }
 
 @end
