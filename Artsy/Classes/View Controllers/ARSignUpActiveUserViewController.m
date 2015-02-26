@@ -71,6 +71,8 @@
 
 - (void)viewDidLoad
 {
+    self.view.backgroundColor = [UIColor clearColor];
+
     AROnboardingNavBarView *navView = [[AROnboardingNavBarView alloc] init];
     [self.view addSubview:navView];
     self.navView = navView;
@@ -107,39 +109,6 @@
 - (void)openPrivacy
 {
     [self.delegate showPrivacyPolicy];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.topView.alpha = 0;
-    self.bottomView.alpha = 0;
-    self.logoConstraint.constant = 8;
-    self.textConstraint.constant = -8;
-    self.buttonsConstraint.constant = 20;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    self.view.backgroundColor = [UIColor clearColor];
-
-    [self.topView layoutSubviews];
-    [self.bottomView layoutSubviews];
-
-    [UIView animateIf:self.shouldAnimate duration:0.5 :^{
-        self.topView.alpha = 1;
-        self.logoConstraint.constant = 0;
-        self.textConstraint.constant = 0;
-        [self.topView layoutSubviews];
-    }];
-
-    [UIView animateIf:self.shouldAnimate duration:0.3 :^{
-        self.bottomView.alpha = 1;
-        self.buttonsConstraint.constant = 0;
-        [self.bottomView layoutSubviews];
-    }];
 }
 
 - (IBAction)connectWithFacebook:(id)sender
