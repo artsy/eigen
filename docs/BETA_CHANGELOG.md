@@ -1,6 +1,13 @@
-## Master
+## Next
 
 * Fix a crash when swiping between artworks. - alloy
+* Tapping YOU as a Trial User invokes signup - 1aurabrown
+* Share URLs always use desktop, not martsy, urls -- 1aurabrown
+* Added works by artists you follow to fair guide Works section - 1aurabrown
+* Minor changes to some buttons - 1aurabrown
+* Featured categories removed from fair guide - 1aurabrown
+* Fix missing thumbnail images on auction results - 1aurabrown
+* Automatically invoke keyboard in email sign in on iPad - 1aurabrown
 
 ## 2014.12.24
 
