@@ -1,5 +1,6 @@
 #import "ARNetworkConstants.h"
 #import "ARRouter.h"
+#import "ARRouter+Private.h"
 #import "ARUserManager.h"
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <CocoaPods-Keys/ArtsyKeys.h>
@@ -34,11 +35,17 @@ static NSSet *artsyHosts = nil;
 
 + (NSURL *)baseWebURL
 {
-    if ([AROptions boolForOption:ARUseStagingDefault]) {
-        return [NSURL URLWithString:[UIDevice isPad] ? ARStagingBaseWebURL : ARStagingBaseMobileWebURL];
-    } else {
-        return [NSURL URLWithString:[UIDevice isPad] ? ARBaseWebURL : ARBaseMobileWebURL];
-    }
+    return [UIDevice isPad] ? [self baseDesktopWebURL] : [self baseMobileWebURL];
+}
+
++ (NSURL *)baseDesktopWebURL
+{
+    return [NSURL URLWithString:[AROptions boolForOption:ARUseStagingDefault] ? ARStagingBaseWebURL : ARBaseDesktopWebURL];
+}
+
++ (NSURL *)baseMobileWebURL
+{
+    return [NSURL URLWithString:[AROptions boolForOption:ARUseStagingDefault] ? ARStagingBaseMobileWebURL : ARBaseMobileWebURL];
 }
 
 + (void)setupWithBaseApiURL:(NSURL *)baseApiURL
