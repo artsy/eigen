@@ -11,9 +11,5 @@
 @property (strong, nonatomic) IBOutlet UIView *bottomView;
 @property (nonatomic, strong) IBOutlet ARSerifLineHeightLabel *bodyCopyLabel;
 
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *logoConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *textConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *buttonsConstraint;
-
 @property (nonatomic) BOOL shouldAnimate;
 @end
