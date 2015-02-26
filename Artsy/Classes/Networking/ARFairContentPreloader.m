@@ -143,6 +143,7 @@
   NSURLSessionDownloadTask *task = nil;
   NSData *resumeData = [NSData dataWithContentsOfURL:partiallyDownloadedPackageURL];
   if (resumeData) {
+    [[NSFileManager defaultManager] removeItemAtURL:partiallyDownloadedPackageURL error:nil];
     task = [[NSURLSession sharedSession] downloadTaskWithResumeData:resumeData
                                                   completionHandler:taskCompletionBlock];
   } else {

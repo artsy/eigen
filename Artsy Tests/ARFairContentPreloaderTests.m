@@ -297,6 +297,17 @@ describe(@"with a published Bonjour service", ^{
                 [[downloadTaskMock expect] resume];
                 [preloader fetchPackage:^(id _) {}];
             });
+
+            it(@"removes partially downloaded data when resuming a download", ^{
+                [resumeData writeToURL:preloader.partiallyDownloadedPackageURL atomically:YES];
+                [[[URLSessionMock stub] andReturn:downloadTaskMock] downloadTaskWithResumeData:OCMOCK_ANY
+                                                                             completionHandler:OCMOCK_ANY];
+                [[downloadTaskMock stub] resume];
+                [preloader fetchPackage:^(id _) {}];
+
+                NSString *resumeDataFile = preloader.partiallyDownloadedPackageURL.path;
+                expect([[NSFileManager defaultManager] fileExistsAtPath:resumeDataFile]).to.equal(NO);
+            });
         });
     });
 
@@ -331,7 +342,7 @@ describe(@"with a published Bonjour service", ^{
 
         it(@"maintains existing cached content", ^{
             NSString *existingCachedContent = @"Existing cached content.";
-            [existingCachedContent writeToURL:unpackedFileURL atomically:YES];
+            [existingCachedContent writeToURL:unpackedFileURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
             __block BOOL yielded = NO;
             [preloader unpackPackage:^(id _) { yielded = YES; }];
