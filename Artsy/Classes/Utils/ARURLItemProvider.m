@@ -1,11 +1,12 @@
 #import "ARURLItemProvider.h"
 #import "ARFileUtils.h"
+#import "ARRouter+Private.h"
 
 @implementation ARURLItemProvider
 
 - (instancetype)initWithMessage:(NSString *)message path:(NSString *)path thumbnailImageURL:(NSURL *)thumbnailImageURL
 {
-    NSURL *shareableURL = [ARSwitchBoard.sharedInstance resolveRelativeUrl:path];
+    NSURL *shareableURL = [NSURL URLWithString:path relativeToURL:[ARRouter baseDesktopWebURL]];
 
     // sharing the URL built with URLWithString:relativeToURL via AirDrop: fails with a declined error message
     self = [super initWithPlaceholderItem:[NSURL URLWithString:shareableURL.absoluteString]];

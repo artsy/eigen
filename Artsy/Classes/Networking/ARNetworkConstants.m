@@ -1,4 +1,4 @@
-NSString *const ARBaseWebURL = @"https://artsy.net/";
+NSString *const ARBaseDesktopWebURL = @"https://artsy.net/";
 NSString *const ARBaseMobileWebURL = @"https://m.artsy.net/";
 NSString *const ARBaseApiURL = @"https://api.artsy.net/";
 
