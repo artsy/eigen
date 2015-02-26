@@ -330,7 +330,19 @@ describe(@"with a published Bonjour service", ^{
         });
 
         it(@"maintains existing cached content", ^{
-            // pending
+            NSString *existingCachedContent = @"Existing cached content.";
+            [existingCachedContent writeToURL:unpackedFileURL atomically:YES];
+
+            __block BOOL yielded = NO;
+            [preloader unpackPackage:^(id _) { yielded = YES; }];
+            while (!yielded) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+            }
+
+            NSString *unpackedPackageContent = [NSString stringWithContentsOfURL:unpackedFileURL
+                                                                        encoding:NSUTF8StringEncoding
+                                                                           error:nil];
+            expect(unpackedPackageContent).to.equal(existingCachedContent);
         });
     });
 
