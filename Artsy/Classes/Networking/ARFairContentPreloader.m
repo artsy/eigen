@@ -1,4 +1,5 @@
 #import "ARFairContentPreloader.h"
+#import <SSZipArchive/SSZipArchive.h>
 #import <netinet/in.h>
 #import <arpa/inet.h>
 
@@ -152,6 +153,24 @@
   [task resume];
 }
 
+- (void)unpackPackage:(void(^)(NSError *))completionBlock;
+{
+  NSString *sourcePath = self.temporaryLocalPackageURL.path;
+  NSString *destinationPath = self.cacheDirectoryURL.path;
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    NSError *error = nil;
+    if (![SSZipArchive unzipFileAtPath:sourcePath
+                         toDestination:destinationPath
+                             overwrite:NO
+                              password:nil
+                                 error:&error]) {
+      completionBlock(error);
+    } else {
+      completionBlock(nil);
+    }
+  });
+}
+
 - (NSURL *)manifestURL;
 {
   return [self.serviceURL URLByAppendingPathComponent:@"/fair/manifest.json"];
@@ -171,6 +190,11 @@
 - (NSURL *)partiallyDownloadedPackageURL;
 {
   return [self.temporaryLocalPackageURL URLByAppendingPathExtension:@"partial"];
+}
+
+- (NSURL *)cacheDirectoryURL;
+{
+  return [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0]];
 }
 
 - (NSString *)fairName;

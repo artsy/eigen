@@ -85,6 +85,7 @@ PODS:
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
   - Specta (0.3.0.beta1)
+  - SSZipArchive (0.3.2)
   - TSMiniWebBrowser@dblock (HEAD based on 1.1)
   - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
@@ -140,6 +141,7 @@ DEPENDENCIES:
   - ReactiveCocoa (= 2.3)
   - SDWebImage (= 3.7.1)
   - Specta (from `https://github.com/specta/specta.git`, tag `v0.3.0.beta1`)
+  - SSZipArchive
   - TSMiniWebBrowser@dblock (HEAD)
   - UIAlertView+Blocks (= 0.8)
   - UICKeyChainStore (= 1.0.5)
@@ -233,6 +235,7 @@ SPEC CHECKSUMS:
   RSSwizzle: ab39962b7ec56d19c2318ec1127e253797121363
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
   Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
+  SSZipArchive: 11299a4e89821bd4085b12f25edaa85853e0051c
   TSMiniWebBrowser@dblock: 4e73ee955fcf2e9f5d98f7a17460454ac059bc37
   UIAlertView+Blocks: 90d7f6b2853404277c94f6284c2b8c16028272e6
   UICKeyChainStore: 4f9719600cc70025064e26f28f1210bcfc3b0c35

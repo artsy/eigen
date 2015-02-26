@@ -13,5 +13,6 @@
 - (void)discoverFairService;
 - (void)fetchManifest:(void(^)(NSError *))completionBlock;
 - (void)fetchPackage:(void(^)(NSError *))completionBlock;
+- (void)unpackPackage:(void(^)(NSError *))completionBlock;
 
 @end

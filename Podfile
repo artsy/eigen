@@ -94,6 +94,7 @@ pod 'UICKeyChainStore', '1.0.5'
 
 # Fairs
 pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit', :commit => '62275386978db91b0e7ed8de755d15cef3e793b4'
+pod 'SSZipArchive'
 
 # Developer Pods
 pod 'VCRURLConnection', '0.2.0'
