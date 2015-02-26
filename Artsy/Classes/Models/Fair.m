@@ -321,15 +321,9 @@
 
 - (NSString *)bannerAddress
 {
-    NSString *url = nil;
-    NSArray *desiredVersions = @[@"wide", @"large_rectange", @"square"];
-
+    NSString *url = [self.bannerURLs.allValues firstObject];
     if (!url) {
-        NSArray *possibleVersions = [desiredVersions intersectionWithArray:[self.bannerURLs allKeys]];
-        url = [self.bannerURLs objectForKey:possibleVersions.firstObject];
-    }
-
-    if (!url) {
+        NSArray *desiredVersions = @[@"wide", @"large_rectangle", @"square"];
         NSArray *possibleVersions = [desiredVersions intersectionWithArray:[self.imageURLs allKeys]];
         url = [self.imageURLs objectForKey:possibleVersions.firstObject];
     }
