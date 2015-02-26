@@ -122,19 +122,33 @@
 
 - (void)fetchPackage:(void(^)(NSError *))completionBlock;
 {
-  NSURLSessionDownloadTask *task = [[NSURLSession sharedSession] downloadTaskWithURL:self.packageURL
-                                                                   completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+  NSURL *partiallyDownloadedPackageURL = self.partiallyDownloadedPackageURL;
+  NSURL *temporaryLocalPackageURL = self.temporaryLocalPackageURL;
+
+  void (^taskCompletionBlock)(NSURL *, NSURLResponse *, NSError *);
+  taskCompletionBlock = ^(NSURL *location, NSURLResponse *response, NSError *error) {
     if (error) {
       NSData *resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData];
       if (resumeData) {
-        [resumeData writeToURL:self.partiallyDownloadedPackageURL atomically:YES];
+        [resumeData writeToURL:partiallyDownloadedPackageURL atomically:YES];
       }
       completionBlock(error);
     } else {
-      [[NSFileManager defaultManager] moveItemAtURL:location toURL:self.temporaryLocalPackageURL error:&error];
+      [[NSFileManager defaultManager] moveItemAtURL:location toURL:temporaryLocalPackageURL error:&error];
       completionBlock(nil);
     }
-  }];
+  };
+
+  NSURLSessionDownloadTask *task = nil;
+  NSData *resumeData = [NSData dataWithContentsOfURL:partiallyDownloadedPackageURL];
+  if (resumeData) {
+    task = [[NSURLSession sharedSession] downloadTaskWithResumeData:resumeData
+                                                  completionHandler:taskCompletionBlock];
+  } else {
+    task = [[NSURLSession sharedSession] downloadTaskWithURL:self.packageURL
+                                           completionHandler:taskCompletionBlock];
+  }
+  // NSAssert(task != nil, @"Expected an instance of NSURLSessionDownloadTask");
   [task resume];
 }
 

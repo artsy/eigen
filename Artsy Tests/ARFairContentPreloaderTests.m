@@ -196,9 +196,16 @@ describe(@"with a published Bonjour service", ^{
         describe(@"concerning downloading", ^{
             NSString *packageName = @"fair-content-preloader-package.zip";
 
-            afterEach(^{
-              [[NSFileManager defaultManager] removeItemAtURL:preloader.temporaryLocalPackageURL error:nil];
-              [[NSFileManager defaultManager] removeItemAtURL:preloader.partiallyDownloadedPackageURL error:nil];
+            // TODO Because Specta processes `afterEach` blocks in a FILO fashion, it can happen that the `afterEach`
+            //      block in the sub-context `concerning download resuming` raises an exception from
+            //      `-[OCMockObject verify]` after which Specta will no longer execute this block and the files won’t
+            //      get cleaned up, which would break subsequent test runs.
+            //
+            //      For now this means we clean before running the tests, which is backwards, but it works.
+            //
+            beforeEach(^{
+                [[NSFileManager defaultManager] removeItemAtURL:preloader.temporaryLocalPackageURL error:nil];
+                [[NSFileManager defaultManager] removeItemAtURL:preloader.partiallyDownloadedPackageURL error:nil];
             });
 
             it(@"is able to download a package", ^{
@@ -220,35 +227,62 @@ describe(@"with a published Bonjour service", ^{
                 expect([[NSFileManager defaultManager] fileExistsAtPath:path]).to.equal(YES);
             });
 
-            it(@"saves resume data to disk if a transfer fails", ^{
-                id URLSessionMock = [OCMockObject mockForClass:[NSURLSession class]];
-                [[[URLSessionMock stub] andReturn:URLSessionMock] sharedSession];
+            describe(@"concerning download resuming", ^{
+                __block id URLSessionMock = nil;
+                __block id downloadTaskMock = nil;
+                __block NSData *resumeData = nil;
 
-                // Create NSError with stubbed first 100 bytes of package data.
-                NSData *resumeData = [NSData dataWithContentsOfFile:ARTestFixture(packageName)];
-                resumeData = [resumeData subdataWithRange:NSMakeRange(0, 100)];
-                NSError *errorWithResumeData = [NSError errorWithDomain:NSURLErrorDomain
-                                                                   code:NSURLErrorTimedOut
-                                                               userInfo:@{ NSURLSessionDownloadTaskResumeData:resumeData }];
+                beforeEach(^{
+                    URLSessionMock = [OCMockObject mockForClass:[NSURLSession class]];
+                    [[[URLSessionMock stub] andReturn:URLSessionMock] sharedSession];
 
-                // Get block defined in fetchPackage: and yield the stubbed error to it.
-                [[[[URLSessionMock stub] andReturn:nil] andDo:^(NSInvocation *invocation) {
-                  void (^completionBlock)(NSURL *, NSURLResponse *, NSError *);
-                  [invocation getArgument:&completionBlock atIndex:3];
-                  completionBlock(nil, nil, errorWithResumeData);
-                }] downloadTaskWithURL:OCMOCK_ANY completionHandler:OCMOCK_ANY];
+                    downloadTaskMock = [OCMockObject mockForClass:[NSURLSessionDownloadTask class]];
 
-                __block NSError *error = nil;
-                [preloader fetchPackage:^(NSError *e) { error = e; }];
-                // No need to run the runloop, as our stubbing above immediately yields the block.
-                expect(error).to.equal(errorWithResumeData);
-                expect([NSData dataWithContentsOfURL:preloader.partiallyDownloadedPackageURL]).to.equal(resumeData);
+                    // TODO I don't believe that actual NSURLSessionDownloadTaskResumeData is just the downloaded data,
+                    //      it seems to also encode the location URL.
+                    NSData *allData = [NSData dataWithContentsOfFile:ARTestFixture(packageName)];
+                    resumeData = [allData subdataWithRange:NSMakeRange(0, 100)];
+                });
 
-                [URLSessionMock stopMocking];
-            });
+                afterEach(^{
+                    [URLSessionMock stopMocking];
+                    [URLSessionMock verify];
+                    [downloadTaskMock verify];
+                });
 
-            it(@"is able to resume a download", ^{
-                // pending
+                it(@"saves resume data to disk if a transfer fails", ^{
+                    // Create NSError with stubbed first 100 bytes of package data.
+                    NSError *errorWithResumeData = [NSError errorWithDomain:NSURLErrorDomain
+                                                                       code:NSURLErrorTimedOut
+                                                                   userInfo:@{ NSURLSessionDownloadTaskResumeData:resumeData }];
+
+                    // TODO Returning the downloadTaskMock here results in a segfault when by the end of `fetchPackage:`
+                    //      ARC is releasing objects, probably the mock., but I got too tired of figuring that out and
+                    //      it's not really necessary for this test anyways.
+                    //
+                    // [[[[URLSessionMock stub] andReturn:downloadTaskMock] andDo:^(NSInvocation *invocation) {
+                    [[[[URLSessionMock stub] andReturn:nil] andDo:^(NSInvocation *invocation) {
+                        // Get the block defined in `fetchPackage:`
+                        void (^completionBlock)(NSURL *, NSURLResponse *, NSError *);
+                        [invocation getArgument:&completionBlock atIndex:3];
+                        // Yield our stubbed error
+                        completionBlock(nil, nil, errorWithResumeData);
+                    }] downloadTaskWithURL:OCMOCK_ANY completionHandler:OCMOCK_ANY];
+
+                    __block NSError *error = nil;
+                    [preloader fetchPackage:^(NSError *e) { error = e; }];
+                    // No need to run the runloop, as our stubbing above immediately yields the block.
+                    expect(error).to.equal(errorWithResumeData);
+                    expect([NSData dataWithContentsOfURL:preloader.partiallyDownloadedPackageURL]).to.equal(resumeData);
+                });
+
+                it(@"is able to resume a download", ^{
+                    [resumeData writeToURL:preloader.partiallyDownloadedPackageURL atomically:YES];
+                    [[[URLSessionMock expect] andReturn:downloadTaskMock] downloadTaskWithResumeData:resumeData
+                                                                                   completionHandler:OCMOCK_ANY];
+                    [[downloadTaskMock expect] resume];
+                    [preloader fetchPackage:^(id _) {}];
+                });
             });
 
             // These are probably more for e.g. the application delegate
