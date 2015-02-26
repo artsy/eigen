@@ -37,7 +37,7 @@
            didFindService:(NSNetService *)service
                moreComing:(BOOL)moreServicesComing;
 {
-  NSLog(@"SERVICE: %@ MORE: %@", service, @(moreServicesComing));
+  ARActionLog(@"[FairEnough] Found Bonjour service: %@", service);
   if ([service.name isEqualToString:self.serviceName]) {
     self.service = service;
     if (service.addresses.count > 0) {
@@ -50,7 +50,6 @@
     return;
   }
   if (!moreServicesComing) {
-    DDLogDebug(@"Unable to find a Artsy-FairEnough-Server Bonjour service.");
     [self.serviceBrowser stop];
     // TODO Tell delegate to release this object.
     self.isResolvingService = NO;
@@ -74,7 +73,7 @@
 {
   self.isResolvingService = NO;
   if (!self.hasResolvedService) {
-    NSLog(@"FAILED TO RESOLVE SERVICE!");
+    ARActionLog(@"[FairEnough] Failed to resolve a Artsy-FairEnough-Server Bonjour service.");
   }
 }
 
@@ -85,12 +84,9 @@
     // IPv4
     if (address->sa_family == AF_INET) {
       self.serviceURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%s:%ld", inet_ntoa(((struct sockaddr_in *)address)->sin_addr), (long)self.service.port]];
-      NSLog(@"Found IPv4 address: %@", self.serviceURL);
     } else if (address->sa_family == AF_INET6) {
       // TODO?
       // NSLog(@"Found IPv6 address");
-    } else {
-      NSLog(@"Unknown address type");
     }
   }
 }
@@ -105,7 +101,7 @@
 
     NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
     if (statusCode < 200 || statusCode >= 300) {
-      DDLogError(@"Unexpected response from FairEnough HTTP server: %@", response);
+      ARErrorLog(@"Unexpected response from FairEnough HTTP server: %@", response);
       completionBlock([NSError errorWithDomain:@"ARFairContentPreloaderErrorDomain"
                                           code:statusCode
                                       userInfo:@{ NSLocalizedDescriptionKey:@"Unexpected HTTP status code." }]);
@@ -135,9 +131,8 @@
       }
       completionBlock(error);
     } else {
-    NSLog(@"%@", location);
-    [[NSFileManager defaultManager] moveItemAtURL:location toURL:self.temporaryLocalPackageURL error:&error];
-    completionBlock(nil);
+      [[NSFileManager defaultManager] moveItemAtURL:location toURL:self.temporaryLocalPackageURL error:&error];
+      completionBlock(nil);
     }
   }];
   [task resume];

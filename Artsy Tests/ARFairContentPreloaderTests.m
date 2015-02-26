@@ -70,8 +70,6 @@ describe(@"with a published Bonjour service", ^{
           [service stop];
           service = nil;
           // TODO how can we best fail all the test cases in this group?
-      } else {
-          NSLog(@"SERVICE STARTED!");
       }
     });
 
