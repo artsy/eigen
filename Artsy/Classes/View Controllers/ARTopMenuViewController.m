@@ -137,7 +137,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 - (ARNavigationController *)rootNavigationController
 {
-    return self.navigationDataSource.currentNavigationController;
+    return (ARNavigationController *)[self.tabContentView currentNavigationController];
 }
 
 #pragma mark - ARMenuAwareViewController
@@ -260,11 +260,15 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
+    if (index == ARTopTabControllerIndexFavorites && [User isTrialUser]) {
+        [ARTrialController presentTrialWithContext:ARTrialContextShowingFavorites fromTarget:self selector:_cmd];
+        return NO;
+    }
     if (index == _selectedTabIndex) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
         if (controller.viewControllers.count == 1) {
             if (index == ARTopTabControllerIndexSearch) {
-                [tabContentView returnToPreviousViewIndex];
+                [self returnToPreviousTab];
             } else {
                 UIScrollView *scrollView = nil;
                 if (index == ARTopTabControllerIndexFeed) {
