@@ -58,12 +58,6 @@
     return self.favoritesNavigationController;
 }
 
-
-- (ARNavigationController *)currentNavigationController
-{
-    return (id)[self viewControllerForTabContentView:nil atIndex:self.currentIndex];
-}
-
 #pragma mark ARTabViewDataSource
 
 - (UINavigationController *)viewControllerForTabContentView:(ARTabContentView *)tabContentView atIndex:(NSInteger)index

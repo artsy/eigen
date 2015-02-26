@@ -1,4 +1,4 @@
-## 1.7.0
+## 1.7.0 (16/2/2015)
 
 * Fair Map will zoom to show annotations on first double tap - 1aurabrown
 * Fix iOS 8 status bar in onboarding - ash

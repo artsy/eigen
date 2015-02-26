@@ -3,8 +3,15 @@
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARFairViewController.h"
+#import "ARUserManager+Stubs.h"
+#import "ARTrialController.h"
+#import "AROnboardingViewController.h"
 
-@interface ARTopMenuViewController(Testing)
+@interface ARTrialController (Testing)
+- (void)presentTrialWithContext:(enum ARTrialContext)context fromTarget:(id)target selector:(SEL)selector;
+@end
+
+@interface ARTopMenuViewController(Testing) <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 @end
 
@@ -36,18 +43,118 @@ itHasSnapshotsForDevices(@"should be able to hide", ^{
     return sut;
 });
 
+sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
+    __block NSInteger tab;
+    before(^{
+        tab = [data[@"tab"] integerValue];
+    });
+
+    it(@"is selectable when not selected", ^{
+        expect([sut tabContentView:sut.tabContentView shouldChangeToIndex:tab]).to.beTruthy();
+    });
+
+    describe(@"already selected", ^{
+        before(^{
+            [sut.tabContentView setCurrentViewIndex:tab animated:NO];
+        });
+
+        it(@"is not selectable", ^{
+            expect([sut tabContentView:sut.tabContentView shouldChangeToIndex:tab]).to.beFalsy();
+        });
+        
+        it(@"pops to root", ^{
+            [sut pushViewController:[[ARFairViewController alloc] init] animated:NO];
+            expect(sut.rootNavigationController.viewControllers.count).to.equal(2);
+
+            [sut.tabContentView setCurrentViewIndex:tab animated:NO];
+            expect(sut.rootNavigationController.viewControllers.count).to.equal(1);
+        });
+    });
+});
+
 describe(@"navigation", ^{
-    it(@"resets the search view controller to the root", ^{
+    __block NSInteger tabIndex;
+    before(^{
         dataSource = [[ARTopMenuNavigationDataSource alloc] init];
         sharedBefore();
+    });
+    describe(@"search", ^{
+        before(^{
+            tabIndex = ARTopTabControllerIndexSearch;
+        });
 
-        [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexSearch animated:NO];
-        [sut pushViewController:[[ARFairViewController alloc] init] animated:NO];
+        itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexSearch]});
 
-        [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
-        [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexSearch animated:NO];
+        it(@"always begins at root of stack", ^{
+            [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
+            [sut pushViewController:[[ARFairViewController alloc] init] animated:NO];
+            expect(sut.rootNavigationController.viewControllers.count).to.equal(2);
 
-        expect(sut.rootNavigationController.viewControllers.count).to.equal(1);
+            [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
+            [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
+
+            expect(sut.rootNavigationController.viewControllers.count).to.equal(1);
+        });
+
+        it(@"already at root returns to previous tab", ^{
+            id mock = [OCMockObject partialMockForObject:sut];
+
+            [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
+            [[mock expect] returnToPreviousTab];
+
+
+            [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
+
+            [mock verify];
+        });
+    });
+
+    describe(@"feed", ^{
+        before(^{
+            [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexSearch animated:NO];
+        });
+        itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexFeed]});
+    });
+
+    describe(@"browse", ^{
+        itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexBrowse]});
+    });
+
+    describe(@"favorites", ^{
+        before(^{
+            tabIndex = ARTopTabControllerIndexFavorites;
+        });
+
+        describe(@"logged out", ^{
+            __block id userMock;
+            before(^{
+                userMock = [OCMockObject niceMockForClass:[User class]];
+                [[[userMock stub] andReturnValue:@(YES)] isTrialUser];
+            });
+
+            after(^{
+                [userMock stopMocking];
+            });
+
+            it(@"is not selectable", ^{
+                expect([sut tabContentView:sut.tabContentView shouldChangeToIndex:tabIndex]).to.beFalsy();
+            });
+
+            it(@"invokes signup popover", ^{
+                id mock = [OCMockObject niceMockForClass:[ARTrialController class]];
+                [[mock expect] presentTrialWithContext:0 fromTarget:[OCMArg any] selector:[OCMArg anyPointer]] ;
+            });
+        });
+
+        describe(@"logged in", ^{
+            before(^{
+                [ARUserManager stubAndLoginWithUsername];
+            });
+            after(^{
+                [[ARUserManager sharedManager] logout];
+            });
+            itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexFavorites]});
+        });
     });
 });
 

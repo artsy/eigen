@@ -11,8 +11,6 @@ NS_ENUM(NSInteger, ARTopTabControllerIndex){
 
 @interface ARTopMenuNavigationDataSource : NSObject <ARTabViewDataSource>
 
-- (ARNavigationController *)currentNavigationController;
-
 @property (readwrite, nonatomic, strong) ARShowFeedViewController *showFeedViewController;
 
 @end
