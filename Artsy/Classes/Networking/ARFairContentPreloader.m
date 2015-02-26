@@ -172,6 +172,17 @@
   });
 }
 
+- (void)preload:(void(^)(NSError *))completionBlock;
+{
+  [self fetchManifest:^(NSError *manifestError) {
+    [self fetchPackage:^(NSError *packageError) {
+      [self unpackPackage:^(NSError *unpackError) {
+        completionBlock(nil);
+      }];
+    }];
+  }];
+}
+
 - (NSURL *)manifestURL;
 {
   return [self.serviceURL URLByAppendingPathComponent:@"/fair/manifest.json"];

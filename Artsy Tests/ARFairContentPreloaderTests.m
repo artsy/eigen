@@ -43,14 +43,12 @@
 // TODO make a global test helper?
 static NSString *
 ARTestFixture(NSString *pathname) {
-  NSBundle *testBundle = [NSBundle bundleForClass:[ARFairContentPreloaderTestServiceDelegate class]];
-  return [testBundle.resourcePath stringByAppendingPathComponent:pathname];
+    NSBundle *testBundle = [NSBundle bundleForClass:[ARFairContentPreloaderTestServiceDelegate class]];
+    return [testBundle.resourcePath stringByAppendingPathComponent:pathname];
 }
 
 
 SpecBegin(ARFairContentPreloader)
-
-
 
 it(@"uses a default service name", ^{
     expect([ARFairContentPreloader contentPreloader].serviceName).to.equal(@"Artsy-FairEnough-Server");
@@ -355,6 +353,38 @@ describe(@"with a published Bonjour service", ^{
                                                                            error:nil];
             expect(unpackedPackageContent).to.equal(existingCachedContent);
         });
+    });
+
+    it(@"performs all the work needed in sequence", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return [request.URL isEqual:preloader.manifestURL];
+        } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithJSONObject:manifest
+                                                    statusCode:200
+                                                       headers:@{ @"Content-Type":@"application/json" }];
+        }];
+
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return [request.URL isEqual:preloader.packageURL];
+        } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithFileAtPath:ARTestFixture(packageName)
+                                                    statusCode:200
+                                                       headers:@{ @"Content-Type":@"application/zip" }];
+        }];
+
+        __block BOOL yielded = NO;
+        [preloader preload:^(id _) { yielded = YES; }];
+        while (!yielded) {
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+        }
+
+        NSURL *unpackedFileURL = [preloader.cacheDirectoryURL URLByAppendingPathComponent:@"fair-content.txt"];
+        NSString *unpackedPackageContent = [NSString stringWithContentsOfURL:unpackedFileURL
+                                                                    encoding:NSUTF8StringEncoding
+                                                                       error:nil];
+        expect(unpackedPackageContent).to.equal(@"Yup, this is fair content.\n");
+
+        [[NSFileManager defaultManager] removeItemAtURL:unpackedFileURL error:nil];
     });
 
     // These are probably more for e.g. the application delegate
