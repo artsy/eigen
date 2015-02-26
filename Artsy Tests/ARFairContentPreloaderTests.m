@@ -30,6 +30,7 @@
 @property (nonatomic, readonly) NSURL *manifestURL;
 @property (nonatomic, readonly) NSURL *packageURL;
 @property (nonatomic, readonly) NSURL *temporaryLocalPackageURL;
+@property (nonatomic, readonly) NSURL *partiallyDownloadedPackageURL;
 @property (nonatomic, readonly) NSUInteger packageSize;
 @property (nonatomic, readonly) NSUInteger unpackedSize;
 @property (nonatomic, readonly) NSUInteger requiredDiskSpace;
@@ -199,6 +200,7 @@ describe(@"with a published Bonjour service", ^{
 
             afterEach(^{
               [[NSFileManager defaultManager] removeItemAtURL:preloader.temporaryLocalPackageURL error:nil];
+              [[NSFileManager defaultManager] removeItemAtURL:preloader.partiallyDownloadedPackageURL error:nil];
             });
 
             it(@"is able to download a package", ^{
@@ -218,6 +220,33 @@ describe(@"with a published Bonjour service", ^{
 
                 NSString *path = preloader.temporaryLocalPackageURL.path;
                 expect([[NSFileManager defaultManager] fileExistsAtPath:path]).to.equal(YES);
+            });
+
+            it(@"saves resume data to disk if a transfer fails", ^{
+                id URLSessionMock = [OCMockObject mockForClass:[NSURLSession class]];
+                [[[URLSessionMock stub] andReturn:URLSessionMock] sharedSession];
+
+                // Create NSError with stubbed first 100 bytes of package data.
+                NSData *resumeData = [NSData dataWithContentsOfFile:ARTestFixture(packageName)];
+                resumeData = [resumeData subdataWithRange:NSMakeRange(0, 100)];
+                NSError *errorWithResumeData = [NSError errorWithDomain:NSURLErrorDomain
+                                                                   code:NSURLErrorTimedOut
+                                                               userInfo:@{ NSURLSessionDownloadTaskResumeData:resumeData }];
+
+                // Get block defined in fetchPackage: and yield the stubbed error to it.
+                [[[[URLSessionMock stub] andReturn:nil] andDo:^(NSInvocation *invocation) {
+                  void (^completionBlock)(NSURL *, NSURLResponse *, NSError *);
+                  [invocation getArgument:&completionBlock atIndex:3];
+                  completionBlock(nil, nil, errorWithResumeData);
+                }] downloadTaskWithURL:OCMOCK_ANY completionHandler:OCMOCK_ANY];
+
+                __block NSError *error = nil;
+                [preloader fetchPackage:^(NSError *e) { error = e; }];
+                // No need to run the runloop, as our stubbing above immediately yields the block.
+                expect(error).to.equal(errorWithResumeData);
+                expect([NSData dataWithContentsOfURL:preloader.partiallyDownloadedPackageURL]).to.equal(resumeData);
+
+                [URLSessionMock stopMocking];
             });
 
             it(@"is able to resume a download", ^{

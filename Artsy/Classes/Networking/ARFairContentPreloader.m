@@ -128,9 +128,17 @@
 {
   NSURLSessionDownloadTask *task = [[NSURLSession sharedSession] downloadTaskWithURL:self.packageURL
                                                                    completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+    if (error) {
+      NSData *resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData];
+      if (resumeData) {
+        [resumeData writeToURL:self.partiallyDownloadedPackageURL atomically:YES];
+      }
+      completionBlock(error);
+    } else {
     NSLog(@"%@", location);
     [[NSFileManager defaultManager] moveItemAtURL:location toURL:self.temporaryLocalPackageURL error:&error];
     completionBlock(nil);
+    }
   }];
   [task resume];
 }
@@ -149,6 +157,11 @@
 {
   NSString *filename = [self.fairName stringByAppendingPathExtension:@"zip"];
   return [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filename]];
+}
+
+- (NSURL *)partiallyDownloadedPackageURL;
+{
+  return [self.temporaryLocalPackageURL URLByAppendingPathExtension:@"partial"];
 }
 
 - (NSString *)fairName;
