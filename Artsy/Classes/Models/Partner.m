@@ -1,11 +1,7 @@
 #import "ARValueTransformer.h"
 
-@interface Partner()
-@property (nonatomic, copy, readonly) NSDictionary *imageURLs;
-@end
-
-
 @implementation Partner
+@synthesize imageURLs;
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
@@ -37,7 +33,7 @@
 
 - (NSURL *)imageURLWithFormatName:(NSString *)formatName
 {
-    return [self.imageURLs objectForKey:formatName];
+    return [NSURL URLWithString:[self.imageURLs objectForKey:formatName]];
 }
 
 + (NSValueTransformer *)defaultProfilePublicJSONTransformer

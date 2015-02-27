@@ -3,7 +3,7 @@
 #import "ARShareableObject.h"
 #import "ARHasImageBaseURL.h"
 
-@interface Artist : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageBaseURL>
+@interface Artist : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageURLs>
 
 @property (readonly, nonatomic, copy) NSString *artistID;
 @property (readonly, nonatomic, copy) NSString *name;
@@ -22,7 +22,7 @@
 - (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
 - (AFJSONRequestOperation *)getRelatedArtists:(void (^)(NSArray *artists))success;
 
-- (NSURL *)smallImageURL;
+- (NSURL *)squareImageURL;
 
 - (NSString *)publicURL;
 @end

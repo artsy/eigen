@@ -3,10 +3,10 @@
 @interface Artist() {
     BOOL _isFollowed;
 }
-@property (nonatomic, copy, readonly) NSString *urlFormatString;
 @end
 
 @implementation Artist
+@synthesize imageURLs;
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
@@ -19,25 +19,18 @@
         @"blurb": @"blurb",
         @"publishedArtworksCount": @"published_artworks_count",
         @"forSaleArtworksCount": @"forsale_artworks_count",
-        @"urlFormatString": @"image_url"
+        @"imageURLs": @"image_urls"
     };
 }
 
-- (NSURL *)largeImageURL
+- (NSURL *)squareImageURL
 {
-    return [NSURL URLWithString:[self.urlFormatString stringByReplacingOccurrencesOfString:@":version" withString:@"square"]];
+    return [self imageURLWithFormatName:@"square"];
 }
 
-// the smallest is thumb on an artist
-
-- (NSURL *)smallImageURL
+- (NSURL *)imageURLWithFormatName:(NSString *)formatName
 {
-    return [NSURL URLWithString:[self.urlFormatString stringByReplacingOccurrencesOfString:@":version" withString:@"square"]];
-}
-
-- (NSString *)baseImageURL
-{
-    return self.urlFormatString;
+    return [NSURL URLWithString:[self.imageURLs objectForKey:formatName]];
 }
 
 - (instancetype)initWithArtistID:(NSString *)artistID
