@@ -70,8 +70,11 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
     if ([object respondsToSelector:@selector(largeImageURL)]) {
         NSURL *url = [object largeImageURL];
         [self.imageView ar_setImageWithURL:url];
+    } else if ([object respondsToSelector:@selector(squareImageURL)]) {
+        NSURL *url = [object squareImageURL];
+        [self.imageView ar_setImageWithURL:url];
     }
-
+    
     if (!self.titleLabel) {
         UILabel *label = [[UILabel alloc] init];
         label.font = [UIFont sansSerifFontWithSize:12];

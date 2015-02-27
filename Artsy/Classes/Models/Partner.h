@@ -1,4 +1,5 @@
 #import "MTLModel.h"
+#import "ARHasImageBaseURL.h"
 
 typedef NS_ENUM(NSInteger, ARPartnerType) {
     ARPartnerTypeGallery,
@@ -11,7 +12,7 @@ typedef NS_ENUM(NSInteger, ARPartnerType) {
     ARPartnerTypeNonProfit
 };
 
-@interface Partner : MTLModel <MTLJSONSerializing>
+@interface Partner : MTLModel <MTLJSONSerializing, ARHasImageURLs>
 
 @property (readonly, nonatomic, assign) BOOL defaultProfilePublic;
 @property (readonly, nonatomic, copy) NSString *name;

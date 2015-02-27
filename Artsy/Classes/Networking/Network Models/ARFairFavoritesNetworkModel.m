@@ -163,7 +163,7 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
         ARNavigationButtonPropertiesKey: @{
             @keypath(ARButtonWithImage.new, title): [artist.name uppercaseString] ?: [NSNull null],
             @keypath(ARButtonWithImage.new, subtitle): @"", // TODO: number of works exhibited at this fair
-            @keypath(ARButtonWithImage.new, imageURL): [artist smallImageURL] ?: [NSNull null],
+            @keypath(ARButtonWithImage.new, imageURL): [artist squareImageURL] ?: [NSNull null],
             @keypath(ARButtonWithImage.new, titleFont): [UIFont sansSerifFontWithSize:12],
             @keypath(ARButtonWithImage.new, subtitleFont): [UIFont serifFontWithSize:12]
         },

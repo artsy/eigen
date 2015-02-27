@@ -1,11 +1,7 @@
 #import "ARValueTransformer.h"
 
-@interface Partner()
-@property (nonatomic, copy, readonly) NSString *imageAddress;
-@end
-
-
 @implementation Partner
+@synthesize imageURLs;
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
@@ -15,7 +11,7 @@
         @keypath(Partner.new, partnerID) : @"id",
         @keypath(Partner.new, defaultProfilePublic) : @"default_profile_public",
         @keypath(Partner.new, profileID) : @"default_profile_id",
-        @keypath(Partner.new, imageAddress) : @"image_url",
+        @keypath(Partner.new, imageURLs) : @"image_urls",
     };
 }
 
@@ -37,8 +33,7 @@
 
 - (NSURL *)imageURLWithFormatName:(NSString *)formatName
 {
-    NSString *url = [self.imageAddress stringByReplacingOccurrencesOfString:@":version" withString:formatName];
-    return [NSURL URLWithString:url];
+    return [NSURL URLWithString:[self.imageURLs objectForKey:formatName]];
 }
 
 + (NSValueTransformer *)defaultProfilePublicJSONTransformer
