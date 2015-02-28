@@ -4,6 +4,7 @@
 #import <arpa/inet.h>
 
 @interface ARFairContentPreloader () <NSNetServiceBrowserDelegate, NSNetServiceDelegate>
+@property (nonatomic, strong) dispatch_queue_t workQueue;
 @property (nonatomic, strong) NSNetServiceBrowser *serviceBrowser;
 @property (nonatomic, strong) NSNetService *service;
 @property (nonatomic, strong) NSURL *serviceURL;
@@ -22,6 +23,7 @@
 {
    if ((self = [super init])) {
      _serviceName = [serviceName copy];
+     _workQueue = dispatch_queue_create("net.artsy.ARFairContentPreloader.workQueue", DISPATCH_QUEUE_SERIAL);
    }
    return self;
 }
@@ -252,7 +254,7 @@
   NSString *destinationPath = self.cacheDirectoryURL.path;
   NSDictionary *manifest = self.manifest;
   NSURL *cachedManifestURL = self.cachedManifestURL;
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+  dispatch_async(self.workQueue, ^{
     NSError *error = nil;
     if ([SSZipArchive unzipFileAtPath:sourcePath
                         toDestination:destinationPath
@@ -279,7 +281,7 @@
     if (error) {
       completionBlock(error);
     } else {
-      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+      dispatch_async(self.workQueue, ^{
         @strongify(self);
         [self preload:completionBlock];
       });
@@ -287,7 +289,7 @@
   };
 
   if (!self.hasResolvedService) {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    dispatch_async(self.workQueue, ^{
       @strongify(self);
       if (!self) return;
 
