@@ -91,9 +91,8 @@
 
 - (BOOL)hasEnoughFreeDiskSpace;
 {
-  NSError *error = nil;
   NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory()
-                                                                                     error:&error];
+                                                                                     error:nil];
   return [attributes[NSFileSystemFreeSize] unsignedIntegerValue] >= self.requiredDiskSpace;
 }
 
@@ -132,19 +131,21 @@
 {
   ARActionLog(@"[FairEnough] Found Bonjour service: %@", service);
   if ([service.name isEqualToString:self.serviceName]) {
+    [self.serviceBrowser stop];
+    self.serviceBrowser = nil;
+
     self.service = service;
-    if (service.addresses.count > 0) {
+    if (self.hasResolvedService) {
       [self resolveAddress];
     } else {
       self.service.delegate = self;
       [self.service resolveWithTimeout:10];
     }
-    [self.serviceBrowser stop];
     return;
   }
   if (!moreServicesComing) {
     [self.serviceBrowser stop];
-    // TODO Tell delegate to release this object.
+    self.serviceBrowser = nil;
     self.isResolvingService = NO;
   }
 }
@@ -171,8 +172,9 @@
     const struct sockaddr *address = (const struct sockaddr *)addressData.bytes;
     // IPv4
     if (address->sa_family == AF_INET) {
-      self.serviceURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%s:%ld", inet_ntoa(((struct sockaddr_in *)address)->sin_addr), (long)self.service.port]];
-    } else if (address->sa_family == AF_INET6) {
+      char *ip = inet_ntoa(((struct sockaddr_in *)address)->sin_addr);
+      self.serviceURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%s:%ld", ip, (long)self.service.port]];
+    // } else if (address->sa_family == AF_INET6) {
       // TODO?
       // NSLog(@"Found IPv6 address");
     }
@@ -184,8 +186,9 @@
 - (void)fetchManifest:(void(^)(NSError *))completionBlock;
 {
   @weakify(self);
-  NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:self.manifestURL
-                                                           completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+  NSURLSessionDataTask *task = nil;
+  task = [[NSURLSession sharedSession] dataTaskWithURL:self.manifestURL
+                                     completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
     @strongify(self);
     if (!self) return;
 
@@ -271,6 +274,7 @@
   }
 
   @weakify(self);
+
   void (^handleResult)(NSError *) = ^(NSError *error) {
     if (error) {
       completionBlock(error);
@@ -281,6 +285,27 @@
       });
     }
   };
+
+  if (!self.hasResolvedService) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+      @strongify(self);
+      if (!self) return;
+
+      [self discoverFairService];
+      while (self.isResolvingService) {
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+      }
+
+      NSError *error = nil;
+      if (!self.hasResolvedService) {
+        NSString *description = @"Unable to resolve a Artsy-FairEnough-Server Bonjour service.";
+        error = [NSError errorWithDomain:@"ARFairContentPreloaderErrorDomain"
+                                    code:-2
+                                userInfo:@{ NSLocalizedDescriptionKey:description }];
+      }
+      handleResult(error);
+    });
+  }
 
   if (!self.hasManifest) {
     [self fetchManifest:handleResult];
