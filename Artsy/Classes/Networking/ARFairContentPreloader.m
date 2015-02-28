@@ -163,10 +163,10 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
     NSError *error = nil;
     if ([SSZipArchive unzipFileAtPath:sourcePath
-                         toDestination:destinationPath
-                             overwrite:NO
-                              password:nil
-                                 error:&error]) {
+                        toDestination:destinationPath
+                            overwrite:NO
+                             password:nil
+                                error:&error]) {
       [manifest writeToURL:cachedManifestURL atomically:YES];
       [[NSFileManager defaultManager] removeItemAtPath:sourcePath error:nil]; // TODO deal with error?
     }
@@ -176,13 +176,35 @@
 
 - (void)preload:(void(^)(NSError *))completionBlock;
 {
-  [self fetchManifest:^(NSError *manifestError) {
-    [self fetchPackage:^(NSError *packageError) {
-      [self unpackPackage:^(NSError *unpackError) {
-        completionBlock(nil);
-      }];
-    }];
-  }];
+  if (self.hasPreloadedContent) {
+    completionBlock(nil);
+    return;
+  }
+
+  @weakify(self);
+  void (^handleResult)(NSError *) = ^(NSError *error) {
+    if (error) {
+      completionBlock(error);
+    } else {
+      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        @strongify(self);
+        [self preload:completionBlock];
+      });
+    }
+  };
+
+  if (!self.hasManifest) {
+    [self fetchManifest:handleResult];
+  } else if (!self.hasPackage) {
+    [self fetchPackage:handleResult];
+  } else if (!self.hasPreloadedContent) {
+    [self unpackPackage:handleResult];
+  } else {
+    completionBlock([NSError errorWithDomain:@"ARFairContentPreloaderErrorDomain"
+                                        code:-1
+                                    userInfo:@{ NSLocalizedDescriptionKey:@"Unexpected state achieved." }]);
+
+  }
 }
 
 - (NSURL *)manifestURL;

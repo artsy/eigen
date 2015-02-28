@@ -343,6 +343,7 @@ describe(@"with a published Bonjour service", ^{
 
         afterEach(^{
             [[NSFileManager defaultManager] removeItemAtURL:unpackedFileURL error:nil];
+            [[NSFileManager defaultManager] removeItemAtURL:preloader.cachedManifestURL error:nil];
         });
 
         it(@"unpacks the package to the cache directory", ^{
@@ -426,6 +427,7 @@ describe(@"with a published Bonjour service", ^{
         expect(unpackedPackageContent).to.equal(@"Yup, this is fair content.\n");
 
         [[NSFileManager defaultManager] removeItemAtURL:unpackedFileURL error:nil];
+        [[NSFileManager defaultManager] removeItemAtURL:preloader.cachedManifestURL error:nil];
     });
 
     // These are probably more for e.g. the application delegate
