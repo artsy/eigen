@@ -292,9 +292,10 @@ describe(@"with a published Bonjour service", ^{
 
                 it(@"saves resume data to disk if a transfer fails", ^{
                     // Create NSError with stubbed first 100 bytes of package data.
-                    NSError *errorWithResumeData = [NSError errorWithDomain:NSURLErrorDomain
-                                                                       code:NSURLErrorTimedOut
-                                                                   userInfo:@{ NSURLSessionDownloadTaskResumeData:resumeData }];
+                    NSError *errorWithResumeData = nil;
+                    errorWithResumeData = [NSError errorWithDomain:NSURLErrorDomain
+                                                              code:NSURLErrorTimedOut
+                                                          userInfo:@{ NSURLSessionDownloadTaskResumeData:resumeData }];
 
                     // TODO Returning the downloadTaskMock here results in a segfault when by the end of `fetchPackage:`
                     //      ARC is releasing objects, probably the mock., but I got too tired of figuring that out and
@@ -373,13 +374,17 @@ describe(@"with a published Bonjour service", ^{
                 while (!yielded) {
                     CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
                 }
-                expect([NSDictionary dictionaryWithContentsOfURL:preloader.cachedManifestURL]).to.equal(preloader.manifest);
+                NSDictionary *cachedManifest = [NSDictionary dictionaryWithContentsOfURL:preloader.cachedManifestURL];
+                expect(cachedManifest).to.equal(preloader.manifest);
                 expect(preloader.hasPreloadedContent).to.equal(YES);
             });
 
             it(@"maintains existing cached content", ^{
                 NSString *existingCachedContent = @"Existing cached content.";
-                [existingCachedContent writeToURL:unpackedFileURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
+                [existingCachedContent writeToURL:unpackedFileURL
+                                       atomically:YES
+                                         encoding:NSUTF8StringEncoding
+                                            error:nil];
 
                 __block BOOL yielded = NO;
                 [preloader unpackPackage:^(id _) { yielded = YES; }];
