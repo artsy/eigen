@@ -26,6 +26,98 @@
    return self;
 }
 
+#pragma mark - URLs
+
+- (NSURL *)manifestURL;
+{
+  return [self.serviceURL URLByAppendingPathComponent:@"/fair/manifest.json"];
+}
+
+- (NSURL *)packageURL;
+{
+  return [self.serviceURL URLByAppendingPathComponent:@"/fair/package.zip"];
+}
+
+- (NSURL *)temporaryLocalPackageURL;
+{
+  NSString *filename = [self.fairName stringByAppendingPathExtension:@"zip"];
+  return [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filename]];
+}
+
+- (NSURL *)partiallyDownloadedPackageURL;
+{
+  return [self.temporaryLocalPackageURL URLByAppendingPathExtension:@"partial"];
+}
+
+- (NSURL *)cacheDirectoryURL;
+{
+  return [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0]];
+}
+
+- (NSURL *)cachedManifestURL;
+{
+  NSString *filename = [NSString stringWithFormat:@"%@.FairEnough-manifest.plist", self.fairName];
+  return [self.cacheDirectoryURL URLByAppendingPathComponent:filename];
+}
+
+#pragma mark - Metadata
+
+- (NSString *)fairName;
+{
+  return self.manifest[@"fair"];
+}
+
+- (NSUInteger)packageSize;
+{
+  return [self.manifest[@"package-size"] unsignedIntegerValue];
+}
+
+- (NSUInteger)unpackedSize;
+{
+  return [self.manifest[@"unpacked-size"] unsignedIntegerValue];
+}
+
+- (NSUInteger)requiredDiskSpace;
+{
+  return self.packageSize + self.unpackedSize;
+}
+
+#pragma mark - Predicates
+
+- (BOOL)hasResolvedService;
+{
+  return self.service.addresses.count > 0;
+}
+
+- (BOOL)hasEnoughFreeDiskSpace;
+{
+  NSError *error = nil;
+  NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory()
+                                                                                     error:&error];
+  return [attributes[NSFileSystemFreeSize] unsignedIntegerValue] >= self.requiredDiskSpace;
+}
+
+- (BOOL)hasManifest;
+{
+  return self.manifest != nil;
+}
+
+- (BOOL)hasPackage;
+{
+  return [[NSFileManager defaultManager] fileExistsAtPath:self.temporaryLocalPackageURL.path];
+}
+
+- (BOOL)hasPreloadedContent;
+{
+  if (self.hasManifest && [[NSFileManager defaultManager] fileExistsAtPath:self.cachedManifestURL.path]) {
+    NSDictionary *cachedManifest = [NSDictionary dictionaryWithContentsOfURL:self.cachedManifestURL];
+    return [self.manifest isEqualToDictionary:cachedManifest];
+  }
+  return NO;
+}
+
+#pragma mark - Bonjour service
+
 - (void)discoverFairService;
 {
   self.isResolvingService = YES;
@@ -65,11 +157,6 @@
   }
 }
 
-- (BOOL)hasResolvedService;
-{
-  return self.service.addresses.count > 0;
-}
-
 - (void)netServiceDidStop:(NSNetService *)service;
 {
   self.isResolvingService = NO;
@@ -91,6 +178,8 @@
     }
   }
 }
+
+#pragma mark - Operations
 
 - (void)fetchManifest:(void(^)(NSError *))completionBlock;
 {
@@ -205,85 +294,6 @@
                                     userInfo:@{ NSLocalizedDescriptionKey:@"Unexpected state achieved." }]);
 
   }
-}
-
-- (NSURL *)manifestURL;
-{
-  return [self.serviceURL URLByAppendingPathComponent:@"/fair/manifest.json"];
-}
-
-- (NSURL *)packageURL;
-{
-  return [self.serviceURL URLByAppendingPathComponent:@"/fair/package.zip"];
-}
-
-- (NSURL *)temporaryLocalPackageURL;
-{
-  NSString *filename = [self.fairName stringByAppendingPathExtension:@"zip"];
-  return [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:filename]];
-}
-
-- (NSURL *)partiallyDownloadedPackageURL;
-{
-  return [self.temporaryLocalPackageURL URLByAppendingPathExtension:@"partial"];
-}
-
-- (NSURL *)cacheDirectoryURL;
-{
-  return [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0]];
-}
-
-- (NSURL *)cachedManifestURL;
-{
-  NSString *filename = [NSString stringWithFormat:@"%@.FairEnough-manifest.plist", self.fairName];
-  return [self.cacheDirectoryURL URLByAppendingPathComponent:filename];
-}
-
-- (NSString *)fairName;
-{
-  return self.manifest[@"fair"];
-}
-
-- (NSUInteger)packageSize;
-{
-  return [self.manifest[@"package-size"] unsignedIntegerValue];
-}
-
-- (NSUInteger)unpackedSize;
-{
-  return [self.manifest[@"unpacked-size"] unsignedIntegerValue];
-}
-
-- (NSUInteger)requiredDiskSpace;
-{
-  return self.packageSize + self.unpackedSize;
-}
-
-- (BOOL)hasEnoughFreeDiskSpace;
-{
-  NSError *error = nil;
-  NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory()
-                                                                                     error:&error];
-  return [attributes[NSFileSystemFreeSize] unsignedIntegerValue] >= self.requiredDiskSpace;
-}
-
-- (BOOL)hasManifest;
-{
-  return self.manifest != nil;
-}
-
-- (BOOL)hasPackage;
-{
-  return [[NSFileManager defaultManager] fileExistsAtPath:self.temporaryLocalPackageURL.path];
-}
-
-- (BOOL)hasPreloadedContent;
-{
-  if (self.hasManifest && [[NSFileManager defaultManager] fileExistsAtPath:self.cachedManifestURL.path]) {
-    NSDictionary *cachedManifest = [NSDictionary dictionaryWithContentsOfURL:self.cachedManifestURL];
-    return [self.manifest isEqualToDictionary:cachedManifest];
-  }
-  return NO;
 }
 
 @end

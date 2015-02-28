@@ -11,9 +11,6 @@
 - (instancetype)initWithServiceName:(NSString *)serviceName;
 
 - (void)discoverFairService;
-- (void)fetchManifest:(void(^)(NSError *))completionBlock;
-- (void)fetchPackage:(void(^)(NSError *))completionBlock;
-- (void)unpackPackage:(void(^)(NSError *))completionBlock;
 - (void)preload:(void(^)(NSError *))completionBlock;
 
 @end

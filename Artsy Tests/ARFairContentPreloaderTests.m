@@ -41,6 +41,10 @@
 @property (nonatomic, readonly) BOOL hasManifest;
 @property (nonatomic, readonly) BOOL hasPackage;
 @property (nonatomic, readonly) BOOL hasPreloadedContent;
+
+- (void)fetchManifest:(void(^)(NSError *))completionBlock;
+- (void)fetchPackage:(void(^)(NSError *))completionBlock;
+- (void)unpackPackage:(void(^)(NSError *))completionBlock;
 @end
 
 
