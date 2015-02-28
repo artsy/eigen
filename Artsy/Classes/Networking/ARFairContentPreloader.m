@@ -158,17 +158,19 @@
 {
   NSString *sourcePath = self.temporaryLocalPackageURL.path;
   NSString *destinationPath = self.cacheDirectoryURL.path;
+  NSDictionary *manifest = self.manifest;
+  NSURL *cachedManifestURL = self.cachedManifestURL;
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
     NSError *error = nil;
-    if (![SSZipArchive unzipFileAtPath:sourcePath
+    if ([SSZipArchive unzipFileAtPath:sourcePath
                          toDestination:destinationPath
                              overwrite:NO
                               password:nil
                                  error:&error]) {
-      completionBlock(error);
-    } else {
-      completionBlock(nil);
+      [manifest writeToURL:cachedManifestURL atomically:YES];
+      [[NSFileManager defaultManager] removeItemAtPath:sourcePath error:nil]; // TODO deal with error?
     }
+    completionBlock(error);
   });
 }
 
@@ -209,6 +211,12 @@
   return [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0]];
 }
 
+- (NSURL *)cachedManifestURL;
+{
+  NSString *filename = [NSString stringWithFormat:@"%@.FairEnough-manifest.plist", self.fairName];
+  return [self.cacheDirectoryURL URLByAppendingPathComponent:filename];
+}
+
 - (NSString *)fairName;
 {
   return self.manifest[@"fair"];
@@ -235,6 +243,25 @@
   NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory()
                                                                                      error:&error];
   return [attributes[NSFileSystemFreeSize] unsignedIntegerValue] >= self.requiredDiskSpace;
+}
+
+- (BOOL)hasManifest;
+{
+  return self.manifest != nil;
+}
+
+- (BOOL)hasPackage;
+{
+  return [[NSFileManager defaultManager] fileExistsAtPath:self.temporaryLocalPackageURL.path];
+}
+
+- (BOOL)hasPreloadedContent;
+{
+  if (self.hasManifest && [[NSFileManager defaultManager] fileExistsAtPath:self.cachedManifestURL.path]) {
+    NSDictionary *cachedManifest = [NSDictionary dictionaryWithContentsOfURL:self.cachedManifestURL];
+    return [self.manifest isEqualToDictionary:cachedManifest];
+  }
+  return NO;
 }
 
 @end

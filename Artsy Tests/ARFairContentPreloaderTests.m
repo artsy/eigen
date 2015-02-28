@@ -33,10 +33,14 @@
 @property (nonatomic, readonly) NSURL *temporaryLocalPackageURL;
 @property (nonatomic, readonly) NSURL *partiallyDownloadedPackageURL;
 @property (nonatomic, readonly) NSURL *cacheDirectoryURL;
+@property (nonatomic, readonly) NSURL *cachedManifestURL;
 @property (nonatomic, readonly) NSUInteger packageSize;
 @property (nonatomic, readonly) NSUInteger unpackedSize;
 @property (nonatomic, readonly) NSUInteger requiredDiskSpace;
 @property (nonatomic, readonly) BOOL hasEnoughFreeDiskSpace;
+@property (nonatomic, readonly) BOOL hasManifest;
+@property (nonatomic, readonly) BOOL hasPackage;
+@property (nonatomic, readonly) BOOL hasPreloadedContent;
 @end
 
 
@@ -105,6 +109,10 @@ describe(@"with a published Bonjour service", ^{
         }
     });
 
+    it(@"reports that it needs to fetch the manifest", ^{
+        expect(preloader.hasManifest).to.equal(NO);
+    });
+
     it(@"fetches the manifest", ^{
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return [request.URL isEqual:preloader.manifestURL];
@@ -120,6 +128,7 @@ describe(@"with a published Bonjour service", ^{
             CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
         }
         expect(preloader.manifest).to.equal(manifest);
+        expect(preloader.hasManifest).to.equal(YES);
     });
 
     describe(@"concerning fetch failures", ^{
@@ -136,6 +145,7 @@ describe(@"with a published Bonjour service", ^{
             while (error == nil) {
                 CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
             }
+            expect(preloader.hasManifest).to.equal(NO);
         });
 
         it(@"reports a JSON error", ^{
@@ -153,6 +163,7 @@ describe(@"with a published Bonjour service", ^{
                 CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
             }
             expect(error).notTo.equal(nil);
+            expect(preloader.hasManifest).to.equal(NO);
         });
     });
 
@@ -220,6 +231,10 @@ describe(@"with a published Bonjour service", ^{
             [[NSFileManager defaultManager] removeItemAtURL:preloader.partiallyDownloadedPackageURL error:nil];
         });
 
+        it(@"reports that it needs to fetch the package", ^{
+            expect(preloader.hasPackage).to.equal(NO);
+        });
+
         it(@"is able to download a package", ^{
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return [request.URL isEqual:preloader.packageURL];
@@ -237,6 +252,7 @@ describe(@"with a published Bonjour service", ^{
 
             NSString *path = preloader.temporaryLocalPackageURL.path;
             expect([[NSFileManager defaultManager] fileExistsAtPath:path]).to.equal(YES);
+            expect(preloader.hasPackage).to.equal(YES);
         });
 
         describe(@"concerning download resuming", ^{
@@ -260,6 +276,10 @@ describe(@"with a published Bonjour service", ^{
                 [URLSessionMock stopMocking];
                 [URLSessionMock verify];
                 [downloadTaskMock verify];
+            });
+
+            it(@"reports that it needs to fetch the package", ^{
+                expect(preloader.hasPackage).to.equal(NO);
             });
 
             it(@"saves resume data to disk if a transfer fails", ^{
@@ -338,6 +358,16 @@ describe(@"with a published Bonjour service", ^{
             expect(unpackedPackageContent).to.equal(@"Yup, this is fair content.\n");
         });
 
+        it(@"places the manifest in the cache directory so we know it has been installed", ^{
+            __block BOOL yielded = NO;
+            [preloader unpackPackage:^(id _) { yielded = YES; }];
+            while (!yielded) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+            }
+            expect([NSDictionary dictionaryWithContentsOfURL:preloader.cachedManifestURL]).to.equal(preloader.manifest);
+            expect(preloader.hasPreloadedContent).to.equal(YES);
+        });
+
         it(@"maintains existing cached content", ^{
             NSString *existingCachedContent = @"Existing cached content.";
             [existingCachedContent writeToURL:unpackedFileURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
@@ -352,6 +382,17 @@ describe(@"with a published Bonjour service", ^{
                                                                         encoding:NSUTF8StringEncoding
                                                                            error:nil];
             expect(unpackedPackageContent).to.equal(existingCachedContent);
+        });
+
+        it(@"removes the package after unpacking", ^{
+            __block BOOL yielded = NO;
+            [preloader unpackPackage:^(id _) { yielded = YES; }];
+            while (!yielded) {
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.25, true);
+            }
+
+            NSString *packagePath = preloader.temporaryLocalPackageURL.path;
+            expect([[NSFileManager defaultManager] fileExistsAtPath:packagePath]).to.equal(NO);
         });
     });
 
