@@ -5,15 +5,8 @@
 
 @interface ARSharingController (Testing)
 - (NSString *)message;
-// - (NSString *)objectID;
 - (NSArray *)activityItems;
 @property (nonatomic, strong) id <ARShareableObject> object;
-// @property (nonatomic, strong) ARURLItemProvider *urlProvider;
-// @property (nonatomic, strong) ARImageItemProvider *imageProvider;
-// @property (nonatomic, strong) ARMessageItemProvider *messageProvider;
-// - (void)shareWithThumbnailImageURL:(NSURL *)thumbnailImageURL image:(UIImage *)image;
-// - (instancetype)initWithObject:(id)object;
-// - (void)presentActivityViewController;
 @end
 
 SpecBegin(ARSharingController)

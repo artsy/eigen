@@ -1,5 +1,6 @@
 ## Next
 
+* Fix a crash when sharing from an iPad. - alloy
 * Fix a crash when swiping between artworks. - alloy
 * Tapping YOU as a Trial User invokes signup - 1aurabrown
 * Share URLs always use desktop, not martsy, urls -- 1aurabrown
