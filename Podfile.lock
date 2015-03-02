@@ -190,7 +190,7 @@ SPEC CHECKSUMS:
   AFHTTPRequestOperationLogger: 890afab1adb178314d33c4de9d2aa5a42cc594b9
   AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
   AFOAuth1Client: 53c76d9cadd73142a9f73854456d5d970bdc147a
-  ALPValidator: 33ec78108e2389b903f066179973dbb1679d82c1
+  ALPValidator: 13bc680ecba56a5385ade37137d7cc75a16e5504
   ARAnalytics: 4626cd58b4ab08ca4857da8ecf02e47c6f6bdefa
   ARASCIISwizzle: 01fc71ffac975f18079a249b0608c9769a9fc4b6
   ARCollectionViewMasonryLayout: 164b82010cf8ec99bc7a38cffe59a179d7e5a116
