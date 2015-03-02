@@ -4,7 +4,7 @@
 #import "ARMessageItemProvider.h"
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
-@interface ARSharingController () <UIPopoverControllerDelegate>
+@interface ARSharingController ()
 @property (nonatomic, strong) id <ARShareableObject> object;
 @property (nonatomic, strong) NSURL *thumbnailImageURL;
 @property (nonatomic, strong) UIImage *image;
@@ -32,7 +32,7 @@
     return self;
 }
 
-- (void)presentActivityViewControllerOverViewController:(UIViewController *)presentingViewController fromView:(UIView *)view;
+- (void)presentActivityViewControllerFromView:(UIView *)view;
 {
     if (ARIsRunningInDemoMode) {
         [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
@@ -55,11 +55,11 @@
     UIPopoverController *popover = nil;
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [presentingViewController presentViewController:activityVC animated:YES completion:nil];
+        [[ARTopMenuViewController sharedController] presentViewController:activityVC animated:YES completion:nil];
     } else {
         UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:activityVC];
-        [popover presentPopoverFromRect:[view convertRect:view.bounds toView:presentingViewController.view]
-                                 inView:presentingViewController.view
+        [popover presentPopoverFromRect:view.bounds
+                                 inView:view
                permittedArrowDirections:UIPopoverArrowDirectionAny
                                animated:YES];
     }

@@ -215,7 +215,7 @@
 {
     ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.gene
                                                                             thumbnailImageURL:self.gene.smallImageURL];
-    [sharingController presentActivityViewControllerOverViewController:self fromView:sender];
+    [sharingController presentActivityViewControllerFromView:sender];
 }
 
 -(BOOL)shouldAutorotate

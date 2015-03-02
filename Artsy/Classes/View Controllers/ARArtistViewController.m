@@ -491,7 +491,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 {
     ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.artist
                                                                             thumbnailImageURL:self.artist.squareImageURL];
-    [sharingController presentActivityViewControllerOverViewController:self fromView:sender];
+    [sharingController presentActivityViewControllerFromView:sender];
 }
 
 - (void)loadBioViewController
