@@ -145,7 +145,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
     UIView *actionsWrapper = [[UIView alloc] init];
     UIButton *shareButton = [[ARCircularActionButton alloc] initWithImageName:@"Artwork_Icon_Share"];
-    [shareButton addTarget:self action:@selector(shareArtist) forControlEvents:UIControlEventTouchUpInside];
+    [shareButton addTarget:self action:@selector(shareArtist:) forControlEvents:UIControlEventTouchUpInside];
     [actionsWrapper addSubview:shareButton];
 
     ARHeartButton *favoriteButton = [[ARHeartButton alloc] init];
@@ -487,9 +487,11 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     return 0;
 }
 
-- (void)shareArtist
+- (void)shareArtist:(UIButton *)sender
 {
-    [ARSharingController shareObject:self.artist withThumbnailImageURL:self.artist.squareImageURL];
+    ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.artist
+                                                                            thumbnailImageURL:self.artist.squareImageURL];
+    [sharingController presentActivityViewControllerOverViewController:self fromView:sender];
 }
 
 - (void)loadBioViewController

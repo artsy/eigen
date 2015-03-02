@@ -137,7 +137,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             if (self.imagePageViewController.images.count) {
                 imageURL = [(Image *)self.imagePageViewController.images[0] urlForThumbnailImage];
             }
-            [ARSharingController shareObject:self.show withThumbnailImageURL:imageURL];
+            ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.show
+                                                                                    thumbnailImageURL:imageURL];
+            [sharingController presentActivityViewControllerOverViewController:self fromView:sender];
         }
     }];
 
