@@ -32,7 +32,7 @@
     return self;
 }
 
-- (void)presentActivityViewControllerFromView:(UIView *)view;
+- (void)presentActivityViewControllerFromButton:(UIButton *)button;
 {
     if (ARIsRunningInDemoMode) {
         [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
@@ -52,22 +52,36 @@
     ];
 
     // Declare it here so it can be accessed from the UIActivityViewController's completionHandler.
-    UIPopoverController *popover = nil;
+    __block UIPopoverController *popover = nil;
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [[ARTopMenuViewController sharedController] presentViewController:activityVC animated:YES completion:nil];
     } else {
-        UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:activityVC];
-        [popover presentPopoverFromRect:view.bounds
-                                 inView:view
+        popover = [[UIPopoverController alloc] initWithContentViewController:activityVC];
+        [popover presentPopoverFromRect:button.bounds
+                                 inView:button
                permittedArrowDirections:UIPopoverArrowDirectionAny
                                animated:YES];
     }
 
     activityVC.completionHandler = ^(NSString *activityType, BOOL completed) {
         [popover dismissPopoverAnimated:YES];
+        // Set to `nil` to signal loop below that we're done.
+        popover = nil;
         [self handleActivityCompletion:activityType completed:completed];
     };
+
+    // This is so we don't need to retain the popover and have the caller retain us and then again having to
+    // tell the caller we're done (from e.g. a delegate).
+    //
+    // TODO It appears that on iOS 8 the popver is retained by the system? In which case this can be removed.
+    if (popover) {
+        // Extra hack to ensure the button doesn't remain highlighted during this loop.
+        button.highlighted = NO;
+        while (popover != nil) {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        }
+    }
 }
 
 - (void)handleActivityCompletion:(NSString *)activityType completed:(BOOL)completed

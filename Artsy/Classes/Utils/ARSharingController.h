@@ -6,7 +6,7 @@
 + (instancetype)sharingControllerWithObject:(id)object thumbnailImageURL:(NSURL *)thumbnailImageURL image:(UIImage *)image;
 
 - (NSString *)objectID;
-- (void)presentActivityViewControllerFromView:(UIView *)view;
+- (void)presentActivityViewControllerFromButton:(UIButton *)button;
 
 @property (nonatomic, readonly) id <ARShareableObject> object;
 

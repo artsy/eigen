@@ -54,7 +54,7 @@
     ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.artwork
                                                                             thumbnailImageURL:thumbnailImageURL
                                                                                         image:image];
-    [sharingController presentActivityViewControllerFromView:sender];
+    [sharingController presentActivityViewControllerFromButton:sender];
 }
 
 

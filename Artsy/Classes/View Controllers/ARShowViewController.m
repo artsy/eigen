@@ -139,7 +139,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             }
             ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.show
                                                                                     thumbnailImageURL:imageURL];
-            [sharingController presentActivityViewControllerFromView:sender];
+            [sharingController presentActivityViewControllerFromButton:sender];
         }
     }];
 
