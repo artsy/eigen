@@ -41,15 +41,20 @@
     }];
 }
 
-- (void)tappedArtworkShare:(id)sender
+- (void)tappedArtworkShare:(UIButton *)sender
 {
+    NSURL *thumbnailImageURL = nil;
+    UIImage *image = nil;
     if (self.artwork.defaultImage.downloadable) {
-        [ARSharingController shareObject:self.artwork withThumbnailImageURL:self.artwork.defaultImage.urlForThumbnailImage withImage:self.imageView.image];
+      thumbnailImageURL = self.artwork.defaultImage.urlForThumbnailImage;
+      image = self.imageView.image;
     } else if (self.artwork.canShareImage) {
-        [ARSharingController shareObject:self.artwork withThumbnailImageURL:self.artwork.defaultImage.urlForThumbnailImage];
-    } else {
-        [ARSharingController shareObject:self.artwork];
+      thumbnailImageURL = self.artwork.defaultImage.urlForThumbnailImage;
     }
+    ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.artwork
+                                                                            thumbnailImageURL:thumbnailImageURL
+                                                                                        image:image];
+    [sharingController presentActivityViewControllerFromButton:sender];
 }
 
 

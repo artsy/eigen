@@ -6,54 +6,40 @@
 
 @interface ARSharingController ()
 @property (nonatomic, strong) id <ARShareableObject> object;
-@property (nonatomic, strong) ARURLItemProvider *urlProvider;
-@property (nonatomic, strong) ARImageItemProvider *imageProvider;
-@property (nonatomic, strong) ARMessageItemProvider *messageProvider;
+@property (nonatomic, strong) NSURL *thumbnailImageURL;
+@property (nonatomic, strong) UIImage *image;
 @end
 
 @implementation ARSharingController
 
-+ (void)shareObject:(id)object
++ (instancetype)sharingControllerWithObject:(id)object thumbnailImageURL:(NSURL *)thumbnailImageURL;
 {
-    return [self shareObject:object withThumbnailImageURL:nil withImage:nil];
+    return [self sharingControllerWithObject:object thumbnailImageURL:thumbnailImageURL image:nil];
 }
 
-+ (void)shareObject:(id)object withThumbnailImageURL:(NSURL *)thumbnailImageURL
++ (instancetype)sharingControllerWithObject:(id)object thumbnailImageURL:(NSURL *)thumbnailImageURL image:(UIImage *)image;
 {
-    return [self shareObject:object withThumbnailImageURL:thumbnailImageURL withImage:nil];
+    return [[self alloc] initWithObject:object thumbnailImageURL:thumbnailImageURL image:image];
 }
 
-+ (void)shareObject:(id)object withThumbnailImageURL:(NSURL *)thumbnailImageURL withImage:(UIImage *)image
+- (instancetype)initWithObject:(id)object thumbnailImageURL:(NSURL *)thumbnailImageURL image:(UIImage *)image;
 {
-    ARSharingController *sharingController = [[self alloc] initWithObject:object];
-    [sharingController shareWithThumbnailImageURL:thumbnailImageURL image:image];
-}
-
-- (instancetype)initWithObject:(id)object
-{
-    self = [super init];
-    if (!self) { return nil; }
-    _object = object;
+    if ((self = [super init])) {
+        _object = object;
+        _thumbnailImageURL = thumbnailImageURL;
+        _image = image;
+    }
     return self;
 }
 
-- (void)shareWithThumbnailImageURL:(NSURL *)thumbnailImageURL image:(UIImage *)image
-{
-    _messageProvider = [[ARMessageItemProvider alloc] initWithMessage:self.message path:[self.object publicArtsyPath]];
-    _urlProvider = [[ARURLItemProvider alloc] initWithMessage:self.message path:[self.object publicArtsyPath] thumbnailImageURL:thumbnailImageURL];
-    _imageProvider = [[ARImageItemProvider alloc] initWithPlaceholderItem:image];
-    [self presentActivityViewController];
-}
-
-- (void)presentActivityViewController
+- (void)presentActivityViewControllerFromButton:(UIButton *)button;
 {
     if (ARIsRunningInDemoMode) {
         [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
         return;
     }
 
-    ARTopMenuViewController *topMenuVC = [ARTopMenuViewController sharedController];
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:[self activityItems] applicationActivities:nil];
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:self.activityItems applicationActivities:nil];
 
     activityVC.excludedActivityTypes = @[
         UIActivityTypePostToWeibo,
@@ -65,11 +51,37 @@
         UIActivityTypePostToTencentWeibo
     ];
 
+    // Declare it here so it can be accessed from the UIActivityViewController's completionHandler.
+    __block UIPopoverController *popover = nil;
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[ARTopMenuViewController sharedController] presentViewController:activityVC animated:YES completion:nil];
+    } else {
+        popover = [[UIPopoverController alloc] initWithContentViewController:activityVC];
+        [popover presentPopoverFromRect:button.bounds
+                                 inView:button
+               permittedArrowDirections:UIPopoverArrowDirectionAny
+                               animated:YES];
+    }
+
     activityVC.completionHandler = ^(NSString *activityType, BOOL completed) {
+        [popover dismissPopoverAnimated:YES];
+        // Set to `nil` to signal loop below that we're done.
+        popover = nil;
         [self handleActivityCompletion:activityType completed:completed];
     };
 
-    [topMenuVC presentViewController:activityVC animated:YES completion:nil];
+    // This is so we don't need to retain the popover and have the caller retain us and then again having to
+    // tell the caller we're done (from e.g. a delegate).
+    //
+    // TODO It appears that on iOS 8 the popver is retained by the system? In which case this can be removed.
+    if (popover) {
+        // Extra hack to ensure the button doesn't remain highlighted during this loop.
+        button.highlighted = NO;
+        while (popover != nil) {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        }
+    }
 }
 
 - (void)handleActivityCompletion:(NSString *)activityType completed:(BOOL)completed
@@ -107,6 +119,21 @@
     } else {
         return nil;
     }
+}
+
+- (ARURLItemProvider *)urlProvider;
+{
+    return [[ARURLItemProvider alloc] initWithMessage:self.message path:self.object.publicArtsyPath thumbnailImageURL:self.thumbnailImageURL];
+}
+
+- (ARImageItemProvider *)imageProvider;
+{
+    return [[ARImageItemProvider alloc] initWithPlaceholderItem:self.image];
+}
+
+- (ARMessageItemProvider *)messageProvider;
+{
+    return [[ARMessageItemProvider alloc] initWithMessage:self.message path:self.object.publicArtsyPath];
 }
 
 - (NSArray *)activityItems

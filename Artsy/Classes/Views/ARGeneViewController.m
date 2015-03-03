@@ -211,9 +211,11 @@
     [self getNextGeneArtworks];
 }
 
-- (void)shareGene:(id)sender
+- (void)shareGene:(UIButton *)sender
 {
-    [ARSharingController shareObject:self.gene withThumbnailImageURL:self.gene.smallImageURL];
+    ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.gene
+                                                                            thumbnailImageURL:self.gene.smallImageURL];
+    [sharingController presentActivityViewControllerFromButton:sender];
 }
 
 -(BOOL)shouldAutorotate

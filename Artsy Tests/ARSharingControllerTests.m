@@ -5,15 +5,8 @@
 
 @interface ARSharingController (Testing)
 - (NSString *)message;
-- (NSString *)objectID;
 - (NSArray *)activityItems;
 @property (nonatomic, strong) id <ARShareableObject> object;
-@property (nonatomic, strong) ARURLItemProvider *urlProvider;
-@property (nonatomic, strong) ARImageItemProvider *imageProvider;
-@property (nonatomic, strong) ARMessageItemProvider *messageProvider;
-- (void)shareWithThumbnailImageURL:(NSURL *)thumbnailImageURL image:(UIImage *)image;
-- (instancetype)initWithObject:(id)object;
-- (void)presentActivityViewController;
 @end
 
 SpecBegin(ARSharingController)
@@ -77,50 +70,13 @@ describe(@"sharing", ^{
     });
 
     describe(@"activityItems", ^{
-        __block ARMessageItemProvider *messageProvider;
-        __block ARURLItemProvider *urlProvider;
-
-        before(^{
-            sharingController = [ARSharingController new];
-            messageProvider = [ARMessageItemProvider new];
-            urlProvider = [ARURLItemProvider new];
-        });
-
         it(@"orders items", ^{
-            [sharingController shareWithThumbnailImageURL:nil image:nil];
+            sharingController = [ARSharingController sharingControllerWithObject:nil thumbnailImageURL:nil image:nil];
             NSArray *activityItems = [sharingController activityItems];
             expect([activityItems count]).to.equal(3);
             expect(activityItems[0]).to.beKindOf([ARMessageItemProvider class]);
             expect(activityItems[1]).to.beKindOf([ARURLItemProvider class]);
             expect(activityItems[2]).to.beKindOf([ARImageItemProvider class]);
-        });
-    });
-
-    describe(@"initWithObject", ^{
-        it(@"sets object", ^{
-            Artist *artistObject = [Artist new];
-            sharingController = [[ARSharingController alloc] initWithObject:artistObject];
-            expect(sharingController.object).to.equal(artistObject);
-        });
-    });
-
-    describe(@"sharewithImage", ^{
-        before(^{
-            sharingController = [ARSharingController new];
-        });
-
-        it(@"sets all providers", ^{
-            [sharingController shareWithThumbnailImageURL:nil image:nil];
-            expect(sharingController.messageProvider).notTo.beNil();
-            expect(sharingController.urlProvider).notTo.beNil();
-            expect(sharingController.imageProvider).notTo.beNil();
-        });
-
-        it(@"triggers the View Controller", ^{
-            id mock = [OCMockObject partialMockForObject:sharingController];
-            [[mock expect] presentActivityViewController];
-            [sharingController shareWithThumbnailImageURL:nil image:nil];
-            [mock verify];
         });
     });
 });

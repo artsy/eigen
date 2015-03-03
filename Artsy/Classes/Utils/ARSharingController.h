@@ -2,12 +2,12 @@
 
 @interface ARSharingController : NSObject
 
-+ (void)shareObject:(id)object;
-+ (void)shareObject:(id)object withThumbnailImageURL:(NSURL *)thumbnailImageURL;
-+ (void)shareObject:(id)object withThumbnailImageURL:(NSURL *)thumbnailImageURL withImage:(UIImage *)image;
++ (instancetype)sharingControllerWithObject:(id)object thumbnailImageURL:(NSURL *)thumbnailImageURL;
++ (instancetype)sharingControllerWithObject:(id)object thumbnailImageURL:(NSURL *)thumbnailImageURL image:(UIImage *)image;
 
 - (NSString *)objectID;
+- (void)presentActivityViewControllerFromButton:(UIButton *)button;
 
-@property (nonatomic, strong, readonly) id <ARShareableObject> object;
+@property (nonatomic, readonly) id <ARShareableObject> object;
 
 @end
