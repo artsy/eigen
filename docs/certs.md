@@ -1,4 +1,10 @@
 ### Certificates & Profiles
+
+#### Beta
+
+* Provisioning Profile: `Artsy Beta Enterprise Provisioning Profile`
+* Certificate: `iPhone Distribution: ART SY INC`, found in the Artsy Engineering 1Password vault. (For now, this is the Feb 25, 2018 one.)
+
 ##### Orta Therox - Wed 4 Sep 2013
 
 ### I can't get my provisional profiles set up
