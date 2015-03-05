@@ -63,17 +63,17 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2015.02.20</string>
+	<string>2015.03.06</string>
 	<key>FacebookAppID</key>
 	<string>308278682573501</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>GITCommitRev</key>
-	<string>aebfeaa</string>
+	<string>6dac93c</string>
 	<key>GITCommitSha</key>
-	<string>aebfeaac5fcf8437afb96992ce1c40e0f102d773</string>
+	<string>6dac93c8db2319f90be355a6b75b044fe1a5e818</string>
 	<key>GITRemoteOriginURL</key>
-	<string>https://github.com/1aurabrown/eigen.git</string>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>
