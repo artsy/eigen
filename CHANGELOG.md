@@ -1,3 +1,7 @@
+## 1.7.1
+
+* Add previously missing fair editorial content - alloy
+
 ## 1.7.0 (16/2/2015)
 
 * Fair Map will zoom to show annotations on first double tap - 1aurabrown
