@@ -1,6 +1,8 @@
 #import "ARButtonWithImage.h"
 #import "ARFeedImageLoader.h"
 
+const CGFloat TitlesMargin = 5;
+
 @interface ARButtonWithImage ()
 
 @property (readonly, nonatomic, strong) UIView *contentView;
@@ -10,6 +12,7 @@
 @property (readonly, nonatomic, strong) UIView *labelContainer;
 @property (readonly, nonatomic, strong) UILabel *actualTitleLabel;
 @property (readonly, nonatomic, strong) UILabel *subtitleLabel;
+@property (readonly, nonatomic, strong) NSLayoutConstraint *titlesMarginConstraint;
 
 @property (readonly, nonatomic, strong) UIImageView *buttonArrowView;
 
@@ -71,9 +74,8 @@
     self.buttonImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.buttonImageView.clipsToBounds = YES;
 
+    [self.buttonImageView alignCenterYWithView:self.contentView predicate:nil];
     [self.buttonImageView alignLeadingEdgeWithView:self.contentView predicate:@"10"];
-    [self.buttonImageView alignTopEdgeWithView:self.contentView predicate:@"12"];
-    [self.contentView alignBottomEdgeWithView:self.buttonImageView predicate:@"13"];
 
     [self.labelContainer constrainLeadingSpaceToView:self.buttonImageView predicate:@"20"];
     [self.labelContainer alignCenterYWithView:self.contentView predicate:nil];
@@ -81,15 +83,20 @@
     [self.labelContainer alignTopEdgeWithView:self.actualTitleLabel predicate:nil];
     [self.actualTitleLabel alignLeadingEdgeWithView:self.labelContainer predicate:nil];
     [self.actualTitleLabel alignTrailingEdgeWithView:self.labelContainer predicate:nil];
+    _titlesMarginConstraint = [[self.subtitleLabel constrainTopSpaceToView:self.actualTitleLabel predicate:@"0"] lastObject];
     [self.subtitleLabel alignBottomEdgeWithView:self.labelContainer predicate:nil];
-
-    [self.subtitleLabel constrainTopSpaceToView:self.actualTitleLabel predicate:@"5"];
 
     [UIView alignLeadingAndTrailingEdgesOfViews:@[ self.actualTitleLabel, self.subtitleLabel, self.labelContainer ]];
 
     [self.buttonArrowView alignCenterYWithView:self.contentView predicate:nil];
     [self.buttonArrowView alignTrailingEdgeWithView:self.contentView predicate:@"-15@1000"];
     [self.buttonArrowView constrainLeadingSpaceToView:self.labelContainer predicate:@">=8@800"];
+
+    // Constrain size of contentView to content
+    [self.contentView alignTopEdgeWithView:self.buttonImageView predicate:@"<=-12"];
+    [self.contentView alignBottomEdgeWithView:self.buttonImageView predicate:@">=13"];
+    [self.contentView alignTopEdgeWithView:self.labelContainer predicate:@"<=-12"];
+    [self.contentView alignBottomEdgeWithView:self.labelContainer predicate:@">=13"];
 
     return self;
 }
@@ -108,6 +115,8 @@
     _subtitle = [subtitle copy];
 
     self.subtitleLabel.text = subtitle;
+
+    self.titlesMarginConstraint.constant = subtitle.length > 0 ? TitlesMargin : 0;
 }
 
 - (void)setImageURL:(NSURL *)imageURL

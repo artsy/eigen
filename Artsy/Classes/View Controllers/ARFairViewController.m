@@ -33,6 +33,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 @property (nonatomic, strong) ARNavigationButtonsViewController *primaryNavigationVC;
 @property (nonatomic, strong) ARFairSectionViewController *categoryCollectionVC;
 @property (nonatomic, strong) ARNavigationButtonsViewController *curatorVC;
+@property (nonatomic, strong) ARNavigationButtonsViewController *editorialVC;
 @property (nonatomic, strong) ARFairPostsViewController *fairPostsVC;
 @property (nonatomic, strong) NSLayoutConstraint *searchConstraint;
 
@@ -121,6 +122,12 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
     self.primaryNavigationVC.view.hidden = YES;
     [self.stackView.stackView addSubview:self.primaryNavigationVC.view withTopMargin:@"12" sideMargin:@"20"];
 
+    self.editorialVC = [[ARNavigationButtonsViewController alloc] init];
+    [(ORStackView *)self.editorialVC.view addPageTitleWithString:@"Fair Highlights"];
+    [(ORStackView *)self.editorialVC.view addGenericSeparatorWithSideMargin: @"20"];
+    self.editorialVC.view.hidden = YES;
+    [self.stackView.stackView addSubview:self.editorialVC.view withTopMargin:@"60" sideMargin:@"20"];
+
     self.curatorVC = [[ARNavigationButtonsViewController alloc] init];
     [(ORStackView *)self.curatorVC.view addPageTitleWithString:@"Insider's Picks"];
     [(ORStackView *)self.curatorVC.view addGenericSeparatorWithSideMargin: @"20"];
@@ -160,6 +167,21 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
                 break;
             };
 
+            for (OrderedSet *curatorSet in orderedSets[@"editorial"]) {
+              [curatorSet getItems:^(NSArray *items) {
+                @strongify(self);
+                self.editorialVC.buttonDescriptions = [[items select:displayOnMobile] map:^(FeaturedLink *link) {
+                  return [self buttonDescriptionForFeaturedLink:link buttonClass:[ARButtonWithImage class]];
+                }];
+                self.editorialVC.view.hidden = NO;
+                if (self.editorialVC.buttonDescriptions.count == 0) {
+                  [self.stackView.stackView removeSubview:self.editorialVC.view];
+                }
+              }];
+              // TODO why always break after the first set and not just get the first set?
+              break;
+            }
+
             for (OrderedSet *curatorSet in orderedSets[@"curator"]) {
                 [curatorSet getItems:^(NSArray *items) {
                     @strongify(self);
@@ -174,6 +196,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 
                 break;
             }
+
         }];
     }];
 
