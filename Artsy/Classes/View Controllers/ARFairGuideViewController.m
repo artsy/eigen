@@ -206,20 +206,22 @@ typedef NS_ENUM(NSInteger, ARFairGuideSelectedTab) {
 
 - (void)addPersonalLabel
 {
-    UILabel *titleLabel = [ARThemedFactory labelForSerifHeaders];
-    titleLabel.text = self.currentUser.name ? NSStringWithFormat(@"%@'s Guide", self.currentUser.name) : @"Your Personal Guide";
+    UILabel *titleLabel = [ARThemedFactory labelForViewSubHeaders];
+    NSString *text = self.currentUser.name ? NSStringWithFormat(@"%@'s Guide", self.currentUser.name) : @"Your Personal Guide";
+    titleLabel.text = [text uppercaseString];
     titleLabel.userInteractionEnabled = YES;
     titleLabel.tag = ARFairGuideViewTitle;
-    [self.view.stackView addSubview:titleLabel withTopMargin:@"12" sideMargin:@"80"];
+    [self.view.stackView addSubview:titleLabel withTopMargin:@"22" sideMargin:@"110"];
 }
 
 - (void)addTrialLabel
 {
-    UILabel *titleLabel = [ARThemedFactory labelForSerifHeaders];
-    titleLabel.text = @"Discover Your Personal Guide";
+    UILabel *titleLabel = [ARThemedFactory labelForViewSubHeaders];
+    NSString *text = @"Discover Your Personal Guide";
+    titleLabel.text = [text uppercaseString];
     titleLabel.userInteractionEnabled = YES;
     titleLabel.tag = ARFairGuideViewTitle;
-    [self.view.stackView addSubview:titleLabel withTopMargin:@"18" sideMargin:@"80"];
+    [self.view.stackView addSubview:titleLabel withTopMargin:@"22" sideMargin:@"110"];
     [titleLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(signupForArtsy:)]];
 
     UILabel *subtitleLabel = [ARThemedFactory labelForSerifSubHeaders];
