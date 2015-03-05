@@ -34,7 +34,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.7.1</string>
+	<string>1.7.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -69,9 +69,9 @@
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>GITCommitRev</key>
-	<string>6dac93c</string>
+	<string>13f13e2</string>
 	<key>GITCommitSha</key>
-	<string>6dac93c8db2319f90be355a6b75b044fe1a5e818</string>
+	<string>13f13e2baa8b8771a9387e439366246563e7d61c</string>
 	<key>GITRemoteOriginURL</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>

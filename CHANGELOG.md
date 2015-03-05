@@ -1,3 +1,5 @@
+## Next
+
 ## 1.7.1 (06/03/2015)
 
 * Add previously missing fair editorial content - alloy
