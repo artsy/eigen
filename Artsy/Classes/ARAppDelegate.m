@@ -72,7 +72,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [ARDefaults setup];
     [ARRouter setup];
 
-    self.fairContentPreloader = [ARFairContentPreloader new];
+    self.fairContentPreloader = [ARFairContentPreloader contentPreloader];
     [self.fairContentPreloader discoverFairService];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
