@@ -4,6 +4,7 @@
 #import "ARUserManager.h"
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <CocoaPods-Keys/ArtsyKeys.h>
+#import <AFCache/AFCache.h>
 
 static AFHTTPClient *staticHTTPClient = nil;
 static NSSet *artsyHosts = nil;
@@ -13,6 +14,11 @@ static NSSet *artsyHosts = nil;
 + (void)setup
 {
     artsyHosts = [NSSet setWithObjects:@"art.sy", @"artsyapi.com", @"artsy.net", @"m.artsy.net", @"staging.artsy.net", @"m-staging.artsy.net", nil];
+
+    // TODO figure out right cache size, the OS will also clear when needed
+    [NSURLCache setSharedURLCache:[[AFURLCache alloc] initWithMemoryCapacity:4 * 1024 * 1024
+                                                                diskCapacity:50 * 1024 * 1024
+                                                                    diskPath:nil]];
 
     [ARRouter setupWithBaseApiURL:[ARRouter baseApiURL]];
 
@@ -57,9 +63,11 @@ static NSSet *artsyHosts = nil;
             case AFNetworkReachabilityStatusUnknown:
                 break; // do nothing
             case AFNetworkReachabilityStatusNotReachable:
+                [AFCache sharedInstance].offlineMode = YES;
                 [[NSNotificationCenter defaultCenter] postNotificationName:ARNetworkUnavailableNotification object:nil];
                 break;
             default:
+                [AFCache sharedInstance].offlineMode = NO;
                 [[NSNotificationCenter defaultCenter] postNotificationName:ARNetworkAvailableNotification object:nil];
                 break;
         }

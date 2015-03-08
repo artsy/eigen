@@ -22,6 +22,7 @@
 - (instancetype)initWithServiceName:(NSString *)serviceName;
 {
    if ((self = [super init])) {
+     NSLog(@"CACHE: %@", self.cacheDirectoryURL);
      _serviceName = [serviceName copy];
      _workQueue = dispatch_queue_create("net.artsy.ARFairContentPreloader.workQueue", DISPATCH_QUEUE_SERIAL);
    }

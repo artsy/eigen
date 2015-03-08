@@ -34,6 +34,7 @@ plugin 'cocoapods-keys', {
 pod 'Mantle', '1.5.3'
 pod 'AFNetworking', '1.3.4'
 pod 'AFHTTPRequestOperationLogger', '1.0.0'
+pod 'AFCache', :git => 'https://github.com/alloy/AFCache.git'
 pod 'SDWebImage', '3.7.1'
 pod 'JLRoutes', '1.5'
 pod 'ISO8601DateFormatter', '0.7'
