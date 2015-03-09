@@ -34,6 +34,7 @@ plugin 'cocoapods-keys', {
 pod 'Mantle', '1.5.3'
 pod 'AFNetworking', '1.3.4'
 pod 'AFHTTPRequestOperationLogger', '1.0.0'
+pod 'AFCache', :git => 'https://github.com/alloy/AFCache.git'
 pod 'SDWebImage', '3.7.1'
 pod 'JLRoutes', '1.5'
 pod 'ISO8601DateFormatter', '0.7'
@@ -94,6 +95,7 @@ pod 'UICKeyChainStore', '1.0.5'
 
 # Fairs
 pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit', :commit => '62275386978db91b0e7ed8de755d15cef3e793b4'
+pod 'SSZipArchive'
 
 # Developer Pods
 pod 'VCRURLConnection', '0.2.0'

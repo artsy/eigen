@@ -32,7 +32,14 @@ static const NSDictionary *contextMap;
     NSString *dateAndTime = [self.dateFormatter stringFromDate:(logMessage->timestamp)];
     NSString *logMsg = logMessage->logMsg;
 
-    return [NSString stringWithFormat:@"%@ [%@] | %@\n", dateAndTime, [contextMap[@(logMessage->logContext)] uppercaseString], logMsg];
+    NSString *context = nil;
+    if (logMessage->tag && [logMessage->tag isEqualToString:@"AFCache"]) {
+      context = @"Cache";
+    } else {
+      context = contextMap[@(logMessage->logContext)];
+    }
+
+    return [NSString stringWithFormat:@"%@ [%@] | %@\n", dateAndTime, [context uppercaseString], logMsg];
 
     return nil;
 }
