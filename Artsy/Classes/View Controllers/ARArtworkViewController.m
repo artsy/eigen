@@ -192,7 +192,7 @@
     [metadataView layoutIfNeeded];
 
     [UIView animateTwoStepIf:self.shouldAnimate
-        duration:ARAnimationDuration  * 2 :^{
+        duration:ARAnimationDuration * 2 :^{
             [self.view.stackView layoutIfNeeded];
         } midway:^{
             actionsView.alpha = 1;
