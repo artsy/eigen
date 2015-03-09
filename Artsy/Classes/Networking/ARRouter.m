@@ -3,7 +3,7 @@
 #import "ARRouter+Private.h"
 #import "ARUserManager.h"
 #import <UICKeyChainStore/UICKeyChainStore.h>
-#import <CocoaPods-Keys/ArtsyKeys.h>
+#import <Keys/ArtsyKeys.h>
 
 static AFHTTPClient *staticHTTPClient = nil;
 static NSSet *artsyHosts = nil;

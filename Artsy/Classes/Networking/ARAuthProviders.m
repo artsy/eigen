@@ -6,7 +6,7 @@
 #import "FBAccessTokenData.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
-#import <CocoaPods-Keys/ArtsyKeys.h>
+#import <Keys/ArtsyKeys.h>
 
 @implementation ARAuthProviders
 

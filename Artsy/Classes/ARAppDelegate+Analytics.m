@@ -37,7 +37,7 @@
 
 // Models
 #import "ARFairFavoritesNetworkModel+Private.h"
-#import <CocoaPods-Keys/ArtsyKeys.h>
+#import <Keys/ArtsyKeys.h>
 
 @implementation ARAppDelegate (Analytics)
 

@@ -23,7 +23,7 @@
 #import "ARFileUtils.h"
 #import "FBSettings.h"
 #import "FBAppCall.h"
-#import <CocoaPods-Keys/ArtsyKeys.h>
+#import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
 
 #if ADMIN_MENU_ENABLED

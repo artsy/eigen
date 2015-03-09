@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-gem "cocoapods", '0.36.0.beta.1'
+gem 'cocoapods', :git => 'https://github.com/CocoaPods/CocoaPods.git'
+gem 'xcodeproj', :git => 'https://github.com/CocoaPods/Xcodeproj.git'
 gem "cocoapods-keys", :git => "git://github.com/orta/cocoapods-keys"
 
 gem 'fui', '~> 0.3.0'
