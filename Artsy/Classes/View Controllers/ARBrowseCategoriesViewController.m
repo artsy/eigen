@@ -4,7 +4,6 @@
 #import "ORStackView+ArtsyViews.h"
 
 @interface ARBrowseCategoriesViewController () <ARBrowseFeaturedLinksCollectionViewDelegate>
-
 @property (nonatomic, strong) NSMutableArray *collectionViews;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end

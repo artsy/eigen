@@ -1,10 +1,9 @@
 #import "ARBrowseViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
+#import "ARBrowseNetworkModel.h"
 
 @interface ARBrowseViewCell : ARBrowseFeaturedLinksCollectionViewCell
-@property (nonatomic, strong, readonly) ARSansSerifLabel *titleLabel;
-@property (nonatomic, strong, readonly) UIImageView *imageView;
 @end
 
 @implementation ARBrowseViewCell
@@ -18,12 +17,24 @@
 
 @end
 
+/////////////////
 
 @interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
-@property (nonatomic, strong, readwrite)NSArray *menuLinks;
+@property (nonatomic, strong, readwrite) NSArray *menuLinks;
+@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
+@property (nonatomic, strong, readonly) ARBrowseNetworkModel *networkModel;
 @end
 
 @implementation ARBrowseViewController
+
+- (instancetype)init
+{
+    self = [super init];
+    if (!self) { return nil; }
+    _shouldAnimate = YES;
+    _networkModel = [[ARBrowseNetworkModel alloc] init];
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -62,19 +73,17 @@
 
 - (void)fetchMenuItems
 {
-    [ArtsyAPI getBrowseMenuFeedLinksWithSuccess:^(NSArray *links) {
-        self.menuLinks = links;
+    [self.networkModel getBrowseFeaturedLinks:^(NSArray *links) {
         [self.collectionView reloadData];
         [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
-
     } failure:^(NSError *error) {
         [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
     }];
 }
 
-- (BOOL)shouldAnimate
+- (NSArray *)menuLinks
 {
-    return YES;
+    return self.networkModel.links;
 }
 
 #pragma mark - UITableViewDelegate
