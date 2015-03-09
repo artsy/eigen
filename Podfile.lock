@@ -52,6 +52,7 @@ PODS:
   - ISO8601DateFormatter (0.7)
   - JLRoutes (1.5)
   - JSDecoupledAppDelegate (1.0.1)
+  - Keys (1.0.1)
   - KSDeferred (0.2.0)
   - libextobjc/EXTKeyPathCoding (0.4):
     - libextobjc/RuntimeExtensions
@@ -124,6 +125,7 @@ DEPENDENCIES:
   - ISO8601DateFormatter (= 0.7)
   - JLRoutes (= 1.5)
   - JSDecoupledAppDelegate (= 1.0.1)
+  - Keys (from `https://github.com/ashfurrow/empty-podspec.git`)
   - KSDeferred (= 0.2.0)
   - libextobjc/EXTKeyPathCoding (= 0.4)
   - libextobjc/EXTScope (= 0.4)
@@ -159,6 +161,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/dblock/ARTiledImageView
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
+  Keys:
+    :git: https://github.com/ashfurrow/empty-podspec.git
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
@@ -179,6 +183,9 @@ CHECKOUT OPTIONS:
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
     :git: https://github.com/1aurabrown/FODFormKit.git
+  Keys:
+    :commit: 4951cc9d3031a9ac72400ee95440bef1ad1c04b3
+    :git: https://github.com/ashfurrow/empty-podspec.git
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
@@ -217,6 +224,7 @@ SPEC CHECKSUMS:
   ISO8601DateFormatter: 59731cd880cf87e71b4fa95f0d6b713dcbc4cbce
   JLRoutes: 1a32dbc34b8af9c2a0174c4799afdc72ad5fe447
   JSDecoupledAppDelegate: cff5663e495456300b1ca2c9479d13d44f43e3e0
+  Keys: 828b370fea8d74e7a353a4844a4c305038291f16
   KSDeferred: 33361e3e63ebe90210ea94d7f6469c1c2b874763
   libextobjc: ba42e4111f433273a886cd54f0ddaddb7f62f82f
   Mantle: 8d84cacd6c2a69ff6fbce985a2b51298a5495de3
