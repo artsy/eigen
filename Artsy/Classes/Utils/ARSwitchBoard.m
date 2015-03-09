@@ -9,6 +9,7 @@
 #import "ARGeneViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
+#import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairGuideContainerViewController.h"
 #import "ARUserSettingsViewController.h"
@@ -134,7 +135,13 @@
     }];
 
     [self.routes addRoute:@"/browse" handler:^BOOL(NSDictionary *parameters) {
-        ARBrowseViewController *viewController = [[ARBrowseViewController alloc] init];
+        ARBrowseCategoriesViewController *viewController = [[ARBrowseCategoriesViewController alloc] init];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+        return YES;
+    }];
+
+    [self.routes addRoute:@"/categories" handler:^BOOL(NSDictionary *parameters) {
+        ARBrowseCategoriesViewController *viewController = [[ARBrowseCategoriesViewController alloc] init];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
     }];

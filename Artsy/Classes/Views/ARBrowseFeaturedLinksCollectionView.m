@@ -1,6 +1,5 @@
 #import "ARBrowseFeaturedLinksCollectionView.h"
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
-#import "ARBrowseFeaturedLinkInsetCell.h"
 
 static CGFloat const ARDoubleRowStyleSpacing = 11;
 
@@ -35,10 +34,11 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 - (CGFloat)heightForCollectionViewWithStyle:(ARFeaturedLinkStyle)style
 {
     CGFloat cellHeight =  [self heightForCellWithStyle:style];
-    if (style == ARFeaturedLinkLayoutDoubleRow) {
-        return cellHeight * 2 + ARDoubleRowStyleSpacing;
-    } else {
-        return cellHeight;
+    switch (style) {
+        case ARFeaturedLinkLayoutSingleRow:
+            return cellHeight;
+        case ARFeaturedLinkLayoutDoubleRow:
+            return cellHeight * 2 + ARDoubleRowStyleSpacing;
     }
 }
 - (CGFloat)heightForCellWithStyle:(ARFeaturedLinkStyle)style

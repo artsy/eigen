@@ -7,7 +7,7 @@
 #import "ARFavoritesViewController.h"
 #import "ARProfileViewController.h"
 #import "ARArtistViewController.h"
-#import "ARBrowseViewController.h"
+#import "ARBrowseCategoriesViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARExternalWebBrowserViewController.h"
 #import "ARGeneViewController.h"
@@ -163,7 +163,7 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"routes /browse", ^{
-            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARBrowseViewController class]]];
+            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARBrowseCategoriesViewController class]]];
             [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/browse"] fair:nil];
         });
 

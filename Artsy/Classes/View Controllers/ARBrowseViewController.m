@@ -1,118 +1,120 @@
 #import "ARBrowseViewController.h"
-#import "ARBrowseFeaturedLinksCollectionView.h"
 #import "UIViewController+FullScreenLoading.h"
-#import "ORStackView+ArtsyViews.h"
+#import "ARBrowseFeaturedLinksCollectionViewCell.h"
 
-@interface ARBrowseViewController () <ARBrowseFeaturedLinksCollectionViewDelegate>
+@interface ARBrowseViewCell : ARBrowseFeaturedLinksCollectionViewCell
+@property (nonatomic, strong, readonly) ARSansSerifLabel *titleLabel;
+@property (nonatomic, strong, readonly) UIImageView *imageView;
+@end
 
-@property (nonatomic, strong) NSMutableArray *collectionViews;
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
+@implementation ARBrowseViewCell
+
+- (void)setupTitleLabel
+{
+    [self.titleLabel setFont:[self.titleLabel.font fontWithSize:16]];
+    [self.titleLabel constrainWidthToView:self.contentView predicate:@"-26"];
+    [self.titleLabel alignTop:nil leading:@"13" bottom:@"-13" trailing:nil toView:self.contentView];
+}
+
+@end
+
+
+@interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@property (nonatomic, strong, readwrite)NSArray *menuLinks;
 @end
 
 @implementation ARBrowseViewController
 
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) { return nil; }
-    _shouldAnimate = YES;
-    return self;
-}
-
-#pragma mark - UIViewController
-
-- (void)loadView
-{
-    self.view = [[ORStackScrollView alloc] init];
-    self.view.stackView.bottomMarginHeight = 20;
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.view.delegate = [ARScrollNavigationChief chief];
-}
-
 - (void)viewDidLoad
 {
-    [self.view.stackView addPageTitleWithString:@"Featured Categories"];
-    self.collectionViews = [NSMutableArray array];
-
-    ARBrowseFeaturedLinksCollectionView *featureCollectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:ARFeaturedLinkLayoutSingleRow];
-    [self.view.stackView addSubview:featureCollectionView withTopMargin:@"30" sideMargin:@"0"];
-    [self.collectionViews addObject: featureCollectionView];
-    featureCollectionView.selectionDelegate = self;
-
-    [ArtsyAPI getFeaturedLinksForGenesWithSuccess:^(NSArray *genes) {
-        featureCollectionView.featuredLinks = genes;
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
-
-    } failure:^(NSError *error) {
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
-    }];
-
-    [ArtsyAPI getFeaturedLinkCategoriesForGenesWithSuccess:^(NSArray *orderedSets) {
-        for (OrderedSet *orderedSet in orderedSets) {
-            [self createCollectionViewWithOrderedSet:orderedSet];
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"error");
-    }];
-
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
     [super viewDidLoad];
-}
+    self.view.backgroundColor = [UIColor blackColor];
 
-- (void)createCollectionViewWithOrderedSet:(OrderedSet *)orderedSet
-{
-    [self.view.stackView addPageSubtitleWithString:orderedSet.name];
+    [self setupCollectionView];
+    [self.collectionView registerClass:[ARBrowseViewCell class] forCellWithReuseIdentifier:[ARBrowseViewCell reuseID]];
 
-    ARBrowseFeaturedLinksCollectionView *categoryCollectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:ARFeaturedLinkLayoutDoubleRow];
-    categoryCollectionView.selectionDelegate = self;
-    [self.view.stackView addSubview:categoryCollectionView withTopMargin:@"20" sideMargin:@"0"];
-    [self.collectionViews addObject:categoryCollectionView];
-
-    [orderedSet getItems:^(NSArray *items) {
-        categoryCollectionView.featuredLinks = items;
-    }];
-}
-
--(BOOL)shouldAutorotate
-{
-    return [UIDevice isPad];
-}
-
-- (void)invalidateCollectionViews
-{
-    for (ARBrowseFeaturedLinksCollectionView *collectionView in self.collectionViews) {
-        [collectionView.collectionViewLayout invalidateLayout];
-        [collectionView invalidateIntrinsicContentSize];
-    }
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self invalidateCollectionViews];
+    [super viewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.view.delegate = [ARScrollNavigationChief chief];
-    [self invalidateCollectionViews];
-    [super viewWillAppear:animated && self.shouldAnimate];
+    [super viewWillAppear:animated];
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+    [self fetchMenuItems];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)setupCollectionView
 {
-    self.view.delegate = nil;
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.itemSize = CGSizeMake(280, 144);
+    layout.minimumLineSpacing = 13;
+    layout.sectionInset = UIEdgeInsetsMake(20, 20, 20, 20);
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    collectionView.backgroundColor = [UIColor whiteColor];
 
-    [super viewWillDisappear:animated && self.shouldAnimate];
+    [self.view addSubview:collectionView];
+
+    [collectionView alignToView:self.view];
+    _collectionView = collectionView;
 }
 
-#pragma mark - ARBrowseFeaturedLinksCollectionViewDelegate
-
-- (void)didSelectFeaturedLink:(FeaturedLink *)featuredLink
+- (void)fetchMenuItems
 {
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:featuredLink.href];
+    [ArtsyAPI getBrowseMenuFeedLinksWithSuccess:^(NSArray *links) {
+        self.menuLinks = links;
+        [self.collectionView reloadData];
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+
+    } failure:^(NSError *error) {
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+    }];
+}
+
+- (BOOL)shouldAnimate
+{
+    return YES;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    FeaturedLink *link = [self.menuLinks objectAtIndex:indexPath.row];
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:link.href];
     if (viewController) {
-        [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+        [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 
+#pragma mark - UICollectionViewDataSource
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    ARBrowseViewCell *cell = (id)[self.collectionView dequeueReusableCellWithReuseIdentifier:[ARBrowseViewCell reuseID] forIndexPath:indexPath];
+    FeaturedLink *link = self.menuLinks[indexPath.row];
+    [cell updateWithTitle:link.title imageURL:link.largeImageURL];
+
+    return cell;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.menuLinks.count;
+}
+
+#pragma mark - Orientation
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [UIDevice isPad];
+}
+
 @end
+

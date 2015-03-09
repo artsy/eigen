@@ -1,15 +1,15 @@
-#import "ARBrowseViewController.h"
+#import "ARBrowseCategoriesViewController.h"
 #import "ARBrowseFeaturedLinksCollectionView.h"
 #import <ORStackView/ORStackScrollView.h>
 #import "ARUserManager+Stubs.h"
 
-@interface ARBrowseViewController (Tests)
+@interface ARBrowseCategoriesViewController (Tests)
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
-SpecBegin(ARBrowseViewController)
+SpecBegin(ARBrowseCategoriesViewController)
 
-__block ARBrowseViewController *viewController;
+__block ARBrowseCategoriesViewController *viewController;
 
 describe(@"", ^{
     before(^{
@@ -52,7 +52,7 @@ describe(@"", ^{
                                               @{ @"id" : @"spumato", @"title" : @"Spumato", @"item_type" : @"FeaturedLink"}]
          ];
         
-        viewController = [[ARBrowseViewController alloc] init];
+        viewController = [[ARBrowseCategoriesViewController alloc] init];
         viewController.shouldAnimate = NO;
     });
 

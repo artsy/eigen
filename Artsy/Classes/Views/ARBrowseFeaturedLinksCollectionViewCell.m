@@ -22,10 +22,7 @@
         self.titleLabel.font = [UIFont sansSerifFontWithSize:12];
 
         [self.contentView addSubview:self.titleLabel];
-
-        [self.titleLabel constrainWidthToView:self.contentView predicate:@"-20"];
-        [self.titleLabel alignCenterXWithView:self.contentView predicate:nil];
-        [self.titleLabel alignBottomEdgeWithView:self.contentView predicate:@"-12"];
+        [self setupTitleLabel];
     }
 
     [self setImageWithURL:imageURL];
@@ -34,6 +31,13 @@
     self.isAccessibilityElement = YES;
     self.accessibilityLabel = title;
     self.accessibilityTraits = UIAccessibilityTraitButton;
+}
+
+- (void)setupTitleLabel
+{
+    [self.titleLabel constrainWidthToView:self.contentView predicate:@"-20"];
+    [self.titleLabel alignCenterXWithView:self.contentView predicate:nil];
+    [self.titleLabel alignBottomEdgeWithView:self.contentView predicate:@"-12"];
 }
 
 + (NSString *)reuseID
