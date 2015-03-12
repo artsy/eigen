@@ -63,7 +63,7 @@ PODS:
     - Mantle/extobjc (= 1.5.3)
   - Mantle/extobjc (1.5.3)
   - Mixpanel (2.3.1)
-  - MMMarkdown (0.3)
+  - MMMarkdown (0.4)
   - MultiDelegate (0.0.2)
   - NAMapKit (3.1.1):
     - ARTiledImageView
@@ -131,7 +131,7 @@ DEPENDENCIES:
   - libextobjc/EXTScope (= 0.4)
   - Mantle (= 1.5.3)
   - Mixpanel (= 2.3.1)
-  - MMMarkdown (= 0.3)
+  - MMMarkdown (= 0.4)
   - MultiDelegate (= 0.0.2)
   - NAMapKit (from `https://github.com/neilang/NAMapKit`, commit `62275386978db91b0e7ed8de755d15cef3e793b4`)
   - ObjectiveSugar (= 1.1.0)
@@ -229,7 +229,7 @@ SPEC CHECKSUMS:
   libextobjc: ba42e4111f433273a886cd54f0ddaddb7f62f82f
   Mantle: 8d84cacd6c2a69ff6fbce985a2b51298a5495de3
   Mixpanel: 9cc470a58346f60da8ce2982096bcc72b5a7372b
-  MMMarkdown: 95af8920c647512d1efa2ac8ac1932baf3266e2c
+  MMMarkdown: 409977dc4a20728e1afd7a0ae023be936d5508af
   MultiDelegate: 30ea47d00d916390e7b53ba8dc240b8751d19107
   NAMapKit: 4f57bea305c1795d2d6b8a6d6b31c59b1a08114f
   ObjectiveSugar: f48793f5902c77cfc02a4ce46d2e8ecddcad4dc2
