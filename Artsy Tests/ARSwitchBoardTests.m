@@ -214,6 +214,12 @@ describe(@"ARSwitchboard", ^{
             [ARTestContext stopStubbing];
         });
 
+        it(@"routes shows", ^{
+            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARShowViewController class]]];
+            id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/show/show-id"] fair:nil];
+            expect(viewController).to.beNil();
+        });
+
         context(@"fairs", ^{
 
             context(@"on iphone", ^{
@@ -224,12 +230,6 @@ describe(@"ARSwitchboard", ^{
 
                 after(^{
                     [ARTestContext stopStubbing];
-                });
-
-                it(@"routes shows", ^{
-                    [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARShowViewController class]]];
-                    id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/show/show-id"] fair:nil];
-                    expect(viewController).to.beNil();
                 });
 
                 it(@"routes fair guide", ^{
@@ -261,14 +261,6 @@ describe(@"ARSwitchboard", ^{
 
                 after(^{
                     [ARTestContext stopStubbing];
-                });
-
-                it(@"doesn't route shows", ^{
-                    Fair *fair = [OCMockObject mockForClass:[Fair class]];
-                    [[controllerMock reject] pushViewController:OCMOCK_ANY];
-                    ARInternalMobileWebViewController *viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/show/show-id"] fair:fair];
-                    expect(viewController).to.beKindOf([ARInternalMobileWebViewController class]);
-                    expect(viewController.fair).to.equal(fair);
                 });
 
                 it(@"doesn't route fair guide", ^{
