@@ -122,9 +122,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
         buttonsWidth += button.intrinsicContentSize.width;
     }];
 
-    BOOL isPortrait = UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-
-    CGFloat viewWidth = isPortrait ? self.view.frame.size.width : self.view.frame.size.height;
+    CGFloat viewWidth = self.view.frame.size.width;
     CGFloat extraWidth = viewWidth - buttonsWidth;
     CGFloat eachMargin = floorf(extraWidth / (self.tabContentView.buttons.count - 1));
 
