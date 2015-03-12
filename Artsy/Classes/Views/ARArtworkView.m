@@ -53,7 +53,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     self.spinner = spinner;
     [spinner constrainHeight:@"100"];
 
-    ARArtworkRelatedArtworksView *relatedArtworks = [[ARArtworkRelatedArtworksView alloc] init];
+    ARArtworkRelatedArtworksView *relatedArtworks = [[ARArtworkRelatedArtworksView alloc] initWithArtwork:artwork];
     relatedArtworks.alpha = 0;
     relatedArtworks.tag = ARArtworkRelatedArtworks;
     self.relatedArtworksView = relatedArtworks;

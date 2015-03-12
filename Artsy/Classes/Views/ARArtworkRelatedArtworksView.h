@@ -26,8 +26,6 @@ typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
 @property (nonatomic, weak) ARArtworkViewController<ARArtworkRelatedArtworksViewParentViewController> *parentViewController;
 
 - (instancetype)initWithArtwork:(Artwork *)artwork;
-- (void)updateWithArtwork:(Artwork *)artwork;
-- (void)cancel;
 
 // Use this when showing an artwork in the context of a fair.
 - (void)addSectionsForFair:(Fair *)fair;
@@ -40,5 +38,8 @@ typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
 
 // In all other cases, this should be used to simply show related artworks.
 - (void)addSectionWithRelatedArtworks;
+
+// TODO Cancel requests really needed? If so, add cancelling back to -[ARArtworkViewController viewDidDisappear:]
+// - (void)cancel;
 
 @end

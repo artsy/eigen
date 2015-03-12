@@ -92,7 +92,6 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [self.view.relatedArtworksView cancel];
     self.view.scrollsToTop = NO;
     [super viewDidDisappear:self.shouldAnimate && animated];
 }
@@ -106,7 +105,6 @@
     [self.artwork updateArtwork];
     [self.artwork updateSaleArtwork];
     [self.artwork updateFair];
-    [self.view.relatedArtworksView updateWithArtwork:self.artwork];
     if (!self.postsVC.posts.count){
         [self getRelatedPosts];
     }
