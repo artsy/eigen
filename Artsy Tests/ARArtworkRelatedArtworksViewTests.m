@@ -12,14 +12,18 @@
 
 SpecBegin(ARArtworkRelatedArtworksView)
 
+__block NSDictionary *artworkJSON = nil;
 __block Artwork *artwork = nil;
 __block ARArtworkRelatedArtworksView *relatedView = nil;
 
 before(^{
-    artwork = [Artwork modelWithJSON:@{
+    // Can't use MTLJSONAdapter to generate JSON from model because, unless we specify all fields, it will raise an
+    // exception on all the `null` fields.
+    artworkJSON = @{
          @"id": @"korakrit-arunanondchai-untitled-memories1",
       @"title": @"Untitled (Memories1)",
-    }];
+    };
+    artwork = [Artwork modelWithJSON:artworkJSON];
     relatedView = [[ARArtworkRelatedArtworksView alloc] initWithArtwork:artwork];
     // Ensure UICollectionView adds visible cells.
     relatedView.frame = CGRectMake(0, 0, 320, 480);
@@ -29,12 +33,17 @@ it(@"falls back to a section with any related artworks", ^{
 });
 
 describe(@"concerning an artwork at a fair", ^{
+    __block NSDictionary *otherFairArtworkJSON = nil;
     __block Artwork *otherFairArtwork = nil;
 
     before(^{
-        otherFairArtwork = [Artwork modelWithJSON:@{ @"id": @"other-fair-artwork", @"title": @"Other fair artwork" }];
+        otherFairArtworkJSON = @{
+             @"id": @"other-fair-artwork",
+          @"title": @"Other fair artwork",
+        };
+        otherFairArtwork = [Artwork modelWithJSON:otherFairArtworkJSON];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/fair/the-armory-show/artworks?artwork[]=korakrit-arunanondchai-untitled-memories1"
-                               withResponse:@[artwork.dictionaryValue, otherFairArtwork.dictionaryValue]];
+                               withResponse:@[artworkJSON, otherFairArtworkJSON]];
 
         Fair *fair = [Fair modelWithJSON:@{
               @"id": @"the-armory-show",
