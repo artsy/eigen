@@ -274,7 +274,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
                 if (index == ARTopTabControllerIndexFeed) {
                     scrollView = [(ARShowFeedViewController *)[controller.childViewControllers objectAtIndex:0] tableView];
                 } else if (index == ARTopTabControllerIndexBrowse) {
-                    scrollView = [(ARBrowseViewController *)[controller.childViewControllers objectAtIndex:0] view];
+                    scrollView = [(ARBrowseViewController *)[controller.childViewControllers objectAtIndex:0] collectionView];
                 } else if (index == ARTopTabControllerIndexFavorites) {
                     scrollView = [(ARFavoritesViewController *)[controller.childViewControllers objectAtIndex:0] collectionView];
                 }

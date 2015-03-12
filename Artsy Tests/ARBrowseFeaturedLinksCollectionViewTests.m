@@ -1,6 +1,5 @@
 #import "ARBrowseFeaturedLinksCollectionView.h"
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
-#import "ARBrowseFeaturedLinkInsetCell.h"
 #import "UIDevice-Hardware.h"
 #import <UIKit/UIKit.h>
 #import "ARSwitchBoard.h"

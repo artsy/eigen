@@ -1,7 +1,3 @@
-#import <UIKit/UIKit.h>
-
 @interface ARBrowseViewController : UIViewController
-
-@property (nonatomic, strong) ORStackScrollView *view;
-
+@property (nonatomic, strong, readonly)UICollectionView *collectionView;
 @end
