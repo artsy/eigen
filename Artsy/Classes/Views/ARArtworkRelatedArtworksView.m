@@ -3,6 +3,7 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARArtworkSetViewController.h"
 
+
 @interface ARArtworkRelatedArtworksView() <AREmbeddedModelsDelegate>
 @property (nonatomic, assign) BOOL hasRequested;
 @property (nonatomic, strong) AFJSONRequestOperation *relatedArtworksRequest;
@@ -12,7 +13,88 @@
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
 @end
 
+
+@interface ARArtworkRelatedArtworksContentView : ORStackView
+@property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
+@end
+
+@implementation ARArtworkRelatedArtworksContentView
+
+- (instancetype)initWithTag:(ARRelatedArtworksSubviewOrder)tag
+                     module:(ARArtworkMasonryModule *)module
+                   artworks:(NSArray *)artworks
+                    heading:(NSString *)heading;
+{
+    if ((self = [super init])) {
+        self.tag = (NSInteger)tag;
+        [self addPageSubtitleWithString:heading.uppercaseString];
+        _artworksVC = [[AREmbeddedModelsViewController alloc] init];
+        _artworksVC.constrainHeightAutomatically = YES;
+        _artworksVC.activeModule = module;
+        [_artworksVC appendItems:artworks];
+        [self addSubview:_artworksVC.view withTopMargin:@"0" sideMargin:@"0"];
+    }
+    return self;
+}
+
+@end
+
+
 @implementation ARArtworkRelatedArtworksView
+
+- (instancetype)initWithArtwork:(Artwork *)artwork;
+{
+    if ((self = [super init])) {
+        _artwork = artwork;
+    }
+    return self;
+}
+
+- (void)addSectionForFair:(Fair *)fair;
+{
+    @weakify(self);
+    [self.artwork getRelatedFairArtworks:fair success:^(NSArray *artworks) {
+        @strongify(self);
+        [self addSectionWithTag:ARRelatedArtworksSameFair artworks:artworks heading:@"Other works in fair"];
+    }];
+}
+
+- (void)addSectionWithTag:(ARRelatedArtworksSubviewOrder)tag artworks:(NSArray *)artworks heading:(NSString *)heading;
+{
+    artworks = [artworks reject:^BOOL(Artwork *artwork) {
+        return [artwork.artworkID isEqualToString:self.artwork.artworkID];
+    }];
+
+    ARArtworkMasonryLayout layout = [UIDevice isPad] ? [self masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]] : ARArtworkMasonryLayout2Column;
+    ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
+    module.layoutProvider = self;
+
+    ARArtworkRelatedArtworksContentView *section = [[ARArtworkRelatedArtworksContentView alloc] initWithTag:tag
+                                                                                                     module:module
+                                                                                                   artworks:artworks
+                                                                                                    heading:heading];
+
+    section.artworksVC.shouldAnimate = self.parentViewController.shouldAnimate;
+    section.artworksVC.delegate = self;
+
+    // [section addToRelatedArtworksView:self];
+
+    // TODO I don’t really like that this view is adding view controllers to its own view controller,
+    //      but it's a real problem when testing because `-[ORStackView addViewController:toParent:withTopMargin:]`
+    //      will get the view to add the subview to from the controller, which is `nil` or you have to also setup
+    //      a view controller just for the tests.
+    //
+    //      So duplicating it here for now, but adding the reference to the `section` directly instead.
+    //
+    [section.artworksVC willMoveToParentViewController:self.parentViewController];
+    [self.parentViewController addChildViewController:section.artworksVC];
+    [self addSubview:section withTopMargin:@"0" sideMargin:@"0"];
+    [section.artworksVC didMoveToParentViewController:self.parentViewController];
+  
+    [self layoutIfNeeded];
+}
+
+// -------
 
 - (instancetype)init
 {
