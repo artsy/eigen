@@ -72,6 +72,15 @@
     [self addSectionWithRelatedArtworks];
 }
 
+- (void)addSectionsForAuction:(Sale *)auction;
+{
+    @weakify(self);
+    [auction getArtworks:^(NSArray *artworks) {
+        @strongify(self);
+        [self addSectionWithTag:ARRelatedArtworksSameAuction artworks:artworks heading:@"Other works in auction"];
+    }];
+}
+
 - (void)addSectionWithOtherArtworksInShow:(PartnerShow *)show;
 {
     @weakify(self);

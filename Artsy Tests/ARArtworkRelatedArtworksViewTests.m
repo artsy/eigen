@@ -81,6 +81,10 @@ before(^{
 });
 
 it(@"falls back to a section with any related artworks", ^{
+    [relatedView addSectionWithRelatedArtworks];
+    expect([relatedView viewWithTag:ARRelatedArtworks]).willNot.beNil();
+    expect([relatedView titleForSectionWithTag:ARRelatedArtworks]).to.equal(@"RELATED ARTWORKS");
+    expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworks]).to.equal(@[relatedArtwork.title]);
 });
 
 describe(@"concerning an artwork at a fair", ^{
@@ -117,11 +121,31 @@ describe(@"concerning an artwork at a fair", ^{
 });
 
 describe(@"concerning an artwork at an auction", ^{
-    //before(^{
-        //[relatedView addSectionForAuction:auction];
-    //});
+    __block NSDictionary *otherSaleArtworkJSON = nil;
+    __block Artwork *otherSaleArtwork = nil;
+
+    before(^{
+        otherSaleArtworkJSON = @{
+             @"id": @"ed-ruscha-cockroaches-from-insects-portfolio",
+          @"title": @"Cockroaches (from Insects Portfolio)",
+        };
+        otherSaleArtwork = [Artwork modelWithJSON:otherSaleArtworkJSON];
+
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/los-angeles-modern-auctions-march-2015/sale_artworks"
+                               withResponse:@[@{ @"artwork": artworkJSON }, @{ @"artwork": otherSaleArtworkJSON }]];
+
+        // The main artwork fixture is not actually on sale at this auction, but such is life :)
+        Sale *auction = [Sale modelWithJSON: @{
+                  @"id": @"los-angeles-modern-auctions-march-2015",
+          @"is_auction": @(YES),
+        }];
+        [relatedView addSectionsForAuction:auction];
+    });
 
     it(@"adds a section with other works in the same auction", ^{
+        expect([relatedView viewWithTag:ARRelatedArtworksSameAuction]).willNot.beNil();
+        expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameAuction]).to.equal(@"OTHER WORKS IN AUCTION");
+        expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksSameAuction]).to.equal(@[otherSaleArtwork.title]);
     });
 });
 
