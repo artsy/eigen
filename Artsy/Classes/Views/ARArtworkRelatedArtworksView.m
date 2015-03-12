@@ -53,9 +53,26 @@
 - (void)addSectionForFair:(Fair *)fair;
 {
     @weakify(self);
+    [self.artwork getFeaturedShowsAtFair:fair success:^(NSArray *shows) {
+        @strongify(self);
+        for (PartnerShow *show in shows) {
+            [self addSectionForShow:show];
+        }
+    }];
     [self.artwork getRelatedFairArtworks:fair success:^(NSArray *artworks) {
         @strongify(self);
         [self addSectionWithTag:ARRelatedArtworksSameFair artworks:artworks heading:@"Other works in fair"];
+    }];
+}
+
+- (void)addSectionForShow:(PartnerShow *)show;
+{
+    @weakify(self);
+    [show getArtworksAtPage:1 success:^(NSArray *artworks) {
+        @strongify(self);
+        // TODO Apperantly (potentially) an artwork can be in multiple shows, so should the heading include the show's
+        //      name or something?
+        [self addSectionWithTag:ARRelatedArtworksSameShow artworks:artworks heading:@"Other works in show"];
     }];
 }
 

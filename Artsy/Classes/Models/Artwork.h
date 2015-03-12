@@ -91,6 +91,7 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 - (AFJSONRequestOperation *)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success;
 - (AFJSONRequestOperation *)getRelatedFairArtworks:(Fair *)fair success:(void (^)(NSArray *artworks))success;
 - (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
+- (AFJSONRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
 
 /// Gets an update from the server and updates itself, triggers defers from onArtworkUpdate
 - (void)updateArtwork;

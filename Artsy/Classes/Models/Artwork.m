@@ -201,6 +201,14 @@
     }];
 }
 
+- (AFJSONRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
+{
+    return [ArtsyAPI getShowsForArtworkID:self.artworkID inFairID:fair.fairID success:success
+        failure: ^(NSError *error) {
+            success(@[]);
+    }];
+}
+
 - (BOOL)hasWidth
 {
     return [self.width intValue] > 0;

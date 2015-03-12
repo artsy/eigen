@@ -51,10 +51,23 @@ it(@"falls back to a section with any related artworks", ^{
 });
 
 describe(@"concerning an artwork at a fair", ^{
+    __block NSDictionary *otherShowArtworkJSON = nil;
+    __block Artwork *otherShowArtwork = nil;
+
     __block NSDictionary *otherFairArtworkJSON = nil;
     __block Artwork *otherFairArtwork = nil;
 
     before(^{
+        otherShowArtworkJSON = @{
+             @"id": @"hyong-keun-yun-burnt-umber-and-ultramarine-1",
+          @"title": @"Burnt umber and ultramarine",
+        };
+        otherShowArtwork = [Artwork modelWithJSON:otherShowArtworkJSON];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows?artwork[]=el-anatsui-revelation&fair_id=the-armory-show"
+                               withResponse:@[@{ @"id":@"axel-vervoordt-gallery-axel-vervoordt-gallery-at-the-armory-show-2015", @"partner":@{ @"id":@"axel-vervoordt-gallery" } }]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/partner/axel-vervoordt-gallery/show/axel-vervoordt-gallery-axel-vervoordt-gallery-at-the-armory-show-2015/artworks?size=10&published=true&page=1"
+                               withResponse:@[artworkJSON, otherShowArtworkJSON]];
+
         otherFairArtworkJSON = @{
              @"id": @"gilles-barbier-a-very-old-thing",
           @"title": @"A very old Thing",
@@ -68,15 +81,16 @@ describe(@"concerning an artwork at a fair", ^{
             @"name": @"The Armory Show 2015",
         }];
         [relatedView addSectionForFair:fair];
-
-        // Wait till the views are added and layed out.
-        expect([relatedView viewWithTag:ARRelatedArtworksSameFair]).willNot.beNil();
     });
 
     it(@"adds a section with other works in the same show (booth)", ^{
+      expect([relatedView viewWithTag:ARRelatedArtworksSameShow]).willNot.beNil();
+      expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@"OTHER WORKS IN SHOW");
+      expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@[otherShowArtwork.title]);
     });
 
     it(@"adds a section with related works at the fair", ^{
+      expect([relatedView viewWithTag:ARRelatedArtworksSameFair]).willNot.beNil();
       expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameFair]).to.equal(@"OTHER WORKS IN FAIR");
       expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksSameFair]).to.equal(@[otherFairArtwork.title]);
     });
