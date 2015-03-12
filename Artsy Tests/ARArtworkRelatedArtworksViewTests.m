@@ -10,6 +10,24 @@
 - (void)renderWithArtworks:(NSArray *)artworks heading:(NSString *)heading;
 @end
 
+@implementation ARArtworkRelatedArtworksView (Testing)
+
+- (NSString *)titleForSectionWithTag:(ARRelatedArtworksSubviewOrder)tag;
+{
+    return [(UILabel *)[[self viewWithTag:tag] subviews][0] text];
+}
+
+- (NSArray *)titlesOfArtworksInSectionWithTag:(ARRelatedArtworksSubviewOrder)tag;
+{
+    UIView *artworksVCView = [[self viewWithTag:tag] subviews][1];
+    UICollectionView *artworksCollectionView = [artworksVCView.subviews lastObject];
+    NSAssert(!CGSizeEqualToSize(artworksCollectionView.frame.size, CGSizeZero),
+             @"There are no visible cells in a UICollectionView if it has no visible frame.");
+    return [[artworksCollectionView visibleCells] valueForKeyPath:@"metadataView.secondaryLabel.text"];
+}
+
+@end
+
 SpecBegin(ARArtworkRelatedArtworksView)
 
 __block NSDictionary *artworkJSON = nil;
@@ -42,6 +60,7 @@ describe(@"concerning an artwork at a fair", ^{
           @"title": @"Other fair artwork",
         };
         otherFairArtwork = [Artwork modelWithJSON:otherFairArtworkJSON];
+
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/fair/the-armory-show/artworks?artwork[]=korakrit-arunanondchai-untitled-memories1"
                                withResponse:@[artworkJSON, otherFairArtworkJSON]];
 
@@ -50,20 +69,17 @@ describe(@"concerning an artwork at a fair", ^{
             @"name": @"The Armory Show",
         }];
         [relatedView addSectionForFair:fair];
+
+        // Wait till the views are added and layed out.
+        expect([relatedView viewWithTag:ARRelatedArtworksSameFair]).willNot.beNil();
     });
 
-    it(@"adds a section with other works in the same show (booth)", {
+    it(@"adds a section with other works in the same show (booth)", ^{
     });
 
     it(@"adds a section with related works at the fair", ^{
-      expect([relatedView viewWithTag:ARRelatedArtworksSameFair]).willNot.beNil();
-      NSArray *subviews = [[relatedView viewWithTag:ARRelatedArtworksSameFair] subviews];
-      expect([(UILabel *)[subviews firstObject] text]).to.equal(@"OTHER WORKS IN FAIR");
-
-      UIView *artworksVCView = [subviews lastObject];
-      UICollectionView *artworksCollectionView = [artworksVCView.subviews lastObject];
-      NSArray *titles = [[artworksCollectionView visibleCells] valueForKeyPath:@"metadataView.secondaryLabel.text"];
-      expect(titles).to.equal(@[otherFairArtwork.title]);
+      expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameFair]).to.equal(@"OTHER WORKS IN FAIR");
+      expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksSameFair]).to.equal(@[otherFairArtwork.title]);
     });
 });
 
