@@ -4,6 +4,8 @@
 typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
     ARRelatedArtworksSameShow = 1,
     ARRelatedArtworksSameFair,
+    ARRelatedArtworksArtistArtworks,
+    ARRelatedArtworks,
 };
 
 @class ARArtworkRelatedArtworksView;
@@ -26,6 +28,7 @@ typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
 - (void)updateWithArtwork:(Artwork *)artwork;
 - (void)cancel;
 
-- (void)addSectionForFair:(Fair *)fair;
+- (void)addSectionsForFair:(Fair *)fair;
+- (void)addSectionsForShow:(PartnerShow *)show;
 
 @end
