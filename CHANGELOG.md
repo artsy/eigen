@@ -1,5 +1,7 @@
 ## Next
 
+* Pre-caches hero unit images — @ashfurrow
+
 ## 1.7.1 (06/03/2015)
 
 * Add previously missing fair editorial content - alloy

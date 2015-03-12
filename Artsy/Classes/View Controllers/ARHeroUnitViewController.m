@@ -2,6 +2,8 @@
 #import "ARSiteHeroUnitView.h"
 #import "ARHeroUnitsNetworkModel.h"
 
+#import <SDWebImage/SDWebImagePrefetcher.h>
+
 const static CGFloat ARHeroUnitDotsHeight = 30;
 const static CGFloat ARCarouselDelay = 10;
 
@@ -83,6 +85,13 @@ const static CGFloat ARCarouselDelay = 10;
 
         self.view.userInteractionEnabled = YES;
         [self updateViewWithHeroUnits:heroUnits];
+
+        // Grab all but the first and try to pre-download them.
+        NSArray *urls = [[heroUnits subarrayWithRange:NSMakeRange(1, heroUnits.count-1)] map:^id(SiteHeroUnit *unit) {
+            return unit.preferredImageURL;
+        }];
+        [SDWebImagePrefetcher.sharedImagePrefetcher prefetchURLs:urls];
+
         [self startTimer];
 
     } failure:^(NSError *error) {
