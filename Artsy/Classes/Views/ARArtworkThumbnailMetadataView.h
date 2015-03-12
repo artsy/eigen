@@ -6,4 +6,7 @@
 - (void)configureWithArtwork:(Artwork *)artwork;
 - (void)resetLabels;
 
+@property (nonatomic, readonly) ARSerifLabel *primaryLabel;
+@property (nonatomic, readonly) ARArtworkTitleLabel *secondaryLabel;
+
 @end

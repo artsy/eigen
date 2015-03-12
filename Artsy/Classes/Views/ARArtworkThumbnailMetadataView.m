@@ -4,8 +4,8 @@ static CGFloat ARMetadataFontSize;
 
 @interface ARArtworkThumbnailMetadataView ()
 
-@property (nonatomic, strong, readonly) ARSerifLabel *primaryLabel;
-@property (nonatomic, strong, readonly) ARArtworkTitleLabel *secondaryLabel;
+@property (nonatomic, strong) ARSerifLabel *primaryLabel;
+@property (nonatomic, strong) ARArtworkTitleLabel *secondaryLabel;
 
 @end
 
