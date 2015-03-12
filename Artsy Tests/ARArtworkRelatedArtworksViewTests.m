@@ -38,8 +38,8 @@ before(^{
     // Can't use MTLJSONAdapter to generate JSON from model because, unless we specify all fields, it will raise an
     // exception on all the `null` fields.
     artworkJSON = @{
-         @"id": @"korakrit-arunanondchai-untitled-memories1",
-      @"title": @"Untitled (Memories1)",
+         @"id": @"el-anatsui-revelation",
+      @"title": @"Revelation",
     };
     artwork = [Artwork modelWithJSON:artworkJSON];
     relatedView = [[ARArtworkRelatedArtworksView alloc] initWithArtwork:artwork];
@@ -56,17 +56,16 @@ describe(@"concerning an artwork at a fair", ^{
 
     before(^{
         otherFairArtworkJSON = @{
-             @"id": @"other-fair-artwork",
-          @"title": @"Other fair artwork",
+             @"id": @"gilles-barbier-a-very-old-thing",
+          @"title": @"A very old Thing",
         };
         otherFairArtwork = [Artwork modelWithJSON:otherFairArtworkJSON];
-
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/fair/the-armory-show/artworks?artwork[]=korakrit-arunanondchai-untitled-memories1"
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/fair/the-armory-show-2015/artworks?artwork[]=el-anatsui-revelation"
                                withResponse:@[artworkJSON, otherFairArtworkJSON]];
 
         Fair *fair = [Fair modelWithJSON:@{
-              @"id": @"the-armory-show",
-            @"name": @"The Armory Show",
+              @"id": @"the-armory-show-2015",
+            @"name": @"The Armory Show 2015",
         }];
         [relatedView addSectionForFair:fair];
 
