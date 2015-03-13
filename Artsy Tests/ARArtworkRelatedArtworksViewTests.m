@@ -22,7 +22,9 @@
     UICollectionView *artworksCollectionView = [artworksVCView.subviews lastObject];
     NSAssert(!CGSizeEqualToSize(artworksCollectionView.frame.size, CGSizeZero),
              @"There are no visible cells in a UICollectionView if it has no visible frame.");
-    return [[artworksCollectionView visibleCells] valueForKeyPath:@"metadataView.secondaryLabel.text"];
+    return [artworksCollectionView.visibleCells map:^(ARArtworkWithMetadataThumbnailCell *cell) {
+        return cell.metadataView.secondaryLabel.text;
+    }];
 }
 
 @end
