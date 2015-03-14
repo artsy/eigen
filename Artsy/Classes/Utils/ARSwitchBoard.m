@@ -93,35 +93,38 @@
     }];
 
 
-    if (![UIDevice isPad]) {
-        [self.routes addRoute:@"/show/:id" handler:^BOOL(NSDictionary *parameters) {
-            @strongify(self)
-            ARShowViewController *viewController = [self loadShowWithID:parameters[@"id"]];
-            [[ARTopMenuViewController sharedController] pushViewController:viewController];
-            return YES;
-        }];
+    [self.routes addRoute:@"/show/:id" handler:^BOOL(NSDictionary *parameters) {
+        @strongify(self)
+        ARShowViewController *viewController = [self loadShowWithID:parameters[@"id"]];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+        return YES;
+    }];
 
+    [self.routes addRoute:@"/:profile_id/for-you" handler:^BOOL(NSDictionary *parameters) {
 
-        [self.routes addRoute:@"/:profile_id/for-you" handler:^BOOL(NSDictionary *parameters) {
-            @strongify(self);
+        if ([UIDevice isPad]) { return NO; }
 
-            id context = parameters[@"fair"];
-            NSAssert(context != nil, @"Fair guide routing attempt with no context. ");
+        @strongify(self);
 
-            UIViewController *viewController = [self loadFairGuideWithFair:context];
-            [[ARTopMenuViewController sharedController] pushViewController:viewController];
+        id context = parameters[@"fair"];
+        NSAssert(context != nil, @"Fair guide routing attempt with no context. ");
 
-            return YES;
-        }];
+        UIViewController *viewController = [self loadFairGuideWithFair:context];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
 
-        [self.routes addRoute:@"/:profile_id/browse/artist/:id" handler:^BOOL(NSDictionary *parameters) {
-            @strongify(self)
+        return YES;
+    }];
 
-            UIViewController *viewController = [self loadArtistInFairWithID:parameters[@"id"] fair:parameters[@"fair"]];
-            [[ARTopMenuViewController sharedController] pushViewController:viewController];
-            return YES;
-        }];
-    }
+    [self.routes addRoute:@"/:profile_id/browse/artist/:id" handler:^BOOL(NSDictionary *parameters) {
+
+        if ([UIDevice isPad]) { return NO; }
+
+        @strongify(self)
+
+        UIViewController *viewController = [self loadArtistInFairWithID:parameters[@"id"] fair:parameters[@"fair"]];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+        return YES;
+    }];
 
     [self.routes addRoute:@"/" handler:^BOOL(NSDictionary *parameters) {
         [[ARTopMenuViewController sharedController] loadFeed];
