@@ -118,6 +118,10 @@
         return [artwork.artworkID isEqualToString:self.artwork.artworkID];
     }];
 
+    if (artworks.count == 0) {
+        return;
+    }
+
     ARArtworkMasonryLayout layout = [UIDevice isPad] ? [self masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]] : ARArtworkMasonryLayout2Column;
     ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     module.layoutProvider = self;

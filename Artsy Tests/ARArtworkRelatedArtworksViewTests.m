@@ -7,6 +7,7 @@
 
 @interface ARArtworkRelatedArtworksView (Testing)
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
+- (void)addSectionWithTag:(ARRelatedArtworksSubviewOrder)tag artworks:(NSArray *)artworks heading:(NSString *)heading;
 @end
 
 @implementation ARArtworkRelatedArtworksView (Testing)
@@ -86,6 +87,11 @@ it(@"falls back to a section with any related artworks", ^{
     expect([relatedView viewWithTag:ARRelatedArtworks]).willNot.beNil();
     expect([relatedView titleForSectionWithTag:ARRelatedArtworks]).to.equal(@"RELATED ARTWORKS");
     expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworks]).to.equal(@[relatedArtwork.title]);
+});
+
+it(@"does not add a section when there are no artworks for that section", ^{
+    [relatedView addSectionWithTag:0 artworks:@[] heading:@"Empty"];
+    expect(relatedView.subviews).to.haveACountOf(0);
 });
 
 describe(@"concerning an artwork at a fair", ^{
