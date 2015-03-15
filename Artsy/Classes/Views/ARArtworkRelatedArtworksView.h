@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
 
 @required
 - (void)relatedArtworksView:(ARArtworkRelatedArtworksView *)view shouldShowViewController:(UIViewController *)viewController;
-- (void)didUpdateRelatedArtworksView:(ARArtworkRelatedArtworksView *)relatedArtworksView;
+- (void)relatedArtworksView:(ARArtworkRelatedArtworksView *)view didAddSection:(UIView *)section;
 @optional
 
 - (Fair *)fair;

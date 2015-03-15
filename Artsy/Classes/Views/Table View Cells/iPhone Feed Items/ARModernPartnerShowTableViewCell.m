@@ -206,7 +206,7 @@ static CGFloat ARPartnerShowCellSideMargin;
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
-    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:self.artworkThumbnailsVC.items inFair:nil atIndex:index];
+    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:self.artworkThumbnailsVC.items inFair:nil inShow:self.show atIndex:index];
     [self.delegate modernPartnerShowTableViewCell:self shouldShowViewController:viewController];
 }
 

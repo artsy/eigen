@@ -180,13 +180,17 @@
     return viewController;
 }
 
+- (ARArtworkSetViewController *)loadArtworkSet:(NSArray *)artworkSet inFair:(Fair *)fair inShow:(PartnerShow *)show atIndex:(NSInteger)index
+{
+    ARArtworkSetViewController *viewController = [[ARArtworkSetViewController alloc] initWithArtworkSet:artworkSet fair:fair show:show atIndex:index];
+    return viewController;
+}
 
 - (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
 {
     NSString *path = [NSString stringWithFormat:@"/feature/%@/bid/%@", saleID, artworkID];
     return [self loadURL:[NSURL URLWithString:path]];
 }
-
 
 - (ARAuctionArtworkResultsViewController *)loadAuctionResultsForArtwork:(Artwork *)artwork
 {

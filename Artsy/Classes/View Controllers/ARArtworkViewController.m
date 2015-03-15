@@ -31,18 +31,24 @@
 
 - (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair
 {
+    return [self initWithArtwork:artwork fair:fair show:nil];
+}
+
+- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair show:(PartnerShow *)show
+{
     self = [self init];
     if (!self) { return nil; }
 
     _artwork = artwork;
     _fair = fair;
+    _show = show;
 
     return self;
 }
 
 - (void)loadView
 {
-    self.view = [[ARArtworkView alloc] initWithArtwork:self.artwork fair:self.fair andParentViewController:self];
+    self.view = [[ARArtworkView alloc] initWithArtwork:self.artwork fair:self.fair show:self.show andParentViewController:self];
     self.view.delegate = self;
     self.view.metadataView.delegate = self;
     self.view.artworkBlurbView.delegate = self;
@@ -211,14 +217,15 @@
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
 
-- (void)didUpdateRelatedArtworksView:(ARArtworkRelatedArtworksView *)relatedArtworksView
+- (void)relatedArtworksView:(ARArtworkRelatedArtworksView *)view didAddSection:(UIView *)section;
 {
+    section.alpha = 0;
     [UIView animateTwoStepIf:self.shouldAnimate
         duration:ARAnimationDuration * 2 :^{
             [self.view.stackView setNeedsLayout];
             [self.view.stackView layoutIfNeeded];
         } midway:^{
-            relatedArtworksView.alpha = 1;
+            section.alpha = 1;
             [self.view flashScrollIndicators];
         } completion:nil];
 }

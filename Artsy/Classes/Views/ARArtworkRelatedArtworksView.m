@@ -145,6 +145,8 @@
     [section.artworksVC didMoveToParentViewController:self.parentViewController];
 
     [self layoutIfNeeded];
+
+    [self.parentViewController relatedArtworksView:self didAddSection:section];
 }
 
 //- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void(^)())completion

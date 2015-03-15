@@ -5,10 +5,12 @@
 /// Designated initializer
 - (instancetype)initWithArtworkID:(NSString *)artworkID fair:(Fair *)fair;
 - (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair;
+- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair show:(PartnerShow *)show;
 
 /// The artwork this VC represents
 @property (nonatomic, strong, readonly) Artwork *artwork;
 @property (nonatomic, strong, readonly) Fair *fair;
+@property (nonatomic, strong, readonly) PartnerShow *show;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 
 /// The index in the current set of artworks

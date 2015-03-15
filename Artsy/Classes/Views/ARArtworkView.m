@@ -7,6 +7,7 @@
 @interface ARArtworkView()
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) Fair *fair;
+@property (nonatomic, strong) PartnerShow *show;
 @property (nonatomic, strong) ARSpinner *spinner;
 @property (nonatomic, strong) ARAuctionBannerView *banner;
 @property (nonatomic, strong) ARWhitespaceGobbler *gobbler;
@@ -17,13 +18,14 @@
 static const CGFloat ARArtworkImageHeightAdjustmentForPad = -100;
 static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
-- (id)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair andParentViewController:(ARArtworkViewController *)parentViewController
+- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair show:(PartnerShow *)show andParentViewController:(ARArtworkViewController *)parentViewController;
 {
     self = [super initWithStackViewClass:[ORTagBasedAutoStackView class]];
 
     if (!self) { return nil; }
     _artwork = artwork;
     _fair = fair;
+    _show = show;
     _parentViewController = parentViewController;
 
     self.scrollsToTop = NO;
@@ -54,8 +56,16 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     [spinner constrainHeight:@"100"];
 
     ARArtworkRelatedArtworksView *relatedArtworks = [[ARArtworkRelatedArtworksView alloc] initWithArtwork:artwork];
-    relatedArtworks.alpha = 0;
     relatedArtworks.tag = ARArtworkRelatedArtworks;
+    if (self.show) {
+        [relatedArtworks addSectionsForShow:self.show];
+    } else if (self.fair) {
+        [relatedArtworks addSectionsForFair:self.fair];
+    //} else if (self.auction) {
+        //[relatedArtworks addSectionsForAuction:self.auction];
+    } else {
+        [relatedArtworks addSectionWithRelatedArtworks];
+    }
     self.relatedArtworksView = relatedArtworks;
 
     ARAuctionBannerView *banner = [[ARAuctionBannerView alloc] init];
