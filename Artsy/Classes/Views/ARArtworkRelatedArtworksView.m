@@ -10,7 +10,6 @@
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic) SaleArtwork *saleArtwork;
 @property (nonatomic) BOOL hasArtworks;
-@property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
 @end
 
 
@@ -225,7 +224,7 @@
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
-    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:self.artworksVC.items inFair:self.fair atIndex:index];
+    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:controller.items inFair:self.fair atIndex:index];
     [self.parentViewController relatedArtworksView:self shouldShowViewController:viewController];
 }
 
