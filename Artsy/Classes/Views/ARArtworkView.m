@@ -55,17 +55,8 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     self.spinner = spinner;
     [spinner constrainHeight:@"100"];
 
-    ARArtworkRelatedArtworksView *relatedArtworks = [[ARArtworkRelatedArtworksView alloc] initWithArtwork:artwork];
+    ARArtworkRelatedArtworksView *relatedArtworks = [ARArtworkRelatedArtworksView new];
     relatedArtworks.tag = ARArtworkRelatedArtworks;
-    if (self.show) {
-        [relatedArtworks addSectionsForShow:self.show];
-    } else if (self.fair) {
-        [relatedArtworks addSectionsForFair:self.fair];
-    //} else if (self.auction) {
-        //[relatedArtworks addSectionsForAuction:self.auction];
-    } else {
-        [relatedArtworks addSectionWithRelatedArtworks];
-    }
     self.relatedArtworksView = relatedArtworks;
 
     ARAuctionBannerView *banner = [[ARAuctionBannerView alloc] init];

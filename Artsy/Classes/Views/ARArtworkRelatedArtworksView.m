@@ -41,13 +41,64 @@
 
 @implementation ARArtworkRelatedArtworksView
 
-- (instancetype)initWithArtwork:(Artwork *)artwork;
+- (void)updateWithArtwork:(Artwork *)artwork
 {
-    if ((self = [super init])) {
-        _artwork = artwork;
-    }
-    return self;
+    [self updateWithArtwork:artwork withCompletion:nil];
 }
+
+- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void(^)())completion
+{
+    if (self.hasRequested) { return; }
+
+    self.artwork = artwork;
+    self.hasRequested = YES;
+
+    @weakify(self);
+
+    // TODO: refactor these callbacks to return so we can use
+    // results from the values array in a `when`
+    KSPromise *salePromise = [artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
+        self.saleArtwork = saleArtwork;
+    } failure:nil];
+
+    KSPromise *fairPromise = [artwork onFairUpdate:nil failure:nil];
+
+    __block PartnerShow *show = nil;
+    KSPromise *partnerShowPromise = [artwork onPartnerShowUpdate:^(PartnerShow *s) { show = s; } failure:nil];
+
+    [[KSPromise when:@[salePromise, fairPromise, partnerShowPromise]] then:^id(id value) {
+        @strongify(self);
+
+        if (show) {
+            [self addSectionsForShow:show];
+            return show;
+        }
+
+        Sale *auction = self.saleArtwork.auction;
+        if (auction) {
+            // TODO did the previous code show any other auction specific views?
+            [self addSectionsForAuction:auction];
+            return auction;
+        }
+
+        Fair *fair = self.fair ?: self.artwork.fair;
+        if (fair) {
+            [self addSectionsForFair:fair];
+            return fair;
+        }
+
+        [self addSectionWithRelatedArtworks];
+        return nil;
+
+    } error:^id(NSError *error) {
+        @strongify(self);
+        ARErrorLog(@"Error fetching sale/fair for %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
+        [self addSectionWithRelatedArtworks];
+        return error;
+    }];
+}
+
+#pragma mark - Add related works sections
 
 - (void)addSectionsForFair:(Fair *)fair;
 {
@@ -151,58 +202,6 @@
 
     [self.parentViewController relatedArtworksView:self didAddSection:section];
 }
-
-//- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void(^)())completion
-//{
-    //if (self.hasRequested) { return; }
-
-    //self.artwork = artwork;
-    //self.hasRequested = YES;
-
-    //@weakify(self);
-
-    //// TODO: refactor these callbacks to return so we can use
-    //// results from the values array in a `when`
-    //KSPromise *salePromise = [artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-        //self.saleArtwork = saleArtwork;
-    //} failure:nil];
-
-    //KSPromise *fairPromise = [artwork onFairUpdate:nil failure:nil];
-
-    //[[KSPromise when:@[salePromise, fairPromise]] then:^id(id value) {
-        //@strongify(self);
-        //id returnable = nil;
-
-        //Fair *fairContext;
-
-        //if ([self.parentViewController respondsToSelector:@selector(fair)]) {
-            //fairContext = [self.parentViewController fair];
-        //}
-
-        //if (!fairContext) {
-            //fairContext = self.artwork.fair;
-        //}
-
-        //if (self.saleArtwork.auction) {
-            //returnable = self.saleArtwork.auction;
-            //[self fetchSaleArtworks];
-
-        //} else if (fairContext) {
-            //returnable = fairContext;
-            //[self fetchFairArtworksForFair:fairContext];
-
-        //} else {
-            //[self fetchRelatedArtworks];
-        //}
-        //return returnable;
-
-    //} error:^id(NSError *error) {
-        //@strongify(self);
-        //ARErrorLog(@"Error fetching sale/fair for %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
-        //[self fetchRelatedArtworks];
-        //return error;
-    //}];
-//}
 
 // TODO Why is this?
 //- (CGSize)intrinsicContentSize

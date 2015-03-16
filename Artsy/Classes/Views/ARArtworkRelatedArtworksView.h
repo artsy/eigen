@@ -25,7 +25,10 @@ typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
 
 @property (nonatomic, weak) ARArtworkViewController<ARArtworkRelatedArtworksViewParentViewController> *parentViewController;
 
-- (instancetype)initWithArtwork:(Artwork *)artwork;
+- (void)updateWithArtwork:(Artwork *)artwork;
+- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void(^)())completion;
+
+// TODO make all these private
 
 // Use this when showing an artwork in the context of a fair.
 - (void)addSectionsForFair:(Fair *)fair;

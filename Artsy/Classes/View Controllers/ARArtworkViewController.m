@@ -111,6 +111,8 @@
     [self.artwork updateArtwork];
     [self.artwork updateSaleArtwork];
     [self.artwork updateFair];
+    [self.artwork updatePartnerShow];
+    [self.view.relatedArtworksView updateWithArtwork:self.artwork];
     if (!self.postsVC.posts.count){
         [self getRelatedPosts];
     }

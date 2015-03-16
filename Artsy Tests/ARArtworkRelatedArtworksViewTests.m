@@ -6,6 +6,7 @@
 #import "ARArtworkThumbnailMetadataView.h"
 
 @interface ARArtworkRelatedArtworksView (Testing)
+@property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
 - (void)addSectionWithTag:(ARRelatedArtworksSubviewOrder)tag artworks:(NSArray *)artworks heading:(NSString *)heading;
 @end
@@ -77,7 +78,8 @@ before(^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks?artwork[]=el-anatsui-revelation"
                            withResponse:@[artworkJSON, relatedArtworkJSON]];
 
-    relatedView = [[ARArtworkRelatedArtworksView alloc] initWithArtwork:artwork];
+    relatedView = [ARArtworkRelatedArtworksView new];
+    relatedView.artwork = artwork;
     // Ensure UICollectionView adds visible cells.
     relatedView.frame = CGRectMake(0, 0, 320, 480);
 });
