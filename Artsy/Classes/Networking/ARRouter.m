@@ -454,7 +454,7 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newShowsRequestForArtworkID:(NSString *)artworkID andFairID:(NSString *)fairID
 {
-    NSDictionary *params = @{@"artwork": @[ artworkID ], @"fair_id": fairID};
+    NSDictionary *params = fairID ? @{@"artwork": @[artworkID], @"fair_id": fairID} : @{@"artwork": @[artworkID] };
     return [staticHTTPClient requestWithMethod:@"GET" path:ARRelatedShowsURL parameters:params];
 }
 
