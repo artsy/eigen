@@ -8,7 +8,7 @@
 
 // TODO: Add support ARFollowable for following status
 
-@class Artist, Partner, Profile, Sale, Fair;
+@class Artist, Partner, Profile, Sale, Fair, PartnerShow;
 
 typedef NS_ENUM(NSInteger, ARArtworkAvailability) {
     ARArtworkAvailabilityNotForSale,
@@ -97,11 +97,13 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 - (void)updateArtwork;
 - (void)updateSaleArtwork;
 - (void)updateFair;
+- (void)updatePartnerShow;
 
 /// Adds a callback when the artwork has been update, does not trigger said update.
 - (KSPromise *)onArtworkUpdate:(void(^)(void))success failure:(void(^)(NSError *error))failure;
 - (KSPromise *)onSaleArtworkUpdate:(void(^)(SaleArtwork *saleArtwork))success failure:(void(^)(NSError *error))failure;
 - (KSPromise *)onFairUpdate:(void(^)(Fair *fair))success failure:(void(^)(NSError *error))failure;
+- (KSPromise *)onPartnerShowUpdate:(void(^)(PartnerShow *show))success failure:(void(^)(NSError *error))failure;
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure;
 - (void)getFavoriteStatus:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
