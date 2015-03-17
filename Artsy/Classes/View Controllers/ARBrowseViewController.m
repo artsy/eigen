@@ -2,6 +2,7 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
 #import "ARBrowseNetworkModel.h"
+#import <SDWebImage/SDWebImagePrefetcher.h>
 
 @interface ARBrowseViewCell : ARBrowseFeaturedLinksCollectionViewCell
 @end
@@ -33,6 +34,12 @@
     if (!self) { return nil; }
     _shouldAnimate = YES;
     _networkModel = [[ARBrowseNetworkModel alloc] init];
+    [_networkModel getBrowseFeaturedLinks:^(NSArray *links) {
+        NSArray *urls = [links map:^(FeaturedLink * link){
+            return link.largeImageURL;
+        }];
+        [SDWebImagePrefetcher.sharedImagePrefetcher prefetchURLs:urls];
+    } failure:nil];
     return self;
 }
 
@@ -50,16 +57,23 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
-    [self fetchMenuItems];
+
+    NSArray *oldLinks = [self.menuLinks copy];
+    [self.networkModel getBrowseFeaturedLinks:^(NSArray *links) {
+        if (![links isEqualToArray:oldLinks]) {
+            [self.collectionView reloadData];
+        }
+    } failure:nil];
 }
 
 - (void)setupCollectionView
 {
+    CGFloat margin = 20;
+
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(280, 144);
+    layout.itemSize = CGSizeMake(self.view.frame.size.width - (2 * margin), 144);
     layout.minimumLineSpacing = 13;
-    layout.sectionInset = UIEdgeInsetsMake(20, 20, 20, 20);
+    layout.sectionInset = UIEdgeInsetsMake(margin, margin, margin, margin);
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     collectionView.dataSource = self;
     collectionView.delegate = self;
@@ -69,16 +83,6 @@
 
     [collectionView alignToView:self.view];
     _collectionView = collectionView;
-}
-
-- (void)fetchMenuItems
-{
-    [self.networkModel getBrowseFeaturedLinks:^(NSArray *links) {
-        [self.collectionView reloadData];
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
-    } failure:^(NSError *error) {
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
-    }];
 }
 
 - (NSArray *)menuLinks

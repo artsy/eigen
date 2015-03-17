@@ -11,7 +11,6 @@
 @property (nonatomic, strong, readonly) NSArray *navigationControllers;
 
 @property (readwrite, nonatomic, strong) ARNavigationController *feedNavigationController;
-@property (readwrite, nonatomic, strong) ARNavigationController *favoritesNavigationController;
 @property (readwrite, nonatomic, strong) ARNavigationController *browseNavigationController;
 @property (readwrite, nonatomic, strong) ARNavigationController *searchNavigationController;
 
@@ -19,43 +18,39 @@
 
 @implementation ARTopMenuNavigationDataSource
 
-- (ARNavigationController *)navigationControllerForSearch
+- (instancetype)init
 {
-    if (self.searchNavigationController) { return self.searchNavigationController; }
+    self = [super init];
+
+    // Search
 
     ARSearchViewController *searchController = [[ARAppSearchViewController alloc] init];
     _searchNavigationController = [[ARNavigationController alloc] initWithRootViewController: searchController];
-    return self.searchNavigationController;
-}
 
-- (ARNavigationController *)navigationControllerForFeed
-{
-    if (self.feedNavigationController) { return self.feedNavigationController; }
+    // Feed
 
     ARShowFeed *showFeed = [[ARShowFeed alloc] init];
     ARFeedTimeline *showFeedTimeline = [[ARFeedTimeline alloc] initWithFeed:showFeed];
 
     _showFeedViewController = [[ARShowFeedViewController alloc] initWithFeedTimeline:showFeedTimeline];
-    self.showFeedViewController.heroUnitDatasource = [[ARHeroUnitsNetworkModel alloc] init];
-
+    _showFeedViewController.heroUnitDatasource = [[ARHeroUnitsNetworkModel alloc] init];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController: _showFeedViewController];
-    return self.feedNavigationController;
-}
 
-- (ARNavigationController *)navigationControllerForBrowse
-{
-    if (self.browseNavigationController) { return self.browseNavigationController; }
+    // Browse
 
     ARBrowseViewController *browseViewController = [[ARBrowseViewController alloc] init];
+
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:browseViewController];
-    return self.browseNavigationController;
+
+    return self;
 }
 
-- (ARNavigationController *)navigationControllerForFavorites
+- (ARNavigationController *)favoritesNavigationController
 {
+    // Make a new one each time the favorites tab is selected
+
     ARFavoritesViewController *favoritesViewController = [[ARFavoritesViewController alloc] init];
-    _favoritesNavigationController = [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
-    return self.favoritesNavigationController;
+    return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
 }
 
 #pragma mark ARTabViewDataSource
@@ -66,13 +61,13 @@
 
     switch (index){
         case ARTopTabControllerIndexSearch:
-            return [self navigationControllerForSearch];
-        case ARTopTabControllerIndexBrowse:
-            return [self navigationControllerForBrowse];
-        case ARTopTabControllerIndexFavorites:
-            return [self navigationControllerForFavorites];
+            return self.searchNavigationController;
         case ARTopTabControllerIndexFeed:
-            return [self navigationControllerForFeed];
+            return self.feedNavigationController;
+        case ARTopTabControllerIndexBrowse:
+            return self.browseNavigationController;
+        case ARTopTabControllerIndexFavorites:
+            return self.favoritesNavigationController;
     }
 
     return nil;
