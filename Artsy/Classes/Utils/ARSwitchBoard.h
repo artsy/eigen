@@ -30,7 +30,6 @@
 - (ARArtworkSetViewController *)loadArtworkSet:(NSArray *)artworkSet inFair:(Fair *)fair atIndex:(NSInteger)index;
 - (ARArtworkSetViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair;
 - (ARArtworkSetViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair;
-- (ARArtworkSetViewController *)loadArtworkSet:(NSArray *)artworkSet inFair:(Fair *)fair inShow:(PartnerShow *)show atIndex:(NSInteger)index;
 
 - (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
 

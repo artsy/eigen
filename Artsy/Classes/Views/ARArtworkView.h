@@ -24,6 +24,6 @@ NS_ENUM(NSInteger, ARArtworkViewIndex){
 @property (nonatomic, strong) ARArtworkBlurbView *artworkBlurbView;
 @property (nonatomic, weak) ARArtworkViewController *parentViewController;
 
-- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair show:(PartnerShow *)show andParentViewController:(ARArtworkViewController *)parentViewController;
+- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair andParentViewController:(ARArtworkViewController *)parentViewController;
 
 @end

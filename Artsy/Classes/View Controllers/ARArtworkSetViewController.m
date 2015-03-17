@@ -5,7 +5,6 @@
 @interface ARArtworkSetViewController ()
 
 @property (nonatomic, strong) Fair *fair;
-@property (nonatomic, strong) PartnerShow *show;
 @property (nonatomic, strong) NSArray *artworks;
 @property (nonatomic, assign) NSInteger index;
 
@@ -51,16 +50,10 @@
 
 - (instancetype)initWithArtworkSet:(NSArray *)artworkSet fair:(Fair *)fair atIndex:(NSInteger)index
 {
-  return [self initWithArtworkSet:artworkSet fair:fair show:nil atIndex:index];
-}
-
-- (instancetype)initWithArtworkSet:(NSArray *)artworkSet fair:(Fair *)fair show:(PartnerShow *)show atIndex:(NSInteger)index;
-{
     self = [super initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
 
     if (!self) { return nil; }
 
-    _show = show;
     _fair = fair;
     _artworks = artworkSet;
     _index = [self isValidArtworkIndex:index] ? index : 0;
@@ -99,7 +92,7 @@
 {
     if (![self isValidArtworkIndex:index]) return nil;
 
-    ARArtworkViewController *artworkViewController = [[ARArtworkViewController alloc] initWithArtwork:self.artworks[index] fair:self.fair show:self.show];
+    ARArtworkViewController *artworkViewController = [[ARArtworkViewController alloc] initWithArtwork:self.artworks[index] fair:self.fair];
     artworkViewController.index = index;
 
     return artworkViewController;
