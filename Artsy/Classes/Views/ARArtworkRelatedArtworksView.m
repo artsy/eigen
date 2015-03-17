@@ -42,6 +42,11 @@
 
 @implementation ARArtworkRelatedArtworksView
 
+- (CGSize)intrinsicContentSize
+{
+   return CGSizeMake(UIViewNoIntrinsicMetric, self.hasArtworks ? UIViewNoIntrinsicMetric : 0);
+}
+
 - (void)updateWithArtwork:(Artwork *)artwork
 {
     [self updateWithArtwork:artwork withCompletion:nil];
@@ -170,6 +175,11 @@
         return;
     }
 
+    if (!self.hasArtworks) {
+        self.hasArtworks = YES;
+        [self invalidateIntrinsicContentSize];
+    }
+
     ARArtworkMasonryLayout layout = [UIDevice isPad] ? [self masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]] : ARArtworkMasonryLayout2Column;
     ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     module.layoutProvider = self;
@@ -197,11 +207,6 @@
     [self.parentViewController relatedArtworksView:self didAddSection:section];
 }
 
-// TODO Why is this?
-//- (CGSize)intrinsicContentSize
-//{
-//    return CGSizeMake(UIViewNoIntrinsicMetric, self.hasArtworks ? UIViewNoIntrinsicMetric : 0);
-//}
 #pragma mark - ARArtworkMasonryLayoutProvider
 
 - (ARArtworkMasonryLayout)masonryLayoutForPadWithOrientation:(UIInterfaceOrientation)orientation
