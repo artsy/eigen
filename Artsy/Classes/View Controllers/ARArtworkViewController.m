@@ -99,6 +99,7 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     self.view.scrollsToTop = NO;
+    [self.view.relatedArtworksView cancelRequests];
     [super viewDidDisappear:self.shouldAnimate && animated];
 }
 

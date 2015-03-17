@@ -9,7 +9,7 @@
 @property (nonatomic, assign) BOOL hasArtworks;
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
-@property (nonatomic, strong) AFJSONRequestOperation *relatedArtworksRequest;
+@property (nonatomic, strong) NSArray *relatedArtworkRequests;
 @end
 
 
@@ -42,9 +42,24 @@
 
 @implementation ARArtworkRelatedArtworksView
 
+- (instancetype)init;
+{
+    if ((self = [super init])) {
+        _relatedArtworkRequests = [NSArray array];
+    }
+    return self;
+}
+
 - (CGSize)intrinsicContentSize
 {
    return CGSizeMake(UIViewNoIntrinsicMetric, self.hasArtworks ? UIViewNoIntrinsicMetric : 0);
+}
+
+- (void)cancelRequests;
+{
+    [self.relatedArtworkRequests each:^(AFJSONRequestOperation *request) {
+        [request cancel];
+    }];
 }
 
 - (void)updateWithArtwork:(Artwork *)artwork
@@ -103,21 +118,26 @@
     }];
 }
 
+- (void)addRelatedArtworkRequest:(AFJSONRequestOperation *)requestOperation;
+{
+    self.relatedArtworkRequests = [self.relatedArtworkRequests arrayByAddingObject:requestOperation];
+}
+
 #pragma mark - Add related works sections
 
 - (void)addSectionsForFair:(Fair *)fair;
 {
     @weakify(self);
-    [self.artwork getFeaturedShowsAtFair:fair success:^(NSArray *shows) {
+    [self addRelatedArtworkRequest:[self.artwork getFeaturedShowsAtFair:fair success:^(NSArray *shows) {
         @strongify(self);
         for (PartnerShow *show in shows) {
             [self addSectionWithOtherArtworksInShow:show];
         }
-    }];
-    [self.artwork getRelatedFairArtworks:fair success:^(NSArray *artworks) {
+    }]];
+    [self addRelatedArtworkRequest:[self.artwork getRelatedFairArtworks:fair success:^(NSArray *artworks) {
         @strongify(self);
         [self addSectionWithTag:ARRelatedArtworksSameFair artworks:artworks heading:@"Other works in fair"];
-    }];
+    }]];
 }
 
 - (void)addSectionsForShow:(PartnerShow *)show;
@@ -130,39 +150,39 @@
 - (void)addSectionsForAuction:(Sale *)auction;
 {
     @weakify(self);
-    [auction getArtworks:^(NSArray *artworks) {
+    [self addRelatedArtworkRequest:[auction getArtworks:^(NSArray *artworks) {
         @strongify(self);
         [self addSectionWithTag:ARRelatedArtworksSameAuction artworks:artworks heading:@"Other works in auction"];
-    }];
+    }]];
 }
 
 - (void)addSectionWithOtherArtworksInShow:(PartnerShow *)show;
 {
     @weakify(self);
-    [show getArtworksAtPage:1 success:^(NSArray *artworks) {
+    [self addRelatedArtworkRequest:[show getArtworksAtPage:1 success:^(NSArray *artworks) {
         @strongify(self);
         [self addSectionWithTag:ARRelatedArtworksSameShow artworks:artworks heading:@"Other works in show"];
-    }];
+    }]];
 }
 
 - (void)addSectionWithArtistArtworks;
 {
     @weakify(self);
-    [self.artwork.artist getArtworksAtPage:1 andParams:nil success:^(NSArray *artworks) {
+    [self addRelatedArtworkRequest:[self.artwork.artist getArtworksAtPage:1 andParams:nil success:^(NSArray *artworks) {
         @strongify(self);
         [self addSectionWithTag:ARRelatedArtworksArtistArtworks
                        artworks:artworks
                         heading:[NSString stringWithFormat:@"Other works by %@", self.artwork.artist.name]];
-    }];
+    }]];
 }
 
 - (void)addSectionWithRelatedArtworks;
 {
     @weakify(self);
-    [self.artwork getRelatedArtworks:^(NSArray *artworks) {
+    [self addRelatedArtworkRequest:[self.artwork getRelatedArtworks:^(NSArray *artworks) {
         @strongify(self);
         [self addSectionWithTag:ARRelatedArtworks artworks:artworks heading:@"Related artworks"];
-    }];
+    }]];
 }
 
 - (void)addSectionWithTag:(ARRelatedArtworksSubviewOrder)tag artworks:(NSArray *)artworks heading:(NSString *)heading;

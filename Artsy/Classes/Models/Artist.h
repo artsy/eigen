@@ -17,7 +17,7 @@
 - (instancetype)initWithArtistID:(NSString *)artistID;
 
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
-- (void)getArtworksAtPage:(NSInteger)page andParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success;
+- (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page andParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success;
 
 - (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
 - (AFJSONRequestOperation *)getRelatedArtists:(void (^)(NSArray *artists))success;

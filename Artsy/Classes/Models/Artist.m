@@ -96,8 +96,8 @@
     } failure:failure];
 }
 
-- (void)getArtworksAtPage:(NSInteger)page andParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success {
-    [ArtsyAPI getArtistArtworks:self andPage:page withParams:params success:^(NSArray *artworks) {
+- (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page andParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success {
+    return [ArtsyAPI getArtistArtworks:self andPage:page withParams:params success:^(NSArray *artworks) {
         success(artworks);
     } failure:^(NSError *error) {
         success(@[]);
