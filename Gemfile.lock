@@ -1,37 +1,3 @@
-GIT
-  remote: git://github.com/orta/cocoapods-keys
-  revision: f0b326fbe47941f88b205e8708e178f8694e5aae
-  specs:
-    cocoapods-keys (1.0.0)
-      osx_keychain
-
-GIT
-  remote: https://github.com/CocoaPods/CocoaPods.git
-  revision: 988dbba97ccfa126033c8393b0ce7ffcd1f23780
-  specs:
-    cocoapods (0.36.0.rc.1)
-      activesupport (>= 3.2.15)
-      claide (~> 0.8.1)
-      cocoapods-core (= 0.36.0.rc.1)
-      cocoapods-downloader (~> 0.8.1)
-      cocoapods-plugins (~> 0.4.1)
-      cocoapods-trunk (~> 0.5.1)
-      cocoapods-try (~> 0.4.3)
-      colored (~> 1.2)
-      escape (~> 0.0.4)
-      molinillo (~> 0.2.1)
-      nap (~> 0.8)
-      open4 (~> 1.3)
-      xcodeproj (~> 0.22.0)
-
-GIT
-  remote: https://github.com/CocoaPods/Xcodeproj.git
-  revision: d164f5531293692cc5304dd4cdcc1ed85c53da69
-  specs:
-    xcodeproj (0.22.0)
-      activesupport (>= 3)
-      colored (~> 1.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -58,14 +24,30 @@ GEM
       xpath (~> 2.0)
     claide (0.8.1)
     cliver (0.3.2)
-    cocoapods-core (0.36.0.rc.1)
+    cocoapods (0.36.0)
+      activesupport (>= 3.2.15)
+      claide (~> 0.8.1)
+      cocoapods-core (= 0.36.0)
+      cocoapods-downloader (~> 0.8.1)
+      cocoapods-plugins (~> 0.4.1)
+      cocoapods-trunk (~> 0.6.0)
+      cocoapods-try (~> 0.4.3)
+      colored (~> 1.2)
+      escape (~> 0.0.4)
+      molinillo (~> 0.2.1)
+      nap (~> 0.8)
+      open4 (~> 1.3)
+      xcodeproj (~> 0.23.0)
+    cocoapods-core (0.36.0)
       activesupport (>= 3.2.15)
       fuzzy_match (~> 2.0.4)
       nap (~> 0.8.0)
     cocoapods-downloader (0.8.1)
+    cocoapods-keys (1.0.1)
+      osx_keychain
     cocoapods-plugins (0.4.1)
       nap
-    cocoapods-trunk (0.5.1)
+    cocoapods-trunk (0.6.0)
       nap (>= 0.8)
       netrc (= 0.7.8)
     cocoapods-try (0.4.3)
@@ -205,13 +187,16 @@ GEM
       json
     subexec (0.2.3)
     terminal-table (1.4.5)
-    thread_safe (0.3.4)
+    thread_safe (0.3.5)
     ttfunk (1.4.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     websocket-driver (0.5.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.1)
+    xcodeproj (0.23.0)
+      activesupport (>= 3)
+      colored (~> 1.2)
     xcpretty (0.1.7)
     xpath (2.0.0)
       nokogiri (~> 1.3)
@@ -220,11 +205,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods!
-  cocoapods-keys!
+  cocoapods
+  cocoapods-keys
   fastlane
   fui (~> 0.3.0)
   second_curtain (~> 0.2.3)
   shenzhen
-  xcodeproj!
   xcpretty
