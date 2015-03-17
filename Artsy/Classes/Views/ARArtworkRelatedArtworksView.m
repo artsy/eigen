@@ -15,6 +15,7 @@
 
 @interface ARArtworkRelatedArtworksContentView : ORStackView
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
+@property (nonatomic, strong) UIView *separator;
 @end
 
 @implementation ARArtworkRelatedArtworksContentView
@@ -32,7 +33,8 @@
         _artworksVC.activeModule = module;
         [_artworksVC appendItems:artworks];
         [self addSubview:_artworksVC.view withTopMargin:@"0" sideMargin:@"0"];
-        [self addGenericSeparatorWithSideMargin:@"40"];
+        _separator = [self addGenericSeparatorWithSideMargin:@"40"];
+        _separator.hidden = YES;
     }
     return self;
 }
@@ -226,9 +228,21 @@
     [self addSubview:section withTopMargin:@"0" sideMargin:@"0"];
     [section.artworksVC didMoveToParentViewController:self.parentViewController];
 
+    [self updateSeparators];
     [self layoutIfNeeded];
 
     [self.parentViewController relatedArtworksView:self didAddSection:section];
+}
+
+- (void)updateSeparators;
+{
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES];
+    NSArray *sections = [self.subviews sortedArrayUsingDescriptors:@[sortDescriptor]];
+    NSUInteger last = sections.count - 1;
+    for (NSUInteger i = 0; i < last; i++) {
+        [sections[i] separator].hidden = NO;
+    }
+    [sections[last] separator].hidden = YES;
 }
 
 #pragma mark - ARArtworkMasonryLayoutProvider
