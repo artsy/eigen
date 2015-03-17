@@ -1,3 +1,7 @@
+## Next
+
+* Show more related artworks on an artwork view - alloy
+
 ## 2015.03.03
 
 * Fix a crash when sharing from an iPad. - alloy
