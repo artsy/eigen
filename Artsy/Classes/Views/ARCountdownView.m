@@ -88,7 +88,7 @@
         return @"00 : 00 : 00 : 00";
     }
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSCalendarUnit dhms = NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    NSCalendarUnit dhms = NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
     NSDateComponents *components = [calendar components:dhms
                                                fromDate:now
                                                  toDate:self.targetDate
