@@ -26,12 +26,13 @@
 {
     if ((self = [super init])) {
         self.tag = (NSInteger)tag;
-        [self addPageSubtitleWithString:heading.uppercaseString];
+        [self addPageSubtitleWithString:heading.uppercaseString withTopMargin:@"22" tag:0];
         _artworksVC = [[AREmbeddedModelsViewController alloc] init];
         _artworksVC.constrainHeightAutomatically = YES;
         _artworksVC.activeModule = module;
         [_artworksVC appendItems:artworks];
         [self addSubview:_artworksVC.view withTopMargin:@"0" sideMargin:@"0"];
+        [self addGenericSeparatorWithSideMargin:@"40"];
     }
     return self;
 }

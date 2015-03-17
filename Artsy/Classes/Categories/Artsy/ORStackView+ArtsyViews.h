@@ -15,6 +15,7 @@
 /// Use a consistent subtitle
 - (UILabel *)addPageSubtitleWithString:(NSString *)title;
 - (UILabel *)addPageSubtitleWithString:(NSString *)title tag:(NSInteger)tag;
+- (UILabel *)addPageSubtitleWithString:(NSString *)title withTopMargin:(NSString *)topMargin tag:(NSInteger)tag;
 
 /// Use a consistent seperator
 - (UIView *)addGenericSeparatorWithSideMargin:(NSString *)sideMargin;

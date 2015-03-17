@@ -24,10 +24,15 @@
 
 - (UILabel *)addPageSubtitleWithString:(NSString *)title tag:(NSInteger)tag
 {
+    return [self addPageSubtitleWithString:title withTopMargin:@"44" tag:tag];
+}
+
+- (UILabel *)addPageSubtitleWithString:(NSString *)title withTopMargin:(NSString *)topMargin tag:(NSInteger)tag;
+{
     UILabel *featuredTitle = [ARThemedFactory labelForViewSubHeaders];
     featuredTitle.text = title.uppercaseString;
     featuredTitle.tag = tag;
-    [self addSubview:featuredTitle withTopMargin:@"44" sideMargin:@"40"];
+    [self addSubview:featuredTitle withTopMargin:topMargin sideMargin:@"40"];
     return featuredTitle;
 }
 
