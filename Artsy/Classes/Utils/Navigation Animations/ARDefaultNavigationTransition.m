@@ -74,7 +74,7 @@
         // snapshot of.
         navigationController.backButton.alpha = 1;
 
-        // We don't use the new iOS 7 snapshotting API because we can't wait
+        // We don't use the iOS snapshotting API because we can't wait
         // for a screen update to reflect our changes.
         backButtonSnapshot = [navigationController.backButton ar_snapshot];
 

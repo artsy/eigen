@@ -292,10 +292,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
-    // In iOS 7 in Landscape orientation, the keyboard's length and width values are as though the orientation was Portrait.
-    // This is fixed in iOS 8, but we must account for both possibilities. We will therefore assume the actual height to be the smaller of the two dimensions.
-    // See http://stackoverflow.com/questions/24314222/change-in-metrics-for-the-new-ios-simulator-in-xcode-6
-    CGFloat height = MIN(keyboardSize.width, keyboardSize.height);
+    CGFloat height = keyboardSize.height;
 
     self.inquiryHeightConstraint.constant = -height - self.topLayoutGuide.length;
 
