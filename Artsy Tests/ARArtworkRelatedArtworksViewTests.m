@@ -5,7 +5,7 @@
 #import "ARArtworkWithMetadataThumbnailCell.h"
 #import "ARArtworkThumbnailMetadataView.h"
 
-@interface ARArtworkRelatedArtworksView (Testing)
+@interface ARArtworkRelatedArtworksView (Private)
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
 - (void)addSectionWithTag:(ARRelatedArtworksSubviewOrder)tag artworks:(NSArray *)artworks heading:(NSString *)heading;
