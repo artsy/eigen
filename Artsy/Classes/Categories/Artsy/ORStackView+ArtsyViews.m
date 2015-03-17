@@ -73,7 +73,7 @@
 {
     return [self addWhiteSpaceWithHeight:height tag:0];
 }
-    
+
 - (UIView *)addWhiteSpaceWithHeight:(NSString *)height tag:(NSInteger)tag
 {
     UIView *gap = [[UIView alloc] init];

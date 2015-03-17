@@ -200,8 +200,12 @@
         [self invalidateIntrinsicContentSize];
     }
 
-    ARArtworkMasonryLayout layout = [UIDevice isPad] ? [self masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]] : ARArtworkMasonryLayout2Column;
-    ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
+    ARArtworkMasonryLayout layout = ARArtworkMasonryLayout2Column;
+    if ([UIDevice isPad]) {
+        layout = [self masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    }
+    ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout
+                                                                            andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     module.layoutProvider = self;
 
     ARArtworkRelatedArtworksContentView *section = [[ARArtworkRelatedArtworksContentView alloc] initWithTag:tag
@@ -236,14 +240,17 @@
 
 #pragma mark - AREmbeddedModelsDelegate
 
-- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller
+         shouldPresentViewController:(UIViewController *)viewController
 {
     [self.parentViewController relatedArtworksView:self shouldShowViewController:viewController];
 }
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
-    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:controller.items inFair:self.fair atIndex:index];
+    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:controller.items
+                                                                                       inFair:self.fair
+                                                                                      atIndex:index];
     [self.parentViewController relatedArtworksView:self shouldShowViewController:viewController];
 }
 
