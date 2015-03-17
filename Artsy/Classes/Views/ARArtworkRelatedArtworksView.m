@@ -6,10 +6,10 @@
 
 @interface ARArtworkRelatedArtworksView() <AREmbeddedModelsDelegate>
 @property (nonatomic, assign) BOOL hasRequested;
-@property (nonatomic, strong) AFJSONRequestOperation *relatedArtworksRequest;
+@property (nonatomic, assign) BOOL hasArtworks;
 @property (nonatomic, strong) Artwork *artwork;
-@property (nonatomic) SaleArtwork *saleArtwork;
-@property (nonatomic) BOOL hasArtworks;
+@property (nonatomic, strong) SaleArtwork *saleArtwork;
+@property (nonatomic, strong) AFJSONRequestOperation *relatedArtworksRequest;
 @end
 
 
@@ -76,7 +76,6 @@
 
         Sale *auction = self.saleArtwork.auction;
         if (auction) {
-            // TODO did the previous code show any other auction specific views?
             [self addSectionsForAuction:auction];
             return auction;
         }
@@ -136,8 +135,6 @@
     @weakify(self);
     [show getArtworksAtPage:1 success:^(NSArray *artworks) {
         @strongify(self);
-        // TODO Apperantly (potentially) an artwork can be in multiple shows, so should the heading include the show's
-        //      name or something?
         [self addSectionWithTag:ARRelatedArtworksSameShow artworks:artworks heading:@"Other works in show"];
     }];
 }
@@ -184,14 +181,10 @@
     section.artworksVC.shouldAnimate = self.parentViewController.shouldAnimate;
     section.artworksVC.delegate = self;
 
-    // [section addToRelatedArtworksView:self];
-
-    // TODO I don’t really like that this view is adding view controllers to its own view controller, but besides taste
-    //      it's a real problem when testing because `-[ORStackView addViewController:toParent:withTopMargin:]`
-    //      will get the view (to add the subview to) from the controller, which is `nil` or you have to also setup
-    //      a view controller just for the tests.
-    //
-    //      So duplicating it here for now, but adding the reference to the `section` directly instead.
+    // `-[ORStackView addViewController:toParent:withTopMargin:]` is a bit of a problem with unit-testing, because it
+    // will get the view (to add the subview to) from the controller, which is `nil`. You could also setup
+    // a view controller just for the tests, but I'm just duplicating the code here for now, but adding the reference
+    // to the `section` directly instead.
     //
     [section.artworksVC willMoveToParentViewController:self.parentViewController];
     [self.parentViewController addChildViewController:section.artworksVC];
@@ -208,6 +201,7 @@
 //{
 //    return CGSizeMake(UIViewNoIntrinsicMetric, self.hasArtworks ? UIViewNoIntrinsicMetric : 0);
 //}
+#pragma mark - ARArtworkMasonryLayoutProvider
 
 - (ARArtworkMasonryLayout)masonryLayoutForPadWithOrientation:(UIInterfaceOrientation)orientation
 {
