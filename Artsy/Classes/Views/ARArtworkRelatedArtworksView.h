@@ -30,18 +30,4 @@ typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
 - (void)updateWithArtwork:(Artwork *)artwork;
 - (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void(^)())completion;
 
-// TODO make all these private
-
-// Use this when showing an artwork in the context of a fair.
-- (void)addSectionsForFair:(Fair *)fair;
-
-// Use this when showing an artwork in the context of a show.
-- (void)addSectionsForShow:(PartnerShow *)show;
-
-// Use this when showing an artwork in the context of an auction.
-- (void)addSectionsForAuction:(Sale *)auction;
-
-// In all other cases, this should be used to simply show related artworks.
-- (void)addSectionWithRelatedArtworks;
-
 @end
