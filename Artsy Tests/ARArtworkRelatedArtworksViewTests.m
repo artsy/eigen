@@ -59,21 +59,21 @@ __block Artwork *relatedArtwork = nil;
 
 before(^{
     artworkJSON = @{
-          @"id": @"el-anatsui-revelation",
-       @"title": @"Revelation",
-      @"artist": @{ @"id": @"el-anatsui", @"name": @"El Anatsui" },
+            @"id": @"el-anatsui-revelation",
+         @"title": @"Revelation",
+        @"artist": @{ @"id": @"el-anatsui", @"name": @"El Anatsui" },
     };
     artwork = [Artwork modelWithJSON:artworkJSON];
 
     showJSON = @{
-           @"id":@"axel-vervoordt-gallery-axel-vervoordt-gallery-at-the-armory-show-2015",
-      @"partner":@{ @"id":@"axel-vervoordt-gallery" }
+             @"id":@"axel-vervoordt-gallery-axel-vervoordt-gallery-at-the-armory-show-2015",
+        @"partner":@{ @"id":@"axel-vervoordt-gallery" }
     };
     show = [PartnerShow modelWithJSON:showJSON];
 
     otherShowArtworkJSON = @{
-         @"id": @"hyong-keun-yun-burnt-umber-and-ultramarine-1",
-      @"title": @"Burnt umber and ultramarine",
+           @"id": @"hyong-keun-yun-burnt-umber-and-ultramarine-1",
+        @"title": @"Burnt umber and ultramarine",
     };
     otherShowArtwork = [Artwork modelWithJSON:otherShowArtworkJSON];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows?artwork[]=el-anatsui-revelation&fair_id=the-armory-show"
@@ -82,8 +82,8 @@ before(^{
                            withResponse:@[artworkJSON, otherShowArtworkJSON]];
 
     relatedArtworkJSON = @{
-         @"id": @"judy-pfaff-wallabout",
-      @"title": @"Wallabout",
+           @"id": @"judy-pfaff-wallabout",
+        @"title": @"Wallabout",
     };
     relatedArtwork = [Artwork modelWithJSON:relatedArtworkJSON];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks?artwork[]=el-anatsui-revelation"
@@ -113,8 +113,8 @@ describe(@"concerning an artwork at a fair", ^{
 
     before(^{
         otherFairArtworkJSON = @{
-             @"id": @"gilles-barbier-a-very-old-thing",
-          @"title": @"A very old Thing",
+               @"id": @"gilles-barbier-a-very-old-thing",
+            @"title": @"A very old Thing",
         };
         otherFairArtwork = [Artwork modelWithJSON:otherFairArtworkJSON];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/fair/the-armory-show-2015/artworks?artwork[]=el-anatsui-revelation"
@@ -146,8 +146,8 @@ describe(@"concerning an artwork at an auction", ^{
 
     before(^{
         otherSaleArtworkJSON = @{
-             @"id": @"ed-ruscha-cockroaches-from-insects-portfolio",
-          @"title": @"Cockroaches (from Insects Portfolio)",
+               @"id": @"ed-ruscha-cockroaches-from-insects-portfolio",
+            @"title": @"Cockroaches (from Insects Portfolio)",
         };
         otherSaleArtwork = [Artwork modelWithJSON:otherSaleArtworkJSON];
 
@@ -156,8 +156,8 @@ describe(@"concerning an artwork at an auction", ^{
 
         // The main artwork fixture is not actually on sale at this auction, but such is life :)
         Sale *auction = [Sale modelWithJSON: @{
-                  @"id": @"los-angeles-modern-auctions-march-2015",
-          @"is_auction": @(YES),
+                    @"id": @"los-angeles-modern-auctions-march-2015",
+            @"is_auction": @(YES),
         }];
         [relatedView addSectionsForAuction:auction];
     });
@@ -175,8 +175,8 @@ describe(@"concerning an artwork at a show", ^{
 
     before(^{
         otherWorkByArtistJSON = @{
-             @"id":@"el-anatsui-wet",
-          @"title":@"Wet"
+               @"id":@"el-anatsui-wet",
+            @"title":@"Wet"
         };
         otherWorkByArtist = [Artwork modelWithJSON:otherWorkByArtistJSON];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/el-anatsui/artworks?page=1&size=10"
