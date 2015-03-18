@@ -5,10 +5,21 @@
 #import "ARArtworkWithMetadataThumbnailCell.h"
 #import "ARArtworkThumbnailMetadataView.h"
 
+@interface ARArtworkRelatedArtworksContentView : ORStackView
+@property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
+@end
+
 @interface ARArtworkRelatedArtworksView (Private)
+
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
-- (void)addSectionWithTag:(ARRelatedArtworksSubviewOrder)tag artworks:(NSArray *)artworks heading:(NSString *)heading;
+
+- (void)addSectionsForFair:(Fair *)fair;
+- (void)addSectionsForShow:(PartnerShow *)show;
+- (void)addSectionsForAuction:(Sale *)auction;
+- (void)addSectionWithRelatedArtworks;
+- (ARArtworkRelatedArtworksContentView *)addSectionWithTag:(ARRelatedArtworksSubviewOrder)tag artworks:(NSArray *)artworks heading:(NSString *)heading;
+
 @end
 
 @implementation ARArtworkRelatedArtworksView (Testing)
@@ -193,39 +204,41 @@ describe(@"concerning an artwork at a show", ^{
     });
 });
 
-//describe(@"concerning layout", ^{
-    //before(^{
-        //[relatedView renderWithArtworks:@[[Artwork modelFromDictionary:@{@"title": @"Title"}]] heading:@"Related Heading"];
-    //});
+describe(@"concerning layout", ^{
+    __block ARArtworkRelatedArtworksContentView *section = nil;
 
-    //describe(@"iPhone", ^{
-        //it(@"initializes module with correct layout", ^{
-            //ARArtworkMasonryLayout layout = [(ARArtworkMasonryModule *)relatedView.artworksVC.activeModule layout];
-            //expect(layout).to.equal(ARArtworkMasonryLayout2Column);
-        //});
-    //});
+    before(^{
+        section = [relatedView addSectionWithTag:0 artworks:@[[Artwork modelFromDictionary:@{@"title": @"Title"}]] heading:@"Related Heading"];
+    });
 
-    //describe(@"iPad", ^{
-        //beforeAll(^{
-            //[ARTestContext stubDevice:ARDeviceTypePad];
-        //});
+    describe(@"iPhone", ^{
+        it(@"initializes module with correct layout", ^{
+            ARArtworkMasonryLayout layout = [(ARArtworkMasonryModule *)section.artworksVC.activeModule layout];
+            expect(layout).to.equal(ARArtworkMasonryLayout2Column);
+        });
+    });
 
-        //afterAll(^{
-            //[ARTestContext stopStubbing];
-        //});
+    describe(@"iPad", ^{
+        beforeAll(^{
+            [ARTestContext stubDevice:ARDeviceTypePad];
+        });
 
-        //it(@"initializes the module with correct layout", ^{
-            //ARArtworkMasonryLayout layout = [(ARArtworkMasonryModule *)relatedView.artworksVC.activeModule layout];
-            //expect(layout).to.equal(ARArtworkMasonryLayout3Column);
-        //});
+        afterAll(^{
+            [ARTestContext stopStubbing];
+        });
 
-        //it(@"returns correct layout for orientation", ^{
-            //expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationLandscapeLeft]).to.equal(ARArtworkMasonryLayout4Column);
-            //expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationLandscapeRight]).to.equal(ARArtworkMasonryLayout4Column);
-            //expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationPortrait]).to.equal(ARArtworkMasonryLayout3Column);
-            //expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationPortraitUpsideDown]).to.equal(ARArtworkMasonryLayout3Column);
-        //});
-    //});
-//});
+        it(@"initializes the module with correct layout", ^{
+            ARArtworkMasonryLayout layout = [(ARArtworkMasonryModule *)section.artworksVC.activeModule layout];
+            expect(layout).to.equal(ARArtworkMasonryLayout3Column);
+        });
+
+        it(@"returns correct layout for orientation", ^{
+            expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationLandscapeLeft]).to.equal(ARArtworkMasonryLayout4Column);
+            expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationLandscapeRight]).to.equal(ARArtworkMasonryLayout4Column);
+            expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationPortrait]).to.equal(ARArtworkMasonryLayout3Column);
+            expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationPortraitUpsideDown]).to.equal(ARArtworkMasonryLayout3Column);
+        });
+    });
+});
 
 SpecEnd

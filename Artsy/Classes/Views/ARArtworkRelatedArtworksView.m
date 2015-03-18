@@ -187,14 +187,16 @@
     }]];
 }
 
-- (void)addSectionWithTag:(ARRelatedArtworksSubviewOrder)tag artworks:(NSArray *)artworks heading:(NSString *)heading;
+- (ARArtworkRelatedArtworksContentView *)addSectionWithTag:(ARRelatedArtworksSubviewOrder)tag
+                                                  artworks:(NSArray *)artworks
+                                                   heading:(NSString *)heading;
 {
     artworks = [artworks reject:^BOOL(Artwork *artwork) {
         return [artwork.artworkID isEqualToString:self.artwork.artworkID];
     }];
 
     if (artworks.count == 0) {
-        return;
+        return nil;
     }
 
     if (!self.hasArtworks) {
@@ -232,6 +234,8 @@
     [self layoutIfNeeded];
 
     [self.parentViewController relatedArtworksView:self didAddSection:section];
+
+    return section;
 }
 
 - (void)updateSeparators;
