@@ -110,7 +110,7 @@ describe(@"with three hero units", ^{
 
     itHasSnapshotsForDevices(@"with three units", ^{
         sharedBefore();
-        [heroVC fetchHeroUnits];
+        [heroVC updateViewWithHeroUnits:heroUnits];
         return heroVC;
     });
 });
@@ -163,7 +163,7 @@ describe(@"with one hero unit", ^{
 
     itHasSnapshotsForDevices(@"with one unit", ^{
         sharedBefore();
-        [heroVC fetchHeroUnits];
+        [heroVC updateViewWithHeroUnits:heroUnits];
         return heroVC;
     });
 });
@@ -203,7 +203,7 @@ describe(@"with no hero units", ^{
 
     itHasSnapshotsForDevices(@"with no units", ^{
         sharedBefore();
-        [heroVC fetchHeroUnits];
+        [heroVC updateViewWithHeroUnits:heroUnits];
         return heroVC;
     });
 });

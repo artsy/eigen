@@ -74,29 +74,36 @@ const static CGFloat ARCarouselDelay = 10;
 
 - (void)fetchHeroUnits
 {
+    NSArray *oldHeroUnits = self.heroUnitNetworkModel.heroUnits;
+
     @weakify(self);
-    [self.heroUnitNetworkModel getHeroUnitsWithSuccess:^{
+    [self.heroUnitNetworkModel getHeroUnitsWithSuccess:^(NSArray *heroUnits){
         @strongify(self);
 
+        if ([oldHeroUnits isEqualToArray:heroUnits]) { return ; }
+
         // Should never be false in production, but will cause problems in development if false on staging.
-        NSArray *heroUnits = self.heroUnitNetworkModel.heroUnits;
-        BOOL hasHeroUnits = heroUnits.count >= 1;
-        if (!hasHeroUnits) { return; }
+        BOOL hasHeroUnits = heroUnits.count > 0;
+        if (!hasHeroUnits) {
+            self.view.userInteractionEnabled = NO;
+            return;
+        }
 
         self.view.userInteractionEnabled = YES;
+
+        [self cancelTimer];
         [self updateViewWithHeroUnits:heroUnits];
+        [self startTimer];
 
         // Grab all but the first and try to pre-download them.
         NSArray *urls = [[heroUnits subarrayWithRange:NSMakeRange(1, heroUnits.count-1)] map:^id(SiteHeroUnit *unit) {
             return unit.preferredImageURL;
         }];
-        [SDWebImagePrefetcher.sharedImagePrefetcher prefetchURLs:urls];
 
-        [self startTimer];
+        SDWebImagePrefetcher *heroUnitPrefetcher = [[SDWebImagePrefetcher alloc] init];
+        [heroUnitPrefetcher prefetchURLs:urls];
 
-    } failure:^(NSError *error) {
-        [self performSelector:_cmd withObject:nil afterDelay:3];
-    }];
+    } failure:nil];
 }
 
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits
@@ -111,6 +118,7 @@ const static CGFloat ARCarouselDelay = 10;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self startTimer];
     [self fetchHeroUnits];
 }
 
