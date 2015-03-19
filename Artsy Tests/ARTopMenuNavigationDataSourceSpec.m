@@ -6,10 +6,10 @@
 #import "ARShowFeedViewController.h"
 
 @interface ARTopMenuNavigationDataSource (Testing)
--(ARNavigationController *)navigationControllerForSearch;
--(ARNavigationController *)navigationControllerForFeed;
--(ARNavigationController *)navigationControllerForBrowse;
--(ARNavigationController *)navigationControllerForFavorites;
+@property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *searchNavigationController;
+- (ARNavigationController *)favoritesNavigationController;
 @end
 
 
@@ -20,22 +20,22 @@ before(^{
 });
 
 it(@"uses a single search vc", ^{
-    ARNavigationController *navigationController = [navDataSource navigationControllerForSearch];
+    ARNavigationController *navigationController = [navDataSource searchNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
     expect(rootVC).to.beKindOf([ARAppSearchViewController class]);
 
-    ARNavigationController *newNavigationController = [navDataSource navigationControllerForSearch];
+    ARNavigationController *newNavigationController = [navDataSource searchNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];
     expect(newNavigationController).to.equal(navigationController);
     expect(newRootVC).to.equal(rootVC);
 });
 
 it(@"uses a single feed vc", ^{
-    ARNavigationController *navigationController = [navDataSource navigationControllerForFeed];
+    ARNavigationController *navigationController = [navDataSource feedNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
     expect(rootVC).to.beKindOf([ARShowFeedViewController class]);
 
-    ARNavigationController *newNavigationController = [navDataSource navigationControllerForFeed];
+    ARNavigationController *newNavigationController = [navDataSource feedNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];
     expect(newNavigationController).to.equal(navigationController);
     expect(newRootVC).to.equal(rootVC);
@@ -43,11 +43,11 @@ it(@"uses a single feed vc", ^{
 
 
 it(@"uses a single browse vc", ^{
-    ARNavigationController *navigationController = [navDataSource navigationControllerForBrowse];
+    ARNavigationController *navigationController = [navDataSource browseNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
     expect(rootVC).to.beKindOf([ARBrowseViewController class]);
 
-    ARNavigationController *newNavigationController = [navDataSource navigationControllerForBrowse];
+    ARNavigationController *newNavigationController = [navDataSource browseNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];
     expect(newNavigationController).to.equal(navigationController);
     expect(newRootVC).to.equal(rootVC);
@@ -55,22 +55,22 @@ it(@"uses a single browse vc", ^{
 
 // TODO: use the same favorites VC. Requires fixing collection view bug.
 pending(@"uses a single favorites vc", ^{
-    ARNavigationController *navigationController = [navDataSource navigationControllerForFavorites];
+    ARNavigationController *navigationController = [navDataSource favoritesNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
     expect(rootVC).to.beKindOf([ARFavoritesViewController class]);
 
-    ARNavigationController *newNavigationController = [navDataSource navigationControllerForFavorites];
+    ARNavigationController *newNavigationController = [navDataSource favoritesNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];
     expect(newNavigationController).to.equal(navigationController);
     expect(newRootVC).to.equal(rootVC);
 });
 
 it(@"reinstantiates favorites vc", ^{
-    ARNavigationController *navigationController = [navDataSource navigationControllerForFavorites];
+    ARNavigationController *navigationController = [navDataSource favoritesNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
     expect(rootVC).to.beKindOf([ARFavoritesViewController class]);
 
-    ARNavigationController *newNavigationController = [navDataSource navigationControllerForFavorites];
+    ARNavigationController *newNavigationController = [navDataSource favoritesNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];
     expect(newNavigationController).notTo.equal(navigationController);
     expect(newRootVC).to.beKindOf([ARFavoritesViewController class]);

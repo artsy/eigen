@@ -44,7 +44,7 @@ static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey
                 self.heroUnits = filteredHeroUnits;
 
                 ar_dispatch_main_queue(^{
-                    success(heroUnits);
+                    success(self.heroUnits);
                 });
             }
 

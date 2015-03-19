@@ -360,10 +360,8 @@
 // use the internal router
 - (ARInternalMobileWebViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
 {
-    if ([self.routes canRouteURL:url]) {
-        [self.routes routeURL:url withParameters:(fair? @{@"fair": fair} : nil)];
-        return nil;
-    }
+    BOOL routed = [self.routes routeURL:url withParameters:(fair? @{@"fair": fair} : nil)];
+    if (routed) { return nil; }
 
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
     viewController.fair = fair;

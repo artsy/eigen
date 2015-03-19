@@ -6,6 +6,12 @@
 #import "ARUserManager+Stubs.h"
 #import "ARTrialController.h"
 #import "AROnboardingViewController.h"
+#import "ARStubbedBrowseNetworkModel.h"
+#import "ARBrowseViewController.h"
+
+@interface ARTopMenuNavigationDataSource (Test)
+@property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
+@end
 
 @interface ARTrialController (Testing)
 - (void)presentTrialWithContext:(enum ARTrialContext)context fromTarget:(id)target selector:(SEL)selector;
@@ -23,6 +29,7 @@ __block ARTopMenuNavigationDataSource *dataSource;
 dispatch_block_t sharedBefore = ^{
     sut = [[ARTopMenuViewController alloc] init];
     sut.navigationDataSource = dataSource;
+    dataSource.browseViewController.networkModel = [[ARStubbedBrowseNetworkModel alloc] init];
     [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];
 
     [sut beginAppearanceTransition:YES animated:NO];
