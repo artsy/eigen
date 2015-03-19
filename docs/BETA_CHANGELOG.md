@@ -1,5 +1,6 @@
 ## Next
 
+* Only show ‘unpublished’ work warning once - alloy
 * Show more related artworks on an artwork view - alloy
 
 ## 2015.03.03

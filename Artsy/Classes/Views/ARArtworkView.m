@@ -145,11 +145,13 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
 - (void)addUnpublishedBanner
 {
-    UILabel *warning = [[ARWarningView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), 88)];
-    warning.text = @"Artwork is unpublished.";
-    warning.tag = ARArtworkUnpublishedWarning;
-    [warning constrainHeight:@"44"];
-    [self.stackView addSubview:warning withTopMargin:@"0" sideMargin:@"0"];
+    if (![self.stackView viewWithTag:ARArtworkUnpublishedWarning]) {
+        UILabel *warning = [[ARWarningView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), 88)];
+        warning.text = @"Artwork is unpublished.";
+        warning.tag = ARArtworkUnpublishedWarning;
+        [warning constrainHeight:@"44"];
+        [self.stackView addSubview:warning withTopMargin:@"0" sideMargin:@"0"];
+    }
 }
 
 @end
