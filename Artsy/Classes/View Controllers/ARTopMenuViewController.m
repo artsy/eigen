@@ -112,6 +112,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 {
     [super viewWillAppear:animated];
     [self.navigationDataSource prefetchBrowse];
+    [self.navigationDataSource prefetchHeroUnits];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

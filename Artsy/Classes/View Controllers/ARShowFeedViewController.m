@@ -156,6 +156,11 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     self.heroUnitVC.heroUnitNetworkModel = heroUnitDatasource;
 }
 
+- (ARHeroUnitsNetworkModel *)heroUnitDatasource
+{
+    return self.heroUnitVC.heroUnitNetworkModel;
+}
+
 - (NSDictionary *)tableViewCellIdentifiers
 {
     return @{
@@ -312,7 +317,6 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
         UIFont.ascii = ! UIFont.ascii;
         UIImageView.ascii = ! UIImageView.ascii;
         ARTile.ascii = ! ARTile.ascii;
-        [self.heroUnitVC fetchHeroUnits];
         [self.tableView reloadData];
     }
 }

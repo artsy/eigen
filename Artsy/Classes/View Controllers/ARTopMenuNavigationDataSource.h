@@ -14,5 +14,6 @@ NS_ENUM(NSInteger, ARTopTabControllerIndex){
 @property (readwrite, nonatomic, strong) ARShowFeedViewController *showFeedViewController;
 
 - (void)prefetchBrowse;
+- (void)prefetchHeroUnits;
 
 @end

@@ -64,46 +64,30 @@ const static CGFloat ARCarouselDelay = 10;
     self.shadowLayer = shadowLayer;
 
     [self.view insertSubview:self.pageControl aboveSubview:self.pageViewController.view];
+
+    [RACObserve(self.heroUnitNetworkModel, heroUnits) subscribeNext:^(NSArray *heroUnits) {
+        // Should never be false in production, but will cause problems in development if false on staging.
+        BOOL timerEnabled = self.timer != nil;
+        [self cancelTimer];
+
+        BOOL hasHeroUnits = heroUnits.count > 0;
+        if (!hasHeroUnits) {
+            [self cancelTimer];
+            self.view.userInteractionEnabled = NO;
+            return;
+        }
+
+        self.view.userInteractionEnabled = YES;
+        [self updateViewWithHeroUnits:heroUnits];
+
+        if (timerEnabled) { [self startTimer]; }
+    }];
 }
 
 - (void)viewDidLayoutSubviews
 {
     self.shadowLayer.frame = self.view.bounds;
     [super viewDidLayoutSubviews];
-}
-
-- (void)fetchHeroUnits
-{
-    NSArray *oldHeroUnits = self.heroUnitNetworkModel.heroUnits;
-
-    @weakify(self);
-    [self.heroUnitNetworkModel getHeroUnitsWithSuccess:^(NSArray *heroUnits){
-        @strongify(self);
-
-        if ([oldHeroUnits isEqualToArray:heroUnits]) { return ; }
-
-        // Should never be false in production, but will cause problems in development if false on staging.
-        BOOL hasHeroUnits = heroUnits.count > 0;
-        if (!hasHeroUnits) {
-            self.view.userInteractionEnabled = NO;
-            return;
-        }
-
-        self.view.userInteractionEnabled = YES;
-
-        [self cancelTimer];
-        [self updateViewWithHeroUnits:heroUnits];
-        [self startTimer];
-
-        // Grab all but the first and try to pre-download them.
-        NSArray *urls = [[heroUnits subarrayWithRange:NSMakeRange(1, heroUnits.count-1)] map:^id(SiteHeroUnit *unit) {
-            return unit.preferredImageURL;
-        }];
-
-        SDWebImagePrefetcher *heroUnitPrefetcher = [[SDWebImagePrefetcher alloc] init];
-        [heroUnitPrefetcher prefetchURLs:urls];
-
-    } failure:nil];
 }
 
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits
@@ -119,7 +103,6 @@ const static CGFloat ARCarouselDelay = 10;
 {
     [super viewWillAppear:animated];
     [self startTimer];
-    [self fetchHeroUnits];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

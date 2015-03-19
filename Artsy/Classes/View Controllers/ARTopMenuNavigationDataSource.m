@@ -56,7 +56,23 @@
         NSArray *urls = [links map:^(FeaturedLink * link){
             return link.largeImageURL;
         }];
-        [SDWebImagePrefetcher.sharedImagePrefetcher prefetchURLs:urls];
+        SDWebImagePrefetcher *browsePrefetcher = [[SDWebImagePrefetcher alloc] init];
+        [browsePrefetcher prefetchURLs:urls];
+    } failure:nil];
+}
+
+- (void)prefetchHeroUnits
+{
+    [self.showFeedViewController.heroUnitDatasource getHeroUnitsWithSuccess:^(NSArray *heroUnits){
+
+        // Grab all but the first and try to pre-download them.
+        NSArray *urls = [heroUnits map:^id(SiteHeroUnit *unit) {
+            return unit.preferredImageURL;
+        }];
+
+        SDWebImagePrefetcher *heroUnitPrefetcher = [[SDWebImagePrefetcher alloc] init];
+        [heroUnitPrefetcher prefetchURLs:urls];
+        
     } failure:nil];
 }
 

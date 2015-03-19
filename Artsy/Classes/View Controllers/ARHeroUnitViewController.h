@@ -4,6 +4,4 @@
 
 @property (nonatomic, strong) ARHeroUnitsNetworkModel *heroUnitNetworkModel;
 
-- (void)fetchHeroUnits;
-
 @end
