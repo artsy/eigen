@@ -44,4 +44,6 @@
 /// Show image url, could be an artwork / installation shot
 - (NSURL *)imageURLWithFormatName:(NSString *)formatName;
 
+- (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
+
 @end

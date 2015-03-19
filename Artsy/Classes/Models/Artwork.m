@@ -8,6 +8,7 @@
     KSDeferred *_saleArtworkUpdateDeferred;
     KSDeferred *_favDeferred;
     KSDeferred *_fairDeferred;
+    KSDeferred *_partnerShowDeferred;
     enum ARHeartStatus _heartStatus;
     Fair *_fair;
 }
@@ -196,6 +197,14 @@
 - (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success
 {
     return [ArtsyAPI getRelatedPostsForArtwork:self success:success
+        failure: ^(NSError *error) {
+            success(@[]);
+    }];
+}
+
+- (AFJSONRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
+{
+    return [ArtsyAPI getShowsForArtworkID:self.artworkID inFairID:fair.fairID success:success
         failure: ^(NSError *error) {
             success(@[]);
     }];
@@ -393,6 +402,42 @@
             failure(error);
         }
         return error;
+    }];
+}
+
+- (KSDeferred *)deferredPartnerShowUpdate;
+{
+    if (!_partnerShowDeferred) {
+        _partnerShowDeferred = [KSDeferred defer];
+    }
+    return _partnerShowDeferred;
+}
+
+- (KSPromise *)onPartnerShowUpdate:(void(^)(PartnerShow *show))success failure:(void(^)(NSError *error))failure;
+{
+    KSDeferred *deferred = self.deferredPartnerShowUpdate;
+    return [deferred.promise then:^(PartnerShow *show) {
+        success(show);
+        return self;
+    } error:^(NSError *error) {
+        if (failure) failure(error);
+        return error;
+    }];
+}
+
+- (void)updatePartnerShow;
+{
+    @weakify(self);
+
+    KSDeferred *deferred = [self deferredPartnerShowUpdate];
+    [ArtsyAPI getShowsForArtworkID:self.artworkID inFairID:nil success:^(NSArray *shows) {
+        // we're not checking for count > 0 cause we wanna fulfill with nil if no shows
+        PartnerShow *show = [shows firstObject];
+        [deferred resolveWithValue:show];
+    } failure:^(NSError *error) {
+        @strongify(self);
+        [deferred rejectWithError:error];
+        ARErrorLog(@"Couldn't get shows for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
     }];
 }
 

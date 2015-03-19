@@ -180,13 +180,11 @@
     return viewController;
 }
 
-
 - (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
 {
     NSString *path = [NSString stringWithFormat:@"/feature/%@/bid/%@", saleID, artworkID];
     return [self loadURL:[NSURL URLWithString:path]];
 }
-
 
 - (ARAuctionArtworkResultsViewController *)loadAuctionResultsForArtwork:(Artwork *)artwork
 {

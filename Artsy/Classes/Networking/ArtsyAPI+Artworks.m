@@ -8,12 +8,12 @@
     [self getRequest:request parseIntoAClass:Artwork.class success:success failure:failure];
 }
 
-+ (void)getArtistArtworks:(Artist *)artist andPage:(NSInteger)page withParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
++ (AFJSONRequestOperation *)getArtistArtworks:(Artist *)artist andPage:(NSInteger)page withParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *newParams = [[NSMutableDictionary alloc] initWithDictionary:@{@"size" : @10, @"page" : @(page)}];
     [newParams addEntriesFromDictionary:params];
     NSURLRequest *request = [ARRouter newArtistArtworksRequestWithParams:newParams andArtistID:artist.artistID];
-    [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
+    return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
 }
 
 + (void)getArtworkFromUserFavorites:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure

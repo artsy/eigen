@@ -17,6 +17,6 @@
 - (ARArtworkViewController *)currentArtworkViewController;
 
 @property (nonatomic, assign, readonly) NSInteger index;
-@property (nonatomic, strong) Fair *fair;
+@property (nonatomic, strong, readonly) Fair *fair;
 
 @end

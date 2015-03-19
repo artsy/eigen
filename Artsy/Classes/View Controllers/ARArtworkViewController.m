@@ -92,8 +92,8 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [self.view.relatedArtworksView cancel];
     self.view.scrollsToTop = NO;
+    [self.view.relatedArtworksView cancelRequests];
     [super viewDidDisappear:self.shouldAnimate && animated];
 }
 
@@ -106,6 +106,7 @@
     [self.artwork updateArtwork];
     [self.artwork updateSaleArtwork];
     [self.artwork updateFair];
+    [self.artwork updatePartnerShow];
     [self.view.relatedArtworksView updateWithArtwork:self.artwork];
     if (!self.postsVC.posts.count){
         [self getRelatedPosts];
@@ -192,7 +193,7 @@
     [metadataView layoutIfNeeded];
 
     [UIView animateTwoStepIf:self.shouldAnimate
-        duration:ARAnimationDuration  * 2 :^{
+        duration:ARAnimationDuration * 2 :^{
             [self.view.stackView layoutIfNeeded];
         } midway:^{
             actionsView.alpha = 1;
@@ -213,14 +214,15 @@
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
 
-- (void)didUpdateRelatedArtworksView:(ARArtworkRelatedArtworksView *)relatedArtworksView
+- (void)relatedArtworksView:(ARArtworkRelatedArtworksView *)view didAddSection:(UIView *)section;
 {
+    section.alpha = 0;
     [UIView animateTwoStepIf:self.shouldAnimate
         duration:ARAnimationDuration * 2 :^{
             [self.view.stackView setNeedsLayout];
             [self.view.stackView layoutIfNeeded];
         } midway:^{
-            relatedArtworksView.alpha = 1;
+            section.alpha = 1;
             [self.view flashScrollIndicators];
         } completion:nil];
 }

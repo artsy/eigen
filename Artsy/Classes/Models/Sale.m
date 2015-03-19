@@ -56,4 +56,9 @@
     return self.buyersPremium != nil;
 }
 
+- (AFJSONRequestOperation *)getArtworks:(void (^)(NSArray *artworks))success;
+{
+    return [ArtsyAPI getArtworksForSale:self.saleID success:success failure:^(NSError *_) { success(@[]); }];
+}
+
 @end

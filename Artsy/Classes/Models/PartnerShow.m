@@ -164,6 +164,11 @@ static ARStandardDateFormatter *staticDateFormatter;
     }
 }
 
+- (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
+{
+    return [ArtsyAPI getArtworksForShow:self atPage:page success:success failure:^(NSError *_) { success(@[]); }];
+}
+
 #pragma mark ShareableObject
 
 - (NSString *)publicArtsyPath

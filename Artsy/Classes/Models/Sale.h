@@ -17,4 +17,6 @@
 - (BOOL)isCurrentlyActive;
 - (BOOL)hasBuyersPremium;
 
+- (AFJSONRequestOperation *)getArtworks:(void (^)(NSArray *artworks))success;
+
 @end

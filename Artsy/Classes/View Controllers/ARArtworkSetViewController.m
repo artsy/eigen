@@ -4,7 +4,7 @@
 
 @interface ARArtworkSetViewController ()
 
-// Private Properties
+@property (nonatomic, strong) Fair *fair;
 @property (nonatomic, strong) NSArray *artworks;
 @property (nonatomic, assign) NSInteger index;
 
@@ -54,13 +54,13 @@
 
     if (!self) { return nil; }
 
-    self.fair = fair;
+    _fair = fair;
+    _artworks = artworkSet;
+    _index = [self isValidArtworkIndex:index] ? index : 0;
+
     self.delegate = self;
     self.dataSource = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
-
-    self.artworks = artworkSet;
-    self.index = [self isValidArtworkIndex:index] ? index : 0;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 
