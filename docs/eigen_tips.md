@@ -6,6 +6,8 @@ Use Quicksilver
 
 Quickly load any type of our primitives ( shows / artworks / artists etc ) by pressing enter on the keyboard when the app loads, typing in your changes and then pressing enter again.
 
+Be sure to sign-in with an admin account if you wish to see admin only content, such as ‘unpublished’ artworks.
+
 Use your `.eigen` file
 -----------------------
 
