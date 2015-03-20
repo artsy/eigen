@@ -86,10 +86,9 @@ pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
 # Analytics
 pod 'HockeySDK', '3.5.0'
 pod 'Mixpanel', '2.3.1'
-# TODO(AF): Once ARAnalytics is updated, bump this.
-pod 'ARAnalytics/Mixpanel', :git => 'https://github.com/orta/ARAnalytics', :commit => '6f1a1c314894437e7e5c09572c276e644dbfb64b'
-pod 'ARAnalytics/HockeyApp', :git => 'https://github.com/orta/ARAnalytics', :commit => '6f1a1c314894437e7e5c09572c276e644dbfb64b'
-pod 'ARAnalytics/DSL', :git => 'https://github.com/orta/ARAnalytics', :commit => '6f1a1c314894437e7e5c09572c276e644dbfb64b'
+pod 'ARAnalytics/Mixpanel', :git => 'https://github.com/orta/ARAnalytics.git'
+pod 'ARAnalytics/HockeyApp', :git => 'https://github.com/orta/ARAnalytics.git'
+pod 'ARAnalytics/DSL', :git => 'https://github.com/orta/ARAnalytics.git'
 pod 'UICKeyChainStore', '1.0.5'
 
 # Fairs
