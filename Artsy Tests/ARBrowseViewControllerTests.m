@@ -13,7 +13,6 @@ SpecBegin(ARBrowseViewController)
 __block ARBrowseViewController *viewController;
 
 before(^{
-    viewController = [[ARBrowseViewController alloc] init];
     ARStubbedBrowseNetworkModel *networkModel = [[ARStubbedBrowseNetworkModel alloc] init];
     networkModel.links = @[[FeaturedLink modelWithJSON:@{@"title": @"Link 1"}],
                            [FeaturedLink modelWithJSON:@{@"title": @"Link 2"}],
@@ -21,15 +20,12 @@ before(^{
                            [FeaturedLink modelWithJSON:@{@"title": @"Link 4"}],
                            [FeaturedLink modelWithJSON:@{@"title": @"Link 5"}]];
 
-    id mock = [OCMockObject partialMockForObject:viewController];
-
-    [[[mock stub] andReturn:networkModel] networkModel];
-
+    viewController = [[ARBrowseViewController alloc] init];
+    viewController.networkModel = networkModel;
     viewController.shouldAnimate = NO;
 });
 
 it(@"sets its menu items", ^{
-    [viewController fetchMenuItems];
     expect(viewController.menuLinks.count).will.equal(5);
 });
 

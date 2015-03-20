@@ -20,7 +20,7 @@ static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey
     return self;
 }
 
-- (void)getHeroUnitsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)getHeroUnitsWithSuccess:(void (^)(NSArray *heroUnits))success failure:(void (^)(NSError *error))failure
 {
     if (self.isLoading) {
         return;
@@ -44,7 +44,7 @@ static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey
                 self.heroUnits = filteredHeroUnits;
 
                 ar_dispatch_main_queue(^{
-                    success();
+                    success(self.heroUnits);
                 });
             }
 

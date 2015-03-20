@@ -20,7 +20,8 @@ describe(@"heroes", ^{
                                                   @{ @"id": @"current", @"enabled" : @YES, @"display_on_mobile" : @YES, @"start_at" : @"1976-01-27T05:00:00+00:00", @"end_at" : @"2099-01-27T05:00:00+00:00" }
             ]];
 
-            [_dataSource getHeroUnitsWithSuccess:^{
+            [_dataSource getHeroUnitsWithSuccess:^(NSArray *heroUnits){
+                expect([_dataSource.heroUnits isEqualToArray:heroUnits]).to.beTruthy();
                 expect([_dataSource.heroUnits count]).to.equal(1);
                 expect([[_dataSource.heroUnits firstObject] siteHeroUnitID]).to.equal(@"current");
                 done();

@@ -108,6 +108,13 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     self.tabHeightConstraint = [[tabContainer alignBottomEdgeWithView:self.view predicate:@"0"] firstObject];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationDataSource prefetchBrowse];
+    [self.navigationDataSource prefetchHeroUnits];
+}
+
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self.view layoutSubviews];

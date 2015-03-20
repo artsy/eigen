@@ -4,15 +4,18 @@
 #import "ARFavoritesViewController.h"
 #import "ARAppSearchViewController.h"
 #import "ARHeroUnitsNetworkModel.h"
+#import <SDWebImage/SDWebImagePrefetcher.h>
 
 @interface ARTopMenuNavigationDataSource()
 
 @property (nonatomic, assign, readwrite) NSInteger currentIndex;
 @property (nonatomic, strong, readonly) NSArray *navigationControllers;
 
-@property (readwrite, nonatomic, strong) ARNavigationController *feedNavigationController;
-@property (readwrite, nonatomic, strong) ARNavigationController *browseNavigationController;
-@property (readwrite, nonatomic, strong) ARNavigationController *searchNavigationController;
+@property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
+
+@property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *searchNavigationController;
 
 @end
 
@@ -38,11 +41,39 @@
 
     // Browse
 
-    ARBrowseViewController *browseViewController = [[ARBrowseViewController alloc] init];
+    _browseViewController = [[ARBrowseViewController alloc] init];
+    _browseViewController.networkModel = [[ARBrowseNetworkModel alloc] init];
 
-    _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:browseViewController];
+    
+    _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
 
     return self;
+}
+
+- (void)prefetchBrowse
+{
+    [self.browseViewController.networkModel getBrowseFeaturedLinks:^(NSArray *links) {
+        NSArray *urls = [links map:^(FeaturedLink * link){
+            return link.largeImageURL;
+        }];
+        SDWebImagePrefetcher *browsePrefetcher = [[SDWebImagePrefetcher alloc] init];
+        [browsePrefetcher prefetchURLs:urls];
+    } failure:nil];
+}
+
+- (void)prefetchHeroUnits
+{
+    [self.showFeedViewController.heroUnitDatasource getHeroUnitsWithSuccess:^(NSArray *heroUnits){
+
+        // Grab all but the first and try to pre-download them.
+        NSArray *urls = [heroUnits map:^id(SiteHeroUnit *unit) {
+            return unit.preferredImageURL;
+        }];
+
+        SDWebImagePrefetcher *heroUnitPrefetcher = [[SDWebImagePrefetcher alloc] init];
+        [heroUnitPrefetcher prefetchURLs:urls];
+        
+    } failure:nil];
 }
 
 - (ARNavigationController *)favoritesNavigationController

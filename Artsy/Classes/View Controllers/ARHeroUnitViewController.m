@@ -64,39 +64,30 @@ const static CGFloat ARCarouselDelay = 10;
     self.shadowLayer = shadowLayer;
 
     [self.view insertSubview:self.pageControl aboveSubview:self.pageViewController.view];
+
+    [RACObserve(self.heroUnitNetworkModel, heroUnits) subscribeNext:^(NSArray *heroUnits) {
+        // Should never be false in production, but will cause problems in development if false on staging.
+        BOOL timerEnabled = self.timer != nil;
+        [self cancelTimer];
+
+        BOOL hasHeroUnits = heroUnits.count > 0;
+        if (!hasHeroUnits) {
+            [self cancelTimer];
+            self.view.userInteractionEnabled = NO;
+            return;
+        }
+
+        self.view.userInteractionEnabled = YES;
+        [self updateViewWithHeroUnits:heroUnits];
+
+        if (timerEnabled) { [self startTimer]; }
+    }];
 }
 
 - (void)viewDidLayoutSubviews
 {
     self.shadowLayer.frame = self.view.bounds;
     [super viewDidLayoutSubviews];
-}
-
-- (void)fetchHeroUnits
-{
-    @weakify(self);
-    [self.heroUnitNetworkModel getHeroUnitsWithSuccess:^{
-        @strongify(self);
-
-        // Should never be false in production, but will cause problems in development if false on staging.
-        NSArray *heroUnits = self.heroUnitNetworkModel.heroUnits;
-        BOOL hasHeroUnits = heroUnits.count >= 1;
-        if (!hasHeroUnits) { return; }
-
-        self.view.userInteractionEnabled = YES;
-        [self updateViewWithHeroUnits:heroUnits];
-
-        // Grab all but the first and try to pre-download them.
-        NSArray *urls = [[heroUnits subarrayWithRange:NSMakeRange(1, heroUnits.count-1)] map:^id(SiteHeroUnit *unit) {
-            return unit.preferredImageURL;
-        }];
-        [SDWebImagePrefetcher.sharedImagePrefetcher prefetchURLs:urls];
-
-        [self startTimer];
-
-    } failure:^(NSError *error) {
-        [self performSelector:_cmd withObject:nil afterDelay:3];
-    }];
 }
 
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits
@@ -111,7 +102,7 @@ const static CGFloat ARCarouselDelay = 10;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self fetchHeroUnits];
+    [self startTimer];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

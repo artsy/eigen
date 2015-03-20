@@ -5,7 +5,7 @@
 @property (nonatomic, readonly, copy) NSArray *heroUnits;
 @property (nonatomic, readonly) BOOL isLoading;
 
-- (void)getHeroUnitsWithSuccess:(void (^)())success
+- (void)getHeroUnitsWithSuccess:(void (^)(NSArray *heroUnits))success
                         failure:(void (^)(NSError *error))failure;
 
 @end

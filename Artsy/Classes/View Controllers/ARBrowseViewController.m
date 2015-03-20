@@ -1,8 +1,6 @@
 #import "ARBrowseViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
-#import "ARBrowseNetworkModel.h"
-#import <SDWebImage/SDWebImagePrefetcher.h>
 
 @interface ARBrowseViewCell : ARBrowseFeaturedLinksCollectionViewCell
 @end
@@ -23,7 +21,6 @@
 @interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 @property (nonatomic, strong, readwrite) NSArray *menuLinks;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
-@property (nonatomic, strong, readonly) ARBrowseNetworkModel *networkModel;
 @end
 
 @implementation ARBrowseViewController
@@ -33,13 +30,6 @@
     self = [super init];
     if (!self) { return nil; }
     _shouldAnimate = YES;
-    _networkModel = [[ARBrowseNetworkModel alloc] init];
-    [_networkModel getBrowseFeaturedLinks:^(NSArray *links) {
-        NSArray *urls = [links map:^(FeaturedLink * link){
-            return link.largeImageURL;
-        }];
-        [SDWebImagePrefetcher.sharedImagePrefetcher prefetchURLs:urls];
-    } failure:nil];
     return self;
 }
 
@@ -52,18 +42,6 @@
     [self.collectionView registerClass:[ARBrowseViewCell class] forCellWithReuseIdentifier:[ARBrowseViewCell reuseID]];
 
     [super viewDidLoad];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    NSArray *oldLinks = [self.menuLinks copy];
-    [self.networkModel getBrowseFeaturedLinks:^(NSArray *links) {
-        if (![links isEqualToArray:oldLinks]) {
-            [self.collectionView reloadData];
-        }
-    } failure:nil];
 }
 
 - (void)setupCollectionView
