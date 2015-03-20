@@ -64,19 +64,19 @@
     [[BITHockeyManager sharedHockeyManager] setDisableCrashManager: YES];
 #endif
 
-    ARAnalyticsEventPropertiesBlock fairAndProfileIDBlock = ^NSDictionary*(ARFairGuideViewController *controller, RACTuple *_) {
+    ARAnalyticsEventPropertiesBlock fairAndProfileIDBlock = ^NSDictionary*(ARFairGuideViewController *controller, NSArray *_) {
         return @{
              @"profile_id" : controller.fair.organizer.profileID ?: @"",
              @"fair_id" : controller.fair.fairID ?: @"",
         };
     };
 
-    ARAnalyticsEventShouldFireBlock heartedShouldFireBlock = ^BOOL(id controller, RACTuple *parameters) {
-        ARHeartButton *sender = parameters.first;
+    ARAnalyticsEventShouldFireBlock heartedShouldFireBlock = ^BOOL(id controller, NSArray *parameters) {
+        ARHeartButton *sender = parameters.firstObject;
         return sender.isHearted;
     };
 
-    ARAnalyticsEventShouldFireBlock unheartedShouldFireBlock = ^BOOL(id controller, RACTuple *parameters) {
+    ARAnalyticsEventShouldFireBlock unheartedShouldFireBlock = ^BOOL(id controller, NSArray *parameters) {
         return !heartedShouldFireBlock(controller, parameters);
     };
 
