@@ -39,12 +39,13 @@
 
 - (void)logOperationStart:(AFHTTPRequestOperation *)operation
 {
-    NSString *body = nil;
     if ([operation.request HTTPBody]) {
-        body = [[NSString alloc] initWithData:[operation.request HTTPBody] encoding:NSUTF8StringEncoding];
+        ARHTTPRequestOperationDebugLog(@"[Operation Start] %@ '%@': %@ %@",
+                                       [operation.request HTTPMethod],
+                                       [[operation.request URL] absoluteString],
+                                       [operation.request allHTTPHeaderFields],
+                                       [[NSString alloc] initWithData:[operation.request HTTPBody] encoding:NSUTF8StringEncoding]);
     }
-
-    ARHTTPRequestOperationDebugLog(@"[Operation Start] %@ '%@': %@ %@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], [operation.request allHTTPHeaderFields], body);
 }
 
 static void * AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate;
