@@ -56,7 +56,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     searchButton.adjustsImageWhenHighlighted = NO;
 
     [homeButton setTitle:@"HOME" forState:UIControlStateNormal];
-    [browseButton setTitle:@"BROWSE" forState:UIControlStateNormal];
+    [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
     [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
 
     NSArray *buttons = @[searchButton, homeButton, browseButton, favoritesButton];
