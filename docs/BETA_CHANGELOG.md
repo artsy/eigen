@@ -1,3 +1,6 @@
+## Next
+* Browse renamed to Explore - 1aurabrown
+
 ## 2015.03.20
 
 * Route shows natively on iPad - 1aurabrown
