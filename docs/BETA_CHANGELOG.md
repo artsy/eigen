@@ -1,5 +1,9 @@
-## Next
+## 2015.03.20
 
+* Route shows natively on iPad - 1aurabrown
+* New Browse view - 1aurabrown
+* Prefetch hero units and browse data - 1aurabrown & ashfurrow
+* Fix broken navigation button layout when rotating on iPad - 1aurabrown
 * Only show ‘unpublished’ work warning once - alloy
 * Show more related artworks on an artwork view - alloy
 
