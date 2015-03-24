@@ -1,4 +1,6 @@
 ## Next
+
+* Fix a crash caused by the assumption that an artwork will always have a artist - alloy
 * Browse renamed to Explore - 1aurabrown
 
 ## 2015.03.20
