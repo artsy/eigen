@@ -111,6 +111,8 @@
         self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
     } else {
         [self.containerView alignBottomEdgeWithView:self.view predicate:@"<=-56"];
+//        [self.containerView alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.navView predicate:@">=0"];
+//        [self.containerView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         self.keyboardConstraint = [[self.forgotPasswordButton alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
     }
 
