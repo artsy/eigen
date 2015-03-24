@@ -70,6 +70,7 @@ NSString *const ARProfileInformationURLFormat = @"/api/v1/profile/%@";
 
 NSString *const ARShowFeedURL = @"/api/v1/shows/feed";
 NSString *const ARShowInformationURLFormat = @"/api/v1/show/%@";
+NSString *const ARShowsURL = @"/api/v1/shows";
 
 NSString *const ARNewSearchURL = @"/api/v1/match";
 NSString *const ARNewArtistSearchURL = @"/api/v1/match/artists";
@@ -85,6 +86,9 @@ NSString *const ARShowImagesURLFormat = @"/api/v1/partner_show/%@/images";
 
 NSString *const AROrderedSetsURL = @"/api/v1/sets";
 NSString *const AROrderedSetItemsURLFormat = @"/api/v1/set/%@/items";
+
+NSString *const ARSuggestedHomepageArtworks = @"/api/v1/me/suggested/artworks/homepage";
+NSString *const ARNotifiationsURL = @"/api/v1/notifications";
 
 NSString *const ARSiteFeaturesURL = @"/api/v1/site_features/";
 

@@ -385,6 +385,12 @@ static NSSet *artsyHosts = nil;
     return [staticHTTPClient requestWithMethod:@"GET" path:url parameters:params];
 }
 
++ (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents
+{
+    NSDictionary *params = @{ @"sale_id" : saleID, @"artwork_id" : artworkID, @"max_bid_amount_cents": @(maxBidAmountCents) };
+    return [staticHTTPClient requestWithMethod:@"POST" path:ARBidderPositionsForSaleAndArtworkURL parameters:params];
+}
+
 #pragma mark -
 #pragma mark Artwork Favorites (items in the saved-artwork collection)
 
@@ -535,6 +541,18 @@ static NSSet *artsyHosts = nil;
     return [staticHTTPClient requestWithMethod:@"GET" path:NSStringWithFormat(ARShowsFeaturingArtistsURLFormat, fairID) parameters:params];
 }
 
++ (NSURLRequest *)newShowsListingRequest
+{
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARShowsURL parameters:nil];
+}
+
++ (NSURLRequest *)newRunningShowsListingRequestForLongitude:(CGFloat)longitude latitude:(CGFloat)latitude
+{
+    NSString *near = [NSString stringWithFormat:@"%@,%@", @(latitude), @(longitude)];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARShowsURL parameters:@{
+       @"near": near, @"max_distance": @1000, @"status": @"running"
+    }];
+}
 
 #pragma mark - Genes
 
@@ -670,6 +688,21 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)newFollowArtistRequestWithFair:(Fair *)fair
 {
     return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"fair_id": fair.fairID }];
+}
+
+#pragma mark - Recommendations
+
++ (NSURLRequest *)suggestedHomepageArtworksRequest
+{
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARSuggestedHomepageArtworks parameters:nil];
+}
+
++ (NSURLRequest *)worksForYouRequest
+{
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARNotifiationsURL parameters:@{
+        @"page": @1, @"type": @"ArtworkPublished",
+        @"user_id": [User currentUser].userID, @"size": @10
+    }];
 }
 
 #pragma mark -
@@ -853,6 +886,12 @@ static NSSet *artsyHosts = nil;
     }
 
     return [staticHTTPClient requestWithMethod:@"POST" path:ARCreatePendingOrderURL parameters:params];
+}
+
++ (NSURLRequest *)newRequestOutbidNotificationRequest
+{
+    NSAssert(FALSE, @"STUB");
+    return [staticHTTPClient requestWithMethod:@"GET" path:@"/api/v1/" parameters:nil];
 }
 
 @end

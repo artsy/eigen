@@ -39,6 +39,7 @@ extern NSString *const ARArtworkFairsURLFormat;
 
 extern NSString *const ARRelatedShowsURL;
 extern NSString *const ARShowsFeaturingArtistsURLFormat;
+extern NSString *const ARShowsURL;
 
 extern NSString *const ARArtistArtworksURLFormat;
 extern NSString *const ARArtistInformationURLFormat;
@@ -53,6 +54,7 @@ extern NSString *const ARFollowProfilesURL;
 extern NSString *const ARFollowingProfileURLFormat;
 
 extern NSString *const ARRelatedArtistsURL;
+extern NSString *const ARNotifiationsURL;
 
 extern NSString *const ARGeneArtworksURLFormat;
 extern NSString *const ARGeneInformationURLFormat;
@@ -94,5 +96,7 @@ extern NSString *const ARNewFairMapURLFormat;
 extern NSString *const ARNewRelatedPostsURL;
 
 extern NSString *const ARSystemTimeURL;
+
+extern NSString *const ARSuggestedHomepageArtworks;
 
 extern NSString *const ARCreatePendingOrderURL;

@@ -25,6 +25,7 @@
 #import "FBAppCall.h"
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
+#import "ARDefaults+SiteFeatures.h"
 
 #if ADMIN_MENU_ENABLED
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>

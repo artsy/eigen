@@ -1,6 +1,6 @@
 #import "ARShareableObject.h"
 
-@class Partner, Fair, MapPoint, PartnerShowFairLocation;
+@class Partner, Fair, MapPoint, PartnerShowFairLocation, PartnerShowCoordinates;
 
 @interface PartnerShow : MTLModel <MTLJSONSerializing, ARShareableObject>
 
@@ -24,6 +24,7 @@
 @property (nonatomic, copy, readonly) NSString *locationInFair;
 
 @property (nonatomic, strong, readonly) PartnerShowFairLocation *fairLocation;
+@property (nonatomic, strong, readonly) PartnerShowCoordinates *coordinates;
 
 - (id)initWithShowID:(NSString *)showID;
 
@@ -43,6 +44,10 @@
 
 /// Show image url, could be an artwork / installation shot
 - (NSURL *)imageURLWithFormatName:(NSString *)formatName;
+
+/// A small preview URL that represents the show
+- (NSURL *)smallPreviewImageURL;
+
 
 - (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
 

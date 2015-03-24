@@ -51,7 +51,7 @@ PODS:
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7)
   - JLRoutes (1.5)
-  - JSDecoupledAppDelegate (1.0.1)
+  - JSDecoupledAppDelegate (1.1.0)
   - Keys (1.0.1)
   - KSDeferred (0.2.0)
   - libextobjc/EXTKeyPathCoding (0.4):
@@ -124,7 +124,7 @@ DEPENDENCIES:
   - iRate (= 1.10.2)
   - ISO8601DateFormatter (= 0.7)
   - JLRoutes (= 1.5)
-  - JSDecoupledAppDelegate (= 1.0.1)
+  - JSDecoupledAppDelegate (= 1.1.0)
   - Keys (from `https://github.com/ashfurrow/empty-podspec.git`)
   - KSDeferred (= 0.2.0)
   - libextobjc/EXTKeyPathCoding (= 0.4)
@@ -222,7 +222,7 @@ SPEC CHECKSUMS:
   iRate: 7d204971bab2f727195b868e32e05216fe257681
   ISO8601DateFormatter: 59731cd880cf87e71b4fa95f0d6b713dcbc4cbce
   JLRoutes: 1a32dbc34b8af9c2a0174c4799afdc72ad5fe447
-  JSDecoupledAppDelegate: cff5663e495456300b1ca2c9479d13d44f43e3e0
+  JSDecoupledAppDelegate: 98ac2cc5ce175ed57e8129ae26c09be83699e8f7
   Keys: 828b370fea8d74e7a353a4844a4c305038291f16
   KSDeferred: 33361e3e63ebe90210ea94d7f6469c1c2b874763
   libextobjc: ba42e4111f433273a886cd54f0ddaddb7f62f82f
