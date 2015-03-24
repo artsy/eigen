@@ -5,6 +5,7 @@
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARSearchViewController.h"
+#import "ArtsyAPI+Private.h"
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) NSArray *constraintsForButtons;
@@ -111,8 +112,10 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationDataSource prefetchBrowse];
-    [self.navigationDataSource prefetchHeroUnits];
+    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+        [self.navigationDataSource prefetchBrowse];
+        [self.navigationDataSource prefetchHeroUnits];
+    }];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
