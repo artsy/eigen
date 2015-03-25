@@ -74,7 +74,8 @@
         [self.auctionPriceView updateWithSaleArtwork:self.saleArtwork];
         [self addSubview:self.auctionPriceView withTopMargin:@"12" sideMargin:@"0"];
         shownPrice = YES;
-    } else if ([self showPriceLabel]) {
+        
+    } else if ([self showPriceLabel] || [self showNotForSaleLabel]) {
         self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
         [self.priceView updateWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
         [self addSubview:self.priceView withTopMargin:@"4" sideMargin:@"0"];
@@ -210,15 +211,15 @@
 - (BOOL)showNotForSaleLabel
 {
     return self.artwork.inquireable.boolValue
-    && !self.artwork.sold.boolValue
-    && !self.artwork.forSale.boolValue;
+        && self.artwork.sold.boolValue
+        && !self.artwork.forSale.boolValue;
 }
 
 - (BOOL)showPriceLabel
 {
     return self.artwork.price.length
-    && !self.artwork.hasMultipleEditions
-    && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
+        && !self.artwork.hasMultipleEditions
+        && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
 }
 
 - (BOOL)showContactButton
