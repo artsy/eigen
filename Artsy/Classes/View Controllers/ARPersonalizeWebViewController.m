@@ -35,11 +35,17 @@
     
     if (shouldLoad && [ARRouter isInternalURL:request.URL] && [path isEqualToString:ARPersonalizePath]) {
         return YES;
-    } else {
 
-        // Force onboarding is all push-state. A new request to load a page indicates that onboarding is complete.
+    } else if ([ARRouter isInternalURL:request.URL] && [path isEqualToString:@"/"]) {
+
+        // Force onboarding is all push-state.
+        // A new request to load the root page indicates that onboarding is complete.
+
         [self.delegate dismissOnboardingWithVoidAnimation:YES];
         return NO;
+
+    } else {
+        return YES;
     }
 }
 
