@@ -56,7 +56,9 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     }];
 
     [onboardingData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        [self logout];
+        [self showAlertViewWithTitle:@"Confirm Logout" message:@"App will exit. Please re-open to log back in." actionTitle:@"Logout" actionHandler:^{
+            [ARUserManager logout];
+        }];
     }];
     return onboardingData;
 }
@@ -103,7 +105,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 - (ARCellData *)generateStagingSwitch
 {
     BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
-    NSString *title = useStaging ?  @"Switch to Production (Logs out)" : @"Switch to Staging (Logs out)";
+    NSString *title = NSStringWithFormat(@"Switch to %@ (Logs out)", useStaging ? @"Production" : @"Staging");
 
     ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
     [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
@@ -111,8 +113,9 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     }];
 
     [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        [AROptions setBool:!useStaging forOption:ARUseStagingDefault];
-        [self logout];
+        [self showAlertViewWithTitle:@"Confirm Logout" message:@"Switching servers requires logout. App will exit. Please re-open to log back in." actionTitle:@"Continue" actionHandler:^{
+            [ARUserManager logoutAndSetUseStaging:!useStaging];
+        }];
     }];
     return crashCellData;
 }
@@ -182,11 +185,20 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     return vcrSectionData;
 }
 
-- (void)logout
+- (void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message actionTitle:(NSString *)actionTitle actionHandler:(void (^)())handler
 {
-    [[ARUserManager sharedManager] logout];
-    [ARRouter setup];
-    [self showSlideshow];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:actionTitle
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+                                                              handler();
+                                                          }];
+    
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)showSlideshow
