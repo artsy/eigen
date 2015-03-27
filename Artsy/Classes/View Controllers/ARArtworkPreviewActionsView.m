@@ -87,13 +87,21 @@
 
     if (fair) {
         self.mapButtonConstraint.constant = artwork.canViewInRoom ? -8 : 48;
-        
-        [ArtsyAPI getShowsForArtworkID:artwork.artworkID inFairID:fair.fairID success:^(NSArray *shows) {
-            [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
-                self.viewInMapButton.enabled = YES;
-                self.viewInMapButton.alpha = 1;
-            }];
-        } failure:nil];
+
+        void(^revealMapButton)(NSArray *) = ^(NSArray *maps) {
+            if (maps.count > 0) {
+                [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
+                    self.viewInMapButton.enabled = YES;
+                    self.viewInMapButton.alpha = 1;
+                }];
+            }
+        };
+
+        if (fair.maps.count > 0) {
+            revealMapButton(fair.maps);
+        } else {
+            [fair getFairMaps:revealMapButton];
+        }
     }
 }
 
