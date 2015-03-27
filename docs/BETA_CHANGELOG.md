@@ -1,9 +1,10 @@
-## Next
+## 2015.03.27
 
 * Ensure labels don’t overlap with chevrons - alloy
 * Add shows and magazine to available tabs - alloy
 * Fix a crash caused by the assumption that an artwork will always have a artist - alloy
 * Browse renamed to Explore - 1aurabrown
+* Ensure XAPP token is fetched before pre-loading browse and hero units
 
 ## 2015.03.20
 
