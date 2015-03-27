@@ -473,7 +473,6 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     [sharedManager deleteUserData];
     [ARDefaults resetDefaults];
 
-
     [UICKeyChainStore removeItemForKey:AROAuthTokenDefault];
     [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
 
