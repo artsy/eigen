@@ -191,13 +191,26 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
 
+    // if iOS 7
+
+    if (!alert) {
+        handler();
+    }
+
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:actionTitle
-                                                            style:UIAlertActionStyleDestructive
-                                                          handler:^(UIAlertAction * action) {
-                                                              handler();
-                                                          }];
-    
+                                    style:UIAlertActionStyleDestructive
+                                    handler:^(UIAlertAction * action) {
+                                        handler();
+                                    }];
+
+
+    UIAlertAction *cancelAction = [UIAlertAction
+                                   actionWithTitle:@"Cancel"
+                                   style:UIAlertActionStyleCancel
+                                   handler:nil];
+
     [alert addAction:defaultAction];
+    [alert addAction:cancelAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
 

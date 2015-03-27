@@ -466,9 +466,9 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     [self.class clearUserDataAndSetUseStaging:useStaging];
 }
 
-// This takes id instead of BOOL because if you call this method from `clearUserData` and
-// `ARUseStagingDefault` was not previously set, we don't want to explicitly set it to `0` or NO.
-// If the value passed is `nil`, we will leave ARUseStagingDefault unset after clearing all user defaults.
+// This takes `id` instead of `BOOL` because if you call this method from `clearUserData` and
+// `ARUseStagingDefault` was not previously set, we don't want to explicitly set it to `0` or `NO`.
+// If the value passed is `nil`, we will leave `ARUseStagingDefault` unset after clearing all user defaults.
 + (void)clearUserDataAndSetUseStaging:(id)useStaging
 {
     ARUserManager *sharedManager = [self.class sharedManager];
