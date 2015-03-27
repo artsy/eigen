@@ -18,6 +18,8 @@
 		<string>file:///Users/orta/Library/Caches/CocoaPods/GitHub/004a3cc1761b10f3f82a090cc26cc2c2ce1d838c/</string>
 		<key>50E2DA14808978A91345AF54368A077CA57D1CE5</key>
 		<string>https://github.com/1aurabrown/Artsy-UIButtons.git</string>
+		<key>6C6CAB42115E9DD134C3229B6EF336B14A6A14C6</key>
+		<string>https://github.com/artsy/Artsy-UILabels.git</string>
 		<key>845859A7-FA92-405A-8322-857295701E99</key>
 		<string>file:///Users/orta/Library/Caches/CocoaPods/GitHub/24df5a2085de21d8fad23d8c62031457c0bf59f1/</string>
 		<key>A0BF4531-3219-4B64-8B43-1EDF74C43CA0</key>
@@ -39,6 +41,8 @@
 		<string>../Pods/ARGenericTableViewController</string>
 		<key>50E2DA14808978A91345AF54368A077CA57D1CE5</key>
 		<string>../../Artsy-UIButtons</string>
+		<key>6C6CAB42115E9DD134C3229B6EF336B14A6A14C6</key>
+		<string>../../Artsy-UILabels</string>
 		<key>845859A7-FA92-405A-8322-857295701E99</key>
 		<string>../Pods/TSMiniWebBrowser</string>
 		<key>A0BF4531-3219-4B64-8B43-1EDF74C43CA0</key>
@@ -79,6 +83,14 @@
 			<string>50E2DA14808978A91345AF54368A077CA57D1CE5</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Artsy-UIButtons</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6C6CAB42115E9DD134C3229B6EF336B14A6A14C6</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Artsy-UILabels</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

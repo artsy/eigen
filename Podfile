@@ -55,7 +55,7 @@ pod 'ARGenericTableViewController', '1.0.2'
 pod 'FLKAutoLayout', '0.1.1'
 
 # Artsy Spec repo stuff
-pod 'Artsy+UILabels', '1.3.1'
+pod 'Artsy+UILabels', :head
 pod 'Artsy+UIColors'
 pod 'Artsy-UIButtons', :head
 pod 'UIView+BooleanAnimations'
