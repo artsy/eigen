@@ -1,5 +1,6 @@
 ## Next
 
+* Add shows and magazine to available tabs - alloy
 * Fix a crash caused by the assumption that an artwork will always have a artist - alloy
 * Browse renamed to Explore - 1aurabrown
 

@@ -4,6 +4,7 @@
 #import "ARFavoritesViewController.h"
 #import "ARAppSearchViewController.h"
 #import "ARHeroUnitsNetworkModel.h"
+#import "ARInternalMobileWebViewController.h"
 #import <SDWebImage/SDWebImagePrefetcher.h>
 
 @interface ARTopMenuNavigationDataSource()
@@ -84,6 +85,23 @@
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
 }
 
+- (ARNavigationController *)showsNavigationController;
+{
+    return [self internalWebViewNavigationController:@"/shows"];
+}
+
+- (ARNavigationController *)magazineNavigationController;
+{
+    return [self internalWebViewNavigationController:@"/magazine"];
+}
+
+- (ARNavigationController *)internalWebViewNavigationController:(NSString *)path;
+{
+    NSURL *URL = [NSURL URLWithString:path];
+    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:URL];
+    return [[ARNavigationController alloc] initWithRootViewController:viewController];
+}
+
 #pragma mark ARTabViewDataSource
 
 - (UINavigationController *)viewControllerForTabContentView:(ARTabContentView *)tabContentView atIndex:(NSInteger)index
@@ -95,8 +113,12 @@
             return self.searchNavigationController;
         case ARTopTabControllerIndexFeed:
             return self.feedNavigationController;
+        case ARTopTabControllerIndexShows:
+            return self.showsNavigationController;
         case ARTopTabControllerIndexBrowse:
             return self.browseNavigationController;
+        case ARTopTabControllerIndexMagazine:
+            return self.magazineNavigationController;
         case ARTopTabControllerIndexFavorites:
             return self.favoritesNavigationController;
     }
