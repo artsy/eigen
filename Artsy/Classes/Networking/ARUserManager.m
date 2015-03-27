@@ -450,40 +450,40 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 + (void)logout
 {
-    [self.class clearUserData];
+    [self clearUserData];
     exit(0);
 }
 
 + (void)logoutAndSetUseStaging:(BOOL)useStaging
 {
-    [self.class clearUserDataAndSetUseStaging:useStaging];
+    [self.class clearUserDataAndSetUseStaging:@(useStaging)];
     exit(0);
 }
 
 + (void)clearUserData
 {
-    BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
-    [self clearUserDataAndSetUseStaging:useStaging];
+    id useStaging = [[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault];
+    [self.class clearUserDataAndSetUseStaging:useStaging];
 }
 
-+ (void)clearUserDataAndSetUseStaging:(BOOL)useStaging
++ (void)clearUserDataAndSetUseStaging:(id)useStaging
 {
-    NSLog(@"clear user data param %d", useStaging);
-    NSLog(@"clear user data before clear %d", [AROptions boolForOption:ARUseStagingDefault]);
-
     ARUserManager *sharedManager = [self.class sharedManager];
 
     [sharedManager deleteUserData];
     [ARDefaults resetDefaults];
 
-    [AROptions setBool:useStaging forOption:ARUseStagingDefault];
 
     [UICKeyChainStore removeItemForKey:AROAuthTokenDefault];
     [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
 
     [sharedManager deleteHTTPCookies];
-    NSLog(@"clear user data after clear %d", [AROptions boolForOption:ARUseStagingDefault]);
+    [ARRouter setAuthToken:nil];
+    sharedManager.currentUser = nil;
 
+    if (useStaging != nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
+    }
 }
 
 - (void)deleteHTTPCookies

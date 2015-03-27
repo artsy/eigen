@@ -67,7 +67,7 @@ static NSSet *artsyHosts = nil;
 
     // Ensure the keychain is empty incase you've uninstalled and cleared user data
     if (![[ARUserManager sharedManager] hasExistingAccount]) {
-        [[ARUserManager sharedManager] logout];
+        [ARUserManager clearUserData];
     }
 
     NSString *token = [UICKeyChainStore stringForKey:AROAuthTokenDefault];

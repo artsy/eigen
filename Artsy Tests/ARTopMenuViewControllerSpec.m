@@ -158,7 +158,7 @@ describe(@"navigation", ^{
                 [ARUserManager stubAndLoginWithUsername];
             });
             after(^{
-                [[ARUserManager sharedManager] logout];
+                [ARUserManager clearUserData];
             });
             itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexFavorites]});
         });

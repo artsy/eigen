@@ -63,7 +63,7 @@ static ARAppDelegate *_sharedInstance = nil;
     _sharedInstance = self;
 
     if (ARIsRunningInDemoMode) {
-        [self resetUserDefaults];
+        [ARUserManager clearUserData];
     }
 
     [ARDefaults setup];
@@ -313,11 +313,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfRuns forKey:ARAnalyticsAppUsageCountProperty];
     [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (void)resetUserDefaults
-{
-    [[ARUserManager sharedManager] logout];
 }
 
 @end
