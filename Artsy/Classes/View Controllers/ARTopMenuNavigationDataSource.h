@@ -5,7 +5,9 @@
 NS_ENUM(NSInteger, ARTopTabControllerIndex){
     ARTopTabControllerIndexSearch,
     ARTopTabControllerIndexFeed,
+    ARTopTabControllerIndexShows,
     ARTopTabControllerIndexBrowse,
+    ARTopTabControllerIndexMagazine,
     ARTopTabControllerIndexFavorites
 };
 
