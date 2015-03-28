@@ -1,5 +1,6 @@
 ## 2015.03.27
 
+* Ensure web views properly cleanup and can’t lead to crashes - alloy
 * Ensure labels don’t overlap with chevrons - alloy
 * Add shows and magazine to available tabs - alloy
 * Fix a crash caused by the assumption that an artwork will always have a artist - alloy
