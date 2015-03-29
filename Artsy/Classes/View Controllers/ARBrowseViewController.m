@@ -47,11 +47,13 @@
 - (void)setupCollectionView
 {
     CGFloat margin = 20;
+    CGFloat width = self.view.frame.size.width - (2 * margin);
 
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(self.view.frame.size.width - (2 * margin), 144);
+    layout.itemSize = CGSizeMake(width, width * 0.625);
     layout.minimumLineSpacing = 13;
     layout.sectionInset = UIEdgeInsetsMake(margin, margin, margin, margin);
+
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     collectionView.dataSource = self;
     collectionView.delegate = self;

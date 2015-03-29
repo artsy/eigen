@@ -5,6 +5,7 @@
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARSearchViewController.h"
+#import "ArtsyAPI+Private.h"
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) NSArray *constraintsForButtons;
@@ -47,8 +48,10 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
     ARNavigationTabButton *searchButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *showsButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *magazineButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
 
     [searchButton setImage:[UIImage imageNamed:@"SearchIcon_White"] forState:UIControlStateNormal];
     [searchButton setImage:[UIImage imageNamed:@"SearchIcon_White"] forState:UIControlStateSelected];
@@ -56,10 +59,12 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     searchButton.adjustsImageWhenHighlighted = NO;
 
     [homeButton setTitle:@"HOME" forState:UIControlStateNormal];
+    [showsButton setTitle:@"SHOWS" forState:UIControlStateNormal];
     [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
+    [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
     [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
 
-    NSArray *buttons = @[searchButton, homeButton, browseButton, favoritesButton];
+    NSArray *buttons = @[searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton];
 
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero hostViewController:self delegate:self dataSource:self.navigationDataSource];
     tabContentView.supportSwipeGestures = NO;
@@ -72,15 +77,14 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [tabContentView alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.view];
     [tabContentView constrainWidthToView:self.view predicate:@"0"];
 
-    [self.view addSubview: tabContainer];
+    [self.view addSubview:tabContainer];
     [tabContainer constrainHeight:@(ARSearchMenuButtonDimension).stringValue];
     [tabContainer constrainTopSpaceToView:tabContentView predicate:nil];
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
 
-    [tabContainer addSubview:searchButton];
-    [tabContainer addSubview:homeButton];
-    [tabContainer addSubview:browseButton];
-    [tabContainer addSubview:favoritesButton];
+    for (ARNavigationTabButton *button in buttons) {
+        [tabContainer addSubview:button];
+    }
 
     [searchButton constrainWidth:@(ARSearchMenuButtonDimension).stringValue];
     NSMutableArray *constraintsForButtons = [NSMutableArray array];
@@ -111,8 +115,10 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationDataSource prefetchBrowse];
-    [self.navigationDataSource prefetchHeroUnits];
+    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+        [self.navigationDataSource prefetchBrowse];
+        [self.navigationDataSource prefetchHeroUnits];
+    }];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

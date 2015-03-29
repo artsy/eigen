@@ -35,6 +35,7 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 @property (nonatomic, copy) NSString *dimensionsCM;
 @property (nonatomic, copy) NSString *dimensionsInches;
 
+// The artist that created the artwork. This may be `nil`.
 @property (nonatomic, strong) Artist *artist;
 @property (nonatomic, copy) NSString *imageFormatAddress;
 

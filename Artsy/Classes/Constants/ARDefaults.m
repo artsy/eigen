@@ -41,4 +41,11 @@ NSString *const ARShowAuctionResultsButtonDefault = @"auction-results";
         }
      ];
 }
+
++ (void)resetDefaults
+{
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 @end

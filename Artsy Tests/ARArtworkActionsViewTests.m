@@ -195,6 +195,14 @@ context(@"price view", ^{
             expect(view.priceView).to.haveValidSnapshot();
         });
 
+        it(@"sold but inquireable", ^{
+            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(true), @"inquireable": @(true), @"forSale": @(false) }];
+            [view updateUI];
+            [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+            [view layoutIfNeeded];
+            expect(view.priceView).to.haveValidSnapshot();
+        });
+
         it(@"contact for price", ^{
             view.artwork = [Artwork modelFromDictionary:@{ @"price" : @"$30,000", @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"isPriceHidden" : @(true) }];
             [view updateUI];

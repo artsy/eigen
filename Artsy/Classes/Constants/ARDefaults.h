@@ -24,4 +24,5 @@ extern NSString *const ARShowAuctionResultsButtonDefault;
 
 @interface ARDefaults : NSObject
 + (void)setup;
++ (void)resetDefaults;
 @end

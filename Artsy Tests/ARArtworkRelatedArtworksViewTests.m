@@ -170,6 +170,12 @@ describe(@"concerning an artwork at an auction", ^{
 });
 
 describe(@"concerning an artwork at a show", ^{
+    it(@"does not add a section with other works by the same artist if the artwork has no associated artist", ^{
+        relatedView.artwork.artist = nil;
+        [relatedView addSectionsForShow:show];
+        expect([relatedView viewWithTag:ARRelatedArtworksArtistArtworks]).will.beNil();
+    });
+
     __block NSDictionary *otherWorkByArtistJSON = nil;
     __block Artwork *otherWorkByArtist = nil;
 
@@ -191,13 +197,13 @@ describe(@"concerning an artwork at a show", ^{
         expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@[otherShowArtwork.title]);
     });
 
-    it(@"adds a section with other works by the same artist (not in the same show?)", ^{
+    it(@"adds a section with other works by the same artist", ^{
         expect([relatedView viewWithTag:ARRelatedArtworksArtistArtworks]).willNot.beNil();
         expect([relatedView titleForSectionWithTag:ARRelatedArtworksArtistArtworks]).to.equal(@"OTHER WORKS BY EL ANATSUI");
         expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksArtistArtworks]).to.equal(@[otherWorkByArtist.title]);
     });
 
-    it(@"adds a section with related works (not in the same show?)", ^{
+    it(@"adds a section with related works", ^{
         expect([relatedView viewWithTag:ARRelatedArtworks]).willNot.beNil();
         expect([relatedView titleForSectionWithTag:ARRelatedArtworks]).to.equal(@"RELATED ARTWORKS");
         expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworks]).to.equal(@[relatedArtwork.title]);

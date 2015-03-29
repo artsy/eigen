@@ -426,6 +426,7 @@
 		60CEA78119B6254800CC3A91 /* ARStubbedArtistNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CEA78019B6254800CC3A91 /* ARStubbedArtistNetworkModel.m */; };
 		60CF97FC17BE9303005ED59B /* ARShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CF97FB17BE9303005ED59B /* ARShadowView.m */; };
 		60CF980817BF79CA005ED59B /* ARArtistBiographyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CF980717BF79CA005ED59B /* ARArtistBiographyViewController.m */; };
+		60D7FB731AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D7FB721AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m */; };
 		60D83DE8189EAB82001672E9 /* ARFairShowMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D83DE7189EAB82001672E9 /* ARFairShowMapper.m */; };
 		60D83DEE189EE679001672E9 /* ARFairGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D83DED189EE679001672E9 /* ARFairGuideViewController.m */; };
 		60D8E63B18D256BB0040BEFD /* ARDemoSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D8E63918D256BB0040BEFD /* ARDemoSplashViewController.m */; };
@@ -485,6 +486,7 @@
 		D39E87521AB0FBDF006B5BE9 /* ARStubbedBrowseNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D39E87511AB0FBDF006B5BE9 /* ARStubbedBrowseNetworkModel.m */; };
 		D3BB62921AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BB62911AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m */; };
 		D3F3FA1F1AAE1BFC00E88359 /* ARBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F3FA1E1AAE1BFC00E88359 /* ARBrowseViewController.m */; };
+		D3F69A4A1AC1F7CB007C65C9 /* ARDefaultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */; };
 		DCA78A9CCA74D94C34C35156 /* libPods-Artsy Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E8D6BDCA48472E439B9D79CB /* libPods-Artsy Tests.a */; };
 		E60673B319BE4E8C00EF05EB /* full_logo_white_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */; };
 		E611847018D78068000FE4C9 /* ARMessageItemProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E611846F18D78068000FE4C9 /* ARMessageItemProviderTests.m */; };
@@ -1345,6 +1347,7 @@
 		60CF97FB17BE9303005ED59B /* ARShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShadowView.m; sourceTree = "<group>"; };
 		60CF980617BF79CA005ED59B /* ARArtistBiographyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtistBiographyViewController.h; sourceTree = "<group>"; };
 		60CF980717BF79CA005ED59B /* ARArtistBiographyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtistBiographyViewController.m; sourceTree = "<group>"; };
+		60D7FB721AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPersonalizeWebViewControllerTests.m; sourceTree = "<group>"; };
 		60D83DE6189EAB82001672E9 /* ARFairShowMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARFairShowMapper.h; path = models/ARFairShowMapper.h; sourceTree = "<group>"; };
 		60D83DE7189EAB82001672E9 /* ARFairShowMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARFairShowMapper.m; path = models/ARFairShowMapper.m; sourceTree = "<group>"; };
 		60D83DEC189EE679001672E9 /* ARFairGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairGuideViewController.h; sourceTree = "<group>"; };
@@ -1460,6 +1463,7 @@
 		D3BB62911AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseViewControllerTests.m; sourceTree = "<group>"; };
 		D3F3FA1D1AAE1BFC00E88359 /* ARBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARBrowseViewController.h; path = "Artsy/Classes/View Controllers/ARBrowseViewController.h"; sourceTree = SOURCE_ROOT; };
 		D3F3FA1E1AAE1BFC00E88359 /* ARBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARBrowseViewController.m; path = "Artsy/Classes/View Controllers/ARBrowseViewController.m"; sourceTree = SOURCE_ROOT; };
+		D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultsTests.m; sourceTree = "<group>"; };
 		E2C583DC5F5EBC24D3CC3B76 /* Pods.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.demo.xcconfig; path = "Pods/Target Support Files/Pods/Pods.demo.xcconfig"; sourceTree = "<group>"; };
 		E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_small@2x.png"; sourceTree = "<group>"; };
 		E611846F18D78068000FE4C9 /* ARMessageItemProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMessageItemProviderTests.m; sourceTree = "<group>"; };
@@ -1992,6 +1996,7 @@
 				54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */,
 				3C5C7E3E18970E78003823BB /* Enumerations */,
 				604151E41A7998E300D5F9CA /* NSDate+RangeTests.m */,
+				D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */,
 			);
 			name = "Util Tests";
 			sourceTree = "<group>";
@@ -2172,6 +2177,7 @@
 				3CB97D8E1887099E008C44FE /* ARLoginViewControllerTests.m */,
 				3CF144B718E9E00400B1A764 /* ARSignUpSplashViewControllerTests.m */,
 				E6F84D011A0AB40500BF99A3 /* ARSignUpActiveUserViewControllerTests.m */,
+				60D7FB721AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m */,
 			);
 			name = "Login and Onboarding";
 			sourceTree = "<group>";
@@ -4585,6 +4591,7 @@
 				3CA55D8918BFF8F800B44CD3 /* MapFeatureTests.m in Sources */,
 				60647C2E1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m in Sources */,
 				3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */,
+				D3F69A4A1AC1F7CB007C65C9 /* ARDefaultsTests.m in Sources */,
 				3CA1E8231884663E003C622D /* Bid+Extensions.m in Sources */,
 				E6718310194A3D1E001A5566 /* ARHeroUnitTests.m in Sources */,
 				3CAED17C188026AC00840608 /* ARUserManagerTests.m in Sources */,
@@ -4598,6 +4605,7 @@
 				E6BC2C3E197EDC950063ED3C /* ARBrowseCategoriesViewControllerTests.m in Sources */,
 				3CBB03A8192BA94C00689F89 /* ARFairArtistViewControllerTests.m in Sources */,
 				3CF144B618E4802400B1A764 /* ARSystemTimeTests.m in Sources */,
+				60D7FB731AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m in Sources */,
 				E6F111A018A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewTests.m in Sources */,
 				3C7A7FA718C6EDAB00E8D336 /* ArtworkTests.m in Sources */,
 				E67E1DB219475642004252E0 /* ARAnimatedTickViewTest.m in Sources */,

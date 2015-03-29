@@ -23,7 +23,7 @@ PODS:
   - Artsy+UIColors (1.0.0):
     - EDColor (~> 0.4)
   - Artsy+UIFonts (1.0.0)
-  - Artsy+UILabels (1.3.1):
+  - Artsy+UILabels (HEAD based on 1.3.1):
     - Artsy+UIColors
   - Artsy-UIButtons (HEAD based on 1.3.0):
     - Artsy+UIColors
@@ -108,7 +108,7 @@ DEPENDENCIES:
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
   - Artsy+UIColors
   - Artsy+UIFonts
-  - Artsy+UILabels (= 1.3.1)
+  - Artsy+UILabels (HEAD)
   - Artsy-UIButtons (HEAD)
   - CocoaLumberjack (= 1.8.1)
   - DHCShakeNotifier (= 0.2.0)

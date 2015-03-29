@@ -169,6 +169,10 @@
 
 - (void)addSectionWithArtistArtworks;
 {
+    if (!self.artwork.artist) {
+        return;
+    }
+
     @weakify(self);
     [self addRelatedArtworkRequest:[self.artwork.artist getArtworksAtPage:1 andParams:nil success:^(NSArray *artworks) {
         @strongify(self);
