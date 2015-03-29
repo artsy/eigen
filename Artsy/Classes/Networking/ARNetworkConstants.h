@@ -54,7 +54,7 @@ extern NSString *const ARFollowProfilesURL;
 extern NSString *const ARFollowingProfileURLFormat;
 
 extern NSString *const ARRelatedArtistsURL;
-extern NSString *const ARNotifiationsURL;
+extern NSString *const ARNotificationsURL;
 
 extern NSString *const ARGeneArtworksURLFormat;
 extern NSString *const ARGeneInformationURLFormat;

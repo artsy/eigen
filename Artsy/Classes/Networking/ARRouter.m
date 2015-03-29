@@ -699,7 +699,7 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)worksForYouRequest
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARNotifiationsURL parameters:@{
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARNotificationsURL parameters:@{
         @"page": @1, @"type": @"ArtworkPublished",
         @"user_id": [User currentUser].userID, @"size": @10
     }];
