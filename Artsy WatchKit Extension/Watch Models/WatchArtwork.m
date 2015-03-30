@@ -21,11 +21,11 @@
 - (NSDictionary *)dictionaryRepresentation
 {
     return @{
-        @"artworkID": self.artworkID,
-        @"title": self.title,
-        @"date": self.date,
-        @"artistName": self.artistName,
-        @"thumbnailImageURL": self.thumbnailImageURL.absoluteString,
+        @"artworkID": self.artworkID ?: @"",
+        @"title": self.title ?: @"",
+        @"date": self.date ?: @"",
+        @"artistName": self.artistName ?: @"",
+        @"thumbnailImageURL": self.thumbnailImageURL.absoluteString ?: @"",
     };
 }
 
