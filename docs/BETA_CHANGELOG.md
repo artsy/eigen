@@ -4,6 +4,7 @@
 
 ## 2015.03.27
 
+* Ensure navigation controllers properly cleanup and can’t lead to crashes - alloy
 * Ensure web views properly cleanup and can’t lead to crashes - alloy
 * Ensure labels don’t overlap with chevrons - alloy
 * Add shows and magazine to available tabs - alloy

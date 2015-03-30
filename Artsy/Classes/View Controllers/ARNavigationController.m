@@ -62,7 +62,7 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 - (void)dealloc
 {
     [ARScrollNavigationChief.chief removeObserver:self forKeyPath:@keypath(ARScrollNavigationChief.chief, allowsMenuButtons) context:ARNavigationControllerScrollingChiefContext];
-    [_observedViewController removeObserver:self forKeyPath:@keypath(self.observedViewController, hidesBackButton) context:ARNavigationControllerButtonStateContext];
+    [self observeViewController:NO];
 }
 
 - (void)setEnableNavigationButtons:(BOOL)enabled
@@ -79,31 +79,16 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
     [self.multiDelegate addDelegate:self];
 }
 
-- (void)setObservedViewController:(UIViewController<ARMenuAwareViewController> *)observedViewController {
-    NSParameterAssert(observedViewController == nil || [observedViewController.class conformsToProtocol:@protocol(ARMenuAwareViewController)]);
-
-    NSArray *keyPaths = @[
-        @keypath(self.observedViewController, hidesBackButton),
-        @keypath(self.observedViewController, hidesToolbarMenu),
-        @keypath(self.observedViewController, enableMenuButtons)
-    ];
-
-    [keyPaths each:^(NSString *keyPath) {
-        if ([self.observedViewController respondsToSelector:NSSelectorFromString(keyPath)]){
-            [self.observedViewController removeObserver:self forKeyPath:keyPath context:ARNavigationControllerButtonStateContext];
-        }
-    }];
-
+- (void)setObservedViewController:(UIViewController<ARMenuAwareViewController> *)observedViewController
+{
+    NSParameterAssert(observedViewController == nil
+                      || [observedViewController.class conformsToProtocol:@protocol(ARMenuAwareViewController)]);
+    [self observeViewController:NO];
     _observedViewController = observedViewController;
-
-    [keyPaths each:^(NSString *keyPath) {
-        if ([self.observedViewController respondsToSelector:NSSelectorFromString(keyPath)]){
-            [self.observedViewController addObserver:self forKeyPath:keyPath options:0 context:ARNavigationControllerButtonStateContext];
-        }
-    }];
+    [self observeViewController:YES];
 }
 
-#pragma mark - UIViewControl;er
+#pragma mark - UIViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -365,6 +350,27 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 }
 
 #pragma mark - KVO
+
+- (void)observeViewController:(BOOL)observe;
+{
+    UIViewController<ARMenuAwareViewController> *vc = self.observedViewController;
+
+    NSArray *keyPaths = @[
+        @keypath(vc, hidesBackButton),
+        @keypath(vc, hidesToolbarMenu),
+        @keypath(vc, enableMenuButtons)
+    ];
+
+    [keyPaths each:^(NSString *keyPath) {
+        if ([vc respondsToSelector:NSSelectorFromString(keyPath)]) {
+            if (observe) {
+                [vc addObserver:self forKeyPath:keyPath options:0 context:ARNavigationControllerButtonStateContext];
+            } else {
+                [vc removeObserver:self forKeyPath:keyPath context:ARNavigationControllerButtonStateContext];
+            }
+        }
+    }];
+}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
