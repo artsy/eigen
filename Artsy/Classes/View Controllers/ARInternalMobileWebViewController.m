@@ -1,6 +1,9 @@
 #import "ARInternalMobileWebViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARRouter.h"
+#import "ARSharingController.h"
+#import "Article.h"
+#import "NSString+StringBetweenStrings.h"
 
 @interface TSMiniWebBrowser (Private)
 @property(nonatomic, readonly, strong) UIWebView *webView;
@@ -99,11 +102,18 @@
     ARInfoLog(@"Martsy URL %@", request.URL);
 
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
-        if (viewController) {
-            [self.navigationController pushViewController:viewController animated:YES];
+        if ([self isSocialSharingURL:request.URL]) {
+            [self shareURL:request.URL];
             return NO;
+        } else {
+
+            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
+            if (viewController) {
+                [self.navigationController pushViewController:viewController animated:YES];
+                return NO;
+            }
         }
+
     } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
         // hijack AJAX requests
         if ([User isTrialUser]) {
@@ -124,6 +134,62 @@
 - (NSURLRequest *)requestWithURL:(NSURL *)url
 {
     return [ARRouter requestForURL:url];
+}
+
+- (BOOL)isSocialSharingURL:(NSURL *)url
+{
+    return [self isTwitterShareURL:url] || [self isFacebookShareURL:url];
+}
+
+- (BOOL)isFacebookShareURL:(NSURL *)url
+{
+    return [url.host hasSuffix:@"facebook.com"] && [url.path isEqualToString:@"/sharer/sharer.php"];
+}
+
+- (BOOL)isTwitterShareURL:(NSURL *)url
+{
+    return [url.host hasSuffix:@"twitter.com"] && [url.path isEqualToString:@"/intent/tweet"];
+}
+
+- (NSString *)addressBeingSharedFromShareURL:(NSURL *)url
+{
+    NSString *readableQuery = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+    if ([self isFacebookShareURL:url]) {
+        return [readableQuery componentsSeparatedByString:@"u="].lastObject;
+    } else if ([self isTwitterShareURL:url]) {
+        return [readableQuery componentsSeparatedByString:@"url="].lastObject;
+    }
+
+    return nil;
+}
+
+- (NSString *)nameBeingSharedInURL:(NSURL *)url
+{
+    if ([self isFacebookShareURL:url]) {
+        return nil;
+    } else if ([self isTwitterShareURL:url]) {
+        NSString *readableQuery = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        return [readableQuery substringBetween:@"&text=" and:@"&url="];
+    }
+    return nil;
+}
+
+- (void)shareURL:(NSURL *)url
+{
+    NSString *actualAddress = [self addressBeingSharedFromShareURL:url];
+
+    // We want to be defensive here incase someone changes the share URL structures
+    // in the future.
+
+    if (actualAddress && [actualAddress containsString:@"/article/"]) {
+        NSURL *actualURL = [NSURL URLWithString:actualAddress];
+        NSString *name = [self nameBeingSharedInURL:url];
+        Article *article = [[Article alloc] initWithURL:actualURL name:name];
+
+        ARSharingController *shareArticle = [ARSharingController sharingControllerWithObject:article thumbnailImageURL:nil];
+        [shareArticle presentActivityViewControllerFromView:self.view];
+    }
 }
 
 @end

@@ -358,6 +358,8 @@
 		609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 609B3C081761F80C00953CB2 /* ARSiteHeroUnitView.m */; };
 		60A0AD4A1797FD2E00E976B7 /* ARThemedFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A0AD491797FD2E00E976B7 /* ARThemedFactory.m */; };
 		60A224FC17CE040B00233CA1 /* AROnboardingTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */; };
+		60A309A21AC98BF3000783C1 /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A11AC98BF3000783C1 /* Article.m */; };
+		60A309A51AC9910D000783C1 /* NSString+StringBetweenStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A41AC9910D000783C1 /* NSString+StringBetweenStrings.m */; };
 		60A49F601676559300B9B95D /* ARNetworkConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A49F5F1676559300B9B95D /* ARNetworkConstants.m */; };
 		60A612B8189673F4008FC19D /* ARGeneArtworksNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A612B7189673F4008FC19D /* ARGeneArtworksNetworkModel.m */; };
 		60AEC84716E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AEC84616E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m */; };
@@ -1160,6 +1162,10 @@
 		60A224FA17CE040B00233CA1 /* AROnboardingTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingTransition.h; sourceTree = "<group>"; };
 		60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingTransition.m; sourceTree = "<group>"; };
 		60A224FD17CE0E1B00233CA1 /* AROnboardingViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AROnboardingViewControllers.h; sourceTree = "<group>"; };
+		60A309A01AC98BF3000783C1 /* Article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Article.h; sourceTree = "<group>"; };
+		60A309A11AC98BF3000783C1 /* Article.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Article.m; sourceTree = "<group>"; };
+		60A309A31AC9910D000783C1 /* NSString+StringBetweenStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringBetweenStrings.h"; sourceTree = "<group>"; };
+		60A309A41AC9910D000783C1 /* NSString+StringBetweenStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+StringBetweenStrings.m"; sourceTree = "<group>"; };
 		60A49F5E1676559200B9B95D /* ARNetworkConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNetworkConstants.h; sourceTree = "<group>"; };
 		60A49F5F1676559300B9B95D /* ARNetworkConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNetworkConstants.m; sourceTree = "<group>"; };
 		60A612B6189673F4008FC19D /* ARGeneArtworksNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeneArtworksNetworkModel.h; sourceTree = "<group>"; };
@@ -1613,6 +1619,8 @@
 		342F9C2C3D87889B79459CED /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				60A309A31AC9910D000783C1 /* NSString+StringBetweenStrings.h */,
+				60A309A41AC9910D000783C1 /* NSString+StringBetweenStrings.m */,
 				E619969919B9094F00DB273C /* Swizzles */,
 				342F97E1E35CFFE9767F07CD /* NSDate+DateRange.h */,
 				342F9175329F0389E644C194 /* NSDate+DateRange.m */,
@@ -2045,6 +2053,8 @@
 			children = (
 				3CCCC89918996DD4008015DD /* Post.h */,
 				3CCCC89A18996DD4008015DD /* Post.m */,
+				60A309A01AC98BF3000783C1 /* Article.h */,
+				60A309A11AC98BF3000783C1 /* Article.m */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -3945,6 +3955,7 @@
 				60327DCD1987AD240075B399 /* ARDispatchManager.m in Sources */,
 				60B7604617C9FBEA00073A14 /* ARArtworkActionsView.m in Sources */,
 				4938743617BDB2CD00724795 /* ARCrossfadingImageView.m in Sources */,
+				60A309A51AC9910D000783C1 /* NSString+StringBetweenStrings.m in Sources */,
 				E6B958EF188DB24200D75C86 /* ARViewTagConstants.m in Sources */,
 				60D90A0B17C218930073D5B9 /* ARInternalMobileWebViewController.m in Sources */,
 				609A82F017A10C5C00AFDF13 /* ARNavigationTransitionController.m in Sources */,
@@ -4015,6 +4026,7 @@
 				E667F12918EC82AB00503F50 /* ARLogger.m in Sources */,
 				3C94B2DA192BF109008D04DF /* ARFairMapPreview.m in Sources */,
 				E6C13AC41A23AB160050AB53 /* ARPersonalizeWebViewController.m in Sources */,
+				60A309A21AC98BF3000783C1 /* Article.m in Sources */,
 				342F9F54666BFDFF200E31AE /* UIView+HitTestExpansion.m in Sources */,
 				342F9BBE60676CEC2AD66C5A /* NSString+StringCase.m in Sources */,
 				342F9CEA884D36A98BE6BA96 /* NSString+StringSize.m in Sources */,
