@@ -1,9 +1,7 @@
 #import "ARInternalMobileWebViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARRouter.h"
-#import "ARSharingController.h"
-#import "Article.h"
-#import "NSString+StringBetweenStrings.h"
+#import "ARInternalShareValidator.h"
 
 @interface TSMiniWebBrowser (Private)
 @property(nonatomic, readonly, strong) UIWebView *webView;
@@ -13,6 +11,8 @@
 
 @interface ARInternalMobileWebViewController() <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
 @property (nonatomic, readonly, assign) BOOL loaded;
+@property (nonatomic, readonly, strong) ARInternalShareValidator *shareValidator;
+
 @end
 
 @implementation ARInternalMobileWebViewController
@@ -53,6 +53,7 @@
     self.showToolBar = NO;
     self.backgroundColor = [UIColor whiteColor];
     self.opaque = NO;
+    _shareValidator = [[ARInternalShareValidator alloc] init];
 
     ARInfoLog(@"Initialized with URL %@", url);
     return self;
@@ -102,8 +103,8 @@
     ARInfoLog(@"Martsy URL %@", request.URL);
 
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        if ([self isSocialSharingURL:request.URL]) {
-            [self shareURL:request.URL];
+        if ([self.shareValidator isSocialSharingURL:request.URL]) {
+            [self.shareValidator shareURL:request.URL inView:self.view];
             return NO;
         } else {
 
@@ -126,6 +127,7 @@
 }
 
 // A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
+
 - (void)reload
 {
     [self.webView loadRequest:[self requestWithURL:self.currentURL]];
@@ -136,60 +138,5 @@
     return [ARRouter requestForURL:url];
 }
 
-- (BOOL)isSocialSharingURL:(NSURL *)url
-{
-    return [self isTwitterShareURL:url] || [self isFacebookShareURL:url];
-}
-
-- (BOOL)isFacebookShareURL:(NSURL *)url
-{
-    return [url.host hasSuffix:@"facebook.com"] && [url.path isEqualToString:@"/sharer/sharer.php"];
-}
-
-- (BOOL)isTwitterShareURL:(NSURL *)url
-{
-    return [url.host hasSuffix:@"twitter.com"] && [url.path isEqualToString:@"/intent/tweet"];
-}
-
-- (NSString *)addressBeingSharedFromShareURL:(NSURL *)url
-{
-    NSString *readableQuery = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-    if ([self isFacebookShareURL:url]) {
-        return [readableQuery componentsSeparatedByString:@"u="].lastObject;
-    } else if ([self isTwitterShareURL:url]) {
-        return [readableQuery componentsSeparatedByString:@"url="].lastObject;
-    }
-
-    return nil;
-}
-
-- (NSString *)nameBeingSharedInURL:(NSURL *)url
-{
-    if ([self isFacebookShareURL:url]) {
-        return nil;
-    } else if ([self isTwitterShareURL:url]) {
-        NSString *readableQuery = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        return [readableQuery substringBetween:@"&text=" and:@"&url="];
-    }
-    return nil;
-}
-
-- (void)shareURL:(NSURL *)url
-{
-    NSString *actualAddress = [self addressBeingSharedFromShareURL:url];
-
-    // We want to be defensive here incase someone changes the share URL structures
-    // in the future.
-
-    if (actualAddress && [actualAddress containsString:@"/article/"]) {
-        NSURL *actualURL = [NSURL URLWithString:actualAddress];
-        NSString *name = [self nameBeingSharedInURL:url];
-        Article *article = [[Article alloc] initWithURL:actualURL name:name];
-
-        ARSharingController *shareArticle = [ARSharingController sharingControllerWithObject:article thumbnailImageURL:nil];
-        [shareArticle presentActivityViewControllerFromView:self.view];
-    }
-}
 
 @end

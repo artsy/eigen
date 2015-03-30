@@ -360,6 +360,8 @@
 		60A224FC17CE040B00233CA1 /* AROnboardingTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */; };
 		60A309A21AC98BF3000783C1 /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A11AC98BF3000783C1 /* Article.m */; };
 		60A309A51AC9910D000783C1 /* NSString+StringBetweenStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A41AC9910D000783C1 /* NSString+StringBetweenStrings.m */; };
+		60A309A81AC999DE000783C1 /* ARInternalShareValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */; };
+		60A309AA1AC99B47000783C1 /* ARInternalShareValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */; };
 		60A49F601676559300B9B95D /* ARNetworkConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A49F5F1676559300B9B95D /* ARNetworkConstants.m */; };
 		60A612B8189673F4008FC19D /* ARGeneArtworksNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A612B7189673F4008FC19D /* ARGeneArtworksNetworkModel.m */; };
 		60AEC84716E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AEC84616E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m */; };
@@ -1166,6 +1168,9 @@
 		60A309A11AC98BF3000783C1 /* Article.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Article.m; sourceTree = "<group>"; };
 		60A309A31AC9910D000783C1 /* NSString+StringBetweenStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringBetweenStrings.h"; sourceTree = "<group>"; };
 		60A309A41AC9910D000783C1 /* NSString+StringBetweenStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+StringBetweenStrings.m"; sourceTree = "<group>"; };
+		60A309A61AC999DE000783C1 /* ARInternalShareValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalShareValidator.h; sourceTree = "<group>"; };
+		60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalShareValidator.m; sourceTree = "<group>"; };
+		60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalShareValidatorTests.m; sourceTree = "<group>"; };
 		60A49F5E1676559200B9B95D /* ARNetworkConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNetworkConstants.h; sourceTree = "<group>"; };
 		60A49F5F1676559300B9B95D /* ARNetworkConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNetworkConstants.m; sourceTree = "<group>"; };
 		60A612B6189673F4008FC19D /* ARGeneArtworksNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeneArtworksNetworkModel.h; sourceTree = "<group>"; };
@@ -2036,6 +2041,7 @@
 			isa = PBXGroup;
 			children = (
 				3C6AEE26188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m */,
+				60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */,
 			);
 			name = "Web Browsing";
 			sourceTree = "<group>";
@@ -3147,6 +3153,8 @@
 				60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */,
 				60647C731A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.h */,
 				60647C741A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m */,
+				60A309A61AC999DE000783C1 /* ARInternalShareValidator.h */,
+				60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */,
 			);
 			name = "Web Browsing";
 			sourceTree = "<group>";
@@ -3931,6 +3939,7 @@
 				60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */,
 				3CD3679C189AC4F000285DF7 /* ARAspectRatioImageView.m in Sources */,
 				607E2E8417C8CF6B00396120 /* ARArtworkPreviewActionsView.m in Sources */,
+				60A309A81AC999DE000783C1 /* ARInternalShareValidator.m in Sources */,
 				B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */,
 				6037442516D4227500AE7788 /* ARSwitchBoard.m in Sources */,
 				3C4AE9A419096CED009C0E8B /* ARFairMapAnnotationCallOutView.m in Sources */,
@@ -4114,6 +4123,7 @@
 				60327DEC198933610075B399 /* ARTopMenuViewControllerSpec.m in Sources */,
 				3CA37E7C1910217500B06E81 /* ARHeartButtonTests.m in Sources */,
 				3CEE0B6A18A18CDA00FEA6E6 /* ProfileTests.m in Sources */,
+				60A309AA1AC99B47000783C1 /* ARInternalShareValidatorTests.m in Sources */,
 				E65BB51F1A3FB552004C4DB4 /* ARAppSearchViewControllerSpec.m in Sources */,
 				3CE7F34418A99E6D002BA993 /* SiteHeroUnitTests.m in Sources */,
 				5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */,
