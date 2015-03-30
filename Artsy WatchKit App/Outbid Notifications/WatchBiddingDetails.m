@@ -12,7 +12,7 @@
 
     _lastBidCents = [dictionary[@"your_last_bid_cents"] integerValue];
     _minumumBidCents = [dictionary[@"minimum_bid_cents"] integerValue];
-    _currentBidCents = [dictionary[@"current_bid_cents"] integerValue] ?: _minumumBidCents;
+    _currentBidCents = [(dictionary[@"current_bid_cents"] ?: @(_minumumBidCents)) integerValue];
 
     return self;
 }
