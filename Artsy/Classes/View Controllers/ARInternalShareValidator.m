@@ -1,6 +1,7 @@
 #import "ARInternalShareValidator.h"
 #import "ARSharingController.h"
 #import "Article.h"
+#import "NSString+StringBetweenStrings.h"
 
 @implementation ARInternalShareValidator
 
@@ -21,12 +22,12 @@
 
 - (NSString *)addressBeingSharedFromShareURL:(NSURL *)url
 {
-    NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
+    NSString *readableQuery = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     if ([self isFacebookShareURL:url]) {
-        return [components.queryItems valueForKey:@"u"];
+        return [readableQuery componentsSeparatedByString:@"u="].lastObject;
     } else if ([self isTwitterShareURL:url]) {
-        return [components.queryItems valueForKey:@"url"];
+        return [readableQuery componentsSeparatedByString:@"url="].lastObject;
     }
 
     return nil;
@@ -37,8 +38,8 @@
     if ([self isFacebookShareURL:url]) {
         return nil;
     } else if ([self isTwitterShareURL:url]) {
-        NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
-        return [components.queryItems valueForKey:@"text"];
+        NSString *readableQuery = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        return [readableQuery substringBetween:@"&text=" and:@"&url="];
     }
     return nil;
 }

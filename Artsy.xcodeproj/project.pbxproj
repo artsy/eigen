@@ -361,6 +361,7 @@
 		60A309A21AC98BF3000783C1 /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A11AC98BF3000783C1 /* Article.m */; };
 		60A309A81AC999DE000783C1 /* ARInternalShareValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */; };
 		60A309AA1AC99B47000783C1 /* ARInternalShareValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */; };
+		60A309AD1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309AC1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m */; };
 		60A49F601676559300B9B95D /* ARNetworkConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A49F5F1676559300B9B95D /* ARNetworkConstants.m */; };
 		60A612B8189673F4008FC19D /* ARGeneArtworksNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A612B7189673F4008FC19D /* ARGeneArtworksNetworkModel.m */; };
 		60AEC84716E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AEC84616E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m */; };
@@ -1168,6 +1169,8 @@
 		60A309A61AC999DE000783C1 /* ARInternalShareValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalShareValidator.h; sourceTree = "<group>"; };
 		60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalShareValidator.m; sourceTree = "<group>"; };
 		60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalShareValidatorTests.m; sourceTree = "<group>"; };
+		60A309AB1AC9A7C8000783C1 /* NSString+StringBetweenStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringBetweenStrings.h"; sourceTree = "<group>"; };
+		60A309AC1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+StringBetweenStrings.m"; sourceTree = "<group>"; };
 		60A49F5E1676559200B9B95D /* ARNetworkConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNetworkConstants.h; sourceTree = "<group>"; };
 		60A49F5F1676559300B9B95D /* ARNetworkConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNetworkConstants.m; sourceTree = "<group>"; };
 		60A612B6189673F4008FC19D /* ARGeneArtworksNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeneArtworksNetworkModel.h; sourceTree = "<group>"; };
@@ -1621,6 +1624,8 @@
 		342F9C2C3D87889B79459CED /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				60A309AB1AC9A7C8000783C1 /* NSString+StringBetweenStrings.h */,
+				60A309AC1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m */,
 				E619969919B9094F00DB273C /* Swizzles */,
 				342F97E1E35CFFE9767F07CD /* NSDate+DateRange.h */,
 				342F9175329F0389E644C194 /* NSDate+DateRange.m */,
@@ -3809,6 +3814,7 @@
 				49A77239165ADB9400BC6FD3 /* ARRepostFeedItem.m in Sources */,
 				608B709917D4F6520088A56C /* ARSearchTableViewCell.m in Sources */,
 				49A7723A165ADB9400BC6FD3 /* ARSavedArtworkSetFeedItem.m in Sources */,
+				60A309AD1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m in Sources */,
 				3CEE0B6518A16F7D00FEA6E6 /* ArtsyAPI+Artists.m in Sources */,
 				607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */,
 				3C7880BC18B9081C00595E30 /* ARNotificationView.m in Sources */,
