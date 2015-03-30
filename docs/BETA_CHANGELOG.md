@@ -4,6 +4,7 @@
 
 ## 2015.03.27
 
+* Nullify scrollview delegate of artview after all to ensure it can never crash again - alloy
 * Ensure navigation controllers properly cleanup and can’t lead to crashes - alloy
 * Ensure web views properly cleanup and can’t lead to crashes - alloy
 * Ensure labels don’t overlap with chevrons - alloy
