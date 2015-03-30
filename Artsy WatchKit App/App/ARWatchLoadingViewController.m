@@ -22,20 +22,26 @@ static BOOL ARShouldUseShowsTableView = YES;
     [self.loadingIndicator setImageNamed:@"Progress-Spinner-"];
     [self.loadingIndicator startAnimatingWithImagesInRange:NSMakeRange(0, 59) duration:0.8 repeatCount:0];
 
-    if (self.message.action == ARWatchMessageRequestShows) {
-        self.titleLabel.text = @"Loading Shows";
-    }
+    switch (self.message.action) {
+        case ARWatchMessageRequestShows:
+            self.titleLabel.text = @"Loading Shows";
+            break;
 
-    if (self.message.action == ARWatchMessageRequestWorksForYou) {
-        self.titleLabel.text = @"Loading New Works By Artists You Follow";
-    }
+        case ARWatchMessageRequestWorksForYou:
+            self.titleLabel.text = @"Loading New Works By Artists You Follow";
+            break;
 
-    if (self.message.action == ARWatchMessageRequestFavorites) {
-        self.titleLabel.text = @"Loading Favorites";
-    }
+        case ARWatchMessageRequestFavorites:
+            self.titleLabel.text = @"Loading Favorites";
+            break;
 
-    if (self.message.action == ARWatchMessageRequestRecommended) {
-        self.titleLabel.text = @"Loading Reccommendations";
+
+        case ARWatchMessageRequestRecommended:
+            self.titleLabel.text = @"Loading Reccommendations";
+            break;
+
+        case ARWatchMessageRequestBid:
+            self.titleLabel.text = @"Loading Your Bid";
     }
 
     [self.class openParentApplication:self.message.dictionaryRepresentation reply:^(NSDictionary *replyInfo, NSError *error) {
