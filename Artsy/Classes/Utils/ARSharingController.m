@@ -75,10 +75,13 @@
     // tell the caller we're done (from e.g. a delegate).
     //
     // TODO It appears that on iOS 8 the popver is retained by the system? In which case this can be removed.
-    if (popover && [view isKindOfClass:UIButton.class]) {
+    if (popover) {
+
         // Extra hack to ensure the button doesn't remain highlighted during this loop.
-        [(UIButton *)view setHighlighted: NO]
-        ;
+        if ([view isKindOfClass:UIButton.class]) {
+            [(UIButton *)view setHighlighted: NO];
+        }
+
         while (popover != nil) {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
         }
