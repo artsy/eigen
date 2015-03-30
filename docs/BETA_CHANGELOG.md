@@ -1,3 +1,7 @@
+## Next
+
+* Added hooks for the share buttons in articles - orta
+
 ## 2015.03.27
 
 * Ensure navigation controllers properly cleanup and can’t lead to crashes - alloy
