@@ -408,7 +408,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 - (void)addImagePagingViewToStack
 {
     _imagePageViewController = [[ARImagePageViewController alloc] init];
-    self.imagePageViewController.imageContentMode = UIViewContentModeScaleAspectFill;
+    self.imagePageViewController.imageContentMode = UIViewContentModeScaleAspectFit;
     self.imagePageViewController.view.tag = ARFairShowViewHeader;
     [self.view.stackView addSubview:self.imagePageViewController.view withTopMargin:@"0" sideMargin:@"0"];
 
