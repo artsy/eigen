@@ -1,13 +1,17 @@
-## Next
+## 2015.03.31
 
+* Fixes problem displaying map button on artworks in fairs with no map - @ashfurrow
 * Update ISO8601DateFormatter to be thread safe - alloy
 * Added hooks for the share buttons in articles - orta
+* Nullify scrollview delegate of artview after all to ensure it can never crash again - alloy
+* Ensure navigation controllers properly cleanup and can’t lead to crashes - alloy
+
+## 2015.03.28
+
+* Ensure web views properly cleanup and can’t lead to crashes - alloy
 
 ## 2015.03.27
 
-* Nullify scrollview delegate of artview after all to ensure it can never crash again - alloy
-* Ensure navigation controllers properly cleanup and can’t lead to crashes - alloy
-* Ensure web views properly cleanup and can’t lead to crashes - alloy
 * Ensure labels don’t overlap with chevrons - alloy
 * Add shows and magazine to available tabs - alloy
 * Fix a crash caused by the assumption that an artwork will always have a artist - alloy
