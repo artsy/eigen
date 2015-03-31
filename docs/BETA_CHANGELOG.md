@@ -6,6 +6,9 @@
 * Added hooks for the share buttons in articles - orta
 * Nullify scrollview delegate of artview after all to ensure it can never crash again - alloy
 * Ensure navigation controllers properly cleanup and can’t lead to crashes - alloy
+* Update the display of show header images to fit instead of fill - 1aurabrown
+* Ensure useStaging default is properly set when switching between servers - 1aurabrown
+* Update Hero Unit margins - 1aurabrown
 
 ## 2015.03.28
 
