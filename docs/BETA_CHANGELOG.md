@@ -1,6 +1,7 @@
 ## 2015.03.31
 
-* Fixes problem displaying map button on artworks in fairs with no map - @ashfurrow
+* Bump minimal iOS version to 7.1 to fix a UICollectionView related crash - alloy
+* Fixes problem displaying map button on artworks in fairs with no map - ashfurrow
 * Update ISO8601DateFormatter to be thread safe - alloy
 * Added hooks for the share buttons in articles - orta
 * Nullify scrollview delegate of artview after all to ensure it can never crash again - alloy
