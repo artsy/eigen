@@ -1,5 +1,6 @@
 ## Next
 
+* Update ISO8601DateFormatter to be thread safe - alloy
 * Added hooks for the share buttons in articles - orta
 
 ## 2015.03.27

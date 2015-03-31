@@ -49,7 +49,7 @@ PODS:
   - FXBlurView (1.6.1)
   - HockeySDK (3.5.0)
   - iRate (1.10.2)
-  - ISO8601DateFormatter (0.7)
+  - ISO8601DateFormatter (HEAD based on 0.7)
   - JLRoutes (1.5)
   - JSDecoupledAppDelegate (1.0.1)
   - Keys (1.0.1)
@@ -122,7 +122,7 @@ DEPENDENCIES:
   - FXBlurView (= 1.6.1)
   - HockeySDK (= 3.5.0)
   - iRate (= 1.10.2)
-  - ISO8601DateFormatter (= 0.7)
+  - ISO8601DateFormatter (HEAD)
   - JLRoutes (= 1.5)
   - JSDecoupledAppDelegate (= 1.0.1)
   - Keys (from `https://github.com/ashfurrow/empty-podspec.git`)
@@ -193,58 +193,58 @@ CHECKOUT OPTIONS:
     :tag: v0.3.0.beta1
 
 SPEC CHECKSUMS:
-  AFHTTPRequestOperationLogger: 890afab1adb178314d33c4de9d2aa5a42cc594b9
-  AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
-  AFOAuth1Client: 53c76d9cadd73142a9f73854456d5d970bdc147a
-  ALPValidator: 13bc680ecba56a5385ade37137d7cc75a16e5504
+  AFHTTPRequestOperationLogger: 251332cf89812162df96843ca51a76107fb95a94
+  AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
+  AFOAuth1Client: 7bac5f9f00a2a97d99d4cb9942a09d0812c5e5b7
+  ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   ARAnalytics: e0eba4bd2ecedc3b07c34eca73eb86f3f6c68339
-  ARASCIISwizzle: 01fc71ffac975f18079a249b0608c9769a9fc4b6
+  ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
   ARCollectionViewMasonryLayout: 164b82010cf8ec99bc7a38cffe59a179d7e5a116
-  ARGenericTableViewController: f40b437b8abb2e2de7c98f1f35f0487ec9087ead
+  ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 000af4093f9bdcd0f754e6ebd964c90641389f90
   Artsy+UIColors: d1d5e084a0e542d310c507acb5446bae6a322241
   Artsy+UIFonts: fb0a70f93ca888d45a3af751707701fe8cbeae2a
   Artsy+UILabels: a7c713069e3d10144a3dc8e377bef8b2253cd766
   Artsy-UIButtons: be101574d2d61d310620319252c56ec98d5181c3
-  Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
-  CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427
-  DHCShakeNotifier: d5e1130243096e9488e0ecce8e6e268647357b4b
-  DRKonamiCode: 17a4e3a8bf527b62c245c511656e4f4e70bcf518
-  EDColor: bcdb8600b7a456f4408ce1d7e7fc001588919254
-  Expecta: ce8a51b9fad15a2cd573b291cb2909aaed865350
-  Expecta+Snapshots: 0ec8bd543329a3944f5e5dc2a5cb220c3dde4ab0
-  Facebook-iOS-SDK: e9b3d5ac54ee3e5e693f4eef470b97911b3d076d
-  FBSnapshotTestCase: f9f225b5ba11c8d8c09075590490df16314e4d62
-  FLKAutoLayout: 9fa39aac2903b274fbeed6be74154cdb937a04fc
+  Bolts: e431c88fd02115d4a34016c2100bbfa4d2d5b146
+  CocoaLumberjack: 555162681b9c20a271909b235c43f6bbd5d512e1
+  DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
+  DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
+  EDColor: 89d19a013279a5604d61650721c15f20fefaaf00
+  Expecta: 917bda2935b63ca7175741b8cf1b26796db6205f
+  Expecta+Snapshots: 07c3838422fe9107002a8e395739fa60c0d60dff
+  Facebook-iOS-SDK: 2948301ff993744c3c931d1ba46fa4a5bd60a687
+  FBSnapshotTestCase: 892508495a69e8703bab36c9da7674ff740d41db
+  FLKAutoLayout: 95b12c5cd9652100235140b68652f063f7437851
   FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
-  FXBlurView: 1d01b96076d65027314d1be024c7506c292392aa
-  HockeySDK: 85c058a5300638a2e4fc98658f90b76df96c9f46
-  iRate: 7d204971bab2f727195b868e32e05216fe257681
-  ISO8601DateFormatter: 59731cd880cf87e71b4fa95f0d6b713dcbc4cbce
-  JLRoutes: 1a32dbc34b8af9c2a0174c4799afdc72ad5fe447
-  JSDecoupledAppDelegate: cff5663e495456300b1ca2c9479d13d44f43e3e0
+  FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
+  HockeySDK: 9c50c596a51a015a8e5073252340a36d3047a126
+  iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
+  ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
+  JLRoutes: 5a6096ec514f105fc906f9334c90d8276fe13687
+  JSDecoupledAppDelegate: db9bb678694d2e2a288ed90da425fe69e3bc737d
   Keys: 828b370fea8d74e7a353a4844a4c305038291f16
-  KSDeferred: 33361e3e63ebe90210ea94d7f6469c1c2b874763
-  libextobjc: ba42e4111f433273a886cd54f0ddaddb7f62f82f
-  Mantle: 8d84cacd6c2a69ff6fbce985a2b51298a5495de3
-  Mixpanel: 9cc470a58346f60da8ce2982096bcc72b5a7372b
-  MMMarkdown: 409977dc4a20728e1afd7a0ae023be936d5508af
-  MultiDelegate: 30ea47d00d916390e7b53ba8dc240b8751d19107
+  KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
+  libextobjc: f2802d4262f6885570df9799747409ceb1de602c
+  Mantle: 7dddb082367d3e13bd244636d56838481c4552fe
+  Mixpanel: 10f1994e9d6d1317bf3ede96f44cc92a7c53b227
+  MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
+  MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: 4f57bea305c1795d2d6b8a6d6b31c59b1a08114f
-  ObjectiveSugar: f48793f5902c77cfc02a4ce46d2e8ecddcad4dc2
-  OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
-  OHHTTPStubs: c1c2007839687eaf9b80f061ce84440515080ebb
-  ORKeyboardReactingApplication: 9e9543372960d3a4994f0ee12ebf125d0ffb2012
-  ORStackView: b6ccb2d7a1730548631a8a2749ba3c1bf12168db
-  ReactiveCocoa: 2066583826c17dde8e90c41e489f682048cc57c9
-  RSSwizzle: ab39962b7ec56d19c2318ec1127e253797121363
-  SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
+  ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
+  OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
+  OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
+  ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
+  ORStackView: 5df6b1b990b0648d8ef6f69f89361ea8648e8f64
+  ReactiveCocoa: fbe689fe218063b7bbed41032912c9ca4fdbe172
+  RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
+  SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
   Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
-  TSMiniWebBrowser@dblock: 4e73ee955fcf2e9f5d98f7a17460454ac059bc37
-  UIAlertView+Blocks: 90d7f6b2853404277c94f6284c2b8c16028272e6
-  UICKeyChainStore: 4f9719600cc70025064e26f28f1210bcfc3b0c35
-  UIView+BooleanAnimations: 48cc98d5469ced7f7654310bff47c8ddba72c8f4
-  VCRURLConnection: ad8bfbd376ad44a7f5c48358f3ee96a40d4e683e
-  XCTest+OHHTTPStubSuiteCleanUp: 16f0278ca4d489896745e6f4f71b8b3efa93cba8
+  TSMiniWebBrowser@dblock: 6eb565b44cc2e5cd5eee7660ee5c21f8afae415c
+  UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
+  UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
+  UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
+  VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
+  XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
 COCOAPODS: 0.36.0.rc.1
