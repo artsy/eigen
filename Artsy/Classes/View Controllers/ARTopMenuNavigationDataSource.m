@@ -14,37 +14,43 @@
 
 @property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
 
-@property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *searchNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *showsNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *magazineNavigationController;
 
 @end
 
 @implementation ARTopMenuNavigationDataSource
 
++ (ARNavigationController *)internalWebViewNavigationController:(NSString *)path;
+{
+    NSURL *URL = [NSURL URLWithString:path];
+    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:URL];
+    return [[ARNavigationController alloc] initWithRootViewController:viewController];
+}
+
 - (instancetype)init
 {
     self = [super init];
 
-    // Search
-
     ARSearchViewController *searchController = [[ARAppSearchViewController alloc] init];
-    _searchNavigationController = [[ARNavigationController alloc] initWithRootViewController: searchController];
-
-    // Feed
+    _searchNavigationController = [[ARNavigationController alloc] initWithRootViewController:searchController];
 
     ARShowFeed *showFeed = [[ARShowFeed alloc] init];
     ARFeedTimeline *showFeedTimeline = [[ARFeedTimeline alloc] initWithFeed:showFeed];
-
     _showFeedViewController = [[ARShowFeedViewController alloc] initWithFeedTimeline:showFeedTimeline];
     _showFeedViewController.heroUnitDatasource = [[ARHeroUnitsNetworkModel alloc] init];
-    _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController: _showFeedViewController];
+    _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:_showFeedViewController];
 
-    // Browse
+    _showsNavigationController = [self.class internalWebViewNavigationController:@"/shows"];
 
     _browseViewController = [[ARBrowseViewController alloc] init];
     _browseViewController.networkModel = [[ARBrowseNetworkModel alloc] init];
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
+
+    _magazineNavigationController = [self.class internalWebViewNavigationController:@"/magazine"];
 
     return self;
 }
@@ -84,23 +90,6 @@
     // https://github.com/artsy/eigen/issues/287#issuecomment-88036710
     ARFavoritesViewController *favoritesViewController = [[ARFavoritesViewController alloc] init];
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
-}
-
-- (ARNavigationController *)showsNavigationController;
-{
-    return [self internalWebViewNavigationController:@"/shows"];
-}
-
-- (ARNavigationController *)magazineNavigationController;
-{
-    return [self internalWebViewNavigationController:@"/magazine"];
-}
-
-- (ARNavigationController *)internalWebViewNavigationController:(NSString *)path;
-{
-    NSURL *URL = [NSURL URLWithString:path];
-    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:URL];
-    return [[ARNavigationController alloc] initWithRootViewController:viewController];
 }
 
 #pragma mark ARTabViewDataSource
