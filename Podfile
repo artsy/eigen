@@ -36,7 +36,7 @@ pod 'AFNetworking', '1.3.4'
 pod 'AFHTTPRequestOperationLogger', '1.0.0'
 pod 'SDWebImage', '3.7.1'
 pod 'JLRoutes', '1.5'
-pod 'ISO8601DateFormatter', '0.7'
+pod 'ISO8601DateFormatter', :head
 pod 'KSDeferred', '0.2.0'
 pod 'JSDecoupledAppDelegate', '1.0.1'
 pod 'CocoaLumberjack', '1.8.1'
