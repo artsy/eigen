@@ -1,11 +1,3 @@
-//
-//  ARArtworkTitleLabelTests.m
-//  Artsy
-//
-//  Created by Laura Brown on 3/31/15.
-//  Copyright (c) 2015 Artsy. All rights reserved.
-//
-
 #import "ARCustomEigenLabels.h"
 
 SpecBegin(ARArtworkTitleLabel)
