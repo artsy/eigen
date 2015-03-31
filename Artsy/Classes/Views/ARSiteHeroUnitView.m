@@ -61,8 +61,10 @@ static CGFloat ARHeroUnitDescriptionFont;
     ORStackView *textViewsContainer = [[ORStackView alloc] init];
     textViewsContainer.bottomMarginHeight = 0;
     [self addSubview:textViewsContainer];
-    [textViewsContainer alignLeadingEdgeWithView:self predicate:NSStringWithFormat(@"%f", ARHeroUnitSideMargin)];
-    [textViewsContainer alignTrailingEdgeWithView:self predicate:NSStringWithFormat(@"-%f", ARHeroUnitSideMargin)];
+    CGFloat leftMarginMultiplier = _alignment == ARHeroUnitAlignmentLeft ? 1 : 1.5;
+    CGFloat rightMarginMultiplier = _alignment == ARHeroUnitAlignmentLeft ? 1.5 : 1;
+    [textViewsContainer alignLeadingEdgeWithView:self predicate:NSStringWithFormat(@"%f", ARHeroUnitSideMargin * leftMarginMultiplier)];
+    [textViewsContainer alignTrailingEdgeWithView:self predicate:NSStringWithFormat(@"-%f", ARHeroUnitSideMargin * rightMarginMultiplier)];
 
     UILabel *headingLabel = [self createHeadingLabelWithText:unit.heading];
     UIView *titleView;
@@ -140,11 +142,8 @@ static CGFloat ARHeroUnitDescriptionFont;
     @weakify(titleImageView);
     [titleImageView ar_setImageWithURL:titleImageURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             @strongify(titleImageView);
-            titleImageView.image = [UIImage imageWithCGImage:image.CGImage scale:2.48 orientation:image.imageOrientation];
+            titleImageView.image = [UIImage imageWithCGImage:image.CGImage scale:2.58 orientation:image.imageOrientation];
     }];
-    titleImageView.image = [UIImage imageWithCGImage:[titleImageView.image CGImage]
-        scale:(titleImageView.image.scale * 1.25)
-        orientation:(titleImageView.image.imageOrientation)];
     if (self.alignment == ARHeroUnitAlignmentRight) {
         titleImageView.contentMode = UIViewContentModeRight;
     } else {

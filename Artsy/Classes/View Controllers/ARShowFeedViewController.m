@@ -286,6 +286,10 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     UIEdgeInsets insets = self.tableView.contentInset;
     insets.top = 20 + self.heroUnitVC.preferredContentSize.height;
     self.tableView.contentInset = insets;
+
+    CGPoint offset = self.tableView.contentOffset;
+    offset.y = -insets.top;
+    self.tableView.contentOffset = offset;
 }
 
 - (void)viewDidAppear:(BOOL)animated
