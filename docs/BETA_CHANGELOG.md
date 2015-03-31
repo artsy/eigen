@@ -6,6 +6,7 @@
 * Show the ‘YOU’ tab after tapping it and signing-in - alloy
 * Maintain shows and magazine view hierarchies when navigating to other tabs - alloy
 * Logout and switching servers now completely exits app - 1aurabrown
+* fix the formatting of title strings when title is absent but date is present - 1aurabrown
 
 ## 2015.03.31
 
