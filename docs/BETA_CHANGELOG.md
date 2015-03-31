@@ -1,5 +1,7 @@
 ## 2015.03.31
 
+* Show the ‘YOU’ tab after tapping it and signing-in - alloy
+* Maintain shows and magazine view hierarchies when navigating to other tabs - alloy
 * Bump minimal iOS version to 7.1 to fix a UICollectionView related crash - alloy
 * Fixes problem displaying map button on artworks in fairs with no map - ashfurrow
 * Update ISO8601DateFormatter to be thread safe - alloy
