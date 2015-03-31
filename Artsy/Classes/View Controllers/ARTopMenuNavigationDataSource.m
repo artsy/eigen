@@ -77,8 +77,11 @@
 
 - (ARNavigationController *)favoritesNavigationController
 {
-    // Make a new one each time the favorites tab is selected
-
+    // Make a new one each time the favorites tab is selected, so that it presents up-to-date data.
+    //
+    // According to Laura, the existing instance was kept alive in the past and updated whenever new favourite data
+    // became available, but it was removed because of some crashes. This likely had to do with
+    // https://github.com/artsy/eigen/issues/287#issuecomment-88036710
     ARFavoritesViewController *favoritesViewController = [[ARFavoritesViewController alloc] init];
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
 }
