@@ -1,5 +1,8 @@
 ## 2015.04.01
 
+* Update the display of show header images to fit instead of fill - 1aurabrown
+* Ensure useStaging default is properly set when switching between servers - 1aurabrown
+* Update Hero Unit margins - 1aurabrown
 * Show the ‘YOU’ tab after tapping it and signing-in - alloy
 * Maintain shows and magazine view hierarchies when navigating to other tabs - alloy
 * Logout and switching servers now completely exits app - 1aurabrown
@@ -12,9 +15,6 @@
 * Added hooks for the share buttons in articles - orta
 * Nullify scrollview delegate of artview after all to ensure it can never crash again - alloy
 * Ensure navigation controllers properly cleanup and can’t lead to crashes - alloy
-* Update the display of show header images to fit instead of fill - 1aurabrown
-* Ensure useStaging default is properly set when switching between servers - 1aurabrown
-* Update Hero Unit margins - 1aurabrown
 
 ## 2015.03.28
 
