@@ -24,7 +24,7 @@ describe(@"caches", ^{
 
 describe(@"logged out user documents folder", ^{
     beforeEach(^{
-        [[ARUserManager sharedManager] logout];
+        [ARUserManager clearUserData];
     });
 
     it(@"userDocumentsFolder", ^{

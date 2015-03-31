@@ -448,22 +448,44 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     }
 }
 
-- (void)logout
++ (void)logout
 {
-    [self deleteUserData];
+    [self clearUserData];
+    exit(0);
+}
+
++ (void)logoutAndSetUseStaging:(BOOL)useStaging
+{
+    [self.class clearUserDataAndSetUseStaging:@(useStaging)];
+    exit(0);
+}
+
++ (void)clearUserData
+{
+    id useStaging = [[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault];
+    [self.class clearUserDataAndSetUseStaging:useStaging];
+}
+
+// This takes `id` instead of `BOOL` because if you call this method from `clearUserData` and
+// `ARUseStagingDefault` was not previously set, we don't want to explicitly set it to `0` or `NO`.
+// If the value passed is `nil`, we will leave `ARUseStagingDefault` unset after clearing all user defaults.
++ (void)clearUserDataAndSetUseStaging:(id)useStaging
+{
+    ARUserManager *sharedManager = [self.class sharedManager];
+
+    [sharedManager deleteUserData];
+    [ARDefaults resetDefaults];
 
     [UICKeyChainStore removeItemForKey:AROAuthTokenDefault];
     [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
 
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:AROAuthTokenExpiryDateDefault];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ARXAppTokenExpiryDateDefault];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ARUserIdentifierDefault];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
+    [sharedManager deleteHTTPCookies];
     [ARRouter setAuthToken:nil];
-    [self deleteHTTPCookies];
+    sharedManager.currentUser = nil;
 
-    self.currentUser = nil;
+    if (useStaging != nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
+    }
 }
 
 - (void)deleteHTTPCookies

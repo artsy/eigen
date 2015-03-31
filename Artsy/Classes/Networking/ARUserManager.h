@@ -3,6 +3,9 @@
 @interface ARUserManager : NSObject
 
 + (ARUserManager *)sharedManager;
++ (void)logout;
++ (void)logoutAndSetUseStaging:(BOOL)useStaging;
++ (void)clearUserData;
 
 + (void)identifyAnalyticsUser;
 
@@ -19,7 +22,6 @@
 - (BOOL)hasValidAuthenticationToken;
 - (BOOL)hasValidXAppToken;
 
-- (void)logout;
 
 - (void)startTrial:(void(^)())callback failure:(void (^)(NSError *error))failure;
 

@@ -19,7 +19,7 @@ beforeEach(^{
 });
 
 afterEach(^{
-    [[ARUserManager sharedManager] logout];
+    [ARUserManager clearUserData];
     [OHHTTPStubs removeAllStubs];
 });
 

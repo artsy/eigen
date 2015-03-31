@@ -20,7 +20,7 @@
 SpecBegin(ARLoginViewController)
 
 beforeEach(^{
-    [[ARUserManager sharedManager] logout];
+    [ARUserManager clearUserData];
 });
 
 afterEach(^{
