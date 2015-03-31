@@ -56,7 +56,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     if (self.imagePageViewController.images.count == 0) { return 0; }
 
     if ([UIDevice isPhone]) {
-        return 213;
+        return 250;
     } else {
         return UIInterfaceOrientationIsPortrait(interfaceOrientation) ? 413 : 511;
     }
