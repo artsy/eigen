@@ -123,7 +123,7 @@
 
 - (NSInteger)numberOfViewControllersForTabContentView:(ARTabContentView *)tabContentView
 {
-    return 4;
+    return 6;
 }
 
 @end
