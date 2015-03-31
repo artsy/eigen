@@ -1,6 +1,7 @@
 ## Next
 
 * Pre-caches hero unit images — @ashfurrow
+* Fixes problem displaying map button on artworks in fairs with no map — @ashfurrow
 
 ## 1.7.1 (06/03/2015)
 
