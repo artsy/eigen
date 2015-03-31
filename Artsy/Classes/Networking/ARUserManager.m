@@ -485,6 +485,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
     if (useStaging != nil) {
         [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
