@@ -1,7 +1,11 @@
-## 2015.03.31
+## 2015.04.01
 
 * Show the ‘YOU’ tab after tapping it and signing-in - alloy
 * Maintain shows and magazine view hierarchies when navigating to other tabs - alloy
+* Logout and switching servers now completely exits app - 1aurabrown
+
+## 2015.03.31
+
 * Bump minimal iOS version to 7.1 to fix a UICollectionView related crash - alloy
 * Fixes problem displaying map button on artworks in fairs with no map - ashfurrow
 * Update ISO8601DateFormatter to be thread safe - alloy
@@ -20,7 +24,6 @@
 * Fix a crash caused by the assumption that an artwork will always have a artist - alloy
 * Browse renamed to Explore - 1aurabrown
 * Ensure XAPP token is fetched before pre-loading browse and hero units - 1aurabrown
-* Logout and switching servers now completely exits app - 1aurabrown
 
 ## 2015.03.20
 
