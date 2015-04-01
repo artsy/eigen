@@ -27,6 +27,8 @@
 #import "AREndOfLineInternalMobileWebViewController.h"
 #import "ARDefaults+SiteFeatures.h"
 
+#import <InterAppCommunication/IACManager.h>
+
 #if ADMIN_MENU_ENABLED
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <VCRURLConnection/VCR.h>
@@ -95,6 +97,9 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
     [FBSettings setDefaultAppID:[ArtsyKeys new].artsyFacebookAppID];
+    IACManager *sharedManager = [IACManager sharedManager];
+    sharedManager.callbackURLScheme = ARArtsyXCallbackUrlScheme;
+    [self setupXCallbackUrlManager];
 
     if (ARIsRunningInDemoMode) {
 
@@ -140,6 +145,23 @@ static ARAppDelegate *_sharedInstance = nil;
     [self.viewController presentViewController:onboardVC animated:NO completion:nil];
 }
 
+- (void)setupXCallbackUrlManager
+{
+    [[IACManager sharedManager] handleAction:@"open" withBlock:^(NSDictionary *inputParameters, IACSuccessBlock success, IACFailureBlock failure) {
+        NSString *url = inputParameters[@"url"];
+        if (!url) {
+            failure();
+            return;
+        }
+
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:url];
+        // Do things to set up back button.
+        if (viewController) {
+            [self.viewControllerDelegate textView:self shouldOpenViewController:viewController];
+        }
+    }];
+}
+
 - (void)setupAdminTools
 {
 #if ADMIN_MENU_ENABLED
@@ -181,8 +203,9 @@ static ARAppDelegate *_sharedInstance = nil;
     _referralURLRepresentation = sourceApplication;
     _landingURLRepresentation = [url absoluteString];
 
-    // Twitter SSO
     NSString *fbScheme = [@"fb" stringByAppendingString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"]];
+
+    // Twitter SSO
     if ([[url absoluteString] hasPrefix:ARTwitterCallbackPath]) {
         NSNotification *notification = nil;
         notification = [NSNotification notificationWithName:kAFApplicationLaunchedWithURLNotification
@@ -215,6 +238,8 @@ static ARAppDelegate *_sharedInstance = nil;
                 [[ARTopMenuViewController sharedController] pushViewController:viewController];
             }
         }
+    } else if ([[url scheme] isEqualToString:[IACManager sharedManager].callbackURLScheme]) {
+        [[IACManager sharedManager] handleOpenURL:url];
     } else {
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:url];
         if (viewController) {

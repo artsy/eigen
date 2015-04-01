@@ -48,6 +48,7 @@ PODS:
   - FODFormKit (0.1.1)
   - FXBlurView (1.6.1)
   - HockeySDK (3.5.0)
+  - InterAppCommunication (1.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (HEAD based on 0.7)
   - JLRoutes (1.5)
@@ -122,6 +123,7 @@ DEPENDENCIES:
   - FODFormKit (from `https://github.com/1aurabrown/FODFormKit.git`)
   - FXBlurView (= 1.6.1)
   - HockeySDK (= 3.5.0)
+  - InterAppCommunication
   - iRate (= 1.10.2)
   - ISO8601DateFormatter (HEAD)
   - JLRoutes (= 1.5)
@@ -220,6 +222,7 @@ SPEC CHECKSUMS:
   FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   HockeySDK: 9c50c596a51a015a8e5073252340a36d3047a126
+  InterAppCommunication: 3239945b30e9dc5f91ef8be057fbcae4e3398e5c
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
   JLRoutes: 5a6096ec514f105fc906f9334c90d8276fe13687
