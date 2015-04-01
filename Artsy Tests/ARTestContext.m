@@ -24,8 +24,12 @@ static OCMockObject *ARPartialScreenMock;
         case ARDeviceTypePhone5:
             size = (CGSize){ 320, 568 };
             break;
+
+        case ARDeviceTypePhone6:
+            size = (CGSize){ 375, 667 };
+            break;
     }
-    
+
     ARDeviceMock = [OCMockObject niceMockForClass:UIDevice.class];
     [[[ARDeviceMock stub] andReturnValue:OCMOCK_VALUE((BOOL){ !isClassedAsPhone })] isPad];
     [[[ARDeviceMock stub] andReturnValue:OCMOCK_VALUE((BOOL){ isClassedAsPhone })] isPhone];

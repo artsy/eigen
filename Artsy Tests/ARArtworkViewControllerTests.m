@@ -321,7 +321,7 @@ describe(@"at a closed auction", ^{
     it(@"displays artwork on iPhone", ^{
         waitUntil(^(DoneCallback done) {
 
-            [ARTestContext stubDevice:ARDeviceTypePhone4];
+            [ARTestContext stubDevice:ARDeviceTypePhone6];
             window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             vc.shouldAnimate = NO;
