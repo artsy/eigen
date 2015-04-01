@@ -1,3 +1,7 @@
+## 2015.04.01.1642
+
+* Fix a crash when swiping through artworks that have Markdown content - alloy
+
 ## 2015.04.01
 
 * Update the display of show header images to fit instead of fill - 1aurabrown
