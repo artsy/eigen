@@ -28,16 +28,18 @@
         return;
     }
 
-
-    NSError *error = nil;
-    NSString *HTML = [MMMarkdown HTMLStringWithMarkdown:string error:&error];
-    if (error) {
-        ARErrorLog(@"Error Parsing markdown! %@", string);
-        self.text = @"Error Parsing markdown";
-        return;
-    }
-
-    [self setHTMLString:HTML];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSError *error = nil;
+        NSString *HTML = [MMMarkdown HTMLStringWithMarkdown:string error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error) {
+                ARErrorLog(@"Error Parsing markdown! %@", string);
+                self.text = @"Error Parsing markdown";
+            } else {
+                [self setHTMLString:HTML];
+            }
+        });
+    });
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
@@ -53,30 +55,36 @@
 
 - (void)setHTMLString:(NSString *)HTMLstring
 {
-    NSAttributedString *string = [self.class artsyBodyTextAttributedStringFromHTML:HTMLstring withFont:self.font];
+    NSAssert([NSThread isMainThread], @"HTML content must be assigned from the main thread.");
 
-    // SCREW IT MEGAHACK to get paragraph spacing right.
-    NSMutableAttributedString *mutableCopy = string.mutableCopy;
+    // This *MUST* be performed on the next runloop iteration, otherwise the HTML parsing of NSAttributedString will
+    // crash. For more information see https://github.com/artsy/eigen/issues/348.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSAttributedString *string = [self.class artsyBodyTextAttributedStringFromHTML:HTMLstring withFont:self.font];
 
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        // SCREW IT MEGAHACK to get paragraph spacing right.
+        NSMutableAttributedString *mutableCopy = string.mutableCopy;
 
-    if (self.expectsSingleLine) {
-        [style setParagraphSpacing:-1 * self.font.pointSize];
-    } else {
-        [style setParagraphSpacing:0];
-    }
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
 
-    [style setLineSpacing:5];
+        if (self.expectsSingleLine) {
+            [style setParagraphSpacing:-1 * self.font.pointSize];
+        } else {
+            [style setParagraphSpacing:0];
+        }
 
-    [mutableCopy addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, mutableCopy.length)];
+        [style setLineSpacing:5];
 
-    if (self.plainLinks) {
-        [mutableCopy addAttribute:NSUnderlineStyleAttributeName value:@0 range:NSMakeRange(0, mutableCopy.length)];
-    }
+        [mutableCopy addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, mutableCopy.length)];
 
-    self.attributedText = mutableCopy;
+        if (self.plainLinks) {
+            [mutableCopy addAttribute:NSUnderlineStyleAttributeName value:@0 range:NSMakeRange(0, mutableCopy.length)];
+        }
 
-    [self.superview setNeedsUpdateConstraints];
+        self.attributedText = mutableCopy;
+
+        [self.superview setNeedsUpdateConstraints];
+    });
 }
 
 + (NSAttributedString *)artsyBodyTextAttributedStringFromHTML:(NSString *)HTML withFont:(UIFont *)font
@@ -122,7 +130,7 @@
 
     NSError *error = nil;
     NSString *formatString = [[self _cssStringFromAttributedStringAttributes:textParams] stringByAppendingFormat:@"%@</body>", HTML];
-    NSData *stringData = [formatString dataUsingEncoding:NSUnicodeStringEncoding] ;
+    NSData *stringData = [formatString dataUsingEncoding:NSUnicodeStringEncoding];
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:stringData options:importParams documentAttributes:NULL error:&error];
     if (error) {
         ARErrorLog(@"Error creating NSAttributedString from HTML %@", error.localizedDescription);
