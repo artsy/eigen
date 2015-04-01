@@ -14,7 +14,8 @@
     }];
 
     if (date.length > 0) {
-        NSString *formattedTitleDate = [@", " stringByAppendingString:date];
+        NSString *separator = (artworkTitle.length > 0) ? @", " : @"";
+        NSString *formattedTitleDate = [separator stringByAppendingString:date];
         NSAttributedString *andDate = [[NSAttributedString alloc] initWithString:formattedTitleDate attributes:@{
           NSFontAttributeName : [UIFont serifFontWithSize:self.font.pointSize]
         }];

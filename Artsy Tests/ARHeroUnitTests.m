@@ -209,4 +209,65 @@ describe(@"with no hero units", ^{
 });
 
 
+describe(@"alignment on iPad", ^{
+    describe(@"align left", ^{
+        before(^{
+            [ARTestContext stubDevice:ARDeviceTypePad];
+            heroUnits = @[[SiteHeroUnit modelWithJSON:@{
+                @"id": @"art-basel1",
+                @"name": @"Art Basel1",
+                @"heading": @"Exclusive Preview",
+                @"mobile_description": @"Discover some artworks.",
+                @"mobile_title": @"Art Basel Art Basel Art Basel Art Basel Art Basel Art Basel Art Basel Art Basel",
+                @"display_on_mobile": @true,
+                @"type":@"left",
+                @"position": @1,
+                @"link":@"/art-basel1",
+                @"link_text":@"Explore",
+                @"credit_line":@"Artsy artsy artsy"
+            }]];
+        });
+
+        after(^{
+            [ARTestContext stopStubbing];
+        });
+
+        it(@"looks correct", ^{
+            sharedBefore();
+            [heroVC updateViewWithHeroUnits:heroUnits];
+            expect(heroVC).to.haveValidSnapshot();
+        });
+    });
+
+    describe(@"align right", ^{
+        before(^{
+            [ARTestContext stubDevice:ARDeviceTypePad];
+            heroUnits = @[[SiteHeroUnit modelWithJSON:@{
+                @"id": @"art-basel1",
+                @"name": @"Art Basel1",
+                @"heading": @"Exclusive Preview",
+                @"mobile_description": @"Discover some artworks.",
+                @"mobile_title": @"Art Basel Art Basel Art Basel Art Basel Art Basel Art Basel Art Basel Art Basel",
+                @"display_on_mobile": @true,
+                @"type":@"right",
+                @"position": @1,
+                @"link":@"/art-basel1",
+                @"link_text":@"Explore",
+                @"credit_line":@"Artsy artsy artsy"
+            }]];
+        });
+
+        after(^{
+            [ARTestContext stopStubbing];
+        });
+
+        it(@"looks correct", ^{
+            sharedBefore();
+            [heroVC updateViewWithHeroUnits:heroUnits];
+            expect(heroVC).to.haveValidSnapshot();
+        });
+    });
+});
+
+
 SpecEnd

@@ -1,6 +1,7 @@
 #import "ARInternalMobileWebViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARRouter.h"
+#import "ARInternalShareValidator.h"
 
 @interface TSMiniWebBrowser (Private)
 @property(nonatomic, readonly, strong) UIWebView *webView;
@@ -10,6 +11,8 @@
 
 @interface ARInternalMobileWebViewController() <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
 @property (nonatomic, readonly, assign) BOOL loaded;
+@property (nonatomic, readonly, strong) ARInternalShareValidator *shareValidator;
+
 @end
 
 @implementation ARInternalMobileWebViewController
@@ -50,6 +53,7 @@
     self.showToolBar = NO;
     self.backgroundColor = [UIColor whiteColor];
     self.opaque = NO;
+    _shareValidator = [[ARInternalShareValidator alloc] init];
 
     ARInfoLog(@"Initialized with URL %@", url);
     return self;
@@ -99,11 +103,18 @@
     ARInfoLog(@"Martsy URL %@", request.URL);
 
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
-        if (viewController) {
-            [self.navigationController pushViewController:viewController animated:YES];
+        if ([self.shareValidator isSocialSharingURL:request.URL]) {
+            [self.shareValidator shareURL:request.URL inView:self.view];
             return NO;
+        } else {
+
+            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
+            if (viewController) {
+                [self.navigationController pushViewController:viewController animated:YES];
+                return NO;
+            }
         }
+
     } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
         // hijack AJAX requests
         if ([User isTrialUser]) {
@@ -116,6 +127,7 @@
 }
 
 // A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
+
 - (void)reload
 {
     [self.webView loadRequest:[self requestWithURL:self.currentURL]];
@@ -125,5 +137,6 @@
 {
     return [ARRouter requestForURL:url];
 }
+
 
 @end

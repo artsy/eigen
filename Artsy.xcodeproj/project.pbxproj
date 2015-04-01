@@ -360,7 +360,6 @@
 		609F97D01AC0F26A0079FE21 /* Artsy WatchKit App.app in Resources */ = {isa = PBXBuildFile; fileRef = 609F97CF1AC0F26A0079FE21 /* Artsy WatchKit App.app */; };
 		609F97D81AC0F26A0079FE21 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 609F97D61AC0F26A0079FE21 /* Interface.storyboard */; };
 		609F97DA1AC0F26A0079FE21 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 609F97D91AC0F26A0079FE21 /* Images.xcassets */; };
-		609F97DD1AC0F26A0079FE21 /* Artsy WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 609F97BD1AC0F2690079FE21 /* Artsy WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		609F97F41AC0F2EF0079FE21 /* ARWatchLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97EB1AC0F2EF0079FE21 /* ARWatchLoadingViewController.m */; };
 		609F97F51AC0F2EF0079FE21 /* ARWatchOpeningInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97ED1AC0F2EF0079FE21 /* ARWatchOpeningInterfaceController.m */; };
 		609F97F61AC0F2EF0079FE21 /* ARWatchNoResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97EF1AC0F2EF0079FE21 /* ARWatchNoResultsViewController.m */; };
@@ -409,6 +408,10 @@
 		609F98611AC106030079FE21 /* WatchBiddingDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97FF1AC0F3450079FE21 /* WatchBiddingDetails.m */; };
 		60A0AD4A1797FD2E00E976B7 /* ARThemedFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A0AD491797FD2E00E976B7 /* ARThemedFactory.m */; };
 		60A224FC17CE040B00233CA1 /* AROnboardingTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */; };
+		60A309A21AC98BF3000783C1 /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A11AC98BF3000783C1 /* Article.m */; };
+		60A309A81AC999DE000783C1 /* ARInternalShareValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */; };
+		60A309AA1AC99B47000783C1 /* ARInternalShareValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */; };
+		60A309AD1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309AC1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m */; };
 		60A49F601676559300B9B95D /* ARNetworkConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A49F5F1676559300B9B95D /* ARNetworkConstants.m */; };
 		60A612B8189673F4008FC19D /* ARGeneArtworksNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A612B7189673F4008FC19D /* ARGeneArtworksNetworkModel.m */; };
 		60AEC84716E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AEC84616E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m */; };
@@ -480,6 +483,7 @@
 		CBB25B3C17F36DDE00C31446 /* ARFeaturedArtworksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB25B3B17F36DDE00C31446 /* ARFeaturedArtworksViewController.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
 		CBE939F817FA336C00AD7DDD /* ARArtworkBlurbView.m in Sources */ = {isa = PBXBuildFile; fileRef = 601F029417F336AB00EB3E83 /* ARArtworkBlurbView.m */; };
+		D35D9D5C1ACB4FF800E67A1D /* ARArtworkTitleLabelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D35D9D5B1ACB4FF800E67A1D /* ARArtworkTitleLabelTests.m */; };
 		D37E4CFB1A92AC5A00023E2C /* ARAnnotatedMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = D37E4CFA1A92AC5A00023E2C /* ARAnnotatedMapView.m */; };
 		D37E4CFD1A92B29F00023E2C /* ARAnnotatedMapViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D37E4CFC1A92B29F00023E2C /* ARAnnotatedMapViewTests.m */; };
 		D39E874F1AB0F97A006B5BE9 /* ARBrowseNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D39E874E1AB0F97A006B5BE9 /* ARBrowseNetworkModel.m */; };
@@ -576,13 +580,6 @@
 			remoteGlobalIDString = 609F97CE1AC0F26A0079FE21;
 			remoteInfo = "Artsy WatchKit App";
 		};
-		609F97DB1AC0F26A0079FE21 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 609F97BC1AC0F2690079FE21;
-			remoteInfo = "Artsy WatchKit Extension";
-		};
 		B3ECE8341819D1E7009F5C5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
@@ -591,20 +588,6 @@
 			remoteInfo = Artsy;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		609F97E81AC0F26A0079FE21 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				609F97DD1AC0F26A0079FE21 /* Artsy WatchKit Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		062C201F16DD76C90095A7EC /* ARZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARZoomView.h; sourceTree = "<group>"; };
@@ -1311,6 +1294,13 @@
 		60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingTransition.m; sourceTree = "<group>"; };
 		60A224FD17CE0E1B00233CA1 /* AROnboardingViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AROnboardingViewControllers.h; sourceTree = "<group>"; };
 		60A3099C1AC8AD6A000783C1 /* Artsy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Artsy.entitlements; path = Artsy/Artsy.entitlements; sourceTree = SOURCE_ROOT; };
+		60A309A01AC98BF3000783C1 /* Article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Article.h; sourceTree = "<group>"; };
+		60A309A11AC98BF3000783C1 /* Article.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Article.m; sourceTree = "<group>"; };
+		60A309A61AC999DE000783C1 /* ARInternalShareValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalShareValidator.h; sourceTree = "<group>"; };
+		60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalShareValidator.m; sourceTree = "<group>"; };
+		60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalShareValidatorTests.m; sourceTree = "<group>"; };
+		60A309AB1AC9A7C8000783C1 /* NSString+StringBetweenStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringBetweenStrings.h"; sourceTree = "<group>"; };
+		60A309AC1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+StringBetweenStrings.m"; sourceTree = "<group>"; };
 		60A49F5E1676559200B9B95D /* ARNetworkConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNetworkConstants.h; sourceTree = "<group>"; };
 		60A49F5F1676559300B9B95D /* ARNetworkConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNetworkConstants.m; sourceTree = "<group>"; };
 		60A612B6189673F4008FC19D /* ARGeneArtworksNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeneArtworksNetworkModel.h; sourceTree = "<group>"; };
@@ -1452,6 +1442,7 @@
 		CBB25B3B17F36DDE00C31446 /* ARFeaturedArtworksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeaturedArtworksViewController.m; sourceTree = "<group>"; };
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
 		CBB469CF181F1F1200B5692B /* Bid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bid.m; sourceTree = "<group>"; };
+		D35D9D5B1ACB4FF800E67A1D /* ARArtworkTitleLabelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkTitleLabelTests.m; sourceTree = "<group>"; };
 		D37E4CF91A92AC5A00023E2C /* ARAnnotatedMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnnotatedMapView.h; sourceTree = "<group>"; };
 		D37E4CFA1A92AC5A00023E2C /* ARAnnotatedMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnnotatedMapView.m; sourceTree = "<group>"; };
 		D37E4CFC1A92B29F00023E2C /* ARAnnotatedMapViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnnotatedMapViewTests.m; sourceTree = "<group>"; };
@@ -1771,6 +1762,8 @@
 		342F9C2C3D87889B79459CED /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				60A309AB1AC9A7C8000783C1 /* NSString+StringBetweenStrings.h */,
+				60A309AC1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m */,
 				E619969919B9094F00DB273C /* Swizzles */,
 				342F97E1E35CFFE9767F07CD /* NSDate+DateRange.h */,
 				342F9175329F0389E644C194 /* NSDate+DateRange.m */,
@@ -2186,6 +2179,7 @@
 			isa = PBXGroup;
 			children = (
 				3C6AEE26188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m */,
+				60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */,
 			);
 			name = "Web Browsing";
 			sourceTree = "<group>";
@@ -2203,6 +2197,8 @@
 			children = (
 				3CCCC89918996DD4008015DD /* Post.h */,
 				3CCCC89A18996DD4008015DD /* Post.m */,
+				60A309A01AC98BF3000783C1 /* Article.h */,
+				60A309A11AC98BF3000783C1 /* Article.m */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -3475,6 +3471,8 @@
 				60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */,
 				60647C731A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.h */,
 				60647C741A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m */,
+				60A309A61AC999DE000783C1 /* ARInternalShareValidator.h */,
+				60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */,
 			);
 			name = "Web Browsing";
 			sourceTree = "<group>";
@@ -3634,6 +3632,7 @@
 				3CD3679E189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m */,
 				5ECFA8E91907E9AB000B92EA /* ARSwitchViewTests.m */,
 				342F9316E861BD2C6EBFA31A /* ORStackViewArtsyCategoriesTests.m */,
+				D35D9D5B1ACB4FF800E67A1D /* ARArtworkTitleLabelTests.m */,
 			);
 			name = "View Tests";
 			sourceTree = "<group>";
@@ -3839,12 +3838,10 @@
 				49BA7DFC1655ABE600C06572 /* Frameworks */,
 				49BA7DFD1655ABE600C06572 /* Resources */,
 				1A2FC4ED23AE843DFE3A8B1B /* Copy Pods Resources */,
-				609F97E81AC0F26A0079FE21 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				609F97DC1AC0F26A0079FE21 /* PBXTargetDependency */,
 			);
 			name = Artsy;
 			productName = Artsy;
@@ -4224,6 +4221,7 @@
 				49A77239165ADB9400BC6FD3 /* ARRepostFeedItem.m in Sources */,
 				608B709917D4F6520088A56C /* ARSearchTableViewCell.m in Sources */,
 				49A7723A165ADB9400BC6FD3 /* ARSavedArtworkSetFeedItem.m in Sources */,
+				60A309AD1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m in Sources */,
 				3CEE0B6518A16F7D00FEA6E6 /* ArtsyAPI+Artists.m in Sources */,
 				607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */,
 				3C7880BC18B9081C00595E30 /* ARNotificationView.m in Sources */,
@@ -4351,6 +4349,7 @@
 				60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */,
 				3CD3679C189AC4F000285DF7 /* ARAspectRatioImageView.m in Sources */,
 				607E2E8417C8CF6B00396120 /* ARArtworkPreviewActionsView.m in Sources */,
+				60A309A81AC999DE000783C1 /* ARInternalShareValidator.m in Sources */,
 				B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */,
 				6037442516D4227500AE7788 /* ARSwitchBoard.m in Sources */,
 				3C4AE9A419096CED009C0E8B /* ARFairMapAnnotationCallOutView.m in Sources */,
@@ -4450,6 +4449,7 @@
 				E667F12918EC82AB00503F50 /* ARLogger.m in Sources */,
 				3C94B2DA192BF109008D04DF /* ARFairMapPreview.m in Sources */,
 				E6C13AC41A23AB160050AB53 /* ARPersonalizeWebViewController.m in Sources */,
+				60A309A21AC98BF3000783C1 /* Article.m in Sources */,
 				342F9F54666BFDFF200E31AE /* UIView+HitTestExpansion.m in Sources */,
 				342F9BBE60676CEC2AD66C5A /* NSString+StringCase.m in Sources */,
 				342F9CEA884D36A98BE6BA96 /* NSString+StringSize.m in Sources */,
@@ -4567,6 +4567,7 @@
 				60327DEC198933610075B399 /* ARTopMenuViewControllerSpec.m in Sources */,
 				3CA37E7C1910217500B06E81 /* ARHeartButtonTests.m in Sources */,
 				3CEE0B6A18A18CDA00FEA6E6 /* ProfileTests.m in Sources */,
+				60A309AA1AC99B47000783C1 /* ARInternalShareValidatorTests.m in Sources */,
 				E65BB51F1A3FB552004C4DB4 /* ARAppSearchViewControllerSpec.m in Sources */,
 				3CE7F34418A99E6D002BA993 /* SiteHeroUnitTests.m in Sources */,
 				5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */,
@@ -4596,6 +4597,7 @@
 				E6718310194A3D1E001A5566 /* ARHeroUnitTests.m in Sources */,
 				3CAED17C188026AC00840608 /* ARUserManagerTests.m in Sources */,
 				3C5C7E4018970E8B003823BB /* UIApplicationStateEnumTests.m in Sources */,
+				D35D9D5C1ACB4FF800E67A1D /* ARArtworkTitleLabelTests.m in Sources */,
 				5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */,
 				60647C7C1A951F2A00A45247 /* ARFairPopupViewControllerTests.m in Sources */,
 				3CFBE33618C5848900C781D0 /* ARFileUtilsTests.m in Sources */,
@@ -4646,11 +4648,6 @@
 			isa = PBXTargetDependency;
 			target = 609F97CE1AC0F26A0079FE21 /* Artsy WatchKit App */;
 			targetProxy = 609F97D11AC0F26A0079FE21 /* PBXContainerItemProxy */;
-		};
-		609F97DC1AC0F26A0079FE21 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 609F97BC1AC0F2690079FE21 /* Artsy WatchKit Extension */;
-			targetProxy = 609F97DB1AC0F26A0079FE21 /* PBXContainerItemProxy */;
 		};
 		B3ECE8351819D1E7009F5C5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4711,7 +4708,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DAR_SHOW_ALL_DEBUG=1";
 				PROVISIONING_PROFILE = "";
@@ -4737,7 +4734,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "014f37c9-e744-4bf5-a4f1-ab28d3755805";
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -4791,7 +4788,6 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Artsy/App/Artsy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -4846,7 +4842,6 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Artsy/App/Artsy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -5201,7 +5196,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "a947500d-6376-41ca-b4f7-12ef34f2459f";
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -5257,7 +5252,6 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Artsy/App/Artsy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -5328,7 +5322,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "049e1a3a-52f3-41da-b341-ae36edc7fe17";
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -5383,7 +5377,6 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Artsy/App/Artsy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;

@@ -251,10 +251,19 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [topMenuViewController ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
+#pragma mark - Tab selection flow handling
+
 - (void)returnToPreviousTab
 {
     [self.tabContentView returnToPreviousViewIndex];
 }
+
+- (void)userDidSignUp
+{
+    [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFavorites animated:NO];
+}
+
+#pragma mark - ARTabViewDelegate
 
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeSelectedIndex:(NSInteger)index
 {
@@ -272,7 +281,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
     if (index == ARTopTabControllerIndexFavorites && [User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextShowingFavorites fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextShowingFavorites fromTarget:self selector:@selector(userDidSignUp)];
         return NO;
     }
     if (index == _selectedTabIndex) {

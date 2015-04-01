@@ -113,7 +113,7 @@ describe(@"authenticated", ^{
     });
     
     afterEach(^{
-        [[ARUserManager sharedManager] logout];
+        [ARUserManager clearUserData];
     });
     
     it(@"injects an X-Auth-Token header in requests", ^{
@@ -151,7 +151,7 @@ describe(@"authenticated", ^{
 
 describe(@"unauthenticated", ^{
     beforeEach(^{
-        [[ARUserManager sharedManager] logout];
+        [ARUserManager clearUserData];
     });
     
     it(@"doesn't inject an X-Auth-Token header in requests", ^{

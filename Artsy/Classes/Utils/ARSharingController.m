@@ -32,7 +32,7 @@
     return self;
 }
 
-- (void)presentActivityViewControllerFromButton:(UIButton *)button;
+- (void)presentActivityViewControllerFromView:(UIView *)view
 {
     if (ARIsRunningInDemoMode) {
         [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
@@ -58,8 +58,8 @@
         [[ARTopMenuViewController sharedController] presentViewController:activityVC animated:YES completion:nil];
     } else {
         popover = [[UIPopoverController alloc] initWithContentViewController:activityVC];
-        [popover presentPopoverFromRect:button.bounds
-                                 inView:button
+        [popover presentPopoverFromRect:view.bounds
+                                 inView:view
                permittedArrowDirections:UIPopoverArrowDirectionAny
                                animated:YES];
     }
@@ -76,8 +76,12 @@
     //
     // TODO It appears that on iOS 8 the popver is retained by the system? In which case this can be removed.
     if (popover) {
+
         // Extra hack to ensure the button doesn't remain highlighted during this loop.
-        button.highlighted = NO;
+        if ([view isKindOfClass:UIButton.class]) {
+            [(UIButton *)view setHighlighted: NO];
+        }
+
         while (popover != nil) {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
         }

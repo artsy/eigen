@@ -68,7 +68,7 @@ describe(@"logged in", ^{
     });
 
     afterEach(^{
-        [[ARUserManager sharedManager] logout];
+        [ARUserManager clearUserData];
     });
 
     itHasAsyncronousSnapshotsForDevices(@"displays Contact Gallery when seller is a gallery", ^{
@@ -96,7 +96,7 @@ describe(@"logged in", ^{
 describe(@"logged out", ^{
     describe(@"contact information", ^{
         beforeEach(^{
-            [[ARUserManager sharedManager] logout];
+            [ARUserManager clearUserData];
             [ARUserManager sharedManager].trialUserName = @"Trial User";
             [ARUserManager sharedManager].trialUserEmail = @"trial@example.com";
         });
@@ -133,7 +133,7 @@ describe(@"logged out", ^{
         __block Artwork *artwork;
         
         beforeEach(^{
-            [[ARUserManager sharedManager] logout];
+            [ARUserManager clearUserData];
             [ARUserManager sharedManager].trialUserName = @"Trial User";
         });
 
@@ -203,7 +203,7 @@ describe(@"sending", ^{
     __block id userMock;
 
     beforeEach(^{
-        [[ARUserManager sharedManager] logout];
+        [ARUserManager clearUserData];
         [ARUserManager sharedManager].trialUserName = @"Trial User";
         [ARUserManager sharedManager].trialUserEmail = @"trial@example.com";
         userMock = [OCMockObject mockForClass:[User class]];
