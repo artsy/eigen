@@ -1,6 +1,28 @@
-## Next
+## 1.8.0 (01/04/2015)
 
-* Pre-caches hero unit images — @ashfurrow
+* Fix a crash when swiping through artworks that have Markdown content - alloy
+* Fix the formatting of title strings when title is absent but date is present - 1aurabrown
+* Update the display of show header images to fit instead of fill - 1aurabrown
+* Update Hero Unit margins - 1aurabrown
+* Show the ‘YOU’ tab after tapping it and signing-in - alloy
+* Bump minimal iOS version to 7.1 to fix a UICollectionView related crash - alloy
+* Fix problem displaying map button on artworks in fairs with no map - ashfurrow
+* Update ISO8601DateFormatter to be thread safe - alloy
+* Added hooks for the share buttons in articles - orta
+* Nullify scrollview delegate of artview after all to ensure it can never crash again - alloy
+* Ensure navigation controllers properly cleanup and can’t lead to crashes - alloy
+* Ensure web views properly cleanup and can’t lead to crashes - alloy
+* Ensure labels don’t overlap with chevrons - alloy
+* Add shows and magazine to available tabs - alloy
+* Route ‘shows’ natively on iPad - 1aurabrown
+* New Explore view - 1aurabrown
+* Prefetch hero units and browse data - 1aurabrown & ashfurrow
+* Fix broken navigation button layout when rotating on iPad - 1aurabrown
+* Show more related artworks on an artwork view - alloy
+
+## 1.7.2 (29/03/2015)
+
+The same as 1.7.1 but _with_ analytics enabled - 1aurabrown
 
 ## 1.7.1 (06/03/2015)
 

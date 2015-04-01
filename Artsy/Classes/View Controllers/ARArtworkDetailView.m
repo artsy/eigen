@@ -157,7 +157,7 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
         [self addSubview:artistNameLabel withTopMargin:@"0" sideMargin:@"0"];
     }
 
-    if (artwork.title.length) {
+    if (artwork.title.length || artwork.date.length) {
         NSString *topMargin = hasArtist ? @"4" : @"16";
         ARArtworkTitleLabel *titleLabel = [self viewFor:ARDetailArtworkTitle];
         titleLabel.font = [titleLabel.font fontWithSize:16];

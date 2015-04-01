@@ -1,5 +1,6 @@
 #import "ARStandardDateFormatter.h"
 #import "NSDate+DateRange.h"
+#import "PartnerShowCoordinates.h"
 
 static ARStandardDateFormatter *staticDateFormatter;
 
@@ -38,6 +39,7 @@ static ARStandardDateFormatter *staticDateFormatter;
         @keypath(PartnerShow.new, location) : @"location",
         @keypath(PartnerShow.new, locationInFair) : @"fair_location.display",
         @keypath(PartnerShow.new, fairLocation) : @"fair_location",
+        @keypath(PartnerShow.new, coordinates) : @"coordinates",
     };
 }
 
@@ -81,6 +83,10 @@ static ARStandardDateFormatter *staticDateFormatter;
     }];
 }
 
++ (NSValueTransformer *)coordinatesJSONTransformer
+{
+    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:PartnerShowCoordinates.class];
+}
 
 - (NSString *)title
 {
@@ -138,6 +144,16 @@ static ARStandardDateFormatter *staticDateFormatter;
 - (NSUInteger)hash
 {
     return self.showID.hash;
+}
+
+// TODO, this is not correct!
+
+- (NSURL *)smallPreviewImageURL
+{
+    if ([self.imageVersions includes:@"square"]) {
+        return [self imageURLWithFormatName:@"square"];
+    }
+    return [self imageURLWithFormatName:self.imageVersions.first];
 }
 
 - (NSURL *)imageURLWithFormatName:(NSString *)formatName

@@ -23,6 +23,6 @@ extern NSString *const AROnboardingPromptThresholdDefault;
 extern NSString *const ARShowAuctionResultsButtonDefault;
 
 @interface ARDefaults : NSObject
-+ (void)setOnboardingDefaults:(NSArray *)features;
 + (void)setup;
++ (void)resetDefaults;
 @end

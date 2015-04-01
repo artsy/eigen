@@ -3,6 +3,9 @@
 @interface ARUserManager : NSObject
 
 + (ARUserManager *)sharedManager;
++ (void)logout;
++ (void)logoutAndSetUseStaging:(BOOL)useStaging;
++ (void)clearUserData;
 
 + (void)identifyAnalyticsUser;
 
@@ -13,13 +16,14 @@
 @property (nonatomic, strong) NSString *trialUserEmail;
 @property (nonatomic, strong, readonly) NSString *trialUserUUID;
 
+@property (nonatomic, strong) NSString *userAuthenticationToken;
+
 - (void)resetTrialUserUUID;
 
 - (BOOL)hasExistingAccount;
 - (BOOL)hasValidAuthenticationToken;
 - (BOOL)hasValidXAppToken;
 
-- (void)logout;
 
 - (void)startTrial:(void(^)())callback failure:(void (^)(NSError *error))failure;
 

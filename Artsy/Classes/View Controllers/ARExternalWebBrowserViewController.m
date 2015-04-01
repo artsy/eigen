@@ -80,7 +80,7 @@
 
 - (BOOL)shouldAutorotate
 {
-    return NO;
+    return [UIDevice isPad];
 }
 
 - (NSDictionary *)dictionaryForAnalytics

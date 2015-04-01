@@ -48,8 +48,10 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
     ARNavigationTabButton *searchButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *showsButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *magazineButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
 
     [searchButton setImage:[UIImage imageNamed:@"SearchIcon_White"] forState:UIControlStateNormal];
     [searchButton setImage:[UIImage imageNamed:@"SearchIcon_White"] forState:UIControlStateSelected];
@@ -57,10 +59,12 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     searchButton.adjustsImageWhenHighlighted = NO;
 
     [homeButton setTitle:@"HOME" forState:UIControlStateNormal];
+    [showsButton setTitle:@"SHOWS" forState:UIControlStateNormal];
     [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
+    [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
     [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
 
-    NSArray *buttons = @[searchButton, homeButton, browseButton, favoritesButton];
+    NSArray *buttons = @[searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton];
 
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero hostViewController:self delegate:self dataSource:self.navigationDataSource];
     tabContentView.supportSwipeGestures = NO;
@@ -73,15 +77,14 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [tabContentView alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.view];
     [tabContentView constrainWidthToView:self.view predicate:@"0"];
 
-    [self.view addSubview: tabContainer];
+    [self.view addSubview:tabContainer];
     [tabContainer constrainHeight:@(ARSearchMenuButtonDimension).stringValue];
     [tabContainer constrainTopSpaceToView:tabContentView predicate:nil];
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
 
-    [tabContainer addSubview:searchButton];
-    [tabContainer addSubview:homeButton];
-    [tabContainer addSubview:browseButton];
-    [tabContainer addSubview:favoritesButton];
+    for (ARNavigationTabButton *button in buttons) {
+        [tabContainer addSubview:button];
+    }
 
     [searchButton constrainWidth:@(ARSearchMenuButtonDimension).stringValue];
     NSMutableArray *constraintsForButtons = [NSMutableArray array];
@@ -248,10 +251,19 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [topMenuViewController ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
+#pragma mark - Tab selection flow handling
+
 - (void)returnToPreviousTab
 {
     [self.tabContentView returnToPreviousViewIndex];
 }
+
+- (void)userDidSignUp
+{
+    [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFavorites animated:NO];
+}
+
+#pragma mark - ARTabViewDelegate
 
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeSelectedIndex:(NSInteger)index
 {
@@ -269,7 +281,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
     if (index == ARTopTabControllerIndexFavorites && [User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextShowingFavorites fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextShowingFavorites fromTarget:self selector:@selector(userDidSignUp)];
         return NO;
     }
     if (index == _selectedTabIndex) {

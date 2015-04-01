@@ -15,6 +15,20 @@
 
 @implementation ARArtworkViewController
 
+- (void)dealloc;
+{
+    if (self.isViewLoaded) {
+        // See:
+        // * https://github.com/artsy/eigen/issues/103
+        // * https://github.com/artsy/eigen/pull/218#issuecomment-75958606
+        self.view.delegate = nil;
+        // And nill-ify these as well, for good measure.
+        self.view.metadataView.delegate = nil;
+        self.view.artworkBlurbView.delegate = nil;
+        self.postsVC.delegate = nil;
+    }
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -62,7 +76,7 @@
         [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
     }
 
-    @weakify(self);
+    @weakify(self); 
 
     void (^completion)(void) = ^{
         @strongify(self);

@@ -21,7 +21,7 @@ beforeAll(^{
 });
 
 afterAll(^{
-    [[ARUserManager sharedManager] logout];
+    [ARUserManager clearUserData];
 });
 
 describe(@"init", ^{
