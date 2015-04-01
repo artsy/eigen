@@ -61,13 +61,11 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     NSString *userDataPath = [userDataFolderPath stringByAppendingPathComponent:@"User.data"];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:userDataPath]) {
-        _currentUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userDataPath
-            exceptionBlock:^id(NSException *exception) {
-                ARErrorLog(@"%@", exception.reason);
-                [[NSFileManager defaultManager] removeItemAtPath:userDataPath error:nil];
-                return nil;
-            }
-        ];
+        _currentUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userDataPath  exceptionBlock:^id(NSException *exception) {
+            ARErrorLog(@"%@", exception.reason);
+            [[NSFileManager defaultManager] removeItemAtPath:userDataPath error:nil];
+            return nil;
+        }];
 
         // safeguard
         if (!self.currentUser.userID) {
@@ -86,7 +84,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 - (BOOL)hasValidAuthenticationToken
 {
-    NSString *authToken = [UICKeyChainStore stringForKey:AROAuthTokenDefault];
+    NSString *authToken = [self userAuthenticationToken];
     NSDate *expiryDate  = [[NSUserDefaults standardUserDefaults] objectForKey:AROAuthTokenExpiryDateDefault];
 
     BOOL tokenValid = expiryDate && [[[ARSystemTime date] GMTDate] earlierDate:expiryDate] != expiryDate;
@@ -95,11 +93,29 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 - (BOOL)hasValidXAppToken
 {
-    NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenDefault];
+    NSString *xapp = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenDefault];
     NSDate *expiryDate  = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenExpiryDateDefault];
 
     BOOL tokenValid = expiryDate && [[[ARSystemTime date] GMTDate] earlierDate:expiryDate] != expiryDate;
     return xapp && tokenValid;
+}
+
+- (NSString *)userAuthenticationToken
+{
+    return _userAuthenticationToken ?: [UICKeyChainStore stringForKey:AROAuthTokenDefault];
+}
+
+- (void)saveUserOAuthToken:(NSString *)token expiryDate:(NSDate *)expiryDate
+{
+    NSString *service = [UICKeyChainStore defaultService];
+    [UICKeyChainStore setString:token forKey:AROAuthTokenDefault service:service accessGroup:@"group.net.artsy.eigen"];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:expiryDate forKey:AROAuthTokenExpiryDateDefault];
+
+    [defaults removeObjectForKey:ARXAppTokenDefault];
+    [defaults removeObjectForKey:ARXAppTokenExpiryDateDefault];
+    [defaults synchronize];
 }
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password
@@ -111,61 +127,57 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     NSURLRequest *request = [ARRouter newOAuthRequestWithUsername:username password:password];
 
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-         success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
+    success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 
-             NSString *token = JSON[AROAuthTokenKey];
-             NSString *expiryDateString = JSON[AROExpiryDateKey];
+        NSString *token = JSON[AROAuthTokenKey];
+        NSString *expiryDateString = JSON[AROExpiryDateKey];
 
-             [ARRouter setAuthToken:token];
+        [ARRouter setAuthToken:token];
 
-             // Create an Expiration Date
-             ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
-             NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
+        // Create an Expiration Date
+        ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+        NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
 
-             // Let clients perform any actions once we've got the tokens sorted
-             if (credentials) {
-                 credentials(token, expiryDate);
-             }
+        // Let clients perform any actions once we've got the tokens sorted
+        if (credentials) {
+            credentials(token, expiryDate);
+        }
 
-             NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
-             AFJSONRequestOperation *userOp = [AFJSONRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
+        AFJSONRequestOperation *userOp = [AFJSONRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 
-                 User *user = [User modelWithJSON:JSON];
+            User *user = [User modelWithJSON:JSON];
 
-                 self.currentUser = user;
-                 [self storeUserData];
-                 [user updateProfile:^{
-                     [self storeUserData];
-                 }];
+            self.currentUser = user;
+            [self storeUserData];
+            [user updateProfile:^{
+                [self storeUserData];
+            }];
 
-                 // Store the credentials for next app launch
-                 [UICKeyChainStore setString:token forKey:AROAuthTokenDefault];
-                 [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
+            // Store the credentials for next app launch
 
-                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:ARXAppTokenExpiryDateDefault];
-                 [[NSUserDefaults standardUserDefaults] setObject:expiryDate forKey:AROAuthTokenExpiryDateDefault];
-                 [[NSUserDefaults standardUserDefaults] synchronize];
-                 gotUser(user);
+            [self saveUserOAuthToken:token expiryDate:expiryDate];
+            gotUser(user);
 
-             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                 if (authenticationFailure) {
-                     authenticationFailure(error);
-                 }
-             }];
-             [userOp start];
-         }
-         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-             if (JSON) {
-                 if (authenticationFailure) {
-                     authenticationFailure(error);
-                 }
-             } else {
-                 if (networkFailure) {
-                     networkFailure(error);
-                 }
-             }
-         }
-    ];
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            if (authenticationFailure) {
+                authenticationFailure(error);
+            }
+        }];
+        [userOp start];
+    }
+
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        if (JSON) {
+            if (authenticationFailure) {
+                authenticationFailure(error);
+            }
+        } else {
+            if (networkFailure) {
+                networkFailure(error);
+            }
+        }
+    }];
     [op start];
 }
 
@@ -177,59 +189,54 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 {
     NSURLRequest *request = [ARRouter newFacebookOAuthRequestWithToken:token];
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-                                                                                 success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
+    success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 
-         NSString *token = JSON[AROAuthTokenKey];
-         NSString *expiryDateString = JSON[AROExpiryDateKey];
+        NSString *token = JSON[AROAuthTokenKey];
+        NSString *expiryDateString = JSON[AROExpiryDateKey];
 
-         [ARRouter setAuthToken:token];
+        [ARRouter setAuthToken:token];
 
-         // Create an Expiration Date
-         ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
-         NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
+        // Create an Expiration Date
+        ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+        NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
 
-         // Let clients perform any actions once we've got the tokens sorted
-         if (credentials) {
-             credentials(token, expiryDate);
-         }
+        // Let clients perform any actions once we've got the tokens sorted
+        if (credentials) {
+            credentials(token, expiryDate);
+        }
 
-         NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
-         AFJSONRequestOperation *userOp = [AFJSONRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
+        AFJSONRequestOperation *userOp = [AFJSONRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 
-             User *user = [User modelWithJSON:JSON];
+            User *user = [User modelWithJSON:JSON];
 
-             self.currentUser = user;
-             [self storeUserData];
-             [user updateProfile:^{
-                 [self storeUserData];
-             }];
+            self.currentUser = user;
+            [self storeUserData];
+            [user updateProfile:^{
+                [self storeUserData];
+            }];
 
-             // Store the credentials for next app launch
-             [UICKeyChainStore setString:token forKey:AROAuthTokenDefault];
-             [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
+            [self saveUserOAuthToken:token expiryDate:expiryDate];
+            gotUser(user);
 
-             [[NSUserDefaults standardUserDefaults] removeObjectForKey:ARXAppTokenExpiryDateDefault];
-             [[NSUserDefaults standardUserDefaults] setObject:expiryDate forKey:AROAuthTokenExpiryDateDefault];
-             [[NSUserDefaults standardUserDefaults] synchronize];
-             gotUser(user);
-
-         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-             if (authenticationFailure) {
-                 authenticationFailure(error);
-             }
-         }];
-         [userOp start];
-     }
-     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-         if (JSON) {
-             if (authenticationFailure) {
-                 authenticationFailure(error);
-             }
-         } else {
-             if (networkFailure) {
-                 networkFailure(error);
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            if (authenticationFailure) {
+                authenticationFailure(error);
             }
-         }
+        }];
+    [userOp start];
+    }
+
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        if (JSON) {
+            if (authenticationFailure) {
+                authenticationFailure(error);
+            }
+        } else {
+            if (networkFailure) {
+                networkFailure(error);
+            }
+        }
 
     }];
     [op start];
@@ -244,68 +251,67 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 {
     NSURLRequest *request = [ARRouter newTwitterOAuthRequestWithToken:token andSecret:secret];
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-                                                                                 success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
+    success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 
-             NSString *token = JSON[AROAuthTokenKey];
-             NSString *expiryDateString = JSON[AROExpiryDateKey];
+        NSString *token = JSON[AROAuthTokenKey];
+        NSString *expiryDateString = JSON[AROExpiryDateKey];
 
-             [ARRouter setAuthToken:token];
+        [ARRouter setAuthToken:token];
 
-             // Create an Expiration Date
-             ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
-             NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
+        // Create an Expiration Date
+        ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+        NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
 
-             // Let clients perform any actions once we've got the tokens sorted
-             if (credentials) {
-                 credentials(token, expiryDate);
-             }
+        // Let clients perform any actions once we've got the tokens sorted
+        if (credentials) {
+            credentials(token, expiryDate);
+        }
 
-             NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
-             AFJSONRequestOperation *userOp = [AFJSONRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
+        AFJSONRequestOperation *userOp = [AFJSONRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 
-                 User *user = [User modelWithJSON:JSON];
+            User *user = [User modelWithJSON:JSON];
 
-                 self.currentUser = user;
-                 [self storeUserData];
-                 [user updateProfile:^{
-                     [self storeUserData];
-                 }];
+            self.currentUser = user;
+            [self storeUserData];
+            [user updateProfile:^{
+                [self storeUserData];
+            }];
 
-                 // Store the credentials for next app launch
-                 [UICKeyChainStore setString:token forKey:AROAuthTokenDefault];
-                 [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
+            // Store the credentials for next app launch
+            [self saveUserOAuthToken:token expiryDate:expiryDate];
 
-                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:ARXAppTokenExpiryDateDefault];
-                 [[NSUserDefaults standardUserDefaults] setObject:expiryDate forKey:AROAuthTokenExpiryDateDefault];
-                 [[NSUserDefaults standardUserDefaults] synchronize];
-                 gotUser(user);
+            gotUser(user);
 
-             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                 if (authenticationFailure) {
-                     authenticationFailure(error);
-                 }
-             }];
-             [userOp start];
-         }
-         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-             if (JSON) {
-                 if (authenticationFailure) {
-                     authenticationFailure(error);
-                 }
-             } else {
-                 networkFailure(error);
-             }
-         }];
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            if (authenticationFailure) {
+                authenticationFailure(error);
+            }
+        }];
+        [userOp start];
+    }
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        if (JSON) {
+            if (authenticationFailure) {
+                authenticationFailure(error);
+            }
+        } else {
+            networkFailure(error);
+        }
+    }];
 
     [op start];
-
+    
 }
 
 - (void)startTrial:(void(^)())callback failure:(void (^)(NSError *error))failure
 {
+    [UICKeyChainStore removeItemForKey:AROAuthTokenDefault];
+    
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        [UICKeyChainStore setString:xappToken forKey:ARXAppTokenDefault];
+        [[NSUserDefaults standardUserDefaults] setObject:xappToken forKey:ARXAppTokenDefault];
         [[NSUserDefaults standardUserDefaults] setObject:expirationDate forKey:ARXAppTokenExpiryDateDefault];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         callback();
     } failure:failure];
 }
@@ -313,48 +319,48 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 - (void)createUserWithName:(NSString *)name email:(NSString *)email password:(NSString *)password success:(void (^)(User *))success failure:(void (^)(NSError *error, id JSON))failure
 {
     [ARAnalytics event:ARAnalyticsUserCreationStarted  withProperties:@{
-        @"context" : ARAnalyticsUserContextEmail
-    }];
-
+                                                                        @"context" : ARAnalyticsUserContextEmail
+                                                                        }];
+    
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-
+        
         ARActionLog(@"Got Xapp. Creating a new user account.");
-
+        
         NSURLRequest *request = [ARRouter newCreateUserRequestWithName:name email:email password:password];
         AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-        success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            NSError *error;
-            User *user = [User modelWithJSON:JSON error:&error];
-            if (error) {
+         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+             NSError *error;
+             User *user = [User modelWithJSON:JSON error:&error];
+             if (error) {
                  ARErrorLog(@"Couldn't create user model from fresh user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
                  [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
                  failure(error, JSON);
                  return;
-            }
-
-            self.currentUser = user;
-            [self storeUserData];
-
-            if(success) success(user);
-            [ARAnalytics event:ARAnalyticsUserCreationCompleted];
-
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            ARErrorLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-            failure(error, JSON);
-            [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
-        }];
+             }
+             
+             self.currentUser = user;
+             [self storeUserData];
+             
+             if(success) success(user);
+             [ARAnalytics event:ARAnalyticsUserCreationCompleted];
+             
+         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+             ARErrorLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
+             failure(error, JSON);
+             [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
+         }];
 
         [op start];
-
+        
     }];
 }
 
 - (void)createUserViaFacebookWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name success:(void (^)(User *))success failure:(void (^)(NSError *, id))failure
 {
     [ARAnalytics event:ARAnalyticsUserCreationStarted withProperties:@{
-        @"context" : ARAnalyticsUserContextFacebook
-    }];
-
+                                                                       @"context" : ARAnalyticsUserContextFacebook
+                                                                       }];
+    
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         NSURLRequest *request = [ARRouter newCreateUserViaFacebookRequestWithToken:token email:email name:name];
         AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
@@ -369,15 +375,15 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              }
              self.currentUser = user;
              [self storeUserData];
-
+             
              if (success) { success(user); }
-
+             
              [ARAnalytics event:ARAnalyticsUserCreationCompleted];
-
+             
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
              [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
-
+             
          }];
         [op start];
     }];
@@ -386,9 +392,9 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 - (void)createUserViaTwitterWithToken:(NSString *)token secret:(NSString *)secret email:(NSString *)email name:(NSString *)name success:(void (^)(User *))success failure:(void (^)(NSError *, id))failure
 {
     [ARAnalytics event:ARAnalyticsUserCreationStarted withProperties:@{
-        @"context" : ARAnalyticsUserContextTwitter
-    }];
-
+                                                                       @"context" : ARAnalyticsUserContextTwitter
+                                                                       }];
+    
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         NSURLRequest *request = [ARRouter newCreateUserViaTwitterRequestWithToken:token secret:secret email:email name:name];
         AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
@@ -403,11 +409,11 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              }
              self.currentUser = user;
              [self storeUserData];
-
+             
              if(success) success(user);
-
+             
              [ARAnalytics event:ARAnalyticsUserCreationCompleted];
-
+             
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
              [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
@@ -421,16 +427,16 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         NSURLRequest *request = [ARRouter newForgotPasswordRequestWithEmail:email];
         AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-        success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            if (success) {
-                success();
-            }
-        }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            if (failure) {
-                failure(error);
-            }
-        }];
+         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+             if (success) {
+                 success();
+             }
+         }
+         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+             if (failure) {
+                 failure(error);
+             }
+         }];
         [op start];
     }];
 }
@@ -440,9 +446,9 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     NSString *userDataPath = [ARFileUtils userDocumentsPathWithFile:@"User.data"];
     if (userDataPath) {
         [NSKeyedArchiver archiveRootObject:self.currentUser toFile:userDataPath];
-
+        
         [ARUserManager identifyAnalyticsUser];
-
+        
         [[NSUserDefaults standardUserDefaults] setObject:self.currentUser.userID forKey:ARUserIdentifierDefault];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
@@ -518,7 +524,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 - (NSString *)userDataPath {
     NSString *userID = [[NSUserDefaults standardUserDefaults] objectForKey:ARUserIdentifierDefault];
     if (!userID) { return nil; }
-
+    
     NSArray *directories =[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     NSString *documentsPath = [[directories lastObject] relativePath];
     return [documentsPath stringByAppendingPathComponent:userID];

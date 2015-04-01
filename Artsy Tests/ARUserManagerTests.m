@@ -255,7 +255,8 @@ describe(@"startTrial", ^{
     });
 
     it(@"sets an xapp token", ^{
-        expect([[ARUserManager stubXappToken] isEqualToString:[UICKeyChainStore stringForKey:ARXAppTokenDefault]]).to.beTruthy();
+        NSString *xapp = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenDefault];
+        expect([[ARUserManager stubXappToken] isEqualToString:xapp]).to.beTruthy();
     });
 
     it(@"sets expiry date", ^{

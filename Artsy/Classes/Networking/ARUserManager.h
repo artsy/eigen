@@ -16,6 +16,8 @@
 @property (nonatomic, strong) NSString *trialUserEmail;
 @property (nonatomic, strong, readonly) NSString *trialUserUUID;
 
+@property (nonatomic, strong) NSString *userAuthenticationToken;
+
 - (void)resetTrialUserUUID;
 
 - (BOOL)hasExistingAccount;

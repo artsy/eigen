@@ -76,7 +76,7 @@
         [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
     }
 
-    @weakify(self);
+    @weakify(self); 
 
     void (^completion)(void) = ^{
         @strongify(self);
