@@ -28,6 +28,7 @@
 #import "ARDefaults+SiteFeatures.h"
 
 #import <InterAppCommunication/IACManager.h>
+#import "ARBackButtonCallbackManager.h"
 
 #if ADMIN_MENU_ENABLED
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
@@ -155,9 +156,11 @@ static ARAppDelegate *_sharedInstance = nil;
         }
 
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:url];
-        // Do things to set up back button.
         if (viewController) {
-            [self.viewControllerDelegate textView:self shouldOpenViewController:viewController];
+            ARXCallbackUrlManager *manager = [[ARXCallbackUrlManager alloc] initWithViewController:viewController andBackBlock:success];
+
+            viewController.navigationController.xCallbackUrlManager = manager;
+            [[ARTopMenuViewController sharedController] pushViewController:viewController];
         }
     }];
 }

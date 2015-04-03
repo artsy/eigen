@@ -21,6 +21,7 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 @property (readwrite, nonatomic, strong) AIMultiDelegate *multiDelegate;
 @property (readwrite, nonatomic, strong) UIViewController<ARMenuAwareViewController> *observedViewController;
 @property (readwrite, nonatomic, strong) UIPercentDrivenInteractiveTransition *interactiveTransitionHandler;
+@property (nonatomic, strong, readonly) ARXCallbackUrlManager *xCallbackUrlManager;
 
 - (void)handlePopGuesture:(UIGestureRecognizer *)sender;
 
@@ -403,12 +404,20 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 - (IBAction)back:(id)sender {
     if(self.isAnimatingTransition) return;
 
+    
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
 
+    UIViewController *poppedVC;
     if (navigationController.viewControllers.count > 1) {
-        [navigationController popViewControllerAnimated:YES];
+        poppedVC = [navigationController popViewControllerAnimated:YES];
     } else {
-        [navigationController.navigationController popViewControllerAnimated:YES];
+        poppedVC = [navigationController.navigationController popViewControllerAnimated:YES];
+    }
+
+    ARXCallbackUrlManager *xCallbackUrlManager = [ARTopMenuViewController sharedController].xCallbackUrlManager;
+
+    if (xCallbackUrlManager && [xCallbackUrlManager handleBackForViewController:viewController]) {
+        [ARTopMenuViewController sharedController].xCallbackUrlManager = nil;
     }
 }
 
