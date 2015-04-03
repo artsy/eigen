@@ -103,7 +103,8 @@ DEPENDENCIES:
   - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`)
   - ARAnalytics/Mixpanel (from `https://github.com/orta/ARAnalytics.git`)
   - ARASCIISwizzle (= 1.1.0)
-  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`, commit `2ee871f509806af147d0529a36f791906997d4b7`)
+  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`,
+    commit `2ee871f509806af147d0529a36f791906997d4b7`)
   - ARGenericTableViewController (= 1.0.2)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
   - Artsy+UIColors
@@ -223,7 +224,7 @@ SPEC CHECKSUMS:
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
   JLRoutes: 5a6096ec514f105fc906f9334c90d8276fe13687
   JSDecoupledAppDelegate: db9bb678694d2e2a288ed90da425fe69e3bc737d
-  Keys: 828b370fea8d74e7a353a4844a4c305038291f16
+  Keys: eebd2acc391d97c7d62500c606fc1921809060e5
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   libextobjc: f2802d4262f6885570df9799747409ceb1de602c
   Mantle: 7dddb082367d3e13bd244636d56838481c4552fe
@@ -247,4 +248,4 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-COCOAPODS: 0.36.0.rc.1
+COCOAPODS: 0.36.3
