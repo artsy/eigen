@@ -103,7 +103,8 @@ DEPENDENCIES:
   - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`)
   - ARAnalytics/Mixpanel (from `https://github.com/orta/ARAnalytics.git`)
   - ARASCIISwizzle (= 1.1.0)
-  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`, commit `2ee871f509806af147d0529a36f791906997d4b7`)
+  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`,
+    commit `2ee871f509806af147d0529a36f791906997d4b7`)
   - ARGenericTableViewController (= 1.0.2)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
   - Artsy+UIColors
@@ -247,4 +248,4 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-COCOAPODS: 0.36.0.rc.1
+COCOAPODS: 0.36.3
