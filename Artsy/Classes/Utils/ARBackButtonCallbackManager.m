@@ -2,7 +2,7 @@
 
 @implementation ARBackButtonCallbackManager
 
-- (instancetype)initWithViewController:(UIViewController *)viewController andBackBlock:(IACSuccessBlock)backBlock
+- (instancetype)initWithViewController:(UIViewController *)viewController andBackBlock:(void(^)(void))backBlock
 {
     self = [super init];
     if (!self) { return nil; }
@@ -21,7 +21,7 @@
 - (BOOL)handleBackForViewController:(UIViewController *)viewController;
 {
     if (![self canHandleBackForViewController:viewController]) { return NO; };
-    self.backBlock(nil, NO);
+    self.backBlock();
     return YES;
 }
 
