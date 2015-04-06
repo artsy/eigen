@@ -105,7 +105,8 @@ itHasSnapshotsForDevices(@"two-rows artworks masonry", ^{
     return vc;
 });
 
-itHasAsyncronousSnapshotsForDevices(@"with a bio", ^{
+// itHasAsyncronousSnapshotsForDevices(@"with a bio", ^{
+pending(@"with a bio", ^{
 
     ARArtistViewController *vc = [[ARArtistViewController alloc] initWithArtistID:@"some-artist"];
     networkModel = [[ARStubbedArtistNetworkModel alloc] initWithArtist:vc.artist];

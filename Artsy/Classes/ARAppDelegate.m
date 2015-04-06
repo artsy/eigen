@@ -5,6 +5,7 @@
 #endif
 
 #import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
+#import "ARAppWatchCommunicator.h"
 #import <iRate/iRate.h>
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <ARAnalytics/ARAnalytics.h>
