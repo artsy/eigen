@@ -181,7 +181,7 @@ describe(@"concerning an artwork at a show", ^{
 
     before(^{
         otherWorkByArtistJSON = @{
-               @"id":@"el-anatsui-wet",
+            @"id":@"el-anatsui-wet",
             @"title":@"Wet"
         };
         otherWorkByArtist = [Artwork modelWithJSON:otherWorkByArtistJSON];
@@ -192,18 +192,21 @@ describe(@"concerning an artwork at a show", ^{
     });
 
     it(@"adds a section with other works in the same show", ^{
+        relatedView.frame = CGRectMake(0, 0, 320, 1200);
         expect([relatedView viewWithTag:ARRelatedArtworksSameShow]).willNot.beNil();
         expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@"OTHER WORKS IN SHOW");
         expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@[otherShowArtwork.title]);
     });
 
     it(@"adds a section with other works by the same artist", ^{
+        relatedView.frame = CGRectMake(0, 0, 320, 1200);
         expect([relatedView viewWithTag:ARRelatedArtworksArtistArtworks]).willNot.beNil();
         expect([relatedView titleForSectionWithTag:ARRelatedArtworksArtistArtworks]).to.equal(@"OTHER WORKS BY EL ANATSUI");
         expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksArtistArtworks]).to.equal(@[otherWorkByArtist.title]);
     });
 
     it(@"adds a section with related works", ^{
+        relatedView.frame = CGRectMake(0, 0, 320, 1200);
         expect([relatedView viewWithTag:ARRelatedArtworks]).willNot.beNil();
         expect([relatedView titleForSectionWithTag:ARRelatedArtworks]).to.equal(@"RELATED ARTWORKS");
         expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworks]).to.equal(@[relatedArtwork.title]);
