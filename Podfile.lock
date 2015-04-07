@@ -37,7 +37,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (0.4.0)
-  - Expecta (0.3.0)
+  - Expecta (0.3.2)
   - Expecta+Snapshots (1.3.1):
     - Expecta
     - FBSnapshotTestCase
@@ -85,7 +85,7 @@ PODS:
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
-  - Specta (0.3.0.beta1)
+  - Specta (0.5.0)
   - TSMiniWebBrowser@dblock (HEAD based on 1.1)
   - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
@@ -114,7 +114,7 @@ DEPENDENCIES:
   - CocoaLumberjack (= 1.8.1)
   - DHCShakeNotifier (= 0.2.0)
   - DRKonamiCode (= 1.1.0)
-  - Expecta (= 0.3.0)
+  - Expecta
   - Expecta+Snapshots (~> 1.2)
   - Facebook-iOS-SDK (= 3.14.1)
   - FBSnapshotTestCase (= 1.4)
@@ -142,7 +142,7 @@ DEPENDENCIES:
   - ORStackView (HEAD)
   - ReactiveCocoa (= 2.3)
   - SDWebImage (= 3.7.1)
-  - Specta (from `https://github.com/specta/specta.git`, tag `v0.3.0.beta1`)
+  - Specta
   - TSMiniWebBrowser@dblock (HEAD)
   - UIAlertView+Blocks (= 0.8)
   - UICKeyChainStore (= 1.0.5)
@@ -166,9 +166,6 @@ EXTERNAL SOURCES:
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
-  Specta:
-    :git: https://github.com/specta/specta.git
-    :tag: v0.3.0.beta1
 
 CHECKOUT OPTIONS:
   ARAnalytics:
@@ -189,9 +186,6 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
-  Specta:
-    :git: https://github.com/specta/specta.git
-    :tag: v0.3.0.beta1
 
 SPEC CHECKSUMS:
   AFHTTPRequestOperationLogger: 251332cf89812162df96843ca51a76107fb95a94
@@ -212,7 +206,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: 89d19a013279a5604d61650721c15f20fefaaf00
-  Expecta: 917bda2935b63ca7175741b8cf1b26796db6205f
+  Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   Expecta+Snapshots: 4a0b46d3ba755bd43dffa7d53e4585fc6cbfe8cd
   Facebook-iOS-SDK: 2948301ff993744c3c931d1ba46fa4a5bd60a687
   FBSnapshotTestCase: 892508495a69e8703bab36c9da7674ff740d41db
@@ -240,7 +234,7 @@ SPEC CHECKSUMS:
   ReactiveCocoa: fbe689fe218063b7bbed41032912c9ca4fdbe172
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
-  Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
+  Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
   TSMiniWebBrowser@dblock: 6eb565b44cc2e5cd5eee7660ee5c21f8afae415c
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377

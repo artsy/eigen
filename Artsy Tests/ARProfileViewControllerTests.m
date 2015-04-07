@@ -112,8 +112,8 @@ describe(@"loadProfile", ^{
 
         it(@"loads a fairvc on iphone with a fair organizer", ^{
             [ARTestContext stubDevice:ARDeviceTypePhone5];
-            [[viewControllerMock expect] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
-            [[viewControllerMock reject] loadMartsyView];
+            [[viewControllerMock reject] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
+            [[viewControllerMock expect] loadMartsyView];
             [[apiMock expect] getProfileForProfileID:profileID success:[OCMArg checkWithBlock:^BOOL(void (^obj)(Profile *profile)) {
                 Profile *profile = [Profile modelWithJSON:@{
                     @"id" : @"profile-id",
@@ -203,14 +203,14 @@ describe(@"loadProfile", ^{
         
         [[apiMock expect] getProfileForProfileID:profileID success:[OCMArg checkWithBlock:^BOOL(void (^obj)(Profile *profile)) {
             Profile *profile = [Profile modelWithJSON:@{
-                                                        @"id" : @"profile-id",
-                                                        @"owner_type" : @"User",
-                                                        @"owner" : @{
-                                                                @"id" : @"user-id",
-                                                                @"type" : @"User"
-                                                                }
-                                                        }];
-            
+                @"id" : @"profile-id",
+                @"owner_type" : @"User",
+                @"owner" : @{
+                    @"id" : @"user-id",
+                    @"type" : @"User"
+                }
+            }];
+
             if (obj) {
                 obj(profile);
             }

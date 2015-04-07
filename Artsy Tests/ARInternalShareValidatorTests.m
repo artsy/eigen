@@ -65,7 +65,7 @@ describe(@"correctly pulls out the address", ^{
     });
 
     it(@"linkedin", ^{
-        expect([sut addressBeingSharedFromShareURL:facebookURL]).to.beFalsy();
+        expect([sut addressBeingSharedFromShareURL:linkedInURL]).to.beFalsy();
     });
 });
 
