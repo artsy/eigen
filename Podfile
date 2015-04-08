@@ -60,7 +60,7 @@ pod 'Artsy+UIColors'
 pod 'Artsy-UIButtons', :head
 pod 'UIView+BooleanAnimations'
 
-if %w(orta ash artsy laura eloy).include?(ENV['USER']) || ENV['CI'] == 'true'
+if %w(orta ash artsy laura eloy sarahscott).include?(ENV['USER']) || ENV['CI'] == 'true'
   pod 'Artsy+UIFonts', '1.0.0'
 else
   pod 'Artsy+OSSUIFonts'

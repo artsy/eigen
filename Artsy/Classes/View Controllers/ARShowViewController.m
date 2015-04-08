@@ -21,6 +21,8 @@ NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewPartnerLabelFollowButton,
     ARFairShowViewPartnerName,
     ARFairShowViewBoothLocation,
+    ARFairShowViewAusstellungsdauer,
+    ARFairShowViewLocationAddress,
     ARFairShowViewMapPreview,
     ARFairShowViewFollowPartner,
     ARFairShowViewWhitespaceAboveArtworks,
@@ -265,8 +267,22 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     partnerName.tag = ARFairShowViewPartnerName;
     partnerName.font = [UIFont serifFontWithSize:16];
     partnerName.text = self.show.fair ? self.show.fair.name : self.show.name;
-    [self.view.stackView addSubview:partnerName withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
+    [self.view.stackView addSubview:partnerName withTopMargin:@"10" sideMargin:[self sideMarginPredicate]];
 
+    ARSerifLabel *ausstellungsdauer = [[ARSerifLabel alloc] init];
+    ausstellungsdauer.textColor = [UIColor artsyHeavyGrey];
+    ausstellungsdauer.font = [UIFont serifFontWithSize:14];
+    ausstellungsdauer.text = self.show.ausstellungsdauer;
+    ausstellungsdauer.tag = ARFairShowViewAusstellungsdauer;
+    [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
+    
+    ARSerifLabel *locationAddress = [[ARSerifLabel alloc] init];
+    locationAddress.textColor = [UIColor artsyHeavyGrey];
+    locationAddress.font = [UIFont serifFontWithSize:14];
+    locationAddress.text = self.show.location;
+    locationAddress.tag = ARFairShowViewLocationAddress;
+    [self.view.stackView addSubview:locationAddress withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
+    
     BOOL isNotCurrentFairContext = self.show.fair && !self.fair;
     if (isNotCurrentFairContext) {
         partnerName.userInteractionEnabled = YES;
