@@ -23,6 +23,7 @@ NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewBoothLocation,
     ARFairShowViewAusstellungsdauer,
     ARFairShowViewLocationAddress,
+    ARFairShowDescription,
     ARFairShowViewMapPreview,
     ARFairShowViewFollowPartner,
     ARFairShowViewWhitespaceAboveArtworks,
@@ -283,6 +284,11 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     locationAddress.tag = ARFairShowViewLocationAddress;
     [self.view.stackView addSubview:locationAddress withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
     
+    // if it's not in a fair at all
+    if (!self.fair && !self.show.fair) {
+        [self addShowDescriptionToStack];
+    }
+    
     BOOL isNotCurrentFairContext = self.show.fair && !self.fair;
     if (isNotCurrentFairContext) {
         partnerName.userInteractionEnabled = YES;
@@ -292,19 +298,34 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     } else {
         partnerName.chevronHidden = YES;
     }
+    
+    [self addFairBoothLocationToStack:isNotCurrentFairContext];
+}
 
+- (void)addShowDescriptionToStack
+{
+    ARSerifLabel *description = [[ARSerifLabel alloc] init];
+    description.textColor = [UIColor blackColor];
+    description.font = [UIFont serifFontWithSize:15];
+    description.text = self.show.officialDescription;
+    description.tag = ARFairShowDescription;
+    [self.view.stackView addSubview:description withTopMargin:@"8" sideMargin:[self sideMarginPredicate]];
+}
+
+- (void)addFairBoothLocationToStack:(BOOL)isNotCurrentFairContext
+{
     ARSerifLabel *boothLocation = [[ARSerifLabel alloc] init];
     boothLocation.tag = ARFairShowViewBoothLocation;
     boothLocation.textColor = [UIColor artsyHeavyGrey];
-    boothLocation.font = [UIFont serifFontWithSize:14];
-
+    boothLocation.font = [UIFont serifFontWithSize:15];
+    
     // We don't care about the fairs opening / closing if
     if (isNotCurrentFairContext) {
         boothLocation.text = self.show.ausstellungsdauerAndLocation;
     } else {
         boothLocation.text = self.show.locationInFair;
     }
-
+    
     [self.view.stackView addSubview:boothLocation withTopMargin:@"6" sideMargin:[self sideMarginPredicate]];
 }
 

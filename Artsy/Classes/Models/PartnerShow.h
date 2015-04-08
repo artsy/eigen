@@ -10,6 +10,7 @@
 @property (nonatomic, copy, readonly) NSString *showID;
 
 @property (nonatomic, copy, readonly) NSString *name;
+@property (nonatomic, copy, readonly) NSString *officialDescription;
 
 @property (nonatomic, copy, readonly) NSArray *artists;
 @property (nonatomic, copy, readonly) NSArray *artworks;
