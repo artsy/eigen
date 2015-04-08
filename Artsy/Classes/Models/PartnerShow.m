@@ -79,7 +79,7 @@ static ARStandardDateFormatter *staticDateFormatter;
         if (!item) {
             return @"";
         }
-        return (NSString *)item[@"city"];
+        return [NSString stringWithFormat:@"%@, %@", item[@"address"], item[@"city"]];
     }];
 }
 
@@ -172,12 +172,21 @@ static ARStandardDateFormatter *staticDateFormatter;
     if (self.fair && self.locationInFair && ![self.locationInFair isEqualToString:@""]) {
         return [NSString stringWithFormat: @"%@, %@", ausstellungsdauer, self.locationInFair];
 
-    } else if (self.location && ![self.location isEqualToString:@""]) {
-        return [NSString stringWithFormat: @"%@, %@", ausstellungsdauer, self.location];
+    } else if (self.city && ![self.city isEqualToString:@""]) {
+        return [NSString stringWithFormat: @"%@, %@", ausstellungsdauer, self.city];
 
     } else {
         return self.ausstellungsdauer;
     }
+}
+
+- (NSString *)city
+{
+    NSArray *locationComponents = [self.location componentsSeparatedByString:@", "];
+    if (locationComponents.count > 1) {
+        return locationComponents[1];
+    }
+    else return @"";
 }
 
 - (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;

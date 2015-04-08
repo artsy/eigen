@@ -22,6 +22,8 @@
 
 @property (nonatomic, copy, readonly) NSString *location;
 @property (nonatomic, copy, readonly) NSString *locationInFair;
+@property (nonatomic, copy, readonly) NSString *city;
+@property (nonatomic, copy, readonly) struct fullLocation;
 
 @property (nonatomic, strong, readonly) PartnerShowFairLocation *fairLocation;
 @property (nonatomic, strong, readonly) PartnerShowCoordinates *coordinates;
@@ -37,7 +39,7 @@
 /// A string with the date range for the show, or corrosponding fair
 - (NSString *)ausstellungsdauer;
 
-/// A useful method for date range and location
+/// A useful method for date range and city
 - (NSString *)ausstellungsdauerAndLocation;
 
 - (BOOL)hasMapLocation;
