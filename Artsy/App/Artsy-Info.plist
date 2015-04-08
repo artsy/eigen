@@ -51,6 +51,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>artsy</string>
+				<string>artsy-x-callback-url</string>
 			</array>
 		</dict>
 		<dict>

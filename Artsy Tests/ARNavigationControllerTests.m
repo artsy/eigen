@@ -1,42 +1,70 @@
 #import "ARNavigationController.h"
 #import "UIViewController+SimpleChildren.h"
 #import "ARPendingOperationViewController.h"
-
+#import "ARBackButtonCallbackManager.h"
+#import "ARTopMenuViewController.h"
 
 @interface ARNavigationController (Testing)
-
+- (IBAction)back:(id)sender;
 @property (nonatomic, strong) ARPendingOperationViewController *pendingOperationViewController;
-
 @end
 
 SpecBegin(ARNavigationController)
 
 __block ARNavigationController *navigationController;
 
+before(^{
+    UIViewController *viewController = [[UIViewController alloc] init];
+    navigationController = [[ARNavigationController alloc] initWithRootViewController:viewController];
+});
 
 describe(@"visuals", ^{
+
     it(@"should be empty for a rootVC", ^{
-        UIViewController *viewController = [[UIViewController alloc] init];
-        navigationController = [[ARNavigationController alloc] initWithRootViewController:viewController];
         expect(navigationController).to.haveValidSnapshot();
     });
 
     it(@"should be show a back button with 2 view controllers", ^{
-        UIViewController *viewController = [[UIViewController alloc] init];
         UIViewController *viewController2 = [[UIViewController alloc] init];
-        navigationController = [[ARNavigationController alloc] initWithRootViewController:viewController];
         [navigationController pushViewController:viewController2 animated:NO];
         expect(navigationController).to.haveValidSnapshot();
     });
 });
 
-describe(@"presenting pending operation layover", ^{
-    __block ARNavigationController *navigationController;
-    
-    before(^{
-        UIViewController *viewController = [[UIViewController alloc] init];
-        navigationController = [[ARNavigationController alloc] initWithRootViewController:viewController];
+describe(@"back", ^{
+
+    it(@"pops the top view controller", ^{
+        UIViewController *viewController2 = [[UIViewController alloc] init];
+        [navigationController pushViewController:viewController2 animated:NO];
+
+        expect(navigationController.childViewControllers.count).to.equal(2);
+
+        OCMockObject *navMock = [OCMockObject partialMockForObject:navigationController];
+
+        [[[navMock expect] ignoringNonObjectArgs] popViewControllerAnimated:NO] ;
+
+        [navigationController back:nil];
+
+        [navMock verify];
     });
+
+    it(@"checks for backbutton x-callback-url callback", ^{
+        UIViewController *viewController2 = [[UIViewController alloc] init];
+        [navigationController pushViewController:viewController2 animated:NO];
+
+        id managerStub = [OCMockObject niceMockForClass:[ARBackButtonCallbackManager class]];
+
+        [[managerStub expect] handleBackForViewController:viewController2];
+
+        [ARTopMenuViewController sharedController].backButtonCallbackManager = managerStub;
+
+        [navigationController back:nil];
+
+        [managerStub verify];
+    });
+});
+
+describe(@"presenting pending operation layover", ^{
     
     it(@"should animate layover transitions", ^{
         expect(navigationController.animatesLayoverChanges).to.beTruthy();

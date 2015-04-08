@@ -8,6 +8,7 @@
 #import "AROnboardingViewController.h"
 #import "ARStubbedBrowseNetworkModel.h"
 #import "ARBrowseViewController.h"
+#import "ARBackButtonCallbackManager.h"
 
 @interface ARTopMenuNavigationDataSource (Test)
 @property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
@@ -54,6 +55,16 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
     __block NSInteger tab;
     before(^{
         tab = [data[@"tab"] integerValue];
+    });
+
+    it(@"removes x-callback-url callbacks", ^{
+        ARBackButtonCallbackManager *manager = [[ARBackButtonCallbackManager alloc] initWithViewController:[[UIViewController alloc] init] andBackBlock:^{}];
+
+        [ARTopMenuViewController sharedController].backButtonCallbackManager = manager;
+
+        [sut tabContentView:sut.tabContentView shouldChangeToIndex:tab];
+        expect([ARTopMenuViewController sharedController].backButtonCallbackManager).to.beNil();
+
     });
 
     it(@"is selectable when not selected", ^{
