@@ -15,13 +15,13 @@
 
 - (BOOL)canHandleBackForViewController:(UIViewController *)viewController;
 {
-    return (self.viewController && self.viewController == viewController);
+    return self.viewController != nil && self.viewController == viewController;
 }
 
 - (BOOL)handleBackForViewController:(UIViewController *)viewController;
 {
     if (![self canHandleBackForViewController:viewController]) { return NO; };
-    self.backBlock();
+    if (self.backBlock) { self.backBlock(); }
     return YES;
 }
 

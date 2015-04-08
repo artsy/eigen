@@ -415,9 +415,7 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
     ARBackButtonCallbackManager *backButtonCallbackManager = [ARTopMenuViewController sharedController].backButtonCallbackManager;
 
-    if (backButtonCallbackManager && [backButtonCallbackManager handleBackForViewController:poppedVC]) {
-        [ARTopMenuViewController sharedController].backButtonCallbackManager = nil;
-    }
+    if (backButtonCallbackManager) { [backButtonCallbackManager handleBackForViewController:poppedVC]; }
 }
 
 @end

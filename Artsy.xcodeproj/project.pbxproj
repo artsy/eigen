@@ -483,6 +483,7 @@
 		CBB25B3C17F36DDE00C31446 /* ARFeaturedArtworksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB25B3B17F36DDE00C31446 /* ARFeaturedArtworksViewController.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
 		CBE939F817FA336C00AD7DDD /* ARArtworkBlurbView.m in Sources */ = {isa = PBXBuildFile; fileRef = 601F029417F336AB00EB3E83 /* ARArtworkBlurbView.m */; };
+		D301A1C21AD59BD100EA9E49 /* ARBackButtonCallbackManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D301A1C11AD59BD100EA9E49 /* ARBackButtonCallbackManagerTests.m */; };
 		D33AF4FF1ACF08E1009C053C /* ARBackButtonCallbackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D33AF4FE1ACF08E1009C053C /* ARBackButtonCallbackManager.m */; };
 		D35D9D5C1ACB4FF800E67A1D /* ARArtworkTitleLabelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D35D9D5B1ACB4FF800E67A1D /* ARArtworkTitleLabelTests.m */; };
 		D37E4CFB1A92AC5A00023E2C /* ARAnnotatedMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = D37E4CFA1A92AC5A00023E2C /* ARAnnotatedMapView.m */; };
@@ -1443,6 +1444,7 @@
 		CBB25B3B17F36DDE00C31446 /* ARFeaturedArtworksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeaturedArtworksViewController.m; sourceTree = "<group>"; };
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
 		CBB469CF181F1F1200B5692B /* Bid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bid.m; sourceTree = "<group>"; };
+		D301A1C11AD59BD100EA9E49 /* ARBackButtonCallbackManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBackButtonCallbackManagerTests.m; sourceTree = "<group>"; };
 		D33AF4FD1ACF08E1009C053C /* ARBackButtonCallbackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARBackButtonCallbackManager.h; path = Artsy/Classes/Utils/ARBackButtonCallbackManager.h; sourceTree = SOURCE_ROOT; };
 		D33AF4FE1ACF08E1009C053C /* ARBackButtonCallbackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARBackButtonCallbackManager.m; path = Artsy/Classes/Utils/ARBackButtonCallbackManager.m; sourceTree = SOURCE_ROOT; };
 		D35D9D5B1ACB4FF800E67A1D /* ARArtworkTitleLabelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkTitleLabelTests.m; sourceTree = "<group>"; };
@@ -1990,6 +1992,7 @@
 			children = (
 				E676B2F318D2307D0057B4E1 /* Sharing Tests */,
 				54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */,
+				D301A1C11AD59BD100EA9E49 /* ARBackButtonCallbackManagerTests.m */,
 				3C5C7E3E18970E78003823BB /* Enumerations */,
 				604151E41A7998E300D5F9CA /* NSDate+RangeTests.m */,
 				D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */,
@@ -4536,6 +4539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CB97D8F1887099E008C44FE /* ARLoginViewControllerTests.m in Sources */,
+				D301A1C21AD59BD100EA9E49 /* ARBackButtonCallbackManagerTests.m in Sources */,
 				3C6AA7CB1885F38D00501F07 /* SaleArtwork+Extensions.m in Sources */,
 				60F8FFC1197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m in Sources */,
 				5EBDC95119794D840082C514 /* ARSearchFieldButtonTests.m in Sources */,
