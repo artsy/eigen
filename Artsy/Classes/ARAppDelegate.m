@@ -99,8 +99,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
     [FBSettings setDefaultAppID:[ArtsyKeys new].artsyFacebookAppID];
-    IACManager *sharedManager = [IACManager sharedManager];
-    sharedManager.callbackURLScheme = ARArtsyXCallbackUrlScheme;
     [self setupXCallbackUrlManager];
 
     if (ARIsRunningInDemoMode) {
@@ -149,7 +147,11 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupXCallbackUrlManager
 {
-    [[IACManager sharedManager] handleAction:@"open" withBlock:^(NSDictionary *inputParameters, IACSuccessBlock success, IACFailureBlock failure) {
+
+    IACManager *sharedManager = [IACManager sharedManager];
+    sharedManager.callbackURLScheme = ARArtsyXCallbackUrlScheme;
+
+    [sharedManager handleAction:@"open" withBlock:^(NSDictionary *inputParameters, IACSuccessBlock success, IACFailureBlock failure) {
         NSString *urlString = inputParameters[@"url"];
         NSURL *url = [NSURL URLWithString:urlString];
 
