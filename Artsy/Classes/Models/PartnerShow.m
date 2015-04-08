@@ -40,6 +40,7 @@ static ARStandardDateFormatter *staticDateFormatter;
         @keypath(PartnerShow.new, locationInFair) : @"fair_location.display",
         @keypath(PartnerShow.new, fairLocation) : @"fair_location",
         @keypath(PartnerShow.new, coordinates) : @"coordinates",
+        @keypath(PartnerShow.new, officialDescription) : @"description",
     };
 }
 
