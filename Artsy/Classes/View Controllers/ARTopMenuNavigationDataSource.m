@@ -50,7 +50,7 @@
     _browseViewController.networkModel = [[ARBrowseNetworkModel alloc] init];
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
 
-    _magazineNavigationController = [self.class internalWebViewNavigationController:@"/magazine"];
+    _magazineNavigationController = [self.class internalWebViewNavigationController:@"/articles"];
 
     return self;
 }
