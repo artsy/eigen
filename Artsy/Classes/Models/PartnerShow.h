@@ -1,6 +1,6 @@
 #import "ARShareableObject.h"
 
-@class Partner, Fair, MapPoint, PartnerShowFairLocation, PartnerShowCoordinates;
+@class Partner, Fair, MapPoint, PartnerShowFairLocation, PartnerShowCoordinates, ARLocation;
 
 @interface PartnerShow : MTLModel <MTLJSONSerializing, ARShareableObject>
 
@@ -21,10 +21,9 @@
 @property (nonatomic, readonly) NSDate *startDate;
 @property (nonatomic, readonly) NSDate *endDate;
 
-@property (nonatomic, copy, readonly) NSString *location;
+@property (nonatomic, copy, readonly) ARLocation *location;
 @property (nonatomic, copy, readonly) NSString *locationInFair;
 @property (nonatomic, copy, readonly) NSString *city;
-@property (nonatomic, copy, readonly) struct fullLocation;
 
 @property (nonatomic, strong, readonly) PartnerShowFairLocation *fairLocation;
 @property (nonatomic, strong, readonly) PartnerShowCoordinates *coordinates;

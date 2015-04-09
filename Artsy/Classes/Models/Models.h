@@ -22,3 +22,4 @@
 #import "PartnerShowFairLocation.h"
 #import "MapFeature.h"
 #import "SystemTime.h"
+#import "ARLocation.h"
