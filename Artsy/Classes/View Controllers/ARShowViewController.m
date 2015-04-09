@@ -288,7 +288,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         if (self.show.location.publiclyViewable) {
             [self.view.stackView addSubview:[self locationLabel] withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
         }
-        [self.view.stackView addSubview:[self showDescriptionLabel] withTopMargin:@"8" sideMargin:[self sideMarginPredicate]];
+        [self.view.stackView addSubview:[self showDescriptionLabel] withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
     }
 }
 
