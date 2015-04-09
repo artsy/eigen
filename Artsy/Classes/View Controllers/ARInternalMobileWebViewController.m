@@ -10,9 +10,8 @@
 @end
 
 @interface ARInternalMobileWebViewController() <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
-@property (nonatomic, readonly, assign) BOOL loaded;
+@property (nonatomic, assign) BOOL loaded;
 @property (nonatomic, readonly, strong) ARInternalShareValidator *shareValidator;
-
 @end
 
 @implementation ARInternalMobileWebViewController
@@ -59,6 +58,13 @@
     return self;
 }
 
+- (void)loadURL:(NSURL *)url
+{
+    self.loaded = NO;
+    [self showLoading];
+    [super loadURL:url];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -88,7 +94,7 @@
 {
     [super webViewDidFinishLoad:aWebView];
     [self hideLoading];
-    _loaded = YES;
+    self.loaded = YES;
 }
 
 - (void)hideLoading
@@ -118,7 +124,7 @@
     } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
         // hijack AJAX requests
         if ([User isTrialUser]) {
-            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial fromTarget:self selector:@selector(reload)];
+            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial fromTarget:self selector:@selector(userDidSignUp)];
         }
         return NO;
     }
@@ -128,7 +134,7 @@
 
 // A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
 
-- (void)reload
+- (void)userDidSignUp
 {
     [self.webView loadRequest:[self requestWithURL:self.currentURL]];
 }
