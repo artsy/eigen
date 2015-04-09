@@ -449,7 +449,7 @@
 		60F8FFC1197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F8FFC0197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m */; };
 		60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FAEF42179843080031C88B /* ARFavoritesViewController.m */; };
 		7BAB70E261299573481071A9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AABCA8DF484E65EF3CC11FA /* libPods.a */; };
-		83F9D5801AD6FDE0000BCC77 /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* ARLocation.m */; };
+		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
 		B316E2F7181713110086CCDB /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F6181713110086CCDB /* Bidder.m */; };
@@ -1382,8 +1382,8 @@
 		60FFE3DD188E921A0012B485 /* eigen_tips.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = eigen_tips.md; sourceTree = "<group>"; };
 		7AABCA8DF484E65EF3CC11FA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B33890F5B4F8EFF536074A4 /* Pods.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.beta.xcconfig; path = "Pods/Target Support Files/Pods/Pods.beta.xcconfig"; sourceTree = "<group>"; };
-		83F9D57E1AD6FDE0000BCC77 /* ARLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocation.h; sourceTree = "<group>"; };
-		83F9D57F1AD6FDE0000BCC77 /* ARLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLocation.m; sourceTree = "<group>"; };
+		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
+		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		885DE1DBF1C1DB636BA9F61A /* Pods.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.store.xcconfig; path = "Pods/Target Support Files/Pods/Pods.store.xcconfig"; sourceTree = "<group>"; };
 		8A6745B7A19EEDA119AEA48E /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		8E3DD2A89F196F5E5BFB9689 /* Pods-Artsy Tests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.store.xcconfig"; sourceTree = "<group>"; };
@@ -2898,8 +2898,8 @@
 				342F9EF0AF8F712E38798AE8 /* MapFeature.h */,
 				609F985D1AC1054D0079FE21 /* PartnerShowCoordinates.h */,
 				609F985E1AC1054D0079FE21 /* PartnerShowCoordinates.m */,
-				83F9D57E1AD6FDE0000BCC77 /* ARLocation.h */,
-				83F9D57F1AD6FDE0000BCC77 /* ARLocation.m */,
+				83F9D57E1AD6FDE0000BCC77 /* Location.h */,
+				83F9D57F1AD6FDE0000BCC77 /* Location.m */,
 			);
 			name = "Partner Metadata";
 			sourceTree = "<group>";
@@ -4217,7 +4217,7 @@
 				60A224FC17CE040B00233CA1 /* AROnboardingTransition.m in Sources */,
 				6088B75417D1DBAC00E4BB67 /* ARAnalyticsConstants.m in Sources */,
 				3CF144AE18E460EF00B1A764 /* ArtsyAPI+SystemTime.m in Sources */,
-				83F9D5801AD6FDE0000BCC77 /* ARLocation.m in Sources */,
+				83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */,
 				49A77221165ADB6E00BC6FD3 /* ARFeedTimeline.m in Sources */,
 				49A77235165ADB9400BC6FD3 /* ARFeedItem.m in Sources */,
 				3CCCC88D1899657C008015DD /* ARFairPostsViewController.m in Sources */,

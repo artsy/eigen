@@ -76,7 +76,7 @@ static ARStandardDateFormatter *staticDateFormatter;
 
 + (NSValueTransformer *)locationJSONTransformer
 {
-    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[ARLocation class]];
+    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[Location class]];
 }
 
 + (NSValueTransformer *)coordinatesJSONTransformer
@@ -168,17 +168,12 @@ static ARStandardDateFormatter *staticDateFormatter;
     if (self.fair && self.locationInFair && ![self.locationInFair isEqualToString:@""]) {
         return [NSString stringWithFormat: @"%@, %@", ausstellungsdauer, self.locationInFair];
 
-    } else if (self.city && ![self.city isEqualToString:@""]) {
+    } else if (self.location.city && ![self.location.city isEqualToString:@""]) {
         return [NSString stringWithFormat: @"%@, %@", ausstellungsdauer, self.location.city];
 
     } else {
         return self.ausstellungsdauer;
     }
-}
-
-- (NSString *)city
-{
-    return self.location.city;
 }
 
 - (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
