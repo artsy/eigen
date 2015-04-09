@@ -4,27 +4,22 @@
 #import "ARFavoritesViewController.h"
 #import "ARAppSearchViewController.h"
 #import "ARHeroUnitsNetworkModel.h"
-#import "ARInternalMobileWebViewController.h"
+#import "ARTopMenuInternalMobileWebViewController.h"
 #import <SDWebImage/SDWebImagePrefetcher.h>
 
 static ARNavigationController *
-InternalWebViewNavigationControllerWithPath(NSString *path) {
+WebViewNavigationControllerWithPath(NSString *path) {
     NSURL *URL = [NSURL URLWithString:path];
-    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:URL];
+    ARTopMenuInternalMobileWebViewController *viewController = [[ARTopMenuInternalMobileWebViewController alloc] initWithURL:URL];
     return [[ARNavigationController alloc] initWithRootViewController:viewController];
 }
 
-// If the currently visible view is the root webview, reload it. This ensures that an existing view hierachy isn't
-// thrown out every time the user changes tabs, but that the user also has a way to effectively ‘reload’ a webview.
-// This is needed because there could have been a connectivity/server error at the time of loading and also because
-// content needs to be refreshable.
-//
 static ARNavigationController *
 RefreshedWebViewNavigationController(ARNavigationController *navigationController) {
     NSArray *viewControllers = navigationController.viewControllers;
-    ARInternalMobileWebViewController *rootViewController = (ARInternalMobileWebViewController *)viewControllers[0];
-    if (navigationController.visibleViewController == rootViewController) {
-        [rootViewController loadURL:rootViewController.currentURL];
+    ARTopMenuInternalMobileWebViewController *viewController = (ARTopMenuInternalMobileWebViewController *)viewControllers[0];
+    if (viewController.shouldBeReloaded) {
+        [viewController reload];
     }
     return navigationController;
 }
@@ -59,13 +54,13 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
     _showFeedViewController.heroUnitDatasource = [[ARHeroUnitsNetworkModel alloc] init];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:_showFeedViewController];
 
-    _showsNavigationController = InternalWebViewNavigationControllerWithPath(@"/shows");
+    _showsNavigationController = WebViewNavigationControllerWithPath(@"/shows");
 
     _browseViewController = [[ARBrowseViewController alloc] init];
     _browseViewController.networkModel = [[ARBrowseNetworkModel alloc] init];
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
 
-    _magazineNavigationController = InternalWebViewNavigationControllerWithPath(@"/magazine");
+    _magazineNavigationController = WebViewNavigationControllerWithPath(@"/magazine");
 
     return self;
 }
