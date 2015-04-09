@@ -7,6 +7,28 @@
 #import "ARInternalMobileWebViewController.h"
 #import <SDWebImage/SDWebImagePrefetcher.h>
 
+static ARNavigationController *
+InternalWebViewNavigationControllerWithPath(NSString *path) {
+    NSURL *URL = [NSURL URLWithString:path];
+    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:URL];
+    return [[ARNavigationController alloc] initWithRootViewController:viewController];
+}
+
+// If the currently visible view is the root webview, reload it. This ensures that an existing view hierachy isn't
+// thrown out every time the user changes tabs, but that the user also has a way to effectively ‘reload’ a webview.
+// This is needed because there could have been a connectivity/server error at the time of loading and also because
+// content needs to be refreshable.
+//
+static ARNavigationController *
+RefreshedWebViewNavigationController(ARNavigationController *navigationController) {
+    NSArray *viewControllers = navigationController.viewControllers;
+    ARInternalMobileWebViewController *rootViewController = (ARInternalMobileWebViewController *)viewControllers[0];
+    if (navigationController.visibleViewController == rootViewController) {
+        [rootViewController loadURL:rootViewController.currentURL];
+    }
+    return navigationController;
+}
+
 @interface ARTopMenuNavigationDataSource()
 
 @property (nonatomic, assign, readwrite) NSInteger currentIndex;
@@ -24,13 +46,6 @@
 
 @implementation ARTopMenuNavigationDataSource
 
-+ (ARNavigationController *)internalWebViewNavigationController:(NSString *)path;
-{
-    NSURL *URL = [NSURL URLWithString:path];
-    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:URL];
-    return [[ARNavigationController alloc] initWithRootViewController:viewController];
-}
-
 - (instancetype)init
 {
     self = [super init];
@@ -44,13 +59,13 @@
     _showFeedViewController.heroUnitDatasource = [[ARHeroUnitsNetworkModel alloc] init];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:_showFeedViewController];
 
-    _showsNavigationController = [self.class internalWebViewNavigationController:@"/shows"];
+    _showsNavigationController = InternalWebViewNavigationControllerWithPath(@"/shows");
 
     _browseViewController = [[ARBrowseViewController alloc] init];
     _browseViewController.networkModel = [[ARBrowseNetworkModel alloc] init];
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
 
-    _magazineNavigationController = [self.class internalWebViewNavigationController:@"/articles"];
+    _magazineNavigationController = InternalWebViewNavigationControllerWithPath(@"/magazine");
 
     return self;
 }
@@ -104,11 +119,11 @@
         case ARTopTabControllerIndexFeed:
             return self.feedNavigationController;
         case ARTopTabControllerIndexShows:
-            return self.showsNavigationController;
+            return RefreshedWebViewNavigationController(self.showsNavigationController);
         case ARTopTabControllerIndexBrowse:
             return self.browseNavigationController;
         case ARTopTabControllerIndexMagazine:
-            return self.magazineNavigationController;
+            return RefreshedWebViewNavigationController(self.magazineNavigationController);
         case ARTopTabControllerIndexFavorites:
             return self.favoritesNavigationController;
     }
