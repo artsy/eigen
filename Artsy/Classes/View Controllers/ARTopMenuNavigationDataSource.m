@@ -60,7 +60,7 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
     _browseViewController.networkModel = [[ARBrowseNetworkModel alloc] init];
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
 
-    _magazineNavigationController = WebViewNavigationControllerWithPath(@"/magazine");
+    _magazineNavigationController = WebViewNavigationControllerWithPath(@"/articles");
 
     return self;
 }
