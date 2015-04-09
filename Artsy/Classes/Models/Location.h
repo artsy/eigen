@@ -1,4 +1,4 @@
-@interface ARLocation : MTLModel<MTLJSONSerializing>
+@interface Location : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *name;
 
@@ -11,5 +11,7 @@
 @property (nonatomic, copy, readonly) NSString *phone;
 
 @property (nonatomic, readonly) BOOL publiclyViewable;
+
+- (NSString *)addressAndCity;
 
 @end

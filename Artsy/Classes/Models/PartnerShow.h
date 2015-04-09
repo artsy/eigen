@@ -1,11 +1,12 @@
 #import "ARShareableObject.h"
 
-@class Partner, Fair, MapPoint, PartnerShowFairLocation, PartnerShowCoordinates, ARLocation;
+@class Partner, Fair, MapPoint, PartnerShowFairLocation, PartnerShowCoordinates, Location;
 
 @interface PartnerShow : MTLModel <MTLJSONSerializing, ARShareableObject>
 
 @property (nonatomic, strong, readonly) Partner *partner;
 @property (nonatomic, strong, readonly) Fair *fair;
+@property (nonatomic, strong, readonly) Location *location;
 
 @property (nonatomic, copy, readonly) NSString *showID;
 
@@ -21,9 +22,7 @@
 @property (nonatomic, readonly) NSDate *startDate;
 @property (nonatomic, readonly) NSDate *endDate;
 
-@property (nonatomic, copy, readonly) ARLocation *location;
 @property (nonatomic, copy, readonly) NSString *locationInFair;
-@property (nonatomic, copy, readonly) NSString *city;
 
 @property (nonatomic, strong, readonly) PartnerShowFairLocation *fairLocation;
 @property (nonatomic, strong, readonly) PartnerShowCoordinates *coordinates;
@@ -39,7 +38,7 @@
 /// A string with the date range for the show, or corrosponding fair
 - (NSString *)ausstellungsdauer;
 
-/// A useful method for date range and city
+/// A useful method for date range and location (either the city or the fair booth location)
 - (NSString *)ausstellungsdauerAndLocation;
 
 - (BOOL)hasMapLocation;
