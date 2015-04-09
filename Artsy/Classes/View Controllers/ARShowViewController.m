@@ -280,7 +280,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     ARSerifLabel *locationAddress = [[ARSerifLabel alloc] init];
     locationAddress.textColor = [UIColor artsyHeavyGrey];
     locationAddress.font = [UIFont serifFontWithSize:14];
-    locationAddress.text = self.show.location;
+    locationAddress.text = self.show.location.streetAddress;
     locationAddress.tag = ARFairShowViewLocationAddress;
     [self.view.stackView addSubview:locationAddress withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
     
