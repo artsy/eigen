@@ -10,7 +10,7 @@
 @end
 
 @interface ARInternalMobileWebViewController() <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
-@property (nonatomic, readonly, assign) BOOL loaded;
+@property (nonatomic, assign) BOOL loaded;
 @property (nonatomic, readonly, strong) ARInternalShareValidator *shareValidator;
 
 @end
@@ -57,6 +57,13 @@
 
     ARInfoLog(@"Initialized with URL %@", url);
     return self;
+}
+
+- (void)loadURL:(NSURL *)url
+{
+    self.loaded = NO;
+    [self showLoading];
+    [super loadURL:url];
 }
 
 - (void)viewWillAppear:(BOOL)animated
