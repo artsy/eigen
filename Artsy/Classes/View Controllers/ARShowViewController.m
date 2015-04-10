@@ -19,7 +19,7 @@ NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewActionButtons,
     ARFairShowViewPartnerLabel,
     ARFairShowViewPartnerLabelFollowButton,
-    ARFairShowViewPartnerName,
+    ARFairShowViewShowName,
     ARFairShowViewAusstellungsdauer,
     ARFairShowViewBoothLocation,
     ARFairShowViewLocationAddress,
@@ -266,41 +266,44 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 - (void)addPartnerMetadataToStack
 {
-    ARItalicsSerifLabelWithChevron *partnerName = [[ARItalicsSerifLabelWithChevron alloc] init];
-    partnerName.tag = ARFairShowViewPartnerName;
-    partnerName.font = [UIFont serifFontWithSize:16];
-    partnerName.text = self.show.fair ? self.show.fair.name : self.show.name;
-    [self.view.stackView addSubview:partnerName withTopMargin:@"10" sideMargin:[self sideMarginPredicate]];
+    ARItalicsSerifLabelWithChevron *showName = [[ARItalicsSerifLabelWithChevron alloc] init];
+    showName.tag = ARFairShowViewShowName;
+    showName.font = [UIFont serifFontWithSize:16];
+    showName.text = self.show.fair ? self.show.fair.name : self.show.name;
+    [self.view.stackView addSubview:showName withTopMargin:@"10" sideMargin:[self sideMarginPredicate]];
     
     ARSerifLabel *ausstellungsdauer = [self metadataLabel:self.show.ausstellungsdauer];
     ausstellungsdauer.tag = ARFairShowViewAusstellungsdauer;
     [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
     
-    // if the show is in a fair, add booth location. if it's not, add the show location (if publicly available) and description
+    // if the show is in a fair, add booth location & chevron. if it's not, add the show location (if publicly available) and description
     if (self.show.fair) {
-        BOOL isNotCurrentFairContext = self.show.fair && !self.fair;
-        if (isNotCurrentFairContext) {
-            partnerName.userInteractionEnabled = YES;
-            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openShowFair:)];
-            [partnerName addGestureRecognizer:tapGesture];
-            partnerName.chevronHidden = NO;
-        } else {
-            partnerName.chevronHidden = YES;
-        }
+        showName.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openShowFair:)];
+        [showName addGestureRecognizer:tapGesture];
+        showName.chevronHidden = NO;
+
         ARSerifLabel *boothLocation = [self metadataLabel:self.show.locationInFair];
         boothLocation.tag = ARFairShowViewBoothLocation;
-        [self.view.stackView addSubview:boothLocation withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
+        [self.view.stackView addSubview:boothLocation withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
     }
     else {
+        showName.chevronHidden = YES;
+        
         if (self.show.location.publiclyViewable) {
             ARSerifLabel *addressLabel = [self metadataLabel:self.show.location.addressAndCity];
             addressLabel.tag = ARFairShowViewLocationAddress;
-            [self.view.stackView addSubview:[self metadataLabel:self.show.location.addressAndCity] withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
+            [self.view.stackView addSubview:addressLabel withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
         }
-        ARSerifLabel *descriptionLabel = [self metadataLabel:self.show.officialDescription];
-        descriptionLabel.tag = ARFairShowViewDescription;
-        descriptionLabel.textColor = [UIColor blackColor];
-        [self.view.stackView addSubview:descriptionLabel withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
+        
+        if (self.show.officialDescription) {
+            ARSerifLineHeightLabel *descriptionLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:5];
+            descriptionLabel.tag = ARFairShowViewDescription;
+            descriptionLabel.textColor = [UIColor blackColor];
+            descriptionLabel.font = [UIFont serifFontWithSize:14];
+            descriptionLabel.text = self.show.officialDescription;
+            [self.view.stackView addSubview:descriptionLabel withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
+        }
     }
 }
 
