@@ -1,5 +1,6 @@
 ## 1.8.0 (01/04/2015)
 
+* Make Fairs with a FairOrganizer ( e.g. fairs we've worked with for multiple years ) go to martsy instead of native - orta
 * Fix a crash when swiping through artworks that have Markdown content - alloy
 * Fix the formatting of title strings when title is absent but date is present - 1aurabrown
 * Update the display of show header images to fit instead of fill - 1aurabrown
