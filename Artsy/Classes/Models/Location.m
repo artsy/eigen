@@ -16,7 +16,10 @@
 }
 
 - (NSString *)addressAndCity {
-    return [NSString stringWithFormat:@"%@, %@", self.streetAddress, self.city];
+    if (self.streetAddress && self.city) {
+        return [NSString stringWithFormat:@"%@, %@", self.streetAddress, self.city];
+    }
+    return @"";
 }
 
 @end
