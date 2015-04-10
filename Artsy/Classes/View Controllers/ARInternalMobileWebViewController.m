@@ -58,6 +58,17 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.scrollView.delegate = self;
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return nil;
+}
+
 - (void)loadURL:(NSURL *)url
 {
     self.loaded = NO;
