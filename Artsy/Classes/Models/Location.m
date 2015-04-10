@@ -7,7 +7,6 @@
     return @{
              @keypath(Location.new, streetAddress) : @"address",
              @keypath(Location.new, postalCode) : @"postal_code",
-             @keypath(Location.new, streetAddress) : @"address",
              @keypath(Location.new, publiclyViewable) : @"publicly_viewable",
     };
 }
