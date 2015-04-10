@@ -208,7 +208,7 @@
 {
     CGFloat width = scrollView.frame.size.width;
     CGFloat offset = scrollView.contentOffset.x;
-    CGFloat shiftFactor = fabsf(offset - width) / width;
+    CGFloat shiftFactor = fabs(offset - width) / width;
 
     if (offset < width) {
         [self.imageView down:shiftFactor];

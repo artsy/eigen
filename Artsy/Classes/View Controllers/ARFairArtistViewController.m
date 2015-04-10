@@ -32,6 +32,8 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
 @implementation ARFairArtistViewController
 
+@dynamic view;
+
 - (instancetype)init
 {
     self = [super init];

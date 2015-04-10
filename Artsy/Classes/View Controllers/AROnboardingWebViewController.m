@@ -101,7 +101,7 @@ typedef NS_ENUM(NSInteger, ARScrollState) {
     }
     self.lastY = MAX(nextY, 0);
 
-    *delta = fabsf(nextY - self.initialY);
+    *delta = fabs(nextY - self.initialY);
 
     if (self.scrollState != nextState) {
         self.scrollState = nextState;

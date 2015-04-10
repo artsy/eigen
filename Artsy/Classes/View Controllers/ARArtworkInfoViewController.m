@@ -9,6 +9,8 @@
 
 @implementation ARArtworkInfoViewController
 
+@dynamic view;
+
 - (instancetype)initWithArtwork:(Artwork *)artwork
 {
     self = [super init];
