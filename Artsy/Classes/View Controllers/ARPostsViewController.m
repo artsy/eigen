@@ -8,6 +8,8 @@
 
 @implementation ARPostsViewController
 
+@dynamic view;
+
 - (void)loadView
 {
     self.view = [[ORStackView alloc] init];

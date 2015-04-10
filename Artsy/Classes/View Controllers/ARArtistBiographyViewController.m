@@ -10,6 +10,8 @@
 
 @implementation ARArtistBiographyViewController
 
+@dynamic view;
+
 - (instancetype)initWithArtist:(Artist *)artist
 {
     self = [super init];

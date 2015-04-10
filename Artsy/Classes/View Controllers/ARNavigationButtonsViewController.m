@@ -14,6 +14,8 @@ NSString * const ARNavigationButtonPropertiesKey = @"ARNavigationButtonPropertie
 
 @implementation ARNavigationButtonsViewController
 
+@dynamic view;
+
 - (id)init
 {
     self = [super init];

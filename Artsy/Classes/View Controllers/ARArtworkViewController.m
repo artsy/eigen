@@ -15,6 +15,8 @@
 
 @implementation ARArtworkViewController
 
+@dynamic view;
+
 - (void)dealloc;
 {
     if (self.isViewLoaded) {

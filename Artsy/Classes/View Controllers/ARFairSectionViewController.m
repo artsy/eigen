@@ -7,6 +7,8 @@
 
 @implementation ARFairSectionViewController
 
+@dynamic view;
+
 - (instancetype)initWithFair:(Fair *)fair
 {
     self = [super init];
