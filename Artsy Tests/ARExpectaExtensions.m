@@ -20,7 +20,7 @@ void _itTestsAsyncronouslyWithDevicesRecording(id self, int lineNumber, const ch
             snapshot(sut, @" as iphone");
         }
         @catch (NSException *exception) {
-            NSLog(@"Device snapshot failure");
+            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as iphone"]]);
         }
         @finally {
             [ARTestContext stopStubbing];
@@ -34,7 +34,7 @@ void _itTestsAsyncronouslyWithDevicesRecording(id self, int lineNumber, const ch
             snapshot(sut, @" as ipad");
         }
         @catch (NSException *exception) {
-            NSLog(@"Device snapshot failure");
+            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as ipad"]]);
         }
         @finally {
             [ARTestContext stopStubbing];
@@ -62,7 +62,7 @@ void _itTestsSyncronouslyWithDevicesRecording(id self, int lineNumber, const cha
             snapshot(sut, @" as iphone");
         }
         @catch (NSException *exception) {
-            NSLog(@"Device snapshot failure");
+            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as iphone"]]);
         }
         @finally {
             [ARTestContext stopStubbing];
@@ -76,7 +76,7 @@ void _itTestsSyncronouslyWithDevicesRecording(id self, int lineNumber, const cha
             snapshot(sut, @" as ipad");
         }
         @catch (NSException *exception) {
-            NSLog(@"Device snapshot failure");
+            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as ipad"]]);
         }
         @finally {
             [ARTestContext stopStubbing];
