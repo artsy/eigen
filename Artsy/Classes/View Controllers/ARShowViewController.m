@@ -268,7 +268,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 {
     ARItalicsSerifLabelWithChevron *partnerName = [[ARItalicsSerifLabelWithChevron alloc] init];
     partnerName.tag = ARFairShowViewPartnerName;
-    partnerName.font = [UIFont serifFontWithSize:15];
+    partnerName.font = [UIFont serifFontWithSize:16];
     partnerName.text = self.show.fair ? self.show.fair.name : self.show.name;
     [self.view.stackView addSubview:partnerName withTopMargin:@"10" sideMargin:[self sideMarginPredicate]];
     [self.view.stackView addSubview:[self ausstellungsdauerLabel] withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
@@ -298,7 +298,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 {
     ARSerifLabel *location = [[ARSerifLabel alloc] init];
     location.textColor = [UIColor artsyHeavyGrey];
-    location.font = [UIFont serifFontWithSize:15];
+    location.font = [UIFont serifFontWithSize:14];
     location.text = self.show.location.addressAndCity;
     location.tag = ARFairShowViewLocationAddress;
     return location;
@@ -308,17 +308,17 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 {
     ARSerifLabel *ausstellungsdauer = [[ARSerifLabel alloc] init];
     ausstellungsdauer.textColor = [UIColor artsyHeavyGrey];
-    ausstellungsdauer.font = [UIFont serifFontWithSize:15];
+    ausstellungsdauer.font = [UIFont serifFontWithSize:14];
     ausstellungsdauer.text = self.show.ausstellungsdauer;
     ausstellungsdauer.tag = ARFairShowViewAusstellungsdauer;
     return ausstellungsdauer;
 }
 
-- (ARSerifLabel *)showDescriptionLabel
+- (ARSerifLineHeightLabel *)showDescriptionLabel
 {
-    ARSerifLabel *description = [[ARSerifLabel alloc] init];
+    ARSerifLineHeightLabel *description = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:5];
     description.textColor = [UIColor blackColor];
-    description.font = [UIFont serifFontWithSize:15];
+    description.font = [UIFont serifFontWithSize:14];
     description.text = self.show.officialDescription;
     description.tag = ARFairShowDescription;
     return description;
@@ -329,7 +329,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     ARSerifLabel *boothLocation = [[ARSerifLabel alloc] init];
     boothLocation.tag = ARFairShowViewBoothLocation;
     boothLocation.textColor = [UIColor artsyHeavyGrey];
-    boothLocation.font = [UIFont serifFontWithSize:15];
+    boothLocation.font = [UIFont serifFontWithSize:14];
     boothLocation.text = self.show.locationInFair;
     return boothLocation;
 }
