@@ -48,16 +48,7 @@
 
     [ArtsyAPI getProfileForProfileID:self.profileID success:^(Profile *profile) {
 
-        if ([profile.profileOwner isKindOfClass:[FairOrganizer class]] && ![UIDevice isPad]) {
-            NSString * defaultFairID = ((FairOrganizer *) profile.profileOwner).defaultFairID;
-            Fair *fair = [[Fair alloc] initWithFairID:defaultFairID];
-
-            ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:fair andProfile:profile];
-
-            RAC(self, hidesBackButton) = RACObserve(viewController, hidesBackButton);
-
-            [self showViewController:viewController];
-        } else if ([profile.profileOwner isKindOfClass:[Fair class]] && ![UIDevice isPad]) {
+        if ([profile.profileOwner isKindOfClass:[Fair class]] && ![UIDevice isPad]) {
             NSString * fairID = ((Fair *) profile.profileOwner).fairID;
             Fair *fair = [[Fair alloc] initWithFairID:fairID];
 

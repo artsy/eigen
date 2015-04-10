@@ -284,13 +284,23 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
         [ARTrialController presentTrialWithContext:ARTrialContextShowingFavorites fromTarget:self selector:@selector(userDidSignUp)];
         return NO;
     }
+
+    // Remove any existing x-callback-url actions if you change tabs or pop to the root.
+
+    [ARTopMenuViewController sharedController].backButtonCallbackManager = nil;
+
     if (index == _selectedTabIndex) {
+
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
+
         if (controller.viewControllers.count == 1) {
+
             if (index == ARTopTabControllerIndexSearch) {
                 [self returnToPreviousTab];
+
             } else {
                 UIScrollView *scrollView = nil;
+
                 if (index == ARTopTabControllerIndexFeed) {
                     scrollView = [(ARShowFeedViewController *)[controller.childViewControllers objectAtIndex:0] tableView];
                 } else if (index == ARTopTabControllerIndexBrowse) {
@@ -298,11 +308,14 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
                 } else if (index == ARTopTabControllerIndexFavorites) {
                     scrollView = [(ARFavoritesViewController *)[controller.childViewControllers objectAtIndex:0] collectionView];
                 }
+
                 [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x, -scrollView.contentInset.top) animated:YES];
             }
+
         } else {
             [controller popToRootViewControllerAnimated:YES];
         }
+
         return NO;
     }
 

@@ -34,7 +34,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.8.0</string>
+	<string>1.8.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -51,6 +51,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>artsy</string>
+				<string>artsy-x-callback-url</string>
 			</array>
 		</dict>
 		<dict>
@@ -63,15 +64,15 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2015.03.06</string>
+	<string>2015.04.03</string>
 	<key>FacebookAppID</key>
 	<string>308278682573501</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>GITCommitRev</key>
-	<string>13f13e2</string>
+	<string>9a44530</string>
 	<key>GITCommitSha</key>
-	<string>13f13e2baa8b8771a9387e439366246563e7d61c</string>
+	<string>9a44530f66c06f740edccd173328825ecc08ed58</string>
 	<key>GITRemoteOriginURL</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>

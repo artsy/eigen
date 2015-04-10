@@ -81,7 +81,7 @@ set_git_properties:
 	$(PLIST_BUDDY) -c "Set GITRemoteOriginURL $(GIT_REMOTE_ORIGIN_URL)" $(APP_PLIST)
 
 set_targeted_device_family:
-	perl -pi -w -e "s{TARGETED_DEVICE_FAMILY = .*}{TARGETED_DEVICE_FAMILY = $(TARGETED_DEVICE_FAMILY);}g" Artsy.xcodeproj/project.pbxproj
+	perl -pi -w -e "s{TARGETED_DEVICE_FAMILY = \"?[1,2]+\"?;}{TARGETED_DEVICE_FAMILY = $(TARGETED_DEVICE_FAMILY);}g" Artsy.xcodeproj/project.pbxproj
 
 distribute:
 	./config/generate_changelog_short.rb
