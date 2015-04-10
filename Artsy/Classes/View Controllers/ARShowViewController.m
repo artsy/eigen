@@ -23,7 +23,7 @@ NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewAusstellungsdauer,
     ARFairShowViewBoothLocation,
     ARFairShowViewLocationAddress,
-    ARFairShowDescription,
+    ARFairShowViewDescription,
     ARFairShowViewMapPreview,
     ARFairShowViewFollowPartner,
     ARFairShowViewWhitespaceAboveArtworks,
@@ -271,7 +271,10 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     partnerName.font = [UIFont serifFontWithSize:16];
     partnerName.text = self.show.fair ? self.show.fair.name : self.show.name;
     [self.view.stackView addSubview:partnerName withTopMargin:@"10" sideMargin:[self sideMarginPredicate]];
-    [self.view.stackView addSubview:[self ausstellungsdauerLabel] withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
+    
+    ARSerifLabel *ausstellungsdauer = [self metadataLabel:self.show.ausstellungsdauer];
+    ausstellungsdauer.tag = ARFairShowViewAusstellungsdauer;
+    [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
     
     // if the show is in a fair, add booth location. if it's not, add the show location (if publicly available) and description
     if (self.show.fair) {
@@ -284,54 +287,30 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         } else {
             partnerName.chevronHidden = YES;
         }
-        [self.view.stackView addSubview:[self boothLocationLabel] withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
+        ARSerifLabel *boothLocation = [self metadataLabel:self.show.locationInFair];
+        boothLocation.tag = ARFairShowViewBoothLocation;
+        [self.view.stackView addSubview:boothLocation withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
     }
     else {
         if (self.show.location.publiclyViewable) {
-            [self.view.stackView addSubview:[self locationLabel] withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
+            ARSerifLabel *addressLabel = [self metadataLabel:self.show.location.addressAndCity];
+            addressLabel.tag = ARFairShowViewLocationAddress;
+            [self.view.stackView addSubview:[self metadataLabel:self.show.location.addressAndCity] withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
         }
-        [self.view.stackView addSubview:[self showDescriptionLabel] withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
+        ARSerifLabel *descriptionLabel = [self metadataLabel:self.show.officialDescription];
+        descriptionLabel.tag = ARFairShowViewDescription;
+        descriptionLabel.textColor = [UIColor blackColor];
+        [self.view.stackView addSubview:descriptionLabel withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
     }
 }
 
-- (ARSerifLabel *)locationLabel
+- (ARSerifLabel *)metadataLabel:(NSString *)text
 {
-    ARSerifLabel *location = [[ARSerifLabel alloc] init];
-    location.textColor = [UIColor artsyHeavyGrey];
-    location.font = [UIFont serifFontWithSize:14];
-    location.text = self.show.location.addressAndCity;
-    location.tag = ARFairShowViewLocationAddress;
-    return location;
-}
-
-- (ARSerifLabel *)ausstellungsdauerLabel
-{
-    ARSerifLabel *ausstellungsdauer = [[ARSerifLabel alloc] init];
-    ausstellungsdauer.textColor = [UIColor artsyHeavyGrey];
-    ausstellungsdauer.font = [UIFont serifFontWithSize:14];
-    ausstellungsdauer.text = self.show.ausstellungsdauer;
-    ausstellungsdauer.tag = ARFairShowViewAusstellungsdauer;
-    return ausstellungsdauer;
-}
-
-- (ARSerifLineHeightLabel *)showDescriptionLabel
-{
-    ARSerifLineHeightLabel *description = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:5];
-    description.textColor = [UIColor blackColor];
-    description.font = [UIFont serifFontWithSize:14];
-    description.text = self.show.officialDescription;
-    description.tag = ARFairShowDescription;
-    return description;
-}
-
-- (ARSerifLabel *)boothLocationLabel
-{
-    ARSerifLabel *boothLocation = [[ARSerifLabel alloc] init];
-    boothLocation.tag = ARFairShowViewBoothLocation;
-    boothLocation.textColor = [UIColor artsyHeavyGrey];
-    boothLocation.font = [UIFont serifFontWithSize:14];
-    boothLocation.text = self.show.locationInFair;
-    return boothLocation;
+    ARSerifLabel *label = [[ARSerifLabel alloc] init];
+    label.textColor = [UIColor artsyHeavyGrey];
+    label.font = [UIFont serifFontWithSize:14];
+    label.text = text;
+    return label;
 }
 
 - (void)openShowFair:(id)sender
