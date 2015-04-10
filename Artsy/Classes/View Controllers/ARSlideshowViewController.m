@@ -9,6 +9,8 @@
 
 @implementation ARSlideshowViewController
 
+@dynamic view;
+
 - (instancetype)initWithSlides:(NSArray *)slides
 {
     self = [super init];

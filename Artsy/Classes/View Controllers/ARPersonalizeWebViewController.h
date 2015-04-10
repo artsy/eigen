@@ -1,10 +1,10 @@
 #import "ARInternalMobileWebViewController.h"
 
-@protocol ARPersonalizeWebViewControllerDelegate <NSObject>
+@protocol ARPersonalizeWebViewControllerDelegate <NSObject, TSMiniWebBrowserDelegate>
 - (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount;
 - (void)webOnboardingDone;
 @end
 
 @interface ARPersonalizeWebViewController : ARInternalMobileWebViewController
-@property (nonatomic, weak) id <ARPersonalizeWebViewControllerDelegate> delegate;
+@property (atomic, weak) id <ARPersonalizeWebViewControllerDelegate> delegate;
 @end

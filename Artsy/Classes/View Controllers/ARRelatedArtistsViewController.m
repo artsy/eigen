@@ -13,6 +13,8 @@
 
 @implementation ARRelatedArtistsViewController
 
+@dynamic view;
+
 - (instancetype)initWithFair:(Fair *)fair {
     self = [super init];
     if (!self) { return nil; }

@@ -10,6 +10,8 @@
 
 @implementation ARBrowseCategoriesViewController
 
+@dynamic view;
+
 - (instancetype)init
 {
     self = [super init];

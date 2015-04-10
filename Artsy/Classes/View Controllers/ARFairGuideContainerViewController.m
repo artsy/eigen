@@ -32,6 +32,8 @@
 
 @implementation ARFairGuideContainerViewController
 
+@dynamic parentViewController;
+
 const CGFloat kClosedMapHeight = 180.0f;
 
 - (instancetype)initWithFair:(Fair *)fair
@@ -253,7 +255,7 @@ const CGFloat kClosedMapHeight = 180.0f;
         // We check for oldTopHeight != 0 to prevent the controller from executing this branch when beginning to scroll down from contentOffset.y ~= 0. 
         CGFloat heightRatio = ((contentOffset.y + kClosedMapHeight)/kClosedMapHeight) / 2.0;
         [self.fairMapViewController centerMap:heightRatio inFrameOfHeight:kClosedMapHeight animated:NO];
-        self.fairBackgroundViewTopLayoutConstraint.constant = fabsf(contentOffset.y) + kClosedMapHeight;
+        self.fairBackgroundViewTopLayoutConstraint.constant = fabs(contentOffset.y) + kClosedMapHeight;
         updateConstraints();
     }
   }
