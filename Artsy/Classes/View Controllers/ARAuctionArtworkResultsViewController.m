@@ -38,12 +38,11 @@ static const NSInteger ARArtworkIndex = 0;
 
 - (UIView *)createWarningView
 {
-    CGFloat bottomMargin = 12;
-    UIView *container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 88 + bottomMargin)];
-    UILabel *warning = [[ARWarningView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 88)];
-    warning.text = @"Note: Auction results are an \nexperimental feature with\n limited data.";
+    UIView *container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100)];
+    UILabel *warning = [[ARWarningView alloc] initWithFrame:CGRectZero];
+    warning.text = @"Note: Auction results are an experimental feature with limited data.";
     [container addSubview:warning];
-    [warning alignToView:container];
+    [warning alignTop:@"0" leading:@"0" bottom:@"-12" trailing:@"0" toView:container];
 
     return container;
 }
