@@ -4729,6 +4729,7 @@
 				OTHER_CFLAGS = "-DAR_SHOW_ALL_DEBUG=1";
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -4753,6 +4754,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "014f37c9-e744-4bf5-a4f1-ab28d3755805";
 				RUN_CLANG_STATIC_ANALYZER = NO;
+				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Beta;
@@ -5208,6 +5210,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "a947500d-6376-41ca-b4f7-12ef34f2459f";
 				RUN_CLANG_STATIC_ANALYZER = NO;
+				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Demo;
@@ -5271,7 +5274,7 @@
 			baseConfigurationReference = 3E944480103FA2476C7049C2 /* Pods-Artsy Tests.demo.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5286,11 +5289,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
@@ -5303,9 +5301,8 @@
 				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
-				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Demo;
@@ -5331,6 +5328,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "049e1a3a-52f3-41da-b341-ae36edc7fe17";
 				RUN_CLANG_STATIC_ANALYZER = NO;
+				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Store;
@@ -5392,7 +5390,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A6745B7A19EEDA119AEA48E /* Pods-Artsy Tests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -5400,12 +5398,6 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(DEVELOPER_DIR)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5420,8 +5412,7 @@
 				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				VALID_ARCHS = "arm64 armv7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -5431,7 +5422,7 @@
 			baseConfigurationReference = 1A25A9493C56A91CDFB95D0B /* Pods-Artsy Tests.beta.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5446,11 +5437,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
@@ -5467,9 +5453,8 @@
 				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
-				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Beta;
@@ -5479,7 +5464,7 @@
 			baseConfigurationReference = 8E3DD2A89F196F5E5BFB9689 /* Pods-Artsy Tests.store.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5494,11 +5479,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
@@ -5511,9 +5491,8 @@
 				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
-				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Store;
