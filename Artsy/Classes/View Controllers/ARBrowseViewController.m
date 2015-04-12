@@ -18,7 +18,7 @@
 
 /////////////////
 
-@interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong, readwrite) NSArray *menuLinks;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
@@ -44,25 +44,94 @@
     [super viewDidLoad];
 }
 
+- (CGFloat)itemMargin
+{
+    return [UIDevice isPad] ? 20 : 16;
+}
+
+- (NSInteger)numberOfColumnsForInterfaceOrientation:(UIInterfaceOrientation)orientation
+{
+    if ([UIDevice isPad]) {
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            return 3;
+        } else {
+            return 2;
+        }
+    } else {
+        return 1;
+    }
+}
+
+- (CGFloat)collectionViewInsetMargin
+{
+    return [UIDevice isPad] ? 40 : 22;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context){
+         [self.collectionView.collectionViewLayout invalidateLayout];
+     } completion:nil];
+
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+}
+
 - (void)setupCollectionView
 {
-    CGFloat margin = 20;
-    CGFloat width = self.view.frame.size.width - (2 * margin);
-
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(width, width * 0.625);
-    layout.minimumLineSpacing = 13;
-    layout.sectionInset = UIEdgeInsetsMake(margin, margin, margin, margin);
 
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.backgroundColor = [UIColor whiteColor];
-
+    [self.collectionView.collectionViewLayout invalidateLayout];
     [self.view addSubview:collectionView];
 
     [collectionView alignToView:self.view];
     _collectionView = collectionView;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return [self itemMargin];
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return [self itemMargin];
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    CGFloat margin = self.collectionViewInsetMargin;
+    return UIEdgeInsetsMake(margin, margin, margin, margin);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger numberOfColumns = numberOfColumns = [self numberOfColumnsForInterfaceOrientation:self.interfaceOrientation];
+    NSInteger numberOfMargins = numberOfColumns - 1;
+    CGFloat totalMarginsWidth = (numberOfMargins * self.itemMargin) + (2 * self.collectionViewInsetMargin);
+
+    CGFloat collectionViewWidth = self.view.frame.size.width;
+    CGFloat cellWidth = (collectionViewWidth - totalMarginsWidth)/(float)numberOfColumns;
+
+    CGFloat heightToWidthFactor;
+
+    if ([UIDevice isPhone]) {
+        heightToWidthFactor = .597;
+    } else {
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            heightToWidthFactor = 1;
+        } else {
+            heightToWidthFactor = .8358;
+        }
+    }
+
+    CGFloat cellHeight = cellWidth * heightToWidthFactor;
+    return CGSizeMake(cellWidth, cellHeight);
 }
 
 - (NSArray *)menuLinks
@@ -70,7 +139,7 @@
     return self.networkModel.links;
 }
 
-#pragma mark - UITableViewDelegate
+#pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
