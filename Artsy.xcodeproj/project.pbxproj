@@ -288,6 +288,7 @@
 		6044CFC4179D64F500CE4132 /* Theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 6044CFC3179D64F500CE4132 /* Theme.json */; };
 		6044CFC8179DD3C200CE4132 /* ARTheme+HeightAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */; };
 		6044E545176E165600075B15 /* ARShowFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044E544176E165600075B15 /* ARShowFeedViewController.m */; };
+		60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60476F4B1AD87DB200670502 /* UIKit.framework */; };
 		605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */; };
 		605002E917D9F5DC00C090B8 /* SmallMoreVerticalArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */; };
 		605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */; };
@@ -460,9 +461,7 @@
 		B3BD12DA17F22370002CA230 /* fbs in Resources */ = {isa = PBXBuildFile; fileRef = B3BD12D817F22370002CA230 /* fbs */; };
 		B3DDE9C118313C7C0012819F /* ARArtworkAuctionPriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3DDE9C018313C7C0012819F /* ARArtworkAuctionPriceView.m */; };
 		B3DDE9C418313CFF0012819F /* ARArtworkPriceRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3DDE9C318313CFF0012819F /* ARArtworkPriceRowView.m */; };
-		B3ECE8281819D1E6009F5C5B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3ECE8271819D1E6009F5C5B /* XCTest.framework */; };
 		B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BA7E051655ABE600C06572 /* Foundation.framework */; };
-		B3ECE82A1819D1E6009F5C5B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BA7E031655ABE600C06572 /* UIKit.framework */; };
 		B3ECE8301819D1E6009F5C5B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B3ECE82E1819D1E6009F5C5B /* InfoPlist.strings */; };
 		B3ECE83C1819D1FD009F5C5B /* SaleArtworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B3ECE83B1819D1FD009F5C5B /* SaleArtworkTests.m */; };
 		B3EFC6391815B41C00F23540 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EFC6381815B41C00F23540 /* BidderPosition.m */; };
@@ -1104,6 +1103,7 @@
 		6044E543176E165600075B15 /* ARShowFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARShowFeedViewController.h; sourceTree = "<group>"; };
 		6044E544176E165600075B15 /* ARShowFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShowFeedViewController.m; sourceTree = "<group>"; };
 		60466F761A698B96004CAA93 /* BETA_CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = BETA_CHANGELOG.md; sourceTree = "<group>"; };
+		60476F4B1AD87DB200670502 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Artwork_Icon_Share@2x.png"; sourceTree = "<group>"; };
 		605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallMoreVerticalArrow.png; sourceTree = "<group>"; };
 		605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SmallMoreVerticalArrow@2x.png"; sourceTree = "<group>"; };
@@ -1597,8 +1597,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3ECE8281819D1E6009F5C5B /* XCTest.framework in Frameworks */,
-				B3ECE82A1819D1E6009F5C5B /* UIKit.framework in Frameworks */,
+				60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */,
 				B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */,
 				DCA78A9CCA74D94C34C35156 /* libPods-Artsy Tests.a in Frameworks */,
 			);
@@ -2394,6 +2393,7 @@
 		49BA7E021655ABE600C06572 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				60476F4B1AD87DB200670502 /* UIKit.framework */,
 				60935A451A69CFEE00129CE1 /* WebKit.framework */,
 				60892CEC16B9A849004C1B47 /* Accelerate.framework */,
 				494F16BC17BEDA8E00204F1D /* Accounts.framework */,
@@ -4729,7 +4729,6 @@
 				OTHER_CFLAGS = "-DAR_SHOW_ALL_DEBUG=1";
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -4754,7 +4753,6 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "014f37c9-e744-4bf5-a4f1-ab28d3755805";
 				RUN_CLANG_STATIC_ANALYZER = NO;
-				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Beta;
@@ -4807,8 +4805,8 @@
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4861,8 +4859,8 @@
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Beta;
@@ -4899,6 +4897,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Artsy/Classes/Utils";
 			};
@@ -5063,6 +5062,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
 				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
@@ -5212,7 +5212,6 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "a947500d-6376-41ca-b4f7-12ef34f2459f";
 				RUN_CLANG_STATIC_ANALYZER = NO;
-				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Demo;
@@ -5267,8 +5266,8 @@
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Demo;
@@ -5312,6 +5311,7 @@
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_PRODUCT = NO;
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Demo;
@@ -5337,7 +5337,6 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "049e1a3a-52f3-41da-b341-ae36edc7fe17";
 				RUN_CLANG_STATIC_ANALYZER = NO;
-				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Store;
@@ -5391,8 +5390,8 @@
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Store;
@@ -5413,6 +5412,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(DEVELOPER_DIR)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
@@ -5427,7 +5427,9 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUNDLE_LOADER)";
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -5475,6 +5477,7 @@
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_PRODUCT = NO;
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Beta;
@@ -5518,6 +5521,7 @@
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_PRODUCT = NO;
+				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Store;
