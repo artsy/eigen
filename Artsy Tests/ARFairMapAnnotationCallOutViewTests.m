@@ -19,6 +19,7 @@ beforeEach(^{
 });
 
 it(@"blank", ^{
+    [view snapshotViewAfterScreenUpdates:YES];
     expect(view).to.haveValidSnapshotNamed(@"blank");
 });
 
@@ -29,6 +30,7 @@ it(@"title", ^{
     }];
     ARFairMapAnnotation *annotation = [[ARFairMapAnnotation alloc] initWithPoint:CGPointZero representedObject:partnerShow];
     [view setAnnotation:annotation];
+    [view snapshotViewAfterScreenUpdates:YES];
     expect(view).to.haveValidSnapshotNamed(@"title");
 });
 
@@ -40,6 +42,7 @@ it(@"titleWithSubtitle", ^{
     }];
     ARFairMapAnnotation *annotation = [[ARFairMapAnnotation alloc] initWithPoint:CGPointZero representedObject:partnerShow];
     [view setAnnotation:annotation];
+    [view snapshotViewAfterScreenUpdates:YES];
     expect(view).to.haveValidSnapshotNamed(@"titleWithSubtitle");
 });
 
@@ -51,6 +54,7 @@ it(@"titleWithArrow", ^{
     }];
     ARFairMapAnnotation *annotation = [[ARFairMapAnnotation alloc] initWithPoint:CGPointZero representedObject:mapFeature];
     [view setAnnotation:annotation];
+    [view snapshotViewAfterScreenUpdates:YES];
     expect(view).to.haveValidSnapshotNamed(@"titleWithArrow");
 });
 
@@ -62,6 +66,7 @@ it(@"long title with arrow", ^{
     }];
     ARFairMapAnnotation *annotation = [[ARFairMapAnnotation alloc] initWithPoint:CGPointZero representedObject:mapFeature];
     [view setAnnotation:annotation];
+    [view snapshotViewAfterScreenUpdates:YES];
     expect(view).to.haveValidSnapshotNamed(@"longTitleWithArrow");
 });
 
