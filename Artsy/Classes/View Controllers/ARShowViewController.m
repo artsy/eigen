@@ -84,7 +84,10 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     self = [self init];
 
     _show = show;
-    _fair = fair ? fair : show.fair;
+    if (!self.fair) {
+        _fair = fair ? fair : show.fair;
+    }
+    //_fair = fair ? fair : show.fair;
 
     return self;
 }
@@ -272,21 +275,29 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     
     ARSerifLabel *ausstellungsdauer = [self metadataLabel:self.show.ausstellungsdauer];
     ausstellungsdauer.tag = ARFairShowViewAusstellungsdauer;
-    [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
     
-    // if the show is in a fair, add booth location & chevron. if it's not, add the show location (if publicly available) and description
+    // if the show is in a fair, add booth location & possibly chevron. if it's not, add the show location (if publicly available) and description
     if (self.show.fair) {
-        showName.userInteractionEnabled = YES;
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openShowFair:)];
-        [showName addGestureRecognizer:tapGesture];
-        showName.chevronHidden = NO;
+        BOOL isNotCurrentFairContext = ![self.show.fair isEqual:self.fair];
+        if (isNotCurrentFairContext) {
+            // show the ausstellungsdauer and link to fair page
+            [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
 
+            showName.userInteractionEnabled = YES;
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openShowFair:)];
+            [showName addGestureRecognizer:tapGesture];
+            showName.chevronHidden = NO;
+        }
+        else showName.chevronHidden = YES;
+        
         ARSerifLabel *boothLocation = [self metadataLabel:self.show.locationInFair];
         boothLocation.tag = ARFairShowViewBoothLocation;
         [self.view.stackView addSubview:boothLocation withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
     }
     else {
+        // show the address of the gallery, ausstellungsdauer, and description of show
         showName.chevronHidden = YES;
+        [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
         
         if (self.show.location.publiclyViewable) {
             ARSerifLabel *addressLabel = [self metadataLabel:self.show.location.addressAndCity];
