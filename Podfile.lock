@@ -38,12 +38,12 @@ PODS:
   - DRKonamiCode (1.1.0)
   - EDColor (0.4.0)
   - Expecta (0.3.2)
-  - Expecta+Snapshots (1.3.1):
-    - Expecta
-    - FBSnapshotTestCase
+  - Expecta+Snapshots (1.3.2):
+    - Expecta (~> 0.3)
+    - FBSnapshotTestCase (= 1.6)
   - Facebook-iOS-SDK (3.14.1):
     - Bolts
-  - FBSnapshotTestCase (1.4)
+  - FBSnapshotTestCase (1.6)
   - FLKAutoLayout (0.1.1)
   - FODFormKit (0.1.1)
   - FXBlurView (1.6.1)
@@ -118,7 +118,7 @@ DEPENDENCIES:
   - Expecta
   - Expecta+Snapshots (~> 1.2)
   - Facebook-iOS-SDK (= 3.14.1)
-  - FBSnapshotTestCase (= 1.4)
+  - FBSnapshotTestCase (= 1.6)
   - FLKAutoLayout (= 0.1.1)
   - FODFormKit (from `https://github.com/1aurabrown/FODFormKit.git`)
   - FXBlurView (= 1.6.1)
@@ -209,9 +209,9 @@ SPEC CHECKSUMS:
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: 89d19a013279a5604d61650721c15f20fefaaf00
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
-  Expecta+Snapshots: 4a0b46d3ba755bd43dffa7d53e4585fc6cbfe8cd
+  Expecta+Snapshots: 40c5ec43b43da3bae957f14fed5dc9177d08ec8b
   Facebook-iOS-SDK: 2948301ff993744c3c931d1ba46fa4a5bd60a687
-  FBSnapshotTestCase: 892508495a69e8703bab36c9da7674ff740d41db
+  FBSnapshotTestCase: 9d5fe43b29ae3a0ed8fc829477971b281038f748
   FLKAutoLayout: 95b12c5cd9652100235140b68652f063f7437851
   FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
@@ -221,7 +221,7 @@ SPEC CHECKSUMS:
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
   JLRoutes: 5a6096ec514f105fc906f9334c90d8276fe13687
   JSDecoupledAppDelegate: ec2e9480b893fa27ba3db5b12d51a6d5803c550b
-  Keys: 0feb3c779714b9ddbb40a8214ca348af3ea4986c
+  Keys: 525bc9e85ec1a99d57b371dd6c71660ea98eb34f
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   libextobjc: f2802d4262f6885570df9799747409ceb1de602c
   Mantle: 7dddb082367d3e13bd244636d56838481c4552fe

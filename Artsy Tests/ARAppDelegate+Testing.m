@@ -1,5 +1,5 @@
 #import <objc/runtime.h>
-
+#import <iRate/iRate.h>
 #import "ARRouter.h"
 #import "ARSwitchBoard.h"
 #import "ARLogger.h"
@@ -44,6 +44,10 @@
 {
     [ARRouter setup];
     [ARDispatchManager sharedManager].useSyncronousDispatches = YES;
+
+    /// Never run in tests
+    [[iRate sharedInstance] setRatedThisVersion:YES];
+
 //    [AROHHTTPNoStubAssertionBot assertOnFailForGlobalOHHTTPStubs];
     return YES;
 }

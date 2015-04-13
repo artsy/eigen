@@ -80,7 +80,7 @@ describe(@"", ^{
         });
 
         it(@"looks correct", ^{
-            [ARTestContext stubDevice:ARDeviceTypePhone4];
+            [ARTestContext stubDevice:ARDeviceTypePhone6];
             [viewController ar_presentWithFrame:CGRectMake(0, 0, 320, 480)];
             expect(viewController.view).will.haveValidSnapshot();
             [ARTestContext stopStubbing];

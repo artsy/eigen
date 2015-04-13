@@ -106,7 +106,7 @@ pod 'ARASCIISwizzle', '1.1.0'
 pod 'DRKonamiCode', '1.1.0'
 
 target 'Artsy Tests', :exclusive => true do
-  pod 'FBSnapshotTestCase', '1.4'
+  pod 'FBSnapshotTestCase', '1.6'
   pod 'Expecta+Snapshots', '~> 1.2'
   pod 'OHHTTPStubs', '3.1.2'
   pod 'XCTest+OHHTTPStubSuiteCleanUp', '1.0.0'

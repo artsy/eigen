@@ -91,8 +91,10 @@
         if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)]) {
             [[UIApplication sharedApplication] registerForRemoteNotifications];
         } else {
-            UIRemoteNotificationType allTypes = (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert);
-            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:allTypes];
+            UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
+            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
         }
     });
 }

@@ -288,6 +288,7 @@
 		6044CFC4179D64F500CE4132 /* Theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 6044CFC3179D64F500CE4132 /* Theme.json */; };
 		6044CFC8179DD3C200CE4132 /* ARTheme+HeightAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */; };
 		6044E545176E165600075B15 /* ARShowFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044E544176E165600075B15 /* ARShowFeedViewController.m */; };
+		60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60476F4B1AD87DB200670502 /* UIKit.framework */; };
 		605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */; };
 		605002E917D9F5DC00C090B8 /* SmallMoreVerticalArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */; };
 		605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */; };
@@ -300,6 +301,7 @@
 		60647C791A95095800A45247 /* ARFairPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C771A95095800A45247 /* ARFairPopupViewController.m */; };
 		60647C7A1A95095800A45247 /* ARFairPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60647C781A95095800A45247 /* ARFairPopupViewController.xib */; };
 		60647C7C1A951F2A00A45247 /* ARFairPopupViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C7B1A951F2A00A45247 /* ARFairPopupViewControllerTests.m */; };
+		606B6E3D1ADC14E500A12E08 /* ARFairArtistNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 606B6E3C1ADC14E500A12E08 /* ARFairArtistNetworkModel.m */; };
 		60745DEA165802D9006CE156 /* ARUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60745DE9165802D9006CE156 /* ARUserManager.m */; };
 		607D754A17C239E700CA1D41 /* ArtsyAPI+Following.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D754917C239E700CA1D41 /* ArtsyAPI+Following.m */; };
 		607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D756A17C3816600CA1D41 /* ArtsyAPI+ListCollection.m */; };
@@ -460,9 +462,7 @@
 		B3BD12DA17F22370002CA230 /* fbs in Resources */ = {isa = PBXBuildFile; fileRef = B3BD12D817F22370002CA230 /* fbs */; };
 		B3DDE9C118313C7C0012819F /* ARArtworkAuctionPriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3DDE9C018313C7C0012819F /* ARArtworkAuctionPriceView.m */; };
 		B3DDE9C418313CFF0012819F /* ARArtworkPriceRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3DDE9C318313CFF0012819F /* ARArtworkPriceRowView.m */; };
-		B3ECE8281819D1E6009F5C5B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3ECE8271819D1E6009F5C5B /* XCTest.framework */; };
 		B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BA7E051655ABE600C06572 /* Foundation.framework */; };
-		B3ECE82A1819D1E6009F5C5B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BA7E031655ABE600C06572 /* UIKit.framework */; };
 		B3ECE8301819D1E6009F5C5B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B3ECE82E1819D1E6009F5C5B /* InfoPlist.strings */; };
 		B3ECE83C1819D1FD009F5C5B /* SaleArtworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B3ECE83B1819D1FD009F5C5B /* SaleArtworkTests.m */; };
 		B3EFC6391815B41C00F23540 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EFC6381815B41C00F23540 /* BidderPosition.m */; };
@@ -1104,6 +1104,7 @@
 		6044E543176E165600075B15 /* ARShowFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARShowFeedViewController.h; sourceTree = "<group>"; };
 		6044E544176E165600075B15 /* ARShowFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShowFeedViewController.m; sourceTree = "<group>"; };
 		60466F761A698B96004CAA93 /* BETA_CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = BETA_CHANGELOG.md; sourceTree = "<group>"; };
+		60476F4B1AD87DB200670502 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Artwork_Icon_Share@2x.png"; sourceTree = "<group>"; };
 		605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallMoreVerticalArrow.png; sourceTree = "<group>"; };
 		605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SmallMoreVerticalArrow@2x.png"; sourceTree = "<group>"; };
@@ -1124,6 +1125,8 @@
 		60647C771A95095800A45247 /* ARFairPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairPopupViewController.m; sourceTree = "<group>"; };
 		60647C781A95095800A45247 /* ARFairPopupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARFairPopupViewController.xib; sourceTree = "<group>"; };
 		60647C7B1A951F2A00A45247 /* ARFairPopupViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairPopupViewControllerTests.m; sourceTree = "<group>"; };
+		606B6E3B1ADC14E500A12E08 /* ARFairArtistNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARFairArtistNetworkModel.h; path = "Artsy/Classes/Networking/Network Models/ARFairArtistNetworkModel.h"; sourceTree = SOURCE_ROOT; };
+		606B6E3C1ADC14E500A12E08 /* ARFairArtistNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARFairArtistNetworkModel.m; path = "Artsy/Classes/Networking/Network Models/ARFairArtistNetworkModel.m"; sourceTree = SOURCE_ROOT; };
 		60745DE8165802D9006CE156 /* ARUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserManager.h; sourceTree = "<group>"; };
 		60745DE9165802D9006CE156 /* ARUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserManager.m; sourceTree = "<group>"; };
 		607861A1165E47470010FAA2 /* EXTConcreteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTConcreteProtocol.h; path = Artsy/Resources/EXTConcreteProtocol.h; sourceTree = "<group>"; };
@@ -1597,8 +1600,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3ECE8281819D1E6009F5C5B /* XCTest.framework in Frameworks */,
-				B3ECE82A1819D1E6009F5C5B /* UIKit.framework in Frameworks */,
+				60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */,
 				B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */,
 				DCA78A9CCA74D94C34C35156 /* libPods-Artsy Tests.a in Frameworks */,
 			);
@@ -2394,6 +2396,7 @@
 		49BA7E021655ABE600C06572 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				60476F4B1AD87DB200670502 /* UIKit.framework */,
 				60935A451A69CFEE00129CE1 /* WebKit.framework */,
 				60892CEC16B9A849004C1B47 /* Accelerate.framework */,
 				494F16BC17BEDA8E00204F1D /* Accounts.framework */,
@@ -2915,6 +2918,15 @@
 				6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		606B6E3A1ADC14A400A12E08 /* Network Models */ = {
+			isa = PBXGroup;
+			children = (
+				606B6E3B1ADC14E500A12E08 /* ARFairArtistNetworkModel.h */,
+				606B6E3C1ADC14E500A12E08 /* ARFairArtistNetworkModel.m */,
+			);
+			name = "Network Models";
 			sourceTree = "<group>";
 		};
 		607D6974181A97F0009462DD /* ArtworkSources */ = {
@@ -3604,6 +3616,7 @@
 		60FFE3DE188E97FE0012B485 /* Fair */ = {
 			isa = PBXGroup;
 			children = (
+				606B6E3A1ADC14A400A12E08 /* Network Models */,
 				60D83DEF189EE9BF001672E9 /* Guides */,
 				342F994893B9660BEA23C18D /* ARFairViewController.h */,
 				342F951B04D7300332FF3DDB /* ARFairViewController.m */,
@@ -4461,6 +4474,7 @@
 				342F9A60D7F0C30310535232 /* UIImage+ImageFromColor.m in Sources */,
 				342F9A43E9B4295EF2CE07E2 /* UIViewController+FullScreenLoading.m in Sources */,
 				342F91B952D170DCF5A0CDA4 /* UIImageView+AsyncImageLoading.m in Sources */,
+				606B6E3D1ADC14E500A12E08 /* ARFairArtistNetworkModel.m in Sources */,
 				E667F12918EC82AB00503F50 /* ARLogger.m in Sources */,
 				3C94B2DA192BF109008D04DF /* ARFairMapPreview.m in Sources */,
 				E6C13AC41A23AB160050AB53 /* ARPersonalizeWebViewController.m in Sources */,
@@ -4724,7 +4738,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DAR_SHOW_ALL_DEBUG=1";
 				PROVISIONING_PROFILE = "";
@@ -4750,7 +4764,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "014f37c9-e744-4bf5-a4f1-ab28d3755805";
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -4789,7 +4803,7 @@
 					"COCOAPODS=1",
 				);
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
@@ -4805,8 +4819,8 @@
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4841,7 +4855,7 @@
 					"COCOAPODS=1",
 				);
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
@@ -4857,8 +4871,8 @@
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Beta;
@@ -4891,11 +4905,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "Artsy WatchKit Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Artsy/Classes/Utils";
 			};
@@ -4934,7 +4948,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "Artsy WatchKit Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -4979,7 +4992,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "Artsy WatchKit Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -5024,7 +5036,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "Artsy WatchKit Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -5063,6 +5074,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
 				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
@@ -5208,7 +5220,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "a947500d-6376-41ca-b4f7-12ef34f2459f";
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -5249,7 +5261,7 @@
 					"DEMO_MODE=1",
 				);
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
@@ -5265,8 +5277,8 @@
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Demo;
@@ -5276,7 +5288,7 @@
 			baseConfigurationReference = 3E944480103FA2476C7049C2 /* Pods-Artsy Tests.demo.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5291,11 +5303,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
@@ -5306,10 +5313,9 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -5332,7 +5338,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "049e1a3a-52f3-41da-b341-ae36edc7fe17";
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -5372,7 +5378,7 @@
 					"STORE=1",
 				);
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
@@ -5388,8 +5394,8 @@
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Store;
@@ -5398,7 +5404,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A6745B7A19EEDA119AEA48E /* Pods-Artsy Tests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -5406,11 +5412,6 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5423,9 +5424,9 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -5435,7 +5436,7 @@
 			baseConfigurationReference = 1A25A9493C56A91CDFB95D0B /* Pods-Artsy Tests.beta.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5450,11 +5451,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
@@ -5469,10 +5465,9 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -5483,7 +5478,7 @@
 			baseConfigurationReference = 8E3DD2A89F196F5E5BFB9689 /* Pods-Artsy Tests.store.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5498,11 +5493,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
@@ -5513,10 +5503,9 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = xctest;
 			};

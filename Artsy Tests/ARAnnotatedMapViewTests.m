@@ -26,21 +26,21 @@ describe(@"nextZoomScale", ^{
         mapView.minimumZoomScale = 0.2f;
         mapView.maximumZoomScale = 4.0f;
         mock = [OCMockObject partialMockForObject:mapView];
-        [[[mock stub] andReturnValue:OCMOCK_VALUE(1.1f)] annotationZoomScaleThreshold];
+        [[[mock stub] andReturnValue:OCMOCK_VALUE(1.1)] annotationZoomScaleThreshold];
     });
 
     it(@"gives value necessary to show annotations", ^{
-        [[[mock stub] andReturnValue:OCMOCK_VALUE(0.2f)] zoomScale];
+        [[[mock stub] andReturnValue:OCMOCK_VALUE(0.2)] zoomScale];
         expect(mapView.nextZoomScale).to.equal(mapView.annotationZoomScaleThreshold);
     });
 
     it (@"doesn't let you exceed the maxZoomScale", ^{
-        [[[mock stub] andReturnValue:OCMOCK_VALUE(3.9f)] zoomScale];
+        [[[mock stub] andReturnValue:OCMOCK_VALUE(3.9)] zoomScale];
         expect(mapView.nextZoomScale).to.equal(mapView.maximumZoomScale);
     });
 
     it(@"otherwise multiplies the scale by the zoom step", ^{
-        [[[mock stub] andReturnValue:OCMOCK_VALUE(1.0f)] zoomScale];
+        [[[mock stub] andReturnValue:OCMOCK_VALUE(1.0)] zoomScale];
         expect(mapView.nextZoomScale).to.equal(mapView.zoomScale * mapView.zoomStep);
     });
 });

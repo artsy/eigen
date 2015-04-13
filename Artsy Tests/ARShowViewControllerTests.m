@@ -56,6 +56,7 @@ describe(@"with map", ^{
         showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
         showVC.showNetworkModel = stubbedNetworkModel;
         [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        [showVC.view snapshotViewAfterScreenUpdates:YES];
         return showVC;
     });
 });
@@ -82,6 +83,8 @@ describe(@"without map", ^{
         showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
         showVC.showNetworkModel = stubbedNetworkModel;
         [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        [showVC.view snapshotViewAfterScreenUpdates:YES];
+
         return showVC;
     });
 
@@ -95,6 +98,8 @@ describe(@"without map", ^{
 
         showVC.showNetworkModel = stubbedNetworkModel;
         [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        [showVC.view snapshotViewAfterScreenUpdates:YES];
+
         return showVC;
     });
 
@@ -110,6 +115,8 @@ describe(@"without map", ^{
 
         showVC.showNetworkModel = stubbedNetworkModel;
         [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        [showVC.view snapshotViewAfterScreenUpdates:YES];
+
         return showVC;
     });
 });
@@ -134,6 +141,8 @@ describe(@"partner is a gallery", ^{
         showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
         showVC.showNetworkModel = stubbedNetworkModel;
         [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        [showVC.view snapshotViewAfterScreenUpdates:YES];
+
         return showVC;
     });
 });
@@ -157,6 +166,8 @@ describe(@"partner is not a gallery", ^{
         showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
         showVC.showNetworkModel = stubbedNetworkModel;
         [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        [showVC.view snapshotViewAfterScreenUpdates:YES];
+
         return showVC;
     });
 });

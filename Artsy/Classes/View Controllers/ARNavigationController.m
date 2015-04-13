@@ -401,9 +401,8 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 #pragma mark - Actions
 
 - (IBAction)back:(id)sender {
-    if(self.isAnimatingTransition) return;
+    if (self.isAnimatingTransition) return;
 
-    
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
 
     UIViewController *poppedVC;
