@@ -197,6 +197,8 @@ describe(@"with related artworks", ^{
                 expect(vc.view).willNot.beNil();
                 [window makeKeyAndVisible];
                 [vc setHasFinishedScrolling];
+                [vc.view snapshotViewAfterScreenUpdates:YES];
+
                 activelyWaitFor(0.5, ^{
                     expect([(ARArtworkView *)vc.view relatedArtworksView]).will.haveValidSnapshot();
                     done();
@@ -333,6 +335,7 @@ describe(@"at a closed auction", ^{
             [vc setHasFinishedScrolling];
 
             activelyWaitFor(0.5, ^{
+                [vc.view snapshotViewAfterScreenUpdates:YES];
                 expect(vc.view).will.haveValidSnapshot();
                 [ARTestContext stopStubbing];
                 done();

@@ -40,7 +40,6 @@ describe(@"back", ^{
         expect(navigationController.childViewControllers.count).to.equal(2);
 
         OCMockObject *navMock = [OCMockObject partialMockForObject:navigationController];
-
         [[[navMock expect] ignoringNonObjectArgs] popViewControllerAnimated:NO] ;
 
         [navigationController back:nil];
@@ -53,8 +52,7 @@ describe(@"back", ^{
         [navigationController pushViewController:viewController2 animated:NO];
 
         id managerStub = [OCMockObject niceMockForClass:[ARBackButtonCallbackManager class]];
-
-        [[managerStub expect] handleBackForViewController:viewController2];
+        [[managerStub expect] handleBackForViewController:[OCMArg any]];
 
         [ARTopMenuViewController sharedController].backButtonCallbackManager = managerStub;
 

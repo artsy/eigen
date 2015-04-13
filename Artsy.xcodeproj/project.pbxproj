@@ -301,6 +301,7 @@
 		60647C791A95095800A45247 /* ARFairPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C771A95095800A45247 /* ARFairPopupViewController.m */; };
 		60647C7A1A95095800A45247 /* ARFairPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60647C781A95095800A45247 /* ARFairPopupViewController.xib */; };
 		60647C7C1A951F2A00A45247 /* ARFairPopupViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C7B1A951F2A00A45247 /* ARFairPopupViewControllerTests.m */; };
+		606B6E3D1ADC14E500A12E08 /* ARFairArtistNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 606B6E3C1ADC14E500A12E08 /* ARFairArtistNetworkModel.m */; };
 		60745DEA165802D9006CE156 /* ARUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60745DE9165802D9006CE156 /* ARUserManager.m */; };
 		607D754A17C239E700CA1D41 /* ArtsyAPI+Following.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D754917C239E700CA1D41 /* ArtsyAPI+Following.m */; };
 		607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D756A17C3816600CA1D41 /* ArtsyAPI+ListCollection.m */; };
@@ -1124,6 +1125,8 @@
 		60647C771A95095800A45247 /* ARFairPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairPopupViewController.m; sourceTree = "<group>"; };
 		60647C781A95095800A45247 /* ARFairPopupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARFairPopupViewController.xib; sourceTree = "<group>"; };
 		60647C7B1A951F2A00A45247 /* ARFairPopupViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairPopupViewControllerTests.m; sourceTree = "<group>"; };
+		606B6E3B1ADC14E500A12E08 /* ARFairArtistNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARFairArtistNetworkModel.h; path = "Artsy/Classes/Networking/Network Models/ARFairArtistNetworkModel.h"; sourceTree = SOURCE_ROOT; };
+		606B6E3C1ADC14E500A12E08 /* ARFairArtistNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARFairArtistNetworkModel.m; path = "Artsy/Classes/Networking/Network Models/ARFairArtistNetworkModel.m"; sourceTree = SOURCE_ROOT; };
 		60745DE8165802D9006CE156 /* ARUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserManager.h; sourceTree = "<group>"; };
 		60745DE9165802D9006CE156 /* ARUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserManager.m; sourceTree = "<group>"; };
 		607861A1165E47470010FAA2 /* EXTConcreteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTConcreteProtocol.h; path = Artsy/Resources/EXTConcreteProtocol.h; sourceTree = "<group>"; };
@@ -2917,6 +2920,15 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		606B6E3A1ADC14A400A12E08 /* Network Models */ = {
+			isa = PBXGroup;
+			children = (
+				606B6E3B1ADC14E500A12E08 /* ARFairArtistNetworkModel.h */,
+				606B6E3C1ADC14E500A12E08 /* ARFairArtistNetworkModel.m */,
+			);
+			name = "Network Models";
+			sourceTree = "<group>";
+		};
 		607D6974181A97F0009462DD /* ArtworkSources */ = {
 			isa = PBXGroup;
 			children = (
@@ -3604,6 +3616,7 @@
 		60FFE3DE188E97FE0012B485 /* Fair */ = {
 			isa = PBXGroup;
 			children = (
+				606B6E3A1ADC14A400A12E08 /* Network Models */,
 				60D83DEF189EE9BF001672E9 /* Guides */,
 				342F994893B9660BEA23C18D /* ARFairViewController.h */,
 				342F951B04D7300332FF3DDB /* ARFairViewController.m */,
@@ -4461,6 +4474,7 @@
 				342F9A60D7F0C30310535232 /* UIImage+ImageFromColor.m in Sources */,
 				342F9A43E9B4295EF2CE07E2 /* UIViewController+FullScreenLoading.m in Sources */,
 				342F91B952D170DCF5A0CDA4 /* UIImageView+AsyncImageLoading.m in Sources */,
+				606B6E3D1ADC14E500A12E08 /* ARFairArtistNetworkModel.m in Sources */,
 				E667F12918EC82AB00503F50 /* ARLogger.m in Sources */,
 				3C94B2DA192BF109008D04DF /* ARFairMapPreview.m in Sources */,
 				E6C13AC41A23AB160050AB53 /* ARPersonalizeWebViewController.m in Sources */,

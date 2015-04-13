@@ -10,6 +10,7 @@
 #import "ARFairMapPreview.h"
 #import "ARArtworkSetViewController.h"
 #import "ARFairMapPreviewButton.h"
+#import "ARFairArtistNetworkModel.h"
 
 NS_ENUM(NSInteger, ARFairArtistViewIndex){
     ARFairArtistTitle = 1,
@@ -24,6 +25,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 @interface ARFairArtistViewController () <AREmbeddedModelsDelegate>
 @property (nonatomic, strong, readonly) ORStackScrollView *view;
 @property (nonatomic, strong, readonly) ARFollowableNetworkModel *followableNetwork;
+@property (nonatomic, strong, readwrite) NSObject <FairArtistNeworkModel> *networkModel;
 @property (nonatomic, strong, readonly) NSArray *partnerShows;
 @property (nonatomic, strong, readwrite) Fair *fair;
 @property (nonatomic, strong, readonly) NSString *header;
@@ -34,19 +36,13 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
 @dynamic view;
 
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) { return nil; }
-    _shouldAnimate = YES;
-    return self;
-}
-
 - (instancetype)initWithArtistID:(NSString *)artistID fair:(Fair *)fair
 {
-    self = [self init];
+    self = [super init];
     _fair = fair;
+    _shouldAnimate = YES;
     _artist = [[Artist alloc] initWithArtistID:artistID];
+    _networkModel = [[ARFairArtistNetworkModel alloc] init];
     return self;
 }
 
@@ -58,7 +54,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     self.view.delegate = [ARScrollNavigationChief chief];
 
     @weakify(self);
-    [ArtsyAPI getArtistForArtistID:self.artist.artistID success:^(Artist *artist) {
+    [self.networkModel getArtistForArtistID:self.artist.artistID success:^(Artist *artist) {
         @strongify(self);
         if (!self) { return; }
         self->_artist = artist;
@@ -88,7 +84,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     [self addSubtitle];
 
     @weakify(self);
-    [ArtsyAPI getShowsForArtistID:self.artist.artistID inFairID:self.fair.fairID success:^(NSArray *shows) {
+    [self.networkModel getShowsForArtistID:self.artist.artistID inFairID:self.fair.fairID success:^(NSArray *shows) {
         @strongify(self);
         if (!self) { return; }
 

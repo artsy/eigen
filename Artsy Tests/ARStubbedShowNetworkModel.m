@@ -36,11 +36,9 @@
 
 - (void)getFairBoothArtworksAndInstallShots:(PartnerShow *)show gotInstallImages:(void (^)(NSArray *images))gotInstallImages noImages:(void (^)(void))noImages
 {
-    if (self.imagesForBoothHeader.count) {
+    if (self.imagesForBoothHeader.count > 0) {
         gotInstallImages(self.imagesForBoothHeader);
-    }
-
-    if (self.imagesForBoothHeader.count == 0) {
+    } else {
         noImages();
     }
 }

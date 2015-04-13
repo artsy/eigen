@@ -123,8 +123,8 @@ describe(@"imageURL", ^{
             }];
         });
 
-        it(@"uses the first available icon version", ^{
-            expect(profile.iconURL).to.equal(@"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square.png");
+        it(@"uses any available icon version", ^{
+            expect(profile.iconURL).to.contain(@"http://static1.artsy.net/profile_icons");
         });
     });
 
