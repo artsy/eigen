@@ -49,6 +49,8 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 @implementation ARShowViewController
 
+@dynamic view;
+
 + (CGFloat)followButtonWidthForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return UIInterfaceOrientationIsPortrait(interfaceOrientation) ? 315 : 281;
@@ -56,7 +58,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 - (CGFloat)headerImageHeightForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if (self.imagePageViewController.images.count == 0) { return 0; }
+    if (self.imagePageViewController.images.count == 0) { return 1; }
 
     if ([UIDevice isPhone]) {
         return 250;

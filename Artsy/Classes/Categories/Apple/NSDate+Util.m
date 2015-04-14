@@ -12,7 +12,7 @@
 - (NSString *)relativeDate {
     NSCalendar *calendar = [NSCalendar currentCalendar];
 
-    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitWeekOfYear | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
 
     NSDateComponents *components = [calendar components:unitFlags fromDate:self toDate:[ARSystemTime date] options:0];
 

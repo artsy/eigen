@@ -64,7 +64,7 @@
                                animated:YES];
     }
 
-    activityVC.completionHandler = ^(NSString *activityType, BOOL completed) {
+    activityVC.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
         [popover dismissPopoverAnimated:YES];
         // Set to `nil` to signal loop below that we're done.
         popover = nil;

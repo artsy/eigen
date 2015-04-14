@@ -18,13 +18,13 @@ static NSDateFormatter *ARMonthFormatter;
     // it turned out the word did exist in German. Thanks Leonard / Jessica ./
 
     NSString *dateString = nil;
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSInteger desiredComponents = (NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit);
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSInteger desiredComponents = (NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear);
     NSDateComponents *startsComponents = [gregorian components:desiredComponents fromDate:self];
     NSDateComponents *endsComponents = [gregorian components:desiredComponents fromDate:endDate];
 
 
-    NSInteger thisYear = [gregorian components:NSYearCalendarUnit fromDate:[ARSystemTime date]].year;
+    NSInteger thisYear = [gregorian components:NSCalendarUnitYear fromDate:[ARSystemTime date]].year;
     BOOL shouldShowYear = endsComponents.year != thisYear;
 
     // Same month - "July 2nd - 12th, 2011"

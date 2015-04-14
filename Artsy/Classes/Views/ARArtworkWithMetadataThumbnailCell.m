@@ -10,6 +10,8 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 
 @implementation ARArtworkWithMetadataThumbnailCell
 
+@dynamic imageSize;
+
 + (CGFloat)heightForMetaData
 {
     return [ARArtworkThumbnailMetadataView heightForView] + ARArtworkCellMetadataMargin;

@@ -54,6 +54,9 @@ pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCol
 pod 'ARGenericTableViewController', '1.0.2'
 pod 'FLKAutoLayout', '0.1.1'
 
+# X-Callback-Url support
+pod 'InterAppCommunication'
+
 # Artsy Spec repo stuff
 pod 'Artsy+UILabels', :head
 pod 'Artsy+UIColors'
@@ -103,7 +106,7 @@ pod 'ARASCIISwizzle', '1.1.0'
 pod 'DRKonamiCode', '1.1.0'
 
 target 'Artsy Tests', :exclusive => true do
-  pod 'FBSnapshotTestCase', '1.4'
+  pod 'FBSnapshotTestCase', '1.6'
   pod 'Expecta+Snapshots', '~> 1.2'
   pod 'OHHTTPStubs', '3.1.2'
   pod 'XCTest+OHHTTPStubSuiteCleanUp', '1.0.0'

@@ -68,6 +68,8 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 @implementation ARArtistViewController
 
+@dynamic view;
+
 - (instancetype)init
 {
     self = [super init];

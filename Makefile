@@ -4,7 +4,7 @@ CONFIGURATION = Beta
 APP_PLIST = Artsy/App/Artsy-Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
 TARGETED_DEVICE_FAMILY = \"1,2\"
-DEVICE_HOST = platform='iOS Simulator',OS='7.1',name='iPhone 4s'
+DEVICE_HOST = platform='iOS Simulator',OS='8.1',name='iPhone 6'
 
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
 GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')

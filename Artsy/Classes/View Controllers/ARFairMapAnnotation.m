@@ -8,6 +8,8 @@
 
 @implementation ARFairMapAnnotation
 
+@dynamic view;
+
 - (id)initWithPoint:(CGPoint)point representedObject:(id)representedObject
 {
     self = [super initWithPoint:point];

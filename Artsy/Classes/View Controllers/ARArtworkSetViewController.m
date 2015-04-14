@@ -152,7 +152,7 @@
 
     if (![UIDevice isPad] && canShowInRoom && !isShowingModalViewController && isTopViewController) {
 
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
+        if (UIDeviceOrientationIsLandscape(orientation)) {
             ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:artwork];
             viewInRoomVC.popOnRotation = YES;
             viewInRoomVC.rotationDelegate = self;

@@ -107,6 +107,19 @@ describe(@"initWithURL", ^{
     });
 });
 
+describe(@"zooming", ^{
+    it(@"sets the scroll view delegate", ^{
+        ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/foo/bar"]];
+        [controller view]; // Make sure `viewDidLoad` was called.
+        expect(controller.scrollView.delegate).to.equal(controller);
+    });
+
+    it(@"does not provide a view for zooming", ^{
+        ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/foo/bar"]];
+        expect([controller viewForZoomingInScrollView:controller.scrollView]).to.beNil();
+    });
+});
+
 describe(@"authenticated", ^{
     beforeEach(^{
         [ARUserManager stubAndLoginWithUsername];

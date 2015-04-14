@@ -60,4 +60,10 @@
     self.backgroundColor = [UIColor artsyAttention];
 }
 
+- (void)drawTextInRect:(CGRect)rect
+{
+    UIEdgeInsets insets = {0, 60, 0, 60};
+    [super drawTextInRect:UIEdgeInsetsInsetRect(rect, insets)];
+}
+
 @end

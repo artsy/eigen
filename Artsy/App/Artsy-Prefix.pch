@@ -32,6 +32,7 @@
     #import <NAMapKit/NAMapView.h>
     #import <EDColor/UIColor+Hex.h>
     #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+    #import <Artsy-UIButtons/ARButtonSubclasses.h>
 
     #import "ArtsyAPI.h"
     #import "Models.h"

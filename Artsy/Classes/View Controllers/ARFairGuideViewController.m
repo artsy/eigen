@@ -46,6 +46,8 @@ typedef NS_ENUM(NSInteger, ARFairGuideSelectedTab) {
 
 @implementation ARFairGuideViewController
 
+@dynamic view;
+
 #pragma mark - Lifecyce
 
 - (instancetype)initWithFair:(Fair *)fair

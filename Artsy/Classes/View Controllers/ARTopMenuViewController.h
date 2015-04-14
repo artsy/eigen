@@ -9,6 +9,7 @@
 #import "ARMenuAwareViewController.h"
 #import "ARNavigationContainer.h"
 #import "ARNavigationController.h"
+#import "ARBackButtonCallbackManager.h"
 
 @class ARTabContentView;
 @interface ARTopMenuViewController : UIViewController <ARMenuAwareViewController, ARNavigationContainer, UIViewControllerTransitioningDelegate>
@@ -21,6 +22,8 @@
 
 /// The content view for the tabbed nav
 @property (readonly, nonatomic, weak) ARTabContentView *tabContentView;
+
+@property (nonatomic, strong, readwrite) ARBackButtonCallbackManager *backButtonCallbackManager;
 
 /// Pushes the view controller into the current navigation controller.
 /// Using this method makes it easier to change the navigation systems

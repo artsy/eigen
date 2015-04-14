@@ -1,4 +1,7 @@
 ## Next
 
-* Watch app. - orta
-* Make Fairs with a FairOrganizer ( e.g. fairs we've worked with for multiple years ) go to martsy instead of native - orta
+* Fix layout issue with auction results warning banner after changing orientation - 1aurabrown
+* Add `x-callback-url` infrastructure which for now allows external applications to open an artwork in a native view - 1aurabrown
+* Watch app - orta
+* Make sure internal web views are not zoomable - 1aurabrown
+* Update Explore tab for iPad - 1aurabrown

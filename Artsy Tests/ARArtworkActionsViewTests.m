@@ -102,7 +102,7 @@ it(@"displays both bid and buy when artwork is in auction and is acquireable", ^
         @"end_at" : @"4001-01-01 00:00:00"
     }];
     [view updateUI];
-    [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    [view snapshotViewAfterScreenUpdates:YES];
     expect(view).to.haveValidSnapshotNamed(@"acquireableAtAuction");
 });
 
@@ -125,7 +125,7 @@ it(@"shows a buyers premium notice", ^{
         @"buyers_premium" : @{ }
     }];
     [view updateUI];
-    [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    [view snapshotViewAfterScreenUpdates:YES];
     expect(view).to.haveValidSnapshot();
 });
 

@@ -401,15 +401,20 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 #pragma mark - Actions
 
 - (IBAction)back:(id)sender {
-    if(self.isAnimatingTransition) return;
+    if (self.isAnimatingTransition) return;
 
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
 
+    UIViewController *poppedVC;
     if (navigationController.viewControllers.count > 1) {
-        [navigationController popViewControllerAnimated:YES];
+        poppedVC = [navigationController popViewControllerAnimated:YES];
     } else {
-        [navigationController.navigationController popViewControllerAnimated:YES];
+        poppedVC = [navigationController.navigationController popViewControllerAnimated:YES];
     }
+
+    ARBackButtonCallbackManager *backButtonCallbackManager = [ARTopMenuViewController sharedController].backButtonCallbackManager;
+
+    if (backButtonCallbackManager) { [backButtonCallbackManager handleBackForViewController:poppedVC]; }
 }
 
 @end
