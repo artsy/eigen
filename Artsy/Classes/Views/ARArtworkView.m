@@ -72,7 +72,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
 - (void)setUpSubviews
 {
-    [self.stackView addSubview:self.metadataView withTopMargin:@"0" sideMargin:nil];
+    [self.stackView addSubview:self.metadataView withTopMargin:@"0" sideMargin:@"0"];
     [self.stackView addSubview:self.artworkBlurbView withTopMargin:@"0" sideMargin:[UIDevice isPad] ? @"100" : @"40"];
     [self.stackView addSubview:self.spinner withTopMargin:@"0" sideMargin:@"0"];
     [self.stackView addSubview:self.relatedArtworksView withTopMargin:@"0" sideMargin:@"0"];

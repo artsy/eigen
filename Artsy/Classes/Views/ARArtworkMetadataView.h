@@ -17,10 +17,14 @@
 
 @end
 
-@interface ARArtworkMetadataView : ORStackView
+@interface ARArtworkMetadataView : UIView
 
 - (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair;
 - (void)updateWithFair:(Fair *)fair;
+- (void)updateConstraintsForSize:(CGSize)size;
+
+@property (nonatomic, strong, readonly) UIView *left;
+@property (nonatomic, strong, readonly) ORStackView *right;
 
 - (UIImageView *)imageView;
 

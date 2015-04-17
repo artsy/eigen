@@ -241,7 +241,8 @@
 
 - (BOOL)showAuctionControls
 {
-    return (self.saleArtwork != nil) && !self.artwork.sold.boolValue;
+    return YES;
+//    return (self.saleArtwork != nil) && !self.artwork.sold.boolValue;
 }
 
 - (BOOL)showAuctionResultsButton
@@ -282,31 +283,34 @@
 {
     NSDate *now = [ARSystemTime date];
 
-    NSDate *startDate = self.saleArtwork.auction.startDate;
-    NSDate *endDate = self.saleArtwork.auction.endDate;
+    int daysToAdd = 1;
+    NSDate *newDate1 = [now dateByAddingTimeInterval:60*60*24*daysToAdd];
+    
+    NSDate *startDate = newDate1;
+    NSDate *endDate = [startDate dateByAddingTimeInterval:60*60*24*daysToAdd];
 
-    self.bidButton.auctionState = self.saleArtwork.auctionState;
+    self.bidButton.auctionState = ARAuctionStateStarted;
 
-    if (!self.saleArtwork.auction) {
-        [self removeSubview:self.bidButton];
-        [self removeSubview:self.countdownView];
-        [self removeSubview:self.bidderStatusLabel];
-        [self removeSubview:self.auctionPriceView];
-
-    } else if ([now compare:startDate] == NSOrderedAscending) {
-        self.countdownView.heading = @"Auction Opens";
-        self.countdownView.targetDate = startDate;
-        [self.countdownView startTimer];
-
-    } else if ([now compare:endDate] == NSOrderedAscending) {
+//    if (!self.saleArtwork.auction) {
+//        [self removeSubview:self.bidButton];
+//        [self removeSubview:self.countdownView];
+//        [self removeSubview:self.bidderStatusLabel];
+//        [self removeSubview:self.auctionPriceView];
+//
+//    } else if ([now compare:startDate] == NSOrderedAscending) {
+//        self.countdownView.heading = @"Auction Opens";
+//        self.countdownView.targetDate = startDate;
+//        [self.countdownView startTimer];
+//
+//    } else if ([now compare:endDate] == NSOrderedAscending) {
         self.countdownView.heading = @"Auction Ends";
         self.countdownView.targetDate = endDate;
         [self.countdownView startTimer];
 
-    } else {
-        [self removeSubview:self.countdownView];
-        [self.delegate didUpdateArtworkActionsView:self];
-    }
+//    } else {
+//        [self removeSubview:self.countdownView];
+//        [self.delegate didUpdateArtworkActionsView:self];
+//    }
 }
 
 - (void)countdownViewDidFinish:(ARCountdownView *)countdownView

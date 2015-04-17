@@ -168,7 +168,7 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
+    return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 -(BOOL)shouldAutorotate
@@ -180,7 +180,6 @@
 {
     return UIInterfaceOrientationPortrait;
 }
-
 
 - (NSUInteger)pageViewControllerSupportedInterfaceOrientations:(UIPageViewController *)pageViewController
 {
