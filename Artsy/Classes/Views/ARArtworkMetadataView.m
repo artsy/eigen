@@ -91,11 +91,13 @@
 
     [verticalConstriants addObject:[[previewActionsView alignTopEdgeWithView:textContainer predicate:@"0"] lastObject]];
     [verticalConstriants addObject:[[previewActionsView alignTrailingEdgeWithView:textContainer predicate:@"0"] lastObject]];
-    [verticalConstriants addObject:[[artworkActionsView constrainTopSpaceToView:artworkDetailView predicate:@"0"] lastObject]];
+    [verticalConstriants addObject:[[artworkActionsView constrainTopSpaceToView:artworkDetailView predicate:@"8"] lastObject]];
 
     // Vertical iPad only
     if ([UIDevice isPad]) {
         [verticalConstriants addObject:[[previewActionsView constrainLeadingSpaceToView:artworkDetailView predicate:@">=0"] lastObject]];
+        [verticalConstriants addObject:[[artworkDetailView alignBottomEdgeWithView:previewActionsView predicate:@">=0"] lastObject]];
+    } else {
     }
     
     _verticalConstraints = [verticalConstriants copy];
@@ -107,8 +109,8 @@
     [horizontalConstriants addObject:[[textContainer constrainLeadingSpaceToView:imageContainer predicate:@"40"] lastObject]];
     [horizontalConstriants addObject:[[textContainer constrainWidthToView:self predicate:@"*.26"] lastObject]];
     [horizontalConstriants addObject:[[self alignBottomEdgeWithView:imageContainer predicate:@"0"] lastObject]];
-    [horizontalConstriants addObject:[[self alignBottomEdgeWithView:imageContainer predicate:@">=0@1000"] lastObject]];
-    [horizontalConstriants addObject:[[self alignBottomEdgeWithView:textContainer predicate:@">=0@1000"] lastObject]];
+    [horizontalConstriants addObject:[[self alignBottomEdgeWithView:imageContainer predicate:@">=0"] lastObject]];
+    [horizontalConstriants addObject:[[self alignBottomEdgeWithView:textContainer predicate:@">=0"] lastObject]];
     
     [horizontalConstriants addObject:[[artworkDetailView alignTrailingEdgeWithView:textContainer predicate:@"0"] lastObject]];
     [horizontalConstriants addObject:[[previewActionsView constrainTopSpaceToView:artworkDetailView predicate:@"12"] lastObject]];
