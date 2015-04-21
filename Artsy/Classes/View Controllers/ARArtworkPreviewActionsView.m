@@ -4,8 +4,6 @@
 const CGFloat ARArtworkActionButtonSpacing = 8;
 
 @interface ARArtworkPreviewActionsView()
-@property (nonatomic, strong, readwrite) NSLayoutConstraint *alignmentConstraint;
-@property (nonatomic, strong, readonly) UIView *buttonsContainer;
 
 /// The button for indicating you're favoriting a work
 @property (readonly, nonatomic, strong) ARHeartButton *favoriteButton;
@@ -28,10 +26,6 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 {
     self = [super init];
     if (!self) { return nil; }
-    
-    _buttonsContainer = [[UIView alloc] initWithFrame:CGRectZero];
-    [self addSubview:_buttonsContainer];
-    [_buttonsContainer alignTop:@"0" leading:@">=0" bottom:@"0" trailing:@"<=0" toView:self];
     
     _shareButton = [self newShareButton];
     _favoriteButton = [self newFavoriteButton];
@@ -56,7 +50,7 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 - (ARHeartButton *)newFavoriteButton
 {
     ARHeartButton *button = [[ARHeartButton alloc] init];
-    [self.buttonsContainer addSubview:button];
+    [self addSubview:button];
     button.accessibilityIdentifier = @"Favorite Artwork";
     [button addTarget:nil action:@selector(tappedArtworkFavorite:) forControlEvents:UIControlEventTouchUpInside];
     return button;
@@ -80,7 +74,7 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 - (ARCircularActionButton *)buttonWithName:(NSString *)name identifier:(NSString *)identifier action:(SEL)action
 {
     ARCircularActionButton *button = [[ARCircularActionButton alloc] initWithImageName:name];
-    [self.buttonsContainer addSubview:button];
+    [self addSubview:button];
     button.accessibilityIdentifier = identifier;
     [button addTarget:nil action:action forControlEvents:UIControlEventTouchUpInside];
     return button;
@@ -125,34 +119,11 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
     }
 }
 
-- (void)setStyle:(ARArtworkPreviewActionsStyle)style
-{
-    if (_style == style) { return; }
-    
-    if (self.alignmentConstraint) {
-        [self removeConstraint:self.alignmentConstraint];
-    }
-    
-    switch (style) {
-        case ARArtworkPreviewActionsStyleCenter:
-            self.alignmentConstraint = [[self.buttonsContainer alignCenterXWithView:self predicate:@"0"] lastObject];
-            break;
-            
-        case ARArtworkPreviewActionsStyleRight:
-            self.alignmentConstraint = [[self.buttonsContainer alignTrailingEdgeWithView:self predicate:@"0"] lastObject];
-            break;
-    }
-    
-    [self setNeedsLayout];
-}
-
 - (void)updateConstraints
 {
     [super updateConstraints];
     
-    if (!self.style) { self.style = ARArtworkPreviewActionsStyleRight; }
-    
-    [self.buttonsContainer removeConstraints:self.buttonsContainer.constraints];
+    [self removeConstraints:self.constraints];
 
     NSMutableArray *buttons = [NSMutableArray array];
     
