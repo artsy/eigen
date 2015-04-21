@@ -1,8 +1,5 @@
 #import "ARCountdownView.h"
 
-#define kARCountdownViewWidth 160
-#define kARCountdownViewHeight 50
-
 @interface ARCountdownView ()
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) UILabel *countdown;
@@ -113,10 +110,5 @@
                                                 options:0];
     return [NSString stringWithFormat:@"%02d : %02d : %02d : %02d", (unsigned int)components.day, (unsigned int)components.hour, (unsigned int)components.minute, (unsigned int)components.second];
 }
-
-//- (CGSize)intrinsicContentSize
-//{
-//    return (CGSize){ kARCountdownViewWidth, kARCountdownViewHeight };
-//}
 
 @end

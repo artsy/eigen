@@ -5,12 +5,16 @@
 #import "ARWhitespaceGobbler.h"
 
 @interface ARArtworkMetadataView() <ARArtworkDetailViewDelegate, ARArtworkActionsViewDelegate>
+
+@property (nonatomic, strong, readonly) UIView *left;
+@property (nonatomic, strong, readonly) ORStackView *right;
 @property (nonatomic, strong) ARArtworkPreviewActionsView *artworkPreviewActions;
 @property (nonatomic, strong) ARArtworkPreviewImageView *artworkPreview;
 @property (nonatomic, strong) ARArtworkActionsView *actionsView;
 @property (nonatomic, strong) ARArtworkDetailView *artworkDetailView;
 @property (nonatomic, strong, readonly) NSArray *verticalConstraints;
 @property (nonatomic, strong, readonly) NSArray *horizontalConstraints;
+
 @end
 
 @implementation ARArtworkMetadataView
@@ -111,7 +115,7 @@
     [horizontalConstriants addObject:[[previewActionsView alignLeadingEdgeWithView:textContainer predicate:@">=0"] lastObject]];
     [horizontalConstriants addObject:[[previewActionsView alignTrailingEdgeWithView:textContainer predicate:@"<=0"] lastObject]];
     [horizontalConstriants addObject:[[previewActionsView alignCenterXWithView:textContainer predicate:@"0"] lastObject]];
-    [horizontalConstriants addObject:[[artworkActionsView constrainTopSpaceToView:previewActionsView predicate:@"12"] lastObject]];
+    [horizontalConstriants addObject:[[artworkActionsView constrainTopSpaceToView:previewActionsView predicate:@"22"] lastObject]];
 
     _horizontalConstraints = [horizontalConstriants copy];
     

@@ -23,9 +23,6 @@
 - (void)updateWithFair:(Fair *)fair;
 - (void)updateConstraintsForSize:(CGSize)size;
 
-@property (nonatomic, strong, readonly) UIView *left;
-@property (nonatomic, strong, readonly) ORStackView *right;
-
 - (UIImageView *)imageView;
 
 /// TODO: Make this a view controller so that we can negate doing this.
