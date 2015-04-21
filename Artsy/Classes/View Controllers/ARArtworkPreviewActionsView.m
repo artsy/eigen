@@ -80,41 +80,57 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
     return button;
 }
 
+- (void)toggleViewInRoomButton:(BOOL)show
+{
+    // Return if there is nothing to change
+    if (show == (self.viewInRoomButton != nil)) { return; }
+
+    if (show) {
+        self.viewInRoomButton = [self newViewInRoomButton];
+    } else {
+        [self.viewInRoomButton removeFromSuperview];
+        self.viewInRoomButton = nil;
+    }
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)toggleMapButton:(BOOL)show
+{
+    // Return if there is nothing to change
+    if (show == (self.viewInMapButton != nil)) { return; }
+
+    if (show) {
+        self.viewInRoomButton = [self newMapButton];
+    } else  {
+        [self.viewInMapButton removeFromSuperview];
+        self.viewInMapButton = nil;
+    }
+    
+    [self setNeedsUpdateConstraints];
+
+}
+
 - (void)updateWithArtwork:(Artwork *)artwork andFair:(Fair *)fair
 {
-    if ([UIDevice isPhone]) {
-        if (artwork.canViewInRoom) {
-            if (!self.viewInRoomButton) {
-                self.viewInRoomButton = [self newViewInRoomButton];
-                [self setNeedsUpdateConstraints];
-            }
+    BOOL canDisplayViewInRoom = [UIDevice isPhone];
+    BOOL showViewInRoom = canDisplayViewInRoom && artwork.canViewInRoom;
     
-        } else if (self.viewInRoomButton) {
-            [self.viewInRoomButton removeFromSuperview];
-            self.viewInRoomButton = nil;
-            [self setNeedsUpdateConstraints];
-        }
+    [self toggleViewInRoomButton:showViewInRoom];
+    
+    
+    BOOL canDisplayMap = [UIDevice isPhone];
+    if (fair && canDisplayMap) {
+        void(^revealMapButton)(NSArray *) = ^(NSArray *maps) {
+
+            BOOL showMapButton = maps.count > 0;
+            [self toggleMapButton:showMapButton];
+
+        };
         
-        if (fair) {
-            void(^revealMapButton)(NSArray *) = ^(NSArray *maps) {
-                if (maps.count > 0) {
-                    if (!self.viewInMapButton) {
-                        self.viewInMapButton = [self newMapButton];
-                        [self setNeedsUpdateConstraints];
-                    }
-                    
-                } else if (self.viewInMapButton) {
-                    [self.viewInMapButton removeFromSuperview];
-                    self.viewInMapButton = nil;
-                    [self setNeedsUpdateConstraints];
-                }
-            };
-            
-            if (fair.maps.count > 0) {
-                revealMapButton(fair.maps);
-            } else {
-                [fair getFairMaps:revealMapButton];
-            }
+        if (fair.maps.count > 0) {
+            revealMapButton(fair.maps);
+        } else {
+            [fair getFairMaps:revealMapButton];
         }
     }
 }
