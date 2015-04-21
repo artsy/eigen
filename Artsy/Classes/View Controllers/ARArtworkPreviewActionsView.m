@@ -1,8 +1,23 @@
 #import "ARArtworkPreviewActionsView.h"
 #import "ARHeartButton.h"
 
+const CGFloat ARArtworkActionButtonSpacing = 8;
+
 @interface ARArtworkPreviewActionsView()
-@property (readwrite, nonatomic, strong) NSLayoutConstraint *mapButtonConstraint;
+
+/// The button for indicating you're favoriting a work
+@property (readonly, nonatomic, strong) ARHeartButton *favoriteButton;
+
+/// The button for sharing a work over airplay / twitter / fb
+@property (readonly, nonatomic, strong) ARCircularActionButton *shareButton;
+
+/// The button for viewing a room, initially hidden, only available
+/// if the Artwork can be viewed in a room.
+@property (readwrite, nonatomic, strong) ARCircularActionButton *viewInRoomButton;
+
+/// The button for showing the map, initially hidden, only available
+/// if in a fair context
+@property (readwrite, nonatomic, strong) ARCircularActionButton *viewInMapButton;
 @end
 
 @implementation ARArtworkPreviewActionsView
@@ -11,53 +26,9 @@
 {
     self = [super init];
     if (!self) { return nil; }
-
-    _shareButton = [[ARCircularActionButton alloc] initWithImageName:@"Artwork_Icon_Share"];
-    _favoriteButton = [[ARHeartButton alloc] init];
-    _viewInRoomButton = [[ARCircularActionButton alloc] initWithImageName:@"Artwork_Icon_VIR"];
-    _viewInMapButton = [[ARCircularActionButton alloc] initWithImageName:@"MapButtonAction"];
-
-    [@[_viewInMapButton, _viewInRoomButton] each:^(UIButton *button) {
-        button.alpha = 0;
-        button.enabled = NO;
-    }];
-
-    self.shareButton.accessibilityIdentifier = @"Share Artwork";
-    self.favoriteButton.accessibilityIdentifier = @"Favorite Artwork";
-    self.viewInRoomButton.accessibilityIdentifier = @"View Artwork in Room";
-    self.viewInMapButton.accessibilityIdentifier = @"Show the map";
-
-    [self addSubview:self.shareButton];
-    [self addSubview:self.favoriteButton];
-
-    ARThemeLayoutVendor *layout = [ARTheme themeNamed:@"Artwork"].layout;
-
-    if ([UIDevice isPad]) {
-        [self.favoriteButton alignCenterXWithView:self predicate:@"-32"];
-        [self.shareButton alignCenterXWithView:self predicate:@"32"];
-    } else {
-        // right aligned with VIR
-
-        [self addSubview:self.viewInRoomButton];
-
-        [self.shareButton alignTrailingEdgeWithView:self predicate:@"0"];
-        [self.favoriteButton alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeLeading ofView:_shareButton predicate:layout[@"ButtonMargin"]];
-        [self.viewInRoomButton alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeLeading ofView:_favoriteButton predicate:layout[@"ButtonMargin"]];
-
-        [self addSubview:self.viewInMapButton];
-
-        self.mapButtonConstraint = [[_viewInMapButton alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeLeading ofView:_viewInRoomButton predicate:layout[@"ButtonMargin"]] firstObject];
-    }
-
-
-    for (UIView *view in @[self.shareButton, self.favoriteButton, self.viewInRoomButton, self.viewInMapButton]) {
-        [view alignTopEdgeWithView:self predicate:@"0"];
-    }
-
-    [self.shareButton addTarget:nil action:@selector(tappedArtworkShare:) forControlEvents:UIControlEventTouchUpInside];
-    [self.favoriteButton addTarget:nil action:@selector(tappedArtworkFavorite:) forControlEvents:UIControlEventTouchUpInside];
-    [self.viewInRoomButton addTarget:nil action:@selector(tappedArtworkViewInRoom:) forControlEvents:UIControlEventTouchUpInside];
-    [self.viewInMapButton addTarget:nil action:@selector(tappedArtworkViewInMap:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _shareButton = [self newShareButton];
+    _favoriteButton = [self newFavoriteButton];
 
     @weakify(self);
     [artwork getFavoriteStatus:^(ARHeartStatus status) {
@@ -76,27 +47,86 @@
     return self;
 }
 
+- (ARHeartButton *)newFavoriteButton
+{
+    ARHeartButton *button = [[ARHeartButton alloc] init];
+    [self addSubview:button];
+    button.accessibilityIdentifier = @"Favorite Artwork";
+    [button addTarget:nil action:@selector(tappedArtworkFavorite:) forControlEvents:UIControlEventTouchUpInside];
+    return button;
+}
+
+- (ARCircularActionButton *)newShareButton
+{
+    return[self buttonWithName:@"Artwork_Icon_Share" identifier:@"Share Artwork" action:@selector(tappedArtworkShare:)];
+}
+
+- (ARCircularActionButton *)newViewInRoomButton
+{
+    return [self buttonWithName:@"Artwork_Icon_VIR" identifier:@"View Artwork in Room" action:@selector(tappedArtworkViewInRoom:)];
+}
+
+- (ARCircularActionButton *)newMapButton
+{
+    return [self buttonWithName:@"MapButtonAction" identifier:@"Show the map" action:@selector(tappedArtworkViewInMap:)];
+}
+
+- (ARCircularActionButton *)buttonWithName:(NSString *)name identifier:(NSString *)identifier action:(SEL)action
+{
+    ARCircularActionButton *button = [[ARCircularActionButton alloc] initWithImageName:name];
+    [self addSubview:button];
+    button.accessibilityIdentifier = identifier;
+    [button addTarget:nil action:action forControlEvents:UIControlEventTouchUpInside];
+    return button;
+}
+
+- (void)toggleViewInRoomButton:(BOOL)show
+{
+    // Return if there is nothing to change
+    if (show == (self.viewInRoomButton != nil)) { return; }
+
+    if (show) {
+        self.viewInRoomButton = [self newViewInRoomButton];
+    } else {
+        [self.viewInRoomButton removeFromSuperview];
+        self.viewInRoomButton = nil;
+    }
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)toggleMapButton:(BOOL)show
+{
+    // Return if there is nothing to change
+    if (show == (self.viewInMapButton != nil)) { return; }
+
+    if (show) {
+        self.viewInRoomButton = [self newMapButton];
+    } else  {
+        [self.viewInMapButton removeFromSuperview];
+        self.viewInMapButton = nil;
+    }
+    
+    [self setNeedsUpdateConstraints];
+
+}
+
 - (void)updateWithArtwork:(Artwork *)artwork andFair:(Fair *)fair
 {
-    if (artwork.canViewInRoom) {
-        [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
-            self.viewInRoomButton.enabled = YES;
-            self.viewInRoomButton.alpha = 1;
-        }];
-    }
-
-    if (fair) {
-        self.mapButtonConstraint.constant = artwork.canViewInRoom ? -8 : 48;
-
+    BOOL canDisplayViewInRoom = [UIDevice isPhone];
+    BOOL showViewInRoom = canDisplayViewInRoom && artwork.canViewInRoom;
+    
+    [self toggleViewInRoomButton:showViewInRoom];
+    
+    
+    BOOL canDisplayMap = [UIDevice isPhone];
+    if (fair && canDisplayMap) {
         void(^revealMapButton)(NSArray *) = ^(NSArray *maps) {
-            if (maps.count > 0) {
-                [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
-                    self.viewInMapButton.enabled = YES;
-                    self.viewInMapButton.alpha = 1;
-                }];
-            }
-        };
 
+            BOOL showMapButton = maps.count > 0;
+            [self toggleMapButton:showMapButton];
+
+        };
+        
         if (fair.maps.count > 0) {
             revealMapButton(fair.maps);
         } else {
@@ -105,9 +135,35 @@
     }
 }
 
+- (void)updateConstraints
+{
+    [super updateConstraints];
+    
+    [self removeConstraints:self.constraints];
+
+    NSMutableArray *buttons = [NSMutableArray array];
+    
+    if (self.viewInMapButton) {
+        [buttons addObject:self.viewInMapButton];
+    }
+    
+    if (self.viewInRoomButton) {
+        [buttons addObject:self.viewInRoomButton];
+    }
+    
+    [buttons addObjectsFromArray:@[self.favoriteButton, self.shareButton]];
+    
+    if (buttons.count > 0) {
+        [UIView spaceOutViewsHorizontally:buttons predicate:@(ARArtworkActionButtonSpacing).stringValue];
+        [(UIView *)[buttons firstObject] alignLeadingEdgeWithView:self predicate:@"0"];
+        [(UIView *)[buttons lastObject] alignTrailingEdgeWithView:self predicate:@"0"];
+        [UIView alignTopAndBottomEdgesOfViews:[buttons arrayByAddingObject:self]];
+    }
+}
+
 - (CGSize)intrinsicContentSize
 {
-    return (CGSize) { UIViewNoIntrinsicMetric, 48 };
+    return (CGSize) { UIViewNoIntrinsicMetric , 48 };
 }
 
 @end
