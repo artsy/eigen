@@ -73,7 +73,7 @@ PODS:
   - OCMock (2.2.4)
   - OHHTTPStubs (3.1.2)
   - ORKeyboardReactingApplication (0.5.3)
-  - ORStackView (HEAD based on 2.0.0):
+  - ORStackView (2.0.0):
     - FLKAutoLayout (~> 0.1)
   - ReactiveCocoa (2.3):
     - ReactiveCocoa/UI (= 2.3)
@@ -141,7 +141,7 @@ DEPENDENCIES:
   - OCMock (= 2.2.4)
   - OHHTTPStubs (= 3.1.2)
   - ORKeyboardReactingApplication (= 0.5.3)
-  - ORStackView (HEAD)
+  - ORStackView (~> 2.0)
   - ReactiveCocoa (= 2.3)
   - SDWebImage (= 3.7.1)
   - Specta

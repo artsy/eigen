@@ -48,7 +48,7 @@ pod 'MultiDelegate', '0.0.2'
 pod 'ReactiveCocoa', '2.3'
 pod 'ALPValidator', '0.0.3'
 pod 'ORKeyboardReactingApplication', '0.5.3'
-pod 'ORStackView', :head
+pod 'ORStackView', '~> 2.0'
 pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView', :commit => '1a31b864d1d56b1aaed0816c10bb55cf2e078bb8'
 pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout', :commit => '2ee871f509806af147d0529a36f791906997d4b7'
 pod 'ARGenericTableViewController', '1.0.2'
