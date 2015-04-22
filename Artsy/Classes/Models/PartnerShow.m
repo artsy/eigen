@@ -1,6 +1,5 @@
 #import "ARStandardDateFormatter.h"
 #import "NSDate+DateRange.h"
-#import "PartnerShowCoordinates.h"
 
 static ARStandardDateFormatter *staticDateFormatter;
 
@@ -39,7 +38,6 @@ static ARStandardDateFormatter *staticDateFormatter;
         @keypath(PartnerShow.new, location) : @"location",
         @keypath(PartnerShow.new, locationInFair) : @"fair_location.display",
         @keypath(PartnerShow.new, fairLocation) : @"fair_location",
-        @keypath(PartnerShow.new, coordinates) : @"coordinates",
         @keypath(PartnerShow.new, officialDescription) : @"description",
     };
 }
@@ -77,11 +75,6 @@ static ARStandardDateFormatter *staticDateFormatter;
 + (NSValueTransformer *)locationJSONTransformer
 {
     return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[Location class]];
-}
-
-+ (NSValueTransformer *)coordinatesJSONTransformer
-{
-    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:PartnerShowCoordinates.class];
 }
 
 - (NSString *)title

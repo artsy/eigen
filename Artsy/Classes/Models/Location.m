@@ -8,6 +8,8 @@
              @keypath(Location.new, streetAddress) : @"address",
              @keypath(Location.new, postalCode) : @"postal_code",
              @keypath(Location.new, publiclyViewable) : @"publicly_viewable",
+             @keypath(Location.new, latitude) : @"coordinates.lat",
+             @keypath(Location.new, longitude) : @"coordinates.lng",
     };
 }
 
@@ -21,5 +23,19 @@
     }
     return @"";
 }
+
+- (NSDictionary *)coordinatesAsDictionary
+{
+    return @{
+             @"longitude" : self.longitude,
+             @"latitude"  : self.latitude
+             };
+}
+
+- (CLLocation *)clLocation
+{
+    return [[CLLocation alloc] initWithLatitude:self.latitude.doubleValue longitude:self.longitude.doubleValue];
+}
+
 
 @end

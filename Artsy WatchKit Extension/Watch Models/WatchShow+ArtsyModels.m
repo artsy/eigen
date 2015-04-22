@@ -5,7 +5,7 @@
 
 - (instancetype)initWithArtsyPartnerShow:(PartnerShow *)show;
 {
-    return [[WatchShow alloc] initWithShowID:show.showID title:show.name partnerName:show.partner.name ausstellungsdauer:show.ausstellungsdauer locationString:show.location.city distanceFromString:nil coordinatesDictionary:show.coordinates.dictionaryRepresentation thumbnailImageURL:show.smallPreviewImageURL];
+    return [[WatchShow alloc] initWithShowID:show.showID title:show.name partnerName:show.partner.name ausstellungsdauer:show.ausstellungsdauer locationString:show.location.city distanceFromString:nil coordinatesDictionary:show.location.coordinatesAsDictionary thumbnailImageURL:show.smallPreviewImageURL];
 }
 
 - (instancetype)initWithArtsyPartnerShow:(PartnerShow *)show atLocation:(CLLocation *)location

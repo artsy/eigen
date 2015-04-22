@@ -25,7 +25,6 @@
 @property (nonatomic, copy, readonly) NSString *locationInFair;
 
 @property (nonatomic, strong, readonly) PartnerShowFairLocation *fairLocation;
-@property (nonatomic, strong, readonly) PartnerShowCoordinates *coordinates;
 
 - (id)initWithShowID:(NSString *)showID;
 

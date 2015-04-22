@@ -1,3 +1,5 @@
+@import CoreLocation;
+
 @interface Location : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *name;
@@ -9,6 +11,11 @@
 @property (nonatomic, copy, readonly) NSString *postalCode;
 
 @property (nonatomic, copy, readonly) NSString *phone;
+
+@property (nonatomic, copy, readonly) NSNumber *longitude;
+@property (nonatomic, copy, readonly) NSNumber *latitude;
+- (NSDictionary *)coordinatesAsDictionary;
+- (CLLocation *)clLocation;
 
 @property (nonatomic, readonly) BOOL publiclyViewable;
 

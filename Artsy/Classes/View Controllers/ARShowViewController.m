@@ -290,7 +290,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             [showName addGestureRecognizer:tapGesture];
             showName.chevronHidden = NO;
         }
-        else showName.chevronHidden = YES;
+        else {
+            showName.chevronHidden = YES;
+        }
         
         ARSerifLabel *boothLocation = [self metadataLabel:self.show.locationInFair];
         boothLocation.tag = ARFairShowViewBoothLocation;
