@@ -92,12 +92,5 @@
         "Title": "Avant@18",
         "Bio": "Garamond@18"
     }
- },
- {
-     "name": "Artwork",
-
-     "content": {
-         "ButtonMargin": "-8"
-     }
-}
+ }
 ]
