@@ -54,6 +54,7 @@
 
 -(void)didMoveToSuperview
 {
+    if (!self.superview) { return; }
     [self alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.superview];
 }
 

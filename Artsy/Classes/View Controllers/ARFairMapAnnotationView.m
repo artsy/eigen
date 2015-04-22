@@ -41,12 +41,18 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
         self.primaryTitleLabel = primaryTitleLabel;
         [self addSubview:primaryTitleLabel];
         [primaryTitleLabel alignTopEdgeWithView:self predicate:nil];
-        [primaryTitleLabel alignAttribute:NSLayoutAttributeLeading toAttribute:NSLayoutAttributeTrailing ofView:self.mapFeatureView predicate:NSStringWithFormat(@"%f", ARHorizontalOffsetFromIcon)];
-        [primaryTitleLabel constrainHeightToView:self.mapFeatureView predicate:nil];
+        [self alignTitleToFeatureView];
     }
 
     self.primaryTitleLabel.text = self.hasLabel ? [title uppercaseString] : @"";
     _displayTitle = title;
+}
+
+- (void)alignTitleToFeatureView
+{
+    if (!(self.primaryTitleLabel && self.mapFeatureView)) { return; }
+    [self.primaryTitleLabel constrainLeadingSpaceToView:self.mapFeatureView predicate:@(ARHorizontalOffsetFromIcon).stringValue];
+    [self.primaryTitleLabel constrainHeightToView:self.mapFeatureView predicate:nil];
 }
 
 // draw a red border around the current view
@@ -74,6 +80,7 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
         [mapFeatureView alignLeadingEdgeWithView:self predicate:nil];
         self.mapFeatureView = mapFeatureView;
         self.clipsToBounds = NO;
+        [self alignTitleToFeatureView];
     }
 
     NSString *mapFeatureTypeString = NSStringFromARMapFeatureType(mapFeatureType) ?: @"GenericEvent";
