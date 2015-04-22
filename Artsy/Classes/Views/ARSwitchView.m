@@ -1,11 +1,11 @@
 #import "ARSwitchView.h"
 
 @interface ARSwitchView()
-@property (nonatomic, strong, readwrite) NSLayoutConstraint *selectionConstraint;
 @property (nonatomic, strong, readwrite) NSArray *buttons;
 @property (nonatomic, strong, readonly) UIView *selectionIndicator;
 @property (nonatomic, strong, readonly) UIView *topSelectionIndicator;
 @property (nonatomic, strong, readonly) UIView *bottomSelectionIndicator;
+@property (nonatomic, strong, readonly) NSArray *selectionIndicatorConstraints;
 @end
 
 @implementation ARSwitchView
@@ -26,34 +26,46 @@
     self = [self init];
     if (!self) { return nil; }
 
-    __block NSInteger index = 0;
-    _buttons = [buttonTitlesArray map:^id(id object) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self setupButton:button];
-        [button setTitle:object forState:UIControlStateNormal];
-        [button setTitle:object forState:UIControlStateDisabled];
-        [button addTarget:self action:@selector(selectedButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self createSelectionIndicator];
 
-        if (index == 0) {
-            [button setEnabled:NO];
-        }
+    UIView *buttonContainer = [[UIView alloc] init];
+    [self addSubview:buttonContainer];
 
-        index++;
+    [buttonContainer alignLeading:@"0" trailing:@"0" toView:self];
+    [buttonContainer alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.topSelectionIndicator predicate:@"0"];
+    [buttonContainer alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeTop ofView:self.bottomSelectionIndicator predicate:@"0"];
+
+    NSMutableArray *selectionIndicatorConstraints = [NSMutableArray array];
+
+    _buttons = [buttonTitlesArray map:^(NSString *title) {
+        UIButton *button = [self createButtonWithTitle:title];
+        [buttonContainer addSubview:button];
+
+        // These constraints will be activated and deactivated to move the indicator.
+        NSLayoutConstraint *indicatorConstraint = [[self.selectionIndicator alignLeadingEdgeWithView:button predicate:@"0"] lastObject];
+        [selectionIndicatorConstraints addObject:indicatorConstraint];
+
         return button;
     }];
 
-    NSString *widthPredicateWithMultiplier = NSStringWithFormat(@"*%f", self.widthMultiplier);
+    _selectionIndicatorConstraints = [selectionIndicatorConstraints copy];
+    [NSLayoutConstraint deactivateConstraints:_selectionIndicatorConstraints];
 
-    [self.buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
-        [self addSubview:button];
-        [button constrainWidthToView:self predicate:widthPredicateWithMultiplier];
-        if (index == 0) {
-            [button alignLeadingEdgeWithView:self predicate:nil];
-        } else {
-            [button constrainLeadingSpaceToView:self.buttons[index - 1] predicate:nil];
-        }
-        [button alignTop:@"2" bottom:@"-2" toView:self];
-    }];
+    [(UIView *)[_buttons firstObject] alignLeadingEdgeWithView:buttonContainer predicate:@"0"];
+    [(UIView *)[_buttons lastObject] alignTrailingEdgeWithView:buttonContainer predicate:@"0"];
+
+    [UIView spaceOutViewsHorizontally:_buttons predicate:@"0"];
+    [UIView alignTopAndBottomEdgesOfViews:[_buttons arrayByAddingObject:buttonContainer]];
+    [UIView equalWidthForViews:[_buttons arrayByAddingObject:_selectionIndicator]];
+
+    [self setSelectedIndex:0 animated:NO];
+
+    return self;
+}
+
+- (void)createSelectionIndicator
+{
+    CGFloat indicatorThickness = 2;
 
     _selectionIndicator = [[UIView alloc] init];
     _topSelectionIndicator = [[UIView alloc] init];
@@ -69,21 +81,11 @@
     [self.topSelectionIndicator alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.selectionIndicator];
     [self.bottomSelectionIndicator alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.selectionIndicator];
 
-    [self.topSelectionIndicator constrainHeight:@"2"];
-    [self.bottomSelectionIndicator constrainHeight:@"2"];
+    [self.topSelectionIndicator constrainHeight:@(indicatorThickness).stringValue];
+    [self.bottomSelectionIndicator constrainHeight:@(indicatorThickness).stringValue];
 
     [self insertSubview:self.selectionIndicator atIndex:0];
-    [self.selectionIndicator constrainWidthToView:self predicate:widthPredicateWithMultiplier];
     [self.selectionIndicator alignTop:@"0" bottom:@"0" toView:self];
-
-    _selectionConstraint = [[self.selectionIndicator alignLeadingEdgeWithView:self predicate:nil] lastObject];
-
-    return self;
-}
-
-- (CGFloat)widthMultiplier
-{
-    return 1.0 / self.buttons.count;
 }
 
 - (void)selectedButton:(UIButton *)sender
@@ -92,8 +94,14 @@
     [self setSelectedIndex:buttonIndex animated:self.shouldAnimate];
 }
 
-- (void)setupButton:(UIButton *)button
+- (UIButton *)createButtonWithTitle:(NSString *)title
 {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitle:title forState:UIControlStateDisabled];
+    [button addTarget:self action:@selector(selectedButton:) forControlEvents:UIControlEventTouchUpInside];
+
     button.titleLabel.font = [UIFont sansSerifFontWithSize:14];
     button.titleLabel.backgroundColor = [UIColor whiteColor];
     button.titleLabel.opaque = YES;
@@ -102,6 +110,8 @@
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateDisabled];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
     [button setTitleColor:[UIColor artsyHeavyGrey] forState:UIControlStateNormal];
+
+    return button;
 }
 
 - (CGSize)intrinsicContentSize
@@ -134,22 +144,9 @@
 
         [self highlightButton:button highlighted:YES];
         
-        // Set the x-position of the selection indicator as a fraction of the total width of the switch view according to which button was pressed.
-        double buttonIndex = [[NSNumber numberWithInteger:[self.buttons indexOfObject:button]] doubleValue];
-        double buttonCount = [[NSNumber numberWithInteger:self.buttons.count] doubleValue];
-        double multiplier =  buttonIndex/buttonCount;
-        [self removeConstraint:self.selectionConstraint];
-
-        // Must be a constraint with a multiple rather than a numerical value so that position is updated if switchview width changes.
-        self.selectionConstraint = [NSLayoutConstraint constraintWithItem:self.selectionIndicator
-                                                                attribute:NSLayoutAttributeLeft
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:self
-                                                                attribute:NSLayoutAttributeRight
-                                                               multiplier:multiplier
-                                                                 constant:0];
-
-        [self addConstraint:self.selectionConstraint];
+        [NSLayoutConstraint deactivateConstraints:self.selectionIndicatorConstraints];
+        [NSLayoutConstraint activateConstraints:@[self.selectionIndicatorConstraints[index]]];
+        
         [self layoutIfNeeded];
     }];
 
