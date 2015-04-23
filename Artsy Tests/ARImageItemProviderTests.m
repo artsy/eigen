@@ -16,13 +16,13 @@ describe(@"image provider item", ^{
     for (NSString *activity in imagelessActivities) {
         it([NSString stringWithFormat:@"%@%@", @"returns nil for ", activity], ^{
             NSString *activityType = [NSString stringWithFormat:@"%@%@",@"com.apple.UIKit.activity.PostTo", activity];
-            [[[providerMock stub] andReturn:activityType] activityType];
+            [(ARImageItemProvider *)[[providerMock stub] andReturn:activityType] activityType];
             expect(provider.item).to.beNil();
         });
     }
 
     it(@"returns placeholderItem for other activities", ^{
-        [[[providerMock stub] andReturn:@"another activity"] activityType];;
+        [(ARImageItemProvider *)[[providerMock stub] andReturn:@"another activity"] activityType];;
         expect(provider.item).to.equal(image);
     });
 
