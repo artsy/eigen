@@ -16,7 +16,7 @@ PODS:
     - ARAnalytics/CoreIOS
     - Mixpanel
   - ARASCIISwizzle (1.1.0)
-  - ARCollectionViewMasonryLayout (2.0.0)
+  - ARCollectionViewMasonryLayout (2.1.1)
   - ARGenericTableViewController (1.0.2)
   - ARTiledImageView (1.2):
     - SDWebImage/Core
@@ -104,8 +104,7 @@ DEPENDENCIES:
   - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`)
   - ARAnalytics/Mixpanel (from `https://github.com/orta/ARAnalytics.git`)
   - ARASCIISwizzle (= 1.1.0)
-  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`,
-    commit `2ee871f509806af147d0529a36f791906997d4b7`)
+  - ARCollectionViewMasonryLayout (>= 2.1.1, ~> 2.1)
   - ARGenericTableViewController (= 1.0.2)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
   - Artsy+UIColors
@@ -155,9 +154,6 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   ARAnalytics:
     :git: https://github.com/orta/ARAnalytics.git
-  ARCollectionViewMasonryLayout:
-    :commit: 2ee871f509806af147d0529a36f791906997d4b7
-    :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
@@ -173,9 +169,6 @@ CHECKOUT OPTIONS:
   ARAnalytics:
     :commit: fa35a18caab902f79046c9f079ba490bfcfed931
     :git: https://github.com/orta/ARAnalytics.git
-  ARCollectionViewMasonryLayout:
-    :commit: 2ee871f509806af147d0529a36f791906997d4b7
-    :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
@@ -196,7 +189,7 @@ SPEC CHECKSUMS:
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   ARAnalytics: 952400e88ab11aa631aa4e0a21a3cf7163d3c8f4
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
-  ARCollectionViewMasonryLayout: 164b82010cf8ec99bc7a38cffe59a179d7e5a116
+  ARCollectionViewMasonryLayout: 98a899a3c9ebf9283e993198e12b54bd3615f672
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 000af4093f9bdcd0f754e6ebd964c90641389f90
   Artsy+UIColors: d1d5e084a0e542d310c507acb5446bae6a322241
