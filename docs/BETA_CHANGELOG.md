@@ -1,4 +1,4 @@
-## Next
+## 2015.04.23
 
 * Ensure artworks in a collection view do not stick out too much to the right - alloy
 * Fix layout issue with auction results warning banner after changing orientation - 1aurabrown
