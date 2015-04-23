@@ -3,9 +3,12 @@
 ### TODOs for anyone before deploying
 
 1. Check out eigen Artsy master.
-1. Run `make appstore`. This runs `pod install` and prompts for a release version number.
-1. Update CHANGELOG with the release number.
-1. Add and commit the changed files, typically with `-m "Preparing for the next release, version X.Y.Z."`.
+2. Ensure all required/expected analytics events are in `docs/BETA_CHANGELOG.md`.
+3. Move `docs/BETA_CHANGELOG.md` to `CHANGELOG.md`.
+4. Remove dev only entries from `CHANGELOG.md`.
+5. Run `make appstore`. This runs `pod install` and prompts for a release version number.
+6. Update CHANGELOG with the release number.
+7. Add and commit the changed files, typically with `-m "Preparing for the next release, version X.Y.Z."`.
 
 ### Provisioning Profiles
 
