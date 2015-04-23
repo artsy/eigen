@@ -56,19 +56,19 @@ describe(@"message provider", ^{
         });
 
         it(@"adds Twitter handle for Twitter", ^{
-            [[[providerMock stub] andReturn:UIActivityTypePostToTwitter] activityType];
+            [(ARMessageItemProvider *)[[providerMock stub] andReturn:UIActivityTypePostToTwitter] activityType];
             expect([provider item]).to.equal(@"So And So on @Artsy");
         });
 
         it(@"formats HTML for Mail", ^{
-            [[[providerMock stub] andReturn:UIActivityTypeMail] activityType];
+            [(ARMessageItemProvider *)[[providerMock stub] andReturn:UIActivityTypeMail] activityType];
             NSString *email = [NSString stringWithFormat: @"<html><body><a href='%@%@'>%@</a></body></html>",
                                [ARRouter baseWebURL].absoluteString, path, @"So And So on Artsy"];
             expect([provider item]).to.equal(email);
         });
 
         it(@"adds ' on Artsy: for other activities", ^{
-            [[[providerMock stub] andReturn:@"another activity"] activityType];
+            [(ARMessageItemProvider *)[[providerMock stub] andReturn:@"another activity"] activityType];
             expect([provider item]).to.equal(@"So And So on Artsy");
         });
     });

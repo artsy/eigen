@@ -24,6 +24,12 @@ describe(@"with map", ^{
             @"id": @"some-show",
             @"name": @"Some Show",
             @"partner": @{ @"id" : @"some-partner" },
+            @"location": @{
+                @"address" : @"123 Some Street",
+                @"city" : @"New York",
+                @"state" : @"NY",
+                @"publicly_viewable" : @YES
+            },
             @"fair_location": @{
                 @"map_points": @[
                     @{
@@ -32,6 +38,8 @@ describe(@"with map", ^{
                     }
                 ]
             },
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
 
         fair = [Fair modelWithJSON:@{
@@ -67,6 +75,14 @@ describe(@"without map", ^{
             @"id": @"some-show",
             @"name": @"Some Show",
             @"partner": @{ @"id" : @"some-partner" },
+            @"location": @{
+                @"address" : @"123 Some Street",
+                @"city" : @"New York",
+                @"state" : @"NY",
+                @"publicly_viewable" : @YES
+            },
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
 
         fair = [Fair modelWithJSON:@{
@@ -129,8 +145,16 @@ describe(@"partner is a gallery", ^{
             @"partner": @{
                 @"id" : @"some-partner",
                 @"type" : @"Gallery",
-                @"default_profile_public" : @(YES)
-            }
+                @"default_profile_public" : @YES,
+            @"location": @{
+                @"address" : @"123 Some Street",
+                @"city" : @"New York",
+                @"state" : @"NY",
+                @"publicly_viewable" : @YES
+                },
+            },
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
 
 
@@ -138,7 +162,7 @@ describe(@"partner is a gallery", ^{
     });
 
     itHasSnapshotsForDevices(@"gallery", ^{
-        showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
+        showVC = [[ARShowViewController alloc] initWithShow:show fair:nil];
         showVC.showNetworkModel = stubbedNetworkModel;
         [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         [showVC.view snapshotViewAfterScreenUpdates:YES];
@@ -155,8 +179,16 @@ describe(@"partner is not a gallery", ^{
             @"partner": @{
                 @"id" : @"some-partner",
                 @"type" : @"Museum",
-                @"default_profile_public" : @(YES)
-            }
+                @"default_profile_public" : @YES
+            },
+            @"location": @{
+                @"address" : @"123 Some Street",
+                @"city" : @"New York",
+                @"state" : @"NY",
+                @"publicly_viewable" : @YES
+            },
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
 
         stubbedNetworkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show maps:nil];
