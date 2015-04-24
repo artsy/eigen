@@ -1,6 +1,5 @@
 #import "ARStandardDateFormatter.h"
 #import "NSDate+DateRange.h"
-#import "PartnerShowCoordinates.h"
 
 static ARStandardDateFormatter *staticDateFormatter;
 
@@ -39,7 +38,7 @@ static ARStandardDateFormatter *staticDateFormatter;
         @keypath(PartnerShow.new, location) : @"location",
         @keypath(PartnerShow.new, locationInFair) : @"fair_location.display",
         @keypath(PartnerShow.new, fairLocation) : @"fair_location",
-        @keypath(PartnerShow.new, coordinates) : @"coordinates",
+        @keypath(PartnerShow.new, officialDescription) : @"description",
     };
 }
 
@@ -75,17 +74,7 @@ static ARStandardDateFormatter *staticDateFormatter;
 
 + (NSValueTransformer *)locationJSONTransformer
 {
-    return [MTLValueTransformer transformerWithBlock:^(NSDictionary *item) {
-        if (!item) {
-            return @"";
-        }
-        return (NSString *)item[@"city"];
-    }];
-}
-
-+ (NSValueTransformer *)coordinatesJSONTransformer
-{
-    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:PartnerShowCoordinates.class];
+    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[Location class]];
 }
 
 - (NSString *)title
@@ -172,8 +161,8 @@ static ARStandardDateFormatter *staticDateFormatter;
     if (self.fair && self.locationInFair && ![self.locationInFair isEqualToString:@""]) {
         return [NSString stringWithFormat: @"%@, %@", ausstellungsdauer, self.locationInFair];
 
-    } else if (self.location && ![self.location isEqualToString:@""]) {
-        return [NSString stringWithFormat: @"%@, %@", ausstellungsdauer, self.location];
+    } else if (self.location.city && ![self.location.city isEqualToString:@""]) {
+        return [NSString stringWithFormat: @"%@, %@", ausstellungsdauer, self.location.city];
 
     } else {
         return self.ausstellungsdauer;

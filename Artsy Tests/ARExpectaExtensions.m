@@ -15,16 +15,30 @@ void _itTestsAsyncronouslyWithDevicesRecording(id self, int lineNumber, const ch
 
     it([name stringByAppendingString:@" as iphone"], ^{
         [ARTestContext stubDevice:ARDeviceTypePhone5];
-        id sut = block();
-        snapshot(sut, @" as iphone");
-        [ARTestContext stopStubbing];
+        @try {
+            id sut = block();
+            snapshot(sut, @" as iphone");
+        }
+        @catch (NSException *exception) {
+            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as iphone"]]);
+        }
+        @finally {
+            [ARTestContext stopStubbing];
+        }
     });
 
     it([name stringByAppendingString:@" as ipad"], ^{
         [ARTestContext stubDevice:ARDeviceTypePad];
-        id sut = block();
-        snapshot(sut, @" as ipad");
-        [ARTestContext stopStubbing];
+        @try {
+            id sut = block();
+            snapshot(sut, @" as ipad");
+        }
+        @catch (NSException *exception) {
+            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as ipad"]]);
+        }
+        @finally {
+            [ARTestContext stopStubbing];
+        }
     });
 }
 
@@ -43,15 +57,29 @@ void _itTestsSyncronouslyWithDevicesRecording(id self, int lineNumber, const cha
     
     it([name stringByAppendingString:@" as iphone"], ^{
         [ARTestContext stubDevice:ARDeviceTypePhone5];
-        id sut = block();
-        snapshot(sut, @" as iphone");
-        [ARTestContext stopStubbing];
+        @try {
+            id sut = block();
+            snapshot(sut, @" as iphone");
+        }
+        @catch (NSException *exception) {
+            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as iphone"]]);
+        }
+        @finally {
+            [ARTestContext stopStubbing];
+        }
     });
     
     it([name stringByAppendingString:@" as ipad"], ^{
         [ARTestContext stubDevice:ARDeviceTypePad];
-        id sut = block();
-        snapshot(sut, @" as ipad");
-        [ARTestContext stopStubbing];
+        @try {
+            id sut = block();
+            snapshot(sut, @" as ipad");
+        }
+        @catch (NSException *exception) {
+            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as ipad"]]);
+        }
+        @finally {
+            [ARTestContext stopStubbing];
+        }
     });
 }

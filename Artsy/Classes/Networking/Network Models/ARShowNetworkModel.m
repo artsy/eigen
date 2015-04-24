@@ -13,12 +13,14 @@
 {
     self = [super init];
     if (self == nil) { return nil; }
-
+    
     _fair = fair;
     _show = show;
 
     return self;
 }
+
+
 
 - (void)getShowInfo:(void (^)(PartnerShow *))success failure:(void (^)(NSError *))failure
 {
