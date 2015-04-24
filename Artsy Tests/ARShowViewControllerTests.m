@@ -197,7 +197,6 @@ describe(@"non-gallery partner, not in a fair, and has public location", ^{
                 @"id" : @"some-partner",
                 @"type" : @"Museum",
                 @"default_profile_public" : @NO,
-                @"default_profile_id" : @"some-museum"
             },
             @"location": @{
                 @"address" : @"123 Some Street",
@@ -229,8 +228,10 @@ describe(@"non-gallery partner, not in a fair, and has private location", ^{
             @"id": @"some-show",
             @"name": @"Some Show",
             @"partner": @{
+                    @"name" : @"Some Museum",
                     @"id" : @"some-partner",
                     @"type" : @"Museum",
+                    @"default_profile_id" : @"some-museum",
                     @"default_profile_public" : @YES
                     },
             @"location": @{
