@@ -18,13 +18,23 @@ __block Fair *fair = nil;
 __block PartnerShow *show = nil;
 __block ARStubbedShowNetworkModel *stubbedNetworkModel;
 
-describe(@"with map", ^{
+describe(@"partner at a fair with map", ^{
     beforeEach(^{
         show = [PartnerShow modelWithJSON:@{
             @"id": @"some-show",
             @"name": @"Some Show",
-            @"partner": @{ @"id" : @"some-partner" },
+            @"partner": @{
+                    @"id" : @"some-partner",
+                    @"name" : @"Some Gallery",
+                    @"default_profile_id" : @"some-gallery",
+                    @"default_profile_public" : @YES
+            },
+            @"fair" : @{
+                @"name" : @"The Armory Show",
+                @"id" : @"fair-id",
+            },
             @"fair_location": @{
+                @"display" : @"Armory Presents, Booth 666",
                 @"map_points": @[
                     @{
                         @"x": @(0.15),
@@ -32,6 +42,9 @@ describe(@"with map", ^{
                     }
                 ]
             },
+            @"location" : [NSNull null],
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
 
         fair = [Fair modelWithJSON:@{
@@ -39,7 +52,7 @@ describe(@"with map", ^{
             @"name" : @"The Armory Show",
             @"organizer" : @{ @"profile_id" : @"fair-profile-id" },
         }];
-
+        
         // Required since Fair doesn't parse maps dictionary in Mantle
         Map *map = [Map modelWithJSON:@{
             @"id" : @"map-id",
@@ -48,7 +61,7 @@ describe(@"with map", ^{
             @"max_tiled_width": @(1000),
             @"max_tiled_height": @(2000)
         }];
-
+        
         stubbedNetworkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:fair show:show maps:@[map]];
     });
 
@@ -61,12 +74,27 @@ describe(@"with map", ^{
     });
 });
 
-describe(@"without map", ^{
+describe(@"partner at a fair without map", ^{
     beforeEach(^{
         show = [PartnerShow modelWithJSON:@{
             @"id": @"some-show",
-            @"name": @"Some Show",
-            @"partner": @{ @"id" : @"some-partner" },
+            @"name": @"Some Gallery at the Armory Show",
+            @"fair" : @{
+                @"id" : @"the-armory-show-2015",
+                @"name" : @"The Armory Show 2015",
+            },
+            @"partner": @{
+                @"id" : @"some-partner",
+                @"name" : @"Some Gallery",
+                @"default_profile_id" : @"some-gallery",
+                @"default_profile_public" : @YES
+            },
+            @"fair_location" : @{
+                @"display" : @"Armory Presents, Booth 666"
+            },
+            @"location" : [NSNull null],
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
 
         fair = [Fair modelWithJSON:@{
@@ -121,23 +149,69 @@ describe(@"without map", ^{
     });
 });
 
-describe(@"partner is a gallery", ^{
+// a partner gallery show with a publicly viewable location should show the location and a follow button
+describe(@"partner gallery, not in a fair, and has public location", ^{
     beforeEach(^{
         show = [PartnerShow modelWithJSON:@{
             @"id": @"some-show",
             @"name": @"Some Show",
             @"partner": @{
-                @"id" : @"some-partner",
-                @"type" : @"Gallery",
-                @"default_profile_public" : @(YES)
-            }
+                    @"name" : @"Some Gallery",
+                    @"id" : @"some-partner",
+                    @"type" : @"Gallery",
+                    @"default_profile_public" : @YES,
+                    @"default_profile_id" : @"some-gallery",
+            },
+            @"location": @{
+                    @"address" : @"123 Some Street",
+                    @"city" : @"New York",
+                    @"state" : @"NY",
+                    @"publicly_viewable" : @YES
+            },
+            
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
 
+        stubbedNetworkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show];
+    });
+
+    itHasSnapshotsForDevices(@"gallery", ^{
+        showVC = [[ARShowViewController alloc] initWithShow:show fair:nil];
+        showVC.showNetworkModel = stubbedNetworkModel;
+        [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        [showVC.view snapshotViewAfterScreenUpdates:YES];
+
+        return showVC;
+    });
+});
+
+// a non-gallery partner that doesn't have a public profile shouldn't have a follow button
+describe(@"non-gallery partner, not in a fair, and has public location", ^{
+    beforeEach(^{
+        show = [PartnerShow modelWithJSON:@{
+            @"id": @"some-show",
+            @"name": @"Some Show",
+            @"partner": @{
+                @"name" : @"Some Museum",
+                @"id" : @"some-partner",
+                @"type" : @"Museum",
+                @"default_profile_public" : @NO,
+            },
+            @"location": @{
+                @"address" : @"123 Some Street",
+                @"city" : @"New York",
+                @"state" : @"NY",
+                @"publicly_viewable" : @YES
+            },
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
+        }];
 
         stubbedNetworkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show maps:nil];
     });
 
-    itHasSnapshotsForDevices(@"gallery", ^{
+    itHasSnapshotsForDevices(@"not gallery public location", ^{
         showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
         showVC.showNetworkModel = stubbedNetworkModel;
         [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
@@ -147,27 +221,38 @@ describe(@"partner is a gallery", ^{
     });
 });
 
-describe(@"partner is not a gallery", ^{
+// if the show location isn't publicly viewable, it shouldn't be shown
+describe(@"non-gallery partner, not in a fair, and has private location", ^{
     beforeEach(^{
         show = [PartnerShow modelWithJSON:@{
             @"id": @"some-show",
             @"name": @"Some Show",
             @"partner": @{
-                @"id" : @"some-partner",
-                @"type" : @"Museum",
-                @"default_profile_public" : @(YES)
-            }
-        }];
-
+                    @"name" : @"Some Museum",
+                    @"id" : @"some-partner",
+                    @"type" : @"Museum",
+                    @"default_profile_id" : @"some-museum",
+                    @"default_profile_public" : @YES
+                    },
+            @"location": @{
+                    @"address" : @"123 Some Street",
+                    @"city" : @"New York",
+                    @"state" : @"NY",
+                    @"publicly_viewable" : @NO
+                    },
+            @"start_at" : @"1976-01-30T15:00:00+00:00",
+            @"end_at" : @"1976-02-02T15:00:00+00:00"
+            }];
+        
         stubbedNetworkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show maps:nil];
     });
-
-    itHasSnapshotsForDevices(@"not gallery", ^{
+    
+    itHasSnapshotsForDevices(@"not gallery private location", ^{
         showVC = [[ARShowViewController alloc] initWithShow:show fair:fair];
         showVC.showNetworkModel = stubbedNetworkModel;
         [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         [showVC.view snapshotViewAfterScreenUpdates:YES];
-
+        
         return showVC;
     });
 });

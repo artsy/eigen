@@ -96,7 +96,7 @@ describe(@"url and image thumbnail", ^{
 
                 before(^{
                     providerMock = [OCMockObject partialMockForObject:provider];
-                    [[[providerMock stub] andReturn:UIActivityTypeAirDrop] activityType];
+                    [(ARURLItemProvider *)[[providerMock stub] andReturn:UIActivityTypeAirDrop] activityType];
                     file = provider.item;
                     fileURL = (id) file;
                     NSData *fileData = [NSData dataWithContentsOfURL:fileURL];

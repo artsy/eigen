@@ -19,8 +19,11 @@ NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewActionButtons,
     ARFairShowViewPartnerLabel,
     ARFairShowViewPartnerLabelFollowButton,
-    ARFairShowViewPartnerName,
+    ARFairShowViewShowName,
+    ARFairShowViewAusstellungsdauer,
     ARFairShowViewBoothLocation,
+    ARFairShowViewLocationAddress,
+    ARFairShowViewDescription,
     ARFairShowViewMapPreview,
     ARFairShowViewFollowPartner,
     ARFairShowViewWhitespaceAboveArtworks,
@@ -83,7 +86,10 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     self = [self init];
 
     _show = show;
-    _fair = fair ? fair : show.fair;
+    if (!self.fair) {
+        _fair = fair ? fair : show.fair;
+    }
+    //_fair = fair ? fair : show.fair;
 
     return self;
 }
@@ -263,35 +269,64 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 - (void)addPartnerMetadataToStack
 {
-    ARItalicsSerifLabelWithChevron *partnerName = [[ARItalicsSerifLabelWithChevron alloc] init];
-    partnerName.tag = ARFairShowViewPartnerName;
-    partnerName.font = [UIFont serifFontWithSize:16];
-    partnerName.text = self.show.fair ? self.show.fair.name : self.show.name;
-    [self.view.stackView addSubview:partnerName withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
+    ARItalicsSerifLabelWithChevron *showName = [[ARItalicsSerifLabelWithChevron alloc] init];
+    showName.tag = ARFairShowViewShowName;
+    showName.font = [UIFont serifFontWithSize:16];
+    showName.text = self.show.fair ? self.show.fair.name : self.show.name;
+    [self.view.stackView addSubview:showName withTopMargin:@"10" sideMargin:[self sideMarginPredicate]];
+    
+    ARSerifLabel *ausstellungsdauer = [self metadataLabel:self.show.ausstellungsdauer];
+    ausstellungsdauer.tag = ARFairShowViewAusstellungsdauer;
+    
+    // if the show is in a fair, add booth location & possibly chevron. if it's not, add the show location (if publicly available) and description
+    if (self.show.fair) {
+        BOOL isNotCurrentFairContext = ![self.show.fair isEqual:self.fair];
+        if (isNotCurrentFairContext) {
+            // show the ausstellungsdauer and link to fair page
+            [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
 
-    BOOL isNotCurrentFairContext = self.show.fair && !self.fair;
-    if (isNotCurrentFairContext) {
-        partnerName.userInteractionEnabled = YES;
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openShowFair:)];
-        [partnerName addGestureRecognizer:tapGesture];
-        partnerName.chevronHidden = NO;
-    } else {
-        partnerName.chevronHidden = YES;
+            showName.userInteractionEnabled = YES;
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openShowFair:)];
+            [showName addGestureRecognizer:tapGesture];
+            showName.chevronHidden = NO;
+        }
+        else {
+            showName.chevronHidden = YES;
+        }
+        
+        ARSerifLabel *boothLocation = [self metadataLabel:self.show.locationInFair];
+        boothLocation.tag = ARFairShowViewBoothLocation;
+        [self.view.stackView addSubview:boothLocation withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
     }
-
-    ARSerifLabel *boothLocation = [[ARSerifLabel alloc] init];
-    boothLocation.tag = ARFairShowViewBoothLocation;
-    boothLocation.textColor = [UIColor artsyHeavyGrey];
-    boothLocation.font = [UIFont serifFontWithSize:14];
-
-    // We don't care about the fairs opening / closing if
-    if (isNotCurrentFairContext) {
-        boothLocation.text = self.show.ausstellungsdauerAndLocation;
-    } else {
-        boothLocation.text = self.show.locationInFair;
+    else {
+        // show the address of the gallery, ausstellungsdauer, and description of show
+        showName.chevronHidden = YES;
+        [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
+        
+        if (self.show.location.publiclyViewable) {
+            ARSerifLabel *addressLabel = [self metadataLabel:self.show.location.addressAndCity];
+            addressLabel.tag = ARFairShowViewLocationAddress;
+            [self.view.stackView addSubview:addressLabel withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
+        }
+        
+        if (self.show.officialDescription) {
+            ARSerifLineHeightLabel *descriptionLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:5];
+            descriptionLabel.tag = ARFairShowViewDescription;
+            descriptionLabel.textColor = [UIColor blackColor];
+            descriptionLabel.font = [UIFont serifFontWithSize:14];
+            descriptionLabel.text = self.show.officialDescription;
+            [self.view.stackView addSubview:descriptionLabel withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
+        }
     }
+}
 
-    [self.view.stackView addSubview:boothLocation withTopMargin:@"6" sideMargin:[self sideMarginPredicate]];
+- (ARSerifLabel *)metadataLabel:(NSString *)text
+{
+    ARSerifLabel *label = [[ARSerifLabel alloc] init];
+    label.textColor = [UIColor artsyHeavyGrey];
+    label.font = [UIFont serifFontWithSize:14];
+    label.text = text;
+    return label;
 }
 
 - (void)openShowFair:(id)sender
