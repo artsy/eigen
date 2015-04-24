@@ -14,12 +14,7 @@
     self = [super init];
     if (self == nil) { return nil; }
     
-    if (!fair) {
-        _fair = nil;
-    }
-    else {
-        _fair = fair;
-    }
+    _fair = fair;
     _show = show;
 
     return self;
