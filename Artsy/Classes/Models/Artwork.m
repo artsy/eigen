@@ -78,7 +78,7 @@
 {
     return [MTLValueTransformer reversibleTransformerWithForwardBlock: ^ Image *(NSArray *items) {
         NSDictionary *defaultImageDict = [[items select: ^(NSDictionary *item) {
-            return[item[@"is_default"] boolValue];
+            return [item[@"is_default"] boolValue];
         }] first];
         return defaultImageDict ? [Image modelWithJSON:defaultImageDict] : nil;
     }
