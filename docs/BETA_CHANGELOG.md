@@ -9,3 +9,4 @@
 * Update Artwork view for iPad - 1aurabrown
 * Fix autolayout-related crashes and failing tests - 1aurabrown
 * Drop iOS 7 support - ashfurrow
+* Fix broken rotation when rotating and then tapping Explore tab - 1aurabrown

@@ -49,10 +49,10 @@
     return [UIDevice isPad] ? 20 : 16;
 }
 
-- (NSInteger)numberOfColumnsForInterfaceOrientation:(UIInterfaceOrientation)orientation
+- (NSInteger)numberOfColumnsForSize:(CGSize)size
 {
     if ([UIDevice isPad]) {
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
+        if (size.width > size.height) {
             return 3;
         } else {
             return 2;
@@ -93,6 +93,12 @@
     _collectionView = collectionView;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     return [self itemMargin];
@@ -111,7 +117,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger numberOfColumns = numberOfColumns = [self numberOfColumnsForInterfaceOrientation:self.interfaceOrientation];
+    NSInteger numberOfColumns = numberOfColumns = [self numberOfColumnsForSize:self.view.frame.size];
     NSInteger numberOfMargins = numberOfColumns - 1;
     CGFloat totalMarginsWidth = (numberOfMargins * self.itemMargin) + (2 * self.collectionViewInsetMargin);
 
@@ -123,7 +129,8 @@
     if ([UIDevice isPhone]) {
         heightToWidthFactor = .597;
     } else {
-        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        CGRect frame = self.view.frame;
+        if (CGRectGetWidth(frame) > CGRectGetHeight(frame)) {
             heightToWidthFactor = 1;
         } else {
             heightToWidthFactor = .8358;
