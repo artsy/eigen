@@ -87,7 +87,7 @@ describe(@"general", ^{
 
 describe(@"artworks", ^{
 
-    itHasSnapshotsForDevices(@"with no artworks", ^{
+    itHasSnapshotsForDevicesWithName(@"with no artworks", ^{
         sharedBefore();
 
         id networkModelMock = [OCMockObject niceMockForClass:[ARArtworkFavoritesNetworkModel class]];
@@ -123,7 +123,7 @@ describe(@"artworks", ^{
             [[[moduleMock stub] andReturn:artworks] items];
         };
 
-        itHasSnapshotsForDevices(@"with artworks", ^{
+        itHasSnapshotsForDevicesWithName(@"with artworks", ^{
             artworksBefore();
             return favoritesVC.view;
         });
@@ -157,7 +157,7 @@ describe(@"artists", ^{
         expect(favoritesVC.embeddedItemsVC.activeModule).to.beKindOf([ARFavoriteItemModule class]);
     });
 
-    itHasSnapshotsForDevices(@"with no artists", ^{
+    itHasSnapshotsForDevicesWithName(@"with no artists", ^{
         artistsBefore();
         id mock = [OCMockObject partialMockForObject:favoritesVC];
         id networkModelMock = [OCMockObject niceMockForClass:[ARArtistFavoritesNetworkModel class]];
@@ -188,7 +188,7 @@ describe(@"artists", ^{
             [[[moduleMock stub] andReturn:artists] items];
         };
 
-        itHasSnapshotsForDevices(@"with artists", ^{
+        itHasSnapshotsForDevicesWithName(@"with artists", ^{
             artistsWithArtistsBefore();
             return favoritesVC.view;
         });
@@ -222,7 +222,7 @@ describe(@"genes", ^{
         expect(favoritesVC.embeddedItemsVC.activeModule).to.beKindOf([ARFavoriteItemModule class]);
     });
 
-    itHasSnapshotsForDevices(@"with no genes", ^{
+    itHasSnapshotsForDevicesWithName(@"with no genes", ^{
         genesBefore();
         id mock = [OCMockObject partialMockForObject:favoritesVC];
         id networkModelMock = [OCMockObject niceMockForClass:[ARGeneFavoritesNetworkModel class]];
@@ -254,7 +254,7 @@ describe(@"genes", ^{
             [[switchView buttons][ARSwitchViewFavoriteCategoriesIndex] sendActionsForControlEvents:UIControlEventTouchUpInside];
         };
 
-        itHasSnapshotsForDevices(@"with genes", ^{
+        itHasSnapshotsForDevicesWithName(@"with genes", ^{
             genesWithGenesBefore();
             return favoritesVC.view;
         });

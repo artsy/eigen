@@ -108,7 +108,7 @@ describe(@"with three hero units", ^{
         expect(heroVC.timer).toNot.beNil();
     });
 
-    itHasSnapshotsForDevices(@"with three units", ^{
+    itHasSnapshotsForDevicesWithName(@"with three units", ^{
         sharedBefore();
         [heroVC updateViewWithHeroUnits:heroUnits];
         return heroVC;
@@ -161,7 +161,7 @@ describe(@"with one hero unit", ^{
         expect(heroVC.timer).to.beNil();
     });
 
-    itHasSnapshotsForDevices(@"with one unit", ^{
+    itHasSnapshotsForDevicesWithName(@"with one unit", ^{
         sharedBefore();
         [heroVC updateViewWithHeroUnits:heroUnits];
         return heroVC;
@@ -201,7 +201,7 @@ describe(@"with no hero units", ^{
         expect(heroVC.timer).to.beNil();
     });
 
-    itHasSnapshotsForDevices(@"with no units", ^{
+    itHasSnapshotsForDevicesWithName(@"with no units", ^{
         sharedBefore();
         [heroVC updateViewWithHeroUnits:heroUnits];
         return heroVC;

@@ -24,7 +24,7 @@ describe(@"signup splash", ^{
         expect([controller.imageView.images count]).to.equal(3);
     });
 
-    itHasSnapshotsForDevices(@"looks correct", ^{
+    itHasSnapshotsForDevicesWithName(@"looks correct", ^{
         sharedBefore();
         [controller ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return controller;

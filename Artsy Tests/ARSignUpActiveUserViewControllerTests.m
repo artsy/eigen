@@ -10,84 +10,84 @@ dispatch_block_t sharedBefore = ^{
 };
 
 describe(@"sign up after app launch", ^{
-    itHasSnapshotsForDevices(@"ARTrialContextFavoriteArtist", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextFavoriteArtist", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextFavoriteArtist;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextFavoriteProfile", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextFavoriteProfile", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextFavoriteProfile;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextFavoriteGene", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextFavoriteGene", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextFavoriteGene;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextFavoriteArtwork", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextFavoriteArtwork", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextFavoriteArtwork;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextShowingFavorites", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextShowingFavorites", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextShowingFavorites;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextPeriodical", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextPeriodical", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextPeriodical;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextRepresentativeInquiry", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextRepresentativeInquiry", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextRepresentativeInquiry;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextContactGallery", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextContactGallery", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextContactGallery;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextAuctionBid", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextAuctionBid", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextAuctionBid;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextArtworkOrder", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextArtworkOrder", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextArtworkOrder;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextFairGuide", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextFairGuide", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextFairGuide;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return vc;
     });
 
-    itHasSnapshotsForDevices(@"ARTrialContextNotTrial", ^{
+    itHasSnapshotsForDevicesWithName(@"ARTrialContextNotTrial", ^{
         sharedBefore();
         vc.trialContext = ARTrialContextNotTrial;
         [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];

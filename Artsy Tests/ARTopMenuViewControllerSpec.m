@@ -38,13 +38,13 @@ dispatch_block_t sharedBefore = ^{
     [sut.view layoutIfNeeded];
 };
 
-itHasSnapshotsForDevices(@"selects 'home' by default", ^{
+itHasSnapshotsForDevicesWithName(@"selects 'home' by default", ^{
     dataSource = [[ARTestTopMenuNavigationDataSource alloc] init];
     sharedBefore();
     return sut;
 });
 
-itHasSnapshotsForDevices(@"should be able to hide", ^{
+itHasSnapshotsForDevicesWithName(@"should be able to hide", ^{
     dataSource = [[ARTestTopMenuNavigationDataSource alloc] init];
     sharedBefore();
     [sut hideToolbar:YES animated:NO];

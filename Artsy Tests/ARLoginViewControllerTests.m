@@ -36,12 +36,12 @@ describe(@"login view controller", ^{
             controller.hideDefaultValues = YES;
         });
                    
-        itHasSnapshotsForDevices(@"blank form", ^{
+        itHasSnapshotsForDevicesWithName(@"blank form", ^{
             [controller ar_presentWithFrame:[UIScreen mainScreen].bounds];
             return controller;
         });
 
-        itHasSnapshotsForDevices(@"completed form", ^{
+        itHasSnapshotsForDevicesWithName(@"completed form", ^{
             [controller ar_presentWithFrame:[UIScreen mainScreen].bounds];
             controller.emailTextField.text = [ARUserManager stubUserEmail];
             controller.passwordTextField.text = [ARUserManager stubUserPassword];

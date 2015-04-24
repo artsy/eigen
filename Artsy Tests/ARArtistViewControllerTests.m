@@ -10,7 +10,7 @@ SpecBegin(ARArtistViewController)
 
 __block ARStubbedArtistNetworkModel *networkModel;
 
-itHasSnapshotsForDevices(@"displays artwork counts", ^{
+itHasSnapshotsForDevicesWithName(@"displays artwork counts", ^{
     
     ARArtistViewController *vc = [[ARArtistViewController alloc] initWithArtistID:@"some-artist"];
     
@@ -31,7 +31,7 @@ itHasSnapshotsForDevices(@"displays artwork counts", ^{
     return vc;
 });
 
-itHasSnapshotsForDevices(@"no artworks", ^{
+itHasSnapshotsForDevicesWithName(@"no artworks", ^{
     ARArtistViewController *vc = [[ARArtistViewController alloc] initWithArtistID:@"some-artist"];
     networkModel = [[ARStubbedArtistNetworkModel alloc] initWithArtist:vc.artist];
     networkModel.artistForArtistInfo = [Artist modelWithJSON:@{
@@ -51,7 +51,7 @@ itHasSnapshotsForDevices(@"no artworks", ^{
     return vc;
 });
 
-itHasSnapshotsForDevices(@"artworks masonry", ^{
+itHasSnapshotsForDevicesWithName(@"artworks masonry", ^{
     
     ARArtistViewController *vc = [[ARArtistViewController alloc] initWithArtistID:@"some-artist"];
     networkModel = [[ARStubbedArtistNetworkModel alloc] initWithArtist:vc.artist];
@@ -75,7 +75,7 @@ itHasSnapshotsForDevices(@"artworks masonry", ^{
     return vc;
 });
 
-itHasSnapshotsForDevices(@"two-rows artworks masonry", ^{
+itHasSnapshotsForDevicesWithName(@"two-rows artworks masonry", ^{
     ARArtistViewController *vc = [[ARArtistViewController alloc] initWithArtistID:@"some-artist"];
     networkModel = [[ARStubbedArtistNetworkModel alloc] initWithArtist:vc.artist];
     networkModel.artistForArtistInfo = [Artist modelWithJSON:@{

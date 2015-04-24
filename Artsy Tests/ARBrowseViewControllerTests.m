@@ -29,7 +29,7 @@ it(@"sets its menu items", ^{
     expect(viewController.menuLinks.count).will.equal(5);
 });
 
-itHasSnapshotsForDevices(@"looks correct", ^{
+itHasSnapshotsForDevicesWithName(@"looks correct", ^{
     return viewController;
 });
 

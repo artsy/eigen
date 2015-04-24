@@ -363,6 +363,7 @@ describe(@"at a closed auction", ^{
         });
     });
 });
+
 pending(@"at a fair");
 
 SpecEnd

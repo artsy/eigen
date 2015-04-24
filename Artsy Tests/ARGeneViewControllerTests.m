@@ -9,7 +9,7 @@ after(^{
 });
 
 pending(@"with long desciption", ^{ // This works, but on Travis we get a weird autolayout error.
-// itHasAsyncronousSnapshotsForDevices(@"with long desciption", ^{
+// itHasAsyncronousSnapshotsForDevicesWithName(@"with long desciption", ^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/gene/painting" withResponse:@{
         @"id" : @"painting",
         @"name" : @"Painting",
