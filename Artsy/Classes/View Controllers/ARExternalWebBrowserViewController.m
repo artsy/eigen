@@ -6,6 +6,7 @@
 @end
 
 @interface ARExternalWebBrowserViewController()<UIGestureRecognizerDelegate>
+@property (readonly, nonatomic, strong) id<ARWebViewControllerScrollDelegate> scrollDelegate;
 @property(nonatomic, readonly, strong) UIGestureRecognizer *gesture;
 @end
 
@@ -16,6 +17,7 @@
     self = [super initWithURL:url];
     if (!self) { return nil; }
 
+    _scrollDelegate = [ARScrollNavigationChief chief];
     self.showNavigationBar = NO;
     return self;
 }
@@ -25,7 +27,7 @@
     [super viewWillAppear:animated];
 
     self.webView.frame = self.view.bounds;
-    self.webView.scrollView.delegate = [ARScrollNavigationChief chief];
+    self.webView.scrollView.delegate = self;
     self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -55,6 +57,13 @@
 - (UIScrollView *)scrollView
 {
     return self.webView.scrollView;
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.scrollDelegate scrollViewDidScroll:scrollView];
 }
 
 #pragma mark UIGestureRecognizerDelegate

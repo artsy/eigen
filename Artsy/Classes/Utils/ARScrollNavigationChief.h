@@ -1,12 +1,14 @@
 /// Psh, managers are for Java
 
+#import "ARExternalWebBrowserViewController.h"
+
 @protocol ARScrollNavigationChiefAwareViewController <UIScrollViewDelegate>
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
 @end
 
-@interface ARScrollNavigationChief : NSObject <UIScrollViewDelegate, UICollectionViewDelegate>
+@interface ARScrollNavigationChief : NSObject <UIScrollViewDelegate, UICollectionViewDelegate, ARWebViewControllerScrollDelegate>
 
 + (ARScrollNavigationChief *)chief;
 
