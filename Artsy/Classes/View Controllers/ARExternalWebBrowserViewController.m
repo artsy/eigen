@@ -12,9 +12,9 @@
 
 @implementation ARExternalWebBrowserViewController
 
-- (instancetype)initWithURL:(NSURL *)url
+- (instancetype)init
 {
-    self = [super initWithURL:url];
+    self = [super init];
     if (!self) { return nil; }
 
     _scrollDelegate = [ARScrollNavigationChief chief];
