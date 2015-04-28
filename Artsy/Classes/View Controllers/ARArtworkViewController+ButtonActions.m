@@ -219,4 +219,10 @@
     [[ARTopMenuViewController sharedController] pushViewController:viewController];
 }
 
+- (void)tappedConditionsOfSale:(id)sender
+{
+    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/conditions-of-sale"]];
+    [[ARTopMenuViewController sharedController] pushViewController:viewController];
+}
+
 @end
