@@ -4,9 +4,9 @@ gem 'cocoapods'
 gem "cocoapods-keys"
 
 group :test do
-  gem 'fui', '~> 0.3.0'
+  gem 'fui'
   gem 'xcpretty'
-  gem 'second_curtain', '~> 0.2.3'
+  gem 'second_curtain'
 end
 
 group :distribution do
