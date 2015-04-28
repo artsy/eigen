@@ -13,7 +13,6 @@ before_install:
   - 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
   - echo "machine github.com login $GITHUB_API_KEY" > ~/.netrc
   - chmod 600 ~/.netrc
-  - pod repo add artsy https://github.com/artsy/Specs.git
 
 before_script:
   - make ci
