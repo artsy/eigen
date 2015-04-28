@@ -158,8 +158,6 @@ static CGFloat UpwardScrollDistanceForShowing = 160;
     }
 
     self.lastOffset = offset;
-
-    [self.awareViewController scrollViewDidScroll:scrollView];
 }
 
 @end
