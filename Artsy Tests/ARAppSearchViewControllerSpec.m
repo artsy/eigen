@@ -23,7 +23,7 @@ dispatch_block_t sharedBefore = ^{
     [sut.view layoutIfNeeded];
 };
 
-itHasSnapshotsForDevices(@"looks correct", ^{
+itHasSnapshotsForDevicesWithName(@"looks correct", ^{
     sharedBefore();
     return sut;
 });
@@ -32,7 +32,7 @@ context(@"searching", ^{
     context(@"with results", ^{
 
 
-        itHasSnapshotsForDevices(@"displays search results", ^{
+        itHasSnapshotsForDevicesWithName(@"displays search results", ^{
 
             sharedBefore();
 
@@ -79,7 +79,7 @@ context(@"searching", ^{
     });
 
     context(@"with no results", ^{
-        itHasSnapshotsForDevices(@"displays zero state", ^{
+        itHasSnapshotsForDevicesWithName(@"displays zero state", ^{
 
             sharedBefore();
             sut.searchDataSource.searchResults = [NSOrderedSet orderedSetWithObjects:[SearchResult modelWithJSON:@{

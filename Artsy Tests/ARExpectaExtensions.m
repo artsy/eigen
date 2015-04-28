@@ -1,19 +1,29 @@
 #import "ARExpectaExtensions.h"
 
-void _itTestsAsyncronouslyWithDevicesRecording(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)()) {
+void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber, const char *fileName, BOOL record, BOOL async, NSString *name, id (^block)()) {
 
     void (^snapshot)(id, NSString *) = ^void (id sut, NSString *suffix) {
 
         EXPExpect *expectation = _EXP_expect(self, lineNumber, fileName, ^id{ return EXPObjectify((sut)); });
 
+        expectation = async ? expectation.will : expectation.to;
+
         if (record) {
-            expectation.will.recordSnapshotNamed([name stringByAppendingString:suffix]);
+            if (name) {
+                expectation.recordSnapshotNamed([name stringByAppendingString:suffix]);
+            } else {
+                expectation.recordSnapshot();
+            }
         } else {
-            expectation.will.haveValidSnapshotNamed([name stringByAppendingString:suffix]);
+            if (name) {
+                expectation.haveValidSnapshotNamed([name stringByAppendingString:suffix]);
+            } else {
+                expectation.haveValidSnapshot();
+            }
         }
     };
 
-    it([name stringByAppendingString:@" as iphone"], ^{
+    it(@" as iphone", ^{
         [ARTestContext stubDevice:ARDeviceTypePhone5];
         @try {
             id sut = block();
@@ -27,7 +37,7 @@ void _itTestsAsyncronouslyWithDevicesRecording(id self, int lineNumber, const ch
         }
     });
 
-    it([name stringByAppendingString:@" as ipad"], ^{
+    it(@" as ipad", ^{
         [ARTestContext stubDevice:ARDeviceTypePad];
         @try {
             id sut = block();
@@ -42,44 +52,10 @@ void _itTestsAsyncronouslyWithDevicesRecording(id self, int lineNumber, const ch
     });
 }
 
-void _itTestsSyncronouslyWithDevicesRecording(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)()) {
-    
-    void (^snapshot)(id, NSString *) = ^void (id sut, NSString *suffix) {
-        
-        EXPExpect *expectation = _EXP_expect(self, lineNumber, fileName, ^id{ return EXPObjectify((sut)); });
-        
-        if (record) {
-            expectation.to.recordSnapshotNamed([name stringByAppendingString:suffix]);
-        } else {
-            expectation.to.haveValidSnapshotNamed([name stringByAppendingString:suffix]);
-        }
-    };
-    
-    it([name stringByAppendingString:@" as iphone"], ^{
-        [ARTestContext stubDevice:ARDeviceTypePhone5];
-        @try {
-            id sut = block();
-            snapshot(sut, @" as iphone");
-        }
-        @catch (NSException *exception) {
-            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as iphone"]]);
-        }
-        @finally {
-            [ARTestContext stopStubbing];
-        }
-    });
-    
-    it([name stringByAppendingString:@" as ipad"], ^{
-        [ARTestContext stubDevice:ARDeviceTypePad];
-        @try {
-            id sut = block();
-            snapshot(sut, @" as ipad");
-        }
-        @catch (NSException *exception) {
-            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as ipad"]]);
-        }
-        @finally {
-            [ARTestContext stopStubbing];
-        }
-    });
+void _itTestsSyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)()) {
+    _itTestsWithDevicesRecordingAsynchronouslyWithName(self, lineNumber, fileName, record, NO, name, block);
+}
+
+void _itTestsAsyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)()) {
+    _itTestsWithDevicesRecordingAsynchronouslyWithName(self, lineNumber, fileName, record, YES, name, block);
 }

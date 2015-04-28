@@ -71,21 +71,21 @@ describe(@"logged in", ^{
         [ARUserManager clearUserData];
     });
 
-    itHasAsyncronousSnapshotsForDevices(@"displays Contact Gallery when seller is a gallery", ^{
+    itHasAsyncronousSnapshotsForDevicesWithName(@"displays Contact Gallery when seller is a gallery", ^{
         ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:galleryArtwork fair:nil];
         vc.shouldAnimate = NO;
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         return vc;
     });
 
-    itHasAsyncronousSnapshotsForDevices(@"displays Contact Seller when seller is not a gallery", ^{
+    itHasAsyncronousSnapshotsForDevicesWithName(@"displays Contact Seller when seller is not a gallery", ^{
         ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:museumGallery fair:nil];
         vc.shouldAnimate = NO;
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         return vc;
     });
 
-    itHasAsyncronousSnapshotsForDevices(@"logged out, displays artsy specialist", ^{
+    itHasAsyncronousSnapshotsForDevicesWithName(@"logged out, displays artsy specialist", ^{
         ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
         vc.shouldAnimate = NO;
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
@@ -106,21 +106,21 @@ describe(@"logged out", ^{
             [ARUserManager sharedManager].trialUserEmail = nil;
         });
 
-        itHasAsyncronousSnapshotsForDevices(@"displays contact gallery", ^{
+        itHasAsyncronousSnapshotsForDevicesWithName(@"displays contact gallery", ^{
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:galleryArtwork fair:nil];
             vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             return vc;
         });
 
-        itHasAsyncronousSnapshotsForDevices(@"displays artsy specialist", ^{
+        itHasAsyncronousSnapshotsForDevicesWithName(@"displays artsy specialist", ^{
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
             vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             return vc;
         });
         
-        itHasAsyncronousSnapshotsForDevices(@"works for an artwork without a title", ^{
+        itHasAsyncronousSnapshotsForDevicesWithName(@"works for an artwork without a title", ^{
             museumGallery.title = nil;
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:museumGallery fair:nil];
             vc.shouldAnimate = NO;
@@ -143,7 +143,7 @@ describe(@"logged out", ^{
             artwork = nil;
         });
 
-        itHasAsyncronousSnapshotsForDevices(@"does not initially enable send if stored email is invalid", ^{
+        itHasAsyncronousSnapshotsForDevicesWithName(@"does not initially enable send if stored email is invalid", ^{
             [ARUserManager sharedManager].trialUserEmail = @"invalidEmail";
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
@@ -152,7 +152,7 @@ describe(@"logged out", ^{
             return vc;
         });
 
-        itHasAsyncronousSnapshotsForDevices(@"does initially enables send if stored email is valid", ^{
+        itHasAsyncronousSnapshotsForDevicesWithName(@"does initially enables send if stored email is valid", ^{
             [ARUserManager sharedManager].trialUserEmail = @"validemail@gmail.com";
 
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
@@ -161,7 +161,7 @@ describe(@"logged out", ^{
             return vc;
         });
         
-        itHasAsyncronousSnapshotsForDevices(@"toggles the send button with empty email", ^{
+        itHasAsyncronousSnapshotsForDevicesWithName(@"toggles the send button with empty email", ^{
             [ARUserManager sharedManager].trialUserEmail = nil;
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
@@ -170,7 +170,7 @@ describe(@"logged out", ^{
             return vc;
         });
         
-        itHasAsyncronousSnapshotsForDevices(@"toggles the send button when email becomes valid", ^{
+        itHasAsyncronousSnapshotsForDevicesWithName(@"toggles the send button when email becomes valid", ^{
             [ARUserManager sharedManager].trialUserEmail = nil;
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
@@ -182,7 +182,7 @@ describe(@"logged out", ^{
             return vc;
         });
         
-        itHasAsyncronousSnapshotsForDevices(@"toggles the send button when valid email becomes invalid", ^{
+        itHasAsyncronousSnapshotsForDevicesWithName(@"toggles the send button when valid email becomes invalid", ^{
             [ARUserManager sharedManager].trialUserEmail = nil;
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
