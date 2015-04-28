@@ -25,8 +25,8 @@
     [super viewWillAppear:animated];
 
     self.webView.frame = self.view.bounds;
-    self.webView.scrollView.delegate = self;
-    self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
+     self.scrollView.delegate = self;
+     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
@@ -38,7 +38,7 @@
     if ([self.navigationController isKindOfClass:[ARNavigationController class]]) {
         UIGestureRecognizer *gesture = self.navigationController.interactivePopGestureRecognizer;
 
-        [self.webView.scrollView.panGestureRecognizer requireGestureRecognizerToFail:gesture];
+        [ self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:gesture];
         _gesture = gesture;
     }
 }
@@ -54,7 +54,7 @@
 
 - (UIScrollView *)scrollView
 {
-    return self.webView.scrollView;
+    return  self.webView.scrollView;
 }
 
 #pragma mark UIScrollViewDelegate

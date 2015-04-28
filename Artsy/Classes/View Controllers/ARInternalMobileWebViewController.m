@@ -83,8 +83,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [UIView animateWithDuration:ARAnimationDuration animations:^{
-        self.webView.scrollView.contentInset = [self webViewContentInset];
-        self.webView.scrollView.scrollIndicatorInsets = [self webViewScrollIndicatorsInsets];
+         self.scrollView.contentInset = [self webViewContentInset];
+         self.scrollView.scrollIndicatorInsets = [self webViewScrollIndicatorsInsets];
     }];
 
     [super viewDidAppear:animated];
