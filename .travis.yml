@@ -3,7 +3,8 @@ language: objective-c
 
 env:
   global:
-    secure: "nNOR1HgbuY1Z1SgsHyn2p2EtcC7N8HMJvv3BrQwnY7Fzg6dkIFWISAZYzzijXaqN0BJ+lvKHSO8F4HjWRL64x868bPSMdf3xlqG2VR5yvKsFfpjwqxoyDsBYc68VPsH+tcZqQt4SC2wAqGSkOOF3Pn/4yGyoCGZWWq05cN05las="
+    - secure: "nNOR1HgbuY1Z1SgsHyn2p2EtcC7N8HMJvv3BrQwnY7Fzg6dkIFWISAZYzzijXaqN0BJ+lvKHSO8F4HjWRL64x868bPSMdf3xlqG2VR5yvKsFfpjwqxoyDsBYc68VPsH+tcZqQt4SC2wAqGSkOOF3Pn/4yGyoCGZWWq05cN05las="
+    - LANG=en_US.UTF-8
 
 cache:
   - bundler
