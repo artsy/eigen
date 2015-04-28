@@ -7,7 +7,7 @@
 
 #import "UIView+HitTestExpansion.h"
 
-@interface ARFairGuideContainerViewController () <ARScrollNavigationChiefAwareViewController, ARFairGuideViewControllerDelegate>
+@interface ARFairGuideContainerViewController () <ARFairGuideViewControllerDelegate>
 
 @property (nonatomic, readonly) ARNavigationController *parentViewController;
 

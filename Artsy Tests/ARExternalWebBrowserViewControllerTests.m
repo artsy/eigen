@@ -2,7 +2,6 @@
 #import "ARScrollNavigationChief.h"
 
 @interface ARExternalWebBrowserViewController(Tests)
-@property (readonly, nonatomic, strong) id<ARWebViewControllerScrollDelegate> scrollDelegate;
 @property (readonly, nonatomic, strong) UIWebView *webView;
 @end
 
@@ -12,10 +11,6 @@ __block ARExternalWebBrowserViewController *vc;
 
 beforeEach(^{
     vc = [[ARExternalWebBrowserViewController alloc] init];
-});
-
-it(@"sets the `scrollDelegate`", ^{
-    expect(vc.scrollDelegate).to.equal([ARScrollNavigationChief chief]);
 });
 
 it(@"sets the scroll view's `delegate`", ^{

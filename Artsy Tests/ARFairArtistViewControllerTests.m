@@ -19,7 +19,7 @@ void (^itlooksCorrectWithArtist)(Artist* artist) = ^void(Artist *artist) {
     ARFairArtistViewController *fairArtistVC = [[ARFairArtistViewController alloc] initWithArtistID:@"some-artist" fair:fair];
     fairArtistVC.networkModel = model;
     [fairArtistVC ar_presentWithFrame:CGRectMake(0, 0, 320, 480)];
-    expect(fairArtistVC.view).will.recordSnapshot();
+    expect(fairArtistVC.view).will.haveValidSnapshot();
 
 };
 
