@@ -18,7 +18,7 @@ before_script:
   - make ci
   
 install:
-  - bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
+  - bundle install --jobs=3 --retry=3 --deployment --without distribution --path=${BUNDLE_PATH:-vendor/bundle}
   - make oss
   - bundle exec pod install
 
