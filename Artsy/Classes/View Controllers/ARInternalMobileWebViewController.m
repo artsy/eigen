@@ -58,17 +58,6 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.scrollView.delegate = self;
-}
-
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
-    return nil;
-}
-
 - (void)loadURL:(NSURL *)url
 {
     self.loaded = NO;
@@ -94,8 +83,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [UIView animateWithDuration:ARAnimationDuration animations:^{
-        self.webView.scrollView.contentInset = [self webViewContentInset];
-        self.webView.scrollView.scrollIndicatorInsets = [self webViewScrollIndicatorsInsets];
+         self.scrollView.contentInset = [self webViewContentInset];
+         self.scrollView.scrollIndicatorInsets = [self webViewScrollIndicatorsInsets];
     }];
 
     [super viewDidAppear:animated];
@@ -155,5 +144,11 @@
     return [ARRouter requestForURL:url];
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return nil;
+}
 
 @end

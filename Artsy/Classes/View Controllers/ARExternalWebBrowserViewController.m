@@ -11,9 +11,9 @@
 
 @implementation ARExternalWebBrowserViewController
 
-- (instancetype)initWithURL:(NSURL *)url
+- (instancetype)init
 {
-    self = [super initWithURL:url];
+    self = [super init];
     if (!self) { return nil; }
 
     self.showNavigationBar = NO;
@@ -25,8 +25,8 @@
     [super viewWillAppear:animated];
 
     self.webView.frame = self.view.bounds;
-    self.webView.scrollView.delegate = [ARScrollNavigationChief chief];
-    self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
+     self.scrollView.delegate = self;
+     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
@@ -38,7 +38,7 @@
     if ([self.navigationController isKindOfClass:[ARNavigationController class]]) {
         UIGestureRecognizer *gesture = self.navigationController.interactivePopGestureRecognizer;
 
-        [self.webView.scrollView.panGestureRecognizer requireGestureRecognizerToFail:gesture];
+        [ self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:gesture];
         _gesture = gesture;
     }
 }
@@ -54,7 +54,14 @@
 
 - (UIScrollView *)scrollView
 {
-    return self.webView.scrollView;
+    return  self.webView.scrollView;
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
 }
 
 #pragma mark UIGestureRecognizerDelegate

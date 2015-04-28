@@ -14,6 +14,8 @@
 
 - (void)fairDidLoad;
 
+@property (nonatomic, strong) ORStackScrollView *view;
+
 @property (nonatomic, strong, readonly) Fair *fair;
 @property (nonatomic, assign, readonly) BOOL contentIsOverstretched;
 @property (nonatomic, assign, readwrite) BOOL showTopBorder;
