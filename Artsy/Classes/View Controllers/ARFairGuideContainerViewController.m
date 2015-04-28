@@ -103,7 +103,7 @@ const CGFloat kClosedMapHeight = 180.0f;
 {
     [super viewDidAppear:animated];
 
-    [[ARScrollNavigationChief chief] setAwareViewController:self];
+    self.fairGuideViewController.view.delegate = self;
 }
 
 - (BOOL)shouldAutorotate
@@ -340,10 +340,12 @@ const CGFloat kClosedMapHeight = 180.0f;
     _topHeight = round(MAX(0, MIN(kClosedMapHeight, topHeight)));
 }
 
-#pragma mark - ARScrollNavigationChiefAwareViewController
+#pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
+
     if ([scrollView isDescendantOfView:self.view] == NO) { return; }
     if (self.hasMap == NO) { return; }
 

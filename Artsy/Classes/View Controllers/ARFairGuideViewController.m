@@ -40,7 +40,6 @@ typedef NS_ENUM(NSInteger, ARFairGuideSelectedTab) {
 @property (nonatomic, strong) ARFairFavoritesNetworkModel *fairFavorites;
 @property (nonatomic, assign) ARFairGuideSelectedTab selectedTabIndex;
 
-@property (nonatomic, strong) ORStackScrollView *view;
 @property (nonatomic, strong) User *currentUser;
 @end
 
@@ -71,7 +70,6 @@ typedef NS_ENUM(NSInteger, ARFairGuideSelectedTab) {
     self.view.stackView.bottomMarginHeight = 15;
     self.view.showsVerticalScrollIndicator = ![User isTrialUser];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.view.delegate = [ARScrollNavigationChief chief];
     self.view.alwaysBounceVertical = YES;
 }
 
