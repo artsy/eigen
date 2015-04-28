@@ -10,3 +10,5 @@
 * Fix autolayout-related crashes and failing tests - 1aurabrown
 * Drop iOS 7 support - ashfurrow
 * Fix broken rotation when rotating and then tapping Explore tab - 1aurabrown
+* Add snapshot macro that infers the image file name from the spec name - 1aurabrown
+* Remove ability to zoom internal web views - 1aurabrown
