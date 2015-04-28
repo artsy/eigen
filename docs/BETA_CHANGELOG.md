@@ -12,3 +12,4 @@
 * Fix broken rotation when rotating and then tapping Explore tab - 1aurabrown
 * Add snapshot macro that infers the image file name from the spec name - 1aurabrown
 * Remove ability to zoom internal web views - 1aurabrown
+* Add Conditions of Sale link to works at auction - 1aurabrown
