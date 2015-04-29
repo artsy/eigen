@@ -41,9 +41,9 @@
 
 - (void)fetchSearchResults:(NSString *)text replace:(BOOL)replaceResults
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    ar_dispatch_async(^{
         NSArray *partnerSearchResults = [self searchPartners:text];
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        ar_dispatch_main_queue(^{
             [self addResults:partnerSearchResults replace:replaceResults];
             [super fetchSearchResults:text replace:NO];
         });
@@ -93,12 +93,14 @@
 
 - (AFJSONRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
-    return [ArtsyAPI searchWithFairID:self.fair.fairID andQuery:query success:^(NSArray *searchResults) {
+    AFJSONRequestOperation *request = [ArtsyAPI searchWithFairID:self.fair.fairID andQuery:query success:^(NSArray *searchResults) {
         success([searchResults select:^BOOL(SearchResult *searchResult) {
             // we have local search results for shows
             return ! [searchResult.model isEqual:[PartnerShow class]];
         }]);
     } failure:failure];
+
+    return request;
 }
 
 - (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query

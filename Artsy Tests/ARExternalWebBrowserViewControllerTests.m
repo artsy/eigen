@@ -13,8 +13,12 @@ beforeEach(^{
     vc = [[ARExternalWebBrowserViewController alloc] init];
 });
 
+afterEach(^{
+    vc = nil;
+});
+
 it(@"sets the scroll view's `delegate`", ^{
-    [vc viewWillAppear:NO];
+    [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
     expect(vc.scrollView.delegate).to.equal(vc);
 });
 

@@ -1,11 +1,5 @@
 #import "ARStubbedShowNetworkModel.h"
 
-@interface Fair ()
-
-@property (nonatomic, copy) NSArray *maps;
-
-@end
-
 @implementation ARStubbedShowNetworkModel
 
 - (instancetype)initWithFair:(Fair *)fair show:(PartnerShow *)show maps:(NSArray *)maps

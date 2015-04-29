@@ -24,7 +24,7 @@
         return nil;
     }
 
-    if (failure) failure(nil);
+    if (failure) { failure(nil); }
     return nil;
 }
 
@@ -35,7 +35,7 @@
         return;
     }
 
-    if (self.artist) failure(nil);
+    if (failure) { failure(nil); }
 }
 
 @end

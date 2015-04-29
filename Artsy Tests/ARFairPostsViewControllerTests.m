@@ -1,14 +1,18 @@
 #import "ARFairPostsViewController.h"
 #import "ARPostFeedItemLinkView.h"
 #import "ARSwitchBoard.h"
+#import "ARPostFeedItem.h"
 
 SpecBegin(ARFairPostsViewController)
 
 __block ARFairPostsViewController *fairVC = nil;
 
 beforeEach(^{
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/profile/fair-profile-id/posts" withResponse:@{ @"results" : @[ @{ @"id": @"post-id", @"title": @"Post Title", @"_type" : @"Post" } ] }];
     Fair *fair = [Fair modelWithJSON:@{ @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
+    ARStubbedFairNetworkModel *networkModel = [[ARStubbedFairNetworkModel alloc] init];
+    networkModel.postFeedItems = @[ [ARPostFeedItem modelWithJSON:@{ @"id": @"post-id", @"title": @"Post Title", @"_type" : @"Post" }] ];
+    fair.networkModel = networkModel;
+
     fairVC = [[ARFairPostsViewController alloc] initWithFair:fair];
 });
 
