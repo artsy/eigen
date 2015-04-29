@@ -3,7 +3,8 @@ language: objective-c
 
 env:
   global:
-    secure: "nNOR1HgbuY1Z1SgsHyn2p2EtcC7N8HMJvv3BrQwnY7Fzg6dkIFWISAZYzzijXaqN0BJ+lvKHSO8F4HjWRL64x868bPSMdf3xlqG2VR5yvKsFfpjwqxoyDsBYc68VPsH+tcZqQt4SC2wAqGSkOOF3Pn/4yGyoCGZWWq05cN05las="
+    - secure: "nNOR1HgbuY1Z1SgsHyn2p2EtcC7N8HMJvv3BrQwnY7Fzg6dkIFWISAZYzzijXaqN0BJ+lvKHSO8F4HjWRL64x868bPSMdf3xlqG2VR5yvKsFfpjwqxoyDsBYc68VPsH+tcZqQt4SC2wAqGSkOOF3Pn/4yGyoCGZWWq05cN05las="
+    - LANG=en_US.UTF-8
 
 cache:
   - bundler
@@ -13,13 +14,12 @@ before_install:
   - 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
   - echo "machine github.com login $GITHUB_API_KEY" > ~/.netrc
   - chmod 600 ~/.netrc
-  - pod repo add artsy https://github.com/artsy/Specs.git
 
 before_script:
   - make ci
   
 install:
-  - bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
+  - bundle install --jobs=3 --retry=3 --deployment --without distribution --path=${BUNDLE_PATH:-vendor/bundle}
   - make oss
   - bundle exec pod install
 

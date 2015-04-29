@@ -17,9 +17,9 @@ before_all do
   sh "cd ..; make test"
 end
 
-lane :test do
-  snapshot
-end
+#lane :test do
+  #snapshot
+#end
 
 lane :beta do
   snapshot

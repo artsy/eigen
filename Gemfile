@@ -3,8 +3,13 @@ source 'https://rubygems.org'
 gem 'cocoapods'
 gem "cocoapods-keys"
 
-gem 'fui', '~> 0.3.0'
-gem 'xcpretty'
-gem 'second_curtain', '~> 0.2.3'
-gem 'shenzhen'
-gem 'fastlane'
+group :test do
+  gem 'fui'
+  gem 'xcpretty'
+  gem 'second_curtain'
+end
+
+group :distribution do
+  gem 'shenzhen'
+  gem 'fastlane'
+end
