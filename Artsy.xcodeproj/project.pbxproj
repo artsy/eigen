@@ -215,6 +215,7 @@
 		5174A03B1A859E2C006CD337 /* ARFairMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5174A03A1A859E2C006CD337 /* ARFairMapView.m */; };
 		51D141B01AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141AF1AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m */; };
 		51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141B61AF0F14B000091CF /* ARTestHelper.m */; };
+		51D141B41AEFE430000091CF /* ARTestViewHostingWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141B31AEFE430000091CF /* ARTestViewHostingWindow.m */; };
 		540262C618A0FAFB00844AE1 /* ARButtonWithImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 540262C518A0FAFB00844AE1 /* ARButtonWithImage.m */; };
 		54289FEE18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */; };
 		5435192E18A8E9420060F31E /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */; };
@@ -965,6 +966,8 @@
 		51D141AF1AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelsViewControllerTests.m; sourceTree = "<group>"; };
 		51D141B51AF0F14B000091CF /* ARTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTestHelper.h; sourceTree = "<group>"; };
 		51D141B61AF0F14B000091CF /* ARTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTestHelper.m; sourceTree = "<group>"; };
+		51D141B21AEFE430000091CF /* ARTestViewHostingWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTestViewHostingWindow.h; sourceTree = "<group>"; };
+		51D141B31AEFE430000091CF /* ARTestViewHostingWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTestViewHostingWindow.m; sourceTree = "<group>"; };
 		540262C418A0FAFB00844AE1 /* ARButtonWithImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARButtonWithImage.h; path = "Table View Cells/ARButtonWithImage.h"; sourceTree = "<group>"; };
 		540262C518A0FAFB00844AE1 /* ARButtonWithImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARButtonWithImage.m; path = "Table View Cells/ARButtonWithImage.m"; sourceTree = "<group>"; };
 		54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINavigationController_InnermostTopViewControllerSpec.m; sourceTree = "<group>"; };
@@ -2526,6 +2529,15 @@
 			name = Artwork;
 			sourceTree = "<group>";
 		};
+		51D141B11AEFE246000091CF /* Test Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				51D141B21AEFE430000091CF /* ARTestViewHostingWindow.h */,
+				51D141B31AEFE430000091CF /* ARTestViewHostingWindow.m */,
+			);
+			name = "Test Helpers";
+			sourceTree = "<group>";
+		};
 		5EBDC94F19794D6C0082C514 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -3708,6 +3720,7 @@
 		B3ECE82B1819D1E6009F5C5B /* Artsy Tests */ = {
 			isa = PBXGroup;
 			children = (
+				51D141B11AEFE246000091CF /* Test Helpers */,
 				3C205B5718900091004280E0 /* App Tests */,
 				3C3FEA8B188433CB00E1A16F /* Extensions */,
 				B31BBE10181EFA08001C623C /* Model Tests */,
@@ -4694,6 +4707,7 @@
 				608EE3DB19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m in Sources */,
 				5122D69A1A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m in Sources */,
 				342F9E0892E99A2F66657964 /* Artwork+Extensions.m in Sources */,
+				51D141B41AEFE430000091CF /* ARTestViewHostingWindow.m in Sources */,
 				342F9715E899AC7D24E70734 /* ORStackViewArtsyCategoriesTests.m in Sources */,
 				342F925E34CAC3E5DB8E5F52 /* ARFairMapViewControllerTests.m in Sources */,
 				342F99FA4B25031ABC0613DA /* ARTiledImageDataSourceWithImageTests.m in Sources */,
