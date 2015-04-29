@@ -29,4 +29,4 @@ open Artsy.xcworkspace
 
 This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Build > Run`. 
 
-**Copyright**: 2012-2015, Artsy
+**Copyright**: 2012-2015, Artsy. Thanks to all [our contributors](/docs/thanks.md).
