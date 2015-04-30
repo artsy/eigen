@@ -5,51 +5,10 @@
 
 #if DEBUG
 
-// #import <sys/types.h>
-#import <mach-o/ldsyms.h>
-#ifdef __LP64__
-typedef struct segment_command_64 *segment_command_ptr;
-typedef struct mach_header_64     *macho_header_ptr;
-typedef struct mach_header_64     macho_header;
-#define SEGMENT_LOAD_COMMAND      LC_SEGMENT_64
-#else
-typedef struct segment_command    *segment_command_ptr;
-typedef struct mach_header        *macho_header_ptr;
-typedef struct mach_header        macho_header;
-#define SEGMENT_LOAD_COMMAND      LC_SEGMENT
-#endif
-static intptr_t
-LastAddressOfAppImage(void)
-{
-    static intptr_t last_image_address = 0;
-    static dispatch_once_t once_token = 0;
-    dispatch_once(&once_token, ^{
-        segment_command_ptr segment;
-        macho_header_ptr header = (macho_header_ptr)&_mh_execute_header;
-        segment = (segment_command_ptr)((char *)header + sizeof(macho_header));
-        for (uint32_t i = 0; i < header->ncmds; i++) {
-            if (segment->cmd == SEGMENT_LOAD_COMMAND) {
-                intptr_t next_address = segment->vmaddr + segment->vmsize;
-                if (next_address > last_image_address) {
-                    last_image_address = next_address;
-                }
-            }
-            segment = (segment_command_ptr)((char *)segment + segment->cmdsize);
-        }
-    });
-    return last_image_address;
-}
+#import "ARAutoLayoutDebugging.h"
 
-
-static int const ARLayoutConstraintDebuggingShort;
+static int const ARLayoutConstraintDebuggingEnabled;
 static int const ARLayoutConstraintDebuggingCallStackSymbols;
-
-
-static BOOL
-ARAutoLayoutDebuggingEnabled(void)
-{
-    return [[NSProcessInfo processInfo] environment][@"ARAutoLayoutDebugging"] != nil;
-}
 
 #import <objc/runtime.h>
 static void
@@ -64,6 +23,42 @@ MethodSwizzle(Class c, SEL origSEL, SEL overrideSEL)
     }
 }
 
+static void
+WithoutConstraintsUnsatisfiableLogging(dispatch_block_t block)
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL before = [defaults boolForKey:@"_UIConstraintBasedLayoutLogUnsatisfiable"];
+    [defaults setBool:NO forKey:@"_UIConstraintBasedLayoutLogUnsatisfiable"];
+    block();
+    [defaults setBool:before forKey:@"_UIConstraintBasedLayoutLogUnsatisfiable"];
+}
+
+#import <mach-o/dyld.h>
+static BOOL
+SymbolIsFromAppImage(const char *symbol)
+{
+    static const char *app_image_name = NULL;
+    if (app_image_name == NULL) {
+        app_image_name = _dyld_get_image_name(0);
+    }
+    return strcmp(symbol, app_image_name) == 0;
+}
+
+static BOOL
+SymbolIsFromAutoLayoutDebugging(NSString *symbol)
+{
+    return [symbol hasPrefix:@"-[UIView(ARAutoLayoutDebugging)"];
+}
+
+static BOOL
+SymbolHasAppPrefix(NSString *symbol)
+{
+    NSScanner *scanner = [NSScanner scannerWithString:symbol];
+    [scanner scanString:@"+[" intoString:NULL];
+    [scanner scanString:@"-[" intoString:NULL];
+    return [scanner scanString:@"AR" intoString:NULL];
+}
+
 #import <execinfo.h>
 #import <dlfcn.h>
 static void
@@ -72,8 +67,9 @@ AddCallstackToConstraints(NSArray *constraints)
     void *callstack[128];
     int callstack_size = backtrace(callstack, 128);
 
-    NSString *firstAppSymbol = nil;
-    NSMutableArray *symbols = [NSMutableArray new];
+    NSMutableArray *appSymbols = [NSMutableArray new];
+    NSMutableArray *prefixedAppSymbols = [NSMutableArray new];
+    NSMutableArray *allSymbols = [NSMutableArray new];
 
     // Skip the frames for this function and the calling addConstraint(s) method.
     for (int i = 2; i < callstack_size; i++) {
@@ -84,67 +80,144 @@ AddCallstackToConstraints(NSArray *constraints)
             symbol = [NSString stringWithFormat:@"%p", (void *)address];
         } else {
             symbol = [NSString stringWithUTF8String:info.dli_sname];
-            if (firstAppSymbol == nil && address <= LastAddressOfAppImage()) {
-                firstAppSymbol = symbol;
+            if (SymbolIsFromAppImage(info.dli_fname) && !SymbolIsFromAutoLayoutDebugging(symbol)) {
+                [appSymbols addObject:symbol];
+                if (SymbolHasAppPrefix(symbol)) {
+                    [prefixedAppSymbols addObject:symbol];
+                }
             }
         }
-        [symbols addObject:symbol];
+        [allSymbols addObject:symbol];
     }
 
-    for (NSLayoutConstraint *c in constraints) {
-        if (firstAppSymbol != nil) {
-            objc_setAssociatedObject(c, &ARLayoutConstraintDebuggingShort, firstAppSymbol, OBJC_ASSOCIATION_COPY_NONATOMIC);
-        }
-        objc_setAssociatedObject(c, &ARLayoutConstraintDebuggingCallStackSymbols, symbols, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    NSArray *symbols = nil;
+    if (prefixedAppSymbols.count > 0) {
+        symbols = prefixedAppSymbols;
+    } else if (appSymbols.count > 0) {
+        symbols = appSymbols;
+    } else {
+        symbols = allSymbols;
+    }
+
+    for (NSLayoutConstraint *constraint in constraints) {
+        objc_setAssociatedObject(constraint, &ARLayoutConstraintDebuggingCallStackSymbols, symbols, OBJC_ASSOCIATION_COPY_NONATOMIC);
     }
 }
 
+static NSArray *
+RecursiveViewsAndFramesDescription(NSArray *views, int indent)
+{
+    NSMutableArray *descriptions = [NSMutableArray new];
+    for (UIView *view in views) {
+        const char *className = class_getName(object_getClass(view));
+        NSString *frameDescription = NSStringFromCGRect(view.frame);
+        NSString *description = [NSString stringWithFormat:@"<%s:%p %@>", className, (void *)view, frameDescription];
+        for (int i = 0; i < indent; i++) {
+            description = [@"*" stringByAppendingString:description];
+        }
+        [descriptions addObject:description];
+        [descriptions addObjectsFromArray:RecursiveViewsAndFramesDescription(view.subviews, indent+2)];
+    }
+    return descriptions;
+}
+
+@implementation NSLayoutConstraint (ARAutoLayoutDebugging)
+
+- (NSArray *)ARAutoLayoutDebugging_creationCallStackSymbols;
+{
+    return objc_getAssociatedObject(self, &ARLayoutConstraintDebuggingCallStackSymbols);
+}
+
+@end
 
 @implementation UIView (ARAutoLayoutDebugging)
 
 + (void)load;
 {
-    if (ARAutoLayoutDebuggingEnabled()) {
-        MethodSwizzle(self, @selector(addConstraint:), @selector(ARAutoLayoutDebugging_addConstraint:));
-        MethodSwizzle(self, @selector(addConstraints:), @selector(ARAutoLayoutDebugging_addConstraints:));
-    }
+    MethodSwizzle(self, @selector(addConstraint:), @selector(ARAutoLayoutDebugging_addConstraint:));
+    MethodSwizzle(self, @selector(addConstraints:), @selector(ARAutoLayoutDebugging_addConstraints:));
+}
+
+- (void)ARAutoLayoutDebugging_setLogConstraints:(BOOL)flag;
+{
+    objc_setAssociatedObject(self, &ARLayoutConstraintDebuggingEnabled, @(flag), OBJC_ASSOCIATION_RETAIN);
+}
+
+- (BOOL)ARAutoLayoutDebugging_logConstraints;
+{
+    return [objc_getAssociatedObject(self, &ARLayoutConstraintDebuggingEnabled) boolValue] || getenv("ARAutoLayoutDebugging") != NULL;
 }
 
 - (void)ARAutoLayoutDebugging_addConstraint:(NSLayoutConstraint *)constraint;
 {
-    AddCallstackToConstraints(@[constraint]);
-    [self ARAutoLayoutDebugging_addConstraint:constraint];
-}
-
-- (void)ARAutoLayoutDebugging_addConstraints:(NSArray *)constraints;
-{
-    AddCallstackToConstraints(constraints);
-    [self ARAutoLayoutDebugging_addConstraints:constraints];
-}
-
-@end
-
-
-@implementation NSLayoutConstraint (ARAutoLayoutDebugging)
-
-+ (void)load;
-{
-    if (ARAutoLayoutDebuggingEnabled()) {
-        MethodSwizzle(self, @selector(description), @selector(ARAutoLayoutDebugging_description));
+    if (self.ARAutoLayoutDebugging_logConstraints) {
+        AddCallstackToConstraints(@[constraint]);
+        [self ARAutoLayoutDebugging_addSingleConstraint:constraint];
+    } else {
+        // This is the original -[UIView addConstraint:] method.
+        [self ARAutoLayoutDebugging_addConstraint:constraint];
     }
 }
 
-- (NSString *)ARAutoLayoutDebugging_description;
+// This adds the constraints one at a time to ensure that we get to see the changes for each constraint.
+- (void)ARAutoLayoutDebugging_addConstraints:(NSArray *)constraints;
 {
-    NSString *description = [self ARAutoLayoutDebugging_description];
-    NSString *symbol = objc_getAssociatedObject(self, &ARLayoutConstraintDebuggingShort);
-    return symbol == nil ? description : [description stringByAppendingFormat:@" %@", symbol];
+    if (self.ARAutoLayoutDebugging_logConstraints) {
+        AddCallstackToConstraints(constraints);
+        for (NSLayoutConstraint *constraint in constraints) {
+            [self ARAutoLayoutDebugging_addSingleConstraint:constraint];
+        }
+    } else {
+        // This is the original -[UIView addConstraints:] method.
+        [self ARAutoLayoutDebugging_addConstraints:constraints];
+    }
 }
 
-// You can call this from the debugger to get a full callstack.
-- (NSArray *)creationCallStackSymbols;
+- (void)ARAutoLayoutDebugging_addSingleConstraint:(NSLayoutConstraint *)constraint;
 {
-    return objc_getAssociatedObject(self, &ARLayoutConstraintDebuggingCallStackSymbols);
+    NSArray *changes = [self ARAutoLayoutDebugging_differenceInTree:^{
+        WithoutConstraintsUnsatisfiableLogging(^{
+            // This is the original -[UIView addConstraint:] method.
+            [self ARAutoLayoutDebugging_addConstraint:constraint];
+        });
+    }];
+
+    if (changes.count > 0) {
+      printf("\n" \
+             "================================================================================\n" \
+             "Changes were made by adding constraint: %s\n" \
+             "To view: %s\n" \
+             "--------------------------------------------------------------------------------\n" \
+             "%s\n" \
+             "--------------------------------------------------------------------------------\n" \
+             "%s\n" \
+             "================================================================================\n" \
+             "\n", [[constraint description] UTF8String], [[self description] UTF8String], [[changes componentsJoinedByString:@"\n"] UTF8String], [[constraint.ARAutoLayoutDebugging_creationCallStackSymbols componentsJoinedByString:@"\n"] UTF8String]);
+    }
+}
+
+- (NSArray *)ARAutoLayoutDebugging_differenceInTree:(dispatch_block_t)block;
+{
+    NSArray *before = [self ARAutoLayoutDebugging_recursiveDescription];
+    block();
+    [self layoutIfNeeded];
+    NSArray *after = [self ARAutoLayoutDebugging_recursiveDescription];
+    NSAssert(before.count == after.count, @"Expected recursiveDescription to not change in line count.");
+
+    NSMutableArray *changes = [NSMutableArray new];
+    for (NSUInteger i = 0; i < before.count; i++) {
+        NSString *beforeLine = before[i];
+        NSString *afterLine = after[i];
+        if (![beforeLine isEqualToString:afterLine]) {
+            [changes addObject:afterLine];
+        }
+    }
+    return changes;
+}
+
+- (NSArray *)ARAutoLayoutDebugging_recursiveDescription;
+{
+    return RecursiveViewsAndFramesDescription(@[self], 0);
 }
 
 @end

@@ -29,6 +29,7 @@
     #import "Extensions.h"
     #import "ARTestContext.h"
     #import "ARTestViewHostingWindow.h"
+    #import "ARAutoLayoutDebugging.h"
     #import "StyledSubclasses.h"
     #import <ObjectiveSugar/ObjectiveSugar.h>
     #import <ORStackView/ORStackScrollView.h>
