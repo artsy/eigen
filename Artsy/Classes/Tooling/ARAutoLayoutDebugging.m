@@ -3,25 +3,18 @@
 // Advanced Auto Layout Toolbox
 //
 
-#import "NSLayoutConstraint+Debugging.h"
-
 #if DEBUG
 
 #import <objc/runtime.h>
 
-static BOOL ObjcioLayoutConstraintsDebuggingEnabled(void)
+static BOOL
+ARAutoLayoutDebuggingEnabled(void)
 {
-    static BOOL enabled;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        enabled = ([[NSProcessInfo processInfo] environment][@"ObjcioLayoutConstraintsDebugging"] != nil);
-    });
-    return enabled;
+    return [[NSProcessInfo processInfo] environment][@"ARAutoLayoutDebugging"] != nil;
 }
 
-
-// C.f. <http://www.mikeash.com/pyblog/friday-qa-2010-01-29-method-replacement-for-fun-and-profit.html>
-static void MethodSwizzle(Class c, SEL origSEL, SEL overrideSEL)
+static void
+MethodSwizzle(Class c, SEL origSEL, SEL overrideSEL)
 {
     Method origMethod = class_getInstanceMethod(c, origSEL);
     Method overrideMethod = class_getInstanceMethod(c, overrideSEL);
@@ -32,34 +25,33 @@ static void MethodSwizzle(Class c, SEL origSEL, SEL overrideSEL)
     }
 }
 
-static int const ObjcioLayoutConstraintDebuggingShort;
-static int const ObjcioLayoutConstraintDebuggingCallStackSymbols;
+static int const ARLayoutConstraintDebuggingShort;
+static int const ARLayoutConstraintDebuggingCallStackSymbols;
 
-@implementation NSView (ObjcioLayoutConstraintsDebugging)
+@implementation UIView (ARAutoLayoutDebugging)
 
-
-// We're doing some nasty method swizzling here to make debugging of constraints easier.
 + (void)load;
 {
-    if (ObjcioLayoutConstraintsDebuggingEnabled()) {
-        MethodSwizzle(self, @selector(addConstraint:), @selector(objcioOverride_addConstraint:));
-        MethodSwizzle(self, @selector(addConstraints:), @selector(objcioOverride_addConstraints:));
+    if (ARAutoLayoutDebuggingEnabled()) {
+        MethodSwizzle(self, @selector(addConstraint:), @selector(ARAutoLayoutDebugging_addConstraint:));
+        MethodSwizzle(self, @selector(addConstraints:), @selector(ARAutoLayoutDebugging_addConstraints:));
     }
 }
 
-- (void)objcioOverride_addConstraint:(NSLayoutConstraint *)constraint
+- (void)ARAutoLayoutDebugging_addConstraint:(NSLayoutConstraint *)constraint;
 {
     AddTracebackToConstraints(@[constraint]);
-    [self objcioOverride_addConstraint:constraint];
+    [self ARAutoLayoutDebugging_addConstraint:constraint];
 }
 
-- (void)objcioOverride_addConstraints:(NSArray *)constraints
+- (void)ARAutoLayoutDebugging_addConstraints:(NSArray *)constraints;
 {
     AddTracebackToConstraints(constraints);
-    [self objcioOverride_addConstraints:constraints];
+    [self ARAutoLayoutDebugging_addConstraints:constraints];
 }
 
-static void AddTracebackToConstraints(NSArray *constraints)
+static void
+AddTracebackToConstraints(NSArray *constraints)
 {
     NSArray *a = [NSThread callStackSymbols];
     NSString *symbol = nil;
@@ -80,51 +72,37 @@ static void AddTracebackToConstraints(NSArray *constraints)
     }
     for (NSLayoutConstraint *c in constraints) {
         if (symbol != nil) {
-            objc_setAssociatedObject(c, &ObjcioLayoutConstraintDebuggingShort, symbol, OBJC_ASSOCIATION_COPY_NONATOMIC);
+            objc_setAssociatedObject(c, &ARLayoutConstraintDebuggingShort, symbol, OBJC_ASSOCIATION_COPY_NONATOMIC);
         }
-        objc_setAssociatedObject(c, &ObjcioLayoutConstraintDebuggingCallStackSymbols, a, OBJC_ASSOCIATION_COPY_NONATOMIC);
+        objc_setAssociatedObject(c, &ARLayoutConstraintDebuggingCallStackSymbols, a, OBJC_ASSOCIATION_COPY_NONATOMIC);
     }
 }
 
 @end
 
 
+@implementation NSLayoutConstraint (ARAutoLayoutDebugging)
 
-@implementation NSLayoutConstraint (ObjcioLayoutConstraintsDebugging)
-
-// We're doing some nasty method swizzling here to make debugging of constraints easier.
 + (void)load;
 {
-    if (ObjcioLayoutConstraintsDebuggingEnabled()) {
-        MethodSwizzle(self, @selector(description), @selector(objcioOverride_description));
+    if (ARAutoLayoutDebuggingEnabled()) {
+        MethodSwizzle(self, @selector(description), @selector(AROverride_description));
     }
 }
 
-- (NSString *)objcioOverride_description
+- (NSString *)ARAutoLayoutDebugging_description;
 {
-    // call through to the original, really
-    NSString *description = [self objcioOverride_description];
-    NSString *objcioTag = objc_getAssociatedObject(self, &ObjcioLayoutConstraintDebuggingShort);
-    if (objcioTag == nil) {
+    NSString *description = [self ARAutoLayoutDebugging_description];
+    NSString *ARTag = objc_getAssociatedObject(self, &ARLayoutConstraintDebuggingShort);
+    if (ARTag == nil) {
         return description;
     }
-    return [description stringByAppendingFormat:@" %@", objcioTag];
+    return [description stringByAppendingFormat:@" %@", ARTag];
 }
 
-- (NSArray *)creationCallStackSymbols
+- (NSArray *)creationCallStackSymbols;
 {
-    return objc_getAssociatedObject(self, &ObjcioLayoutConstraintDebuggingCallStackSymbols);
-}
-
-@end
-
-#else 
-
-@implementation NSLayoutConstraint (ObjcioLayoutConstraintsDebugging)
-
-- (NSArray *)creationCallStackSymbols
-{
-    return nil;
+    return objc_getAssociatedObject(self, &ARLayoutConstraintDebuggingCallStackSymbols);
 }
 
 @end
