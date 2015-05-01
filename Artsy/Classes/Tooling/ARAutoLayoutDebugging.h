@@ -3,7 +3,8 @@
 #import <UIKit/UIKit.h>
 
 @interface NSLayoutConstraint (ARAutoLayoutDebugging)
-- (NSArray *)ARAutoLayoutDebugging_creationCallStackSymbols;
+- (NSArray *)ARAutoLayoutDebugging_callStackSymbols;
+- (NSArray *)ARAutoLayoutDebugging_filteredCallStackSymbols;
 @end
 
 @interface UIView (ARAutoLayoutDebugging)

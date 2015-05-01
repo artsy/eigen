@@ -9,6 +9,7 @@
 
 static int const ARLayoutConstraintDebuggingEnabled;
 static int const ARLayoutConstraintDebuggingCallStackSymbols;
+static int const ARLayoutConstraintDebuggingFilteredCallStackSymbols;
 
 #import <objc/runtime.h>
 static void
@@ -81,9 +82,9 @@ AddCallstackToConstraints(NSArray *constraints)
         NSString *symbol = nil;
         Dl_info info;
         if (dladdr((void *)address, &info) == 0) {
-            symbol = [NSString stringWithFormat:@"%p", (void *)address];
+            symbol = [NSString stringWithFormat:@"???? (%p)", (void *)address];
         } else {
-            symbol = [NSString stringWithUTF8String:info.dli_sname];
+            symbol = [NSString stringWithFormat:@"%s (%p)", info.dli_sname, (void *)address];
             if (SymbolIsFromAppImage(info.dli_fname) && !SymbolIsFromAutoLayoutDebugging(symbol)) {
                 [appSymbols addObject:symbol];
                 if (!SymbolHasBlacklistedPrefix(symbol)) {
@@ -94,17 +95,18 @@ AddCallstackToConstraints(NSArray *constraints)
         [allSymbols addObject:symbol];
     }
 
-    NSArray *symbols = nil;
+    NSArray *filteredSymbols = nil;
     if (prefixedAppSymbols.count > 0) {
-        symbols = prefixedAppSymbols;
+        filteredSymbols = prefixedAppSymbols;
     } else if (appSymbols.count > 0) {
-        symbols = appSymbols;
+        filteredSymbols = appSymbols;
     } else {
-        symbols = allSymbols;
+        filteredSymbols = allSymbols;
     }
 
     for (NSLayoutConstraint *constraint in constraints) {
-        objc_setAssociatedObject(constraint, &ARLayoutConstraintDebuggingCallStackSymbols, symbols, OBJC_ASSOCIATION_COPY_NONATOMIC);
+        objc_setAssociatedObject(constraint, &ARLayoutConstraintDebuggingCallStackSymbols, allSymbols, OBJC_ASSOCIATION_COPY_NONATOMIC);
+        objc_setAssociatedObject(constraint, &ARLayoutConstraintDebuggingFilteredCallStackSymbols, filteredSymbols, OBJC_ASSOCIATION_COPY_NONATOMIC);
     }
 }
 
@@ -127,9 +129,14 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
 
 @implementation NSLayoutConstraint (ARAutoLayoutDebugging)
 
-- (NSArray *)ARAutoLayoutDebugging_creationCallStackSymbols;
+- (NSArray *)ARAutoLayoutDebugging_callStackSymbols;
 {
     return objc_getAssociatedObject(self, &ARLayoutConstraintDebuggingCallStackSymbols);
+}
+
+- (NSArray *)ARAutoLayoutDebugging_filteredCallStackSymbols;
+{
+    return objc_getAssociatedObject(self, &ARLayoutConstraintDebuggingFilteredCallStackSymbols);
 }
 
 @end
@@ -154,8 +161,8 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
 
 - (void)ARAutoLayoutDebugging_addConstraint:(NSLayoutConstraint *)constraint;
 {
+    AddCallstackToConstraints(@[constraint]);
     if (self.ARAutoLayoutDebugging_logConstraints) {
-        AddCallstackToConstraints(@[constraint]);
         [self ARAutoLayoutDebugging_addSingleConstraint:constraint];
     } else {
         // This is the original -[UIView addConstraint:] method.
@@ -166,8 +173,8 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
 // This adds the constraints one at a time to ensure that we get to see the changes for each constraint.
 - (void)ARAutoLayoutDebugging_addConstraints:(NSArray *)constraints;
 {
+    AddCallstackToConstraints(constraints);
     if (self.ARAutoLayoutDebugging_logConstraints) {
-        AddCallstackToConstraints(constraints);
         for (NSLayoutConstraint *constraint in constraints) {
             [self ARAutoLayoutDebugging_addSingleConstraint:constraint];
         }
@@ -196,7 +203,7 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
              "--------------------------------------------------------------------------------\n" \
              "%s\n" \
              "================================================================================\n" \
-             "\n", [[constraint description] UTF8String], [[self description] UTF8String], [[changes componentsJoinedByString:@"\n"] UTF8String], [[constraint.ARAutoLayoutDebugging_creationCallStackSymbols componentsJoinedByString:@"\n"] UTF8String]);
+             "\n", [[constraint description] UTF8String], [[self description] UTF8String], [[changes componentsJoinedByString:@"\n"] UTF8String], [[constraint.ARAutoLayoutDebugging_filteredCallStackSymbols componentsJoinedByString:@"\n"] UTF8String]);
     }
 }
 
