@@ -81,6 +81,7 @@ it(@"does not display contact when artwork is in auction", ^{
     }];
     [view updateUI];
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    ARTestWrapView(view);
     expect(view).to.haveValidSnapshotNamed(@"forSaleAtAuction");
 });
 

@@ -1,5 +1,44 @@
 #import "ARTestHelper.h"
 
+void
+ARTestWrapView(UIView *view)
+{
+    UIView *containerView = [[UIView alloc] initWithFrame:(CGRect){ CGPointZero, view.bounds.size }];
+    [containerView addSubview:view];
+    [containerView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                              attribute:NSLayoutAttributeTop
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:containerView
+                                                              attribute:NSLayoutAttributeTop
+                                                             multiplier:1.0
+                                                               constant:0.0]];
+
+    [containerView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                              attribute:NSLayoutAttributeLeading
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:containerView
+                                                              attribute:NSLayoutAttributeLeading
+                                                             multiplier:1.0
+                                                               constant:0.0]];
+
+    [containerView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:containerView
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1.0
+                                                               constant:0.0]];
+
+    [containerView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                              attribute:NSLayoutAttributeTrailing
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:containerView
+                                                              attribute:NSLayoutAttributeTrailing
+                                                             multiplier:1.0
+                                                               constant:0.0]];
+    [containerView layoutIfNeeded];
+}
+
 @implementation ARTestHelper
 
 + (void)load;
