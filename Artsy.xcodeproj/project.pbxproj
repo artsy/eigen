@@ -2529,15 +2529,6 @@
 			name = Artwork;
 			sourceTree = "<group>";
 		};
-		51D141B11AEFE246000091CF /* Test Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				51D141B21AEFE430000091CF /* ARTestViewHostingWindow.h */,
-				51D141B31AEFE430000091CF /* ARTestViewHostingWindow.m */,
-			);
-			name = "Test Helpers";
-			sourceTree = "<group>";
-		};
 		5EBDC94F19794D6C0082C514 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -3722,7 +3713,6 @@
 		B3ECE82B1819D1E6009F5C5B /* Artsy Tests */ = {
 			isa = PBXGroup;
 			children = (
-				51D141B11AEFE246000091CF /* Test Helpers */,
 				3C205B5718900091004280E0 /* App Tests */,
 				3C3FEA8B188433CB00E1A16F /* Extensions */,
 				B31BBE10181EFA08001C623C /* Model Tests */,
@@ -4710,7 +4700,6 @@
 				608EE3DB19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m in Sources */,
 				5122D69A1A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m in Sources */,
 				342F9E0892E99A2F66657964 /* Artwork+Extensions.m in Sources */,
-				51D141B41AEFE430000091CF /* ARTestViewHostingWindow.m in Sources */,
 				342F9715E899AC7D24E70734 /* ORStackViewArtsyCategoriesTests.m in Sources */,
 				342F925E34CAC3E5DB8E5F52 /* ARFairMapViewControllerTests.m in Sources */,
 				342F99FA4B25031ABC0613DA /* ARTiledImageDataSourceWithImageTests.m in Sources */,

@@ -28,7 +28,7 @@
     #import "Models.h"
     #import "Extensions.h"
     #import "ARTestContext.h"
-    #import "ARTestViewHostingWindow.h"
+    #import "ARTestHelper.h"
     #import "ARAutoLayoutDebugging.h"
     #import "StyledSubclasses.h"
     #import <ObjectiveSugar/ObjectiveSugar.h>
