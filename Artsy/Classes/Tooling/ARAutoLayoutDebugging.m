@@ -51,12 +51,16 @@ SymbolIsFromAutoLayoutDebugging(NSString *symbol)
 }
 
 static BOOL
-SymbolHasAppPrefix(NSString *symbol)
+SymbolHasBlacklistedPrefix(NSString *symbol)
 {
     NSScanner *scanner = [NSScanner scannerWithString:symbol];
-    [scanner scanString:@"+[" intoString:NULL];
-    [scanner scanString:@"-[" intoString:NULL];
-    return [scanner scanString:@"AR" intoString:NULL];
+    // First remove block prefixes
+    [scanner scanString:@"__" intoString:NULL] && [scanner scanInt:NULL];
+    // Then remove class or instance method indicators
+    [scanner scanString:@"+[" intoString:NULL] || [scanner scanString:@"-[" intoString:NULL];
+    return [scanner scanString:@"main" intoString:NULL] ||
+           [scanner scanString:@"FLK" intoString:NULL] ||
+           [scanner scanString:@"UIView(FLK" intoString:NULL];
 }
 
 #import <execinfo.h>
@@ -82,7 +86,7 @@ AddCallstackToConstraints(NSArray *constraints)
             symbol = [NSString stringWithUTF8String:info.dli_sname];
             if (SymbolIsFromAppImage(info.dli_fname) && !SymbolIsFromAutoLayoutDebugging(symbol)) {
                 [appSymbols addObject:symbol];
-                if (SymbolHasAppPrefix(symbol)) {
+                if (!SymbolHasBlacklistedPrefix(symbol)) {
                     [prefixedAppSymbols addObject:symbol];
                 }
             }
