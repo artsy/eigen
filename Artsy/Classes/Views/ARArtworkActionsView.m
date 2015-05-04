@@ -60,7 +60,8 @@
         [self removeSubview:subview];
     }
 
-    BOOL isTopButton = YES;
+    NSMutableArray *buttonsWhoseMarginCanChange = [NSMutableArray array];
+
 
     if ([self showAuctionControls]) {
 
@@ -80,8 +81,6 @@
         [self addSubview:bidButton withTopMargin: @"30" sideMargin:@"0"];
         [bidButton addTarget:nil action:@selector(tappedBidButton:) forControlEvents:UIControlEventTouchUpInside];
         self.bidButton = bidButton;
-
-        isTopButton = NO;
 
         if ([self showBuyersPremium]) {
             ARInquireButton *premium = [[ARInquireButton alloc] init];
@@ -110,15 +109,16 @@
             self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
             [self.priceView updateWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
             [self addSubview:self.priceView withTopMargin:@"4" sideMargin:@"0"];
-            isTopButton = NO;
         }
 
         if ([self showBuyButton]) {
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
             [buy setTitle:@"Buy" forState:UIControlStateNormal];
             [buy addTarget:nil action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
-            [self addSubview:buy withTopMargin:isTopButton ? @"0" : @"30" sideMargin:nil];
-            isTopButton = NO;
+
+            [buttonsWhoseMarginCanChange addObject:buy];
+
+            [self addSubview:buy withTopMargin:@"30" sideMargin:nil];
         }
     }
 
@@ -135,9 +135,11 @@
         [contact setTitle:title forState:UIControlStateNormal];
 
         [contact addTarget:nil action:@selector(tappedContactGallery:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:contact withTopMargin:isTopButton ? @"0" : @"8" sideMargin:nil];
+
+        [buttonsWhoseMarginCanChange addObject:contact];
+
+        [self addSubview:contact withTopMargin:@"8" sideMargin:nil];
         self.contactGalleryButton = contact;
-        isTopButton = NO;
     }
 
     if ([self showInquireButton]) {
@@ -145,9 +147,10 @@
         [specialist setTitle:@"Ask a Specialist" forState:UIControlStateNormal];
         [specialist addTarget:nil action:@selector(tappedContactRepresentative:) forControlEvents:UIControlEventTouchUpInside];
 
-        [self addSubview:specialist withTopMargin:isTopButton ? @"0" : @"8" sideMargin:nil];
+        [buttonsWhoseMarginCanChange addObject:specialist];
+
+        [self addSubview:specialist withTopMargin:@"8" sideMargin:nil];
         self.inquireWithArtsyButton = specialist;
-        isTopButton = NO;
     }
 
     if ([self showAuctionControls]) {
@@ -155,16 +158,19 @@
         [auctionsInfo setTitle:@"How bidding works" forState:UIControlStateNormal];
         [auctionsInfo addTarget:nil action:@selector(tappedAuctionInfo:) forControlEvents:UIControlEventTouchUpInside];
 
-        [self addSubview:auctionsInfo withTopMargin:isTopButton ? @"0" : @"8" sideMargin:nil];
-        isTopButton = NO;
+        [buttonsWhoseMarginCanChange addObject:auctionsInfo];
+
+        [self addSubview:auctionsInfo withTopMargin:@"8" sideMargin:nil];
     }
 
     if ([self showConditionsOfSale]) {
-        ARInquireButton *auctionsInfo = [[ARInquireButton alloc] init];
-        [auctionsInfo setTitle:@"Conditions of Sale" forState:UIControlStateNormal];
-        [auctionsInfo addTarget:nil action:@selector(conditionsOfSaleTapped:) forControlEvents:UIControlEventTouchUpInside];
+        ARInquireButton *conditions = [[ARInquireButton alloc] init];
+        [conditions setTitle:@"Conditions of Sale" forState:UIControlStateNormal];
+        [conditions addTarget:nil action:@selector(conditionsOfSaleTapped:) forControlEvents:UIControlEventTouchUpInside];
 
-        [self addSubview:auctionsInfo withTopMargin:isTopButton ? @"0" : @"8" sideMargin:nil];
+        [buttonsWhoseMarginCanChange addObject:conditions];
+
+        [self addSubview:conditions withTopMargin:@"8" sideMargin:nil];
     }
 
     NSArray *navigationButtons = [self navigationButtons];
@@ -173,6 +179,10 @@
         [self.navigationButtonsVC addButtonDescriptions:[self navigationButtons] unique:YES];
         [self addSubview:self.navigationButtonsVC.view withTopMargin:@"20" sideMargin:@"0"];
     }
+
+    UIView *first = [self firstView];
+    BOOL shouldUpdateTopMargin = [buttonsWhoseMarginCanChange indexOfObject:[self firstView]] != NSNotFound;
+    if (shouldUpdateTopMargin) { [self updateTopMargin:@"0" forView:first]; }
 
     [self.delegate didUpdateArtworkActionsView:self];
 }
