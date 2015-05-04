@@ -99,4 +99,16 @@
     return nil;
 }
 
+// UIWebViews sometimes cause a memory leak if they are in the middle of loading somethign when they are deallocated.
+// This memory leak caused failures in unrelated tests and could easily happen in production as well. This `dealloc` helps.
+// See http://www.codercowboy.com/code-uiwebview-memory-leak-prevention/.
+
+- (void)dealloc
+{
+    [self.webView loadHTMLString:@"" baseURL:nil];
+    [self.webView stopLoading];
+    self.webView.delegate = nil;
+    [self.webView removeFromSuperview];
+}
+
 @end
