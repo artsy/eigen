@@ -89,9 +89,9 @@ pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
 # Analytics
 pod 'HockeySDK', '3.5.0'
 pod 'Mixpanel', '2.3.1'
-pod 'ARAnalytics/Mixpanel', :git => 'https://github.com/orta/ARAnalytics.git'
-pod 'ARAnalytics/HockeyApp', :git => 'https://github.com/orta/ARAnalytics.git'
-pod 'ARAnalytics/DSL', :git => 'https://github.com/orta/ARAnalytics.git'
+pod 'ARAnalytics/Mixpanel'
+pod 'ARAnalytics/HockeyApp'
+pod 'ARAnalytics/DSL'
 pod 'UICKeyChainStore', '1.0.5'
 
 # Fairs
