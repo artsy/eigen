@@ -130,7 +130,6 @@ it(@"shows a buyers premium notice", ^{
     expect(view).to.haveValidSnapshot();
 });
 
-
 it(@"displays sold when artwork is in auction and has been acquired", ^{
     view.artwork = [Artwork modelWithJSON:@{
         @"id" : @"artwork-id",
@@ -150,6 +149,7 @@ it(@"displays sold when artwork is in auction and has been acquired", ^{
     }];
     [view updateUI];
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    [view snapshotViewAfterScreenUpdates:YES];
     expect(view).will.haveValidSnapshotNamed(@"soldAtAuction");
 });
 
