@@ -60,7 +60,7 @@ pod 'InterAppCommunication'
 # Artsy Spec repo stuff
 pod 'Artsy+UILabels', :head
 pod 'Artsy+UIColors'
-pod 'Artsy-UIButtons', :git => 'https://github.com/artsy/Artsy-UIButtons.git', :branch => 'underline-fixes-for-iOS-8'
+pod 'Artsy-UIButtons', '~> 1.4'
 pod 'UIView+BooleanAnimations'
 
 if %w(orta ash artsy laura eloy sarahscott).include?(ENV['USER']) || ENV['CI'] == 'true'
