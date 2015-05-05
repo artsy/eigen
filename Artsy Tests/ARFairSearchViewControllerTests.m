@@ -92,9 +92,9 @@ describe(@"init", ^{
             
             // the results are a combination of the local Leila Heller and the remote Leila Pazooki
             expect(fairSearchVC.searchResults.count).will.equal(2);
-            expect(fairSearchVC.searchResults.firstObject).will.beKindOf([SearchResult class]);
+            expect(fairSearchVC.searchResults.firstObject).to.beKindOf([SearchResult class]);
             SearchResult *result = (id) fairSearchVC.searchResults.firstObject;
-            expect(result.modelID).will.equal(@"leila-heller-gallery-show");
+            expect(result.modelID).to.equal(@"leila-heller-gallery-show");
         });
     });
     

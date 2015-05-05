@@ -5,10 +5,10 @@ SpecBegin(ARPersonalizeWebViewController)
 __block ARPersonalizeWebViewController *sut;
 
 before(^{
-    sut = [[ARPersonalizeWebViewController alloc] init];
+    sut = [[ARPersonalizeWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
 });
 
-it(@"allows goole urls to pass", ^{
+it(@"allows google urls to pass", ^{
     NSURL *url = [NSURL URLWithString:@"https://google.com/hi"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     BOOL allowed = [sut webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther];

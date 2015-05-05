@@ -5,6 +5,9 @@
 #import "ARFairNetworkModel.h"
 
 @interface Fair : MTLModel <MTLJSONSerializing>
+{
+    ARFairNetworkModel *_networkModel;
+}
 
 - (instancetype)initWithFairID:(NSString *)fairID;
 
@@ -22,7 +25,6 @@
 - (BOOL)usesBrandedBanners;
 - (NSString *)bannerAddress;
 
-@property (nonatomic, strong, readwrite) ARFairNetworkModel *networkModel;
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, copy, readonly) NSString *defaultProfileID;
 @property (nonatomic, copy, readonly) NSString *fairID;
@@ -34,5 +36,11 @@
 @property (nonatomic, strong, readonly) NSDate *endDate;
 @property (nonatomic, assign, readonly) NSInteger partnersCount;
 @property (nonatomic, copy, readonly) FairOrganizer* organizer;
+
+// Don't use a property for the network model because it can't be serialized.
+// Mantle's implementation of `encodeWithCoder` will attempt to serialize all properties.
+
+- (ARFairNetworkModel *)networkModel;
+- (void)setNetworkModel:(ARFairNetworkModel *)networkModel;
 
 @end

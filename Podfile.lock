@@ -25,7 +25,7 @@ PODS:
   - Artsy+UIFonts (1.0.0)
   - Artsy+UILabels (HEAD based on 1.3.1):
     - Artsy+UIColors
-  - Artsy-UIButtons (HEAD based on 1.3.0):
+  - Artsy-UIButtons (HEAD based on 1.4.0):
     - Artsy+UIColors
     - UIView+BooleanAnimations
   - Bolts (1.1.4)
@@ -195,7 +195,7 @@ SPEC CHECKSUMS:
   Artsy+UIColors: d1d5e084a0e542d310c507acb5446bae6a322241
   Artsy+UIFonts: fb0a70f93ca888d45a3af751707701fe8cbeae2a
   Artsy+UILabels: a7c713069e3d10144a3dc8e377bef8b2253cd766
-  Artsy-UIButtons: be101574d2d61d310620319252c56ec98d5181c3
+  Artsy-UIButtons: 6f67de2a5285f18acb5d0e2919d1b17188acbc27
   Bolts: f8e2f94edbf9fec7bb8de5ecaaa3aa6b7de6f64e
   CocoaLumberjack: 555162681b9c20a271909b235c43f6bbd5d512e1
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee

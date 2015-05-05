@@ -55,7 +55,7 @@
                 success(JSON);
             }
             if(isFirstPageOfMainFeed) {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                ar_dispatch_async(^{
                     NSString *path = [ARFileUtils userDocumentsPathWithFile:request.URL.absoluteString];
                     [feedOperation.responseData writeToFile:path options:NSDataWritingAtomic error:nil];
                 });

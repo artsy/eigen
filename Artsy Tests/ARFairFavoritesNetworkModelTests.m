@@ -12,7 +12,6 @@
 
 SpecBegin(ARFairFavoritesNetworkModel)
 
-__block Fair *fair;
 beforeEach(^{
     [ARUserManager stubAndLoginWithUsername];
 });
@@ -42,7 +41,7 @@ it(@"ignores artworks without a partner", ^{
                                withResponse:@[]
         ];
 
-        fair = [Fair modelWithJSON:@{ @"id" : @"fair-id" }];
+        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id" }];
 
         ARFairFavoritesNetworkModel *favoritesNetworkModel = [[ARFairFavoritesNetworkModel alloc] init];
         [favoritesNetworkModel getFavoritesForNavigationsButtonsForFair:fair artworks:^(NSArray *work) {
@@ -65,7 +64,7 @@ describe(@"when downloading exhibitor data", ^{
     });
     
     it(@"generates random exhibitors when no values are returned from API", ^{
-        fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-1" }];
+        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-1" }];
 
         fairMock = [OCMockObject partialMockForObject:fair];
 
@@ -92,7 +91,7 @@ describe(@"when downloading exhibitor data", ^{
     });
 
     it(@"returns correct exhibitors when values are returned from API", ^{
-        fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-2" }];
+        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-2" }];
 
         fairMock = [OCMockObject partialMockForObject:fair];
 

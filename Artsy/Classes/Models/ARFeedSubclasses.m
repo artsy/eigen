@@ -149,11 +149,11 @@
 - (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure {
     @weakify(self);
     [ArtsyAPI getFeedResultsForFairOrganizer:self.fairOrganizer withCursor:cursor success:^(id JSON) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        ar_dispatch_async(^{
             @strongify(self);
             NSOrderedSet *items = [self parseItemsFromJSON:JSON];
 
-            dispatch_async(dispatch_get_main_queue(), ^{
+            ar_dispatch_main_queue(^{
                 success(items);
             });
         });
@@ -194,11 +194,12 @@
     @weakify(self);
 
     [ArtsyAPI getFeedResultsForFairShows:self.fair partnerID:self.partner.partnerID withCursor:cursor success:^(id JSON) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        ar_dispatch_async(^{
             @strongify(self);
+
             NSOrderedSet *items = [self parseItemsFromJSON:JSON];
 
-            dispatch_async(dispatch_get_main_queue(), ^{
+            ar_dispatch_main_queue(^{
                 success(items);
             });
         });

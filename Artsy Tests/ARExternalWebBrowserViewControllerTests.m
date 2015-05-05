@@ -10,7 +10,7 @@ SpecBegin(ARExternalWebBrowserViewController)
 __block ARExternalWebBrowserViewController *vc;
 
 beforeEach(^{
-    vc = [[ARExternalWebBrowserViewController alloc] init];
+    vc = [[ARExternalWebBrowserViewController alloc] initWithURL:[NSURL URLWithString:@""]];
 });
 
 afterEach(^{
