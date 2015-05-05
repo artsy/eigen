@@ -10,6 +10,7 @@ it (@"looks correct configured with two buttons", ^{
     ARSwitchView *switchView = [[ARSwitchView alloc] initWithButtonTitles:titles];
     switchView.frame = (CGRect){.origin = CGPointZero, .size = CGSizeMake(280, switchView.intrinsicContentSize.height)};
 
+    [switchView snapshotViewAfterScreenUpdates:YES];
     expect(switchView).to.haveValidSnapshot();
 });
 
@@ -19,6 +20,7 @@ it (@"accepts any number of items", ^{
     ARSwitchView *switchView = [[ARSwitchView alloc] initWithButtonTitles:titles];
     switchView.frame = (CGRect){.origin = CGPointZero, .size = CGSizeMake(280, switchView.intrinsicContentSize.height)};
 
+    [switchView snapshotViewAfterScreenUpdates:YES];
     expect(switchView).to.haveValidSnapshot();
 });
 
@@ -28,6 +30,7 @@ it (@"adjusts buttons to any switch width", ^{
     ARSwitchView *switchView = [[ARSwitchView alloc] initWithButtonTitles:titles];
     switchView.frame = (CGRect){.origin = CGPointZero, .size = CGSizeMake(728, switchView.intrinsicContentSize.height)};
 
+    [switchView snapshotViewAfterScreenUpdates:YES];
     expect(switchView).to.haveValidSnapshot();
 });
 
