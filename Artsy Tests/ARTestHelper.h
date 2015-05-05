@@ -1,7 +1,5 @@
 #import <UIKit/UIKit.h>
 
-void ARTestWrapView(UIView *view);
-
 @interface ARTestHelper : NSObject
 @end
 
