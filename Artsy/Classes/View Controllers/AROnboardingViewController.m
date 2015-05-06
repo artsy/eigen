@@ -222,7 +222,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     NSURL *url = [ARSwitchBoard.sharedInstance resolveRelativeUrl:ARPersonalizePath];
     ARPersonalizeWebViewController *viewController = [[ARPersonalizeWebViewController alloc] initWithURL:url];
-    viewController.delegate = self;
+    viewController.personalizeDelegate = self;
     [self pushViewController:viewController animated:YES];
 }
 

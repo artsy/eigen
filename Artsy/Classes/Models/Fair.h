@@ -2,16 +2,17 @@
 #import "ARFeedSubclasses.h"
 #import "ARFeedTimeline.h"
 #import "Map.h"
+#import "ARFairNetworkModel.h"
 
 @interface Fair : MTLModel <MTLJSONSerializing>
+{
+    ARFairNetworkModel *_networkModel;
+}
 
 - (instancetype)initWithFairID:(NSString *)fairID;
 
 - (void)downloadShows;
 - (void)updateFair:(void(^)(void))success;
-
-- (KSPromise *)onShowsUpdate:(void (^)(NSArray *shows))success failure:(void(^)(NSError *error))failure;
-
 - (void)getPosts:(void (^)(ARFeedTimeline *feedTimeline))success;
 - (void)getOrderedSets:(void (^)(NSMutableDictionary *orderedSets))success;
 - (void)getFairMaps:(void (^)(NSArray *))success;
@@ -27,7 +28,7 @@
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, copy, readonly) NSString *defaultProfileID;
 @property (nonatomic, copy, readonly) NSString *fairID;
-@property (nonatomic, copy, readonly) NSArray *maps;
+@property (nonatomic, copy, readwrite) NSArray *maps;
 @property (nonatomic, strong, readonly) NSSet *shows;
 @property (nonatomic, copy, readonly) NSString *city;
 @property (nonatomic, copy, readonly) NSString *state;
@@ -35,4 +36,11 @@
 @property (nonatomic, strong, readonly) NSDate *endDate;
 @property (nonatomic, assign, readonly) NSInteger partnersCount;
 @property (nonatomic, copy, readonly) FairOrganizer* organizer;
+
+// Don't use a property for the network model because it can't be serialized.
+// Mantle's implementation of `encodeWithCoder` will attempt to serialize all properties.
+
+- (ARFairNetworkModel *)networkModel;
+- (void)setNetworkModel:(ARFairNetworkModel *)networkModel;
+
 @end

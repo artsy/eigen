@@ -20,6 +20,7 @@ __block ARFairGuideContainerViewController *_fairGuideVC = nil;
 
 beforeEach(^{
     Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
+    fair.networkModel = [[ARStubbedFairNetworkModel alloc] init];
     id mockFair = [OCMockObject partialMockForObject:fair];
     
     NSArray *maps = @[[Map modelWithJSON: @{

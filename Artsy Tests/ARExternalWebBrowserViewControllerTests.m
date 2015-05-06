@@ -10,11 +10,15 @@ SpecBegin(ARExternalWebBrowserViewController)
 __block ARExternalWebBrowserViewController *vc;
 
 beforeEach(^{
-    vc = [[ARExternalWebBrowserViewController alloc] init];
+    vc = [[ARExternalWebBrowserViewController alloc] initWithURL:[NSURL URLWithString:@""]];
+});
+
+afterEach(^{
+    vc = nil;
 });
 
 it(@"sets the scroll view's `delegate`", ^{
-    [vc viewWillAppear:NO];
+    [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
     expect(vc.scrollView.delegate).to.equal(vc);
 });
 

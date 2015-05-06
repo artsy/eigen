@@ -139,7 +139,7 @@ describe(@"authenticated", ^{
         __block ARInternalMobileWebViewController *controller;
         
         beforeEach(^{
-            controller = [[ARInternalMobileWebViewController alloc] init];
+            controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
         });
         
         it(@"doesn't show a trial login/signup view on a request to log_in", ^{
@@ -171,7 +171,7 @@ describe(@"unauthenticated", ^{
         __block ARInternalMobileWebViewController *controller;
         
         beforeEach(^{
-            controller = [[ARInternalMobileWebViewController alloc] init];
+            controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
         });
         
         it(@"handles an internal link being clicked", ^{

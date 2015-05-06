@@ -34,12 +34,12 @@ SpecBegin(ARFairViewController)
 
 it(@"maps bindings correctly", ^{
     ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:nil];
-    
+
     expect(viewController.displayingSearch).to.beFalsy();
     expect(viewController.hidesBackButton).to.beFalsy();
 
     viewController.searchVC = [[ARFairSearchViewController alloc] initWithFair:nil];
-    
+
     expect(viewController.displayingSearch).to.beTruthy();
     expect(viewController.hidesBackButton).to.beTruthy();
 });
@@ -52,8 +52,8 @@ __block Profile *bannerProfile;
 before(^{
     bannerlessFair = [[Fair alloc] initWithFairID:@"a-fair-affair"];
     bannerFair = [Fair modelWithJSON:@{
-    @"id" : @"fair-id",
-    @"image_urls" : @{
+        @"id" : @"fair-id",
+        @"image_urls" : @{
             @"square" : @"http://static1.artsy.net/fairs/52617c6c8b3b81f094000013/9/square.jpg",
             @"large_rectangle" : @"http://static1.artsy.net/fairs/52617c6c8b3b81f094000013/9/large_rectangle",
             @"wide" : @"http://static1.artsy.net/fairs/52617c6c8b3b81f094000013/9/wide"
@@ -83,7 +83,7 @@ describe(@"with some information", ^{
         ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:bannerFair andProfile:bannerlessProfile];
         expect([viewController hasSufficientDataForParallaxHeader]).to.beTruthy();
     });
-    
+
     it(@"uses a parallax header", ^{
         ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:bannerlessFair andProfile:bannerProfile];
         expect([viewController hasSufficientDataForParallaxHeader]).to.beTruthy();
@@ -99,19 +99,18 @@ describe(@"with all available information", ^{
 
 context(@"with no map", ^{
     __block ARFairViewController *fairVC = nil;
-    
+
     beforeEach(^{
-        Fair *fair = [[Fair alloc] initWithFairID:@"a-fair-affair"];
-    
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/a-fair-affair" withResponse:@{
+        Fair *fair = [Fair modelWithJSON:@{
             @"id" : @"a-fair-affair",
             @"name" : @"The Fair Affair",
             @"start_at" : @"1976-01-30T15:00:00+00:00",
             @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
-        
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@[
-           @{
+
+        ARStubbedFairNetworkModel *networkModel = [[ARStubbedFairNetworkModel alloc] init];
+        networkModel.maps = @[];
+        OrderedSet *set = [OrderedSet modelWithJSON: @{
             @"description": @"",
             @"display_on_mobile": @(1),
             @"id": @"set-id",
@@ -120,23 +119,24 @@ context(@"with no map", ^{
             @"key": @"primary",
             @"name": @"The Armory Show 2014 Primary Features",
             @"published": @(1),
-        }
-        ]];
-        
+        }];
+
+        networkModel.orderedSets =  @[set];
+
+        fair.networkModel = networkModel;
+
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/set/set-id/items" withResponse:@[
             @{ @"id": @"one", @"href": @"/post/moby-my-highlights-from-art-los-angeles-contemporary", @"title" : @"Moby" },
         ]];
-        
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/maps" withResponse:@[]];
-        
+
         fairVC = [[ARFairViewController alloc] initWithFair:fair];
         fairVC.animatesSearchBehavior = NO;
     });
-    
+
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });
-    
+
     context(@"without a profile", ^{
         it(@"sets fair title and dates", ^{
             expect(fairVC.view.subviews.count).will.equal(2);
@@ -156,12 +156,12 @@ context(@"with no map", ^{
             expect(((UILabel *) subtitleView).text).to.equal(@"Jan 30th - Feb 2nd, 1976");
         });
     });
-    
+
     context(@"view is loaded", ^{
         beforeEach(^{
             expect(fairVC.view).toNot.beNil();
         });
-        
+
         it(@"has no map", ^{
             expect(fairVC.hasMap).will.beFalsy();
         });
@@ -170,19 +170,18 @@ context(@"with no map", ^{
 
 context(@"with a map", ^{
     __block ARFairViewController *fairVC = nil;
-    
+
     beforeEach(^{
-        Fair *fair = [[Fair alloc] initWithFairID:@"a-fair-affair"];
-    
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/a-fair-affair" withResponse:@{
+        Fair *fair = [Fair modelWithJSON:@{
             @"id" : @"a-fair-affair",
             @"name" : @"The Fair Affair",
             @"start_at" : @"1976-01-30T15:00:00+00:00",
             @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
-        
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@[
-           @{
+
+        ARStubbedFairNetworkModel *networkModel = [[ARStubbedFairNetworkModel alloc] init];
+        networkModel.maps = @[[Map modelWithJSON:@{@"id": @"map-id"}]];
+        OrderedSet *set = [OrderedSet modelWithJSON: @{
             @"description": @"",
             @"display_on_mobile": @(1),
             @"id": @"set-id",
@@ -191,29 +190,26 @@ context(@"with a map", ^{
             @"key": @"primary",
             @"name": @"The Armory Show 2014 Primary Features",
             @"published": @(1),
-        }
-        ]];
+        }];
+
+        networkModel.orderedSets = @[set];
+        
+        fair.networkModel = networkModel;
         
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/set/set-id/items" withResponse:@[
             @{ @"id": @"one", @"href": @"/post/moby-my-highlights-from-art-los-angeles-contemporary", @"title" : @"Moby" },
         ]];
-        
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/maps" withResponse:@[
-            @{
-                @"id": @"map-id",
-            }
-        ]];
-        
+
         fairVC = [[ARFairViewController alloc] initWithFair:fair];
         fairVC.animatesSearchBehavior = NO;
         fairVC.view.frame = [[UIScreen mainScreen] bounds];
-
+        
     });
-
+    
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });
-
+    
     it(@"has a map", ^{
         expect(fairVC.hasMap).will.beTruthy();
     });

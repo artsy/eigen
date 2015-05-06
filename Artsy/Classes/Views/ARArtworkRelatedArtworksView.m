@@ -3,7 +3,6 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARArtworkSetViewController.h"
 
-
 @interface ARArtworkRelatedArtworksView() <AREmbeddedModelsDelegate>
 @property (nonatomic, assign) BOOL hasRequested;
 @property (nonatomic, assign) BOOL hasArtworks;

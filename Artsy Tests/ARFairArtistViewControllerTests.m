@@ -9,60 +9,59 @@
 
 SpecBegin(ARFairArtistViewController)
 
-void (^itlooksCorrectWithArtist)(Artist* artist) = ^void(Artist *artist) {
+void (^itlooksCorrectWithArtist)(Artist* artist, NSArray *maps) = ^void(Artist *artist, NSArray *mapsJSON) {
 
-    ARStubbedFairArtistNetworkModel *model = [[ARStubbedFairArtistNetworkModel alloc] init];
-    model.artist = artist;
-    model.shows = @[];
+    Fair *fair = [Fair modelWithJSON:@{
+        @"id" : @"fair-id",
+        @"name" : @"The Armory Show",
+        @"organizer" : @{ @"profile_id" : @"fair-profile-id" },
+    }];
 
-    Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
+    ARStubbedFairNetworkModel *fairNetworkModel = [[ARStubbedFairNetworkModel alloc] init];
+    fairNetworkModel.maps = [mapsJSON map:^Map*(NSDictionary *mapJSON) { return [Map modelWithJSON:mapJSON]; }];
+
+    fair.networkModel = fairNetworkModel;
+
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/maps" withParams:@{ @"fair_id" : @"fair-id" } withResponse:mapsJSON];
+
+
+    ARStubbedFairArtistNetworkModel *fairArtistNetworkModel = [[ARStubbedFairArtistNetworkModel alloc] init];
+    fairArtistNetworkModel.artist = artist;
+    fairArtistNetworkModel.shows = @[];
+
     ARFairArtistViewController *fairArtistVC = [[ARFairArtistViewController alloc] initWithArtistID:@"some-artist" fair:fair];
-    fairArtistVC.networkModel = model;
+    fairArtistVC.networkModel = fairArtistNetworkModel;
     [fairArtistVC ar_presentWithFrame:CGRectMake(0, 0, 320, 480)];
     expect(fairArtistVC.view).will.haveValidSnapshot();
 
 };
 
-describe(@"with maps", ^{
-    beforeEach(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/maps" withParams:@{ @"fair_id" : @"fair-id" } withResponse:@[@{ @"id" : @"map-id" }]];
-    });
+sharedExamples(@"looks correct", ^(NSDictionary *data) {
+    __block NSArray *mapsJSON = data[@"mapsJSON"];
 
     it(@"show subtitle with a birthdate and a nationality", ^{
         Artist *artist = [Artist modelWithJSON:@{ @"id" : @"some-artist", @"name" : @"Some Artist", @"birthday" : @"1999", @"nationality" : @"Chinese"}];
-        itlooksCorrectWithArtist(artist);
+        itlooksCorrectWithArtist(artist, mapsJSON);
     });
 
     it(@"hides subtitle without a birthdate", ^{
         Artist *artist = [Artist modelWithJSON:@{ @"id" : @"some-artist", @"name" : @"Some Artist", @"nationality" : @"Chinese"}];
-        itlooksCorrectWithArtist(artist);
+        itlooksCorrectWithArtist(artist, mapsJSON);
     });
 
     it(@"hides subtitle without a nationality", ^{
         Artist *artist = [Artist modelWithJSON:@{ @"id" : @"some-artist", @"name" : @"Some Artist", @"birthday" : @"1999"}];
-        itlooksCorrectWithArtist(artist);
+        itlooksCorrectWithArtist(artist, mapsJSON);
     });
+
+});
+
+describe(@"with maps", ^{
+    itBehavesLike(@"looks correct", @{@"mapsJSON": @[@{ @"id" : @"map-id" }] });
 });
 
 describe(@"without maps", ^{
-    beforeEach(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/maps" withParams:@{ @"fair_id" : @"fair-id" } withResponse:@[]];
-    });
-
-    it(@"show subtitle with a birthdate and a nationality", ^{
-        Artist *artist = [Artist modelWithJSON:@{ @"id" : @"some-artist", @"name" : @"Some Artist", @"birthday" : @"1999", @"nationality" : @"Chinese"}];
-        itlooksCorrectWithArtist(artist);
-    });
-
-    it(@"hides subtitle without a birthdate", ^{
-        Artist *artist = [Artist modelWithJSON:@{ @"id" : @"some-artist", @"name" : @"Some Artist", @"nationality" : @"Chinese"}];
-        itlooksCorrectWithArtist(artist);
-    });
-
-    it(@"hides subtitle without a nationality", ^{
-        Artist *artist = [Artist modelWithJSON:@{ @"id" : @"some-artist", @"name" : @"Some Artist", @"birthday" : @"1999",}];
-        itlooksCorrectWithArtist(artist);
-    });
+    itBehavesLike(@"looks correct", @{@"mapsJSON": @[] });
 });
 
 SpecEnd

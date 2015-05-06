@@ -39,6 +39,8 @@ describe(@"on init", ^{
             @"id" : @"fair-id",
         }];
 
+        fair.networkModel = [[ARStubbedFairNetworkModel alloc] init];
+
         NSArray *maps = @[ [Map modelWithJSON: @{
             @"map_features": @[
             @{
