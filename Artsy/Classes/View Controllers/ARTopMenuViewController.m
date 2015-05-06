@@ -86,11 +86,17 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
         [tabContainer addSubview:button];
     }
 
+    UIView *separator = [[UIView alloc] init];
+    [separator constrainHeight:@".5"];
+    separator.backgroundColor = [UIColor colorWithWhite:.3 alpha:1];
+    [tabContainer addSubview:separator];
+    [separator alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:tabContainer];
+
     [searchButton constrainWidth:@(ARSearchMenuButtonDimension).stringValue];
     NSMutableArray *constraintsForButtons = [NSMutableArray array];
     [buttons eachWithIndex:^(UIButton *button, NSUInteger index){
-        [button alignCenterYWithView:tabContainer predicate:nil];
-        [button constrainHeightToView:tabContainer predicate:nil];
+        [button constrainTopSpaceToView:separator predicate:@"0"];
+        [button alignBottomEdgeWithView:tabContainer predicate:@"0"];
         if (index == 0) {
             [button alignLeadingEdgeWithView:tabContainer predicate:nil];
         } else {
@@ -109,7 +115,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [tabContainer.layer addSublayer:divider];
     _divider = divider;
 
-    self.tabHeightConstraint = [[tabContainer alignBottomEdgeWithView:self.view predicate:@"0"] firstObject];
+    self.tabHeightConstraint = [[tabContainer alignBottomEdgeWithView:self.view predicate:@"0"] lastObject];
 }
 
 - (void)viewWillAppear:(BOOL)animated

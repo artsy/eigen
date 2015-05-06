@@ -13,4 +13,5 @@
 * Add snapshot macro that infers the image file name from the spec name - 1aurabrown
 * Remove ability to zoom internal web views - 1aurabrown
 * Add Conditions of Sale link to works at auction - 1aurabrown
-* Fix memory leak in web views - 1aurabrown
+* Add a fair network model to improve testing - 1aurabrown
+* Add top rule to main nav to separate it from black content - 1aurabrown
