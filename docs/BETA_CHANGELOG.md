@@ -6,6 +6,7 @@
 * Add Conditions of Sale link to works at auction - 1aurabrown
 * Add a fair network model to improve testing - 1aurabrown
 * Add top rule to main nav to separate it from black content - 1aurabrown
+* Fix buttons that have a partial underlined title on iOS 8.0, 8.1, and 8.2 - alloy
 
 ## 2015.04.23
 
