@@ -85,7 +85,7 @@
         if ([self showBuyersPremium]) {
             ARInquireButton *premium = [[ARInquireButton alloc] init];
             premium.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-            [premium setAttributedTitle:[self.class buyersPremiumAttributedString] forState:UIControlStateNormal];
+            [premium setUnderlinedTitle:@"This work has a Buyer's Premium" underlineRange:NSMakeRange(16, 15) forState:UIControlStateNormal];
             [premium addTarget:nil action:@selector(tappedBuyersPremium:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:premium withTopMargin:@"8" sideMargin:nil];
         }
@@ -283,14 +283,6 @@
 - (BOOL)showBuyersPremium
 {
     return self.saleArtwork.auction.hasBuyersPremium;
-}
-
-+ (NSAttributedString *)buyersPremiumAttributedString
-{
-    NSMutableAttributedString *attributedMessage = [[NSMutableAttributedString alloc] initWithString:@"This work has a Buyer's Premium"];
-    [attributedMessage addAttribute:NSForegroundColorAttributeName value:[UIColor artsyHeavyGrey] range:NSMakeRange(0, 31)];
-    [attributedMessage addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(16, 15)];
-    return attributedMessage.copy;
 }
 
 #pragma mark ARContactViewDelegate

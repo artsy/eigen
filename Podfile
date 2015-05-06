@@ -60,7 +60,7 @@ pod 'InterAppCommunication'
 # Artsy Spec repo stuff
 pod 'Artsy+UILabels', :head
 pod 'Artsy+UIColors'
-pod 'Artsy-UIButtons', :head
+pod 'Artsy-UIButtons', '~> 1.4'
 pod 'UIView+BooleanAnimations'
 
 if %w(orta ash artsy laura eloy sarahscott).include?(ENV['USER']) || ENV['CI'] == 'true'

@@ -49,6 +49,7 @@
     #import "NSString+ObjectiveSugar.h"
     #import "ARDispatchManager.h"
     #import "ARDeveloperOptions.h"
+    #import "ARAutoLayoutDebugging.h"
 
     #import <libextobjc/EXTKeyPathCoding.h>
     #import <libextobjc/EXTScope.h>
