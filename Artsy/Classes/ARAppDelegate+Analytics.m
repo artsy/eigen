@@ -82,15 +82,15 @@
     };
 
     [ARAnalytics setupWithAnalytics:
-     @{
-       ARHockeyAppBetaID:@"306e66bde3cb91a2043f2606cf335700",
-       ARHockeyAppLiveID:@"d7bceb80c6fa1e83e787b3919c749311",
-       ARMixpanelToken:mixpanelToken
-       } configuration:
-     @{
-       ARAnalyticsTrackedEvents:
-           @[
-               @{
+    @{
+        ARHockeyAppBetaID:@"306e66bde3cb91a2043f2606cf335700",
+        ARHockeyAppLiveID:@"d7bceb80c6fa1e83e787b3919c749311",
+        ARMixpanelToken:mixpanelToken
+    } configuration:
+    @{
+        ARAnalyticsTrackedEvents:
+            @[
+                @{
                     ARAnalyticsClass: ARFairGuideViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -100,7 +100,7 @@
                         },
                     ]
                 },
-               @{
+                @{
                     ARAnalyticsClass: ARFairArtistViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -415,7 +415,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsStartedSignIn,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(twitter:)),
-                                        ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
+                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
                                 return @{ @"context" : ARAnalyticsUserContextTwitter };
                             },
                         },
@@ -828,33 +828,33 @@
                         }
                     ]
                 },
-               @{
-                   ARAnalyticsClass: ARTabContentView.class,
-                   ARAnalyticsDetails: @[
-                       @{
-                           ARAnalyticsEventName: ARAnalyticsTappedMainNavigationItem,
-                           ARAnalyticsSelectorName: ARAnalyticsSelector(navigationControllerForIndex:),
-                           ARAnalyticsEventProperties:^NSDictionary*(ARTabContentView *view, NSArray *parameters) {
-                               NSInteger index = [parameters.firstObject integerValue];
-                               UIButton *button = view.buttons[index];
-                               NSString *title = button.titleLabel.text.lowercaseString;
-                               return @{
-                                   @"tab name" : title ?: @""
-                               };
-                           },
-                           ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                               // Ignore first invocation so that we don't track when users are loading the app initially.
-                               static BOOL firstInvocation = YES;
-                               if (firstInvocation) {
-                                   firstInvocation = NO;
-                                   return NO;
-                               }
-
-                               return YES;
+                @{
+                    ARAnalyticsClass: ARTabContentView.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsTappedMainNavigationItem,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(navigationControllerForIndex:),
+                            ARAnalyticsEventProperties:^NSDictionary*(ARTabContentView *view, NSArray *parameters) {
+                                NSInteger index = [parameters.firstObject integerValue];
+                                UIButton *button = view.buttons[index];
+                                NSString *title = button.titleLabel.text.lowercaseString;
+                                return @{
+                                    @"tab name" : title ?: @""
+                                };
+                            },
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                // Ignore first invocation so that we don't track when users are loading the app initially.
+                                static BOOL firstInvocation = YES;
+                                if (firstInvocation) {
+                                    firstInvocation = NO;
+                                    return NO;
+                                }
+ 
+                                return YES;
                             }
-                       }
-                   ]
-               },
+                        }
+                    ]
+                },
                 @{
                     ARAnalyticsClass: ARArtistViewController.class,
                     ARAnalyticsDetails: @[
@@ -1118,7 +1118,8 @@
                     ]
                 },
             ]
-       }];
+        }
+    ];
 
     [ARUserManager identifyAnalyticsUser];
     [ARAnalytics incrementUserProperty:ARAnalyticsAppUsageCountProperty byInt:1];
