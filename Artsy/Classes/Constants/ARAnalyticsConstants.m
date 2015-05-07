@@ -55,6 +55,7 @@ NSString *const ARAnalyticsOnboardingCompleted = @"user_completed_onboarding";
 NSString *const ARAnalyticsShowTrialSplash = @"user_trial_splash_presented";
 
 NSString *const ARAnalyticsTappedHeroUnit = @"tapped_hero_unit";
+NSString *const ARAnalyticsTappedMainNavigationItem = @"view main navigation item";
 
 NSString *const ARAnalyticsArtworkView = @"artwork_view";
 NSString *const ARAnalyticsArtworkViewInRoom = @"artwork_view_in_room";

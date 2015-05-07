@@ -73,6 +73,7 @@ extern NSString *const ARAnalyticsInquiryContextGallery;
 
 extern NSString *const ARAnalyticsShowTrialSplash;
 extern NSString *const ARAnalyticsTappedHeroUnit;
+extern NSString *const ARAnalyticsTappedMainNavigationItem;
 
 // Sharing
 extern NSString *const ARAnalyticsShareStarted;

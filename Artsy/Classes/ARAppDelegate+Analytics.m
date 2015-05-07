@@ -34,6 +34,7 @@
 #import "ARFairMapAnnotationCallOutView.h"
 #import "ARSiteHeroUnitView.h"
 #import "ARButtonWithImage.h"
+#import "ARTabContentView.h"
 
 // Models
 #import "ARFairFavoritesNetworkModel+Private.h"
@@ -827,6 +828,33 @@
                         }
                     ]
                 },
+               @{
+                   ARAnalyticsClass: ARTabContentView.class,
+                   ARAnalyticsDetails: @[
+                       @{
+                           ARAnalyticsEventName: ARAnalyticsTappedMainNavigationItem,
+                           ARAnalyticsSelectorName: ARAnalyticsSelector(navigationControllerForIndex:),
+                           ARAnalyticsEventProperties:^NSDictionary*(ARTabContentView *view, NSArray *parameters) {
+                               NSInteger index = [parameters.firstObject integerValue];
+                               UIButton *button = view.buttons[index];
+                               NSString *title = button.titleLabel.text.lowercaseString;
+                               return @{
+                                   @"tab name" : title ?: @""
+                               };
+                           },
+                           ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                               // Ignore first invocation so that we don't track when users are loading the app initially.
+                               static BOOL firstInvocation = YES;
+                               if (firstInvocation) {
+                                   firstInvocation = NO;
+                                   return NO;
+                               }
+
+                               return YES;
+                            }
+                       }
+                   ]
+               },
                 @{
                     ARAnalyticsClass: ARArtistViewController.class,
                     ARAnalyticsDetails: @[
