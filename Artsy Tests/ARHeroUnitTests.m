@@ -4,6 +4,8 @@
 #import "SiteHeroUnit.h"
 
 @interface ARSiteHeroUnitViewController : UIViewController
+@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) SiteHeroUnit *heroUnit;
 @end
 
 @interface ARHeroUnitViewController (Test)
@@ -13,6 +15,7 @@
 - (void)startTimer;
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits;
 - (ARSiteHeroUnitViewController *)currentViewController;
+- (void)pageControlTapped:(id)sender;
 @end
 
 @interface ARHeroUnitsNetworkModel (Test)
@@ -90,6 +93,17 @@ describe(@"with three hero units", ^{
             expect(heroVC.pageControl.numberOfPages).to.equal(3);
         });
 
+        it(@"responds to page control", ^{
+            expect([heroVC currentViewController].index).to.equal(0);
+            expect([heroVC currentViewController].heroUnit).to.equal(heroUnits[0]);
+
+            heroVC.pageControl.currentPage = 1;
+            [heroVC pageControlTapped:heroVC.pageControl];
+
+            expect([heroVC currentViewController].index).to.equal(1);
+            expect([heroVC currentViewController].heroUnit).to.equal(heroUnits[1]);
+        });
+
         it(@"sets the first view controller", ^{
             expect(heroVC.pageViewController.viewControllers.count).to.equal(1);
         });
@@ -152,8 +166,6 @@ describe(@"with one hero unit", ^{
             expect(currentViewController).to.beKindOf([ARSiteHeroUnitViewController class]);
         });
     });
-
-
 
     it(@"startTimer doesn't set timer for page turn", ^{
         sharedBefore();

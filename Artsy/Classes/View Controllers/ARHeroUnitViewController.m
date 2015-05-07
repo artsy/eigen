@@ -51,6 +51,8 @@ const static CGFloat ARCarouselDelay = 10;
     self.pageControl.pageIndicatorTintColor = [UIColor colorWithWhite:1 alpha:0.5];
     self.pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
 
+    [self.pageControl addTarget:self action:@selector(pageControlTapped:) forControlEvents:UIControlEventValueChanged];
+
     CAGradientLayer *shadowLayer = [CAGradientLayer layer];
     shadowLayer.colors = @[(id)[UIColor colorWithWhite:0 alpha:.4].CGColor,
                            (id)[UIColor colorWithWhite:0 alpha:.12].CGColor,
@@ -82,6 +84,13 @@ const static CGFloat ARCarouselDelay = 10;
 
         if (timerEnabled) { [self startTimer]; }
     }];
+}
+
+- (void)pageControlTapped:(UIPageControl *)sender
+{
+    NSInteger newIndex = sender.currentPage;
+    UIPageViewControllerNavigationDirection direction = newIndex < [self currentViewController].index ? UIPageViewControllerNavigationDirectionReverse : UIPageViewControllerNavigationDirectionForward;
+    [self goToHeroUnit:[self viewControllerForIndex:newIndex] withDirection:direction];
 }
 
 - (void)viewDidLayoutSubviews
@@ -136,17 +145,22 @@ const static CGFloat ARCarouselDelay = 10;
     }
 }
 
--(void)goToNextHeroUnit
+-(void)goToHeroUnit:(UIViewController *)vc withDirection:(UIPageViewControllerNavigationDirection)direction
 {
     self.pageViewController.view.userInteractionEnabled = NO;
-    UIViewController *nextVC = [self pageViewController:self.pageViewController viewControllerAfterViewController:[self currentViewController]];
     @weakify(self);
-    [self.pageViewController setViewControllers:@[nextVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+    [self.pageViewController setViewControllers:@[vc] direction:direction animated:YES completion:^(BOOL finished) {
         @strongify(self);
         [self.pageControl setCurrentPage:[self currentViewController].index];
         self.pageViewController.view.userInteractionEnabled = YES;
 
     }];
+}
+
+-(void)goToNextHeroUnit
+{
+    UIViewController *nextVC = [self pageViewController:self.pageViewController viewControllerAfterViewController:[self currentViewController]];
+    [self goToHeroUnit:nextVC withDirection:UIPageViewControllerNavigationDirectionForward];
 }
 
 #pragma mark - UIPageViewControllerDataSource
