@@ -3,13 +3,14 @@
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
 
-@interface TSMiniWebBrowser (Private)
-@property(nonatomic, readonly, strong) UIWebView *webView;
-- (UIEdgeInsets)webViewContentInset;
-- (UIEdgeInsets)webViewScrollIndicatorsInsets;
-@end
+//@interface TSMiniWebBrowser (Private)
+//@property(nonatomic, readonly, strong) UIWebView *webView;
+//- (UIEdgeInsets)webViewContentInset;
+//- (UIEdgeInsets)webViewScrollIndicatorsInsets;
+//@end
 
-@interface ARInternalMobileWebViewController() <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
+// @interface ARInternalMobileWebViewController() <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
+@interface ARInternalMobileWebViewController () <UIAlertViewDelegate>
 @property (nonatomic, assign) BOOL loaded;
 @property (nonatomic, readonly, strong) ARInternalShareValidator *shareValidator;
 @end
@@ -46,23 +47,23 @@
     self = [super initWithURL:url];
     if (!self) { return nil; }
 
-    self.delegate = self;
-    self.showNavigationBar = NO;
-    self.mode = TSMiniWebBrowserModeNavigation;
-    self.showToolBar = NO;
-    self.backgroundColor = [UIColor whiteColor];
-    self.opaque = NO;
+    // self.delegate = self;
+    // self.showNavigationBar = NO;
+    // self.mode = TSMiniWebBrowserModeNavigation;
+    // self.showToolBar = NO;
+//    self.backgroundColor = [UIColor whiteColor];
+//    self.opaque = NO;
     _shareValidator = [[ARInternalShareValidator alloc] init];
 
     ARInfoLog(@"Initialized with URL %@", url);
     return self;
 }
 
-- (void)loadURL:(NSURL *)url
+- (void)loadURL:(NSURL *)URL
 {
     self.loaded = NO;
     [self showLoading];
-    [super loadURL:url];
+    [super loadURL:URL];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -82,20 +83,20 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [UIView animateWithDuration:ARAnimationDuration animations:^{
-         self.scrollView.contentInset = [self webViewContentInset];
-         self.scrollView.scrollIndicatorInsets = [self webViewScrollIndicatorsInsets];
-    }];
+    //[UIView animateWithDuration:ARAnimationDuration animations:^{
+         //self.scrollView.contentInset = [self webViewContentInset];
+         //self.scrollView.scrollIndicatorInsets = [self webViewScrollIndicatorsInsets];
+    //}];
 
     [super viewDidAppear:animated];
 }
-
-- (void)webViewDidFinishLoad:(UIWebView *)aWebView
-{
-    [super webViewDidFinishLoad:aWebView];
-    [self hideLoading];
-    self.loaded = YES;
-}
+//
+//- (void)webViewDidFinishLoad:(UIWebView *)aWebView
+//{
+//    [super webViewDidFinishLoad:aWebView];
+//    [self hideLoading];
+//    self.loaded = YES;
+//}
 
 - (void)hideLoading
 {
@@ -104,39 +105,42 @@
 
 // Load a new internal web VC for each link we can do
 
-- (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+// - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+// - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
+- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
-    ARInfoLog(@"Martsy URL %@", request.URL);
+    NSURL *URL = navigationAction.request.URL;
+    ARInfoLog(@"Martsy URL %@", URL);
 
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        if ([self.shareValidator isSocialSharingURL:request.URL]) {
-            [self.shareValidator shareURL:request.URL inView:self.view];
-            return NO;
+    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
+        if ([self.shareValidator isSocialSharingURL:URL]) {
+            [self.shareValidator shareURL:URL inView:self.view];
+            return WKNavigationActionPolicyCancel;
         } else {
 
-            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
+            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
             if (viewController) {
                 [self.navigationController pushViewController:viewController animated:YES];
-                return NO;
+                return WKNavigationActionPolicyCancel;
             }
         }
 
-    } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
+    } else if ([ARRouter isInternalURL:URL] && ([URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"])) {
         // hijack AJAX requests
         if ([User isTrialUser]) {
             [ARTrialController presentTrialWithContext:ARTrialContextNotTrial fromTarget:self selector:@selector(userDidSignUp)];
         }
-        return NO;
+        return WKNavigationActionPolicyCancel;
     }
 
-    return YES;
+    return WKNavigationActionPolicyAllow;
 }
 
 // A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
 
 - (void)userDidSignUp
 {
-    [self.webView loadRequest:[self requestWithURL:self.currentURL]];
+    [self.webView loadRequest:[self requestWithURL:self.webView.URL]];
 }
 
 - (NSURLRequest *)requestWithURL:(NSURL *)url

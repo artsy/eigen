@@ -3,9 +3,9 @@
 #import "ARRouter.h"
 #import "ARSpinner.h"
 
-@interface TSMiniWebBrowser (Private)
-@property(nonatomic, readonly, strong) UIWebView *webView;
-@end
+//@interface TSMiniWebBrowser (Private)
+//@property(nonatomic, readonly, strong) UIWebView *webView;
+//@end
 
 @interface ARPersonalizeWebViewController ()
 @property (nonatomic, strong, readonly) ARSpinner *spinner;
@@ -13,7 +13,7 @@
 
 @implementation ARPersonalizeWebViewController
 
-@dynamic delegate;
+// @dynamic delegate;
 
 - (void)viewDidLoad
 {
@@ -30,31 +30,34 @@
     self.view.backgroundColor = [UIColor clearColor];
 }
 
-- (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+// - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+// - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
+- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
-    BOOL shouldLoad = [super webView:aWebView shouldStartLoadWithRequest:request navigationType:navigationType];
-    NSString *path = [request.URL lastPathComponent];
+    WKNavigationActionPolicy shouldLoad = [super shouldLoadNavigationAction:navigationAction];
+    NSURL *URL = navigationAction.request.URL;
+    NSString *path = [URL lastPathComponent];
     
-    if (shouldLoad && [ARRouter isInternalURL:request.URL] && [path isEqualToString:ARPersonalizePath]) {
-        return YES;
+    if (shouldLoad == WKNavigationActionPolicyAllow && [ARRouter isInternalURL:URL] && [path isEqualToString:ARPersonalizePath]) {
+        return WKNavigationActionPolicyAllow;
 
-    } else if ([ARRouter isInternalURL:request.URL] && [path isEqualToString:@"/"]) {
+    } else if ([ARRouter isInternalURL:URL] && [path isEqualToString:@"/"]) {
 
         // Force onboarding is all push-state.
         // A new request to load the root page indicates that onboarding is complete.
 
         [self.personalizeDelegate dismissOnboardingWithVoidAnimation:YES];
-        return NO;
+        return WKNavigationActionPolicyCancel;
 
     } else {
-        return YES;
+        return WKNavigationActionPolicyAllow;
     }
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    [self exitOnboarding];
-}
+//- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+//{
+    //[self exitOnboarding];
+//}
 
 - (void)exitOnboarding
 {

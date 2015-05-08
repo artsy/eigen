@@ -11,7 +11,7 @@
 
 - (void)reload;
 {
-    [self loadURL:self.currentURL];
+    [self loadURL:self.webView.URL];
 }
 
 // If the currently visible view is the root webview, reload it. This ensures that an existing view hierachy isn't
@@ -36,38 +36,38 @@
 
 #pragma mark - Overrides
 
-- (instancetype)initWithURL:(NSURL *)url;
+- (instancetype)initWithURL:(NSURL *)URL;
 {
-    if ((self = [super initWithURL:url])) {
+    if ((self = [super initWithURL:URL])) {
         _hasSuccessfullyLoadedLastRequest = YES;
     }
     return self;
 }
 
-- (void)loadURL:(NSURL *)url
+- (void)loadURL:(NSURL *)URL
 {
     self.lastRequestLoadedAt = nil;
-    [super loadURL:url];
+    [super loadURL:URL];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView;
-{
-    [super webViewDidFinishLoad:webView];
+//- (void)webViewDidFinishLoad:(UIWebView *)webView;
+//{
+//    [super webViewDidFinishLoad:webView];
+//
+//    NSCachedURLResponse *urlResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:webView.request];
+//    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)urlResponse.response;
+//    NSInteger statusCode = httpResponse.statusCode;
+//    self.hasSuccessfullyLoadedLastRequest = statusCode >= 200 && statusCode < 300;
+//
+//    if (self.hasSuccessfullyLoadedLastRequest) {
+//        self.lastRequestLoadedAt = [NSDate date];
+//    }
+//}
 
-    NSCachedURLResponse *urlResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:webView.request];
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)urlResponse.response;
-    NSInteger statusCode = httpResponse.statusCode;
-    self.hasSuccessfullyLoadedLastRequest = statusCode >= 200 && statusCode < 300;
-
-    if (self.hasSuccessfullyLoadedLastRequest) {
-        self.lastRequestLoadedAt = [NSDate date];
-    }
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error;
-{
-    [super webView:webView didFailLoadWithError:error];
-    self.hasSuccessfullyLoadedLastRequest = NO;
-}
+//- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error;
+//{
+//    [super webView:webView didFailLoadWithError:error];
+//    self.hasSuccessfullyLoadedLastRequest = NO;
+//}
 
 @end

@@ -1,94 +1,105 @@
 #import "ARExternalWebBrowserViewController.h"
 #import <JLRoutes/JLRoutes.h>
 
-@interface TSMiniWebBrowser (Private)
-@property(nonatomic, readonly, strong) UIWebView *webView;
-@end
+//@interface TSMiniWebBrowser (Private)
+//@property(nonatomic, readonly, strong) UIWebView *webView;
+//@end
 
-@interface ARExternalWebBrowserViewController()<UIGestureRecognizerDelegate>
+@interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate>
 @property(nonatomic, readonly, strong) UIGestureRecognizer *gesture;
 @end
 
 @implementation ARExternalWebBrowserViewController
 
-- (instancetype)initWithURL:(NSURL *)url
+- (void)loadURL:(NSURL *)URL;
 {
-    self = [super initWithURL:url];
-    if (!self) { return nil; }
-
-    self.showNavigationBar = NO;
-    return self;
+    [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+//- (instancetype)initWithURL:(NSURL *)url
+//{
+    //self = [super initWithURL:url];
+    //if (!self) { return nil; }
 
-    self.scrollView.delegate = self;
-    self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
-}
+    //self.showNavigationBar = NO;
+    //return self;
+//}
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+//- (void)viewDidLoad
+//{
+    //[super viewDidLoad];
 
-    self.webView.frame = self.view.bounds;
+    //self.scrollView.delegate = self;
+    //self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
+//}
 
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-}
+//- (void)viewWillAppear:(BOOL)animated
+//{
+    //[super viewWillAppear:animated];
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+    //self.webView.frame = self.view.bounds;
 
-    if ([self.navigationController isKindOfClass:[ARNavigationController class]]) {
-        UIGestureRecognizer *gesture = self.navigationController.interactivePopGestureRecognizer;
+    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+//}
 
-        [ self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:gesture];
-        _gesture = gesture;
-    }
-}
+//- (void)viewDidAppear:(BOOL)animated
+//{
+    //[super viewDidAppear:animated];
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    self.gesture.delegate = nil;
-    [super viewWillDisappear:animated];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-}
+    //if ([self.navigationController isKindOfClass:[ARNavigationController class]]) {
+        //UIGestureRecognizer *gesture = self.navigationController.interactivePopGestureRecognizer;
+
+        //[ self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:gesture];
+        //_gesture = gesture;
+    //}
+//}
+
+//- (void)viewWillDisappear:(BOOL)animated
+//{
+    //self.gesture.delegate = nil;
+    //[super viewWillDisappear:animated];
+    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+//}
 
 #pragma mark - Properties
 
-- (UIScrollView *)scrollView
-{
-    return  self.webView.scrollView;
-}
+//- (UIScrollView *)scrollView
+//{
+    //return  self.webView.scrollView;
+//}
 
 #pragma mark UIScrollViewDelegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+    //[[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
+//}
 
 #pragma mark UIGestureRecognizerDelegate
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
-}
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+//{
+    //return YES;
+//}
 
 #pragma mark UIWebViewDelegate
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        if ([JLRoutes canRouteURL:request.URL]) {
-            [JLRoutes routeURL:request.URL];
-            return NO;
+    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
+        NSURL *URL = navigationAction.request.URL;
+        if ([JLRoutes canRouteURL:URL]) {
+            [JLRoutes routeURL:URL];
+            return WKNavigationActionPolicyCancel;
         }
     }
+    return WKNavigationActionPolicyAllow;
+}
 
-    return YES;
+// - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
+{
+    decisionHandler([self shouldLoadNavigationAction:navigationAction]);
 }
 
 - (BOOL)shouldAutorotate
@@ -98,8 +109,8 @@
 
 - (NSDictionary *)dictionaryForAnalytics
 {
-    if (self.currentURL) {
-        return @{ @"url" : self.currentURL.absoluteString, @"type" : @"url" };
+    if (self.webView.URL) {
+        return @{ @"url" : self.webView.URL.absoluteString, @"type" : @"url" };
     }
 
     return nil;

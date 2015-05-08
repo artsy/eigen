@@ -1,7 +1,7 @@
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '7.0'
+platform :ios, '8.0'
 
 # Yep.
 inhibit_all_warnings!
@@ -82,6 +82,7 @@ pod 'libextobjc/EXTScope', '0.4'
 
 # Martsy
 pod 'TSMiniWebBrowser@dblock', :head
+pod 'STKWebKitViewController'
 
 # Table View simplification
 pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
