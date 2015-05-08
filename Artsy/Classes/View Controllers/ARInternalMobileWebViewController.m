@@ -90,13 +90,13 @@
 
     [super viewDidAppear:animated];
 }
-//
-//- (void)webViewDidFinishLoad:(UIWebView *)aWebView
-//{
-//    [super webViewDidFinishLoad:aWebView];
-//    [self hideLoading];
-//    self.loaded = YES;
-//}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
+{
+    [super webView:webView didFinishNavigation:navigation];
+    [self hideLoading];
+    self.loaded = YES;
+}
 
 - (void)hideLoading
 {
@@ -105,8 +105,6 @@
 
 // Load a new internal web VC for each link we can do
 
-// - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-// - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
     NSURL *URL = navigationAction.request.URL;
