@@ -25,13 +25,13 @@
     //return self;
 //}
 
-//- (void)viewDidLoad
-//{
-    //[super viewDidLoad];
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
 
-    //self.scrollView.delegate = self;
-    //self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
-//}
+    // self.scrollView.delegate = self;
+    self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
+}
 
 //- (void)viewWillAppear:(BOOL)animated
 //{
@@ -63,10 +63,10 @@
 
 #pragma mark - Properties
 
-//- (UIScrollView *)scrollView
-//{
-    //return  self.webView.scrollView;
-//}
+- (UIScrollView *)scrollView
+{
+    return  self.webView.scrollView;
+}
 
 #pragma mark UIScrollViewDelegate
 
