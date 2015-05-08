@@ -1,4 +1,5 @@
 #import "ARTiledImageDataSourceWithImage.h"
+#import <ARAnalytics/ARAnalytics.h>
 
 @implementation ARTiledImageDataSourceWithImage
 
@@ -8,6 +9,7 @@
     if (!self) { return nil; }
 
     _image = image;
+    ARLog(@"ARTiledImageDataSourceWithImage (%p) created for imageID:%@ URL:%@", (__bridge void *)self, _image.imageID, _image.urlForDetailImage);
 
     self.tileFormat = @"jpg";
     self.tileBaseURL = [NSURL URLWithString:self.image.tileBaseUrl];
@@ -22,7 +24,9 @@
 
 - (NSURL *)tiledImageView:(ARTiledImageView *)imageView urlForImageTileAtLevel:(NSInteger)level x:(NSInteger)x y:(NSInteger)y
 {
-    return [self.image urlTileForLevel:level atX:x andY:y];
+    NSURL *URL = [self.image urlTileForLevel:level atX:x andY:y];
+    ARLog(@"ARTiledImageView (%p) will draw imageID:%@ URL:%@", (__bridge void *)imageView, self.image.imageID, URL);
+    return URL;
 }
 
 @end
