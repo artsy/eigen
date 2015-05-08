@@ -69,6 +69,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES animated:NO];
 
     // As we initially show the loading, we don't want this to appear when you do a back or when a modal covers this view.
     if (!self.loaded) {
