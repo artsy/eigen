@@ -7,7 +7,7 @@ PODS:
   - ALPValidator (0.0.3)
   - ARAnalytics/CoreIOS (3.0.0)
   - ARAnalytics/DSL (3.0.0):
-    - ReactiveCocoa (= 2.3)
+    - ReactiveCocoa (~> 2.0)
     - RSSwizzle (~> 0.1.0)
   - ARAnalytics/HockeyApp (3.0.0):
     - ARAnalytics/CoreIOS
@@ -47,7 +47,7 @@ PODS:
   - FLKAutoLayout (0.1.1)
   - FODFormKit (0.1.1)
   - FXBlurView (1.6.1)
-  - HockeySDK (3.5.0)
+  - HockeySDK (3.6.4)
   - InterAppCommunication (1.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (HEAD based on 0.7)
@@ -100,9 +100,11 @@ DEPENDENCIES:
   - AFNetworking (= 1.3.4)
   - AFOAuth1Client (= 0.3.3)
   - ALPValidator (= 0.0.3)
-  - ARAnalytics/DSL
-  - ARAnalytics/HockeyApp
-  - ARAnalytics/Mixpanel
+  - ARAnalytics/DSL (from `https://github.com/alloy/ARAnalytics.git`, branch `add-breadcrumb-logging-to-HockeyApp`)
+  - ARAnalytics/HockeyApp (from `https://github.com/alloy/ARAnalytics.git`, branch
+    `add-breadcrumb-logging-to-HockeyApp`)
+  - ARAnalytics/Mixpanel (from `https://github.com/alloy/ARAnalytics.git`, branch
+    `add-breadcrumb-logging-to-HockeyApp`)
   - ARASCIISwizzle (= 1.1.0)
   - ARCollectionViewMasonryLayout (>= 2.1.1, ~> 2.1)
   - ARGenericTableViewController (= 1.0.2)
@@ -121,7 +123,7 @@ DEPENDENCIES:
   - FLKAutoLayout (= 0.1.1)
   - FODFormKit (from `https://github.com/1aurabrown/FODFormKit.git`)
   - FXBlurView (= 1.6.1)
-  - HockeySDK (= 3.5.0)
+  - HockeySDK (from `https://github.com/alloy/HockeySDK-iOS.git`, branch `develop`)
   - InterAppCommunication
   - iRate (= 1.10.2)
   - ISO8601DateFormatter (HEAD)
@@ -152,11 +154,17 @@ DEPENDENCIES:
   - XCTest+OHHTTPStubSuiteCleanUp (= 1.0.0)
 
 EXTERNAL SOURCES:
+  ARAnalytics:
+    :branch: add-breadcrumb-logging-to-HockeyApp
+    :git: https://github.com/alloy/ARAnalytics.git
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
+  HockeySDK:
+    :branch: develop
+    :git: https://github.com/alloy/HockeySDK-iOS.git
   Keys:
     :git: https://github.com/ashfurrow/empty-podspec.git
   NAMapKit:
@@ -166,12 +174,18 @@ EXTERNAL SOURCES:
     :git: https://github.com/1aurabrown/ORStackView.git
 
 CHECKOUT OPTIONS:
+  ARAnalytics:
+    :commit: 2c77b867c9ac3c75595caf6c839a06e6280e5ca1
+    :git: https://github.com/alloy/ARAnalytics.git
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
     :git: https://github.com/1aurabrown/FODFormKit.git
+  HockeySDK:
+    :commit: 63228fdc2587896c30d3dbcc03fbd0613a4b5da1
+    :git: https://github.com/alloy/HockeySDK-iOS.git
   Keys:
     :commit: dfc3c5e75dd23e5e9f938f4552eaceec4a8b4b73
     :git: https://github.com/ashfurrow/empty-podspec.git
@@ -187,7 +201,7 @@ SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
   AFOAuth1Client: 7bac5f9f00a2a97d99d4cb9942a09d0812c5e5b7
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
-  ARAnalytics: 9669efd110dd9a92c0b3f6e073f01f8eec9a8a21
+  ARAnalytics: c331321fc6b034ad6249cd43e226d0b262436ce5
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
   ARCollectionViewMasonryLayout: 98a899a3c9ebf9283e993198e12b54bd3615f672
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
@@ -208,7 +222,7 @@ SPEC CHECKSUMS:
   FLKAutoLayout: 95b12c5cd9652100235140b68652f063f7437851
   FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  HockeySDK: 9c50c596a51a015a8e5073252340a36d3047a126
+  HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
   InterAppCommunication: 3239945b30e9dc5f91ef8be057fbcae4e3398e5c
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274

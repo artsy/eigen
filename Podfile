@@ -87,11 +87,11 @@ pod 'TSMiniWebBrowser@dblock', :head
 pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
 
 # Analytics
-pod 'HockeySDK', '3.5.0'
+pod 'HockeySDK', :git => 'https://github.com/alloy/HockeySDK-iOS.git', :branch => 'develop'
 pod 'Mixpanel', '2.3.1'
-pod 'ARAnalytics/Mixpanel'
-pod 'ARAnalytics/HockeyApp'
-pod 'ARAnalytics/DSL'
+pod 'ARAnalytics/Mixpanel', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
+pod 'ARAnalytics/HockeyApp', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
+pod 'ARAnalytics/DSL', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
 pod 'UICKeyChainStore', '1.0.5'
 
 # Fairs
