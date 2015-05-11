@@ -1,3 +1,19 @@
+machine:
+  environment:
+    ArtsyAPIClientSecret: 3a33d2085cbd1176153f99781bbce7c6
+    ArtsyAPIClientKey: e750db60ac506978fc70
+    HockeyProductionSecret: "-"
+    HockeyBetaSecret: "-"
+    MixpanelProductionAPIClientKey: "-"
+    MixpanelStagingAPIClientKey: "-"
+    MixpanelDevAPIClientKey: "-"
+    MixpanelInStoreAPIClientKey: "-"
+    ArtsyFacebookAppID: "-"
+    ArtsyTwitterKey: "-"
+    ArtsyTwitterSecret: "-"
+    ArtsyTwitterStagingKey: "-"
+    ArtsyTwitterStagingSecret: "-"
+
 dependencies:
   override:
     - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3 --without distribution

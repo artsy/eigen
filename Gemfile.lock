@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/alloy/cocoapods-keys.git
+  revision: d33aafed433317ca0463b912809508f05f9e2299
+  branch: retrieve-keys-from-env
+  specs:
+    cocoapods-keys (1.2.0)
+      osx_keychain
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -47,8 +55,6 @@ GEM
       fuzzy_match (~> 2.0.4)
       nap (~> 0.8.0)
     cocoapods-downloader (0.9.0)
-    cocoapods-keys (1.1.0)
-      osx_keychain
     cocoapods-plugins (0.4.2)
       nap
     cocoapods-trunk (0.6.0)
@@ -162,7 +168,7 @@ GEM
       mini_portile (~> 0.6.0)
     ntlm-http (0.1.1)
     open4 (1.3.4)
-    osx_keychain (1.0.0)
+    osx_keychain (1.0.1)
       RubyInline (~> 3)
     pdf-core (0.5.1)
     pem (0.5.4)
@@ -233,7 +239,7 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods
-  cocoapods-keys
+  cocoapods-keys!
   fastlane
   fui
   second_curtain
