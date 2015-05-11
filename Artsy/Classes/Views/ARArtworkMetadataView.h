@@ -21,7 +21,7 @@
 
 - (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair;
 - (void)updateWithFair:(Fair *)fair;
-- (void)updateConstraintsForSize:(CGSize)size;
+- (void)updateConstraintsIsLandscape:(BOOL)isLandscape;
 
 - (UIImageView *)imageView;
 
