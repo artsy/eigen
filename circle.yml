@@ -3,6 +3,9 @@ dependencies:
     - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3 --without distribution
     - sudo make oss
     - bundle exec pod install
+  cache_directories:
+    - vendor/bundle
+    - Pods
 
 test:
   pre:
