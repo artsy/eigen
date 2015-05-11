@@ -1,5 +1,7 @@
-PATH
-  remote: /Users/orta/spiel/ruby/Rainforest/CocoaPods
+GIT
+  remote: git@github.com:orta/CocoaPods.git
+  revision: 101cb5efb333b17b928c362d582440a9210f8d21
+  branch: de-dupe-subspec-refs
   specs:
     cocoapods (0.37.1)
       activesupport (>= 3.2.15)
@@ -14,14 +16,6 @@ PATH
       molinillo (~> 0.2.3)
       nap (~> 0.8)
       xcodeproj (~> 0.24.1)
-
-PATH
-  remote: /Users/orta/spiel/ruby/Rainforest/Core
-  specs:
-    cocoapods-core (0.37.1)
-      activesupport (>= 3.2.15)
-      fuzzy_match (~> 2.0.4)
-      nap (~> 0.8.0)
 
 GEM
   remote: https://rubygems.org/
@@ -53,8 +47,10 @@ GEM
     certified (1.0.0)
     claide (0.8.1)
     cliver (0.3.2)
-    cocoapods-deintegrate (0.2.1)
-      cocoapods (~> 0.34)
+    cocoapods-core (0.37.1)
+      activesupport (>= 3.2.15)
+      fuzzy_match (~> 2.0.4)
+      nap (~> 0.8.0)
     cocoapods-downloader (0.9.0)
     cocoapods-keys (1.2.0)
       osx_keychain
@@ -252,8 +248,6 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods!
-  cocoapods-core!
-  cocoapods-deintegrate
   cocoapods-keys
   fastlane
   fui
