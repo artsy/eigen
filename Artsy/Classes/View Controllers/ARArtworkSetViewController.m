@@ -181,7 +181,6 @@
     return UIInterfaceOrientationPortrait;
 }
 
-
 - (NSUInteger)pageViewControllerSupportedInterfaceOrientations:(UIPageViewController *)pageViewController
 {
     return [self supportedInterfaceOrientations];
@@ -212,6 +211,5 @@
 
     return nil;
 }
-
 
 @end

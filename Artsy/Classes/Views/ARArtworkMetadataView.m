@@ -131,9 +131,9 @@
     return self;
 }
 
-- (void)updateConstraintsForSize:(CGSize)size
+- (void)updateConstraintsIsLandscape:(BOOL)isLandscape
 {
-    if (size.width > size.height) {
+    if (isLandscape) {
         [NSLayoutConstraint deactivateConstraints:self.verticalConstraints];
         [NSLayoutConstraint activateConstraints:self.horizontalConstraints];
     } else {

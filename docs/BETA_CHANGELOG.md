@@ -20,3 +20,4 @@
 * Update Artwork view for iPad - 1aurabrown
 * Fix autolayout-related crashes and failing tests - 1aurabrown
 * Drop iOS 7 support - ashfurrow
+* fix buggy swiping between artworks - 1aurabrown
