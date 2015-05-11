@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/alloy/cocoapods-keys.git
-  revision: d33aafed433317ca0463b912809508f05f9e2299
+  revision: 60a23f0b3b3ef7c055386417d94111795a2ec456
   branch: retrieve-keys-from-env
   specs:
     cocoapods-keys (1.2.0)
