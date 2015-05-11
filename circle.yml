@@ -1,6 +1,7 @@
 dependencies:
   override:
     - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3 --without distribution
+    - make oss
     - bundle exec pod install
 
 test:
