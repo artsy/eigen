@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods'
+gem 'cocoapods-core', :path => "/Users/orta/spiel/ruby/Rainforest/Core"
+gem 'cocoapods', :path => "/Users/orta/spiel/ruby/Rainforest/CocoaPods"
 gem "cocoapods-keys"
+gem "cocoapods-deintegrate"
 
 group :test do
   gem 'fui'

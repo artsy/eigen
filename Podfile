@@ -13,6 +13,7 @@ eval(File.open(local_podfile).read) if File.exist? local_podfile
 
 plugin 'cocoapods-keys', {
     :project => "Artsy",
+    :target => "Artsy",
     :keys => [
         "ArtsyAPIClientSecret",
         "ArtsyAPIClientKey",
@@ -104,7 +105,7 @@ pod 'DHCShakeNotifier', '0.2.0'
 pod 'ARASCIISwizzle', '1.1.0'
 pod 'DRKonamiCode', '1.1.0'
 
-target 'Artsy Tests', :exclusive => true do
+target 'Artsy Tests' do
   pod 'FBSnapshotTestCase', '1.6'
   pod 'Expecta+Snapshots', '~> 1.2'
   pod 'OHHTTPStubs', '3.1.2'
