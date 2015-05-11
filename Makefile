@@ -52,7 +52,7 @@ oss:
 
 
 ci: CONFIGURATION = Debug
-ci: build	
+ci: build
 
 update_bundle_version:
 	@printf 'What is the new human-readable release version? '; \
@@ -121,8 +121,8 @@ beta: NOTIFY = 1
 beta: stamp_date deploy
 
 
-LOCAL_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
-BRANCH := $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
+LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
 
 pr: 
 	if [ "$(BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push upstream "$(LOCAL_BRANCH):$(BRANCH)"; open -a "Google Chrome" "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi
