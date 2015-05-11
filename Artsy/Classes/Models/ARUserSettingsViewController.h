@@ -1,4 +1,4 @@
-#import "FODFormViewController.h"
+#import <FODFormKit/FODFormViewController.h>
 
 @interface ARUserSettingsViewController : FODFormViewController <ARMenuAwareViewController>
 

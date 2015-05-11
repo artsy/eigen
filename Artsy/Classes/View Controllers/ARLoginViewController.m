@@ -3,7 +3,7 @@
 #import "AROnboardingNavBarView.h"
 #import "ARAuthProviders.h"
 #import "UIViewController+FullScreenLoading.h"
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import "ARTextFieldWithPlaceholder.h"
 #import "ARSecureTextFieldWithPlaceholder.h"
 #import "UIView+HitTestExpansion.h"

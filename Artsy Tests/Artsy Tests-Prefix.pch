@@ -13,12 +13,12 @@
     #import <Specta/Specta.h>
     #import "SpectaDSL+Sleep.h"
     #import <Expecta/Expecta.h>
-    #import <Expecta+Snapshots/EXPMatchers+FBSnapshotTest.h>
+    #import <Expecta_Snapshots/EXPMatchers+FBSnapshotTest.h>
     #import <OHHTTPStubs/OHHTTPStubs.h>
     #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
     #import <UICKeyChainStore/UICKeyChainStore.h>
     #import <OCMock/OCMock.h>
-    #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+    #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
     #import <AFNetworking/AFNetworking.h>
     #import <Mantle/Mantle.h>
     #import <Mantle/MTLJSONAdapter.h>
