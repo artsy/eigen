@@ -1,4 +1,6 @@
 machine:
+  xcode:
+    version: "6.3.1"
   environment:
     ArtsyAPIClientSecret: 3a33d2085cbd1176153f99781bbce7c6
     ArtsyAPIClientKey: e750db60ac506978fc70
