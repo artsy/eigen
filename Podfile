@@ -64,7 +64,7 @@ pod 'Artsy-UIButtons', '~> 1.4'
 pod 'UIView+BooleanAnimations'
 
 if %w(orta ash artsy laura eloy sarahscott).include?(ENV['USER']) || ENV['CI'] == 'true'
-  pod 'Artsy+UIFonts', '1.0.0'
+  pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts"
 else
   pod 'Artsy+OSSUIFonts'
 end
