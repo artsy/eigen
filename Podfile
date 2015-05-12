@@ -12,7 +12,6 @@ eval(File.open(local_podfile).read) if File.exist? local_podfile
 
 plugin 'cocoapods-keys', {
     :project => "Artsy",
-    :target => "Artsy",
     :keys => [
         "ArtsyAPIClientSecret",
         "ArtsyAPIClientKey",
