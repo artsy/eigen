@@ -6,6 +6,14 @@ GIT
     cocoapods-keys (1.2.0)
       osx_keychain
 
+GIT
+  remote: https://github.com/alloy/second_curtain
+  revision: 74dd2de33fb3a96f48d5ce602ffae04217f00b10
+  specs:
+    second_curtain (0.3.0)
+      aws-sdk-v1 (~> 1.52)
+      mustache (~> 0.99)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -189,9 +197,6 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rubyzip (1.1.7)
-    second_curtain (0.3.0)
-      aws-sdk-v1 (~> 1.52)
-      mustache (~> 0.99)
     security (0.1.3)
     shenzhen (0.14.0)
       aws-sdk (~> 1.0)
@@ -242,6 +247,6 @@ DEPENDENCIES
   cocoapods-keys!
   fastlane
   fui
-  second_curtain
+  second_curtain!
   shenzhen
   xcpretty
