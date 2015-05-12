@@ -170,17 +170,15 @@
 {
     ARInfoLog(@"Martsy URL %@", request.URL);
 
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        if ([self.shareValidator isSocialSharingURL:request.URL]) {
-            [self.shareValidator shareURL:request.URL inView:self.view];
+    if ([self.shareValidator isSocialSharingURL:request.URL]) {
+        [self.shareValidator shareURL:request.URL inView:self.view];
+        return NO;
+    }
+    else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
+        if (viewController) {
+            [self.navigationController pushViewController:viewController animated:YES];
             return NO;
-        } else {
-
-            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
-            if (viewController) {
-                [self.navigationController pushViewController:viewController animated:YES];
-                return NO;
-            }
         }
 
     } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
