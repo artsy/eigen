@@ -37,6 +37,19 @@
     self.collectionView.frame = self.view.bounds;
 }
 
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self.view setNeedsUpdateConstraints];
+
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+
+    }];
+}
+
 - (UICollectionView *)createCollectionView
 {
     // Because the collection view is lazily created at view will appear
