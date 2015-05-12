@@ -108,7 +108,7 @@
     _artistFavoritesNetworkModel = [[ARArtistFavoritesNetworkModel alloc] init];
     _geneFavoritesNetworkModel = [[ARGeneFavoritesNetworkModel alloc] init];
 
-    ARArtworkMasonryLayout layout = [UIDevice isPad] ? [self masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]] : ARArtworkMasonryLayout2Column;
+    ARArtworkMasonryLayout layout = [UIDevice isPad] ? [self masonryLayoutForPadWithSize:self.view.frame.size] : ARArtworkMasonryLayout2Column;
     _artworksModule = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     _artworksModule.layoutProvider = self;
     _artistsModule = [[ARFavoriteItemModule alloc] init];

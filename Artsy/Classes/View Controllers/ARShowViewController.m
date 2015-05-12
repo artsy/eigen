@@ -348,7 +348,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
     ARArtworkMasonryLayout layout;
     if ([UIDevice isPad]) {
-        layout = [self masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+        layout = [self masonryLayoutForPadWithSize:self.view.frame.size];
     } else {
         layout = ARArtworkMasonryLayout2Column;
     }
@@ -538,9 +538,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 }
 
 #pragma mark - ARArtworkMasonryLayoutProvider
-- (ARArtworkMasonryLayout)masonryLayoutForPadWithOrientation:(UIInterfaceOrientation)orientation
+- (ARArtworkMasonryLayout)masonryLayoutForPadWithSize:(CGSize)size
 {
-    return UIInterfaceOrientationIsLandscape(orientation) ? ARArtworkMasonryLayout3Column : ARArtworkMasonryLayout2Column;
+    return size.width > size.height ? ARArtworkMasonryLayout3Column : ARArtworkMasonryLayout2Column;
 }
 
 @end

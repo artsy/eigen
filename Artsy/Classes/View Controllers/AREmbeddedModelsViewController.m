@@ -42,12 +42,15 @@
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
+    if ([self.activeModule isKindOfClass:[ARArtworkMasonryModule class]]) {
+        [(ARArtworkMasonryModule *)self.activeModule updateLayoutForSize:size];
+    }
+
+    [self.view setNeedsUpdateConstraints];
+
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        [self.view setNeedsUpdateConstraints];
-
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-
-    }];
+        [self.view layoutIfNeeded];
+    } completion:nil];
 }
 
 - (UICollectionView *)createCollectionView
@@ -161,11 +164,7 @@
     [super updateViewConstraints];
 
     if (self.heightConstraint) {
-        if (self.collectionView.contentSize.height != 0) {
-            self.heightConstraint.constant = self.collectionView.contentSize.height;
-        } else {
             self.heightConstraint.constant = self.activeModule.intrinsicSize.height;
-        }
     }
 }
 
