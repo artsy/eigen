@@ -2,6 +2,13 @@ machine:
   xcode:
     version: "6.3.1"
   environment:
+    # Private repo access
+    GITHUB_API_KEY: secret
+    # SecondCurtain
+    UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
+    AWS_ACCESS_KEY_ID: secret
+    AWS_SECRET_ACCESS_KEY: secret
+    # CocoaPods-Keys
     ArtsyAPIClientSecret: 3a33d2085cbd1176153f99781bbce7c6
     ArtsyAPIClientKey: e750db60ac506978fc70
     HockeyProductionSecret: "-"
