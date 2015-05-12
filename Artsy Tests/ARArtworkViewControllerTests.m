@@ -264,7 +264,7 @@ it(@"shows an upublished banner", ^{
     NSDictionary *artworkDict = @{
         @"id" : @"artwork-id",
         @"title" : @"Artwork Title",
-        @"published" : @YES,
+        @"published" : @NO,
     };
     Artwork *artwork = [Artwork modelWithJSON:artworkDict];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/artwork-id" withResponse:artworkDict];
