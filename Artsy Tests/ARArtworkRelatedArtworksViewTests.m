@@ -242,10 +242,8 @@ describe(@"concerning layout", ^{
         });
 
         it(@"returns correct layout for orientation", ^{
-//            expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationLandscapeLeft]).to.equal(ARArtworkMasonryLayout4Column);
-//            expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationLandscapeRight]).to.equal(ARArtworkMasonryLayout4Column);
-//            expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationPortrait]).to.equal(ARArtworkMasonryLayout3Column);
-//            expect([relatedView masonryLayoutForPadWithOrientation:UIInterfaceOrientationPortraitUpsideDown]).to.equal(ARArtworkMasonryLayout3Column);
+            expect([relatedView masonryLayoutForPadWithSize:CGSizeMake(400, 300)]).to.equal(ARArtworkMasonryLayout4Column);
+            expect([relatedView masonryLayoutForPadWithSize:CGSizeMake(300, 400)]).to.equal(ARArtworkMasonryLayout3Column);
         });
     });
 });

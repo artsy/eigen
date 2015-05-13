@@ -39,7 +39,6 @@
     return layout;
 }
 
-
 - (CGSize)intrinsicSize
 {
     return [self.class intrinsicSizeWithlayout:self.layout andArtworks:self.items];

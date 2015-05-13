@@ -72,6 +72,8 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+
     self.embeddedItemsVC.delegate = self;
     self.embeddedItemsVC.showTrailingLoadingIndicator = YES;
 
@@ -118,11 +120,9 @@
 
     self.embeddedItemsVC.scrollDelegate = [ARScrollNavigationChief chief];
 
-    [self setModuleItemSizesForOrientation:[UIApplication sharedApplication].statusBarOrientation];
     [self.embeddedItemsVC.headerView updateConstraints];
     self.collectionView.scrollsToTop = YES;
 
-    [super viewDidLoad];
 }
 
 - (UICollectionView *)collectionView
@@ -135,24 +135,15 @@
     return [UIDevice isPad] ? 193 : 127;
 }
 
-- (ARArtworkMasonryLayout)masonryLayoutForPadWithOrientation:(UIInterfaceOrientation)orientation
+- (ARArtworkMasonryLayout)masonryLayoutForPadWithSize:(CGSize)size
 {
-    return UIInterfaceOrientationIsLandscape(orientation) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
+    return (size.width > size.height) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
 }
 
-- (void)setModuleItemSizesForOrientation:(UIInterfaceOrientation)orientation
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    CGFloat width = [ARFavoriteItemViewCell widthForCellWithOrientation:orientation];
-    CGFloat height = [ARFavoriteItemViewCell heightForCellWithOrientation:orientation];
-
-    self.genesModule.moduleLayout.itemSize = (CGSize){ width, height };
-    self.artistsModule.moduleLayout.itemSize = (CGSize){ width, height };
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self setModuleItemSizesForOrientation:(UIInterfaceOrientation)toInterfaceOrientation];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [self.embeddedItemsVC.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -161,6 +152,12 @@
     self.embeddedItemsVC.scrollDelegate = nil;
 
     [super viewWillDisappear:animated];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.embeddedItemsVC.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -318,6 +315,15 @@
 - (void)embeddedModelsViewControllerDidScrollPastEdge:(AREmbeddedModelsViewController *)embeddedModelsViewController
 {
     [self getNextItemSet];
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)layout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (layout == self.genesModule.moduleLayout || layout == self.artistsModule.moduleLayout) {
+        return [ARFavoriteItemViewCell sizeForCellwithSize:self.view.frame.size];
+    } else {
+        return CGSizeZero;
+    }
 }
 
 #pragma mark - ARSwitchViewDelegate

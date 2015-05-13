@@ -164,7 +164,7 @@
     [super updateViewConstraints];
 
     if (self.heightConstraint) {
-            self.heightConstraint.constant = self.activeModule.intrinsicSize.height;
+        self.heightConstraint.constant = self.activeModule.intrinsicSize.height;
     }
 }
 
@@ -283,6 +283,15 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
     return self.showTrailingLoadingIndicator ? CGSizeMake(CGRectGetWidth(self.collectionView.bounds), 44) : CGSizeZero;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:sizeForItemAtIndexPath:)]) {
+        return [self.delegate collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
+    } else {
+        return collectionViewLayout.itemSize;
+    }
 }
 
 #pragma mark ARCollectionViewMasonryLayoutDelegate Methods

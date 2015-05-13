@@ -252,13 +252,9 @@
 
 #pragma mark - ARArtworkMasonryLayoutProvider
 
--(ARArtworkMasonryLayout)masonryLayoutForPadWithOrientation:(UIInterfaceOrientation)orientation
+-(ARArtworkMasonryLayout)masonryLayoutForPadWithSize:(CGSize)size
 {
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return ARArtworkMasonryLayout4Column;
-    } else {
-        return ARArtworkMasonryLayout3Column;
-    }
+    return (size.width > size.height) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
 }
 #pragma mark - AREmbeddedModelsDelegate
 
