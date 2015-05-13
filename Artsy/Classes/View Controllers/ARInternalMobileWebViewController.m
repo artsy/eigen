@@ -9,12 +9,18 @@
 - (UIEdgeInsets)webViewScrollIndicatorsInsets;
 @end
 
-@interface ARInternalMobileWebViewController() <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
+@interface ARInternalMobileWebViewController () <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
 @property (nonatomic, assign) BOOL loaded;
 @property (nonatomic, readonly, strong) ARInternalShareValidator *shareValidator;
+@property (nonatomic, strong) NSTimer *contentLoadStateTimer;
 @end
 
 @implementation ARInternalMobileWebViewController
+
+- (void)dealloc;
+{
+    [self removeContentLoadStateTimer];
+}
 
 - (instancetype)initWithURL:(NSURL *)url
 {
@@ -58,12 +64,32 @@
     return self;
 }
 
+- (void)removeContentLoadStateTimer;
+{
+    [self.contentLoadStateTimer invalidate];
+    self.contentLoadStateTimer = nil;
+}
+
 - (void)loadURL:(NSURL *)url
 {
+    [self removeContentLoadStateTimer];
     self.loaded = NO;
     [self showLoading];
     [super loadURL:url];
 }
+
+// A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
+- (void)userDidSignUp
+{
+    [self.webView loadRequest:[self requestWithURL:self.currentURL]];
+}
+
+- (NSURLRequest *)requestWithURL:(NSURL *)url
+{
+    return [ARRouter requestForURL:url];
+}
+
+#pragma mark - UIViewController
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -73,11 +99,6 @@
     if (!self.loaded) {
         [self showLoading];
     }
-}
-
-- (void)showLoading
-{
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -90,11 +111,11 @@
     [super viewDidAppear:animated];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)aWebView
+#pragma mark - Progress Indication
+
+- (void)showLoading
 {
-    [super webViewDidFinishLoad:aWebView];
-    [self hideLoading];
-    self.loaded = YES;
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 }
 
 - (void)hideLoading
@@ -102,7 +123,48 @@
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
-// Load a new internal web VC for each link we can do
+- (void)checkWebViewLoadingState;
+{
+    NSString *readyState = [self.webView stringByEvaluatingJavaScriptFromString:@"document.readyState"];
+    // DOMContentLoaded, which is once the webview is finished parsing but still loading sub-resources.
+    if ([readyState isEqualToString:@"interactive"]) {
+        [self removeContentLoadStateTimer];
+        [self hideLoading];
+    }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return nil;
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webViewDidStartLoad:(UIWebView *)webView;
+{
+    self.contentLoadStateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                                                  target:self
+                                                                selector:@selector(checkWebViewLoadingState)
+                                                                userInfo:nil
+                                                                 repeats:YES];
+    [super webViewDidStartLoad:webView];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [super webViewDidFinishLoad:webView];
+    [self removeContentLoadStateTimer];
+    [self hideLoading];
+    self.loaded = YES;
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error;
+{
+    [super webView:webView didFailLoadWithError:error];
+    [self removeContentLoadStateTimer];
+}
 
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
@@ -130,25 +192,6 @@
     }
 
     return YES;
-}
-
-// A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
-
-- (void)userDidSignUp
-{
-    [self.webView loadRequest:[self requestWithURL:self.currentURL]];
-}
-
-- (NSURLRequest *)requestWithURL:(NSURL *)url
-{
-    return [ARRouter requestForURL:url];
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
-    return nil;
 }
 
 @end

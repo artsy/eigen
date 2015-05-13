@@ -9,6 +9,7 @@
 * Fix buttons that have a partial underlined title on iOS 8.0, 8.1, and 8.2 - alloy
 * Add ability to paginate left and right by tapping hero unit page control - 1aurabrown
 * Add breadcrumbs to crash reports, especially around ARTiledImageView - alloy
+* Remove progress indicator from martsy views as soon as the state of the webview is at DOMContentLoaded - alloy
 
 ## 2015.04.23
 
