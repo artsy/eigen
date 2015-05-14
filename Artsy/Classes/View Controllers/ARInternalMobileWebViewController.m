@@ -11,8 +11,8 @@
 
 @interface ARInternalMobileWebViewController () <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
 @property (nonatomic, assign) BOOL loaded;
-@property (nonatomic, readonly, strong) ARInternalShareValidator *shareValidator;
 @property (nonatomic, strong) NSTimer *contentLoadStateTimer;
+@property (nonatomic, strong) ARInternalShareValidator *shareValidator;
 @end
 
 @implementation ARInternalMobileWebViewController

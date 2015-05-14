@@ -5,6 +5,13 @@
 #import "ARNetworkConstants.h"
 #import "ARTrialController.h"
 #import "ARSwitchBoard.h"
+#import "ARInternalShareValidator.h"
+
+@interface ARInternalMobileWebViewController (Testing)
+
+@property (nonatomic, strong) ARInternalShareValidator *shareValidator;
+
+@end
 
 SpecBegin(ARInternalMobileViewController)
 
@@ -205,6 +212,34 @@ describe(@"unauthenticated", ^{
             [mockUser stopMocking];
             [mock stopMocking];
         });
+    });
+});
+
+describe(@"sharing", ^{
+    __block ARInternalMobileWebViewController *controller;
+    __block id shareValidator;
+
+    beforeEach(^{
+        controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
+        shareValidator = [OCMockObject niceMockForClass:[ARInternalShareValidator class]];
+        controller.shareValidator = shareValidator;
+    });
+
+    it(@"redirects sharing link taps to the shareValidator", ^{
+        [[[shareValidator stub] andReturnValue:@(YES)] isSocialSharingURL: OCMOCK_ANY];
+        [[shareValidator expect] shareURL:OCMOCK_ANY inView:OCMOCK_ANY];
+
+        [controller webView:nil shouldStartLoadWithRequest:nil navigationType:UIWebViewNavigationTypeOther];
+
+        [shareValidator verify];
+    });
+
+    it(@"returns NO when asked to start loading sharing request", ^{
+        [[[shareValidator stub] andReturnValue:@(YES)] isSocialSharingURL: OCMOCK_ANY];
+
+        BOOL shouldLoad = [controller webView:nil shouldStartLoadWithRequest:nil navigationType:UIWebViewNavigationTypeOther];
+
+        expect(shouldLoad).to.beFalsy();
     });
 });
 
