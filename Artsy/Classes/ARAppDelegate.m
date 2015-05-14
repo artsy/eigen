@@ -75,7 +75,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [ARDefaults setup];
     [ARRouter setup];
 
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [ARTopMenuViewController sharedController];
 
     [self.viewController setupRestorationIdentifierAndClass];
@@ -374,6 +374,19 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfRuns forKey:ARAnalyticsAppUsageCountProperty];
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+@end
+
+@implementation ARWindow
+
+- (void)sendEvent:(UIEvent *)event
+{
+    [super sendEvent:event];
+
+    if (event.type == UIEventTypeTouches) {
+        self.lastTouchPoint = [[[event allTouches] anyObject] locationInView:self];
+    }
 }
 
 @end

@@ -226,8 +226,8 @@ describe(@"sharing", ^{
     });
 
     it(@"redirects sharing link taps to the shareValidator", ^{
-        [[[shareValidator stub] andReturnValue:@(YES)] isSocialSharingURL: OCMOCK_ANY];
-        [[shareValidator expect] shareURL:OCMOCK_ANY inView:OCMOCK_ANY];
+        [[[shareValidator stub] andReturnValue:@(YES)] isSocialSharingURL:OCMOCK_ANY];
+        [[[shareValidator expect] ignoringNonObjectArgs] shareURL:OCMOCK_ANY inView:OCMOCK_ANY frame:CGRectNull];
 
         [controller webView:nil shouldStartLoadWithRequest:nil navigationType:UIWebViewNavigationTypeOther];
 
@@ -235,7 +235,7 @@ describe(@"sharing", ^{
     });
 
     it(@"returns NO when asked to start loading sharing request", ^{
-        [[[shareValidator stub] andReturnValue:@(YES)] isSocialSharingURL: OCMOCK_ANY];
+        [[[shareValidator stub] andReturnValue:@(YES)] isSocialSharingURL:OCMOCK_ANY];
 
         BOOL shouldLoad = [controller webView:nil shouldStartLoadWithRequest:nil navigationType:UIWebViewNavigationTypeOther];
 

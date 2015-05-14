@@ -20,6 +20,8 @@
 - (NSString *)nameBeingSharedInURL:(NSURL *)url;
 
 /// Shares the URL, presenting a UI within a view
-- (void)shareURL:(NSURL *)url inView:(UIView *)view;
+/// Frame is only needed on iPad to present a popover.
+/// On other platforms, the frame is ignored.
+- (void)shareURL:(NSURL *)url inView:(UIView *)view frame:(CGRect)frame;
 
 @end

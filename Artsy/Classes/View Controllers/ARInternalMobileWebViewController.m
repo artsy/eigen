@@ -2,6 +2,7 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
+#import "ARAppDelegate.h"
 
 @interface TSMiniWebBrowser (Private)
 @property(nonatomic, readonly, strong) UIWebView *webView;
@@ -166,12 +167,15 @@
     [self removeContentLoadStateTimer];
 }
 
-- (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     ARInfoLog(@"Martsy URL %@", request.URL);
 
     if ([self.shareValidator isSocialSharingURL:request.URL]) {
-        [self.shareValidator shareURL:request.URL inView:self.view];
+        ARWindow *window = ARAppDelegate.sharedInstance.window;
+        CGPoint lastTouchPointInView = [window convertPoint:window.lastTouchPoint toView:self.view];
+
+        [self.shareValidator shareURL:request.URL inView:self.view frame:(CGRect){ .origin = lastTouchPointInView, .size = CGSizeZero }];
         return NO;
     }
     else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
