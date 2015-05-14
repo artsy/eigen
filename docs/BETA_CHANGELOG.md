@@ -11,6 +11,7 @@
 * Add breadcrumbs to crash reports, especially around ARTiledImageView - alloy
 * Remove progress indicator from martsy views as soon as the state of the webview is at DOMContentLoaded - alloy
 * Really only show artworks that are for sale on an artist’s ‘for sale’ tab - alloy
+* Fixes iPad sharing hijacking - ash
 
 ## 2015.04.23
 

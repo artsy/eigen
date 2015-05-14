@@ -2,6 +2,7 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
+#import "ARAppDelegate.h"
 
 @interface TSMiniWebBrowser (Private)
 @property(nonatomic, readonly, strong) UIWebView *webView;
@@ -11,8 +12,8 @@
 
 @interface ARInternalMobileWebViewController () <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
 @property (nonatomic, assign) BOOL loaded;
-@property (nonatomic, readonly, strong) ARInternalShareValidator *shareValidator;
 @property (nonatomic, strong) NSTimer *contentLoadStateTimer;
+@property (nonatomic, strong) ARInternalShareValidator *shareValidator;
 @end
 
 @implementation ARInternalMobileWebViewController
@@ -166,21 +167,22 @@
     [self removeContentLoadStateTimer];
 }
 
-- (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     ARInfoLog(@"Martsy URL %@", request.URL);
 
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        if ([self.shareValidator isSocialSharingURL:request.URL]) {
-            [self.shareValidator shareURL:request.URL inView:self.view];
-            return NO;
-        } else {
+    if ([self.shareValidator isSocialSharingURL:request.URL]) {
+        ARWindow *window = ARAppDelegate.sharedInstance.window;
+        CGPoint lastTouchPointInView = [window convertPoint:window.lastTouchPoint toView:self.view];
 
-            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
-            if (viewController) {
-                [self.navigationController pushViewController:viewController animated:YES];
-                return NO;
-            }
+        [self.shareValidator shareURL:request.URL inView:self.view frame:(CGRect){ .origin = lastTouchPointInView, .size = CGSizeZero }];
+        return NO;
+    }
+    else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
+        if (viewController) {
+            [self.navigationController pushViewController:viewController animated:YES];
+            return NO;
         }
 
     } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
