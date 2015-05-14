@@ -1,9 +1,14 @@
 #import "ARArtistViewController.h"
 #import "ARStubbedArtistNetworkModel.h"
+#import "ARSwitchView.h"
 
 @interface ARArtistViewController (Tests)
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @property (nonatomic, strong) ARArtistNetworkModel *networkModel;
+@end
+
+@interface ARArtistViewController (Private)
+@property (nonatomic, strong) ARSwitchView *switchView;
 @end
 
 SpecBegin(ARArtistViewController)
@@ -102,6 +107,43 @@ itHasSnapshotsForDevicesWithName(@"two-rows artworks masonry", ^{
     
     vc.networkModel = networkModel;
     [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
+    return vc;
+});
+
+itHasSnapshotsForDevicesWithName(@"when showing for sale artworks", ^{
+    ARArtistViewController *vc = [[ARArtistViewController alloc] initWithArtistID:@"some-artist"];
+    networkModel = [[ARStubbedArtistNetworkModel alloc] initWithArtist:vc.artist];
+    networkModel.artistForArtistInfo = [Artist modelWithJSON:@{
+         @"id": @"some-artist",
+         @"name": @"Some Artist",
+         @"years": @"1928-1987",
+         @"published_artworks_count": @(14),
+         @"forsale_artworks_count": @(4),
+         @"artworks_count": @(14)
+    }];
+    
+    networkModel.artworksForArtworksAtPage = [Artwork arrayOfModelsWithJSON:@[
+        @{ @"id" : @"some-artist-artwork-1",  @"availability" : @"not for sale" },
+        @{ @"id" : @"some-artist-artwork-2",  @"availability" : @"not for sale" },
+        @{ @"id" : @"some-artist-artwork-3",  @"availability" : @"not for sale" },
+        @{ @"id" : @"some-artist-artwork-4",  @"availability" : @"not for sale" },
+        @{ @"id" : @"some-artist-artwork-5",  @"availability" : @"not for sale" },
+        @{ @"id" : @"some-artist-artwork-6",  @"availability" : @"not for sale" },
+        @{ @"id" : @"some-artist-artwork-7",  @"availability" : @"not for sale" },
+        @{ @"id" : @"some-artist-artwork-8",  @"availability" : @"not for sale" },
+        @{ @"id" : @"some-artist-artwork-9",  @"availability" : @"not for sale" },
+        @{ @"id" : @"some-artist-artwork-10", @"availability" : @"not for sale" },
+    ]];
+    networkModel.forSaleArtworksForArtworksAtPage = [Artwork arrayOfModelsWithJSON:@[
+        @{ @"id" : @"some-artist-artwork-11", @"availability" : @"for sale" },
+        @{ @"id" : @"some-artist-artwork-12", @"availability" : @"for sale" },
+        @{ @"id" : @"some-artist-artwork-13", @"availability" : @"for sale" },
+        @{ @"id" : @"some-artist-artwork-14", @"availability" : @"for sale" },
+    ]];
+    
+    vc.networkModel = networkModel;
+    [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
+    vc.switchView.selectedIndex = 1; // for sale
     return vc;
 });
 
