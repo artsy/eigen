@@ -10,6 +10,7 @@
 * Add ability to paginate left and right by tapping hero unit page control - 1aurabrown
 * Add breadcrumbs to crash reports, especially around ARTiledImageView - alloy
 * Remove progress indicator from martsy views as soon as the state of the webview is at DOMContentLoaded - alloy
+* Really only show artworks that are for sale on an artist’s ‘for sale’ tab - alloy
 
 ## 2015.04.23
 
