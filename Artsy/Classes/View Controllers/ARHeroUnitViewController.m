@@ -68,21 +68,7 @@ const static CGFloat ARCarouselDelay = 10;
     [self.view insertSubview:self.pageControl aboveSubview:self.pageViewController.view];
 
     [RACObserve(self.heroUnitNetworkModel, heroUnits) subscribeNext:^(NSArray *heroUnits) {
-        // Should never be false in production, but will cause problems in development if false on staging.
-        BOOL timerEnabled = self.timer != nil;
-        [self cancelTimer];
-
-        BOOL hasHeroUnits = heroUnits.count > 0;
-        if (!hasHeroUnits) {
-            [self cancelTimer];
-            self.view.userInteractionEnabled = NO;
-            return;
-        }
-
-        self.view.userInteractionEnabled = YES;
-        [self updateViewWithHeroUnits:heroUnits];
-
-        if (timerEnabled) { [self startTimer]; }
+        [self handleHeroUnits:heroUnits];
     }];
 }
 
@@ -99,6 +85,25 @@ const static CGFloat ARCarouselDelay = 10;
     [super viewDidLayoutSubviews];
 }
 
+-(void)handleHeroUnits:(NSArray *)heroUnits
+{
+    // Should never be false in production, but will cause problems in development if false on staging.
+    BOOL timerEnabled = self.timer != nil;
+    [self cancelTimer];
+
+    BOOL hasHeroUnits = heroUnits.count > 0;
+    if (!hasHeroUnits) {
+        [self cancelTimer];
+        self.view.userInteractionEnabled = NO;
+        return;
+    }
+
+    self.view.userInteractionEnabled = YES;
+    [self updateViewWithHeroUnits:heroUnits];
+
+    if (timerEnabled) { [self startTimer]; }
+}
+
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits
 {
     self.pageControl.numberOfPages = heroUnits.count;
@@ -111,6 +116,11 @@ const static CGFloat ARCarouselDelay = 10;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSArray *oldHeroUnits = [self.heroUnitNetworkModel.heroUnits copy];
+    [self.heroUnitNetworkModel getHeroUnitsWithSuccess:^(NSArray *heroUnits) {
+        if (heroUnits == oldHeroUnits) { return; }
+        [self handleHeroUnits:heroUnits];
+    } failure:nil];
     [self startTimer];
 }
 
