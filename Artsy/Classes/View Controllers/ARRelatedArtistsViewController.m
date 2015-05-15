@@ -1,7 +1,7 @@
 #import "ARRelatedArtistsViewController.h"
 #import "ARFavoriteItemViewCell.h"
 
-@interface ARRelatedArtistsViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ARRelatedArtistsViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UICollectionView *view;
 
@@ -41,24 +41,27 @@
     }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [self setItemSizeForOrientation:toInterfaceOrientation];
-    [self updateHeightConstraint];
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [self.view.collectionViewLayout invalidateLayout];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self updateHeightConstraint];
+    } completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setItemSizeForOrientation:[UIApplication sharedApplication].statusBarOrientation];
+    [self.view.collectionViewLayout invalidateLayout];
     [self updateHeightConstraint];
 }
 
 - (void) loadView
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    CGFloat sideMargin = [UIDevice isPad] ?  50 : 20;
+    CGFloat sideMargin = [UIDevice isPad] ? 50 : 20;
     layout.sectionInset = UIEdgeInsetsMake(20, sideMargin, 20, sideMargin);
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
 
@@ -70,16 +73,13 @@
     self.view = collectionView;
 }
 
-- (void)setItemSizeForOrientation:(UIInterfaceOrientation)orientation
-{
-    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.view.collectionViewLayout;
-    layout.itemSize = (CGSize){ [ARFavoriteItemViewCell widthForCellWithOrientation:orientation], [ARFavoriteItemViewCell heightForCellWithOrientation:orientation] };
-    [self.view.collectionViewLayout invalidateLayout];
-    [self.view layoutIfNeeded];
-}
-
 #pragma mark -
 #pragma mark Related artist delegate/datasource
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [ARFavoriteItemViewCell sizeForCellwithSize:self.parentViewController.view.frame.size];
+}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
 {

@@ -127,9 +127,11 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     }];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self.view layoutSubviews];
+
 }
 
 - (void)viewWillLayoutSubviews

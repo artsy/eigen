@@ -18,41 +18,20 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
     self.imageView.image = [ARFeedImageLoader defaultPlaceholder];
 }
 
-+ (CGFloat)heightForCellWithOrientation:(UIInterfaceOrientation)orientation
++ (CGSize)sizeForCellwithSize:(CGSize)size
 {
-    return ARFavoriteCellLabelHeight + ARFavoriteCellMetadataMargin + [self heightForImageWithOrientation:orientation];
-}
-
-+ (CGFloat)heightForImageWithOrientation:(UIInterfaceOrientation)orientation
-{
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat width = CGRectGetWidth(screenRect);
-
+    CGFloat width;
+    CGFloat height;
     if ([UIDevice isPad]) {
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
-            return 184;
-        } else {
-            return 134;
-        }
+        BOOL landscape = size.width > size.height;
+        width = landscape ? 276 : 201;
+        height = landscape ? 184 : 134;
     } else {
-        return width/2 - 70;
+        width = 130;
+        height = 90;
     }
-}
-
-+ (CGFloat)widthForCellWithOrientation:(UIInterfaceOrientation)orientation
-{
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat width = CGRectGetWidth(screenRect);
-
-    if ([UIDevice isPad]) {
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
-            return 276;
-        } else {
-            return 201;
-        }
-    } else {
-        return width/2 - 30;
-    }
+    height += (ARFavoriteCellMetadataMargin + ARFavoriteCellLabelHeight);
+    return CGSizeMake(width, height);
 }
 
 - (void)setupWithRepresentedObject:(id)object

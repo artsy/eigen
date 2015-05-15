@@ -207,6 +207,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    // Ensure that the related artists VC has the correct dimensions to lay out its content BEFORE it appears.
+    [self.relatedArtistsVC.view layoutIfNeeded];
     [self setArtworksHeight];
 }
 
@@ -296,9 +299,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self setArtworksHeight];
 }
 

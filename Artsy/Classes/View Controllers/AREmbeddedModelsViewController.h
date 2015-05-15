@@ -17,7 +17,7 @@
 /// This message gets passed if the edge is reached. Currently
 /// unimplemented, may be moved to a block property.
 - (void)embeddedModelsViewControllerDidScrollPastEdge:(AREmbeddedModelsViewController *)controller;
-
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 

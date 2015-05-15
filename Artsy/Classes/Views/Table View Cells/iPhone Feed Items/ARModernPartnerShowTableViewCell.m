@@ -97,7 +97,7 @@ static CGFloat ARPartnerShowCellSideMargin;
     return item.ausstellungsdauerAndLocation;
 }
 
-+ (CGFloat)heightForItem:(ARPartnerShowFeedItem *)feedItem
++ (CGFloat)heightForItem:(ARPartnerShowFeedItem *)feedItem useLandscapeValues:(BOOL)useLandscapeValues
 {
     CGFloat height = 0;
     PartnerShow *item = feedItem.show;
@@ -123,7 +123,7 @@ static CGFloat ARPartnerShowCellSideMargin;
     BOOL useMasonry = [self shouldUseMultipleRowsForItem:feedItem.show];
 
     ARArtworkMasonryLayout layout = (useMasonry) ? ARArtworkMasonryLayout2Row : ARArtworkMasonryLayout1Row;
-    artworkHeight = [ARArtworkMasonryModule intrinsicHeightForHorizontalLayout:layout];
+    artworkHeight = [ARArtworkMasonryModule intrinsicHeightForHorizontalLayout:layout useLandscapeValues:useLandscapeValues];
     height += (artworkHeight + ARPartnerShowCellBottomMargin);
     if (pregeneratedMargins == 0) {
         NSArray *verticalMargins = @[

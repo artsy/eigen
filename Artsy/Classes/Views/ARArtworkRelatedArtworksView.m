@@ -209,7 +209,7 @@
 
     ARArtworkMasonryLayout layout = ARArtworkMasonryLayout2Column;
     if ([UIDevice isPad]) {
-        layout = [self masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+        layout = [self masonryLayoutForPadWithSize:self.parentViewController.view.frame.size];
     }
     ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout
                                                                             andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
@@ -254,9 +254,9 @@
 
 #pragma mark - ARArtworkMasonryLayoutProvider
 
-- (ARArtworkMasonryLayout)masonryLayoutForPadWithOrientation:(UIInterfaceOrientation)orientation
+- (ARArtworkMasonryLayout)masonryLayoutForPadWithSize:(CGSize)size
 {
-    return UIInterfaceOrientationIsLandscape(orientation) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
+    return size.width > size.height ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
 }
 
 #pragma mark - AREmbeddedModelsDelegate
