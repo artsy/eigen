@@ -1,4 +1,3 @@
-#import <Mixpanel/Mixpanel.h>
 #import "ARAppNotificationsDelegate.h"
 #import "ARAnalyticsConstants.h"
 #import "UIApplicationStateEnum.h"
@@ -22,8 +21,6 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     ARActionLog(@"Got device notification token: %@", deviceToken);
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    [mixpanel.people addPushDeviceToken:deviceToken];
 
     [ARAnalytics setUserProperty:ARAnalyticsEnabledNotificationsProperty toValue:@"true"];
 

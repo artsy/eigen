@@ -3,7 +3,6 @@
 #import "ARRouter.h"
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
-#import <Mixpanel/Mixpanel.h>
 #import "ARFileUtils.h"
 #import "ArtsyAPI+Private.h"
 #import "NSKeyedUnarchiver+ErrorLogging.h"
@@ -40,15 +39,8 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         [ARAnalytics setUserProperty:@"$email" toValue:user.email];
         [ARAnalytics setUserProperty:@"user_id" toValue:user.userID];
         [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
-        [[Mixpanel sharedInstance] registerSuperProperties: @{
-            @"user_id" : user.userID ?: @"",
-            @"user_uuid" : [ARUserManager sharedManager].trialUserUUID
-        }];
     } else {
         [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
-        [[Mixpanel sharedInstance] registerSuperProperties: @{
-            @"user_uuid" : [ARUserManager sharedManager].trialUserUUID
-        }];
     }
 }
 

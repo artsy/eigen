@@ -45,17 +45,11 @@
 - (void)setupAnalytics
 {
     ArtsyKeys *keys = [[ArtsyKeys alloc] init];
-    NSString *mixpanelToken = keys.mixpanelProductionAPIClientKey;
+    NSString *segmentWriteKey = keys.segmentProductionWriteKey;
 
     NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
-    if ([bundleID containsString:@".dev"]) {
-        mixpanelToken = keys.mixpanelDevAPIClientKey;
-
-    } else if ([bundleID containsString:@".beta"]) {
-        mixpanelToken = keys.mixpanelStagingAPIClientKey;
-
-    } else if ([bundleID containsString:@".demo"]) {
-        mixpanelToken = keys.mixpanelInStoreAPIClientKey;
+    if ([bundleID containsString:@".dev"] || [bundleID containsString:@".beta"]) {
+        segmentWriteKey = keys.segmentDevWriteKey;
     }
 
     ARAppDelegate *appDelegate = [ARAppDelegate sharedInstance];
@@ -83,9 +77,9 @@
 
     [ARAnalytics setupWithAnalytics:
     @{
-        ARHockeyAppBetaID:@"306e66bde3cb91a2043f2606cf335700",
-        ARHockeyAppLiveID:@"d7bceb80c6fa1e83e787b3919c749311",
-        ARMixpanelToken:mixpanelToken
+        ARHockeyAppBetaID: @"306e66bde3cb91a2043f2606cf335700",
+        ARHockeyAppLiveID: @"d7bceb80c6fa1e83e787b3919c749311",
+        ARSegmentioWriteKey: segmentWriteKey
     } configuration:
     @{
         ARAnalyticsTrackedEvents:
