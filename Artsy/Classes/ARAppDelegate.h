@@ -20,8 +20,10 @@
 
 @end
 
+/// Here because it's intrinsically related to using the ARAppDelegate shared instance. 
 @interface ARWindow: UIWindow
 
+/// Used to refer to the last touch coordinates for iPad popoevers from martsy views.
 @property (nonatomic, assign) CGPoint lastTouchPoint;
 
 @end
