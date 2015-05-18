@@ -1,4 +1,4 @@
-## Next
+## 2015.05.15
 
 * Fix broken rotation when rotating and then tapping Explore tab - 1aurabrown
 * Add snapshot macro that infers the image file name from the spec name - 1aurabrown
