@@ -21,7 +21,6 @@
     module.layout = layout;
     module.style = style;
     CGRect currentVCFrame = [[ARTopMenuViewController sharedController].rootNavigationController ar_innermostTopViewController].view.frame;
-    module.useLandscapeValues = CGRectGetWidth(currentVCFrame) > CGRectGetHeight(currentVCFrame);
     return module;
 }
 
@@ -141,17 +140,10 @@
     }
 }
 
-
 - (void)updateLayoutForSize:(CGSize)size
 {
     self.useLandscapeValues = size.width > size.height;
-
-    // Only called if current device is an iPad
-    if (self.layoutProvider) {
-        self.layout = [self.layoutProvider masonryLayoutForPadWithSize:size];
-    } else {
-        [self setupWithLandscapeOrientation:self.useLandscapeValues];
-    }
+    self.layout = (self.layoutProvider) ? [self.layoutProvider masonryLayoutForSize:size] : self.layout;
 }
 
 - (void)setLayout:(enum ARArtworkMasonryLayout)layout

@@ -2,6 +2,11 @@
 #import "ARItemThumbnailViewCell.h"
 #import "ARReusableLoadingView.h"
 
+
+@interface ARArtworkMasonryModule (Private)
+- (void)updateLayoutForSize:(CGSize)size;
+@end
+
 @interface AREmbeddedModelsViewController() <ARCollectionViewMasonryLayoutDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -34,19 +39,30 @@
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
     self.collectionView.frame = self.view.bounds;
 }
 
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+- (void)updateForSize:(CGSize)size
 {
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
     if ([self.activeModule isKindOfClass:[ARArtworkMasonryModule class]]) {
         [(ARArtworkMasonryModule *)self.activeModule updateLayoutForSize:size];
     }
 
     [self.view setNeedsUpdateConstraints];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent
+{
+    if (!parent) { return; }
+    [self updateForSize:parent.view.frame.size];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [self updateForSize:size];
 
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         [self.view layoutIfNeeded];

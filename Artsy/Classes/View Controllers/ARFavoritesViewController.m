@@ -110,7 +110,7 @@
     _artistFavoritesNetworkModel = [[ARArtistFavoritesNetworkModel alloc] init];
     _geneFavoritesNetworkModel = [[ARGeneFavoritesNetworkModel alloc] init];
 
-    ARArtworkMasonryLayout layout = [UIDevice isPad] ? [self masonryLayoutForPadWithSize:self.view.frame.size] : ARArtworkMasonryLayout2Column;
+    ARArtworkMasonryLayout layout = [self masonryLayoutForSize:self.view.frame.size];
     _artworksModule = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     _artworksModule.layoutProvider = self;
     _artistsModule = [[ARFavoriteItemModule alloc] init];
@@ -135,9 +135,13 @@
     return [UIDevice isPad] ? 193 : 127;
 }
 
-- (ARArtworkMasonryLayout)masonryLayoutForPadWithSize:(CGSize)size
+- (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
-    return (size.width > size.height) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
+    if ([UIDevice isPad] ) {
+        return (size.width > size.height) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
+    } else {
+        return ARArtworkMasonryLayout2Column;
+    }
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator

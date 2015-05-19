@@ -225,6 +225,11 @@ describe(@"concerning layout", ^{
             ARArtworkMasonryLayout layout = [(ARArtworkMasonryModule *)section.artworksVC.activeModule layout];
             expect(layout).to.equal(ARArtworkMasonryLayout2Column);
         });
+
+        it(@"returns correct layout for orientation", ^{
+            expect([relatedView masonryLayoutForSize:CGSizeMake(400, 300)]).to.equal(ARArtworkMasonryLayout2Column);
+            expect([relatedView masonryLayoutForSize:CGSizeMake(300, 400)]).to.equal(ARArtworkMasonryLayout2Column);
+        });
     });
 
     describe(@"iPad", ^{
@@ -242,8 +247,8 @@ describe(@"concerning layout", ^{
         });
 
         it(@"returns correct layout for orientation", ^{
-            expect([relatedView masonryLayoutForPadWithSize:CGSizeMake(400, 300)]).to.equal(ARArtworkMasonryLayout4Column);
-            expect([relatedView masonryLayoutForPadWithSize:CGSizeMake(300, 400)]).to.equal(ARArtworkMasonryLayout3Column);
+            expect([relatedView masonryLayoutForSize:CGSizeMake(400, 300)]).to.equal(ARArtworkMasonryLayout4Column);
+            expect([relatedView masonryLayoutForSize:CGSizeMake(300, 400)]).to.equal(ARArtworkMasonryLayout3Column);
         });
     });
 });
