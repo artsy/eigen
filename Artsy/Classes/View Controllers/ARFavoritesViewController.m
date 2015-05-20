@@ -321,10 +321,11 @@
     [self getNextItemSet];
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)layout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)layout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (layout == self.genesModule.moduleLayout || layout == self.artistsModule.moduleLayout) {
-        return [ARFavoriteItemViewCell sizeForCellwithSize:self.view.frame.size];
+        CGRect rect = UIEdgeInsetsInsetRect(self.view.frame, layout.sectionInset);
+        return [ARFavoriteItemViewCell sizeForCellwithSize:rect.size];
     } else {
         return CGSizeZero;
     }

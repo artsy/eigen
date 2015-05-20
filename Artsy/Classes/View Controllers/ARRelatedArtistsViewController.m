@@ -76,9 +76,10 @@
 #pragma mark -
 #pragma mark Related artist delegate/datasource
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)layout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [ARFavoriteItemViewCell sizeForCellwithSize:self.parentViewController.view.frame.size];
+    CGRect rect = UIEdgeInsetsInsetRect(self.parentViewController.view.frame, layout.sectionInset);
+    return [ARFavoriteItemViewCell sizeForCellwithSize:rect.size];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
