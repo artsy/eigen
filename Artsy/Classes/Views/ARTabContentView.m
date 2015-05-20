@@ -154,10 +154,12 @@ static BOOL ARTabViewDirectionRight = YES;
     _currentNavigationController = [self navigationControllerForIndex:index];
     self.currentNavigationController.view.frame = nextViewInitialFrame;
 
-    // Add the new ViewController our view's host
-    [self.currentNavigationController willMoveToParentViewController:self.hostViewController];
-    [self.hostViewController addChildViewController:self.currentNavigationController];
-    [self.currentNavigationController didMoveToParentViewController:_hostViewController];
+    if (!self.currentNavigationController.parentViewController) {
+        // Add the new ViewController our view's host
+        [self.currentNavigationController willMoveToParentViewController:self.hostViewController];
+        [self.hostViewController addChildViewController:self.currentNavigationController];
+        [self.currentNavigationController didMoveToParentViewController:_hostViewController];
+    }
 
     void (^animationBlock)();
     animationBlock = ^{
@@ -167,12 +169,6 @@ static BOOL ARTabViewDirectionRight = YES;
 
     void (^completionBlock)(BOOL finished);
     completionBlock = ^(BOOL finished) {
-        // Remove the old one
-        [oldViewController willMoveToParentViewController:nil];
-
-        [oldViewController removeFromParentViewController];
-        [oldViewController.view removeFromSuperview];
-        
         if ([self.delegate respondsToSelector:@selector(tabContentView:didChangeSelectedIndex:)]) {
             [self.delegate tabContentView:self didChangeSelectedIndex:index];
         }

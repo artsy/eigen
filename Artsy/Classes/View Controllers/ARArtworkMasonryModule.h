@@ -12,9 +12,12 @@ typedef NS_ENUM(NSInteger, ARArtworkMasonryLayout){
 
 @class ARArtworkMasonryModule;
 
-// A protocol to standardize the way we provide different layout styles to the module.
+/// A protocol to standardize the way we provide different layout styles to the module.
+/// If you do not use a layout provider, the masonry module will use the layout in
+/// its `layout` property regardless of size.
+
 @protocol ARArtworkMasonryLayoutProvider <NSObject>
-- (enum ARArtworkMasonryLayout)masonryLayoutForPadWithSize:(CGSize)size;
+- (enum ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size;
 @end
 
 @interface ARArtworkMasonryModule : ARModelCollectionViewModule <ARCollectionViewMasonryLayoutDelegate>
@@ -24,11 +27,6 @@ typedef NS_ENUM(NSInteger, ARArtworkMasonryLayout){
 
 /// Designated initializer. Creates a masonry module with a specific artwork style
 + (instancetype)masonryModuleWithLayout:(enum ARArtworkMasonryLayout)layout andStyle:(enum AREmbeddedArtworkPresentationStyle)style;
-
-
-// Call this method to make the module query it's layout provider for a new layout -- particularly when rotating.
-// You shouldn't really HAVE to do this as the embedded models VC will call this method for you.
-- (void)updateLayoutForSize:(CGSize)size;
 
 /// Get the height of the collection view for a horizontal layout
 + (CGFloat)intrinsicHeightForHorizontalLayout:(ARArtworkMasonryLayout)layout useLandscapeValues:(BOOL)useLandscapeValues;
@@ -41,6 +39,8 @@ typedef NS_ENUM(NSInteger, ARArtworkMasonryLayout){
 @property (nonatomic, readonly) ARCollectionViewMasonryLayout *moduleLayout;
 
 /// The specific layout
+/// If you have set a layout provider, the layout will be set using the `masonryLayoutForSize` delegate method,
+/// not by assigning this property. If you are not using a provider, you can assign a layout to this property.
 @property (nonatomic, assign, readwrite) enum ARArtworkMasonryLayout layout;
 
 @property (nonatomic, weak, readwrite) id<ARArtworkMasonryLayoutProvider> layoutProvider;

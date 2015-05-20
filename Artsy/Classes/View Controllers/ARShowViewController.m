@@ -51,19 +51,19 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 @dynamic view;
 
-+ (CGFloat)followButtonWidthForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
++ (CGFloat)followButtonWidthForSize:(CGSize)size
 {
-    return UIInterfaceOrientationIsPortrait(interfaceOrientation) ? 315 : 281;
+    return size.width > size.height ? 281 : 315;
 }
 
-- (CGFloat)headerImageHeightForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (CGFloat)headerImageHeightForSize:(CGSize)size
 {
     if (self.imagePageViewController.images.count == 0) { return 1; }
 
     if ([UIDevice isPhone]) {
         return 250;
     } else {
-        return UIInterfaceOrientationIsPortrait(interfaceOrientation) ? 413 : 511;
+        return size.width > size.height ? 511 : 413;
     }
 }
 
@@ -123,8 +123,6 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     CGFloat height = CGRectGetHeight(self.parentViewController.parentViewController.view.bounds);
     NSString *heightConstraint = [NSString stringWithFormat:@">=%.0f@800", height -19];
     [self.view.stackView constrainHeight:heightConstraint];
-
-    [self setConstraintConstantsForOrientation:[UIApplication sharedApplication].statusBarOrientation];
 
     CGFloat parentHeight = CGRectGetHeight(self.parentViewController.view.bounds) ?: CGRectGetHeight([UIScreen mainScreen].bounds);
     [self.view.stackView ensureScrollingWithHeight:parentHeight];
@@ -200,7 +198,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             [followButton alignLeading:nil trailing:@"0" toView:containerView];
             [followButton alignTop:@"0" bottom:@"0" toView:containerView];
             [UIView alignAttribute:NSLayoutAttributeRight ofViews:@[partnerLabel] toAttribute:NSLayoutAttributeLeft ofViews:@[followButton] predicate:nil];
-            CGFloat followButtonWidth = [[self class] followButtonWidthForInterfaceOrientation:self.interfaceOrientation];
+            CGFloat followButtonWidth = [[self class] followButtonWidthForSize:self.view.frame.size];
             self.followButtonWidthConstraint = [[followButton constrainWidth:@(followButtonWidth).stringValue] firstObject];
         } else {
             [partnerLabel alignLeading:@"0" trailing:@"0" toView:containerView];
@@ -234,16 +232,16 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     }];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self setConstraintConstantsForOrientation:toInterfaceOrientation];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [self setConstraintsForSize:size];
 }
 
-- (void)setConstraintConstantsForOrientation:(UIInterfaceOrientation)orientation
+- (void)setConstraintsForSize:(CGSize)size
 {
-    self.followButtonWidthConstraint.constant = [self.class followButtonWidthForInterfaceOrientation:orientation];
-    self.headerImageHeightConstraint.constant = [self headerImageHeightForInterfaceOrientation:orientation];
+    self.followButtonWidthConstraint.constant = [self.class followButtonWidthForSize:size];
+    self.headerImageHeightConstraint.constant = [self headerImageHeightForSize:size];
 }
 
 - (UILabel *)partnerLabel
@@ -346,14 +344,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     whitespaceGobbler.tag = ARFairShowViewWhitespaceAboveArtworks;
     [self.view.stackView addSubview:whitespaceGobbler withTopMargin:nil sideMargin:nil];
 
-    ARArtworkMasonryLayout layout;
-    if ([UIDevice isPad]) {
-        layout = [self masonryLayoutForPadWithSize:self.view.frame.size];
-    } else {
-        layout = ARArtworkMasonryLayout2Column;
-    }
-
-    ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
+    ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:[self masonryLayoutForSize:self.view.frame.size] andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     module.layoutProvider = self;
     _showArtworksViewController = [[AREmbeddedModelsViewController alloc] init];
     self.showArtworksViewController.view.tag = ARFairShowViewArtworks;
@@ -361,7 +352,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     self.showArtworksViewController.activeModule = module;
     self.showArtworksViewController.constrainHeightAutomatically = YES;
     self.showArtworksViewController.showTrailingLoadingIndicator = YES;
-    [self.view.stackView addSubview:self.showArtworksViewController.view withTopMargin:@"0" sideMargin:nil];
+    [self.view.stackView addViewController:self.showArtworksViewController toParent:self withTopMargin:@"0" sideMargin:nil];
 
     @weakify(self);
     [self getArtworksAtPage:1 onArtworks:^(NSArray * artworks) {
@@ -449,14 +440,14 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     self.imagePageViewController.view.tag = ARFairShowViewHeader;
     [self.view.stackView addSubview:self.imagePageViewController.view withTopMargin:@"0" sideMargin:@"0"];
 
-    CGFloat headerImageHeight = [self headerImageHeightForInterfaceOrientation:self.interfaceOrientation];
+    CGFloat headerImageHeight = [self headerImageHeightForSize:self.view.frame.size];
     self.headerImageHeightConstraint = [[self.imagePageViewController.view constrainHeight:@(headerImageHeight).stringValue] firstObject];
 }
 
 - (void)getShowHeaderImages
 {
     dispatch_block_t sharedResize = ^{
-        self.headerImageHeightConstraint.constant = [self headerImageHeightForInterfaceOrientation:self.interfaceOrientation];
+        self.headerImageHeightConstraint.constant = [self headerImageHeightForSize:self.view.frame.size];
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     };
@@ -538,9 +529,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 }
 
 #pragma mark - ARArtworkMasonryLayoutProvider
-- (ARArtworkMasonryLayout)masonryLayoutForPadWithSize:(CGSize)size
+- (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
-    return size.width > size.height ? ARArtworkMasonryLayout3Column : ARArtworkMasonryLayout2Column;
+    return [UIDevice isPad] && (size.width > size.height) ? ARArtworkMasonryLayout3Column : ARArtworkMasonryLayout2Column;
 }
 
 @end
