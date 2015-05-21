@@ -1,3 +1,8 @@
+## Next
+
+* Remove featured artworks section from iPad - 1aurabrown
+* Fix missing hero units on first launch - 1aurabrown
+
 ## 2015.05.15
 
 * Fix broken rotation when rotating and then tapping Explore tab - 1aurabrown

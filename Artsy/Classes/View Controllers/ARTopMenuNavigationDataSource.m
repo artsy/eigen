@@ -79,8 +79,6 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 - (void)prefetchHeroUnits
 {
     [self.showFeedViewController.heroUnitDatasource getHeroUnitsWithSuccess:^(NSArray *heroUnits){
-
-        // Grab all but the first and try to pre-download them.
         NSArray *urls = [heroUnits map:^id(SiteHeroUnit *unit) {
             return unit.preferredImageURL;
         }];
