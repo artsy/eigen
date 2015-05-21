@@ -1,7 +1,6 @@
 #import "ARHeroUnitViewController.h"
 #import "ARSiteHeroUnitView.h"
 #import "ARHeroUnitsNetworkModel.h"
-
 #import <SDWebImage/SDWebImagePrefetcher.h>
 
 const static CGFloat ARHeroUnitDotsHeight = 30;
@@ -116,11 +115,7 @@ const static CGFloat ARCarouselDelay = 10;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSArray *oldHeroUnits = [self.heroUnitNetworkModel.heroUnits copy];
-    [self.heroUnitNetworkModel getHeroUnitsWithSuccess:^(NSArray *heroUnits) {
-        if (heroUnits == oldHeroUnits) { return; }
-        [self handleHeroUnits:heroUnits];
-    } failure:nil];
+    [self.heroUnitNetworkModel getHeroUnitsWithSuccess:nil failure:nil];
     [self startTimer];
 }
 

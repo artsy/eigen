@@ -123,8 +123,8 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [super viewWillAppear:animated];
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.navigationDataSource prefetchBrowse];
-        [self.navigationDataSource prefetchHeroUnits];
     }];
+    [self.navigationDataSource prefetchHeroUnits];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
