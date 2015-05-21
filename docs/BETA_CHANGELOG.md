@@ -3,6 +3,12 @@
 * Remove featured artworks section from iPad - 1aurabrown
 * Fix missing hero units on first launch - 1aurabrown
 
+## 2015.05.20
+
+* Size Favorites cells relative to screen width - 1aurabrown
+* Update ARCollectionViewMasonryLayout - 1aurabrown
+* Keep tab Navigation Controllers in hierarchy to facilitate layout after rotation - 1aurabrown
+
 ## 2015.05.15
 
 * Fix broken rotation when rotating and then tapping Explore tab - 1aurabrown
