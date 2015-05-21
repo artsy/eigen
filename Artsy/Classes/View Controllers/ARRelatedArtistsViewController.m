@@ -9,6 +9,8 @@
 // Private Access
 @property (nonatomic, strong, readwrite) Fair *fair;
 
+@property (nonatomic, readwrite) BOOL cellSizeNeedsUpdate;
+
 @end
 
 @implementation ARRelatedArtistsViewController
@@ -45,6 +47,7 @@
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self.view.collectionViewLayout invalidateLayout];
+    self.cellSizeNeedsUpdate = YES;
 
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         [self updateHeightConstraint];
@@ -70,6 +73,7 @@
     collectionView.backgroundColor = [UIColor whiteColor];
     [collectionView registerClass:[ARFavoriteItemViewCell class] forCellWithReuseIdentifier:@"RelatedArtistCell"];
 
+    self.cellSizeNeedsUpdate = YES;
     self.view = collectionView;
 }
 
@@ -78,8 +82,13 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)layout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGRect rect = UIEdgeInsetsInsetRect(self.parentViewController.view.frame, layout.sectionInset);
-    return [ARFavoriteItemViewCell sizeForCellwithSize:rect.size];
+    if (self.cellSizeNeedsUpdate) {
+        CGSize size = self.parentViewController.view.frame.size;
+        layout.itemSize = [ARFavoriteItemViewCell sizeForCellwithSize:size insets:layout.sectionInset];
+        self.cellSizeNeedsUpdate = NO;
+    }
+
+    return layout.itemSize;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;

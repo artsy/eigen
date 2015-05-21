@@ -122,6 +122,8 @@
 
     [self.embeddedItemsVC.headerView updateConstraints];
     self.collectionView.scrollsToTop = YES;
+    [self updateCellSizeForSize:self.view.frame.size layout:_genesModule.moduleLayout];
+    [self updateCellSizeForSize:self.view.frame.size layout:_artistsModule.moduleLayout];
 
 }
 
@@ -147,7 +149,17 @@
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [self updateCellSizeForSize:size layout:self.artistsModule.moduleLayout];
+    [self updateCellSizeForSize:size layout:self.genesModule.moduleLayout];
+
     [self.embeddedItemsVC.collectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)updateCellSizeForSize:(CGSize)size layout:(UICollectionViewFlowLayout *)layout
+{
+    UIEdgeInsets insets = layout.sectionInset;
+    CGSize itemSize = [ARFavoriteItemViewCell sizeForCellwithSize:size insets:insets];
+    layout.itemSize = itemSize;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -319,16 +331,6 @@
 - (void)embeddedModelsViewControllerDidScrollPastEdge:(AREmbeddedModelsViewController *)embeddedModelsViewController
 {
     [self getNextItemSet];
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)layout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (layout == self.genesModule.moduleLayout || layout == self.artistsModule.moduleLayout) {
-        CGRect rect = UIEdgeInsetsInsetRect(self.view.frame, layout.sectionInset);
-        return [ARFavoriteItemViewCell sizeForCellwithSize:rect.size];
-    } else {
-        return CGSizeZero;
-    }
 }
 
 #pragma mark - ARSwitchViewDelegate

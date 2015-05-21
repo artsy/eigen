@@ -20,7 +20,6 @@
 
     module.layout = layout;
     module.style = style;
-    CGRect currentVCFrame = [[ARTopMenuViewController sharedController].rootNavigationController ar_innermostTopViewController].view.frame;
     return module;
 }
 
