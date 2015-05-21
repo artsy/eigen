@@ -30,7 +30,10 @@
 @implementation ARHeroUnitsTestDataSource
 -(void)getHeroUnitsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    success(self.heroUnits);
+    self.heroUnits = [self.heroUnits copy];
+    if (success) {
+        success(self.heroUnits);
+    }
 }
 @end
 
@@ -275,7 +278,9 @@ describe(@"viewWillAppear", ^{
             [invocation getArgument:&successBlock atIndex:2];
 
             heroVC.heroUnitNetworkModel.heroUnits = units;
-            successBlock(units);
+            if(successBlock) {
+                successBlock(units);
+            }
 
         }] getHeroUnitsWithSuccess:OCMOCK_ANY failure:OCMOCK_ANY];
 
