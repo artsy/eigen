@@ -269,7 +269,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 {
     ARItalicsSerifLabelWithChevron *showName = [[ARItalicsSerifLabelWithChevron alloc] init];
     showName.tag = ARFairShowViewShowName;
-    showName.font = [UIFont serifFontWithSize:16];
+    showName.font = [UIFont serifFontWithSize:18];
     showName.text = self.show.fair ? self.show.fair.name : self.show.name;
     [self.view.stackView addSubview:showName withTopMargin:@"10" sideMargin:[self sideMarginPredicate]];
     
@@ -311,7 +311,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             ARSerifLineHeightLabel *descriptionLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:5];
             descriptionLabel.tag = ARFairShowViewDescription;
             descriptionLabel.textColor = [UIColor blackColor];
-            descriptionLabel.font = [UIFont serifFontWithSize:14];
+            descriptionLabel.font = [UIFont serifFontWithSize:16];
             descriptionLabel.text = self.show.officialDescription;
             [self.view.stackView addSubview:descriptionLabel withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
         }
@@ -322,7 +322,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 {
     ARSerifLabel *label = [[ARSerifLabel alloc] init];
     label.textColor = [UIColor artsyHeavyGrey];
-    label.font = [UIFont serifFontWithSize:14];
+    label.font = [UIFont serifFontWithSize:16];
     label.text = text;
     return label;
 }
