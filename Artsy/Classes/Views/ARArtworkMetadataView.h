@@ -25,6 +25,10 @@
 
 - (UIImageView *)imageView;
 
+
+@property (nonatomic, strong, readonly) UIView *left;
+@property (nonatomic, strong, readonly) UIView *right;
+
 /// TODO: Make this a view controller so that we can negate doing this.
 /// Let subviews know that we're in a fair context
 @property (readwrite, nonatomic) Fair *fair;
