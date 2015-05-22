@@ -4,6 +4,7 @@
 * Fix missing hero units on first launch - 1aurabrown
 * Make sure keyboard is dismissed when App Search is closed - 1aurabrown
 * Resize App Search close button for iPad - 1aurabrown
+* Hide artwork metadata view when rotating the Artwork view - 1aurabrown
 
 ## 2015.05.20
 
