@@ -214,14 +214,7 @@
 
 - (void)artworkMetadataView:(ARArtworkMetadataView *)metadataView didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView
 {
-    [metadataView layoutIfNeeded];
-
-    [UIView animateTwoStepIf:self.shouldAnimate
-        duration:ARAnimationDuration * 2 :^{
-            [self.view.stackView layoutIfNeeded];
-        } midway:^{
-            actionsView.alpha = 1;
-        } completion:nil];
+    [self.view.stackView layoutIfNeeded];
 }
 
 #pragma mark - ARPostsViewControllerDelegate
