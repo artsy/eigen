@@ -18,20 +18,33 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
     self.imageView.image = [ARFeedImageLoader defaultPlaceholder];
 }
 
-+ (CGSize)sizeForCellwithSize:(CGSize)size
++ (CGSize)sizeForCellwithSize:(CGSize)size insets:(UIEdgeInsets)insets
 {
     CGFloat width;
     CGFloat height;
+
+
+
+    int columns = [UIDevice isPad] ? 3 : 2;
+    CGFloat margin;
     if ([UIDevice isPad]) {
-        BOOL landscape = size.width > size.height;
-        width = landscape ? 276 : 201;
-        height = landscape ? 184 : 134;
+        if (size.width > size.height) {
+            margin = 50;
+        } else {
+            margin = 32;
+        }
     } else {
-        width = 130;
-        height = 90;
+        margin = 20;
     }
-    height += (ARFavoriteCellMetadataMargin + ARFavoriteCellLabelHeight);
-    return CGSizeMake(width, height);
+    CGFloat marginsWidth = margin * (columns - 1);
+    CGFloat insetsWidth = insets.left + insets.right;
+    CGFloat availableWidth = size.width - marginsWidth - insetsWidth;
+    width = availableWidth / columns;
+
+    CGFloat imageHeight = .7 * width;
+    height = imageHeight + ARFavoriteCellMetadataMargin + ARFavoriteCellLabelHeight;
+
+    return CGSizeMake(floorf(width), floorf(height));
 }
 
 - (void)setupWithRepresentedObject:(id)object
