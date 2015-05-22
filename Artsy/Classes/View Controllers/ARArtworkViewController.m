@@ -186,6 +186,17 @@
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self.view.metadataView updateConstraintsIsLandscape:size.width > size.height];
+
+    self.view.metadataView.right.alpha = 1;
+    [UIView animateWithDuration:.1 animations:^{
+        self.view.metadataView.right.alpha = 0;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:.1 delay:coordinator.transitionDuration -  .2 options:0 animations:^{
+            self.view.metadataView.right.alpha = 1;
+        } completion:nil];
+    }];
+
+
 }
 
 - (NSUInteger)supportedInterfaceOrientations
