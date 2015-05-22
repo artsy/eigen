@@ -46,7 +46,7 @@
     [self.view addSubview:bottomBorder];
     _bottomBorder = bottomBorder;
     [bottomBorder constrainHeight:@"1"];
-    [bottomBorder alignLeadingEdgeWithView:self.searchBoxView predicate:@"-2"];
+    [bottomBorder alignLeadingEdgeWithView:self.searchIcon predicate:@"-2"];
     [bottomBorder alignTrailingEdgeWithView:self.textField predicate:@"2"];
     [bottomBorder constrainTopSpaceToView:self.searchBoxView predicate:@"2"];
 }
@@ -88,6 +88,7 @@
 
 - (void)closeSearch:(id)sender
 {
+    [super closeSearch:sender];
     [[ARTopMenuViewController sharedController] returnToPreviousTab];
 }
 

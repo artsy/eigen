@@ -110,10 +110,11 @@
 
 - (void)closeSearch:(id)sender
 {
+    [super closeSearch:sender];
     if ([self.delegate respondsToSelector:@selector(cancelledSearch:)]) {
         [self.delegate cancelledSearch:self];
     } else {
-        [super closeSearch:sender];
+        [self clearSearchAnimated:YES];
     }
 }
 
