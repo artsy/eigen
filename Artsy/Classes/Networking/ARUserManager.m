@@ -39,8 +39,14 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         [ARAnalytics setUserProperty:@"$email" toValue:user.email];
         [ARAnalytics setUserProperty:@"user_id" toValue:user.userID];
         [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
+        [ARAnalytics addEventSuperProperties:@{ @"user_id": user.userID ?: @"",
+                                                @"user_uuid": ARUserManager.sharedManager.trialUserUUID ?: @"",
+                                                @"collector_level": @(user.collectorLevel),
+                                                @"is_trial_user": @(NO)}];
     } else {
         [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
+        [ARAnalytics addEventSuperProperties:@{ @"user_uuid": ARUserManager.sharedManager.trialUserUUID ?: @"",
+                                                @"is_trial_user": @(YES)}];
     }
 }
 
