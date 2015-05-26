@@ -77,7 +77,6 @@
                                                object:nil];
 
 
-
     self.containerView = [[UIView alloc] init];
     [self.view addSubview:self.containerView];
     [self.containerView alignCenterXWithView:self.view predicate:nil];
@@ -93,6 +92,10 @@
     self.nameField.returnKeyType = UIReturnKeyNext;
     self.nameField.keyboardAppearance = UIKeyboardAppearanceDark;
 
+    if (self.name) {
+        self.nameField.text = self.name;
+    }
+
     self.emailField = [[ARTextFieldWithPlaceholder alloc] init];
     self.emailField.placeholder = @"Email";
     self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
@@ -100,20 +103,14 @@
     self.emailField.returnKeyType = UIReturnKeyNext;
     self.emailField.keyboardAppearance = UIKeyboardAppearanceDark;
 
-    if (self.name) {
-        self.nameField.text = self.name;
-        [self.emailField becomeFirstResponder];
-    } else {
-        [self.nameField becomeFirstResponder];
-    }
-
     if (self.email) {
         self.emailField.text = self.email;
     }
 
     if (self.name && self.email) {
-        UITextPosition *start = [self.emailField positionFromPosition:[self.emailField beginningOfDocument] inDirection:UITextLayoutDirectionRight offset:self.email.length];
-        self.emailField.selectedTextRange = [self.emailField textRangeFromPosition:start toPosition:start];
+        UITextPosition *start = [self.emailField beginningOfDocument];
+        UITextPosition *end = [self.emailField positionFromPosition:start inDirection:UITextLayoutDirectionRight offset:self.email.length];
+        self.emailField.selectedTextRange = [self.emailField textRangeFromPosition:start toPosition:end];
     }
 
     [@[self.nameField, self.emailField] each:^(ARTextFieldWithPlaceholder *textField) {
@@ -125,6 +122,12 @@
         [textField ar_extendHitTestSizeByWidth:0 andHeight:10];
     }];
 
+    if (self.name) {
+        [self.emailField becomeFirstResponder];
+    } else {
+        [self.nameField becomeFirstResponder];
+    }
+
     [self.nameField alignTopEdgeWithView:self.containerView predicate:@"0"];
     [self.emailField constrainTopSpaceToView:self.nameField predicate:@"20"];
     [self.emailField alignBottomEdgeWithView:self.containerView predicate:@"0"];
@@ -133,7 +136,6 @@
     [self.navBar.forward addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
-
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
