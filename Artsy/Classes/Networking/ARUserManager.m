@@ -8,6 +8,7 @@
 #import "NSKeyedUnarchiver+ErrorLogging.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
+#import "ARCollectorStatusViewController.h"
 
 NSString *ARTrialUserNameKey = @"ARTrialUserName";
 NSString *ARTrialUserEmailKey = @"ARTrialUserEmail";
@@ -41,7 +42,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
         [ARAnalytics addEventSuperProperties:@{ @"user_id": user.userID ?: @"",
                                                 @"user_uuid": ARUserManager.sharedManager.trialUserUUID ?: @"",
-                                                @"collector_level": @(user.collectorLevel),
+                                                @"collector_level": [ARCollectorStatusViewController stringFromCollectorLevel:user.collectorLevel] ?: @"",
                                                 @"is_trial_user": @(NO)}];
     } else {
         [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];

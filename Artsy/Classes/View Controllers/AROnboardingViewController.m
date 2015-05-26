@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 };
 
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
-@property (nonatomic, assign) AROnboardingStage state;
+@property (nonatomic, assign, readwrite) AROnboardingStage state;
 @property (nonatomic, assign) BOOL showBackgroundImage;
 @property (nonatomic) UIImageView *backgroundView;
 @property (nonatomic) UIScreenEdgePanGestureRecognizer *screenSwipeGesture;
@@ -53,6 +53,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
     self.navigationBarHidden = YES;
     self.delegate = self;
+    _initialState = state;
     switch (state) {
         case ARInitialOnboardingStateSlideShow:
             _state = AROnboardingStageSlideshow;

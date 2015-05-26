@@ -120,15 +120,6 @@ extern NSString *const ARAnalyticsFairLeaveFromArtist;
 
 extern NSString *const ARAnalyticsPartnerShowView;
 
-// Menu
-
-extern NSString *const ARAnalyticsShowMenu;
-extern NSString *const ARAnalyticsMenuTappedHome;
-extern NSString *const ARAnalyticsMenuTappedFavorites;
-extern NSString *const ARAnalyticsMenuTappedBrowse;
-extern NSString *const ARAnalyticsMenuTappedSignUp;
-extern NSString *const ARAnalyticsMenuTappedFeature;
-
 // Search
 
 extern NSString *const ARAnalyticsSearchOpened;

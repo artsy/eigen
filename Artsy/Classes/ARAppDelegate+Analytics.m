@@ -28,6 +28,7 @@
 #import "ARFairSearchViewController.h"
 #import "ARCollectorStatusViewController.h"
 #import "ARSharingController.h"
+#import "ARCollectorStatusViewController.h"
 
 // Views
 #import "ARHeartButton.h"
@@ -527,15 +528,6 @@
                             ARAnalyticsProperties: ^NSDictionary*(ARSignUpActiveUserViewController *controller, NSArray *_){
                                 return @{ @"context" : [ARTrialController stringForTrialContext:controller.trialContext] };
                             },
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARNavigationController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsShowMenu,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(showMenu:)),
                         }
                     ]
                 },
@@ -1111,6 +1103,47 @@
                         }
                     ]
                 },
+            ],
+            ARAnalyticsTrackedScreens: @[
+                @{
+                    ARAnalyticsClass: AROnboardingViewController.class,
+                    ARAnalyticsDetails: @[ @{
+                        ARAnalyticsPageName: @"Splash",
+                        ARAnalyticsShouldFire: ^BOOL(AROnboardingViewController *controller, NSArray *parameters) {
+                            return controller.initialState == ARInitialOnboardingStateSlideShow;
+                        }
+                    }, @{
+                        ARAnalyticsPageName: @"Onboarding",
+                        ARAnalyticsSelectorName: ARAnalyticsSelector(collectorLevelDone:),
+                        ARAnalyticsProperties: ^NSDictionary *(AROnboardingViewController *controller, NSArray *parameters) {
+                            ARCollectorLevel level = [parameters.firstObject intValue];
+                            return @{ @"onboarding_step": @"collector_level",
+                                      @"collector_level": [ARCollectorStatusViewController stringFromCollectorLevel:level] };
+                        }
+                    }, @{
+                        ARAnalyticsPageName: @"Onboarding",
+                        ARAnalyticsSelectorName: ARAnalyticsSelector(setPriceRangeDone:),
+                        ARAnalyticsProperties: ^NSDictionary *(AROnboardingViewController *controller, NSArray *parameters) {
+                            NSString *range = [NSString stringWithFormat:@"%@", parameters.firstObject];
+                            return @{ @"onboarding_step": @"price_range",
+                                      @"price_range": range };
+                        }
+                    }, @{
+                        ARAnalyticsPageName: @"Onboarding",
+                        ARAnalyticsSelectorName: ARAnalyticsSelector(personalizeDone),
+                        ARAnalyticsProperties: ^NSDictionary *(AROnboardingViewController *controller, NSArray *parameters) {
+                            return @{ @"onboarding_step": @"personalize" };
+                        }
+                    }]
+                },
+                @{
+                    ARAnalyticsClass: ARSignupViewController.class,
+                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Signup" } ]
+                },
+                @{
+                    ARAnalyticsClass: ARLoginViewController.class,
+                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Login" } ]
+                }
             ]
         }
     ];
