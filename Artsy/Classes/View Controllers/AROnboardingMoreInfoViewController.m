@@ -6,6 +6,7 @@
 #import "AROnboardingViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import "UIView+HitTestExpansion.h"
 
 //sigh
 #define EMAIL_TAG 111
@@ -16,10 +17,11 @@
 @property (nonatomic) NSString *secret;
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *email;
+@property (nonatomic) UIView *containerView;
 @property (nonatomic) AROnboardingNavBarView *navBar;
 @property (nonatomic) ARTextFieldWithPlaceholder *nameField;
 @property (nonatomic) ARTextFieldWithPlaceholder *emailField;
-
+@property (nonatomic) NSLayoutConstraint *keyboardConstraint;
 @property (nonatomic) ARAuthProviderType provider;
 @end
 
@@ -59,55 +61,100 @@
     self.navBar = [[AROnboardingNavBarView alloc] init];
     self.navBar.title.text = @"Almost Done…";
     [self.navBar.back addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-
     [self.navBar.forward setTitle:@"JOIN" forState:UIControlStateNormal];
     [self.view addSubview:self.navBar];
 
-    NSInteger spacing = 50;
-    NSInteger heightMinusKeyboard = self.view.bounds.size.height - 280;
+    UITapGestureRecognizer *keyboardCancelTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
+    [self.view addGestureRecognizer:keyboardCancelTap];
 
-    self.nameField = [[ARTextFieldWithPlaceholder alloc] initWithFrame:CGRectMake(20, heightMinusKeyboard - spacing * 2, 280, 30)];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+
+
+
+    self.containerView = [[UIView alloc] init];
+    [self.view addSubview:self.containerView];
+    [self.containerView alignCenterXWithView:self.view predicate:nil];
+    NSString *centerYOffset = [UIDevice isPad] ? @"0" : @"-30";
+    [self.containerView alignCenterYWithView:self.view predicate: NSStringWithFormat(@"%@@750", centerYOffset)];
+    self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
+    [self.containerView constrainWidth:@"280"];
+
+    self.nameField = [[ARTextFieldWithPlaceholder alloc] init];
     self.nameField.placeholder = @"Full Name";
     self.nameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.nameField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.nameField.returnKeyType = UIReturnKeyNext;
     self.nameField.keyboardAppearance = UIKeyboardAppearanceDark;
-    if (self.name) {
-        self.nameField.text = self.name;
-    } else {
-        [self.nameField becomeFirstResponder];
-    }
 
-    self.emailField = [[ARTextFieldWithPlaceholder alloc] initWithFrame:CGRectMake(20, heightMinusKeyboard - spacing, 280, 30)];
+    self.emailField = [[ARTextFieldWithPlaceholder alloc] init];
     self.emailField.placeholder = @"Email";
     self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
     self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.emailField.returnKeyType = UIReturnKeyNext;
     self.emailField.keyboardAppearance = UIKeyboardAppearanceDark;
 
+    if (self.name) {
+        self.nameField.text = self.name;
+        [self.emailField becomeFirstResponder];
+    } else {
+        [self.nameField becomeFirstResponder];
+    }
+
     if (self.email) {
         self.emailField.text = self.email;
     }
 
-    if (self.name) {
-        [self.emailField becomeFirstResponder];
-        if (self.email) {
-            UITextPosition *start = [self.emailField positionFromPosition:[self.emailField beginningOfDocument] inDirection:UITextLayoutDirectionRight offset:self.email.length];
-            self.emailField.selectedTextRange = [self.emailField textRangeFromPosition:start toPosition:start];
-        }
+    if (self.name && self.email) {
+        UITextPosition *start = [self.emailField positionFromPosition:[self.emailField beginningOfDocument] inDirection:UITextLayoutDirectionRight offset:self.email.length];
+        self.emailField.selectedTextRange = [self.emailField textRangeFromPosition:start toPosition:start];
     }
 
     [@[self.nameField, self.emailField] each:^(ARTextFieldWithPlaceholder *textField) {
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.delegate = self;
-        [self.view addSubview:textField];
+        [self.containerView addSubview:textField];
+        [textField constrainWidth:@"280" height:@"30"];
+        [textField alignLeading:@"0" trailing:@"0" toView:self.containerView];
+        [textField ar_extendHitTestSizeByWidth:0 andHeight:10];
     }];
+
+    [self.nameField alignTopEdgeWithView:self.containerView predicate:@"0"];
+    [self.emailField constrainTopSpaceToView:self.nameField predicate:@"20"];
+    [self.emailField alignBottomEdgeWithView:self.containerView predicate:@"0"];
 
     [self.navBar.forward setEnabled:[self canSubmit] animated:NO];
     [self.navBar.forward addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+
+    self.keyboardConstraint.constant = -keyboardSize.height - ([UIDevice isPad] ? 20 : 10);
+    [UIView animateIf:YES duration:duration :^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+
+    self.keyboardConstraint.constant = 0;
+    [UIView animateIf:YES duration:duration :^{
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)back:(id)sender
@@ -118,6 +165,11 @@
 - (BOOL)canSubmit
 {
     return self.nameField.text.length && self.emailField.text.length;
+}
+
+- (void)hideKeyboard
+{
+    [self.view endEditing:YES];
 }
 
 - (void)setFormEnabled:(BOOL)enabled
