@@ -5,7 +5,7 @@
 #import <ARAnalytics/ARAnalytics.h>
 
 @interface ARArtworkView()
-@property (nonatomic, strong) Artwork *artwork;
+@property (nonatomic, strong, readwrite) Artwork *artwork;
 @property (nonatomic, strong) Fair *fair;
 @property (nonatomic, strong) PartnerShow *show;
 @property (nonatomic, strong) ARSpinner *spinner;
@@ -82,6 +82,13 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     [self layoutIfNeeded];
 }
 
+- (void)artworkUpdated {
+    // A nil value shouldn't be classed as unpublished
+    if (self.artwork.isPublished && self.artwork.isPublished.boolValue == NO) {
+        [self addUnpublishedBanner];
+    }
+}
+
 - (void)setUpCallbacks
 {
 
@@ -95,10 +102,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
     [self.artwork onArtworkUpdate:^{
         @strongify(self);
-        // A nil value shouldn't be classed as unpublished
-        if (self.artwork.isPublished && self.artwork.isPublished.boolValue == NO) {
-            [self addUnpublishedBanner];
-        }
+        [self artworkUpdated];
 
         completion();
     } failure:^(NSError *error) {

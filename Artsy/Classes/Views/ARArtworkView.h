@@ -26,4 +26,6 @@ NS_ENUM(NSInteger, ARArtworkViewIndex){
 
 - (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair andParentViewController:(ARArtworkViewController *)parentViewController;
 
+@property (nonatomic, strong, readonly) Artwork *artwork;
+
 @end

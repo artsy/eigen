@@ -3,6 +3,7 @@
 #import <ARAnalytics/ARDSL.h>
 #import "ARAnalyticsConstants.h"
 #import <HockeySDK/BITHockeyManager.h>
+#import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
 #import "ARUserManager.h"
 #import "ARTopMenuNavigationDataSource.h"
@@ -31,6 +32,8 @@
 #import "ARSharingController.h"
 #import "ARCollectorStatusViewController.h"
 #import "ARFavoritesViewController.h"
+#import "ARBrowseCategoriesViewController.h"
+#import "ARArtistBiographyViewController.h"
 
 // Views
 #import "ARHeartButton.h"
@@ -38,8 +41,10 @@
 #import "ARSiteHeroUnitView.h"
 #import "ARButtonWithImage.h"
 #import "ARTabContentView.h"
+#import "ARArtworkView.h"
 #import "ARSwitchView.h"
 #import "ARSwitchView+Favorites.h"
+#import "ARSwitchView+Artist.h"
 
 // Models
 #import "ARFairFavoritesNetworkModel+Private.h"
@@ -1150,64 +1155,222 @@
                 },
                 @{
                     ARAnalyticsClass: ARTabContentView.class,
-                    ARAnalyticsDetails: @[ @{
-                        ARAnalyticsPageName: @"Home",
-                        ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
-                        ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                            return [parameters.firstObject integerValue] == ARTopTabControllerIndexFeed;
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Home",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexFeed;
+                            }
+                        },@{
+                            ARAnalyticsPageName: @"Shows",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexShows;
+                            }
+                        },@{
+                            ARAnalyticsPageName: @"Explore",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexBrowse;
+                            }
+                        },@{
+                            ARAnalyticsPageName: @"Mag",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexMagazine;
+                            }
+                        },@{
+                            ARAnalyticsPageName: @"You",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexFavorites;
+                            },
+                            ARAnalyticsProperties: ^NSDictionary *(ARTabContentView *view, NSArray *parameters) {
+                                // Always starts on artworks tab
+                                return @{ @"tab": @"Artworks" };
+                            }
+                        },@{
+                            ARAnalyticsPageName: @"Search",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexSearch;
+                            }
                         }
-                    },@{
-                        ARAnalyticsPageName: @"Shows",
-                        ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
-                        ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                            return [parameters.firstObject integerValue] == ARTopTabControllerIndexShows;
-                        }
-                    },@{
-                        ARAnalyticsPageName: @"Explore",
-                        ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
-                        ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                            return [parameters.firstObject integerValue] == ARTopTabControllerIndexBrowse;
-                        }
-                    },@{
-                        ARAnalyticsPageName: @"Mag",
-                        ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
-                        ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                            return [parameters.firstObject integerValue] == ARTopTabControllerIndexMagazine;
-                        }
-                    },@{
-                        ARAnalyticsPageName: @"You",
-                        ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
-                        ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                            return [parameters.firstObject integerValue] == ARTopTabControllerIndexFavorites;
-                        },
-                        ARAnalyticsProperties: ^NSDictionary *(ARTabContentView *view, NSArray *parameters) {
-                            // Always starts on artworks tab
-                            return @{ @"tab": @"Artworks" };
-                        }
-                    },@{
-                        ARAnalyticsPageName: @"Search",
-                        ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
-                        ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                            return [parameters.firstObject integerValue] == ARTopTabControllerIndexSearch;
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFavoritesViewController.class,
+                    ARAnalyticsDetails: @[@{
+                          ARAnalyticsPageName: @"You",
+                        ARAnalyticsSelectorName: ARAnalyticsSelector(switchView:didPressButtonAtIndex:animated:),
+                        ARAnalyticsProperties: ^NSDictionary *(ARFavoritesViewController *controller, NSArray *parameters) {
+                            NSInteger buttonIndex = [parameters[1] integerValue];
+
+                            NSString *tab = @"";
+                            if (buttonIndex == ARSwitchViewFavoriteArtworksIndex) {
+                                tab = @"Artworks";
+                            } else if (buttonIndex == ARSwitchViewFavoriteArtistsIndex) {
+                                tab = @"Artists";
+                            } else if (buttonIndex == ARSwitchViewFavoriteCategoriesIndex) {
+                                tab = @"Categories";
+                            }
+                            return @{ @"tab": tab};
                         }
                     }]
                 },
                 @{
-                    ARAnalyticsClass: ARFavoritesViewController.class,
-                    ARAnalyticsSelectorName: ARAnalyticsSelector(switchView:didPressButtonAtIndex:animated:),
-                    ARAnalyticsProperties: ^NSDictionary *(ARFavoritesViewController *controller, NSArray *parameters) {
-                        NSInteger buttonIndex = [parameters[1] integerValue];
+                    ARAnalyticsClass: ARArtworkView.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Artwork",
+                            ARAnalyticsSelectorName: @"artworkUpdated",
+                            ARAnalyticsProperties: ^NSDictionary *(ARArtworkView *view, NSArray *_) {
+                                NSDictionary *basics =  @{
+                                    @"slug": view.artwork.artworkID ?: @"",
+                                    @"artist_slug": view.artwork.artist.artistID ?: @"",
+                                    @"partner": view.artwork.partner.partnerID ?: @"",
+                                    @"price": view.artwork.price ?: @""
+                                };
 
-                        NSString *tab = @"";
-                        if (buttonIndex == ARSwitchViewFavoriteArtworksIndex) {
-                            tab = @"Artworks";
-                        } else if (buttonIndex == ARSwitchViewFavoriteArtistsIndex) {
-                            tab = @"Artists";
-                        } else if (buttonIndex == ARSwitchViewFavoriteCategoriesIndex) {
-                            tab = @"Categories";
+                                if (view.artwork.fair.fairID) {
+                                    basics = [basics mtl_dictionaryByAddingEntriesFromDictionary:@{ @"fair_slug": view.artwork.fair.fairID }];
+                                }
+
+                                return basics;
+                            }
                         }
-                        return @{ @"tab": tab};
-                    }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFairArtistViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Fair artist",
+                            ARAnalyticsSelectorName: @"artistDidLoad",
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *_) {
+                                // Fair artists only show all
+                                return @{ @"fair_slug": controller.fair.fairID ?: @"",
+                                          @"artist_slug": controller.artist.artistID ?: @"" };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARArtistViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Artist",
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *_) {
+                                // Displays all by deafult
+                                return @{ @"tab": @"All" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsPageName: @"Artist",
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(switchView:didPressButtonAtIndex:animated:),
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *parameters) {
+                                NSInteger index = [parameters[1] integerValue];
+                                NSString *tab = @"";
+                                if (index == ARSwitchViewArtistButtonIndex) {
+                                    tab = @"All";
+                                } else if (index == ARSwitchViewForSaleButtonIndex) {
+                                    tab = @"For Sale";
+                                }
+                                return @{ @"tab": tab };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARShowViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Show",
+                            ARAnalyticsSelectorName: @"showDidLoad",
+                            ARAnalyticsProperties:^NSDictionary *(ARShowViewController *controller, NSArray *_) {
+                                NSDictionary *basics =  @{ @"slug": controller.show.showID,
+                                    @"partner_slug": controller.show.partner.partnerID
+                               };
+
+                               if (controller.show.fair.fairID) {
+                                   basics = [basics mtl_dictionaryByAddingEntriesFromDictionary:@{ @"fair_slug": controller.show.fair.fairID }];
+                               }
+
+                               return basics;
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFairViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Fair",
+                            ARAnalyticsSelectorName: @"fairDidLoad",
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairViewController *controller, NSArray *_) {
+                                return @{ @"slug": controller.fair.fairID ?: @"",
+                                    @"screen_type": @"Overview" };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFairSearchViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Fair",
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairSearchViewController *controller, NSArray *_) {
+                                return @{ @"slug": controller.fair.fairID ?: @"",
+                                    @"screen_type": @"Search" };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFairGuideViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Fair",
+                            ARAnalyticsSelectorName: @"setFairLoaded",
+                            ARAnalyticsShouldFire: ^BOOL(ARFairGuideViewController *controller, BOOL newValue) {
+                                return newValue == YES;
+                            },
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairGuideViewController *controller, NSArray *_) {
+                                return @{ @"slug": controller.fair.fairID ?: @"",
+                                    @"screen_type": @"Personalized Guide" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsPageName: @"Fair personalized guide",
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(setSelectedTabIndex:),
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairGuideViewController *controller, NSArray *parameters) {
+                                NSInteger index = [parameters.firstObject integerValue];
+                                NSString *tab = @"";
+
+                                if (index == ARFairGuideSelectedTabWork) {
+                                    tab = @"Work";
+                                } else if (index == ARFairGuideSelectedTabArtists) {
+                                    tab = @"Artists";
+                                } else if (index == ARFairGuideSelectedTabExhibitors) {
+                                    tab = @"Exhibitors";
+                                }
+
+                                return @{ @"tab": tab };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARArtistBiographyViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Artist Biography",
+                            ARAnalyticsProperties: ^NSDictionary *(ARArtistBiographyViewController *controller, NSArray *_) {
+                                return @{ @"artist_slug": controller.artist.artistID };
+                            }
+                        }
+                    ]
                 }
             ]
         }

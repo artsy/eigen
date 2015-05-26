@@ -2,4 +2,6 @@
 
 - (instancetype)initWithArtist:(Artist *)artist;
 
+@property (nonatomic, strong, readonly) Artist *artist;
+
 @end

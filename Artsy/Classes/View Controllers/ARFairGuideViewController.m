@@ -22,13 +22,6 @@ NS_ENUM(NSInteger, ARFairGuideViewOrder) {
     ARFairGuideViewWhitespace
 };
 
-typedef NS_ENUM(NSInteger, ARFairGuideSelectedTab) {
-    ARFairGuideSelectedTabUndefined = -1,
-    ARFairGuideSelectedTabWork = 0,
-    ARFairGuideSelectedTabExhibitors,
-    ARFairGuideSelectedTabArtists
-};
-
 @interface ARFairGuideViewController() <ARSwitchViewDelegate, ARFairFavoritesNetworkModelDelegate>
 
 @property (nonatomic, strong, readwrite) Fair *fair;
@@ -38,7 +31,7 @@ typedef NS_ENUM(NSInteger, ARFairGuideSelectedTab) {
 @property (nonatomic, strong) ARNavigationButtonsViewController *exhibitorsViewController;
 @property (nonatomic, strong) ARNavigationButtonsViewController *artistsViewController;
 @property (nonatomic, strong) ARFairFavoritesNetworkModel *fairFavorites;
-@property (nonatomic, assign) ARFairGuideSelectedTab selectedTabIndex;
+@property (nonatomic, assign, readwrite) ARFairGuideSelectedTab selectedTabIndex;
 
 @property (nonatomic, strong) User *currentUser;
 @end
