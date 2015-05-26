@@ -99,6 +99,7 @@
     self.emailField = [[ARTextFieldWithPlaceholder alloc] init];
     self.emailField.placeholder = @"Email";
     self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
+    self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.emailField.returnKeyType = UIReturnKeyNext;
     self.emailField.keyboardAppearance = UIKeyboardAppearanceDark;
