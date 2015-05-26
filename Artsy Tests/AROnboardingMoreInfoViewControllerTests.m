@@ -2,14 +2,10 @@
 #import "ARAuthProviders.h"
 
 @interface AROnboardingMoreInfoViewController (Tests)
-@property (nonatomic) NSString *token;
-@property (nonatomic) NSString *secret;
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *email;
-@property (nonatomic) UIView *containerView;
 @property (nonatomic) UITextField *nameField;
 @property (nonatomic) UITextField *emailField;
-@property (nonatomic) NSLayoutConstraint *keyboardConstraint;
 @property (nonatomic) ARAuthProviderType provider;
 - (BOOL)canSubmit;
 @end
