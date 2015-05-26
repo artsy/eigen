@@ -2,6 +2,11 @@
 #import "ARItemThumbnailViewCell.h"
 #import "ARReusableLoadingView.h"
 
+
+@interface ARArtworkMasonryModule (Private)
+- (void)updateLayoutForSize:(CGSize)size;
+@end
+
 @interface AREmbeddedModelsViewController() <ARCollectionViewMasonryLayoutDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -34,7 +39,34 @@
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
     self.collectionView.frame = self.view.bounds;
+}
+
+- (void)updateForSize:(CGSize)size
+{
+    if ([self.activeModule isKindOfClass:[ARArtworkMasonryModule class]]) {
+        [(ARArtworkMasonryModule *)self.activeModule updateLayoutForSize:size];
+    }
+
+    [self.view setNeedsUpdateConstraints];
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent
+{
+    if (!parent) { return; }
+    [self updateForSize:parent.view.frame.size];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [self updateForSize:size];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self.view layoutIfNeeded];
+    } completion:nil];
 }
 
 - (UICollectionView *)createCollectionView
@@ -148,11 +180,7 @@
     [super updateViewConstraints];
 
     if (self.heightConstraint) {
-        if (self.collectionView.contentSize.height != 0) {
-            self.heightConstraint.constant = self.collectionView.contentSize.height;
-        } else {
-            self.heightConstraint.constant = self.activeModule.intrinsicSize.height;
-        }
+        self.heightConstraint.constant = self.activeModule.intrinsicSize.height;
     }
 }
 

@@ -1,12 +1,20 @@
 #import "ARHeroUnitsNetworkModel.h"
 #import "SiteHeroUnit.h"
+#import "ARUserManager+Stubs.h"
+
 SpecBegin(ARHeroUnitsNetworkModel)
 
-describe(@"heroes", ^{
+describe(@"heros", ^{
     __block ARHeroUnitsNetworkModel *_dataSource;
 
     beforeEach(^{
+        [ARUserManager stubXappToken:[ARUserManager stubXappToken] expiresIn:[ARUserManager stubXappTokenExpiresIn]];
         _dataSource = [[ARHeroUnitsNetworkModel alloc] init];
+    });
+
+    afterEach(^{
+        [ARUserManager clearUserData];
+        [OHHTTPStubs removeAllStubs];
     });
 
     it(@"only retrieves active hero units", ^{

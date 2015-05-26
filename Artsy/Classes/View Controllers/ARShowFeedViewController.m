@@ -4,7 +4,6 @@
 #import "ARModernPartnerShowTableViewCell.h"
 #import "ARPageSubTitleView.h"
 #import "ARFeedLinkUnitViewController.h"
-#import "ARFeaturedArtworksViewController.h"
 #import "UIViewController+SimpleChildren.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ArtsyAPI+Private.h"
@@ -31,8 +30,6 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 @property (nonatomic, strong) ARFeedLinkUnitViewController *feedLinkVC;
 @property (nonatomic, strong) UIView *pageTitle;
 @property (nonatomic, strong) CALayer *separator;
-@property (nonatomic, strong) UIView *featuredArtworksView;
-@property (nonatomic, strong) ARFeaturedArtworksViewController *featuredArtworksVC;
 @property (nonatomic, readonly) ARKonamiKeyboardView *konamiKeyboardView;
 @property (nonatomic, strong, readwrite) UIView *headerView;
 
@@ -140,15 +137,6 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
         }];
     }];
-    // TODO: unify this across iPad/iPhone
-    if ([UIDevice isPad]) {
-        [ArtsyAPI getFeaturedWorks:^(NSArray *works) {
-            @strongify(self);
-            self.featuredArtworksVC.artworks = works;
-        } failure:^(NSError *error) {
-            ARErrorLog(@"Couldn't fetch featured artworks. Error: %@", error.localizedDescription);
-        }];
-    }
 }
 
 - (void)setHeroUnitDatasource:(ARHeroUnitsNetworkModel *)heroUnitDatasource
@@ -185,38 +173,22 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     CGFloat sideMargin = [UIDevice isPad] ? 50 : 20;
 
     if ([UIDevice isPad]) {
-        ARSerifLabel *featuredArtworksLabel = [[ARSerifLabel alloc] init];
-        [featuredArtworksLabel constrainHeight:@(ARShowFeedHeaderLabelHeightPad).stringValue];
-        featuredArtworksLabel.font = [featuredArtworksLabel.font fontWithSize:24];
-        featuredArtworksLabel.text = @"Featured Artworks";
-
-        self.featuredArtworksVC = [[ARFeaturedArtworksViewController alloc] init];
-
         ARSerifLabel *featuredShowsLabel = [[ARSerifLabel alloc] init];
         [featuredShowsLabel constrainHeight:@(ARShowFeedHeaderLabelHeightPad).stringValue];
         featuredShowsLabel.font = [featuredShowsLabel.font fontWithSize:24];
         featuredShowsLabel.text = @"Featured Shows";
 
-        ARSeparatorView *artworksTitleSeparator = [[ARSeparatorView alloc] init];
         ARSeparatorView *showsTitleSeparator = [[ARSeparatorView alloc] init];
 
         self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, [self heightForHeader])];
         self.headerView.backgroundColor = [UIColor whiteColor];
 
-        [self.headerView addSubview:featuredArtworksLabel];
-        [featuredArtworksLabel alignTop:@(ARShowFeedHeaderLabelMarginPad).stringValue leading:@(sideMargin).stringValue
-            bottom:nil trailing:@(-sideMargin).stringValue toView:self.headerView];
-
-        [self.headerView addSubview:artworksTitleSeparator];
-        [artworksTitleSeparator alignBottomEdgeWithView:featuredArtworksLabel predicate:nil];
-        [artworksTitleSeparator alignLeading:@(sideMargin).stringValue trailing:@(-sideMargin).stringValue toView:self.headerView];
-
-        [self ar_addModernChildViewController:self.featuredArtworksVC intoView:self.headerView];
-        [self.featuredArtworksVC.view alignLeading:@"0" trailing:@"0" toView:self.headerView];
-        [self.featuredArtworksVC.view constrainTopSpaceToView:featuredArtworksLabel predicate:@(ARShowFeedHeaderLabelMarginPad).stringValue];
-
         [self.headerView addSubview:featuredShowsLabel];
-        [featuredShowsLabel constrainTopSpaceToView:self.featuredArtworksVC.view predicate:@(ARShowFeedHeaderLabelMarginPad).stringValue];
+        [featuredShowsLabel alignTop:@(ARShowFeedHeaderLabelMarginPad).stringValue
+                             leading:@(sideMargin).stringValue
+                              bottom:nil
+                            trailing:@(-sideMargin).stringValue
+                              toView:self.headerView];
         [featuredShowsLabel alignLeading:@(sideMargin).stringValue trailing:@(-sideMargin).stringValue toView:self.headerView];
         [featuredShowsLabel alignBottomEdgeWithView:self.headerView predicate:@"0"];
 
@@ -266,9 +238,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 {
     CGFloat height;
     if ([UIDevice isPad] ) {
-        CGFloat labelHeight = ARShowFeedHeaderLabelMarginPad + ARShowFeedHeaderLabelHeightPad;
-        CGFloat artworksHeight = ARShowFeedHeaderLabelMarginPad + self.featuredArtworksVC.preferredContentSize.height;
-        height = (2 * labelHeight) + artworksHeight;
+        height = ARShowFeedHeaderLabelMarginPad + ARShowFeedHeaderLabelHeightPad;
     } else {
         height =  ARFeedLinksNavMarginPhone + self.feedLinkVC.preferredContentSize.height + ARFeaturedShowsTitleHeightPhone;
     }

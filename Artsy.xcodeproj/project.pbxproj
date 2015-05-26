@@ -485,7 +485,6 @@
 		CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = CB879D0B180746C900E2D8EC /* AuctionLot.m */; };
 		CB8D9D4417CEA7B900F3286B /* AROnboardingMoreInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8D9D4317CEA7B900F3286B /* AROnboardingMoreInfoViewController.m */; };
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
-		CBB25B3C17F36DDE00C31446 /* ARFeaturedArtworksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB25B3B17F36DDE00C31446 /* ARFeaturedArtworksViewController.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
 		CBE939F817FA336C00AD7DDD /* ARArtworkBlurbView.m in Sources */ = {isa = PBXBuildFile; fileRef = 601F029417F336AB00EB3E83 /* ARArtworkBlurbView.m */; };
 		D301A1C21AD59BD100EA9E49 /* ARBackButtonCallbackManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D301A1C11AD59BD100EA9E49 /* ARBackButtonCallbackManagerTests.m */; };
@@ -1460,8 +1459,6 @@
 		CB8D9D4317CEA7B900F3286B /* AROnboardingMoreInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingMoreInfoViewController.m; sourceTree = "<group>"; };
 		CB9E243F17CBC36F00773A9A /* ARAuthProviders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuthProviders.h; sourceTree = "<group>"; };
 		CB9E244017CBC36F00773A9A /* ARAuthProviders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuthProviders.m; sourceTree = "<group>"; };
-		CBB25B3A17F36DDE00C31446 /* ARFeaturedArtworksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeaturedArtworksViewController.h; sourceTree = "<group>"; };
-		CBB25B3B17F36DDE00C31446 /* ARFeaturedArtworksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeaturedArtworksViewController.m; sourceTree = "<group>"; };
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
 		CBB469CF181F1F1200B5692B /* Bid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bid.m; sourceTree = "<group>"; };
 		D301A1C11AD59BD100EA9E49 /* ARBackButtonCallbackManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBackButtonCallbackManagerTests.m; sourceTree = "<group>"; };
@@ -2568,8 +2565,6 @@
 		600249F1166CFCF5007E6E9A /* Feed VCs */ = {
 			isa = PBXGroup;
 			children = (
-				CBB25B3A17F36DDE00C31446 /* ARFeaturedArtworksViewController.h */,
-				CBB25B3B17F36DDE00C31446 /* ARFeaturedArtworksViewController.m */,
 				49A7723F165ADC3C00BC6FD3 /* ARFeedViewController.h */,
 				49A77240165ADC3C00BC6FD3 /* ARFeedViewController.m */,
 				6044E543176E165600075B15 /* ARShowFeedViewController.h */,
@@ -4254,7 +4249,6 @@
 				3CF144A718E45F6C00B1A764 /* SystemTime.m in Sources */,
 				609F98561AC0F5B90079FE21 /* ARWatchBidNetworkModel.m in Sources */,
 				608B2F6F1657D1D10046956C /* User.m in Sources */,
-				CBB25B3C17F36DDE00C31446 /* ARFeaturedArtworksViewController.m in Sources */,
 				60D83DEE189EE679001672E9 /* ARFairGuideViewController.m in Sources */,
 				609F98601AC105F30079FE21 /* WatchMessage.m in Sources */,
 				60B617D31815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m in Sources */,

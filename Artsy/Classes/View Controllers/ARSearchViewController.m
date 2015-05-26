@@ -37,7 +37,7 @@
         UIView *searchBoxView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:searchBoxView];
     [searchBoxView constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"24"];
-    [searchBoxView alignLeading:@"20" trailing:@"-10" toView:self.view];
+    [searchBoxView alignLeading:@"10" trailing:@"-10" toView:self.view];
     [searchBoxView constrainHeight:@(self.fontSize).stringValue];
     _searchBoxView = searchBoxView;
 
@@ -47,12 +47,14 @@
     searchIcon.contentMode = UIViewContentModeScaleAspectFit;
     [searchBoxView addSubview:searchIcon];
     _searchIcon = searchIcon;
-    [searchIcon alignTop:@"0" leading:@"0" bottom:@"0" trailing:nil toView:searchBoxView];
+
+    [searchIcon alignLeadingEdgeWithView:searchBoxView predicate:@"10"];
     [searchIcon alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:searchIcon predicate:nil];
 
     // input text field
-    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectZero];
     [searchBoxView addSubview:textField];
+    [textField constrainLeadingSpaceToView:searchIcon predicate:@"4"];
 
     textField.textColor = [UIColor whiteColor];
     textField.font = [UIFont serifFontWithSize:self.fontSize];
@@ -61,22 +63,25 @@
     textField.opaque = NO;
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.returnKeyType = UIReturnKeySearch;
-    [textField alignTop:@"0" bottom:@"0" toView:self.searchBoxView];
-    [textField constrainLeadingSpaceToView:searchIcon predicate:@"4"];
-    _textField = textField;
+
     textField.delegate = self;
     [textField ar_extendHitTestSizeByWidth:6 andHeight:16];
     [textField addTarget:self action:@selector(searchTextFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+    _textField = textField;
 
     UIButton *closeButton = [[UIButton alloc] init];
+    [searchBoxView addSubview:closeButton];
+    [closeButton constrainLeadingSpaceToView:textField predicate:@"14"];
+    [closeButton alignTrailingEdgeWithView:searchBoxView predicate:@"0"];
+
     [closeButton setTitle:@"CLOSE" forState:UIControlStateNormal];
-    [closeButton.titleLabel setFont:[UIFont sansSerifFontWithSize:self.fontSize * 0.75]];
-    [closeButton setContentHuggingPriority:750 forAxis:UILayoutConstraintAxisHorizontal];
+    closeButton.titleLabel.font = [UIFont sansSerifFontWithSize:[UIDevice isPad] ? 13 : 12];
+    [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    closeButton.contentEdgeInsets = [UIDevice isPad] ? UIEdgeInsetsMake(0, 10, 0, 10) : UIEdgeInsetsMake(0, 0, 0, 0);
     [closeButton addTarget:self action:@selector(closeSearch:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:closeButton];
     _closeButton = closeButton;
-    [closeButton alignTop:@"0" leading:nil bottom:@"0" trailing:@"0" toView:searchBoxView];
-    [textField alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeLeading ofView:closeButton predicate:@"-14"];
+
+    [UIView alignTopAndBottomEdgesOfViews:@[searchBoxView, searchIcon, textField, closeButton]];
 
     _contentView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.contentView];
@@ -282,7 +287,7 @@
 
 - (void)closeSearch:(id)sender
 {
-    [self clearSearchAnimated:YES];
+    [self.view endEditing:YES];
 }
 
 - (void)clearSearchAnimated:(BOOL)animated

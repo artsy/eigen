@@ -1,7 +1,6 @@
 #import "ARHeroUnitViewController.h"
 #import "ARSiteHeroUnitView.h"
 #import "ARHeroUnitsNetworkModel.h"
-
 #import <SDWebImage/SDWebImagePrefetcher.h>
 
 const static CGFloat ARHeroUnitDotsHeight = 30;
@@ -68,21 +67,7 @@ const static CGFloat ARCarouselDelay = 10;
     [self.view insertSubview:self.pageControl aboveSubview:self.pageViewController.view];
 
     [RACObserve(self.heroUnitNetworkModel, heroUnits) subscribeNext:^(NSArray *heroUnits) {
-        // Should never be false in production, but will cause problems in development if false on staging.
-        BOOL timerEnabled = self.timer != nil;
-        [self cancelTimer];
-
-        BOOL hasHeroUnits = heroUnits.count > 0;
-        if (!hasHeroUnits) {
-            [self cancelTimer];
-            self.view.userInteractionEnabled = NO;
-            return;
-        }
-
-        self.view.userInteractionEnabled = YES;
-        [self updateViewWithHeroUnits:heroUnits];
-
-        if (timerEnabled) { [self startTimer]; }
+        [self handleHeroUnits:heroUnits];
     }];
 }
 
@@ -99,6 +84,25 @@ const static CGFloat ARCarouselDelay = 10;
     [super viewDidLayoutSubviews];
 }
 
+-(void)handleHeroUnits:(NSArray *)heroUnits
+{
+    // Should never be false in production, but will cause problems in development if false on staging.
+    BOOL timerEnabled = self.timer != nil;
+    [self cancelTimer];
+
+    BOOL hasHeroUnits = heroUnits.count > 0;
+    if (!hasHeroUnits) {
+        [self cancelTimer];
+        self.view.userInteractionEnabled = NO;
+        return;
+    }
+
+    self.view.userInteractionEnabled = YES;
+    [self updateViewWithHeroUnits:heroUnits];
+
+    if (timerEnabled) { [self startTimer]; }
+}
+
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits
 {
     self.pageControl.numberOfPages = heroUnits.count;
@@ -111,6 +115,7 @@ const static CGFloat ARCarouselDelay = 10;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.heroUnitNetworkModel getHeroUnitsWithSuccess:nil failure:nil];
     [self startTimer];
 }
 

@@ -137,9 +137,7 @@
 
 - (void)createGeneArtworksViewController
 {
-    ARArtworkMasonryLayout layout = [UIDevice isPad] ? [self masonryLayoutForPadWithOrientation:[UIApplication sharedApplication].statusBarOrientation] : ARArtworkMasonryLayout2Column;
-
-    ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
+    ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:[self masonryLayoutForSize:self.view.frame.size] andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
 
     module.layoutProvider = self;
     self.artworksViewController = [[AREmbeddedModelsViewController alloc] init];
@@ -252,14 +250,15 @@
 
 #pragma mark - ARArtworkMasonryLayoutProvider
 
--(ARArtworkMasonryLayout)masonryLayoutForPadWithOrientation:(UIInterfaceOrientation)orientation
+-(ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return ARArtworkMasonryLayout4Column;
+    if ([UIDevice isPad] ) {
+        return (size.width > size.height) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
     } else {
-        return ARArtworkMasonryLayout3Column;
+        return ARArtworkMasonryLayout2Column;
     }
 }
+
 #pragma mark - AREmbeddedModelsDelegate
 
 -(void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController

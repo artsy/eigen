@@ -1,5 +1,19 @@
 ## Next
 
+* Remove featured artworks section from iPad - 1aurabrown
+* Fix missing hero units on first launch - 1aurabrown
+* Make sure keyboard is dismissed when App Search is closed - 1aurabrown
+* Resize App Search close button for iPad - 1aurabrown
+* Hide artwork metadata view when rotating the Artwork view - 1aurabrown
+
+## 2015.05.20
+
+* Size Favorites cells relative to screen width - 1aurabrown
+* Update ARCollectionViewMasonryLayout - 1aurabrown
+* Keep tab Navigation Controllers in hierarchy to facilitate layout after rotation - 1aurabrown
+
+## 2015.05.15
+
 * Fix broken rotation when rotating and then tapping Explore tab - 1aurabrown
 * Add snapshot macro that infers the image file name from the spec name - 1aurabrown
 * Remove ability to zoom internal web views - 1aurabrown
@@ -12,6 +26,8 @@
 * Remove progress indicator from martsy views as soon as the state of the webview is at DOMContentLoaded - alloy
 * Really only show artworks that are for sale on an artist’s ‘for sale’ tab - alloy
 * Fixes iPad sharing hijacking - ash
+* Improve masonry/collection view layout changes when rotation occurs using iOS8 API - 1aurabrown
+* Re-fetch hero units every time they will appear - 1aurabrown
 
 ## 2015.04.23
 

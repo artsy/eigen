@@ -45,7 +45,7 @@ pod 'ALPValidator', '0.0.3'
 pod 'ORKeyboardReactingApplication', '0.5.3'
 pod 'ORStackView', :git => 'https://github.com/1aurabrown/ORStackView.git'
 pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView', :commit => '1a31b864d1d56b1aaed0816c10bb55cf2e078bb8'
-pod 'ARCollectionViewMasonryLayout', '~> 2.1', '>= 2.1.1'
+pod 'ARCollectionViewMasonryLayout', '~> 2.1', '>= 2.1.2'
 pod 'ARGenericTableViewController', '1.0.2'
 pod 'FLKAutoLayout', '0.1.1'
 

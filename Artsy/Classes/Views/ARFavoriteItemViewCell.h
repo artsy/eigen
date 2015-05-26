@@ -1,7 +1,6 @@
 @interface ARFavoriteItemViewCell : UICollectionViewCell
 
-+ (CGFloat)heightForCellWithOrientation:(UIInterfaceOrientation)orientation;
-+ (CGFloat)widthForCellWithOrientation:(UIInterfaceOrientation)orientation;
++ (CGSize)sizeForCellwithSize:(CGSize)size insets:(UIEdgeInsets)insets;
 - (void)setupWithRepresentedObject:(id)object;
 
 @end

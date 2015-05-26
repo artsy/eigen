@@ -104,8 +104,8 @@
     // When we get back from zoom / VIR allow the preview to do trigger zoom
     self.view.metadataView.userInteractionEnabled = YES;
     [super viewDidAppear:self.shouldAnimate && animated];
-    CGSize size = self.view.frame.size;
-    [self.view.metadataView updateConstraintsIsLandscape:size.width > size.height];
+    CGRect frame = self.view.frame;
+    [self.view.metadataView updateConstraintsIsLandscape:CGRectGetWidth(frame) > CGRectGetHeight(frame)];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -186,6 +186,17 @@
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self.view.metadataView updateConstraintsIsLandscape:size.width > size.height];
+
+    self.view.metadataView.right.alpha = 1;
+    [UIView animateWithDuration:.1 animations:^{
+        self.view.metadataView.right.alpha = 0;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:.1 delay:coordinator.transitionDuration -  .2 options:0 animations:^{
+            self.view.metadataView.right.alpha = 1;
+        } completion:nil];
+    }];
+
+
 }
 
 - (NSUInteger)supportedInterfaceOrientations

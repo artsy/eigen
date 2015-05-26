@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSTimer *timer;
 - (void)startTimer;
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits;
+- (void)handleHeroUnits:(NSArray *)heroUnits;
 - (ARSiteHeroUnitViewController *)currentViewController;
 - (void)pageControlTapped:(id)sender;
 @end
@@ -29,7 +30,10 @@
 @implementation ARHeroUnitsTestDataSource
 -(void)getHeroUnitsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    success(self.heroUnits);
+    self.heroUnits = [self.heroUnits copy];
+    if (success) {
+        success(self.heroUnits);
+    }
 }
 @end
 
@@ -80,6 +84,16 @@ describe(@"with three hero units", ^{
             @"link_text":@"Explore",
             @"credit_line":@"Artsy artsy artsy"
         }]];
+    });
+
+    describe(@"handleHeroUnits", ^{
+        it(@"updates the view", ^{
+            sharedBefore();
+            id mock = [OCMockObject partialMockForObject:heroVC];
+            [[mock expect] updateViewWithHeroUnits:heroUnits];
+            [heroVC handleHeroUnits:heroUnits];
+            [mock verify];
+        });
     });
 
     describe(@"updateViewWithHeroUnits", ^{
@@ -145,6 +159,16 @@ describe(@"with one hero unit", ^{
         }]];
     });
 
+    describe(@"handleHeroUnits", ^{
+        it(@"updates the view", ^{
+            sharedBefore();
+            id mock = [OCMockObject partialMockForObject:heroVC];
+            [[mock expect] updateViewWithHeroUnits:heroUnits];
+            [heroVC handleHeroUnits:heroUnits];
+            [mock verify];
+        });
+    });
+
     describe(@"updateViewWithHeroUnits", ^{
         before(^{
             sharedBefore();
@@ -180,10 +204,104 @@ describe(@"with one hero unit", ^{
     });
 });
 
+describe(@"viewWillAppear", ^{
+    __block id mock;
+    __block id networkModelMock;
+    before(^{
+        mock = [OCMockObject partialMockForObject:heroVC];
+        heroUnits = @[[SiteHeroUnit modelWithJSON:@{
+            @"id": @"art-basel1",
+            @"name": @"Art Basel1",
+            @"heading": @"Exclusive Preview",
+            @"mobile_description": @"Discover some artworks.",
+            @"mobile_title": @"Art Basel",
+            @"display_on_mobile": @true,
+            @"position": @1,
+            @"link":@"/art-basel1",
+            @"link_text":@"Explore",
+            @"credit_line":@"Artsy artsy artsy"
+        }], [SiteHeroUnit modelWithJSON:@{
+            @"id": @"art-basel2",
+            @"name": @"Art Basel2",
+            @"heading": @"Exclusive Preview",
+            @"mobile_description": @"Discover some artworks.",
+            @"mobile_title": @"Art Basel",
+            @"display_on_mobile": @true,
+            @"position": @2,
+            @"link":@"/art-basel2",
+            @"link_text":@"Explore",
+            @"credit_line":@"Artsy artsy artsy"
+        }], [SiteHeroUnit modelWithJSON:@{
+            @"id": @"art-basel3",
+            @"name": @"Art Basel3",
+            @"heading": @"Exclusive Preview",
+            @"mobile_description": @"Discover some artworks.",
+            @"mobile_title": @"Art Basel",
+            @"display_on_mobile": @true,
+            @"position": @3,
+            @"link":@"/art-basel3",
+            @"link_text":@"Explore",
+            @"credit_line":@"Artsy artsy artsy"
+        }]];
+        sharedBefore();
+        networkModelMock = [OCMockObject partialMockForObject:heroVC.heroUnitNetworkModel];
+    });
+
+    it(@"refetches hero units", ^{
+        [[networkModelMock expect] getHeroUnitsWithSuccess:OCMOCK_ANY failure:OCMOCK_ANY];
+        [heroVC viewWillAppear:NO];
+        [networkModelMock verify];
+    });
+
+    it(@"does not update view if they are the same", ^{
+        [[mock reject] updateViewWithHeroUnits:OCMOCK_ANY];
+        [heroVC viewWillAppear:NO];
+        [mock verify];
+    });
+
+    it(@"updates view if units have changed", ^{
+        __block NSArray *units = [heroUnits arrayByAddingObject:[SiteHeroUnit modelWithJSON:@{
+           @"id": @"art-basel4",
+           @"name": @"Art Basel4",
+           @"heading": @"Exclusive Preview",
+           @"mobile_description": @"Discover some artworks.",
+           @"mobile_title": @"Art Basel",
+           @"display_on_mobile": @true,
+           @"position": @3,
+           @"link":@"/art-basel4",
+           @"link_text":@"Explore",
+           @"credit_line":@"Artsy artsy artsy"
+       }]];
+
+        [[[networkModelMock stub] andDo:^(NSInvocation *invocation) {
+            void (^successBlock)(NSArray *) = nil;
+            [invocation getArgument:&successBlock atIndex:2];
+
+            heroVC.heroUnitNetworkModel.heroUnits = units;
+            if(successBlock) {
+                successBlock(units);
+            }
+
+        }] getHeroUnitsWithSuccess:OCMOCK_ANY failure:OCMOCK_ANY];
+
+        [[mock expect] updateViewWithHeroUnits:units];
+
+        [heroVC viewWillAppear:NO];
+    });
+});
+
 describe(@"with no hero units", ^{
     // In practice this should never happen. If there are ever zero hero units, there is a data problem.
     before(^{
         heroUnits = @[];
+    });
+
+    describe(@"handleHeroUnits", ^{
+        sharedBefore();
+        id mock = [OCMockObject partialMockForObject:heroVC];
+        [[mock reject] updateViewWithHeroUnits:OCMOCK_ANY];
+        [heroVC handleHeroUnits:heroUnits];
+        [mock verify];
     });
 
     describe(@"updateViewWithHeroUnits", ^{

@@ -207,11 +207,7 @@
         [self invalidateIntrinsicContentSize];
     }
 
-    ARArtworkMasonryLayout layout = ARArtworkMasonryLayout2Column;
-    if ([UIDevice isPad]) {
-        layout = [self masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
-    }
-    ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout
+    ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:[self masonryLayoutForSize:self.parentViewController.view.frame.size]
                                                                             andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     module.layoutProvider = self;
 
@@ -254,9 +250,13 @@
 
 #pragma mark - ARArtworkMasonryLayoutProvider
 
-- (ARArtworkMasonryLayout)masonryLayoutForPadWithOrientation:(UIInterfaceOrientation)orientation
+- (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
-    return UIInterfaceOrientationIsLandscape(orientation) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
+    if ([UIDevice isPad]) {
+        return size.width > size.height ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
+    } else {
+        return ARArtworkMasonryLayout2Column;
+    }
 }
 
 #pragma mark - AREmbeddedModelsDelegate
