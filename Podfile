@@ -83,9 +83,9 @@ pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
 
 # Analytics
 pod 'HockeySDK', :git => 'https://github.com/bitstadium/HockeySDK-iOS.git', :branch => 'develop'
-pod 'ARAnalytics/Segmentio'
-pod 'ARAnalytics/HockeyApp'
-pod 'ARAnalytics/DSL'
+pod 'ARAnalytics/Segmentio', :git => 'https://github.com/orta/ARAnalytics.git', :branch => 'add-screen-properties'
+pod 'ARAnalytics/HockeyApp', :git => 'https://github.com/orta/ARAnalytics.git', :branch => 'add-screen-properties'
+pod 'ARAnalytics/DSL', :git => 'https://github.com/orta/ARAnalytics.git', :branch => 'add-screen-properties'
 pod 'UICKeyChainStore', '1.0.5'
 
 # Fairs
