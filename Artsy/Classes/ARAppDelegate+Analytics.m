@@ -334,14 +334,14 @@
                             },
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsHearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkFavorite:)),
-                            ARAnalyticsShouldFire: heartedShouldFireBlock,
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUnhearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkFavorite:)),
-                            ARAnalyticsShouldFire: unheartedShouldFireBlock,
+                            ARAnalyticsEventName: ARAnalyticsTapPartnerName,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedOpenArtworkPartner:)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
+                                return @{
+                                    @"gallery_slug": controller.artwork.partner.partnerID ?: @"",
+                                };
+                            },
+
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
@@ -356,10 +356,15 @@
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
                                 SaleArtwork *saleArtwork = parameters.first;
                                 return @{
-                                    @"artwork_id" : controller.artwork.artworkID ?: @"",
-                                    @"sale_id" : saleArtwork.auction.saleID ?: @""
+                                    @"artwork_slug": controller.artwork.artworkID ?: @"",
+                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
+                                    @"auction_id": saleArtwork.auction.saleID ?: @""
                                 };
                             },
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsAuctionHowBiddingWorks,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedAuctionInfo:)),
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtworkView,
@@ -815,6 +820,16 @@
                                     @"profile_id" : controller.fair.organizer.profileID ?: @"",
                                     @"fair_id" : controller.fair.fairID ?: @"",
                                     @"url" : button.targetURL ?: @""
+                                };
+                            },
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsFairOverviewSelection,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(buttonPressed:),
+                            ARAnalyticsProperties:  ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
+                                ARButtonWithImage *button = parameters.first;
+                                return @{
+                                    @"button_text" : button.title ?: @"",
                                 };
                             },
                         }

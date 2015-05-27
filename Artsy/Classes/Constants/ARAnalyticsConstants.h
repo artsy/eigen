@@ -65,10 +65,8 @@ extern NSString *const ARAnalyticsTappedHeroUnit;
 extern NSString *const ARAnalyticsTappedMainNavigationItem;
 
 // Sharing
-extern NSString *const ARAnalyticsShare;
 
-extern NSString *const ARAnalyticsHearted;
-extern NSString *const ARAnalyticsUnhearted;
+extern NSString *const ARAnalyticsShare;
 
 // Artwork
 
@@ -77,6 +75,7 @@ extern NSString *const ARAnalyticsArtworkViewInRoom;
 extern NSString *const ARAnalyticsArtworkSave;
 extern NSString *const ARAnalyticsArtworkUnsave;
 extern NSString *const ARAnalyticsArtworkZoom;
+extern NSString *const ARAnalyticsTapPartnerName;
 
 // Artist
 
@@ -105,10 +104,7 @@ extern NSString *const ARAnalyticsFairGuideAllExhibitorsSelected;
 extern NSString *const ARAnalyticsFairFeaturedLinkSelected;
 extern NSString *const ARAnalyticsFairPostSelected;
 extern NSString *const ARAnalyticsFairLeaveFromArtist;
-
-// PartnerShow
-
-extern NSString *const ARAnalyticsPartnerShowView;
+extern NSString *const ARAnalyticsFairOverviewSelection;
 
 // Search
 
@@ -147,3 +143,4 @@ extern NSString *const ARAnalyticsFairMapPartnerShowTapped;
 // Auctions
 
 extern NSString *const ARAnalyticsAuctionBidTapped;
+extern NSString *const ARAnalyticsAuctionHowBiddingWorks;

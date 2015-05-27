@@ -59,13 +59,9 @@ NSString *const ARAnalyticsArtworkViewInRoom = @"View in room";
 NSString *const ARAnalyticsArtworkSave = @"Save artwork";
 NSString *const ARAnalyticsArtworkUnsave = @"Unsave artwork";
 NSString *const ARAnalyticsArtworkZoom = @"Artwork Zoom";
-
-NSString *const ARAnalyticsPartnerShowView = @"partner show view";
+NSString *const ARAnalyticsTapPartnerName = @"Tapped gallery name";
 
 NSString *const ARAnalyticsShare = @"Share";
-
-NSString *const ARAnalyticsHearted = @"user hearted";
-NSString *const ARAnalyticsUnhearted = @"user unhearted";
 
 NSString *const ARAnalyticsProfileView = @"profile view";
 NSString *const ARAnalyticsPartnerFollow = @"Follow partner";
@@ -78,6 +74,7 @@ NSString *const ARAnalyticsFairGuideArtistSelected = @"fair selected artist";
 NSString *const ARAnalyticsFairGuideAllExhibitorsSelected = @"fair selected all exhibitors";
 NSString *const ARAnalyticsFairFeaturedLinkSelected = @"fair selected featured link";
 NSString *const ARAnalyticsFairPostSelected = @"fair selected post";
+NSString *const ARAnalyticsFairOverviewSelection = @"Tapped fair section from fair overview";
 
 NSString *const ARAnalyticsArtistView = @"artist view";
 NSString *const ARAnalyticsArtistFollow = @"Follow artist";
@@ -115,5 +112,5 @@ NSString *const ARAnalyticsFairMapButtonTapped = @"fair tapped map button";
 NSString *const ARAnalyticsFairMapAnnotationTapped = @"fair tapped map annotation";
 NSString *const ARAnalyticsFairMapPartnerShowTapped = @"fair tapped map partner show";
 
-NSString *const ARAnalyticsAuctionBidTapped = @"auction tapped bid";
-
+NSString *const ARAnalyticsAuctionBidTapped = @"Bid button";
+NSString *const ARAnalyticsAuctionHowBiddingWorks = @"How bidding works";
