@@ -2,7 +2,7 @@
 
 ## Artsy Eigen
 
-[![Build Status](https://travis-ci.org/artsy/eigen.svg?branch=master)](https://travis-ci.org/artsy/eigen)
+[![Build Status](https://circleci.com/gh/artsy/eigen/tree/master.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
 
 
 <a href="http://iphone.artsy.net"><img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg"></a>

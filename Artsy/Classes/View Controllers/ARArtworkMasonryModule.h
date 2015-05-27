@@ -12,9 +12,12 @@ typedef NS_ENUM(NSInteger, ARArtworkMasonryLayout){
 
 @class ARArtworkMasonryModule;
 
-// A protocol to standardize the way we provide different layout styles to the module.
+/// A protocol to standardize the way we provide different layout styles to the module.
+/// If you do not use a layout provider, the masonry module will use the layout in
+/// its `layout` property regardless of size.
+
 @protocol ARArtworkMasonryLayoutProvider <NSObject>
-- (enum ARArtworkMasonryLayout)masonryLayoutForPadWithOrientation:(UIInterfaceOrientation)orientation;
+- (enum ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size;
 @end
 
 @interface ARArtworkMasonryModule : ARModelCollectionViewModule <ARCollectionViewMasonryLayoutDelegate>
@@ -26,7 +29,7 @@ typedef NS_ENUM(NSInteger, ARArtworkMasonryLayout){
 + (instancetype)masonryModuleWithLayout:(enum ARArtworkMasonryLayout)layout andStyle:(enum AREmbeddedArtworkPresentationStyle)style;
 
 /// Get the height of the collection view for a horizontal layout
-+ (CGFloat)intrinsicHeightForHorizontalLayout:(ARArtworkMasonryLayout)layout;
++ (CGFloat)intrinsicHeightForHorizontalLayout:(ARArtworkMasonryLayout)layout useLandscapeValues:(BOOL)useLandscapeValues;
 
 /// Gets the intrinsic property from an existing instance
 - (CGSize)intrinsicSize;
@@ -36,6 +39,8 @@ typedef NS_ENUM(NSInteger, ARArtworkMasonryLayout){
 @property (nonatomic, readonly) ARCollectionViewMasonryLayout *moduleLayout;
 
 /// The specific layout
+/// If you have set a layout provider, the layout will be set using the `masonryLayoutForSize` delegate method,
+/// not by assigning this property. If you are not using a provider, you can assign a layout to this property.
 @property (nonatomic, assign, readwrite) enum ARArtworkMasonryLayout layout;
 
 @property (nonatomic, weak, readwrite) id<ARArtworkMasonryLayoutProvider> layoutProvider;

@@ -207,6 +207,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    // Ensure that the related artists VC has the correct dimensions to lay out its content BEFORE it appears.
+    [self.relatedArtistsVC.view layoutIfNeeded];
     [self setArtworksHeight];
 }
 
@@ -296,9 +299,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self setArtworksHeight];
 }
 
@@ -346,9 +349,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
             self.artworkVC.view.alpha = 0;
         } midway:^{
             self.artworkVC.collectionView.contentOffset = CGPointZero;
+            self.artworkVC.activeModule.items = @[];
+
             if (artworks.count > 0) {
-                // clear the array and append the artowrks because `appendItems` does a bunch of necessary stuff that simply setting `items`.
-                self.artworkVC.activeModule.items = @[];
                 [self.artworkVC appendItems:artworks.array];
             } else {
                 [self.artworkVC ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
@@ -368,7 +371,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 {
     if (![self shouldFetchArtworks]) { return; }
 
-    BOOL displayMode = self.displayMode;
+    ARArtistArtworksDisplayMode displayMode = self.displayMode;
     [self setIsGettingArtworks:YES displayMode:displayMode];
 
     BOOL showingForSale = (displayMode == ARArtistArtworksDisplayForSale);

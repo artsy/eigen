@@ -16,7 +16,7 @@ PODS:
     - ARAnalytics/CoreIOS
     - Mixpanel
   - ARASCIISwizzle (1.1.0)
-  - ARCollectionViewMasonryLayout (2.1.1)
+  - ARCollectionViewMasonryLayout (2.1.2)
   - ARGenericTableViewController (1.0.2)
   - ARTiledImageView (1.2):
     - SDWebImage/Core
@@ -109,7 +109,7 @@ DEPENDENCIES:
   - ARAnalytics/Mixpanel (from `https://github.com/alloy/ARAnalytics.git`, branch
     `add-breadcrumb-logging-to-HockeyApp`)
   - ARASCIISwizzle (= 1.1.0)
-  - ARCollectionViewMasonryLayout (>= 2.1.1, ~> 2.1)
+  - ARCollectionViewMasonryLayout (>= 2.1.2, ~> 2.1)
   - ARGenericTableViewController (= 1.0.2)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
   - Artsy+UIColors
@@ -220,7 +220,7 @@ SPEC CHECKSUMS:
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   ARAnalytics: c331321fc6b034ad6249cd43e226d0b262436ce5
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
-  ARCollectionViewMasonryLayout: 98a899a3c9ebf9283e993198e12b54bd3615f672
+  ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 000af4093f9bdcd0f754e6ebd964c90641389f90
   Artsy+UIColors: d1d5e084a0e542d310c507acb5446bae6a322241

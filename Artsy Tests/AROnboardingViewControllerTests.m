@@ -13,8 +13,6 @@ __block OCMockObject *mock;
 __block AROnboardingViewController *vc;
 
 describe(@"signup splash", ^{
-
-    
     describe(@"signupDone", ^{
 
         before(^{

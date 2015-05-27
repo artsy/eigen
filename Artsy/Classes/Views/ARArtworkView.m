@@ -135,6 +135,18 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     imageMaxHeight.constant = [UIDevice isPad] ? ARArtworkImageHeightAdjustmentForPad : ARArtworkImageHeightAdjustmentForPhone;
 }
 
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    // We want to set up the metadata view before the artwork view appears,
+    // but there is no size available to reference until this point.
+
+    [super willMoveToSuperview:newSuperview];
+    if (newSuperview) {
+        CGSize size = newSuperview.frame.size;
+        [self.metadataView updateConstraintsIsLandscape:size.width > size.height];
+    }
+}
+
 - (void)didMoveToSuperview
 {
     if (self.superview) {

@@ -4,7 +4,7 @@ CONFIGURATION = Beta
 APP_PLIST = Artsy/App/Artsy-Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
 TARGETED_DEVICE_FAMILY = \"1,2\"
-DEVICE_HOST = platform='iOS Simulator',OS='8.2',name='iPhone 6'
+DEVICE_HOST = platform='iOS Simulator',OS='8.3',name='iPhone 6'
 
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
 GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
@@ -24,13 +24,13 @@ DSYM = Artsy.app.dSYM.zip
 all: ci
 
 build:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator -destination $(DEVICE_HOST) build | bundle exec xcpretty -c
+	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator -destination $(DEVICE_HOST) build | tee $(CIRCLE_ARTIFACTS)/xcode_raw.log | bundle exec xcpretty -c
 
 clean:
 	xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' clean
 
 test:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | bundle exec xcpretty -c --test
+	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
 
 lint:
 	bundle exec fui --path Artsy find
@@ -52,7 +52,7 @@ oss:
 
 
 ci: CONFIGURATION = Debug
-ci: build	
+ci: build
 
 update_bundle_version:
 	@printf 'What is the new human-readable release version? '; \
@@ -121,8 +121,8 @@ beta: NOTIFY = 1
 beta: stamp_date deploy
 
 
-LOCAL_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
-BRANCH := $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
+LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
 
 pr: 
 	if [ "$(BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push upstream "$(LOCAL_BRANCH):$(BRANCH)"; open -a "Google Chrome" "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi

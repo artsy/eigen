@@ -18,7 +18,7 @@
 @interface ARModernPartnerShowTableViewCell : UITableViewCell
 
 /// Get the pre-generated height for the table view cell
-+ (CGFloat)heightForItem:(ARFeedItem *)feedItem;
++ (CGFloat)heightForItem:(ARFeedItem *)feedItem useLandscapeValues:(BOOL)useLandscapeValues;
 
 /// Configure the cell with the feed item
 - (void)configureWithFeedItem:(ARFeedItem *)feedItem;

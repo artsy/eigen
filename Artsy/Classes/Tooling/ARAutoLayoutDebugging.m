@@ -145,8 +145,10 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
 
 + (void)load;
 {
-    MethodSwizzle(self, @selector(addConstraint:), @selector(ARAutoLayoutDebugging_addConstraint:));
-    MethodSwizzle(self, @selector(addConstraints:), @selector(ARAutoLayoutDebugging_addConstraints:));
+    if (getenv("ARAutoLayoutDebuggingEnabled") != NULL) {
+        MethodSwizzle(self, @selector(addConstraint:), @selector(ARAutoLayoutDebugging_addConstraint:));
+        MethodSwizzle(self, @selector(addConstraints:), @selector(ARAutoLayoutDebugging_addConstraints:));
+    }
 }
 
 - (void)ARAutoLayoutDebugging_setLogConstraints:(BOOL)flag;
@@ -156,7 +158,7 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
 
 - (BOOL)ARAutoLayoutDebugging_logConstraints;
 {
-    return [objc_getAssociatedObject(self, &ARLayoutConstraintDebuggingEnabled) boolValue] || getenv("ARAutoLayoutDebugging") != NULL;
+    return [objc_getAssociatedObject(self, &ARLayoutConstraintDebuggingEnabled) boolValue] || getenv("ARAutoLayoutDebuggingLog") != NULL;
 }
 
 - (void)ARAutoLayoutDebugging_addConstraint:(NSLayoutConstraint *)constraint;

@@ -72,6 +72,8 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+
     self.embeddedItemsVC.delegate = self;
     self.embeddedItemsVC.showTrailingLoadingIndicator = YES;
 
@@ -108,7 +110,7 @@
     _artistFavoritesNetworkModel = [[ARArtistFavoritesNetworkModel alloc] init];
     _geneFavoritesNetworkModel = [[ARGeneFavoritesNetworkModel alloc] init];
 
-    ARArtworkMasonryLayout layout = [UIDevice isPad] ? [self masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]] : ARArtworkMasonryLayout2Column;
+    ARArtworkMasonryLayout layout = [self masonryLayoutForSize:self.view.frame.size];
     _artworksModule = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     _artworksModule.layoutProvider = self;
     _artistsModule = [[ARFavoriteItemModule alloc] init];
@@ -118,11 +120,11 @@
 
     self.embeddedItemsVC.scrollDelegate = [ARScrollNavigationChief chief];
 
-    [self setModuleItemSizesForOrientation:[UIApplication sharedApplication].statusBarOrientation];
     [self.embeddedItemsVC.headerView updateConstraints];
     self.collectionView.scrollsToTop = YES;
+    [self updateCellSizeForSize:self.view.frame.size layout:_genesModule.moduleLayout];
+    [self updateCellSizeForSize:self.view.frame.size layout:_artistsModule.moduleLayout];
 
-    [super viewDidLoad];
 }
 
 - (UICollectionView *)collectionView
@@ -135,24 +137,29 @@
     return [UIDevice isPad] ? 193 : 127;
 }
 
-- (ARArtworkMasonryLayout)masonryLayoutForPadWithOrientation:(UIInterfaceOrientation)orientation
+- (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
-    return UIInterfaceOrientationIsLandscape(orientation) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
+    if ([UIDevice isPad] ) {
+        return (size.width > size.height) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
+    } else {
+        return ARArtworkMasonryLayout2Column;
+    }
 }
 
-- (void)setModuleItemSizesForOrientation:(UIInterfaceOrientation)orientation
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    CGFloat width = [ARFavoriteItemViewCell widthForCellWithOrientation:orientation];
-    CGFloat height = [ARFavoriteItemViewCell heightForCellWithOrientation:orientation];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [self updateCellSizeForSize:size layout:self.artistsModule.moduleLayout];
+    [self updateCellSizeForSize:size layout:self.genesModule.moduleLayout];
 
-    self.genesModule.moduleLayout.itemSize = (CGSize){ width, height };
-    self.artistsModule.moduleLayout.itemSize = (CGSize){ width, height };
+    [self.embeddedItemsVC.collectionView.collectionViewLayout invalidateLayout];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)updateCellSizeForSize:(CGSize)size layout:(UICollectionViewFlowLayout *)layout
 {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self setModuleItemSizesForOrientation:(UIInterfaceOrientation)toInterfaceOrientation];
+    UIEdgeInsets insets = layout.sectionInset;
+    CGSize itemSize = [ARFavoriteItemViewCell sizeForCellwithSize:size insets:insets];
+    layout.itemSize = itemSize;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -161,6 +168,12 @@
     self.embeddedItemsVC.scrollDelegate = nil;
 
     [super viewWillDisappear:animated];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.embeddedItemsVC.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)viewDidAppear:(BOOL)animated

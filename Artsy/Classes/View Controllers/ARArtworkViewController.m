@@ -104,7 +104,8 @@
     // When we get back from zoom / VIR allow the preview to do trigger zoom
     self.view.metadataView.userInteractionEnabled = YES;
     [super viewDidAppear:self.shouldAnimate && animated];
-    [self.view.metadataView updateConstraintsForSize:self.view.frame.size];
+    CGRect frame = self.view.frame;
+    [self.view.metadataView updateConstraintsIsLandscape:CGRectGetWidth(frame) > CGRectGetHeight(frame)];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -184,7 +185,18 @@
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    [self.view.metadataView updateConstraintsForSize:size];
+    [self.view.metadataView updateConstraintsIsLandscape:size.width > size.height];
+
+    self.view.metadataView.right.alpha = 1;
+    [UIView animateWithDuration:.1 animations:^{
+        self.view.metadataView.right.alpha = 0;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:.1 delay:coordinator.transitionDuration -  .2 options:0 animations:^{
+            self.view.metadataView.right.alpha = 1;
+        } completion:nil];
+    }];
+
+
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -213,14 +225,7 @@
 
 - (void)artworkMetadataView:(ARArtworkMetadataView *)metadataView didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView
 {
-    [metadataView layoutIfNeeded];
-
-    [UIView animateTwoStepIf:self.shouldAnimate
-        duration:ARAnimationDuration * 2 :^{
-            [self.view.stackView layoutIfNeeded];
-        } midway:^{
-            actionsView.alpha = 1;
-        } completion:nil];
+    [self.view.stackView layoutIfNeeded];
 }
 
 #pragma mark - ARPostsViewControllerDelegate

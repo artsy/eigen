@@ -62,8 +62,6 @@
     self.dataSource = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-
     return self;
 }
 
@@ -75,17 +73,38 @@
     [self setViewControllers:@[artworkVC] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
-}
-
 - (BOOL)isValidArtworkIndex:(NSInteger)index
 {
     if (index < 0 || index >= self.artworks.count) {
         return NO;
     }
     return YES;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    BOOL landscape = size.width > size.height;
+    Artwork *artwork = self.currentArtworkViewController.artwork;
+
+    BOOL isTopViewController = self.navigationController.topViewController == self;
+    BOOL isShowingModalViewController = [ARTopMenuViewController sharedController].presentedViewController != nil;
+    BOOL canShowInRoom = self.currentArtworkViewController.artwork.canViewInRoom;
+
+    if (![UIDevice isPad] && canShowInRoom && !isShowingModalViewController && isTopViewController) {
+
+        if (landscape) {
+            ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:artwork];
+            viewInRoomVC.popOnRotation = YES;
+            viewInRoomVC.rotationDelegate = self;
+
+            [self.navigationController pushViewController:viewInRoomVC animated:YES];
+        }
+    }
+
+    if (![UIDevice isPad]) {
+        self.view.bounds = [UIScreen mainScreen].bounds;
+    }
 }
 
 - (ARArtworkViewController *)viewControllerForIndex:(NSInteger)index
@@ -140,32 +159,6 @@
     [self.currentArtworkViewController setHasFinishedScrolling];
 }
 
-- (void)orientationChanged:(NSNotification *)notification
-{
-    UIDevice *device = [notification object];
-    UIDeviceOrientation orientation = [device orientation];
-    Artwork *artwork = self.currentArtworkViewController.artwork;
-
-    BOOL isTopViewController = self.navigationController.topViewController == self;
-    BOOL isShowingModalViewController = [ARTopMenuViewController sharedController].presentedViewController != nil;
-    BOOL canShowInRoom = self.currentArtworkViewController.artwork.canViewInRoom;
-
-    if (![UIDevice isPad] && canShowInRoom && !isShowingModalViewController && isTopViewController) {
-
-        if (UIDeviceOrientationIsLandscape(orientation)) {
-            ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:artwork];
-            viewInRoomVC.popOnRotation = YES;
-            viewInRoomVC.rotationDelegate = self;
-
-            [self.navigationController pushViewController:viewInRoomVC animated:YES];
-        }
-    }
-
-    if (![UIDevice isPad]) {
-        self.view.bounds = [UIScreen mainScreen].bounds;
-    }
-}
-
 - (NSUInteger)supportedInterfaceOrientations
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
@@ -180,7 +173,6 @@
 {
     return UIInterfaceOrientationPortrait;
 }
-
 
 - (NSUInteger)pageViewControllerSupportedInterfaceOrientations:(UIPageViewController *)pageViewController
 {
@@ -212,6 +204,5 @@
 
     return nil;
 }
-
 
 @end

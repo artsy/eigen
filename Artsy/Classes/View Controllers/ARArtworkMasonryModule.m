@@ -2,13 +2,14 @@
 #import "ARReusableLoadingView.h"
 #import "ARItemThumbnailViewCell.h"
 #import "ARArtworkWithMetadataThumbnailCell.h"
-
+#import "UIViewController+InnermostTopViewController.h"
 
 @interface ARArtworkMasonryModule()
 @property (nonatomic, strong) ARCollectionViewMasonryLayout *moduleLayout;
 @property (nonatomic, assign) enum AREmbeddedArtworkPresentationStyle style;
 @property (nonatomic, assign, getter = isHorizontal) BOOL horizontalOrientation;
 @property (nonatomic, readonly, strong) ARReusableLoadingView *loadingView;
+@property (nonatomic, readwrite) BOOL useLandscapeValues;
 @end
 
 @implementation ARArtworkMasonryModule
@@ -19,9 +20,6 @@
 
     module.layout = layout;
     module.style = style;
-    if ([UIDevice isPad]) {
-        [[NSNotificationCenter defaultCenter] addObserver:module selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    }
     return module;
 }
 
@@ -31,10 +29,10 @@
     return [self masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkOnly];
 }
 
-+ (CGFloat)intrinsicHeightForHorizontalLayout:(ARArtworkMasonryLayout)layout
++ (CGFloat)intrinsicHeightForHorizontalLayout:(ARArtworkMasonryLayout)layout useLandscapeValues:(BOOL)useLandscapeValues
 {
     NSAssert([self.class layoutIsHorizontal:layout], @"intrinsicHeightForHorizontalLayout must be given a horizontal layout.");
-    CGFloat height = [self dimensionForlayout:layout];
+    CGFloat height = [self dimensionForlayout:layout useLandscapeValues:useLandscapeValues];
     CGFloat margin = [self itemMarginsforLayout:layout].height;
     CGFloat rank = [self rankForlayout:layout];
     height = (rank * height) + ((rank - 1) * margin);
@@ -75,7 +73,7 @@
     }
 }
 
-+ (CGFloat)dimensionForlayout:(ARArtworkMasonryLayout)layout
++ (CGFloat)dimensionForlayout:(ARArtworkMasonryLayout)layout useLandscapeValues:(BOOL)useLandscapeValues
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat width = CGRectGetWidth(screenRect);
@@ -91,8 +89,7 @@
         case ARArtworkMasonryLayout3Column:
             // The 3-column layout is only used on iPad.
             NSAssert([UIDevice isPad], @"ARARtworkMasonryLayout3Column is intended for use with iPad");
-            UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-            if (UIInterfaceOrientationIsLandscape(orientation)) {
+            if (useLandscapeValues) {
                 return 280;
             } else {
                 return 200;
@@ -105,10 +102,10 @@
 
         case ARArtworkMasonryLayout2Row:
             if ([UIDevice isPad]) {
-                if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
-                    return 134;
-                } else {
+                if (useLandscapeValues) {
                     return 184;
+                } else {
+                    return 134;
                 }
             } else {
                 return 120;
@@ -142,35 +139,29 @@
     }
 }
 
-
-- (void)orientationChanged:(id)sender
+- (void)updateLayoutForSize:(CGSize)size
 {
-    // Only called if current device is an iPad
-    if (self.layoutProvider) {
-        self.layout = [self.layoutProvider masonryLayoutForPadWithOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
-    } else {
-        [self setup];
-    }
+    self.useLandscapeValues = size.width > size.height;
+    self.layout = (self.layoutProvider) ? [self.layoutProvider masonryLayoutForSize:size] : self.layout;
 }
 
 - (void)setLayout:(enum ARArtworkMasonryLayout)layout
 {
     _layout = layout;
-    [self setup];
+    [self setupWithLandscapeOrientation:self.useLandscapeValues];
 }
 
 - (CGSize)intrinsicSize
 {
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-    CGFloat width = UIInterfaceOrientationIsLandscape(orientation) ? screenSize.height : screenSize.width;
+    CGFloat width = screenSize.width;
     CGFloat height;
     if ([self.class layoutIsHorizontal:self.layout]) {
-        height = [self.class intrinsicHeightForHorizontalLayout:self.layout];
+        height = [self.class intrinsicHeightForHorizontalLayout:self.layout useLandscapeValues:self.useLandscapeValues];
     } else {
         NSMutableArray *lengths = [NSMutableArray array];
         for (Artwork *artwork in self.items) {
-            CGFloat itemLength = [self.class variableDimensionForItem:artwork style:self.style layout:self.layout];
+            CGFloat itemLength = [self.class variableDimensionForItem:artwork style:self.style layout:self.layout useLandscapeValues:self.useLandscapeValues];
             [lengths addObject:@( itemLength )];
         }
 
@@ -190,7 +181,7 @@
     }
 }
 
-- (void)setup
+- (void)setupWithLandscapeOrientation:(BOOL)useLandscapeValues
 {
     self.horizontalOrientation = [self.class layoutIsHorizontal:self.layout];
 
@@ -200,19 +191,19 @@
 
     self.moduleLayout.itemMargins = [self.class itemMarginsforLayout:self.layout];
     self.moduleLayout.rank = [self.class rankForlayout:self.layout];
-    self.moduleLayout.dimensionLength = [self.class dimensionForlayout:self.layout];
+    self.moduleLayout.dimensionLength = [self.class dimensionForlayout:self.layout useLandscapeValues:useLandscapeValues];
     self.moduleLayout.contentInset = [self.class edgeInsetsForlayout:self.layout];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ARCollectionViewMasonryLayout *)collectionViewLayout variableDimensionForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     Artwork *item = self.items[indexPath.row];
-    return [[self class] variableDimensionForItem:item style:self.style layout:self.layout];
+    return [[self class] variableDimensionForItem:item style:self.style layout:self.layout useLandscapeValues:self.useLandscapeValues];
 }
 
-+ (CGFloat)variableDimensionForItem:(Artwork *)item style:(AREmbeddedArtworkPresentationStyle)style layout:(ARArtworkMasonryLayout)layout
++ (CGFloat)variableDimensionForItem:(Artwork *)item style:(AREmbeddedArtworkPresentationStyle)style layout:(ARArtworkMasonryLayout)layout useLandscapeValues:(BOOL)useLandscapeValues
 {
-    CGFloat staticDimension = [self.class dimensionForlayout:layout];
+    CGFloat staticDimension = [self.class dimensionForlayout:layout useLandscapeValues:useLandscapeValues];
     CGFloat variableDimension = 0;
 
     // Set the artwork height/width for the artwork based on the layout

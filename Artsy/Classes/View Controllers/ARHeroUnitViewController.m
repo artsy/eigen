@@ -1,7 +1,6 @@
 #import "ARHeroUnitViewController.h"
 #import "ARSiteHeroUnitView.h"
 #import "ARHeroUnitsNetworkModel.h"
-
 #import <SDWebImage/SDWebImagePrefetcher.h>
 
 const static CGFloat ARHeroUnitDotsHeight = 30;
@@ -51,6 +50,8 @@ const static CGFloat ARCarouselDelay = 10;
     self.pageControl.pageIndicatorTintColor = [UIColor colorWithWhite:1 alpha:0.5];
     self.pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
 
+    [self.pageControl addTarget:self action:@selector(pageControlTapped:) forControlEvents:UIControlEventValueChanged];
+
     CAGradientLayer *shadowLayer = [CAGradientLayer layer];
     shadowLayer.colors = @[(id)[UIColor colorWithWhite:0 alpha:.4].CGColor,
                            (id)[UIColor colorWithWhite:0 alpha:.12].CGColor,
@@ -66,28 +67,40 @@ const static CGFloat ARCarouselDelay = 10;
     [self.view insertSubview:self.pageControl aboveSubview:self.pageViewController.view];
 
     [RACObserve(self.heroUnitNetworkModel, heroUnits) subscribeNext:^(NSArray *heroUnits) {
-        // Should never be false in production, but will cause problems in development if false on staging.
-        BOOL timerEnabled = self.timer != nil;
-        [self cancelTimer];
-
-        BOOL hasHeroUnits = heroUnits.count > 0;
-        if (!hasHeroUnits) {
-            [self cancelTimer];
-            self.view.userInteractionEnabled = NO;
-            return;
-        }
-
-        self.view.userInteractionEnabled = YES;
-        [self updateViewWithHeroUnits:heroUnits];
-
-        if (timerEnabled) { [self startTimer]; }
+        [self handleHeroUnits:heroUnits];
     }];
+}
+
+- (void)pageControlTapped:(UIPageControl *)sender
+{
+    NSInteger newIndex = sender.currentPage;
+    UIPageViewControllerNavigationDirection direction = newIndex < [self currentViewController].index ? UIPageViewControllerNavigationDirectionReverse : UIPageViewControllerNavigationDirectionForward;
+    [self goToHeroUnit:[self viewControllerForIndex:newIndex] withDirection:direction];
 }
 
 - (void)viewDidLayoutSubviews
 {
     self.shadowLayer.frame = self.view.bounds;
     [super viewDidLayoutSubviews];
+}
+
+-(void)handleHeroUnits:(NSArray *)heroUnits
+{
+    // Should never be false in production, but will cause problems in development if false on staging.
+    BOOL timerEnabled = self.timer != nil;
+    [self cancelTimer];
+
+    BOOL hasHeroUnits = heroUnits.count > 0;
+    if (!hasHeroUnits) {
+        [self cancelTimer];
+        self.view.userInteractionEnabled = NO;
+        return;
+    }
+
+    self.view.userInteractionEnabled = YES;
+    [self updateViewWithHeroUnits:heroUnits];
+
+    if (timerEnabled) { [self startTimer]; }
 }
 
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits
@@ -102,6 +115,7 @@ const static CGFloat ARCarouselDelay = 10;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.heroUnitNetworkModel getHeroUnitsWithSuccess:nil failure:nil];
     [self startTimer];
 }
 
@@ -136,17 +150,22 @@ const static CGFloat ARCarouselDelay = 10;
     }
 }
 
--(void)goToNextHeroUnit
+-(void)goToHeroUnit:(UIViewController *)vc withDirection:(UIPageViewControllerNavigationDirection)direction
 {
     self.pageViewController.view.userInteractionEnabled = NO;
-    UIViewController *nextVC = [self pageViewController:self.pageViewController viewControllerAfterViewController:[self currentViewController]];
     @weakify(self);
-    [self.pageViewController setViewControllers:@[nextVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+    [self.pageViewController setViewControllers:@[vc] direction:direction animated:YES completion:^(BOOL finished) {
         @strongify(self);
         [self.pageControl setCurrentPage:[self currentViewController].index];
         self.pageViewController.view.userInteractionEnabled = YES;
 
     }];
+}
+
+-(void)goToNextHeroUnit
+{
+    UIViewController *nextVC = [self pageViewController:self.pageViewController viewControllerAfterViewController:[self currentViewController]];
+    [self goToHeroUnit:nextVC withDirection:UIPageViewControllerNavigationDirectionForward];
 }
 
 #pragma mark - UIPageViewControllerDataSource

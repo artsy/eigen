@@ -260,14 +260,20 @@
     @weakify(self);
     __weak KSDeferred *deferred = _artworkUpdateDeferred;
 
-    [ArtsyAPI getArtworkInfo:self.artworkID success:^(id artwork) {
-        @strongify(self);
-        [self mergeValuesForKeysFromModel:artwork];
-        [deferred resolveWithValue:self];
+    ar_dispatch_async(^{
+        [ArtsyAPI getArtworkInfo:self.artworkID success:^(id artwork) {
+            ar_dispatch_main_queue(^{
+                @strongify(self);
+                [self mergeValuesForKeysFromModel:artwork];
+                [deferred resolveWithValue:self];
+            });
+        } failure:^(NSError *error) {
+            ar_dispatch_main_queue(^{
+                [deferred rejectWithError:error];
+            });
+        }];
+    });
 
-    } failure:^(NSError *error) {
-        [deferred rejectWithError:error];
-    }];
 }
 
 - (BOOL)hasMoreInfo

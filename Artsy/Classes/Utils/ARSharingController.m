@@ -32,7 +32,11 @@
     return self;
 }
 
-- (void)presentActivityViewControllerFromView:(UIView *)view
+- (void)presentActivityViewControllerFromView:(UIView *)view {
+    [self presentActivityViewControllerFromView:view frame:view.bounds];
+}
+
+- (void)presentActivityViewControllerFromView:(UIView *)view frame:(CGRect)frame
 {
     if (ARIsRunningInDemoMode) {
         [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
@@ -58,7 +62,7 @@
         [[ARTopMenuViewController sharedController] presentViewController:activityVC animated:YES completion:nil];
     } else {
         popover = [[UIPopoverController alloc] initWithContentViewController:activityVC];
-        [popover presentPopoverFromRect:view.bounds
+        [popover presentPopoverFromRect:frame
                                  inView:view
                permittedArrowDirections:UIPopoverArrowDirectionAny
                                animated:YES];

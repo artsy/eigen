@@ -2,7 +2,7 @@
 #import "ARArtworkMasonryModule.h"
 
 @interface ARArtworkMasonryModule (Private)
-+ (CGFloat)dimensionForlayout:(ARArtworkMasonryLayout)layout;
++ (CGFloat)dimensionForlayout:(ARArtworkMasonryLayout)layout useLandscapeValues:(BOOL)useLandscapeValues;
 @end
 
 static CGFloat
@@ -13,7 +13,7 @@ AspectRatioForMultiplier(CGFloat multiplier, ARArtworkMasonryLayout layout) {
         case ARArtworkMasonryLayout3Column:
         case ARArtworkMasonryLayout4Column:
             {
-                CGFloat dimension = [ARArtworkMasonryModule dimensionForlayout:layout];
+                CGFloat dimension = [ARArtworkMasonryModule dimensionForlayout:layout useLandscapeValues:NO];
                 return dimension / (dimension * multiplier);
             }
 

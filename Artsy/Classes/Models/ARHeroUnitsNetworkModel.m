@@ -31,22 +31,31 @@ static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey
 
     // This is generally one of the first networking calls, lets make sure it comes through.
 
-    [ArtsyAPI getSiteHeroUnits:^(NSArray *heroUnits) {
+    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+        [ArtsyAPI getSiteHeroUnits:^(NSArray *heroUnits) {
 
-        @strongify(self);
-        self.isLoading = NO;
+            @strongify(self);
+            self.isLoading = NO;
 
-        if (success) {
-            NSArray *filteredHeroUnits = [heroUnits select:^BOOL(SiteHeroUnit *unit) {
-                return unit.isCurrentlyActive;
-            }];
-            self.heroUnits = filteredHeroUnits;
+            if (success) {
+                NSArray *filteredHeroUnits = [heroUnits select:^BOOL(SiteHeroUnit *unit) {
+                    return unit.isCurrentlyActive;
+                }];
+                self.heroUnits = filteredHeroUnits;
 
-            ar_dispatch_main_queue(^{
-                success(self.heroUnits);
-            });
-        }
+                ar_dispatch_main_queue(^{
+                    success(self.heroUnits);
+                });
+            }
 
+        } failure:^(NSError *error) {
+            @strongify(self);
+            ARErrorLog(@"There was an error getting Hero Units: %@", error.localizedDescription);
+            self.isLoading = NO;
+            if (failure) {
+                failure(error);
+            }
+        }];
     } failure:^(NSError *error) {
         @strongify(self);
         ARErrorLog(@"There was an error getting Hero Units: %@", error.localizedDescription);

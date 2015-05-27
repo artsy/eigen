@@ -18,41 +18,33 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
     self.imageView.image = [ARFeedImageLoader defaultPlaceholder];
 }
 
-+ (CGFloat)heightForCellWithOrientation:(UIInterfaceOrientation)orientation
++ (CGSize)sizeForCellwithSize:(CGSize)size insets:(UIEdgeInsets)insets
 {
-    return ARFavoriteCellLabelHeight + ARFavoriteCellMetadataMargin + [self heightForImageWithOrientation:orientation];
-}
+    CGFloat width;
+    CGFloat height;
 
-+ (CGFloat)heightForImageWithOrientation:(UIInterfaceOrientation)orientation
-{
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat width = CGRectGetWidth(screenRect);
 
+
+    int columns = [UIDevice isPad] ? 3 : 2;
+    CGFloat margin;
     if ([UIDevice isPad]) {
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
-            return 184;
+        if (size.width > size.height) {
+            margin = 50;
         } else {
-            return 134;
+            margin = 32;
         }
     } else {
-        return width/2 - 70;
+        margin = 20;
     }
-}
+    CGFloat marginsWidth = margin * (columns - 1);
+    CGFloat insetsWidth = insets.left + insets.right;
+    CGFloat availableWidth = size.width - marginsWidth - insetsWidth;
+    width = availableWidth / columns;
 
-+ (CGFloat)widthForCellWithOrientation:(UIInterfaceOrientation)orientation
-{
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat width = CGRectGetWidth(screenRect);
+    CGFloat imageHeight = .7 * width;
+    height = imageHeight + ARFavoriteCellMetadataMargin + ARFavoriteCellLabelHeight;
 
-    if ([UIDevice isPad]) {
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
-            return 276;
-        } else {
-            return 201;
-        }
-    } else {
-        return width/2 - 30;
-    }
+    return CGSizeMake(floorf(width), floorf(height));
 }
 
 - (void)setupWithRepresentedObject:(id)object

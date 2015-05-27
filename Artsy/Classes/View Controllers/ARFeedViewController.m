@@ -20,6 +20,7 @@
 @property (nonatomic, readonly) BOOL shouldRefreshFeed;
 @property (nonatomic, readwrite, assign) NSInteger refreshFeedInterval;
 @property (nonatomic, readonly, assign) BOOL loading;
+@property (nonatomic, readwrite) BOOL useLandscapeValues;
 @end
 
 @implementation ARFeedViewController
@@ -60,6 +61,11 @@
 
     [tableView alignToView:self.view];
     self.tableView = tableView;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    self.useLandscapeValues = size.width > size.height;
 }
 
 - (Class)classForTableView
@@ -129,7 +135,7 @@
         return [ARFeedStatusIndicatorTableViewCell heightForFeedItemWithState:_footerState];
     } else {
         ARFeedItem *item = [self.feedTimeline itemAtIndex:indexPath.row];
-        return [ARModernPartnerShowTableViewCell heightForItem:item];
+        return [ARModernPartnerShowTableViewCell heightForItem:item useLandscapeValues:self.useLandscapeValues];
     }
 }
 

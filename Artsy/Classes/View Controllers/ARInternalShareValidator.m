@@ -44,7 +44,7 @@
     return nil;
 }
 
-- (void)shareURL:(NSURL *)url inView:(UIView *)view
+- (void)shareURL:(NSURL *)url inView:(UIView *)view frame:(CGRect)frame
 {
     NSString *actualAddress = [self addressBeingSharedFromShareURL:url];
 
@@ -57,7 +57,7 @@
         Article *article = [[Article alloc] initWithURL:actualURL name:name];
 
         ARSharingController *shareArticle = [ARSharingController sharingControllerWithObject:article thumbnailImageURL:nil];
-        [shareArticle presentActivityViewControllerFromView:view];
+        [shareArticle presentActivityViewControllerFromView:view frame:frame];
     }
 }
 

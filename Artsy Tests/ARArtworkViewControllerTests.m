@@ -278,9 +278,8 @@ it(@"shows an upublished banner", ^{
     [vc setHasFinishedScrolling];
     [artwork updateArtwork];
 
-    activelyWaitFor(0.1, ^{
-        expect(vc.view).will.haveValidSnapshot();
-    });
+    [vc.view snapshotViewAfterScreenUpdates:YES];
+    expect(vc.view).will.haveValidSnapshot();
 });
 
 
