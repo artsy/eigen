@@ -13,8 +13,7 @@ NSString *const ARAnalyticsNotificationTapped = @"notification tapped";
 NSString *const ARAnalyticsFreshInstall = @"first user install";
 
 NSString *const ARAnalyticsTappedSignUp = @"tapped sign up";
-NSString *const ARAnalyticsStartedTrial = @"tapped start trial";
-NSString *const ARAnalyticsTappedLogIn = @"tapped log in";
+NSString *const ARAnalyticsTappedLogIn = @"Login";
 
 NSString *const ARAnalyticsStartedSignup = @"started sign up";
 NSString *const ARAnalyticsAmendingDetails = @"editing sign up";
@@ -23,20 +22,17 @@ NSString *const ARAnalyticsUserAlreadyExistedAtSignUp = @"user already existed a
 
 NSString *const ARAnalyticsDismissedActiveUserSignUp = @"dismissed active user signup";
 
-NSString *const ARAnalyticsStartedSignIn = @"started sign in";
-NSString *const ARAnalyticsUserSignedIn = @"user connected";
-NSString *const ARAnalyticsSignInError = @"sign in error";
-NSString *const ARAnalyticsSignInTwitter = @"sign in twitter";
-NSString *const ARAnalyticsSignInFacebook = @"sign in facebook";
+NSString *const ARAnalyticsSignInEmail = @"Login with email";
+NSString *const ARAnalyticsSignInTwitter = @"Login with twitter";
+NSString *const ARAnalyticsSignInFacebook = @"Login with facebook";
+NSString *const ARAnalyticsSignInError = @"Login errors";
 
-NSString *const ARAnalyticsUserCreationStarted = @"artsy user creation started";
-NSString *const ARAnalyticsUserCreationCompleted = @"artsy user creation completed";
-NSString *const ARAnalyticsUserCreationUserError = @"artsy user creation user error";
-NSString *const ARAnalyticsUserCreationUnknownError = @"artsy user error";
-
-NSString *const ARAnalyticsUserContextEmail = @"email";
-NSString *const ARAnalyticsUserContextTwitter = @"twitter";
-NSString *const ARAnalyticsUserContextFacebook = @"facebook";
+NSString *const ARAnalyticsSignUpEmail = @"Sign up with email";
+NSString *const ARAnalyticsSignUpTwitter = @"Connect with twitter";
+NSString *const ARAnalyticsSignUpFacebook = @"Connect with facebook";
+NSString *const ARAnalyticsAccountCreated = @"Created account";
+NSString *const ARAnalyticsSignUpError = @"Sign up errors";
+NSString *const ARAnalyticsTryWithoutAccount = @"Try without an account";
 
 NSString *const ARAnalyticsStartedGalleryInquiry = @"Contact gallery";
 NSString *const ARAnalyticsStartedSpecialistInquiry = @"Ask a specialist";
@@ -55,7 +51,7 @@ NSString *const ARAnalyticsOnboardingCompleted = @"user completed onboarding";
 
 NSString *const ARAnalyticsShowTrialSplash = @"user trial splash presented";
 
-NSString *const ARAnalyticsTappedHeroUnit = @"tapped hero unit";
+NSString *const ARAnalyticsTappedHeroUnit = @"Tapped banner";
 NSString *const ARAnalyticsTappedMainNavigationItem = @"view main navigation item";
 
 NSString *const ARAnalyticsArtworkView = @"artwork view";

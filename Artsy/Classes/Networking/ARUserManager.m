@@ -317,10 +317,8 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 - (void)createUserWithName:(NSString *)name email:(NSString *)email password:(NSString *)password success:(void (^)(User *))success failure:(void (^)(NSError *error, id JSON))failure
 {
-    [ARAnalytics event:ARAnalyticsUserCreationStarted  withProperties:@{
-                                                                        @"context" : ARAnalyticsUserContextEmail
-                                                                        }];
-    
+    [ARAnalytics event:ARAnalyticsSignUpEmail];
+
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         
         ARActionLog(@"Got Xapp. Creating a new user account.");
@@ -332,7 +330,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
                  ARErrorLog(@"Couldn't create user model from fresh user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-                 [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
+                 [ARAnalytics event:ARAnalyticsSignUpError];
                  failure(error, JSON);
                  return;
              }
@@ -341,12 +339,12 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              [self storeUserData];
              
              if(success) success(user);
-             [ARAnalytics event:ARAnalyticsUserCreationCompleted];
+             [ARAnalytics event:ARAnalyticsAccountCreated];
              
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              ARErrorLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
              failure(error, JSON);
-             [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
+             [ARAnalytics event:ARAnalyticsSignUpError];
          }];
 
         [op start];
@@ -356,10 +354,8 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 - (void)createUserViaFacebookWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name success:(void (^)(User *))success failure:(void (^)(NSError *, id))failure
 {
-    [ARAnalytics event:ARAnalyticsUserCreationStarted withProperties:@{
-                                                                       @"context" : ARAnalyticsUserContextFacebook
-                                                                       }];
-    
+    [ARAnalytics event:ARAnalyticsSignUpFacebook];
+
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         NSURLRequest *request = [ARRouter newCreateUserViaFacebookRequestWithToken:token email:email name:name];
         AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
@@ -368,20 +364,20 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
                  ARErrorLog(@"Couldn't create user model from fresh Facebook user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-                 [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
+                 [ARAnalytics event:ARAnalyticsSignUpError];
                  failure(error, JSON);
                  return;
              }
              self.currentUser = user;
              [self storeUserData];
-             
+
              if (success) { success(user); }
              
-             [ARAnalytics event:ARAnalyticsUserCreationCompleted];
+             [ARAnalytics event:ARAnalyticsSignUpEmail];
              
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
-             [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
+             [ARAnalytics event:ARAnalyticsSignUpError];
              
          }];
         [op start];
@@ -390,10 +386,8 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 - (void)createUserViaTwitterWithToken:(NSString *)token secret:(NSString *)secret email:(NSString *)email name:(NSString *)name success:(void (^)(User *))success failure:(void (^)(NSError *, id))failure
 {
-    [ARAnalytics event:ARAnalyticsUserCreationStarted withProperties:@{
-                                                                       @"context" : ARAnalyticsUserContextTwitter
-                                                                       }];
-    
+    [ARAnalytics event:ARAnalyticsSignUpTwitter];
+
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         NSURLRequest *request = [ARRouter newCreateUserViaTwitterRequestWithToken:token secret:secret email:email name:name];
         AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
@@ -402,7 +396,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
                  ARErrorLog(@"Couldn't create user model from fresh Twitter user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-                 [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
+                 [ARAnalytics event:ARAnalyticsSignUpError];
                  failure(error, JSON);
                  return;
              }
@@ -410,12 +404,12 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              [self storeUserData];
              
              if(success) success(user);
-             
-             [ARAnalytics event:ARAnalyticsUserCreationCompleted];
+
+             [ARAnalytics event:ARAnalyticsSignUpEmail];
              
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
-             [ARAnalytics event:ARAnalyticsUserCreationUnknownError];
+             [ARAnalytics event:ARAnalyticsSignUpError];
          }];
         [op start];
     }];

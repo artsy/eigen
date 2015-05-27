@@ -21,17 +21,7 @@ extern NSString *const ARAnalyticsFreshInstall;
 // Initial Splash Screen only, not trial splash
 
 extern NSString *const ARAnalyticsTappedSignUp;
-extern NSString *const ARAnalyticsStartedTrial;
 extern NSString *const ARAnalyticsTappedLogIn;
-
-// Sign up
-
-extern NSString *const ARAnalyticsStartedSignup;
-extern NSString *const ARAnalyticsAmendingDetails;
-extern NSString *const ARAnalyticsCompletedSignUp;
-extern NSString *const ARAnalyticsUserAlreadyExistedAtSignUp;
-
-extern NSString *const ARAnalyticsDismissedActiveUserSignUp;
 
 // Onboarding
 
@@ -47,22 +37,19 @@ extern NSString *const ARAnalyticsOnboardingCompleted;
 
 // Sign in
 
-extern NSString *const ARAnalyticsStartedSignIn;
-extern NSString *const ARAnalyticsUserSignedIn;
-extern NSString *const ARAnalyticsSignInError;
+extern NSString *const ARAnalyticsSignInEmail;
 extern NSString *const ARAnalyticsSignInTwitter;
 extern NSString *const ARAnalyticsSignInFacebook;
+extern NSString *const ARAnalyticsSignInError;
 
-// User creation abstracted from specifics like facebook / twitter / email
+// Sign up
 
-extern NSString *const ARAnalyticsUserCreationStarted;
-extern NSString *const ARAnalyticsUserCreationCompleted;
-extern NSString *const ARAnalyticsUserCreationUserError;
-extern NSString *const ARAnalyticsUserCreationUnknownError;
-
-extern NSString *const ARAnalyticsUserContextEmail;
-extern NSString *const ARAnalyticsUserContextTwitter;
-extern NSString *const ARAnalyticsUserContextFacebook;
+extern NSString *const ARAnalyticsSignUpEmail;
+extern NSString *const ARAnalyticsSignUpTwitter;
+extern NSString *const ARAnalyticsSignUpFacebook;
+extern NSString *const ARAnalyticsAccountCreated;
+extern NSString *const ARAnalyticsSignUpError;
+extern NSString *const ARAnalyticsTryWithoutAccount;
 
 // Inquiring
 

@@ -67,8 +67,6 @@
         segmentWriteKey = keys.segmentDevWriteKey;
     }
 
-    ARAppDelegate *appDelegate = [ARAppDelegate sharedInstance];
-
 #if DEBUG
     [[BITHockeyManager sharedHockeyManager] setDisableUpdateManager:YES];
     [[BITHockeyManager sharedHockeyManager] setDisableCrashManager: YES];
@@ -422,126 +420,47 @@
                     ARAnalyticsClass: ARLoginViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignIn,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(twitter:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextTwitter };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUserSignedIn,
+                            ARAnalyticsEventName: ARAnalyticsSignInEmail,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *parameters){
+                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters){
                                 NSNumber *typeNumber = parameters.first;
-
                                 ARLoginViewControllerLoginType type = typeNumber.integerValue;
-
-                                NSString *context = @"";
-
-                                switch (type) {
-                                    case ARLoginViewControllerLoginTypeTwitter:
-                                        context = ARAnalyticsUserContextTwitter;
-                                        break;
-                                    case ARLoginViewControllerLoginTypeFacebook:
-                                        context = ARAnalyticsUserContextFacebook;
-                                        break;
-                                    case ARLoginViewControllerLoginTypeEmail:
-                                        context = ARAnalyticsUserContextFacebook;
-                                        break;
-                                }
-
-                                return @{ @"context" : context };
+                                return type == ARLoginViewControllerLoginTypeEmail;
                             },
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsSignInTwitter,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters) {
-                                ARLoginViewControllerLoginType type = [parameters.first integerValue];
+                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters){
+                                NSNumber *typeNumber = parameters.first;
+                                ARLoginViewControllerLoginType type = typeNumber.integerValue;
                                 return type == ARLoginViewControllerLoginTypeTwitter;
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *parameters){
-                                User *currentUser = parameters[1];
-                                return @{ @"user_id": currentUser.userID ?: @"" };
                             },
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsSignInFacebook,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters) {
-                                ARLoginViewControllerLoginType type = [parameters.first integerValue];
+                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters){
+                                NSNumber *typeNumber = parameters.first;
+                                ARLoginViewControllerLoginType type = typeNumber.integerValue;
                                 return type == ARLoginViewControllerLoginTypeFacebook;
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *parameters){
-                                User *currentUser = parameters[1];
-                                return @{ @"user_id": currentUser.userID ?: @"" };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: @"Log in",
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters) {
-                                ARLoginViewControllerLoginType type = [parameters.first integerValue];
-                                return type == ARLoginViewControllerLoginTypeEmail;
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *parameters){
-                                User *currentUser = parameters[1];
-                                return @{ @"user_id": currentUser.userID ?: @"" };
                             },
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsSignInError,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(failedToLoginToTwitter)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *parameters){
-                                return @{ @"context" : ARAnalyticsUserContextTwitter };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignIn,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fb:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextFacebook };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignIn,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loginWithUsername:andPassword:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextEmail };
-                            },
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsSignInError,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(authenticationFailure)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextEmail };
-                            },
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsSignInError,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(networkFailure:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextEmail };
-                            },
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsSignInError,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(failedToLoginToFacebook)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextFacebook };
-                            },
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARSignUpActiveUserViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsDismissedActiveUserSignUp,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(goBackToApp:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARSignUpActiveUserViewController *controller, NSArray *_){
-                                return @{ @"context" : [ARTrialController stringForTrialContext:controller.trialContext] };
-                            },
                         }
                     ]
                 },
@@ -575,32 +494,6 @@
                                     @"profile_id" : view.fair.organizer.profileID ?: @"",
                                     @"href" : view.annotation.href ?: @""
                                 };
-                            },
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARSignupViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignup,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(twitter:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextTwitter };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignup,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(email:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextEmail };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignup,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fb:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextFacebook };
                             },
                         }
                     ]
@@ -730,7 +623,7 @@
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(signUp:)),
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsStartedTrial,
+                            ARAnalyticsEventName: ARAnalyticsTryWithoutAccount,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(startTrial)),
                             ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
                             NSInteger threshold = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingPromptThresholdDefault];
@@ -758,49 +651,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: AROnboardingMoreInfoViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsAmendingDetails,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(initForFacebookWithToken:email:name:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextFacebook };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsAmendingDetails,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(initForTwitterWithToken:andSecret:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextTwitter };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUserAlreadyExistedAtSignUp,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(userAlreadyExistsForLoginType:)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsCompletedSignUp,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loginCompletedForLoginType:skipAhead:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
-                                NSString *context = @"";
-
-                                AROnboardingMoreInfoViewControllerLoginType type = [parameters.first integerValue];
-
-                                switch (type) {
-                                    case AROnboardingMoreInfoViewControllerLoginTypeFacebook:
-                                        context = ARAnalyticsUserContextFacebook;
-                                        break;
-                                    case AROnboardingMoreInfoViewControllerLoginTypeTwitter:
-                                        context = ARAnalyticsUserContextTwitter;
-                                        break;
-                                }
-
-                                return @{ @"context" : context };
-                            },
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARViewInRoomViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -823,7 +673,7 @@
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedView:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARSiteHeroUnitView *view, NSArray *_){
                                 return @{
-                                    @"url" : view.linkAddress ?: @""
+                                    @"destination" : view.linkAddress ?: @""
                                 };
                             },
                         }
@@ -1009,20 +859,6 @@
                                 return @{
                                     @"configuration" : [controller onboardingConfigurationString]
                                 };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignup,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(signUpWithFacebook)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextFacebook };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignup,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(signUpWithTwitter)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextTwitter };
                             },
                         },
                         @{
