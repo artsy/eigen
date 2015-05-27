@@ -281,7 +281,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         BOOL isNotCurrentFairContext = ![self.show.fair isEqual:self.fair];
         if (isNotCurrentFairContext) {
             // show the ausstellungsdauer and link to fair page
-            [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
+            [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"6" sideMargin:[self sideMarginPredicate]];
 
             showName.userInteractionEnabled = YES;
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openShowFair:)];
@@ -294,25 +294,35 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         
         ARSerifLabel *boothLocation = [self metadataLabel:self.show.locationInFair];
         boothLocation.tag = ARFairShowViewBoothLocation;
-        [self.view.stackView addSubview:boothLocation withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
+        [self.view.stackView addSubview:boothLocation withTopMargin:@"6" sideMargin:[self sideMarginPredicate]];
     }
     else {
         // show the address of the gallery, ausstellungsdauer, and description of show
         showName.chevronHidden = YES;
-        [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"3" sideMargin:[self sideMarginPredicate]];
+        [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"6" sideMargin:[self sideMarginPredicate]];
         
         if (self.show.location.publiclyViewable) {
             ARSerifLabel *addressLabel = [self metadataLabel:self.show.location.addressAndCity];
             addressLabel.tag = ARFairShowViewLocationAddress;
-            [self.view.stackView addSubview:addressLabel withTopMargin:@"1" sideMargin:[self sideMarginPredicate]];
+            [self.view.stackView addSubview:addressLabel withTopMargin:@"6" sideMargin:[self sideMarginPredicate]];
         }
         
         if (self.show.officialDescription) {
             ARSerifLineHeightLabel *descriptionLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:5];
             descriptionLabel.tag = ARFairShowViewDescription;
+            
+            NSMutableDictionary *attrDictionary = [NSMutableDictionary dictionary];
+            [attrDictionary setObject:[UIFont serifFontWithSize:16] forKey:NSFontAttributeName];
+            
+            NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+            [style setLineSpacing:6];
+            
+            [attrDictionary setObject:style forKey:NSParagraphStyleAttributeName];
+            
+            NSAttributedString *descriptionString = [[NSAttributedString alloc] initWithString:self.show.officialDescription attributes:attrDictionary];
             descriptionLabel.textColor = [UIColor blackColor];
-            descriptionLabel.font = [UIFont serifFontWithSize:16];
-            descriptionLabel.text = self.show.officialDescription;
+            descriptionLabel.attributedText = descriptionString;
+            
             [self.view.stackView addSubview:descriptionLabel withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
         }
     }
