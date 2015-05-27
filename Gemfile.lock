@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:orta/CocoaPods.git
+  remote: https://github.com/orta/CocoaPods.git
   revision: 101cb5efb333b17b928c362d582440a9210f8d21
   branch: de-dupe-subspec-refs
   specs:
@@ -56,10 +56,10 @@ GEM
       osx_keychain
     cocoapods-plugins (0.4.2)
       nap
-    cocoapods-trunk (0.6.0)
+    cocoapods-trunk (0.6.1)
       nap (>= 0.8)
       netrc (= 0.7.8)
-    cocoapods-try (0.4.4)
+    cocoapods-try (0.4.5)
     colored (1.2)
     commander (4.3.4)
       highline (~> 1.7.2)

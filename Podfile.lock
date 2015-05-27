@@ -198,7 +198,7 @@ CHECKOUT OPTIONS:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
   Artsy+UIFonts:
-    :commit: 475bb2216fdcd121d7fc26ddd6acac3c13284092
+    :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
