@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods'
-gem "cocoapods-keys", :git => 'https://github.com/alloy/cocoapods-keys.git', :branch => 'retrieve-keys-from-env'
+gem 'cocoapods', :git => "https://github.com/orta/CocoaPods.git", :branch => "de-dupe-subspec-refs"
+gem "cocoapods-keys"
 
 group :test do
   gem 'fui'

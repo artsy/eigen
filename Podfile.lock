@@ -2,7 +2,7 @@ PODS:
   - AFHTTPRequestOperationLogger (1.0.0):
     - AFNetworking (~> 1.0)
   - AFNetworking (1.3.4)
-  - AFOAuth1Client (0.3.3):
+  - AFOAuth1Client (1.0.0):
     - AFNetworking (~> 1.3)
   - ALPValidator (0.0.3)
   - ARAnalytics/CoreIOS (3.0.0)
@@ -22,18 +22,21 @@ PODS:
     - SDWebImage/Core
   - Artsy+UIColors (1.0.0):
     - EDColor (~> 0.4)
-  - Artsy+UIFonts (1.0.0)
+  - Artsy+UIFonts (1.1.0)
   - Artsy+UILabels (HEAD based on 1.3.1):
     - Artsy+UIColors
   - Artsy-UIButtons (1.4.0):
     - Artsy+UIColors
     - UIView+BooleanAnimations
   - Bolts (1.1.4)
-  - CocoaLumberjack (1.8.1):
-    - CocoaLumberjack/Extensions (= 1.8.1)
-  - CocoaLumberjack/Core (1.8.1)
-  - CocoaLumberjack/Extensions (1.8.1):
+  - CocoaLumberjack (2.0.0):
+    - CocoaLumberjack/Default (= 2.0.0)
+    - CocoaLumberjack/Extensions (= 2.0.0)
+  - CocoaLumberjack/Core (2.0.0)
+  - CocoaLumberjack/Default (2.0.0):
     - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.0.0):
+    - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (0.4.0)
@@ -97,8 +100,8 @@ PODS:
 
 DEPENDENCIES:
   - AFHTTPRequestOperationLogger (= 1.0.0)
-  - AFNetworking (= 1.3.4)
-  - AFOAuth1Client (= 0.3.3)
+  - AFNetworking (from `https://github.com/orta/AFNetworking`, branch `no_ifdefs`)
+  - AFOAuth1Client (from `https://github.com/orta/AFOAuth1Client`, branch `patch-1`)
   - ALPValidator (= 0.0.3)
   - ARAnalytics/DSL (from `https://github.com/alloy/ARAnalytics.git`, branch `add-breadcrumb-logging-to-HockeyApp`)
   - ARAnalytics/HockeyApp (from `https://github.com/alloy/ARAnalytics.git`, branch
@@ -110,10 +113,10 @@ DEPENDENCIES:
   - ARGenericTableViewController (= 1.0.2)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
   - Artsy+UIColors
-  - Artsy+UIFonts (= 1.0.0)
+  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts`)
   - Artsy+UILabels (HEAD)
   - Artsy-UIButtons (~> 1.4)
-  - CocoaLumberjack (= 1.8.1)
+  - CocoaLumberjack (~> 2.0)
   - DHCShakeNotifier (= 0.2.0)
   - DRKonamiCode (= 1.1.0)
   - Expecta
@@ -154,12 +157,20 @@ DEPENDENCIES:
   - XCTest+OHHTTPStubSuiteCleanUp (= 1.0.0)
 
 EXTERNAL SOURCES:
+  AFNetworking:
+    :branch: no_ifdefs
+    :git: https://github.com/orta/AFNetworking
+  AFOAuth1Client:
+    :branch: patch-1
+    :git: https://github.com/orta/AFOAuth1Client
   ARAnalytics:
     :branch: add-breadcrumb-logging-to-HockeyApp
     :git: https://github.com/alloy/ARAnalytics.git
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
+  Artsy+UIFonts:
+    :git: https://github.com/artsy/Artsy-UIFonts
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
   HockeySDK:
@@ -174,12 +185,21 @@ EXTERNAL SOURCES:
     :git: https://github.com/1aurabrown/ORStackView.git
 
 CHECKOUT OPTIONS:
+  AFNetworking:
+    :commit: cc4b73ce61b74d366ff4dd706deedccd5b1755f0
+    :git: https://github.com/orta/AFNetworking
+  AFOAuth1Client:
+    :commit: c6eb04f4f8b943d074d9adf91cba6213a09647bb
+    :git: https://github.com/orta/AFOAuth1Client
   ARAnalytics:
     :commit: 2c77b867c9ac3c75595caf6c839a06e6280e5ca1
     :git: https://github.com/alloy/ARAnalytics.git
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
+  Artsy+UIFonts:
+    :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
+    :git: https://github.com/artsy/Artsy-UIFonts
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
     :git: https://github.com/1aurabrown/FODFormKit.git
@@ -196,7 +216,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AFHTTPRequestOperationLogger: 251332cf89812162df96843ca51a76107fb95a94
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
-  AFOAuth1Client: 7bac5f9f00a2a97d99d4cb9942a09d0812c5e5b7
+  AFOAuth1Client: 51d32174520b54d7e15a8b3dd618a9a5b87a6344
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   ARAnalytics: c331321fc6b034ad6249cd43e226d0b262436ce5
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
@@ -204,11 +224,11 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 000af4093f9bdcd0f754e6ebd964c90641389f90
   Artsy+UIColors: d1d5e084a0e542d310c507acb5446bae6a322241
-  Artsy+UIFonts: d447d4efaefbe651f6275b0535444814bbdb4e2d
+  Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy+UILabels: a7c713069e3d10144a3dc8e377bef8b2253cd766
   Artsy-UIButtons: 6f67de2a5285f18acb5d0e2919d1b17188acbc27
   Bolts: f8e2f94edbf9fec7bb8de5ecaaa3aa6b7de6f64e
-  CocoaLumberjack: 555162681b9c20a271909b235c43f6bbd5d512e1
+  CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: 89d19a013279a5604d61650721c15f20fefaaf00
@@ -225,7 +245,7 @@ SPEC CHECKSUMS:
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
   JLRoutes: 5a6096ec514f105fc906f9334c90d8276fe13687
   JSDecoupledAppDelegate: ec2e9480b893fa27ba3db5b12d51a6d5803c550b
-  Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
+  Keys: 253e4d01f8fe0a795e628b0040257c99f6ab7eab
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   libextobjc: f2802d4262f6885570df9799747409ceb1de602c
   Mantle: 7dddb082367d3e13bd244636d56838481c4552fe
@@ -249,4 +269,4 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-COCOAPODS: 0.36.4
+COCOAPODS: 0.37.1

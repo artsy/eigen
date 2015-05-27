@@ -1,7 +1,7 @@
 #import "ARSignUpSplashViewController.h"
 #import "ARAppDelegate.h"
 #import "ARCrossfadingImageView.h"
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import "UIView+HitTestExpansion.h"
 
 @interface ARSignUpSplashTextViewController : UIViewController

@@ -1,10 +1,11 @@
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '7.0'
+platform :ios, '8.0'
 
 # Yep.
 inhibit_all_warnings!
+use_frameworks!
 
 # Allows per-dev overrides
 local_podfile = "Podfile.local"
@@ -31,14 +32,14 @@ plugin 'cocoapods-keys', {
 
 # Core
 pod 'Mantle', '1.5.3'
-pod 'AFNetworking', '1.3.4'
+pod 'AFNetworking', :git => 'https://github.com/orta/AFNetworking', :branch => 'no_ifdefs'
 pod 'AFHTTPRequestOperationLogger', '1.0.0'
 pod 'SDWebImage', '3.7.1'
 pod 'JLRoutes', '1.5'
 pod 'ISO8601DateFormatter', :head
 pod 'KSDeferred', '0.2.0'
 pod 'JSDecoupledAppDelegate', '1.1.0'
-pod 'CocoaLumberjack', '1.8.1'
+pod 'CocoaLumberjack', '~> 2.0'
 pod 'FXBlurView', '1.6.1'
 pod 'MMMarkdown', '0.4'
 pod 'UIAlertView+Blocks', '0.8'
@@ -63,14 +64,15 @@ pod 'Artsy-UIButtons', '~> 1.4'
 pod 'UIView+BooleanAnimations'
 
 if %w(orta ash artsy laura eloy sarahscott).include?(ENV['USER']) || ENV['CI'] == 'true'
-  pod 'Artsy+UIFonts', '1.0.0'
+  pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts"
 else
   pod 'Artsy+OSSUIFonts'
 end
 
 # Auth
 pod 'Facebook-iOS-SDK', '3.14.1'
-pod 'AFOAuth1Client', '0.3.3'
+
+pod 'AFOAuth1Client', :git => "https://github.com/orta/AFOAuth1Client", :branch => "patch-1"
 
 # Language niceities
 pod 'ObjectiveSugar', '1.1.0'
@@ -88,9 +90,7 @@ pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
 # Analytics
 pod 'HockeySDK', :git => 'https://github.com/alloy/HockeySDK-iOS.git', :branch => 'develop'
 pod 'Mixpanel', '2.3.1'
-pod 'ARAnalytics/Mixpanel', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
-pod 'ARAnalytics/HockeyApp', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
-pod 'ARAnalytics/DSL', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
+pod 'ARAnalytics', :subspecs => ["Mixpanel", "HockeyApp", "DSL"], :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
 pod 'UICKeyChainStore', '1.0.5'
 
 # Fairs
@@ -104,7 +104,7 @@ pod 'DHCShakeNotifier', '0.2.0'
 pod 'ARASCIISwizzle', '1.1.0'
 pod 'DRKonamiCode', '1.1.0'
 
-target 'Artsy Tests', :exclusive => true do
+target 'Artsy Tests' do
   pod 'FBSnapshotTestCase', '1.6'
   pod 'Expecta+Snapshots', '~> 1.2'
   pod 'OHHTTPStubs', '3.1.2'

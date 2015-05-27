@@ -1,5 +1,5 @@
 #import "ARParallaxHeaderViewController.h"
-#import <UIImageView+WebCache.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 const CGFloat ARParallaxHeaderViewBannerImageMissingImageHeight = 60.0;
 const CGFloat ARParallaxHeaderViewBannerImageHeight = 180.0;

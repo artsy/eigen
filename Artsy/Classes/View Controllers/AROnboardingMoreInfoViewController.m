@@ -5,7 +5,7 @@
 #import "ARUserManager.h"
 #import "AROnboardingViewController.h"
 #import "UIViewController+FullScreenLoading.h"
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import "UIView+HitTestExpansion.h"
 
 //sigh
