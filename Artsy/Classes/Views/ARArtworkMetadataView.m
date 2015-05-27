@@ -30,7 +30,6 @@
     ARArtworkPreviewActionsView *previewActionsView = [[ARArtworkPreviewActionsView alloc] initWithArtwork:artwork andFair:fair];
     ARArtworkDetailView *artworkDetailView = [[ARArtworkDetailView alloc] initWithArtwork:artwork andFair:fair];
     ARArtworkActionsView *artworkActionsView = [[ARArtworkActionsView alloc] initWithArtwork:artwork];
-    artworkActionsView.alpha = 0;
     self.artworkPreview = artworkPreview;
     self.actionsView = artworkActionsView;
     self.artworkPreviewActions = previewActionsView;
@@ -190,6 +189,7 @@
 -(void)didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView
 {
     [self.delegate artworkMetadataView:self didUpdateArtworkActionsView:actionsView];
+    [self layoutIfNeeded];
 }
 
 #pragma mark - ARArtworkDetailViewDelegate

@@ -7,6 +7,11 @@ static NSCache *imageCache;
 
 + (UIImage *)imageFromColor:(UIColor *)color
 {
+    return [self.class imageFromColor:color withSize:CGSizeMake(1, 1)];
+}
+
++ (UIImage *)imageFromColor:(UIColor *)color withSize:(CGSize)size
+{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         imageCache = [[NSCache alloc] init];
@@ -17,7 +22,7 @@ static NSCache *imageCache;
         return image;
     }
 
-    CGRect rect = CGRectMake(0, 0, 1, 1);
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, [color CGColor]);

@@ -88,7 +88,15 @@
 - (UIImage *)placeholderImageForArtwork:(Artwork *)artwork
 {
     NSURL *imageURL = [NSURL URLWithString:artwork.defaultImage.baseImageURL];
-    return [ARFeedImageLoader bestAvailableCachedImageForBaseURL:imageURL];
+    UIImage *image;
+    image = [ARFeedImageLoader bestAvailableCachedImageForBaseURL:imageURL];
+    if (!image) {
+        // Multiply by 1000 to preserve precision because the image's dimensions get rounded to whole numbers.
+        CGFloat aspectRatio = artwork.aspectRatio ?: 1;
+        CGSize size = CGSizeMake(aspectRatio * 1000, 1000);
+        image = [UIImage imageFromColor:[UIColor artsyLightGrey] withSize:size];
+    }
+    return image;
 }
 
 - (void)setImage:(UIImage *)image
