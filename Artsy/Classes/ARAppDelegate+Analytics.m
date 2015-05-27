@@ -33,6 +33,7 @@
 #import "ARCollectorStatusViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARBrowseCategoriesViewController.h"
+#import "ARAuctionArtworkResultsViewController.h"
 #import "ARArtistBiographyViewController.h"
 
 // Views
@@ -1368,6 +1369,29 @@
                             ARAnalyticsPageName: @"Artist Biography",
                             ARAnalyticsProperties: ^NSDictionary *(ARArtistBiographyViewController *controller, NSArray *_) {
                                 return @{ @"artist_slug": controller.artist.artistID };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARGeneViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Category",
+                            ARAnalyticsProperties: ^NSDictionary *(ARGeneViewController *controller, NSArray *_) {
+                                return @{ @"slug": controller.gene.geneID ?: @"" };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARAuctionArtworkResultsViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Auction results",
+                            ARAnalyticsProperties: ^NSDictionary *(ARAuctionArtworkResultsViewController *controller, NSArray *_) {
+                                return @{ @"artist_slug": controller.artwork.artist.artistID ?: @"",
+                                          @"artwork_slug": controller.artwork.artworkID };
                             }
                         }
                     ]
