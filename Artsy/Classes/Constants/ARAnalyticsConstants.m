@@ -1,5 +1,7 @@
 #import "ARAnalyticsConstants.h"
 
+NSString *const ARAnalyticsBackTapped = @"Back arrow";
+
 NSString *const ARAnalyticsAppUsageCountProperty = @"app launched count";
 NSString *const ARAnalyticsCollectorLevelProperty = @"collector level";
 NSString *const ARAnalyticsPriceRangeProperty = @"collector price range";
@@ -36,11 +38,10 @@ NSString *const ARAnalyticsUserContextEmail = @"email";
 NSString *const ARAnalyticsUserContextTwitter = @"twitter";
 NSString *const ARAnalyticsUserContextFacebook = @"facebook";
 
-NSString *const ARAnalyticsStartedInquiry = @"user started inquiry";
-NSString *const ARAnalyticsCancelledInquiry = @"user cancelled inquiry";
-NSString *const ARAnalyticsSubmittedInquiry = @"user submitted inquiry";
-NSString *const ARAnalyticsInquiryContextSpecialist = @"inquiry specialist";
-NSString *const ARAnalyticsInquiryContextGallery = @"inquiry gallery";
+NSString *const ARAnalyticsStartedGalleryInquiry = @"Contact gallery";
+NSString *const ARAnalyticsStartedSpecialistInquiry = @"Ask a specialist";
+NSString *const ARAnalyticsSubmittedInquiry = @"Sent artwork inquiry";
+NSString *const ARAnalyticsInquiryError = @"Inquiry error";
 
 NSString *const ARAnalyticsOnboardingStarted = @"user started onboarding";
 NSString *const ARAnalyticsOnboardingStartedCollectorLevel = @"user started collector level";
@@ -58,20 +59,20 @@ NSString *const ARAnalyticsTappedHeroUnit = @"tapped hero unit";
 NSString *const ARAnalyticsTappedMainNavigationItem = @"view main navigation item";
 
 NSString *const ARAnalyticsArtworkView = @"artwork view";
-NSString *const ARAnalyticsArtworkViewInRoom = @"artwork view in room";
-NSString *const ARAnalyticsArtworkFavorite = @"artwork favorite";
+NSString *const ARAnalyticsArtworkViewInRoom = @"View in room";
+NSString *const ARAnalyticsArtworkSave = @"Save artwork";
+NSString *const ARAnalyticsArtworkUnsave = @"Unsave artwork";
+NSString *const ARAnalyticsArtworkZoom = @"Artwork Zoom";
 
 NSString *const ARAnalyticsPartnerShowView = @"partner show view";
 
-NSString *const ARAnalyticsShareStarted = @"share started";
-NSString *const ARAnalyticsShareCompleted = @"share completed";
-NSString *const ARAnalyticsShareCancelled = @"share cancelled";
+NSString *const ARAnalyticsShare = @"Share";
 
 NSString *const ARAnalyticsHearted = @"user hearted";
 NSString *const ARAnalyticsUnhearted = @"user unhearted";
 
 NSString *const ARAnalyticsProfileView = @"profile view";
-NSString *const ARAnalyticsProfileFollow = @"profile favorite";
+NSString *const ARAnalyticsPartnerFollow = @"Follow partner";
 
 NSString *const ARAnalyticsFairLeaveFromArtist = @"fair leave from artist";
 NSString *const ARAnalyticsFairGuideView = @"fair guide view";
@@ -83,7 +84,8 @@ NSString *const ARAnalyticsFairFeaturedLinkSelected = @"fair selected featured l
 NSString *const ARAnalyticsFairPostSelected = @"fair selected post";
 
 NSString *const ARAnalyticsArtistView = @"artist view";
-NSString *const ARAnalyticsArtistFollow = @"artist favorite";
+NSString *const ARAnalyticsArtistFollow = @"Follow artist";
+NSString *const ARAnalyticsArtistUnfollow = @"Follow artist";
 NSString *const ARAnalyticsArtistTappedForSale = @"artist tapped for sale";
 
 NSString *const ARAnalyticsGeneView = @"gene view";
@@ -96,9 +98,12 @@ NSString *const ARAnalyticsMenuTappedBrowse = @"user menu tapped browse";
 NSString *const ARAnalyticsMenuTappedSignUp = @"user menu tapped signup";
 NSString *const ARAnalyticsMenuTappedFeature = @"user menu tapped feature";
 
-NSString *const ARAnalyticsSearchOpened = @"search opened";
-NSString *const ARAnalyticsSearchStartedQuery = @"seach started";
-NSString *const ARAnalyticsSearchItemSelected = @"seach item selected";
+NSString *const ARAnalyticsSearchClosed = @"Close search screen";
+NSString *const ARAnalyticsSearchCleared = @"Cleared input in search screen";
+NSString *const ARAnalyticsSearchStartedQuery = @"Searched";
+NSString *const ARAnalyticsSearchItemSelected = @"Selected result from search screen";
+NSString *const ARAnalyticsFairSearch = @"Fair search";
+NSString *const ARAnalyticsFairSearchItemSelected = @"Selected item from fair search";
 
 NSString *const ARAnalyticsTimePerSession = @"app session time";
 
@@ -107,6 +112,8 @@ NSString *const ARAnalyticsOpenedArtsyGravityURL = @"has shown gravity url";
 NSString *const ARAnalyticsErrorFailedToGetFacebookCredentials = @"error failed to get facebook credentials";
 
 NSString *const ARAnalyticsInitialFeedLoadTime = @"initial feed load time";
+
+NSString *const ARAnalyticsExploreTap = @"Select object from explore screen";
 
 NSString *const ARAnalyticsFairMapButtonTapped = @"fair tapped map button";
 NSString *const ARAnalyticsFairMapAnnotationTapped = @"fair tapped map annotation";
