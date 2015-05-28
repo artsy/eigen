@@ -15,17 +15,13 @@ plugin 'cocoapods-keys', {
     :keys => [
         "ArtsyAPIClientSecret",
         "ArtsyAPIClientKey",
-        "HockeyProductionSecret",
-        "HockeyBetaSecret",
-        "MixpanelProductionAPIClientKey",
-        "MixpanelStagingAPIClientKey",
-        "MixpanelDevAPIClientKey",
-        "MixpanelInStoreAPIClientKey",
         "ArtsyFacebookAppID",
         "ArtsyTwitterKey",
         "ArtsyTwitterSecret",
         "ArtsyTwitterStagingKey",
-        "ArtsyTwitterStagingSecret"
+        "ArtsyTwitterStagingSecret",
+        "SegmentProductionWriteKey",
+        "SegmentDevWriteKey"
     ]
 }
 
@@ -86,11 +82,8 @@ pod 'TSMiniWebBrowser@dblock', :head
 pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
 
 # Analytics
-pod 'HockeySDK', :git => 'https://github.com/alloy/HockeySDK-iOS.git', :branch => 'develop'
-pod 'Mixpanel', '2.3.1'
-pod 'ARAnalytics/Mixpanel', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
-pod 'ARAnalytics/HockeyApp', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
-pod 'ARAnalytics/DSL', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
+pod 'HockeySDK', :git => 'https://github.com/bitstadium/HockeySDK-iOS.git', :branch => 'develop'
+pod 'ARAnalytics', :subspecs => ["Segmentio", "HockeyApp", "DSL"], :git => 'https://github.com/ashfurrow/ARAnalytics.git', :branch => 'cleanup'
 pod 'UICKeyChainStore', '1.0.5'
 
 # Fairs

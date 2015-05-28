@@ -201,7 +201,6 @@
                 || [JSON[@"error"] isEqualToString:@"User Already Invited"])) {
                 NSString *source = [self existingAccountSource:JSON];
                 [self accountExists:source];
-            [ARAnalytics event:ARAnalyticsUserAlreadyExistedAtSignUp];
 
         } else {
             [self setFormEnabled:YES];
@@ -211,6 +210,8 @@
 
             [self.email becomeFirstResponder];
         }
+
+        [ARAnalytics event:ARAnalyticsSignUpError];
     }];
 }
 
@@ -224,8 +225,6 @@
      gotUser:^(User *currentUser) {
         @strongify(self);
         [self.delegate signupDone];
-        [ARAnalytics event:ARAnalyticsUserSignedIn withProperties:@{ @"context" : ARAnalyticsUserContextEmail }];
-
     } authenticationFailure:^(NSError *error) {
         @strongify(self);
         [self setFormEnabled:YES];

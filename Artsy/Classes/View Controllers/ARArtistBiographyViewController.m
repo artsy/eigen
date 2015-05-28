@@ -4,7 +4,7 @@
 
 
 @interface ARArtistBiographyViewController () <ARTextViewDelegate>
-@property (nonatomic, strong) Artist *artist;
+@property (nonatomic, strong, readwrite) Artist *artist;
 @property (nonatomic, strong) ORStackScrollView *view;
 @end
 

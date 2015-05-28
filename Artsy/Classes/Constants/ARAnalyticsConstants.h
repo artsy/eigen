@@ -1,3 +1,7 @@
+// Glbal
+
+extern NSString *const ARAnalyticsBackTapped;
+
 // User properties
 
 extern NSString *const ARAnalyticsAppUsageCountProperty;
@@ -17,17 +21,7 @@ extern NSString *const ARAnalyticsFreshInstall;
 // Initial Splash Screen only, not trial splash
 
 extern NSString *const ARAnalyticsTappedSignUp;
-extern NSString *const ARAnalyticsStartedTrial;
 extern NSString *const ARAnalyticsTappedLogIn;
-
-// Sign up
-
-extern NSString *const ARAnalyticsStartedSignup;
-extern NSString *const ARAnalyticsAmendingDetails;
-extern NSString *const ARAnalyticsCompletedSignUp;
-extern NSString *const ARAnalyticsUserAlreadyExistedAtSignUp;
-
-extern NSString *const ARAnalyticsDismissedActiveUserSignUp;
 
 // Onboarding
 
@@ -43,31 +37,26 @@ extern NSString *const ARAnalyticsOnboardingCompleted;
 
 // Sign in
 
-extern NSString *const ARAnalyticsStartedSignIn;
-extern NSString *const ARAnalyticsUserSignedIn;
-extern NSString *const ARAnalyticsSignInError;
+extern NSString *const ARAnalyticsSignInEmail;
 extern NSString *const ARAnalyticsSignInTwitter;
 extern NSString *const ARAnalyticsSignInFacebook;
+extern NSString *const ARAnalyticsSignInError;
 
-// User creation abstracted from specifics like facebook / twitter / email
+// Sign up
 
-extern NSString *const ARAnalyticsUserCreationStarted;
-extern NSString *const ARAnalyticsUserCreationCompleted;
-extern NSString *const ARAnalyticsUserCreationUserError;
-extern NSString *const ARAnalyticsUserCreationUnknownError;
-
-extern NSString *const ARAnalyticsUserContextEmail;
-extern NSString *const ARAnalyticsUserContextTwitter;
-extern NSString *const ARAnalyticsUserContextFacebook;
+extern NSString *const ARAnalyticsSignUpEmail;
+extern NSString *const ARAnalyticsSignUpTwitter;
+extern NSString *const ARAnalyticsSignUpFacebook;
+extern NSString *const ARAnalyticsAccountCreated;
+extern NSString *const ARAnalyticsSignUpError;
+extern NSString *const ARAnalyticsTryWithoutAccount;
 
 // Inquiring
 
-extern NSString *const ARAnalyticsStartedInquiry;
-extern NSString *const ARAnalyticsCancelledInquiry;
+extern NSString *const ARAnalyticsStartedGalleryInquiry;
+extern NSString *const ARAnalyticsStartedSpecialistInquiry;
 extern NSString *const ARAnalyticsSubmittedInquiry;
-
-extern NSString *const ARAnalyticsInquiryContextSpecialist;
-extern NSString *const ARAnalyticsInquiryContextGallery;
+extern NSString *const ARAnalyticsInquiryError;
 
 // Trial
 
@@ -76,10 +65,8 @@ extern NSString *const ARAnalyticsTappedHeroUnit;
 extern NSString *const ARAnalyticsTappedMainNavigationItem;
 
 // Sharing
-extern NSString *const ARAnalyticsShareStarted;
-extern NSString *const ARAnalyticsShareCompleted;
-extern NSString *const ARAnalyticsShareCancelled;
 
+extern NSString *const ARAnalyticsShare;
 extern NSString *const ARAnalyticsHearted;
 extern NSString *const ARAnalyticsUnhearted;
 
@@ -87,12 +74,17 @@ extern NSString *const ARAnalyticsUnhearted;
 
 extern NSString *const ARAnalyticsArtworkView;
 extern NSString *const ARAnalyticsArtworkViewInRoom;
-extern NSString *const ARAnalyticsArtworkFavorite;
+extern NSString *const ARAnalyticsArtworkSave;
+extern NSString *const ARAnalyticsArtworkUnsave;
+extern NSString *const ARAnalyticsArtworkZoom;
+extern NSString *const ARAnalyticsTapPartnerName;
+extern NSString *const ARAnalyticsPartnerShowView;
 
 // Artist
 
 extern NSString *const ARAnalyticsArtistView;
 extern NSString *const ARAnalyticsArtistFollow;
+extern NSString *const ARAnalyticsArtistUnfollow;
 extern NSString *const ARAnalyticsArtistTappedForSale;
 
 // Gene
@@ -102,7 +94,7 @@ extern NSString *const ARAnalyticsGeneFollow;
 
 // Profile
 
-extern NSString *const ARAnalyticsProfileFollow;
+extern NSString *const ARAnalyticsPartnerFollow;
 extern NSString *const ARAnalyticsProfileView;
 
 // Fair
@@ -115,25 +107,17 @@ extern NSString *const ARAnalyticsFairGuideAllExhibitorsSelected;
 extern NSString *const ARAnalyticsFairFeaturedLinkSelected;
 extern NSString *const ARAnalyticsFairPostSelected;
 extern NSString *const ARAnalyticsFairLeaveFromArtist;
-
-// PartnerShow
-
-extern NSString *const ARAnalyticsPartnerShowView;
-
-// Menu
-
-extern NSString *const ARAnalyticsShowMenu;
-extern NSString *const ARAnalyticsMenuTappedHome;
-extern NSString *const ARAnalyticsMenuTappedFavorites;
-extern NSString *const ARAnalyticsMenuTappedBrowse;
-extern NSString *const ARAnalyticsMenuTappedSignUp;
-extern NSString *const ARAnalyticsMenuTappedFeature;
+extern NSString *const ARAnalyticsFairOverviewSelection;
 
 // Search
 
-extern NSString *const ARAnalyticsSearchOpened;
+extern NSString *const ARAnalyticsSearchClosed;
+extern NSString *const ARAnalyticsSearchCleared;
 extern NSString *const ARAnalyticsSearchStartedQuery;
 extern NSString *const ARAnalyticsSearchItemSelected;
+
+extern NSString *const ARAnalyticsFairSearch;
+extern NSString *const ARAnalyticsFairSearchItemSelected;
 
 // App Session
 
@@ -149,11 +133,17 @@ extern NSString *const ARAnalyticsInitialFeedLoadTime;
 
 extern NSString *const ARAnalyticsErrorFailedToGetFacebookCredentials;
 
+// Explore
+
+extern NSString *const ARAnalyticsExploreTap;
 
 // Maps
+
 extern NSString *const ARAnalyticsFairMapButtonTapped;
 extern NSString *const ARAnalyticsFairMapAnnotationTapped;
 extern NSString *const ARAnalyticsFairMapPartnerShowTapped;
 
 // Auctions
+
 extern NSString *const ARAnalyticsAuctionBidTapped;
+extern NSString *const ARAnalyticsAuctionHowBiddingWorks;
