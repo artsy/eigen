@@ -916,9 +916,7 @@
                                 return completed;
                             },
                             ARAnalyticsProperties: ^NSDictionary*(ARSharingController * controller, NSArray *parameters){
-                                NSString *itemType = [NSStringFromClass([controller.object class])
-                                                      stringByReplacingOccurrencesOfString:@"partner"
-                                                      withString:@""].lowercaseString;
+                                NSString *itemType = NSStringFromClass([controller.object class]).lowercaseString;
                                 NSString *activityType = parameters.first;
                                 return @{
                                     @"object_type" : itemType ?: @"",
