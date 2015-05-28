@@ -104,7 +104,7 @@
             return @"collector";
         case ARCollectorLevelInterested:
             return @"interested";
-        case ARCollectorLevelNo:
+        default: // Or ARCollectorLevelNo , since ARCollectorLevel starts at 1 but zero is the default value for a new User instance.
             return @"no";
     }
 }

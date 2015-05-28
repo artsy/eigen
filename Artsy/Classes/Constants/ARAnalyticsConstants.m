@@ -61,7 +61,12 @@ NSString *const ARAnalyticsArtworkUnsave = @"Unsave artwork";
 NSString *const ARAnalyticsArtworkZoom = @"Artwork Zoom";
 NSString *const ARAnalyticsTapPartnerName = @"Tapped gallery name";
 
+NSString *const ARAnalyticsPartnerShowView = @"partner show view";
+
 NSString *const ARAnalyticsShare = @"Share";
+
+NSString *const ARAnalyticsHearted = @"user hearted";
+NSString *const ARAnalyticsUnhearted = @"user unhearted";
 
 NSString *const ARAnalyticsProfileView = @"profile view";
 NSString *const ARAnalyticsPartnerFollow = @"Follow partner";

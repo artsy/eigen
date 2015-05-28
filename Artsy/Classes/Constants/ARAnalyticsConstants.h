@@ -67,6 +67,8 @@ extern NSString *const ARAnalyticsTappedMainNavigationItem;
 // Sharing
 
 extern NSString *const ARAnalyticsShare;
+extern NSString *const ARAnalyticsHearted;
+extern NSString *const ARAnalyticsUnhearted;
 
 // Artwork
 
@@ -76,6 +78,7 @@ extern NSString *const ARAnalyticsArtworkSave;
 extern NSString *const ARAnalyticsArtworkUnsave;
 extern NSString *const ARAnalyticsArtworkZoom;
 extern NSString *const ARAnalyticsTapPartnerName;
+extern NSString *const ARAnalyticsPartnerShowView;
 
 // Artist
 
