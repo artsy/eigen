@@ -133,7 +133,7 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(mapButtonTapped:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(mapButtonTapped)),
                             ARAnalyticsProperties: ^NSDictionary*(ARFairArtistViewController *controller, NSArray *_) {
                                 FairOrganizer *organizer = controller.fair.organizer;
                                 return @{
@@ -283,7 +283,7 @@
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: ARAnalyticsStartedSpecialistInquiry,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactRepresentative:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactRepresentative)),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
                                 return @{
                                     @"artwork_slug": controller.artwork.artworkID ?: @"",
@@ -294,7 +294,7 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsStartedGalleryInquiry,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactGallery:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactGallery)),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
                                 return @{
                                     @"artwork_slug": controller.artwork.artworkID ?: @"",
@@ -335,7 +335,7 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsTapPartnerName,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedOpenArtworkPartner:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedOpenArtworkPartner)),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
                                 return @{
                                     @"gallery_slug": controller.artwork.partner.partnerID ?: @"",
@@ -364,7 +364,7 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsAuctionHowBiddingWorks,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedAuctionInfo:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedAuctionInfo)),
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtworkView,
@@ -378,7 +378,7 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtworkZoom,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(tappedTileableImagePreview:),
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(tappedTileableImagePreview),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
                                 return @{
                                     @"artwork_slug" : controller.artwork.artworkID ?: @"",
