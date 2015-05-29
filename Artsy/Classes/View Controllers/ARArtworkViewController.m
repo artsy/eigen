@@ -7,7 +7,7 @@
 #import "ARArtworkView.h"
 #import "ARArtworkViewController+ButtonActions.h"
 
-@interface ARArtworkViewController() <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARArtworkMetadataViewDelegate, ARPostsViewControllerDelegate>
+@interface ARArtworkViewController() <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>
 
 @property (nonatomic, strong) ARArtworkView *view;
 @property (nonatomic, strong, readonly) ARPostsViewController *postsVC;
@@ -195,8 +195,6 @@
             self.view.metadataView.right.alpha = 1;
         } completion:nil];
     }];
-
-
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -206,24 +204,26 @@
 
 #pragma mark - ARArtworkBlurViewDelegate
 
--(void)artworkBlurView:(ARArtworkBlurbView *)blurbView shouldPresentViewController:(UIViewController *)viewController
+- (void)artworkBlurView:(ARArtworkBlurbView *)blurbView shouldPresentViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
 
-#pragma mark - ARArtworkMetadataViewDelegate
+#pragma mark - ARArtworkDetailViewDelegate
 
--(void)artworkMetadataView:(ARArtworkMetadataView *)metadataView shouldPresentViewController:(UIViewController *)viewController {
+- (void)artworkDetailView:(ARArtworkDetailView *)detailView shouldPresentViewController:(UIViewController *)viewController {
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
 
-- (void)artworkMetadataView:(ARArtworkMetadataView *)metadataView didUpdateArtworkDetailView:(id)detailView
+- (void)didUpdateArtworkDetailView:(id)detailView
 {
     [self.view.stackView setNeedsLayout];
     [self.view.stackView layoutIfNeeded];
 }
 
-- (void)artworkMetadataView:(ARArtworkMetadataView *)metadataView didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView
+#pragma mark - ARArtworkActionsViewDelefate
+
+- (void)didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView
 {
     [self.view.stackView layoutIfNeeded];
 }

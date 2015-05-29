@@ -1,5 +1,12 @@
 #import "ARArtworkViewController.h"
+#import "ARHeartButton.h"
+#import "ARBidButton.h"
 
-@interface ARArtworkViewController (ButtonActions)
+#import "ARArtworkPreviewActionsView.h"
+#import "ARArtworkActionsView.h"
+#import "ARArtworkPreviewImageView.h"
+#import "ARArtworkDetailView.h"
+
+@interface ARArtworkViewController (ButtonActions) <ARArtworkDetailViewButtonDelegate, ARArtworkPreviewActionsViewDelegate, ARArtworkActionsViewDelegate, ARArtworkPreviewImageViewDelegate>
 
 @end

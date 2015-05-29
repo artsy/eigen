@@ -1,6 +1,8 @@
 #import "ARInquireForArtworkViewController.h"
+#import "ARArtworkDetailView.h"
+#import "ARArtworkActionsView.h"
 
-@interface ARArtworkViewController : UIViewController
+@interface ARArtworkViewController : UIViewController <ARArtworkActionsViewDelegate, ARArtworkDetailViewDelegate>
 
 /// Designated initializer
 - (instancetype)initWithArtworkID:(NSString *)artworkID fair:(Fair *)fair;

@@ -61,7 +61,7 @@
     if ([self.artwork.defaultImage needsTiles]) {
 
         // Let the ArtworkVC decide what to do, pass via responder chain
-        [[UIApplication sharedApplication] sendAction:@selector(tappedTileableImagePreview:) to:nil from:self forEvent:nil];
+        [self.delegate tappedTileableImagePreview];
 
     } else {
         // Do a small bounce when tapping an artwork which doesn't go full screen

@@ -345,7 +345,7 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkViewInMap:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkViewInMap)),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *_){
                                 return @{@"artwork_id" : controller.artwork.artworkID ?: @""};
                             },

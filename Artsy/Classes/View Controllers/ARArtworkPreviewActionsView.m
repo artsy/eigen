@@ -52,32 +52,45 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
     ARHeartButton *button = [[ARHeartButton alloc] init];
     [self addSubview:button];
     button.accessibilityIdentifier = @"Favorite Artwork";
-    [button addTarget:nil action:@selector(tappedArtworkFavorite:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
 
 - (ARCircularActionButton *)newShareButton
 {
-    return[self buttonWithName:@"Artwork_Icon_Share" identifier:@"Share Artwork" action:@selector(tappedArtworkShare:)];
+    return[self buttonWithName:@"Artwork_Icon_Share" identifier:@"Share Artwork"];
 }
 
 - (ARCircularActionButton *)newViewInRoomButton
 {
-    return [self buttonWithName:@"Artwork_Icon_VIR" identifier:@"View Artwork in Room" action:@selector(tappedArtworkViewInRoom:)];
+    return [self buttonWithName:@"Artwork_Icon_VIR" identifier:@"View Artwork in Room"];
 }
 
 - (ARCircularActionButton *)newMapButton
 {
-    return [self buttonWithName:@"MapButtonAction" identifier:@"Show the map" action:@selector(tappedArtworkViewInMap:)];
+    return [self buttonWithName:@"MapButtonAction" identifier:@"Show the map"];
 }
 
-- (ARCircularActionButton *)buttonWithName:(NSString *)name identifier:(NSString *)identifier action:(SEL)action
+- (ARCircularActionButton *)buttonWithName:(NSString *)name identifier:(NSString *)identifier
 {
     ARCircularActionButton *button = [[ARCircularActionButton alloc] initWithImageName:name];
     [self addSubview:button];
     button.accessibilityIdentifier = identifier;
-    [button addTarget:nil action:action forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     return button;
+}
+
+- (void)buttonTapped:(id)sender
+{
+    if (sender == self.shareButton) {
+        [self.delegate tappedArtworkShare:sender];
+    } else if (sender == self.favoriteButton) {
+        [self.delegate tappedArtworkFavorite:sender];
+    } else if (sender == self.viewInMapButton) {
+        [self.delegate tappedArtworkViewInMap];
+    } else if (sender == self.viewInRoomButton) {
+        [self.delegate tappedArtworkViewInRoom];
+    }
 }
 
 - (void)toggleViewInRoomButton:(BOOL)show
