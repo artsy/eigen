@@ -37,7 +37,7 @@
     if (self) {
         _pages = @[
            [self pageWithImageName:@"onboard_1.jpg"
-                          bodyCopy:@"Explore and collect\nover 160,000 works from\n2,500 leading galleries,\nart fairs, and museums."],
+                          bodyCopy:@"Explore and collect\nover 280,000 works from\n3,500 leading galleries,\nart fairs, and museums."],
 
            [self pageWithImageName:@"onboard_2.jpg"
                           bodyCopy:@"Favorite artists and works\nto get alerts about\nnew shows and personal recommendations."],
