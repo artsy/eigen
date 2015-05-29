@@ -1,5 +1,6 @@
 #import "ARArtworkViewController.h"
 #import "ARArtworkView.h"
+#import "ARUserManager+Stubs.h"
 #import "ARRouter.h"
 
 @interface ARArtworkViewController (Tests)
@@ -28,6 +29,15 @@ describe(@"buy button", ^{
         [routerMock stopMocking];
         [vcMock stopMocking];
     });
+
+    beforeEach(^{
+        [ARUserManager stubAndLoginWithUsername];
+    });
+
+    afterEach(^{
+        [ARUserManager clearUserData];
+    });
+
 
     it(@"posts order if artwork has no edition sets", ^{
         Artwork *artwork = [Artwork modelWithJSON:@{
