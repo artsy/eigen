@@ -65,11 +65,6 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
     [self observeViewController:NO];
 }
 
-- (void)setEnableNavigationButtons:(BOOL)enabled
-{
-    self.backButton.enabled = enabled;
-}
-
 #pragma mark - Properties
 
 - (void)setDelegate:(id<UINavigationControllerDelegate>)delegate
@@ -164,8 +159,6 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [self setEnableNavigationButtons:NO];
-
     // If it is a non-interactive transition, we fade the buttons in or out
     // ourselves. Otherwise, we'll leave it to the interactive transition.
     if (self.interactiveTransitionHandler == nil) {
@@ -180,8 +173,6 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [self setEnableNavigationButtons:YES];
-
     if ([viewController conformsToProtocol:@protocol(ARMenuAwareViewController)]) {
         self.observedViewController = (UIViewController<ARMenuAwareViewController> *)viewController;
     } else {
@@ -357,8 +348,7 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
     NSArray *keyPaths = @[
         @keypath(vc, hidesBackButton),
-        @keypath(vc, hidesToolbarMenu),
-        @keypath(vc, enableMenuButtons)
+        @keypath(vc, hidesToolbarMenu)
     ];
 
     [keyPaths each:^(NSString *keyPath) {
@@ -381,10 +371,6 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
         if ([vc respondsToSelector:@selector(hidesToolbarMenu)]) {
             [[ARTopMenuViewController sharedController] hideToolbar:vc.hidesToolbarMenu animated:YES];
-        }
-
-        if ([vc respondsToSelector:@selector(enableMenuButtons)]) {
-            self.backButton.enabled = vc.enableMenuButtons;
         }
 
     } else if (context == ARNavigationControllerScrollingChiefContext) {
