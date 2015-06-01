@@ -35,7 +35,7 @@
     return self;
 }
 
-- (void)setDelegate:(id<ARArtworkActionsViewDelegate>)delegate
+- (void)setDelegate:(id<ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate>)delegate
 {
     _delegate = delegate;
     @weakify(self);
@@ -79,14 +79,14 @@
         ARBidButton *bidButton = [[ARBidButton alloc] init];
         bidButton.auctionState = self.saleArtwork.auctionState;
         [self addSubview:bidButton withTopMargin: @"30" sideMargin:@"0"];
-        [bidButton addTarget:nil action:@selector(tappedBidButton:) forControlEvents:UIControlEventTouchUpInside];
+        [bidButton addTarget:self action:@selector(tappedBidButton:) forControlEvents:UIControlEventTouchUpInside];
         self.bidButton = bidButton;
 
         if ([self showBuyersPremium]) {
             ARInquireButton *premium = [[ARInquireButton alloc] init];
             premium.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
             [premium setUnderlinedTitle:@"This work has a Buyer's Premium" underlineRange:NSMakeRange(16, 15) forState:UIControlStateNormal];
-            [premium addTarget:nil action:@selector(tappedBuyersPremium:) forControlEvents:UIControlEventTouchUpInside];
+            [premium addTarget:self action:@selector(tappedBuyersPremium:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:premium withTopMargin:@"8" sideMargin:nil];
         }
 
@@ -97,7 +97,7 @@
 
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
             [buy setTitle:@"Buy Now" forState:UIControlStateNormal];
-            [buy addTarget:nil action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
+            [buy addTarget:self action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:buy withTopMargin:@"8" sideMargin:nil];
         }
 
@@ -114,7 +114,7 @@
         if ([self showBuyButton]) {
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
             [buy setTitle:@"Buy" forState:UIControlStateNormal];
-            [buy addTarget:nil action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
+            [buy addTarget:self action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
 
             [buttonsWhoseMarginCanChange addObject:buy];
 
@@ -134,7 +134,7 @@
         ARBlackFlatButton *contact = [[ARBlackFlatButton alloc] init];
         [contact setTitle:title forState:UIControlStateNormal];
 
-        [contact addTarget:nil action:@selector(tappedContactGallery:) forControlEvents:UIControlEventTouchUpInside];
+        [contact addTarget:self action:@selector(tappedContactGallery:) forControlEvents:UIControlEventTouchUpInside];
 
         [buttonsWhoseMarginCanChange addObject:contact];
 
@@ -145,7 +145,7 @@
     if ([self showInquireButton]) {
         ARInquireButton *specialist = [[ARInquireButton alloc] init];
         [specialist setTitle:@"Ask a Specialist" forState:UIControlStateNormal];
-        [specialist addTarget:nil action:@selector(tappedContactRepresentative:) forControlEvents:UIControlEventTouchUpInside];
+        [specialist addTarget:self action:@selector(tappedContactRepresentative:) forControlEvents:UIControlEventTouchUpInside];
 
         [buttonsWhoseMarginCanChange addObject:specialist];
 
@@ -156,7 +156,7 @@
     if ([self showAuctionControls]) {
         ARInquireButton *auctionsInfo = [[ARInquireButton alloc] init];
         [auctionsInfo setTitle:@"How bidding works" forState:UIControlStateNormal];
-        [auctionsInfo addTarget:nil action:@selector(tappedAuctionInfo:) forControlEvents:UIControlEventTouchUpInside];
+        [auctionsInfo addTarget:self action:@selector(tappedAuctionInfo:) forControlEvents:UIControlEventTouchUpInside];
 
         [buttonsWhoseMarginCanChange addObject:auctionsInfo];
 
@@ -166,7 +166,7 @@
     if ([self showConditionsOfSale]) {
         ARInquireButton *conditions = [[ARInquireButton alloc] init];
         [conditions setTitle:@"Conditions of Sale" forState:UIControlStateNormal];
-        [conditions addTarget:nil action:@selector(conditionsOfSaleTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [conditions addTarget:self action:@selector(tappedConditionsOfSale:) forControlEvents:UIControlEventTouchUpInside];
 
         [buttonsWhoseMarginCanChange addObject:conditions];
 
@@ -187,6 +187,51 @@
     [self.delegate didUpdateArtworkActionsView:self];
 }
 
+- (void)tappedContactGallery:(id)sender
+{
+    [self.delegate tappedContactGallery];
+}
+
+- (void)tappedContactRepresentative:(id)sender
+{
+    [self.delegate tappedContactRepresentative];
+}
+
+- (void)tappedAuctionInfo:(id)sender
+{
+    [self.delegate tappedAuctionInfo];
+}
+
+- (void)tappedConditionsOfSale:(id)sender
+{
+    [self.delegate tappedConditionsOfSale];
+}
+
+- (void)tappedBidButton:(id)sender
+{
+    [self.delegate tappedBidButton];
+}
+
+- (void)tappedBuyersPremium:(id)sender
+{
+    [self.delegate tappedBuyersPremium];
+}
+
+- (void)tappedBuyButton:(id)sender
+{
+    [self.delegate tappedBuyButton];
+}
+
+- (void)tappedAuctionResults:(id)sender
+{
+    [self.delegate tappedAuctionResults];
+}
+
+- (void)tappedMoreInfo:(id)sender
+{
+    [self.delegate tappedMoreInfo];
+}
+
 - (NSArray *)navigationButtons
 {
     NSMutableArray *navigationButtons = [[NSMutableArray alloc] init];
@@ -199,8 +244,7 @@
             },
             ARNavigationButtonHandlerKey: ^(UIButton *sender) {
                 // This will pass the message up the responder chain
-                [[UIApplication sharedApplication] sendAction:@selector(tappedAuctionResults:)
-                                                to:nil from:self forEvent:nil];
+                [self.delegate tappedAuctionResults];
             }
         }];
     }
@@ -213,8 +257,7 @@
                 },
             ARNavigationButtonHandlerKey: ^(UIButton *sender) {
                 // This will pass the message up the responder chain
-                [[UIApplication sharedApplication] sendAction:@selector(tappedMoreInfo:)
-                                                to:nil from:self forEvent:nil];
+                [self.delegate tappedMoreInfo];
             }
         }];
     }

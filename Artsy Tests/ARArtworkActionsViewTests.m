@@ -12,6 +12,16 @@
 @property (nonatomic, strong) ARArtworkAuctionPriceView *auctionPriceView;
 - (void)updateUI;
 - (void)setupCountdownView;
+
+- (void)tappedContactGallery:(id)sender;
+- (void)tappedContactRepresentative:(id)sender;
+- (void)tappedAuctionInfo:(id)sender;
+- (void)tappedConditionsOfSale:(id)sender;
+- (void)tappedBidButton:(id)sender;
+- (void)tappedBuyersPremium:(id)sender;
+- (void)tappedBuyButton:(id)sender;
+- (void)tappedAuctionResults:(id)sender;
+- (void)tappedMoreInfo:(id)sender;
 @end
 
 SpecBegin(ARArtworkActionsView)
@@ -254,7 +264,7 @@ context(@"price view", ^{
             [view layoutIfNeeded];
             expect(view.auctionPriceView).to.haveValidSnapshot();
         });
-
+        
         it(@"reserve not met and has no bids", ^{
             view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"reserve_status" : @"reserve_not_met" }];
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1-12-30 00:00:00", @"end_at" : @"1-12-30 00:00:00" }];
@@ -264,6 +274,106 @@ context(@"price view", ^{
             [view layoutIfNeeded];
             expect(view.auctionPriceView).to.haveValidSnapshot();
         });
+    });
+});
+
+describe(@"mocked artwork promises", ^{
+    beforeEach(^{
+        id artwork = [OCMockObject mockForClass:[Artwork class]];
+        [[[artwork stub] andReturn:[KSPromise new]] onArtworkUpdate:OCMOCK_ANY failure:OCMOCK_ANY];
+        [[[artwork stub] andReturn:[KSPromise new]] onSaleArtworkUpdate:OCMOCK_ANY failure:OCMOCK_ANY];
+
+        view.artwork = artwork;
+    });
+
+    it(@"forwards contact gallery to delegate", ^{
+        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
+        view.delegate = mockDelegate;
+
+        [[mockDelegate expect] tappedContactGallery];
+        [view tappedContactGallery:nil];
+
+        [mockDelegate verify];
+    });
+
+    it(@"forwards contact specialist to delegate", ^{
+        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
+        view.delegate = mockDelegate;
+
+        [[mockDelegate expect] tappedContactRepresentative];
+        [view tappedContactRepresentative:nil];
+
+        [mockDelegate verify];
+    });
+
+    it(@"forwards auction info to delegate", ^{
+        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
+        view.delegate = mockDelegate;
+
+        [[mockDelegate expect] tappedAuctionInfo];
+        [view tappedAuctionInfo:nil];
+
+        [mockDelegate verify];
+    });
+
+    it(@"forwards conditions of sale to delegate", ^{
+        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
+        view.delegate = mockDelegate;
+
+        [[mockDelegate expect] tappedConditionsOfSale];
+        [view tappedConditionsOfSale:nil];
+
+        [mockDelegate verify];
+    });
+
+    it(@"forwards bid button to delegate", ^{
+        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
+        view.delegate = mockDelegate;
+
+        [[mockDelegate expect] tappedBidButton];
+        [view tappedBidButton:nil];
+
+        [mockDelegate verify];
+    });
+
+    it(@"forwards buyers premium to delegate", ^{
+        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
+        view.delegate = mockDelegate;
+
+        [[mockDelegate expect] tappedBuyersPremium];
+        [view tappedBuyersPremium:nil];
+
+        [mockDelegate verify];
+    });
+
+    it(@"forwards buy button to delegate", ^{
+        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
+        view.delegate = mockDelegate;
+
+        [[mockDelegate expect] tappedBuyButton];
+        [view tappedBuyButton:nil];
+
+        [mockDelegate verify];
+    });
+
+    it(@"forwards auction results to delegate", ^{
+        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
+        view.delegate = mockDelegate;
+
+        [[mockDelegate expect] tappedAuctionResults];
+        [view tappedAuctionResults:nil];
+
+        [mockDelegate verify];
+    });
+
+    it(@"forwards more info to delegate", ^{
+        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
+        view.delegate = mockDelegate;
+
+        [[mockDelegate expect] tappedMoreInfo];
+        [view tappedMoreInfo:nil];
+
+        [mockDelegate verify];
     });
 });
 

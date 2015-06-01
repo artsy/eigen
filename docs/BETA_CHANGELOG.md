@@ -1,5 +1,6 @@
 ## Next
 
+* Fix problems tapping artwork buttons - 1aurabrown & ashfurrow
 * Remove featured artworks section from iPad - 1aurabrown
 * Fix missing hero units on first launch - 1aurabrown
 * Make sure keyboard is dismissed when App Search is closed - 1aurabrown

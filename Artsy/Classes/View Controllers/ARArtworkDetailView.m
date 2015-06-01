@@ -34,7 +34,7 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
     return self;
 }
 
-- (void)setDelegate:(id<ARArtworkDetailViewDelegate>)delegate
+- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate>)delegate
 {
     _delegate = delegate;
     @weakify(self);
@@ -274,20 +274,17 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
 
 - (void)openArtworkArtist:(UIGestureRecognizer *)tapGesture
 {
-    // This will pass the message up the responder chain
-    [[UIApplication sharedApplication] sendAction:@selector(tappedOpenArtworkArtist:) to:nil from:self forEvent:nil];
+    [self.delegate tappedOpenArtworkArtist];
 }
 
 - (void)openArtworkFair:(UIGestureRecognizer *)tapGesture
 {
-    // This will pass the message up the responder chain
-    [[UIApplication sharedApplication] sendAction:@selector(tappedOpenFair:) to:nil from:self forEvent:nil];
+    [self.delegate tappedOpenFair];
 }
 
 - (void)openArtworkPartner:(UIGestureRecognizer *)tapGesture
 {
-    // This will pass the message up the responder chain
-    [[UIApplication sharedApplication] sendAction:@selector(tappedOpenArtworkPartner:) to:nil from:self forEvent:nil];
+    [self.delegate tappedOpenArtworkPartner];
 }
 
 #pragma mark - ARTextViewDelegate
