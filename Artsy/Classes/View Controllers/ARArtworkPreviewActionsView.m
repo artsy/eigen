@@ -6,10 +6,10 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 @interface ARArtworkPreviewActionsView()
 
 /// The button for indicating you're favoriting a work
-@property (readonly, nonatomic, strong) ARHeartButton *favoriteButton;
+@property (readwrite, nonatomic, strong) ARHeartButton *favoriteButton;
 
 /// The button for sharing a work over airplay / twitter / fb
-@property (readonly, nonatomic, strong) ARCircularActionButton *shareButton;
+@property (readwrite, nonatomic, strong) ARCircularActionButton *shareButton;
 
 /// The button for viewing a room, initially hidden, only available
 /// if the Artwork can be viewed in a room.
