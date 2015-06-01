@@ -6,6 +6,7 @@
 #import <ORStackView/ORStackView.h>
 #import "ARArtworkDetailView.h"
 #import "ARArtworkActionsView.h"
+#import "ARArtworkPreviewImageView.h"
 
 @class ARArtworkMetadataView;
 
@@ -17,7 +18,7 @@
 
 - (UIImageView *)imageView;
 
-- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkActionsViewDelegate>)delegate;
+- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate>)delegate;
 
 @property (nonatomic, strong, readonly) UIView *left;
 @property (nonatomic, strong, readonly) UIView *right;

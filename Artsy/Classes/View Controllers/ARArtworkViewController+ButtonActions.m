@@ -192,7 +192,7 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-#pragma mark - ARArtworkDetailViewButtonDelegate
+#pragma mark - ARArtworkDetailViewDelegate
 
 - (void)tappedOpenArtworkPartner
 {

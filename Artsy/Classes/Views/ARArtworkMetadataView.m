@@ -140,7 +140,7 @@
     }
 }
 
-- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkActionsViewDelegate, ARArtworkPreviewImageDelegate>)delegate
+- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate>)delegate
 {
     self.artworkPreview.delegate = delegate;
     self.artworkDetailView.delegate = delegate;

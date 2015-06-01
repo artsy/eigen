@@ -7,6 +7,6 @@
 #import "ARArtworkPreviewImageView.h"
 #import "ARArtworkDetailView.h"
 
-@interface ARArtworkViewController (ButtonActions) <ARArtworkDetailViewButtonDelegate, ARArtworkPreviewActionsViewDelegate, ARArtworkActionsViewDelegate, ARArtworkPreviewImageViewDelegate>
+@interface ARArtworkViewController (ButtonActions) <ARArtworkDetailViewButtonDelegate, ARArtworkPreviewActionsViewDelegate, ARArtworkActionsViewDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkActionsViewButtonDelegate>
 
 @end
