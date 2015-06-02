@@ -1,5 +1,9 @@
 ## Next
 
+* Fix a crash when changing orientation on the artwork view while the sign-in view is shown - alloy
+
+## 2015.05.27
+
 * Fix problems tapping artwork buttons - 1aurabrown & ashfurrow
 * Remove featured artworks section from iPad - 1aurabrown
 * Fix missing hero units on first launch - 1aurabrown
