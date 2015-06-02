@@ -187,11 +187,17 @@
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self.view.metadataView updateConstraintsIsLandscape:size.width > size.height];
 
+    // Capture the duration now, because the coordinator’s internal context will be gone by the time the animation
+    // completion block is called *if* the transition is interrupted by the sign-in view controller being shown modally.
+    //
+    // See https://github.com/artsy/eigen/issues/494
+    NSTimeInterval transitionDuration = coordinator.transitionDuration;
+
     self.view.metadataView.right.alpha = 1;
     [UIView animateWithDuration:.1 animations:^{
         self.view.metadataView.right.alpha = 0;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.1 delay:coordinator.transitionDuration -  .2 options:0 animations:^{
+        [UIView animateWithDuration:.1 delay:transitionDuration-.2 options:0 animations:^{
             self.view.metadataView.right.alpha = 1;
         } completion:nil];
     }];
