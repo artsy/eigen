@@ -58,4 +58,6 @@
 
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 
+-(BOOL)currentContentFillsView;
+
 @end
