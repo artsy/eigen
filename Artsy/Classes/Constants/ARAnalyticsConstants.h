@@ -25,6 +25,8 @@ extern NSString *const ARAnalyticsTappedLogIn;
 
 // Onboarding
 
+extern NSString *const ARAnalyticsSlideshowStarted;
+
 extern NSString *const ARAnalyticsOnboardingStarted;
 extern NSString *const ARAnalyticsOnboardingStartedCollectorLevel;
 extern NSString *const ARAnalyticsOnboardingCompletedCollectorLevel;

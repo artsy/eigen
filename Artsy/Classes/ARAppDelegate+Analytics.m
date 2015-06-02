@@ -422,6 +422,39 @@
                     ]
                 },
                 @{
+                    ARAnalyticsClass: ARSignUpActiveUserViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsTappedLogIn,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(goToLogin:),
+                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
+                                return @{@"active_user": @"true"};
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpEmail,
+                            ARAnalyticsSelectorName: @"signUpWithEmail:",
+                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
+                                return @{@"active_user": @"true"};
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpFacebook,
+                            ARAnalyticsSelectorName: @"connectWithFacebook:",
+                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
+                                return @{@"active_user": @"true"};
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpTwitter,
+                            ARAnalyticsSelectorName: @"connectWithTwitter:",
+                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
+                                return @{@"active_user": @"true"};
+                            }
+                        },
+                    ]
+                },
+                @{
                     ARAnalyticsClass: ARLoginViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -636,7 +669,7 @@
                                     @"tap_threshold" : @(threshold)
                                 };
                             },
-                        },
+                        }
                     ]
                 },
                 @{
@@ -839,7 +872,19 @@
                     ARAnalyticsClass: AROnboardingViewController.class,
                     ARAnalyticsDetails: @[
                         @{
+                            ARAnalyticsEventName: ARAnalyticsSlideshowStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(startSlideshow)),
+                        },
+                        @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(splashDone:)),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(splashDoneWithLogin:)),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsAccountCreated,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(signupDone)),
                         },
                         @{
@@ -886,7 +931,24 @@
                                     @"collector_level" : collectorLevel
                                 };
                             },
-                        }
+                        },
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARSignupViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpTwitter,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(fb:),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpFacebook,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(twitter:),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpEmail,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(email:),
+                        },
                     ]
                 },
                 @{
