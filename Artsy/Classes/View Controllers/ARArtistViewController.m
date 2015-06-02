@@ -367,6 +367,12 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     }
 }
 
+- (void)checkForAdditionalArtworksToFillView {
+    if ([self.artworkVC currentContentFillsView] == NO) {
+        [self getMoreArtworks];
+    }
+}
+
 - (void)getMoreArtworks
 {
     if (![self shouldFetchArtworks]) { return; }
@@ -374,8 +380,8 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     ARArtistArtworksDisplayMode displayMode = self.displayMode;
     [self setIsGettingArtworks:YES displayMode:displayMode];
 
+    NSInteger lastPage = [self lastPageForDisplayMode:displayMode];
     BOOL showingForSale = (displayMode == ARArtistArtworksDisplayForSale);
-    NSInteger lastPage = (showingForSale) ? self.forSaleArtworksLastPage : self.allArtworksLastPage;
     NSDictionary *params = (showingForSale) ? @{ @"filter[]" : @"for_sale" } : nil;
 
     @weakify(self);
@@ -383,6 +389,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
         @strongify(self);
         [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
         [self handleFetchedArtworks:artworks displayMode:self.displayMode];
+        [self checkForAdditionalArtworksToFillView];
     } failure:^(NSError *error) {
         @strongify(self);
         ARErrorLog(@"Could not get Artist Artworks: %@", error.localizedDescription);
@@ -420,9 +427,11 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"forSale == YES"];
     NSOrderedSet *filteredResults = [self.allArtworks filteredOrderedSetUsingPredicate:predicate];
-
     self.forSaleFilteredArtworks = filteredResults;
-    [self.artworkVC appendItems:[[self artworksForDisplayMode:self.displayMode] array]];
+
+    if (displayMode == self.displayMode) {
+        [self.artworkVC appendItems:artworks];
+    }
 
     [self.view layoutSubviews];
 }
