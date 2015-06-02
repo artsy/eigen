@@ -12,15 +12,8 @@ NSString *const ARAnalyticsNotificationTapped = @"notification tapped";
 
 NSString *const ARAnalyticsFreshInstall = @"first user install";
 
-NSString *const ARAnalyticsTappedSignUp = @"tapped sign up";
-NSString *const ARAnalyticsTappedLogIn = @"Login";
-
-NSString *const ARAnalyticsStartedSignup = @"started sign up";
-NSString *const ARAnalyticsAmendingDetails = @"editing sign up";
-NSString *const ARAnalyticsCompletedSignUp = @"signed up";
-NSString *const ARAnalyticsUserAlreadyExistedAtSignUp = @"user already existed at signup";
-
-NSString *const ARAnalyticsDismissedActiveUserSignUp = @"dismissed active user signup";
+NSString *const ARAnalyticsTappedSignUp = @"Tapped sign up";
+NSString *const ARAnalyticsTappedLogIn = @"Tapped log in";
 
 NSString *const ARAnalyticsSignInEmail = @"Login with email";
 NSString *const ARAnalyticsSignInTwitter = @"Login with twitter";
@@ -38,6 +31,8 @@ NSString *const ARAnalyticsStartedGalleryInquiry = @"Contact gallery";
 NSString *const ARAnalyticsStartedSpecialistInquiry = @"Ask a specialist";
 NSString *const ARAnalyticsSubmittedInquiry = @"Sent artwork inquiry";
 NSString *const ARAnalyticsInquiryError = @"Inquiry error";
+
+NSString *const ARAnalyticsSlideshowStarted = @"Slideshow started";
 
 NSString *const ARAnalyticsOnboardingStarted = @"user started onboarding";
 NSString *const ARAnalyticsOnboardingStartedCollectorLevel = @"user started collector level";
