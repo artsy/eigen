@@ -1,5 +1,9 @@
 ## Next
 
+* Fix artwork preview action buttons not being hooked-up - alloy
+
+## 2015.06.02
+
 * Fix a crash when changing orientation on the artwork view while the sign-in view is shown - alloy
 * Fix problems tapping artwork buttons - 1aurabrown & ashfurrow
 * Fixes artworks on artist page not loading subsequent pages on iPad - ash

@@ -7,6 +7,7 @@
 #import "ARArtworkDetailView.h"
 #import "ARArtworkActionsView.h"
 #import "ARArtworkPreviewImageView.h"
+#import "ARArtworkPreviewActionsView.h"
 
 @class ARArtworkMetadataView;
 
@@ -18,7 +19,7 @@
 
 - (UIImageView *)imageView;
 
-- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate>)delegate;
+- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkPreviewActionsViewDelegate>)delegate;
 
 @property (nonatomic, strong, readonly) UIView *left;
 @property (nonatomic, strong, readonly) UIView *right;
