@@ -1,6 +1,4 @@
 #import "ARArtworkMetadataView.h"
-#import "ARArtworkPreviewImageView.h"
-#import "ARArtworkPreviewActionsView.h"
 #import "ARSplitStackView.h"
 #import "ARWhitespaceGobbler.h"
 
@@ -140,9 +138,10 @@
     }
 }
 
-- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate>)delegate
+- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkPreviewActionsViewDelegate>)delegate
 {
     self.artworkPreview.delegate = delegate;
+    self.artworkPreviewActions.delegate = delegate;
     self.artworkDetailView.delegate = delegate;
     self.actionsView.delegate = delegate;
 }
