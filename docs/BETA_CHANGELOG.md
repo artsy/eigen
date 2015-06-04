@@ -2,6 +2,7 @@
 
 * Fix artwork preview action buttons not being hooked-up - alloy
 * Fix for related artworks insets being the devices longest length after rotation - orta
+* Fix for bottom of artwork view getting truncated after enabling VIR mode - alloy
 
 ## 2015.06.02
 
