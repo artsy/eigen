@@ -1,3 +1,22 @@
+## 1.9.0 (04/06/2015)
+
+* Add iPad support - 1aurabrown
+* Drop iOS 7 support - ashfurrow
+* Fixes artworks on artist page displaying duplicate results - ash
+* Remove ability to zoom internal web views - 1aurabrown
+* Add Conditions of Sale link to works at auction - 1aurabrown
+* Add top rule to main nav to separate it from black content - 1aurabrown
+* Fix buttons that have a partial underlined title on iOS 8.0, 8.1, and 8.2 - alloy
+* Add ability to paginate left and right by tapping hero unit page control - 1aurabrown
+* Remove progress indicator from martsy views as soon as the state of the webview is at DOMContentLoaded - alloy
+* Really only show artworks that are for sale on an artist’s ‘for sale’ tab - alloy
+* Re-fetch hero units every time they will appear - 1aurabrown
+* Ensure artworks in a collection view do not stick out too much to the right - alloy
+* Add `x-callback-url` infrastructure which for now allows external applications to open an artwork in a native view - 1aurabrown
+* Make sure internal web views are not zoomable - 1aurabrown
+* Fix autolayout-related crashes and failing tests - 1aurabrown
+* Fix buggy swiping between artworks - 1aurabrown
+
 ## 1.8.0 (01/04/2015)
 
 * Make Fairs with a FairOrganizer ( e.g. fairs we've worked with for multiple years ) go to martsy instead of native - orta
