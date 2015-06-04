@@ -185,6 +185,7 @@
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
     [self.view.metadataView updateConstraintsIsLandscape:size.width > size.height];
 
     // Capture the duration now, because the coordinator’s internal context will be gone by the time the animation
