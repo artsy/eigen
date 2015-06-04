@@ -163,6 +163,11 @@
         [artworkImageView removeFromSuperview];
 
         [transitionContext completeTransition:YES];
+
+        // Ensure the artwork VC is properly layed out to work around the issue described here:
+        // https://github.com/artsy/eigen/issues/507
+        [artworkController.navigationController.view setNeedsLayout];
+        [artworkController.navigationController.view layoutIfNeeded];
     }];
 
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
@@ -172,6 +177,5 @@
     [artworkImageView.layer addAnimation:anim forKey:@"shadowOpacity"];
     artworkImageView.layer.shadowOpacity = 0.0;
 }
-
 
 @end
