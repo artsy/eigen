@@ -94,16 +94,13 @@ distribute:
 	 https://rink.hockeyapp.net/api/2/apps/upload \
 	 | grep -v "errors"
 
-appstore: TARGETED_DEVICE_FAMILY = 1
 appstore: update_bundle_version set_git_properties change_version_to_date set_targeted_device_family
 
-appledemo: TARGETED_DEVICE_FAMILY = 1
 appledemo: NOTIFY = 0
 appledemo: CONFIGURATION = "Apple Demo"
 appledemo: set_git_properties change_version_to_date set_targeted_device_family
 appledemo: ipa distribute
 
-next: TARGETED_DEVICE_FAMILY = \"1,2\"
 next: update_bundle_version set_git_properties change_version_to_date set_targeted_device_family
 
 deploy: ipa distribute
