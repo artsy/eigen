@@ -1,4 +1,4 @@
-## 1.9.0 (04/06/2015)
+## 2.0.0 (05/06/2015)
 
 * Add iPad support - 1aurabrown
 * Drop iOS 7 support - ashfurrow
