@@ -153,11 +153,20 @@ describe(@"authenticated", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://m.artsy.net/log_in"]];
             id mockUser = [OCMockObject mockForClass:[User class]];
             [[[mockUser stub] andReturnValue:OCMOCK_VALUE(NO)] isTrialUser];
+
             id mock = [OCMockObject partialMockForObject:[ARTrialController instance]];
             [[mock reject] presentTrialWithContext:ARTrialContextNotTrial fromTarget:[OCMArg any] selector:[OCMArg anySelector]];
+
+            id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+            [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
+
             expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther]).to.beFalsy();
+
             [mock verify];
+            [switchboardMock verify];
+
             [mockUser stopMocking];
+            [switchboardMock stopMocking];
             [mock stopMocking];
         });
     });
@@ -205,11 +214,41 @@ describe(@"unauthenticated", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://m.artsy.net/log_in"]];
             id mockUser = [OCMockObject mockForClass:[User class]];
             [[[mockUser stub] andReturnValue:OCMOCK_VALUE(YES)] isTrialUser];
+
             id mock = [OCMockObject partialMockForObject:[ARTrialController instance]];
             [[mock expect] presentTrialWithContext:ARTrialContextNotTrial fromTarget:[OCMArg any] selector:[OCMArg anySelector]];
+
+            id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+            [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
+
             expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther]).to.beFalsy();
+
             [mock verify];
+            [switchboardMock verify];
+
             [mockUser stopMocking];
+            [switchboardMock stopMocking];
+            [mock stopMocking];
+        });
+
+        it(@"shows a trial login/signup view on a request to sign_up", ^{
+            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://m.artsy.net/sign_up"]];
+            id mockUser = [OCMockObject mockForClass:[User class]];
+            [[[mockUser stub] andReturnValue:OCMOCK_VALUE(YES)] isTrialUser];
+
+            id mock = [OCMockObject partialMockForObject:[ARTrialController instance]];
+            [[mock expect] presentTrialWithContext:ARTrialContextNotTrial fromTarget:[OCMArg any] selector:[OCMArg anySelector]];
+
+            id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+            [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
+
+            expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther]).to.beFalsy();
+
+            [mock verify];
+            [switchboardMock verify];
+
+            [mockUser stopMocking];
+            [switchboardMock stopMocking];
             [mock stopMocking];
         });
     });

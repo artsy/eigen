@@ -184,7 +184,7 @@
             [ARTrialController presentTrialWithContext:ARTrialContextNotTrial fromTarget:self selector:@selector(userDidSignUp)];
         }
         return NO;
-        
+
     } else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
         if (viewController) {
