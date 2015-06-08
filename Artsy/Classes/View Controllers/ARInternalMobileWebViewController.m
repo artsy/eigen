@@ -177,13 +177,6 @@
 
         [self.shareValidator shareURL:request.URL inView:self.view frame:(CGRect){ .origin = lastTouchPointInView, .size = CGSizeZero }];
         return NO;
-    }
-    else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
-        if (viewController) {
-            [self.navigationController pushViewController:viewController animated:YES];
-            return NO;
-        }
 
     } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
         // hijack AJAX requests
@@ -191,6 +184,13 @@
             [ARTrialController presentTrialWithContext:ARTrialContextNotTrial fromTarget:self selector:@selector(userDidSignUp)];
         }
         return NO;
+        
+    } else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
+        if (viewController) {
+            [self.navigationController pushViewController:viewController animated:YES];
+            return NO;
+        }
     }
 
     return YES;
