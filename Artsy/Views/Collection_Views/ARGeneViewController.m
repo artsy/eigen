@@ -140,7 +140,7 @@
 
     [self ar_addModernChildViewController:self.artworksViewController];
 
-    [self.artworksViewController.view constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:nil];
+    [self.artworksViewController.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:nil];
     [self.artworksViewController.view alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
 
     self.artworksViewController.collectionView.showsVerticalScrollIndicator = YES;

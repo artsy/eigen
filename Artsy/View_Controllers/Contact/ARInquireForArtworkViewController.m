@@ -249,8 +249,8 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
     // We will toggle the priority of the second constraint to determine whether or not it should take
     // precedence over the first in order to show/hide the form.
-    [topContainer constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"0@500"];
-    _hideInquiryConstraint = [[topContainer constrainTopSpaceToView:(UIView *)self.bottomLayoutGuide predicate:@"0@999"] lastObject];
+    [topContainer constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0@500"];
+    _hideInquiryConstraint = [[topContainer constrainTopSpaceToView:self.flk_bottomLayoutGuide predicate:@"0@999"] lastObject];
 
     _topContainer = topContainer;
     UIView *inquiryFormView = [[UIView alloc] init];
@@ -263,7 +263,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     viewBehindKeyboard.backgroundColor = [UIColor blackColor];
     [self.view addSubview:viewBehindKeyboard];
     [viewBehindKeyboard alignLeading:@"0" trailing:@"0" toView:self.view];
-    _keyboardPositionConstraint = [[viewBehindKeyboard alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:(UIView *)self.bottomLayoutGuide predicate:nil] lastObject];
+    _keyboardPositionConstraint = [[viewBehindKeyboard constrainTopSpaceToView:self.flk_bottomLayoutGuide predicate:nil] lastObject];
 
     if ([UIDevice isPad]) {
         [inquiryFormView constrainWidth:@"600"];

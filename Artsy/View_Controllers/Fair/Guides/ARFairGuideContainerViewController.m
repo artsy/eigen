@@ -191,7 +191,7 @@ const CGFloat kClosedMapHeight = 180.0f;
 
     CGFloat mapTopMargin = self.topLayoutGuide.length;
 
-    NSString *topLayoutGuide = @(self.topLayoutGuide.length).stringValue;
+    NSString *topLayoutGuide = @(mapTopMargin).stringValue;
 
     if (self.mapCollapsed) {
         if (self.hasMap) {

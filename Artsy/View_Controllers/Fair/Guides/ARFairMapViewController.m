@@ -101,7 +101,7 @@
         self.searchButton = [[ARSearchFieldButton alloc] init];
         self.searchButton.delegate = self;
         [self.view addSubview:self.searchButton];
-        [self.searchButton constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"17"];
+        [self.searchButton constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"17"];
         [self.searchButton alignTrailingEdgeWithView:self.view predicate:@"-20"];
 
         CGFloat width = CGRectGetWidth(self.view.bounds) - 80;

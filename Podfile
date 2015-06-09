@@ -50,7 +50,7 @@ target 'Artsy' do
   pod 'ALPValidator'
   pod 'ARGenericTableViewController'
   pod 'CocoaLumberjack'
-  pod 'FLKAutoLayout'
+  pod 'FLKAutoLayout', :git => 'https://github.com/alloy/FLKAutoLayout.git', :branch => 'add-support-for-layout-guides-take-2'
   pod 'FXBlurView'
   pod 'iRate'
   pod 'ISO8601DateFormatter', :head
