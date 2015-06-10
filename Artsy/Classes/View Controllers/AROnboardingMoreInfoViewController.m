@@ -216,7 +216,7 @@
                                                                  name:self.nameField.text
                                                               success:^(User *user) {
             @strongify(self);
-            [self loginWithFacebookCredential:NO];
+            [self loginWithFacebookCredential];
         } failure:^(NSError *error, id JSON) {
             @strongify(self);
             if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
@@ -249,7 +249,7 @@
                                                                  name:self.nameField.text
                                                               success:^(User *user) {
             @strongify(self);
-            [self loginWithTwitterCredential:NO];
+            [self loginWithTwitterCredential];
       } failure:^(NSError *error, id JSON) {
           @strongify(self);
           if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
@@ -296,8 +296,7 @@
     [alert show];
 }
 
-/// skipAhead to pass over the rest of onboarding
-- (void)loginWithTwitterCredential:(BOOL)skipAhead
+- (void)loginWithTwitterCredential
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
     @weakify(self);
@@ -307,7 +306,7 @@
                                   successWithCredentials:nil
      gotUser:^(User *currentUser) {
          @strongify(self);
-         [self loginCompletedForLoginType:AROnboardingMoreInfoViewControllerLoginTypeTwitter skipAhead:skipAhead];
+         [self loginCompletedForLoginType:AROnboardingMoreInfoViewControllerLoginTypeTwitter];
     } authenticationFailure:^(NSError *error) {
         @strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
@@ -321,8 +320,7 @@
     }];
 }
 
-/// skipAhead to pass over the rest of onboarding
-- (void)loginWithFacebookCredential:(BOOL)skipAhead
+- (void)loginWithFacebookCredential
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
     @weakify(self);
@@ -330,7 +328,7 @@
     [[ARUserManager sharedManager] loginWithFacebookToken:self.token successWithCredentials:nil
       gotUser:^(User *currentUser) {
           @strongify(self);
-          [self loginCompletedForLoginType:AROnboardingMoreInfoViewControllerLoginTypeFacebook skipAhead:skipAhead];
+          [self loginCompletedForLoginType:AROnboardingMoreInfoViewControllerLoginTypeFacebook];
       } authenticationFailure:^(NSError *error) {
           @strongify(self);
           [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
@@ -349,22 +347,22 @@
     //let's go ahead and log them in
     switch (loginType) {
         case AROnboardingMoreInfoViewControllerLoginTypeFacebook:
-            [self loginWithFacebookCredential:YES];
+            [self loginWithFacebookCredential];
             break;
         case AROnboardingMoreInfoViewControllerLoginTypeTwitter:
-            [self loginWithTwitterCredential:YES];
+            [self loginWithTwitterCredential];
             break;
     }
 }
 
-- (void)loginCompletedForLoginType:(AROnboardingMoreInfoViewControllerLoginType)loginType skipAhead:(BOOL)skipAhead
+- (void)loginCompletedForLoginType:(AROnboardingMoreInfoViewControllerLoginType)loginType
 {
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
     
-    if (skipAhead) {
-        [self.delegate dismissOnboardingWithVoidAnimation:YES];
+    if ([ARUserManager didCreateAccountThisSession]) {
+        [self.delegate didSignUpAndLogin];
     } else {
-        [self.delegate signupDone];
+        [self.delegate dismissOnboardingWithVoidAnimation:YES];
     }
 }
 

@@ -1,7 +1,21 @@
-#import "ARSignUpSplashViewController.h"
 #import "ARNavigationController.h"
 #import "ARTrialController.h"
-#import "ARPersonalizeWebViewController.h"
+
+@class ARSignUpSplashViewController;
+
+@protocol AROnboardingStepsDelegate <NSObject>
+- (void)personalizeDone;
+- (void)splashDone:(ARSignUpSplashViewController *)sender;
+- (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender;
+- (void)collectorLevelDone:(ARCollectorLevel)level;
+- (void)slideshowDone;
+- (void)setPriceRangeDone:(NSInteger)range;
+@end
+
+@protocol ARLoginSignupDelegate <NSObject>
+- (void)didSignUpAndLogin;
+- (void)dismissOnboardingWithVoidAnimation:(BOOL)animated;
+@end
 
 typedef NS_ENUM(NSInteger, ARInitialOnboardingState){
     ARInitialOnboardingStateSlideShow,
@@ -10,7 +24,7 @@ typedef NS_ENUM(NSInteger, ARInitialOnboardingState){
 
 /// A state-machine based VC that implements the app onboarding process
 
-@interface AROnboardingViewController : UINavigationController <ARPersonalizeWebViewControllerDelegate>
+@interface AROnboardingViewController : UINavigationController <ARLoginSignupDelegate, AROnboardingStepsDelegate>
 
 - (instancetype)initWithState:(enum ARInitialOnboardingState)state;
 
@@ -19,20 +33,7 @@ typedef NS_ENUM(NSInteger, ARInitialOnboardingState){
 - (void)signUpWithFacebook;
 - (void)signUpWithTwitter;
 - (void)signUpWithEmail;
-
 - (void)logInWithEmail:(NSString *)email;
-
-- (void)slideshowDone;
-
-- (void)splashDone:(ARSignUpSplashViewController *)sender;
-- (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender;
-
-- (void)signupDone;
-- (void)collectorLevelDone:(ARCollectorLevel)level;
-- (void)setPriceRangeDone:(NSInteger)range;
-- (void)personalizeDone;
-- (void)webOnboardingDone;
-
 - (void)showTermsAndConditions;
 - (void)showPrivacyPolicy;
 

@@ -956,7 +956,7 @@
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: ARAnalyticsShowTrialSplash,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(presentTrialWithContext:fromTarget:selector:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(presentTrialWithContext:success:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARTrialController *controller, NSArray *parameters){
                                 enum ARTrialContext context = [parameters.first integerValue];
                                 return @{

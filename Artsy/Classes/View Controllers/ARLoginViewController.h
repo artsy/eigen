@@ -1,4 +1,5 @@
-#import "AROnboardingViewController.h"
+@protocol AROnboardingStepsDelegate;
+@protocol ARLoginSignupDelegate;
 
 typedef NS_ENUM(NSInteger, ARLoginViewControllerLoginType) {
     ARLoginViewControllerLoginTypeTwitter = 0,
@@ -10,7 +11,7 @@ typedef NS_ENUM(NSInteger, ARLoginViewControllerLoginType) {
 
 - (instancetype)initWithEmail:(NSString *)email;
 
-@property (nonatomic, weak) AROnboardingViewController *delegate;
+@property (nonatomic, weak) id<AROnboardingStepsDelegate, ARLoginSignupDelegate> delegate;
 @property (nonatomic, assign) BOOL hideDefaultValues;
 
 @end

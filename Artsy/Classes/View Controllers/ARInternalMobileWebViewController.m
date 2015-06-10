@@ -80,7 +80,7 @@
 }
 
 // A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
-- (void)userDidSignUp
+- (void)userDidLoginOrSignUp
 {
     [self.webView loadRequest:[self requestWithURL:self.currentURL]];
 }
@@ -181,7 +181,9 @@
     } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
         // hijack AJAX requests
         if ([User isTrialUser]) {
-            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial fromTarget:self selector:@selector(userDidSignUp)];
+            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser){
+                [self userDidLoginOrSignUp];
+            }];
         }
         return NO;
 

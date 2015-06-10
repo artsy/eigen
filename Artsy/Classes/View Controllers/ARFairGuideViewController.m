@@ -234,11 +234,13 @@ NS_ENUM(NSInteger, ARFairGuideViewOrder) {
 - (void)signupForArtsy:(id)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFairGuide fromTarget:self selector:@selector(userDidSignUp)];
+        [ARTrialController presentTrialWithContext:ARTrialContextFairGuide success:^(BOOL newUser){
+            [self userDidLoginOrSignUp];
+        }];
     }
 }
 
-- (void)userDidSignUp
+- (void)userDidLoginOrSignUp
 {
     [self.delegate fairGuideViewControllerDidChangeUser:self];
     _selectedTabIndex = ARFairGuideSelectedTabUndefined;

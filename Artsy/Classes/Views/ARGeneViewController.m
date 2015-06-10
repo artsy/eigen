@@ -178,7 +178,9 @@
 - (void)toggleFollowingGene:(ARHeartButton *)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteGene fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteGene success:^(BOOL newUser){
+            [self toggleFollowingGene:sender];
+        }];
         return;
     }
 

@@ -35,9 +35,6 @@
 /// Hides the toolbar
 - (void)hideToolbar:(BOOL)hideToolbar animated:(BOOL)animated;
 
-/// Removes the Onboarding overlay
-- (void)moveToInAppAnimated:(BOOL)animated;
-
 /// Used in search to exit out of search and back into a previous tab.
 - (void)returnToPreviousTab;
 

@@ -150,13 +150,21 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)finishOnboardingAnimated:(BOOL)animated didCancel:(BOOL)cancelledSignIn;
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    [[ARTopMenuViewController sharedController] moveToInAppAnimated:animated];
+
+    ARTopMenuViewController *topVC = ARTopMenuViewController.sharedController;
+    if (topVC.presentedViewController) {
+        topVC.presentedViewController.transitioningDelegate = topVC;
+        [topVC.presentedViewController dismissViewControllerAnimated:animated completion:^{
+            [ARTrialController performCompletionNewUser:[ARUserManager didCreateAccountThisSession]];
+        }];
+    }
 
     if (!cancelledSignIn) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self registerForDeviceNotifications];
         });
     }
+
 }
 
 - (void)showTrialOnboardingWithState:(enum ARInitialOnboardingState)state andContext:(enum ARTrialContext)context

@@ -7,6 +7,7 @@
 #import "ARTextFieldWithPlaceholder.h"
 #import "ARSecureTextFieldWithPlaceholder.h"
 #import "UIView+HitTestExpansion.h"
+#import "AROnboardingViewController.h"
 
 #define SPINNER_TAG 0x555
 

@@ -196,18 +196,6 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     self.divider.frame = CGRectMake(tabHeight, tabHeight * .25, 1, tabHeight * .5);
 }
 
-- (void)moveToInAppAnimated:(BOOL)animated
-{
-    if (self.presentedViewController) {
-        self.presentedViewController.transitioningDelegate = self;
-        [self.presentedViewController dismissViewControllerAnimated:animated completion:^{
-            if ([User currentUser]) {
-                [ARTrialController performPostSignupEvent];
-            }
-        }];
-    }
-}
-
 #pragma mark - Pushing VCs
 
 - (void)loadFeed
@@ -266,11 +254,6 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [self.tabContentView returnToPreviousViewIndex];
 }
 
-- (void)userDidSignUp
-{
-    [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFavorites animated:NO];
-}
-
 #pragma mark - ARTabViewDelegate
 
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeSelectedIndex:(NSInteger)index
@@ -289,7 +272,13 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
     if (index == ARTopTabControllerIndexFavorites && [User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextShowingFavorites fromTarget:self selector:@selector(userDidSignUp)];
+        [ARTrialController presentTrialWithContext:ARTrialContextShowingFavorites success:^(BOOL newUser) {
+            if(newUser) {
+                [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
+            } else {
+                [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFavorites animated:NO];
+            }
+        }];
         return NO;
     }
 
