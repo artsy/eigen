@@ -54,12 +54,15 @@
     #import <libextobjc/EXTKeyPathCoding.h>
     #import <libextobjc/EXTScope.h>
 
-    #ifdef DEBUG
-    static const int ddLogLevel = LOG_LEVEL_VERBOSE;
-    static const int httpLogLevel = AFLoggerLevelInfo;
-    #else
+    #if defined(STORE)
     static const int ddLogLevel = LOG_LEVEL_WARN;
     static const int httpLogLevel = AFLoggerLevelError;
+    #elif defined(DEBUG)
+    static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+    static const int httpLogLevel = AFLoggerLevelInfo;
+    #else // Beta
+    static const int ddLogLevel = LOG_LEVEL_DEBUG;
+    static const int httpLogLevel = AFLoggerLevelInfo;
     #endif
 
     #ifdef DEMO_MODE
