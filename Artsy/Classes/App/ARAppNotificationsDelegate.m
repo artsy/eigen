@@ -29,6 +29,7 @@
 
     ARActionLog(@"Got device notification token: %@", deviceToken);
 
+#ifndef DEBUG
     [ARAnalytics setUserProperty:ARAnalyticsEnabledNotificationsProperty toValue:@"true"];
 
     // Apple says to always save the device token, as it may change. We do that at least when the token is different
@@ -43,6 +44,7 @@
             ARErrorLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
         }];
     }
+#endif
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
