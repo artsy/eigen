@@ -31,10 +31,14 @@
 
     [ARAnalytics setUserProperty:ARAnalyticsEnabledNotificationsProperty toValue:@"true"];
 
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:ARHasSubmittedDeviceTokenDefault]) {
+    // Apple says to always save the device token, as it may change. We do that at least when the token is different
+    // than the one we prviously saved.
+    //
+    // https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html#//apple_ref/doc/uid/TP40008194-CH103-SW2
+    if (![[[NSUserDefaults standardUserDefaults] stringForKey:ARSubmittedAPNDeviceTokenDefault] isEqualToString:deviceToken]) {
         [ArtsyAPI setAPNTokenForCurrentDevice:deviceToken success:^(id response) {
             ARActionLog(@"Pushed device token to Artsy's servers");
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ARHasSubmittedDeviceTokenDefault];
+            [[NSUserDefaults standardUserDefaults] setObject:deviceToken forKey:ARSubmittedAPNDeviceTokenDefault];
         } failure:^(NSError *error) {
             ARErrorLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
         }];
