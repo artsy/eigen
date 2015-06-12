@@ -29,21 +29,20 @@
 
     ARActionLog(@"Got device notification token: %@", deviceToken);
 
+    // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
     [ARAnalytics setUserProperty:ARAnalyticsEnabledNotificationsProperty toValue:@"true"];
 
-    // Apple says to always save the device token, as it may change. We do that at least when the token is different
-    // than the one we prviously saved.
+    // Apple says to always save the device token, as it may change. In addition, since we allow a device to register
+    // for notifications even if the user has not signed-in, we must be sure to always update this to ensure the Artsy
+    // service always has an up-to-date record of devices and associated users.
     //
     // https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html#//apple_ref/doc/uid/TP40008194-CH103-SW2
-    if (![[[NSUserDefaults standardUserDefaults] stringForKey:ARSubmittedAPNDeviceTokenDefault] isEqualToString:deviceToken]) {
-        [ArtsyAPI setAPNTokenForCurrentDevice:deviceToken success:^(id response) {
-            ARActionLog(@"Pushed device token to Artsy's servers");
-            [[NSUserDefaults standardUserDefaults] setObject:deviceToken forKey:ARSubmittedAPNDeviceTokenDefault];
-        } failure:^(NSError *error) {
-            ARErrorLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
-        }];
-    }
+    [ArtsyAPI setAPNTokenForCurrentDevice:deviceToken success:^(id response) {
+        ARActionLog(@"Pushed device token to Artsy's servers");
+    } failure:^(NSError *error) {
+        ARErrorLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
+    }];
 #endif
 }
 
@@ -96,6 +95,7 @@
 
 -(void)registerForDeviceNotifications
 {
+    ARActionLog(@"Registering with Apple for remote notifications.");
     UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];

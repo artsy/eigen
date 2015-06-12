@@ -13,6 +13,7 @@
 
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
+#import "ARAppNotificationsDelegate.h"
 #import "ARUserManager.h"
 
 #import "UIViewController+InnermostTopViewController.h"
@@ -102,11 +103,13 @@ static ARAppDelegate *_sharedInstance = nil;
     [FBSettings setDefaultAppID:[ArtsyKeys new].artsyFacebookAppID];
     [self setupXCallbackUrlManager];
 
+    // This has to be checked *before* creating the first Xapp token.
+    BOOL showOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
+
     if (ARIsRunningInDemoMode) {
         [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
         [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
-
-    } else if (![[ARUserManager sharedManager] hasExistingAccount]) {
+    } else if (showOnboarding) {
         [self fetchSiteFeatures];
         [self showTrialOnboardingWithState:ARInitialOnboardingStateSlideShow andContext:ARTrialContextNotTrial];
     }
@@ -119,9 +122,24 @@ static ARAppDelegate *_sharedInstance = nil;
         // Start doing the network calls to grab the feed
         [topVC refreshFeedItems];
         [self checkForiOS7Deprecation];
+
+        // Register for push notifications as early as possible, but not on top of the onboarding view, in which case it
+        // will be called from the -finishOnboardingAnimated: callback.
+        //
+        // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API. Later on,
+        // when the user does sign-in, this will be ran again and the device will be associated with the user account.
+        if (!showOnboarding) {
+            [self registerForDeviceNotifications];
+        }
     }];
 
     return YES;
+}
+
+- (void)registerForDeviceNotifications;
+{
+    JSDecoupledAppDelegate *decoupledDelegate = [JSDecoupledAppDelegate sharedAppDelegate];
+    [(ARAppNotificationsDelegate *)decoupledDelegate.remoteNotificationsDelegate registerForDeviceNotifications];
 }
 
 - (void)finishDemoSplash
@@ -129,10 +147,16 @@ static ARAppDelegate *_sharedInstance = nil;
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)finishOnboardingAnimated:(BOOL)animated
+- (void)finishOnboardingAnimated:(BOOL)animated didCancel:(BOOL)cancelledSignIn;
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [[ARTopMenuViewController sharedController] moveToInAppAnimated:animated];
+
+    if (!cancelledSignIn) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self registerForDeviceNotifications];
+        });
+    }
 }
 
 - (void)showTrialOnboardingWithState:(enum ARInitialOnboardingState)state andContext:(enum ARTrialContext)context
@@ -145,7 +169,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupXCallbackUrlManager
 {
-
     IACManager *sharedManager = [IACManager sharedManager];
     sharedManager.callbackURLScheme = ARArtsyXCallbackUrlScheme;
 
