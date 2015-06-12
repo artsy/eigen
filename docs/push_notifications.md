@@ -11,17 +11,17 @@ Sorry open-sorcerers, this requires specialised provisioning profiles and privat
 
 2. On startup, the app will register with APN and log the current device token, which will look like:
 
-       Got device notification token: b37e50cedcd3e3f1ff64f4afc0422084ae694253cf399326868e07a35f4a45fb
+        Got device notification token: b37e50cedcd3e3f1ff64f4afc0422084ae694253cf399326868e07a35f4a45fb
 
 3. Ensure the app is not currently active. (Notifications for active applications are not shown.)
 
 4. Send a notification, using the locally stored certificate and your current device token:
 
-       $ bundle exec apn push [TOKEN] --environment development --certificate path/to/certificate.pem --alert 'The “earth” without “art” is just “eh.”'
+        $ bundle exec apn push [TOKEN] --environment development --certificate path/to/certificate.pem --alert 'The “earth” without “art” is just “eh.”'
 
 5. For more options, such as app icon badge number, sounds, etc, see:
 
-       $ bundle exec apn push --help
+        $ bundle exec apn push --help
 
 
 ### Further reading
@@ -38,8 +38,9 @@ If the application does not deploy to your device:
 
 * Ensure your device is listed in that provisioning profile with:
 
-      $ security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/UUID.mobileprovision > /tmp/net.artsy.artsy.dev.profile
-      $ /usr/libexec/PlistBuddy /tmp/net.artsy.artsy.dev.profile -c 'Print :ProvisionedDevices'
+        $ security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/UUID.mobileprovision > /tmp/net.artsy.artsy.dev.profile
+        $ /usr/libexec/PlistBuddy /tmp/net.artsy.artsy.dev.profile -c 'Print :ProvisionedDevices'
 
   (You can locate the profile by going into Xcode > Preferences > Accounts > ‘ART SY INC’, right-click it, select
   ‘Show in Finder’, and drag it to your terminal.)
+
