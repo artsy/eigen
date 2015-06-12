@@ -24,6 +24,12 @@ Sorry open-sorcerers, this requires specialised provisioning profiles and privat
        $ bundle exec apn push --help
 
 
+### Further reading
+
+* Troubleshooting and information on how to reset the alert asking the user for permission:
+  https://developer.apple.com/library/ios/technotes/tn2265/_index.html#//apple_ref/doc/uid/DTS40010376-CH1-TNTAG21
+
+
 ### Troubleshooting
 
 If the application does not deploy to your device:
