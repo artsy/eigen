@@ -19,7 +19,6 @@
 @property (nonatomic) ARSpinner *loadingSpinner;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
-
 @end
 
 @implementation ARCreateAccountViewController

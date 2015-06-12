@@ -29,7 +29,7 @@ describe(@"signup splash", ^{
             [ARTestContext stubDevice:ARDeviceTypePad];
             [[mock reject] presentCollectorLevel];
             [[mock expect] presentWebOnboarding];
-            [vc signupDone];
+            [vc didSignUpAndLogin];
             [mock verify];
         });
 
@@ -37,7 +37,7 @@ describe(@"signup splash", ^{
             [ARTestContext stubDevice:ARDeviceTypePhone5];
             [[mock reject] presentWebOnboarding];
             [[mock expect] presentCollectorLevel];
-            [vc signupDone];
+            [vc didSignUpAndLogin];
             [mock verify];
         });
     });

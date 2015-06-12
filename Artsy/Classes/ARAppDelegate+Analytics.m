@@ -18,6 +18,8 @@
 #import "ARInquireForArtworkViewController.h"
 #import "ARArtworkViewController.h"
 #import "AROnboardingArtistTableController.h"
+#import "ARInternalMobileWebViewController.h"
+#import "ARSignUpSplashViewController.h"
 #import "ARLoginViewController.h"
 #import "ARSignUpActiveUserViewController.h"
 #import "ARSignupViewController.h"

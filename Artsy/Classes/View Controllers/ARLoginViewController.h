@@ -1,5 +1,4 @@
-@protocol AROnboardingStepsDelegate;
-@protocol ARLoginSignupDelegate;
+#import "AROnboardingViewController.h"
 
 typedef NS_ENUM(NSInteger, ARLoginViewControllerLoginType) {
     ARLoginViewControllerLoginTypeTwitter = 0,

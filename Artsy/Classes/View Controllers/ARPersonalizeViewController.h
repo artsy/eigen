@@ -1,4 +1,5 @@
-@protocol AROnboardingStepsDelegate;
+#import "AROnboardingViewController.h"
+
 @class AROnboardingGeneTableController;
 @class AROnboardingArtistTableController;
 
