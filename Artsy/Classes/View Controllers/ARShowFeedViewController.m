@@ -5,7 +5,6 @@
 #import "ARPageSubTitleView.h"
 #import "ARFeedLinkUnitViewController.h"
 #import "UIViewController+SimpleChildren.h"
-#import "ARAppNotificationsDelegate.h"
 #import "ArtsyAPI+Private.h"
 #import "AROfflineView.h"
 
@@ -261,14 +260,6 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     CGPoint offset = self.tableView.contentOffset;
     offset.y = -insets.top;
     self.tableView.contentOffset = offset;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    ARAppNotificationsDelegate * delegate = (ARAppNotificationsDelegate *) [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate;
-    [delegate registerForDeviceNotificationsOnce];
 }
 
 - (BOOL)shouldAutorotate

@@ -103,19 +103,16 @@ static ARAppDelegate *_sharedInstance = nil;
     [self setupXCallbackUrlManager];
 
     if (ARIsRunningInDemoMode) {
-
         [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
         [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
 
-    } else if(![[ARUserManager sharedManager] hasExistingAccount]) {
-
+    } else if (![[ARUserManager sharedManager] hasExistingAccount]) {
         [self fetchSiteFeatures];
         [self showTrialOnboardingWithState:ARInitialOnboardingStateSlideShow andContext:ARTrialContextNotTrial];
     }
 
     ARShowFeedViewController *topVC = (id)ARTopMenuViewController.sharedController.rootNavigationController.topViewController;
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-
         // Sync clock with server
         [ARSystemTime sync];
 
@@ -174,11 +171,9 @@ static ARAppDelegate *_sharedInstance = nil;
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:url];
         if (viewController) {
             // This happens when the URL is routed to a web view.
-
             [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
         } else {
             // This happens if JLRoutes found a route for the URL.
-
             viewController = [ARTopMenuViewController sharedController].rootNavigationController.ar_innermostTopViewController;
         }
 

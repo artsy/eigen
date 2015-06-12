@@ -9,6 +9,7 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "ARCollectorStatusViewController.h"
+#import "ARAppNotificationsDelegate.h"
 
 NSString *ARTrialUserNameKey = @"ARTrialUserName";
 NSString *ARTrialUserEmailKey = @"ARTrialUserEmail";
@@ -60,7 +61,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     NSString *userDataPath = [userDataFolderPath stringByAppendingPathComponent:@"User.data"];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:userDataPath]) {
-        _currentUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userDataPath  exceptionBlock:^id(NSException *exception) {
+        self.currentUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userDataPath  exceptionBlock:^id(NSException *exception) {
             ARErrorLog(@"%@", exception.reason);
             [[NSFileManager defaultManager] removeItemAtPath:userDataPath error:nil];
             return nil;
@@ -432,6 +433,17 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
          }];
         [op start];
     }];
+}
+
+// Once a user object is available, register for remote notifications.
+- (void)setCurrentUser:(User *)user;
+{
+    if (_currentUser != user) {
+        _currentUser = user;
+        if (_currentUser == nil) return;
+        JSDecoupledAppDelegate *decoupledDelegate = [JSDecoupledAppDelegate sharedAppDelegate];
+        [(ARAppNotificationsDelegate *)decoupledDelegate.remoteNotificationsDelegate registerForDeviceNotifications];
+    }
 }
 
 - (void)storeUserData
