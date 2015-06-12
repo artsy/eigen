@@ -318,7 +318,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     [self dismissOnboardingWithVoidAnimation:YES];
 }
 
--(void) resetBackgroundImageView:(BOOL)animated completion:(void (^)(void))completion
+-(void)resetBackgroundImageView:(BOOL)animated completion:(void (^)(void))completion
 {
     self.backgroundWidthConstraint.constant = 0;
     self.backgroundHeightConstraint.constant = 0;
@@ -334,16 +334,21 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     }];
 }
 
-- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount
+- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount;
+{
+    [self dismissOnboardingWithVoidAnimation:createdAccount didCancel:NO];
+}
+
+- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount didCancel:(BOOL)cancelledSignIn;
 {
     // send them off into the app
 
     if (createdAccount) {
-        [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount];
+        [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount didCancel:cancelledSignIn];
     } else {
         [self resetBackgroundImageView:YES completion:^{
             self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount];
+            [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount didCancel:cancelledSignIn];
         }];
     }
 }

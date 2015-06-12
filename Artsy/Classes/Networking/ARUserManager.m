@@ -67,8 +67,8 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         }];
 
         // safeguard
-        if (!self.currentUser.userID) {
-            ARErrorLog(@"Deserialized user %@ does not have an ID.", self.currentUser);
+        if (!_currentUser.userID) {
+            ARErrorLog(@"Deserialized user %@ does not have an ID.", _currentUser);
             _currentUser = nil;
         }
     }

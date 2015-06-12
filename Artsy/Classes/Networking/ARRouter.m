@@ -806,7 +806,7 @@ static NSSet *artsyHosts = nil;
         @"token": token,
         @"app_id": bundleID
     };
-    return [staticHTTPClient requestWithMethod:@"POST" path:ARMyDevicesURL parameters:params];
+    return [staticHTTPClient requestWithMethod:@"POST" path:ARNewDeviceURL parameters:params];
 }
 
 + (NSURLRequest *)newUptimeURLRequest

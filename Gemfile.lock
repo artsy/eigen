@@ -138,6 +138,9 @@ GEM
     fuzzy_match (2.0.4)
     gli (2.13.0)
     highline (1.7.2)
+    houston (2.2.3)
+      commander (~> 4.1)
+      json
     i18n (0.7.0)
     json (1.8.3)
     mechanize (2.5.1)
@@ -240,6 +243,7 @@ DEPENDENCIES
   cocoapods-keys!
   fastlane
   fui
+  houston
   second_curtain
   shenzhen
   xcpretty

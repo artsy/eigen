@@ -18,20 +18,32 @@
 #endif
 }
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceTokenData
 {
+    // http://stackoverflow.com/questions/9372815/how-can-i-convert-my-device-token-nsdata-into-an-nsstring
+    const unsigned *tokenBytes = [deviceTokenData bytes];
+    NSString *deviceToken = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",
+                                ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
+                                ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
+                                ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
+
     ARActionLog(@"Got device notification token: %@", deviceToken);
 
+    // We only record device tokens on the Artsy service in case of Beta or App Store builds.
+#ifndef DEBUG
     [ARAnalytics setUserProperty:ARAnalyticsEnabledNotificationsProperty toValue:@"true"];
 
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:ARHasSubmittedDeviceTokenDefault]) {
-        [ArtsyAPI setAPNTokenForCurrentDevice:deviceToken success:^(id response) {
-            ARActionLog(@"Pushed device token to Artsy's servers");
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ARHasSubmittedDeviceTokenDefault];
-        } failure:^(NSError *error) {
-            ARErrorLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
-        }];
-    }
+    // Apple says to always save the device token, as it may change. In addition, since we allow a device to register
+    // for notifications even if the user has not signed-in, we must be sure to always update this to ensure the Artsy
+    // service always has an up-to-date record of devices and associated users.
+    //
+    // https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html#//apple_ref/doc/uid/TP40008194-CH103-SW2
+    [ArtsyAPI setAPNTokenForCurrentDevice:deviceToken success:^(id response) {
+        ARActionLog(@"Pushed device token to Artsy's servers");
+    } failure:^(NSError *error) {
+        ARErrorLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
+    }];
+#endif
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -81,19 +93,13 @@
     }
 }
 
--(void)registerForDeviceNotificationsOnce
+-(void)registerForDeviceNotifications
 {
-    static dispatch_once_t once;
-    dispatch_once(&once, ^ {
-        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)]) {
-            [[UIApplication sharedApplication] registerForRemoteNotifications];
-        } else {
-            UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
-            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
-            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-            [[UIApplication sharedApplication] registerForRemoteNotifications];
-        }
-    });
+    ARActionLog(@"Registering with Apple for remote notifications.");
+    UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
 
 - (UIWindow *)findVisibleWindow {

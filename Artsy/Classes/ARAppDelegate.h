@@ -16,7 +16,9 @@
 
 - (void)showTrialOnboardingWithState:(enum ARInitialOnboardingState)state andContext:(enum ARTrialContext)context;
 
-- (void)finishOnboardingAnimated:(BOOL)animated;
+// A sign-in is considered cancelled when the user taps the close button on a ARSignUpActiveUserViewController,
+// not when the user initially chooses to use the app as a trial user.
+- (void)finishOnboardingAnimated:(BOOL)animated didCancel:(BOOL)cancelledSignIn;
 
 @end
 

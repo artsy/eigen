@@ -1,5 +1,5 @@
 #import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
 
 @interface ARAppNotificationsDelegate : NSObject <JSApplicationRemoteNotificationsDelegate>
-- (void)registerForDeviceNotificationsOnce;
+- (void)registerForDeviceNotifications;
 @end
