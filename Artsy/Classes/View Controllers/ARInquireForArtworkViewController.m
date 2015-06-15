@@ -715,7 +715,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
     } failure:^(NSError *error) {
         @strongify(self);
-        ARErrorLog(@"Couldn't get an inquiry contact. %@", error.localizedDescription);
+        NSLog(@"Couldn't get an inquiry contact. %@", error.localizedDescription);
         [self performSelector:@selector(getCurrentAdmin) withObject:nil afterDelay:2];
     }];
 }
@@ -802,7 +802,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)inquiryFailed:(NSError *)error
 {
-    ARErrorLog(@"Error sending inquiry for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
+    NSLog(@"Error sending inquiry for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
     NSString *errorTitle, *errorMessage;
     // think we need to return JSON in this error to not do this
     errorTitle = @"Error Sending Message";

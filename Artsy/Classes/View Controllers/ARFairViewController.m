@@ -252,7 +252,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
                 ARButtonWithImage *buttonWithImage = (ARButtonWithImage *) button;
                 [self buttonPressed:buttonWithImage];
             } else {
-                ARActionLog(@"Clicked %@", button);
+                NSLog(@"Clicked %@", button);
             }
         }
     };

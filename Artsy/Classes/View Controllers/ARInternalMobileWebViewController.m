@@ -61,7 +61,7 @@
     self.opaque = NO;
     _shareValidator = [[ARInternalShareValidator alloc] init];
 
-    ARInfoLog(@"Initialized with URL %@", url);
+    NSLog(@"Initialized with URL %@", url);
     return self;
 }
 
@@ -169,7 +169,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    ARInfoLog(@"Martsy URL %@", request.URL);
+    NSLog(@"Martsy URL %@", request.URL);
 
     if ([self.shareValidator isSocialSharingURL:request.URL]) {
         ARWindow *window = ARAppDelegate.sharedInstance.window;

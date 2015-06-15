@@ -15,7 +15,7 @@
 
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
 {
-    ARActionLog(@"Fetching show feed in the background.");
+    NSLog(@"Fetching show feed in the background.");
 
     [ArtsyAPI getFeedResultsForShowsWithCursor:nil pageSize:10 success:^(NSDictionary *JSON) {
         if ([JSON isKindOfClass:[NSDictionary class]]) {
@@ -23,7 +23,7 @@
             NSString *path = [self.class pathForDownloadedShowFeed];
             [NSKeyedArchiver archiveRootObject:JSON toFile:path];
 
-            ARActionLog(@"Downloaded show feed in the background");
+            NSLog(@"Downloaded show feed in the background");
 
             if (completionHandler) {
                 completionHandler(UIBackgroundFetchResultNewData);
@@ -32,13 +32,13 @@
             return;
         }
 
-        ARErrorLog(@"Error feed is in an unexpected format");
+        NSLog(@"Error feed is in an unexpected format");
         if (completionHandler) {
             completionHandler(UIBackgroundFetchResultFailed);
         }
 
     } failure:^(NSError *error) {
-        ARErrorLog(@"Error downloading feed from the background : %@", error.localizedDescription);
+        NSLog(@"Error downloading feed from the background : %@", error.localizedDescription);
         if (completionHandler) {
             completionHandler(UIBackgroundFetchResultFailed);
         }

@@ -113,7 +113,7 @@
 
     } error:^id(NSError *error) {
         @strongify(self);
-        ARErrorLog(@"Error fetching sale/fair for %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
+        NSLog(@"Error fetching sale/fair for %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
         [self addSectionWithRelatedArtworks];
         return error;
     }];

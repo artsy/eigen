@@ -1,4 +1,4 @@
-#import "TSMiniWebBrowser.h"
+@import TSMiniWebBrowser_dblock;
 
 @interface ARExternalWebBrowserViewController : TSMiniWebBrowser <UIScrollViewDelegate>
 @property (readonly, nonatomic, strong) UIScrollView *scrollView;

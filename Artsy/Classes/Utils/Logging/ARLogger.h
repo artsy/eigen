@@ -29,7 +29,3 @@ typedef NS_ENUM(NSInteger, ARLogContext) {
 #define ARHTTPRequestOperationSuccessLog(frmt, ...)  LOG_OBJC_MAYBE(YES, ddLogLevel, LOG_FLAG_INFO, ARLogContextRequestOperation, frmt, ##__VA_ARGS__)
 #define ARHTTPRequestOperationFailureLog(frmt, ...)  LOG_OBJC_MAYBE(YES, ddLogLevel, LOG_FLAG_ERROR, ARLogContextRequestOperation, frmt, ##__VA_ARGS__)
 
-// For logging human-readable Activity and Errors:
-#define ARInfoLog(frmt, ...)  LOG_OBJC_MAYBE(YES, ddLogLevel, LOG_FLAG_INFO, ARLogContextInfo, frmt, ##__VA_ARGS__)
-#define ARActionLog(frmt, ...)  LOG_OBJC_MAYBE(YES, ddLogLevel, LOG_FLAG_DEBUG, ARLogContextAction, frmt, ##__VA_ARGS__)
-#define ARErrorLog(frmt, ...)  LOG_OBJC_MAYBE(YES, ddLogLevel, LOG_FLAG_ERROR, ARLogContextError, frmt, ##__VA_ARGS__)

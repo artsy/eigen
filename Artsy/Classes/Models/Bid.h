@@ -1,5 +1,4 @@
-#import "MTLModel.h"
-#import "MTLJSONAdapter.h"
+#import <Mantle/Mantle.h>
 
 @interface Bid : MTLModel<MTLJSONSerializing>
 

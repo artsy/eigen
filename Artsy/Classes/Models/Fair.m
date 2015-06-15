@@ -188,7 +188,7 @@
     if(!ARIsRunningInDemoMode) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             if(![NSKeyedArchiver archiveRootObject:self.shows toFile:self.pathForLocalShowStorage]){
-                ARErrorLog(@"Issue saving show data for fair %@", self.fairID);
+                NSLog(@"Issue saving show data for fair %@", self.fairID);
             }
         });
     }

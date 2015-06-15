@@ -15,13 +15,13 @@
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
 #if (TARGET_IPHONE_SIMULATOR == 0)
-    ARErrorLog(@"Error registering for remote notifications: %@", error.localizedDescription);
+    NSLog(@"Error registering for remote notifications: %@", error.localizedDescription);
 #endif
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    ARActionLog(@"Got device notification token: %@", deviceToken);
+    NSLog(@"Got device notification token: %@", deviceToken);
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     [mixpanel.people addPushDeviceToken:deviceToken];
 
@@ -29,10 +29,10 @@
 
     if (![[NSUserDefaults standardUserDefaults] boolForKey:ARHasSubmittedDeviceTokenDefault]) {
         [ArtsyAPI setAPNTokenForCurrentDevice:deviceToken success:^(id response) {
-            ARActionLog(@"Pushed device token to Artsy's servers");
+            NSLog(@"Pushed device token to Artsy's servers");
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ARHasSubmittedDeviceTokenDefault];
         } failure:^(NSError *error) {
-            ARErrorLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
+            NSLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
         }];
     }
 }
@@ -42,7 +42,7 @@
     UIApplication *app = [UIApplication sharedApplication];
     NSString *uiApplicationState = [UIApplicationStateEnum toString:app.applicationState];
 
-    ARActionLog(@"Incoming notification in the %@ application state: %@", uiApplicationState, userInfo);
+    NSLog(@"Incoming notification in the %@ application state: %@", uiApplicationState, userInfo);
 
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];

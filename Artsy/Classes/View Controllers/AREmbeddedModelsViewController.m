@@ -260,7 +260,7 @@
         [cell setupWithRepresentedObject:item];
 
     } else {
-        ARErrorLog(@"Could not set up cell %@", cell);
+        NSLog(@"Could not set up cell %@", cell);
     }
 
     return cell;

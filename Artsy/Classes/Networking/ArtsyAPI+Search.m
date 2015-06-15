@@ -23,7 +23,7 @@
                 NSError *error = nil;
                 SearchResult *result = [[SearchResult class] modelWithJSON:dictionary error:&error];
                 if (error) {
-                    ARErrorLog(@"Error creating search result. Error: %@", error.localizedDescription);
+                    NSLog(@"Error creating search result. Error: %@", error.localizedDescription);
                 } else {
                     [returnArray addObject:result];
                 }
@@ -56,7 +56,7 @@
             NSError *error = nil;
             Artist *result = [Artist modelWithJSON:dictionary error:&error];
             if (error) {
-                ARErrorLog(@"Error creating search result. Error: %@", error.localizedDescription);
+                NSLog(@"Error creating search result. Error: %@", error.localizedDescription);
             } else {
                 [returnArray addObject:result];
             }

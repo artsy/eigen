@@ -188,7 +188,7 @@
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
 
              //TODO: handle this less stupid
-             ARErrorLog(@"Couldn't get an Xapp token.");
+             NSLog(@"Couldn't get an Xapp token.");
 
              NSError *cleanError = [NSError errorWithDomain:@"Auth" code:404 userInfo:@{ NSLocalizedDescriptionKey: @"Couldn't reach Artsy" }];
              [ARNetworkErrorManager presentActiveErrorModalWithError:cleanError];

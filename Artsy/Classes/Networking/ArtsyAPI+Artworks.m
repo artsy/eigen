@@ -78,7 +78,7 @@
                 NSError *error = nil;
                 BidderPosition *position =[BidderPosition  modelWithJSON:dictionary error:&error];
                 if (error) {
-                    ARErrorLog(@"Couldn't parse bidder position. Error: %@", error.localizedDescription);
+                    NSLog(@"Couldn't parse bidder position. Error: %@", error.localizedDescription);
                 }
                 return position;
 

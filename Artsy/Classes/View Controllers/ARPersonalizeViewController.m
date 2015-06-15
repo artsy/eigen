@@ -41,7 +41,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
         _searchResults = [NSMutableArray array];
         if (!genes || genes.count == 0) {
             NSArray *fallbackGenes = @[@"Photography", @"Bauhaus", @"Dada", @"Glitch Aesthetic", @"Computer Art", @"Op Art", @"Minimalism"];
-            ARActionLog(@"Using fallback genes in 'Personalize'");
+            NSLog(@"Using fallback genes in 'Personalize'");
             // Convert names to Gene Objects
             _genesToFollow = [fallbackGenes map:^id(NSString *name) {
                 NSString *geneID = [[name stringByReplacingOccurrencesOfString:@" " withString:@"-"]
@@ -383,7 +383,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     } failure:^(NSError *error) {
         if (error.code != NSURLErrorCancelled) {
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            ARErrorLog(@"Personalize search network error %@", error.localizedDescription);
+            NSLog(@"Personalize search network error %@", error.localizedDescription);
         }
     }];
 }

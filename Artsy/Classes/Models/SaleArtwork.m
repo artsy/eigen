@@ -131,7 +131,7 @@ static NSNumberFormatter *dollarFormatter;
     } else if (self.highEstimateCents) {
         ret = [self dollarsFromCents:self.highEstimateCents];
     } else {
-        ARErrorLog(@"Asked for estimate from an artwork with no estimate data %@", self);
+        NSLog(@"Asked for estimate from an artwork with no estimate data %@", self);
         ret = @"$0";
     }
     return [NSString stringWithFormat:@"Estimate: %@", ret];

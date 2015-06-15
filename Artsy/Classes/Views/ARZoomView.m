@@ -133,7 +133,7 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
 {
     // Changing the zoomScale in an animation block makes the contentOffset "jump" at the beginning of the animation.
     if (self.overrideContentOffsetChanges) {
-        ARInfoLog(@"Ignoring contentOffset change: %@", NSStringFromCGPoint(contentOffset));
+        NSLog(@"Ignoring contentOffset change: %@", NSStringFromCGPoint(contentOffset));
     } else {
         [super setContentOffset:contentOffset];
     }

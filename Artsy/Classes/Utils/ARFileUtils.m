@@ -52,8 +52,8 @@ static NSString *_cachesDirectory;
         NSError *error = nil;
         [[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:&error];
         if(error) {
-            ARErrorLog(@"Error creating directory at path %@/%@", rootFolderName, folderName);
-            ARErrorLog(@"%@", [error userInfo]);
+            NSLog(@"Error creating directory at path %@/%@", rootFolderName, folderName);
+            NSLog(@"%@", [error userInfo]);
         }
     }
 

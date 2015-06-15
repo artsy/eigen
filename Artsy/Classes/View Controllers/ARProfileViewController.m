@@ -63,7 +63,7 @@
 
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
     } failure:^(NSError *error) {
-        ARErrorLog(@"Error getting Profile %@, falling back to Martsy.", self.profileID);
+        NSLog(@"Error getting Profile %@, falling back to Martsy.", self.profileID);
         [self loadMartsyView];
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
     }];

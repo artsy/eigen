@@ -50,7 +50,7 @@ static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey
 
         } failure:^(NSError *error) {
             @strongify(self);
-            ARErrorLog(@"There was an error getting Hero Units: %@", error.localizedDescription);
+            NSLog(@"There was an error getting Hero Units: %@", error.localizedDescription);
             self.isLoading = NO;
             if (failure) {
                 failure(error);
@@ -58,7 +58,7 @@ static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey
         }];
     } failure:^(NSError *error) {
         @strongify(self);
-        ARErrorLog(@"There was an error getting Hero Units: %@", error.localizedDescription);
+        NSLog(@"There was an error getting Hero Units: %@", error.localizedDescription);
         self.isLoading = NO;
         if (failure) {
             failure(error);

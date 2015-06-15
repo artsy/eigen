@@ -1,4 +1,4 @@
-#import "FODSwitchCell.h"
+@import FODFormKit;
 
 @interface ARSwitchCell : FODSwitchCell
 

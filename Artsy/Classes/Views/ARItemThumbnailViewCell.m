@@ -46,7 +46,7 @@
 
     } else {
         // HACK: this needs a better implementation?
-        ARErrorLog(@"Could not make thumbnail for %@", object);
+        NSLog(@"Could not make thumbnail for %@", object);
     }
 
     if ([object respondsToSelector:@selector(title)]) {

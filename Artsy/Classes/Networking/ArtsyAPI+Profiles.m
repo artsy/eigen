@@ -37,7 +37,7 @@
 
     } failure:^(NSError *error) {
 
-        ARErrorLog(@"Could not Follow Profile: %@", error.localizedDescription);
+        NSLog(@"Could not Follow Profile: %@", error.localizedDescription);
         if (failure) { failure(error); }
     }];
 }
@@ -55,7 +55,7 @@
                 success(profile);
             }
         } failure:^(NSError *error) {
-            ARErrorLog(@"Could not Unfollow Profile: %@", error.localizedDescription);
+            NSLog(@"Could not Unfollow Profile: %@", error.localizedDescription);
             if (failure) {
                 failure(error);
             }

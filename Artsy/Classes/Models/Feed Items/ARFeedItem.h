@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "MTLModel.h"
+#import <Mantle/Mantle.h>
 
 @interface ARFeedItem : MTLModel <MTLJSONSerializing>
 

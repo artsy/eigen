@@ -1,10 +1,35 @@
 GIT
+  remote: https://github.com/CocoaPods/CocoaPods.git
+  revision: deff0ca128be878e3aab3f999dbaeac64d8f7ff1
+  branch: mr-deduplicate-frameworks
+  specs:
+    cocoapods (0.37.2)
+      activesupport (>= 3.2.15)
+      claide (~> 0.8.1)
+      cocoapods-core (= 0.37.2)
+      cocoapods-downloader (~> 0.9.0)
+      cocoapods-plugins (~> 0.4.2)
+      cocoapods-trunk (~> 0.6.1)
+      cocoapods-try (~> 0.4.5)
+      colored (~> 1.2)
+      escape (~> 0.0.4)
+      molinillo (~> 0.2.3)
+      nap (~> 0.8)
+      xcodeproj (~> 0.24.2)
+
+GIT
   remote: https://github.com/alloy/cocoapods-keys.git
   revision: 60a23f0b3b3ef7c055386417d94111795a2ec456
   branch: retrieve-keys-from-env
   specs:
     cocoapods-keys (1.2.0)
       osx_keychain
+
+PATH
+  remote: /Users/orta/spiel/ruby/cocoapods-stats
+  specs:
+    cocoapods-stats (0.0.1)
+      nap
 
 GEM
   remote: https://rubygems.org/
@@ -34,7 +59,19 @@ GEM
     cert (0.2.0)
       fastlane_core (>= 0.7.2)
     certified (1.0.0)
+    claide (0.8.1)
     cliver (0.3.2)
+    cocoapods-core (0.37.2)
+      activesupport (>= 3.2.15)
+      fuzzy_match (~> 2.0.4)
+      nap (~> 0.8.0)
+    cocoapods-downloader (0.9.0)
+    cocoapods-plugins (0.4.2)
+      nap
+    cocoapods-trunk (0.6.1)
+      nap (>= 0.8)
+      netrc (= 0.7.8)
+    cocoapods-try (0.4.5)
     colored (1.2)
     commander (4.3.4)
       highline (~> 1.7.2)
@@ -63,6 +100,7 @@ GEM
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.0.1)
+    escape (0.0.4)
     excon (0.45.3)
     faraday (0.8.9)
       multipart-post (~> 1.2.0)
@@ -107,10 +145,11 @@ GEM
       mini_magick (~> 4.0.2)
     fui (0.3.0)
       gli
+    fuzzy_match (2.0.4)
     gli (2.13.0)
     highline (1.7.2)
     i18n (0.7.0)
-    json (1.8.2)
+    json (1.8.3)
     krausefx-shenzhen (0.14.2)
       aws-sdk (~> 1.0)
       commander (~> 4.3)
@@ -135,15 +174,18 @@ GEM
     mime-types (1.25.1)
     mini_magick (4.0.4)
     mini_portile (0.6.2)
-    minitest (5.6.1)
+    minitest (5.7.0)
+    molinillo (0.2.3)
     multi_json (1.11.0)
     multipart-post (1.2.0)
     mustache (0.99.8)
+    nap (0.8.0)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
+    netrc (0.7.8)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     ntlm-http (0.1.1)
@@ -206,7 +248,7 @@ GEM
     websocket-driver (0.5.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    xcodeproj (0.24.1)
+    xcodeproj (0.24.2)
       activesupport (>= 3)
       colored (~> 1.2)
     xcpretty (0.1.10)
@@ -217,9 +259,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  cocoapods!
   cocoapods-keys!
+  cocoapods-stats!
   fastlane
   fui
   second_curtain
   shenzhen
   xcpretty
+
+BUNDLED WITH
+   1.10.0

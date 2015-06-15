@@ -11,6 +11,8 @@ use_frameworks!
 local_podfile = "Podfile.local"
 eval(File.open(local_podfile).read) if File.exist? local_podfile
 
+# Include my pods in the install stats
+plugin 'cocoapods-stats'
 plugin 'cocoapods-keys', {
     :project => "Artsy",
     :keys => [
@@ -31,6 +33,7 @@ plugin 'cocoapods-keys', {
 }
 
 # Core
+
 pod 'Mantle', '1.5.3'
 pod 'AFNetworking', :git => 'https://github.com/orta/AFNetworking', :branch => 'no_ifdefs'
 pod 'AFHTTPRequestOperationLogger', '1.0.0'
@@ -70,7 +73,9 @@ else
 end
 
 # Auth
-pod 'Facebook-iOS-SDK', '3.14.1'
+pod 'FBSDKCoreKit', '~> 4.2'
+pod 'FBSDKLoginKit', '~> 4.2'
+
 
 pod 'AFOAuth1Client', :git => "https://github.com/orta/AFOAuth1Client", :branch => "patch-1"
 
@@ -113,3 +118,6 @@ target 'Artsy Tests' do
   pod 'Expecta'
   pod 'OCMock', '2.2.4'
 end
+
+# Yep.
+inhibit_all_warnings!

@@ -28,7 +28,12 @@ PODS:
   - Artsy-UIButtons (1.4.0):
     - Artsy+UIColors
     - UIView+BooleanAnimations
-  - Bolts (1.1.4)
+  - Bolts (1.2.0):
+    - Bolts/AppLinks (= 1.2.0)
+    - Bolts/Tasks (= 1.2.0)
+  - Bolts/AppLinks (1.2.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.2.0)
   - CocoaLumberjack (2.0.0):
     - CocoaLumberjack/Default (= 2.0.0)
     - CocoaLumberjack/Extensions (= 2.0.0)
@@ -44,8 +49,17 @@ PODS:
   - Expecta+Snapshots (1.3.2):
     - Expecta (~> 0.3)
     - FBSnapshotTestCase (= 1.6)
-  - Facebook-iOS-SDK (3.14.1):
-    - Bolts
+  - FBSDKCoreKit (4.2.0):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc (= 4.2.0)
+    - FBSDKCoreKit/no-arc (= 4.2.0)
+  - FBSDKCoreKit/arc (4.2.0):
+    - Bolts (~> 1.1)
+  - FBSDKCoreKit/no-arc (4.2.0):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc
+  - FBSDKLoginKit (4.2.0):
+    - FBSDKCoreKit
   - FBSnapshotTestCase (1.6)
   - FLKAutoLayout (0.1.1)
   - FODFormKit (0.1.1)
@@ -121,7 +135,8 @@ DEPENDENCIES:
   - DRKonamiCode (= 1.1.0)
   - Expecta
   - Expecta+Snapshots (~> 1.2)
-  - Facebook-iOS-SDK (= 3.14.1)
+  - FBSDKCoreKit (~> 4.2)
+  - FBSDKLoginKit (~> 4.2)
   - FBSnapshotTestCase (= 1.6)
   - FLKAutoLayout (= 0.1.1)
   - FODFormKit (from `https://github.com/1aurabrown/FODFormKit.git`)
@@ -227,14 +242,15 @@ SPEC CHECKSUMS:
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy+UILabels: a7c713069e3d10144a3dc8e377bef8b2253cd766
   Artsy-UIButtons: 6f67de2a5285f18acb5d0e2919d1b17188acbc27
-  Bolts: f8e2f94edbf9fec7bb8de5ecaaa3aa6b7de6f64e
+  Bolts: d176cb1e0012175589e389a9db49b85e27787576
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: 89d19a013279a5604d61650721c15f20fefaaf00
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   Expecta+Snapshots: 40c5ec43b43da3bae957f14fed5dc9177d08ec8b
-  Facebook-iOS-SDK: 2948301ff993744c3c931d1ba46fa4a5bd60a687
+  FBSDKCoreKit: 84b3616a361801f190e43a9909caead7bb6087c7
+  FBSDKLoginKit: 57e37106af12c9e264e473dcb75d7decdbb07fe4
   FBSnapshotTestCase: 9d5fe43b29ae3a0ed8fc829477971b281038f748
   FLKAutoLayout: 95b12c5cd9652100235140b68652f063f7437851
   FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
@@ -245,7 +261,7 @@ SPEC CHECKSUMS:
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
   JLRoutes: 5a6096ec514f105fc906f9334c90d8276fe13687
   JSDecoupledAppDelegate: ec2e9480b893fa27ba3db5b12d51a6d5803c550b
-  Keys: 253e4d01f8fe0a795e628b0040257c99f6ab7eab
+  Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   libextobjc: f2802d4262f6885570df9799747409ceb1de602c
   Mantle: 7dddb082367d3e13bd244636d56838481c4552fe
@@ -269,4 +285,4 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-COCOAPODS: 0.37.1
+COCOAPODS: 0.37.2

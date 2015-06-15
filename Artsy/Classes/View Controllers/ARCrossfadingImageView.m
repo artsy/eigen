@@ -87,7 +87,7 @@ typedef NS_ENUM(NSInteger, ARDirection) {
         return;
     }
     if (currentIndex < 0 || currentIndex >= imageCount) {
-        ARErrorLog(@"Index %@ out of bounds in crossfading image view %@ with %@ images",
+        NSLog(@"Index %@ out of bounds in crossfading image view %@ with %@ images",
                                                         @(currentIndex), self, @(imageCount));
         return;
     }

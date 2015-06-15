@@ -46,7 +46,7 @@
     #import "ARTopMenuViewController.h"
     #import "ARScrollNavigationChief.h"
     #import "ARSystemTime.h"
-    #import "NSString+ObjectiveSugar.h"
+    @import ObjectiveSugar;
     #import "ARDispatchManager.h"
     #import "ARDeveloperOptions.h"
     #import "ARAutoLayoutDebugging.h"

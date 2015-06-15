@@ -23,8 +23,10 @@
 #import "ARNetworkConstants.h"
 #import "ArtsyAPI+Private.h"
 #import "ARFileUtils.h"
-#import "FBSettings.h"
-#import "FBAppCall.h"
+
+@import FBSDKCoreKit;
+@import FBSDKLoginKit;
+
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
 #import "ARDefaults+SiteFeatures.h"
@@ -99,7 +101,7 @@ static ARAppDelegate *_sharedInstance = nil;
     _landingURLRepresentation = self.landingURLRepresentation ?: @"http://artsy.net";
 
     [[ARLogger sharedLogger] startLogging];
-    [FBSettings setDefaultAppID:[ArtsyKeys new].artsyFacebookAppID];
+    [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
     [self setupXCallbackUrlManager];
 
     if (ARIsRunningInDemoMode) {
@@ -253,8 +255,11 @@ static ARAppDelegate *_sharedInstance = nil;
     NSString *fbScheme = [@"fb" stringByAppendingString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"]];
 
     if ([[url scheme] isEqualToString:fbScheme]) {
+
+
+        NSAssert(TRUE, @"SHOULD NOT BE CALLED");
         // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
-        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+//        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
     }
 
     if ([url isFileURL]) {
@@ -360,7 +365,7 @@ static ARAppDelegate *_sharedInstance = nil;
            [ARDefaults setOnboardingDefaults:features];
 
        } failure:^(NSError *error) {
-           ARErrorLog(@"Couldn't get site features. Error %@", error.localizedDescription);
+           NSLog(@"Couldn't get site features. Error %@", error.localizedDescription);
        }];
     }];
 }

@@ -21,7 +21,7 @@
         self->_following = (status == ARHeartStatusYes);
         [self didChangeValueForKey:@"following"];
     } failure:^(NSError *error) {
-        ARErrorLog(@"Error checking follow status for %@ - %@", self.representedObject, error.localizedDescription);
+        NSLog(@"Error checking follow status for %@ - %@", self.representedObject, error.localizedDescription);
     }];
 
     return self;
@@ -35,14 +35,14 @@
     if(following){
         [_representedObject followWithSuccess:nil failure:^(NSError *error) {
             @strongify(self);
-            ARErrorLog(@"Error following %@ - %@", self.representedObject, error.localizedDescription);
+            NSLog(@"Error following %@ - %@", self.representedObject, error.localizedDescription);
             [self _setFollowing:NO];
         }];
 
     } else {
         [_representedObject unfollowWithSuccess:nil failure:^(NSError *error) {
             @strongify(self);
-            ARErrorLog(@"Error following %@ - %@", self.representedObject, error.localizedDescription);
+            NSLog(@"Error following %@ - %@", self.representedObject, error.localizedDescription);
             [self _setFollowing:YES];
         }];
     }

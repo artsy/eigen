@@ -73,11 +73,11 @@ static NSSet *artsyHosts = nil;
 
     NSString *token = [UICKeyChainStore stringForKey:AROAuthTokenDefault];
     if(token) {
-        ARActionLog(@"Found OAuth token in keychain");
+        NSLog(@"Found OAuth token in keychain");
         [ARRouter setAuthToken:token];
 
     } else {
-        ARActionLog(@"Found trial XApp token in keychain");
+        NSLog(@"Found trial XApp token in keychain");
         NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenDefault];
         [ARRouter setXappToken:xapp];
     }

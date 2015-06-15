@@ -79,12 +79,12 @@ static NSString *CellId = @"OnboardingGeneFollow";
     @weakify(gene);
     [gene setFollowState:newState success:^(id response) {
         @strongify(gene);
-        ARActionLog(@"%@ gene %@", newState ? @"Followed" : @"Unfollowed" , gene.geneID);
+        NSLog(@"%@ gene %@", newState ? @"Followed" : @"Unfollowed" , gene.geneID);
 
     } failure:^(NSError *error) {
         @strongify(gene);
         [cell toggleFollowState];
-        ARErrorLog(@"Error %@ gene %@. Error: %@", newState ? @"following" : @"unfollowing", gene, error.localizedDescription);
+        NSLog(@"Error %@ gene %@. Error: %@", newState ? @"following" : @"unfollowing", gene, error.localizedDescription);
     }];
 
 }

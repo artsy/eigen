@@ -1,4 +1,4 @@
-#import "MTLModel.h"
+#import <Mantle/Mantle.h>
 #import "Sale.h"
 #import "Bidder.h"
 #import "BidderPosition.h"
