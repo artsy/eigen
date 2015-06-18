@@ -2,6 +2,7 @@
 
 * Tapping bid button on an artwork uses new /auctions/ route - orta
 * Ensure consistent access to the keychain throughout the ARUserManager - orta
+* Fair Artists links in Martsy outside of a fair will resolve correctly to their fair - orta
 
 ## 2.0.0 (05/06/2015)
 

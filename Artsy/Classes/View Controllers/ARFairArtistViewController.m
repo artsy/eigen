@@ -77,7 +77,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
 - (void)artistDidLoad
 {
-    _header = NSStringWithFormat(@"%@ at %@", self.artist.name, self.fair.name);
+    _header = NSStringWithFormat(@"%@ at %@", self.artist.name, self.fair.name ?: self.fair.fairID);
 
     [self.view.stackView addPageTitleWithString:self.header tag:ARFairArtistTitle];
 
