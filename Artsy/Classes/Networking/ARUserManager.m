@@ -2,19 +2,20 @@
 #import "NSDate+Util.h"
 #import "ARRouter.h"
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
-#import <UICKeyChainStore/UICKeyChainStore.h>
 #import "ARFileUtils.h"
 #import "ArtsyAPI+Private.h"
 #import "NSKeyedUnarchiver+ErrorLogging.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "ARCollectorStatusViewController.h"
+#import "ARKeychainable.h"
 
 NSString *ARTrialUserNameKey = @"ARTrialUserName";
 NSString *ARTrialUserEmailKey = @"ARTrialUserEmail";
 NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 @interface ARUserManager()
+@property (nonatomic, strong) NSObject <ARKeychainable> *keychain;
 @property (nonatomic, strong) User *currentUser;
 @end
 
@@ -73,6 +74,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         }
     }
 
+    _keychain = [[ARKeychain alloc] init];
     return self;
 }
 
@@ -101,13 +103,12 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 - (NSString *)userAuthenticationToken
 {
-    return _userAuthenticationToken ?: [UICKeyChainStore stringForKey:AROAuthTokenDefault];
+    return _userAuthenticationToken ?: [self.keychain keychainStringForKey:AROAuthTokenDefault];
 }
 
 - (void)saveUserOAuthToken:(NSString *)token expiryDate:(NSDate *)expiryDate
 {
-    NSString *service = [UICKeyChainStore defaultService];
-    [UICKeyChainStore setString:token forKey:AROAuthTokenDefault service:service accessGroup:@"group.net.artsy.eigen"];
+    [self.keychain setKeychainStringForKey:AROAuthTokenDefault value:token];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:expiryDate forKey:AROAuthTokenExpiryDateDefault];
@@ -305,7 +306,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 - (void)startTrial:(void(^)())callback failure:(void (^)(NSError *error))failure
 {
-    [UICKeyChainStore removeItemForKey:AROAuthTokenDefault];
+    [self.keychain removeKeychainStringForKey:AROAuthTokenDefault];
     
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [[NSUserDefaults standardUserDefaults] setObject:xappToken forKey:ARXAppTokenDefault];
@@ -455,32 +456,31 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 + (void)logoutAndSetUseStaging:(BOOL)useStaging
 {
-    [self.class clearUserDataAndSetUseStaging:@(useStaging)];
+    [self clearUserData:[self sharedManager] useStaging:@(useStaging)];
     exit(0);
 }
 
 + (void)clearUserData
 {
     id useStaging = [[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault];
-    [self.class clearUserDataAndSetUseStaging:useStaging];
+    [self clearUserData:[self sharedManager] useStaging:useStaging];
 }
 
 // This takes `id` instead of `BOOL` because if you call this method from `clearUserData` and
 // `ARUseStagingDefault` was not previously set, we don't want to explicitly set it to `0` or `NO`.
 // If the value passed is `nil`, we will leave `ARUseStagingDefault` unset after clearing all user defaults.
-+ (void)clearUserDataAndSetUseStaging:(id)useStaging
-{
-    ARUserManager *sharedManager = [self.class sharedManager];
 
-    [sharedManager deleteUserData];
++ (void)clearUserData:(ARUserManager *)manager useStaging:(id)useStaging
+{
+    [manager deleteUserData];
     [ARDefaults resetDefaults];
 
-    [UICKeyChainStore removeItemForKey:AROAuthTokenDefault];
-    [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
+    [manager.keychain removeKeychainStringForKey:AROAuthTokenDefault];
+    [manager.keychain removeKeychainStringForKey:ARXAppTokenDefault];
 
-    [sharedManager deleteHTTPCookies];
+    [manager deleteHTTPCookies];
     [ARRouter setAuthToken:nil];
-    sharedManager.currentUser = nil;
+    manager.currentUser = nil;
 
     if (useStaging != nil) {
         [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
@@ -529,44 +529,44 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 - (void)setTrialUserName:(NSString *)trialUserName
 {
     if (trialUserName) {
-        [UICKeyChainStore setString:trialUserName forKey:ARTrialUserNameKey];
+        [self.keychain setKeychainStringForKey:ARTrialUserNameKey value:trialUserName];
     } else {
-        [UICKeyChainStore removeItemForKey:ARTrialUserNameKey];
+        [self.keychain removeKeychainStringForKey:ARTrialUserNameKey];
     }
 }
 
 - (void)setTrialUserEmail:(NSString *)trialUserEmail
 {
     if (trialUserEmail) {
-        [UICKeyChainStore setString:trialUserEmail forKey:ARTrialUserEmailKey];
+        [self.keychain setKeychainStringForKey:ARTrialUserEmailKey value:trialUserEmail];
     } else {
-        [UICKeyChainStore removeItemForKey:ARTrialUserEmailKey];
+        [self.keychain removeKeychainStringForKey:ARTrialUserEmailKey];
     }
 }
 
 - (NSString *)trialUserName
 {
-    return [UICKeyChainStore stringForKey:ARTrialUserNameKey];
+    return [self.keychain keychainStringForKey:ARTrialUserNameKey];
 }
 
 - (NSString *)trialUserEmail
 {
-    return [UICKeyChainStore stringForKey:ARTrialUserEmailKey];
+    return [self.keychain keychainStringForKey:ARTrialUserEmailKey];
 }
 
 - (NSString *)trialUserUUID
 {
-    NSString *uuid = [UICKeyChainStore stringForKey:ARTrialUserUUID];
+    NSString *uuid = [self.keychain keychainStringForKey:ARTrialUserUUID];
     if (!uuid) {
         uuid = [[NSUUID UUID] UUIDString];
-        [UICKeyChainStore setString:uuid forKey:ARTrialUserUUID];
+        [self.keychain setKeychainStringForKey:ARTrialUserUUID value:uuid];
     }
     return uuid;
 }
 
 - (void)resetTrialUserUUID
 {
-    [UICKeyChainStore removeItemForKey:ARTrialUserUUID];
+    [self.keychain removeKeychainStringForKey:ARTrialUserUUID];
 }
 
 @end

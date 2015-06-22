@@ -38,6 +38,8 @@
 #import <VCRURLConnection/VCR.h>
 #endif
 
+#import <UICKeyChainStore/UICKeyChainStore.h>
+
 // demo
 #import "ARDemoSplashViewController.h"
 #import "ARShowFeedViewController.h"
@@ -64,6 +66,7 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 // These methods are swizzled during unit tests. See ARAppDelegate(Testing).
+
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

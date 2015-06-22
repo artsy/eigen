@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Ensure consistent access to the keychain throughout the ARUserManager - orta
+
 ## 2.0.0 (05/06/2015)
 
 * Add iPad support - 1aurabrown
