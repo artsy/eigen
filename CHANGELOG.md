@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Tapping bid button on an artwork uses new /auctions/ route - orta
+
 ## 2.0.0 (05/06/2015)
 
 * Add iPad support - 1aurabrown
