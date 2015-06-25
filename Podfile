@@ -82,8 +82,8 @@ pod 'TSMiniWebBrowser@dblock', :head
 pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
 
 # Analytics
-pod 'HockeySDK', :git => 'https://github.com/bitstadium/HockeySDK-iOS.git', :branch => 'develop'
-pod 'ARAnalytics', :subspecs => ["Segmentio", "HockeyApp", "DSL"], :git => 'https://github.com/ashfurrow/ARAnalytics.git', :branch => 'cleanup'
+pod 'HockeySDK-Source', '~> 3.7'
+pod 'ARAnalytics', '>= 3.6.2', :subspecs => ["Segmentio", "HockeyApp", "DSL"]
 pod 'UICKeyChainStore', '1.0.5'
 
 # Fairs
