@@ -1,5 +1,6 @@
 ## 2.0.1
 
+* Tapping bid button on an artwork uses new /auctions/ route - orta
 * Ensure consistent access to the keychain throughout the ARUserManager - orta
 
 ## 2.0.0 (05/06/2015)
