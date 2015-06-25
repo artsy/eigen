@@ -322,6 +322,7 @@
 		6088B75417D1DBAC00E4BB67 /* ARAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */; };
 		6088B75917D20A0A00E4BB67 /* ARSlideshowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0C67E17B972F200721244 /* ARSlideshowView.m */; };
 		608920C3178C682A00989A10 /* ARItemThumbnailViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 608920C2178C682A00989A10 /* ARItemThumbnailViewCell.m */; };
+		608AABDC1B3884C600855A1C /* ARKeychainable.m in Sources */ = {isa = PBXBuildFile; fileRef = 608AABDB1B3884C600855A1C /* ARKeychainable.m */; };
 		608B2F5E1657D0500046956C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F5D1657D0500046956C /* main.m */; };
 		608B2F621657D1500046956C /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F611657D1500046956C /* ARDefaults.m */; };
 		608B2F6F1657D1D10046956C /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F6E1657D1D10046956C /* User.m */; };
@@ -1177,6 +1178,8 @@
 		6089243217F617140023D1AC /* ARArtworkMetadataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkMetadataView.m; sourceTree = "<group>"; };
 		60892CEC16B9A849004C1B47 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		60892CEE16B9A871004C1B47 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		608AABDA1B3884C600855A1C /* ARKeychainable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARKeychainable.h; sourceTree = "<group>"; };
+		608AABDB1B3884C600855A1C /* ARKeychainable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARKeychainable.m; sourceTree = "<group>"; };
 		608B2F5D1657D0500046956C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Artsy/App/main.m; sourceTree = SOURCE_ROOT; };
 		608B2F601657D1500046956C /* ARDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDefaults.h; sourceTree = "<group>"; };
 		608B2F611657D1500046956C /* ARDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaults.m; sourceTree = "<group>"; };
@@ -3478,6 +3481,8 @@
 				3CF144AD18E460EF00B1A764 /* ArtsyAPI+SystemTime.m */,
 				3CB37D95192246B500089A1D /* ArtsyAPI+ErrorHandlers.h */,
 				3CB37D96192246B500089A1D /* ArtsyAPI+ErrorHandlers.m */,
+				608AABDA1B3884C600855A1C /* ARKeychainable.h */,
+				608AABDB1B3884C600855A1C /* ARKeychainable.m */,
 			);
 			name = "API Modules";
 			sourceTree = "<group>";
@@ -4250,6 +4255,7 @@
 				49BA7E141655ABE600C06572 /* ARAppDelegate.m in Sources */,
 				B375E5F418121EEA005FC680 /* Sale.m in Sources */,
 				608B2F5E1657D0500046956C /* main.m in Sources */,
+				608AABDC1B3884C600855A1C /* ARKeychainable.m in Sources */,
 				608B2F621657D1500046956C /* ARDefaults.m in Sources */,
 				600415C917C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m in Sources */,
 				3CF144A718E45F6C00B1A764 /* SystemTime.m in Sources */,

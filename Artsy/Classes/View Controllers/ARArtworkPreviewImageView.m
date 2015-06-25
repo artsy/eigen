@@ -90,12 +90,13 @@
     NSURL *imageURL = [NSURL URLWithString:artwork.defaultImage.baseImageURL];
     UIImage *image;
     image = [ARFeedImageLoader bestAvailableCachedImageForBaseURL:imageURL];
-    if (!image) {
-        // Multiply by 1000 to preserve precision because the image's dimensions get rounded to whole numbers.
-        CGFloat aspectRatio = artwork.aspectRatio ?: 1;
-        CGSize size = CGSizeMake(aspectRatio * 1000, 1000);
-        image = [UIImage imageFromColor:[UIColor artsyLightGrey] withSize:size];
-    }
+//    Temporarily disable this to see if it’s related to https://github.com/artsy/eigen/issues/526.
+//    if (!image) {
+//        // Multiply by 1000 to preserve precision because the image's dimensions get rounded to whole numbers.
+//        CGFloat aspectRatio = artwork.aspectRatio ?: 1;
+//        CGSize size = CGSizeMake(aspectRatio * 1000, 1000);
+//        image = [UIImage imageFromColor:[UIColor artsyLightGrey] withSize:size];
+//    }
     return image;
 }
 

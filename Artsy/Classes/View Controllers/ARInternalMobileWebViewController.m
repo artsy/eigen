@@ -20,6 +20,16 @@
 
 - (void)dealloc;
 {
+    // This is already done in -[TSMiniWebBrowser dealloc], but still it seems we're getting UIWebViewDelegate messages
+    // after this object has been deallocated.
+    //
+    // It could also have been due to ARExternalWebBrowserViewController
+    // hijacking the webview’s scrollview delegate and maybe the webview doing something funky, like retrieving its
+    // delegate from the scrollview. If so, then the nillifying of the scrollview that's now done in
+    // -[ARExternalWebBrowserViewController dealloc] should be enough, but that's all just conjecture.
+    //
+    self.webView.delegate = nil;
+
     [self removeContentLoadStateTimer];
 }
 
