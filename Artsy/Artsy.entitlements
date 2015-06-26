@@ -4,10 +4,7 @@
 <dict>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)net.artsy.artsy.dev</string>
-		<string>$(AppIdentifierPrefix)net.artsy.artsy.beta</string>
-		<string>$(AppIdentifierPrefix)net.artsy.artsy</string>
-		<string>$(AppIdentifierPrefix)net.artsy.artsy.demo</string>
+		<string>$(AppIdentifierPrefix)$(CFBundleIdentifier).keychain-group</string>
 	</array>
 </dict>
 </plist>
