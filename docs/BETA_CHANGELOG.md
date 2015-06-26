@@ -1,3 +1,7 @@
+## 2.0.1 (2015.06.26)
+
+* Use App ID Prefix for keychain access group. - alloy
+
 ## 2.0.1 (2015.06.25)
 
 * Ensure that tapping /sign_up or /log_in from a webview doesn't push a new webview. - 1aurabrown
