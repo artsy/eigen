@@ -4,31 +4,28 @@
 
 @implementation ARKeychain
 
+- (NSString *)accessGroup;
+{
+    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+    return [NSString stringWithFormat:@"%@%@.keychain-group", info[@"AppIdentifierPrefix"], info[@"CFBundleIdentifier"]];
+}
+
 - (void)removeKeychainStringForKey:(NSString *)key
 {
     NSString *service = [UICKeyChainStore defaultService];
-    NSString *appBundle = [[NSBundle mainBundle] bundleIdentifier];
-    NSString *accessGroup = [@"group." stringByAppendingString:appBundle];
-
-    [UICKeyChainStore removeItemForKey:key service:service accessGroup:accessGroup];
+    [UICKeyChainStore removeItemForKey:key service:service accessGroup:self.accessGroup];
 }
 
 - (NSString *)keychainStringForKey:(NSString *)key
 {
     NSString *service = [UICKeyChainStore defaultService];
-    NSString *appBundle = [[NSBundle mainBundle] bundleIdentifier];
-    NSString *accessGroup = [@"group." stringByAppendingString:appBundle];
-
-    return [UICKeyChainStore stringForKey:key service:service accessGroup:accessGroup];
+    return [UICKeyChainStore stringForKey:key service:service accessGroup:self.accessGroup];
 }
 
 - (void)setKeychainStringForKey:(NSString *)key value:(NSString *)value
 {
     NSString *service = [UICKeyChainStore defaultService];
-    NSString *appBundle = [[NSBundle mainBundle] bundleIdentifier];
-    NSString *accessGroup = [@"group." stringByAppendingString:appBundle];
-
-    [UICKeyChainStore setString:value forKey:key service:service accessGroup:accessGroup];
+    [UICKeyChainStore setString:value forKey:key service:service accessGroup:self.accessGroup];
 }
 
 @end
