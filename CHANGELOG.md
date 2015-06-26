@@ -5,6 +5,8 @@
 * Make registration for push notifications work on iOS 8 and up and save devices of both trial and registered users on the server. - alloy
 * Ensure that tapping /sign_up or /log_in from a webview doesn't push a new webview. - 1aurabrown
 * Zoom artwork to fullscreen when changing orientation on iPad from portrait to landscape. - alloy
+* Attempt to fix a crash where a deallocated internal webview controller still receives messages. - alloy
+* Attempt to pin-point correlation with auto layout crash by reverting placeholder artwork images at real size. - alloy
 
 ## 2.0.0 (05/06/2015)
 
