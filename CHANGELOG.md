@@ -1,8 +1,10 @@
-## 2.0.1
+## 2.0.1 (26/06/2015)
 
-* Tapping bid button on an artwork uses new /auctions/ route - orta
-* Ensure consistent access to the keychain throughout the ARUserManager - orta
+* Fix user credential storage so the user is only asked for it once - orta & alloy
 * Fair Artists links in Martsy outside of a fair will resolve correctly to their fair - orta
+* Make registration for push notifications work on iOS 8 and up and save devices of both trial and registered users on the server. - alloy
+* Ensure that tapping /sign_up or /log_in from a webview doesn't push a new webview. - 1aurabrown
+* Zoom artwork to fullscreen when changing orientation on iPad from portrait to landscape. - alloy
 
 ## 2.0.0 (05/06/2015)
 
