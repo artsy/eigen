@@ -208,7 +208,9 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 - (void)toggleFollowArtist:(id)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist success:^(BOOL newUser){
+            [self toggleFollowArtist:sender];
+        }];
         return;
     }
     self.followableNetwork.following = !self.followableNetwork.following;

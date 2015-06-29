@@ -15,7 +15,7 @@
 @end
 
 @interface ARTrialController (Testing)
-- (void)presentTrialWithContext:(enum ARTrialContext)context fromTarget:(id)target selector:(SEL)selector;
+- (void)presentTrialWithContext:(enum ARTrialContext)context success:(void (^)(BOOL newUser))success;
 @end
 
 @interface ARTopMenuViewController(Testing) <ARTabViewDelegate>
@@ -160,7 +160,7 @@ describe(@"navigation", ^{
 
             it(@"invokes signup popover", ^{
                 id mock = [OCMockObject niceMockForClass:[ARTrialController class]];
-                [[mock expect] presentTrialWithContext:0 fromTarget:[OCMArg any] selector:[OCMArg anyPointer]] ;
+                [[mock expect] presentTrialWithContext:0 success:[OCMArg any]];
             });
         });
 

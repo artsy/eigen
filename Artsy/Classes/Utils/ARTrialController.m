@@ -7,8 +7,7 @@ static ARTrialController *instance;
 @interface ARTrialController ()
 @property (readwrite, nonatomic, assign) NSInteger threshold;
 @property (readwrite, nonatomic, assign) NSInteger count;
-@property (readwrite, nonatomic, assign) SEL selectorForPostSignup;
-@property (readwrite, nonatomic, strong) id targetForPostSignup;
+@property (nonatomic, copy) void (^successCallback)(BOOL newUser);
 @end
 
 @implementation ARTrialController
@@ -43,12 +42,13 @@ static ARTrialController *instance;
     }
 }
 
-+ (void)presentTrialWithContext:(enum ARTrialContext)context fromTarget:(id)target selector:(SEL)selector
++ (void)presentTrialWithContext:(enum ARTrialContext)context success:(void (^)(BOOL newUser))success
 {
-    [instance presentTrialWithContext:context fromTarget:target selector:selector];
+    [instance presentTrialWithContext:context success:success];
 }
 
-- (void)presentTrialWithContext:(enum ARTrialContext)context fromTarget:(id)target selector:(SEL)selector
+
+- (void)presentTrialWithContext:(enum ARTrialContext)context success:(void (^)(BOOL newUser))success
 {
     if (ARIsRunningInDemoMode) {
         [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
@@ -56,8 +56,7 @@ static ARTrialController *instance;
     }
 
     if ([User isTrialUser]) {
-        self.selectorForPostSignup = selector;
-        self.targetForPostSignup = target;
+        self.successCallback = success;
 
         ARAppDelegate *appDelegate = [ARAppDelegate sharedInstance];
         [appDelegate showTrialOnboardingWithState:ARInitialOnboardingStateInApp andContext:context];
@@ -95,25 +94,19 @@ static ARTrialController *instance;
     }
 }
 
-+ (void)performPostSignupEvent
++ (void)performCompletionNewUser:(BOOL)newUser
 {
-    [instance performPostSignupEvent];
-}
-
-- (void)performPostSignupEvent
-{
-    if (self.selectorForPostSignup && self.targetForPostSignup) {
-        if ([self.targetForPostSignup respondsToSelector:self.selectorForPostSignup]) {
-
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [self.targetForPostSignup performSelector:self.selectorForPostSignup withObject:nil];
-# pragma clang diagnostic pop
-
-        }
+    if ([User currentUser]) {
+        [instance performCompletionNewUser:newUser];
     }
 }
 
+- (void)performCompletionNewUser:(BOOL)newUser
+{
+    if (self.successCallback) {
+        self.successCallback(newUser);
+    }
+}
 
 + (void)startTrialWithCompletion:(void (^)(void))completion failure:(void (^)(NSError *error))failure
 {
@@ -141,7 +134,7 @@ static ARTrialController *instance;
 
     BOOL shouldShowSplash = self.count >= self.threshold;
     if (shouldShowSplash) {
-        [self presentTrialWithContext:ARTrialContextPeriodical fromTarget:nil selector:nil];
+        [self presentTrialWithContext:ARTrialContextPeriodical success:nil];
         [self reset];
     }
 

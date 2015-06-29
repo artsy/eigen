@@ -308,7 +308,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 - (void)toggleFollowingArtist:(ARHeartButton *)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist success:^(BOOL newUser){
+            [self toggleFollowingArtist:sender];
+        }];
         return;
     }
 

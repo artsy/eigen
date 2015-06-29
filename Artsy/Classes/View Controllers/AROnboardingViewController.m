@@ -2,7 +2,6 @@
 
 #import "ARAppDelegate.h"
 #import "ARUserManager.h"
-
 #import "AROnboardingTransition.h"
 #import "AROnboardingViewControllers.h"
 #import "ARNetworkConstants.h"
@@ -13,6 +12,7 @@
 #import "ARAuthProviders.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "AROnboardingMoreInfoViewController.h"
+#import "ARPersonalizeWebViewController.h"
 #import "ARParallaxEffect.h"
 #import "NSString+StringCase.h"
 #import "ArtsyAPI+Private.h"
@@ -203,7 +203,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     self.state = AROnboardingStageEmailPassword;
 }
 
-- (void)signupDone
+- (void)presentOnboarding
 {
     if ([UIDevice isPad]) {
         [self presentWebOnboarding];
@@ -213,6 +213,11 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
         }];
         [self presentCollectorLevel];
     }
+}
+
+- (void)didSignUpAndLogin
+{
+    [self presentOnboarding];
 }
 
 
@@ -225,11 +230,6 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     ARPersonalizeWebViewController *viewController = [[ARPersonalizeWebViewController alloc] initWithURL:url];
     viewController.personalizeDelegate = self;
     [self pushViewController:viewController animated:YES];
-}
-
-- (void)webOnboardingDone
-{
-    [self dismissOnboardingWithVoidAnimation:YES];
 }
 
 #pragma mark -

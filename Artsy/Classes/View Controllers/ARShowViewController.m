@@ -436,7 +436,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 - (void)toggleFollowShow:(id)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteProfile fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteProfile success:^(BOOL newUser){
+            [self toggleFollowShow:sender];
+        }];
         return;
     }
 

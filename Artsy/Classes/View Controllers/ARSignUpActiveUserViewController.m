@@ -138,7 +138,6 @@
         self.bottomView.alpha = 0;
     }];
     [self.delegate dismissOnboardingWithVoidAnimation:NO didCancel:YES];
-
 }
 
 @end

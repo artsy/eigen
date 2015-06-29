@@ -17,6 +17,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 @interface ARUserManager()
 @property (nonatomic, strong) NSObject <ARKeychainable> *keychain;
 @property (nonatomic, strong) User *currentUser;
+@property (nonatomic, readonly) BOOL didCreateAccountThisSession;
 @end
 
 @implementation ARUserManager
@@ -29,6 +30,11 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         _sharedManager = [[self alloc] init];
     });
     return _sharedManager;
+}
+
++ (BOOL)didCreateAccountThisSession
+{
+    return [self.class sharedManager].didCreateAccountThisSession;
 }
 
 + (void)identifyAnalyticsUser
@@ -335,7 +341,8 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
                  failure(error, JSON);
                  return;
              }
-             
+
+             self->_didCreateAccountThisSession = YES;
              self.currentUser = user;
              [self storeUserData];
              
@@ -369,6 +376,8 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
                  failure(error, JSON);
                  return;
              }
+
+             self->_didCreateAccountThisSession = YES;
              self.currentUser = user;
              [self storeUserData];
 
@@ -401,6 +410,8 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
                  failure(error, JSON);
                  return;
              }
+
+             self->_didCreateAccountThisSession = YES;
              self.currentUser = user;
              [self storeUserData];
              

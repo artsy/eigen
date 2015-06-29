@@ -44,6 +44,8 @@ describe(@"login", ^{
         });
 
         it(@"sets current user", ^{
+            expect([ARUserManager didCreateAccountThisSession]).to.beFalsy();
+
             User *currentUser = [[ARUserManager sharedManager] currentUser];
             expect(currentUser).toNot.beNil();
             expect(currentUser.userID).to.equal(ARUserManager.stubUserID);
@@ -286,6 +288,8 @@ describe(@"createUserWithName", ^{
     });
 
     it(@"sets current user", ^{
+        expect([ARUserManager didCreateAccountThisSession]).to.beTruthy();
+
         User *currentUser = [[ARUserManager sharedManager] currentUser];
         expect(currentUser).toNot.beNil();
         expect(currentUser.userID).to.equal(ARUserManager.stubUserID);
@@ -313,6 +317,8 @@ describe(@"createUserViaFacebookWithToken", ^{
     });
 
     it(@"sets current user", ^{
+        expect([ARUserManager didCreateAccountThisSession]).to.beTruthy();
+
         User *currentUser = [[ARUserManager sharedManager] currentUser];
         expect(currentUser).toNot.beNil();
         expect(currentUser.userID).to.equal(ARUserManager.stubUserID);
@@ -340,6 +346,8 @@ describe(@"createUserViaTwitterWithToken", ^{
     });
 
     it(@"sets current user", ^{
+        expect([ARUserManager didCreateAccountThisSession]).to.beTruthy();
+
         User *currentUser = [[ARUserManager sharedManager] currentUser];
         expect(currentUser).toNot.beNil();
         expect(currentUser.userID).to.equal(ARUserManager.stubUserID);

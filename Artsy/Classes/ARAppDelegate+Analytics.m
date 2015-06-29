@@ -18,6 +18,8 @@
 #import "ARInquireForArtworkViewController.h"
 #import "ARArtworkViewController.h"
 #import "AROnboardingArtistTableController.h"
+#import "ARInternalMobileWebViewController.h"
+#import "ARSignUpSplashViewController.h"
 #import "ARLoginViewController.h"
 #import "ARSignUpActiveUserViewController.h"
 #import "ARSignupViewController.h"
@@ -956,7 +958,7 @@
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: ARAnalyticsShowTrialSplash,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(presentTrialWithContext:fromTarget:selector:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(presentTrialWithContext:success:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARTrialController *controller, NSArray *parameters){
                                 enum ARTrialContext context = [parameters.first integerValue];
                                 return @{

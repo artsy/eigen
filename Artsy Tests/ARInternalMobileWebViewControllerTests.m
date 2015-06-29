@@ -155,7 +155,7 @@ describe(@"authenticated", ^{
             [[[mockUser stub] andReturnValue:OCMOCK_VALUE(NO)] isTrialUser];
 
             id mock = [OCMockObject partialMockForObject:[ARTrialController instance]];
-            [[mock reject] presentTrialWithContext:ARTrialContextNotTrial fromTarget:[OCMArg any] selector:[OCMArg anySelector]];
+            [[mock reject] presentTrialWithContext:ARTrialContextNotTrial success:[OCMArg any]];
 
             id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
             [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
@@ -216,7 +216,7 @@ describe(@"unauthenticated", ^{
             [[[mockUser stub] andReturnValue:OCMOCK_VALUE(YES)] isTrialUser];
 
             id mock = [OCMockObject partialMockForObject:[ARTrialController instance]];
-            [[mock expect] presentTrialWithContext:ARTrialContextNotTrial fromTarget:[OCMArg any] selector:[OCMArg anySelector]];
+            [[mock expect] presentTrialWithContext:ARTrialContextNotTrial success:[OCMArg any]];
 
             id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
             [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
@@ -237,7 +237,7 @@ describe(@"unauthenticated", ^{
             [[[mockUser stub] andReturnValue:OCMOCK_VALUE(YES)] isTrialUser];
 
             id mock = [OCMockObject partialMockForObject:[ARTrialController instance]];
-            [[mock expect] presentTrialWithContext:ARTrialContextNotTrial fromTarget:[OCMArg any] selector:[OCMArg anySelector]];
+            [[mock expect] presentTrialWithContext:ARTrialContextNotTrial success:[OCMArg any]];
 
             id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
             [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];

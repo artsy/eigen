@@ -30,7 +30,9 @@
 - (void)tappedArtworkFavorite:(ARHeartButton *)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser){
+            [self tappedArtworkFavorite:sender];
+        }];
         return;
     }
 
@@ -109,7 +111,9 @@
 - (void)tappedBidButton
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextAuctionBid fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextAuctionBid success:^(BOOL newUser){
+            [self tappedBidButton];
+        }];
         return;
     }
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
@@ -143,7 +147,9 @@
 - (void)tappedBuyButton
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextArtworkOrder fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextArtworkOrder success:^(BOOL newUser){
+            [self tappedBuyButton];
+        }];
         return;
     }
 
