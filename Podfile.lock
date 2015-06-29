@@ -55,6 +55,7 @@ PODS:
     - HockeySDK-Source/AllFeatures (= 3.7.0)
   - HockeySDK-Source/AdHocUpdates (3.7.0):
     - HockeySDK-Source/SharedRequirements
+    - HockeySDK-Source/UserInterface
   - HockeySDK-Source/AllFeatures (3.7.0):
     - HockeySDK-Source/AdHocUpdates
     - HockeySDK-Source/Authenticator
@@ -63,12 +64,20 @@ PODS:
     - HockeySDK-Source/UserFeedback
   - HockeySDK-Source/Authenticator (3.7.0):
     - HockeySDK-Source/SharedRequirements
+    - HockeySDK-Source/UserInterface
   - HockeySDK-Source/CrashReporter (3.7.0):
+    - HockeySDK-Source/Extendable
+    - HockeySDK-Source/SharedRequirements
+  - HockeySDK-Source/Extendable (3.7.0):
     - HockeySDK-Source/SharedRequirements
   - HockeySDK-Source/SharedRequirements (3.7.0)
   - HockeySDK-Source/StoreUpdates (3.7.0):
     - HockeySDK-Source/SharedRequirements
   - HockeySDK-Source/UserFeedback (3.7.0):
+    - HockeySDK-Source/Extendable
+    - HockeySDK-Source/SharedRequirements
+    - HockeySDK-Source/UserInterface
+  - HockeySDK-Source/UserInterface (3.7.0):
     - HockeySDK-Source/SharedRequirements
   - InterAppCommunication (1.0)
   - iRate (1.10.2)
@@ -227,7 +236,7 @@ SPEC CHECKSUMS:
   FLKAutoLayout: 95b12c5cd9652100235140b68652f063f7437851
   FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  HockeySDK-Source: 34022ff53e57bd329c5772bc149cbe803a49ba11
+  HockeySDK-Source: e96ad84d5db85fe2a7ad83d573210b1eb6c3e755
   InterAppCommunication: 3239945b30e9dc5f91ef8be057fbcae4e3398e5c
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
