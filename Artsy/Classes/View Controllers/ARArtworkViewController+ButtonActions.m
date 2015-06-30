@@ -119,7 +119,7 @@
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
         [self bidCompelted:saleArtwork];
     } failure:^(NSError *error) {
-        NSLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
+        ARErrorLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
     }];
 }
 
@@ -140,7 +140,7 @@
         [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 
     } failure:^(NSError *error) {
-        NSLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
+        ARErrorLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
     }];
 }
 
@@ -174,13 +174,13 @@
         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             NSString *orderID = [JSON valueForKey:@"id"];
             NSString *resumeToken = [JSON valueForKey:@"token"];
-            NSLog(@"Created order %@", orderID);
+            ARErrorLog(@"Created order %@", orderID);
             UIViewController *controller = [[ARSwitchBoard sharedInstance] loadOrderUIForID:orderID resumeToken:resumeToken];
             [self.navigationController pushViewController:controller animated:YES];
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             @strongify(self);
-            NSLog(@"Creating a new order failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
+            ARErrorLog(@"Creating a new order failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
             [self tappedContactGallery];
         }];
 

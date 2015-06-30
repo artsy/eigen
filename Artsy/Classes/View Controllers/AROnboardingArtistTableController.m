@@ -42,7 +42,7 @@ static NSString *CellId = @"OnboardingArtistFollow";
     [self removeArtist:artist];
 
     [artist unfollowWithSuccess:^(id response) {
-        NSLog(@"Unfollowed artist %@ from onboarding.", artist.artistID);
+        ARActionLog(@"Unfollowed artist %@ from onboarding.", artist.artistID);
 
     } failure:^(NSError *error) {
         NSLog(@"Error unfollowing artist %@ from onboarding. Error: %@", artist.artistID, error.localizedDescription);

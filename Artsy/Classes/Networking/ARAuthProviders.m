@@ -58,14 +58,14 @@
 //                       NSString *name = user[@"name"];
 //                       success(token, email, name);
 //                   } else {
-//                       NSLog(@"Couldn't get user info from Facebook");
+//                       ARErrorLog(@"Couldn't get user info from Facebook");
 //                       failure(error);
 //                   }
 //               }];
 //          } else {
 //              NSString *description = error ? [error description] : @"token was nil";
 //              [ARAnalytics event:ARAnalyticsErrorFailedToGetFacebookCredentials withProperties:@{ @"error" : description }];
-//              NSLog(@"Couldn't get Facebook credentials");
+//              ARErrorLog(@"Couldn't get Facebook credentials");
 //              failure(error);
 //          }
 //      }];

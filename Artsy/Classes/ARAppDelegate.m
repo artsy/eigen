@@ -394,7 +394,7 @@ static ARAppDelegate *_sharedInstance = nil;
            [ARDefaults setOnboardingDefaults:features];
 
        } failure:^(NSError *error) {
-           NSLog(@"Couldn't get site features. Error %@", error.localizedDescription);
+           ARErrorLog(@"Couldn't get site features. Error %@", error.localizedDescription);
        }];
     }];
 }

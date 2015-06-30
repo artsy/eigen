@@ -14,7 +14,7 @@
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
 #if (TARGET_IPHONE_SIMULATOR == 0)
-    NSLog(@"Error registering for remote notifications: %@", error.localizedDescription);
+    ARErrorLog(@"Error registering for remote notifications: %@", error.localizedDescription);
 #endif
 }
 
@@ -41,7 +41,7 @@
     [ArtsyAPI setAPNTokenForCurrentDevice:deviceToken success:^(id response) {
         ARActionLog(@"Pushed device token to Artsy's servers");
     } failure:^(NSError *error) {
-        NSLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
+        ARErrorLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
     }];
 #endif
 }

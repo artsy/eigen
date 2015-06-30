@@ -121,7 +121,7 @@
             [self hideLoadingView];
             [self.tableView reloadData];
         } failure:^(NSError *error) {
-            NSLog(@"There was an error getting newest items for the feed: %@", error.localizedDescription);
+            ARErrorLog(@"There was an error getting newest items for the feed: %@", error.localizedDescription);
             [self performSelector:@selector(refreshFeed) withObject:nil afterDelay:3];
         }];
     }];
@@ -186,7 +186,7 @@
         if (!self) { return; }
 
         // add a "network error, retry?" state to footer
-        NSLog(@"There was an error getting next feed page: %@", error.localizedDescription);
+        ARErrorLog(@"There was an error getting next feed page: %@", error.localizedDescription);
         [self setFooterStatus:ARFeedStatusStateNetworkError];
         self->_loading = NO;
     }

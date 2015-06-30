@@ -116,7 +116,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
         if (!self) { return; }
 
         if (!artist) {
-            NSLog(@"Failed to update artist information: missing artist");
+            ARErrorLog(@"Failed to update artist information: missing artist");
             return;
         }
 
@@ -126,7 +126,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
     } failure:^(NSError *error) {
         @strongify(self);
-        NSLog(@"Could not update artist information: %@", error.localizedDescription);
+        ARErrorLog(@"Could not update artist information: %@", error.localizedDescription);
         [self setIsGettingArtworks:NO displayMode:self.displayMode];
     }];
 }
@@ -394,7 +394,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
         [self checkForAdditionalArtworksToFillView];
     } failure:^(NSError *error) {
         @strongify(self);
-        NSLog(@"Could not get Artist Artworks: %@", error.localizedDescription);
+        ARErrorLog(@"Could not get Artist Artworks: %@", error.localizedDescription);
         [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
         [self setIsGettingArtworks:NO displayMode:displayMode];
     }];

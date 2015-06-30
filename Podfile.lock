@@ -49,10 +49,10 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (0.4.0)
-  - Expecta (0.3.2)
-  - Expecta+Snapshots (1.3.2):
-    - Expecta (~> 0.3)
-    - FBSnapshotTestCase (= 1.6)
+  - Expecta (1.0.0)
+  - Expecta+Snapshots (1.3.4):
+    - Expecta (~> 1.0)
+    - FBSnapshotTestCase (~> 1.8)
   - FBSDKCoreKit (4.2.0):
     - Bolts (~> 1.1)
     - FBSDKCoreKit/arc (= 4.2.0)
@@ -64,7 +64,7 @@ PODS:
     - FBSDKCoreKit/arc
   - FBSDKLoginKit (4.2.0):
     - FBSDKCoreKit
-  - FBSnapshotTestCase (1.6)
+  - FBSnapshotTestCase (1.8.1)
   - FLKAutoLayout (0.1.1)
   - FODFormKit (0.1.1)
   - FXBlurView (1.6.1)
@@ -129,17 +129,17 @@ DEPENDENCIES:
   - ARGenericTableViewController (= 1.0.2)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
   - Artsy+UIColors
-  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts`)
+  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts`, branch `old_fonts_new_lib`)
   - Artsy+UILabels (HEAD)
   - Artsy-UIButtons (~> 1.4)
   - CocoaLumberjack (~> 2.0)
   - DHCShakeNotifier (= 0.2.0)
   - DRKonamiCode (= 1.1.0)
   - Expecta
-  - Expecta+Snapshots (~> 1.2)
+  - Expecta+Snapshots (= 1.3.4)
   - FBSDKCoreKit (~> 4.2)
   - FBSDKLoginKit (~> 4.2)
-  - FBSnapshotTestCase (= 1.6)
+  - FBSnapshotTestCase
   - FLKAutoLayout (= 0.1.1)
   - FODFormKit (from `https://github.com/1aurabrown/FODFormKit.git`)
   - FXBlurView (= 1.6.1)
@@ -183,6 +183,7 @@ EXTERNAL SOURCES:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
   Artsy+UIFonts:
+    :branch: old_fonts_new_lib
     :git: https://github.com/artsy/Artsy-UIFonts
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
@@ -205,7 +206,7 @@ CHECKOUT OPTIONS:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
   Artsy+UIFonts:
-    :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
+    :commit: 27c3cddd11d76f6c58a15880782ce5a922c17dc5
     :git: https://github.com/artsy/Artsy-UIFonts
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
@@ -237,11 +238,11 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: 89d19a013279a5604d61650721c15f20fefaaf00
-  Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
-  Expecta+Snapshots: 40c5ec43b43da3bae957f14fed5dc9177d08ec8b
+  Expecta: 32604574add2c46a36f8d2f716b6c5736eb75024
+  Expecta+Snapshots: ca15bfb57e7a0f78f86c7699c2c54ffacfa4ad2a
   FBSDKCoreKit: 84b3616a361801f190e43a9909caead7bb6087c7
   FBSDKLoginKit: 57e37106af12c9e264e473dcb75d7decdbb07fe4
-  FBSnapshotTestCase: 9d5fe43b29ae3a0ed8fc829477971b281038f748
+  FBSnapshotTestCase: 3dc3899168747a0319c5278f5b3445c13a6532dd
   FLKAutoLayout: 95b12c5cd9652100235140b68652f063f7437851
   FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
@@ -275,4 +276,4 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-COCOAPODS: 0.38.0.beta.1
+COCOAPODS: 0.37.2

@@ -47,10 +47,10 @@ static NSString *ARFeedCursorKey = @"ARFeedCursorKey";
             // Sometimes the cursor is an NSNumber, so stringify it
         } else if ([next respondsToSelector:@selector(stringValue)]) {
             self.cursor =  [next stringValue];
-            NSLog(@"Got a weird next cursor for the feed but string'd %@ - ", self.cursor);
+            ARErrorLog(@"Got a weird next cursor for the feed but string'd %@ - ", self.cursor);
 
         } else {
-            NSLog(@"Got a weird next cursor for the feed %@ - ", self.cursor);
+            ARErrorLog(@"Got a weird next cursor for the feed %@ - ", self.cursor);
         }
     }
 
@@ -63,10 +63,10 @@ static NSString *ARFeedCursorKey = @"ARFeedCursorKey";
             if (!error) {
                 [objects addObject:object];
             } else {
-                NSLog(@"Error creating %@ - %@", type, error.localizedDescription);
+                ARErrorLog(@"Error creating %@ - %@", type, error.localizedDescription);
             }
         } else {
-            NSLog(@"Unknown feed item type %@! Ignoring!", type);
+            ARErrorLog(@"Unknown feed item type %@! Ignoring!", type);
         }
     }
 

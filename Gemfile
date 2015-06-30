@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods', '0.38.0.beta.1'
-gem "cocoapods-keys"
+gem 'cocoapods', '0.37.2'
+gem "cocoapods-keys", :git => 'https://github.com/alloy/cocoapods-keys.git', :branch => 'retrieve-keys-from-env'
 gem "cocoapods-stats"
+gem "cocoapods-deintegrate"
 
 group :development do
   gem 'houston'
