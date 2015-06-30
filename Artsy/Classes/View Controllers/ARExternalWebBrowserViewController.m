@@ -11,6 +11,11 @@
 
 @implementation ARExternalWebBrowserViewController
 
+- (void)dealloc;
+{
+    self.scrollView.delegate = nil;
+}
+
 - (instancetype)initWithURL:(NSURL *)url
 {
     self = [super initWithURL:url];
@@ -60,7 +65,7 @@
 
 - (UIScrollView *)scrollView
 {
-    return  self.webView.scrollView;
+    return self.webView.scrollView;
 }
 
 #pragma mark UIScrollViewDelegate

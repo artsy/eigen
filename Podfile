@@ -18,17 +18,13 @@ plugin 'cocoapods-keys', {
     :keys => [
         "ArtsyAPIClientSecret",
         "ArtsyAPIClientKey",
-        "HockeyProductionSecret",
-        "HockeyBetaSecret",
-        "MixpanelProductionAPIClientKey",
-        "MixpanelStagingAPIClientKey",
-        "MixpanelDevAPIClientKey",
-        "MixpanelInStoreAPIClientKey",
         "ArtsyFacebookAppID",
         "ArtsyTwitterKey",
         "ArtsyTwitterSecret",
         "ArtsyTwitterStagingKey",
-        "ArtsyTwitterStagingSecret"
+        "ArtsyTwitterStagingSecret",
+        "SegmentProductionWriteKey",
+        "SegmentDevWriteKey"
     ]
 }
 
@@ -76,7 +72,6 @@ end
 pod 'FBSDKCoreKit', '~> 4.2'
 pod 'FBSDKLoginKit', '~> 4.2'
 
-
 pod 'AFOAuth1Client', :git => "https://github.com/orta/AFOAuth1Client", :branch => "patch-1"
 
 # Language niceities
@@ -93,9 +88,8 @@ pod 'TSMiniWebBrowser@dblock', :head
 pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
 
 # Analytics
-pod 'HockeySDK', :git => 'https://github.com/alloy/HockeySDK-iOS.git', :branch => 'develop'
-pod 'Mixpanel', '2.3.1'
-pod 'ARAnalytics', :subspecs => ["Mixpanel", "HockeyApp", "DSL"], :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-breadcrumb-logging-to-HockeyApp'
+pod 'HockeySDK-Source', '~> 3.7'
+pod 'ARAnalytics', '>= 3.6.2', :subspecs => ["Segmentio", "HockeyApp", "DSL"]
 pod 'UICKeyChainStore', '1.0.5'
 
 # Fairs

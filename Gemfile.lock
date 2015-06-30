@@ -1,43 +1,10 @@
-GIT
-  remote: https://github.com/CocoaPods/CocoaPods.git
-  revision: deff0ca128be878e3aab3f999dbaeac64d8f7ff1
-  branch: mr-deduplicate-frameworks
-  specs:
-    cocoapods (0.37.2)
-      activesupport (>= 3.2.15)
-      claide (~> 0.8.1)
-      cocoapods-core (= 0.37.2)
-      cocoapods-downloader (~> 0.9.0)
-      cocoapods-plugins (~> 0.4.2)
-      cocoapods-trunk (~> 0.6.1)
-      cocoapods-try (~> 0.4.5)
-      colored (~> 1.2)
-      escape (~> 0.0.4)
-      molinillo (~> 0.2.3)
-      nap (~> 0.8)
-      xcodeproj (~> 0.24.2)
-
-GIT
-  remote: https://github.com/alloy/cocoapods-keys.git
-  revision: 60a23f0b3b3ef7c055386417d94111795a2ec456
-  branch: retrieve-keys-from-env
-  specs:
-    cocoapods-keys (1.2.0)
-      osx_keychain
-
-PATH
-  remote: /Users/orta/spiel/ruby/cocoapods-stats
-  specs:
-    cocoapods-stats (0.0.1)
-      nap
-
 GEM
   remote: https://rubygems.org/
   specs:
     RubyInline (3.12.4)
       ZenTest (~> 4.3)
     ZenTest (4.11.0)
-    activesupport (4.2.1)
+    activesupport (4.2.3)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
@@ -59,15 +26,32 @@ GEM
     cert (0.2.0)
       fastlane_core (>= 0.7.2)
     certified (1.0.0)
-    claide (0.8.1)
+    claide (0.8.2)
     cliver (0.3.2)
-    cocoapods-core (0.37.2)
+    cocoapods (0.38.0.beta.1)
+      activesupport (>= 3.2.15)
+      claide (~> 0.8.2)
+      cocoapods-core (= 0.38.0.beta.1)
+      cocoapods-downloader (~> 0.9.1)
+      cocoapods-plugins (~> 0.4.2)
+      cocoapods-trunk (~> 0.6.1)
+      cocoapods-try (~> 0.4.5)
+      colored (~> 1.2)
+      escape (~> 0.0.4)
+      molinillo (~> 0.2.3)
+      nap (~> 0.8)
+      xcodeproj (~> 0.25.0)
+    cocoapods-core (0.38.0.beta.1)
       activesupport (>= 3.2.15)
       fuzzy_match (~> 2.0.4)
       nap (~> 0.8.0)
-    cocoapods-downloader (0.9.0)
+    cocoapods-downloader (0.9.1)
+    cocoapods-keys (1.3.2)
+      osx_keychain
     cocoapods-plugins (0.4.2)
       nap
+    cocoapods-stats (0.5.0)
+      nap (~> 0.8)
     cocoapods-trunk (0.6.1)
       nap (>= 0.8)
       netrc (= 0.7.8)
@@ -148,6 +132,9 @@ GEM
     fuzzy_match (2.0.4)
     gli (2.13.0)
     highline (1.7.2)
+    houston (2.2.3)
+      commander (~> 4.1)
+      json
     i18n (0.7.0)
     json (1.8.3)
     krausefx-shenzhen (0.14.2)
@@ -248,7 +235,7 @@ GEM
     websocket-driver (0.5.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    xcodeproj (0.24.2)
+    xcodeproj (0.25.1)
       activesupport (>= 3)
       colored (~> 1.2)
     xcpretty (0.1.10)
@@ -259,14 +246,15 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods!
-  cocoapods-keys!
-  cocoapods-stats!
+  cocoapods (= 0.38.0.beta.1)
+  cocoapods-keys
+  cocoapods-stats
   fastlane
   fui
+  houston
   second_curtain
   shenzhen
   xcpretty
 
 BUNDLED WITH
-   1.10.0
+   1.10.5

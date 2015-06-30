@@ -3,7 +3,6 @@
 #import "AROnboardingArtistTableController.h"
 #import "AROnboardingSearchField.h"
 #import "AROnboardingFollowableTableViewCell.h"
-#import "AROnboardingViewController.h"
 
 static NSString *SearchCellId = @"OnboardingSearchCell";
 

@@ -7,7 +7,7 @@
 #import "ARArtworkView.h"
 #import "ARArtworkViewController+ButtonActions.h"
 
-@interface ARArtworkViewController() <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARArtworkMetadataViewDelegate, ARPostsViewControllerDelegate>
+@interface ARArtworkViewController() <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>
 
 @property (nonatomic, strong) ARArtworkView *view;
 @property (nonatomic, strong, readonly) ARPostsViewController *postsVC;
@@ -185,18 +185,23 @@
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
     [self.view.metadataView updateConstraintsIsLandscape:size.width > size.height];
+
+    // Capture the duration now, because the coordinator’s internal context will be gone by the time the animation
+    // completion block is called *if* the transition is interrupted by the sign-in view controller being shown modally.
+    //
+    // See https://github.com/artsy/eigen/issues/494
+    NSTimeInterval transitionDuration = coordinator.transitionDuration;
 
     self.view.metadataView.right.alpha = 1;
     [UIView animateWithDuration:.1 animations:^{
         self.view.metadataView.right.alpha = 0;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.1 delay:coordinator.transitionDuration -  .2 options:0 animations:^{
+        [UIView animateWithDuration:.1 delay:transitionDuration-.2 options:0 animations:^{
             self.view.metadataView.right.alpha = 1;
         } completion:nil];
     }];
-
-
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -206,24 +211,26 @@
 
 #pragma mark - ARArtworkBlurViewDelegate
 
--(void)artworkBlurView:(ARArtworkBlurbView *)blurbView shouldPresentViewController:(UIViewController *)viewController
+- (void)artworkBlurView:(ARArtworkBlurbView *)blurbView shouldPresentViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
 
-#pragma mark - ARArtworkMetadataViewDelegate
+#pragma mark - ARArtworkDetailViewDelegate
 
--(void)artworkMetadataView:(ARArtworkMetadataView *)metadataView shouldPresentViewController:(UIViewController *)viewController {
+- (void)artworkDetailView:(ARArtworkDetailView *)detailView shouldPresentViewController:(UIViewController *)viewController {
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
 
-- (void)artworkMetadataView:(ARArtworkMetadataView *)metadataView didUpdateArtworkDetailView:(id)detailView
+- (void)didUpdateArtworkDetailView:(id)detailView
 {
     [self.view.stackView setNeedsLayout];
     [self.view.stackView layoutIfNeeded];
 }
 
-- (void)artworkMetadataView:(ARArtworkMetadataView *)metadataView didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView
+#pragma mark - ARArtworkActionsViewDelefate
+
+- (void)didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView
 {
     [self.view.stackView layoutIfNeeded];
 }

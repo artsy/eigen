@@ -7,6 +7,5 @@
 
 @optional
 @property (readonly, nonatomic, assign) BOOL hidesStatusBarBackground;
-@property (readonly, nonatomic, assign) BOOL enableMenuButtons;
 
 @end

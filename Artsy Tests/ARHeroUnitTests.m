@@ -3,9 +3,9 @@
 #import "ARHeroUnitsNetworkModel.h"
 #import "SiteHeroUnit.h"
 
-@interface ARSiteHeroUnitViewController : UIViewController
+@interface ARSiteHeroUnitViewController ()
 @property (nonatomic, assign) NSInteger index;
-@property (nonatomic, assign) SiteHeroUnit *heroUnit;
+@property (nonatomic, strong, readwrite) SiteHeroUnit *heroUnit;
 @end
 
 @interface ARHeroUnitViewController (Test)

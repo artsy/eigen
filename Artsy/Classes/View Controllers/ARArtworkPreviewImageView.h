@@ -3,7 +3,15 @@
 extern const CGFloat ARiPadPreviewImageWidth;
 extern const CGFloat AconstRiPhonePreviewImageWidth;
 
+@protocol ARArtworkPreviewImageViewDelegate <NSObject>
+
+- (void)tappedTileableImagePreview;
+
+@end
+
 @interface ARArtworkPreviewImageView : UIImageView
+
+@property (nonatomic, weak) id<ARArtworkPreviewImageViewDelegate> delegate;
 
 /// The artwork for showing, triggers loading the image and invalidates layout
 @property (nonatomic, strong) Artwork *artwork;

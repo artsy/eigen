@@ -72,7 +72,6 @@ static BOOL ARTabViewDirectionRight = YES;
     NSInteger nextIndex = [self nextEnabledIndexInDirection:ARTabViewDirectionLeft];
 
     if (self.currentViewIndex != nextIndex) {
-        self.currentViewIndex = nextIndex;
         [self setCurrentViewIndex:nextIndex animated:animated];
     }
 }
@@ -86,7 +85,6 @@ static BOOL ARTabViewDirectionRight = YES;
 {
     NSInteger nextIndex = [self nextEnabledIndexInDirection:ARTabViewDirectionRight];
     if (self.currentViewIndex != nextIndex) {
-        self.currentViewIndex = nextIndex;
         [self setCurrentViewIndex:nextIndex animated:animated];
     }
 }
@@ -122,17 +120,16 @@ static BOOL ARTabViewDirectionRight = YES;
 #pragma mark -
 #pragma mark Setting the Current View Index
 
-- (void)setCurrentViewIndex:(NSInteger)currentViewIndex
-{
-    [self setCurrentViewIndex:currentViewIndex animated:YES];
-}
-
 - (void)setCurrentViewIndex:(NSInteger)index animated:(BOOL)animated
 {
     if ([self.delegate respondsToSelector:@selector(tabContentView:shouldChangeToIndex:)]) {
         if ([self.delegate tabContentView:self shouldChangeToIndex:index] == NO) return;
     }
 
+    [self forceSetCurrentViewIndex:index animated:animated];
+}
+
+- (void)forceSetCurrentViewIndex:(NSInteger)index animated:(BOOL)animated {
     [self.buttons each:^(UIButton *button) {
         button.selected = NO;
     }];

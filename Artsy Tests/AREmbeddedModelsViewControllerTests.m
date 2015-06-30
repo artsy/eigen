@@ -1,6 +1,13 @@
 #import "AREmbeddedModelsViewController.h"
 #import "ARArtworkMasonryModule.h"
 
+
+@interface AREmbeddedModelsViewController (Testing)
+
+@property (nonatomic, strong, readwrite) UICollectionView *collectionView;
+
+@end
+
 @interface ARArtworkMasonryModule (Private)
 + (CGFloat)dimensionForlayout:(ARArtworkMasonryLayout)layout useLandscapeValues:(BOOL)useLandscapeValues;
 @end
@@ -65,6 +72,47 @@ describe(@"masonry layout", ^{
             ]];
             expect(viewController.view).to.haveValidSnapshot();
         });
+
+        describe(@"content overflow calculations", ^{
+            __block id mockCollectionView;
+
+            beforeEach(^{
+                mockCollectionView = [OCMockObject mockForClass:[UICollectionView class]];
+                viewController.activeModule = nil;
+                viewController.collectionView = mockCollectionView;
+            });
+
+            it(@"indicates that content fills when it does", ^{
+                CGSize contentSize = CGSizeMake(100, 101);
+                CGRect bounds = CGRectMake(0, 0, 100, 100);
+
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(contentSize)] contentSize];
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(bounds)] bounds];
+
+                expect([viewController currentContentFillsView]).to.beTruthy();
+            });
+
+            it(@"indicates that content fills when it barely does", ^{
+                CGSize contentSize = CGSizeMake(100, 100);
+                CGRect bounds = CGRectMake(0, 0, 100, 100);
+
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(contentSize)] contentSize];
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(bounds)] bounds];
+
+                expect([viewController currentContentFillsView]).to.beTruthy();
+                
+            });
+
+            it(@"indicates that content does not fill when it does not", ^{
+                CGSize contentSize = CGSizeMake(100, 99);
+                CGRect bounds = CGRectMake(0, 0, 100, 100);
+
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(contentSize)] contentSize];
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(bounds)] bounds];
+
+                expect([viewController currentContentFillsView]).to.beFalsy();
+            });
+        });
     });
 
     describe(@"with horizontal rows", ^{
@@ -90,6 +138,47 @@ describe(@"masonry layout", ^{
                 ArtworkWithImageAspectRatio(1),
             ]];
             expect(viewController.view).to.haveValidSnapshot();
+        });
+
+        describe(@"content overflow calculations", ^{
+            __block id mockCollectionView;
+
+            beforeEach(^{
+                mockCollectionView = [OCMockObject mockForClass:[UICollectionView class]];
+                viewController.activeModule = nil;
+                viewController.collectionView = mockCollectionView;
+            });
+
+            it(@"indicates that content fills when it does", ^{
+                CGSize contentSize = CGSizeMake(101, 100);
+                CGRect bounds = CGRectMake(0, 0, 100, 100);
+
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(contentSize)] contentSize];
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(bounds)] bounds];
+
+                expect([viewController currentContentFillsView]).to.beTruthy();
+            });
+
+            it(@"indicates that content fills when it barely does", ^{
+                CGSize contentSize = CGSizeMake(100, 100);
+                CGRect bounds = CGRectMake(0, 0, 100, 100);
+
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(contentSize)] contentSize];
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(bounds)] bounds];
+
+                expect([viewController currentContentFillsView]).to.beTruthy();
+
+            });
+
+            it(@"indicates that content does not fill when it does not", ^{
+                CGSize contentSize = CGSizeMake(99, 100);
+                CGRect bounds = CGRectMake(0, 0, 100, 100);
+
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(contentSize)] contentSize];
+                [[[mockCollectionView stub] andReturnValue:OCMOCK_VALUE(bounds)] bounds];
+                
+                expect([viewController currentContentFillsView]).to.beFalsy();
+            });
         });
     });
 });

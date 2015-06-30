@@ -12,8 +12,6 @@ NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
 NSString *const ARXAppTokenDefault = @"ARXAppTokenDefault";
 NSString *const ARXAppTokenExpiryDateDefault = @"ARXAppTokenExpiryDateDefault";
 
-NSString *const ARHasSubmittedDeviceTokenDefault = @"ARHasSubmittedFullDeviceToken";
-
 NSString *const AROnboardingSkipPersonalizeDefault = @"eigen-onboard-skip-personalize";
 NSString *const AROnboardingSkipCollectorLevelDefault = @"eigen-onboard-skip-collector-level";
 NSString *const AROnboardingSkipPriceRangeDefault = @"eigen-onboard-skip-price-range";

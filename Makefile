@@ -38,17 +38,13 @@ lint:
 oss:
 	bundle exec pod keys set "ArtsyAPIClientSecret" "3a33d2085cbd1176153f99781bbce7c6" Artsy
 	bundle exec pod keys set "ArtsyAPIClientKey" "e750db60ac506978fc70"
-	bundle exec pod keys set "HockeyProductionSecret" "-"
-	bundle exec pod keys set "HockeyBetaSecret" "-"
-	bundle exec pod keys set "MixpanelProductionAPIClientKey" "-"
-	bundle exec pod keys set "MixpanelStagingAPIClientKey" "-"
-	bundle exec pod keys set "MixpanelDevAPIClientKey" "-"
-	bundle exec pod keys set "MixpanelInStoreAPIClientKey" "-"
 	bundle exec pod keys set "ArtsyFacebookAppID" "-"
 	bundle exec pod keys set "ArtsyTwitterKey" "-"
 	bundle exec pod keys set "ArtsyTwitterSecret" "-"
 	bundle exec pod keys set "ArtsyTwitterStagingKey" "-"
 	bundle exec pod keys set "ArtsyTwitterStagingSecret" "-"
+	bundle exec pod keys set "SegmentProductionWriteKey" "-"
+	bundle exec pod keys set "SegmentDevWriteKey" "-"
 
 
 ci: CONFIGURATION = Debug
@@ -98,16 +94,13 @@ distribute:
 	 https://rink.hockeyapp.net/api/2/apps/upload \
 	 | grep -v "errors"
 
-appstore: TARGETED_DEVICE_FAMILY = 1
 appstore: update_bundle_version set_git_properties change_version_to_date set_targeted_device_family
 
-appledemo: TARGETED_DEVICE_FAMILY = 1
 appledemo: NOTIFY = 0
 appledemo: CONFIGURATION = "Apple Demo"
 appledemo: set_git_properties change_version_to_date set_targeted_device_family
 appledemo: ipa distribute
 
-next: TARGETED_DEVICE_FAMILY = \"1,2\"
 next: update_bundle_version set_git_properties change_version_to_date set_targeted_device_family
 
 deploy: ipa distribute
@@ -122,13 +115,13 @@ beta: stamp_date deploy
 
 
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
-BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
+BRANCH = $(shell echo $(shell whoami)-$(shell git rev-parse --abbrev-ref HEAD))
 
 pr: 
-	if [ "$(BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push upstream "$(LOCAL_BRANCH):$(BRANCH)"; open -a "Google Chrome" "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push upstream "$(LOCAL_BRANCH):$(BRANCH)"; open -a "Google Chrome" "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi
 
 push: 
-	if [ "$(BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH); fi
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH); fi
 
 fpush: 
-	if [ "$(BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH) --force; fi
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH) --force; fi

@@ -16,17 +16,23 @@
 
 @implementation ARArtworkViewController (ButtonActions)
 
-- (void)tappedTileableImagePreview:(ARArtworkPreviewImageView *)sender
+#pragma mark - ARArtworkPreviewImageViewDelegate
+
+- (void)tappedTileableImagePreview
 {
     ARZoomArtworkImageViewController *zoomImgeVC = [[ARZoomArtworkImageViewController alloc] initWithImage:self.artwork.defaultImage];
     zoomImgeVC.suppressZoomViewCreation = (self.fair == nil);
     [self.navigationController pushViewController:zoomImgeVC animated:self.shouldAnimate];
 }
 
+#pragma mark - ARArtworkPreviewActionsViewDelegate
+
 - (void)tappedArtworkFavorite:(ARHeartButton *)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser){
+            [self tappedArtworkFavorite:sender];
+        }];
         return;
     }
 
@@ -58,13 +64,13 @@
 }
 
 
-- (void)tappedArtworkViewInRoom:(id)sender
+- (void)tappedArtworkViewInRoom
 {
     ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
     [self.navigationController pushViewController:viewInRoomVC animated:self.shouldAnimate];
 }
 
-- (void)tappedArtworkViewInMap:(id)sender
+- (void)tappedArtworkViewInMap
 {
     [ArtsyAPI getShowsForArtworkID:self.artwork.artworkID inFairID:self.fair.fairID success:^(NSArray *shows) {
         if (shows.count > 0) {
@@ -76,10 +82,38 @@
     }];
 }
 
-- (void)tappedBidButton:(ARBidButton *)sender
+#pragma mark - ARArtworkActionsViewButtonDelegate
+
+- (void)tappedContactGallery
+{
+    ARInquireForArtworkViewController *inquireVC = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:self.artwork fair:self.fair];
+    [inquireVC presentFormWithInquiryURLRepresentation:[self inquiryURLRepresentation]];
+}
+
+- (void)tappedContactRepresentative
+{
+    ARInquireForArtworkViewController *inquireVC = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:self.artwork fair:self.fair];
+    [inquireVC presentFormWithInquiryURLRepresentation:[self inquiryURLRepresentation]];
+}
+
+- (void)tappedAuctionInfo
+{
+    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/auction-info"]];
+    [[ARTopMenuViewController sharedController] pushViewController:viewController];
+}
+
+- (void)tappedConditionsOfSale
+{
+    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/conditions-of-sale"]];
+    [[ARTopMenuViewController sharedController] pushViewController:viewController];
+}
+
+- (void)tappedBidButton
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextAuctionBid fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextAuctionBid success:^(BOOL newUser){
+            [self tappedBidButton];
+        }];
         return;
     }
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
@@ -94,11 +128,11 @@
     [ARAnalytics setUserProperty:@"has_started_bid" toValue:@"true"];
 
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadBidUIForArtwork:self.artwork.artworkID
-                                                                 inSale:saleArtwork.auction.saleID];
+                                                                                  inSale:saleArtwork.auction.saleID];
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
 
-- (void)tappedBuyersPremium:(ARButton *)sender
+- (void)tappedBuyersPremium
 {
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
         NSString *path = [NSString stringWithFormat:@"/auction/%@/buyers-premium", saleArtwork.auction.saleID];
@@ -110,17 +144,19 @@
     }];
 }
 
-- (void)tappedBuyButton:(ARButton *)sender
+- (void)tappedBuyButton
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextArtworkOrder fromTarget:self selector:_cmd];
+        [ARTrialController presentTrialWithContext:ARTrialContextArtworkOrder success:^(BOOL newUser){
+            [self tappedBuyButton];
+        }];
         return;
     }
 
     // We currently don't have a UI for a user to select from multiple editions. Instead, send the user
     // to the inquiry form.
     if (self.artwork.hasMultipleEditions) {
-        [self tappedContactGallery:sender];
+        [self tappedContactGallery];
         return;
     }
 
@@ -141,29 +177,31 @@
             NSLog(@"Created order %@", orderID);
             UIViewController *controller = [[ARSwitchBoard sharedInstance] loadOrderUIForID:orderID resumeToken:resumeToken];
             [self.navigationController pushViewController:controller animated:YES];
+            
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             @strongify(self);
             NSLog(@"Creating a new order failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-            [self tappedContactGallery:sender];
+            [self tappedContactGallery];
         }];
 
     [op start];
-
 }
 
-- (void)tappedContactGallery:(ARButton *)sender
+- (void)tappedAuctionResults
 {
-    ARInquireForArtworkViewController *inquireVC = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:self.artwork fair:self.fair];
-    [inquireVC presentFormWithInquiryURLRepresentation:[self inquiryURLRepresentation]];
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadAuctionResultsForArtwork:self.artwork];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)tappedContactRepresentative:(ARButton *)sender
+- (void)tappedMoreInfo
 {
-    ARInquireForArtworkViewController *inquireVC = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:self.artwork fair:self.fair];
-    [inquireVC presentFormWithInquiryURLRepresentation:[self inquiryURLRepresentation]];
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadMoreInfoForArtwork:self.artwork];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)tappedOpenArtworkPartner:(id)sender
+#pragma mark - ARArtworkDetailViewDelegate
+
+- (void)tappedOpenArtworkPartner
 {
     Partner *partner = self.artwork.partner;
     if (self.fair) {
@@ -188,41 +226,17 @@
     }
 }
 
-- (void)tappedOpenFair:(id)sender
+- (void)tappedOpenFair
 {
     Fair *fair = self.fair ?: self.artwork.fair;
     NSString *fairID = fair.defaultProfileID ?: fair.organizer.profileID;
     UIViewController *viewController = [ARSwitchBoard.sharedInstance routeProfileWithID:fairID];
     [self.navigationController pushViewController:viewController animated:YES];
 }
-- (void)tappedOpenArtworkArtist:(id)sender
+- (void)tappedOpenArtworkArtist
 {
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:self.artwork.artist.artistID inFair:self.fair];
     [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)tappedAuctionResults:(id)sender
-{
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadAuctionResultsForArtwork:self.artwork];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)tappedMoreInfo:(id)sender
-{
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadMoreInfoForArtwork:self.artwork];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)tappedAuctionInfo:(id)sender
-{
-    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/auction-info"]];
-    [[ARTopMenuViewController sharedController] pushViewController:viewController];
-}
-
-- (void)tappedConditionsOfSale:(id)sender
-{
-    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/conditions-of-sale"]];
-    [[ARTopMenuViewController sharedController] pushViewController:viewController];
 }
 
 @end

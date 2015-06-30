@@ -13,6 +13,7 @@
 
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
+#import "ARAppNotificationsDelegate.h"
 #import "ARUserManager.h"
 
 #import "UIViewController+InnermostTopViewController.h"
@@ -38,6 +39,8 @@
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <VCRURLConnection/VCR.h>
 #endif
+
+#import <UICKeyChainStore/UICKeyChainStore.h>
 
 // demo
 #import "ARDemoSplashViewController.h"
@@ -65,6 +68,7 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 // These methods are swizzled during unit tests. See ARAppDelegate(Testing).
+
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -104,29 +108,43 @@ static ARAppDelegate *_sharedInstance = nil;
     [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
     [self setupXCallbackUrlManager];
 
-    if (ARIsRunningInDemoMode) {
+    // This has to be checked *before* creating the first Xapp token.
+    BOOL showOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
 
+    if (ARIsRunningInDemoMode) {
         [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
         [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
-
-    } else if(![[ARUserManager sharedManager] hasExistingAccount]) {
-
+    } else if (showOnboarding) {
         [self fetchSiteFeatures];
         [self showTrialOnboardingWithState:ARInitialOnboardingStateSlideShow andContext:ARTrialContextNotTrial];
     }
 
     ARShowFeedViewController *topVC = (id)ARTopMenuViewController.sharedController.rootNavigationController.topViewController;
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-
         // Sync clock with server
         [ARSystemTime sync];
 
         // Start doing the network calls to grab the feed
         [topVC refreshFeedItems];
         [self checkForiOS7Deprecation];
+
+        // Register for push notifications as early as possible, but not on top of the onboarding view, in which case it
+        // will be called from the -finishOnboardingAnimated: callback.
+        //
+        // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API. Later on,
+        // when the user does sign-in, this will be ran again and the device will be associated with the user account.
+        if (!showOnboarding) {
+            [self registerForDeviceNotifications];
+        }
     }];
 
     return YES;
+}
+
+- (void)registerForDeviceNotifications;
+{
+    JSDecoupledAppDelegate *decoupledDelegate = [JSDecoupledAppDelegate sharedAppDelegate];
+    [(ARAppNotificationsDelegate *)decoupledDelegate.remoteNotificationsDelegate registerForDeviceNotifications];
 }
 
 - (void)finishDemoSplash
@@ -134,10 +152,24 @@ static ARAppDelegate *_sharedInstance = nil;
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)finishOnboardingAnimated:(BOOL)animated
+- (void)finishOnboardingAnimated:(BOOL)animated didCancel:(BOOL)cancelledSignIn;
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    [[ARTopMenuViewController sharedController] moveToInAppAnimated:animated];
+
+    ARTopMenuViewController *topVC = ARTopMenuViewController.sharedController;
+    if (topVC.presentedViewController) {
+        topVC.presentedViewController.transitioningDelegate = topVC;
+        [topVC.presentedViewController dismissViewControllerAnimated:animated completion:^{
+            [ARTrialController performCompletionNewUser:[ARUserManager didCreateAccountThisSession]];
+        }];
+    }
+
+    if (!cancelledSignIn) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self registerForDeviceNotifications];
+        });
+    }
+
 }
 
 - (void)showTrialOnboardingWithState:(enum ARInitialOnboardingState)state andContext:(enum ARTrialContext)context
@@ -150,7 +182,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupXCallbackUrlManager
 {
-
     IACManager *sharedManager = [IACManager sharedManager];
     sharedManager.callbackURLScheme = ARArtsyXCallbackUrlScheme;
 
@@ -176,11 +207,9 @@ static ARAppDelegate *_sharedInstance = nil;
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:url];
         if (viewController) {
             // This happens when the URL is routed to a web view.
-
             [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
         } else {
             // This happens if JLRoutes found a route for the URL.
-
             viewController = [ARTopMenuViewController sharedController].rootNavigationController.ar_innermostTopViewController;
         }
 

@@ -69,8 +69,8 @@
     if ([UIDevice isPad]) {
         [self.routes addRoute:@"/:profile_id/artist/:id" handler:^BOOL(NSDictionary *parameters) {
             @strongify(self)
-            Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
 
+            Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
             ARArtistViewController *viewController = (id)[self loadArtistWithID:parameters[@"id"] inFair:fair];
             [[ARTopMenuViewController sharedController] pushViewController:viewController];
             return YES;
@@ -106,10 +106,8 @@
 
         @strongify(self);
 
-        id context = parameters[@"fair"];
-        NSAssert(context != nil, @"Fair guide routing attempt with no context. ");
-
-        UIViewController *viewController = [self loadFairGuideWithFair:context];
+        Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
+        UIViewController *viewController = [self loadFairGuideWithFair:fair];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
 
         return YES;
@@ -120,8 +118,8 @@
         if ([UIDevice isPad]) { return NO; }
 
         @strongify(self)
-
-        UIViewController *viewController = [self loadArtistInFairWithID:parameters[@"id"] fair:parameters[@"fair"]];
+        Fair *fair = parameters[@"fair"] ?: [[Fair alloc] initWithFairID:parameters[@"profile_id"]];
+        UIViewController *viewController = [self loadArtistInFairWithID:parameters[@"id"] fair:fair];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
     }];
@@ -182,7 +180,7 @@
 
 - (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
 {
-    NSString *path = [NSString stringWithFormat:@"/feature/%@/bid/%@", saleID, artworkID];
+    NSString *path = [NSString stringWithFormat:@"/auctions/%@/bid/%@", saleID, artworkID];
     return [self loadURL:[NSURL URLWithString:path]];
 }
 
@@ -249,7 +247,7 @@
 
 - (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair
 {
-    if(fair){
+    if (fair) {
         ARFairArtistViewController *viewController = [[ARFairArtistViewController alloc] initWithArtistID:artistID fair:fair];
         return viewController;
     } else {

@@ -13,8 +13,14 @@
 - (void)didUpdateArtworkDetailView:(ARArtworkDetailView *)detailView;
 @end
 
+@protocol ARArtworkDetailViewButtonDelegate <NSObject>
+- (void)tappedOpenArtworkArtist;
+- (void)tappedOpenFair;
+- (void)tappedOpenArtworkPartner;
+@end
+
 @interface ARArtworkDetailView : ORTagBasedAutoStackView
-@property (nonatomic, weak) id<ARArtworkDetailViewDelegate> delegate;
+@property (nonatomic, weak) id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate> delegate;
 @property(readonly, nonatomic, strong) Artwork *artwork;
 @property(readonly, nonatomic, strong) Fair *fair;
 - (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair;

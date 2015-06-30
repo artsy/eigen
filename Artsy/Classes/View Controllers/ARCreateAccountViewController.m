@@ -19,7 +19,6 @@
 @property (nonatomic) ARSpinner *loadingSpinner;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
-
 @end
 
 @implementation ARCreateAccountViewController
@@ -192,7 +191,9 @@
     @weakify(self);
     [[ARUserManager sharedManager] createUserWithName:self.name.text email:username password:password success:^(User *user) {
         @strongify(self);
-        [self loginWithUserCredentials];
+        [self loginWithUserCredentialsWithSuccess:^{
+            [self.delegate didSignUpAndLogin];
+        }];
     } failure:^(NSError *error, id JSON) {
         @strongify(self);
         if (JSON
@@ -201,7 +202,6 @@
                 || [JSON[@"error"] isEqualToString:@"User Already Invited"])) {
                 NSString *source = [self existingAccountSource:JSON];
                 [self accountExists:source];
-            [ARAnalytics event:ARAnalyticsUserAlreadyExistedAtSignUp];
 
         } else {
             [self setFormEnabled:YES];
@@ -211,10 +211,12 @@
 
             [self.email becomeFirstResponder];
         }
+
+        [ARAnalytics event:ARAnalyticsSignUpError];
     }];
 }
 
-- (void)loginWithUserCredentials
+- (void)loginWithUserCredentialsWithSuccess:(void(^)())success
 {
     NSString *username = self.email.text;
     NSString *password = self.password.text;
@@ -222,10 +224,7 @@
     @weakify(self);
    [[ARUserManager sharedManager] loginWithUsername:username password:password successWithCredentials:nil
      gotUser:^(User *currentUser) {
-        @strongify(self);
-        [self.delegate signupDone];
-        [ARAnalytics event:ARAnalyticsUserSignedIn withProperties:@{ @"context" : ARAnalyticsUserContextEmail }];
-
+         success();
     } authenticationFailure:^(NSError *error) {
         @strongify(self);
         [self setFormEnabled:YES];

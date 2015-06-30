@@ -13,10 +13,10 @@ const static CGFloat ARCarouselDelay = 10;
 @property (nonatomic, strong) NSTimer *timer;
 @end
 
-@interface ARSiteHeroUnitViewController : UIViewController
+@interface ARSiteHeroUnitViewController ()
 - (instancetype)initWithHeroUnit:(SiteHeroUnit *)heroUnit andIndex:(NSInteger)index;
 @property (nonatomic, assign) NSInteger index;
-@property (nonatomic, assign) SiteHeroUnit *heroUnit;
+@property (nonatomic, strong, readwrite) SiteHeroUnit *heroUnit;
 @end
 
 @implementation ARHeroUnitViewController

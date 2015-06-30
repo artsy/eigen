@@ -1,10 +1,11 @@
 #import "ARArtworkViewController.h"
 #import "ARArtworkView.h"
+#import "ARUserManager+Stubs.h"
 #import "ARRouter.h"
 
 @interface ARArtworkViewController (Tests)
-- (void)tappedBuyButton:(UIButton *)sender;
-- (void)tappedContactGallery:(UIButton *)sender;
+- (void)tappedBuyButton;
+- (void)tappedContactGallery;
 @end
 
 SpecBegin(ARArtworkViewController)
@@ -29,6 +30,15 @@ describe(@"buy button", ^{
         [vcMock stopMocking];
     });
 
+    beforeEach(^{
+        [ARUserManager stubAndLoginWithUsername];
+    });
+
+    afterEach(^{
+        [ARUserManager clearUserData];
+    });
+
+
     it(@"posts order if artwork has no edition sets", ^{
         Artwork *artwork = [Artwork modelWithJSON:@{
             @"id" : @"artwork-id",
@@ -38,12 +48,12 @@ describe(@"buy button", ^{
         }];
         vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
         vcMock = [OCMockObject partialMockForObject:vc];
-        [[vcMock reject] tappedContactGallery:OCMOCK_ANY];
+        [[vcMock reject] tappedContactGallery];
 
         [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:@"artwork-id" editionSetID:[OCMArg isNil]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[]];
 
-        [vc tappedBuyButton:nil];
+        [vc tappedBuyButton];
         [routerMock verify];
         [vcMock verify];
     });
@@ -61,12 +71,12 @@ describe(@"buy button", ^{
 
         vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
         vcMock = [OCMockObject partialMockForObject:vc];
-        [[vcMock reject] tappedContactGallery:OCMOCK_ANY];
+        [[vcMock reject] tappedContactGallery];
 
         [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:@"artwork-id" editionSetID:@"set-1"];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[]];
 
-        [vc tappedBuyButton:nil];
+        [vc tappedBuyButton];
         [routerMock verify];
         [vcMock verify];
     });
@@ -85,12 +95,12 @@ describe(@"buy button", ^{
 
         vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
         vcMock = [OCMockObject partialMockForObject:vc];
-        [[vcMock expect] tappedContactGallery:OCMOCK_ANY];
+        [[vcMock expect] tappedContactGallery];
 
         [[[routerMock reject] classMethod] newPendingOrderWithArtworkID:OCMOCK_ANY editionSetID:OCMOCK_ANY];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[]];
 
-        [vc tappedBuyButton:nil];
+        [vc tappedBuyButton];
         [routerMock verify];
         [vcMock verify];
     });
@@ -105,12 +115,12 @@ describe(@"buy button", ^{
 
         vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
         vcMock = [OCMockObject partialMockForObject:vc];
-        [[vcMock expect] tappedContactGallery:OCMOCK_ANY];
+        [[vcMock expect] tappedContactGallery];
 
         [[[[routerMock expect] andForwardToRealObject]classMethod] newPendingOrderWithArtworkID:OCMOCK_ANY editionSetID:OCMOCK_ANY];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[] andStatusCode:400];
 
-        [vc tappedBuyButton:nil];
+        [vc tappedBuyButton];
         [routerMock verify];
         [vcMock verifyWithDelay:2.0];
     });

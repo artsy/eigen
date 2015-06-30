@@ -5,8 +5,6 @@
 * Provisioning Profile: `Artsy Beta Enterprise Provisioning Profile`
 * Certificate: `iPhone Distribution: ART SY INC`, found in the Artsy Engineering 1Password vault. (For now, this is the Feb 25, 2018 one.)
 
-##### Orta Therox - Wed 4 Sep 2013
-
 ### I can't get my provisional profiles set up
 
 I've not had to do this from scratch in so long that I can't give any good advice. Xcode 5 should be able to do this automatically.

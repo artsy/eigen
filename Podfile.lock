@@ -5,16 +5,20 @@ PODS:
   - AFOAuth1Client (1.0.0):
     - AFNetworking (~> 1.3)
   - ALPValidator (0.0.3)
-  - ARAnalytics/CoreIOS (3.0.0)
-  - ARAnalytics/DSL (3.0.0):
+  - Analytics/Core-iOS (1.12.0):
+    - TRVSDictionaryWithCaseInsensitivity (= 0.0.2)
+  - Analytics/Segmentio (1.12.0):
+    - Analytics/Core-iOS
+  - ARAnalytics/CoreIOS (3.6.2)
+  - ARAnalytics/DSL (3.6.2):
     - ReactiveCocoa (~> 2.0)
     - RSSwizzle (~> 0.1.0)
-  - ARAnalytics/HockeyApp (3.0.0):
+  - ARAnalytics/HockeyApp (3.6.2):
     - ARAnalytics/CoreIOS
-    - HockeySDK
-  - ARAnalytics/Mixpanel (3.0.0):
+    - HockeySDK-Source
+  - ARAnalytics/Segmentio (3.6.2):
+    - Analytics/Segmentio
     - ARAnalytics/CoreIOS
-    - Mixpanel
   - ARASCIISwizzle (1.1.0)
   - ARCollectionViewMasonryLayout (2.1.2)
   - ARGenericTableViewController (1.0.2)
@@ -64,7 +68,7 @@ PODS:
   - FLKAutoLayout (0.1.1)
   - FODFormKit (0.1.1)
   - FXBlurView (1.6.1)
-  - HockeySDK (3.6.4)
+  - HockeySDK-Source (3.7.1)
   - InterAppCommunication (1.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (HEAD based on 0.7)
@@ -80,7 +84,6 @@ PODS:
   - Mantle (1.5.3):
     - Mantle/extobjc (= 1.5.3)
   - Mantle/extobjc (1.5.3)
-  - Mixpanel (2.3.1)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.2)
   - NAMapKit (3.1.1):
@@ -104,6 +107,7 @@ PODS:
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
   - Specta (0.5.0)
+  - TRVSDictionaryWithCaseInsensitivity (0.0.2)
   - TSMiniWebBrowser@dblock (HEAD based on 1.1)
   - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
@@ -117,11 +121,9 @@ DEPENDENCIES:
   - AFNetworking (from `https://github.com/orta/AFNetworking`, branch `no_ifdefs`)
   - AFOAuth1Client (from `https://github.com/orta/AFOAuth1Client`, branch `patch-1`)
   - ALPValidator (= 0.0.3)
-  - ARAnalytics/DSL (from `https://github.com/alloy/ARAnalytics.git`, branch `add-breadcrumb-logging-to-HockeyApp`)
-  - ARAnalytics/HockeyApp (from `https://github.com/alloy/ARAnalytics.git`, branch
-    `add-breadcrumb-logging-to-HockeyApp`)
-  - ARAnalytics/Mixpanel (from `https://github.com/alloy/ARAnalytics.git`, branch
-    `add-breadcrumb-logging-to-HockeyApp`)
+  - ARAnalytics/DSL (>= 3.6.2)
+  - ARAnalytics/HockeyApp (>= 3.6.2)
+  - ARAnalytics/Segmentio (>= 3.6.2)
   - ARASCIISwizzle (= 1.1.0)
   - ARCollectionViewMasonryLayout (>= 2.1.2, ~> 2.1)
   - ARGenericTableViewController (= 1.0.2)
@@ -141,18 +143,17 @@ DEPENDENCIES:
   - FLKAutoLayout (= 0.1.1)
   - FODFormKit (from `https://github.com/1aurabrown/FODFormKit.git`)
   - FXBlurView (= 1.6.1)
-  - HockeySDK (from `https://github.com/alloy/HockeySDK-iOS.git`, branch `develop`)
+  - HockeySDK-Source (~> 3.7)
   - InterAppCommunication
   - iRate (= 1.10.2)
   - ISO8601DateFormatter (HEAD)
   - JLRoutes (= 1.5)
   - JSDecoupledAppDelegate (= 1.1.0)
-  - Keys (from `Pods/CocoaPodsKeys/`)
+  - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred (= 0.2.0)
   - libextobjc/EXTKeyPathCoding (= 0.4)
   - libextobjc/EXTScope (= 0.4)
   - Mantle (= 1.5.3)
-  - Mixpanel (= 2.3.1)
   - MMMarkdown (= 0.4)
   - MultiDelegate (= 0.0.2)
   - NAMapKit (from `https://github.com/neilang/NAMapKit`, commit `62275386978db91b0e7ed8de755d15cef3e793b4`)
@@ -178,9 +179,6 @@ EXTERNAL SOURCES:
   AFOAuth1Client:
     :branch: patch-1
     :git: https://github.com/orta/AFOAuth1Client
-  ARAnalytics:
-    :branch: add-breadcrumb-logging-to-HockeyApp
-    :git: https://github.com/alloy/ARAnalytics.git
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
@@ -188,11 +186,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Artsy-UIFonts
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
-  HockeySDK:
-    :branch: develop
-    :git: https://github.com/alloy/HockeySDK-iOS.git
   Keys:
-    :path: Pods/CocoaPodsKeys/
+    :path: Pods/CocoaPodsKeys
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
@@ -206,9 +201,6 @@ CHECKOUT OPTIONS:
   AFOAuth1Client:
     :commit: c6eb04f4f8b943d074d9adf91cba6213a09647bb
     :git: https://github.com/orta/AFOAuth1Client
-  ARAnalytics:
-    :commit: 2c77b867c9ac3c75595caf6c839a06e6280e5ca1
-    :git: https://github.com/alloy/ARAnalytics.git
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
@@ -218,9 +210,6 @@ CHECKOUT OPTIONS:
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
     :git: https://github.com/1aurabrown/FODFormKit.git
-  HockeySDK:
-    :commit: 63228fdc2587896c30d3dbcc03fbd0613a4b5da1
-    :git: https://github.com/alloy/HockeySDK-iOS.git
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
@@ -233,7 +222,8 @@ SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
   AFOAuth1Client: 51d32174520b54d7e15a8b3dd618a9a5b87a6344
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
-  ARAnalytics: c331321fc6b034ad6249cd43e226d0b262436ce5
+  Analytics: b8cc04af04e4751109730fa852fa1b86341f50e4
+  ARAnalytics: 697797d915d0afadf27f79563b262557cbe3d378
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
@@ -255,7 +245,7 @@ SPEC CHECKSUMS:
   FLKAutoLayout: 95b12c5cd9652100235140b68652f063f7437851
   FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
+  HockeySDK-Source: d620f330b23691017c141de6e25e5cdc8c67848c
   InterAppCommunication: 3239945b30e9dc5f91ef8be057fbcae4e3398e5c
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
@@ -265,7 +255,6 @@ SPEC CHECKSUMS:
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   libextobjc: f2802d4262f6885570df9799747409ceb1de602c
   Mantle: 7dddb082367d3e13bd244636d56838481c4552fe
-  Mixpanel: 10f1994e9d6d1317bf3ede96f44cc92a7c53b227
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: 4f57bea305c1795d2d6b8a6d6b31c59b1a08114f
@@ -278,6 +267,7 @@ SPEC CHECKSUMS:
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
   Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
+  TRVSDictionaryWithCaseInsensitivity: 51d2ccf52c6d645d27b63467a98fa02c556e01b0
   TSMiniWebBrowser@dblock: 6eb565b44cc2e5cd5eee7660ee5c21f8afae415c
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
@@ -285,4 +275,4 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.0.beta.1

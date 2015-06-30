@@ -76,15 +76,15 @@
 + (CGFloat)dimensionForlayout:(ARArtworkMasonryLayout)layout useLandscapeValues:(BOOL)useLandscapeValues
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat width = CGRectGetWidth(screenRect);
+    CGFloat shortestDimension = MIN(CGRectGetWidth(screenRect), CGRectGetHeight(screenRect));
 
     switch (layout) {
         case ARArtworkMasonryLayout1Column:
-            return width - 40;
+            return shortestDimension - 40;
 
         case ARArtworkMasonryLayout2Column:
             // On iPad, the 2-column layout is only used in portrait mode.
-            return [UIDevice isPad] ? 315 : width/2 -30;
+            return [UIDevice isPad] ? 315 : shortestDimension/2 -30;
 
         case ARArtworkMasonryLayout3Column:
             // The 3-column layout is only used on iPad.

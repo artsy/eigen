@@ -7,35 +7,6 @@
 
 SpecBegin(ARAppNotificationsDelegate)
 
-// TODO: This is our slowest test by far, we should try speed it up.
-
-describe(@"registerForDeviceNotificationsOnce", ^{
-    it(@"only registers for device notifications once", ^{
-        id app = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-        BOOL respondsToRegisterForRemoteNotifications = [app respondsToSelector:@selector(registerForRemoteNotifications)];
-        if (respondsToRegisterForRemoteNotifications) {
-            [[app expect] registerForRemoteNotifications];
-        } else {
-            UIRemoteNotificationType allTypes = (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert);
-            [[app expect] registerForRemoteNotificationTypes:allTypes];
-        }
-
-        ARAppNotificationsDelegate *delegate = (ARAppNotificationsDelegate *) [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate;
-        [delegate registerForDeviceNotificationsOnce];
-        [app verifyWithDelay:1];
-
-        if (respondsToRegisterForRemoteNotifications) {
-            [[app reject] registerForRemoteNotifications];
-        } else {
-            UIRemoteNotificationType allTypes = (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert);
-            [[app reject] registerForRemoteNotificationTypes:allTypes];
-        }
-        [delegate registerForDeviceNotificationsOnce];
-        [app verify];
-        [app stopMocking];
-    });
-});
-
 describe(@"receiveRemoteNotification", ^{
 
     __block id mockApplication = nil;

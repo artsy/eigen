@@ -1,10 +1,8 @@
 #import "ARArtworkMetadataView.h"
-#import "ARArtworkPreviewImageView.h"
-#import "ARArtworkPreviewActionsView.h"
 #import "ARSplitStackView.h"
 #import "ARWhitespaceGobbler.h"
 
-@interface ARArtworkMetadataView() <ARArtworkDetailViewDelegate, ARArtworkActionsViewDelegate>
+@interface ARArtworkMetadataView ()
 @property (nonatomic, strong) ARArtworkPreviewActionsView *artworkPreviewActions;
 @property (nonatomic, strong) ARArtworkPreviewImageView *artworkPreview;
 @property (nonatomic, strong) ARArtworkActionsView *actionsView;
@@ -140,12 +138,14 @@
     }
 }
 
-- (void)setDelegate:(id<ARArtworkMetadataViewDelegate>)delegate
+- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkPreviewActionsViewDelegate>)delegate
 {
-    _delegate = delegate;
-    self.artworkDetailView.delegate = self;
-    self.actionsView.delegate = self;
+    self.artworkPreview.delegate = delegate;
+    self.artworkPreviewActions.delegate = delegate;
+    self.artworkDetailView.delegate = delegate;
+    self.actionsView.delegate = delegate;
 }
+
 - (void)registerForNetworkNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkAvailable) name:ARNetworkAvailableNotification object:nil];
@@ -182,26 +182,6 @@
 {
     [super setUserInteractionEnabled:userInteractionEnabled];
     [self.artworkPreview setUserInteractionEnabled:userInteractionEnabled];
-}
-
-#pragma mark - ARArtworkActionsViewDelegate
-
--(void)didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView
-{
-    [self.delegate artworkMetadataView:self didUpdateArtworkActionsView:actionsView];
-    [self layoutIfNeeded];
-}
-
-#pragma mark - ARArtworkDetailViewDelegate
-
--(void)artworkDetailView:(ARArtworkDetailView *)detailView shouldPresentViewController:(UIViewController *)viewController
-{
-    [self.delegate artworkMetadataView:self shouldPresentViewController:viewController];
-}
-
--(void)didUpdateArtworkDetailView:(ARArtworkDetailView *)detailView
-{
-    [self.delegate artworkMetadataView:self didUpdateArtworkDetailView:detailView];
 }
 
 @end

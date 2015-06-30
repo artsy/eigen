@@ -11,24 +11,20 @@ machine:
     # CocoaPods-Keys
     ArtsyAPIClientSecret: 3a33d2085cbd1176153f99781bbce7c6
     ArtsyAPIClientKey: e750db60ac506978fc70
-    HockeyProductionSecret: "-"
-    HockeyBetaSecret: "-"
-    MixpanelProductionAPIClientKey: "-"
-    MixpanelStagingAPIClientKey: "-"
-    MixpanelDevAPIClientKey: "-"
-    MixpanelInStoreAPIClientKey: "-"
     ArtsyFacebookAppID: "-"
     ArtsyTwitterKey: "-"
     ArtsyTwitterSecret: "-"
     ArtsyTwitterStagingKey: "-"
     ArtsyTwitterStagingSecret: "-"
+    SegmentProductionWriteKey: "-"
+    SegmentDevWriteKey: "-"
   post:
     - echo "machine github.com login $GITHUB_API_KEY" > ~/.netrc
     - chmod 600 ~/.netrc
 
 dependencies:
   override:
-    - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3 --without distribution
+    - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development distribution
     - bundle exec pod install
   cache_directories:
     - vendor/bundle

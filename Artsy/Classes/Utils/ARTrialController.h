@@ -15,17 +15,16 @@ typedef NS_ENUM(NSInteger, ARTrialContext){
 
 @interface ARTrialController : NSObject
 
-/// Shows the sign up, with an optional target / selector to re-trigger the
-/// original action after we've logged in.
-
-+ (void)presentTrialWithContext:(enum ARTrialContext)context fromTarget:(id)target selector:(SEL)selector;
+/// Shows the sign up, with optional completion block to be triggered after signup or login.
++ (void)presentTrialWithContext:(enum ARTrialContext)context success:(void (^)(BOOL newUser))success;
 
 /// Get the guest authentication token and run the completion block
 + (void)startTrialWithCompletion:(void (^)(void))completion failure:(void (^)(NSError *error))failure;
 
 /// No-op if you didn't have a trial account before signing up
 /// otherwise will run the "favorite" artwork or whatever started the splash
-+ (void)performPostSignupEvent;
+
++ (void)performCompletionNewUser:(BOOL)newUser;
 
 /// Adds one to the number of view controllers shown before showing the splash
 + (void)shownAViewController;

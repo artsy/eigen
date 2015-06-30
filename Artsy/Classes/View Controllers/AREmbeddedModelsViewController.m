@@ -110,6 +110,19 @@
     }
 }
 
+-(BOOL)currentContentFillsView
+{
+    if (self.collectionView.contentSize.height < self.collectionView.bounds.size.height) {
+        return NO;
+    }
+
+    if (self.collectionView.contentSize.width < self.collectionView.bounds.size.width) {
+        return NO;
+    }
+
+    return YES;
+}
+
 #pragma mark - Sizing
 
 - (CGSize)preferredContentSize

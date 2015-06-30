@@ -2,7 +2,6 @@
 
 #import "ARAppDelegate.h"
 #import "ARUserManager.h"
-
 #import "AROnboardingTransition.h"
 #import "AROnboardingViewControllers.h"
 #import "ARNetworkConstants.h"
@@ -13,6 +12,7 @@
 #import "ARAuthProviders.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "AROnboardingMoreInfoViewController.h"
+#import "ARPersonalizeWebViewController.h"
 #import "ARParallaxEffect.h"
 #import "NSString+StringCase.h"
 #import "ArtsyAPI+Private.h"
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 };
 
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
-@property (nonatomic, assign) AROnboardingStage state;
+@property (nonatomic, assign, readwrite) AROnboardingStage state;
 @property (nonatomic, assign) BOOL showBackgroundImage;
 @property (nonatomic) UIImageView *backgroundView;
 @property (nonatomic) UIScreenEdgePanGestureRecognizer *screenSwipeGesture;
@@ -53,6 +53,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
     self.navigationBarHidden = YES;
     self.delegate = self;
+    _initialState = state;
     switch (state) {
         case ARInitialOnboardingStateSlideShow:
             _state = AROnboardingStageSlideshow;
@@ -202,7 +203,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     self.state = AROnboardingStageEmailPassword;
 }
 
-- (void)signupDone
+- (void)presentOnboarding
 {
     if ([UIDevice isPad]) {
         [self presentWebOnboarding];
@@ -212,6 +213,11 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
         }];
         [self presentCollectorLevel];
     }
+}
+
+- (void)didSignUpAndLogin
+{
+    [self presentOnboarding];
 }
 
 
@@ -224,11 +230,6 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     ARPersonalizeWebViewController *viewController = [[ARPersonalizeWebViewController alloc] initWithURL:url];
     viewController.personalizeDelegate = self;
     [self pushViewController:viewController animated:YES];
-}
-
-- (void)webOnboardingDone
-{
-    [self dismissOnboardingWithVoidAnimation:YES];
 }
 
 #pragma mark -
@@ -317,7 +318,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     [self dismissOnboardingWithVoidAnimation:YES];
 }
 
--(void) resetBackgroundImageView:(BOOL)animated completion:(void (^)(void))completion
+-(void)resetBackgroundImageView:(BOOL)animated completion:(void (^)(void))completion
 {
     self.backgroundWidthConstraint.constant = 0;
     self.backgroundHeightConstraint.constant = 0;
@@ -333,16 +334,21 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     }];
 }
 
-- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount
+- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount;
+{
+    [self dismissOnboardingWithVoidAnimation:createdAccount didCancel:NO];
+}
+
+- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount didCancel:(BOOL)cancelledSignIn;
 {
     // send them off into the app
 
     if (createdAccount) {
-        [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount];
+        [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount didCancel:cancelledSignIn];
     } else {
         [self resetBackgroundImageView:YES completion:^{
             self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount];
+            [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount didCancel:cancelledSignIn];
         }];
     }
 }

@@ -7,8 +7,6 @@ extern NSString *const AROAuthTokenExpiryDateDefault;
 extern NSString *const ARXAppTokenDefault;
 extern NSString *const ARXAppTokenExpiryDateDefault;
 
-extern NSString *const ARHasSubmittedDeviceTokenDefault;
-
 #pragma mark -
 #pragma mark onboarding
 

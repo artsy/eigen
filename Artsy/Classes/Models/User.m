@@ -10,7 +10,7 @@
 + (BOOL)isTrialUser
 {
     ARUserManager *userManager = [ARUserManager sharedManager];
-    return (userManager.currentUser == nil) && userManager.hasValidXAppToken;
+    return userManager.currentUser == nil;
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey

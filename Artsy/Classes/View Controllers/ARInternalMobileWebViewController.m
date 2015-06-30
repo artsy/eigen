@@ -20,6 +20,16 @@
 
 - (void)dealloc;
 {
+    // This is already done in -[TSMiniWebBrowser dealloc], but still it seems we're getting UIWebViewDelegate messages
+    // after this object has been deallocated.
+    //
+    // It could also have been due to ARExternalWebBrowserViewController
+    // hijacking the webview’s scrollview delegate and maybe the webview doing something funky, like retrieving its
+    // delegate from the scrollview. If so, then the nillifying of the scrollview that's now done in
+    // -[ARExternalWebBrowserViewController dealloc] should be enough, but that's all just conjecture.
+    //
+    self.webView.delegate = nil;
+
     [self removeContentLoadStateTimer];
 }
 
@@ -80,7 +90,7 @@
 }
 
 // A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
-- (void)userDidSignUp
+- (void)userDidLoginOrSignUp
 {
     [self.webView loadRequest:[self requestWithURL:self.currentURL]];
 }
@@ -177,20 +187,22 @@
 
         [self.shareValidator shareURL:request.URL inView:self.view frame:(CGRect){ .origin = lastTouchPointInView, .size = CGSizeZero }];
         return NO;
-    }
-    else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+
+    } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
+        // hijack AJAX requests
+        if ([User isTrialUser]) {
+            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser){
+                [self userDidLoginOrSignUp];
+            }];
+        }
+        return NO;
+
+    } else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
         if (viewController) {
             [self.navigationController pushViewController:viewController animated:YES];
             return NO;
         }
-
-    } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
-        // hijack AJAX requests
-        if ([User isTrialUser]) {
-            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial fromTarget:self selector:@selector(userDidSignUp)];
-        }
-        return NO;
     }
 
     return YES;

@@ -23,11 +23,11 @@
 
 - (void)startLogging
 {
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyLightGrey] backgroundColor:nil forFlag:(LOG_FLAG_DEBUG)];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyAttention] backgroundColor:nil forFlag:LOG_FLAG_INFO];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyRed] backgroundColor:nil forFlag:LOG_FLAG_ERROR];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor colorWithHex:0x66cc4c] backgroundColor:nil forFlag:LOG_FLAG_INFO context:ARLogContextRequestOperation];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor colorWithHex:0xe56633] backgroundColor:nil forFlag:LOG_FLAG_ERROR context:ARLogContextRequestOperation];
+    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyLightGrey] backgroundColor:nil forFlag:DDLogFlagDebug];
+    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyAttention] backgroundColor:nil forFlag:DDLogFlagInfo];
+    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyRed] backgroundColor:nil forFlag:DDLogFlagError];
+    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor colorWithHex:0x66cc4c] backgroundColor:nil forFlag:DDLogFlagInfo context:ARLogContextRequestOperation];
+    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor colorWithHex:0xe56633] backgroundColor:nil forFlag:DDLogFlagError context:ARLogContextRequestOperation];
 
     //Console.app + Xcode log window// We could reuse the formatter, but then our date formatter would
     // need to be thread-safe

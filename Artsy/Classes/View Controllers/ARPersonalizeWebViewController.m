@@ -43,7 +43,7 @@
         // Force onboarding is all push-state.
         // A new request to load the root page indicates that onboarding is complete.
 
-        [self.personalizeDelegate dismissOnboardingWithVoidAnimation:YES];
+        [self exitOnboarding];
         return NO;
 
     } else {
@@ -58,7 +58,7 @@
 
 - (void)exitOnboarding
 {
-    [self.personalizeDelegate webOnboardingDone];
+    [self.personalizeDelegate dismissOnboardingWithVoidAnimation:YES];
 }
 
 - (void)showLoading

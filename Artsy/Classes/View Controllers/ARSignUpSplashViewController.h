@@ -1,8 +1,7 @@
-@class AROnboardingViewController;
+#import "AROnboardingViewController.h"
 
 @interface ARSignUpSplashViewController : UIViewController
-
-@property (nonatomic, weak) AROnboardingViewController *delegate;
+@property (nonatomic, weak) id<AROnboardingStepsDelegate, ARLoginSignupDelegate> delegate;
 
 @property (nonatomic, strong) UIImage *backgroundImage;
 

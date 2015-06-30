@@ -58,8 +58,16 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
     [singleTapGesture requireGestureRecognizerToFail:twoFingerTapGesture];
     [self addGestureRecognizer:singleTapGesture];
 
+    CGSize minimumSize;
+    if ([UIDevice isPad]) {
+        CGFloat minimumEdge = MAX(CGRectGetWidth(eventualFrame), CGRectGetHeight(eventualFrame));
+        minimumSize = CGSizeMake(minimumEdge, minimumEdge);
+    } else {
+        minimumSize = eventualFrame.size;
+    }
+
     _tileDataSource = [[ARTiledImageDataSourceWithImage alloc] initWithImage:_image];
-    _zoomableView = [[ARTiledImageView alloc] initWithDataSource:_tileDataSource minimumSize:eventualFrame.size];
+    _zoomableView = [[ARTiledImageView alloc] initWithDataSource:_tileDataSource minimumSize:minimumSize];
     _backgroundView = [[UIImageView alloc] initWithFrame:_zoomableView.frame];
 
     [[ARFeedImageLoader alloc] loadImageAtAddress:[_image baseImageURL] desiredSize:ARFeedItemImageSizeLarge forImageView:_backgroundView customPlaceholder:nil];

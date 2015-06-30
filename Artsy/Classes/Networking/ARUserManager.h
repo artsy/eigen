@@ -6,6 +6,7 @@
 + (void)logout;
 + (void)logoutAndSetUseStaging:(BOOL)useStaging;
 + (void)clearUserData;
++ (BOOL)didCreateAccountThisSession;
 
 + (void)identifyAnalyticsUser;
 

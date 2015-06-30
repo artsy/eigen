@@ -2,9 +2,11 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import <ARAnalytics/ARDSL.h>
 #import "ARAnalyticsConstants.h"
-#import <HockeySDK/BITHockeyManager.h>
+#import <HockeySDK_Source/BITHockeyManager.h>
+#import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
 #import "ARUserManager.h"
+#import "ARTopMenuNavigationDataSource.h"
 
 // View Controllers
 #import "ARFairGuideViewController.h"
@@ -16,6 +18,8 @@
 #import "ARInquireForArtworkViewController.h"
 #import "ARArtworkViewController.h"
 #import "AROnboardingArtistTableController.h"
+#import "ARInternalMobileWebViewController.h"
+#import "ARSignUpSplashViewController.h"
 #import "ARLoginViewController.h"
 #import "ARSignUpActiveUserViewController.h"
 #import "ARSignupViewController.h"
@@ -28,6 +32,15 @@
 #import "ARFairSearchViewController.h"
 #import "ARCollectorStatusViewController.h"
 #import "ARSharingController.h"
+#import "ARCollectorStatusViewController.h"
+#import "ARFavoritesViewController.h"
+#import "ARBrowseCategoriesViewController.h"
+#import "ARAuctionArtworkResultsViewController.h"
+#import "ARArtistBiographyViewController.h"
+#import "ARFairMapViewController.h"
+#import "ARBrowseViewController.h"
+#import "ARSearchViewController.h"
+#import "ARNavigationController.h"
 
 // Views
 #import "ARHeartButton.h"
@@ -35,6 +48,10 @@
 #import "ARSiteHeroUnitView.h"
 #import "ARButtonWithImage.h"
 #import "ARTabContentView.h"
+#import "ARArtworkView.h"
+#import "ARSwitchView.h"
+#import "ARSwitchView+Favorites.h"
+#import "ARSwitchView+Artist.h"
 
 // Models
 #import "ARFairFavoritesNetworkModel+Private.h"
@@ -45,27 +62,19 @@
 - (void)setupAnalytics
 {
     ArtsyKeys *keys = [[ArtsyKeys alloc] init];
-    NSString *mixpanelToken = keys.mixpanelProductionAPIClientKey;
+    NSString *segmentWriteKey = keys.segmentProductionWriteKey;
 
     NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
-    if ([bundleID containsString:@".dev"]) {
-        mixpanelToken = keys.mixpanelDevAPIClientKey;
-
-    } else if ([bundleID containsString:@".beta"]) {
-        mixpanelToken = keys.mixpanelStagingAPIClientKey;
-
-    } else if ([bundleID containsString:@".demo"]) {
-        mixpanelToken = keys.mixpanelInStoreAPIClientKey;
+    if ([bundleID containsString:@".dev"] || [bundleID containsString:@".beta"]) {
+        segmentWriteKey = keys.segmentDevWriteKey;
     }
-
-    ARAppDelegate *appDelegate = [ARAppDelegate sharedInstance];
 
 #if DEBUG
     [[BITHockeyManager sharedHockeyManager] setDisableUpdateManager:YES];
     [[BITHockeyManager sharedHockeyManager] setDisableCrashManager: YES];
 #endif
 
-    ARAnalyticsEventPropertiesBlock fairAndProfileIDBlock = ^NSDictionary*(ARFairGuideViewController *controller, NSArray *_) {
+    ARAnalyticsPropertiesBlock fairAndProfileIDBlock = ^NSDictionary*(ARFairGuideViewController *controller, NSArray *_) {
         return @{
              @"profile_id" : controller.fair.organizer.profileID ?: @"",
              @"fair_id" : controller.fair.fairID ?: @"",
@@ -83,9 +92,9 @@
 
     [ARAnalytics setupWithAnalytics:
     @{
-        ARHockeyAppBetaID:@"306e66bde3cb91a2043f2606cf335700",
-        ARHockeyAppLiveID:@"d7bceb80c6fa1e83e787b3919c749311",
-        ARMixpanelToken:mixpanelToken
+        ARHockeyAppBetaID: @"306e66bde3cb91a2043f2606cf335700",
+        ARHockeyAppLiveID: @"d7bceb80c6fa1e83e787b3919c749311",
+        ARSegmentioWriteKey: segmentWriteKey
     } configuration:
     @{
         ARAnalyticsTrackedEvents:
@@ -96,7 +105,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairGuideView,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsEventProperties: fairAndProfileIDBlock
+                            ARAnalyticsProperties: fairAndProfileIDBlock
                         },
                     ]
                 },
@@ -106,7 +115,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairLeaveFromArtist,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(addArtistOnArtsyButton)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairArtistViewController *controller, NSArray *_) {
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairArtistViewController *controller, NSArray *_) {
                                 return @{
                                     @"artist_id" : controller.artist.artistID ?: @"",
                                     @"fair_id" : controller.fair.fairID ?: @"",
@@ -116,7 +125,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairLeaveFromArtist,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(addArtistOnArtsyButton)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairArtistViewController *controller, NSArray *_) {
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairArtistViewController *controller, NSArray *_) {
                                 return @{
                                     @"followed": controller.isFollowingArtist ? @"yes" : @"no",
                                     @"artist_id" : controller.artist.artistID ?: @"",
@@ -126,8 +135,8 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(mapButtonTapped:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairArtistViewController *controller, NSArray *_) {
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(mapButtonTapped)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairArtistViewController *controller, NSArray *_) {
                                 FairOrganizer *organizer = controller.fair.organizer;
                                 return @{
                                     @"artist_id" : controller.artist.artistID ?: @"",
@@ -144,27 +153,26 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsPartnerShowView,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
+                            ARAnalyticsProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
                                 return controller.dictionaryForAnalytics;
                             }
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(handleMapButtonPress:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
+                            ARAnalyticsProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
                                 return controller.dictionaryForAnalytics;
                             }
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsProfileFollow,
+                            ARAnalyticsEventName: ARAnalyticsPartnerFollow,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowShow:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
+                            ARAnalyticsShouldFire: ^BOOL(ARShowViewController *controller, NSArray *_) {
+                                return controller.isFollowing == YES;
+                            },
+                            ARAnalyticsProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
                                 return @{
-                                    @"followed": controller.isFollowing ? @"yes" : @"no",
-                                    @"profile_id" : controller.show.partner.profileID ?: @"",
-                                    @"partner_show_id" : controller.show.showID ?: @"",
-                                    @"partner_id" : controller.show.partner.partnerID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @"",
+                                    @"gallery_slug" : controller.show.partner.partnerID ?: @"",
                                 };
                             }
                         },
@@ -195,7 +203,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsProfileView,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(loadMartsyView)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARProfileViewController *controller, NSArray *_) {
+                            ARAnalyticsProperties: ^NSDictionary*(ARProfileViewController *controller, NSArray *_) {
                                 return @{
                                     @"profile_id" : controller.profileID ?: @"",
                                     @"user_id" : [[ARUserManager sharedManager] currentUser].userID ?: @""
@@ -210,7 +218,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairGuidePartnerShowSelected,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(handleShowButtonPress:fair:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairFavoritesNetworkModel *model, NSArray *parameters) {
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairFavoritesNetworkModel *model, NSArray *parameters) {
                                 PartnerShow *show = parameters[0];
                                 Fair *fair = parameters[1];
                                 return @{
@@ -224,7 +232,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairGuideArtworkSelected,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(handleArtworkButtonPress:fair:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairFavoritesNetworkModel *model, NSArray *parameters) {
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairFavoritesNetworkModel *model, NSArray *parameters) {
                                 Artwork *artwork = parameters[0];
                                 Fair *fair = parameters[1];
                                 return @{
@@ -237,7 +245,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairGuideArtistSelected,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(handleArtistButtonPress:fair:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairFavoritesNetworkModel *model, NSArray *parameters) {
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairFavoritesNetworkModel *model, NSArray *parameters) {
                                 Artist *artist = parameters[0];
                                 Fair *fair = parameters[1];
                                 return @{
@@ -259,7 +267,7 @@
                                 NSString *type = parameters[1];
                                 return type != nil;
                             },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARAppSearchViewController *controller, NSArray *parameters) {
+                            ARAnalyticsProperties: ^NSDictionary*(ARAppSearchViewController *controller, NSArray *parameters) {
                                 SearchResult *result = parameters[0];
                                 NSString *type = parameters[1];
                                 NSString *query = parameters[2];
@@ -273,92 +281,109 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: AROnboardingGeneTableController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtworkFavorite,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tableView:didSelectRowAtIndexPath:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(AROnboardingGeneTableController *controller, NSArray *parameters) {
-                                NSIndexPath *indexPath = parameters[1];
-                                Gene *gene = [controller.genes objectAtIndex:indexPath.row];
-                                return @{
-                                    @"followed": gene.followed? @"yes" : @"no",
-                                    @"gene_id" : gene.geneID ?: @"",
-                                };
-                            }
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARArtworkViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsStartedInquiry,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactRepresentative:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
+                            ARAnalyticsEventName: ARAnalyticsStartedSpecialistInquiry,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactRepresentative)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
                                 return @{
-                                    @"context" : ARAnalyticsInquiryContextSpecialist,
-                                    @"fair_id" : controller.fair.fairID ?: @"",
+                                    @"artwork_slug": controller.artwork.artworkID ?: @"",
+                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
+                                    @"partner_slug": controller.artwork.partner.partnerID ?: @"",
                                 };
                             }
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsStartedInquiry,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactGallery:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
+                            ARAnalyticsEventName: ARAnalyticsStartedGalleryInquiry,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactGallery)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
                                 return @{
-                                    @"context" : ARAnalyticsInquiryContextGallery,
-                                    @"fair_id" : controller.fair.fairID ?: @"",
+                                    @"artwork_slug": controller.artwork.artworkID ?: @"",
+                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
+                                    @"partner_slug": controller.artwork.partner.partnerID ?: @"",
                                 };
                             }
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsArtworkFavorite,
+                            ARAnalyticsEventName: ARAnalyticsArtworkSave,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkFavorite:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
+                            ARAnalyticsShouldFire: ^BOOL(ARArtworkViewController *controller, NSArray *parameters) {
                                 ARHeartButton *sender = parameters.first;
+                                return sender.isHearted == YES;
+                            },
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
                                 return @{
-                                    @"followed": sender.isHearted? @"yes" : @"no",
-                                    @"artwork_id" : controller.artwork.artworkID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @""
+                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
+                                    @"artwork_slug" : controller.artwork.artworkID ?: @"",
+                                    @"source_screen" : @"Artwork"
                                 };
                             },
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsHearted,
+                            ARAnalyticsEventName: ARAnalyticsArtworkUnsave,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkFavorite:)),
-                            ARAnalyticsShouldFire: heartedShouldFireBlock,
+                            ARAnalyticsShouldFire: ^BOOL(ARArtworkViewController *controller, NSArray *parameters) {
+                                ARHeartButton *sender = parameters.first;
+                                return sender.isHearted == NO;
+                            },
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
+                                return @{
+                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
+                                    @"artwork_slug" : controller.artwork.artworkID ?: @"",
+                                    @"source_screen" : @"Artwork"
+                                };
+                            },
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsUnhearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkFavorite:)),
-                            ARAnalyticsShouldFire: unheartedShouldFireBlock,
+                            ARAnalyticsEventName: ARAnalyticsTapPartnerName,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedOpenArtworkPartner)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
+                                return @{
+                                    @"gallery_slug": controller.artwork.partner.partnerID ?: @"",
+                                };
+                            },
+
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkViewInMap:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *_){
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkViewInMap)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *_){
                                 return @{@"artwork_id" : controller.artwork.artworkID ?: @""};
                             },
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsAuctionBidTapped,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(bidCompelted:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
                                 SaleArtwork *saleArtwork = parameters.first;
                                 return @{
-                                    @"artwork_id" : controller.artwork.artworkID ?: @"",
-                                    @"sale_id" : saleArtwork.auction.saleID ?: @""
+                                    @"artwork_slug": controller.artwork.artworkID ?: @"",
+                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
+                                    @"auction_id": saleArtwork.auction.saleID ?: @""
                                 };
                             },
                         },
                         @{
+                            ARAnalyticsEventName: ARAnalyticsAuctionHowBiddingWorks,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedAuctionInfo)),
+                        },
+                        @{
                             ARAnalyticsEventName: ARAnalyticsArtworkView,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
                                 return @{
                                     @"artwork_id" : controller.artwork.artworkID ?: @"",
                                     @"fair_id" : controller.fair.fairID ?: @""
+                                };
+                            },
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsArtworkZoom,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(tappedTileableImagePreview),
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
+                                return @{
+                                    @"artwork_slug" : controller.artwork.artworkID ?: @"",
                                 };
                             },
                         }
@@ -368,28 +393,17 @@
                     ARAnalyticsClass: ARInquireForArtworkViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsCancelledInquiry,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(cancelButtonTapped:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARInquireForArtworkViewController *controller, NSArray *_) {
+                            ARAnalyticsEventName: ARAnalyticsInquiryError,
+                            ARAnalyticsSelectorName: @"inquiryFailed:",
+                            ARAnalyticsProperties: ^NSDictionary*(ARInquireForArtworkViewController *controller, NSArray *parameters) {
                                 return @{
-                                    @"fair_id" : controller.fair.fairID ?: @"",
+                                    @"errors" : [[parameters first] localizedDescription] ?: @"",
                                 };
                             }
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsSubmittedInquiry,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(inquiryCompleted:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARInquireForArtworkViewController *controller, NSArray *_) {
-                                return @{
-                                    @"body_length": controller.body ?: @"",
-                                    @"type": (controller.state == ARInquireStatePartner) ? @"partner" : @"representative",
-                                    @"artwork_id": controller.artwork.artworkID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @"",
-                                    @"inquiry_url": controller.inquiryURLRepresentation ?: @"",
-                                    @"referring_url": appDelegate.referralURLRepresentation ?: @"",
-                                    @"landing_url": appDelegate.landingURLRepresentation ?: @"",
-                                };
-                            }
                         },
                     ]
                 },
@@ -397,151 +411,96 @@
                     ARAnalyticsClass: AROnboardingArtistTableController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsArtistFollow,
+                            ARAnalyticsEventName: ARAnalyticsArtistUnfollow,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(unfollowArtist:)),
-                            ARAnalyticsEventProperties:^NSDictionary*(AROnboardingArtistTableController *controller, NSArray *parameters) {
+                            ARAnalyticsProperties:^NSDictionary*(AROnboardingArtistTableController *controller, NSArray *parameters) {
                                 Artist *artist = parameters[0];
                                 return @{
-                                    @"followed": @"no",
-                                    @"artist_id" : artist.artistID?: @"",
+                                    @"source_screen": @"Onboarding",
+                                    @"artist_slug" : artist.artistID ?: @"",
                                 };
                             }
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARLoginViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignIn,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(twitter:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextTwitter };
-                            },
                         },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUserSignedIn,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *parameters){
-                                NSNumber *typeNumber = parameters.first;
-
-                                ARLoginViewControllerLoginType type = typeNumber.integerValue;
-
-                                NSString *context = @"";
-
-                                switch (type) {
-                                    case ARLoginViewControllerLoginTypeTwitter:
-                                        context = ARAnalyticsUserContextTwitter;
-                                        break;
-                                    case ARLoginViewControllerLoginTypeFacebook:
-                                        context = ARAnalyticsUserContextFacebook;
-                                        break;
-                                    case ARLoginViewControllerLoginTypeEmail:
-                                        context = ARAnalyticsUserContextFacebook;
-                                        break;
-                                }
-
-                                return @{ @"context" : context };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSignInTwitter,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters) {
-                                ARLoginViewControllerLoginType type = [parameters.first integerValue];
-                                return type == ARLoginViewControllerLoginTypeTwitter;
-                            },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *parameters){
-                                User *currentUser = parameters[1];
-                                return @{ @"user_id": currentUser.userID ?: @"" };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSignInFacebook,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters) {
-                                ARLoginViewControllerLoginType type = [parameters.first integerValue];
-                                return type == ARLoginViewControllerLoginTypeFacebook;
-                            },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *parameters){
-                                User *currentUser = parameters[1];
-                                return @{ @"user_id": currentUser.userID ?: @"" };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: @"Log in",
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters) {
-                                ARLoginViewControllerLoginType type = [parameters.first integerValue];
-                                return type == ARLoginViewControllerLoginTypeEmail;
-                            },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *parameters){
-                                User *currentUser = parameters[1];
-                                return @{ @"user_id": currentUser.userID ?: @"" };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSignInError,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(failedToLoginToTwitter)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *parameters){
-                                return @{ @"context" : ARAnalyticsUserContextTwitter };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignIn,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fb:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextFacebook };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignIn,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loginWithUsername:andPassword:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextEmail };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSignInError,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(authenticationFailure)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextEmail };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSignInError,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(networkFailure:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextEmail };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSignInError,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(failedToLoginToFacebook)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARLoginViewController *controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextFacebook };
-                            },
-                        }
                     ]
                 },
                 @{
                     ARAnalyticsClass: ARSignUpActiveUserViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsDismissedActiveUserSignUp,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(goBackToApp:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARSignUpActiveUserViewController *controller, NSArray *_){
-                                return @{ @"context" : [ARTrialController stringForTrialContext:controller.trialContext] };
-                            },
-                        }
+                            ARAnalyticsEventName: ARAnalyticsTappedLogIn,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(goToLogin:),
+                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
+                                return @{@"active_user": @"true"};
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpEmail,
+                            ARAnalyticsSelectorName: @"signUpWithEmail:",
+                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
+                                return @{@"active_user": @"true"};
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpFacebook,
+                            ARAnalyticsSelectorName: @"connectWithFacebook:",
+                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
+                                return @{@"active_user": @"true"};
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpTwitter,
+                            ARAnalyticsSelectorName: @"connectWithTwitter:",
+                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
+                                return @{@"active_user": @"true"};
+                            }
+                        },
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARNavigationController.class,
+                    ARAnalyticsClass: ARLoginViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsShowMenu,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(showMenu:)),
+                            ARAnalyticsEventName: ARAnalyticsSignInEmail,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
+                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters){
+                                NSNumber *typeNumber = parameters.first;
+                                ARLoginViewControllerLoginType type = typeNumber.integerValue;
+                                return type == ARLoginViewControllerLoginTypeEmail;
+                            },
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignInTwitter,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
+                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters){
+                                NSNumber *typeNumber = parameters.first;
+                                ARLoginViewControllerLoginType type = typeNumber.integerValue;
+                                return type == ARLoginViewControllerLoginTypeTwitter;
+                            },
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignInFacebook,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
+                            ARAnalyticsShouldFire: ^BOOL(ARLoginViewController *controller, NSArray *parameters){
+                                NSNumber *typeNumber = parameters.first;
+                                ARLoginViewControllerLoginType type = typeNumber.integerValue;
+                                return type == ARLoginViewControllerLoginTypeFacebook;
+                            },
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignInError,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(failedToLoginToTwitter)),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignInError,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(authenticationFailure)),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignInError,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(networkFailure:)),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignInError,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(failedToLoginToFacebook)),
                         }
                     ]
                 },
@@ -554,7 +513,7 @@
                             ARAnalyticsShouldFire: ^BOOL(ARFairMapAnnotationCallOutView *view, NSArray *parameters) {
                                 return [view.annotation.representedObject isKindOfClass:[PartnerShow class]];
                             },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairMapAnnotationCallOutView *view, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairMapAnnotationCallOutView *view, NSArray *_){
                                 PartnerShow *partnerShow = view.annotation.representedObject;
                                 return @{
                                     @"fair_id" : partnerShow.fair.fairID ?: @"",
@@ -569,7 +528,7 @@
                             ARAnalyticsShouldFire: ^BOOL(ARFairMapAnnotationCallOutView *view, NSArray *parameters) {
                                 return ![view.annotation.representedObject isKindOfClass:[PartnerShow class]] && view.annotation.href;
                             },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairMapAnnotationCallOutView *view, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairMapAnnotationCallOutView *view, NSArray *_){
                                 return @{
                                     @"fair_id" : view.fair.fairID ?: @"",
                                     @"profile_id" : view.fair.organizer.profileID ?: @"",
@@ -580,38 +539,12 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARSignupViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignup,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(twitter:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextTwitter };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignup,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(email:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextEmail };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignup,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fb:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextFacebook };
-                            },
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARGeneViewController.class,
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: ARAnalyticsGeneView,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARGeneViewController *controller, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(ARGeneViewController *controller, NSArray *_){
                                 return @{
                                     @"gene_id" : controller.gene.geneID ?: @"",
                                 };
@@ -620,7 +553,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsGeneFollow,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingGene:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARGeneViewController *controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(ARGeneViewController *controller, NSArray *parameters){
                                 ARHeartButton *sender = parameters.first;
                                 return @{
                                     @"followed": sender.isHearted? @"yes" : @"no",
@@ -656,7 +589,7 @@
                                 NSURLRequest *request = parameters[1];
                                 return [request.URL.absoluteString containsString:@"stop_microgravity_redirect"];
                             },
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
                                 NSURLRequest *request = parameters[1];
                                 return @{ @"url" : request.URL.absoluteString ?: @"" };
                             },
@@ -672,7 +605,7 @@
                             ARAnalyticsShouldFire: ^BOOL (ARPersonalizeViewController *controller, NSArray *parameters) {
                                 return controller.followedThisSession || controller.geneController.numberOfFollowedGenes;
                             },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *_){
                                 return @{
                                     @"artist_count": @(controller.followedThisSession),
                                     @"gene_count": @(controller.geneController.numberOfFollowedGenes)
@@ -687,17 +620,17 @@
                             }
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsArtistFollow,
+                            ARAnalyticsEventName: ARAnalyticsArtistUnfollow,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(searchToggleFollowStatusForArtist:atIndexPath:)),
                             ARAnalyticsShouldFire: ^BOOL (ARPersonalizeViewController *controller, NSArray *parameters) {
                                 Artist *artist = parameters.first;
                                 return [controller.artistController hasArtist:artist];
                             },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *parameters){
                                 Artist *artist = parameters.first;
                                 return @{
-                                    @"followed": @"no",
-                                    @"artist_id" : artist.artistID,
+                                    @"source_screen": @"Onboarding",
+                                    @"artist_slug" : artist.artistID,
                                 };
                             },
                         },
@@ -708,11 +641,11 @@
                                 Artist *artist = parameters.first;
                                 return !([controller.artistController hasArtist:artist]);
                             },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *parameters){
                                 Artist *artist = parameters.first;
                                 return @{
-                                    @"followed": @"yes",
-                                    @"artist_id" : artist.artistID,
+                                    @"source_screen": @"Onboarding",
+                                    @"artist_slug" : artist.artistID,
                                 };
                             },
                         },
@@ -730,15 +663,15 @@
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(signUp:)),
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsStartedTrial,
+                            ARAnalyticsEventName: ARAnalyticsTryWithoutAccount,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(startTrial)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
                             NSInteger threshold = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingPromptThresholdDefault];
                                 return @{
                                     @"tap_threshold" : @(threshold)
                                 };
                             },
-                        },
+                        }
                     ]
                 },
                 @{
@@ -747,65 +680,23 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtworkViewInRoom,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARViewInRoomViewController *controller, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(ARViewInRoomViewController *controller, NSArray *_){
                                 return @{
-                                    @"via_rotation" : @(controller.popOnRotation),
-                                    @"artwork" : controller.artwork.artworkID ?: @""
+                                    @"interaction_type": controller.popOnRotation ? @"rotation" : @"button",
+                                    @"artwork_slug": controller.artwork.artworkID ?: @"",
+                                    @"artist_slug": controller.artwork.artist.artistID ?: @""
                                 };
                             },
                         }
                     ]
                 },
                 @{
-                    ARAnalyticsClass: AROnboardingMoreInfoViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsAmendingDetails,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(initForFacebookWithToken:email:name:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextFacebook };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsAmendingDetails,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(initForTwitterWithToken:andSecret:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextTwitter };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUserAlreadyExistedAtSignUp,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(userAlreadyExistsForLoginType:)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsCompletedSignUp,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loginCompletedForLoginType:skipAhead:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *parameters){
-                                NSString *context = @"";
-
-                                AROnboardingMoreInfoViewControllerLoginType type = [parameters.first integerValue];
-
-                                switch (type) {
-                                    case AROnboardingMoreInfoViewControllerLoginTypeFacebook:
-                                        context = ARAnalyticsUserContextFacebook;
-                                        break;
-                                    case AROnboardingMoreInfoViewControllerLoginTypeTwitter:
-                                        context = ARAnalyticsUserContextTwitter;
-                                        break;
-                                }
-
-                                return @{ @"context" : context };
-                            },
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARViewInRoomViewController.class,
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtworkViewInRoom,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARViewInRoomViewController *controller, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(ARViewInRoomViewController *controller, NSArray *_){
                                 return @{
                                     @"via_rotation" : @(controller.popOnRotation),
                                     @"artwork" : controller.artwork.artworkID ?: @""
@@ -820,9 +711,9 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsTappedHeroUnit,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedView:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARSiteHeroUnitView *view, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(ARSiteHeroUnitView *view, NSArray *_){
                                 return @{
-                                    @"url" : view.linkAddress ?: @""
+                                    @"destination" : view.linkAddress ?: @""
                                 };
                             },
                         }
@@ -834,7 +725,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsTappedMainNavigationItem,
                             ARAnalyticsSelectorName: ARAnalyticsSelector(navigationControllerForIndex:),
-                            ARAnalyticsEventProperties:^NSDictionary*(ARTabContentView *view, NSArray *parameters) {
+                            ARAnalyticsProperties:^NSDictionary*(ARTabContentView *view, NSArray *parameters) {
                                 NSInteger index = [parameters.firstObject integerValue];
                                 UIButton *button = view.buttons[index];
                                 NSString *title = button.titleLabel.text.lowercaseString;
@@ -861,7 +752,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtistView,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidLoad)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *_){
                                 return @{
                                     @"artist_id" : controller.artist.artistID ?: @"",
                                     @"fair_id" : controller.fair.fairID ?: @""
@@ -871,12 +762,28 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtistFollow,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingArtist:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *parameters){
-                            ARHeartButton *sender = parameters.first;
+                            ARAnalyticsShouldFire: ^BOOL(ARArtistViewController *controller, NSArray *parameters){
+                                ARHeartButton *sender = parameters.first;
+                                return sender.isHearted == YES;
+                            },
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *parameters){
                                 return @{
-                                    @"followed": sender.isHearted? @"yes" : @"no",
-                                    @"artist_id" : controller.artist.artistID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @""
+                                         @"artist_slug" : controller.artist.artistID ?: @"",
+                                         @"source_screen" : @"Artist"
+                                };
+                            },
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsArtistUnfollow,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingArtist:)),
+                            ARAnalyticsShouldFire: ^BOOL(ARArtistViewController *controller, NSArray *parameters){
+                                ARHeartButton *sender = parameters.first;
+                                return sender.isHearted == NO;
+                            },
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *parameters){
+                                return @{
+                                    @"artist_slug" : controller.artist.artistID ?: @"",
+                                    @"source_screen" : @"Artist"
                                 };
                             },
                         },
@@ -893,7 +800,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtistTappedForSale,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(forSaleOnlyArtworksTapped)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *_){
                                 return @{
                                     @"artist_id" : controller.artist.artistID ?: @"",
                                     @"fair_id" : controller.fair.fairID ?: @""
@@ -908,7 +815,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsProfileView,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *_){
                                 return @{
                                     @"profile_id" : controller.fairProfile.profileID ?: @"",
                                     @"fair_id" : controller.fair.fairID ?: @"",
@@ -918,7 +825,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairFeaturedLinkSelected,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(didSelectFeaturedLink:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
                                 FeaturedLink *featuredLink = parameters.first;
                                 return @{
                                     @"profile_id" : controller.fair.organizer.profileID ?: @"",
@@ -930,7 +837,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairPostSelected,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(didSelectPost:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
                                 NSString *postURL = parameters.first;
                                 return @{
                                     @"profile_id" : controller.fair.organizer.profileID ?: @"",
@@ -942,7 +849,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairFeaturedLinkSelected,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(buttonPressed:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
                                 ARButtonWithImage *button = parameters.first;
                                 return @{
                                     @"profile_id" : controller.fair.organizer.profileID ?: @"",
@@ -950,27 +857,14 @@
                                     @"url" : button.targetURL ?: @""
                                 };
                             },
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARFairSearchViewController.class,
-                    ARAnalyticsDetails: @[
+                        },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsSearchItemSelected,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(selectedResult:ofType:fromQuery:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARFairSearchViewController *controller, NSArray *parameters) {
-                                NSString *type = parameters[1];
-                                return type != nil;
-                            },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARFairSearchViewController *controller, NSArray *parameters){
-                                SearchResult *result = parameters[0];
-                                NSString *type = parameters[1];
-                                NSString *query = parameters[2];
-                                return  @{
-                                    type ?: @"" : result.modelID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @"",
-                                    @"query" : query.length > 0 ? query : @"",
+                            ARAnalyticsEventName: ARAnalyticsFairOverviewSelection,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(buttonPressed:),
+                            ARAnalyticsProperties:  ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
+                                ARButtonWithImage *button = parameters.first;
+                                return @{
+                                    @"button_text" : button.title ?: @"",
                                 };
                             },
                         }
@@ -980,7 +874,19 @@
                     ARAnalyticsClass: AROnboardingViewController.class,
                     ARAnalyticsDetails: @[
                         @{
+                            ARAnalyticsEventName: ARAnalyticsSlideshowStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(startSlideshow)),
+                        },
+                        @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(splashDone:)),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(splashDoneWithLogin:)),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsAccountCreated,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(signupDone)),
                         },
                         @{
@@ -1002,7 +908,7 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingCompletedPriceRange,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(setPriceRangeDone:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
                                 NSInteger range = [parameters.first integerValue];
                                 NSString *stringRange = [NSString stringWithFormat:@"%@", @(range)];
                                 return @{ @"price_range" : stringRange };
@@ -1011,37 +917,40 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingCompleted,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(dismissOnboardingWithVoidAnimation:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(AROnboardingViewController *controller, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(AROnboardingViewController *controller, NSArray *_){
                                 return @{
                                     @"configuration" : [controller onboardingConfigurationString]
                                 };
                             },
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignup,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(signUpWithFacebook)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextFacebook };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSignup,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(signUpWithTwitter)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *_){
-                                return @{ @"context" : ARAnalyticsUserContextTwitter };
-                            },
-                        },
-                        @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingCompletedCollectorLevel,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(collectorLevelDone:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(id controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
                                 ARCollectorLevel level = [parameters.first integerValue];
                                 NSString *collectorLevel = [ARCollectorStatusViewController stringFromCollectorLevel:level];
                                 return @{
                                     @"collector_level" : collectorLevel
                                 };
                             },
-                        }
+                        },
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARSignupViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpTwitter,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(fb:),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpFacebook,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(twitter:),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignUpEmail,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(email:),
+                        },
                     ]
                 },
                 @{
@@ -1049,8 +958,8 @@
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: ARAnalyticsShowTrialSplash,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(presentTrialWithContext:fromTarget:selector:)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARTrialController *controller, NSArray *parameters){
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(presentTrialWithContext:success:)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARTrialController *controller, NSArray *parameters){
                                 enum ARTrialContext context = [parameters.first integerValue];
                                 return @{
                                     @"context" : [ARTrialController stringForTrialContext:context],
@@ -1064,59 +973,402 @@
                     ARAnalyticsClass: ARSharingController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsShareStarted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(presentActivityViewController)),
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARSharingController *controller, NSArray *_){
-                                NSString *itemType = [NSStringFromClass([controller.object class])
-                                                      stringByReplacingOccurrencesOfString:@"partner"
-                                                      withString:@""].lowercaseString;
-                                NSString *itemId = [controller objectID];
-                                return @{
-                                    @"context" : itemType ?: @"",
-                                    @"id" : itemId ?: @""
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsShareCompleted,
+                            ARAnalyticsEventName: ARAnalyticsShare,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(handleActivityCompletion:completed:)),
                             ARAnalyticsShouldFire: ^BOOL(ARSharingController *controller, NSArray *parameters) {
                                 BOOL completed = [parameters[1] boolValue];
                                 return completed;
                             },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARSharingController * controller, NSArray *parameters){
-                                NSString *itemType = [NSStringFromClass([controller.object class])
-                                                      stringByReplacingOccurrencesOfString:@"partner"
-                                                      withString:@""].lowercaseString;
-                                NSString *itemId = [controller objectID];
+                            ARAnalyticsProperties: ^NSDictionary*(ARSharingController * controller, NSArray *parameters){
+                                NSString *itemType = NSStringFromClass([controller.object class]).lowercaseString;
                                 NSString *activityType = parameters.first;
                                 return @{
-                                    @"context" : itemType ?: @"",
-                                    @"id" : itemId ?: @"",
+                                    @"object_type" : itemType ?: @"",
                                     @"service" : activityType ?: @""
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsShareCancelled,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(handleActivityCompletion:completed:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARSharingController *controller, NSArray *parameters) {
-                                BOOL completed = [parameters[1] boolValue];
-                                return !completed;
-                            },
-                            ARAnalyticsEventProperties: ^NSDictionary*(ARSharingController * controller, NSArray *parameters){
-                                NSString *itemType = [NSStringFromClass([controller.object class])
-                                                      stringByReplacingOccurrencesOfString:@"partner"
-                                                      withString:@""].lowercaseString;
-                                NSString *itemId = [controller objectID];
-                                return @{
-                                   @"context" : itemType ?: @"",
-                                   @"id" : itemId ?: @""
                                 };
                             },
                         }
                     ]
                 },
+                @{
+                    ARAnalyticsClass: ARBrowseViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsExploreTap,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(collectionView:didSelectItemAtIndexPath:),
+                            ARAnalyticsProperties:^NSDictionary *(ARBrowseViewController *controller, NSArray *parameters) {
+                                NSIndexPath *indexPath = parameters[1];
+                                FeaturedLink *link = [controller.networkModel.links objectAtIndex:indexPath.row];
+
+                                return @{
+                                    @"type": link.title ?: @""
+                                };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARAppSearchViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSearchClosed,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(viewDidDisappear:)
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSearchStartedQuery,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(fetchSearchResults:replace:),
+                            ARAnalyticsProperties: ^NSDictionary *(ARSearchViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"query": parameters.firstObject ?: @""
+                                };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSearchCleared,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(clearSearchAnimated:)
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSearchItemSelected,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(selectedResult:ofType:fromQuery:),
+                            ARAnalyticsProperties: ^NSDictionary *(ARSearchViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"query": parameters[2] ?: @"",
+                                    @"selected_object_type": parameters[1] ?: @"",
+                                    @"selected_object_slug": [parameters[0] modelID] ?: @""
+                                };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFairSearchViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsFairSearch,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(fetchSearchResults:replace:),
+                            ARAnalyticsProperties: ^NSDictionary *(ARSearchViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"query": parameters.firstObject ?: @""
+                                };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSearchItemSelected,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(selectedResult:ofType:fromQuery:),
+                            ARAnalyticsProperties: ^NSDictionary *(ARSearchViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"query": parameters[2] ?: @"",
+                                    @"selected_object_type": parameters[1] ?: @"",
+                                    @"slug": [parameters[0] modelID] ?: @""
+                                };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARNavigationController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsSelectorName: @"back:",
+                            ARAnalyticsEventName: ARAnalyticsBackTapped
+                        }
+                    ]
+                }
+            ],
+            ARAnalyticsTrackedScreens: @[
+                @{
+                    ARAnalyticsClass: AROnboardingViewController.class,
+                    ARAnalyticsDetails: @[ @{
+                        ARAnalyticsPageName: @"Splash",
+                        ARAnalyticsShouldFire: ^BOOL(AROnboardingViewController *controller, NSArray *parameters) {
+                            return controller.initialState == ARInitialOnboardingStateSlideShow;
+                        }
+                    }, @{
+                        ARAnalyticsPageName: @"Onboarding",
+                        ARAnalyticsSelectorName: ARAnalyticsSelector(collectorLevelDone:),
+                        ARAnalyticsProperties: ^NSDictionary *(AROnboardingViewController *controller, NSArray *parameters) {
+                            ARCollectorLevel level = [parameters.firstObject intValue];
+                            return @{ @"onboarding_step": @"collector_level",
+                                      @"collector_level": [ARCollectorStatusViewController stringFromCollectorLevel:level] };
+                        }
+                    }, @{
+                        ARAnalyticsPageName: @"Onboarding",
+                        ARAnalyticsSelectorName: ARAnalyticsSelector(setPriceRangeDone:),
+                        ARAnalyticsProperties: ^NSDictionary *(AROnboardingViewController *controller, NSArray *parameters) {
+                            NSString *range = [NSString stringWithFormat:@"%@", parameters.firstObject];
+                            return @{ @"onboarding_step": @"price_range",
+                                      @"price_range": range };
+                        }
+                    }, @{
+                        ARAnalyticsPageName: @"Onboarding",
+                        ARAnalyticsSelectorName: ARAnalyticsSelector(personalizeDone),
+                        ARAnalyticsProperties: ^NSDictionary *(AROnboardingViewController *controller, NSArray *parameters) {
+                            return @{ @"onboarding_step": @"personalize" };
+                        }
+                    }]
+                },
+                @{
+                    ARAnalyticsClass: ARSignupViewController.class,
+                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Signup" } ]
+                },
+                @{
+                    ARAnalyticsClass: ARLoginViewController.class,
+                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Login" } ]
+                },
+                @{
+                    ARAnalyticsClass: ARTabContentView.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Home",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexFeed;
+                            }
+                        },@{
+                            ARAnalyticsPageName: @"Shows",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexShows;
+                            }
+                        },@{
+                            ARAnalyticsPageName: @"Explore",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexBrowse;
+                            }
+                        },@{
+                            ARAnalyticsPageName: @"Mag",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexMagazine;
+                            }
+                        },@{
+                            ARAnalyticsPageName: @"You",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexFavorites;
+                            },
+                            ARAnalyticsProperties: ^NSDictionary *(ARTabContentView *view, NSArray *parameters) {
+                                // Always starts on artworks tab
+                                return @{ @"tab": @"Artworks" };
+                            }
+                        },@{
+                            ARAnalyticsPageName: @"Search",
+                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexSearch;
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFavoritesViewController.class,
+                    ARAnalyticsDetails: @[@{
+                          ARAnalyticsPageName: @"You",
+                        ARAnalyticsSelectorName: ARAnalyticsSelector(switchView:didPressButtonAtIndex:animated:),
+                        ARAnalyticsProperties: ^NSDictionary *(ARFavoritesViewController *controller, NSArray *parameters) {
+                            NSInteger buttonIndex = [parameters[1] integerValue];
+
+                            NSString *tab = @"";
+                            if (buttonIndex == ARSwitchViewFavoriteArtworksIndex) {
+                                tab = @"Artworks";
+                            } else if (buttonIndex == ARSwitchViewFavoriteArtistsIndex) {
+                                tab = @"Artists";
+                            } else if (buttonIndex == ARSwitchViewFavoriteCategoriesIndex) {
+                                tab = @"Categories";
+                            }
+                            return @{ @"tab": tab};
+                        }
+                    }]
+                },
+                @{
+                    ARAnalyticsClass: ARArtworkView.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Artwork",
+                            ARAnalyticsSelectorName: @"artworkUpdated",
+                            ARAnalyticsProperties: ^NSDictionary *(ARArtworkView *view, NSArray *_) {
+                                NSDictionary *basics =  @{
+                                    @"slug": view.artwork.artworkID ?: @"",
+                                    @"artist_slug": view.artwork.artist.artistID ?: @"",
+                                    @"partner": view.artwork.partner.partnerID ?: @"",
+                                    @"price": view.artwork.price ?: @""
+                                };
+
+                                if (view.artwork.fair.fairID) {
+                                    basics = [basics mtl_dictionaryByAddingEntriesFromDictionary:@{ @"fair_slug": view.artwork.fair.fairID }];
+                                }
+
+                                return basics;
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFairArtistViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Fair artist",
+                            ARAnalyticsSelectorName: @"artistDidLoad",
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *_) {
+                                // Fair artists only show all
+                                return @{ @"fair_slug": controller.fair.fairID ?: @"",
+                                          @"artist_slug": controller.artist.artistID ?: @"" };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARArtistViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Artist",
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *_) {
+                                // Displays all by deafult
+                                return @{ @"tab": @"All" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsPageName: @"Artist",
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(switchView:didPressButtonAtIndex:animated:),
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *parameters) {
+                                NSInteger index = [parameters[1] integerValue];
+                                NSString *tab = @"";
+                                if (index == ARSwitchViewArtistButtonIndex) {
+                                    tab = @"All";
+                                } else if (index == ARSwitchViewForSaleButtonIndex) {
+                                    tab = @"For Sale";
+                                }
+                                return @{ @"tab": tab };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARShowViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Show",
+                            ARAnalyticsSelectorName: @"showDidLoad",
+                            ARAnalyticsProperties:^NSDictionary *(ARShowViewController *controller, NSArray *_) {
+                                NSDictionary *basics =  @{ @"slug": controller.show.showID,
+                                    @"partner_slug": controller.show.partner.partnerID
+                               };
+
+                               if (controller.show.fair.fairID) {
+                                   basics = [basics mtl_dictionaryByAddingEntriesFromDictionary:@{ @"fair_slug": controller.show.fair.fairID }];
+                               }
+
+                               return basics;
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFairViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Fair",
+                            ARAnalyticsSelectorName: @"fairDidLoad",
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairViewController *controller, NSArray *_) {
+                                return @{ @"slug": controller.fair.fairID ?: @"",
+                                    @"screen_type": @"Overview" };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFairSearchViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Fair",
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairSearchViewController *controller, NSArray *_) {
+                                return @{ @"slug": controller.fair.fairID ?: @"",
+                                    @"screen_type": @"Search" };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFairMapViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Fair",
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairMapViewController *controller, NSArray *_) {
+                                return @{ @"slug": controller.fair.fairID ?: @"",
+                                    @"screen_type": @"Map" };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARFairGuideViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Fair",
+                            ARAnalyticsSelectorName: @"setFairLoaded",
+                            ARAnalyticsShouldFire: ^BOOL(ARFairGuideViewController *controller, BOOL newValue) {
+                                return newValue == YES;
+                            },
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairGuideViewController *controller, NSArray *_) {
+                                return @{ @"slug": controller.fair.fairID ?: @"",
+                                    @"screen_type": @"Personalized Guide" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsPageName: @"Fair personalized guide",
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(setSelectedTabIndex:),
+                            ARAnalyticsProperties: ^NSDictionary *(ARFairGuideViewController *controller, NSArray *parameters) {
+                                NSInteger index = [parameters.firstObject integerValue];
+                                NSString *tab = @"";
+
+                                if (index == ARFairGuideSelectedTabWork) {
+                                    tab = @"Work";
+                                } else if (index == ARFairGuideSelectedTabArtists) {
+                                    tab = @"Artists";
+                                } else if (index == ARFairGuideSelectedTabExhibitors) {
+                                    tab = @"Exhibitors";
+                                }
+
+                                return @{ @"tab": tab };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARArtistBiographyViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Artist Biography",
+                            ARAnalyticsProperties: ^NSDictionary *(ARArtistBiographyViewController *controller, NSArray *_) {
+                                return @{ @"artist_slug": controller.artist.artistID };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARGeneViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Category",
+                            ARAnalyticsProperties: ^NSDictionary *(ARGeneViewController *controller, NSArray *_) {
+                                return @{ @"slug": controller.gene.geneID ?: @"" };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARAuctionArtworkResultsViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Auction results",
+                            ARAnalyticsProperties: ^NSDictionary *(ARAuctionArtworkResultsViewController *controller, NSArray *_) {
+                                return @{ @"artist_slug": controller.artwork.artist.artistID ?: @"",
+                                          @"artwork_slug": controller.artwork.artworkID };
+                            }
+                        }
+                    ]
+                }
             ]
         }
     ];

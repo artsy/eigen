@@ -6,16 +6,10 @@
 #import <ORStackView/ORStackView.h>
 #import "ARArtworkDetailView.h"
 #import "ARArtworkActionsView.h"
+#import "ARArtworkPreviewImageView.h"
+#import "ARArtworkPreviewActionsView.h"
 
 @class ARArtworkMetadataView;
-
-@protocol ARArtworkMetadataViewDelegate <NSObject>
-
-- (void)artworkMetadataView:(ARArtworkMetadataView *)metadataView shouldPresentViewController:(UIViewController *)viewController;
-- (void)artworkMetadataView:(ARArtworkMetadataView *)metadataView didUpdateArtworkDetailView:(ARArtworkDetailView *)detailView;
-- (void)artworkMetadataView:(ARArtworkMetadataView *)metadataView didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView;
-
-@end
 
 @interface ARArtworkMetadataView : UIView
 
@@ -25,6 +19,7 @@
 
 - (UIImageView *)imageView;
 
+- (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkPreviewActionsViewDelegate>)delegate;
 
 @property (nonatomic, strong, readonly) UIView *left;
 @property (nonatomic, strong, readonly) UIView *right;
@@ -32,7 +27,5 @@
 /// TODO: Make this a view controller so that we can negate doing this.
 /// Let subviews know that we're in a fair context
 @property (readwrite, nonatomic) Fair *fair;
-
-@property (nonatomic, weak) id<ARArtworkMetadataViewDelegate> delegate;
 
 @end

@@ -47,4 +47,7 @@
 // Move to the next or previous tab, if you're at the end it does nothing
 - (void)showNextTabAnimated:(BOOL)animated;
 - (void)showPreviousTabAnimated:(BOOL)animated;
+
+- (void)buttonTapped:(id)sender;
+
 @end
