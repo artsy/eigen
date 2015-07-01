@@ -57,7 +57,7 @@
     }
 
     if (![urlString isEqualToString:url.absoluteString]) {
-        NSLog(@"Rewriting %@ as %@", urlString, url.absoluteString);
+        ARActionLog(@"Rewriting %@ as %@", urlString, url.absoluteString);
     }
 
     self = [super initWithURL:url];
@@ -71,7 +71,7 @@
     self.opaque = NO;
     _shareValidator = [[ARInternalShareValidator alloc] init];
 
-    NSLog(@"Initialized with URL %@", url);
+    ARActionLog(@"Initialized with URL %@", url);
     return self;
 }
 
@@ -179,7 +179,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    NSLog(@"Martsy URL %@", request.URL);
+    ARActionLog(@"Martsy URL %@", request.URL);
 
     if ([self.shareValidator isSocialSharingURL:request.URL]) {
         ARWindow *window = ARAppDelegate.sharedInstance.window;

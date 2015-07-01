@@ -300,7 +300,7 @@
         if (failure) { failure(error); }
 
         @strongify(self);
-        NSLog(@"Failed fetching full JSON for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
+        ARErrorLog(@"Failed fetching full JSON for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
         return error;
     }];
 }
@@ -338,7 +338,7 @@
 
             } failure:^(NSError *error) {
                 @strongify(self);
-                NSLog(@"Error fetching auction details for artwork %@: %@", self.artworkID, error.localizedDescription);
+                ARErrorLog(@"Error fetching auction details for artwork %@: %@", self.artworkID, error.localizedDescription);
                 [deferred rejectWithError:error];
             }];
         } else {
@@ -348,7 +348,7 @@
     } failure:^(NSError *error) {
         @strongify(self);
         [deferred rejectWithError:error];
-        NSLog(@"Error fetching sales for artwork %@: %@", self.artworkID, error.localizedDescription);
+        ARErrorLog(@"Error fetching sales for artwork %@: %@", self.artworkID, error.localizedDescription);
     }];
 }
 
@@ -390,7 +390,7 @@
     } failure:^(NSError *error) {
         @strongify(self);
         [deferred rejectWithError:error];
-        NSLog(@"Couldn't get fairs for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
+        ARErrorLog(@"Couldn't get fairs for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
     }];
 }
 
@@ -443,7 +443,7 @@
     } failure:^(NSError *error) {
         @strongify(self);
         [deferred rejectWithError:error];
-        NSLog(@"Couldn't get shows for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
+        ARErrorLog(@"Couldn't get shows for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
     }];
 }
 
@@ -509,7 +509,7 @@
         if (response.statusCode == 404) {
             success(ARHeartStatusNo);
         } else {
-            NSLog(@"Failed fetching favorite status for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
+            ARErrorLog(@"Failed fetching favorite status for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
             failure(error);
         }
         return error;

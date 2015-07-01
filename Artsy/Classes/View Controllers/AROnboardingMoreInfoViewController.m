@@ -221,7 +221,7 @@
             @strongify(self);
             if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
                 if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
-                    NSLog(@"Facebook account already linked");
+                    ARErrorLog(@"Facebook account already linked");
                     [self userAlreadyExistsForLoginType:AROnboardingMoreInfoViewControllerLoginTypeFacebook];
                     return;
 
@@ -234,7 +234,7 @@
                 }
             }
 
-            NSLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
+            ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
             NSString *errorString = [NSString stringWithFormat:@"Server replied saying '%@'.", JSON[@"error"] ?: JSON[@"message"] ?: error.localizedDescription];
             @weakify(self);
             [UIAlertView showWithTitle:@"Error Creating\na New Artsy Account" message:errorString cancelButtonTitle:@"Close" otherButtonTitles:nil tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
@@ -254,7 +254,7 @@
           @strongify(self);
           if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
               if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
-                  NSLog(@"Twitter account already linked");
+                  ARErrorLog(@"Twitter account already linked");
                   [self userAlreadyExistsForLoginType:AROnboardingMoreInfoViewControllerLoginTypeTwitter];
                   return;
 
@@ -267,7 +267,7 @@
               }
           }
 
-          NSLog(@"Couldn't link Twitter account. Error: %@. The server said: %@", error.localizedDescription, JSON);
+          ARErrorLog(@"Couldn't link Twitter account. Error: %@. The server said: %@", error.localizedDescription, JSON);
           NSString *errorString = [NSString stringWithFormat:@"Server replied saying '%@'.", JSON[@"error"] ?: JSON[@"message"] ?: error.localizedDescription];
           @weakify(self);
           [UIAlertView showWithTitle:@"Error Creating\na New Artsy Account" message:errorString cancelButtonTitle:@"Close" otherButtonTitles:nil tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {

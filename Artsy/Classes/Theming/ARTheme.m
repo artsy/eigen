@@ -32,7 +32,7 @@ static ARTheme *defaultTheme;
     NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"json"]];
     NSArray *themeDictionaries = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     if (error) {
-        NSLog(@"Error parsing JSON for themes with filename %@ - %@ %@", name, error.localizedDescription, error.localizedFailureReason);
+        ARErrorLog(@"Error parsing JSON for themes with filename %@ - %@ %@", name, error.localizedDescription, error.localizedFailureReason);
         return nil;
     }
 
@@ -89,7 +89,7 @@ static ARTheme *defaultTheme;
 {
     id object = (self.themeDictionary[key])? self.themeDictionary[key] : [self.class defaultTheme].themeDictionary[key];
     if (!object) {
-        NSLog(@"ARTheme: Could not find item for key %@ in %@", self.name, key);
+        ARErrorLog(@"ARTheme: Could not find item for key %@ in %@", self.name, key);
     }
     return object;
 }

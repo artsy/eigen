@@ -149,7 +149,7 @@ DEPENDENCIES:
   - ISO8601DateFormatter (HEAD)
   - JLRoutes (= 1.5)
   - JSDecoupledAppDelegate (= 1.1.0)
-  - Keys (from `Pods/CocoaPodsKeys`)
+  - Keys (from `Pods/CocoaPodsKeys/`)
   - KSDeferred (= 0.2.0)
   - libextobjc/EXTKeyPathCoding (= 0.4)
   - libextobjc/EXTScope (= 0.4)
@@ -188,7 +188,7 @@ EXTERNAL SOURCES:
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
   Keys:
-    :path: Pods/CocoaPodsKeys
+    :path: Pods/CocoaPodsKeys/
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
@@ -276,4 +276,4 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.0.beta.1

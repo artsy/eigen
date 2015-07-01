@@ -47,7 +47,7 @@ static BOOL ARShouldUseShowsTableView = YES;
     [self.class openParentApplication:self.message.dictionaryRepresentation reply:^(NSDictionary *replyInfo, NSError *error) {
 
         if (replyInfo == nil) {
-            NSLog(@"Likely a problem with the phone app, check the log.");
+            ARErrorLog(@"Likely a problem with the phone app, check the log.");
         }
 
         // Expects a WatchMessage +messageWithArtworks, +messageWithArtworks or +messageWithError returned

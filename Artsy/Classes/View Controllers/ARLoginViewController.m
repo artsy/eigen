@@ -358,9 +358,9 @@
 {
     [[ARUserManager sharedManager] sendPasswordResetForEmail:email success:^{
         [self passwordResetSent];
-        NSLog(@"Sent password reset request for %@", email);
+        ARActionLog(@"Sent password reset request for %@", email);
     } failure:^(NSError *error) {
-        NSLog(@"Password reset failed for %@. Error: %@", email, error.localizedDescription);
+        ARErrorLog(@"Password reset failed for %@. Error: %@", email, error.localizedDescription);
         [self passwordResetError:@"Couldn’t send reset password link. Please try again, or contact support@artsy.net"];
     }];
 }

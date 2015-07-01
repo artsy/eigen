@@ -7,10 +7,10 @@ static NSTimeInterval ARSystemTimeInterval = NSTimeIntervalSince1970;
     [ArtsyAPI getSystemTime:^(SystemTime *systemTime) {
         @synchronized(self) {
             ARSystemTimeInterval = [[NSDate date] timeIntervalSinceDate:systemTime.date];
-            NSLog(@"Synchronized clock with server, local time is %.2f second(s) %@", ABS(ARSystemTimeInterval), ARSystemTimeInterval > 0 ? @"ahead" : @"behind");
+            ARActionLog(@"Synchronized clock with server, local time is %.2f second(s) %@", ABS(ARSystemTimeInterval), ARSystemTimeInterval > 0 ? @"ahead" : @"behind");
         }
     } failure:^(NSError *error) {
-        NSLog(@"Error retrieving system time, %@", error.localizedDescription);
+        ARErrorLog(@"Error retrieving system time, %@", error.localizedDescription);
         [self performSelector:_cmd withObject:nil afterDelay:3];
     }];
 }

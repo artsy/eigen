@@ -6,6 +6,25 @@ GIT
     cocoapods-keys (1.2.0)
       osx_keychain
 
+GIT
+  remote: https://github.com/cocoapods/cocoapods.git
+  revision: c7e261c93575751149b62c49fea74254e652647e
+  branch: seg-embed-frameworks-quotes
+  specs:
+    cocoapods (0.38.0.beta.1)
+      activesupport (>= 3.2.15)
+      claide (~> 0.8.2)
+      cocoapods-core (= 0.38.0.beta.1)
+      cocoapods-downloader (~> 0.9.1)
+      cocoapods-plugins (~> 0.4.2)
+      cocoapods-trunk (~> 0.6.1)
+      cocoapods-try (~> 0.4.5)
+      colored (~> 1.2)
+      escape (~> 0.0.4)
+      molinillo (~> 0.2.3)
+      nap (~> 0.8)
+      xcodeproj (~> 0.25.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -36,20 +55,7 @@ GEM
     certified (1.0.0)
     claide (0.8.2)
     cliver (0.3.2)
-    cocoapods (0.37.2)
-      activesupport (>= 3.2.15)
-      claide (~> 0.8.1)
-      cocoapods-core (= 0.37.2)
-      cocoapods-downloader (~> 0.9.0)
-      cocoapods-plugins (~> 0.4.2)
-      cocoapods-trunk (~> 0.6.1)
-      cocoapods-try (~> 0.4.5)
-      colored (~> 1.2)
-      escape (~> 0.0.4)
-      molinillo (~> 0.2.3)
-      nap (~> 0.8)
-      xcodeproj (~> 0.24.2)
-    cocoapods-core (0.37.2)
+    cocoapods-core (0.38.0.beta.1)
       activesupport (>= 3.2.15)
       fuzzy_match (~> 2.0.4)
       nap (~> 0.8.0)
@@ -243,7 +249,7 @@ GEM
     websocket-driver (0.5.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    xcodeproj (0.24.3)
+    xcodeproj (0.25.1)
       activesupport (>= 3)
       colored (~> 1.2)
     xcpretty (0.1.10)
@@ -254,7 +260,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods (= 0.37.2)
+  cocoapods!
   cocoapods-deintegrate
   cocoapods-keys!
   cocoapods-stats

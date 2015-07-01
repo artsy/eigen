@@ -85,7 +85,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
             @strongify(self);
             self.genesForPersonalize = genes;
         } failure:^(NSError *error) {
-            NSLog(@"Couldn't get personalize genes. Error: %@", error.localizedDescription);
+            ARErrorLog(@"Couldn't get personalize genes. Error: %@", error.localizedDescription);
         }];
     }];
 
@@ -261,7 +261,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     [ARAnalytics setUserProperty:ARAnalyticsCollectorLevelProperty toValue:collectorLevel];
 
     [user setRemoteUpdateCollectorLevel:level success:nil failure:^(NSError *error) {
-        NSLog(@"Error updating collector level");
+        ARErrorLog(@"Error updating collector level");
     }];
 
     [[ARUserManager sharedManager] storeUserData];
@@ -312,7 +312,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     user.priceRange = range;
 
     [user setRemoteUpdatePriceRange:range success:nil failure:^(NSError *error) {
-        NSLog(@"Error updating price range");
+        ARErrorLog(@"Error updating price range");
     }];
 
     [self dismissOnboardingWithVoidAnimation:YES];
@@ -449,7 +449,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 //                                                               delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //                [alert show];
 //            });
-//            NSLog(@"Failed to get Facebook credentials in onboarding. Error: %@", error.localizedDescription);
+//            ARErrorLog(@"Failed to get Facebook credentials in onboarding. Error: %@", error.localizedDescription);
 //        }
 //    }];
 

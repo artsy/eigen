@@ -45,7 +45,7 @@ static NSString *CellId = @"OnboardingArtistFollow";
         ARActionLog(@"Unfollowed artist %@ from onboarding.", artist.artistID);
 
     } failure:^(NSError *error) {
-        NSLog(@"Error unfollowing artist %@ from onboarding. Error: %@", artist.artistID, error.localizedDescription);
+        ARErrorLog(@"Error unfollowing artist %@ from onboarding. Error: %@", artist.artistID, error.localizedDescription);
         [self addArtist:artist];
     }];
 }

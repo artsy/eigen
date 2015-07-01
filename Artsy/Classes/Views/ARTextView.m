@@ -33,7 +33,7 @@
         NSString *HTML = [MMMarkdown HTMLStringWithMarkdown:string error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error) {
-                NSLog(@"Error Parsing markdown! %@", string);
+                ARErrorLog(@"Error Parsing markdown! %@", string);
                 self.text = @"Error Parsing markdown";
             } else {
                 [self setHTMLString:HTML];
@@ -133,7 +133,7 @@
     NSData *stringData = [formatString dataUsingEncoding:NSUnicodeStringEncoding];
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:stringData options:importParams documentAttributes:NULL error:&error];
     if (error) {
-        NSLog(@"Error creating NSAttributedString from HTML %@", error.localizedDescription);
+        ARErrorLog(@"Error creating NSAttributedString from HTML %@", error.localizedDescription);
         return nil;
     }
 

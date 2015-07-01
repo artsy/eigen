@@ -154,7 +154,6 @@ describe(@"not at a fair", ^{
 
     sharedExamples(@"looks correct", ^(NSDictionary *data) {
         NSDictionary *json = data[@"json"];
-        NSLog(@"%@", json);
 
         itHasSnapshotsForDevices(^{
             PartnerShow *show = [PartnerShow modelWithJSON:json];

@@ -251,8 +251,6 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
             if ([button isKindOfClass:[ARButtonWithImage class]]) {
                 ARButtonWithImage *buttonWithImage = (ARButtonWithImage *) button;
                 [self buttonPressed:buttonWithImage];
-            } else {
-                NSLog(@"Clicked %@", button);
             }
         }
     };

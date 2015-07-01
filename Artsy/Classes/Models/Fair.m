@@ -166,7 +166,7 @@
     } failure:^(NSError *error) {
 
         @strongify(self);
-        NSLog(@"failed to get shows %@", error.localizedDescription);
+        ARErrorLog(@"failed to get shows %@", error.localizedDescription);
         [self performSelector:@selector(downloadPastShowSet) withObject:nil afterDelay:0.5];
     }];
 }
@@ -188,7 +188,7 @@
     if(!ARIsRunningInDemoMode) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             if(![NSKeyedArchiver archiveRootObject:self.shows toFile:self.pathForLocalShowStorage]){
-                NSLog(@"Issue saving show data for fair %@", self.fairID);
+                ARErrorLog(@"Issue saving show data for fair %@", self.fairID);
             }
         });
     }

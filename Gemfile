@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods', '0.37.2'
+gem 'cocoapods', :git => "https://github.com/cocoapods/cocoapods.git", :branch => "seg-embed-frameworks-quotes"
 gem "cocoapods-keys", :git => 'https://github.com/alloy/cocoapods-keys.git', :branch => 'retrieve-keys-from-env'
 gem "cocoapods-stats"
 gem "cocoapods-deintegrate"

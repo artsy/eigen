@@ -68,14 +68,14 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:userDataPath]) {
         _currentUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userDataPath  exceptionBlock:^id(NSException *exception) {
-            NSLog(@"%@", exception.reason);
+            ARErrorLog(@"%@", exception.reason);
             [[NSFileManager defaultManager] removeItemAtPath:userDataPath error:nil];
             return nil;
         }];
 
         // safeguard
         if (!self.currentUser.userID) {
-            NSLog(@"Deserialized user %@ does not have an ID.", _currentUser);
+            ARErrorLog(@"Deserialized user %@ does not have an ID.", _currentUser);
             _currentUser = nil;
         }
     }
@@ -328,7 +328,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         
-        NSLog(@"Got Xapp. Creating a new user account.");
+        ARActionLog(@"Got Xapp. Creating a new user account.");
         
         NSURLRequest *request = [ARRouter newCreateUserRequestWithName:name email:email password:password];
         AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
@@ -336,7 +336,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              NSError *error;
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
-                 NSLog(@"Couldn't create user model from fresh user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
+                 ARErrorLog(@"Couldn't create user model from fresh user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
                  [ARAnalytics event:ARAnalyticsSignUpError];
                  failure(error, JSON);
                  return;
@@ -350,7 +350,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              [ARAnalytics event:ARAnalyticsAccountCreated];
              
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-             NSLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
+             ARActionLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
              failure(error, JSON);
              [ARAnalytics event:ARAnalyticsSignUpError];
          }];
@@ -371,7 +371,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              NSError *error;
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
-                 NSLog(@"Couldn't create user model from fresh Facebook user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
+                 ARErrorLog(@"Couldn't create user model from fresh Facebook user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
                  [ARAnalytics event:ARAnalyticsSignUpError];
                  failure(error, JSON);
                  return;
@@ -405,7 +405,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              NSError *error;
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
-                 NSLog(@"Couldn't create user model from fresh Twitter user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
+                 ARErrorLog(@"Couldn't create user model from fresh Twitter user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
                  [ARAnalytics event:ARAnalyticsSignUpError];
                  failure(error, JSON);
                  return;
@@ -517,7 +517,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         NSError *error = nil;
         [[NSFileManager defaultManager] removeItemAtPath:userDataPath error:&error];
         if (error) {
-            NSLog(@"Error Deleting User Data %@", error.localizedDescription);
+            ARErrorLog(@"Error Deleting User Data %@", error.localizedDescription);
         }
     }
 }

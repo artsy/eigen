@@ -126,7 +126,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
         // Start doing the network calls to grab the feed
         [topVC refreshFeedItems];
-        [self checkForiOS7Deprecation];
 
         // Register for push notifications as early as possible, but not on top of the onboarding view, in which case it
         // will be called from the -finishOnboardingAnimated: callback.
@@ -286,9 +285,9 @@ static ARAppDelegate *_sharedInstance = nil;
     if ([[url scheme] isEqualToString:fbScheme]) {
 
 
-        NSAssert(TRUE, @"SHOULD NOT BE CALLED");
         // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
-//        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+        FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
+        return [fbAppDelegate application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
     }
 
     if ([url isFileURL]) {
@@ -347,33 +346,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     ARQuicksilverViewController *adminSettings = [[ARQuicksilverViewController alloc] init];
     [navigationController pushViewController:adminSettings animated:YES];
-}
-
-- (void)checkForiOS7Deprecation
-{
-    // To totally deprecate all iOS7 devices
-    // set the "iOS7 Redirection URL" featured link's HREF to something like /404/ios7
-    // https://admin.artsy.net/set/54e4aab97261692d085a1c00
-
-    // This was added in iOS8
-    if (&UIApplicationOpenSettingsURLString != NULL) { return; }
-
-    [ArtsyAPI getOrderedSetWithKey:@"eigen-ios-deprecation-featured-links" success:^(OrderedSet *set) {
-        [set getItems:^(NSArray *items) {
-            FeaturedLink *link = [items detect:^BOOL(FeaturedLink *link) {
-                return [link.title isEqualToString:@"iOS7 Redirection URL"];
-            }];
-
-            // By default it be 0 length
-            if (link.href.length) {
-                UINavigationController *navigationController = ARTopMenuViewController.sharedController.rootNavigationController;
-                NSURL *url = [NSURL URLWithString:link.href relativeToURL:[ARRouter baseWebURL]];
-                UIViewController *martsyWarning = [[AREndOfLineInternalMobileWebViewController alloc] initWithURL:url];
-                [navigationController setViewControllers:@[martsyWarning] animated:NO];
-            }
-
-        }];
-    } failure:nil];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

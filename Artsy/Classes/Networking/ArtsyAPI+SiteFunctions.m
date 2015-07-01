@@ -27,7 +27,7 @@ NSString * const ArtsyAPIInquiryAnalyticsLandingURL = @"ArtsyAPIInquiryAnalytics
             NSError *error = nil;
             User *contact = [User modelWithJSON:results[0] error:&error];
             if (error) {
-                NSLog(@"Error parsing the admin on duty");
+                ARErrorLog(@"Error parsing the admin on duty");
                 success(nil);
                 return;
             }

@@ -17,7 +17,7 @@
     for (id <NSCopying> key in keys) {
         NSString *layoutValue = [self itemWithKey:key];
         if (!layoutValue) {
-            NSLog(@"Could not find value for %@", key);
+            ARErrorLog(@"Could not find value for %@", key);
         }
 
         sum += [layoutValue floatValue];

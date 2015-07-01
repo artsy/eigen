@@ -131,7 +131,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
 
         } failure:^(NSError *error) {
-            NSLog(@"There was an error getting newest items for the feed: %@", error.localizedDescription);
+            ARErrorLog(@"There was an error getting newest items for the feed: %@", error.localizedDescription);
             [self performSelector:@selector(refreshFeed) withObject:nil afterDelay:3];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
         }];

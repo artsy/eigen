@@ -188,7 +188,7 @@
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
 
              //TODO: handle this less stupid
-             NSLog(@"Couldn't get an Xapp token.");
+             ARErrorLog(@"Couldn't get an Xapp token.");
 
              NSError *cleanError = [NSError errorWithDomain:@"Auth" code:404 userInfo:@{ NSLocalizedDescriptionKey: @"Couldn't reach Artsy" }];
              [ARNetworkErrorManager presentActiveErrorModalWithError:cleanError];
@@ -211,7 +211,7 @@
     if (response.statusCode == 401) {
         NSDictionary *recoverySuggestion = [NSJSONSerialization JSONObjectWithData:[error.userInfo[NSLocalizedRecoverySuggestionErrorKey] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
         if ([recoverySuggestion[@"error"] isEqualToString:@"Unauthorized"] && [recoverySuggestion[@"text"] isEqualToString:@"The XAPP token is invalid or has expired."]) {
-            NSLog(@"Resetting XAPP token after error: %@", error.localizedDescription);
+            ARActionLog(@"Resetting XAPP token after error: %@", error.localizedDescription);
             [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
             [ARRouter setXappToken:nil];
         }
