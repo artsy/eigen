@@ -19,6 +19,8 @@ CHANGELOG_SHORT = CHANGELOG_SHORT.md
 IPA = Artsy.ipa
 DSYM = Artsy.app.dSYM.zip
 
+CIRCLE_TEST_REPORTS ?= $(TMPDIR)
+
 .PHONY: all build ci clean test lint oss pr
 
 all: ci
