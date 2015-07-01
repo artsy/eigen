@@ -66,11 +66,11 @@ static UIWindow *_hostingWindow = nil;
     if (objc_getClass("IBARevealServer") == nil) {
         const char *revealPath = "/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib";
         if (access(revealPath, R_OK) != 0) {
-            ARErrorLog(@"[!] Unable to find the Reveal.app library at: %s", revealPath);
+            NSLog(@"[!] Unable to find the Reveal.app library at: %s", revealPath);
             return;
         }
         if (dlopen(revealPath, RTLD_NOW) == NULL) {
-            ARErrorLog(@"[!] Unable to load the Reveal.app library at: %s", revealPath);
+            NSLog(@"[!] Unable to load the Reveal.app library at: %s", revealPath);
             return;
         }
     }
