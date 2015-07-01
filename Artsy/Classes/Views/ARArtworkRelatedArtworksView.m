@@ -160,10 +160,27 @@
 - (void)addSectionWithOtherArtworksInShow:(PartnerShow *)show;
 {
     @weakify(self);
-    [self addRelatedArtworkRequest:[show getArtworksAtPage:1 success:^(NSArray *artworks) {
+    [self getArtworksInShow:show atPage:1 success:^(NSArray *artworks) {
         @strongify(self);
-        [self addSectionWithTag:ARRelatedArtworksSameShow artworks:artworks heading:@"Other works in show"];
-    }]];
+        ARArtworkRelatedArtworksContentView *view = [self addSectionWithTag:ARRelatedArtworksSameShow artworks:artworks heading:@"Other works in show"];
+        [self addArtworksInShow:show atPage:2 toView:view];
+    }];
+}
+
+- (void)addArtworksInShow:(PartnerShow *)show atPage:(NSInteger)page toView:(ARArtworkRelatedArtworksContentView *)view
+{
+    @weakify(self);
+    [self getArtworksInShow:show atPage:page success:^(NSArray *artworks) {
+        if (!artworks.count > 0) { return; }
+        @strongify(self);
+        [view.artworksVC appendItems:artworks];
+        [self addArtworksInShow:show atPage:page+1 toView:view];
+    }];
+}
+
+-(void)getArtworksInShow:(PartnerShow *)show atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success
+{
+    [self addRelatedArtworkRequest:[show getArtworksAtPage:page success:success]];
 }
 
 - (void)addSectionWithArtistArtworks;

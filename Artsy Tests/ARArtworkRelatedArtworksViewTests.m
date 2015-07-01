@@ -40,6 +40,11 @@
     }];
 }
 
+- (AREmbeddedModelsViewController *)viewControllerForTag:(ARRelatedArtworksSubviewOrder)tag
+{
+    return [(ARArtworkRelatedArtworksContentView *)[self viewWithTag:tag] artworksVC];
+}
+
 @end
 
 SpecBegin(ARArtworkRelatedArtworksView)
@@ -50,9 +55,6 @@ __block ARArtworkRelatedArtworksView *relatedView = nil;
 
 __block NSDictionary *showJSON = nil;
 __block PartnerShow *show = nil;
-
-__block NSDictionary *otherShowArtworkJSON = nil;
-__block Artwork *otherShowArtwork = nil;
 
 __block NSDictionary *relatedArtworkJSON = nil;
 __block Artwork *relatedArtwork = nil;
@@ -71,15 +73,21 @@ before(^{
     };
     show = [PartnerShow modelWithJSON:showJSON];
 
-    otherShowArtworkJSON = @{
-           @"id": @"hyong-keun-yun-burnt-umber-and-ultramarine-1",
-        @"title": @"Burnt umber and ultramarine",
-    };
-    otherShowArtwork = [Artwork modelWithJSON:otherShowArtworkJSON];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows?artwork[]=el-anatsui-revelation&fair_id=the-armory-show"
                            withResponse:@[showJSON]];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/partner/axel-vervoordt-gallery/show/axel-vervoordt-gallery-axel-vervoordt-gallery-at-the-armory-show-2015/artworks?size=10&published=true&page=1"
-                           withResponse:@[artworkJSON, otherShowArtworkJSON]];
+
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/partner/axel-vervoordt-gallery/show/axel-vervoordt-gallery-axel-vervoordt-gallery-at-the-armory-show-2015/artworks"
+                             withParams:@{@"size" : @"10", @"published" : @YES, @"page" : @1}
+                           withResponse:@[artworkJSON, @{ @"id":@"id-1", @"title":@"Title1" },
+                                          @{ @"id":@"id-2", @"title":@"Title2" }, @{ @"id":@"id-3", @"title":@"Title3" },
+                                          @{ @"id":@"id-4", @"title":@"Title4" }, @{ @"id":@"id-5", @"title":@"Title5" },
+                                          @{ @"id":@"id-6", @"title":@"Title6" }, @{ @"id":@"id-7", @"title":@"Title7" },
+                                          @{ @"id":@"id-8", @"title":@"Title8" }, @{ @"id":@"id-9", @"title":@"Title9" },
+                                          ]];
+
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/partner/axel-vervoordt-gallery/show/axel-vervoordt-gallery-axel-vervoordt-gallery-at-the-armory-show-2015/artworks"
+                             withParams:@{@"size" : @"10", @"published" : @YES, @"page" : @2}
+                           withResponse:@[@{ @"id":@"id-10", @"title":@"Title10" }, @{ @"id":@"id-11", @"title":@"Title11" }]];
 
     relatedArtworkJSON = @{
            @"id": @"judy-pfaff-wallabout",
@@ -130,7 +138,8 @@ describe(@"concerning an artwork at a fair", ^{
     it(@"adds a section with other works in the same show (booth)", ^{
         expect([relatedView viewWithTag:ARRelatedArtworksSameShow]).willNot.beNil();
         expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@"OTHER WORKS IN SHOW");
-        expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@[otherShowArtwork.title]);
+        AREmbeddedModelsViewController *vc = [relatedView viewControllerForTag:ARRelatedArtworksSameShow];
+        expect(vc.items.count).will.equal(11);
     });
 
     it(@"adds a section with related works at the fair", ^{
@@ -195,7 +204,8 @@ describe(@"concerning an artwork at a show", ^{
         relatedView.frame = CGRectMake(0, 0, 320, 1200);
         expect([relatedView viewWithTag:ARRelatedArtworksSameShow]).willNot.beNil();
         expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@"OTHER WORKS IN SHOW");
-        expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@[otherShowArtwork.title]);
+        AREmbeddedModelsViewController *vc = [relatedView viewControllerForTag:ARRelatedArtworksSameShow];
+        expect(vc.items.count).will.equal(11);
     });
 
     it(@"adds a section with other works by the same artist", ^{
