@@ -10,7 +10,6 @@
 		062C202116DD76C90095A7EC /* ARZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 062C202016DD76C90095A7EC /* ARZoomView.m */; };
 		0631FA6F1705E77F000A5ED3 /* mail.html in Resources */ = {isa = PBXBuildFile; fileRef = 0631FA6E1705E77F000A5ED3 /* mail.html */; };
 		064330E5170F526300FF6C41 /* ARArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 064330E4170F526200FF6C41 /* ARArtistViewController.m */; };
-		22088AA8BEC1169BEBDBDFB8 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9434A9843098609F9F092F0D /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
 		342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
 		342F906FD605E75158D32876 /* ARSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DC4018D17E7378DA607 /* ARSharingController.m */; };
@@ -1610,7 +1609,6 @@
 			files = (
 				60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */,
 				60935A441A69CFE700129CE1 /* MobileCoreServices.framework in Frameworks */,
-				22088AA8BEC1169BEBDBDFB8 /* Pods.framework in Frameworks */,
 				B7B3D27A8B80E2F2B0A340DE /* Pods_Artsy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
