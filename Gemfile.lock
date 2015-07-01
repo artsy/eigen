@@ -1,4 +1,13 @@
 GIT
+  remote: git@github.com:ashfurrow/second_curtain.git
+  revision: 2f388f5aca8496c14c4c72ac5a726529b7dedb80
+  branch: improved_parse
+  specs:
+    second_curtain (0.4.0)
+      aws-sdk-v1 (~> 1.52)
+      mustache (~> 0.99)
+
+GIT
   remote: https://github.com/alloy/cocoapods-keys.git
   revision: 60a23f0b3b3ef7c055386417d94111795a2ec456
   branch: retrieve-keys-from-env
@@ -211,9 +220,6 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rubyzip (1.1.7)
-    second_curtain (0.4.0)
-      aws-sdk-v1 (~> 1.52)
-      mustache (~> 0.99)
     security (0.1.3)
     shenzhen (0.14.1)
       aws-sdk (~> 1.0)
@@ -267,7 +273,7 @@ DEPENDENCIES
   fastlane
   fui
   houston
-  second_curtain
+  second_curtain!
   shenzhen
   xcpretty
 
