@@ -129,7 +129,7 @@ DEPENDENCIES:
   - ARGenericTableViewController (= 1.0.2)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
   - Artsy+UIColors
-  - Artsy+UIFonts
+  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`, branch `old_fonts_new_lib`)
   - Artsy+UILabels (HEAD)
   - Artsy-UIButtons (~> 1.4)
   - CocoaLumberjack (~> 2.0)
@@ -182,6 +182,9 @@ EXTERNAL SOURCES:
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
+  Artsy+UIFonts:
+    :branch: old_fonts_new_lib
+    :git: https://github.com/artsy/Artsy-UIFonts.git
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
   Keys:
@@ -202,6 +205,9 @@ CHECKOUT OPTIONS:
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
+  Artsy+UIFonts:
+    :commit: 39f47deebf947aa4c07727fdf2b69e2feff17428
+    :git: https://github.com/artsy/Artsy-UIFonts.git
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
     :git: https://github.com/1aurabrown/FODFormKit.git
@@ -224,7 +230,7 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 000af4093f9bdcd0f754e6ebd964c90641389f90
   Artsy+UIColors: d1d5e084a0e542d310c507acb5446bae6a322241
-  Artsy+UIFonts: c51bb3b5cbf9c1a5fe198b4385d49133c5c71f5a
+  Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy+UILabels: a7c713069e3d10144a3dc8e377bef8b2253cd766
   Artsy-UIButtons: 6f67de2a5285f18acb5d0e2919d1b17188acbc27
   Bolts: d176cb1e0012175589e389a9db49b85e27787576

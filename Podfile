@@ -65,7 +65,7 @@ target 'Artsy' do
   pod 'UIView+BooleanAnimations'
 
   if %w(orta ash artsy laura eloy sarahscott).include?(ENV['USER']) || ENV['CI'] == 'true'
-      pod 'Artsy+UIFonts'
+    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git", :branch => "old_fonts_new_lib"
   else
     pod 'Artsy+OSSUIFonts'
   end

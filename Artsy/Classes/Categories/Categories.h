@@ -1,5 +1,3 @@
-//#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
-//#import <Artsy_UIColor/UIColor+ArtsyColors.h>
 @import Artsy_UIColors;
 @import Artsy_UIFonts;
 
