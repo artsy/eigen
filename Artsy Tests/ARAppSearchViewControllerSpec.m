@@ -79,7 +79,7 @@ context(@"searching", ^{
     });
 
     context(@"with no results", ^{
-        itHasSnapshotsForDevicesWithName(@"displays zero state", ^{
+        itHasAsyncronousSnapshotsForDevices(@"displays zero state", ^{
 
             sharedBefore();
             sut.searchDataSource.searchResults = [NSOrderedSet orderedSetWithObjects:[SearchResult modelWithJSON:@{
