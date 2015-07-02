@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, ARFairGuideSelectedTab) {
     ARFairGuideSelectedTabArtists
 };
 
+
 @interface ARFairGuideViewController : UIViewController
 
 - (instancetype)initWithFair:(Fair *)fair __attribute((objc_designated_initializer));

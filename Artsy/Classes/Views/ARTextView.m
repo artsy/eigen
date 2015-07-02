@@ -1,12 +1,15 @@
 #import "ARTextView.h"
 #import <MMMarkdown/MMMarkdown.h>
 
+
 @implementation ARTextView
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.font = [ARTheme defaultTheme].fonts[@"BodyText"];
     self.scrollEnabled = NO;
@@ -126,7 +129,7 @@
 
 + (NSAttributedString *)_attributedStringWithTextParams:(NSDictionary *)textParams andHTML:(NSString *)HTML
 {
-    NSDictionary *importParams = @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType };
+    NSDictionary *importParams = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
 
     NSError *error = nil;
     NSString *formatString = [[self _cssStringFromAttributedStringAttributes:textParams] stringByAppendingFormat:@"%@</body>", HTML];

@@ -1,8 +1,10 @@
 #import "ARAuctionArtworkTableViewCell.h"
 
+
 @interface ARAuctionArtworkTableViewCell ()
 @property (nonatomic, weak) UIView *separator;
 @end
+
 
 @implementation ARAuctionArtworkTableViewCell
 
@@ -48,7 +50,7 @@ static const CGFloat ARTextLineSpacing = 5;
     CGFloat yOffset = ARVerticalMargin;
     CGFloat xOffset = ARImageMargin + ARImageSize + ARImageMargin;
     CGFloat textWidth = CGRectGetWidth(self.bounds) - ARTextHorizontalMargin;
-    CGSize maxSize = (CGSize){ textWidth, 600 };
+    CGSize maxSize = (CGSize){textWidth, 600};
 
     for (NSString *string in strings) {
         Class klass = ([strings indexOfObject:string] == index) ? [ARArtworkTitleLabel class] : [ARSerifLabel class];
@@ -57,7 +59,7 @@ static const CGFloat ARTextLineSpacing = 5;
         label.text = string;
 
         CGSize size = [string ar_sizeWithFont:[UIFont serifFontWithSize:17] constrainedToSize:maxSize];
-        label.frame = (CGRect){ CGPointMake(xOffset, yOffset), CGSizeMake(textWidth, size.height) };
+        label.frame = (CGRect){CGPointMake(xOffset, yOffset), CGSizeMake(textWidth, size.height)};
 
         [self.contentView addSubview:label];
         yOffset += (size.height + ARTextLineSpacing);
@@ -113,7 +115,7 @@ static const CGFloat ARTextLineSpacing = 5;
 + (CGFloat)_heightWithStringArray:(NSArray *)strings withWidth:(CGFloat)width
 {
     CGFloat height = 0;
-    CGSize maxSize = (CGSize){ width - ARTextHorizontalMargin, 600 };
+    CGSize maxSize = (CGSize){width - ARTextHorizontalMargin, 600};
     UIFont *font = [UIFont serifFontWithSize:17];
 
     for (NSString *string in strings) {

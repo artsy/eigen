@@ -6,6 +6,7 @@ typedef NS_ENUM(NSInteger, ARLoginViewControllerLoginType) {
     ARLoginViewControllerLoginTypeEmail
 };
 
+
 @interface ARLoginViewController : UIViewController
 
 - (instancetype)initWithEmail:(NSString *)email;

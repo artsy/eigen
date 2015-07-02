@@ -3,6 +3,7 @@
 #import "AREmbeddedModelsViewController.h"
 #import "ARSwitchView.h"
 
+
 @interface ARArtistViewController (Tests)
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @property (nonatomic, strong) ARArtistNetworkModel *networkModel;
@@ -13,11 +14,12 @@
 
 @end
 
+
 @interface ARArtistViewController (Private)
 @property (nonatomic, strong) ARSwitchView *switchView;
 @end
 
-SpecBegin(ARArtistViewController)
+SpecBegin(ARArtistViewController);
 
 __block ARStubbedArtistNetworkModel *networkModel;
 

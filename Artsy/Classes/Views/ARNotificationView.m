@@ -3,18 +3,20 @@
 
 #import "ARNotificationView.h"
 
+
 @interface ARNotificationView ()
-@property (nonatomic,strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, copy) void (^responseBlock)(void);
 @property (nonatomic, strong) UIView *parentView;
 @property (nonatomic, assign) NSTimeInterval hideInterval;
-- (void) show;
+- (void)show;
 @end
 
 const CGFloat panelHeight = 80;
 const CGFloat panelMargin = 20;
 
-static NSMutableArray *notificationQueue = nil;       // Global notification queue
+static NSMutableArray *notificationQueue = nil; // Global notification queue
+
 
 @implementation ARNotificationView
 
@@ -65,13 +67,13 @@ static NSMutableArray *notificationQueue = nil;       // Global notification que
     noticeView.parentView = view;
     noticeView.hideInterval = hideInterval;
 
-    if(notificationQueue == nil) {
+    if (notificationQueue == nil) {
         notificationQueue = [[NSMutableArray alloc] init];
     }
 
     [notificationQueue addObject:noticeView];
 
-    if([notificationQueue count] == 1) {
+    if ([notificationQueue count] == 1) {
         // since this notification is the only one in the queue, it can be shown and its delay interval can be honored
         [noticeView show];
     }
@@ -79,37 +81,38 @@ static NSMutableArray *notificationQueue = nil;       // Global notification que
     return noticeView;
 }
 
-- (void) show
+- (void)show
 {
     [self.parentView addSubview:self];
     [self setNeedsDisplay];
 
     [UIView animateWithDuration:1
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
+        delay:0
+        options:UIViewAnimationOptionCurveEaseInOut
+        animations:^{
                          self.hidden = NO;
                          self.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), panelHeight);
-                     }
-                     completion:^(BOOL finished) {
+        }
+        completion:^(BOOL finished) {
                          if (finished){
                              if (self.hideInterval > 0) {
                                  [self performSelector:@selector(hide) withObject:self.parentView afterDelay:self.hideInterval];
                              }
                          }
-                     }];
+        }];
 }
 
 #pragma mark - Hide
 
-- (void)hide{
+- (void)hide
+{
     [UIView animateWithDuration:0.4f
-                          delay:0.0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
+        delay:0.0
+        options:UIViewAnimationOptionCurveEaseInOut
+        animations:^{
                          self.frame = CGRectMake(0, -panelHeight, self.frame.size.width, 1);
-                     }
-                     completion:^(BOOL finished) {
+        }
+        completion:^(BOOL finished) {
                          if (finished){
                              [self performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.1f];
 
@@ -122,13 +125,12 @@ static NSMutableArray *notificationQueue = nil;       // Global notification que
                                  [nextNotification show];
                              }
                          }
-                     }];
+        }];
 }
 
 + (void)hideCurrentNotificationView
 {
-    if([notificationQueue count] > 0)
-    {
+    if ([notificationQueue count] > 0) {
         ARNotificationView *currentNotification = [notificationQueue objectAtIndex:0];
         [currentNotification hide];
     }
@@ -136,9 +138,10 @@ static NSMutableArray *notificationQueue = nil;       // Global notification que
 
 #pragma mark - Touch events
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
     [self hide];
-    if(self.responseBlock != nil) {
+    if (self.responseBlock != nil) {
         self.responseBlock();
     }
 }

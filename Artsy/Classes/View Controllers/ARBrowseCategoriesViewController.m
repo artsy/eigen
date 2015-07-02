@@ -3,10 +3,12 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ORStackView+ArtsyViews.h"
 
+
 @interface ARBrowseCategoriesViewController () <ARBrowseFeaturedLinksCollectionViewDelegate>
 @property (nonatomic, strong) NSMutableArray *collectionViews;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
+
 
 @implementation ARBrowseCategoriesViewController
 
@@ -15,7 +17,9 @@
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _shouldAnimate = YES;
     return self;
 }
@@ -37,7 +41,7 @@
 
     ARBrowseFeaturedLinksCollectionView *featureCollectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:ARFeaturedLinkLayoutSingleRow];
     [self.view.stackView addSubview:featureCollectionView withTopMargin:@"30" sideMargin:@"0"];
-    [self.collectionViews addObject: featureCollectionView];
+    [self.collectionViews addObject:featureCollectionView];
     featureCollectionView.selectionDelegate = self;
 
     [ArtsyAPI getFeaturedLinksForGenesWithSuccess:^(NSArray *genes) {
@@ -74,7 +78,7 @@
     }];
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return [UIDevice isPad];
 }
@@ -87,7 +91,8 @@
     }
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self invalidateCollectionViews];
 }

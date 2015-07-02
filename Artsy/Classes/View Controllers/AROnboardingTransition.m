@@ -1,14 +1,15 @@
 #import "AROnboardingTransition.h"
 
+
 @implementation AROnboardingTransition
 
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
+- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     return ARAnimationDuration;
 }
 
-- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext {
-
+- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
+{
     CGRect fullFrame = [transitionContext containerView].bounds;
     CGRect offScreenRight = fullFrame;
     CGRect offScreenLeft = fullFrame;
@@ -30,8 +31,8 @@
     }];
 }
 
-- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext {
-
+- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
+{
     CGRect fullFrame = [transitionContext containerView].bounds;
     CGRect offScreenRight = fullFrame;
     CGRect offScreenLeft = fullFrame;

@@ -1,17 +1,19 @@
 #import "ARMessageItemProvider.h"
 
+
 @interface ARMessageItemProvider ()
 @property (nonatomic, strong, readonly) NSString *path;
 @property (nonatomic, strong, readonly) NSString *message;
 @property (nonatomic, strong, readonly) NSURL *url;
 @end
 
+
 @implementation ARMessageItemProvider
 
 - (instancetype)initWithMessage:(NSString *)message path:(NSString *)path
 {
     self = [self initWithPlaceholderItem:message];
-    if(!self) return nil;
+    if (!self) return nil;
     _path = path;
     return self;
 }

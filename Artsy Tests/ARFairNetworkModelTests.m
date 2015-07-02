@@ -1,7 +1,7 @@
 #import "ARPostFeedItem.h"
 #import "ARPartnerShowFeedItem.h"
 
-SpecBegin (ARFairNetworkModel)
+SpecBegin(ARFairNetworkModel);
 
 describe(@"getFairInfo", ^{
     before(^{

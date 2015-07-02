@@ -1,6 +1,7 @@
 #import <WatchKit/WatchKit.h>
 #import <Foundation/Foundation.h>
 
+
 @interface ARWatchShowViewController : WKInterfaceController
 @property (strong, nonatomic) IBOutlet WKInterfaceImage *thumbnail;
 

@@ -1,6 +1,6 @@
 #import "ARDeveloperOptions.h"
 
-SpecBegin(ARDeveloperOptions)
+SpecBegin(ARDeveloperOptions);
 
 it(@"transforms the correct syntax to options", ^{
     ARDeveloperOptions *sut = [[ARDeveloperOptions alloc] init];

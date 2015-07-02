@@ -6,11 +6,13 @@
 #import "ARTopMenuViewController.h"
 #import "ArtsyAPI.h"
 
+
 @interface ARFairShowMapper ()
 
 - (ARFairMapAnnotationView *)viewForPoint:(CGPoint)point andRepresentedObject:(id)representedObject;
 
 @end
+
 
 @interface ARFairMapViewController (Testing)
 
@@ -25,7 +27,7 @@
 
 @end
 
-SpecBegin(ARFairMapViewController)
+SpecBegin(ARFairMapViewController);
 
 describe(@"on init", ^{
 

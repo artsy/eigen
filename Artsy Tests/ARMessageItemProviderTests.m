@@ -2,6 +2,7 @@
 #import "ARNetworkConstants.h"
 #import "ARRouter.h"
 
+
 @interface ARMessageItemProvider (Testing)
 @property (nonatomic, strong, readonly) NSString *path;
 @property (nonatomic, strong, readonly) NSString *message;
@@ -9,7 +10,7 @@
 @end
 
 
-SpecBegin(ARMessageItemProvider)
+SpecBegin(ARMessageItemProvider);
 
 describe(@"message provider", ^{
     __block ARMessageItemProvider *provider;
@@ -75,4 +76,3 @@ describe(@"message provider", ^{
 });
 
 SpecEnd
-

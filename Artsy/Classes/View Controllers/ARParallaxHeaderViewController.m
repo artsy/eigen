@@ -6,8 +6,10 @@ const CGFloat ARParallaxHeaderViewBannerImageHeight = 180.0;
 const CGFloat ARParallaxHeaderViewBottomWhitespaceHeight = 53.0;
 const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
 
+
 @interface ARParallaxImageView : UIImageView
 @end
+
 
 @interface ARParallaxHeaderViewController ()
 
@@ -20,24 +22,27 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
 
 @end
 
+
 @implementation ARParallaxHeaderViewController
 
 - (instancetype)initWithContainingScrollView:(UIScrollView *)containingScrollView fair:(id)fair profile:(Profile *)profile
 {
     self = [super initWithNibName:nil bundle:nil];
-    if (self == nil) { return nil; }
-    
+    if (self == nil) {
+        return nil;
+    }
+
     _containingScrollView = containingScrollView;
     _fair = fair;
     _profile = profile;
-    
+
     return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self addSubviews];
     [self constrainViews];
     [self downloadImages];
@@ -47,21 +52,21 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
 {
     self.bannerImageView = [[ARParallaxImageView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.bannerImageView];
-    
+
     if ([self hasIconImage]) {
         self.iconImageView = [[ARParallaxImageView alloc] initWithFrame:CGRectZero];
         [self.view addSubview:self.iconImageView];
     }
-    
+
     const CGFloat fontSize = 14.0;
-    
+
     self.titleLabel = [[ARSansSerifHeaderLabel alloc] init];
     self.titleLabel.font = [self.titleLabel.font fontWithSize:fontSize];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = self.fair.name;
     [self.view addSubview:self.titleLabel];
-    
+
     self.subtitleLabel = [[ARSerifLabel alloc] init];
     self.subtitleLabel.font = [self.subtitleLabel.font fontWithSize:fontSize];
     self.subtitleLabel.backgroundColor = [UIColor clearColor];
@@ -81,7 +86,7 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
     self.bannerTopLayoutConstraint = constraintsArray.firstObject;
     NSString *bottomPredicate = [NSString stringWithFormat:@"<=-%@", @(ARParallaxHeaderViewBottomWhitespaceHeight)];
     [self.bannerImageView alignTop:nil leading:@"0" bottom:bottomPredicate trailing:@"0" toView:self.view];
-    
+
     CGFloat bannerHeight = [self hasBannerImage] ? ARParallaxHeaderViewBannerImageHeight : ARParallaxHeaderViewBannerImageMissingImageHeight;
     NSString *heightPredicate = [NSString stringWithFormat:@"%@", @(bannerHeight + ARParallaxHeaderViewBottomWhitespaceHeight)];
     [self.view constrainHeight:heightPredicate];
@@ -92,12 +97,12 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
 
     [self.titleLabel alignTrailingEdgeWithView:self.view predicate:@"-20"];
     [self.titleLabel constrainTopSpaceToView:self.bannerImageView predicate:@"24"];
-    
+
     [self.subtitleLabel alignLeadingEdgeWithView:self.titleLabel predicate:nil];
     [self.subtitleLabel alignTrailingEdgeWithView:self.view predicate:@"-20"];
     [self.subtitleLabel constrainTopSpaceToView:self.titleLabel predicate:nil];
     [self.subtitleLabel alignBottomEdgeWithView:self.view predicate:nil];
-    
+
     RAC(self.bannerTopLayoutConstraint, constant) = [[RACObserve(self.containingScrollView, contentOffset) map:^id(id value) {
         CGPoint contentOffset = [value CGPointValue];
         return @(contentOffset.y);
@@ -111,7 +116,7 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
     if ([self hasBannerImage]) {
         [self.bannerImageView sd_setImageWithURL:[NSURL URLWithString:[self.fair bannerAddress]]];
     }
-    
+
     if (![self hasNewStyledBanner] && [self hasIconImage]) {
         @weakify(self);
         [self.iconImageView ar_setImageWithURL:[NSURL URLWithString:[self.profile iconURL]] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -158,17 +163,20 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
 
 #pragma mark - Private UIView subclasses
 
+
 @implementation ARParallaxImageView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self == nil) { return nil; }
-    
+    if (self == nil) {
+        return nil;
+    }
+
     self.contentMode = UIViewContentModeScaleAspectFill;
     self.clipsToBounds = YES;
     self.backgroundColor = [UIColor lightGrayColor];
-    
+
     return self;
 }
 

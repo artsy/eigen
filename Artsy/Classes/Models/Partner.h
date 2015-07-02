@@ -12,6 +12,7 @@ typedef NS_ENUM(NSInteger, ARPartnerType) {
     ARPartnerTypeNonProfit
 };
 
+
 @interface Partner : MTLModel <MTLJSONSerializing, ARHasImageURLs>
 
 @property (readonly, nonatomic, assign) BOOL defaultProfilePublic;

@@ -2,6 +2,7 @@
 #import <UIKit/UIKit.h>
 #import "UIFont+ArtsyFonts.h"
 
+
 @implementation WatchArtwork
 
 - (instancetype)initWithArtworkID:(NSString *)artworkID title:(NSString *)title date:(NSString *)date artistName:(NSString *)artistName thumbnailImageURL:(NSURL *)thumbnailImageURL
@@ -21,11 +22,11 @@
 - (NSDictionary *)dictionaryRepresentation
 {
     return @{
-        @"artworkID": self.artworkID ?: @"",
-        @"title": self.title ?: @"",
-        @"date": self.date ?: @"",
-        @"artistName": self.artistName ?: @"",
-        @"thumbnailImageURL": self.thumbnailImageURL.absoluteString ?: @"",
+        @"artworkID" : self.artworkID ?: @"",
+        @"title" : self.title ?: @"",
+        @"date" : self.date ?: @"",
+        @"artistName" : self.artistName ?: @"",
+        @"thumbnailImageURL" : self.thumbnailImageURL.absoluteString ?: @"",
     };
 }
 
@@ -41,7 +42,7 @@
 
     // Why can't I use a serifItalicFont ?!
 
-    NSString *title = self.title ? : @"Untitled";
+    NSString *title = self.title ?: @"Untitled";
     NSMutableAttributedString *titleAndDate = [[NSMutableAttributedString alloc] initWithString:title attributes:@{
         NSParagraphStyleAttributeName : paragraphStyle,
 
@@ -55,7 +56,7 @@
         }];
         [titleAndDate appendAttributedString:andDate];
     }
-    
+
     return titleAndDate.copy;
 }
 

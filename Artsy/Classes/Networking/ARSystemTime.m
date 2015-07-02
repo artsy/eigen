@@ -1,3 +1,5 @@
+
+
 @implementation ARSystemTime
 
 static NSTimeInterval ARSystemTimeInterval = NSTimeIntervalSince1970;
@@ -22,7 +24,8 @@ static NSTimeInterval ARSystemTimeInterval = NSTimeIntervalSince1970;
 
 + (NSDate *)date
 {
-    @synchronized(self) {
+    @synchronized(self)
+    {
         NSDate *now = [NSDate date];
         return ARSystemTime.inSync ? [now dateByAddingTimeInterval:-ARSystemTimeInterval] : now;
     }
@@ -30,10 +33,10 @@ static NSTimeInterval ARSystemTimeInterval = NSTimeIntervalSince1970;
 
 + (void)reset
 {
-    @synchronized(self) {
+    @synchronized(self)
+    {
         ARSystemTimeInterval = NSTimeIntervalSince1970;
     }
 }
 
 @end
-

@@ -2,6 +2,7 @@
 #import "ARHeartButton.h"
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 
+
 @interface ARArtworkPreviewActionsView (Testing)
 
 - (void)buttonTapped:(id)sender;
@@ -12,7 +13,7 @@
 @property (readwrite, nonatomic, strong) ARCircularActionButton *viewInMapButton;
 @end
 
-SpecBegin(ARArtworkPreviewActionsView)
+SpecBegin(ARArtworkPreviewActionsView);
 
 __block ARArtworkPreviewActionsView *subject;
 

@@ -1,8 +1,12 @@
+
+
 @implementation UILabel (Typography)
 
 - (void)setText:(NSString *)text withLineHeight:(CGFloat)lineHeight
 {
-    if (!text) { return; }
+    if (!text) {
+        return;
+    }
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:text];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:lineHeight];
@@ -14,7 +18,9 @@
 
 - (void)setText:(NSString *)text withLetterSpacing:(CGFloat)letterSpacing
 {
-    if (!text) { return; }
+    if (!text) {
+        return;
+    }
     NSMutableAttributedString *attributedText = nil;
     attributedText = [[NSMutableAttributedString alloc] initWithString:text];
     [attributedText addAttribute:NSKernAttributeName value:@(letterSpacing) range:NSMakeRange(0, text.length)];

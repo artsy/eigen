@@ -1,6 +1,6 @@
 #import "ARInternalShareValidator.h"
 
-SpecBegin(ARInternalShareValidator)
+SpecBegin(ARInternalShareValidator);
 
 __block ARInternalShareValidator *sut;
 __block NSURL *facebookURL, *twitterURL, *linkedInURL;

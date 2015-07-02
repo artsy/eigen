@@ -1,8 +1,10 @@
 #import "ARItemThumbnailViewCell.h"
 
-@interface ARItemThumbnailViewCell()
+
+@interface ARItemThumbnailViewCell ()
 @property (nonatomic, strong) UIImageView *imageView;
 @end
+
 
 @implementation ARItemThumbnailViewCell
 
@@ -31,12 +33,13 @@
         ARFeedItemImageSize size = self.imageSize;
 
         if (self.imageSize == ARFeedItemImageSizeAuto) {
-            CGFloat longestDimension = (imageSize.height > imageSize.height)? imageSize.height : imageSize.width;
+            CGFloat longestDimension = (imageSize.height > imageSize.height) ? imageSize.height : imageSize.width;
             size = (longestDimension > 100) ? ARFeedItemImageSizeLarge : ARFeedItemImageSizeSmall;
         }
 
         [[ARFeedImageLoader alloc] loadImageAtAddress:baseUrl desiredSize:size
-                                     forImageView:self.imageView customPlaceholder:nil];
+                                         forImageView:self.imageView
+                                    customPlaceholder:nil];
     }
 
     //TODO - deprecate this

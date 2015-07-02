@@ -3,6 +3,7 @@
 
 const CGFloat TitlesMargin = 5;
 
+
 @interface ARButtonWithImage ()
 
 @property (readonly, nonatomic, strong) UIView *contentView;
@@ -20,13 +21,17 @@ const CGFloat TitlesMargin = 5;
 
 @end
 
+
 @implementation ARButtonWithImage
 
 #pragma mark - Lifecycle
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
     _contentView.userInteractionEnabled = NO;

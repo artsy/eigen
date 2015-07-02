@@ -14,7 +14,8 @@
 #import "ARGeneViewController.h"
 #import "ARFavoriteItemViewCell.h"
 
-@interface ARFavoritesViewController() <AREmbeddedModelsDelegate, UIScrollViewDelegate, ARSwitchViewDelegate, ARArtworkMasonryLayoutProvider>
+
+@interface ARFavoritesViewController () <AREmbeddedModelsDelegate, UIScrollViewDelegate, ARSwitchViewDelegate, ARArtworkMasonryLayoutProvider>
 
 @property (nonatomic, strong, readonly) AREmbeddedModelsViewController *embeddedItemsVC;
 @property (nonatomic, strong, readonly) UILabel *noFavoritesInfoLabel;
@@ -35,12 +36,15 @@
 
 @end
 
+
 @implementation ARFavoritesViewController
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _embeddedItemsVC = [[AREmbeddedModelsViewController alloc] init];
     return self;
@@ -62,7 +66,7 @@
 
 - (void)suspendPageQueue
 {
-    if (self.artworkPageQueue && ! self.artworkPageQueueSuspended) {
+    if (self.artworkPageQueue && !self.artworkPageQueueSuspended) {
         dispatch_suspend(self.artworkPageQueue);
         _artworkPageQueueSuspended = YES;
     }
@@ -124,7 +128,6 @@
     self.collectionView.scrollsToTop = YES;
     [self updateCellSizeForSize:self.view.frame.size layout:_genesModule.moduleLayout];
     [self updateCellSizeForSize:self.view.frame.size layout:_artistsModule.moduleLayout];
-
 }
 
 - (UICollectionView *)collectionView
@@ -139,7 +142,7 @@
 
 - (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
-    if ([UIDevice isPad] ) {
+    if ([UIDevice isPad]) {
         return (size.width > size.height) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
     } else {
         return ARArtworkMasonryLayout2Column;
@@ -196,7 +199,6 @@
     if (self.emptyStateView) {
         self.emptyStateView.hidden = NO;
     } else {
-
         CGFloat emptyStateWidth = 270;
         UIView *emptyStateView = [[UIView alloc] init];
         _emptyStateView = emptyStateView;
@@ -265,7 +267,7 @@
     [self.collectionView reloadData];
     if (!allDownloaded) {
         [self checkContentSize];
-    } else if (self.embeddedItemsVC.activeModule.items.count <= 0){
+    } else if (self.embeddedItemsVC.activeModule.items.count <= 0) {
         [self showEmptyState];
     }
 }
@@ -275,7 +277,7 @@
     CGFloat contentHeight = self.collectionView.contentSize.height;
     CGFloat frameHeight = self.collectionView.frame.size.height;
     // This will only be true the first time a tab is loaded. Get enough items to fill the height of the view.
-    if (contentHeight < frameHeight){
+    if (contentHeight < frameHeight) {
         [self getNextItemSet];
     }
 }
@@ -284,7 +286,9 @@
 {
     ARFavoritesNetworkModel *networkModel = self.activeNetworkModel;
     ARModelCollectionViewModule *module = self.embeddedItemsVC.activeModule;
-    if (networkModel.allDownloaded) { return; };
+    if (networkModel.allDownloaded) {
+        return;
+    };
     @weakify(self);
     dispatch_async(self.artworkPageQueue, ^{
         [self.activeNetworkModel getFavorites:^(NSArray *items){
@@ -296,18 +300,22 @@
 
 - (void)addItems:(NSArray *)items toModule:(ARModelCollectionViewModule *)module
 {
-    if (items.count > 0) { module.items = [module.items arrayByAddingObjectsFromArray:items]; }
-    if (module == self.embeddedItemsVC.activeModule) { [self updateView]; }
+    if (items.count > 0) {
+        module.items = [module.items arrayByAddingObjectsFromArray:items];
+    }
+    if (module == self.embeddedItemsVC.activeModule) {
+        [self updateView];
+    }
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return [UIDevice isPad];
 }
 
 #pragma mark - AREmbeddedModelsDelegate
 
--(void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:YES];
 }

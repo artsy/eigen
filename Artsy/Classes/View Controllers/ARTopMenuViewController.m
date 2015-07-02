@@ -7,6 +7,7 @@
 #import "ARSearchViewController.h"
 #import "ArtsyAPI+Private.h"
 
+
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) NSArray *constraintsForButtons;
 
@@ -21,6 +22,7 @@
 @end
 
 static const CGFloat ARSearchMenuButtonDimension = 46;
+
 
 @implementation ARTopMenuViewController
 
@@ -64,7 +66,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
     [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
 
-    NSArray *buttons = @[searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton];
+    NSArray *buttons = @[ searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton ];
 
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero hostViewController:self delegate:self dataSource:self.navigationDataSource];
     tabContentView.supportSwipeGestures = NO;
@@ -94,7 +96,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
     [searchButton constrainWidth:@(ARSearchMenuButtonDimension).stringValue];
     NSMutableArray *constraintsForButtons = [NSMutableArray array];
-    [buttons eachWithIndex:^(UIButton *button, NSUInteger index){
+    [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
         [button constrainTopSpaceToView:separator predicate:@"0"];
         [button alignBottomEdgeWithView:tabContainer predicate:@"0"];
         if (index == 0) {
@@ -131,14 +133,13 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self.view layoutSubviews];
-
 }
 
 - (void)viewWillLayoutSubviews
 {
     NSArray *buttons = self.tabContentView.buttons;
     __block CGFloat buttonsWidth = ARSearchMenuButtonDimension;
-    [buttons eachWithIndex:^(UIButton *button, NSUInteger index){
+    [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
         if (index == 0){ return; }
         buttonsWidth += button.intrinsicContentSize.width;
     }];
@@ -164,9 +165,11 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 - (void)hideToolbar:(BOOL)hideToolbar animated:(BOOL)animated
 {
     BOOL isCurrentlyHiding = (self.tabHeightConstraint.constant != 0);
-    if (isCurrentlyHiding == hideToolbar) { return; }
+    if (isCurrentlyHiding == hideToolbar) {
+        return;
+    }
 
-    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         self.tabHeightConstraint.constant = hideToolbar ? self.tabContainer.frame.size.height : 0;
 
         [self.view setNeedsLayout];
@@ -200,7 +203,6 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 - (void)loadFeed
 {
-
 }
 
 - (void)pushViewController:(UIViewController *)viewController
@@ -218,12 +220,12 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 // Let the nav decide what rotations to support
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return [self.rootNavigationController shouldAutorotate];
 }
 
--(NSUInteger)supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations
 {
     return self.rootNavigationController.supportedInterfaceOrientations ?: ([UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait);
 }
@@ -287,11 +289,9 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [ARTopMenuViewController sharedController].backButtonCallbackManager = nil;
 
     if (index == _selectedTabIndex) {
-
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
 
         if (controller.viewControllers.count == 1) {
-
             if (index == ARTopTabControllerIndexSearch) {
                 [self returnToPreviousTab];
 

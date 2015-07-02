@@ -2,9 +2,11 @@
 #import "ContentLink.h"
 #import "PostImage.h"
 
+
 @implementation ARPostFeedItem
 
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
     return [super.JSONKeyPathsByPropertyKey mtl_dictionaryByAddingEntriesFromDictionary:@{
         @"postID" : @"id",
         @"bodyHTML" : @"body",
@@ -19,30 +21,36 @@
     }];
 }
 
-+ (NSValueTransformer *)profileJSONTransformer {
++ (NSValueTransformer *)profileJSONTransformer
+{
     return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[Profile class]];
 }
 
-+ (NSValueTransformer *)artworksJSONTransformer {
++ (NSValueTransformer *)artworksJSONTransformer
+{
     return [MTLValueTransformer mtl_JSONArrayTransformerWithModelClass:[Artwork class]];
 }
 
-+ (NSValueTransformer *)postImagesJSONTransformer {
++ (NSValueTransformer *)postImagesJSONTransformer
+{
     return [MTLValueTransformer mtl_JSONArrayTransformerWithModelClass:[PostImage class]];
 }
 
-+ (NSValueTransformer *)contentLinksJSONTransformer {
++ (NSValueTransformer *)contentLinksJSONTransformer
+{
     return [MTLValueTransformer mtl_JSONArrayTransformerWithModelClass:[ContentLink class]];
 }
 
-+ (NSValueTransformer *)bodyJSONTransformer {
++ (NSValueTransformer *)bodyJSONTransformer
+{
     return [MTLValueTransformer transformerWithBlock:^id(id str) {
         return [[str stringByReplacingOccurrencesOfString:@"\n" withString:@" "]
                 stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }];
 }
 
-+ (NSValueTransformer *)typeJSONTransformer {
++ (NSValueTransformer *)typeJSONTransformer
+{
     NSDictionary *types = @{
         @"singlecolumn" : @(ARPostTypeSingleColumn),
         @"twocolumn" : @(ARPostTypeTwoColumn),
@@ -56,14 +64,16 @@
     }];
 }
 
-+ (NSString *)cellIdentifier {
++ (NSString *)cellIdentifier
+{
     return @"PostCellIdentifier";
 }
 
-- (NSInteger)attachmentCount {
+- (NSInteger)attachmentCount
+{
     //TODO: write fold for primitives
     NSInteger count = 0;
-    for (NSArray *arr in @[self.artworks, self.postImages, self.contentLinks]) {
+    for (NSArray *arr in @[ self.artworks, self.postImages, self.contentLinks ]) {
         if (arr) {
             count += arr.count;
         }
@@ -71,9 +81,10 @@
     return count;
 }
 
-- (NSArray *)allAttachments {
+- (NSArray *)allAttachments
+{
     NSMutableArray *ret = [[NSMutableArray alloc] init];
-    for (NSArray *arr in @[self.artworks, self.postImages, self.contentLinks]) {
+    for (NSArray *arr in @[ self.artworks, self.postImages, self.contentLinks ]) {
         if (arr) {
             [ret addObjectsFromArray:arr];
         }
@@ -81,15 +92,18 @@
     return ret;
 }
 
-- (NSString *)publicURL {
+- (NSString *)publicURL
+{
     return [NSString stringWithFormat:@"http://art.sy/%@/post/%@", self.profile.profileID, self.postID];
 }
 
-- (NSArray *)dataForActivities {
-    return @[self];
+- (NSArray *)dataForActivities
+{
+    return @[ self ];
 }
 
-- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType {
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
     if (self.profile && self.title && ![self.title isEqualToString:@""]) {
         return [NSString stringWithFormat:@"%@: %@ via @artsy %@", self.profile.profileName, self.title, self.publicURL];
 
@@ -103,23 +117,28 @@
     }
 }
 
-- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
     return @"";
 }
 
-- (NSString *)description {
+- (NSString *)description
+{
     return [NSString stringWithFormat:@"FeedItem - Post ( %@ by %@ ) ", _title, self.profile.profileID];
 }
 
-- (NSString *)localizedStringForActivity {
+- (NSString *)localizedStringForActivity
+{
     return NSLocalizedString(@"Posted", @"Posted a post header text for Feed Item");
 }
 
-- (BOOL)hasTitle {
+- (BOOL)hasTitle
+{
     return (_title && ![_title isEqualToString:@""]);
 }
 
-- (void)updatePost:(void (^)(BOOL updateSuccessful))success {
+- (void)updatePost:(void (^)(BOOL updateSuccessful))success
+{
     [ArtsyAPI getPostForPostID:_postID success:^(id post) {
         [self mergeValuesForKeysFromModel:post];
         success(YES);
@@ -129,7 +148,7 @@
     }];
 }
 
--(NSString *)imageURL
+- (NSString *)imageURL
 {
     NSString *imageURL = self.shareableImageURL;
     if (!imageURL && self.profile) {

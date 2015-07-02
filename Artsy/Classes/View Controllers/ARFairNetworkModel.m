@@ -1,5 +1,6 @@
 #import "ARFairNetworkModel.h"
 
+
 @implementation ARFairNetworkModel
 
 - (void)getFairInfo:(Fair *)fair success:(void (^)(Fair *))success failure:(void (^)(NSError *))failure
@@ -62,9 +63,11 @@
 
 @end
 
+
 @interface ARFeedTimeline (Stubs)
 @property (nonatomic, strong, readwrite) NSMutableOrderedSet *items;
 @end
+
 
 @implementation ARStubbedFairNetworkModel
 
@@ -87,9 +90,8 @@
 - (void)getOrderedSetsForFair:(Fair *)fair success:(void (^)(NSMutableDictionary *sets))success failure:(void (^)(NSError *))failure
 {
     if (self.orderedSets) {
-
         NSMutableDictionary *orderedSetsByKey = [[NSMutableDictionary alloc] init];
-        for (OrderedSet * orderedSet in self.orderedSets) {
+        for (OrderedSet *orderedSet in self.orderedSets) {
             NSArray *sets = orderedSetsByKey[orderedSet.key] ?: @[];
             orderedSetsByKey[orderedSet.key] = [sets arrayByAddingObject:orderedSet];
         }
@@ -109,7 +111,6 @@
     }
 
     failure(nil);
-
 }
 
 - (void)getShowFeedItems:(ARFairShowFeed *)feed success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure

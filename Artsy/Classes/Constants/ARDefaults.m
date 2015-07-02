@@ -18,6 +18,7 @@ NSString *const AROnboardingSkipPriceRangeDefault = @"eigen-onboard-skip-price-r
 NSString *const AROnboardingPromptThresholdDefault = @"eigen-onboard-prompt-threshold";
 NSString *const ARShowAuctionResultsButtonDefault = @"auction-results";
 
+
 @implementation ARDefaults
 
 + (void)setup
@@ -30,14 +31,13 @@ NSString *const ARShowAuctionResultsButtonDefault = @"auction-results";
 #endif
 
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-        ARUseStagingDefault: @(useStagingDefault),
-        AROnboardingPromptThresholdDefault: @(AROnboardingPromptDefault),
-        AROnboardingSkipPersonalizeDefault: @(NO),
-        AROnboardingSkipCollectorLevelDefault: @(NO),
-        AROnboardingSkipPriceRangeDefault: @(NO),
-        AROnboardingPromptThresholdDefault: @(NO)
-        }
-     ];
+        ARUseStagingDefault : @(useStagingDefault),
+        AROnboardingPromptThresholdDefault : @(AROnboardingPromptDefault),
+        AROnboardingSkipPersonalizeDefault : @(NO),
+        AROnboardingSkipCollectorLevelDefault : @(NO),
+        AROnboardingSkipPriceRangeDefault : @(NO),
+        AROnboardingPromptThresholdDefault : @(NO)
+    }];
 }
 
 + (void)resetDefaults

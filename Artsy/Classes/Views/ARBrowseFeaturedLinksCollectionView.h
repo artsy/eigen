@@ -1,4 +1,4 @@
-typedef NS_ENUM(NSInteger, ARFeaturedLinkStyle){
+typedef NS_ENUM(NSInteger, ARFeaturedLinkStyle) {
     ARFeaturedLinkLayoutSingleRow,
     ARFeaturedLinkLayoutDoubleRow,
 };
@@ -10,11 +10,12 @@ typedef NS_ENUM(NSInteger, ARFeaturedLinkStyle){
 - (void)didSelectFeaturedLink:(FeaturedLink *)featuredLink;
 @end
 
+
 @interface ARBrowseFeaturedLinksCollectionView : UICollectionView <UICollectionViewDataSource, UICollectionViewDelegate>
 
 - (instancetype)initWithStyle:(enum ARFeaturedLinkStyle)style;
 
-@property (nonatomic, copy,  readwrite) NSArray *featuredLinks;
+@property (nonatomic, copy, readwrite) NSArray *featuredLinks;
 @property (nonatomic, assign, readonly) ARFeaturedLinkStyle style;
 @property (nonatomic, strong, readwrite) id<ARBrowseFeaturedLinksCollectionViewDelegate> selectionDelegate;
 @end

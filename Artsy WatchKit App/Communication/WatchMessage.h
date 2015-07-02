@@ -6,8 +6,7 @@ NS_ENUM(NSInteger, ARWatchMessageRequest){
     ARWatchMessageRequestRecommended,
     ARWatchMessageRequestBid,
     ARWatchMessageRequestShows,
-    ARWatchMessageRequestWorksForYou
-};
+    ARWatchMessageRequestWorksForYou};
 
 /// A communication object that represents messages
 /// sent between the watch and the app
@@ -15,6 +14,7 @@ NS_ENUM(NSInteger, ARWatchMessageRequest){
 /// - As the app is backgrounded, it does not have
 /// access to it's own auth token, but the watch does
 /// so it also comes along.
+
 
 @interface WatchMessage : NSObject
 

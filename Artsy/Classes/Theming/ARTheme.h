@@ -8,6 +8,7 @@
 
 /// Basically considered to be deprecated, you should not be using this in new code.
 
+
 @interface ARTheme : NSObject
 
 /// Get the shared instance
@@ -38,29 +39,33 @@
 // a way of typing what comes back, so [ARTheme theme].fonts[@"Main"]
 // can return a UIFont * instead of an id.
 
+
 @interface ARThemeVendor : NSObject
 
 - (instancetype)initWithTheme:(ARTheme *)theme;
 
 @end
 
+
 @interface ARThemeLayoutVendor : ARThemeVendor
 
-- (NSString *)objectForKeyedSubscript:(id <NSCopying>)key;
-- (void)setObject:(NSString *)obj forKeyedSubscript:(id <NSCopying>)key;
+- (NSString *)objectForKeyedSubscript:(id<NSCopying>)key;
+- (void)setObject:(NSString *)obj forKeyedSubscript:(id<NSCopying>)key;
 
 @end
+
 
 @interface ARThemeColorVendor : ARThemeVendor
 
-- (UIColor *)objectForKeyedSubscript:(id <NSCopying>)key;
-- (void)setObject:(NSString *)obj forKeyedSubscript:(id <NSCopying>)key;
+- (UIColor *)objectForKeyedSubscript:(id<NSCopying>)key;
+- (void)setObject:(NSString *)obj forKeyedSubscript:(id<NSCopying>)key;
 
 @end
 
+
 @interface ARThemeFontVendor : ARThemeVendor
 
-- (UIFont *)objectForKeyedSubscript:(id <NSCopying>)key;
-- (void)setObject:(UIFont *)obj forKeyedSubscript:(id <NSCopying>)key;
+- (UIFont *)objectForKeyedSubscript:(id<NSCopying>)key;
+- (void)setObject:(UIFont *)obj forKeyedSubscript:(id<NSCopying>)key;
 
 @end

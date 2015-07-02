@@ -9,7 +9,8 @@
     tableViewHeader/tableViewFooter to provide additional meta-data around the feed
 */
 
-@interface ARFeedViewController : UIViewController < UITableViewDataSource, UITableViewDelegate, UIViewControllerRestoration>
+
+@interface ARFeedViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIViewControllerRestoration>
 
 /// The designated initializer
 - (instancetype)initWithFeedTimeline:(ARFeedTimeline *)feedTimeline;

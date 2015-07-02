@@ -1,5 +1,6 @@
 #import "UIViewController+ARStateRestoration.h"
 
+
 @implementation UIViewController (ARStateRestoration)
 
 - (void)setupRestorationIdentifierAndClass
@@ -12,4 +13,3 @@
 }
 
 @end
-

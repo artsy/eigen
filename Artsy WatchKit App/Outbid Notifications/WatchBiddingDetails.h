@@ -5,8 +5,8 @@
 NS_ENUM(NSInteger, ARWatchBiddingStatus){
     ARWatchBiddingStatusFailed,
     ARWatchBiddingStatusOutbid,
-    ARWatchBiddingStatusHighestBidder
-};
+    ARWatchBiddingStatusHighestBidder};
+
 
 @interface WatchBiddingDetails : NSObject
 

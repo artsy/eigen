@@ -1,6 +1,7 @@
 @import CoreLocation;
 
-@interface Location : MTLModel<MTLJSONSerializing>
+
+@interface Location : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *name;
 

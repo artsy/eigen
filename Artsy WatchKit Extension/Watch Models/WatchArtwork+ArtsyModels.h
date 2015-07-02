@@ -3,7 +3,8 @@
 
 /// This file is only in the Artsy Target
 
-@interface WatchArtwork(FromArtwork)
+
+@interface WatchArtwork (FromArtwork)
 
 - (instancetype)initWithArtsyArtwork:(Artwork *)artwork;
 

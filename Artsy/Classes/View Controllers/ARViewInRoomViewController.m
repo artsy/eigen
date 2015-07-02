@@ -20,7 +20,8 @@ static const CGFloat LandscapeOrientationArtworkNegativeBottomMargin = 80;
 // unless it's too tall that it touches the minimum distance above
 static const CGFloat ArtworkEyelineLevelFromBench = 160;
 
-static const CGFloat DistanceToTopOfBenchPortrait =  90;
+static const CGFloat DistanceToTopOfBenchPortrait = 90;
+
 
 @interface ARViewInRoomViewController ()
 
@@ -46,6 +47,7 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 
 @end
 
+
 @implementation ARViewInRoomViewController
 
 + (UIImageView *)imageViewForFramedArtwork
@@ -65,7 +67,9 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 - (ARViewInRoomViewController *)initWithArtwork:(Artwork *)artwork
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _artwork = artwork;
     self.view.clipsToBounds = YES;
@@ -78,7 +82,8 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 
 #pragma mark - ARMenuAwareViewController
 
-- (BOOL)hidesToolbarMenu {
+- (BOOL)hidesToolbarMenu
+{
     return YES;
 }
 
@@ -92,7 +97,8 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
         self.artworkImageView.frame = [ARViewInRoomViewController rectForImageViewWithArtwork:self.artwork withContainerFrame:self.view.bounds];
 
         [[ARFeedImageLoader alloc] loadImageAtAddress:[self.artwork baseImageURL] desiredSize:ARFeedItemImageSizeLarge
-                                         forImageView:self.artworkImageView customPlaceholder:nil];
+                                         forImageView:self.artworkImageView
+                                    customPlaceholder:nil];
 
         self.artworkImageView.layer.shadowOpacity = 0.3;
     }
@@ -113,12 +119,13 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 
     [self.view addSubview:galleryBackground];
 
-    #if DEBUG_VIEW_IN_ROOM
-        [self setupDebugTools];
-    #endif
+#if DEBUG_VIEW_IN_ROOM
+    [self setupDebugTools];
+#endif
 }
 
-- (void)setArtworkImageView:(UIImageView *)artworkImageView {
+- (void)setArtworkImageView:(UIImageView *)artworkImageView
+{
     _artworkImageView = artworkImageView;
     self.artworkImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.artworkImageView.backgroundColor = [UIColor clearColor];
@@ -132,10 +139,10 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
     UITapGestureRecognizer *exitTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.navigationController action:@selector(popViewControllerAnimated:)];
     self.artworkImageView.userInteractionEnabled = YES;
     [self.artworkImageView addGestureRecognizer:exitTapGesture];
-
 }
 
-- (void)tappedArtwork {
+- (void)tappedArtwork
+{
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -176,7 +183,8 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 }
 
 
-- (void)setupParallaxVIR {
+- (void)setupParallaxVIR
+{
     CGFloat wallsWidth = 90;
     CGFloat wallsYOffset = -2;
     CGFloat wallsStretch = 8;
@@ -217,13 +225,13 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
         chairView.contentScaleFactor = UIViewContentModeScaleAspectFill;
         self.chairImageView = chairView;
 
-        CGRect chairFrame = CGRectMake(CGRectGetWidth(self.view.bounds)/2 - chairWidth/2, CGRectGetHeight(self.view.bounds) - chairOffset, chairWidth, chairHeight);
+        CGRect chairFrame = CGRectMake(CGRectGetWidth(self.view.bounds) / 2 - chairWidth / 2, CGRectGetHeight(self.view.bounds) - chairOffset, chairWidth, chairHeight);
         chairView.frame = chairFrame;
 
         [self.view addSubview:chairView];
 
         UIInterpolatingMotionEffect *chairMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
-                                                        type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+                                                                                                   type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
         chairMotion.minimumRelativeValue = @(chairMotionDelta);
         chairMotion.maximumRelativeValue = @(-chairMotionDelta);
         [self.chairImageView addMotionEffect:chairMotion];
@@ -270,7 +278,7 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
         UIImageView *dudeView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ViewInRoom_Man_3"]];
         self.dudeImageView = dudeView;
         dudeView.contentScaleFactor = UIViewContentModeScaleAspectFit;
-        dudeView.frame = CGRectMake(CGRectGetWidth(self.view.bounds)/2 + dudeCenterXOffset, CGRectGetHeight(self.view.bounds) - dudeHeight + dudeYOffset, dudeWidth, dudeHeight);
+        dudeView.frame = CGRectMake(CGRectGetWidth(self.view.bounds) / 2 + dudeCenterXOffset, CGRectGetHeight(self.view.bounds) - dudeHeight + dudeYOffset, dudeWidth, dudeHeight);
         [self.view addSubview:dudeView];
 
         UIInterpolatingMotionEffect *chairMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
@@ -279,10 +287,10 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
         chairMotion.maximumRelativeValue = @(-dudeMotionDelta);
         [self.dudeImageView addMotionEffect:chairMotion];
     }
-
 }
 
-- (void)hideDecorationViews {
+- (void)hideDecorationViews
+{
     if (!self.artworkImageView || !self.leftWallImageView || !self.rightWallImageView) {
         return;
     }
@@ -296,7 +304,7 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
         [self.artworkImageView removeMotionEffect:effect];
     }
 
-    NSArray *views = @[self.chairImageView, self.leftWallImageView, self.rightWallImageView];
+    NSArray *views = @[ self.chairImageView, self.leftWallImageView, self.rightWallImageView ];
     for (__strong UIView *decorationView in views) {
         [decorationView removeFromSuperview];
         decorationView = nil;
@@ -312,10 +320,10 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     BOOL isLandscape = UIInterfaceOrientationIsLandscape(orientation);
-    CGFloat benchWidth = isLandscape? InitialWidthOfBenchPXLandscape : InitialWidthOfBenchPX;
+    CGFloat benchWidth = isLandscape ? InitialWidthOfBenchPXLandscape : InitialWidthOfBenchPX;
 
     // Initial Scale in this case is when the image is at 100% zoom
-    CGFloat initialScale =  benchWidth / InitialWidthOfBenchInches;
+    CGFloat initialScale = benchWidth / InitialWidthOfBenchInches;
     CGFloat artworkWidth = artwork.widthInches;
     CGFloat scale = initialScale;
 
@@ -325,7 +333,6 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 
         // Generate the new background width
         //        CGFloat newBackgroundImageWidth =  (CGRectGetWidth(self.backgroundImageView.frame) / initialScale) * pixelsPerInch;
-
     }
 
     CGFloat artworkHeight = artwork.heightInches;
@@ -343,13 +350,9 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 
     CGRect frame = {
         .origin = {
-            floorf((CGRectGetWidth(containerFrame) - scaledWidth)  * .5f),
-            floorf(CGRectGetHeight(containerFrame) - [self artworkEyelineLevel] - (scaledHeight * .5f))
-        },
-        .size = {
-            scaledWidth,
-            scaledHeight
-        },
+            floorf((CGRectGetWidth(containerFrame) - scaledWidth) * .5f),
+            floorf(CGRectGetHeight(containerFrame) - [self artworkEyelineLevel] - (scaledHeight * .5f))},
+        .size = {scaledWidth, scaledHeight},
     };
 
     if (frame.origin.y < 0 || [self artworkFrameIsBelowMinimumDistance:frame inContainer:containerFrame]) {
@@ -364,7 +367,7 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
     return frame;
 }
 
-+ (BOOL)artworkFrameIsBelowMinimumDistance:(CGRect)artworkFrame inContainer:(CGRect) containerFrame
++ (BOOL)artworkFrameIsBelowMinimumDistance:(CGRect)artworkFrame inContainer:(CGRect)containerFrame
 {
     return (CGRectGetMaxY(artworkFrame) > CGRectGetHeight(containerFrame) - [self artworkMinimumDistanceToBottom]);
 }
@@ -376,7 +379,7 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 
 + (CGFloat)artworkEyelineLevel
 {
-    return  [self distanceToTopOfBench] + ArtworkEyelineLevelFromBench;
+    return [self distanceToTopOfBench] + ArtworkEyelineLevelFromBench;
 }
 
 + (CGFloat)distanceToTopOfBench
@@ -396,7 +399,7 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
     self.debugEyelineView = eyeline;
     self.debugEyelineView.backgroundColor = [UIColor redColor];
     self.debugEyelineView.clipsToBounds = NO;
-    [self.view addSubview: self.debugEyelineView];
+    [self.view addSubview:self.debugEyelineView];
 
     UILabel *eyelineLabel = [[UILabel alloc] initWithFrame:CGRectMake(18, -20, 200, 24)];
     eyelineLabel.text = @"Eyeline";
@@ -407,7 +410,7 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
     self.debugMinimumArtworkView = lowestPointLine;
     self.debugMinimumArtworkView.backgroundColor = [UIColor greenColor];
     self.debugMinimumArtworkView.clipsToBounds = NO;
-    [self.view addSubview: self.debugMinimumArtworkView];
+    [self.view addSubview:self.debugMinimumArtworkView];
 
     UILabel *lowestPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(18, -20, 200, 16)];
     lowestPointLabel.text = @"Lowest Point";
@@ -462,7 +465,8 @@ static const CGFloat DistanceToTopOfBenchPortrait =  90;
 - (NSDictionary *)dictionaryForAnalytics
 {
     if (self.artwork) {
-        return @{ @"artwork" : self.artwork.artworkID, @"type" : @"artwork" };
+        return @{ @"artwork" : self.artwork.artworkID,
+                  @"type" : @"artwork" };
     }
 
     return nil;

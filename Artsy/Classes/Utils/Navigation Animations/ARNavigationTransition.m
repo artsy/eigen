@@ -1,13 +1,14 @@
 #import "ARNavigationTransition.h"
 
+
 @implementation ARNavigationTransition
 
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
+- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     return 0.3;
 }
 
-- (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
+- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
@@ -21,7 +22,7 @@
             [self popTransitionFrom:fromVC to:toVC withContext:transitionContext];
             break;
 
-        default:{
+        default: {
             CGRect endFrame = [transitionContext containerView].bounds;
             toVC.view.frame = endFrame;
             [transitionContext completeTransition:YES];
@@ -30,19 +31,20 @@
     }
 }
 
-- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext
+- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     [transitionContext completeTransition:YES];
 }
 
-- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext
+- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     [transitionContext completeTransition:YES];
 }
 
 #pragma mark - Properties
 
-- (BOOL)supportsInteractiveTransitioning {
+- (BOOL)supportsInteractiveTransitioning
+{
     return NO;
 }
 

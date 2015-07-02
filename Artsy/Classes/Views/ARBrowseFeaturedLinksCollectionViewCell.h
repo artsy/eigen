@@ -1,5 +1,6 @@
 #import "FeaturedLink.h"
 
+
 @interface ARBrowseFeaturedLinksCollectionViewCell : UICollectionViewCell
 
 - (void)updateWithTitle:(NSString *)title imageURL:(NSURL *)imageURL;

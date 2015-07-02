@@ -42,11 +42,13 @@ static NSString *ARImageSizeSmall = @"small";
 static NSString *ARImageSizeLarge = @"large";
 static NSString *ARImageSizeMasonry = @"tall";
 
+
 @interface ARFeedImageLoader ()
 @property (nonatomic, weak) UIImageView *imageView;
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, copy) NSString* baseImageURL;
+@property (nonatomic, copy) NSString *baseImageURL;
 @end
+
 
 @implementation ARFeedImageLoader
 
@@ -56,7 +58,6 @@ static NSString *ARImageSizeMasonry = @"tall";
     self.baseImageURL = baseImageURL;
 
     if (desiredSize == ARFeedItemImageSizeLarge) {
-
         // Check to see if we have a small image in cache first that we can use as a placeholder
 
         NSString *imagePath = [[self generateUrlForSize:ARFeedItemImageSizeSmall] absoluteString];
@@ -64,7 +65,7 @@ static NSString *ARImageSizeMasonry = @"tall";
         self.image = localImage;
     }
 
-    if (!self.image){
+    if (!self.image) {
         self.image = customPlaceholder ?: [[self class] defaultPlaceholder];
     }
 
@@ -78,7 +79,7 @@ static NSString *ARImageSizeMasonry = @"tall";
 
 - (NSURL *)generateUrlForSize:(ARFeedItemImageSize)desiredSize
 {
-    if(!self.baseImageURL) return nil;
+    if (!self.baseImageURL) return nil;
 
     NSString *size = nil;
 
@@ -116,8 +117,7 @@ static NSString *ARImageSizeMasonry = @"tall";
 {
     NSString *address = url.absoluteString;
 
-    for (NSString *format in @[ ARImageSizeLarge, ARImageSizeMasonry, ARImageSizeSmall]) {
-
+    for (NSString *format in @[ ARImageSizeLarge, ARImageSizeMasonry, ARImageSizeSmall ]) {
         NSString *cachePath = [address stringByReplacingOccurrencesOfString:@":version" withString:format];
 
         UIImage *image = [self cachedImageForPath:cachePath];

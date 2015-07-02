@@ -10,19 +10,22 @@
 #import "ARBrowseViewController.h"
 #import "ARBackButtonCallbackManager.h"
 
+
 @interface ARTopMenuNavigationDataSource (Test)
 @property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
 @end
+
 
 @interface ARTrialController (Testing)
 - (void)presentTrialWithContext:(enum ARTrialContext)context success:(void (^)(BOOL newUser))success;
 @end
 
-@interface ARTopMenuViewController(Testing) <ARTabViewDelegate>
+
+@interface ARTopMenuViewController (Testing) <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 @end
 
-SpecBegin(ARTopMenuViewController)
+SpecBegin(ARTopMenuViewController);
 
 __block ARTopMenuViewController *sut;
 __block ARTopMenuNavigationDataSource *dataSource;

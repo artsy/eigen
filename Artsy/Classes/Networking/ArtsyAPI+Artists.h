@@ -1,3 +1,5 @@
+
+
 @interface ArtsyAPI (Artists)
 
 + (void)getArtistForArtistID:(NSString *)artistID success:(void (^)(Artist *artist))success failure:(void (^)(NSError *error))failure;

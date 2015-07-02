@@ -3,15 +3,17 @@
 static BOOL ARTabViewDirectionLeft = NO;
 static BOOL ARTabViewDirectionRight = YES;
 
+
 @interface ARTabContentView ()
 @end
 
+
 @implementation ARTabContentView
 
-- (id)initWithFrame:(CGRect)frame hostViewController:(UIViewController *)controller delegate:(id <ARTabViewDelegate>)delegate dataSource:(id <ARTabViewDataSource>)dataSource
+- (id)initWithFrame:(CGRect)frame hostViewController:(UIViewController *)controller delegate:(id<ARTabViewDelegate>)delegate dataSource:(id<ARTabViewDataSource>)dataSource
 {
-    self =[super initWithFrame:frame];
-    if(!self) return nil;
+    self = [super initWithFrame:frame];
+    if (!self) return nil;
 
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.opaque = YES;
@@ -95,7 +97,7 @@ static BOOL ARTabViewDirectionRight = YES;
     if (self.currentViewIndex == 0 && direction == ARTabViewDirectionLeft) return self.currentViewIndex;
     if (self.currentViewIndex == [self numberOfViewControllers] - 1 && direction == ARTabViewDirectionRight) return self.currentViewIndex;
 
-    NSInteger nextViewIndex = direction? self.currentViewIndex + 1 : self.currentViewIndex - 1;
+    NSInteger nextViewIndex = direction ? self.currentViewIndex + 1 : self.currentViewIndex - 1;
     // loop until we hit an enabled view
     while (![self.dataSource tabContentView:self canPresentViewControllerAtIndex:nextViewIndex]) {
         if (direction) {
@@ -129,19 +131,22 @@ static BOOL ARTabViewDirectionRight = YES;
     [self forceSetCurrentViewIndex:index animated:animated];
 }
 
-- (void)forceSetCurrentViewIndex:(NSInteger)index animated:(BOOL)animated {
+- (void)forceSetCurrentViewIndex:(NSInteger)index animated:(BOOL)animated
+{
     [self.buttons each:^(UIButton *button) {
         button.selected = NO;
     }];
 
-    if (index < self.buttons.count) { [(UIButton *)self.buttons[index] setSelected:YES]; }
+    if (index < self.buttons.count) {
+        [(UIButton *)self.buttons[index] setSelected:YES];
+    }
 
     // Setup positions of views
     NSInteger direction = (_currentViewIndex > index) ? -1 : 1;
     CGRect nextViewInitialFrame = self.bounds;
     CGRect oldViewEndFrame = self.bounds;
-    nextViewInitialFrame.origin.x =  direction * CGRectGetWidth(self.superview.bounds);
-    oldViewEndFrame.origin.x      = -direction * CGRectGetWidth(self.superview.bounds);
+    nextViewInitialFrame.origin.x = direction * CGRectGetWidth(self.superview.bounds);
+    oldViewEndFrame.origin.x = -direction * CGRectGetWidth(self.superview.bounds);
 
     __block UIViewController *oldViewController = self.currentNavigationController;
     _previousViewIndex = self.currentViewIndex;
@@ -171,7 +176,7 @@ static BOOL ARTabViewDirectionRight = YES;
         }
     };
 
-    ar_dispatch_main_queue( ^{
+    ar_dispatch_main_queue(^{
 
         if (animated && oldViewController && oldViewController.parentViewController) {
             [self.hostViewController transitionFromViewController:oldViewController toViewController:self.currentNavigationController duration:0.3 options:0 animations:animationBlock completion:completionBlock];

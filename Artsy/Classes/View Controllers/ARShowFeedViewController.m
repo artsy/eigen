@@ -23,7 +23,8 @@ static CGFloat ARShowFeedHeaderLabelHeightPad = 55;
 static CGFloat ARFeedLinksNavMarginPhone = 20;
 static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
-@interface ARShowFeedViewController() <ARMenuAwareViewController, DRKonamiGestureProtocol>
+
+@interface ARShowFeedViewController () <ARMenuAwareViewController, DRKonamiGestureProtocol>
 
 @property (nonatomic, strong) ARHeroUnitViewController *heroUnitVC;
 @property (nonatomic, strong) ARFeedLinkUnitViewController *feedLinkVC;
@@ -33,17 +34,20 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 @property (nonatomic, strong, readwrite) UIView *headerView;
 
 @property (nonatomic, strong) AROfflineView *offlineView;
-@property (nonatomic, readwrite, getter = isSHowingOfflineView) BOOL showingOfflineView;
+@property (nonatomic, readwrite, getter=isSHowingOfflineView) BOOL showingOfflineView;
 @property (nonatomic, strong) id networkNotificationObserver;
 
 @end
+
 
 @implementation ARShowFeedViewController
 
 - (instancetype)initWithFeedTimeline:(ARFeedTimeline *)timeline
 {
     self = [super initWithFeedTimeline:timeline];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _heroUnitVC = [[ARHeroUnitViewController alloc] init];
 
@@ -60,7 +64,8 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter removeObserver:self.networkNotificationObserver];
 }
@@ -75,7 +80,8 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
 #pragma mark - Overridden Properties
 
-- (void)setShowingOfflineView:(BOOL)showingOfflineView {
+- (void)setShowingOfflineView:(BOOL)showingOfflineView
+{
     // Force containing VC to re-evaluate the state of the menu button.
     [self willChangeValueForKey:@keypath(self, hidesToolbarMenu)];
     _showingOfflineView = showingOfflineView;
@@ -84,7 +90,8 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
 #pragma mark - Private Methods
 
-- (void)showOfflineView {
+- (void)showOfflineView
+{
     self.showingOfflineView = YES;
 
     if (self.offlineView == nil) {
@@ -98,7 +105,8 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     [self.offlineView constrainHeightToView:self.view predicate:@""];
 }
 
-- (void)hideOfflineView {
+- (void)hideOfflineView
+{
     self.showingOfflineView = NO;
 
     [self.offlineView removeFromSuperview];
@@ -108,11 +116,13 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
 #pragma mark - ARMenuAwareViewController
 
-- (BOOL)hidesBackButton {
+- (BOOL)hidesBackButton
+{
     return self.navigationController.viewControllers.count <= 1;
 }
 
-- (BOOL)hidesToolbarMenu {
+- (BOOL)hidesToolbarMenu
+{
     return self.showingOfflineView == YES;
 }
 - (void)refreshFeedItems
@@ -121,7 +131,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     [self presentLoadingView];
 
     @weakify(self)
-    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^{
             @strongify(self);
             [self.tableView reloadData];
@@ -135,7 +145,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
             [self performSelector:@selector(refreshFeed) withObject:nil afterDelay:3];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
         }];
-    }];
+        }];
 }
 
 - (void)setHeroUnitDatasource:(ARHeroUnitsNetworkModel *)heroUnitDatasource
@@ -151,7 +161,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 - (NSDictionary *)tableViewCellIdentifiers
 {
     return @{
-       @"PartnerShowCellIdentifier" : [ARModernPartnerShowTableViewCell class]
+        @"PartnerShowCellIdentifier" : [ARModernPartnerShowTableViewCell class]
     };
 }
 
@@ -236,10 +246,10 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 - (CGFloat)heightForHeader
 {
     CGFloat height;
-    if ([UIDevice isPad] ) {
+    if ([UIDevice isPad]) {
         height = ARShowFeedHeaderLabelMarginPad + ARShowFeedHeaderLabelHeightPad;
     } else {
-        height =  ARFeedLinksNavMarginPhone + self.feedLinkVC.preferredContentSize.height + ARFeaturedShowsTitleHeightPhone;
+        height = ARFeedLinksNavMarginPhone + self.feedLinkVC.preferredContentSize.height + ARFeaturedShowsTitleHeightPhone;
     }
     return height;
 }
@@ -279,10 +289,10 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
 - (void)konami:(DRKonamiGestureRecognizer *)recognizer
 {
-    if ([recognizer konamiState] == DRKonamiGestureStateRecognized ) {
-        UIFont.ascii = ! UIFont.ascii;
-        UIImageView.ascii = ! UIImageView.ascii;
-        ARTile.ascii = ! ARTile.ascii;
+    if ([recognizer konamiState] == DRKonamiGestureStateRecognized) {
+        UIFont.ascii = !UIFont.ascii;
+        UIImageView.ascii = !UIImageView.ascii;
+        ARTile.ascii = !ARTile.ascii;
         [self.tableView reloadData];
     }
 }
@@ -299,13 +309,13 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 #pragma mark -
 #pragma mark DRKonamiGestureProtocol
 
-- (void)DRKonamiGestureRecognizerNeedsABEnterSequence:(DRKonamiGestureRecognizer*)gesture
+- (void)DRKonamiGestureRecognizerNeedsABEnterSequence:(DRKonamiGestureRecognizer *)gesture
 {
     [self.view addSubview:self.konamiKeyboardView];
     [self.konamiKeyboardView becomeFirstResponder];
 }
 
-- (void)DRKonamiGestureRecognizer:(DRKonamiGestureRecognizer*)gesture didFinishNeedingABEnterSequenceWithError:(BOOL)error
+- (void)DRKonamiGestureRecognizer:(DRKonamiGestureRecognizer *)gesture didFinishNeedingABEnterSequenceWithError:(BOOL)error
 {
     [self.konamiKeyboardView resignFirstResponder];
     [self.konamiKeyboardView removeFromSuperview];

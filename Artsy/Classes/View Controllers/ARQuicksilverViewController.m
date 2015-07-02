@@ -4,6 +4,7 @@
 #import "ARSearchTableViewCell.h"
 #import "ARFileUtils.h"
 
+
 @interface ARQuicksilverViewController ()
 
 @property (nonatomic, assign, readwrite) NSInteger selectedIndex;
@@ -12,6 +13,7 @@
 @property (nonatomic, strong, readonly) AFJSONRequestOperation *searchRequest;
 
 @end
+
 
 @implementation ARQuicksilverViewController
 
@@ -81,7 +83,7 @@
     NSIndexPath *path = [NSIndexPath indexPathForRow:index inSection:0];
     UITableViewCell *cell = [self.searchDisplayController.searchResultsTableView cellForRowAtIndexPath:path];
 
-    UIColor *background = highlight? [UIColor darkGrayColor] : [UIColor blackColor];
+    UIColor *background = highlight ? [UIColor darkGrayColor] : [UIColor blackColor];
     [cell setBackgroundColor:background];
 }
 
@@ -113,8 +115,8 @@
     controller.searchResultsTableView.hidden = NO;
 }
 
--(void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
-
+- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView
+{
     // We need to prevent the resultsTable from hiding if the search is still active
     if (self.searchDisplayController.active == YES) {
         tableView.hidden = NO;
@@ -180,19 +182,20 @@
     @weakify(cell);
     [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:placeholder
 
-     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
          @strongify(cell);
          cell.imageView.image = image;
          [cell layoutSubviews];
 
-    } failure:nil];
+                                   }
+                                   failure:nil];
 
     return cell;
 }
 
 - (NSArray *)contentArray
 {
-   return (self.searchBar.text.length == 0) ? self.resultsHistory : self.searchResults;
+    return (self.searchBar.text.length == 0) ? self.resultsHistory : self.searchResults;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -218,7 +221,7 @@
     } else if (result.model == [Profile class]) {
         controller = [ARSwitchBoard.sharedInstance routeProfileWithID:result.modelID];
 
-    } else if ( result.model == [SiteFeature class]) {
+    } else if (result.model == [SiteFeature class]) {
         NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
         controller = [[ARSwitchBoard sharedInstance] loadPath:path];
     }

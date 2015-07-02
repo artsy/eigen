@@ -3,17 +3,21 @@
 
 static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey";
 
+
 @interface ARHeroUnitsNetworkModel ()
 @property (nonatomic, copy, readwrite) NSArray *heroUnits;
 @property (nonatomic, assign) BOOL isLoading;
 @end
+
 
 @implementation ARHeroUnitsNetworkModel
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.isLoading = NO;
 

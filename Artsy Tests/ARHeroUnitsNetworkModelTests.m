@@ -2,7 +2,7 @@
 #import "SiteHeroUnit.h"
 #import "ARUserManager+Stubs.h"
 
-SpecBegin(ARHeroUnitsNetworkModel)
+SpecBegin(ARHeroUnitsNetworkModel);
 
 describe(@"heros", ^{
     __block ARHeroUnitsNetworkModel *_dataSource;

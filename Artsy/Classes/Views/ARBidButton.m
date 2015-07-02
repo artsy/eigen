@@ -1,9 +1,10 @@
 #import "ARBidButton.h"
 
-NSString * const ARBidButtonRegisterStateTitle = @"REGISTER TO BID";
-NSString * const ARBidButtonRegisteredStateTitle = @"YOU ARE REGISTERED TO BID";
-NSString * const ARBidButtonBiddingOpenStateTitle = @"BID";
-NSString * const ARBidButtonBiddingClosedStateTitle = @"BIDDING CLOSED";
+NSString *const ARBidButtonRegisterStateTitle = @"REGISTER TO BID";
+NSString *const ARBidButtonRegisteredStateTitle = @"YOU ARE REGISTERED TO BID";
+NSString *const ARBidButtonBiddingOpenStateTitle = @"BID";
+NSString *const ARBidButtonBiddingClosedStateTitle = @"BIDDING CLOSED";
+
 
 @implementation ARBidButton
 
@@ -18,7 +19,7 @@ NSString * const ARBidButtonBiddingClosedStateTitle = @"BIDDING CLOSED";
 
 - (CGSize)intrinsicContentSize
 {
-    return (CGSize){ UIViewNoIntrinsicMetric, 46 };
+    return (CGSize){UIViewNoIntrinsicMetric, 46};
 }
 
 - (void)setAuctionState:(ARAuctionState)state

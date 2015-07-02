@@ -11,9 +11,10 @@
 
 @protocol ARModernPartnerShowTableViewCellDelegate <NSObject>
 
--(void)modernPartnerShowTableViewCell:(ARModernPartnerShowTableViewCell *)cell shouldShowViewController:(UIViewController *)viewController;
+- (void)modernPartnerShowTableViewCell:(ARModernPartnerShowTableViewCell *)cell shouldShowViewController:(UIViewController *)viewController;
 
 @end
+
 
 @interface ARModernPartnerShowTableViewCell : UITableViewCell
 

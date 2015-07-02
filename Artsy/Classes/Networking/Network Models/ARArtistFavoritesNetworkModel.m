@@ -1,5 +1,6 @@
 #import "ARArtistFavoritesNetworkModel.h"
 
+
 @implementation ARArtistFavoritesNetworkModel
 
 - (void)performNetworkRequestAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure

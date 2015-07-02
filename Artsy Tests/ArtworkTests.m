@@ -1,4 +1,4 @@
-SpecBegin(Artwork)
+SpecBegin(Artwork);
 
 describe(@"hasHeightAndWidth", ^{
     it(@"with height and width", ^{
@@ -99,7 +99,6 @@ describe(@"defaultImage", ^{
         expect(deserializedArtwork.additionalInfo).to.equal(@"In the collection of European Painting and Sculpture at LACMA.\n\nPaul Rodman Mabury Collection (39.12.3)");
     });
 });
-
 
 
 SpecEnd

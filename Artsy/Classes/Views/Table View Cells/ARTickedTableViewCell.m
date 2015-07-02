@@ -1,9 +1,11 @@
 #import "ARTickedTableViewCell.h"
 #import "ARAnimatedTickView.h"
 
+
 @implementation ARTickedTableViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.useSerifFont = YES;
@@ -16,13 +18,15 @@
 
 // Using setSelected comes with too much baggage. Lets simplify.
 
-- (void)setTickSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setTickSelected:(BOOL)selected animated:(BOOL)animated
+{
     if ([self.accessoryView isKindOfClass:[ARAnimatedTickView class]]) {
         [(ARAnimatedTickView *)self.accessoryView setSelected:selected animated:animated];
     }
 }
 
-- (BOOL)isSelected {
+- (BOOL)isSelected
+{
     if ([self.accessoryView isKindOfClass:[ARAnimatedTickView class]]) {
         return [(ARAnimatedTickView *)self.accessoryView selected];
     }

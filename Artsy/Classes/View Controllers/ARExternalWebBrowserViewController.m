@@ -1,13 +1,16 @@
 #import "ARExternalWebBrowserViewController.h"
 #import <JLRoutes/JLRoutes.h>
 
+
 @interface TSMiniWebBrowser (Private)
-@property(nonatomic, readonly, strong) UIWebView *webView;
+@property (nonatomic, readonly, strong) UIWebView *webView;
 @end
 
-@interface ARExternalWebBrowserViewController()<UIGestureRecognizerDelegate>
-@property(nonatomic, readonly, strong) UIGestureRecognizer *gesture;
+
+@interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate>
+@property (nonatomic, readonly, strong) UIGestureRecognizer *gesture;
 @end
+
 
 @implementation ARExternalWebBrowserViewController
 
@@ -19,7 +22,9 @@
 - (instancetype)initWithURL:(NSURL *)url
 {
     self = [super initWithURL:url];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.showNavigationBar = NO;
     return self;
@@ -49,7 +54,7 @@
     if ([self.navigationController isKindOfClass:[ARNavigationController class]]) {
         UIGestureRecognizer *gesture = self.navigationController.interactivePopGestureRecognizer;
 
-        [ self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:gesture];
+        [self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:gesture];
         _gesture = gesture;
     }
 }
@@ -104,7 +109,8 @@
 - (NSDictionary *)dictionaryForAnalytics
 {
     if (self.currentURL) {
-        return @{ @"url" : self.currentURL.absoluteString, @"type" : @"url" };
+        return @{ @"url" : self.currentURL.absoluteString,
+                  @"type" : @"url" };
     }
 
     return nil;

@@ -1,6 +1,6 @@
 #import "ARSearchFieldButton.h"
 
-SpecBegin(ARSearchFieldButton)
+SpecBegin(ARSearchFieldButton);
 
 it(@"has a valid snapshot", ^{
     ARSearchFieldButton *button = [[ARSearchFieldButton alloc] initWithFrame:CGRectMake(0, 0, 280, 44)];

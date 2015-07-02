@@ -3,7 +3,8 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARArtworkSetViewController.h"
 
-@interface ARArtworkRelatedArtworksView() <AREmbeddedModelsDelegate>
+
+@interface ARArtworkRelatedArtworksView () <AREmbeddedModelsDelegate>
 @property (nonatomic, assign) BOOL hasRequested;
 @property (nonatomic, assign) BOOL hasArtworks;
 @property (nonatomic, strong) Artwork *artwork;
@@ -16,6 +17,7 @@
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
 @property (nonatomic, strong) UIView *separator;
 @end
+
 
 @implementation ARArtworkRelatedArtworksContentView
 
@@ -53,7 +55,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-   return CGSizeMake(UIViewNoIntrinsicMetric, self.hasArtworks ? UIViewNoIntrinsicMetric : 0);
+    return CGSizeMake(UIViewNoIntrinsicMetric, self.hasArtworks ? UIViewNoIntrinsicMetric : 0);
 }
 
 - (void)cancelRequests;
@@ -68,9 +70,11 @@
     [self updateWithArtwork:artwork withCompletion:nil];
 }
 
-- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void(^)())completion
+- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void (^)())completion
 {
-    if (self.hasRequested) { return; }
+    if (self.hasRequested) {
+        return;
+    }
 
     self.artwork = artwork;
     self.hasRequested = YES;
@@ -86,9 +90,10 @@
     KSPromise *fairPromise = [artwork onFairUpdate:nil failure:nil];
 
     __block PartnerShow *show = nil;
-    KSPromise *partnerShowPromise = [artwork onPartnerShowUpdate:^(PartnerShow *s) { show = s; } failure:nil];
+    KSPromise *partnerShowPromise = [artwork onPartnerShowUpdate:^(PartnerShow *s) { show = s;
+    } failure:nil];
 
-    [[KSPromise when:@[salePromise, fairPromise, partnerShowPromise]] then:^id(id value) {
+    [[KSPromise when:@[ salePromise, fairPromise, partnerShowPromise ]] then:^id(id value) {
         @strongify(self);
 
         if (show) {
@@ -178,7 +183,7 @@
     }];
 }
 
--(void)getArtworksInShow:(PartnerShow *)show atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success
+- (void)getArtworksInShow:(PartnerShow *)show atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success
 {
     [self addRelatedArtworkRequest:[show getArtworksAtPage:page success:success]];
 }
@@ -257,7 +262,7 @@
 - (void)updateSeparators;
 {
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES];
-    NSArray *sections = [self.subviews sortedArrayUsingDescriptors:@[sortDescriptor]];
+    NSArray *sections = [self.subviews sortedArrayUsingDescriptors:@[ sortDescriptor ]];
     NSUInteger last = sections.count - 1;
     for (NSUInteger i = 0; i < last; i++) {
         [sections[i] separator].hidden = NO;

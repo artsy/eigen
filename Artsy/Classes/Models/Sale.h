@@ -1,6 +1,8 @@
 #import <Mantle/Mantle.h>
 
 @class BuyersPremium;
+
+
 @interface Sale : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *name;

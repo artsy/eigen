@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
+
 @interface WatchShow : NSObject
 
 - (instancetype)initWithShowID:(NSString *)showID title:(NSString *)title partnerName:(NSString *)partnerName ausstellungsdauer:(NSString *)ausstellungsdauer locationString:(NSString *)locationString distanceFromString:(NSString *)distanceFromString coordinatesDictionary:(NSDictionary *)coordinates thumbnailImageURL:(NSURL *)thumbnailImageURL;

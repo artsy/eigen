@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+
 @interface NSString (StringBetweenStrings)
 
 /// on a string "hello world" with arguments "e" and "d"

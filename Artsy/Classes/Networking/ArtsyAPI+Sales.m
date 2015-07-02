@@ -1,5 +1,6 @@
 #import "ArtsyAPI+Private.h"
 
+
 @implementation ArtsyAPI (Sales)
 
 + (void)getSalesWithArtwork:(NSString *)artworkID
@@ -11,8 +12,8 @@
 }
 
 + (AFJSONRequestOperation *)getArtworksForSale:(NSString *)saleID
-                   success:(void (^)(NSArray *))success
-                   failure:(void (^)(NSError *))failure
+                                       success:(void (^)(NSArray *))success
+                                       failure:(void (^)(NSError *))failure
 {
     NSURLRequest *request = [ARRouter artworksForSaleRequest:saleID];
     return [self getRequest:request parseIntoAnArrayOfClass:[Artwork class] withKey:@"artwork" success:success failure:failure];

@@ -1,5 +1,6 @@
 #import <Mantle/Mantle.h>
 
+
 @interface SystemTime : MTLModel <MTLJSONSerializing>
 /**
  *  System (server-side) date.

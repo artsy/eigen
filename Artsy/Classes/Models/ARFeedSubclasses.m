@@ -1,19 +1,24 @@
 #import "ARAppBackgroundFetchDelegate.h"
 
+
 @interface ARFeed ()
 - (NSOrderedSet *)parseItemsFromJSON:(NSDictionary *)result;
 @end
 
-@interface ARFileFeed()
+
+@interface ARFileFeed ()
 @property (nonatomic, copy) id JSON;
 @end
+
 
 @implementation ARFileFeed
 
 - (instancetype)initWithNamedFile:(NSString *)fileName
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:fileName ofType:@"json"]];
     NSError *error = nil;
@@ -22,7 +27,8 @@
     return self;
 }
 
-- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure {
+- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
+{
     if (success) {
         dispatch_async(dispatch_get_main_queue(), ^{
             success([self parseItemsFromJSON:self.JSON]);
@@ -40,12 +46,15 @@
 @property (nonatomic, assign) BOOL parsing;
 @end
 
+
 @implementation ARShowFeed
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     //NSString *fetchBackgroundFilePath = [ARAppBackgroundFetchDelegate pathForDownloadedShowFeed];
     //self.JSON = [NSKeyedUnarchiver unarchiveObjectWithFile:fetchBackgroundFilePath];
@@ -54,7 +63,8 @@
 }
 
 
-- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure {
+- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
+{
     @weakify(self);
     if (self.JSON) {
         // We may get asked multiple times before we finished extracting the data
@@ -105,18 +115,22 @@
 @property (nonatomic, strong) Profile *profile;
 @end
 
+
 @implementation ARProfileFeed
 
-- (instancetype)initWithProfile:(Profile *)profile {
+- (instancetype)initWithProfile:(Profile *)profile
+{
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _profile = profile;
     return self;
 }
 
-- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure {
-
+- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
+{
     @weakify(self);
     [ArtsyAPI getFeedResultsForProfile:self.profile withCursor:cursor success:^(id JSON) {
         @strongify(self);
@@ -140,13 +154,16 @@
 - (instancetype)initWithFairOrganizer:(FairOrganizer *)fairOrganizer
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _fairOrganizer = fairOrganizer;
     return self;
 }
 
-- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure {
+- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
+{
     @weakify(self);
     [ArtsyAPI getFeedResultsForFairOrganizer:self.fairOrganizer withCursor:cursor success:^(id JSON) {
         ar_dispatch_async(^{
@@ -182,7 +199,9 @@
 - (instancetype)initWithFair:(Fair *)fair partner:(Partner *)partner
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _fair = fair;
     _partner = partner;
@@ -207,4 +226,3 @@
 }
 
 @end
-

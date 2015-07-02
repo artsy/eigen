@@ -4,11 +4,13 @@
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import "UIView+HitTestExpansion.h"
 
+
 @interface ARSignUpSplashTextViewController : UIViewController
 @property (nonatomic, readwrite) NSInteger index;
 @property (nonatomic, strong, readwrite) NSString *text;
 - (instancetype)initWithText:(NSString *)text andIndex:(NSInteger)index;
 @end
+
 
 @interface ARSignUpSplashViewController () <UIScrollViewDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
@@ -21,12 +23,13 @@
 @property (nonatomic, strong, readwrite) UIPageControl *pageControl;
 @end
 
+
 @implementation ARSignUpSplashViewController
 
 - (NSDictionary *)pageWithImageName:(NSString *)imageName bodyCopy:(NSString *)copy
 {
     return @{
-        @"image": [UIImage imageNamed:imageName],
+        @"image" : [UIImage imageNamed:imageName],
         @"copy" : copy
     };
 }
@@ -36,14 +39,14 @@
     self = [super init];
     if (self) {
         _pages = @[
-           [self pageWithImageName:@"onboard_1.jpg"
-                          bodyCopy:@"Explore and collect\nover 280,000 works from\n3,500 leading galleries,\nart fairs, and museums."],
+            [self pageWithImageName:@"onboard_1.jpg"
+                           bodyCopy:@"Explore and collect\nover 280,000 works from\n3,500 leading galleries,\nart fairs, and museums."],
 
-           [self pageWithImageName:@"onboard_2.jpg"
-                          bodyCopy:@"Favorite artists and works\nto get alerts about\nnew shows and personal recommendations."],
+            [self pageWithImageName:@"onboard_2.jpg"
+                           bodyCopy:@"Favorite artists and works\nto get alerts about\nnew shows and personal recommendations."],
 
-           [self pageWithImageName:@"onboard_3.jpg"
-                          bodyCopy:@"Collect works and\nconnect with galleries.\nNeed help or advice? Artsy's specialists can help."],
+            [self pageWithImageName:@"onboard_3.jpg"
+                           bodyCopy:@"Collect works and\nconnect with galleries.\nNeed help or advice? Artsy's specialists can help."],
         ];
     }
 
@@ -57,7 +60,7 @@
 
     self.imageView = [[ARCrossfadingImageView alloc] init];
     self.imageView.shouldLoopImages = YES;
-    [self.view addSubview: self.imageView];
+    [self.view addSubview:self.imageView];
     [self.imageView alignToView:self.view];
     self.imageView.userInteractionEnabled = YES;
 
@@ -70,7 +73,7 @@
     ARSignUpSplashTextViewController *initialVC = [self viewControllerForIndex:0];
     if (initialVC) {
         self.pageControl.currentPage = 0;
-        NSArray *initialVCs = @[initialVC];
+        NSArray *initialVCs = @[ initialVC ];
         [self.pageViewController setViewControllers:initialVCs direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     }
 
@@ -102,7 +105,7 @@
     [self.signUpButton constrainTopSpaceToView:self.pageControl predicate:@"29"];
     [self.signUpButton alignCenterXWithView:self.view predicate:nil];
 
-    self.trialButton  = [[ARClearFlatButton alloc] init];
+    self.trialButton = [[ARClearFlatButton alloc] init];
     [self.view addSubview:self.trialButton];
     [self.trialButton setTitle:@"TRY WITHOUT AN ACCOUNT" forState:UIControlStateNormal];
     [self.trialButton addTarget:self action:@selector(startTrial) forControlEvents:UIControlEventTouchUpInside];
@@ -161,7 +164,9 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(ARSignUpSplashTextViewController *)viewController
 {
-    if (self.pageCount <= 1) { return nil; }
+    if (self.pageCount <= 1) {
+        return nil;
+    }
 
 
     NSInteger newIndex = viewController.index - 1;
@@ -174,7 +179,9 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(ARSignUpSplashTextViewController *)viewController
 {
-    if (self.pageCount <= 1) { return nil; }
+    if (self.pageCount <= 1) {
+        return nil;
+    }
 
     NSInteger newIndex = (viewController.index + 1) % self.pageCount;
     return [self viewControllerForIndex:newIndex];
@@ -182,7 +189,9 @@
 
 - (ARSignUpSplashTextViewController *)viewControllerForIndex:(NSInteger)index
 {
-    if (index < 0 || index >= self.pageCount) { return nil; }
+    if (index < 0 || index >= self.pageCount) {
+        return nil;
+    }
 
     return [[ARSignUpSplashTextViewController alloc] initWithText:self.pages[index][@"copy"] andIndex:index];
 }
@@ -191,7 +200,9 @@
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
 {
-    if (!completed) { return; }
+    if (!completed) {
+        return;
+    }
     NSInteger index = [self currentViewController].index;
     [self.pageControl setCurrentPage:index];
     self.imageView.currentIndex = index;
@@ -237,7 +248,7 @@
         // Load normal app
         [self.delegate dismissOnboardingWithVoidAnimation:YES];
     }
-    failure:^(NSError *error) {
+        failure:^(NSError *error) {
         [UIAlertView showWithTitle:@"Couldn’t Reach Artsy"
                            message:error.localizedDescription
                  cancelButtonTitle:@"Retry"
@@ -245,7 +256,7 @@
                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                               [self performSelector:@selector(enableForm) withObject:nil];
                           }];
-    }];
+        }];
 }
 
 - (void)enableForm
@@ -257,7 +268,7 @@
 
 - (void)setFormEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-    [UIView animateIf:animated duration:0.15 :^{
+    [UIView animateIf:animated duration:0.15:^{
         for (UIView *view in @[self.trialButton, self.logInButton, self.signUpButton]) {
             view.userInteractionEnabled = enabled;
             view.alpha = enabled ? 1 : 0.3;
@@ -280,11 +291,14 @@
 
 @end
 
+
 @implementation ARSignUpSplashTextViewController
 - (instancetype)initWithText:(NSString *)text andIndex:(NSInteger)index
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _text = text;
     _index = index;
     return self;
@@ -323,4 +337,3 @@
 }
 
 @end
-

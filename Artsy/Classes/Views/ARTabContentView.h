@@ -22,15 +22,16 @@
 
 **/
 
+
 @interface ARTabContentView : UIView
 
-- (id)initWithFrame:(CGRect)frame hostViewController:(UIViewController *)controller delegate:(id <ARTabViewDelegate>)delegate dataSource:(id <ARTabViewDataSource>)dataSource;
+- (id)initWithFrame:(CGRect)frame hostViewController:(UIViewController *)controller delegate:(id<ARTabViewDelegate>)delegate dataSource:(id<ARTabViewDataSource>)dataSource;
 
 @property (nonatomic, strong, readwrite) NSArray *buttons;
 @property (nonatomic, weak, readonly) UIViewController *hostViewController;
 
-@property (nonatomic, weak) id <ARTabViewDelegate> delegate;
-@property (nonatomic, weak) id <ARTabViewDataSource> dataSource;
+@property (nonatomic, weak) id<ARTabViewDelegate> delegate;
+@property (nonatomic, weak) id<ARTabViewDataSource> dataSource;
 
 
 @property (nonatomic, strong, readonly) UINavigationController *currentNavigationController;

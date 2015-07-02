@@ -2,6 +2,7 @@
 #import "ARArtworkPriceRowView.h"
 @import Artsy_UILabels;
 
+
 @implementation ARArtworkAuctionPriceView
 
 - (void)updateWithSaleArtwork:(SaleArtwork *)saleArtwork
@@ -37,7 +38,7 @@
     } else if (bidCount && reserveStatus == ARReserveStatusReserveMet) {
         return [NSString stringWithFormat:@"(%@ %@, Reserve met)", @(bidCount), bids];
     } else if (reserveStatus == ARReserveStatusReserveNotMet) {
-        return startedAuction ? @"This work has a reserve" :  @"(This work has a reserve)";
+        return startedAuction ? @"This work has a reserve" : @"(This work has a reserve)";
     } else {
         return nil;
     }

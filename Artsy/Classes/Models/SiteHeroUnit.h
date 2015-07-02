@@ -1,14 +1,15 @@
 #import <Mantle/Mantle.h>
 
-typedef NS_ENUM(NSInteger, ARHeroUnitImageColor){
+typedef NS_ENUM(NSInteger, ARHeroUnitImageColor) {
     ARHeroUnitImageColorBlack,
     ARHeroUnitImageColorWhite
 };
 
-typedef NS_ENUM(NSInteger, ARHeroUnitAlignment){
+typedef NS_ENUM(NSInteger, ARHeroUnitAlignment) {
     ARHeroUnitAlignmentLeft,
     ARHeroUnitAlignmentRight
 };
+
 
 @interface SiteHeroUnit : MTLModel <MTLJSONSerializing>
 
@@ -28,7 +29,7 @@ typedef NS_ENUM(NSInteger, ARHeroUnitAlignment){
 
 @property (nonatomic, copy, readonly) NSString *mobileBackgroundImageAddress;
 @property (nonatomic, copy, readonly) NSString *backgroundImageAddress;
-@property (nonatomic, assign, readonly, getter = isCurrentlyActive) BOOL currentlyActive;
+@property (nonatomic, assign, readonly, getter=isCurrentlyActive) BOOL currentlyActive;
 
 @property (nonatomic, assign, readonly) ARHeroUnitImageColor backgroundStyle;
 @property (nonatomic, assign, readonly) ARHeroUnitAlignment alignment;

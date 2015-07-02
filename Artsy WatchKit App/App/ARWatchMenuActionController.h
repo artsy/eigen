@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "WatchArtwork.h"
 
+
 @interface ARWatchMenuActionController : NSObject
 
 - (void)heartArtwork:(WatchArtwork *)artwork;

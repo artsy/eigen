@@ -7,6 +7,7 @@
 #import "ARFairSearchViewController.h"
 #import "ARSearchViewController+Private.h"
 
+
 @interface ARFairViewController (Testing)
 
 @property (nonatomic, strong) ARSearchFieldButton *searchButton;
@@ -26,11 +27,12 @@
 
 @end
 
+
 @interface ARFairSearchViewController (Testing)
-@property(nonatomic, readwrite, assign) BOOL shouldAnimate;
+@property (nonatomic, readwrite, assign) BOOL shouldAnimate;
 @end
 
-SpecBegin(ARFairViewController)
+SpecBegin(ARFairViewController);
 
 it(@"maps bindings correctly", ^{
     ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:nil];

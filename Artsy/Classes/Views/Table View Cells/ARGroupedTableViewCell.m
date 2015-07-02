@@ -1,8 +1,10 @@
 #import "ARGroupedTableViewCell.h"
 
+
 @implementation ARGroupedTableViewCell
 
-- (void)drawRect:(CGRect)rect {
+- (void)drawRect:(CGRect)rect
+{
     CGContextRef context = UIGraphicsGetCurrentContext();
     [[UIColor whiteColor] setFill];
     CGContextFillRect(context, rect);
@@ -28,7 +30,8 @@
     CGContextStrokePath(context);
 }
 
-- (void)prepareForReuse {
+- (void)prepareForReuse
+{
     _isTopCell = NO;
     [super prepareForReuse];
 }

@@ -1,5 +1,6 @@
 #import "ARValueTransformer.h"
 
+
 @implementation Partner
 @synthesize imageURLs;
 
@@ -18,15 +19,15 @@
 + (NSValueTransformer *)typeJSONTransformer
 {
     NSDictionary *types = @{
-         @"Gallery": @(ARPartnerTypeGallery),
-         @"Museum": @(ARPartnerTypeMuseum),
-         @"Artist Estate": @(ARPartnerTypeArtistEstate),
-         @"Private Collection": @(ARPartnerTypePrivateCollection),
-         @"Foundation": @(ARPartnerTypeFoundation),
-         @"Public Domain": @(ARPartnerTypePublicDomain),
-         @"Image Archive": @(ARPartnerTypeImageArchive),
-         @"Non Profit": @(ARPartnerTypeNonProfit),
-     };
+        @"Gallery" : @(ARPartnerTypeGallery),
+        @"Museum" : @(ARPartnerTypeMuseum),
+        @"Artist Estate" : @(ARPartnerTypeArtistEstate),
+        @"Private Collection" : @(ARPartnerTypePrivateCollection),
+        @"Foundation" : @(ARPartnerTypeFoundation),
+        @"Public Domain" : @(ARPartnerTypePublicDomain),
+        @"Image Archive" : @(ARPartnerTypeImageArchive),
+        @"Non Profit" : @(ARPartnerTypeNonProfit),
+    };
 
     return [ARValueTransformer enumValueTransformerWithMap:types];
 }
@@ -54,7 +55,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         Partner *partner = object;
         return [partner.partnerID isEqualToString:self.partnerID];
     }

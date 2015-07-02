@@ -2,6 +2,7 @@
 #import "ARRouter.h"
 #import "ArtsyAPI+Private.h"
 
+
 @implementation ArtsyAPI (Feed)
 
 + (void)getFeedResultsForMainFeedWithCursor:(NSString *)cursor success:(void (^)(id JSON))success failure:(void (^)(NSError *error))failure
@@ -48,7 +49,7 @@
 {
     __weak AFJSONRequestOperation *feedOperation = nil;
     feedOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-        success:^ (NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 
             BOOL isFirstPageOfMainFeed = (!cursor);
             if (success) {
@@ -60,12 +61,13 @@
                     [feedOperation.responseData writeToFile:path options:NSDataWritingAtomic error:nil];
                 });
             }
-        } failure:^ (NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        }
+        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             [ArtsyAPI handleXappTokenError:error];
             if (failure) {
                 failure(error);
             }
-    }];
+        }];
     [feedOperation start];
 }
 

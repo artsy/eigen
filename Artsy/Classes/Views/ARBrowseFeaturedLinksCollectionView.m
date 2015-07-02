@@ -3,6 +3,7 @@
 
 static CGFloat const ARDoubleRowStyleSpacing = 11;
 
+
 @implementation ARBrowseFeaturedLinksCollectionView
 
 - (instancetype)initWithStyle:(enum ARFeaturedLinkStyle)style
@@ -11,7 +12,9 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat height = [self heightForCollectionViewWithStyle:style];
     self = [super initWithFrame:CGRectMake(0, 0, width, height) collectionViewLayout:flowLayout];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _style = style;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -33,7 +36,7 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 
 - (CGFloat)heightForCollectionViewWithStyle:(ARFeaturedLinkStyle)style
 {
-    CGFloat cellHeight =  [self heightForCellWithStyle:style];
+    CGFloat cellHeight = [self heightForCellWithStyle:style];
     switch (style) {
         case ARFeaturedLinkLayoutSingleRow:
             return cellHeight;
@@ -43,7 +46,6 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 }
 - (CGFloat)heightForCellWithStyle:(ARFeaturedLinkStyle)style
 {
-
     switch (style) {
         case ARFeaturedLinkLayoutSingleRow:
             if ([UIDevice isPhone]) {
@@ -65,8 +67,8 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
     }
 }
 
-- (CGFloat)widthForCellWithStyle:(ARFeaturedLinkStyle)style{
-
+- (CGFloat)widthForCellWithStyle:(ARFeaturedLinkStyle)style
+{
     switch (self.style) {
         case ARFeaturedLinkLayoutSingleRow:
             if ([UIDevice isPhone]) {
@@ -88,17 +90,19 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
     }
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = [self widthForCellWithStyle:self.style];
     CGFloat height = [self heightForCellWithStyle:self.style];
 
-    if (!(width && height)) { return CGSizeZero; }
+    if (!(width && height)) {
+        return CGSizeZero;
+    }
 
     return CGSizeMake(width, height);
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     CGFloat inset;
     if ([UIDevice isPhone]) {
@@ -120,7 +124,7 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 
     FeaturedLink *link = self.featuredLinks[indexPath.row];
     NSURL *imageURL;
-    switch (self.style){
+    switch (self.style) {
         case ARFeaturedLinkLayoutSingleRow:
             imageURL = link.largeImageURL;
             break;

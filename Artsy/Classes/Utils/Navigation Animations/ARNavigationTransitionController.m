@@ -8,6 +8,7 @@
 #import "ARViewInRoomViewController.h"
 #import "ARZoomArtworkImageViewController.h"
 
+
 @implementation ARNavigationTransitionController
 
 + (ARNavigationTransition *)animationControllerForOperation:(UINavigationControllerOperation)operation
@@ -33,7 +34,7 @@
 + (BOOL)objects:(id)first andSecond:(id)second areTransitionsFromClass:(Class)klass1 andClass:(Class)klass2
 {
     return ([first isKindOfClass:[klass1 class]] && [second isKindOfClass:[klass2 class]]) ||
-           ([first isKindOfClass:[klass2 class]] && [second isKindOfClass:[klass1 class]]);
+        ([first isKindOfClass:[klass2 class]] && [second isKindOfClass:[klass1 class]]);
 }
 
 @end

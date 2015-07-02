@@ -1,9 +1,10 @@
 #import "ARNavigationButtonsViewController.h"
 #import "ARNavigationButton.h"
 
-NSString * const ARNavigationButtonClassKey = @"ARNavigationButtonClassKey";
-NSString * const ARNavigationButtonHandlerKey = @"ARNavigationButtonHandlerKey";
-NSString * const ARNavigationButtonPropertiesKey = @"ARNavigationButtonPropertiesKey";
+NSString *const ARNavigationButtonClassKey = @"ARNavigationButtonClassKey";
+NSString *const ARNavigationButtonHandlerKey = @"ARNavigationButtonHandlerKey";
+NSString *const ARNavigationButtonPropertiesKey = @"ARNavigationButtonPropertiesKey";
+
 
 @interface ARNavigationButtonsViewController ()
 
@@ -12,6 +13,7 @@ NSString * const ARNavigationButtonPropertiesKey = @"ARNavigationButtonPropertie
 
 @end
 
+
 @implementation ARNavigationButtonsViewController
 
 @dynamic view;
@@ -19,7 +21,9 @@ NSString * const ARNavigationButtonPropertiesKey = @"ARNavigationButtonPropertie
 - (id)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _handlersByButton = [NSMapTable strongToStrongObjectsMapTable];
     _buttonDescriptions = [[NSArray alloc] init];
@@ -30,7 +34,9 @@ NSString * const ARNavigationButtonPropertiesKey = @"ARNavigationButtonPropertie
 - (id)initWithButtonDescriptions:(NSArray *)descriptions
 {
     self = [self init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.buttonDescriptions = descriptions;
 
@@ -58,13 +64,13 @@ NSString * const ARNavigationButtonPropertiesKey = @"ARNavigationButtonPropertie
 
     return (CGSize){
         .width = CGRectGetWidth(self.parentViewController.view.bounds),
-        .height = height
-    };
+        .height = height};
 }
 
 #pragma mark - Properties
 
-- (void)setButtonDescriptions:(NSArray *)buttonDescriptions {
+- (void)setButtonDescriptions:(NSArray *)buttonDescriptions
+{
     // Remove old buttons
     for (UIButton *button in self.navigationButtons) {
         [self.handlersByButton removeObjectForKey:button];
@@ -74,15 +80,17 @@ NSString * const ARNavigationButtonPropertiesKey = @"ARNavigationButtonPropertie
     [self addButtonDescriptions:[buttonDescriptions copy]];
 }
 
-- (void)addButtonDescriptions:(NSArray *)buttonDescriptions {
+- (void)addButtonDescriptions:(NSArray *)buttonDescriptions
+{
     [self addButtonDescriptions:buttonDescriptions unique:NO];
 }
 
-- (void)addButtonDescriptions:(NSArray *)buttonDescriptions unique:(BOOL)unique {
+- (void)addButtonDescriptions:(NSArray *)buttonDescriptions unique:(BOOL)unique
+{
     for (NSDictionary *newButtonDescription in buttonDescriptions) {
         if (unique && [_buttonDescriptions detect:^BOOL(id buttonDescription) {
             return [buttonDescription[ARNavigationButtonPropertiesKey] isEqualToDictionary:newButtonDescription[ARNavigationButtonPropertiesKey]];
-        }]) {
+            }]) {
             continue;
         }
 

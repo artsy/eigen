@@ -10,28 +10,31 @@
 @property (nonatomic, strong) ARFairMapAnnotationCallOutView *calloutView;
 @end
 
+
 @implementation ARFairMapContentView
 
 - (void)addSubview:(UIView *)subview;
 {
-  [super addSubview:subview];
-  if ([subview isKindOfClass:[ARFairMapAnnotationCallOutView class]]) {
-    self.calloutView = (ARFairMapAnnotationCallOutView *)subview;
-  }
+    [super addSubview:subview];
+    if ([subview isKindOfClass:[ARFairMapAnnotationCallOutView class]]) {
+        self.calloutView = (ARFairMapAnnotationCallOutView *)subview;
+    }
 }
 
 - (void)layoutSubviews;
 {
-  CGPoint center = self.calloutView.center;
-  [super layoutSubviews];
-  self.calloutView.center = center;
+    CGPoint center = self.calloutView.center;
+    [super layoutSubviews];
+    self.calloutView.center = center;
 }
 
 @end
 
+
 @interface ARFairMapView ()
 @property (nonatomic, readonly) ARFairMapContentView *contentView;
 @end
+
 
 @implementation ARFairMapView
 

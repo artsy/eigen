@@ -1,5 +1,6 @@
 #import "ArtsyAPI.h"
 
+
 @interface ArtsyAPI (RelatedModels)
 
 + (AFJSONRequestOperation *)getRelatedArtistsForArtist:(Artist *)artist success:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure;

@@ -1,6 +1,7 @@
 #import "ArtsyAPI.h"
 #import "Models.h"
 
+
 @interface ArtsyAPI (Feed)
 
 + (void)getFeedResultsForMainFeedWithCursor:(NSString *)cursor success:(void (^)(id JSON))success failure:(void (^)(NSError *error))failure;

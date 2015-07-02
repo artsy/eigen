@@ -1,13 +1,16 @@
 #import "ARWatchNoResultsViewController.h"
 
-@interface ARWatchNoResultsViewController()
+
+@interface ARWatchNoResultsViewController ()
 @end
+
 
 @implementation ARWatchNoResultsViewController
 
 + (NSDictionary *)contextWithTitle:(NSString *)title subtitle:(NSString *)subtitle
 {
-    return @{ @"title" : title, @"subtitle": subtitle };
+    return @{ @"title" : title,
+              @"subtitle" : subtitle };
 }
 
 - (void)awakeWithContext:(NSDictionary *)context

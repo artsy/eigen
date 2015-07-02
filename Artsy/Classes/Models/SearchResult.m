@@ -3,6 +3,7 @@
 
 static NSDictionary *classMap;
 
+
 @implementation SearchResult
 
 + (BOOL)searchResultIsSupported:(NSDictionary *)dict
@@ -18,9 +19,9 @@ static NSDictionary *classMap;
 + (void)initialize
 {
     classMap = @{
-        @"artwork": [Artwork class],
-        @"gene": [Gene class],
-        @"artist": [Artist class],
+        @"artwork" : [Artwork class],
+        @"gene" : [Gene class],
+        @"artist" : [Artist class],
         @"profile" : [Profile class],
         @"feature" : [SiteFeature class],
 
@@ -54,7 +55,7 @@ static NSDictionary *classMap;
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:self.class]){
+    if ([object isKindOfClass:self.class]) {
         return [self.model isEqual:[object model]] && [self.modelID isEqualToString:[object modelID]];
     }
 
@@ -79,7 +80,9 @@ static NSDictionary *classMap;
 - (id)initWithCoder:(NSCoder *)decoder
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _modelID = [decoder decodeObjectForKey:@"id"];
     _displayText = [decoder decodeObjectForKey:@"display"];

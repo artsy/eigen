@@ -7,6 +7,7 @@
 
 #import "UIView+HitTestExpansion.h"
 
+
 @interface ARFairGuideContainerViewController () <ARFairGuideViewControllerDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, readonly) ARNavigationController *parentViewController;
@@ -29,6 +30,7 @@
 @property (readwrite, nonatomic, assign) CGFloat topHeight;
 
 @end
+
 
 @implementation ARFairGuideContainerViewController
 
@@ -62,7 +64,7 @@ const CGFloat kClosedMapHeight = 180.0f;
         [self downloadContent];
     }];
 
-    [[RACSignal combineLatest:@[RACObserve(self, mapsLoaded), RACObserve(self, fairLoaded)]] subscribeNext:^(id x) {
+    [[RACSignal combineLatest:@[ RACObserve(self, mapsLoaded), RACObserve(self, fairLoaded) ]] subscribeNext:^(id x) {
         @strongify(self);
         [self checkForDataLoaded];
     }];
@@ -203,7 +205,7 @@ const CGFloat kClosedMapHeight = 180.0f;
 
         // @"-64" is statusbar + nav bar, to hide the map VC's title view
         [self alignViewToSelf:self.fairMapViewController.view top:@"-64" leading:@"0" bottom:mapBottomString trailing:@"0"];
-        [self alignViewToSelf:self.clickInterceptorView  top:@"0" leading:@"0" bottom:mapBottomString trailing:@"0"];
+        [self alignViewToSelf:self.clickInterceptorView top:@"0" leading:@"0" bottom:mapBottomString trailing:@"0"];
         [self alignViewToSelf:self.fairGuideViewController.view top:nil leading:@"0" bottom:@"0" trailing:@"0"];
         [self alignViewToSelf:self.fairGuideBackgroundView top:nil leading:@"0" bottom:@"0" trailing:@"0"];
 
@@ -245,20 +247,20 @@ const CGFloat kClosedMapHeight = 180.0f;
     };
 
     if (oldTopHeight > 0 && self.topHeight < kClosedMapHeight) { // Collapsing to map preview
-        CGFloat heightRatio = ((1.0 - self.topHeight/kClosedMapHeight) + 1.0) / 2.0;
+        CGFloat heightRatio = ((1.0 - self.topHeight / kClosedMapHeight) + 1.0) / 2.0;
         [self.fairMapViewController centerMap:heightRatio inFrameOfHeight:kClosedMapHeight animated:NO];
         self.fairBackgroundViewTopLayoutConstraint.constant = self.topHeight;
         updateConstraints();
         scrollView.contentOffset = contentOffset.y > 0 ? CGPointZero : contentOffset;
 
     } else if (contentOffset.y < 0 && oldTopHeight != 0) { // Expanding to fullscreen map
-        // We check for oldTopHeight != 0 to prevent the controller from executing this branch when beginning to scroll down from contentOffset.y ~= 0. 
-        CGFloat heightRatio = ((contentOffset.y + kClosedMapHeight)/kClosedMapHeight) / 2.0;
+        // We check for oldTopHeight != 0 to prevent the controller from executing this branch when beginning to scroll down from contentOffset.y ~= 0.
+        CGFloat heightRatio = ((contentOffset.y + kClosedMapHeight) / kClosedMapHeight) / 2.0;
         [self.fairMapViewController centerMap:heightRatio inFrameOfHeight:kClosedMapHeight animated:NO];
         self.fairBackgroundViewTopLayoutConstraint.constant = fabs(contentOffset.y) + kClosedMapHeight;
         updateConstraints();
     }
-  }
+}
 
 - (void)alignViewToSelf:(UIView *)view top:(NSString *)top leading:(NSString *)leading bottom:(NSString *)bottom trailing:(NSString *)trailing
 {
@@ -346,13 +348,17 @@ const CGFloat kClosedMapHeight = 180.0f;
 {
     [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
 
-    if ([scrollView isDescendantOfView:self.view] == NO) { return; }
-    if (self.hasMap == NO) { return; }
+    if ([scrollView isDescendantOfView:self.view] == NO) {
+        return;
+    }
+    if (self.hasMap == NO) {
+        return;
+    }
 
     [self updateParallaxConstraints];
 
     // We move the scroll view indicator as we do the parallax, so we trick a little.
-    CGFloat top = -self.topHeight * 1.5 + 20 + kClosedMapHeight/2;
+    CGFloat top = -self.topHeight * 1.5 + 20 + kClosedMapHeight / 2;
     scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(top, 0, 0, 0);
 }
 

@@ -1,13 +1,16 @@
+
+
 @interface Map ()
 @property (nonatomic, strong) Image *image;
 @end
+
 
 @implementation Map
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(Map.new, features) :@"map_features",
+        @keypath(Map.new, features) : @"map_features",
         @keypath(Map.new, mapID) : @"id",
     };
 }
@@ -29,7 +32,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         Map *map = object;
         return [map.mapID isEqualToString:self.mapID];
     }

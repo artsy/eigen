@@ -1,8 +1,8 @@
 #import "ARBidButton.h"
 
-SpecBegin(ARBidButton)
+SpecBegin(ARBidButton);
 
-__block ARBidButton * _button = nil;
+__block ARBidButton *_button = nil;
 
 beforeEach(^{
     _button = [[ARBidButton alloc] initWithFrame:CGRectMake(0, 0, 300, 46)];
@@ -29,4 +29,3 @@ it(@"bidding closed", ^{
 });
 
 SpecEnd
-

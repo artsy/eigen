@@ -6,12 +6,15 @@
 #import "ARDefaults.h"
 #import "AROptions.h"
 
+
 @implementation ARWatchHomeRowController
 @end
 
-@interface ARWatchOpeningInterfaceController()
+
+@interface ARWatchOpeningInterfaceController ()
 @property (nonatomic, copy) NSArray *menuItemTitles;
 @end
+
 
 @implementation ARWatchOpeningInterfaceController
 
@@ -35,7 +38,6 @@
 
     self.menuItemTitles = mutableTitles;
     for (NSString *title in mutableTitles) {
-
         ARWatchHomeRowController *row = [self.table rowControllerAtIndex:[mutableTitles indexOfObject:title]];
         row.titleLabel.text = title.uppercaseString;
     }
@@ -56,7 +58,6 @@
     if ([title isEqualToString:@"Shows nearby"]) {
         [self showsTapped];
     }
-
 }
 
 - (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification
@@ -113,10 +114,7 @@
 - (BOOL)hasShowsNearbyEnabled
 {
     return YES;
-//    return [AROptions boolForOption:AROptionsShowsNearMe];
+    //    return [AROptions boolForOption:AROptionsShowsNearMe];
 }
 
 @end
-
-
-

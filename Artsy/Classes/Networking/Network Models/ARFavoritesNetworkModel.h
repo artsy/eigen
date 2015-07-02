@@ -1,3 +1,5 @@
+
+
 @interface ARFavoritesNetworkModel : NSObject
 
 @property (readonly, nonatomic, assign) BOOL allDownloaded;

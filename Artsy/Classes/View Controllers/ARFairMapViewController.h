@@ -2,7 +2,8 @@
 
 @class ARTiledImageDataSourceWithImage, ARFairMapZoomManager, ARFairShowMapper, ARFairMapAnnotation;
 
-@interface ARFairMapViewController : UIViewController<ARMenuAwareViewController>
+
+@interface ARFairMapViewController : UIViewController <ARMenuAwareViewController>
 
 - (id)initWithFair:(Fair *)fair;
 - (id)initWithFair:(Fair *)fair title:(NSString *)title selectedPartnerShows:(NSArray *)selectedPartnerShows;

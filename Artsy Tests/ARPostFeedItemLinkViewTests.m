@@ -1,7 +1,7 @@
 #import "ARPostFeedItemLinkView.h"
 #import "ARPostFeedItem.h"
 
-SpecBegin(ARPostFeedItemLinkView)
+SpecBegin(ARPostFeedItemLinkView);
 
 __block ARPostFeedItemLinkView *view = nil;
 __block ARPostFeedItem *postFeedItem = nil;

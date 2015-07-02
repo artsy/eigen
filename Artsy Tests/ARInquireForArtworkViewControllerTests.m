@@ -1,6 +1,7 @@
 #import "ARInquireForArtworkViewController.h"
 #import "ARUserManager+Stubs.h"
 
+
 @interface ARInquireForArtworkViewController (Testing)
 
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
@@ -22,7 +23,7 @@
 - (void)sendInquiry;
 @end
 
-SpecBegin(ARInquireForArtworkViewController)
+SpecBegin(ARInquireForArtworkViewController);
 
 __block Artwork *galleryArtwork, *museumGallery;
 

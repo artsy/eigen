@@ -2,8 +2,10 @@
 #import "ARDefaults.h"
 #import "UICKeyChainStore.h"
 
-@interface WatchMessage()
+
+@interface WatchMessage ()
 @end
+
 
 @implementation WatchMessage
 
@@ -23,10 +25,10 @@
 - (NSDictionary *)dictionaryRepresentation;
 {
     /// NSNulls cannot be sent through, so absence can be presumed by -1
-    
+
     return @{
-        @"object": self.referenceObject ?: @(-1),
-        @"action": @(self.action),
+        @"object" : self.referenceObject ?: @(-1),
+        @"action" : @(self.action),
         @"token" : self.authenticationToken ?: @(-1),
         @"error" : self.error ?: @(-1)
     };
@@ -72,18 +74,18 @@
 
 + (WatchMessage *)_messageWithMessageRequest:(enum ARWatchMessageRequest)request
 {
-    return [[WatchMessage alloc] initWithDictionary: @{
-        @"action": @(request),
-        @"token": [self getAuthenticationToken] ?: @(-1),
+    return [[WatchMessage alloc] initWithDictionary:@{
+        @"action" : @(request),
+        @"token" : [self getAuthenticationToken] ?: @(-1),
     }];
 }
 
 + (WatchMessage *)messageToRequestBidWithDetails:(WatchBiddingDetails *)details
 {
-    return [[WatchMessage alloc] initWithDictionary: @{
-        @"action": @(ARWatchMessageRequestBid),
-        @"object": [details dictionaryRepresentation],
-        @"token": [self getAuthenticationToken] ?: @(-1),
+    return [[WatchMessage alloc] initWithDictionary:@{
+        @"action" : @(ARWatchMessageRequestBid),
+        @"object" : [details dictionaryRepresentation],
+        @"token" : [self getAuthenticationToken] ?: @(-1),
     }];
 }
 
@@ -94,9 +96,9 @@
 
 + (WatchMessage *)messageWithShows:(NSArray *)artworks
 {
-    return [[WatchMessage alloc] initWithDictionary: @{
-        @"action": @(ARWatchMessageRequestShows),
-        @"object": artworks
+    return [[WatchMessage alloc] initWithDictionary:@{
+        @"action" : @(ARWatchMessageRequestShows),
+        @"object" : artworks
     }];
 }
 
@@ -107,14 +109,14 @@
 
 + (WatchMessage *)_messageWithObject:(id)object
 {
-    return [[WatchMessage alloc] initWithDictionary: @{
+    return [[WatchMessage alloc] initWithDictionary:@{
         @"object" : object,
     }];
 }
 
 + (WatchMessage *)messageWithError:(NSString *)error
 {
-    return [[WatchMessage alloc] initWithDictionary: @{
+    return [[WatchMessage alloc] initWithDictionary:@{
         @"error" : error,
     }];
 }

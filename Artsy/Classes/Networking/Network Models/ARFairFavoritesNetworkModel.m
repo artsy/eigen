@@ -8,6 +8,7 @@
 
 const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 
+
 @implementation ARFairFavoritesNetworkModel
 
 - (void)getFavoritesForNavigationsButtonsForFair:(Fair *)fair
@@ -17,7 +18,7 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
                                          artists:(void (^)(NSArray *artists))artistsBlock
                                          failure:(void (^)(NSError *error))failure
 {
-    if(artworksBlock){
+    if (artworksBlock) {
         // "Work" tab
         [ArtsyAPI getArtworkFavoritesForFair:fair success:^(NSArray *artworks) {
             NSArray *buttons = [artworks map:^id(Artwork *artwork) {
@@ -31,7 +32,6 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 
     // "Exhibitors" tab
     if (exhibitorsBlock) {
-
         [ArtsyAPI getProfileFollowsForFair:fair success:^(NSArray *follows) {
             // Create a subject that'll receive partners from either of our two code paths, below
             RACSubject *partnerSubject = [[RACSubject subject] setNameWithFormat:@"getProfileFollowsForFair:success:"];
@@ -114,22 +114,23 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 
     @weakify(self);
     return @{
-        ARNavigationButtonClassKey: ARButtonWithImage.class,
-        ARNavigationButtonPropertiesKey: @{
-            @keypath(ARButtonWithImage.new, title): partner.name ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, subtitle): (show ? show.locationInFair : [NSNull null]) ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, image): show ? [NSNull null] : [UIImage imageNamed:@"SearchThumb_LightGrey"],
-            @keypath(ARButtonWithImage.new, imageURL): (show ? [show imageURLWithFormatName:@"square"] : [NSNull null]) ?: [NSNull null]
+        ARNavigationButtonClassKey : ARButtonWithImage.class,
+        ARNavigationButtonPropertiesKey : @{
+            @keypath(ARButtonWithImage.new, title) : partner.name ?: [NSNull null],
+            @keypath(ARButtonWithImage.new, subtitle) : (show ? show.locationInFair : [NSNull null]) ?: [NSNull null],
+            @keypath(ARButtonWithImage.new, image) : show ? [NSNull null] : [UIImage imageNamed:@"SearchThumb_LightGrey"],
+            @keypath(ARButtonWithImage.new, imageURL) : (show ? [show imageURLWithFormatName:@"square"] : [NSNull null]) ?: [NSNull null]
         },
-        ARNavigationButtonHandlerKey: ^(ARButtonWithImage *sender) {
+        ARNavigationButtonHandlerKey : ^(ARButtonWithImage *sender){
             @strongify(self);
-            if (show) {
-                [self handleShowButtonPress:show fair:fair];
-            } else {
-                [self handlePartnerButtonPress:partner fair:fair];
-            }
-        }
-    };
+    if (show) {
+        [self handleShowButtonPress:show fair:fair];
+    } else {
+        [self handlePartnerButtonPress:partner fair:fair];
+    }
+}
+}
+;
 }
 
 // Artwork = italics serif title, sansserif subtitle // name | artist name
@@ -138,19 +139,20 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 {
     @weakify(self);
     return @{
-        ARNavigationButtonClassKey: ARButtonWithImage.class,
-        ARNavigationButtonPropertiesKey: @{
-            @keypath(ARButtonWithImage.new, title): artwork.title ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, subtitle): [artwork.artist.name uppercaseString] ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, imageURL): [artwork.defaultImage urlForSquareImage] ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, titleFont):  [UIFont serifItalicFontWithSize:12],
-            @keypath(ARButtonWithImage.new, subtitleFont): [UIFont sansSerifFontWithSize:12]
+        ARNavigationButtonClassKey : ARButtonWithImage.class,
+        ARNavigationButtonPropertiesKey : @{
+            @keypath(ARButtonWithImage.new, title) : artwork.title ?: [NSNull null],
+            @keypath(ARButtonWithImage.new, subtitle) : [artwork.artist.name uppercaseString] ?: [NSNull null],
+            @keypath(ARButtonWithImage.new, imageURL) : [artwork.defaultImage urlForSquareImage] ?: [NSNull null],
+            @keypath(ARButtonWithImage.new, titleFont) : [UIFont serifItalicFontWithSize:12],
+            @keypath(ARButtonWithImage.new, subtitleFont) : [UIFont sansSerifFontWithSize:12]
         },
-        ARNavigationButtonHandlerKey: ^(ARButtonWithImage *sender) {
+        ARNavigationButtonHandlerKey : ^(ARButtonWithImage *sender){
             @strongify(self);
-            [self handleArtworkButtonPress:artwork fair:fair];
-        }
-    };
+    [self handleArtworkButtonPress:artwork fair:fair];
+}
+}
+;
 }
 
 // Artist = sanserif title, serif subtitle // name | number of works in fair
@@ -159,19 +161,20 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 {
     @weakify(self);
     return @{
-        ARNavigationButtonClassKey: ARButtonWithImage.class,
-        ARNavigationButtonPropertiesKey: @{
-            @keypath(ARButtonWithImage.new, title): [artist.name uppercaseString] ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, subtitle): @"", // TODO: number of works exhibited at this fair
-            @keypath(ARButtonWithImage.new, imageURL): [artist squareImageURL] ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, titleFont): [UIFont sansSerifFontWithSize:12],
-            @keypath(ARButtonWithImage.new, subtitleFont): [UIFont serifFontWithSize:12]
+        ARNavigationButtonClassKey : ARButtonWithImage.class,
+        ARNavigationButtonPropertiesKey : @{
+            @keypath(ARButtonWithImage.new, title) : [artist.name uppercaseString] ?: [NSNull null],
+            @keypath(ARButtonWithImage.new, subtitle) : @"", // TODO: number of works exhibited at this fair
+            @keypath(ARButtonWithImage.new, imageURL) : [artist squareImageURL] ?: [NSNull null],
+            @keypath(ARButtonWithImage.new, titleFont) : [UIFont sansSerifFontWithSize:12],
+            @keypath(ARButtonWithImage.new, subtitleFont) : [UIFont serifFontWithSize:12]
         },
-        ARNavigationButtonHandlerKey: ^(ARButtonWithImage *sender) {
+        ARNavigationButtonHandlerKey : ^(ARButtonWithImage *sender){
             @strongify(self);
-            [self handleArtistButtonPress:artist fair:fair];
-        }
-    };
+    [self handleArtistButtonPress:artist fair:fair];
+}
+}
+;
 }
 
 - (void)handlePartnerButtonPress:(Partner *)partner fair:(Fair *)fair

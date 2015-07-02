@@ -5,17 +5,21 @@
 #import "ARSearchViewController+Private.h"
 #import "UIView+HitTestExpansion.h"
 
+
 @interface ARAppSearchViewController () <ARMenuAwareViewController>
-@property(readonly, nonatomic, strong) UIButton *clearButton;
-@property(readonly, nonatomic) UIView *bottomBorder;
+@property (readonly, nonatomic, strong) UIButton *clearButton;
+@property (readonly, nonatomic) UIView *bottomBorder;
 @end
+
 
 @implementation ARAppSearchViewController
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     self.defaultInfoLabelText = @"Search Artists, Artworks, Movements, or Medium.";
     return self;
 }

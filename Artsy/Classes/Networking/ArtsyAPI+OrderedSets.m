@@ -1,5 +1,6 @@
 #import "ArtsyAPI+Private.h"
 
+
 @implementation ArtsyAPI (OrderedSets)
 
 + (AFJSONRequestOperation *)getOrderedSetsWithOwnerType:(NSString *)ownerType
@@ -8,7 +9,7 @@
                                                 failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter orderedSetsWithOwnerType:ownerType andID:ownerID];
-    return [self getRequest:request parseIntoAnArrayOfClass:[OrderedSet class] success:^(NSArray * orderedSets) {
+    return [self getRequest:request parseIntoAnArrayOfClass:[OrderedSet class] success:^(NSArray *orderedSets) {
         NSMutableDictionary *orderedSetsByKey = [[NSMutableDictionary alloc] init];
         for (OrderedSet * orderedSet in orderedSets) {
             NSArray *sets = orderedSetsByKey[orderedSet.key] ?: @[];
@@ -20,9 +21,9 @@
     } failure:failure];
 }
 
-+ (AFJSONRequestOperation *) getOrderedSetWithKey:(NSString *)key
-                                            success:(void (^)(OrderedSet *set))success
-                                            failure:(void (^)(NSError *error))failure
++ (AFJSONRequestOperation *)getOrderedSetWithKey:(NSString *)key
+                                         success:(void (^)(OrderedSet *set))success
+                                         failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter orderedSetsWithKey:key];
     return [self getRequest:request parseIntoAnArrayOfClass:[OrderedSet class] success:^(NSArray *orderedSets) {
@@ -30,9 +31,9 @@
     } failure:failure];
 }
 
-+ (AFJSONRequestOperation *) getOrderedSetItemsWithKey:(NSString *)key
-                                               success:(void (^)(NSArray *sets))success
-                                               failure:(void (^)(NSError *error))failure
++ (AFJSONRequestOperation *)getOrderedSetItemsWithKey:(NSString *)key
+                                              success:(void (^)(NSArray *sets))success
+                                              failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter orderedSetsWithKey:key];
     return [self getRequest:request parseIntoAnArrayOfClass:[OrderedSet class] success:^(NSArray *orderedSets) {
@@ -42,10 +43,10 @@
     } failure:failure];
 }
 
-+ (AFJSONRequestOperation *) getOrderedSetItemsWithKey:(NSString *)key
-                                               andName:(NSString *)name
-                                               success:(void (^)(NSArray *items))success
-                                               failure:(void (^)(NSError *error))failure
++ (AFJSONRequestOperation *)getOrderedSetItemsWithKey:(NSString *)key
+                                              andName:(NSString *)name
+                                              success:(void (^)(NSArray *items))success
+                                              failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter orderedSetsWithKey:key];
     return [self getRequest:request parseIntoAnArrayOfClass:[OrderedSet class] success:^(NSArray *orderedSets) {
@@ -58,7 +59,7 @@
 }
 
 + (AFJSONRequestOperation *)getOrderedSetItems:(NSString *)orderedSetID
-                                      withType:(Class)class
+                                      withType:(Class) class
                                        success:(void (^)(NSArray *orderedSets))success
                                        failure:(void (^)(NSError *error))failure
 {
@@ -66,15 +67,14 @@
     return [self getRequest:request parseIntoAnArrayOfClass:class success:success failure:failure];
 }
 
-+ (AFJSONRequestOperation *)getOrderedSetItems:(NSString *)orderedSetID
-                                        atPage:(NSInteger)page
-                                      withType:(Class)class
-                                       success:(void (^)(NSArray *orderedSets))success
-                                       failure:(void (^)(NSError *error))failure;
+    + (AFJSONRequestOperation *)getOrderedSetItems : (NSString *)orderedSetID
+                                                     atPage : (NSInteger)page
+                                                              withType : (Class) class
+                                                                         success : (void (^)(NSArray *orderedSets))success
+                                                                                   failure : (void (^)(NSError *error))failure;
 {
     NSURLRequest *request = [ARRouter orderedSetItems:orderedSetID atPage:page];
     return [self getRequest:request parseIntoAnArrayOfClass:class success:success failure:failure];
-
 }
 
 @end

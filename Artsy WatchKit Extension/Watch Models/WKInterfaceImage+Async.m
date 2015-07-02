@@ -1,6 +1,7 @@
 #import "WKInterfaceImage+Async.h"
 
-@implementation WKInterfaceImage(Async)
+
+@implementation WKInterfaceImage (Async)
 
 - (void)ar_asyncSetImageURL:(NSURL *)url
 {

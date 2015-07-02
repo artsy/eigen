@@ -27,8 +27,7 @@ NS_ENUM(NSInteger, ARArtistViewIndex){
     ARArtistViewRelatedTitle,
     ARArtistViewRelatedArtists,
     ARArtistViewRelatedPosts,
-    ARArtistViewWhitepsaceGobbler
-};
+    ARArtistViewWhitepsaceGobbler};
 
 typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     ARArtistArtworksDisplayAll,
@@ -37,7 +36,8 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 // TODO: Add ARFollowableNetworkModel for following status
 
-@interface ARArtistViewController ()<UIScrollViewDelegate, AREmbeddedModelsDelegate, ARPostsViewControllerDelegate, ARSwitchViewDelegate>
+
+@interface ARArtistViewController () <UIScrollViewDelegate, AREmbeddedModelsDelegate, ARPostsViewControllerDelegate, ARSwitchViewDelegate>
 @property (nonatomic, strong) ORStackScrollView *view;
 @property (nonatomic, assign) enum ARArtistArtworksDisplayMode displayMode;
 
@@ -66,6 +66,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
+
 @implementation ARArtistViewController
 
 @dynamic view;
@@ -73,7 +74,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _shouldAnimate = YES;
     return self;
 }
@@ -162,7 +165,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     [actionsWrapper addSubview:favoriteButton];
     [favoriteButton alignCenterXWithView:actionsWrapper predicate:@"-30"];
     [shareButton alignCenterXWithView:actionsWrapper predicate:@"30"];
-    [UIView alignTopAndBottomEdgesOfViews:@[actionsWrapper, favoriteButton, shareButton]];
+    [UIView alignTopAndBottomEdgesOfViews:@[ actionsWrapper, favoriteButton, shareButton ]];
     actionsWrapper.tag = ARArtistViewActionButtons;
     [self.view.stackView addSubview:actionsWrapper withTopMargin:@"20" sideMargin:@"40"];
 
@@ -243,7 +246,6 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     if (artworkCount == 0) {
         [self prepareForNoArtworks];
     } else {
-
         ARArtworkMasonryModule *module = (ARArtworkMasonryModule *)self.artworkVC.activeModule;
         ARArtworkMasonryLayout newLayout = [self masonryLayout];
         if (newLayout != module.layout) {
@@ -308,7 +310,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 - (void)toggleFollowingArtist:(ARHeartButton *)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist success:^(BOOL newUser){
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist success:^(BOOL newUser) {
             [self toggleFollowingArtist:sender];
         }];
         return;
@@ -318,13 +320,14 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     [sender setHearted:hearted animated:self.shouldAnimate];
 
     @weakify(self);
-    [self.networkModel setFavoriteStatus:sender.isHearted success:^(id response) {}
-     failure:^(NSError *error) {
+    [self.networkModel setFavoriteStatus:sender.isHearted success:^(id response) {
+    }
+        failure:^(NSError *error) {
 
          @strongify(self);
         [ARNetworkErrorManager presentActiveErrorModalWithError:error];
         [sender setHearted:!hearted animated:self.shouldAnimate];
-    }];
+        }];
 }
 
 #pragma mark - Switch Navigation
@@ -347,7 +350,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
     NSOrderedSet *artworks = [self artworksForDisplayMode:displayMode];
     if (![artworks isEqualToOrderedSet:[self artworksForDisplayMode:oldDisplayMode]]) {
-        [UIView animateTwoStepIf:self.shouldAnimate && animated duration:ARAnimationDuration * 1.5 :^{
+        [UIView animateTwoStepIf:self.shouldAnimate && animated duration:ARAnimationDuration * 1.5:^{
             self.artworkVC.view.alpha = 0;
         } midway:^{
             self.artworkVC.collectionView.contentOffset = CGPointZero;
@@ -369,7 +372,8 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     }
 }
 
-- (void)checkForAdditionalArtworksToFillView {
+- (void)checkForAdditionalArtworksToFillView
+{
     if ([self.artworkVC currentContentFillsView] == NO) {
         [self getMoreArtworks];
     }
@@ -377,7 +381,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getMoreArtworks
 {
-    if (![self shouldFetchArtworks]) { return; }
+    if (![self shouldFetchArtworks]) {
+        return;
+    }
 
     ARArtistArtworksDisplayMode displayMode = self.displayMode;
     [self setIsGettingArtworks:YES displayMode:displayMode];
@@ -414,7 +420,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 {
     [self setIsGettingArtworks:NO displayMode:displayMode];
 
-    if(!artworks.count) {
+    if (!artworks.count) {
         return;
     }
 
@@ -512,11 +518,11 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)loadBioViewController
 {
-    ARArtistBiographyViewController * artistBioVC = [[ARArtistBiographyViewController alloc] initWithArtist:self.artist];
+    ARArtistBiographyViewController *artistBioVC = [[ARArtistBiographyViewController alloc] initWithArtist:self.artist];
     [self.navigationController pushViewController:artistBioVC animated:self.shouldAnimate];
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return [UIDevice isPad];
 }
@@ -524,7 +530,8 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 - (NSDictionary *)dictionaryForAnalytics
 {
     if (self.artist) {
-        return @{ @"artist" : self.artist.artistID, @"type" : @"artist" };
+        return @{ @"artist" : self.artist.artistID,
+                  @"type" : @"artist" };
     }
 
     return nil;
@@ -575,7 +582,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 #pragma mark - AREmbeddedModelsDelegate
 
--(void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
@@ -593,7 +600,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 #pragma mark - ARPostsViewControllerDelegate
 
--(void)postViewController:(ARPostsViewController *)postViewController shouldShowViewController:(UIViewController *)viewController
+- (void)postViewController:(ARPostsViewController *)postViewController shouldShowViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }

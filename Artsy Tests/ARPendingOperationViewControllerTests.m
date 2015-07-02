@@ -1,6 +1,7 @@
 #import "ARPendingOperationViewController.h"
 #import "ARSpinner.h"
 
+
 @interface ARPendingOperationViewController (Testing)
 
 @property (nonatomic, strong) UILabel *label;
@@ -8,7 +9,7 @@
 
 @end
 
-SpecBegin(ARPendingOperationViewController)
+SpecBegin(ARPendingOperationViewController);
 
 it(@"has a valid snapshot", ^{
     ARPendingOperationViewController *viewController = [[ARPendingOperationViewController alloc] init];

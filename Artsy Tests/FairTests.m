@@ -1,6 +1,6 @@
 #import "ARFeedItems.h"
 
-SpecBegin(Fair)
+SpecBegin(Fair);
 
 afterEach(^{
     [OHHTTPStubs removeAllStubs];

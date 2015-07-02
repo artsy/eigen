@@ -1,5 +1,6 @@
 #import "UIViewController+InnermostTopViewController.h"
 
+
 @implementation UIViewController (InnermostTopViewController)
 
 - (UIViewController *)ar_innermostTopViewController
@@ -12,7 +13,7 @@
     }
 
     if ([self isKindOfClass:UINavigationController.class]) {
-        return ((UINavigationController *) self).topViewController;
+        return ((UINavigationController *)self).topViewController;
     }
 
     return nil;

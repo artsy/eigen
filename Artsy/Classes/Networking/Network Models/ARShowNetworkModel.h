@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+
 @interface ARShowNetworkModel : NSObject
 
 - (instancetype)initWithFair:(Fair *)fair show:(PartnerShow *)show;

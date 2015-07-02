@@ -2,6 +2,7 @@
 
 #import "ARKeychainable.h"
 
+
 @implementation ARKeychain
 
 - (NSString *)accessGroup;
@@ -30,12 +31,15 @@
 
 @end
 
+
 @implementation ARDictionaryBackedKeychain
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _dict = [NSMutableDictionary dictionary];
     return self;

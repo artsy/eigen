@@ -4,6 +4,7 @@ extern NSString *const AROptionsUseVCR;
 extern NSString *const AROptionsSettingsMenu;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
 
+
 @interface AROptions : NSObject
 
 /// Returns all the current options

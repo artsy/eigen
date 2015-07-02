@@ -8,6 +8,7 @@ typedef NS_ENUM(NSInteger, ARScrollState) {
     ARScrollStateScrollingDown
 };
 
+
 @interface AROnboardingWebViewController () <UIWebViewDelegate, UIScrollViewDelegate>
 @property (nonatomic, strong) NSString *path;
 @property (nonatomic, assign) CGFloat lastY;
@@ -15,6 +16,7 @@ typedef NS_ENUM(NSInteger, ARScrollState) {
 @property (nonatomic, assign) ARScrollState scrollState;
 @property (nonatomic, retain) AROnboardingNavBarView *navView;
 @end
+
 
 @implementation AROnboardingWebViewController
 
@@ -27,13 +29,15 @@ typedef NS_ENUM(NSInteger, ARScrollState) {
 
     NSString *userAgent = [NSString stringWithFormat:@"Artsy-Mobile: %@ | v%@ | %@", version, build, fullAgent];
 
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"UserAgent" : userAgent } ];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"UserAgent" : userAgent }];
 }
 
 - (instancetype)initWithMobileArtsyPath:(NSString *)path
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _path = path;
 

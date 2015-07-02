@@ -2,9 +2,11 @@
 #import "VideoContentLink.h"
 #import "PhotoContentLink.h"
 
+
 @implementation ContentLink
 
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
     return @{
         @"linkID" : @"id",
         @"thumbnailUrl" : @"oembed_json.thumbnail_url",
@@ -17,7 +19,8 @@
     };
 }
 
-+ (instancetype)modelWithDictionary:(NSDictionary *)dictionaryValue error:(NSError *__autoreleasing *)error {
++ (instancetype)modelWithDictionary:(NSDictionary *)dictionaryValue error:(NSError *__autoreleasing *)error
+{
     NSString *type = [dictionaryValue valueForKeyPath:@"type"];
     if ([type isEqualToString:@"video"]) {
         return [[VideoContentLink alloc] initWithDictionary:dictionaryValue error:error];
@@ -26,7 +29,6 @@
         return [[PhotoContentLink alloc] initWithDictionary:dictionaryValue error:error];
 
     } else if ([type isEqualToString:@"link"]) {
-
         //TODO: this - maybe?!
         return [[PhotoContentLink alloc] initWithDictionary:dictionaryValue error:error];
     } else {
@@ -35,27 +37,30 @@
     }
 }
 
-- (CGFloat)aspectRatio {
+- (CGFloat)aspectRatio
+{
     if (!self.height || !self.width) {
         return 1;
     }
-    return (CGFloat)self.width/self.height;
+    return (CGFloat)self.width / self.height;
 }
 
-- (CGSize)maxSize {
+- (CGSize)maxSize
+{
     if (!self.height || !self.width) {
         return CGSizeZero;
     }
     return CGSizeMake(self.width, self.height);
 }
 
-- (NSURL *)urlForThumbnail {
-    return [NSURL URLWithString: self.url];
+- (NSURL *)urlForThumbnail
+{
+    return [NSURL URLWithString:self.url];
 }
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         ContentLink *contentLink = object;
         return [contentLink.linkID isEqualToString:self.linkID];
     }

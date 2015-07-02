@@ -5,6 +5,7 @@
 
 /// This Transition will shrink & fade the current view controller, and push the new view in from the left.
 
+
 @interface ARDefaultNavigationTransition : ARNavigationTransition
 
 @end

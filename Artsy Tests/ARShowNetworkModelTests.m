@@ -2,7 +2,7 @@
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Shows.h"
 
-SpecBegin(ARShowNetworkModel)
+SpecBegin(ARShowNetworkModel);
 
 __block PartnerShow *show;
 __block Fair *fair;

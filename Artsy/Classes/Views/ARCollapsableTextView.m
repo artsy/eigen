@@ -2,13 +2,15 @@
 
 static const CGFloat ARCollapsableTextViewHeight = 80;
 
-@interface ARCollapsableTextView()
+
+@interface ARCollapsableTextView ()
 @property (nonatomic, assign) CGFloat collapsedHeight;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeGesture;
 @property (nonatomic, strong) NSLayoutConstraint *heightCollapsingConstraint;
 @property (nonatomic, strong) UIView *collapsedOverlapView;
 @end
+
 
 @implementation ARCollapsableTextView
 
@@ -28,10 +30,8 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
     [super setAttributedText:attributedText];
 
     if (attributedText && !self.tapGesture) {
-
         // Only show the more indicator if the height of the text exceeds the height of the constraint.
         if (self.intrinsicContentSize.height > self.heightCollapsingConstraint.constant) {
-
             self.collapsedOverlapView = [[UIView alloc] init];
             self.collapsedOverlapView.backgroundColor = [UIColor whiteColor];
             [self addSubview:self.collapsedOverlapView];

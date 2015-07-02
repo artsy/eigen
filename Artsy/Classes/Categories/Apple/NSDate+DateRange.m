@@ -2,6 +2,7 @@
 
 static NSDateFormatter *ARMonthFormatter;
 
+
 @implementation NSDate (DateRange)
 
 
@@ -30,38 +31,38 @@ static NSDateFormatter *ARMonthFormatter;
     // Same month - "July 2nd - 12th, 2011"
     if (endsComponents.month == startsComponents.month && endsComponents.year == startsComponents.year) {
         dateString = [NSString stringWithFormat:@"%@ %@%@ - %@%@",
-                              [ARMonthFormatter stringFromDate:self],
-                              @(startsComponents.day),
-                              [self.class ordinalForDay:startsComponents.day],
-                              @(endsComponents.day),
-                              [self.class ordinalForDay:endsComponents.day]];
+                                                [ARMonthFormatter stringFromDate:self],
+                                                @(startsComponents.day),
+                                                [self.class ordinalForDay:startsComponents.day],
+                                                @(endsComponents.day),
+                                                [self.class ordinalForDay:endsComponents.day]];
 
         if (shouldShowYear) {
             dateString = [NSString stringWithFormat:@"%@, %@", dateString, @(endsComponents.year)];
         }
 
-    // Same year - "June 12th - August 20th, 2012"
+        // Same year - "June 12th - August 20th, 2012"
     } else if (endsComponents.year == startsComponents.year) {
         dateString = [NSString stringWithFormat:@"%@ %@%@ - %@ %@%@",
-                              [ARMonthFormatter stringFromDate:self],
-                              @(startsComponents.day),
-                              [self.class ordinalForDay:startsComponents.day],
-                              [ARMonthFormatter stringFromDate:endDate],
-                              @(endsComponents.day),
-                              [self.class ordinalForDay:endsComponents.day]];
+                                                [ARMonthFormatter stringFromDate:self],
+                                                @(startsComponents.day),
+                                                [self.class ordinalForDay:startsComponents.day],
+                                                [ARMonthFormatter stringFromDate:endDate],
+                                                @(endsComponents.day),
+                                                [self.class ordinalForDay:endsComponents.day]];
         if (shouldShowYear) {
-            dateString = [NSString stringWithFormat:@"%@, %@",dateString, @(endsComponents.year)];
+            dateString = [NSString stringWithFormat:@"%@, %@", dateString, @(endsComponents.year)];
         }
 
         // Different year - "January 12th, 2011 - April 19th, 2014"
     } else {
         dateString = [NSString stringWithFormat:@"%@ %@, %@ - %@ %@, %@",
-                              [ARMonthFormatter stringFromDate:self],
-                              @(startsComponents.day),
-                              @(startsComponents.year),
-                              [ARMonthFormatter stringFromDate:endDate],
-                              @(endsComponents.day),
-                              @(endsComponents.year)];
+                                                [ARMonthFormatter stringFromDate:self],
+                                                @(startsComponents.day),
+                                                @(startsComponents.year),
+                                                [ARMonthFormatter stringFromDate:endDate],
+                                                @(endsComponents.day),
+                                                @(endsComponents.year)];
     }
 
     return dateString;
@@ -76,16 +77,19 @@ static NSDateFormatter *ARMonthFormatter;
     switch (integer) {
         case 1:
         case 21:
-        case 31: return @"st";
+        case 31:
+            return @"st";
 
         case 2:
-        case 22: return @"nd";
+        case 22:
+            return @"nd";
 
         case 3:
-        case 23: return @"rd";
-        default: return @"th";
+        case 23:
+            return @"rd";
+        default:
+            return @"th";
     }
-
 }
 
 @end

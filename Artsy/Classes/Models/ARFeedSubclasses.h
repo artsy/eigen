@@ -2,19 +2,25 @@
 
 /// For taking a feed from a file
 
+
 @interface ARFileFeed : ARFeed
 - (instancetype)initWithNamedFile:(NSString *)fileName;
 @end
 
-@interface ARShowFeed : ARFileFeed @end
+
+@interface ARShowFeed : ARFileFeed
+@end
+
 
 @interface ARProfileFeed : ARFeed
 - (instancetype)initWithProfile:(Profile *)profile;
 @end
 
+
 @interface ARFairOrganizerFeed : ARFeed
 - (instancetype)initWithFairOrganizer:(FairOrganizer *)fairOrganizer;
 @end
+
 
 @interface ARFairShowFeed : ARFeed
 - (instancetype)initWithFair:(Fair *)fair;

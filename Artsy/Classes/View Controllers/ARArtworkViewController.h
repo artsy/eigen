@@ -2,6 +2,7 @@
 #import "ARArtworkDetailView.h"
 #import "ARArtworkActionsView.h"
 
+
 @interface ARArtworkViewController : UIViewController <ARArtworkActionsViewDelegate, ARArtworkDetailViewDelegate>
 
 /// Designated initializer

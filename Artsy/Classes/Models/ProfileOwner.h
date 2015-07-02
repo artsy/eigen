@@ -1,4 +1,4 @@
-@protocol ProfileOwner<NSObject>
+@protocol ProfileOwner <NSObject>
 
 @property (nonatomic, copy, readonly) NSString *name;
 

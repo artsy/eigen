@@ -1,6 +1,7 @@
 #import "ArtsyAPI+Private.h"
 #import "ARPostFeedItem.h"
 
+
 @implementation ArtsyAPI (RelatedModels)
 
 + (AFJSONRequestOperation *)getRelatedArtistsForArtist:(Artist *)artist

@@ -1,6 +1,7 @@
 #import "ARFairGuideContainerViewController.h"
 #import "ARFairGuideViewController.h"
 
+
 @interface ARFairGuideContainerViewController (Testing) <ARFairGuideViewControllerDelegate>
 
 - (void)didReceiveTap:(UITapGestureRecognizer *)recognizer;
@@ -14,7 +15,7 @@
 
 @end
 
-SpecBegin(ARFairGuideContainerViewController)
+SpecBegin(ARFairGuideContainerViewController);
 
 __block ARFairGuideContainerViewController *_fairGuideVC = nil;
 

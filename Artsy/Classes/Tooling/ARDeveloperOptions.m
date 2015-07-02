@@ -1,6 +1,9 @@
-@interface ARDeveloperOptions()
+
+
+@interface ARDeveloperOptions ()
 @property (nonatomic, strong, readonly) NSDictionary *data;
 @end
+
 
 @implementation ARDeveloperOptions
 
@@ -58,11 +61,11 @@
         NSString *key = components[0];
         id value = components[1];
 
-        if ([value isEqualToString:@"yes"] || [value isEqualToString:@"true"] ) {
+        if ([value isEqualToString:@"yes"] || [value isEqualToString:@"true"]) {
             value = @(YES);
         }
 
-        else if ([value isEqualToString:@"no"] || [value isEqualToString:@"false"] ) {
+        else if ([value isEqualToString:@"no"] || [value isEqualToString:@"false"]) {
             value = @(NO);
         }
 
@@ -72,7 +75,7 @@
     return [NSDictionary dictionaryWithDictionary:settings];
 }
 
-- (id)objectForKeyedSubscript:(id <NSCopying>)key
+- (id)objectForKeyedSubscript:(id<NSCopying>)key
 {
     return [self.data objectForKey:key];
 }

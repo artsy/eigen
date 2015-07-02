@@ -2,9 +2,10 @@
 
 @protocol ARTextViewDelegate <NSObject>
 
--(void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController;
+- (void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController;
 
 @end
+
 
 @interface ARTextView : UITextView <UITextViewDelegate>
 
@@ -17,6 +18,6 @@
 /// Don't underline links
 @property (nonatomic, assign) BOOL plainLinks;
 
-@property(nonatomic,assign) id<ARTextViewDelegate> viewControllerDelegate;
+@property (nonatomic, assign) id<ARTextViewDelegate> viewControllerDelegate;
 
 @end

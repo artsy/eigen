@@ -3,10 +3,12 @@
 #import "ARHeroUnitsNetworkModel.h"
 #import "SiteHeroUnit.h"
 
+
 @interface ARSiteHeroUnitViewController ()
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, strong, readwrite) SiteHeroUnit *heroUnit;
 @end
+
 
 @interface ARHeroUnitViewController (Test)
 @property (nonatomic, strong) UIPageControl *pageControl;
@@ -19,16 +21,19 @@
 - (void)pageControlTapped:(id)sender;
 @end
 
+
 @interface ARHeroUnitsNetworkModel (Test)
 @property (nonatomic, copy, readwrite) NSArray *heroUnits;
 @end
 
+
 @interface ARHeroUnitsTestDataSource : ARHeroUnitsNetworkModel
--(void)getHeroUnitsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)getHeroUnitsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 @end
 
+
 @implementation ARHeroUnitsTestDataSource
--(void)getHeroUnitsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)getHeroUnitsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     self.heroUnits = [self.heroUnits copy];
     if (success) {
@@ -37,7 +42,7 @@
 }
 @end
 
-SpecBegin(ARHeroUnitViewController)
+SpecBegin(ARHeroUnitViewController);
 __block ARHeroUnitViewController *heroVC;
 __block NSArray *heroUnits;
 

@@ -1,34 +1,36 @@
 #import "ARStandardDateFormatter.h"
 
+
 @interface SiteHeroUnit ()
 @property (nonatomic, copy, readonly) NSString *buttonColorHex;
 @property (nonatomic, copy, readonly) NSString *inverseButtonColorHex;
 @end
+
 
 @implementation SiteHeroUnit
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(SiteHeroUnit.new, siteHeroUnitID): @"id",
-        @keypath(SiteHeroUnit.new, heading): @"heading",
-        @keypath(SiteHeroUnit.new, title): @"mobile_title",
-        @keypath(SiteHeroUnit.new, titleImageAddress): @"title_image_retina_url",
-        @keypath(SiteHeroUnit.new, body): @"mobile_description",
-        @keypath(SiteHeroUnit.new, backgroundColor): @"menu_color_class",
-        @keypath(SiteHeroUnit.new, mobileBackgroundColor): @"mobile_menu_color_class",
-        @keypath(SiteHeroUnit.new, name): @"name",
-        @keypath(SiteHeroUnit.new, link): @"link",
-        @keypath(SiteHeroUnit.new, linkText): @"link_text",
-        @keypath(SiteHeroUnit.new, buttonColorHex): @"link_color_off_hex",
-        @keypath(SiteHeroUnit.new, inverseButtonColorHex): @"link_color_hover_hex",
-        @keypath(SiteHeroUnit.new, creditLine): @"credit_line",
+        @keypath(SiteHeroUnit.new, siteHeroUnitID) : @"id",
+        @keypath(SiteHeroUnit.new, heading) : @"heading",
+        @keypath(SiteHeroUnit.new, title) : @"mobile_title",
+        @keypath(SiteHeroUnit.new, titleImageAddress) : @"title_image_retina_url",
+        @keypath(SiteHeroUnit.new, body) : @"mobile_description",
+        @keypath(SiteHeroUnit.new, backgroundColor) : @"menu_color_class",
+        @keypath(SiteHeroUnit.new, mobileBackgroundColor) : @"mobile_menu_color_class",
+        @keypath(SiteHeroUnit.new, name) : @"name",
+        @keypath(SiteHeroUnit.new, link) : @"link",
+        @keypath(SiteHeroUnit.new, linkText) : @"link_text",
+        @keypath(SiteHeroUnit.new, buttonColorHex) : @"link_color_off_hex",
+        @keypath(SiteHeroUnit.new, inverseButtonColorHex) : @"link_color_hover_hex",
+        @keypath(SiteHeroUnit.new, creditLine) : @"credit_line",
         @keypath(SiteHeroUnit.new, mobileBackgroundImageAddress) : @"background_image_mobile_url",
-        @keypath(SiteHeroUnit.new, backgroundImageAddress): @"background_image_url",
-        @keypath(SiteHeroUnit.new, position): @"position",
-        @keypath(SiteHeroUnit.new, startDate): @"start_at",
-        @keypath(SiteHeroUnit.new, endDate): @"end_at",
-        @keypath(SiteHeroUnit.new, alignment): @"type"
+        @keypath(SiteHeroUnit.new, backgroundImageAddress) : @"background_image_url",
+        @keypath(SiteHeroUnit.new, position) : @"position",
+        @keypath(SiteHeroUnit.new, startDate) : @"start_at",
+        @keypath(SiteHeroUnit.new, endDate) : @"end_at",
+        @keypath(SiteHeroUnit.new, alignment) : @"type"
     };
 }
 
@@ -55,8 +57,8 @@
 + (NSValueTransformer *)alignmentJSONTransformer
 {
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{
-        @"left":@(ARHeroUnitAlignmentLeft),
-        @"right":@(ARHeroUnitAlignmentRight)
+        @"left" : @(ARHeroUnitAlignmentLeft),
+        @"right" : @(ARHeroUnitAlignmentRight)
     } defaultValue:@(ARHeroUnitAlignmentLeft) reverseDefaultValue:@"left"];
 }
 
@@ -69,7 +71,7 @@
         color = self.mobileBackgroundColor;
     }
 
-    if ([color isEqualToString:@"black"]){
+    if ([color isEqualToString:@"black"]) {
         return ARHeroUnitImageColorBlack;
     }
     return ARHeroUnitImageColorWhite;
@@ -78,7 +80,7 @@
 - (NSURL *)titleImageURL
 {
     NSString *address = self.titleImageAddress;
-    return [NSURL URLWithString:[address stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]];
+    return [NSURL URLWithString:[address stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
 }
 
 - (NSURL *)preferredImageURL
@@ -87,7 +89,7 @@
     if (self.mobileBackgroundImageAddress && ![UIDevice isPad]) {
         address = self.mobileBackgroundImageAddress;
     }
-    return [NSURL URLWithString:[address stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding]];
+    return [NSURL URLWithString:[address stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
 }
 
 - (BOOL)isCurrentlyActive
@@ -109,7 +111,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         SiteHeroUnit *siteHeroUnit = object;
         return [siteHeroUnit.siteHeroUnitID isEqualToString:self.siteHeroUnitID];
     }

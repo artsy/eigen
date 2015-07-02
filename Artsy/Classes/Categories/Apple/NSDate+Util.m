@@ -1,15 +1,18 @@
 #import "NSDate+Util.h"
 
+
 @implementation NSDate (Util)
 
-- (NSDate *)GMTDate {
+- (NSDate *)GMTDate
+{
     NSTimeInterval timeZoneOffset = [[NSTimeZone defaultTimeZone] secondsFromGMT];
     NSTimeInterval gmtTimeInterval = [self timeIntervalSinceReferenceDate] - timeZoneOffset;
     return [NSDate dateWithTimeIntervalSinceReferenceDate:gmtTimeInterval];
 }
 
 // Adapted from http://digdog.tumblr.com/post/254073803/relative-date-for-nsdate
-- (NSString *)relativeDate {
+- (NSString *)relativeDate
+{
     NSCalendar *calendar = [NSCalendar currentCalendar];
 
     NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitWeekOfYear | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;

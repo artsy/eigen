@@ -21,7 +21,7 @@ DSYM = Artsy.app.dSYM.zip
 
 CIRCLE_TEST_REPORTS ?= $(TMPDIR)
 
-.PHONY: all build ci clean test lint oss pr
+.PHONY: all build ci clean test lint oss pr artsy
 
 all: ci
 
@@ -48,6 +48,10 @@ oss:
 	bundle exec pod keys set "SegmentProductionWriteKey" "-"
 	bundle exec pod keys set "SegmentDevWriteKey" "-"
 
+artsy:
+	git submodule init
+	git submodule update
+	config/spacecommander/setup-repo.sh
 
 ci: CONFIGURATION = Debug
 ci: build
@@ -57,7 +61,7 @@ update_bundle_version:
 		read HUMAN_VERSION; \
 		$(PLIST_BUDDY) -c "Set CFBundleShortVersionString $$HUMAN_VERSION" $(APP_PLIST)
 
-bundler:
+format-objc-files-in-repo.sh.bundler:
 	gem install bundler
 	bundle install
 

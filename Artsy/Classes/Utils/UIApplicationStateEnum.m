@@ -1,10 +1,11 @@
 #import "UIApplicationStateEnum.h"
 
+
 @implementation UIApplicationStateEnum
-+ (NSString*)toString:(UIApplicationState)state
++ (NSString *)toString:(UIApplicationState)state
 {
     NSString *result = nil;
-    switch(state) {
+    switch (state) {
         case UIApplicationStateActive:
             result = @"active";
             break;

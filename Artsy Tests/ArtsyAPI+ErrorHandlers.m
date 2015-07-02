@@ -1,7 +1,7 @@
 #import "ArtsyAPI.h"
 #import "MutableNSURLResponse.h"
 
-SpecBegin(ArtsyAPIErrorHandlers)
+SpecBegin(ArtsyAPIErrorHandlers);
 
 describe(@"handleHTTPError", ^{
     it(@"nil error", ^{
@@ -104,4 +104,3 @@ describe(@"handleHTTPErrors", ^{
 });
 
 SpecEnd
-

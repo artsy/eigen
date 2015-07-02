@@ -2,6 +2,7 @@
 #import "ARSplitStackView.h"
 #import "ARWhitespaceGobbler.h"
 
+
 @interface ARArtworkMetadataView ()
 @property (nonatomic, strong) ARArtworkPreviewActionsView *artworkPreviewActions;
 @property (nonatomic, strong) ARArtworkPreviewImageView *artworkPreview;
@@ -12,15 +13,18 @@
 
 @end
 
+
 @implementation ARArtworkMetadataView
 
 - (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair
 {
     CGFloat margin = [UIDevice isPad] ? 50 : 20;
     CGFloat imageMargin = [UIDevice isPad] ? margin : 0;
-    
+
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     _fair = fair;
 
@@ -38,47 +42,47 @@
 
     [self addSubview:left];
     [self addSubview:right];
-    
+
     [left addSubview:artworkPreview];
     [artworkPreview alignTopEdgeWithView:left predicate:@"0"];
     [artworkPreview alignCenterXWithView:left predicate:@"0"];
     [artworkPreview constrainWidthToView:left predicate:@"0"];
-    
+
     ARWhitespaceGobbler *whitespaceGobbler = [[ARWhitespaceGobbler alloc] init];
     [left addSubview:whitespaceGobbler];
     [whitespaceGobbler constrainTopSpaceToView:artworkPreview predicate:@"0"];
     [left alignBottomEdgeWithView:whitespaceGobbler predicate:@"0"];
-    
+
     [right addSubview:previewActionsView];
     [right addSubview:artworkDetailView];
     [right addSubview:artworkActionsView];
     whitespaceGobbler = [[ARWhitespaceGobbler alloc] init];
     [right addSubview:whitespaceGobbler];
-    
+
     [artworkDetailView alignLeadingEdgeWithView:right predicate:@"0"];
     [artworkActionsView alignLeading:@"0" trailing:@"0" toView:right];
     [whitespaceGobbler constrainTopSpaceToView:artworkActionsView predicate:@"0"];
     [whitespaceGobbler alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:right];
-    
-    
+
+
     [left alignTopEdgeWithView:self predicate:@(imageMargin).stringValue];
     [left alignLeadingEdgeWithView:self predicate:@(imageMargin).stringValue];
     [right alignTrailingEdgeWithView:self predicate:@(-margin).stringValue];
-    
+
     [self alignBottomEdgeWithView:right predicate:@"0"];
-    
+
     // Constraints for both iPad orientations but not iPhone
     if ([UIDevice isPad]) {
         [artworkDetailView alignTopEdgeWithView:right predicate:@"0"];
-    
-    // iPhone layout only
+
+        // iPhone layout only
     } else {
         [artworkDetailView constrainTopSpaceToView:previewActionsView predicate:@"0"];
         [artworkDetailView alignTrailingEdgeWithView:right predicate:@"0"];
     }
-    
+
     // Constraints that apply to iPhone and vertical iPad
-    NSMutableArray *verticalConstriants =[NSMutableArray array];
+    NSMutableArray *verticalConstriants = [NSMutableArray array];
     [verticalConstriants addObject:[[right constrainTopSpaceToView:left predicate:@"28"] lastObject]];
     [verticalConstriants addObject:[[left alignTrailingEdgeWithView:self predicate:@(-imageMargin).stringValue] lastObject]];
     [verticalConstriants addObject:[[right alignLeadingEdgeWithView:self predicate:@(margin).stringValue] lastObject]];
@@ -93,11 +97,11 @@
         [verticalConstriants addObject:[[artworkDetailView alignBottomEdgeWithView:previewActionsView predicate:@">=0"] lastObject]];
     } else {
     }
-    
+
     _verticalConstraints = [verticalConstriants copy];
-    
+
     // Constraints for horizontal iPad layout
-    NSMutableArray *horizontalConstriants =[NSMutableArray array];
+    NSMutableArray *horizontalConstriants = [NSMutableArray array];
 
     [horizontalConstriants addObject:[[right alignTopEdgeWithView:self predicate:@(margin).stringValue] lastObject]];
     [horizontalConstriants addObject:[[right constrainLeadingSpaceToView:left predicate:@"40"] lastObject]];
@@ -105,7 +109,7 @@
     [horizontalConstriants addObject:[[self alignBottomEdgeWithView:left predicate:@"0"] lastObject]];
     [horizontalConstriants addObject:[[self alignBottomEdgeWithView:left predicate:@">=0"] lastObject]];
     [horizontalConstriants addObject:[[self alignBottomEdgeWithView:right predicate:@">=0"] lastObject]];
-    
+
     [horizontalConstriants addObject:[[artworkDetailView alignTrailingEdgeWithView:right predicate:@"0"] lastObject]];
     [horizontalConstriants addObject:[[previewActionsView constrainTopSpaceToView:artworkDetailView predicate:@"12"] lastObject]];
     [horizontalConstriants addObject:[[previewActionsView alignLeadingEdgeWithView:right predicate:@">=0"] lastObject]];
@@ -114,13 +118,13 @@
     [horizontalConstriants addObject:[[artworkActionsView constrainTopSpaceToView:previewActionsView predicate:@"22"] lastObject]];
 
     _horizontalConstraints = [horizontalConstriants copy];
-    
+
     [NSLayoutConstraint deactivateConstraints:self.verticalConstraints];
     [NSLayoutConstraint deactivateConstraints:self.horizontalConstraints];
 
-    
+
     [self registerForNetworkNotifications];
-    
+
     artworkPreview.artwork = artwork;
     _left = left;
     _right = right;

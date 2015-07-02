@@ -2,6 +2,7 @@
 
 @class ARFairMapPreview, Map;
 
+
 @interface ARFairMapPreviewButton : ARClearFlatButton
 
 - (instancetype)initWithFrame:(CGRect)frame map:(Map *)map NS_DESIGNATED_INITIALIZER;

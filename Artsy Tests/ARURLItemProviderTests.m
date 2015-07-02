@@ -2,7 +2,7 @@
 #import "ARNetworkConstants.h"
 #import "ARRouter+Private.h"
 
-SpecBegin(ARURLItemProvider)
+SpecBegin(ARURLItemProvider);
 
 afterEach(^{
     [OHHTTPStubs removeAllStubs];

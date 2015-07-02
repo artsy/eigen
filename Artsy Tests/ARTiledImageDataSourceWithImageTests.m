@@ -1,7 +1,7 @@
 #import "UIImage+ImageFromColor.h"
 #import "ARTiledImageDataSourceWithImage.h"
 
-SpecBegin(ARTiledImageDataSourceWithImage)
+SpecBegin(ARTiledImageDataSourceWithImage);
 
 describe(@"init", ^{
 

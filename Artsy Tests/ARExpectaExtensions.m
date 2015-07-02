@@ -1,8 +1,8 @@
 #import "ARExpectaExtensions.h"
 
-void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber, const char *fileName, BOOL record, BOOL async, NSString *name, id (^block)()) {
-
-    void (^snapshot)(id, NSString *) = ^void (id sut, NSString *suffix) {
+void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber, const char *fileName, BOOL record, BOOL async, NSString *name, id (^block)())
+{
+    void (^snapshot)(id, NSString *) = ^void(id sut, NSString *suffix) {
 
         EXPExpect *expectation = _EXP_expect(self, lineNumber, fileName, ^id{ return EXPObjectify((sut)); });
 
@@ -52,10 +52,12 @@ void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber,
     });
 }
 
-void _itTestsSyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)()) {
+void _itTestsSyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)())
+{
     _itTestsWithDevicesRecordingAsynchronouslyWithName(self, lineNumber, fileName, record, NO, name, block);
 }
 
-void _itTestsAsyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)()) {
+void _itTestsAsyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)())
+{
     _itTestsWithDevicesRecordingAsynchronouslyWithName(self, lineNumber, fileName, record, YES, name, block);
 }

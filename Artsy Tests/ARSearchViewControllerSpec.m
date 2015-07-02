@@ -1,11 +1,12 @@
 #import "ARSearchViewController.h"
 
-@interface ARSearchViewController(Testing)
+
+@interface ARSearchViewController (Testing)
 @property (readwrite, nonatomic) BOOL shouldAnimate;
 - (void)presentResultsViewAnimated:(BOOL)animated;
 @end
 
-SpecBegin(ARSearchViewController)
+SpecBegin(ARSearchViewController);
 
 __block ARSearchViewController *sut;
 __block id sutMock;

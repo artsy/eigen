@@ -1,11 +1,13 @@
 #import "ARSlideshowViewController.h"
 #import "ARSlideshowView.h"
 
+
 @interface ARSlideshowViewController ()
 @property (nonatomic, readonly) NSArray *slides;
 @property (nonatomic) ARSlideshowView *view;
 @property (nonatomic, assign, readonly) BOOL isDeveloper;
 @end
+
 
 @implementation ARSlideshowViewController
 
@@ -14,7 +16,9 @@
 - (instancetype)initWithSlides:(NSArray *)slides
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _slides = slides;
     _isDeveloper = [[ARDeveloperOptions options] isDeveloper];
@@ -25,13 +29,12 @@
 - (void)loadView
 {
     self.view = [[ARSlideshowView alloc] initWithSlides:self.slides];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", [UIDevice isPad] ? @"large" : @"small");
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
     logo.contentMode = UIViewContentModeScaleAspectFit;
@@ -50,7 +53,6 @@
     } else {
         [self performSelector:@selector(nextSlide) withObject:nil afterDelay:0.6];
     }
-
 }
 
 - (void)nextSlide

@@ -1,7 +1,9 @@
+
+
 @interface ARHeartButton : ARCircularActionButton
 
 @property (nonatomic, assign) ARHeartStatus status;
-@property (nonatomic, readonly, getter = isHearted) BOOL hearted;
+@property (nonatomic, readonly, getter=isHearted) BOOL hearted;
 
 - (void)setStatus:(ARHeartStatus)hearted;
 - (void)setStatus:(ARHeartStatus)hearted animated:(BOOL)animated;

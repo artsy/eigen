@@ -1,14 +1,15 @@
 #import "ARAppSearchViewController.h"
 #import "ARTopMenuViewController.h"
 
-@interface ARAppSearchViewController(Testing)
+
+@interface ARAppSearchViewController (Testing)
 @property (readwrite, nonatomic) BOOL shouldAnimate;
 - (void)clearTapped:(id)sender;
 - (void)closeSearch:(id)sender;
 @end
 
 
-SpecBegin(ARAppSearchViewController)
+SpecBegin(ARAppSearchViewController);
 
 __block ARAppSearchViewController *sut;
 

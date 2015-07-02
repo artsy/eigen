@@ -12,6 +12,8 @@
 #import "ARBackButtonCallbackManager.h"
 
 @class ARTabContentView;
+
+
 @interface ARTopMenuViewController : UIViewController <ARMenuAwareViewController, ARNavigationContainer, UIViewControllerTransitioningDelegate>
 
 /// The main interface of the app

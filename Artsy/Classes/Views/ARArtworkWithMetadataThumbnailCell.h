@@ -5,6 +5,7 @@
 
 @class ARArtworkThumbnailMetadataView;
 
+
 @interface ARArtworkWithMetadataThumbnailCell : ARItemThumbnailViewCell
 
 + (CGFloat)heightForMetaData;

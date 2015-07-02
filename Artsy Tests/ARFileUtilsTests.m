@@ -2,7 +2,7 @@
 #import "ARUserManager.h"
 #import "ARUserManager+Stubs.h"
 
-SpecBegin(ARFileUtilsTests)
+SpecBegin(ARFileUtilsTests);
 
 describe(@"caches", ^{
     it(@"cachesFolder", ^{

@@ -1,6 +1,7 @@
 #import "ARBrowseViewController.h"
 #import "ARStubbedBrowseNetworkModel.h"
 
+
 @interface ARBrowseViewController (Tests)
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @property (nonatomic, strong, readonly) NSArray *menuLinks;
@@ -8,7 +9,7 @@
 - (void)fetchMenuItems;
 @end
 
-SpecBegin(ARBrowseViewController)
+SpecBegin(ARBrowseViewController);
 
 __block ARBrowseViewController *viewController;
 

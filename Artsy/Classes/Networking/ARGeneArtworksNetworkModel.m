@@ -1,17 +1,21 @@
 #import "ARGeneArtworksNetworkModel.h"
 
-@interface ARGeneArtworksNetworkModel()
+
+@interface ARGeneArtworksNetworkModel ()
 @property (nonatomic, assign) NSInteger currentPage;
 @property (readwrite, nonatomic, assign) BOOL allDownloaded;
 @property (readwrite, nonatomic, assign) BOOL downloadLock;
 @end
+
 
 @implementation ARGeneArtworksNetworkModel
 
 - (id)initWithGene:(Gene *)gene
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _gene = gene;
     _currentPage = 1;
@@ -21,7 +25,9 @@
 
 - (void)getNextArtworkPage:(void (^)(NSArray *artworks))success
 {
-    if (self.allDownloaded || self.downloadLock) { return; }
+    if (self.allDownloaded || self.downloadLock) {
+        return;
+    }
 
     self.downloadLock = YES;
 

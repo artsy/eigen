@@ -1,8 +1,10 @@
 #import "ARStandardDateFormatter.h"
 
-@interface ARStandardDateFormatter()
+
+@interface ARStandardDateFormatter ()
 @property (nonatomic, strong) NSValueTransformer *stringTransformer;
 @end
+
 
 @implementation ARStandardDateFormatter
 

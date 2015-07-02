@@ -8,14 +8,16 @@
 #import <SDWebImage/SDWebImagePrefetcher.h>
 
 static ARNavigationController *
-WebViewNavigationControllerWithPath(NSString *path) {
+WebViewNavigationControllerWithPath(NSString *path)
+{
     NSURL *URL = [NSURL URLWithString:path];
     ARTopMenuInternalMobileWebViewController *viewController = [[ARTopMenuInternalMobileWebViewController alloc] initWithURL:URL];
     return [[ARNavigationController alloc] initWithRootViewController:viewController];
 }
 
 static ARNavigationController *
-RefreshedWebViewNavigationController(ARNavigationController *navigationController) {
+RefreshedWebViewNavigationController(ARNavigationController *navigationController)
+{
     NSArray *viewControllers = navigationController.viewControllers;
     ARTopMenuInternalMobileWebViewController *viewController = (ARTopMenuInternalMobileWebViewController *)viewControllers[0];
     if (viewController.shouldBeReloaded) {
@@ -24,7 +26,8 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
     return navigationController;
 }
 
-@interface ARTopMenuNavigationDataSource()
+
+@interface ARTopMenuNavigationDataSource ()
 
 @property (nonatomic, assign, readwrite) NSInteger currentIndex;
 @property (nonatomic, strong, readonly) NSArray *navigationControllers;
@@ -38,6 +41,7 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 @property (readonly, nonatomic, strong) ARNavigationController *magazineNavigationController;
 
 @end
+
 
 @implementation ARTopMenuNavigationDataSource
 
@@ -78,14 +82,14 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 
 - (void)prefetchHeroUnits
 {
-    [self.showFeedViewController.heroUnitDatasource getHeroUnitsWithSuccess:^(NSArray *heroUnits){
+    [self.showFeedViewController.heroUnitDatasource getHeroUnitsWithSuccess:^(NSArray *heroUnits) {
         NSArray *urls = [heroUnits map:^id(SiteHeroUnit *unit) {
             return unit.preferredImageURL;
         }];
 
         SDWebImagePrefetcher *heroUnitPrefetcher = [[SDWebImagePrefetcher alloc] init];
         [heroUnitPrefetcher prefetchURLs:urls];
-        
+
     } failure:nil];
 }
 
@@ -106,7 +110,7 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 {
     _currentIndex = index;
 
-    switch (index){
+    switch (index) {
         case ARTopTabControllerIndexSearch:
             return self.searchNavigationController;
         case ARTopTabControllerIndexFeed:

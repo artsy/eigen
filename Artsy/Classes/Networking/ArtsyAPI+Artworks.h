@@ -1,5 +1,6 @@
 @class Artwork, Artist, Gene, Fair, PartnerShow;
 
+
 @interface ArtsyAPI (Artworks)
 
 + (void)getArtworkInfo:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure;

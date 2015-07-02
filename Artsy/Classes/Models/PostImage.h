@@ -2,7 +2,8 @@
 #import "ARPostAttachment.h"
 #import "ARHasImageBaseURL.h"
 
-@interface PostImage : MTLModel<ARPostAttachment, MTLJSONSerializing, ARHasImageBaseURL>
+
+@interface PostImage : MTLModel <ARPostAttachment, MTLJSONSerializing, ARHasImageBaseURL>
 
 @property (readonly, nonatomic, copy) NSString *imageID;
 @property (readonly, nonatomic, copy) NSString *url;

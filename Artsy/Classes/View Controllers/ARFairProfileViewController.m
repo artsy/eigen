@@ -1,15 +1,16 @@
 #import "ARFairProfileViewController.h"
 
-NSString * const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
-NSString * const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";
-NSString * const ARFairHighlightArtistIDKey = @"ARFairHighlightArtistIDKey";
-NSString * const ARFairHighlightShowsKey = @"ARFairHighlightShowsKey";
-NSString * const ARFairHighlightPartnersKey = @"ARFairHighlightPartnersKey";
-NSString * const ARFairHighlightFocusMapKey = @"ARFairHighlightFocusMapKey";
-NSString * const ARFairMapSetFavoritePartnersKey = @"ARFairMapSetFavoritePartnersKey";
-NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePartnersKey";
+NSString *const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
+NSString *const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";
+NSString *const ARFairHighlightArtistIDKey = @"ARFairHighlightArtistIDKey";
+NSString *const ARFairHighlightShowsKey = @"ARFairHighlightShowsKey";
+NSString *const ARFairHighlightPartnersKey = @"ARFairHighlightPartnersKey";
+NSString *const ARFairHighlightFocusMapKey = @"ARFairHighlightFocusMapKey";
+NSString *const ARFairMapSetFavoritePartnersKey = @"ARFairMapSetFavoritePartnersKey";
+NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePartnersKey";
 
-@interface ARFairProfileViewController() <UIGestureRecognizerDelegate, UIScrollViewDelegate, UINavigationControllerDelegate>
+
+@interface ARFairProfileViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate, UINavigationControllerDelegate>
 
 // Taken from the ARParallaxScrollViewController.
 @property (readonly, nonatomic, strong) UIViewController *topViewController;
@@ -34,6 +35,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 
 @end
 
+
 @implementation ARFairProfileViewController
 
 - (id)initWithProfile:(Profile *)profile
@@ -41,7 +43,9 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
     NSAssert([profile.owner isKindOfClass:[FairOrganizer class]], @"Expected a profile owned by a FairOrganizer.");
 
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _profile = profile;
     return self;
 }
@@ -58,7 +62,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
     [self setupProfile];
 }
 
-- (void) setFair:(Fair *)fair
+- (void)setFair:(Fair *)fair
 {
     [_fair removeObserver:self forKeyPath:@keypath(Fair.new, shows)];
 
@@ -69,7 +73,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 
 - (void)setupProfile
 {
-    NSString * defaultFairID = ((FairOrganizer *) _profile.owner).defaultFairID;
+    NSString *defaultFairID = ((FairOrganizer *)_profile.owner).defaultFairID;
 
     self.fair = [[Fair alloc] initWithFairID:defaultFairID];
 
@@ -85,14 +89,16 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
     [self ar_addModernChildViewController:self.innerNavigationController];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
 
     NSNotificationCenter *dc = NSNotificationCenter.defaultCenter;
     [dc addObserver:self selector:@selector(didReceiveRefreshNotification:) name:ARFairRefreshFavoritesNotification object:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
 
     NSNotificationCenter *dc = NSNotificationCenter.defaultCenter;
@@ -105,11 +111,11 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
         return;
     }
 
-    if(!_favoritesNetworkModel) {
+    if (!_favoritesNetworkModel) {
         _favoritesNetworkModel = [[ARFairFavoritesNetworkModel alloc] init];
     }
 
-    if(self.favoritesNetworkModel.isDownloading) return;
+    if (self.favoritesNetworkModel.isDownloading) return;
     [self.favoritesNetworkModel getFavoritesForNavigationsButtonsForFair:self.fair navigation:nil success:^(NSArray *relatedPartners) {
     } failure:nil];
 }
@@ -179,7 +185,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 
 - (BOOL)hidesMenuButton
 {
-    if (self.searchVC.menuState==ARMenuStateExpanded) {
+    if (self.searchVC.menuState == ARMenuStateExpanded) {
         return YES;
     }
 

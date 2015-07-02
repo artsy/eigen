@@ -5,6 +5,7 @@ typedef NS_ENUM(NSInteger, AROnboardingMoreInfoViewControllerLoginType) {
     AROnboardingMoreInfoViewControllerLoginTypeTwitter
 };
 
+
 @interface AROnboardingMoreInfoViewController : UIViewController
 
 - (instancetype)initForFacebookWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name;

@@ -1,5 +1,6 @@
 #import "ARFairFavoritesNetworkModel.h"
 
+
 @interface ARFairFavoritesNetworkModel ()
 
 - (void)handleShowButtonPress:(PartnerShow *)show fair:(Fair *)fair;

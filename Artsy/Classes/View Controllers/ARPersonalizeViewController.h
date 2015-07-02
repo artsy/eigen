@@ -3,6 +3,7 @@
 @class AROnboardingGeneTableController;
 @class AROnboardingArtistTableController;
 
+
 @interface ARPersonalizeViewController : UIViewController
 
 - (instancetype)initWithGenes:(NSArray *)genes;

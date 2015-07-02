@@ -1,17 +1,21 @@
 #import "ARZoomArtworkImageViewController.h"
 
+
 @interface ARZoomArtworkImageViewController () <ARZoomViewDelegate>
 
 @property (nonatomic, assign) BOOL popped;
 
 @end
 
+
 @implementation ARZoomArtworkImageViewController
 
 - (instancetype)initWithImage:(Image *)image
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _image = image;
 
@@ -51,14 +55,14 @@
     _zoomView.zoomDelegate = self;
 
     [self.view addSubview:zoomView];
-    
+
     RACSignal *unconstrainSignal = [self rac_signalForSelector:@selector(unconstrainZoomView)];
-    
+
     // This has immediate effect
     RACSignal *viewFrameSignal = [RACObserve(self.view, frame) takeUntil:unconstrainSignal];
     RAC(zoomView, frame) = viewFrameSignal;
-    
-    
+
+
     // throttle: is necessary to push this to the next runloop invocation.
     // Well, technically we need to delay it at least 2 invocations, at least on iOS 7.
     // Since it's not good to rely on iOS implementation details, this inperceptable delay will do.
@@ -101,14 +105,14 @@
     [super viewDidAppear:animated];
 
     if (!self.suppressZoomViewCreation) {
-        self.zoomView = [[ARZoomView alloc]initWithImage:self.image frame:self.view.bounds];
+        self.zoomView = [[ARZoomView alloc] initWithImage:self.image frame:self.view.bounds];
         self.zoomView.zoomScale = [self.zoomView scaleForFullScreenZoomInSize:self.view.bounds.size];
     }
 
     [super viewWillAppear:animated];
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     // YES is buggy.
     return [UIDevice isPad];

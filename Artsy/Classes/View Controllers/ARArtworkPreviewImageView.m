@@ -1,15 +1,19 @@
 #import "ARArtworkPreviewImageView.h"
 #import "ARFeedImageLoader.h"
 
-@interface ARArtworkPreviewImageView()
+
+@interface ARArtworkPreviewImageView ()
 @end
+
 
 @implementation ARArtworkPreviewImageView
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     [self setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisVertical];
     self.userInteractionEnabled = YES;
@@ -30,7 +34,7 @@
     return self;
 }
 
--(void)setArtwork:(Artwork *)artwork
+- (void)setArtwork:(Artwork *)artwork
 {
     _artwork = artwork;
     [self updateWithArtwork:artwork];
@@ -59,7 +63,6 @@
 - (void)goToFullScreen
 {
     if ([self.artwork.defaultImage needsTiles]) {
-
         // Let the ArtworkVC decide what to do, pass via responder chain
         [self.delegate tappedTileableImagePreview];
 
@@ -90,19 +93,18 @@
     NSURL *imageURL = [NSURL URLWithString:artwork.defaultImage.baseImageURL];
     UIImage *image;
     image = [ARFeedImageLoader bestAvailableCachedImageForBaseURL:imageURL];
-//    Temporarily disable this to see if it’s related to https://github.com/artsy/eigen/issues/526.
-//    if (!image) {
-//        // Multiply by 1000 to preserve precision because the image's dimensions get rounded to whole numbers.
-//        CGFloat aspectRatio = artwork.aspectRatio ?: 1;
-//        CGSize size = CGSizeMake(aspectRatio * 1000, 1000);
-//        image = [UIImage imageFromColor:[UIColor artsyLightGrey] withSize:size];
-//    }
+    //    Temporarily disable this to see if it’s related to https://github.com/artsy/eigen/issues/526.
+    //    if (!image) {
+    //        // Multiply by 1000 to preserve precision because the image's dimensions get rounded to whole numbers.
+    //        CGFloat aspectRatio = artwork.aspectRatio ?: 1;
+    //        CGSize size = CGSizeMake(aspectRatio * 1000, 1000);
+    //        image = [UIImage imageFromColor:[UIColor artsyLightGrey] withSize:size];
+    //    }
     return image;
 }
 
 - (void)setImage:(UIImage *)image
 {
-
     if (image) {
         self.backgroundColor = [UIColor whiteColor];
         [self setAspectRatioConstraintWithImage:image];
@@ -113,25 +115,25 @@
 - (void)setAspectRatioConstraintWithImage:(UIImage *)image
 {
     [self removeConstraints:self.constraints];
-    CGFloat ratio = image.size.height/image.size.width;
+    CGFloat ratio = image.size.height / image.size.width;
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint
-                                      constraintWithItem:self
-                                      attribute:NSLayoutAttributeHeight
-                                      relatedBy:NSLayoutRelationEqual
-                                      toItem:self
-                                      attribute:NSLayoutAttributeWidth
-                                      multiplier:ratio
-                                      constant:0];
+        constraintWithItem:self
+                 attribute:NSLayoutAttributeHeight
+                 relatedBy:NSLayoutRelationEqual
+                    toItem:self
+                 attribute:NSLayoutAttributeWidth
+                multiplier:ratio
+                  constant:0];
     constraint1.priority = 750;
 
     NSLayoutConstraint *constraint2 = [NSLayoutConstraint
-                                       constraintWithItem:self
-                                       attribute:NSLayoutAttributeHeight
-                                       relatedBy:NSLayoutRelationLessThanOrEqual
-                                       toItem:self
-                                       attribute:NSLayoutAttributeWidth
-                                       multiplier:ratio
-                                       constant:0];
+        constraintWithItem:self
+                 attribute:NSLayoutAttributeHeight
+                 relatedBy:NSLayoutRelationLessThanOrEqual
+                    toItem:self
+                 attribute:NSLayoutAttributeWidth
+                multiplier:ratio
+                  constant:0];
     constraint2.priority = 1000;
 
     [self addConstraint:constraint1];

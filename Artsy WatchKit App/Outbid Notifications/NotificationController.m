@@ -1,6 +1,7 @@
 #import "NotificationController.h"
 
-@interface NotificationController()
+
+@interface NotificationController ()
 @property (strong, nonatomic) IBOutlet WKInterfaceImage *image;
 @property (strong, nonatomic) IBOutlet WKInterfaceGroup *notificationGroup;
 
@@ -8,11 +9,12 @@
 @property (strong, nonatomic) IBOutlet WKInterfaceLabel *artworkTitleLabel;
 @end
 
+
 @implementation NotificationController
 
-- (void)didReceiveLocalNotification:(UILocalNotification *)localNotification withCompletion:(void (^)(WKUserNotificationInterfaceType))completionHandler 
- {
-     [self didReceiveRemoteNotification:localNotification.userInfo withCompletion:completionHandler];
+- (void)didReceiveLocalNotification:(UILocalNotification *)localNotification withCompletion:(void (^)(WKUserNotificationInterfaceType))completionHandler
+{
+    [self didReceiveRemoteNotification:localNotification.userInfo withCompletion:completionHandler];
 }
 
 - (void)didReceiveRemoteNotification:(NSDictionary *)remoteNotification withCompletion:(void (^)(WKUserNotificationInterfaceType))completionHandler

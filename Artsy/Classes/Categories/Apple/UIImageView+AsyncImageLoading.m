@@ -10,14 +10,14 @@
                  completed:(SDWebImageCompletionBlock)completionBlock
 {
     if (!placeholder) {
-      placeholder = [UIImage imageFromColor:[UIColor artsyLightGrey]];
+        placeholder = [UIImage imageFromColor:[UIColor artsyLightGrey]];
     }
 
-// This will save a lot of async calls sometime, this exists in Energy.
-//    if ([ARDispatchManager sharedManager].useSyncronousDispatches) {
-//        self.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-//        return;
-//    }
+    // This will save a lot of async calls sometime, this exists in Energy.
+    //    if ([ARDispatchManager sharedManager].useSyncronousDispatches) {
+    //        self.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+    //        return;
+    //    }
 
     if ([ARLogger shouldLogNetworkRequests]) {
         // SDWebImage might not call the callback in case an image view is deallocated in the
@@ -53,9 +53,9 @@
             if (completionBlock) {
                 completionBlock(image, error, cacheType, imageURL);
             }
-        }];
+                       }];
     } else {
-      [self sd_setImageWithURL:url placeholderImage:placeholder completed:completionBlock];
+        [self sd_setImageWithURL:url placeholderImage:placeholder completed:completionBlock];
     }
 }
 

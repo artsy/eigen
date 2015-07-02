@@ -1,5 +1,8 @@
+
+
 @interface PartnerShowFairLocation ()
 @end
+
 
 @implementation PartnerShowFairLocation
 

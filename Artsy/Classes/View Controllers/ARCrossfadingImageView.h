@@ -1,3 +1,5 @@
+
+
 @interface ARCrossfadingImageView : UIImageView
 
 @property (nonatomic, readwrite) BOOL shouldLoopImages;

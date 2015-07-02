@@ -1,3 +1,5 @@
+
+
 @implementation Video
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -11,7 +13,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         Video *video = object;
         return [video.videoID isEqualToString:self.videoID];
     }
@@ -25,4 +27,3 @@
 }
 
 @end
-

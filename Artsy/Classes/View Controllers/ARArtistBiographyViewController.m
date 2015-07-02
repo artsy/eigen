@@ -8,6 +8,7 @@
 @property (nonatomic, strong) ORStackScrollView *view;
 @end
 
+
 @implementation ARArtistBiographyViewController
 
 @dynamic view;
@@ -15,7 +16,9 @@
 - (instancetype)initWithArtist:(Artist *)artist
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _artist = artist;
 
@@ -69,14 +72,14 @@
     return nil;
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return NO;
 }
 
 #pragma mark - ARTextViewDelegate
 
--(void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController
+- (void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:YES];
 }

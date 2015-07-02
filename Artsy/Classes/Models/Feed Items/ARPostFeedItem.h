@@ -7,13 +7,14 @@ typedef NS_ENUM(NSUInteger, ARPostType) {
     ARPostTypeTextOnly
 };
 
+
 @interface ARPostFeedItem : ARFeedItem <UIActivityItemSource>
 
-@property (nonatomic,  copy, readonly) NSString *postID;
-@property (nonatomic,  copy, readonly) NSString *bodyHTML;
-@property (nonatomic,  copy, readonly) NSString *title;
-@property (nonatomic,  copy, readonly) NSString *shareableImageURL;
-@property (nonatomic,  copy, readonly) NSString *imageURL;
+@property (nonatomic, copy, readonly) NSString *postID;
+@property (nonatomic, copy, readonly) NSString *bodyHTML;
+@property (nonatomic, copy, readonly) NSString *title;
+@property (nonatomic, copy, readonly) NSString *shareableImageURL;
+@property (nonatomic, copy, readonly) NSString *imageURL;
 
 @property (nonatomic, readonly) ARPostType type;
 @property (nonatomic, readonly) Profile *profile;

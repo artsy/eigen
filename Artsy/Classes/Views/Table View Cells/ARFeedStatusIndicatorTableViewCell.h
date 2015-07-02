@@ -7,6 +7,7 @@ typedef NS_ENUM(NSUInteger, ARFeedStatusState) {
 /// Cell for displaying the state of a feed's network activity
 /// will change height and colour based on the state property.
 
+
 @interface ARFeedStatusIndicatorTableViewCell : UITableViewCell
 
 /// Preferred initiliser, sets up cell and sets internal state

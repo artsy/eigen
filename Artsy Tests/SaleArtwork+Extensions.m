@@ -1,5 +1,6 @@
 #import "SaleArtwork+Extensions.h"
 
+
 @implementation SaleArtwork (Extensions)
 + (SaleArtwork *)saleArtworkWithHighBid:(Bid *)bid AndReserveStatus:(ARReserveStatus)status
 {
@@ -11,4 +12,3 @@
     }];
 }
 @end
-

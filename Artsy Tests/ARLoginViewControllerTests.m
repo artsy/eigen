@@ -3,6 +3,7 @@
 #import "ARUserManager+Stubs.h"
 #import "ARAuthProviders.h"
 
+
 @interface ARLoginViewController (Testing)
 
 @property (nonatomic, strong) NSString *email;
@@ -17,7 +18,7 @@
 - (void)textFieldDidChange:(UIView *)textView;
 @end
 
-SpecBegin(ARLoginViewController)
+SpecBegin(ARLoginViewController);
 
 beforeEach(^{
     [ARUserManager clearUserData];

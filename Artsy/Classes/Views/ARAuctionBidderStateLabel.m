@@ -1,9 +1,10 @@
 #import "ARAuctionBidderStateLabel.h"
 #import <Artsy_UILabels/NSNumberFormatter+ARCurrency.h>
 
+
 @implementation ARAuctionBidderStateLabel
 
--(void)updateWithSaleArtwork:(SaleArtwork *)saleArtwork
+- (void)updateWithSaleArtwork:(SaleArtwork *)saleArtwork
 {
     ARAuctionState state = saleArtwork.auctionState;
     if (state & ARAuctionStateUserIsHighBidder) {

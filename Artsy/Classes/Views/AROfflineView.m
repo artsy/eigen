@@ -1,16 +1,20 @@
 #import "AROfflineView.h"
 #import "ORStackView+ArtsyViews.h"
 
+
 @interface AROfflineView ()
 
 @end
+
 
 @implementation AROfflineView
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.backgroundColor = [UIColor whiteColor];
     [self addWhiteSpaceWithHeight:@"200"];

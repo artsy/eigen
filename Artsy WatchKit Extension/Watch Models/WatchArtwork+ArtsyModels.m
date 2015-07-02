@@ -1,5 +1,6 @@
 #import "WatchArtwork+ArtsyModels.h"
 
+
 @implementation WatchArtwork (FromArtwork)
 
 - (instancetype)initWithArtsyArtwork:(Artwork *)artwork

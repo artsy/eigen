@@ -19,18 +19,19 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     ARFairArtistFollow,
     ARFairArtistShows,
     ARFairArtistOnArtsy = ARFairArtistShows + 3 * 42, // we don't expect more than 42 shows
-    ARFairArtistWhitespaceGobbler
-};
+    ARFairArtistWhitespaceGobbler};
+
 
 @interface ARFairArtistViewController () <AREmbeddedModelsDelegate>
 @property (nonatomic, strong, readonly) ORStackScrollView *view;
 @property (nonatomic, strong, readonly) ARFollowableNetworkModel *followableNetwork;
-@property (nonatomic, strong, readwrite) NSObject <FairArtistNeworkModel> *networkModel;
+@property (nonatomic, strong, readwrite) NSObject<FairArtistNeworkModel> *networkModel;
 @property (nonatomic, strong, readonly) NSArray *partnerShows;
 @property (nonatomic, strong, readwrite) Fair *fair;
 @property (nonatomic, strong, readonly) NSString *header;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
+
 
 @implementation ARFairArtistViewController
 
@@ -110,7 +111,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     NSString *title = NSStringWithFormat(@"%@ on Artsy", self.artist.name);
     ARNavigationButton *button = [[ARNavigationButton alloc] initWithTitle:title];
     button.tag = ARFairArtistOnArtsy;
-    button.onTap = ^(UIButton *tappedButton){
+    button.onTap = ^(UIButton *tappedButton) {
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadArtistWithID:self.artist.artistID inFair:nil];
         [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
     };
@@ -135,7 +136,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 {
     ARNavigationButton *button = [[ARSerifNavigationButton alloc] initWithTitle:show.partner.name andSubtitle:show.locationInFair withBorder:0];
     button.tag = tag;
-    button.onTap = ^(UIButton *tappedButton){
+    button.onTap = ^(UIButton *tappedButton) {
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:show fair:self.fair];
         [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
     };
@@ -184,7 +185,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 - (void)mapButtonTapped:(id)mapButtonTapped
 {
     @weakify(self);
-    [self.fair getFairMaps:^(NSArray * maps) {
+    [self.fair getFairMaps:^(NSArray *maps) {
         @strongify(self);
         ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.header selectedPartnerShows:self.partnerShows];
         [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
@@ -208,7 +209,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 - (void)toggleFollowArtist:(id)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist success:^(BOOL newUser){
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist success:^(BOOL newUser) {
             [self toggleFollowArtist:sender];
         }];
         return;
@@ -223,7 +224,7 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     return self.followableNetwork.following;
 }
 
--(void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }

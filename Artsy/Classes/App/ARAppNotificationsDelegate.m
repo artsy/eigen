@@ -4,6 +4,7 @@
 #import "ARNotificationView.h"
 #import <ARAnalytics/ARAnalytics.h>
 
+
 @implementation ARAppNotificationsDelegate
 
 + (void)load
@@ -23,13 +24,13 @@
     // http://stackoverflow.com/questions/9372815/how-can-i-convert-my-device-token-nsdata-into-an-nsstring
     const unsigned *tokenBytes = [deviceTokenData bytes];
     NSString *deviceToken = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",
-                                ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
-                                ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
-                                ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
+                                                       ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
+                                                       ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
+                                                       ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
 
     ARActionLog(@"Got device notification token: %@", deviceToken);
 
-    // We only record device tokens on the Artsy service in case of Beta or App Store builds.
+// We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
     [ARAnalytics setUserProperty:ARAnalyticsEnabledNotificationsProperty toValue:@"true"];
 
@@ -67,9 +68,9 @@
     if (app.applicationState == UIApplicationStateActive && message) {
         // app is in the foreground
         [ARNotificationView showNoticeInView:[self findVisibleWindow]
-            title:message
-            hideAfter:0
-            response: ^{
+                                       title:message
+                                   hideAfter:0
+                                    response:^{
                 if (url) {
                     [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
 
@@ -78,8 +79,7 @@
                         [[ARTopMenuViewController sharedController] pushViewController:viewController];
                     }
                 }
-            }
-        ];
+                                    }];
     } else {
         // app was brought from the background after a user clicked on the notification
         [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
@@ -93,7 +93,7 @@
     }
 }
 
--(void)registerForDeviceNotifications
+- (void)registerForDeviceNotifications
 {
     ARActionLog(@"Registering with Apple for remote notifications.");
     UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
@@ -102,7 +102,8 @@
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
 
-- (UIWindow *)findVisibleWindow {
+- (UIWindow *)findVisibleWindow
+{
     NSArray *windows = [[UIApplication sharedApplication] windows];
     for (UIWindow *window in [windows reverseObjectEnumerator]) {
         if (!window.hidden) {

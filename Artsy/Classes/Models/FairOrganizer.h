@@ -1,5 +1,6 @@
 #import <Mantle/Mantle.h>
 
+
 @interface FairOrganizer : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *fairOrganizerID;

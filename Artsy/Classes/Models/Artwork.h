@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
     ARDimensionMetricNoMetric
 };
 
+
 @interface Artwork : MTLModel <ARPostAttachment, MTLJSONSerializing, ARHasImageBaseURL, ARShareableObject>
 
 @property (nonatomic, copy) NSString *artworkID;
@@ -43,7 +44,7 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 @property (nonatomic, copy) NSString *collectingInstitution;
 
 // not a property, carried around for fair context
-- (Fair *) fair;
+- (Fair *)fair;
 
 // we're just gonna leave these as dictionaries for now
 // I think?
@@ -57,7 +58,7 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 @property (nonatomic, copy) NSString *exhibitionHistory;
 @property (nonatomic, copy) NSString *additionalInfo;
 @property (nonatomic, strong) NSNumber *isPriceHidden;
-@property (nonatomic, strong, getter = isPublished) NSNumber *published;
+@property (nonatomic, strong, getter=isPublished) NSNumber *published;
 @property (nonatomic, copy) NSString *imageRights;
 @property (nonatomic, copy) NSString *medium;
 @property (nonatomic, copy) NSString *literature;
@@ -101,10 +102,10 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 - (void)updatePartnerShow;
 
 /// Adds a callback when the artwork has been update, does not trigger said update.
-- (KSPromise *)onArtworkUpdate:(void(^)(void))success failure:(void(^)(NSError *error))failure;
-- (KSPromise *)onSaleArtworkUpdate:(void(^)(SaleArtwork *saleArtwork))success failure:(void(^)(NSError *error))failure;
-- (KSPromise *)onFairUpdate:(void(^)(Fair *fair))success failure:(void(^)(NSError *error))failure;
-- (KSPromise *)onPartnerShowUpdate:(void(^)(PartnerShow *show))success failure:(void(^)(NSError *error))failure;
+- (KSPromise *)onArtworkUpdate:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success failure:(void (^)(NSError *error))failure;
+- (KSPromise *)onFairUpdate:(void (^)(Fair *fair))success failure:(void (^)(NSError *error))failure;
+- (KSPromise *)onPartnerShowUpdate:(void (^)(PartnerShow *show))success failure:(void (^)(NSError *error))failure;
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure;
 - (void)getFavoriteStatus:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;

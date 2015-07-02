@@ -1,7 +1,7 @@
 
 #import "UIApplicationStateEnum.h"
 
-SpecBegin(UIApplicationStateEnum)
+SpecBegin(UIApplicationStateEnum);
 
 describe(@"toString", ^{
     it(@"background", ^{

@@ -1,5 +1,6 @@
 #import "ArtsyAPI+Private.h"
 
+
 @implementation ArtsyAPI (DeviceTokens)
 
 + (AFJSONRequestOperation *)setAPNTokenForCurrentDevice:(NSString *)token success:(void (^)(id response))success failure:(void (^)(NSError *error))failure

@@ -2,6 +2,7 @@
 
 /// Handles hitting share buttons inside InternalWebViewControllers
 
+
 @interface ARInternalShareValidator : NSObject
 
 /// Checks if the URL is a share URL

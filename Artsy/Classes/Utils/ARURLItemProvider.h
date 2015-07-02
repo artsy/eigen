@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+
 @interface ARURLItemProvider : UIActivityItemProvider
 
 @property (nonatomic, strong, readonly) NSString *message;

@@ -2,8 +2,10 @@
 #import "ARArtworkPriceRowView.h"
 @import Artsy_UILabels;
 
-@interface ARArtworkPriceView()
+
+@interface ARArtworkPriceView ()
 @end
+
 
 @implementation ARArtworkPriceView
 
@@ -59,4 +61,3 @@
 }
 
 @end
-

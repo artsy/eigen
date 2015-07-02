@@ -1,6 +1,6 @@
 #import "ARPersonalizeWebViewController.h"
 
-SpecBegin(ARPersonalizeWebViewController)
+SpecBegin(ARPersonalizeWebViewController);
 
 __block ARPersonalizeWebViewController *sut;
 

@@ -5,9 +5,11 @@
 #import "ARArtworkWithMetadataThumbnailCell.h"
 #import "ARArtworkThumbnailMetadataView.h"
 
+
 @interface ARArtworkRelatedArtworksContentView : ORStackView
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
 @end
+
 
 @interface ARArtworkRelatedArtworksView (Private)
 
@@ -21,6 +23,7 @@
 - (ARArtworkRelatedArtworksContentView *)addSectionWithTag:(ARRelatedArtworksSubviewOrder)tag artworks:(NSArray *)artworks heading:(NSString *)heading;
 
 @end
+
 
 @implementation ARArtworkRelatedArtworksView (Testing)
 
@@ -47,7 +50,7 @@
 
 @end
 
-SpecBegin(ARArtworkRelatedArtworksView)
+SpecBegin(ARArtworkRelatedArtworksView);
 
 __block NSDictionary *artworkJSON = nil;
 __block Artwork *artwork = nil;

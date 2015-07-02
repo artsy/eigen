@@ -9,6 +9,7 @@ typedef NS_ENUM(NSInteger, ARFeedItemImageSize) {
     ARFeedItemImageSizeLarge
 };
 
+
 @interface ARFeedImageLoader : NSObject
 
 - (void)loadImageAtAddress:(NSString *)baseImageURL desiredSize:(ARFeedItemImageSize)desiredSize forImageView:(UIImageView *)imageView customPlaceholder:(UIImage *)customPlaceholder;

@@ -1,8 +1,10 @@
 #import "ARSecureTextFieldWithPlaceholder.h"
 
+
 @interface ARSecureTextFieldWithPlaceholder ()
 @property (nonatomic, strong) NSString *actualText;
 @end
+
 
 @implementation ARSecureTextFieldWithPlaceholder
 

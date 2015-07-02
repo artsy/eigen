@@ -1,10 +1,12 @@
 #import "ARCountdownView.h"
 
+
 @interface ARCountdownView ()
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) UILabel *countdown;
 @property (nonatomic, strong) UILabel *headingLabel;
 @end
+
 
 @implementation ARCountdownView
 
@@ -23,7 +25,7 @@
     self.headingLabel.textAlignment = NSTextAlignmentCenter;
     self.headingLabel.font = [UIFont smallCapsSerifFontWithSize:14];
     self.headingLabel.textColor = [UIColor blackColor];
-    
+
     [self addSubview:self.headingLabel];
     [self.headingLabel alignTopEdgeWithView:self predicate:@"0"];
     [self.headingLabel alignCenterXWithView:self predicate:@"0"];
@@ -33,7 +35,7 @@
     self.countdown.textColor = [UIColor blackColor];
     self.countdown.text = [self countdownString];
     self.countdown.textAlignment = NSTextAlignmentCenter;
-    
+
     [self addSubview:self.countdown];
     [self.countdown constrainTopSpaceToView:self.headingLabel predicate:@"0"];
     [self.countdown alignCenterXWithView:self predicate:@"0"];
@@ -43,9 +45,9 @@
     [labelsContainer constrainTopSpaceToView:self.countdown predicate:@"0"];
     [labelsContainer alignCenterXWithView:self predicate:@"0"];
     [labelsContainer alignBottomEdgeWithView:self predicate:@"0"];
-    
+
     NSMutableArray *labels = [NSMutableArray array];
-    [@[@"Days", @"Hrs", @"Min", @"Sec"] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [@[ @"Days", @"Hrs", @"Min", @"Sec" ] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.text = [obj uppercaseString];
         label.textColor = [UIColor artsyHeavyGrey];
@@ -57,10 +59,10 @@
         [label constrainWidth:@"39"];
         [labels addObject:label];
     }];
-    
+
     [(UIView *)[labels firstObject] alignLeadingEdgeWithView:labelsContainer predicate:@"0"];
     [(UIView *)[labels lastObject] alignTrailingEdgeWithView:labelsContainer predicate:@"0"];
-    
+
     [UIView equalWidthForViews:labels];
     [UIView spaceOutViewsHorizontally:labels predicate:@"0"];
     [UIView alignTopAndBottomEdgesOfViews:[labels arrayByAddingObject:labelsContainer]];

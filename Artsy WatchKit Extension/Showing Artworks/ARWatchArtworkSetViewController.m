@@ -3,12 +3,15 @@
 #import "WKInterfaceImage+Async.h"
 #import "ARWatchAsyncTableViewController.h"
 
+
 @implementation ARWatchArtworkRowController
 @end
 
-@interface ARWatchArtworkSetViewController()
+
+@interface ARWatchArtworkSetViewController ()
 @property (nonatomic, readonly, strong) ARWatchAsyncTableViewController *controller;
 @end
+
 
 @implementation ARWatchArtworkSetViewController
 

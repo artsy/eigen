@@ -14,6 +14,7 @@
 #import "ARFairMapViewController.h"
 #import "ARBidButton.h"
 
+
 @implementation ARArtworkViewController (ButtonActions)
 
 #pragma mark - ARArtworkPreviewImageViewDelegate
@@ -30,7 +31,7 @@
 - (void)tappedArtworkFavorite:(ARHeartButton *)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser){
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser) {
             [self tappedArtworkFavorite:sender];
         }];
         return;
@@ -52,10 +53,10 @@
     NSURL *thumbnailImageURL = nil;
     UIImage *image = nil;
     if (self.artwork.defaultImage.downloadable) {
-      thumbnailImageURL = self.artwork.defaultImage.urlForThumbnailImage;
-      image = self.imageView.image;
+        thumbnailImageURL = self.artwork.defaultImage.urlForThumbnailImage;
+        image = self.imageView.image;
     } else if (self.artwork.canShareImage) {
-      thumbnailImageURL = self.artwork.defaultImage.urlForThumbnailImage;
+        thumbnailImageURL = self.artwork.defaultImage.urlForThumbnailImage;
     }
     ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.artwork
                                                                             thumbnailImageURL:thumbnailImageURL
@@ -77,7 +78,7 @@
             ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.artwork.partner.name selectedPartnerShows:shows];
             [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
         }
-    } failure:^(NSError *error) {
+    } failure:^(NSError *error){
         // ignore
     }];
 }
@@ -111,7 +112,7 @@
 - (void)tappedBidButton
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextAuctionBid success:^(BOOL newUser){
+        [ARTrialController presentTrialWithContext:ARTrialContextAuctionBid success:^(BOOL newUser) {
             [self tappedBidButton];
         }];
         return;
@@ -147,7 +148,7 @@
 - (void)tappedBuyButton
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextArtworkOrder success:^(BOOL newUser){
+        [ARTrialController presentTrialWithContext:ARTrialContextArtworkOrder success:^(BOOL newUser) {
             [self tappedBuyButton];
         }];
         return;
@@ -177,8 +178,9 @@
             ARErrorLog(@"Created order %@", orderID);
             UIViewController *controller = [[ARSwitchBoard sharedInstance] loadOrderUIForID:orderID resumeToken:resumeToken];
             [self.navigationController pushViewController:controller animated:YES];
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+
+        }
+        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             @strongify(self);
             ARErrorLog(@"Creating a new order failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
             [self tappedContactGallery];
@@ -210,7 +212,7 @@
                 UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:shows.firstObject fair:self.fair];
                 [self.navigationController pushViewController:viewController animated:YES];
             }
-        } failure:^(NSError *error) {
+        } failure:^(NSError *error){
             // ignore
         }];
     } else if (partner.defaultProfilePublic) {
@@ -218,7 +220,7 @@
         if (viewController) {
             [self.navigationController pushViewController:viewController animated:YES];
         }
-    } else if(partner.website.length) {
+    } else if (partner.website.length) {
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:[NSURL URLWithString:partner.website]];
         if (viewController) {
             [self.navigationController pushViewController:viewController animated:YES];

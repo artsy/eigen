@@ -1,3 +1,5 @@
+
+
 @implementation SiteFeature
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -12,7 +14,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         SiteFeature *siteFeature = object;
         return [siteFeature.siteFeatureID isEqualToString:self.siteFeatureID];
     }

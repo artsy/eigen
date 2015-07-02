@@ -1,5 +1,6 @@
 #import "ARFairArtistNetworkModel.h"
 
+
 @implementation ARFairArtistNetworkModel
 
 - (AFJSONRequestOperation *)getShowsForArtistID:(NSString *)artistID inFairID:(NSString *)fairID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure
@@ -24,7 +25,9 @@
         return nil;
     }
 
-    if (failure) { failure(nil); }
+    if (failure) {
+        failure(nil);
+    }
     return nil;
 }
 
@@ -35,7 +38,9 @@
         return;
     }
 
-    if (failure) { failure(nil); }
+    if (failure) {
+        failure(nil);
+    }
 }
 
 @end

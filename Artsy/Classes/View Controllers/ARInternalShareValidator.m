@@ -3,6 +3,7 @@
 #import "Article.h"
 #import "NSString+StringBetweenStrings.h"
 
+
 @implementation ARInternalShareValidator
 
 - (BOOL)isSocialSharingURL:(NSURL *)url

@@ -3,6 +3,7 @@
 
 static ARStandardDateFormatter *staticDateFormatter;
 
+
 @implementation ARFeedItem
 
 + (NSValueTransformer *)standardDateTransformer

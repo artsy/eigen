@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+
 @interface ARAnimatedTickView : UIView
 - (id)initWithSelection:(BOOL)selected;
 

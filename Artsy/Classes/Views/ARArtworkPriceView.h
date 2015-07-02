@@ -1,5 +1,6 @@
 #import <ORStackView/ORStackView.h>
 
+
 @interface ARArtworkPriceView : ORStackView
 
 - (void)updateWithArtwork:(Artwork *)artwork;

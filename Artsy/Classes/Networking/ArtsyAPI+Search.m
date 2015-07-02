@@ -1,9 +1,10 @@
 #import "ARRouter.h"
 #import "SearchResult.h"
 
+
 @implementation ArtsyAPI (Search)
 
-+ (AFJSONRequestOperation *)searchWithQuery:(NSString *)query success:(void(^)(NSArray *results))success failure:(void (^)(NSError *error))failure
++ (AFJSONRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *results))success failure:(void (^)(NSError *error))failure
 {
     return [self searchWithFairID:nil andQuery:query success:success failure:failure];
 }

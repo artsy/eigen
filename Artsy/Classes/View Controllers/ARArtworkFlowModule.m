@@ -4,11 +4,13 @@
 
 /// Note: a purposeful lack of constants in here. YOLO.
 
+
 @interface ARArtworkFlowModule ()
 @property (nonatomic, strong) UICollectionViewFlowLayout *moduleLayout;
 @property (nonatomic, assign) enum ARArtworkFlowLayout layout;
 @property (nonatomic, assign) enum AREmbeddedArtworkPresentationStyle style;
 @end
+
 
 @implementation ARArtworkFlowModule
 
@@ -67,16 +69,16 @@
 
 + (CGSize)intrinsicSizeWithlayout:(enum ARArtworkFlowLayout)layout andArtworks:(NSArray *)items
 {
-//    if (items.count == 0) {
-//        size = CGSizeMake(320, 320);
-//
-//    } else if (items.count == 1) {
-//        size = [self sizeForSingleItem:items.first];
-//
-//    } else {
-//        CGFloat height = [self sizeForSingleItem:items.first].height;
-//        size = CGSizeMake(320, height);
-//    }
+    //    if (items.count == 0) {
+    //        size = CGSizeMake(320, 320);
+    //
+    //    } else if (items.count == 1) {
+    //        size = [self sizeForSingleItem:items.first];
+    //
+    //    } else {
+    //        CGFloat height = [self sizeForSingleItem:items.first].height;
+    //        size = CGSizeMake(320, height);
+    //    }
 
     switch (layout) {
         case ARArtworkFlowLayoutDoubleRow:
@@ -92,20 +94,19 @@
 {
     CGFloat aspectRatio = item.aspectRatio;
     CGFloat height, width;
-    CGFloat ARFeedCarouselThresholdRatio = 3.0/2.0;
+    CGFloat ARFeedCarouselThresholdRatio = 3.0 / 2.0;
 
     CGSize sizeWithMaxHeight = [self sizeForSingleItem:item withHeight:280];
 
     if (aspectRatio) {
         if (aspectRatio < ARFeedCarouselThresholdRatio) {
-
             // Fit inside ARFeedWidth x ARFeedWidth Square
             if (aspectRatio <= 1) {
                 return sizeWithMaxHeight;
 
             } else {
                 width = 280;
-                height = 280/aspectRatio;
+                height = 280 / aspectRatio;
             }
 
         } else {
@@ -113,7 +114,7 @@
 
             CGFloat maxWidth = 2 * 280;
             if (sizeWithMaxHeight.width > maxWidth) {
-                return CGSizeMake(maxWidth, maxWidth/aspectRatio);
+                return CGSizeMake(maxWidth, maxWidth / aspectRatio);
             } else {
                 return sizeWithMaxHeight;
             }

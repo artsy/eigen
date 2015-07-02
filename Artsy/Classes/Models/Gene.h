@@ -3,6 +3,7 @@
 #import "ARShareableObject.h"
 #import "ARHasImageBaseURL.h"
 
+
 @interface Gene : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageBaseURL>
 
 @property (readonly, nonatomic, copy) NSString *name;
@@ -20,7 +21,7 @@
 
 - (instancetype)initWithGeneID:(NSString *)geneID;
 
-- (void)updateGene:(void(^)(void))success;
+- (void)updateGene:(void (^)(void))success;
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
 
 - (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;

@@ -1,6 +1,7 @@
 #import "WatchShow+ArtsyModels.h"
 #import "PartnerShowCoordinates.h"
 
+
 @implementation WatchShow (FromShow)
 
 - (instancetype)initWithArtsyPartnerShow:(PartnerShow *)show;

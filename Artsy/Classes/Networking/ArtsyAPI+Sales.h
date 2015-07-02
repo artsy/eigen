@@ -1,5 +1,6 @@
 #import "ArtsyAPI.h"
 
+
 @interface ArtsyAPI (Sales)
 
 + (void)getSalesWithArtwork:(NSString *)artworkID
@@ -7,7 +8,7 @@
                     failure:(void (^)(NSError *error))failure;
 
 + (AFJSONRequestOperation *)getArtworksForSale:(NSString *)saleID
-                   success:(void (^)(NSArray *artworks))success
-                   failure:(void (^)(NSError *error))failure;
+                                       success:(void (^)(NSArray *artworks))success
+                                       failure:(void (^)(NSError *error))failure;
 
 @end

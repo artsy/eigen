@@ -6,14 +6,15 @@
 #import "ARArtworkSetViewController.h"
 #import "ARArtworkViewController.h"
 
+
 @implementation ARZoomImageTransition
 
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
+- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     return 0.2;
 }
 
-- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext
+- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     ARArtworkSetViewController *artworkController = (id)fromVC;
     ARZoomArtworkImageViewController *zoomController = (id)toVC;
@@ -64,7 +65,7 @@
     }];
 }
 
-- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext
+- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     ARArtworkSetViewController *artworkController = (id)toVC;
     ARZoomArtworkImageViewController *zoomController = (id)fromVC;

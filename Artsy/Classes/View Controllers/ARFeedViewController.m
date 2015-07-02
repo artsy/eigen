@@ -11,7 +11,8 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARtsyAPI+Private.h"
 
-@interface ARFeedViewController() <ARModernPartnerShowTableViewCellDelegate>
+
+@interface ARFeedViewController () <ARModernPartnerShowTableViewCellDelegate>
 @property (nonatomic, strong) ARReusableLoadingView *loadingView;
 @property (nonatomic, strong) ARFeedTimeline *feedTimeline;
 @property (nonatomic, strong) UITableView *tableView;
@@ -23,12 +24,13 @@
 @property (nonatomic, readwrite) BOOL useLandscapeValues;
 @end
 
+
 @implementation ARFeedViewController
 
 - (instancetype)initWithFeedTimeline:(ARFeedTimeline *)feedTimeline
 {
     self = [super init];
-    if(!self) return nil;
+    if (!self) return nil;
 
     _feedTimeline = feedTimeline;
     _footerState = ARFeedStatusStateLoading;
@@ -115,7 +117,7 @@
 - (void)refreshFeedItems
 {
     @weakify(self)
-    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^{
             @strongify(self);
             [self hideLoadingView];
@@ -124,14 +126,14 @@
             ARErrorLog(@"There was an error getting newest items for the feed: %@", error.localizedDescription);
             [self performSelector:@selector(refreshFeed) withObject:nil afterDelay:3];
         }];
-    }];
+        }];
 }
 
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == self.feedTimeline.numberOfItems) {
+    if (indexPath.row == self.feedTimeline.numberOfItems) {
         return [ARFeedStatusIndicatorTableViewCell heightForFeedItemWithState:_footerState];
     } else {
         ARFeedItem *item = [self.feedTimeline itemAtIndex:indexPath.row];
@@ -146,7 +148,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == self.feedTimeline.numberOfItems) {
+    if (indexPath.row == self.feedTimeline.numberOfItems) {
         return [ARFeedStatusIndicatorTableViewCell cellWithInitialState:_footerState];
     } else {
         ARFeedItem *feedItem = [self.feedTimeline itemAtIndex:indexPath.row];
@@ -159,7 +161,7 @@
 
 - (void)loadNextFeedPage
 {
-    if (self.loading || ! self.feedTimeline.hasNext || self.feedTimeline.loading) {
+    if (self.loading || !self.feedTimeline.hasNext || self.feedTimeline.loading) {
         return;
     }
 
@@ -167,7 +169,7 @@
     [self setFooterStatus:ARFeedStatusStateLoading];
 
     @weakify(self)
-    NSInteger oldCount = self.feedTimeline.numberOfItems;
+        NSInteger oldCount = self.feedTimeline.numberOfItems;
 
     [self.feedTimeline getNextPage:^{
         @strongify(self);
@@ -181,7 +183,7 @@
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
         self->_loading = NO;
     }
-    failure:^(NSError *error) {
+        failure:^(NSError *error) {
         @strongify(self);
         if (!self) { return; }
 
@@ -189,14 +191,14 @@
         ARErrorLog(@"There was an error getting next feed page: %@", error.localizedDescription);
         [self setFooterStatus:ARFeedStatusStateNetworkError];
         self->_loading = NO;
-    }
-    completion:^{
+        }
+        completion:^{
         @strongify(self);
         if (!self) { return; }
 
         [self setFooterStatus:ARFeedStatusStateEndOfFeed];
         self->_loading = NO;
-    }];
+        }];
 }
 
 - (void)setFooterStatus:(ARFeedStatusState)state
@@ -211,7 +213,7 @@
         [self.tableView beginUpdates];
 
         [cell setState:state];
-        [self.tableView reloadRowsAtIndexPaths:@[lastItem] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadRowsAtIndexPaths:@[ lastItem ] withRowAnimation:UITableViewRowAnimationFade];
 
         [self.tableView endUpdates];
         [self.tableView scrollToRowAtIndexPath:lastItem atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -247,7 +249,7 @@
         [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
     }
 
-    if((scrollView.contentSize.height - scrollView.contentOffset.y) < scrollView.bounds.size.height) {
+    if ((scrollView.contentSize.height - scrollView.contentOffset.y) < scrollView.bounds.size.height) {
         [self loadNextFeedPage];
     }
 }
@@ -265,12 +267,12 @@
 
 #pragma mark - Orientation
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return NO;
 }
 
--(NSUInteger)supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
 }
@@ -282,7 +284,7 @@
 
 #pragma mark - ARModernPartnerShowTableViewCellDelegate
 
--(void)modernPartnerShowTableViewCell:(ARModernPartnerShowTableViewCell *)cell shouldShowViewController:(UIViewController *)viewController
+- (void)modernPartnerShowTableViewCell:(ARModernPartnerShowTableViewCell *)cell shouldShowViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:YES];
 }

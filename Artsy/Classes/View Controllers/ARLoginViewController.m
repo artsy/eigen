@@ -10,6 +10,7 @@
 
 #define SPINNER_TAG 0x555
 
+
 @interface ARLoginViewController () <UITextFieldDelegate>
 @property (nonatomic, strong) AROnboardingNavBarView *navView;
 @property (nonatomic, strong) UIButton *testBotButton;
@@ -25,6 +26,7 @@
 
 @property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
 @end
+
 
 @implementation ARLoginViewController
 
@@ -77,8 +79,10 @@
         [self.passwordTextField becomeFirstResponder];
     }
 
-    for (UITextField *textField in @[self.emailTextField, self.passwordTextField]) {
-        if ([textField respondsToSelector:@selector(setAutocorrectionType:)]) { textField.autocorrectionType = UITextAutocorrectionTypeNo; }
+    for (UITextField *textField in @[ self.emailTextField, self.passwordTextField ]) {
+        if ([textField respondsToSelector:@selector(setAutocorrectionType:)]) {
+            textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        }
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.textColor = [UIColor whiteColor];
         textField.keyboardAppearance = UIKeyboardAppearanceDark;
@@ -111,8 +115,8 @@
         self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
     } else {
         [self.containerView alignBottomEdgeWithView:self.view predicate:@"<=-56"];
-//        [self.containerView alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.navView predicate:@">=0"];
-//        [self.containerView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        //        [self.containerView alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.navView predicate:@">=0"];
+        //        [self.containerView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         self.keyboardConstraint = [[self.forgotPasswordButton alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
     }
 
@@ -162,11 +166,11 @@
                 [self failedToLoginToTwitter];
             }];
 
-         } failure:^(NSError *error) {
+    } failure:^(NSError *error) {
              @strongify(self);
              [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
              [self twitterError];
-         }];
+    }];
 }
 
 - (void)loggedInWithType:(ARLoginViewControllerLoginType)type user:(User *)currentUser
@@ -258,7 +262,7 @@
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
     self.keyboardConstraint.constant = -keyboardSize.height - ([UIDevice isPad] ? 20 : 10);
-    [UIView animateIf:YES duration:duration :^{
+    [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -268,7 +272,7 @@
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
     self.keyboardConstraint.constant = 0;
-    [UIView animateIf:YES duration:duration :^{
+    [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -297,11 +301,11 @@
 
 - (void)autoLogIn:(id)sender
 {
-    // this won't leak passwords into the build unless you've
-    // somehow got a simulator only build, which is only
-    // really possible if you grab a dev's laptop
+// this won't leak passwords into the build unless you've
+// somehow got a simulator only build, which is only
+// really possible if you grab a dev's laptop
 
-    // ... in which case you've got the source, so who'd bother running strings?
+// ... in which case you've got the source, so who'd bother running strings?
 
 #if (AR_SHOW_ALL_DEBUG)
     NSString *username, *password;
@@ -332,11 +336,11 @@
 - (void)forgotPassword:(id)sender
 {
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Forgot Password"
-                          message:@"Please enter your email address and we’ll send you a reset link."
-                          delegate:nil
-                          cancelButtonTitle:@"Cancel"
-                          otherButtonTitles:@"Send Link", nil];
+            initWithTitle:@"Forgot Password"
+                  message:@"Please enter your email address and we’ll send you a reset link."
+                 delegate:nil
+        cancelButtonTitle:@"Cancel"
+        otherButtonTitles:@"Send Link", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[alert textFieldAtIndex:0] setKeyboardAppearance:UIKeyboardAppearanceDark];
     alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
@@ -380,22 +384,22 @@
 
     @weakify(self);
     [[ARUserManager sharedManager] loginWithUsername:username
-                                            password:password
-                              successWithCredentials:nil
-    gotUser:^(User *currentUser) {
+        password:password
+        successWithCredentials:nil
+        gotUser:^(User *currentUser) {
         @strongify(self);
         [self loggedInWithType:ARLoginViewControllerLoginTypeEmail user:currentUser];
-    }
+        }
 
-    authenticationFailure:^(NSError *error) {
+        authenticationFailure:^(NSError *error) {
         @strongify(self);
         [self authenticationFailure];
-    }
+        }
 
-    networkFailure:^(NSError *error) {
+        networkFailure:^(NSError *error) {
         @strongify(self);
         [self networkFailure:error];
-    }];
+        }];
 }
 
 - (void)authenticationFailure

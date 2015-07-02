@@ -4,12 +4,13 @@
 #import "ARNetworkConstants.h"
 #import "ARDefaults.h"
 
+
 @interface ARUserManager (Testing)
 + (void)clearUserData;
 + (void)clearUserData:(ARUserManager *)manager useStaging:(id)useStaging;
 @end
 
-SpecBegin(ARUserManager)
+SpecBegin(ARUserManager);
 
 beforeEach(^{
     [ARUserManager clearUserData];
@@ -414,4 +415,3 @@ describe(@"trialUserUUID", ^{
 });
 
 SpecEnd
-

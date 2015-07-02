@@ -2,10 +2,12 @@
 
 #define CLEAR_BUTTON_TAG 0xbada55
 
-@interface ARTextFieldWithPlaceholder()
+
+@interface ARTextFieldWithPlaceholder ()
 @property (nonatomic, assign) BOOL swizzledClear;
 @property (nonatomic, strong) CALayer *baseline;
 @end
+
 
 @implementation ARTextFieldWithPlaceholder
 
@@ -38,7 +40,7 @@
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyHeavyGrey ]}];
+    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyHeavyGrey]}];
 }
 
 - (void)addSubview:(UIView *)view
@@ -56,7 +58,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    UIButton *button = (UIButton  *)[self viewWithTag:CLEAR_BUTTON_TAG];
+    UIButton *button = (UIButton *)[self viewWithTag:CLEAR_BUTTON_TAG];
     if (button) {
         button.center = CGPointMake(button.center.x, button.center.y - 3);
     }

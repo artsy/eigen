@@ -1,3 +1,5 @@
+
+
 @implementation MapPoint
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -16,7 +18,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         MapPoint *mapPoint = object;
         return mapPoint.x == self.x && mapPoint.y == self.y && mapPoint.z == self.z;
     }

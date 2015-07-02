@@ -1,11 +1,14 @@
 #import "ARSearchResultsDataSource.h"
 
+
 @implementation ARSearchResultsDataSource
 
 - (id)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _placeholderImage = [UIImage imageNamed:@"SearchThumb_LightGrey"];
 
@@ -33,12 +36,13 @@
 
     @weakify(cell);
     [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:self.placeholderImage
-    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
        @strongify(cell);
        cell.imageView.image = image;
        [cell layoutSubviews];
 
-    } failure:nil];
+                                   }
+                                   failure:nil];
 
     return cell;
 }

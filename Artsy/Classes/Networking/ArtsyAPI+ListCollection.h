@@ -1,5 +1,6 @@
 #import "ArtsyAPI.h"
 
+
 @interface ArtsyAPI (ListCollection)
 
 + (void)getGenesFromPersonalCollectionAtPage:(NSInteger)page success:(void (^)(NSArray *genes))success failure:(void (^)(NSError *error))failure;

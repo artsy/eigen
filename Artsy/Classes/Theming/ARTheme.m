@@ -1,6 +1,7 @@
 static NSMutableDictionary *staticThemes;
 static ARTheme *defaultTheme;
 
+
 @interface ARTheme ()
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) ARThemeFontVendor *fonts;
@@ -13,6 +14,7 @@ static ARTheme *defaultTheme;
 @property (nonatomic, strong) NSCache *colorCache;
 @property (nonatomic, strong) NSCache *fontCache;
 @end
+
 
 @implementation ARTheme
 
@@ -65,7 +67,9 @@ static ARTheme *defaultTheme;
 - (instancetype)initWithName:(NSString *)name content:(NSDictionary *)content
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.colorCache = [[NSCache alloc] init];
     self.fontCache = [[NSCache alloc] init];
@@ -73,9 +77,9 @@ static ARTheme *defaultTheme;
     self.name = name;
     self.themeDictionary = [content mutableCopy];
     self.fontShortcuts = @{
-        @"Avant": @"AvantGardeGothicITCW01Dm",
-        @"Garamond": @"AGaramondPro-Regular",
-        @"GaramondBold": @"AGaramondPro-Bold"
+        @"Avant" : @"AvantGardeGothicITCW01Dm",
+        @"Garamond" : @"AGaramondPro-Regular",
+        @"GaramondBold" : @"AGaramondPro-Bold"
     };
 
     self.fonts = [[ARThemeFontVendor alloc] initWithTheme:self];
@@ -85,22 +89,24 @@ static ARTheme *defaultTheme;
     return self;
 }
 
-- (id)itemWithKey:(id <NSCopying>)key
+- (id)itemWithKey:(id<NSCopying>)key
 {
-    id object = (self.themeDictionary[key])? self.themeDictionary[key] : [self.class defaultTheme].themeDictionary[key];
+    id object = (self.themeDictionary[key]) ? self.themeDictionary[key] : [self.class defaultTheme].themeDictionary[key];
     if (!object) {
         ARErrorLog(@"ARTheme: Could not find item for key %@ in %@", self.name, key);
     }
     return object;
 }
 
-- (UIFont *)fontWithKey:(id <NSCopying>)key
+- (UIFont *)fontWithKey:(id<NSCopying>)key
 {
     // JSON String format = Fontname@Size
     // If _anything_ is wrong we should just bail out and give a system font
 
     UIFont *cachedFont = [self.fontCache objectForKey:key];
-    if (cachedFont) { return cachedFont; }
+    if (cachedFont) {
+        return cachedFont;
+    }
 
     NSString *fontString = [self itemWithKey:key];
     NSArray *components = [fontString split:@"@"];
@@ -116,7 +122,7 @@ static ARTheme *defaultTheme;
         fontSize = 15;
     }
 
-    fontString = (self.fontShortcuts[fontString])? self.fontShortcuts[fontString] : fontString;
+    fontString = (self.fontShortcuts[fontString]) ? self.fontShortcuts[fontString] : fontString;
 
     UIFont *font = [UIFont fontWithName:fontString size:fontSize];
     if (font) {
@@ -129,7 +135,7 @@ static ARTheme *defaultTheme;
 
 // Based on http://stackoverflow.com/questions/1560081/how-can-i-create-a-uicolor-from-a-hex-string
 
-- (UIColor *)colorWithKey:(id <NSCopying>)key
+- (UIColor *)colorWithKey:(id<NSCopying>)key
 {
     // JSON String format = #11FF33
 
@@ -153,9 +159,10 @@ static ARTheme *defaultTheme;
     NSScanner *scanner = [NSScanner scannerWithString:hexString];
     [scanner setScanLocation:1]; // bypass '#' character
     [scanner scanHexInt:&rgbValue];
-    UIColor *color = [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16)/255.0
-                                     green:((rgbValue & 0xFF00) >> 8)/255.0
-                                      blue:(rgbValue & 0xFF)/255.0 alpha:1.0];
+    UIColor *color = [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16) / 255.0
+                                     green:((rgbValue & 0xFF00) >> 8) / 255.0
+                                      blue:(rgbValue & 0xFF) / 255.0
+                                     alpha:1.0];
 
     return color ? color : hotPink;
 }
@@ -165,7 +172,7 @@ static ARTheme *defaultTheme;
     return [self numberWithKey:defaultName].floatValue;
 }
 
-- (NSNumber *)numberWithKey:(id <NSCopying>)key
+- (NSNumber *)numberWithKey:(id<NSCopying>)key
 {
     NSNumber *number = [self itemWithKey:key];
     if ([number isKindOfClass:[NSString class]]) {
@@ -181,16 +188,20 @@ static ARTheme *defaultTheme;
 
 @end
 
-@interface ARThemeVendor()
+
+@interface ARThemeVendor ()
 @property (nonatomic, strong) ARTheme *theme;
 @end
+
 
 @implementation ARThemeVendor
 
 - (instancetype)initWithTheme:(ARTheme *)theme
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _theme = theme;
 
@@ -202,12 +213,12 @@ static ARTheme *defaultTheme;
 
 @implementation ARThemeFontVendor
 
-- (UIFont *)objectForKeyedSubscript:(id <NSCopying>)key;
+- (UIFont *)objectForKeyedSubscript:(id<NSCopying>)key;
 {
     return [self.theme fontWithKey:key];
 }
 
-- (void)setObject:(UIFont *)obj forKeyedSubscript:(id <NSCopying>)key;
+- (void)setObject:(UIFont *)obj forKeyedSubscript:(id<NSCopying>)key;
 {
     self.theme.themeDictionary[key] = obj;
 }
@@ -217,12 +228,12 @@ static ARTheme *defaultTheme;
 
 @implementation ARThemeLayoutVendor
 
-- (NSString *)objectForKeyedSubscript:(id <NSCopying>)key
+- (NSString *)objectForKeyedSubscript:(id<NSCopying>)key
 {
     return [self.theme itemWithKey:key];
 }
 
-- (void)setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key
+- (void)setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key
 {
     self.theme.themeDictionary[key] = obj;
 }
@@ -232,12 +243,12 @@ static ARTheme *defaultTheme;
 
 @implementation ARThemeColorVendor
 
-- (UIColor *)objectForKeyedSubscript:(id <NSCopying>)key
+- (UIColor *)objectForKeyedSubscript:(id<NSCopying>)key
 {
     return [self.theme colorWithKey:key];
 }
 
-- (void)setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key
+- (void)setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key
 {
     self.theme.themeDictionary[key] = obj;
 }

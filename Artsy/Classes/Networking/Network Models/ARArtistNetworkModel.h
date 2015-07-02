@@ -1,7 +1,9 @@
+
+
 @interface ARArtistNetworkModel : NSObject
 
 - (instancetype)initWithArtist:(Artist *)artist;
-@property (readonly, nonatomic, strong) Artist * artist;
+@property (readonly, nonatomic, strong) Artist *artist;
 
 - (void)getArtistInfoWithSuccess:(void (^)(Artist *artist))success failure:(void (^)(NSError *error))failure;
 

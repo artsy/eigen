@@ -1,5 +1,6 @@
 #import <Mantle/Mantle.h>
 
+
 @interface Video : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *videoID;

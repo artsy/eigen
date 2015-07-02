@@ -4,6 +4,7 @@
 //
 //   git update-index --assume-unchanged Artsy/Classes/View\ Controllers/ARTopMenuViewController+DeveloperExtras.m
 
+
 @implementation ARTopMenuViewController (DeveloperExtras)
 
 // Use this function to run code once the app is loaded, useful for pushing a
@@ -11,7 +12,6 @@
 
 - (void)runDeveloperExtras
 {
-
 }
 
 @end

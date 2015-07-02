@@ -3,13 +3,14 @@
 #import "ArtsyAPI.h"
 #import "Artwork+Extensions.h"
 
+
 @interface ARFavoritesNetworkModel (Tests)
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
 @property (readwrite, nonatomic, assign) BOOL downloadLock;
 - (void)performNetworkRequestAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure;
 @end
 
-SpecBegin(ARArtworkFavoritesNetworkModel)
+SpecBegin(ARArtworkFavoritesNetworkModel);
 __block ARArtworkFavoritesNetworkModel *networkModel;
 
 beforeEach(^{

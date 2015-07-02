@@ -1,6 +1,7 @@
 #import "ARAnnotatedMapView.h"
 #import "ARFairMapAnnotationView.h"
 
+
 @interface ARFairShowMapper : NSObject
 
 - (id)initWithMapView:(ARAnnotatedMapView *)mapView map:(Map *)map imageSize:(CGSize)imageSize;

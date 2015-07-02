@@ -1,5 +1,6 @@
 #import "ArtsyAPI+Private.h"
 
+
 @implementation ArtsyAPI (Profiles)
 
 + (void)getProfileForProfileID:(NSString *)profileID success:(void (^)(Profile *profile))success failure:(void (^)(NSError *error))failure
@@ -42,7 +43,8 @@
     }];
 }
 
-+ (void)unfollowProfile:(Profile *)profile success:(void (^)(Profile *returnedProfile))success failure:(void (^)(NSError *error))failure {
++ (void)unfollowProfile:(Profile *)profile success:(void (^)(Profile *returnedProfile))success failure:(void (^)(NSError *error))failure
+{
     NSURLRequest *request = [ARRouter newMyUnfollowProfileRequest:[profile profileID]];
 
     [self getRequest:request parseIntoAClass:[Profile class] success:^(Profile *returnedProfile) {

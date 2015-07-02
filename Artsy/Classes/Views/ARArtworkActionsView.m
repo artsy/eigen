@@ -7,7 +7,8 @@
 #import "ARAuctionBidderStateLabel.h"
 #import "ARBidButton.h"
 
-@interface ARArtworkActionsView()<ARCountdownViewDelegate>
+
+@interface ARArtworkActionsView () <ARCountdownViewDelegate>
 
 @property (nonatomic, strong) ARCountdownView *countdownView;
 @property (nonatomic, strong) ARBlackFlatButton *contactGalleryButton;
@@ -22,12 +23,15 @@
 
 @end
 
+
 @implementation ARArtworkActionsView
 
 - (instancetype)initWithArtwork:(Artwork *)artwork
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _artwork = artwork;
     self.bottomMarginHeight = 0;
@@ -46,7 +50,7 @@
         self.saleArtwork = saleArtwork;
     } failure:nil];
 
-    [[KSPromise when:@[artworkPromise, saleArtworkPromise]] then:^id(id value) {
+    [[KSPromise when:@[ artworkPromise, saleArtworkPromise ]] then:^id(id value) {
         @strongify(self);
         id returnable = nil;
         [self updateUI];
@@ -64,7 +68,6 @@
 
 
     if ([self showAuctionControls]) {
-
         ARAuctionState state = self.saleArtwork.auctionState;
         if (state & (ARAuctionStateUserIsHighBidder | ARAuctionStateUserIsBidder)) {
             self.bidderStatusLabel = [[ARAuctionBidderStateLabel alloc] init];
@@ -78,7 +81,7 @@
 
         ARBidButton *bidButton = [[ARBidButton alloc] init];
         bidButton.auctionState = self.saleArtwork.auctionState;
-        [self addSubview:bidButton withTopMargin: @"30" sideMargin:@"0"];
+        [self addSubview:bidButton withTopMargin:@"30" sideMargin:@"0"];
         [bidButton addTarget:self action:@selector(tappedBidButton:) forControlEvents:UIControlEventTouchUpInside];
         self.bidButton = bidButton;
 
@@ -104,7 +107,6 @@
         [self setupCountdownView];
 
     } else {
-
         if ([self showPriceLabel] || [self showNotForSaleLabel]) {
             self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
             [self.priceView updateWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
@@ -123,7 +125,6 @@
     }
 
     if ([self showContactButton]) {
-
         NSString *title = nil;
         if (self.artwork.partner.type == ARPartnerTypeGallery) {
             title = NSLocalizedString(@"Contact Gallery", @"Contact Gallery");
@@ -182,7 +183,9 @@
 
     UIView *first = [self firstView];
     BOOL shouldUpdateTopMargin = [buttonsWhoseMarginCanChange indexOfObject:[self firstView]] != NSNotFound;
-    if (shouldUpdateTopMargin) { [self updateTopMargin:@"0" forView:first]; }
+    if (shouldUpdateTopMargin) {
+        [self updateTopMargin:@"0" forView:first];
+    }
 
     [self.delegate didUpdateArtworkActionsView:self];
 }
@@ -245,11 +248,10 @@
             ARNavigationButtonHandlerKey: ^(UIButton *sender) {
                 // This will pass the message up the responder chain
                 [self.delegate tappedAuctionResults];
-            }
-        }];
     }
-    if ([self showMoreInfoButton]) {
-
+}];
+}
+if ([self showMoreInfoButton]) {
         [navigationButtons addObject:@{
             ARNavigationButtonClassKey: ARNavigationButton.class,
             ARNavigationButtonPropertiesKey: @{
@@ -258,13 +260,14 @@
             ARNavigationButtonHandlerKey: ^(UIButton *sender) {
                 // This will pass the message up the responder chain
                 [self.delegate tappedMoreInfo];
-            }
-        }];
-    }
-    return [navigationButtons copy];
+}
+}];
+}
+return [navigationButtons copy];
 }
 
-- (void)setEnabled:(BOOL)enabled {
+- (void)setEnabled:(BOOL)enabled
+{
     [self.contactGalleryButton setEnabled:enabled animated:YES];
     [self.inquireWithArtsyButton setEnabled:enabled animated:YES];
 }
@@ -273,23 +276,17 @@
 
 - (BOOL)showNotForSaleLabel
 {
-    return self.artwork.inquireable.boolValue
-        && self.artwork.sold.boolValue
-        && !self.artwork.forSale.boolValue;
+    return self.artwork.inquireable.boolValue && self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
 }
 
 - (BOOL)showPriceLabel
 {
-    return self.artwork.price.length
-        && !self.artwork.hasMultipleEditions
-        && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
+    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
 }
 
 - (BOOL)showContactButton
 {
-    return self.artwork.forSale.boolValue
-    && !self.artwork.acquireable.boolValue
-    && ![self showAuctionControls];
+    return self.artwork.forSale.boolValue && !self.artwork.acquireable.boolValue && ![self showAuctionControls];
 }
 
 - (BOOL)showBuyButton
@@ -375,7 +372,7 @@
     [self updateCountdownView];
 }
 
--(CGSize) intrinsicContentSize
+- (CGSize)intrinsicContentSize
 {
     return CGSizeMake(280, UIViewNoIntrinsicMetric);
 }

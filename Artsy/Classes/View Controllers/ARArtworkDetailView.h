@@ -19,10 +19,11 @@
 - (void)tappedOpenArtworkPartner;
 @end
 
+
 @interface ARArtworkDetailView : ORTagBasedAutoStackView
 @property (nonatomic, weak) id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate> delegate;
-@property(readonly, nonatomic, strong) Artwork *artwork;
-@property(readonly, nonatomic, strong) Fair *fair;
+@property (readonly, nonatomic, strong) Artwork *artwork;
+@property (readonly, nonatomic, strong) Fair *fair;
 - (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair;
 
 /// Update the view with fair details

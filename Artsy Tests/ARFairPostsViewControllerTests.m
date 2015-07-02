@@ -3,7 +3,7 @@
 #import "ARSwitchBoard.h"
 #import "ARPostFeedItem.h"
 
-SpecBegin(ARFairPostsViewController)
+SpecBegin(ARFairPostsViewController);
 
 __block ARFairPostsViewController *fairVC = nil;
 

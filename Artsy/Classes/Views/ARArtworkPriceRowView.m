@@ -1,8 +1,10 @@
 #import "ARArtworkPriceRowView.h"
 
+
 @interface ARArtworkPriceRowView ()
 @property (nonatomic, strong, readonly) ARSerifLabel *bidStatusLabel;
 @end
+
 
 @implementation ARArtworkPriceRowView
 

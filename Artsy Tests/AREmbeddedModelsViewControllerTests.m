@@ -8,21 +8,22 @@
 
 @end
 
+
 @interface ARArtworkMasonryModule (Private)
 + (CGFloat)dimensionForlayout:(ARArtworkMasonryLayout)layout useLandscapeValues:(BOOL)useLandscapeValues;
 @end
 
 static CGFloat
-AspectRatioForMultiplier(CGFloat multiplier, ARArtworkMasonryLayout layout) {
+AspectRatioForMultiplier(CGFloat multiplier, ARArtworkMasonryLayout layout)
+{
     switch (layout) {
         case ARArtworkMasonryLayout1Column:
         case ARArtworkMasonryLayout2Column:
         case ARArtworkMasonryLayout3Column:
-        case ARArtworkMasonryLayout4Column:
-            {
-                CGFloat dimension = [ARArtworkMasonryModule dimensionForlayout:layout useLandscapeValues:NO];
-                return dimension / (dimension * multiplier);
-            }
+        case ARArtworkMasonryLayout4Column: {
+            CGFloat dimension = [ARArtworkMasonryModule dimensionForlayout:layout useLandscapeValues:NO];
+            return dimension / (dimension * multiplier);
+        }
 
         case ARArtworkMasonryLayout1Row:
         case ARArtworkMasonryLayout2Row:
@@ -31,19 +32,21 @@ AspectRatioForMultiplier(CGFloat multiplier, ARArtworkMasonryLayout layout) {
 }
 
 static Artwork *
-ArtworkWithImageAspectRatio(CGFloat aspectRatio) {
-    return [Artwork modelWithJSON:@{ @"images": @[@{ @"is_default": @YES, @"aspect_ratio":@(aspectRatio) }] }];
+ArtworkWithImageAspectRatio(CGFloat aspectRatio)
+{
+    return [Artwork modelWithJSON:@{ @"images" : @[ @{@"is_default" : @YES, @"aspect_ratio" : @(aspectRatio)} ] }];
 }
 
 static AREmbeddedModelsViewController *
-AREmbeddedModelsViewControllerWithLayout(ARArtworkMasonryLayout layout) {
+AREmbeddedModelsViewControllerWithLayout(ARArtworkMasonryLayout layout)
+{
     ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout];
     AREmbeddedModelsViewController *viewController = [AREmbeddedModelsViewController new];
     viewController.activeModule = module;
     return viewController;
 }
 
-SpecBegin(AREmbeddedModelsViewController)
+SpecBegin(AREmbeddedModelsViewController);
 
 describe(@"masonry layout", ^{
     __block AREmbeddedModelsViewController *viewController = nil;

@@ -2,7 +2,7 @@
 #import "ArtsyAPI+SystemTime.h"
 #import "ARNetworkConstants.h"
 
-SpecBegin(ArtsyAPISystemTime)
+SpecBegin(ArtsyAPISystemTime);
 
 beforeEach(^{
     [OHHTTPStubs stubJSONResponseAtPath:ARSystemTimeURL withResponse:@{
@@ -40,4 +40,3 @@ it(@"retrieves system time", ^{
 });
 
 SpecEnd
-

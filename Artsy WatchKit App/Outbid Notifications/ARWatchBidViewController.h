@@ -2,6 +2,8 @@
 #import <WatchKit/WatchKit.h>
 
 @class WatchBiddingDetails;
+
+
 @interface ARWatchBidViewController : WKInterfaceController
 
 @property (strong, nonatomic) IBOutlet WKInterfaceLabel *lastBidAmountDollarsLabel;

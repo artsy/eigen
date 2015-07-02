@@ -1,4 +1,4 @@
-SpecBegin(SaleArtwork)
+SpecBegin(SaleArtwork);
 
 describe(@"artwork for sale", ^{
     __block SaleArtwork *_saleArtwork;
@@ -137,4 +137,3 @@ describe(@"artwork for sale", ^{
 });
 
 SpecEnd
-

@@ -3,6 +3,7 @@
 static NSString *_userDocumentsDirectory;
 static NSString *_cachesDirectory;
 
+
 @implementation ARFileUtils
 
 + (void)initialize
@@ -13,23 +14,24 @@ static NSString *_cachesDirectory;
 
 + (NSString *)userDocumentsFolder
 {
-    if(![User currentUser]) return nil;
+    if (![User currentUser]) return nil;
     return [NSString stringWithFormat:@"%@/%@", _userDocumentsDirectory, [User currentUser].userID];
 }
 
 + (NSString *)userDocumentsPathWithFile:(NSString *)fileName
 {
-    if(![User currentUser]) return nil;
+    if (![User currentUser]) return nil;
     return [self pathWithFolder:_userDocumentsDirectory folderName:[User currentUser].userID filename:fileName];
 }
 
 + (NSString *)userDocumentsPathWithFolder:(NSString *)folderName filename:(NSString *)fileName
 {
-    if(![User currentUser]) return nil;
+    if (![User currentUser]) return nil;
     return [self pathWithFolder:_userDocumentsDirectory folderName:NSStringWithFormat(@"%@/%@", [User currentUser].userID, folderName) filename:fileName];
 }
 
-+ (NSString *)cachesFolder {
++ (NSString *)cachesFolder
+{
     return _cachesDirectory;
 }
 
@@ -48,10 +50,10 @@ static NSString *_cachesDirectory;
 {
     NSString *directory = [NSString stringWithFormat:@"%@/%@", rootFolderName, folderName];
 
-    if(![[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:nil]) {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:nil]) {
         NSError *error = nil;
         [[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:&error];
-        if(error) {
+        if (error) {
             ARErrorLog(@"Error creating directory at path %@/%@", rootFolderName, folderName);
             ARErrorLog(@"%@", [error userInfo]);
         }

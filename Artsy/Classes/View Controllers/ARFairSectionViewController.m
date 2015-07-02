@@ -1,9 +1,11 @@
 #import "ARFairSectionViewController.h"
 #import "ORStackView+ArtsyViews.h"
 
+
 @interface ARFairSectionViewController ()
 @property (nonatomic, strong) ORStackView *view;
 @end
+
 
 @implementation ARFairSectionViewController
 
@@ -12,7 +14,9 @@
 - (instancetype)initWithFair:(Fair *)fair
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _fair = fair;
 
@@ -50,8 +54,7 @@
 {
     return (CGSize){
         .width = CGRectGetWidth(self.parentViewController.view.bounds),
-        .height = CGRectGetWidth(self.view.bounds)
-    };
+        .height = CGRectGetWidth(self.view.bounds)};
 }
 
 @end

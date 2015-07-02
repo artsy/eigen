@@ -1,6 +1,7 @@
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 
-@interface SystemTime()
+
+@interface SystemTime ()
 @property (nonatomic, readonly, strong) NSString *time;
 @property (nonatomic, readonly, assign) NSInteger day;
 @property (nonatomic, readonly, assign) NSInteger wday;
@@ -16,6 +17,7 @@
 @property (nonatomic, readonly, strong) NSString *iso8601;
 @end
 
+
 @implementation SystemTime
 
 #pragma mark - MTLJSONSerializing
@@ -23,7 +25,7 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(SystemTime.new, utcOffset): @"utc_offset",
+        @keypath(SystemTime.new, utcOffset) : @"utc_offset",
     };
 }
 

@@ -1,5 +1,6 @@
 #import "ARPostAttachment.h"
 
+
 @interface ARArtworkThumbnailMetadataView : UIView
 
 + (CGFloat)heightForView;

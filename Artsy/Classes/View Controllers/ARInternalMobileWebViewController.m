@@ -4,17 +4,20 @@
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegate.h"
 
+
 @interface TSMiniWebBrowser (Private)
-@property(nonatomic, readonly, strong) UIWebView *webView;
+@property (nonatomic, readonly, strong) UIWebView *webView;
 - (UIEdgeInsets)webViewContentInset;
 - (UIEdgeInsets)webViewScrollIndicatorsInsets;
 @end
+
 
 @interface ARInternalMobileWebViewController () <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
 @property (nonatomic, assign) BOOL loaded;
 @property (nonatomic, strong) NSTimer *contentLoadStateTimer;
 @property (nonatomic, strong) ARInternalShareValidator *shareValidator;
 @end
+
 
 @implementation ARInternalMobileWebViewController
 
@@ -45,7 +48,7 @@
 
     if ([[ARRouter artsyHosts] containsObject:urlHost]) {
         NSMutableString *mutableUrlString = [urlString mutableCopy];
-        if (![urlScheme isEqualToString:correctScheme]){
+        if (![urlScheme isEqualToString:correctScheme]) {
             [mutableUrlString replaceOccurrencesOfString:urlScheme withString:correctScheme options:NSCaseInsensitiveSearch range:NSMakeRange(0, mutableUrlString.length)];
         }
         if (![url.host isEqualToString:correctBaseUrl.host]) {
@@ -61,7 +64,9 @@
     }
 
     self = [super initWithURL:url];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.delegate = self;
     self.showNavigationBar = NO;
@@ -185,13 +190,13 @@
         ARWindow *window = ARAppDelegate.sharedInstance.window;
         CGPoint lastTouchPointInView = [window convertPoint:window.lastTouchPoint toView:self.view];
 
-        [self.shareValidator shareURL:request.URL inView:self.view frame:(CGRect){ .origin = lastTouchPointInView, .size = CGSizeZero }];
+        [self.shareValidator shareURL:request.URL inView:self.view frame:(CGRect){.origin = lastTouchPointInView, .size = CGSizeZero}];
         return NO;
 
     } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
         // hijack AJAX requests
         if ([User isTrialUser]) {
-            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser){
+            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser) {
                 [self userDidLoginOrSignUp];
             }];
         }

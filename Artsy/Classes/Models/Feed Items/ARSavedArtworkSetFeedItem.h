@@ -1,6 +1,7 @@
 #import "ARFeedItem.h"
 #import "User.h"
 
+
 @interface ARSavedArtworkSetFeedItem : ARFeedItem
 
 @property (readonly, nonatomic) Profile *profile;

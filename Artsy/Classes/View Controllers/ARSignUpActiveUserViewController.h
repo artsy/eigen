@@ -2,6 +2,7 @@
 #import "ARTrialController.h"
 #import "ARTermsAndConditionsView.h"
 
+
 @interface ARSignUpActiveUserViewController : UIViewController
 
 @property (nonatomic, weak) AROnboardingViewController *delegate;

@@ -1,5 +1,6 @@
 #import "AROnboardingViewController.h"
 
+
 @interface AROnboardingViewController (Test)
 
 - (void)presentCollectorLevel;
@@ -7,7 +8,7 @@
 
 @end
 
-SpecBegin(AROnboardingViewController)
+SpecBegin(AROnboardingViewController);
 
 __block OCMockObject *mock;
 __block AROnboardingViewController *vc;

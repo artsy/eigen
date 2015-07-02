@@ -1,15 +1,16 @@
 #import "Artwork+Extensions.h"
 #import "ARGeneArtworksNetworkModel.h"
 
-@interface ARGeneArtworksNetworkModel(Testing)
+
+@interface ARGeneArtworksNetworkModel (Testing)
 @property (nonatomic, assign) NSInteger currentPage;
 @property (readwrite, nonatomic, assign) BOOL allDownloaded;
 @property (readwrite, nonatomic, assign) BOOL downloadLock;
 @end
 
-void stubNetworkingForPartialGeneAtPageWithArray(id gene, NSInteger page,  NSArray* content);
+void stubNetworkingForPartialGeneAtPageWithArray(id gene, NSInteger page, NSArray *content);
 
-SpecBegin(ARGeneArtworknetworkModel)
+SpecBegin(ARGeneArtworknetworkModel);
 __block ARGeneArtworksNetworkModel *networkModel;
 
 describe(@"init", ^{
@@ -94,11 +95,14 @@ describe(@"networking", ^{
 
 SpecEnd
 
-void stubNetworkingForPartialGeneAtPageWithArray(id gene, NSInteger page,  NSArray* content){
+    void
+    stubNetworkingForPartialGeneAtPageWithArray(id gene, NSInteger page, NSArray *content)
+{
     [[[gene stub] andDo:^(NSInvocation *invocation) {
         void (^successBlock)(NSArray *) = nil;
         [invocation getArgument:&successBlock atIndex:3];
         successBlock(content);
 
-    }] getArtworksAtPage:page success:[OCMArg any]];
+    }] getArtworksAtPage:page
+                  success:[OCMArg any]];
 }

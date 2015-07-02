@@ -1,4 +1,6 @@
-@interface Profile (){
+
+
+@interface Profile () {
     BOOL _followed;
 }
 
@@ -7,6 +9,7 @@
 @property (nonatomic, strong) NSString *ownerClassString;
 @property (nonatomic, copy) NSDictionary *ownerJSON;
 @end
+
 
 @implementation Profile
 @synthesize profileOwner = _profileOwner;
@@ -17,12 +20,12 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @"profileID"         : @"id",
-        @"ownerJSON"         : @"owner",
-        @"ownerClassString"  : @"owner_type",
-        @"followCount"       : @"follow_count",
-        @"iconVersion"       : @"default_icon_version",
-        @"iconURLs"          : @"icon.image_urls",
+        @"profileID" : @"id",
+        @"ownerJSON" : @"owner",
+        @"ownerClassString" : @"owner_type",
+        @"followCount" : @"follow_count",
+        @"iconVersion" : @"default_icon_version",
+        @"iconURLs" : @"icon.image_urls",
     };
 }
 
@@ -52,7 +55,7 @@
     return _profileOwner;
 }
 
-- (void)updateProfile:(void(^)(void))success
+- (void)updateProfile:(void (^)(void))success
 {
     @weakify(self);
 
@@ -74,12 +77,13 @@
 - (NSString *)iconURL
 {
     NSString *iconURL = nil;
-    if (self.iconURLs.count > 0){
+    if (self.iconURLs.count > 0) {
         if (self.iconVersion && [self.iconURLs objectForKey:self.iconVersion]) {
-            iconURL  = [self.iconURLs objectForKey:self.iconVersion];
+            iconURL = [self.iconURLs objectForKey:self.iconVersion];
         } else {
             NSArray *values = [self.iconURLs allValues];
-            iconURL = [values objectAtIndex:0];;
+            iconURL = [values objectAtIndex:0];
+            ;
         }
         return iconURL;
     } else {
@@ -94,7 +98,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         Profile *profile = object;
         return [profile.profileID isEqualToString:_profileID];
     }
@@ -110,7 +114,9 @@
 - (instancetype)initWithProfileID:(NSString *)profileID
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _profileID = profileID;
 
@@ -144,10 +150,10 @@
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    if(state){
-       [self followWithSuccess:success failure:failure];
+    if (state) {
+        [self followWithSuccess:success failure:failure];
     } else {
-       [self unfollowWithSuccess:success failure:failure];
+        [self unfollowWithSuccess:success failure:failure];
     }
 }
 

@@ -1,5 +1,6 @@
 #import "ARFairMapAnnotationView.h"
 
+
 @interface ARFairMapAnnotationView ()
 @property (nonatomic, weak) UIImageView *mapFeatureView;
 @property (nonatomic, strong) UILabel *primaryTitleLabel;
@@ -8,11 +9,12 @@
 @property (nonatomic, assign) CGPoint mapPositioningPoint;
 @end
 
+
 @implementation ARFairMapAnnotationView
 
 static CGFloat ARHorizontalOffsetFromIcon = 4;
 
-- (instancetype) initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -34,7 +36,7 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
 
 - (void)setDisplayTitle:(NSString *)title
 {
-    if(! self.primaryTitleLabel){
+    if (!self.primaryTitleLabel) {
         UILabel *primaryTitleLabel = [[UILabel alloc] init];
         primaryTitleLabel.font = [UIFont sansSerifFontWithSize:8];
         primaryTitleLabel.preferredMaxLayoutWidth = 90;
@@ -50,7 +52,9 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
 
 - (void)alignTitleToFeatureView
 {
-    if (!(self.primaryTitleLabel && self.mapFeatureView)) { return; }
+    if (!(self.primaryTitleLabel && self.mapFeatureView)) {
+        return;
+    }
     [self.primaryTitleLabel constrainLeadingSpaceToView:self.mapFeatureView predicate:@(ARHorizontalOffsetFromIcon).stringValue];
     [self.primaryTitleLabel constrainHeightToView:self.mapFeatureView predicate:nil];
 }
@@ -72,7 +76,7 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
 {
     _mapFeatureType = mapFeatureType;
 
-    if(! self.mapFeatureView) {
+    if (!self.mapFeatureView) {
         UIImageView *mapFeatureView = [[UIImageView alloc] init];
         mapFeatureView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:mapFeatureView];
@@ -91,7 +95,7 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
 }
 
 - (void)updatePosition
-{    
+{
     CGPoint point = [self.mapView zoomRelativePoint:self.annotation.point];
     point.x -= self.mapPositioningPoint.x;
     point.y -= self.mapPositioningPoint.x;
@@ -108,8 +112,7 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
     }
     return (CGRect){
         .origin = self.frame.origin,
-        .size = CGSizeMake(primaryRect.size.width, primaryRect.size.height)
-    };
+        .size = CGSizeMake(primaryRect.size.width, primaryRect.size.height)};
 }
 
 - (void)reduceToPoint
@@ -132,17 +135,12 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
 
 - (BOOL)hasLabel
 {
-    return self.mapFeatureType != ARMapFeatureTypeEntrance
-        && self.mapFeatureType != ARMapFeatureTypeCoatCheck
-        && self.mapFeatureType != ARMapFeatureTypeExit
-        && self.mapFeatureType != ARMapFeatureTypeTicket;
+    return self.mapFeatureType != ARMapFeatureTypeEntrance && self.mapFeatureType != ARMapFeatureTypeCoatCheck && self.mapFeatureType != ARMapFeatureTypeExit && self.mapFeatureType != ARMapFeatureTypeTicket;
 }
 
 - (BOOL)isUserInteractionAlwaysEnabled
 {
-    return self.mapFeatureType == ARMapFeatureTypeHighlighted
-        || self.mapFeatureType == ARMapFeatureTypeSaved
-        || self.mapFeatureType == ARMapFeatureTypeArtsy;
+    return self.mapFeatureType == ARMapFeatureTypeHighlighted || self.mapFeatureType == ARMapFeatureTypeSaved || self.mapFeatureType == ARMapFeatureTypeArtsy;
 }
 
 @end

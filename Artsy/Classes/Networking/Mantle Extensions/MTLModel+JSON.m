@@ -1,3 +1,5 @@
+
+
 @implementation MTLModel (JSON)
 
 + (NSArray *)arrayOfModelsWithJSON:(NSArray *)dictionaries
@@ -28,15 +30,14 @@
     // This means sending the same JSON data to property on the feed item class itself.
 
     if ([initialObject conformsToProtocol:@protocol(ARFeedHostItem)]) {
-
         Class secondaryObjectClass = [initialObject hostedObjectClass];
         SEL setSecondaryObject = [initialObject setHostPropertySelector];
         id secondObject = [secondaryObjectClass modelWithJSON:JSONdictionary error:error];
 
-        # pragma clang diagnostic push
-        # pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [initialObject performSelector:setSecondaryObject withObject:secondObject];
-        # pragma clang diagnostic pop
+#pragma clang diagnostic pop
     }
 
     return initialObject;

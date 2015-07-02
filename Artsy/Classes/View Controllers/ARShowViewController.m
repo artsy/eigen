@@ -27,10 +27,10 @@ NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewMapPreview,
     ARFairShowViewFollowPartner,
     ARFairShowViewWhitespaceAboveArtworks,
-    ARFairShowViewArtworks
-};
+    ARFairShowViewArtworks};
 
 static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
+
 
 @interface ARShowViewController () <AREmbeddedModelsDelegate, ARArtworkMasonryLayoutProvider>
 @property (nonatomic, strong, readonly) ORStackScrollView *view;
@@ -47,6 +47,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 @end
 
+
 @implementation ARShowViewController
 
 @dynamic view;
@@ -58,7 +59,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 - (CGFloat)headerImageHeightForSize:(CGSize)size
 {
-    if (self.imagePageViewController.images.count == 0) { return 1; }
+    if (self.imagePageViewController.images.count == 0) {
+        return 1;
+    }
 
     if ([UIDevice isPhone]) {
         return 250;
@@ -70,7 +73,9 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _shouldAnimate = YES;
     return self;
 }
@@ -121,7 +126,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
     // Create a "be full screen with a low priority" constraint
     CGFloat height = CGRectGetHeight(self.parentViewController.parentViewController.view.bounds);
-    NSString *heightConstraint = [NSString stringWithFormat:@">=%.0f@800", height -19];
+    NSString *heightConstraint = [NSString stringWithFormat:@">=%.0f@800", height - 19];
     [self.view.stackView constrainHeight:heightConstraint];
 
     CGFloat parentHeight = CGRectGetHeight(self.parentViewController.view.bounds) ?: CGRectGetHeight([UIScreen mainScreen].bounds);
@@ -141,27 +146,28 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         ARActionButtonHandlerKey: ^(ARCircularActionButton *sender) {
             NSURL *imageURL = nil;
             if (self.imagePageViewController.images.count) {
-                imageURL = [(Image *)self.imagePageViewController.images[0] urlForThumbnailImage];
+        imageURL = [(Image *)self.imagePageViewController.images[0] urlForThumbnailImage];
             }
             ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.show
                                                                                     thumbnailImageURL:imageURL];
             [sharingController presentActivityViewControllerFromView:sender];
-        }
-    }];
+}
+}];
 
-    self.actionButtonsView.actionButtonDescriptions = descriptions;
+self.actionButtonsView.actionButtonDescriptions = descriptions;
 }
 
 - (NSDictionary *)descriptionForMapButton
 {
     @weakify(self);
     return @{
-        ARActionButtonImageKey: @"MapButtonAction",
-        ARActionButtonHandlerKey: ^(ARCircularActionButton *sender) {
+        ARActionButtonImageKey : @"MapButtonAction",
+        ARActionButtonHandlerKey : ^(ARCircularActionButton *sender){
             @strongify(self);
-            [self handleMapButtonPress:sender];
-        }
-    };
+    [self handleMapButtonPress:sender];
+}
+}
+;
 }
 
 - (void)handleMapButtonPress:(ARCircularActionButton *)sender
@@ -197,7 +203,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             [partnerLabel alignLeading:@"0" trailing:nil toView:containerView];
             [followButton alignLeading:nil trailing:@"0" toView:containerView];
             [followButton alignTop:@"0" bottom:@"0" toView:containerView];
-            [UIView alignAttribute:NSLayoutAttributeRight ofViews:@[partnerLabel] toAttribute:NSLayoutAttributeLeft ofViews:@[followButton] predicate:nil];
+            [UIView alignAttribute:NSLayoutAttributeRight ofViews:@[ partnerLabel ] toAttribute:NSLayoutAttributeLeft ofViews:@[ followButton ] predicate:nil];
             CGFloat followButtonWidth = [[self class] followButtonWidthForSize:self.view.frame.size];
             self.followButtonWidthConstraint = [[followButton constrainWidth:@(followButtonWidth).stringValue] firstObject];
         } else {
@@ -208,7 +214,8 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     }
 }
 
-- (void)viewDidLoad{
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
@@ -272,10 +279,10 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     showName.font = [UIFont serifFontWithSize:18];
     showName.text = self.show.fair ? self.show.fair.name : self.show.name;
     [self.view.stackView addSubview:showName withTopMargin:@"10" sideMargin:[self sideMarginPredicate]];
-    
+
     ARSerifLabel *ausstellungsdauer = [self metadataLabel:self.show.ausstellungsdauer];
     ausstellungsdauer.tag = ARFairShowViewAusstellungsdauer;
-    
+
     // if the show is in a fair, add booth location & possibly chevron. if it's not, add the show location (if publicly available) and description
     if (self.show.fair) {
         BOOL isNotCurrentFairContext = ![self.show.fair isEqual:self.fair];
@@ -287,42 +294,40 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openShowFair:)];
             [showName addGestureRecognizer:tapGesture];
             showName.chevronHidden = NO;
-        }
-        else {
+        } else {
             showName.chevronHidden = YES;
         }
-        
+
         ARSerifLabel *boothLocation = [self metadataLabel:self.show.locationInFair];
         boothLocation.tag = ARFairShowViewBoothLocation;
         [self.view.stackView addSubview:boothLocation withTopMargin:@"8" sideMargin:[self sideMarginPredicate]];
-    }
-    else {
+    } else {
         // show the address of the gallery, ausstellungsdauer, and description of show
         showName.chevronHidden = YES;
         [self.view.stackView addSubview:ausstellungsdauer withTopMargin:@"12" sideMargin:[self sideMarginPredicate]];
-        
+
         if (self.show.location.publiclyViewable) {
             ARSerifLabel *addressLabel = [self metadataLabel:self.show.location.addressAndCity];
             addressLabel.tag = ARFairShowViewLocationAddress;
             [self.view.stackView addSubview:addressLabel withTopMargin:@"8" sideMargin:[self sideMarginPredicate]];
         }
-        
+
         if (self.show.officialDescription) {
             ARSerifLineHeightLabel *descriptionLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:5];
             descriptionLabel.tag = ARFairShowViewDescription;
-            
+
             NSMutableDictionary *attrDictionary = [NSMutableDictionary dictionary];
             [attrDictionary setObject:[UIFont serifFontWithSize:16] forKey:NSFontAttributeName];
-            
+
             NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
             [style setLineSpacing:10];
-            
+
             [attrDictionary setObject:style forKey:NSParagraphStyleAttributeName];
-            
+
             NSAttributedString *descriptionString = [[NSAttributedString alloc] initWithString:self.show.officialDescription attributes:attrDictionary];
             descriptionLabel.textColor = [UIColor blackColor];
             descriptionLabel.attributedText = descriptionString;
-            
+
             [self.view.stackView addSubview:descriptionLabel withTopMargin:@"18" sideMargin:[self sideMarginPredicate]];
         }
     }
@@ -365,7 +370,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     [self.view.stackView addViewController:self.showArtworksViewController toParent:self withTopMargin:@"0" sideMargin:nil];
 
     @weakify(self);
-    [self getArtworksAtPage:1 onArtworks:^(NSArray * artworks) {
+    [self getArtworksAtPage:1 onArtworks:^(NSArray *artworks) {
         @strongify(self);
         if (artworks.count > 0) {
             if (whitespaceGobbler) {
@@ -398,11 +403,11 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 - (UIView *)followButton
 {
-    if(!self.show.partner.defaultProfilePublic) return nil;
+    if (!self.show.partner.defaultProfilePublic) return nil;
 
     ARFollowableButton *followButton = [[ARFollowableButton alloc] init];
     followButton.tag = ARFairShowViewFollowPartner;
-    if (self.show.partner.type == ARPartnerTypeGallery){
+    if (self.show.partner.type == ARPartnerTypeGallery) {
         followButton.toFollowTitle = @"Follow Gallery";
         followButton.toUnfollowTitle = @"Following Gallery";
     }
@@ -436,7 +441,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 - (void)toggleFollowShow:(id)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteProfile success:^(BOOL newUser){
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteProfile success:^(BOOL newUser) {
             [self toggleFollowShow:sender];
         }];
         return;
@@ -479,7 +484,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 - (void)setSingleInstallShot:(Image *)image
 {
-    self.imagePageViewController.images = @[image];
+    self.imagePageViewController.images = @[ image ];
     self.imagePageViewController.view.userInteractionEnabled = NO;
     [self.imagePageViewController setHidesPageIndicators:YES];
 }
@@ -491,12 +496,12 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return [UIDevice isPad];
 }
 
--(NSUInteger)supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
 }
@@ -514,7 +519,8 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 #pragma mark - AREmbeddedModelsDelegate
 
--(void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController {
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
+{
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
 
@@ -531,7 +537,8 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     return self.followableNetwork.isFollowing;
 }
 
-- (NSDictionary *)dictionaryForAnalytics {
+- (NSDictionary *)dictionaryForAnalytics
+{
     return @{
         @"partner_show_id" : self.show.showID ?: @"",
         @"partner_id" : self.show.partner.partnerID ?: @"",

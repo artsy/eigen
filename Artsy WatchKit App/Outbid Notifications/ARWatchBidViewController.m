@@ -1,16 +1,18 @@
 #import "ARWatchBidViewController.h"
 #import "WatchBiddingDetails.h"
 
-@interface ARWatchBidViewController()
+
+@interface ARWatchBidViewController ()
 @property (nonatomic, readonly, assign) BOOL loaded;
 @end
+
 
 @implementation ARWatchBidViewController
 
 - (void)willActivate
 {
     [super willActivate];
-    
+
     if (self.loaded) {
         [self popToRootController];
     }

@@ -7,13 +7,14 @@
 #import "ARSwitchBoard.h"
 #import "ARInternalShareValidator.h"
 
+
 @interface ARInternalMobileWebViewController (Testing)
 
 @property (nonatomic, strong) ARInternalShareValidator *shareValidator;
 
 @end
 
-SpecBegin(ARInternalMobileViewController)
+SpecBegin(ARInternalMobileViewController);
 
 it(@"passes on fair context", ^{
     id fair = [OCMockObject mockForClass:[Fair class]];

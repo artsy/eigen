@@ -6,7 +6,8 @@
 
 static NSString *SearchCellId = @"OnboardingSearchCell";
 
-@interface ARPersonalizeViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+
+@interface ARPersonalizeViewController () <UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 @property (nonatomic) NSArray *genesToFollow;
 @property (nonatomic) NSArray *searchResults;
@@ -31,6 +32,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 @property (nonatomic) AFJSONRequestOperation *searchRequestOperation;
 @end
 
+
 @implementation ARPersonalizeViewController
 
 - (instancetype)initWithGenes:(NSArray *)genes
@@ -39,7 +41,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     if (self) {
         _searchResults = [NSMutableArray array];
         if (!genes || genes.count == 0) {
-            NSArray *fallbackGenes = @[@"Photography", @"Bauhaus", @"Dada", @"Glitch Aesthetic", @"Computer Art", @"Op Art", @"Minimalism"];
+            NSArray *fallbackGenes = @[ @"Photography", @"Bauhaus", @"Dada", @"Glitch Aesthetic", @"Computer Art", @"Op Art", @"Minimalism" ];
             ARActionLog(@"Using fallback genes in 'Personalize'");
             // Convert names to Gene Objects
             _genesToFollow = [fallbackGenes map:^id(NSString *name) {
@@ -71,7 +73,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 {
     [super viewDidLoad];
     self.scrollView = [[UIScrollView alloc] init];
-    self.scrollView.frame =  self.view.frame;
+    self.scrollView.frame = self.view.frame;
     self.scrollView.delaysContentTouches = NO;
     self.scrollView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.scrollView];
@@ -99,7 +101,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.searchBar addTarget:self action:@selector(searchBarDown:) forControlEvents:UIControlEventTouchDown];
 
     self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.cancelButton.frame = CGRectMake(230, self.searchBar.frame.origin.y, 90, self.searchBar.bounds.size.height -1);
+    self.cancelButton.frame = CGRectMake(230, self.searchBar.frame.origin.y, 90, self.searchBar.bounds.size.height - 1);
     self.cancelButton.titleLabel.font = [UIFont sansSerifFontWithSize:14];
     self.cancelButton.backgroundColor = [UIColor blackColor];
     [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -115,9 +117,11 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startedEditing:)
-                                                 name:UITextFieldTextDidBeginEditingNotification object:nil];
+                                                 name:UITextFieldTextDidBeginEditingNotification
+                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTextChanged:)
-                                                 name:UITextFieldTextDidChangeNotification object:nil];
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
 
     [self.scrollView addSubview:self.searchBar];
 
@@ -138,8 +142,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.scrollView addSubview:self.artistTableView];
 
     self.geneTableView = [[UITableView alloc] initWithFrame:CGRectMake(0,
-                                                                       [self bottomOf:self.artistTableView]
-                                                                       , screenSize.width,
+                                                                       [self bottomOf:self.artistTableView], screenSize.width,
                                                                        54 * self.genesToFollow.count + 50)];
     self.geneTableView.dataSource = self.geneController;
     self.geneTableView.delegate = self.geneController;
@@ -287,7 +290,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     CGRect gFrame = self.geneTableView.frame;
     gFrame.origin.y = CGRectGetMaxY(aFrame);
 
-    [UIView animateSpringIf:animated duration:0.3 delay:0 damping:10 velocity:5 :^{
+    [UIView animateSpringIf:animated duration:0.3 delay:0 damping:10 velocity:5:^{
         self.artistTableView.frame = aFrame;
         self.geneTableView.frame = gFrame;
         self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetMaxY(self.geneTableView.frame) + 44);
@@ -321,7 +324,6 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
             self.titleLabel.alpha = 0;
         } completion:nil];
     }];
-
 }
 
 - (void)cancelSearch:(id)sender

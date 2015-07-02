@@ -3,12 +3,13 @@
 #import "ARUserManager+Stubs.h"
 #import "ARRouter.h"
 
+
 @interface ARArtworkViewController (Tests)
 - (void)tappedBuyButton;
 - (void)tappedContactGallery;
 @end
 
-SpecBegin(ARArtworkViewController)
+SpecBegin(ARArtworkViewController);
 
 __block UIWindow *window;
 __block ARArtworkViewController *vc;
@@ -298,7 +299,8 @@ describe(@"at a closed auction", ^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[@{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
+@{
             @"id": @"some-auction",
             @"name": @"Some Auction",
             @"is_auction": @YES,

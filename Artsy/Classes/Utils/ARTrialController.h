@@ -1,4 +1,4 @@
-typedef NS_ENUM(NSInteger, ARTrialContext){
+typedef NS_ENUM(NSInteger, ARTrialContext) {
     ARTrialContextNotTrial,
     ARTrialContextFavoriteArtwork,
     ARTrialContextFavoriteArtist,
@@ -12,6 +12,7 @@ typedef NS_ENUM(NSInteger, ARTrialContext){
     ARTrialContextArtworkOrder,
     ARTrialContextFairGuide
 };
+
 
 @interface ARTrialController : NSObject
 

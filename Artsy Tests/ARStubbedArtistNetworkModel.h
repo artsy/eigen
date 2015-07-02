@@ -1,5 +1,6 @@
 #import "ARArtistNetworkModel.h"
 
+
 @interface ARStubbedArtistNetworkModel : ARArtistNetworkModel
 
 @property (readwrite, nonatomic, strong) Artist *artistForArtistInfo;

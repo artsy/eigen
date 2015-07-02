@@ -5,6 +5,7 @@
 #import "ARAppSearchViewController.h"
 #import "ARShowFeedViewController.h"
 
+
 @interface ARTopMenuNavigationDataSource (Testing)
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
@@ -13,7 +14,7 @@
 @end
 
 
-SpecBegin(ARTopMenuNavigationDataSource)
+SpecBegin(ARTopMenuNavigationDataSource);
 __block ARTopMenuNavigationDataSource *navDataSource;
 before(^{
     navDataSource = [[ARTopMenuNavigationDataSource alloc] init];

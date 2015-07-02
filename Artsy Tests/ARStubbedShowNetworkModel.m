@@ -1,11 +1,14 @@
 #import "ARStubbedShowNetworkModel.h"
 
+
 @implementation ARStubbedShowNetworkModel
 
 - (instancetype)initWithFair:(Fair *)fair show:(PartnerShow *)show maps:(NSArray *)maps
 {
     self = [super initWithFair:fair show:show];
-    if (self == nil) { return nil; }
+    if (self == nil) {
+        return nil;
+    }
 
     _maps = maps;
 

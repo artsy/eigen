@@ -1,10 +1,11 @@
 #import "ARFairMapAnnotationView.h"
 
+
 @interface ARFairMapAnnotationView (Testing)
 @property (nonatomic, readonly) UILabel *primaryTitleLabel;
 @end
 
-SpecBegin(ARFairMapAnnotationView)
+SpecBegin(ARFairMapAnnotationView);
 
 __block ARFairMapAnnotationView *annotationView = nil;
 

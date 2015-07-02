@@ -1,4 +1,4 @@
-SpecBegin(SiteHeroUnit)
+SpecBegin(SiteHeroUnit);
 
 describe(@"currentlyActive", ^{
     it(@"past", ^{

@@ -11,6 +11,7 @@ typedef NS_ENUM(NSInteger, ARReserveStatus) {
     ARReserveStatusReserveMet
 };
 
+
 @interface SaleArtwork : MTLModel <MTLJSONSerializing>
 
 - (BidderPosition *)userMaxBidderPosition;

@@ -4,6 +4,7 @@
 
 @class ARWindow;
 
+
 @interface ARAppDelegate : UIResponder <JSApplicationStateDelegate>
 
 + (ARAppDelegate *)sharedInstance;
@@ -22,8 +23,8 @@
 
 @end
 
-/// Here because it's intrinsically related to using the ARAppDelegate shared instance. 
-@interface ARWindow: UIWindow
+/// Here because it's intrinsically related to using the ARAppDelegate shared instance.
+@interface ARWindow : UIWindow
 
 /// Used to refer to the last touch coordinates for iPad popovers from martsy views.
 @property (nonatomic, assign) CGPoint lastTouchPoint;
