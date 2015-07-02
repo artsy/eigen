@@ -5,3 +5,4 @@
   of the foundations of the app. Most importantly it required making breaking 
   changes to facebook that are more or lesss impossible to test automatically. - orta
 * Load all artworks in an artwork's show in the "artwork related artworks" view. - 1aurabrown
+* Fixes auctions route. – ashfurrow

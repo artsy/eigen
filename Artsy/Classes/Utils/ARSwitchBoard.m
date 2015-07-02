@@ -180,7 +180,7 @@
 
 - (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
 {
-    NSString *path = [NSString stringWithFormat:@"/auctions/%@/bid/%@", saleID, artworkID];
+    NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
     return [self loadURL:[NSURL URLWithString:path]];
 }
 
