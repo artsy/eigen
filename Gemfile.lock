@@ -1,19 +1,19 @@
 GIT
-  remote: git@github.com:ashfurrow/second_curtain.git
-  revision: 2f388f5aca8496c14c4c72ac5a726529b7dedb80
-  branch: improved_parse
-  specs:
-    second_curtain (0.4.0)
-      aws-sdk-v1 (~> 1.52)
-      mustache (~> 0.99)
-
-GIT
   remote: https://github.com/alloy/cocoapods-keys.git
   revision: 60a23f0b3b3ef7c055386417d94111795a2ec456
   branch: retrieve-keys-from-env
   specs:
     cocoapods-keys (1.2.0)
       osx_keychain
+
+GIT
+  remote: https://github.com/ashfurrow/second_curtain.git
+  revision: 2f388f5aca8496c14c4c72ac5a726529b7dedb80
+  branch: improved_parse
+  specs:
+    second_curtain (0.4.0)
+      aws-sdk-v1 (~> 1.52)
+      mustache (~> 0.99)
 
 GIT
   remote: https://github.com/cocoapods/cocoapods.git
