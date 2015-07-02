@@ -1,3 +1,13 @@
+class Pod::Project
+  def predictabilize_uuids
+    # no-op to ensure we can use this branch, but without the, currently for us broken, persistant UUID change in Xcodeproj:
+    # https://github.com/CocoaPods/CocoaPods/tree/seg-embed-frameworks-quotes
+    #
+    # Remove this and change Gemfile to latest CP once this is fixed:
+    # https://github.com/CocoaPods/CocoaPods/issues/3763
+  end
+end
+
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
@@ -54,6 +64,7 @@ target 'Artsy' do
   pod 'ARCollectionViewMasonryLayout', '~> 2.1', '>= 2.1.2'
   pod 'ARGenericTableViewController', '1.0.2'
   pod 'FLKAutoLayout', '0.1.1'
+  pod 'TPDWeakProxy', '1.1.0'
 
   # X-Callback-Url support
   pod 'InterAppCommunication'

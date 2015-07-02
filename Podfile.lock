@@ -107,6 +107,7 @@ PODS:
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
   - Specta (0.5.0)
+  - TPDWeakProxy (1.1.0)
   - TRVSDictionaryWithCaseInsensitivity (0.0.2)
   - TSMiniWebBrowser@dblock (HEAD based on 1.1)
   - UIAlertView+Blocks (0.8)
@@ -149,7 +150,7 @@ DEPENDENCIES:
   - ISO8601DateFormatter (HEAD)
   - JLRoutes (= 1.5)
   - JSDecoupledAppDelegate (= 1.1.0)
-  - Keys (from `Pods/CocoaPodsKeys/`)
+  - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred (= 0.2.0)
   - libextobjc/EXTKeyPathCoding (= 0.4)
   - libextobjc/EXTScope (= 0.4)
@@ -165,6 +166,7 @@ DEPENDENCIES:
   - ReactiveCocoa (= 2.3)
   - SDWebImage (= 3.7.1)
   - Specta
+  - TPDWeakProxy (= 1.1.0)
   - TSMiniWebBrowser@dblock (HEAD)
   - UIAlertView+Blocks (= 0.8)
   - UICKeyChainStore (= 1.0.5)
@@ -188,7 +190,7 @@ EXTERNAL SOURCES:
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
   Keys:
-    :path: Pods/CocoaPodsKeys/
+    :path: Pods/CocoaPodsKeys
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
@@ -268,6 +270,7 @@ SPEC CHECKSUMS:
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
   Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
+  TPDWeakProxy: 2ee6754e401aad6a67cc1d59c9fedddae7815abf
   TRVSDictionaryWithCaseInsensitivity: 51d2ccf52c6d645d27b63467a98fa02c556e01b0
   TSMiniWebBrowser@dblock: 6eb565b44cc2e5cd5eee7660ee5c21f8afae415c
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
