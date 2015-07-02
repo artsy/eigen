@@ -1,4 +1,4 @@
-#import "MTLValueTransformer.h"
+@import Mantle;
 
 @interface ARValueTransformer : MTLValueTransformer
 

@@ -166,7 +166,7 @@
     } failure:^(NSError *error) {
 
         @strongify(self);
-        NSLog(@"failed to get shows %@", error.localizedDescription);
+        ARErrorLog(@"failed to get shows %@", error.localizedDescription);
         [self performSelector:@selector(downloadPastShowSet) withObject:nil afterDelay:0.5];
     }];
 }

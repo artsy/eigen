@@ -25,14 +25,14 @@
     #import <Mantle/Mantle.h>
     #import <ObjectiveSugar/ObjectiveSugar.h>
     #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-    #import <CocoaLumberjack/DDLog.h>
+    #import <CocoaLumberjack/CocoaLumberjack.h>
     #import <ORStackView/ORStackScrollView.h>
     #import <ORStackView/ORTagBasedAutoStackView.h>
     #import <ReactiveCocoa/ReactiveCocoa.h>
     #import <NAMapKit/NAMapView.h>
     #import <EDColor/UIColor+Hex.h>
-    #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
-    #import <Artsy-UIButtons/ARButtonSubclasses.h>
+    #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+    #import <Artsy_UIButtons/ARButtonSubclasses.h>
 
     #import "ArtsyAPI.h"
     #import "Models.h"
@@ -46,7 +46,7 @@
     #import "ARTopMenuViewController.h"
     #import "ARScrollNavigationChief.h"
     #import "ARSystemTime.h"
-    #import "NSString+ObjectiveSugar.h"
+    @import ObjectiveSugar;
     #import "ARDispatchManager.h"
     #import "ARDeveloperOptions.h"
     #import "ARAutoLayoutDebugging.h"
@@ -54,15 +54,12 @@
     #import <libextobjc/EXTKeyPathCoding.h>
     #import <libextobjc/EXTScope.h>
 
-    #if defined(STORE)
-    static const int ddLogLevel = LOG_LEVEL_WARN;
+    #ifdef DEBUG
+    static const int ddLogLevel = DDLogLevelVerbose;
+    static const int httpLogLevel = AFLoggerLevelInfo;
+    #else
+    static const int ddLogLevel = DDLogLevelWarning;
     static const int httpLogLevel = AFLoggerLevelError;
-    #elif defined(DEBUG)
-    static const int ddLogLevel = LOG_LEVEL_VERBOSE;
-    static const int httpLogLevel = AFLoggerLevelInfo;
-    #else // Beta
-    static const int ddLogLevel = LOG_LEVEL_DEBUG;
-    static const int httpLogLevel = AFLoggerLevelInfo;
     #endif
 
     #ifdef DEMO_MODE

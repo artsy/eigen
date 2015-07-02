@@ -211,7 +211,7 @@
     if (response.statusCode == 401) {
         NSDictionary *recoverySuggestion = [NSJSONSerialization JSONObjectWithData:[error.userInfo[NSLocalizedRecoverySuggestionErrorKey] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
         if ([recoverySuggestion[@"error"] isEqualToString:@"Unauthorized"] && [recoverySuggestion[@"text"] isEqualToString:@"The XAPP token is invalid or has expired."]) {
-            NSLog(@"Resetting XAPP token after error: %@", error.localizedDescription);
+            ARActionLog(@"Resetting XAPP token after error: %@", error.localizedDescription);
             [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
             [ARRouter setXappToken:nil];
         }

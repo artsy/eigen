@@ -1,7 +1,6 @@
 #import "ARArtworkAuctionPriceView.h"
 #import "ARArtworkPriceRowView.h"
-#import "NSNumberFormatter+ARCurrency.h"
-#import "UIView+ARDrawing.h"
+@import Artsy_UILabels;
 
 @implementation ARArtworkAuctionPriceView
 

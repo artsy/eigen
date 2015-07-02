@@ -1,4 +1,4 @@
-#import "MTLModel.h"
+#import <Mantle/Mantle.h>
 #import "ARHasImageBaseURL.h"
 
 @interface Image : MTLModel <MTLJSONSerializing, ARHasImageBaseURL>

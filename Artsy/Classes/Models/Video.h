@@ -1,4 +1,4 @@
-#import "MTLModel.h"
+#import <Mantle/Mantle.h>
 
 @interface Video : MTLModel <MTLJSONSerializing>
 

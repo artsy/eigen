@@ -5,7 +5,7 @@
 #import "ARUserManager.h"
 #import "AROnboardingViewController.h"
 #import "UIViewController+FullScreenLoading.h"
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import "UIView+HitTestExpansion.h"
 
 //sigh
@@ -221,7 +221,7 @@
             @strongify(self);
             if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
                 if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
-                    ARActionLog(@"Facebook account already linked");
+                    ARErrorLog(@"Facebook account already linked");
                     [self userAlreadyExistsForLoginType:AROnboardingMoreInfoViewControllerLoginTypeFacebook];
                     return;
 
@@ -254,7 +254,7 @@
           @strongify(self);
           if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
               if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
-                  ARActionLog(@"Twitter account already linked");
+                  ARErrorLog(@"Twitter account already linked");
                   [self userAlreadyExistsForLoginType:AROnboardingMoreInfoViewControllerLoginTypeTwitter];
                   return;
 

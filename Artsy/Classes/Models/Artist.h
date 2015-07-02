@@ -1,4 +1,4 @@
-#import "MTLModel.h"
+#import <Mantle/Mantle.h>
 #import "ARFollowable.h"
 #import "ARShareableObject.h"
 #import "ARHasImageBaseURL.h"

@@ -33,7 +33,7 @@ static BOOL PSPDFReplaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id blo
   // Add the new method.
   IMP impl = imp_implementationWithBlock(block);
   if (!class_addMethod(c, newSEL, impl, encoding)) {
-    NSLog(@"Failed to add method: %@ on %@", NSStringFromSelector(newSEL), c);
+    ARActionLog(@"Failed to add method: %@ on %@", NSStringFromSelector(newSEL), c);
     return NO;
   }else {
     // Ensure the new selector has the same parameters as the existing selector.

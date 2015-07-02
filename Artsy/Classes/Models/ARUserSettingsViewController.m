@@ -1,5 +1,6 @@
 #import "ARUserSettingsViewController.h"
 
+#import <FODFormKit/FODForm.h>
 #import <FODFormKit/FODFormBuilder.h>
 
 #import "ARUserManager.h"

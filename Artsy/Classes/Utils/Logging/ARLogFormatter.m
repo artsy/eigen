@@ -29,10 +29,10 @@ static const NSDictionary *contextMap;
 
 - (NSString *)formatLogMessage:(DDLogMessage *)logMessage
 {
-    NSString *dateAndTime = [self.dateFormatter stringFromDate:(logMessage->timestamp)];
-    NSString *logMsg = logMessage->logMsg;
+    NSString *dateAndTime = [self.dateFormatter stringFromDate:(logMessage->_timestamp)];
+    NSString *logMsg = logMessage->_message;
 
-    return [NSString stringWithFormat:@"%@ [%@] | %@\n", dateAndTime, [contextMap[@(logMessage->logContext)] uppercaseString], logMsg];
+    return [NSString stringWithFormat:@"%@ [%@] | %@\n", dateAndTime, [contextMap[@(logMessage->_context)] uppercaseString], logMsg];
 
     return nil;
 }

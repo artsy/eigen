@@ -1,4 +1,4 @@
-#import "Mantle.h"
+#import <Mantle/Mantle.h>
 
 typedef NS_ENUM(NSInteger, ARHeroUnitImageColor){
     ARHeroUnitImageColorBlack,

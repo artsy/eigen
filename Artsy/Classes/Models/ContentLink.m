@@ -30,7 +30,7 @@
         //TODO: this - maybe?!
         return [[PhotoContentLink alloc] initWithDictionary:dictionaryValue error:error];
     } else {
-        NSLog(@"Error! Unknown content link type '%@'", type);
+        ARErrorLog(@"Error! Unknown content link type '%@'", type);
         return nil;
     }
 }

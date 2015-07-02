@@ -74,7 +74,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         }];
 
         // safeguard
-        if (!_currentUser.userID) {
+        if (!self.currentUser.userID) {
             ARErrorLog(@"Deserialized user %@ does not have an ID.", _currentUser);
             _currentUser = nil;
         }
@@ -350,7 +350,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              [ARAnalytics event:ARAnalyticsAccountCreated];
              
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-             ARErrorLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
+             ARActionLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
              failure(error, JSON);
              [ARAnalytics event:ARAnalyticsSignUpError];
          }];

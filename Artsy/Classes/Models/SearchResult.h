@@ -1,4 +1,4 @@
-#import "Mantle.h"
+@import Mantle;
 
 @interface SearchResult : MTLModel <MTLJSONSerializing>
 

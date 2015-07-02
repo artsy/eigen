@@ -174,9 +174,10 @@
         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             NSString *orderID = [JSON valueForKey:@"id"];
             NSString *resumeToken = [JSON valueForKey:@"token"];
-            ARInfoLog(@"Created order %@", orderID);
+            ARErrorLog(@"Created order %@", orderID);
             UIViewController *controller = [[ARSwitchBoard sharedInstance] loadOrderUIForID:orderID resumeToken:resumeToken];
             [self.navigationController pushViewController:controller animated:YES];
+            
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             @strongify(self);
             ARErrorLog(@"Creating a new order failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);

@@ -66,7 +66,7 @@ static NSString *ARFeedCursorKey = @"ARFeedCursorKey";
                 ARErrorLog(@"Error creating %@ - %@", type, error.localizedDescription);
             }
         } else {
-            ARActionLog(@"Unknown feed item type %@! Ignoring!", type);
+            ARErrorLog(@"Unknown feed item type %@! Ignoring!", type);
         }
     }
 

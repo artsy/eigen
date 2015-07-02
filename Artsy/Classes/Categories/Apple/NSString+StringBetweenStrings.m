@@ -12,7 +12,7 @@
 
     NSInteger length = endingRange.location - startingRange.location - startingRange.length;
     if (length < 0) {
-        NSLog(@"length is below zero, you need a more specific end result");
+        ARActionLog(@"length is below zero, you need a more specific end result");
         return nil;
     }
 

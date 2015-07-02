@@ -40,7 +40,7 @@
 - (void)logOperationStart:(AFHTTPRequestOperation *)operation
 {
     if ([operation.request HTTPBody]) {
-        ARHTTPRequestOperationDebugLog(@"[Operation Start] %@ '%@': %@ %@",
+        NSLog(@"[Operation Start] %@ '%@': %@ %@",
                                        [operation.request HTTPMethod],
                                        [[operation.request URL] absoluteString],
                                        [operation.request allHTTPHeaderFields],
@@ -69,17 +69,17 @@ static void * AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate
             case AFLoggerLevelInfo:
             case AFLoggerLevelWarn:
             case AFLoggerLevelError:
-                ARHTTPRequestOperationFailureLog(@"[Error] %@ '%@' (%ld) [%.04f s]: %@", [operation.request HTTPMethod], [[operation.response URL] absoluteString], (long)[operation.response statusCode], elapsedTime, operation.error);
+                NSLog(@"[Error] %@ '%@' (%ld) [%.04f s]: %@", [operation.request HTTPMethod], [[operation.response URL] absoluteString], (long)[operation.response statusCode], elapsedTime, operation.error);
             default:
                 break;
         }
     } else {
         switch (self.level) {
             case AFLoggerLevelDebug:
-                ARHTTPRequestOperationSuccessLog(@"[Success] %ld '%@' [%.04f s]: %@ %@", (long)[operation.response statusCode], [[operation.response URL] absoluteString], elapsedTime, [operation.response allHeaderFields], operation.responseString);
+                NSLog(@"[Success] %ld '%@' [%.04f s]: %@ %@", (long)[operation.response statusCode], [[operation.response URL] absoluteString], elapsedTime, [operation.response allHeaderFields], operation.responseString);
                 break;
             case AFLoggerLevelInfo:
-                ARHTTPRequestOperationSuccessLog(@"[Success] %ld '%@' [%.04f s]", (long)[operation.response statusCode], [[operation.response URL] absoluteString], elapsedTime);
+                NSLog(@"[Success] %ld '%@' [%.04f s]", (long)[operation.response statusCode], [[operation.response URL] absoluteString], elapsedTime);
                 break;
             default:
                 break;

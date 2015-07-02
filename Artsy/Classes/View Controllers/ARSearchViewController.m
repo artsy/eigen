@@ -240,7 +240,7 @@
     } failure:^(NSError *error) {
         if (error.code != NSURLErrorCancelled) {
             [self presentNoResults];
-            ARErrorLog(@"Search network error %@", error.localizedDescription);
+            ARActionLog(@"Search network error %@", error.localizedDescription);
         }
     }];
 }

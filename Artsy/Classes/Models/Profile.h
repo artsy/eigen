@@ -1,4 +1,4 @@
-#import "MTLModel.h"
+#import <Mantle/Mantle.h>
 #import "ProfileOwner.h"
 
 /// A profile is a model that represents something

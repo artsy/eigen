@@ -2,7 +2,7 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import <ARAnalytics/ARDSL.h>
 #import "ARAnalyticsConstants.h"
-#import <HockeySDK-Source/BITHockeyManager.h>
+#import <HockeySDK_Source/BITHockeyManager.h>
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 
 #import "ARUserManager.h"

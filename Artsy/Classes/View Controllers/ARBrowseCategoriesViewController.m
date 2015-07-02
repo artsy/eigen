@@ -53,7 +53,7 @@
             [self createCollectionViewWithOrderedSet:orderedSet];
         }
     } failure:^(NSError *error) {
-        NSLog(@"error");
+        ARErrorLog(@"Error getting Featured Link Categories for genes");
     }];
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];

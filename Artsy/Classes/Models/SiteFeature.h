@@ -1,4 +1,4 @@
-#import "Mantle.h"
+#import <Mantle/Mantle.h>
 
 @interface SiteFeature : MTLModel<MTLJSONSerializing>
 

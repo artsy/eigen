@@ -45,10 +45,10 @@
                         status = error.code;
                     }
                 }
-                ARHTTPRequestOperationFailureLog(@"[Error] %ld '%@' [%.04f s]: %@", (long)status, imageURL, elapsedTime, error);
+                ARErrorLog(@"[Error] %ld '%@' [%.04f s]: %@", (long)status, imageURL, elapsedTime, error);
             } else {
                 // This might actually be another 2xx status code, but let's assume 200 for now.
-                ARHTTPRequestOperationSuccessLog(@"[Success] 200 '%@' [%.04f s]", imageURL, elapsedTime);
+                ARActionLog(@"[Success] 200 '%@' [%.04f s]", imageURL, elapsedTime);
             }
             if (completionBlock) {
                 completionBlock(image, error, cacheType, imageURL);

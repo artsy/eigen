@@ -1,4 +1,4 @@
-#import "MTLModel.h"
+#import <Mantle/Mantle.h>
 #import "ARHasImageBaseURL.h"
 
 typedef NS_ENUM(NSInteger, ARPartnerType) {

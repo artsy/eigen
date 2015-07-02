@@ -1,6 +1,6 @@
 #import "ARRouter.h"
 #import <JLRoutes/JLRoutes.h>
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
 // View Controllers
 #import "ARArtworkSetViewController.h"

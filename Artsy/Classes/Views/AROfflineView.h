@@ -1,5 +1,4 @@
-#import <UIKit/UIKit.h>
-#import "ORStackView.h"
+@import ORStackView;
 
 @interface AROfflineView : ORStackView
 
