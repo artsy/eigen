@@ -6,6 +6,7 @@
 const static CGFloat ARHeroUnitDotsHeight = 30;
 const static CGFloat ARCarouselDelay = 10;
 
+
 @interface ARHeroUnitViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 @property (nonatomic, strong) UIPageControl *pageControl;
 @property (nonatomic) CAGradientLayer *shadowLayer;
@@ -13,11 +14,13 @@ const static CGFloat ARCarouselDelay = 10;
 @property (nonatomic, strong) NSTimer *timer;
 @end
 
+
 @interface ARSiteHeroUnitViewController ()
 - (instancetype)initWithHeroUnit:(SiteHeroUnit *)heroUnit andIndex:(NSInteger)index;
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, strong, readwrite) SiteHeroUnit *heroUnit;
 @end
+
 
 @implementation ARHeroUnitViewController
 
@@ -53,9 +56,9 @@ const static CGFloat ARCarouselDelay = 10;
     [self.pageControl addTarget:self action:@selector(pageControlTapped:) forControlEvents:UIControlEventValueChanged];
 
     CAGradientLayer *shadowLayer = [CAGradientLayer layer];
-    shadowLayer.colors = @[(id)[UIColor colorWithWhite:0 alpha:.4].CGColor,
-                           (id)[UIColor colorWithWhite:0 alpha:.12].CGColor,
-                           (id)[UIColor colorWithWhite:0 alpha:0].CGColor];
+    shadowLayer.colors = @[ (id)[UIColor colorWithWhite:0 alpha:.4].CGColor,
+                            (id)[UIColor colorWithWhite:0 alpha:.12].CGColor,
+                            (id)[UIColor colorWithWhite:0 alpha:0].CGColor ];
 
     shadowLayer.startPoint = CGPointMake(0, 1);
     shadowLayer.endPoint = CGPointMake(0, 0.8);
@@ -84,7 +87,7 @@ const static CGFloat ARCarouselDelay = 10;
     [super viewDidLayoutSubviews];
 }
 
--(void)handleHeroUnits:(NSArray *)heroUnits
+- (void)handleHeroUnits:(NSArray *)heroUnits
 {
     // Should never be false in production, but will cause problems in development if false on staging.
     BOOL timerEnabled = self.timer != nil;
@@ -100,15 +103,19 @@ const static CGFloat ARCarouselDelay = 10;
     self.view.userInteractionEnabled = YES;
     [self updateViewWithHeroUnits:heroUnits];
 
-    if (timerEnabled) { [self startTimer]; }
+    if (timerEnabled) {
+        [self startTimer];
+    }
 }
 
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits
 {
     self.pageControl.numberOfPages = heroUnits.count;
     ARSiteHeroUnitViewController *initialVC = [self viewControllerForIndex:0];
-    if (!initialVC) { return; }
-    NSArray *initialVCs = @[initialVC];
+    if (!initialVC) {
+        return;
+    }
+    NSArray *initialVCs = @[ initialVC ];
     [self.pageViewController setViewControllers:initialVCs direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
@@ -137,7 +144,9 @@ const static CGFloat ARCarouselDelay = 10;
 
 - (void)startTimer
 {
-    if (self.heroUnitNetworkModel.heroUnits.count <= 1) { return; }
+    if (self.heroUnitNetworkModel.heroUnits.count <= 1) {
+        return;
+    }
     [self cancelTimer];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:ARCarouselDelay target:self selector:@selector(goToNextHeroUnit) userInfo:nil repeats:YES];
 }
@@ -150,11 +159,11 @@ const static CGFloat ARCarouselDelay = 10;
     }
 }
 
--(void)goToHeroUnit:(UIViewController *)vc withDirection:(UIPageViewControllerNavigationDirection)direction
+- (void)goToHeroUnit:(UIViewController *)vc withDirection:(UIPageViewControllerNavigationDirection)direction
 {
     self.pageViewController.view.userInteractionEnabled = NO;
     @weakify(self);
-    [self.pageViewController setViewControllers:@[vc] direction:direction animated:YES completion:^(BOOL finished) {
+    [self.pageViewController setViewControllers:@[ vc ] direction:direction animated:YES completion:^(BOOL finished) {
         @strongify(self);
         [self.pageControl setCurrentPage:[self currentViewController].index];
         self.pageViewController.view.userInteractionEnabled = YES;
@@ -162,7 +171,7 @@ const static CGFloat ARCarouselDelay = 10;
     }];
 }
 
--(void)goToNextHeroUnit
+- (void)goToNextHeroUnit
 {
     UIViewController *nextVC = [self pageViewController:self.pageViewController viewControllerAfterViewController:[self currentViewController]];
     [self goToHeroUnit:nextVC withDirection:UIPageViewControllerNavigationDirectionForward];
@@ -172,7 +181,9 @@ const static CGFloat ARCarouselDelay = 10;
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(ARSiteHeroUnitViewController *)viewController
 {
-    if (self.heroUnitNetworkModel.heroUnits.count == 1) { return nil; }
+    if (self.heroUnitNetworkModel.heroUnits.count == 1) {
+        return nil;
+    }
 
     NSInteger newIndex = viewController.index - 1;
     if (newIndex < 0) {
@@ -184,7 +195,9 @@ const static CGFloat ARCarouselDelay = 10;
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(ARSiteHeroUnitViewController *)viewController
 {
-    if (self.heroUnitNetworkModel.heroUnits.count == 1) { return nil; }
+    if (self.heroUnitNetworkModel.heroUnits.count == 1) {
+        return nil;
+    }
 
     NSInteger newIndex = (viewController.index + 1) % self.heroUnitNetworkModel.heroUnits.count;
     return [self viewControllerForIndex:newIndex ?: 0];
@@ -192,7 +205,9 @@ const static CGFloat ARCarouselDelay = 10;
 
 - (ARSiteHeroUnitViewController *)viewControllerForIndex:(NSInteger)index
 {
-    if (index < 0 || index >= self.heroUnitNetworkModel.heroUnits.count) { return nil; }
+    if (index < 0 || index >= self.heroUnitNetworkModel.heroUnits.count) {
+        return nil;
+    }
 
     SiteHeroUnit *heroUnit = self.heroUnitNetworkModel.heroUnits[index];
     ARSiteHeroUnitViewController *viewController = [[ARSiteHeroUnitViewController alloc] initWithHeroUnit:heroUnit andIndex:index];
@@ -216,12 +231,15 @@ const static CGFloat ARCarouselDelay = 10;
 
 @end
 
+
 @implementation ARSiteHeroUnitViewController
 
 - (instancetype)initWithHeroUnit:(SiteHeroUnit *)heroUnit andIndex:(NSInteger)index
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _heroUnit = heroUnit;
     _index = index;
     return self;

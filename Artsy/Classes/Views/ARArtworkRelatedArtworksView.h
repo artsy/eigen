@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
 - (Fair *)fair;
 @end
 
+
 @interface ARArtworkRelatedArtworksView : ORTagBasedAutoStackView <ARArtworkMasonryLayoutProvider>
 
 @property (nonatomic, weak) ARArtworkViewController<ARArtworkRelatedArtworksViewParentViewController> *parentViewController;
@@ -28,6 +29,6 @@ typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
 - (void)cancelRequests;
 
 - (void)updateWithArtwork:(Artwork *)artwork;
-- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void(^)())completion;
+- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void (^)())completion;
 
 @end

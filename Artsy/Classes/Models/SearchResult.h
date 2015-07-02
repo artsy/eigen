@@ -1,5 +1,6 @@
 @import Mantle;
 
+
 @interface SearchResult : MTLModel <MTLJSONSerializing>
 
 @property (readonly, nonatomic, copy) NSString *modelString;

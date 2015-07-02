@@ -2,18 +2,22 @@
 #import "ARTextView.h"
 #import "ORStackView+ArtsyViews.h"
 
+
 @interface ARArtworkBlurbView () <ARTextViewDelegate>
 @property (nonatomic, strong) UILabel *aboutHeading;
 @property (nonatomic, strong) ARTextView *blurbTextView;
 
 @end
 
+
 @implementation ARArtworkBlurbView
 
 - (instancetype)initWithArtwork:(Artwork *)artwork
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     @weakify(self);
 
@@ -30,8 +34,7 @@
     BOOL showBio = (artwork.blurb.length > 0);
     self.bottomMarginHeight = 0;
 
-    if (showBio){
-
+    if (showBio) {
         if (!self.aboutHeading) {
             self.aboutHeading = [self addPageSubtitleWithString:[NSLocalizedString(@"About this Artwork", @"About this artwork header") uppercaseString]];
         }
@@ -43,7 +46,7 @@
 
         [self.blurbTextView setMarkdownString:artwork.blurb];
 
-        NSString *sideMargin = [UIDevice isPad]? @"280" : @"0";
+        NSString *sideMargin = [UIDevice isPad] ? @"280" : @"0";
         [self addSubview:self.blurbTextView withTopMargin:@"16" sideMargin:sideMargin];
         [self invalidateIntrinsicContentSize];
     }
@@ -57,7 +60,7 @@
 
 #pragma mark - ARTextViewDelegate
 
--(void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController
+- (void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController
 {
     [self.delegate artworkBlurView:self shouldPresentViewController:viewController];
 }

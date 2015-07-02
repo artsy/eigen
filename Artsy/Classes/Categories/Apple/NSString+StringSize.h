@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+
 @interface NSString (StringSize)
 
 /// This is to emulate the old deprecated API for getting a string size using the

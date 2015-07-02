@@ -15,14 +15,15 @@
 #import "ARGeneViewController.h"
 #import "ARParallaxHeaderViewController.h"
 
-NSString * const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
-NSString * const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";
-NSString * const ARFairHighlightArtistIDKey = @"ARFairHighlightArtistIDKey";
-NSString * const ARFairHighlightShowsKey = @"ARFairHighlightShowsKey";
-NSString * const ARFairHighlightPartnersKey = @"ARFairHighlightPartnersKey";
-NSString * const ARFairHighlightFocusMapKey = @"ARFairHighlightFocusMapKey";
-NSString * const ARFairMapSetFavoritePartnersKey = @"ARFairMapSetFavoritePartnersKey";
-NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePartnersKey";
+NSString *const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
+NSString *const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";
+NSString *const ARFairHighlightArtistIDKey = @"ARFairHighlightArtistIDKey";
+NSString *const ARFairHighlightShowsKey = @"ARFairHighlightShowsKey";
+NSString *const ARFairHighlightPartnersKey = @"ARFairHighlightPartnersKey";
+NSString *const ARFairHighlightFocusMapKey = @"ARFairHighlightFocusMapKey";
+NSString *const ARFairMapSetFavoritePartnersKey = @"ARFairMapSetFavoritePartnersKey";
+NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePartnersKey";
+
 
 @interface ARFairViewController () <ARBrowseFeaturedLinksCollectionViewDelegate, ARFairPostsViewControllerDelegate, ARSearchFieldButtonDelegate, ARFairSearchViewControllerDelegate>
 
@@ -45,6 +46,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 
 @end
 
+
 @implementation ARFairViewController
 
 - (instancetype)initWithFair:(Fair *)fair
@@ -55,7 +57,9 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 - (instancetype)initWithFair:(Fair *)fair andProfile:(Profile *)profile
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _fair = fair;
     _fairProfile = profile;
@@ -92,12 +96,12 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
     [super viewDidLoad];
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return NO;
 }
 
--(NSUInteger)supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
 }
@@ -111,7 +115,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
         [self.stackView.stackView addSubview:self.headerViewController.view withTopMargin:nil sideMargin:nil];
     } else {
         [self.stackView.stackView addSerifPageTitle:self.fair.name subtitle:self.fair.ausstellungsdauer];
-        [self.stackView.stackView addGenericSeparatorWithSideMargin: @"40"];
+        [self.stackView.stackView addGenericSeparatorWithSideMargin:@"40"];
     }
 
     self.searchButton = [[ARSearchFieldButton alloc] init];
@@ -124,13 +128,13 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 
     self.editorialVC = [[ARNavigationButtonsViewController alloc] init];
     [(ORStackView *)self.editorialVC.view addPageTitleWithString:@"Fair Highlights"];
-    [(ORStackView *)self.editorialVC.view addGenericSeparatorWithSideMargin: @"20"];
+    [(ORStackView *)self.editorialVC.view addGenericSeparatorWithSideMargin:@"20"];
     self.editorialVC.view.hidden = YES;
     [self.stackView.stackView addSubview:self.editorialVC.view withTopMargin:@"60" sideMargin:@"20"];
 
     self.curatorVC = [[ARNavigationButtonsViewController alloc] init];
     [(ORStackView *)self.curatorVC.view addPageTitleWithString:@"Insider's Picks"];
-    [(ORStackView *)self.curatorVC.view addGenericSeparatorWithSideMargin: @"20"];
+    [(ORStackView *)self.curatorVC.view addGenericSeparatorWithSideMargin:@"20"];
     self.curatorVC.view.hidden = YES;
     [self.stackView.stackView addSubview:self.curatorVC.view withTopMargin:@"60" sideMargin:@"20"];
 
@@ -139,7 +143,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
     };
 
     @weakify(self)
-    [self.fair getFairMaps:^(NSArray *maps) {
+        [self.fair getFairMaps:^(NSArray *maps) {
         [self.fair getOrderedSets:^(NSMutableDictionary *orderedSets) {
             for (OrderedSet *primarySet in orderedSets[@"primary"]) {
                 [primarySet getItems:^(NSArray *items) {
@@ -198,7 +202,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
             }
 
         }];
-    }];
+        }];
 
     if (self.fair.organizer) {
         self.fairPostsVC = [[ARFairPostsViewController alloc] initWithFair:[self fair]];
@@ -221,39 +225,41 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 {
     @weakify(self);
     return @{
-        ARNavigationButtonClassKey: [ARButtonWithImage class],
-        ARNavigationButtonPropertiesKey: @{
-            @keypath(ARButtonWithImage.new, title): @"Map",
-            @keypath(ARButtonWithImage.new, subtitle): @"Find your way",
-            @keypath(ARButtonWithImage.new, image): [UIImage imageNamed:@"MapIcon"]
+        ARNavigationButtonClassKey : [ARButtonWithImage class],
+        ARNavigationButtonPropertiesKey : @{
+            @keypath(ARButtonWithImage.new, title) : @"Map",
+            @keypath(ARButtonWithImage.new, subtitle) : @"Find your way",
+            @keypath(ARButtonWithImage.new, image) : [UIImage imageNamed:@"MapIcon"]
         },
-        ARNavigationButtonHandlerKey: ^(ARButtonWithImage *button) {
+        ARNavigationButtonHandlerKey : ^(ARButtonWithImage *button){
             @strongify(self);
-            ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair];
-            [self.navigationController pushViewController:viewController animated:YES];
-        }
-    };
+    ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+}
+;
 }
 
 - (NSDictionary *)buttonDescriptionForFeaturedLink:(FeaturedLink *)featuredLink buttonClass:(Class)buttonClass
 {
     @weakify(self);
     return @{
-        ARNavigationButtonClassKey: buttonClass,
-        ARNavigationButtonPropertiesKey: @{
-            @keypath(ARButtonWithImage.new, title): featuredLink.title ?: NSNull.null,
-            @keypath(ARButtonWithImage.new, subtitle): featuredLink.subtitle ?: NSNull.null,
-            @keypath(ARButtonWithImage.new, imageURL): featuredLink.smallSquareImageURL ?: NSNull.null,
-            @keypath(ARButtonWithImage.new, targetURL): [NSURL URLWithString:featuredLink.href] ?: NSNull.null
+        ARNavigationButtonClassKey : buttonClass,
+        ARNavigationButtonPropertiesKey : @{
+            @keypath(ARButtonWithImage.new, title) : featuredLink.title ?: NSNull.null,
+            @keypath(ARButtonWithImage.new, subtitle) : featuredLink.subtitle ?: NSNull.null,
+            @keypath(ARButtonWithImage.new, imageURL) : featuredLink.smallSquareImageURL ?: NSNull.null,
+            @keypath(ARButtonWithImage.new, targetURL) : [NSURL URLWithString:featuredLink.href] ?: NSNull.null
         },
-        ARNavigationButtonHandlerKey: ^(UIButton *button) {
+        ARNavigationButtonHandlerKey : ^(UIButton *button){
             @strongify(self);
-            if ([button isKindOfClass:[ARButtonWithImage class]]) {
-                ARButtonWithImage *buttonWithImage = (ARButtonWithImage *) button;
-                [self buttonPressed:buttonWithImage];
-            }
-        }
-    };
+    if ([button isKindOfClass:[ARButtonWithImage class]]) {
+        ARButtonWithImage *buttonWithImage = (ARButtonWithImage *)button;
+        [self buttonPressed:buttonWithImage];
+    }
+}
+}
+;
 }
 
 - (void)buttonPressed:(ARButtonWithImage *)buttonWithImage
@@ -299,7 +305,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
     [self.searchVC.view alignCenterWithView:self.view];
     self.stackView.scrollEnabled = NO;
 
-    [UIView animateIf:self.animatesSearchBehavior duration:ARAnimationDuration :^{
+    [UIView animateIf:self.animatesSearchBehavior duration:ARAnimationDuration:^{
         self.searchVC.view.alpha = 1.0;
     }];
 }
@@ -341,7 +347,7 @@ NSString * const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoriteP
 - (void)cancelledSearch:(ARFairSearchViewController *)controller
 {
     self.stackView.scrollEnabled = YES;
-    [UIView animateIf:self.animatesSearchBehavior duration:ARAnimationDuration :^{
+    [UIView animateIf:self.animatesSearchBehavior duration:ARAnimationDuration:^{
         self.searchVC.view.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self ar_removeChildViewController:self.searchVC], self.searchVC = nil;

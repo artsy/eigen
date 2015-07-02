@@ -2,6 +2,7 @@
 
 #import "ARExternalWebBrowserViewController.h"
 
+
 @interface ARScrollNavigationChief : NSObject <UIScrollViewDelegate, UICollectionViewDelegate>
 
 + (ARScrollNavigationChief *)chief;

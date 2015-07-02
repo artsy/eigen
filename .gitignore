@@ -36,3 +36,4 @@ fastlane/report.xml
 
 # Artsy Development APN certificate
 net.artsy.artsy.dev.pem
+.clang-format

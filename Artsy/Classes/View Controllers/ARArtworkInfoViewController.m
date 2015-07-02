@@ -2,10 +2,12 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARTextView.h"
 
+
 @interface ARArtworkInfoViewController ()
-@property (nonatomic, strong)Artwork *artwork;
+@property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) ORStackScrollView *view;
 @end
+
 
 @implementation ARArtworkInfoViewController
 
@@ -14,7 +16,9 @@
 - (instancetype)initWithArtwork:(Artwork *)artwork
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _artwork = artwork;
     return self;
 }
@@ -57,7 +61,9 @@
 
 - (void)addSectionWithTitle:(NSString *)title andText:(NSString *)text
 {
-    if (![text length]) { return; }
+    if (![text length]) {
+        return;
+    }
     ARLabel *label = [[ARSansSerifLabel alloc] init];
     label.font = [label.font fontWithSize:14];
     label.text = title;
@@ -76,7 +82,7 @@
     return nil;
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return [UIDevice isPad];
 }

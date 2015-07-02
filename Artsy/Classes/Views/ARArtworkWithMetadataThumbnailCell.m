@@ -3,10 +3,12 @@
 
 static const CGFloat ARArtworkCellMetadataMargin = 8;
 
-@interface ARArtworkWithMetadataThumbnailCell()
+
+@interface ARArtworkWithMetadataThumbnailCell ()
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) ARArtworkThumbnailMetadataView *metadataView;
 @end
+
 
 @implementation ARArtworkWithMetadataThumbnailCell
 
@@ -62,12 +64,13 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
     ARFeedItemImageSize size = self.imageSize;
     if (self.imageSize == ARFeedItemImageSizeAuto) {
         CGSize imageSize = self.imageView.bounds.size;
-        CGFloat longestDimension = (imageSize.height > imageSize.width)? imageSize.height : imageSize.width;
+        CGFloat longestDimension = (imageSize.height > imageSize.width) ? imageSize.height : imageSize.width;
         size = (longestDimension > 200) ? ARFeedItemImageSizeLarge : ARFeedItemImageSizeSmall;
     }
 
     [[ARFeedImageLoader alloc] loadImageAtAddress:baseUrl desiredSize:size
-        forImageView:self.imageView customPlaceholder:nil];
+                                     forImageView:self.imageView
+                                customPlaceholder:nil];
 
     [self.metadataView configureWithArtwork:artwork];
 

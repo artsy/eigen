@@ -4,9 +4,10 @@
 
 @protocol ARFairFavoritesNetworkModelDelegate <NSObject>
 
--(void)fairFavoritesNetworkModel:(ARFairFavoritesNetworkModel *)fairFavoritesNetworkModel shouldPresentViewController:(UIViewController *)viewController;
+- (void)fairFavoritesNetworkModel:(ARFairFavoritesNetworkModel *)fairFavoritesNetworkModel shouldPresentViewController:(UIViewController *)viewController;
 
 @end
+
 
 @interface ARFairFavoritesNetworkModel : NSObject
 

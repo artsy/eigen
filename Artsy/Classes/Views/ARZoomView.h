@@ -4,6 +4,7 @@
 - (void)zoomViewFinished:(ARZoomView *)zoomView;
 @end
 
+
 @interface ARZoomView : UIScrollView <UIScrollViewDelegate>
 
 @property (nonatomic, strong, readonly) Image *image;

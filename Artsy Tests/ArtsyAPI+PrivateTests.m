@@ -2,7 +2,7 @@
 #import "ArtsyAPI+Private.h"
 #import "MutableNSURLResponse.h"
 
-SpecBegin(ArtsyAPIPrivate)
+SpecBegin(ArtsyAPIPrivate);
 
 describe(@"handleXappTokenError", ^{
     it(@"doesn't reset XAPP token on non-401 errors", ^{
@@ -28,4 +28,3 @@ describe(@"handleXappTokenError", ^{
 });
 
 SpecEnd
-

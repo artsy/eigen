@@ -1,8 +1,8 @@
 #import "ARNavigationButton.h"
 
-SpecBegin(ARNavigationButtonSpec)
+SpecBegin(ARNavigationButtonSpec);
 
-__block ARNavigationButton * _view;
+__block ARNavigationButton *_view;
 CGRect frame = CGRectMake(0, 0, 280, 60);
 
 describe(@"ARNavigationButton", ^{

@@ -4,11 +4,13 @@
 static const CGFloat ARFavoriteCellMetadataMargin = 8;
 static const CGFloat ARFavoriteCellLabelHeight = 34;
 
-@interface ARFavoriteItemViewCell()
+
+@interface ARFavoriteItemViewCell ()
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) NSLayoutConstraint *imageHeightConstraint;
 @end
+
 
 @implementation ARFavoriteItemViewCell
 
@@ -22,7 +24,6 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
 {
     CGFloat width;
     CGFloat height;
-
 
 
     int columns = [UIDevice isPad] ? 3 : 2;
@@ -66,7 +67,7 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
         NSURL *url = [object squareImageURL];
         [self.imageView ar_setImageWithURL:url];
     }
-    
+
     if (!self.titleLabel) {
         UILabel *label = [[UILabel alloc] init];
         label.font = [UIFont sansSerifFontWithSize:12];

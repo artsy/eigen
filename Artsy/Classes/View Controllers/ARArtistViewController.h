@@ -1,5 +1,6 @@
 #import "ARFairAwareObject.h"
 
+
 @interface ARArtistViewController : UIViewController <ARFairAwareObject>
 
 - (instancetype)initWithArtistID:(NSString *)artistID;

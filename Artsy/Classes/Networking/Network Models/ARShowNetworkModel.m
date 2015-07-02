@@ -1,5 +1,6 @@
 #import "ARShowNetworkModel.h"
 
+
 @interface ARShowNetworkModel ()
 
 @property (nonatomic, strong, readwrite) Fair *fair;
@@ -7,12 +8,15 @@
 
 @end
 
+
 @implementation ARShowNetworkModel
 
 - (instancetype)initWithFair:(Fair *)fair show:(PartnerShow *)show
 {
     self = [super init];
-    if (self == nil) { return nil; }
+    if (self == nil) {
+        return nil;
+    }
 
     _fair = fair;
     _show = show;

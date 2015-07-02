@@ -1,8 +1,10 @@
 static NSInteger ARTiledZoomMinLevel = 11;
 
+
 @interface Image ()
 @property (nonatomic, assign) NSInteger maxTileLevel;
 @end
+
 
 @implementation Image
 
@@ -35,9 +37,9 @@ static NSInteger ARTiledZoomMinLevel = 11;
 
 - (void)setNilValueForKey:(NSString *)key
 {
-    if ([@[@"aspectRatio", @"originalHeight", @"originalWidth"] containsObject:key]) {
+    if ([@[ @"aspectRatio", @"originalHeight", @"originalWidth" ] containsObject:key]) {
         [self setValue:@1 forKey:key];
-    } else if ([@[@"maxTiledHeight", @"maxTiledWidth", @"tileSize"] containsObject:key]) {
+    } else if ([@[ @"maxTiledHeight", @"maxTiledWidth", @"tileSize" ] containsObject:key]) {
         [self setValue:@0 forKey:key];
     } else {
         [super setNilValueForKey:key];
@@ -97,7 +99,7 @@ static NSInteger ARTiledZoomMinLevel = 11;
     if (_maxTileLevel <= 0) {
         NSInteger width = _maxTiledWidth;
         NSInteger height = _maxTiledHeight;
-        _maxTileLevel = ceil(log(MAX(width, height))/log(2));
+        _maxTileLevel = ceil(log(MAX(width, height)) / log(2));
     }
     return _maxTileLevel;
 }
@@ -109,7 +111,7 @@ static NSInteger ARTiledZoomMinLevel = 11;
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         Image *image = object;
         return [image.imageID isEqualToString:self.imageID];
     }

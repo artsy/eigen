@@ -7,6 +7,7 @@
 
 @end
 
+
 @interface ARFairArtistViewController : UIViewController <ARFairAwareObject>
 
 - (instancetype)initWithArtistID:(NSString *)artistID fair:(Fair *)fair NS_DESIGNATED_INITIALIZER;

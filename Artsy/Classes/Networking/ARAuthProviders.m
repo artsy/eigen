@@ -8,9 +8,10 @@
 #import "ARAnalyticsConstants.h"
 #import <Keys/ArtsyKeys.h>
 
+
 @implementation ARAuthProviders
 
-+ (void)getReverseAuthTokenForTwitter:(void(^)(NSString *token, NSString *secret))success failure:(void (^)(NSError *))failure
++ (void)getReverseAuthTokenForTwitter:(void (^)(NSString *token, NSString *secret))success failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(success);
     AFOAuth1Client *client = nil;
@@ -19,18 +20,19 @@
                                               secret:[ArtsyKeys new].artsyTwitterSecret];
 
     [client authorizeUsingOAuthWithRequestTokenPath:@"/oauth/request_token"
-                              userAuthorizationPath:@"/oauth/authorize"
-                                        callbackURL:[NSURL URLWithString:ARTwitterCallbackPath]
-                                    accessTokenPath:@"/oauth/access_token"
-                                       accessMethod:@"POST" scope:nil
-    success:^(AFOAuth1Token *accessToken, id responseObject) {
+        userAuthorizationPath:@"/oauth/authorize"
+        callbackURL:[NSURL URLWithString:ARTwitterCallbackPath]
+        accessTokenPath:@"/oauth/access_token"
+        accessMethod:@"POST"
+        scope:nil
+        success:^(AFOAuth1Token *accessToken, id responseObject) {
         success(accessToken.key, accessToken.secret);
-    } failure:^(NSError *error) {
+        }
+        failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
-    }];
-
+        }];
 }
 
 + (void)getTokenForFacebook:(void (^)(NSString *token, NSString *email, NSString *name))success failure:(void (^)(NSError *error))failure
@@ -38,7 +40,7 @@
     NSParameterAssert(success);
 
     FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-    [login logInWithReadPermissions:@[@"email"] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+    [login logInWithReadPermissions:@[ @"email" ] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
         if (error) {
             ARErrorLog(@"Failed to log in to Facebook: %@", error.localizedDescription);
             failure(error);

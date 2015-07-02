@@ -1,5 +1,6 @@
 #import <Mantle/Mantle.h>
 
+
 @interface MTLModel (JSON)
 
 /// There isn't a logical one-liner to create a JSON model without jumping to a non-relevant class.

@@ -1,17 +1,21 @@
 #import "ARHeartButton.h"
 
+
 @interface ARHeartButton ()
 // Front = Active, back = inactive
 @property (nonatomic, strong) UIImageView *frontView;
 @property (nonatomic, strong) UIImageView *backView;
 @end
 
+
 @implementation ARHeartButton
 
 - (instancetype)init
 {
     self = [super initWithImageName:nil];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     [self setImage:nil forState:UIControlStateNormal];
 
@@ -60,7 +64,7 @@
 
 - (void)setHearted:(BOOL)hearted animated:(BOOL)animated
 {
-    [self setStatus:(hearted ? ARHeartStatusYes : ARHeartStatusNo) animated:animated];
+    [self setStatus:(hearted ? ARHeartStatusYes : ARHeartStatusNo)animated:animated];
 }
 
 - (void)setStatus:(ARHeartStatus)status

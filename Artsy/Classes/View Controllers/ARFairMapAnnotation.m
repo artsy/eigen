@@ -2,9 +2,11 @@
 #import "ARFairMapAnnotationView.h"
 #import "UIView+HitTestExpansion.h"
 
-@interface ARFairMapAnnotation()
-@property(nonatomic, readonly) ARFairMapAnnotationView *view;
+
+@interface ARFairMapAnnotation ()
+@property (nonatomic, readonly) ARFairMapAnnotationView *view;
 @end
+
 
 @implementation ARFairMapAnnotation
 
@@ -28,8 +30,8 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:self.class]){
-        return CGPointEqualToPoint(self.point , [object point]) && [self.representedObject isEqual:[object representedObject]];
+    if ([object isKindOfClass:self.class]) {
+        return CGPointEqualToPoint(self.point, [object point]) && [self.representedObject isEqual:[object representedObject]];
     }
     return [super isEqual:object];
 }
@@ -47,7 +49,7 @@
     if (featureType == ARMapFeatureTypeDefault) {
         [view reduceToPoint];
     }
-    
+
     [view ar_extendHitTestSizeByWidth:0 andHeight:5];
     [view addTarget:self action:@selector(tappedOnAnnotation:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -64,7 +66,7 @@
         } else {
             return ARMapFeatureTypeDefault;
         }
-    } else if([self.representedObject isKindOfClass:MapFeature.class]) {
+    } else if ([self.representedObject isKindOfClass:MapFeature.class]) {
         return [self.representedObject featureType];
     } else {
         return ARMapFeatureTypeGenericEvent;
@@ -85,7 +87,7 @@
     if ([self.representedObject isKindOfClass:PartnerShow.class]) {
         PartnerShow *partnerShow = self.representedObject;
         return partnerShow.partner.shortName ?: partnerShow.partner.name;
-    } else if([self.representedObject isKindOfClass:MapFeature.class]) {
+    } else if ([self.representedObject isKindOfClass:MapFeature.class]) {
         MapFeature *mapFeature = self.representedObject;
         return mapFeature.name;
     } else {
@@ -97,7 +99,7 @@
 {
     if ([self.representedObject isKindOfClass:PartnerShow.class]) {
         return [self.representedObject locationInFair];
-    } else if([self.representedObject isKindOfClass:MapFeature.class]) {
+    } else if ([self.representedObject isKindOfClass:MapFeature.class]) {
         return @"";
     } else {
         return @"";

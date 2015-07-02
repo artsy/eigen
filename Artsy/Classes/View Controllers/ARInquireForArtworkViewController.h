@@ -6,6 +6,7 @@ typedef NS_ENUM(NSInteger, ARInquireState) {
     ARInquireStatePartner
 };
 
+
 @interface ARInquireForArtworkViewController : UIViewController <UITextViewDelegate>
 
 /// Create a Inquire form for contacting an artsy specialist

@@ -1,13 +1,14 @@
 #import "ARFeedLinkUnitViewController.h"
 #import "ARNavigationButton.h"
 
+
 @implementation ARFeedLinkUnitViewController
 
 - (void)fetchLinks:(void (^)(void))completion
 {
     if (ARIsRunningInDemoMode) {
         FeaturedLink *link = [self defaultFeedLink];
-        [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:@[link]]];
+        [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:@[ link ]]];
 
         if (completion) {
             completion();
@@ -39,7 +40,6 @@
 
     NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
     if ([bundleID containsString:@".dev"] || [bundleID containsString:@".beta"]) {
-
         // edit set here: http://admin.artsy.net/set/5308e7be9c18db75fd000343
         [ArtsyAPI getOrderedSetItemsWithKey:@"eigen:beta-feed-links" success:^(NSArray *items) {
             @strongify(self);
@@ -55,7 +55,7 @@
 {
     @weakify(self);
     NSMutableArray *phoneNavigation = [NSMutableArray array];
-    for(FeaturedLink *featuredLink in featuredLinks) {
+    for (FeaturedLink *featuredLink in featuredLinks) {
         [phoneNavigation addObject:@{
             ARNavigationButtonClassKey: ARSerifNavigationButton.class,
             ARNavigationButtonPropertiesKey: @{
@@ -66,21 +66,21 @@
                 @strongify(self);
                 UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:featuredLink.href];
                 [self.navigationController pushViewController:viewController animated:YES];
-            }
-        }];
     }
-    return phoneNavigation;
+}];
+}
+return phoneNavigation;
 }
 
 - (FeaturedLink *)defaultFeedLink
 {
-   return [FeaturedLink modelWithJSON:@{
-        @"id": @"52277695c9dc2405b000022b",
-        @"image_url": @"http://static1.artsy.net/featured_links/52277695c9dc2405b000022b/:version.jpg",
-        @"title": @"Featured Works For Sale",
+    return [FeaturedLink modelWithJSON:@{
+        @"id" : @"52277695c9dc2405b000022b",
+        @"image_url" : @"http://static1.artsy.net/featured_links/52277695c9dc2405b000022b/:version.jpg",
+        @"title" : @"Featured Works For Sale",
         @"subtitle" : @"",
-        @"href": @"http://m.artsy.net/home/featured_works",
-        @"display_on_mobile": @YES
+        @"href" : @"http://m.artsy.net/home/featured_works",
+        @"display_on_mobile" : @YES
     }];
 }
 

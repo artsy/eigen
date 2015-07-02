@@ -1,6 +1,7 @@
 #import "SearchResult.h"
 
-@interface ARSearchResultsDataSource : NSObject<UITableViewDataSource>
+
+@interface ARSearchResultsDataSource : NSObject <UITableViewDataSource>
 
 @property (nonatomic) NSOrderedSet *searchResults;
 @property (nonatomic, readwrite, strong) UIColor *textColor;

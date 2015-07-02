@@ -1,7 +1,9 @@
 #import "ARShadowView.h"
 
-@interface ARShadowView()
+
+@interface ARShadowView ()
 @end
+
 
 @implementation ARShadowView
 
@@ -12,7 +14,8 @@
     shadow.frame = shadowFrame;
 
     shadow.colors = @[
-        (id)[UIColor colorWithWhite:0 alpha:0].CGColor,
+        (id)[UIColor colorWithWhite:0 alpha:0]
+            .CGColor,
         (id)[UIColor colorWithWhite:0 alpha:0.9].CGColor,
         (id)[UIColor colorWithWhite:0 alpha:0.9].CGColor
     ];

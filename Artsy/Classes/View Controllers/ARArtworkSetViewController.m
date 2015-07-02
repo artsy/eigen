@@ -2,6 +2,7 @@
 #import "ARViewInRoomViewController.h"
 #import "ARArtworkViewController.h"
 
+
 @interface ARArtworkSetViewController ()
 
 @property (nonatomic, strong) Fair *fair;
@@ -9,6 +10,7 @@
 @property (nonatomic, assign) NSInteger index;
 
 @end
+
 
 @implementation ARArtworkSetViewController
 
@@ -30,7 +32,7 @@
 
 - (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair
 {
-    return [self initWithArtworkSet:@[artwork] fair:fair];
+    return [self initWithArtworkSet:@[ artwork ] fair:fair];
 }
 
 - (instancetype)initWithArtworkSet:(NSArray *)artworkSet
@@ -52,7 +54,9 @@
 {
     self = [super initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
 
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _fair = fair;
     _artworks = artworkSet;
@@ -70,7 +74,7 @@
     [super viewDidLoad];
 
     ARArtworkViewController *artworkVC = [self viewControllerForIndex:self.index];
-    [self setViewControllers:@[artworkVC] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    [self setViewControllers:@[ artworkVC ] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
 - (BOOL)isValidArtworkIndex:(NSInteger)index
@@ -92,7 +96,6 @@
     BOOL canShowInRoom = self.currentArtworkViewController.artwork.canViewInRoom;
 
     if (![UIDevice isPad] && canShowInRoom && !isShowingModalViewController && isTopViewController) {
-
         if (landscape) {
             ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:artwork];
             viewInRoomVC.popOnRotation = YES;
@@ -164,7 +167,7 @@
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return [UIDevice isPad] ? YES : self.currentArtworkViewController.artwork.canViewInRoom;
 }
@@ -199,7 +202,8 @@
 - (NSDictionary *)dictionaryForAnalytics
 {
     if (self.currentArtworkViewController.artwork) {
-        return @{ @"artwork" : self.currentArtworkViewController.artwork.artworkID, @"type" : @"artwork" };
+        return @{ @"artwork" : self.currentArtworkViewController.artwork.artworkID,
+                  @"type" : @"artwork" };
     }
 
     return nil;

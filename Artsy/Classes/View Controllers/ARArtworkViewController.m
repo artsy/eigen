@@ -7,11 +7,13 @@
 #import "ARArtworkView.h"
 #import "ARArtworkViewController+ButtonActions.h"
 
-@interface ARArtworkViewController() <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>
+
+@interface ARArtworkViewController () <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>
 
 @property (nonatomic, strong) ARArtworkView *view;
 @property (nonatomic, strong, readonly) ARPostsViewController *postsVC;
 @end
+
 
 @implementation ARArtworkViewController
 
@@ -34,7 +36,9 @@
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _shouldAnimate = YES;
     return self;
 }
@@ -48,7 +52,9 @@
 - (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair
 {
     self = [self init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _artwork = artwork;
     _fair = fair;
@@ -74,11 +80,11 @@
 
 - (void)viewDidLoad
 {
-    if (self.artwork.title == nil){
+    if (self.artwork.title == nil) {
         [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
     }
 
-    @weakify(self); 
+    @weakify(self);
 
     void (^completion)(void) = ^{
         @strongify(self);
@@ -126,7 +132,7 @@
     [self.artwork updateFair];
     [self.artwork updatePartnerShow];
     [self.view.relatedArtworksView updateWithArtwork:self.artwork];
-    if (!self.postsVC.posts.count){
+    if (!self.postsVC.posts.count) {
         [self getRelatedPosts];
     }
 }
@@ -144,7 +150,7 @@
 {
     if (posts.count > 0) {
         self.postsVC.posts = posts;
-        [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration :^{
+        [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration:^{
             self.postsVC.view.alpha = 1;
         }];
     } else {
@@ -169,7 +175,7 @@
 
 - (CGPoint)imageViewOffset
 {
-    return (CGPoint){ 0, [self.view contentOffset].y };
+    return (CGPoint){0, [self.view contentOffset].y};
 }
 
 #pragma mark - Tapping on buttons
@@ -218,7 +224,8 @@
 
 #pragma mark - ARArtworkDetailViewDelegate
 
-- (void)artworkDetailView:(ARArtworkDetailView *)detailView shouldPresentViewController:(UIViewController *)viewController {
+- (void)artworkDetailView:(ARArtworkDetailView *)detailView shouldPresentViewController:(UIViewController *)viewController
+{
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
 
@@ -237,7 +244,7 @@
 
 #pragma mark - ARPostsViewControllerDelegate
 
--(void)postViewController:(ARPostsViewController *)postViewController shouldShowViewController:(UIViewController *)viewController
+- (void)postViewController:(ARPostsViewController *)postViewController shouldShowViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
 }
@@ -253,13 +260,16 @@
 {
     section.alpha = 0;
     [UIView animateTwoStepIf:self.shouldAnimate
-        duration:ARAnimationDuration * 2 :^{
+        duration:ARAnimationDuration *
+        2:^{
             [self.view.stackView setNeedsLayout];
             [self.view.stackView layoutIfNeeded];
-        } midway:^{
+        }
+        midway:^{
             section.alpha = 1;
             [self.view flashScrollIndicators];
-        } completion:nil];
+        }
+        completion:nil];
 }
 
 @end

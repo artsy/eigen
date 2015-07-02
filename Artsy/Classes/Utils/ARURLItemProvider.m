@@ -2,6 +2,7 @@
 #import "ARFileUtils.h"
 #import "ARRouter+Private.h"
 
+
 @implementation ARURLItemProvider
 
 - (instancetype)initWithMessage:(NSString *)message path:(NSString *)path thumbnailImageURL:(NSURL *)thumbnailImageURL
@@ -10,7 +11,9 @@
 
     // sharing the URL built with URLWithString:relativeToURL via AirDrop: fails with a declined error message
     self = [super initWithPlaceholderItem:[NSURL URLWithString:shareableURL.absoluteString]];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _thumbnailImageURL = thumbnailImageURL;
     _message = message;
     return self;
@@ -25,8 +28,8 @@
     }
 
     if (!self.thumbnailImage && self.thumbnailImageURL) {
-        NSData * imageData = [[NSData alloc] initWithContentsOfURL:self.thumbnailImageURL];
-        _thumbnailImage = [UIImage imageWithData: imageData];
+        NSData *imageData = [[NSData alloc] initWithContentsOfURL:self.thumbnailImageURL];
+        _thumbnailImage = [UIImage imageWithData:imageData];
     }
 
     return self.thumbnailImage;
@@ -43,7 +46,8 @@
         // append filename extension
         safeFilename = [safeFilename stringByAppendingString:@".Artsy"];
         NSURL *filename = [NSURL fileURLWithPath:[ARFileUtils cachesPathWithFolder:@"Airdrop" filename:safeFilename]];
-        id JSON = @{ @"version" : @(1), @"url" : [self.placeholderItem absoluteString] };
+        id JSON = @{ @"version" : @(1),
+                     @"url" : [self.placeholderItem absoluteString] };
         NSData *data = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
         [data writeToURL:filename atomically:YES];
         return filename;

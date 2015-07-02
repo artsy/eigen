@@ -8,6 +8,7 @@
 static AFHTTPClient *staticHTTPClient = nil;
 static NSSet *artsyHosts = nil;
 
+
 @implementation ARRouter
 
 + (void)setup
@@ -72,7 +73,7 @@ static NSSet *artsyHosts = nil;
     }
 
     NSString *token = [UICKeyChainStore stringForKey:AROAuthTokenDefault];
-    if(token) {
+    if (token) {
         ARActionLog(@"Found OAuth token in keychain");
         [ARRouter setAuthToken:token];
 
@@ -91,7 +92,7 @@ static NSSet *artsyHosts = nil;
     NSString *agentString = [NSString stringWithFormat:@"Artsy-Mobile/%@ Eigen/%@", version, build];
     NSString *userAgent = [header stringByReplacingOccurrencesOfString:@"Artsy" withString:agentString];
 
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"UserAgent" : userAgent } ];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"UserAgent" : userAgent }];
     [staticHTTPClient setDefaultHeader:@"User-Agent" value:userAgent];
 }
 
@@ -184,7 +185,6 @@ static NSSet *artsyHosts = nil;
 }
 
 
-
 #pragma mark -
 #pragma mark XApp
 
@@ -196,11 +196,10 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)newXAppTokenRequest
 {
     NSDictionary *params = @{
-         @"client_id" : [ArtsyKeys new].artsyAPIClientKey,
-         @"client_secret" : [ArtsyKeys new].artsyAPIClientSecret,
+        @"client_id" : [ArtsyKeys new].artsyAPIClientKey,
+        @"client_secret" : [ArtsyKeys new].artsyAPIClientSecret,
     };
     return [staticHTTPClient requestWithMethod:@"GET" path:ARXappURL parameters:params];
-
 }
 
 #pragma mark -
@@ -221,8 +220,8 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)newCreateUserViaFacebookRequestWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
 {
     NSDictionary *params = @{
-        @"provider": @"facebook",
-        @"oauth_token": token,
+        @"provider" : @"facebook",
+        @"oauth_token" : token,
         @"email" : email,
         @"name" : name
     };
@@ -233,15 +232,14 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)newCreateUserViaTwitterRequestWithToken:(NSString *)token secret:(NSString *)secret email:(NSString *)email name:(NSString *)name
 {
     NSDictionary *params = @{
-        @"provider": @"twitter",
-        @"oauth_token": token,
-        @"oauth_token_secret": secret,
+        @"provider" : @"twitter",
+        @"oauth_token" : token,
+        @"oauth_token_secret" : secret,
         @"email" : email,
         @"name" : name
     };
 
     return [staticHTTPClient requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
-
 }
 
 #pragma mark -
@@ -276,7 +274,7 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newFollowingProfilesRequestWithFair:(Fair *)fair
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowProfilesURL parameters:@{ @"fair_id": fair.fairID }];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowProfilesURL parameters:@{ @"fair_id" : fair.fairID }];
 }
 
 #pragma mark -
@@ -284,8 +282,11 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newFeedRequestWithCursor:(NSString *)cursor pageSize:(NSInteger)size
 {
-    if (!cursor) { cursor = @""; }
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARMyFeedURL parameters:@{@"cursor" : cursor, @"size" : @(size)}];
+    if (!cursor) {
+        cursor = @"";
+    }
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARMyFeedURL parameters:@{ @"cursor" : cursor,
+                                                                                     @"size" : @(size) }];
 }
 
 + (NSURLRequest *)newShowFeedRequestWithCursor:(NSString *)cursor pageSize:(NSInteger)size
@@ -339,27 +340,27 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newArtworksRelatedToArtworkRequest:(Artwork *)artwork
 {
-    NSDictionary *params = @{ @"artwork" : @[artwork.artworkID] };
+    NSDictionary *params = @{ @"artwork" : @[ artwork.artworkID ] };
     NSString *address = [NSString stringWithFormat:ARNewRelatedArtworksURLFormat, @"synthetic", @"main"];
     return [staticHTTPClient requestWithMethod:@"GET" path:address parameters:params];
 }
 
 + (NSURLRequest *)newArtworksRelatedToArtwork:(Artwork *)artwork inFairRequest:(Fair *)fair
 {
-    NSDictionary *params = @{@"artwork" : @[artwork.artworkID]};
+    NSDictionary *params = @{ @"artwork" : @[ artwork.artworkID ] };
     NSString *address = [NSString stringWithFormat:ARNewRelatedArtworksURLFormat, @"fair", fair.fairID];
     return [staticHTTPClient requestWithMethod:@"GET" path:address parameters:params];
 }
 
 + (NSURLRequest *)newPostsRelatedToArtwork:(Artwork *)artwork
 {
-    NSDictionary *params = @{@"artwork" : @[artwork.artworkID]};
+    NSDictionary *params = @{ @"artwork" : @[ artwork.artworkID ] };
     return [staticHTTPClient requestWithMethod:@"GET" path:ARNewRelatedPostsURL parameters:params];
 }
 
 + (NSURLRequest *)newPostsRelatedToArtist:(Artist *)artist
 {
-    NSDictionary *params = @{@"artist" : @[artist.artistID]};
+    NSDictionary *params = @{ @"artist" : @[ artist.artistID ] };
     return [staticHTTPClient requestWithMethod:@"GET" path:ARNewRelatedPostsURL parameters:params];
 }
 
@@ -388,7 +389,9 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents
 {
-    NSDictionary *params = @{ @"sale_id" : saleID, @"artwork_id" : artworkID, @"max_bid_amount_cents": @(maxBidAmountCents) };
+    NSDictionary *params = @{ @"sale_id" : saleID,
+                              @"artwork_id" : artworkID,
+                              @"max_bid_amount_cents" : @(maxBidAmountCents) };
     return [staticHTTPClient requestWithMethod:@"POST" path:ARBidderPositionsForSaleAndArtworkURL parameters:params];
 }
 
@@ -398,9 +401,9 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)newArtworkFavoritesRequestWithFair:(Fair *)fair
 {
     NSDictionary *params = @{
-        @"fair_id": fair.fairID,
-        @"user_id": [User currentUser].userID ?: @"",
-        @"private": @YES
+        @"fair_id" : fair.fairID,
+        @"user_id" : [User currentUser].userID ?: @"",
+        @"private" : @YES
     };
 
     NSMutableURLRequest *request = [staticHTTPClient requestWithMethod:@"GET" path:ARFavoritesURL parameters:params];
@@ -424,11 +427,11 @@ static NSSet *artsyHosts = nil;
 {
     NSDictionary *params = @{
         @"size" : @15,
-        @"page": @(page),
-        @"sort": @"-position",
-        @"total_count": @1,
-        @"user_id": userID ?: @"",
-        @"private" : ARIsRunningInDemoMode ? @"false" :@"true"
+        @"page" : @(page),
+        @"sort" : @"-position",
+        @"total_count" : @1,
+        @"user_id" : userID ?: @"",
+        @"private" : ARIsRunningInDemoMode ? @"false" : @"true"
     };
 
     return [staticHTTPClient requestWithMethod:@"GET" path:ARFavoritesURL parameters:params];
@@ -436,17 +439,17 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtwork:(Artwork *)artwork
 {
-    return [self newCheckFavoriteStatusRequestForArtworks:@[artwork]];
+    return [self newCheckFavoriteStatusRequestForArtworks:@[ artwork ]];
 }
 
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtworks:(NSArray *)artworks
 {
-    NSArray *slugs = [artworks map: ^(Artwork *artwork) {
+    NSArray *slugs = [artworks map:^(Artwork *artwork) {
         return artwork.artworkID;
     }];
 
     NSDictionary *params = @{
-        @"artworks":slugs,
+        @"artworks" : slugs,
         @"user_id" : [User currentUser].userID ?: @"",
         @"private" : @"true"
     };
@@ -455,13 +458,15 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newFairsRequestForArtwork:(Artwork *)artwork
 {
-    NSDictionary *params = @{@"artwork": @[artwork.artworkID]};
+    NSDictionary *params = @{ @"artwork" : @[ artwork.artworkID ] };
     return [staticHTTPClient requestWithMethod:@"GET" path:ARArtworkFairsURLFormat parameters:params];
 }
 
 + (NSURLRequest *)newShowsRequestForArtworkID:(NSString *)artworkID andFairID:(NSString *)fairID
 {
-    NSDictionary *params = fairID ? @{@"artwork": @[artworkID], @"fair_id": fairID} : @{@"artwork": @[artworkID] };
+    NSDictionary *params = fairID ? @{ @"artwork" : @[ artworkID ],
+                                       @"fair_id" : fairID } :
+                                    @{ @"artwork" : @[ artworkID ] };
     return [staticHTTPClient requestWithMethod:@"GET" path:ARRelatedShowsURL parameters:params];
 }
 
@@ -470,19 +475,19 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newArtistsFromSampleAtPage:(NSInteger)page
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARSampleArtistsURL parameters: @{ @"page": @(page) } ];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARSampleArtistsURL parameters:@{ @"page" : @(page) }];
 }
 
 
 + (NSURLRequest *)newArtistsFromPersonalCollectionAtPage:(NSInteger)page
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowArtistsURL parameters: @{ @"page": @(page) } ];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"page" : @(page) }];
 }
 
 + (NSURLRequest *)newArtistCountFromPersonalCollectionRequest;
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowArtistsURL parameters: @{
-         @"total_count": @1
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{
+        @"total_count" : @1
     }];
 }
 
@@ -507,12 +512,12 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newFollowingRequestForArtist:(Artist *)artists
 {
-    return [self newFollowingRequestForArtists:@[artists]];
+    return [self newFollowingRequestForArtists:@[ artists ]];
 }
 
 + (NSURLRequest *)newFollowingRequestForArtists:(NSArray *)artists
 {
-    NSArray *slugs = [artists map: ^(Artist *artist) {
+    NSArray *slugs = [artists map:^(Artist *artist) {
         return artist.artistID;
     }];
 
@@ -521,24 +526,24 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newFollowingArtistsRequestWithFair:(Fair *)fair
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"fair_id": fair.fairID }];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"fair_id" : fair.fairID }];
 }
 
 + (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist
 {
-    NSDictionary *params = @{ @"artist" : @[artist.artistID] };
+    NSDictionary *params = @{ @"artist" : @[ artist.artistID ] };
     return [staticHTTPClient requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID
 {
-    NSDictionary *params = @{@"artist": @[ artistID ]};
+    NSDictionary *params = @{ @"artist" : @[ artistID ] };
     return [staticHTTPClient requestWithMethod:@"GET" path:ARRelatedShowsURL parameters:params];
 }
 
 + (NSURLRequest *)newShowsRequestForArtistID:(NSString *)artistID inFairID:(NSString *)fairID
 {
-    NSDictionary *params = @{ @"artist": artistID };
+    NSDictionary *params = @{ @"artist" : artistID };
     return [staticHTTPClient requestWithMethod:@"GET" path:NSStringWithFormat(ARShowsFeaturingArtistsURLFormat, fairID) parameters:params];
 }
 
@@ -551,7 +556,9 @@ static NSSet *artsyHosts = nil;
 {
     NSString *near = [NSString stringWithFormat:@"%@,%@", @(latitude), @(longitude)];
     return [staticHTTPClient requestWithMethod:@"GET" path:ARShowsURL parameters:@{
-       @"near": near, @"max_distance": @1000, @"status": @"running"
+        @"near" : near,
+        @"max_distance" : @1000,
+        @"status" : @"running"
     }];
 }
 
@@ -559,12 +566,12 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newGeneCountFromPersonalCollectionRequest
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowGenesURL parameters: @{ @"total_count": @1 }];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowGenesURL parameters:@{ @"total_count" : @1 }];
 }
 
 + (NSURLRequest *)newGenesFromPersonalCollectionAtPage:(NSInteger)page
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowGenesURL parameters: @{ @"page": @(page) } ];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowGenesURL parameters:@{ @"page" : @(page) }];
 }
 
 + (NSURLRequest *)newGeneInfoRequestWithID:(NSString *)geneID
@@ -575,7 +582,7 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newFollowingRequestForGene:(Gene *)gene
 {
-    return [self newFollowingRequestForGenes:@[gene]];
+    return [self newFollowingRequestForGenes:@[ gene ]];
 }
 
 + (NSURLRequest *)newFollowGeneRequest:(Gene *)gene
@@ -591,7 +598,8 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newFollowingRequestForGenes:(NSArray *)genes
 {
-    NSArray *slugs = [genes map:^(Gene *gene) { return gene.geneID; }];
+    NSArray *slugs = [genes map:^(Gene *gene) { return gene.geneID;
+    }];
     return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowGenesURL parameters:@{ @"genes" : slugs }];
 }
 
@@ -633,21 +641,22 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newSearchRequestWithFairID:(NSString *)fairID andQuery:(NSString *)query
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARNewSearchURL parameters:@{ @"term" : query, @"fair_id" : fairID }];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARNewSearchURL parameters:@{ @"term" : query,
+                                                                                        @"fair_id" : fairID }];
 }
 
 + (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARNewArtistSearchURL parameters:@{@"term": query}];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARNewArtistSearchURL parameters:@{ @"term" : query }];
 }
 
 + (NSURLRequest *)directImageRequestForModel:(Class)model andSlug:(NSString *)slug
 {
     // Note: should these be moved to network constants?
 
-    NSDictionary *paths  = @{
+    NSDictionary *paths = @{
         @"Artwork" : @"/api/v1/artwork/%@/default_image.jpg",
-        @"Artist" :  @"/api/v1/artist/%@/image",
+        @"Artist" : @"/api/v1/artist/%@/image",
         @"Gene" : @"/api/v1/gene/%@/image",
         @"Tag" : @"/api/v1/tag/%@/image",
         @"Profile" : @"/api/v1/profile/%@/image",
@@ -657,7 +666,7 @@ static NSSet *artsyHosts = nil;
 
     NSString *key = NSStringFromClass(model);
     NSString *path = [NSString stringWithFormat:paths[key], slug];
-    return [staticHTTPClient requestWithMethod:@"GET" path: path parameters:nil];
+    return [staticHTTPClient requestWithMethod:@"GET" path:path parameters:nil];
 }
 
 #pragma mark -
@@ -688,7 +697,7 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newFollowArtistRequestWithFair:(Fair *)fair
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"fair_id": fair.fairID }];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"fair_id" : fair.fairID }];
 }
 
 #pragma mark - Recommendations
@@ -701,8 +710,10 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)worksForYouRequest
 {
     return [staticHTTPClient requestWithMethod:@"GET" path:ARNotificationsURL parameters:@{
-        @"page": @1, @"type": @"ArtworkPublished",
-        @"user_id": [User currentUser].userID, @"size": @10
+        @"page" : @1,
+        @"type" : @"ArtworkPublished",
+        @"user_id" : [User currentUser].userID,
+        @"size" : @10
     }];
 }
 
@@ -711,7 +722,8 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newSiteHeroUnitsRequest
 {
-    return [staticHTTPClient requestWithMethod:@"GET" path:ARSiteHeroUnitsURL parameters:@{ @"mobile": @"true", @"enabled":@"true" }];
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARSiteHeroUnitsURL parameters:@{ @"mobile" : @"true",
+                                                                                            @"enabled" : @"true" }];
 }
 
 + (NSURLRequest *)newOnDutyRepresentativeRequest
@@ -752,8 +764,8 @@ static NSSet *artsyHosts = nil;
         [params setValue:email forKey:@"email"];
         [params setValue:[ARUserManager sharedManager].trialUserUUID forKey:@"session_id"];
     } else {
-        NSParameterAssert(! name);
-        NSParameterAssert(! email);
+        NSParameterAssert(!name);
+        NSParameterAssert(!email);
     }
 
     return [staticHTTPClient requestWithMethod:@"POST" path:ARArtworkInquiryRequestURL parameters:params];
@@ -763,7 +775,9 @@ static NSSet *artsyHosts = nil;
 {
     NSString *url = [NSString stringWithFormat:ARShowArtworksURLFormat, show.partner.partnerID, show.showID];
     return [staticHTTPClient requestWithMethod:@"GET" path:url parameters:@{
-          @"page": @(page), @"published" : @YES, @"size" : @10
+        @"page" : @(page),
+        @"published" : @YES,
+        @"size" : @10
     }];
 }
 
@@ -771,24 +785,26 @@ static NSSet *artsyHosts = nil;
 {
     NSString *url = [NSString stringWithFormat:ARShowImagesURLFormat, show.showID];
     return [staticHTTPClient requestWithMethod:@"GET" path:url parameters:@{
-          @"default" : @(NO), @"page": @(page), @"size" : @10
+        @"default" : @(NO),
+        @"page" : @(page),
+        @"size" : @10
     }];
 }
 
 + (NSURLRequest *)newArtworksFromGeneRequest:(NSString *)gene atPage:(NSInteger)page
 {
     NSDictionary *params = @{
-        @"page": @(page),
-        @"sort": @"-date_added"
+        @"page" : @(page),
+        @"sort" : @"-date_added"
     };
     NSString *url = [NSString stringWithFormat:ARGeneArtworksURLFormat, gene];
 
     return [staticHTTPClient requestWithMethod:@"GET" path:url parameters:params];
 }
 
-+ (NSURLRequest *)newForgotPasswordRequestWithEmail:(NSString  *)email
++ (NSURLRequest *)newForgotPasswordRequestWithEmail:(NSString *)email
 {
-    NSDictionary *params = @{@"email": email};
+    NSDictionary *params = @{ @"email" : email };
     return [staticHTTPClient requestWithMethod:@"POST" path:ARForgotPasswordURL parameters:params];
 }
 
@@ -802,9 +818,9 @@ static NSSet *artsyHosts = nil;
     NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
 
     NSDictionary *params = @{
-        @"name": device,
-        @"token": token,
-        @"app_id": bundleID
+        @"name" : device,
+        @"token" : token,
+        @"app_id" : bundleID
     };
     return [staticHTTPClient requestWithMethod:@"POST" path:ARNewDeviceURL parameters:params];
 }
@@ -833,14 +849,15 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)bidderPositionsRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID
 {
-    NSDictionary *params = @{ @"sale_id" : saleID, @"artwork_id" : artworkID };
+    NSDictionary *params = @{ @"sale_id" : saleID,
+                              @"artwork_id" : artworkID };
     return [staticHTTPClient requestWithMethod:@"GET" path:ARBidderPositionsForSaleAndArtworkURL parameters:params];
 }
 
 + (NSURLRequest *)saleArtworkRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID
 {
     NSString *path = [NSString stringWithFormat:ARSaleArtworkForSaleAndArtworkURLFormat, saleID, artworkID];
-    NSMutableURLRequest *req =  [staticHTTPClient requestWithMethod:@"GET" path:path parameters:nil];
+    NSMutableURLRequest *req = [staticHTTPClient requestWithMethod:@"GET" path:path parameters:nil];
     req.cachePolicy = NSURLRequestReloadIgnoringCacheData;
     return req;
 }
@@ -848,13 +865,20 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)orderedSetsWithOwnerType:(NSString *)ownerType andID:(NSString *)ownerID
 {
     ownerType = ownerType ?: @"";
-    NSDictionary *params = @{ @"owner_type" : ownerType, @"owner_id" : ownerID, @"sort" : @"key", @"mobile" : @"true", @"published" : @"true" };
+    NSDictionary *params = @{ @"owner_type" : ownerType,
+                              @"owner_id" : ownerID,
+                              @"sort" : @"key",
+                              @"mobile" : @"true",
+                              @"published" : @"true" };
     return [staticHTTPClient requestWithMethod:@"GET" path:AROrderedSetsURL parameters:params];
 }
 
 + (NSURLRequest *)orderedSetsWithKey:(NSString *)key
 {
-    NSDictionary *params = @{ @"key" : key, @"sort" : @"key", @"mobile" : @"true", @"published" : @"true" };
+    NSDictionary *params = @{ @"key" : key,
+                              @"sort" : @"key",
+                              @"mobile" : @"true",
+                              @"published" : @"true" };
     return [staticHTTPClient requestWithMethod:@"GET" path:AROrderedSetsURL parameters:params];
 }
 
@@ -867,7 +891,8 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)orderedSetItems:(NSString *)orderedSetID atPage:(NSInteger)page
 {
     NSString *url = [NSString stringWithFormat:AROrderedSetItemsURLFormat, orderedSetID];
-    return [staticHTTPClient requestWithMethod:@"GET" path:url parameters:@{ @"page": @(page), @"size" : @10 }];
+    return [staticHTTPClient requestWithMethod:@"GET" path:url parameters:@{ @"page" : @(page),
+                                                                             @"size" : @10 }];
 }
 
 + (NSURLRequest *)newSystemTimeRequest
@@ -878,12 +903,12 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)newPendingOrderWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
-      @"artwork_id": artworkID,
-      @"replace_order": @YES,
-      @"session_id": [[NSUUID UUID] UUIDString] // TODO: preserve across session?
+        @"artwork_id" : artworkID,
+        @"replace_order" : @YES,
+        @"session_id" : [[NSUUID UUID] UUIDString] // TODO: preserve across session?
     }];
     if (editionSetID != nil) {
-        [params addEntriesFromDictionary:@{@"edition_set_id": editionSetID}];
+        [params addEntriesFromDictionary:@{ @"edition_set_id" : editionSetID }];
     }
 
     return [staticHTTPClient requestWithMethod:@"POST" path:ARCreatePendingOrderURL parameters:params];

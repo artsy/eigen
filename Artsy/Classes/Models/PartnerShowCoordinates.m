@@ -1,5 +1,6 @@
 #import "PartnerShowCoordinates.h"
 
+
 @implementation PartnerShowCoordinates
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -14,8 +15,8 @@
 {
     return @{
         @"longitude" : self.longitude,
-        @"latitude"  : self.latitude
-     };
+        @"latitude" : self.latitude
+    };
 }
 
 - (CLLocation *)location

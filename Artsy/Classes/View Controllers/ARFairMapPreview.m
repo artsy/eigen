@@ -3,6 +3,7 @@
 #import "ARFairShowMapper.h"
 #import "ARFairMapZoomManager.h"
 
+
 @interface ARFairMapPreview ()
 @property (nonatomic, weak, readonly) Map *map;
 @property (nonatomic, strong) ARFairShowMapper *showMapper;
@@ -10,13 +11,16 @@
 
 @end
 
+
 @implementation ARFairMapPreview
 
-- (instancetype) initWithFairMap:(Map *)map andFrame:(CGRect)frame
+- (instancetype)initWithFairMap:(Map *)map andFrame:(CGRect)frame
 {
     ARTiledImageDataSourceWithImage *ds = [[ARTiledImageDataSourceWithImage alloc] initWithImage:map.image];
     self = [super initWithFrame:frame tiledImageDataSource:ds];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.zoomStep = 2.5;
     self.showsVerticalScrollIndicator = NO;
@@ -41,7 +45,7 @@
 
 - (void)addHighlightedShow:(PartnerShow *)show animated:(BOOL)animated
 {
-    NSArray *shows = @[show];
+    NSArray *shows = @[ show ];
     [self addShows:shows animated:animated];
     [[self.showMapper mapFeatureViewsForShows:shows] each:^(ARFairMapAnnotationView *annotation) {
         [annotation setHighlighted:YES];

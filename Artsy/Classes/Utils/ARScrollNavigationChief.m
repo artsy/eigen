@@ -6,7 +6,8 @@ typedef NS_ENUM(NSInteger, ARScrollDirection) {
 
 static ARScrollNavigationChief *instance;
 
-@interface ARScrollNavigationChief()
+
+@interface ARScrollNavigationChief ()
 
 @property (nonatomic, assign) enum ARScrollDirection lastDirection;
 @property (nonatomic, assign) CGFloat lastOffset;
@@ -32,7 +33,8 @@ static ARScrollNavigationChief *instance;
     return instance;
 }
 
-- (id)init {
+- (id)init
+{
     self = [super init];
     if (self == nil) {
         return nil;
@@ -43,11 +45,13 @@ static ARScrollNavigationChief *instance;
     return self;
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfAllowsMenuButtons {
++ (BOOL)automaticallyNotifiesObserversOfAllowsMenuButtons
+{
     return NO;
 }
 
-- (void)setAllowsMenuButtons:(BOOL)allowsMenuButtons {
+- (void)setAllowsMenuButtons:(BOOL)allowsMenuButtons
+{
     if (_allowsMenuButtons == allowsMenuButtons) {
         return;
     }
@@ -123,7 +127,6 @@ static CGFloat UpwardScrollDistanceForShowing = 160;
     BOOL isScrollingPastTopEdge = offset < 0;
 
     if ([self changedDirection:scrollView newDirection:&newDirection]) {
-
         if (newDirection == ARScrollDirectionUp) {
             // If we're going up, give ourselves an initial offset for gettng a distance
             self.initialUpwardOffset = scrollView.contentOffset.y;
@@ -139,7 +142,7 @@ static CGFloat UpwardScrollDistanceForShowing = 160;
         }
     }
 
-    if (isScrollingPastTopEdge){
+    if (isScrollingPastTopEdge) {
         self.lastDirection = ARScrollDirectionUp;
     } else if (self.lastOffset == 0) {
         self.lastDirection = ARScrollDirectionDown;

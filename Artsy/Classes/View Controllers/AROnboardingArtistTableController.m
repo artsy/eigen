@@ -3,10 +3,12 @@
 
 static NSString *CellId = @"OnboardingArtistFollow";
 
+
 @interface AROnboardingArtistTableController ()
 @property (nonatomic) NSMutableOrderedSet *artists;
 @property (nonatomic, assign) BOOL isFollowed;
 @end
+
 
 @implementation AROnboardingArtistTableController
 
@@ -79,7 +81,7 @@ static NSString *CellId = @"OnboardingArtistFollow";
 {
     Artist *artist = [self.artists objectAtIndex:indexPath.row];
     [self.artists removeObject:artist];
-    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
     [self unfollowArtist:artist];
 }
 

@@ -2,8 +2,10 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
 
+
 @interface ARBrowseViewCell : ARBrowseFeaturedLinksCollectionViewCell
 @end
+
 
 @implementation ARBrowseViewCell
 
@@ -18,17 +20,21 @@
 
 /////////////////
 
+
 @interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong, readwrite) NSArray *menuLinks;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
+
 
 @implementation ARBrowseViewController
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _shouldAnimate = YES;
     return self;
 }
@@ -69,12 +75,11 @@
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context){
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
          [self.collectionView.collectionViewLayout invalidateLayout];
-     } completion:nil];
+    } completion:nil];
 
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
 }
 
 - (void)setupCollectionView
@@ -122,7 +127,7 @@
     CGFloat totalMarginsWidth = (numberOfMargins * self.itemMargin) + (2 * self.collectionViewInsetMargin);
 
     CGFloat collectionViewWidth = self.view.frame.size.width;
-    CGFloat cellWidth = (collectionViewWidth - totalMarginsWidth)/(float)numberOfColumns;
+    CGFloat cellWidth = (collectionViewWidth - totalMarginsWidth) / (float)numberOfColumns;
 
     CGFloat heightToWidthFactor;
 
@@ -151,7 +156,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FeaturedLink *link = [self.menuLinks objectAtIndex:indexPath.row];
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:link.href];
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:link.href];
     if (viewController) {
         [self.navigationController pushViewController:viewController animated:YES];
     }
@@ -175,7 +180,7 @@
 
 #pragma mark - Orientation
 
--(NSUInteger)supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
 }
@@ -186,4 +191,3 @@
 }
 
 @end
-

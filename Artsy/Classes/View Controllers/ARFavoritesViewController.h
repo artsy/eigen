@@ -4,6 +4,7 @@ typedef NS_ENUM(NSInteger, ARFavoritesDisplayMode) {
     ARFavoritesDisplayModeGenes
 };
 
+
 @interface ARFavoritesViewController : UIViewController
 @property (nonatomic, assign, readwrite) ARFavoritesDisplayMode displayMode;
 - (UICollectionView *)collectionView;

@@ -1,26 +1,35 @@
 #import "ARNetworkErrorView.h"
 
+
 @interface ARNetworkErrorView ()
 @property (nonatomic, strong) UILabel *errorText;
 @end
 
+
 @implementation ARNetworkErrorView
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
     self = [super initWithCoder:aDecoder];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     [self setup];
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     [self setup];
     return self;
 }
 
-- (void)setup {
+- (void)setup
+{
     self.backgroundColor = [UIColor whiteColor];
     self.errorText = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:2];
     self.errorText.font = [UIFont serifFontWithSize:12];

@@ -2,10 +2,12 @@
 #import "AROnboardingTableViewCell.h"
 #import "AROnboardingViewController.h"
 
-@interface ARCollectorStatusViewController()<UITableViewDataSource, UITableViewDelegate>
+
+@interface ARCollectorStatusViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic) ARSerifLineHeightLabel *label;
 @property (nonatomic) UITableView *tableView;
 @end
+
 
 @implementation ARCollectorStatusViewController
 
@@ -45,7 +47,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"StatusCell"];
-    cell.textLabel.text = @[@"Yes, I buy art", @"Interested in starting", @"Just looking and learning"][indexPath.row];
+    cell.textLabel.text = @[ @"Yes, I buy art", @"Interested in starting", @"Just looking and learning" ][indexPath.row];
     return cell;
 }
 

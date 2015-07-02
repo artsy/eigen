@@ -1,10 +1,11 @@
 #import "ARImageItemProvider.h"
 
+
 @interface ARImageItemProvider (Testing)
 @property (nonatomic, strong, readwrite) NSString *activityType;
 @end
 
-SpecBegin(ARImageItemProvider)
+SpecBegin(ARImageItemProvider);
 
 describe(@"image provider item", ^{
     __block UIImage *image = [UIImage imageNamed:@"stub.jpg"];

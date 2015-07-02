@@ -7,7 +7,8 @@
 - (void)updateLayoutForSize:(CGSize)size;
 @end
 
-@interface AREmbeddedModelsViewController() <ARCollectionViewMasonryLayoutDelegate>
+
+@interface AREmbeddedModelsViewController () <ARCollectionViewMasonryLayoutDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
@@ -16,6 +17,7 @@
 @property (nonatomic, strong, readwrite) Fair *fair;
 
 @end
+
 
 @implementation AREmbeddedModelsViewController
 
@@ -54,7 +56,9 @@
 
 - (void)didMoveToParentViewController:(UIViewController *)parent
 {
-    if (!parent) { return; }
+    if (!parent) {
+        return;
+    }
     [self updateForSize:parent.view.frame.size];
 }
 
@@ -89,10 +93,9 @@
     _collectionView = collectionView;
     if (self.activeModule) {
         [self.collectionView registerClass:self.activeModule.classForCell
-            forCellWithReuseIdentifier:NSStringFromClass(self.activeModule.classForCell)];
+                forCellWithReuseIdentifier:NSStringFromClass(self.activeModule.classForCell)];
         self.collectionView.collectionViewLayout = self.activeModule.moduleLayout;
     }
-
 }
 
 - (void)setActiveModule:(ARModelCollectionViewModule *)activeModule
@@ -101,7 +104,7 @@
         // Must be done in this order, otherwise inexplicable crashes happen inside Apple code.
         self.collectionView.collectionViewLayout = activeModule.moduleLayout;
         [self.collectionView registerClass:activeModule.classForCell
-            forCellWithReuseIdentifier:NSStringFromClass(activeModule.classForCell)];
+                forCellWithReuseIdentifier:NSStringFromClass(activeModule.classForCell)];
         _activeModule = activeModule;
         [self.collectionView reloadData];
         [self.collectionView layoutIfNeeded];
@@ -110,7 +113,7 @@
     }
 }
 
--(BOOL)currentContentFillsView
+- (BOOL)currentContentFillsView
 {
     if (self.collectionView.contentSize.height < self.collectionView.bounds.size.height) {
         return NO;
@@ -149,26 +152,26 @@
     // This can crash when you have hundreds of works, but is the right way to do it
     // TODO: Figure this out
 
-//    NSInteger artworkCount = [self collectionView:self.collectionView numberOfItemsInSection:0];
-//
-//    NSInteger start = artworkCount - artworks.count - 1;
-//    NSMutableArray *indexPaths = [NSMutableArray array];
-//
-//    for (NSInteger i = 0; i < artworks.count; i++) {
-//        NSIndexPath *path = [NSIndexPath indexPathForItem:start + i inSection:0];
-//        [indexPaths addObject:path];
-//    }
-//
-//    if (self.collectionView.scrollEnabled) {
-//        [CATransaction begin];
-//        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
-//    }
-//
-//    [self.collectionView insertItemsAtIndexPaths:indexPaths];
-//
-//    if (self.collectionView.scrollEnabled) {
-//        [CATransaction commit];
-//    }
+    //    NSInteger artworkCount = [self collectionView:self.collectionView numberOfItemsInSection:0];
+    //
+    //    NSInteger start = artworkCount - artworks.count - 1;
+    //    NSMutableArray *indexPaths = [NSMutableArray array];
+    //
+    //    for (NSInteger i = 0; i < artworks.count; i++) {
+    //        NSIndexPath *path = [NSIndexPath indexPathForItem:start + i inSection:0];
+    //        [indexPaths addObject:path];
+    //    }
+    //
+    //    if (self.collectionView.scrollEnabled) {
+    //        [CATransaction begin];
+    //        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    //    }
+    //
+    //    [self.collectionView insertItemsAtIndexPaths:indexPaths];
+    //
+    //    if (self.collectionView.scrollEnabled) {
+    //        [CATransaction commit];
+    //    }
 
     [self updateViewConstraints];
     [self.view.superview setNeedsUpdateConstraints];
@@ -211,14 +214,14 @@
         [self.scrollDelegate scrollViewDidScroll:scrollView];
     }
 
-    if(self.delegate && (scrollView.contentSize.height - scrollView.contentOffset.y) < scrollView.bounds.size.height) {
-        if([self.delegate respondsToSelector:@selector(embeddedModelsViewControllerDidScrollPastEdge:)]) {
+    if (self.delegate && (scrollView.contentSize.height - scrollView.contentOffset.y) < scrollView.bounds.size.height) {
+        if ([self.delegate respondsToSelector:@selector(embeddedModelsViewControllerDidScrollPastEdge:)]) {
             [self.delegate embeddedModelsViewControllerDidScrollPastEdge:self];
         }
     }
 
-    if(_delegate && (scrollView.contentSize.width - scrollView.contentOffset.x) < scrollView.bounds.size.width) {
-        if([self.delegate respondsToSelector:@selector(embeddedModelsViewControllerDidScrollPastEdge:)]) {
+    if (_delegate && (scrollView.contentSize.width - scrollView.contentOffset.x) < scrollView.bounds.size.width) {
+        if ([self.delegate respondsToSelector:@selector(embeddedModelsViewControllerDidScrollPastEdge:)]) {
             [self.delegate embeddedModelsViewControllerDidScrollPastEdge:self];
         }
     }
@@ -318,7 +321,7 @@
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ARCollectionViewMasonryLayout *)collectionViewLayout variableDimensionForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.activeModule conformsToProtocol:@protocol(ARCollectionViewMasonryLayoutDelegate)]){
+    if ([self.activeModule conformsToProtocol:@protocol(ARCollectionViewMasonryLayoutDelegate)]) {
         return [(id<ARCollectionViewMasonryLayoutDelegate>)self.activeModule collectionView:collectionView layout:collectionViewLayout variableDimensionForItemAtIndexPath:indexPath];
     } else {
         return 0;

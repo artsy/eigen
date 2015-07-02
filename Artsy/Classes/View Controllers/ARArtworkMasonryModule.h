@@ -1,7 +1,7 @@
 #import "ARModelCollectionViewModule.h"
 @import ARCollectionViewMasonryLayout;
 
-typedef NS_ENUM(NSInteger, ARArtworkMasonryLayout){
+typedef NS_ENUM(NSInteger, ARArtworkMasonryLayout) {
     ARArtworkMasonryLayout1Row,
     ARArtworkMasonryLayout2Row,
     ARArtworkMasonryLayout1Column,
@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, ARArtworkMasonryLayout){
 @protocol ARArtworkMasonryLayoutProvider <NSObject>
 - (enum ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size;
 @end
+
 
 @interface ARArtworkMasonryModule : ARModelCollectionViewModule <ARCollectionViewMasonryLayoutDelegate>
 

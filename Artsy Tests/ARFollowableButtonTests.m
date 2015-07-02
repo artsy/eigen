@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import "ARFollowableButton.h"
 
-SpecBegin(ARFollowableButton)
+SpecBegin(ARFollowableButton);
 
 describe(@"ARFollowableButton", ^{
     it(@"following", ^{

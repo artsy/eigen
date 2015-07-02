@@ -9,6 +9,7 @@
 - (void)cancelledSearch:(ARFairSearchViewController *)controller;
 @end
 
+
 @interface ARFairSearchViewController : ARSearchViewController
 
 - (instancetype)initWithFair:(Fair *)fair;

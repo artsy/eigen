@@ -14,10 +14,12 @@ static CGFloat ARHeroUnitHeadingTitleMargin;
 static CGFloat ARHeroUnitTitleDescriptionMargin;
 static CGFloat ARHeroUnitDescriptionFont;
 
-@interface ARSiteHeroUnitView()
+
+@interface ARSiteHeroUnitView ()
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, readonly) ARHeroUnitAlignment alignment;
 @end
+
 
 @implementation ARSiteHeroUnitView
 
@@ -40,7 +42,9 @@ static CGFloat ARHeroUnitDescriptionFont;
 - (id)initWithFrame:(CGRect)frame unit:(SiteHeroUnit *)unit
 {
     self = [super initWithFrame:frame];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.clipsToBounds = YES;
 
@@ -81,7 +85,7 @@ static CGFloat ARHeroUnitDescriptionFont;
                         sideMargin:nil];
 
     [textViewsContainer addSubview:descriptionLabel withTopMargin:NSStringWithFormat(@"%f", ARHeroUnitTitleDescriptionMargin)
-              sideMargin:nil];
+                        sideMargin:nil];
 
     if ([UIDevice isPad]) {
         ARHeroUnitButton *button = [self createButtonWithColor:unit.buttonColor inverseColor:unit.inverseButtonColor andText:unit.linkText];

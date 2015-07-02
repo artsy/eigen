@@ -2,14 +2,18 @@
 
 CGFloat ARTableViewCellSettingsHeight = 60;
 
+
 @implementation ARAdminTableViewCell
 
 CGFloat MainTextVerticalOffset = 4;
 CGFloat DetailTextVerticalOffset = 6;
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.useSerifFont = YES;
     UIView *backgroundView = [[UIView alloc] init];
@@ -21,7 +25,8 @@ CGFloat DetailTextVerticalOffset = 6;
 }
 
 
-- (void)setUseSerifFont:(BOOL)newUseSerifFont {
+- (void)setUseSerifFont:(BOOL)newUseSerifFont
+{
     _useSerifFont = newUseSerifFont;
 
     if (_useSerifFont) {
@@ -29,11 +34,12 @@ CGFloat DetailTextVerticalOffset = 6;
         self.detailTextLabel.font = [UIFont serifFontWithSize:18];
     } else {
         self.textLabel.font = [UIFont sansSerifFontWithSize:15];
-        self.detailTextLabel.font =  [UIFont sansSerifFontWithSize:15];
+        self.detailTextLabel.font = [UIFont sansSerifFontWithSize:15];
     }
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 
     if (!self.detailTextLabel) {
@@ -43,8 +49,7 @@ CGFloat DetailTextVerticalOffset = 6;
             self.textLabel.frame = frame;
             self.textLabel.center = CGPointMake(self.textLabel.center.x, self.textLabel.center.y + MainTextVerticalOffset);
         }
-    }
-    else{
+    } else {
         self.detailTextLabel.center = CGPointMake(self.detailTextLabel.center.x, self.detailTextLabel.center.y + DetailTextVerticalOffset);
     }
 }

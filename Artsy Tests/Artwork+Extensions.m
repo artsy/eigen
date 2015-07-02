@@ -1,5 +1,6 @@
 #import "Artwork+Extensions.h"
 
+
 @implementation Artwork (Extensions)
 
 + (id)stubbedArtwork

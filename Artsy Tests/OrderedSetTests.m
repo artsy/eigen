@@ -1,4 +1,4 @@
-SpecBegin(OrderedSet)
+SpecBegin(OrderedSet);
 
 afterEach(^{
     [OHHTTPStubs removeAllStubs];

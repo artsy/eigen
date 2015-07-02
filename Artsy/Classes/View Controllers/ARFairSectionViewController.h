@@ -1,5 +1,6 @@
 #import <ORStackView/ORStackView.h>
 
+
 @interface ARFairSectionViewController : UIViewController
 
 - (instancetype)initWithFair:(Fair *)fair;
@@ -10,4 +11,3 @@
 @property (nonatomic, strong, readonly) Fair *fair;
 
 @end
-

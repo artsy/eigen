@@ -60,8 +60,8 @@ SymbolHasBlacklistedPrefix(NSString *symbol)
     // Then remove class or instance method indicators
     [scanner scanString:@"+[" intoString:NULL] || [scanner scanString:@"-[" intoString:NULL];
     return [scanner scanString:@"main" intoString:NULL] ||
-           [scanner scanString:@"FLK" intoString:NULL] ||
-           [scanner scanString:@"UIView(FLK" intoString:NULL];
+        [scanner scanString:@"FLK" intoString:NULL] ||
+        [scanner scanString:@"UIView(FLK" intoString:NULL];
 }
 
 #import <execinfo.h>
@@ -122,10 +122,11 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
             description = [@"*" stringByAppendingString:description];
         }
         [descriptions addObject:description];
-        [descriptions addObjectsFromArray:RecursiveViewsAndFramesDescription(view.subviews, indent+2)];
+        [descriptions addObjectsFromArray:RecursiveViewsAndFramesDescription(view.subviews, indent + 2)];
     }
     return descriptions;
 }
+
 
 @implementation NSLayoutConstraint (ARAutoLayoutDebugging)
 
@@ -140,6 +141,7 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
 }
 
 @end
+
 
 @implementation UIView (ARAutoLayoutDebugging)
 
@@ -163,7 +165,7 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
 
 - (void)ARAutoLayoutDebugging_addConstraint:(NSLayoutConstraint *)constraint;
 {
-    AddCallstackToConstraints(@[constraint]);
+    AddCallstackToConstraints(@[ constraint ]);
     if (self.ARAutoLayoutDebugging_logConstraints) {
         [self ARAutoLayoutDebugging_addSingleConstraint:constraint];
     } else {
@@ -196,16 +198,17 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
     }];
 
     if (changes.count > 0) {
-      printf("\n" \
-             "================================================================================\n" \
-             "Changes were made by adding constraint: %s\n" \
-             "To view: %s\n" \
-             "--------------------------------------------------------------------------------\n" \
-             "%s\n" \
-             "--------------------------------------------------------------------------------\n" \
-             "%s\n" \
-             "================================================================================\n" \
-             "\n", [[constraint description] UTF8String], [[self description] UTF8String], [[changes componentsJoinedByString:@"\n"] UTF8String], [[constraint.ARAutoLayoutDebugging_filteredCallStackSymbols componentsJoinedByString:@"\n"] UTF8String]);
+        printf("\n"
+               "================================================================================\n"
+               "Changes were made by adding constraint: %s\n"
+               "To view: %s\n"
+               "--------------------------------------------------------------------------------\n"
+               "%s\n"
+               "--------------------------------------------------------------------------------\n"
+               "%s\n"
+               "================================================================================\n"
+               "\n",
+               [[constraint description] UTF8String], [[self description] UTF8String], [[changes componentsJoinedByString:@"\n"] UTF8String], [[constraint.ARAutoLayoutDebugging_filteredCallStackSymbols componentsJoinedByString:@"\n"] UTF8String]);
     }
 }
 
@@ -230,7 +233,7 @@ RecursiveViewsAndFramesDescription(NSArray *views, int indent)
 
 - (NSArray *)ARAutoLayoutDebugging_recursiveDescription;
 {
-    return RecursiveViewsAndFramesDescription(@[self], 0);
+    return RecursiveViewsAndFramesDescription(@[ self ], 0);
 }
 
 @end

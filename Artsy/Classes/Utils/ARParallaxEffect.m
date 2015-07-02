@@ -1,5 +1,6 @@
 #import "ARParallaxEffect.h"
 
+
 @implementation ARParallaxEffect
 
 - (instancetype)initWithOffset:(NSInteger)offset
@@ -19,8 +20,7 @@
         my.minimumRelativeValue = @(offsets.y);
         my.maximumRelativeValue = @(-offsets.y);
 
-        self.motionEffects = @[mx, my];
-
+        self.motionEffects = @[ mx, my ];
     }
     return self;
 }

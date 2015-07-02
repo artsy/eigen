@@ -2,7 +2,7 @@
 #import "AROptions.h"
 #import "ARNetworkConstants.h"
 
-SpecBegin(ARRouter)
+SpecBegin(ARRouter);
 
 describe(@"requestForURL", ^{
     describe(@"with auth token", ^{

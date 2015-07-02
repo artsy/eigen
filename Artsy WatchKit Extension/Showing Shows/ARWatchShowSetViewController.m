@@ -1,12 +1,15 @@
 #import "ARWatchShowSetViewController.h"
 #import "WatchShow.h"
 
+
 @implementation ARWatchShowRowController
 @end
 
-@interface ARWatchShowSetViewController()
+
+@interface ARWatchShowSetViewController ()
 @property (readonly, copy, nonatomic) NSArray *shows;
 @end
+
 
 @implementation ARWatchShowSetViewController
 

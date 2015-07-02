@@ -1,14 +1,20 @@
-@interface FeaturedLink()
+
+
+@interface FeaturedLink ()
 @property (nonatomic, copy, readonly) NSString *urlFormatString;
 @end
+
 
 @implementation FeaturedLink
 
 #pragma mark - Lifecycle
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _displayOnMobile = YES;
 
@@ -20,12 +26,12 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(FeaturedLink.new, featuredLinkID): @"id",
-        @keypath(FeaturedLink.new, urlFormatString): @"image_url",
-        @keypath(FeaturedLink.new, title): @"title",
-        @keypath(FeaturedLink.new, subtitle): @"subtitle",
-        @keypath(FeaturedLink.new, href): @"href",
-        @keypath(FeaturedLink.new, displayOnMobile): @"display_on_mobile"
+        @keypath(FeaturedLink.new, featuredLinkID) : @"id",
+        @keypath(FeaturedLink.new, urlFormatString) : @"image_url",
+        @keypath(FeaturedLink.new, title) : @"title",
+        @keypath(FeaturedLink.new, subtitle) : @"subtitle",
+        @keypath(FeaturedLink.new, href) : @"href",
+        @keypath(FeaturedLink.new, displayOnMobile) : @"display_on_mobile"
     };
 }
 
@@ -62,7 +68,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         FeaturedLink *featuredLink = object;
         return [featuredLink.featuredLinkID isEqualToString:self.featuredLinkID] || self == object;
     }

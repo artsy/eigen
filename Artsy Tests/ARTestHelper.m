@@ -1,5 +1,6 @@
 #import "ARTestHelper.h"
 
+
 @implementation ARTestHelper
 
 + (void)load;
@@ -9,8 +10,7 @@
              @"The tests should be run on iOS 8.3, not %ld.%ld", version.majorVersion, version.minorVersion);
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
-    NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone
-                 && CGSizeEqualToSize(nativeResolution, CGSizeMake(750, 1334)),
+    NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(750, 1334)),
              @"The tests should be run on an iPhone 6, not a device with native resolution %@",
              NSStringFromCGSize(nativeResolution));
 }
@@ -23,6 +23,7 @@
 #import <unistd.h>
 #import <dlfcn.h>
 #import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
+
 
 @implementation ARTestViewHostingWindow
 
@@ -46,7 +47,7 @@ static UIWindow *_hostingWindow = nil;
 
     [self loadReveal];
 
-    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORSpaceKey :^{
+    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORSpaceKey:^{
         NSAssert([[[UIApplication sharedApplication] keyWindow] isKindOfClass:[ARTestViewHostingWindow class]],
                  @"Current key window is not a ARTestViewHostingWindow");
         _hostingWindow = nil;

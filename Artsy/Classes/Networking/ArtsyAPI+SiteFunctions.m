@@ -1,12 +1,14 @@
 #import "ArtsyAPI+Private.h"
 
-NSString * const ArtsyAPIInquiryAnalyticsInquiryURL = @"ArtsyAPIInquiryAnalyticsInquiryURL";
-NSString * const ArtsyAPIInquiryAnalyticsReferralURL = @"ArtsyAPIInquiryAnalyticsReferralURL";
-NSString * const ArtsyAPIInquiryAnalyticsLandingURL = @"ArtsyAPIInquiryAnalyticsLandingURL";
+NSString *const ArtsyAPIInquiryAnalyticsInquiryURL = @"ArtsyAPIInquiryAnalyticsInquiryURL";
+NSString *const ArtsyAPIInquiryAnalyticsReferralURL = @"ArtsyAPIInquiryAnalyticsReferralURL";
+NSString *const ArtsyAPIInquiryAnalyticsLandingURL = @"ArtsyAPIInquiryAnalyticsLandingURL";
+
 
 @implementation ArtsyAPI (SiteFunctions)
 
-+ (void)getSiteHeroUnits:(void (^)(NSArray *heroUnits))success failure:(void (^)(NSError *error))failure {
++ (void)getSiteHeroUnits:(void (^)(NSArray *heroUnits))success failure:(void (^)(NSError *error))failure
+{
     NSURLRequest *request = [ARRouter newSiteHeroUnitsRequest];
     [self getRequest:request parseIntoAnArrayOfClass:[SiteHeroUnit class] success:success failure:failure];
 }

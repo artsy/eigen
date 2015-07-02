@@ -1,5 +1,6 @@
 #import <Mantle/Mantle.h>
 
+
 @interface FeaturedLink : MTLModel <MTLJSONSerializing>
 
 @property (readonly, nonatomic, copy) NSString *featuredLinkID;

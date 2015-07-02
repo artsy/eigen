@@ -2,9 +2,11 @@
 #import "AROnboardingViewController.h"
 #import "AROnboardingTableViewCell.h"
 
-@interface ARPriceRangeViewController ()<UITableViewDataSource, UITableViewDelegate>
+
+@interface ARPriceRangeViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic) NSArray *ranges;
 @end
+
 
 @implementation ARPriceRangeViewController
 - (void)viewDidLoad
@@ -16,31 +18,44 @@
     NSInteger tableOrigin;
     if (screenSize.height > 480) {
         self.ranges = @[
-                        @{@"range" : @(500), @"display": @"Under $500"},
-                        @{@"range" : @(2500), @"display": @"Under $2,500"},
-                        @{@"range" : @(5000), @"display": @"Under $5,000"},
-                        @{@"range" : @(10000), @"display": @"Under $10,000"},
-                        @{@"range" : @(25000), @"display": @"Under $25,000"},
-                        @{@"range" : @(50000), @"display": @"Under $50,000"},
-                        @{@"range" : @(100000), @"display": @"Under $100,000"},
-                        @{@"range" : @(1000000), @"display": @"$100,000+"}
-                        ];
+            @{ @"range" : @(500),
+               @"display" : @"Under $500" },
+            @{ @"range" : @(2500),
+               @"display" : @"Under $2,500" },
+            @{ @"range" : @(5000),
+               @"display" : @"Under $5,000" },
+            @{ @"range" : @(10000),
+               @"display" : @"Under $10,000" },
+            @{ @"range" : @(25000),
+               @"display" : @"Under $25,000" },
+            @{ @"range" : @(50000),
+               @"display" : @"Under $50,000" },
+            @{ @"range" : @(100000),
+               @"display" : @"Under $100,000" },
+            @{ @"range" : @(1000000),
+               @"display" : @"$100,000+" }
+        ];
         tableOrigin = 120;
 
     } else {
         self.ranges = @[
-                        @{@"range" : @(1000), @"display": @"Under $1,000"},
-                        @{@"range" : @(5000), @"display": @"Under $5,000"},
-                        @{@"range" : @(20000), @"display": @"Under $20,000"},
-                        @{@"range" : @(50000), @"display": @"Under $50,000"},
-                        @{@"range" : @(100000), @"display": @"Under $100,000"},
-                        @{@"range" : @(1000000), @"display": @"$100,000+"}
-                        ];
+            @{ @"range" : @(1000),
+               @"display" : @"Under $1,000" },
+            @{ @"range" : @(5000),
+               @"display" : @"Under $5,000" },
+            @{ @"range" : @(20000),
+               @"display" : @"Under $20,000" },
+            @{ @"range" : @(50000),
+               @"display" : @"Under $50,000" },
+            @{ @"range" : @(100000),
+               @"display" : @"Under $100,000" },
+            @{ @"range" : @(1000000),
+               @"display" : @"$100,000+" }
+        ];
         tableOrigin = 136;
-
     }
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableOrigin, screenSize.width, screenSize.height - tableOrigin)
-                                                  style:UITableViewStylePlain];
+                                                          style:UITableViewStylePlain];
     [tableView registerClass:[AROnboardingTableViewCell class] forCellReuseIdentifier:@"StatusCell"];
     tableView.backgroundColor = [UIColor clearColor];
     tableView.dataSource = self;

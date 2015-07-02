@@ -1,27 +1,36 @@
 #import "ARReusableLoadingView.h"
 #import "ARSpinner.h"
 
-@interface ARReusableLoadingView()
+
+@interface ARReusableLoadingView ()
 @property (nonatomic, strong) ARSpinner *spinner;
 @end
 
+
 @implementation ARReusableLoadingView
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
     self = [super initWithCoder:aDecoder];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     [self setup];
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     [self setup];
     return self;
 }
 
-- (void)setup {
+- (void)setup
+{
     self.backgroundColor = [UIColor whiteColor];
     self.spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     [self addSubview:self.spinner];
@@ -30,7 +39,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.spinner.center = CGPointMake( CGRectGetWidth(self.bounds) / 2, CGRectGetHeight(self.bounds) / 2);
+    self.spinner.center = CGPointMake(CGRectGetWidth(self.bounds) / 2, CGRectGetHeight(self.bounds) / 2);
 }
 
 - (void)prepareForReuse
@@ -60,7 +69,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return (CGSize){ 44, 44 };
+    return (CGSize){44, 44};
 }
 
 @end

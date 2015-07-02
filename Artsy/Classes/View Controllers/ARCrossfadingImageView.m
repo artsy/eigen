@@ -5,10 +5,12 @@ typedef NS_ENUM(NSInteger, ARDirection) {
     ARDown = -1
 };
 
-@interface ARCrossfadingImageView()
+
+@interface ARCrossfadingImageView ()
 @property (nonatomic) UIImageView *topView;
 @property (nonatomic) ARDirection dir;
 @end
+
 
 @implementation ARCrossfadingImageView
 
@@ -41,7 +43,6 @@ typedef NS_ENUM(NSInteger, ARDirection) {
     _images = images;
     self.currentIndex = 0;
     self.dir = ARUp;
-
 }
 
 - (void)setDir:(ARDirection)dir
@@ -55,7 +56,7 @@ typedef NS_ENUM(NSInteger, ARDirection) {
 
 - (void)setTop
 {
-    switch (self.dir){
+    switch (self.dir) {
         case ARUp:
             if (self.currentIndex == self.images.count - 1) {
                 if (self.shouldLoopImages) {
@@ -88,7 +89,7 @@ typedef NS_ENUM(NSInteger, ARDirection) {
     }
     if (currentIndex < 0 || currentIndex >= imageCount) {
         ARErrorLog(@"Index %@ out of bounds in crossfading image view %@ with %@ images",
-                                                        @(currentIndex), self, @(imageCount));
+                   @(currentIndex), self, @(imageCount));
         return;
     }
     _currentIndex = currentIndex;

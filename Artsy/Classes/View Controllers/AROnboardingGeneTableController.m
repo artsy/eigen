@@ -3,10 +3,12 @@
 
 static NSString *CellId = @"OnboardingGeneFollow";
 
+
 @interface AROnboardingGeneTableController ()
 @property (nonatomic) UITableView *tableView;
 @property (nonatomic) NSArray *genes;
 @end
+
 
 @implementation AROnboardingGeneTableController
 
@@ -86,6 +88,5 @@ static NSString *CellId = @"OnboardingGeneFollow";
         [cell toggleFollowState];
         ARErrorLog(@"Error %@ gene %@. Error: %@", newState ? @"following" : @"unfollowing", gene, error.localizedDescription);
     }];
-
 }
 @end

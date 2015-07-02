@@ -4,12 +4,13 @@
 #import "ARBackButtonCallbackManager.h"
 #import "ARTopMenuViewController.h"
 
+
 @interface ARNavigationController (Testing)
 - (IBAction)back:(id)sender;
 @property (nonatomic, strong) ARPendingOperationViewController *pendingOperationViewController;
 @end
 
-SpecBegin(ARNavigationController)
+SpecBegin(ARNavigationController);
 
 __block ARNavigationController *navigationController;
 

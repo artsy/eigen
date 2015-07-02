@@ -4,6 +4,7 @@
 - (void)switchView:(ARSwitchView *)switchView didPressButtonAtIndex:(NSInteger)buttonIndex animated:(BOOL)animated;
 @end
 
+
 @interface ARSwitchView : UIView
 
 - (instancetype)initWithButtonTitles:(NSArray *)buttonTitlesArray;

@@ -1,6 +1,6 @@
 #import "ARSearchResultsDataSource.h"
 
-typedef NS_ENUM(NSInteger, ARMenuState){
+typedef NS_ENUM(NSInteger, ARMenuState) {
     ARMenuStateCollapsed,
     ARMenuStateExpanded
 };
@@ -11,6 +11,7 @@ typedef NS_ENUM(NSInteger, ARMenuState){
 
 /// The FairSearchVC supports a scoped version of search using the local Fair context to look
 /// up shows. This makes it super fast, the trade off is that the API below is confusing.
+
 
 @interface ARSearchViewController : UIViewController
 

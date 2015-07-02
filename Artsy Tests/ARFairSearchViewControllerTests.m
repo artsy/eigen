@@ -2,7 +2,7 @@
 #import <ORStackView/ORStackScrollView.h>
 #import "SearchResult.h"
 
-SpecBegin(ARFairSearchViewController)
+SpecBegin(ARFairSearchViewController);
 
 describe(@"init", ^{
 
@@ -68,7 +68,8 @@ describe(@"init", ^{
             // stub remote results
             [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/match"
                                      withParams:@{ @"term" : @"Leila", @"fair_id" : @"fair-id" }
-                                   withResponse:@[ @{
+                                   withResponse:@[
+@{
                     @"model" : @"artist",
                     @"id" : @"leila-pazooki",
                     @"display": @"Leila Pazooki",
@@ -97,7 +98,7 @@ describe(@"init", ^{
             expect(result.modelID).to.equal(@"leila-heller-gallery-show");
         });
     });
-    
+
 });
 
 SpecEnd

@@ -1,6 +1,7 @@
 #import "ARRelatedArtistsViewController.h"
 #import "ARFavoriteItemViewCell.h"
 
+
 @interface ARRelatedArtistsViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UICollectionView *view;
@@ -13,13 +14,17 @@
 
 @end
 
+
 @implementation ARRelatedArtistsViewController
 
 @dynamic view;
 
-- (instancetype)initWithFair:(Fair *)fair {
+- (instancetype)initWithFair:(Fair *)fair
+{
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.fair = fair;
 
@@ -61,7 +66,7 @@
     [self updateHeightConstraint];
 }
 
-- (void) loadView
+- (void)loadView
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     CGFloat sideMargin = [UIDevice isPad] ? 50 : 20;

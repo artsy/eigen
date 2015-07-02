@@ -1,8 +1,10 @@
 #import "ARKonamiKeyboardView.h"
 
+
 @interface ARKonamiKeyboardView ()
 @property (nonatomic, strong) DRKonamiGestureRecognizer *gestureRecognizer;
 @end
+
 
 @implementation ARKonamiKeyboardView
 
@@ -15,7 +17,8 @@
     return self;
 }
 
-- (void)insertText:(NSString *)text {
+- (void)insertText:(NSString *)text
+{
     if ([text.lowercaseString isEqualToString:@"b"]) {
         [self.gestureRecognizer BButtonAction];
     } else if ([text.lowercaseString isEqualToString:@"a"]) {
@@ -26,15 +29,17 @@
     }
 }
 
-- (BOOL)canBecomeFirstResponder {
+- (BOOL)canBecomeFirstResponder
+{
     return YES;
 }
 
-- (void)deleteBackward {
-
+- (void)deleteBackward
+{
 }
 
-- (BOOL)hasText {
+- (BOOL)hasText
+{
     return YES;
 }
 

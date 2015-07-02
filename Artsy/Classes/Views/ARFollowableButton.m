@@ -1,10 +1,12 @@
 #import "ARFollowableButton.h"
 #import "ARFollowableNetworkModel.h"
 
+
 @interface ARFollowableButton ()
 @property (readwrite, nonatomic, weak) ARFollowableNetworkModel *model;
 @property (readonly, nonatomic, assign) BOOL followingStatus;
 @end
+
 
 @implementation ARFollowableButton
 
@@ -30,15 +32,15 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(ARFollowableNetworkModel *)followableNetworkModel change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@keypath(ARFollowableNetworkModel.new, following)]) {
-        [self setFollowingStatus: followableNetworkModel.isFollowing];
+        [self setFollowingStatus:followableNetworkModel.isFollowing];
     }
 }
 
 - (void)setFollowingStatus:(BOOL)following
 {
-    NSString *title =               (following) ? self.toUnfollowTitle  : self.toFollowTitle;
-    UIColor *titleColor =           (following) ? [UIColor artsyPurple] : [UIColor blackColor];
-    UIColor *tapBackgroundColor =   (following) ? [UIColor artsyPurple] : [UIColor blackColor];
+    NSString *title = (following) ? self.toUnfollowTitle : self.toFollowTitle;
+    UIColor *titleColor = (following) ? [UIColor artsyPurple] : [UIColor blackColor];
+    UIColor *tapBackgroundColor = (following) ? [UIColor artsyPurple] : [UIColor blackColor];
 
     [self setTitle:title forState:UIControlStateNormal];
     [self setTitleColor:titleColor forState:UIControlStateNormal];
@@ -47,7 +49,7 @@
     _followingStatus = following;
 }
 
-- (void) setToFollowTitle:(NSString *)title
+- (void)setToFollowTitle:(NSString *)title
 {
     _toFollowTitle = title;
     if (!self.followingStatus) {
@@ -55,7 +57,7 @@
     }
 }
 
-- (void) setToUnfollowTitle:(NSString *)title
+- (void)setToUnfollowTitle:(NSString *)title
 {
     _toUnfollowTitle = title;
     if (self.followingStatus) {
@@ -65,7 +67,7 @@
 
 - (void)dealloc
 {
-    [self.model removeObserver:self forKeyPath:@keypath(ARFollowableNetworkModel .new, following)];
+    [self.model removeObserver:self forKeyPath:@keypath(ARFollowableNetworkModel.new, following)];
 }
 
 - (CGSize)intrinsicContentSize

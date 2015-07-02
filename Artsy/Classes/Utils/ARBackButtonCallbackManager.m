@@ -1,11 +1,14 @@
 #import "ARBackButtonCallbackManager.h"
 
+
 @implementation ARBackButtonCallbackManager
 
-- (instancetype)initWithViewController:(UIViewController *)viewController andBackBlock:(void(^)(void))backBlock
+- (instancetype)initWithViewController:(UIViewController *)viewController andBackBlock:(void (^)(void))backBlock
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _viewController = viewController;
     _backBlock = backBlock;
@@ -20,8 +23,12 @@
 
 - (BOOL)handleBackForViewController:(UIViewController *)viewController;
 {
-    if (![self canHandleBackForViewController:viewController]) { return NO; };
-    if (self.backBlock) { self.backBlock(); }
+    if (![self canHandleBackForViewController:viewController]) {
+        return NO;
+    };
+    if (self.backBlock) {
+        self.backBlock();
+    }
     return YES;
 }
 

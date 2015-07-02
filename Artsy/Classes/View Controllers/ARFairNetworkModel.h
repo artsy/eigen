@@ -1,3 +1,5 @@
+
+
 @interface ARFairNetworkModel : NSObject
 - (void)getFairInfo:(Fair *)fair success:(void (^)(Fair *fair))success failure:(void (^)(NSError *error))failure;
 
@@ -12,6 +14,7 @@
 - (void)getMapInfoForFair:(Fair *)fair success:(void (^)(NSArray *maps))success failure:(void (^)(NSError *error))failure;
 
 @end
+
 
 @interface ARStubbedFairNetworkModel : ARFairNetworkModel
 

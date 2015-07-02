@@ -2,11 +2,13 @@
 #import "ARWatchAsyncTableViewController.h"
 #import <WatchKit/WatchKit.h>
 
-@interface ARWatchAsyncTableViewController()
+
+@interface ARWatchAsyncTableViewController ()
 @property (readonly, strong, nonatomic) WKInterfaceTable *table;
 @property (readonly, copy, nonatomic) NSArray *data;
 @property (readonly, assign, nonatomic) NSInteger lastIndex;
 @end
+
 
 @implementation ARWatchAsyncTableViewController
 
@@ -19,7 +21,7 @@
     _table = table;
     _numberOfInitialRows = 2;
     _rowType = @"default";
-    
+
     return self;
 }
 
@@ -48,7 +50,7 @@
 
         // Assign the text to the row's label.
         id row = [self.table rowControllerAtIndex:i];
-        if (self.updateRow) self.updateRow(row, object,i);
+        if (self.updateRow) self.updateRow(row, object, i);
     }
 }
 @end

@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+
 @interface ARParallaxHeaderViewController : UIViewController
 
 - (instancetype)initWithContainingScrollView:(UIScrollView *)containingScrollView fair:(Fair *)fair profile:(Profile *)profile __attribute((objc_designated_initializer));

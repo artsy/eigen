@@ -3,9 +3,12 @@
 
 @implementation ARButtonWithCircularImage
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     self.buttonImageView.layer.cornerRadius = 40;
     self.buttonImageView.clipsToBounds = YES;
 

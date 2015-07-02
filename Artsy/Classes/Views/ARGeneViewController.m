@@ -10,6 +10,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ORStackView+ArtsyViews.h"
 
+
 @interface ARGeneViewController () <AREmbeddedModelsDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
 
 @property (nonatomic, strong) ARGeneArtworksNetworkModel *artworkCollection;
@@ -20,6 +21,7 @@
 @property (nonatomic, strong) ARTextView *descriptionTextView;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksViewController;
 @end
+
 
 @implementation ARGeneViewController
 
@@ -32,7 +34,9 @@
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _shouldAnimate = YES;
     return self;
 }
@@ -72,14 +76,13 @@
         textView = [[ARTextView alloc] init];
     } else {
         textView = [[ARCollapsableTextView alloc] init];
-        [(ARCollapsableTextView *)textView setExpansionBlock: ^(ARCollapsableTextView *textView){
+        [(ARCollapsableTextView *)textView setExpansionBlock:^(ARCollapsableTextView *textView) {
             [self viewDidLayoutSubviews];
         }];
     }
     textView.viewControllerDelegate = self;
     self.descriptionTextView = textView;
     [headerContainerView addSubview:textView withTopMargin:@"20" sideMargin:@"40"];
-
 
 
     UIView *actionsWrapper = [self createGeneActionsView];
@@ -131,7 +134,7 @@
     [actionsWrapper addSubview:favoriteButton];
     [favoriteButton alignCenterXWithView:actionsWrapper predicate:@"-30"];
     [shareButton alignCenterXWithView:actionsWrapper predicate:@"30"];
-    [UIView alignTopAndBottomEdgesOfViews:@[actionsWrapper, favoriteButton, shareButton]];
+    [UIView alignTopAndBottomEdgesOfViews:@[ actionsWrapper, favoriteButton, shareButton ]];
     return actionsWrapper;
 }
 
@@ -178,7 +181,7 @@
 - (void)toggleFollowingGene:(ARHeartButton *)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteGene success:^(BOOL newUser){
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteGene success:^(BOOL newUser) {
             [self toggleFollowingGene:sender];
         }];
         return;
@@ -187,11 +190,12 @@
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:self.shouldAnimate];
 
-    [ArtsyAPI setFavoriteStatus:sender.isHearted forGene:self.gene success:^(id response) {}
-    failure:^(NSError *error) {
+    [ArtsyAPI setFavoriteStatus:sender.isHearted forGene:self.gene success:^(id response) {
+    }
+        failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveErrorModalWithError:error];
         [sender setHearted:!hearted animated:self.shouldAnimate];
-    }];
+        }];
 }
 
 - (void)updateBody
@@ -200,7 +204,7 @@
 
     // For now we're doing the simplest model possible
 
-    if (self.gene.geneDescription.length ) {
+    if (self.gene.geneDescription.length) {
         [self.descriptionTextView setMarkdownString:self.gene.geneDescription];
     }
     self.artworksViewController.collectionView.scrollsToTop = YES;
@@ -218,7 +222,7 @@
     [sharingController presentActivityViewControllerFromView:sender];
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return [UIDevice isPad];
 }
@@ -236,7 +240,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if ( scrollView.contentSize.height > scrollView.bounds.size.height) {
+    if (scrollView.contentSize.height > scrollView.bounds.size.height) {
         [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
     }
 }
@@ -244,7 +248,8 @@
 - (NSDictionary *)dictionaryForAnalytics
 {
     if (self.gene) {
-        return @{ @"gene" : self.gene.geneID, @"type" : @"gene" };
+        return @{ @"gene" : self.gene.geneID,
+                  @"type" : @"gene" };
     }
 
     return nil;
@@ -252,9 +257,9 @@
 
 #pragma mark - ARArtworkMasonryLayoutProvider
 
--(ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
+- (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
-    if ([UIDevice isPad] ) {
+    if ([UIDevice isPad]) {
         return (size.width > size.height) ? ARArtworkMasonryLayout4Column : ARArtworkMasonryLayout3Column;
     } else {
         return ARArtworkMasonryLayout2Column;
@@ -263,7 +268,7 @@
 
 #pragma mark - AREmbeddedModelsDelegate
 
--(void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -281,7 +286,7 @@
 
 #pragma mark - ARTextViewDelegate
 
--(void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController
+- (void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController
 {
     [self.navigationController pushViewController:viewController animated:YES];
 }

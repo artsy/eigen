@@ -1,5 +1,6 @@
 #import "ARValueTransformer.h"
 
+
 @implementation Artwork {
     // If we give these as properties they can cause
     // chaos with Mantle & State Resotoration.
@@ -16,7 +17,9 @@
 - (instancetype)initWithArtworkID:(NSString *)artworkID
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _artworkID = artworkID;
     _heartStatus = ARHeartStatusNotFetched;
@@ -27,22 +30,22 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(Artwork.new, artworkID)             : @"id",
-        @keypath(Artwork.new, auctionResultCount)    : @"comparables_count",
-        @keypath(Artwork.new, canShareImage)         : @"can_share_image",
+        @keypath(Artwork.new, artworkID) : @"id",
+        @keypath(Artwork.new, auctionResultCount) : @"comparables_count",
+        @keypath(Artwork.new, canShareImage) : @"can_share_image",
         @keypath(Artwork.new, collectingInstitution) : @"collecting_institution",
-        @keypath(Artwork.new, defaultImage)          : @"images",
-        @keypath(Artwork.new, additionalInfo)        : @"additional_information",
-        @keypath(Artwork.new, dimensionsCM)          : @"dimensions.cm",
-        @keypath(Artwork.new, dimensionsInches)      : @"dimensions.in",
-        @keypath(Artwork.new, displayTitle)          : @"display",
-        @keypath(Artwork.new, editionSets)           : @"edition_sets",
-        @keypath(Artwork.new, exhibitionHistory)     : @"exhibition_history",
-        @keypath(Artwork.new, forSale)               : @"forsale",
-        @keypath(Artwork.new, imageRights)           : @"image_rights",
-        @keypath(Artwork.new, published)             : @"published",
-        @keypath(Artwork.new, saleMessage)           : @"sale_message",
-        @keypath(Artwork.new, sold)                  : @"sold"
+        @keypath(Artwork.new, defaultImage) : @"images",
+        @keypath(Artwork.new, additionalInfo) : @"additional_information",
+        @keypath(Artwork.new, dimensionsCM) : @"dimensions.cm",
+        @keypath(Artwork.new, dimensionsInches) : @"dimensions.in",
+        @keypath(Artwork.new, displayTitle) : @"display",
+        @keypath(Artwork.new, editionSets) : @"edition_sets",
+        @keypath(Artwork.new, exhibitionHistory) : @"exhibition_history",
+        @keypath(Artwork.new, forSale) : @"forsale",
+        @keypath(Artwork.new, imageRights) : @"image_rights",
+        @keypath(Artwork.new, published) : @"published",
+        @keypath(Artwork.new, saleMessage) : @"sale_message",
+        @keypath(Artwork.new, sold) : @"sold"
     };
 }
 
@@ -76,15 +79,15 @@
 
 + (NSValueTransformer *)defaultImageJSONTransformer
 {
-    return [MTLValueTransformer reversibleTransformerWithForwardBlock: ^ Image *(NSArray *items) {
+    return [MTLValueTransformer reversibleTransformerWithForwardBlock:^Image *(NSArray *items) {
         NSDictionary *defaultImageDict = [[items select: ^(NSDictionary *item) {
             return [item[@"is_default"] boolValue];
         }] first];
         return defaultImageDict ? [Image modelWithJSON:defaultImageDict] : nil;
     }
-    reverseBlock:^ NSArray *(Image *image) {
+        reverseBlock:^NSArray *(Image *image) {
         return @[image];
-    }];
+        }];
 }
 
 + (NSValueTransformer *)acquireableJSONTransformer
@@ -138,14 +141,16 @@
         @"not for sale" : @(ARArtworkAvailabilityNotForSale),
         @"for sale" : @(ARArtworkAvailabilityForSale),
         @"sold" : @(ARArtworkAvailabilitySold),
-        @"on hold" :@(ARArtworkAvailabilityOnHold)
+        @"on hold" : @(ARArtworkAvailabilityOnHold)
     };
     return [ARValueTransformer enumValueTransformerWithMap:types];
 }
 
 + (NSValueTransformer *)metricJSONTransformer
 {
-    NSDictionary *metrics =  @{@"in": @(ARDimensionMetricInches), @"cm" : @(ARDimensionMetricCentimeters), @"" : @(ARDimensionMetricNoMetric)};
+    NSDictionary *metrics = @{ @"in" : @(ARDimensionMetricInches),
+                               @"cm" : @(ARDimensionMetricCentimeters),
+                               @"" : @(ARDimensionMetricNoMetric) };
     return [ARValueTransformer enumValueTransformerWithMap:metrics];
 }
 
@@ -173,41 +178,41 @@
 - (AFJSONRequestOperation *)getRelatedArtworks:(void (^)(NSArray *artworks))success
 {
     return [ArtsyAPI getRelatedArtworksForArtwork:self success:success
-    failure: ^(NSError *error) {
+                                          failure:^(NSError *error) {
         success(@[]);
-    }];
+                                          }];
 }
 
 - (AFJSONRequestOperation *)getRelatedFairArtworks:(Fair *)fair success:(void (^)(NSArray *artworks))success
 {
-    return [ArtsyAPI getRelatedArtworksForArtwork:self inFair:(fair ?: self.fair) success:success
-        failure:^(NSError *error) {
+    return [ArtsyAPI getRelatedArtworksForArtwork:self inFair:(fair ?: self.fair)success:success
+                                          failure:^(NSError *error) {
             success(@[]);
-    }];
+                                          }];
 }
 
 - (AFJSONRequestOperation *)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success
 {
     return [ArtsyAPI getAuctionComparablesForArtwork:self success:success
-        failure: ^(NSError *error) {
+                                             failure:^(NSError *error) {
             success(@[]);
-    }];
+                                             }];
 }
 
 - (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success
 {
     return [ArtsyAPI getRelatedPostsForArtwork:self success:success
-        failure: ^(NSError *error) {
+                                       failure:^(NSError *error) {
             success(@[]);
-    }];
+                                       }];
 }
 
 - (AFJSONRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
 {
     return [ArtsyAPI getShowsForArtworkID:self.artworkID inFairID:fair.fairID success:success
-        failure: ^(NSError *error) {
+                                  failure:^(NSError *error) {
             success(@[]);
-    }];
+                                  }];
 }
 
 - (BOOL)hasWidth
@@ -242,12 +247,7 @@
 
 - (BOOL)canViewInRoom
 {
-    return (self.hasDimensions
-            && !self.hasDepth
-            && [self.category rangeOfString:@"Sculpture"].location == NSNotFound
-            && [self.category rangeOfString:@"Design"].location == NSNotFound
-            && [self.category rangeOfString:@"Installation"].location == NSNotFound
-            && [self.category rangeOfString:@"Architecture"].location == NSNotFound);
+    return (self.hasDimensions && !self.hasDepth && [self.category rangeOfString:@"Sculpture"].location == NSNotFound && [self.category rangeOfString:@"Design"].location == NSNotFound && [self.category rangeOfString:@"Installation"].location == NSNotFound && [self.category rangeOfString:@"Architecture"].location == NSNotFound);
 }
 
 - (BOOL)hasMultipleEditions
@@ -273,18 +273,14 @@
             });
         }];
     });
-
 }
 
 - (BOOL)hasMoreInfo
-{   return [self.provenance length]
-    || [self.exhibitionHistory length]
-    || [self.signature length]
-    || [self.additionalInfo length]
-    || [self.literature length];
+{
+    return [self.provenance length] || [self.exhibitionHistory length] || [self.signature length] || [self.additionalInfo length] || [self.literature length];
 }
 
-- (KSPromise *)onArtworkUpdate:(void(^)(void))success failure:(void(^)(NSError *error))failure
+- (KSPromise *)onArtworkUpdate:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     @weakify(self);
 
@@ -292,7 +288,7 @@
         _artworkUpdateDeferred = [KSDeferred defer];
     }
 
-    return [_artworkUpdateDeferred.promise then: ^(id value) {
+    return [_artworkUpdateDeferred.promise then:^(id value) {
         if (success) { success(); }
         return self;
 
@@ -352,10 +348,10 @@
     }];
 }
 
-- (KSPromise *)onSaleArtworkUpdate:(void(^)(SaleArtwork *saleArtwork))success failure:(void(^)(NSError *error))failure
+- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success failure:(void (^)(NSError *error))failure
 {
     KSDeferred *deferred = [self deferredSaleArtworkUpdate];
-    return [deferred.promise then: ^(id value) {
+    return [deferred.promise then:^(id value) {
         if (success) {
             success(value);
         }
@@ -397,7 +393,7 @@
 - (KSPromise *)onFairUpdate:(void (^)(Fair *))success failure:(void (^)(NSError *))failure
 {
     KSDeferred *deferred = [self deferredFairUpdate];
-    return [deferred.promise then: ^(id value) {
+    return [deferred.promise then:^(id value) {
         self.fair = value;
         if (success) {
             success(value);
@@ -419,7 +415,7 @@
     return _partnerShowDeferred;
 }
 
-- (KSPromise *)onPartnerShowUpdate:(void(^)(PartnerShow *show))success failure:(void(^)(NSError *error))failure;
+- (KSPromise *)onPartnerShowUpdate:(void (^)(PartnerShow *show))success failure:(void (^)(NSError *error))failure;
 {
     KSDeferred *deferred = self.deferredPartnerShowUpdate;
     return [deferred.promise then:^(PartnerShow *show) {
@@ -498,12 +494,12 @@
         _favDeferred = deferred;
     }
 
-    [_favDeferred.promise then: ^(id value) {
+    [_favDeferred.promise then:^(id value) {
         @strongify(self);
 
         success(self.heartStatus);
         return self;
-    } error: ^(NSError *error) {
+    } error:^(NSError *error) {
         // Its a 404 if you have no artworks
         NSHTTPURLResponse *response = [error userInfo][AFNetworkingOperationFailingURLResponseErrorKey];
         if (response.statusCode == 404) {
@@ -542,14 +538,11 @@
 
 - (BOOL)shouldShowAuctionResults
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:ARShowAuctionResultsButtonDefault]
-           && self.partner
-           && self.partner.type == ARPartnerTypeGallery
-           && [self.category rangeOfString:@"Architecture"].location == NSNotFound
-           && self.auctionResultCount.intValue > 0;
+    return [[NSUserDefaults standardUserDefaults] boolForKey:ARShowAuctionResultsButtonDefault] && self.partner && self.partner.type == ARPartnerTypeGallery && [self.category rangeOfString:@"Architecture"].location == NSNotFound && self.auctionResultCount.intValue > 0;
 }
 
-- (CGFloat)dimensionInInches:(CGFloat)dimension {
+- (CGFloat)dimensionInInches:(CGFloat)dimension
+{
     switch (self.metric) {
         case ARDimensionMetricCentimeters:
             return dimension * 0.393701;
@@ -590,12 +583,12 @@
 }
 
 // NOTE: cannot be a property, otherwise overwritten via updateFair
-- (Fair *) fair
+- (Fair *)fair
 {
     return _fair;
 }
 
-- (void) setFair:(Fair *)fair
+- (void)setFair:(Fair *)fair
 {
     _fair = fair;
 }

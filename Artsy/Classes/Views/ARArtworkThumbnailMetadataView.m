@@ -2,6 +2,7 @@
 
 static CGFloat ARMetadataFontSize;
 
+
 @interface ARArtworkThumbnailMetadataView ()
 
 @property (nonatomic, strong) ARSerifLabel *primaryLabel;
@@ -9,29 +10,36 @@ static CGFloat ARMetadataFontSize;
 
 @end
 
+
 @implementation ARArtworkThumbnailMetadataView
 
-+ (void)initialize{
++ (void)initialize
+{
     [super initialize];
     ARMetadataFontSize = [UIDevice isPad] ? 15 : 12;
 }
 
-+ (CGFloat)heightForMargin {
++ (CGFloat)heightForMargin
+{
     return 8;
 }
 
-+ (CGFloat)heightForView {
++ (CGFloat)heightForView
+{
     return [UIDevice isPad] ? 42 : 34;
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _primaryLabel = [[ARSerifLabel alloc] init];
     _secondaryLabel = [[ARArtworkTitleLabel alloc] init];
 
-    [@[self.primaryLabel, self.secondaryLabel] each:^(UILabel *label) {
+    [@[ self.primaryLabel, self.secondaryLabel ] each:^(UILabel *label) {
         label.font = [label.font fontWithSize:ARMetadataFontSize];
         label.textColor = [UIColor artsyHeavyGrey];
         [self addSubview:label];
@@ -42,10 +50,11 @@ static CGFloat ARMetadataFontSize;
 
 - (CGSize)intrinsicContentSize
 {
-    return (CGSize){ UIViewNoIntrinsicMetric, [self.class heightForView] };
+    return (CGSize){UIViewNoIntrinsicMetric, [self.class heightForView]};
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 
     CGRect labelFrame = self.bounds;
@@ -57,12 +66,14 @@ static CGFloat ARMetadataFontSize;
     self.secondaryLabel.frame = labelFrame;
 }
 
-- (void)configureWithArtwork:(Artwork *)artwork {
+- (void)configureWithArtwork:(Artwork *)artwork
+{
     self.primaryLabel.text = artwork.artist.name;
     [self.secondaryLabel setTitle:artwork.title date:artwork.date];
 }
 
-- (void)resetLabels{
+- (void)resetLabels
+{
     self.primaryLabel.text = nil;
     [self.secondaryLabel setTitle:nil date:nil];
 }

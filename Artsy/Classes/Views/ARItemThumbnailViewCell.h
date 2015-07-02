@@ -3,6 +3,7 @@
 /// The ARItemThumbnail is an object aware re-usable
 /// view that loads a thumbnail
 
+
 @interface ARItemThumbnailViewCell : UICollectionViewCell
 
 /// Deals with setting up it's own imageview and setting the

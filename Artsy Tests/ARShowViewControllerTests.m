@@ -3,6 +3,7 @@
 #import "UIDevice-Hardware.h"
 #import "ARStubbedShowNetworkModel.h"
 
+
 @interface ARShowViewController ()
 
 - (void)addMapPreview;
@@ -11,7 +12,7 @@
 
 @end
 
-SpecBegin(ARShowViewController)
+SpecBegin(ARShowViewController);
 
 describe(@"at a fair", ^{
     __block ARShowViewController *showVC;

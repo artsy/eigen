@@ -1,4 +1,4 @@
-SpecBegin(MapFeature)
+SpecBegin(MapFeature);
 
 it(@"maps every feature type to an image", ^{
     for (int mapFeatureType = 0; mapFeatureType < ARMapFeatureTypeMax; mapFeatureType++) {

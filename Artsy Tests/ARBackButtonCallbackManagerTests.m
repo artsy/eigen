@@ -1,27 +1,29 @@
 #import "ARBackButtonCallbackManager.h"
 
-@interface ARBackButtonCallbackManager(Testing)
+
+@interface ARBackButtonCallbackManager (Testing)
 - (BOOL)canHandleBackForViewController:(UIViewController *)viewController;
 @end
+
 
 @interface TestBlockWasCalledObject : NSObject
 - (void)callSomeMethod;
 @end
 
+
 @implementation TestBlockWasCalledObject
 
 - (void)callSomeMethod
 {
-
 }
 
 @end
 
-SpecBegin(ARBackButtonCallbackManagerTests)
+SpecBegin(ARBackButtonCallbackManagerTests);
 
 __block TestBlockWasCalledObject *testBlockWasCalledObject;
 
-dispatch_block_t block= ^{
+dispatch_block_t block = ^{
     [testBlockWasCalledObject callSomeMethod];
 };
 

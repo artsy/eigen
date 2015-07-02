@@ -4,11 +4,13 @@
 #import "ARMessageItemProvider.h"
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
+
 @interface ARSharingController ()
-@property (nonatomic, strong) id <ARShareableObject> object;
+@property (nonatomic, strong) id<ARShareableObject> object;
 @property (nonatomic, strong) NSURL *thumbnailImageURL;
 @property (nonatomic, strong) UIImage *image;
 @end
+
 
 @implementation ARSharingController
 
@@ -32,7 +34,8 @@
     return self;
 }
 
-- (void)presentActivityViewControllerFromView:(UIView *)view {
+- (void)presentActivityViewControllerFromView:(UIView *)view
+{
     [self presentActivityViewControllerFromView:view frame:view.bounds];
 }
 
@@ -80,10 +83,9 @@
     //
     // TODO It appears that on iOS 8 the popver is retained by the system? In which case this can be removed.
     if (popover) {
-
         // Extra hack to ensure the button doesn't remain highlighted during this loop.
         if ([view isKindOfClass:UIButton.class]) {
-            [(UIButton *)view setHighlighted: NO];
+            [(UIButton *)view setHighlighted:NO];
         }
 
         while (popover != nil) {
@@ -100,7 +102,7 @@
 // ARMessageItemProvider will add the appropriate " on Artsy:", " on Artsy", " on @Artsy", etc to message.
 - (NSString *)message
 {
-    if (self.object.class == [Artwork class]){
+    if (self.object.class == [Artwork class]) {
         Artwork *artwork = (Artwork *)self.object;
         if (artwork.artist.name.length) {
             return [NSString stringWithFormat:@"\"%@\" by %@", artwork.title, artwork.artist.name];
@@ -117,13 +119,13 @@
 - (NSString *)objectID
 {
     if (self.object.class == [Artwork class]) {
-        return [(Artwork *) self.object artworkID];
+        return [(Artwork *)self.object artworkID];
     } else if (self.object.class == [Artist class]) {
-        return [(Artist *) self.object artistID];
+        return [(Artist *)self.object artistID];
     } else if (self.object.class == [Gene class]) {
-        return [(Gene *) self.object geneID];
+        return [(Gene *)self.object geneID];
     } else if (self.object.class == [PartnerShow class]) {
-        return [(PartnerShow *) self.object showID];
+        return [(PartnerShow *)self.object showID];
     } else {
         return nil;
     }

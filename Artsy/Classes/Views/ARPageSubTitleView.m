@@ -1,10 +1,12 @@
 #import "ARPageSubTitleView.h"
 
-@interface ARPageSubTitleView()
+
+@interface ARPageSubTitleView ()
 @property (nonatomic, assign) CGFloat margin;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *separator;
 @end
+
 
 @implementation ARPageSubTitleView
 
@@ -12,7 +14,7 @@
 {
     CGSize labelSize = self.titleLabel.intrinsicContentSize;
     CGFloat width = (CGRectGetWidth(self.bounds) == 0) ? CGRectGetWidth(self.bounds) : CGRectGetWidth(self.superview.bounds);
-    return (CGSize){ width, labelSize.height + (self.margin * 2) + CGRectGetHeight(self.separator.bounds)};
+    return (CGSize){width, labelSize.height + (self.margin * 2) + CGRectGetHeight(self.separator.bounds)};
 }
 
 - (instancetype)initWithTitle:(NSString *)title
@@ -23,7 +25,7 @@
 - (instancetype)initWithTitle:(NSString *)title andFrame:(CGRect)frame
 {
     self = [super init];
-    if(!self) return nil;
+    if (!self) return nil;
 
     ARThemeLayoutVendor *layout = [ARTheme defaultTheme].layout;
 
@@ -41,7 +43,7 @@
     } else {
         self.frame = frame;
         CGFloat offset = [[ARTheme defaultTheme] floatForKey:@"FeedSectionTitleVerticalOffset"];
-        _titleLabel.center = (CGPoint){ self.center.x, self.center.y - offset };
+        _titleLabel.center = (CGPoint){self.center.x, self.center.y - offset};
     }
 
     return self;
@@ -59,7 +61,6 @@
     [attributedTitle addAttribute:NSKernAttributeName value:@0.5 range:NSMakeRange(0, title.length)];
 
     self.titleLabel.attributedText = attributedTitle;
-
 }
 
 @end

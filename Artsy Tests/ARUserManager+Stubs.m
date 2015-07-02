@@ -1,6 +1,7 @@
 #import "ARUserManager+Stubs.h"
 #import <OHHTTPStubs/OHHTTPStubs.h>
 
+
 @implementation ARUserManager (Stubs)
 
 + (NSString *)stubAccessToken { return @"access token"; };
@@ -12,19 +13,23 @@
 + (NSString *)stubUserPassword { return @"password"; };
 + (NSString *)stubUserName { return @"Joe Shmoe"; };
 
-+ (void)stubAccessToken:(NSString*)accessToken expiresIn:(NSString*)expiresIn
++ (void)stubAccessToken:(NSString *)accessToken expiresIn:(NSString *)expiresIn
 {
-    [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"access_token": accessToken, @"expires_in": expiresIn }];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"access_token" : accessToken,
+                                                                                @"expires_in" : expiresIn }];
 }
 
-+ (void)stubXappToken:(NSString*)xappToken expiresIn:(NSString*)expiresIn
++ (void)stubXappToken:(NSString *)xappToken expiresIn:(NSString *)expiresIn
 {
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/xapp_token" withResponse:@{ @"xapp_token": xappToken, @"expires_in": expiresIn }];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/xapp_token" withResponse:@{ @"xapp_token" : xappToken,
+                                                                              @"expires_in" : expiresIn }];
 }
 
-+ (void)stubMe:(NSString*)userID email:(NSString*)email name:(NSString*)name
++ (void)stubMe:(NSString *)userID email:(NSString *)email name:(NSString *)name
 {
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me" withResponse:@{ @"id" : userID, @"email": email, @"name": name }];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me" withResponse:@{ @"id" : userID,
+                                                                      @"email" : email,
+                                                                      @"name" : name }];
 }
 
 + (void)stubAndLoginWithUsername
@@ -38,43 +43,43 @@
                            gotUser:nil
              authenticationFailure:nil
                     networkFailure:nil];
-
 }
 
 + (void)stubbedLoginWithUsername:(NSString *)username password:(NSString *)password
-          successWithCredentials:(void(^)(NSString *accessToken, NSDate *expirationDate))credentials
-                         gotUser:(void(^)(User *currentUser))success
+          successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials
+                         gotUser:(void (^)(User *currentUser))success
            authenticationFailure:(void (^)(NSError *error))authFail
                   networkFailure:(void (^)(NSError *error))networkFailure
 {
     __block BOOL done = NO;
     [[ARUserManager sharedManager]
-     loginWithUsername:[ARUserManager stubUserEmail] password:[ARUserManager stubUserPassword]
-     successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
+        loginWithUsername:[ARUserManager stubUserEmail]
+        password:[ARUserManager stubUserPassword]
+        successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
          if (credentials) {
              credentials(accessToken, tokenExpiryDate);
          }
-     }
-     gotUser:^(User *currentUser) {
+        }
+        gotUser:^(User *currentUser) {
          if (success) {
              success(currentUser);
          }
              done = YES;
-         }
-     authenticationFailure:^(NSError *error) {
+        }
+        authenticationFailure:^(NSError *error) {
          if (authFail) {
              authFail(error);
          }
          done = YES;
-     }
-     networkFailure:^(NSError *error) {
+        }
+        networkFailure:^(NSError *error) {
          if (networkFailure) {
              networkFailure(error);
          }
          done = YES;
-    }];
+        }];
 
-    while(!done) {
+    while (!done) {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
 }
@@ -99,32 +104,32 @@
 {
     __block BOOL done = NO;
     [[ARUserManager sharedManager]
-     loginWithFacebookToken:token
-     successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
+        loginWithFacebookToken:token
+        successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
         if (credentials) {
             credentials(accessToken, tokenExpiryDate);
         }
-     }
-     gotUser:^(User *currentUser) {
+        }
+        gotUser:^(User *currentUser) {
          if (success) {
              success(currentUser);
          }
          done = YES;
-     }
-     authenticationFailure:^(NSError *error) {
+        }
+        authenticationFailure:^(NSError *error) {
         if (authFail) {
             authFail(error);
         }
         done = YES;
-     }
-     networkFailure:^(NSError *error) {
+        }
+        networkFailure:^(NSError *error) {
          if (networkFailure) {
              networkFailure(error);
          }
          done = YES;
-    }];
+        }];
 
-    while(!done) {
+    while (!done) {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
 }
@@ -151,32 +156,32 @@
                       networkFailure:(void (^)(NSError *))networkFailure
 {
     __block BOOL done = NO;
-    [[ARUserManager sharedManager] loginWithTwitterToken:token secret: secret
-     successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
+    [[ARUserManager sharedManager] loginWithTwitterToken:token secret:secret
+        successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
          if (credentials) {
              credentials(accessToken, tokenExpiryDate);
          }
-     }
-     gotUser:^(User *currentUser) {
+        }
+        gotUser:^(User *currentUser) {
          if (success) {
              success(currentUser);
          }
          done = YES;
-     }
-     authenticationFailure:^(NSError *error) {
+        }
+        authenticationFailure:^(NSError *error) {
          if (authFail) {
              authFail(error);
          }
          done = YES;
-     }
-     networkFailure:^(NSError *error) {
+        }
+        networkFailure:^(NSError *error) {
          if (networkFailure) {
              networkFailure(error);
          }
          done = YES;
-    }];
+        }];
 
-    while(!done) {
+    while (!done) {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
 }
@@ -184,10 +189,13 @@
 #pragma mark -
 #pragma mark Utilities
 
-+ (NSString *)userDataPath {
++ (NSString *)userDataPath
+{
     NSString *userID = [[NSUserDefaults standardUserDefaults] objectForKey:ARUserIdentifierDefault];
-    if (!userID) { return nil; }
-    NSArray *directories =[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    if (!userID) {
+        return nil;
+    }
+    NSArray *directories = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     NSString *documentsPath = [[directories lastObject] relativePath];
     return [[documentsPath stringByAppendingPathComponent:userID] stringByAppendingPathComponent:@"User.data"];
 }

@@ -1,5 +1,6 @@
 #import "ARModelCollectionViewModule.h"
 
+
 @implementation ARModelCollectionViewModule
 
 // As the items & moduleLayout should be treated as
@@ -9,7 +10,9 @@
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _items = [NSArray array];
     return self;
@@ -23,7 +26,6 @@
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-
 }
 
 - (Class)classForCell
@@ -34,7 +36,7 @@
 
 - (CGSize)intrinsicSize
 {
-    return (CGSize){ 240, 240 };
+    return (CGSize){240, 240};
 }
 
 - (ARFeedItemImageSize)imageSize

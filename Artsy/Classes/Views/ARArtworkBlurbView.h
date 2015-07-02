@@ -4,9 +4,10 @@
 
 @protocol ARArtworkBlurbViewDelegate <NSObject>
 
--(void)artworkBlurView:(ARArtworkBlurbView *)blurbView shouldPresentViewController:(UIViewController *)viewController;
+- (void)artworkBlurView:(ARArtworkBlurbView *)blurbView shouldPresentViewController:(UIViewController *)viewController;
 
 @end
+
 
 @interface ARArtworkBlurbView : ORStackView
 

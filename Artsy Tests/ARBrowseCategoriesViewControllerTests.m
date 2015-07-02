@@ -3,11 +3,12 @@
 #import <ORStackView/ORStackScrollView.h>
 #import "ARUserManager+Stubs.h"
 
+
 @interface ARBrowseCategoriesViewController (Tests)
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
-SpecBegin(ARBrowseCategoriesViewController)
+SpecBegin(ARBrowseCategoriesViewController);
 
 __block ARBrowseCategoriesViewController *viewController;
 

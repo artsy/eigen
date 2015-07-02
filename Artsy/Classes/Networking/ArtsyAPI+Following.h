@@ -2,6 +2,7 @@
 
 @class Gene, Artist, Artwork;
 
+
 @interface ArtsyAPI (Following)
 
 #pragma mark - Artwork

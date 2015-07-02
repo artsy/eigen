@@ -1,8 +1,8 @@
 #import "ARHeartButton.h"
 
-SpecBegin(ARHeartButton)
+SpecBegin(ARHeartButton);
 
-__block ARHeartButton * _button = nil;
+__block ARHeartButton *_button = nil;
 
 beforeEach(^{
     _button = [[ARHeartButton alloc] init];
@@ -69,4 +69,3 @@ describe(@"hearted", ^{
 
 
 SpecEnd
-

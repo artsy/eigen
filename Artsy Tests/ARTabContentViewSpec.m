@@ -1,7 +1,7 @@
 #import "ARTabContentView.h"
 #import "ARTestTopMenuNavigationDataSource.h"
 
-SpecBegin(ARTabView)
+SpecBegin(ARTabView);
 
 __block UIViewController *outerController, *innerController1, *innerController2;
 __block ARTabContentView *sut;

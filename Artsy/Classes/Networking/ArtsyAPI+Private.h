@@ -1,5 +1,6 @@
 #import "ARRouter.h"
 
+
 @interface ArtsyAPI (Private)
 
 /// A simple method for performing a ARJSONRequest and passing back the returned JSON as a native object
@@ -17,7 +18,7 @@
 /// If you're dealing with dictionary as the root object and want an array of objects
 + (AFJSONRequestOperation *)getRequest:(NSURLRequest *)request parseIntoAnArrayOfClass:(Class)klass fromDictionaryWithKey:(NSString *)key success:(void (^)(NSArray *))success failure:(void (^)(NSError *error))failure;
 
-+ (void)getXappTokenWithCompletion:(void(^)(NSString *xappToken, NSDate *expirationDate))callback;
-+ (void)getXappTokenWithCompletion:(void(^)(NSString *xappToken, NSDate *expirationDate))callback failure:(void (^)(NSError *error))failure;
++ (void)getXappTokenWithCompletion:(void (^)(NSString *xappToken, NSDate *expirationDate))callback;
++ (void)getXappTokenWithCompletion:(void (^)(NSString *xappToken, NSDate *expirationDate))callback failure:(void (^)(NSError *error))failure;
 + (void)handleXappTokenError:(NSError *)error;
 @end

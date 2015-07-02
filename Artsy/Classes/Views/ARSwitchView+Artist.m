@@ -3,10 +3,12 @@
 NSInteger ARSwitchViewArtistButtonIndex = 0;
 NSInteger ARSwitchViewForSaleButtonIndex = 1;
 
-@interface ARSwitchView()
+
+@interface ARSwitchView ()
 @property (nonatomic, strong, readwrite) NSArray *buttons;
 @property (nonatomic, strong, readonly) UIView *selectionIndicator;
 @end
+
 
 @implementation ARSwitchView (Artist)
 
@@ -19,7 +21,7 @@ NSInteger ARSwitchViewForSaleButtonIndex = 1;
 
 + (NSArray *)artistButtonTitlesArray
 {
-    return @[@"ARTWORKS", @"FOR SALE"];
+    return @[ @"ARTWORKS", @"FOR SALE" ];
 }
 
 @end

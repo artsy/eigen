@@ -3,6 +3,7 @@
 #import "ARShareableObject.h"
 #import "ARHasImageBaseURL.h"
 
+
 @interface Artist : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageURLs>
 
 @property (readonly, nonatomic, copy) NSString *artistID;

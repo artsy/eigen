@@ -1,23 +1,27 @@
 #import "ARAnnotatedMapView.h"
 
+
 @interface NAMapView (Private)
 @property (nonatomic, strong) UIImageView *imageView;
 - (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer;
 - (CGRect)rectAroundPoint:(CGPoint)point atZoomScale:(CGFloat)zoomScale;
 @end
 
+
 @implementation ARAnnotatedMapView
 
 - (instancetype)init
 {
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     self.zoomStep = 2.5f;
     return self;
 }
 
 - (CGFloat)annotationZoomScaleThreshold
 {
-    return self.minimumZoomScale + (self.maximumZoomScale - self.minimumZoomScale)/2;
+    return self.minimumZoomScale + (self.maximumZoomScale - self.minimumZoomScale) / 2;
 }
 
 - (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer

@@ -1,12 +1,13 @@
 #import "ARArtistNetworkModel.h"
 
+
 @implementation ARArtistNetworkModel
 
 - (instancetype)initWithArtist:(Artist *)artist
 {
     self = [super init];
     if (!self) return nil;
-    
+
     _artist = artist;
 
     return self;

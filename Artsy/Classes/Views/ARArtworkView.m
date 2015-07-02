@@ -4,7 +4,8 @@
 #import "ARWhitespaceGobbler.h"
 #import <ARAnalytics/ARAnalytics.h>
 
-@interface ARArtworkView()
+
+@interface ARArtworkView ()
 @property (nonatomic, strong, readwrite) Artwork *artwork;
 @property (nonatomic, strong) Fair *fair;
 @property (nonatomic, strong) PartnerShow *show;
@@ -12,6 +13,7 @@
 @property (nonatomic, strong) ARAuctionBannerView *banner;
 @property (nonatomic, strong) ARWhitespaceGobbler *gobbler;
 @end
+
 
 @implementation ARArtworkView
 
@@ -22,7 +24,9 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 {
     self = [super initWithStackViewClass:[ORTagBasedAutoStackView class]];
 
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _artwork = artwork;
     _fair = fair;
     _parentViewController = parentViewController;
@@ -82,7 +86,8 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     [self layoutIfNeeded];
 }
 
-- (void)artworkUpdated {
+- (void)artworkUpdated
+{
     // A nil value shouldn't be classed as unpublished
     if (self.artwork.isPublished && self.artwork.isPublished.boolValue == NO) {
         [self addUnpublishedBanner];
@@ -91,7 +96,6 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
 - (void)setUpCallbacks
 {
-
     @weakify(self);
 
     void (^completion)(void) = ^{
@@ -133,7 +137,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 - (void)createHeightConstraints
 {
     NSLayoutConstraint *minimumHeight = [[self.stackView constrainHeightToView:self.superview predicate:@">=0"] lastObject];
-    minimumHeight.constant -=self.contentInset.top;
+    minimumHeight.constant -= self.contentInset.top;
     NSLayoutConstraint *imageMaxHeight = [[self.metadataView.imageView constrainHeightToView:self.superview predicate:@"<=0"] lastObject];
     // Make the image height somewhat smaller than the superview height so that Artwork favorite and share buttons are visible.
     imageMaxHeight.constant = [UIDevice isPad] ? ARArtworkImageHeightAdjustmentForPad : ARArtworkImageHeightAdjustmentForPhone;

@@ -3,7 +3,8 @@
 
 const CGFloat ARArtworkActionButtonSpacing = 8;
 
-@interface ARArtworkPreviewActionsView()
+
+@interface ARArtworkPreviewActionsView ()
 
 /// The button for indicating you're favoriting a work
 @property (readwrite, nonatomic, strong) ARHeartButton *favoriteButton;
@@ -20,13 +21,16 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 @property (readwrite, nonatomic, strong) ARCircularActionButton *viewInMapButton;
 @end
 
+
 @implementation ARArtworkPreviewActionsView
 
 - (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair
 {
     self = [super init];
-    if (!self) { return nil; }
-    
+    if (!self) {
+        return nil;
+    }
+
     _shareButton = [self newShareButton];
     _favoriteButton = [self newFavoriteButton];
 
@@ -58,7 +62,7 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 
 - (ARCircularActionButton *)newShareButton
 {
-    return[self buttonWithName:@"Artwork_Icon_Share" identifier:@"Share Artwork"];
+    return [self buttonWithName:@"Artwork_Icon_Share" identifier:@"Share Artwork"];
 }
 
 - (ARCircularActionButton *)newViewInRoomButton
@@ -96,7 +100,9 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 - (void)toggleViewInRoomButton:(BOOL)show
 {
     // Return if there is nothing to change
-    if (show == (self.viewInRoomButton != nil)) { return; }
+    if (show == (self.viewInRoomButton != nil)) {
+        return;
+    }
 
     if (show) {
         self.viewInRoomButton = [self newViewInRoomButton];
@@ -110,36 +116,37 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 - (void)toggleMapButton:(BOOL)show
 {
     // Return if there is nothing to change
-    if (show == (self.viewInMapButton != nil)) { return; }
+    if (show == (self.viewInMapButton != nil)) {
+        return;
+    }
 
     if (show) {
         self.viewInRoomButton = [self newMapButton];
-    } else  {
+    } else {
         [self.viewInMapButton removeFromSuperview];
         self.viewInMapButton = nil;
     }
-    
-    [self setNeedsUpdateConstraints];
 
+    [self setNeedsUpdateConstraints];
 }
 
 - (void)updateWithArtwork:(Artwork *)artwork andFair:(Fair *)fair
 {
     BOOL canDisplayViewInRoom = [UIDevice isPhone];
     BOOL showViewInRoom = canDisplayViewInRoom && artwork.canViewInRoom;
-    
+
     [self toggleViewInRoomButton:showViewInRoom];
-    
-    
+
+
     BOOL canDisplayMap = [UIDevice isPhone];
     if (fair && canDisplayMap) {
-        void(^revealMapButton)(NSArray *) = ^(NSArray *maps) {
+        void (^revealMapButton)(NSArray *) = ^(NSArray *maps) {
 
             BOOL showMapButton = maps.count > 0;
             [self toggleMapButton:showMapButton];
 
         };
-        
+
         if (fair.maps.count > 0) {
             revealMapButton(fair.maps);
         } else {
@@ -151,21 +158,21 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 - (void)updateConstraints
 {
     [super updateConstraints];
-    
+
     [self removeConstraints:self.constraints];
 
     NSMutableArray *buttons = [NSMutableArray array];
-    
+
     if (self.viewInMapButton) {
         [buttons addObject:self.viewInMapButton];
     }
-    
+
     if (self.viewInRoomButton) {
         [buttons addObject:self.viewInRoomButton];
     }
-    
-    [buttons addObjectsFromArray:@[self.favoriteButton, self.shareButton]];
-    
+
+    [buttons addObjectsFromArray:@[ self.favoriteButton, self.shareButton ]];
+
     if (buttons.count > 0) {
         [UIView spaceOutViewsHorizontally:buttons predicate:@(ARArtworkActionButtonSpacing).stringValue];
         [(UIView *)[buttons firstObject] alignLeadingEdgeWithView:self predicate:@"0"];
@@ -176,7 +183,7 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 
 - (CGSize)intrinsicContentSize
 {
-    return (CGSize) { UIViewNoIntrinsicMetric , 48 };
+    return (CGSize){UIViewNoIntrinsicMetric, 48};
 }
 
 @end

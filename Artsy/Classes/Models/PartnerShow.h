@@ -2,6 +2,7 @@
 
 @class Partner, Fair, MapPoint, PartnerShowFairLocation, PartnerShowCoordinates, Location;
 
+
 @interface PartnerShow : MTLModel <MTLJSONSerializing, ARShareableObject>
 
 @property (nonatomic, strong, readonly) Partner *partner;

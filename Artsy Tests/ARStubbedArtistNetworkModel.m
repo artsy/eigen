@@ -1,5 +1,6 @@
 #import "ARStubbedArtistNetworkModel.h"
 
+
 @implementation ARStubbedArtistNetworkModel
 
 - (void)getArtistInfoWithSuccess:(void (^)(Artist *artist))success failure:(void (^)(NSError *error))failure

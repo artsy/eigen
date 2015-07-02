@@ -1,6 +1,7 @@
 #import "ARRouter.h"
 #import "ArtsyAPI+Private.h"
 
+
 @implementation ArtsyAPI (Following)
 
 + (void)setFavoriteStatus:(BOOL)status
@@ -39,7 +40,7 @@
 #pragma mark - Artist
 
 + (void)setFavoriteStatus:(BOOL)status
-               forArtist:(Artist *)artist
+                forArtist:(Artist *)artist
                   success:(void (^)(id response))success
                   failure:(void (^)(NSError *error))failure
 {
@@ -64,7 +65,7 @@
 
 + (void)unFollowArtist:(Artist *)artist
                success:(void (^)(id response))success
-             failure:(void (^)(NSError *error))failure
+               failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newUnfollowArtistRequest:artist];
     [self performRequest:request success:success failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
@@ -76,7 +77,7 @@
 
 + (void)checkFavoriteStatusForArtist:(Artist *)artist
                              success:(void (^)(BOOL result))success
-                              failure:(void (^)(NSError *error))failure
+                             failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newFollowingRequestForArtist:artist];
     [self performRequest:request success:^(NSArray *response) {
@@ -109,8 +110,8 @@
 }
 
 + (void)followGene:(Gene *)gene
-          success:(void (^)(id response))success
-             failure:(void (^)(NSError *error))failure
+           success:(void (^)(id response))success
+           failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newFollowGeneRequest:gene];
     [self performRequest:request success:success failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {

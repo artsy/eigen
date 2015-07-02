@@ -6,12 +6,13 @@
 /// a timeline that makes it easy to deal with showing the data using
 /// a tableview.
 
+
 @interface ARFeedTimeline : NSObject
 
 - (id)initWithFeed:(ARFeed *)feed;
 - (ARFeedItem *)itemAtIndex:(NSInteger)index;
-- (void)getNewItems:(void(^)())success failure:(void (^)(NSError *error))failure;
-- (void)getNextPage:(void(^)())success failure:(void (^)(NSError *error))failure completion:(void(^)())completion;
+- (void)getNewItems:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)getNextPage:(void (^)())success failure:(void (^)(NSError *error))failure completion:(void (^)())completion;
 - (void)removeAllItems;
 
 @property (nonatomic, assign) BOOL hasNext;

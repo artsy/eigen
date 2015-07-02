@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStageNotes
 };
 
+
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 @property (nonatomic, assign) BOOL showBackgroundImage;
@@ -49,7 +50,9 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 - (instancetype)initWithState:(enum ARInitialOnboardingState)state
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.navigationBarHidden = YES;
     self.delegate = self;
@@ -65,13 +68,14 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     self.view.tintColor = [UIColor artsyPurple];
 
 
-    self.screenSwipeGesture = [[UIScreenEdgePanGestureRecognizer alloc]  initWithTarget:self action:@selector(edgeSwiped:)];
+    self.screenSwipeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgeSwiped:)];
     self.screenSwipeGesture.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:self.screenSwipeGesture];
 
@@ -93,8 +97,6 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
                                              selector:@selector(didBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
-
-
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -119,7 +121,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    
+
     [self createBackgroundImageView];
 
     if (self.state == AROnboardingStageSlideshow) {
@@ -141,7 +143,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     NSMutableArray *slides = [NSMutableArray array];
     NSInteger numberOfImages = [UIDevice isPad] ? 5 : 4;
-    for (int i = 1; i <= numberOfImages ; i++) {
+    for (int i = 1; i <= numberOfImages; i++) {
         NSString *file = [NSString stringWithFormat:@"splash_%d.jpg", i];
         UIImage *image = [UIImage imageNamed:file];
         [slides addObject:image];
@@ -156,7 +158,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     ARSignUpSplashViewController *splash = [[ARSignUpSplashViewController alloc] init];
     splash.delegate = self;
-    self.viewControllers = @[splash];
+    self.viewControllers = @[ splash ];
     self.state = AROnboardingStageStart;
 }
 
@@ -318,12 +320,12 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     [self dismissOnboardingWithVoidAnimation:YES];
 }
 
--(void)resetBackgroundImageView:(BOOL)animated completion:(void (^)(void))completion
+- (void)resetBackgroundImageView:(BOOL)animated completion:(void (^)(void))completion
 {
     self.backgroundWidthConstraint.constant = 0;
     self.backgroundHeightConstraint.constant = 0;
     @weakify(self);
-    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         @strongify(self);
         [self.backgroundView layoutIfNeeded];
         self.backgroundView.alpha = 1;
@@ -388,7 +390,6 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
             [self fbError];
         }
     }];
-
 }
 
 - (void)signUpWithTwitter
@@ -416,8 +417,10 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 - (void)fbError
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Facebook credentials"
-                                                                    message:@"Couldn’t get Facebook credentials. Please link a Facebook account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
-                                                                   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                                    message:@"Couldn’t get Facebook credentials. Please link a Facebook account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
     [alert show];
 }
 
@@ -425,7 +428,9 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Twitter credentials"
                                                     message:@"Couldn’t get Twitter credentials. Please link a Twitter account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
-                                                   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
     [alert show];
 }
 
@@ -466,7 +471,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     UIViewController *poppedVC = [super popViewControllerAnimated:animated];
     UIViewController *topVC = self.topViewController;
-    if (topVC == [self.viewControllers objectAtIndex:0] && [topVC isKindOfClass:ARSignUpSplashViewController.class]){
+    if (topVC == [self.viewControllers objectAtIndex:0] && [topVC isKindOfClass:ARSignUpSplashViewController.class]) {
         [self resetBackgroundImageView:animated completion:nil];
     }
     return poppedVC;
@@ -491,13 +496,12 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     NSString *viewIdentifier = [NSString humanReadableStringFromClass:[viewController class]];
     if (viewIdentifier) [ARAnalytics pageView:viewIdentifier];
-
 }
 
-- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
 {
     AROnboardingTransition *transition = [[AROnboardingTransition alloc] init];
     transition.operationType = operation;
@@ -544,7 +548,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     self.backgroundWidthConstraint.constant = offset * 2;
     self.backgroundHeightConstraint.constant = offset * 2;
     @weakify(self);
-    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         @strongify(self);
         [self.backgroundView layoutIfNeeded];
         self.backgroundView.image = blurImage;

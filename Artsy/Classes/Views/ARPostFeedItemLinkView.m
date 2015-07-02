@@ -2,12 +2,15 @@
 #import "ARPostFeedItem.h"
 #import "ARAspectRatioImageView.h"
 
+
 @implementation ARPostFeedItemLinkView
 
 - (id)initWithPostFeedItem:(ARPostFeedItem *)postFeedItem
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     [self addTarget:nil action:@selector(tappedPostFeedItemLinkView:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -57,12 +60,12 @@
 
         [postAuthorLabel constrainTopSpaceToView:postTitleLabel predicate:@"5"];
         [labelContainer alignBottomEdgeWithView:postAuthorLabel predicate:@"0"];
-        [UIView alignLeadingAndTrailingEdgesOfViews:@[postTitleLabel, postAuthorLabel, labelContainer]];
+        [UIView alignLeadingAndTrailingEdgesOfViews:@[ postTitleLabel, postAuthorLabel, labelContainer ]];
     } else {
-        [UIView alignLeadingAndTrailingEdgesOfViews:@[postTitleLabel, labelContainer]];
+        [UIView alignLeadingAndTrailingEdgesOfViews:@[ postTitleLabel, labelContainer ]];
         [labelContainer alignBottomEdgeWithView:postTitleLabel predicate:@"0"];
     };
-    [UIView alignLeadingAndTrailingEdgesOfViews:@[labelFiller, labelContainer]];
+    [UIView alignLeadingAndTrailingEdgesOfViews:@[ labelFiller, labelContainer ]];
     [labelFiller constrainTopSpaceToView:labelContainer predicate:@"0"];
 
     [self alignBottomEdgeWithView:labelFiller predicate:@"21"];
@@ -71,7 +74,7 @@
     _targetPath = NSStringWithFormat(@"/post/%@", postFeedItem.postID);
 
     NSURL *imageUrl = [NSURL URLWithString:postFeedItem.imageURL];
-    [imageView ar_setImageWithURL:imageUrl completed:(SDWebImageCompletionBlock)^{
+    [imageView ar_setImageWithURL:imageUrl completed:(SDWebImageCompletionBlock) ^ {
         [self setNeedsLayout];
         [self layoutIfNeeded];
     }];

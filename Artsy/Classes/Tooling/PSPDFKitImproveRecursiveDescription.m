@@ -25,45 +25,49 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Helper for Swizzling
 
-static BOOL PSPDFReplaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id block) {
-  NSCAssert(c && origSEL && newSEL && block, @"Expected parameters.");
-  Method origMethod = class_getInstanceMethod(c, origSEL);
-  const char *encoding = method_getTypeEncoding(origMethod);
-  
-  // Add the new method.
-  IMP impl = imp_implementationWithBlock(block);
-  if (!class_addMethod(c, newSEL, impl, encoding)) {
-    ARActionLog(@"Failed to add method: %@ on %@", NSStringFromSelector(newSEL), c);
-    return NO;
-  }else {
-    // Ensure the new selector has the same parameters as the existing selector.
-    Method newMethod = class_getInstanceMethod(c, newSEL);
-    NSCAssert(strcmp(method_getTypeEncoding(origMethod), method_getTypeEncoding(newMethod)) == 0, @"Encoding must be the same.");
-    
-    // If original doesn't implement the method we want to swizzle, create it.
-    if (class_addMethod(c, origSEL, method_getImplementation(newMethod), encoding)) {
-      class_replaceMethod(c, newSEL, method_getImplementation(origMethod), encoding);
-    }else {
-      method_exchangeImplementations(origMethod, newMethod);
+static BOOL PSPDFReplaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id block)
+{
+    NSCAssert(c && origSEL && newSEL && block, @"Expected parameters.");
+    Method origMethod = class_getInstanceMethod(c, origSEL);
+    const char *encoding = method_getTypeEncoding(origMethod);
+
+    // Add the new method.
+    IMP impl = imp_implementationWithBlock(block);
+    if (!class_addMethod(c, newSEL, impl, encoding)) {
+        ARActionLog(@"Failed to add method: %@ on %@", NSStringFromSelector(newSEL), c);
+        return NO;
+    } else {
+        // Ensure the new selector has the same parameters as the existing selector.
+        Method newMethod = class_getInstanceMethod(c, newSEL);
+        NSCAssert(strcmp(method_getTypeEncoding(origMethod), method_getTypeEncoding(newMethod)) == 0, @"Encoding must be the same.");
+
+        // If original doesn't implement the method we want to swizzle, create it.
+        if (class_addMethod(c, origSEL, method_getImplementation(newMethod), encoding)) {
+            class_replaceMethod(c, newSEL, method_getImplementation(origMethod), encoding);
+        } else {
+            method_exchangeImplementations(origMethod, newMethod);
+        }
     }
-  }
-  return YES;
+    return YES;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Improve Description of UIImage/UIImageView
 
-static inline BOOL PSPDFIsVisibleView(__unsafe_unretained UIView *view) {
-  BOOL isViewHidden = view.isHidden || view.alpha < 0.01f || CGRectIsEmpty(view.frame);
-  return !view || (PSPDFIsVisibleView(view.superview) && !isViewHidden);
+static inline BOOL PSPDFIsVisibleView(__unsafe_unretained UIView *view)
+{
+    BOOL isViewHidden = view.isHidden || view.alpha < 0.01f || CGRectIsEmpty(view.frame);
+    return !view || (PSPDFIsVisibleView(view.superview) && !isViewHidden);
 }
 
 // Following code patches UIView's description to show the class name of a view controller, if one is attached.
 // Will only get compiled for debugging. Use 'po [[UIWindow keyWindow] recursiveDescription]' to invoke.
-__attribute__((constructor)) static void PSPDFKitImproveRecursiveDescription(void) {
-  @autoreleasepool {
-    SEL descriptionSEL = NSSelectorFromString(@"pspdf_description");
-    PSPDFReplaceMethodWithBlock(UIView.class, @selector(description), descriptionSEL, ^(id self) {
+__attribute__((constructor)) static void PSPDFKitImproveRecursiveDescription(void)
+{
+    @autoreleasepool
+    {
+        SEL descriptionSEL = NSSelectorFromString(@"pspdf_description");
+        PSPDFReplaceMethodWithBlock(UIView.class, @selector(description), descriptionSEL, ^(id self) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
       NSMutableString *description = [self performSelector:descriptionSEL];
@@ -109,16 +113,18 @@ __attribute__((constructor)) static void PSPDFKitImproveRecursiveDescription(voi
         description = [NSMutableString stringWithFormat:@"XX (%@)", description];
       }
       return description;
-    });
-  }
+        });
+    }
 }
 
 // Instead of "<UIImage: 0x8b612f0>" we want "<UIImage:0x8b612f0 size:{768, 1001} scale:1 imageOrientation:0>".
 // Doesn't use any private API.
-__attribute__((constructor)) static void PSPDFKitImproveImageDescription(void) {
-  @autoreleasepool {
-    SEL descriptionSEL = NSSelectorFromString(@"pspdf_description");
-    PSPDFReplaceMethodWithBlock(UIImage.class, @selector(description), descriptionSEL, ^(UIImage *self) {
+__attribute__((constructor)) static void PSPDFKitImproveImageDescription(void)
+{
+    @autoreleasepool
+    {
+        SEL descriptionSEL = NSSelectorFromString(@"pspdf_description");
+        PSPDFReplaceMethodWithBlock(UIImage.class, @selector(description), descriptionSEL, ^(UIImage *self) {
       NSMutableString *description = [NSMutableString stringWithFormat:@"<%@: %p size:%@", self.class, self, NSStringFromCGSize(self.size)];
       if (self.scale > 1) {
         [description appendFormat:@" scale:%.0f", self.scale];
@@ -132,8 +138,8 @@ __attribute__((constructor)) static void PSPDFKitImproveImageDescription(void) {
 #else
       return [[description copy] autorelease];
 #endif
-    });
-  }
+        });
+    }
 }
 
 // Breaks on iOS >= 7

@@ -1,6 +1,6 @@
 #import "ARTheme.h"
 
-SpecBegin(ARTheme)
+SpecBegin(ARTheme);
 
 it(@"automatically loads defaultTheme", ^{
     expect([ARTheme defaultTheme]).toNot.beNil();

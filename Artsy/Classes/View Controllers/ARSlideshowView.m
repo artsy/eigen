@@ -2,11 +2,13 @@
 
 #define TRANSITION_DURATION .15
 
+
 @interface ARSlideshowView ()
 @property (nonatomic, readonly, copy) NSArray *slides;
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic) UIImageView *imageView;
 @end
+
 
 @implementation ARSlideshowView
 

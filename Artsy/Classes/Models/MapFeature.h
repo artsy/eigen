@@ -1,4 +1,4 @@
- NS_ENUM(NSInteger , ARMapFeatureType){
+NS_ENUM(NSInteger, ARMapFeatureType){
     ARMapFeatureTypeDefault,
     ARMapFeatureTypeArtsy,
     ARMapFeatureTypeDrink,
@@ -18,10 +18,10 @@
     ARMapFeatureTypeInstallation,
     ARMapFeatureTypeTransport,
     ARMapFeatureTypeGenericEvent,
-    ARMapFeatureTypeMax
-};
+    ARMapFeatureTypeMax};
 
 FOUNDATION_EXPORT NSString *NSStringFromARMapFeatureType(enum ARMapFeatureType featureType);
+
 
 @interface MapFeature : MTLModel <MTLJSONSerializing>
 

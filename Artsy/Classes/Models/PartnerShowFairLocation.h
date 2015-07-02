@@ -1,6 +1,7 @@
 #import "MapPoint.h"
 
-@interface PartnerShowFairLocation : MTLModel  <MTLJSONSerializing>
+
+@interface PartnerShowFairLocation : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *display;
 

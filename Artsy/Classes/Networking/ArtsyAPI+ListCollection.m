@@ -1,5 +1,6 @@
 #import "ArtsyAPI+Private.h"
 
+
 @implementation ArtsyAPI (ListCollection)
 
 + (void)getGenesFromPersonalCollectionCount:(void (^)(NSNumber *count))success failure:(void (^)(NSError *error))failure

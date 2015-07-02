@@ -8,16 +8,20 @@ static NSString *ARAuctionTableViewHeaderIdentifier = @"ARAuctionTableViewHeader
 
 static const NSInteger ARArtworkIndex = 0;
 
+
 @interface ARAuctionArtworkResultsViewController ()
 @property (nonatomic, copy) NSArray *auctionResults;
 @end
+
 
 @implementation ARAuctionArtworkResultsViewController
 
 - (instancetype)initWithArtwork:(Artwork *)artwork
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _artwork = artwork;
 
@@ -60,7 +64,7 @@ static const NSInteger ARArtworkIndex = 0;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSString *title = (section == ARArtworkIndex)? @"COMPARABLE AUCTION RESULTS FOR" : @"MOST SIMILAR RESULTS";
+    NSString *title = (section == ARArtworkIndex) ? @"COMPARABLE AUCTION RESULTS FOR" : @"MOST SIMILAR RESULTS";
     return [[ARPageSubTitleView alloc] initWithTitle:title];
 }
 
@@ -130,7 +134,7 @@ static const NSInteger ARArtworkIndex = 0;
 }
 
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return [UIDevice isPad];
 }

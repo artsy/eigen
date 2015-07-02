@@ -1,5 +1,6 @@
 @class ARArtworkViewController;
 
+
 @interface ARArtworkSetViewController : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
 - (instancetype)initWithArtworkID:(NSString *)artworkID;

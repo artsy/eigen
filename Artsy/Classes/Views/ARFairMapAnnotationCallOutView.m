@@ -1,6 +1,7 @@
 #import "ARFairMapAnnotationCallOutView.h"
 #import "ARShowViewController.h"
 
+
 @interface ARFairMapAnnotationCallOutView ()
 
 @property (nonatomic, strong, readonly) UILabel *partnerLocation;
@@ -17,12 +18,15 @@
 
 @end
 
+
 @implementation ARFairMapAnnotationCallOutView
 
 - (id)initOnMapView:(NAMapView *)mapView fair:(Fair *)fair
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     [self constrainHeight:@"80"];
 
@@ -120,8 +124,8 @@
     self.position = annotation.point;
 
     id representedObject = self.annotation.representedObject;
-    if([representedObject isKindOfClass:PartnerShow.class]) {
-        PartnerShow *partnerShow = (PartnerShow *) representedObject;
+    if ([representedObject isKindOfClass:PartnerShow.class]) {
+        PartnerShow *partnerShow = (PartnerShow *)representedObject;
         self.partnerImage.hidden = NO;
         [self.partnerImage setImage:self.defaultPartnerImage];
         [self.partnerImage ar_setImageWithURL:[partnerShow imageURLWithFormatName:@"square"]];
@@ -148,8 +152,8 @@
 - (void)tapped:(id)sender
 {
     id representedObject = self.annotation.representedObject;
-    if([representedObject isKindOfClass:PartnerShow.class]) {
-        PartnerShow *partnerShow = (PartnerShow *) representedObject;
+    if ([representedObject isKindOfClass:PartnerShow.class]) {
+        PartnerShow *partnerShow = (PartnerShow *)representedObject;
         ARShowViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:partnerShow fair:self.fair];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
     } else if (self.annotation.href) {

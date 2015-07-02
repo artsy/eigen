@@ -1,3 +1,5 @@
+
+
 @implementation FairOrganizer
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -11,7 +13,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         FairOrganizer *fairOrganizer = object;
         return [fairOrganizer.fairOrganizerID isEqualToString:self.fairOrganizerID];
     }

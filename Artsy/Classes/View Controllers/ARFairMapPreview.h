@@ -1,5 +1,6 @@
 #import "ARAnnotatedMapView.h"
 
+
 @interface ARFairMapPreview : ARAnnotatedMapView
 
 - (id)initWithFairMap:(Map *)map andFrame:(CGRect)frame;

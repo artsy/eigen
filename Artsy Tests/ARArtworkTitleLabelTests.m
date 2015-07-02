@@ -1,6 +1,6 @@
 #import "ARCustomEigenLabels.h"
 
-SpecBegin(ARArtworkTitleLabel)
+SpecBegin(ARArtworkTitleLabel);
 
 __block ARArtworkTitleLabel *titleLabel;
 

@@ -1,5 +1,6 @@
 #import "ARNavigationButtonsViewController.h"
 
+
 @interface ARFeedLinkUnitViewController : ARNavigationButtonsViewController
 
 /// Fetch the required links, and will call the completion block multiple times

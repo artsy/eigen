@@ -4,6 +4,7 @@
 /// Has a corrosponding push animation: ARViewInRoomTransition which handles
 /// switching to and from both versions.
 
+
 @interface ARViewInRoomViewController : UIViewController <ARMenuAwareViewController>
 
 + (UIImageView *)imageViewForFramedArtwork;

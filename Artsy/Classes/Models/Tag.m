@@ -1,3 +1,5 @@
+
+
 @implementation Tag
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -10,7 +12,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         Tag *tag = object;
         return [tag.tagID isEqualToString:self.tagID];
     }

@@ -1,7 +1,9 @@
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
 
-@interface ARBrowseFeaturedLinksCollectionViewCell()
+
+@interface ARBrowseFeaturedLinksCollectionViewCell ()
 @end
+
 
 @implementation ARBrowseFeaturedLinksCollectionViewCell
 

@@ -1,8 +1,11 @@
 #import "AROnboardingTableViewCell.h"
 
-@interface AROnboardingTableViewCell()
+
+@interface AROnboardingTableViewCell ()
 @property (nonatomic) BOOL centerFixed;
 @end
+
+
 @implementation AROnboardingTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

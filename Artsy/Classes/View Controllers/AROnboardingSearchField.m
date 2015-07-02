@@ -1,9 +1,11 @@
 #import "AROnboardingSearchField.h"
 #define CLEAR_BUTTON_TAG 0xbada55
 
+
 @interface AROnboardingSearchField ()
 @property (nonatomic, assign) BOOL swizzledClear;
 @end
+
 
 @implementation AROnboardingSearchField
 
@@ -48,7 +50,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    UIButton *button = (UIButton  *)[self viewWithTag:CLEAR_BUTTON_TAG];
+    UIButton *button = (UIButton *)[self viewWithTag:CLEAR_BUTTON_TAG];
     if (button) {
         button.center = CGPointMake(button.center.x, button.center.y - 3);
     }

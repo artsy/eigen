@@ -1,6 +1,7 @@
 #import "ARHTTPRequestOperationLogger.h"
 #import <objc/runtime.h>
 
+
 @implementation ARHTTPRequestOperationLogger
 
 - (id)init
@@ -15,7 +16,8 @@
     return self;
 }
 
-- (void)HTTPOperationDidStart:(NSNotification *)notification {
+- (void)HTTPOperationDidStart:(NSNotification *)notification
+{
     AFHTTPRequestOperation *operation = (AFHTTPRequestOperation *)[notification object];
 
     if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
@@ -41,16 +43,17 @@
 {
     if ([operation.request HTTPBody]) {
         NSLog(@"[Operation Start] %@ '%@': %@ %@",
-                                       [operation.request HTTPMethod],
-                                       [[operation.request URL] absoluteString],
-                                       [operation.request allHTTPHeaderFields],
-                                       [[NSString alloc] initWithData:[operation.request HTTPBody] encoding:NSUTF8StringEncoding]);
+              [operation.request HTTPMethod],
+              [[operation.request URL] absoluteString],
+              [operation.request allHTTPHeaderFields],
+              [[NSString alloc] initWithData:[operation.request HTTPBody] encoding:NSUTF8StringEncoding]);
     }
 }
 
-static void * AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate;
+static void *AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate;
 
-- (void)HTTPOperationDidFinish:(NSNotification *)notification {
+- (void)HTTPOperationDidFinish:(NSNotification *)notification
+{
     AFHTTPRequestOperation *operation = (AFHTTPRequestOperation *)[notification object];
 
     if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {

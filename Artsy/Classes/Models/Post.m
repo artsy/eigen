@@ -1,3 +1,5 @@
+
+
 @implementation Post
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -10,7 +12,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         Post *post = object;
         return [post.postID isEqualToString:self.postID];
     }

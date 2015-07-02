@@ -3,6 +3,7 @@
 /// A cell for showing an auction result, either from an artwork
 /// or from a auction lot.
 
+
 @interface ARAuctionArtworkTableViewCell : UITableViewCell
 
 /// provides the cell with updated information from a lot

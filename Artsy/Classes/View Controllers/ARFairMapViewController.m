@@ -11,6 +11,7 @@
 #import "ARGeneViewController.h"
 #import "ARSearchFieldButton.h"
 
+
 @interface ARFairMapViewController () <NAMapViewDelegate, ARFairSearchViewControllerDelegate, ARSearchFieldButtonDelegate>
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong, readwrite) ARFairMapView *mapView;
@@ -23,12 +24,15 @@
 @property (nonatomic, readonly, strong) NSString *selectedTitle;
 @end
 
+
 @implementation ARFairMapViewController
 
 - (id)initWithFair:(Fair *)fair
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _fair = fair;
 
@@ -42,7 +46,9 @@
 - (id)initWithFair:(Fair *)fair title:(NSString *)title selectedPartnerShows:(NSArray *)selectedPartnerShows
 {
     self = [self initWithFair:fair];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _selectedTitle = title;
     _selectedPartnerShows = selectedPartnerShows;
@@ -52,8 +58,7 @@
 
 - (void)dealloc
 {
-    if (_mapShowMapper)
-    {
+    if (_mapShowMapper) {
         [_fair removeObserver:_mapShowMapper forKeyPath:@keypath(Fair.new, shows)];
         [_fair removeObserver:self forKeyPath:@keypath(Fair.new, shows)];
     }
@@ -238,7 +243,7 @@
     [self.mapView bringSubviewToFront:self.calloutView];
     self.calloutView.hidden = NO;
 
-    [UIView animateIf:animated duration:0.1f :^{
+    [UIView animateIf:animated duration:0.1f:^{
         self.calloutView.transform = CGAffineTransformIdentity;
     }];
 }

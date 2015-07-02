@@ -1,9 +1,9 @@
 #import "ARAspectRatioImageView.h"
 #import "UIImage+ImageFromColor.h"
 
-SpecBegin(ARAspectRatioImageView)
+SpecBegin(ARAspectRatioImageView);
 
-__block ARAspectRatioImageView * view = nil;
+__block ARAspectRatioImageView *view = nil;
 
 describe(@"intrinsicContentSize", ^{
 
@@ -33,4 +33,3 @@ describe(@"intrinsicContentSize", ^{
 });
 
 SpecEnd
-

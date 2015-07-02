@@ -11,6 +11,7 @@
 
 @class ARArtworkMetadataView;
 
+
 @interface ARArtworkMetadataView : UIView
 
 - (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair;

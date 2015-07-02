@@ -4,10 +4,11 @@
 /// to deal with different layouts for a collection of items
 
 // Presentation styles used by artwork-specific subclasses.
-typedef NS_ENUM(NSInteger, AREmbeddedArtworkPresentationStyle){
+typedef NS_ENUM(NSInteger, AREmbeddedArtworkPresentationStyle) {
     AREmbeddedArtworkPresentationStyleArtworkOnly,
     AREmbeddedArtworkPresentationStyleArtworkMetadata
 };
+
 
 @interface ARModelCollectionViewModule : NSObject
 
@@ -27,6 +28,6 @@ typedef NS_ENUM(NSInteger, AREmbeddedArtworkPresentationStyle){
 /// If the module should support some form of paging this function is necessary
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset;
 
--(ARFeedItemImageSize)imageSize;
+- (ARFeedItemImageSize)imageSize;
 
 @end

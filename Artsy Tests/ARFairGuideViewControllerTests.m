@@ -2,6 +2,7 @@
 #import "ARFairGuideViewController.h"
 #import "ARSwitchBoard.h"
 
+
 @interface ARFairGuideViewController (Testing)
 
 - (void)userDidLoginOrSignUp;
@@ -9,7 +10,7 @@
 @property (nonatomic, strong) User *currentUser;
 @end
 
-SpecBegin(ARFairGuideViewController)
+SpecBegin(ARFairGuideViewController);
 
 __block ARFairGuideViewController *fairGuideVC = nil;
 

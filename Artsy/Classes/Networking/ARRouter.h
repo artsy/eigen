@@ -1,3 +1,5 @@
+
+
 @interface ARRouter : NSObject
 
 + (void)setup;
@@ -166,7 +168,7 @@
 #pragma mark - Misc Site
 
 + (NSURLRequest *)newSiteHeroUnitsRequest;
-+ (NSURLRequest *)newForgotPasswordRequestWithEmail:(NSString  *)email;
++ (NSURLRequest *)newForgotPasswordRequestWithEmail:(NSString *)email;
 + (NSURLRequest *)newSiteFeaturesRequest;
 + (NSURLRequest *)newSetDeviceAPNTokenRequest:(NSString *)token forDevice:(NSString *)device;
 + (NSURLRequest *)newUptimeURLRequest;

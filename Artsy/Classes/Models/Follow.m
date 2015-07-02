@@ -1,3 +1,5 @@
+
+
 @implementation Follow
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -19,7 +21,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         Follow *follow = object;
         return [follow.followID isEqualToString:self.followID];
     }
@@ -33,4 +35,3 @@
 }
 
 @end
-

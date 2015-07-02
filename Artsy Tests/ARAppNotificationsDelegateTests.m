@@ -5,7 +5,7 @@
 #import "ARNotificationView.h"
 #import "ARTopMenuViewController.h"
 
-SpecBegin(ARAppNotificationsDelegate)
+SpecBegin(ARAppNotificationsDelegate);
 
 describe(@"receiveRemoteNotification", ^{
 
@@ -156,4 +156,3 @@ describe(@"receiveRemoteNotification", ^{
 });
 
 SpecEnd
-

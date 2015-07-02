@@ -1,6 +1,6 @@
 #import "NSDate+DateRange.h"
 
-SpecBegin(NSDateRange)
+SpecBegin(NSDateRange);
 
 it(@"ordinals correctly", ^{
     expect([NSDate ordinalForDay:22]).to.equal(@"nd");

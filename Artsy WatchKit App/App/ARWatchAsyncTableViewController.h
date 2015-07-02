@@ -2,6 +2,7 @@
 
 @class WKInterfaceTable;
 
+
 @interface ARWatchAsyncTableViewController : NSObject
 
 - (instancetype)initWithTableView:(WKInterfaceTable *)table dataArray:(NSArray *)array;

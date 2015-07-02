@@ -6,6 +6,7 @@
 /// Gets the notification for outbids
 /// TODO: Figure how to make this just for that notification
 
+
 @interface NotificationController : WKUserNotificationInterfaceController
 
 /// Provides a way to communicate between a notification controller and

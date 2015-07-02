@@ -1,5 +1,6 @@
 static NSNumberFormatter *dollarFormatter;
 
+
 @implementation SaleArtwork
 
 + (void)initialize
@@ -101,7 +102,7 @@ static NSNumberFormatter *dollarFormatter;
 
 - (NSString *)dollarsFromCents:(NSNumber *)cents
 {
-    NSNumber *dollars = @(roundf(cents.floatValue / 100)) ;
+    NSNumber *dollars = @(roundf(cents.floatValue / 100));
 
     if ([dollars integerValue] == 0) {
         return @"$0";
@@ -139,7 +140,7 @@ static NSNumberFormatter *dollarFormatter;
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         SaleArtwork *saleArtwork = object;
         return [saleArtwork.saleArtworkID isEqualToString:self.saleArtworkID];
     }

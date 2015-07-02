@@ -4,13 +4,15 @@
 #import "ARArtworkWithMetadataThumbnailCell.h"
 #import "UIViewController+InnermostTopViewController.h"
 
-@interface ARArtworkMasonryModule()
+
+@interface ARArtworkMasonryModule ()
 @property (nonatomic, strong) ARCollectionViewMasonryLayout *moduleLayout;
 @property (nonatomic, assign) enum AREmbeddedArtworkPresentationStyle style;
-@property (nonatomic, assign, getter = isHorizontal) BOOL horizontalOrientation;
+@property (nonatomic, assign, getter=isHorizontal) BOOL horizontalOrientation;
 @property (nonatomic, readonly, strong) ARReusableLoadingView *loadingView;
 @property (nonatomic, readwrite) BOOL useLandscapeValues;
 @end
+
 
 @implementation ARArtworkMasonryModule
 
@@ -84,7 +86,7 @@
 
         case ARArtworkMasonryLayout2Column:
             // On iPad, the 2-column layout is only used in portrait mode.
-            return [UIDevice isPad] ? 315 : shortestDimension/2 -30;
+            return [UIDevice isPad] ? 315 : shortestDimension / 2 - 30;
 
         case ARArtworkMasonryLayout3Column:
             // The 3-column layout is only used on iPad.
@@ -124,18 +126,19 @@
     }
 }
 
-+ (UIEdgeInsets)edgeInsetsForlayout:(ARArtworkMasonryLayout)layout {
++ (UIEdgeInsets)edgeInsetsForlayout:(ARArtworkMasonryLayout)layout
+{
     CGFloat inset = [UIDevice isPad] ? 50 : 20;
     switch (layout) {
         case ARArtworkMasonryLayout1Column:
         case ARArtworkMasonryLayout2Column:
         case ARArtworkMasonryLayout3Column:
         case ARArtworkMasonryLayout4Column:
-            return (UIEdgeInsets){ 20, 0, 20, 0 };
+            return (UIEdgeInsets){20, 0, 20, 0};
 
         case ARArtworkMasonryLayout1Row:
         case ARArtworkMasonryLayout2Row:
-            return (UIEdgeInsets){ 0, inset, 0, inset };
+            return (UIEdgeInsets){0, inset, 0, inset};
     }
 }
 
@@ -162,12 +165,12 @@
         NSMutableArray *lengths = [NSMutableArray array];
         for (Artwork *artwork in self.items) {
             CGFloat itemLength = [self.class variableDimensionForItem:artwork style:self.style layout:self.layout useLandscapeValues:self.useLandscapeValues];
-            [lengths addObject:@( itemLength )];
+            [lengths addObject:@(itemLength)];
         }
 
         height = [self.moduleLayout longestDimensionWithLengths:lengths withOppositeDimension:width];
     }
-    return (CGSize){ width, height };
+    return (CGSize){width, height};
 }
 
 - (Class)classForCell
@@ -236,7 +239,6 @@
             break;
     }
     return variableDimension;
-
 }
 
 + (CGSize)itemMarginsforLayout:(ARArtworkMasonryLayout)layout
@@ -245,33 +247,33 @@
         case ARArtworkMasonryLayout1Column:
         case ARArtworkMasonryLayout2Column:
             if ([UIDevice isPad]) {
-                return (CGSize){ 38, 38 };
+                return (CGSize){38, 38};
             }
         case ARArtworkMasonryLayout3Column:
             if ([UIDevice isPad]) {
                 UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
-                    return (CGSize){ 42, 42 };
+                    return (CGSize){42, 42};
                 } else {
-                    return (CGSize){ 34, 34 };
+                    return (CGSize){34, 34};
                 }
             }
         case ARArtworkMasonryLayout4Column:
             if ([UIDevice isPad]) {
-                return (CGSize){ 28, 28 };
+                return (CGSize){28, 28};
             }
 
         case ARArtworkMasonryLayout2Row:
         case ARArtworkMasonryLayout1Row:
-            return (CGSize){ 15, 15 };
+            return (CGSize){15, 15};
     }
-
 }
 
-- (ARCollectionViewMasonryLayoutDirection)direction {
+- (ARCollectionViewMasonryLayoutDirection)direction
+{
     return (self.isHorizontal) ?
-        ARCollectionViewMasonryLayoutDirectionHorizontal
-      : ARCollectionViewMasonryLayoutDirectionVertical;
+        ARCollectionViewMasonryLayoutDirectionHorizontal :
+        ARCollectionViewMasonryLayoutDirectionVertical;
 }
 
 - (ARFeedItemImageSize)imageSize

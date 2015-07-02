@@ -4,10 +4,11 @@ NSInteger const ARSwitchViewFavoriteCategoriesIndex = 2;
 
 #import "ARSwitchView+Favorites.h"
 
+
 @implementation ARSwitchView (Favorites)
 
 + (NSArray *)favoritesButtonsTitlesArray
 {
-    return @[@"ARTWORKS", @"ARTISTS", @"CATEGORIES"];
+    return @[ @"ARTWORKS", @"ARTISTS", @"CATEGORIES" ];
 }
 @end

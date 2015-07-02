@@ -1,10 +1,10 @@
 #import "ARSwitchView.h"
 
-SpecBegin(ARSwitchView)
+SpecBegin(ARSwitchView);
 
 __block NSArray *titles;
 
-it (@"looks correct configured with two buttons", ^{
+it(@"looks correct configured with two buttons", ^{
     titles = @[@"First title", @"Second Title"];
 
     ARSwitchView *switchView = [[ARSwitchView alloc] initWithButtonTitles:titles];
@@ -14,7 +14,7 @@ it (@"looks correct configured with two buttons", ^{
     expect(switchView).to.haveValidSnapshot();
 });
 
-it (@"accepts any number of items", ^{
+it(@"accepts any number of items", ^{
     NSArray *titles = @[@"First title", @"Second Title", @"Third Title", @"Forth Title"];
 
     ARSwitchView *switchView = [[ARSwitchView alloc] initWithButtonTitles:titles];
@@ -24,7 +24,7 @@ it (@"accepts any number of items", ^{
     expect(switchView).to.haveValidSnapshot();
 });
 
-it (@"adjusts buttons to any switch width", ^{
+it(@"adjusts buttons to any switch width", ^{
     NSArray *titles = @[@"First title", @"Second Title", @"Third Title", @"Forth Title"];
 
     ARSwitchView *switchView = [[ARSwitchView alloc] initWithButtonTitles:titles];

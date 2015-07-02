@@ -7,15 +7,18 @@
 #import "ARFairViewController.h"
 #import "ARInternalMobileWebViewController.h"
 
+
 @interface ARProfileViewControllerTestsConcreteLayoutGuide : NSObject <UILayoutSupport>
 
 @property (nonatomic, assign) CGFloat length;
 
 @end
 
+
 @implementation ARProfileViewControllerTestsConcreteLayoutGuide
 
 @end
+
 
 @interface ARProfileViewController (Private)
 
@@ -25,7 +28,7 @@
 
 @end
 
-SpecBegin(ARProfileViewController)
+SpecBegin(ARProfileViewController);
 
 NSString *profileID = @"id";
 

@@ -18,17 +18,19 @@
 #import "ARFairArtistViewController.h"
 #import "ARFairGuideContainerViewController.h"
 
-@interface ARSwitchBoard(Tests)
-- (NSURL *) resolveRelativeUrl:(NSString *)path;
+
+@interface ARSwitchBoard (Tests)
+- (NSURL *)resolveRelativeUrl:(NSString *)path;
 - (id)routeInternalURL:(NSURL *)url fair:(Fair *)fair;
-- (void) openURLInExternalService:(NSURL *)url;
+- (void)openURLInExternalService:(NSURL *)url;
 @end
 
-@interface ARProfileViewController(Tests)
+
+@interface ARProfileViewController (Tests)
 - (void)showViewController:(UIViewController *)viewController;
 @end
 
-SpecBegin(ARSwitchBoard)
+SpecBegin(ARSwitchBoard);
 
 __block ARSwitchBoard *switchboard;
 

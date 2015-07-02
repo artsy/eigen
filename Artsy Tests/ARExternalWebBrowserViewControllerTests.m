@@ -1,11 +1,12 @@
 #import "ARExternalWebBrowserViewController.h"
 #import "ARScrollNavigationChief.h"
 
-@interface ARExternalWebBrowserViewController(Tests)
+
+@interface ARExternalWebBrowserViewController (Tests)
 @property (readonly, nonatomic, strong) UIWebView *webView;
 @end
 
-SpecBegin(ARExternalWebBrowserViewController)
+SpecBegin(ARExternalWebBrowserViewController);
 
 __block ARExternalWebBrowserViewController *vc;
 

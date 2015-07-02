@@ -1,8 +1,9 @@
 #import <NAMapKit/NAAnnotation.h>
 
-@interface ARFairMapAnnotation : NAAnnotation<NSCopying>
 
--(id)initWithPoint:(CGPoint)point representedObject:(id)representedObject;
+@interface ARFairMapAnnotation : NAAnnotation <NSCopying>
+
+- (id)initWithPoint:(CGPoint)point representedObject:(id)representedObject;
 
 @property (nonatomic, strong) id representedObject;
 @property (nonatomic, readonly) enum ARMapFeatureType featureType;

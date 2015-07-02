@@ -11,6 +11,7 @@
 @property (nonatomic) UIImageView *backgroundView;
 @end
 
+
 @implementation ARSignupViewController
 
 - (void)viewDidLoad
@@ -38,7 +39,7 @@
     ARTermsAndConditionsView *label = [[ARTermsAndConditionsView alloc] init];
     [label constrainWidth:@"280"];
 
-    [@[self.facebook, self.twitter, self.email, label] each:^(UIView *view) {
+    [@[ self.facebook, self.twitter, self.email, label ] each:^(UIView *view) {
         [self.view addSubview:view];
         [view alignCenterXWithView:self.view predicate:nil];
     }];

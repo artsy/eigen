@@ -1,3 +1,5 @@
+
+
 @implementation BidderPosition
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -21,7 +23,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         BidderPosition *bidderPosition = object;
         return [bidderPosition.bidderPositionID isEqualToString:self.bidderPositionID];
     }

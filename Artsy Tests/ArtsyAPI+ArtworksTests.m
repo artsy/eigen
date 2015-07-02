@@ -1,7 +1,7 @@
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Artworks.h"
 
-SpecBegin(ArtsyAPIArtworks)
+SpecBegin(ArtsyAPIArtworks);
 
 describe(@"relatedFairs", ^{
     it(@"filters out fairs that do not have an organizer or profile", ^{
@@ -50,4 +50,3 @@ describe(@"relatedFairs", ^{
 });
 
 SpecEnd
-

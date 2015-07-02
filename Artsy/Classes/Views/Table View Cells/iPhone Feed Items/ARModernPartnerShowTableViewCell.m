@@ -9,7 +9,8 @@ static const CGFloat ARPartnerShowCellBottomMargin = 30;
 static CGFloat pregeneratedMargins = 0;
 static CGFloat ARPartnerShowCellSideMargin;
 
-@interface ARModernPartnerShowTableViewCell() <AREmbeddedModelsDelegate>
+
+@interface ARModernPartnerShowTableViewCell () <AREmbeddedModelsDelegate>
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworkThumbnailsVC;
 
 @property (nonatomic, strong) ORStackView *stackView;
@@ -22,6 +23,7 @@ static CGFloat ARPartnerShowCellSideMargin;
 
 @end
 
+
 @implementation ARModernPartnerShowTableViewCell
 
 + (void)initialize
@@ -32,14 +34,16 @@ static CGFloat ARPartnerShowCellSideMargin;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass(self.class)];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     ARTheme *theme = [ARTheme themeNamed:@"ShowFeed"];
     ARThemeLayoutVendor *layout = [theme layout];
 
     // on iOS7 this is a UITableViewCellScrollView, but on iOS8
     if ([self.contentView.superview isKindOfClass:[UIScrollView class]]) {
-        UIScrollView *contentViewSuperview = (UIScrollView *) self.contentView.superview;
+        UIScrollView *contentViewSuperview = (UIScrollView *)self.contentView.superview;
         contentViewSuperview.scrollEnabled = NO;
     }
 
@@ -63,12 +67,12 @@ static CGFloat ARPartnerShowCellSideMargin;
 
     // Subtract one on the bottom because the separatorView's height is 1.
     [_stackView alignToView:self];
-    [_stackView addSubview:_partnerNameLabel withTopMargin:layout[@"FeedItemTopMargin"] sideMargin:@(ARPartnerShowCellSideMargin *2).stringValue];
+    [_stackView addSubview:_partnerNameLabel withTopMargin:layout[@"FeedItemTopMargin"] sideMargin:@(ARPartnerShowCellSideMargin * 2).stringValue];
 
-    [_stackView addSubview:_titleLabel withTopMargin:layout[@"ShowFeedItemShowTitleTopMargin"] sideMargin:@(ARPartnerShowCellSideMargin *2).stringValue];
-    [_stackView addSubview:_ausstellungsdauerLabel withTopMargin:layout[@"ShowFeedItemSubtitleTopMargin"] sideMargin:@(ARPartnerShowCellSideMargin *2).stringValue];
+    [_stackView addSubview:_titleLabel withTopMargin:layout[@"ShowFeedItemShowTitleTopMargin"] sideMargin:@(ARPartnerShowCellSideMargin * 2).stringValue];
+    [_stackView addSubview:_ausstellungsdauerLabel withTopMargin:layout[@"ShowFeedItemSubtitleTopMargin"] sideMargin:@(ARPartnerShowCellSideMargin * 2).stringValue];
     [_stackView addSubview:_artworkThumbnailsVC.view withTopMargin:layout[@"ShowFeedItemArtworksTopMargin"] sideMargin:nil];
-    [_stackView addSubview:_separatorView withTopMargin:@(ARPartnerShowCellBottomMargin - 1).stringValue sideMargin:@(ARPartnerShowCellSideMargin *2).stringValue];
+    [_stackView addSubview:_separatorView withTopMargin:@(ARPartnerShowCellBottomMargin - 1).stringValue sideMargin:@(ARPartnerShowCellSideMargin * 2).stringValue];
 
     UITapGestureRecognizer *goToPartnerTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openPartner:)];
     [_partnerNameLabel addGestureRecognizer:goToPartnerTapGesture];
@@ -111,7 +115,7 @@ static CGFloat ARPartnerShowCellSideMargin;
     CGSize size = [partnerName ar_sizeWithFont:theme.fonts[@"FeedHeaderTitle"] constrainedToSize:CGSizeMake(width, MAXFLOAT)];
     height += size.height;
 
-    NSString *title = [item.subtitle stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *title = [item.subtitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     size = [title ar_sizeWithFont:theme.fonts[@"FeedHeaderTitle"] constrainedToSize:CGSizeMake(width, MAXFLOAT)];
     height += size.height;
 
@@ -153,7 +157,7 @@ static CGFloat ARPartnerShowCellSideMargin;
     self.show = item;
     self.partnerNameLabel.text = item.title;
     self.titleLabel.text = [item.subtitle stringByTrimmingCharactersInSet:
-                            [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                                              [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     self.ausstellungsdauerLabel.text = [self.class subtitleForItem:feedItem];
 
     BOOL useMasonry = [[self class] shouldUseMultipleRowsForItem:item];
@@ -188,7 +192,6 @@ static CGFloat ARPartnerShowCellSideMargin;
 - (void)openPartner:(UITapGestureRecognizer *)gesture
 {
     if ([AROptions boolForOption:AROptionsTappingPartnerSendsToPartner]) {
-
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPartnerWithID:self.show.partner.partnerID];
         [self.delegate modernPartnerShowTableViewCell:self shouldShowViewController:(id)viewController];
 

@@ -3,24 +3,25 @@
 #import "OHHTTPStubs+JSON.h"
 #import "ARRouter.h"
 
-@implementation OHHTTPStubs(JSON)
 
-+(void)stubJSONResponseAtPath:(NSString *)path withResponse:(id)response
+@implementation OHHTTPStubs (JSON)
+
++ (void)stubJSONResponseAtPath:(NSString *)path withResponse:(id)response
 {
     [OHHTTPStubs stubJSONResponseAtPath:path withResponse:response andStatusCode:200];
 }
 
-+(void)stubJSONResponseAtPath:(NSString *)path withResponse:(id)response andStatusCode:(NSInteger)code;
++ (void)stubJSONResponseAtPath:(NSString *)path withResponse:(id)response andStatusCode:(NSInteger)code;
 {
     [OHHTTPStubs stubJSONResponseAtPath:path withParams:nil withResponse:response andStatusCode:code];
 }
 
-+(void)stubJSONResponseAtPath:(NSString *)path withParams:(NSDictionary *)params withResponse:(id)response
++ (void)stubJSONResponseAtPath:(NSString *)path withParams:(NSDictionary *)params withResponse:(id)response
 {
     [OHHTTPStubs stubJSONResponseAtPath:path withParams:params withResponse:response andStatusCode:200];
 }
 
-+(void)stubJSONResponseAtPath:(NSString *)path withParams:(NSDictionary *)params withResponse:(id)response andStatusCode:(NSInteger)code
++ (void)stubJSONResponseAtPath:(NSString *)path withParams:(NSDictionary *)params withResponse:(id)response andStatusCode:(NSInteger)code
 {
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         NSURLComponents *requestComponents = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:NO];

@@ -3,15 +3,16 @@
 // Human-readable context names for file loggers
 static const NSDictionary *contextMap;
 
+
 @implementation ARLogFormatter
 
 + (void)initialize
 {
     contextMap = @{
-       @(ARLogContextRequestOperation): @"Network",
-       @(ARLogContextAction): @"Action",
-       @(ARLogContextError): @"Error",
-       @(ARLogContextInfo): @"Info"
+        @(ARLogContextRequestOperation) : @"Network",
+        @(ARLogContextAction) : @"Action",
+        @(ARLogContextError) : @"Error",
+        @(ARLogContextInfo) : @"Info"
     };
 }
 

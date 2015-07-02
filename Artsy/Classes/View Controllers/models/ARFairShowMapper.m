@@ -1,6 +1,7 @@
 #import "ARFairShowMapper.h"
 
-@interface ARFairShowMapper()
+
+@interface ARFairShowMapper ()
 @property (readwrite, nonatomic, copy) NSSet *highlightedShows;
 @property (readwrite, nonatomic, copy) NSSet *shows;
 @property (readonly, nonatomic, assign) CGFloat overlappingZoomLevel;
@@ -10,12 +11,15 @@
 @property (nonatomic, readonly, strong) NSMapTable *partnerToShowsMap;
 @end
 
+
 @implementation ARFairShowMapper
 
 - (id)initWithMapView:(ARAnnotatedMapView *)mapView map:(Map *)map imageSize:(CGSize)imageSize
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _mapView = mapView;
     _map = map;
@@ -183,26 +187,32 @@
         [self zoomToPoint:points.firstObject animated:animated];
 
     } else {
-
         CGPoint topLeft = CGPointMake(FLT_MAX, FLT_MAX);
         CGPoint bottomRight = CGPointMake(-FLT_MAX, -FLT_MAX);
 
         for (MapPoint *point in points) {
             CGPoint coordinates = [point coordinateOnImage:self.map.image];
 
-            if (topLeft.x > coordinates.x) { topLeft.x = coordinates.x; }
-            if (topLeft.y > coordinates.y) { topLeft.y = coordinates.y; }
+            if (topLeft.x > coordinates.x) {
+                topLeft.x = coordinates.x;
+            }
+            if (topLeft.y > coordinates.y) {
+                topLeft.y = coordinates.y;
+            }
 
-            if (bottomRight.x < coordinates.x) { bottomRight.x = coordinates.x; }
-            if (bottomRight.y < coordinates.y) { bottomRight.y = coordinates.y; }
+            if (bottomRight.x < coordinates.x) {
+                bottomRight.x = coordinates.x;
+            }
+            if (bottomRight.y < coordinates.y) {
+                bottomRight.y = coordinates.y;
+            }
         }
 
         CGPoint centerPoint = (CGPoint){
-            .x = topLeft.x + ((bottomRight.x - topLeft.x)/2),
-            .y = topLeft.y + ((bottomRight.y - topLeft.y)/2)
-        };
+            .x = topLeft.x + ((bottomRight.x - topLeft.x) / 2),
+            .y = topLeft.y + ((bottomRight.y - topLeft.y) / 2)};
 
-        if(animated){
+        if (animated) {
             [UIView animateWithDuration:0.5 animations:^{
                 [self.mapView centerOnPoint:centerPoint animated:NO];
                 [self.mapView setZoomScale:self.mapView.minimumZoomScale animated:NO];
@@ -396,12 +406,12 @@
     return nil;
 }
 
--(NSEnumerator *)annotationViews
+- (NSEnumerator *)annotationViews
 {
     return [self.annotationsToAnnotationViews objectEnumerator];
 }
 
--(NSEnumerator *)annotations
+- (NSEnumerator *)annotations
 {
     return [self.annotationsToAnnotationViews keyEnumerator];
 }

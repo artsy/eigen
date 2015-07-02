@@ -2,9 +2,11 @@
 #import "ARPostFeedItemLinkView.h"
 #import "ORStackView+ArtsyViews.h"
 
+
 @interface ARPostsViewController ()
 @property (nonatomic, strong) ORStackView *view;
 @end
+
 
 @implementation ARPostsViewController
 
@@ -17,24 +19,24 @@
     self.view.bottomMarginHeight = 20;
 }
 
--(void)setPosts:(NSArray *)posts
+- (void)setPosts:(NSArray *)posts
 {
     _posts = posts;
     [self reloadData];
 }
 
--(void)reloadData
+- (void)reloadData
 {
     [self addPageTitleWithString:@"Featured Posts"];
 
-    for(NSInteger i = 0; i < self.posts.count; i++) {
+    for (NSInteger i = 0; i < self.posts.count; i++) {
         ARPostFeedItem *post = self.posts[i];
-        ARPostFeedItemLinkView * postLinkView = [[ARPostFeedItemLinkView alloc] initWithPostFeedItem:post];
+        ARPostFeedItemLinkView *postLinkView = [[ARPostFeedItemLinkView alloc] initWithPostFeedItem:post];
         [self.view addSubview:postLinkView withTopMargin:nil sideMargin:nil];
     }
 }
 
--(void)tappedPostFeedItemLinkView:(ARPostFeedItemLinkView *)sender
+- (void)tappedPostFeedItemLinkView:(ARPostFeedItemLinkView *)sender
 {
     UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:[sender targetPath]];
     if (viewController) {

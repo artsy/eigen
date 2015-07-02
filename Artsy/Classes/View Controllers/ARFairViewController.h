@@ -3,14 +3,15 @@
 @class Fair;
 @class ARNavigationButtonsViewController;
 
-extern NSString * const ARFairRefreshFavoritesNotification;
-extern NSString * const ARFairHighlightArtworkIDKey;
-extern NSString * const ARFairHighlightArtistIDKey;
-extern NSString * const ARFairHighlightShowsKey;
-extern NSString * const ARFairHighlightPartnersKey;
-extern NSString * const ARFairHighlightFocusMapKey;
-extern NSString * const ARFairMapSetFavoritePartnersKey;
-extern NSString * const ARFairHighlightFavoritePartnersKey;
+extern NSString *const ARFairRefreshFavoritesNotification;
+extern NSString *const ARFairHighlightArtworkIDKey;
+extern NSString *const ARFairHighlightArtistIDKey;
+extern NSString *const ARFairHighlightShowsKey;
+extern NSString *const ARFairHighlightPartnersKey;
+extern NSString *const ARFairHighlightFocusMapKey;
+extern NSString *const ARFairMapSetFavoritePartnersKey;
+extern NSString *const ARFairHighlightFavoritePartnersKey;
+
 
 @interface ARFairViewController : UIViewController <ARMenuAwareViewController>
 

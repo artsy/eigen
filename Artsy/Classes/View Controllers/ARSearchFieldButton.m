@@ -1,5 +1,6 @@
 #import "ARSearchFieldButton.h"
 
+
 @interface ARSearchFieldButton ()
 
 @property (nonatomic, strong) UIImageView *imageView;
@@ -7,12 +8,15 @@
 
 @end
 
+
 @implementation ARSearchFieldButton
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self == nil) { return nil; }
+    if (self == nil) {
+        return nil;
+    }
 
     self.backgroundColor = [UIColor colorWithHex:0xf2f2f2];
 

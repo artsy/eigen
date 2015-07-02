@@ -1,8 +1,10 @@
 #import "NSString+StringBetweenStrings.h"
 
+
 @implementation NSString (StringBetweenStrings)
 
-- (NSString *)substringBetween:(NSString *)start and:(NSString *)end {
+- (NSString *)substringBetween:(NSString *)start and:(NSString *)end
+{
     NSRange startingRange = [self rangeOfString:start];
     NSRange endingRange = [self rangeOfString:end];
 

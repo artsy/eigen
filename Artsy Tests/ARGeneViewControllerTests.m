@@ -1,6 +1,6 @@
 #import "ARGeneViewController.h"
 
-SpecBegin(ARGeneViewController)
+SpecBegin(ARGeneViewController);
 
 __block ARGeneViewController *vc;
 

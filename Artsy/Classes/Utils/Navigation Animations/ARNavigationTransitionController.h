@@ -2,6 +2,7 @@
 
 #import "ARNavigationTransition.h"
 
+
 @interface ARNavigationTransitionController : NSObject
 
 /// Get an animation transition for a navigation view controller

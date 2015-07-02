@@ -1,18 +1,22 @@
 #import "ARFeedItem.h"
 
-@interface ARFeedTimeline()
+
+@interface ARFeedTimeline ()
 @property (nonatomic, strong) ARFeed *currentFeed;
 @property (nonatomic, copy) NSString *currentlyLoadingCursor;
 @property (nonatomic, strong) id representedObject;
 @property (nonatomic, strong) NSMutableOrderedSet *items; // set enforces uniqueness of feed items
 @end
 
+
 @implementation ARFeedTimeline
 
 - (instancetype)initWithFeed:(ARFeed *)feed
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _currentFeed = feed;
     _items = [[NSMutableOrderedSet alloc] init];
@@ -28,7 +32,7 @@
 
 // Should this have a "no more items" block? - ./
 
-- (void)getNewItems:(void(^)())success failure:(void (^)(NSError *error))failure
+- (void)getNewItems:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     @weakify(self);
     [_currentFeed getFeedItemsWithCursor:nil success:^(NSOrderedSet *parsedItems) {
@@ -43,7 +47,7 @@
     } failure:failure];
 }
 
-- (void)getNextPage:(void(^)())success failure:(void (^)(NSError *error))failure completion:(void (^)())completion
+- (void)getNextPage:(void (^)())success failure:(void (^)(NSError *error))failure completion:(void (^)())completion
 {
     if (![self hasNext]) {
         if (completion) {

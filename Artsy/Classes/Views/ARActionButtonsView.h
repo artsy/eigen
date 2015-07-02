@@ -1,7 +1,8 @@
 typedef void (^ARActionButtonHandler)(UIButton *button);
 
-extern NSString * const ARActionButtonImageKey;
-extern NSString * const ARActionButtonHandlerKey;
+extern NSString *const ARActionButtonImageKey;
+extern NSString *const ARActionButtonHandlerKey;
+
 
 @interface ARActionButtonsView : UIView
 

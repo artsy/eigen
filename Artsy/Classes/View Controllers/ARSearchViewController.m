@@ -3,14 +3,16 @@
 #import "ARSearchTableViewCell.h"
 #import "UIView+HitTestExpansion.h"
 
+
 @interface ARSearchViewController () <UITextFieldDelegate, UITableViewDelegate>
-@property(readonly, nonatomic) UIActivityIndicatorView *activityIndicator;
-@property(readonly, nonatomic) UITableView *resultsView;
-@property(readonly, nonatomic) UIView *contentView;
-@property(readonly, nonatomic) AFJSONRequestOperation *searchRequest;
-@property(readonly, nonatomic, strong) NSLayoutConstraint *contentHeightConstraint;
-@property(nonatomic, readwrite, assign) BOOL shouldAnimate;
+@property (readonly, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (readonly, nonatomic) UITableView *resultsView;
+@property (readonly, nonatomic) UIView *contentView;
+@property (readonly, nonatomic) AFJSONRequestOperation *searchRequest;
+@property (readonly, nonatomic, strong) NSLayoutConstraint *contentHeightConstraint;
+@property (nonatomic, readwrite, assign) BOOL shouldAnimate;
 @end
+
 
 @implementation ARSearchViewController
 
@@ -34,7 +36,7 @@
 
     self.view.backgroundColor = [UIColor blackColor];
 
-        UIView *searchBoxView = [[UIView alloc] initWithFrame:CGRectZero];
+    UIView *searchBoxView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:searchBoxView];
     [searchBoxView constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"24"];
     [searchBoxView alignLeading:@"10" trailing:@"-10" toView:self.view];
@@ -81,7 +83,7 @@
     [closeButton addTarget:self action:@selector(closeSearch:) forControlEvents:UIControlEventTouchUpInside];
     _closeButton = closeButton;
 
-    [UIView alignTopAndBottomEdgesOfViews:@[searchBoxView, searchIcon, textField, closeButton]];
+    [UIView alignTopAndBottomEdgesOfViews:@[ searchBoxView, searchIcon, textField, closeButton ]];
 
     _contentView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.contentView];
@@ -142,7 +144,7 @@
 
     CGFloat height = CGRectGetHeight(keyboardRect);
     self.contentHeightConstraint.constant = -height - 20;
-    [UIView animateIf:self.shouldAnimate duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:self.shouldAnimate duration:ARAnimationQuickDuration:^{
         [self.view layoutSubviews];
     } completion:^(BOOL finished) {
         if (!(self.textField.text.length > 0)) {
@@ -156,7 +158,7 @@
     [self showInfoLabel:NO animated:self.shouldAnimate completion:^{
         self.contentHeightConstraint.constant = -20;
     }];
-    [UIView animateIf:self.shouldAnimate duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:self.shouldAnimate duration:ARAnimationQuickDuration:^{
         [self.view layoutSubviews];
     }];
 }
@@ -165,7 +167,7 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if([string isEqualToString:@"\n"]) {
+    if ([string isEqualToString:@"\n"]) {
         [textField resignFirstResponder];
         return NO;
     }
@@ -196,8 +198,8 @@
 - (AFJSONRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
-        reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
-        userInfo:nil];
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 - (void)setSearchQuery:(NSString *)text
@@ -207,7 +209,9 @@
 
 - (void)setSearchQuery:(NSString *)text animated:(BOOL)animated
 {
-    if (self.searchRequest) { [self.searchRequest cancel]; }
+    if (self.searchRequest) {
+        [self.searchRequest cancel];
+    }
 
     if (text.length == 0) {
         [self stopSearching];
@@ -300,7 +304,7 @@
 {
     @weakify(self);
 
-    [UIView animateIf:animated duration:0.15 :^{
+    [UIView animateIf:animated duration:0.15:^{
         @strongify(self);
         self.resultsView.alpha = 0;
     } completion:^(BOOL finished) {
@@ -328,7 +332,7 @@
 - (void)showInfoLabel:(BOOL)show animated:(BOOL)animated completion:(void (^)(void))completion
 {
     if (show) self.infoLabel.hidden = NO;
-    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         self.infoLabel.alpha = show ? 1 : 0;
     } completion:^(BOOL finished) {
         if (!show) self.infoLabel.hidden = YES;
@@ -339,7 +343,7 @@
 // display the info label if there's nothing to search for
 - (void)updateInfoLabel:(BOOL)animated
 {
-    [self showInfoLabel:(self.textField.text.length == 0) animated:animated];
+    [self showInfoLabel:(self.textField.text.length == 0)animated:animated];
 }
 
 - (void)setDefaultInfoLabelText
@@ -375,7 +379,7 @@
         [self.view layoutIfNeeded];
     }
     self.resultsView.hidden = NO;
-    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         self.resultsView.alpha = 1;
     }];
 }
@@ -390,8 +394,8 @@
 - (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
-            reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
-            userInfo:nil];
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

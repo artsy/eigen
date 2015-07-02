@@ -1,6 +1,7 @@
 #import "AROnboardingMoreInfoViewController.h"
 #import "ARAuthProviders.h"
 
+
 @interface AROnboardingMoreInfoViewController (Tests)
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *email;
@@ -10,7 +11,7 @@
 - (BOOL)canSubmit;
 @end
 
-SpecBegin(AROnboardingMoreInfoViewController)
+SpecBegin(AROnboardingMoreInfoViewController);
 __block AROnboardingMoreInfoViewController *vc;
 
 

@@ -1,5 +1,6 @@
 #import "ArtsyAPI+Private.h"
 
+
 @implementation ArtsyAPI (Artworks)
 
 + (void)getArtworkInfo:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure
@@ -10,7 +11,8 @@
 
 + (AFJSONRequestOperation *)getArtistArtworks:(Artist *)artist andPage:(NSInteger)page withParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
-    NSMutableDictionary *newParams = [[NSMutableDictionary alloc] initWithDictionary:@{@"size" : @10, @"page" : @(page)}];
+    NSMutableDictionary *newParams = [[NSMutableDictionary alloc] initWithDictionary:@{ @"size" : @10,
+                                                                                        @"page" : @(page) }];
     [newParams addEntriesFromDictionary:params];
     NSURLRequest *request = [ARRouter newArtistArtworksRequestWithParams:newParams andArtistID:artist.artistID];
     return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
@@ -100,14 +102,14 @@
     NSURLRequest *request = [ARRouter newFairsRequestForArtwork:artwork];
     return [self getRequest:request
         parseIntoAnArrayOfClass:[Fair class]
-        success:^(NSArray *fairs) {
+                        success:^(NSArray *fairs) {
             success([fairs select:^BOOL(Fair *fair) {
                 return fair.defaultProfileID != nil
                        || fair.organizer.fairOrganizerID != nil
                        || fair.organizer.profileID != nil;
             }]);
-        }
-        failure:failure];
+                        }
+                        failure:failure];
 }
 
 + (AFJSONRequestOperation *)getShowsForArtworkID:(NSString *)artworkID
@@ -118,8 +120,8 @@
     NSURLRequest *request = [ARRouter newShowsRequestForArtworkID:artworkID andFairID:fairID];
     return [self getRequest:request
         parseIntoAnArrayOfClass:[PartnerShow class]
-        success:success
-        failure:failure];
+                        success:success
+                        failure:failure];
 }
 
 @end

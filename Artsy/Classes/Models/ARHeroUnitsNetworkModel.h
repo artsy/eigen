@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+
 @interface ARHeroUnitsNetworkModel : NSObject
 
 @property (nonatomic, readonly, copy) NSArray *heroUnits;

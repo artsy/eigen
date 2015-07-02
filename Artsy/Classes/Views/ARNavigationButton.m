@@ -1,5 +1,6 @@
 #import "ARNavigationButton.h"
 
+
 @interface ARNavigationButton ()
 
 @property (nonatomic, strong, readonly) UILabel *primaryTitleLabel;
@@ -11,6 +12,7 @@
 
 @end
 
+
 @implementation ARNavigationButton
 
 - (id)initWithFrame:(CGRect)frame
@@ -21,7 +23,9 @@
 - (id)initWithFrame:(CGRect)frame withBorder:(CGFloat)borderWidth
 {
     self = [super initWithFrame:frame];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _borderWidth = borderWidth;
     _topBorder = [[UIView alloc] init];
@@ -86,7 +90,9 @@
 - (id)initWithFrame:(CGRect)frame andTitle:(NSString *)title andSubtitle:(NSString *)subtitle withBorder:(CGFloat)borderWidth
 {
     self = [self initWithFrame:frame withBorder:borderWidth];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.title = title;
     self.subtitle = subtitle;
@@ -144,6 +150,7 @@
 }
 @end
 
+
 @implementation ARSerifNavigationButton
 
 - (id)initWithFrame:(CGRect)frame withBorder:(CGFloat)borderWidth
@@ -157,7 +164,8 @@
     return self;
 }
 
-- (void)setTitle:(NSString *)title {
+- (void)setTitle:(NSString *)title
+{
     [super setTitle:title];
 
     self.primaryTitleLabel.text = title;

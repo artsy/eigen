@@ -1,6 +1,7 @@
 #import <Mantle/Mantle.h>
 
-@interface AuctionLot : MTLModel<MTLJSONSerializing>
+
+@interface AuctionLot : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy) NSString *auctionLotID;
 @property (nonatomic, copy) NSString *dimensionsCM;
@@ -14,5 +15,5 @@
 @property (nonatomic, copy) NSDictionary *imageURLs;
 @property (nonatomic, copy) NSURL *externalURL;
 @property (nonatomic, strong) NSDate *auctionDate;
--(NSURL *)imageURL;
+- (NSURL *)imageURL;
 @end

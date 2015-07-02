@@ -1,3 +1,5 @@
+
+
 @interface ARNavigationTransition : NSObject <UIViewControllerAnimatedTransitioning>
 
 @property (nonatomic, assign) enum UINavigationControllerOperation operationType;
@@ -13,8 +15,8 @@
 // Currently, only ARDefaultTransition returns YES
 @property (readonly, nonatomic, assign) BOOL supportsInteractiveTransitioning;
 
-- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext;
+- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext;
 
-- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext;
+- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext;
 
 @end

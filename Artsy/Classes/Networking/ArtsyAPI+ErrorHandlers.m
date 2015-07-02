@@ -1,3 +1,5 @@
+
+
 @implementation ArtsyAPI (ErrorHandlers)
 
 + (void)handleHTTPError:(NSError *)error
@@ -19,7 +21,7 @@
                 success:(void (^)(NSError *error))success
                 failure:(void (^)(NSError *error))failure
 {
-    NSHTTPURLResponse *response = (NSHTTPURLResponse *) error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
+    NSHTTPURLResponse *response = (NSHTTPURLResponse *)error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
     if (response.statusCode == statusCode) {
         if (errorMessages.count == 0) {
             if (success) {
@@ -31,7 +33,7 @@
         errorData = [errorData dataUsingEncoding:NSUTF8StringEncoding];
         if (errorData) {
             NSDictionary *recoverySuggestion = [NSJSONSerialization JSONObjectWithData:errorData options:0 error:nil];
-            for(NSString *errorMessage in errorMessages) {
+            for (NSString *errorMessage in errorMessages) {
                 if ([recoverySuggestion[@"error"] isEqualToString:errorMessage]) {
                     if (success) {
                         success(error);

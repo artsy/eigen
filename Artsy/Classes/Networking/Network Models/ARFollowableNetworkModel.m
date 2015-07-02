@@ -1,14 +1,18 @@
 #import "ARFollowableNetworkModel.h"
 
+
 @interface ARFollowableNetworkModel ()
 @end
 
+
 @implementation ARFollowableNetworkModel
 
-- (id)initWithFollowableObject:(id <ARFollowable>)representedObject
+- (id)initWithFollowableObject:(id<ARFollowable>)representedObject
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _representedObject = representedObject;
 
@@ -29,10 +33,10 @@
 
 - (void)setFollowing:(BOOL)following
 {
-    if(following == _following) return;
+    if (following == _following) return;
 
     @weakify(self);
-    if(following){
+    if (following) {
         [_representedObject followWithSuccess:nil failure:^(NSError *error) {
             @strongify(self);
             ARErrorLog(@"Error following %@ - %@", self.representedObject, error.localizedDescription);

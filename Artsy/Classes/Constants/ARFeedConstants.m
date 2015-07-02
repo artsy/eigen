@@ -2,7 +2,7 @@
 
 #pragma mark Dimensions
 
-const CGFloat ARFeedCarouselThresholdRatio = 3.0/2.0;
+const CGFloat ARFeedCarouselThresholdRatio = 3.0 / 2.0;
 
 #pragma mark Font sizes
 const NSInteger ARFeedHeaderTitleTextSize = 20;

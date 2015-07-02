@@ -1,11 +1,12 @@
 #import "ARValueTransformer.h"
 
+
 @implementation MapFeature
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-         @keypath(MapFeature.new, featureType) : @"feature_type",
+        @keypath(MapFeature.new, featureType) : @"feature_type",
     };
 }
 
@@ -17,7 +18,7 @@
 + (NSValueTransformer *)featureTypeJSONTransformer
 {
     NSDictionary *types = @{
-        @"artsy": @(ARMapFeatureTypeArtsy),
+        @"artsy" : @(ARMapFeatureTypeArtsy),
         @"drink" : @(ARMapFeatureTypeDrink),
         @"coat-check" : @(ARMapFeatureTypeCoatCheck),
         @"food" : @(ARMapFeatureTypeFood),
@@ -48,7 +49,8 @@
 
 @end
 
-NSString * NSStringFromARMapFeatureType(enum ARMapFeatureType featureType) {
+NSString *NSStringFromARMapFeatureType(enum ARMapFeatureType featureType)
+{
     static NSDictionary *mapFeatureToStringDictionary = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

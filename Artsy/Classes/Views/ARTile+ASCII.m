@@ -1,20 +1,23 @@
 #import "ARTile+ASCII.h"
 #import <objc/runtime.h>
 
+
 @implementation ARTile (ASCII)
 
 static BOOL _ascii = NO;
 
 + (BOOL)ascii
 {
-    @synchronized(self) {
+    @synchronized(self)
+    {
         return _ascii;
     }
 }
 
 + (void)setAscii:(BOOL)value
 {
-    @synchronized(self) {
+    @synchronized(self)
+    {
         if (_ascii != value) {
             _ascii = value;
             if (value) {

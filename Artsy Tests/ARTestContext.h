@@ -2,8 +2,8 @@ NS_ENUM(NSInteger, ARDeviceType){
     ARDeviceTypePhone4,
     ARDeviceTypePhone5,
     ARDeviceTypePhone6,
-    ARDeviceTypePad
-};
+    ARDeviceTypePad};
+
 
 @interface ARTestContext : NSObject
 

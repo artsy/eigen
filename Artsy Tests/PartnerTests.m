@@ -1,4 +1,4 @@
-SpecBegin(Partner)
+SpecBegin(Partner);
 
 describe(@"defaultImage", ^{
     __block Partner *partner;

@@ -1,7 +1,7 @@
 #import "Artwork+Extensions.h"
 #import "ARArtworkSetViewController.h"
 
-SpecBegin(ARArtworkSetViewController)
+SpecBegin(ARArtworkSetViewController);
 
 __block ARArtworkSetViewController *controller;
 

@@ -13,13 +13,15 @@
 #define EMAIL_TAG 111
 #define SOCIAL_TAG 222
 
-@interface ARCreateAccountViewController ()<UITextFieldDelegate, UIAlertViewDelegate>
+
+@interface ARCreateAccountViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 @property (nonatomic) AROnboardingNavBarView *navbar;
 @property (nonatomic) ARTextFieldWithPlaceholder *name, *email, *password;
 @property (nonatomic) ARSpinner *loadingSpinner;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
 @end
+
 
 @implementation ARCreateAccountViewController
 
@@ -71,11 +73,11 @@
     [self.view addSubview:self.containerView];
     [self.containerView alignCenterXWithView:self.view predicate:nil];
     NSString *centerYOffset = [UIDevice isPad] ? @"0" : @"-30";
-    [self.containerView alignCenterYWithView:self.view predicate: NSStringWithFormat(@"%@@750", centerYOffset)];
+    [self.containerView alignCenterYWithView:self.view predicate:NSStringWithFormat(@"%@@750", centerYOffset)];
     self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
     [self.containerView constrainWidth:@"280"];
 
-    [@[self.name, self.email, self.password] each:^(ARTextFieldWithPlaceholder *textField) {
+    [@[ self.name, self.email, self.password ] each:^(ARTextFieldWithPlaceholder *textField) {
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.delegate = self;
         [self.containerView addSubview:textField];
@@ -106,7 +108,7 @@
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
     self.keyboardConstraint.constant = -keyboardSize.height - ([UIDevice isPad] ? 20 : 10);
-    [UIView animateIf:YES duration:duration :^{
+    [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -116,7 +118,7 @@
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
     self.keyboardConstraint.constant = 0;
-    [UIView animateIf:YES duration:duration :^{
+    [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -134,10 +136,7 @@
 
 - (BOOL)canSubmit
 {
-    return self.email.text.length
-            && self.name.text.length
-            && [self.email.text containsString:@"@"]
-            && self.password.text.length >= 6;
+    return self.email.text.length && self.name.text.length && [self.email.text containsString:@"@"] && self.password.text.length >= 6;
 }
 
 
@@ -148,12 +147,13 @@
 
 - (void)setFormEnabled:(BOOL)enabled
 {
-    [@[self.name, self.email, self.password] each:^(ARTextFieldWithPlaceholder *textField) {
+    [@[ self.name, self.email, self.password ] each:^(ARTextFieldWithPlaceholder *textField) {
         textField.enabled = enabled;
         textField.alpha = enabled ? 1 : 0.3;
     }];
 
-    [self.navbar.forward setEnabled:enabled animated:YES];;
+    [self.navbar.forward setEnabled:enabled animated:YES];
+    ;
 
     if (enabled) {
         [self.loadingSpinner fadeOutAnimated:YES];
@@ -216,27 +216,29 @@
     }];
 }
 
-- (void)loginWithUserCredentialsWithSuccess:(void(^)())success
+- (void)loginWithUserCredentialsWithSuccess:(void (^)())success
 {
     NSString *username = self.email.text;
     NSString *password = self.password.text;
 
     @weakify(self);
-   [[ARUserManager sharedManager] loginWithUsername:username password:password successWithCredentials:nil
-     gotUser:^(User *currentUser) {
+    [[ARUserManager sharedManager] loginWithUsername:username password:password successWithCredentials:nil
+        gotUser:^(User *currentUser) {
          success();
-    } authenticationFailure:^(NSError *error) {
+        }
+        authenticationFailure:^(NSError *error) {
         @strongify(self);
         [self setFormEnabled:YES];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t Log In" message:@"Please check your email and password." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         [alert show];
 
-    } networkFailure:^(NSError *error) {
+        }
+        networkFailure:^(NSError *error) {
         @strongify(self);
         [self setFormEnabled:YES];
         [self performSelector:_cmd withObject:self afterDelay:3];
         [ARNetworkErrorManager presentActiveErrorModalWithError:error];
-    }];
+        }];
 }
 
 - (void)accountExists:(NSString *)source
@@ -244,12 +246,12 @@
     NSString *message;
     NSInteger tag;
     if ([source isEqualToString:@"email"]) {
-        message= [NSString stringWithFormat:@"An account already exists for the email address \"%@\".", self.email.text];
+        message = [NSString stringWithFormat:@"An account already exists for the email address \"%@\".", self.email.text];
         tag = EMAIL_TAG;
     } else {
-        message= [NSString stringWithFormat:@"An account already exists for the email address \"%@\". Please log in via %@.",
-                  self.email.text,
-                  [source capitalizedString]];
+        message = [NSString stringWithFormat:@"An account already exists for the email address \"%@\". Please log in via %@.",
+                                             self.email.text,
+                                             [source capitalizedString]];
         tag = SOCIAL_TAG;
     }
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Account Already Exists" message:message delegate:self cancelButtonTitle:@"Log In" otherButtonTitles:nil];

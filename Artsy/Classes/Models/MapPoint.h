@@ -1,3 +1,5 @@
+
+
 @interface MapPoint : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, assign, readonly) CGFloat z;

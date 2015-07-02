@@ -1,9 +1,11 @@
 #import "ARNetworkConstants.h"
 
-@interface Artist() {
+
+@interface Artist () {
     BOOL _isFollowed;
 }
 @end
+
 
 @implementation Artist
 @synthesize imageURLs;
@@ -16,10 +18,10 @@
         @"years" : @"years",
         @"birthday" : @"birthday",
         @"nationality" : @"nationality",
-        @"blurb": @"blurb",
-        @"publishedArtworksCount": @"published_artworks_count",
-        @"forSaleArtworksCount": @"forsale_artworks_count",
-        @"imageURLs": @"image_urls"
+        @"blurb" : @"blurb",
+        @"publishedArtworksCount" : @"published_artworks_count",
+        @"forSaleArtworksCount" : @"forsale_artworks_count",
+        @"imageURLs" : @"image_urls"
     };
 }
 
@@ -36,7 +38,9 @@
 - (instancetype)initWithArtistID:(NSString *)artistID
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _artistID = artistID;
 
@@ -96,7 +100,8 @@
     } failure:failure];
 }
 
-- (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page andParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success {
+- (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page andParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success
+{
     return [ArtsyAPI getArtistArtworks:self andPage:page withParams:params success:^(NSArray *artworks) {
         success(artworks);
     } failure:^(NSError *error) {
@@ -104,7 +109,8 @@
     }];
 }
 
-- (NSString *)publicURL {
+- (NSString *)publicURL
+{
     NSString *path = [NSString stringWithFormat:ARArtistInformationURLFormat, self.artistID];
     NSURL *url = [ARSwitchBoard.sharedInstance resolveRelativeUrl:path];
     return [url absoluteString];
@@ -117,7 +123,6 @@
     }
     Artist *other = (Artist *)object;
     return [self.artistID isEqualToString:other.artistID];
-
 }
 
 - (NSUInteger)hash
@@ -128,19 +133,19 @@
 - (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success
 {
     return [ArtsyAPI getRelatedPostsForArtist:self
-        success:success
-        failure: ^(NSError *error) {
+                                      success:success
+                                      failure:^(NSError *error) {
            success(@[]);
-    }];
+                                      }];
 }
 
 - (AFJSONRequestOperation *)getRelatedArtists:(void (^)(NSArray *artists))success
 {
     return [ArtsyAPI getRelatedArtistsForArtist:self
-        success:success
-        failure: ^(NSError *error) {
+                                        success:success
+                                        failure:^(NSError *error) {
             success(@[]);
-    }];
+                                        }];
 }
 
 #pragma mark ShareableObject

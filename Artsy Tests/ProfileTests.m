@@ -1,4 +1,4 @@
-SpecBegin(Profile)
+SpecBegin(Profile);
 
 __block Profile *profile;
 

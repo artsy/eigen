@@ -1,5 +1,6 @@
 @class AREmbeddedModelsViewController;
 
+
 @interface ARGeneArtworksNetworkModel : NSObject
 
 - (id)initWithGene:(Gene *)gene;

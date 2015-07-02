@@ -1,3 +1,5 @@
+
+
 @interface ARArtworkPriceRowView : UIView
 
 @property (nonatomic, strong) UILabel *messageLabel;

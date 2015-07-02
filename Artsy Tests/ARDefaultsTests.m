@@ -1,6 +1,6 @@
 #import "ARDefaults.h"
 
-SpecBegin(ARDefaults)
+SpecBegin(ARDefaults);
 
 it(@"rests user defaults", ^{
     [[NSUserDefaults standardUserDefaults] setValue:@1 forKey:@"Test Value"];

@@ -3,6 +3,7 @@
 #import "UIView+HitTestExpansion.h"
 #import <objc/runtime.h>
 
+
 @implementation UIView (HitTestExpansion)
 
 static const NSString *KEY_HIT_TEST_EDGE_INSETS = @"HitTestEdgeInsets";
@@ -21,9 +22,11 @@ static BOOL ARHasSwizzledSetFrame;
 - (UIEdgeInsets)hitTestEdgeInsets
 {
     NSValue *value = objc_getAssociatedObject(self, &KEY_HIT_TEST_EDGE_INSETS);
-    if(value) {
-        UIEdgeInsets edgeInsets; [value getValue:&edgeInsets]; return edgeInsets;
-    }else {
+    if (value) {
+        UIEdgeInsets edgeInsets;
+        [value getValue:&edgeInsets];
+        return edgeInsets;
+    } else {
         return UIEdgeInsetsZero;
     }
 }
@@ -55,17 +58,17 @@ static BOOL ARHasSwizzledSetFrame;
         self.clipsToBounds = NO;
         [self addSubview:highlightView];
     }
-    
+
     highlightView.frame = UIEdgeInsetsInsetRect(self.bounds, highlightInsets);
-    
+
     [self ar_extendHitTestSizeByWidth:width andHeight:height];
-    
-    if (!ARHasSwizzledSetFrame){
+
+    if (!ARHasSwizzledSetFrame) {
         ARHasSwizzledSetFrame = YES;
-        
+
         SEL setFrame = @selector(layoutSubviews);
         SEL newSetFrame = @selector(swizzledLayoutSubviews);
-        
+
         Method originalMethod = class_getInstanceMethod(self.class, setFrame);
         Method overrideMethod = class_getInstanceMethod(self.class, newSetFrame);
         if (class_addMethod(self.class, setFrame, method_getImplementation(overrideMethod), method_getTypeEncoding(overrideMethod))) {
@@ -78,15 +81,14 @@ static BOOL ARHasSwizzledSetFrame;
 
 - (void)swizzledLayoutSubviews
 {
-    
     [self swizzledLayoutSubviews];
 
     NSValue *value = objc_getAssociatedObject(self, &KEY_HIT_TEST_EDGE_INSETS);
     if (value) {
-        UIEdgeInsets edgeInsets; [value getValue:&edgeInsets];
+        UIEdgeInsets edgeInsets;
+        [value getValue:&edgeInsets];
         [self ar_visuallyExtendHitTestSizeByWidth:-edgeInsets.left andHeight:-edgeInsets.top];
     }
-    
 }
 
 

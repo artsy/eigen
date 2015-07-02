@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <Mantle/Mantle.h>
 
+
 @interface ARFeedItem : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *feedItemID;

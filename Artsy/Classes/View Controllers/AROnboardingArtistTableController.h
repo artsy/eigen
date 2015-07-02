@@ -1,7 +1,8 @@
 /// This exists purely because we don't want to have to disambiguate between this tableView
 /// and the Gene and Search ones in personalize
 
-@interface AROnboardingArtistTableController : NSObject<UITableViewDataSource, UITableViewDelegate>
+
+@interface AROnboardingArtistTableController : NSObject <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, readonly) NSMutableOrderedSet *artists;
 

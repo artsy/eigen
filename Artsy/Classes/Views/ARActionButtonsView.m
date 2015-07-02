@@ -1,11 +1,13 @@
 #import "ARActionButtonsView.h"
 
-NSString * const ARActionButtonImageKey = @"ARActionButtonImageKey";
-NSString * const ARActionButtonHandlerKey = @"ARActionButtonHandlerKey";
+NSString *const ARActionButtonImageKey = @"ARActionButtonImageKey";
+NSString *const ARActionButtonHandlerKey = @"ARActionButtonHandlerKey";
+
 
 @interface ARActionButtonsView ()
 @property (nonatomic, strong) NSMapTable *handlersByButton;
 @end
+
 
 @implementation ARActionButtonsView
 
@@ -17,7 +19,7 @@ NSString * const ARActionButtonHandlerKey = @"ARActionButtonHandlerKey";
 
     _actionButtonDescriptions = [actionButtonDescriptions copy];
 
-    for(NSDictionary *description in actionButtonDescriptions) {
+    for (NSDictionary *description in actionButtonDescriptions) {
         ARActionButtonHandler handler = description[ARActionButtonHandlerKey];
         NSString *imageName = description[ARActionButtonImageKey];
 
@@ -28,11 +30,11 @@ NSString * const ARActionButtonHandlerKey = @"ARActionButtonHandlerKey";
         [self addSubview:actionButton];
 
         NSInteger index = [actionButtonDescriptions indexOfObject:description];
-        if(index == 0){
+        if (index == 0) {
             [actionButton alignTrailingEdgeWithView:self predicate:nil];
 
         } else {
-            UIView *closestSibling = self.subviews[index-1];
+            UIView *closestSibling = self.subviews[index - 1];
             [actionButton alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeLeading ofView:closestSibling predicate:@"-10"];
         }
         [actionButton alignTopEdgeWithView:self predicate:nil];
@@ -49,8 +51,7 @@ NSString * const ARActionButtonHandlerKey = @"ARActionButtonHandlerKey";
 {
     return (CGSize){
         .height = [ARCircularActionButton buttonSize],
-        .width = UIViewNoIntrinsicMetric
-    };
+        .width = UIViewNoIntrinsicMetric};
 }
 
 @end

@@ -1,17 +1,21 @@
 #import "ARSignUpActiveUserViewController.h"
 #import "AROnboardingNavBarView.h"
 
+
 @interface ARSignUpActiveUserViewController ()
 @property (nonatomic, strong) AROnboardingNavBarView *navView;
 @property (nonatomic, strong) NSString *message;
 @end
+
 
 @implementation ARSignUpActiveUserViewController
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _shouldAnimate = YES;
     return self;
 }
@@ -57,11 +61,11 @@
         case ARTrialContextArtworkOrder:
             message = @"Sign up for a free account\nto buy works.";
             break;
-            
+
         case ARTrialContextFairGuide:
             message = @"Sign up for a free account\nto get personal recommendations.";
             break;
-            
+
         case ARTrialContextNotTrial:
             message = @"";
             break;
@@ -133,7 +137,7 @@
 
 - (void)goBackToApp:(id)sender
 {
-    [UIView animateIf:YES duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:YES duration:ARAnimationQuickDuration:^{
         self.topView.alpha = 0;
         self.bottomView.alpha = 0;
     }];

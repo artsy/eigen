@@ -1,12 +1,13 @@
 #import "ARSignUpSplashViewController.h"
 #import "ARCrossfadingImageView.h"
 
+
 @interface ARSignUpSplashViewController ()
 @property (nonatomic, strong, readwrite) UIPageControl *pageControl;
 @property (nonatomic) ARCrossfadingImageView *imageView;
 @end
 
-SpecBegin(ARSignUpSplashViewController)
+SpecBegin(ARSignUpSplashViewController);
 
 __block ARSignUpSplashViewController *controller;
 

@@ -5,16 +5,16 @@
 #define FADE_MOVEMENT_Y 16
 #define FADE_ALPHA 0.2
 
+
 @implementation ARDefaultNavigationTransition
 
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
+- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     return ARAnimationDuration;
 }
 
-- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext
+- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-
     CGRect fullFrame = [transitionContext containerView].bounds;
     CGRect offScreen = fullFrame;
 
@@ -28,24 +28,24 @@
     fromVC.view.transform = CGAffineTransformIdentity;
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
-                          delay:0.0
-                        options:UIViewAnimationOptionCurveEaseOut
-                     animations:^{
+        delay:0.0
+        options:UIViewAnimationOptionCurveEaseOut
+        animations:^{
          fromVC.view.alpha = 0.2;
          fromVC.view.transform = CGAffineTransformMakeScale(0.9, 0.9);
 
          toVC.view.frame = fullFrame;
 
-     }
-     completion:^(BOOL finished) {
+        }
+        completion:^(BOOL finished) {
          fromVC.view.alpha = 1;
          fromVC.view.transform = CGAffineTransformIdentity;
 
          [transitionContext completeTransition:YES];
-     }];
+        }];
 }
 
-- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)context
+- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)context
 {
     CGRect fullFrame = [context initialFrameForViewController:fromVC];
     CGRect offScreen = fullFrame;
@@ -98,17 +98,17 @@
     toVC.view.transform = CGAffineTransformMakeScale(0.9, 0.9);
 
     [UIView animateWithDuration:[self transitionDuration:context]
-                          delay:0.0
-                        options:options
-                     animations:^{
+        delay:0.0
+        options:options
+        animations:^{
          toVC.view.alpha = 1;
          toVC.view.transform = CGAffineTransformIdentity;
 
          fromVC.view.frame = offScreen;
 
          backButtonSnapshot.alpha = self.backButtonTargetAlpha;
-     }
-     completion:^(BOOL finished) {
+        }
+        completion:^(BOOL finished) {
          toVC.view.alpha = 1;
          toVC.view.transform = CGAffineTransformIdentity;
 
@@ -122,7 +122,7 @@
          }
 
          [context completeTransition:![context transitionWasCancelled]];
-     }];
+        }];
 }
 
 #pragma mark - Properties

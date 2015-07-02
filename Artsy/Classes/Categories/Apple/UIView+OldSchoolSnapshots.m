@@ -1,5 +1,6 @@
 #import "UIView+OldSchoolSnapshots.h"
 
+
 @implementation UIView (OldSchoolSnapshots)
 
 - (UIView *)ar_snapshot

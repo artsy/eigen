@@ -3,13 +3,16 @@
 #import "ARRouter.h"
 #import "ARSpinner.h"
 
+
 @interface TSMiniWebBrowser (Private)
-@property(nonatomic, readonly, strong) UIWebView *webView;
+@property (nonatomic, readonly, strong) UIWebView *webView;
 @end
+
 
 @interface ARPersonalizeWebViewController ()
 @property (nonatomic, strong, readonly) ARSpinner *spinner;
 @end
+
 
 @implementation ARPersonalizeWebViewController
 
@@ -20,7 +23,7 @@
     [super viewDidLoad];
     _spinner = [[ARSpinner alloc] init];
     [self.view addSubview:self.spinner];
-    [self.spinner alignCenterWithView: self.webView];
+    [self.spinner alignCenterWithView:self.webView];
 
     UITapGestureRecognizer *exitTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(exitOnboarding)];
     [self.view addGestureRecognizer:exitTap];
@@ -34,12 +37,11 @@
 {
     BOOL shouldLoad = [super webView:aWebView shouldStartLoadWithRequest:request navigationType:navigationType];
     NSString *path = [request.URL lastPathComponent];
-    
+
     if (shouldLoad && [ARRouter isInternalURL:request.URL] && [path isEqualToString:ARPersonalizePath]) {
         return YES;
 
     } else if ([ARRouter isInternalURL:request.URL] && [path isEqualToString:@"/"]) {
-
         // Force onboarding is all push-state.
         // A new request to load the root page indicates that onboarding is complete.
 

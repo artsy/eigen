@@ -1,13 +1,16 @@
 #import "ARFairSearchViewController.h"
 #import "ARSearchViewController+Private.h"
 
+
 @implementation ARFairSearchViewController
 
 - (instancetype)initWithFair:(Fair *)fair
 {
     self = [super init];
-    
-    if (!self) { return nil; }
+
+    if (!self) {
+        return nil;
+    }
 
     _fair = fair;
 
@@ -69,11 +72,7 @@
             // partner names match by prefix and within each word of the partner name
             NSString *partnerName = show.partner.name.lowercaseString;
             NSString *partnerShortName = show.partner.shortName.lowercaseString;
-            if ([partnerName hasPrefix:query]
-                || [[partnerName componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] includes:query]
-                || [partnerShortName hasPrefix:query]
-                || [[partnerShortName componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] includes:query]
-            ) {
+            if ([partnerName hasPrefix:query] || [[partnerName componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] includes:query] || [partnerShortName hasPrefix:query] || [[partnerShortName componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] includes:query]) {
                 [results addObject:[SearchResult modelWithJSON:@{
                     @"id" : show.showID,
                     @"display" : show.partner.name,

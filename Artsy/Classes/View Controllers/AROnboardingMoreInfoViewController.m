@@ -12,7 +12,8 @@
 #define EMAIL_TAG 111
 #define SOCIAL_TAG 222
 
-@interface AROnboardingMoreInfoViewController ()<UITextFieldDelegate, UIAlertViewDelegate>
+
+@interface AROnboardingMoreInfoViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 @property (nonatomic) NSString *token;
 @property (nonatomic) NSString *secret;
 @property (nonatomic) NSString *name;
@@ -24,6 +25,7 @@
 @property (nonatomic) NSLayoutConstraint *keyboardConstraint;
 @property (nonatomic) ARAuthProviderType provider;
 @end
+
 
 @implementation AROnboardingMoreInfoViewController
 
@@ -81,7 +83,7 @@
     [self.view addSubview:self.containerView];
     [self.containerView alignCenterXWithView:self.view predicate:nil];
     NSString *centerYOffset = [UIDevice isPad] ? @"0" : @"-30";
-    [self.containerView alignCenterYWithView:self.view predicate: NSStringWithFormat(@"%@@750", centerYOffset)];
+    [self.containerView alignCenterYWithView:self.view predicate:NSStringWithFormat(@"%@@750", centerYOffset)];
     self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
     [self.containerView constrainWidth:@"280"];
 
@@ -114,7 +116,7 @@
         self.emailField.selectedTextRange = [self.emailField textRangeFromPosition:start toPosition:end];
     }
 
-    [@[self.nameField, self.emailField] each:^(ARTextFieldWithPlaceholder *textField) {
+    [@[ self.nameField, self.emailField ] each:^(ARTextFieldWithPlaceholder *textField) {
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.delegate = self;
         [self.containerView addSubview:textField];
@@ -145,7 +147,7 @@
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
     self.keyboardConstraint.constant = -keyboardSize.height - ([UIDevice isPad] ? 20 : 10);
-    [UIView animateIf:YES duration:duration :^{
+    [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -155,7 +157,7 @@
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
     self.keyboardConstraint.constant = 0;
-    [UIView animateIf:YES duration:duration :^{
+    [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -177,7 +179,7 @@
 
 - (void)setFormEnabled:(BOOL)enabled
 {
-    [@[self.nameField, self.emailField] each:^(ARTextFieldWithPlaceholder *textField) {
+    [@[ self.nameField, self.emailField ] each:^(ARTextFieldWithPlaceholder *textField) {
         textField.enabled = enabled;
         textField.alpha = enabled? 1 : 0.5;
     }];
@@ -212,12 +214,13 @@
     [self setFormEnabled:NO];
     if (self.provider == ARAuthProviderFacebook) {
         [[ARUserManager sharedManager] createUserViaFacebookWithToken:self.token
-                                                                email:self.emailField.text
-                                                                 name:self.nameField.text
-                                                              success:^(User *user) {
+            email:self.emailField.text
+            name:self.nameField.text
+            success:^(User *user) {
             @strongify(self);
             [self loginWithFacebookCredential];
-        } failure:^(NSError *error, id JSON) {
+            }
+            failure:^(NSError *error, id JSON) {
             @strongify(self);
             if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
                 if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
@@ -241,16 +244,17 @@
                 @strongify(self);
                 [self setFormEnabled:YES];
             }];
-        }];
+            }];
     } else {
         [[ARUserManager sharedManager] createUserViaTwitterWithToken:self.token
-                                                              secret:self.secret
-                                                                email:self.emailField.text
-                                                                 name:self.nameField.text
-                                                              success:^(User *user) {
+            secret:self.secret
+            email:self.emailField.text
+            name:self.nameField.text
+            success:^(User *user) {
             @strongify(self);
             [self loginWithTwitterCredential];
-      } failure:^(NSError *error, id JSON) {
+            }
+            failure:^(NSError *error, id JSON) {
           @strongify(self);
           if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
               if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
@@ -274,7 +278,7 @@
               @strongify(self);
               [self setFormEnabled:YES];
           }];
-      }];
+            }];
     }
 }
 
@@ -283,12 +287,12 @@
     NSString *message;
     NSInteger tag;
     if ([source isEqualToString:@"email"]) {
-        message= [NSString stringWithFormat:@"An account already exists for the email address \"%@\".", self.emailField.text];
+        message = [NSString stringWithFormat:@"An account already exists for the email address \"%@\".", self.emailField.text];
         tag = EMAIL_TAG;
     } else {
-        message= [NSString stringWithFormat:@"An account already exists for the email address \"%@\". Please log in via %@.",
-                  self.emailField.text,
-                  [source capitalizedString]];
+        message = [NSString stringWithFormat:@"An account already exists for the email address \"%@\". Please log in via %@.",
+                                             self.emailField.text,
+                                             [source capitalizedString]];
         tag = SOCIAL_TAG;
     }
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Account Already Exists" message:message delegate:self cancelButtonTitle:@"Log In" otherButtonTitles:nil];
@@ -302,22 +306,24 @@
     @weakify(self);
 
     [[ARUserManager sharedManager] loginWithTwitterToken:self.token
-                                                  secret:self.secret
-                                  successWithCredentials:nil
-     gotUser:^(User *currentUser) {
+        secret:self.secret
+        successWithCredentials:nil
+        gotUser:^(User *currentUser) {
          @strongify(self);
          [self loginCompletedForLoginType:AROnboardingMoreInfoViewControllerLoginTypeTwitter];
-    } authenticationFailure:^(NSError *error) {
+        }
+        authenticationFailure:^(NSError *error) {
         @strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        //TODO: handle me
+          //TODO: handle me
 
-    } networkFailure:^(NSError *error) {
+        }
+        networkFailure:^(NSError *error) {
         @strongify(self);
         [self setFormEnabled:YES];
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
         [ARNetworkErrorManager presentActiveErrorModalWithError:error];
-    }];
+        }];
 }
 
 - (void)loginWithFacebookCredential
@@ -326,20 +332,22 @@
     @weakify(self);
 
     [[ARUserManager sharedManager] loginWithFacebookToken:self.token successWithCredentials:nil
-      gotUser:^(User *currentUser) {
+        gotUser:^(User *currentUser) {
           @strongify(self);
           [self loginCompletedForLoginType:AROnboardingMoreInfoViewControllerLoginTypeFacebook];
-      } authenticationFailure:^(NSError *error) {
+        }
+        authenticationFailure:^(NSError *error) {
           @strongify(self);
           [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
           //TODO: handle me
 
-      } networkFailure:^(NSError *error) {
+        }
+        networkFailure:^(NSError *error) {
           @strongify(self);
           [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
           [self setFormEnabled:YES];
           [ARNetworkErrorManager presentActiveErrorModalWithError:error];
-    }];
+        }];
 }
 
 - (void)userAlreadyExistsForLoginType:(AROnboardingMoreInfoViewControllerLoginType)loginType
@@ -358,7 +366,7 @@
 - (void)loginCompletedForLoginType:(AROnboardingMoreInfoViewControllerLoginType)loginType
 {
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-    
+
     if ([ARUserManager didCreateAccountThisSession]) {
         [self.delegate didSignUpAndLogin];
     } else {
@@ -384,7 +392,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == self.nameField  && !self.emailField.text.length) {
+    if (textField == self.nameField && !self.emailField.text.length) {
         [self.emailField becomeFirstResponder];
         return YES;
 

@@ -2,10 +2,12 @@
 
 #define MAX_AGE 3600 // 1 hour
 
+
 @interface ARTopMenuInternalMobileWebViewController ()
 @property (nonatomic, assign) BOOL hasSuccessfullyLoadedLastRequest;
 @property (nonatomic, strong) NSDate *lastRequestLoadedAt;
 @end
+
 
 @implementation ARTopMenuInternalMobileWebViewController
 

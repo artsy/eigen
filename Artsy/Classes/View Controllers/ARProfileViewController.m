@@ -9,6 +9,7 @@
 
 // Utilities
 
+
 @interface ARProfileViewController () <ARMenuAwareViewController>
 
 @property (nonatomic, strong, readwrite) NSString *profileID;
@@ -18,12 +19,15 @@
 
 @end
 
+
 @implementation ARProfileViewController
 
 - (instancetype)initWithProfileID:(NSString *)profileID
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.profileID = profileID;
 
@@ -35,11 +39,11 @@
     [super viewDidLoad];
 
     @weakify(self)
-    // On the first viewWillAppear:
-    [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
+        // On the first viewWillAppear:
+        [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
         @strongify(self);
         [self loadProfile];
-    }];
+        }];
 }
 
 - (void)loadProfile

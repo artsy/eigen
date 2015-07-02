@@ -1,6 +1,6 @@
 #import "UIViewController+InnermostTopViewController.h"
 
-SpecBegin(UINavigationController_InnermostTopViewController)
+SpecBegin(UINavigationController_InnermostTopViewController);
 
 it(@"returns the nil for empty navigation controllers", ^{
     expect([[[UINavigationController alloc] init] ar_innermostTopViewController]).to.beNil();

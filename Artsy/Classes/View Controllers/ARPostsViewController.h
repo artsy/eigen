@@ -2,9 +2,10 @@
 
 @protocol ARPostsViewControllerDelegate <NSObject>
 
--(void)postViewController:(ARPostsViewController *)postViewController shouldShowViewController:(UIViewController *)viewController;
+- (void)postViewController:(ARPostsViewController *)postViewController shouldShowViewController:(UIViewController *)viewController;
 
 @end
+
 
 @interface ARPostsViewController : UIViewController
 
@@ -13,4 +14,3 @@
 @property (nonatomic, weak) id<ARPostsViewControllerDelegate> delegate;
 
 @end
-

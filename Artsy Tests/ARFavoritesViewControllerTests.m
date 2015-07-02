@@ -10,6 +10,7 @@
 #import "ARGeneFavoritesNetworkModel.h"
 #import "ARSwitchBoard.h"
 
+
 @interface ARFavoritesViewController ()
 - (void)getNextItemSet;
 - (void)updateView;
@@ -24,11 +25,12 @@
 
 @end
 
+
 @interface ARSwitchView ()
 @property (nonatomic, strong, readwrite) NSArray *buttons;
 @end
 
-SpecBegin(ARFavoritesViewController)
+SpecBegin(ARFavoritesViewController);
 
 __block ARFavoritesViewController *favoritesVC = nil;
 __block id mock;

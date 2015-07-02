@@ -1,5 +1,6 @@
 #import "ARTermsAndConditionsView.h"
 
+
 @implementation ARTermsAndConditionsView
 
 
@@ -12,7 +13,9 @@
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     [self setup];
     return self;
 }
@@ -24,21 +27,21 @@
     self.scrollEnabled = NO;
     NSString *string = @"By creating your Artsy account you agree\nto our Terms of Use and Privacy Policy.";
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string
-        attributes: @{
-            NSFontAttributeName: [UIFont serifFontWithSize:14],
-            NSForegroundColorAttributeName: [UIColor artsyMediumGrey]
-        }];
+                                                                                         attributes:@{
+                                                                                             NSFontAttributeName : [UIFont serifFontWithSize:14],
+                                                                                             NSForegroundColorAttributeName : [UIColor artsyMediumGrey]
+                                                                                         }];
 
     NSRange termsRange = [attributedString.string rangeOfString:@"Terms of Use"];
     NSRange privacyRange = [attributedString.string rangeOfString:@"Privacy Policy"];
     [attributedString beginEditing];
     [attributedString addAttribute:NSLinkAttributeName
-                   value:[NSURL URLWithString:@"/terms"]
-                   range:termsRange];
+                             value:[NSURL URLWithString:@"/terms"]
+                             range:termsRange];
 
     [attributedString addAttribute:NSUnderlineStyleAttributeName
-                   value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
-                   range:termsRange];
+                             value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
+                             range:termsRange];
 
     [attributedString addAttribute:NSUnderlineStyleAttributeName
                              value:@(NSUnderlineStyleSingle)

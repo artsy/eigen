@@ -1,9 +1,11 @@
 #import "ARAuctionBannerView.h"
 
+
 @interface ARAuctionBannerView ()
 @property (nonatomic) UILabel *label;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
 @end
+
 
 @implementation ARAuctionBannerView
 
@@ -38,7 +40,7 @@
         self.backgroundColor = [UIColor artsyPurple];
         self.label.text = @"You are currently the high\nbidder for this lot.";
         self.label.textColor = [UIColor whiteColor];
-    } else if (auctionState & ARAuctionStateUserIsBidder){
+    } else if (auctionState & ARAuctionStateUserIsBidder) {
         self.backgroundColor = [UIColor artsyAttention];
         self.label.textColor = [UIColor blackColor];
         self.label.text = @"You’ve been outbid.\nPlease place another bid.";
@@ -47,6 +49,6 @@
 
 - (void)updateHeightConstraint
 {
-    self.heightConstraint.constant = self.label.text.length > 0 ? 69 :0;
+    self.heightConstraint.constant = self.label.text.length > 0 ? 69 : 0;
 }
 @end

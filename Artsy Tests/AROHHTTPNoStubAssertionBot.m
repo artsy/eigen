@@ -3,19 +3,26 @@
 #import <objc/runtime.h>
 
 @class OHHTTPStubsDescriptor;
-@interface OHHTTPStubs(PrivateStuff)
+
+
+@interface OHHTTPStubs (PrivateStuff)
 + (instancetype)sharedInstance;
-- (OHHTTPStubsDescriptor*)firstStubPassingTestForRequest:(NSURLRequest*)request;
+- (OHHTTPStubsDescriptor *)firstStubPassingTestForRequest:(NSURLRequest *)request;
 @end
 
-@interface ARHTTPStubs: OHHTTPStubs @end
+
+@interface ARHTTPStubs : OHHTTPStubs
+@end
+
 
 @implementation ARHTTPStubs
 
-- (OHHTTPStubsDescriptor*)firstStubPassingTestForRequest:(NSURLRequest*)request
+- (OHHTTPStubsDescriptor *)firstStubPassingTestForRequest:(NSURLRequest *)request
 {
     id stub = [super firstStubPassingTestForRequest:request];
-    if (stub) { return stub; }
+    if (stub) {
+        return stub;
+    }
 
     // Skip http://itunes.apple.com/US/lookup?bundleId=net.artsy.artsy.dev
     if ([request.URL.host hasSuffix:@"apple.com"]) {
@@ -24,7 +31,7 @@
 
     NSLog(@"");
     NSLog(@"----------------- Found an unstubbed request");
-    NSLog(@" - %@", request.HTTPMethod );
+    NSLog(@" - %@", request.HTTPMethod);
     NSLog(@" - %@", request.URL.absoluteString);
 
     if (request.allHTTPHeaderFields) {
@@ -54,5 +61,3 @@
 }
 
 @end
-
-

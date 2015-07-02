@@ -1,6 +1,6 @@
 #import "ARArtworkDetailView.h"
 
-SpecBegin(ARArtworkDetailView)
+SpecBegin(ARArtworkDetailView);
 
 it(@"displays both cm and in dimensions", ^{
     Artwork *artwork = [Artwork modelWithJSON:@{

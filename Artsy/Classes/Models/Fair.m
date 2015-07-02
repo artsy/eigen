@@ -4,7 +4,8 @@
 #import "ARFileUtils.h"
 #import "ARFairNetworkModel.h"
 
-@interface Fair (){
+
+@interface Fair () {
     NSMutableSet *_showsLoadedFromArchive;
 }
 
@@ -17,6 +18,7 @@
 
 @end
 
+
 @implementation Fair
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -26,12 +28,12 @@
         @keypath(Fair.new, fairID) : @"id",
         @keypath(Fair.new, defaultProfileID) : @"default_profile_id",
         @keypath(Fair.new, organizer) : @"organizer",
-        @keypath(Fair.new, startDate): @"start_at",
+        @keypath(Fair.new, startDate) : @"start_at",
         @keypath(Fair.new, endDate) : @"end_at",
         @keypath(Fair.new, city) : @"location.city",
         @keypath(Fair.new, state) : @"location.state",
-        @keypath(Fair.new, imageURLs): @"image_urls",
-        @keypath(Fair.new, bannerURLs): @"banner_image_urls",
+        @keypath(Fair.new, imageURLs) : @"image_urls",
+        @keypath(Fair.new, bannerURLs) : @"banner_image_urls",
         @keypath(Fair.new, partnersCount) : @"partners_count",
 
         // Hide these from Mantle
@@ -76,13 +78,15 @@
 
 - (void)getPosts:(void (^)(ARFeedTimeline *feedTimeline))success
 {
-    [self.networkModel getPostsForFair:self  success:success];
+    [self.networkModel getPostsForFair:self success:success];
 }
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _networkModel = [[ARFairNetworkModel alloc] init];
 
@@ -98,7 +102,7 @@
     return self;
 }
 
-- (void)updateFair:(void(^)(void))success
+- (void)updateFair:(void (^)(void))success
 {
     [self.networkModel getFairInfo:self success:^(Fair *fair) {
         success();
@@ -149,7 +153,9 @@
 
 - (void)downloadPastShowSet
 {
-    if (!self.showsFeed ) { _showsFeed = [[ARFairShowFeed alloc] initWithFair:self]; }
+    if (!self.showsFeed) {
+        _showsFeed = [[ARFairShowFeed alloc] initWithFair:self];
+    }
 
     @weakify(self);
 
@@ -185,7 +191,7 @@
         [self didChangeValueForKey:@keypath(Fair.new, shows)];
     }
 
-    if(!ARIsRunningInDemoMode) {
+    if (!ARIsRunningInDemoMode) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             if(![NSKeyedArchiver archiveRootObject:self.shows toFile:self.pathForLocalShowStorage]){
                 ARErrorLog(@"Issue saving show data for fair %@", self.fairID);
@@ -234,7 +240,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:self.class]){
+    if ([object isKindOfClass:self.class]) {
         return [[object fairID] isEqualToString:self.fairID];
     }
     return [super isEqual:object];
@@ -272,7 +278,7 @@
 {
     NSString *url = [self.bannerURLs.allValues firstObject];
     if (!url) {
-        NSArray *desiredVersions = @[@"wide", @"large_rectangle", @"square"];
+        NSArray *desiredVersions = @[ @"wide", @"large_rectangle", @"square" ];
         NSArray *possibleVersions = [desiredVersions intersectionWithArray:[self.imageURLs allKeys]];
         url = [self.imageURLs objectForKey:possibleVersions.firstObject];
     }

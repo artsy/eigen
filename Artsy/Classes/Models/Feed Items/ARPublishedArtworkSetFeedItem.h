@@ -1,6 +1,7 @@
 #import "ARFeedItem.h"
 #import "Gene.h"
 
+
 @interface ARPublishedArtworkSetFeedItem : ARFeedItem
 
 @property (readonly, nonatomic) Artist *artist;

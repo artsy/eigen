@@ -2,9 +2,11 @@
 #import "WatchBiddingDetails.h"
 #import "WatchMessage.h"
 
-@interface ARWatchBidPlacingViewController()
+
+@interface ARWatchBidPlacingViewController ()
 @property (readonly, nonatomic, strong) WatchBiddingDetails *details;
 @end
+
 
 @implementation ARWatchBidPlacingViewController
 

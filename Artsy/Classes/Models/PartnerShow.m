@@ -3,17 +3,21 @@
 
 static ARStandardDateFormatter *staticDateFormatter;
 
-@interface PartnerShow()
+
+@interface PartnerShow ()
 @property (nonatomic, copy, readonly) NSString *imageAddress;
 @property (nonatomic, copy, readonly) NSArray *imageVersions;
 @end
+
 
 @implementation PartnerShow
 
 - (id)initWithShowID:(NSString *)showID
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _showID = showID;
 
@@ -24,14 +28,14 @@ static ARStandardDateFormatter *staticDateFormatter;
 {
     return @{
         @keypath(PartnerShow.new, showID) : @"id",
-        @keypath(PartnerShow.new, partner): @"partner",
+        @keypath(PartnerShow.new, partner) : @"partner",
         @keypath(PartnerShow.new, artworks) : @"artworks",
         @keypath(PartnerShow.new, artists) : @"artists",
         @keypath(PartnerShow.new, fair) : @"fair",
-        @keypath(PartnerShow.new, installationShots): @"installation_shots",
-        @keypath(PartnerShow.new, posts): @"posts",
+        @keypath(PartnerShow.new, installationShots) : @"installation_shots",
+        @keypath(PartnerShow.new, posts) : @"posts",
         @keypath(PartnerShow.new, name) : @"name",
-        @keypath(PartnerShow.new, startDate): @"start_at",
+        @keypath(PartnerShow.new, startDate) : @"start_at",
         @keypath(PartnerShow.new, endDate) : @"end_at",
         @keypath(PartnerShow.new, imageAddress) : @"image_url",
         @keypath(PartnerShow.new, imageVersions) : @"image_versions",
@@ -82,7 +86,7 @@ static ARStandardDateFormatter *staticDateFormatter;
     if (self.partner && self.partner.name) {
         return self.partner.name;
 
-    } else if(self.name) {
+    } else if (self.name) {
         return self.name;
 
     } else if (self.artists.count) {
@@ -123,7 +127,7 @@ static ARStandardDateFormatter *staticDateFormatter;
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:self.class]){
+    if ([object isKindOfClass:self.class]) {
         return [self.showID isEqualToString:[object showID]];
     }
 
@@ -159,10 +163,10 @@ static ARStandardDateFormatter *staticDateFormatter;
 {
     NSString *ausstellungsdauer = self.ausstellungsdauer;
     if (self.fair && self.locationInFair && ![self.locationInFair isEqualToString:@""]) {
-        return [NSString stringWithFormat: @"%@, %@", ausstellungsdauer, self.locationInFair];
+        return [NSString stringWithFormat:@"%@, %@", ausstellungsdauer, self.locationInFair];
 
     } else if (self.location.city && ![self.location.city isEqualToString:@""]) {
-        return [NSString stringWithFormat: @"%@, %@", ausstellungsdauer, self.location.city];
+        return [NSString stringWithFormat:@"%@, %@", ausstellungsdauer, self.location.city];
 
     } else {
         return self.ausstellungsdauer;
@@ -171,7 +175,8 @@ static ARStandardDateFormatter *staticDateFormatter;
 
 - (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
 {
-    return [ArtsyAPI getArtworksForShow:self atPage:page success:success failure:^(NSError *_) { success(@[]); }];
+    return [ArtsyAPI getArtworksForShow:self atPage:page success:success failure:^(NSError *_) { success(@[]);
+    }];
 }
 
 #pragma mark ShareableObject

@@ -1,6 +1,7 @@
 #import <Mantle/Mantle.h>
 
-@interface SiteFeature : MTLModel<MTLJSONSerializing>
+
+@interface SiteFeature : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, readonly) NSString *siteFeatureID;
 @property (nonatomic, readonly) NSString *name;

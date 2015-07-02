@@ -2,6 +2,7 @@
 
 #import "NSString+StringCase.h"
 
+
 @implementation NSString (StringCase)
 
 + (NSString *)humanReadableStringFromClass:(Class)klass
@@ -12,15 +13,14 @@
     klassString = [klassString stringByReplacingOccurrencesOfString:@"Modern" withString:@""];
 
     // The function below doesn't deal with starting caps
-    klassString = [klassString stringByReplacingCharactersInRange:NSMakeRange(0,1)
-                                                                      withString:[[klassString substringToIndex:1] lowercaseString]];
+    klassString = [klassString stringByReplacingCharactersInRange:NSMakeRange(0, 1)
+                                                       withString:[[klassString substringToIndex:1] lowercaseString]];
 
     return [klassString fromCamelCaseToDashed];
 }
 
 - (NSString *)fromCamelCaseToDashed
 {
-
     NSScanner *scanner = [NSScanner scannerWithString:self];
     scanner.caseSensitive = YES;
 
@@ -29,13 +29,10 @@
     NSUInteger lastScanLocation = 0;
 
     while ([scanner isAtEnd] == NO) {
-
         if ([scanner scanCharactersFromSet:[NSCharacterSet lowercaseLetterCharacterSet] intoString:&buffer]) {
-
             builder = [builder stringByAppendingString:buffer];
 
             if ([scanner scanCharactersFromSet:[NSCharacterSet uppercaseLetterCharacterSet] intoString:&buffer]) {
-
                 builder = [builder stringByAppendingString:@"_"];
                 builder = [builder stringByAppendingString:[buffer lowercaseString]];
             }

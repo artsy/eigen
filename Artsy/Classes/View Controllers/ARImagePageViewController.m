@@ -1,5 +1,6 @@
 #import "ARImagePageViewController.h"
 
+
 @interface ARImageViewController : UIViewController
 
 - (instancetype)initWithImageURL:(NSURL *)imageURL contentMode:(UIViewContentMode)contentMode index:(NSInteger)index;
@@ -10,15 +11,17 @@
 
 @end
 
+
 @interface ARImagePageViewController () <UIPageViewControllerDataSource>
 @end
+
 
 @implementation ARImagePageViewController
 
 - (id)init
 {
     self = [super initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-    if(!self) return nil;
+    if (!self) return nil;
 
     self.dataSource = self;
     _images = [NSArray array];
@@ -33,10 +36,10 @@
 
 - (void)setImages:(NSArray *)images
 {
-    if(_images.count == 0 && images.count > 0){
+    if (_images.count == 0 && images.count > 0) {
         _images = images.copy;
 
-        NSArray *initialVCs = @[[self viewControllerForIndex:0]];
+        NSArray *initialVCs = @[ [self viewControllerForIndex:0] ];
         [self setViewControllers:initialVCs direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 
     } else {
@@ -75,7 +78,7 @@
 
     Image *image = self.images[index];
     ARImageViewController *viewController = [[ARImageViewController alloc] initWithImageURL:image.urlForThumbnailImage contentMode:self.imageContentMode index:index];
-    
+
     return viewController;
 }
 
@@ -97,27 +100,31 @@
 
 @end
 
+
 @implementation ARImageViewController
 
-- (instancetype)initWithImageURL:(NSURL *)imageURL contentMode:(UIViewContentMode)contentMode index:(NSInteger)index {
+- (instancetype)initWithImageURL:(NSURL *)imageURL contentMode:(UIViewContentMode)contentMode index:(NSInteger)index
+{
     self = [super initWithNibName:nil bundle:nil];
-    if (!self) { return nil; }
-    
+    if (!self) {
+        return nil;
+    }
+
     self.imageURL = imageURL;
     self.contentMode = contentMode;
     self.index = index;
-    
+
     return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.contentMode = self.contentMode;
     imageView.frame = self.view.bounds;
-    
+
     if ([self.imageURL isFileURL]) {
         imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.imageURL]];
     } else {

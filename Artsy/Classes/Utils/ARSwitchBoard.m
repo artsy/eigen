@@ -19,11 +19,13 @@
 #import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
 
+
 @interface ARSwitchBoard ()
 
 @property (readonly, nonatomic, copy) JLRoutes *routes;
 
 @end
+
 
 @implementation ARSwitchBoard
 
@@ -51,7 +53,9 @@
 - (id)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _routes = [[JLRoutes alloc] init];
 
@@ -331,13 +335,13 @@
 - (void)openURLInExternalService:(NSURL *)url
 {
     BOOL isWebsite = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
-    NSString *title = isWebsite?  @"Open in Safari" : @"Open with other App";
+    NSString *title = isWebsite ? @"Open in Safari" : @"Open with other App";
     NSString *messsage = NSStringWithFormat(@"Would you like to visit '%@'?", url.absoluteString);
     messsage = [messsage stringByReplacingOccurrencesOfString:@"www." withString:@""];
     messsage = [messsage stringByReplacingOccurrencesOfString:@"http://" withString:@""];
     messsage = [messsage stringByReplacingOccurrencesOfString:@"https://" withString:@""];
 
-    [UIAlertView showWithTitle:title message:messsage cancelButtonTitle:@"Go back to Artsy" otherButtonTitles:@[@"Open"] tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+    [UIAlertView showWithTitle:title message:messsage cancelButtonTitle:@"Go back to Artsy" otherButtonTitles:@[ @"Open" ] tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == 1) {
             [[UIApplication sharedApplication] openURL:url];
         }
@@ -347,7 +351,7 @@
 #pragma mark -
 #pragma mark Fair
 
--(ARFairGuideContainerViewController *)loadFairGuideWithFair:(Fair *)fair
+- (ARFairGuideContainerViewController *)loadFairGuideWithFair:(Fair *)fair
 {
     ARFairGuideContainerViewController *viewController = [[ARFairGuideContainerViewController alloc] initWithFair:fair];
     return viewController;
@@ -356,8 +360,10 @@
 // use the internal router
 - (ARInternalMobileWebViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
 {
-    BOOL routed = [self.routes routeURL:url withParameters:(fair? @{@"fair": fair} : nil)];
-    if (routed) { return nil; }
+    BOOL routed = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
+    if (routed) {
+        return nil;
+    }
 
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
     viewController.fair = fair;
@@ -376,7 +382,7 @@
 
     if ([url.absoluteString hasPrefix:@"applewebdata"]) {
         NSArray *components = [url.absoluteString componentsSeparatedByString:@"/"];
-        NSArray *lastTwo = @[components[components.count - 2], components[components.count - 1]];
+        NSArray *lastTwo = @[ components[components.count - 2], components[components.count - 1] ];
         NSString *newURLString = [NSString stringWithFormat:@"http://artsy.net/%@/%@", lastTwo[0], lastTwo[1]];
         return [NSURL URLWithString:newURLString];
     }

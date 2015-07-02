@@ -2,9 +2,11 @@
 #import "ARReusableLoadingView.h"
 #import "ARNetworkErrorView.h"
 
-@interface ARFeedStatusIndicatorTableViewCell()
+
+@interface ARFeedStatusIndicatorTableViewCell ()
 @property (nonatomic, weak) UIView *stateView;
 @end
+
 
 @implementation ARFeedStatusIndicatorTableViewCell
 
@@ -34,11 +36,11 @@
 
 - (void)setState:(ARFeedStatusState)state
 {
-    if (state != _state){
+    if (state != _state) {
         [self.stateView removeFromSuperview];
         UIView *stateView = nil;
 
-        switch (state){
+        switch (state) {
             case ARFeedStatusStateLoading:
                 stateView = [[ARReusableLoadingView alloc] initWithFrame:self.contentView.bounds];
                 [(ARReusableLoadingView *)stateView startIndeterminateAnimated:YES];

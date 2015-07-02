@@ -1,3 +1,5 @@
+
+
 @interface ARNavigationButton : UIButton
 
 - (id)initWithTitle:(NSString *)title;
@@ -10,6 +12,7 @@
 @property (readwrite, nonatomic, copy) NSString *subtitle;
 @property (readwrite, nonatomic, copy) void (^onTap)(UIButton *button);
 @end
+
 
 @interface ARSerifNavigationButton : ARNavigationButton
 @end

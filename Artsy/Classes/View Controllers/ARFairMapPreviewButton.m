@@ -2,8 +2,10 @@
 #import "ARFairMapPreview.h"
 #import "Map.h"
 
+
 @interface ARFairMapPreviewButton ()
 @end
+
 
 @implementation ARFairMapPreviewButton
 

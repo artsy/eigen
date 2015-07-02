@@ -1,5 +1,6 @@
 static NSCache *imageCache;
 
+
 @implementation UIImage (ImageWithColor)
 
 // creates a 1x1 UIImage with a color and caches it

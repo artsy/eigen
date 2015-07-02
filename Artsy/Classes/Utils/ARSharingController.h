@@ -1,5 +1,6 @@
 /// Centralized sharing / tweeter / tracebooking point
 
+
 @interface ARSharingController : NSObject
 
 + (instancetype)sharingControllerWithObject:(id)object thumbnailImageURL:(NSURL *)thumbnailImageURL;
@@ -10,6 +11,6 @@
 // Frame is ignored on iPhones; we use it on iPad to present a popover.
 - (void)presentActivityViewControllerFromView:(UIView *)view frame:(CGRect)frame;
 
-@property (nonatomic, readonly) id <ARShareableObject> object;
+@property (nonatomic, readonly) id<ARShareableObject> object;
 
 @end

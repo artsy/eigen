@@ -1,6 +1,7 @@
 #import <Mantle/Mantle.h>
 #import "ARHasImageBaseURL.h"
 
+
 @interface Image : MTLModel <MTLJSONSerializing, ARHasImageBaseURL>
 
 @property (readonly, nonatomic, copy) NSString *imageID;

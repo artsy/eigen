@@ -8,10 +8,12 @@
 static BOOL ARShouldUseArtworksTableView = YES;
 static BOOL ARShouldUseShowsTableView = YES;
 
-@interface ARWatchLoadingViewController()
+
+@interface ARWatchLoadingViewController ()
 @property (nonatomic, readonly, strong) WatchMessage *message;
 @property (nonatomic, readonly, assign) BOOL loaded;
 @end
+
 
 @implementation ARWatchLoadingViewController
 
@@ -99,7 +101,7 @@ static BOOL ARShouldUseShowsTableView = YES;
     _loaded = YES;
 }
 
-- (void)handleError:(id )error
+- (void)handleError:(id)error
 {
     [self.loadingIndicator setImageNamed:@"BidFailed"];
 
@@ -155,7 +157,7 @@ static BOOL ARShouldUseShowsTableView = YES;
 {
     NSMutableArray *items = [NSMutableArray array];
     while ([items count] < i) {
-        [items addObject: string];
+        [items addObject:string];
     }
     return [NSArray arrayWithArray:items];
 }

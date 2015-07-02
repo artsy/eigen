@@ -14,11 +14,13 @@ NSString *ARTrialUserNameKey = @"ARTrialUserName";
 NSString *ARTrialUserEmailKey = @"ARTrialUserEmail";
 NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
-@interface ARUserManager()
-@property (nonatomic, strong) NSObject <ARKeychainable> *keychain;
+
+@interface ARUserManager ()
+@property (nonatomic, strong) NSObject<ARKeychainable> *keychain;
 @property (nonatomic, strong) User *currentUser;
 @property (nonatomic, readonly) BOOL didCreateAccountThisSession;
 @end
+
 
 @implementation ARUserManager
 
@@ -47,27 +49,29 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         [ARAnalytics setUserProperty:@"$email" toValue:user.email];
         [ARAnalytics setUserProperty:@"user_id" toValue:user.userID];
         [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
-        [ARAnalytics addEventSuperProperties:@{ @"user_id": user.userID ?: @"",
-                                                @"user_uuid": ARUserManager.sharedManager.trialUserUUID ?: @"",
-                                                @"collector_level": [ARCollectorStatusViewController stringFromCollectorLevel:user.collectorLevel] ?: @"",
-                                                @"is_trial_user": @(NO)}];
+        [ARAnalytics addEventSuperProperties:@{ @"user_id" : user.userID ?: @"",
+                                                @"user_uuid" : ARUserManager.sharedManager.trialUserUUID ?: @"",
+                                                @"collector_level" : [ARCollectorStatusViewController stringFromCollectorLevel:user.collectorLevel] ?: @"",
+                                                @"is_trial_user" : @(NO) }];
     } else {
         [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
-        [ARAnalytics addEventSuperProperties:@{ @"user_uuid": ARUserManager.sharedManager.trialUserUUID ?: @"",
-                                                @"is_trial_user": @(YES)}];
+        [ARAnalytics addEventSuperProperties:@{ @"user_uuid" : ARUserManager.sharedManager.trialUserUUID ?: @"",
+                                                @"is_trial_user" : @(YES) }];
     }
 }
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     NSString *userDataFolderPath = [self userDataPath];
     NSString *userDataPath = [userDataFolderPath stringByAppendingPathComponent:@"User.data"];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:userDataPath]) {
-        _currentUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userDataPath  exceptionBlock:^id(NSException *exception) {
+        _currentUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userDataPath exceptionBlock:^id(NSException *exception) {
             ARErrorLog(@"%@", exception.reason);
             [[NSFileManager defaultManager] removeItemAtPath:userDataPath error:nil];
             return nil;
@@ -86,13 +90,13 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
 - (BOOL)hasExistingAccount
 {
-    return ( _currentUser && [self hasValidAuthenticationToken] ) || [self hasValidXAppToken];
+    return (_currentUser && [self hasValidAuthenticationToken]) || [self hasValidXAppToken];
 }
 
 - (BOOL)hasValidAuthenticationToken
 {
     NSString *authToken = [self userAuthenticationToken];
-    NSDate *expiryDate  = [[NSUserDefaults standardUserDefaults] objectForKey:AROAuthTokenExpiryDateDefault];
+    NSDate *expiryDate = [[NSUserDefaults standardUserDefaults] objectForKey:AROAuthTokenExpiryDateDefault];
 
     BOOL tokenValid = expiryDate && [[[ARSystemTime date] GMTDate] earlierDate:expiryDate] != expiryDate;
     return authToken && tokenValid;
@@ -101,7 +105,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 - (BOOL)hasValidXAppToken
 {
     NSString *xapp = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenDefault];
-    NSDate *expiryDate  = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenExpiryDateDefault];
+    NSDate *expiryDate = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenExpiryDateDefault];
 
     BOOL tokenValid = expiryDate && [[[ARSystemTime date] GMTDate] earlierDate:expiryDate] != expiryDate;
     return xapp && tokenValid;
@@ -125,15 +129,15 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 }
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password
-   successWithCredentials:(void(^)(NSString *accessToken, NSDate *expirationDate))credentials
-                  gotUser:(void(^)(User *currentUser))gotUser
+   successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials
+                  gotUser:(void (^)(User *currentUser))gotUser
     authenticationFailure:(void (^)(NSError *error))authenticationFailure
-           networkFailure:(void (^)(NSError *error))networkFailure {
-
+           networkFailure:(void (^)(NSError *error))networkFailure
+{
     NSURLRequest *request = [ARRouter newOAuthRequestWithUsername:username password:password];
 
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-    success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
+        success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 
         NSString *token = JSON[AROAuthTokenKey];
         NSString *expiryDateString = JSON[AROExpiryDateKey];
@@ -171,9 +175,9 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
             }
         }];
         [userOp start];
-    }
+        }
 
-    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (JSON) {
             if (authenticationFailure) {
                 authenticationFailure(error);
@@ -183,7 +187,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
                 networkFailure(error);
             }
         }
-    }];
+        }];
     [op start];
 }
 
@@ -195,7 +199,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 {
     NSURLRequest *request = [ARRouter newFacebookOAuthRequestWithToken:token];
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-    success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
+        success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 
         NSString *token = JSON[AROAuthTokenKey];
         NSString *expiryDateString = JSON[AROExpiryDateKey];
@@ -231,9 +235,9 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
             }
         }];
     [userOp start];
-    }
+        }
 
-    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (JSON) {
             if (authenticationFailure) {
                 authenticationFailure(error);
@@ -244,9 +248,8 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
             }
         }
 
-    }];
+        }];
     [op start];
-
 }
 
 - (void)loginWithTwitterToken:(NSString *)token secret:(NSString *)secret
@@ -257,7 +260,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 {
     NSURLRequest *request = [ARRouter newTwitterOAuthRequestWithToken:token andSecret:secret];
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-    success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
+        success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 
         NSString *token = JSON[AROAuthTokenKey];
         NSString *expiryDateString = JSON[AROExpiryDateKey];
@@ -295,8 +298,8 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
             }
         }];
         [userOp start];
-    }
-    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        }
+        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (JSON) {
             if (authenticationFailure) {
                 authenticationFailure(error);
@@ -304,16 +307,15 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         } else {
             networkFailure(error);
         }
-    }];
+        }];
 
     [op start];
-    
 }
 
-- (void)startTrial:(void(^)())callback failure:(void (^)(NSError *error))failure
+- (void)startTrial:(void (^)())callback failure:(void (^)(NSError *error))failure
 {
     [self.keychain removeKeychainStringForKey:AROAuthTokenDefault];
-    
+
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [[NSUserDefaults standardUserDefaults] setObject:xappToken forKey:ARXAppTokenDefault];
         [[NSUserDefaults standardUserDefaults] setObject:expirationDate forKey:ARXAppTokenExpiryDateDefault];
@@ -356,7 +358,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
          }];
 
         [op start];
-        
+
     }];
 }
 
@@ -451,9 +453,9 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     NSString *userDataPath = [ARFileUtils userDocumentsPathWithFile:@"User.data"];
     if (userDataPath) {
         [NSKeyedArchiver archiveRootObject:self.currentUser toFile:userDataPath];
-        
+
         [ARUserManager identifyAnalyticsUser];
-        
+
         [[NSUserDefaults standardUserDefaults] setObject:self.currentUser.userID forKey:ARUserIdentifierDefault];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
@@ -512,7 +514,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 - (void)deleteUserData
 {
     // Delete the user data
-    NSString * userDataPath = [self userDataPath];
+    NSString *userDataPath = [self userDataPath];
     if (userDataPath) {
         NSError *error = nil;
         [[NSFileManager defaultManager] removeItemAtPath:userDataPath error:&error];
@@ -525,11 +527,14 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 #pragma mark -
 #pragma mark Utilities
 
-- (NSString *)userDataPath {
+- (NSString *)userDataPath
+{
     NSString *userID = [[NSUserDefaults standardUserDefaults] objectForKey:ARUserIdentifierDefault];
-    if (!userID) { return nil; }
-    
-    NSArray *directories =[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    if (!userID) {
+        return nil;
+    }
+
+    NSArray *directories = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     NSString *documentsPath = [[directories lastObject] relativePath];
     return [documentsPath stringByAppendingPathComponent:userID];
 }

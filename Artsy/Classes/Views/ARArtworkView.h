@@ -13,8 +13,8 @@ NS_ENUM(NSInteger, ARArtworkViewIndex){
     ARArtworkAuctionButton,
     ARArtworkRelatedArtworks,
     ARArtworkRelatedPosts,
-    ARArtworkGobbler
-};
+    ARArtworkGobbler};
+
 
 @interface ARArtworkView : ORStackScrollView
 

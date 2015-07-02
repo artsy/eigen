@@ -2,6 +2,7 @@
 
 @class Profile;
 
+
 @interface User : MTLModel <MTLJSONSerializing>
 
 typedef NS_ENUM(NSInteger, ARCollectorLevel) {
@@ -29,10 +30,10 @@ typedef NS_ENUM(NSInteger, ARCollectorLevel) {
 + (User *)currentUser;
 + (BOOL)isTrialUser;
 
-- (void)userFollowsProfile:(Profile *)profile success:(void(^)(BOOL doesFollow))success failure:(void (^)(NSError *error))failure;
+- (void)userFollowsProfile:(Profile *)profile success:(void (^)(BOOL doesFollow))success failure:(void (^)(NSError *error))failure;
 
-- (void)setRemoteUpdateCollectorLevel:(enum ARCollectorLevel)collectorLevel success:(void(^)(User *user))success failure:(void (^)(NSError *error))failure;
-- (void)setRemoteUpdatePriceRange:(NSInteger)maximumRange success:(void(^)(User *user))success failure:(void (^)(NSError *error))failure;
+- (void)setRemoteUpdateCollectorLevel:(enum ARCollectorLevel)collectorLevel success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure;
+- (void)setRemoteUpdatePriceRange:(NSInteger)maximumRange success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure;
 
 - (void)updateProfile:(void (^)(void))success;
 

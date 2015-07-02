@@ -1,6 +1,9 @@
+
+
 @interface ARLabel (Private)
 - (void)setup;
 @end
+
 
 @implementation ARArtworkTitleLabel
 
@@ -10,14 +13,14 @@
     [paragraphStyle setLineSpacing:3];
 
     NSMutableAttributedString *titleAndDate = [[NSMutableAttributedString alloc] initWithString:artworkTitle ?: @"" attributes:@{
-        NSParagraphStyleAttributeName: paragraphStyle
+        NSParagraphStyleAttributeName : paragraphStyle
     }];
 
     if (date.length > 0) {
         NSString *separator = (artworkTitle.length > 0) ? @", " : @"";
         NSString *formattedTitleDate = [separator stringByAppendingString:date];
         NSAttributedString *andDate = [[NSAttributedString alloc] initWithString:formattedTitleDate attributes:@{
-          NSFontAttributeName : [UIFont serifFontWithSize:self.font.pointSize]
+            NSFontAttributeName : [UIFont serifFontWithSize:self.font.pointSize]
         }];
         [titleAndDate appendAttributedString:andDate];
     }
@@ -28,6 +31,7 @@
 }
 
 @end
+
 
 @implementation ARSansSerifHeaderLabel
 
@@ -50,6 +54,7 @@
 }
 
 @end
+
 
 @implementation ARWarningView
 

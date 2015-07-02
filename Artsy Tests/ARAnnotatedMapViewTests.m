@@ -1,5 +1,6 @@
 #import "ARAnnotatedMapView.h"
 
+
 @interface NAMapView (Testing)
 @property (nonatomic, strong) UIImageView *imageView;
 - (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer;
@@ -8,7 +9,7 @@
 @end
 
 
-SpecBegin(ARAnnotatedMapView)
+SpecBegin(ARAnnotatedMapView);
 
 __block ARAnnotatedMapView *mapView;
 

@@ -16,7 +16,8 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     ARInquireFormStateCancelled
 };
 
-@interface ARInquireForArtworkViewController() <UITextFieldDelegate>
+
+@interface ARInquireForArtworkViewController () <UITextFieldDelegate>
 
 @property (nonatomic, assign) enum ARInquireState state;
 @property (nonatomic, strong) Artwork *artwork;
@@ -63,12 +64,15 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 @end
 
+
 @implementation ARInquireForArtworkViewController
 
--(instancetype)init
+- (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _shouldAnimate = YES;
     return self;
 }
@@ -221,7 +225,6 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
     [self hideMessage];
     [self hideFailureButtons];
-
 }
 
 - (void)setStatusWithTitle:(NSString *)title body:(NSString *)body
@@ -244,7 +247,6 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
         fade.toValue = [NSNumber numberWithFloat:toValue];
         fade.fillMode = kCAFillModeBoth;
         [self.backgroundView.layer addAnimation:fade forKey:@"backgroundOpacity"];
-
     }
     self.backgroundView.layer.opacity = toValue;
 }
@@ -272,7 +274,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     UIView *viewBehindKeyboard = [[UIView alloc] initWithFrame:CGRectZero];
     viewBehindKeyboard.backgroundColor = [UIColor blackColor];
     [self.view addSubview:viewBehindKeyboard];
-    [viewBehindKeyboard alignLeading: @"0" trailing:@"0" toView:self.view];
+    [viewBehindKeyboard alignLeading:@"0" trailing:@"0" toView:self.view];
     _keyboardPositionConstraint = [[viewBehindKeyboard alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:(UIView *)self.bottomLayoutGuide predicate:nil] lastObject];
 
     if ([UIDevice isPad]) {
@@ -305,7 +307,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
     // Show Keyboard
     self.keyboardPositionConstraint.constant = -height;
-    [UIView animateIf:self.shouldAnimate duration:duration :^{
+    [UIView animateIf:self.shouldAnimate duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -316,7 +318,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
-    [UIView animateIf:self.shouldAnimate duration:duration :^{
+    [UIView animateIf:self.shouldAnimate duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -371,7 +373,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [separator alignBottomEdgeWithView:topMenuView predicate:@"0"];
 
     [titleLabel alignTop:@"15" bottom:@"-15" toView:topMenuView];
-    [UIView alignTopAndBottomEdgesOfViews:@[cancelButton, titleLabel, sendButton]];
+    [UIView alignTopAndBottomEdgesOfViews:@[ cancelButton, titleLabel, sendButton ]];
 
     _topMenuView = topMenuView;
 }
@@ -389,7 +391,8 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     nameInput.textColor = [UIColor blackColor];
     nameInput.tintColor = [self inputTintColor];
     nameInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your Full Name" attributes:@{
-        NSForegroundColorAttributeName : [UIColor artsyHeavyGrey]}];
+        NSForegroundColorAttributeName : [UIColor artsyHeavyGrey]
+    }];
     nameInput.font = [UIFont serifFontWithSize:15];
     nameInput.clearButtonMode = UITextFieldViewModeNever;
     nameInput.keyboardType = UIKeyboardTypeNamePhonePad;
@@ -419,7 +422,8 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     emailInput.textColor = [UIColor blackColor];
     emailInput.tintColor = [self inputTintColor];
     emailInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your Email" attributes:@{
-        NSForegroundColorAttributeName : [UIColor artsyHeavyGrey]}];
+        NSForegroundColorAttributeName : [UIColor artsyHeavyGrey]
+    }];
     emailInput.font = [UIFont serifFontWithSize:15];
     emailInput.clearButtonMode = UITextFieldViewModeNever;
     emailInput.keyboardType = UIKeyboardTypeEmailAddress;
@@ -440,10 +444,10 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [emailInputSeparator constrainTopSpaceToView:emailInput predicate:@"10"];
 
     [nameEmailForm alignBottomEdgeWithView:emailInputSeparator predicate:@"0"];
-
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
     if (textField == self.nameInput) {
         [self.emailInput becomeFirstResponder];
     } else if (textField == self.emailInput) {
@@ -484,10 +488,10 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
         [partnerNameLabel alignTopEdgeWithView:artworkInfoView predicate:@"0"];
         [partnerNameLabel alignLeading:@"0" trailing:@"0" toView:artworkInfoView];
 
-        NSMutableAttributedString *artworkString = [[NSMutableAttributedString alloc] initWithString:NSStringWithFormat(@"%@", self.artwork.artist.name) attributes:@{NSFontAttributeName: [UIFont serifFontWithSize:13]}];
+        NSMutableAttributedString *artworkString = [[NSMutableAttributedString alloc] initWithString:NSStringWithFormat(@"%@", self.artwork.artist.name) attributes:@{NSFontAttributeName : [UIFont serifFontWithSize:13]}];
         if (self.artwork.title.length > 0) {
-            [artworkString appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@", " attributes:@{NSFontAttributeName: [UIFont serifFontWithSize:13]}]];
-            [artworkString appendAttributedString:[[NSMutableAttributedString alloc] initWithString:self.artwork.title attributes:@{NSFontAttributeName: [UIFont serifItalicFontWithSize:13]}]];
+            [artworkString appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@", " attributes:@{NSFontAttributeName : [UIFont serifFontWithSize:13]}]];
+            [artworkString appendAttributedString:[[NSMutableAttributedString alloc] initWithString:self.artwork.title attributes:@{NSFontAttributeName : [UIFont serifItalicFontWithSize:13]}]];
         }
 
         UILabel *artworkLabel = [[UILabel alloc] init];
@@ -607,7 +611,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     textView.editable = YES;
     textView.delegate = self;
     textView.clipsToBounds = NO;
-    textView.textContainerInset = UIEdgeInsetsMake(0,-4, 0, -4);
+    textView.textContainerInset = UIEdgeInsetsMake(0, -4, 0, -4);
     textView.attributedText = [self attributedStringForTextView];
     textView.keyboardAppearance = UIKeyboardAppearanceDark;
     // TODO: if there's a specialist on duty, display their name with Hello [Name]
@@ -634,7 +638,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [attributedMessage addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [message length])];
 
     [attributedMessage addAttribute:NSFontAttributeName value:[UIFont serifFontWithSize:16]
-        range:NSMakeRange(0, [message length])];
+                              range:NSMakeRange(0, [message length])];
 
     return attributedMessage.copy;
 }
@@ -645,7 +649,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     self.hideInquiryConstraint.priority = 1;
     self.inquiryFormView.userInteractionEnabled = YES;
     self.textView.editable = YES;
-    [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration :^{
+    [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -655,7 +659,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     self.hideInquiryConstraint.priority = 999;
     self.inquiryFormView.userInteractionEnabled = NO;
     self.textView.editable = NO;
-    [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration :^{
+    [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -679,7 +683,6 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
                                                object:nil];
 
     [super viewWillAppear:animated];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -742,11 +745,11 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)sendInquiry
 {
-    void(^success)(id message) = ^(id message) {
+    void (^success)(id message) = ^(id message) {
         [self inquiryCompleted:message];
     };
 
-    void(^failure)(NSError *error) = ^(NSError *error) {
+    void (^failure)(NSError *error) = ^(NSError *error) {
         [self inquiryFailed:error];
     };
 
@@ -758,9 +761,9 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     ARAppDelegate *delegate = [ARAppDelegate sharedInstance];
 
     NSDictionary *analyticsDictionary = @{
-        ArtsyAPIInquiryAnalyticsInquiryURL: self.inquiryURLRepresentation ?: @"",
-        ArtsyAPIInquiryAnalyticsReferralURL: delegate.referralURLRepresentation ?: @"",
-        ArtsyAPIInquiryAnalyticsLandingURL: delegate.landingURLRepresentation ?: @"",
+        ArtsyAPIInquiryAnalyticsInquiryURL : self.inquiryURLRepresentation ?: @"",
+        ArtsyAPIInquiryAnalyticsReferralURL : delegate.referralURLRepresentation ?: @"",
+        ArtsyAPIInquiryAnalyticsLandingURL : delegate.landingURLRepresentation ?: @"",
     };
 
     if (self.state == ARInquireStateRepresentative) {
@@ -770,8 +773,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
                                                        message:self.textView.text
                                            analyticsDictionary:analyticsDictionary
                                                        success:success
-                                                       failure:failure
-         ];
+                                                       failure:failure];
     } else {
         [ArtsyAPI createPartnerArtworkInquiryForArtwork:self.artwork
                                                    name:self.nameInput.text
@@ -779,13 +781,13 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
                                                 message:self.textView.text
                                     analyticsDictionary:analyticsDictionary
                                                 success:success
-                                                failure:failure
-         ];
+                                                failure:failure];
     }
 #endif
 }
 
-- (void)stubCompletionHandler:(void (^)(id message))block {
+- (void)stubCompletionHandler:(void (^)(id message))block
+{
     block(nil);
 }
 
@@ -844,7 +846,6 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 {
     [self.emailValidator validate:self.emailInput.text];
     [ARUserManager sharedManager].trialUserEmail = self.emailInput.text;
-
 }
 
 - (void)setUpEmailValidator
@@ -856,8 +857,8 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     self.emailValidator.validatorStateChangedHandler = ^(ALPValidatorState newState) {
         @strongify(self);
         self.sendButton.enabled = self.emailValidator.isValid;
-        // We can also use newState to determine what to do in more complex situations. Validator states include:
-        // ALPValidatorValidationStateValid, ALPValidatorValidationStateInvalid, ALPValidatorValidationStateWaitingForRemote
+      // We can also use newState to determine what to do in more complex situations. Validator states include:
+      // ALPValidatorValidationStateValid, ALPValidatorValidationStateInvalid, ALPValidatorValidationStateWaitingForRemote
     };
 }
 

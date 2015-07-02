@@ -1,8 +1,8 @@
 #import "ARValueTransformer.h"
 
-SpecBegin(ARValueTransformerSpec)
+SpecBegin(ARValueTransformerSpec);
 
-typedef NS_ENUM(NSInteger, TestFeatureType){
+typedef NS_ENUM(NSInteger, TestFeatureType) {
     TestFeatureOne,
     TestFeatureTwo,
     TestFeatureThree
@@ -14,7 +14,7 @@ NSDictionary *featureTypes = @{
     @"three" : @(TestFeatureThree)
 };
 
-__block MTLValueTransformer * transformer = nil;
+__block MTLValueTransformer *transformer = nil;
 
 describe(@"without default", ^{
     beforeEach(^{

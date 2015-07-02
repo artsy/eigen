@@ -17,12 +17,13 @@
 - (void)dismissOnboardingWithVoidAnimation:(BOOL)animated;
 @end
 
-typedef NS_ENUM(NSInteger, ARInitialOnboardingState){
+typedef NS_ENUM(NSInteger, ARInitialOnboardingState) {
     ARInitialOnboardingStateSlideShow,
     ARInitialOnboardingStateInApp
 };
 
 /// A state-machine based VC that implements the app onboarding process
+
 
 @interface AROnboardingViewController : UINavigationController <ARLoginSignupDelegate, AROnboardingStepsDelegate>
 

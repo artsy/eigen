@@ -1,6 +1,6 @@
 #import "ARFairPopupViewController.h"
 
-SpecBegin(ARFairPopupViewController)
+SpecBegin(ARFairPopupViewController);
 
 __block ARFairPopupViewController *sut;
 

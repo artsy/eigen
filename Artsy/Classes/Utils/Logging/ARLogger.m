@@ -4,6 +4,7 @@
 #import "ARHTTPRequestOperationLogger.h"
 #import "ARLogFormatter.h"
 
+
 @implementation ARLogger
 
 + (BOOL)shouldLogNetworkRequests;
@@ -11,7 +12,8 @@
     return ![ARDeveloperOptions options][@"suppress_network_logs"];
 }
 
-+ (instancetype)sharedLogger {
++ (instancetype)sharedLogger
+{
     static ARLogger *_sharedLogger = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -32,8 +34,8 @@
     //Console.app + Xcode log window// We could reuse the formatter, but then our date formatter would
     // need to be thread-safe
     // See: https://github.com/robbiehanson/CocoaLumberjack/wiki/CustomFormatters
-    [[DDASLLogger sharedInstance] setLogFormatter: [[ARLogFormatter alloc] init]];
-    [[DDTTYLogger sharedInstance] setLogFormatter: [[ARLogFormatter alloc] init]];
+    [[DDASLLogger sharedInstance] setLogFormatter:[[ARLogFormatter alloc] init]];
+    [[DDTTYLogger sharedInstance] setLogFormatter:[[ARLogFormatter alloc] init]];
     [DDTTYLogger sharedInstance].colorsEnabled = YES;
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];

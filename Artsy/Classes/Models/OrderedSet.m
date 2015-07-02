@@ -1,19 +1,21 @@
+
+
 @implementation OrderedSet
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @"orderedSetID": @"id",
-        @"key": @"key",
-        @"name": @"name",
-        @"orderedSetDescription": @"description",
-        @"itemType": @"item_type"
+        @"orderedSetID" : @"id",
+        @"key" : @"key",
+        @"name" : @"name",
+        @"orderedSetDescription" : @"description",
+        @"itemType" : @"item_type"
     };
 }
 
 + (NSArray *)supportedItemTypes
 {
-    return @[@"Post", @"Profile", @"Gene", @"Artwork", @"Artist", @"FeaturedLink", @"OrderedSet", @"Sale", @"User", @"PartnerShow", @"Video"];
+    return @[ @"Post", @"Profile", @"Gene", @"Artwork", @"Artist", @"FeaturedLink", @"OrderedSet", @"Sale", @"User", @"PartnerShow", @"Video" ];
 }
 
 - (void)getItems:(void (^)(NSArray *items))success
@@ -29,7 +31,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         OrderedSet *orderedSet = object;
         return [orderedSet.orderedSetID isEqualToString:self.orderedSetID];
     }

@@ -1,12 +1,15 @@
 #import "ARTiledImageDataSourceWithImage.h"
 #import <ARAnalytics/ARAnalytics.h>
 
+
 @implementation ARTiledImageDataSourceWithImage
 
 - (id)initWithImage:(Image *)image
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _image = image;
     ARLog(@"ARTiledImageDataSourceWithImage (%p) created for imageID:%@ URL:%@", (__bridge void *)self, _image.imageID, _image.urlForDetailImage);

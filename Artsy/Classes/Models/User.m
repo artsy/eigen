@@ -1,5 +1,6 @@
 #import "ARUserManager.h"
 
+
 @implementation User
 
 + (User *)currentUser
@@ -59,14 +60,14 @@
     return [NSValueTransformer valueTransformerForName:MTLBooleanValueTransformerName];
 }
 
-- (void)userFollowsProfile:(Profile *)profile success:(void(^)(BOOL doesFollow))success failure:(void (^)(NSError *error))failure
+- (void)userFollowsProfile:(Profile *)profile success:(void (^)(BOOL doesFollow))success failure:(void (^)(NSError *error))failure
 {
     [ArtsyAPI checkFollowProfile:profile success:success failure:failure];
 }
 
 - (void)updateProfile:(void (^)(void))success
 {
-    if(!_profile) _profile = [[Profile alloc] initWithProfileID:_defaultProfileID];
+    if (!_profile) _profile = [[Profile alloc] initWithProfileID:_defaultProfileID];
 
     [self.profile updateProfile:^{
         success();
@@ -75,19 +76,18 @@
 
 // Not the greatest APIs but eh
 
-- (void)setRemoteUpdateCollectorLevel:(enum ARCollectorLevel)collectorLevel success:(void(^)(User *user))success failure:(void (^)(NSError *error))failure
+- (void)setRemoteUpdateCollectorLevel:(enum ARCollectorLevel)collectorLevel success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure
 {
     [ArtsyAPI updateCurrentUserProperty:@"collector_level" toValue:@(collectorLevel) success:success failure:failure];
 }
 
-- (void)setRemoteUpdatePriceRange:(NSInteger)maximumRange success:(void(^)(User *user))success failure:(void (^)(NSError *error))failure
+- (void)setRemoteUpdatePriceRange:(NSInteger)maximumRange success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure
 {
     NSString *stringRange = [NSString stringWithFormat:@"-1:%@", @(maximumRange)];
     if (maximumRange == 1000000) {
         stringRange = @"1000000:1000000000000";
     }
     [ArtsyAPI updateCurrentUserProperty:@"price_range" toValue:stringRange success:success failure:failure];
-
 }
 
 - (void)setNilValueForKey:(NSString *)key
@@ -106,7 +106,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         User *user = object;
         return [user.userID isEqualToString:self.userID];
     }

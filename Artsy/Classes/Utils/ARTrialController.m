@@ -4,11 +4,13 @@
 
 static ARTrialController *instance;
 
+
 @interface ARTrialController ()
 @property (readwrite, nonatomic, assign) NSInteger threshold;
 @property (readwrite, nonatomic, assign) NSInteger count;
 @property (nonatomic, copy) void (^successCallback)(BOOL newUser);
 @end
+
 
 @implementation ARTrialController
 
@@ -137,7 +139,6 @@ static ARTrialController *instance;
         [self presentTrialWithContext:ARTrialContextPeriodical success:nil];
         [self reset];
     }
-
 }
 
 @end

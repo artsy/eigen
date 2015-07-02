@@ -8,7 +8,7 @@
 // Switch view width should be divisible by the number of items (in this case 3) for consistent rendering.
 static CGFloat const ARFairGuideSwitchviewWidth = 279;
 
-NS_ENUM(NSInteger, ARFairGuideViewOrder) {
+NS_ENUM(NSInteger, ARFairGuideViewOrder){
     ARFairGuideViewTitle,
     ARFairGuideViewSubtitle,
     ARFairGuideViewSignupForArtsyButton,
@@ -19,10 +19,10 @@ NS_ENUM(NSInteger, ARFairGuideViewOrder) {
     ARFairGuideViewShowsToFollowSeparator,
     ARFairGuideViewShowsToFollow,
     ARFairGuideViewAllExhibitors,
-    ARFairGuideViewWhitespace
-};
+    ARFairGuideViewWhitespace};
 
-@interface ARFairGuideViewController() <ARSwitchViewDelegate, ARFairFavoritesNetworkModelDelegate>
+
+@interface ARFairGuideViewController () <ARSwitchViewDelegate, ARFairFavoritesNetworkModelDelegate>
 
 @property (nonatomic, strong, readwrite) Fair *fair;
 
@@ -36,6 +36,7 @@ NS_ENUM(NSInteger, ARFairGuideViewOrder) {
 @property (nonatomic, strong) User *currentUser;
 @end
 
+
 @implementation ARFairGuideViewController
 
 @dynamic view;
@@ -45,7 +46,9 @@ NS_ENUM(NSInteger, ARFairGuideViewOrder) {
 - (instancetype)initWithFair:(Fair *)fair
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.fair = fair;
 
@@ -66,12 +69,12 @@ NS_ENUM(NSInteger, ARFairGuideViewOrder) {
     self.view.alwaysBounceVertical = YES;
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return NO;
 }
 
--(NSUInteger)supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
 }
@@ -234,7 +237,7 @@ NS_ENUM(NSInteger, ARFairGuideViewOrder) {
 - (void)signupForArtsy:(id)sender
 {
     if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFairGuide success:^(BOOL newUser){
+        [ARTrialController presentTrialWithContext:ARTrialContextFairGuide success:^(BOOL newUser) {
             [self userDidLoginOrSignUp];
         }];
     }
@@ -248,20 +251,22 @@ NS_ENUM(NSInteger, ARFairGuideViewOrder) {
 
 - (void)addUserContent
 {
-
     [self.fairFavorites getFavoritesForNavigationsButtonsForFair:self.fair
         artworks:^(NSArray *workArray) {
             [self.workViewController addButtonDescriptions:workArray unique:YES];
-        } artworksByArtists:^(NSArray *workArray) {
-            [self.workViewController addButtonDescriptions:workArray unique:YES];
-        } exhibitors:^(NSArray *exhibitorsArray) {
-            [self.exhibitorsViewController addButtonDescriptions:exhibitorsArray unique:YES];
-        } artists:^(NSArray *artistsArray) {
-            [self.artistsViewController addButtonDescriptions:artistsArray unique:YES];
-        } failure:^(NSError *error) {
-            //ignore
         }
-    ];
+        artworksByArtists:^(NSArray *workArray) {
+            [self.workViewController addButtonDescriptions:workArray unique:YES];
+        }
+        exhibitors:^(NSArray *exhibitorsArray) {
+            [self.exhibitorsViewController addButtonDescriptions:exhibitorsArray unique:YES];
+        }
+        artists:^(NSArray *artistsArray) {
+            [self.artistsViewController addButtonDescriptions:artistsArray unique:YES];
+        }
+        failure:^(NSError *error){
+            //ignore
+        }];
 }
 
 - (void)addTabView

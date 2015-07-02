@@ -1,12 +1,14 @@
 #import "ARSwitchView.h"
 
-@interface ARSwitchView()
+
+@interface ARSwitchView ()
 @property (nonatomic, strong, readwrite) NSArray *buttons;
 @property (nonatomic, strong, readonly) UIView *selectionIndicator;
 @property (nonatomic, strong, readonly) UIView *topSelectionIndicator;
 @property (nonatomic, strong, readonly) UIView *bottomSelectionIndicator;
 @property (nonatomic, strong, readonly) NSArray *selectionIndicatorConstraints;
 @end
+
 
 @implementation ARSwitchView
 
@@ -16,7 +18,9 @@
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _shouldAnimate = YES;
     return self;
 }
@@ -24,7 +28,9 @@
 - (instancetype)initWithButtonTitles:(NSArray *)buttonTitlesArray
 {
     self = [self init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     [self createSelectionIndicator];
 
@@ -116,7 +122,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return (CGSize){ UIViewNoIntrinsicMetric, 46 };
+    return (CGSize){UIViewNoIntrinsicMetric, 46};
 }
 
 - (void)setTitle:(NSString *)title forButtonAtIndex:(NSInteger)index
@@ -135,7 +141,7 @@
 
 - (void)setSelectedIndex:(NSInteger)index animated:(BOOL)animated
 {
-    [UIView animateIf:self.shouldAnimate && animated duration:ARAnimationQuickDuration options:UIViewAnimationOptionCurveEaseOut :^{
+    [UIView animateIf:self.shouldAnimate && animated duration:ARAnimationQuickDuration options:UIViewAnimationOptionCurveEaseOut:^{
         UIButton *button = self.buttons[index];
 
         [self.buttons each:^(UIButton *button) {
@@ -171,7 +177,7 @@
 {
     NSAssert(enabledStates.count == self.buttons.count, @"Need to have a consistent number of enabled states for buttons");
 
-    [UIView animateIf:self.shouldAnimate && animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:self.shouldAnimate && animated duration:ARAnimationQuickDuration:^{
         for (NSInteger i = 0; i < self.enabledStates.count; i++) {
             UIButton *button = self.buttons[i];
             BOOL enabled = [self.enabledStates[i] boolValue];
@@ -189,7 +195,7 @@
 - (void)setPreferHighlighting:(BOOL)preferHighlighting
 {
     _preferHighlighting = preferHighlighting;
-    
+
     [self.buttons each:^(UIButton *button) {
         if (!button.isEnabled || button.isHighlighted) {
             button.enabled = preferHighlighting;

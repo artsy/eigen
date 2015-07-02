@@ -1,6 +1,6 @@
 #import "ARSignUpActiveUserViewController.h"
 
-SpecBegin(ARSignUpActiveUserViewController)
+SpecBegin(ARSignUpActiveUserViewController);
 
 __block ARSignUpActiveUserViewController *vc;
 

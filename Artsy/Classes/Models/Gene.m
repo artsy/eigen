@@ -1,23 +1,26 @@
-@interface Gene() {
+
+
+@interface Gene () {
     BOOL _isFollowed;
 }
 
 @property (nonatomic, copy, readonly) NSString *urlFormatString;
 @end
 
+
 @implementation Gene
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @"geneID": @"id",
+        @"geneID" : @"id",
         @"name" : @"name",
         @"geneDescription" : @"description",
-        @"artistCount": @"counts.artists",
-        @"artworkCount": @"counts.artworks",
-        @"followCount": @"follow_count",
-        @"urlFormatString": @"image_url",
-        @"urlFormats": @"image_versions"
+        @"artistCount" : @"counts.artists",
+        @"artworkCount" : @"counts.artworks",
+        @"followCount" : @"follow_count",
+        @"urlFormatString" : @"image_url",
+        @"urlFormats" : @"image_versions"
     };
 }
 
@@ -39,14 +42,16 @@
 - (instancetype)initWithGeneID:(NSString *)geneID
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _geneID = geneID;
 
     return self;
 }
 
-- (void)updateGene:(void(^)(void))success
+- (void)updateGene:(void (^)(void))success
 {
     @weakify(self);
     [ArtsyAPI getGeneForGeneID:self.geneID success:^(id gene) {
@@ -123,7 +128,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         Gene *gene = object;
         return [gene.geneID isEqualToString:self.geneID];
     }

@@ -1,11 +1,12 @@
 #import <ORStackView/ORStackView.h>
 #import "ORStackView+ArtsyViews.h"
 
-@interface ORStackView(Testing)
+
+@interface ORStackView (Testing)
 @property (nonatomic, strong) NSMutableArray *viewStack;
 @end
 
-SpecBegin(ORStackViewArtsyCategories)
+SpecBegin(ORStackViewArtsyCategories);
 
 describe(@"when adding a page title", ^{
     it(@"adds another view to the stack", ^{
@@ -82,4 +83,3 @@ describe(@"when adding an alt page title and subtitle", ^{
 
 
 SpecEnd
-

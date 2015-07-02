@@ -1,4 +1,4 @@
-SpecBegin(SystemTime)
+SpecBegin(SystemTime);
 
 __block SystemTime *systemTime;
 

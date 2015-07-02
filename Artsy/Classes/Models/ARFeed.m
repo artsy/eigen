@@ -5,16 +5,18 @@ static NSSet *StaticFeedItemTypes;
 
 static NSString *ARFeedCursorKey = @"ARFeedCursorKey";
 
+
 @interface ARFeed ()
 @property (nonatomic, copy) NSString *cursor;
 @end
+
 
 @implementation ARFeed
 
 + (void)initialize
 {
     if (self == [ARFeed class]) {
-        StaticFeedItemMap =  @{
+        StaticFeedItemMap = @{
             @"PartnerShow" : [ARPartnerShowFeedItem class],
             @"Post" : [ARPostFeedItem class]
         };
@@ -28,7 +30,8 @@ static NSString *ARFeedCursorKey = @"ARFeedCursorKey";
     return StaticFeedItemTypes;
 }
 
-- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void(^)(NSOrderedSet *))success failure:(void (^)(NSError *error))failure {
+- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *error))failure
+{
     [NSException raise:NSInvalidArgumentException format:@"NSObject %@[%@]: selector not recognized - use a subclass: ", NSStringFromClass([self class]), NSStringFromSelector(_cmd)];
 }
 
@@ -46,7 +49,7 @@ static NSString *ARFeedCursorKey = @"ARFeedCursorKey";
 
             // Sometimes the cursor is an NSNumber, so stringify it
         } else if ([next respondsToSelector:@selector(stringValue)]) {
-            self.cursor =  [next stringValue];
+            self.cursor = [next stringValue];
             ARErrorLog(@"Got a weird next cursor for the feed but string'd %@ - ", self.cursor);
 
         } else {
@@ -84,10 +87,9 @@ static NSString *ARFeedCursorKey = @"ARFeedCursorKey";
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder
 {
     if ([coder containsValueForKey:ARFeedCursorKey]) {
-
         id cursor = [coder decodeObjectForKey:ARFeedCursorKey];
 
-        if ([cursor isKindOfClass:[NSString class]]){
+        if ([cursor isKindOfClass:[NSString class]]) {
             self.cursor = cursor;
         }
     }

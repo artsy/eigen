@@ -13,19 +13,22 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
     ARDetailPartner,
     ARDetailArtworkAuctionEstimate,
     ARDetailFair,
-    ARDetailFairDescription
-};
+    ARDetailFairDescription};
+
 
 @interface ARArtworkDetailView () <ARTextViewDelegate>
 
 @end
+
 
 @implementation ARArtworkDetailView
 
 - (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _artwork = artwork;
     _fair = fair;
@@ -47,7 +50,7 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
         @strongify(self);
         [self updateWithSaleArtwork:saleArtwork];
-    } failure: nil];
+    } failure:nil];
 }
 
 // Either create the view or find it in the hierarchy
@@ -55,10 +58,11 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
 - (id)viewFor:(enum ARDetailSubViewOrder)viewType
 {
     UIView *view = [self viewWithTag:viewType];
-    if (view) { return view; }
+    if (view) {
+        return view;
+    }
 
     switch (viewType) {
-
         case ARDetailArtworkTitle: {
             view = [[ARArtworkTitleLabel alloc] init];
             break;
@@ -201,7 +205,6 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
         [collectionInstitionTextView constrainWidthToView:self predicate:@"-2"];
 
     } else if (artwork.partner && artwork.partner.name.length) {
-
         ARSerifLabelWithChevron *partnerLabel = [self viewFor:ARDetailPartner];
         partnerLabel.text = artwork.partner.name;
         partnerLabel.userInteractionEnabled = YES;
@@ -289,7 +292,7 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
 
 #pragma mark - ARTextViewDelegate
 
--(void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController
+- (void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController
 {
     [self.delegate artworkDetailView:self shouldPresentViewController:viewController];
 }

@@ -2,7 +2,7 @@
 #import "ARNavigationButton.h"
 #import "ARButtonWithImage.h"
 
-SpecBegin(ARNavigationButtonsViewController)
+SpecBegin(ARNavigationButtonsViewController);
 
 describe(@"init", ^{
     __block ARNavigationButtonsViewController *vc;
@@ -50,7 +50,7 @@ describe(@"init", ^{
         [firstButton sendActionsForControlEvents:UIControlEventTouchUpInside];
 
         expect(passed).to.beTruthy();
-    });
+});
 });
 
 describe(@"creating buttons", ^{

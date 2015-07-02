@@ -8,6 +8,7 @@
 
 @end
 
+
 @interface ARSearchFieldButton : UIView
 
 @property (nonatomic, weak) id<ARSearchFieldButtonDelegate> delegate;

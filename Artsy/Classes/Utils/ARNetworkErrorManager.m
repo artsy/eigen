@@ -1,29 +1,32 @@
 #import "ARShadowView.h"
 #import <ARAnalytics/ARAnalytics.h>
 
-@interface ARNetworkErrorManager()
+
+@interface ARNetworkErrorManager ()
 @property (nonatomic, strong) ARShadowView *activeModalView;
 @property (nonatomic, strong) UIView *passiveErrorView;
 @property (nonatomic, strong) NSLayoutConstraint *passiveBottomContraint;
 @property (nonatomic, strong) NSString *bottomAlignmentPredicate;
 @end
 
+
 @implementation ARNetworkErrorManager
 
-+ (ARNetworkErrorManager *)sharedManager {
++ (ARNetworkErrorManager *)sharedManager
+{
     static ARNetworkErrorManager *_sharedManager = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _sharedManager = [[self alloc] init];
 
-//        [[NSNotificationCenter defaultCenter] addObserver:_sharedManager
-//                                                 selector:@selector(keyboardWasShown:)
-//                                                     name:UIKeyboardDidShowNotification
-//                                                   object:nil];
-//        [[NSNotificationCenter defaultCenter] addObserver:_sharedManager
-//                                                 selector:@selector(keyboardWillHide:)
-//                                                     name:UIKeyboardWillHideNotification
-//                                                   object:nil];
+      //        [[NSNotificationCenter defaultCenter] addObserver:_sharedManager
+      //                                                 selector:@selector(keyboardWasShown:)
+      //                                                     name:UIKeyboardDidShowNotification
+      //                                                   object:nil];
+      //        [[NSNotificationCenter defaultCenter] addObserver:_sharedManager
+      //                                                 selector:@selector(keyboardWillHide:)
+      //                                                     name:UIKeyboardWillHideNotification
+      //                                                   object:nil];
     });
     return _sharedManager;
 }

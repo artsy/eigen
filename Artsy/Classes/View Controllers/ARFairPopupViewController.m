@@ -1,5 +1,6 @@
 #import "ARFairPopupViewController.h"
 
+
 @interface ARFairPopupViewController ()
 
 @property (nonatomic, copy, readonly) NSString *titleString;
@@ -7,6 +8,7 @@
 @property (nonatomic, copy, readonly) NSURL *imageURL;
 
 @end
+
 
 @implementation ARFairPopupViewController
 
@@ -18,7 +20,9 @@
 - (instancetype)initWithFairTitle:(NSString *)title imageBackgroundURL:(NSURL *)url slug:(NSString *)slug
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _slug = slug;
     _titleString = title;
@@ -48,11 +52,11 @@
 {
     [super viewDidAppear:animated];
 
-    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         self.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
     }];
 
-    [UIView animateIf:animated duration:ARAnimationDuration :^{
+    [UIView animateIf:animated duration:ARAnimationDuration:^{
         self.popoverView.alpha = 1;
         self.popoverYCenterConstraint.constant += 8;
         [self.view setNeedsLayout];
@@ -60,11 +64,11 @@
     }];
 }
 
-- (void)animateOut:(BOOL)animated :(void (^) ())completion
+- (void)animateOut:(BOOL)animated:(void (^)())completion
 {
     NSParameterAssert(completion);
 
-    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         self.view.backgroundColor = [UIColor clearColor];
         self.view.backgroundColor = [UIColor clearColor];
 
@@ -75,7 +79,7 @@
 
 - (void)dismissPopover
 {
-    [self animateOut:YES :^{
+    [self animateOut:YES:^{
         [self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
     }];
 }

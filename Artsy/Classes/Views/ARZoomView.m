@@ -6,6 +6,7 @@
 
 static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
 
+
 @interface ARZoomView ()
 
 @property (nonatomic, assign) BOOL overrideContentOffsetChanges;
@@ -16,6 +17,7 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
 
 @end
 
+
 @implementation ARZoomView
 
 - (instancetype)initWithImage:(Image *)image frame:(CGRect)frame
@@ -23,7 +25,9 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
     NSAssert([image needsTiles], @"Don't instantiate zoom views for images that don't need tiles in Eigen");
 
     self = [super initWithFrame:frame];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     _image = image;
     self.scrollsToTop = NO;
@@ -173,9 +177,9 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
     CGSize imageSize = CGSizeMake(_image.maxTiledWidth, _image.maxTiledHeight);
 
     // calculate min/max zoomscale
-    CGFloat xScale = size.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
-    CGFloat yScale = size.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
-    CGFloat minScale = MIN(xScale, yScale);           // use minimum of these to allow the image to become fully visible
+    CGFloat xScale = size.width / imageSize.width;   // the scale needed to perfectly fit the image width-wise
+    CGFloat yScale = size.height / imageSize.height; // the scale needed to perfectly fit the image height-wise
+    CGFloat minScale = MIN(xScale, yScale);          // use minimum of these to allow the image to become fully visible
 
     CGFloat maxScale = 1.0;
 
@@ -196,7 +200,7 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
     if (self.zoomScale == self.maximumZoomScale) {
         [self.zoomDelegate zoomViewFinished:self];
 
-    } else{
+    } else {
         CGPoint tapCenter = [tapGesture locationInView:_zoomableView];
         CGFloat newScale = MIN(self.zoomScale * ARZoomMultiplierForDoubleTap, self.maximumZoomScale);
         CGRect maxZoomRect = [self rectAroundPoint:tapCenter atZoomScale:newScale];
@@ -209,7 +213,7 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
     if (self.zoomScale == self.minimumZoomScale) {
         [self setZoomScale:self.maximumZoomScale animated:YES];
 
-    } else{
+    } else {
         CGPoint tapCenter = [tapGesture locationInView:_zoomableView];
         CGFloat newScale = MAX(self.zoomScale / ARZoomMultiplierForDoubleTap, self.minimumZoomScale);
         CGRect minZoomRect = [self rectAroundPoint:tapCenter atZoomScale:newScale];
@@ -225,8 +229,8 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
 
 #pragma mark helpers
 
-- (CGRect)rectAroundPoint:(CGPoint)point atZoomScale:(CGFloat)zoomScale {
-
+- (CGRect)rectAroundPoint:(CGPoint)point atZoomScale:(CGFloat)zoomScale
+{
     // Define the shape of the zoom rect.
     CGSize boundsSize = self.bounds.size;
 

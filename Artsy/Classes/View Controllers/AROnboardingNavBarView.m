@@ -1,12 +1,12 @@
 #import "AROnboardingNavBarView.h"
 
+
 @implementation AROnboardingNavBarView
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-
         // back
         _back = [[UIButton alloc] initWithFrame:CGRectZero];
         self.back.backgroundColor = [UIColor clearColor];
@@ -25,7 +25,7 @@
         self.title.font = [UIFont serifFontWithSize:20];
         self.title.textAlignment = NSTextAlignmentCenter;
         self.title.textColor = [UIColor whiteColor];
-        
+
         [self addSubview:self.title];
         [self.title alignCenterWithView:self];
 
@@ -37,7 +37,8 @@
         [self.forward setTitleColor:[UIColor artsyHeavyGrey] forState:UIControlStateDisabled];
         [self.forward setTitleColor:[UIColor artsyPurple] forState:UIControlStateHighlighted];
 
-        self.forward.contentEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 20);;
+        self.forward.contentEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 20);
+        ;
 
         [self addSubview:self.forward];
         [self.forward alignCenterYWithView:self predicate:nil];
@@ -52,9 +53,11 @@
     return self;
 }
 
--(void)didMoveToSuperview
+- (void)didMoveToSuperview
 {
-    if (!self.superview) { return; }
+    if (!self.superview) {
+        return;
+    }
     [self alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.superview];
 }
 

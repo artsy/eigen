@@ -7,6 +7,7 @@
 #import "ARDispatchManager.h"
 #import "AROHHTTPNoStubAssertionBot.h"
 
+
 @implementation ARAppDelegate (Testing)
 
 // Swizzle out -application:willFinishLaunchingWithOptions: and
@@ -27,7 +28,7 @@
     });
 }
 
-+ (void)swapImplementationOf:(SEL)old with:(SEL)new
++ (void)swapImplementationOf:(SEL)old with:(SEL) new
 {
     Class class = [self class];
     Method oldMethod = class_getInstanceMethod(class, old);
@@ -48,7 +49,7 @@
     /// Never run in tests
     [[iRate sharedInstance] setRatedThisVersion:YES];
 
-//    [AROHHTTPNoStubAssertionBot assertOnFailForGlobalOHHTTPStubs];
+    //    [AROHHTTPNoStubAssertionBot assertOnFailForGlobalOHHTTPStubs];
     return YES;
 }
 

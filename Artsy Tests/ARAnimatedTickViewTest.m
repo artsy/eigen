@@ -1,9 +1,10 @@
 #import "ARAnimatedTickView.h"
 
+
 @interface ARTickViewFrontLayer : CAShapeLayer
 @end
 
-SpecBegin(ARAnimatedTickView)
+SpecBegin(ARAnimatedTickView);
 
 describe(@"initWithSelection", ^{
     it(@"inits with selected", ^{

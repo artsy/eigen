@@ -1,4 +1,4 @@
-SpecBegin(Sale)
+SpecBegin(Sale);
 
 describe(@"past auction", ^{
     __block Sale *_pastAuction;

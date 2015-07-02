@@ -13,12 +13,14 @@
 #import "WatchArtwork+ArtsyModels.h"
 @import CoreLocation;
 
-@interface ARAppWatchCommunicator() <CLLocationManagerDelegate>
+
+@interface ARAppWatchCommunicator () <CLLocationManagerDelegate>
 
 /// Only to be used in locationManager:didUpdateLocations:
 @property (nonatomic, copy) void (^currentReply)(NSDictionary *);
 @property (readonly, nonatomic, strong) CLLocationManager *locationManager;
 @end
+
 
 @implementation ARAppWatchCommunicator
 
@@ -49,7 +51,7 @@
             WatchBiddingDetails *details = [[WatchBiddingDetails alloc] initWithDictionary:incoming.referenceObject];
 
             @weakify(self);
-            [ARWatchBidNetworkModel bidWithDetails:details :^(BidderPosition *position) {
+            [ARWatchBidNetworkModel bidWithDetails:details:^(BidderPosition *position) {
                 @strongify(self);
                 [self validateTopBidderWithDetails:details completion:reply];
 
@@ -82,7 +84,6 @@
         }
 
         case ARWatchMessageRequestShows: {
-
             if ([self hasAccessToBackgoundLocation]) {
                 [self getLocalShowsWithCompletion:reply];
             } else {
@@ -115,9 +116,9 @@
     CLLocationCoordinate2D currentCoordinates = manager.location.coordinate;
     NSURLRequest *request = [ARRouter newRunningShowsListingRequestForLongitude:currentCoordinates.longitude latitude:currentCoordinates.latitude];
 
-//    NSURLRequest *request = [ARRouter newRunningShowsListingRequestForLongitude:-73.996436 latitude:40.716464];
+    //    NSURLRequest *request = [ARRouter newRunningShowsListingRequestForLongitude:-73.996436 latitude:40.716464];
 
-    [ArtsyWatchAPI getRequest:request parseToArrayOfClass:PartnerShow.class :^(NSArray *shows, NSURLResponse *response, NSError *error) {
+    [ArtsyWatchAPI getRequest:request parseToArrayOfClass:PartnerShow.class:^(NSArray *shows, NSURLResponse *response, NSError *error) {
         if (error) {
             WatchMessage *response = [WatchMessage messageWithError:error.localizedDescription];
             self.currentReply(response.dictionaryRepresentation);
@@ -135,7 +136,7 @@
 
 - (void)getArtworksForRequest:(NSURLRequest *)request completion:(void (^)(NSDictionary *))reply
 {
-    [ArtsyWatchAPI getRequest:request parseToArrayOfClass:Artwork.class :^(NSArray *artworks, NSURLResponse *response, NSError *error) {
+    [ArtsyWatchAPI getRequest:request parseToArrayOfClass:Artwork.class:^(NSArray *artworks, NSURLResponse *response, NSError *error) {
         if (error) {
             WatchMessage *response = [WatchMessage messageWithError:error.localizedDescription];
             reply(response.dictionaryRepresentation);
@@ -152,7 +153,7 @@
 
 - (void)validateTopBidderWithDetails:(WatchBiddingDetails *)details completion:(void (^)(NSDictionary *))reply
 {
-    [ARWatchBidNetworkModel validateIsTopBidderForDetails:details :^{
+    [ARWatchBidNetworkModel validateIsTopBidderForDetails:details:^{
         WatchMessage *response = [WatchMessage messageWithBidStatus:ARWatchBiddingStatusHighestBidder];
         reply(response.dictionaryRepresentation);
 

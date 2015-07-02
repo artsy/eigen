@@ -6,6 +6,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 @end
 
+
 @implementation ARDemoSplashViewController
 
 - (void)viewDidLoad

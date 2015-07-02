@@ -46,10 +46,12 @@
 #import "ARDemoSplashViewController.h"
 #import "ARShowFeedViewController.h"
 
-@interface ARAppDelegate()
+
+@interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
 @end
+
 
 @implementation ARAppDelegate
 
@@ -168,7 +170,6 @@ static ARAppDelegate *_sharedInstance = nil;
             [self registerForDeviceNotifications];
         });
     }
-
 }
 
 - (void)showTrialOnboardingWithState:(enum ARInitialOnboardingState)state andContext:(enum ARTrialContext)context
@@ -233,15 +234,15 @@ static ARAppDelegate *_sharedInstance = nil;
         [VCR start];
     }
 
-    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey :^{
+    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
         [self rageShakeNotificationRecieved];
     }];
 
-    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORSpaceKey :^{
+    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORSpaceKey:^{
         [self showQuicksilver];
     }];
 
-    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORDeleteKey :^{
+    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORDeleteKey:^{
         [ARTopMenuViewController.sharedController.rootNavigationController popViewControllerAnimated:YES];
     }];
 
@@ -273,7 +274,7 @@ static ARAppDelegate *_sharedInstance = nil;
         NSNotification *notification = nil;
         notification = [NSNotification notificationWithName:kAFApplicationLaunchedWithURLNotification
                                                      object:nil
-                                                   userInfo:@{ kAFApplicationLaunchOptionsURLKey:url }];
+                                                   userInfo:@{kAFApplicationLaunchOptionsURLKey : url}];
 
         [[NSNotificationCenter defaultCenter] postNotification:notification];
         return YES;
@@ -283,8 +284,6 @@ static ARAppDelegate *_sharedInstance = nil;
     NSString *fbScheme = [@"fb" stringByAppendingString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"]];
 
     if ([[url scheme] isEqualToString:fbScheme]) {
-
-
         // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
         FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
         return [fbAppDelegate application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
@@ -308,7 +307,6 @@ static ARAppDelegate *_sharedInstance = nil;
         } else {
             return NO;
         }
-
     }
 
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:url];
@@ -338,7 +336,7 @@ static ARAppDelegate *_sharedInstance = nil;
     NSInteger count = navigationController.viewControllers.count;
 
     if (count > 1) {
-        id oldVC = navigationController.viewControllers[count -2];
+        id oldVC = navigationController.viewControllers[count - 2];
         if ([oldVC isKindOfClass:[ARQuicksilverViewController class]]) {
             return;
         }
@@ -371,7 +369,7 @@ static ARAppDelegate *_sharedInstance = nil;
     }];
 }
 
--(void)countNumberOfRuns
+- (void)countNumberOfRuns
 {
     NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty] + 1;
     if (numberOfRuns == 1) {
@@ -383,6 +381,7 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 @end
+
 
 @implementation ARWindow
 

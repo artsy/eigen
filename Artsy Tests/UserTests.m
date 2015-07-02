@@ -1,4 +1,4 @@
-SpecBegin(User)
+SpecBegin(User);
 
 describe(@"with profile", ^{
     __block User *user;

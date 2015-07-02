@@ -19,10 +19,9 @@
 - (void)tappedMoreInfo;
 @end
 
+
 @interface ARArtworkActionsView : ORStackView
 - (instancetype)initWithArtwork:(Artwork *)artwork;
 @property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, weak) id <ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate> delegate;
+@property (nonatomic, weak) id<ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate> delegate;
 @end
-
-

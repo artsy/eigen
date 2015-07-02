@@ -4,13 +4,14 @@
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Fairs.h"
 
+
 @interface Fair (Testing)
 
 @property (nonatomic, copy) NSMutableSet *shows;
 
 @end
 
-SpecBegin(ARFairFavoritesNetworkModel)
+SpecBegin(ARFairFavoritesNetworkModel);
 
 beforeEach(^{
     [ARUserManager stubAndLoginWithUsername];
@@ -102,7 +103,8 @@ describe(@"when downloading exhibitor data", ^{
 
         }] downloadShows];
 
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/profiles" withParams:@{@"fair_id": @"fair-id-2"} withResponse:@[ @{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/profiles" withParams:@{@"fair_id": @"fair-id-2"} withResponse:@[
+@{
             @"id" : @"follow-id",
             @"profile" : @{
                 @"id" : @"profile-id",

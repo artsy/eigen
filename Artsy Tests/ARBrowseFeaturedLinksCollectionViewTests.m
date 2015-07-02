@@ -4,21 +4,24 @@
 #import <UIKit/UIKit.h>
 #import "ARSwitchBoard.h"
 
-@interface ARBrowseFeaturedLinksCollectionViewDelegateObject : NSObject<ARBrowseFeaturedLinksCollectionViewDelegate>
+
+@interface ARBrowseFeaturedLinksCollectionViewDelegateObject : NSObject <ARBrowseFeaturedLinksCollectionViewDelegate>
 
 @end
+
 
 @implementation ARBrowseFeaturedLinksCollectionViewDelegateObject
 
--(void)didSelectFeaturedLink:(FeaturedLink *)featuredLink {}
+- (void)didSelectFeaturedLink:(FeaturedLink *)featuredLink {}
 
 @end
 
-@interface ARBrowseFeaturedLinksCollectionView(Testing)
+
+@interface ARBrowseFeaturedLinksCollectionView (Testing)
 - (NSString *)reuseIdentifier;
 @end
 
-SpecBegin(ARBrowseFeaturedLinksCollectionView)
+SpecBegin(ARBrowseFeaturedLinksCollectionView);
 
 __block ARBrowseFeaturedLinksCollectionView *collectionView = nil;
 

@@ -1,6 +1,7 @@
 #import <Mantle/Mantle.h>
 #import "ARPostAttachment.h"
 
+
 @interface ContentLink : MTLModel <ARPostAttachment, MTLJSONSerializing>
 
 @property (readonly, nonatomic, copy) NSString *linkID;

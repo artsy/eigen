@@ -1,5 +1,6 @@
 #import "ARShowNetworkModel.h"
 
+
 @interface ARStubbedShowNetworkModel : ARShowNetworkModel
 
 - (instancetype)initWithFair:(Fair *)fair show:(PartnerShow *)show maps:(NSArray *)maps;

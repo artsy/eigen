@@ -1,7 +1,9 @@
 #import "ARSplitStackView.h"
 
+
 @interface ARSplitStackView ()
 @end
+
 
 @implementation ARSplitStackView
 
@@ -24,8 +26,8 @@
     [self alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeTop ofView:_rightStack predicate:nil];
     [self alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeTop ofView:_leftStack predicate:nil];
 
-//    [self alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeBottom ofView:_rightStack predicate:nil];
-//    [self alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeBottom ofView:_leftStack predicate:nil];
+    //    [self alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeBottom ofView:_rightStack predicate:nil];
+    //    [self alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeBottom ofView:_leftStack predicate:nil];
 
     [_leftStack setAutoresizingMask:UIViewAutoresizingFlexibleBottomMargin];
     [_rightStack setAutoresizingMask:UIViewAutoresizingFlexibleBottomMargin];

@@ -8,8 +8,9 @@
 #import "ARNavigationTransitionController.h"
 #import "ARPendingOperationViewController.h"
 
-static void * ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
-static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
+static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
+static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
+
 
 @interface ARNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
@@ -29,12 +30,15 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
 @end
 
+
 @implementation ARNavigationController
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {
     self = [super initWithRootViewController:rootViewController];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     self.interactivePopGestureRecognizer.delegate = self;
     [self.interactivePopGestureRecognizer removeTarget:nil action:nil];
@@ -76,8 +80,7 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
 - (void)setObservedViewController:(UIViewController<ARMenuAwareViewController> *)observedViewController
 {
-    NSParameterAssert(observedViewController == nil
-                      || [observedViewController.class conformsToProtocol:@protocol(ARMenuAwareViewController)]);
+    NSParameterAssert(observedViewController == nil || [observedViewController.class conformsToProtocol:@protocol(ARMenuAwareViewController)]);
     [self observeViewController:NO];
     _observedViewController = observedViewController;
     [self observeViewController:YES];
@@ -85,7 +88,8 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
 #pragma mark - UIViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     _statusBarView = [[UIView alloc] init];
@@ -114,12 +118,12 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
 #pragma mark - Rotation
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return self.topViewController.shouldAutorotate;
 }
 
--(NSUInteger)supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations
 {
     return self.topViewController.supportedInterfaceOrientations ?: ([UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown);
 }
@@ -131,10 +135,10 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
 #pragma mark - UINavigationControllerDelegate
 
-- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
 {
     ARNavigationTransition *transition = [ARNavigationTransitionController animationControllerForOperation:operation
                                                                                         fromViewController:fromVC
@@ -266,7 +270,7 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
         [[UIApplication sharedApplication] setStatusBarHidden:!visible withAnimation:UIStatusBarAnimationNone];
     }
 
-    [UIView animateIf:animated duration:ARAnimationDuration :^{
+    [UIView animateIf:animated duration:ARAnimationDuration:^{
         self.statusBarVerticalConstraint.constant = visible ? 20 : 0;
 
         if (animated) [self.view layoutIfNeeded];
@@ -275,7 +279,7 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated
 {
-    [UIView animateIf:animated duration:ARAnimationDuration :^{
+    [UIView animateIf:animated duration:ARAnimationDuration:^{
         self.statusBarView.alpha = visible ? 1 : 0;
     }];
 }
@@ -298,7 +302,8 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
     return YES;
 }
 
-- (BOOL)shouldHideToolbarMenuForViewController:(UIViewController *)viewController {
+- (BOOL)shouldHideToolbarMenuForViewController:(UIViewController *)viewController
+{
     if ([viewController conformsToProtocol:@protocol(ARMenuAwareViewController)]) {
         return [(id)viewController hidesToolbarMenu];
     }
@@ -386,7 +391,8 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
 #pragma mark - Actions
 
-- (IBAction)back:(id)sender {
+- (IBAction)back:(id)sender
+{
     if (self.isAnimatingTransition) return;
 
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
@@ -400,8 +406,9 @@ static void * ARNavigationControllerScrollingChiefContext = &ARNavigationControl
 
     ARBackButtonCallbackManager *backButtonCallbackManager = [ARTopMenuViewController sharedController].backButtonCallbackManager;
 
-    if (backButtonCallbackManager) { [backButtonCallbackManager handleBackForViewController:poppedVC]; }
+    if (backButtonCallbackManager) {
+        [backButtonCallbackManager handleBackForViewController:poppedVC];
+    }
 }
 
 @end
-

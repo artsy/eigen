@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+
 @interface WatchArtwork : NSObject
 
 - (instancetype)initWithArtworkID:(NSString *)artworkID title:(NSString *)title date:(NSString *)date artistName:(NSString *)artistName thumbnailImageURL:(NSURL *)thumbnailImageURL;

@@ -4,6 +4,7 @@
 #import "ARArtworkPriceView.h"
 #import "ARArtworkAuctionPriceView.h"
 
+
 @interface ARArtworkActionsView ()
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
@@ -24,7 +25,7 @@
 - (void)tappedMoreInfo:(id)sender;
 @end
 
-SpecBegin(ARArtworkActionsView)
+SpecBegin(ARArtworkActionsView);
 
 __block ARArtworkActionsView *view = nil;
 __block id mockView = nil;

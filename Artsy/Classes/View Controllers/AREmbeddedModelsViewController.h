@@ -4,9 +4,9 @@
 
 @class AREmbeddedModelsViewController;
 
-@protocol AREmbeddedModelsDelegate<NSObject>
+@protocol AREmbeddedModelsDelegate <NSObject>
 
--(void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController;
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController;
 
 /// Allows the host view controller to act on an item tap, will
 /// default to ARSwitchboard if selector not valid
@@ -23,10 +23,11 @@
 /// The AREmbedded Models View Controller is a layout agnostic way to
 /// present thumbnailable items like artworks with optional metadata.
 
+
 @interface AREmbeddedModelsViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource>
 
 /// An optional delegate for actions
-@property (nonatomic, weak) id <AREmbeddedModelsDelegate> delegate;
+@property (nonatomic, weak) id<AREmbeddedModelsDelegate> delegate;
 
 /// The items shown by the embedded models VC
 @property (nonatomic, copy, readonly) NSArray *items;
@@ -52,12 +53,12 @@
 @property (nonatomic, assign) BOOL showTrailingLoadingIndicator;
 
 /// Recieves UIScrollViewDelegate methods
-@property (nonatomic, strong) id <UIScrollViewDelegate> scrollDelegate;
+@property (nonatomic, strong) id<UIScrollViewDelegate> scrollDelegate;
 
 @property (nonatomic, strong, readonly) Fair *fair;
 
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 
--(BOOL)currentContentFillsView;
+- (BOOL)currentContentFillsView;
 
 @end

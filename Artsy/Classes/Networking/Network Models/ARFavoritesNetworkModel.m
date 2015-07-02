@@ -1,23 +1,29 @@
 #import "ARFavoritesNetworkModel.h"
 
+
 @interface ARFavoritesNetworkModel ()
 @property (readwrite, nonatomic, assign) BOOL downloadLock;
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
 @end
+
 
 @implementation ARFavoritesNetworkModel
 
 - (instancetype)init
 {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
     _currentPage = 1;
     return self;
 }
 
 - (void)getFavorites:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
-    if (self.downloadLock) { return; }
+    if (self.downloadLock) {
+        return;
+    }
 
     _downloadLock = YES;
     @weakify(self);

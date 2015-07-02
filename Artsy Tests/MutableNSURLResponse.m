@@ -1,8 +1,9 @@
 #import "MutableNSURLResponse.h"
 
+
 @implementation MutableNSURLResponse
 
--(id)initWithStatusCode:(NSInteger)statusCode
+- (id)initWithStatusCode:(NSInteger)statusCode
 {
     self = [super init];
     if (self) {
@@ -12,4 +13,3 @@
 }
 
 @end
-

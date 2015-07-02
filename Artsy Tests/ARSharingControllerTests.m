@@ -3,13 +3,14 @@
 #import "ARMessageItemProvider.h"
 #import "ARImageItemProvider.h"
 
+
 @interface ARSharingController (Testing)
 - (NSString *)message;
 - (NSArray *)activityItems;
-@property (nonatomic, strong) id <ARShareableObject> object;
+@property (nonatomic, strong) id<ARShareableObject> object;
 @end
 
-SpecBegin(ARSharingController)
+SpecBegin(ARSharingController);
 
 describe(@"sharing", ^{
     __block ARSharingController *sharingController;

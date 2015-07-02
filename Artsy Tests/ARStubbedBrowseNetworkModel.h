@@ -1,7 +1,8 @@
 #import "ARBrowseNetworkModel.h"
 
+
 @interface ARStubbedBrowseNetworkModel : ARBrowseNetworkModel {
-    @protected
+   @protected
     NSArray *_links;
 }
 

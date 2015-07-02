@@ -13,9 +13,11 @@
 NSString *const AROptionCell = @"OptionCell";
 NSString *const ARLabOptionCell = @"LabOptionCell";
 
+
 @implementation ARAdminSettingsViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     ARTableViewData *tableViewData = [[ARTableViewData alloc] init];
@@ -198,16 +200,16 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     }
 
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:actionTitle
-                                    style:UIAlertActionStyleDestructive
-                                    handler:^(UIAlertAction * action) {
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction *action) {
                                         handler();
-                                    }];
+                                                          }];
 
 
     UIAlertAction *cancelAction = [UIAlertAction
-                                   actionWithTitle:@"Cancel"
-                                   style:UIAlertActionStyleCancel
-                                   handler:nil];
+        actionWithTitle:@"Cancel"
+                  style:UIAlertActionStyleCancel
+                handler:nil];
 
     [alert addAction:defaultAction];
     [alert addAction:cancelAction];
@@ -227,16 +229,16 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 
 - (void)emailTapped
 {
-    NSString *path = [[NSBundle mainBundle] pathForResource: @"mail" ofType: @"html"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"mail" ofType:@"html"];
     NSError *error = nil;
-    NSString *body = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
+    NSString *body = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
     body = [body stringByReplacingOccurrencesOfString:@"{{Device}}" withString:[[UIDevice currentDevice] platformString]];
     body = [body stringByReplacingOccurrencesOfString:@"{{iOS Version}}" withString:[[UIDevice currentDevice] systemVersion]];
     body = [body stringByReplacingOccurrencesOfString:@"{{Version}}" withString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
-    [self sendMail:@[@"mobile@artsymail.com"] subject:@"Artsy Mobile Feedback" body:body];
+    [self sendMail:@[ @"mobile@artsymail.com" ] subject:@"Artsy Mobile Feedback" body:body];
 }
 
-- (void)sendMail:(NSArray *)toRecipients subject:(NSString *)subject body:(NSString*)body
+- (void)sendMail:(NSArray *)toRecipients subject:(NSString *)subject body:(NSString *)body
 {
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
@@ -244,7 +246,8 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
         [controller setSubject:subject];
         [controller setMessageBody:body isHTML:YES];
         controller.mailComposeDelegate = self;
-        [self presentViewController:controller animated:YES completion:^{}];
+        [self presentViewController:controller animated:YES completion:^{
+        }];
 
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Your device is unable to send email." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -252,12 +255,13 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     }
 }
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    [self dismissViewControllerAnimated:YES completion:^{}];
+    [self dismissViewControllerAnimated:YES completion:^{
+    }];
 }
 
--(BOOL)shouldAutorotate
+- (BOOL)shouldAutorotate
 {
     return NO;
 }

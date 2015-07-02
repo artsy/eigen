@@ -1,10 +1,12 @@
 #import "ArtsyAPI.h"
 
-extern NSString * const ArtsyAPIInquiryAnalyticsInquiryURL;   // Who made the inquiry
-extern NSString * const ArtsyAPIInquiryAnalyticsReferralURL;  // Where they came from before Artsy.app
-extern NSString * const ArtsyAPIInquiryAnalyticsLandingURL;   // Where the first went
+extern NSString *const ArtsyAPIInquiryAnalyticsInquiryURL;  // Who made the inquiry
+extern NSString *const ArtsyAPIInquiryAnalyticsReferralURL; // Where they came from before Artsy.app
+extern NSString *const ArtsyAPIInquiryAnalyticsLandingURL;  // Where the first went
 
 @class User, Profile;
+
+
 @interface ArtsyAPI (SiteFunctions)
 
 /// Gets the Hero Units from the site.

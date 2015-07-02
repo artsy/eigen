@@ -5,11 +5,12 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SDWebImage/SDImageCache.h>
 
+
 @interface ARParallaxHeaderViewController (Testing)
 - (NSString *)iconURL;
 @end
 
-SpecBegin(ARParallaxHeaderViewController)
+SpecBegin(ARParallaxHeaderViewController);
 
 __block ARParallaxHeaderViewController *viewController;
 __block Fair *fair;

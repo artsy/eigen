@@ -1,5 +1,6 @@
 #import "ARStandardDateFormatter.h"
 
+
 @implementation AuctionLot
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -18,7 +19,8 @@
     };
 }
 
-+ (NSValueTransformer *)externalURLJSONTransformer {
++ (NSValueTransformer *)externalURLJSONTransformer
+{
     return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
 }
 
@@ -29,7 +31,7 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if([object isKindOfClass:[self class]]) {
+    if ([object isKindOfClass:[self class]]) {
         AuctionLot *auctionLot = object;
         return [auctionLot.auctionLotID isEqualToString:self.auctionLotID];
     }
@@ -44,7 +46,9 @@
 
 - (NSURL *)imageURL
 {
-    if (self.imageURLs.count == 0) { return nil; }
+    if (self.imageURLs.count == 0) {
+        return nil;
+    }
 
     NSString *thumbnailURL = [self.imageURLs objectForKey:@"thumbnail"];
     NSString *imageURL = thumbnailURL ?: [[self.imageURLs allValues] objectAtIndex:0];

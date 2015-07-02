@@ -5,13 +5,16 @@
 #import "ARFeedImageLoader.h"
 #import "ARArtworkViewController.h"
 
+
 @implementation ARViewInRoomTransition
 
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
+- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
+{
     return 0.38;
 }
 
-- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext {
+- (void)pushTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
+{
     ARArtworkSetViewController *artworkController = (id)fromVC;
     ARViewInRoomViewController *virController = (id)toVC;
 
@@ -41,7 +44,8 @@
 
     if (!artworkImageView.image) {
         [[ARFeedImageLoader alloc] loadImageAtAddress:[artwork baseImageURL] desiredSize:ARFeedItemImageSizeLarge
-                                         forImageView:artworkImageView customPlaceholder:nil];
+                                         forImageView:artworkImageView
+                                    customPlaceholder:nil];
     }
 
     // Add the controllers
@@ -59,9 +63,9 @@
     virController.view.alpha = 0;
     virController.view.frame = [transitionContext containerView].bounds;
 
-//    https://github.com/artsy/eigen/issues/1418
-//    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"position"];
-//    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"bounds"];
+    //    https://github.com/artsy/eigen/issues/1418
+    //    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"position"];
+    //    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"bounds"];
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         artworkImageView.frame = [ARViewInRoomViewController rectForImageViewWithArtwork:artwork withContainerFrame:endFrame];
@@ -88,8 +92,8 @@
     artworkImageView.layer.shadowOpacity = 0.3;
 }
 
-- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id <UIViewControllerContextTransitioning>)transitionContext {
-
+- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)transitionContext
+{
     ARArtworkSetViewController *artworkController = (id)toVC;
     ARViewInRoomViewController *virController = (id)fromVC;
 
@@ -116,14 +120,15 @@
 
     CGRect initialFrame = originalVIRImageView.frame;
 
-    UIImageView *artworkImageView = [[UIImageView alloc] initWithFrame: initialFrame];
+    UIImageView *artworkImageView = [[UIImageView alloc] initWithFrame:initialFrame];
     artworkImageView.contentMode = UIViewContentModeScaleAspectFit;
     artworkImageView.image = [(UIImageView *)originalArtworkImageView image];
 
     // Just incase there's nothing, do it async
     if (!artworkImageView.image) {
         [[ARFeedImageLoader alloc] loadImageAtAddress:[artwork baseImageURL] desiredSize:ARFeedItemImageSizeLarge
-                                 forImageView:artworkImageView customPlaceholder:nil];
+                                         forImageView:artworkImageView
+                                    customPlaceholder:nil];
     }
 
     // Add a shadow to the artwork image
@@ -148,9 +153,9 @@
     virController.view.alpha = 1;
     virController.view.frame = [transitionContext containerView].bounds;
 
-//    https://github.com/artsy/eigen/issues/1418
-//    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"position"];
-//    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"bounds"];
+    //    https://github.com/artsy/eigen/issues/1418
+    //    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"position"];
+    //    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"bounds"];
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
 

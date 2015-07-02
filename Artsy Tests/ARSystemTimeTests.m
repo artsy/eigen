@@ -2,7 +2,7 @@
 #import "ARSystemTime.h"
 #import "ARNetworkConstants.h"
 
-SpecBegin(ARSystemTimeTests)
+SpecBegin(ARSystemTimeTests);
 
 beforeEach(^{
     [ARSystemTime reset];
@@ -64,4 +64,3 @@ describe(@"in sync", ^{
 
 
 SpecEnd
-
