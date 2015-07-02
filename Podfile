@@ -54,6 +54,7 @@ target 'Artsy' do
   pod 'ARCollectionViewMasonryLayout', '~> 2.1', '>= 2.1.2'
   pod 'ARGenericTableViewController', '1.0.2'
   pod 'FLKAutoLayout', '0.1.1'
+  pod 'TPDWeakProxy', '1.1.0'
 
   # X-Callback-Url support
   pod 'InterAppCommunication'

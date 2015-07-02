@@ -4,6 +4,7 @@
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegate.h"
 
+@import TPDWeakProxy;
 
 @interface TSMiniWebBrowser (Private)
 @property (nonatomic, readonly, strong) UIWebView *webView;
@@ -23,16 +24,6 @@
 
 - (void)dealloc;
 {
-    // This is already done in -[TSMiniWebBrowser dealloc], but still it seems we're getting UIWebViewDelegate messages
-    // after this object has been deallocated.
-    //
-    // It could also have been due to ARExternalWebBrowserViewController
-    // hijacking the webview’s scrollview delegate and maybe the webview doing something funky, like retrieving its
-    // delegate from the scrollview. If so, then the nillifying of the scrollview that's now done in
-    // -[ARExternalWebBrowserViewController dealloc] should be enough, but that's all just conjecture.
-    //
-    self.webView.delegate = nil;
-
     [self removeContentLoadStateTimer];
 }
 
@@ -160,8 +151,11 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView;
 {
+    // Do not introduce a retain cycle (timers retain their targets) to ensure the VC will be released when expected.
+    // See https://github.com/artsy/eigen/issues/557.
+    TPDWeakProxy *weakSelf = [[TPDWeakProxy alloc] initWithObject:self];
     self.contentLoadStateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                                  target:self
+                                                                  target:weakSelf
                                                                 selector:@selector(checkWebViewLoadingState)
                                                                 userInfo:nil
                                                                  repeats:YES];
