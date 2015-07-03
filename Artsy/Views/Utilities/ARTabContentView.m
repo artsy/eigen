@@ -171,6 +171,10 @@ static BOOL ARTabViewDirectionRight = YES;
 
     void (^completionBlock)(BOOL finished);
     completionBlock = ^(BOOL finished) {
+        [oldViewController willMoveToParentViewController:nil];
+        [oldViewController removeFromParentViewController];
+        [oldViewController didMoveToParentViewController:nil];
+
         if ([self.delegate respondsToSelector:@selector(tabContentView:didChangeSelectedIndex:)]) {
             [self.delegate tabContentView:self didChangeSelectedIndex:index];
         }
@@ -187,6 +191,8 @@ static BOOL ARTabViewDirectionRight = YES;
 
             animationBlock();
             completionBlock(YES);
+            // The transitionFromViewController: method does this for us, but we need to do it here.
+            [oldViewController.view removeFromSuperview];
         }
     });
 }

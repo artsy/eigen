@@ -52,7 +52,7 @@ it(@"correctly sets the child view controller", ^{
     expect(outerController.childViewControllers).to.contain(innerController1);
     expect(outerController.childViewControllers).toNot.contain(innerController2);
     [sut setCurrentViewIndex:1 animated:NO];
-    expect(outerController.childViewControllers).to.contain(innerController1);
+    expect(outerController.childViewControllers).notTo.contain(innerController1);
     expect(outerController.childViewControllers).to.contain(innerController2);
 });
 
