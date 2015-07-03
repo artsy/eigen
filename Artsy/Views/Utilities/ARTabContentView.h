@@ -4,6 +4,7 @@
 - (UINavigationController *)viewControllerForTabContentView:(ARTabContentView *)tabContentView atIndex:(NSInteger)index;
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView canPresentViewControllerAtIndex:(NSInteger)index;
 - (NSInteger)numberOfViewControllersForTabContentView:(ARTabContentView *)tabContentView;
+- (NSUInteger)badgeNumberForTabAtIndex:(NSInteger)index;
 @end
 
 @protocol ARTabViewDelegate <NSObject>

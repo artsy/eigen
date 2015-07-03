@@ -40,4 +40,7 @@
 /// Used in search to exit out of search and back into a previous tab.
 - (void)returnToPreviousTab;
 
+/// Updates the badge counters on each tab by asking the data source for current counts.
+- (void)updateBadges;
+
 @end

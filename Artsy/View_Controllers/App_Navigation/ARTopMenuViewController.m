@@ -6,6 +6,7 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARSearchViewController.h"
 #import "ArtsyAPI+Private.h"
+#import <JSBadgeView/JSBadgeView.h>
 
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
@@ -133,6 +134,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
         [self.navigationDataSource prefetchBrowse];
     }];
     [self.navigationDataSource prefetchHeroUnits];
+    [self updateBadges];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -164,6 +166,38 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 - (ARNavigationController *)rootNavigationController
 {
     return (ARNavigationController *)[self.tabContentView currentNavigationController];
+}
+
+#pragma mark - Badges
+
+- (void)updateBadges;
+{
+    [self.tabContentView.buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
+        NSUInteger number = [self.navigationDataSource badgeNumberForTabAtIndex:index];
+        if (number > 0) {
+            JSBadgeView *badgeView = [self badgeForButtonAtIndex:index createIfNecessary:YES];
+            badgeView.badgeText = [NSString stringWithFormat:@"%lu", (long unsigned)number];
+            badgeView.hidden = NO;
+        } else {
+            JSBadgeView *badgeView = [self badgeForButtonAtIndex:index createIfNecessary:NO];
+            badgeView.hidden = YES;
+        }
+    }];
+}
+
+- (JSBadgeView *)badgeForButtonAtIndex:(NSInteger)index createIfNecessary:(BOOL)createIfNecessary;
+{
+    static char kButtonBadgeKey;
+    UIButton *button = self.tabContentView.buttons[index];
+    JSBadgeView *badgeView = objc_getAssociatedObject(button, &kButtonBadgeKey);
+    if (badgeView == nil && createIfNecessary) {
+        UIView *parentView = [button titleForState:UIControlStateNormal] == nil ? button.imageView : button.titleLabel;
+        parentView.clipsToBounds = NO;
+        badgeView = [[JSBadgeView alloc] initWithParentView:parentView alignment:JSBadgeViewAlignmentTopRight];
+        badgeView.badgeBackgroundColor = [[UIColor alloc] initWithRed:139.0 / 255.0 green:0 blue:255.0 alpha:1];
+        objc_setAssociatedObject(button, &kButtonBadgeKey, badgeView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return badgeView;
 }
 
 #pragma mark - ARMenuAwareViewController

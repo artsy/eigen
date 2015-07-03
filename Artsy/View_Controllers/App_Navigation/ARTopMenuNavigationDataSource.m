@@ -143,4 +143,9 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
     return 6;
 }
 
+- (NSUInteger)badgeNumberForTabAtIndex:(NSInteger)index;
+{
+    return index == ARTopTabControllerIndexNotifications ? 42 : 0;
+}
+
 @end
