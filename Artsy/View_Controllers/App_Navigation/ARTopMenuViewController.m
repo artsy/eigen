@@ -200,6 +200,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
         UIView *parentView = [button titleForState:UIControlStateNormal] == nil ? button.imageView : button.titleLabel;
         parentView.clipsToBounds = NO;
         badgeView = [[JSBadgeView alloc] initWithParentView:parentView alignment:JSBadgeViewAlignmentTopRight];
+        badgeView.badgeTextFont = [UIFont sansSerifFontWithSize:10];
         badgeView.badgeBackgroundColor = [[UIColor alloc] initWithRed:139.0 / 255.0 green:0 blue:255.0 alpha:1];
         objc_setAssociatedObject(button, &kButtonBadgeKey, badgeView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
