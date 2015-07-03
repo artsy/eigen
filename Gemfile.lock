@@ -27,8 +27,10 @@ GIT
       nap (~> 0.8)
       xcodeproj (~> 0.25.0)
 
-PATH
-  remote: /Users/orta/spiel/ruby/synx
+GIT
+  remote: https://github.com/orta/synx
+  revision: ebf1f2d88d5a0262e408e70bac0364fcbc306d6c
+  branch: spaces_to-underscores
   specs:
     synx (0.0.61)
       clamp (~> 0.6)
