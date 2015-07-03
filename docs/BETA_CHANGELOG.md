@@ -11,4 +11,5 @@
 * Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done loading. - alloy
 * Remove opaque background from Search keyboard. - 1aurabrown
 * Reduce height of inquiry form on iPad - 1aurabrown
+* Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
 * Adds ‘bell’ notifications tab and shows notification count (currently only on launch and only if already signed-in). - alloy
