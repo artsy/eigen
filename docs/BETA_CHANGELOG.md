@@ -1,4 +1,4 @@
-## Next
+## 2.1.0 (2015.07.04)
 
 * Reduced the filesize of the Artsy Loading screen - orta
 * Change onboarding callback to use a block rather then a delegate message. - 1aurabrown
