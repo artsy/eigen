@@ -19,5 +19,6 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
 
 - (void)prefetchBrowse;
 - (void)prefetchHeroUnits;
+- (void)fetchNotificationCount:(void (^)())success;
 
 @end

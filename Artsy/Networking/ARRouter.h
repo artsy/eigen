@@ -1,5 +1,6 @@
 
 
+
 @interface ARRouter : NSObject
 
 + (void)setup;
@@ -164,6 +165,7 @@
 
 + (NSURLRequest *)suggestedHomepageArtworksRequest;
 + (NSURLRequest *)worksForYouRequest;
++ (NSURLRequest *)worksForYouCountRequest;
 
 #pragma mark - Misc Site
 

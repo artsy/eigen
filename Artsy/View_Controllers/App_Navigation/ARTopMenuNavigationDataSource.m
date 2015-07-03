@@ -32,6 +32,8 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 @property (nonatomic, assign, readwrite) NSInteger currentIndex;
 @property (nonatomic, strong, readonly) NSArray *navigationControllers;
 
+@property (nonatomic, assign, readwrite) NSUInteger notificationCount;
+
 @property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
 
 @property (readonly, nonatomic, strong) ARNavigationController *searchNavigationController;
@@ -96,6 +98,14 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
     } failure:nil];
 }
 
+- (void)fetchNotificationCount:(void (^)())success;
+{
+    [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
+        self.notificationCount = count;
+        success();
+    } failure:nil];
+}
+
 - (ARNavigationController *)favoritesNavigationController
 {
     // Make a new one each time the favorites tab is selected, so that it presents up-to-date data.
@@ -145,7 +155,7 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 
 - (NSUInteger)badgeNumberForTabAtIndex:(NSInteger)index;
 {
-    return index == ARTopTabControllerIndexNotifications ? 42 : 0;
+    return index == ARTopTabControllerIndexNotifications ? self.notificationCount : 0;
 }
 
 @end

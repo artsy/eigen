@@ -134,7 +134,9 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
         [self.navigationDataSource prefetchBrowse];
     }];
     [self.navigationDataSource prefetchHeroUnits];
-    [self updateBadges];
+    [self.navigationDataSource fetchNotificationCount:^{
+        [self updateBadges];
+    }];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
