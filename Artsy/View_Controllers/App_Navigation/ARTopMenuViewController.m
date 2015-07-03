@@ -54,6 +54,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *magazineButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
 
     [searchButton setImage:[UIImage imageNamed:@"SearchIcon_White"] forState:UIControlStateNormal];
     [searchButton setImage:[UIImage imageNamed:@"SearchIcon_White"] forState:UIControlStateSelected];
@@ -66,7 +67,12 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
     [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
 
-    NSArray *buttons = @[ searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton ];
+    [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateNormal];
+    [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateSelected];
+    [notificationsButton.imageView constrainWidth:@"16" height:@"16"];
+    searchButton.adjustsImageWhenHighlighted = NO;
+
+    NSArray *buttons = @[ searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
 
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero hostViewController:self delegate:self dataSource:self.navigationDataSource];
     tabContentView.supportSwipeGestures = NO;

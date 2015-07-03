@@ -39,6 +39,7 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 @property (readonly, nonatomic, strong) ARNavigationController *showsNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *magazineNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *notificationsNavigationController;
 
 @end
 
@@ -65,6 +66,8 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
 
     _magazineNavigationController = WebViewNavigationControllerWithPath(@"/articles");
+
+    _notificationsNavigationController = WebViewNavigationControllerWithPath(@"/works-for-you");
 
     return self;
 }
@@ -123,6 +126,8 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
             return RefreshedWebViewNavigationController(self.magazineNavigationController);
         case ARTopTabControllerIndexFavorites:
             return self.favoritesNavigationController;
+        case ARTopTabControllerIndexNotifications:
+            return RefreshedWebViewNavigationController(self.notificationsNavigationController);
     }
 
     return nil;

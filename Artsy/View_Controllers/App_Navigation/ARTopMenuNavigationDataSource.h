@@ -8,7 +8,8 @@ NS_ENUM(NSInteger, ARTopTabControllerIndex){
     ARTopTabControllerIndexShows,
     ARTopTabControllerIndexBrowse,
     ARTopTabControllerIndexMagazine,
-    ARTopTabControllerIndexFavorites};
+    ARTopTabControllerIndexFavorites,
+    ARTopTabControllerIndexNotifications};
 
 
 @interface ARTopMenuNavigationDataSource : NSObject <ARTabViewDataSource>
