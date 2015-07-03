@@ -3,6 +3,8 @@
 // https://github.com/objcio/issue-3-auto-layout-debugging
 //
 
+// TODO This should use ARFilteredStackTrace now that we have frameworks.
+
 #if DEBUG
 
 #import "ARAutoLayoutDebugging.h"

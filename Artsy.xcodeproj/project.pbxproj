@@ -211,6 +211,7 @@
 		5122D69A1A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5122D6991A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m */; };
 		513483551AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 513483541AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m */; };
 		5144331B1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5144331A1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m */; };
+		5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */; };
 		5174A03B1A859E2C006CD337 /* ARFairMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5174A03A1A859E2C006CD337 /* ARFairMapView.m */; };
 		51D141B01AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141AF1AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m */; };
 		51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141B61AF0F14B000091CF /* ARTestHelper.m */; };
@@ -958,6 +959,8 @@
 		513483541AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSPDFKitImproveRecursiveDescription.m; sourceTree = "<group>"; };
 		514433191AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTopMenuInternalMobileWebViewController.h; sourceTree = "<group>"; };
 		5144331A1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuInternalMobileWebViewController.m; sourceTree = "<group>"; };
+		5168A76C1B46A70500FFBCBF /* ARFilteredStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFilteredStackTrace.h; sourceTree = "<group>"; };
+		5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFilteredStackTrace.m; sourceTree = "<group>"; };
 		5174A0391A859E2C006CD337 /* ARFairMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapView.h; sourceTree = "<group>"; };
 		5174A03A1A859E2C006CD337 /* ARFairMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapView.m; sourceTree = "<group>"; };
 		51D141AF1AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelsViewControllerTests.m; sourceTree = "<group>"; };
@@ -2825,6 +2828,8 @@
 				513483541AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m */,
 				51D141BA1AF2B3CD000091CF /* ARAutoLayoutDebugging.h */,
 				51D141B81AF25DB4000091CF /* ARAutoLayoutDebugging.m */,
+				5168A76C1B46A70500FFBCBF /* ARFilteredStackTrace.h */,
+				5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */,
 			);
 			path = Tooling;
 			sourceTree = "<group>";
@@ -4353,6 +4358,7 @@
 				60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */,
 				60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */,
 				49EC62181778AF100020D648 /* PartnerShow.m in Sources */,
+				5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */,
 				E61446AF195A1CDC00BFB7C3 /* ARFairFavoritesNetworkModel.m in Sources */,
 				5174A03B1A859E2C006CD337 /* ARFairMapView.m in Sources */,
 				60B6F13916638785007C9587 /* ArtsyAPI.m in Sources */,
