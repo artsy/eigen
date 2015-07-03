@@ -9,7 +9,6 @@
 @property (readonly, nonatomic) UITableView *resultsView;
 @property (readonly, nonatomic) UIView *contentView;
 @property (readonly, nonatomic) AFJSONRequestOperation *searchRequest;
-@property (readonly, nonatomic, strong) NSLayoutConstraint *contentHeightConstraint;
 @property (nonatomic, readwrite, assign) BOOL shouldAnimate;
 @end
 
@@ -31,9 +30,6 @@
 
 - (void)viewDidLoad
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
     self.view.backgroundColor = [UIColor blackColor];
 
     UIView *searchBoxView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -88,8 +84,7 @@
     _contentView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.contentView];
     [self.contentView constrainTopSpaceToView:self.searchBoxView predicate:@"15"];
-    [self.contentView alignLeading:@"20" trailing:@"-20" toView:self.view];
-    _contentHeightConstraint = [[self.contentView alignBottomEdgeWithView:self.view predicate:@"-20"] lastObject];
+    [self.contentView alignTop:nil leading:@"20" bottom:@"0" trailing:@"-20" toView:self.view];
 
     // search info label
     UILabel *infoLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
@@ -136,31 +131,6 @@
 - (void)hideKeyboard
 {
     [self.view endEditing:YES];
-}
-
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-
-    CGFloat height = CGRectGetHeight(keyboardRect);
-    self.contentHeightConstraint.constant = -height - 20;
-    [UIView animateIf:self.shouldAnimate duration:ARAnimationQuickDuration:^{
-        [self.view layoutSubviews];
-    } completion:^(BOOL finished) {
-        if (!(self.textField.text.length > 0)) {
-            [self showInfoLabel:YES animated:self.shouldAnimate];
-        }
-    }];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    [self showInfoLabel:NO animated:self.shouldAnimate completion:^{
-        self.contentHeightConstraint.constant = -20;
-    }];
-    [UIView animateIf:self.shouldAnimate duration:ARAnimationQuickDuration:^{
-        [self.view layoutSubviews];
-    }];
 }
 
 #pragma mark - Search
