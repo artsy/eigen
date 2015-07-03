@@ -7,6 +7,7 @@ gem 'cocoapods-deintegrate'
 
 group :development do
   gem 'houston'
+  gem 'synx', :git => "https://github.com/orta/synx", :branch => "spaces_to-underscores"
 end
 
 group :test do
