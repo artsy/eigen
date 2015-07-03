@@ -7,6 +7,7 @@
 * Zoom artwork to fullscreen when changing orientation on iPad from portrait to landscape. - alloy
 * Attempt to fix a crash where a deallocated internal webview controller still receives messages. - alloy
 * Attempt to pin-point correlation with auto layout crash by reverting placeholder artwork images at real size. - alloy
+* Fixes scroll to top after switching tabs. – ash
 
 ## 2.0.0 (05/06/2015)
 
