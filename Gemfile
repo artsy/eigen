@@ -7,6 +7,7 @@ gem 'cocoapods-deintegrate'
 
 group :development do
   gem 'houston'
+  gem 'synx', :path => "/Users/orta/spiel/ruby/synx"
 end
 
 group :test do

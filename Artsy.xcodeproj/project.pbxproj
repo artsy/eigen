@@ -2496,7 +2496,7 @@
 				6088B75517D1E05200E4BB67 /* Views */,
 				60059B3917CEA46700BE132D /* 5- Onboarding Personalization */,
 				60059B1F17CE6DBE00BE132D /* 4- Onboarding New User */,
-				60059B1D17CE6D8600BE132D /* 3 - Sign Up / Log In */,
+				60059B1D17CE6D8600BE132D /* 3 - Sign Up + Log In */,
 				60059B1C17CE6D3F00BE132D /* 2 - Calls to Action */,
 				60059B1B17CE6D3400BE132D /* 1 - Slideshow */,
 			);
@@ -2633,7 +2633,7 @@
 			name = "2 - Calls to Action";
 			sourceTree = "<group>";
 		};
-		60059B1D17CE6D8600BE132D /* 3 - Sign Up / Log In */ = {
+		60059B1D17CE6D8600BE132D /* 3 - Sign Up + Log In */ = {
 			isa = PBXGroup;
 			children = (
 				CB8D9D4217CEA7B900F3286B /* AROnboardingMoreInfoViewController.h */,
@@ -2643,7 +2643,7 @@
 				60DE2DDE1677B26A00621540 /* ARLoginViewController.h */,
 				608B2F711657D2DF0046956C /* ARLoginViewController.m */,
 			);
-			name = "3 - Sign Up / Log In";
+			name = "3 - Sign Up + Log In";
 			sourceTree = "<group>";
 		};
 		60059B1E17CE6DB300BE132D /* Views */ = {

@@ -27,6 +27,14 @@ GIT
       nap (~> 0.8)
       xcodeproj (~> 0.25.0)
 
+PATH
+  remote: /Users/orta/spiel/ruby/synx
+  specs:
+    synx (0.0.61)
+      clamp (~> 0.6)
+      colorize (~> 0.7)
+      xcodeproj (~> 0.25.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -56,6 +64,7 @@ GEM
       fastlane_core (>= 0.7.2)
     certified (1.0.0)
     claide (0.8.2)
+    clamp (0.6.5)
     cliver (0.3.2)
     cocoapods-core (0.38.0.beta.1)
       activesupport (>= 3.2.15)
@@ -75,6 +84,7 @@ GEM
       netrc (= 0.7.8)
     cocoapods-try (0.4.5)
     colored (1.2)
+    colorize (0.7.7)
     commander (4.3.4)
       highline (~> 1.7.2)
     credentials_manager (0.6.0)
@@ -274,6 +284,7 @@ DEPENDENCIES
   houston
   second_curtain!
   shenzhen
+  synx!
   xcpretty
 
 BUNDLED WITH
