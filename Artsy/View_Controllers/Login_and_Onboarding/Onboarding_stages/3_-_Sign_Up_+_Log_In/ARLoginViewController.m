@@ -121,6 +121,24 @@
     }
 
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didBecomeActive)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)didBecomeActive
+{
+    // If you've cancelled a twitter request we're currently showing the loader
+    // add a delay so the user gets that they were doing something as they were leaving.
+    ar_dispatch_after(0.3, ^{
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+    });
 }
 
 - (void)hideKeyboard
