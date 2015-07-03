@@ -28,14 +28,14 @@
     });
 }
 
-+ (void)swapImplementationOf:(SEL)old with:(SEL) new
++ (void)swapImplementationOf:(SEL)oldSel with:(SEL)newSel
 {
     Class class = [self class];
-    Method oldMethod = class_getInstanceMethod(class, old);
-    Method newMethod = class_getInstanceMethod(class, new);
+    Method oldMethod = class_getInstanceMethod(class, oldSel);
+    Method newMethod = class_getInstanceMethod(class, newSel);
 
-    if (class_addMethod(class, old, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
-        class_replaceMethod(class, new, method_getImplementation(oldMethod), method_getTypeEncoding(oldMethod));
+    if (class_addMethod(class, oldSel, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
+        class_replaceMethod(class, newSel, method_getImplementation(oldMethod), method_getTypeEncoding(oldMethod));
     } else {
         method_exchangeImplementations(oldMethod, newMethod);
     }
