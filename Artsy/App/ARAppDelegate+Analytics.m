@@ -1,3 +1,5 @@
+// MARK: Formatter Exempt
+
 #import "ARAppDelegate+Analytics.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import <ARAnalytics/ARDSL.h>

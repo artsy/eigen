@@ -154,7 +154,7 @@
 		3CD3679C189AC4F000285DF7 /* ARAspectRatioImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD3679B189AC4F000285DF7 /* ARAspectRatioImageView.m */; };
 		3CD3679F189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD3679E189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m */; };
 		3CE0DA2F18A12335000E537A /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE0DA2E18A12335000E537A /* Video.m */; };
-		3CE0DA3218A13604000E537A /* OHHTTPStubs+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE0DA3118A13604000E537A /* OHHTTPStubs+JSON.m */; };
+		3CE0DA3218A13604000E537A /* OHHTTPStubs+Artsy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE0DA3118A13604000E537A /* OHHTTPStubs+Artsy.m */; };
 		3CE75A0B18B6367F00885355 /* ARValueTransformerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE75A0A18B6367F00885355 /* ARValueTransformerTests.m */; };
 		3CE7F34218A99E62002BA993 /* ARHeroUnitsNetworkModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7F34118A99E62002BA993 /* ARHeroUnitsNetworkModelTests.m */; };
 		3CE7F34418A99E6D002BA993 /* SiteHeroUnitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7F34318A99E6D002BA993 /* SiteHeroUnitTests.m */; };
@@ -321,6 +321,7 @@
 		607E2E8417C8CF6B00396120 /* ARArtworkPreviewActionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 607E2E8317C8CF6B00396120 /* ARArtworkPreviewActionsView.m */; };
 		607E2E8717C8E87E00396120 /* ARArtworkPreviewImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 607E2E8617C8E87E00396120 /* ARArtworkPreviewImageView.m */; };
 		607E2E8A17C9121500396120 /* ARZoomImageTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 607E2E8917C9121500396120 /* ARZoomImageTransition.m */; };
+		6082B2051B46ADDE00953BC8 /* stubbed_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082B2041B46ADDE00953BC8 /* stubbed_image.png */; };
 		60838EAF17728C5D00869F6E /* ARHeartButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 60838EAE17728C5D00869F6E /* ARHeartButton.m */; };
 		60838EB51773547700869F6E /* ARViewInRoomTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 60838EB41773547700869F6E /* ARViewInRoomTransition.m */; };
 		60889874175DEBC2008C9319 /* ARFeedSubclasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 60889873175DEBC2008C9319 /* ARFeedSubclasses.m */; };
@@ -838,8 +839,8 @@
 		3CD3679E189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPostFeedItemLinkViewTests.m; sourceTree = "<group>"; };
 		3CE0DA2D18A12335000E537A /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
 		3CE0DA2E18A12335000E537A /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
-		3CE0DA3018A13604000E537A /* OHHTTPStubs+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OHHTTPStubs+JSON.h"; sourceTree = "<group>"; };
-		3CE0DA3118A13604000E537A /* OHHTTPStubs+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OHHTTPStubs+JSON.m"; sourceTree = "<group>"; };
+		3CE0DA3018A13604000E537A /* OHHTTPStubs+Artsy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OHHTTPStubs+Artsy.h"; sourceTree = "<group>"; };
+		3CE0DA3118A13604000E537A /* OHHTTPStubs+Artsy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OHHTTPStubs+Artsy.m"; sourceTree = "<group>"; };
 		3CE75A0A18B6367F00885355 /* ARValueTransformerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARValueTransformerTests.m; sourceTree = "<group>"; };
 		3CE7F34118A99E62002BA993 /* ARHeroUnitsNetworkModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHeroUnitsNetworkModelTests.m; sourceTree = "<group>"; };
 		3CE7F34318A99E6D002BA993 /* SiteHeroUnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteHeroUnitTests.m; sourceTree = "<group>"; };
@@ -1172,6 +1173,7 @@
 		607E2E8617C8E87E00396120 /* ARArtworkPreviewImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkPreviewImageView.m; sourceTree = "<group>"; };
 		607E2E8817C9121500396120 /* ARZoomImageTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARZoomImageTransition.h; sourceTree = "<group>"; };
 		607E2E8917C9121500396120 /* ARZoomImageTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARZoomImageTransition.m; sourceTree = "<group>"; };
+		6082B2041B46ADDE00953BC8 /* stubbed_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stubbed_image.png; sourceTree = "<group>"; };
 		60838EAD17728C5D00869F6E /* ARHeartButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHeartButton.h; sourceTree = "<group>"; };
 		60838EAE17728C5D00869F6E /* ARHeartButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHeartButton.m; sourceTree = "<group>"; };
 		60838EB31773547700869F6E /* ARViewInRoomTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewInRoomTransition.h; sourceTree = "<group>"; };
@@ -1961,8 +1963,8 @@
 				3C7ECF72189010CA004BC877 /* Extensions.h */,
 				342F93309D1B60C53E2E0732 /* Artwork+Extensions.m */,
 				342F95F94C5759B9CA05AB59 /* Artwork+Extensions.h */,
-				3CE0DA3018A13604000E537A /* OHHTTPStubs+JSON.h */,
-				3CE0DA3118A13604000E537A /* OHHTTPStubs+JSON.m */,
+				3CE0DA3018A13604000E537A /* OHHTTPStubs+Artsy.h */,
+				3CE0DA3118A13604000E537A /* OHHTTPStubs+Artsy.m */,
 				3C6BDCBE18E0B3E40028EF5D /* MutableNSURLResponse.h */,
 				3C6BDCBF18E0B3E40028EF5D /* MutableNSURLResponse.m */,
 				3CA17D571901A4900010C9F5 /* SpectaDSL+Sleep.h */,
@@ -2080,8 +2082,6 @@
 			isa = PBXGroup;
 			children = (
 				3CA0A17C18EF633900C361E5 /* ARArtistViewControllerTests.m */,
-				60CEA77F19B6254800CC3A91 /* ARStubbedArtistNetworkModel.h */,
-				60CEA78019B6254800CC3A91 /* ARStubbedArtistNetworkModel.m */,
 				5E0AEB7B19B9FAED009F34DE /* ARStubbedShowNetworkModel.h */,
 				5E0AEB7C19B9FAED009F34DE /* ARStubbedShowNetworkModel.m */,
 			);
@@ -3790,6 +3790,7 @@
 		B3ECE82C1819D1E6009F5C5B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6082B2041B46ADDE00953BC8 /* stubbed_image.png */,
 				E6718314194A595F001A5566 /* ARTestContext.h */,
 				E6718315194A595F001A5566 /* ARTestContext.m */,
 				546778EC18A95642002C4C71 /* ARAppDelegate+Testing.h */,
@@ -4237,6 +4238,7 @@
 				E6B9FA7B18A97C0A00E961F9 /* stub.jpg in Resources */,
 				5EB33E78197EBFEB00706EB1 /* square.png in Resources */,
 				E6F466E818EF52A800A09AFA /* Artwork_v1.data in Resources */,
+				6082B2051B46ADDE00953BC8 /* stubbed_image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4729,7 +4731,7 @@
 				3C6AEE27188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m in Sources */,
 				3C6AEE2D188F2D3E00DD98FC /* ARSwitchBoardTests.m in Sources */,
 				E6718316194A595F001A5566 /* ARTestContext.m in Sources */,
-				3CE0DA3218A13604000E537A /* OHHTTPStubs+JSON.m in Sources */,
+				3CE0DA3218A13604000E537A /* OHHTTPStubs+Artsy.m in Sources */,
 				60327DEC198933610075B399 /* ARTopMenuViewControllerSpec.m in Sources */,
 				3CA37E7C1910217500B06E81 /* ARHeartButtonTests.m in Sources */,
 				3CEE0B6A18A18CDA00FEA6E6 /* ProfileTests.m in Sources */,
@@ -4752,7 +4754,6 @@
 				3CAA413218D8CC32000EE867 /* ARFairFavoritesNetworkModelTests.m in Sources */,
 				60327DEA198933610075B399 /* ARTestTopMenuNavigationDataSource.m in Sources */,
 				3CA1E82518846B3A003C622D /* SaleTests.m in Sources */,
-				60CEA78119B6254800CC3A91 /* ARStubbedArtistNetworkModel.m in Sources */,
 				D37CBC4B1AF2C62E00A69019 /* ARFairNetworkModelTests.m in Sources */,
 				5E9A782019068EDF00734E1B /* ARProfileViewControllerTests.m in Sources */,
 				E6EC246118F7069300C89192 /* PartnerTests.m in Sources */,

@@ -29,7 +29,8 @@
         return nil;
     }
 
-    NSLog(@"");
+    NSLog(@"\n\n\n\n\n\n\n");
+
     NSLog(@"----------------- Found an unstubbed request");
     NSLog(@" - %@", request.HTTPMethod);
     NSLog(@" - %@", request.URL.absoluteString);
@@ -45,7 +46,22 @@
     NSLog(@"----------------- ");
     NSLog(@"");
 
-    NSAssert(NO, @"BANG");
+
+#if __has_include(<Specta/Specta.h>)
+    fflush(stderr);
+    fflush(stdout);
+    id compiledExample = [[NSThread mainThread] threadDictionary][@"SPTCurrentSpec"];
+
+    NSLog(@"\n\n\n!!!! Unstubbed Request Found\n\n\n Inside Test: %@ \n\n Unstubbed URL: %@ \n\n\n\n Add a breakpoint  in AROHHTTPNoStubAssertionBot.m or look above for more info. \n\n\n", compiledExample, request.URL.absoluteString);
+
+    fflush(stderr);
+    fflush(stdout);
+
+    exit(-1);
+#else
+    NSAssert(NO, @"Bang");
+#endif
+
     return nil;
 }
 

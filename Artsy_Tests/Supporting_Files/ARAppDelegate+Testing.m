@@ -49,7 +49,7 @@
     /// Never run in tests
     [[iRate sharedInstance] setRatedThisVersion:YES];
 
-    //    [AROHHTTPNoStubAssertionBot assertOnFailForGlobalOHHTTPStubs];
+    [AROHHTTPNoStubAssertionBot assertOnFailForGlobalOHHTTPStubs];
     return YES;
 }
 

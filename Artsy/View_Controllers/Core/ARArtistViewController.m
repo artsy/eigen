@@ -37,12 +37,11 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 // TODO: Add ARFollowableNetworkModel for following status
 
-
 @interface ARArtistViewController () <UIScrollViewDelegate, AREmbeddedModelsDelegate, ARPostsViewControllerDelegate, ARSwitchViewDelegate>
 @property (nonatomic, strong) ORStackScrollView *view;
 @property (nonatomic, assign) enum ARArtistArtworksDisplayMode displayMode;
 
-@property (nonatomic, strong) ARArtistNetworkModel *networkModel;
+@property (nonatomic, strong) id<ARArtistNetworkModelable> networkModel;
 
 @property (nonatomic, assign) NSInteger allArtworksLastPage;
 @property (nonatomic, assign) NSInteger forSaleArtworksLastPage;
@@ -566,7 +565,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 - (void)getRelatedArtists
 {
     @_weakify(self);
-    [self.artist getRelatedArtists:^(NSArray *artists) {
+    [self.networkModel getRelatedArtists:^(NSArray *artists) {
         @_strongify(self);
         if (artists.count > 0 ) {
             [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration :^{
@@ -581,7 +580,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 - (void)getRelatedPosts
 {
     @_weakify(self);
-    [self.artist getRelatedPosts:^(NSArray *posts) {
+    [self.networkModel getRelatedPosts:^(NSArray *posts) {
         @_strongify(self);
         if (posts.count > 0) {
             self.postsVC.posts = posts;
