@@ -381,7 +381,7 @@
 		609F98101AC0F3960079FE21 /* ARWatchArtworkSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F980E1AC0F3960079FE21 /* ARWatchArtworkSetViewController.m */; };
 		609F98161AC0F3BF0079FE21 /* ARWatchShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98131AC0F3BF0079FE21 /* ARWatchShowViewController.m */; };
 		609F98171AC0F3BF0079FE21 /* ARWatchShowSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98151AC0F3BF0079FE21 /* ARWatchShowSetViewController.m */; };
-		609F98191AC0F3D60079FE21 /* Artsy WatchKit Extension.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 609F98181AC0F3D60079FE21 /* Artsy WatchKit Extension.entitlements */; };
+		609F98191AC0F3D60079FE21 /* Artsy_WatchKit_Extension.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 609F98181AC0F3D60079FE21 /* Artsy_WatchKit_Extension.entitlements */; };
 		609F981B1AC0F3DF0079FE21 /* PushNotificationPayload.json in Resources */ = {isa = PBXBuildFile; fileRef = 609F981A1AC0F3DF0079FE21 /* PushNotificationPayload.json */; };
 		609F98231AC0F4400079FE21 /* AGaramondPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F981D1AC0F4400079FE21 /* AGaramondPro-Bold.otf */; };
 		609F98241AC0F4400079FE21 /* AGaramondPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F981D1AC0F4400079FE21 /* AGaramondPro-Bold.otf */; };
@@ -669,11 +669,11 @@
 		342F987C1CACE95AAD292717 /* UIImage+ImageFromColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageFromColor.m"; sourceTree = "<group>"; };
 		342F98950528061D8AE370EA /* MTLModel+Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MTLModel+Dictionary.m"; sourceTree = "<group>"; };
 		342F98A73E2E1162514B5A24 /* ARScrollNavigationChief.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScrollNavigationChief.m; sourceTree = "<group>"; };
-		342F992BB6F28B5BE6477E3F /* UIViewController+ARStateRestoration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ARStateRestoration.m"; path = "Artsy/Classes/Categories/UIViewController+ARStateRestoration.m"; sourceTree = SOURCE_ROOT; };
+		342F992BB6F28B5BE6477E3F /* UIViewController+ARStateRestoration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ARStateRestoration.m"; sourceTree = "<group>"; };
 		342F994893B9660BEA23C18D /* ARFairViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairViewController.h; sourceTree = "<group>"; };
 		342F995897B0B106E59A39A0 /* ARFairMapAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapAnnotationView.h; sourceTree = "<group>"; };
 		342F9960EEF42063F7494D42 /* ARTrialController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTrialController.h; sourceTree = "<group>"; };
-		342F997FDCA4513495F1E949 /* UIViewController+ARStateRestoration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ARStateRestoration.h"; path = "Artsy/Classes/Categories/UIViewController+ARStateRestoration.h"; sourceTree = SOURCE_ROOT; };
+		342F997FDCA4513495F1E949 /* UIViewController+ARStateRestoration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ARStateRestoration.h"; sourceTree = "<group>"; };
 		342F9983D46712773FC71FC3 /* Fair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fair.h; sourceTree = "<group>"; };
 		342F9A069BB0267F7BF6F260 /* UIView+HitTestExpansion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HitTestExpansion.h"; sourceTree = "<group>"; };
 		342F9A17225A44AC4BE26303 /* PartnerShowFairLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerShowFairLocation.m; sourceTree = "<group>"; };
@@ -716,8 +716,8 @@
 		3C205ACB1908041700B3C2B4 /* ARSearchResultsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSearchResultsDataSource.h; sourceTree = "<group>"; };
 		3C205ACC1908041700B3C2B4 /* ARSearchResultsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSearchResultsDataSource.m; sourceTree = "<group>"; };
 		3C205B58189000A5004280E0 /* ARAppNotificationsDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegateTests.m; sourceTree = "<group>"; };
-		3C22227318C6487C00B7CE3A /* User_v0.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = User_v0.data; path = TestData/User_v0.data; sourceTree = "<group>"; };
-		3C22227518C64B4A00B7CE3A /* User_v1.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = User_v1.data; path = TestData/User_v1.data; sourceTree = "<group>"; };
+		3C22227318C6487C00B7CE3A /* User_v0.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = User_v0.data; sourceTree = "<group>"; };
+		3C22227518C64B4A00B7CE3A /* User_v1.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = User_v1.data; sourceTree = "<group>"; };
 		3C28D3DA18BE180B00C846EA /* ARNavigationButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationButtonTests.m; sourceTree = "<group>"; };
 		3C2E6C5B192262A3009DAB28 /* ARRouterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRouterTests.m; sourceTree = "<group>"; };
 		3C33298B18AD3324006D28C0 /* ARFairSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairSearchViewController.h; sourceTree = "<group>"; };
@@ -738,31 +738,31 @@
 		3C4AE96419094969009C0E8B /* SearchIcon_MediumGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchIcon_MediumGrey@2x.png"; sourceTree = "<group>"; };
 		3C4AE96519094969009C0E8B /* SearchThumb_HeavyGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchThumb_HeavyGrey@2x.png"; sourceTree = "<group>"; };
 		3C4AE96619094969009C0E8B /* SearchThumb_LightGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchThumb_LightGrey@2x.png"; sourceTree = "<group>"; };
-		3C4AE96D19094DAA009C0E8B /* MapAnnotation_Artsy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Artsy@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Artsy@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE96E19094DAA009C0E8B /* MapAnnotation_CoatCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_CoatCheck@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_CoatCheck@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE96F19094DAA009C0E8B /* MapAnnotation_Drink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Drink@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Drink@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97019094DAA009C0E8B /* MapAnnotation_Food@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Food@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Food@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97119094DAA009C0E8B /* MapAnnotation_GenericEvent@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_GenericEvent@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_GenericEvent@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97219094DAA009C0E8B /* MapAnnotation_Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Highlighted@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Highlighted@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97319094DAA009C0E8B /* MapAnnotation_Info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Info@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Info@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97419094DAA009C0E8B /* MapAnnotation_Installation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Installation@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Installation@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97519094DAA009C0E8B /* MapAnnotation_Lounge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Lounge@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Lounge@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97619094DAA009C0E8B /* MapAnnotation_Restroom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Restroom@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Restroom@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97719094DAA009C0E8B /* MapAnnotation_Saved@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Saved@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Saved@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97819094DAA009C0E8B /* MapAnnotation_Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Search@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Search@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97919094DAA009C0E8B /* MapAnnotation_Transport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Transport@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Transport@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97A19094DAA009C0E8B /* MapAnnotation_Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_Default@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_Default@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE97B19094DAA009C0E8B /* MapAnnotation_VIP@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotation_VIP@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotation_VIP@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE98C19094F96009C0E8B /* ViewInRoom_Base@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ViewInRoom_Base@2x.png"; path = "Artsy/Resources/ViewInRoom/ViewInRoom_Base@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE98D19094F96009C0E8B /* ViewInRoom_BaseNoBench@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ViewInRoom_BaseNoBench@2x.png"; path = "Artsy/Resources/ViewInRoom/ViewInRoom_BaseNoBench@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE98E19094F96009C0E8B /* ViewInRoom_Bench@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ViewInRoom_Bench@2x.png"; path = "Artsy/Resources/ViewInRoom/ViewInRoom_Bench@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE98F19094F96009C0E8B /* ViewInRoom_Man_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ViewInRoom_Man_3@2x.png"; path = "Artsy/Resources/ViewInRoom/ViewInRoom_Man_3@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE99019094F96009C0E8B /* ViewInRoom_Wall_Right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ViewInRoom_Wall_Right@2x.png"; path = "Artsy/Resources/ViewInRoom/ViewInRoom_Wall_Right@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE99119094F96009C0E8B /* ViewInRoom_Wall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ViewInRoom_Wall@2x.png"; path = "Artsy/Resources/ViewInRoom/ViewInRoom_Wall@2x.png"; sourceTree = SOURCE_ROOT; };
+		3C4AE96D19094DAA009C0E8B /* MapAnnotation_Artsy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Artsy@2x.png"; sourceTree = "<group>"; };
+		3C4AE96E19094DAA009C0E8B /* MapAnnotation_CoatCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_CoatCheck@2x.png"; sourceTree = "<group>"; };
+		3C4AE96F19094DAA009C0E8B /* MapAnnotation_Drink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Drink@2x.png"; sourceTree = "<group>"; };
+		3C4AE97019094DAA009C0E8B /* MapAnnotation_Food@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Food@2x.png"; sourceTree = "<group>"; };
+		3C4AE97119094DAA009C0E8B /* MapAnnotation_GenericEvent@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_GenericEvent@2x.png"; sourceTree = "<group>"; };
+		3C4AE97219094DAA009C0E8B /* MapAnnotation_Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Highlighted@2x.png"; sourceTree = "<group>"; };
+		3C4AE97319094DAA009C0E8B /* MapAnnotation_Info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Info@2x.png"; sourceTree = "<group>"; };
+		3C4AE97419094DAA009C0E8B /* MapAnnotation_Installation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Installation@2x.png"; sourceTree = "<group>"; };
+		3C4AE97519094DAA009C0E8B /* MapAnnotation_Lounge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Lounge@2x.png"; sourceTree = "<group>"; };
+		3C4AE97619094DAA009C0E8B /* MapAnnotation_Restroom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Restroom@2x.png"; sourceTree = "<group>"; };
+		3C4AE97719094DAA009C0E8B /* MapAnnotation_Saved@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Saved@2x.png"; sourceTree = "<group>"; };
+		3C4AE97819094DAA009C0E8B /* MapAnnotation_Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Search@2x.png"; sourceTree = "<group>"; };
+		3C4AE97919094DAA009C0E8B /* MapAnnotation_Transport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Transport@2x.png"; sourceTree = "<group>"; };
+		3C4AE97A19094DAA009C0E8B /* MapAnnotation_Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Default@2x.png"; sourceTree = "<group>"; };
+		3C4AE97B19094DAA009C0E8B /* MapAnnotation_VIP@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_VIP@2x.png"; sourceTree = "<group>"; };
+		3C4AE98C19094F96009C0E8B /* ViewInRoom_Base@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewInRoom_Base@2x.png"; sourceTree = "<group>"; };
+		3C4AE98D19094F96009C0E8B /* ViewInRoom_BaseNoBench@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewInRoom_BaseNoBench@2x.png"; sourceTree = "<group>"; };
+		3C4AE98E19094F96009C0E8B /* ViewInRoom_Bench@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewInRoom_Bench@2x.png"; sourceTree = "<group>"; };
+		3C4AE98F19094F96009C0E8B /* ViewInRoom_Man_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewInRoom_Man_3@2x.png"; sourceTree = "<group>"; };
+		3C4AE99019094F96009C0E8B /* ViewInRoom_Wall_Right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewInRoom_Wall_Right@2x.png"; sourceTree = "<group>"; };
+		3C4AE99119094F96009C0E8B /* ViewInRoom_Wall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewInRoom_Wall@2x.png"; sourceTree = "<group>"; };
 		3C4AE9A219096CED009C0E8B /* ARFairMapAnnotationCallOutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapAnnotationCallOutView.h; sourceTree = "<group>"; };
 		3C4AE9A319096CED009C0E8B /* ARFairMapAnnotationCallOutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapAnnotationCallOutView.m; sourceTree = "<group>"; };
-		3C4AE9A519098916009C0E8B /* MapAnnotationCallout_Anchor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotationCallout_Anchor@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotationCallout_Anchor@2x.png"; sourceTree = SOURCE_ROOT; };
-		3C4AE9AB1909C3A5009C0E8B /* MapAnnotationCallout_Arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotationCallout_Arrow@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotationCallout_Arrow@2x.png"; sourceTree = SOURCE_ROOT; };
+		3C4AE9A519098916009C0E8B /* MapAnnotationCallout_Anchor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotationCallout_Anchor@2x.png"; sourceTree = "<group>"; };
+		3C4AE9AB1909C3A5009C0E8B /* MapAnnotationCallout_Arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotationCallout_Arrow@2x.png"; sourceTree = "<group>"; };
 		3C5C7E3F18970E8B003823BB /* UIApplicationStateEnumTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplicationStateEnumTests.m; sourceTree = "<group>"; };
 		3C6AA7C91885F38D00501F07 /* SaleArtwork+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SaleArtwork+Extensions.h"; sourceTree = "<group>"; };
 		3C6AA7CA1885F38D00501F07 /* SaleArtwork+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SaleArtwork+Extensions.m"; sourceTree = "<group>"; };
@@ -775,8 +775,8 @@
 		3C6CB60418ABC7BB008DFE3B /* UserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTests.m; sourceTree = "<group>"; };
 		3C6CB60718ABD8D2008DFE3B /* ARPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPostsViewController.h; sourceTree = "<group>"; };
 		3C6CB60818ABD8D2008DFE3B /* ARPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPostsViewController.m; sourceTree = "<group>"; };
-		3C6CB60E18ABFB8D008DFE3B /* ARRelatedArtistsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARRelatedArtistsViewController.h; path = "../View Controllers/ARRelatedArtistsViewController.h"; sourceTree = "<group>"; };
-		3C6CB60F18ABFB8D008DFE3B /* ARRelatedArtistsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARRelatedArtistsViewController.m; path = "../View Controllers/ARRelatedArtistsViewController.m"; sourceTree = "<group>"; };
+		3C6CB60E18ABFB8D008DFE3B /* ARRelatedArtistsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRelatedArtistsViewController.h; sourceTree = "<group>"; };
+		3C6CB60F18ABFB8D008DFE3B /* ARRelatedArtistsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRelatedArtistsViewController.m; sourceTree = "<group>"; };
 		3C7294CB196C3E660073663D /* ARShowViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShowViewControllerTests.m; sourceTree = "<group>"; };
 		3C7880BA18B9081C00595E30 /* ARNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNotificationView.h; sourceTree = "<group>"; };
 		3C7880BB18B9081C00595E30 /* ARNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNotificationView.m; sourceTree = "<group>"; };
@@ -801,10 +801,10 @@
 		3CA37E791910072C00B06E81 /* ARHeartStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARHeartStatus.h; sourceTree = "<group>"; };
 		3CA37E7B1910217500B06E81 /* ARHeartButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHeartButtonTests.m; sourceTree = "<group>"; };
 		3CA55D8818BFF8F800B44CD3 /* MapFeatureTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapFeatureTests.m; sourceTree = "<group>"; };
-		3CAA412D18D88F2E000EE867 /* UIViewController+InnermostTopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+InnermostTopViewController.h"; path = "Artsy/Classes/Utils/UIViewController+InnermostTopViewController.h"; sourceTree = SOURCE_ROOT; };
-		3CAA412E18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+InnermostTopViewController.m"; path = "Artsy/Classes/Utils/UIViewController+InnermostTopViewController.m"; sourceTree = SOURCE_ROOT; };
+		3CAA412D18D88F2E000EE867 /* UIViewController+InnermostTopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+InnermostTopViewController.h"; sourceTree = "<group>"; };
+		3CAA412E18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+InnermostTopViewController.m"; sourceTree = "<group>"; };
 		3CAA413118D8CC32000EE867 /* ARFairFavoritesNetworkModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairFavoritesNetworkModelTests.m; sourceTree = "<group>"; };
-		3CAC639E190AA87A00B17325 /* MapAnnotationCallout_Partner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MapAnnotationCallout_Partner@2x.png"; path = "Artsy/Resources/MapAnnotations/MapAnnotationCallout_Partner@2x.png"; sourceTree = SOURCE_ROOT; };
+		3CAC639E190AA87A00B17325 /* MapAnnotationCallout_Partner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotationCallout_Partner@2x.png"; sourceTree = "<group>"; };
 		3CACF2AB18F591E40054091E /* ARThemeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARThemeTests.m; sourceTree = "<group>"; };
 		3CAED17B188026AC00840608 /* ARUserManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserManagerTests.m; sourceTree = "<group>"; };
 		3CB37D95192246B500089A1D /* ArtsyAPI+ErrorHandlers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+ErrorHandlers.h"; sourceTree = "<group>"; };
@@ -891,8 +891,8 @@
 		49473F3217C18772004BF082 /* ARSlideshowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSlideshowViewController.m; sourceTree = "<group>"; };
 		49473F3417C1907F004BF082 /* ARCreateAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCreateAccountViewController.h; sourceTree = "<group>"; };
 		49473F3517C1907F004BF082 /* ARCreateAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCreateAccountViewController.m; sourceTree = "<group>"; };
-		49473F3717C192AE004BF082 /* ARTextFieldWithPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARTextFieldWithPlaceholder.h; path = "../View Controllers/ARTextFieldWithPlaceholder.h"; sourceTree = "<group>"; };
-		49473F3817C192AE004BF082 /* ARTextFieldWithPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARTextFieldWithPlaceholder.m; path = "../View Controllers/ARTextFieldWithPlaceholder.m"; sourceTree = "<group>"; };
+		49473F3717C192AE004BF082 /* ARTextFieldWithPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTextFieldWithPlaceholder.h; sourceTree = "<group>"; };
+		49473F3817C192AE004BF082 /* ARTextFieldWithPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextFieldWithPlaceholder.m; sourceTree = "<group>"; };
 		494F16BC17BEDA8E00204F1D /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		4953E8301668021D00A09726 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		4953E8311668021D00A09726 /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
@@ -941,9 +941,9 @@
 		49BA7E031655ABE600C06572 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49BA7E051655ABE600C06572 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		49BA7E071655ABE600C06572 /* CoreGraphics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		49BA7E0B1655ABE600C06572 /* Artsy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Artsy-Info.plist"; path = "../App/Artsy-Info.plist"; sourceTree = "<group>"; };
+		49BA7E0B1655ABE600C06572 /* Artsy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Artsy-Info.plist"; sourceTree = "<group>"; };
 		49BA7E0D1655ABE600C06572 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		49BA7E111655ABE600C06572 /* Artsy-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Artsy-Prefix.pch"; path = "../App/Artsy-Prefix.pch"; sourceTree = "<group>"; };
+		49BA7E111655ABE600C06572 /* Artsy-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artsy-Prefix.pch"; sourceTree = "<group>"; };
 		49BA7E121655ABE600C06572 /* ARAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAppDelegate.h; sourceTree = "<group>"; };
 		49BA7E131655ABE600C06572 /* ARAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAppDelegate.m; sourceTree = "<group>"; };
 		49EC62161778AF100020D648 /* PartnerShow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartnerShow.h; sourceTree = "<group>"; };
@@ -965,8 +965,8 @@
 		51D141B61AF0F14B000091CF /* ARTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTestHelper.m; sourceTree = "<group>"; };
 		51D141B81AF25DB4000091CF /* ARAutoLayoutDebugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAutoLayoutDebugging.m; sourceTree = "<group>"; };
 		51D141BA1AF2B3CD000091CF /* ARAutoLayoutDebugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAutoLayoutDebugging.h; sourceTree = "<group>"; };
-		540262C418A0FAFB00844AE1 /* ARButtonWithImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARButtonWithImage.h; path = "Table View Cells/ARButtonWithImage.h"; sourceTree = "<group>"; };
-		540262C518A0FAFB00844AE1 /* ARButtonWithImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARButtonWithImage.m; path = "Table View Cells/ARButtonWithImage.m"; sourceTree = "<group>"; };
+		540262C418A0FAFB00844AE1 /* ARButtonWithImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARButtonWithImage.h; sourceTree = "<group>"; };
+		540262C518A0FAFB00844AE1 /* ARButtonWithImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARButtonWithImage.m; sourceTree = "<group>"; };
 		54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINavigationController_InnermostTopViewControllerSpec.m; sourceTree = "<group>"; };
 		5435192C18A8E9420060F31E /* UIView+OldSchoolSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+OldSchoolSnapshots.h"; sourceTree = "<group>"; };
 		5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OldSchoolSnapshots.m"; sourceTree = "<group>"; };
@@ -974,7 +974,7 @@
 		546778ED18A95642002C4C71 /* ARAppDelegate+Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Testing.m"; sourceTree = "<group>"; };
 		546A858017763349006D489B /* ARHeroUnitsNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHeroUnitsNetworkModel.h; sourceTree = "<group>"; };
 		546A858117763349006D489B /* ARHeroUnitsNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHeroUnitsNetworkModel.m; sourceTree = "<group>"; };
-		54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ARMenuAwareViewController.h; path = "../View Controllers/ARMenuAwareViewController.h"; sourceTree = "<group>"; };
+		54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMenuAwareViewController.h; sourceTree = "<group>"; };
 		54B7477318A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTopMenuViewController+DeveloperExtras.h"; sourceTree = "<group>"; };
 		54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTopMenuViewController+DeveloperExtras.m"; sourceTree = "<group>"; };
 		5E0AEB7619B9EA43009F34DE /* ARShowNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARShowNetworkModel.h; sourceTree = "<group>"; };
@@ -1084,14 +1084,14 @@
 		6036B5631760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+SiteFunctions.h"; sourceTree = "<group>"; };
 		6036B5641760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+SiteFunctions.m"; sourceTree = "<group>"; };
 		6036B56617612CFA00F1DD01 /* ARNavigationContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARNavigationContainer.h; sourceTree = "<group>"; };
-		6037442316D4227500AE7788 /* ARSwitchBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARSwitchBoard.h; path = Utils/ARSwitchBoard.h; sourceTree = "<group>"; };
-		6037442416D4227500AE7788 /* ARSwitchBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSwitchBoard.m; path = Utils/ARSwitchBoard.m; sourceTree = "<group>"; };
-		60388701189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARTiledImageDataSourceWithImage.h; path = models/ARTiledImageDataSourceWithImage.h; sourceTree = "<group>"; };
-		60388702189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARTiledImageDataSourceWithImage.m; path = models/ARTiledImageDataSourceWithImage.m; sourceTree = "<group>"; };
-		60388704189C103F00D3EEAA /* ARFairMapZoomManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARFairMapZoomManager.h; path = models/ARFairMapZoomManager.h; sourceTree = "<group>"; };
-		60388705189C103F00D3EEAA /* ARFairMapZoomManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARFairMapZoomManager.m; path = models/ARFairMapZoomManager.m; sourceTree = "<group>"; };
-		603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ARNavigationController.h; path = "../View Controllers/ARNavigationController.h"; sourceTree = "<group>"; };
-		603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ARNavigationController.m; path = "../View Controllers/ARNavigationController.m"; sourceTree = "<group>"; };
+		6037442316D4227500AE7788 /* ARSwitchBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSwitchBoard.h; sourceTree = "<group>"; };
+		6037442416D4227500AE7788 /* ARSwitchBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchBoard.m; sourceTree = "<group>"; };
+		60388701189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTiledImageDataSourceWithImage.h; sourceTree = "<group>"; };
+		60388702189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTiledImageDataSourceWithImage.m; sourceTree = "<group>"; };
+		60388704189C103F00D3EEAA /* ARFairMapZoomManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapZoomManager.h; sourceTree = "<group>"; };
+		60388705189C103F00D3EEAA /* ARFairMapZoomManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapZoomManager.m; sourceTree = "<group>"; };
+		603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARNavigationController.h; sourceTree = "<group>"; };
+		603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARNavigationController.m; sourceTree = "<group>"; };
 		603B559F17D64A1B00566935 /* ARArtworkPriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkPriceView.h; sourceTree = "<group>"; };
 		603B55A017D64A1B00566935 /* ARArtworkPriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkPriceView.m; sourceTree = "<group>"; };
 		603D7C03195884C100ACA840 /* ARAuctionBidderStateLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionBidderStateLabel.h; sourceTree = "<group>"; };
@@ -1102,10 +1102,10 @@
 		604166AF16C1D46F00CFBD2F /* ArtsyAPI+CurrentUserFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+CurrentUserFunctions.h"; sourceTree = "<group>"; };
 		604166B016C1D47000CFBD2F /* ArtsyAPI+CurrentUserFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+CurrentUserFunctions.m"; sourceTree = "<group>"; };
 		604166B316C1D55000CFBD2F /* ArtsyAPI+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Private.h"; sourceTree = "<group>"; };
-		60431FB618042A1E000118D7 /* ARAppNotificationsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARAppNotificationsDelegate.h; path = App/ARAppNotificationsDelegate.h; sourceTree = "<group>"; };
-		60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARAppNotificationsDelegate.m; path = App/ARAppNotificationsDelegate.m; sourceTree = "<group>"; };
-		60431FB918042E63000118D7 /* ARAppBackgroundFetchDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARAppBackgroundFetchDelegate.h; path = App/ARAppBackgroundFetchDelegate.h; sourceTree = "<group>"; };
-		60431FBA18042E63000118D7 /* ARAppBackgroundFetchDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARAppBackgroundFetchDelegate.m; path = App/ARAppBackgroundFetchDelegate.m; sourceTree = "<group>"; };
+		60431FB618042A1E000118D7 /* ARAppNotificationsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppNotificationsDelegate.h; sourceTree = "<group>"; };
+		60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegate.m; sourceTree = "<group>"; };
+		60431FB918042E63000118D7 /* ARAppBackgroundFetchDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppBackgroundFetchDelegate.h; sourceTree = "<group>"; };
+		60431FBA18042E63000118D7 /* ARAppBackgroundFetchDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppBackgroundFetchDelegate.m; sourceTree = "<group>"; };
 		60438F881782F8CC00C1B63B /* ArtsyAPI+Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Search.h"; sourceTree = "<group>"; };
 		60438F891782F8CC00C1B63B /* ArtsyAPI+Search.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Search.m"; sourceTree = "<group>"; };
 		6044CFC3179D64F500CE4132 /* Theme.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Theme.json; sourceTree = "<group>"; };
@@ -1135,8 +1135,8 @@
 		60647C771A95095800A45247 /* ARFairPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairPopupViewController.m; sourceTree = "<group>"; };
 		60647C781A95095800A45247 /* ARFairPopupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARFairPopupViewController.xib; sourceTree = "<group>"; };
 		60647C7B1A951F2A00A45247 /* ARFairPopupViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairPopupViewControllerTests.m; sourceTree = "<group>"; };
-		606B6E3B1ADC14E500A12E08 /* ARFairArtistNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARFairArtistNetworkModel.h; path = "Artsy/Classes/Networking/Network Models/ARFairArtistNetworkModel.h"; sourceTree = SOURCE_ROOT; };
-		606B6E3C1ADC14E500A12E08 /* ARFairArtistNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARFairArtistNetworkModel.m; path = "Artsy/Classes/Networking/Network Models/ARFairArtistNetworkModel.m"; sourceTree = SOURCE_ROOT; };
+		606B6E3B1ADC14E500A12E08 /* ARFairArtistNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairArtistNetworkModel.h; sourceTree = "<group>"; };
+		606B6E3C1ADC14E500A12E08 /* ARFairArtistNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairArtistNetworkModel.m; sourceTree = "<group>"; };
 		60745DE8165802D9006CE156 /* ARUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserManager.h; sourceTree = "<group>"; };
 		60745DE9165802D9006CE156 /* ARUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserManager.m; sourceTree = "<group>"; };
 		607D754817C239E700CA1D41 /* ArtsyAPI+Following.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Following.h"; sourceTree = "<group>"; };
@@ -1147,14 +1147,14 @@
 		607D756D17C3873700CA1D41 /* ARFavoriteItemViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFavoriteItemViewCell.m; sourceTree = "<group>"; };
 		607E2E7617C8C46000396120 /* ARArtworkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkViewController.h; sourceTree = "<group>"; };
 		607E2E7717C8C46000396120 /* ARArtworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkViewController.m; sourceTree = "<group>"; };
-		607E2E7917C8C9FE00396120 /* ARArtworkDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARArtworkDetailView.h; path = "../View Controllers/ARArtworkDetailView.h"; sourceTree = "<group>"; };
-		607E2E7A17C8C9FE00396120 /* ARArtworkDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARArtworkDetailView.m; path = "../View Controllers/ARArtworkDetailView.m"; sourceTree = "<group>"; };
+		607E2E7917C8C9FE00396120 /* ARArtworkDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkDetailView.h; sourceTree = "<group>"; };
+		607E2E7A17C8C9FE00396120 /* ARArtworkDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkDetailView.m; sourceTree = "<group>"; };
 		607E2E7C17C8CA4D00396120 /* ARZoomArtworkImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARZoomArtworkImageViewController.h; sourceTree = "<group>"; };
 		607E2E7D17C8CA4D00396120 /* ARZoomArtworkImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARZoomArtworkImageViewController.m; sourceTree = "<group>"; };
-		607E2E8217C8CF6B00396120 /* ARArtworkPreviewActionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARArtworkPreviewActionsView.h; path = "../View Controllers/ARArtworkPreviewActionsView.h"; sourceTree = "<group>"; };
-		607E2E8317C8CF6B00396120 /* ARArtworkPreviewActionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARArtworkPreviewActionsView.m; path = "../View Controllers/ARArtworkPreviewActionsView.m"; sourceTree = "<group>"; };
-		607E2E8517C8E87E00396120 /* ARArtworkPreviewImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARArtworkPreviewImageView.h; path = "../View Controllers/ARArtworkPreviewImageView.h"; sourceTree = "<group>"; };
-		607E2E8617C8E87E00396120 /* ARArtworkPreviewImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARArtworkPreviewImageView.m; path = "../View Controllers/ARArtworkPreviewImageView.m"; sourceTree = "<group>"; };
+		607E2E8217C8CF6B00396120 /* ARArtworkPreviewActionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkPreviewActionsView.h; sourceTree = "<group>"; };
+		607E2E8317C8CF6B00396120 /* ARArtworkPreviewActionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkPreviewActionsView.m; sourceTree = "<group>"; };
+		607E2E8517C8E87E00396120 /* ARArtworkPreviewImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkPreviewImageView.h; sourceTree = "<group>"; };
+		607E2E8617C8E87E00396120 /* ARArtworkPreviewImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkPreviewImageView.m; sourceTree = "<group>"; };
 		607E2E8817C9121500396120 /* ARZoomImageTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARZoomImageTransition.h; sourceTree = "<group>"; };
 		607E2E8917C9121500396120 /* ARZoomImageTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARZoomImageTransition.m; sourceTree = "<group>"; };
 		60838EAD17728C5D00869F6E /* ARHeartButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHeartButton.h; sourceTree = "<group>"; };
@@ -1163,8 +1163,8 @@
 		60838EB41773547700869F6E /* ARViewInRoomTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewInRoomTransition.m; sourceTree = "<group>"; };
 		60889872175DEBC2008C9319 /* ARFeedSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedSubclasses.h; sourceTree = "<group>"; };
 		60889873175DEBC2008C9319 /* ARFeedSubclasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeedSubclasses.m; sourceTree = "<group>"; };
-		6088B75217D1DBAC00E4BB67 /* ARAnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARAnalyticsConstants.h; path = Constants/ARAnalyticsConstants.h; sourceTree = "<group>"; };
-		6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARAnalyticsConstants.m; path = Constants/ARAnalyticsConstants.m; sourceTree = "<group>"; };
+		6088B75217D1DBAC00E4BB67 /* ARAnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsConstants.h; sourceTree = "<group>"; };
+		6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsConstants.m; sourceTree = "<group>"; };
 		608920C1178C682A00989A10 /* ARItemThumbnailViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARItemThumbnailViewCell.h; sourceTree = "<group>"; };
 		608920C2178C682A00989A10 /* ARItemThumbnailViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARItemThumbnailViewCell.m; sourceTree = "<group>"; };
 		6089243117F617140023D1AC /* ARArtworkMetadataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkMetadataView.h; sourceTree = "<group>"; };
@@ -1173,7 +1173,7 @@
 		60892CEE16B9A871004C1B47 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		608AABDA1B3884C600855A1C /* ARKeychainable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARKeychainable.h; sourceTree = "<group>"; };
 		608AABDB1B3884C600855A1C /* ARKeychainable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARKeychainable.m; sourceTree = "<group>"; };
-		608B2F5D1657D0500046956C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Artsy/App/main.m; sourceTree = SOURCE_ROOT; };
+		608B2F5D1657D0500046956C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		608B2F601657D1500046956C /* ARDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDefaults.h; sourceTree = "<group>"; };
 		608B2F611657D1500046956C /* ARDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaults.m; sourceTree = "<group>"; };
 		608B2F6C1657D1BB0046956C /* Models.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Models.h; sourceTree = "<group>"; };
@@ -1204,8 +1204,8 @@
 		608B709817D4F6520088A56C /* ARSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSearchTableViewCell.m; sourceTree = "<group>"; };
 		608EE3D919954CEB001F4FE0 /* UIViewController+PresentWithFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+PresentWithFrame.h"; sourceTree = "<group>"; };
 		608EE3DA19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+PresentWithFrame.m"; sourceTree = "<group>"; };
-		60903CC2175CE21A002AB800 /* AROptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AROptions.h; path = Utils/AROptions.h; sourceTree = "<group>"; };
-		60903CC3175CE21A002AB800 /* AROptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AROptions.m; path = Utils/AROptions.m; sourceTree = "<group>"; };
+		60903CC2175CE21A002AB800 /* AROptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROptions.h; sourceTree = "<group>"; };
+		60903CC3175CE21A002AB800 /* AROptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROptions.m; sourceTree = "<group>"; };
 		60903CC9175CE766002AB800 /* ARAdminSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAdminSettingsViewController.h; sourceTree = "<group>"; };
 		60903CCA175CE766002AB800 /* ARAdminSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAdminSettingsViewController.m; sourceTree = "<group>"; };
 		60903CCD175CF088002AB800 /* ARGroupedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGroupedTableViewCell.h; sourceTree = "<group>"; };
@@ -1219,8 +1219,8 @@
 		60903CDB175DE1C2002AB800 /* ARFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeed.h; sourceTree = "<group>"; };
 		60903CDC175DE1C2002AB800 /* ARFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeed.m; sourceTree = "<group>"; };
 		60935A451A69CFEE00129CE1 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		6099F8F7178DBF160004EF04 /* ARModernPartnerShowTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARModernPartnerShowTableViewCell.h; path = "iPhone Feed Items/ARModernPartnerShowTableViewCell.h"; sourceTree = "<group>"; };
-		6099F8F8178DBF160004EF04 /* ARModernPartnerShowTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARModernPartnerShowTableViewCell.m; path = "iPhone Feed Items/ARModernPartnerShowTableViewCell.m"; sourceTree = "<group>"; };
+		6099F8F7178DBF160004EF04 /* ARModernPartnerShowTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModernPartnerShowTableViewCell.h; sourceTree = "<group>"; };
+		6099F8F8178DBF160004EF04 /* ARModernPartnerShowTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARModernPartnerShowTableViewCell.m; sourceTree = "<group>"; };
 		6099F8FC178DE9400004EF04 /* ARTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTheme.h; sourceTree = "<group>"; };
 		6099F8FD178DE9400004EF04 /* ARTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTheme.m; sourceTree = "<group>"; };
 		6099F905178F24750004EF04 /* ARDefaultNavigationTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDefaultNavigationTransition.h; sourceTree = "<group>"; };
@@ -1271,7 +1271,7 @@
 		609F98131AC0F3BF0079FE21 /* ARWatchShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchShowViewController.m; sourceTree = "<group>"; };
 		609F98141AC0F3BF0079FE21 /* ARWatchShowSetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchShowSetViewController.h; sourceTree = "<group>"; };
 		609F98151AC0F3BF0079FE21 /* ARWatchShowSetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchShowSetViewController.m; sourceTree = "<group>"; };
-		609F98181AC0F3D60079FE21 /* Artsy WatchKit Extension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Artsy WatchKit Extension.entitlements"; sourceTree = "<group>"; };
+		609F98181AC0F3D60079FE21 /* Artsy_WatchKit_Extension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Artsy_WatchKit_Extension.entitlements; sourceTree = "<group>"; };
 		609F981A1AC0F3DF0079FE21 /* PushNotificationPayload.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PushNotificationPayload.json; sourceTree = "<group>"; };
 		609F981D1AC0F4400079FE21 /* AGaramondPro-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AGaramondPro-Bold.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-Bold.otf"; sourceTree = SOURCE_ROOT; };
 		609F981E1AC0F4400079FE21 /* AGaramondPro-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AGaramondPro-BoldItalic.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-BoldItalic.otf"; sourceTree = SOURCE_ROOT; };
@@ -1311,7 +1311,7 @@
 		60A224FA17CE040B00233CA1 /* AROnboardingTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingTransition.h; sourceTree = "<group>"; };
 		60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingTransition.m; sourceTree = "<group>"; };
 		60A224FD17CE0E1B00233CA1 /* AROnboardingViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AROnboardingViewControllers.h; sourceTree = "<group>"; };
-		60A3099C1AC8AD6A000783C1 /* Artsy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Artsy.entitlements; path = Artsy/Artsy.entitlements; sourceTree = SOURCE_ROOT; };
+		60A3099C1AC8AD6A000783C1 /* Artsy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Artsy.entitlements; sourceTree = "<group>"; };
 		60A309A01AC98BF3000783C1 /* Article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Article.h; sourceTree = "<group>"; };
 		60A309A11AC98BF3000783C1 /* Article.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Article.m; sourceTree = "<group>"; };
 		60A309A61AC999DE000783C1 /* ARInternalShareValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalShareValidator.h; sourceTree = "<group>"; };
@@ -1342,8 +1342,8 @@
 		60B79B81182C346700945FFF /* ARQuicksilverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARQuicksilverViewController.h; sourceTree = "<group>"; };
 		60B79B82182C346700945FFF /* ARQuicksilverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARQuicksilverViewController.m; sourceTree = "<group>"; };
 		60B79B83182C346700945FFF /* ARQuicksilverViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARQuicksilverViewController.xib; sourceTree = "<group>"; };
-		60B79B87182C54CE00945FFF /* ARQuicksilverSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARQuicksilverSearchBar.h; path = quicksilver/ARQuicksilverSearchBar.h; sourceTree = "<group>"; };
-		60B79B88182C54CE00945FFF /* ARQuicksilverSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARQuicksilverSearchBar.m; path = quicksilver/ARQuicksilverSearchBar.m; sourceTree = "<group>"; };
+		60B79B87182C54CE00945FFF /* ARQuicksilverSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARQuicksilverSearchBar.h; sourceTree = "<group>"; };
+		60B79B88182C54CE00945FFF /* ARQuicksilverSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARQuicksilverSearchBar.m; sourceTree = "<group>"; };
 		60BC390718182227003F34E7 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		60C4BD6317B3B91800D79058 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
 		60CAA3741782D87B00CA3DA8 /* ARContentViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARContentViewControllers.h; sourceTree = "<group>"; };
@@ -1356,8 +1356,8 @@
 		60CF980617BF79CA005ED59B /* ARArtistBiographyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtistBiographyViewController.h; sourceTree = "<group>"; };
 		60CF980717BF79CA005ED59B /* ARArtistBiographyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtistBiographyViewController.m; sourceTree = "<group>"; };
 		60D7FB721AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPersonalizeWebViewControllerTests.m; sourceTree = "<group>"; };
-		60D83DE6189EAB82001672E9 /* ARFairShowMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARFairShowMapper.h; path = models/ARFairShowMapper.h; sourceTree = "<group>"; };
-		60D83DE7189EAB82001672E9 /* ARFairShowMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARFairShowMapper.m; path = models/ARFairShowMapper.m; sourceTree = "<group>"; };
+		60D83DE6189EAB82001672E9 /* ARFairShowMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairShowMapper.h; sourceTree = "<group>"; };
+		60D83DE7189EAB82001672E9 /* ARFairShowMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairShowMapper.m; sourceTree = "<group>"; };
 		60D83DEC189EE679001672E9 /* ARFairGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairGuideViewController.h; sourceTree = "<group>"; };
 		60D83DED189EE679001672E9 /* ARFairGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideViewController.m; sourceTree = "<group>"; };
 		60D8E63818D256BB0040BEFD /* ARDemoSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDemoSplashViewController.h; sourceTree = "<group>"; };
@@ -1380,8 +1380,8 @@
 		60EEFE741658547C00F43F00 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		60EFA6F316CAA8180094AD7C /* ArtsyAPI+Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Feed.h"; sourceTree = "<group>"; };
 		60EFA6F416CAA8180094AD7C /* ArtsyAPI+Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Feed.m"; sourceTree = "<group>"; };
-		60F1C50C17C0EC6A000938F7 /* ARBrowseCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARBrowseCategoriesViewController.h; path = "../View Controllers/ARBrowseCategoriesViewController.h"; sourceTree = "<group>"; };
-		60F1C50D17C0EC6A000938F7 /* ARBrowseCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARBrowseCategoriesViewController.m; path = "../View Controllers/ARBrowseCategoriesViewController.m"; sourceTree = "<group>"; };
+		60F1C50C17C0EC6A000938F7 /* ARBrowseCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseCategoriesViewController.h; sourceTree = "<group>"; };
+		60F1C50D17C0EC6A000938F7 /* ARBrowseCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseCategoriesViewController.m; sourceTree = "<group>"; };
 		60F1C51017C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseFeaturedLinksCollectionView.h; sourceTree = "<group>"; };
 		60F1C51117C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseFeaturedLinksCollectionView.m; sourceTree = "<group>"; usesTabs = 0; };
 		60F1C51317C0EFD7000938F7 /* ARBrowseFeaturedLinksCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseFeaturedLinksCollectionViewCell.h; sourceTree = "<group>"; };
@@ -1423,9 +1423,9 @@
 		B3DDE9C318313CFF0012819F /* ARArtworkPriceRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkPriceRowView.m; sourceTree = "<group>"; };
 		B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Artsy Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3ECE8271819D1E6009F5C5B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		B3ECE82D1819D1E6009F5C5B /* Artsy Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Artsy Tests-Info.plist"; sourceTree = "<group>"; };
+		B3ECE82D1819D1E6009F5C5B /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		B3ECE82F1819D1E6009F5C5B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B3ECE8331819D1E6009F5C5B /* Artsy Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artsy Tests-Prefix.pch"; sourceTree = "<group>"; };
+		B3ECE8331819D1E6009F5C5B /* Artsy_Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artsy_Tests-Prefix.pch"; sourceTree = "<group>"; };
 		B3ECE83B1819D1FD009F5C5B /* SaleArtworkTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleArtworkTests.m; sourceTree = "<group>"; };
 		B3EFC6371815B41C00F23540 /* BidderPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BidderPosition.h; sourceTree = "<group>"; };
 		B3EFC6381815B41C00F23540 /* BidderPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidderPosition.m; sourceTree = "<group>"; };
@@ -1465,8 +1465,8 @@
 		CDEDFCEA46DCA90DBC0EA7D8 /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
 		D1B307A5238B6E45DC517910 /* Pods-Artsy Tests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.store.xcconfig"; sourceTree = "<group>"; };
 		D301A1C11AD59BD100EA9E49 /* ARBackButtonCallbackManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBackButtonCallbackManagerTests.m; sourceTree = "<group>"; };
-		D33AF4FD1ACF08E1009C053C /* ARBackButtonCallbackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARBackButtonCallbackManager.h; path = Artsy/Classes/Utils/ARBackButtonCallbackManager.h; sourceTree = SOURCE_ROOT; };
-		D33AF4FE1ACF08E1009C053C /* ARBackButtonCallbackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARBackButtonCallbackManager.m; path = Artsy/Classes/Utils/ARBackButtonCallbackManager.m; sourceTree = SOURCE_ROOT; };
+		D33AF4FD1ACF08E1009C053C /* ARBackButtonCallbackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBackButtonCallbackManager.h; sourceTree = "<group>"; };
+		D33AF4FE1ACF08E1009C053C /* ARBackButtonCallbackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBackButtonCallbackManager.m; sourceTree = "<group>"; };
 		D35D9D5B1ACB4FF800E67A1D /* ARArtworkTitleLabelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkTitleLabelTests.m; sourceTree = "<group>"; };
 		D37CBC4A1AF2C62E00A69019 /* ARFairNetworkModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairNetworkModelTests.m; sourceTree = "<group>"; };
 		D37E4CF91A92AC5A00023E2C /* ARAnnotatedMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnnotatedMapView.h; sourceTree = "<group>"; };
@@ -1482,8 +1482,8 @@
 		D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExternalWebBrowserViewControllerTests.m; sourceTree = "<group>"; };
 		D3BB62911AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseViewControllerTests.m; sourceTree = "<group>"; };
 		D3C696C91B1500D70034A034 /* AROnboardingMoreInfoViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingMoreInfoViewControllerTests.m; sourceTree = "<group>"; };
-		D3F3FA1D1AAE1BFC00E88359 /* ARBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARBrowseViewController.h; path = "Artsy/Classes/View Controllers/ARBrowseViewController.h"; sourceTree = SOURCE_ROOT; };
-		D3F3FA1E1AAE1BFC00E88359 /* ARBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARBrowseViewController.m; path = "Artsy/Classes/View Controllers/ARBrowseViewController.m"; sourceTree = SOURCE_ROOT; };
+		D3F3FA1D1AAE1BFC00E88359 /* ARBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseViewController.h; sourceTree = "<group>"; };
+		D3F3FA1E1AAE1BFC00E88359 /* ARBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseViewController.m; sourceTree = "<group>"; };
 		D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultsTests.m; sourceTree = "<group>"; };
 		E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_small@2x.png"; sourceTree = "<group>"; };
 		E611846F18D78068000FE4C9 /* ARMessageItemProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMessageItemProviderTests.m; sourceTree = "<group>"; };
@@ -1504,14 +1504,14 @@
 		E61446AB195A1CDC00BFB7C3 /* ARGeneFavoritesNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGeneFavoritesNetworkModel.m; sourceTree = "<group>"; };
 		E616B2461911664900D1CBC6 /* ARArtworkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkView.h; sourceTree = "<group>"; };
 		E616B2471911664900D1CBC6 /* ARArtworkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkView.m; sourceTree = "<group>"; };
-		E619969A19B9099400DB273C /* UIScrollView+HitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+HitTest.h"; path = "Apple/UIScrollView+HitTest.h"; sourceTree = "<group>"; };
-		E619969B19B9099400DB273C /* UIScrollView+HitTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+HitTest.m"; path = "Apple/UIScrollView+HitTest.m"; sourceTree = "<group>"; };
+		E619969A19B9099400DB273C /* UIScrollView+HitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+HitTest.h"; sourceTree = "<group>"; };
+		E619969B19B9099400DB273C /* UIScrollView+HitTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+HitTest.m"; sourceTree = "<group>"; };
 		E61B703719904D9F00260D29 /* ARTopTapThroughTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTopTapThroughTableView.h; sourceTree = "<group>"; };
 		E61B703819904D9F00260D29 /* ARTopTapThroughTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopTapThroughTableView.m; sourceTree = "<group>"; };
 		E61E772419A5477300C55E14 /* ARExpectaExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARExpectaExtensions.h; sourceTree = "<group>"; };
 		E61E772519A5477300C55E14 /* ARExpectaExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExpectaExtensions.m; sourceTree = "<group>"; };
 		E61E773819A7E8D500C55E14 /* ARGeneViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGeneViewControllerTests.m; sourceTree = "<group>"; };
-		E620C74719C746530064A0FF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Artsy/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		E620C74719C746530064A0FF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E63C796B198811E400579C04 /* ARArtworkRelatedArtworksViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkRelatedArtworksViewTests.m; sourceTree = "<group>"; };
 		E649708818D7762F009DB0C4 /* ARImageItemProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageItemProviderTests.m; sourceTree = "<group>"; };
 		E6543CDA18AD795E00A6B9AF /* Parallax_Overlay_Bottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Parallax_Overlay_Bottom@2x.png"; sourceTree = "<group>"; };
@@ -1519,12 +1519,12 @@
 		E65BB51E1A3FB552004C4DB4 /* ARAppSearchViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppSearchViewControllerSpec.m; sourceTree = "<group>"; };
 		E65BB5221A408A29004C4DB4 /* TextfieldClearButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TextfieldClearButton.png; sourceTree = "<group>"; };
 		E66492D218B7D26B00531B8F /* Parallax_Overlay_Top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Parallax_Overlay_Top@2x.png"; sourceTree = "<group>"; };
-		E667F12018EC825D00503F50 /* ARHTTPRequestOperationLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARHTTPRequestOperationLogger.h; path = Artsy/Classes/Utils/Logging/ARHTTPRequestOperationLogger.h; sourceTree = SOURCE_ROOT; };
-		E667F12118EC825D00503F50 /* ARHTTPRequestOperationLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARHTTPRequestOperationLogger.m; path = Artsy/Classes/Utils/Logging/ARHTTPRequestOperationLogger.m; sourceTree = SOURCE_ROOT; };
-		E667F12618EC82AB00503F50 /* ARLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARLogger.h; path = Logging/ARLogger.h; sourceTree = "<group>"; };
-		E667F12718EC82AB00503F50 /* ARLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARLogger.m; path = Logging/ARLogger.m; sourceTree = "<group>"; };
-		E667F12A18EC889F00503F50 /* ARLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARLogFormatter.h; path = Logging/ARLogFormatter.h; sourceTree = "<group>"; };
-		E667F12B18EC889F00503F50 /* ARLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARLogFormatter.m; path = Logging/ARLogFormatter.m; sourceTree = "<group>"; };
+		E667F12018EC825D00503F50 /* ARHTTPRequestOperationLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHTTPRequestOperationLogger.h; sourceTree = "<group>"; };
+		E667F12118EC825D00503F50 /* ARHTTPRequestOperationLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHTTPRequestOperationLogger.m; sourceTree = "<group>"; };
+		E667F12618EC82AB00503F50 /* ARLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLogger.h; sourceTree = "<group>"; };
+		E667F12718EC82AB00503F50 /* ARLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLogger.m; sourceTree = "<group>"; };
+		E667F12A18EC889F00503F50 /* ARLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLogFormatter.h; sourceTree = "<group>"; };
+		E667F12B18EC889F00503F50 /* ARLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLogFormatter.m; sourceTree = "<group>"; };
 		E66A0A8219C2125400ECEB1A /* full_logo_white_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_large@2x.png"; sourceTree = "<group>"; };
 		E66EE4AD196460620081ED0C /* ARFavoriteItemModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFavoriteItemModule.h; sourceTree = "<group>"; };
 		E66EE4AE196460620081ED0C /* ARFavoriteItemModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFavoriteItemModule.m; sourceTree = "<group>"; };
@@ -1576,23 +1576,23 @@
 		E6F466E718EF52A800A09AFA /* Artwork_v1.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Artwork_v1.data; sourceTree = "<group>"; };
 		E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CloseButtonLargeHighlighted@2x.png"; sourceTree = "<group>"; };
 		E6F84D011A0AB40500BF99A3 /* ARSignUpActiveUserViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSignUpActiveUserViewControllerTests.m; sourceTree = "<group>"; };
-		E6FD2F1F187B0D76002AAFEB /* ARUserSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARUserSettingsViewController.h; path = ../Models/ARUserSettingsViewController.h; sourceTree = "<group>"; };
-		E6FD2F20187B0D76002AAFEB /* ARUserSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARUserSettingsViewController.m; path = ../Models/ARUserSettingsViewController.m; sourceTree = "<group>"; };
-		E6FFEA9F19C7925600A0D7DE /* onboard_1@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "onboard_1@2x~ipad.jpg"; path = "Artsy/Resources/onboarding/onboard_1@2x~ipad.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAA019C7925600A0D7DE /* onboard_1@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "onboard_1@2x~iphone.jpg"; path = "Artsy/Resources/onboarding/onboard_1@2x~iphone.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAA119C7925600A0D7DE /* onboard_2@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "onboard_2@2x~ipad.jpg"; path = "Artsy/Resources/onboarding/onboard_2@2x~ipad.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAA219C7925600A0D7DE /* onboard_2@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "onboard_2@2x~iphone.jpg"; path = "Artsy/Resources/onboarding/onboard_2@2x~iphone.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAA319C7925600A0D7DE /* onboard_3@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "onboard_3@2x~ipad.jpg"; path = "Artsy/Resources/onboarding/onboard_3@2x~ipad.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAA419C7925600A0D7DE /* onboard_3@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "onboard_3@2x~iphone.jpg"; path = "Artsy/Resources/onboarding/onboard_3@2x~iphone.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAA519C7925600A0D7DE /* splash_1@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "splash_1@2x~ipad.jpg"; path = "Artsy/Resources/onboarding/splash_1@2x~ipad.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAA619C7925600A0D7DE /* splash_1@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "splash_1@2x~iphone.jpg"; path = "Artsy/Resources/onboarding/splash_1@2x~iphone.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAA719C7925600A0D7DE /* splash_2@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "splash_2@2x~ipad.jpg"; path = "Artsy/Resources/onboarding/splash_2@2x~ipad.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAA819C7925600A0D7DE /* splash_2@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "splash_2@2x~iphone.jpg"; path = "Artsy/Resources/onboarding/splash_2@2x~iphone.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAA919C7925600A0D7DE /* splash_3@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "splash_3@2x~ipad.jpg"; path = "Artsy/Resources/onboarding/splash_3@2x~ipad.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAAA19C7925600A0D7DE /* splash_3@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "splash_3@2x~iphone.jpg"; path = "Artsy/Resources/onboarding/splash_3@2x~iphone.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAAB19C7925600A0D7DE /* splash_4@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "splash_4@2x~ipad.jpg"; path = "Artsy/Resources/onboarding/splash_4@2x~ipad.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "splash_4@2x~iphone.jpg"; path = "Artsy/Resources/onboarding/splash_4@2x~iphone.jpg"; sourceTree = SOURCE_ROOT; };
-		E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "splash_5@2x~ipad.jpg"; path = "Artsy/Resources/onboarding/splash_5@2x~ipad.jpg"; sourceTree = SOURCE_ROOT; };
+		E6FD2F1F187B0D76002AAFEB /* ARUserSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserSettingsViewController.h; sourceTree = "<group>"; };
+		E6FD2F20187B0D76002AAFEB /* ARUserSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserSettingsViewController.m; sourceTree = "<group>"; };
+		E6FFEA9F19C7925600A0D7DE /* onboard_1@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "onboard_1@2x~ipad.jpg"; sourceTree = "<group>"; };
+		E6FFEAA019C7925600A0D7DE /* onboard_1@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "onboard_1@2x~iphone.jpg"; sourceTree = "<group>"; };
+		E6FFEAA119C7925600A0D7DE /* onboard_2@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "onboard_2@2x~ipad.jpg"; sourceTree = "<group>"; };
+		E6FFEAA219C7925600A0D7DE /* onboard_2@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "onboard_2@2x~iphone.jpg"; sourceTree = "<group>"; };
+		E6FFEAA319C7925600A0D7DE /* onboard_3@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "onboard_3@2x~ipad.jpg"; sourceTree = "<group>"; };
+		E6FFEAA419C7925600A0D7DE /* onboard_3@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "onboard_3@2x~iphone.jpg"; sourceTree = "<group>"; };
+		E6FFEAA519C7925600A0D7DE /* splash_1@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_1@2x~ipad.jpg"; sourceTree = "<group>"; };
+		E6FFEAA619C7925600A0D7DE /* splash_1@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_1@2x~iphone.jpg"; sourceTree = "<group>"; };
+		E6FFEAA719C7925600A0D7DE /* splash_2@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_2@2x~ipad.jpg"; sourceTree = "<group>"; };
+		E6FFEAA819C7925600A0D7DE /* splash_2@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_2@2x~iphone.jpg"; sourceTree = "<group>"; };
+		E6FFEAA919C7925600A0D7DE /* splash_3@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_3@2x~ipad.jpg"; sourceTree = "<group>"; };
+		E6FFEAAA19C7925600A0D7DE /* splash_3@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_3@2x~iphone.jpg"; sourceTree = "<group>"; };
+		E6FFEAAB19C7925600A0D7DE /* splash_4@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_4@2x~ipad.jpg"; sourceTree = "<group>"; };
+		E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_4@2x~iphone.jpg"; sourceTree = "<group>"; };
+		E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_5@2x~ipad.jpg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1641,7 +1641,7 @@
 				062C201F16DD76C90095A7EC /* ARZoomView.h */,
 				062C202016DD76C90095A7EC /* ARZoomView.m */,
 			);
-			name = Image;
+			path = Image;
 			sourceTree = "<group>";
 		};
 		342F90A2E677A86747A25FD8 /* Artsy */ = {
@@ -1691,9 +1691,8 @@
 				3CFB078918EB417F00792024 /* ARSecureTextFieldWithPlaceholder.h */,
 				3CFB078A18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m */,
 			);
-			name = Util;
-			path = Artsy/Classes/Utils;
-			sourceTree = SOURCE_ROOT;
+			path = Util;
+			sourceTree = "<group>";
 		};
 		342F929D496BA3C99B4DB11A /* State Restoration */ = {
 			isa = PBXGroup;
@@ -1702,6 +1701,7 @@
 				342F992BB6F28B5BE6477E3F /* UIViewController+ARStateRestoration.m */,
 			);
 			name = "State Restoration";
+			path = State_Restoration;
 			sourceTree = "<group>";
 		};
 		342F93B0E900CB6BC98011DE /* Views */ = {
@@ -1718,10 +1718,10 @@
 				5EDB1209197E691100E241F0 /* ARParallaxHeaderViewController.h */,
 				5EDB120A197E691100E241F0 /* ARParallaxHeaderViewController.m */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		342F93BE04F58F4AD75A8FDD /* Mantle Extensions */ = {
+		342F93BE04F58F4AD75A8FDD /* Mantle_Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				342F92D1AEEE18F719695548 /* MTLModel+JSON.m */,
@@ -1729,7 +1729,7 @@
 				342F984DED67FEAABB90AFC3 /* MTLModel+Dictionary.h */,
 				342F98950528061D8AE370EA /* MTLModel+Dictionary.m */,
 			);
-			path = "Mantle Extensions";
+			path = Mantle_Extensions;
 			sourceTree = "<group>";
 		};
 		342F9453C931C592D4F8A2AA /* Fair */ = {
@@ -1746,7 +1746,7 @@
 				342F92FE487AC8FCA43F5C74 /* Follow.m */,
 				342F9AC158B5157E968BE7BE /* Follow.h */,
 			);
-			name = Fair;
+			path = Fair;
 			sourceTree = "<group>";
 		};
 		342F949FC80594AFFBBE1017 /* Errors */ = {
@@ -1756,7 +1756,7 @@
 				342F97A9F6D9D371703C2B19 /* ARNetworkErrorManager.m */,
 				342F9AF3B1FC9DB29D65F3D1 /* ActiveErrorView.xib */,
 			);
-			name = Errors;
+			path = Errors;
 			sourceTree = "<group>";
 		};
 		342F96EF894DC84D6564FA20 /* Collection */ = {
@@ -1764,10 +1764,10 @@
 			children = (
 				342F93F91FB4ACCDC29EB901 /* ARGeneArtworksNetworkModelTests.m */,
 			);
-			name = Collection;
+			path = Collection;
 			sourceTree = "<group>";
 		};
-		342F99296B0CBCEF0CDA9ECA /* Network Models */ = {
+		342F99296B0CBCEF0CDA9ECA /* Network_Models */ = {
 			isa = PBXGroup;
 			children = (
 				E614469D195A1CDC00BFB7C3 /* ARArtistFavoritesNetworkModel.h */,
@@ -1790,7 +1790,7 @@
 				D39E874D1AB0F97A006B5BE9 /* ARBrowseNetworkModel.h */,
 				D39E874E1AB0F97A006B5BE9 /* ARBrowseNetworkModel.m */,
 			);
-			path = "Network Models";
+			path = Network_Models;
 			sourceTree = "<group>";
 		};
 		342F9C2C3D87889B79459CED /* Apple */ = {
@@ -1842,6 +1842,7 @@
 				342F927CDF62DAE64F3A1AD7 /* ARCollapsableTextView.m */,
 			);
 			name = "Styled Subclasses";
+			path = Styled_Subclasses;
 			sourceTree = "<group>";
 		};
 		342F9D63C266DC8B9A46A4F5 /* Emumerations */ = {
@@ -1850,7 +1851,7 @@
 				342F92B72CCFA5F1E35F0067 /* UIApplicationStateEnum.h */,
 				342F9CDCE3E3D1674CA080AD /* UIApplicationStateEnum.m */,
 			);
-			name = Emumerations;
+			path = Emumerations;
 			sourceTree = "<group>";
 		};
 		342F9E0324CE65C4B8969EE4 /* Maps */ = {
@@ -1858,7 +1859,7 @@
 			children = (
 				342F92647D726C0DC289B1F3 /* ARFairMapViewControllerTests.m */,
 			);
-			name = Maps;
+			path = Maps;
 			sourceTree = "<group>";
 		};
 		342F9FE0B50F629107FA5E5A /* Generics */ = {
@@ -1873,7 +1874,7 @@
 				342F9D38472C06E2C065568E /* ARImagePageViewController.m */,
 				342F91073D92A49978A29DA6 /* ARImagePageViewController.h */,
 			);
-			name = Generics;
+			path = Generics;
 			sourceTree = "<group>";
 		};
 		3C12144A18FD6AA9003CDC74 /* Sharing */ = {
@@ -1888,7 +1889,7 @@
 				342F954D3ABCF82AAC1640D9 /* ARSharingController.h */,
 				342F9DC4018D17E7378DA607 /* ARSharingController.m */,
 			);
-			name = Sharing;
+			path = Sharing;
 			sourceTree = "<group>";
 		};
 		3C205B5718900091004280E0 /* App Tests */ = {
@@ -1899,6 +1900,7 @@
 				60327DD11987BA830075B399 /* ARDeveloperOptionsSpec.m */,
 			);
 			name = "App Tests";
+			path = App_Tests;
 			sourceTree = "<group>";
 		};
 		3C22227018C647CC00B7CE3A /* Data */ = {
@@ -1909,7 +1911,7 @@
 				E676A62418EF5F6E00B9AF2C /* Artwork_v0.data */,
 				E6F466E718EF52A800A09AFA /* Artwork_v1.data */,
 			);
-			name = Data;
+			path = Data;
 			sourceTree = "<group>";
 		};
 		3C2E034A18DA7F640001B7E5 /* Image */ = {
@@ -1918,7 +1920,7 @@
 				60388701189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.h */,
 				60388702189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m */,
 			);
-			name = Image;
+			path = Image;
 			sourceTree = "<group>";
 		};
 		3C2E034B18DA7FD80001B7E5 /* Image */ = {
@@ -1926,7 +1928,7 @@
 			children = (
 				342F9F73EE9B1DBFE4E88BA3 /* ARTiledImageDataSourceWithImageTests.m */,
 			);
-			name = Image;
+			path = Image;
 			sourceTree = "<group>";
 		};
 		3C3FEA8B188433CB00E1A16F /* Extensions */ = {
@@ -1958,7 +1960,7 @@
 				60647C2C1A89721800A45247 /* AROHHTTPNoStubAssertionBot.h */,
 				60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */,
 			);
-			name = Extensions;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		3C4AE96C19094D8F009C0E8B /* Map Annotations */ = {
@@ -1984,6 +1986,7 @@
 				3CAC639E190AA87A00B17325 /* MapAnnotationCallout_Partner@2x.png */,
 			);
 			name = "Map Annotations";
+			path = Map_Annotations;
 			sourceTree = "<group>";
 		};
 		3C4AE98B19094F74009C0E8B /* ViewInRoom */ = {
@@ -1996,7 +1999,7 @@
 				3C4AE99019094F96009C0E8B /* ViewInRoom_Wall_Right@2x.png */,
 				3C4AE99119094F96009C0E8B /* ViewInRoom_Wall@2x.png */,
 			);
-			name = ViewInRoom;
+			path = ViewInRoom;
 			sourceTree = "<group>";
 		};
 		3C5C7E3D18970E73003823BB /* Util Tests */ = {
@@ -2010,6 +2013,7 @@
 				D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */,
 			);
 			name = "Util Tests";
+			path = Util_Tests;
 			sourceTree = "<group>";
 		};
 		3C5C7E3E18970E78003823BB /* Enumerations */ = {
@@ -2017,7 +2021,7 @@
 			children = (
 				3C5C7E3F18970E8B003823BB /* UIApplicationStateEnumTests.m */,
 			);
-			name = Enumerations;
+			path = Enumerations;
 			sourceTree = "<group>";
 		};
 		3C6BDCC118E0B8C80028EF5D /* Contact */ = {
@@ -2025,7 +2029,7 @@
 			children = (
 				3C6BDCC218E0B8D50028EF5D /* ARInquireForArtworkViewControllerTests.m */,
 			);
-			name = Contact;
+			path = Contact;
 			sourceTree = "<group>";
 		};
 		3C6CB60618ABD8C1008DFE3B /* Post */ = {
@@ -2034,7 +2038,7 @@
 				3C6CB60718ABD8D2008DFE3B /* ARPostsViewController.h */,
 				3C6CB60818ABD8D2008DFE3B /* ARPostsViewController.m */,
 			);
-			name = Post;
+			path = Post;
 			sourceTree = "<group>";
 		};
 		3C7880B918B9080B00595E30 /* Notifications */ = {
@@ -2043,7 +2047,7 @@
 				3C7880BA18B9081C00595E30 /* ARNotificationView.h */,
 				3C7880BB18B9081C00595E30 /* ARNotificationView.m */,
 			);
-			name = Notifications;
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		3C9F215C18B25CFA00D8898B /* Search */ = {
@@ -2055,7 +2059,7 @@
 				3C205ACB1908041700B3C2B4 /* ARSearchResultsDataSource.h */,
 				3C205ACC1908041700B3C2B4 /* ARSearchResultsDataSource.m */,
 			);
-			name = Search;
+			path = Search;
 			sourceTree = "<group>";
 		};
 		3CA0A17B18EF632800C361E5 /* Artist */ = {
@@ -2067,7 +2071,7 @@
 				5E0AEB7B19B9FAED009F34DE /* ARStubbedShowNetworkModel.h */,
 				5E0AEB7C19B9FAED009F34DE /* ARStubbedShowNetworkModel.m */,
 			);
-			name = Artist;
+			path = Artist;
 			sourceTree = "<group>";
 		};
 		3CA37E781910070600B06E81 /* Favorites */ = {
@@ -2075,14 +2079,14 @@
 			children = (
 				3CA37E791910072C00B06E81 /* ARHeartStatus.h */,
 			);
-			name = Favorites;
+			path = Favorites;
 			sourceTree = "<group>";
 		};
 		3CA4B73018B418F500256B33 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = Utils;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		3CAA413018D8CC21000EE867 /* Networking Models */ = {
@@ -2094,6 +2098,7 @@
 				5E0AEB7919B9EF57009F34DE /* ARShowNetworkModelTests.m */,
 			);
 			name = "Networking Models";
+			path = Networking_Models;
 			sourceTree = "<group>";
 		};
 		3CACF2AA18F591D40054091E /* Theming Tests */ = {
@@ -2102,6 +2107,7 @@
 				3CACF2AB18F591E40054091E /* ARThemeTests.m */,
 			);
 			name = "Theming Tests";
+			path = Theming_Tests;
 			sourceTree = "<group>";
 		};
 		3CAED1791880268E00840608 /* Networking Tests */ = {
@@ -2114,6 +2120,7 @@
 				3C2E6C5B192262A3009DAB28 /* ARRouterTests.m */,
 			);
 			name = "Networking Tests";
+			path = Networking_Tests;
 			sourceTree = "<group>";
 		};
 		3CAED17A1880269E00840608 /* API Modules */ = {
@@ -2126,6 +2133,7 @@
 				3CB37D981922483100089A1D /* ArtsyAPI+ErrorHandlers.m */,
 			);
 			name = "API Modules";
+			path = API_Modules;
 			sourceTree = "<group>";
 		};
 		3CB97D8D18870979008C44FE /* View Controller Tests */ = {
@@ -2147,6 +2155,7 @@
 				3CCCC88E189966C0008015DD /* Fair */,
 			);
 			name = "View Controller Tests";
+			path = View_Controller_Tests;
 			sourceTree = "<group>";
 		};
 		3CCCC88E189966C0008015DD /* Fair */ = {
@@ -2170,7 +2179,7 @@
 				5122D6991A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m */,
 				60647C7B1A951F2A00A45247 /* ARFairPopupViewControllerTests.m */,
 			);
-			name = Fair;
+			path = Fair;
 			sourceTree = "<group>";
 		};
 		3CCCC88F189966CB008015DD /* Artwork */ = {
@@ -2179,7 +2188,7 @@
 				E6B958F0188DB6F800D75C86 /* ARArtworkViewControllerTests.m */,
 				60F8FFC0197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m */,
 			);
-			name = Artwork;
+			path = Artwork;
 			sourceTree = "<group>";
 		};
 		3CCCC890189966E3008015DD /* Login and Onboarding */ = {
@@ -2193,6 +2202,7 @@
 				D3C696C91B1500D70034A034 /* AROnboardingMoreInfoViewControllerTests.m */,
 			);
 			name = "Login and Onboarding";
+			path = Login_and_Onboarding;
 			sourceTree = "<group>";
 		};
 		3CCCC8911899672E008015DD /* Web Browsing */ = {
@@ -2203,6 +2213,7 @@
 				D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */,
 			);
 			name = "Web Browsing";
+			path = Web_Browsing;
 			sourceTree = "<group>";
 		};
 		3CCCC8921899673C008015DD /* Embedded */ = {
@@ -2211,7 +2222,7 @@
 				342F965F76AA25C6C700FE1C /* ARNavigationButtonsViewControllerTests.m */,
 				51D141AF1AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m */,
 			);
-			name = Embedded;
+			path = Embedded;
 			sourceTree = "<group>";
 		};
 		3CCCC89818996DC5008015DD /* Posts */ = {
@@ -2222,7 +2233,7 @@
 				60A309A01AC98BF3000783C1 /* Article.h */,
 				60A309A11AC98BF3000783C1 /* Article.m */,
 			);
-			name = Posts;
+			path = Posts;
 			sourceTree = "<group>";
 		};
 		3CD0BB8718EB0CCB00A59910 /* Favorites */ = {
@@ -2230,7 +2241,7 @@
 			children = (
 				3CD0BB8818EB0CDF00A59910 /* ARFavoritesViewControllerTests.m */,
 			);
-			name = Favorites;
+			path = Favorites;
 			sourceTree = "<group>";
 		};
 		3CD36796189A9AD600285DF7 /* Post */ = {
@@ -2239,7 +2250,7 @@
 				3CD36797189A9B7A00285DF7 /* ARPostFeedItemLinkView.h */,
 				3CD36798189A9B7A00285DF7 /* ARPostFeedItemLinkView.m */,
 			);
-			name = Post;
+			path = Post;
 			sourceTree = "<group>";
 		};
 		3CD3679D189AC4FF00285DF7 /* Images */ = {
@@ -2248,7 +2259,7 @@
 				3CD3679A189AC4F000285DF7 /* ARAspectRatioImageView.h */,
 				3CD3679B189AC4F000285DF7 /* ARAspectRatioImageView.m */,
 			);
-			name = Images;
+			path = Images;
 			sourceTree = "<group>";
 		};
 		3CE0DA2C18A12326000E537A /* Media */ = {
@@ -2257,7 +2268,7 @@
 				3CE0DA2D18A12335000E537A /* Video.h */,
 				3CE0DA2E18A12335000E537A /* Video.m */,
 			);
-			name = Media;
+			path = Media;
 			sourceTree = "<group>";
 		};
 		3CE75A0918B6366F00885355 /* Util */ = {
@@ -2267,7 +2278,7 @@
 				3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */,
 				5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */,
 			);
-			name = Util;
+			path = Util;
 			sourceTree = "<group>";
 		};
 		3CE7F34018A99E4B002BA993 /* Feed Timeline Tests */ = {
@@ -2276,6 +2287,7 @@
 				3CE7F34118A99E62002BA993 /* ARHeroUnitsNetworkModelTests.m */,
 			);
 			name = "Feed Timeline Tests";
+			path = Feed_Timeline_Tests;
 			sourceTree = "<group>";
 		};
 		49538BDE6414F495D1AAFDB1 /* Pods */ = {
@@ -2300,10 +2312,10 @@
 				29773A6F17B9749800FC89B3 /* ARHasImageBaseURL.h */,
 				3CCE08A618A3C0A000AE4CC3 /* ProfileOwner.h */,
 			);
-			name = Protocols;
+			path = Protocols;
 			sourceTree = "<group>";
 		};
-		499A5805165AE24C004B0E2F /* Table View Cells */ = {
+		499A5805165AE24C004B0E2F /* Table_View_Cells */ = {
 			isa = PBXGroup;
 			children = (
 				499A5806165AE24C004B0E2F /* Feed Items */,
@@ -2319,7 +2331,7 @@
 				E693BF7A18A1941D00D464BC /* ARTextInputCell.h */,
 				E693BF7B18A1941D00D464BC /* ARTextInputCell.m */,
 			);
-			path = "Table View Cells";
+			path = Table_View_Cells;
 			sourceTree = "<group>";
 		};
 		499A5806165AE24C004B0E2F /* Feed Items */ = {
@@ -2328,10 +2340,10 @@
 				6099F8FA178DD7F90004EF04 /* Modern */,
 			);
 			name = "Feed Items";
-			path = "iPhone Feed Items";
+			path = Feed_Items;
 			sourceTree = "<group>";
 		};
-		49A77222165ADB9300BC6FD3 /* Feed Items */ = {
+		49A77222165ADB9300BC6FD3 /* Feed_Items */ = {
 			isa = PBXGroup;
 			children = (
 				60567B2A167F8F9E009D205A /* ARFeedItems.h */,
@@ -2352,7 +2364,7 @@
 				499A58A316669CD4004B0E2F /* ARPostFeedItem.h */,
 				499A58A416669CD5004B0E2F /* ARPostFeedItem.m */,
 			);
-			path = "Feed Items";
+			path = Feed_Items;
 			sourceTree = "<group>";
 		};
 		49A7723E165ADBF700BC6FD3 /* App */ = {
@@ -2376,7 +2388,7 @@
 				60431FB918042E63000118D7 /* ARAppBackgroundFetchDelegate.h */,
 				60431FBA18042E63000118D7 /* ARAppBackgroundFetchDelegate.m */,
 			);
-			name = App;
+			path = App;
 			sourceTree = "<group>";
 		};
 		49B32E11166D0AF9008BAB02 /* Collection View Cells */ = {
@@ -2392,6 +2404,7 @@
 				607D756D17C3873700CA1D41 /* ARFavoriteItemViewCell.m */,
 			);
 			name = "Collection View Cells";
+			path = Collection_View_Cells;
 			sourceTree = "<group>";
 		};
 		49BA7DF41655ABE600C06572 = {
@@ -2472,22 +2485,12 @@
 				60F82FC21657FBEE0076AEAE /* Networking */,
 				60438F801782E9A300C1B63B /* Protocols */,
 				608B2F751657D3220046956C /* Resources */,
-				49BA7E0A1655ABE600C06572 /* Supporting Files */,
 				6099F8FB178DE91F0004EF04 /* Theming */,
 				60327DCA1987AD140075B399 /* Tooling */,
 				608B2F5A1657CED10046956C /* View Controllers */,
 				608B2F821657D4780046956C /* Views */,
 			);
-			name = Artsy;
-			path = Artsy/Classes;
-			sourceTree = "<group>";
-		};
-		49BA7E0A1655ABE600C06572 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Supporting Files";
-			path = ../Resources;
+			path = Artsy;
 			sourceTree = "<group>";
 		};
 		49F0C67C17B972C900721244 /* Onboarding stages */ = {
@@ -2501,6 +2504,7 @@
 				60059B1B17CE6D3400BE132D /* 1 - Slideshow */,
 			);
 			name = "Onboarding stages";
+			path = Onboarding_stages;
 			sourceTree = "<group>";
 		};
 		49F45191176B9B2F0041A4B4 /* Artwork */ = {
@@ -2530,7 +2534,7 @@
 				601F029317F336AB00EB3E83 /* ARArtworkBlurbView.h */,
 				601F029417F336AB00EB3E83 /* ARArtworkBlurbView.m */,
 			);
-			name = Artwork;
+			path = Artwork;
 			sourceTree = "<group>";
 		};
 		5EBDC94F19794D6C0082C514 /* Views */ = {
@@ -2538,7 +2542,7 @@
 			children = (
 				5EBDC95019794D840082C514 /* ARSearchFieldButtonTests.m */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		5ECFA8EB1907FC4D000B92EA /* Fair */ = {
@@ -2549,7 +2553,7 @@
 				3C4AE9A219096CED009C0E8B /* ARFairMapAnnotationCallOutView.h */,
 				3C4AE9A319096CED009C0E8B /* ARFairMapAnnotationCallOutView.m */,
 			);
-			name = Fair;
+			path = Fair;
 			sourceTree = "<group>";
 		};
 		600249F0166CFCCE007E6E9A /* Core */ = {
@@ -2566,7 +2570,7 @@
 				60CF980617BF79CA005ED59B /* ARArtistBiographyViewController.h */,
 				60CF980717BF79CA005ED59B /* ARArtistBiographyViewController.m */,
 			);
-			name = Core;
+			path = Core;
 			sourceTree = "<group>";
 		};
 		600249F1166CFCF5007E6E9A /* Feed VCs */ = {
@@ -2580,6 +2584,7 @@
 				3CF0774518DC6585009E18E4 /* ARKonamiKeyboardView.m */,
 			);
 			name = "Feed VCs";
+			path = Feed_VCs;
 			sourceTree = "<group>";
 		};
 		600249F2166CFD08007E6E9A /* Login and Onboarding */ = {
@@ -2597,6 +2602,7 @@
 				49F0C67C17B972C900721244 /* Onboarding stages */,
 			);
 			name = "Login and Onboarding";
+			path = Login_and_Onboarding;
 			sourceTree = "<group>";
 		};
 		600249F3166CFD13007E6E9A /* Menu */ = {
@@ -2604,7 +2610,7 @@
 			children = (
 				E6D2E911187E07530089728B /* Settings */,
 			);
-			name = Menu;
+			path = Menu;
 			sourceTree = "<group>";
 		};
 		60059B1B17CE6D3400BE132D /* 1 - Slideshow */ = {
@@ -2616,6 +2622,7 @@
 				49F0C67D17B972F200721244 /* ARSlideshowView.h */,
 			);
 			name = "1 - Slideshow";
+			path = "1_-_Slideshow";
 			sourceTree = "<group>";
 		};
 		60059B1C17CE6D3F00BE132D /* 2 - Calls to Action */ = {
@@ -2631,6 +2638,7 @@
 				4938742717BD512700724795 /* ARSignUpSplashViewController.m */,
 			);
 			name = "2 - Calls to Action";
+			path = "2_-_Calls_to_Action";
 			sourceTree = "<group>";
 		};
 		60059B1D17CE6D8600BE132D /* 3 - Sign Up + Log In */ = {
@@ -2644,6 +2652,7 @@
 				608B2F711657D2DF0046956C /* ARLoginViewController.m */,
 			);
 			name = "3 - Sign Up + Log In";
+			path = "3_-_Sign_Up_+_Log_In";
 			sourceTree = "<group>";
 		};
 		60059B1E17CE6DB300BE132D /* Views */ = {
@@ -2654,7 +2663,7 @@
 				4938743417BDB2CD00724795 /* ARCrossfadingImageView.h */,
 				4938743517BDB2CD00724795 /* ARCrossfadingImageView.m */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		60059B1F17CE6DBE00BE132D /* 4- Onboarding New User */ = {
@@ -2670,6 +2679,7 @@
 				CB11525A17C815210093D864 /* AROnboardingFollowableTableViewCell.m */,
 			);
 			name = "4- Onboarding New User";
+			path = "4-_Onboarding_New_User";
 			sourceTree = "<group>";
 		};
 		60059B2017CE9CEE00BE132D /* Onboarding */ = {
@@ -2691,8 +2701,7 @@
 				E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */,
 				E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */,
 			);
-			name = Onboarding;
-			path = ../Resources/Onboarding;
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		60059B3917CEA46700BE132D /* 5- Onboarding Personalization */ = {
@@ -2706,6 +2715,7 @@
 				CB206F7317C569E800A4FDC4 /* ARPersonalizeViewController.m */,
 			);
 			name = "5- Onboarding Personalization";
+			path = "5-_Onboarding_Personalization";
 			sourceTree = "<group>";
 		};
 		6008A58F16D8155C007E8E26 /* Utilities */ = {
@@ -2741,7 +2751,7 @@
 				E61B703819904D9F00260D29 /* ARTopTapThroughTableView.m */,
 				062C201A16DD76A30095A7EC /* Image */,
 			);
-			name = Utilities;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		6008A59016D815A4007E8E26 /* Pages */ = {
@@ -2750,7 +2760,7 @@
 				342F940CACC66E85F5F48B96 /* ARPageSubTitleView.m */,
 				342F9DED668071BB2B4C12F5 /* ARPageSubTitleView.h */,
 			);
-			name = Pages;
+			path = Pages;
 			sourceTree = "<group>";
 		};
 		6008A59116D815E5007E8E26 /* Debug */ = {
@@ -2758,7 +2768,7 @@
 			children = (
 				60B79B86182C549900945FFF /* Quicksilver */,
 			);
-			name = Debug;
+			path = Debug;
 			sourceTree = "<group>";
 		};
 		6016C18D178C2B46008EC8E7 /* Embedded */ = {
@@ -2768,7 +2778,7 @@
 				6016C191178C2BD9008EC8E7 /* Artworks */,
 				342F9FE0B50F629107FA5E5A /* Generics */,
 			);
-			name = Embedded;
+			path = Embedded;
 			sourceTree = "<group>";
 		};
 		6016C191178C2BD9008EC8E7 /* Artworks */ = {
@@ -2776,7 +2786,7 @@
 			children = (
 				6016C192178C2BE2008EC8E7 /* Modules */,
 			);
-			name = Artworks;
+			path = Artworks;
 			sourceTree = "<group>";
 		};
 		6016C192178C2BE2008EC8E7 /* Modules */ = {
@@ -2787,7 +2797,7 @@
 				6016C193178C2C06008EC8E7 /* ARArtworkFlowModule.h */,
 				6016C194178C2C06008EC8E7 /* ARArtworkFlowModule.m */,
 			);
-			name = Modules;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		603218C3195C92C2004E7A24 /* App Menu */ = {
@@ -2802,6 +2812,7 @@
 				E67DF2121A40A73C00C8495E /* ARSearchViewControllerSpec.m */,
 			);
 			name = "App Menu";
+			path = App_Menu;
 			sourceTree = "<group>";
 		};
 		60327DCA1987AD140075B399 /* Tooling */ = {
@@ -2833,6 +2844,7 @@
 				54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */,
 			);
 			name = "App Navigation";
+			path = App_Navigation;
 			sourceTree = "<group>";
 		};
 		60388700189C0ED600D3EEAA /* Utils */ = {
@@ -2843,7 +2855,7 @@
 				60D83DE6189EAB82001672E9 /* ARFairShowMapper.h */,
 				60D83DE7189EAB82001672E9 /* ARFairShowMapper.m */,
 			);
-			name = Utils;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		603D7C021958849C00ACA840 /* Auctions */ = {
@@ -2856,7 +2868,7 @@
 				603D7C03195884C100ACA840 /* ARAuctionBidderStateLabel.h */,
 				603D7C04195884C100ACA840 /* ARAuctionBidderStateLabel.m */,
 			);
-			name = Auctions;
+			path = Auctions;
 			sourceTree = "<group>";
 		};
 		60438F801782E9A300C1B63B /* Protocols */ = {
@@ -2878,7 +2890,7 @@
 				608B2F6D1657D1D10046956C /* User.h */,
 				608B2F6E1657D1D10046956C /* User.m */,
 			);
-			name = Social;
+			path = Social;
 			sourceTree = "<group>";
 		};
 		60438F821782ED6000C1B63B /* Artwork Metadata */ = {
@@ -2894,6 +2906,7 @@
 				4953E8311668021D00A09726 /* Image.m */,
 			);
 			name = "Artwork Metadata";
+			path = Artwork_Metadata;
 			sourceTree = "<group>";
 		};
 		60438F831782ED6A00C1B63B /* Application */ = {
@@ -2912,7 +2925,7 @@
 				3CF144A518E45F6C00B1A764 /* SystemTime.h */,
 				3CF144A618E45F6C00B1A764 /* SystemTime.m */,
 			);
-			name = Application;
+			path = Application;
 			sourceTree = "<group>";
 		};
 		60438F841782ED8600C1B63B /* Partner Metadata */ = {
@@ -2936,6 +2949,7 @@
 				83F9D57F1AD6FDE0000BCC77 /* Location.m */,
 			);
 			name = "Partner Metadata";
+			path = Partner_Metadata;
 			sourceTree = "<group>";
 		};
 		6044CFC5179DD38F00CE4132 /* Extensions */ = {
@@ -2944,7 +2958,7 @@
 				6044CFC6179DD3C200CE4132 /* ARTheme+HeightAdditions.h */,
 				6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */,
 			);
-			name = Extensions;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		606B6E3A1ADC14A400A12E08 /* Network Models */ = {
@@ -2956,6 +2970,7 @@
 				D3A9C23C1AF15FF00018A12E /* ARFairNetworkModel.m */,
 			);
 			name = "Network Models";
+			path = Network_Models;
 			sourceTree = "<group>";
 		};
 		607D6974181A97F0009462DD /* ArtworkSources */ = {
@@ -2964,7 +2979,7 @@
 				60A612B6189673F4008FC19D /* ARGeneArtworksNetworkModel.h */,
 				60A612B7189673F4008FC19D /* ARGeneArtworksNetworkModel.m */,
 			);
-			name = ArtworkSources;
+			path = ArtworkSources;
 			sourceTree = "<group>";
 		};
 		607E2E7517C8C44000396120 /* Artwork */ = {
@@ -2981,7 +2996,7 @@
 				601F029617F3419400EB3E83 /* ARArtworkViewController+ButtonActions.h */,
 				601F029717F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m */,
 			);
-			name = Artwork;
+			path = Artwork;
 			sourceTree = "<group>";
 		};
 		60838EB2177351DD00869F6E /* Navigation Transitions */ = {
@@ -2999,7 +3014,7 @@
 				607E2E8917C9121500396120 /* ARZoomImageTransition.m */,
 			);
 			name = "Navigation Transitions";
-			path = "Utils/Navigation Animations";
+			path = Navigation_Transitions;
 			sourceTree = "<group>";
 		};
 		6088B75517D1E05200E4BB67 /* Views */ = {
@@ -3010,7 +3025,7 @@
 				49405AB117BEBAFF004F86D8 /* AROnboardingNavBarView.h */,
 				49405AB217BEBAFF004F86D8 /* AROnboardingNavBarView.m */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		608B2F5A1657CED10046956C /* View Controllers */ = {
@@ -3036,7 +3051,8 @@
 				60B9D00F17834A35006E498A /* Web Browsing */,
 				600249F0166CFCCE007E6E9A /* Core */,
 			);
-			path = "View Controllers";
+			name = "View Controllers";
+			path = View_Controllers;
 			sourceTree = "<group>";
 		};
 		608B2F5B1657CF600046956C /* App Resources */ = {
@@ -3046,6 +3062,7 @@
 				49BA7E0C1655ABE600C06572 /* InfoPlist.strings */,
 			);
 			name = "App Resources";
+			path = App_Resources;
 			sourceTree = "<group>";
 		};
 		608B2F5F1657D11F0046956C /* Constants */ = {
@@ -3073,7 +3090,7 @@
 				60B6F14E16639607007C9587 /* API Models */,
 				4953E8341668022E00A09726 /* Protocols */,
 				60903CD9175DE136002AB800 /* Feed Item Models */,
-				49A77222165ADB9300BC6FD3 /* Feed Items */,
+				49A77222165ADB9300BC6FD3 /* Feed_Items */,
 				60903CDA175DE18F002AB800 /* Feed Timelines */,
 			);
 			path = Models;
@@ -3089,7 +3106,7 @@
 				60059B2017CE9CEE00BE132D /* Onboarding */,
 				0631FA6E1705E77F000A5ED3 /* mail.html */,
 			);
-			name = Resources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		608B2F7E1657D3B40046956C /* Categories */ = {
@@ -3115,7 +3132,7 @@
 				60E5D8881694ED0B00BDC57E /* SwitchViews */,
 				60F1C50F17C0EDA7000938F7 /* Collection Views */,
 				49B32E11166D0AF9008BAB02 /* Collection View Cells */,
-				499A5805165AE24C004B0E2F /* Table View Cells */,
+				499A5805165AE24C004B0E2F /* Table_View_Cells */,
 				6008A59016D815A4007E8E26 /* Pages */,
 				6008A58F16D8155C007E8E26 /* Utilities */,
 			);
@@ -3165,8 +3182,7 @@
 				605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */,
 				E65BB5221A408A29004C4DB4 /* TextfieldClearButton.png */,
 			);
-			name = Assets;
-			path = ../Resources/ImageAssets;
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		60903CC5175CE588002AB800 /* Admin */ = {
@@ -3175,7 +3191,7 @@
 				60903CC9175CE766002AB800 /* ARAdminSettingsViewController.h */,
 				60903CCA175CE766002AB800 /* ARAdminSettingsViewController.m */,
 			);
-			name = Admin;
+			path = Admin;
 			sourceTree = "<group>";
 		};
 		60903CCC175CF074002AB800 /* AdminTableView */ = {
@@ -3190,7 +3206,7 @@
 				60903CCD175CF088002AB800 /* ARGroupedTableViewCell.h */,
 				60903CCE175CF088002AB800 /* ARGroupedTableViewCell.m */,
 			);
-			name = AdminTableView;
+			path = AdminTableView;
 			sourceTree = "<group>";
 		};
 		60903CD9175DE136002AB800 /* Feed Item Models */ = {
@@ -3206,6 +3222,7 @@
 				49433300166920B3005AB483 /* PhotoContentLink.m */,
 			);
 			name = "Feed Item Models";
+			path = Feed_Item_Models;
 			sourceTree = "<group>";
 		};
 		60903CDA175DE18F002AB800 /* Feed Timelines */ = {
@@ -3221,6 +3238,7 @@
 				60889873175DEBC2008C9319 /* ARFeedSubclasses.m */,
 			);
 			name = "Feed Timelines";
+			path = Feed_Timelines;
 			sourceTree = "<group>";
 		};
 		6099F8FA178DD7F90004EF04 /* Modern */ = {
@@ -3229,8 +3247,7 @@
 				6099F8F7178DBF160004EF04 /* ARModernPartnerShowTableViewCell.h */,
 				6099F8F8178DBF160004EF04 /* ARModernPartnerShowTableViewCell.m */,
 			);
-			name = Modern;
-			path = ..;
+			path = Modern;
 			sourceTree = "<group>";
 		};
 		6099F8FB178DE91F0004EF04 /* Theming */ = {
@@ -3252,22 +3269,23 @@
 				609A82F217A1117E00AFDF13 /* ARInquireForArtworkViewController.h */,
 				609A82F317A1117E00AFDF13 /* ARInquireForArtworkViewController.m */,
 			);
-			name = Contact;
+			path = Contact;
 			sourceTree = "<group>";
 		};
 		609F97BE1AC0F2690079FE21 /* Artsy WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				609F983A1AC0F4BA0079FE21 /* Watch Models */,
+				609F983A1AC0F4BA0079FE21 /* Watch_Models */,
 				609F981C1AC0F4150079FE21 /* Vendored from CP */,
-				609F98111AC0F3A80079FE21 /* Showing Shows */,
-				609F980A1AC0F3800079FE21 /* Showing Artworks */,
+				609F98111AC0F3A80079FE21 /* Showing_Shows */,
+				609F980A1AC0F3800079FE21 /* Showing_Artworks */,
 				609F97FD1AC0F31D0079FE21 /* Outbid Notification */,
 				609F97F91AC0F2FE0079FE21 /* Communication */,
 				609F97E91AC0F2D00079FE21 /* App */,
 				609F97BF1AC0F2690079FE21 /* Supporting Files */,
 			);
-			path = "Artsy WatchKit Extension";
+			name = "Artsy WatchKit Extension";
+			path = Artsy_WatchKit_Extension;
 			sourceTree = "<group>";
 		};
 		609F97BF1AC0F2690079FE21 /* Supporting Files */ = {
@@ -3275,12 +3293,13 @@
 			children = (
 				609F97CB1AC0F26A0079FE21 /* Images.xcassets */,
 				609F981A1AC0F3DF0079FE21 /* PushNotificationPayload.json */,
-				609F98181AC0F3D60079FE21 /* Artsy WatchKit Extension.entitlements */,
+				609F98181AC0F3D60079FE21 /* Artsy_WatchKit_Extension.entitlements */,
 				609F97C01AC0F2690079FE21 /* Info.plist */,
 				609F97C11AC0F2690079FE21 /* PushNotificationPayload.apns */,
 				609F98581AC0F63E0079FE21 /* ArtsyWatchPrefix.pch */,
 			);
 			name = "Supporting Files";
+			path = Supporting_Files;
 			sourceTree = "<group>";
 		};
 		609F97D31AC0F26A0079FE21 /* Artsy WatchKit App */ = {
@@ -3290,7 +3309,8 @@
 				609F97D91AC0F26A0079FE21 /* Images.xcassets */,
 				609F97D41AC0F26A0079FE21 /* Supporting Files */,
 			);
-			path = "Artsy WatchKit App";
+			name = "Artsy WatchKit App";
+			path = Artsy_WatchKit_App;
 			sourceTree = "<group>";
 		};
 		609F97D41AC0F26A0079FE21 /* Supporting Files */ = {
@@ -3299,6 +3319,7 @@
 				609F97D51AC0F26A0079FE21 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			path = Supporting_Files;
 			sourceTree = "<group>";
 		};
 		609F97E91AC0F2D00079FE21 /* App */ = {
@@ -3315,8 +3336,7 @@
 				609F97F21AC0F2EF0079FE21 /* ARWatchAsyncTableViewController.h */,
 				609F97F31AC0F2EF0079FE21 /* ARWatchAsyncTableViewController.m */,
 			);
-			name = App;
-			path = "../Artsy WatchKit App/App";
+			path = App;
 			sourceTree = "<group>";
 		};
 		609F97F91AC0F2FE0079FE21 /* Communication */ = {
@@ -3325,8 +3345,7 @@
 				609F97FA1AC0F3190079FE21 /* WatchMessage.h */,
 				609F97FB1AC0F3190079FE21 /* WatchMessage.m */,
 			);
-			name = Communication;
-			path = "../Artsy WatchKit App/Communication";
+			path = Communication;
 			sourceTree = "<group>";
 		};
 		609F97FD1AC0F31D0079FE21 /* Outbid Notification */ = {
@@ -3342,10 +3361,10 @@
 				609F98051AC0F3450079FE21 /* ARWatchBidPlacingViewController.m */,
 			);
 			name = "Outbid Notification";
-			path = "../Artsy WatchKit App/Outbid Notifications";
+			path = Outbid_Notification;
 			sourceTree = "<group>";
 		};
-		609F980A1AC0F3800079FE21 /* Showing Artworks */ = {
+		609F980A1AC0F3800079FE21 /* Showing_Artworks */ = {
 			isa = PBXGroup;
 			children = (
 				609F980B1AC0F3960079FE21 /* ARWatchArtworkViewController.h */,
@@ -3353,10 +3372,10 @@
 				609F980D1AC0F3960079FE21 /* ARWatchArtworkSetViewController.h */,
 				609F980E1AC0F3960079FE21 /* ARWatchArtworkSetViewController.m */,
 			);
-			path = "Showing Artworks";
+			path = Showing_Artworks;
 			sourceTree = "<group>";
 		};
-		609F98111AC0F3A80079FE21 /* Showing Shows */ = {
+		609F98111AC0F3A80079FE21 /* Showing_Shows */ = {
 			isa = PBXGroup;
 			children = (
 				609F98121AC0F3BF0079FE21 /* ARWatchShowViewController.h */,
@@ -3364,7 +3383,7 @@
 				609F98141AC0F3BF0079FE21 /* ARWatchShowSetViewController.h */,
 				609F98151AC0F3BF0079FE21 /* ARWatchShowSetViewController.m */,
 			);
-			path = "Showing Shows";
+			path = Showing_Shows;
 			sourceTree = "<group>";
 		};
 		609F981C1AC0F4150079FE21 /* Vendored from CP */ = {
@@ -3379,6 +3398,7 @@
 				609F982F1AC0F4470079FE21 /* Fonts */,
 			);
 			name = "Vendored from CP";
+			path = Vendored_from_CP;
 			sourceTree = "<group>";
 		};
 		609F982F1AC0F4470079FE21 /* Fonts */ = {
@@ -3391,10 +3411,10 @@
 				609F98211AC0F4400079FE21 /* AGaramondPro-Semibold.otf */,
 				609F98221AC0F4400079FE21 /* ITC_Avant_Garde_Gothic__Demi.ttf */,
 			);
-			name = Fonts;
+			path = Fonts;
 			sourceTree = "<group>";
 		};
-		609F983A1AC0F4BA0079FE21 /* Watch Models */ = {
+		609F983A1AC0F4BA0079FE21 /* Watch_Models */ = {
 			isa = PBXGroup;
 			children = (
 				609F983B1AC0F4D90079FE21 /* WKInterfaceImage+Async.h */,
@@ -3408,7 +3428,7 @@
 				609F98431AC0F4D90079FE21 /* WatchShow+ArtsyModels.h */,
 				609F98441AC0F4D90079FE21 /* WatchShow+ArtsyModels.m */,
 			);
-			path = "Watch Models";
+			path = Watch_Models;
 			sourceTree = "<group>";
 		};
 		609F984E1AC0F5950079FE21 /* Watch */ = {
@@ -3421,8 +3441,7 @@
 				609F98531AC0F5B90079FE21 /* ArtsyWatchAPI.h */,
 				609F98541AC0F5B90079FE21 /* ArtsyWatchAPI.m */,
 			);
-			name = Watch;
-			path = App/Watch;
+			path = Watch;
 			sourceTree = "<group>";
 		};
 		60B617CA181598F400EBDC51 /* Auction Results */ = {
@@ -3432,6 +3451,7 @@
 				60B617CC1815991E00EBDC51 /* ARAuctionArtworkResultsViewController.m */,
 			);
 			name = "Auction Results";
+			path = Auction_Results;
 			sourceTree = "<group>";
 		};
 		60B6F13B16638797007C9587 /* API Modules */ = {
@@ -3484,6 +3504,7 @@
 				608AABDB1B3884C600855A1C /* ARKeychainable.m */,
 			);
 			name = "API Modules";
+			path = API_Modules;
 			sourceTree = "<group>";
 		};
 		60B6F14E16639607007C9587 /* API Models */ = {
@@ -3500,6 +3521,7 @@
 				342F9453C931C592D4F8A2AA /* Fair */,
 			);
 			name = "API Models";
+			path = API_Models;
 			sourceTree = "<group>";
 		};
 		60B79B86182C549900945FFF /* Quicksilver */ = {
@@ -3511,7 +3533,7 @@
 				60B79B87182C54CE00945FFF /* ARQuicksilverSearchBar.h */,
 				60B79B88182C54CE00945FFF /* ARQuicksilverSearchBar.m */,
 			);
-			name = Quicksilver;
+			path = Quicksilver;
 			sourceTree = "<group>";
 		};
 		60B9D00F17834A35006E498A /* Web Browsing */ = {
@@ -3529,6 +3551,7 @@
 				5144331A1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m */,
 			);
 			name = "Web Browsing";
+			path = Web_Browsing;
 			sourceTree = "<group>";
 		};
 		60D83DEF189EE9BF001672E9 /* Guides */ = {
@@ -3545,7 +3568,7 @@
 				3C990C8618CF8E9000BF4C44 /* ARFairMapAnnotation.h */,
 				3C990C8718CF8E9000BF4C44 /* ARFairMapAnnotation.m */,
 			);
-			name = Guides;
+			path = Guides;
 			sourceTree = "<group>";
 		};
 		60D8E63718D256A30040BEFD /* Demo */ = {
@@ -3555,7 +3578,7 @@
 				60D8E63918D256BB0040BEFD /* ARDemoSplashViewController.m */,
 				60D8E63A18D256BB0040BEFD /* ARDemoSplashViewController.xib */,
 			);
-			name = Demo;
+			path = Demo;
 			sourceTree = "<group>";
 		};
 		60E5D8881694ED0B00BDC57E /* SwitchViews */ = {
@@ -3568,7 +3591,7 @@
 				5ECFA8ED1907FC6C000B92EA /* ARSwitchView+FairGuide.h */,
 				5ECFA8EE1907FC6C000B92EA /* ARSwitchView+FairGuide.m */,
 			);
-			name = SwitchViews;
+			path = SwitchViews;
 			sourceTree = "<group>";
 		};
 		60E6447017BE41A0004486B3 /* Artist */ = {
@@ -3577,7 +3600,7 @@
 				3C6CB60F18ABFB8D008DFE3B /* ARRelatedArtistsViewController.m */,
 				3C6CB60E18ABFB8D008DFE3B /* ARRelatedArtistsViewController.h */,
 			);
-			name = Artist;
+			path = Artist;
 			sourceTree = "<group>";
 		};
 		60F1C50F17C0EDA7000938F7 /* Collection Views */ = {
@@ -3589,6 +3612,7 @@
 				60F1C51A17C11303000938F7 /* ARGeneViewController.m */,
 			);
 			name = "Collection Views";
+			path = Collection_Views;
 			sourceTree = "<group>";
 		};
 		60F82FC21657FBEE0076AEAE /* Networking */ = {
@@ -3605,8 +3629,8 @@
 				CB9E244017CBC36F00773A9A /* ARAuthProviders.m */,
 				60B6F13816638785007C9587 /* ArtsyAPI.m */,
 				60B6F13B16638797007C9587 /* API Modules */,
-				342F99296B0CBCEF0CDA9ECA /* Network Models */,
-				342F93BE04F58F4AD75A8FDD /* Mantle Extensions */,
+				342F99296B0CBCEF0CDA9ECA /* Network_Models */,
+				342F93BE04F58F4AD75A8FDD /* Mantle_Extensions */,
 				3CF144B218E47F9F00B1A764 /* ARSystemTime.h */,
 				3CF144B318E47F9F00B1A764 /* ARSystemTime.m */,
 				D33AF4FD1ACF08E1009C053C /* ARBackButtonCallbackManager.h */,
@@ -3621,7 +3645,7 @@
 				60FAEF41179843080031C88B /* ARFavoritesViewController.h */,
 				60FAEF42179843080031C88B /* ARFavoritesViewController.m */,
 			);
-			name = Favorites;
+			path = Favorites;
 			sourceTree = "<group>";
 		};
 		60FFE3D5188E916C0012B485 /* Documentation */ = {
@@ -3670,7 +3694,7 @@
 				60647C771A95095800A45247 /* ARFairPopupViewController.m */,
 				60647C781A95095800A45247 /* ARFairPopupViewController.xib */,
 			);
-			name = Fair;
+			path = Fair;
 			sourceTree = "<group>";
 		};
 		B31BBE0F181EF9F7001C623C /* View Tests */ = {
@@ -3692,6 +3716,7 @@
 				5EC883231B1CBA8E000374C9 /* ARArtworkPreviewActionsViewTests.m */,
 			);
 			name = "View Tests";
+			path = View_Tests;
 			sourceTree = "<group>";
 		};
 		B31BBE10181EFA08001C623C /* Model Tests */ = {
@@ -3712,6 +3737,7 @@
 				E6EC246018F7069300C89192 /* PartnerTests.m */,
 			);
 			name = "Model Tests";
+			path = Model_Tests;
 			sourceTree = "<group>";
 		};
 		B3ECE82B1819D1E6009F5C5B /* Artsy Tests */ = {
@@ -3727,7 +3753,8 @@
 				3CB97D8D18870979008C44FE /* View Controller Tests */,
 				B31BBE0F181EF9F7001C623C /* View Tests */,
 			);
-			path = "Artsy Tests";
+			name = "Artsy Tests";
+			path = Artsy_Tests;
 			sourceTree = "<group>";
 		};
 		B3ECE82C1819D1E6009F5C5B /* Supporting Files */ = {
@@ -3738,13 +3765,14 @@
 				546778EC18A95642002C4C71 /* ARAppDelegate+Testing.h */,
 				546778ED18A95642002C4C71 /* ARAppDelegate+Testing.m */,
 				E6B9FA7A18A97C0A00E961F9 /* stub.jpg */,
-				B3ECE82D1819D1E6009F5C5B /* Artsy Tests-Info.plist */,
+				B3ECE82D1819D1E6009F5C5B /* Artsy_Tests-Info.plist */,
 				B3ECE82E1819D1E6009F5C5B /* InfoPlist.strings */,
-				B3ECE8331819D1E6009F5C5B /* Artsy Tests-Prefix.pch */,
+				B3ECE8331819D1E6009F5C5B /* Artsy_Tests-Prefix.pch */,
 				51D141B51AF0F14B000091CF /* ARTestHelper.h */,
 				51D141B61AF0F14B000091CF /* ARTestHelper.m */,
 			);
 			name = "Supporting Files";
+			path = Supporting_Files;
 			sourceTree = "<group>";
 		};
 		CBB469CD181F1EED00B5692B /* Auctions */ = {
@@ -3763,7 +3791,7 @@
 				60647C651A8BB9AE00A45247 /* BuyersPremium.h */,
 				60647C661A8BB9AE00A45247 /* BuyersPremium.m */,
 			);
-			name = Auctions;
+			path = Auctions;
 			sourceTree = "<group>";
 		};
 		E619969919B9094F00DB273C /* Swizzles */ = {
@@ -3772,8 +3800,7 @@
 				E619969A19B9099400DB273C /* UIScrollView+HitTest.h */,
 				E619969B19B9099400DB273C /* UIScrollView+HitTest.m */,
 			);
-			name = Swizzles;
-			path = ..;
+			path = Swizzles;
 			sourceTree = "<group>";
 		};
 		E61E773A19A7E8DB00C55E14 /* Gene */ = {
@@ -3781,7 +3808,7 @@
 			children = (
 				E61E773819A7E8D500C55E14 /* ARGeneViewControllerTests.m */,
 			);
-			name = Gene;
+			path = Gene;
 			sourceTree = "<group>";
 		};
 		E667F12318EC827B00503F50 /* Logging */ = {
@@ -3794,7 +3821,7 @@
 				E667F12A18EC889F00503F50 /* ARLogFormatter.h */,
 				E667F12B18EC889F00503F50 /* ARLogFormatter.m */,
 			);
-			name = Logging;
+			path = Logging;
 			sourceTree = "<group>";
 		};
 		E66EE4AC196460530081ED0C /* Favorites */ = {
@@ -3803,7 +3830,7 @@
 				E66EE4AD196460620081ED0C /* ARFavoriteItemModule.h */,
 				E66EE4AE196460620081ED0C /* ARFavoriteItemModule.m */,
 			);
-			name = Favorites;
+			path = Favorites;
 			sourceTree = "<group>";
 		};
 		E6718311194A3D31001A5566 /* Hero Unit */ = {
@@ -3812,6 +3839,7 @@
 				E671830F194A3D1E001A5566 /* ARHeroUnitTests.m */,
 			);
 			name = "Hero Unit";
+			path = Hero_Unit;
 			sourceTree = "<group>";
 		};
 		E676B2F318D2307D0057B4E1 /* Sharing Tests */ = {
@@ -3823,6 +3851,7 @@
 				E611847118D7B4C4000FE4C9 /* ARSharingControllerTests.m */,
 			);
 			name = "Sharing Tests";
+			path = Sharing_Tests;
 			sourceTree = "<group>";
 		};
 		E6B71BA11A129DA700BBD2E2 /* Buttons */ = {
@@ -3841,7 +3870,7 @@
 				540262C418A0FAFB00844AE1 /* ARButtonWithImage.h */,
 				540262C518A0FAFB00844AE1 /* ARButtonWithImage.m */,
 			);
-			name = Buttons;
+			path = Buttons;
 			sourceTree = "<group>";
 		};
 		E6B71BA21A129F1C00BBD2E2 /* Buttons */ = {
@@ -3852,7 +3881,7 @@
 				3CA37E7B1910217500B06E81 /* ARHeartButtonTests.m */,
 				3C28D3DA18BE180B00C846EA /* ARNavigationButtonTests.m */,
 			);
-			name = Buttons;
+			path = Buttons;
 			sourceTree = "<group>";
 		};
 		E6BC2C3A197EDBA80063ED3C /* Browse */ = {
@@ -3863,7 +3892,7 @@
 				D39E87501AB0FBDF006B5BE9 /* ARStubbedBrowseNetworkModel.h */,
 				D39E87511AB0FBDF006B5BE9 /* ARStubbedBrowseNetworkModel.m */,
 			);
-			name = Browse;
+			path = Browse;
 			sourceTree = "<group>";
 		};
 		E6D2E911187E07530089728B /* Settings */ = {
@@ -3873,7 +3902,7 @@
 				E6FD2F1F187B0D76002AAFEB /* ARUserSettingsViewController.h */,
 				E6FD2F20187B0D76002AAFEB /* ARUserSettingsViewController.m */,
 			);
-			name = Settings;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		E6D2E915187E09CE0089728B /* FormCellNibs */ = {
@@ -3882,7 +3911,7 @@
 				E693BF8418A1949A00D464BC /* ARTextInputCellWithTitle.xib */,
 				E693BF7F18A1942D00D464BC /* ARSwitchCell.xib */,
 			);
-			name = FormCellNibs;
+			path = FormCellNibs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4137,7 +4166,7 @@
 				609F98251AC0F4400079FE21 /* AGaramondPro-BoldItalic.otf in Resources */,
 				609F981B1AC0F3DF0079FE21 /* PushNotificationPayload.json in Resources */,
 				609F982B1AC0F4400079FE21 /* AGaramondPro-Semibold.otf in Resources */,
-				609F98191AC0F3D60079FE21 /* Artsy WatchKit Extension.entitlements in Resources */,
+				609F98191AC0F3D60079FE21 /* Artsy_WatchKit_Extension.entitlements in Resources */,
 				609F98271AC0F4400079FE21 /* AGaramondPro-Italic.otf in Resources */,
 				609F97CC1AC0F26A0079FE21 /* Images.xcassets in Resources */,
 				609F982D1AC0F4400079FE21 /* ITC_Avant_Garde_Gothic__Demi.ttf in Resources */,
@@ -4767,7 +4796,7 @@
 				49BA7E0D1655ABE600C06572 /* en */,
 			);
 			name = InfoPlist.strings;
-			path = ..;
+			path = .;
 			sourceTree = "<group>";
 		};
 		609F97D61AC0F26A0079FE21 /* Interface.storyboard */ = {
@@ -4776,6 +4805,7 @@
 				609F97D71AC0F26A0079FE21 /* Base */,
 			);
 			name = Interface.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		B3ECE82E1819D1E6009F5C5B /* InfoPlist.strings */ = {
@@ -4784,6 +4814,7 @@
 				B3ECE82F1819D1E6009F5C5B /* en */,
 			);
 			name = InfoPlist.strings;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -4892,7 +4923,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
-				INFOPLIST_FILE = "Artsy/App/Artsy-Info.plist";
+				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
 				PRODUCT_NAME = Artsy;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
@@ -4943,7 +4974,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
-				INFOPLIST_FILE = "Artsy/App/Artsy-Info.plist";
+				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
 				PRODUCT_NAME = Artsy;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
@@ -4969,7 +5000,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
-				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/ArtsyWatchPrefix.pch";
+				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/Supporting Files/ArtsyWatchPrefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -4979,7 +5010,7 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = "Artsy WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = "Artsy WatchKit Extension/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -5015,14 +5046,14 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
-				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/ArtsyWatchPrefix.pch";
+				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/Supporting Files/ArtsyWatchPrefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Artsy WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = "Artsy WatchKit Extension/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -5059,14 +5090,14 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
-				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/ArtsyWatchPrefix.pch";
+				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/Supporting Files/ArtsyWatchPrefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Artsy WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = "Artsy WatchKit Extension/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -5103,14 +5134,14 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
-				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/ArtsyWatchPrefix.pch";
+				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/Supporting Files/ArtsyWatchPrefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Artsy WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = "Artsy WatchKit Extension/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -5145,7 +5176,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				IBSC_MODULE = Artsy_WatchKit_Extension;
-				INFOPLIST_FILE = "Artsy WatchKit App/Info.plist";
+				INFOPLIST_FILE = "Artsy WatchKit App/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5185,7 +5216,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBSC_MODULE = Artsy_WatchKit_Extension;
-				INFOPLIST_FILE = "Artsy WatchKit App/Info.plist";
+				INFOPLIST_FILE = "Artsy WatchKit App/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5226,7 +5257,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBSC_MODULE = Artsy_WatchKit_Extension;
-				INFOPLIST_FILE = "Artsy WatchKit App/Info.plist";
+				INFOPLIST_FILE = "Artsy WatchKit App/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5267,7 +5298,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBSC_MODULE = Artsy_WatchKit_Extension;
-				INFOPLIST_FILE = "Artsy WatchKit App/Info.plist";
+				INFOPLIST_FILE = "Artsy WatchKit App/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5349,7 +5380,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
-				INFOPLIST_FILE = "Artsy/App/Artsy-Info.plist";
+				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
 				PRODUCT_NAME = Artsy;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
@@ -5380,13 +5411,13 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
+				GCC_PREFIX_HEADER = "Artsy_Tests/Supporting_Files/Artsy_Tests-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
+				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
@@ -5465,7 +5496,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
-				INFOPLIST_FILE = "Artsy/App/Artsy-Info.plist";
+				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
 				PRODUCT_NAME = Artsy;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
@@ -5487,7 +5518,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
+				GCC_PREFIX_HEADER = "Artsy_Tests/Supporting_Files/Artsy_Tests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -5496,7 +5527,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
+				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
@@ -5526,7 +5557,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
+				GCC_PREFIX_HEADER = "Artsy_Tests/Supporting_Files/Artsy_Tests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -5536,7 +5567,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
+				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
@@ -5567,13 +5598,13 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Artsy Tests/Artsy Tests-Prefix.pch";
+				GCC_PREFIX_HEADER = "Artsy_Tests/Supporting_Files/Artsy_Tests-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Artsy Tests/Artsy Tests-Info.plist";
+				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
