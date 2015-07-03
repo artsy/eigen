@@ -16,7 +16,7 @@
 
 static const NSInteger ARMinimumArtworksFor2Column = 5;
 
-NS_ENUM(NSInteger, ARArtistViewIndex){
+typedef NS_ENUM(NSInteger, ARArtistViewIndex) {
     ARArtistViewArtistName = 1,
     ARArtistViewArtistInfo,
     ARArtistViewBioTextPad,
@@ -27,7 +27,8 @@ NS_ENUM(NSInteger, ARArtistViewIndex){
     ARArtistViewRelatedTitle,
     ARArtistViewRelatedArtists,
     ARArtistViewRelatedPosts,
-    ARArtistViewWhitepsaceGobbler};
+    ARArtistViewWhitepsaceGobbler
+};
 
 typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     ARArtistArtworksDisplayAll,

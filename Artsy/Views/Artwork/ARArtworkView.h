@@ -4,7 +4,7 @@
 #import "ARArtworkBlurbView.h"
 #import "ARArtworkViewController.h"
 
-NS_ENUM(NSInteger, ARArtworkViewIndex){
+typedef NS_ENUM(NSInteger, ARArtworkViewIndex) {
     ARArtworkBanner = 1,
     ARArtworkUnpublishedWarning,
     ARArtworkPreview,
@@ -13,7 +13,8 @@ NS_ENUM(NSInteger, ARArtworkViewIndex){
     ARArtworkAuctionButton,
     ARArtworkRelatedArtworks,
     ARArtworkRelatedPosts,
-    ARArtworkGobbler};
+    ARArtworkGobbler
+};
 
 
 @interface ARArtworkView : ORStackScrollView
