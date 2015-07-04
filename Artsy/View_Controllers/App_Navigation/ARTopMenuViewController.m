@@ -5,6 +5,7 @@
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARSearchViewController.h"
+#import "ARUserManager.h"
 #import "ArtsyAPI+Private.h"
 #import <JSBadgeView/JSBadgeView.h>
 
@@ -35,6 +36,12 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
         _sharedManager = [[self alloc] init];
     });
     return _sharedManager;
+}
+
+// Really never used, but whatevs.
+- (void)dealloc;
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -135,11 +142,13 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     }];
     [self.navigationDataSource prefetchHeroUnits];
 
-    // TODO this needs to be called after signing-in during on-boarding
-    if ([User currentUser]) {
-        [self.navigationDataSource fetchNotificationCount:^{
-            [self updateBadges];
-        }];
+    if ([[ARUserManager sharedManager] currentUser]) {
+        [self fetchNotificationCount];
+    } else {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(fetchNotificationCount)
+                                                     name:ARUserSessionStartedNotification
+                                                   object:nil];
     }
 }
 
@@ -175,6 +184,13 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 }
 
 #pragma mark - Badges
+
+- (void)fetchNotificationCount;
+{
+    [self.navigationDataSource fetchNotificationCount:^{
+        [self updateBadges];
+    }];
+}
 
 - (void)updateBadges;
 {

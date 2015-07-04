@@ -1,3 +1,8 @@
+## Next
+
+* Show sign-in/sign-up flow when selecting ‘bell’ tab as a trial user. - alloy
+* Fetch pending notifications count when the user signs-up/signs-in. - alloy
+
 ## 2.1.0 (2015.07.04)
 
 * Reduced the filesize of the Artsy Loading screen - orta
@@ -13,4 +18,3 @@
 * Reduce height of inquiry form on iPad - 1aurabrown
 * Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
 * Adds ‘bell’ notifications tab and shows notification count (currently only on launch and only if already signed-in). - alloy
-* Show sign-in/sign-up flow when selecting ‘bell’ tab as a trial user. - alloy
