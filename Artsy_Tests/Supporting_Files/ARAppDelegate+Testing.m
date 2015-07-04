@@ -43,8 +43,8 @@
 
 - (BOOL)swizzled_application:(id)app willFinishLaunchingWithOptions:(id)opts
 {
-    [ARRouter setup];
     [ARDispatchManager sharedManager].useSyncronousDispatches = YES;
+    [ARRouter setup];
 
     /// Never run in tests
     [[iRate sharedInstance] setRatedThisVersion:YES];

@@ -1,5 +1,6 @@
 
 
+
 @interface ARArtworkTitleLabel : ARItalicsSerifLabel
 - (void)setTitle:(NSString *)artworkTitle date:(NSString *)date;
 @end

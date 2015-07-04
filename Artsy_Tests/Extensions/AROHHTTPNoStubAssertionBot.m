@@ -29,6 +29,15 @@
         return nil;
     }
 
+    id spectaExample = [[NSThread mainThread] threadDictionary][@"SPTCurrentSpec"];
+    id expectaMatcher = [[NSThread mainThread] threadDictionary][@"EXP_currentMatcher"];
+
+    NSString *error = nil;
+    if (spectaExample || expectaMatcher) {
+        error = [NSString stringWithFormat:@"\n\n\n!!!! Unstubbed Request Found\n\n\n Inside Test: %@ \n\n Or Matcher: %@ \n\n Unstubbed URL: %@ \n\n\n\n Add a breakpoint  in AROHHTTPNoStubAssertionBot.m or look above for more info. \n\n\n", spectaExample, expectaMatcher, request.URL.absoluteString];
+        ;
+    }
+
     NSLog(@"\n\n\n\n\n\n\n");
 
     NSLog(@"----------------- Found an unstubbed request");
@@ -47,20 +56,14 @@
     NSLog(@"");
 
 
-#if __has_include(<Specta/Specta.h>)
     fflush(stderr);
     fflush(stdout);
-    id compiledExample = [[NSThread mainThread] threadDictionary][@"SPTCurrentSpec"];
-
-    NSLog(@"\n\n\n!!!! Unstubbed Request Found\n\n\n Inside Test: %@ \n\n Unstubbed URL: %@ \n\n\n\n Add a breakpoint  in AROHHTTPNoStubAssertionBot.m or look above for more info. \n\n\n", compiledExample, request.URL.absoluteString);
+    NSLog(@"%@", error);
 
     fflush(stderr);
     fflush(stdout);
 
     exit(-1);
-#else
-    NSAssert(NO, @"Bang");
-#endif
 
     return nil;
 }
@@ -72,8 +75,9 @@
 
 + (BOOL)assertOnFailForGlobalOHHTTPStubs
 {
-    id newClass = object_setClass([OHHTTPStubs sharedInstance], ARHTTPStubs.class);
-    return newClass != nil;
+    //    id newClass = object_setClass([OHHTTPStubs sharedInstance], ARHTTPStubs.class);
+    //    return newClass != nil;
+    return NO;
 }
 
 @end

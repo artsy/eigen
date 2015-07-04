@@ -1,6 +1,7 @@
 @import OHHTTPStubs;
 @import AFNetworking;
 
+
 @implementation OHHTTPStubs (Artsy)
 
 + (void)stubJSONResponseAtPath:(NSString *)path withResponse:(id)response
@@ -60,7 +61,6 @@
 
         return [OHHTTPStubsResponse responseWithFileAtPath:path statusCode:200 headers:@{ @"Content-Type": @"image/xyz" }];
     }];
-
 }
 
 @end

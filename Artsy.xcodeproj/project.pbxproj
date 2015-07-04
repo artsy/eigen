@@ -440,6 +440,7 @@
 		60B79B85182C346700945FFF /* ARQuicksilverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B79B83182C346700945FFF /* ARQuicksilverViewController.xib */; };
 		60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B79B88182C54CE00945FFF /* ARQuicksilverSearchBar.m */; };
 		60BB9FE916695A8F001FA20A /* PhotoContentLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 49433300166920B3005AB483 /* PhotoContentLink.m */; };
+		60CE3CAB1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */; };
 		60CEA77E19B61F8000CC3A91 /* ARArtistNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CEA77D19B61F8000CC3A91 /* ARArtistNetworkModel.m */; };
 		60CEA78119B6254800CC3A91 /* ARStubbedArtistNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CEA78019B6254800CC3A91 /* ARStubbedArtistNetworkModel.m */; };
 		60CF980817BF79CA005ED59B /* ARArtistBiographyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CF980717BF79CA005ED59B /* ARArtistBiographyViewController.m */; };
@@ -1365,6 +1366,8 @@
 		60BC390718182227003F34E7 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		60C4BD6317B3B91800D79058 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
 		60CAA3741782D87B00CA3DA8 /* ARContentViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARContentViewControllers.h; sourceTree = "<group>"; };
+		60CE3CA91B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyOHHTTPAPI.h; sourceTree = "<group>"; };
+		60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyOHHTTPAPI.m; sourceTree = "<group>"; };
 		60CEA77C19B61F8000CC3A91 /* ARArtistNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtistNetworkModel.h; sourceTree = "<group>"; };
 		60CEA77D19B61F8000CC3A91 /* ARArtistNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtistNetworkModel.m; sourceTree = "<group>"; };
 		60CEA77F19B6254800CC3A91 /* ARStubbedArtistNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStubbedArtistNetworkModel.h; sourceTree = "<group>"; };
@@ -1950,6 +1953,8 @@
 		3C3FEA8B188433CB00E1A16F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				60CE3CA91B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.h */,
+				60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */,
 				5E9A78211906BA3D00734E1B /* OCMArg+ClassChecker.h */,
 				5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */,
 				3C3FEA8C188433F200E1A16F /* ARUserManager+Stubs.h */,
@@ -4726,6 +4731,7 @@
 				E6B958F1188DB6F800D75C86 /* ARArtworkViewControllerTests.m in Sources */,
 				E63C796C198811E400579C04 /* ARArtworkRelatedArtworksViewTests.m in Sources */,
 				3C11CD28189B07810060B26B /* ARAspectRatioImageViewTests.m in Sources */,
+				60CE3CAB1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m in Sources */,
 				3CF144AB18E460BE00B1A764 /* ArtsyAPI+SystemTimeTests.m in Sources */,
 				3C28D3DB18BE180B00C846EA /* ARNavigationButtonTests.m in Sources */,
 				3C6AEE27188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m in Sources */,

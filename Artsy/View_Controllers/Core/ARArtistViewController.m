@@ -37,6 +37,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 // TODO: Add ARFollowableNetworkModel for following status
 
+
 @interface ARArtistViewController () <UIScrollViewDelegate, AREmbeddedModelsDelegate, ARPostsViewControllerDelegate, ARSwitchViewDelegate>
 @property (nonatomic, strong) ORStackScrollView *view;
 @property (nonatomic, assign) enum ARArtistArtworksDisplayMode displayMode;
@@ -156,7 +157,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     ARHeartButton *favoriteButton = [[ARHeartButton alloc] init];
     [favoriteButton addTarget:self action:@selector(toggleFollowingArtist:) forControlEvents:UIControlEventTouchUpInside];
 
-    [self.artist getFollowState:^(ARHeartStatus status) {
+    [self.networkModel getFollowState:^(ARHeartStatus status) {
         [favoriteButton setStatus:status animated:self.shouldAnimate];
     } failure:^(NSError *error) {
         [favoriteButton setStatus:ARHeartStatusNo];

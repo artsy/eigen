@@ -39,8 +39,12 @@
     return [self.artist getRelatedPosts:success];
 }
 
-@end
+- (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
+{
+    [self.artist getFollowState:success failure:failure];
+}
 
+@end
 
 
 @implementation ARStubbedArtistNetworkModel
@@ -86,6 +90,11 @@
 {
     success(@[]);
     return nil;
+}
+
+- (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
+{
+    success(ARHeartStatusNo);
 }
 
 @end

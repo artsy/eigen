@@ -1,5 +1,6 @@
 
 
+
 @interface ARSpinner : UIView
 
 - (void)fadeInAnimated:(BOOL)animated;

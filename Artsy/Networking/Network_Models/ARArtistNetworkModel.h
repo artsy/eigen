@@ -12,9 +12,12 @@
 
 - (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
 
+- (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
+
 @end
 
 /// The Network Model for the ArtistViewController
+
 
 @interface ARArtistNetworkModel : NSObject <ARArtistNetworkModelable>
 
@@ -24,6 +27,7 @@
 @end
 
 /// The Stubbed Network Model for the ArtistViewController
+
 
 @interface ARStubbedArtistNetworkModel : NSObject <ARArtistNetworkModelable>
 

@@ -1,5 +1,6 @@
 
 
+
 @interface ARNavigationTransition : NSObject <UIViewControllerAnimatedTransitioning>
 
 @property (nonatomic, assign) enum UINavigationControllerOperation operationType;
