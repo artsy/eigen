@@ -77,7 +77,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
     [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateNormal];
     [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateSelected];
-    [notificationsButton.imageView constrainWidth:@"16" height:@"16"];
+    [notificationsButton.imageView constrainWidth:@"12" height:@"14"];
     searchButton.adjustsImageWhenHighlighted = NO;
 
     NSArray *buttons = @[ searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
