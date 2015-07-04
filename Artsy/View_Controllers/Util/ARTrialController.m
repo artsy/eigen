@@ -93,6 +93,8 @@ static ARTrialController *instance;
             return @"artwork_order";
         case ARTrialContextFairGuide:
             return @"fair_guide";
+        case ARTrialContextNotifications:
+            return @"works_for_you";
     }
 }
 

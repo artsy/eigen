@@ -320,12 +320,13 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
-    if (index == ARTopTabControllerIndexFavorites && [User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextShowingFavorites success:^(BOOL newUser) {
-            if(newUser) {
+    if ((index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isTrialUser]) {
+        ARTrialContext context = (index == ARTopTabControllerIndexFavorites) ? ARTrialContextShowingFavorites : ARTrialContextNotifications;
+        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
+            if (newUser) {
                 [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
             } else {
-                [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFavorites animated:NO];
+                [self.tabContentView setCurrentViewIndex:index animated:NO];
             }
         }];
         return NO;
