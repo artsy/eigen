@@ -120,7 +120,7 @@ alpha: stamp_date deploy
 
 beta: BUNDLE_NAME = 'Artsy β'
 beta: NOTIFY = 1
-beta: stamp_date deploy
+beta: deploy
 
 synxify: 
 	bundle exec synx --spaces-to-underscores -e "/Documentation" Artsy.xcodeproj
