@@ -738,8 +738,8 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     self.cancelButton.enabled = NO;
     self.sendButton.enabled = NO;
     [self hideFailureButtons];
-    [self sendInquiry];
     [self setStatusWithTitle:@"Sending…" body:@""];
+    [self sendInquiry];
     [self presentMessage];
     [self.view endEditing:YES];
 }

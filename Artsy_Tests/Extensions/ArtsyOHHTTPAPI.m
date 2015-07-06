@@ -2,6 +2,11 @@
 #import "ArtsyOHHTTPAPI.h"
 
 
+@interface ArtsyAPI (Private)
+- (AFJSONRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+@end
+
+
 @interface OHHTTPStubsDescriptor : NSObject <OHHTTPStubsDescriptor>
 @property (atomic, copy) OHHTTPStubsTestBlock testBlock;
 @property (atomic, copy) OHHTTPStubsResponseBlock responseBlock;
@@ -30,7 +35,7 @@
 
 @implementation ArtsyOHHTTPAPI
 
-- (AFJSONRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+- (AFJSONRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
 {
     OHHTTPStubsDescriptor *stub = [[OHHTTPStubs sharedInstance] firstStubPassingTestForRequest:request];
     if (!stub) {
@@ -39,23 +44,31 @@
 
         NSString *error = nil;
         if (spectaExample || expectaMatcher) {
-            error = [NSString stringWithFormat:@"\n\n\n!!!! Unstubbed Request Found\n\n\n Inside Test: %@ \n\n Or Matcher: %@ \n\n Unstubbed URL: %@ \n\n\n\n Add a breakpoint  in AROHHTTPNoStubAssertionBot.m or look above for more info. \n\n\n", spectaExample, expectaMatcher, request.URL.absoluteString];
+            error = [NSString stringWithFormat:@"\n\n\n!!!! Unstubbed Request Found\n\n\n Inside Test: %@ \n\n Or Matcher: %@ \n\n Unstubbed URL: %@ \n\n\n\n Add a breakpoint in ArtsyOHHTTPAPI.m or look above for more info. \n\n\n", spectaExample, expectaMatcher, request.URL.absoluteString];
             ;
+            NSLog(@"%@", error);
         }
 
-        return [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:success failure:failure];
+        return [super requestOperation:request success:success failure:failureCallback];
     }
-
 
     return (id)[ARFakeAFJSONOperation blockOperationWithBlock:^{
         OHHTTPStubsResponse *response = stub.responseBlock(request);
+        [response.inputStream open];
         NSError *error = nil;
         id json = @[];
         if (response.inputStream.hasBytesAvailable) {
-            json = [NSJSONSerialization JSONObjectWithStream:response.inputStream options:nil error:&error];
+            json = [NSJSONSerialization JSONObjectWithStream:response.inputStream options:NSJSONReadingAllowFragments error:&error];
         }
 
-        success(request, nil, json);
+        NSHTTPURLResponse *URLresponse = [[NSHTTPURLResponse alloc] initWithURL:request.URL statusCode:response.statusCode HTTPVersion:@"1.0" headerFields:response.httpHeaders];
+
+        if (response.statusCode >= 200 && response.statusCode < 205) {
+            success(request, URLresponse, json);
+        } else {
+            failureCallback(request, URLresponse, response.error, json);
+        }
+
     }];
 }
 

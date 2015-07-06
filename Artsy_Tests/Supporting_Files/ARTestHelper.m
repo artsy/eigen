@@ -6,7 +6,7 @@
 + (void)load;
 {
     NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
-    NSAssert(version.majorVersion == 8 && version.minorVersion == 2,
+    NSAssert(version.majorVersion == 8 && version.minorVersion == 3,
              @"The tests should be run on iOS 8.3, not %ld.%ld", version.majorVersion, version.minorVersion);
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
