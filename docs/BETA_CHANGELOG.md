@@ -2,6 +2,7 @@
 
 * Show sign-in/sign-up flow when selecting ‘bell’ tab as a trial user. - alloy
 * Fetch pending notifications count when the user signs-up/signs-in. - alloy
+* Open notifications tab when tapping an incoming push notification. - alloy
 
 ## 2.1.0 (2015.07.04)
 

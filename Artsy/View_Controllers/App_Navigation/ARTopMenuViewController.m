@@ -183,6 +183,23 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     return (ARNavigationController *)[self.tabContentView currentNavigationController];
 }
 
+- (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index;
+{
+    return (ARNavigationController *)[self.navigationDataSource viewControllerForTabContentView:self.tabContentView atIndex:index];
+}
+
+- (void)presentRootViewControllerAtIndex:(NSInteger)index;
+{
+    BOOL alreadySelectedTab = self.selectedTabIndex == index;
+    ARNavigationController *controller = [self rootNavigationControllerAtIndex:index];
+    if (controller.viewControllers.count > 1) {
+        [controller popToRootViewControllerAnimated:alreadySelectedTab];
+    }
+    if (!alreadySelectedTab) {
+        [self.tabContentView setCurrentViewIndex:index animated:YES];
+    }
+}
+
 #pragma mark - Badges
 
 - (void)fetchNotificationCount;
@@ -275,7 +292,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSAssert(viewController != nil, @"Attempt to push a nil view controller. ");
+    NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
     [self.rootNavigationController pushViewController:viewController animated:animated];
 }
 

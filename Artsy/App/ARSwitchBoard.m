@@ -19,6 +19,8 @@
 #import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
 
+#import "ARTopMenuNavigationDataSource.h"
+
 
 @interface ARSwitchBoard ()
 
@@ -151,6 +153,12 @@
         return YES;
     }];
 
+    [self.routes addRoute:@"/works-for-you" handler:^BOOL(NSDictionary *parameters) {
+        [[ARTopMenuViewController sharedController] presentRootViewControllerAtIndex:ARTopTabControllerIndexNotifications];
+        return YES;
+    }];
+
+    // This route will match any single path component and thus should be added last.
     [self.routes addRoute:@"/:profile_id" handler:^BOOL(NSDictionary *parameters) {
         @_strongify(self);
         UIViewController *viewController = [self routeProfileWithID: parameters[@"profile_id"]];

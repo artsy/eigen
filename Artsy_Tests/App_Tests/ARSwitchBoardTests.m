@@ -17,6 +17,7 @@
 #import "ARFairViewController.h"
 #import "ARFairArtistViewController.h"
 #import "ARFairGuideContainerViewController.h"
+#import "ARTopMenuNavigationDataSource.h"
 
 
 @interface ARSwitchBoard (Tests)
@@ -28,6 +29,16 @@
 
 @interface ARProfileViewController (Tests)
 - (void)showViewController:(UIViewController *)viewController;
+@end
+
+
+@interface ARTopMenuViewController (Tests)
+@property (nonatomic, readonly) ARTopMenuNavigationDataSource *navigationDataSource;
+@end
+
+
+@interface ARTopMenuNavigationDataSource (Tests)
+@property (nonatomic, readonly) ARNavigationController *notificationsNavigationController;
 @end
 
 SpecBegin(ARSwitchBoard);
@@ -220,6 +231,14 @@ describe(@"ARSwitchboard", ^{
             [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARShowViewController class]]];
             id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/show/show-id"] fair:nil];
             expect(viewController).to.beNil();
+        });
+
+        describe(@"top-menu root view controllers", ^{
+            it(@"routes to the existing notifications view controller", ^{
+                [[controllerMock expect] presentRootViewControllerAtIndex:ARTopTabControllerIndexNotifications];
+                id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/works-for-you"] fair:nil];
+                expect(viewController).to.beNil();
+            });
         });
 
         context(@"fairs", ^{
