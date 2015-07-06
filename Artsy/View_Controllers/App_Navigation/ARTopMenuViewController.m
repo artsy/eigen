@@ -142,7 +142,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     }];
     [self.navigationDataSource prefetchHeroUnits];
 
-    if ([[ARUserManager sharedManager] currentUser]) {
+    if ([User currentUser]) {
         [self fetchNotificationCount];
     } else {
         [[NSNotificationCenter defaultCenter] addObserver:self
