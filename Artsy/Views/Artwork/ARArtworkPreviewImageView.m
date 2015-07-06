@@ -158,10 +158,8 @@
 
     constraint2.priority = 1000;
 
-    [self addConstraint:constraint1];
-    [self addConstraint:constraint2];
-
-    _imageConstraints = @[ constraint1, constraint2 ];
+    self.imageConstraints = @[ constraint1, constraint2 ];
+    [NSLayoutConstraint activateConstraints:self.imageConstraints];
 }
 
 - (CGSize)intrinsicContentSize
