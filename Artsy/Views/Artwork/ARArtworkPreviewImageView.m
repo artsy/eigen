@@ -3,6 +3,7 @@
 
 
 @interface ARArtworkPreviewImageView ()
+@property (nonatomic, strong, readwrite) NSArray *imageConstraints;
 @end
 
 
@@ -93,13 +94,12 @@
     NSURL *imageURL = [NSURL URLWithString:artwork.defaultImage.baseImageURL];
     UIImage *image;
     image = [ARFeedImageLoader bestAvailableCachedImageForBaseURL:imageURL];
-    //    Temporarily disable this to see if it’s related to https://github.com/artsy/eigen/issues/526.
-    //    if (!image) {
-    //        // Multiply by 1000 to preserve precision because the image's dimensions get rounded to whole numbers.
-    //        CGFloat aspectRatio = artwork.aspectRatio ?: 1;
-    //        CGSize size = CGSizeMake(aspectRatio * 1000, 1000);
-    //        image = [UIImage imageFromColor:[UIColor artsyLightGrey] withSize:size];
-    //    }
+    if (!image) {
+        // Multiply by 1000 to preserve precision because the image's dimensions get rounded to whole numbers.
+        CGFloat aspectRatio = artwork.aspectRatio ?: 1;
+        CGSize size = CGSizeMake(aspectRatio * 1000, 1000);
+        image = [UIImage imageFromColor:[UIColor artsyLightGrey] withSize:size];
+    }
     return image;
 }
 
@@ -114,8 +114,28 @@
 
 - (void)setAspectRatioConstraintWithImage:(UIImage *)image
 {
-    [self removeConstraints:self.constraints];
-    CGFloat ratio = image.size.height / image.size.width;
+    CGFloat oldRatio = 0;
+    if (self.image) {
+        oldRatio = self.image.size.height / self.image.size.width;
+    }
+
+    CGFloat newRatio = image.size.height / image.size.width;
+
+    if (oldRatio != newRatio) {
+        if (self.imageConstraints) {
+            // removeConstraints is scheduled for deprication. Apparently you're
+            // supposed to `deactivate` constraints instead of removing them.
+            [NSLayoutConstraint deactivateConstraints:self.imageConstraints];
+        }
+
+        if (newRatio != 0) {
+            [self createConstraintsWithRatio:newRatio];
+        }
+    }
+}
+
+- (void)createConstraintsWithRatio:(CGFloat)ratio
+{
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint
         constraintWithItem:self
                  attribute:NSLayoutAttributeHeight
@@ -124,6 +144,7 @@
                  attribute:NSLayoutAttributeWidth
                 multiplier:ratio
                   constant:0];
+
     constraint1.priority = 750;
 
     NSLayoutConstraint *constraint2 = [NSLayoutConstraint
@@ -134,10 +155,13 @@
                  attribute:NSLayoutAttributeWidth
                 multiplier:ratio
                   constant:0];
+
     constraint2.priority = 1000;
 
     [self addConstraint:constraint1];
     [self addConstraint:constraint2];
+
+    _imageConstraints = @[ constraint1, constraint2 ];
 }
 
 - (CGSize)intrinsicContentSize
