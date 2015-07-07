@@ -58,11 +58,26 @@
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];
     [ARAnalytics event:ARAnalyticsNotificationReceived withProperties:notificationInfo];
 
-    NSString *message = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    NSString *message = userInfo[@"aps"][@"alert"];
     NSString *url = userInfo[@"url"];
 
     if (!message) {
         message = url;
+    }
+
+    UIViewController *viewController = nil;
+
+    if (url) {
+        // Theoretically the way JLRoutes works could mean that a view controller would immediately get shown if it mached a
+        // route, which would be bad, because it should only happen when the user actually tapped the notification. But
+        // right now we're only expecting notifications for ‘works for you’, which is not routed that way.
+        viewController = [ARSwitchBoard.sharedInstance loadPath:url];
+
+        NSInteger tabIndex = [[ARTopMenuViewController sharedController] indexOfRootViewController:viewController];
+        if (tabIndex != NSNotFound) {
+            NSUInteger badgeNumber = [userInfo[@"aps"][@"badge"] unsignedLongValue];
+            [[ARTopMenuViewController sharedController] setBadgeNumber:badgeNumber forTabAtIndex:tabIndex];
+        }
     }
 
     if (app.applicationState == UIApplicationStateActive && message) {
@@ -71,25 +86,21 @@
                                        title:message
                                    hideAfter:0
                                     response:^{
-                if (url) {
-                    [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
-
-                    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:url];
-                    if (viewController) {
-                        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-                    }
-                }
+            if (url) {
+                [self tappedNotification:notificationInfo viewController:viewController];
+            }
                                     }];
     } else {
         // app was brought from the background after a user clicked on the notification
-        [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
-        if (url) {
-            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:url];
+        [self tappedNotification:notificationInfo viewController:viewController];
+    }
+}
 
-            if (viewController) {
-                [[ARTopMenuViewController sharedController] pushViewController:viewController];
-            }
-        }
+- (void)tappedNotification:(NSDictionary *)notificationInfo viewController:(UIViewController *)viewController;
+{
+    [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
+    if (viewController) {
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
     }
 }
 

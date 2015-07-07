@@ -4,6 +4,8 @@
 #import "ARAnalyticsConstants.h"
 #import "ARNotificationView.h"
 #import "ARTopMenuViewController.h"
+#import "ARTopMenuNavigationDataSource.h"
+
 
 SpecBegin(ARAppNotificationsDelegate);
 
@@ -36,7 +38,7 @@ describe(@"receiveRemoteNotification", ^{
             
             id JSON = @{ @"url" : @"http://artsy.net/feature" };
             NSData *data = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
-            NSDictionary *notification =[NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             UIApplication *app = [UIApplication sharedApplication];
 
             id mock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
@@ -44,6 +46,27 @@ describe(@"receiveRemoteNotification", ^{
             [[app delegate] application:app didReceiveRemoteNotification:notification];
             [mock verify];
             [mock stopMocking];
+            [classMock stopMocking];
+        });
+
+        it(@"updates the badge count", ^{
+            id classMock = [OCMockObject mockForClass:[ARTopMenuViewController class]];
+            id controllerMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
+            [[[classMock stub] andReturn:controllerMock] sharedController];
+
+            [[[controllerMock stub] andReturnValue:@(ARTopTabControllerIndexNotifications)] indexOfRootViewController:OCMOCK_ANY];
+            [[controllerMock expect] setBadgeNumber:42 forTabAtIndex:ARTopTabControllerIndexNotifications];
+
+            NSDictionary *notification = @{
+                @"url": @"http://artsy.net/works-for-you",
+                @"aps": @{ @"badge": @(42) }
+            };
+
+            UIApplication *app = [UIApplication sharedApplication];
+            [[app delegate] application:app didReceiveRemoteNotification:notification];
+
+            [controllerMock verify];
+            [controllerMock stopMocking];
             [classMock stopMocking];
         });
 

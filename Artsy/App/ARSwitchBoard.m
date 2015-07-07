@@ -153,11 +153,6 @@
         return YES;
     }];
 
-    [self.routes addRoute:@"/works-for-you" handler:^BOOL(NSDictionary *parameters) {
-        [[ARTopMenuViewController sharedController] presentRootViewControllerAtIndex:ARTopTabControllerIndexNotifications];
-        return YES;
-    }];
-
     // This route will match any single path component and thus should be added last.
     [self.routes addRoute:@"/:profile_id" handler:^BOOL(NSDictionary *parameters) {
         @_strongify(self);
@@ -366,8 +361,14 @@
 }
 
 // use the internal router
-- (ARInternalMobileWebViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
+- (UIViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
 {
+    // Can't be routed in the JLRoutes usage at the top, because we can't return view controller instances from there.
+    if ([url.path isEqualToString:@"/works-for-you"]) {
+        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
+        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications] rootViewController];
+    }
+
     BOOL routed = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
     if (routed) {
         return nil;

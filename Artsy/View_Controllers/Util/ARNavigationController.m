@@ -69,6 +69,11 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     [self observeViewController:NO];
 }
 
+- (UIViewController *)rootViewController;
+{
+    return self.viewControllers[0];
+}
+
 #pragma mark - Properties
 
 - (void)setDelegate:(id<UINavigationControllerDelegate>)delegate

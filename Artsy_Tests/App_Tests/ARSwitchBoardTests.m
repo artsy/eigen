@@ -235,9 +235,12 @@ describe(@"ARSwitchboard", ^{
 
         describe(@"top-menu root view controllers", ^{
             it(@"routes to the existing notifications view controller", ^{
-                [[controllerMock expect] presentRootViewControllerAtIndex:ARTopTabControllerIndexNotifications];
+                UIViewController *rootViewController = [UIViewController new];
+                ARNavigationController *navigationController = [[ARNavigationController alloc] initWithRootViewController:rootViewController];
+                [[[controllerMock expect] andReturn:navigationController] rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications];
+
                 id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/works-for-you"] fair:nil];
-                expect(viewController).to.beNil();
+                expect(viewController).to.equal(rootViewController);
             });
         });
 

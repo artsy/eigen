@@ -30,9 +30,8 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 @interface ARTopMenuNavigationDataSource ()
 
 @property (nonatomic, assign, readwrite) NSInteger currentIndex;
-@property (nonatomic, strong, readonly) NSArray *navigationControllers;
 
-@property (nonatomic, assign, readwrite) NSUInteger notificationCount;
+@property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
 
 @property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
 
@@ -48,9 +47,19 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 
 @implementation ARTopMenuNavigationDataSource
 
+- (void)dealloc;
+{
+    free(_badgeCounts);
+}
+
 - (instancetype)init
 {
     self = [super init];
+
+    _badgeCounts = malloc(sizeof(NSUInteger) * ARTopTabControllerIndexDelimiter);
+    for (int i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
+        _badgeCounts[i] = 0;
+    }
 
     ARSearchViewController *searchController = [[ARAppSearchViewController alloc] init];
     _searchNavigationController = [[ARNavigationController alloc] initWithRootViewController:searchController];
@@ -101,7 +110,7 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 - (void)fetchNotificationCount:(void (^)())success;
 {
     [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
-        self.notificationCount = count;
+        [self setBadgeNumber:count forTabAtIndex:ARTopTabControllerIndexNotifications];
         success();
     } failure:nil];
 }
@@ -150,12 +159,17 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 
 - (NSInteger)numberOfViewControllersForTabContentView:(ARTabContentView *)tabContentView
 {
-    return 6;
+    return ARTopTabControllerIndexDelimiter;
 }
 
 - (NSUInteger)badgeNumberForTabAtIndex:(NSInteger)index;
 {
-    return index == ARTopTabControllerIndexNotifications ? self.notificationCount : 0;
+    return self.badgeCounts[index];
+}
+
+- (void)setBadgeNumber:(NSUInteger)number forTabAtIndex:(NSInteger)index;
+{
+    self.badgeCounts[index] = number;
 }
 
 @end

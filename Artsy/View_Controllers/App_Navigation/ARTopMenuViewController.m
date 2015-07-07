@@ -188,16 +188,28 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     return (ARNavigationController *)[self.navigationDataSource viewControllerForTabContentView:self.tabContentView atIndex:index];
 }
 
-- (void)presentRootViewControllerAtIndex:(NSInteger)index;
+- (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;
 {
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
     ARNavigationController *controller = [self rootNavigationControllerAtIndex:index];
     if (controller.viewControllers.count > 1) {
-        [controller popToRootViewControllerAnimated:alreadySelectedTab];
+        [controller popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
     }
     if (!alreadySelectedTab) {
-        [self.tabContentView setCurrentViewIndex:index animated:YES];
+        [self.tabContentView setCurrentViewIndex:index animated:animated];
     }
+}
+
+- (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
+{
+    NSInteger numberOfTabs = [self.navigationDataSource numberOfViewControllersForTabContentView:self.tabContentView];
+    for (NSInteger index = 0; index < numberOfTabs; index++) {
+        ARNavigationController *rootController = [self rootNavigationControllerAtIndex:index];
+        if (rootController.rootViewController == viewController) {
+            return index;
+        }
+    }
+    return NSNotFound;
 }
 
 #pragma mark - Badges
@@ -207,6 +219,12 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [self.navigationDataSource fetchNotificationCount:^{
         [self updateBadges];
     }];
+}
+
+- (void)setBadgeNumber:(NSUInteger)number forTabAtIndex:(NSInteger)index;
+{
+    [self.navigationDataSource setBadgeNumber:number forTabAtIndex:index];
+    [self updateBadges];
 }
 
 - (void)updateBadges;
@@ -219,6 +237,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
             badgeView.hidden = NO;
         } else {
             JSBadgeView *badgeView = [self badgeForButtonAtIndex:index createIfNecessary:NO];
+            badgeView.badgeText = @"0";
             badgeView.hidden = YES;
         }
     }];
@@ -293,7 +312,12 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
-    [self.rootNavigationController pushViewController:viewController animated:animated];
+    NSInteger index = [self indexOfRootViewController:viewController];
+    if (index != NSNotFound) {
+        [self presentRootViewControllerAtIndex:index animated:animated];
+    } else {
+        [self.rootNavigationController pushViewController:viewController animated:animated];
+    }
 }
 
 #pragma mark - Auto Rotation

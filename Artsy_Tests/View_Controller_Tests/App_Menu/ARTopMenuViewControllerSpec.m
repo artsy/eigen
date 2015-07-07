@@ -14,7 +14,7 @@
 
 @interface ARTopMenuNavigationDataSource (Test)
 @property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
-@property (nonatomic, assign, readwrite) NSUInteger notificationCount;
+@property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
 @end
 
 
@@ -118,13 +118,13 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
 
             it(@"animates popping", ^{
                 [[navigationControllerMock expect] popToRootViewControllerAnimated:YES];
-                [topMenuVCMock presentRootViewControllerAtIndex:tab];
+                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
                 [navigationControllerMock verify];
             });
 
             it(@"does not change tab", ^{
                 [[[tabContentViewMock reject] ignoringNonObjectArgs] setCurrentViewIndex:0 animated:0];
-                [topMenuVCMock presentRootViewControllerAtIndex:tab];
+                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
                 [tabContentViewMock verify];
             });
         });
@@ -140,16 +140,40 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
                 // The search tab cannot be selected in the same way.
                 if (tab != ARTopTabControllerIndexSearch) {
                     [[navigationControllerMock expect] popToRootViewControllerAnimated:NO];
-                    [topMenuVCMock presentRootViewControllerAtIndex:tab];
+                    [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
                     [navigationControllerMock verify];
                 }
             });
 
             it(@"changes tabs in an animated fashion", ^{
                 [[tabContentViewMock expect] setCurrentViewIndex:tab animated:YES];
-                [topMenuVCMock presentRootViewControllerAtIndex:tab];
+                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
                 [tabContentViewMock verify];
             });
+        });
+    });
+
+    describe(@"concerning badges", ^{
+        __block JSBadgeView *badgeView = nil;
+
+        before(^{
+            sut.navigationDataSource.badgeCounts[tab] = tab+1;
+            [sut updateBadges];
+            badgeView = [sut badgeForButtonAtIndex:tab createIfNecessary:NO];
+        });
+
+        it(@"shows a notification badge", ^{
+            expect(badgeView.badgeText).to.equal([NSString stringWithFormat:@"%ld", tab+1]);
+        });
+
+        it(@"updates the badge count in the data source", ^{
+            [sut setBadgeNumber:0 forTabAtIndex:tab];
+            expect(badgeView.badgeText).to.equal(@"0");
+        });
+
+        it(@"does not show a notification badge when it's value is 0", ^{
+            [sut setBadgeNumber:0 forTabAtIndex:tab];
+            expect(badgeView.isHidden).to.beTruthy;
         });
     });
 });
@@ -236,19 +260,6 @@ describe(@"navigation", ^{
                [ARUserManager clearUserData];
            });
            itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexFavorites]});
-       });
-   });
-
-   describe(@"notifications", ^{
-       before(^{
-           tabIndex = ARTopTabControllerIndexNotifications;
-           sut.navigationDataSource.notificationCount = 3;
-       });
-
-       it(@"shows a notification badge", ^{
-           [sut updateBadges];
-           JSBadgeView *badgeView = [sut badgeForButtonAtIndex:tabIndex createIfNecessary:NO];
-           expect(badgeView.badgeText).to.equal(@"3");
        });
    });
 });

@@ -27,7 +27,9 @@
 
 @property (nonatomic, strong, readwrite) ARBackButtonCallbackManager *backButtonCallbackManager;
 
-/// Pushes the view controller into the current navigation controller.
+/// Pushes the view controller into the current navigation controller or if it’s an existing view controller at the root
+/// of a navigation stack of any of the tabs, it changes to that tab and pop’s to root if necessary.
+///
 /// Using this method makes it easier to change the navigation systems
 - (void)pushViewController:(UIViewController *)viewController;
 
@@ -45,9 +47,16 @@
 
 /// Present the root view controller of the navigation controller at the specified (tab) index. If a navigation stack
 /// exists, it is popped to said root view controller.
-- (void)presentRootViewControllerAtIndex:(NSInteger)index;
+- (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;
 
 /// Returns the root navigation controller for the tab at the specified index.
 - (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index;
+
+/// Update the badge number on the data source for the navigation root view controller at the specified tab index.
+- (void)setBadgeNumber:(NSUInteger)number forTabAtIndex:(NSInteger)index;
+
+/// Returns the index of the tab that holds the given view controller at the root of the navigation stack or
+/// `NSNotFound` in case it’s not a root view controller.
+- (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
 
 @end
