@@ -448,6 +448,8 @@
 		60DE2DE01677B2A600621540 /* ARFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A77240165ADC3C00BC6FD3 /* ARFeedViewController.m */; };
 		60DE2DE11677B30700621540 /* ARLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F711657D2DF0046956C /* ARLoginViewController.m */; };
 		60E6447617BE424E004486B3 /* ARSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E6447517BE424E004486B3 /* ARSwitchView.m */; };
+		60E719FE1B4C6032008948FA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60E719FD1B4C6032008948FA /* Launch Screen.xib */; };
+		60E71A011B4C60AC008948FA /* Artsy_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 60E71A001B4C60AC008948FA /* Artsy_Logo.png */; };
 		60EFA6F516CAA8180094AD7C /* ArtsyAPI+Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EFA6F416CAA8180094AD7C /* ArtsyAPI+Feed.m */; };
 		60F1C50E17C0EC6A000938F7 /* ARBrowseCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C50D17C0EC6A000938F7 /* ARBrowseCategoriesViewController.m */; };
 		60F1C51217C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C51117C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.m */; };
@@ -463,8 +465,6 @@
 		B31DB35B17FA234C009B122B /* ARArtworkMetadataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6089243217F617140023D1AC /* ARArtworkMetadataView.m */; };
 		B375E5F418121EEA005FC680 /* Sale.m in Sources */ = {isa = PBXBuildFile; fileRef = B375E5F318121EEA005FC680 /* Sale.m */; };
 		B375E5F71812207D005FC680 /* ArtsyAPI+Sales.m in Sources */ = {isa = PBXBuildFile; fileRef = B375E5F61812207D005FC680 /* ArtsyAPI+Sales.m */; };
-		B3BD12D917F22370002CA230 /* fbp in Resources */ = {isa = PBXBuildFile; fileRef = B3BD12D717F22370002CA230 /* fbp */; };
-		B3BD12DA17F22370002CA230 /* fbs in Resources */ = {isa = PBXBuildFile; fileRef = B3BD12D817F22370002CA230 /* fbs */; };
 		B3DDE9C118313C7C0012819F /* ARArtworkAuctionPriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3DDE9C018313C7C0012819F /* ARArtworkAuctionPriceView.m */; };
 		B3DDE9C418313CFF0012819F /* ARArtworkPriceRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3DDE9C318313CFF0012819F /* ARArtworkPriceRowView.m */; };
 		B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BA7E051655ABE600C06572 /* Foundation.framework */; };
@@ -1380,6 +1380,8 @@
 		60E6446F17BE219E004486B3 /* HACKS.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = HACKS.md; path = ../HACKS.md; sourceTree = "<group>"; };
 		60E6447417BE424E004486B3 /* ARSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSwitchView.h; sourceTree = "<group>"; };
 		60E6447517BE424E004486B3 /* ARSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchView.m; sourceTree = "<group>"; };
+		60E719FD1B4C6032008948FA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		60E71A001B4C60AC008948FA /* Artsy_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Artsy_Logo.png; sourceTree = "<group>"; };
 		60EEFE741658547C00F43F00 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		60EFA6F316CAA8180094AD7C /* ArtsyAPI+Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Feed.h"; sourceTree = "<group>"; };
 		60EFA6F416CAA8180094AD7C /* ArtsyAPI+Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Feed.m"; sourceTree = "<group>"; };
@@ -1418,8 +1420,6 @@
 		B375E5F318121EEA005FC680 /* Sale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sale.m; sourceTree = "<group>"; };
 		B375E5F51812207D005FC680 /* ArtsyAPI+Sales.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Sales.h"; sourceTree = "<group>"; };
 		B375E5F61812207D005FC680 /* ArtsyAPI+Sales.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Sales.m"; sourceTree = "<group>"; };
-		B3BD12D717F22370002CA230 /* fbp */ = {isa = PBXFileReference; lastKnownFileType = file; path = fbp; sourceTree = "<group>"; };
-		B3BD12D817F22370002CA230 /* fbs */ = {isa = PBXFileReference; lastKnownFileType = file; path = fbs; sourceTree = "<group>"; };
 		B3DDE9BF18313C7C0012819F /* ARArtworkAuctionPriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkAuctionPriceView.h; sourceTree = "<group>"; };
 		B3DDE9C018313C7C0012819F /* ARArtworkAuctionPriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkAuctionPriceView.m; sourceTree = "<group>"; };
 		B3DDE9C218313CFF0012819F /* ARArtworkPriceRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkPriceRowView.h; sourceTree = "<group>"; };
@@ -3065,6 +3065,7 @@
 			children = (
 				49BA7E0B1655ABE600C06572 /* Artsy-Info.plist */,
 				49BA7E0C1655ABE600C06572 /* InfoPlist.strings */,
+				60E719FD1B4C6032008948FA /* Launch Screen.xib */,
 			);
 			name = "App Resources";
 			path = App_Resources;
@@ -3147,6 +3148,7 @@
 		608B703017D4A10F0088A56C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				60E719FF1B4C60A0008948FA /* Launch */,
 				608B703117D4A1C70088A56C /* ActionButton@2x.png */,
 				608B703A17D4A1C70088A56C /* Artwork_Icon_Share.png */,
 				605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */,
@@ -3156,8 +3158,6 @@
 				608B703E17D4A1C70088A56C /* BackArrow_Highlighted@2x.png */,
 				608B706217D4A1C80088A56C /* CloseButtonLarge@2x.png */,
 				E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */,
-				B3BD12D717F22370002CA230 /* fbp */,
-				B3BD12D817F22370002CA230 /* fbs */,
 				608B704717D4A1C70088A56C /* FollowCheckmark.png */,
 				608B704817D4A1C70088A56C /* FollowCheckmark@2x.png */,
 				608B704917D4A1C70088A56C /* FooterBackground@2x.png */,
@@ -3606,6 +3606,14 @@
 				3C6CB60E18ABFB8D008DFE3B /* ARRelatedArtistsViewController.h */,
 			);
 			path = Artist;
+			sourceTree = "<group>";
+		};
+		60E719FF1B4C60A0008948FA /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				60E71A001B4C60AC008948FA /* Artsy_Logo.png */,
+			);
+			name = Launch;
 			sourceTree = "<group>";
 		};
 		60F1C50F17C0EDA7000938F7 /* Collection Views */ = {
@@ -4072,7 +4080,6 @@
 			files = (
 				3C4AE98319094DAA009C0E8B /* MapAnnotation_Installation@2x.png in Resources */,
 				E6FFEAB319C7925600A0D7DE /* onboard_3@2x~ipad.jpg in Resources */,
-				B3BD12D917F22370002CA230 /* fbp in Resources */,
 				608B706D17D4A1C80088A56C /* Artwork_Icon_VIR.png in Resources */,
 				608B707B17D4A1C80088A56C /* FooterBackground@2x.png in Resources */,
 				3C4AE99319094F96009C0E8B /* ViewInRoom_BaseNoBench@2x.png in Resources */,
@@ -4094,11 +4101,13 @@
 				60647C7A1A95095800A45247 /* ARFairPopupViewController.xib in Resources */,
 				E6FFEABA19C7925600A0D7DE /* splash_3@2x~iphone.jpg in Resources */,
 				3C4AE98119094DAA009C0E8B /* MapAnnotation_Highlighted@2x.png in Resources */,
+				60E71A011B4C60AC008948FA /* Artsy_Logo.png in Resources */,
 				605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */,
 				E6FFEABD19C7925600A0D7DE /* splash_5@2x~ipad.jpg in Resources */,
 				3C4AE96819094969009C0E8B /* SearchIcon_LightGrey@2x.png in Resources */,
 				608B706C17D4A1C80088A56C /* Artwork_Icon_Share.png in Resources */,
 				E66A0A8319C2125400ECEB1A /* full_logo_white_large@2x.png in Resources */,
+				60E719FE1B4C6032008948FA /* Launch Screen.xib in Resources */,
 				E6FFEAB519C7925600A0D7DE /* splash_1@2x~ipad.jpg in Resources */,
 				6012313618B2E44A00B7667F /* MapButtonAction@2x.png in Resources */,
 				608B706317D4A1C80088A56C /* ActionButton@2x.png in Resources */,
@@ -4109,7 +4118,6 @@
 				3C4AE99219094F96009C0E8B /* ViewInRoom_Base@2x.png in Resources */,
 				3C4AE9AC1909C3A5009C0E8B /* MapAnnotationCallout_Arrow@2x.png in Resources */,
 				608B708C17D4A1C80088A56C /* SidebarButtonHighlightBG@2x.png in Resources */,
-				B3BD12DA17F22370002CA230 /* fbs in Resources */,
 				3C4AE98819094DAA009C0E8B /* MapAnnotation_Transport@2x.png in Resources */,
 				E6543CDB18AD795E00A6B9AF /* Parallax_Overlay_Bottom@2x.png in Resources */,
 				5E6621DD19768F750064FC52 /* MapIcon@2x.png in Resources */,
@@ -4892,7 +4900,6 @@
 			baseConfigurationReference = 60DD9B3C1B42CE940067EFCE /* Pods-Artsy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -4943,7 +4950,6 @@
 			baseConfigurationReference = 60DD9B3B1B42CE940067EFCE /* Pods-Artsy.beta.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -5347,7 +5353,6 @@
 			baseConfigurationReference = 60DD9B3D1B42CE940067EFCE /* Pods-Artsy.demo.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -5464,7 +5469,6 @@
 			baseConfigurationReference = 60DD9B3E1B42CE940067EFCE /* Pods-Artsy.store.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ENABLE_MODULES = YES;
