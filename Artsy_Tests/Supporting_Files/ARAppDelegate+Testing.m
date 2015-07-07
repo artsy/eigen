@@ -5,7 +5,6 @@
 #import "ARLogger.h"
 #import "ARAppDelegate+Testing.h"
 #import "ARDispatchManager.h"
-#import "AROHHTTPNoStubAssertionBot.h"
 
 
 @implementation ARAppDelegate (Testing)
@@ -48,8 +47,6 @@
 
     /// Never run in tests
     [[iRate sharedInstance] setRatedThisVersion:YES];
-
-    [AROHHTTPNoStubAssertionBot assertOnFailForGlobalOHHTTPStubs];
     return YES;
 }
 

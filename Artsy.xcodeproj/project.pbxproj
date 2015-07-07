@@ -303,7 +303,6 @@
 		605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */; };
 		605B11B217CFD78400334196 /* AROnboardingWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B11B117CFD78400334196 /* AROnboardingWebViewController.m */; };
 		605B11B517CFE7CC00334196 /* ARTermsAndConditionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */; };
-		60647C2E1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */; };
 		60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C661A8BB9AE00A45247 /* BuyersPremium.m */; };
 		60647C701A92512600A45247 /* ARFairMapPreviewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C6F1A92512600A45247 /* ARFairMapPreviewButton.m */; };
 		60647C751A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C741A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m */; };
@@ -1140,8 +1139,6 @@
 		605B11B117CFD78400334196 /* AROnboardingWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingWebViewController.m; sourceTree = "<group>"; };
 		605B11B317CFE7CC00334196 /* ARTermsAndConditionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTermsAndConditionsView.h; sourceTree = "<group>"; };
 		605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTermsAndConditionsView.m; sourceTree = "<group>"; };
-		60647C2C1A89721800A45247 /* AROHHTTPNoStubAssertionBot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROHHTTPNoStubAssertionBot.h; sourceTree = "<group>"; };
-		60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROHHTTPNoStubAssertionBot.m; sourceTree = "<group>"; };
 		60647C651A8BB9AE00A45247 /* BuyersPremium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyersPremium.h; sourceTree = "<group>"; };
 		60647C661A8BB9AE00A45247 /* BuyersPremium.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyersPremium.m; sourceTree = "<group>"; };
 		60647C6E1A92512600A45247 /* ARFairMapPreviewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapPreviewButton.h; sourceTree = "<group>"; };
@@ -1978,8 +1975,6 @@
 				608EE3DA19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m */,
 				E61E772419A5477300C55E14 /* ARExpectaExtensions.h */,
 				E61E772519A5477300C55E14 /* ARExpectaExtensions.m */,
-				60647C2C1A89721800A45247 /* AROHHTTPNoStubAssertionBot.h */,
-				60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4765,7 +4760,6 @@
 				E6EC246118F7069300C89192 /* PartnerTests.m in Sources */,
 				3CD3679F189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m in Sources */,
 				3CA55D8918BFF8F800B44CD3 /* MapFeatureTests.m in Sources */,
-				60647C2E1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m in Sources */,
 				3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */,
 				D3F69A4A1AC1F7CB007C65C9 /* ARDefaultsTests.m in Sources */,
 				3CA1E8231884663E003C622D /* Bid+Extensions.m in Sources */,
