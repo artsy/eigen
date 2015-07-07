@@ -4,6 +4,8 @@
 #import "ARFavoritesViewController.h"
 #import "ARAppSearchViewController.h"
 #import "ARShowFeedViewController.h"
+#import "ArtsyAPI.h"
+#import "ArtsyAPI+Artworks.h"
 
 
 @interface ARTopMenuNavigationDataSource (Testing)
@@ -15,7 +17,9 @@
 
 
 SpecBegin(ARTopMenuNavigationDataSource);
+
 __block ARTopMenuNavigationDataSource *navDataSource;
+
 before(^{
     navDataSource = [[ARTopMenuNavigationDataSource alloc] init];
 });
@@ -77,4 +81,20 @@ it(@"reinstantiates favorites vc", ^{
     expect(newRootVC).to.beKindOf([ARFavoritesViewController class]);
     expect(newRootVC).notTo.equal(rootVC);
 });
+
+it(@"fetches the pending notification count from the API and updates the UI", ^{
+    id APIMock = [OCMockObject mockForClass:[ArtsyAPI class]];
+    // Call block passed to ArtsyAPI method to simulate request being finished.
+    [[[APIMock stub] andDo:^(NSInvocation *invocation) {
+        void (^block)(NSUInteger);
+        [invocation getArgument:&block atIndex:2];
+        block(42);
+    }] getWorksForYouCount:OCMOCK_ANY failure:OCMOCK_ANY];
+
+    [navDataSource fetchNotificationCount:^{}];
+
+    expect([navDataSource badgeNumberForTabAtIndex:ARTopTabControllerIndexNotifications]).to.equal(42);
+    expect([[UIApplication sharedApplication] applicationIconBadgeNumber]).to.equal(42);
+});
+
 SpecEnd

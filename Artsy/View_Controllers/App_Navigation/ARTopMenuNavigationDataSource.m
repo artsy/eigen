@@ -111,6 +111,7 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 {
     [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
         [self setBadgeNumber:count forTabAtIndex:ARTopTabControllerIndexNotifications];
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
         success();
     } failure:nil];
 }
