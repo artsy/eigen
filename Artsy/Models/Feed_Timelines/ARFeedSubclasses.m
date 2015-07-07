@@ -1,4 +1,6 @@
+
 #import "ARAppBackgroundFetchDelegate.h"
+#import "NSKeyedUnarchiver+ErrorLogging.h"
 
 
 @interface ARFeed ()
@@ -30,7 +32,7 @@
 - (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
 {
     if (success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        ar_dispatch_main_queue(^{
             success([self parseItemsFromJSON:self.JSON]);
         });
     }
@@ -56,8 +58,11 @@
         return nil;
     }
 
-    //NSString *fetchBackgroundFilePath = [ARAppBackgroundFetchDelegate pathForDownloadedShowFeed];
-    //self.JSON = [NSKeyedUnarchiver unarchiveObjectWithFile:fetchBackgroundFilePath];
+    NSString *fetchBackgroundFilePath = [ARAppBackgroundFetchDelegate pathForDownloadedShowFeed];
+    self.JSON = [NSKeyedUnarchiver unarchiveObjectWithFile:fetchBackgroundFilePath exceptionBlock:^id(NSException *exception) {
+        ARErrorLog(@"Could not unarchive the Feed JSON from a background fetch");
+        return nil;
+    }];
 
     return self;
 }
@@ -77,11 +82,11 @@
 
         // If we've background fetch'd a copy of the feed, we should use that on the first grab of show data
 
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        ar_dispatch_async(^{
             @strongify(self);
             NSOrderedSet *items = [self parseItemsFromJSON:self.JSON];
 
-            dispatch_async(dispatch_get_main_queue(), ^{
+            ar_dispatch_main_queue(^{
                 success(items);
             });
 

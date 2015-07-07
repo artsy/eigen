@@ -66,7 +66,10 @@ static NSSet *artsyHosts = nil;
     }];
 
     // Ensure the keychain is empty incase you've uninstalled and cleared user data
-    if (![[ARUserManager sharedManager] hasExistingAccount]) {
+    // but make sure that this is not a slip-up due to background fetch downloading
+
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if (![[ARUserManager sharedManager] hasExistingAccount] && state != UIApplicationStateBackground) {
         [UICKeyChainStore removeItemForKey:AROAuthTokenDefault];
         [UICKeyChainStore removeItemForKey:ARXAppTokenKeychainKey];
     }
