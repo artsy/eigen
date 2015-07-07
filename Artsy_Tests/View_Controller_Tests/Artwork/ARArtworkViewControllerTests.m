@@ -281,7 +281,13 @@ it(@"shows an upublished banner", ^{
     };
     Artwork *artwork = [Artwork modelWithJSON:artworkDict];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/artwork-id" withResponse:artworkDict];
-
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@{}];
+    
     vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
     vc.shouldAnimate = NO;
 
@@ -332,6 +338,7 @@ describe(@"at a closed auction", ^{
         }];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork"
             withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
     });
     
     it(@"displays artwork on iPhone", ^{

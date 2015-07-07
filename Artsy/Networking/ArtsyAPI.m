@@ -251,7 +251,8 @@
                 [returnArray addObject:object];
             }
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
+        
+        ar_dispatch_main_queue(^{
             success(returnArray);
         });
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {

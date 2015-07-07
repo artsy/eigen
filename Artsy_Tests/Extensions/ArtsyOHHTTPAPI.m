@@ -42,11 +42,12 @@
         id spectaExample = [[NSThread mainThread] threadDictionary][@"SPTCurrentSpec"];
         id expectaMatcher = [[NSThread mainThread] threadDictionary][@"EXP_currentMatcher"];
 
-        NSString *error = nil;
         if (spectaExample || expectaMatcher) {
-            error = [NSString stringWithFormat:@"\n\n\n!!!! Unstubbed Request Found\n\n\n Inside Test: %@ \n\n Or Matcher: %@ \n\n Unstubbed URL: %@ \n\n\n\n Add a breakpoint in ArtsyOHHTTPAPI.m or look above for more info. \n\n\n", spectaExample, expectaMatcher, request.URL.absoluteString];
-            ;
-            NSLog(@"%@", error);
+            printf("\n\n\n!!!! Unstubbed Request Found");
+            printf("\n\n\n Inside Test: %s \n\n Or Matcher: %s \n\n", [spectaExample description].UTF8String, [expectaMatcher description].UTF8String);
+            printf("Un-stubbed URL: %s \n\n", request.URL.absoluteString.UTF8String);
+            printf("You should use: [OHHTTPStubs stubJSONResponseAtPath:@\"%s\" withResponse:@{}]; \n\n", request.URL.path.UTF8String);
+            printf("Add a breakpoint in ArtsyOHHTTPAPI.m or look above for more info. \n\n\n");
         }
 
         return [super requestOperation:request success:success failure:failureCallback];

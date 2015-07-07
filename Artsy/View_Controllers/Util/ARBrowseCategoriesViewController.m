@@ -35,7 +35,12 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+
     [self.view.stackView addPageTitleWithString:@"Featured Categories"];
+
+    self.collectionViews = [NSMutableArray array];
 
     ARBrowseFeaturedLinksCollectionViewController *featureCollectionVC = [[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:ARFeaturedLinkLayoutSingleRow];
     [self.view.stackView addViewController:featureCollectionVC toParent:self withTopMargin:@"30" sideMargin:@"0"];
@@ -57,9 +62,6 @@
     } failure:^(NSError *error) {
         ARErrorLog(@"Error getting Featured Link Categories for genes");
     }];
-
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
-    [super viewDidLoad];
 }
 
 - (void)createCollectionViewWithOrderedSet:(OrderedSet *)orderedSet

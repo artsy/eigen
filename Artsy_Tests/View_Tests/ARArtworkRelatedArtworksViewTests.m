@@ -91,6 +91,9 @@ before(^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/partner/axel-vervoordt-gallery/show/axel-vervoordt-gallery-axel-vervoordt-gallery-at-the-armory-show-2015/artworks"
                              withParams:@{@"size" : @"10", @"published" : @YES, @"page" : @2}
                            withResponse:@[@{ @"id":@"id-10", @"title":@"Title10" }, @{ @"id":@"id-11", @"title":@"Title11" }]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/partner/axel-vervoordt-gallery/show/axel-vervoordt-gallery-axel-vervoordt-gallery-at-the-armory-show-2015/artworks"
+                             withParams:@{@"size" : @"10", @"published" : @YES, @"page" : @3}
+                           withResponse:@[]];
 
     relatedArtworkJSON = @{
            @"id": @"judy-pfaff-wallabout",
@@ -139,14 +142,14 @@ describe(@"concerning an artwork at a fair", ^{
     });
 
     it(@"adds a section with other works in the same show (booth)", ^{
-        expect([relatedView viewWithTag:ARRelatedArtworksSameShow]).willNot.beNil();
+        expect([relatedView viewWithTag:ARRelatedArtworksSameShow]).to.beTruthy();
         expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@"OTHER WORKS IN SHOW");
         AREmbeddedModelsViewController *vc = [relatedView viewControllerForTag:ARRelatedArtworksSameShow];
-        expect(vc.items.count).will.equal(11);
+        expect(vc.items.count).to.equal(11);
     });
 
     it(@"adds a section with related works at the fair", ^{
-        expect([relatedView viewWithTag:ARRelatedArtworksSameFair]).willNot.beNil();
+        expect([relatedView viewWithTag:ARRelatedArtworksSameFair]).to.beTruthy();
         expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameFair]).to.equal(@"OTHER WORKS IN FAIR");
         expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksSameFair]).to.equal(@[otherFairArtwork.title]);
     });
@@ -182,48 +185,52 @@ describe(@"concerning an artwork at an auction", ^{
 });
 
 describe(@"concerning an artwork at a show", ^{
+
     it(@"does not add a section with other works by the same artist if the artwork has no associated artist", ^{
         relatedView.artwork.artist = nil;
         [relatedView addSectionsForShow:show];
-        expect([relatedView viewWithTag:ARRelatedArtworksArtistArtworks]).will.beNil();
+        expect([relatedView viewWithTag:ARRelatedArtworksArtistArtworks]).to.beNil();
     });
 
-    __block NSDictionary *otherWorkByArtistJSON = nil;
-    __block Artwork *otherWorkByArtist = nil;
+    describe(@"with artwork metadata", ^{
+        __block NSDictionary *otherWorkByArtistJSON = nil;
+        __block Artwork *otherWorkByArtist = nil;
 
-    before(^{
-        otherWorkByArtistJSON = @{
-            @"id":@"el-anatsui-wet",
-            @"title":@"Wet"
-        };
-        otherWorkByArtist = [Artwork modelWithJSON:otherWorkByArtistJSON];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/el-anatsui/artworks?page=1&size=10"
-                               withResponse:@[artworkJSON, otherWorkByArtistJSON]];
+        before(^{
+            otherWorkByArtistJSON = @{
+                                      @"id":@"el-anatsui-wet",
+                                      @"title":@"Wet"
+                                      };
+            otherWorkByArtist = [Artwork modelWithJSON:otherWorkByArtistJSON];
+            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/el-anatsui/artworks?page=1&size=10"
+                                   withResponse:@[artworkJSON, otherWorkByArtistJSON]];
+            
+            [relatedView addSectionsForShow:show];
+        });
 
-        [relatedView addSectionsForShow:show];
+        it(@"adds a section with other works in the same show", ^{
+            relatedView.frame = CGRectMake(0, 0, 320, 1200);
+            expect([relatedView viewWithTag:ARRelatedArtworksSameShow]).willNot.beNil();
+            expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@"OTHER WORKS IN SHOW");
+            AREmbeddedModelsViewController *vc = [relatedView viewControllerForTag:ARRelatedArtworksSameShow];
+            expect(vc.items.count).will.equal(11);
+        });
+
+        it(@"adds a section with other works by the same artist", ^{
+            relatedView.frame = CGRectMake(0, 0, 320, 1200);
+            expect([relatedView viewWithTag:ARRelatedArtworksArtistArtworks]).willNot.beNil();
+            expect([relatedView titleForSectionWithTag:ARRelatedArtworksArtistArtworks]).to.equal(@"OTHER WORKS BY EL ANATSUI");
+            expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksArtistArtworks]).to.equal(@[otherWorkByArtist.title]);
+        });
+
+        it(@"adds a section with related works", ^{
+            relatedView.frame = CGRectMake(0, 0, 320, 1200);
+            expect([relatedView viewWithTag:ARRelatedArtworks]).willNot.beNil();
+            expect([relatedView titleForSectionWithTag:ARRelatedArtworks]).to.equal(@"RELATED ARTWORKS");
+            expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworks]).to.equal(@[relatedArtwork.title]);
+        });
     });
 
-    it(@"adds a section with other works in the same show", ^{
-        relatedView.frame = CGRectMake(0, 0, 320, 1200);
-        expect([relatedView viewWithTag:ARRelatedArtworksSameShow]).willNot.beNil();
-        expect([relatedView titleForSectionWithTag:ARRelatedArtworksSameShow]).to.equal(@"OTHER WORKS IN SHOW");
-        AREmbeddedModelsViewController *vc = [relatedView viewControllerForTag:ARRelatedArtworksSameShow];
-        expect(vc.items.count).will.equal(11);
-    });
-
-    it(@"adds a section with other works by the same artist", ^{
-        relatedView.frame = CGRectMake(0, 0, 320, 1200);
-        expect([relatedView viewWithTag:ARRelatedArtworksArtistArtworks]).willNot.beNil();
-        expect([relatedView titleForSectionWithTag:ARRelatedArtworksArtistArtworks]).to.equal(@"OTHER WORKS BY EL ANATSUI");
-        expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworksArtistArtworks]).to.equal(@[otherWorkByArtist.title]);
-    });
-
-    it(@"adds a section with related works", ^{
-        relatedView.frame = CGRectMake(0, 0, 320, 1200);
-        expect([relatedView viewWithTag:ARRelatedArtworks]).willNot.beNil();
-        expect([relatedView titleForSectionWithTag:ARRelatedArtworks]).to.equal(@"RELATED ARTWORKS");
-        expect([relatedView titlesOfArtworksInSectionWithTag:ARRelatedArtworks]).to.equal(@[relatedArtwork.title]);
-    });
 });
 
 describe(@"concerning layout", ^{
