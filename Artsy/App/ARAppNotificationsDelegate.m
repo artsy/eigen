@@ -87,7 +87,6 @@
         // app is in the foreground
         [ARNotificationView showNoticeInView:[self findVisibleWindow]
                                        title:message
-                                   hideAfter:0
                                     response:^{
             if (url) {
                 [self tappedNotification:notificationInfo viewController:viewController];
