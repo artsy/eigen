@@ -10,3 +10,4 @@
 * Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done loading. - alloy
 * Remove opaque background from Search keyboard. - 1aurabrown
 * Reduce height of inquiry form on iPad - 1aurabrown
+* Fix ARCollapsableTextView not expanding to full height - 1aurabrown

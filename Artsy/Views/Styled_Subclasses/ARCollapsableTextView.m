@@ -7,7 +7,8 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
 @property (nonatomic, assign) CGFloat collapsedHeight;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeGesture;
-@property (nonatomic, strong) NSLayoutConstraint *heightCollapsingConstraint;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *heightCollapsingConstraint;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *fullHeightConstraint;
 @property (nonatomic, strong) UIView *collapsedOverlapView;
 @end
 
@@ -21,6 +22,7 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
         _collapsedHeight = ARCollapsableTextViewHeight;
 
         _heightCollapsingConstraint = [[self constrainHeight:@(_collapsedHeight).stringValue] lastObject];
+        self.heightCollapsingConstraint.active = NO;
     }
     return self;
 }
@@ -29,9 +31,16 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
 {
     [super setAttributedText:attributedText];
 
+    CGFloat fullHeight = ceilf([self sizeThatFits:self.frame.size].height);
+
+    _fullHeightConstraint = [[self constrainHeight:@(fullHeight).stringValue] lastObject];
+
     if (attributedText && !self.tapGesture) {
         // Only show the more indicator if the height of the text exceeds the height of the constraint.
-        if (self.intrinsicContentSize.height > self.heightCollapsingConstraint.constant) {
+        if (fullHeight > self.heightCollapsingConstraint.constant) {
+            self.heightCollapsingConstraint.active = YES;
+            self.fullHeightConstraint.active = NO;
+
             self.collapsedOverlapView = [[UIView alloc] init];
             self.collapsedOverlapView.backgroundColor = [UIColor whiteColor];
             [self addSubview:self.collapsedOverlapView];
@@ -64,8 +73,6 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
             [self.superview setNeedsLayout];
             [self layoutIfNeeded];
             [self.superview layoutIfNeeded];
-        } else {
-            self.heightCollapsingConstraint.constant = self.intrinsicContentSize.height;
         }
     }
 }
@@ -77,7 +84,10 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
 
     [self layoutIfNeeded];
     [UIView animateWithDuration:0.3 animations:^{
-        self.heightCollapsingConstraint.constant = self.intrinsicContentSize.height;
+
+        self.heightCollapsingConstraint.active = NO;
+        self.fullHeightConstraint.active = YES;
+
         self.collapsedOverlapView.alpha = 0;
 
         [self setNeedsLayout];
