@@ -111,7 +111,6 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 {
     [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
         [self setBadgeNumber:count forTabAtIndex:ARTopTabControllerIndexNotifications];
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
         success();
     } failure:nil];
 }
@@ -171,6 +170,12 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 - (void)setBadgeNumber:(NSUInteger)number forTabAtIndex:(NSInteger)index;
 {
     self.badgeCounts[index] = number;
+
+    NSInteger total = 0;
+    for (NSInteger i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
+        total += self.badgeCounts[i];
+    }
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:total];
 }
 
 @end

@@ -175,6 +175,22 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
             [sut setBadgeNumber:0 forTabAtIndex:tab];
             expect(badgeView.isHidden).to.beTruthy;
         });
+
+        fit(@"removes the badge after moving away from the badged tab", ^{
+            NSString *badgeTextBefore = badgeView.badgeText;
+            NSInteger numberOfTabs = [sut.navigationDataSource numberOfViewControllersForTabContentView:sut.tabContentView];
+            NSInteger otherTab = (tab + 1) % numberOfTabs;
+
+            // Selecting the badged tab does *not* remove the badge
+            [sut.tabContentView setCurrentViewIndex:tab animated:NO];
+            expect(badgeView.badgeText).to.equal(badgeTextBefore);
+            expect(badgeView.isHidden).to.beFalsy;
+
+            // Moving away from the badged tab, however, *does* remove the badge
+            [sut.tabContentView setCurrentViewIndex:otherTab animated:NO];
+            expect(badgeView.badgeText).to.equal(@"0");
+            expect(badgeView.isHidden).to.beTruthy;
+        });
     });
 });
 

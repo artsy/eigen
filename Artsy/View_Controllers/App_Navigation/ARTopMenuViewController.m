@@ -364,7 +364,11 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeSelectedIndex:(NSInteger)index
 {
+    NSInteger previousIndex = _selectedTabIndex;
     _selectedTabIndex = index;
+
+    [self.navigationDataSource setBadgeNumber:0 forTabAtIndex:previousIndex];
+    [self updateBadges];
 
     if (index == ARTopTabControllerIndexSearch) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
