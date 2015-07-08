@@ -138,17 +138,23 @@ static ARAppDelegate *_sharedInstance = nil;
         // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API. Later on,
         // when the user does sign-in, this will be ran again and the device will be associated with the user account.
         if (!showOnboarding) {
-            [self registerForDeviceNotifications];
+            [self.remoteNotificationsDelegate registerForDeviceNotifications];
+        }
+
+        NSDictionary *remoteNotification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+        if (remoteNotification) {
+            // The app was not running, so considering it to be in the UIApplicationStateInactive state.
+            [self.remoteNotificationsDelegate applicationDidReceiveRemoteNotification:remoteNotification
+                                                                   inApplicationState:UIApplicationStateInactive];
         }
     }];
 
     return YES;
 }
 
-- (void)registerForDeviceNotifications;
+- (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
 {
-    JSDecoupledAppDelegate *decoupledDelegate = [JSDecoupledAppDelegate sharedAppDelegate];
-    [(ARAppNotificationsDelegate *)decoupledDelegate.remoteNotificationsDelegate registerForDeviceNotifications];
+    return [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
 }
 
 - (void)finishDemoSplash
@@ -181,7 +187,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
     if (!cancelledSignIn) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self registerForDeviceNotifications];
+            [self.remoteNotificationsDelegate registerForDeviceNotifications];
         });
     }
 }

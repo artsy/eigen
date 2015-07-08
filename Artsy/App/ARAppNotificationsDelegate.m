@@ -49,9 +49,12 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    UIApplication *app = [UIApplication sharedApplication];
-    NSString *uiApplicationState = [UIApplicationStateEnum toString:app.applicationState];
+    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
+}
 
+- (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo inApplicationState:(UIApplicationState)applicationState;
+{
+    NSString *uiApplicationState = [UIApplicationStateEnum toString:applicationState];
     ARActionLog(@"Incoming notification in the %@ application state: %@", uiApplicationState, userInfo);
 
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
@@ -80,7 +83,7 @@
         }
     }
 
-    if (app.applicationState == UIApplicationStateActive && message) {
+    if (applicationState == UIApplicationStateActive && message) {
         // app is in the foreground
         [ARNotificationView showNoticeInView:[self findVisibleWindow]
                                        title:message
