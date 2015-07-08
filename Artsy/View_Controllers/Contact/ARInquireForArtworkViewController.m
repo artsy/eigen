@@ -279,8 +279,9 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
     if ([UIDevice isPad]) {
         [inquiryFormView constrainWidth:@"600"];
+        [inquiryFormView constrainHeight:@"<=600"];
         [inquiryFormView alignTopEdgeWithView:topContainer predicate:@"50"];
-        [inquiryFormView alignBottomEdgeWithView:topContainer predicate:@"0"];
+        [inquiryFormView alignBottomEdgeWithView:topContainer predicate:@"0@750"];
         [inquiryFormView alignCenterXWithView:topContainer predicate:nil];
     } else {
         [inquiryFormView alignToView:topContainer];
