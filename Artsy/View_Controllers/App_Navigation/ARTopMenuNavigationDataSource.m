@@ -134,14 +134,7 @@ WebViewNavigationControllerWithPath(NSString *path)
 - (UINavigationController *)viewControllerForTabContentView:(ARTabContentView *)tabContentView atIndex:(NSInteger)index
 {
     _currentIndex = index;
-    ARNavigationController *navigationController = [self navigationControllerAtIndex:index];
-
-    id<ARTopMenuRootViewController> rootViewController = navigationController.rootViewController;
-    if ([rootViewController respondsToSelector:@selector(reloadContentForPresentation)]) {
-        [rootViewController reloadContentForPresentation];
-    }
-
-    return navigationController;
+    return [self navigationControllerAtIndex:index];
 }
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView canPresentViewControllerAtIndex:(NSInteger)index

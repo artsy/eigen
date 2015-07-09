@@ -17,7 +17,6 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
 
 @protocol ARTopMenuRootViewController <NSObject>
 @optional
-- (void)reloadContentForPresentation;
 - (void)remoteNotificationsReceived:(NSUInteger)notificationCount;
 @end
 

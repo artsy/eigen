@@ -40,11 +40,6 @@
 
 #pragma mark - ARTopMenuRootViewController
 
-- (void)reloadContentForPresentation;
-{
-    if ([self shouldBeReloaded]) [self reload];
-}
-
 // Currently the only VC that does anything with remote notifications is the ‘bell’ tab, so this generelization is good
 // enough for now, but might need changing once other tabs start having notifications as well.
 - (void)remoteNotificationsReceived:(NSUInteger)notificationCount;
@@ -72,6 +67,12 @@
 {
     self.lastRequestLoadedAt = nil;
     [super loadURL:url];
+}
+
+- (void)viewWillAppear:(BOOL)animated;
+{
+    [super viewWillAppear:animated];
+    if ([self shouldBeReloaded]) [self reload];
 }
 
 - (void)viewDidAppear:(BOOL)animated;
