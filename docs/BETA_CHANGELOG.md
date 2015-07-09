@@ -1,5 +1,6 @@
 ## Next
 
+* Reduced the filesize of the Artsy Loading screen - orta
 * Change onboarding callback to use a block rather then a delegate message. - 1aurabrown
 * Pre-cache all Artsy Fonts on App launch. - orta
 * Migrated to frameworks under the hood. This is a massive change to a lot
@@ -9,3 +10,4 @@
 * Fixes auctions route. – ashfurrow
 * Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done loading. - alloy
 * Remove opaque background from Search keyboard. - 1aurabrown
+* Reduce height of inquiry form on iPad - 1aurabrown
