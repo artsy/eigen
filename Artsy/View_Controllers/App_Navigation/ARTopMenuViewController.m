@@ -141,15 +141,6 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
         [self.navigationDataSource prefetchBrowse];
     }];
     [self.navigationDataSource prefetchHeroUnits];
-
-    if ([User currentUser]) {
-        [self fetchNotificationCount];
-    } else {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(fetchNotificationCount)
-                                                     name:ARUserSessionStartedNotification
-                                                   object:nil];
-    }
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -185,7 +176,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 - (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index;
 {
-    return (ARNavigationController *)[self.navigationDataSource viewControllerForTabContentView:self.tabContentView atIndex:index];
+    return (ARNavigationController *)[self.navigationDataSource navigationControllerAtIndex:index];
 }
 
 - (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;
@@ -214,16 +205,9 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 #pragma mark - Badges
 
-- (void)fetchNotificationCount;
+- (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
 {
-    [self.navigationDataSource fetchNotificationCount:^{
-        [self updateBadges];
-    }];
-}
-
-- (void)setBadgeNumber:(NSUInteger)number forTabAtIndex:(NSInteger)index;
-{
-    [self.navigationDataSource setBadgeNumber:number forTabAtIndex:index];
+    [self.navigationDataSource setNotificationCount:number forControllerAtIndex:index];
     [self updateBadges];
 }
 
@@ -364,11 +348,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeSelectedIndex:(NSInteger)index
 {
-    NSInteger previousIndex = _selectedTabIndex;
     _selectedTabIndex = index;
-
-    [self.navigationDataSource setBadgeNumber:0 forTabAtIndex:previousIndex];
-    [self updateBadges];
 
     if (index == ARTopTabControllerIndexSearch) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];

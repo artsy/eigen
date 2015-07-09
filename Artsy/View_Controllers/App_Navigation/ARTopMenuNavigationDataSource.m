@@ -15,17 +15,6 @@ WebViewNavigationControllerWithPath(NSString *path)
     return [[ARNavigationController alloc] initWithRootViewController:viewController];
 }
 
-static ARNavigationController *
-RefreshedWebViewNavigationController(ARNavigationController *navigationController)
-{
-    NSArray *viewControllers = navigationController.viewControllers;
-    ARTopMenuInternalMobileWebViewController *viewController = (ARTopMenuInternalMobileWebViewController *)viewControllers[0];
-    if (viewController.shouldBeReloaded) {
-        [viewController reload];
-    }
-    return navigationController;
-}
-
 
 @interface ARTopMenuNavigationDataSource ()
 
@@ -107,14 +96,6 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
     } failure:nil];
 }
 
-- (void)fetchNotificationCount:(void (^)())success;
-{
-    [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
-        [self setBadgeNumber:count forTabAtIndex:ARTopTabControllerIndexNotifications];
-        success();
-    } failure:nil];
-}
-
 - (ARNavigationController *)favoritesNavigationController
 {
     // Make a new one each time the favorites tab is selected, so that it presents up-to-date data.
@@ -126,30 +107,41 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
 }
 
-#pragma mark ARTabViewDataSource
-
-- (UINavigationController *)viewControllerForTabContentView:(ARTabContentView *)tabContentView atIndex:(NSInteger)index
+- (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 {
-    _currentIndex = index;
-
     switch (index) {
         case ARTopTabControllerIndexSearch:
             return self.searchNavigationController;
         case ARTopTabControllerIndexFeed:
             return self.feedNavigationController;
         case ARTopTabControllerIndexShows:
-            return RefreshedWebViewNavigationController(self.showsNavigationController);
+            return self.showsNavigationController;
         case ARTopTabControllerIndexBrowse:
             return self.browseNavigationController;
         case ARTopTabControllerIndexMagazine:
-            return RefreshedWebViewNavigationController(self.magazineNavigationController);
+            return self.magazineNavigationController;
         case ARTopTabControllerIndexFavorites:
             return self.favoritesNavigationController;
         case ARTopTabControllerIndexNotifications:
-            return RefreshedWebViewNavigationController(self.notificationsNavigationController);
+            return self.notificationsNavigationController;
     }
 
     return nil;
+}
+
+#pragma mark ARTabViewDataSource
+
+- (UINavigationController *)viewControllerForTabContentView:(ARTabContentView *)tabContentView atIndex:(NSInteger)index
+{
+    _currentIndex = index;
+    ARNavigationController *navigationController = [self navigationControllerAtIndex:index];
+
+    id<ARTopMenuRootViewController> rootViewController = navigationController.rootViewController;
+    if ([rootViewController respondsToSelector:@selector(reloadContentForPresentation)]) {
+        [rootViewController reloadContentForPresentation];
+    }
+
+    return navigationController;
 }
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView canPresentViewControllerAtIndex:(NSInteger)index
@@ -171,11 +163,26 @@ RefreshedWebViewNavigationController(ARNavigationController *navigationControlle
 {
     self.badgeCounts[index] = number;
 
+    // When setting 0, that just means to remove the badge, no remote notifications were received.
+    if (number > 0) {
+        ARNavigationController *navigationController = [self navigationControllerAtIndex:index];
+        id<ARTopMenuRootViewController> rootViewController = (id<ARTopMenuRootViewController>)navigationController.rootViewController;
+        if ([rootViewController respondsToSelector:@selector(remoteNotificationsReceived:)]) {
+            [rootViewController remoteNotificationsReceived:number];
+        }
+    }
+
     NSInteger total = 0;
     for (NSInteger i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
         total += self.badgeCounts[i];
     }
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:total];
+}
+
+// Just an alias for the above, which keeps the ARTabViewDataSource and ARTopMenuViewController concerns seperated.
+- (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
+{
+    [self setBadgeNumber:number forTabAtIndex:index];
 }
 
 @end

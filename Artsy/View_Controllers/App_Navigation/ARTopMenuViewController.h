@@ -10,6 +10,7 @@
 #import "ARNavigationContainer.h"
 #import "ARNavigationController.h"
 #import "ARBackButtonCallbackManager.h"
+#import "ARTopMenuNavigationDataSource.h"
 
 @class ARTabContentView;
 
@@ -52,11 +53,11 @@
 /// Returns the root navigation controller for the tab at the specified index.
 - (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index;
 
-/// Update the badge number on the data source for the navigation root view controller at the specified tab index.
-- (void)setBadgeNumber:(NSUInteger)number forTabAtIndex:(NSInteger)index;
-
 /// Returns the index of the tab that holds the given view controller at the root of the navigation stack or
 /// `NSNotFound` in case it’s not a root view controller.
-- (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
+- (ARTopTabControllerIndex)indexOfRootViewController:(UIViewController *)viewController;
+
+/// Update the badge number on the data source for the navigation root view controller at the specified tab index.
+- (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
 
 @end

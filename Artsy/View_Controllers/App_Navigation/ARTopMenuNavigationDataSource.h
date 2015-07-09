@@ -15,6 +15,12 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
     ARTopTabControllerIndexDelimiter
 };
 
+@protocol ARTopMenuRootViewController <NSObject>
+@optional
+- (void)reloadContentForPresentation;
+- (void)remoteNotificationsReceived:(NSUInteger)notificationCount;
+@end
+
 
 @interface ARTopMenuNavigationDataSource : NSObject <ARTabViewDataSource>
 
@@ -22,6 +28,7 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
 
 - (void)prefetchBrowse;
 - (void)prefetchHeroUnits;
-- (void)fetchNotificationCount:(void (^)())success;
+- (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
+- (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
 
 @end

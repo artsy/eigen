@@ -12,6 +12,15 @@
     [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[self alloc] init];
 }
 
+- (void)registerForDeviceNotifications
+{
+    ARActionLog(@"Registering with Apple for remote notifications.");
+    UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+}
+
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
 #if (TARGET_IPHONE_SIMULATOR == 0)
@@ -78,8 +87,8 @@
 
         NSInteger tabIndex = [[ARTopMenuViewController sharedController] indexOfRootViewController:viewController];
         if (tabIndex != NSNotFound) {
-            NSUInteger badgeNumber = [userInfo[@"aps"][@"badge"] unsignedLongValue];
-            [[ARTopMenuViewController sharedController] setBadgeNumber:badgeNumber forTabAtIndex:tabIndex];
+            NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];
+            [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:tabIndex];
         }
     }
 
@@ -106,13 +115,11 @@
     }
 }
 
-- (void)registerForDeviceNotifications
+- (void)fetchNotificationCounts;
 {
-    ARActionLog(@"Registering with Apple for remote notifications.");
-    UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
-    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
+        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
+    } failure:nil];
 }
 
 - (UIWindow *)findVisibleWindow

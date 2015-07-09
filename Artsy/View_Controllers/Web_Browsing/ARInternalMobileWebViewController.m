@@ -6,6 +6,7 @@
 
 @import TPDWeakProxy;
 
+
 @interface TSMiniWebBrowser (Private)
 @property (nonatomic, readonly, strong) UIWebView *webView;
 - (UIEdgeInsets)webViewContentInset;
@@ -133,11 +134,15 @@
 - (void)checkWebViewLoadingState;
 {
     NSString *readyState = [self.webView stringByEvaluatingJavaScriptFromString:@"document.readyState"];
-    // DOMContentLoaded, which is once the webview is finished parsing but still loading sub-resources.
     if ([readyState isEqualToString:@"interactive"]) {
-        [self removeContentLoadStateTimer];
-        [self hideLoading];
+        [self webViewDidLoadDOMContent:self.webView];
     }
+}
+
+- (void)webViewDidLoadDOMContent:(UIWebView *)webView;
+{
+    [self removeContentLoadStateTimer];
+    [self hideLoading];
 }
 
 #pragma mark - UIScrollViewDelegate

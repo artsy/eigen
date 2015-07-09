@@ -146,6 +146,8 @@ static ARAppDelegate *_sharedInstance = nil;
             // The app was not running, so considering it to be in the UIApplicationStateInactive state.
             [self.remoteNotificationsDelegate applicationDidReceiveRemoteNotification:remoteNotification
                                                                    inApplicationState:UIApplicationStateInactive];
+        } else if ([User currentUser]) {
+            [self.remoteNotificationsDelegate fetchNotificationCounts];
         }
     }];
 
@@ -187,7 +189,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
     if (!cancelledSignIn) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.remoteNotificationsDelegate registerForDeviceNotifications];
+            if ([User currentUser]) {
+                [self.remoteNotificationsDelegate registerForDeviceNotifications];
+                [self.remoteNotificationsDelegate fetchNotificationCounts];
+            }
         });
     }
 }
