@@ -116,10 +116,10 @@
 
 - (void)refreshFeedItems
 {
-    @weakify(self)
+   @_weakify(self)
         [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^{
-            @strongify(self);
+            @_strongify(self);
             [self hideLoadingView];
             [self.tableView reloadData];
         } failure:^(NSError *error) {
@@ -168,11 +168,11 @@
     _loading = YES;
     [self setFooterStatus:ARFeedStatusStateLoading];
 
-    @weakify(self)
+   @_weakify(self)
         NSInteger oldCount = self.feedTimeline.numberOfItems;
 
     [self.feedTimeline getNextPage:^{
-        @strongify(self);
+        @_strongify(self);
         if (!self) { return; }
 
         NSMutableArray *indexPaths = [NSMutableArray array];
@@ -184,7 +184,7 @@
         self->_loading = NO;
     }
         failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         if (!self) { return; }
 
         // add a "network error, retry?" state to footer
@@ -193,7 +193,7 @@
         self->_loading = NO;
         }
         completion:^{
-        @strongify(self);
+        @_strongify(self);
         if (!self) { return; }
 
         [self setFooterStatus:ARFeedStatusStateEndOfFeed];

@@ -26,10 +26,10 @@
     }
 
     _downloadLock = YES;
-    @weakify(self);
+   @_weakify(self);
 
     [self performNetworkRequestAtPage:self.currentPage withSuccess:^(NSArray *items) {
-        @strongify(self);
+        @_strongify(self);
         if (!self) { return; }
 
         self.currentPage++;
@@ -42,7 +42,7 @@
         if(success) success(items);
 
     } failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         if (!self) { return; }
 
         self->_allDownloaded = YES;

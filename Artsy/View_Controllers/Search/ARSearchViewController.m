@@ -206,9 +206,9 @@
 
 - (void)fetchSearchResults:(NSString *)text replace:(BOOL)replaceResults
 {
-    @weakify(self);
+   @_weakify(self);
     _searchRequest = [self searchWithQuery:text success:^(NSArray *results) {
-        @strongify(self);
+        @_strongify(self);
         [self addResults:results replace:replaceResults];
         [self finishSearching];
     } failure:^(NSError *error) {
@@ -272,13 +272,13 @@
 
 - (void)removeResultsViewAnimated:(BOOL)animated
 {
-    @weakify(self);
+   @_weakify(self);
 
     [UIView animateIf:animated duration:0.15:^{
-        @strongify(self);
+        @_strongify(self);
         self.resultsView.alpha = 0;
     } completion:^(BOOL finished) {
-        @strongify(self);
+        @_strongify(self);
         if (!self) { return; }
 
         self.resultsView.hidden = YES;

@@ -327,10 +327,10 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     }
     [self ar_addModernChildViewController:self.pendingOperationViewController];
 
-    @weakify(self);
+   @_weakify(self);
 
     return [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-        @strongify(self);
+        @_strongify(self);
         RACSubject *completionSubject = [RACSubject subject];
 
         [UIView animateIf:self.animatesLayoverChanges duration:ARAnimationDuration :^{

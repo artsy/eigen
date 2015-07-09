@@ -50,9 +50,9 @@
         case ARWatchMessageRequestBid: {
             WatchBiddingDetails *details = [[WatchBiddingDetails alloc] initWithDictionary:incoming.referenceObject];
 
-            @weakify(self);
+           @_weakify(self);
             [ARWatchBidNetworkModel bidWithDetails:details:^(BidderPosition *position) {
-                @strongify(self);
+                @_strongify(self);
                 [self validateTopBidderWithDetails:details completion:reply];
 
             } failure:^(NSError *error) {

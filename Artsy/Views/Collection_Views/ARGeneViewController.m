@@ -97,9 +97,9 @@
 
 - (void)loadGene
 {
-    @weakify(self);
+   @_weakify(self);
     [self.gene updateGene:^{
-        @strongify(self);
+        @_strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
         [self updateBody];
 

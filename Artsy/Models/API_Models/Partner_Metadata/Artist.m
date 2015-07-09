@@ -69,15 +69,15 @@
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    @weakify(self);
+   @_weakify(self);
     [ArtsyAPI setFavoriteStatus:state forArtist:self success:^(id response) {
-        @strongify(self);
+        @_strongify(self);
         self.followed = state;
         if (success) {
             success(response);
         }
     } failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         self.followed = !state;
         if (failure) {
             failure(error);
@@ -92,9 +92,9 @@
         return;
     }
 
-    @weakify(self);
+   @_weakify(self);
     [ArtsyAPI checkFavoriteStatusForArtist:self success:^(BOOL result) {
-        @strongify(self);
+        @_strongify(self);
         self.followed = result;
         success(result ? ARHeartStatusYes : ARHeartStatusNo);
     } failure:failure];

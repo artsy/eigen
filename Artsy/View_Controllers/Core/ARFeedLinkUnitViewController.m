@@ -16,11 +16,11 @@
         return;
     }
 
-    @weakify(self);
+   @_weakify(self);
 
     // edit set here: http://admin.artsy.net/set/52277573c9dc24da5b00020c
     [ArtsyAPI getOrderedSetItemsWithKey:@"eigen:feed-links" success:^(NSArray *items) {
-        @strongify(self);
+        @_strongify(self);
         [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:items]];
         completion();
     } failure:^(NSError *error) {
@@ -30,7 +30,7 @@
     // edit set here: https://admin.artsy.net/set/54e255e9726169752bbb1b00
     if ([User currentUser]) {
         [ArtsyAPI getOrderedSetItemsWithKey:@"eigen:logged-in-feed-links" success:^(NSArray *items) {
-            @strongify(self);
+            @_strongify(self);
             [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:items]];
             completion();
         } failure:^(NSError *error) {
@@ -42,7 +42,7 @@
     if ([bundleID containsString:@".dev"] || [bundleID containsString:@".beta"]) {
         // edit set here: http://admin.artsy.net/set/5308e7be9c18db75fd000343
         [ArtsyAPI getOrderedSetItemsWithKey:@"eigen:beta-feed-links" success:^(NSArray *items) {
-            @strongify(self);
+            @_strongify(self);
             [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:items]];
             completion();
         } failure:^(NSError *error) {
@@ -53,7 +53,7 @@
 
 - (NSArray *)phoneNavigationForFeaturedLinks:(NSArray *)featuredLinks
 {
-    @weakify(self);
+   @_weakify(self);
     NSMutableArray *phoneNavigation = [NSMutableArray array];
     for (FeaturedLink *featuredLink in featuredLinks) {
         [phoneNavigation addObject:@{
@@ -63,7 +63,7 @@
                 @keypath(ARSerifNavigationButton.new, subtitle): featuredLink.subtitle
             },
             ARNavigationButtonHandlerKey: ^(UIButton *sender) {
-                @strongify(self);
+                @_strongify(self);
                 UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:featuredLink.href];
                 [self.navigationController pushViewController:viewController animated:YES];
     }

@@ -84,10 +84,10 @@
         [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
     }
 
-    @weakify(self);
+   @_weakify(self);
 
     void (^completion)(void) = ^{
-        @strongify(self);
+        @_strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
     };
 
@@ -139,9 +139,9 @@
 
 - (void)getRelatedPosts
 {
-    @weakify(self);
+   @_weakify(self);
     [self.artwork getRelatedPosts:^(NSArray *posts) {
-        @strongify(self);
+        @_strongify(self);
         [self updateWithRelatedPosts:posts];
     }];
 }
