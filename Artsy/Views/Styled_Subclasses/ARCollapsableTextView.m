@@ -83,10 +83,11 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
     self.downSwipeGesture.enabled = NO;
 
     [self layoutIfNeeded];
-    [UIView animateWithDuration:0.3 animations:^{
 
-        self.heightCollapsingConstraint.active = NO;
-        self.fullHeightConstraint.active = YES;
+    self.heightCollapsingConstraint.active = NO;
+    self.fullHeightConstraint.active = YES;
+
+    [UIView animateIf:self.shouldAnimate duration:0.3:^{
 
         self.collapsedOverlapView.alpha = 0;
 
@@ -99,6 +100,11 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
     if (self.expansionBlock) {
         self.expansionBlock(self);
     }
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
 }
 
 @end
