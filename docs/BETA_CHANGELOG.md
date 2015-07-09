@@ -3,6 +3,9 @@
 * Show sign-in/sign-up flow when selecting ‘bell’ tab as a trial user. - alloy
 * Fetch pending notifications count when the user signs-up/signs-in. - alloy
 * Open notifications tab when tapping an incoming push notification. - alloy
+* Always poll for remote notifications on app activationg. - alloy
+* Reload notifications view whenever notifications come in or have been polled. - alloy
+* Mark notifications as seen once the new notifications view has been loaded and was visible. - alloy
 
 ## 2.1.0 (2015.07.04)
 
