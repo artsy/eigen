@@ -210,18 +210,18 @@
         return;
     }
 
-    @weakify(self);
+   @_weakify(self);
     [self setFormEnabled:NO];
     if (self.provider == ARAuthProviderFacebook) {
         [[ARUserManager sharedManager] createUserViaFacebookWithToken:self.token
             email:self.emailField.text
             name:self.nameField.text
             success:^(User *user) {
-            @strongify(self);
+            @_strongify(self);
             [self loginWithFacebookCredential];
             }
             failure:^(NSError *error, id JSON) {
-            @strongify(self);
+            @_strongify(self);
             if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
                 if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
                     ARErrorLog(@"Facebook account already linked");
@@ -239,9 +239,9 @@
 
             ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
             NSString *errorString = [NSString stringWithFormat:@"Server replied saying '%@'.", JSON[@"error"] ?: JSON[@"message"] ?: error.localizedDescription];
-            @weakify(self);
+           @_weakify(self);
             [UIAlertView showWithTitle:@"Error Creating\na New Artsy Account" message:errorString cancelButtonTitle:@"Close" otherButtonTitles:nil tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                @strongify(self);
+                @_strongify(self);
                 [self setFormEnabled:YES];
             }];
             }];
@@ -251,11 +251,11 @@
             email:self.emailField.text
             name:self.nameField.text
             success:^(User *user) {
-            @strongify(self);
+            @_strongify(self);
             [self loginWithTwitterCredential];
             }
             failure:^(NSError *error, id JSON) {
-          @strongify(self);
+          @_strongify(self);
           if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
               if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
                   ARErrorLog(@"Twitter account already linked");
@@ -273,9 +273,9 @@
 
           ARErrorLog(@"Couldn't link Twitter account. Error: %@. The server said: %@", error.localizedDescription, JSON);
           NSString *errorString = [NSString stringWithFormat:@"Server replied saying '%@'.", JSON[@"error"] ?: JSON[@"message"] ?: error.localizedDescription];
-          @weakify(self);
+         @_weakify(self);
           [UIAlertView showWithTitle:@"Error Creating\na New Artsy Account" message:errorString cancelButtonTitle:@"Close" otherButtonTitles:nil tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-              @strongify(self);
+              @_strongify(self);
               [self setFormEnabled:YES];
           }];
             }];
@@ -303,23 +303,23 @@
 - (void)loginWithTwitterCredential
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-    @weakify(self);
+   @_weakify(self);
 
     [[ARUserManager sharedManager] loginWithTwitterToken:self.token
         secret:self.secret
         successWithCredentials:nil
         gotUser:^(User *currentUser) {
-         @strongify(self);
+         @_strongify(self);
          [self loginCompletedForLoginType:AROnboardingMoreInfoViewControllerLoginTypeTwitter];
         }
         authenticationFailure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
           //TODO: handle me
 
         }
         networkFailure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         [self setFormEnabled:YES];
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
         [ARNetworkErrorManager presentActiveErrorModalWithError:error];
@@ -329,21 +329,21 @@
 - (void)loginWithFacebookCredential
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-    @weakify(self);
+   @_weakify(self);
 
     [[ARUserManager sharedManager] loginWithFacebookToken:self.token successWithCredentials:nil
         gotUser:^(User *currentUser) {
-          @strongify(self);
+          @_strongify(self);
           [self loginCompletedForLoginType:AROnboardingMoreInfoViewControllerLoginTypeFacebook];
         }
         authenticationFailure:^(NSError *error) {
-          @strongify(self);
+          @_strongify(self);
           [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
           //TODO: handle me
 
         }
         networkFailure:^(NSError *error) {
-          @strongify(self);
+          @_strongify(self);
           [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
           [self setFormEnabled:YES];
           [ARNetworkErrorManager presentActiveErrorModalWithError:error];

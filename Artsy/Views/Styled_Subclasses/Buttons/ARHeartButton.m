@@ -88,9 +88,9 @@
 
     _status = status;
 
-    @weakify(self);
+   @_weakify(self);
     void (^animation)() = ^() {
-        @strongify(self);
+        @_strongify(self);
         if (status == ARHeartStatusYes) {
             [self.backView removeFromSuperview];
             [self addSubview:self.frontView];

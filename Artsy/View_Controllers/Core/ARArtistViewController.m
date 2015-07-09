@@ -112,10 +112,10 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)updateArtistInfo
 {
-    @weakify(self);
+   @_weakify(self);
     [self.networkModel getArtistInfoWithSuccess:^(Artist *artist) {
 
-        @strongify(self);
+        @_strongify(self);
         if (!self) { return; }
 
         if (!artist) {
@@ -128,7 +128,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
         [self artistIsReady];
 
     } failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         ARErrorLog(@"Could not update artist information: %@", error.localizedDescription);
         [self setIsGettingArtworks:NO displayMode:self.displayMode];
     }];
@@ -319,12 +319,12 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:self.shouldAnimate];
 
-    @weakify(self);
+   @_weakify(self);
     [self.networkModel setFavoriteStatus:sender.isHearted success:^(id response) {
     }
         failure:^(NSError *error) {
 
-         @strongify(self);
+         @_strongify(self);
         [ARNetworkErrorManager presentActiveErrorModalWithError:error];
         [sender setHearted:!hearted animated:self.shouldAnimate];
         }];
@@ -392,14 +392,14 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL showingForSale = (displayMode == ARArtistArtworksDisplayForSale);
     NSDictionary *params = (showingForSale) ? @{ @"filter[]" : @"for_sale" } : nil;
 
-    @weakify(self);
+   @_weakify(self);
     [self.networkModel getArtistArtworksAtPage:lastPage + 1 params:params success:^(NSArray *artworks) {
-        @strongify(self);
+        @_strongify(self);
         [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
         [self handleFetchedArtworks:artworks displayMode:self.displayMode];
         [self checkForAdditionalArtworksToFillView];
     } failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         ARErrorLog(@"Could not get Artist Artworks: %@", error.localizedDescription);
         [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
         [self setIsGettingArtworks:NO displayMode:displayMode];
@@ -555,9 +555,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getRelatedArtists
 {
-    @weakify(self);
+   @_weakify(self);
     [self.artist getRelatedArtists:^(NSArray *artists) {
-        @strongify(self);
+        @_strongify(self);
         if (artists.count > 0 ) {
             [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration :^{
                 self.relatedTitle.alpha = 1;
@@ -570,9 +570,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getRelatedPosts
 {
-    @weakify(self);
+   @_weakify(self);
     [self.artist getRelatedPosts:^(NSArray *posts) {
-        @strongify(self);
+        @_strongify(self);
         if (posts.count > 0) {
             self.postsVC.posts = posts;
             [self.view.stackView addSubview:self.postsVC.view withTopMargin:@"20" sideMargin:@"40"];

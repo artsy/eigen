@@ -54,14 +54,14 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
     self.view.stackView.bottomMarginHeight = 20;
     self.view.delegate = [ARScrollNavigationChief chief];
 
-    @weakify(self);
+   @_weakify(self);
     [self.networkModel getArtistForArtistID:self.artist.artistID success:^(Artist *artist) {
-        @strongify(self);
+        @_strongify(self);
         if (!self) { return; }
         self->_artist = artist;
         [self artistDidLoad];
     } failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         [self artistDidLoad];
     }];
 }
@@ -84,9 +84,9 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
     [self addSubtitle];
 
-    @weakify(self);
+   @_weakify(self);
     [self.networkModel getShowsForArtistID:self.artist.artistID inFairID:self.fair.fairID success:^(NSArray *shows) {
-        @strongify(self);
+        @_strongify(self);
         if (!self) { return; }
 
         self->_partnerShows = shows;
@@ -157,9 +157,9 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
 - (void)addMapButton
 {
-    @weakify(self);
+   @_weakify(self);
     [self.fair getFairMaps:^(NSArray *maps) {
-        @strongify(self);
+        @_strongify(self);
 
         Map *map = maps.firstObject;
         if (!map) { return; }
@@ -184,9 +184,9 @@ NS_ENUM(NSInteger, ARFairArtistViewIndex){
 
 - (void)mapButtonTapped:(id)mapButtonTapped
 {
-    @weakify(self);
+   @_weakify(self);
     [self.fair getFairMaps:^(NSArray *maps) {
-        @strongify(self);
+        @_strongify(self);
         ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.header selectedPartnerShows:self.partnerShows];
         [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
     }];

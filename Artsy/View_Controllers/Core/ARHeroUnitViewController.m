@@ -162,9 +162,9 @@ const static CGFloat ARCarouselDelay = 10;
 - (void)goToHeroUnit:(UIViewController *)vc withDirection:(UIPageViewControllerNavigationDirection)direction
 {
     self.pageViewController.view.userInteractionEnabled = NO;
-    @weakify(self);
+   @_weakify(self);
     [self.pageViewController setViewControllers:@[ vc ] direction:direction animated:YES completion:^(BOOL finished) {
-        @strongify(self);
+        @_strongify(self);
         [self.pageControl setCurrentPage:[self currentViewController].index];
         self.pageViewController.view.userInteractionEnabled = YES;
 

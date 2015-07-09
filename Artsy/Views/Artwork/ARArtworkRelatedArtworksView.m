@@ -79,7 +79,7 @@
     self.artwork = artwork;
     self.hasRequested = YES;
 
-    @weakify(self);
+   @_weakify(self);
 
     // TODO: refactor these callbacks to return so we can use
     // results from the values array in a `when`
@@ -94,7 +94,7 @@
     } failure:nil];
 
     [[KSPromise when:@[ salePromise, fairPromise, partnerShowPromise ]] then:^id(id value) {
-        @strongify(self);
+        @_strongify(self);
 
         if (show) {
             [self addSectionsForShow:show];
@@ -117,7 +117,7 @@
         return nil;
 
     } error:^id(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         ARErrorLog(@"Error fetching sale/fair for %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
         [self addSectionWithRelatedArtworks];
         return error;
@@ -133,15 +133,15 @@
 
 - (void)addSectionsForFair:(Fair *)fair;
 {
-    @weakify(self);
+   @_weakify(self);
     [self addRelatedArtworkRequest:[self.artwork getFeaturedShowsAtFair:fair success:^(NSArray *shows) {
-        @strongify(self);
+        @_strongify(self);
         for (PartnerShow *show in shows) {
             [self addSectionWithOtherArtworksInShow:show];
         }
     }]];
     [self addRelatedArtworkRequest:[self.artwork getRelatedFairArtworks:fair success:^(NSArray *artworks) {
-        @strongify(self);
+        @_strongify(self);
         [self addSectionWithTag:ARRelatedArtworksSameFair artworks:artworks heading:@"Other works in fair"];
     }]];
 }
@@ -155,18 +155,18 @@
 
 - (void)addSectionsForAuction:(Sale *)auction;
 {
-    @weakify(self);
+   @_weakify(self);
     [self addRelatedArtworkRequest:[auction getArtworks:^(NSArray *artworks) {
-        @strongify(self);
+        @_strongify(self);
         [self addSectionWithTag:ARRelatedArtworksSameAuction artworks:artworks heading:@"Other works in auction"];
     }]];
 }
 
 - (void)addSectionWithOtherArtworksInShow:(PartnerShow *)show;
 {
-    @weakify(self);
+   @_weakify(self);
     [self getArtworksInShow:show atPage:1 success:^(NSArray *artworks) {
-        @strongify(self);
+        @_strongify(self);
         ARArtworkRelatedArtworksContentView *view = [self addSectionWithTag:ARRelatedArtworksSameShow artworks:artworks heading:@"Other works in show"];
         [self addArtworksInShow:show atPage:2 toView:view];
     }];
@@ -174,10 +174,10 @@
 
 - (void)addArtworksInShow:(PartnerShow *)show atPage:(NSInteger)page toView:(ARArtworkRelatedArtworksContentView *)view
 {
-    @weakify(self);
+   @_weakify(self);
     [self getArtworksInShow:show atPage:page success:^(NSArray *artworks) {
         if (!artworks.count > 0) { return; }
-        @strongify(self);
+        @_strongify(self);
         [view.artworksVC appendItems:artworks];
         [self addArtworksInShow:show atPage:page+1 toView:view];
     }];
@@ -194,9 +194,9 @@
         return;
     }
 
-    @weakify(self);
+   @_weakify(self);
     [self addRelatedArtworkRequest:[self.artwork.artist getArtworksAtPage:1 andParams:nil success:^(NSArray *artworks) {
-        @strongify(self);
+        @_strongify(self);
         [self addSectionWithTag:ARRelatedArtworksArtistArtworks
                        artworks:artworks
                         heading:[NSString stringWithFormat:@"Other works by %@", self.artwork.artist.name]];
@@ -205,9 +205,9 @@
 
 - (void)addSectionWithRelatedArtworks;
 {
-    @weakify(self);
+   @_weakify(self);
     [self addRelatedArtworkRequest:[self.artwork getRelatedArtworks:^(NSArray *artworks) {
-        @strongify(self);
+        @_strongify(self);
         [self addSectionWithTag:ARRelatedArtworks artworks:artworks heading:@"Related artworks"];
     }]];
 }

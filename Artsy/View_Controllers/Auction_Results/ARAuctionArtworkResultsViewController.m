@@ -25,9 +25,9 @@ static const NSInteger ARArtworkIndex = 0;
 
     _artwork = artwork;
 
-    @weakify(self);
+   @_weakify(self);
     [_artwork getRelatedAuctionResults:^(NSArray *auctionResults) {
-        @strongify(self);
+        @_strongify(self);
         self.auctionResults = auctionResults;
     }];
 
