@@ -134,15 +134,11 @@
 - (void)checkWebViewLoadingState;
 {
     NSString *readyState = [self.webView stringByEvaluatingJavaScriptFromString:@"document.readyState"];
+    // DOMContentLoaded, which is once the webview is finished parsing but still loading sub-resources.
     if ([readyState isEqualToString:@"interactive"]) {
-        [self webViewDidLoadDOMContent:self.webView];
+        [self removeContentLoadStateTimer];
+        [self hideLoading];
     }
-}
-
-- (void)webViewDidLoadDOMContent:(UIWebView *)webView;
-{
-    [self removeContentLoadStateTimer];
-    [self hideLoading];
 }
 
 #pragma mark - UIScrollViewDelegate

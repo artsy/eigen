@@ -49,8 +49,10 @@
 
 - (void)markRemoteNotificationsAsRead;
 {
-    ARTopTabControllerIndex index = [[ARTopMenuViewController sharedController] indexOfRootViewController:self];
-    [[ARTopMenuViewController sharedController] setNotificationCount:0 forControllerAtIndex:index];
+    if (self.lastRequestLoadedAt != nil && self.hasSuccessfullyLoadedLastRequest && self.isCurrentlyVisibleViewController) {
+        ARTopTabControllerIndex index = [[ARTopMenuViewController sharedController] indexOfRootViewController:self];
+        [[ARTopMenuViewController sharedController] setNotificationCount:0 forControllerAtIndex:index];
+    }
 }
 
 #pragma mark - Overrides
@@ -81,16 +83,6 @@
     [self markRemoteNotificationsAsRead];
 }
 
-- (void)webViewDidLoadDOMContent:(UIWebView *)webView;
-{
-    [super webViewDidLoadDOMContent:webView];
-
-    // TODO only remove count when visible now or in the future
-
-    // Ensure the notification count doesn’t get removed if this root view is covered by a view hierarchy.
-    if (self.isCurrentlyVisibleViewController) [self markRemoteNotificationsAsRead];
-}
-
 - (void)webViewDidFinishLoad:(UIWebView *)webView;
 {
     [super webViewDidFinishLoad:webView];
@@ -103,6 +95,8 @@
     if (self.hasSuccessfullyLoadedLastRequest) {
         self.lastRequestLoadedAt = [NSDate date];
     }
+
+    [self markRemoteNotificationsAsRead];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error;
