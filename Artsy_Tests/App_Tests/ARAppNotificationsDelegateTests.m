@@ -55,7 +55,7 @@ describe(@"receiveRemoteNotification", ^{
             [[[classMock stub] andReturn:controllerMock] sharedController];
 
             [[[controllerMock stub] andReturnValue:@(ARTopTabControllerIndexNotifications)] indexOfRootViewController:OCMOCK_ANY];
-            [[controllerMock expect] setBadgeNumber:42 forTabAtIndex:ARTopTabControllerIndexNotifications];
+            [[controllerMock expect] setNotificationCount:42 forControllerAtIndex:ARTopTabControllerIndexNotifications];
 
             NSDictionary *notification = @{
                 @"url": @"http://artsy.net/works-for-you",
@@ -112,7 +112,6 @@ describe(@"receiveRemoteNotification", ^{
             [[mock reject]
              showNoticeInView:OCMOCK_ANY
              title:OCMOCK_ANY
-             hideAfter:0
              response:OCMOCK_ANY];
             UIApplication *app = [UIApplication sharedApplication];
             [[app delegate] application:app didReceiveRemoteNotification:notification];
@@ -150,7 +149,6 @@ describe(@"receiveRemoteNotification", ^{
             [[mock expect]
              showNoticeInView:OCMOCK_ANY
              title:@"hello world"
-             hideAfter:0
              response:OCMOCK_ANY];
             UIApplication *app = [UIApplication sharedApplication];
             [[app delegate] application:app didReceiveRemoteNotification:notification];
@@ -166,7 +164,6 @@ describe(@"receiveRemoteNotification", ^{
             [[mock expect]
              showNoticeInView:OCMOCK_ANY
              title:@"http://artsy.net/feature"
-             hideAfter:0
              response:OCMOCK_ANY];
             UIApplication *app = [UIApplication sharedApplication];
             [[app delegate] application:app didReceiveRemoteNotification:notification];

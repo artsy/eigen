@@ -146,12 +146,27 @@ static ARAppDelegate *_sharedInstance = nil;
             // The app was not running, so considering it to be in the UIApplicationStateInactive state.
             [self.remoteNotificationsDelegate applicationDidReceiveRemoteNotification:remoteNotification
                                                                    inApplicationState:UIApplicationStateInactive];
-        } else if ([User currentUser]) {
-            [self.remoteNotificationsDelegate fetchNotificationCounts];
         }
     }];
 
     return YES;
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [ARTrialController extendTrial];
+    [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
+
+    if ([User currentUser]) {
+        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+            [self.remoteNotificationsDelegate fetchNotificationCounts];
+        }];
+    }
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    [ARAnalytics finishTimingEvent:ARAnalyticsTimePerSession];
 }
 
 - (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
@@ -370,18 +385,6 @@ static ARAppDelegate *_sharedInstance = nil;
     ARQuicksilverViewController *adminSettings = [[ARQuicksilverViewController alloc] init];
     [navigationController pushViewController:adminSettings animated:YES];
 }
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    [ARTrialController extendTrial];
-    [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    [ARAnalytics finishTimingEvent:ARAnalyticsTimePerSession];
-}
-
 - (void)fetchSiteFeatures
 {
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {

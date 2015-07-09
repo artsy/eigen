@@ -154,6 +154,11 @@ WebViewNavigationControllerWithPath(NSString *path)
 
 - (void)setBadgeNumber:(NSUInteger)number forTabAtIndex:(NSInteger)index;
 {
+    // Specifically short-cut so controllers don’t get superfluous remoteNotificationsReceived: events.
+    if (self.badgeCounts[index] == number) {
+        return;
+    }
+
     self.badgeCounts[index] = number;
 
     // When setting 0, that just means to remove the badge, no remote notifications were received.

@@ -177,7 +177,6 @@ static BOOL ARTabViewDirectionRight = YES;
     };
 
     ar_dispatch_main_queue(^{
-
         if (animated && oldViewController && oldViewController.parentViewController) {
             [self.hostViewController transitionFromViewController:oldViewController toViewController:self.currentNavigationController duration:0.3 options:0 animations:animationBlock completion:completionBlock];
         } else {

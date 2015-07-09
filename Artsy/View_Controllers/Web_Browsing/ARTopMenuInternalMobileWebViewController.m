@@ -30,7 +30,7 @@
 
 - (BOOL)isCurrentlyVisibleViewController;
 {
-    return self.navigationController.visibleViewController == self;
+    return self.navigationController.visibleViewController == self && [[ARTopMenuViewController sharedController] rootNavigationController] == self.navigationController;
 }
 
 - (BOOL)isContentStale;
@@ -102,7 +102,11 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error;
 {
     [super webView:webView didFailLoadWithError:error];
-    self.hasSuccessfullyLoadedLastRequest = NO;
+
+    // This happens when we cancel loading the request and route internally from ARInternalMobileWebViewController.
+    if (error.code != NSURLErrorCancelled) {
+        self.hasSuccessfullyLoadedLastRequest = NO;
+    }
 }
 
 @end
