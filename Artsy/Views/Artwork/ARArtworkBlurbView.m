@@ -2,7 +2,6 @@
 #import "ARTextView.h"
 #import "ORStackView+ArtsyViews.h"
 
-
 @interface ARArtworkBlurbView () <ARTextViewDelegate>
 @property (nonatomic, strong) UILabel *aboutHeading;
 @property (nonatomic, strong) ARTextView *blurbTextView;

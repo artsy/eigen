@@ -254,7 +254,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     if (animated) {
         CABasicAnimation *fade = [CABasicAnimation animation];
         fade.keyPath = @keypath(self.backButton.layer, opacity);
-        fade.fromValue = @([self.backButton.layer.presentationLayer opacity]);
+        fade.fromValue = @([(CALayer *)self.backButton.layer.presentationLayer opacity]);
         fade.toValue = @(toValue);
         fade.duration = ARAnimationDuration;
 

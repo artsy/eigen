@@ -27,7 +27,7 @@ PODS:
   - Artsy+UIColors (1.0.0):
     - EDColor (~> 0.4)
   - Artsy+UIFonts (1.1.0)
-  - Artsy+UILabels (HEAD based on 1.3.1):
+  - Artsy+UILabels (1.3.1):
     - Artsy+UIColors
   - Artsy-UIButtons (1.4.0):
     - Artsy+UIColors
@@ -78,8 +78,6 @@ PODS:
   - KSDeferred (0.2.0)
   - libextobjc/EXTKeyPathCoding (0.4):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTScope (0.4):
-    - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4)
   - Mantle (1.5.3):
     - Mantle/extobjc (= 1.5.3)
@@ -118,61 +116,59 @@ PODS:
     - OHHTTPStubs
 
 DEPENDENCIES:
-  - AFHTTPRequestOperationLogger (= 1.0.0)
+  - AFHTTPRequestOperationLogger
   - AFNetworking (from `https://github.com/orta/AFNetworking`, branch `no_ifdefs`)
   - AFOAuth1Client (from `https://github.com/orta/AFOAuth1Client`, branch `patch-1`)
-  - ALPValidator (= 0.0.3)
+  - ALPValidator
   - ARAnalytics/DSL (>= 3.6.2)
   - ARAnalytics/HockeyApp (>= 3.6.2)
   - ARAnalytics/Segmentio (>= 3.6.2)
-  - ARASCIISwizzle (= 1.1.0)
-  - ARCollectionViewMasonryLayout (>= 2.1.2, ~> 2.1)
-  - ARGenericTableViewController (= 1.0.2)
+  - ARASCIISwizzle
+  - ARCollectionViewMasonryLayout
+  - ARGenericTableViewController
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
   - Artsy+UIColors
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`, branch `old_fonts_new_lib`)
-  - Artsy+UILabels (HEAD)
-  - Artsy-UIButtons (~> 1.4)
-  - CocoaLumberjack (~> 2.0)
-  - DHCShakeNotifier (= 0.2.0)
-  - DRKonamiCode (= 1.1.0)
+  - Artsy+UILabels
+  - Artsy-UIButtons
+  - CocoaLumberjack
+  - DHCShakeNotifier
+  - DRKonamiCode
   - Expecta
-  - Expecta+Snapshots (= 1.3.4)
-  - FBSDKCoreKit (~> 4.2)
-  - FBSDKLoginKit (~> 4.2)
+  - Expecta+Snapshots
+  - FBSDKCoreKit
+  - FBSDKLoginKit
   - FBSnapshotTestCase
-  - FLKAutoLayout (= 0.1.1)
+  - FLKAutoLayout
   - FODFormKit (from `https://github.com/1aurabrown/FODFormKit.git`)
-  - FXBlurView (= 1.6.1)
-  - HockeySDK-Source (~> 3.7)
+  - FXBlurView
   - InterAppCommunication
-  - iRate (= 1.10.2)
+  - iRate
   - ISO8601DateFormatter (HEAD)
-  - JLRoutes (= 1.5)
-  - JSDecoupledAppDelegate (= 1.1.0)
+  - JLRoutes
+  - JSDecoupledAppDelegate
   - Keys (from `Pods/CocoaPodsKeys`)
-  - KSDeferred (= 0.2.0)
-  - libextobjc/EXTKeyPathCoding (= 0.4)
-  - libextobjc/EXTScope (= 0.4)
-  - Mantle (= 1.5.3)
-  - MMMarkdown (= 0.4)
-  - MultiDelegate (= 0.0.2)
+  - KSDeferred
+  - libextobjc/EXTKeyPathCoding
+  - Mantle
+  - MMMarkdown
+  - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`, commit `62275386978db91b0e7ed8de755d15cef3e793b4`)
-  - ObjectiveSugar (= 1.1.0)
-  - OCMock (= 2.2.4)
-  - OHHTTPStubs (= 3.1.2)
-  - ORKeyboardReactingApplication (= 0.5.3)
+  - ObjectiveSugar
+  - OCMock
+  - OHHTTPStubs
+  - ORKeyboardReactingApplication
   - ORStackView (from `https://github.com/1aurabrown/ORStackView.git`)
-  - ReactiveCocoa (= 2.3)
-  - SDWebImage (= 3.7.1)
+  - ReactiveCocoa
+  - SDWebImage
   - Specta
-  - TPDWeakProxy (= 1.1.0)
+  - TPDWeakProxy
   - TSMiniWebBrowser@dblock (HEAD)
-  - UIAlertView+Blocks (= 0.8)
+  - UIAlertView+Blocks
   - UICKeyChainStore (= 1.0.5)
   - UIView+BooleanAnimations
-  - VCRURLConnection (= 0.2.0)
-  - XCTest+OHHTTPStubSuiteCleanUp (= 1.0.0)
+  - VCRURLConnection
+  - XCTest+OHHTTPStubSuiteCleanUp
 
 EXTERNAL SOURCES:
   AFNetworking:

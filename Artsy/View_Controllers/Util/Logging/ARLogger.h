@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, ARLogContext) {
 #define ARHTTPRequestOperationSuccessLog(frmt, ...) LOG_OBJC_MAYBE(YES, ddLogLevel, LOG_FLAG_INFO, ARLogContextRequestOperation, frmt, ##__VA_ARGS__)
 #define ARHTTPRequestOperationFailureLog(frmt, ...) LOG_OBJC_MAYBE(YES, ddLogLevel, LOG_FLAG_ERROR, ARLogContextRequestOperation, frmt, ##__VA_ARGS__)
 
-#define ARLogInfo(frmt, ...) LOG_MAYBE(NO LOG_LEVEL_DEF, ARLogContextInfo, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define ARActionLog(frmt, ...) LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, ARLogContextAction, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define ARErrorLog(frmt, ...) LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, ARLogContextError, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define ARLogInfo(frmt, ...) LOG_OBJC_MAYBE(NO LOG_LEVEL_DEF, (DDLogFlag)ARLogContextInfo, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define ARActionLog(frmt, ...) LOG_OBJC_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, (DDLogFlag)ARLogContextAction, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+
+#define ARErrorLog(frmt, ...) LOG_OBJC_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, (DDLogFlag)ARLogContextError, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
