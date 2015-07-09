@@ -1,0 +1,5 @@
+
+
+@interface ARNetworkErrorView : UICollectionReusableView
+
+@end

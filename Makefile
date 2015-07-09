@@ -4,7 +4,7 @@ CONFIGURATION = Beta
 APP_PLIST = Artsy/App/Artsy-Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
 TARGETED_DEVICE_FAMILY = \"1,2\"
-DEVICE_HOST = platform='iOS Simulator',OS='8.2',name='iPhone 6'
+DEVICE_HOST = platform='iOS Simulator',OS='8.3',name='iPhone 6'
 
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
 GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
@@ -19,18 +19,20 @@ CHANGELOG_SHORT = CHANGELOG_SHORT.md
 IPA = Artsy.ipa
 DSYM = Artsy.app.dSYM.zip
 
-.PHONY: all build ci clean test lint oss pr
+CIRCLE_TEST_REPORTS ?= $(TMPDIR)
+
+.PHONY: all build ci clean test lint oss pr artsy
 
 all: ci
 
 build:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator -destination $(DEVICE_HOST) build | bundle exec xcpretty -c
+	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator -destination $(DEVICE_HOST) build | tee $(CIRCLE_ARTIFACTS)/xcode_build_raw.log | bundle exec xcpretty -c
 
 clean:
 	xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' clean
 
 test:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | bundle exec xcpretty -c --test
+	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
 
 lint:
 	bundle exec fui --path Artsy find
@@ -38,28 +40,28 @@ lint:
 oss:
 	bundle exec pod keys set "ArtsyAPIClientSecret" "3a33d2085cbd1176153f99781bbce7c6" Artsy
 	bundle exec pod keys set "ArtsyAPIClientKey" "e750db60ac506978fc70"
-	bundle exec pod keys set "HockeyProductionSecret" "-"
-	bundle exec pod keys set "HockeyBetaSecret" "-"
-	bundle exec pod keys set "MixpanelProductionAPIClientKey" "-"
-	bundle exec pod keys set "MixpanelStagingAPIClientKey" "-"
-	bundle exec pod keys set "MixpanelDevAPIClientKey" "-"
-	bundle exec pod keys set "MixpanelInStoreAPIClientKey" "-"
 	bundle exec pod keys set "ArtsyFacebookAppID" "-"
 	bundle exec pod keys set "ArtsyTwitterKey" "-"
 	bundle exec pod keys set "ArtsyTwitterSecret" "-"
 	bundle exec pod keys set "ArtsyTwitterStagingKey" "-"
 	bundle exec pod keys set "ArtsyTwitterStagingSecret" "-"
+	bundle exec pod keys set "SegmentProductionWriteKey" "-"
+	bundle exec pod keys set "SegmentDevWriteKey" "-"
 
+artsy:
+	git submodule init
+	git submodule update
+	config/spacecommander/setup-repo.sh
 
 ci: CONFIGURATION = Debug
-ci: build	
+ci: build
 
 update_bundle_version:
 	@printf 'What is the new human-readable release version? '; \
 		read HUMAN_VERSION; \
 		$(PLIST_BUDDY) -c "Set CFBundleShortVersionString $$HUMAN_VERSION" $(APP_PLIST)
 
-bundler:
+format-objc-files-in-repo.sh.bundler:
 	gem install bundler
 	bundle install
 
@@ -98,16 +100,13 @@ distribute:
 	 https://rink.hockeyapp.net/api/2/apps/upload \
 	 | grep -v "errors"
 
-appstore: TARGETED_DEVICE_FAMILY = 1
 appstore: update_bundle_version set_git_properties change_version_to_date set_targeted_device_family
 
-appledemo: TARGETED_DEVICE_FAMILY = 1
 appledemo: NOTIFY = 0
 appledemo: CONFIGURATION = "Apple Demo"
 appledemo: set_git_properties change_version_to_date set_targeted_device_family
 appledemo: ipa distribute
 
-next: TARGETED_DEVICE_FAMILY = \"1,2\"
 next: update_bundle_version set_git_properties change_version_to_date set_targeted_device_family
 
 deploy: ipa distribute
@@ -120,15 +119,17 @@ beta: BUNDLE_NAME = 'Artsy β'
 beta: NOTIFY = 1
 beta: stamp_date deploy
 
+synxify: 
+	bundle exec synx --spaces-to-underscores -e "/Documentation" Artsy.xcodeproj
 
-LOCAL_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
-BRANCH := $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
+LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+BRANCH = $(shell echo $(shell whoami)-$(shell git rev-parse --abbrev-ref HEAD))
 
-pr: 
-	if [ "$(BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push upstream "$(LOCAL_BRANCH):$(BRANCH)"; open -a "Google Chrome" "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi
+pr:
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push upstream "$(LOCAL_BRANCH):$(BRANCH)"; open -a "Google Chrome" "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi
 
-push: 
-	if [ "$(BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH); fi
+push:
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH); fi
 
-fpush: 
-	if [ "$(BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH) --force; fi
+fpush:
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH) --force; fi

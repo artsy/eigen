@@ -2,13 +2,13 @@
 
 ## Artsy Eigen
 
-[![Build Status](https://travis-ci.org/artsy/eigen.svg?branch=master)](https://travis-ci.org/artsy/eigen)
+[![Build Status](https://circleci.com/gh/artsy/eigen/tree/master.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
 
 
 <a href="http://iphone.artsy.net"><img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg"></a>
 
 
-I'm in your [phone](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) letting you browse the arts.
+I'm in your [phone](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) or [ipad](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) letting you browse the arts.
 
 ### Docs
 
@@ -28,5 +28,11 @@ open Artsy.xcworkspace
 ```
 
 This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Build > Run`. 
+
+### Work at Artsy?
+
+Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander).
+
+### Thanks
 
 **Copyright**: 2012-2015, Artsy. Thanks to all [our contributors](/docs/thanks.md).
