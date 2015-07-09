@@ -83,6 +83,9 @@ static ARAppDelegate *_sharedInstance = nil;
     [ARDefaults setup];
     [ARRouter setup];
 
+    // Temp Fix for: https://github.com/artsy/eigen/issues/602
+    [self forceCacheCustomFonts];
+
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [ARTopMenuViewController sharedController];
 
@@ -151,6 +154,17 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)finishDemoSplash
 {
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)forceCacheCustomFonts
+{
+    __unused UIFont *font = [UIFont serifBoldItalicFontWithSize:12];
+    font = [UIFont serifBoldFontWithSize:12];
+    font = [UIFont serifSemiBoldFontWithSize:12];
+    font = [UIFont serifFontWithSize:12];
+    font = [UIFont serifItalicFontWithSize:12];
+    font = [UIFont sansSerifFontWithSize:12];
+    font = [UIFont smallCapsSerifFontWithSize:12];
 }
 
 - (void)finishOnboardingAnimated:(BOOL)animated didCancel:(BOOL)cancelledSignIn;
