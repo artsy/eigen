@@ -8,7 +8,7 @@
 #import "ArtsyAPI+Private.h"
 #import <JSBadgeView/JSBadgeView.h>
 
-static const CGFloat ARSearchMenuButtonDimension = 46;
+static const CGFloat ARMenuButtonDimension = 46;
 
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
@@ -20,7 +20,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 @property (readwrite, nonatomic, strong) NSLayoutConstraint *tabHeightConstraint;
 
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
-@property (readonly, nonatomic, strong) UIView *tabContainer;
+@property (readwrite, nonatomic, strong) UIView *tabContainer;
 @end
 
 
@@ -45,9 +45,6 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
     _navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
 
-    UIView *tabContainer = [[UIView alloc] init];
-    _tabContainer = tabContainer;
-
     ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *showsButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
@@ -70,7 +67,13 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
     NSArray *buttons = @[ homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
 
-    ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero hostViewController:self delegate:self dataSource:self.navigationDataSource];
+    UIView *tabContainer = [[UIView alloc] init];
+    self.tabContainer = tabContainer;
+
+    ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero
+                                                            hostViewController:self
+                                                                      delegate:self
+                                                                    dataSource:self.navigationDataSource];
     tabContentView.supportSwipeGestures = NO;
     tabContentView.buttons = buttons;
     [tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
@@ -82,7 +85,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [tabContentView constrainWidthToView:self.view predicate:@"0"];
 
     [self.view addSubview:tabContainer];
-    [tabContainer constrainHeight:@(ARSearchMenuButtonDimension).stringValue];
+    [tabContainer constrainHeight:@(ARMenuButtonDimension).stringValue];
     [tabContainer constrainTopSpaceToView:tabContentView predicate:nil];
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
 
@@ -132,7 +135,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 - (void)viewWillLayoutSubviews
 {
     NSArray *buttons = self.tabContentView.buttons;
-    __block CGFloat buttonsWidth = ARSearchMenuButtonDimension;
+    __block CGFloat buttonsWidth = ARMenuButtonDimension;
     [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
         if (index == 0){ return; }
         buttonsWidth += button.intrinsicContentSize.width;
