@@ -93,7 +93,7 @@
 - (void)closeSearch:(id)sender
 {
     [super closeSearch:sender];
-    [[ARTopMenuViewController sharedController] returnToPreviousTab];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - ARMenuAwareViewController
