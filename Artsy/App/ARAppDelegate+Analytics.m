@@ -1152,12 +1152,6 @@
                                 // Always starts on artworks tab
                                 return @{ @"tab": @"Artworks" };
                             }
-                        },@{
-                            ARAnalyticsPageName: @"Search",
-                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
-                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexSearch;
-                            }
                         }
                     ]
                 },

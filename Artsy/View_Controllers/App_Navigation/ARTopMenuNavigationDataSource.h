@@ -3,7 +3,6 @@
 @class ARShowFeedViewController, ARNavigationController;
 
 typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
-    ARTopTabControllerIndexSearch,
     ARTopTabControllerIndexFeed,
     ARTopTabControllerIndexShows,
     ARTopTabControllerIndexBrowse,
