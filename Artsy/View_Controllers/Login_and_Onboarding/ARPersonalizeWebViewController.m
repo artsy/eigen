@@ -7,9 +7,11 @@
 //@property(nonatomic, readonly, strong) UIWebView *webView;
 //@end
 
+
 @interface ARPersonalizeWebViewController ()
 @property (nonatomic, strong, readonly) ARSpinner *spinner;
 @end
+
 
 @implementation ARPersonalizeWebViewController
 
@@ -20,7 +22,7 @@
     [super viewDidLoad];
     _spinner = [[ARSpinner alloc] init];
     [self.view addSubview:self.spinner];
-    [self.spinner alignCenterWithView: self.webView];
+    [self.spinner alignCenterWithView:self.webView];
 
     UITapGestureRecognizer *exitTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(exitOnboarding)];
     [self.view addGestureRecognizer:exitTap];
@@ -37,12 +39,11 @@
     WKNavigationActionPolicy shouldLoad = [super shouldLoadNavigationAction:navigationAction];
     NSURL *URL = navigationAction.request.URL;
     NSString *path = [URL lastPathComponent];
-    
+
     if (shouldLoad == WKNavigationActionPolicyAllow && [ARRouter isInternalURL:URL] && [path isEqualToString:ARPersonalizePath]) {
         return WKNavigationActionPolicyAllow;
 
     } else if ([ARRouter isInternalURL:URL] && [path isEqualToString:@"/"]) {
-
         // Force onboarding is all push-state.
         // A new request to load the root page indicates that onboarding is complete.
 
@@ -56,12 +57,12 @@
 
 //- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 //{
-    //[self exitOnboarding];
+//[self exitOnboarding];
 //}
 
 - (void)exitOnboarding
 {
-    [self.personalizeDelegate webOnboardingDone];
+    [self.personalizeDelegate didSignUpAndLogin];
 }
 
 - (void)showLoading

@@ -15,6 +15,7 @@
 @property (nonatomic, readonly, strong) ARInternalShareValidator *shareValidator;
 @end
 
+
 @implementation ARInternalMobileWebViewController
 
 - (instancetype)initWithURL:(NSURL *)url
@@ -29,7 +30,7 @@
 
     if ([[ARRouter artsyHosts] containsObject:urlHost]) {
         NSMutableString *mutableUrlString = [urlString mutableCopy];
-        if (![urlScheme isEqualToString:correctScheme]){
+        if (![urlScheme isEqualToString:correctScheme]) {
             [mutableUrlString replaceOccurrencesOfString:urlScheme withString:correctScheme options:NSCaseInsensitiveSearch range:NSMakeRange(0, mutableUrlString.length)];
         }
         if (![url.host isEqualToString:correctBaseUrl.host]) {
@@ -45,17 +46,19 @@
     }
 
     self = [super initWithURL:url];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
 
     // self.delegate = self;
     // self.showNavigationBar = NO;
     // self.mode = TSMiniWebBrowserModeNavigation;
     // self.showToolBar = NO;
-//    self.backgroundColor = [UIColor whiteColor];
-//    self.opaque = NO;
+    //    self.backgroundColor = [UIColor whiteColor];
+    //    self.opaque = NO;
     _shareValidator = [[ARInternalShareValidator alloc] init];
 
-    ARInfoLog(@"Initialized with URL %@", url);
+    ARActionLog(@"Initialized with URL %@", url);
     return self;
 }
 
@@ -85,8 +88,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     //[UIView animateWithDuration:ARAnimationDuration animations:^{
-         //self.scrollView.contentInset = [self webViewContentInset];
-         //self.scrollView.scrollIndicatorInsets = [self webViewScrollIndicatorsInsets];
+    //self.scrollView.contentInset = [self webViewContentInset];
+    //self.scrollView.scrollIndicatorInsets = [self webViewScrollIndicatorsInsets];
     //}];
 
     [super viewDidAppear:animated];
@@ -109,14 +112,13 @@
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
     NSURL *URL = navigationAction.request.URL;
-    ARInfoLog(@"Martsy URL %@", URL);
+    ARActionLog(@"Martsy URL %@", URL);
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
-            [self.shareValidator shareURL:URL inView:self.view];
+            [self.shareValidator shareURL:URL inView:self.view frame:self.view.frame];
             return WKNavigationActionPolicyCancel;
         } else {
-
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
             if (viewController) {
                 [self.navigationController pushViewController:viewController animated:YES];
@@ -127,7 +129,9 @@
     } else if ([ARRouter isInternalURL:URL] && ([URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"])) {
         // hijack AJAX requests
         if ([User isTrialUser]) {
-            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial fromTarget:self selector:@selector(userDidSignUp)];
+            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser) {
+                [self userDidSignUp];
+            }];
         }
         return WKNavigationActionPolicyCancel;
     }

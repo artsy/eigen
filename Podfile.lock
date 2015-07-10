@@ -105,6 +105,7 @@ PODS:
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
   - Specta (0.5.0)
+  - STKWebKitViewController (0.1.9)
   - TPDWeakProxy (1.1.0)
   - TRVSDictionaryWithCaseInsensitivity (0.0.2)
   - TSMiniWebBrowser@dblock (HEAD based on 1.1)
@@ -162,10 +163,11 @@ DEPENDENCIES:
   - ReactiveCocoa
   - SDWebImage
   - Specta
+  - STKWebKitViewController
   - TPDWeakProxy
   - TSMiniWebBrowser@dblock (HEAD)
   - UIAlertView+Blocks
-  - UICKeyChainStore (= 1.0.5)
+  - UICKeyChainStore
   - UIView+BooleanAnimations
   - VCRURLConnection
   - XCTest+OHHTTPStubSuiteCleanUp
@@ -266,6 +268,7 @@ SPEC CHECKSUMS:
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
   Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
+  STKWebKitViewController: 679e9f6ceff88572eb5596f0662b992e9ebb55e3
   TPDWeakProxy: 2ee6754e401aad6a67cc1d59c9fedddae7815abf
   TRVSDictionaryWithCaseInsensitivity: 51d2ccf52c6d645d27b63467a98fa02c556e01b0
   TSMiniWebBrowser@dblock: 6eb565b44cc2e5cd5eee7660ee5c21f8afae415c
