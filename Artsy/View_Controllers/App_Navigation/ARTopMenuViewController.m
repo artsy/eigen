@@ -55,7 +55,10 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
 
-    [homeButton setTitle:@"HOME" forState:UIControlStateNormal];
+    [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateNormal];
+    [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateSelected];
+    [homeButton.imageView constrainWidth:@"20" height:@"20"];
+
     [showsButton setTitle:@"SHOWS" forState:UIControlStateNormal];
     [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
     [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
