@@ -1,83 +1,80 @@
+@import FLKAutoLayout;
 #import "ARCollapsableTextView.h"
 
 
-@interface ARCollapsableTextView (Tests)
-- (void)openToFullHeight;
-@property (nonatomic, strong, readonly) NSLayoutConstraint *heightCollapsingConstraint;
-@property (nonatomic, strong, readonly) NSLayoutConstraint *fullHeightConstraint;
-@end
-
-SpecBegin(ARCollapsableTextView);
-
-__block ARCollapsableTextView *textView;
-
-void (^sharedBefore)(NSString *) = ^void(NSString *string) {
-    textView = [[ARCollapsableTextView alloc] init];
-    textView.shouldAnimate = NO;
-    [textView setFrame:[UIScreen mainScreen].bounds];
-
+static NSAttributedString *AttributedStringForString(NSString *string)
+{
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:3];
     [paragraphStyle setLineBreakMode:NSLineBreakByWordWrapping];
 
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string
-                                                                           attributes:@{NSParagraphStyleAttributeName : paragraphStyle}];
+    return [[NSAttributedString alloc] initWithString:string
+                                           attributes:@{NSParagraphStyleAttributeName : paragraphStyle}];
+}
 
-    [textView setAttributedText:attributedString];
-};
+SpecBegin(ARCollapsableTextView);
 
-after(^{
-    textView = nil;
+__block ARCollapsableTextView *subject;
+__block UIViewController *hostVC;
+
+before(^{
+    hostVC = [[UIViewController alloc] init];
+    subject = [[ARCollapsableTextView alloc] init];
+    subject.frame = CGRectMake(20, 20, 200, 30);
+    [hostVC.view addSubview:subject];
+
+    [subject alignCenterXWithView:hostVC.view predicate:@""];
+    [subject constrainWidth:@"200"];
+    [subject alignTopEdgeWithView:hostVC.view predicate:@"20"];
+
+    [hostVC ar_presentWithFrame:CGRectMake(0, 0, 440, 600)];
+
+    subject.backgroundColor = [UIColor redColor];
 });
 
-describe(@"text is shorter than collapsed height", ^{
-    before(^{
-        NSString *shortString = @"Short String Short String Short String Short String Short String Short String Short String Short String Short String";
-        sharedBefore(shortString);
-    });
+it(@"calls the callback block", ^{
+    __block BOOL ran = NO;
+    [subject setExpansionBlock:^(ARCollapsableTextView *textView) {
+        ran = YES;
+    }];
+    [subject openToFullHeightAnimated:NO];
+    expect(ran).to.beTruthy();
+});
 
-    it(@"constrains height to text", ^{
-        expect(textView.heightCollapsingConstraint.active).to.beFalsy();
-        expect(textView.fullHeightConstraint.active).to.beTruthy();
+describe(@"when text is shorter than collapsed height", ^{
+    before(^{
+        subject.attributedText = AttributedStringForString(@"Short String Short String Short    ");
     });
 
     it(@"looks correct" , ^{
-        expect(textView).to.haveValidSnapshot();
+        expect(hostVC).to.haveValidSnapshot();
     });
 });
 
 
 describe(@"text is taller than collapsed height", ^{
     before(^{
-        NSString *longString = @"Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String ";
-        sharedBefore(longString);
+        NSString *longString = @"Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String Long String ";
+        subject.attributedText = AttributedStringForString(longString);
     });
 
     describe(@"before expansion", ^{
-        it(@"constrains height to text", ^{
-            expect(textView.heightCollapsingConstraint.active).to.beTruthy();
-            expect(textView.fullHeightConstraint.active).to.beFalsy();
-        });
-
         it(@"looks correct" , ^{
-            expect(textView).to.haveValidSnapshot();
+            expect(hostVC).to.haveValidSnapshot();
         });
     });
 
-    pending(@"after expansion", ^{
+    describe(@"after expansion", ^{
         before(^{
-            [textView openToFullHeight];
-            [textView setNeedsLayout];
-            [textView layoutIfNeeded];
-        });
+            subject.expansionBlock = ^(ARCollapsableTextView *textView) {
+                [hostVC viewDidLayoutSubviews];
+            };
 
-        it(@"constrains height to text", ^{
-            expect(textView.heightCollapsingConstraint.active).to.beFalsy();
-            expect(textView.fullHeightConstraint.active).to.beTruthy();
+            [subject openToFullHeightAnimated:NO];
         });
 
         it(@"looks correct" , ^{
-            expect(textView).to.haveValidSnapshot();
+            expect(hostVC).to.haveValidSnapshot();
         });
     });
 

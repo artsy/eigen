@@ -32,10 +32,15 @@ static const NSDictionary *contextMap;
 {
     NSString *dateAndTime = [self.dateFormatter stringFromDate:(logMessage->_timestamp)];
     NSString *logMsg = logMessage->_message;
-
-    return [NSString stringWithFormat:@"%@ [%@] | %@\n", dateAndTime, [contextMap[@(logMessage->_context)] uppercaseString], logMsg];
+    NSString *context = [[self nameForContext:logMessage.context] uppercaseString];
+    return [NSString stringWithFormat:@"%@ [%@] | %@\n", dateAndTime, context, logMsg];
 
     return nil;
+}
+
+- (NSString *)nameForContext:(NSInteger)context
+{
+    return contextMap[@(context)];
 }
 
 - (void)didAddToLogger:(id<DDLogger>)logger

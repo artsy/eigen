@@ -79,6 +79,11 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
 
 - (void)openToFullHeight
 {
+    [self openToFullHeight];
+}
+
+- (void)openToFullHeightAnimated:(BOOL)animates
+{
     self.tapGesture.enabled = NO;
     self.downSwipeGesture.enabled = NO;
 
@@ -87,7 +92,7 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
     self.heightCollapsingConstraint.active = NO;
     self.fullHeightConstraint.active = YES;
 
-    [UIView animateIf:self.shouldAnimate duration:0.3:^{
+    [UIView animateIf:animates duration:0.3:^{
 
         self.collapsedOverlapView.alpha = 0;
 
