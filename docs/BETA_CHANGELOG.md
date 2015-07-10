@@ -22,3 +22,4 @@
 * Reduce height of inquiry form on iPad - 1aurabrown
 * Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
 * Adds ‘bell’ notifications tab and shows notification count (currently only on launch and only if already signed-in). - alloy
+* Fix personalize search bar. - 1aurabrown

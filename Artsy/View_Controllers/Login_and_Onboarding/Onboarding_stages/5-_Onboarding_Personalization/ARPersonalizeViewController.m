@@ -92,7 +92,9 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     followArtists.text = [@"Enter your favorite artists" uppercaseString];
     [self.scrollView addSubview:followArtists];
 
-    self.searchBar = [[AROnboardingSearchField alloc] initWithFrame:CGRectMake(20, 105, screenSize.width - 110, 40)];
+    CGFloat cancelButtonWidth = 70;
+    CGFloat searchLeftMargin = 20;
+    self.searchBar = [[AROnboardingSearchField alloc] initWithFrame:CGRectMake(searchLeftMargin, 105, screenSize.width - cancelButtonWidth - searchLeftMargin, 40)];
     self.searchBar.placeholder = @"Search artists…";
     self.searchBar.delegate = self;
     self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeWords;
@@ -101,8 +103,8 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.searchBar addTarget:self action:@selector(searchBarDown:) forControlEvents:UIControlEventTouchDown];
 
     self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.cancelButton.frame = CGRectMake(230, self.searchBar.frame.origin.y, 90, self.searchBar.bounds.size.height - 1);
-    self.cancelButton.titleLabel.font = [UIFont sansSerifFontWithSize:14];
+    self.cancelButton.frame = CGRectMake(screenSize.width - cancelButtonWidth, self.searchBar.frame.origin.y, cancelButtonWidth, self.searchBar.bounds.size.height - 1);
+    self.cancelButton.titleLabel.font = [UIFont sansSerifFontWithSize:11];
     self.cancelButton.backgroundColor = [UIColor blackColor];
     [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.cancelButton setTitle:@"CANCEL" forState:UIControlStateNormal];
@@ -110,11 +112,6 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.scrollView addSubview:self.cancelButton];
     [self.cancelButton addTarget:self action:@selector(cancelSearch:) forControlEvents:UIControlEventTouchUpInside];
     self.cancelButton.alpha = 0;
-    CALayer *cancelButtonSeparator = [CALayer layer];
-    cancelButtonSeparator.backgroundColor = [UIColor artsyHeavyGrey].CGColor;
-    cancelButtonSeparator.frame = CGRectMake(0, 0, .5, self.cancelButton.frame.size.height);
-    [self.cancelButton.layer addSublayer:cancelButtonSeparator];
-
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startedEditing:)
                                                  name:UITextFieldTextDidBeginEditingNotification
@@ -133,7 +130,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     self.artistTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.artistTableView.scrollEnabled = NO;
 
-   @_weakify(self);
+    @_weakify(self);
     [self.artistController setPostRemoveBlock:^{
         @_strongify(self);
         [self updateArtistTableViewAnimated:YES];
