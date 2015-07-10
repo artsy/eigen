@@ -231,6 +231,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
         parentView.clipsToBounds = NO;
         badgeView = [[JSBadgeView alloc] initWithParentView:parentView alignment:JSBadgeViewAlignmentTopRight];
         badgeView.badgeTextFont = [UIFont sansSerifFontWithSize:10];
+        // This is a unique purple color. If it ever needs to be used elsewhere it should be moved to Artsy-UIColors.
         badgeView.badgeBackgroundColor = [[UIColor alloc] initWithRed:139.0 / 255.0 green:0 blue:255.0 alpha:1];
         objc_setAssociatedObject(button, &kButtonBadgeKey, badgeView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
