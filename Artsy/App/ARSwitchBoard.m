@@ -59,7 +59,7 @@
 
     _routes = [[JLRoutes alloc] init];
 
-   @_weakify(self);
+    @_weakify(self);
     [self.routes addRoute:@"/artist/:id" handler:^BOOL(NSDictionary *parameters) {
         @_strongify(self)
         ARArtistViewController *viewController = [self loadArtistWithID:parameters[@"id"]];
@@ -70,16 +70,6 @@
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view on iPad.
 
-    if ([UIDevice isPad]) {
-        [self.routes addRoute:@"/:profile_id/artist/:id" handler:^BOOL(NSDictionary *parameters) {
-            @_strongify(self)
-
-            Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-            ARArtistViewController *viewController = (id)[self loadArtistWithID:parameters[@"id"] inFair:fair];
-            [[ARTopMenuViewController sharedController] pushViewController:viewController];
-            return YES;
-        }];
-    }
 
     [self.routes addRoute:@"/artwork/:id" handler:^BOOL(NSDictionary *parameters) {
         @_strongify(self)
@@ -127,6 +117,7 @@
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
     }];
+
 
     [self.routes addRoute:@"/" handler:^BOOL(NSDictionary *parameters) {
         [[ARTopMenuViewController sharedController] loadFeed];
@@ -358,11 +349,11 @@
 }
 
 // use the internal router
-- (ARInternalMobileWebViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
+- (UIViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
 {
     BOOL routed = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
     if (routed) {
-        return nil;
+        return [[[ARTopMenuViewController sharedController] rootNavigationController] topViewController];
     }
 
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];

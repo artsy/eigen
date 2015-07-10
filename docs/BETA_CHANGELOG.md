@@ -6,5 +6,6 @@
   changes to facebook that are more or lesss impossible to test automatically. - orta
 * Load all artworks in an artwork's show in the "artwork related artworks" view. - 1aurabrown
 * Fixes auctions route. – ashfurrow
+* Switches our Internal Web View Controllers to use iOS8 APIs, should be a big speed increase - orta
 * Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done loading. - alloy
 * Remove opaque background from Search keyboard. - 1aurabrown

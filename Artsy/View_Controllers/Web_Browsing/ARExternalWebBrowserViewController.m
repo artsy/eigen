@@ -59,14 +59,11 @@
     self.webView.frame = self.view.bounds;
 }
 
-//[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-//}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
 
-    if ([self.navigationController isKindOfClass:[ARNavigationController class]]) {
+    if ([self.navigationController isKindOfClass:ARNavigationController.class]) {
         UIGestureRecognizer *gesture = self.navigationController.interactivePopGestureRecognizer;
 
         [self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:gesture];
@@ -78,7 +75,6 @@
 {
     self.gesture.delegate = nil;
     [super viewWillDisappear:animated];
-    //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 #pragma mark - Properties
@@ -128,7 +124,7 @@
 
 - (NSDictionary *)dictionaryForAnalytics
 {
-    if (self.webView.URL) {
+    if (self.currentURL) {
         return @{ @"url" : self.currentURL.absoluteString,
                   @"type" : @"url" };
     }

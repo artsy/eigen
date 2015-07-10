@@ -4,7 +4,7 @@
 #import "ARInternalShareValidator.h"
 
 
-@interface ARInternalMobileWebViewController () <UIAlertViewDelegate>
+@interface ARInternalMobileWebViewController () <UIAlertViewDelegate, WKNavigationDelegate>
 @property (nonatomic, assign) BOOL loaded;
 @property (nonatomic, strong) ARInternalShareValidator *shareValidator;
 @end
@@ -85,10 +85,25 @@
 
 // Load a new internal web VC for each link we can do
 
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
+{
+    decisionHandler([self shouldLoadNavigationAction:navigationAction]);
+}
+
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
     NSURL *URL = navigationAction.request.URL;
-    ARActionLog(@"Martsy URL %@", URL);
+    NSLog(@"Martsy URL %@ - %@", URL, @(navigationAction.navigationType));
+
+    // WKWebKit sends us this shouldLoad twice, we only
+    // care if it's not an Other ( which seems to maybe be the main frame
+    // actually loading after it has a response. )
+
+    if (navigationAction.navigationType == WKNavigationTypeOther) {
+        return WKNavigationActionPolicyAllow;
+    }
+
+#warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
@@ -97,14 +112,14 @@
 
         } else {
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
-            if (viewController) {
+            if (viewController && ![self.navigationController.viewControllers containsObject:viewController]) {
                 [self.navigationController pushViewController:viewController animated:YES];
-                return WKNavigationActionPolicyCancel;
             }
+            return WKNavigationActionPolicyCancel;
         }
 
     } else if ([ARRouter isInternalURL:URL] && ([URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"])) {
-        // hijack AJAX requests
+        // hijack AJAX requests, as well as
         if ([User isTrialUser]) {
             [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser) {
                 [self userDidSignUp];
