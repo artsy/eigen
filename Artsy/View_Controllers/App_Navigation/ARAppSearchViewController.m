@@ -103,7 +103,7 @@
     return YES;
 }
 
-- (BOOL)hidesBackButton
+- (BOOL)hidesNavigationButtons
 {
     return YES;
 }

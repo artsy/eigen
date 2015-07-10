@@ -244,7 +244,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     }];
 }
 
-- (BOOL)hidesBackButton
+- (BOOL)hidesNavigationButtons
 {
     return YES;
 }

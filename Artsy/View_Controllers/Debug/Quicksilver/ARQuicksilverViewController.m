@@ -19,7 +19,7 @@
 
 #pragma mark - ARMenuAwareViewController
 
-- (BOOL)hidesBackButton
+- (BOOL)hidesNavigationButtons
 {
     return YES;
 }
@@ -142,7 +142,7 @@
     } else {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
-       @_weakify(self);
+        @_weakify(self);
         _searchRequest = [ArtsyAPI searchWithQuery:query success:^(NSArray *results) {
             @_strongify(self);
             self.searchResults = [results copy];
@@ -179,7 +179,7 @@
 
     UIImage *placeholder = [UIImage imageNamed:@"SearchThumb_LightGray"];
 
-   @_weakify(cell);
+    @_weakify(cell);
     [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:placeholder
 
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
