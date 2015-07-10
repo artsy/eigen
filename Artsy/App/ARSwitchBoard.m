@@ -19,6 +19,8 @@
 #import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
 
+#import "ARTopMenuNavigationDataSource.h"
+
 
 @interface ARSwitchBoard ()
 
@@ -59,9 +61,9 @@
 
     _routes = [[JLRoutes alloc] init];
 
-    @weakify(self);
+   @_weakify(self);
     [self.routes addRoute:@"/artist/:id" handler:^BOOL(NSDictionary *parameters) {
-        @strongify(self)
+        @_strongify(self)
         ARArtistViewController *viewController = [self loadArtistWithID:parameters[@"id"]];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
@@ -72,7 +74,7 @@
 
     if ([UIDevice isPad]) {
         [self.routes addRoute:@"/:profile_id/artist/:id" handler:^BOOL(NSDictionary *parameters) {
-            @strongify(self)
+            @_strongify(self)
 
             Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
             ARArtistViewController *viewController = (id)[self loadArtistWithID:parameters[@"id"] inFair:fair];
@@ -82,7 +84,7 @@
     }
 
     [self.routes addRoute:@"/artwork/:id" handler:^BOOL(NSDictionary *parameters) {
-        @strongify(self)
+        @_strongify(self)
         Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
         ARArtworkSetViewController *viewController = [self loadArtworkWithID:parameters[@"id"] inFair:fair];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
@@ -90,7 +92,7 @@
     }];
 
     [self.routes addRoute:@"/gene/:id" handler:^BOOL(NSDictionary *parameters) {
-        @strongify(self)
+        @_strongify(self)
         ARGeneViewController *viewController = [self loadGeneWithID:parameters[@"id"]];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
@@ -98,7 +100,7 @@
 
 
     [self.routes addRoute:@"/show/:id" handler:^BOOL(NSDictionary *parameters) {
-        @strongify(self)
+        @_strongify(self)
         ARShowViewController *viewController = [self loadShowWithID:parameters[@"id"]];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
@@ -108,7 +110,7 @@
 
         if ([UIDevice isPad]) { return NO; }
 
-        @strongify(self);
+        @_strongify(self);
 
         Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
         UIViewController *viewController = [self loadFairGuideWithFair:fair];
@@ -121,7 +123,7 @@
 
         if ([UIDevice isPad]) { return NO; }
 
-        @strongify(self)
+        @_strongify(self)
         Fair *fair = parameters[@"fair"] ?: [[Fair alloc] initWithFairID:parameters[@"profile_id"]];
         UIViewController *viewController = [self loadArtistInFairWithID:parameters[@"id"] fair:fair];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
@@ -151,8 +153,9 @@
         return YES;
     }];
 
+    // This route will match any single path component and thus should be added last.
     [self.routes addRoute:@"/:profile_id" handler:^BOOL(NSDictionary *parameters) {
-        @strongify(self);
+        @_strongify(self);
         UIViewController *viewController = [self routeProfileWithID: parameters[@"profile_id"]];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
@@ -358,8 +361,14 @@
 }
 
 // use the internal router
-- (ARInternalMobileWebViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
+- (UIViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
 {
+    // Can't be routed in the JLRoutes usage at the top, because we can't return view controller instances from there.
+    if ([url.path isEqualToString:@"/works-for-you"]) {
+        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
+        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications] rootViewController];
+    }
+
     BOOL routed = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
     if (routed) {
         return nil;

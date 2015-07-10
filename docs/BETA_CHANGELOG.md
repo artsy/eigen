@@ -1,7 +1,17 @@
 ## Next
 
+* Show sign-in/sign-up flow when selecting ‘bell’ tab as a trial user. - alloy
+* Fetch pending notifications count when the user signs-up/signs-in. - alloy
+* Open notifications tab when tapping an incoming push notification. - alloy
+* Always poll for remote notifications on app activationg. - alloy
+* Reload notifications view whenever notifications come in or have been polled. - alloy
+* Mark notifications as seen once the new notifications view has been loaded and was visible. - alloy
+
+## 2.1.0 (2015.07.04)
+
 * Reduced the filesize of the Artsy Loading screen - orta
 * Change onboarding callback to use a block rather then a delegate message. - 1aurabrown
+* Pre-cache all Artsy Fonts on App launch. - orta
 * Migrated to frameworks under the hood. This is a massive change to a lot
   of the foundations of the app. Most importantly it required making breaking 
   changes to facebook that are more or lesss impossible to test automatically. - orta
@@ -11,3 +21,5 @@
 * Remove opaque background from Search keyboard. - 1aurabrown
 * Reduce height of inquiry form on iPad - 1aurabrown
 * Fix ARCollapsableTextView not expanding to full height - 1aurabrown
+* Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
+* Adds ‘bell’ notifications tab and shows notification count (currently only on launch and only if already signed-in). - alloy

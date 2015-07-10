@@ -10,7 +10,8 @@ typedef NS_ENUM(NSInteger, ARTrialContext) {
     ARTrialContextAuctionBid,
     ARTrialContextFavoriteProfile,
     ARTrialContextArtworkOrder,
-    ARTrialContextFairGuide
+    ARTrialContextFairGuide,
+    ARTrialContextNotifications
 };
 
 

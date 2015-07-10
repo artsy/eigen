@@ -1,7 +1,7 @@
 #import "ARArtworkDetailView.h"
 #import "ARTextView.h"
 
-NS_ENUM(NSInteger, ARDetailSubViewOrder){
+typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
     ARDetailArtistName = 1,
     ARDetailArtworkLotNumber,
     ARDetailArtworkTitle,
@@ -13,7 +13,8 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
     ARDetailPartner,
     ARDetailArtworkAuctionEstimate,
     ARDetailFair,
-    ARDetailFairDescription};
+    ARDetailFairDescription
+};
 
 
 @interface ARArtworkDetailView () <ARTextViewDelegate>
@@ -40,15 +41,15 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
 - (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate>)delegate
 {
     _delegate = delegate;
-    @weakify(self);
+   @_weakify(self);
     [self.artwork onArtworkUpdate:^{
-        @strongify(self);
+        @_strongify(self);
         [self updateWithArtwork:self.artwork];
     } failure:nil];
     [self updateWithArtwork:self.artwork];
 
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-        @strongify(self);
+        @_strongify(self);
         [self updateWithSaleArtwork:saleArtwork];
     } failure:nil];
 }

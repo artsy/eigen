@@ -133,9 +133,9 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     self.artistTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.artistTableView.scrollEnabled = NO;
 
-    @weakify(self);
+   @_weakify(self);
     [self.artistController setPostRemoveBlock:^{
-        @strongify(self);
+        @_strongify(self);
         [self updateArtistTableViewAnimated:YES];
     }];
 

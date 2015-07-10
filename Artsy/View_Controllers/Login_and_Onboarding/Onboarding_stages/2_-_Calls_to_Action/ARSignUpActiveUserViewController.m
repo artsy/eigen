@@ -63,6 +63,7 @@
             break;
 
         case ARTrialContextFairGuide:
+        case ARTrialContextNotifications:
             message = @"Sign up for a free account\nto get personal recommendations.";
             break;
 

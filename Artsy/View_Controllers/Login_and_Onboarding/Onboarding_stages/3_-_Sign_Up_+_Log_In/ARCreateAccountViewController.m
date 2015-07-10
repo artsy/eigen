@@ -188,14 +188,14 @@
     NSString *username = self.email.text;
     NSString *password = self.password.text;
 
-    @weakify(self);
+   @_weakify(self);
     [[ARUserManager sharedManager] createUserWithName:self.name.text email:username password:password success:^(User *user) {
-        @strongify(self);
+        @_strongify(self);
         [self loginWithUserCredentialsWithSuccess:^{
             [self.delegate didSignUpAndLogin];
         }];
     } failure:^(NSError *error, id JSON) {
-        @strongify(self);
+        @_strongify(self);
         if (JSON
             && [JSON isKindOfClass:[NSDictionary class]]
             && ([JSON[@"error"] isEqualToString:@"User Already Exists"]
@@ -221,20 +221,20 @@
     NSString *username = self.email.text;
     NSString *password = self.password.text;
 
-    @weakify(self);
+   @_weakify(self);
     [[ARUserManager sharedManager] loginWithUsername:username password:password successWithCredentials:nil
         gotUser:^(User *currentUser) {
          success();
         }
         authenticationFailure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         [self setFormEnabled:YES];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t Log In" message:@"Please check your email and password." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         [alert show];
 
         }
         networkFailure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         [self setFormEnabled:YES];
         [self performSelector:_cmd withObject:self afterDelay:3];
         [ARNetworkErrorManager presentActiveErrorModalWithError:error];

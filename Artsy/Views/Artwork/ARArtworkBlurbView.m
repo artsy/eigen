@@ -2,7 +2,6 @@
 #import "ARTextView.h"
 #import "ORStackView+ArtsyViews.h"
 
-
 @interface ARArtworkBlurbView () <ARTextViewDelegate>
 @property (nonatomic, strong) UILabel *aboutHeading;
 @property (nonatomic, strong) ARTextView *blurbTextView;
@@ -19,10 +18,10 @@
         return nil;
     }
 
-    @weakify(self);
+   @_weakify(self);
 
     [artwork onArtworkUpdate:^{
-        @strongify(self);
+        @_strongify(self);
         [self updateWithArtwork:artwork];
     } failure:nil];
 

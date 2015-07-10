@@ -69,6 +69,11 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     [self observeViewController:NO];
 }
 
+- (UIViewController *)rootViewController;
+{
+    return [self.viewControllers firstObject];
+}
+
 #pragma mark - Properties
 
 - (void)setDelegate:(id<UINavigationControllerDelegate>)delegate
@@ -254,7 +259,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     if (animated) {
         CABasicAnimation *fade = [CABasicAnimation animation];
         fade.keyPath = @keypath(self.backButton.layer, opacity);
-        fade.fromValue = @([self.backButton.layer.presentationLayer opacity]);
+        fade.fromValue = @([(CALayer *)self.backButton.layer.presentationLayer opacity]);
         fade.toValue = @(toValue);
         fade.duration = ARAnimationDuration;
 
@@ -327,10 +332,10 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     }
     [self ar_addModernChildViewController:self.pendingOperationViewController];
 
-    @weakify(self);
+    @_weakify(self);
 
     return [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-        @strongify(self);
+        @_strongify(self);
         RACSubject *completionSubject = [RACSubject subject];
 
         [UIView animateIf:self.animatesLayoverChanges duration:ARAnimationDuration :^{

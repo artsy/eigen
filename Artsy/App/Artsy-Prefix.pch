@@ -8,31 +8,36 @@
 
 #import <Availability.h>
 
-#ifndef __IPHONE_5_0
-#warning "This project uses features only available in iOS SDK 4.0 and later."
+#ifndef __IPHONE_8_3
+#warning "This project uses features only available in iOS SDK 8.3 and later."
 #endif
 
 #ifdef __OBJC__
-    #import <UIKit/UIKit.h>
-    #import <Foundation/Foundation.h>
-    #import <SystemConfiguration/SystemConfiguration.h>
-    #import <MobileCoreServices/MobileCoreServices.h>
+    @import UIKit;
+    @import Foundation;
+    @import SystemConfiguration;
+    @import MobileCoreServices;
 
     #import "Constants.h"
 
-    #import <AFNetworking/AFNetworking.h>
-    #import <AFHTTPRequestOperationLogger/AFHTTPRequestOperationLogger.h>
-    #import <Mantle/Mantle.h>
-    #import <ObjectiveSugar/ObjectiveSugar.h>
-    #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-    #import <CocoaLumberjack/CocoaLumberjack.h>
+    @import AFNetworking;
+    @import Mantle;
+    @import Mantle.metamacros;
+    @import AFHTTPRequestOperationLogger;
+    @import ObjectiveSugar;
+    @import FLKAutoLayout;
+    @import CocoaLumberjack;
+    @import ORStackView;
+    @import ReactiveCocoa;
+    @import NAMapKit;
+    @import EDColor;
+    @import libextobjc;
+    @import UIView_BooleanAnimations;
+    @import Artsy_UIButtons;
+    @import ObjectiveSugar;
+
     #import <ORStackView/ORStackScrollView.h>
     #import <ORStackView/ORTagBasedAutoStackView.h>
-    #import <ReactiveCocoa/ReactiveCocoa.h>
-    #import <NAMapKit/NAMapView.h>
-    #import <EDColor/UIColor+Hex.h>
-    #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
-    #import <Artsy_UIButtons/ARButtonSubclasses.h>
 
     #import "ArtsyAPI.h"
     #import "Models.h"
@@ -46,13 +51,10 @@
     #import "ARTopMenuViewController.h"
     #import "ARScrollNavigationChief.h"
     #import "ARSystemTime.h"
-    @import ObjectiveSugar;
     #import "ARDispatchManager.h"
     #import "ARDeveloperOptions.h"
     #import "ARAutoLayoutDebugging.h"
 
-    #import <libextobjc/EXTKeyPathCoding.h>
-    #import <libextobjc/EXTScope.h>
 
     #ifdef DEBUG
     static const int ddLogLevel = DDLogLevelVerbose;
@@ -69,13 +71,23 @@
     #endif
 
     #import "ARLogger.h"
-
 #endif
 
-#ifndef __FEATURES
-#define __FEATURES
+// Given that we don't see eye to eye with the GitHub team
+// on dependency management, we can't use frameworks without
+// getting ambiguous warning when Mantle+RAC and @weakify
+// as they just throw it all in together.
 
-// define here all the features you want on
-//#define STUBBED_FEED
+// We can work around this for now by having our own commands
+// but a more realistic approach is to migrate away from the APIs.
 
-#endif
+#define _weakify(...) \
+    autoreleasepool {} \
+    metamacro_foreach_cxt(rac_weakify_,, __weak, __VA_ARGS__)
+
+#define _strongify(...) \
+    try {} @finally {} \
+    _Pragma("clang diagnostic push") \
+    _Pragma("clang diagnostic ignored \"-Wshadow\"") \
+    metamacro_foreach(rac_strongify_,, __VA_ARGS__) \
+    _Pragma("clang diagnostic pop")

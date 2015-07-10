@@ -5,9 +5,9 @@
 
 - (void)getBrowseFeaturedLinks:(void (^)(NSArray *links))success failure:(void (^)(NSError *error))failure;
 {
-    @weakify(self);
+   @_weakify(self);
     [ArtsyAPI getBrowseMenuFeedLinksWithSuccess:^(NSArray *links) {
-        @strongify(self);
+        @_strongify(self);
         self->_links = links;
         success(self.links);
     } failure:failure];

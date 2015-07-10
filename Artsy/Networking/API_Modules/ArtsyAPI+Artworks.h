@@ -16,4 +16,7 @@
 + (AFJSONRequestOperation *)getAuctionComparablesForArtwork:(Artwork *)artwork success:(void (^)(NSArray *comparables))success failure:(void (^)(NSError *error))failure;
 + (void)getAuctionArtworkWithSale:(NSString *)saleID artwork:(NSString *)artworkID success:(void (^)(id auctionArtwork))success failure:(void (^)(NSError *error))failure;
 
++ (AFHTTPRequestOperation *)getWorksForYouCount:(void (^)(NSUInteger notificationCount))success
+                                        failure:(void (^)(NSError *error))failure;
+
 @end

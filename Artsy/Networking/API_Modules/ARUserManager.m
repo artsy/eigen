@@ -10,6 +10,8 @@
 #import "ARCollectorStatusViewController.h"
 #import "ARKeychainable.h"
 
+NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";
+
 NSString *ARTrialUserNameKey = @"ARTrialUserName";
 NSString *ARTrialUserEmailKey = @"ARTrialUserEmail";
 NSString *ARTrialUserUUID = @"ARTrialUserUUID";
@@ -18,7 +20,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 @interface ARUserManager ()
 @property (nonatomic, strong) NSObject<ARKeychainable> *keychain;
 @property (nonatomic, strong) User *currentUser;
-@property (nonatomic, readonly) BOOL didCreateAccountThisSession;
+@property (nonatomic, assign) BOOL didCreateAccountThisSession;
 @end
 
 
@@ -78,7 +80,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         }];
 
         // safeguard
-        if (!self.currentUser.userID) {
+        if (!_currentUser.userID) {
             ARErrorLog(@"Deserialized user %@ does not have an ID.", _currentUser);
             _currentUser = nil;
         }
@@ -88,9 +90,19 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     return self;
 }
 
+- (void)setCurrentUser:(User *)user;
+{
+    if (_currentUser != user) {
+        _currentUser = user;
+        if (user != nil) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:ARUserSessionStartedNotification object:self];
+        }
+    }
+}
+
 - (BOOL)hasExistingAccount
 {
-    return (_currentUser && [self hasValidAuthenticationToken]) || [self hasValidXAppToken];
+    return (self.currentUser && [self hasValidAuthenticationToken]) || [self hasValidXAppToken];
 }
 
 - (BOOL)hasValidAuthenticationToken
@@ -344,7 +356,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
                  return;
              }
 
-             self->_didCreateAccountThisSession = YES;
+             self.didCreateAccountThisSession = YES;
              self.currentUser = user;
              [self storeUserData];
              
@@ -379,7 +391,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
                  return;
              }
 
-             self->_didCreateAccountThisSession = YES;
+             self.didCreateAccountThisSession = YES;
              self.currentUser = user;
              [self storeUserData];
 
@@ -413,7 +425,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
                  return;
              }
 
-             self->_didCreateAccountThisSession = YES;
+             self.didCreateAccountThisSession = YES;
              self.currentUser = user;
              [self storeUserData];
              

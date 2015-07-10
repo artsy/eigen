@@ -12,6 +12,15 @@
     [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[self alloc] init];
 }
 
+- (void)registerForDeviceNotifications
+{
+    ARActionLog(@"Registering with Apple for remote notifications.");
+    UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+}
+
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
 #if (TARGET_IPHONE_SIMULATOR == 0)
@@ -49,57 +58,68 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    UIApplication *app = [UIApplication sharedApplication];
-    NSString *uiApplicationState = [UIApplicationStateEnum toString:app.applicationState];
+    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
+}
 
+- (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo inApplicationState:(UIApplicationState)applicationState;
+{
+    NSString *uiApplicationState = [UIApplicationStateEnum toString:applicationState];
     ARActionLog(@"Incoming notification in the %@ application state: %@", uiApplicationState, userInfo);
 
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];
     [ARAnalytics event:ARAnalyticsNotificationReceived withProperties:notificationInfo];
 
-    NSString *message = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    NSString *message = userInfo[@"aps"][@"alert"];
     NSString *url = userInfo[@"url"];
 
     if (!message) {
         message = url;
     }
 
-    if (app.applicationState == UIApplicationStateActive && message) {
+    UIViewController *viewController = nil;
+
+    if (url) {
+        // Theoretically the way JLRoutes works could mean that a view controller would immediately get shown if it mached a
+        // route, which would be bad, because it should only happen when the user actually tapped the notification. But
+        // right now we're only expecting notifications for ‘works for you’, which is not routed that way.
+        viewController = [ARSwitchBoard.sharedInstance loadPath:url];
+
+        NSInteger tabIndex = [[ARTopMenuViewController sharedController] indexOfRootViewController:viewController];
+        if (tabIndex != NSNotFound) {
+            NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];
+            [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:tabIndex];
+        }
+    }
+
+    if (applicationState == UIApplicationStateActive && message) {
         // app is in the foreground
         [ARNotificationView showNoticeInView:[self findVisibleWindow]
                                        title:message
-                                   hideAfter:0
                                     response:^{
-                if (url) {
-                    [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
-
-                    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:url];
-                    if (viewController) {
-                        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-                    }
-                }
+            if (url) {
+                [self tappedNotification:notificationInfo viewController:viewController];
+            }
                                     }];
     } else {
         // app was brought from the background after a user clicked on the notification
-        [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
-        if (url) {
-            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:url];
-
-            if (viewController) {
-                [[ARTopMenuViewController sharedController] pushViewController:viewController];
-            }
-        }
+        [self tappedNotification:notificationInfo viewController:viewController];
     }
 }
 
-- (void)registerForDeviceNotifications
+- (void)tappedNotification:(NSDictionary *)notificationInfo viewController:(UIViewController *)viewController;
 {
-    ARActionLog(@"Registering with Apple for remote notifications.");
-    UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
-    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
+    if (viewController) {
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+    }
+}
+
+- (void)fetchNotificationCounts;
+{
+    [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
+        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
+    } failure:nil];
 }
 
 - (UIWindow *)findVisibleWindow

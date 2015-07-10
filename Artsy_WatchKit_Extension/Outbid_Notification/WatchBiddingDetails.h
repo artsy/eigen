@@ -2,10 +2,11 @@
 
 /// A class to encapsulate all possible state needed for the Outbid notification
 
-NS_ENUM(NSInteger, ARWatchBiddingStatus){
+typedef NS_ENUM(NSInteger, ARWatchBiddingStatus) {
     ARWatchBiddingStatusFailed,
     ARWatchBiddingStatusOutbid,
-    ARWatchBiddingStatusHighestBidder};
+    ARWatchBiddingStatusHighestBidder
+};
 
 
 @interface WatchBiddingDetails : NSObject

@@ -707,18 +707,18 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)getCurrentAdmin
 {
-    @weakify(self);
+   @_weakify(self);
     [ArtsyAPI getInquiryContact:^(User *contactStub) {
-        @strongify(self);
+        @_strongify(self);
         self.specialistNameLabel.text = contactStub.name;
 
     } withProfile:^(Profile *contactProfile) {
-        @strongify(self);
+        @_strongify(self);
         // Use a white BG because the square to circle looks ugly
         [self.specialistHeadImage ar_setImageWithURL:[NSURL URLWithString:contactProfile.iconURL] placeholderImage:[UIImage imageFromColor:[UIColor whiteColor]]];
 
     } failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         ARErrorLog(@"Couldn't get an inquiry contact. %@", error.localizedDescription);
         [self performSelector:@selector(getCurrentAdmin) withObject:nil afterDelay:2];
     }];
@@ -854,9 +854,9 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     _emailValidator = [ALPValidator validatorWithType:ALPValidatorTypeString];
     [self.emailValidator addValidationToEnsureValidEmailWithInvalidMessage:NSLocalizedString(@"Please enter a valid email", nil)];
 
-    @weakify(self);
+   @_weakify(self);
     self.emailValidator.validatorStateChangedHandler = ^(ALPValidatorState newState) {
-        @strongify(self);
+        @_strongify(self);
         self.sendButton.enabled = self.emailValidator.isValid;
       // We can also use newState to determine what to do in more complex situations. Validator states include:
       // ALPValidatorValidationStateValid, ALPValidatorValidationStateInvalid, ALPValidatorValidationStateWaitingForRemote

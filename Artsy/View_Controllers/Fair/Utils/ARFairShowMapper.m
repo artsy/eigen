@@ -247,9 +247,9 @@
 
 - (void)rebuildPartnerToShowsMap
 {
-    @weakify(self);
+   @_weakify(self);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        @strongify(self);
+        @_strongify(self);
 
         NSMapTable *result = [NSMapTable strongToStrongObjectsMapTable];
         for(PartnerShow *show in self.shows) {

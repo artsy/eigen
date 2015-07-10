@@ -1,7 +1,7 @@
 WORKSPACE = Artsy.xcworkspace
 SCHEME = Artsy
 CONFIGURATION = Beta
-APP_PLIST = Artsy/App/Artsy-Info.plist
+APP_PLIST = Artsy/App_Resources/Artsy-Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
 TARGETED_DEVICE_FAMILY = \"1,2\"
 DEVICE_HOST = platform='iOS Simulator',OS='8.3',name='iPhone 6'
@@ -70,9 +70,12 @@ ipa: set_git_properties change_version_to_date
 	ipa build --scheme $(SCHEME) --configuration $(CONFIGURATION) -t --verbose
 
 stamp_date:
-	config/stamp --input Artsy/Classes/AppIcon_58.png --output Artsy/Classes/AppIcon_58.png --text "$(DATE_MONTH)"
-	config/stamp --input Artsy/Classes/AppIcon_80.png --output Artsy/Classes/AppIcon_80.png --text "$(DATE_MONTH)"
-	config/stamp --input Artsy/Classes/AppIcon_120.png --output Artsy/Classes/AppIcon_120.png --text "$(DATE_MONTH)"
+	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-60@2x.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-60@2x.png --text "$(DATE_MONTH)"
+	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-76.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-76.png --text "$(DATE_MONTH)"
+	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-76@2x.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-76@2x.png --text "$(DATE_MONTH)"
+	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40.png --text "$(DATE_MONTH)"
+	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x.png --text "$(DATE_MONTH)"
+	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x-1.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x-1.png --text "$(DATE_MONTH)"
 
 change_version_to_date:
 	$(PLIST_BUDDY) -c "Set CFBundleVersion $(DATE_VERSION)" $(APP_PLIST)
@@ -117,7 +120,7 @@ alpha: stamp_date deploy
 
 beta: BUNDLE_NAME = 'Artsy β'
 beta: NOTIFY = 1
-beta: stamp_date deploy
+beta: deploy
 
 synxify: 
 	bundle exec synx --spaces-to-underscores -e "/Documentation" Artsy.xcodeproj

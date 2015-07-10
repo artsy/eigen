@@ -79,14 +79,14 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     self.screenSwipeGesture.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:self.screenSwipeGesture];
 
-    @weakify(self);
+   @_weakify(self);
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        @strongify(self);
+        @_strongify(self);
 
-        @weakify(self);
+       @_weakify(self);
         [ArtsyAPI getPersonalizeGenesWithSuccess:^(NSArray *genes) {
-            @strongify(self);
+            @_strongify(self);
             self.genesForPersonalize = genes;
         } failure:^(NSError *error) {
             ARErrorLog(@"Couldn't get personalize genes. Error: %@", error.localizedDescription);
@@ -324,9 +324,9 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     self.backgroundWidthConstraint.constant = 0;
     self.backgroundHeightConstraint.constant = 0;
-    @weakify(self);
+   @_weakify(self);
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
-        @strongify(self);
+        @_strongify(self);
         [self.backgroundView layoutIfNeeded];
         self.backgroundView.alpha = 1;
         self.backgroundView.backgroundColor = [UIColor clearColor];
@@ -370,10 +370,10 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 - (void)signUpWithFacebook
 {
-    @weakify(self);
+   @_weakify(self);
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
-        @strongify(self);
+        @_strongify(self);
 
         AROnboardingMoreInfoViewController *more = [[AROnboardingMoreInfoViewController alloc] initForFacebookWithToken:token email:email name:name];
         more.delegate = self;
@@ -381,7 +381,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
         [self pushViewController:more animated:YES];
 
     } failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
 
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 
@@ -396,9 +396,9 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
-    @weakify(self);
+   @_weakify(self);
     [ARAuthProviders getReverseAuthTokenForTwitter:^(NSString *token, NSString *secret) {
-        @strongify(self);
+        @_strongify(self);
 
         AROnboardingMoreInfoViewController *more = [[AROnboardingMoreInfoViewController alloc]
                                                     initForTwitterWithToken:token andSecret:secret];
@@ -407,7 +407,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
         [self pushViewController:more animated:YES];
 
     } failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
 
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
         [self twitterError];
@@ -547,9 +547,9 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
     self.backgroundWidthConstraint.constant = offset * 2;
     self.backgroundHeightConstraint.constant = offset * 2;
-    @weakify(self);
+   @_weakify(self);
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
-        @strongify(self);
+        @_strongify(self);
         [self.backgroundView layoutIfNeeded];
         self.backgroundView.image = blurImage;
         self.backgroundView.alpha = 0.3;

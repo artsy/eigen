@@ -83,6 +83,9 @@ static ARAppDelegate *_sharedInstance = nil;
     [ARDefaults setup];
     [ARRouter setup];
 
+    // Temp Fix for: https://github.com/artsy/eigen/issues/602
+    [self forceCacheCustomFonts];
+
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [ARTopMenuViewController sharedController];
 
@@ -135,22 +138,56 @@ static ARAppDelegate *_sharedInstance = nil;
         // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API. Later on,
         // when the user does sign-in, this will be ran again and the device will be associated with the user account.
         if (!showOnboarding) {
-            [self registerForDeviceNotifications];
+            [self.remoteNotificationsDelegate registerForDeviceNotifications];
+        }
+
+        NSDictionary *remoteNotification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+        if (remoteNotification) {
+            // The app was not running, so considering it to be in the UIApplicationStateInactive state.
+            [self.remoteNotificationsDelegate applicationDidReceiveRemoteNotification:remoteNotification
+                                                                   inApplicationState:UIApplicationStateInactive];
         }
     }];
 
     return YES;
 }
 
-- (void)registerForDeviceNotifications;
+- (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    JSDecoupledAppDelegate *decoupledDelegate = [JSDecoupledAppDelegate sharedAppDelegate];
-    [(ARAppNotificationsDelegate *)decoupledDelegate.remoteNotificationsDelegate registerForDeviceNotifications];
+    [ARTrialController extendTrial];
+    [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
+
+    if ([User currentUser]) {
+        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+            [self.remoteNotificationsDelegate fetchNotificationCounts];
+        }];
+    }
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    [ARAnalytics finishTimingEvent:ARAnalyticsTimePerSession];
+}
+
+- (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
+{
+    return [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
 }
 
 - (void)finishDemoSplash
 {
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)forceCacheCustomFonts
+{
+    __unused UIFont *font = [UIFont serifBoldItalicFontWithSize:12];
+    font = [UIFont serifBoldFontWithSize:12];
+    font = [UIFont serifSemiBoldFontWithSize:12];
+    font = [UIFont serifFontWithSize:12];
+    font = [UIFont serifItalicFontWithSize:12];
+    font = [UIFont sansSerifFontWithSize:12];
+    font = [UIFont smallCapsSerifFontWithSize:12];
 }
 
 - (void)finishOnboardingAnimated:(BOOL)animated didCancel:(BOOL)cancelledSignIn;
@@ -166,8 +203,11 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     if (!cancelledSignIn) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self registerForDeviceNotifications];
+        ar_dispatch_main_queue(^{
+            if ([User currentUser]) {
+                [self.remoteNotificationsDelegate registerForDeviceNotifications];
+                [self.remoteNotificationsDelegate fetchNotificationCounts];
+            }
         });
     }
 }
@@ -345,18 +385,6 @@ static ARAppDelegate *_sharedInstance = nil;
     ARQuicksilverViewController *adminSettings = [[ARQuicksilverViewController alloc] init];
     [navigationController pushViewController:adminSettings animated:YES];
 }
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    [ARTrialController extendTrial];
-    [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    [ARAnalytics finishTimingEvent:ARAnalyticsTimePerSession];
-}
-
 - (void)fetchSiteFeatures
 {
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {

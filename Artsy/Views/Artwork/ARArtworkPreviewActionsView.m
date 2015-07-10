@@ -34,17 +34,17 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
     _shareButton = [self newShareButton];
     _favoriteButton = [self newFavoriteButton];
 
-    @weakify(self);
+   @_weakify(self);
     [artwork getFavoriteStatus:^(ARHeartStatus status) {
-        @strongify(self);
+        @_strongify(self);
         [self.favoriteButton setStatus:status animated:YES];
     } failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
         [self.favoriteButton setStatus:ARHeartStatusNo animated:YES];
     }];
 
     [artwork onArtworkUpdate:^{
-        @strongify(self);
+        @_strongify(self);
         [self updateWithArtwork:artwork andFair:fair];
     } failure:nil];
 

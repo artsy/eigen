@@ -707,14 +707,26 @@ static NSSet *artsyHosts = nil;
     return [staticHTTPClient requestWithMethod:@"GET" path:ARSuggestedHomepageArtworks parameters:nil];
 }
 
-+ (NSURLRequest *)worksForYouRequest
+static NSURLRequest *
+WorksForYouRequest(NSUInteger pageSize)
 {
     return [staticHTTPClient requestWithMethod:@"GET" path:ARNotificationsURL parameters:@{
         @"page" : @1,
         @"type" : @"ArtworkPublished",
         @"user_id" : [User currentUser].userID,
-        @"size" : @10
+        @"size" : @(pageSize),
+        @"total_count" : @1
     }];
+}
+
++ (NSURLRequest *)worksForYouRequest
+{
+    return WorksForYouRequest(10);
+}
+
++ (NSURLRequest *)worksForYouCountRequest;
+{
+    return WorksForYouRequest(1);
 }
 
 #pragma mark -
