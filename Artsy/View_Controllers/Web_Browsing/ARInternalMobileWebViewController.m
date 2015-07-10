@@ -3,16 +3,10 @@
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
 
-//@interface TSMiniWebBrowser (Private)
-//@property(nonatomic, readonly, strong) UIWebView *webView;
-//- (UIEdgeInsets)webViewContentInset;
-//- (UIEdgeInsets)webViewScrollIndicatorsInsets;
-//@end
 
-// @interface ARInternalMobileWebViewController() <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
 @interface ARInternalMobileWebViewController () <UIAlertViewDelegate>
 @property (nonatomic, assign) BOOL loaded;
-@property (nonatomic, readonly, strong) ARInternalShareValidator *shareValidator;
+@property (nonatomic, strong) ARInternalShareValidator *shareValidator;
 @end
 
 
@@ -50,15 +44,9 @@
         return nil;
     }
 
-    // self.delegate = self;
-    // self.showNavigationBar = NO;
-    // self.mode = TSMiniWebBrowserModeNavigation;
-    // self.showToolBar = NO;
-    //    self.backgroundColor = [UIColor whiteColor];
-    //    self.opaque = NO;
     _shareValidator = [[ARInternalShareValidator alloc] init];
 
-    ARActionLog(@"Initialized with URL %@", url);
+    ARActionLog(@"InternalWebVC init with URL %@", url);
     return self;
 }
 
@@ -72,7 +60,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES animated:NO];
 
     // As we initially show the loading, we don't want this to appear when you do a back or when a modal covers this view.
     if (!self.loaded) {
@@ -85,19 +72,8 @@
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation
 {
-    //[UIView animateWithDuration:ARAnimationDuration animations:^{
-    //self.scrollView.contentInset = [self webViewContentInset];
-    //self.scrollView.scrollIndicatorInsets = [self webViewScrollIndicatorsInsets];
-    //}];
-
-    [super viewDidAppear:animated];
-}
-
-- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
-{
-    [super webView:webView didFinishNavigation:navigation];
     [self hideLoading];
     self.loaded = YES;
 }
@@ -118,6 +94,7 @@
         if ([self.shareValidator isSocialSharingURL:URL]) {
             [self.shareValidator shareURL:URL inView:self.view frame:self.view.frame];
             return WKNavigationActionPolicyCancel;
+
         } else {
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
             if (viewController) {

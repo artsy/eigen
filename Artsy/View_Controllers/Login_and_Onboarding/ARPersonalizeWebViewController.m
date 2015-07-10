@@ -3,10 +3,6 @@
 #import "ARRouter.h"
 #import "ARSpinner.h"
 
-//@interface TSMiniWebBrowser (Private)
-//@property(nonatomic, readonly, strong) UIWebView *webView;
-//@end
-
 
 @interface ARPersonalizeWebViewController ()
 @property (nonatomic, strong, readonly) ARSpinner *spinner;
@@ -15,11 +11,10 @@
 
 @implementation ARPersonalizeWebViewController
 
-// @dynamic delegate;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     _spinner = [[ARSpinner alloc] init];
     [self.view addSubview:self.spinner];
     [self.spinner alignCenterWithView:self.webView];
@@ -32,8 +27,11 @@
     self.view.backgroundColor = [UIColor clearColor];
 }
 
-// - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-// - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+    decisionHandler([self shouldLoadNavigationAction:navigationAction]);
+}
+
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
     WKNavigationActionPolicy shouldLoad = [super shouldLoadNavigationAction:navigationAction];
@@ -55,10 +53,10 @@
     }
 }
 
-//- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-//{
-//[self exitOnboarding];
-//}
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+    [self exitOnboarding];
+}
 
 - (void)exitOnboarding
 {

@@ -1,8 +1,14 @@
-#import <STKWebKitViewController/STKWebKitViewController.h>
+@import WebKit;
 
-@interface ARExternalWebBrowserViewController : STKWebKitViewController <UIScrollViewDelegate>
-// @property (readonly, nonatomic, strong) UIScrollView *scrollView;
 
+@interface ARExternalWebBrowserViewController : UIViewController
+
+@property (readonly, nonatomic, strong) WKWebView *webView;
+@property (readonly, nonatomic, strong) UIScrollView *scrollView;
+
+- (instancetype)initWithURL:(NSURL *)url;
+
+- (NSURL *)currentURL;
 - (void)loadURL:(NSURL *)URL;
 
 // Private

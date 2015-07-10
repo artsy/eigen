@@ -98,10 +98,6 @@ target 'Artsy' do
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
 
-  # Martsy / Force integration
-  pod 'TSMiniWebBrowser@dblock', :head
-  pod 'STKWebKitViewController'
-
   # Analytics
   pod 'ARAnalytics', '>= 3.6.2', :subspecs => ["Segmentio", "HockeyApp", "DSL"]
 

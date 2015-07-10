@@ -7,10 +7,19 @@
 #import "ARSwitchBoard.h"
 #import "ARInternalShareValidator.h"
 
+static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavigationType type)
+{
+    id action = [OCMockObject mockForClass:WKNavigationAction.class];
+    [[[action stub] andReturnValue:OCMOCK_VALUE(type)] navigationType];
+    [[[action stub] andReturn:request] request];
+    return action;
+}
+
 
 @interface ARInternalMobileWebViewController (Testing)
 
 @property (nonatomic, strong) ARInternalShareValidator *shareValidator;
+- (NSURLRequest *)requestWithURL:(NSURL *)url;
 
 @end
 
@@ -23,12 +32,14 @@ it(@"passes on fair context", ^{
         return obj == fair;
     }]];
 
-    ARInternalMobileWebViewController<UIWebViewDelegate> *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://artsy.net/foo/bar"]];
+    ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://artsy.net/foo/bar"]];
     controller.fair = fair;
     
     NSURL *url = [NSURL URLWithString:@"http://artsy.net/foo/bar"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeLinkClicked];
+
+    id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
+    [controller shouldLoadNavigationAction:action];
     
     [switchboardMock verify];
     [switchboardMock stopMocking];
@@ -161,7 +172,8 @@ describe(@"authenticated", ^{
             id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
             [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
 
-            expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther]).to.beFalsy();
+            id action = StubNavActionForRequest(request, WKNavigationTypeOther);
+            expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
 
             [mock verify];
             [switchboardMock verify];
@@ -193,22 +205,26 @@ describe(@"unauthenticated", ^{
         
         it(@"handles an internal link being clicked", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"/artwork/andy-warhol-skull"]];
-            expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeLinkClicked]).to.beFalsy();
+            id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
+            expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
         });
         
         it(@"handles an external link being clicked (via a browser)", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://example.com"]];
-            expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeLinkClicked]).to.beFalsy();
+            id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
+            expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
         });
 
         it(@"doesn't handle non-link requests", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://example.com"]];
-            expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeFormSubmitted]).to.beTruthy();
+            id action = StubNavActionForRequest(request, WKNavigationTypeFormSubmitted);
+            expect([controller shouldLoadNavigationAction:action]).to.beTruthy();
         });
 
         it(@"doesn't handle a link with an non-http protocol", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"ftp://example.com"]];
-            expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeLinkClicked]).to.beTruthy();
+            id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
+            expect([controller shouldLoadNavigationAction:action]).to.beTruthy();
         });
 
         it(@"shows a trial login/signup view on a request to log_in", ^{
@@ -222,7 +238,8 @@ describe(@"unauthenticated", ^{
             id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
             [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
 
-            expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther]).to.beFalsy();
+            id action = StubNavActionForRequest(request, WKNavigationTypeOther);
+            expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
 
             [mock verify];
             [switchboardMock verify];
@@ -243,7 +260,8 @@ describe(@"unauthenticated", ^{
             id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
             [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
 
-            expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther]).to.beFalsy();
+            id action = StubNavActionForRequest(request, WKNavigationTypeOther);
+            expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
 
             [mock verify];
             [switchboardMock verify];
@@ -269,7 +287,8 @@ describe(@"sharing", ^{
         [[[shareValidator stub] andReturnValue:@(YES)] isSocialSharingURL:OCMOCK_ANY];
         [[[shareValidator expect] ignoringNonObjectArgs] shareURL:OCMOCK_ANY inView:OCMOCK_ANY frame:CGRectNull];
 
-        [controller webView:nil shouldStartLoadWithRequest:nil navigationType:UIWebViewNavigationTypeOther];
+        id action = StubNavActionForRequest(nil, WKNavigationTypeLinkActivated);
+        [controller shouldLoadNavigationAction:action];
 
         [shareValidator verify];
     });
@@ -277,9 +296,8 @@ describe(@"sharing", ^{
     it(@"returns NO when asked to start loading sharing request", ^{
         [[[shareValidator stub] andReturnValue:@(YES)] isSocialSharingURL:OCMOCK_ANY];
 
-        BOOL shouldLoad = [controller webView:nil shouldStartLoadWithRequest:nil navigationType:UIWebViewNavigationTypeOther];
-
-        expect(shouldLoad).to.beFalsy();
+        id action = StubNavActionForRequest(nil, WKNavigationTypeLinkActivated);
+        expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
     });
 });
 

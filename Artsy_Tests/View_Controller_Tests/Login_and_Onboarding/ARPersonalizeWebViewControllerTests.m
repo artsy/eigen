@@ -11,15 +11,23 @@ before(^{
 it(@"allows google urls to pass", ^{
     NSURL *url = [NSURL URLWithString:@"https://google.com/hi"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    BOOL allowed = [sut webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther];
-    expect(allowed).to.beTruthy();
+
+    id action = [OCMockObject mockForClass:WKNavigationAction.class];
+    [[[action stub] andReturnValue:OCMOCK_VALUE(UIWebViewNavigationTypeOther)] navigationType];
+    [[[action stub] andReturn:request] request];
+
+    expect([sut shouldLoadNavigationAction:action]).to.beTruthy();
 });
 
 it(@"returns no on artsy root urls", ^{
     NSURL *url = [NSURL URLWithString:@"https://staging.artsy.net/"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    BOOL allowed = [sut webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther];
-    expect(allowed).to.beFalsy();
+
+    id action = [OCMockObject mockForClass:WKNavigationAction.class];
+    [[[action stub] andReturnValue:OCMOCK_VALUE(UIWebViewNavigationTypeOther)] navigationType];
+    [[[action stub] andReturn:request] request];
+
+    expect([sut shouldLoadNavigationAction:action]).to.beFalsy();
 });
 
 
