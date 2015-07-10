@@ -39,7 +39,7 @@
 {
     _artwork = artwork;
     [self updateWithArtwork:artwork];
-   @_weakify(self);
+    @_weakify(self);
     [artwork onArtworkUpdate:^{
         @_strongify(self);
         [self updateWithArtwork:artwork];
@@ -114,21 +114,24 @@
 
 - (void)setAspectRatioConstraintWithImage:(UIImage *)image
 {
-    CGFloat oldRatio = 0;
-    if (self.image) {
-        oldRatio = self.image.size.height / self.image.size.width;
-    }
 
-    CGFloat newRatio = image.size.height / image.size.width;
+    BOOL imageSizeChanged = !(self.image && CGSizeEqualToSize(self.image.size, image.size)
 
-    if (oldRatio != newRatio) {
+    if (imageSizeChanged) {
         if (self.imageConstraints) {
             // removeConstraints is scheduled for deprication. Apparently you're
             // supposed to `deactivate` constraints instead of removing them.
             [NSLayoutConstraint deactivateConstraints:self.imageConstraints];
         }
 
-        if (newRatio != 0) {
+        CGFloat newImageWidth = CGRectGetWidth(image.size);
+        CGFloat newImageHeight = CGRectGetHeight(image.size);
+        BOOL sizeIsNotZero = (newImageWidth > 0 && newImageHeight > 0);
+
+        // Unlikely that an image would have a width or height of zero, but just in case
+        // let's prevent a crash.
+        if (sizeIsNotZero) {
+            CGFloat newRatio = newImageHeight / newImageWidth;
             [self createConstraintsWithRatio:newRatio];
         }
     }
