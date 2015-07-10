@@ -5,7 +5,9 @@
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARSearchViewController.h"
+#import "ARUserManager.h"
 #import "ArtsyAPI+Private.h"
+#import <JSBadgeView/JSBadgeView.h>
 
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
@@ -54,6 +56,7 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *magazineButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
 
     [searchButton setImage:[UIImage imageNamed:@"SearchIcon_White"] forState:UIControlStateNormal];
     [searchButton setImage:[UIImage imageNamed:@"SearchIcon_White"] forState:UIControlStateSelected];
@@ -66,7 +69,12 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
     [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
 
-    NSArray *buttons = @[ searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton ];
+    [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateNormal];
+    [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateSelected];
+    [notificationsButton.imageView constrainWidth:@"12" height:@"14"];
+    searchButton.adjustsImageWhenHighlighted = NO;
+
+    NSArray *buttons = @[ searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
 
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero hostViewController:self delegate:self dataSource:self.navigationDataSource];
     tabContentView.supportSwipeGestures = NO;
@@ -160,6 +168,76 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     return (ARNavigationController *)[self.tabContentView currentNavigationController];
 }
 
+- (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index;
+{
+    return (ARNavigationController *)[self.navigationDataSource navigationControllerAtIndex:index];
+}
+
+- (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;
+{
+    BOOL alreadySelectedTab = self.selectedTabIndex == index;
+    ARNavigationController *controller = [self rootNavigationControllerAtIndex:index];
+    if (controller.viewControllers.count > 1) {
+        [controller popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
+    }
+    if (!alreadySelectedTab) {
+        [self.tabContentView setCurrentViewIndex:index animated:animated];
+    }
+}
+
+- (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
+{
+    NSInteger numberOfTabs = [self.navigationDataSource numberOfViewControllersForTabContentView:self.tabContentView];
+    for (NSInteger index = 0; index < numberOfTabs; index++) {
+        ARNavigationController *rootController = [self rootNavigationControllerAtIndex:index];
+        if (rootController.rootViewController == viewController) {
+            return index;
+        }
+    }
+    return NSNotFound;
+}
+
+#pragma mark - Badges
+
+- (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
+{
+    [self.navigationDataSource setNotificationCount:number forControllerAtIndex:index];
+    [self updateBadges];
+}
+
+- (void)updateBadges;
+{
+    [self.tabContentView.buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
+        NSUInteger number = [self.navigationDataSource badgeNumberForTabAtIndex:index];
+        if (number > 0) {
+            JSBadgeView *badgeView = [self badgeForButtonAtIndex:index createIfNecessary:YES];
+            badgeView.badgeText = [NSString stringWithFormat:@"%lu", (long unsigned)number];
+            badgeView.hidden = NO;
+        } else {
+            JSBadgeView *badgeView = [self badgeForButtonAtIndex:index createIfNecessary:NO];
+            badgeView.badgeText = @"0";
+            badgeView.hidden = YES;
+        }
+    }];
+}
+
+- (JSBadgeView *)badgeForButtonAtIndex:(NSInteger)index createIfNecessary:(BOOL)createIfNecessary;
+{
+    static char kButtonBadgeKey;
+    UIButton *button = self.tabContentView.buttons[index];
+    JSBadgeView *badgeView = objc_getAssociatedObject(button, &kButtonBadgeKey);
+    if (badgeView == nil && createIfNecessary) {
+        UIView *parentView = [button titleForState:UIControlStateNormal] == nil ? button.imageView : button.titleLabel;
+        parentView.clipsToBounds = NO;
+        badgeView = [[JSBadgeView alloc] initWithParentView:parentView alignment:JSBadgeViewAlignmentTopRight];
+        badgeView.badgeTextFont = [UIFont sansSerifFontWithSize:10];
+        // This is a unique purple color. If it ever needs to be used elsewhere it should be moved to Artsy-UIColors.
+        badgeView.badgeBackgroundColor = [[UIColor alloc] initWithRed:139.0 / 255.0 green:0 blue:255.0 alpha:1];
+        objc_setAssociatedObject(button, &kButtonBadgeKey, badgeView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return badgeView;
+}
+
 #pragma mark - ARMenuAwareViewController
 
 - (void)hideToolbar:(BOOL)hideToolbar animated:(BOOL)animated
@@ -212,8 +290,13 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSAssert(viewController != nil, @"Attempt to push a nil view controller. ");
-    [self.rootNavigationController pushViewController:viewController animated:animated];
+    NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
+    NSInteger index = [self indexOfRootViewController:viewController];
+    if (index != NSNotFound) {
+        [self presentRootViewControllerAtIndex:index animated:animated];
+    } else {
+        [self.rootNavigationController pushViewController:viewController animated:animated];
+    }
 }
 
 #pragma mark - Auto Rotation
@@ -273,12 +356,13 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
-    if (index == ARTopTabControllerIndexFavorites && [User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextShowingFavorites success:^(BOOL newUser) {
-            if(newUser) {
+    if ((index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isTrialUser]) {
+        ARTrialContext context = (index == ARTopTabControllerIndexFavorites) ? ARTrialContextShowingFavorites : ARTrialContextNotifications;
+        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
+            if (newUser) {
                 [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
             } else {
-                [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFavorites animated:NO];
+                [self.tabContentView setCurrentViewIndex:index animated:NO];
             }
         }];
         return NO;

@@ -1,4 +1,4 @@
-NS_ENUM(NSInteger, ARMapFeatureType){
+typedef NS_ENUM(NSInteger, ARMapFeatureType) {
     ARMapFeatureTypeDefault,
     ARMapFeatureTypeArtsy,
     ARMapFeatureTypeDrink,
@@ -18,7 +18,8 @@ NS_ENUM(NSInteger, ARMapFeatureType){
     ARMapFeatureTypeInstallation,
     ARMapFeatureTypeTransport,
     ARMapFeatureTypeGenericEvent,
-    ARMapFeatureTypeMax};
+    ARMapFeatureTypeMax
+};
 
 FOUNDATION_EXPORT NSString *NSStringFromARMapFeatureType(enum ARMapFeatureType featureType);
 

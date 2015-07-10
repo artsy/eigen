@@ -54,6 +54,7 @@ target 'Artsy' do
   pod 'iRate'
   pod 'ISO8601DateFormatter', :head
   pod 'JLRoutes'
+  pod 'JSBadgeView'
   pod 'JSDecoupledAppDelegate'
   pod 'Mantle'
   pod 'MMMarkdown'

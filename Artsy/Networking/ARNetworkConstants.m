@@ -89,7 +89,7 @@ NSString *const AROrderedSetsURL = @"/api/v1/sets";
 NSString *const AROrderedSetItemsURLFormat = @"/api/v1/set/%@/items";
 
 NSString *const ARSuggestedHomepageArtworks = @"/api/v1/me/suggested/artworks/homepage";
-NSString *const ARNotificationsURL = @"/api/v1/notifications";
+NSString *const ARNotificationsURL = @"/api/v1/me/notifications";
 
 NSString *const ARSiteFeaturesURL = @"/api/v1/site_features/";
 

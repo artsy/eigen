@@ -69,6 +69,11 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     [self observeViewController:NO];
 }
 
+- (UIViewController *)rootViewController;
+{
+    return [self.viewControllers firstObject];
+}
+
 #pragma mark - Properties
 
 - (void)setDelegate:(id<UINavigationControllerDelegate>)delegate
@@ -327,7 +332,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     }
     [self ar_addModernChildViewController:self.pendingOperationViewController];
 
-   @_weakify(self);
+    @_weakify(self);
 
     return [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
         @_strongify(self);

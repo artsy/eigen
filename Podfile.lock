@@ -73,6 +73,7 @@ PODS:
   - iRate (1.10.2)
   - ISO8601DateFormatter (HEAD based on 0.7)
   - JLRoutes (1.5)
+  - JSBadgeView (1.4.1)
   - JSDecoupledAppDelegate (1.1.0)
   - Keys (1.0.0)
   - KSDeferred (0.2.0)
@@ -146,6 +147,7 @@ DEPENDENCIES:
   - iRate
   - ISO8601DateFormatter (HEAD)
   - JLRoutes
+  - JSBadgeView
   - JSDecoupledAppDelegate
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
@@ -165,7 +167,7 @@ DEPENDENCIES:
   - TPDWeakProxy
   - TSMiniWebBrowser@dblock (HEAD)
   - UIAlertView+Blocks
-  - UICKeyChainStore (= 1.0.5)
+  - UICKeyChainStore
   - UIView+BooleanAnimations
   - VCRURLConnection
   - XCTest+OHHTTPStubSuiteCleanUp
@@ -249,6 +251,7 @@ SPEC CHECKSUMS:
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
   JLRoutes: 5a6096ec514f105fc906f9334c90d8276fe13687
+  JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
   JSDecoupledAppDelegate: ec2e9480b893fa27ba3db5b12d51a6d5803c550b
   Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe

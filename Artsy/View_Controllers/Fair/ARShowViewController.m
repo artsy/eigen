@@ -14,7 +14,7 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARFairMapPreviewButton.h"
 
-NS_ENUM(NSInteger, ARFairShowViewIndex){
+typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
     ARFairShowViewHeader = 1,
     ARFairShowViewActionButtons,
     ARFairShowViewPartnerLabel,
@@ -27,7 +27,8 @@ NS_ENUM(NSInteger, ARFairShowViewIndex){
     ARFairShowViewMapPreview,
     ARFairShowViewFollowPartner,
     ARFairShowViewWhitespaceAboveArtworks,
-    ARFairShowViewArtworks};
+    ARFairShowViewArtworks
+};
 
 static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 

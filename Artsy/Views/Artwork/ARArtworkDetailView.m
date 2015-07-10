@@ -1,7 +1,7 @@
 #import "ARArtworkDetailView.h"
 #import "ARTextView.h"
 
-NS_ENUM(NSInteger, ARDetailSubViewOrder){
+typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
     ARDetailArtistName = 1,
     ARDetailArtworkLotNumber,
     ARDetailArtworkTitle,
@@ -13,7 +13,8 @@ NS_ENUM(NSInteger, ARDetailSubViewOrder){
     ARDetailPartner,
     ARDetailArtworkAuctionEstimate,
     ARDetailFair,
-    ARDetailFairDescription};
+    ARDetailFairDescription
+};
 
 
 @interface ARArtworkDetailView () <ARTextViewDelegate>

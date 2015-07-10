@@ -19,6 +19,8 @@
 #import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
 
+#import "ARTopMenuNavigationDataSource.h"
+
 
 @interface ARSwitchBoard ()
 
@@ -151,6 +153,7 @@
         return YES;
     }];
 
+    // This route will match any single path component and thus should be added last.
     [self.routes addRoute:@"/:profile_id" handler:^BOOL(NSDictionary *parameters) {
         @_strongify(self);
         UIViewController *viewController = [self routeProfileWithID: parameters[@"profile_id"]];
@@ -358,8 +361,14 @@
 }
 
 // use the internal router
-- (ARInternalMobileWebViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
+- (UIViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
 {
+    // Can't be routed in the JLRoutes usage at the top, because we can't return view controller instances from there.
+    if ([url.path isEqualToString:@"/works-for-you"]) {
+        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
+        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications] rootViewController];
+    }
+
     BOOL routed = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
     if (routed) {
         return nil;

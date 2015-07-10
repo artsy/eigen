@@ -1,12 +1,13 @@
 #import <Foundation/Foundation.h>
 #import "WatchBiddingDetails.h"
 
-NS_ENUM(NSInteger, ARWatchMessageRequest){
+typedef NS_ENUM(NSInteger, ARWatchMessageRequest) {
     ARWatchMessageRequestFavorites,
     ARWatchMessageRequestRecommended,
     ARWatchMessageRequestBid,
     ARWatchMessageRequestShows,
-    ARWatchMessageRequestWorksForYou};
+    ARWatchMessageRequestWorksForYou
+};
 
 /// A communication object that represents messages
 /// sent between the watch and the app
