@@ -38,9 +38,9 @@
 {
     _artwork = artwork;
     [self updateWithArtwork:artwork];
-    @weakify(self);
+   @_weakify(self);
     [artwork onArtworkUpdate:^{
-        @strongify(self);
+        @_strongify(self);
         [self updateWithArtwork:artwork];
     } failure:nil];
 }

@@ -44,10 +44,10 @@
 
 - (void)getMapInfoForFair:(Fair *)fair success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
-    @weakify(fair);
+   @_weakify(fair);
 
     [ArtsyAPI getMapInfoForFair:fair success:^(NSArray *maps) {
-        @strongify(fair);
+        @_strongify(fair);
         if (!fair) { return; }
         fair.maps = maps;
         if (success) {

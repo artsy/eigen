@@ -159,22 +159,21 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (NSDictionary *)descriptionForMapButton
 {
-    @weakify(self);
+   @_weakify(self);
     return @{
         ARActionButtonImageKey : @"MapButtonAction",
         ARActionButtonHandlerKey : ^(ARCircularActionButton *sender){
-            @strongify(self);
-    [self handleMapButtonPress:sender];
-}
-}
-;
+            @_strongify(self);
+            [self handleMapButtonPress:sender];
+        }
+    };
 }
 
 - (void)handleMapButtonPress:(ARCircularActionButton *)sender
 {
-    @weakify(self);
+   @_weakify(self);
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
-        @strongify(self);
+        @_strongify(self);
         ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.show.title selectedPartnerShows:@[self.show]];
         [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
     }];
@@ -220,9 +219,9 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
 
-    @weakify(self);
+   @_weakify(self);
     [self.showNetworkModel getShowInfo:^(PartnerShow *show) {
-        @strongify(self);
+        @_strongify(self);
         if (!self) { return; }
 
         [self.show mergeValuesForKeysFromModel:show];
@@ -233,7 +232,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
         [self showDidLoad];
     } failure:^(NSError *error) {
-        @strongify(self);
+        @_strongify(self);
 
         [self showDidLoad];
     }];
@@ -369,9 +368,9 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     self.showArtworksViewController.showTrailingLoadingIndicator = YES;
     [self.view.stackView addViewController:self.showArtworksViewController toParent:self withTopMargin:@"0" sideMargin:nil];
 
-    @weakify(self);
+   @_weakify(self);
     [self getArtworksAtPage:1 onArtworks:^(NSArray *artworks) {
-        @strongify(self);
+        @_strongify(self);
         if (artworks.count > 0) {
             if (whitespaceGobbler) {
                 [self.view.stackView removeSubview:whitespaceGobbler];
@@ -391,9 +390,9 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 {
     NSParameterAssert(onArtworks);
 
-    @weakify(self);
+   @_weakify(self);
     [self.showNetworkModel getArtworksAtPage:page success:^(NSArray *artworks) {
-        @strongify(self);
+        @_strongify(self);
         onArtworks(artworks);
         if (artworks.count > 0) {
             [self getArtworksAtPage:page + 1 onArtworks:onArtworks];
@@ -422,9 +421,9 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (void)addMapPreview
 {
-    @weakify(self);
+   @_weakify(self);
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
-        @strongify(self);
+        @_strongify(self);
 
         Map *map = maps.firstObject;
         if (!map) { return; }

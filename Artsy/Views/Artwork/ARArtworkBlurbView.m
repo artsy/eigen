@@ -18,10 +18,10 @@
         return nil;
     }
 
-    @weakify(self);
+   @_weakify(self);
 
     [artwork onArtworkUpdate:^{
-        @strongify(self);
+        @_strongify(self);
         [self updateWithArtwork:artwork];
     } failure:nil];
 

@@ -38,10 +38,10 @@
 {
     [super viewDidLoad];
 
-    @weakify(self)
+   @_weakify(self)
         // On the first viewWillAppear:
         [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
-        @strongify(self);
+        @_strongify(self);
         [self loadProfile];
         }];
 }

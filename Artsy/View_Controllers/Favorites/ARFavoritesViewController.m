@@ -289,10 +289,10 @@
     if (networkModel.allDownloaded) {
         return;
     };
-    @weakify(self);
+   @_weakify(self);
     dispatch_async(self.artworkPageQueue, ^{
         [self.activeNetworkModel getFavorites:^(NSArray *items){
-            @strongify(self);
+            @_strongify(self);
             [self addItems:items toModule:module];
         } failure:nil];
     });

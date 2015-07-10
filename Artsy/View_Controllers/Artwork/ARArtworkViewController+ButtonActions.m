@@ -170,7 +170,7 @@
     // create a new order
     NSURLRequest *request = [ARRouter newPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID];
 
-    @weakify(self);
+   @_weakify(self);
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             NSString *orderID = [JSON valueForKey:@"id"];
@@ -181,7 +181,7 @@
 
         }
         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            @strongify(self);
+            @_strongify(self);
             ARErrorLog(@"Creating a new order failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
             [self tappedContactGallery];
         }];

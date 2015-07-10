@@ -166,16 +166,16 @@
     [super switchValueChangedTo:newValue userInfo:userInfo];
     FODFormRow *row = (FODFormRow *)userInfo;
 
-    @weakify(row);
+   @_weakify(row);
     [ArtsyAPI updateCurrentUserProperty:[User JSONKeyPathsByPropertyKey][row.key]
         toValue:row.workingValue
         success:^(User *user) {
-            @strongify(row);
+            @_strongify(row);
             [[User currentUser] setValue:[user valueForKey:row.key] forKey:row.key];
             [[ARUserManager sharedManager] storeUserData];
         }
         failure:^(NSError *error) {
-            @strongify(row);
+            @_strongify(row);
             row.workingValue = row.initialValue;
             [self.tableView reloadRowsAtIndexPaths:@[row.indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }];
@@ -190,15 +190,15 @@
         return;
     }
 
-    @weakify(row);
+   @_weakify(row);
     [ArtsyAPI updateCurrentUserProperty:[User JSONKeyPathsByPropertyKey][row.key] toValue:row.workingValue
         success:^(User *user) {
-            @strongify(row);
+            @_strongify(row);
             [[User currentUser] setValue:[user valueForKey:row.key] forKey:row.key];
             [[ARUserManager sharedManager] storeUserData];
         }
         failure:^(NSError *error) {
-            @strongify(row);
+            @_strongify(row);
             row.workingValue = row.initialValue;
             [self.tableView reloadRowsAtIndexPaths:@[row.indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }];

@@ -34,10 +34,10 @@
 
     cell.textLabel.textColor = self.textColor ?: [UIColor whiteColor];
 
-    @weakify(cell);
+   @_weakify(cell);
     [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:self.placeholderImage
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-       @strongify(cell);
+       @_strongify(cell);
        cell.imageView.image = image;
        [cell layoutSubviews];
 

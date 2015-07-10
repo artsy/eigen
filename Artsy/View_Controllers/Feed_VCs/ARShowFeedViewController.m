@@ -51,10 +51,10 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
     _heroUnitVC = [[ARHeroUnitViewController alloc] init];
 
-    @weakify(self);
+   @_weakify(self);
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     self.networkNotificationObserver = [defaultCenter addObserverForName:ARNetworkUnavailableNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        @strongify(self);
+        @_strongify(self);
         if (self.feedTimeline.numberOfItems == 0) {
             // The offline view will be hidden when we load content.
             [self showOfflineView];
@@ -130,10 +130,10 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     [ARAnalytics startTimingEvent:ARAnalyticsInitialFeedLoadTime];
     [self presentLoadingView];
 
-    @weakify(self)
+   @_weakify(self)
         [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^{
-            @strongify(self);
+            @_strongify(self);
             [self.tableView reloadData];
             [self hideLoadingView];
             [self hideOfflineView];
@@ -207,10 +207,10 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
     } else {
         self.feedLinkVC = [[ARFeedLinkUnitViewController alloc] init];
-        @weakify(self);
+       @_weakify(self);
         [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
             [self.feedLinkVC fetchLinks:^{
-                @strongify(self);
+                @_strongify(self);
                 if (![UIDevice isPad]) { [self layoutFeedLinks]; }
             }];
         }];

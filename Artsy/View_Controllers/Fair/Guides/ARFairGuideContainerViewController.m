@@ -58,21 +58,21 @@ const CGFloat kClosedMapHeight = 180.0f;
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-    @weakify(self);
+   @_weakify(self);
     [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
-        @strongify(self);
+        @_strongify(self);
         [self downloadContent];
     }];
 
     [[RACSignal combineLatest:@[ RACObserve(self, mapsLoaded), RACObserve(self, fairLoaded) ]] subscribeNext:^(id x) {
-        @strongify(self);
+        @_strongify(self);
         [self checkForDataLoaded];
     }];
 
     // Every time the mapCollapsed property changes, we want to setup the constraints.
     // We skip the first time because we don't want to fire immediately.
     [[[RACObserve(self, mapCollapsed) skip:1] distinctUntilChanged] subscribeNext:^(id _) {
-        @strongify(self);
+        @_strongify(self);
 
         CGFloat height = 0;
         if (self.mapCollapsed) {
