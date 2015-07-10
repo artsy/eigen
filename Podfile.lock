@@ -167,7 +167,7 @@ DEPENDENCIES:
   - TPDWeakProxy
   - TSMiniWebBrowser@dblock (HEAD)
   - UIAlertView+Blocks
-  - UICKeyChainStore (= 1.0.5)
+  - UICKeyChainStore
   - UIView+BooleanAnimations
   - VCRURLConnection
   - XCTest+OHHTTPStubSuiteCleanUp
