@@ -38,12 +38,6 @@ static const CGFloat ARSearchMenuButtonDimension = 46;
     return _sharedManager;
 }
 
-// Really never used, but whatevs.
-- (void)dealloc;
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

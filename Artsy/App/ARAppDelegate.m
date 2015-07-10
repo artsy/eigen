@@ -203,7 +203,7 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     if (!cancelledSignIn) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        ar_dispatch_main_queue(^{
             if ([User currentUser]) {
                 [self.remoteNotificationsDelegate registerForDeviceNotifications];
                 [self.remoteNotificationsDelegate fetchNotificationCounts];
