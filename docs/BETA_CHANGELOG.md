@@ -1,4 +1,4 @@
-## Next
+## 2.1.0 (2015.07.11)
 
 * Show sign-in/sign-up flow when selecting ‘bell’ tab as a trial user. - alloy
 * Fetch pending notifications count when the user signs-up/signs-in. - alloy
