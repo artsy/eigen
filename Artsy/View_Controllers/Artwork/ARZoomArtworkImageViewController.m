@@ -24,7 +24,7 @@
 
 #pragma mark - ARMenuAwareViewController
 
-- (BOOL)hidesBackButton
+- (BOOL)hidesNavigationButtons
 {
     return NO;
 }
@@ -66,7 +66,7 @@
     // throttle: is necessary to push this to the next runloop invocation.
     // Well, technically we need to delay it at least 2 invocations, at least on iOS 7.
     // Since it's not good to rely on iOS implementation details, this inperceptable delay will do.
-   @_weakify(zoomView);
+    @_weakify(zoomView);
     [[[viewFrameSignal skip:1] throttle:0.01] subscribeNext:^(id x) {
         @_strongify(zoomView);
         

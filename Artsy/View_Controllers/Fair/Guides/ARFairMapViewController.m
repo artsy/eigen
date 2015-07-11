@@ -123,7 +123,7 @@
     RAC(self.mapShowMapper, expandAnnotations) = RACObserve(self, expandAnnotations);
 
     // Due to a problem in the custom UIViewController transitions API (when the VC's view is a scrollview subclass)
-   @_weakify(self);
+    @_weakify(self);
     [[self rac_signalForSelector:@selector(viewWillDisappear:)] subscribeNext:^(id x) {
         @_strongify(self);
 
@@ -206,7 +206,7 @@
     return [NSSet setWithObjects:@"searchVC.menuState", nil];
 }
 
-- (BOOL)hidesBackButton
+- (BOOL)hidesNavigationButtons
 {
     if (self.searchVC) {
         return YES;

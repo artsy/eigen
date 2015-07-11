@@ -137,12 +137,9 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
             });
 
             it(@"does not animate popping", ^{
-                // The search tab cannot be selected in the same way.
-                if (tab != ARTopTabControllerIndexSearch) {
-                    [[navigationControllerMock expect] popToRootViewControllerAnimated:NO];
-                    [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
-                    [navigationControllerMock verify];
-                }
+                [[navigationControllerMock expect] popToRootViewControllerAnimated:NO];
+                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
+                [navigationControllerMock verify];
             });
 
             it(@"changes tabs in an animated fashion", ^{
@@ -163,7 +160,7 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
         });
 
         it(@"shows a notification badge", ^{
-            expect(badgeView.badgeText).to.equal([NSString stringWithFormat:@"%ld", tab+1]);
+            expect(badgeView.badgeText).to.equal(@(tab+1).stringValue);
         });
 
         it(@"updates the badge count in the data source", ^{
@@ -184,40 +181,10 @@ describe(@"navigation", ^{
        dataSource = [[ARTopMenuNavigationDataSource alloc] init];
        sharedBefore();
    });
-   describe(@"search", ^{
-       before(^{
-           tabIndex = ARTopTabControllerIndexSearch;
-       });
-
-       itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexSearch]});
-
-       it(@"always begins at root of stack", ^{
-           [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
-           [sut pushViewController:[[ARFairViewController alloc] init] animated:NO];
-           expect(sut.rootNavigationController.viewControllers.count).to.equal(2);
-
-           [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
-           [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
-
-           expect(sut.rootNavigationController.viewControllers.count).to.equal(1);
-       });
-
-       it(@"already at root returns to previous tab", ^{
-           id mock = [OCMockObject partialMockForObject:sut];
-
-           [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
-           [[mock expect] returnToPreviousTab];
-
-
-           [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
-
-           [mock verify];
-       });
-   });
 
    describe(@"feed", ^{
        before(^{
-           [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexSearch animated:NO];
+           [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexBrowse animated:NO];
        });
        itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexFeed]});
    });

@@ -2,7 +2,6 @@
 #import "ARShowFeedViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARFavoritesViewController.h"
-#import "ARAppSearchViewController.h"
 #import "ARHeroUnitsNetworkModel.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
 #import <SDWebImage/SDWebImagePrefetcher.h>
@@ -24,7 +23,6 @@ WebViewNavigationControllerWithPath(NSString *path)
 
 @property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
 
-@property (readonly, nonatomic, strong) ARNavigationController *searchNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *showsNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
@@ -49,9 +47,6 @@ WebViewNavigationControllerWithPath(NSString *path)
     for (int i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
         _badgeCounts[i] = 0;
     }
-
-    ARSearchViewController *searchController = [[ARAppSearchViewController alloc] init];
-    _searchNavigationController = [[ARNavigationController alloc] initWithRootViewController:searchController];
 
     ARShowFeed *showFeed = [[ARShowFeed alloc] init];
     ARFeedTimeline *showFeedTimeline = [[ARFeedTimeline alloc] initWithFeed:showFeed];
@@ -110,8 +105,6 @@ WebViewNavigationControllerWithPath(NSString *path)
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 {
     switch (index) {
-        case ARTopTabControllerIndexSearch:
-            return self.searchNavigationController;
         case ARTopTabControllerIndexFeed:
             return self.feedNavigationController;
         case ARTopTabControllerIndexShows:

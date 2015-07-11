@@ -117,12 +117,13 @@ it(@"clears search", ^{
 
 it(@"closes search", ^{
     sut = [[ARAppSearchViewController alloc] init];
-    OCMockObject *topMenuViewControllerMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sut];
+    OCMockObject *navigationControllerMock = [OCMockObject partialMockForObject:navigationController];
     sut.shouldAnimate = NO;
     [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];
-    [[topMenuViewControllerMock expect] returnToPreviousTab];
+    [[navigationControllerMock expect] popViewControllerAnimated:YES];
     [sut closeSearch:nil];
-    [topMenuViewControllerMock verify];
+    [navigationControllerMock verify];
 });
 
 SpecEnd

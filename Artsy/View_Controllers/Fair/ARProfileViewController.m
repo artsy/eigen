@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong, readwrite) NSString *profileID;
 
-@property (nonatomic, assign) BOOL hidesBackButton;
+@property (nonatomic, assign) BOOL hidesNavigationButtons;
 @property (nonatomic, assign) BOOL hidesToolbarMenu;
 
 @end
@@ -38,7 +38,7 @@
 {
     [super viewDidLoad];
 
-   @_weakify(self)
+    @_weakify(self)
         // On the first viewWillAppear:
         [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
         @_strongify(self);
@@ -58,7 +58,7 @@
 
             ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:fair andProfile:profile];
 
-            RAC(self, hidesBackButton) = RACObserve(viewController, hidesBackButton);
+            RAC(self, hidesNavigationButtons) = RACObserve(viewController, hidesNavigationButtons);
 
             [self showViewController:viewController];
         } else {
