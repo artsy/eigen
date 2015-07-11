@@ -16,7 +16,9 @@
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    toVC.backgroundImage = viewImage;
+    if ([toVC isKindOfClass:[ARAppSearchViewController class]]) {
+        toVC.backgroundImage = viewImage;
+    }
 
     [transitionContext.containerView addSubview:fromVC.view];
     [transitionContext.containerView addSubview:toVC.view];
@@ -29,9 +31,6 @@
         }
         completion:^(BOOL finished) {
                         [transitionContext completeTransition:YES];
-                        // Doing this here instead of -[ARAppSearchViewController hidesToolbarMenu] so that there won't
-                        // be a visible gap underneath the blurred background view.
-                        [[ARTopMenuViewController sharedController] hideToolbar:YES animated:YES];
         }];
 }
 
@@ -46,11 +45,13 @@
         delay:0.0
         options:UIViewAnimationOptionCurveEaseOut
         animations:^{
-                         fromVC.view.alpha = 0;
+            fromVC.view.alpha = 0;
         }
         completion:^(BOOL finished) {
-                             fromVC.backgroundImage = nil;
-                         [transitionContext completeTransition:YES];
+            if ([fromVC isKindOfClass:[ARAppSearchViewController class]]) {
+                fromVC.backgroundImage = nil;
+            }
+            [transitionContext completeTransition:YES];
         }];
 }
 
