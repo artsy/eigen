@@ -119,7 +119,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
 
     _searchButton = [[ARMenuButton alloc] init];
     [_searchButton ar_extendHitTestSizeByWidth:10 andHeight:10];
-    [_searchButton setImage:[UIImage imageNamed:@"SearchIcon_White"] forState:UIControlStateNormal];
+    [_searchButton setImage:[UIImage imageNamed:@"SearchButton"] forState:UIControlStateNormal];
     [_searchButton addTarget:self action:@selector(search:) forControlEvents:UIControlEventTouchUpInside];
     _searchButton.adjustsImageWhenDisabled = NO;
 
