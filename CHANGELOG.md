@@ -1,3 +1,17 @@
+## Next
+
+* Adds ‘bell’ notifications tab and show notification count. - alloy
+* Move search button from tab bar to navigation bar. - alloy
+* Replace add/removeConstraint with activate/deactivateConstraints in ARArtworkPreviewImage View in hopes of fixing autolayout crash - 1aurabrown
+* Reduced the filesize of the Artsy Loading screen - orta
+* Load all artworks in an artwork's show in the "artwork related artworks" view. - 1aurabrown
+* Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done loading. - alloy
+* Remove opaque background from Search keyboard. - 1aurabrown
+* Reduce height of inquiry form on iPad - 1aurabrown
+* Fix ARCollapsableTextView not expanding to full height - 1aurabrown
+* Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
+* Fix personalize search bar. - 1aurabrown
+
 ## 2.0.1 (26/06/2015)
 
 * Fix user credential storage so the user is only asked for it once - orta & alloy
