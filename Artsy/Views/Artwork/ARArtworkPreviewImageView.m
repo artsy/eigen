@@ -114,8 +114,7 @@
 
 - (void)setAspectRatioConstraintWithImage:(UIImage *)image
 {
-
-    BOOL imageSizeChanged = !(self.image && CGSizeEqualToSize(self.image.size, image.size)
+    BOOL imageSizeChanged = !(self.image && CGSizeEqualToSize(self.image.size, image.size));
 
     if (imageSizeChanged) {
         if (self.imageConstraints) {
@@ -124,8 +123,8 @@
             [NSLayoutConstraint deactivateConstraints:self.imageConstraints];
         }
 
-        CGFloat newImageWidth = CGRectGetWidth(image.size);
-        CGFloat newImageHeight = CGRectGetHeight(image.size);
+        CGFloat newImageWidth = image.size.width;
+        CGFloat newImageHeight = image.size.height;
         BOOL sizeIsNotZero = (newImageWidth > 0 && newImageHeight > 0);
 
         // Unlikely that an image would have a width or height of zero, but just in case
