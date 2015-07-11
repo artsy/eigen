@@ -7,6 +7,7 @@
 * Reload notifications view whenever notifications come in or have been polled. - alloy
 * Mark notifications as seen once the new notifications view has been loaded and was visible. - alloy
 * Move search button from tab bar to navigation bar. - alloy
+* Replace add/removeConstraint with activate/deactivateConstraints in ARArtworkPreviewImage View in hopes of fixing autolayout crash - 1aurabrown
 
 ## 2.1.0 (2015.07.04)
 
