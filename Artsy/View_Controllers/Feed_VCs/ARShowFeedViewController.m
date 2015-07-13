@@ -51,7 +51,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
     _heroUnitVC = [[ARHeroUnitViewController alloc] init];
 
-   @_weakify(self);
+    @_weakify(self);
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     self.networkNotificationObserver = [defaultCenter addObserverForName:ARNetworkUnavailableNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
         @_strongify(self);
@@ -60,7 +60,9 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
             [self showOfflineView];
         }
     }];
+
     self.automaticallyAdjustsScrollViewInsets = NO;
+
     return self;
 }
 
@@ -130,8 +132,8 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     [ARAnalytics startTimingEvent:ARAnalyticsInitialFeedLoadTime];
     [self presentLoadingView];
 
-   @_weakify(self)
-        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+    @_weakify(self);
+    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^{
             @_strongify(self);
             [self.tableView reloadData];
@@ -145,7 +147,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
             [self performSelector:@selector(refreshFeed) withObject:nil afterDelay:3];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
         }];
-        }];
+    }];
 }
 
 - (void)setHeroUnitDatasource:(ARHeroUnitsNetworkModel *)heroUnitDatasource
@@ -207,7 +209,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
     } else {
         self.feedLinkVC = [[ARFeedLinkUnitViewController alloc] init];
-       @_weakify(self);
+        @_weakify(self);
         [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
             [self.feedLinkVC fetchLinks:^{
                 @_strongify(self);
