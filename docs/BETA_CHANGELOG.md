@@ -34,3 +34,4 @@
 * Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
 * Adds ‘bell’ notifications tab and shows notification count (currently only on launch and only if already signed-in). - alloy
 * Fix personalize search bar. - 1aurabrown
+* Don't use square placeholder image for artwork image preview. - 1aurabrown
