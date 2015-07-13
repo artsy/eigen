@@ -30,3 +30,4 @@
 * Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
 * Adds ‘bell’ notifications tab and shows notification count (currently only on launch and only if already signed-in). - alloy
 * Fix personalize search bar. - 1aurabrown
+* Constrain size of launch logo to 200px on iphone - 1aurabrown
