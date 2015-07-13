@@ -15,8 +15,8 @@
                     <animations/>
                     <constraints>
                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="J9h-cn-RfE"/>
-                        <constraint firstAttribute="width" constant="200" id="LxL-2v-6xP"/>
-                        <constraint firstAttribute="height" constant="69" id="VtU-kR-P6R"/>
+                        <constraint firstAttribute="width" constant="119" id="LxL-2v-6xP"/>
+                        <constraint firstAttribute="height" constant="41" id="VtU-kR-P6R"/>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="86" id="qsT-5K-yhF"/>
                     </constraints>
                     <variation key="default">

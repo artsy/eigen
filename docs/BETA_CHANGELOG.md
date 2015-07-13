@@ -1,5 +1,6 @@
 ## Next
 
+* Constrain size of launch logo to smaller size on iphone - 1aurabrown
 * Force portrait orientation for the admin menu on iPhone, which could be wrong on top of a landscape VIR view. - alloy
 * Make hit test areas of ‘MAG’, ‘YOU’, and ‘bell’ tab buttons wider. - alloy
 * Force the feed view controller to load its content when the network becomes available. - alloy
@@ -33,4 +34,3 @@
 * Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
 * Adds ‘bell’ notifications tab and shows notification count (currently only on launch and only if already signed-in). - alloy
 * Fix personalize search bar. - 1aurabrown
-* Constrain size of launch logo to 200px on iphone - 1aurabrown
