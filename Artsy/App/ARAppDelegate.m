@@ -362,6 +362,13 @@ static ARAppDelegate *_sharedInstance = nil;
     UINavigationController *navigationController = ARTopMenuViewController.sharedController.rootNavigationController;
 
     if (![navigationController.topViewController isKindOfClass:ARAdminSettingsViewController.class]) {
+        if (![UIDevice isPad]) {
+            // For some reason the supported orientation isn’t respected when this is pushed on top
+            // of a landscape VIR view.
+            //
+            // Since this is a debug/admin only issue, it’s safe to use private API here.
+            [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortrait) forKey:@"orientation"];
+        }
         ARAdminSettingsViewController *adminSettings = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [navigationController pushViewController:adminSettings animated:YES];
     }
