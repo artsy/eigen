@@ -1,6 +1,7 @@
 ## Next
 
 * Force portrait orientation for the admin menu on iPhone, which could be wrong on top of a landscape VIR view. - alloy
+* Make hit test areas of ‘MAG’, ‘YOU’, and ‘bell’ tab buttons wider. - alloy
 
 ## 2.1.0 (2015.07.11)
 

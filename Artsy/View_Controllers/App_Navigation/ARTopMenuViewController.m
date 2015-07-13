@@ -8,6 +8,8 @@
 #import "ArtsyAPI+Private.h"
 #import <JSBadgeView/JSBadgeView.h>
 
+#import "UIView+HitTestExpansion.h"
+
 static const CGFloat ARMenuButtonDimension = 46;
 
 
@@ -65,7 +67,18 @@ static const CGFloat ARMenuButtonDimension = 46;
     [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateSelected];
     [notificationsButton.imageView constrainWidth:@"12" height:@"14"];
 
+    [magazineButton ar_extendHitTestSizeByWidth:5 andHeight:0];
+    [favoritesButton ar_extendHitTestSizeByWidth:5 andHeight:0];
+    [notificationsButton ar_extendHitTestSizeByWidth:10 andHeight:0];
+
     NSArray *buttons = @[ homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
+
+    //#ifdef DEBUG
+    //// Show the hit areas
+    //for (UIButton *button in buttons) {
+    //[button ar_visualizeHitTestArea];
+    //}
+    //#endif
 
     UIView *tabContainer = [[UIView alloc] init];
     self.tabContainer = tabContainer;
