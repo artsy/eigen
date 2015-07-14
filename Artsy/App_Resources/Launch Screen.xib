@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="15A204h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,13 +10,27 @@
             <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="Artsy_Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="WeP-8T-eYW">
-                    <rect key="frame" x="263" y="470" width="242" height="83"/>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" image="full_logo_white_large.png" translatesAutoresizingMaskIntoConstraints="NO" id="WeP-8T-eYW">
+                    <rect key="frame" x="259" y="469" width="250" height="86"/>
                     <animations/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="242" id="P3k-hL-VdX"/>
-                        <constraint firstAttribute="height" constant="83" id="ShW-3j-aoK"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="J9h-cn-RfE"/>
+                        <constraint firstAttribute="width" constant="200" id="LxL-2v-6xP"/>
+                        <constraint firstAttribute="height" constant="69" id="VtU-kR-P6R"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="86" id="qsT-5K-yhF"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="LxL-2v-6xP"/>
+                            <exclude reference="VtU-kR-P6R"/>
+                        </mask>
+                    </variation>
+                    <variation key="widthClass=compact">
+                        <mask key="constraints">
+                            <include reference="LxL-2v-6xP"/>
+                            <include reference="VtU-kR-P6R"/>
+                        </mask>
+                    </variation>
                 </imageView>
             </subviews>
             <animations/>
@@ -31,6 +45,6 @@
         </view>
     </objects>
     <resources>
-        <image name="Artsy_Logo.png" width="242" height="83"/>
+        <image name="full_logo_white_large.png" width="250" height="86"/>
     </resources>
 </document>
