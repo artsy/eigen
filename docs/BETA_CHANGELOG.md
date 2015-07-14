@@ -1,10 +1,10 @@
 ## Next
 
 * Constrain size of launch logo to smaller size on iphone - 1aurabrown
-* Force portrait orientation for the admin menu on iPhone, which could be wrong on top of a landscape VIR view. - alloy
 * Make hit test areas of ‘MAG’, ‘YOU’, and ‘bell’ tab buttons wider. - alloy
 * Force the feed view controller to load its content when the network becomes available. - alloy
 * Force portrait orientation for the admin menu on iPhone, which could be wrong on top of a landscape VIR view. - alloy
+* Don't use square placeholder image for artwork image preview. - 1aurabrown
 
 ## 2.1.0 (2015.07.11)
 
