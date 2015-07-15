@@ -1,6 +1,7 @@
 #import "ARCollectorStatusViewController.h"
 #import "AROnboardingTableViewCell.h"
 #import "AROnboardingViewController.h"
+#import "UIViewController+ScreenSize.h"
 
 
 @interface ARCollectorStatusViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -29,9 +30,10 @@
     [self.view addSubview:self.label];
     self.label.text = @"To give you better\nrecommendations we would\nlike to know a few things\nabout you.";
 
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, screenSize.height - 250, screenSize.width, 230)
+    CGFloat height = 230 + [self tableView:nil heightForHeaderInSection:0];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, screenSize.height - height, screenSize.width, height)
                                                   style:UITableViewStylePlain];
-    [self.tableView registerClass:[AROnboardingTableViewCell class] forCellReuseIdentifier:@"StatusCell"];
+    [self.tableView registerClass:AROnboardingTableViewCell.class forCellReuseIdentifier:@"StatusCell"];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -82,7 +84,8 @@
     [wrapper addSubview:header];
 
     CALayer *separator = [CALayer layer];
-    separator.frame = CGRectMake(15, wrapper.bounds.size.height - .5, CGRectGetWidth(self.view.bounds) - 30, .5);
+    CGFloat height = [self tableView:tableView heightForHeaderInSection:section];
+    separator.frame = CGRectMake(15, height - .5, CGRectGetWidth(self.view.bounds) - 30, .5);
     separator.backgroundColor = [UIColor artsyHeavyGrey].CGColor;
     [wrapper.layer addSublayer:separator];
     return wrapper;
@@ -90,7 +93,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 50;
+    return [self smallScreen] ? 50 : 75;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
