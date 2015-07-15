@@ -56,7 +56,9 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateNormal];
     [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateSelected];
-    homeButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+    CGFloat buttonImageSize = 20;
+    CGFloat inset = (ARMenuButtonDimension - buttonImageSize) / 2;
+    homeButton.contentEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
 
     [showsButton setTitle:@"SHOWS" forState:UIControlStateNormal];
     [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
