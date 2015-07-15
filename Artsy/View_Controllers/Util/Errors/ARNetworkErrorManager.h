@@ -1,8 +1,10 @@
 
 
+
 @interface ARNetworkErrorManager : NSObject
 
-/// Present full screen modal, used when a user interaction has failed
-+ (void)presentActiveErrorModalWithError:(NSError *)error;
+/// Present banner, used when a user interaction has failed
++ (void)presentActiveError:(NSError *)error;
++ (void)presentActiveError:(NSError *)error withMessage:(NSString *)message;
 
 @end

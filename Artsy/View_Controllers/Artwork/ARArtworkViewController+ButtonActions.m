@@ -43,7 +43,7 @@
     [self.artwork setFollowState:sender.isHearted success:^(id json) {
         [NSNotificationCenter.defaultCenter postNotificationName:ARFairRefreshFavoritesNotification object:nil];
     } failure:^(NSError *error) {
-        [ARNetworkErrorManager presentActiveErrorModalWithError:error];
+        [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to save artwork."];
         [sender setHearted:!hearted animated:YES];
     }];
 }
@@ -170,7 +170,7 @@
     // create a new order
     NSURLRequest *request = [ARRouter newPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID];
 
-   @_weakify(self);
+    @_weakify(self);
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             NSString *orderID = [JSON valueForKey:@"id"];

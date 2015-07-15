@@ -196,7 +196,7 @@
              ARErrorLog(@"Couldn't get an Xapp token.");
 
              NSError *cleanError = [NSError errorWithDomain:@"Auth" code:404 userInfo:@{ NSLocalizedDescriptionKey: @"Couldn't reach Artsy" }];
-             [ARNetworkErrorManager presentActiveErrorModalWithError:cleanError];
+             [ARNetworkErrorManager presentActiveError:cleanError];
 
              if (failure) { failure(error); }
         }];
