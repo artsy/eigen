@@ -26,8 +26,8 @@ typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
     ARFairShowViewDescription,
     ARFairShowViewMapPreview,
     ARFairShowViewFollowPartner,
-    ARFairShowViewWhitespaceAboveArtworks,
-    ARFairShowViewArtworks
+    ARFairShowViewArtworks,
+    ARFairShowViewWhitespaceGobbler,
 };
 
 static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
@@ -131,14 +131,17 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     [self.view.stackView constrainHeight:heightConstraint];
 
     CGFloat parentHeight = CGRectGetHeight(self.parentViewController.view.bounds) ?: CGRectGetHeight([UIScreen mainScreen].bounds);
-    [self.view.stackView ensureScrollingWithHeight:parentHeight];
+    [self.view.stackView ensureScrollingWithHeight:parentHeight tag:ARFairShowViewWhitespaceGobbler];
 }
 
 - (void)addActionButtonsToStack
 {
     _actionButtonsView = [[ARActionButtonsView alloc] init];
     self.actionButtonsView.tag = ARFairShowViewActionButtons;
+
+    // Make sure that the action view is at least 70px below the top of the stack view in case there are no install shots.
     [self.view.stackView addSubview:self.actionButtonsView withTopMargin:@"20" sideMargin:[self sideMarginPredicate]];
+    [self.actionButtonsView alignTopEdgeWithView:self.view.self predicate:@">=70"];
 
     NSMutableArray *descriptions = [NSMutableArray array];
 
@@ -160,19 +163,20 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (NSDictionary *)descriptionForMapButton
 {
-   @_weakify(self);
+    @_weakify(self);
     return @{
         ARActionButtonImageKey : @"MapButtonAction",
         ARActionButtonHandlerKey : ^(ARCircularActionButton *sender){
             @_strongify(self);
-            [self handleMapButtonPress:sender];
-        }
-    };
+    [self handleMapButtonPress:sender];
+}
+}
+;
 }
 
 - (void)handleMapButtonPress:(ARCircularActionButton *)sender
 {
-   @_weakify(self);
+    @_weakify(self);
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
         @_strongify(self);
         ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.show.title selectedPartnerShows:@[self.show]];
@@ -220,7 +224,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
 
-   @_weakify(self);
+    @_weakify(self);
     [self.showNetworkModel getShowInfo:^(PartnerShow *show) {
         @_strongify(self);
         if (!self) { return; }
@@ -350,14 +354,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (void)addFairArtworksToStack
 {
-    // We use a view that takes up the required whitespace to hit the full height
-
     // TODO: this should only load more artworks on scroll (like favorites)
-
-    __block ARWhitespaceGobbler *whitespaceGobbler = [[ARWhitespaceGobbler alloc] init];
-    whitespaceGobbler.backgroundColor = [UIColor whiteColor];
-    whitespaceGobbler.tag = ARFairShowViewWhitespaceAboveArtworks;
-    [self.view.stackView addSubview:whitespaceGobbler withTopMargin:nil sideMargin:nil];
 
     ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:[self masonryLayoutForSize:self.view.frame.size] andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     module.layoutProvider = self;
@@ -369,17 +366,11 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     self.showArtworksViewController.showTrailingLoadingIndicator = YES;
     [self.view.stackView addViewController:self.showArtworksViewController toParent:self withTopMargin:@"0" sideMargin:nil];
 
-   @_weakify(self);
+    @_weakify(self);
     [self getArtworksAtPage:1 onArtworks:^(NSArray *artworks) {
         @_strongify(self);
         if (artworks.count > 0) {
-            if (whitespaceGobbler) {
-                [self.view.stackView removeSubview:whitespaceGobbler];
-                [self.showArtworksViewController appendItems:artworks];
-                whitespaceGobbler = nil;
-            } else {
-                [self.showArtworksViewController appendItems:artworks];
-            }
+            [self.showArtworksViewController appendItems:artworks];
         } else {
             self.showArtworksViewController.showTrailingLoadingIndicator = NO;
             [self.showArtworksViewController.view invalidateIntrinsicContentSize];
@@ -391,7 +382,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 {
     NSParameterAssert(onArtworks);
 
-   @_weakify(self);
+    @_weakify(self);
     [self.showNetworkModel getArtworksAtPage:page success:^(NSArray *artworks) {
         @_strongify(self);
         onArtworks(artworks);
@@ -422,7 +413,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (void)addMapPreview
 {
-   @_weakify(self);
+    @_weakify(self);
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
         @_strongify(self);
 
