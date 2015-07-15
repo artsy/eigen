@@ -150,15 +150,14 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         ARActionButtonHandlerKey: ^(ARCircularActionButton *sender) {
             NSURL *imageURL = nil;
             if (self.imagePageViewController.images.count) {
-        imageURL = [(Image *)self.imagePageViewController.images[0] urlForThumbnailImage];
+                imageURL = [(Image *)self.imagePageViewController.images[0] urlForThumbnailImage];
             }
-            ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.show
-                                                                                    thumbnailImageURL:imageURL];
+            ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.show thumbnailImageURL:imageURL];
             [sharingController presentActivityViewControllerFromView:sender];
-}
-}];
+        }
+    }];
 
-self.actionButtonsView.actionButtonDescriptions = descriptions;
+    self.actionButtonsView.actionButtonDescriptions = descriptions;
 }
 
 - (NSDictionary *)descriptionForMapButton
@@ -168,10 +167,9 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
         ARActionButtonImageKey : @"MapButtonAction",
         ARActionButtonHandlerKey : ^(ARCircularActionButton *sender){
             @_strongify(self);
-    [self handleMapButtonPress:sender];
-}
-}
-;
+            [self handleMapButtonPress:sender];
+        }
+    };
 }
 
 - (void)handleMapButtonPress:(ARCircularActionButton *)sender
