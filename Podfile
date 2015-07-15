@@ -58,6 +58,7 @@ target 'Artsy' do
   pod 'JSDecoupledAppDelegate'
   pod 'Mantle'
   pod 'MMMarkdown'
+  pod 'NPKeyboardLayoutGuide'
   pod 'ReactiveCocoa'
   pod 'UICKeyChainStore'
 

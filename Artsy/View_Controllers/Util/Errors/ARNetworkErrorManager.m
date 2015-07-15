@@ -1,12 +1,12 @@
-#import "ARShadowView.h"
-#import <ARAnalytics/ARAnalytics.h>
+#import "ARNetworkErrorManager.h"
+#import "ARCustomEigenLabels.h"
+
+@import ARAnalytics;
+@import NPKeyboardLayoutGuide;
 
 
 @interface ARNetworkErrorManager ()
-@property (nonatomic, strong) ARShadowView *activeModalView;
-@property (nonatomic, strong) UIView *passiveErrorView;
-@property (nonatomic, strong) NSLayoutConstraint *passiveBottomContraint;
-@property (nonatomic, strong) NSString *bottomAlignmentPredicate;
+@property (nonatomic, strong) UILabel *activeModalView;
 @end
 
 
@@ -18,37 +18,8 @@
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _sharedManager = [[self alloc] init];
-
-      //        [[NSNotificationCenter defaultCenter] addObserver:_sharedManager
-      //                                                 selector:@selector(keyboardWasShown:)
-      //                                                     name:UIKeyboardDidShowNotification
-      //                                                   object:nil];
-      //        [[NSNotificationCenter defaultCenter] addObserver:_sharedManager
-      //                                                 selector:@selector(keyboardWillHide:)
-      //                                                     name:UIKeyboardWillHideNotification
-      //                                                   object:nil];
     });
     return _sharedManager;
-}
-
-- (void)keyboardWasShown:(NSNotification *)notification
-{
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    self.bottomAlignmentPredicate = [NSString stringWithFormat:@"-%0.f", keyboardSize.height];
-
-    if (self.passiveBottomContraint) {
-        CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-
-        [UIView animateWithDuration:duration animations:^{
-            self.passiveBottomContraint.constant = -keyboardSize.height;
-            [self.passiveErrorView.superview layoutIfNeeded];
-        }];
-    }
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    self.bottomAlignmentPredicate = @"0";
 }
 
 + (void)presentActiveErrorModalWithError:(NSError *)error
@@ -64,16 +35,35 @@
 
 - (void)presentActiveError:(NSError *)error
 {
-    NSArray *views = [[UINib nibWithNibName:@"ActiveErrorView" bundle:nil] instantiateWithOwner:self options:nil];
-    self.activeModalView = views[0];
+    ARTopMenuViewController *topMenu = [ARTopMenuViewController sharedController];
+    UIViewController *hostVC = topMenu.visibleViewController;
+
+    self.activeModalView = [[ARWarningView alloc] initWithFrame:CGRectZero];
+    self.activeModalView.text = @"Network connection error.";
 
     self.activeModalView.alpha = 0;
-    ARTopMenuViewController *topMenu = [ARTopMenuViewController sharedController];
-    [topMenu.view addSubview:self.activeModalView];
+    [hostVC.view addSubview:self.activeModalView];
+
+    [self.activeModalView constrainHeight:@"40"];
+    [self.activeModalView constrainWidthToView:hostVC.view predicate:nil];
+
+    [self.activeModalView alignAttribute:NSLayoutAttributeBottom
+                             toAttribute:NSLayoutAttributeTop
+                                  ofView:hostVC.bottomLayoutGuide
+                               predicate:@"@750"];
+    [self.activeModalView alignAttribute:NSLayoutAttributeBottom
+                             toAttribute:NSLayoutAttributeTop
+                                  ofView:hostVC.keyboardLayoutGuide
+                               predicate:@"@1000"];
+
+    UITapGestureRecognizer *removeTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeActiveErrorModal)];
+    [self.activeModalView addGestureRecognizer:removeTapGesture];
 
     [UIView animateWithDuration:0.15 animations:^{
         self.activeModalView.alpha = 1;
     }];
+
+    [self performSelector:@selector(removeActiveErrorModal) withObject:nil afterDelay:10];
 }
 
 - (void)removeActiveErrorModal
@@ -85,19 +75,6 @@
         [self.activeModalView removeFromSuperview];
         self.activeModalView = nil;
     }];
-}
-
-- (void)setActiveModalView:(ARShadowView *)activeModalView
-{
-    _activeModalView = activeModalView;
-
-    UITapGestureRecognizer *removeTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeActiveErrorModal)];
-    [self.activeModalView addGestureRecognizer:removeTapGesture];
-
-    UILabel *titleLabel = activeModalView.subviews[0];
-    titleLabel.font = [UIFont serifFontWithSize:26];
-
-    [self.activeModalView createShadow];
 }
 
 @end

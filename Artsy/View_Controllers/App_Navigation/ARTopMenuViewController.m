@@ -167,7 +167,12 @@ static const CGFloat ARMenuButtonDimension = 46;
     }];
 }
 
-- (ARNavigationController *)rootNavigationController
+- (UIViewController *)visibleViewController;
+{
+    return self.presentedViewController ?: self.rootNavigationController.visibleViewController;
+}
+
+- (ARNavigationController *)rootNavigationController;
 {
     return (ARNavigationController *)[self.tabContentView currentNavigationController];
 }

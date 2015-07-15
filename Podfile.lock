@@ -88,6 +88,7 @@ PODS:
   - NAMapKit (3.1.1):
     - ARTiledImageView
     - SDWebImage
+  - NPKeyboardLayoutGuide (1.0.0)
   - ObjectiveSugar (1.1.0)
   - OCMock (2.2.4)
   - OHHTTPStubs (3.1.2)
@@ -156,6 +157,7 @@ DEPENDENCIES:
   - MMMarkdown
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`, commit `62275386978db91b0e7ed8de755d15cef3e793b4`)
+  - NPKeyboardLayoutGuide
   - ObjectiveSugar
   - OCMock
   - OHHTTPStubs
@@ -260,6 +262,7 @@ SPEC CHECKSUMS:
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: 4f57bea305c1795d2d6b8a6d6b31c59b1a08114f
+  NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c

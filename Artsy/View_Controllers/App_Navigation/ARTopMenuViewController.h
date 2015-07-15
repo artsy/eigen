@@ -23,6 +23,10 @@
 /// The current navigation controller for the app from inside the tab controller
 @property (readonly, nonatomic, strong) ARNavigationController *rootNavigationController;
 
+/// The view controller associated with the currently visible view in the navigation interface, be it in a tab’s
+/// navigation controller or shown modally.
+@property (readonly, nonatomic, strong) UIViewController *visibleViewController;
+
 /// The content view for the tabbed nav
 @property (readonly, nonatomic, weak) ARTabContentView *tabContentView;
 
