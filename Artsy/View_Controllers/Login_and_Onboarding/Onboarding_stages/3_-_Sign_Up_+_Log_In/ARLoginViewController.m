@@ -163,7 +163,7 @@
 - (void)twitter:(id)sender
 {
     [self hideKeyboard];
-   @_weakify(self);
+    @_weakify(self);
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
@@ -181,7 +181,7 @@
 
             } networkFailure:^(NSError *error) {
                 @_strongify(self);
-                [self failedToLoginToTwitter];
+                [self failedToLoginToTwitter:error];
             }];
 
     } failure:^(NSError *error) {
@@ -197,11 +197,10 @@
     [self loggedInWithUser:currentUser];
 }
 
-- (void)failedToLoginToTwitter
+- (void)failedToLoginToTwitter:(NSError *)error
 {
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-    [self presentErrorMessage:@"Network Error"];
-    self.loginButton.alpha = 1;
+    [self networkFailure:error];
 }
 
 - (void)fb:(id)sender
@@ -209,7 +208,7 @@
     [self hideKeyboard];
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
-   @_weakify(self);
+    @_weakify(self);
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
         [[ARUserManager sharedManager] loginWithFacebookToken:token
            successWithCredentials:nil gotUser:^(User *currentUser) {
@@ -230,7 +229,7 @@
 
            } networkFailure:^(NSError *error) {
                @_strongify(self);
-               [self failedToLoginToFacebook];
+               [self failedToLoginToFacebook:error];
            }];
     } failure:^(NSError *error) {
         @_strongify(self);
@@ -240,11 +239,10 @@
     }];
 }
 
-- (void)failedToLoginToFacebook
+- (void)failedToLoginToFacebook:(NSError *)error;
 {
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-    [self presentErrorMessage:@"Network Error"];
-    self.loginButton.alpha = 1;
+    [self networkFailure:error];
 }
 
 - (void)fbError
@@ -400,7 +398,7 @@
 
     self.loginButton.alpha = 0.5;
 
-   @_weakify(self);
+    @_weakify(self);
     [[ARUserManager sharedManager] loginWithUsername:username
         password:password
         successWithCredentials:nil
@@ -428,7 +426,7 @@
 
 - (void)networkFailure:(NSError *)error
 {
-    [self presentErrorMessage:@"There is an issue connecting to Artsy"];
+    [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to sign-in."];
     self.loginButton.alpha = 1;
 }
 
