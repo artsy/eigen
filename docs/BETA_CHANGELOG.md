@@ -1,6 +1,7 @@
 ## Next
 
 * Constrain size of launch logo to smaller size on iphone - 1aurabrown
+* Keep search outside of the navigation stack and maintain search results. - alloy
 * Make hit test areas of ‘MAG’, ‘YOU’, and ‘bell’ tab buttons wider. - alloy
 * Adds some spacing to the question on "do you buy art?" in onboarding - orta
 * Force the feed view controller to load its content when the network becomes available. - alloy
@@ -35,3 +36,4 @@
 * Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
 * Adds ‘bell’ notifications tab and shows notification count (currently only on launch and only if already signed-in). - alloy
 * Fix personalize search bar. - 1aurabrown
+

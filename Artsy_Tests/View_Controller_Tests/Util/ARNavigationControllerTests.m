@@ -3,11 +3,13 @@
 #import "ARPendingOperationViewController.h"
 #import "ARBackButtonCallbackManager.h"
 #import "ARTopMenuViewController.h"
+#import "ARAppSearchViewController.h"
 
 
 @interface ARNavigationController (Testing)
 - (IBAction)back:(id)sender;
-@property (nonatomic, strong) ARPendingOperationViewController *pendingOperationViewController;
+@property (readwrite, nonatomic, strong) ARPendingOperationViewController *pendingOperationViewController;
+@property (readwrite, nonatomic, strong) ARAppSearchViewController *searchViewController;
 @end
 
 SpecBegin(ARNavigationController);
@@ -32,34 +34,42 @@ describe(@"visuals", ^{
     });
 });
 
-describe(@"back", ^{
-
-    it(@"pops the top view controller", ^{
+describe(@"stack manipulation", ^{
+    it(@"removes a view controller from anywhere in the stack", ^{
         UIViewController *viewController2 = [[UIViewController alloc] init];
         [navigationController pushViewController:viewController2 animated:NO];
-
-        expect(navigationController.childViewControllers.count).to.equal(2);
-
-        OCMockObject *navMock = [OCMockObject partialMockForObject:navigationController];
-        [[[navMock expect] ignoringNonObjectArgs] popViewControllerAnimated:NO] ;
-
-        [navigationController back:nil];
-
-        [navMock verify];
+        [navigationController removeViewControllerFromStack:navigationController.rootViewController];
+        expect(navigationController.viewControllers).to.equal(@[viewController2]);
     });
 
-    it(@"checks for backbutton x-callback-url callback", ^{
-        UIViewController *viewController2 = [[UIViewController alloc] init];
-        [navigationController pushViewController:viewController2 animated:NO];
+    describe(@"back", ^{
+        it(@"pops the top view controller", ^{
+            UIViewController *viewController2 = [[UIViewController alloc] init];
+            [navigationController pushViewController:viewController2 animated:NO];
 
-        id managerStub = [OCMockObject niceMockForClass:[ARBackButtonCallbackManager class]];
-        [[managerStub expect] handleBackForViewController:[OCMArg any]];
+            expect(navigationController.childViewControllers.count).to.equal(2);
 
-        [ARTopMenuViewController sharedController].backButtonCallbackManager = managerStub;
+            OCMockObject *navMock = [OCMockObject partialMockForObject:navigationController];
+            [[[navMock expect] ignoringNonObjectArgs] popViewControllerAnimated:NO] ;
 
-        [navigationController back:nil];
+            [navigationController back:nil];
 
-        [managerStub verify];
+            [navMock verify];
+        });
+
+        it(@"checks for backbutton x-callback-url callback", ^{
+            UIViewController *viewController2 = [[UIViewController alloc] init];
+            [navigationController pushViewController:viewController2 animated:NO];
+
+            id managerStub = [OCMockObject niceMockForClass:[ARBackButtonCallbackManager class]];
+            [[managerStub expect] handleBackForViewController:[OCMArg any]];
+
+            [ARTopMenuViewController sharedController].backButtonCallbackManager = managerStub;
+
+            [navigationController back:nil];
+
+            [managerStub verify];
+        });
     });
 });
 
@@ -116,6 +126,39 @@ describe(@"presenting pending operation layover", ^{
                 [mock verify];
             });
         });
+    });
+});
+
+describe(@"search", ^{
+    before(^{
+        navigationController.searchViewController = [ARAppSearchViewController new];
+    });
+
+    it(@"presents the search VC", ^{
+        [navigationController search:nil];
+        // This is normally only called when on-screen
+        [(id<UINavigationControllerDelegate>)navigationController navigationController:navigationController
+                                                                 didShowViewController:navigationController.searchViewController
+                                                                              animated:NO];
+        expect(navigationController.topViewController).to.equal(navigationController.searchViewController);
+    });
+
+    it(@"removes the search VC from the stack after presenting another view controller on top of it", ^{
+        [navigationController search:nil];
+        UIViewController *other = [UIViewController new];
+        [navigationController pushViewController:other animated:NO];
+        // This is normally only called when on-screen
+        [(id<UINavigationControllerDelegate>)navigationController navigationController:navigationController
+                                                                 didShowViewController:other
+                                                                              animated:NO];
+        expect(navigationController.viewControllers).to.equal(@[navigationController.rootViewController, other]);
+    });
+
+    it(@"removes the search view controller from any other stack before showing it", ^{
+        ARNavigationController *other = [[ARNavigationController alloc] initWithRootViewController:navigationController.searchViewController];
+        [navigationController search:nil];
+        expect(navigationController.searchViewController.navigationController).to.equal(navigationController);
+        expect(other.viewControllers).to.beEmpty();
     });
 });
 
