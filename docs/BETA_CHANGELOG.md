@@ -5,6 +5,7 @@
 * Make hit test areas of ‘MAG’, ‘YOU’, and ‘bell’ tab buttons wider. - alloy
 * Adds some spacing to the question on "do you buy art?" in onboarding - orta
 * Force the feed view controller to load its content when the network becomes available. - alloy
+* Fix top margin & whitespace gobbler for shows without install shots - 1aurabrown
 * Force portrait orientation for the admin menu on iPhone, which could be wrong on top of a landscape VIR view. - alloy
 * Don't use square placeholder image for artwork image preview. - 1aurabrown
 
