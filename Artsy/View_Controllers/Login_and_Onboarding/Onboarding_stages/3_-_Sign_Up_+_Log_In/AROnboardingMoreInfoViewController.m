@@ -322,7 +322,7 @@
         @_strongify(self);
         [self setFormEnabled:YES];
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to sign-in."];
+        [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign up failed."];
         }];
 }
 
@@ -346,7 +346,7 @@
           @_strongify(self);
           [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
           [self setFormEnabled:YES];
-          [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to sign-in."];
+          [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign up failed."];
         }];
 }
 

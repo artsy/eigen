@@ -426,7 +426,7 @@
 
 - (void)networkFailure:(NSError *)error
 {
-    [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to sign-in."];
+    [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign in failed."];
     self.loginButton.alpha = 1;
 }
 

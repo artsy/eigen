@@ -237,7 +237,7 @@
         @_strongify(self);
         [self setFormEnabled:YES];
         [self performSelector:_cmd withObject:self afterDelay:3];
-        [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to sign-in."];
+        [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign up failed."];
         }];
 }
 
