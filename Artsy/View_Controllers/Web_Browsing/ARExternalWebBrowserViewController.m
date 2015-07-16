@@ -34,10 +34,15 @@
 {
     [super viewDidLoad];
 
-    [self.webView constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"0"];
-    [self.webView alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
+    [self setupConstraints];
     self.scrollView.delegate = self;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
+}
+
+- (void)setupConstraints
+{
+    [self.webView constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"0"];
+    [self.webView alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
 }
 
 - (void)viewWillAppear:(BOOL)animated

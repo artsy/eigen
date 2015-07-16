@@ -4,6 +4,9 @@
 //
 //   git update-index --assume-unchanged Artsy/Classes/View\ Controllers/ARTopMenuViewController+DeveloperExtras.m
 
+#import "ARPersonalizeWebViewController.h"
+#import "ARNetworkConstants.h"
+
 
 @implementation ARTopMenuViewController (DeveloperExtras)
 
@@ -12,6 +15,9 @@
 
 - (void)runDeveloperExtras
 {
+    NSURL *url = [ARSwitchBoard.sharedInstance resolveRelativeUrl:ARPersonalizePath];
+    ARPersonalizeWebViewController *viewController = [[ARPersonalizeWebViewController alloc] initWithURL:url];
+    [self.rootNavigationController pushViewController:viewController animated:NO];
 }
 
 @end
