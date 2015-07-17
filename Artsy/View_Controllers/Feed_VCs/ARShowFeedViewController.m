@@ -138,8 +138,16 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
 - (BOOL)hidesToolbarMenu
 {
-    return self.showingOfflineView == YES;
+    return self.showingOfflineView;
 }
+
+- (BOOL)hidesSearchButton;
+{
+    return self.showingOfflineView;
+}
+
+#pragma mark - Implementation
+
 - (void)refreshFeedItems
 {
     [ARAnalytics startTimingEvent:ARAnalyticsInitialFeedLoadTime];
