@@ -24,7 +24,7 @@ static CGFloat ARFeedLinksNavMarginPhone = 20;
 static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
 
-@interface ARShowFeedViewController () <ARMenuAwareViewController, DRKonamiGestureProtocol>
+@interface ARShowFeedViewController () <ARMenuAwareViewController, DRKonamiGestureProtocol, AROfflineViewDelegate>
 
 @property (nonatomic, strong) ARHeroUnitViewController *heroUnitVC;
 @property (nonatomic, strong) ARFeedLinkUnitViewController *feedLinkVC;
@@ -90,7 +90,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     [self didChangeValueForKey:@keypath(self, hidesToolbarMenu)];
 }
 
-#pragma mark - Private Methods
+#pragma mark - Offline View
 
 - (void)showOfflineView
 {
@@ -98,6 +98,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
     if (self.offlineView == nil) {
         self.offlineView = [[AROfflineView alloc] initWithFrame:self.view.bounds];
+        self.offlineView.delegate = self;
     }
 
     [self.view addSubview:self.offlineView];
@@ -116,6 +117,11 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     self.offlineView = nil;
 }
 
+- (void)offlineViewDidRequestRefresh:(AROfflineView *)offlineView;
+{
+    [self refreshFeed];
+}
+
 #pragma mark - ARMenuAwareViewController
 
 - (BOOL)hidesBackButton
@@ -130,9 +136,12 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 - (void)refreshFeedItems
 {
     [ARAnalytics startTimingEvent:ARAnalyticsInitialFeedLoadTime];
-    [self presentLoadingView];
+    if (!self.showingOfflineView) {
+        [self presentLoadingView];
+    }
 
     @_weakify(self);
+
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^{
             @_strongify(self);
@@ -144,9 +153,12 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
         } failure:^(NSError *error) {
             ARErrorLog(@"There was an error getting newest items for the feed: %@", error.localizedDescription);
+            [self.offlineView refreshFailed];
             [self performSelector:@selector(refreshFeed) withObject:nil afterDelay:3];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
         }];
+    } failure:^(NSError *error) {
+        [self.offlineView refreshFailed];
     }];
 }
 

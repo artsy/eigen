@@ -1,6 +1,13 @@
-@import ORStackView;
+@import UIKit;
+
+@class AROfflineView;
+
+@protocol AROfflineViewDelegate
+- (void)offlineViewDidRequestRefresh:(AROfflineView *)offlineView;
+@end
 
 
-@interface AROfflineView : ORStackView
-
+@interface AROfflineView : UIView
+@property (readwrite, nonatomic, weak) id<AROfflineViewDelegate> delegate;
+- (void)refreshFailed;
 @end
