@@ -1,4 +1,4 @@
-## Next
+## 2.1.0 (2015.07.18)
 
 * Fix broken web onboarding constraints - 1aurabrown
 * Constrain size of launch logo to smaller size on iphone - 1aurabrown
