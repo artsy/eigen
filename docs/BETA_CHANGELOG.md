@@ -1,5 +1,6 @@
 ## Next
 
+* Fix broken web onboarding constraints - 1aurabrown
 * Constrain size of launch logo to smaller size on iphone - 1aurabrown
 * Keep search outside of the navigation stack and maintain search results. - alloy
 * Make hit test areas of ‘MAG’, ‘YOU’, and ‘bell’ tab buttons wider. - alloy
