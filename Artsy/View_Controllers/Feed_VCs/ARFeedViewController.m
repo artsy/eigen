@@ -43,7 +43,7 @@
     _loading = NO;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshFeedItems)
+                                             selector:@selector(refreshFeed)
                                                  name:ARNetworkAvailableNotification
                                                object:nil];
 
