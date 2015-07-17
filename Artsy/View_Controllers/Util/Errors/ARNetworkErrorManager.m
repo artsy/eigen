@@ -54,7 +54,7 @@
     self.activeModalView.alpha = 0;
     [hostVC.view addSubview:self.activeModalView];
 
-    [self.activeModalView constrainHeight:@"40"];
+    [self.activeModalView constrainHeight:@"50"];
     [self.activeModalView constrainWidthToView:hostVC.view predicate:nil];
 
     [self.activeModalView alignAttribute:NSLayoutAttributeBottom
