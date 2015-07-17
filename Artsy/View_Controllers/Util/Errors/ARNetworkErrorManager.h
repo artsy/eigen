@@ -1,4 +1,6 @@
-
+@protocol ARNetworkErrorAwareViewController
+@property (readonly, nonatomic, assign) BOOL shouldShowActiveNetworkError;
+@end
 
 
 @interface ARNetworkErrorManager : NSObject

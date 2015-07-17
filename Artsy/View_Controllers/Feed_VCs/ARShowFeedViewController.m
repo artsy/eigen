@@ -24,7 +24,7 @@ static CGFloat ARFeedLinksNavMarginPhone = 20;
 static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
 
-@interface ARShowFeedViewController () <ARMenuAwareViewController, DRKonamiGestureProtocol, AROfflineViewDelegate>
+@interface ARShowFeedViewController () <ARMenuAwareViewController, DRKonamiGestureProtocol, AROfflineViewDelegate, ARNetworkErrorAwareViewController>
 
 @property (nonatomic, strong) ARHeroUnitViewController *heroUnitVC;
 @property (nonatomic, strong) ARFeedLinkUnitViewController *feedLinkVC;
@@ -120,6 +120,13 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 - (void)offlineViewDidRequestRefresh:(AROfflineView *)offlineView;
 {
     [self refreshFeed];
+}
+
+#pragma mark - ARNetworkErrorAwareViewController
+
+- (BOOL)shouldShowActiveNetworkError;
+{
+    return !self.isSHowingOfflineView;
 }
 
 #pragma mark - ARMenuAwareViewController

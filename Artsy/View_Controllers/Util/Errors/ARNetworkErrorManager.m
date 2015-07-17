@@ -42,6 +42,12 @@
     ARTopMenuViewController *topMenu = [ARTopMenuViewController sharedController];
     UIViewController *hostVC = topMenu.visibleViewController;
 
+    if ([hostVC respondsToSelector:@selector(shouldShowActiveNetworkError)]) {
+        if (![(id<ARNetworkErrorAwareViewController>)hostVC shouldShowActiveNetworkError]) {
+            return;
+        }
+    }
+
     self.activeModalView = [[ARWarningView alloc] initWithFrame:CGRectZero];
     self.activeModalView.text = [NSString stringWithFormat:@"%@ Network connection error.", message];
 
