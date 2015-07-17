@@ -220,6 +220,7 @@
 		51D141B01AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141AF1AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m */; };
 		51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141B61AF0F14B000091CF /* ARTestHelper.m */; };
 		51D141B91AF25DB4000091CF /* ARAutoLayoutDebugging.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141B81AF25DB4000091CF /* ARAutoLayoutDebugging.m */; };
+		51DA12251B596035001B6F2A /* RefreshIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DA12241B596035001B6F2A /* RefreshIcon@2x.png */; };
 		540262C618A0FAFB00844AE1 /* ARButtonWithImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 540262C518A0FAFB00844AE1 /* ARButtonWithImage.m */; };
 		54289FEE18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */; };
 		5435192E18A8E9420060F31E /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */; };
@@ -978,6 +979,7 @@
 		51D141B61AF0F14B000091CF /* ARTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTestHelper.m; sourceTree = "<group>"; };
 		51D141B81AF25DB4000091CF /* ARAutoLayoutDebugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAutoLayoutDebugging.m; sourceTree = "<group>"; };
 		51D141BA1AF2B3CD000091CF /* ARAutoLayoutDebugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAutoLayoutDebugging.h; sourceTree = "<group>"; };
+		51DA12241B596035001B6F2A /* RefreshIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RefreshIcon@2x.png"; sourceTree = "<group>"; };
 		540262C418A0FAFB00844AE1 /* ARButtonWithImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARButtonWithImage.h; sourceTree = "<group>"; };
 		540262C518A0FAFB00844AE1 /* ARButtonWithImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARButtonWithImage.m; sourceTree = "<group>"; };
 		54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINavigationController_InnermostTopViewControllerSpec.m; sourceTree = "<group>"; };
@@ -3187,6 +3189,7 @@
 				5168A76F1B46D6D000FFBCBF /* NotificationsButton@2x.png */,
 				E6543CDA18AD795E00A6B9AF /* Parallax_Overlay_Bottom@2x.png */,
 				E66492D218B7D26B00531B8F /* Parallax_Overlay_Top@2x.png */,
+				51DA12241B596035001B6F2A /* RefreshIcon@2x.png */,
 				5152C65A1B5039170018D4E4 /* SearchButton@2x.png */,
 				E69101FF19C9E17B0048149C /* SearchIcon_White@2x.png */,
 				3C4AE96319094969009C0E8B /* SearchIcon_LightGrey@2x.png */,
@@ -4157,6 +4160,7 @@
 				608B706B17D4A1C80088A56C /* Heart_Black@2x.png in Resources */,
 				3C4AE96719094969009C0E8B /* SearchIcon_HeavyGrey@2x.png in Resources */,
 				3C4AE96B19094969009C0E8B /* SearchThumb_LightGrey@2x.png in Resources */,
+				51DA12251B596035001B6F2A /* RefreshIcon@2x.png in Resources */,
 				608B706E17D4A1C80088A56C /* Artwork_Icon_VIR@2x.png in Resources */,
 				E6FFEAB619C7925600A0D7DE /* splash_1@2x~iphone.jpg in Resources */,
 				605002E917D9F5DC00C090B8 /* SmallMoreVerticalArrow.png in Resources */,

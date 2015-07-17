@@ -27,8 +27,10 @@
             label.textColor = [UIColor artsyHeavyGrey];
         }];
 
-        UIImage *buttonIcon = [UIImage imageNamed:@"SearchButton"];
+        UIImage *buttonIcon = [UIImage imageNamed:@"RefreshIcon"];
         _refreshButton = [ARMenuButton new];
+        [_refreshButton setBorderColor:[UIColor artsyLightGrey] forState:UIControlStateNormal animated:NO];
+        [_refreshButton setBackgroundColor:[UIColor whiteColor] forState:UIControlStateNormal animated:NO];
         // [button ar_extendHitTestSizeByWidth:10 andHeight:10];
         [_refreshButton setImage:buttonIcon forState:UIControlStateNormal];
         [_refreshButton addTarget:self action:@selector(forceRefreshFeedItems:) forControlEvents:UIControlEventTouchUpInside];
@@ -55,13 +57,22 @@
 // Only need to rotate half way, because the icon is symetrical.
 - (void)rotate;
 {
-    [UIView animateWithDuration:1
-        delay:0
-        options:UIViewAnimationOptionCurveLinear
-        animations:^{ self.refreshButton.transform = CGAffineTransformMakeRotation(M_PI);
+    self.refreshButton.transform = CGAffineTransformIdentity;
+    [UIView animateKeyframesWithDuration:1.0
+        delay:0.0
+        options:UIViewKeyframeAnimationOptionCalculationModePaced | UIViewAnimationOptionCurveLinear
+        animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.0 animations:^{
+                                    self.refreshButton.transform = CGAffineTransformMakeRotation(M_PI * 2.0 / 3.0);
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.0 animations:^{
+                                    self.refreshButton.transform = CGAffineTransformMakeRotation(M_PI * 4.0 / 3.0);
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.0 animations:^{
+                                    self.refreshButton.transform = CGAffineTransformIdentity;
+                                  }];
         }
         completion:^(BOOL _) {
-        self.refreshButton.transform = CGAffineTransformIdentity;
         if (self.stopRotating) {
             self.stopRotating = NO;
         } else {
