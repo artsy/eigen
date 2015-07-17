@@ -44,6 +44,11 @@
     BOOL showOnTopMenu = topMenu.presentedViewController == nil;
     UIView *hostView = showOnTopMenu ? topMenu.tabContentView : hostVC.view;
 
+    // This happens when there’s no network on app launch and onboarding will be shown.
+    if (hostView.superview == nil) {
+        return;
+    }
+
     if ([hostVC respondsToSelector:@selector(shouldShowActiveNetworkError)]) {
         if (![(id<ARNetworkErrorAwareViewController>)hostVC shouldShowActiveNetworkError]) {
             return;
