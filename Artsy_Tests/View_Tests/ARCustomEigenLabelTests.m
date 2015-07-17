@@ -48,7 +48,7 @@ describe(@"ARArtworkTitleLabel", ^{
 describe(@"ARWarningView", ^{
     it(@"looks correct", ^{
         ARWarningView *warningLabel = [[ARWarningView alloc] initWithFrame:CGRectMake(0, 0, 640, 40)];
-        warningLabel.text = @"Remember that life’s big changes rarely give advance warning.";
+        warningLabel.text = @"Life’s big changes rarely give advance warning.";
         expect(warningLabel).to.haveValidSnapshot();
     });
 });
