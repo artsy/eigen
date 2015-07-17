@@ -33,7 +33,8 @@ plugin 'cocoapods-keys', {
         "ArtsyTwitterStagingKey",
         "ArtsyTwitterStagingSecret",
         "SegmentProductionWriteKey",
-        "SegmentDevWriteKey"
+        "SegmentDevWriteKey",
+        "AdjustProductionAppToken"
     ]
 }
 
@@ -103,7 +104,7 @@ target 'Artsy' do
   pod 'TSMiniWebBrowser@dblock', :head
 
   # Analytics
-  pod 'ARAnalytics', '>= 3.6.2', :subspecs => ["Segmentio", "HockeyApp", "DSL"]
+  pod 'ARAnalytics', '>= 3.6.2', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'
