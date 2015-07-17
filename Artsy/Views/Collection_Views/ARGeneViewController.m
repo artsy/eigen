@@ -97,7 +97,7 @@
 
 - (void)loadGene
 {
-   @_weakify(self);
+    @_weakify(self);
     [self.gene updateGene:^{
         @_strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
@@ -193,7 +193,7 @@
     [ArtsyAPI setFavoriteStatus:sender.isHearted forGene:self.gene success:^(id response) {
     }
         failure:^(NSError *error) {
-        [ARNetworkErrorManager presentActiveErrorModalWithError:error];
+        [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow category."];
         [sender setHearted:!hearted animated:self.shouldAnimate];
         }];
 }

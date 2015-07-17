@@ -49,12 +49,23 @@
     titleLabel.tag = tag;
     [self addSubview:titleLabel withTopMargin:@"20" sideMargin:@"80"];
 
+    [self addSerifPageSubtitle:subtitle tag:tag + 1];
+}
+
+- (UILabel *)addSerifPageSubtitle:(NSString *)subtitle;
+{
+    return [self addSerifPageSubtitle:subtitle tag:0];
+}
+
+- (UILabel *)addSerifPageSubtitle:(NSString *)subtitle tag:(NSInteger)tag;
+{
     UILabel *subtitleLabel = [ARThemedFactory labelForSerifSubHeaders];
     subtitleLabel.text = subtitle;
-    subtitleLabel.tag = tag + 1;
+    subtitleLabel.tag = tag;
     subtitleLabel.font = [UIFont serifFontWithSize:16];
     subtitleLabel.textColor = [UIColor blackColor];
     [self addSubview:subtitleLabel withTopMargin:@"8" sideMargin:@"48"];
+    return subtitleLabel;
 }
 
 - (UIView *)addGenericSeparatorWithSideMargin:(NSString *)sideMargin

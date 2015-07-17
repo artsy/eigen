@@ -10,6 +10,8 @@
 
 #import "UIView+HitTestExpansion.h"
 
+@import NPKeyboardLayoutGuide;
+
 static const CGFloat ARMenuButtonDimension = 46;
 
 
@@ -130,6 +132,11 @@ static const CGFloat ARMenuButtonDimension = 46;
     self.constraintsForButtons = [constraintsForButtons copy];
 
     self.tabHeightConstraint = [[tabContainer alignBottomEdgeWithView:self.view predicate:@"0"] lastObject];
+
+    // Ensure it's created now and started listening for keyboard changes.
+    // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
+    // be assured that any VCs guide can be trusted.
+    self.keyboardLayoutGuide;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -167,7 +174,12 @@ static const CGFloat ARMenuButtonDimension = 46;
     }];
 }
 
-- (ARNavigationController *)rootNavigationController
+- (UIViewController *)visibleViewController;
+{
+    return self.presentedViewController ?: self.rootNavigationController.visibleViewController;
+}
+
+- (ARNavigationController *)rootNavigationController;
 {
     return (ARNavigationController *)[self.tabContentView currentNavigationController];
 }

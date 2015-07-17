@@ -113,7 +113,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)updateArtistInfo
 {
-   @_weakify(self);
+    @_weakify(self);
     [self.networkModel getArtistInfoWithSuccess:^(Artist *artist) {
 
         @_strongify(self);
@@ -320,13 +320,13 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:self.shouldAnimate];
 
-   @_weakify(self);
-    [self.networkModel setFavoriteStatus:sender.isHearted success:^(id response) {
-    }
+    @_weakify(self);
+    [self.networkModel setFavoriteStatus:sender.isHearted
+        success:^(id response) {
+        }
         failure:^(NSError *error) {
-
-         @_strongify(self);
-        [ARNetworkErrorManager presentActiveErrorModalWithError:error];
+        @_strongify(self);
+        [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
         [sender setHearted:!hearted animated:self.shouldAnimate];
         }];
 }
@@ -393,7 +393,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL showingForSale = (displayMode == ARArtistArtworksDisplayForSale);
     NSDictionary *params = (showingForSale) ? @{ @"filter[]" : @"for_sale" } : nil;
 
-   @_weakify(self);
+    @_weakify(self);
     [self.networkModel getArtistArtworksAtPage:lastPage + 1 params:params success:^(NSArray *artworks) {
         @_strongify(self);
         [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
@@ -556,7 +556,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getRelatedArtists
 {
-   @_weakify(self);
+    @_weakify(self);
     [self.artist getRelatedArtists:^(NSArray *artists) {
         @_strongify(self);
         if (artists.count > 0 ) {
@@ -571,7 +571,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getRelatedPosts
 {
-   @_weakify(self);
+    @_weakify(self);
     [self.artist getRelatedPosts:^(NSArray *posts) {
         @_strongify(self);
         if (posts.count > 0) {
