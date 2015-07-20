@@ -1,5 +1,7 @@
 ## Next
 
+* Do not show the search navigation button in VIR mode. - alloy
+
 ## 2.1.0 (2015.07.18)
 
 * Fix broken web onboarding constraints - 1aurabrown
