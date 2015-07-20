@@ -47,6 +47,7 @@ oss:
 	bundle exec pod keys set "ArtsyTwitterStagingSecret" "-"
 	bundle exec pod keys set "SegmentProductionWriteKey" "-"
 	bundle exec pod keys set "SegmentDevWriteKey" "-"
+	bundle exec pod keys set "AdjustProductionAppToken" "-"
 
 artsy:
 	git submodule init

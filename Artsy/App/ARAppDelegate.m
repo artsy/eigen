@@ -4,10 +4,15 @@
 #define ADMIN_MENU_ENABLED 1
 #endif
 
-#import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
+@import FBSDKCoreKit;
+@import FBSDKLoginKit;
+@import ORKeyboardReactingApplication;
+@import iRate;
+@import AFOAuth1Client;
+@import UICKeyChainStore;
+
 #import "ARAppWatchCommunicator.h"
-#import <iRate/iRate.h>
-#import <AFOAuth1Client/AFOAuth1Client.h>
+
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 
@@ -25,9 +30,6 @@
 #import "ArtsyAPI+Private.h"
 #import "ARFileUtils.h"
 
-@import FBSDKCoreKit;
-@import FBSDKLoginKit;
-
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
 #import "ARDefaults+SiteFeatures.h"
@@ -36,11 +38,9 @@
 #import "ARBackButtonCallbackManager.h"
 
 #if ADMIN_MENU_ENABLED
-#import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
-#import <VCRURLConnection/VCR.h>
+@import DHCShakeNotifier;
+@import VCRURLConnection;
 #endif
-
-#import <UICKeyChainStore/UICKeyChainStore.h>
 
 // demo
 #import "ARDemoSplashViewController.h"
@@ -303,6 +303,7 @@ static ARAppDelegate *_sharedInstance = nil;
     _referralURLRepresentation = sourceApplication;
     _landingURLRepresentation = [url absoluteString];
 
+    [self lookAtURLForAnalytics:url];
 
     // X-Callback-Url
     if ([[IACManager sharedManager] handleOpenURL:url]) {

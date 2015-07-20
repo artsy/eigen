@@ -16,6 +16,7 @@ machine:
     ArtsyTwitterSecret: "-"
     ArtsyTwitterStagingKey: "-"
     ArtsyTwitterStagingSecret: "-"
+    AdjustProductionAppToken: "-"
     SegmentProductionWriteKey: "-"
     SegmentDevWriteKey: "-"
   post:

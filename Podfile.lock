@@ -1,4 +1,7 @@
 PODS:
+  - Adjust (4.2.7):
+    - Adjust/Core (= 4.2.7)
+  - Adjust/Core (4.2.7)
   - AFHTTPRequestOperationLogger (1.0.0):
     - AFNetworking (~> 1.0)
   - AFNetworking (1.3.4)
@@ -9,6 +12,9 @@ PODS:
     - TRVSDictionaryWithCaseInsensitivity (= 0.0.2)
   - Analytics/Segmentio (1.12.0):
     - Analytics/Core-iOS
+  - ARAnalytics/Adjust (3.6.2):
+    - Adjust
+    - ARAnalytics/CoreIOS
   - ARAnalytics/CoreIOS (3.6.2)
   - ARAnalytics/DSL (3.6.2):
     - ReactiveCocoa (~> 2.0)
@@ -122,6 +128,7 @@ DEPENDENCIES:
   - AFNetworking (from `https://github.com/orta/AFNetworking`, branch `no_ifdefs`)
   - AFOAuth1Client (from `https://github.com/orta/AFOAuth1Client`, branch `patch-1`)
   - ALPValidator
+  - ARAnalytics/Adjust (>= 3.6.2)
   - ARAnalytics/DSL (>= 3.6.2)
   - ARAnalytics/HockeyApp (>= 3.6.2)
   - ARAnalytics/Segmentio (>= 3.6.2)
@@ -221,6 +228,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/1aurabrown/ORStackView.git
 
 SPEC CHECKSUMS:
+  Adjust: 2c3d4db6047c6bba68d7c5ede63fbdc989eb57b7
   AFHTTPRequestOperationLogger: 251332cf89812162df96843ca51a76107fb95a94
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
   AFOAuth1Client: 51d32174520b54d7e15a8b3dd618a9a5b87a6344

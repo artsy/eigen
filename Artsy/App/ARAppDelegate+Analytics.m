@@ -4,7 +4,7 @@
 #import "ARAnalyticsConstants.h"
 #import <HockeySDK_Source/BITHockeyManager.h>
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
-
+#import <Adjust/Adjust.h>
 #import "ARUserManager.h"
 #import "ARTopMenuNavigationDataSource.h"
 
@@ -59,15 +59,27 @@
 
 @implementation ARAppDelegate (Analytics)
 
+- (void)lookAtURLForAnalytics:(NSURL *)url
+{
+    [Adjust appWillOpenUrl:url];
+}
+
 - (void)setupAnalytics
 {
     ArtsyKeys *keys = [[ArtsyKeys alloc] init];
     NSString *segmentWriteKey = keys.segmentProductionWriteKey;
+    NSString *environment = ADJEnvironmentProduction;
 
     NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
     if ([bundleID containsString:@".dev"] || [bundleID containsString:@".beta"]) {
         segmentWriteKey = keys.segmentDevWriteKey;
+        environment = ADJEnvironmentSandbox;
     }
+
+    // Skipping ARAnalytics because Adjust has its own expectations
+    // around event names being < 6 chars
+    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:keys.adjustProductionAppToken environment:environment];
+    [Adjust appDidLaunch:adjustConfig];
 
 #if DEBUG
     [[BITHockeyManager sharedHockeyManager] setDisableUpdateManager:YES];
@@ -94,7 +106,7 @@
     @{
         ARHockeyAppBetaID: @"306e66bde3cb91a2043f2606cf335700",
         ARHockeyAppLiveID: @"d7bceb80c6fa1e83e787b3919c749311",
-        ARSegmentioWriteKey: segmentWriteKey
+        ARSegmentioWriteKey: segmentWriteKey,
     } configuration:
     @{
         ARAnalyticsTrackedEvents:
