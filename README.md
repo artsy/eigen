@@ -8,7 +8,7 @@
 <a href="http://iphone.artsy.net"><img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg"></a>
 
 
-I'm in your [phone](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) or [ipad](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) letting you browse the arts.
+I'm in your [phone](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) or [ipad](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) letting you browse the arts. 
 
 ### Docs
 
@@ -32,6 +32,10 @@ This will set you up on our staging server, you will have a running version of t
 ### Work at Artsy?
 
 Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander).
+
+### Don't work at Artsy?
+
+We're actively looking for 2 more [mobile developers](https://www.artsy.net/job/mobile-engineer) to join our [team](https://github.com/artsy/mobile/). Want work in NYC, and do impactful work in the open? Get in contact.
 
 ### Thanks
 

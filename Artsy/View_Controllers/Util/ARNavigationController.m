@@ -24,6 +24,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
 @property (readwrite, nonatomic, strong) AIMultiDelegate *multiDelegate;
 @property (readwrite, nonatomic, strong) UIViewController<ARMenuAwareViewController> *observedViewController;
 @property (readwrite, nonatomic, strong) UIPercentDrivenInteractiveTransition *interactiveTransitionHandler;
+@property (readwrite, nonatomic, strong) ARAppSearchViewController *searchViewController;
 
 @end
 
@@ -64,11 +65,6 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
 {
     [ARScrollNavigationChief.chief removeObserver:self forKeyPath:@keypath(ARScrollNavigationChief.chief, allowsMenuButtons) context:ARNavigationControllerScrollingChiefContext];
     [self observeViewController:NO];
-}
-
-- (UIViewController *)rootViewController;
-{
-    return [self.viewControllers firstObject];
 }
 
 #pragma mark - Properties
@@ -204,6 +200,10 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
 
     BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
     [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:NO];
+
+    if (viewController != self.searchViewController) {
+        [self removeViewControllerFromStack:self.searchViewController];
+    }
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -349,6 +349,22 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 #pragma mark - Public methods
 
+- (UIViewController *)rootViewController;
+{
+    return [self.viewControllers firstObject];
+}
+
+- (void)removeViewControllerFromStack:(UIViewController *)viewController;
+{
+    NSArray *stack = self.viewControllers;
+    NSUInteger index = [stack indexOfObjectIdenticalTo:viewController];
+    if (index != NSNotFound) {
+        NSMutableArray *mutatedStack = [stack mutableCopy];
+        [mutatedStack removeObjectAtIndex:index];
+        self.viewControllers = mutatedStack;
+    }
+}
+
 - (RACCommand *)presentPendingOperationLayover
 {
     return [self presentPendingOperationLayoverWithMessage:nil];
@@ -450,12 +466,12 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (IBAction)search:(id)sender;
 {
+    if (self.searchViewController == nil) {
+        self.searchViewController = [ARAppSearchViewController sharedSearchViewController];
+    }
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
-    // TODO What is this about? (From above)
-    // [navigationController.navigationController …];
-
-    ARSearchViewController *searchController = [ARAppSearchViewController new];
-    [navigationController pushViewController:searchController animated:YES];
+    [navigationController pushViewController:self.searchViewController
+                                    animated:![ARDispatchManager sharedManager].useSyncronousDispatches];
 }
 
 @end

@@ -43,7 +43,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 @property (nonatomic, weak) UIView *debugMinimumArtworkView;
 @property (nonatomic, weak) UIView *debugEyelineView;
 
-@property (readwrite, nonatomic, assign) BOOL hidesNavigationButtons;
+@property (readwrite, nonatomic, assign) BOOL hidesBackButton;
 
 @end
 
@@ -75,7 +75,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     self.view.clipsToBounds = YES;
 
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    self.hidesNavigationButtons = UIInterfaceOrientationIsLandscape(orientation);
+    self.hidesBackButton = UIInterfaceOrientationIsLandscape(orientation);
 
     return self;
 }
@@ -83,6 +83,11 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 #pragma mark - ARMenuAwareViewController
 
 - (BOOL)hidesToolbarMenu
+{
+    return YES;
+}
+
+- (BOOL)hidesSearchButton;
 {
     return YES;
 }
@@ -207,7 +212,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 
     self.artworkImageView.userInteractionEnabled = NO;
 
-    self.hidesNavigationButtons = YES;
+    self.hidesBackButton = YES;
 
     if (self.artworkImageView && self.artworkImageView.motionEffects.count == 0) {
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedArtwork)];
@@ -297,7 +302,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 
     self.artworkImageView.userInteractionEnabled = YES;
 
-    self.hidesNavigationButtons = NO;
+    self.hidesBackButton = NO;
 
     NSArray *effects = self.artworkImageView.motionEffects.copy;
     for (UIMotionEffect *effect in effects) {

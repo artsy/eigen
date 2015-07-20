@@ -1,9 +1,20 @@
 ## Next
 
+* Do not show the search navigation button in VIR mode. - alloy
+* Adds Adjust SDK to the app. - orta
+
+
+## 2.1.0 (2015.07.18)
+
+* Fix broken web onboarding constraints - 1aurabrown
 * Constrain size of launch logo to smaller size on iphone - 1aurabrown
+* Keep search outside of the navigation stack and maintain search results. - alloy
 * Make hit test areas of ‘MAG’, ‘YOU’, and ‘bell’ tab buttons wider. - alloy
 * Adds some spacing to the question on "do you buy art?" in onboarding - orta
+* Fix bad margins around home button - 1aurabrown
+* Add updated design for when connection errors occur. - alloy
 * Force the feed view controller to load its content when the network becomes available. - alloy
+* Fix top margin & whitespace gobbler for shows without install shots - 1aurabrown
 * Force portrait orientation for the admin menu on iPhone, which could be wrong on top of a landscape VIR view. - alloy
 * Don't use square placeholder image for artwork image preview. - 1aurabrown
 
@@ -35,3 +46,4 @@
 * Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
 * Adds ‘bell’ notifications tab and shows notification count (currently only on launch and only if already signed-in). - alloy
 * Fix personalize search bar. - 1aurabrown
+

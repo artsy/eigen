@@ -20,6 +20,16 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
 
 @implementation ARAppSearchViewController
 
++ (instancetype)sharedSearchViewController;
+{
+    static ARAppSearchViewController *sharedInstance = nil;
+    static dispatch_once_t onceToken = 0;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [self new];
+    });
+    return sharedInstance;
+}
+
 - (instancetype)init
 {
     self = [super init];

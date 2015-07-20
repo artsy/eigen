@@ -210,7 +210,7 @@
         return;
     }
 
-   @_weakify(self);
+    @_weakify(self);
     [self setFormEnabled:NO];
     if (self.provider == ARAuthProviderFacebook) {
         [[ARUserManager sharedManager] createUserViaFacebookWithToken:self.token
@@ -303,7 +303,7 @@
 - (void)loginWithTwitterCredential
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-   @_weakify(self);
+    @_weakify(self);
 
     [[ARUserManager sharedManager] loginWithTwitterToken:self.token
         secret:self.secret
@@ -322,14 +322,14 @@
         @_strongify(self);
         [self setFormEnabled:YES];
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        [ARNetworkErrorManager presentActiveErrorModalWithError:error];
+        [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign up failed."];
         }];
 }
 
 - (void)loginWithFacebookCredential
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-   @_weakify(self);
+    @_weakify(self);
 
     [[ARUserManager sharedManager] loginWithFacebookToken:self.token successWithCredentials:nil
         gotUser:^(User *currentUser) {
@@ -346,7 +346,7 @@
           @_strongify(self);
           [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
           [self setFormEnabled:YES];
-          [ARNetworkErrorManager presentActiveErrorModalWithError:error];
+          [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign up failed."];
         }];
 }
 

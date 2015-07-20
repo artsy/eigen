@@ -10,6 +10,8 @@
 
 #import "UIView+HitTestExpansion.h"
 
+@import NPKeyboardLayoutGuide;
+
 static const CGFloat ARMenuButtonDimension = 46;
 
 
@@ -56,7 +58,9 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateNormal];
     [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateSelected];
-    [homeButton.imageView constrainWidth:@"20" height:@"20"];
+    CGFloat buttonImageSize = 20;
+    CGFloat inset = (ARMenuButtonDimension - buttonImageSize) / 2;
+    homeButton.contentEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
 
     [showsButton setTitle:@"SHOWS" forState:UIControlStateNormal];
     [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
@@ -117,7 +121,7 @@ static const CGFloat ARMenuButtonDimension = 46;
         [button constrainTopSpaceToView:separator predicate:@"0"];
         [button alignBottomEdgeWithView:tabContainer predicate:@"0"];
         if (index == 0) {
-            [button alignLeadingEdgeWithView:tabContainer predicate:nil];
+            [button alignLeadingEdgeWithView:tabContainer predicate:@"0"];
         } else {
             [constraintsForButtons addObject:[[button constrainLeadingSpaceToView:buttons[index - 1] predicate:nil] lastObject] ];
         }
@@ -128,6 +132,11 @@ static const CGFloat ARMenuButtonDimension = 46;
     self.constraintsForButtons = [constraintsForButtons copy];
 
     self.tabHeightConstraint = [[tabContainer alignBottomEdgeWithView:self.view predicate:@"0"] lastObject];
+
+    // Ensure it's created now and started listening for keyboard changes.
+    // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
+    // be assured that any VCs guide can be trusted.
+    self.keyboardLayoutGuide;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -165,7 +174,12 @@ static const CGFloat ARMenuButtonDimension = 46;
     }];
 }
 
-- (ARNavigationController *)rootNavigationController
+- (UIViewController *)visibleViewController;
+{
+    return self.presentedViewController ?: self.rootNavigationController.visibleViewController;
+}
+
+- (ARNavigationController *)rootNavigationController;
 {
     return (ARNavigationController *)[self.tabContentView currentNavigationController];
 }
