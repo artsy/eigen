@@ -79,7 +79,7 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
 
 - (void)openToFullHeight
 {
-    [self openToFullHeight];
+    [self openToFullHeightAnimated:YES];
 }
 
 - (void)openToFullHeightAnimated:(BOOL)animates

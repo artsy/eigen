@@ -3,6 +3,7 @@
 * Do not show the search navigation button in VIR mode. - alloy
 * Adds Adjust SDK to the app. - orta
 * Add back analytics page view event for Search and add Bell. - alloy
+* Fixes crash on expanding gene text. - ash
 * Hero units load when app connects to internet after offline start. - ash
 * Explore tab loads when app connects to the internet after offline start. - ash
 
