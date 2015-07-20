@@ -2,7 +2,7 @@
 
 * Do not show the search navigation button in VIR mode. - alloy
 * Adds Adjust SDK to the app. - orta
-
+* Add back analytics page view event for Search and add Bell. - alloy
 
 ## 2.1.0 (2015.07.18)
 
