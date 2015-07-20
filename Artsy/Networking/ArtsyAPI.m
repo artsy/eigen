@@ -12,13 +12,12 @@
     __weak AFJSONRequestOperation *performOperation = nil;
     performOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         success(JSON);
-    }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-       if (failure) {
-           [ArtsyAPI handleXappTokenError:error];
-           failure(request, response, error);
-       }
-        }];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        if (failure) {
+            [ArtsyAPI handleXappTokenError:error];
+            failure(request, response, error);
+        }
+    }];
 
     [performOperation start];
     return performOperation;
@@ -53,13 +52,14 @@
                 success(object);
             });
         }
-    }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         [ArtsyAPI handleXappTokenError:error];
         if (failure) {
             failure(error);
         }
-        }];
+    }];
+
+    // Use a background queue so JSON results are parsed off the UI thread. We'll dispatch back to main queue on success.
     getOperation.successCallbackQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     [getOperation start];
     return getOperation;
@@ -96,13 +96,14 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             success(returnArray);
         });
-    }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         [ArtsyAPI handleXappTokenError:error];
         if (failure) {
             failure(error);
         }
-        }];
+    }];
+
+    // Use a background queue so JSON results are parsed off the UI thread. We'll dispatch back to main queue on success.
     getOperation.successCallbackQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     [getOperation start];
     return getOperation;
@@ -127,13 +128,14 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             success(returnArray);
         });
-    }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
        [ArtsyAPI handleXappTokenError:error];
        if (failure) {
            failure(error);
        }
-        }];
+    }];
+
+    // Use a background queue so JSON results are parsed off the UI thread. We'll dispatch back to main queue on success.
     getOperation.successCallbackQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     [getOperation start];
     return getOperation;
