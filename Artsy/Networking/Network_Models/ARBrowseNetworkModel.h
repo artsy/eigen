@@ -1,8 +1,10 @@
 
 
+
 @interface ARBrowseNetworkModel : NSObject
 
-@property (nonatomic, strong, readonly) NSArray *links;
+@property (nonatomic, copy, readonly) NSArray *links;
+
 - (void)getBrowseFeaturedLinks:(void (^)(NSArray *links))success failure:(void (^)(NSError *error))failure;
 
 @end

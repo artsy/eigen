@@ -1,10 +1,8 @@
 #import "ARBrowseNetworkModel.h"
 
 
-@interface ARStubbedBrowseNetworkModel : ARBrowseNetworkModel {
-   @protected
-    NSArray *_links;
-}
+@interface ARStubbedBrowseNetworkModel : ARBrowseNetworkModel
 
-@property (nonatomic, strong, readwrite) NSArray *links;
+@property (nonatomic, copy, readwrite) NSArray *links;
+
 @end
