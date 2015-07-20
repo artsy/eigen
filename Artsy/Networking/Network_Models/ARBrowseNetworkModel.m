@@ -16,7 +16,9 @@
     [ArtsyAPI getBrowseMenuFeedLinksWithSuccess:^(NSArray *links) {
         @_strongify(self);
         self.links = links;
-        success(self.links);
+        if (success) {
+            success(self.links);
+        }
     } failure:failure];
 }
 

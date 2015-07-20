@@ -22,7 +22,7 @@
 
 
 @interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
-@property (nonatomic, strong, readwrite) NSArray *menuLinks;
+@property (nonatomic, strong, readonly) NSArray *menuLinks;
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
@@ -48,6 +48,19 @@
     [self.collectionView registerClass:[ARBrowseViewCell class] forCellWithReuseIdentifier:[ARBrowseViewCell reuseID]];
 
     [super viewDidLoad];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    if (self.menuLinks.count < 1) {
+        @_weakify(self);
+        [self.networkModel getBrowseFeaturedLinks:^(NSArray *links) {
+            @_strongify(self);
+            [self.collectionView reloadData];
+        } failure:nil];
+    }
 }
 
 - (CGFloat)itemMargin

@@ -4,6 +4,7 @@
 * Adds Adjust SDK to the app. - orta
 * Add back analytics page view event for Search and add Bell. - alloy
 * Hero units load when app connects to internet after offline start. - ash
+* Explore tab loads when app connects to the internet after offline start. - ash
 
 ## 2.1.0 (2015.07.18)
 
