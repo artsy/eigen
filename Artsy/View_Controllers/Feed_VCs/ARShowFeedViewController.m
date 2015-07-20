@@ -163,6 +163,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
             [self.tableView reloadData];
             [self hideLoadingView];
             [self hideOfflineView];
+            [self loadHeroUnits];
             [self loadNextFeedPage];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
 
@@ -175,6 +176,11 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
     } failure:^(NSError *error) {
         [self.offlineView refreshFailed];
     }];
+}
+
+- (void)loadHeroUnits
+{
+    [self.heroUnitDatasource getHeroUnitsWithSuccess:nil failure:nil];
 }
 
 - (void)setHeroUnitDatasource:(ARHeroUnitsNetworkModel *)heroUnitDatasource

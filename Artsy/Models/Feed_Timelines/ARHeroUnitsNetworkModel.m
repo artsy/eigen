@@ -31,7 +31,7 @@ static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey
     }
 
     self.isLoading = YES;
-   @_weakify(self);
+    @_weakify(self);
 
     // This is generally one of the first networking calls, lets make sure it comes through.
 
@@ -41,15 +41,14 @@ static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey
             @_strongify(self);
             self.isLoading = NO;
 
-            if (success) {
-                NSArray *filteredHeroUnits = [heroUnits select:^BOOL(SiteHeroUnit *unit) {
-                    return unit.isCurrentlyActive;
-                }];
-                self.heroUnits = filteredHeroUnits;
+            NSArray *filteredHeroUnits = [heroUnits select:^BOOL(SiteHeroUnit *unit) {
+                return unit.isCurrentlyActive;
+            }];
 
-                ar_dispatch_main_queue(^{
-                    success(self.heroUnits);
-                });
+            self.heroUnits = filteredHeroUnits;
+
+            if (success) {
+                success(self.heroUnits);
             }
 
         } failure:^(NSError *error) {
