@@ -3,8 +3,38 @@
 #import "ARTiledImageDataSourceWithImage.h"
 
 #import <ARASCIISwizzle/UIImageView+ASCII.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
+
+
+@interface ARTiledImageViewWithBreadcrumb : ARTiledImageView
+@end
+
+
+@implementation ARTiledImageViewWithBreadcrumb
+
+- (void)dealloc;
+{
+    ARLog(@"ARTiledImageView (%p) is deallocating on thread: %@", (__bridge void *)self, [NSThread currentThread]);
+}
+
+- (instancetype)initWithDataSource:(NSObject<ARTiledImageViewDataSource> *)dataSource minimumSize:(CGSize)minimumSize
+{
+    if ((self = [super initWithDataSource:dataSource minimumSize:minimumSize])) {
+        ARLog(@"ARTiledImageView (%p) initialized for data source (%p)", (__bridge void *)self, (__bridge void *)dataSource);
+    }
+    return self;
+}
+
+- (void)drawRect:(CGRect)rect;
+{
+    ARLog(@"ARTiledImageView (%p)   starts rendering on thread: %@", (__bridge void *)self, [NSThread currentThread]);
+    [super drawRect:rect];
+    ARLog(@"ARTiledImageView (%p) finished rendering on thread: %@", (__bridge void *)self, [NSThread currentThread]);
+}
+
+@end
 
 
 @interface ARZoomView ()
@@ -71,7 +101,7 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
     }
 
     _tileDataSource = [[ARTiledImageDataSourceWithImage alloc] initWithImage:_image];
-    _zoomableView = [[ARTiledImageView alloc] initWithDataSource:_tileDataSource minimumSize:minimumSize];
+    _zoomableView = [[ARTiledImageViewWithBreadcrumb alloc] initWithDataSource:_tileDataSource minimumSize:minimumSize];
     _backgroundView = [[UIImageView alloc] initWithFrame:_zoomableView.frame];
 
     [[ARFeedImageLoader alloc] loadImageAtAddress:[_image baseImageURL] desiredSize:ARFeedItemImageSizeLarge forImageView:_backgroundView customPlaceholder:nil];
