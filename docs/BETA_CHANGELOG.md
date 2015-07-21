@@ -3,6 +3,7 @@
 * Fix a crash caused by allowing the user to tap artworks in the ‘For Sale’ section of an artist that were actually
   stale cells of the ‘Artworks’ tab. The stale cells were being shown because of assumptions about the artworks being
   loaded before the end of the tab switch animation, which was prone to breakage on slow connections. - alloy
+* Fix a crash caused by not guarding against `nil` values in show/partner analytics data. - alloy
 
 ## 2.1.0 (2015.07.20)
 
