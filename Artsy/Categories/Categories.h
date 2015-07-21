@@ -11,3 +11,5 @@
 
 #import "MTLModel+JSON.h"
 #import "MTLModel+Dictionary.h"
+
+#import "AFHTTPRequestOperation+JSON.h"

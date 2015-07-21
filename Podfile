@@ -41,9 +41,9 @@ plugin 'cocoapods-keys', {
 target 'Artsy' do
 
   # Networking
-  pod 'AFNetworking', :git => 'https://github.com/orta/AFNetworking', :branch => 'no_ifdefs'
-  pod 'AFOAuth1Client', :git => "https://github.com/orta/AFOAuth1Client", :branch => "patch-1"
-  pod 'AFHTTPRequestOperationLogger'
+  pod 'AFNetworking', "~> 2.5"
+  pod 'AFOAuth1Client', :git => "https://github.com/lxcid/AFOAuth1Client.git", :tag => "0.4.0"
+  pod 'AFNetworkActivityLogger'
   pod 'SDWebImage'
 
   # Core

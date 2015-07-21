@@ -60,7 +60,7 @@
 
 - (void)cancelRequests;
 {
-    [self.relatedArtworkRequests each:^(AFJSONRequestOperation *request) {
+    [self.relatedArtworkRequests each:^(AFHTTPRequestOperation *request) {
         [request cancel];
     }];
 }
@@ -79,7 +79,7 @@
     self.artwork = artwork;
     self.hasRequested = YES;
 
-   @_weakify(self);
+    @_weakify(self);
 
     // TODO: refactor these callbacks to return so we can use
     // results from the values array in a `when`
@@ -124,7 +124,7 @@
     }];
 }
 
-- (void)addRelatedArtworkRequest:(AFJSONRequestOperation *)requestOperation;
+- (void)addRelatedArtworkRequest:(AFHTTPRequestOperation *)requestOperation;
 {
     self.relatedArtworkRequests = [self.relatedArtworkRequests arrayByAddingObject:requestOperation];
 }
@@ -133,7 +133,7 @@
 
 - (void)addSectionsForFair:(Fair *)fair;
 {
-   @_weakify(self);
+    @_weakify(self);
     [self addRelatedArtworkRequest:[self.artwork getFeaturedShowsAtFair:fair success:^(NSArray *shows) {
         @_strongify(self);
         for (PartnerShow *show in shows) {
@@ -155,7 +155,7 @@
 
 - (void)addSectionsForAuction:(Sale *)auction;
 {
-   @_weakify(self);
+    @_weakify(self);
     [self addRelatedArtworkRequest:[auction getArtworks:^(NSArray *artworks) {
         @_strongify(self);
         [self addSectionWithTag:ARRelatedArtworksSameAuction artworks:artworks heading:@"Other works in auction"];
@@ -164,7 +164,7 @@
 
 - (void)addSectionWithOtherArtworksInShow:(PartnerShow *)show;
 {
-   @_weakify(self);
+    @_weakify(self);
     [self getArtworksInShow:show atPage:1 success:^(NSArray *artworks) {
         @_strongify(self);
         ARArtworkRelatedArtworksContentView *view = [self addSectionWithTag:ARRelatedArtworksSameShow artworks:artworks heading:@"Other works in show"];
@@ -174,7 +174,7 @@
 
 - (void)addArtworksInShow:(PartnerShow *)show atPage:(NSInteger)page toView:(ARArtworkRelatedArtworksContentView *)view
 {
-   @_weakify(self);
+    @_weakify(self);
     [self getArtworksInShow:show atPage:page success:^(NSArray *artworks) {
         if (!artworks.count > 0) { return; }
         @_strongify(self);
@@ -194,7 +194,7 @@
         return;
     }
 
-   @_weakify(self);
+    @_weakify(self);
     [self addRelatedArtworkRequest:[self.artwork.artist getArtworksAtPage:1 andParams:nil success:^(NSArray *artworks) {
         @_strongify(self);
         [self addSectionWithTag:ARRelatedArtworksArtistArtworks
@@ -205,7 +205,7 @@
 
 - (void)addSectionWithRelatedArtworks;
 {
-   @_weakify(self);
+    @_weakify(self);
     [self addRelatedArtworkRequest:[self.artwork getRelatedArtworks:^(NSArray *artworks) {
         @_strongify(self);
         [self addSectionWithTag:ARRelatedArtworks artworks:artworks heading:@"Related artworks"];

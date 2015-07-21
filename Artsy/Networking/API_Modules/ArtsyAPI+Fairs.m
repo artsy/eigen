@@ -21,7 +21,7 @@
     [self getRequest:request parseIntoAnArrayOfClass:Map.class success:success failure:failure];
 }
 
-+ (AFJSONRequestOperation *)getArtworkFavoritesForFair:(Fair *)fair success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
++ (AFHTTPRequestOperation *)getArtworkFavoritesForFair:(Fair *)fair success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworkFavoritesRequestWithFair:fair];
     return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];

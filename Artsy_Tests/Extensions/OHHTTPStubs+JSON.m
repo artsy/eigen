@@ -1,4 +1,3 @@
-#import <AFNetworking/AFHTTPClient.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import "OHHTTPStubs+JSON.h"
 #import "ARRouter.h"
@@ -28,8 +27,9 @@
         NSString *urlString = path;
 
         if (params) {
-            NSString *stubbedQueryString = AFQueryStringFromParametersWithEncoding(params, NSUTF8StringEncoding);
-            urlString = [urlString stringByAppendingFormat:@"?%@", stubbedQueryString];
+            AFHTTPRequestSerializer *serializer = [[AFHTTPRequestSerializer alloc] init];
+            NSURLRequest *request = [serializer requestWithMethod:@"GET" URLString:urlString parameters:params error:nil];
+            urlString = [urlString stringByAppendingFormat:@"?%@", request.URL.parameterString];
         }
 
         NSURL *stubbedURL = [NSURL URLWithString:urlString];
@@ -44,5 +44,6 @@
         return [OHHTTPStubsResponse responseWithData:data statusCode:(int)code headers:@{ @"Content-Type": @"application/json" }];
     }];
 }
+
 
 @end

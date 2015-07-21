@@ -1,5 +1,6 @@
 
 
+
 @interface Gene () {
     BOOL _isFollowed;
 }
@@ -53,7 +54,7 @@
 
 - (void)updateGene:(void (^)(void))success
 {
-   @_weakify(self);
+    @_weakify(self);
     [ArtsyAPI getGeneForGeneID:self.geneID success:^(id gene) {
         @_strongify(self);
         [self mergeValuesForKeysFromModel:gene];
@@ -85,7 +86,7 @@
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-   @_weakify(self);
+    @_weakify(self);
     [ArtsyAPI setFavoriteStatus:state forGene:self success:^(id response) {
         @_strongify(self);
         self.followed = state;
@@ -108,7 +109,7 @@
         return;
     }
 
-   @_weakify(self);
+    @_weakify(self);
     [ArtsyAPI checkFavoriteStatusForGene:self success:^(BOOL result) {
         @_strongify(self);
         self.followed = result;
@@ -116,7 +117,7 @@
     } failure:failure];
 }
 
-- (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success
+- (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success
 {
     return [ArtsyAPI getArtworksForGene:self atPage:page success:^(NSArray *artworks) {
         success(artworks);

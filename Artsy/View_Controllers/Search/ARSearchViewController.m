@@ -8,7 +8,7 @@
 @property (readonly, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (readonly, nonatomic) UITableView *resultsView;
 @property (readonly, nonatomic) UIView *contentView;
-@property (readonly, nonatomic) AFJSONRequestOperation *searchRequest;
+@property (readonly, nonatomic) AFHTTPRequestOperation *searchRequest;
 @property (nonatomic, readwrite, assign) BOOL shouldAnimate;
 @end
 
@@ -165,7 +165,7 @@
     [self addResults:@[] replace:YES];
 }
 
-- (AFJSONRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
+- (AFHTTPRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
@@ -206,7 +206,7 @@
 
 - (void)fetchSearchResults:(NSString *)text replace:(BOOL)replaceResults
 {
-   @_weakify(self);
+    @_weakify(self);
     _searchRequest = [self searchWithQuery:text success:^(NSArray *results) {
         @_strongify(self);
         [self addResults:results replace:replaceResults];
@@ -272,7 +272,7 @@
 
 - (void)removeResultsViewAnimated:(BOOL)animated
 {
-   @_weakify(self);
+    @_weakify(self);
 
     [UIView animateIf:animated duration:0.15:^{
         @_strongify(self);

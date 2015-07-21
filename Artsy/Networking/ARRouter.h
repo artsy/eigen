@@ -8,7 +8,7 @@
 + (NSURL *)baseApiURL;
 + (NSURL *)baseWebURL;
 
-+ (AFHTTPClient *)httpClient;
++ (AFHTTPSessionManager *)httpClient;
 + (void)setupWithBaseApiURL:(NSURL *)baseApiURL;
 
 + (void)setupUserAgent;

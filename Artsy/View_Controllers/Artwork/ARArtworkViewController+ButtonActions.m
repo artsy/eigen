@@ -171,7 +171,7 @@
     NSURLRequest *request = [ARRouter newPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID];
 
     @_weakify(self);
-    AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+    AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             NSString *orderID = [JSON valueForKey:@"id"];
             NSString *resumeToken = [JSON valueForKey:@"token"];
