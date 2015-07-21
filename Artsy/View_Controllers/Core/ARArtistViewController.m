@@ -355,6 +355,8 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
             self.artworkVC.view.alpha = 0;
         } midway:^{
             self.artworkVC.collectionView.contentOffset = CGPointZero;
+            // TODO Clearing this array and then appending truly violates SRP and probably needs to be looked into why
+            // it needed to work this way.
             self.artworkVC.activeModule.items = @[];
 
             if (artworks.count > 0) {
@@ -363,11 +365,18 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
                 [self.artworkVC ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
             }
 
+            // Ensure that the user can never get to see any stale cells from the previous tab. E.g. if we ever
+            // introduce a regression that would make the spinner be removed before artworks for this tab were ever
+            // loaded. See https://github.com/artsy/eigen/issues/623.
+            [self.artworkVC.collectionView reloadData];
+
             [self getMoreArtworks];
             self.artworkVC.view.alpha = 1;
 
         } completion:^(BOOL finished) {
-            [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+            if (artworks.count > 0) {
+                [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+            }
             [self.view setNeedsUpdateConstraints];
         }];
     }
