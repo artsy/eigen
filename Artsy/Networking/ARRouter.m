@@ -105,10 +105,7 @@ static NSSet *artsyHosts = nil;
 
 + (void)setHTTPHeader:(NSString *)header value:(NSString *)value
 {
-    NSURLSessionConfiguration *config = staticHTTPClient.session.configuration;
-    NSMutableDictionary *dict = [config.HTTPAdditionalHeaders mutableCopy];
-    dict[header] = value;
-    config.HTTPAdditionalHeaders = dict;
+    [staticHTTPClient.requestSerializer setValue:value forHTTPHeaderField:header];
 }
 
 + (BOOL)isWebURL:(NSURL *)url
@@ -167,7 +164,8 @@ static NSSet *artsyHosts = nil;
 + (NSMutableURLRequest *)requestWithMethod:(NSString *)method path:(NSString *)path parameters:(NSDictionary *)params
 {
     NSString *fullPath = [[staticHTTPClient.baseURL URLByAppendingPathComponent:path] absoluteString];
-    return [staticHTTPClient.requestSerializer requestWithMethod:method URLString:fullPath parameters:params error:nil];
+    NSMutableURLRequest *request = [staticHTTPClient.requestSerializer requestWithMethod:method URLString:fullPath parameters:params error:nil];
+    return request;
 }
 
 + (NSURLRequest *)newOAuthRequestWithUsername:(NSString *)username password:(NSString *)password
