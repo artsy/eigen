@@ -24,9 +24,14 @@
 
 #pragma mark - ARMenuAwareViewController
 
-- (BOOL)hidesNavigationButtons
+- (BOOL)hidesBackButton
 {
     return NO;
+}
+
+- (BOOL)hidesSearchButton
+{
+    return YES;
 }
 
 - (BOOL)hidesToolbarMenu

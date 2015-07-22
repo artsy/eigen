@@ -1,5 +1,6 @@
 ## Next
 
+* Do not show the search navigation button on fullscreen artwork view. - alloy
 * Fix a crash caused by allowing the user to tap artworks in the ‘For Sale’ section of an artist that were actually
   stale cells of the ‘Artworks’ tab. The stale cells were being shown because of assumptions about the artworks being
   loaded before the end of the tab switch animation, which was prone to breakage on slow connections. - alloy
