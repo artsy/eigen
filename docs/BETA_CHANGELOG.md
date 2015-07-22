@@ -6,6 +6,7 @@
   loaded before the end of the tab switch animation, which was prone to breakage on slow connections. - alloy
 * Fix a crash caused by not guarding against `nil` values in show/partner analytics data. - alloy
 * Add more breadcrumbs in order to fix my nemesis crasher in ARTiledImageView. - alloy
+* Fixes a problem with view-in-room showing the back button when it was initially rotated into. - ash
 
 ## 2.1.0 (2015.07.20)
 
