@@ -40,8 +40,6 @@
 
     [self.view.stackView addPageTitleWithString:@"Featured Categories"];
 
-    self.collectionViews = [NSMutableArray array];
-
     ARBrowseFeaturedLinksCollectionViewController *featureCollectionVC = [[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:ARFeaturedLinkLayoutSingleRow];
     [self.view.stackView addViewController:featureCollectionVC toParent:self withTopMargin:@"30" sideMargin:@"0"];
     featureCollectionVC.selectionDelegate = self;
