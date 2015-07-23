@@ -6,7 +6,7 @@
 #import "ARFairMapViewController.h"
 #import "ARButtonWithImage.h"
 #import "ARButtonWithCircularImage.h"
-#import "ARBrowseFeaturedLinksCollectionView.h"
+#import "ARBrowseFeaturedLinksCollectionViewController.h"
 #import "ARFairSearchViewController.h"
 #import "ARSearchFieldButton.h"
 #import "UIViewController+SimpleChildren.h"
@@ -25,7 +25,7 @@ NSString *const ARFairMapSetFavoritePartnersKey = @"ARFairMapSetFavoritePartners
 NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePartnersKey";
 
 
-@interface ARFairViewController () <ARBrowseFeaturedLinksCollectionViewDelegate, ARFairPostsViewControllerDelegate, ARSearchFieldButtonDelegate, ARFairSearchViewControllerDelegate>
+@interface ARFairViewController () <ARBrowseFeaturedLinksCollectionViewControllerDelegate, ARFairPostsViewControllerDelegate, ARSearchFieldButtonDelegate, ARFairSearchViewControllerDelegate>
 
 @property (nonatomic, strong) ORStackScrollView *stackView;
 @property (nonatomic, strong) ARParallaxHeaderViewController *headerViewController;
