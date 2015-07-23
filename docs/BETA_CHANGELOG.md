@@ -24,7 +24,6 @@
 * Keep search outside of the navigation stack and maintain search results. - alloy
 * Make hit test areas of ‘MAG’, ‘YOU’, and ‘bell’ tab buttons wider. - alloy
 * Adds some spacing to the question on "do you buy art?" in onboarding - orta
-* Fix broken iPad orientation for Categories view - 1aurabrown
 * Fix bad margins around home button - 1aurabrown
 * Add updated design for when connection errors occur. - alloy
 * Force the feed view controller to load its content when the network becomes available. - alloy
@@ -61,3 +60,4 @@
 * Adds ‘bell’ notifications tab and shows notification count (currently only on launch and only if already signed-in). - alloy
 * Fix personalize search bar. - 1aurabrown
 
+## Next

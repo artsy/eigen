@@ -1,5 +1,6 @@
 ## Next
 
+* Fix broken iPad orientation for Categories view - 1aurabrown
 * Adds ‘bell’ notifications tab and show notification count. - alloy
 * Move search button from tab bar to navigation bar. - alloy
 * Replace add/removeConstraint with activate/deactivateConstraints in ARArtworkPreviewImage View in hopes of fixing autolayout crash - 1aurabrown
@@ -11,6 +12,13 @@
 * Fix ARCollapsableTextView not expanding to full height - 1aurabrown
 * Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
 * Fix personalize search bar. - 1aurabrown
+* Fix a crash caused by allowing the user to tap artworks in the ‘For Sale’ section of an artist that were actually
+  stale cells of the ‘Artworks’ tab. The stale cells were being shown because of assumptions about the artworks being
+  loaded before the end of the tab switch animation, which was prone to breakage on slow connections. - alloy
+* Fix a crash caused by not guarding against `nil` values in show/partner analytics data. - alloy
+* Force the feed view controller to load its content when the network becomes available. - alloy
+* Don't use square placeholder image for artwork image preview. - 1aurabrown
+
 
 ## 2.0.1 (26/06/2015)
 
