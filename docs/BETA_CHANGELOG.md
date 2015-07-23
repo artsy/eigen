@@ -1,4 +1,4 @@
-## Next
+## 2.1.0 (2015.07.23)
 
 * Do not show the search navigation button on fullscreen artwork view. - alloy
 * Fix a crash caused by allowing the user to tap artworks in the ‘For Sale’ section of an artist that were actually
