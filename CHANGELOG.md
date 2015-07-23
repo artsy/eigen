@@ -1,4 +1,4 @@
-## Next
+## 2.1.0 (23/07/2015)
 
 * Fix broken iPad orientation for Categories view - 1aurabrown
 * Adds ‘bell’ notifications tab and show notification count. - alloy
