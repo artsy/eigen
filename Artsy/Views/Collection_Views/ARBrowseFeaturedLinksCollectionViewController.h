@@ -11,7 +11,7 @@ typedef NS_ENUM(NSInteger, ARFeaturedLinkStyle) {
 @end
 
 
-@interface ARBrowseFeaturedLinksCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ARBrowseFeaturedLinksCollectionViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
 - (instancetype)initWithStyle:(enum ARFeaturedLinkStyle)style;
 @property (nonatomic, copy, readwrite) NSArray *featuredLinks;

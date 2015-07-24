@@ -5,19 +5,23 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 
 
 @interface ARBrowseFeaturedLinksCollectionViewController ()
-@property (nonatomic, strong) UICollectionView *view;
-@property (nonatomic, readwrite) BOOL cellSizeNeedsUpdate;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
-
+@property (nonatomic, strong, readonly) UICollectionViewFlowLayout *collectionViewLayout;
 @end
 
 
 @implementation ARBrowseFeaturedLinksCollectionViewController
-@dynamic view;
+@dynamic collectionViewLayout;
 
 - (instancetype)initWithStyle:(enum ARFeaturedLinkStyle)style
 {
-    self = [super init];
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    CGFloat sideMargin = [UIDevice isPad] ? 50 : 20;
+    layout.sectionInset = UIEdgeInsetsMake(0, sideMargin, 0, sideMargin);
+    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    layout.minimumLineSpacing = ARDoubleRowStyleSpacing;
+
+    self = [super initWithCollectionViewLayout:layout];
     if (!self) {
         return nil;
     }
@@ -35,24 +39,18 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
     } else if (height != self.heightConstraint.constant) {
         self.heightConstraint.constant = height;
     }
+    [self.collectionView.superview layoutIfNeeded];
 }
 
-- (void)loadView
+- (void)viewDidLoad
 {
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    CGFloat sideMargin = [UIDevice isPad] ? 50 : 20;
-    layout.sectionInset = UIEdgeInsetsMake(20, sideMargin, 20, sideMargin);
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    layout.minimumLineSpacing = ARDoubleRowStyleSpacing;
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-    collectionView.delegate = self;
-    collectionView.dataSource = self;
-    collectionView.backgroundColor = [UIColor whiteColor];
-    collectionView.showsHorizontalScrollIndicator = NO;
-    [collectionView registerClass:ARBrowseFeaturedLinksCollectionViewCell.class forCellWithReuseIdentifier:self.reuseIdentifier];
-
-    self.cellSizeNeedsUpdate = YES;
-    self.view = collectionView;
+    [super viewDidLoad];
+    [self.collectionView alignToView:self.view];
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    self.collectionView.backgroundColor = [UIColor whiteColor];
+    self.collectionView.showsHorizontalScrollIndicator = NO;
+    [self.collectionView registerClass:ARBrowseFeaturedLinksCollectionViewCell.class forCellWithReuseIdentifier:self.reuseIdentifier];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -75,6 +73,7 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
         CGSize parentSize = self.parentViewController.view.frame.size;
 
         [self updateItemSizeWithParentSize:parentSize];
+        [self updateHeightConstraintWithSize:self.parentViewController.view.frame.size];
     }
 }
 
@@ -85,20 +84,16 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
         CGSize parentSize = self.parentViewController.view.frame.size;
 
         [self updateItemSizeWithParentSize:parentSize];
+        [self updateHeightConstraintWithSize:self.parentViewController.view.frame.size];
     }
-}
-
-- (UICollectionViewFlowLayout *)layout
-{
-    return (UICollectionViewFlowLayout *)self.view.collectionViewLayout;
 }
 
 - (void)updateItemSizeWithParentSize:(CGSize)parentSize
 {
     CGSize cellSize = [self sizeForCellWithSize:parentSize];
-    if (!CGSizeEqualToSize(self.layout.itemSize, cellSize)) {
-        self.layout.itemSize = cellSize;
-        [self.layout invalidateLayout];
+    if (!CGSizeEqualToSize(self.collectionViewLayout.itemSize, cellSize)) {
+        self.collectionViewLayout.itemSize = cellSize;
+        [self.collectionViewLayout invalidateLayout];
     }
 }
 
@@ -116,7 +111,7 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
             break;
     }
 
-    height = height + self.layout.sectionInset.top + self.layout.sectionInset.bottom;
+    height = height + self.collectionViewLayout.sectionInset.top + self.collectionViewLayout.sectionInset.bottom;
     return height;
 }
 
@@ -181,7 +176,7 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 {
-    ARBrowseFeaturedLinksCollectionViewCell *cell = (id)[self.view dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndexPath:indexPath];
+    ARBrowseFeaturedLinksCollectionViewCell *cell = (id)[self.collectionView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndexPath:indexPath];
 
     FeaturedLink *link = self.featuredLinks[indexPath.row];
     NSURL *imageURL;
@@ -203,9 +198,10 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 - (void)setFeaturedLinks:(NSArray *)featuredLinks
 {
     _featuredLinks = featuredLinks.copy;
-    [self.view reloadData];
-    if (self.parentViewController && !CGRectEqualToRect(self.parentViewController.view.frame, CGRectZero))
+    [self.collectionView reloadData];
+    if (self.parentViewController && !CGRectEqualToRect(self.parentViewController.view.frame, CGRectZero)) {
         [self updateHeightConstraintWithSize:self.parentViewController.view.frame.size];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
