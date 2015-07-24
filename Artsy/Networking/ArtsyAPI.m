@@ -75,12 +75,8 @@
     static ArtsyAPI *_sharedController = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-        if ([[ARDispatchManager sharedManager] useSyncronousDispatches]) {
-            Class klass = NSClassFromString(@"ArtsyOHHTTPAPI");
-            _sharedController = [[klass alloc] init];
-        } else {
-            _sharedController = [[self alloc] init];
-        }
+        Class klass = NSClassFromString(@"ArtsyOHHTTPAPI") ?: self;
+        _sharedController = [[klass alloc] init];
     });
 
     return _sharedController;
