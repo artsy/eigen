@@ -1,6 +1,8 @@
 @import OHHTTPStubs;
 #import "ArtsyOHHTTPAPI.h"
 
+#import "ARFilteredStackTrace.h"
+
 
 @interface ArtsyAPI (Private)
 - (AFJSONRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
@@ -43,11 +45,27 @@
         id expectaMatcher = [[NSThread mainThread] threadDictionary][@"EXP_currentMatcher"];
 
         if (spectaExample || expectaMatcher) {
-            printf("\n\n\n!!!! Unstubbed Request Found");
-            printf("\n\n\n Inside Test: %s \n\n Or Matcher: %s \n\n", [spectaExample description].UTF8String, [expectaMatcher description].UTF8String);
-            printf("Un-stubbed URL: %s \n\n", request.URL.absoluteString.UTF8String);
-            printf("You should use: [OHHTTPStubs stubJSONResponseAtPath:@\"%s\" withResponse:@{}]; \n\n", request.URL.path.UTF8String);
-            printf("Add a breakpoint in ArtsyOHHTTPAPI.m or look above for more info. \n\n\n");
+            static NSArray *whiteList = nil;
+            if (whiteList == nil) whiteList = @[ [NSBundle mainBundle], [NSBundle bundleForClass:ArtsyOHHTTPAPI.class] ];
+            NSArray *stackTrace = ARFilteredStackTraceWithWhiteList(1, whiteList, ^BOOL(BOOL blockInvocation,
+                                                                                        BOOL objcMethod,
+                                                                                        BOOL classMethod,
+                                                                                        NSString *className,
+                                                                                        NSString *methodOrFunction) {
+                return !(
+                    ([className isEqualToString:@"ArtsyAPI"] && [methodOrFunction hasPrefix:@"getRequest:parseInto"])
+                    || [methodOrFunction hasPrefix:@"ar_dispatch"]
+                    || [methodOrFunction isEqualToString:@"main"]
+                );
+            });
+            NSAssert(stackTrace.count > 0, @"Stack trace empty, might need omre white listing.");
+
+            printf("\n\n\n[!] Unstubbed Request Found\n");
+            printf("   Inside Test: %s\n", [spectaExample description].UTF8String);
+            printf("       Matcher: %s\n", [expectaMatcher description].UTF8String);
+            printf("Un-stubbed URL: %s\n", request.URL.absoluteString.UTF8String);
+            printf("You should use: [OHHTTPStubs stubJSONResponseAtPath:@\"%s\" withResponse:@{}];\n", request.URL.path.UTF8String);
+            printf("   Stack trace: %s\n\n\n\n", [stackTrace componentsJoinedByString:@"\n                "].UTF8String);
         }
 
         return [super requestOperation:request success:success failure:failureCallback];
