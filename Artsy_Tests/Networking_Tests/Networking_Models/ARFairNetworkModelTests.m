@@ -11,6 +11,7 @@ describe(@"getFairInfo", ^{
             @"start_at" : @"1976-01-30T15:00:00+00:00",
             @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
     });
 
     it(@"updates original fair instance", ^{

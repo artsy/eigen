@@ -1,5 +1,6 @@
 
 
+
 @implementation ArtsyAPI (ErrorHandlers)
 
 + (void)handleHTTPError:(NSError *)error

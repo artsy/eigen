@@ -1,5 +1,6 @@
 
 
+
 @interface ARFairNetworkModel : NSObject
 - (void)getFairInfo:(Fair *)fair success:(void (^)(Fair *fair))success failure:(void (^)(NSError *error))failure;
 

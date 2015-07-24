@@ -5,7 +5,6 @@
 #import "ARLogger.h"
 #import "ARAppDelegate+Testing.h"
 #import "ARDispatchManager.h"
-#import "AROHHTTPNoStubAssertionBot.h"
 
 
 @implementation ARAppDelegate (Testing)
@@ -43,13 +42,11 @@
 
 - (BOOL)swizzled_application:(id)app willFinishLaunchingWithOptions:(id)opts
 {
-    [ARRouter setup];
     [ARDispatchManager sharedManager].useSyncronousDispatches = YES;
+    [ARRouter setup];
 
     /// Never run in tests
     [[iRate sharedInstance] setRatedThisVersion:YES];
-
-    //    [AROHHTTPNoStubAssertionBot assertOnFailForGlobalOHHTTPStubs];
     return YES;
 }
 

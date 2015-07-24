@@ -48,7 +48,7 @@ describe(@"url and image thumbnail", ^{
 
         describe(@"thumbnailImageForActivityType", ^{
             it(@"fetches and returns the thumbnail", ^{
-                UIActivityViewController *activityVC = [[UIActivityViewController alloc] init];
+                UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[] applicationActivities:@[]];
                 [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                     return [request.URL.path isEqualToString:@"/image.jpg"];
                 } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
@@ -65,7 +65,7 @@ describe(@"url and image thumbnail", ^{
             });
             
             it(@"returns nil for AirDrop sharing", ^{
-                UIActivityViewController *activityVC = [[UIActivityViewController alloc] init];
+                UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[] applicationActivities:@[]];
                 UIImage *thumbnailImage = [provider activityViewController:activityVC thumbnailImageForActivityType:UIActivityTypeAirDrop suggestedSize:CGSizeMake(100, 100)];
                 expect(thumbnailImage).to.beNil();
             });
@@ -167,7 +167,7 @@ describe(@"url and image thumbnail", ^{
 
         describe(@"thumbnailImageForActivityType", ^{
             it(@"fetches and returns the thumbnail", ^{
-                UIActivityViewController *activityVC = [[UIActivityViewController alloc] init];
+                UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[] applicationActivities:@[]];
                 [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                     return [request.URL.path isEqualToString:@"/invalid.jpg"];
                 } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {

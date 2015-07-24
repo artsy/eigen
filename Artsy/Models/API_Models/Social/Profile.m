@@ -1,5 +1,6 @@
 
 
+
 @interface Profile () {
     BOOL _followed;
 }
@@ -57,7 +58,7 @@
 
 - (void)updateProfile:(void (^)(void))success
 {
-   @_weakify(self);
+    @_weakify(self);
 
     if (self.profileID) {
         [ArtsyAPI getProfileForProfileID:self.profileID success:^(Profile *profile) {

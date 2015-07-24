@@ -223,22 +223,28 @@ describe(@"sending", ^{
 
     it(@"displays sending message", ^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/artwork_inquiry_request" withResponse:@{}];
+        id partialVC = [OCMockObject partialMockForObject:vc];
+        [[partialVC stub] sendInquiry];
         [vc sendButtonTapped:vc.sendButton];
+
         expect(vc.messageTitleLabel.hidden).to.beFalsy();
         expect(vc.messageTitleLabel.text).to.equal(@"SENDING…");
         expect(vc.messageBodyLabel.hidden).to.beFalsy();
         expect(vc.messageBodyLabel.text).to.equal(@"");
         expect(vc.failureTryAgainButton.hidden).to.beTruthy();
         expect(vc.failureDismissButton.hidden).to.beTruthy();
+
+        [partialVC stopMocking];
     });
+
 
     it(@"displays success message", ^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/artwork_inquiry_request" withResponse:@{}];
         [vc sendButtonTapped:vc.sendButton];
         expect(vc.messageTitleLabel.hidden).to.beFalsy();
-        expect(vc.messageTitleLabel.text).will.equal(@"THANK YOU");
+        expect(vc.messageTitleLabel.text).to.equal(@"THANK YOU");
         expect(vc.messageBodyLabel.hidden).to.beFalsy();
-        expect(vc.messageBodyLabel.text).will.equal(@"Your message has been sent");
+        expect(vc.messageBodyLabel.text).to.equal(@"Your message has been sent");
         expect(vc.failureTryAgainButton.hidden).to.beTruthy();
         expect(vc.failureDismissButton.hidden).to.beTruthy();
     });
@@ -246,14 +252,15 @@ describe(@"sending", ^{
     describe(@"general failure", ^{
         before(^{
             [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/artwork_inquiry_request" withResponse:@{} andStatusCode:400];
+            [vc ar_presentWithFrame:CGRectMake(0, 0, 360, 720)];
             [vc sendButtonTapped:vc.sendButton];
         });
 
         it(@"displays failure message", ^{
             expect(vc.messageTitleLabel.hidden).to.beFalsy();
-            expect(vc.messageTitleLabel.text).will.equal(@"ERROR SENDING MESSAGE");
+            expect(vc.messageTitleLabel.text).to.equal(@"ERROR SENDING MESSAGE");
             expect(vc.messageBodyLabel.hidden).to.beFalsy();
-            expect(vc.messageBodyLabel.text).will.equal(@"Please try again or email\nsupport@artsy.net if the issue persists");
+            expect(vc.messageBodyLabel.text).to.equal(@"Please try again or email\nsupport@artsy.net if the issue persists");
             expect(vc.failureTryAgainButton.hidden).to.beFalsy();
             expect(vc.failureDismissButton.hidden).to.beFalsy();
         });

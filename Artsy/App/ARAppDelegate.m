@@ -107,7 +107,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    _landingURLRepresentation = self.landingURLRepresentation ?: @"http://artsy.net";
+    _landingURLRepresentation = self.landingURLRepresentation ?: @"https://artsy.net";
 
     [[ARLogger sharedLogger] startLogging];
     [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];

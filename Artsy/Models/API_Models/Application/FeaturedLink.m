@@ -1,5 +1,6 @@
 
 
+
 @interface FeaturedLink ()
 @property (nonatomic, copy, readonly) NSString *urlFormatString;
 @end

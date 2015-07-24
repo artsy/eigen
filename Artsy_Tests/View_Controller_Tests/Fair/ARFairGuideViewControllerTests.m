@@ -15,6 +15,10 @@ SpecBegin(ARFairGuideViewController);
 __block ARFairGuideViewController *fairGuideVC = nil;
 
 beforeEach(^{
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/profiles" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/artists" withResponse:@[]];
+    
     Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
     fairGuideVC = [[ARFairGuideViewController alloc] initWithFair:fair];
 });

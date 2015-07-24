@@ -1,5 +1,6 @@
 
 
+
 @interface ARNavigationButton : UIButton
 
 - (id)initWithTitle:(NSString *)title;
