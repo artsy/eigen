@@ -150,14 +150,14 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
         ARActionButtonHandlerKey: ^(ARCircularActionButton *sender) {
             NSURL *imageURL = nil;
             if (self.imagePageViewController.images.count) {
-                imageURL = [(Image *)self.imagePageViewController.images[0] urlForThumbnailImage];
+        imageURL = [(Image *)self.imagePageViewController.images[0] urlForThumbnailImage];
             }
             ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.show thumbnailImageURL:imageURL];
             [sharingController presentActivityViewControllerFromView:sender];
-        }
-    }];
+}
+}];
 
-    self.actionButtonsView.actionButtonDescriptions = descriptions;
+self.actionButtonsView.actionButtonDescriptions = descriptions;
 }
 
 - (NSDictionary *)descriptionForMapButton
@@ -255,8 +255,8 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 - (UILabel *)partnerLabel
 {
-    ARItalicsSerifLabelWithChevron *partnerLabel = [[ARItalicsSerifLabelWithChevron alloc] init];
-    partnerLabel.font = [UIFont sansSerifFontWithSize:16];
+    ARSansSerifLabelWithChevron *partnerLabel = [[ARSansSerifLabelWithChevron alloc] init];
+    partnerLabel.font = [partnerLabel.font fontWithSize:16];
     partnerLabel.tag = ARFairShowViewPartnerLabel;
     BOOL showChevron = (self.show.partner.profileID && self.show.partner.defaultProfilePublic);
 
