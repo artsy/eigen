@@ -78,7 +78,8 @@ it(@"presents featured categories and genes", ^{
 });
 
 describe(@"looks correct", ^{
-    itHasSnapshotsForDevices(^{
+    itRecordsSnapshotsForDevices(^{
+        [viewController ar_presentWithFrame:[UIScreen mainScreen].bounds];
         return viewController;
     });
 });
