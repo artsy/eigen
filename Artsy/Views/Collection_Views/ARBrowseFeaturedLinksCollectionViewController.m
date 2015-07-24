@@ -73,6 +73,7 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
         CGSize parentSize = self.parentViewController.view.frame.size;
 
         [self updateItemSizeWithParentSize:parentSize];
+        [self updateHeightConstraintWithSize:self.parentViewController.view.frame.size];
     }
 }
 
@@ -83,6 +84,7 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
         CGSize parentSize = self.parentViewController.view.frame.size;
 
         [self updateItemSizeWithParentSize:parentSize];
+        [self updateHeightConstraintWithSize:self.parentViewController.view.frame.size];
     }
 }
 
@@ -197,8 +199,9 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
 {
     _featuredLinks = featuredLinks.copy;
     [self.collectionView reloadData];
-    if (self.parentViewController && !CGRectEqualToRect(self.parentViewController.view.frame, CGRectZero))
+    if (self.parentViewController && !CGRectEqualToRect(self.parentViewController.view.frame, CGRectZero)) {
         [self updateHeightConstraintWithSize:self.parentViewController.view.frame.size];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

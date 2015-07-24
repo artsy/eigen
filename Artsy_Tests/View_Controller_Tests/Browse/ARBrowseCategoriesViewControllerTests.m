@@ -66,20 +66,23 @@ it(@"presents featured categories and genes", ^{
 
     expect(stackView.subviews[0]).to.beKindOf([UILabel class]);
     expect([((UILabel *)stackView.subviews[0]) text]).to.equal(@"FEATURED CATEGORIES");
-    expect(stackView.subviews[1]).to.beKindOf([UICollectionView class]);
+    expect(viewController.childViewControllers[0]).to.beAKindOf([ARBrowseFeaturedLinksCollectionViewController class]);
 
     expect(stackView.subviews[2]).to.beKindOf([UILabel class]);
     expect([((UILabel *)stackView.subviews[2]) text]).to.equal(@"SUBJECT MATTER GENES");
-    expect(stackView.subviews[3]).to.beKindOf([UICollectionView class]);
+    expect(viewController.childViewControllers[1]).to.beAKindOf([ARBrowseFeaturedLinksCollectionViewController class]);
+
 
     expect(stackView.subviews[4]).to.beKindOf([UILabel class]);
     expect([((UILabel *)stackView.subviews[4]) text]).to.equal(@"NEW MEDIA GENES");
-    expect(stackView.subviews[5]).to.beKindOf([UICollectionView class]);
+    expect(viewController.childViewControllers[2]).to.beAKindOf([ARBrowseFeaturedLinksCollectionViewController class]);
+
 });
 
 describe(@"looks correct", ^{
-    itRecordsSnapshotsForDevices(^{
+    itHasSnapshotsForDevices(^{
         [viewController ar_presentWithFrame:[UIScreen mainScreen].bounds];
+        [viewController.view snapshotViewAfterScreenUpdates:YES];
         return viewController;
     });
 });

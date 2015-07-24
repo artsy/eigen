@@ -26,29 +26,25 @@
 SpecBegin(ARBrowseFeaturedLinksCollectionViewController);
 __block ARBrowseFeaturedLinksCollectionViewController *vc;
 
-afterEach(^{
-    vc = nil;
-});
-
 describe(@"appearance", ^{
     sharedExamplesFor(@"general view setup", ^(NSDictionary *data){
 
-        __block ARBrowseFeaturedLinksCollectionViewController *vc = data[@"vc"];
+        __block ARBrowseFeaturedLinksCollectionViewController *testVC = data[@"vc"];
 
-        it(@"sets the layout and frame", ^{
-            UICollectionViewFlowLayout *layout = vc.collectionViewLayout;
-            expect(layout.class).to.equal([UICollectionViewFlowLayout class]);
+        it(@"sets the layout", ^{
+            UICollectionViewFlowLayout *layout = testVC.collectionViewLayout;
+            expect(layout).to.beAKindOf([UICollectionViewFlowLayout class]);
             expect(layout.scrollDirection).to.equal(UICollectionViewScrollDirectionHorizontal);
         });
 
         it (@"sets ui options", ^{
-            expect(vc.collectionView.showsHorizontalScrollIndicator).to.beFalsy();
-            expect(vc.collectionView.backgroundColor).to.equal([UIColor whiteColor]);
+            expect(testVC.collectionView.showsHorizontalScrollIndicator).to.beFalsy();
+            expect(testVC.collectionView.backgroundColor).to.equal([UIColor whiteColor]);
         });
 
         it(@"sets the dataSource and delegate to self", ^{
-            expect(vc.collectionView.dataSource).to.equal(vc);
-            expect(vc.collectionView.delegate).to.equal(vc);
+            expect(testVC.collectionView.dataSource).to.equal(testVC);
+            expect(testVC.collectionView.delegate).to.equal(testVC);
         });
     });
 
@@ -60,21 +56,24 @@ describe(@"appearance", ^{
             expect(vc.style).to.equal(style);
         });
 
-        itBehavesLike(@"general view setup", @{@"vc":[[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:style]}];
+        itBehavesLike(@"general view setup", @{@"vc":[[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:style]});
 
-        itHasSnapshotsForDevices(^{
+        UIViewController*(^block)() = ^UIViewController *(){
             vc = [[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:style];
             UIViewController *parentVC = [[UIViewController alloc] init];
             [parentVC ar_addChildViewController:vc atFrame:CGRectZero];
             [vc.view alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:parentVC.view];
             [parentVC ar_presentWithFrame:[UIScreen mainScreen].bounds];
+            [parentVC.view layoutIfNeeded];
             vc.featuredLinks = @[
-                [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-                [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-                [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-            ];
+                                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
+                                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
+                                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
+                                 ];
             return vc;
-        });
+        };
+
+        itHasSnapshotsForDevices(block);
     });
 
     describe(@"with ARFeaturedLinkLayoutDoubleRow", ^{
@@ -91,6 +90,7 @@ describe(@"appearance", ^{
             [parentVC ar_addChildViewController:vc atFrame:CGRectZero];
             [vc.view alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:parentVC.view];
             [parentVC ar_presentWithFrame:[UIScreen mainScreen].bounds];
+            [parentVC.view layoutIfNeeded];
             vc.featuredLinks = @[
                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
@@ -106,9 +106,7 @@ describe(@"appearance", ^{
             return vc;
         });
 
-        itBehavesLike(@"general view setup", ^{
-            return @{@"vc":[[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:style]};
-        });
+        itBehavesLike(@"general view setup", @{@"vc":[[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:style]});
     });
 });
 
