@@ -38,12 +38,10 @@
     self.scrollView.delegate = self;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
-#ifdef STORE
-#else
+#ifndef STORE
     UILongPressGestureRecognizer *adminGesture;
     adminGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showAdminDetails:)];
     [self.view addGestureRecognizer:adminGesture];
-#endif
 }
 
 - (void)showAdminDetails:(UILongPressGestureRecognizer *)gesture
@@ -58,7 +56,7 @@
 
     NSMutableString *details = [[NSMutableString alloc] initWithString:@"## Web View Details \n\n"];
     if (self.webView.request.URL.absoluteString.length) {
-        [details appendFormat:@"Requested : %@ \n", self.webView.request.URL];
+        [details appendFormat:@"Requested: %@ \n", self.webView.request.URL];
     }
 
     NSString *currentAddress = [self.webView stringByEvaluatingJavaScriptFromString:@"document.location.href"];
@@ -83,6 +81,7 @@
 
 
     textView.text = details;
+#endif
 }
 
 - (void)setupConstraints
