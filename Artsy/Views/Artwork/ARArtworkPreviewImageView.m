@@ -63,7 +63,7 @@
 
 - (void)goToFullScreen
 {
-    if ([self.artwork.defaultImage needsTiles]) {
+    if ([self.artwork.defaultImage canZoom:self.window.frame.size]) {
         // Let the ArtworkVC decide what to do, pass via responder chain
         [self.delegate tappedTileableImagePreview];
 

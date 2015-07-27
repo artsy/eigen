@@ -21,9 +21,9 @@
 
 - (void)tappedTileableImagePreview
 {
-    ARZoomArtworkImageViewController *zoomImgeVC = [[ARZoomArtworkImageViewController alloc] initWithImage:self.artwork.defaultImage];
-    zoomImgeVC.suppressZoomViewCreation = (self.fair == nil);
-    [self.navigationController pushViewController:zoomImgeVC animated:self.shouldAnimate];
+    ARZoomArtworkImageViewController *zoomImageVC = [[ARZoomArtworkImageViewController alloc] initWithImage:self.artwork.defaultImage];
+    zoomImageVC.suppressZoomViewCreation = (self.fair == nil);
+    [self.navigationController pushViewController:zoomImageVC animated:self.shouldAnimate];
 }
 
 #pragma mark - ARArtworkPreviewActionsViewDelegate
