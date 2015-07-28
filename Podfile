@@ -33,7 +33,8 @@ plugin 'cocoapods-keys', {
         "ArtsyTwitterStagingKey",
         "ArtsyTwitterStagingSecret",
         "SegmentProductionWriteKey",
-        "SegmentDevWriteKey"
+        "SegmentDevWriteKey",
+        "AdjustProductionAppToken"
     ]
 }
 
@@ -54,9 +55,11 @@ target 'Artsy' do
   pod 'iRate'
   pod 'ISO8601DateFormatter', :head
   pod 'JLRoutes'
+  pod 'JSBadgeView'
   pod 'JSDecoupledAppDelegate'
   pod 'Mantle'
   pod 'MMMarkdown'
+  pod 'NPKeyboardLayoutGuide'
   pod 'ReactiveCocoa'
   pod 'UICKeyChainStore'
 
@@ -99,7 +102,7 @@ target 'Artsy' do
   pod 'FBSDKLoginKit'
 
   # Analytics
-  pod 'ARAnalytics', '>= 3.6.2', :subspecs => ["Segmentio", "HockeyApp", "DSL"]
+  pod 'ARAnalytics', '>= 3.6.2', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'

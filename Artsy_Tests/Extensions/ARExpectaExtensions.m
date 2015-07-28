@@ -30,7 +30,7 @@ void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber,
             snapshot(sut, @" as iphone");
         }
         @catch (NSException *exception) {
-            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as iphone"]]);
+            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed: %@", [name stringByAppendingString:@" as iphone"], exception.description]);
         }
         @finally {
             [ARTestContext stopStubbing];
@@ -44,7 +44,7 @@ void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber,
             snapshot(sut, @" as ipad");
         }
         @catch (NSException *exception) {
-            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed", [name stringByAppendingString:@" as ipad"]]);
+            EXPFail(self, lineNumber, fileName, [NSString stringWithFormat:@"'%@' has crashed: %@", [name stringByAppendingString:@" as ipad"], exception.description]);
         }
         @finally {
             [ARTestContext stopStubbing];

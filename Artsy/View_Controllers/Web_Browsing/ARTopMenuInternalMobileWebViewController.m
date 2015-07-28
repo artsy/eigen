@@ -3,11 +3,7 @@
 #define MAX_AGE 3600 // 1 hour
 
 
-@interface ARInternalMobileWebViewController (Private) <WKNavigationDelegate>
-@end
-
-
-@interface ARTopMenuInternalMobileWebViewController ()
+@interface ARTopMenuInternalMobileWebViewController() <ARTopMenuRootViewController>
 @property (nonatomic, assign) BOOL hasSuccessfullyLoadedLastRequest;
 @property (nonatomic, strong) NSDate *lastRequestLoadedAt;
 @end
@@ -17,7 +13,9 @@
 
 - (void)reload;
 {
-    [self loadURL:self.webView.URL];
+    if (self.isViewLoaded) {
+        [self loadURL:self.currentURL];
+    }
 }
 
 // If the currently visible view is the root webview, reload it. This ensures that an existing view hierachy isn't
@@ -32,12 +30,29 @@
 
 - (BOOL)isCurrentlyVisibleViewController;
 {
-    return self.navigationController.visibleViewController == self;
+    return self.navigationController.visibleViewController == self && [[ARTopMenuViewController sharedController] rootNavigationController] == self.navigationController;
 }
 
 - (BOOL)isContentStale;
 {
     return self.lastRequestLoadedAt.timeIntervalSinceNow < -MAX_AGE;
+}
+
+#pragma mark - ARTopMenuRootViewController
+
+// Currently the only VC that does anything with remote notifications is the ‘bell’ tab, so this generelization is good
+// enough for now, but might need changing once other tabs start having notifications as well.
+- (void)remoteNotificationsReceived:(NSUInteger)notificationCount;
+{
+    [self reload];
+}
+
+- (void)markRemoteNotificationsAsRead;
+{
+    if (self.lastRequestLoadedAt != nil && self.hasSuccessfullyLoadedLastRequest && self.isCurrentlyVisibleViewController) {
+        ARTopTabControllerIndex index = [[ARTopMenuViewController sharedController] indexOfRootViewController:self];
+        [[ARTopMenuViewController sharedController] setNotificationCount:0 forControllerAtIndex:index];
+    }
 }
 
 #pragma mark - Overrides
@@ -56,21 +71,38 @@
     [super loadURL:URL];
 }
 
+- (void)viewWillAppear:(BOOL)animated;
+{
+    [super viewWillAppear:animated];
+    if ([self shouldBeReloaded]) [self reload];
+}
+
+- (void)viewDidAppear:(BOOL)animated;
+{
+    [super viewDidAppear:animated];
+    [self markRemoteNotificationsAsRead];
+}
+
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
 {
     self.hasSuccessfullyLoadedLastRequest = webView.estimatedProgress == 1;
     if (self.hasSuccessfullyLoadedLastRequest) {
         self.lastRequestLoadedAt = [NSDate date];
     }
+
+    [self markRemoteNotificationsAsRead];
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-    if ([super respondsToSelector:_cmd]) {
-        [super webView:webView didFailNavigation:navigation withError:error];
-    }
+    [super webView:webView didFailNavigation:navigation withError:error];
 
     self.hasSuccessfullyLoadedLastRequest = NO;
+
+    // This happens when we cancel loading the request and route internally from ARInternalMobileWebViewController.
+    if (error.code != NSURLErrorCancelled) {
+        self.hasSuccessfullyLoadedLastRequest = NO;
+    }
 }
 
 @end

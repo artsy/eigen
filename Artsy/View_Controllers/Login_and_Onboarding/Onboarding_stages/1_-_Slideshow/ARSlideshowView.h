@@ -1,5 +1,6 @@
 
 
+
 @interface ARSlideshowView : UIView
 
 /// Create a new slideshow view with an ordered collection of UIImages

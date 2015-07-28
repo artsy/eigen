@@ -1,12 +1,12 @@
 #import "ARArtistViewController.h"
-#import "ARStubbedArtistNetworkModel.h"
 #import "AREmbeddedModelsViewController.h"
 #import "ARSwitchView.h"
+#import "ARArtistNetworkModel.h"
 
 
 @interface ARArtistViewController (Tests)
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
-@property (nonatomic, strong) ARArtistNetworkModel *networkModel;
+@property (nonatomic, strong) id<ARArtistNetworkModelable> networkModel;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworkVC;
 
 - (void)checkForAdditionalArtworksToFillView;
@@ -185,6 +185,10 @@ it(@"tries to load more artworks if the artworks view isn't full", ^{
     id subControllerMock = [OCMockObject mockForClass:[AREmbeddedModelsViewController class]];
     ARArtistViewController *subject = [[ARArtistViewController alloc] init];
     subject.artworkVC = subControllerMock;
+
+    networkModel = [[ARStubbedArtistNetworkModel alloc] initWithArtist:subject.artist];
+    subject.networkModel = networkModel;
+
     id subjectMock = [OCMockObject partialMockForObject:subject];
 
     BOOL full = NO;
@@ -198,6 +202,10 @@ it(@"tries to load more artworks if the artworks view isn't full", ^{
 it(@"does not try to load more artworks if the artworks view is full", ^{
     id subControllerMock = [OCMockObject mockForClass:[AREmbeddedModelsViewController class]];
     ARArtistViewController *subject = [[ARArtistViewController alloc] init];
+
+    networkModel = [[ARStubbedArtistNetworkModel alloc] initWithArtist:subject.artist];
+    subject.networkModel = networkModel;
+    
     subject.artworkVC = subControllerMock;
     id subjectMock = [OCMockObject partialMockForObject:subject];
 

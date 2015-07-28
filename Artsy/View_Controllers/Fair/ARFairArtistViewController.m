@@ -12,14 +12,15 @@
 #import "ARFairMapPreviewButton.h"
 #import "ARFairArtistNetworkModel.h"
 
-NS_ENUM(NSInteger, ARFairArtistViewIndex){
+typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
     ARFairArtistTitle = 1,
     ARFairArtistSubtitle,
     ARFairArtistMapPreview,
     ARFairArtistFollow,
     ARFairArtistShows,
     ARFairArtistOnArtsy = ARFairArtistShows + 3 * 42, // we don't expect more than 42 shows
-    ARFairArtistWhitespaceGobbler};
+    ARFairArtistWhitespaceGobbler
+};
 
 
 @interface ARFairArtistViewController () <AREmbeddedModelsDelegate>

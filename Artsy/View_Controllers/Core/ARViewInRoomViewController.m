@@ -87,6 +87,11 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     return YES;
 }
 
+- (BOOL)hidesSearchButton;
+{
+    return YES;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidAppear:(BOOL)animated

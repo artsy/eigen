@@ -9,3 +9,4 @@
 * Switches our Internal Web View Controllers to use iOS8 APIs, should be a big speed increase - orta
 * Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done loading. - alloy
 * Remove opaque background from Search keyboard. - 1aurabrown
+* Adds a web view admin gesture to get information. Do a long press on a blank space on any web view - orta

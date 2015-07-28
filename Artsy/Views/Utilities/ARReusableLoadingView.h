@@ -1,5 +1,6 @@
 
 
+
 @interface ARReusableLoadingView : UICollectionReusableView
 
 - (void)startIndeterminateAnimated:(BOOL)animated;

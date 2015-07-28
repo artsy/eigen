@@ -223,7 +223,7 @@ describe(@"unauthenticated", ^{
 
         it(@"doesn't handle a link with an non-http protocol", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"ftp://example.com"]];
-            id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
+            id action = StubNxavActionForRequest(request, WKNavigationTypeLinkActivated);
             expect([controller shouldLoadNavigationAction:action]).to.beTruthy();
         });
 

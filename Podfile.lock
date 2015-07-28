@@ -1,4 +1,7 @@
 PODS:
+  - Adjust (4.2.7):
+    - Adjust/Core (= 4.2.7)
+  - Adjust/Core (4.2.7)
   - AFHTTPRequestOperationLogger (1.0.0):
     - AFNetworking (~> 1.0)
   - AFNetworking (1.3.4)
@@ -9,6 +12,9 @@ PODS:
     - TRVSDictionaryWithCaseInsensitivity (= 0.0.2)
   - Analytics/Segmentio (1.12.0):
     - Analytics/Core-iOS
+  - ARAnalytics/Adjust (3.6.2):
+    - Adjust
+    - ARAnalytics/CoreIOS
   - ARAnalytics/CoreIOS (3.6.2)
   - ARAnalytics/DSL (3.6.2):
     - ReactiveCocoa (~> 2.0)
@@ -73,6 +79,7 @@ PODS:
   - iRate (1.10.2)
   - ISO8601DateFormatter (HEAD based on 0.7)
   - JLRoutes (1.5)
+  - JSBadgeView (1.4.1)
   - JSDecoupledAppDelegate (1.1.0)
   - Keys (1.0.0)
   - KSDeferred (0.2.0)
@@ -87,6 +94,7 @@ PODS:
   - NAMapKit (3.1.1):
     - ARTiledImageView
     - SDWebImage
+  - NPKeyboardLayoutGuide (1.0.0)
   - ObjectiveSugar (1.1.0)
   - OCMock (2.2.4)
   - OHHTTPStubs (3.1.2)
@@ -104,7 +112,7 @@ PODS:
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
-  - Specta (0.5.0)
+  - Specta (1.0.2)
   - TPDWeakProxy (1.1.0)
   - TRVSDictionaryWithCaseInsensitivity (0.0.2)
   - UIAlertView+Blocks (0.8)
@@ -119,6 +127,7 @@ DEPENDENCIES:
   - AFNetworking (from `https://github.com/orta/AFNetworking`, branch `no_ifdefs`)
   - AFOAuth1Client (from `https://github.com/orta/AFOAuth1Client`, branch `patch-1`)
   - ALPValidator
+  - ARAnalytics/Adjust (>= 3.6.2)
   - ARAnalytics/DSL (>= 3.6.2)
   - ARAnalytics/HockeyApp (>= 3.6.2)
   - ARAnalytics/Segmentio (>= 3.6.2)
@@ -145,6 +154,7 @@ DEPENDENCIES:
   - iRate
   - ISO8601DateFormatter (HEAD)
   - JLRoutes
+  - JSBadgeView
   - JSDecoupledAppDelegate
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
@@ -153,6 +163,7 @@ DEPENDENCIES:
   - MMMarkdown
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`, commit `62275386978db91b0e7ed8de755d15cef3e793b4`)
+  - NPKeyboardLayoutGuide
   - ObjectiveSugar
   - OCMock
   - OHHTTPStubs
@@ -215,6 +226,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/1aurabrown/ORStackView.git
 
 SPEC CHECKSUMS:
+  Adjust: 2c3d4db6047c6bba68d7c5ede63fbdc989eb57b7
   AFHTTPRequestOperationLogger: 251332cf89812162df96843ca51a76107fb95a94
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
   AFOAuth1Client: 51d32174520b54d7e15a8b3dd618a9a5b87a6344
@@ -225,7 +237,7 @@ SPEC CHECKSUMS:
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 000af4093f9bdcd0f754e6ebd964c90641389f90
-  Artsy+UIColors: d1d5e084a0e542d310c507acb5446bae6a322241
+  Artsy+UIColors: 7a4c987885a8d8da3e22672a3232761f929dd2b6
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy+UILabels: a7c713069e3d10144a3dc8e377bef8b2253cd766
   Artsy-UIButtons: 6f67de2a5285f18acb5d0e2919d1b17188acbc27
@@ -247,6 +259,7 @@ SPEC CHECKSUMS:
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
   JLRoutes: 5a6096ec514f105fc906f9334c90d8276fe13687
+  JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
   JSDecoupledAppDelegate: ec2e9480b893fa27ba3db5b12d51a6d5803c550b
   Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
@@ -255,6 +268,7 @@ SPEC CHECKSUMS:
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: 4f57bea305c1795d2d6b8a6d6b31c59b1a08114f
+  NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
@@ -263,7 +277,7 @@ SPEC CHECKSUMS:
   ReactiveCocoa: fbe689fe218063b7bbed41032912c9ca4fdbe172
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
-  Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
+  Specta: 9cec98310dca411f7c7ffd6943552b501622abfe
   TPDWeakProxy: 2ee6754e401aad6a67cc1d59c9fedddae7815abf
   TRVSDictionaryWithCaseInsensitivity: 51d2ccf52c6d645d27b63467a98fa02c556e01b0
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609

@@ -16,7 +16,7 @@
 
 static const NSInteger ARMinimumArtworksFor2Column = 5;
 
-NS_ENUM(NSInteger, ARArtistViewIndex){
+typedef NS_ENUM(NSInteger, ARArtistViewIndex) {
     ARArtistViewArtistName = 1,
     ARArtistViewArtistInfo,
     ARArtistViewBioTextPad,
@@ -27,7 +27,8 @@ NS_ENUM(NSInteger, ARArtistViewIndex){
     ARArtistViewRelatedTitle,
     ARArtistViewRelatedArtists,
     ARArtistViewRelatedPosts,
-    ARArtistViewWhitepsaceGobbler};
+    ARArtistViewWhitepsaceGobbler
+};
 
 typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     ARArtistArtworksDisplayAll,
@@ -41,7 +42,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 @property (nonatomic, strong) ORStackScrollView *view;
 @property (nonatomic, assign) enum ARArtistArtworksDisplayMode displayMode;
 
-@property (nonatomic, strong) ARArtistNetworkModel *networkModel;
+@property (nonatomic, strong) id<ARArtistNetworkModelable> networkModel;
 
 @property (nonatomic, assign) NSInteger allArtworksLastPage;
 @property (nonatomic, assign) NSInteger forSaleArtworksLastPage;
@@ -112,7 +113,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)updateArtistInfo
 {
-   @_weakify(self);
+    @_weakify(self);
     [self.networkModel getArtistInfoWithSuccess:^(Artist *artist) {
 
         @_strongify(self);
@@ -156,7 +157,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     ARHeartButton *favoriteButton = [[ARHeartButton alloc] init];
     [favoriteButton addTarget:self action:@selector(toggleFollowingArtist:) forControlEvents:UIControlEventTouchUpInside];
 
-    [self.artist getFollowState:^(ARHeartStatus status) {
+    [self.networkModel getFollowState:^(ARHeartStatus status) {
         [favoriteButton setStatus:status animated:self.shouldAnimate];
     } failure:^(NSError *error) {
         [favoriteButton setStatus:ARHeartStatusNo];
@@ -319,13 +320,13 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:self.shouldAnimate];
 
-   @_weakify(self);
-    [self.networkModel setFavoriteStatus:sender.isHearted success:^(id response) {
-    }
+    @_weakify(self);
+    [self.networkModel setFavoriteStatus:sender.isHearted
+        success:^(id response) {
+        }
         failure:^(NSError *error) {
-
-         @_strongify(self);
-        [ARNetworkErrorManager presentActiveErrorModalWithError:error];
+        @_strongify(self);
+        [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
         [sender setHearted:!hearted animated:self.shouldAnimate];
         }];
 }
@@ -354,6 +355,8 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
             self.artworkVC.view.alpha = 0;
         } midway:^{
             self.artworkVC.collectionView.contentOffset = CGPointZero;
+            // TODO Clearing this array and then appending truly violates SRP and probably needs to be looked into why
+            // it needed to work this way.
             self.artworkVC.activeModule.items = @[];
 
             if (artworks.count > 0) {
@@ -362,11 +365,18 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
                 [self.artworkVC ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
             }
 
+            // Ensure that the user can never get to see any stale cells from the previous tab. E.g. if we ever
+            // introduce a regression that would make the spinner be removed before artworks for this tab were ever
+            // loaded. See https://github.com/artsy/eigen/issues/623.
+            [self.artworkVC.collectionView reloadData];
+
             [self getMoreArtworks];
             self.artworkVC.view.alpha = 1;
 
         } completion:^(BOOL finished) {
-            [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+            if (artworks.count > 0) {
+                [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+            }
             [self.view setNeedsUpdateConstraints];
         }];
     }
@@ -392,7 +402,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL showingForSale = (displayMode == ARArtistArtworksDisplayForSale);
     NSDictionary *params = (showingForSale) ? @{ @"filter[]" : @"for_sale" } : nil;
 
-   @_weakify(self);
+    @_weakify(self);
     [self.networkModel getArtistArtworksAtPage:lastPage + 1 params:params success:^(NSArray *artworks) {
         @_strongify(self);
         [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
@@ -555,8 +565,8 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getRelatedArtists
 {
-   @_weakify(self);
-    [self.artist getRelatedArtists:^(NSArray *artists) {
+    @_weakify(self);
+    [self.networkModel getRelatedArtists:^(NSArray *artists) {
         @_strongify(self);
         if (artists.count > 0 ) {
             [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration :^{
@@ -570,8 +580,8 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getRelatedPosts
 {
-   @_weakify(self);
-    [self.artist getRelatedPosts:^(NSArray *posts) {
+    @_weakify(self);
+    [self.networkModel getRelatedPosts:^(NSArray *posts) {
         @_strongify(self);
         if (posts.count > 0) {
             self.postsVC.posts = posts;

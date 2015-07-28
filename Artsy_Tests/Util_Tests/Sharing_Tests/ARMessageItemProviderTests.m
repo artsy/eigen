@@ -16,7 +16,7 @@ describe(@"message provider", ^{
     __block ARMessageItemProvider *provider;
     __block NSString *placeHolderMessage = @"So And So";
     __block NSString *path = @"artist/so-and-so";
-    __block UIActivityViewController *activityVC = [[UIActivityViewController alloc] init];
+    __block UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[] applicationActivities:@[]];
 
     describe(@"provider", ^{
         beforeEach(^{

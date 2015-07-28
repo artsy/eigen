@@ -1,5 +1,6 @@
 
 
+
 @interface ARFeed : NSObject <UIStateRestoring>
 
 + (NSSet *)feedItemTypes;

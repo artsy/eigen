@@ -1,5 +1,6 @@
 
 
+
 @implementation MapPoint
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey

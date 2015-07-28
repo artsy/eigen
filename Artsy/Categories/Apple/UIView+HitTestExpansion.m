@@ -39,6 +39,7 @@ static BOOL ARHasSwizzledSetFrame;
     return CGRectContainsPoint(hitFrame, point);
 }
 
+static const NSInteger HighlightViewTag = 232323;
 
 // Support showing what it would look like at runtime
 // We need to ensure that setting the frame resizes correctly
@@ -46,22 +47,29 @@ static BOOL ARHasSwizzledSetFrame;
 
 - (void)ar_visuallyExtendHitTestSizeByWidth:(CGFloat)width andHeight:(CGFloat)height
 {
-    UIEdgeInsets highlightInsets = UIEdgeInsetsMake(-height, -width, -height, -width);
-    NSInteger highlightViewTag = 232323;
+    [self ar_extendHitTestSizeByWidth:width andHeight:height];
+    [self ar_visualizeHitTestArea];
+}
 
-    UIView *highlightView = [self viewWithTag:highlightViewTag];
+- (void)ar_visualizeHitTestArea;
+{
+    UIEdgeInsets insets = self.hitTestEdgeInsets;
+
+    // Ensure the value is set to at least something so that the frame will get updated from swizzledLayoutSubviews.
+    if (UIEdgeInsetsEqualToEdgeInsets(insets, UIEdgeInsetsZero)) {
+        [self ar_extendHitTestSizeByWidth:0 andHeight:0];
+    }
+
+    UIView *highlightView = [self viewWithTag:HighlightViewTag];
     if (!highlightView) {
         highlightView = [[UIView alloc] init];
         highlightView.backgroundColor = [[UIColor purpleColor] colorWithAlphaComponent:0.5];
-        highlightView.tag = 232323;
+        highlightView.tag = HighlightViewTag;
         highlightView.userInteractionEnabled = NO;
         self.clipsToBounds = NO;
         [self addSubview:highlightView];
     }
-
-    highlightView.frame = UIEdgeInsetsInsetRect(self.bounds, highlightInsets);
-
-    [self ar_extendHitTestSizeByWidth:width andHeight:height];
+    highlightView.frame = UIEdgeInsetsInsetRect(self.bounds, insets);
 
     if (!ARHasSwizzledSetFrame) {
         ARHasSwizzledSetFrame = YES;
@@ -84,11 +92,7 @@ static BOOL ARHasSwizzledSetFrame;
     [self swizzledLayoutSubviews];
 
     NSValue *value = objc_getAssociatedObject(self, &KEY_HIT_TEST_EDGE_INSETS);
-    if (value) {
-        UIEdgeInsets edgeInsets;
-        [value getValue:&edgeInsets];
-        [self ar_visuallyExtendHitTestSizeByWidth:-edgeInsets.left andHeight:-edgeInsets.top];
-    }
+    if (value) [self ar_visualizeHitTestArea];
 }
 
 

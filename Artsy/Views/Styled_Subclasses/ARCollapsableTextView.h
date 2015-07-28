@@ -8,4 +8,6 @@ typedef void (^ARCollapsableTextBlock)(ARCollapsableTextView *textView);
 
 @property (nonatomic, copy) ARCollapsableTextBlock expansionBlock;
 
+- (void)openToFullHeightAnimated:(BOOL)animated;
+
 @end

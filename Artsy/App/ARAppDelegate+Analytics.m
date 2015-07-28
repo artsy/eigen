@@ -1,10 +1,12 @@
+// MARK: Formatter Exempt
+
 #import "ARAppDelegate+Analytics.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import <ARAnalytics/ARDSL.h>
 #import "ARAnalyticsConstants.h"
 #import <HockeySDK_Source/BITHockeyManager.h>
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
-
+#import <Adjust/Adjust.h>
 #import "ARUserManager.h"
 #import "ARTopMenuNavigationDataSource.h"
 
@@ -59,15 +61,27 @@
 
 @implementation ARAppDelegate (Analytics)
 
+- (void)lookAtURLForAnalytics:(NSURL *)url
+{
+    [Adjust appWillOpenUrl:url];
+}
+
 - (void)setupAnalytics
 {
     ArtsyKeys *keys = [[ArtsyKeys alloc] init];
     NSString *segmentWriteKey = keys.segmentProductionWriteKey;
+    NSString *environment = ADJEnvironmentProduction;
 
     NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
     if ([bundleID containsString:@".dev"] || [bundleID containsString:@".beta"]) {
         segmentWriteKey = keys.segmentDevWriteKey;
+        environment = ADJEnvironmentSandbox;
     }
+
+    // Skipping ARAnalytics because Adjust has its own expectations
+    // around event names being < 6 chars
+    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:keys.adjustProductionAppToken environment:environment];
+    [Adjust appDidLaunch:adjustConfig];
 
 #if DEBUG
     [[BITHockeyManager sharedHockeyManager] setDisableUpdateManager:YES];
@@ -94,7 +108,7 @@
     @{
         ARHockeyAppBetaID: @"306e66bde3cb91a2043f2606cf335700",
         ARHockeyAppLiveID: @"d7bceb80c6fa1e83e787b3919c749311",
-        ARSegmentioWriteKey: segmentWriteKey
+        ARSegmentioWriteKey: segmentWriteKey,
     } configuration:
     @{
         ARAnalyticsTrackedEvents:
@@ -1116,6 +1130,15 @@
                     ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Login" } ]
                 },
                 @{
+                    ARAnalyticsClass: ARNavigationController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Search",
+                            ARAnalyticsSelectorName: @"search:",
+                        }
+                    ]
+                },
+                @{
                     ARAnalyticsClass: ARTabContentView.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -1153,11 +1176,11 @@
                                 return @{ @"tab": @"Artworks" };
                             }
                         },@{
-                            ARAnalyticsPageName: @"Search",
+                            ARAnalyticsPageName: @"Bell",
                             ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
                             ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexSearch;
-                            }
+                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexNotifications;
+                            },
                         }
                     ]
                 },
@@ -1252,12 +1275,12 @@
                             ARAnalyticsSelectorName: @"showDidLoad",
                             ARAnalyticsProperties:^NSDictionary *(ARShowViewController *controller, NSArray *_) {
                                 NSDictionary *basics =  @{ @"slug": controller.show.showID,
-                                    @"partner_slug": controller.show.partner.partnerID
-                               };
+                                    @"partner_slug": controller.show.partner.partnerID ?: @""
+                                };
 
-                               if (controller.show.fair.fairID) {
-                                   basics = [basics mtl_dictionaryByAddingEntriesFromDictionary:@{ @"fair_slug": controller.show.fair.fairID }];
-                               }
+                                if (controller.show.fair.fairID) {
+                                    basics = [basics mtl_dictionaryByAddingEntriesFromDictionary:@{ @"fair_slug": controller.show.fair.fairID }];
+                                }
 
                                return basics;
                             }

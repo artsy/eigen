@@ -1,5 +1,6 @@
 
 
+
 @implementation Bid
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey

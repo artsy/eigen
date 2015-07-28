@@ -1,5 +1,6 @@
 
 
+
 @interface ARRelatedArtistsViewController : UIViewController
 
 - (instancetype)initWithFair:(Fair *)fair;

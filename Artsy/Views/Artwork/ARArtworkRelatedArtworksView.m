@@ -140,6 +140,7 @@
             [self addSectionWithOtherArtworksInShow:show];
         }
     }]];
+
     [self addRelatedArtworkRequest:[self.artwork getRelatedFairArtworks:fair success:^(NSArray *artworks) {
         @_strongify(self);
         [self addSectionWithTag:ARRelatedArtworksSameFair artworks:artworks heading:@"Other works in fair"];

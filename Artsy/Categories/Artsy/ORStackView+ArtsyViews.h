@@ -13,6 +13,10 @@
 - (void)addSerifPageTitle:(NSString *)title subtitle:(NSString *)subtitle;
 - (void)addSerifPageTitle:(NSString *)title subtitle:(NSString *)subtitle tag:(NSInteger)tag;
 
+/// An alternative page subtitle style
+- (UILabel *)addSerifPageSubtitle:(NSString *)subtitle;
+- (UILabel *)addSerifPageSubtitle:(NSString *)subtitle tag:(NSInteger)tag;
+
 /// Use a consistent subtitle
 - (UILabel *)addPageSubtitleWithString:(NSString *)title;
 - (UILabel *)addPageSubtitleWithString:(NSString *)title tag:(NSInteger)tag;

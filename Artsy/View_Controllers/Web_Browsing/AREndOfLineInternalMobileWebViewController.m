@@ -3,7 +3,7 @@
 
 @implementation AREndOfLineInternalMobileWebViewController
 
-- (BOOL)hidesBackButton
+- (BOOL)hidesNavigationButtons
 {
     return YES;
 }

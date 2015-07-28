@@ -124,4 +124,20 @@
                         failure:failure];
 }
 
++ (AFHTTPRequestOperation *)getWorksForYouCount:(void (^)(NSUInteger notificationCount))success
+                                        failure:(void (^)(NSError *error))failure;
+{
+    NSURLRequest *request = [ARRouter worksForYouCountRequest];
+
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *op, id __) {
+        success((NSUInteger)[op.response.allHeaderFields[@"X-Total-Count"] integerValue]);
+    } failure:^(id _, NSError *error) {
+        if (failure) failure(error);
+    }];
+    [operation start];
+
+    return operation;
+}
+
 @end

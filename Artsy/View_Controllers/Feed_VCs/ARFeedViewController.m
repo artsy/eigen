@@ -27,6 +27,11 @@
 
 @implementation ARFeedViewController
 
+- (void)dealloc;
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (instancetype)initWithFeedTimeline:(ARFeedTimeline *)feedTimeline
 {
     self = [super init];
@@ -36,6 +41,11 @@
     _footerState = ARFeedStatusStateLoading;
     _refreshFeedInterval = 60 * 60 * 2;
     _loading = NO;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshFeed)
+                                                 name:ARNetworkAvailableNotification
+                                               object:nil];
 
     return self;
 }
@@ -116,7 +126,7 @@
 
 - (void)refreshFeedItems
 {
-   @_weakify(self)
+    @_weakify(self)
         [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^{
             @_strongify(self);
@@ -168,7 +178,7 @@
     _loading = YES;
     [self setFooterStatus:ARFeedStatusStateLoading];
 
-   @_weakify(self)
+    @_weakify(self)
         NSInteger oldCount = self.feedTimeline.numberOfItems;
 
     [self.feedTimeline getNextPage:^{

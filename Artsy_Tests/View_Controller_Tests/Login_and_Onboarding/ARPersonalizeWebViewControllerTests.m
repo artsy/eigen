@@ -30,5 +30,12 @@ it(@"returns no on artsy root urls", ^{
     expect([sut shouldLoadNavigationAction:action]).to.beFalsy();
 });
 
+it(@"is positioned correctly", ^{
+    [ARTestContext stubDevice:ARDeviceTypePad];
+    [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];
+    expect(sut).to.haveValidSnapshot();
+    [ARTestContext stopStubbing];
+});
+
 
 SpecEnd

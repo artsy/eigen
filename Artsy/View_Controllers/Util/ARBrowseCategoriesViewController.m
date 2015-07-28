@@ -1,11 +1,10 @@
 #import "ARBrowseCategoriesViewController.h"
-#import "ARBrowseFeaturedLinksCollectionView.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ORStackView+ArtsyViews.h"
+#import "ARBrowseFeaturedLinksCollectionViewController.h"
 
 
-@interface ARBrowseCategoriesViewController () <ARBrowseFeaturedLinksCollectionViewDelegate>
-@property (nonatomic, strong) NSMutableArray *collectionViews;
+@interface ARBrowseCategoriesViewController () <ARBrowseFeaturedLinksCollectionViewControllerDelegate>
 @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
@@ -36,16 +35,17 @@
 
 - (void)viewDidLoad
 {
-    [self.view.stackView addPageTitleWithString:@"Featured Categories"];
-    self.collectionViews = [NSMutableArray array];
+    [super viewDidLoad];
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
 
-    ARBrowseFeaturedLinksCollectionView *featureCollectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:ARFeaturedLinkLayoutSingleRow];
-    [self.view.stackView addSubview:featureCollectionView withTopMargin:@"30" sideMargin:@"0"];
-    [self.collectionViews addObject:featureCollectionView];
-    featureCollectionView.selectionDelegate = self;
+    [self.view.stackView addPageTitleWithString:@"Featured Categories"];
+
+    ARBrowseFeaturedLinksCollectionViewController *featureCollectionVC = [[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:ARFeaturedLinkLayoutSingleRow];
+    [self.view.stackView addViewController:featureCollectionVC toParent:self withTopMargin:@"30" sideMargin:@"0"];
+    featureCollectionVC.selectionDelegate = self;
 
     [ArtsyAPI getFeaturedLinksForGenesWithSuccess:^(NSArray *genes) {
-        featureCollectionView.featuredLinks = genes;
+        featureCollectionVC.featuredLinks = genes;
         [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
 
     } failure:^(NSError *error) {
@@ -56,25 +56,22 @@
         for (OrderedSet *orderedSet in orderedSets) {
             [self createCollectionViewWithOrderedSet:orderedSet];
         }
+        [self.view.stackView layoutIfNeeded];
     } failure:^(NSError *error) {
         ARErrorLog(@"Error getting Featured Link Categories for genes");
     }];
-
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
-    [super viewDidLoad];
 }
 
 - (void)createCollectionViewWithOrderedSet:(OrderedSet *)orderedSet
 {
     [self.view.stackView addPageSubtitleWithString:orderedSet.name];
 
-    ARBrowseFeaturedLinksCollectionView *categoryCollectionView = [[ARBrowseFeaturedLinksCollectionView alloc] initWithStyle:ARFeaturedLinkLayoutDoubleRow];
-    categoryCollectionView.selectionDelegate = self;
-    [self.view.stackView addSubview:categoryCollectionView withTopMargin:@"20" sideMargin:@"0"];
-    [self.collectionViews addObject:categoryCollectionView];
+    ARBrowseFeaturedLinksCollectionViewController *categoryCollectionVC = [[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:ARFeaturedLinkLayoutDoubleRow];
+    categoryCollectionVC.selectionDelegate = self;
+    [self.view.stackView addViewController:categoryCollectionVC toParent:self withTopMargin:@"20" sideMargin:@"0"];
 
     [orderedSet getItems:^(NSArray *items) {
-        categoryCollectionView.featuredLinks = items;
+        categoryCollectionVC.featuredLinks = items;
     }];
 }
 
@@ -83,25 +80,10 @@
     return [UIDevice isPad];
 }
 
-- (void)invalidateCollectionViews
-{
-    for (ARBrowseFeaturedLinksCollectionView *collectionView in self.collectionViews) {
-        [collectionView.collectionViewLayout invalidateLayout];
-        [collectionView invalidateIntrinsicContentSize];
-    }
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self invalidateCollectionViews];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.view.delegate = [ARScrollNavigationChief chief];
-    [self invalidateCollectionViews];
     [super viewWillAppear:animated && self.shouldAnimate];
+    self.view.delegate = [ARScrollNavigationChief chief];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -111,7 +93,7 @@
     [super viewWillDisappear:animated && self.shouldAnimate];
 }
 
-#pragma mark - ARBrowseFeaturedLinksCollectionViewDelegate
+#pragma mark - ARBrowseFeaturedLinksCollectionViewControllerDelegate
 
 - (void)didSelectFeaturedLink:(FeaturedLink *)featuredLink
 {

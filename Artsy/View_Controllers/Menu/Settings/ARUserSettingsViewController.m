@@ -15,7 +15,7 @@
 
 #pragma mark - ARMenuAwareViewController
 
-- (BOOL)hidesBackButton
+- (BOOL)hidesNavigationButtons
 {
     return NO;
 }
@@ -166,7 +166,7 @@
     [super switchValueChangedTo:newValue userInfo:userInfo];
     FODFormRow *row = (FODFormRow *)userInfo;
 
-   @_weakify(row);
+    @_weakify(row);
     [ArtsyAPI updateCurrentUserProperty:[User JSONKeyPathsByPropertyKey][row.key]
         toValue:row.workingValue
         success:^(User *user) {
@@ -190,7 +190,7 @@
         return;
     }
 
-   @_weakify(row);
+    @_weakify(row);
     [ArtsyAPI updateCurrentUserProperty:[User JSONKeyPathsByPropertyKey][row.key] toValue:row.workingValue
         success:^(User *user) {
             @_strongify(row);

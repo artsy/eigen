@@ -2,17 +2,33 @@
 #import "ARArtworkSetViewController.h"
 #import "ARArtistViewController.h"
 #import "ARGeneViewController.h"
+#import "ARParallaxEffect.h"
 #import "ARSearchViewController+Private.h"
 #import "UIView+HitTestExpansion.h"
+
+@import FXBlurView;
+
+static const NSInteger ARAppSearchParallaxDistance = 20;
 
 
 @interface ARAppSearchViewController () <ARMenuAwareViewController>
 @property (readonly, nonatomic, strong) UIButton *clearButton;
 @property (readonly, nonatomic) UIView *bottomBorder;
+@property (readwrite, nonatomic, strong) UIView *backgroundView;
 @end
 
 
 @implementation ARAppSearchViewController
+
++ (instancetype)sharedSearchViewController;
+{
+    static ARAppSearchViewController *sharedInstance = nil;
+    static dispatch_once_t onceToken = 0;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [self new];
+    });
+    return sharedInstance;
+}
 
 - (instancetype)init
 {
@@ -93,19 +109,42 @@
 - (void)closeSearch:(id)sender
 {
     [super closeSearch:sender];
-    [[ARTopMenuViewController sharedController] returnToPreviousTab];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - ARMenuAwareViewController
 
-- (BOOL)hidesToolbarMenu
+// The toolbar is hidden from ARAppSearchTransition _after_ the transition has finished, because otherwise there would
+// be a gap in the blurred background view.
+
+- (BOOL)hidesNavigationButtons
 {
     return YES;
 }
 
-- (BOOL)hidesBackButton
+#pragma mark - ARAppSearchTransition
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage;
 {
-    return YES;
+    [self.backgroundView removeFromSuperview];
+    self.backgroundView = nil;
+
+    if (backgroundImage) {
+        // [self.backgroundView removeFromSuperview];
+        UIImage *blurImage = [backgroundImage blurredImageWithRadius:12 iterations:2 tintColor:nil];
+        CGRect outset = CGRectInset(self.view.bounds, -ARAppSearchParallaxDistance, -ARAppSearchParallaxDistance);
+
+        UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:outset];
+
+        ARParallaxEffect *parallax = [[ARParallaxEffect alloc] initWithOffset:ARAppSearchParallaxDistance];
+        [backgroundView addMotionEffect:parallax];
+
+        backgroundView.image = blurImage;
+        [self.view insertSubview:backgroundView atIndex:0];
+
+        backgroundView.alpha = 0.2;
+        self.backgroundView = backgroundView;
+    }
 }
 
 @end

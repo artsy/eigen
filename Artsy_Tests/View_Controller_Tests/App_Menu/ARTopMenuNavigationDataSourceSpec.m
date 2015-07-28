@@ -2,33 +2,24 @@
 #import "ARNavigationController.h"
 #import "ARBrowseViewController.h"
 #import "ARFavoritesViewController.h"
-#import "ARAppSearchViewController.h"
 #import "ARShowFeedViewController.h"
+#import "ArtsyAPI.h"
+#import "ArtsyAPI+Artworks.h"
 
 
 @interface ARTopMenuNavigationDataSource (Testing)
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *searchNavigationController;
 - (ARNavigationController *)favoritesNavigationController;
 @end
 
 
 SpecBegin(ARTopMenuNavigationDataSource);
+
 __block ARTopMenuNavigationDataSource *navDataSource;
+
 before(^{
     navDataSource = [[ARTopMenuNavigationDataSource alloc] init];
-});
-
-it(@"uses a single search vc", ^{
-    ARNavigationController *navigationController = [navDataSource searchNavigationController];
-    UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
-    expect(rootVC).to.beKindOf([ARAppSearchViewController class]);
-
-    ARNavigationController *newNavigationController = [navDataSource searchNavigationController];
-    UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];
-    expect(newNavigationController).to.equal(navigationController);
-    expect(newRootVC).to.equal(rootVC);
 });
 
 it(@"uses a single feed vc", ^{
@@ -77,4 +68,5 @@ it(@"reinstantiates favorites vc", ^{
     expect(newRootVC).to.beKindOf([ARFavoritesViewController class]);
     expect(newRootVC).notTo.equal(rootVC);
 });
+
 SpecEnd

@@ -713,7 +713,19 @@ static NSSet *artsyHosts = nil;
         @"page" : @1,
         @"type" : @"ArtworkPublished",
         @"user_id" : [User currentUser].userID,
-        @"size" : @10
+        @"size" : @(10)
+    }];
+}
+
++ (NSURLRequest *)worksForYouCountRequest;
+{
+    return [staticHTTPClient requestWithMethod:@"GET" path:ARNotificationsURL parameters:@{
+        @"page" : @1,
+        @"type" : @"ArtworkPublished",
+        @"user_id" : [User currentUser].userID,
+        @"size" : @(1), // This endpoint only works if at least 1 artwork is requested
+        @"total_count" : @1,
+        @"unread" : @"true"
     }];
 }
 

@@ -70,6 +70,10 @@ context(@"searching", ^{
                 }]
              ];
 
+            [OHHTTPStubs stubImageResponseAtPathWithDefault:@"/api/v1/artist/aes-plus-f/image"];
+            [OHHTTPStubs stubImageResponseAtPathWithDefault:@"/api/v1/artist/john-f-carlson/image"];
+            [OHHTTPStubs stubImageResponseAtPathWithDefault:@"/api/v1/artist/f-scott-hess/image"];
+
             sut.textField.text = @"f";
             [sut.textField sendActionsForControlEvents:UIControlEventEditingChanged];
 
@@ -117,12 +121,13 @@ it(@"clears search", ^{
 
 it(@"closes search", ^{
     sut = [[ARAppSearchViewController alloc] init];
-    OCMockObject *topMenuViewControllerMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sut];
+    OCMockObject *navigationControllerMock = [OCMockObject partialMockForObject:navigationController];
     sut.shouldAnimate = NO;
     [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];
-    [[topMenuViewControllerMock expect] returnToPreviousTab];
+    [[navigationControllerMock expect] popViewControllerAnimated:YES];
     [sut closeSearch:nil];
-    [topMenuViewControllerMock verify];
+    [navigationControllerMock verify];
 });
 
 SpecEnd

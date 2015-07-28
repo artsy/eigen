@@ -89,9 +89,11 @@ static NSInteger ARTiledZoomMinLevel = 11;
     return [NSURL URLWithString:url];
 }
 
-- (BOOL)needsTiles
+- (BOOL)canZoom:(CGSize)targetSize
 {
-    return (self.maxTileLevel >= ARTiledZoomMinLevel) && self.maxTiledWidth && self.maxTiledHeight;
+    CGFloat maxAvailableWidth = self.maxTiledWidth;
+    CGFloat maxAvailableHeight = self.maxTiledHeight;
+    return targetSize.width <= maxAvailableWidth && targetSize.height <= maxAvailableHeight;
 }
 
 - (NSInteger)maxTileLevel

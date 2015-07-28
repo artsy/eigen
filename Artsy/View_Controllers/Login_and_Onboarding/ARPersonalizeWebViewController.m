@@ -21,10 +21,15 @@
 
     UITapGestureRecognizer *exitTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(exitOnboarding)];
     [self.view addGestureRecognizer:exitTap];
+
+    self.view.backgroundColor = [UIColor clearColor];
+}
+
+- (void)setupConstraints
+{
     [self.webView constrainWidthToView:self.view predicate:@"-200"];
     [self.webView constrainHeightToView:self.view predicate:@"-200"];
     [self.webView alignCenterWithView:self.view];
-    self.view.backgroundColor = [UIColor clearColor];
 }
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler

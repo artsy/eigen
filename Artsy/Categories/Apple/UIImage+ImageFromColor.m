@@ -8,31 +8,31 @@ static NSCache *imageCache;
 
 + (UIImage *)imageFromColor:(UIColor *)color
 {
-    return [self.class imageFromColor:color withSize:CGSizeMake(1, 1)];
-}
-
-+ (UIImage *)imageFromColor:(UIColor *)color withSize:(CGSize)size
-{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         imageCache = [[NSCache alloc] init];
     });
 
     UIImage *image = [imageCache objectForKey:color];
-    if (image) {
-        return image;
+    if (!image) {
+        image = [self.class imageFromColor:color withSize:CGSizeMake(1, 1)];
+        [imageCache setObject:image forKey:color];
     }
 
+    return image;
+}
+
++ (UIImage *)imageFromColor:(UIColor *)color withSize:(CGSize)size
+{
     CGRect rect = CGRectMake(0, 0, size.width, size.height);
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, [color CGColor]);
     CGContextFillRect(context, rect);
 
-    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    [imageCache setObject:image forKey:color];
     return image;
 }
 

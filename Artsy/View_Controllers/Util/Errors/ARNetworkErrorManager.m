@@ -1,12 +1,12 @@
-#import "ARShadowView.h"
-#import <ARAnalytics/ARAnalytics.h>
+#import "ARNetworkErrorManager.h"
+#import "ARCustomEigenLabels.h"
+
+@import ARAnalytics;
+@import NPKeyboardLayoutGuide;
 
 
 @interface ARNetworkErrorManager ()
-@property (nonatomic, strong) ARShadowView *activeModalView;
-@property (nonatomic, strong) UIView *passiveErrorView;
-@property (nonatomic, strong) NSLayoutConstraint *passiveBottomContraint;
-@property (nonatomic, strong) NSString *bottomAlignmentPredicate;
+@property (nonatomic, strong) UILabel *activeModalView;
 @end
 
 
@@ -18,65 +18,76 @@
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _sharedManager = [[self alloc] init];
-
-      //        [[NSNotificationCenter defaultCenter] addObserver:_sharedManager
-      //                                                 selector:@selector(keyboardWasShown:)
-      //                                                     name:UIKeyboardDidShowNotification
-      //                                                   object:nil];
-      //        [[NSNotificationCenter defaultCenter] addObserver:_sharedManager
-      //                                                 selector:@selector(keyboardWillHide:)
-      //                                                     name:UIKeyboardWillHideNotification
-      //                                                   object:nil];
     });
     return _sharedManager;
 }
 
-- (void)keyboardWasShown:(NSNotification *)notification
++ (void)presentActiveError:(NSError *)error;
 {
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    self.bottomAlignmentPredicate = [NSString stringWithFormat:@"-%0.f", keyboardSize.height];
+    [self presentActiveError:error withMessage:error.localizedDescription];
+}
 
-    if (self.passiveBottomContraint) {
-        CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
++ (void)presentActiveError:(NSError *)error withMessage:(NSString *)message;
+{
+    [ARAnalytics error:error withMessage:message];
 
-        [UIView animateWithDuration:duration animations:^{
-            self.passiveBottomContraint.constant = -keyboardSize.height;
-            [self.passiveErrorView.superview layoutIfNeeded];
-        }];
+    ARNetworkErrorManager *manager = [self sharedManager];
+    if (manager.activeModalView == nil) {
+        [manager presentActiveError:error withMessage:message];
     }
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification
+- (void)presentActiveError:(NSError *)error withMessage:(NSString *)message;
 {
-    self.bottomAlignmentPredicate = @"0";
-}
+    ARTopMenuViewController *topMenu = [ARTopMenuViewController sharedController];
+    UIViewController *hostVC = topMenu.visibleViewController;
+    BOOL showOnTopMenu = topMenu.presentedViewController == nil;
+    UIView *hostView = showOnTopMenu ? topMenu.tabContentView : hostVC.view;
 
-+ (void)presentActiveErrorModalWithError:(NSError *)error
-{
-    ARNetworkErrorManager *manager = [self sharedManager];
-    if (manager.activeModalView) {
+    // This happens when there’s no network on app launch and onboarding will be shown.
+    if (hostView.superview == nil) {
         return;
     }
 
-    [ARAnalytics error:error];
-    [manager presentActiveError:error];
-}
+    if ([hostVC respondsToSelector:@selector(shouldShowActiveNetworkError)]) {
+        if (![(id<ARNetworkErrorAwareViewController>)hostVC shouldShowActiveNetworkError]) {
+            return;
+        }
+    }
 
-- (void)presentActiveError:(NSError *)error
-{
-    NSArray *views = [[UINib nibWithNibName:@"ActiveErrorView" bundle:nil] instantiateWithOwner:self options:nil];
-    self.activeModalView = views[0];
+    self.activeModalView = [[ARWarningView alloc] initWithFrame:CGRectZero];
+    self.activeModalView.text = [NSString stringWithFormat:@"%@ Network connection error.", message];
 
     self.activeModalView.alpha = 0;
-    ARTopMenuViewController *topMenu = [ARTopMenuViewController sharedController];
-    [topMenu.view addSubview:self.activeModalView];
+    [hostView addSubview:self.activeModalView];
+
+    [self.activeModalView constrainHeight:@"50"];
+    [self.activeModalView constrainWidthToView:hostView predicate:nil];
+
+    // Show banner above bottom of modal view, above tab bar of top menu, or above the keyboard.
+    if (showOnTopMenu) {
+        [self.activeModalView alignBottomEdgeWithView:hostView predicate:nil];
+    } else {
+        // Basically onboarding VCs. Still use the top menu's keyboardLayoutGuide, because it has already been loaded
+        // and thus will do the correct thing when the keyboard is already shown before calling this on the VC for the
+        // first time.
+        [self.activeModalView alignAttribute:NSLayoutAttributeBottom
+                                 toAttribute:NSLayoutAttributeTop
+                                      ofView:topMenu.keyboardLayoutGuide
+                                   predicate:nil];
+    }
+
+    UITapGestureRecognizer *removeTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeActiveError)];
+    [self.activeModalView addGestureRecognizer:removeTapGesture];
 
     [UIView animateWithDuration:0.15 animations:^{
         self.activeModalView.alpha = 1;
     }];
+
+    [self performSelector:@selector(removeActiveError) withObject:nil afterDelay:5];
 }
 
-- (void)removeActiveErrorModal
+- (void)removeActiveError
 {
     [UIView animateWithDuration:0.25 animations:^{
         self.activeModalView.alpha = 0;
@@ -85,19 +96,6 @@
         [self.activeModalView removeFromSuperview];
         self.activeModalView = nil;
     }];
-}
-
-- (void)setActiveModalView:(ARShadowView *)activeModalView
-{
-    _activeModalView = activeModalView;
-
-    UITapGestureRecognizer *removeTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeActiveErrorModal)];
-    [self.activeModalView addGestureRecognizer:removeTapGesture];
-
-    UILabel *titleLabel = activeModalView.subviews[0];
-    titleLabel.font = [UIFont serifFontWithSize:26];
-
-    [self.activeModalView createShadow];
 }
 
 @end

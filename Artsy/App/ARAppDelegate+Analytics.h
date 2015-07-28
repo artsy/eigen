@@ -4,5 +4,6 @@
 @interface ARAppDelegate (Analytics)
 
 - (void)setupAnalytics;
+- (void)lookAtURLForAnalytics:(NSURL *)url;
 
 @end

@@ -38,12 +38,12 @@ it(@"maps bindings correctly", ^{
     ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:nil];
 
     expect(viewController.displayingSearch).to.beFalsy();
-    expect(viewController.hidesBackButton).to.beFalsy();
+    expect(viewController.hidesNavigationButtons).to.beFalsy();
 
     viewController.searchVC = [[ARFairSearchViewController alloc] initWithFair:nil];
 
     expect(viewController.displayingSearch).to.beTruthy();
-    expect(viewController.hidesBackButton).to.beTruthy();
+    expect(viewController.hidesNavigationButtons).to.beTruthy();
 });
 
 __block Fair *bannerlessFair;

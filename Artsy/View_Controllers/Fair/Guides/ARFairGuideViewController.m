@@ -8,7 +8,7 @@
 // Switch view width should be divisible by the number of items (in this case 3) for consistent rendering.
 static CGFloat const ARFairGuideSwitchviewWidth = 279;
 
-NS_ENUM(NSInteger, ARFairGuideViewOrder){
+typedef NS_ENUM(NSInteger, ARFairGuideViewOrder) {
     ARFairGuideViewTitle,
     ARFairGuideViewSubtitle,
     ARFairGuideViewSignupForArtsyButton,
@@ -19,7 +19,8 @@ NS_ENUM(NSInteger, ARFairGuideViewOrder){
     ARFairGuideViewShowsToFollowSeparator,
     ARFairGuideViewShowsToFollow,
     ARFairGuideViewAllExhibitors,
-    ARFairGuideViewWhitespace};
+    ARFairGuideViewWhitespace
+};
 
 
 @interface ARFairGuideViewController () <ARSwitchViewDelegate, ARFairFavoritesNetworkModelDelegate>

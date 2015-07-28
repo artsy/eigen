@@ -6,12 +6,19 @@
 @interface ARNavigationController : UINavigationController
 
 @property (readonly, nonatomic, strong) UIButton *backButton;
+@property (readonly, nonatomic, strong) UIButton *searchButton;
+@property (readonly, nonatomic, strong) UIViewController *rootViewController;
+@property (readwrite, nonatomic, assign) BOOL animatesLayoverChanges;
 
 - (void)showBackButton:(BOOL)visible animated:(BOOL)animated;
 - (void)showStatusBar:(BOOL)visible animated:(BOOL)animated;
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated;
 
 - (IBAction)back:(id)sender;
+- (IBAction)search:(id)sender;
+
+/// Removes the specified viewController from anywhere in the stack.
+- (void)removeViewControllerFromStack:(UIViewController *)viewController;
 
 /// Presents a pending operation overlay view controller.
 ///
@@ -21,7 +28,5 @@
 
 - (RACCommand *)presentPendingOperationLayover;
 - (RACCommand *)presentPendingOperationLayoverWithMessage:(NSString *)message;
-
-@property (nonatomic, assign) BOOL animatesLayoverChanges;
 
 @end

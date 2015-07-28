@@ -1,7 +1,7 @@
 @import WebKit;
 
 
-@interface ARExternalWebBrowserViewController : UIViewController
+@interface ARExternalWebBrowserViewController : UIViewController <WKNavigationDelegate>
 
 @property (readonly, nonatomic, strong) WKWebView *webView;
 @property (readonly, nonatomic, strong) UIScrollView *scrollView;

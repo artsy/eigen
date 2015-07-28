@@ -60,12 +60,14 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
 
 #pragma mark - Show
 
-+ (ARNotificationView *)showNoticeInView:(UIView *)view title:(NSString *)title hideAfter:(NSTimeInterval)hideInterval response:(void (^)(void))response
++ (ARNotificationView *)showNoticeInView:(UIView *)view title:(NSString *)title response:(void (^)(void))response
 {
     ARNotificationView *noticeView = [[self alloc] initWithFrame:CGRectMake(0, -panelHeight, view.bounds.size.width, 0) andResponseBlock:response];
     noticeView.titleLabel.text = title;
     noticeView.parentView = view;
-    noticeView.hideInterval = hideInterval;
+
+    // This is the average duration that I timed iOS (8) shows notifications for.
+    noticeView.hideInterval = 6.5;
 
     if (notificationQueue == nil) {
         notificationQueue = [[NSMutableArray alloc] init];

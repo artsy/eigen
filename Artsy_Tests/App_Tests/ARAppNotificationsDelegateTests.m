@@ -4,6 +4,8 @@
 #import "ARAnalyticsConstants.h"
 #import "ARNotificationView.h"
 #import "ARTopMenuViewController.h"
+#import "ARTopMenuNavigationDataSource.h"
+
 
 SpecBegin(ARAppNotificationsDelegate);
 
@@ -36,7 +38,7 @@ describe(@"receiveRemoteNotification", ^{
             
             id JSON = @{ @"url" : @"http://artsy.net/feature" };
             NSData *data = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
-            NSDictionary *notification =[NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             UIApplication *app = [UIApplication sharedApplication];
 
             id mock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
@@ -44,6 +46,27 @@ describe(@"receiveRemoteNotification", ^{
             [[app delegate] application:app didReceiveRemoteNotification:notification];
             [mock verify];
             [mock stopMocking];
+            [classMock stopMocking];
+        });
+
+        it(@"updates the badge count", ^{
+            id classMock = [OCMockObject mockForClass:[ARTopMenuViewController class]];
+            id controllerMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
+            [[[classMock stub] andReturn:controllerMock] sharedController];
+
+            [[[controllerMock stub] andReturnValue:@(ARTopTabControllerIndexNotifications)] indexOfRootViewController:OCMOCK_ANY];
+            [[controllerMock expect] setNotificationCount:42 forControllerAtIndex:ARTopTabControllerIndexNotifications];
+
+            NSDictionary *notification = @{
+                @"url": @"http://artsy.net/works-for-you",
+                @"aps": @{ @"badge": @(42) }
+            };
+
+            UIApplication *app = [UIApplication sharedApplication];
+            [[app delegate] application:app didReceiveRemoteNotification:notification];
+
+            [controllerMock verify];
+            [controllerMock stopMocking];
             [classMock stopMocking];
         });
 
@@ -89,7 +112,6 @@ describe(@"receiveRemoteNotification", ^{
             [[mock reject]
              showNoticeInView:OCMOCK_ANY
              title:OCMOCK_ANY
-             hideAfter:0
              response:OCMOCK_ANY];
             UIApplication *app = [UIApplication sharedApplication];
             [[app delegate] application:app didReceiveRemoteNotification:notification];
@@ -127,7 +149,6 @@ describe(@"receiveRemoteNotification", ^{
             [[mock expect]
              showNoticeInView:OCMOCK_ANY
              title:@"hello world"
-             hideAfter:0
              response:OCMOCK_ANY];
             UIApplication *app = [UIApplication sharedApplication];
             [[app delegate] application:app didReceiveRemoteNotification:notification];
@@ -143,7 +164,6 @@ describe(@"receiveRemoteNotification", ^{
             [[mock expect]
              showNoticeInView:OCMOCK_ANY
              title:@"http://artsy.net/feature"
-             hideAfter:0
              response:OCMOCK_ANY];
             UIApplication *app = [UIApplication sharedApplication];
             [[app delegate] application:app didReceiveRemoteNotification:notification];
