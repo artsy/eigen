@@ -52,7 +52,7 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
 
 - (instancetype)initWithImage:(Image *)image frame:(CGRect)frame
 {
-    NSAssert([image needsTiles], @"Don't instantiate zoom views for images that don't need tiles in Eigen");
+    NSAssert([image canZoom:frame.size], @"Don't instantiate zoom views for images that don't need tiles in Eigen");
 
     self = [super initWithFrame:frame];
     if (!self) {
