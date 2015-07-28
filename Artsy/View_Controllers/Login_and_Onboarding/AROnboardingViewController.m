@@ -79,7 +79,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     self.screenSwipeGesture.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:self.screenSwipeGesture];
 
-   @_weakify(self);
+    @_weakify(self);
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         @_strongify(self);
@@ -219,7 +219,11 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 - (void)didSignUpAndLogin
 {
-    [self presentOnboarding];
+    if (self.trialContext == ARTrialContextAuctionBid) {
+        [self dismissOnboardingWithVoidAnimation:YES];
+    } else {
+        [self presentOnboarding];
+    }
 }
 
 
@@ -324,7 +328,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     self.backgroundWidthConstraint.constant = 0;
     self.backgroundHeightConstraint.constant = 0;
-   @_weakify(self);
+    @_weakify(self);
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         @_strongify(self);
         [self.backgroundView layoutIfNeeded];
@@ -370,7 +374,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 - (void)signUpWithFacebook
 {
-   @_weakify(self);
+    @_weakify(self);
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
         @_strongify(self);
@@ -396,7 +400,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
-   @_weakify(self);
+    @_weakify(self);
     [ARAuthProviders getReverseAuthTokenForTwitter:^(NSString *token, NSString *secret) {
         @_strongify(self);
 
@@ -547,7 +551,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
     self.backgroundWidthConstraint.constant = offset * 2;
     self.backgroundHeightConstraint.constant = offset * 2;
-   @_weakify(self);
+    @_weakify(self);
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         @_strongify(self);
         [self.backgroundView layoutIfNeeded];
