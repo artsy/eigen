@@ -139,5 +139,7 @@
 			</dict>
 		</dict>
 	</array>
+	<key>UIViewEdgeAntialiasing</key>
+	<true/>
 </dict>
 </plist>
