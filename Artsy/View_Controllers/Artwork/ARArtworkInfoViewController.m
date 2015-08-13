@@ -55,6 +55,7 @@
     [self addSectionWithTitle:@"Signature" andText:self.artwork.signature];
     [self addSectionWithTitle:@"Additional Information" andText:self.artwork.additionalInfo];
     [self addSectionWithTitle:@"Literature" andText:self.artwork.literature];
+    [self addSectionWithTitle:@"Exhibition History" andText:self.artwork.exhibitionHistory];
 
     [super viewDidLoad];
 }
