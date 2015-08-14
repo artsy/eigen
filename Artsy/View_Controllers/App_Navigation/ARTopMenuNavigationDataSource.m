@@ -127,6 +127,11 @@ WebViewNavigationControllerWithPath(NSString *path)
 - (UINavigationController *)viewControllerForTabContentView:(ARTabContentView *)tabContentView atIndex:(NSInteger)index
 {
     _currentIndex = index;
+    
+    // When a tab is clicked, remove it's badge and update application badge,
+    // fixes https://github.com/artsy/eigen/issues/724
+    [self setBadgeNumber:0 forTabAtIndex:index];
+    
     return [self navigationControllerAtIndex:index];
 }
 
