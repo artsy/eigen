@@ -13,6 +13,8 @@
     NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(750, 1334)),
              @"The tests should be run on an iPhone 6, not a device with native resolution %@",
              NSStringFromCGSize(nativeResolution));
+
+    ARPerformWorkAsynchronously = YES;
 }
 
 @end

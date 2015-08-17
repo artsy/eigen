@@ -60,22 +60,10 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 // Private Access
 @property (nonatomic, strong, readwrite) Fair *fair;
 
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
-
 @end
 
 
 @implementation ARInquireForArtworkViewController
-
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
-}
 
 - (instancetype)initWithAdminInquiryForArtwork:(Artwork *)artwork fair:(Fair *)fair
 {
@@ -240,7 +228,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 {
     float fromValue = makeVisible ? 0.0 : 0.5;
     float toValue = makeVisible ? 0.5 : 0.0;
-    if (self.shouldAnimate) {
+    if (ARPerformWorkAsynchronously) {
         CABasicAnimation *fade = [CABasicAnimation animationWithKeyPath:@"opacity"];
         fade.duration = ARAnimationDuration;
         fade.fromValue = [NSNumber numberWithFloat:fromValue];
@@ -308,7 +296,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
     // Show Keyboard
     self.keyboardPositionConstraint.constant = -height;
-    [UIView animateIf:self.shouldAnimate duration:duration:^{
+    [UIView animateIf:ARPerformWorkAsynchronously duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -319,7 +307,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
-    [UIView animateIf:self.shouldAnimate duration:duration:^{
+    [UIView animateIf:ARPerformWorkAsynchronously duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -650,7 +638,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     self.hideInquiryConstraint.priority = 1;
     self.inquiryFormView.userInteractionEnabled = YES;
     self.textView.editable = YES;
-    [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration:^{
+    [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -660,7 +648,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     self.hideInquiryConstraint.priority = 999;
     self.inquiryFormView.userInteractionEnabled = NO;
     self.textView.editable = NO;
-    [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration:^{
+    [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -707,7 +695,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)getCurrentAdmin
 {
-   @_weakify(self);
+    @_weakify(self);
     [ArtsyAPI getInquiryContact:^(User *contactStub) {
         @_strongify(self);
         self.specialistNameLabel.text = contactStub.name;
@@ -794,7 +782,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (UIColor *)inputTintColor
 {
-    return self.shouldAnimate ? [UIColor artsyPurple] : [UIColor whiteColor];
+    return ARPerformWorkAsynchronously ? [UIColor artsyPurple] : [UIColor whiteColor];
 }
 
 - (void)inquiryCompleted:(NSString *)message
@@ -854,7 +842,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     _emailValidator = [ALPValidator validatorWithType:ALPValidatorTypeString];
     [self.emailValidator addValidationToEnsureValidEmailWithInvalidMessage:NSLocalizedString(@"Please enter a valid email", nil)];
 
-   @_weakify(self);
+    @_weakify(self);
     self.emailValidator.validatorStateChangedHandler = ^(ALPValidatorState newState) {
         @_strongify(self);
         self.sendButton.enabled = self.emailValidator.isValid;

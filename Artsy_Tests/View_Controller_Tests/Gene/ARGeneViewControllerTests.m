@@ -30,7 +30,6 @@ pending(@"with long desciption", ^{ // This works, but on Travis we get a weird 
 
     UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     vc = [[ARGeneViewController alloc] initWithGeneID:@"painting"];
-    vc.shouldAnimate = NO;
     window.rootViewController = vc;
     expect(vc.view).willNot.beNil();
     [window makeKeyAndVisible];

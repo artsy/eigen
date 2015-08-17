@@ -14,7 +14,7 @@
     }
 
     // This will save a lot of async calls sometime, this exists in Energy.
-    //    if ([ARDispatchManager sharedManager].useSyncronousDispatches) {
+    //    if (ARPerformWorkSynchronously) {
     //        self.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     //        return;
     //    }

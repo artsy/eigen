@@ -23,21 +23,10 @@
 
 @interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong, readonly) NSArray *menuLinks;
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
 
 @implementation ARBrowseViewController
-
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
-}
 
 - (void)viewDidLoad
 {

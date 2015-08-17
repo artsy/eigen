@@ -10,7 +10,7 @@ void ar_dispatch_main_queue(dispatch_block_t block)
 
 void ar_dispatch_on_queue(dispatch_queue_t queue, dispatch_block_t block)
 {
-    if ([ARDispatchManager sharedManager].useSyncronousDispatches) {
+    if (!ARPerformWorkAsynchronously) {
         if ([NSThread isMainThread]) {
             block();
         } else {
@@ -23,7 +23,7 @@ void ar_dispatch_on_queue(dispatch_queue_t queue, dispatch_block_t block)
 
 void ar_dispatch_after_on_queue(float seconds, dispatch_queue_t queue, dispatch_block_t block)
 {
-    if ([ARDispatchManager sharedManager].useSyncronousDispatches) {
+    if (!ARPerformWorkAsynchronously) {
         block();
     } else {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC), queue, block);
