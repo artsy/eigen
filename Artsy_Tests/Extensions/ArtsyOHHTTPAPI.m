@@ -25,9 +25,11 @@
 - (id)initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)response client:(id<NSURLProtocolClient>)client;
 @end
 
+/// Pretends to be an AFNetworking operation, but really, it just calls a block
+/// thanks Obj-C runtime.
 
 @interface ARFakeAFJSONOperation : NSBlockOperation
-@property (nonatomic, assign) dispatch_queue_t successCallbackQueue;
+@property (nonatomic, assign) dispatch_queue_t completionQueue;
 @end
 
 
@@ -36,6 +38,11 @@
 
 
 @implementation ArtsyOHHTTPAPI
+
+- (void)getXappTokenWithCompletion:(void (^)(NSString *xappToken, NSDate *expirationDate))callback failure:(void (^)(NSError *error))failure
+{
+    callback(@"TOKEN", [NSDate distantFuture]);
+}
 
 - (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
 {
@@ -58,7 +65,7 @@
                     || [methodOrFunction isEqualToString:@"main"]
                 );
             });
-            NSAssert(stackTrace.count > 0, @"Stack trace empty, might need omre white listing.");
+            NSAssert(stackTrace.count > 0, @"Stack trace empty, might need more white listing.");
 
             printf("\n\n\n[!] Unstubbed Request Found\n");
             printf("   Inside Test: %s\n", [spectaExample description].UTF8String);

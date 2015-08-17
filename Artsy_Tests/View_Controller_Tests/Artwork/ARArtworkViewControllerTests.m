@@ -22,14 +22,6 @@ after(^{
 describe(@"buy button", ^{
     __block id routerMock;
     __block id vcMock;
-    before(^{
-        routerMock = [OCMockObject mockForClass:[ARRouter class]];
-    });
-
-    after(^{
-        [routerMock stopMocking];
-        [vcMock stopMocking];
-    });
 
     beforeEach(^{
         [ARUserManager stubAndLoginWithUsername];
@@ -51,11 +43,9 @@ describe(@"buy button", ^{
         vcMock = [OCMockObject partialMockForObject:vc];
         [[vcMock reject] tappedContactGallery];
 
-        [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:@"artwork-id" editionSetID:[OCMArg isNil]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[]];
 
         [vc tappedBuyButton];
-        [routerMock verify];
         [vcMock verify];
     });
 
@@ -74,11 +64,9 @@ describe(@"buy button", ^{
         vcMock = [OCMockObject partialMockForObject:vc];
         [[vcMock reject] tappedContactGallery];
 
-        [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:@"artwork-id" editionSetID:@"set-1"];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[]];
 
         [vc tappedBuyButton];
-        [routerMock verify];
         [vcMock verify];
     });
 
@@ -98,11 +86,9 @@ describe(@"buy button", ^{
         vcMock = [OCMockObject partialMockForObject:vc];
         [[vcMock expect] tappedContactGallery];
 
-        [[[routerMock reject] classMethod] newPendingOrderWithArtworkID:OCMOCK_ANY editionSetID:OCMOCK_ANY];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[]];
 
         [vc tappedBuyButton];
-        [routerMock verify];
         [vcMock verify];
     });
 
@@ -148,7 +134,7 @@ describe(@"no related data", ^{
         expect(vc.view).willNot.beNil();
         [window makeKeyAndVisible];
         [vc setHasFinishedScrolling];
-        expect(vc.view).will.haveValidSnapshot();
+        expect(vc.view).to.recordSnapshotNamed(@"Artworks look right on iPhone with no related data");
     });
 
     it(@"shows artwork on iPad", ^{
@@ -161,10 +147,10 @@ describe(@"no related data", ^{
         expect(vc.view).willNot.beNil();
         [window makeKeyAndVisible];
         [vc setHasFinishedScrolling];
-        activelyWaitFor(0.5, ^{
-            expect(vc.view).will.haveValidSnapshot();
-            [ARTestContext stopStubbing];
-        });
+
+        expect(vc.view).to.recordSnapshotNamed(@"Artworks look right on iPad with no related data");
+
+        [ARTestContext stopStubbing];
     });
 });
 
@@ -350,22 +336,18 @@ describe(@"at a closed auction", ^{
     });
 
     it(@"displays artwork on iPad", ^{
-        waitUntil(^(DoneCallback done) {
+        [ARTestContext stubDevice:ARDeviceTypePad];
+        window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+        vc.shouldAnimate = NO;
 
-            [ARTestContext stubDevice:ARDeviceTypePad];
-            window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            vc.shouldAnimate = NO;
-
-            window.rootViewController = vc;
-            expect(vc.view).willNot.beNil();
-            [window makeKeyAndVisible];
-            [vc setHasFinishedScrolling];
-            activelyWaitFor(0.5, ^{
-                expect(vc.view).will.haveValidSnapshot();
-                [ARTestContext stopStubbing];
-                done();
-            });
+        window.rootViewController = vc;
+        expect(vc.view).willNot.beNil();
+        [window makeKeyAndVisible];
+        [vc setHasFinishedScrolling];
+        activelyWaitFor(0.5, ^{
+            expect(vc.view).will.haveValidSnapshot();
+            [ARTestContext stopStubbing];
         });
     });
 });

@@ -90,9 +90,12 @@ describe(@"login", ^{
             } gotUser:^(User *currentUser) {
                 XCTFail(@"Expected API failure.");
             } authenticationFailure:^(NSError *error) {
+
                 NSHTTPURLResponse *response = (NSHTTPURLResponse *) error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
                 expect(response.statusCode).to.equal(401);
-                NSDictionary *recoverySuggestion = [NSJSONSerialization JSONObjectWithData:[error.userInfo[NSLocalizedRecoverySuggestionErrorKey] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+
+                NSData *data = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+                NSDictionary *recoverySuggestion = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 expect(recoverySuggestion).to.equal(@{ @"error_description" : @"missing client_id", @"error" : @"invalid_client" });
             } networkFailure:^(NSError *error){
                 XCTFail(@"Expected API failure.");

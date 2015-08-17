@@ -710,8 +710,8 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)newFairMapRequestWithFair:(Fair *)fair
 {
-    NSString *url = [NSString stringWithFormat:ARNewFairMapURLFormat, fair.fairID];
-    return [self requestWithMethod:@"GET" path:url parameters:nil];
+    NSString *url = [NSString stringWithFormat:ARNewFairMapURL];
+    return [self requestWithMethod:@"GET" path:url parameters:@{ @"fair_id" : fair.fairID }];
 }
 
 + (NSURLRequest *)newFollowArtistRequest
