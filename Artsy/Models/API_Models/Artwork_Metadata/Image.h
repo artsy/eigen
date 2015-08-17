@@ -21,7 +21,7 @@
 @property (readonly, nonatomic) NSArray *imageVersions;
 
 + (NSInteger)minimumZoomLevel;
-- (BOOL)needsTiles;
+- (BOOL)canZoom:(CGSize)targetSize;
 
 - (NSURL *)urlForThumbnailImage;
 - (NSURL *)urlForDetailImage;

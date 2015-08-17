@@ -132,6 +132,7 @@ describe(@"no related data", ^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork"
@@ -151,21 +152,18 @@ describe(@"no related data", ^{
     });
 
     it(@"shows artwork on iPad", ^{
-        waitUntil(^(DoneCallback done) {
-            [ARTestContext stubDevice:ARDeviceTypePad];
-            window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            vc.shouldAnimate = NO;
+        [ARTestContext stubDevice:ARDeviceTypePad];
+        window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+        vc.shouldAnimate = NO;
 
-            window.rootViewController = vc;
-            expect(vc.view).willNot.beNil();
-            [window makeKeyAndVisible];
-            [vc setHasFinishedScrolling];
-            activelyWaitFor(0.5, ^{
-                expect(vc.view).will.haveValidSnapshot();
-                [ARTestContext stopStubbing];
-                done();
-            });
+        window.rootViewController = vc;
+        expect(vc.view).willNot.beNil();
+        [window makeKeyAndVisible];
+        [vc setHasFinishedScrolling];
+        activelyWaitFor(0.5, ^{
+            expect(vc.view).will.haveValidSnapshot();
+            [ARTestContext stopStubbing];
         });
     });
 });
@@ -175,6 +173,7 @@ describe(@"with related artworks", ^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork"
             withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
@@ -198,22 +197,19 @@ describe(@"with related artworks", ^{
             expect(vc.view).willNot.beNil();
             [window makeKeyAndVisible];
             [vc setHasFinishedScrolling];
-            expect(vc.view).will.haveValidSnapshot();
+            expect(vc.view).to.haveValidSnapshot();
         });
 
         it(@"related artworks view looks correct", ^{
-            waitUntil(^(DoneCallback done) {
 
-                window.rootViewController = vc;
-                expect(vc.view).willNot.beNil();
-                [window makeKeyAndVisible];
-                [vc setHasFinishedScrolling];
-                [vc.view snapshotViewAfterScreenUpdates:YES];
+            window.rootViewController = vc;
+            expect(vc.view).willNot.beNil();
+            [window makeKeyAndVisible];
+            [vc setHasFinishedScrolling];
+            [vc.view snapshotViewAfterScreenUpdates:YES];
 
-                activelyWaitFor(0.5, ^{
-                    expect([(ARArtworkView *)vc.view relatedArtworksView]).will.haveValidSnapshot();
-                    done();
-                });
+            activelyWaitFor(0.5, ^{
+                expect([(ARArtworkView *)vc.view relatedArtworksView]).to.haveValidSnapshot();
             });
         });
     });
@@ -239,31 +235,24 @@ describe(@"with related artworks", ^{
         });
 
         it(@"displays related artworks", ^{
-            waitUntil(^(DoneCallback done) {
 
-                window.rootViewController = vc;
-                expect(vc.view).willNot.beNil();
-                [window makeKeyAndVisible];
-                [vc setHasFinishedScrolling];
-                activelyWaitFor(0.5, ^{
-                    expect(vc.view).will.haveValidSnapshot();
-                    done();
-                });
+            window.rootViewController = vc;
+            expect(vc.view).willNot.beNil();
+            [window makeKeyAndVisible];
+            [vc setHasFinishedScrolling];
+            activelyWaitFor(0.5, ^{
+                expect(vc.view).will.haveValidSnapshot();
             });
         });
 
         it(@"related artworks view looks correct", ^{
-            waitUntil(^(DoneCallback done) {
-
                 window.rootViewController = vc;
                 expect(vc.view).willNot.beNil();
                 [window makeKeyAndVisible];
                 [vc setHasFinishedScrolling];
                 activelyWaitFor(0.5, ^{
                     expect([(ARArtworkView *)vc.view relatedArtworksView]).will.haveValidSnapshot();
-                    done();
                 });
-            });
         });
     });
 
@@ -279,7 +268,13 @@ it(@"shows an upublished banner", ^{
     };
     Artwork *artwork = [Artwork modelWithJSON:artworkDict];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/artwork-id" withResponse:artworkDict];
-
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@{}];
+    
     vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
     vc.shouldAnimate = NO;
 
@@ -290,7 +285,7 @@ it(@"shows an upublished banner", ^{
     [artwork updateArtwork];
 
     [vc.view snapshotViewAfterScreenUpdates:YES];
-    expect(vc.view).will.haveValidSnapshot();
+    expect(vc.view).to.haveValidSnapshot();
 });
 
 
@@ -298,6 +293,7 @@ describe(@"at a closed auction", ^{
     before(^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
 @{
@@ -329,28 +325,27 @@ describe(@"at a closed auction", ^{
         }];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork"
             withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
     });
     
     it(@"displays artwork on iPhone", ^{
-        waitUntil(^(DoneCallback done) {
 
-            [ARTestContext stubDevice:ARDeviceTypePhone6];
-            window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            vc.shouldAnimate = NO;
+        [ARTestContext stubDevice:ARDeviceTypePhone6];
+        window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+        vc.shouldAnimate = NO;
 
-            [vc.imageView removeFromSuperview];
-            window.rootViewController = vc;
-            expect(vc.view).willNot.beNil();
-            [window makeKeyAndVisible];
-            [vc setHasFinishedScrolling];
+        [vc.imageView removeFromSuperview];
+        window.rootViewController = vc;
+        expect(vc.view).willNot.beNil();
+        [window makeKeyAndVisible];
+        [vc setHasFinishedScrolling];
 
-            activelyWaitFor(0.5, ^{
-                [vc.view snapshotViewAfterScreenUpdates:YES];
-                expect(vc.view).will.haveValidSnapshot();
-                [ARTestContext stopStubbing];
-                done();
-            });
+        activelyWaitFor(0.5, ^{
+            [vc.view snapshotViewAfterScreenUpdates:YES];
+            expect(vc.view).will.haveValidSnapshot();
+            [ARTestContext stopStubbing];
+
         });
     });
 

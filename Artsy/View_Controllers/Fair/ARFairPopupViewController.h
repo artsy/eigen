@@ -1,5 +1,6 @@
 
 
+
 @interface ARFairPopupViewController : UIViewController
 
 - (instancetype)initWithFair:(Fair *)fair;

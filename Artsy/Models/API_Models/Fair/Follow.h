@@ -1,5 +1,6 @@
 
 
+
 @interface Follow : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *followID;

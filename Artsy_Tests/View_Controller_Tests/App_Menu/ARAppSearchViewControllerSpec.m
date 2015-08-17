@@ -70,6 +70,10 @@ context(@"searching", ^{
                 }]
              ];
 
+            [OHHTTPStubs stubImageResponseAtPathWithDefault:@"/api/v1/artist/aes-plus-f/image"];
+            [OHHTTPStubs stubImageResponseAtPathWithDefault:@"/api/v1/artist/john-f-carlson/image"];
+            [OHHTTPStubs stubImageResponseAtPathWithDefault:@"/api/v1/artist/f-scott-hess/image"];
+
             sut.textField.text = @"f";
             [sut.textField sendActionsForControlEvents:UIControlEventEditingChanged];
 

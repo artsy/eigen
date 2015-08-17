@@ -1,5 +1,6 @@
 
 
+
 @interface ARSearchViewController (Private)
 
 - (void)closeSearch:(id)sender;

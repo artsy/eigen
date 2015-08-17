@@ -398,12 +398,13 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 #pragma mark - KVO
 
-- (void)observeViewController:(BOOL)observe;
+- (void)observeViewController:(BOOL)observe
 {
     UIViewController<ARMenuAwareViewController> *vc = self.observedViewController;
 
     NSArray *keyPaths = @[
         @keypath(vc, hidesNavigationButtons),
+        @keypath(vc, hidesBackButton),
         @keypath(vc, hidesToolbarMenu)
     ];
 

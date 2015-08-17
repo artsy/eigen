@@ -21,9 +21,9 @@
 
 - (void)tappedTileableImagePreview
 {
-    ARZoomArtworkImageViewController *zoomImgeVC = [[ARZoomArtworkImageViewController alloc] initWithImage:self.artwork.defaultImage];
-    zoomImgeVC.suppressZoomViewCreation = (self.fair == nil);
-    [self.navigationController pushViewController:zoomImgeVC animated:self.shouldAnimate];
+    ARZoomArtworkImageViewController *zoomImageVC = [[ARZoomArtworkImageViewController alloc] initWithImage:self.artwork.defaultImage];
+    zoomImageVC.suppressZoomViewCreation = (self.fair == nil);
+    [self.navigationController pushViewController:zoomImageVC animated:self.shouldAnimate];
 }
 
 #pragma mark - ARArtworkPreviewActionsViewDelegate
@@ -118,13 +118,13 @@
         return;
     }
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-        [self bidCompelted:saleArtwork];
+        [self bidCompleted:saleArtwork];
     } failure:^(NSError *error) {
         ARErrorLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
     }];
 }
 
-- (void)bidCompelted:(SaleArtwork *)saleArtwork
+- (void)bidCompleted:(SaleArtwork *)saleArtwork
 {
     [ARAnalytics setUserProperty:@"has_started_bid" toValue:@"true"];
 

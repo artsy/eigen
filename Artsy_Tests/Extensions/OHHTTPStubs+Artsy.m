@@ -1,9 +1,11 @@
-#import <OHHTTPStubs/OHHTTPStubs.h>
-#import "OHHTTPStubs+JSON.h"
+#import "OHHTTPStubs+Artsy.h"
 #import "ARRouter.h"
 
+@import OHHTTPStubs;
+@import AFNetworking;
 
-@implementation OHHTTPStubs (JSON)
+
+@implementation OHHTTPStubs (Artsy)
 
 + (void)stubJSONResponseAtPath:(NSString *)path withResponse:(id)response
 {
@@ -45,5 +47,24 @@
     }];
 }
 
++ (void)stubImageResponseAtPathWithDefault:(NSString *)path
+{
+    return [self stubImageResponseAtPath:path withTestImageFile:@"stubbed_image.png"];
+}
+
++ (void)stubImageResponseAtPath:(NSString *)path withTestImageFile:(NSString *)imageName
+{
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        NSURLComponents *requestComponents = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:NO];
+        return [requestComponents.path isEqualToString:path];
+
+    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+        NSBundle *bundle = [NSBundle bundleForClass:ARTestContext.class];
+        NSString *path = [bundle pathForResource:imageName ofType:nil];
+        NSAssert(path, @"Could not find image in test bundle");
+
+        return [OHHTTPStubsResponse responseWithFileAtPath:path statusCode:200 headers:@{ @"Content-Type": @"image/xyz" }];
+    }];
+}
 
 @end

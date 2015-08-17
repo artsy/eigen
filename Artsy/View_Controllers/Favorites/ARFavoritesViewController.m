@@ -289,8 +289,8 @@
     if (networkModel.allDownloaded) {
         return;
     };
-   @_weakify(self);
-    dispatch_async(self.artworkPageQueue, ^{
+    @_weakify(self);
+    ar_dispatch_on_queue(self.artworkPageQueue, ^{
         [self.activeNetworkModel getFavorites:^(NSArray *items){
             @_strongify(self);
             [self addItems:items toModule:module];

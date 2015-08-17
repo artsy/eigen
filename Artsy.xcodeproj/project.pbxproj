@@ -154,7 +154,7 @@
 		3CD3679C189AC4F000285DF7 /* ARAspectRatioImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD3679B189AC4F000285DF7 /* ARAspectRatioImageView.m */; };
 		3CD3679F189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD3679E189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m */; };
 		3CE0DA2F18A12335000E537A /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE0DA2E18A12335000E537A /* Video.m */; };
-		3CE0DA3218A13604000E537A /* OHHTTPStubs+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE0DA3118A13604000E537A /* OHHTTPStubs+JSON.m */; };
+		3CE0DA3218A13604000E537A /* OHHTTPStubs+Artsy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE0DA3118A13604000E537A /* OHHTTPStubs+Artsy.m */; };
 		3CE75A0B18B6367F00885355 /* ARValueTransformerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE75A0A18B6367F00885355 /* ARValueTransformerTests.m */; };
 		3CE7F34218A99E62002BA993 /* ARHeroUnitsNetworkModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7F34118A99E62002BA993 /* ARHeroUnitsNetworkModelTests.m */; };
 		3CE7F34418A99E6D002BA993 /* SiteHeroUnitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7F34318A99E6D002BA993 /* SiteHeroUnitTests.m */; };
@@ -304,7 +304,6 @@
 		605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */; };
 		605B11B217CFD78400334196 /* AROnboardingWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B11B117CFD78400334196 /* AROnboardingWebViewController.m */; };
 		605B11B517CFE7CC00334196 /* ARTermsAndConditionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */; };
-		60647C2E1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */; };
 		60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C661A8BB9AE00A45247 /* BuyersPremium.m */; };
 		60647C701A92512600A45247 /* ARFairMapPreviewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C6F1A92512600A45247 /* ARFairMapPreviewButton.m */; };
 		60647C751A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C741A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m */; };
@@ -322,6 +321,7 @@
 		607E2E8417C8CF6B00396120 /* ARArtworkPreviewActionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 607E2E8317C8CF6B00396120 /* ARArtworkPreviewActionsView.m */; };
 		607E2E8717C8E87E00396120 /* ARArtworkPreviewImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 607E2E8617C8E87E00396120 /* ARArtworkPreviewImageView.m */; };
 		607E2E8A17C9121500396120 /* ARZoomImageTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 607E2E8917C9121500396120 /* ARZoomImageTransition.m */; };
+		6082B2051B46ADDE00953BC8 /* stubbed_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082B2041B46ADDE00953BC8 /* stubbed_image.png */; };
 		60838EAF17728C5D00869F6E /* ARHeartButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 60838EAE17728C5D00869F6E /* ARHeartButton.m */; };
 		60838EB51773547700869F6E /* ARViewInRoomTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 60838EB41773547700869F6E /* ARViewInRoomTransition.m */; };
 		60889874175DEBC2008C9319 /* ARFeedSubclasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 60889873175DEBC2008C9319 /* ARFeedSubclasses.m */; };
@@ -440,8 +440,8 @@
 		60B79B85182C346700945FFF /* ARQuicksilverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B79B83182C346700945FFF /* ARQuicksilverViewController.xib */; };
 		60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B79B88182C54CE00945FFF /* ARQuicksilverSearchBar.m */; };
 		60BB9FE916695A8F001FA20A /* PhotoContentLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 49433300166920B3005AB483 /* PhotoContentLink.m */; };
+		60CE3CAB1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */; };
 		60CEA77E19B61F8000CC3A91 /* ARArtistNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CEA77D19B61F8000CC3A91 /* ARArtistNetworkModel.m */; };
-		60CEA78119B6254800CC3A91 /* ARStubbedArtistNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CEA78019B6254800CC3A91 /* ARStubbedArtistNetworkModel.m */; };
 		60CF980817BF79CA005ED59B /* ARArtistBiographyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CF980717BF79CA005ED59B /* ARArtistBiographyViewController.m */; };
 		60D7FB731AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D7FB721AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m */; };
 		60D83DE8189EAB82001672E9 /* ARFairShowMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D83DE7189EAB82001672E9 /* ARFairShowMapper.m */; };
@@ -458,7 +458,7 @@
 		60E71A011B4C60AC008948FA /* Artsy_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 60E71A001B4C60AC008948FA /* Artsy_Logo.png */; };
 		60EFA6F516CAA8180094AD7C /* ArtsyAPI+Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EFA6F416CAA8180094AD7C /* ArtsyAPI+Feed.m */; };
 		60F1C50E17C0EC6A000938F7 /* ARBrowseCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C50D17C0EC6A000938F7 /* ARBrowseCategoriesViewController.m */; };
-		60F1C51217C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C51117C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.m */; };
+		60F1C51217C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C51117C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionViewController.m */; };
 		60F1C51517C0EFD7000938F7 /* ARBrowseFeaturedLinksCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C51417C0EFD7000938F7 /* ARBrowseFeaturedLinksCollectionViewCell.m */; };
 		60F1C51817C0F3DE000938F7 /* ArtsyAPI+Browse.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C51717C0F3DE000938F7 /* ArtsyAPI+Browse.m */; };
 		60F1C51B17C11303000938F7 /* ARGeneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C51A17C11303000938F7 /* ARGeneViewController.m */; };
@@ -508,6 +508,7 @@
 		D3ACE5391AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */; };
 		D3BB62921AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BB62911AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m */; };
 		D3C696CA1B1500D70034A034 /* AROnboardingMoreInfoViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C696C91B1500D70034A034 /* AROnboardingMoreInfoViewControllerTests.m */; };
+		D3C8C2061B66D2FF004CAD7F /* ARImageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C8C2051B66D2FF004CAD7F /* ARImageTests.m */; };
 		D3F3FA1F1AAE1BFC00E88359 /* ARBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F3FA1E1AAE1BFC00E88359 /* ARBrowseViewController.m */; };
 		D3F69A4A1AC1F7CB007C65C9 /* ARDefaultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */; };
 		E60673B319BE4E8C00EF05EB /* full_logo_white_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */; };
@@ -567,7 +568,7 @@
 		E6CD164A18ABE291001254B5 /* Image_Shadow_Overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6CD164918ABE291001254B5 /* Image_Shadow_Overlay@2x.png */; };
 		E6E07D6D195DF5D800403D2B /* ARSwitchView+Favorites.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E07D6C195DF5D800403D2B /* ARSwitchView+Favorites.m */; };
 		E6EC246118F7069300C89192 /* PartnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6EC246018F7069300C89192 /* PartnerTests.m */; };
-		E6F111A018A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F1119F18A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewTests.m */; };
+		E6F111A018A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F1119F18A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewControllerTests.m */; };
 		E6F466E818EF52A800A09AFA /* Artwork_v1.data in Resources */ = {isa = PBXBuildFile; fileRef = E6F466E718EF52A800A09AFA /* Artwork_v1.data */; };
 		E6F84CFF1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */; };
 		E6F84D001A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */; };
@@ -839,8 +840,8 @@
 		3CD3679E189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPostFeedItemLinkViewTests.m; sourceTree = "<group>"; };
 		3CE0DA2D18A12335000E537A /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
 		3CE0DA2E18A12335000E537A /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
-		3CE0DA3018A13604000E537A /* OHHTTPStubs+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OHHTTPStubs+JSON.h"; sourceTree = "<group>"; };
-		3CE0DA3118A13604000E537A /* OHHTTPStubs+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OHHTTPStubs+JSON.m"; sourceTree = "<group>"; };
+		3CE0DA3018A13604000E537A /* OHHTTPStubs+Artsy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OHHTTPStubs+Artsy.h"; sourceTree = "<group>"; };
+		3CE0DA3118A13604000E537A /* OHHTTPStubs+Artsy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OHHTTPStubs+Artsy.m"; sourceTree = "<group>"; };
 		3CE75A0A18B6367F00885355 /* ARValueTransformerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARValueTransformerTests.m; sourceTree = "<group>"; };
 		3CE7F34118A99E62002BA993 /* ARHeroUnitsNetworkModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHeroUnitsNetworkModelTests.m; sourceTree = "<group>"; };
 		3CE7F34318A99E6D002BA993 /* SiteHeroUnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteHeroUnitTests.m; sourceTree = "<group>"; };
@@ -1141,8 +1142,6 @@
 		605B11B117CFD78400334196 /* AROnboardingWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingWebViewController.m; sourceTree = "<group>"; };
 		605B11B317CFE7CC00334196 /* ARTermsAndConditionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTermsAndConditionsView.h; sourceTree = "<group>"; };
 		605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTermsAndConditionsView.m; sourceTree = "<group>"; };
-		60647C2C1A89721800A45247 /* AROHHTTPNoStubAssertionBot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROHHTTPNoStubAssertionBot.h; sourceTree = "<group>"; };
-		60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROHHTTPNoStubAssertionBot.m; sourceTree = "<group>"; };
 		60647C651A8BB9AE00A45247 /* BuyersPremium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyersPremium.h; sourceTree = "<group>"; };
 		60647C661A8BB9AE00A45247 /* BuyersPremium.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyersPremium.m; sourceTree = "<group>"; };
 		60647C6E1A92512600A45247 /* ARFairMapPreviewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapPreviewButton.h; sourceTree = "<group>"; };
@@ -1175,6 +1174,7 @@
 		607E2E8617C8E87E00396120 /* ARArtworkPreviewImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkPreviewImageView.m; sourceTree = "<group>"; };
 		607E2E8817C9121500396120 /* ARZoomImageTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARZoomImageTransition.h; sourceTree = "<group>"; };
 		607E2E8917C9121500396120 /* ARZoomImageTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARZoomImageTransition.m; sourceTree = "<group>"; };
+		6082B2041B46ADDE00953BC8 /* stubbed_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stubbed_image.png; sourceTree = "<group>"; };
 		60838EAD17728C5D00869F6E /* ARHeartButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHeartButton.h; sourceTree = "<group>"; };
 		60838EAE17728C5D00869F6E /* ARHeartButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHeartButton.m; sourceTree = "<group>"; };
 		60838EB31773547700869F6E /* ARViewInRoomTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewInRoomTransition.h; sourceTree = "<group>"; };
@@ -1366,10 +1366,10 @@
 		60BC390718182227003F34E7 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		60C4BD6317B3B91800D79058 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
 		60CAA3741782D87B00CA3DA8 /* ARContentViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARContentViewControllers.h; sourceTree = "<group>"; };
+		60CE3CA91B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyOHHTTPAPI.h; sourceTree = "<group>"; };
+		60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyOHHTTPAPI.m; sourceTree = "<group>"; };
 		60CEA77C19B61F8000CC3A91 /* ARArtistNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtistNetworkModel.h; sourceTree = "<group>"; };
 		60CEA77D19B61F8000CC3A91 /* ARArtistNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtistNetworkModel.m; sourceTree = "<group>"; };
-		60CEA77F19B6254800CC3A91 /* ARStubbedArtistNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStubbedArtistNetworkModel.h; sourceTree = "<group>"; };
-		60CEA78019B6254800CC3A91 /* ARStubbedArtistNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStubbedArtistNetworkModel.m; sourceTree = "<group>"; };
 		60CF980617BF79CA005ED59B /* ARArtistBiographyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtistBiographyViewController.h; sourceTree = "<group>"; };
 		60CF980717BF79CA005ED59B /* ARArtistBiographyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtistBiographyViewController.m; sourceTree = "<group>"; };
 		60D7FB721AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPersonalizeWebViewControllerTests.m; sourceTree = "<group>"; };
@@ -1401,8 +1401,8 @@
 		60EFA6F416CAA8180094AD7C /* ArtsyAPI+Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Feed.m"; sourceTree = "<group>"; };
 		60F1C50C17C0EC6A000938F7 /* ARBrowseCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseCategoriesViewController.h; sourceTree = "<group>"; };
 		60F1C50D17C0EC6A000938F7 /* ARBrowseCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseCategoriesViewController.m; sourceTree = "<group>"; };
-		60F1C51017C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseFeaturedLinksCollectionView.h; sourceTree = "<group>"; };
-		60F1C51117C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseFeaturedLinksCollectionView.m; sourceTree = "<group>"; usesTabs = 0; };
+		60F1C51017C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseFeaturedLinksCollectionViewController.h; sourceTree = "<group>"; };
+		60F1C51117C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseFeaturedLinksCollectionViewController.m; sourceTree = "<group>"; usesTabs = 0; };
 		60F1C51317C0EFD7000938F7 /* ARBrowseFeaturedLinksCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseFeaturedLinksCollectionViewCell.h; sourceTree = "<group>"; };
 		60F1C51417C0EFD7000938F7 /* ARBrowseFeaturedLinksCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseFeaturedLinksCollectionViewCell.m; sourceTree = "<group>"; };
 		60F1C51617C0F3DE000938F7 /* ArtsyAPI+Browse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Browse.h"; sourceTree = "<group>"; };
@@ -1500,6 +1500,7 @@
 		D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExternalWebBrowserViewControllerTests.m; sourceTree = "<group>"; };
 		D3BB62911AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseViewControllerTests.m; sourceTree = "<group>"; };
 		D3C696C91B1500D70034A034 /* AROnboardingMoreInfoViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingMoreInfoViewControllerTests.m; sourceTree = "<group>"; };
+		D3C8C2051B66D2FF004CAD7F /* ARImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageTests.m; sourceTree = "<group>"; };
 		D3F3FA1D1AAE1BFC00E88359 /* ARBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseViewController.h; sourceTree = "<group>"; };
 		D3F3FA1E1AAE1BFC00E88359 /* ARBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseViewController.m; sourceTree = "<group>"; };
 		D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultsTests.m; sourceTree = "<group>"; };
@@ -1590,7 +1591,7 @@
 		E6E07D6B195DF5D800403D2B /* ARSwitchView+Favorites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchView+Favorites.h"; sourceTree = "<group>"; };
 		E6E07D6C195DF5D800403D2B /* ARSwitchView+Favorites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchView+Favorites.m"; sourceTree = "<group>"; };
 		E6EC246018F7069300C89192 /* PartnerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerTests.m; sourceTree = "<group>"; };
-		E6F1119F18A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseFeaturedLinksCollectionViewTests.m; sourceTree = "<group>"; };
+		E6F1119F18A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARBrowseFeaturedLinksCollectionViewControllerTests.m; path = ../../View_Tests/ARBrowseFeaturedLinksCollectionViewControllerTests.m; sourceTree = "<group>"; };
 		E6F466E718EF52A800A09AFA /* Artwork_v1.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Artwork_v1.data; sourceTree = "<group>"; };
 		E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CloseButtonLargeHighlighted@2x.png"; sourceTree = "<group>"; };
 		E6F84D011A0AB40500BF99A3 /* ARSignUpActiveUserViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSignUpActiveUserViewControllerTests.m; sourceTree = "<group>"; };
@@ -1951,6 +1952,8 @@
 		3C3FEA8B188433CB00E1A16F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				60CE3CA91B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.h */,
+				60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */,
 				5E9A78211906BA3D00734E1B /* OCMArg+ClassChecker.h */,
 				5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */,
 				3C3FEA8C188433F200E1A16F /* ARUserManager+Stubs.h */,
@@ -1964,8 +1967,8 @@
 				3C7ECF72189010CA004BC877 /* Extensions.h */,
 				342F93309D1B60C53E2E0732 /* Artwork+Extensions.m */,
 				342F95F94C5759B9CA05AB59 /* Artwork+Extensions.h */,
-				3CE0DA3018A13604000E537A /* OHHTTPStubs+JSON.h */,
-				3CE0DA3118A13604000E537A /* OHHTTPStubs+JSON.m */,
+				3CE0DA3018A13604000E537A /* OHHTTPStubs+Artsy.h */,
+				3CE0DA3118A13604000E537A /* OHHTTPStubs+Artsy.m */,
 				3C6BDCBE18E0B3E40028EF5D /* MutableNSURLResponse.h */,
 				3C6BDCBF18E0B3E40028EF5D /* MutableNSURLResponse.m */,
 				3CA17D571901A4900010C9F5 /* SpectaDSL+Sleep.h */,
@@ -1974,8 +1977,6 @@
 				608EE3DA19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m */,
 				E61E772419A5477300C55E14 /* ARExpectaExtensions.h */,
 				E61E772519A5477300C55E14 /* ARExpectaExtensions.m */,
-				60647C2C1A89721800A45247 /* AROHHTTPNoStubAssertionBot.h */,
-				60647C2D1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2083,8 +2084,6 @@
 			isa = PBXGroup;
 			children = (
 				3CA0A17C18EF633900C361E5 /* ARArtistViewControllerTests.m */,
-				60CEA77F19B6254800CC3A91 /* ARStubbedArtistNetworkModel.h */,
-				60CEA78019B6254800CC3A91 /* ARStubbedArtistNetworkModel.m */,
 				5E0AEB7B19B9FAED009F34DE /* ARStubbedShowNetworkModel.h */,
 				5E0AEB7C19B9FAED009F34DE /* ARStubbedShowNetworkModel.m */,
 			);
@@ -3649,8 +3648,8 @@
 		60F1C50F17C0EDA7000938F7 /* Collection Views */ = {
 			isa = PBXGroup;
 			children = (
-				60F1C51017C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.h */,
-				60F1C51117C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.m */,
+				60F1C51017C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionViewController.h */,
+				60F1C51117C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionViewController.m */,
 				60F1C51917C11303000938F7 /* ARGeneViewController.h */,
 				60F1C51A17C11303000938F7 /* ARGeneViewController.m */,
 			);
@@ -3750,7 +3749,6 @@
 				E63C796B198811E400579C04 /* ARArtworkRelatedArtworksViewTests.m */,
 				D37E4CFC1A92B29F00023E2C /* ARAnnotatedMapViewTests.m */,
 				3C11CD27189B07810060B26B /* ARAspectRatioImageViewTests.m */,
-				E6F1119F18A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewTests.m */,
 				3C4877B2192A745400F40062 /* ARFairMapAnnotationCallOutViewTests.m */,
 				3CD3679E189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m */,
 				5ECFA8E91907E9AB000B92EA /* ARSwitchViewTests.m */,
@@ -3777,6 +3775,7 @@
 				3CA1E82418846B3A003C622D /* SaleTests.m */,
 				3CE7F34318A99E6D002BA993 /* SiteHeroUnitTests.m */,
 				3CF144A818E4607900B1A764 /* SystemTimeTests.m */,
+				D3C8C2051B66D2FF004CAD7F /* ARImageTests.m */,
 				3C6CB60418ABC7BB008DFE3B /* UserTests.m */,
 				E6EC246018F7069300C89192 /* PartnerTests.m */,
 			);
@@ -3804,6 +3803,7 @@
 		B3ECE82C1819D1E6009F5C5B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6082B2041B46ADDE00953BC8 /* stubbed_image.png */,
 				E6718314194A595F001A5566 /* ARTestContext.h */,
 				E6718315194A595F001A5566 /* ARTestContext.m */,
 				546778EC18A95642002C4C71 /* ARAppDelegate+Testing.h */,
@@ -3931,6 +3931,7 @@
 		E6BC2C3A197EDBA80063ED3C /* Browse */ = {
 			isa = PBXGroup;
 			children = (
+				E6F1119F18A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewControllerTests.m */,
 				E6BC2C3D197EDC950063ED3C /* ARBrowseCategoriesViewControllerTests.m */,
 				D3BB62911AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m */,
 				D39E87501AB0FBDF006B5BE9 /* ARStubbedBrowseNetworkModel.h */,
@@ -4047,7 +4048,7 @@
 				ORGANIZATIONNAME = Artsy;
 				TargetAttributes = {
 					49BA7DFE1655ABE600C06572 = {
-						DevelopmentTeam = 23KMWZ572J;
+						DevelopmentTeam = ZH8TGFYKDK;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -4250,6 +4251,7 @@
 				E6B9FA7B18A97C0A00E961F9 /* stub.jpg in Resources */,
 				5EB33E78197EBFEB00706EB1 /* square.png in Resources */,
 				E6F466E818EF52A800A09AFA /* Artwork_v1.data in Resources */,
+				6082B2051B46ADDE00953BC8 /* stubbed_image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4552,7 +4554,7 @@
 				E6B958EF188DB24200D75C86 /* ARViewTagConstants.m in Sources */,
 				60D90A0B17C218930073D5B9 /* ARInternalMobileWebViewController.m in Sources */,
 				609A82F017A10C5C00AFDF13 /* ARNavigationTransitionController.m in Sources */,
-				60F1C51217C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionView.m in Sources */,
+				60F1C51217C0EDDB000938F7 /* ARBrowseFeaturedLinksCollectionViewController.m in Sources */,
 				CB4D652717C80A9600390550 /* AROnboardingSearchField.m in Sources */,
 				607E2E7817C8C46100396120 /* ARArtworkViewController.m in Sources */,
 				3CEE0B5F18A16EA200FEA6E6 /* ArtsyAPI+Profiles.m in Sources */,
@@ -4738,12 +4740,13 @@
 				E6B958F1188DB6F800D75C86 /* ARArtworkViewControllerTests.m in Sources */,
 				E63C796C198811E400579C04 /* ARArtworkRelatedArtworksViewTests.m in Sources */,
 				3C11CD28189B07810060B26B /* ARAspectRatioImageViewTests.m in Sources */,
+				60CE3CAB1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m in Sources */,
 				3CF144AB18E460BE00B1A764 /* ArtsyAPI+SystemTimeTests.m in Sources */,
 				3C28D3DB18BE180B00C846EA /* ARNavigationButtonTests.m in Sources */,
 				3C6AEE27188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m in Sources */,
 				3C6AEE2D188F2D3E00DD98FC /* ARSwitchBoardTests.m in Sources */,
 				E6718316194A595F001A5566 /* ARTestContext.m in Sources */,
-				3CE0DA3218A13604000E537A /* OHHTTPStubs+JSON.m in Sources */,
+				3CE0DA3218A13604000E537A /* OHHTTPStubs+Artsy.m in Sources */,
 				60327DEC198933610075B399 /* ARTopMenuViewControllerSpec.m in Sources */,
 				3CA37E7C1910217500B06E81 /* ARHeartButtonTests.m in Sources */,
 				3CEE0B6A18A18CDA00FEA6E6 /* ProfileTests.m in Sources */,
@@ -4752,6 +4755,7 @@
 				E65BB51F1A3FB552004C4DB4 /* ARAppSearchViewControllerSpec.m in Sources */,
 				3CE7F34418A99E6D002BA993 /* SiteHeroUnitTests.m in Sources */,
 				5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */,
+				D3C8C2061B66D2FF004CAD7F /* ARImageTests.m in Sources */,
 				3CA17D591901A4900010C9F5 /* SpectaDSL+Sleep.m in Sources */,
 				3CE75A0B18B6367F00885355 /* ARValueTransformerTests.m in Sources */,
 				3CA1E820188465F0003C622D /* Sale+Extensions.m in Sources */,
@@ -4766,13 +4770,11 @@
 				3CAA413218D8CC32000EE867 /* ARFairFavoritesNetworkModelTests.m in Sources */,
 				60327DEA198933610075B399 /* ARTestTopMenuNavigationDataSource.m in Sources */,
 				3CA1E82518846B3A003C622D /* SaleTests.m in Sources */,
-				60CEA78119B6254800CC3A91 /* ARStubbedArtistNetworkModel.m in Sources */,
 				D37CBC4B1AF2C62E00A69019 /* ARFairNetworkModelTests.m in Sources */,
 				5E9A782019068EDF00734E1B /* ARProfileViewControllerTests.m in Sources */,
 				E6EC246118F7069300C89192 /* PartnerTests.m in Sources */,
 				3CD3679F189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m in Sources */,
 				3CA55D8918BFF8F800B44CD3 /* MapFeatureTests.m in Sources */,
-				60647C2E1A89721800A45247 /* AROHHTTPNoStubAssertionBot.m in Sources */,
 				3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */,
 				D3F69A4A1AC1F7CB007C65C9 /* ARDefaultsTests.m in Sources */,
 				3CA1E8231884663E003C622D /* Bid+Extensions.m in Sources */,
@@ -4791,7 +4793,7 @@
 				3CBB03A8192BA94C00689F89 /* ARFairArtistViewControllerTests.m in Sources */,
 				3CF144B618E4802400B1A764 /* ARSystemTimeTests.m in Sources */,
 				60D7FB731AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m in Sources */,
-				E6F111A018A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewTests.m in Sources */,
+				E6F111A018A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewControllerTests.m in Sources */,
 				3C7A7FA718C6EDAB00E8D336 /* ArtworkTests.m in Sources */,
 				E67E1DB219475642004252E0 /* ARAnimatedTickViewTest.m in Sources */,
 				604151E51A7998E300D5F9CA /* NSDate+RangeTests.m in Sources */,
@@ -4899,8 +4901,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DAR_SHOW_ALL_DEBUG=1";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "f2ec4ef5-f289-44ba-9c41-bb65afb85999";
+				PROVISIONING_PROFILE = "aa99cd9a-49ea-4ee7-9362-47adb67eb318";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 			};

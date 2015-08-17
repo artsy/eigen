@@ -3,19 +3,18 @@ typedef NS_ENUM(NSInteger, ARFeaturedLinkStyle) {
     ARFeaturedLinkLayoutDoubleRow,
 };
 
-@class ARBrowseFeaturedLinksCollectionView;
+@class ARBrowseFeaturedLinksCollectionViewController;
 
-@protocol ARBrowseFeaturedLinksCollectionViewDelegate
+@protocol ARBrowseFeaturedLinksCollectionViewControllerDelegate
 @required
 - (void)didSelectFeaturedLink:(FeaturedLink *)featuredLink;
 @end
 
 
-@interface ARBrowseFeaturedLinksCollectionView : UICollectionView <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ARBrowseFeaturedLinksCollectionViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
 - (instancetype)initWithStyle:(enum ARFeaturedLinkStyle)style;
-
 @property (nonatomic, copy, readwrite) NSArray *featuredLinks;
 @property (nonatomic, assign, readonly) ARFeaturedLinkStyle style;
-@property (nonatomic, strong, readwrite) id<ARBrowseFeaturedLinksCollectionViewDelegate> selectionDelegate;
+@property (nonatomic, strong, readwrite) id<ARBrowseFeaturedLinksCollectionViewControllerDelegate> selectionDelegate;
 @end

@@ -91,7 +91,7 @@ target 'Artsy' do
   pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
 
-  if %w(orta ash artsy laura eloy sarahscott).include?(ENV['USER']) || ENV['CI'] == 'true'
+  if %w(orta ash artsy laura eloy sarahscott jorystiefel).include?(ENV['USER']) || ENV['CI'] == 'true'
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git", :branch => "old_fonts_new_lib"
   else
     pod 'Artsy+OSSUIFonts'

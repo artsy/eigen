@@ -731,26 +731,26 @@ static NSSet *artsyHosts = nil;
     return [self requestWithMethod:@"GET" path:ARSuggestedHomepageArtworks parameters:nil];
 }
 
-static NSURLRequest *
-WorksForYouRequest(NSUInteger pageSize)
++ (NSURLRequest *)worksForYouRequest
 {
     return [ARRouter requestWithMethod:@"GET" path:ARNotificationsURL parameters:@{
         @"page" : @1,
         @"type" : @"ArtworkPublished",
         @"user_id" : [User currentUser].userID,
-        @"size" : @(pageSize),
-        @"total_count" : @1
+        @"size" : @(10)
     }];
-}
-
-+ (NSURLRequest *)worksForYouRequest
-{
-    return WorksForYouRequest(10);
 }
 
 + (NSURLRequest *)worksForYouCountRequest;
 {
-    return WorksForYouRequest(1);
+    return [ARRouter requestWithMethod:@"GET" path:ARNotificationsURL parameters:@{
+        @"page" : @1,
+        @"type" : @"ArtworkPublished",
+        @"user_id" : [User currentUser].userID,
+        @"size" : @(1), // This endpoint only works if at least 1 artwork is requested
+        @"total_count" : @1,
+        @"unread" : @"true"
+    }];
 }
 
 #pragma mark -

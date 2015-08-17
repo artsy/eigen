@@ -1,3 +1,5 @@
+// MARK: Formatter Exempt
+
 #import "ARAppDelegate+Analytics.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import <ARAnalytics/ARDSL.h>
@@ -1273,12 +1275,12 @@
                             ARAnalyticsSelectorName: @"showDidLoad",
                             ARAnalyticsProperties:^NSDictionary *(ARShowViewController *controller, NSArray *_) {
                                 NSDictionary *basics =  @{ @"slug": controller.show.showID,
-                                    @"partner_slug": controller.show.partner.partnerID
-                               };
+                                    @"partner_slug": controller.show.partner.partnerID ?: @""
+                                };
 
-                               if (controller.show.fair.fairID) {
-                                   basics = [basics mtl_dictionaryByAddingEntriesFromDictionary:@{ @"fair_slug": controller.show.fair.fairID }];
-                               }
+                                if (controller.show.fair.fairID) {
+                                    basics = [basics mtl_dictionaryByAddingEntriesFromDictionary:@{ @"fair_slug": controller.show.fair.fairID }];
+                                }
 
                                return basics;
                             }
