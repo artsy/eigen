@@ -14,7 +14,7 @@
              @"The tests should be run on an iPhone 6, not a device with native resolution %@",
              NSStringFromCGSize(nativeResolution));
 
-    ARPerformWorkAsynchronously = YES;
+    ARPerformWorkAsynchronously = NO;
 }
 
 @end
