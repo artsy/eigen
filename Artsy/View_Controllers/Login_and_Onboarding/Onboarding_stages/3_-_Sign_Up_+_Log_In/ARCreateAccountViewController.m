@@ -8,6 +8,9 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "UIView+HitTestExpansion.h"
+#import "ARCustomEigenLabels.h"
+
+@import NPKeyboardLayoutGuide;
 
 //sigh
 #define EMAIL_TAG 111
@@ -20,6 +23,7 @@
 @property (nonatomic) ARSpinner *loadingSpinner;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
+@property (nonatomic, strong) ARWarningView *warningView;
 @end
 
 
@@ -138,7 +142,6 @@
 {
     return self.email.text.length && self.name.text.length && [self.email.text containsString:@"@"] && self.password.text.length >= 6;
 }
-
 
 - (void)back:(id)sender
 {
@@ -259,6 +262,45 @@
     [alert show];
 }
 
+- (void)showWarning:(NSString *)msg
+{
+    self.warningView = [[ARWarningView alloc] initWithFrame:CGRectZero];
+    self.warningView.text = msg;
+    self.warningView.backgroundColor = [UIColor artsyLightRed];
+    self.warningView.textColor = [UIColor whiteColor];
+    self.warningView.alpha = 0;
+
+    ARTopMenuViewController *topMenu = [ARTopMenuViewController sharedController];
+    UIViewController *hostVC = topMenu.visibleViewController;
+    UIView *hostView = hostVC.view;
+
+    [hostView addSubview:self.warningView];
+
+    [self.warningView constrainHeight:@"50"];
+    [self.warningView constrainWidthToView:hostView predicate:nil];
+
+    [self.warningView alignAttribute:NSLayoutAttributeBottom
+                         toAttribute:NSLayoutAttributeTop
+                              ofView:topMenu.keyboardLayoutGuide
+                           predicate:nil];
+
+    [UIView animateWithDuration:0.15 animations:^{
+        self.warningView.alpha = 1;
+    }];
+
+    [self performSelector:@selector(removeWarning) withObject:nil afterDelay:5];
+}
+
+- (void)removeWarning
+{
+    [UIView animateWithDuration:0.25 animations:^{
+        self.warningView.alpha = 0;
+
+    } completion:^(BOOL finished) {
+        [self.warningView removeFromSuperview];
+        self.warningView = nil;
+    }];
+}
 
 - (void)dealloc
 {
@@ -287,6 +329,12 @@
     } else if ([self canSubmit]) {
         [self submit:nil];
         return YES;
+    }
+
+    if (![self.email.text containsString:@"@"]) {
+        [self showWarning:@"Email address appears to be invalid"];
+    } else if (self.password.text.length < 6) {
+        [self showWarning:@"Password must be at least 6 characters"];
     }
     return NO;
 }

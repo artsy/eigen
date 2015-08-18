@@ -73,7 +73,8 @@ static CGFloat ARWarningViewMargin = 8;
     self.textColor = [UIColor artsyHeavyGrey];
     self.textAlignment = NSTextAlignmentCenter;
     self.backgroundColor = [UIColor artsyAttention];
-    self.attentionSign = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AttentionIcon"]];
+    UIImage *iconImage = [UIImage imageNamed:@"AttentionIcon"];
+    self.attentionSign = [[UIImageView alloc] initWithImage:[iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     [self addSubview:self.attentionSign];
 }
 
@@ -92,6 +93,7 @@ static CGFloat ARWarningViewMargin = 8;
     frame.origin.x = ((CGRectGetWidth(self.bounds) - self.intrinsicContentSize.width) / 2) - ARWarningViewMargin;
     frame.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(frame)) / 2;
     self.attentionSign.frame = frame;
+    self.attentionSign.tintColor = self.textColor;
 }
 
 @end
