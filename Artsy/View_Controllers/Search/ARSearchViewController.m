@@ -273,7 +273,11 @@
     @_weakify(self);
 
     [UIView animateIf:animated duration:0.15:^{
+<<<<<<< HEAD:Artsy/View_Controllers/Search/ARSearchViewController.m
         @_strongify(self);
+=======
+        @strongify(self);
+>>>>>>> Fix code formatting for previous commit.:Artsy/Classes/View Controllers/ARSearchViewController.m
         self.resultsView.alpha = 0;
     } completion:^(BOOL finished) {
         @_strongify(self);
