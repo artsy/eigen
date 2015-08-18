@@ -23,7 +23,7 @@
 {
     ARZoomArtworkImageViewController *zoomImageVC = [[ARZoomArtworkImageViewController alloc] initWithImage:self.artwork.defaultImage];
     zoomImageVC.suppressZoomViewCreation = (self.fair == nil);
-    [self.navigationController pushViewController:zoomImageVC animated:self.shouldAnimate];
+    [self.navigationController pushViewController:zoomImageVC animated:ARPerformWorkAsynchronously];
 }
 
 #pragma mark - ARArtworkPreviewActionsViewDelegate
@@ -68,7 +68,7 @@
 - (void)tappedArtworkViewInRoom
 {
     ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
-    [self.navigationController pushViewController:viewInRoomVC animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
 }
 
 - (void)tappedArtworkViewInMap
@@ -76,7 +76,7 @@
     [ArtsyAPI getShowsForArtworkID:self.artwork.artworkID inFairID:self.fair.fairID success:^(NSArray *shows) {
         if (shows.count > 0) {
             ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.artwork.partner.name selectedPartnerShows:shows];
-            [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+            [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
         }
     } failure:^(NSError *error){
         // ignore
@@ -130,7 +130,7 @@
 
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadBidUIForArtwork:self.artwork.artworkID
                                                                                   inSale:saleArtwork.auction.saleID];
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)tappedBuyersPremium
@@ -138,7 +138,7 @@
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
         NSString *path = [NSString stringWithFormat:@"/auction/%@/buyers-premium", saleArtwork.auction.saleID];
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:path fair:self.fair];
-        [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 
     } failure:^(NSError *error) {
         ARErrorLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);

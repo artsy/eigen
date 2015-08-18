@@ -142,7 +142,6 @@ describe(@"no related data", ^{
     it(@"shows artwork on iPhone", ^{
         window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-        vc.shouldAnimate = NO;
 
         window.rootViewController = vc;
         expect(vc.view).willNot.beNil();
@@ -156,7 +155,6 @@ describe(@"no related data", ^{
             [ARTestContext stubDevice:ARDeviceTypePad];
             window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            vc.shouldAnimate = NO;
 
             window.rootViewController = vc;
             expect(vc.view).willNot.beNil();
@@ -191,7 +189,6 @@ describe(@"with related artworks", ^{
 
             window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            vc.shouldAnimate = NO;
         });
 
         it(@"displays related artworks", ^{
@@ -233,7 +230,6 @@ describe(@"with related artworks", ^{
             [ARTestContext stubDevice:ARDeviceTypePad];
             window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            vc.shouldAnimate = NO;
         });
 
         after(^{
@@ -289,7 +285,6 @@ it(@"shows an upublished banner", ^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@{}];
     
     vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
-    vc.shouldAnimate = NO;
 
     window.rootViewController = vc;
     expect(vc.view).willNot.beNil();
@@ -347,7 +342,6 @@ describe(@"at a closed auction", ^{
             [ARTestContext stubDevice:ARDeviceTypePhone6];
             window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            vc.shouldAnimate = NO;
 
             [vc.imageView removeFromSuperview];
             window.rootViewController = vc;
@@ -370,7 +364,6 @@ describe(@"at a closed auction", ^{
             [ARTestContext stubDevice:ARDeviceTypePad];
             window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            vc.shouldAnimate = NO;
 
             window.rootViewController = vc;
             expect(vc.view).willNot.beNil();

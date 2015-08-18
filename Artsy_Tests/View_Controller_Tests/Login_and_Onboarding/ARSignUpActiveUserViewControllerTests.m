@@ -6,7 +6,6 @@ __block ARSignUpActiveUserViewController *vc;
 
 dispatch_block_t sharedBefore = ^{
     vc = [[ARSignUpActiveUserViewController alloc] init];
-    vc.shouldAnimate = NO;
 };
 
 describe(@"sign up after app launch", ^{

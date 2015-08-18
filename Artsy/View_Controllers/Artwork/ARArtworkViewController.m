@@ -33,16 +33,6 @@
     }
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
-}
-
 - (instancetype)initWithArtworkID:(NSString *)artworkID fair:(Fair *)fair
 {
     Artwork *artwork = [[Artwork alloc] initWithArtworkID:artworkID];
@@ -81,14 +71,14 @@
 - (void)viewDidLoad
 {
     if (self.artwork.title == nil) {
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
     }
 
-   @_weakify(self);
+    @_weakify(self);
 
     void (^completion)(void) = ^{
         @_strongify(self);
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
     };
 
     [self.artwork onArtworkUpdate:^{
@@ -109,7 +99,7 @@
 {
     // When we get back from zoom / VIR allow the preview to do trigger zoom
     self.view.metadataView.userInteractionEnabled = YES;
-    [super viewDidAppear:self.shouldAnimate && animated];
+    [super viewDidAppear:ARPerformWorkAsynchronously && animated];
     CGRect frame = self.view.frame;
     [self.view.metadataView updateConstraintsIsLandscape:CGRectGetWidth(frame) > CGRectGetHeight(frame)];
 }
@@ -118,7 +108,7 @@
 {
     self.view.scrollsToTop = NO;
     [self.view.relatedArtworksView cancelRequests];
-    [super viewDidDisappear:self.shouldAnimate && animated];
+    [super viewDidDisappear:ARPerformWorkAsynchronously && animated];
 }
 
 - (void)setHasFinishedScrolling
@@ -139,7 +129,7 @@
 
 - (void)getRelatedPosts
 {
-   @_weakify(self);
+    @_weakify(self);
     [self.artwork getRelatedPosts:^(NSArray *posts) {
         @_strongify(self);
         [self updateWithRelatedPosts:posts];
@@ -150,7 +140,7 @@
 {
     if (posts.count > 0) {
         self.postsVC.posts = posts;
-        [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration:^{
+        [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration:^{
             self.postsVC.view.alpha = 1;
         }];
     } else {
@@ -219,14 +209,14 @@
 
 - (void)artworkBlurView:(ARArtworkBlurbView *)blurbView shouldPresentViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 #pragma mark - ARArtworkDetailViewDelegate
 
 - (void)artworkDetailView:(ARArtworkDetailView *)detailView shouldPresentViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)didUpdateArtworkDetailView:(id)detailView
@@ -246,20 +236,20 @@
 
 - (void)postViewController:(ARPostsViewController *)postViewController shouldShowViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 #pragma mark - ARArtworkRelatedArtworksViewParentViewController
 
 - (void)relatedArtworksView:(ARArtworkRelatedArtworksView *)view shouldShowViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)relatedArtworksView:(ARArtworkRelatedArtworksView *)view didAddSection:(UIView *)section;
 {
     section.alpha = 0;
-    [UIView animateTwoStepIf:self.shouldAnimate
+    [UIView animateTwoStepIf:ARPerformWorkAsynchronously
         duration:ARAnimationDuration *
         2:^{
             [self.view.stackView setNeedsLayout];
