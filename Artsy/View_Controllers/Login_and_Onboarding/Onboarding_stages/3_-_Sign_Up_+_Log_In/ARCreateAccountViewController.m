@@ -266,7 +266,7 @@
 {
     self.warningView = [[ARWarningView alloc] initWithFrame:CGRectZero];
     self.warningView.text = msg;
-    self.warningView.backgroundColor = [UIColor artsyLightRed];
+    self.warningView.backgroundColor = [UIColor colorWithHex:0xdf6964];
     self.warningView.textColor = [UIColor whiteColor];
     self.warningView.alpha = 0;
 
