@@ -262,7 +262,7 @@
     [alert show];
 }
 
-- (void)showWarning:(NSString *)msg
+- (void)showWarning:(NSString *)msg animated:(BOOL)animates
 {
     self.warningView = [[ARWarningView alloc] initWithFrame:CGRectZero];
     self.warningView.text = msg;
@@ -284,16 +284,18 @@
                               ofView:topMenu.keyboardLayoutGuide
                            predicate:nil];
 
-    [UIView animateWithDuration:0.15 animations:^{
+    [UIView animateIf:animates duration:0.15:^{
         self.warningView.alpha = 1;
     }];
 
-    [self performSelector:@selector(removeWarning) withObject:nil afterDelay:5];
+    ar_dispatch_after(5.0, ^{
+        [self removeWarning:animates];
+    });
 }
 
-- (void)removeWarning
+- (void)removeWarning:(BOOL)animates
 {
-    [UIView animateWithDuration:0.25 animations:^{
+    [UIView animateIf:animates duration:0.25:^{
         self.warningView.alpha = 0;
 
     } completion:^(BOOL finished) {
@@ -332,9 +334,9 @@
     }
 
     if (![self.email.text containsString:@"@"]) {
-        [self showWarning:@"Email address appears to be invalid"];
+        [self showWarning:@"Email address appears to be invalid" animated:YES];
     } else if (self.password.text.length < 6) {
-        [self showWarning:@"Password must be at least 6 characters"];
+        [self showWarning:@"Password must be at least 6 characters" animated:YES];
     }
     return NO;
 }
