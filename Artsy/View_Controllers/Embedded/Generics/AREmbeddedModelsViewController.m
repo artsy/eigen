@@ -298,7 +298,7 @@
         if (view.subviews.count == 0) {
             ARReusableLoadingView *loadingView = [[ARReusableLoadingView alloc] init];
             [view addSubview:loadingView];
-            [loadingView startIndeterminateAnimated:self.shouldAnimate];
+            [loadingView startIndeterminateAnimated:ARPerformWorkAsynchronously];
             [loadingView alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:view];
         }
         return view;

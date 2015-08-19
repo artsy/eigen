@@ -4,10 +4,6 @@
 #import "ARUserManager+Stubs.h"
 
 
-@interface ARBrowseCategoriesViewController (Tests)
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
-@end
-
 SpecBegin(ARBrowseCategoriesViewController);
 
 __block ARBrowseCategoriesViewController *viewController;
@@ -54,7 +50,6 @@ before(^{
      ];
     
     viewController = [[ARBrowseCategoriesViewController alloc] init];
-    viewController.shouldAnimate = NO;
 });
 
 it(@"presents featured categories and genes", ^{

@@ -472,7 +472,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     }
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
     [navigationController pushViewController:self.searchViewController
-                                    animated:![ARDispatchManager sharedManager].useSyncronousDispatches];
+                                    animated:ARPerformWorkAsynchronously];
 }
 
 @end

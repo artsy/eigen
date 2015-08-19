@@ -64,23 +64,12 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 @property (nonatomic, strong) ARPostsViewController *postsVC;
 
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
 
 @implementation ARArtistViewController
 
 @dynamic view;
-
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
-}
 
 - (instancetype)initWithArtistID:(NSString *)artistID
 {
@@ -158,7 +147,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     [favoriteButton addTarget:self action:@selector(toggleFollowingArtist:) forControlEvents:UIControlEventTouchUpInside];
 
     [self.networkModel getFollowState:^(ARHeartStatus status) {
-        [favoriteButton setStatus:status animated:self.shouldAnimate];
+        [favoriteButton setStatus:status animated:ARPerformWorkAsynchronously];
     } failure:^(NSError *error) {
         [favoriteButton setStatus:ARHeartStatusNo];
     }];
@@ -172,7 +161,6 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
     self.switchView = [[ARSwitchView alloc] initWithButtonTitles:[ARSwitchView artistButtonTitlesArray]];
     [self.switchView constrainWidth:@"280"];
-    self.switchView.shouldAnimate = self.shouldAnimate;
     self.switchView.delegate = self;
     self.switchView.tag = ARArtistViewArtworksToggle;
     [self.view.stackView addSubview:self.switchView withTopMargin:@"20" sideMargin:NSStringWithFormat(@">=%@", [self sideMarginString])];
@@ -289,7 +277,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     [noWorksLabel alignTopEdgeWithView:self.artworkVC.view predicate:@"0"];
     [noWorksLabel alignCenterXWithView:self.artworkVC.view predicate:nil];
 
-    [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+    [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 }
 
 - (void)setArtworksHeight
@@ -318,7 +306,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     }
 
     BOOL hearted = !sender.hearted;
-    [sender setHearted:hearted animated:self.shouldAnimate];
+    [sender setHearted:hearted animated:ARPerformWorkAsynchronously];
 
     @_weakify(self);
     [self.networkModel setFavoriteStatus:sender.isHearted
@@ -327,7 +315,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
         failure:^(NSError *error) {
         @_strongify(self);
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
-        [sender setHearted:!hearted animated:self.shouldAnimate];
+        [sender setHearted:!hearted animated:ARPerformWorkAsynchronously];
         }];
 }
 
@@ -335,12 +323,12 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)allArtworksTapped
 {
-    [self switchToDisplayMode:ARArtistArtworksDisplayAll animated:self.shouldAnimate];
+    [self switchToDisplayMode:ARArtistArtworksDisplayAll animated:ARPerformWorkAsynchronously];
 }
 
 - (void)forSaleOnlyArtworksTapped
 {
-    [self switchToDisplayMode:ARArtistArtworksDisplayForSale animated:self.shouldAnimate];
+    [self switchToDisplayMode:ARArtistArtworksDisplayForSale animated:ARPerformWorkAsynchronously];
 }
 
 - (void)switchToDisplayMode:(ARArtistArtworksDisplayMode)displayMode animated:(BOOL)animated
@@ -351,7 +339,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
     NSOrderedSet *artworks = [self artworksForDisplayMode:displayMode];
     if (![artworks isEqualToOrderedSet:[self artworksForDisplayMode:oldDisplayMode]]) {
-        [UIView animateTwoStepIf:self.shouldAnimate && animated duration:ARAnimationDuration * 1.5:^{
+        [UIView animateTwoStepIf:ARPerformWorkAsynchronously && animated duration:ARAnimationDuration * 1.5:^{
             self.artworkVC.view.alpha = 0;
         } midway:^{
             self.artworkVC.collectionView.contentOffset = CGPointZero;
@@ -362,7 +350,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
             if (artworks.count > 0) {
                 [self.artworkVC appendItems:artworks.array];
             } else {
-                [self.artworkVC ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+                [self.artworkVC ar_presentIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
             }
 
             // Ensure that the user can never get to see any stale cells from the previous tab. E.g. if we ever
@@ -375,7 +363,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
         } completion:^(BOOL finished) {
             if (artworks.count > 0) {
-                [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+                [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
             }
             [self.view setNeedsUpdateConstraints];
         }];
@@ -405,13 +393,13 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     @_weakify(self);
     [self.networkModel getArtistArtworksAtPage:lastPage + 1 params:params success:^(NSArray *artworks) {
         @_strongify(self);
-        [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+        [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
         [self handleFetchedArtworks:artworks displayMode:self.displayMode];
         [self checkForAdditionalArtworksToFillView];
     } failure:^(NSError *error) {
         @_strongify(self);
         ARErrorLog(@"Could not get Artist Artworks: %@", error.localizedDescription);
-        [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+        [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
         [self setIsGettingArtworks:NO displayMode:displayMode];
     }];
 }
@@ -529,7 +517,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 - (void)loadBioViewController
 {
     ARArtistBiographyViewController *artistBioVC = [[ARArtistBiographyViewController alloc] initWithArtist:self.artist];
-    [self.navigationController pushViewController:artistBioVC animated:self.shouldAnimate];
+    [self.navigationController pushViewController:artistBioVC animated:ARPerformWorkAsynchronously];
 }
 
 - (BOOL)shouldAutorotate
@@ -569,7 +557,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     [self.networkModel getRelatedArtists:^(NSArray *artists) {
         @_strongify(self);
         if (artists.count > 0 ) {
-            [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration :^{
+            [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration :^{
                 self.relatedTitle.alpha = 1;
             }];
             artists = [artists filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"publishedArtworksCount != 0"]];
@@ -594,13 +582,13 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
     ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:self.artworkVC.items inFair:nil atIndex:index];
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)embeddedModelsViewControllerDidScrollPastEdge:(AREmbeddedModelsViewController *)controller
@@ -612,7 +600,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)postViewController:(ARPostsViewController *)postViewController shouldShowViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 #pragma mark - ARSwitchViewDelegate
