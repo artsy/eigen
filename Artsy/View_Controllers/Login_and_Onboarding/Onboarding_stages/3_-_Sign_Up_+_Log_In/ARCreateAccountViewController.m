@@ -19,11 +19,11 @@
 
 @interface ARCreateAccountViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 @property (nonatomic) AROnboardingNavBarView *navbar;
-@property (nonatomic) ARTextFieldWithPlaceholder *name, *email, *password;
 @property (nonatomic) ARSpinner *loadingSpinner;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
 @property (nonatomic, strong) ARWarningView *warningView;
+@property (nonatomic, strong) ARTopMenuViewController *topMenuViewController;
 @end
 
 
@@ -270,7 +270,7 @@
     self.warningView.textColor = [UIColor whiteColor];
     self.warningView.alpha = 0;
 
-    ARTopMenuViewController *topMenu = [ARTopMenuViewController sharedController];
+    ARTopMenuViewController *topMenu = self.topMenuViewController;
     UIViewController *hostVC = topMenu.visibleViewController;
     UIView *hostView = hostVC.view;
 
@@ -278,24 +278,24 @@
 
     [self.warningView constrainHeight:@"50"];
     [self.warningView constrainWidthToView:hostView predicate:nil];
-
     [self.warningView alignAttribute:NSLayoutAttributeBottom
                          toAttribute:NSLayoutAttributeTop
                               ofView:topMenu.keyboardLayoutGuide
                            predicate:nil];
 
-    [UIView animateIf:animates duration:0.15:^{
+    [UIView animateIf:animates duration:ARAnimationQuickDuration:^{
         self.warningView.alpha = 1;
     }];
 
-    ar_dispatch_after(5.0, ^{
+    // Using dispatch_after (instead of ar_dispatch_after) because we want this to be async in testing
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self removeWarning:animates];
     });
 }
 
 - (void)removeWarning:(BOOL)animates
 {
-    [UIView animateIf:animates duration:0.25:^{
+    [UIView animateIf:animates duration:ARAnimationDuration:^{
         self.warningView.alpha = 0;
 
     } completion:^(BOOL finished) {
@@ -350,6 +350,13 @@
         email = self.email.text;
     }
     [self.delegate logInWithEmail:email];
+}
+
+#pragma mark - DI
+
+- (ARTopMenuViewController *)topMenuViewController
+{
+    return _topMenuViewController ?: [ARTopMenuViewController sharedController];
 }
 
 @end
