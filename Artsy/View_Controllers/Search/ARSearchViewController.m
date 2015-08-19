@@ -82,7 +82,8 @@
     _contentView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.contentView];
     [self.contentView constrainTopSpaceToView:self.searchBoxView predicate:@"15"];
-    [self.contentView alignTop:nil leading:@"20" bottom:@"0" trailing:@"-20" toView:self.view];
+    [self.contentView alignLeading:@"20" trailing:@"-20" toView:self.view];
+    [self.contentView alignBottomEdgeWithView:self.view predicate:nil];
 
     // search info label
     UILabel *infoLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
@@ -105,6 +106,7 @@
     [activityIndicator alignCenterWithView:self.contentView];
     activityIndicator.hidden = YES;
     _activityIndicator = activityIndicator;
+
     [super viewDidLoad];
 }
 
