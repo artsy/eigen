@@ -264,6 +264,10 @@
 
 - (void)showWarning:(NSString *)msg animated:(BOOL)animates
 {
+    if (self.warningView) {
+        [self.warningView removeFromSuperview];
+        self.warningView = nil;
+    }
     self.warningView = [[ARWarningView alloc] initWithFrame:CGRectZero];
     self.warningView.text = msg;
     self.warningView.backgroundColor = [UIColor colorWithHex:0xdf6964];
