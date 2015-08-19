@@ -87,6 +87,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     UIView *tabContainer = [[UIView alloc] init];
     self.tabContainer = tabContainer;
     self.tabContainer.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:tabContainer];
 
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero
                                                             hostViewController:self
@@ -96,13 +97,14 @@ static const CGFloat ARMenuButtonDimension = 46;
     tabContentView.buttons = buttons;
     [tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
     _tabContentView = tabContentView;
+    [self.view addSubview:tabContentView];
 
     // Layout
-    [self.view addSubview:tabContentView];
-    [tabContentView alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.view];
+    [tabContentView alignTopEdgeWithView:self.view predicate:@"0"];
+    [tabContentView alignLeading:@"0" trailing:@"0" toView:self.view];
+    [tabContentView constrainBottomSpaceToView:self.tabContainer predicate:@"0"];
     [tabContentView constrainWidthToView:self.view predicate:@"0"];
 
-    [self.view addSubview:tabContainer];
     [tabContainer constrainHeight:@(ARMenuButtonDimension).stringValue];
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
     self.tabBottomConstraint = [[tabContainer alignBottomEdgeWithView:self.view predicate:@"0"] lastObject];
