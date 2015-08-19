@@ -264,37 +264,39 @@
 
 - (void)showWarning:(NSString *)msg animated:(BOOL)animates
 {
-    if (self.warningView) {
-        [self.warningView removeFromSuperview];
-        self.warningView = nil;
+    if (!self.warningView) {
+        self.warningView = [[ARWarningView alloc] initWithFrame:CGRectZero];
+
+        ARTopMenuViewController *topMenu = self.topMenuViewController;
+        UIViewController *hostVC = topMenu.visibleViewController;
+        UIView *hostView = hostVC.view;
+
+        [hostView addSubview:self.warningView];
+
+        [self.warningView constrainHeight:@"50"];
+        [self.warningView constrainWidthToView:hostView predicate:nil];
+        [self.warningView alignAttribute:NSLayoutAttributeBottom
+                             toAttribute:NSLayoutAttributeTop
+                                  ofView:topMenu.keyboardLayoutGuide
+                               predicate:nil];
     }
-    self.warningView = [[ARWarningView alloc] initWithFrame:CGRectZero];
+
+    self.warningView.alpha = 0;
     self.warningView.text = msg;
     self.warningView.backgroundColor = [UIColor colorWithHex:0xdf6964];
     self.warningView.textColor = [UIColor whiteColor];
-    self.warningView.alpha = 0;
-
-    ARTopMenuViewController *topMenu = self.topMenuViewController;
-    UIViewController *hostVC = topMenu.visibleViewController;
-    UIView *hostView = hostVC.view;
-
-    [hostView addSubview:self.warningView];
-
-    [self.warningView constrainHeight:@"50"];
-    [self.warningView constrainWidthToView:hostView predicate:nil];
-    [self.warningView alignAttribute:NSLayoutAttributeBottom
-                         toAttribute:NSLayoutAttributeTop
-                              ofView:topMenu.keyboardLayoutGuide
-                           predicate:nil];
 
     [UIView animateIf:animates duration:ARAnimationQuickDuration:^{
         self.warningView.alpha = 1;
     }];
 
-    // Using dispatch_after (instead of ar_dispatch_after) because we want this to be async in testing
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self removeWarning:animates];
-    });
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(removeWarning) object:nil];
+    [self performSelector:@selector(removeWarning) withObject:nil afterDelay:5.0];
+}
+
+- (void)removeWarning
+{
+    [self removeWarning:ARPerformWorkAsynchronously];
 }
 
 - (void)removeWarning:(BOOL)animates
