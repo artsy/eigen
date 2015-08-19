@@ -55,10 +55,10 @@
 
 - (void)didMoveToSuperview
 {
-    if (!self.superview) {
-        return;
+    if (self.superview) {
+        [self alignLeading:@"0" trailing:@"0" toView:self.superview];
+        [self alignTopEdgeWithView:self.superview predicate:@"0"];
     }
-    [self alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.superview];
 }
 
 @end
