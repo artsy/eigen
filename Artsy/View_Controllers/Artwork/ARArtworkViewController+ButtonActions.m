@@ -167,26 +167,21 @@
         editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
     }
 
-    // create a new order
-    NSURLRequest *request = [ARRouter newPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID];
-
     @_weakify(self);
-    AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-        success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            NSString *orderID = [JSON valueForKey:@"id"];
-            NSString *resumeToken = [JSON valueForKey:@"token"];
-            ARErrorLog(@"Created order %@", orderID);
-            UIViewController *controller = [[ARSwitchBoard sharedInstance] loadOrderUIForID:orderID resumeToken:resumeToken];
-            [self.navigationController pushViewController:controller animated:YES];
+    [ArtsyAPI createPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID success:^(id JSON) {
 
-        }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            @_strongify(self);
-            ARErrorLog(@"Creating a new order failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-            [self tappedContactGallery];
-        }];
+        NSString *orderID = [JSON valueForKey:@"id"];
+        NSString *resumeToken = [JSON valueForKey:@"token"];
+        ARErrorLog(@"Created order %@", orderID);
+        UIViewController *controller = [[ARSwitchBoard sharedInstance] loadOrderUIForID:orderID resumeToken:resumeToken];
+        [self.navigationController pushViewController:controller animated:YES];
 
-    [op start];
+    }
+    failure:^(NSError *error) {
+        @_strongify(self);
+        ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
+        [self tappedContactGallery];
+    }];
 }
 
 - (void)tappedAuctionResults

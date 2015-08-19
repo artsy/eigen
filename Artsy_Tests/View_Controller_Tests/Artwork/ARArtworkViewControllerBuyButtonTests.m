@@ -1,6 +1,7 @@
 #import "ARArtworkViewController.h"
 #import "ARRouter.h"
 #import "ARUserManager+Stubs.h"
+#import "ARNetworkConstants.h"
 
 @interface ARArtworkViewController (Tests)
 - (void)tappedBuyButton;
@@ -44,7 +45,6 @@ describe(@"buy button", ^{
         [[vcMock reject] tappedContactGallery];
 
         [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:@"artwork-id" editionSetID:[OCMArg isNil]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[]];
 
         [vc tappedBuyButton];
         [routerMock verify];
@@ -67,7 +67,6 @@ describe(@"buy button", ^{
         [[vcMock reject] tappedContactGallery];
 
         [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:@"artwork-id" editionSetID:@"set-1"];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[]];
 
         [vc tappedBuyButton];
         [routerMock verify];
@@ -91,14 +90,15 @@ describe(@"buy button", ^{
         [[vcMock expect] tappedContactGallery];
 
         [[[routerMock reject] classMethod] newPendingOrderWithArtworkID:OCMOCK_ANY editionSetID:OCMOCK_ANY];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[]];
-        
+
         [vc tappedBuyButton];
         [routerMock verify];
         [vcMock verify];
     });
     
     it(@"displays inquiry form if request fails", ^{
+        [OHHTTPStubs stubJSONResponseAtPath:ARCreatePendingOrderURL withResponse:@[] andStatusCode:400];
+
         Artwork *artwork = [Artwork modelWithJSON:@{
             @"id" : @"artwork-id",
             @"title" : @"Artwork Title",
@@ -111,11 +111,10 @@ describe(@"buy button", ^{
         [[vcMock expect] tappedContactGallery];
         
         [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:OCMOCK_ANY editionSetID:OCMOCK_ANY];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/orders" withResponse:@[] andStatusCode:400];
-        
+
         [vc tappedBuyButton];
         [routerMock verify];
-        [vcMock verifyWithDelay:0.3];
+        [vcMock verify];
     });
 });
 
