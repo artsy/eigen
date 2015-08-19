@@ -3,7 +3,6 @@
 
 SpecBegin(ARArtworkViewController);
 
-__block UIWindow *window;
 __block ARArtworkViewController *vc;
 
 describe(@"no related data", ^{
@@ -23,7 +22,6 @@ describe(@"no related data", ^{
         [ARTestContext useDevice:ARDeviceTypePhone6 :^{
 
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
             [vc.view snapshotViewAfterScreenUpdates:YES];
@@ -36,7 +34,6 @@ describe(@"no related data", ^{
         [ARTestContext useDevice:ARDeviceTypePad :^{
 
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
             [vc.view snapshotViewAfterScreenUpdates:YES];
@@ -70,12 +67,11 @@ describe(@"with related artworks", ^{
             [ARTestContext useDevice:ARDeviceTypePhone6 :^{
 
                 vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-                vc.shouldAnimate = NO;
                 [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
                 [vc setHasFinishedScrolling];
                 [vc.view snapshotViewAfterScreenUpdates:YES];
 
-                expect([(ARArtworkView *)vc.view relatedArtworksView]).will.haveValidSnapshot();
+                expect([(ARArtworkView *)vc.view relatedArtworksView]).to.haveValidSnapshot();
             }];
 
         });
@@ -95,12 +91,11 @@ describe(@"with related artworks", ^{
             [ARTestContext useDevice:ARDeviceTypePad :^{
 
                 vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-                vc.shouldAnimate = NO;
                 [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
                 [vc setHasFinishedScrolling];
                 [vc.view snapshotViewAfterScreenUpdates:YES];
 
-                expect([(ARArtworkView *)vc.view relatedArtworksView]).will.haveValidSnapshot();
+                expect([(ARArtworkView *)vc.view relatedArtworksView]).to.haveValidSnapshot();
             }];
         });
     });
@@ -183,7 +178,7 @@ describe(@"at a closed auction", ^{
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
 
-            expect(vc.view).will.haveValidSnapshot();
+            expect(vc.view).to.haveValidSnapshot();
 
         }];
     });
@@ -195,7 +190,7 @@ describe(@"at a closed auction", ^{
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
 
-            expect(vc.view).will.haveValidSnapshot();
+            expect(vc.view).to.haveValidSnapshot();
             
         }];
     });

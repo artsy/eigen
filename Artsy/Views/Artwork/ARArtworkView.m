@@ -53,7 +53,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     self.artworkBlurbView = artworkBlurbView;
 
     ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    [spinner fadeInAnimated:self.parentViewController.shouldAnimate];
+    [spinner fadeInAnimated:ARPerformWorkAsynchronously];
     spinner.tag = ARArtworkSpinner;
     self.spinner = spinner;
     [spinner constrainHeight:@"100"];
@@ -96,11 +96,11 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
 - (void)setUpCallbacks
 {
-   @_weakify(self);
+    @_weakify(self);
 
     void (^completion)(void) = ^{
         @_strongify(self);
-        [self.spinner fadeOutAnimated:self.parentViewController.shouldAnimate];
+        [self.spinner fadeOutAnimated:ARPerformWorkAsynchronously];
         [self.stackView removeSubview:self.spinner];
     };
 
@@ -126,7 +126,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
         if (saleArtwork.auctionState & ARAuctionStateUserIsBidder) {
             [ARAnalytics setUserProperty:@"has_placed_bid" toValue:@"true"];
             self.banner.auctionState = saleArtwork.auctionState;
-            [UIView animateIf:self.parentViewController.shouldAnimate duration:ARAnimationDuration :^{
+            [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration :^{
                 [self.banner updateHeightConstraint];
                 [self.stackView layoutIfNeeded];
             }];

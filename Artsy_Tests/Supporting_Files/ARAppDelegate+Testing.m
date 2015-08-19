@@ -42,7 +42,7 @@
 
 - (BOOL)swizzled_application:(id)app willFinishLaunchingWithOptions:(id)opts
 {
-    [ARDispatchManager sharedManager].useSyncronousDispatches = YES;
+    ARPerformWorkAsynchronously = NO;
     [ARRouter setup];
 
     /// Never run in tests

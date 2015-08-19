@@ -3,7 +3,6 @@
 #import "ARFairArtistNetworkModel.h"
 
 // @interface ARFairArtistViewController (Tests)
-// @property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 // @property (nonatomic, strong, readwrite) NSObject <FairArtistNeworkModel> *networkModel;
 // @end
 //

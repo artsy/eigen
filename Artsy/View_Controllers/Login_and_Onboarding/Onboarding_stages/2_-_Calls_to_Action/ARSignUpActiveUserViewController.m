@@ -10,16 +10,6 @@
 
 @implementation ARSignUpActiveUserViewController
 
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
-}
-
 - (void)setTrialContext:(enum ARTrialContext)context
 {
     _trialContext = context;

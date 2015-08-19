@@ -57,8 +57,6 @@
 
 @property (nonatomic, strong, readonly) Fair *fair;
 
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
-
 - (BOOL)currentContentFillsView;
 
 @end

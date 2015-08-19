@@ -22,6 +22,4 @@
 @property (nonatomic, assign, readwrite) NSInteger selectedIndex;
 - (void)setSelectedIndex:(NSInteger)index animated:(BOOL)animated;
 
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
-
 @end
