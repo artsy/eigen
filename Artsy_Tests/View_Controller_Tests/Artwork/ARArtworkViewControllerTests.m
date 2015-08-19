@@ -5,18 +5,18 @@ SpecBegin(ARArtworkViewController);
 
 __block ARArtworkViewController *vc;
 
+beforeEach(^{
+    [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"access_token" : @"token", @"expires_in" : @"2034-11-11" }];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork" withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
+});
+
 describe(@"no related data", ^{
-    before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"access_token" : @"token", @"expires_in" : @"2034-11-11" }];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork"
-            withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
-    });
 
     it(@"shows artwork on iPhone", ^{
         [ARTestContext useDevice:ARDeviceTypePhone6 :^{
@@ -44,17 +44,6 @@ describe(@"no related data", ^{
 });
 
 describe(@"with related artworks", ^{
-    before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"access_token" : @"token", @"expires_in" : @"2034-11-11" }];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork"
-            withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
-
-    });
 
     describe(@"iPhone", ^{
         it(@"related artworks view looks correct", ^{
@@ -108,15 +97,7 @@ it(@"shows an upublished banner", ^{
         @"published" : @NO,
     };
     Artwork *artwork = [Artwork modelWithJSON:artworkDict];
-
-    [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"access_token" : @"token", @"expires_in" : @"2034-11-11" }];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/artwork-id" withResponse:artworkDict];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[]];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@{}];
 
     CGRect frame = [[UIScreen mainScreen] bounds];
     vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
@@ -134,11 +115,6 @@ it(@"shows an upublished banner", ^{
 
 describe(@"at a closed auction", ^{
     before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"access_token" : @"token", @"expires_in" : @"2034-11-11" }];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/fairs" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[ @{
             @"id": @"some-auction",
             @"name": @"Some Auction",
@@ -152,6 +128,7 @@ describe(@"at a closed auction", ^{
             @"artwork_id":@"some-artwork",
             @"sale_id":@"some-auction"
         } withResponse:@[]];
+
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidders" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artworks" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artwork/some-artwork" withResponse:@{
@@ -177,9 +154,9 @@ describe(@"at a closed auction", ^{
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
+            [vc.view snapshotViewAfterScreenUpdates:YES];
 
-            expect(vc.view).to.haveValidSnapshot();
-
+            expect(vc.view).will.haveValidSnapshot();
         }];
     });
 
@@ -189,8 +166,10 @@ describe(@"at a closed auction", ^{
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
+            [vc.view snapshotViewAfterScreenUpdates:YES];
 
-            expect(vc.view).to.haveValidSnapshot();
+
+            expect(vc.view).will.haveValidSnapshot();
             
         }];
     });
