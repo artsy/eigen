@@ -221,7 +221,7 @@ CHECKOUT OPTIONS:
     :commit: 39f47deebf947aa4c07727fdf2b69e2feff17428
     :git: https://github.com/artsy/Artsy-UIFonts.git
   FLKAutoLayout:
-    :commit: 2817897b916cfa83f09dfe2a53f8458451b5fdf2
+    :commit: dd2cd4fe901ff5dcfc47c2c29c7746779fc12b64
     :git: https://github.com/alloy/FLKAutoLayout.git
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
