@@ -191,8 +191,8 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
         [containerView constrainHeight:@"40"];
         [partnerLabel alignTop:@"0" bottom:@"0" toView:containerView];
         if (followButton) {
-            [partnerLabel alignLeading:@"0" trailing:nil toView:containerView];
-            [followButton alignLeading:nil trailing:@"0" toView:containerView];
+            [partnerLabel alignLeadingEdgeWithView:containerView predicate:@"0"];
+            [followButton alignTrailingEdgeWithView:containerView predicate:@"0"];
             [followButton alignTop:@"0" bottom:@"0" toView:containerView];
             [UIView alignAttribute:NSLayoutAttributeRight ofViews:@[ partnerLabel ] toAttribute:NSLayoutAttributeLeft ofViews:@[ followButton ] predicate:@"0"];
             CGFloat followButtonWidth = [[self class] followButtonWidthForSize:self.view.frame.size];

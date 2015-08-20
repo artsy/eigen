@@ -316,7 +316,8 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 {
     UIView *topMenuView = [[UIView alloc] init];
     [self.inquiryFormView addSubview:topMenuView];
-    [topMenuView alignTop:@"0" leading:@"20" bottom:nil trailing:@"-20" toView:self.inquiryFormView];
+    [topMenuView alignTopEdgeWithView:self.inquiryFormView predicate:@"0"];
+    [topMenuView alignLeading:@"20" trailing:@"-20" toView:self.inquiryFormView];
     [topMenuView constrainHeight:@"60"];
 
     ARModalMenuButton *cancelButton = [[ARModalMenuButton alloc] init];

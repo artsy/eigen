@@ -85,7 +85,7 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
     NSArray *constraintsArray = [self.bannerImageView alignTopEdgeWithView:self.view predicate:@"0"];
     self.bannerTopLayoutConstraint = constraintsArray.firstObject;
     NSString *bottomPredicate = [NSString stringWithFormat:@"<=-%@", @(ARParallaxHeaderViewBottomWhitespaceHeight)];
-    [self.bannerImageView alignTop:nil leading:@"0" bottom:bottomPredicate trailing:@"0" toView:self.view];
+    [self.bannerImageView alignTop:@"0" leading:@"0" bottom:bottomPredicate trailing:@"0" toView:self.view];
 
     CGFloat bannerHeight = [self hasBannerImage] ? ARParallaxHeaderViewBannerImageHeight : ARParallaxHeaderViewBannerImageMissingImageHeight;
     NSString *heightPredicate = [NSString stringWithFormat:@"%@", @(bannerHeight + ARParallaxHeaderViewBottomWhitespaceHeight)];

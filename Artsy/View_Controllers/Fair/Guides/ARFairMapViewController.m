@@ -116,7 +116,8 @@
 
         [self.view addSubview:self.titleLabel];
         NSString *top = [@(10 + ([self.parentViewController isKindOfClass:[UINavigationController class]] ? 20 : 0)) stringValue];
-        [self.titleLabel alignTop:top leading:@"60" bottom:nil trailing:@"-60" toView:self.view];
+        [self.titleLabel alignTopEdgeWithView:self.view predicate:top];
+        [self.titleLabel alignLeading:@"60" trailing:@"-60" toView:self.view];
         [self.titleLabel constrainHeight:@">=44"];
     }
 

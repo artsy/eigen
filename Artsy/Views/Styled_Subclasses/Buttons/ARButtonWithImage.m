@@ -70,8 +70,8 @@ const CGFloat TitlesMargin = 5;
 
     [self alignToView:self.contentView];
 
-    // Use bottom:@"0" to align separator with bottom of button. Using `nil` will align it with the top.
-    [self.separatorView alignTop:nil leading:@"10" bottom:@"0" trailing:@"-10" toView:self.contentView];
+    [self.separatorView alignLeading:@"10" trailing:@"-10" toView:self.contentView];
+    [self.separatorView alignBottomEdgeWithView:self.contentView predicate:@"0"];
 
     [self.buttonImageView constrainWidth:@"80"];
     [self.buttonImageView constrainHeight:@"80"];

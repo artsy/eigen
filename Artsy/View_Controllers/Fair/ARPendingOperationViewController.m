@@ -43,8 +43,8 @@
     self.spinner.spinnerColor = [UIColor whiteColor];
     [self.spinner fadeInAnimated:YES];
     [self.view addSubview:self.spinner];
-    [self.spinner alignCenterXWithView:self.view predicate:nil];
-    [self.spinner alignTop:@"44" bottom:nil toView:self.label];
+    [self.spinner alignCenterXWithView:self.view predicate:@"0"];
+    [self.spinner alignTop:@"44" bottom:@"0" toView:self.label];
     [self.spinner constrainTopSpaceToView:self.label predicate:@"20"];
 }
 

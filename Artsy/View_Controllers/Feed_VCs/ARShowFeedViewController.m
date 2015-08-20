@@ -228,12 +228,8 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
         self.headerView.backgroundColor = [UIColor whiteColor];
 
         [self.headerView addSubview:featuredShowsLabel];
-        [featuredShowsLabel alignTop:@(ARShowFeedHeaderLabelMarginPad).stringValue
-                             leading:@(sideMargin).stringValue
-                              bottom:nil
-                            trailing:@(-sideMargin).stringValue
-                              toView:self.headerView];
         [featuredShowsLabel alignLeading:@(sideMargin).stringValue trailing:@(-sideMargin).stringValue toView:self.headerView];
+        [featuredShowsLabel alignTopEdgeWithView:self.headerView predicate:@(ARShowFeedHeaderLabelMarginPad).stringValue];
         [featuredShowsLabel alignBottomEdgeWithView:self.headerView predicate:@"0"];
 
         [self.headerView addSubview:showsTitleSeparator];
@@ -257,7 +253,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
         self.headerView.backgroundColor = [UIColor whiteColor];
 
         [self ar_addModernChildViewController:self.feedLinkVC intoView:self.headerView];
-        [self.feedLinkVC.view alignTop:@(ARFeedLinksNavMarginPhone).stringValue leading:@(sideMargin).stringValue bottom:nil trailing:@(-sideMargin).stringValue toView:self.headerView];
+        [self.feedLinkVC.view alignTop:@(ARFeedLinksNavMarginPhone).stringValue leading:@(sideMargin).stringValue bottom:@"0" trailing:@(-sideMargin).stringValue toView:self.headerView];
 
         [self.headerView addSubview:featuredShowsLabel];
         [featuredShowsLabel constrainTopSpaceToView:self.feedLinkVC.view predicate:@"0"];

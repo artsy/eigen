@@ -140,8 +140,9 @@
 
     [self ar_addModernChildViewController:self.artworksViewController];
 
-    [self.artworksViewController.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:nil];
-    [self.artworksViewController.view alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
+    [self.artworksViewController.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
+    [self.artworksViewController.view alignLeading:@"0" trailing:@"0" toView:self.view];
+    [self.artworksViewController.view alignBottomEdgeWithView:self.view predicate:@"0"];
 
     self.artworksViewController.collectionView.showsVerticalScrollIndicator = YES;
 }
