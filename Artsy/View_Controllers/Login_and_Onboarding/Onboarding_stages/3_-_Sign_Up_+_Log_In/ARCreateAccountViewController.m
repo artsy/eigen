@@ -279,6 +279,10 @@
                              toAttribute:NSLayoutAttributeTop
                                   ofView:topMenu.keyboardLayoutGuide
                                predicate:nil];
+
+        UITapGestureRecognizer *removeTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeWarning)];
+        [self.warningView addGestureRecognizer:removeTapGesture];
+        self.warningView.userInteractionEnabled = YES;
     }
 
     self.warningView.alpha = 0;
@@ -308,6 +312,13 @@
         [self.warningView removeFromSuperview];
         self.warningView = nil;
     }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if (self.warningView) [self removeWarning:animated];
+
+    [super viewWillDisappear:animated];
 }
 
 - (void)dealloc
