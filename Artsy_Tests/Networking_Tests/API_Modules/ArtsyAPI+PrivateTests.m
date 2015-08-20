@@ -5,6 +5,7 @@
 SpecBegin(ArtsyAPIPrivate);
 
 describe(@"handleXappTokenError", ^{
+
     it(@"doesn't reset XAPP token on non-401 errors", ^{
         [UICKeyChainStore setString:@"xapp token" forKey:ARXAppTokenDefault];
         NSError *error = [[NSError alloc] initWithDomain:NSURLErrorDomain code:302 userInfo:@{}];
@@ -16,10 +17,13 @@ describe(@"handleXappTokenError", ^{
         [UICKeyChainStore setString:@"value" forKey:ARXAppTokenDefault];
         id mock = [OCMockObject mockForClass:[ARRouter class]];
         [[mock expect] setXappToken:nil];
+
+        NSString *errorJSON = @"{\"error\":\"Unauthorized\",\"text\":\"The XAPP token is invalid or has expired.\"}";
         NSError *error = [[NSError alloc] initWithDomain:NSURLErrorDomain code:401 userInfo:@{
-            NSLocalizedRecoverySuggestionErrorKey: @"{\"error\":\"Unauthorized\",\"text\":\"The XAPP token is invalid or has expired.\"}",
+            AFNetworkingOperationFailingURLResponseDataErrorKey: [errorJSON dataUsingEncoding:NSUnicodeStringEncoding],
             AFNetworkingOperationFailingURLResponseErrorKey: [[MutableNSURLResponse alloc] initWithStatusCode:401]
         }];
+
         [ArtsyAPI handleXappTokenError:error];
         [mock verify];
         [mock stopMocking];

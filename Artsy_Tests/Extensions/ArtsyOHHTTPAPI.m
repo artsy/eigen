@@ -41,7 +41,7 @@
 
 - (void)getXappTokenWithCompletion:(void (^)(NSString *xappToken, NSDate *expirationDate))callback failure:(void (^)(NSError *error))failure
 {
-    callback(@"TOKEN", [NSDate distantFuture]);
+    callback(@"xapp token", [NSDate distantFuture]);
 }
 
 - (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
