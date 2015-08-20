@@ -66,25 +66,13 @@ static CGFloat const ARDoubleRowStyleSpacing = 11;
     } completion:nil];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent
+- (void)updateViewConstraints;
 {
-    [super didMoveToParentViewController:parent];
-    if (self.parentViewController && !CGRectEqualToRect(self.parentViewController.view.frame, CGRectZero)) {
-        CGSize parentSize = self.parentViewController.view.frame.size;
-
-        [self updateItemSizeWithParentSize:parentSize];
-        [self updateHeightConstraintWithSize:self.parentViewController.view.frame.size];
-    }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if (self.parentViewController && !CGRectEqualToRect(self.parentViewController.view.frame, CGRectZero)) {
-        CGSize parentSize = self.parentViewController.view.frame.size;
-
-        [self updateItemSizeWithParentSize:parentSize];
-        [self updateHeightConstraintWithSize:self.parentViewController.view.frame.size];
+    [super updateViewConstraints];
+    CGRect parentFrame = self.parentViewController.view.frame;
+    if (self.parentViewController && !CGRectEqualToRect(parentFrame, CGRectZero)) {
+        [self updateItemSizeWithParentSize:parentFrame.size];
+        [self updateHeightConstraintWithSize:parentFrame.size];
     }
 }
 
