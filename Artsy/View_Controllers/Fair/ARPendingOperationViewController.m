@@ -44,7 +44,7 @@
     [self.spinner fadeInAnimated:YES];
     [self.view addSubview:self.spinner];
     [self.spinner alignCenterXWithView:self.view predicate:@"0"];
-    [self.spinner alignTop:@"44" bottom:@"0" toView:self.label];
+    [self.spinner alignTopEdgeWithView:self.label predicate:@"44"];
     [self.spinner constrainTopSpaceToView:self.label predicate:@"20"];
 }
 
