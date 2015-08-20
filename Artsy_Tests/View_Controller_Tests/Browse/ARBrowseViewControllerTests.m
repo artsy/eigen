@@ -3,7 +3,6 @@
 
 
 @interface ARBrowseViewController (Tests)
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @property (nonatomic, strong, readonly) NSArray *menuLinks;
 @property (nonatomic, strong, readonly) ARBrowseNetworkModel *networkModel;
 - (void)fetchMenuItems;
@@ -23,7 +22,6 @@ before(^{
 
     viewController = [[ARBrowseViewController alloc] init];
     viewController.networkModel = networkModel;
-    viewController.shouldAnimate = NO;
 });
 
 it(@"sets its menu items", ^{

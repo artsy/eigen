@@ -201,6 +201,7 @@
 
         NSArray *jsonDictionaries = JSON[key];
         if (![jsonDictionaries isKindOfClass:NSArray.class]) {
+            NSLog(@"Expected a hash JSON repsonse - got an array");
             failure(nil);
         }
 

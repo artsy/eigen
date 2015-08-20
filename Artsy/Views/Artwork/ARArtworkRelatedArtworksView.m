@@ -239,7 +239,6 @@
                                                                                                    artworks:artworks
                                                                                                     heading:heading];
 
-    section.artworksVC.shouldAnimate = self.parentViewController.shouldAnimate;
     section.artworksVC.delegate = self;
 
     // `-[ORStackView addViewController:toParent:withTopMargin:]` is a bit of a problem with unit-testing, because it

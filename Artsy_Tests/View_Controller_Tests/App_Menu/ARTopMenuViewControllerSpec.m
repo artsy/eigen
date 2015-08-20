@@ -35,7 +35,7 @@ __block ARTopMenuNavigationDataSource *dataSource;
 
 dispatch_block_t sharedBefore = ^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/xapp_token" withResponse:@{}];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/site_hero_units" withResponse:@[@{}]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/site_hero_units" withResponse:@[@{ @"heading": @"something" }]];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@{}];
 
     sut = [[ARTopMenuViewController alloc] init];
@@ -65,6 +65,10 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
     __block NSInteger tab;
     before(^{
         tab = [data[@"tab"] integerValue];
+
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/xapp_token" withResponse:@{}];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/site_hero_units" withResponse:@[@{ @"heading": @"something" }]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@{}];
     });
 
     it(@"removes x-callback-url callbacks", ^{

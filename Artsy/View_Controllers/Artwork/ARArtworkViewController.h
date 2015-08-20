@@ -12,7 +12,6 @@
 /// The artwork this VC represents
 @property (nonatomic, strong, readonly) Artwork *artwork;
 @property (nonatomic, strong, readonly) Fair *fair;
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 
 /// The index in the current set of artworks
 @property (nonatomic, assign) NSInteger index;

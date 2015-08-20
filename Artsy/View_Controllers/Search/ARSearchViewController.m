@@ -9,7 +9,6 @@
 @property (readonly, nonatomic) UITableView *resultsView;
 @property (readonly, nonatomic) UIView *contentView;
 @property (readonly, nonatomic) AFHTTPRequestOperation *searchRequest;
-@property (nonatomic, readwrite, assign) BOOL shouldAnimate;
 @end
 
 
@@ -23,7 +22,6 @@
     _searchDataSource = [[ARSearchResultsDataSource alloc] init];
     _fontSize = 16;
     _noResultsInfoLabelText = @"No results found.";
-    _shouldAnimate = YES;
 
     return self;
 }
@@ -174,7 +172,7 @@
 
 - (void)setSearchQuery:(NSString *)text
 {
-    [self setSearchQuery:text animated:self.shouldAnimate];
+    [self setSearchQuery:text animated:ARPerformWorkAsynchronously];
 }
 
 - (void)setSearchQuery:(NSString *)text animated:(BOOL)animated
@@ -226,7 +224,7 @@
     if (self.searchDataSource.searchResults.count == 0) {
         [self presentNoResults];
     } else {
-        [self showInfoLabel:NO animated:self.shouldAnimate];
+        [self showInfoLabel:NO animated:ARPerformWorkAsynchronously];
     }
 }
 
@@ -235,15 +233,15 @@
     if (replaceResults) {
         self.searchDataSource.searchResults = [NSOrderedSet orderedSetWithArray:results];
         if (results.count == 0) {
-            [self removeResultsViewAnimated:self.shouldAnimate];
+            [self removeResultsViewAnimated:ARPerformWorkAsynchronously];
         } else {
-            [self presentResultsViewAnimated:self.shouldAnimate];
+            [self presentResultsViewAnimated:ARPerformWorkAsynchronously];
         }
     } else {
         NSMutableOrderedSet *searchResults = [NSMutableOrderedSet orderedSetWithOrderedSet:self.searchDataSource.searchResults];
         [searchResults addObjectsFromArray:results];
         self.searchDataSource.searchResults = searchResults;
-        [self presentResultsViewAnimated:self.shouldAnimate];
+        [self presentResultsViewAnimated:ARPerformWorkAsynchronously];
     }
 
     [self.resultsView reloadData];
@@ -289,7 +287,7 @@
 {
     [self resetResults];
     [self setNoResultsInfoLabelText];
-    [self showInfoLabel:YES animated:self.shouldAnimate];
+    [self showInfoLabel:YES animated:ARPerformWorkAsynchronously];
     [self stopSearching];
 }
 

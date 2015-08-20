@@ -5,7 +5,6 @@
 
 
 @interface ARArtistViewController (Tests)
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @property (nonatomic, strong) id<ARArtistNetworkModelable> networkModel;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworkVC;
 
