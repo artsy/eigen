@@ -10,7 +10,7 @@ describe(@"more info", ^{
         Artwork *artwork = [Artwork modelWithJSON:@{
             @"provenance" : @"Ancient Hoboken",
             @"signature" : @"John Hancock",
-            @"additional_information" : @"The more you know",
+            @"additional_information" : @"The more you know, with *markdown* and [a link](http://www.google.com/)",
             @"literature": @"Books About Art",
             @"exhibition_history" : @"Metro Pictures April 2014"
         }];
