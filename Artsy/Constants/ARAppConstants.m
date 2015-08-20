@@ -15,4 +15,4 @@ const NSString *AROAuthTokenKey = @"access_token";
 NSString *const ARNetworkAvailableNotification = @"network_available_notification";
 NSString *const ARNetworkUnavailableNotification = @"network_unavailable_notification";
 
-BOOL ARPerformWorkAsynchronously = NO;
+BOOL ARPerformWorkAsynchronously = YES;
