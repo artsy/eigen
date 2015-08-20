@@ -12,6 +12,13 @@ static OCMockObject *ARPartialScreenMock;
 
 @implementation ARTestContext
 
++ (void)useDevice:(enum ARDeviceType)device :(void (^)(void))block
+{
+    [self stubDevice:device];
+    block();
+    [self stopStubbing];
+}
+
 + (void)stubDevice:(enum ARDeviceType)device
 {
     CGSize size;

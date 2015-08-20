@@ -36,6 +36,14 @@
     return [self getRequest:request parseIntoAnArrayOfClass:AuctionLot.class success:success failure:failure];
 }
 
++ (AFJSONRequestOperation *)createPendingOrderWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
+{
+    NSURLRequest *request = [ARRouter newPendingOrderWithArtworkID:artworkID editionSetID:editionSetID];
+    return [self performRequest:request success:success failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        failure(error);
+    }];
+}
+
 // TODO: This method should be moved into ARRouter, exposing our http client shouldn't really happen
 + (void)getAuctionArtworkWithSale:(NSString *)saleID artwork:(NSString *)artworkID success:(void (^)(id auctionArtwork))success failure:(void (^)(NSError *error))failure
 {
