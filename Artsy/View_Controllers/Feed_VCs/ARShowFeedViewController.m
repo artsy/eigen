@@ -237,7 +237,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
         [featuredShowsLabel alignBottomEdgeWithView:self.headerView predicate:@"0"];
 
         [self.headerView addSubview:showsTitleSeparator];
-        [showsTitleSeparator alignBottomEdgeWithView:featuredShowsLabel predicate:nil];
+        [showsTitleSeparator alignBottomEdgeWithView:featuredShowsLabel predicate:@"0"];
         [showsTitleSeparator alignLeading:@(sideMargin).stringValue trailing:@(-sideMargin).stringValue toView:self.headerView];
 
     } else {

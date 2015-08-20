@@ -133,7 +133,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     // This is to ensure that the background view completely coveres the view behind it when rotating.
     [self.backgroundView constrainWidthToView:self.view predicate:@">=0"];
     [self.backgroundView constrainHeightToView:self.view predicate:@">=0"];
-    [self.backgroundView alignAttribute:NSLayoutAttributeHeight toAttribute:NSLayoutAttributeWidth ofView:self.backgroundView predicate:nil];
+    [self.backgroundView alignAttribute:NSLayoutAttributeHeight toAttribute:NSLayoutAttributeWidth ofView:self.backgroundView predicate:@"0"];
 
     [self.backgroundView alignCenterWithView:self.view];
     self.backgroundView.layer.backgroundColor = [UIColor blackColor].CGColor;
@@ -180,7 +180,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     titleLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:titleLabel];
     [titleLabel alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeCenterY ofView:self.view predicate:@"*.8"];
-    [titleLabel alignCenterXWithView:self.view predicate:nil];
+    [titleLabel alignCenterXWithView:self.view predicate:@"0"];
     _messageTitleLabel = titleLabel;
 
     UILabel *bodyTextLabel = [ARThemedFactory labelForBodyText];
@@ -190,7 +190,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     bodyTextLabel.numberOfLines = 0;
     [self.view addSubview:bodyTextLabel];
     [bodyTextLabel constrainTopSpaceToView:titleLabel predicate:@"8"];
-    [bodyTextLabel alignCenterXWithView:self.view predicate:nil];
+    [bodyTextLabel alignCenterXWithView:self.view predicate:@"0"];
     _messageBodyLabel = bodyTextLabel;
 
     ARWhiteFlatButton *failureTryAgainButton = [[ARWhiteFlatButton alloc] initWithFrame:CGRectZero];
@@ -198,7 +198,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [failureTryAgainButton setTitle:@"Send Again" forState:UIControlStateNormal];
     [self.view addSubview:failureTryAgainButton];
     [failureTryAgainButton constrainTopSpaceToView:self.messageBodyLabel predicate:@"20"];
-    [failureTryAgainButton alignCenterXWithView:self.view predicate:nil];
+    [failureTryAgainButton alignCenterXWithView:self.view predicate:@"0"];
     [failureTryAgainButton addTarget:self action:@selector(sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _failureTryAgainButton = failureTryAgainButton;
 
@@ -207,7 +207,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [failureDismissButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [self.view addSubview:failureDismissButton];
     [failureDismissButton constrainTopSpaceToView:self.failureTryAgainButton predicate:@"10"];
-    [failureDismissButton alignCenterXWithView:self.view predicate:nil];
+    [failureDismissButton alignCenterXWithView:self.view predicate:@"0"];
     [failureDismissButton addTarget:self action:@selector(cancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _failureDismissButton = failureDismissButton;
 
@@ -245,7 +245,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [self.view addSubview:topContainer];
     [topContainer alignLeading:@"0" trailing:@"0" toView:self.view];
     topContainer.backgroundColor = [UIColor clearColor];
-    _inquiryHeightConstraint = [[topContainer constrainHeightToView:self.view predicate:nil] lastObject];
+    _inquiryHeightConstraint = [[topContainer constrainHeightToView:self.view predicate:@"0"] lastObject];
 
     // We will toggle the priority of the second constraint to determine whether or not it should take
     // precedence over the first in order to show/hide the form.
@@ -263,14 +263,14 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     viewBehindKeyboard.backgroundColor = [UIColor blackColor];
     [self.view addSubview:viewBehindKeyboard];
     [viewBehindKeyboard alignLeading:@"0" trailing:@"0" toView:self.view];
-    _keyboardPositionConstraint = [[viewBehindKeyboard constrainTopSpaceToView:self.flk_bottomLayoutGuide predicate:nil] lastObject];
+    _keyboardPositionConstraint = [[viewBehindKeyboard constrainTopSpaceToView:self.flk_bottomLayoutGuide predicate:@"0"] lastObject];
 
     if ([UIDevice isPad]) {
         [inquiryFormView constrainWidth:@"600"];
         [inquiryFormView constrainHeight:@"<=600"];
         [inquiryFormView alignTopEdgeWithView:topContainer predicate:@"50"];
         [inquiryFormView alignBottomEdgeWithView:topContainer predicate:@"0@750"];
-        [inquiryFormView alignCenterXWithView:topContainer predicate:nil];
+        [inquiryFormView alignCenterXWithView:topContainer predicate:@"0"];
     } else {
         [inquiryFormView alignToView:topContainer];
     }

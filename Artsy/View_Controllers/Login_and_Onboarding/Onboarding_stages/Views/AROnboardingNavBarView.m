@@ -16,7 +16,7 @@
         self.back.contentEdgeInsets = UIEdgeInsetsMake(0, 12, 0, 12);
 
         [self addSubview:self.back];
-        [self.back alignCenterYWithView:self predicate:nil];
+        [self.back alignCenterYWithView:self predicate:@"0"];
         [self.back alignLeadingEdgeWithView:self predicate:[UIDevice isPad] ? @"22" : @"0"];
 
         // title
@@ -41,12 +41,12 @@
         ;
 
         [self addSubview:self.forward];
-        [self.forward alignCenterYWithView:self predicate:nil];
+        [self.forward alignCenterYWithView:self predicate:@"0"];
         [self.forward alignTrailingEdgeWithView:self predicate:[UIDevice isPad] ? @"-22" : @"0"];
         [self.forward constrainLeadingSpaceToView:self.title predicate:@">=0"];
 
         [self.back constrainHeight:@"44"];
-        [self.forward constrainHeightToView:self.back predicate:nil];
+        [self.forward constrainHeightToView:self.back predicate:@"0"];
         [self constrainHeightToView:self.back predicate:[UIDevice isPad] ? @"*2" : nil];
     }
 

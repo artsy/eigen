@@ -82,7 +82,7 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
 
 - (void)constrainViews
 {
-    NSArray *constraintsArray = [self.bannerImageView alignTopEdgeWithView:self.view predicate:nil];
+    NSArray *constraintsArray = [self.bannerImageView alignTopEdgeWithView:self.view predicate:@"0"];
     self.bannerTopLayoutConstraint = constraintsArray.firstObject;
     NSString *bottomPredicate = [NSString stringWithFormat:@"<=-%@", @(ARParallaxHeaderViewBottomWhitespaceHeight)];
     [self.bannerImageView alignTop:nil leading:@"0" bottom:bottomPredicate trailing:@"0" toView:self.view];
@@ -98,10 +98,10 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
     [self.titleLabel alignTrailingEdgeWithView:self.view predicate:@"-20"];
     [self.titleLabel constrainTopSpaceToView:self.bannerImageView predicate:@"24"];
 
-    [self.subtitleLabel alignLeadingEdgeWithView:self.titleLabel predicate:nil];
+    [self.subtitleLabel alignLeadingEdgeWithView:self.titleLabel predicate:@"0"];
     [self.subtitleLabel alignTrailingEdgeWithView:self.view predicate:@"-20"];
-    [self.subtitleLabel constrainTopSpaceToView:self.titleLabel predicate:nil];
-    [self.subtitleLabel alignBottomEdgeWithView:self.view predicate:nil];
+    [self.subtitleLabel constrainTopSpaceToView:self.titleLabel predicate:@"0"];
+    [self.subtitleLabel alignBottomEdgeWithView:self.view predicate:@"0"];
 
     RAC(self.bannerTopLayoutConstraint, constant) = [[RACObserve(self.containingScrollView, contentOffset) map:^id(id value) {
         CGPoint contentOffset = [value CGPointValue];

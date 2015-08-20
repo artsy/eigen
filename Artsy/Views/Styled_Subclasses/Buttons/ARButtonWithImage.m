@@ -68,7 +68,6 @@ const CGFloat TitlesMargin = 5;
 
     _imageLoader = [[ARFeedImageLoader alloc] init];
 
-    // Autolayout
     [self alignToView:self.contentView];
 
     // Use bottom:@"0" to align separator with bottom of button. Using `nil` will align it with the top.
@@ -79,21 +78,21 @@ const CGFloat TitlesMargin = 5;
     self.buttonImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.buttonImageView.clipsToBounds = YES;
 
-    [self.buttonImageView alignCenterYWithView:self.contentView predicate:nil];
+    [self.buttonImageView alignCenterYWithView:self.contentView predicate:@"0"];
     [self.buttonImageView alignLeadingEdgeWithView:self.contentView predicate:@"10"];
 
     [self.labelContainer constrainLeadingSpaceToView:self.buttonImageView predicate:@"20"];
-    [self.labelContainer alignCenterYWithView:self.contentView predicate:nil];
+    [self.labelContainer alignCenterYWithView:self.contentView predicate:@"0"];
 
-    [self.labelContainer alignTopEdgeWithView:self.actualTitleLabel predicate:nil];
-    [self.actualTitleLabel alignLeadingEdgeWithView:self.labelContainer predicate:nil];
-    [self.actualTitleLabel alignTrailingEdgeWithView:self.labelContainer predicate:nil];
+    [self.labelContainer alignTopEdgeWithView:self.actualTitleLabel predicate:@"0"];
+    [self.actualTitleLabel alignLeadingEdgeWithView:self.labelContainer predicate:@"0"];
+    [self.actualTitleLabel alignTrailingEdgeWithView:self.labelContainer predicate:@"0"];
     _titlesMarginConstraint = [[self.subtitleLabel constrainTopSpaceToView:self.actualTitleLabel predicate:@"0"] lastObject];
-    [self.subtitleLabel alignBottomEdgeWithView:self.labelContainer predicate:nil];
+    [self.subtitleLabel alignBottomEdgeWithView:self.labelContainer predicate:@"0"];
 
     [UIView alignLeadingAndTrailingEdgesOfViews:@[ self.actualTitleLabel, self.subtitleLabel, self.labelContainer ]];
 
-    [self.buttonArrowView alignCenterYWithView:self.contentView predicate:nil];
+    [self.buttonArrowView alignCenterYWithView:self.contentView predicate:@"0"];
     [self.buttonArrowView alignTrailingEdgeWithView:self.contentView predicate:@"-15@1000"];
     [self.buttonArrowView constrainLeadingSpaceToView:self.labelContainer predicate:@">=8@800"];
 

@@ -63,7 +63,7 @@
     [artworkActionsView alignLeading:@"0" trailing:@"0" toView:right];
     [whitespaceGobbler constrainTopSpaceToView:artworkActionsView predicate:@"0"];
     [whitespaceGobbler alignLeading:@"0" trailing:@"0" toView:right];
-    [whitespaceGobbler alignBottomEdgeWithView:right predicate:nil];
+    [whitespaceGobbler alignBottomEdgeWithView:right predicate:@"0"];
 
 
     [left alignTopEdgeWithView:self predicate:@(imageMargin).stringValue];

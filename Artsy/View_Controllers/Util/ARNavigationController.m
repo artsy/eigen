@@ -97,9 +97,9 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     [self.view addSubview:_statusBarView];
 
     _statusBarVerticalConstraint = [_statusBarView constrainHeight:@"20"][0];
-    [_statusBarView constrainWidthToView:self.view predicate:nil];
-    [_statusBarView alignTopEdgeWithView:self.view predicate:nil];
-    [_statusBarView alignLeadingEdgeWithView:self.view predicate:nil];
+    [_statusBarView constrainWidthToView:self.view predicate:@"0"];
+    [_statusBarView alignTopEdgeWithView:self.view predicate:@"0"];
+    [_statusBarView alignLeadingEdgeWithView:self.view predicate:@"0"];
 
     _backButton = [[ARMenuButton alloc] init];
     [_backButton ar_extendHitTestSizeByWidth:10 andHeight:10];

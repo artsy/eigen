@@ -34,9 +34,9 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 
         [self.contentView addSubview:imageView];
 
-        [imageView alignTopEdgeWithView:self.contentView predicate:nil];
-        [imageView alignCenterXWithView:self.contentView predicate:nil];
-        [imageView constrainWidthToView:self.contentView predicate:nil];
+        [imageView alignTopEdgeWithView:self.contentView predicate:@"0"];
+        [imageView alignCenterXWithView:self.contentView predicate:@"0"];
+        [imageView constrainWidthToView:self.contentView predicate:@"0"];
 
         self.imageView = imageView;
     }
@@ -49,9 +49,9 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
         NSString *heightFormat = [NSString stringWithFormat:@"%0.f", [ARArtworkThumbnailMetadataView heightForView]];
 
         [metaData constrainTopSpaceToView:self.imageView predicate:marginFormat];
-        [metaData alignBottomEdgeWithView:self.contentView predicate:nil];
-        [metaData alignCenterXWithView:self.contentView predicate:nil];
-        [metaData constrainWidthToView:self.contentView predicate:nil];
+        [metaData alignBottomEdgeWithView:self.contentView predicate:@"0"];
+        [metaData alignCenterXWithView:self.contentView predicate:@"0"];
+        [metaData constrainWidthToView:self.contentView predicate:@"0"];
         [metaData constrainHeight:heightFormat];
 
         self.metadataView = metaData;

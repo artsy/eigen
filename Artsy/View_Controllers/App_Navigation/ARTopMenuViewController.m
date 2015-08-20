@@ -117,8 +117,8 @@ static const CGFloat ARMenuButtonDimension = 46;
     [separator constrainHeight:@".5"];
     separator.backgroundColor = [UIColor colorWithWhite:.3 alpha:1];
     [tabContainer addSubview:separator];
-    [separator alignTopEdgeWithView:tabContainer predicate:nil];
-    [separator constrainWidthToView:tabContainer predicate:nil];
+    [separator alignTopEdgeWithView:tabContainer predicate:@"0"];
+    [separator constrainWidthToView:tabContainer predicate:@"0"];
 
     NSMutableArray *constraintsForButtons = [NSMutableArray array];
     [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
@@ -127,10 +127,10 @@ static const CGFloat ARMenuButtonDimension = 46;
         if (index == 0) {
             [button alignLeadingEdgeWithView:tabContainer predicate:@"0"];
         } else {
-            [constraintsForButtons addObject:[[button constrainLeadingSpaceToView:buttons[index - 1] predicate:nil] lastObject] ];
+            [constraintsForButtons addObject:[[button constrainLeadingSpaceToView:buttons[index - 1] predicate:@"0"] lastObject] ];
         }
         if (index == buttons.count - 1) {
-            [constraintsForButtons addObject:[[tabContainer alignTrailingEdgeWithView:button predicate:nil] lastObject]];
+            [constraintsForButtons addObject:[[tabContainer alignTrailingEdgeWithView:button predicate:@"0"] lastObject]];
         }
     }];
     self.constraintsForButtons = [constraintsForButtons copy];

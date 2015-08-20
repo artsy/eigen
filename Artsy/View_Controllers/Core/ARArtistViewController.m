@@ -275,7 +275,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     [self.artworkVC.view addSubview:noWorksLabel];
     [noWorksLabel constrainWidthToView:self.artworkVC.view predicate:@"-80"];
     [noWorksLabel alignTopEdgeWithView:self.artworkVC.view predicate:@"0"];
-    [noWorksLabel alignCenterXWithView:self.artworkVC.view predicate:nil];
+    [noWorksLabel alignCenterXWithView:self.artworkVC.view predicate:@"0"];
 
     [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 }

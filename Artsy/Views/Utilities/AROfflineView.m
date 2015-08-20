@@ -38,7 +38,7 @@
 
         UIView *buttonContainer = [UIView new];
         [buttonContainer addSubview:_refreshButton];
-        [buttonContainer constrainHeightToView:_refreshButton predicate:nil];
+        [buttonContainer constrainHeightToView:_refreshButton predicate:@"0"];
         [_refreshButton alignCenterWithView:buttonContainer];
         [stackView addSubview:buttonContainer withTopMargin:@"20" sideMargin:@"0"];
 

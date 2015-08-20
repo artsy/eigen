@@ -18,7 +18,7 @@
 
     row.margin = 16;
     [self addSubview:row withTopMargin:@"0" sideMargin:@"0"];
-    [row alignLeadingEdgeWithView:self predicate:nil];
+    [row alignLeadingEdgeWithView:self predicate:@"0"];
 
     row.bidStatusText = [self statusMessageForSaleArtwork:saleArtwork];
 }

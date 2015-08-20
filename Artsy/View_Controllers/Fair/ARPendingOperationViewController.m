@@ -36,8 +36,8 @@
     self.label.textColor = [UIColor whiteColor];
     self.label.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.label];
-    [self.label alignCenterXWithView:self.view predicate:nil];
-    [self.label alignCenterYWithView:self.view predicate:nil];
+    [self.label alignCenterXWithView:self.view predicate:@"0"];
+    [self.label alignCenterYWithView:self.view predicate:@"0"];
 
     self.spinner = [[ARSpinner alloc] init];
     self.spinner.spinnerColor = [UIColor whiteColor];

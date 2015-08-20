@@ -45,7 +45,7 @@
     _searchIcon = searchIcon;
 
     [searchIcon alignLeadingEdgeWithView:searchBoxView predicate:@"10"];
-    [searchIcon alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:searchIcon predicate:nil];
+    [searchIcon alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:searchIcon predicate:@"0"];
 
     // input text field
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectZero];
@@ -83,7 +83,7 @@
     [self.view addSubview:self.contentView];
     [self.contentView constrainTopSpaceToView:self.searchBoxView predicate:@"15"];
     [self.contentView alignLeading:@"20" trailing:@"-20" toView:self.view];
-    [self.contentView alignBottomEdgeWithView:self.view predicate:nil];
+    [self.contentView alignBottomEdgeWithView:self.view predicate:@"0"];
 
     // search info label
     UILabel *infoLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
@@ -92,7 +92,7 @@
     infoLabel.textAlignment = NSTextAlignmentCenter;
     [self.contentView addSubview:infoLabel];
     [infoLabel constrainHeight:@"60"];
-    [infoLabel constrainWidthToView:self.contentView predicate:nil];
+    [infoLabel constrainWidthToView:self.contentView predicate:@"0"];
     [infoLabel alignCenterWithView:self.contentView];
     infoLabel.textColor = [UIColor artsyHeavyGrey];
     infoLabel.backgroundColor = [UIColor clearColor];
