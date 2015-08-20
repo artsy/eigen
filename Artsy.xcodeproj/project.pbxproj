@@ -11,6 +11,7 @@
 		0631FA6F1705E77F000A5ED3 /* mail.html in Resources */ = {isa = PBXBuildFile; fileRef = 0631FA6E1705E77F000A5ED3 /* mail.html */; };
 		064330E5170F526300FF6C41 /* ARArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 064330E4170F526200FF6C41 /* ARArtistViewController.m */; };
 		0C2C934C1B7E4B310036CC16 /* ARArtworkInfoViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C934B1B7E4B310036CC16 /* ARArtworkInfoViewControllerTests.m */; };
+		0C5100A51B83CC2A0050F479 /* ARCreateAccountViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C5100A31B83CB990050F479 /* ARCreateAccountViewControllerTests.m */; };
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
 		342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
 		342F906FD605E75158D32876 /* ARSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DC4018D17E7378DA607 /* ARSharingController.m */; };
@@ -618,6 +619,7 @@
 		064330E4170F526200FF6C41 /* ARArtistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ARArtistViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		06E44EB8170235D8001B2EBF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0C2C934B1B7E4B310036CC16 /* ARArtworkInfoViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkInfoViewControllerTests.m; sourceTree = "<group>"; };
+		0C5100A31B83CB990050F479 /* ARCreateAccountViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCreateAccountViewControllerTests.m; sourceTree = "<group>"; };
 		29773A6F17B9749800FC89B3 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		342F9005B8C4E89F9DA89E36 /* NSString+StringCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringCase.h"; sourceTree = "<group>"; };
 		342F9018E314BCC99A929A6C /* UILabel+Typography.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Typography.h"; sourceTree = "<group>"; };
@@ -2214,12 +2216,13 @@
 			isa = PBXGroup;
 			children = (
 				60B1B4C81B565218007A7217 /* ARCollectorStatusViewControllerSpec.m */,
+				0C5100A31B83CB990050F479 /* ARCreateAccountViewControllerTests.m */,
+				D3C696C91B1500D70034A034 /* AROnboardingMoreInfoViewControllerTests.m */,
 				E6C13AC01A23AA420050AB53 /* AROnboardingViewControllerTests.m */,
 				3CB97D8E1887099E008C44FE /* ARLoginViewControllerTests.m */,
 				3CF144B718E9E00400B1A764 /* ARSignUpSplashViewControllerTests.m */,
 				E6F84D011A0AB40500BF99A3 /* ARSignUpActiveUserViewControllerTests.m */,
 				60D7FB721AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m */,
-				D3C696C91B1500D70034A034 /* AROnboardingMoreInfoViewControllerTests.m */,
 			);
 			name = "Login and Onboarding";
 			path = Login_and_Onboarding;
@@ -4728,6 +4731,7 @@
 				E67DF2131A40A73C00C8495E /* ARSearchViewControllerSpec.m in Sources */,
 				3C6BDCBD18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m in Sources */,
 				3CB37D991922483100089A1D /* ArtsyAPI+ErrorHandlers.m in Sources */,
+				0C5100A51B83CC2A0050F479 /* ARCreateAccountViewControllerTests.m in Sources */,
 				E6C13AC11A23AA420050AB53 /* AROnboardingViewControllerTests.m in Sources */,
 				E6B958F1188DB6F800D75C86 /* ARArtworkViewControllerTests.m in Sources */,
 				E63C796C198811E400579C04 /* ARArtworkRelatedArtworksViewTests.m in Sources */,
