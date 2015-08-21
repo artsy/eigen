@@ -23,7 +23,7 @@
     @import AFNetworking;
     @import Mantle;
     @import Mantle.metamacros;
-    @import AFHTTPRequestOperationLogger;
+    @import AFNetworkActivityLogger;
     @import ObjectiveSugar;
     @import FLKAutoLayout;
     @import CocoaLumberjack;

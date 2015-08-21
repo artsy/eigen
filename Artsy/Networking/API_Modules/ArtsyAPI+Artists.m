@@ -9,13 +9,13 @@
     [self getRequest:[ARRouter newArtistInfoRequestWithID:artistID] parseIntoAClass:[Artist class] success:success failure:failure];
 }
 
-+ (AFJSONRequestOperation *)getShowsForArtistID:(NSString *)artistID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure
++ (AFHTTPRequestOperation *)getShowsForArtistID:(NSString *)artistID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newShowsRequestForArtist:artistID];
     return [self getRequest:request parseIntoAnArrayOfClass:[PartnerShow class] success:success failure:failure];
 }
 
-+ (AFJSONRequestOperation *)getShowsForArtistID:(NSString *)artistID inFairID:(NSString *)fairID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure
++ (AFHTTPRequestOperation *)getShowsForArtistID:(NSString *)artistID inFairID:(NSString *)fairID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newShowsRequestForArtistID:artistID inFairID:fairID];
     return [self getRequest:request parseIntoAnArrayOfClass:[PartnerShow class] fromDictionaryWithKey:@"results" success:success failure:failure];

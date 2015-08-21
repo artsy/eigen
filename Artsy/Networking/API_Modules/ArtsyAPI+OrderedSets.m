@@ -3,7 +3,7 @@
 
 @implementation ArtsyAPI (OrderedSets)
 
-+ (AFJSONRequestOperation *)getOrderedSetsWithOwnerType:(NSString *)ownerType
++ (AFHTTPRequestOperation *)getOrderedSetsWithOwnerType:(NSString *)ownerType
                                                   andID:(NSString *)ownerID
                                                 success:(void (^)(NSMutableDictionary *orderedSets))success
                                                 failure:(void (^)(NSError *error))failure
@@ -21,7 +21,7 @@
     } failure:failure];
 }
 
-+ (AFJSONRequestOperation *)getOrderedSetWithKey:(NSString *)key
++ (AFHTTPRequestOperation *)getOrderedSetWithKey:(NSString *)key
                                          success:(void (^)(OrderedSet *set))success
                                          failure:(void (^)(NSError *error))failure
 {
@@ -31,7 +31,7 @@
     } failure:failure];
 }
 
-+ (AFJSONRequestOperation *)getOrderedSetItemsWithKey:(NSString *)key
++ (AFHTTPRequestOperation *)getOrderedSetItemsWithKey:(NSString *)key
                                               success:(void (^)(NSArray *sets))success
                                               failure:(void (^)(NSError *error))failure
 {
@@ -43,7 +43,7 @@
     } failure:failure];
 }
 
-+ (AFJSONRequestOperation *)getOrderedSetItemsWithKey:(NSString *)key
++ (AFHTTPRequestOperation *)getOrderedSetItemsWithKey:(NSString *)key
                                               andName:(NSString *)name
                                               success:(void (^)(NSArray *items))success
                                               failure:(void (^)(NSError *error))failure
@@ -58,7 +58,7 @@
     } failure:failure];
 }
 
-+ (AFJSONRequestOperation *)getOrderedSetItems:(NSString *)orderedSetID
++ (AFHTTPRequestOperation *)getOrderedSetItems:(NSString *)orderedSetID
                                       withType:(Class) class
                                        success:(void (^)(NSArray *orderedSets))success
                                        failure:(void (^)(NSError *error))failure
@@ -67,7 +67,7 @@
     return [self getRequest:request parseIntoAnArrayOfClass:class success:success failure:failure];
 }
 
-    + (AFJSONRequestOperation *)getOrderedSetItems : (NSString *)orderedSetID
+    + (AFHTTPRequestOperation *)getOrderedSetItems : (NSString *)orderedSetID
                                                      atPage : (NSInteger)page
                                                               withType : (Class) class
                                                                          success : (void (^)(NSArray *orderedSets))success

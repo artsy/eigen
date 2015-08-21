@@ -272,6 +272,7 @@
 		60289229176BE98C00512977 /* ARViewInRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60289228176BE98C00512977 /* ARViewInRoomViewController.m */; };
 		6029E9F51993D726002D42C3 /* ARAppSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6029E9F41993D726002D42C3 /* ARAppSearchViewController.m */; };
 		602BC089168E0C0E00069FDB /* ARReusableLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 602BC088168E0C0D00069FDB /* ARReusableLoadingView.m */; };
+		602C09BA1B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 602C09B91B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m */; };
 		60327DC91987AAD00075B399 /* ARTabContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DC81987AAD00075B399 /* ARTabContentView.m */; };
 		60327DCD1987AD240075B399 /* ARDispatchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DCC1987AD240075B399 /* ARDispatchManager.m */; };
 		60327DD01987B7940075B399 /* ARDeveloperOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DCF1987B7940075B399 /* ARDeveloperOptions.m */; };
@@ -1078,6 +1079,8 @@
 		6029E9F41993D726002D42C3 /* ARAppSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppSearchViewController.m; sourceTree = "<group>"; };
 		602BC087168E0C0D00069FDB /* ARReusableLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARReusableLoadingView.h; sourceTree = "<group>"; };
 		602BC088168E0C0D00069FDB /* ARReusableLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARReusableLoadingView.m; sourceTree = "<group>"; };
+		602C09B81B5E5CE5003681D3 /* AFHTTPRequestOperation+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AFHTTPRequestOperation+JSON.h"; path = "AFNetworking/AFHTTPRequestOperation+JSON.h"; sourceTree = "<group>"; };
+		602C09B91B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AFHTTPRequestOperation+JSON.m"; path = "AFNetworking/AFHTTPRequestOperation+JSON.m"; sourceTree = "<group>"; };
 		602DCDAB16C6B6C1009EB10D /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		602DCDAD16C6B74D009EB10D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		602DCDAF16C6B752009EB10D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -2821,6 +2824,15 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		602C09B71B5E5CBE003681D3 /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				602C09B81B5E5CE5003681D3 /* AFHTTPRequestOperation+JSON.h */,
+				602C09B91B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m */,
+			);
+			name = AFNetworking;
+			sourceTree = "<group>";
+		};
 		603218C3195C92C2004E7A24 /* App Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -3138,6 +3150,7 @@
 		608B2F7E1657D3B40046956C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				602C09B71B5E5CBE003681D3 /* AFNetworking */,
 				608B2F861657D5880046956C /* Categories.h */,
 				342F9C2C3D87889B79459CED /* Apple */,
 				342F90A2E677A86747A25FD8 /* Artsy */,
@@ -4598,6 +4611,7 @@
 				6036B5651760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m in Sources */,
 				CB73B48B17D2581400891305 /* SiteFeature.m in Sources */,
 				6099F90A17904F9B0004EF04 /* ARModelCollectionViewModule.m in Sources */,
+				602C09BA1B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m in Sources */,
 				609F98611AC106030079FE21 /* WatchBiddingDetails.m in Sources */,
 				609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */,
 				605B11B217CFD78400334196 /* AROnboardingWebViewController.m in Sources */,

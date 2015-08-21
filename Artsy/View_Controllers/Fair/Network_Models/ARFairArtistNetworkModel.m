@@ -3,7 +3,7 @@
 
 @implementation ARFairArtistNetworkModel
 
-- (AFJSONRequestOperation *)getShowsForArtistID:(NSString *)artistID inFairID:(NSString *)fairID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure
+- (AFHTTPRequestOperation *)getShowsForArtistID:(NSString *)artistID inFairID:(NSString *)fairID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure
 {
     return [ArtsyAPI getShowsForArtistID:artistID inFairID:fairID success:success failure:failure];
 }
@@ -18,7 +18,7 @@
 
 @implementation ARStubbedFairArtistNetworkModel
 
-- (AFJSONRequestOperation *)getShowsForArtistID:(NSString *)artistID inFairID:(NSString *)fairID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure
+- (AFHTTPRequestOperation *)getShowsForArtistID:(NSString *)artistID inFairID:(NSString *)fairID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure
 {
     if (self.shows) {
         success(self.shows);

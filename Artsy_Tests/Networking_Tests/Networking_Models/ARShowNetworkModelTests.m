@@ -1,6 +1,7 @@
 #import "ARShowNetworkModel.h"
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Shows.h"
+#import "ARNetworkConstants.h"
 
 SpecBegin(ARShowNetworkModel);
 
@@ -21,97 +22,60 @@ it(@"sets up its properties upon initialization", ^{
     expect(model.fair).to.equal(fair);
 });
 
+__block ARShowNetworkModel *model;
+__block BOOL success = NO;
+
 describe(@"network access", ^{
-    __block id mockShow;
-    __block id mockFair;
-    __block id APIMock;
-    __block id evalutationCheck;
-    
-    before(^{
-        evalutationCheck = [OCMArg checkWithBlock:^BOOL(void (^success)(PartnerShow *show)) {
-            success(mockShow);
-            return YES;
-        }];
-    });
-    
-    
-    beforeEach(^{
-        mockShow = [OCMockObject partialMockForObject:show];
-        mockFair = [OCMockObject partialMockForObject:fair];
-        APIMock = [OCMockObject mockForClass:[ArtsyAPI class]];
-    });
-    
-    afterEach(^{
-        [mockShow verify];
-        [mockFair verify];
-        [APIMock verify], [APIMock stopMocking];
-    });
-    
-    describe(@"with mocked show and fair", ^{
-        __block ARShowNetworkModel *model;
+
+    describe(@"with a show and fair", ^{
+
         beforeEach(^{
-            model = [[ARShowNetworkModel alloc] initWithFair:mockFair show:mockShow];
+            model = [[ARShowNetworkModel alloc] initWithFair:fair show:show];
+            success = NO;
         });
         
         it(@"gets show info", ^{
-            [[[APIMock expect] classMethod] getShowInfo:mockShow success:evalutationCheck failure:OCMOCK_ANY];
-            
-            __block PartnerShow *returnedShow;
+            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/show/show-id" withResponse:@{ @"id" : @"newshow-id" }];
+
             [model getShowInfo:^(PartnerShow *show) {
-                returnedShow = show;
+                success = [show.showID isEqualToString:@"newshow-id"];
             } failure:nil];
-            
-            expect(returnedShow).to.equal(mockShow);
+
+            expect(success).to.beTruthy();
         });
         
         it(@"gets fair maps", ^{
-            NSArray *maps = @[[OCMockObject mockForClass:[Map class]]];
+            [OHHTTPStubs stubJSONResponseAtPath:ARNewFairMapURL withResponse:@[@{}]];
             
-            [[mockFair expect] getFairMaps:[OCMArg checkWithBlock:^BOOL(void (^success)(NSArray *maps)) {
-                success(maps);
-                return YES;
-            }]];
-            
-            __block NSArray *returnedMaps;
             [model getFairMaps:^(NSArray *maps) {
-                returnedMaps = maps;
+                success = maps.count == 1;
             }];
-            
-            expect(returnedMaps).to.equal(maps);
+
+            expect(success).to.beTruthy();
         });
         
         it(@"gets artwork pages", ^{
+            NSDictionary *params = @{ @"page" : @(3), @"published" : @YES, @"size" : @10 };
+            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/partner/leila-heller/show/show-id/artworks" withParams:params withResponse:@[@{}, @{}]];
+
             NSInteger page = 3;
-            NSArray *artworks = @[[OCMockObject mockForClass:[Artwork class]]];
-            
-            [[[APIMock expect] classMethod] getArtworksForShow:mockShow atPage:page success:[OCMArg checkWithBlock:^BOOL(void (^success)(NSArray *artworks)) {
-                success(artworks);
-                return YES;
-            }] failure:OCMOCK_ANY];
-            
-            __block NSArray *returnedArtworks;
             [model getArtworksAtPage:page success:^(NSArray *artworks) {
-                returnedArtworks = artworks;
+                success = artworks.count == 2;
             } failure:nil];
-            
-            expect(returnedArtworks).to.equal(artworks);
+
+            expect(success).to.beTruthy();
         });
     });
     
-    describe(@"with mocked show and nil fair", ^{
-        __block ARShowNetworkModel *model;
-        
-        beforeEach(^{
-            model = [[ARShowNetworkModel alloc] initWithFair:nil show:mockShow];
-        });
-        
+    describe(@"with a show and no fair", ^{
         it(@"sets fair after getting show info", ^{
-            [[[mockShow expect] andReturn:mockFair] fair];
-            [[[APIMock expect] classMethod] getShowInfo:mockShow success:evalutationCheck failure:OCMOCK_ANY];
-            
+            NSDictionary *showJSON = @{ @"id" : @"newshow-id", @"fair": @{} };
+            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/show/show-id" withResponse:showJSON];
+
+            model = [[ARShowNetworkModel alloc] initWithFair:nil show:show];
             [model getShowInfo:nil failure:nil];
             
-            expect(model.fair).to.equal(mockFair);
+            expect(model.fair).to.beTruthy();
         });
     });
 });

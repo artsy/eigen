@@ -67,7 +67,7 @@
 
         // SCREW IT MEGAHACK to get paragraph spacing right.
         NSMutableAttributedString *mutableCopy = string.mutableCopy;
-
+        
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
 
         if (self.expectsSingleLine) {

@@ -24,7 +24,7 @@
 - (void)updateGene:(void (^)(void))success;
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
 
-- (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
+- (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
 
 - (NSURL *)smallImageURL;
 - (NSURL *)largeImageURL;

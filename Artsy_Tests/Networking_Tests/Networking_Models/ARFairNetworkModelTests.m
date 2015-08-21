@@ -188,23 +188,17 @@ describe(@"getMapInfo", ^{
     });
 
     it(@"returns maps for fair", ^{
-        waitUntil(^(DoneCallback done) {
+        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-6", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
+        ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
 
-            Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-6", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
-            ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
+        [networkModel getMapInfoForFair:fair success:^(NSArray *maps) {
 
-            [networkModel getMapInfoForFair:fair success:^(NSArray *maps) {
+            expect(fair.maps).to.equal(maps);
+            expect(maps.count).to.equal(1);
 
-                expect(fair.maps).to.equal(maps);
-                expect(maps.count).to.equal(1);
-
-                done();
-
-            } failure:^(NSError *error) {
-                
-            }];
-        });
-
+        } failure:^(NSError *error) {
+            failure(@"Should not fail");
+        }];
     });
 });
 

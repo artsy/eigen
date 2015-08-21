@@ -70,14 +70,14 @@ static CGFloat ARHeroUnitDescriptionFont;
     [textViewsContainer alignLeadingEdgeWithView:self predicate:NSStringWithFormat(@"%f", ARHeroUnitSideMargin * leftMarginMultiplier)];
     [textViewsContainer alignTrailingEdgeWithView:self predicate:NSStringWithFormat(@"-%f", ARHeroUnitSideMargin * rightMarginMultiplier)];
 
-    UILabel *headingLabel = [self createHeadingLabelWithText:unit.heading];
+    UILabel *headingLabel = [self createHeadingLabelWithText:unit.heading ?: @""];
     UIView *titleView;
     if ([UIDevice isPad] && unit.titleImageURL) {
         titleView = [self createTitleImageWithImageURL:unit.titleImageURL];
     } else {
-        titleView = [self createTitleLabelWithText:unit.title];
+        titleView = [self createTitleLabelWithText:unit.title ?: @""];
     }
-    UILabel *descriptionLabel = [self createDescriptionLabelWithText:unit.body];
+    UILabel *descriptionLabel = [self createDescriptionLabelWithText:unit.body ?: @""];
 
     [textViewsContainer addSubview:headingLabel withTopMargin:nil sideMargin:nil];
 

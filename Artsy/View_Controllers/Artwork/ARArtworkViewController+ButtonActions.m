@@ -230,6 +230,7 @@
     UIViewController *viewController = [ARSwitchBoard.sharedInstance routeProfileWithID:fairID];
     [self.navigationController pushViewController:viewController animated:YES];
 }
+
 - (void)tappedOpenArtworkArtist
 {
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:self.artwork.artist.artistID inFair:self.fair];

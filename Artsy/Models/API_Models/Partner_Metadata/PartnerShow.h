@@ -50,6 +50,6 @@
 - (NSURL *)smallPreviewImageURL;
 
 
-- (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
+- (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
 
 @end

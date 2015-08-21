@@ -11,7 +11,7 @@
     [self getRequest:request parseIntoAnArrayOfClass:[Sale class] success:success failure:failure];
 }
 
-+ (AFJSONRequestOperation *)getArtworksForSale:(NSString *)saleID
++ (AFHTTPRequestOperation *)getArtworksForSale:(NSString *)saleID
                                        success:(void (^)(NSArray *))success
                                        failure:(void (^)(NSError *))failure
 {

@@ -29,7 +29,7 @@ describe(@"handleHTTPError", ^{
 
     it(@"wrong status code", ^{
         waitUntil(^(DoneCallback done) {
-            NSError *error = [[NSError alloc] initWithDomain:AFNetworkingErrorDomain code:302 userInfo:@{}];
+            NSError *error = [[NSError alloc] initWithDomain:NSURLErrorDomain code:302 userInfo:@{}];
             [ArtsyAPI handleHTTPError:error statusCode:404 errorMessage:nil success:^(NSError *error) {
                 expect(false).to.beTruthy();
                 done();
@@ -41,7 +41,7 @@ describe(@"handleHTTPError", ^{
 
     it(@"correct status code and any error message", ^{
         waitUntil(^(DoneCallback done) {
-            NSError *error = [[NSError alloc] initWithDomain:AFNetworkingErrorDomain code:401 userInfo:@{
+            NSError *error = [[NSError alloc] initWithDomain:NSURLErrorDomain code:401 userInfo:@{
                 NSLocalizedRecoverySuggestionErrorKey: @"{\"error\":\"Unauthorized\",\"text\":\"The XAPP token is invalid or has expired.\"}",
                 AFNetworkingOperationFailingURLResponseErrorKey: [[MutableNSURLResponse alloc] initWithStatusCode:401]
             }];
@@ -56,7 +56,7 @@ describe(@"handleHTTPError", ^{
 
     it(@"correct status code and wrong error message", ^{
             waitUntil(^(DoneCallback done) {
-            NSError *error = [[NSError alloc] initWithDomain:AFNetworkingErrorDomain code:401 userInfo:@{
+            NSError *error = [[NSError alloc] initWithDomain:NSURLErrorDomain code:401 userInfo:@{
                 NSLocalizedRecoverySuggestionErrorKey: @"{\"error\":\"Unauthorized\",\"text\":\"The XAPP token is invalid or has expired.\"}",
                 AFNetworkingOperationFailingURLResponseErrorKey: [[MutableNSURLResponse alloc] initWithStatusCode:401]
             }];
@@ -72,7 +72,7 @@ describe(@"handleHTTPError", ^{
 
     it(@"correct status code and correct error message", ^{
         waitUntil(^(DoneCallback done) {
-            NSError *error = [[NSError alloc] initWithDomain:AFNetworkingErrorDomain code:401 userInfo:@{
+            NSError *error = [[NSError alloc] initWithDomain:NSURLErrorDomain code:401 userInfo:@{
                 NSLocalizedRecoverySuggestionErrorKey: @"{\"error\":\"Unauthorized\",\"text\":\"The XAPP token is invalid or has expired.\"}",
                 AFNetworkingOperationFailingURLResponseErrorKey: [[MutableNSURLResponse alloc] initWithStatusCode:401]
             }];
@@ -89,7 +89,7 @@ describe(@"handleHTTPError", ^{
 describe(@"handleHTTPErrors", ^{
     it(@"correct status code and one correct error message", ^{
         waitUntil(^(DoneCallback done) {
-            NSError *error = [[NSError alloc] initWithDomain:AFNetworkingErrorDomain code:401 userInfo:@{
+            NSError *error = [[NSError alloc] initWithDomain:NSURLErrorDomain code:401 userInfo:@{
                 NSLocalizedRecoverySuggestionErrorKey: @"{\"error\":\"Unauthorized\",\"text\":\"The XAPP token is invalid or has expired.\"}",
                 AFNetworkingOperationFailingURLResponseErrorKey: [[MutableNSURLResponse alloc] initWithStatusCode:401]
             }];

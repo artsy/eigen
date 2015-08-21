@@ -82,7 +82,7 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     self.clearButton.hidden = self.textField.text.length == 0;
 }
 
-- (AFJSONRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
+- (AFHTTPRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
     return [ArtsyAPI searchWithQuery:query success:success failure:failure];
 }

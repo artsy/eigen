@@ -8,9 +8,9 @@
 
 - (void)setFavoriteStatus:(BOOL)status success:(void (^)(id response))success failure:(void (^)(NSError *error))failure;
 
-- (AFJSONRequestOperation *)getRelatedArtists:(void (^)(NSArray *artists))success;
+- (void)getRelatedArtists:(void (^)(NSArray *artists))success;
 
-- (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
+- (void)getRelatedPosts:(void (^)(NSArray *posts))success;
 
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
 

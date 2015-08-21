@@ -8,7 +8,7 @@
 @property (readonly, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (readonly, nonatomic) UITableView *resultsView;
 @property (readonly, nonatomic) UIView *contentView;
-@property (readonly, nonatomic) AFJSONRequestOperation *searchRequest;
+@property (readonly, nonatomic) AFHTTPRequestOperation *searchRequest;
 @end
 
 
@@ -165,7 +165,7 @@
     [self addResults:@[] replace:YES];
 }
 
-- (AFJSONRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
+- (AFHTTPRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
