@@ -10,6 +10,7 @@
 * [iOS 9] Fix artwork view layout after rotating into and out of VIR. - alloy
 * [iOS 9] Fix layout of artwork set view after rotating into and out of VIR. - alloy
 * [iOS 9] Fix layout of onboarding views. - alloy
+* [iOS 9] Fix artist view not getting a frame when opened from a search result. - alloy
 * [iOS 9] Ensure cells on genes overview are all properly sized on first launch. - alloy
 * [iOS 9] Ensure navigation buttons are shown/hidden on gene view when scrolling. - alloy
 * [iOS 9] Fix views where undefined behaviour of FLKAutoLayout constraints was being depended on. - alloy
