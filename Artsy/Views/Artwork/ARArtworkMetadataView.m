@@ -65,22 +65,25 @@
     [whitespaceGobbler alignLeading:@"0" trailing:@"0" toView:right];
     [whitespaceGobbler alignBottomEdgeWithView:right predicate:@"0"];
 
-
     [left alignTopEdgeWithView:self predicate:@(imageMargin).stringValue];
     [left alignLeadingEdgeWithView:self predicate:@(imageMargin).stringValue];
     [right alignTrailingEdgeWithView:self predicate:@(-margin).stringValue];
 
     [self alignBottomEdgeWithView:right predicate:@"0"];
 
+    // These constraints are for portrait and landscape orientations.
+    //
+    // The iPhone *only* supports portrait orientation, for which the verticalConstraints are used, whereas the iPad
+    // uses the horizontalConstraints in landscape mode.
+
     // Constraints for both iPad orientations
     if ([UIDevice isPad]) {
         [artworkDetailView alignTopEdgeWithView:right predicate:@"0"];
-    } else {
-        [artworkDetailView alignTrailingEdgeWithView:right predicate:@"0"];
     }
 
     // Constraints that apply to iPhone and vertical iPad
     NSMutableArray *verticalConstraints = [NSMutableArray array];
+
     [verticalConstraints addObject:[[right constrainTopSpaceToView:left predicate:@"28"] lastObject]];
     [verticalConstraints addObject:[[left alignTrailingEdgeWithView:self predicate:@(-imageMargin).stringValue] lastObject]];
     [verticalConstraints addObject:[[right alignLeadingEdgeWithView:self predicate:@(margin).stringValue] lastObject]];
@@ -94,32 +97,35 @@
         [verticalConstraints addObject:[[artworkDetailView alignBottomEdgeWithView:previewActionsView predicate:@">=0"] lastObject]];
     } else {
         [verticalConstraints addObject:[[artworkDetailView constrainTopSpaceToView:previewActionsView predicate:@"0"] lastObject]];
+        [verticalConstraints addObject:[[artworkDetailView alignTrailingEdgeWithView:right predicate:@"0"] lastObject]];
     }
 
     _verticalConstraints = [verticalConstraints copy];
 
-    // Constraints for horizontal iPad layout
-    NSMutableArray *horizontalConstraints = [NSMutableArray array];
+    if ([UIDevice isPad]) {
+        // iPhone only supports portrait, so no need to disable these on iPhone.
+        [NSLayoutConstraint deactivateConstraints:self.verticalConstraints];
 
-    [horizontalConstraints addObject:[[right alignTopEdgeWithView:self predicate:@(margin).stringValue] lastObject]];
-    [horizontalConstraints addObject:[[right constrainLeadingSpaceToView:left predicate:@"40"] lastObject]];
-    [horizontalConstraints addObject:[[right constrainWidthToView:self predicate:@"*.26"] lastObject]];
-    [horizontalConstraints addObject:[[self alignBottomEdgeWithView:left predicate:@"0"] lastObject]];
-    [horizontalConstraints addObject:[[self alignBottomEdgeWithView:left predicate:@">=0"] lastObject]];
-    [horizontalConstraints addObject:[[self alignBottomEdgeWithView:right predicate:@">=0"] lastObject]];
+        // Constraints for horizontal iPad layout
+        NSMutableArray *horizontalConstraints = [NSMutableArray array];
 
-    [horizontalConstraints addObject:[[artworkDetailView alignTrailingEdgeWithView:right predicate:@"0"] lastObject]];
-    [horizontalConstraints addObject:[[previewActionsView constrainTopSpaceToView:artworkDetailView predicate:@"12"] lastObject]];
-    [horizontalConstraints addObject:[[previewActionsView alignLeadingEdgeWithView:right predicate:@">=0"] lastObject]];
-    [horizontalConstraints addObject:[[previewActionsView alignTrailingEdgeWithView:right predicate:@"<=0"] lastObject]];
-    [horizontalConstraints addObject:[[previewActionsView alignCenterXWithView:right predicate:@"0"] lastObject]];
-    [horizontalConstraints addObject:[[artworkActionsView constrainTopSpaceToView:previewActionsView predicate:@"22"] lastObject]];
+        [horizontalConstraints addObject:[[right alignTopEdgeWithView:self predicate:@(margin).stringValue] lastObject]];
+        [horizontalConstraints addObject:[[right constrainLeadingSpaceToView:left predicate:@"40"] lastObject]];
+        [horizontalConstraints addObject:[[right constrainWidthToView:self predicate:@"*.26"] lastObject]];
+        [horizontalConstraints addObject:[[self alignBottomEdgeWithView:left predicate:@"0"] lastObject]];
+        [horizontalConstraints addObject:[[self alignBottomEdgeWithView:left predicate:@">=0"] lastObject]];
+        [horizontalConstraints addObject:[[self alignBottomEdgeWithView:right predicate:@">=0"] lastObject]];
 
-    _horizontalConstraints = [horizontalConstraints copy];
+        [horizontalConstraints addObject:[[artworkDetailView alignTrailingEdgeWithView:right predicate:@"0"] lastObject]];
+        [horizontalConstraints addObject:[[previewActionsView constrainTopSpaceToView:artworkDetailView predicate:@"12"] lastObject]];
+        [horizontalConstraints addObject:[[previewActionsView alignLeadingEdgeWithView:right predicate:@">=0"] lastObject]];
+        [horizontalConstraints addObject:[[previewActionsView alignTrailingEdgeWithView:right predicate:@"<=0"] lastObject]];
+        [horizontalConstraints addObject:[[previewActionsView alignCenterXWithView:right predicate:@"0"] lastObject]];
+        [horizontalConstraints addObject:[[artworkActionsView constrainTopSpaceToView:previewActionsView predicate:@"22"] lastObject]];
 
-    [NSLayoutConstraint deactivateConstraints:self.verticalConstraints];
-    [NSLayoutConstraint deactivateConstraints:self.horizontalConstraints];
-
+        _horizontalConstraints = [horizontalConstraints copy];
+        [NSLayoutConstraint deactivateConstraints:self.horizontalConstraints];
+    }
 
     [self registerForNetworkNotifications];
 
@@ -131,12 +137,14 @@
 
 - (void)updateConstraintsIsLandscape:(BOOL)isLandscape
 {
-    if (isLandscape) {
-        [NSLayoutConstraint deactivateConstraints:self.verticalConstraints];
-        [NSLayoutConstraint activateConstraints:self.horizontalConstraints];
-    } else {
-        [NSLayoutConstraint deactivateConstraints:self.horizontalConstraints];
-        [NSLayoutConstraint activateConstraints:self.verticalConstraints];
+    if ([UIDevice isPad]) {
+        if (isLandscape) {
+            [NSLayoutConstraint deactivateConstraints:self.verticalConstraints];
+            [NSLayoutConstraint activateConstraints:self.horizontalConstraints];
+        } else {
+            [NSLayoutConstraint deactivateConstraints:self.horizontalConstraints];
+            [NSLayoutConstraint activateConstraints:self.verticalConstraints];
+        }
     }
 }
 
