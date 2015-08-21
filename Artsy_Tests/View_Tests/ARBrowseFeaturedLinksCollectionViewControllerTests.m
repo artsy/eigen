@@ -62,7 +62,8 @@ describe(@"appearance", ^{
             vc = [[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:style];
             UIViewController *parentVC = [[UIViewController alloc] init];
             [parentVC ar_addChildViewController:vc atFrame:CGRectZero];
-            [vc.view alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:parentVC.view];
+            [vc.view alignLeading:@"0" trailing:@"0" toView:parentVC.view];
+            [vc.view alignTopEdgeWithView:parentVC.view predicate:@"0"];
             [parentVC ar_presentWithFrame:[UIScreen mainScreen].bounds];
             [parentVC.view layoutIfNeeded];
             vc.featuredLinks = @[
@@ -88,7 +89,8 @@ describe(@"appearance", ^{
             vc = [[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:style];
             UIViewController *parentVC = [[UIViewController alloc] init];
             [parentVC ar_addChildViewController:vc atFrame:CGRectZero];
-            [vc.view alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:parentVC.view];
+            [vc.view alignLeading:@"0" trailing:@"0" toView:parentVC.view];
+            [vc.view alignTopEdgeWithView:parentVC.view predicate:@"0"];
             [parentVC ar_presentWithFrame:[UIScreen mainScreen].bounds];
             [parentVC.view layoutIfNeeded];
             vc.featuredLinks = @[

@@ -41,7 +41,7 @@
 
     [@[ self.facebook, self.twitter, self.email, label ] each:^(UIView *view) {
         [self.view addSubview:view];
-        [view alignCenterXWithView:self.view predicate:nil];
+        [view alignCenterXWithView:self.view predicate:@"0"];
     }];
 
     [self.twitter constrainTopSpaceToView:self.facebook predicate:@"10"];

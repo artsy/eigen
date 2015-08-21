@@ -200,6 +200,12 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 {
     [super viewWillAppear:animated];
 
+    // TODO Figure out why on iOS 9 the view never gets autoresized when opened from a search result.
+    //      The parentViewController check is really only for tests, which currently still run on iOS 8 and thus work as expected.
+    if (self.parentViewController) {
+        self.view.frame = self.parentViewController.view.bounds;
+    }
+
     // Ensure that the related artists VC has the correct dimensions to lay out its content BEFORE it appears.
     [self.relatedArtistsVC.view layoutIfNeeded];
     [self setArtworksHeight];
@@ -275,7 +281,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     [self.artworkVC.view addSubview:noWorksLabel];
     [noWorksLabel constrainWidthToView:self.artworkVC.view predicate:@"-80"];
     [noWorksLabel alignTopEdgeWithView:self.artworkVC.view predicate:@"0"];
-    [noWorksLabel alignCenterXWithView:self.artworkVC.view predicate:nil];
+    [noWorksLabel alignCenterXWithView:self.artworkVC.view predicate:@"0"];
 
     [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 }

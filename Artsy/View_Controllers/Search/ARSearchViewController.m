@@ -32,7 +32,7 @@
 
     UIView *searchBoxView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:searchBoxView];
-    [searchBoxView constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"24"];
+    [searchBoxView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"24"];
     [searchBoxView alignLeading:@"10" trailing:@"-10" toView:self.view];
     [searchBoxView constrainHeight:@(self.fontSize).stringValue];
     _searchBoxView = searchBoxView;
@@ -45,7 +45,7 @@
     _searchIcon = searchIcon;
 
     [searchIcon alignLeadingEdgeWithView:searchBoxView predicate:@"10"];
-    [searchIcon alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:searchIcon predicate:nil];
+    [searchIcon alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:searchIcon predicate:@"0"];
 
     // input text field
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectZero];
@@ -82,7 +82,8 @@
     _contentView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.contentView];
     [self.contentView constrainTopSpaceToView:self.searchBoxView predicate:@"15"];
-    [self.contentView alignTop:nil leading:@"20" bottom:@"0" trailing:@"-20" toView:self.view];
+    [self.contentView alignLeading:@"20" trailing:@"-20" toView:self.view];
+    [self.contentView alignBottomEdgeWithView:self.view predicate:@"0"];
 
     // search info label
     UILabel *infoLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
@@ -91,7 +92,7 @@
     infoLabel.textAlignment = NSTextAlignmentCenter;
     [self.contentView addSubview:infoLabel];
     [infoLabel constrainHeight:@"60"];
-    [infoLabel constrainWidthToView:self.contentView predicate:nil];
+    [infoLabel constrainWidthToView:self.contentView predicate:@"0"];
     [infoLabel alignCenterWithView:self.contentView];
     infoLabel.textColor = [UIColor artsyHeavyGrey];
     infoLabel.backgroundColor = [UIColor clearColor];
@@ -105,6 +106,7 @@
     [activityIndicator alignCenterWithView:self.contentView];
     activityIndicator.hidden = YES;
     _activityIndicator = activityIndicator;
+
     [super viewDidLoad];
 }
 

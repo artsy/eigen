@@ -89,28 +89,28 @@
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
     logo.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:logo];
-    [logo alignCenterXWithView:self.view predicate:nil];
+    [logo alignCenterXWithView:self.view predicate:@"0"];
     [logo alignCenterYWithView:self.view predicate:[UIDevice isPad] ? @"-194" : @"-173"];
 
     self.pageControl = [self pageControlForPaging];
 
     [self.view addSubview:self.pageControl];
     [self.pageControl constrainTopSpaceToView:logo predicate:[UIDevice isPad] ? @"290" : @"160"];
-    [self.pageControl alignCenterXWithView:self.view predicate:nil];
+    [self.pageControl alignCenterXWithView:self.view predicate:@"0"];
 
     self.signUpButton = [[ARWhiteFlatButton alloc] init];
     [self.view addSubview:self.signUpButton];
     [self.signUpButton setTitle:@"SIGN UP" forState:UIControlStateNormal];
     [self.signUpButton addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
     [self.signUpButton constrainTopSpaceToView:self.pageControl predicate:@"29"];
-    [self.signUpButton alignCenterXWithView:self.view predicate:nil];
+    [self.signUpButton alignCenterXWithView:self.view predicate:@"0"];
 
     self.trialButton = [[ARClearFlatButton alloc] init];
     [self.view addSubview:self.trialButton];
     [self.trialButton setTitle:@"TRY WITHOUT AN ACCOUNT" forState:UIControlStateNormal];
     [self.trialButton addTarget:self action:@selector(startTrial) forControlEvents:UIControlEventTouchUpInside];
     [self.trialButton constrainTopSpaceToView:self.signUpButton predicate:@"12"];
-    [self.trialButton alignCenterXWithView:self.view predicate:nil];
+    [self.trialButton alignCenterXWithView:self.view predicate:@"0"];
 
     self.logInButton = [[UIButton alloc] init];
     self.logInButton.titleLabel.font = [UIFont sansSerifFontWithSize:13];
@@ -312,7 +312,7 @@
 
     [self.view addSubview:copyLabel];
     [copyLabel constrainWidth:@"280" height:@"120"];
-    [copyLabel alignCenterXWithView:self.view predicate:nil];
+    [copyLabel alignCenterXWithView:self.view predicate:@"0"];
     [copyLabel alignCenterYWithView:self.view predicate:[UIDevice isPad] ? @"40" : @"-60"];
 }
 

@@ -47,23 +47,23 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
 
             NSString *accuratePositionString = [NSString stringWithFormat:@"%0.f", self.collapsedHeight - 12];
 
-            [self.collapsedOverlapView constrainWidthToView:self predicate:nil];
+            [self.collapsedOverlapView constrainWidthToView:self predicate:@"0"];
             [self.collapsedOverlapView alignBottomEdgeWithView:self predicate:accuratePositionString];
-            [self.collapsedOverlapView alignCenterXWithView:self predicate:nil];
+            [self.collapsedOverlapView alignCenterXWithView:self predicate:@"0"];
             [self.collapsedOverlapView constrainHeight:@"8"];
 
             UIView *border = [[UIView alloc] init];
             border.backgroundColor = [UIColor artsyMediumGrey];
             [self.collapsedOverlapView addSubview:border];
-            [border constrainWidthToView:self predicate:nil];
-            [border alignTopEdgeWithView:_collapsedOverlapView predicate:nil];
-            [border alignCenterXWithView:self predicate:nil];
+            [border constrainWidthToView:self predicate:@"0"];
+            [border alignTopEdgeWithView:_collapsedOverlapView predicate:@"0"];
+            [border alignCenterXWithView:self predicate:@"0"];
             [border constrainHeight:@"1"];
 
             UIImageView *hintImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SmallMoreVerticalArrow"]];
             [self.collapsedOverlapView addSubview:hintImage];
             [hintImage constrainTopSpaceToView:border predicate:@"8"];
-            [hintImage alignCenterXWithView:self.collapsedOverlapView predicate:nil];
+            [hintImage alignCenterXWithView:self.collapsedOverlapView predicate:@"0"];
 
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openToFullHeight)];
             [self addGestureRecognizer:tapGesture];
