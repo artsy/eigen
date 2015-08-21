@@ -8,9 +8,9 @@
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
     operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        success(operation.request, operation.response, responseObject);
+        if (success) { success(operation.request, operation.response, responseObject); }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        failure(operation.request, operation.response, error, operation.responseObject);
+        if (failure) { failure(operation.request, operation.response, error, operation.responseObject); }
     }];
 
     return operation;

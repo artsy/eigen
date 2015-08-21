@@ -39,6 +39,23 @@
     return [self.sharedAPI getRequest:request parseIntoAnArrayOfClass:klass fromDictionaryWithKey:key success:success failure:failure];
 }
 
++ (void)getRequests:(NSArray *)requests success:(void (^)(NSArray *operations))completed
+{
+    [self.sharedAPI getRequests:requests success:completed];
+}
+
+- (void)getRequests:(NSArray *)requests success:(void (^)(NSArray *operations))completed
+{
+    NSArray *operations = [requests map:^id(NSURLRequest *request) {
+        return [self requestOperation:request success:nil failure:nil];
+    }];
+
+    NSArray *newOps = [AFURLConnectionOperation batchOfRequestOperations:operations progressBlock:nil completionBlock:completed];
+
+    [[NSOperationQueue mainQueue] addOperations:newOps waitUntilFinished:NO];
+
+}
+
 #pragma mark -
 #pragma mark Xapp tokens
 
@@ -183,7 +200,9 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         [ArtsyAPI handleXappTokenError:error];
         if (failure) {
-            failure(error);
+            ar_dispatch_main_queue(^{
+                failure(error);
+            });
         }
     }];
 
@@ -213,12 +232,14 @@
             });
         }
     }
-                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                                      [ArtsyAPI handleXappTokenError:error];
-                                      if (failure) {
-                                          failure(error);
-                                      }
-                                  }];
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        [ArtsyAPI handleXappTokenError:error];
+        ar_dispatch_main_queue(^{
+            if (failure) {
+                failure(error);
+            }
+        });
+    }];
     getOperation.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     [getOperation start];
     return getOperation;
@@ -256,9 +277,11 @@
         });
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         [ArtsyAPI handleXappTokenError:error];
-        if (failure) {
-            failure(error);
-        }
+        ar_dispatch_main_queue(^{
+            if (failure) {
+                failure(error);
+            }
+        });
     }];
     
     // Use a background queue so JSON results are parsed off the UI thread. We'll dispatch back to main queue on success.

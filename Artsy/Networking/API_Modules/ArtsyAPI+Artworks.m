@@ -44,66 +44,67 @@
     }];
 }
 
-// TODO: This method should be moved into ARRouter, exposing our http client shouldn't really happen
 + (void)getAuctionArtworkWithSale:(NSString *)saleID artwork:(NSString *)artworkID success:(void (^)(id auctionArtwork))success failure:(void (^)(NSError *error))failure
 {
-    // get sale artwork
-    NSURLRequest *request = [ARRouter saleArtworkRequestForSaleID:saleID artworkID:artworkID];
-    AFHTTPRequestOperation *saleArtworkOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:nil failure:nil];
 
-    // get bidder registration
-    request = [ARRouter biddersRequest];
-    AFHTTPRequestOperation *biddersOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:nil failure:nil];
+    NSURLRequest *saleArtworkRequest = [ARRouter saleArtworkRequestForSaleID:saleID artworkID:artworkID];
+    NSURLRequest *biddersRequest = [ARRouter biddersRequest];
+    NSURLRequest *bidderPositionRequest = [ARRouter bidderPositionsRequestForSaleID:saleID artworkID:artworkID];
 
-    // get bidder position
-    request = [ARRouter bidderPositionsRequestForSaleID:saleID artworkID:artworkID];
-    AFHTTPRequestOperation *positionsOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:nil failure:nil];
+    [self getRequests:@[saleArtworkRequest, biddersRequest, bidderPositionRequest] success:^(NSArray *operations) {
 
+        // Doing all parsing here since completion blocks fire async per: https://github.com/AFNetworking/AFNetworking/issues/362
+        ar_dispatch_async(^{
 
-#warning NEED TO UNDERSTAND HOW TO DO THIS IN AFNETWORKING 2
+            AFHTTPRequestOperation *saleArtworkOperation = [operations find:^BOOL(AFHTTPRequestOperation *operation) {
+                return operation.request == saleArtworkRequest;
+            }];
 
-    //    NSArray *operations = @[ biddersOperation, saleArtworkOperation, positionsOperation ];
-    //    AFHTTPClient *client = [ARRouter httpClient];
-    //
-    //    AFHTTPSessionManager *
-    //    [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:nil completionBlock:^(NSArray *operations) {
-    //
-    //        // Doing all parsing here since completion blocks fire async per: https://github.com/AFNetworking/AFNetworking/issues/362
-    //
-    //        // Parse sale artwork
-    //        SaleArtwork *saleArtwork = nil;
-    //        if (saleArtworkOperation.hasAcceptableStatusCode) {
-    //            saleArtwork = [SaleArtwork modelWithJSON:saleArtworkOperation.responseObject];
-    //        }
-    //
-    //        // Parse bidders
-    //        if (biddersOperation.hasAcceptableStatusCode) {
-    //            for (NSDictionary *dictionary in biddersOperation.responseObject) {
-    //                Bidder *bidder = [Bidder modelWithJSON:dictionary];
-    //                if ([bidder.saleID isEqualToString:saleID]) {
-    //                    saleArtwork.bidder = bidder;
-    //                    break;
-    //                }
-    //            }
-    //        }
-    //
-    //        // Parse bidder positions
-    //        if (positionsOperation.hasAcceptableStatusCode) {
-    //            saleArtwork.positions = [positionsOperation.responseObject map:^id(NSDictionary *dictionary) {
-    //                NSError *error = nil;
-    //                BidderPosition *position =[BidderPosition  modelWithJSON:dictionary error:&error];
-    //                if (error) {
-    //                    ARErrorLog(@"Couldn't parse bidder position. Error: %@", error.localizedDescription);
-    //                }
-    //                return position;
-    //
-    //            }];
-    //        }
-    //
-    //        if (success) {
-    //            success(saleArtwork);
-    //        }
-    //    }];
+            AFHTTPRequestOperation *biddersOperation = [operations find:^BOOL(AFHTTPRequestOperation *operation) {
+                return operation.request == biddersRequest;
+            }];
+
+            AFHTTPRequestOperation *positionsOperation = [operations find:^BOOL(AFHTTPRequestOperation *operation) {
+                return operation.request == bidderPositionRequest;
+            }];
+
+            // Parse sale artwork
+            SaleArtwork *saleArtwork = nil;
+            if (saleArtworkOperation.error == nil) {
+                saleArtwork = [SaleArtwork modelWithJSON:saleArtworkOperation.responseObject];
+            }
+
+            // Parse bidders
+            if (biddersOperation.error == nil) {
+                for (NSDictionary *dictionary in biddersOperation.responseObject) {
+                    Bidder *bidder = [Bidder modelWithJSON:dictionary];
+                    if ([bidder.saleID isEqualToString:saleID]) {
+                        saleArtwork.bidder = bidder;
+                        break;
+                    }
+                }
+            }
+
+            // Parse bidder positions
+            if (positionsOperation.error == nil) {
+                saleArtwork.positions = [positionsOperation.responseObject map:^id(NSDictionary *dictionary) {
+                    NSError *error = nil;
+                    BidderPosition *position = [BidderPosition  modelWithJSON:dictionary error:&error];
+                    if (error) {
+                        ARErrorLog(@"Couldn't parse bidder position. Error: %@", error.localizedDescription);
+                    }
+                    return position;
+                }];
+            }
+            
+            if (success) {
+                ar_dispatch_main_queue(^{
+                    success(saleArtwork);
+                });
+            }
+        });
+
+    }];
 }
 
 + (AFHTTPRequestOperation *)getFairsForArtwork:(Artwork *)artwork success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure

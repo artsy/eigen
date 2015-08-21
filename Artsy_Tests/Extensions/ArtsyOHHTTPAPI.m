@@ -30,6 +30,10 @@
 
 @interface ARFakeAFJSONOperation : NSBlockOperation
 @property (nonatomic, assign) dispatch_queue_t completionQueue;
+@property (nonatomic, strong) dispatch_group_t completionGroup;
+@property (nonatomic, strong) NSURLRequest *request;
+@property (nonatomic, strong) id responseObject;
+@property (nonatomic, strong) NSError *error;
 @end
 
 
@@ -78,24 +82,40 @@
         return [super requestOperation:request success:success failure:failureCallback];
     }
 
-    return (id)[ARFakeAFJSONOperation blockOperationWithBlock:^{
-        OHHTTPStubsResponse *response = stub.responseBlock(request);
-        [response.inputStream open];
-        NSError *error = nil;
-        id json = @[];
-        if (response.inputStream.hasBytesAvailable) {
-            json = [NSJSONSerialization JSONObjectWithStream:response.inputStream options:NSJSONReadingAllowFragments error:&error];
-        }
+    
+    OHHTTPStubsResponse *response = stub.responseBlock(request);
+    [response.inputStream open];
+    NSError *error = nil;
 
+    id json = @[];
+    if (response.inputStream.hasBytesAvailable) {
+        json = [NSJSONSerialization JSONObjectWithStream:response.inputStream options:NSJSONReadingAllowFragments error:&error];
+    }
+
+    ARFakeAFJSONOperation *fakeOp = [ARFakeAFJSONOperation blockOperationWithBlock:^{
         NSHTTPURLResponse *URLresponse = [[NSHTTPURLResponse alloc] initWithURL:request.URL statusCode:response.statusCode HTTPVersion:@"1.0" headerFields:response.httpHeaders];
 
         if (response.statusCode >= 200 && response.statusCode < 205) {
-            success(request, URLresponse, json);
+            if (success) { success(request, URLresponse, json); }
         } else {
-            failureCallback(request, URLresponse, response.error, json);
+            if (failureCallback) { failureCallback(request, URLresponse, response.error, json); }
         }
-
     }];
+
+    fakeOp.responseObject = json;
+    fakeOp.request = request;
+    return (id)fakeOp;
+}
+
+- (void)getRequests:(NSArray *)requests success:(void (^)(NSArray *operations))completed
+{
+    NSArray *operations = [requests map:^id(NSURLRequest *request) {
+        return [self requestOperation:request success:nil failure:nil];
+    }];
+    for (NSBlockOperation *blockOp in operations) {
+        [blockOp start];
+    }
+    completed(operations);
 }
 
 @end
