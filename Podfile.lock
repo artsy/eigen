@@ -92,7 +92,7 @@ PODS:
   - FBSDKLoginKit (4.2.0):
     - FBSDKCoreKit
   - FBSnapshotTestCase (1.8.1)
-  - FLKAutoLayout (0.1.1)
+  - FLKAutoLayout (0.2.1)
   - FODFormKit (0.1.1)
   - FXBlurView (1.6.1)
   - HockeySDK-Source (3.7.1)
@@ -169,7 +169,7 @@ DEPENDENCIES:
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSnapshotTestCase
-  - FLKAutoLayout
+  - FLKAutoLayout (from `https://github.com/alloy/FLKAutoLayout.git`, branch `add-support-for-layout-guides-take-2`)
   - FODFormKit (from `https://github.com/1aurabrown/FODFormKit.git`)
   - FXBlurView
   - InterAppCommunication
@@ -212,6 +212,9 @@ EXTERNAL SOURCES:
   Artsy+UIFonts:
     :branch: old_fonts_new_lib
     :git: https://github.com/artsy/Artsy-UIFonts.git
+  FLKAutoLayout:
+    :branch: add-support-for-layout-guides-take-2
+    :git: https://github.com/alloy/FLKAutoLayout.git
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
   Keys:
@@ -232,6 +235,9 @@ CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 39f47deebf947aa4c07727fdf2b69e2feff17428
     :git: https://github.com/artsy/Artsy-UIFonts.git
+  FLKAutoLayout:
+    :commit: dd2cd4fe901ff5dcfc47c2c29c7746779fc12b64
+    :git: https://github.com/alloy/FLKAutoLayout.git
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
     :git: https://github.com/1aurabrown/FODFormKit.git
@@ -268,7 +274,7 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 84b3616a361801f190e43a9909caead7bb6087c7
   FBSDKLoginKit: 57e37106af12c9e264e473dcb75d7decdbb07fe4
   FBSnapshotTestCase: 3dc3899168747a0319c5278f5b3445c13a6532dd
-  FLKAutoLayout: 95b12c5cd9652100235140b68652f063f7437851
+  FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
   FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   HockeySDK-Source: d620f330b23691017c141de6e25e5cdc8c67848c

@@ -70,8 +70,19 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     gobbler.tag = ARArtworkGobbler;
     self.gobbler = gobbler;
 
-    [self setUpSubviews];
     return self;
+}
+
+- (void)didMoveToSuperview
+{
+    if (self.superview) {
+        // It seems like UIPageViewController (?) adds some temporary constraints that cause breakage with our
+        // constraints. Seting up our constraints from here instead works around that issue.
+        [self setUpSubviews];
+
+        [self setUpCallbacks];
+        [self createHeightConstraints];
+    }
 }
 
 - (void)setUpSubviews
@@ -152,14 +163,6 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     if (newSuperview) {
         CGSize size = newSuperview.frame.size;
         [self.metadataView updateConstraintsIsLandscape:size.width > size.height];
-    }
-}
-
-- (void)didMoveToSuperview
-{
-    if (self.superview) {
-        [self setUpCallbacks];
-        [self createHeightConstraints];
     }
 }
 

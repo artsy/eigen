@@ -38,7 +38,7 @@
 - (void)setupTitleLabel
 {
     [self.titleLabel constrainWidthToView:self.contentView predicate:@"-20"];
-    [self.titleLabel alignCenterXWithView:self.contentView predicate:nil];
+    [self.titleLabel alignCenterXWithView:self.contentView predicate:@"0"];
     [self.titleLabel alignBottomEdgeWithView:self.contentView predicate:@"-12"];
 }
 

@@ -51,7 +51,7 @@
 
     row.margin = artwork.sold.boolValue ? 10 : 16;
     [self addSubview:row withTopMargin:@"0" sideMargin:@"0"];
-    [row alignLeadingEdgeWithView:self predicate:nil];
+    [row alignLeadingEdgeWithView:self predicate:@"0"];
 }
 
 - (void)setBounds:(CGRect)bounds

@@ -136,12 +136,14 @@
     self.artworksViewController = [[AREmbeddedModelsViewController alloc] init];
     self.artworksViewController.activeModule = module;
     self.artworksViewController.delegate = self;
+    self.artworksViewController.scrollDelegate = self;
     self.artworksViewController.showTrailingLoadingIndicator = YES;
 
     [self ar_addModernChildViewController:self.artworksViewController];
 
-    [self.artworksViewController.view constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:nil];
-    [self.artworksViewController.view alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
+    [self.artworksViewController.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
+    [self.artworksViewController.view alignLeading:@"0" trailing:@"0" toView:self.view];
+    [self.artworksViewController.view alignBottomEdgeWithView:self.view predicate:@"0"];
 
     self.artworksViewController.collectionView.showsVerticalScrollIndicator = YES;
 }

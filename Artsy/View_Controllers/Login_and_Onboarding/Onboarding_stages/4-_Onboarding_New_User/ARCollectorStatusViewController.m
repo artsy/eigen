@@ -30,7 +30,11 @@
     [self.view addSubview:self.label];
     self.label.text = @"To give you better\nrecommendations we would\nlike to know a few things\nabout you.";
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
     CGFloat height = 230 + [self tableView:nil heightForHeaderInSection:0];
+#pragma clang diagnostic pop
+
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, screenSize.height - height, screenSize.width, height)
                                                   style:UITableViewStylePlain];
     [self.tableView registerClass:AROnboardingTableViewCell.class forCellReuseIdentifier:@"StatusCell"];

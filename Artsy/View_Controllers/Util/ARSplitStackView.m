@@ -20,11 +20,11 @@
     [self addSubview:leftStack];
     [self addSubview:rightStack];
 
-    [_leftStack alignLeadingEdgeWithView:self predicate:nil];
-    [_rightStack alignTrailingEdgeWithView:self predicate:nil];
+    [_leftStack alignLeadingEdgeWithView:self predicate:@"0"];
+    [_rightStack alignTrailingEdgeWithView:self predicate:@"0"];
 
-    [self alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeTop ofView:_rightStack predicate:nil];
-    [self alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeTop ofView:_leftStack predicate:nil];
+    [self alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeTop ofView:_rightStack predicate:@"0"];
+    [self alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeTop ofView:_leftStack predicate:@"0"];
 
     //    [self alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeBottom ofView:_rightStack predicate:nil];
     //    [self alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeBottom ofView:_leftStack predicate:nil];

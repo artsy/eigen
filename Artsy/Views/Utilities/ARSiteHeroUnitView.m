@@ -91,9 +91,9 @@ static CGFloat ARHeroUnitDescriptionFont;
         ARHeroUnitButton *button = [self createButtonWithColor:unit.buttonColor inverseColor:unit.inverseButtonColor andText:unit.linkText];
         [textViewsContainer addSubview:button withTopMargin:NSStringWithFormat(@"%f", ARHeroUnitDescriptionButtonMargin)];
         if (self.alignment == ARHeroUnitAlignmentRight) {
-            [button alignTrailingEdgeWithView:textViewsContainer predicate:nil];
+            [button alignTrailingEdgeWithView:textViewsContainer predicate:@"0"];
         } else {
-            [button alignLeadingEdgeWithView:textViewsContainer predicate:nil];
+            [button alignLeadingEdgeWithView:textViewsContainer predicate:@"0"];
         }
         UILabel *credit = [self createCreditLabelWithText:unit.creditLine];
         [textViewsContainer addSubview:credit withTopMargin:NSStringWithFormat(@"%f", ARHeroUnitButtonCreditMargin) sideMargin:nil];

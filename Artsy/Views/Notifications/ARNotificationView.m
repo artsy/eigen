@@ -51,8 +51,8 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
 
         ARSeparatorView *separator = [[ARSeparatorView alloc] init];
         [self addSubview:separator];
-        [separator constrainWidthToView:self predicate:nil];
-        [separator alignLeadingEdgeWithView:self predicate:nil];
+        [separator constrainWidthToView:self predicate:@"0"];
+        [separator alignLeadingEdgeWithView:self predicate:@"0"];
         [separator alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self predicate:@"-1"];
     }
     return self;

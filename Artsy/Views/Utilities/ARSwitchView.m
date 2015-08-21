@@ -74,10 +74,12 @@
     [self.selectionIndicator addSubview:self.topSelectionIndicator];
     [self.selectionIndicator addSubview:self.bottomSelectionIndicator];
 
-    [self.topSelectionIndicator alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.selectionIndicator];
-    [self.bottomSelectionIndicator alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.selectionIndicator];
-
+    [self.topSelectionIndicator alignLeading:@"0" trailing:@"0" toView:self.selectionIndicator];
+    [self.topSelectionIndicator alignTopEdgeWithView:self.selectionIndicator predicate:@"0"];
     [self.topSelectionIndicator constrainHeight:@(indicatorThickness).stringValue];
+
+    [self.bottomSelectionIndicator alignLeading:@"0" trailing:@"0" toView:self.selectionIndicator];
+    [self.bottomSelectionIndicator alignBottomEdgeWithView:self.selectionIndicator predicate:@"0"];
     [self.bottomSelectionIndicator constrainHeight:@(indicatorThickness).stringValue];
 
     [self insertSubview:self.selectionIndicator atIndex:0];

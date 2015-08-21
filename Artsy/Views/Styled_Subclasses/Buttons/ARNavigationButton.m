@@ -32,16 +32,16 @@
     [self.topBorder constrainHeight:NSStringWithFormat(@"%f", borderWidth)];
     self.topBorder.backgroundColor = [UIColor artsyLightGrey];
     [self addSubview:self.topBorder];
-    [self.topBorder alignCenterXWithView:self predicate:nil];
-    [self.topBorder constrainWidthToView:self predicate:nil];
-    [self alignTopEdgeWithView:self.topBorder predicate:nil];
+    [self.topBorder alignCenterXWithView:self predicate:@"0"];
+    [self.topBorder constrainWidthToView:self predicate:@"0"];
+    [self alignTopEdgeWithView:self.topBorder predicate:@"0"];
 
     _primaryTitleLabel = [[UILabel alloc] init];
     self.primaryTitleLabel.backgroundColor = [UIColor clearColor];
     self.primaryTitleLabel.font = [UIFont sansSerifFontWithSize:14];
     [self addSubview:self.primaryTitleLabel];
     [self.primaryTitleLabel constrainTopSpaceToView:self.topBorder predicate:@"10"];
-    [self.primaryTitleLabel alignLeadingEdgeWithView:self predicate:nil];
+    [self.primaryTitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
     [self.primaryTitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
 
     _subtitleLabel = [[UILabel alloc] init];
@@ -49,25 +49,25 @@
     self.subtitleLabel.font = [UIFont serifFontWithSize:14];
     self.subtitleLabel.textColor = [UIColor blackColor];
     [self addSubview:self.subtitleLabel];
-    [self.subtitleLabel constrainTopSpaceToView:self.primaryTitleLabel predicate:nil];
-    [self.subtitleLabel alignLeadingEdgeWithView:self predicate:nil];
+    [self.subtitleLabel constrainTopSpaceToView:self.primaryTitleLabel predicate:@"0"];
+    [self.subtitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
     [self.subtitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
 
     _arrowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MoreArrow"]];
     self.arrowView.backgroundColor = [UIColor clearColor];
     self.arrowView.contentMode = UIViewContentModeCenter;
     [self addSubview:self.arrowView];
-    [self.arrowView alignTrailingEdgeWithView:self predicate:nil];
-    [self.arrowView alignCenterYWithView:self predicate:nil];
+    [self.arrowView alignTrailingEdgeWithView:self predicate:@"0"];
+    [self.arrowView alignCenterYWithView:self predicate:@"0"];
 
     _bottomBorder = [[UIView alloc] init];
     [self.bottomBorder constrainHeight:NSStringWithFormat(@"%f", borderWidth)];
     self.bottomBorder.backgroundColor = [UIColor artsyLightGrey];
     [self addSubview:self.bottomBorder];
     [self.bottomBorder constrainTopSpaceToView:self.subtitleLabel predicate:@"10"];
-    [self.bottomBorder alignCenterXWithView:self predicate:nil];
-    [self.bottomBorder constrainWidthToView:self predicate:nil];
-    [self alignBottomEdgeWithView:self.bottomBorder predicate:nil];
+    [self.bottomBorder alignCenterXWithView:self predicate:@"0"];
+    [self.bottomBorder constrainWidthToView:self predicate:@"0"];
+    [self alignBottomEdgeWithView:self.bottomBorder predicate:@"0"];
 
     return self;
 }

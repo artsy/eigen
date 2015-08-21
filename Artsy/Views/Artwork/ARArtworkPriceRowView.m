@@ -44,9 +44,9 @@
 - (void)updateConstraints
 {
     [super updateConstraints];
-    [self.messageLabel alignLeadingEdgeWithView:self predicate:nil];
+    [self.messageLabel alignLeadingEdgeWithView:self predicate:@"0"];
     [self.messageLabel alignTopEdgeWithView:self predicate:@(self.margin).stringValue];
-    [self.priceLabel alignTrailingEdgeWithView:self predicate:nil];
+    [self.priceLabel alignTrailingEdgeWithView:self predicate:@"0"];
     [self.priceLabel constrainLeadingSpaceToView:self.messageLabel predicate:@"4"];
     [self.priceLabel alignTopEdgeWithView:self predicate:@(self.margin).stringValue];
     [self.messageLabel alignCenterYWithView:self.priceLabel predicate:@"0"];

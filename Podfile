@@ -50,7 +50,7 @@ target 'Artsy' do
   pod 'ALPValidator'
   pod 'ARGenericTableViewController'
   pod 'CocoaLumberjack'
-  pod 'FLKAutoLayout'
+  pod 'FLKAutoLayout', :git => 'https://github.com/alloy/FLKAutoLayout.git', :branch => 'add-support-for-layout-guides-take-2'
   pod 'FXBlurView'
   pod 'iRate'
   pod 'ISO8601DateFormatter', :head
@@ -125,4 +125,13 @@ target 'Artsy Tests' do
   pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
+end
+
+# Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+    end
+  end
 end
