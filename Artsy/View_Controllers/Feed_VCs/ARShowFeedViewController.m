@@ -253,7 +253,8 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
         self.headerView.backgroundColor = [UIColor whiteColor];
 
         [self ar_addModernChildViewController:self.feedLinkVC intoView:self.headerView];
-        [self.feedLinkVC.view alignTop:@(ARFeedLinksNavMarginPhone).stringValue leading:@(sideMargin).stringValue bottom:@"0" trailing:@(-sideMargin).stringValue toView:self.headerView];
+        [self.feedLinkVC.view alignLeading:@(sideMargin).stringValue trailing:@(-sideMargin).stringValue toView:self.headerView];
+        [self.feedLinkVC.view alignTopEdgeWithView:self.headerView predicate:@(ARFeedLinksNavMarginPhone).stringValue];
 
         [self.headerView addSubview:featuredShowsLabel];
         [featuredShowsLabel constrainTopSpaceToView:self.feedLinkVC.view predicate:@"0"];
