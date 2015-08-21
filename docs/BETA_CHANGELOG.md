@@ -1,4 +1,4 @@
-## Next
+## 2.2.0 (2015.8.21)
 
 * Unify way to set whether to perform work asynchronously with ARPerformWorkAsynchronously - jorystiefel
 * [iOS 9] Fix FLKAutoLayout issues with top and bottom layout guides. - alloy
