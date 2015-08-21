@@ -289,6 +289,18 @@ static const CGFloat ARMenuButtonDimension = 46;
 #endif
 }
 
+// This is for when we would ever switch to VC controlled status bar showing, set in the Info.plist
+//
+//- (UIViewController *)childViewControllerForStatusBarHidden;
+//{
+//    return self.visibleViewController;
+//}
+//
+//- (BOOL)prefersStatusBarHidden;
+//{
+//    return self.childViewControllerForStatusBarHidden.prefersStatusBarHidden;
+//}
+
 #pragma mark - Pushing VCs
 
 - (void)loadFeed
