@@ -195,7 +195,7 @@ describe(@"unauthenticated", ^{
 
         it(@"handles a non-native internal link being clicked", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"/something/andy-warhol-skull"]];
-            expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeLinkClicked]).to.beFalsy();
+            expect([controller webView:controller.webView shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeLinkClicked]).to.beFalsy();
         });
 
         it(@"handles a native internal link being clicked", ^{
