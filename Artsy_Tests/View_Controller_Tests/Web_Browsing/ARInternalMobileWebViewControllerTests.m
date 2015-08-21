@@ -150,8 +150,9 @@ describe(@"authenticated", ^{
             controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
         });
         
-        it(@"doesn't show a trial login/signup view on a request to log_in", ^{
-            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://m.artsy.net/log_in"]];
+        it(@"doesn't show the website's trial login/signup view on a request to log_in", ^{
+
+            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"https://m.artsy.net/log_in"]];
             id mockUser = [OCMockObject mockForClass:[User class]];
             [[[mockUser stub] andReturnValue:OCMOCK_VALUE(NO)] isTrialUser];
 
@@ -190,10 +191,15 @@ describe(@"unauthenticated", ^{
         beforeEach(^{
             controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
         });
-        
-        it(@"handles an internal link being clicked", ^{
-            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"/artwork/andy-warhol-skull"]];
+
+        it(@"handles a non-native internal link being clicked", ^{
+            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"/something/andy-warhol-skull"]];
             expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeLinkClicked]).to.beFalsy();
+        });
+
+        it(@"handles a native internal link being clicked", ^{
+            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"/artwork/andy-warhol-skull"]];
+            expect([controller webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeLinkClicked]).to.beTruthy();
         });
         
         it(@"handles an external link being clicked (via a browser)", ^{

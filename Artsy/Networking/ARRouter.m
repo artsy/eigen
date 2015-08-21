@@ -128,13 +128,14 @@ static NSSet *artsyHosts = nil;
     if ([host hasPrefix:@"www"]) {
         host = [host substringFromIndex:4];
     }
+
     //if there's no host, we'll assume it's relative
     return (!host || (host && [artsyHosts containsObject:host]));
 }
 
 + (NSURLRequest *)requestForURL:(NSURL *)url
 {
-    NSMutableURLRequest *request = [self requestWithMethod:@"GET" path:[url absoluteString] parameters:nil];
+    NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url.absoluteString parameters:nil];
     if (![ARRouter isInternalURL:url]) {
         [request setValue:nil forHTTPHeaderField:ARAuthHeader];
         [request setValue:nil forHTTPHeaderField:ARXappHeader];
@@ -164,9 +165,15 @@ static NSSet *artsyHosts = nil;
 + (NSMutableURLRequest *)requestWithMethod:(NSString *)method path:(NSString *)path parameters:(NSDictionary *)params
 {
     NSString *fullPath = [[staticHTTPClient.baseURL URLByAppendingPathComponent:path] absoluteString];
-    NSMutableURLRequest *request = [staticHTTPClient.requestSerializer requestWithMethod:method URLString:fullPath parameters:params error:nil];
+    return [self requestWithMethod:method URLString:fullPath parameters:params];
+}
+
++ (NSMutableURLRequest *)requestWithMethod:(NSString *)method URLString:(NSString *)urlString parameters:(NSDictionary *)params
+{
+    NSMutableURLRequest *request = [staticHTTPClient.requestSerializer requestWithMethod:method URLString:urlString parameters:params error:nil];
     return request;
 }
+
 
 + (NSURLRequest *)newOAuthRequestWithUsername:(NSString *)username password:(NSString *)password
 {
