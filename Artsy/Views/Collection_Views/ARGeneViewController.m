@@ -136,6 +136,7 @@
     self.artworksViewController = [[AREmbeddedModelsViewController alloc] init];
     self.artworksViewController.activeModule = module;
     self.artworksViewController.delegate = self;
+    self.artworksViewController.scrollDelegate = self;
     self.artworksViewController.showTrailingLoadingIndicator = YES;
 
     [self ar_addModernChildViewController:self.artworksViewController];
