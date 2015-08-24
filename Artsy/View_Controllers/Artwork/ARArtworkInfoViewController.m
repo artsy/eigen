@@ -94,7 +94,7 @@
 
 - (void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 @end
