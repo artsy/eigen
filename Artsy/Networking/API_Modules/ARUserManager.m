@@ -1,4 +1,5 @@
 @import ISO8601DateFormatter;
+@import Adjust;
 
 #import "ARUserManager.h"
 #import "NSDate+Util.h"
@@ -364,7 +365,11 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              
              if(success) success(user);
              [ARAnalytics event:ARAnalyticsAccountCreated];
-             
+
+             ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustCreatedAnAccount];
+             [event addCallbackParameter:@"email" value:email];
+             [Adjust trackEvent:event];
+
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              ARActionLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
              failure(error, JSON);
