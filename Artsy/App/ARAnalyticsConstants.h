@@ -149,3 +149,10 @@ extern NSString *const ARAnalyticsFairMapPartnerShowTapped;
 
 extern NSString *const ARAnalyticsAuctionBidTapped;
 extern NSString *const ARAnalyticsAuctionHowBiddingWorks;
+
+// Adjust's unique events
+
+extern NSString *const ARAdjustCreatedAnAccount;
+extern NSString *const ARAdjustSentArtworkInquiry;
+extern NSString *const ARAdjustFirstUserInstall;
+extern NSString *const ARAdjustTappedBidButton;

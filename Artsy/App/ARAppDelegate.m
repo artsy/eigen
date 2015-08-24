@@ -10,6 +10,7 @@
 @import iRate;
 @import AFOAuth1Client;
 @import UICKeyChainStore;
+@import Adjust;
 
 #import "ARAppWatchCommunicator.h"
 
@@ -410,6 +411,7 @@ static ARAppDelegate *_sharedInstance = nil;
     NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty] + 1;
     if (numberOfRuns == 1) {
         [ARAnalytics event:ARAnalyticsFreshInstall];
+        [Adjust trackEvent:[ADJEvent eventWithEventToken:ARAdjustFirstUserInstall]];
     }
 
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfRuns forKey:ARAnalyticsAppUsageCountProperty];

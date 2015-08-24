@@ -1,9 +1,12 @@
+@import Adjust;
+@import ALPValidator;
+
 #import "ARInquireForArtworkViewController.h"
 #import "ARUserManager.h"
 #import "UIViewController+ScreenSize.h"
 #import "UIView+HittestExpansion.h"
 #import "ARAppDelegate.h"
-#import <ALPValidator/ALPValidator.h>
+#import "ARAnalyticsConstants.h"
 
 #define USE_LIVE_DATA 1
 // Future TODO: Don't use image alpha on contact image, use grayscale'd image.
@@ -788,6 +791,11 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)inquiryCompleted:(NSString *)message
 {
+    ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustSentArtworkInquiry];
+    [event addCallbackParameter:@"artwork" value:self.artwork.name];
+    [event addCallbackParameter:@"email" value:self.emailInput.text];
+    [Adjust trackEvent:event];
+
     [self setStatusWithTitle:@"Thank you" body:@"Your message has been sent"];
     [self performSelector:@selector(removeFromHostViewController) withObject:nil afterDelay:2];
 }
