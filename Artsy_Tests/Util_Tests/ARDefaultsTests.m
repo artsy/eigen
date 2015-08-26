@@ -9,4 +9,4 @@ it(@"rests user defaults", ^{
     expect([[NSUserDefaults standardUserDefaults] valueForKey:@"Test Value"]).to.beNil();
 });
 
-SpecEnd
+SpecEnd;

@@ -216,4 +216,4 @@ it(@"does not try to load more artworks if the artworks view is full", ^{
     [subjectMock verify];
 });
 
-SpecEnd
+SpecEnd;

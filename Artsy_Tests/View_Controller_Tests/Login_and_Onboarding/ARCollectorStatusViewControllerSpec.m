@@ -13,4 +13,4 @@ itHasSnapshotsForDevicesWithName(@"looks correct", ^{
     return sut;
 });
 
-SpecEnd
+SpecEnd;

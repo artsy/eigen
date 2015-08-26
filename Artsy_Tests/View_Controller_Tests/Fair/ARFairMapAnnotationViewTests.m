@@ -39,4 +39,4 @@ describe(@"expandToFull", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

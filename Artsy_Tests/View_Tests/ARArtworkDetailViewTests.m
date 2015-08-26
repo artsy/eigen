@@ -45,4 +45,4 @@ it(@"shows auction data", ^{
 });
 
 
-SpecEnd
+SpecEnd;

@@ -118,4 +118,4 @@ describe(@"getFavorites", ^{
 });
 
 
-SpecEnd
+SpecEnd;

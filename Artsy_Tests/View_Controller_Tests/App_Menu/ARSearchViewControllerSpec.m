@@ -95,4 +95,4 @@ context(@"add results", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

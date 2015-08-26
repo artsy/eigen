@@ -186,4 +186,4 @@ describe(@"masonry layout", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

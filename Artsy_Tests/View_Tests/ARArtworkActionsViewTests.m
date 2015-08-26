@@ -385,4 +385,4 @@ describe(@"mocked artwork promises", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

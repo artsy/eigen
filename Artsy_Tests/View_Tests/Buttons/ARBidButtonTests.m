@@ -28,4 +28,4 @@ it(@"bidding closed", ^{
     expect(_button).will.haveValidSnapshotNamed(@"testBiddingClosedState");
 });
 
-SpecEnd
+SpecEnd;

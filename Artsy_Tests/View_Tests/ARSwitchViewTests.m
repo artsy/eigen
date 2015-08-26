@@ -34,4 +34,4 @@ it(@"adjusts buttons to any switch width", ^{
     expect(switchView).to.haveValidSnapshot();
 });
 
-SpecEnd
+SpecEnd;

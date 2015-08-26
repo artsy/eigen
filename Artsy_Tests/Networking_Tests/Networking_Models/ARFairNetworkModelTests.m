@@ -203,4 +203,4 @@ describe(@"getMapInfo", ^{
 });
 
 
-SpecEnd
+SpecEnd;

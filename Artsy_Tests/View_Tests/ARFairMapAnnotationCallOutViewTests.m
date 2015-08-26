@@ -70,4 +70,4 @@ it(@"long title with arrow", ^{
     expect(view).to.haveValidSnapshotNamed(@"longTitleWithArrow");
 });
 
-SpecEnd
+SpecEnd;

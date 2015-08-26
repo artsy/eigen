@@ -36,4 +36,4 @@ it(@"is positioned correctly", ^{
 });
 
 
-SpecEnd
+SpecEnd;

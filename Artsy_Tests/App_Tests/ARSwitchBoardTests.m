@@ -364,4 +364,4 @@ describe(@"ARSwitchboard", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

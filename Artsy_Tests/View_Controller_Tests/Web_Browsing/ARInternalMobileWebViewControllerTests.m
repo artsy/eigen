@@ -290,4 +290,4 @@ describe(@"sharing", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

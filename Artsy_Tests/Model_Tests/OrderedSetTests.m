@@ -61,4 +61,4 @@ it(@"getItems raises an exception when retrieving items of an unsupported time",
     }).to.raiseWithReason(@"NSInternalInconsistencyException", @"Unsupported item type: Invalid");
 });
 
-SpecEnd
+SpecEnd;
