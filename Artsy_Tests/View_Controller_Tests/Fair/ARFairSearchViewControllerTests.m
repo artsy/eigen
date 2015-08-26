@@ -101,4 +101,4 @@ describe(@"init", ^{
 
 });
 
-SpecEnd
+SpecEnd;

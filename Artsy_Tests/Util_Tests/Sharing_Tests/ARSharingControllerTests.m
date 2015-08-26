@@ -82,4 +82,4 @@ describe(@"sharing", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

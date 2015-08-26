@@ -39,4 +39,4 @@ describe(@"alignment", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

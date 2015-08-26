@@ -75,4 +75,4 @@ describe(@"message provider", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

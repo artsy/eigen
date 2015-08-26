@@ -282,4 +282,4 @@ describe(@"not at a fair", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

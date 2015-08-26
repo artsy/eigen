@@ -66,4 +66,4 @@ describe(@"with a delegate set", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

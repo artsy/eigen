@@ -12,4 +12,4 @@ describe(@"visuals", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

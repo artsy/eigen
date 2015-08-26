@@ -27,4 +27,4 @@ describe(@"handleXappTokenError", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

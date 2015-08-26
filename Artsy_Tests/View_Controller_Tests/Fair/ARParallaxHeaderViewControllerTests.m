@@ -128,4 +128,4 @@ describe(@"with new banner urls", ^{
 });
 
 
-SpecEnd
+SpecEnd;

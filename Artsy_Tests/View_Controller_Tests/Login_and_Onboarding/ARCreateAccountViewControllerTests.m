@@ -79,10 +79,9 @@ describe(@"warning view", ^{
 
 });
 
-SpecEnd
+SpecEnd;
 
-    BOOL
-    checkViewControllerHasWarningWithMessage(UIViewController *vc, NSString *msg)
+BOOL checkViewControllerHasWarningWithMessage(UIViewController *vc, NSString *msg)
 {
     for (UIView *child in vc.view.subviews) {
         if ([child isKindOfClass:ARWarningView.class]) {

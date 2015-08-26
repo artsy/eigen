@@ -35,4 +35,4 @@ it(@"binds message to the label's text", ^{
     expect(viewController.label.text).to.equal(message);
 });
 
-SpecEnd
+SpecEnd;

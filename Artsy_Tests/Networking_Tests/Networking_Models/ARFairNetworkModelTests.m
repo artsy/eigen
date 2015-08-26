@@ -209,4 +209,4 @@ describe(@"getMapInfo", ^{
 });
 
 
-SpecEnd
+SpecEnd;

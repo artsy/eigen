@@ -126,4 +126,4 @@ it(@"closes search", ^{
     [navigationControllerMock verify];
 });
 
-SpecEnd
+SpecEnd;

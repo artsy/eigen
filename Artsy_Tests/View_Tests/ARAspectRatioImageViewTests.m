@@ -32,4 +32,4 @@ describe(@"intrinsicContentSize", ^{
 
 });
 
-SpecEnd
+SpecEnd;

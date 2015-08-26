@@ -23,4 +23,4 @@ describe(@"setting the index", ^{
 
 });
 
-SpecEnd
+SpecEnd;

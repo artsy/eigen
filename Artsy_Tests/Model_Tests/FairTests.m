@@ -104,4 +104,4 @@ describe(@"getting image URL string", ^{
 
 });
 
-SpecEnd
+SpecEnd;

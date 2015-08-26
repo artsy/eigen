@@ -36,4 +36,4 @@ pending(@"with long desciption", ^{ // This works, but on Travis we get a weird 
     return vc;
 });
 
-SpecEnd
+SpecEnd;

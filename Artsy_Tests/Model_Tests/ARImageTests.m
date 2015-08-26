@@ -26,4 +26,4 @@ describe(@"canZoom", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

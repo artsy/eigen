@@ -3,6 +3,7 @@
 #import "ARUserManager+Stubs.h"
 #import "ARNetworkConstants.h"
 
+
 @interface ARArtworkViewController (Tests)
 - (void)tappedBuyButton;
 - (void)tappedContactGallery;
@@ -118,4 +119,4 @@ describe(@"buy button", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

@@ -39,4 +39,4 @@ describe(@"ARTickViewFrontLayer layer", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

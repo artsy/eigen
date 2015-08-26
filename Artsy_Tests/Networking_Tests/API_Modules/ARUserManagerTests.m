@@ -414,4 +414,4 @@ describe(@"trialUserUUID", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

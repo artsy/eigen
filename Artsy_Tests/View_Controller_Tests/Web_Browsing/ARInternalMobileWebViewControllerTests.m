@@ -283,4 +283,4 @@ describe(@"sharing", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

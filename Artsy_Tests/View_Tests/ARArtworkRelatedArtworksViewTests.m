@@ -273,4 +273,4 @@ describe(@"concerning layout", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

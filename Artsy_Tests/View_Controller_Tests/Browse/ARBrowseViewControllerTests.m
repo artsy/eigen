@@ -52,4 +52,4 @@ itHasSnapshotsForDevicesWithName(@"looks correct", ^{
     return viewController;
 });
 
-SpecEnd
+SpecEnd;

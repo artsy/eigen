@@ -57,4 +57,4 @@ describe(@"init", ^{
 
 });
 
-SpecEnd
+SpecEnd;

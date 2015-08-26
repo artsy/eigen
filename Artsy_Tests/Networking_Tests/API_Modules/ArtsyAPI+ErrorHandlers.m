@@ -103,4 +103,4 @@ describe(@"handleHTTPErrors", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

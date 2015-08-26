@@ -48,4 +48,4 @@ describe(@"heros", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

@@ -19,4 +19,4 @@ it(@"loads layout", ^{
     expect([ARTheme defaultTheme].layout).notTo.beNil();
 });
 
-SpecEnd
+SpecEnd;

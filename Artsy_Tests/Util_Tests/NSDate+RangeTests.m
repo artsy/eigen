@@ -10,4 +10,4 @@ it(@"ordinals correctly", ^{
     expect([NSDate ordinalForDay:11]).to.equal(@"th");
 });
 
-SpecEnd
+SpecEnd;
