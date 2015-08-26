@@ -281,6 +281,8 @@ return [navigationButtons copy];
 
 - (BOOL)showPriceLabel
 {
+    // Check if a price is set OR the price should be hidden - this way we can show the "Contact For Price"
+    // message whether or not a price has been entered
     return (self.artwork.price.length || self.artwork.isPriceHidden.boolValue) && !self.artwork.hasMultipleEditions && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
 }
 
