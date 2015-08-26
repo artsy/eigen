@@ -42,7 +42,7 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
         primaryTitleLabel.preferredMaxLayoutWidth = 90;
         self.primaryTitleLabel = primaryTitleLabel;
         [self addSubview:primaryTitleLabel];
-        [primaryTitleLabel alignTopEdgeWithView:self predicate:nil];
+        [primaryTitleLabel alignTopEdgeWithView:self predicate:@"0"];
         [self alignTitleToFeatureView];
     }
 
@@ -56,7 +56,7 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
         return;
     }
     [self.primaryTitleLabel constrainLeadingSpaceToView:self.mapFeatureView predicate:@(ARHorizontalOffsetFromIcon).stringValue];
-    [self.primaryTitleLabel constrainHeightToView:self.mapFeatureView predicate:nil];
+    [self.primaryTitleLabel constrainHeightToView:self.mapFeatureView predicate:@"0"];
 }
 
 // draw a red border around the current view
@@ -80,8 +80,8 @@ static CGFloat ARHorizontalOffsetFromIcon = 4;
         UIImageView *mapFeatureView = [[UIImageView alloc] init];
         mapFeatureView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:mapFeatureView];
-        [mapFeatureView alignTopEdgeWithView:self predicate:nil];
-        [mapFeatureView alignLeadingEdgeWithView:self predicate:nil];
+        [mapFeatureView alignTopEdgeWithView:self predicate:@"0"];
+        [mapFeatureView alignLeadingEdgeWithView:self predicate:@"0"];
         self.mapFeatureView = mapFeatureView;
         self.clipsToBounds = NO;
         [self alignTitleToFeatureView];

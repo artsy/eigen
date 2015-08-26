@@ -51,7 +51,8 @@
     textView.font = [UIFont fontWithName:@"Courier" size:14];
     textView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
     [self.view addSubview:textView];
-    [textView alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
+    [textView alignLeading:@"0" trailing:@"0" toView:self.view];
+    [textView alignBottomEdgeWithView:self.view predicate:@"0"];
     [textView constrainHeightToView:self.view predicate:@"*.5"];
 
     NSMutableString *details = [[NSMutableString alloc] initWithString:@"## Web View Details \n\n"];
@@ -86,8 +87,9 @@
 
 - (void)setupConstraints
 {
-    [self.webView constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"0"];
-    [self.webView alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
+    [self.webView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
+    [self.webView alignLeading:@"0" trailing:@"0" toView:self.view];
+    [self.webView alignBottomEdgeWithView:self.view predicate:@"0"];
 }
 
 - (void)viewWillAppear:(BOOL)animated

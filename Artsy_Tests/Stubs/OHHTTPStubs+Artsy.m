@@ -1,3 +1,6 @@
+#import "OHHTTPStubs+Artsy.h"
+#import "ARRouter.h"
+
 @import OHHTTPStubs;
 @import AFNetworking;
 
@@ -25,9 +28,11 @@
         NSURLComponents *requestComponents = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:NO];
         NSString *urlString = path;
 
+        // Append the params dict as a query string
         if (params) {
-            NSString *stubbedQueryString = AFQueryStringFromParametersWithEncoding(params, NSUTF8StringEncoding);
-            urlString = [urlString stringByAppendingFormat:@"?%@", stubbedQueryString];
+            AFHTTPRequestSerializer *serializer = [[AFHTTPRequestSerializer alloc] init];
+            NSURLRequest *request = [serializer requestWithMethod:@"GET" URLString:urlString parameters:params error:nil];
+            urlString = [urlString stringByAppendingFormat:@"?%@", request.URL.query];
         }
 
         NSURL *stubbedURL = [NSURL URLWithString:urlString];

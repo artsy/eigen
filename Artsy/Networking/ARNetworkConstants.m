@@ -1,10 +1,10 @@
-NSString *const ARBaseDesktopWebURL = @"https://artsy.net/";
-NSString *const ARBaseMobileWebURL = @"https://m.artsy.net/";
-NSString *const ARBaseApiURL = @"https://api.artsy.net/";
+NSString *const ARBaseDesktopWebURL = @"https://artsy.net";
+NSString *const ARBaseMobileWebURL = @"https://m.artsy.net";
+NSString *const ARBaseApiURL = @"https://api.artsy.net";
 
-NSString *const ARStagingBaseWebURL = @"https://staging.artsy.net/";
-NSString *const ARStagingBaseMobileWebURL = @"http://m-staging.artsy.net/";
-NSString *const ARStagingBaseApiURL = @"https://stagingapi.artsy.net/";
+NSString *const ARStagingBaseWebURL = @"https://staging.artsy.net";
+NSString *const ARStagingBaseMobileWebURL = @"http://m-staging.artsy.net";
+NSString *const ARStagingBaseApiURL = @"https://stagingapi.artsy.net";
 
 NSString *const ARPersonalizePath = @"personalize";
 
@@ -100,7 +100,7 @@ NSString *const ARProfilePostsURLFormat = @"/api/v1/profile/%@/posts";
 
 NSString *const ARNewFairInfoURLFormat = @"/api/v1/fair/%@";
 NSString *const ARNewFairShowsURLFormat = @"/api/v1/fair/%@/shows";
-NSString *const ARNewFairMapURLFormat = @"/api/v1/maps?fair_id=%@";
+NSString *const ARNewFairMapURL = @"/api/v1/maps";
 
 NSString *const ARNewRelatedPostsURL = @"/api/v1/related/posts";
 NSString *const ARShowsFeaturingArtistsURLFormat = @"/api/v1/fair/%@/shows";

@@ -94,7 +94,7 @@
     [switchView constrainWidth:switchViewWidth];
 
     [self.headerContainerView addSubview:switchView withTopMargin:@"0"];
-    [switchView alignCenterXWithView:self.headerContainerView predicate:0];
+    [switchView alignCenterXWithView:self.headerContainerView predicate:@"0"];
 
     self.embeddedItemsVC.headerView = self.headerContainerView;
     self.embeddedItemsVC.headerHeight = self.headerHeight;
@@ -218,7 +218,7 @@
         ARHeartButton *heartButton = [[ARHeartButton alloc] init];
         [emptyStateView addSubview:heartButton];
         [heartButton constrainTopSpaceToView:infoLabel predicate:@"20"];
-        [heartButton alignCenterXWithView:emptyStateView predicate:nil];
+        [heartButton alignCenterXWithView:emptyStateView predicate:@"0"];
         [heartButton addTarget:self action:@selector(tappedNoArtworksHeart:) forControlEvents:UIControlEventTouchUpInside];
         [heartButton setStatus:ARHeartStatusNo];
         [emptyStateView alignBottomEdgeWithView:heartButton predicate:@"0"];

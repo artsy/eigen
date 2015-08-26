@@ -31,13 +31,13 @@ NSString *const ARActionButtonHandlerKey = @"ARActionButtonHandlerKey";
 
         NSInteger index = [actionButtonDescriptions indexOfObject:description];
         if (index == 0) {
-            [actionButton alignTrailingEdgeWithView:self predicate:nil];
+            [actionButton alignTrailingEdgeWithView:self predicate:@"0"];
 
         } else {
             UIView *closestSibling = self.subviews[index - 1];
             [actionButton alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeLeading ofView:closestSibling predicate:@"-10"];
         }
-        [actionButton alignTopEdgeWithView:self predicate:nil];
+        [actionButton alignTopEdgeWithView:self predicate:@"0"];
     }
 }
 

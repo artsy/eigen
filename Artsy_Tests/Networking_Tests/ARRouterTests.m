@@ -128,10 +128,6 @@ describe(@"User-Agent", ^{
 
     it(@"is contained in requests sent out from router", ^{
 
-        // Some random requests from the router
-        OCMockObject *userMock = [OCMockObject mockForClass:[User class]];
-        [[[[userMock stub] classMethod] andReturnValue:OCMOCK_VALUE(YES)] isTrialUser];
-
         Artwork *artwork = [Artwork modelWithJSON:@{ @"id": @"artwork_id" }];
         NSURLRequest *request = [ARRouter newArtworkInquiryRequestForArtwork:artwork name:@"name" email:@"email.com" message:@"message" analyticsDictionary:@{} shouldContactGallery:NO];
 
@@ -156,12 +152,12 @@ describe(@"baseWebURL", ^{
     });
     
     it(@"points to artsy mobile on iphone", ^{
-        expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://m.artsy.net/"]);
+        expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://m.artsy.net"]);
     });
     
     it(@"points to artsy web on ipad", ^{
         [ARTestContext stubDevice:ARDeviceTypePad];
-        expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://artsy.net/"]);
+        expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://artsy.net"]);
         [ARTestContext stopStubbing];
     });
 });

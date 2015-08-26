@@ -60,7 +60,7 @@
 
 - (void)cancelRequests;
 {
-    [self.relatedArtworkRequests each:^(AFJSONRequestOperation *request) {
+    [self.relatedArtworkRequests each:^(AFHTTPRequestOperation *request) {
         [request cancel];
     }];
 }
@@ -124,7 +124,7 @@
     }];
 }
 
-- (void)addRelatedArtworkRequest:(AFJSONRequestOperation *)requestOperation;
+- (void)addRelatedArtworkRequest:(AFHTTPRequestOperation *)requestOperation;
 {
     self.relatedArtworkRequests = [self.relatedArtworkRequests arrayByAddingObject:requestOperation];
 }

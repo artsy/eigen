@@ -47,8 +47,8 @@
                        success:(void (^)(id JSON))success
                        failure:(void (^)(NSError *error))failure
 {
-    __weak AFJSONRequestOperation *feedOperation = nil;
-    feedOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+    __weak AFHTTPRequestOperation *feedOperation = nil;
+    feedOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 
             BOOL isFirstPageOfMainFeed = (!cursor);

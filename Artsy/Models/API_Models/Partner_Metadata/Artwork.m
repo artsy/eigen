@@ -176,7 +176,7 @@
     return _defaultImage.url;
 }
 
-- (AFJSONRequestOperation *)getRelatedArtworks:(void (^)(NSArray *artworks))success
+- (AFHTTPRequestOperation *)getRelatedArtworks:(void (^)(NSArray *artworks))success
 {
     return [ArtsyAPI getRelatedArtworksForArtwork:self success:success
                                           failure:^(NSError *error) {
@@ -184,7 +184,7 @@
                                           }];
 }
 
-- (AFJSONRequestOperation *)getRelatedFairArtworks:(Fair *)fair success:(void (^)(NSArray *artworks))success
+- (AFHTTPRequestOperation *)getRelatedFairArtworks:(Fair *)fair success:(void (^)(NSArray *artworks))success
 {
     return [ArtsyAPI getRelatedArtworksForArtwork:self inFair:(fair ?: self.fair)success:success
                                           failure:^(NSError *error) {
@@ -192,7 +192,7 @@
                                           }];
 }
 
-- (AFJSONRequestOperation *)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success
+- (AFHTTPRequestOperation *)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success
 {
     return [ArtsyAPI getAuctionComparablesForArtwork:self success:success
                                              failure:^(NSError *error) {
@@ -200,7 +200,7 @@
                                              }];
 }
 
-- (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success
+- (AFHTTPRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success
 {
     return [ArtsyAPI getRelatedPostsForArtwork:self success:success
                                        failure:^(NSError *error) {
@@ -208,7 +208,7 @@
                                        }];
 }
 
-- (AFJSONRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
+- (AFHTTPRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
 {
     return [ArtsyAPI getShowsForArtworkID:self.artworkID inFairID:fair.fairID success:success
                                   failure:^(NSError *error) {

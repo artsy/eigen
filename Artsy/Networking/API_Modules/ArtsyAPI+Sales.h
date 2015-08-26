@@ -7,7 +7,7 @@
                     success:(void (^)(NSArray *sales))success
                     failure:(void (^)(NSError *error))failure;
 
-+ (AFJSONRequestOperation *)getArtworksForSale:(NSString *)saleID
++ (AFHTTPRequestOperation *)getArtworksForSale:(NSString *)saleID
                                        success:(void (^)(NSArray *artworks))success
                                        failure:(void (^)(NSError *error))failure;
 

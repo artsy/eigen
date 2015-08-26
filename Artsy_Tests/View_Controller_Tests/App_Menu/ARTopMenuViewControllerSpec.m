@@ -34,14 +34,18 @@ __block ARTopMenuViewController *sut;
 __block ARTopMenuNavigationDataSource *dataSource;
 
 dispatch_block_t sharedBefore = ^{
-   sut = [[ARTopMenuViewController alloc] init];
-   sut.navigationDataSource = dataSource;
-   dataSource.browseViewController.networkModel = [[ARStubbedBrowseNetworkModel alloc] init];
-   [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/xapp_token" withResponse:@{}];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/site_hero_units" withResponse:@[@{ @"heading": @"something" }]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@{}];
 
-   [sut beginAppearanceTransition:YES animated:NO];
-   [sut endAppearanceTransition];
-   [sut.view layoutIfNeeded];
+    sut = [[ARTopMenuViewController alloc] init];
+    sut.navigationDataSource = dataSource;
+    dataSource.browseViewController.networkModel = [[ARStubbedBrowseNetworkModel alloc] init];
+    [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];
+
+    [sut beginAppearanceTransition:YES animated:NO];
+    [sut endAppearanceTransition];
+    [sut.view layoutIfNeeded];
 };
 
 itHasSnapshotsForDevicesWithName(@"selects 'home' by default", ^{
@@ -61,6 +65,10 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
     __block NSInteger tab;
     before(^{
         tab = [data[@"tab"] integerValue];
+
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/xapp_token" withResponse:@{}];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/site_hero_units" withResponse:@[@{ @"heading": @"something" }]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@{}];
     });
 
     it(@"removes x-callback-url callbacks", ^{

@@ -49,10 +49,10 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     [self.view addSubview:clearButton];
     self.textField.clipsToBounds = NO;
     [clearButton ar_extendHitTestSizeByWidth:6 andHeight:16];
-    [clearButton alignTrailingEdgeWithView:self.textField predicate:nil];
-    [clearButton constrainHeightToView:self.textField predicate:nil];
+    [clearButton alignTrailingEdgeWithView:self.textField predicate:@"0"];
+    [clearButton constrainHeightToView:self.textField predicate:@"0"];
     [clearButton alignCenterYWithView:self.textField predicate:@"-2"];
-    [clearButton alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:clearButton predicate:nil];
+    [clearButton alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:clearButton predicate:@"0"];
     [clearButton addTarget:self action:@selector(clearTapped:) forControlEvents:UIControlEventTouchUpInside];
     clearButton.hidden = YES;
 
@@ -82,7 +82,7 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     self.clearButton.hidden = self.textField.text.length == 0;
 }
 
-- (AFJSONRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
+- (AFHTTPRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
     return [ArtsyAPI searchWithQuery:query success:success failure:failure];
 }
