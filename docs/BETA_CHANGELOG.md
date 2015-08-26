@@ -1,5 +1,6 @@
 ## Next
 
+* Fix "Contact for Price" not showing on artworks - jorystiefel
 * Unify way to set whether to perform work asynchronously with ARPerformWorkAsynchronously - jorystiefel
 * Skip onboarding flow when registering to bid on iPhone - jorystiefel
 * Adds a web view admin gesture to get information. Do a long press on a blank space on any web view - orta
