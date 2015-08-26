@@ -355,7 +355,7 @@
 		608B708C17D4A1C80088A56C /* SidebarButtonHighlightBG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B705A17D4A1C80088A56C /* SidebarButtonHighlightBG@2x.png */; };
 		608B709417D4A1C80088A56C /* CloseButtonLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B706217D4A1C80088A56C /* CloseButtonLarge@2x.png */; };
 		608B709917D4F6520088A56C /* ARSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B709817D4F6520088A56C /* ARSearchTableViewCell.m */; };
-		608EE3DB19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 608EE3DA19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m */; };
+		608EE3DB19954CEB001F4FE0 /* UIViewController+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = 608EE3DA19954CEB001F4FE0 /* UIViewController+Testing.m */; };
 		60903CC4175CE21A002AB800 /* AROptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CC3175CE21A002AB800 /* AROptions.m */; };
 		60903CCB175CE766002AB800 /* ARAdminSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CCA175CE766002AB800 /* ARAdminSettingsViewController.m */; };
 		60903CCF175CF088002AB800 /* ARGroupedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CCE175CF088002AB800 /* ARGroupedTableViewCell.m */; };
@@ -1226,8 +1226,8 @@
 		608B706217D4A1C80088A56C /* CloseButtonLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CloseButtonLarge@2x.png"; sourceTree = "<group>"; };
 		608B709717D4F6520088A56C /* ARSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSearchTableViewCell.h; sourceTree = "<group>"; };
 		608B709817D4F6520088A56C /* ARSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSearchTableViewCell.m; sourceTree = "<group>"; };
-		608EE3D919954CEB001F4FE0 /* UIViewController+PresentWithFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+PresentWithFrame.h"; sourceTree = "<group>"; };
-		608EE3DA19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+PresentWithFrame.m"; sourceTree = "<group>"; };
+		608EE3D919954CEB001F4FE0 /* UIViewController+Testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Testing.h"; sourceTree = "<group>"; };
+		608EE3DA19954CEB001F4FE0 /* UIViewController+Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Testing.m"; sourceTree = "<group>"; };
 		60903CC2175CE21A002AB800 /* AROptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROptions.h; sourceTree = "<group>"; };
 		60903CC3175CE21A002AB800 /* AROptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROptions.m; sourceTree = "<group>"; };
 		60903CC9175CE766002AB800 /* ARAdminSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAdminSettingsViewController.h; sourceTree = "<group>"; };
@@ -1669,6 +1669,28 @@
 			path = Image;
 			sourceTree = "<group>";
 		};
+		0CE0FE251B8E29CC00A921FD /* Stubs */ = {
+			isa = PBXGroup;
+			children = (
+				3C7ECF72189010CA004BC877 /* Extensions.h */,
+				60CE3CA91B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.h */,
+				60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */,
+				3C3FEA8C188433F200E1A16F /* ARUserManager+Stubs.h */,
+				3C3FEA8D1884346D00E1A16F /* ARUserManager+Stubs.m */,
+				3CA1E81E188465F0003C622D /* Sale+Extensions.h */,
+				3CA1E81F188465F0003C622D /* Sale+Extensions.m */,
+				3CA1E8211884663E003C622D /* Bid+Extensions.h */,
+				3CA1E8221884663E003C622D /* Bid+Extensions.m */,
+				3C6AA7C91885F38D00501F07 /* SaleArtwork+Extensions.h */,
+				3C6AA7CA1885F38D00501F07 /* SaleArtwork+Extensions.m */,
+				342F93309D1B60C53E2E0732 /* Artwork+Extensions.m */,
+				342F95F94C5759B9CA05AB59 /* Artwork+Extensions.h */,
+				3CE0DA3018A13604000E537A /* OHHTTPStubs+Artsy.h */,
+				3CE0DA3118A13604000E537A /* OHHTTPStubs+Artsy.m */,
+			);
+			path = Stubs;
+			sourceTree = "<group>";
+		};
 		342F90A2E677A86747A25FD8 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
@@ -1958,29 +1980,14 @@
 		3C3FEA8B188433CB00E1A16F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				60CE3CA91B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.h */,
-				60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */,
 				5E9A78211906BA3D00734E1B /* OCMArg+ClassChecker.h */,
 				5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */,
-				3C3FEA8C188433F200E1A16F /* ARUserManager+Stubs.h */,
-				3C3FEA8D1884346D00E1A16F /* ARUserManager+Stubs.m */,
-				3CA1E81E188465F0003C622D /* Sale+Extensions.h */,
-				3CA1E81F188465F0003C622D /* Sale+Extensions.m */,
-				3CA1E8211884663E003C622D /* Bid+Extensions.h */,
-				3CA1E8221884663E003C622D /* Bid+Extensions.m */,
-				3C6AA7C91885F38D00501F07 /* SaleArtwork+Extensions.h */,
-				3C6AA7CA1885F38D00501F07 /* SaleArtwork+Extensions.m */,
-				3C7ECF72189010CA004BC877 /* Extensions.h */,
-				342F93309D1B60C53E2E0732 /* Artwork+Extensions.m */,
-				342F95F94C5759B9CA05AB59 /* Artwork+Extensions.h */,
-				3CE0DA3018A13604000E537A /* OHHTTPStubs+Artsy.h */,
-				3CE0DA3118A13604000E537A /* OHHTTPStubs+Artsy.m */,
 				3C6BDCBE18E0B3E40028EF5D /* MutableNSURLResponse.h */,
 				3C6BDCBF18E0B3E40028EF5D /* MutableNSURLResponse.m */,
 				3CA17D571901A4900010C9F5 /* SpectaDSL+Sleep.h */,
 				3CA17D581901A4900010C9F5 /* SpectaDSL+Sleep.m */,
-				608EE3D919954CEB001F4FE0 /* UIViewController+PresentWithFrame.h */,
-				608EE3DA19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m */,
+				608EE3D919954CEB001F4FE0 /* UIViewController+Testing.h */,
+				608EE3DA19954CEB001F4FE0 /* UIViewController+Testing.m */,
 				E61E772419A5477300C55E14 /* ARExpectaExtensions.h */,
 				E61E772519A5477300C55E14 /* ARExpectaExtensions.m */,
 			);
@@ -3796,6 +3803,7 @@
 			isa = PBXGroup;
 			children = (
 				3C205B5718900091004280E0 /* App Tests */,
+				0CE0FE251B8E29CC00A921FD /* Stubs */,
 				3C3FEA8B188433CB00E1A16F /* Extensions */,
 				B31BBE10181EFA08001C623C /* Model Tests */,
 				3CAED1791880268E00840608 /* Networking Tests */,
@@ -4830,7 +4838,7 @@
 				342F98EAAAAA4C3264E90CD2 /* ARGeneArtworksNetworkModelTests.m in Sources */,
 				E611847218D7B4C4000FE4C9 /* ARSharingControllerTests.m in Sources */,
 				3CA0A17D18EF633900C361E5 /* ARArtistViewControllerTests.m in Sources */,
-				608EE3DB19954CEB001F4FE0 /* UIViewController+PresentWithFrame.m in Sources */,
+				608EE3DB19954CEB001F4FE0 /* UIViewController+Testing.m in Sources */,
 				5122D69A1A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m in Sources */,
 				342F9E0892E99A2F66657964 /* Artwork+Extensions.m in Sources */,
 				342F9715E899AC7D24E70734 /* ORStackViewArtsyCategoriesTests.m in Sources */,

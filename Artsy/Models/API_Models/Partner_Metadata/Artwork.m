@@ -45,7 +45,8 @@
         @keypath(Artwork.new, imageRights) : @"image_rights",
         @keypath(Artwork.new, published) : @"published",
         @keypath(Artwork.new, saleMessage) : @"sale_message",
-        @keypath(Artwork.new, sold) : @"sold"
+        @keypath(Artwork.new, sold) : @"sold",
+        @keypath(Artwork.new, isPriceHidden) : @"price_hidden"
     };
 }
 

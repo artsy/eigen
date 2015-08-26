@@ -1,5 +1,6 @@
 ## 2.2.0 (2015.8.21)
 
+* Fix "Contact for Price" not showing on artworks - jorystiefel
 * Unify way to set whether to perform work asynchronously with ARPerformWorkAsynchronously - jorystiefel
 * [iOS 9] Fix FLKAutoLayout issues with top and bottom layout guides. - alloy
 * [iOS 9] Allow non-SSL connections to any domain. This is needed for now as we might present non-SSL sites in the

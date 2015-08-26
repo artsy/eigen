@@ -22,7 +22,7 @@
 /// The current offset that should be applied to the imageview
 - (CGPoint)imageViewOffset;
 
-// Triggers actions based on when scrolling has settled
+/// Triggers actions based on when scrolling has settled
 - (void)setHasFinishedScrolling;
 
 - (NSString *)inquiryURLRepresentation;

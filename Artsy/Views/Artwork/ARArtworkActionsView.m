@@ -42,7 +42,7 @@
 - (void)setDelegate:(id<ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate>)delegate
 {
     _delegate = delegate;
-   @_weakify(self);
+    @_weakify(self);
 
     KSPromise *artworkPromise = [self.artwork onArtworkUpdate:nil failure:nil];
     KSPromise *saleArtworkPromise = [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
@@ -281,7 +281,9 @@ return [navigationButtons copy];
 
 - (BOOL)showPriceLabel
 {
-    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
+    // Check if a price is set OR the price should be hidden - this way we can show the "Contact For Price"
+    // message whether or not a price has been entered
+    return (self.artwork.price.length || self.artwork.isPriceHidden.boolValue) && !self.artwork.hasMultipleEditions && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
 }
 
 - (BOOL)showContactButton
