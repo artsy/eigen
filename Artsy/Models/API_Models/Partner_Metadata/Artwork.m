@@ -45,7 +45,8 @@
         @keypath(Artwork.new, imageRights) : @"image_rights",
         @keypath(Artwork.new, published) : @"published",
         @keypath(Artwork.new, saleMessage) : @"sale_message",
-        @keypath(Artwork.new, sold) : @"sold"
+        @keypath(Artwork.new, sold) : @"sold",
+        @keypath(Artwork.new, isPriceHidden) : @"price_hidden"
     };
 }
 
@@ -257,7 +258,7 @@
 
 - (void)updateArtwork
 {
-   @_weakify(self);
+    @_weakify(self);
     __weak KSDeferred *deferred = _artworkUpdateDeferred;
 
     ar_dispatch_async(^{
@@ -282,7 +283,7 @@
 
 - (KSPromise *)onArtworkUpdate:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-   @_weakify(self);
+    @_weakify(self);
 
     if (!_artworkUpdateDeferred) {
         _artworkUpdateDeferred = [KSDeferred defer];
@@ -311,7 +312,7 @@
 
 - (void)updateSaleArtwork
 {
-   @_weakify(self);
+    @_weakify(self);
 
     KSDeferred *deferred = [self deferredSaleArtworkUpdate];
 
@@ -374,7 +375,7 @@
 
 - (void)updateFair
 {
-   @_weakify(self);
+    @_weakify(self);
 
     KSDeferred *deferred = [self deferredFairUpdate];
     [ArtsyAPI getFairsForArtwork:self success:^(NSArray *fairs) {
@@ -429,7 +430,7 @@
 
 - (void)updatePartnerShow;
 {
-   @_weakify(self);
+    @_weakify(self);
 
     KSDeferred *deferred = [self deferredPartnerShowUpdate];
     [ArtsyAPI getShowsForArtworkID:self.artworkID inFairID:nil success:^(NSArray *shows) {
@@ -445,7 +446,7 @@
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-   @_weakify(self);
+    @_weakify(self);
     [ArtsyAPI setFavoriteStatus:state forArtwork:self success:^(id response) {
         @_strongify(self);
         if (!self) { return; }
@@ -476,7 +477,7 @@
         return;
     }
 
-   @_weakify(self);
+    @_weakify(self);
 
     if (!_favDeferred) {
         KSDeferred *deferred = [KSDeferred defer];
