@@ -54,7 +54,7 @@
 
     self.containerView = [[ORStackView alloc] init];
     [self.view addSubview:self.containerView];
-    [self.containerView alignCenterXWithView:self.view predicate:nil];
+    [self.containerView alignCenterXWithView:self.view predicate:@"0"];
     [self.containerView constrainWidth:@"280"];
 
     self.emailTextField = [[ARTextFieldWithPlaceholder alloc] initWithFrame:CGRectZero];

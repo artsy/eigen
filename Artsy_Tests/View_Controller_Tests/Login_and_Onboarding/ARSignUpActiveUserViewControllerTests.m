@@ -94,4 +94,4 @@ describe(@"sign up after app launch", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

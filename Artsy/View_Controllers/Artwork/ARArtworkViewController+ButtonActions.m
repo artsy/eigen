@@ -177,11 +177,11 @@
         [self.navigationController pushViewController:controller animated:YES];
 
     }
-    failure:^(NSError *error) {
+        failure:^(NSError *error) {
         @_strongify(self);
         ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
         [self tappedContactGallery];
-    }];
+        }];
 }
 
 - (void)tappedAuctionResults
@@ -230,6 +230,7 @@
     UIViewController *viewController = [ARSwitchBoard.sharedInstance routeProfileWithID:fairID];
     [self.navigationController pushViewController:viewController animated:YES];
 }
+
 - (void)tappedOpenArtworkArtist
 {
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:self.artwork.artist.artistID inFair:self.fair];

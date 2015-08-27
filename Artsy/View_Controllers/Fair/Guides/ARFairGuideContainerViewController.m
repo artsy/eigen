@@ -58,7 +58,7 @@ const CGFloat kClosedMapHeight = 180.0f;
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-   @_weakify(self);
+    @_weakify(self);
     [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
         @_strongify(self);
         [self downloadContent];
@@ -191,7 +191,7 @@ const CGFloat kClosedMapHeight = 180.0f;
 
     CGFloat mapTopMargin = self.topLayoutGuide.length;
 
-    NSString *topLayoutGuide = @(self.topLayoutGuide.length).stringValue;
+    NSString *topLayoutGuide = @(mapTopMargin).stringValue;
 
     if (self.mapCollapsed) {
         if (self.hasMap) {
@@ -206,8 +206,8 @@ const CGFloat kClosedMapHeight = 180.0f;
         // @"-64" is statusbar + nav bar, to hide the map VC's title view
         [self alignViewToSelf:self.fairMapViewController.view top:@"-64" leading:@"0" bottom:mapBottomString trailing:@"0"];
         [self alignViewToSelf:self.clickInterceptorView top:@"0" leading:@"0" bottom:mapBottomString trailing:@"0"];
-        [self alignViewToSelf:self.fairGuideViewController.view top:nil leading:@"0" bottom:@"0" trailing:@"0"];
-        [self alignViewToSelf:self.fairGuideBackgroundView top:nil leading:@"0" bottom:@"0" trailing:@"0"];
+        [self alignViewToSelf:self.fairGuideViewController.view top:mapBottomString leading:@"0" bottom:@"0" trailing:@"0"];
+        [self alignViewToSelf:self.fairGuideBackgroundView top:mapBottomString leading:@"0" bottom:@"0" trailing:@"0"];
 
         NSArray *constraints = [self.fairGuideViewController.view alignTopEdgeWithView:self.view predicate:mapTopString];
         [self.subviewsConstraintsArray addObjectsFromArray:constraints];
@@ -218,11 +218,12 @@ const CGFloat kClosedMapHeight = 180.0f;
         self.fairBackgroundViewTopLayoutConstraint = constraints.firstObject;
 
     } else {
-        NSString *screenHeight = @(CGRectGetHeight(self.view.bounds)).stringValue;
+        NSString *hiddenTop = @(CGRectGetHeight(self.view.bounds)).stringValue;
+        NSString *hiddenBottom = @(-CGRectGetHeight(self.view.bounds)).stringValue;
         [self alignViewToSelf:self.fairMapViewController.view top:topLayoutGuide leading:@"0" bottom:@"0" trailing:@"0"];
-        [self alignViewToSelf:self.clickInterceptorView top:screenHeight leading:@"0" bottom:nil trailing:@"0"];
-        [self alignViewToSelf:self.fairGuideViewController.view top:screenHeight leading:@"0" bottom:nil trailing:@"0"];
-        [self alignViewToSelf:self.fairGuideBackgroundView top:screenHeight leading:@"0" bottom:nil trailing:@"0"];
+        [self alignViewToSelf:self.clickInterceptorView top:hiddenTop leading:@"0" bottom:hiddenBottom trailing:@"0"];
+        [self alignViewToSelf:self.fairGuideViewController.view top:hiddenTop leading:@"0" bottom:hiddenBottom trailing:@"0"];
+        [self alignViewToSelf:self.fairGuideBackgroundView top:hiddenTop leading:@"0" bottom:hiddenBottom trailing:@"0"];
     }
 
     [self.view layoutIfNeeded];
@@ -262,6 +263,7 @@ const CGFloat kClosedMapHeight = 180.0f;
     }
 }
 
+// TODO make these predicates _Nonnull when/if we decide to make FLKAutoLayout work that way.
 - (void)alignViewToSelf:(UIView *)view top:(NSString *)top leading:(NSString *)leading bottom:(NSString *)bottom trailing:(NSString *)trailing
 {
     [self.subviewsConstraintsArray addObjectsFromArray:[view alignTop:top leading:leading bottom:bottom trailing:trailing toView:self.view]];

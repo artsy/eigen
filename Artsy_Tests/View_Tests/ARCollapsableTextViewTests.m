@@ -80,4 +80,4 @@ describe(@"text is taller than collapsed height", ^{
 
 });
 
-SpecEnd
+SpecEnd;

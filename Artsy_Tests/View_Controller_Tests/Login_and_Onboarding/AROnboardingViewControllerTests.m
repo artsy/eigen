@@ -56,4 +56,4 @@ describe(@"signup splash", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

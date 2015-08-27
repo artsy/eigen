@@ -5,7 +5,7 @@
 
 
 @interface ArtsyAPI (Private)
-- (AFJSONRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+- (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 @end
 
 
@@ -25,9 +25,16 @@
 - (id)initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)response client:(id<NSURLProtocolClient>)client;
 @end
 
+/// Pretends to be an AFNetworking operation, but really, it just calls a block
+/// thanks Obj-C runtime.
+
 
 @interface ARFakeAFJSONOperation : NSBlockOperation
-@property (nonatomic, assign) dispatch_queue_t successCallbackQueue;
+@property (nonatomic, assign) dispatch_queue_t completionQueue;
+@property (nonatomic, strong) dispatch_group_t completionGroup;
+@property (nonatomic, strong) NSURLRequest *request;
+@property (nonatomic, strong) id responseObject;
+@property (nonatomic, strong) NSError *error;
 @end
 
 
@@ -37,7 +44,12 @@
 
 @implementation ArtsyOHHTTPAPI
 
-- (AFJSONRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
+- (void)getXappTokenWithCompletion:(void (^)(NSString *xappToken, NSDate *expirationDate))callback failure:(void (^)(NSError *error))failure
+{
+    callback(@"xapp token", [NSDate distantFuture]);
+}
+
+- (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
 {
     OHHTTPStubsDescriptor *stub = [[OHHTTPStubs sharedInstance] firstStubPassingTestForRequest:request];
     if (!stub) {
@@ -58,7 +70,7 @@
                     || [methodOrFunction isEqualToString:@"main"]
                 );
             });
-            NSAssert(stackTrace.count > 0, @"Stack trace empty, might need omre white listing.");
+            NSAssert(stackTrace.count > 0, @"Stack trace empty, might need more white listing.");
 
             printf("\n\n\n[!] Unstubbed Request Found\n");
             printf("   Inside Test: %s\n", [spectaExample description].UTF8String);
@@ -71,24 +83,40 @@
         return [super requestOperation:request success:success failure:failureCallback];
     }
 
-    return (id)[ARFakeAFJSONOperation blockOperationWithBlock:^{
-        OHHTTPStubsResponse *response = stub.responseBlock(request);
-        [response.inputStream open];
-        NSError *error = nil;
-        id json = @[];
-        if (response.inputStream.hasBytesAvailable) {
-            json = [NSJSONSerialization JSONObjectWithStream:response.inputStream options:NSJSONReadingAllowFragments error:&error];
-        }
 
+    OHHTTPStubsResponse *response = stub.responseBlock(request);
+    [response.inputStream open];
+    NSError *error = nil;
+
+    id json = @[];
+    if (response.inputStream.hasBytesAvailable) {
+        json = [NSJSONSerialization JSONObjectWithStream:response.inputStream options:NSJSONReadingAllowFragments error:&error];
+    }
+
+    ARFakeAFJSONOperation *fakeOp = [ARFakeAFJSONOperation blockOperationWithBlock:^{
         NSHTTPURLResponse *URLresponse = [[NSHTTPURLResponse alloc] initWithURL:request.URL statusCode:response.statusCode HTTPVersion:@"1.0" headerFields:response.httpHeaders];
 
         if (response.statusCode >= 200 && response.statusCode < 205) {
-            success(request, URLresponse, json);
+            if (success) { success(request, URLresponse, json); }
         } else {
-            failureCallback(request, URLresponse, response.error, json);
+            if (failureCallback) { failureCallback(request, URLresponse, response.error, json); }
         }
-
     }];
+
+    fakeOp.responseObject = json;
+    fakeOp.request = request;
+    return (id)fakeOp;
+}
+
+- (void)getRequests:(NSArray *)requests success:(void (^)(NSArray *operations))completed
+{
+    NSArray *operations = [requests map:^id(NSURLRequest *request) {
+        return [self requestOperation:request success:nil failure:nil];
+    }];
+    for (NSBlockOperation *blockOp in operations) {
+        [blockOp start];
+    }
+    completed(operations);
 }
 
 @end

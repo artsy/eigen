@@ -197,10 +197,7 @@ describe(@"concerning an artwork at a show", ^{
         __block Artwork *otherWorkByArtist = nil;
 
         before(^{
-            otherWorkByArtistJSON = @{
-                                      @"id":@"el-anatsui-wet",
-                                      @"title":@"Wet"
-                                      };
+            otherWorkByArtistJSON = @{ @"id":@"el-anatsui-wet", @"title":@"Wet" };
             otherWorkByArtist = [Artwork modelWithJSON:otherWorkByArtistJSON];
             [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/el-anatsui/artworks?page=1&size=10"
                                    withResponse:@[artworkJSON, otherWorkByArtistJSON]];
@@ -273,4 +270,4 @@ describe(@"concerning layout", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

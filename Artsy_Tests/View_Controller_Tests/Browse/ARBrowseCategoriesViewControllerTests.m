@@ -77,9 +77,10 @@ it(@"presents featured categories and genes", ^{
 describe(@"looks correct", ^{
     itHasSnapshotsForDevices(^{
         [viewController ar_presentWithFrame:[UIScreen mainScreen].bounds];
+        [viewController.childViewControllers makeObjectsPerformSelector:@selector(updateViewConstraints)];
         [viewController.view snapshotViewAfterScreenUpdates:YES];
         return viewController;
     });
 });
 
-SpecEnd
+SpecEnd;

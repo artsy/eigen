@@ -136,4 +136,4 @@ describe(@"artwork for sale", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

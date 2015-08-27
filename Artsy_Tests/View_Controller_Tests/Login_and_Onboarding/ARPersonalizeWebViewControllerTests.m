@@ -1,5 +1,12 @@
 #import "ARPersonalizeWebViewController.h"
 
+
+@interface ARPersonalizeWebViewController (Testing)
+
+@property (nonatomic, strong) UIWebView *webView;
+
+@end
+
 SpecBegin(ARPersonalizeWebViewController);
 
 __block ARPersonalizeWebViewController *sut;
@@ -11,14 +18,14 @@ before(^{
 it(@"allows google urls to pass", ^{
     NSURL *url = [NSURL URLWithString:@"https://google.com/hi"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    BOOL allowed = [sut webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther];
+    BOOL allowed = [sut webView:sut.webView shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther];
     expect(allowed).to.beTruthy();
 });
 
 it(@"returns no on artsy root urls", ^{
     NSURL *url = [NSURL URLWithString:@"https://staging.artsy.net/"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    BOOL allowed = [sut webView:nil shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther];
+    BOOL allowed = [sut webView:sut.webView shouldStartLoadWithRequest:request navigationType:UIWebViewNavigationTypeOther];
     expect(allowed).to.beFalsy();
 });
 
@@ -30,4 +37,4 @@ it(@"is positioned correctly", ^{
 });
 
 
-SpecEnd
+SpecEnd;

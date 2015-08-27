@@ -89,11 +89,11 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 
 - (ARHeartStatus)heartStatus;
 
-- (AFJSONRequestOperation *)getRelatedArtworks:(void (^)(NSArray *artworks))success;
-- (AFJSONRequestOperation *)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success;
-- (AFJSONRequestOperation *)getRelatedFairArtworks:(Fair *)fair success:(void (^)(NSArray *artworks))success;
-- (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
-- (AFJSONRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
+- (AFHTTPRequestOperation *)getRelatedArtworks:(void (^)(NSArray *artworks))success;
+- (AFHTTPRequestOperation *)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success;
+- (AFHTTPRequestOperation *)getRelatedFairArtworks:(Fair *)fair success:(void (^)(NSArray *artworks))success;
+- (AFHTTPRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
+- (AFHTTPRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
 
 /// Gets an update from the server and updates itself, triggers defers from onArtworkUpdate
 - (void)updateArtwork;

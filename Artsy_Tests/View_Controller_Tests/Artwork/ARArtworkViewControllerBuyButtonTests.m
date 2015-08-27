@@ -3,6 +3,7 @@
 #import "ARUserManager+Stubs.h"
 #import "ARNetworkConstants.h"
 
+
 @interface ARArtworkViewController (Tests)
 - (void)tappedBuyButton;
 - (void)tappedContactGallery;
@@ -52,6 +53,7 @@ describe(@"buy button", ^{
     });
 
     it(@"posts order if artwork has 1 edition set", ^{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/order/pending/items" withResponse:@{}];
         Artwork *artwork = [Artwork modelWithJSON:@{
             @"id" : @"artwork-id",
             @"title" : @"Artwork Title",
@@ -118,4 +120,4 @@ describe(@"buy button", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

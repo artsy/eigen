@@ -21,7 +21,7 @@ static const CGFloat ARMenuButtonDimension = 46;
 @property (readwrite, nonatomic, assign) BOOL hidesToolbarMenu;
 
 @property (readwrite, nonatomic, assign) enum ARTopTabControllerIndex selectedTabIndex;
-@property (readwrite, nonatomic, strong) NSLayoutConstraint *tabHeightConstraint;
+@property (readwrite, nonatomic, strong) NSLayoutConstraint *tabBottomConstraint;
 
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 @property (readwrite, nonatomic, strong) UIView *tabContainer;
@@ -86,6 +86,8 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     UIView *tabContainer = [[UIView alloc] init];
     self.tabContainer = tabContainer;
+    self.tabContainer.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:tabContainer];
 
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero
                                                             hostViewController:self
@@ -95,16 +97,17 @@ static const CGFloat ARMenuButtonDimension = 46;
     tabContentView.buttons = buttons;
     [tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
     _tabContentView = tabContentView;
+    [self.view addSubview:tabContentView];
 
     // Layout
-    [self.view addSubview:tabContentView];
-    [tabContentView alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.view];
+    [tabContentView alignTopEdgeWithView:self.view predicate:@"0"];
+    [tabContentView alignLeading:@"0" trailing:@"0" toView:self.view];
+    [tabContentView constrainBottomSpaceToView:self.tabContainer predicate:@"0"];
     [tabContentView constrainWidthToView:self.view predicate:@"0"];
 
-    [self.view addSubview:tabContainer];
     [tabContainer constrainHeight:@(ARMenuButtonDimension).stringValue];
-    [tabContainer constrainTopSpaceToView:tabContentView predicate:nil];
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
+    self.tabBottomConstraint = [[tabContainer alignBottomEdgeWithView:self.view predicate:@"0"] lastObject];
 
     for (ARNavigationTabButton *button in buttons) {
         [tabContainer addSubview:button];
@@ -114,7 +117,8 @@ static const CGFloat ARMenuButtonDimension = 46;
     [separator constrainHeight:@".5"];
     separator.backgroundColor = [UIColor colorWithWhite:.3 alpha:1];
     [tabContainer addSubview:separator];
-    [separator alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:tabContainer];
+    [separator alignTopEdgeWithView:tabContainer predicate:@"0"];
+    [separator constrainWidthToView:tabContainer predicate:@"0"];
 
     NSMutableArray *constraintsForButtons = [NSMutableArray array];
     [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
@@ -123,15 +127,13 @@ static const CGFloat ARMenuButtonDimension = 46;
         if (index == 0) {
             [button alignLeadingEdgeWithView:tabContainer predicate:@"0"];
         } else {
-            [constraintsForButtons addObject:[[button constrainLeadingSpaceToView:buttons[index - 1] predicate:nil] lastObject] ];
+            [constraintsForButtons addObject:[[button constrainLeadingSpaceToView:buttons[index - 1] predicate:@"0"] lastObject] ];
         }
         if (index == buttons.count - 1) {
-            [constraintsForButtons addObject:[[tabContainer alignTrailingEdgeWithView:button predicate:nil] lastObject]];
+            [constraintsForButtons addObject:[[tabContainer alignTrailingEdgeWithView:button predicate:@"0"] lastObject]];
         }
     }];
     self.constraintsForButtons = [constraintsForButtons copy];
-
-    self.tabHeightConstraint = [[tabContainer alignBottomEdgeWithView:self.view predicate:@"0"] lastObject];
 
     // Ensure it's created now and started listening for keyboard changes.
     // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
@@ -258,13 +260,13 @@ static const CGFloat ARMenuButtonDimension = 46;
 
 - (void)hideToolbar:(BOOL)hideToolbar animated:(BOOL)animated
 {
-    BOOL isCurrentlyHiding = (self.tabHeightConstraint.constant != 0);
+    BOOL isCurrentlyHiding = (self.tabBottomConstraint.constant != 0);
     if (isCurrentlyHiding == hideToolbar) {
         return;
     }
 
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
-        self.tabHeightConstraint.constant = hideToolbar ? self.tabContainer.frame.size.height : 0;
+        self.tabBottomConstraint.constant = hideToolbar ? CGRectGetHeight(self.tabContainer.frame) : 0;
 
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
@@ -286,6 +288,18 @@ static const CGFloat ARMenuButtonDimension = 46;
     [self runDeveloperExtras];
 #endif
 }
+
+// This is for when we would ever switch to VC controlled status bar showing, set in the Info.plist
+//
+//- (UIViewController *)childViewControllerForStatusBarHidden;
+//{
+//    return self.visibleViewController;
+//}
+//
+//- (BOOL)prefersStatusBarHidden;
+//{
+//    return self.childViewControllerForStatusBarHidden.prefersStatusBarHidden;
+//}
 
 #pragma mark - Pushing VCs
 

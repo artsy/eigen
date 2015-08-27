@@ -115,7 +115,8 @@ it(@"shows an upublished banner", ^{
 
 describe(@"at a closed auction", ^{
     before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[ @{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
+@{
             @"id": @"some-auction",
             @"name": @"Some Auction",
             @"is_auction": @YES,
@@ -147,16 +148,16 @@ describe(@"at a closed auction", ^{
             withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
     });
-    
+
     it(@"displays artwork on iPhone", ^{
         [ARTestContext useDevice:ARDeviceTypePhone6 :^{
 
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
-            [vc.view snapshotViewAfterScreenUpdates:YES];
 
-            expect(vc.view).will.haveValidSnapshot();
+            [vc.view snapshotViewAfterScreenUpdates:YES];
+            expect(vc.view).to.haveValidSnapshot();
         }];
     });
 
@@ -169,7 +170,7 @@ describe(@"at a closed auction", ^{
             [vc.view snapshotViewAfterScreenUpdates:YES];
 
 
-            expect(vc.view).will.haveValidSnapshot();
+            expect(vc.view).to.haveValidSnapshot();
             
         }];
     });
@@ -177,4 +178,4 @@ describe(@"at a closed auction", ^{
 
 pending(@"at a fair");
 
-SpecEnd
+SpecEnd;

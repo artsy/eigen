@@ -117,7 +117,7 @@
     } failure:failure];
 }
 
-- (AFJSONRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success
+- (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success
 {
     return [ArtsyAPI getArtworksForGene:self atPage:page success:^(NSArray *artworks) {
         success(artworks);

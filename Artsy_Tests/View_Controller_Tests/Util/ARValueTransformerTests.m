@@ -31,4 +31,4 @@ describe(@"without default", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

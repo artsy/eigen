@@ -92,7 +92,7 @@ extern NSString *const ARProfilePostsURLFormat;
 
 extern NSString *const ARNewFairInfoURLFormat;
 extern NSString *const ARNewFairShowsURLFormat;
-extern NSString *const ARNewFairMapURLFormat;
+extern NSString *const ARNewFairMapURL;
 
 extern NSString *const ARNewRelatedPostsURL;
 

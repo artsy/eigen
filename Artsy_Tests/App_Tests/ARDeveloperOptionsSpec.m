@@ -11,4 +11,4 @@ it(@"transforms the correct syntax to options", ^{
     expect(sut[@"test"]).to.equal(@"data");
 });
 
-SpecEnd
+SpecEnd;

@@ -10,7 +10,7 @@
 @property (nonatomic, assign, readwrite) NSInteger selectedIndex;
 @property (nonatomic, copy, readwrite) NSArray *searchResults;
 @property (nonatomic, copy, readonly) NSArray *resultsHistory;
-@property (nonatomic, strong, readonly) AFJSONRequestOperation *searchRequest;
+@property (nonatomic, strong, readonly) AFHTTPRequestOperation *searchRequest;
 
 @end
 

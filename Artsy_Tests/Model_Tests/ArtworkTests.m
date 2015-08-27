@@ -101,4 +101,4 @@ describe(@"defaultImage", ^{
 });
 
 
-SpecEnd
+SpecEnd;

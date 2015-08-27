@@ -61,7 +61,7 @@
 
     _routes = [[JLRoutes alloc] init];
 
-   @_weakify(self);
+    @_weakify(self);
     [self.routes addRoute:@"/artist/:id" handler:^BOOL(NSDictionary *parameters) {
         @_strongify(self)
         ARArtistViewController *viewController = [self loadArtistWithID:parameters[@"id"]];
@@ -313,7 +313,7 @@
     // May be nil by the end of the method
     UIViewController *viewController;
 
-    if ([ARRouter isInternalURL:url]) {
+    if ([ARRouter isInternalURL:url] || url.scheme == nil) {
         NSURL *fixedURL = [self fixHostForURL:url];
         viewController = [self routeInternalURL:fixedURL fair:fair];
     } else if ([ARRouter isWebURL:url]) {

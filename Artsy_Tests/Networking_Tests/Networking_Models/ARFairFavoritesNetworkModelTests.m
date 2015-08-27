@@ -131,4 +131,4 @@ describe(@"when downloading exhibitor data", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

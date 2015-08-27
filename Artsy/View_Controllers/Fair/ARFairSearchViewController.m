@@ -90,9 +90,9 @@
     return results;
 }
 
-- (AFJSONRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
+- (AFHTTPRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
-    AFJSONRequestOperation *request = [ArtsyAPI searchWithFairID:self.fair.fairID andQuery:query success:^(NSArray *searchResults) {
+    AFHTTPRequestOperation *request = [ArtsyAPI searchWithFairID:self.fair.fairID andQuery:query success:^(NSArray *searchResults) {
         success([searchResults select:^BOOL(SearchResult *searchResult) {
             // we have local search results for shows
             return ! [searchResult.model isEqual:[PartnerShow class]];

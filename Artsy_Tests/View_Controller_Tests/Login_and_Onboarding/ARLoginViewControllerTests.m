@@ -278,4 +278,4 @@ describe(@"login view controller", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

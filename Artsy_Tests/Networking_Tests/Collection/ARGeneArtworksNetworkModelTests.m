@@ -93,10 +93,9 @@ describe(@"networking", ^{
     });
 });
 
-SpecEnd
+SpecEnd;
 
-    void
-    stubNetworkingForPartialGeneAtPageWithArray(id gene, NSInteger page, NSArray *content)
+void stubNetworkingForPartialGeneAtPageWithArray(id gene, NSInteger page, NSArray *content)
 {
     [[[gene stub] andDo:^(NSInvocation *invocation) {
         void (^successBlock)(NSArray *) = nil;

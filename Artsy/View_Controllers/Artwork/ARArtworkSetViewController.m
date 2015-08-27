@@ -85,10 +85,10 @@
     return YES;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+- (void)viewWillTransitionToSize:(CGSize)newSize withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    BOOL landscape = size.width > size.height;
+    [super viewWillTransitionToSize:newSize withTransitionCoordinator:coordinator];
+    BOOL landscape = newSize.width > newSize.height;
     Artwork *artwork = self.currentArtworkViewController.artwork;
 
     BOOL isTopViewController = self.navigationController.topViewController == self;
@@ -106,7 +106,8 @@
     }
 
     if (![UIDevice isPad]) {
-        self.view.bounds = [UIScreen mainScreen].bounds;
+        // TODO Why is this needed at all?
+        self.view.bounds = (CGRect){CGPointZero, newSize};
     }
 }
 

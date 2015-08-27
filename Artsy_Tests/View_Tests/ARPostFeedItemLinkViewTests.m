@@ -15,4 +15,4 @@ it(@"targetURL", ^{
     expect([view targetPath]).to.equal(@"/post/post_id");
 });
 
-SpecEnd
+SpecEnd;

@@ -27,4 +27,4 @@ it(@"converts date", ^{
     expect(components.day).to.equal(24);
 });
 
-SpecEnd
+SpecEnd;

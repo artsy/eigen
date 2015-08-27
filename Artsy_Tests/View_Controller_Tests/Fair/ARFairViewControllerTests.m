@@ -228,4 +228,4 @@ context(@"with a map", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

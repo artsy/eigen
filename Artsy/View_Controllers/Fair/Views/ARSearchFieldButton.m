@@ -25,7 +25,7 @@
     self.imageView.image = [UIImage imageNamed:@"SearchIcon_HeavyGrey"];
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:self.imageView];
-    [self.imageView alignCenterYWithView:self predicate:nil];
+    [self.imageView alignCenterYWithView:self predicate:@"0"];
     [self.imageView alignLeadingEdgeWithView:self predicate:@"10"];
     [self.imageView constrainWidth:@"16"];
     [self.imageView constrainHeight:@"16"];
@@ -38,11 +38,11 @@
     self.label.backgroundColor = [UIColor clearColor];
     [self addSubview:self.label];
     [self.label alignLeadingEdgeWithView:self.imageView predicate:@"21"];
-    [self.label alignTrailingEdgeWithView:self predicate:nil];
+    [self.label alignTrailingEdgeWithView:self predicate:@"0"];
     [self.label alignTop:@"2" bottom:@"0" toView:self];
 
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] init];
-   @_weakify(self);
+    @_weakify(self);
     [recognizer.rac_gestureSignal subscribeNext:^(id _) {
         @_strongify(self);
         [self.delegate searchFieldButtonWasPressed:self];

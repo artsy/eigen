@@ -286,4 +286,4 @@ describe(@"on init", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

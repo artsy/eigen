@@ -23,7 +23,7 @@
     @import AFNetworking;
     @import Mantle;
     @import Mantle.metamacros;
-    @import AFHTTPRequestOperationLogger;
+    @import AFNetworkActivityLogger;
     @import ObjectiveSugar;
     @import FLKAutoLayout;
     @import CocoaLumberjack;
@@ -91,3 +91,4 @@
     _Pragma("clang diagnostic ignored \"-Wshadow\"") \
     metamacro_foreach(rac_strongify_,, __VA_ARGS__) \
     _Pragma("clang diagnostic pop")
+
