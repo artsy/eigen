@@ -58,7 +58,7 @@ const CGFloat kClosedMapHeight = 180.0f;
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-   @_weakify(self);
+    @_weakify(self);
     [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
         @_strongify(self);
         [self downloadContent];

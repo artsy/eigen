@@ -156,9 +156,10 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
         ARActionButtonImageKey : @"MapButtonAction",
         ARActionButtonHandlerKey : ^(ARCircularActionButton *sender){
             @_strongify(self);
-            [self handleMapButtonPress:sender];
-        }
-    };
+    [self handleMapButtonPress:sender];
+}
+}
+;
 }
 
 - (void)handleMapButtonPress:(ARCircularActionButton *)sender

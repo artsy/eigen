@@ -182,11 +182,11 @@
         [self.navigationController pushViewController:controller animated:YES];
 
     }
-    failure:^(NSError *error) {
+        failure:^(NSError *error) {
         @_strongify(self);
         ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
         [self tappedContactGallery];
-    }];
+        }];
 }
 
 - (void)tappedAuctionResults

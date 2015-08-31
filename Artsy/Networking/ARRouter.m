@@ -63,7 +63,7 @@ static NSSet *artsyHosts = nil;
                     [[NSNotificationCenter defaultCenter] postNotificationName:ARNetworkAvailableNotification object:nil];
                     break;
             }
-        }];
+    }];
 
     // Ensure the keychain is empty incase you've uninstalled and cleared user data
     if (![[ARUserManager sharedManager] hasExistingAccount]) {

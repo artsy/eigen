@@ -4,6 +4,7 @@
 @import ISO8601DateFormatter;
 @import UICKeyChainStore;
 
+
 @implementation ArtsyAPI
 
 + (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
@@ -53,7 +54,6 @@
     NSArray *newOps = [AFURLConnectionOperation batchOfRequestOperations:operations progressBlock:nil completionBlock:completed];
 
     [[NSOperationQueue mainQueue] addOperations:newOps waitUntilFinished:NO];
-
 }
 
 #pragma mark -
@@ -80,7 +80,7 @@
     if (response.statusCode == 401) {
         NSData *data = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
         NSDictionary *recoverySuggestion = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
+
         if ([recoverySuggestion[@"error"] isEqualToString:@"Unauthorized"] && [recoverySuggestion[@"text"] isEqualToString:@"The XAPP token is invalid or has expired."]) {
             ARActionLog(@"Resetting XAPP token after error: %@", error.localizedDescription);
             [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
@@ -164,7 +164,7 @@
         }
 
     }
-    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
 
         //TODO: handle this less stupid
         ARErrorLog(@"Couldn't get an Xapp token.");
@@ -173,7 +173,7 @@
         [ARNetworkErrorManager presentActiveError:cleanError];
 
         if (failure) { failure(error); }
-    }];
+        }];
 
     [op start];
 }
@@ -232,14 +232,14 @@
             });
         }
     }
-    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         [ArtsyAPI handleXappTokenError:error];
         ar_dispatch_main_queue(^{
             if (failure) {
                 failure(error);
             }
         });
-    }];
+        }];
     getOperation.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     [getOperation start];
     return getOperation;
@@ -283,7 +283,7 @@
             }
         });
     }];
-    
+
     // Use a background queue so JSON results are parsed off the UI thread. We'll dispatch back to main queue on success.
     getOperation.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     [getOperation start];

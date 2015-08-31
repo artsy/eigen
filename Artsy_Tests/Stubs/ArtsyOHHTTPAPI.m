@@ -28,6 +28,7 @@
 /// Pretends to be an AFNetworking operation, but really, it just calls a block
 /// thanks Obj-C runtime.
 
+
 @interface ARFakeAFJSONOperation : NSBlockOperation
 @property (nonatomic, assign) dispatch_queue_t completionQueue;
 @property (nonatomic, strong) dispatch_group_t completionGroup;
@@ -82,7 +83,7 @@
         return [super requestOperation:request success:success failure:failureCallback];
     }
 
-    
+
     OHHTTPStubsResponse *response = stub.responseBlock(request);
     [response.inputStream open];
     NSError *error = nil;

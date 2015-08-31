@@ -115,7 +115,8 @@ it(@"shows an upublished banner", ^{
 
 describe(@"at a closed auction", ^{
     before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[@{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
+@{
             @"id": @"some-auction",
             @"name": @"Some Auction",
             @"is_auction": @YES,

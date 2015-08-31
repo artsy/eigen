@@ -314,11 +314,12 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:ARPerformWorkAsynchronously];
 
-    [self.networkModel setFavoriteStatus:sender.isHearted success:^(id response) {}
-    failure:^(NSError *error) {
+    [self.networkModel setFavoriteStatus:sender.isHearted success:^(id response) {
+    }
+        failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
         [sender setHearted:!hearted animated:ARPerformWorkAsynchronously];
-    }];
+        }];
 }
 
 #pragma mark - Switch Navigation

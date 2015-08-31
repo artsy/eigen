@@ -143,7 +143,7 @@ static CGFloat ARHeroUnitDescriptionFont;
 - (UIImageView *)createTitleImageWithImageURL:(NSURL *)titleImageURL
 {
     UIImageView *titleImageView = [[UIImageView alloc] init];
-   @_weakify(titleImageView);
+    @_weakify(titleImageView);
     [titleImageView ar_setImageWithURL:titleImageURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             @_strongify(titleImageView);
             titleImageView.image = [UIImage imageWithCGImage:image.CGImage scale:2.58 orientation:image.imageOrientation];

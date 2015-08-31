@@ -140,8 +140,8 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 //      make sure it never shows. This way it is shown for a very short period, but that’s better than nothing.
 - (void)viewDidAppear:(BOOL)animated;
 {
-   [[UIApplication sharedApplication] setStatusBarHidden:YES];
-   [super viewDidAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [super viewDidAppear:animated];
 }
 
 #pragma mark -
