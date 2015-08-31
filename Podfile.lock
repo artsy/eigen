@@ -51,9 +51,9 @@ PODS:
   - ARGenericTableViewController (1.0.2)
   - ARTiledImageView (1.2):
     - SDWebImage/Core
-  - Artsy+OSSUIFonts (1.1.0)
   - Artsy+UIColors (1.0.0):
     - EDColor (~> 0.4)
+  - Artsy+UIFonts (1.1.0)
   - Artsy+UILabels (1.3.1):
     - Artsy+UIColors
   - Artsy-UIButtons (1.4.0):
@@ -157,8 +157,8 @@ DEPENDENCIES:
   - ARCollectionViewMasonryLayout
   - ARGenericTableViewController
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`, commit `1a31b864d1d56b1aaed0816c10bb55cf2e078bb8`)
-  - Artsy+OSSUIFonts
   - Artsy+UIColors
+  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`, branch `old_fonts_new_lib`)
   - Artsy+UILabels
   - Artsy-UIButtons
   - CocoaLumberjack
@@ -209,6 +209,9 @@ EXTERNAL SOURCES:
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
+  Artsy+UIFonts:
+    :branch: old_fonts_new_lib
+    :git: https://github.com/artsy/Artsy-UIFonts.git
   FLKAutoLayout:
     :branch: add-support-for-layout-guides-take-2
     :git: https://github.com/alloy/FLKAutoLayout.git
@@ -229,6 +232,9 @@ CHECKOUT OPTIONS:
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
     :git: https://github.com/dblock/ARTiledImageView
+  Artsy+UIFonts:
+    :commit: 39f47deebf947aa4c07727fdf2b69e2feff17428
+    :git: https://github.com/artsy/Artsy-UIFonts.git
   FLKAutoLayout:
     :commit: dd2cd4fe901ff5dcfc47c2c29c7746779fc12b64
     :git: https://github.com/alloy/FLKAutoLayout.git
@@ -254,8 +260,8 @@ SPEC CHECKSUMS:
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 000af4093f9bdcd0f754e6ebd964c90641389f90
-  Artsy+OSSUIFonts: e538d656b33ee7b1c66a97f57923f37ce565b3a8
   Artsy+UIColors: 7a4c987885a8d8da3e22672a3232761f929dd2b6
+  Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy+UILabels: a7c713069e3d10144a3dc8e377bef8b2253cd766
   Artsy-UIButtons: 6f67de2a5285f18acb5d0e2919d1b17188acbc27
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
