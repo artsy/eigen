@@ -1,3 +1,6 @@
+@import ARAnalytics;
+@import Adjust;
+
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"
 #import "ARArtworkInfoViewController.h"
@@ -8,12 +11,11 @@
 #import "ARShowViewController.h"
 #import "ARHeartButton.h"
 #import "ARFairViewController.h"
-#import <ARAnalytics/ARAnalytics.h>
 #import "ARRouter.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairMapViewController.h"
 #import "ARBidButton.h"
-
+#import "ARAnalyticsConstants.h"
 
 @implementation ARArtworkViewController (ButtonActions)
 
@@ -127,6 +129,9 @@
 - (void)bidCompleted:(SaleArtwork *)saleArtwork
 {
     [ARAnalytics setUserProperty:@"has_started_bid" toValue:@"true"];
+
+    ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustSentArtworkInquiry];
+    [Adjust trackEvent:event];
 
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadBidUIForArtwork:self.artwork.artworkID
                                                                                   inSale:saleArtwork.auction.saleID];

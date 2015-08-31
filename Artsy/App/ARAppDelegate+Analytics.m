@@ -368,7 +368,7 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsAuctionBidTapped,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(bidCompelted:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(bidCompleted:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
                                 SaleArtwork *saleArtwork = parameters.first;
                                 return @{
