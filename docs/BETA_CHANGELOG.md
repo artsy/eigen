@@ -1,3 +1,7 @@
+## Next
+
+* Fix crash related to search icon being pressed again before search view was fully dismissed - jorystiefel
+
 ## 2.2.0 (2015.8.21)
 
 * Fix "Contact for Price" not showing on artworks - jorystiefel
