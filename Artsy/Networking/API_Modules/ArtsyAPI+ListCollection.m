@@ -35,8 +35,8 @@
 
 + (void)getCountForCollectionFromRequest:(NSURLRequest *)request success:(void (^)(NSNumber *count))success failure:(void (^)(NSError *error))failure
 {
-    __weak AFJSONRequestOperation *setsOperation = nil;
-    setsOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSDictionary *JSON) {
+    __weak AFHTTPRequestOperation *setsOperation = nil;
+    setsOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSDictionary *JSON) {
         NSString *stringCount = response.allHeaderFields[@"X-Total-Count"];
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterDecimalStyle];

@@ -8,6 +8,9 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "UIView+HitTestExpansion.h"
+#import "ARCustomEigenLabels.h"
+
+@import NPKeyboardLayoutGuide;
 
 //sigh
 #define EMAIL_TAG 111
@@ -16,10 +19,11 @@
 
 @interface ARCreateAccountViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 @property (nonatomic) AROnboardingNavBarView *navbar;
-@property (nonatomic) ARTextFieldWithPlaceholder *name, *email, *password;
 @property (nonatomic) ARSpinner *loadingSpinner;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
+@property (nonatomic, strong) ARWarningView *warningView;
+@property (nonatomic, strong) ARTopMenuViewController *topMenuViewController;
 @end
 
 
@@ -71,7 +75,7 @@
 
     self.containerView = [[UIView alloc] init];
     [self.view addSubview:self.containerView];
-    [self.containerView alignCenterXWithView:self.view predicate:nil];
+    [self.containerView alignCenterXWithView:self.view predicate:@"0"];
     NSString *centerYOffset = [UIDevice isPad] ? @"0" : @"-30";
     [self.containerView alignCenterYWithView:self.view predicate:NSStringWithFormat(@"%@@750", centerYOffset)];
     self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
@@ -138,7 +142,6 @@
 {
     return self.email.text.length && self.name.text.length && [self.email.text containsString:@"@"] && self.password.text.length >= 6;
 }
-
 
 - (void)back:(id)sender
 {
@@ -259,6 +262,64 @@
     [alert show];
 }
 
+- (void)showWarning:(NSString *)msg animated:(BOOL)animates
+{
+    if (!self.warningView) {
+        self.warningView = [[ARWarningView alloc] initWithFrame:CGRectZero];
+
+        ARTopMenuViewController *topMenu = self.topMenuViewController;
+        UIViewController *hostVC = topMenu.visibleViewController;
+        UIView *hostView = hostVC.view;
+
+        [hostView addSubview:self.warningView];
+
+        [self.warningView constrainHeight:@"50"];
+        [self.warningView constrainWidthToView:hostView predicate:nil];
+        [self.warningView alignAttribute:NSLayoutAttributeBottom
+                             toAttribute:NSLayoutAttributeTop
+                                  ofView:topMenu.keyboardLayoutGuide
+                               predicate:nil];
+
+        UITapGestureRecognizer *removeTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeWarning)];
+        [self.warningView addGestureRecognizer:removeTapGesture];
+        self.warningView.userInteractionEnabled = YES;
+    }
+
+    self.warningView.alpha = 0;
+    self.warningView.text = msg;
+    self.warningView.backgroundColor = [UIColor colorWithHex:0xdf6964];
+    self.warningView.textColor = [UIColor whiteColor];
+
+    [UIView animateIf:animates duration:ARAnimationQuickDuration:^{
+        self.warningView.alpha = 1;
+    }];
+
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(removeWarning) object:nil];
+    [self performSelector:@selector(removeWarning) withObject:nil afterDelay:5.0];
+}
+
+- (void)removeWarning
+{
+    [self removeWarning:ARPerformWorkAsynchronously];
+}
+
+- (void)removeWarning:(BOOL)animates
+{
+    [UIView animateIf:animates duration:ARAnimationDuration:^{
+        self.warningView.alpha = 0;
+
+    } completion:^(BOOL finished) {
+        [self.warningView removeFromSuperview];
+        self.warningView = nil;
+    }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if (self.warningView) [self removeWarning:animated];
+
+    [super viewWillDisappear:animated];
+}
 
 - (void)dealloc
 {
@@ -288,6 +349,12 @@
         [self submit:nil];
         return YES;
     }
+
+    if (![self.email.text containsString:@"@"]) {
+        [self showWarning:@"Email address appears to be invalid" animated:YES];
+    } else if (self.password.text.length < 6) {
+        [self showWarning:@"Password must be at least 6 characters" animated:YES];
+    }
     return NO;
 }
 
@@ -300,6 +367,13 @@
         email = self.email.text;
     }
     [self.delegate logInWithEmail:email];
+}
+
+#pragma mark - DI
+
+- (ARTopMenuViewController *)topMenuViewController
+{
+    return _topMenuViewController ?: [ARTopMenuViewController sharedController];
 }
 
 @end

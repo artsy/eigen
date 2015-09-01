@@ -20,3 +20,5 @@ typedef NS_OPTIONS(NSUInteger, ARAuctionState) {
     ARAuctionStateUserIsBidder = 1 << 4,
     ARAuctionStateUserIsHighBidder = 1 << 5
 };
+
+extern BOOL ARPerformWorkAsynchronously;

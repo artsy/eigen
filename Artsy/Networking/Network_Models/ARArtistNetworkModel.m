@@ -29,14 +29,14 @@
     [ArtsyAPI setFavoriteStatus:status forArtist:self.artist success:success failure:failure];
 }
 
-- (AFJSONRequestOperation *)getRelatedArtists:(void (^)(NSArray *artists))success;
+- (void)getRelatedArtists:(void (^)(NSArray *artists))success;
 {
-    return [self.artist getRelatedArtists:success];
+    [self.artist getRelatedArtists:success];
 }
 
-- (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
+- (void)getRelatedPosts:(void (^)(NSArray *posts))success;
 {
-    return [self.artist getRelatedPosts:success];
+    [self.artist getRelatedPosts:success];
 }
 
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
@@ -80,16 +80,14 @@
     success(@{});
 }
 
-- (AFJSONRequestOperation *)getRelatedArtists:(void (^)(NSArray *artists))success;
+- (void)getRelatedArtists:(void (^)(NSArray *artists))success;
 {
     success(@[]);
-    return nil;
 }
 
-- (AFJSONRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
+- (void)getRelatedPosts:(void (^)(NSArray *posts))success;
 {
     success(@[]);
-    return nil;
 }
 
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure

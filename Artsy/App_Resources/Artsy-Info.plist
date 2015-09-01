@@ -36,7 +36,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.0</string>
+	<string>2.2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -66,19 +66,24 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2015.07.24</string>
+	<string>2015.08.21</string>
 	<key>FacebookAppID</key>
 	<string>308278682573501</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>GITCommitRev</key>
-	<string>ee8e557</string>
+	<string>0957bec</string>
 	<key>GITCommitSha</key>
-	<string>ee8e557c0069dcd453812142687931f8526d17e8</string>
+	<string>0957bec7aed963bf936332ef7d4531447e4cc143</string>
 	<key>GITRemoteOriginURL</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AGaramondPro-BoldItalic.otf</string>
@@ -121,6 +126,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIViewEdgeAntialiasing</key>
+	<true/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

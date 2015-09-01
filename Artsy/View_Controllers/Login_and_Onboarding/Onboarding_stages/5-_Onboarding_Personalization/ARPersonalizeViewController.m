@@ -29,7 +29,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 
 @property (nonatomic) ARWhiteFlatButton *continueButton;
 
-@property (nonatomic) AFJSONRequestOperation *searchRequestOperation;
+@property (nonatomic) AFHTTPRequestOperation *searchRequestOperation;
 @end
 
 

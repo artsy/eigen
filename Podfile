@@ -41,16 +41,16 @@ plugin 'cocoapods-keys', {
 target 'Artsy' do
 
   # Networking
-  pod 'AFNetworking', :git => 'https://github.com/orta/AFNetworking', :branch => 'no_ifdefs'
-  pod 'AFOAuth1Client', :git => "https://github.com/orta/AFOAuth1Client", :branch => "patch-1"
-  pod 'AFHTTPRequestOperationLogger'
+  pod 'AFNetworking', "~> 2.5"
+  pod 'AFOAuth1Client', :git => "https://github.com/lxcid/AFOAuth1Client.git", :tag => "0.4.0"
+  pod 'AFNetworkActivityLogger'
   pod 'SDWebImage'
 
   # Core
   pod 'ALPValidator'
   pod 'ARGenericTableViewController'
   pod 'CocoaLumberjack'
-  pod 'FLKAutoLayout'
+  pod 'FLKAutoLayout', :git => 'https://github.com/alloy/FLKAutoLayout.git', :branch => 'add-support-for-layout-guides-take-2'
   pod 'FXBlurView'
   pod 'iRate'
   pod 'ISO8601DateFormatter', :head
@@ -91,7 +91,7 @@ target 'Artsy' do
   pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
 
-  if %w(orta ash artsy laura eloy sarahscott).include?(ENV['USER']) || ENV['CI'] == 'true'
+  if %w(orta ash artsy laura eloy sarahscott jorystiefel).include?(ENV['USER']) || ENV['CI'] == 'true'
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git", :branch => "old_fonts_new_lib"
   else
     pod 'Artsy+OSSUIFonts'
@@ -122,4 +122,13 @@ target 'Artsy Tests' do
   pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
+end
+
+# Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+    end
+  end
 end

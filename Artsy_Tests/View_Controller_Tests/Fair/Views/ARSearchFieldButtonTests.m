@@ -7,4 +7,4 @@ it(@"has a valid snapshot", ^{
     expect(button).to.haveValidSnapshot();
 });
 
-SpecEnd
+SpecEnd;

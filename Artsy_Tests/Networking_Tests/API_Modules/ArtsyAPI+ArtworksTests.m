@@ -49,4 +49,4 @@ describe(@"relatedFairs", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

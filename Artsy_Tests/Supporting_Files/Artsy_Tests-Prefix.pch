@@ -31,5 +31,5 @@
     #import "ARTestHelper.h"
     #import "ARAutoLayoutDebugging.h"
     #import "StyledSubclasses.h"
-    #import "UIViewController+PresentWithFrame.h"
+    #import "UIViewController+Testing.h"
 #endif

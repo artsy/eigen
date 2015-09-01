@@ -290,7 +290,8 @@
         UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kind forIndexPath:indexPath];
         if (view.subviews.count == 0) {
             [view addSubview:self.headerView];
-            [self.headerView alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:view];
+            [self.headerView alignTopEdgeWithView:view predicate:@"0"];
+            [self.headerView alignLeading:@"0" trailing:@"0" toView:view];
         }
         return view;
     } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
@@ -298,8 +299,9 @@
         if (view.subviews.count == 0) {
             ARReusableLoadingView *loadingView = [[ARReusableLoadingView alloc] init];
             [view addSubview:loadingView];
-            [loadingView startIndeterminateAnimated:self.shouldAnimate];
-            [loadingView alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:view];
+            [loadingView startIndeterminateAnimated:ARPerformWorkAsynchronously];
+            [loadingView alignTopEdgeWithView:view predicate:@"0"];
+            [loadingView alignLeading:@"0" trailing:@"0" toView:view];
         }
         return view;
     } else {

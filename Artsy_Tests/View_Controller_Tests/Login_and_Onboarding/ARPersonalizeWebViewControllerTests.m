@@ -1,5 +1,11 @@
 #import "ARPersonalizeWebViewController.h"
 
+@interface ARPersonalizeWebViewController (Testing)
+
+@property (nonatomic, strong) UIWebView *webView;
+
+@end
+
 SpecBegin(ARPersonalizeWebViewController);
 
 __block ARPersonalizeWebViewController *sut;
@@ -38,4 +44,4 @@ it(@"is positioned correctly", ^{
 });
 
 
-SpecEnd
+SpecEnd;

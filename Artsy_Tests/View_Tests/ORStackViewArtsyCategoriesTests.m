@@ -82,4 +82,4 @@ describe(@"when adding an alt page title and subtitle", ^{
 });
 
 
-SpecEnd
+SpecEnd;

@@ -5,7 +5,6 @@
 
 
 @interface ARArtistViewController (Tests)
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @property (nonatomic, strong) id<ARArtistNetworkModelable> networkModel;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworkVC;
 
@@ -217,4 +216,4 @@ it(@"does not try to load more artworks if the artworks view is full", ^{
     [subjectMock verify];
 });
 
-SpecEnd
+SpecEnd;

@@ -4,8 +4,6 @@
 
 @interface ARInquireForArtworkViewController (Testing)
 
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
-
 @property (nonatomic, strong, readonly) UITextField *emailInput;
 @property (nonatomic, strong, readonly) UITextField *nameInput;
 
@@ -74,21 +72,18 @@ describe(@"logged in", ^{
 
     itHasAsyncronousSnapshotsForDevicesWithName(@"displays Contact Gallery when seller is a gallery", ^{
         ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:galleryArtwork fair:nil];
-        vc.shouldAnimate = NO;
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         return vc;
     });
 
     itHasAsyncronousSnapshotsForDevicesWithName(@"displays Contact Seller when seller is not a gallery", ^{
         ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:museumGallery fair:nil];
-        vc.shouldAnimate = NO;
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         return vc;
     });
 
     itHasAsyncronousSnapshotsForDevicesWithName(@"logged out, displays artsy specialist", ^{
         ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-        vc.shouldAnimate = NO;
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         return vc;
     });
@@ -109,14 +104,12 @@ describe(@"logged out", ^{
 
         itHasAsyncronousSnapshotsForDevicesWithName(@"displays contact gallery", ^{
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:galleryArtwork fair:nil];
-            vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             return vc;
         });
 
         itHasAsyncronousSnapshotsForDevicesWithName(@"displays artsy specialist", ^{
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             return vc;
         });
@@ -124,7 +117,6 @@ describe(@"logged out", ^{
         itHasAsyncronousSnapshotsForDevicesWithName(@"works for an artwork without a title", ^{
             museumGallery.title = nil;
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:museumGallery fair:nil];
-            vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             return vc;
         });
@@ -148,7 +140,6 @@ describe(@"logged out", ^{
             [ARUserManager sharedManager].trialUserEmail = @"invalidEmail";
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             return vc;
         });
@@ -157,7 +148,6 @@ describe(@"logged out", ^{
             [ARUserManager sharedManager].trialUserEmail = @"validemail@gmail.com";
 
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             return vc;
         });
@@ -166,7 +156,6 @@ describe(@"logged out", ^{
             [ARUserManager sharedManager].trialUserEmail = nil;
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             return vc;
         });
@@ -175,7 +164,6 @@ describe(@"logged out", ^{
             [ARUserManager sharedManager].trialUserEmail = nil;
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             
             vc.emailInput.text = @"validemail@gmail.com";
@@ -187,7 +175,6 @@ describe(@"logged out", ^{
             [ARUserManager sharedManager].trialUserEmail = nil;
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            vc.shouldAnimate = NO;
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             
             vc.emailInput.text = @"validemail@gmail.com";
@@ -211,7 +198,6 @@ describe(@"sending", ^{
         [[[[userMock stub] classMethod] andReturnValue:OCMOCK_VALUE(YES)] isTrialUser];
 
         vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:galleryArtwork fair:nil];
-        vc.shouldAnimate = NO;
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
     });
     
@@ -285,4 +271,4 @@ describe(@"sending", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

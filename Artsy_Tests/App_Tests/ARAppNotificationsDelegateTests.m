@@ -175,4 +175,4 @@ describe(@"receiveRemoteNotification", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

@@ -53,4 +53,4 @@ it(@"calls the appropriate delegate method upon user change", ^{
     expect(fairGuideVC.selectedTabIndex).to.equal(-1);
 });
 
-SpecEnd
+SpecEnd;

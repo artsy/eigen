@@ -39,4 +39,4 @@ it(@"retrieves system time", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

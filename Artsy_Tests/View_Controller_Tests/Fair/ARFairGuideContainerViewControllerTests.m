@@ -109,4 +109,4 @@ it(@"handles a changed user correct", ^{
     [fairGuideMock verify];
 });
 
-SpecEnd
+SpecEnd;

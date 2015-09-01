@@ -19,14 +19,15 @@
                                                  key:[ArtsyKeys new].artsyTwitterKey
                                               secret:[ArtsyKeys new].artsyTwitterSecret];
 
-    [client authorizeUsingOAuthWithRequestTokenPath:@"/oauth/request_token"
-        userAuthorizationPath:@"/oauth/authorize"
+
+    [client authorizeUsingOAuthWithRequestTokenURLString:@"/oauth/request_token"
+        userAuthorizationURLString:@"/oauth/authorize"
         callbackURL:[NSURL URLWithString:ARTwitterCallbackPath]
-        accessTokenPath:@"/oauth/access_token"
+        accessTokenURLString:@"/oauth/access_token"
         accessMethod:@"POST"
         scope:nil
         success:^(AFOAuth1Token *accessToken, id responseObject) {
-        success(accessToken.key, accessToken.secret);
+            success(accessToken.key, accessToken.secret);
         }
         failure:^(NSError *error) {
         if (failure) {

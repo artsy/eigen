@@ -4,10 +4,6 @@
 #import "ARUserManager+Stubs.h"
 
 
-@interface ARBrowseCategoriesViewController (Tests)
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
-@end
-
 SpecBegin(ARBrowseCategoriesViewController);
 
 __block ARBrowseCategoriesViewController *viewController;
@@ -54,7 +50,6 @@ before(^{
      ];
     
     viewController = [[ARBrowseCategoriesViewController alloc] init];
-    viewController.shouldAnimate = NO;
 });
 
 it(@"presents featured categories and genes", ^{
@@ -82,9 +77,10 @@ it(@"presents featured categories and genes", ^{
 describe(@"looks correct", ^{
     itHasSnapshotsForDevices(^{
         [viewController ar_presentWithFrame:[UIScreen mainScreen].bounds];
+        [viewController.childViewControllers makeObjectsPerformSelector:@selector(updateViewConstraints)];
         [viewController.view snapshotViewAfterScreenUpdates:YES];
         return viewController;
     });
 });
 
-SpecEnd
+SpecEnd;

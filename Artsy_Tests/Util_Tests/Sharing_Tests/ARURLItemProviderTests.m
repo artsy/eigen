@@ -198,4 +198,4 @@ describe(@"url and image thumbnail", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

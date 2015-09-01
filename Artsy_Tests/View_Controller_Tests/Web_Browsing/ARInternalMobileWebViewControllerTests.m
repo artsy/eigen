@@ -20,6 +20,7 @@ static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavi
 
 @property (nonatomic, strong) ARInternalShareValidator *shareValidator;
 - (NSURLRequest *)requestWithURL:(NSURL *)url;
+@property (nonatomic, strong) UIWebView *webView;
 
 @end
 
@@ -40,7 +41,7 @@ it(@"passes on fair context", ^{
 
     id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
     [controller shouldLoadNavigationAction:action];
-    
+
     [switchboardMock verify];
     [switchboardMock stopMocking];
     [fair stopMocking];
@@ -161,8 +162,9 @@ describe(@"authenticated", ^{
             controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
         });
         
-        it(@"doesn't show a trial login/signup view on a request to log_in", ^{
-            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://m.artsy.net/log_in"]];
+        it(@"doesn't show the website's trial login/signup view on a request to log_in", ^{
+
+            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"https://m.artsy.net/log_in"]];
             id mockUser = [OCMockObject mockForClass:[User class]];
             [[[mockUser stub] andReturnValue:OCMOCK_VALUE(NO)] isTrialUser];
 
@@ -202,28 +204,38 @@ describe(@"unauthenticated", ^{
         beforeEach(^{
             controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
         });
-        
-        it(@"handles an internal link being clicked", ^{
+
+        it(@"handles a non-native internal link being clicked", ^{
+            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"/something/andy-warhol-skull"]];
+            id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
+            expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
+        });
+
+        it(@"handles a native internal link being clicked", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"/artwork/andy-warhol-skull"]];
+
             id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
             expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
         });
         
         it(@"handles an external link being clicked (via a browser)", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://example.com"]];
+
             id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
             expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
         });
 
         it(@"doesn't handle non-link requests", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://example.com"]];
+
             id action = StubNavActionForRequest(request, WKNavigationTypeFormSubmitted);
             expect([controller shouldLoadNavigationAction:action]).to.beTruthy();
         });
 
         it(@"doesn't handle a link with an non-http protocol", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"ftp://example.com"]];
-            id action = StubNxavActionForRequest(request, WKNavigationTypeLinkActivated);
+
+            id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
             expect([controller shouldLoadNavigationAction:action]).to.beTruthy();
         });
 
@@ -301,4 +313,4 @@ describe(@"sharing", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

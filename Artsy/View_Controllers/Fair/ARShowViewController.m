@@ -40,7 +40,6 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 @property (nonatomic, strong, readonly) AREmbeddedModelsViewController *showArtworksViewController;
 @property (nonatomic, strong, readonly) ARActionButtonsView *actionButtonsView;
 @property (nonatomic, strong, readwrite) Fair *fair;
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 
 @property (nonatomic, strong) NSLayoutConstraint *followButtonWidthConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *headerImageHeightConstraint;
@@ -69,16 +68,6 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     } else {
         return size.width > size.height ? 511 : 413;
     }
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
 }
 
 - (instancetype)initWithShowID:(NSString *)showID fair:(Fair *)fair
@@ -123,7 +112,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     [self addMapPreview];
     [self addFairArtworksToStack];
 
-    [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+    [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 
     // Create a "be full screen with a low priority" constraint
     CGFloat height = CGRectGetHeight(self.parentViewController.parentViewController.view.bounds);
@@ -178,7 +167,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
         @_strongify(self);
         ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.show.title selectedPartnerShows:@[self.show]];
-        [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }];
 }
 
@@ -202,10 +191,10 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
         [containerView constrainHeight:@"40"];
         [partnerLabel alignTop:@"0" bottom:@"0" toView:containerView];
         if (followButton) {
-            [partnerLabel alignLeading:@"0" trailing:nil toView:containerView];
-            [followButton alignLeading:nil trailing:@"0" toView:containerView];
+            [partnerLabel alignLeadingEdgeWithView:containerView predicate:@"0"];
+            [followButton alignTrailingEdgeWithView:containerView predicate:@"0"];
             [followButton alignTop:@"0" bottom:@"0" toView:containerView];
-            [UIView alignAttribute:NSLayoutAttributeRight ofViews:@[ partnerLabel ] toAttribute:NSLayoutAttributeLeft ofViews:@[ followButton ] predicate:nil];
+            [UIView alignAttribute:NSLayoutAttributeRight ofViews:@[ partnerLabel ] toAttribute:NSLayoutAttributeLeft ofViews:@[ followButton ] predicate:@"0"];
             CGFloat followButtonWidth = [[self class] followButtonWidthForSize:self.view.frame.size];
             self.followButtonWidthConstraint = [[followButton constrainWidth:@(followButtonWidth).stringValue] firstObject];
         } else {
@@ -220,7 +209,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 {
     [super viewDidLoad];
 
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 
     @_weakify(self);
     [self.showNetworkModel getShowInfo:^(PartnerShow *show) {
@@ -347,7 +336,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 - (void)openShowFair:(id)sender
 {
     UIViewController *viewController = [ARSwitchBoard.sharedInstance routeProfileWithID:self.show.fair.organizer.profileID];
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)addFairArtworksToStack
@@ -482,7 +471,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 {
     Partner *partner = self.show.partner;
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPartnerWithID:partner.profileID];
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (BOOL)shouldAutorotate
@@ -510,13 +499,13 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
     ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:self.showArtworksViewController.items inFair:self.fair atIndex:index];
-    [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 #pragma mark - Public Methods

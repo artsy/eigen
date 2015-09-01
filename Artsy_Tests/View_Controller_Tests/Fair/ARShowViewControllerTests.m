@@ -7,7 +7,6 @@
 @interface ARShowViewController ()
 
 - (void)addMapPreview;
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @property (nonatomic, strong) ARShowNetworkModel *showNetworkModel;
 
 @end
@@ -283,4 +282,4 @@ describe(@"not at a fair", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

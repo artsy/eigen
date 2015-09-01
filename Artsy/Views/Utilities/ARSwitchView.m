@@ -15,16 +15,6 @@
 // Light grey = background, visible by the buttons being a bit smaller than full size
 // black bit that moves = uiviews
 
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
-}
-
 - (instancetype)initWithButtonTitles:(NSArray *)buttonTitlesArray
 {
     self = [self init];
@@ -84,10 +74,12 @@
     [self.selectionIndicator addSubview:self.topSelectionIndicator];
     [self.selectionIndicator addSubview:self.bottomSelectionIndicator];
 
-    [self.topSelectionIndicator alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.selectionIndicator];
-    [self.bottomSelectionIndicator alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.selectionIndicator];
-
+    [self.topSelectionIndicator alignLeading:@"0" trailing:@"0" toView:self.selectionIndicator];
+    [self.topSelectionIndicator alignTopEdgeWithView:self.selectionIndicator predicate:@"0"];
     [self.topSelectionIndicator constrainHeight:@(indicatorThickness).stringValue];
+
+    [self.bottomSelectionIndicator alignLeading:@"0" trailing:@"0" toView:self.selectionIndicator];
+    [self.bottomSelectionIndicator alignBottomEdgeWithView:self.selectionIndicator predicate:@"0"];
     [self.bottomSelectionIndicator constrainHeight:@(indicatorThickness).stringValue];
 
     [self insertSubview:self.selectionIndicator atIndex:0];
@@ -97,7 +89,7 @@
 - (void)selectedButton:(UIButton *)sender
 {
     NSInteger buttonIndex = [self.buttons indexOfObject:sender];
-    [self setSelectedIndex:buttonIndex animated:self.shouldAnimate];
+    [self setSelectedIndex:buttonIndex animated:ARPerformWorkAsynchronously];
 }
 
 - (UIButton *)createButtonWithTitle:(NSString *)title
@@ -141,7 +133,7 @@
 
 - (void)setSelectedIndex:(NSInteger)index animated:(BOOL)animated
 {
-    [UIView animateIf:self.shouldAnimate && animated duration:ARAnimationQuickDuration options:UIViewAnimationOptionCurveEaseOut:^{
+    [UIView animateIf:ARPerformWorkAsynchronously && animated duration:ARAnimationQuickDuration options:UIViewAnimationOptionCurveEaseOut:^{
         UIButton *button = self.buttons[index];
 
         [self.buttons each:^(UIButton *button) {
@@ -156,7 +148,7 @@
         [self layoutIfNeeded];
     }];
 
-    [self.delegate switchView:self didPressButtonAtIndex:index animated:self.shouldAnimate && animated];
+    [self.delegate switchView:self didPressButtonAtIndex:index animated:ARPerformWorkAsynchronously && animated];
 }
 
 - (void)highlightButton:(UIButton *)button highlighted:(BOOL)highlighted
@@ -177,7 +169,7 @@
 {
     NSAssert(enabledStates.count == self.buttons.count, @"Need to have a consistent number of enabled states for buttons");
 
-    [UIView animateIf:self.shouldAnimate && animated duration:ARAnimationQuickDuration:^{
+    [UIView animateIf:ARPerformWorkAsynchronously && animated duration:ARAnimationQuickDuration:^{
         for (NSInteger i = 0; i < self.enabledStates.count; i++) {
             UIButton *button = self.buttons[i];
             BOOL enabled = [self.enabledStates[i] boolValue];

@@ -5,16 +5,24 @@
 #import "ARTopMenuViewController.h"
 #import "ARAppSearchViewController.h"
 
+
 @interface ARTestingHidesBackButtonViewController : UIViewController <ARMenuAwareViewController>
 @property (readwrite, nonatomic, assign) BOOL hidesBackButton;
 @end
+
 
 @interface ARTestingHidesNavigationButtonsViewController : UIViewController <ARMenuAwareViewController>
 @property (readwrite, nonatomic, assign) BOOL hidesNavigationButtons;
 @end
 
-@implementation ARTestingHidesNavigationButtonsViewController @end
-@implementation ARTestingHidesBackButtonViewController @end
+
+@implementation ARTestingHidesNavigationButtonsViewController
+@end
+
+
+@implementation ARTestingHidesBackButtonViewController
+@end
+
 
 @interface ARNavigationController (Testing)
 - (IBAction)back:(id)sender;
@@ -22,9 +30,10 @@
 @property (readwrite, nonatomic, strong) ARAppSearchViewController *searchViewController;
 @end
 
+
 @implementation ARNavigationController (PrivateTesting)
 
--(void)callDidShowVCDelegateMethod
+- (void)callDidShowVCDelegateMethod
 {
     // For some reason, this is not called during tests unless the actual view hierarchy is rendered.
     [(id<UINavigationControllerDelegate>)self navigationController:self
@@ -226,4 +235,4 @@ describe(@"back button", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

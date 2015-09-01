@@ -9,7 +9,7 @@
 
 + (void)getMapInfoForFair:(Fair *)fair success:(void (^)(NSArray *maps))success failure:(void (^)(NSError *error))failure;
 
-+ (AFJSONRequestOperation *)getArtworkFavoritesForFair:(Fair *)fair success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
++ (AFHTTPRequestOperation *)getArtworkFavoritesForFair:(Fair *)fair success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
 + (void)getArtistFollowsForFair:(Fair *)fair success:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure;
 + (void)getProfileFollowsForFair:(Fair *)fair success:(void (^)(NSArray *profiles))success failure:(void (^)(NSError *error))failure;
 

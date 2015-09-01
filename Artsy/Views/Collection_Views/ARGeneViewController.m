@@ -31,16 +31,6 @@
     return [self initWithGene:gene];
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
-}
-
 - (instancetype)initWithGene:(Gene *)gene
 {
     self = [self init];
@@ -59,7 +49,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 
     [self createGeneArtworksViewController];
 
@@ -100,7 +90,7 @@
     @_weakify(self);
     [self.gene updateGene:^{
         @_strongify(self);
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
         [self updateBody];
 
         if (self.gene.geneDescription.length == 0) {
@@ -126,7 +116,7 @@
     [actionsWrapper addSubview:favoriteButton];
 
     [self.gene getFollowState:^(ARHeartStatus status) {
-        [favoriteButton setStatus:status animated:self.shouldAnimate];
+        [favoriteButton setStatus:status animated:ARPerformWorkAsynchronously];
     } failure:^(NSError *error) {
         [favoriteButton setStatus:ARHeartStatusNo];
     }];
@@ -144,15 +134,16 @@
 
     module.layoutProvider = self;
     self.artworksViewController = [[AREmbeddedModelsViewController alloc] init];
-    self.artworksViewController.shouldAnimate = self.shouldAnimate;
     self.artworksViewController.activeModule = module;
     self.artworksViewController.delegate = self;
+    self.artworksViewController.scrollDelegate = self;
     self.artworksViewController.showTrailingLoadingIndicator = YES;
 
     [self ar_addModernChildViewController:self.artworksViewController];
 
-    [self.artworksViewController.view constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:nil];
-    [self.artworksViewController.view alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
+    [self.artworksViewController.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
+    [self.artworksViewController.view alignLeading:@"0" trailing:@"0" toView:self.view];
+    [self.artworksViewController.view alignBottomEdgeWithView:self.view predicate:@"0"];
 
     self.artworksViewController.collectionView.showsVerticalScrollIndicator = YES;
 }
@@ -188,13 +179,13 @@
     }
 
     BOOL hearted = !sender.hearted;
-    [sender setHearted:hearted animated:self.shouldAnimate];
+    [sender setHearted:hearted animated:ARPerformWorkAsynchronously];
 
     [ArtsyAPI setFavoriteStatus:sender.isHearted forGene:self.gene success:^(id response) {
     }
         failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow category."];
-        [sender setHearted:!hearted animated:self.shouldAnimate];
+        [sender setHearted:!hearted animated:ARPerformWorkAsynchronously];
         }];
 }
 

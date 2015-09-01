@@ -51,4 +51,4 @@ describe(@"propertiess", ^{
 });
 
 
-SpecEnd
+SpecEnd;

@@ -13,7 +13,8 @@
 {
     [self.titleLabel setFont:[self.titleLabel.font fontWithSize:16]];
     [self.titleLabel constrainWidthToView:self.contentView predicate:@"-26"];
-    [self.titleLabel alignTop:nil leading:@"13" bottom:@"-13" trailing:nil toView:self.contentView];
+    [self.titleLabel alignLeadingEdgeWithView:self.contentView predicate:@"13"];
+    [self.titleLabel alignBottomEdgeWithView:self.contentView predicate:@"-13"];
 }
 
 @end
@@ -23,21 +24,10 @@
 
 @interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong, readonly) NSArray *menuLinks;
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
 
 @implementation ARBrowseViewController
-
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
-}
 
 - (void)viewDidLoad
 {

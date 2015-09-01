@@ -55,7 +55,8 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
         [self.contentView addSubview:imageView];
-        [imageView alignTop:@"0" leading:@"0" bottom:nil trailing:@"0" toView:self.contentView];
+        [imageView alignTopEdgeWithView:self.contentView predicate:@"0"];
+        [imageView alignLeading:@"0" trailing:@"0" toView:self.contentView];
         [imageView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
         self.imageView = imageView;
     }
@@ -78,8 +79,8 @@ static const CGFloat ARFavoriteCellLabelHeight = 34;
         [self.contentView addSubview:label];
         [label constrainTopSpaceToView:self.imageView predicate:@(ARFavoriteCellMetadataMargin).stringValue];
         [label alignBottomEdgeWithView:self.contentView predicate:@"0"];
-        [label constrainWidthToView:self.contentView predicate:nil];
-        [label alignCenterXWithView:self.contentView predicate:nil];
+        [label constrainWidthToView:self.contentView predicate:@"0"];
+        [label alignCenterXWithView:self.contentView predicate:@"0"];
         [label constrainHeight:@(ARFavoriteCellLabelHeight).stringValue];
         self.titleLabel = label;
     }

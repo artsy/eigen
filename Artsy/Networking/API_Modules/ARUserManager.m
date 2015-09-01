@@ -1,7 +1,9 @@
+@import ISO8601DateFormatter;
+@import Adjust;
+
 #import "ARUserManager.h"
 #import "NSDate+Util.h"
 #import "ARRouter.h"
-#import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import "ARFileUtils.h"
 #import "ArtsyAPI+Private.h"
 #import "NSKeyedUnarchiver+ErrorLogging.h"
@@ -9,6 +11,7 @@
 #import "ARAnalyticsConstants.h"
 #import "ARCollectorStatusViewController.h"
 #import "ARKeychainable.h"
+#import "AFHTTPRequestOperation+JSON.h"
 
 NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";
 
@@ -148,7 +151,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 {
     NSURLRequest *request = [ARRouter newOAuthRequestWithUsername:username password:password];
 
-    AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+    AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
         success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 
         NSString *token = JSON[AROAuthTokenKey];
@@ -166,7 +169,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         }
 
         NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
-        AFJSONRequestOperation *userOp = [AFJSONRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        AFHTTPRequestOperation *userOp = [AFHTTPRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 
             User *user = [User modelWithJSON:JSON];
 
@@ -210,7 +213,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
                 networkFailure:(void (^)(NSError *))networkFailure
 {
     NSURLRequest *request = [ARRouter newFacebookOAuthRequestWithToken:token];
-    AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+    AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
         success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 
         NSString *token = JSON[AROAuthTokenKey];
@@ -228,7 +231,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         }
 
         NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
-        AFJSONRequestOperation *userOp = [AFJSONRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        AFHTTPRequestOperation *userOp = [AFHTTPRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 
             User *user = [User modelWithJSON:JSON];
 
@@ -271,7 +274,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
                networkFailure:(void (^)(NSError *))networkFailure
 {
     NSURLRequest *request = [ARRouter newTwitterOAuthRequestWithToken:token andSecret:secret];
-    AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+    AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
         success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 
         NSString *token = JSON[AROAuthTokenKey];
@@ -289,7 +292,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         }
 
         NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
-        AFJSONRequestOperation *userOp = [AFJSONRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        AFHTTPRequestOperation *userOp = [AFHTTPRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 
             User *user = [User modelWithJSON:JSON];
 
@@ -345,7 +348,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
         ARActionLog(@"Got Xapp. Creating a new user account.");
         
         NSURLRequest *request = [ARRouter newCreateUserRequestWithName:name email:email password:password];
-        AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+        AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              NSError *error;
              User *user = [User modelWithJSON:JSON error:&error];
@@ -362,7 +365,11 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              
              if(success) success(user);
              [ARAnalytics event:ARAnalyticsAccountCreated];
-             
+
+             ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustCreatedAnAccount];
+             [event addCallbackParameter:@"email" value:email];
+             [Adjust trackEvent:event];
+
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              ARActionLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
              failure(error, JSON);
@@ -380,7 +387,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         NSURLRequest *request = [ARRouter newCreateUserViaFacebookRequestWithToken:token email:email name:name];
-        AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+        AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              NSError *error;
              User *user = [User modelWithJSON:JSON error:&error];
@@ -414,7 +421,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         NSURLRequest *request = [ARRouter newCreateUserViaTwitterRequestWithToken:token secret:secret email:email name:name];
-        AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+        AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              NSError *error;
              User *user = [User modelWithJSON:JSON error:&error];
@@ -445,7 +452,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 {
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         NSURLRequest *request = [ARRouter newForgotPasswordRequestWithEmail:email];
-        AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+        AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              if (success) {
                  success();

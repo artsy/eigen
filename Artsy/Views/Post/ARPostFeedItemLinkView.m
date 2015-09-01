@@ -37,8 +37,8 @@
     [postTitleLabel setText:[postFeedItem title] withLineHeight:1.5];
     [labelContainer addSubview:postTitleLabel];
 
-    // Auto Layout
-    [separatorView alignTop:nil leading:@"10" bottom:@"0" trailing:@"-10" toView:self];
+    [separatorView alignLeading:@"10" trailing:@"-10" toView:self];
+    [separatorView alignBottomEdgeWithView:self predicate:@"0"];
 
     [imageView constrainWidth:@"120"];
     [imageView alignLeadingEdgeWithView:self predicate:@"10"];

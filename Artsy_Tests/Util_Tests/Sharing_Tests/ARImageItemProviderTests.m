@@ -29,4 +29,4 @@ describe(@"image provider item", ^{
 
 });
 
-SpecEnd
+SpecEnd;

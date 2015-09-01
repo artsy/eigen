@@ -5,23 +5,12 @@
 
 
 @interface ARBrowseCategoriesViewController () <ARBrowseFeaturedLinksCollectionViewControllerDelegate>
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
 @end
 
 
 @implementation ARBrowseCategoriesViewController
 
 @dynamic view;
-
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
-}
 
 #pragma mark - UIViewController
 
@@ -36,7 +25,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 
     [self.view.stackView addPageTitleWithString:@"Featured Categories"];
 
@@ -46,10 +35,10 @@
 
     [ArtsyAPI getFeaturedLinksForGenesWithSuccess:^(NSArray *genes) {
         featureCollectionVC.featuredLinks = genes;
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 
     } failure:^(NSError *error) {
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:self.shouldAnimate];
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
     }];
 
     [ArtsyAPI getFeaturedLinkCategoriesForGenesWithSuccess:^(NSArray *orderedSets) {
@@ -82,7 +71,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated && self.shouldAnimate];
+    [super viewWillAppear:animated && ARPerformWorkAsynchronously];
     self.view.delegate = [ARScrollNavigationChief chief];
 }
 
@@ -90,7 +79,7 @@
 {
     self.view.delegate = nil;
 
-    [super viewWillDisappear:animated && self.shouldAnimate];
+    [super viewWillDisappear:animated && ARPerformWorkAsynchronously];
 }
 
 #pragma mark - ARBrowseFeaturedLinksCollectionViewControllerDelegate
@@ -99,7 +88,7 @@
 {
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:featuredLink.href];
     if (viewController) {
-        [self.navigationController pushViewController:viewController animated:self.shouldAnimate];
+        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }
 }
 

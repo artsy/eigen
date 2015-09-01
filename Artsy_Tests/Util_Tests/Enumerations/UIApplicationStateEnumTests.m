@@ -23,4 +23,4 @@ describe(@"toString", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

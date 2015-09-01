@@ -40,4 +40,4 @@ it(@"loads model version 1", ^{
     expect(deserializedUser.email).to.equal(@"dblock@dblock.org");
 });
 
-SpecEnd
+SpecEnd;

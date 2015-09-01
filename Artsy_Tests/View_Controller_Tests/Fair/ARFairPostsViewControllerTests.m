@@ -59,4 +59,4 @@ describe(@"rendered", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

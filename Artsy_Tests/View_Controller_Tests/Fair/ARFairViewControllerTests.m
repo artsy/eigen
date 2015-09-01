@@ -28,10 +28,6 @@
 @end
 
 
-@interface ARFairSearchViewController (Testing)
-@property (nonatomic, readwrite, assign) BOOL shouldAnimate;
-@end
-
 SpecBegin(ARFairViewController);
 
 it(@"maps bindings correctly", ^{
@@ -226,11 +222,10 @@ context(@"with a map", ^{
     
     it(@"search view looks correct", ^{
         [fairVC searchFieldButtonWasPressed:nil];
-        fairVC.searchVC.shouldAnimate = NO;
         [fairVC.searchVC beginAppearanceTransition:YES animated:NO];
         [fairVC.searchVC endAppearanceTransition];
         expect(fairVC.view).to.haveValidSnapshot();
     });
 });
 
-SpecEnd
+SpecEnd;

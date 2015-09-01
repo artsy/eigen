@@ -69,4 +69,4 @@ describe(@"correctly pulls out the address", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

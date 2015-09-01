@@ -46,4 +46,4 @@ describe(@"nextZoomScale", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

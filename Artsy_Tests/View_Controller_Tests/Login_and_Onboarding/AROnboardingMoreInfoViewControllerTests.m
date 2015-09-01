@@ -80,4 +80,4 @@ describe(@"canSubmit", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

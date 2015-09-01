@@ -62,11 +62,11 @@
     [hostView addSubview:self.activeModalView];
 
     [self.activeModalView constrainHeight:@"50"];
-    [self.activeModalView constrainWidthToView:hostView predicate:nil];
+    [self.activeModalView constrainWidthToView:hostView predicate:@"0"];
 
     // Show banner above bottom of modal view, above tab bar of top menu, or above the keyboard.
     if (showOnTopMenu) {
-        [self.activeModalView alignBottomEdgeWithView:hostView predicate:nil];
+        [self.activeModalView alignBottomEdgeWithView:hostView predicate:@"0"];
     } else {
         // Basically onboarding VCs. Still use the top menu's keyboardLayoutGuide, because it has already been loaded
         // and thus will do the correct thing when the keyboard is already shown before calling this on the VC for the
@@ -74,7 +74,7 @@
         [self.activeModalView alignAttribute:NSLayoutAttributeBottom
                                  toAttribute:NSLayoutAttributeTop
                                       ofView:topMenu.keyboardLayoutGuide
-                                   predicate:nil];
+                                   predicate:@"0"];
     }
 
     UITapGestureRecognizer *removeTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeActiveError)];

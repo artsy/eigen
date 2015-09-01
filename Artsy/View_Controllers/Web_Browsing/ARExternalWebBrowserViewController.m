@@ -65,7 +65,8 @@
     textView.font = [UIFont fontWithName:@"Courier" size:14];
     textView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
     [self.view addSubview:textView];
-    [textView alignTop:nil leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
+    [textView alignLeading:@"0" trailing:@"0" toView:self.view];
+    [textView alignBottomEdgeWithView:self.view predicate:@"0"];
     [textView constrainHeightToView:self.view predicate:@"*.5"];
 
 #warning BRING BACK INTROSPECTION
@@ -103,7 +104,17 @@
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    self.webView.frame = self.view.bounds;
+
+    [self.webView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
+    [self.webView alignLeading:@"0" trailing:@"0" toView:self.view];
+    [self.webView alignBottomEdgeWithView:self.view predicate:@"0"];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 - (void)viewDidAppear:(BOOL)animated

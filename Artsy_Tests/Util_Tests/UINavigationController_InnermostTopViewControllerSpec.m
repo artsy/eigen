@@ -46,4 +46,4 @@ it(@"returns the inner most top view controller if there is multiple levels of n
     expect(rootNavigationController.ar_innermostTopViewController).to.equal(viewController);
 });
 
-SpecEnd
+SpecEnd;

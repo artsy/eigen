@@ -53,4 +53,4 @@ describe(@"ARWarningView", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

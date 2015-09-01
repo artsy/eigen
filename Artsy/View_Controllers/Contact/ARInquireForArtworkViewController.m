@@ -1,9 +1,12 @@
+@import Adjust;
+@import ALPValidator;
+
 #import "ARInquireForArtworkViewController.h"
 #import "ARUserManager.h"
 #import "UIViewController+ScreenSize.h"
 #import "UIView+HittestExpansion.h"
 #import "ARAppDelegate.h"
-#import <ALPValidator/ALPValidator.h>
+#import "ARAnalyticsConstants.h"
 
 #define USE_LIVE_DATA 1
 // Future TODO: Don't use image alpha on contact image, use grayscale'd image.
@@ -60,22 +63,10 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 // Private Access
 @property (nonatomic, strong, readwrite) Fair *fair;
 
-@property (nonatomic, assign, readwrite) BOOL shouldAnimate;
-
 @end
 
 
 @implementation ARInquireForArtworkViewController
-
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _shouldAnimate = YES;
-    return self;
-}
 
 - (instancetype)initWithAdminInquiryForArtwork:(Artwork *)artwork fair:(Fair *)fair
 {
@@ -145,7 +136,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     // This is to ensure that the background view completely coveres the view behind it when rotating.
     [self.backgroundView constrainWidthToView:self.view predicate:@">=0"];
     [self.backgroundView constrainHeightToView:self.view predicate:@">=0"];
-    [self.backgroundView alignAttribute:NSLayoutAttributeHeight toAttribute:NSLayoutAttributeWidth ofView:self.backgroundView predicate:nil];
+    [self.backgroundView alignAttribute:NSLayoutAttributeHeight toAttribute:NSLayoutAttributeWidth ofView:self.backgroundView predicate:@"0"];
 
     [self.backgroundView alignCenterWithView:self.view];
     self.backgroundView.layer.backgroundColor = [UIColor blackColor].CGColor;
@@ -192,7 +183,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     titleLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:titleLabel];
     [titleLabel alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeCenterY ofView:self.view predicate:@"*.8"];
-    [titleLabel alignCenterXWithView:self.view predicate:nil];
+    [titleLabel alignCenterXWithView:self.view predicate:@"0"];
     _messageTitleLabel = titleLabel;
 
     UILabel *bodyTextLabel = [ARThemedFactory labelForBodyText];
@@ -202,7 +193,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     bodyTextLabel.numberOfLines = 0;
     [self.view addSubview:bodyTextLabel];
     [bodyTextLabel constrainTopSpaceToView:titleLabel predicate:@"8"];
-    [bodyTextLabel alignCenterXWithView:self.view predicate:nil];
+    [bodyTextLabel alignCenterXWithView:self.view predicate:@"0"];
     _messageBodyLabel = bodyTextLabel;
 
     ARWhiteFlatButton *failureTryAgainButton = [[ARWhiteFlatButton alloc] initWithFrame:CGRectZero];
@@ -210,7 +201,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [failureTryAgainButton setTitle:@"Send Again" forState:UIControlStateNormal];
     [self.view addSubview:failureTryAgainButton];
     [failureTryAgainButton constrainTopSpaceToView:self.messageBodyLabel predicate:@"20"];
-    [failureTryAgainButton alignCenterXWithView:self.view predicate:nil];
+    [failureTryAgainButton alignCenterXWithView:self.view predicate:@"0"];
     [failureTryAgainButton addTarget:self action:@selector(sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _failureTryAgainButton = failureTryAgainButton;
 
@@ -219,7 +210,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [failureDismissButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [self.view addSubview:failureDismissButton];
     [failureDismissButton constrainTopSpaceToView:self.failureTryAgainButton predicate:@"10"];
-    [failureDismissButton alignCenterXWithView:self.view predicate:nil];
+    [failureDismissButton alignCenterXWithView:self.view predicate:@"0"];
     [failureDismissButton addTarget:self action:@selector(cancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _failureDismissButton = failureDismissButton;
 
@@ -240,7 +231,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 {
     float fromValue = makeVisible ? 0.0 : 0.5;
     float toValue = makeVisible ? 0.5 : 0.0;
-    if (self.shouldAnimate) {
+    if (ARPerformWorkAsynchronously) {
         CABasicAnimation *fade = [CABasicAnimation animationWithKeyPath:@"opacity"];
         fade.duration = ARAnimationDuration;
         fade.fromValue = [NSNumber numberWithFloat:fromValue];
@@ -257,12 +248,12 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [self.view addSubview:topContainer];
     [topContainer alignLeading:@"0" trailing:@"0" toView:self.view];
     topContainer.backgroundColor = [UIColor clearColor];
-    _inquiryHeightConstraint = [[topContainer constrainHeightToView:self.view predicate:nil] lastObject];
+    _inquiryHeightConstraint = [[topContainer constrainHeightToView:self.view predicate:@"0"] lastObject];
 
     // We will toggle the priority of the second constraint to determine whether or not it should take
     // precedence over the first in order to show/hide the form.
-    [topContainer constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"0@500"];
-    _hideInquiryConstraint = [[topContainer constrainTopSpaceToView:(UIView *)self.bottomLayoutGuide predicate:@"0@999"] lastObject];
+    [topContainer constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0@500"];
+    _hideInquiryConstraint = [[topContainer constrainTopSpaceToView:self.flk_bottomLayoutGuide predicate:@"0@999"] lastObject];
 
     _topContainer = topContainer;
     UIView *inquiryFormView = [[UIView alloc] init];
@@ -275,14 +266,14 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     viewBehindKeyboard.backgroundColor = [UIColor blackColor];
     [self.view addSubview:viewBehindKeyboard];
     [viewBehindKeyboard alignLeading:@"0" trailing:@"0" toView:self.view];
-    _keyboardPositionConstraint = [[viewBehindKeyboard alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:(UIView *)self.bottomLayoutGuide predicate:nil] lastObject];
+    _keyboardPositionConstraint = [[viewBehindKeyboard constrainTopSpaceToView:self.flk_bottomLayoutGuide predicate:@"0"] lastObject];
 
     if ([UIDevice isPad]) {
         [inquiryFormView constrainWidth:@"600"];
         [inquiryFormView constrainHeight:@"<=600"];
         [inquiryFormView alignTopEdgeWithView:topContainer predicate:@"50"];
         [inquiryFormView alignBottomEdgeWithView:topContainer predicate:@"0@750"];
-        [inquiryFormView alignCenterXWithView:topContainer predicate:nil];
+        [inquiryFormView alignCenterXWithView:topContainer predicate:@"0"];
     } else {
         [inquiryFormView alignToView:topContainer];
     }
@@ -308,7 +299,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
     // Show Keyboard
     self.keyboardPositionConstraint.constant = -height;
-    [UIView animateIf:self.shouldAnimate duration:duration:^{
+    [UIView animateIf:ARPerformWorkAsynchronously duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -319,7 +310,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
-    [UIView animateIf:self.shouldAnimate duration:duration:^{
+    [UIView animateIf:ARPerformWorkAsynchronously duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -328,7 +319,8 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 {
     UIView *topMenuView = [[UIView alloc] init];
     [self.inquiryFormView addSubview:topMenuView];
-    [topMenuView alignTop:@"0" leading:@"20" bottom:nil trailing:@"-20" toView:self.inquiryFormView];
+    [topMenuView alignTopEdgeWithView:self.inquiryFormView predicate:@"0"];
+    [topMenuView alignLeading:@"20" trailing:@"-20" toView:self.inquiryFormView];
     [topMenuView constrainHeight:@"60"];
 
     ARModalMenuButton *cancelButton = [[ARModalMenuButton alloc] init];
@@ -650,7 +642,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     self.hideInquiryConstraint.priority = 1;
     self.inquiryFormView.userInteractionEnabled = YES;
     self.textView.editable = YES;
-    [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration:^{
+    [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -660,7 +652,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     self.hideInquiryConstraint.priority = 999;
     self.inquiryFormView.userInteractionEnabled = NO;
     self.textView.editable = NO;
-    [UIView animateIf:self.shouldAnimate duration:ARAnimationDuration:^{
+    [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -707,7 +699,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)getCurrentAdmin
 {
-   @_weakify(self);
+    @_weakify(self);
     [ArtsyAPI getInquiryContact:^(User *contactStub) {
         @_strongify(self);
         self.specialistNameLabel.text = contactStub.name;
@@ -794,11 +786,16 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (UIColor *)inputTintColor
 {
-    return self.shouldAnimate ? [UIColor artsyPurple] : [UIColor whiteColor];
+    return ARPerformWorkAsynchronously ? [UIColor artsyPurple] : [UIColor whiteColor];
 }
 
 - (void)inquiryCompleted:(NSString *)message
 {
+    ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustSentArtworkInquiry];
+    [event addCallbackParameter:@"artwork" value:self.artwork.name];
+    [event addCallbackParameter:@"email" value:self.emailInput.text];
+    [Adjust trackEvent:event];
+
     [self setStatusWithTitle:@"Thank you" body:@"Your message has been sent"];
     [self performSelector:@selector(removeFromHostViewController) withObject:nil afterDelay:2];
 }
@@ -854,7 +851,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     _emailValidator = [ALPValidator validatorWithType:ALPValidatorTypeString];
     [self.emailValidator addValidationToEnsureValidEmailWithInvalidMessage:NSLocalizedString(@"Please enter a valid email", nil)];
 
-   @_weakify(self);
+    @_weakify(self);
     self.emailValidator.validatorStateChangedHandler = ^(ALPValidatorState newState) {
         @_strongify(self);
         self.sendButton.enabled = self.emailValidator.isValid;

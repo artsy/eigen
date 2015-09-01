@@ -2,7 +2,7 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
-
+#import "ARAppDelegate.h"
 
 @interface ARInternalMobileWebViewController () <UIAlertViewDelegate, WKNavigationDelegate>
 @property (nonatomic, assign) BOOL loaded;
@@ -93,20 +93,30 @@
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
     NSURL *URL = navigationAction.request.URL;
-    NSLog(@"Martsy URL %@ - %@", URL, @(navigationAction.navigationType));
 
     // WKWebKit sends us this shouldLoad twice, we only
     // care if it's not an Other ( which seems to maybe be the main frame
     // actually loading after it has a response. )
 
     if (navigationAction.navigationType == WKNavigationTypeOther) {
+        NSLog(@"Martsy - skipping other nav type");
+
         return WKNavigationActionPolicyAllow;
     }
+
+    NSLog(@"Martsy URL %@ - %@", URL, @(navigationAction.navigationType));
+
 
 #warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
+
+            ARWindow *window = ARAppDelegate.sharedInstance.window;
+            CGPoint lastTouchPointInView = [window convertPoint:window.lastTouchPoint toView:self.view];
+            CGRect position = (CGRect){ .origin = lastTouchPointInView, .size = CGSizeZero };
+            [self.shareValidator shareURL:navigationAction.request.URL inView:self.view frame:position];
+
             [self.shareValidator shareURL:URL inView:self.view frame:self.view.frame];
             return WKNavigationActionPolicyCancel;
 
@@ -117,6 +127,7 @@
             }
             return WKNavigationActionPolicyCancel;
         }
+
 
     } else if ([ARRouter isInternalURL:URL] && ([URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"])) {
         // hijack AJAX requests, as well as

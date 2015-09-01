@@ -304,7 +304,7 @@
     // May be nil by the end of the method
     UIViewController *viewController;
 
-    if ([ARRouter isInternalURL:url]) {
+    if ([ARRouter isInternalURL:url] || url.scheme == nil) {
         NSURL *fixedURL = [self fixHostForURL:url];
         viewController = [self routeInternalURL:fixedURL fair:fair];
     } else if ([ARRouter isWebURL:url]) {

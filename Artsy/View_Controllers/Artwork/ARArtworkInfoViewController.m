@@ -3,7 +3,7 @@
 #import "ARTextView.h"
 
 
-@interface ARArtworkInfoViewController ()
+@interface ARArtworkInfoViewController () <ARTextViewDelegate>
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) ORStackScrollView *view;
 @end
@@ -26,7 +26,7 @@
 - (void)loadView
 {
     self.view = [[ORStackScrollView alloc] init];
-    self.view.stackView.bottomMarginHeight = 20;
+    self.view.stackView.bottomMarginHeight = 0;
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
@@ -51,10 +51,12 @@
 - (void)viewDidLoad
 {
     [self.view.stackView addPageTitleWithString:@"More Info"];
+    [self.view.stackView addWhiteSpaceWithHeight:@"20"];
     [self addSectionWithTitle:@"Provenance" andText:self.artwork.provenance];
     [self addSectionWithTitle:@"Signature" andText:self.artwork.signature];
     [self addSectionWithTitle:@"Additional Information" andText:self.artwork.additionalInfo];
     [self addSectionWithTitle:@"Literature" andText:self.artwork.literature];
+    [self addSectionWithTitle:@"Exhibition History" andText:self.artwork.exhibitionHistory];
 
     [super viewDidLoad];
 }
@@ -67,10 +69,11 @@
     ARLabel *label = [[ARSansSerifLabel alloc] init];
     label.font = [label.font fontWithSize:14];
     label.text = title;
-    [self.view.stackView addSubview:label withTopMargin:@"20" sideMargin:@"40"];
+    [self.view.stackView addSubview:label withTopMargin:@"0" sideMargin:@"40"];
 
-    UITextView *textView = [[ARTextView alloc] init];
-    textView.text = text;
+    ARTextView *textView = [[ARTextView alloc] init];
+    textView.viewControllerDelegate = self;
+    [textView setMarkdownString:text];
     [self.view.stackView addSubview:textView withTopMargin:@"0" sideMargin:@"30"];
 }
 
@@ -85,6 +88,13 @@
 - (BOOL)shouldAutorotate
 {
     return [UIDevice isPad];
+}
+
+#pragma mark - ARTextViewDelegate
+
+- (void)textView:(ARTextView *)textView shouldOpenViewController:(UIViewController *)viewController
+{
+    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 @end

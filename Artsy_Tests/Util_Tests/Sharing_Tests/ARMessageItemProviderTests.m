@@ -63,7 +63,7 @@ describe(@"message provider", ^{
 
         it(@"formats HTML for Mail", ^{
             [(ARMessageItemProvider *)[[providerMock stub] andReturn:UIActivityTypeMail] activityType];
-            NSString *email = [NSString stringWithFormat: @"<html><body><a href='%@%@'>%@</a></body></html>",
+            NSString *email = [NSString stringWithFormat: @"<html><body><a href='%@/%@'>%@</a></body></html>",
                                [ARRouter baseWebURL].absoluteString, path, @"So And So on Artsy"];
             expect([provider item]).to.equal(email);
         });
@@ -75,4 +75,4 @@ describe(@"message provider", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

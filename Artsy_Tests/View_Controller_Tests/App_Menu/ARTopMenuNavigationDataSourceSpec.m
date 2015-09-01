@@ -69,4 +69,4 @@ it(@"reinstantiates favorites vc", ^{
     expect(newRootVC).notTo.equal(rootVC);
 });
 
-SpecEnd
+SpecEnd;

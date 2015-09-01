@@ -37,4 +37,4 @@ it(@"forwards `scrollViewDidScroll` to scroll chief", ^{
     [chiefMock verify];
 });
 
-SpecEnd
+SpecEnd;

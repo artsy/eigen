@@ -2,7 +2,6 @@
 
 
 @interface ARSearchViewController (Testing)
-@property (readwrite, nonatomic) BOOL shouldAnimate;
 - (void)presentResultsViewAnimated:(BOOL)animated;
 @end
 
@@ -14,7 +13,6 @@ __block id sutMock;
 context(@"add results", ^{
     before(^{
         sut = [[ARSearchViewController alloc] init];
-        sut.shouldAnimate = NO;
         sutMock = [OCMockObject partialMockForObject:sut];
         [[[sutMock expect] ignoringNonObjectArgs] presentResultsViewAnimated:NO];
     });
@@ -97,4 +95,4 @@ context(@"add results", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

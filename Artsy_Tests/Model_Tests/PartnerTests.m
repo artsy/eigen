@@ -22,4 +22,4 @@ describe(@"defaultImage", ^{
     });
 });
 
-SpecEnd
+SpecEnd;

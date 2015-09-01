@@ -5,6 +5,7 @@
 
 - (void)presentCollectorLevel;
 - (void)presentWebOnboarding;
+- (void)presentOnboarding;
 
 @end
 
@@ -41,7 +42,18 @@ describe(@"signup splash", ^{
             [vc didSignUpAndLogin];
             [mock verify];
         });
+        
+        describe(@"when registering to bid", ^{
+            it(@"does not onboard on iPhone", ^{
+                [ARTestContext stubDevice:ARDeviceTypePhone5];
+                vc.trialContext = ARTrialContextAuctionBid;
+                [[mock reject] presentOnboarding];
+                [[mock expect] dismissOnboardingWithVoidAnimation:YES];
+                [vc didSignUpAndLogin];
+                [mock verify];
+            });
+        });
     });
 });
 
-SpecEnd
+SpecEnd;

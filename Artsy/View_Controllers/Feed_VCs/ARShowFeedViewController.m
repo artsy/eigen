@@ -228,16 +228,12 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
         self.headerView.backgroundColor = [UIColor whiteColor];
 
         [self.headerView addSubview:featuredShowsLabel];
-        [featuredShowsLabel alignTop:@(ARShowFeedHeaderLabelMarginPad).stringValue
-                             leading:@(sideMargin).stringValue
-                              bottom:nil
-                            trailing:@(-sideMargin).stringValue
-                              toView:self.headerView];
         [featuredShowsLabel alignLeading:@(sideMargin).stringValue trailing:@(-sideMargin).stringValue toView:self.headerView];
+        [featuredShowsLabel alignTopEdgeWithView:self.headerView predicate:@(ARShowFeedHeaderLabelMarginPad).stringValue];
         [featuredShowsLabel alignBottomEdgeWithView:self.headerView predicate:@"0"];
 
         [self.headerView addSubview:showsTitleSeparator];
-        [showsTitleSeparator alignBottomEdgeWithView:featuredShowsLabel predicate:nil];
+        [showsTitleSeparator alignBottomEdgeWithView:featuredShowsLabel predicate:@"0"];
         [showsTitleSeparator alignLeading:@(sideMargin).stringValue trailing:@(-sideMargin).stringValue toView:self.headerView];
 
     } else {
@@ -257,7 +253,8 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
         self.headerView.backgroundColor = [UIColor whiteColor];
 
         [self ar_addModernChildViewController:self.feedLinkVC intoView:self.headerView];
-        [self.feedLinkVC.view alignTop:@(ARFeedLinksNavMarginPhone).stringValue leading:@(sideMargin).stringValue bottom:nil trailing:@(-sideMargin).stringValue toView:self.headerView];
+        [self.feedLinkVC.view alignLeading:@(sideMargin).stringValue trailing:@(-sideMargin).stringValue toView:self.headerView];
+        [self.feedLinkVC.view alignTopEdgeWithView:self.headerView predicate:@(ARFeedLinksNavMarginPhone).stringValue];
 
         [self.headerView addSubview:featuredShowsLabel];
         [featuredShowsLabel constrainTopSpaceToView:self.feedLinkVC.view predicate:@"0"];
@@ -296,7 +293,7 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
     [self ar_addModernChildViewController:self.heroUnitVC intoView:self.view belowSubview:self.tableView];
     [self.heroUnitVC.view alignLeading:@"0" trailing:@"0" toView:self.view];
-    [self.heroUnitVC.view constrainTopSpaceToView:(UIView *)self.topLayoutGuide predicate:@"0"];
+    [self.heroUnitVC.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
     UIEdgeInsets insets = self.tableView.contentInset;
     insets.top = 20 + self.heroUnitVC.preferredContentSize.height;
     self.tableView.contentInset = insets;

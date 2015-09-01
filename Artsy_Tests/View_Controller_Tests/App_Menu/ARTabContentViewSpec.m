@@ -56,4 +56,4 @@ it(@"correctly sets the child view controller", ^{
     expect(outerController.childViewControllers).to.contain(innerController2);
 });
 
-SpecEnd
+SpecEnd;
