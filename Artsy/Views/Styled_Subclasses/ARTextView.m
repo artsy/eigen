@@ -31,10 +31,10 @@
         return;
     }
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    ar_dispatch_on_queue(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSError *error = nil;
         NSString *HTML = [MMMarkdown HTMLStringWithMarkdown:string error:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
+        ar_dispatch_main_queue(^{
             if (error) {
                 ARErrorLog(@"Error Parsing markdown! %@", string);
                 self.text = @"Error Parsing markdown";
@@ -62,7 +62,7 @@
 
     // This *MUST* be performed on the next runloop iteration, otherwise the HTML parsing of NSAttributedString will
     // crash. For more information see https://github.com/artsy/eigen/issues/348.
-    dispatch_async(dispatch_get_main_queue(), ^{
+    ar_dispatch_on_queue(dispatch_get_main_queue(), ^{
         NSAttributedString *string = [self.class artsyBodyTextAttributedStringFromHTML:HTMLstring withFont:self.font];
 
         // SCREW IT MEGAHACK to get paragraph spacing right.

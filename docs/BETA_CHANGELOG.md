@@ -23,3 +23,4 @@
 * Add a warning message when creating account if password too short or email doesn't validate - jorystiefel
 * Convert to AFNEtworking 2.0
 * Fix FLKAutoLayout issues with top and bottom layout guides. - alloy
+* Enable Markdown rendering in Artwork More Information screen - jorystiefel
