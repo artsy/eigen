@@ -1,3 +1,7 @@
+## Next
+
+* Show price in artwork grid views - jorystiefel
+
 ## 2.2.0 (2015.8.21)
 
 * Fix "Contact for Price" not showing on artworks - jorystiefel
