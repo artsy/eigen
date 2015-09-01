@@ -3,11 +3,12 @@
 
 @interface ARArtworkThumbnailMetadataView : UIView
 
-+ (CGFloat)heightForView;
-- (void)configureWithArtwork:(Artwork *)artwork;
+- (void)configureWithArtwork:(Artwork *)artwork showPriceLabel:(BOOL)showPrice;
 - (void)resetLabels;
 
 @property (nonatomic, readonly) ARSerifLabel *primaryLabel;
 @property (nonatomic, readonly) ARArtworkTitleLabel *secondaryLabel;
+@property (nonatomic, readonly) ARSerifLabel *priceLabel;
+@property (nonatomic, assign) BOOL showPrice;
 
 @end

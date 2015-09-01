@@ -14,9 +14,23 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 
 @dynamic imageSize;
 
-+ (CGFloat)heightForMetaData
++ (CGFloat)heightForMetadataWithArtwork:(Artwork *)artwork
 {
-    return [ARArtworkThumbnailMetadataView heightForView] + ARArtworkCellMetadataMargin;
+    return [self.class heightIncludingPriceLabel:[self.class showPriceLabelWithArtwork:artwork]] + ARArtworkCellMetadataMargin;
+}
+
++ (CGFloat)heightIncludingPriceLabel:(BOOL)includePriceLabel
+{
+    if (includePriceLabel) {
+        return [UIDevice isPad] ? 63 : 51;
+    } else {
+        return [UIDevice isPad] ? 42 : 34;
+    }
+}
+
++ (BOOL)showPriceLabelWithArtwork:(Artwork *)artwork
+{
+    return artwork.price.length && !artwork.isPriceHidden && !artwork.sold.boolValue;
 }
 
 - (void)prepareForReuse
@@ -41,21 +55,25 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
         self.imageView = imageView;
     }
 
+    BOOL showPrice = [self.class showPriceLabelWithArtwork:artwork];
+
     if (!self.metadataView) {
         ARArtworkThumbnailMetadataView *metaData = [[ARArtworkThumbnailMetadataView alloc] init];
+        [metaData configureWithArtwork:artwork showPriceLabel:showPrice];
         [self.contentView addSubview:metaData];
-
-        NSString *marginFormat = [NSString stringWithFormat:@"%0.f", ARArtworkCellMetadataMargin];
-        NSString *heightFormat = [NSString stringWithFormat:@"%0.f", [ARArtworkThumbnailMetadataView heightForView]];
-
-        [metaData constrainTopSpaceToView:self.imageView predicate:marginFormat];
-        [metaData alignBottomEdgeWithView:self.contentView predicate:@"0"];
-        [metaData alignCenterXWithView:self.contentView predicate:@"0"];
-        [metaData constrainWidthToView:self.contentView predicate:@"0"];
-        [metaData constrainHeight:heightFormat];
-
         self.metadataView = metaData;
+    } else {
+        [self.metadataView configureWithArtwork:artwork showPriceLabel:showPrice];
     }
+
+    NSString *marginFormat = [NSString stringWithFormat:@"%0.f", ARArtworkCellMetadataMargin];
+    NSString *heightFormat = [NSString stringWithFormat:@"%0.f", [self.class heightIncludingPriceLabel:showPrice]];
+
+    [self.metadataView constrainTopSpaceToView:self.imageView predicate:marginFormat];
+    [self.metadataView alignBottomEdgeWithView:self.contentView predicate:@"0"];
+    [self.metadataView alignCenterXWithView:self.contentView predicate:@"0"];
+    [self.metadataView constrainWidthToView:self.contentView predicate:@"0"];
+    [self.metadataView constrainHeight:heightFormat];
 
     [self layoutIfNeeded];
 
@@ -72,11 +90,10 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
                                      forImageView:self.imageView
                                 customPlaceholder:nil];
 
-    [self.metadataView configureWithArtwork:artwork];
-
     self.accessibilityLabel = [artwork title];
     self.isAccessibilityElement = YES;
     self.accessibilityTraits = UIAccessibilityTraitButton;
 }
+
 
 @end

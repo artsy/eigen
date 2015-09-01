@@ -44,6 +44,31 @@ describe(@"no related data", ^{
 });
 
 describe(@"with related artworks", ^{
+    
+    it(@"shows the price when applicable", ^{
+        
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks"
+                                 withParams:@{@"artwork[]": @"some-artwork"}
+                               withResponse:@[
+                                              @{ @"id": @"one", @"title": @"One", @"price_hidden": @YES, @"price": @"$10" },
+                                              @{ @"id": @"two", @"title": @"Two", @"price": @"$1,200" },
+                                              @{ @"id": @"three", @"title": @"Three", @"price": @"$10", @"sold": @YES },
+                                              @{ @"id": @"four", @"title": @"Four", @"price": @"$300" }
+                                              ]];
+        
+        
+        [ARTestContext useDevice:ARDeviceTypePhone6 :^{
+            
+            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+            [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+            [vc setHasFinishedScrolling];
+            [vc.view snapshotViewAfterScreenUpdates:YES];
+            
+            expect([(ARArtworkView *)vc.view relatedArtworksView]).to.haveValidSnapshot();
+        }];
+
+        
+    });
 
     describe(@"iPhone", ^{
         it(@"related artworks view looks correct", ^{
@@ -65,7 +90,7 @@ describe(@"with related artworks", ^{
 
         });
     });
-
+    
     describe(@"iPad", ^{
 
         it(@"related artworks view looks correct", ^{
@@ -115,7 +140,8 @@ it(@"shows an upublished banner", ^{
 
 describe(@"at a closed auction", ^{
     before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[@{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
+@{
             @"id": @"some-auction",
             @"name": @"Some Auction",
             @"is_auction": @YES,

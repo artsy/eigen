@@ -8,7 +8,7 @@
 
 @interface ARArtworkWithMetadataThumbnailCell : ARItemThumbnailViewCell
 
-+ (CGFloat)heightForMetaData;
++ (CGFloat)heightForMetadataWithArtwork:(Artwork *)artwork;
 
 - (void)setupWithRepresentedObject:(Artwork *)artwork;
 
