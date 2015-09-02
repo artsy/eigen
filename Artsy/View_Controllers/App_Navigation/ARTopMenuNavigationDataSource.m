@@ -147,22 +147,21 @@ WebViewNavigationControllerWithPath(NSString *path)
 
 - (void)setBadgeNumber:(NSUInteger)number forTabAtIndex:(NSInteger)index;
 {
-    // Specifically short-cut so controllers don’t get superfluous remoteNotificationsReceived: events.
-    if (self.badgeCounts[index] == number) {
-        return;
-    }
+    // Don’t send superfluous remoteNotificationsReceived: events to the controllers.
+    if (self.badgeCounts[index] != number) {
+        self.badgeCounts[index] = number;
 
-    self.badgeCounts[index] = number;
-
-    // When setting 0, that just means to remove the badge, no remote notifications were received.
-    if (number > 0) {
-        ARNavigationController *navigationController = [self navigationControllerAtIndex:index];
-        id<ARTopMenuRootViewController> rootViewController = (id<ARTopMenuRootViewController>)navigationController.rootViewController;
-        if ([rootViewController respondsToSelector:@selector(remoteNotificationsReceived:)]) {
-            [rootViewController remoteNotificationsReceived:number];
+        // When setting 0, that just means to remove the badge, no remote notifications were received.
+        if (number > 0) {
+            ARNavigationController *navigationController = [self navigationControllerAtIndex:index];
+            id<ARTopMenuRootViewController> rootViewController = (id<ARTopMenuRootViewController>)navigationController.rootViewController;
+            if ([rootViewController respondsToSelector:@selector(remoteNotificationsReceived:)]) {
+                [rootViewController remoteNotificationsReceived:number];
+            }
         }
     }
 
+    // Always ensure the app icon badge is updated to the right count.
     NSInteger total = 0;
     for (NSInteger i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
         total += self.badgeCounts[i];
