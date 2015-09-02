@@ -1,6 +1,7 @@
 ## Next
 
 * Fix crash related to search icon being pressed again before search view was fully dismissed - jorystiefel
+* Ensure that a dollar sign is always used when displaying dollar prices. - alloy
 
 ## 2.2.0 (2015.8.21)
 
