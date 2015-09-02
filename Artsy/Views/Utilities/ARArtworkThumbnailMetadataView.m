@@ -84,7 +84,7 @@ static CGFloat ARMetadataFontSize;
     if (showPrice) {
         self.priceLabel.text = artwork.price;
     }
-    _showPrice = showPrice;
+    self.showPrice = showPrice;
 }
 
 - (void)resetLabels
