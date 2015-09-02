@@ -1,10 +1,16 @@
 ## Next
 
 * Show price in artwork grid views - jorystiefel
+* Fix crash related to search icon being pressed again before search view was fully dismissed - jorystiefel
+* Ensure that a dollar sign is always used when displaying dollar prices. - alloy
 
 ## 2.2.0 (2015.8.21)
 
 * Fix "Contact for Price" not showing on artworks - jorystiefel
+* Fix notification count getting stuck on app badge. - alloy
+
+## 2.2.0 (2015.8.21)
+
 * Unify way to set whether to perform work asynchronously with ARPerformWorkAsynchronously - jorystiefel
 * [iOS 9] Fix FLKAutoLayout issues with top and bottom layout guides. - alloy
 * [iOS 9] Allow non-SSL connections to any domain. This is needed for now as we might present non-SSL sites in the
