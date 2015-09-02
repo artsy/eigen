@@ -89,7 +89,7 @@ target 'Artsy' do
   # Artsy Spec repo stuff
   pod 'Artsy-UIButtons'
   pod 'Artsy+UIColors'
-  pod 'Artsy+UILabels'
+  pod 'Artsy+UILabels', '>= 1.3.2'
 
   if %w(orta ash artsy laura eloy sarahscott jorystiefel).include?(ENV['USER']) || ENV['CI'] == 'true'
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git", :branch => "old_fonts_new_lib"
