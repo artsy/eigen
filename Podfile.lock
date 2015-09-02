@@ -65,13 +65,13 @@ PODS:
   - Bolts/AppLinks (1.2.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.2.0)
-  - CocoaLumberjack (2.0.0):
-    - CocoaLumberjack/Default (= 2.0.0)
-    - CocoaLumberjack/Extensions (= 2.0.0)
-  - CocoaLumberjack/Core (2.0.0)
-  - CocoaLumberjack/Default (2.0.0):
+  - CocoaLumberjack (2.0.1):
+    - CocoaLumberjack/Default (= 2.0.1)
+    - CocoaLumberjack/Extensions (= 2.0.1)
+  - CocoaLumberjack/Core (2.0.1)
+  - CocoaLumberjack/Default (2.0.1):
     - CocoaLumberjack/Core
-  - CocoaLumberjack/Extensions (2.0.0):
+  - CocoaLumberjack/Extensions (2.0.1):
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
@@ -161,7 +161,7 @@ DEPENDENCIES:
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`, branch `old_fonts_new_lib`)
   - Artsy+UILabels (>= 1.3.2)
   - Artsy-UIButtons
-  - CocoaLumberjack
+  - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - DRKonamiCode
   - Expecta
@@ -212,6 +212,8 @@ EXTERNAL SOURCES:
   Artsy+UIFonts:
     :branch: old_fonts_new_lib
     :git: https://github.com/artsy/Artsy-UIFonts.git
+  CocoaLumberjack:
+    :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   FLKAutoLayout:
     :branch: add-support-for-layout-guides-take-2
     :git: https://github.com/alloy/FLKAutoLayout.git
@@ -235,6 +237,9 @@ CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 39f47deebf947aa4c07727fdf2b69e2feff17428
     :git: https://github.com/artsy/Artsy-UIFonts.git
+  CocoaLumberjack:
+    :commit: a09dd37888d9f51159c4926d4280794f915d726c
+    :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   FLKAutoLayout:
     :commit: dd2cd4fe901ff5dcfc47c2c29c7746779fc12b64
     :git: https://github.com/alloy/FLKAutoLayout.git
@@ -265,7 +270,7 @@ SPEC CHECKSUMS:
   Artsy+UILabels: 7efedaf4487a2545c750beaa29cb74db5de39d7f
   Artsy-UIButtons: 6f67de2a5285f18acb5d0e2919d1b17188acbc27
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
-  CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
+  CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: 89d19a013279a5604d61650721c15f20fefaaf00
@@ -310,4 +315,4 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-COCOAPODS: 0.38.0.beta.1
+COCOAPODS: 0.38.2

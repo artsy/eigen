@@ -24,6 +24,7 @@
     @import Mantle;
     @import Mantle.metamacros;
     @import AFNetworkActivityLogger;
+    @import CocoaLumberjack;
     @import ObjectiveSugar;
     @import FLKAutoLayout;
     @import ORStackView;
@@ -34,10 +35,6 @@
     @import UIView_BooleanAnimations;
     @import Artsy_UIButtons;
     @import ObjectiveSugar;
-
-    // Need to use this to ensure the legacy macros are not enabled.
-    #define DD_LEGACY_MACROS 0
-    #import <CocoaLumberjack/DDLog.h>
 
     #import <ORStackView/ORStackScrollView.h>
     #import <ORStackView/ORTagBasedAutoStackView.h>
