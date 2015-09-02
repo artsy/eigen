@@ -2,6 +2,7 @@
 
 
 @interface ARArtworkTitleLabel : ARItalicsSerifLabel
+@property (nonatomic, assign) CGFloat lineHeight;
 - (void)setTitle:(NSString *)artworkTitle date:(NSString *)date;
 @end
 

@@ -8,10 +8,16 @@
 
 @implementation ARArtworkTitleLabel
 
+- (void)setup
+{
+    [super setup];
+    self.lineHeight = 3;
+}
+
 - (void)setTitle:(NSString *)artworkTitle date:(NSString *)date;
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:3];
+    [paragraphStyle setLineSpacing:self.lineHeight];
 
     NSMutableAttributedString *titleAndDate = [[NSMutableAttributedString alloc] initWithString:artworkTitle ?: @"" attributes:@{
         NSParagraphStyleAttributeName : paragraphStyle
@@ -27,7 +33,6 @@
     }
 
     self.font = [UIFont serifItalicFontWithSize:self.font.pointSize];
-    self.numberOfLines = 0;
     self.attributedText = titleAndDate;
 }
 
