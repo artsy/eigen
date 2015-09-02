@@ -3,9 +3,6 @@
 * Show price in artwork grid views - jorystiefel
 * Fix crash related to search icon being pressed again before search view was fully dismissed - jorystiefel
 * Ensure that a dollar sign is always used when displaying dollar prices. - alloy
-
-## 2.2.0 (2015.8.21)
-
 * Fix "Contact for Price" not showing on artworks - jorystiefel
 * Fix notification count getting stuck on app badge. - alloy
 
