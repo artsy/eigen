@@ -36,7 +36,8 @@
     @import ObjectiveSugar;
 
     // Need to use this to ensure the legacy macros are not enabled.
-    #import <CocoaLumberjack/CocoaLumberjack.h>
+    #define DD_LEGACY_MACROS 0
+    #import <CocoaLumberjack/DDLog.h>
 
     #import <ORStackView/ORStackScrollView.h>
     #import <ORStackView/ORTagBasedAutoStackView.h>
