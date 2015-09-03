@@ -16,8 +16,6 @@
 
 @implementation ARPersonalizeWebViewController
 
-@dynamic delegate;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

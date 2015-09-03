@@ -1,13 +1,3 @@
-class Pod::Project
-  def predictabilize_uuids
-    # no-op to ensure we can use this branch, but without the, currently for us broken, persistant UUID change in Xcodeproj:
-    # https://github.com/CocoaPods/CocoaPods/tree/seg-embed-frameworks-quotes
-    #
-    # Remove this and change Gemfile to latest CP once this is fixed:
-    # https://github.com/CocoaPods/CocoaPods/issues/3763
-  end
-end
-
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
@@ -49,7 +39,7 @@ target 'Artsy' do
   # Core
   pod 'ALPValidator'
   pod 'ARGenericTableViewController'
-  pod 'CocoaLumberjack'
+  pod 'CocoaLumberjack', :git => 'https://github.com/CocoaLumberjack/CocoaLumberjack.git' # Unreleased > 2.0.1 version has a CP modulemap fix
   pod 'FLKAutoLayout', :git => 'https://github.com/alloy/FLKAutoLayout.git', :branch => 'add-support-for-layout-guides-take-2'
   pod 'FXBlurView'
   pod 'iRate'

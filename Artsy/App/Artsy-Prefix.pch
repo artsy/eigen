@@ -24,9 +24,9 @@
     @import Mantle;
     @import Mantle.metamacros;
     @import AFNetworkActivityLogger;
+    @import CocoaLumberjack;
     @import ObjectiveSugar;
     @import FLKAutoLayout;
-    @import CocoaLumberjack;
     @import ORStackView;
     @import ReactiveCocoa;
     @import NAMapKit;

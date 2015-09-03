@@ -59,7 +59,7 @@
 
 /// Returns the index of the tab that holds the given view controller at the root of the navigation stack or
 /// `NSNotFound` in case it’s not a root view controller.
-- (ARTopTabControllerIndex)indexOfRootViewController:(UIViewController *)viewController;
+- (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
 
 /// Update the badge number on the data source for the navigation root view controller at the specified tab index.
 - (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
