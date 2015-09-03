@@ -72,6 +72,13 @@
     return self;
 }
 
+- (void)viewDidLoad;
+{
+    [super viewDidLoad];
+    // This is where TSMiniWebBrowser will initially load the URL, so show the initial progress indicator from here.
+    [self showLoading];
+}
+
 - (void)removeContentLoadStateTimer;
 {
     [self.contentLoadStateTimer invalidate];
@@ -89,12 +96,17 @@
 // A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
 - (void)userDidLoginOrSignUp
 {
-    [self.webView loadRequest:[self requestWithURL:self.currentURL]];
+    [self reload];
 }
 
 - (NSURLRequest *)requestWithURL:(NSURL *)url
 {
     return [ARRouter requestForURL:url];
+}
+
+- (void)reload;
+{
+    [self.webView loadRequest:[self requestWithURL:self.currentURL]];
 }
 
 #pragma mark - UIViewController
@@ -105,7 +117,7 @@
 
     // As we initially show the loading, we don't want this to appear when you do a back or when a modal covers this view.
     if (!self.loaded) {
-        [self showLoading];
+        [self reload];
     }
 }
 
