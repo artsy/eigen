@@ -89,13 +89,10 @@ const static CGFloat ARCarouselDelay = 10;
 
 - (void)handleHeroUnits:(NSArray *)heroUnits
 {
-    // Should never be false in production, but will cause problems in development if false on staging.
-    BOOL timerEnabled = self.timer != nil;
     [self cancelTimer];
 
     BOOL hasHeroUnits = heroUnits.count > 0;
     if (!hasHeroUnits) {
-        [self cancelTimer];
         self.view.userInteractionEnabled = NO;
         return;
     }
@@ -103,9 +100,7 @@ const static CGFloat ARCarouselDelay = 10;
     self.view.userInteractionEnabled = YES;
     [self updateViewWithHeroUnits:heroUnits];
 
-    if (timerEnabled) {
-        [self startTimer];
-    }
+    [self startTimer];
 }
 
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits
@@ -122,7 +117,6 @@ const static CGFloat ARCarouselDelay = 10;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.heroUnitNetworkModel getHeroUnitsWithSuccess:nil failure:nil];
     [self startTimer];
 }
 
@@ -162,7 +156,7 @@ const static CGFloat ARCarouselDelay = 10;
 - (void)goToHeroUnit:(UIViewController *)vc withDirection:(UIPageViewControllerNavigationDirection)direction
 {
     self.pageViewController.view.userInteractionEnabled = NO;
-   @_weakify(self);
+    @_weakify(self);
     [self.pageViewController setViewControllers:@[ vc ] direction:direction animated:YES completion:^(BOOL finished) {
         @_strongify(self);
         [self.pageControl setCurrentPage:[self currentViewController].index];
@@ -214,7 +208,7 @@ const static CGFloat ARCarouselDelay = 10;
     return viewController;
 }
 
-#pragma mark - UIPageViewControllerDelegate
+#pragma mark - UIPageViewController
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
 {

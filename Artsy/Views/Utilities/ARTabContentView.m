@@ -180,6 +180,8 @@ static BOOL ARTabViewDirectionRight = YES;
         if (animated && oldViewController && oldViewController.parentViewController) {
             [self.hostViewController transitionFromViewController:oldViewController toViewController:self.currentNavigationController duration:0.3 options:0 animations:animationBlock completion:completionBlock];
         } else {
+            [oldViewController beginAppearanceTransition:NO animated:NO];
+            [oldViewController endAppearanceTransition];
             [self.currentNavigationController beginAppearanceTransition:YES animated:NO];
             [self addSubview:self.currentNavigationController.view];
             [self.currentNavigationController endAppearanceTransition];
