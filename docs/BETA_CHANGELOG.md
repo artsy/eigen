@@ -1,4 +1,4 @@
-## Next
+## 2.2.0 (2015.9.3)
 
 * Show price in artwork grid views - jorystiefel
 * Fix crash related to search icon being pressed again before search view was fully dismissed - jorystiefel
