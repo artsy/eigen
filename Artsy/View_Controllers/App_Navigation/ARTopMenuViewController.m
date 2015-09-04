@@ -138,7 +138,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     // Ensure it's created now and started listening for keyboard changes.
     // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
     // be assured that any VCs guide can be trusted.
-    self.keyboardLayoutGuide;
+    (void)self.keyboardLayoutGuide;
 }
 
 - (void)viewWillAppear:(BOOL)animated

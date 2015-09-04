@@ -64,7 +64,7 @@
     }];
 }
 
-- (void)animateOut:(BOOL)animated:(void (^)())completion
+- (void)animateOut:(BOOL)animated :(void (^)())completion
 {
     NSParameterAssert(completion);
 
@@ -79,7 +79,7 @@
 
 - (void)dismissPopover
 {
-    [self animateOut:YES:^{
+    [self animateOut:YES :^{
         [self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
     }];
 }
