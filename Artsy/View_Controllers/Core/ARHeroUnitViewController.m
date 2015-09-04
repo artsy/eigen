@@ -91,16 +91,13 @@ const static CGFloat ARCarouselDelay = 10;
 {
     [self cancelTimer];
 
-    BOOL hasHeroUnits = heroUnits.count > 0;
-    if (!hasHeroUnits) {
+    if (heroUnits.count > 0) {
+        self.view.userInteractionEnabled = YES;
+        [self updateViewWithHeroUnits:heroUnits];
+        [self startTimer];
+    } else {
         self.view.userInteractionEnabled = NO;
-        return;
     }
-
-    self.view.userInteractionEnabled = YES;
-    [self updateViewWithHeroUnits:heroUnits];
-
-    [self startTimer];
 }
 
 - (void)updateViewWithHeroUnits:(NSArray *)heroUnits
