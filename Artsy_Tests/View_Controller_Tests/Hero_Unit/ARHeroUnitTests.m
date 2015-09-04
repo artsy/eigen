@@ -92,6 +92,14 @@ describe(@"with three hero units", ^{
     });
 
     describe(@"handleHeroUnits", ^{
+        it(@"is called when feed updates", ^{
+            sharedBefore();
+            id mock = [OCMockObject partialMockForObject:heroVC];
+            [[mock expect] handleHeroUnits:heroUnits];
+            [heroVC.heroUnitNetworkModel setHeroUnits:heroUnits];
+            [mock verify];
+        });
+
         it(@"updates the view", ^{
             sharedBefore();
             id mock = [OCMockObject partialMockForObject:heroVC];
