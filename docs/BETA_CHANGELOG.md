@@ -10,6 +10,7 @@
 * Ensure that a dollar sign is always used when displaying dollar prices. - alloy
 * Fix "Contact for Price" not showing on artworks - jorystiefel
 * Fix notification count getting stuck on app badge. - alloy
+* Fix auto-advance on home feed hero carousel and don't lose carousel position when navigating away - jorystiefel
 
 ## 2.2.0 (2015.8.21)
 
