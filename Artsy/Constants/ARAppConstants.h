@@ -8,6 +8,8 @@ extern NSString *const AROAuthTokenKey;
 extern NSString *const AROExpiryDateKey;
 extern NSString *const ARXAppToken;
 
+extern NSString *const ARAPNSDeviceTokenKey;
+
 extern NSString *const ARNetworkAvailableNotification;
 extern NSString *const ARNetworkUnavailableNotification;
 
