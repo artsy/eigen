@@ -1,3 +1,7 @@
+## Next
+
+* Add ‘Copy Push Notification Token’ entry to the admin view, which makes it easier to test push notification sending. - alloy
+
 ## 2.2.0 (2015.9.7)
 
 * Don’t show a progress indicator when navigating back to a web view that was not yet fully done loading. - alloy

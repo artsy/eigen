@@ -39,6 +39,9 @@
 
     ARActionLog(@"Got device notification token: %@", deviceToken);
 
+    // Save device token purely for the admin settings view.
+    [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
+
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
     [ARAnalytics setUserProperty:ARAnalyticsEnabledNotificationsProperty toValue:@"true"];
