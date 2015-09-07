@@ -1,4 +1,4 @@
-## Next
+## 2.2.0 (2015.9.7)
 
 * Don’t show a progress indicator when navigating back to a web view that was not yet fully done loading. - alloy
 * Reload a web view that was not fully done loading when the user navigated away, ensuring the user doesn’t get to see broken pages. - alloy
