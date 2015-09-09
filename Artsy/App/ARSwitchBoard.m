@@ -73,6 +73,18 @@
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view on iPad.
 
 
+    if ([UIDevice isPad]) {
+        [self.routes addRoute:@"/:profile_id/artist/:id" handler:^BOOL(NSDictionary *parameters) {
+            @_strongify(self)
+
+            Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
+            ARArtistViewController *viewController = (id)[self loadArtistWithID:parameters[@"id"] inFair:fair];
+            [[ARTopMenuViewController sharedController] pushViewController:viewController];
+            return YES;
+        }];
+    }
+
+
     [self.routes addRoute:@"/artwork/:id" handler:^BOOL(NSDictionary *parameters) {
         @_strongify(self)
         Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
@@ -362,7 +374,7 @@
 
     BOOL routed = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
     if (routed) {
-        return [[[ARTopMenuViewController sharedController] rootNavigationController] topViewController];
+        return nil;
     }
 
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];

@@ -212,7 +212,9 @@ describe(@"ARSwitchboard", ^{
             [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/artistname/artworks" withParams:@{ @"page" : @"1", @"size" : @"10" } withResponse:@[]];
             [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/artists" withParams:@{ @"artist[]" : @"artistname" } withResponse:@[]];
             [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withParams:@{ @"artist[]" : @"artistname" } withResponse:@[]];
+
             [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARArtistViewController class]]];
+
             id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
             expect(viewController).to.beNil();
             [ARTestContext stopStubbing];

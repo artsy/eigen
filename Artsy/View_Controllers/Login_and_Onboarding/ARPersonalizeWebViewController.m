@@ -23,10 +23,15 @@
     [self.view addGestureRecognizer:exitTap];
 
     self.view.backgroundColor = [UIColor clearColor];
+    [self setupConstraints];
 }
+
+// Override ARExternalWebBrowserViewController's webview setup
 
 - (void)setupConstraints
 {
+    [self.webView removeConstraints:self.webView.constraints];
+
     [self.webView constrainWidthToView:self.view predicate:@"-200"];
     [self.webView constrainHeightToView:self.view predicate:@"-200"];
     [self.webView alignCenterWithView:self.view];
