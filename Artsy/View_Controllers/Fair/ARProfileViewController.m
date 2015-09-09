@@ -75,7 +75,7 @@
 
 - (void)loadMartsyView
 {
-    NSURL *profileURL = [ARSwitchBoard.sharedInstance resolveRelativeUrl:NSStringWithFormat(@"%@%@", self.profileID, @"?foo=bar")];
+    NSURL *profileURL = [ARSwitchBoard.sharedInstance resolveRelativeUrl:self.profileID];
 
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:profileURL];
     [self showViewController:viewController];
