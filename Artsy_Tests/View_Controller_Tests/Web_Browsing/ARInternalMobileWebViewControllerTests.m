@@ -175,7 +175,7 @@ describe(@"authenticated", ^{
             [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
 
             id action = StubNavActionForRequest(request, WKNavigationTypeOther);
-            expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
+            expect([controller shouldLoadNavigationAction:action]).to.equal(WKNavigationActionPolicyCancel);
 
             [mock verify];
             [switchboardMock verify];
@@ -208,7 +208,7 @@ describe(@"unauthenticated", ^{
         it(@"handles a non-native internal link being clicked", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"/something/andy-warhol-skull"]];
             id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
-            expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
+            expect([controller shouldLoadNavigationAction:action]).to.equal(WKNavigationActionPolicyCancel);
         });
 
         it(@"handles a native internal link being clicked", ^{
@@ -236,7 +236,7 @@ describe(@"unauthenticated", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"ftp://example.com"]];
 
             id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
-            expect([controller shouldLoadNavigationAction:action]).to.beTruthy();
+            expect([controller shouldLoadNavigationAction:action]).to.equal(WKNavigationActionPolicyCancel);
         });
 
         it(@"shows a trial login/signup view on a request to log_in", ^{
@@ -251,7 +251,7 @@ describe(@"unauthenticated", ^{
             [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
 
             id action = StubNavActionForRequest(request, WKNavigationTypeOther);
-            expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
+            expect([controller shouldLoadNavigationAction:action]).to.equal(WKNavigationActionPolicyCancel);
 
             [mock verify];
             [switchboardMock verify];

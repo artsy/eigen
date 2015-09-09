@@ -94,20 +94,32 @@
 {
     NSURL *URL = navigationAction.request.URL;
 
+    // If we really have to hijack regardless do it first.
+    // This is to take into account AJAX requests which are not
+    // strictly classed as a WKNavigationTypeLinkActivated
+    // as the user may not have _directly_ loaded it
+
+    if ([ARRouter isInternalURL:URL] && ([URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"])) {
+
+
+        if ([User isTrialUser]) {
+            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser) {
+                [self userDidSignUp];
+            }];
+        }
+        return WKNavigationActionPolicyCancel;
+    }
+
     // WKWebKit sends us this shouldLoad twice, we only
     // care if it's not an Other ( which seems to maybe be the main frame
     // actually loading after it has a response. )
 
     if (navigationAction.navigationType == WKNavigationTypeOther) {
         NSLog(@"Martsy - skipping other nav type");
-
         return WKNavigationActionPolicyAllow;
     }
 
     NSLog(@"Martsy URL %@ - %@", URL, @(navigationAction.navigationType));
-
-
-#warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
@@ -122,23 +134,16 @@
 
         } else {
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
+
+            if (!viewController) {
+
+            }
             if (viewController && ![self.navigationController.viewControllers containsObject:viewController]) {
                 [self.navigationController pushViewController:viewController animated:YES];
             }
             return WKNavigationActionPolicyCancel;
         }
-
-
-    } else if ([ARRouter isInternalURL:URL] && ([URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"])) {
-        // hijack AJAX requests, as well as
-        if ([User isTrialUser]) {
-            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser) {
-                [self userDidSignUp];
-            }];
-        }
-        return WKNavigationActionPolicyCancel;
     }
-
     return WKNavigationActionPolicyAllow;
 }
 

@@ -1,4 +1,4 @@
-## 2.2.0 (2015.8.21)
+## Next
 
 * Change onboarding callback to use a block rather then a delegate message. - 1aurabrown
 * Migrated to frameworks under the hood. This is a massive change to a lot
@@ -33,3 +33,5 @@
 * Convert to AFNEtworking 2.0
 * Fix FLKAutoLayout issues with top and bottom layout guides. - alloy
 * Enable Markdown rendering in Artwork More Information screen - jorystiefel
+* Make CircleCI work again by adding the `build` action to the `test` task to ensure the simulator is running. - alloy
+* Remove `?foo=bar` parameter from Martsy calls - jorystiefel

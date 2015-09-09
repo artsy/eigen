@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: "6.3.1"
+    version: "6.4"
   environment:
     # Private repo access
     GITHUB_API_KEY: secret

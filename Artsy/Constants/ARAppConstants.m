@@ -1,18 +1,20 @@
 // Don't go wild, this is just a standard account I
 // signed up with one day.
 
-const NSString *ARTestAccountLogin = @"energy_test_bot@gmail.com";
-const NSString *ARTestAccountPassword = @"zaqwsxcde";
+NSString *const ARTestAccountLogin = @"energy_test_bot@gmail.com";
+NSString *const ARTestAccountPassword = @"zaqwsxcde";
 
 const CGFloat ARAnimationQuickDuration = 0.15;
 const CGFloat ARAnimationDuration = 0.3;
 
-const NSString *AROExpiryDateKey = @"expires_in";
-const NSString *ARXAppToken = @"xapp_token";
+NSString *const AROExpiryDateKey = @"expires_in";
+NSString *const ARXAppToken = @"xapp_token";
 
-const NSString *AROAuthTokenKey = @"access_token";
+NSString *const AROAuthTokenKey = @"access_token";
 
 NSString *const ARNetworkAvailableNotification = @"network_available_notification";
 NSString *const ARNetworkUnavailableNotification = @"network_unavailable_notification";
+
+NSString *const ARAPNSDeviceTokenKey = @"apns_device_token";
 
 BOOL ARPerformWorkAsynchronously = YES;

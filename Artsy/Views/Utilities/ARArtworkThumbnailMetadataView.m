@@ -7,6 +7,7 @@ static CGFloat ARMetadataFontSize;
 
 @property (nonatomic, strong) ARSerifLabel *primaryLabel;
 @property (nonatomic, strong) ARArtworkTitleLabel *secondaryLabel;
+@property (nonatomic, strong) ARSerifLabel *priceLabel;
 
 @end
 
@@ -24,11 +25,6 @@ static CGFloat ARMetadataFontSize;
     return 8;
 }
 
-+ (CGFloat)heightForView
-{
-    return [UIDevice isPad] ? 42 : 34;
-}
-
 - (instancetype)init
 {
     self = [super init];
@@ -38,8 +34,11 @@ static CGFloat ARMetadataFontSize;
 
     _primaryLabel = [[ARSerifLabel alloc] init];
     _secondaryLabel = [[ARArtworkTitleLabel alloc] init];
+    _secondaryLabel.lineHeight = 1;
+    _secondaryLabel.numberOfLines = 1;
+    _priceLabel = [[ARSerifLabel alloc] init];
 
-    [@[ self.primaryLabel, self.secondaryLabel ] each:^(UILabel *label) {
+    [@[ self.primaryLabel, self.secondaryLabel, self.priceLabel ] each:^(UILabel *label) {
         label.font = [label.font fontWithSize:ARMetadataFontSize];
         label.textColor = [UIColor artsyHeavyGrey];
         [self addSubview:label];
@@ -50,7 +49,7 @@ static CGFloat ARMetadataFontSize;
 
 - (CGSize)intrinsicContentSize
 {
-    return (CGSize){UIViewNoIntrinsicMetric, [self.class heightForView]};
+    return (CGSize){UIViewNoIntrinsicMetric, self.frame.size.height};
 }
 
 - (void)layoutSubviews
@@ -58,24 +57,41 @@ static CGFloat ARMetadataFontSize;
     [super layoutSubviews];
 
     CGRect labelFrame = self.bounds;
-    labelFrame.size.height /= 2;
 
-    self.primaryLabel.frame = labelFrame;
+    if (self.showPrice) {
+        labelFrame.size.height /= 3;
 
-    labelFrame.origin.y = labelFrame.size.height;
-    self.secondaryLabel.frame = labelFrame;
+        self.primaryLabel.frame = labelFrame;
+        labelFrame.origin.y = labelFrame.size.height;
+        self.secondaryLabel.frame = labelFrame;
+        labelFrame.origin.y += labelFrame.size.height;
+        self.priceLabel.frame = labelFrame;
+
+    } else {
+        labelFrame.size.height /= 2;
+
+        self.primaryLabel.frame = labelFrame;
+        labelFrame.origin.y = labelFrame.size.height;
+        self.secondaryLabel.frame = labelFrame;
+    }
 }
 
-- (void)configureWithArtwork:(Artwork *)artwork
+- (void)configureWithArtwork:(Artwork *)artwork showPriceLabel:(BOOL)showPrice
 {
     self.primaryLabel.text = artwork.artist.name;
     [self.secondaryLabel setTitle:artwork.title date:artwork.date];
+
+    if (showPrice) {
+        self.priceLabel.text = artwork.price;
+    }
+    self.showPrice = showPrice;
 }
 
 - (void)resetLabels
 {
     self.primaryLabel.text = nil;
     [self.secondaryLabel setTitle:nil date:nil];
+    self.priceLabel.text = nil;
 }
 
 @end

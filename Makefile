@@ -4,7 +4,7 @@ CONFIGURATION = Beta
 APP_PLIST = Artsy/App_Resources/Artsy-Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
 TARGETED_DEVICE_FAMILY = \"1,2\"
-DEVICE_HOST = platform='iOS Simulator',OS='8.3',name='iPhone 6'
+DEVICE_HOST = platform='iOS Simulator',OS='8.4',name='iPhone 6'
 
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
 GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
@@ -32,7 +32,7 @@ clean:
 	xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' clean
 
 test:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
+	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug build test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
 
 lint:
 	bundle exec fui --path Artsy find

@@ -212,7 +212,7 @@
     // Set the artwork height/width for the artwork based on the layout
     BOOL isHorizontal = [[self class] layoutIsHorizontal:layout];
     if (style == AREmbeddedArtworkPresentationStyleArtworkMetadata && isHorizontal) {
-        staticDimension -= [ARArtworkWithMetadataThumbnailCell heightForMetaData];
+        staticDimension -= [ARArtworkWithMetadataThumbnailCell heightForMetadataWithArtwork:item];
     }
     switch (layout) {
         case ARArtworkMasonryLayout1Column:
@@ -232,7 +232,7 @@
     switch (style) {
         case AREmbeddedArtworkPresentationStyleArtworkMetadata:
             if (!isHorizontal) {
-                return variableDimension + [ARArtworkWithMetadataThumbnailCell heightForMetaData];
+                return variableDimension + [ARArtworkWithMetadataThumbnailCell heightForMetadataWithArtwork:item];
             }
             break;
         case AREmbeddedArtworkPresentationStyleArtworkOnly:
@@ -267,6 +267,11 @@
         case ARArtworkMasonryLayout1Row:
             return (CGSize){15, 15};
     }
+}
+
++ (BOOL)showPriceLabelForItem:(Artwork *)item
+{
+    return item.price.length && !item.isPriceHidden && item.sold.boolValue;
 }
 
 - (ARCollectionViewMasonryLayoutDirection)direction

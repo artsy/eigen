@@ -37,6 +37,9 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     [miscSectionData addCellData:[self generateEmailData]];
     [miscSectionData addCellData:[self generateRestart]];
     [miscSectionData addCellData:[self generateStagingSwitch]];
+#if !TARGET_IPHONE_SIMULATOR
+    [miscSectionData addCellData:[self generateNotificationTokenPasteboardCopy]];
+#endif
 
     [tableViewData addSectionData:miscSectionData];
 
@@ -121,6 +124,21 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     }];
     return crashCellData;
 }
+
+#if !TARGET_IPHONE_SIMULATOR
+- (ARCellData *)generateNotificationTokenPasteboardCopy;
+{
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
+        cell.textLabel.text = @"Copy Push Notification Token";
+    };
+    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
+        NSString *deviceToken = [[NSUserDefaults standardUserDefaults] valueForKey:ARAPNSDeviceTokenKey];
+        [[UIPasteboard generalPasteboard] setValue:deviceToken forPasteboardType:(NSString *)kUTTypePlainText];
+    };
+    return cellData;
+}
+#endif
 
 - (ARSectionData *)createLabsSection
 {

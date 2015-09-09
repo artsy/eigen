@@ -4,6 +4,7 @@
 SpecBegin(ARTabView);
 
 __block UIViewController *outerController, *innerController1, *innerController2;
+__block OCMockObject *mockVC1, *mockVC2;
 __block ARTabContentView *sut;
 __block ARTestTopMenuNavigationDataSource *dataSource;
 
@@ -54,6 +55,48 @@ it(@"correctly sets the child view controller", ^{
     [sut setCurrentViewIndex:1 animated:NO];
     expect(outerController.childViewControllers).to.contain(innerController1);
     expect(outerController.childViewControllers).to.contain(innerController2);
+});
+
+describe(@"sends appearance message to child view controller", ^{
+    
+    before(^{
+        mockVC1 = [OCMockObject partialMockForObject:innerController1];
+        mockVC2 = [OCMockObject partialMockForObject:innerController2];
+    });
+    
+    it(@"viewDidLoad", ^{
+        UIViewController *newController = [[UIViewController alloc] init];
+        OCMockObject *mockVC3 = [OCMockObject partialMockForObject:newController];
+
+        [[mockVC3 expect] viewDidLoad];
+        dataSource.controller2 = newController;
+        [sut setCurrentViewIndex:1 animated:NO];
+        [mockVC3 verify];
+    });
+    
+    it(@"viewWillAppear", ^{
+        [[mockVC2 expect] viewWillAppear:NO];
+        [sut setCurrentViewIndex:1 animated:NO];
+        [mockVC2 verify];
+    });
+
+    it(@"viewDidAppear", ^{
+        [[mockVC2 expect] viewDidAppear:NO];
+        [sut setCurrentViewIndex:1 animated:NO];
+        [mockVC2 verify];
+    });
+
+    it(@"viewWillDisappear", ^{
+        [[mockVC1 expect] viewWillDisappear:NO];
+        [sut setCurrentViewIndex:1 animated:NO];
+        [mockVC1 verify];
+    });
+
+    it(@"viewDidDisappear", ^{
+        [[mockVC1 expect] viewDidDisappear:NO];
+        [sut setCurrentViewIndex:1 animated:NO];
+        [mockVC1 verify];
+    });
 });
 
 SpecEnd;
