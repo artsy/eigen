@@ -4,6 +4,9 @@
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegate.h"
 
+static void *ARProgressContext = &ARProgressContext;
+
+
 @interface ARInternalMobileWebViewController () <UIAlertViewDelegate, WKNavigationDelegate>
 @property (nonatomic, assign) BOOL loaded;
 @property (nonatomic, strong) ARInternalShareValidator *shareValidator;
@@ -57,13 +60,31 @@
     [super loadURL:URL];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-    [super viewWillAppear:animated];
+    [super viewDidLoad];
 
-    // As we initially show the loading, we don't want this to appear when you do a back or when a modal covers this view.
-    if (!self.loaded) {
-        [self showLoading];
+    // KVO on progress for when we can show the page
+    [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew & NSKeyValueObservingOptionOld context:ARProgressContext];
+}
+
+- (void)dealloc
+{
+    [self.webView removeObserver:self forKeyPath:@"estimatedProgress" context:ARProgressContext];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == ARProgressContext && [keyPath isEqualToString:@"estimatedProgress"]) {
+        [self.webView evaluateJavaScript:@"document.readyState == \"interactive\"" completionHandler:^(id response, NSError *error) {
+            if ([response respondsToSelector:@selector(boolValue)]) {
+                if (self.loaded == NO && [response boolValue] == YES) {
+                    [self hideLoading];
+                }
+            }
+        }];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
@@ -72,14 +93,9 @@
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 }
 
-- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation
-{
-    [self hideLoading];
-    self.loaded = YES;
-}
-
 - (void)hideLoading
 {
+    self.loaded = YES;
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
@@ -99,9 +115,8 @@
     // strictly classed as a WKNavigationTypeLinkActivated
     // as the user may not have _directly_ loaded it
 
-    if ([ARRouter isInternalURL:URL] && ([URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"])) {
-
-
+    BOOL urlIsLoginOrSignUp = [URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"];
+    if ([ARRouter isInternalURL:URL] && (urlIsLoginOrSignUp)) {
         if ([User isTrialUser]) {
             [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser) {
                 [self userDidSignUp];
@@ -115,7 +130,6 @@
     // actually loading after it has a response. )
 
     if (navigationAction.navigationType == WKNavigationTypeOther) {
-        NSLog(@"Martsy - skipping other nav type");
         return WKNavigationActionPolicyAllow;
     }
 
@@ -123,21 +137,15 @@
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
-
             ARWindow *window = ARAppDelegate.sharedInstance.window;
             CGPoint lastTouchPointInView = [window convertPoint:window.lastTouchPoint toView:self.view];
-            CGRect position = (CGRect){ .origin = lastTouchPointInView, .size = CGSizeZero };
-            [self.shareValidator shareURL:navigationAction.request.URL inView:self.view frame:position];
+            CGRect position = (CGRect){.origin = lastTouchPointInView, .size = CGSizeZero};
+            [self.shareValidator shareURL:URL inView:self.view frame:position];
 
-            [self.shareValidator shareURL:URL inView:self.view frame:self.view.frame];
             return WKNavigationActionPolicyCancel;
 
         } else {
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
-
-            if (!viewController) {
-
-            }
             if (viewController && ![self.navigationController.viewControllers containsObject:viewController]) {
                 [self.navigationController pushViewController:viewController animated:YES];
             }

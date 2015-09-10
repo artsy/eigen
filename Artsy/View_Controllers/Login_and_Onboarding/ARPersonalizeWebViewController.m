@@ -4,7 +4,7 @@
 #import "ARSpinner.h"
 
 
-@interface ARPersonalizeWebViewController ()
+@interface ARPersonalizeWebViewController () <WKNavigationDelegate>
 @property (nonatomic, strong, readonly) ARSpinner *spinner;
 @end
 
@@ -23,23 +23,26 @@
     [self.view addGestureRecognizer:exitTap];
 
     self.view.backgroundColor = [UIColor clearColor];
-    [self setupConstraints];
 }
 
 // Override ARExternalWebBrowserViewController's webview setup
 
 - (void)setupConstraints
 {
-    [self.webView removeConstraints:self.webView.constraints];
-
     [self.webView constrainWidthToView:self.view predicate:@"-200"];
     [self.webView constrainHeightToView:self.view predicate:@"-200"];
-    [self.webView alignCenterWithView:self.view];
+    [self.webView alignCenterXWithView:self.view predicate:@"0"];
+    [self.webView alignCenterYWithView:self.view predicate:@"0"];
 }
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     decisionHandler([self shouldLoadNavigationAction:navigationAction]);
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
+{
+    self.webView.scrollView.backgroundColor = [UIColor blackColor];
 }
 
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
