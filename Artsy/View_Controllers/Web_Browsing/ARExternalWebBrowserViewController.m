@@ -50,20 +50,12 @@
     webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
     _webView = webView;
-    [self setupConstraints];
 
 #ifndef STORE
     UILongPressGestureRecognizer *adminGesture;
     adminGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showAdminDetails:)];
     [self.view addGestureRecognizer:adminGesture];
 }
-
-
-- (void)setupConstraints
-{
-    [self.webView alignToView:self.view];
-}
-
 
 - (void)showAdminDetails:(UILongPressGestureRecognizer *)gesture
 {
@@ -110,8 +102,6 @@
 
 - (void)viewWillLayoutSubviews
 {
-    [super viewWillLayoutSubviews];
-
     [self.webView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
     [self.webView alignLeading:@"0" trailing:@"0" toView:self.view];
     [self.webView alignBottomEdgeWithView:self.view predicate:@"0"];

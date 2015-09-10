@@ -25,9 +25,9 @@
     self.view.backgroundColor = [UIColor clearColor];
 }
 
-// Override ARExternalWebBrowserViewController's webview setup
+// Override ARExternalWebBrowserViewController's webview contstraints in viewWillLayoutSubviews
 
-- (void)setupConstraints
+- (void)viewWillLayoutSubviews
 {
     [self.webView constrainWidthToView:self.view predicate:@"-200"];
     [self.webView constrainHeightToView:self.view predicate:@"-200"];
