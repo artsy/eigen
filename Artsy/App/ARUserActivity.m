@@ -28,14 +28,14 @@
     }
 
     activity.userInfo = @{ @"id" : artwork.artworkID };
+    activity.contentAttributeSet = attributeSet;
 
     NSURL *thumbnailURL = [[artwork defaultImage] urlForThumbnailImage];
-    [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:attributeSet withCompletion:^{
-        activity.contentAttributeSet = attributeSet;
-        if (becomeCurrent) {
-            [activity becomeCurrent];
-        }
-    }];
+    [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:activity.contentAttributeSet];
+
+    if (becomeCurrent) {
+        [activity becomeCurrent];
+    }
 
     return activity;
 }
@@ -52,6 +52,7 @@
 
     CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
     attributeSet.title = artist.name;
+
     if (artist.blurb.length > 0) {
         attributeSet.contentDescription = artist.blurb;
     } else {
@@ -59,14 +60,14 @@
     }
 
     activity.userInfo = @{ @"id" : artist.artistID };
+    activity.contentAttributeSet = attributeSet;
 
     NSURL *thumbnailURL = [artist squareImageURL];
-    [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:attributeSet withCompletion:^{
-        activity.contentAttributeSet = attributeSet;
-        if (becomeCurrent) {
-            [activity becomeCurrent];
-        }
-    }];
+    [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:activity.contentAttributeSet];
+
+    if (becomeCurrent) {
+        [activity becomeCurrent];
+    }
 
     return activity;
 }
@@ -91,19 +92,19 @@
     }
 
     activity.userInfo = @{ @"id" : gene.geneID };
+    activity.contentAttributeSet = attributeSet;
 
     NSURL *thumbnailURL = [gene smallImageURL];
-    [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:attributeSet withCompletion:^{
-        activity.contentAttributeSet = attributeSet;
-        if (becomeCurrent) {
-            [activity becomeCurrent];
-        }
-    }];
+    [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:activity.contentAttributeSet];
+
+    if (becomeCurrent) {
+        [activity becomeCurrent];
+    }
 
     return activity;
 }
 
-+ (instancetype)activityWithFair:(Fair *)fair andProfile:(Profile *)fairProfile becomeCurrent:(BOOL)becomeCurrent
++ (instancetype)activityWithFair:(Fair *)fair withProfile:(Profile *)fairProfile becomeCurrent:(BOOL)becomeCurrent
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:@"net.artsy.fair"];
     activity.title = [fair name];
@@ -128,22 +129,17 @@
 
     if (fairProfile) {
         NSURL *thumbnailURL = [NSURL URLWithString:fairProfile.iconURL];
-        [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:attributeSet withCompletion:^{
-            activity.contentAttributeSet = attributeSet;
-            if (becomeCurrent) {
-                [activity becomeCurrent];
-            }
-        }];
-    } else {
-        if (becomeCurrent) {
-            [activity becomeCurrent];
-        }
+        [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:activity.contentAttributeSet];
+    }
+
+    if (becomeCurrent) {
+        [activity becomeCurrent];
     }
 
     return activity;
 }
 
-+ (instancetype)activityWithShow:(PartnerShow *)show andFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent
++ (instancetype)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:@"net.artsy.show"];
     activity.title = [show name];
@@ -172,24 +168,26 @@
 
     activity.userInfo = @{ @"id" : show.showID };
 
+    activity.contentAttributeSet = attributeSet;
+
     NSURL *thumbnailURL = [show smallPreviewImageURL];
-    [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:attributeSet withCompletion:^{
-        activity.contentAttributeSet = attributeSet;
-        if (becomeCurrent) {
-            [activity becomeCurrent];
-        }
-    }];
+    [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:activity.contentAttributeSet];
+
+    if (becomeCurrent) {
+        [activity becomeCurrent];
+    }
 
     return activity;
 }
 
-+ (void)loadThumbnail:(NSURL *)thumbnailURL forAttributeSet:(CSSearchableItemAttributeSet *)attributeSet withCompletion:(void (^)())completionHandler
++ (void)loadThumbnail:(NSURL *)thumbnailURL forAttributeSet:(CSSearchableItemAttributeSet *)attributeSet
 {
     [[SDWebImageManager sharedManager] downloadImageWithURL:thumbnailURL options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
         if (image) {
-            attributeSet.thumbnailData = UIImagePNGRepresentation(image);
+            ar_dispatch_main_queue(^{
+                attributeSet.thumbnailData = UIImagePNGRepresentation(image);
+            });
         }
-        completionHandler();
     }];
 }
 
