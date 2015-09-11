@@ -63,6 +63,7 @@ static ARAppDelegate *_sharedInstance = nil;
     id delegate = [[self alloc] init];
     [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = delegate;
     [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = delegate;
+    [JSDecoupledAppDelegate sharedAppDelegate].activityContinuationDelegate = delegate;
 }
 
 + (ARAppDelegate *)sharedInstance
@@ -352,6 +353,16 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:url];
+    if (viewController) {
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+    }
+
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *_Nullable))restorationHandler
+{
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:userActivity.webpageURL];
     if (viewController) {
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
     }

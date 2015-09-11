@@ -12,6 +12,7 @@
 		064330E5170F526300FF6C41 /* ARArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 064330E4170F526200FF6C41 /* ARArtistViewController.m */; };
 		0C2C934C1B7E4B310036CC16 /* ARArtworkInfoViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C934B1B7E4B310036CC16 /* ARArtworkInfoViewControllerTests.m */; };
 		0C5100A51B83CC2A0050F479 /* ARCreateAccountViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C5100A31B83CB990050F479 /* ARCreateAccountViewControllerTests.m */; };
+		0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */; };
 		0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */; };
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
 		342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
@@ -622,6 +623,8 @@
 		06E44EB8170235D8001B2EBF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0C2C934B1B7E4B310036CC16 /* ARArtworkInfoViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkInfoViewControllerTests.m; sourceTree = "<group>"; };
 		0C5100A31B83CB990050F479 /* ARCreateAccountViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCreateAccountViewControllerTests.m; sourceTree = "<group>"; };
+		0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserActivity.h; sourceTree = "<group>"; };
+		0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
 		0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatcher+UINavigationController.h"; sourceTree = "<group>"; };
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
 		29773A6F17B9749800FC89B3 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
@@ -2425,6 +2428,8 @@
 				60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */,
 				60431FB918042E63000118D7 /* ARAppBackgroundFetchDelegate.h */,
 				60431FBA18042E63000118D7 /* ARAppBackgroundFetchDelegate.m */,
+				0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */,
+				0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -4415,6 +4420,7 @@
 				49A77239165ADB9400BC6FD3 /* ARRepostFeedItem.m in Sources */,
 				608B709917D4F6520088A56C /* ARSearchTableViewCell.m in Sources */,
 				49A7723A165ADB9400BC6FD3 /* ARSavedArtworkSetFeedItem.m in Sources */,
+				0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */,
 				60A309AD1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m in Sources */,
 				3CEE0B6518A16F7D00FEA6E6 /* ArtsyAPI+Artists.m in Sources */,
 				607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */,

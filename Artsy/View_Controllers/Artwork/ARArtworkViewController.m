@@ -6,12 +6,14 @@
 #import "ARPostsViewController.h"
 #import "ARArtworkView.h"
 #import "ARArtworkViewController+ButtonActions.h"
+#import "ARUserActivity.h"
 
 
 @interface ARArtworkViewController () <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>
 
 @property (nonatomic, strong) ARArtworkView *view;
 @property (nonatomic, strong, readonly) ARPostsViewController *postsVC;
+@property (nonatomic, strong) ARUserActivity *userActivity;
 @end
 
 
@@ -86,6 +88,8 @@
     } failure:^(NSError *error) {
         completion();
     }];
+
+    self.userActivity = [ARUserActivity activityWithArtwork:self.artwork];
 
     [super viewDidLoad];
 }
