@@ -8,6 +8,7 @@
 + (instancetype)activityWithArtwork:(Artwork *)artwork becomeCurrent:(BOOL)becomeCurrent;
 + (instancetype)activityWithArtist:(Artist *)artist becomeCurrent:(BOOL)becomeCurrent;
 + (instancetype)activityWithGene:(Gene *)gene becomeCurrent:(BOOL)becomeCurrent;
++ (instancetype)activityWithFair:(Fair *)fair andProfile:(Profile *)fairProfile becomeCurrent:(BOOL)becomeCurrent;
 
 @property (assign, getter=isEligibleForPublicIndexing) BOOL eligibleForPublicIndexing;
 @property (nonatomic, assign, getter=isEligibleForSearch) BOOL eligibleForSearch;

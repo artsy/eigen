@@ -14,6 +14,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARGeneViewController.h"
 #import "ARParallaxHeaderViewController.h"
+#import "ARUserActivity.h"
 
 NSString *const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
 NSString *const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";
@@ -37,6 +38,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 @property (nonatomic, strong) ARNavigationButtonsViewController *editorialVC;
 @property (nonatomic, strong) ARFairPostsViewController *fairPostsVC;
 @property (nonatomic, strong) NSLayoutConstraint *searchConstraint;
+@property (nonatomic, strong) ARUserActivity *userActivity;
 
 @property (nonatomic, assign) BOOL hasMap;
 @property (nonatomic, assign) BOOL displayingSearch;
@@ -212,6 +214,8 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 
     [self.stackView.stackView addWhiteSpaceWithHeight:@"20"];
     [self viewDidLayoutSubviews];
+
+    self.userActivity = [ARUserActivity activityWithFair:self.fair andProfile:self.fairProfile becomeCurrent:YES];
 }
 
 #pragma mark - Private
