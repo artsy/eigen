@@ -89,7 +89,7 @@
         completion();
     }];
 
-    self.userActivity = [ARUserActivity activityWithArtwork:self.artwork];
+    self.userActivity = [ARUserActivity activityWithArtwork:self.artwork becomeCurrent:YES];
 
     [super viewDidLoad];
 }
