@@ -13,6 +13,7 @@
 #import "ARShowNetworkModel.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARFairMapPreviewButton.h"
+#import "ARUserActivity.h"
 
 typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
     ARFairShowViewHeader = 1,
@@ -44,6 +45,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 @property (nonatomic, strong) NSLayoutConstraint *followButtonWidthConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *headerImageHeightConstraint;
 @property (nonatomic, strong) ARShowNetworkModel *showNetworkModel;
+@property (nonatomic, strong) ARUserActivity *userActivity;
 
 @end
 
@@ -121,6 +123,8 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
     CGFloat parentHeight = CGRectGetHeight(self.parentViewController.view.bounds) ?: CGRectGetHeight([UIScreen mainScreen].bounds);
     [self.view.stackView ensureScrollingWithHeight:parentHeight tag:ARFairShowViewWhitespaceGobbler];
+
+    self.userActivity = [ARUserActivity activityWithShow:self.show andFair:self.fair becomeCurrent:YES];
 }
 
 - (void)addActionButtonsToStack
@@ -156,9 +160,10 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
         ARActionButtonImageKey : @"MapButtonAction",
         ARActionButtonHandlerKey : ^(ARCircularActionButton *sender){
             @_strongify(self);
-            [self handleMapButtonPress:sender];
-        }
-    };
+    [self handleMapButtonPress:sender];
+}
+}
+;
 }
 
 - (void)handleMapButtonPress:(ARCircularActionButton *)sender

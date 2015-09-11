@@ -2,6 +2,7 @@
 #import "ARAppDelegate.h"
 #import "ARShareableObject.h"
 #import "SDWebImageManager.h"
+#import "NSDate+DateRange.h"
 @import CoreSpotlight;
 
 
@@ -114,6 +115,8 @@
 
     CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
     attributeSet.title = fair.name;
+    attributeSet.startDate = fair.startDate;
+    attributeSet.endDate = fair.endDate;
 
     if (fair.location) {
         attributeSet.contentDescription = fair.location;
@@ -136,6 +139,46 @@
             [activity becomeCurrent];
         }
     }
+
+    return activity;
+}
+
++ (instancetype)activityWithShow:(PartnerShow *)show andFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent
+{
+    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:@"net.artsy.show"];
+    activity.title = [show name];
+
+    activity.eligibleForPublicIndexing = YES;
+    activity.eligibleForSearch = YES;
+    activity.eligibleForHandoff = YES;
+    activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [ARUserActivity landingURL], show.publicArtsyPath]];
+
+    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+    attributeSet.title = show.name;
+
+    // Add 1 day of grace period before show expires, we may want to adjust this
+    activity.expirationDate = [show.endDate dateByAddingTimeInterval:(60 * 60 * 24)];
+
+    NSString *location;
+    if (fair && fair.location) {
+        location = fair.location;
+    } else {
+        location = [NSString stringWithFormat:@"%@, %@ %@", show.location.city, show.location.state, show.location.country];
+    }
+    NSString *dates = [show.startDate ausstellungsdauerToDate:show.endDate];
+    attributeSet.contentDescription = [NSString stringWithFormat:@"%@\n%@\n%@", show.partner.name, location, dates];
+    attributeSet.startDate = show.startDate;
+    attributeSet.endDate = show.endDate;
+
+    activity.userInfo = @{ @"id" : show.showID };
+
+    NSURL *thumbnailURL = [show smallPreviewImageURL];
+    [ARUserActivity loadThumbnail:thumbnailURL forAttributeSet:attributeSet withCompletion:^{
+        activity.contentAttributeSet = attributeSet;
+        if (becomeCurrent) {
+            [activity becomeCurrent];
+        }
+    }];
 
     return activity;
 }
