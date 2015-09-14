@@ -22,7 +22,4 @@
     return YES;
 }
 
-//- (void)application:(UIApplication *)application didFailToContinueUserActivityWithType:(NSString *)userActivityType error:(NSError *)error;
-//- (void)application:(UIApplication *)application didUpdateUserActivity:(NSUserActivity *)userActivity;
-
 @end
