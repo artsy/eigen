@@ -207,11 +207,14 @@ NSString *stringByStrippingMarkdown(NSString *markdownString);
 
 NSString *stringByStrippingMarkdown(NSString *markdownString)
 {
-    NSError *error;
+    NSError *error = nil;
     NSString *renderedString = [MMMarkdown HTMLStringWithMarkdown:markdownString error:&error];
     NSDictionary *importParams = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
     NSData *stringData = [renderedString dataUsingEncoding:NSUnicodeStringEncoding];
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:stringData options:importParams documentAttributes:NULL error:&error];
+    if (error) {
+        return nil;
+    }
 
     return attributedString.string;
 }
