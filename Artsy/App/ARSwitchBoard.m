@@ -370,6 +370,14 @@
         ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
         return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications] rootViewController];
     }
+    if ([url.path isEqualToString:@"/articles"]) {
+        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
+        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexMagazine] rootViewController];
+    }
+    if ([url.path isEqualToString:@"/shows"]) {
+        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
+        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexShows] rootViewController];
+    }
 
     BOOL routed = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
     if (routed) {

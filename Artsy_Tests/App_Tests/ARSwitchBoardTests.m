@@ -233,14 +233,33 @@ describe(@"ARSwitchboard", ^{
             expect(viewController).to.beNil();
         });
 
-        describe(@"top-menu root view controllers", ^{
-            it(@"routes to the existing notifications view controller", ^{
+        describe(@"routing to existing top-menu root view controllers", ^{
+            __block ARNavigationController *navigationController = nil;
+
+            beforeEach(^{
                 UIViewController *rootViewController = [UIViewController new];
-                ARNavigationController *navigationController = [[ARNavigationController alloc] initWithRootViewController:rootViewController];
+                navigationController = [[ARNavigationController alloc] initWithRootViewController:rootViewController];
+            });
+
+            it(@"routes works-for-you", ^{
                 [[[controllerMock expect] andReturn:navigationController] rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications];
 
                 id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/works-for-you"] fair:nil];
-                expect(viewController).to.equal(rootViewController);
+                expect(viewController).to.equal(navigationController.rootViewController);
+            });
+
+            it(@"routes shows", ^{
+                [[[controllerMock expect] andReturn:navigationController] rootNavigationControllerAtIndex:ARTopTabControllerIndexShows];
+
+                id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/shows"] fair:nil];
+                expect(viewController).to.equal(navigationController.rootViewController);
+            });
+
+            it(@"routes articles", ^{
+                [[[controllerMock expect] andReturn:navigationController] rootNavigationControllerAtIndex:ARTopTabControllerIndexMagazine];
+
+                id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/articles"] fair:nil];
+                expect(viewController).to.equal(navigationController.rootViewController);
             });
         });
 
