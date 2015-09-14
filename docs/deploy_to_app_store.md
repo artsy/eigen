@@ -19,8 +19,6 @@ Open the project in Xcode, click on the Artsy project.
 
 IMPORTANT: We use the "Artsy Inc Account" not "ARTSY INC" - which is our enterprise account.
 
-![](../Web/prov-profiles.png)
-
 The provisioning profile should be _"Artsy Mobile - App Store DistrProfile"_ and when the Code Signing ( which should be automatic ) is clicked it should show  "_iPhone Distribution : Art.sy Inc"_
 
 If you don't see the "Artsy Mobile - App Store DistrProfile" in the options above, import the Dev/Apple/Artsy AppStore Identities from the Artsy Engineering Operations 1Password vault.
