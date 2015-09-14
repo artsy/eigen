@@ -4,6 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<string>applinks:artsy.net</string>
 		<string>applinks:www.artsy.net</string>
 		<string>applinks:staging.artsy.net</string>
 	</array>
