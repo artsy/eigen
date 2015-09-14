@@ -61,7 +61,7 @@
 
     _routes = [[JLRoutes alloc] init];
 
-   @_weakify(self);
+    @_weakify(self);
     [self.routes addRoute:@"/artist/:id" handler:^BOOL(NSDictionary *parameters) {
         @_strongify(self)
         ARArtistViewController *viewController = [self loadArtistWithID:parameters[@"id"]];
@@ -310,6 +310,8 @@
 
 - (UIViewController *)loadURL:(NSURL *)url fair:(Fair *)fair
 {
+    NSParameterAssert(url);
+
     // May be nil by the end of the method
     UIViewController *viewController;
 
@@ -367,6 +369,14 @@
     if ([url.path isEqualToString:@"/works-for-you"]) {
         ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
         return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications] rootViewController];
+    }
+    if ([url.path isEqualToString:@"/articles"]) {
+        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
+        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexMagazine] rootViewController];
+    }
+    if ([url.path isEqualToString:@"/shows"]) {
+        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
+        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexShows] rootViewController];
     }
 
     BOOL routed = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
