@@ -11,8 +11,6 @@
 + (instancetype)activityWithFair:(Fair *)fair withProfile:(Profile *)fairProfile becomeCurrent:(BOOL)becomeCurrent;
 + (instancetype)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent;
 
-@property (assign, getter=isEligibleForPublicIndexing) BOOL eligibleForPublicIndexing;
-@property (assign, getter=isEligibleForSearch) BOOL eligibleForSearch;
-@property (assign, getter=isEligibleForHandoff) BOOL eligibleForHandoff;
+- (BOOL)isSpotlightIndexingAvailable;
 
 @end
