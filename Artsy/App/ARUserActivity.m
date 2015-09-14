@@ -3,7 +3,10 @@
 #import "ARShareableObject.h"
 #import "SDWebImageManager.h"
 #import "NSDate+DateRange.h"
+#import <MMMarkdown/MMMarkdown.h>
 @import CoreSpotlight;
+
+NSString *stringByStrippingMarkdown(NSString *markdownString);
 
 
 @implementation ARUserActivity
@@ -56,7 +59,7 @@
         attributeSet.title = artist.name;
 
         if (artist.blurb.length > 0) {
-            attributeSet.contentDescription = artist.blurb;
+            attributeSet.contentDescription = stringByStrippingMarkdown(artist.blurb);
         } else {
             attributeSet.contentDescription = artist.birthday;
         }
@@ -88,7 +91,7 @@
         attributeSet.title = gene.name;
 
         if (gene.geneDescription.length > 0) {
-            attributeSet.contentDescription = gene.geneDescription;
+            attributeSet.contentDescription = stringByStrippingMarkdown(gene.geneDescription);
         } else {
             attributeSet.contentDescription = @"Category on Artsy";
         }
@@ -200,6 +203,17 @@
 + (NSString *)landingURL
 {
     return [[ARAppDelegate sharedInstance] landingURLRepresentation];
+}
+
+NSString *stringByStrippingMarkdown(NSString *markdownString)
+{
+    NSError *error;
+    NSString *renderedString = [MMMarkdown HTMLStringWithMarkdown:markdownString error:&error];
+    NSDictionary *importParams = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
+    NSData *stringData = [renderedString dataUsingEncoding:NSUnicodeStringEncoding];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:stringData options:importParams documentAttributes:NULL error:&error];
+
+    return attributedString.string;
 }
 
 @end
