@@ -1,3 +1,8 @@
+## 2.2.1 (11/09/2015)
+
+* Fix bundle display name. - alloy
+* Remove `?foo=bar` parameter from Martsy calls - jorystiefel
+
 ## 2.2.0 (07/09/2015)
 
 * Don’t show a progress indicator when navigating back to a web view that was not yet fully done loading. - alloy
