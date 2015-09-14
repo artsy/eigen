@@ -123,7 +123,7 @@ beta: BUNDLE_NAME = 'Artsy β'
 beta: NOTIFY = 1
 beta: deploy
 
-synxify: 
+synxify:
 	bundle exec synx --spaces-to-underscores -e "/Documentation" Artsy.xcodeproj
 
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
