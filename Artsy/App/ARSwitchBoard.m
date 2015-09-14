@@ -61,7 +61,7 @@
 
     _routes = [[JLRoutes alloc] init];
 
-   @_weakify(self);
+    @_weakify(self);
     [self.routes addRoute:@"/artist/:id" handler:^BOOL(NSDictionary *parameters) {
         @_strongify(self)
         ARArtistViewController *viewController = [self loadArtistWithID:parameters[@"id"]];
@@ -310,6 +310,8 @@
 
 - (UIViewController *)loadURL:(NSURL *)url fair:(Fair *)fair
 {
+    NSParameterAssert(url);
+
     // May be nil by the end of the method
     UIViewController *viewController;
 
