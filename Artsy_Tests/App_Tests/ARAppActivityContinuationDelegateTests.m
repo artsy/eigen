@@ -23,7 +23,7 @@ it(@"accepts Safari Handoff", ^{
 
 it(@"accepts any user activity with the Artsy prefix", ^{
     [@[@"artwork", @"artist", @"gene", @"fair"] each:^(NSString *subtype) {
-        NSString *type = [NSString stringWithFormat:@"net.artsy.%@", subtype];
+        NSString *type = [NSString stringWithFormat:@"net.artsy.artsy.%@", subtype];
         expect([delegate application:app willContinueUserActivityWithType:type]).to.beTruthy();
     }];
 });

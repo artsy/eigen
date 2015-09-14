@@ -10,7 +10,7 @@
 
 - (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType;
 {
-    return [userActivityType isEqualToString:NSUserActivityTypeBrowsingWeb] || [userActivityType hasPrefix:@"net.artsy."];
+    return [userActivityType isEqualToString:NSUserActivityTypeBrowsingWeb] || [userActivityType hasPrefix:@"net.artsy.artsy."];
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler;
