@@ -63,6 +63,7 @@ static void *ARProgressContext = &ARProgressContext;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self showLoading];
 
     // KVO on progress for when we can show the page
     [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew & NSKeyValueObservingOptionOld context:ARProgressContext];
