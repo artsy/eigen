@@ -80,6 +80,7 @@
     void (^completion)(void) = ^{
         @_strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
+        self.userActivity = [ARUserActivity activityWithArtwork:self.artwork becomeCurrent:YES];
     };
 
     [self.artwork onArtworkUpdate:^{
@@ -87,8 +88,6 @@
     } failure:^(NSError *error) {
         completion();
     }];
-
-    self.userActivity = [ARUserActivity activityWithArtwork:self.artwork becomeCurrent:YES];
 
     [super viewDidLoad];
 }

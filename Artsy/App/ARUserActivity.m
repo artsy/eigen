@@ -1,5 +1,5 @@
 #import "ARUserActivity.h"
-#import "ARAppDelegate.h"
+#import "ARRouter.h"
 #import "ARShareableObject.h"
 #import "SDWebImageManager.h"
 #import "NSDate+DateRange.h"
@@ -206,7 +206,7 @@ static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 
 + (NSString *)landingURL
 {
-    return [[ARAppDelegate sharedInstance] landingURLRepresentation];
+    return [[ARRouter baseWebURL] absoluteString];
 }
 
 NSString *stringByStrippingMarkdown(NSString *markdownString)
