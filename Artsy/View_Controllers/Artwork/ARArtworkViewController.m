@@ -13,7 +13,6 @@
 
 @property (nonatomic, strong) ARArtworkView *view;
 @property (nonatomic, strong, readonly) ARPostsViewController *postsVC;
-@property (nonatomic, strong) ARUserActivity *userActivity;
 @end
 
 

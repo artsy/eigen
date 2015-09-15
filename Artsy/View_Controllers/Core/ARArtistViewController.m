@@ -65,8 +65,6 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 @property (nonatomic, strong) ARPostsViewController *postsVC;
 
-@property (nonatomic, strong) ARUserActivity *userActivity;
-
 @end
 
 

@@ -45,7 +45,6 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 @property (nonatomic, strong) NSLayoutConstraint *followButtonWidthConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *headerImageHeightConstraint;
 @property (nonatomic, strong) ARShowNetworkModel *showNetworkModel;
-@property (nonatomic, strong) ARUserActivity *userActivity;
 
 @end
 

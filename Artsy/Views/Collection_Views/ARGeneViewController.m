@@ -21,7 +21,6 @@
 @property (nonatomic, strong) UIView *titleSeparator;
 @property (nonatomic, strong) ARTextView *descriptionTextView;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksViewController;
-@property (nonatomic, strong) ARUserActivity *userActivity;
 @end
 
 

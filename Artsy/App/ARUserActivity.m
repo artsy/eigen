@@ -8,17 +8,23 @@
 
 NSString *stringByStrippingMarkdown(NSString *markdownString);
 
+static NSString *const ARUserActivityTypeArtwork = @"net.artsy.artsy.artwork";
+static NSString *const ARUserActivityTypeArtist = @"net.artsy.artsy.artist";
+static NSString *const ARUserActivityTypeGene = @"net.artsy.artsy.gene";
+static NSString *const ARUserActivityTypeFair = @"net.artsy.artsy.fair";
+static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
+
 
 @implementation ARUserActivity
 
 + (instancetype)activityWithArtwork:(Artwork *)artwork becomeCurrent:(BOOL)becomeCurrent
 {
-    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:@"net.artsy.artsy.artwork"];
-    activity.title = [artwork name];
+    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeArtwork];
+    activity.title = artwork.name;
     activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [ARUserActivity landingURL], artwork.publicArtsyPath]];
     activity.userInfo = @{ @"id" : artwork.artworkID };
 
-    if (activity.isSpotlightIndexingAvailable) {
+    if (ARUserActivity.isSpotlightIndexingAvailable) {
         activity.eligibleForPublicIndexing = YES;
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
@@ -35,6 +41,7 @@ NSString *stringByStrippingMarkdown(NSString *markdownString);
         activity.contentAttributeSet = attributeSet;
 
         NSURL *thumbnailURL = [[artwork defaultImage] urlForThumbnailImage];
+        // because we cannot call -becomeCurrent before the thumbnail is loaded, this method will call it:
         [activity loadThumbnail:thumbnailURL andBecomeCurrent:becomeCurrent];
     } else if (becomeCurrent) {
         [activity becomeCurrent];
@@ -45,12 +52,12 @@ NSString *stringByStrippingMarkdown(NSString *markdownString);
 
 + (instancetype)activityWithArtist:(Artist *)artist becomeCurrent:(BOOL)becomeCurrent
 {
-    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:@"net.artsy.artsy.artist"];
-    activity.title = [artist name];
+    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeArtist];
+    activity.title = artist.name;
     activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [ARUserActivity landingURL], artist.publicArtsyPath]];
     activity.userInfo = @{ @"id" : artist.artistID };
 
-    if (activity.isSpotlightIndexingAvailable) {
+    if (ARUserActivity.isSpotlightIndexingAvailable) {
         activity.eligibleForPublicIndexing = YES;
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
@@ -77,12 +84,12 @@ NSString *stringByStrippingMarkdown(NSString *markdownString);
 
 + (instancetype)activityWithGene:(Gene *)gene becomeCurrent:(BOOL)becomeCurrent
 {
-    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:@"net.artsy.artsy.gene"];
-    activity.title = [gene name];
+    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeGene];
+    activity.title = gene.name;
     activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [ARUserActivity landingURL], gene.publicArtsyPath]];
     activity.userInfo = @{ @"id" : gene.geneID };
 
-    if (activity.isSpotlightIndexingAvailable) {
+    if (ARUserActivity.isSpotlightIndexingAvailable) {
         activity.eligibleForPublicIndexing = YES;
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
@@ -109,12 +116,12 @@ NSString *stringByStrippingMarkdown(NSString *markdownString);
 
 + (instancetype)activityWithFair:(Fair *)fair withProfile:(Profile *)fairProfile becomeCurrent:(BOOL)becomeCurrent
 {
-    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:@"net.artsy.artsy.fair"];
-    activity.title = [fair name];
+    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeFair];
+    activity.title = fair.name;
     activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [ARUserActivity landingURL], fair.fairID]];
     activity.userInfo = @{ @"id" : fair.fairID };
 
-    if (activity.isSpotlightIndexingAvailable) {
+    if (ARUserActivity.isSpotlightIndexingAvailable) {
         activity.eligibleForPublicIndexing = YES;
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
@@ -143,21 +150,18 @@ NSString *stringByStrippingMarkdown(NSString *markdownString);
 
 + (instancetype)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent
 {
-    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:@"net.artsy.artsy.show"];
-    activity.title = [show name];
+    ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeShow];
+    activity.title = show.name;
     activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [ARUserActivity landingURL], show.publicArtsyPath]];
     activity.userInfo = @{ @"id" : show.showID };
 
-    if (activity.isSpotlightIndexingAvailable) {
+    if (ARUserActivity.isSpotlightIndexingAvailable) {
         activity.eligibleForPublicIndexing = YES;
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
 
         CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
         attributeSet.title = show.name;
-
-        // Add 1 day of grace period before show expires, we may want to adjust this
-        activity.expirationDate = [show.endDate dateByAddingTimeInterval:(60 * 60 * 24)];
 
         NSString *location;
         if (fair && fair.location) {
@@ -195,9 +199,9 @@ NSString *stringByStrippingMarkdown(NSString *markdownString);
     }];
 }
 
-- (BOOL)isSpotlightIndexingAvailable
++ (BOOL)isSpotlightIndexingAvailable
 {
-    return [self respondsToSelector:@selector(isEligibleForSearch)];
+    return [NSUserActivity instancesRespondToSelector:@selector(isEligibleForSearch)];
 }
 
 + (NSString *)landingURL

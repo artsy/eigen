@@ -38,7 +38,6 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 @property (nonatomic, strong) ARNavigationButtonsViewController *editorialVC;
 @property (nonatomic, strong) ARFairPostsViewController *fairPostsVC;
 @property (nonatomic, strong) NSLayoutConstraint *searchConstraint;
-@property (nonatomic, strong) ARUserActivity *userActivity;
 
 @property (nonatomic, assign) BOOL hasMap;
 @property (nonatomic, assign) BOOL displayingSearch;

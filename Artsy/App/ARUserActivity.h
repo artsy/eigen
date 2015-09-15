@@ -11,6 +11,4 @@
 + (instancetype)activityWithFair:(Fair *)fair withProfile:(Profile *)fairProfile becomeCurrent:(BOOL)becomeCurrent;
 + (instancetype)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent;
 
-- (BOOL)isSpotlightIndexingAvailable;
-
 @end
