@@ -1,3 +1,7 @@
+## Next
+
+* Add support for Shared Web Credentials. Available credentials are shown on the login view and entered/created credentials are saved for web use. - alloy
+
 ## 2.3.0 (2015.09.25)
 
 * Improved Spotlight support for favorites. - alloy

@@ -282,7 +282,7 @@ describe(@"createUserWithName", ^{
         } failure:^(NSError *error, id JSON) {
             XCTFail(@"createUserWithName: %@", error);
             done = YES;
-        }];
+        } saveSharedWebCredentials:NO];
 
         while(!done) {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
