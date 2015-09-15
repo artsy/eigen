@@ -60,6 +60,12 @@ static ARAppDelegate *_sharedInstance = nil;
 
 + (void)load
 {
+    /// The setup in testing is done in ARTestAppDelegate
+    BOOL isRunningTests = NSClassFromString(@"XCTestCase") != nil;
+    if (isRunningTests) {
+        return;
+    }
+
     id delegate = [[self alloc] init];
     [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = delegate;
     [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = delegate;

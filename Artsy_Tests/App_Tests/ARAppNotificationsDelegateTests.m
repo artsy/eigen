@@ -50,7 +50,7 @@ describe(@"receiveRemoteNotification", ^{
         });
 
         it(@"updates the badge count", ^{
-            id classMock = [OCMockObject mockForClass:[ARTopMenuViewController class]];
+            id classMock = [OCMockObject mockForClass:ARTopMenuViewController.class];
             id controllerMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
             [[[classMock stub] andReturn:controllerMock] sharedController];
 
