@@ -201,7 +201,7 @@ static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 
 + (BOOL)isSpotlightIndexingAvailable
 {
-    return [NSUserActivity instancesRespondToSelector:@selector(isEligibleForSearch)];
+    return NSClassFromString(@"CSSearchableIndex") != nil && [CSSearchableIndex isIndexingAvailable];
 }
 
 + (NSString *)landingURL
