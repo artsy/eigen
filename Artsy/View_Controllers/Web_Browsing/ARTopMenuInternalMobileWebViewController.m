@@ -3,9 +3,11 @@
 #define MAX_AGE 3600 // 1 hour
 
 
-@interface ARTopMenuInternalMobileWebViewController() <ARTopMenuRootViewController>
+@interface ARTopMenuInternalMobileWebViewController () <ARTopMenuRootViewController>
 @property (nonatomic, assign) BOOL hasSuccessfullyLoadedLastRequest;
 @property (nonatomic, strong) NSDate *lastRequestLoadedAt;
+@property (nonatomic, strong) NSURLRequest *initialRequest;
+@property (nonatomic, strong) NSURLResponse *keyResponse;
 @end
 
 
@@ -68,6 +70,7 @@
 - (void)loadURL:(NSURL *)URL
 {
     self.lastRequestLoadedAt = nil;
+    self.initialRequest = nil;
     [super loadURL:URL];
 }
 
@@ -83,9 +86,30 @@
     [self markRemoteNotificationsAsRead];
 }
 
+// We want to be able to track the responses and the requests in
+// order to evaluate later the status code
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+    [super webView:webView decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
+    self.initialRequest = self.initialRequest ?: navigationAction.request;
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler
+{
+    // Using .path to ensure http -> https is 👍
+    if ([navigationResponse.response.URL.path isEqual:self.initialRequest.URL.path]) {
+        self.keyResponse = navigationResponse.response;
+    }
+    decisionHandler(WKNavigationResponsePolicyAllow);
+}
+
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
 {
-    self.hasSuccessfullyLoadedLastRequest = webView.estimatedProgress == 1;
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)self.keyResponse;
+    NSInteger statusCode = httpResponse.statusCode;
+    self.hasSuccessfullyLoadedLastRequest = statusCode >= 200 && statusCode < 300;
+
     if (self.hasSuccessfullyLoadedLastRequest) {
         self.lastRequestLoadedAt = [NSDate date];
     }

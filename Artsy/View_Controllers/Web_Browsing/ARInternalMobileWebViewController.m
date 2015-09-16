@@ -53,6 +53,12 @@ static void *ARProgressContext = &ARProgressContext;
     return self;
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.webView stopLoading];
+}
+
 - (void)loadURL:(NSURL *)URL
 {
     self.loaded = NO;
@@ -69,6 +75,14 @@ static void *ARProgressContext = &ARProgressContext;
     [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew & NSKeyValueObservingOptionOld context:ARProgressContext];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (!self.loaded) {
+        [self.webView loadRequest:[self requestWithURL:self.currentURL]];
+    }
+}
+
 - (void)dealloc
 {
     [self.webView removeObserver:self forKeyPath:@"estimatedProgress" context:ARProgressContext];
@@ -78,10 +92,8 @@ static void *ARProgressContext = &ARProgressContext;
 {
     if (context == ARProgressContext && [keyPath isEqualToString:@"estimatedProgress"]) {
         [self.webView evaluateJavaScript:@"document.readyState == \"interactive\"" completionHandler:^(id response, NSError *error) {
-            if ([response respondsToSelector:@selector(boolValue)]) {
-                if (self.loaded == NO && [response boolValue] == YES) {
-                    [self hideLoading];
-                }
+            if ([response boolValue]) {
+                [self hideLoading];
             }
         }];
     } else {
@@ -96,8 +108,16 @@ static void *ARProgressContext = &ARProgressContext;
 
 - (void)hideLoading
 {
-    self.loaded = YES;
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
+{
+    /// If we do this initially there's a chance of seeing a black screen
+    /// instead of our default white
+    self.webView.scrollView.backgroundColor = [UIColor blackColor];
+
+    self.loaded = YES;
 }
 
 // Load a new internal web VC for each link we can do
@@ -124,14 +144,6 @@ static void *ARProgressContext = &ARProgressContext;
             }];
         }
         return WKNavigationActionPolicyCancel;
-    }
-
-    // WKWebKit sends us this shouldLoad twice, we only
-    // care if it's not an Other ( which seems to maybe be the main frame
-    // actually loading after it has a response. )
-
-    if (navigationAction.navigationType == WKNavigationTypeOther) {
-        return WKNavigationActionPolicyAllow;
     }
 
     NSLog(@"Martsy URL %@ - %@", URL, @(navigationAction.navigationType));
@@ -163,9 +175,9 @@ static void *ARProgressContext = &ARProgressContext;
     [self.webView loadRequest:[self requestWithURL:self.webView.URL]];
 }
 
-- (NSURLRequest *)requestWithURL:(NSURL *)url
+- (NSURLRequest *)requestWithURL:(NSURL *)URL
 {
-    return [ARRouter requestForURL:url];
+    return [ARRouter requestForURL:URL];
 }
 
 #pragma mark - UIScrollViewDelegate

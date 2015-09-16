@@ -50,54 +50,6 @@
     webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
     _webView = webView;
-
-#ifndef STORE
-    UILongPressGestureRecognizer *adminGesture;
-    adminGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showAdminDetails:)];
-    [self.view addGestureRecognizer:adminGesture];
-}
-
-- (void)showAdminDetails:(UILongPressGestureRecognizer *)gesture
-{
-    gesture.enabled = NO;
-    UITextView *textView = [[UITextView alloc] init];
-    textView.font = [UIFont fontWithName:@"Courier" size:14];
-    textView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
-    [self.view addSubview:textView];
-    [textView alignLeading:@"0" trailing:@"0" toView:self.view];
-    [textView alignBottomEdgeWithView:self.view predicate:@"0"];
-    [textView constrainHeightToView:self.view predicate:@"*.5"];
-
-#warning BRING BACK INTROSPECTION
-
-//    NSMutableString *details = [[NSMutableString alloc] initWithString:@"## Web View Details \n\n"];
-//    if (self.webView.request.URL.absoluteString.length) {
-//        [details appendFormat:@"Requested: %@ \n", self.webView.request.URL];
-//    }
-//
-//    NSString *currentAddress = [self.webView stringByEvaluatingJavaScriptFromString:@"document.location.href"];
-//    if (![currentAddress isEqualToString:self.webView.request.URL.absoluteString]) {
-//        [details appendFormat:@"Current URL: %@ \n", currentAddress];
-//    }
-//
-//    [details appendFormat:@"\n"];
-//
-//    NSString *userName = [self.webView stringByEvaluatingJavaScriptFromString:@"sd.CURRENT_USER.name"];
-//    if (userName.length) {
-//        [details appendFormat:@"User: %@ \n", userName];
-//    } else {
-//        [details appendString:@"User: Not logged in \n"];
-//    }
-//
-//    NSString *userAgent = [self.webView stringByEvaluatingJavaScriptFromString:@"window.clientInformation.userAgent"];
-//    [details appendFormat:@"User agent: %@ \n", userAgent];
-//
-//    NSString *webSession = [self.webView stringByEvaluatingJavaScriptFromString:@"sd.SESSION_ID"];
-//    [details appendFormat:@"Web Session: %@ \n", webSession];
-//
-//
-//    textView.text = details;
-#endif
 }
 
 - (void)viewWillLayoutSubviews

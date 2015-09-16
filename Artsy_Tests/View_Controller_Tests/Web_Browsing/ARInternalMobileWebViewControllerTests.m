@@ -21,6 +21,7 @@ static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavi
 @property (nonatomic, strong) ARInternalShareValidator *shareValidator;
 - (NSURLRequest *)requestWithURL:(NSURL *)url;
 @property (nonatomic, strong) UIWebView *webView;
+- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 
 @end
 

@@ -11,7 +11,4 @@
 - (NSURL *)currentURL;
 - (void)loadURL:(NSURL *)URL;
 
-// Private
-- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
-
 @end

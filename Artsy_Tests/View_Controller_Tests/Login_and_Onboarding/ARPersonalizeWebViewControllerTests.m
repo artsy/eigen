@@ -1,8 +1,10 @@
 #import "ARPersonalizeWebViewController.h"
 
+
 @interface ARPersonalizeWebViewController (Testing)
 
 @property (nonatomic, strong) UIWebView *webView;
+- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 
 @end
 

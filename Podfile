@@ -71,7 +71,6 @@ target 'Artsy' do
   pod 'libextobjc/EXTKeyPathCoding'
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
-  pod 'TPDWeakProxy'
 
   # X-Callback-Url support
   pod 'InterAppCommunication'

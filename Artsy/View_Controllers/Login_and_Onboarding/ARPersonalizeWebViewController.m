@@ -4,6 +4,11 @@
 #import "ARSpinner.h"
 
 
+@interface ARInternalMobileWebViewController ()
+- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
+@end
+
+
 @interface ARPersonalizeWebViewController () <WKNavigationDelegate>
 @property (nonatomic, strong, readonly) ARSpinner *spinner;
 @end
@@ -38,11 +43,6 @@
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     decisionHandler([self shouldLoadNavigationAction:navigationAction]);
-}
-
-- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
-{
-    self.webView.scrollView.backgroundColor = [UIColor blackColor];
 }
 
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
