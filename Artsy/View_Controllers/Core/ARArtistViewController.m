@@ -269,14 +269,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
         }
     }
 
-    @_weakify(self);
-    [ARUserActivity activityWithArtist:self.artist completion:^(ARUserActivity *activity) {
-        @_strongify(self);
-        if (self) {
-            self.userActivity = activity;
-            [activity becomeCurrent];
-        }
-    }];
+    self.userActivity = [ARUserActivity activityWithArtist:self.artist becomeCurrent:YES];
 }
 
 - (void)prepareForNoArtworks
