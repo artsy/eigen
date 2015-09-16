@@ -16,6 +16,7 @@ static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 
 
 typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *attributeSet);
+static dispatch_queue_t ARSearchAttributesQueue;
 
 static void
 ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
@@ -27,100 +28,114 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
                           options:0
                          progress:nil
                         completed:^(UIImage *image, NSError *_, SDImageCacheType __, BOOL ____, NSURL *_____) {
-        NSData *data = UIImagePNGRepresentation(image);
-        ar_dispatch_main_queue(^{
+        ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
             if (image) {
-                attributeSet.thumbnailData = data;
+                attributeSet.thumbnailData = UIImagePNGRepresentation(image);
             }
             completion(attributeSet);
         });
-                        }];
+    }];
 }
 
 
 @implementation ARUserActivity
 
++ (void)load;
+{
+    ARSearchAttributesQueue = dispatch_queue_create("net.artsy.artsy.ARSearchAttributesQueue", DISPATCH_QUEUE_SERIAL);
+}
+
 #pragma mark - CSSearchableItemAttributeSet
 
 + (void)searchAttributesWithArtwork:(Artwork *)artwork completion:(ARSearchAttributesCompletionBlock)completion;
 {
-    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
-    attributeSet.title = artwork.title;
+    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+        attributeSet.title = artwork.title;
 
-    if (artwork.date.length > 0) {
-        attributeSet.contentDescription = [NSString stringWithFormat:@"%@, %@\n%@", artwork.artist.name, artwork.date, artwork.medium];
-    } else {
-        attributeSet.contentDescription = [NSString stringWithFormat:@"%@\n%@", artwork.artist.name, artwork.medium];
-    }
+        if (artwork.date.length > 0) {
+            attributeSet.contentDescription = [NSString stringWithFormat:@"%@, %@\n%@", artwork.artist.name, artwork.date, artwork.medium];
+        } else {
+            attributeSet.contentDescription = [NSString stringWithFormat:@"%@\n%@", artwork.artist.name, artwork.medium];
+        }
 
-    ARSearchAttributesAddThumbnailData(attributeSet, artwork.defaultImage.urlForThumbnailImage, completion);
+        ARSearchAttributesAddThumbnailData(attributeSet, artwork.defaultImage.urlForThumbnailImage, completion);
+    });
 }
 
 + (void)searchAttributesWithArtist:(Artist *)artist completion:(ARSearchAttributesCompletionBlock)completion;
 {
-    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
-    attributeSet.title = artist.name;
+    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+        attributeSet.title = artist.name;
 
-    if (artist.blurb.length > 0) {
-        attributeSet.contentDescription = stringByStrippingMarkdown(artist.blurb);
-    } else {
-        attributeSet.contentDescription = artist.birthday;
-    }
+        if (artist.blurb.length > 0) {
+            attributeSet.contentDescription = stringByStrippingMarkdown(artist.blurb);
+        } else {
+            attributeSet.contentDescription = artist.birthday;
+        }
 
-    ARSearchAttributesAddThumbnailData(attributeSet, artist.squareImageURL, completion);
+        ARSearchAttributesAddThumbnailData(attributeSet, artist.squareImageURL, completion);
+    });
 }
 
 + (void)searchAttributesWithGene:(Gene *)gene completion:(ARSearchAttributesCompletionBlock)completion;
 {
-    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
-    attributeSet.title = gene.name;
+    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+        attributeSet.title = gene.name;
 
-    if (gene.geneDescription.length > 0) {
-        attributeSet.contentDescription = stringByStrippingMarkdown(gene.geneDescription);
-    } else {
-        attributeSet.contentDescription = @"Category on Artsy";
-    }
+        if (gene.geneDescription.length > 0) {
+            attributeSet.contentDescription = stringByStrippingMarkdown(gene.geneDescription);
+        } else {
+            attributeSet.contentDescription = @"Category on Artsy";
+        }
 
-    ARSearchAttributesAddThumbnailData(attributeSet, gene.smallImageURL, completion);
+        ARSearchAttributesAddThumbnailData(attributeSet, gene.smallImageURL, completion);
+    });
 }
 
 + (void)searchAttributesWithFair:(Fair *)fair withProfile:(Profile *)fairProfile completion:(ARSearchAttributesCompletionBlock)completion;
 {
-    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
-    attributeSet.title = fair.name;
-    attributeSet.startDate = fair.startDate;
-    attributeSet.endDate = fair.endDate;
+    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+        attributeSet.title = fair.name;
+        attributeSet.startDate = fair.startDate;
+        attributeSet.endDate = fair.endDate;
 
-    if (fair.location) {
-        attributeSet.contentDescription = fair.location;
-    } else {
-        attributeSet.contentDescription = @"Art fair on Artsy";
-    }
+        if (fair.location) {
+            attributeSet.contentDescription = fair.location;
+        } else {
+            attributeSet.contentDescription = @"Art fair on Artsy";
+        }
 
-    if (fairProfile) {
-        ARSearchAttributesAddThumbnailData(attributeSet, [NSURL URLWithString:fairProfile.iconURL], completion);
-    } else {
-        completion(attributeSet);
-    }
+        if (fairProfile) {
+            ARSearchAttributesAddThumbnailData(attributeSet, [NSURL URLWithString:fairProfile.iconURL], completion);
+        } else {
+            completion(attributeSet);
+        }
+    });
 }
 
 + (void)searchAttributesWithShow:(PartnerShow *)show inFair:(Fair *)fair completion:(ARSearchAttributesCompletionBlock)completion;
 {
-    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
-    attributeSet.title = show.name;
+    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+        attributeSet.title = show.name;
 
-    NSString *location;
-    if (fair && fair.location) {
-        location = fair.location;
-    } else {
-        location = [NSString stringWithFormat:@"%@, %@ %@", show.location.city, show.location.state, show.location.country];
-    }
-    NSString *dates = [show.startDate ausstellungsdauerToDate:show.endDate];
-    attributeSet.contentDescription = [NSString stringWithFormat:@"%@\n%@\n%@", show.partner.name, location, dates];
-    attributeSet.startDate = show.startDate;
-    attributeSet.endDate = show.endDate;
+        NSString *location;
+        if (fair && fair.location) {
+            location = fair.location;
+        } else {
+            location = [NSString stringWithFormat:@"%@, %@ %@", show.location.city, show.location.state, show.location.country];
+        }
+        NSString *dates = [show.startDate ausstellungsdauerToDate:show.endDate];
+        attributeSet.contentDescription = [NSString stringWithFormat:@"%@\n%@\n%@", show.partner.name, location, dates];
+        attributeSet.startDate = show.startDate;
+        attributeSet.endDate = show.endDate;
 
-    ARSearchAttributesAddThumbnailData(attributeSet, show.smallPreviewImageURL, completion);
+        ARSearchAttributesAddThumbnailData(attributeSet, show.smallPreviewImageURL, completion);
+    });
 }
 
 #pragma mark - ARUserActivity
@@ -138,8 +153,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
         activity.eligibleForHandoff = YES;
 
         [self searchAttributesWithArtwork:artwork completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            activity.contentAttributeSet = attributeSet;
-            if (becomeCurrent) [activity becomeCurrent];
+            [activity setContentAttributeSet:attributeSet becomeCurrent:becomeCurrent];
         }];
     } else {
         if (becomeCurrent) [activity becomeCurrent];
@@ -161,8 +175,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
         activity.eligibleForHandoff = YES;
 
         [self searchAttributesWithArtist:artist completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            activity.contentAttributeSet = attributeSet;
-            if (becomeCurrent) [activity becomeCurrent];
+            [activity setContentAttributeSet:attributeSet becomeCurrent:becomeCurrent];
         }];
     } else {
         if (becomeCurrent) [activity becomeCurrent];
@@ -184,8 +197,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
         activity.eligibleForHandoff = YES;
 
         [self searchAttributesWithGene:gene completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            activity.contentAttributeSet = attributeSet;
-            if (becomeCurrent) [activity becomeCurrent];
+            [activity setContentAttributeSet:attributeSet becomeCurrent:becomeCurrent];
         }];
     } else {
         if (becomeCurrent) [activity becomeCurrent];
@@ -207,8 +219,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
         activity.eligibleForHandoff = YES;
 
         [self searchAttributesWithFair:fair withProfile:fairProfile completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            activity.contentAttributeSet = attributeSet;
-            if (becomeCurrent) [activity becomeCurrent];
+            [activity setContentAttributeSet:attributeSet becomeCurrent:becomeCurrent];
         }];
     } else {
         if (becomeCurrent) [activity becomeCurrent];
@@ -230,14 +241,24 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
         activity.eligibleForHandoff = YES;
 
         [self searchAttributesWithShow:show inFair:fair completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            activity.contentAttributeSet = attributeSet;
-            if (becomeCurrent) [activity becomeCurrent];
+            [activity setContentAttributeSet:attributeSet becomeCurrent:becomeCurrent];
         }];
     } else {
         if (becomeCurrent) [activity becomeCurrent];
     }
 
     return activity;
+}
+
+// Ensures that this work is only performed from the main thread.
+- (void)setContentAttributeSet:(CSSearchableItemAttributeSet *)attributeSet becomeCurrent:(BOOL)becomeCurrent;
+{
+    ar_dispatch_main_queue(^{
+        self.contentAttributeSet = attributeSet;
+        if (becomeCurrent) {
+            [self becomeCurrent];
+        }
+    });
 }
 
 + (BOOL)isSpotlightIndexingAvailable
