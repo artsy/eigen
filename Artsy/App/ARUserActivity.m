@@ -125,7 +125,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 
 #pragma mark - ARUserActivity
 
-+ (void)activityWithArtwork:(Artwork *)artwork completion:(ARUserActivityCompletionBlock)completion;
++ (instancetype)activityWithArtwork:(Artwork *)artwork becomeCurrent:(BOOL)becomeCurrent;
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeArtwork];
     activity.title = artwork.name;
@@ -139,14 +139,16 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 
         [self searchAttributesWithArtwork:artwork completion:^(CSSearchableItemAttributeSet *attributeSet) {
             activity.contentAttributeSet = attributeSet;
-            completion(activity);
+            if (becomeCurrent) [activity becomeCurrent];
         }];
     } else {
-        completion(activity);
+        if (becomeCurrent) [activity becomeCurrent];
     }
+
+    return activity;
 }
 
-+ (void)activityWithArtist:(Artist *)artist completion:(ARUserActivityCompletionBlock)completion;
++ (instancetype)activityWithArtist:(Artist *)artist becomeCurrent:(BOOL)becomeCurrent;
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeArtist];
     activity.title = artist.name;
@@ -160,14 +162,16 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 
         [self searchAttributesWithArtist:artist completion:^(CSSearchableItemAttributeSet *attributeSet) {
             activity.contentAttributeSet = attributeSet;
-            completion(activity);
+            if (becomeCurrent) [activity becomeCurrent];
         }];
     } else {
-        completion(activity);
+        if (becomeCurrent) [activity becomeCurrent];
     }
+
+    return activity;
 }
 
-+ (void)activityWithGene:(Gene *)gene completion:(ARUserActivityCompletionBlock)completion;
++ (instancetype)activityWithGene:(Gene *)gene becomeCurrent:(BOOL)becomeCurrent;
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeGene];
     activity.title = gene.name;
@@ -181,14 +185,16 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 
         [self searchAttributesWithGene:gene completion:^(CSSearchableItemAttributeSet *attributeSet) {
             activity.contentAttributeSet = attributeSet;
-            completion(activity);
+            if (becomeCurrent) [activity becomeCurrent];
         }];
     } else {
-        completion(activity);
+        if (becomeCurrent) [activity becomeCurrent];
     }
+
+    return activity;
 }
 
-+ (void)activityWithFair:(Fair *)fair withProfile:(Profile *)fairProfile completion:(ARUserActivityCompletionBlock)completion;
++ (instancetype)activityWithFair:(Fair *)fair withProfile:(Profile *)fairProfile becomeCurrent:(BOOL)becomeCurrent;
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeFair];
     activity.title = fair.name;
@@ -202,14 +208,16 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 
         [self searchAttributesWithFair:fair withProfile:fairProfile completion:^(CSSearchableItemAttributeSet *attributeSet) {
             activity.contentAttributeSet = attributeSet;
-            completion(activity);
+            if (becomeCurrent) [activity becomeCurrent];
         }];
     } else {
-        completion(activity);
+        if (becomeCurrent) [activity becomeCurrent];
     }
+
+    return activity;
 }
 
-+ (void)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair completion:(ARUserActivityCompletionBlock)completion;
++ (instancetype)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent;
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeShow];
     activity.title = show.name;
@@ -223,11 +231,13 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 
         [self searchAttributesWithShow:show inFair:fair completion:^(CSSearchableItemAttributeSet *attributeSet) {
             activity.contentAttributeSet = attributeSet;
-            completion(activity);
+            if (becomeCurrent) [activity becomeCurrent];
         }];
     } else {
-        completion(activity);
+        if (becomeCurrent) [activity becomeCurrent];
     }
+
+    return activity;
 }
 
 + (BOOL)isSpotlightIndexingAvailable
