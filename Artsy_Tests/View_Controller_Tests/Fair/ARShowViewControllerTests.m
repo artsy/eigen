@@ -282,4 +282,38 @@ describe(@"not at a fair", ^{
     });
 });
 
+it(@"creates an NSUserActivity", ^{
+    
+    PartnerShow *show = [PartnerShow modelWithJSON:@{
+        @"id": @"some-show",
+        @"name": @"Some Gallery at the Armory Show",
+        @"fair" : @{
+             @"id" : @"the-armory-show-2015",
+             @"name" : @"The Armory Show 2015",
+             },
+        @"partner": @{
+             @"id" : @"some-partner",
+             @"name" : @"Some Gallery",
+             @"default_profile_id" : @"some-gallery",
+             @"default_profile_public" : @YES
+             },
+        @"fair_location" : @{
+             @"display" : @"Armory Presents, Booth 666"
+             },
+        @"location" : [NSNull null],
+        @"start_at" : @"1976-01-30T15:00:00+00:00",
+        @"end_at" : @"1976-02-02T15:00:00+00:00"
+    }];
+    
+    ARStubbedShowNetworkModel *networkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show];
+    
+    ARShowViewController *showVC = [[ARShowViewController alloc] initWithShow:show fair:nil];
+    showVC.showNetworkModel = networkModel;
+    [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+    [showVC.view snapshotViewAfterScreenUpdates:YES];
+
+    expect(showVC.userActivity).willNot.beNil();
+    expect(showVC.userActivity.title).to.equal(@"Some Gallery at the Armory Show");
+});
+
 SpecEnd;

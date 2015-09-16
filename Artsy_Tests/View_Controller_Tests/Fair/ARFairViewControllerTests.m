@@ -228,4 +228,37 @@ context(@"with a map", ^{
     });
 });
 
+it(@"creates an NSUserActivity", ^{
+    
+    Fair *fair = [Fair modelWithJSON:@{
+        @"id" : @"a-fair-affair",
+        @"name" : @"The Fair Affair",
+        @"start_at" : @"1976-01-30T15:00:00+00:00",
+        @"end_at" : @"1976-02-02T15:00:00+00:00"
+    }];
+    
+    ARStubbedFairNetworkModel *networkModel = [[ARStubbedFairNetworkModel alloc] init];
+    networkModel.maps = @[[Map modelWithJSON:@{@"id": @"map-id"}]];
+    OrderedSet *set = [OrderedSet modelWithJSON: @{
+        @"description": @"",
+        @"display_on_mobile": @(1),
+        @"id": @"set-id",
+        @"internal_name": @"The Armory Show 2014 Primary Features",
+        @"item_type": @"FeaturedLink",
+        @"key": @"primary",
+        @"name": @"The Armory Show 2014 Primary Features",
+        @"published": @(1),
+    }];
+    
+    networkModel.orderedSets = @[set];
+    fair.networkModel = networkModel;
+    
+    ARFairViewController *vc = [[ARFairViewController alloc] initWithFair:fair];
+    vc.view.frame = [[UIScreen mainScreen] bounds];
+    
+    expect(vc.userActivity).notTo.beNil();
+    expect(vc.userActivity.title).to.equal(@"The Fair Affair");
+});
+
+
 SpecEnd;
