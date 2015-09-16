@@ -15,7 +15,6 @@ static NSString *const ARUserActivityTypeFair = @"net.artsy.artsy.fair";
 static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 
 
-typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *attributeSet);
 static dispatch_queue_t ARSearchAttributesQueue;
 
 static void
