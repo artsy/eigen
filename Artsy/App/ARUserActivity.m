@@ -37,6 +37,23 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
     }];
 }
 
+static NSString *
+ARUniqueIdentifierForEntity(id entity)
+{
+    NSString *baseURL = [[ARRouter baseDesktopWebURL] absoluteString];
+    if ([entity isKindOfClass:Fair.class]) {
+        return [NSString stringWithFormat:@"%@/%@", baseURL, [entity fairID]];
+    } else {
+        return [baseURL stringByAppendingString:[entity performSelector:@selector(publicArtsyPath)]];
+    }
+}
+
+static NSURL *
+ARWebpageURLForEntity(id entity)
+{
+    return [NSURL URLWithString:ARUniqueIdentifierForEntity(entity)];
+}
+
 
 @implementation ARUserActivity
 
@@ -51,6 +68,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 {
     ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
         CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+        attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(artwork);
         attributeSet.title = artwork.title;
 
         if (artwork.date.length > 0) {
@@ -67,6 +85,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 {
     ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
         CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+        attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(artist);
         attributeSet.title = artist.name;
 
         if (artist.blurb.length > 0) {
@@ -83,6 +102,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 {
     ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
         CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+        attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(gene);
         attributeSet.title = gene.name;
 
         if (gene.geneDescription.length > 0) {
@@ -99,6 +119,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 {
     ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
         CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+        attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(fair);
         attributeSet.title = fair.name;
         attributeSet.startDate = fair.startDate;
         attributeSet.endDate = fair.endDate;
@@ -121,6 +142,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 {
     ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
         CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+        attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(show);
         attributeSet.title = show.name;
 
         NSString *location;
@@ -144,7 +166,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeArtwork];
     activity.title = artwork.name;
-    activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [ARUserActivity landingURL], artwork.publicArtsyPath]];
+    activity.webpageURL = ARWebpageURLForEntity(artwork);
     activity.userInfo = @{@"id" : artwork.artworkID};
 
     if (ARUserActivity.isSpotlightIndexingAvailable) {
@@ -166,7 +188,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeArtist];
     activity.title = artist.name;
-    activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [ARUserActivity landingURL], artist.publicArtsyPath]];
+    activity.webpageURL = ARWebpageURLForEntity(artist);
     activity.userInfo = @{@"id" : artist.artistID};
 
     if (ARUserActivity.isSpotlightIndexingAvailable) {
@@ -188,7 +210,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeGene];
     activity.title = gene.name;
-    activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [ARUserActivity landingURL], gene.publicArtsyPath]];
+    activity.webpageURL = ARWebpageURLForEntity(gene);
     activity.userInfo = @{@"id" : gene.geneID};
 
     if (ARUserActivity.isSpotlightIndexingAvailable) {
@@ -210,7 +232,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeFair];
     activity.title = fair.name;
-    activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [ARUserActivity landingURL], fair.fairID]];
+    activity.webpageURL = ARWebpageURLForEntity(fair);
     activity.userInfo = @{@"id" : fair.fairID};
 
     if (ARUserActivity.isSpotlightIndexingAvailable) {
@@ -232,7 +254,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeShow];
     activity.title = show.name;
-    activity.webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [ARUserActivity landingURL], show.publicArtsyPath]];
+    activity.webpageURL = ARWebpageURLForEntity(show);
     activity.userInfo = @{@"id" : show.showID};
 
     if (ARUserActivity.isSpotlightIndexingAvailable) {
@@ -250,9 +272,15 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
     return activity;
 }
 
-// Ensures that this work is only performed from the main thread.
 - (void)setContentAttributeSet:(CSSearchableItemAttributeSet *)attributeSet becomeCurrent:(BOOL)becomeCurrent;
 {
+    // First modify the attributeSet on the dedicated queue.
+    // This needs to be done because of: https://forums.developer.apple.com/message/28220#28220
+    //
+    // TODO Test if this is still an issue in the iOS 9 GM and, if so, add a unit test.
+    attributeSet.relatedUniqueIdentifier = nil;
+
+    // Then ensure that this work is only performed from the main thread.
     ar_dispatch_main_queue(^{
         self.contentAttributeSet = attributeSet;
         if (becomeCurrent) {
@@ -264,11 +292,6 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
 + (BOOL)isSpotlightIndexingAvailable
 {
     return [NSUserActivity instancesRespondToSelector:@selector(isEligibleForSearch)];
-}
-
-+ (NSString *)landingURL
-{
-    return [[ARRouter baseWebURL] absoluteString];
 }
 
 NSString *stringByStrippingMarkdown(NSString *markdownString)
