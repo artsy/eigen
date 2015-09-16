@@ -206,7 +206,14 @@
     [self.view layoutIfNeeded];
     [self getNextGeneArtworks];
 
-    self.userActivity = [ARUserActivity activityWithGene:self.gene becomeCurrent:YES];
+    @_weakify(self);
+    [ARUserActivity activityWithGene:self.gene completion:^(ARUserActivity *activity) {
+        @_strongify(self);
+        if (self) {
+            self.userActivity = activity;
+            [activity becomeCurrent];
+        }
+    }];
 }
 
 - (void)shareGene:(UIButton *)sender
