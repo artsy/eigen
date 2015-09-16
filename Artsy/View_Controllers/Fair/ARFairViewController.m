@@ -143,8 +143,9 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
         return link.displayOnMobile;
     };
 
-    @_weakify(self)
-        [self.fair getFairMaps:^(NSArray *maps) {
+    @_weakify(self);
+
+    [self.fair getFairMaps:^(NSArray *maps) {
         [self.fair getOrderedSets:^(NSMutableDictionary *orderedSets) {
             for (OrderedSet *primarySet in orderedSets[@"primary"]) {
                 [primarySet getItems:^(NSArray *items) {
@@ -203,7 +204,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
             }
 
         }];
-        }];
+    }];
 
     if (self.fair.organizer) {
         self.fairPostsVC = [[ARFairPostsViewController alloc] initWithFair:[self fair]];
@@ -214,7 +215,13 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
     [self.stackView.stackView addWhiteSpaceWithHeight:@"20"];
     [self viewDidLayoutSubviews];
 
-    self.userActivity = [ARUserActivity activityWithFair:self.fair withProfile:self.fairProfile becomeCurrent:YES];
+    [ARUserActivity activityWithFair:self.fair withProfile:self.fairProfile completion:^(ARUserActivity *activity) {
+        @_strongify(self);
+        if (self) {
+            self.userActivity = activity;
+            [activity becomeCurrent];
+        }
+    }];
 }
 
 #pragma mark - Private

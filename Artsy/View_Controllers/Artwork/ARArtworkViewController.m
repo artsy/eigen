@@ -75,12 +75,21 @@
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
     }
 
-    @_weakify(self);
+    __weak __typeof__(self) weakSelf = self;
 
     void (^completion)(void) = ^{
-        @_strongify(self);
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
-        self.userActivity = [ARUserActivity activityWithArtwork:self.artwork becomeCurrent:YES];
+        [weakSelf ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
+
+        Artwork *artwork = weakSelf.artwork;
+        if (artwork) {
+            [ARUserActivity activityWithArtwork:artwork completion:^(ARUserActivity *activity) {
+                __typeof__(self) strongSelf = weakSelf;
+                if (strongSelf) {
+                    strongSelf.userActivity = activity;
+                    [activity becomeCurrent];
+                }
+            }];
+        }
     };
 
     [self.artwork onArtworkUpdate:^{
