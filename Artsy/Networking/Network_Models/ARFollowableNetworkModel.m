@@ -16,7 +16,7 @@
 
     _representedObject = representedObject;
 
-   @_weakify(self);
+    @_weakify(self);
     [self.representedObject getFollowState:^(ARHeartStatus status) {
         @_strongify(self);
         if (!self) { return; }

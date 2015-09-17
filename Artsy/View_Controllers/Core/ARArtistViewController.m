@@ -317,12 +317,15 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:ARPerformWorkAsynchronously];
 
-    [self.networkModel setFavoriteStatus:sender.isHearted success:^(id response) {
+    Artist *artist = self.artist;
+    [self.networkModel setFavoriteStatus:hearted
+                                 success:^(id _) {
+        [ARUserActivity addToSpotlightIndex:hearted entity:artist];
     }
-        failure:^(NSError *error) {
+                                 failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
         [sender setHearted:!hearted animated:ARPerformWorkAsynchronously];
-        }];
+    }];
 }
 
 #pragma mark - Switch Navigation
