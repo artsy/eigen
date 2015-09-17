@@ -42,8 +42,10 @@ static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 
         NSURL *thumbnailURL = [[artwork defaultImage] urlForThumbnailImage];
         // because we cannot call -becomeCurrent before the thumbnail is loaded, this method will call it:
-        [activity loadThumbnail:thumbnailURL andBecomeCurrent:becomeCurrent];
-    } else if (becomeCurrent) {
+        [activity loadThumbnail:thumbnailURL];
+    }
+
+    if (becomeCurrent) {
         [activity becomeCurrent];
     }
 
@@ -74,8 +76,10 @@ static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
         activity.contentAttributeSet = attributeSet;
 
         NSURL *thumbnailURL = [artist squareImageURL];
-        [activity loadThumbnail:thumbnailURL andBecomeCurrent:becomeCurrent];
-    } else if (becomeCurrent) {
+        [activity loadThumbnail:thumbnailURL];
+    }
+
+    if (becomeCurrent) {
         [activity becomeCurrent];
     }
 
@@ -106,8 +110,10 @@ static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
         activity.contentAttributeSet = attributeSet;
 
         NSURL *thumbnailURL = [gene smallImageURL];
-        [activity loadThumbnail:thumbnailURL andBecomeCurrent:becomeCurrent];
-    } else if (becomeCurrent) {
+        [activity loadThumbnail:thumbnailURL];
+    }
+
+    if (becomeCurrent) {
         [activity becomeCurrent];
     }
 
@@ -141,9 +147,11 @@ static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 
         if (fairProfile) {
             NSURL *thumbnailURL = [NSURL URLWithString:fairProfile.iconURL];
-            [activity loadThumbnail:thumbnailURL andBecomeCurrent:becomeCurrent];
+            [activity loadThumbnail:thumbnailURL];
         }
-    } else if (becomeCurrent) {
+    }
+
+    if (becomeCurrent) {
         [activity becomeCurrent];
     }
 
@@ -179,23 +187,23 @@ static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
         activity.contentAttributeSet = attributeSet;
 
         NSURL *thumbnailURL = [show smallPreviewImageURL];
-        [activity loadThumbnail:thumbnailURL andBecomeCurrent:becomeCurrent];
-    } else if (becomeCurrent) {
+        [activity loadThumbnail:thumbnailURL];
+    }
+
+    if (becomeCurrent) {
         [activity becomeCurrent];
     }
 
     return activity;
 }
 
-- (void)loadThumbnail:(NSURL *)thumbnailURL andBecomeCurrent:(BOOL)becomeCurrent
+- (void)loadThumbnail:(NSURL *)thumbnailURL
 {
     [[SDWebImageManager sharedManager] downloadImageWithURL:thumbnailURL options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
             ar_dispatch_main_queue(^{
                 if (image) {
                     self.contentAttributeSet.thumbnailData = UIImagePNGRepresentation(image);
-                }
-                if (becomeCurrent) {
-                    [self becomeCurrent];
+                    [self setNeedsSave:YES];
                 }
             });
     }];
