@@ -61,7 +61,68 @@ ARWebpageURLForEntity(id entity)
     ARSearchAttributesQueue = dispatch_queue_create("net.artsy.artsy.ARSearchAttributesQueue", DISPATCH_QUEUE_SERIAL);
 }
 
+#pragma mark - CSSearchableIndex
+
++ (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id)entity;
+{
+    addOrRemove ? [self addEntityToSpotlightIndex:entity] : [self removeEntityFromSpotlightIndex:entity];
+}
+
++ (void)addEntityToSpotlightIndex:(id)entity;
+{
+    [self searchAttributesWithEntity:entity completion:^(CSSearchableItemAttributeSet *attributeSet) {
+        NSString *domainIdentifier = nil;
+        if ([entity isKindOfClass:Artwork.class]) {
+            domainIdentifier = ARUserActivityTypeArtwork;
+        } else if ([entity isKindOfClass:Artist.class]) {
+            domainIdentifier = ARUserActivityTypeArtist;
+        } else if ([entity isKindOfClass:Gene.class]) {
+            domainIdentifier = ARUserActivityTypeGene;
+        }
+        CSSearchableItem *item = [[CSSearchableItem alloc] initWithUniqueIdentifier:attributeSet.relatedUniqueIdentifier
+                                                                   domainIdentifier:domainIdentifier
+                                                                       attributeSet:attributeSet];
+        [[CSSearchableIndex defaultSearchableIndex] indexSearchableItems:@[item] completionHandler:^(NSError *error) {
+            if (error) {
+                NSLog(@"Failed to index entity `%@': %@", entity, error);
+            } else {
+                NSLog(@"Indexed entity `%@'", entity);
+            }
+        }];
+    }];
+}
+
++ (void)removeEntityFromSpotlightIndex:(id)entity;
+{
+    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        NSString *identifier = ARUniqueIdentifierForEntity(entity);
+        [[CSSearchableIndex defaultSearchableIndex] deleteSearchableItemsWithIdentifiers:@[identifier]
+                                                                       completionHandler:^(NSError *error) {
+            if (error) {
+                NSLog(@"Failed to remove `%@' from index: %@", entity, error);
+            } else {
+                NSLog(@"Removed from index: %@", entity);
+            }
+        }];
+    });
+}
+
 #pragma mark - CSSearchableItemAttributeSet
+
+// Only the entities that don’t require a second model to build the search attributes are currently supported.
+// This excludes Fair and Show models.
++ (void)searchAttributesWithEntity:(id)entity completion:(ARSearchAttributesCompletionBlock)completion;
+{
+    if ([entity isKindOfClass:Artwork.class]) {
+        [self searchAttributesWithArtwork:entity completion:completion];
+    } else if ([entity isKindOfClass:Artist.class]) {
+        [self searchAttributesWithArtist:entity completion:completion];
+    } else if ([entity isKindOfClass:Gene.class]) {
+        [self searchAttributesWithGene:entity completion:completion];
+    } else {
+        NSAssert(NO, @"Unsupported entity type: %@", entity);
+    }
+}
 
 + (void)searchAttributesWithArtwork:(Artwork *)artwork completion:(ARSearchAttributesCompletionBlock)completion;
 {
