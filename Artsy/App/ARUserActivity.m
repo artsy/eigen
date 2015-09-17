@@ -79,14 +79,15 @@ ARWebpageURLForEntity(id entity)
         } else if ([entity isKindOfClass:Gene.class]) {
             domainIdentifier = ARUserActivityTypeGene;
         }
-        CSSearchableItem *item = [[CSSearchableItem alloc] initWithUniqueIdentifier:attributeSet.relatedUniqueIdentifier
+        NSString *identifier = attributeSet.relatedUniqueIdentifier;
+        CSSearchableItem *item = [[CSSearchableItem alloc] initWithUniqueIdentifier:identifier
                                                                    domainIdentifier:domainIdentifier
                                                                        attributeSet:attributeSet];
         [[CSSearchableIndex defaultSearchableIndex] indexSearchableItems:@[item] completionHandler:^(NSError *error) {
             if (error) {
-                NSLog(@"Failed to index entity `%@': %@", entity, error);
+                NSLog(@"Failed to index entity `%@': %@", identifier, error);
             } else {
-                NSLog(@"Indexed entity `%@'", entity);
+                NSLog(@"Indexed entity `%@'", identifier);
             }
         }];
     }];
@@ -99,9 +100,9 @@ ARWebpageURLForEntity(id entity)
         [[CSSearchableIndex defaultSearchableIndex] deleteSearchableItemsWithIdentifiers:@[identifier]
                                                                        completionHandler:^(NSError *error) {
             if (error) {
-                NSLog(@"Failed to remove `%@' from index: %@", entity, error);
+                NSLog(@"Failed to remove `%@' from index: %@", identifier, error);
             } else {
-                NSLog(@"Removed from index: %@", entity);
+                NSLog(@"Removed from index: %@", identifier);
             }
         }];
     });

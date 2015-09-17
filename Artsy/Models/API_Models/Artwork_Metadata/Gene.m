@@ -1,4 +1,4 @@
-
+#import "ARUserActivity.h"
 
 
 @interface Gene () {
@@ -90,6 +90,7 @@
     [ArtsyAPI setFavoriteStatus:state forGene:self success:^(id response) {
         @_strongify(self);
         self.followed = state;
+        [ARUserActivity addToSpotlightIndex:state entity:self];
         if (success) {
             success(response);
         }
