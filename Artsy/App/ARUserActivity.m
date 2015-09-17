@@ -137,6 +137,8 @@ static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
             attributeSet.contentDescription = @"Art fair on Artsy";
         }
 
+        activity.contentAttributeSet = attributeSet;
+
         if (fairProfile) {
             NSURL *thumbnailURL = [NSURL URLWithString:fairProfile.iconURL];
             [activity loadThumbnail:thumbnailURL andBecomeCurrent:becomeCurrent];
