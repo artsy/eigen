@@ -104,6 +104,23 @@ ARWebpageURLForEntity(id entity)
     // * Needs the __block modifier, otherwise the block would capture the initial `nil` object.
     // * Needs to be copied so it becomes a NSMallocBlock. NSStackBlock just works in debug, for some reason.
     __block dispatch_block_t fetchFavoritesBlock = nil;
+
+    UIApplication *application = [UIApplication sharedApplication];
+    __block UIBackgroundTaskIdentifier backgroundTask = UIBackgroundTaskInvalid;
+
+    dispatch_block_t finalizeBlock = ^{
+#ifdef DEBUG
+        if (application.applicationState == UIApplicationStateBackground) {
+            NSLog(@"Remaining allowed background time by task finalizing: %f", application.backgroundTimeRemaining);
+        }
+#endif
+        [application endBackgroundTask:backgroundTask];
+        backgroundTask = UIBackgroundTaskInvalid;
+        // Release work block.
+        fetchFavoritesBlock = nil;
+    };
+    backgroundTask = [application beginBackgroundTaskWithExpirationHandler:finalizeBlock];
+
     fetchFavoritesBlock = [^{
         ARFavoritesNetworkModel *networkModel = [networkModels firstObject];
         [networkModel getFavorites:^(NSArray *entities) {
@@ -121,17 +138,18 @@ ARWebpageURLForEntity(id entity)
                         [self removeEntityByIdentifierFromSpotlightIndex:identifier];
                     }
                 }
-                // Release block.
-                fetchFavoritesBlock = nil;
-            } else {
-                // Recursively call block.
+                finalizeBlock();
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+            } else if (fetchFavoritesBlock) {
+                // Recursively call block if it hasn’t been killed by the background task system yet.
                 ar_dispatch_on_queue(ARSearchAttributesQueue, fetchFavoritesBlock);
+#pragma clang diagnostic pop
             }
         }
                            failure:^(NSError *error) {
             ARErrorLog(@"Failed to fetch favorites, cancelling: %@", error);
-            // Release block.
-            fetchFavoritesBlock = nil;
+            finalizeBlock();
         }];
     } copy];
 
