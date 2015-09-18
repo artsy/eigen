@@ -4,29 +4,16 @@
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegate.h"
 
-@import TPDWeakProxy;
+static void *ARProgressContext = &ARProgressContext;
 
 
-@interface TSMiniWebBrowser (Private)
-@property (nonatomic, readonly, strong) UIWebView *webView;
-- (UIEdgeInsets)webViewContentInset;
-- (UIEdgeInsets)webViewScrollIndicatorsInsets;
-@end
-
-
-@interface ARInternalMobileWebViewController () <UIAlertViewDelegate, TSMiniWebBrowserDelegate>
+@interface ARInternalMobileWebViewController () <UIAlertViewDelegate, WKNavigationDelegate>
 @property (nonatomic, assign) BOOL loaded;
-@property (nonatomic, strong) NSTimer *contentLoadStateTimer;
 @property (nonatomic, strong) ARInternalShareValidator *shareValidator;
 @end
 
 
 @implementation ARInternalMobileWebViewController
-
-- (void)dealloc;
-{
-    [self removeContentLoadStateTimer];
-}
 
 - (instancetype)initWithURL:(NSURL *)url
 {
@@ -52,7 +39,7 @@
     }
 
     if (![urlString isEqualToString:url.absoluteString]) {
-        ARActionLog(@"Rewriting %@ as %@", urlString, url.absoluteString);
+        NSLog(@"Rewriting %@ as %@", urlString, url.absoluteString);
     }
 
     self = [super initWithURL:url];
@@ -60,78 +47,59 @@
         return nil;
     }
 
-    self.delegate = self;
-    self.showNavigationBar = NO;
-    self.mode = TSMiniWebBrowserModeNavigation;
-    self.showToolBar = NO;
-    self.backgroundColor = [UIColor whiteColor];
-    self.opaque = NO;
     _shareValidator = [[ARInternalShareValidator alloc] init];
 
-    ARActionLog(@"Initialized with URL %@", url);
+    ARActionLog(@"InternalWebVC init with URL %@", url);
     return self;
 }
 
-- (void)viewDidLoad;
+- (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewDidLoad];
-    // This is where TSMiniWebBrowser will initially load the URL, so show the initial progress indicator from here.
-    [self showLoading];
+    [super viewWillDisappear:animated];
+    [self.webView stopLoading];
 }
 
-- (void)removeContentLoadStateTimer;
+- (void)loadURL:(NSURL *)URL
 {
-    [self.contentLoadStateTimer invalidate];
-    self.contentLoadStateTimer = nil;
-}
-
-- (void)loadURL:(NSURL *)url
-{
-    [self removeContentLoadStateTimer];
     self.loaded = NO;
     [self showLoading];
-    [super loadURL:url];
+    [super loadURL:URL];
 }
 
-// A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
-- (void)userDidLoginOrSignUp
+- (void)viewDidLoad
 {
-    [self reload];
-}
+    [super viewDidLoad];
+    [self showLoading];
 
-- (NSURLRequest *)requestWithURL:(NSURL *)url
-{
-    return [ARRouter requestForURL:url];
+    // KVO on progress for when we can show the page
+    [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew & NSKeyValueObservingOptionOld context:ARProgressContext];
 }
-
-- (void)reload;
-{
-    [self.webView loadRequest:[self requestWithURL:self.currentURL]];
-}
-
-#pragma mark - UIViewController
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // As we initially show the loading, we don't want this to appear when you do a back or when a modal covers this view.
     if (!self.loaded) {
-        [self reload];
+        [self.webView loadRequest:[self requestWithURL:self.currentURL]];
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)dealloc
 {
-    [UIView animateWithDuration:ARAnimationDuration animations:^{
-         self.scrollView.contentInset = [self webViewContentInset];
-         self.scrollView.scrollIndicatorInsets = [self webViewScrollIndicatorsInsets];
-    }];
-
-    [super viewDidAppear:animated];
+    [self.webView removeObserver:self forKeyPath:@"estimatedProgress" context:ARProgressContext];
 }
 
-#pragma mark - Progress Indication
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == ARProgressContext && [keyPath isEqualToString:@"estimatedProgress"]) {
+        [self.webView evaluateJavaScript:@"document.readyState == \"interactive\"" completionHandler:^(id response, NSError *error) {
+            if ([response boolValue]) {
+                [self hideLoading];
+            }
+        }];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
 
 - (void)showLoading
 {
@@ -143,14 +111,73 @@
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
-- (void)checkWebViewLoadingState;
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
 {
-    NSString *readyState = [self.webView stringByEvaluatingJavaScriptFromString:@"document.readyState"];
-    // DOMContentLoaded, which is once the webview is finished parsing but still loading sub-resources.
-    if ([readyState isEqualToString:@"interactive"]) {
-        [self removeContentLoadStateTimer];
-        [self hideLoading];
+    /// If we do this initially there's a chance of seeing a black screen
+    /// instead of our default white
+    self.webView.scrollView.backgroundColor = [UIColor blackColor];
+
+    self.loaded = YES;
+}
+
+// Load a new internal web VC for each link we can do
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
+{
+    decisionHandler([self shouldLoadNavigationAction:navigationAction]);
+}
+
+- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
+{
+    NSURL *URL = navigationAction.request.URL;
+
+    // If we really have to hijack regardless do it first.
+    // This is to take into account AJAX requests which are not
+    // strictly classed as a WKNavigationTypeLinkActivated
+    // as the user may not have _directly_ loaded it
+
+    BOOL urlIsLoginOrSignUp = [URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"];
+    if ([ARRouter isInternalURL:URL] && (urlIsLoginOrSignUp)) {
+        if ([User isTrialUser]) {
+            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser) {
+                [self userDidSignUp];
+            }];
+        }
+        return WKNavigationActionPolicyCancel;
     }
+
+    NSLog(@"Martsy URL %@ - %@", URL, @(navigationAction.navigationType));
+
+    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
+        if ([self.shareValidator isSocialSharingURL:URL]) {
+            ARWindow *window = ARAppDelegate.sharedInstance.window;
+            CGPoint lastTouchPointInView = [window convertPoint:window.lastTouchPoint toView:self.view];
+            CGRect position = (CGRect){.origin = lastTouchPointInView, .size = CGSizeZero};
+            [self.shareValidator shareURL:URL inView:self.view frame:position];
+
+            return WKNavigationActionPolicyCancel;
+
+        } else {
+            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
+            if (viewController && ![self.navigationController.viewControllers containsObject:viewController]) {
+                [self.navigationController pushViewController:viewController animated:YES];
+            }
+            return WKNavigationActionPolicyCancel;
+        }
+    }
+    return WKNavigationActionPolicyAllow;
+}
+
+// A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
+
+- (void)userDidSignUp
+{
+    [self.webView loadRequest:[self requestWithURL:self.webView.URL]];
+}
+
+- (NSURLRequest *)requestWithURL:(NSURL *)URL
+{
+    return [ARRouter requestForURL:URL];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -158,67 +185,6 @@
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return nil;
-}
-
-#pragma mark - UIWebViewDelegate
-
-- (void)webViewDidStartLoad:(UIWebView *)webView;
-{
-    // Do not introduce a retain cycle (timers retain their targets) to ensure the VC will be released when expected.
-    // See https://github.com/artsy/eigen/issues/557.
-    TPDWeakProxy *weakSelf = [[TPDWeakProxy alloc] initWithObject:self];
-    self.contentLoadStateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                                  target:weakSelf
-                                                                selector:@selector(checkWebViewLoadingState)
-                                                                userInfo:nil
-                                                                 repeats:YES];
-    [super webViewDidStartLoad:webView];
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    [super webViewDidFinishLoad:webView];
-    [self removeContentLoadStateTimer];
-    [self hideLoading];
-    self.loaded = YES;
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error;
-{
-    [super webView:webView didFailLoadWithError:error];
-    [self removeContentLoadStateTimer];
-}
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    ARActionLog(@"Martsy URL %@", request.URL);
-
-    if ([self.shareValidator isSocialSharingURL:request.URL]) {
-        ARWindow *window = ARAppDelegate.sharedInstance.window;
-        CGPoint lastTouchPointInView = [window convertPoint:window.lastTouchPoint toView:self.view];
-
-        [self.shareValidator
-         shareURL:request.URL inView:self.view frame:(CGRect){.origin = lastTouchPointInView, .size = CGSizeZero}];
-        return NO;
-
-    } else if ([ARRouter isInternalURL:request.URL] && ([request.URL.path isEqual:@"/log_in"] || [request.URL.path isEqual:@"/sign_up"])) {
-        // hijack AJAX requests
-        if ([User isTrialUser]) {
-            [ARTrialController presentTrialWithContext:ARTrialContextNotTrial success:^(BOOL newUser) {
-                [self userDidLoginOrSignUp];
-            }];
-        }
-        return NO;
-
-    } else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:request.URL fair:self.fair];
-        if (viewController) {
-            [self.navigationController pushViewController:viewController animated:YES];
-            return NO;
-        }
-    }
-
-    return YES;
 }
 
 @end
