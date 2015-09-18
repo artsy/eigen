@@ -20,7 +20,10 @@ static NSString *const ARUserActivityTypeFair = @"net.artsy.artsy.fair";
 static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 
 
-static dispatch_queue_t ARSearchAttributesQueue;
+static dispatch_queue_t ARSearchAttributesQueue = nil;
+static NSMutableSet *ARIndexedEntities = nil;
+static NSString *ARIndexedEntitiesFile = nil;
+
 
 static void
 ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
@@ -64,6 +67,29 @@ ARWebpageURLForEntity(id entity)
 + (void)load;
 {
     ARSearchAttributesQueue = dispatch_queue_create("net.artsy.artsy.ARSearchAttributesQueue", DISPATCH_QUEUE_SERIAL);
+
+    // Load/Initialize ARIndexedEntities db.
+    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        NSString *appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
+                                                                       NSUserDomainMask,
+                                                                       YES) firstObject];
+        appSupportDir = [appSupportDir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+        NSError *error = nil;
+        if ([[NSFileManager defaultManager] createDirectoryAtPath:appSupportDir
+                                      withIntermediateDirectories:YES
+                                                       attributes:nil
+                                                            error:&error]) {
+            ARIndexedEntitiesFile = [appSupportDir stringByAppendingPathComponent:@"ARIndexedEntitiesFile"];
+            NSLog(@"Entities file: %@", ARIndexedEntitiesFile);
+            NSArray *entities = [NSArray arrayWithContentsOfFile:ARIndexedEntitiesFile];
+            ARIndexedEntities = entities ? [NSMutableSet setWithArray:entities] : [NSMutableSet new];
+            NSLog(@"Entities: %@", ARIndexedEntities);
+        } else {
+            NSLog(@"Failed to create app support directory: %@", error);
+            ARIndexedEntitiesFile = nil;
+            ARIndexedEntities = nil;
+        }
+    });
 }
 
 + (void)indexAllUsersFavorites;
@@ -131,7 +157,11 @@ ARWebpageURLForEntity(id entity)
             if (error) {
                 NSLog(@"Failed to index entity `%@': %@", identifier, error);
             } else {
-                NSLog(@"Indexed entity `%@'", identifier);
+                ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+                    [ARIndexedEntities addObject:identifier];
+                    [ARIndexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
+                    NSLog(@"Indexed entity `%@'", identifier);
+                });
             }
         }];
     }];
@@ -146,7 +176,11 @@ ARWebpageURLForEntity(id entity)
             if (error) {
                 NSLog(@"Failed to remove `%@' from index: %@", identifier, error);
             } else {
-                NSLog(@"Removed from index: %@", identifier);
+                ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+                    [ARIndexedEntities removeObject:identifier];
+                    [ARIndexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
+                    NSLog(@"Removed from index: %@", identifier);
+                });
             }
         }];
     });
