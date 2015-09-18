@@ -9,6 +9,7 @@
 #import "ARGeneArtworksNetworkModel.h"
 #import "ARArtworkSetViewController.h"
 #import "ORStackView+ArtsyViews.h"
+#import "ARUserActivity.h"
 
 
 @interface ARGeneViewController () <AREmbeddedModelsDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
@@ -204,6 +205,8 @@
     [self.view setNeedsLayout];
     [self.view layoutIfNeeded];
     [self getNextGeneArtworks];
+
+    self.userActivity = [ARUserActivity activityWithGene:self.gene becomeCurrent:YES];
 }
 
 - (void)shareGene:(UIButton *)sender

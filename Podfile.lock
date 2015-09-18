@@ -133,8 +133,10 @@ PODS:
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
-  - Specta (1.0.2)
+  - Specta (1.0.3)
+  - TPDWeakProxy (1.1.0)
   - TRVSDictionaryWithCaseInsensitivity (0.0.2)
+  - TSMiniWebBrowser@dblock (HEAD based on 1.1)
   - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
   - UIView+BooleanAnimations (1.0.2)
@@ -192,6 +194,8 @@ DEPENDENCIES:
   - ReactiveCocoa
   - SDWebImage
   - Specta
+  - TPDWeakProxy
+  - TSMiniWebBrowser@dblock (HEAD)
   - UIAlertView+Blocks
   - UICKeyChainStore
   - UIView+BooleanAnimations
@@ -253,7 +257,7 @@ SPEC CHECKSUMS:
   Adjust: 2c3d4db6047c6bba68d7c5ede63fbdc989eb57b7
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  AFOAuth1Client: 67c1e4718082d6b244b3f837452eb79f36a48003
+  AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   Analytics: 5edafd4c09d14c3002c754bfdde5535dc3b1320f
   ARAnalytics: 697797d915d0afadf27f79563b262557cbe3d378
@@ -276,7 +280,7 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 57e37106af12c9e264e473dcb75d7decdbb07fe4
   FBSnapshotTestCase: 3dc3899168747a0319c5278f5b3445c13a6532dd
   FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
-  FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
+  FODFormKit: 71e58c63b3ca279616671ab087fd721facf53a78
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   HockeySDK-Source: d620f330b23691017c141de6e25e5cdc8c67848c
   InterAppCommunication: 3239945b30e9dc5f91ef8be057fbcae4e3398e5c
@@ -297,12 +301,14 @@ SPEC CHECKSUMS:
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
-  ORStackView: 5df6b1b990b0648d8ef6f69f89361ea8648e8f64
+  ORStackView: 752d81ca2e2a0bd6c01a2ece30fd24923434be1e
   ReactiveCocoa: fbe689fe218063b7bbed41032912c9ca4fdbe172
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
-  Specta: 9cec98310dca411f7c7ffd6943552b501622abfe
+  Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
+  TPDWeakProxy: 2ee6754e401aad6a67cc1d59c9fedddae7815abf
   TRVSDictionaryWithCaseInsensitivity: 51d2ccf52c6d645d27b63467a98fa02c556e01b0
+  TSMiniWebBrowser@dblock: 6eb565b44cc2e5cd5eee7660ee5c21f8afae415c
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97

@@ -201,6 +201,17 @@ describe(@"at a closed auction", ^{
     });
 });
 
+it(@"creates an NSUserActivity", ^{
+    
+    vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+    [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+    [vc setHasFinishedScrolling];
+    [vc.view snapshotViewAfterScreenUpdates:YES];
+    
+    expect(vc.userActivity).notTo.beNil();
+    expect(vc.userActivity.title).to.equal(@"Some Title");
+});
+
 pending(@"at a fair");
 
 SpecEnd;

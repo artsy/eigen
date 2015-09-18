@@ -216,4 +216,26 @@ it(@"does not try to load more artworks if the artworks view is full", ^{
     [subjectMock verify];
 });
 
+it(@"creates an NSUserActivity", ^{
+    
+    ARArtistViewController *vc = [[ARArtistViewController alloc] initWithArtistID:@"some-artist"];
+    networkModel = [[ARStubbedArtistNetworkModel alloc] initWithArtist:vc.artist];
+    networkModel.artistForArtistInfo = [Artist modelWithJSON:@{
+       @"id": @"some-artist",
+       @"name": @"Some Artist",
+       @"years": @"1928-1987",
+       @"published_artworks_count": @(396),
+       @"forsale_artworks_count": @(285),
+       @"artworks_count": @(919)
+   }];
+    
+    networkModel.artworksForArtworksAtPage = @[];
+    vc.networkModel = networkModel;
+    [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
+    
+    expect(vc.userActivity).notTo.beNil();
+    expect(vc.userActivity.title).to.equal(@"Some Artist");
+});
+
+
 SpecEnd;
