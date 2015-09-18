@@ -97,6 +97,10 @@ ARWebpageURLForEntity(id entity)
     [networkModels addObject:[ARArtistFavoritesNetworkModel new]];
     [networkModels addObject:[ARGeneFavoritesNetworkModel new]];
 
+    // Remove entities from this list that are still favorites, by the end that leaves a list of entities that need to
+    // be purged from the local index.
+    NSMutableSet *previouslyIndexed = [ARIndexedEntities mutableCopy];
+
     // * Needs the __block modifier, otherwise the block would capture the initial `nil` object.
     // * Needs to be copied so it becomes a NSMallocBlock. NSStackBlock just works in debug, for some reason.
     __block dispatch_block_t fetchFavoritesBlock = nil;
@@ -105,12 +109,18 @@ ARWebpageURLForEntity(id entity)
         [networkModel getFavorites:^(NSArray *entities) {
             for (id entity in entities) {
                 [self addEntityToSpotlightIndex:entity];
+                [previouslyIndexed removeObject:ARUniqueIdentifierForEntity(entity)];
             }
             if (networkModel.allDownloaded) {
                 [networkModels removeObject:networkModel];
             }
             if (networkModels.count == 0) {
                 ARActionLog(@"Finished fetching all favorites.");
+                if (previouslyIndexed.count > 0) {
+                    for (NSString *identifier in previouslyIndexed.allObjects) {
+                        [self removeEntityByIdentifierFromSpotlightIndex:identifier];
+                    }
+                }
                 // Release block.
                 fetchFavoritesBlock = nil;
             } else {
@@ -169,6 +179,13 @@ ARWebpageURLForEntity(id entity)
 {
     ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
         NSString *identifier = ARUniqueIdentifierForEntity(entity);
+        [self removeEntityByIdentifierFromSpotlightIndex:identifier];
+    });
+}
+
++ (void)removeEntityByIdentifierFromSpotlightIndex:(NSString *)identifier;
+{
+    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
         [[CSSearchableIndex defaultSearchableIndex] deleteSearchableItemsWithIdentifiers:@[identifier]
                                                                        completionHandler:^(NSError *error) {
             if (error) {
