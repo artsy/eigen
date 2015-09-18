@@ -30,6 +30,7 @@
 #import "ARNetworkConstants.h"
 #import "ArtsyAPI+Private.h"
 #import "ARFileUtils.h"
+#import "ARUserActivity.h"
 
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
@@ -135,6 +136,9 @@ static ARAppDelegate *_sharedInstance = nil;
         // when the user does sign-in, this will be ran again and the device will be associated with the user account.
         if (!showOnboarding) {
             [self.remoteNotificationsDelegate registerForDeviceNotifications];
+            if ([User currentUser]) {
+                [ARUserActivity indexAllUsersFavorites];
+            };
         }
 
         NSDictionary *remoteNotification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -203,6 +207,7 @@ static ARAppDelegate *_sharedInstance = nil;
             [self.remoteNotificationsDelegate registerForDeviceNotifications];
             if ([User currentUser]) {
                 [self.remoteNotificationsDelegate fetchNotificationCounts];
+                [ARUserActivity indexAllUsersFavorites];
             }
         });
     }
