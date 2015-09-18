@@ -80,12 +80,10 @@ ARWebpageURLForEntity(id entity)
                                                        attributes:nil
                                                             error:&error]) {
             ARIndexedEntitiesFile = [appSupportDir stringByAppendingPathComponent:@"ARIndexedEntitiesFile"];
-            NSLog(@"Entities file: %@", ARIndexedEntitiesFile);
             NSArray *entities = [NSArray arrayWithContentsOfFile:ARIndexedEntitiesFile];
             ARIndexedEntities = entities ? [NSMutableSet setWithArray:entities] : [NSMutableSet new];
-            NSLog(@"Entities: %@", ARIndexedEntities);
         } else {
-            NSLog(@"Failed to create app support directory: %@", error);
+            ARErrorLog(@"Failed to create app support directory, will not store indexed entities: %@", error);
             ARIndexedEntitiesFile = nil;
             ARIndexedEntities = nil;
         }
@@ -112,7 +110,7 @@ ARWebpageURLForEntity(id entity)
                 [networkModels removeObject:networkModel];
             }
             if (networkModels.count == 0) {
-                NSLog(@"Finished fetching all favorites.");
+                ARActionLog(@"Finished fetching all favorites.");
                 // Release block.
                 fetchFavoritesBlock = nil;
             } else {
@@ -120,8 +118,8 @@ ARWebpageURLForEntity(id entity)
                 ar_dispatch_on_queue(ARSearchAttributesQueue, fetchFavoritesBlock);
             }
         }
-                                    failure:^(NSError *error) {
-            NSLog(@"Failed to fetch favorites, cancelling: %@", error);
+                           failure:^(NSError *error) {
+            ARErrorLog(@"Failed to fetch favorites, cancelling: %@", error);
             // Release block.
             fetchFavoritesBlock = nil;
         }];
@@ -155,12 +153,12 @@ ARWebpageURLForEntity(id entity)
                                                                        attributeSet:attributeSet];
         [[CSSearchableIndex defaultSearchableIndex] indexSearchableItems:@[item] completionHandler:^(NSError *error) {
             if (error) {
-                NSLog(@"Failed to index entity `%@': %@", identifier, error);
+                ARErrorLog(@"Failed to index entity `%@': %@", identifier, error);
             } else {
                 ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
                     [ARIndexedEntities addObject:identifier];
                     [ARIndexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
-                    NSLog(@"Indexed entity `%@'", identifier);
+                    ARActionLog(@"Indexed entity `%@'", identifier);
                 });
             }
         }];
@@ -174,12 +172,12 @@ ARWebpageURLForEntity(id entity)
         [[CSSearchableIndex defaultSearchableIndex] deleteSearchableItemsWithIdentifiers:@[identifier]
                                                                        completionHandler:^(NSError *error) {
             if (error) {
-                NSLog(@"Failed to remove `%@' from index: %@", identifier, error);
+                ARErrorLog(@"Failed to remove `%@' from index: %@", identifier, error);
             } else {
                 ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
                     [ARIndexedEntities removeObject:identifier];
                     [ARIndexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
-                    NSLog(@"Removed from index: %@", identifier);
+                    ARActionLog(@"Removed from index: %@", identifier);
                 });
             }
         }];
