@@ -1,4 +1,4 @@
-## Next
+## 2.3.0 (2015.09.18)
 
 * Add support for Universal Links on iOS 9. - alloy
 * Add support for Web-to-Native Handoff. - alloy
