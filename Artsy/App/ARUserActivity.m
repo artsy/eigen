@@ -166,31 +166,48 @@ ARWebpageURLForEntity(id entity)
 
 + (void)addEntityToSpotlightIndex:(id)entity;
 {
-    [self searchAttributesWithEntity:entity completion:^(CSSearchableItemAttributeSet *attributeSet) {
-        NSString *domainIdentifier = nil;
-        if ([entity isKindOfClass:Artwork.class]) {
-            domainIdentifier = ARUserActivityTypeArtwork;
-        } else if ([entity isKindOfClass:Artist.class]) {
-            domainIdentifier = ARUserActivityTypeArtist;
-        } else if ([entity isKindOfClass:Gene.class]) {
-            domainIdentifier = ARUserActivityTypeGene;
-        }
-        NSString *identifier = attributeSet.relatedUniqueIdentifier;
-        CSSearchableItem *item = [[CSSearchableItem alloc] initWithUniqueIdentifier:identifier
-                                                                   domainIdentifier:domainIdentifier
-                                                                       attributeSet:attributeSet];
-        [[CSSearchableIndex defaultSearchableIndex] indexSearchableItems:@[item] completionHandler:^(NSError *error) {
-            if (error) {
-                ARErrorLog(@"Failed to index entity `%@': %@", identifier, error);
-            } else {
-                ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
-                    [ARIndexedEntities addObject:identifier];
-                    [ARIndexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
-                    ARActionLog(@"Indexed entity `%@'", identifier);
-                });
+    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        [self searchAttributesWithEntity:entity completion:^(CSSearchableItemAttributeSet *attributeSet) {
+            NSString *domainIdentifier = nil;
+            if ([entity isKindOfClass:Artwork.class]) {
+                domainIdentifier = ARUserActivityTypeArtwork;
+            } else if ([entity isKindOfClass:Artist.class]) {
+                domainIdentifier = ARUserActivityTypeArtist;
+            } else if ([entity isKindOfClass:Gene.class]) {
+                domainIdentifier = ARUserActivityTypeGene;
             }
+            NSString *identifier = attributeSet.relatedUniqueIdentifier;
+            CSSearchableItem *item = [[CSSearchableItem alloc] initWithUniqueIdentifier:identifier
+                                                                       domainIdentifier:domainIdentifier
+                                                                           attributeSet:attributeSet];
+            [[CSSearchableIndex defaultSearchableIndex] indexSearchableItems:@[item] completionHandler:^(NSError *error) {
+                if (error) {
+                    ARErrorLog(@"Failed to index entity `%@': %@", identifier, error);
+                } else {
+                    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+                        [ARIndexedEntities addObject:identifier];
+                        [ARIndexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
+                        ARActionLog(@"Indexed entity `%@'", identifier);
+                    });
+                }
+            }];
         }];
-    }];
+    });
+}
+
+// Only the entities that don’t require a second model to build the search attributes are currently supported.
+// This excludes Fair and Show models.
++ (void)searchAttributesWithEntity:(id)entity completion:(ARSearchAttributesCompletionBlock)completion;
+{
+    if ([entity isKindOfClass:Artwork.class]) {
+        [self searchAttributesWithArtwork:entity includeIdentifier:YES completion:completion];
+    } else if ([entity isKindOfClass:Artist.class]) {
+        [self searchAttributesWithArtist:entity includeIdentifier: YES completion:completion];
+    } else if ([entity isKindOfClass:Gene.class]) {
+        [self searchAttributesWithGene:entity includeIdentifier:YES completion:completion];
+    } else {
+        NSAssert(NO, @"Unsupported entity type: %@", entity);
+    }
 }
 
 + (void)removeEntityFromSpotlightIndex:(id)entity;
@@ -221,118 +238,124 @@ ARWebpageURLForEntity(id entity)
 
 #pragma mark - CSSearchableItemAttributeSet
 
-// Only the entities that don’t require a second model to build the search attributes are currently supported.
-// This excludes Fair and Show models.
-+ (void)searchAttributesWithEntity:(id)entity completion:(ARSearchAttributesCompletionBlock)completion;
+//
+// Do NOT modify any of the returned CSSearchableItemAttributeSet objects on another queue than ARSearchAttributesQueue.
+//
+
++ (CSSearchableItemAttributeSet *)searchAttributesWithArtwork:(Artwork *)artwork
+                                            includeIdentifier:(BOOL)includeIdentifier
+                                                   completion:(ARSearchAttributesCompletionBlock)completion;
 {
-    if ([entity isKindOfClass:Artwork.class]) {
-        [self searchAttributesWithArtwork:entity completion:completion];
-    } else if ([entity isKindOfClass:Artist.class]) {
-        [self searchAttributesWithArtist:entity completion:completion];
-    } else if ([entity isKindOfClass:Gene.class]) {
-        [self searchAttributesWithGene:entity completion:completion];
+    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+    if (includeIdentifier) attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(artwork);
+    attributeSet.title = artwork.title;
+
+    if (artwork.date.length > 0) {
+        attributeSet.contentDescription = [NSString stringWithFormat:@"%@, %@\n%@", artwork.artist.name, artwork.date, artwork.medium];
     } else {
-        NSAssert(NO, @"Unsupported entity type: %@", entity);
+        attributeSet.contentDescription = [NSString stringWithFormat:@"%@\n%@", artwork.artist.name, artwork.medium];
     }
+
+    ARSearchAttributesAddThumbnailData(attributeSet, artwork.defaultImage.urlForThumbnailImage, completion);
+
+    return attributeSet;
 }
 
-+ (void)searchAttributesWithArtwork:(Artwork *)artwork completion:(ARSearchAttributesCompletionBlock)completion;
++ (CSSearchableItemAttributeSet *)searchAttributesWithArtist:(Artist *)artist
+                                           includeIdentifier:(BOOL)includeIdentifier
+                                                  completion:(ARSearchAttributesCompletionBlock)completion;
 {
-    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
-        CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
-        attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(artwork);
-        attributeSet.title = artwork.title;
+    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+    if (includeIdentifier) attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(artist);
+    attributeSet.title = artist.name;
 
-        if (artwork.date.length > 0) {
-            attributeSet.contentDescription = [NSString stringWithFormat:@"%@, %@\n%@", artwork.artist.name, artwork.date, artwork.medium];
-        } else {
-            attributeSet.contentDescription = [NSString stringWithFormat:@"%@\n%@", artwork.artist.name, artwork.medium];
-        }
+    if (artist.blurb.length > 0) {
+        attributeSet.contentDescription = stringByStrippingMarkdown(artist.blurb);
+    } else {
+        attributeSet.contentDescription = artist.birthday;
+    }
 
-        ARSearchAttributesAddThumbnailData(attributeSet, artwork.defaultImage.urlForThumbnailImage, completion);
-    });
+    ARSearchAttributesAddThumbnailData(attributeSet, artist.squareImageURL, completion);
+
+    return attributeSet;
 }
 
-+ (void)searchAttributesWithArtist:(Artist *)artist completion:(ARSearchAttributesCompletionBlock)completion;
++ (CSSearchableItemAttributeSet *)searchAttributesWithGene:(Gene *)gene
+                                         includeIdentifier:(BOOL)includeIdentifier
+                                                completion:(ARSearchAttributesCompletionBlock)completion;
 {
-    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
-        CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
-        attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(artist);
-        attributeSet.title = artist.name;
+    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+    if (includeIdentifier) attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(gene);
+    attributeSet.title = gene.name;
 
-        if (artist.blurb.length > 0) {
-            attributeSet.contentDescription = stringByStrippingMarkdown(artist.blurb);
-        } else {
-            attributeSet.contentDescription = artist.birthday;
-        }
+    if (gene.geneDescription.length > 0) {
+        attributeSet.contentDescription = stringByStrippingMarkdown(gene.geneDescription);
+    } else {
+        attributeSet.contentDescription = @"Category on Artsy";
+    }
 
-        ARSearchAttributesAddThumbnailData(attributeSet, artist.squareImageURL, completion);
-    });
+    ARSearchAttributesAddThumbnailData(attributeSet, gene.smallImageURL, completion);
+
+    return attributeSet;
 }
 
-+ (void)searchAttributesWithGene:(Gene *)gene completion:(ARSearchAttributesCompletionBlock)completion;
++ (CSSearchableItemAttributeSet *)searchAttributesWithFair:(Fair *)fair
+                                               withProfile:(Profile *)fairProfile
+                                         includeIdentifier:(BOOL)includeIdentifier
+                                                completion:(ARSearchAttributesCompletionBlock)completion;
 {
-    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
-        CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
-        attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(gene);
-        attributeSet.title = gene.name;
+    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+    if (includeIdentifier) attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(fair);
+    attributeSet.title = fair.name;
+    attributeSet.startDate = fair.startDate;
+    attributeSet.endDate = fair.endDate;
 
-        if (gene.geneDescription.length > 0) {
-            attributeSet.contentDescription = stringByStrippingMarkdown(gene.geneDescription);
-        } else {
-            attributeSet.contentDescription = @"Category on Artsy";
-        }
+    if (fair.location) {
+        attributeSet.contentDescription = fair.location;
+    } else {
+        attributeSet.contentDescription = @"Art fair on Artsy";
+    }
 
-        ARSearchAttributesAddThumbnailData(attributeSet, gene.smallImageURL, completion);
-    });
+    if (fairProfile) {
+        ARSearchAttributesAddThumbnailData(attributeSet, [NSURL URLWithString:fairProfile.iconURL], completion);
+    } else {
+        completion(attributeSet);
+    }
+
+    return attributeSet;
 }
 
-+ (void)searchAttributesWithFair:(Fair *)fair withProfile:(Profile *)fairProfile completion:(ARSearchAttributesCompletionBlock)completion;
++ (CSSearchableItemAttributeSet *)searchAttributesWithShow:(PartnerShow *)show
+                                                    inFair:(Fair *)fair
+                                         includeIdentifier:(BOOL)includeIdentifier
+                                                completion:(ARSearchAttributesCompletionBlock)completion;
 {
-    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
-        CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
-        attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(fair);
-        attributeSet.title = fair.name;
-        attributeSet.startDate = fair.startDate;
-        attributeSet.endDate = fair.endDate;
+    CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
+    if (includeIdentifier) attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(show);
+    attributeSet.title = show.name;
 
-        if (fair.location) {
-            attributeSet.contentDescription = fair.location;
-        } else {
-            attributeSet.contentDescription = @"Art fair on Artsy";
-        }
+    NSString *location;
+    if (fair && fair.location) {
+        location = fair.location;
+    } else {
+        location = [NSString stringWithFormat:@"%@, %@ %@", show.location.city, show.location.state, show.location.country];
+    }
+    NSString *dates = [show.startDate ausstellungsdauerToDate:show.endDate];
+    attributeSet.contentDescription = [NSString stringWithFormat:@"%@\n%@\n%@", show.partner.name, location, dates];
+    attributeSet.startDate = show.startDate;
+    attributeSet.endDate = show.endDate;
 
-        if (fairProfile) {
-            ARSearchAttributesAddThumbnailData(attributeSet, [NSURL URLWithString:fairProfile.iconURL], completion);
-        } else {
-            completion(attributeSet);
-        }
-    });
-}
+    ARSearchAttributesAddThumbnailData(attributeSet, show.smallPreviewImageURL, completion);
 
-+ (void)searchAttributesWithShow:(PartnerShow *)show inFair:(Fair *)fair completion:(ARSearchAttributesCompletionBlock)completion;
-{
-    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
-        CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
-        attributeSet.relatedUniqueIdentifier = ARUniqueIdentifierForEntity(show);
-        attributeSet.title = show.name;
-
-        NSString *location;
-        if (fair && fair.location) {
-            location = fair.location;
-        } else {
-            location = [NSString stringWithFormat:@"%@, %@ %@", show.location.city, show.location.state, show.location.country];
-        }
-        NSString *dates = [show.startDate ausstellungsdauerToDate:show.endDate];
-        attributeSet.contentDescription = [NSString stringWithFormat:@"%@\n%@\n%@", show.partner.name, location, dates];
-        attributeSet.startDate = show.startDate;
-        attributeSet.endDate = show.endDate;
-
-        ARSearchAttributesAddThumbnailData(attributeSet, show.smallPreviewImageURL, completion);
-    });
+    return attributeSet;
 }
 
 #pragma mark - ARUserActivity
+
+// Do NOT assign a relatedUniqueIdentifier to the attribute set when combining with a user activity.
+// This needs to be done because of: https://forums.developer.apple.com/message/28220#28220
+//
+// TODO Test if this is still an issue in the iOS 9 GM and, if so, add a unit test.
 
 + (instancetype)activityWithArtwork:(Artwork *)artwork becomeCurrent:(BOOL)becomeCurrent;
 {
@@ -346,11 +369,15 @@ ARWebpageURLForEntity(id entity)
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
 
-        [self searchAttributesWithArtwork:artwork completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            [activity setContentAttributeSet:attributeSet becomeCurrent:becomeCurrent];
+        activity.contentAttributeSet = [self searchAttributesWithArtwork:artwork
+                                                       includeIdentifier:NO
+                                                              completion:^(CSSearchableItemAttributeSet *attributeSet) {
+            [activity updateContentAttributeSet:attributeSet];
         }];
-    } else {
-        if (becomeCurrent) [activity becomeCurrent];
+    }
+
+    if (becomeCurrent) {
+        [activity becomeCurrent];
     }
 
     return activity;
@@ -368,11 +395,15 @@ ARWebpageURLForEntity(id entity)
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
 
-        [self searchAttributesWithArtist:artist completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            [activity setContentAttributeSet:attributeSet becomeCurrent:becomeCurrent];
+        activity.contentAttributeSet = [self searchAttributesWithArtist:artist
+                                                      includeIdentifier:NO
+                                                              completion:^(CSSearchableItemAttributeSet *attributeSet) {
+            [activity updateContentAttributeSet:attributeSet];
         }];
-    } else {
-        if (becomeCurrent) [activity becomeCurrent];
+    }
+
+    if (becomeCurrent) {
+        [activity becomeCurrent];
     }
 
     return activity;
@@ -390,11 +421,15 @@ ARWebpageURLForEntity(id entity)
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
 
-        [self searchAttributesWithGene:gene completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            [activity setContentAttributeSet:attributeSet becomeCurrent:becomeCurrent];
+        activity.contentAttributeSet = [self searchAttributesWithGene:gene
+                                                    includeIdentifier:NO
+                                                              completion:^(CSSearchableItemAttributeSet *attributeSet) {
+            [activity updateContentAttributeSet:attributeSet];
         }];
-    } else {
-        if (becomeCurrent) [activity becomeCurrent];
+    }
+
+    if (becomeCurrent) {
+        [activity becomeCurrent];
     }
 
     return activity;
@@ -412,11 +447,16 @@ ARWebpageURLForEntity(id entity)
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
 
-        [self searchAttributesWithFair:fair withProfile:fairProfile completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            [activity setContentAttributeSet:attributeSet becomeCurrent:becomeCurrent];
+        activity.contentAttributeSet = [self searchAttributesWithFair:fair
+                                                          withProfile:fairProfile
+                                                    includeIdentifier:NO
+                                                              completion:^(CSSearchableItemAttributeSet *attributeSet) {
+            [activity updateContentAttributeSet:attributeSet];
         }];
-    } else {
-        if (becomeCurrent) [activity becomeCurrent];
+    }
+
+    if (becomeCurrent) {
+        [activity becomeCurrent];
     }
 
     return activity;
@@ -434,30 +474,26 @@ ARWebpageURLForEntity(id entity)
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
 
-        [self searchAttributesWithShow:show inFair:fair completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            [activity setContentAttributeSet:attributeSet becomeCurrent:becomeCurrent];
+        activity.contentAttributeSet = [self searchAttributesWithShow:show
+                                                               inFair:fair
+                                                    includeIdentifier:NO
+                                                              completion:^(CSSearchableItemAttributeSet *attributeSet) {
+            [activity updateContentAttributeSet:attributeSet];
         }];
-    } else {
-        if (becomeCurrent) [activity becomeCurrent];
+    }
+
+    if (becomeCurrent) {
+        [activity becomeCurrent];
     }
 
     return activity;
 }
 
-- (void)setContentAttributeSet:(CSSearchableItemAttributeSet *)attributeSet becomeCurrent:(BOOL)becomeCurrent;
+- (void)updateContentAttributeSet:(CSSearchableItemAttributeSet *)attributeSet;
 {
-    // First modify the attributeSet on the dedicated queue.
-    // This needs to be done because of: https://forums.developer.apple.com/message/28220#28220
-    //
-    // TODO Test if this is still an issue in the iOS 9 GM and, if so, add a unit test.
-    attributeSet.relatedUniqueIdentifier = nil;
-
-    // Then ensure that this work is only performed from the main thread.
     ar_dispatch_main_queue(^{
         self.contentAttributeSet = attributeSet;
-        if (becomeCurrent) {
-            [self becomeCurrent];
-        }
+        self.needsSave = YES;
     });
 }
 

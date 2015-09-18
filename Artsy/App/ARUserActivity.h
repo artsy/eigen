@@ -14,16 +14,6 @@ typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *
 + (instancetype)activityWithFair:(Fair *)fair withProfile:(Profile *)fairProfile becomeCurrent:(BOOL)becomeCurrent;
 + (instancetype)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent;
 
-/// Creates new CSSearchableItemAttributeSet objects, including thumbnails.
-///
-/// This work is performed on a background queue, the caller is responsible for dispatching onto the main queue (or any
-/// other required queue) from the completion block.
-+ (void)searchAttributesWithArtwork:(Artwork *)artwork completion:(ARSearchAttributesCompletionBlock)completion;
-+ (void)searchAttributesWithArtist:(Artist *)artist completion:(ARSearchAttributesCompletionBlock)completion;
-+ (void)searchAttributesWithGene:(Gene *)gene completion:(ARSearchAttributesCompletionBlock)completion;
-+ (void)searchAttributesWithFair:(Fair *)fair withProfile:(Profile *)fairProfile completion:(ARSearchAttributesCompletionBlock)completion;
-+ (void)searchAttributesWithShow:(PartnerShow *)show inFair:(Fair *)fair completion:(ARSearchAttributesCompletionBlock)completion;
-
 /// Only the entities that don’t require a second model to build the search attributes are currently supported.
 /// This excludes Fair and Show models.
 + (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id)entity;
