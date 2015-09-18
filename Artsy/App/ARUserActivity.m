@@ -3,6 +3,11 @@
 #import "ARShareableObject.h"
 #import "SDWebImageManager.h"
 #import "NSDate+DateRange.h"
+
+#import "ARArtworkFavoritesNetworkModel.h"
+#import "ARGeneFavoritesNetworkModel.h"
+#import "ARArtistFavoritesNetworkModel.h"
+
 #import <MMMarkdown/MMMarkdown.h>
 @import CoreSpotlight;
 
@@ -59,6 +64,45 @@ ARWebpageURLForEntity(id entity)
 + (void)load;
 {
     ARSearchAttributesQueue = dispatch_queue_create("net.artsy.artsy.ARSearchAttributesQueue", DISPATCH_QUEUE_SERIAL);
+}
+
++ (void)indexAllUsersFavorites;
+{
+    NSMutableArray *networkModels = [NSMutableArray new];
+    [networkModels addObject:[ARArtworkFavoritesNetworkModel new]];
+    [networkModels addObject:[ARArtistFavoritesNetworkModel new]];
+    [networkModels addObject:[ARGeneFavoritesNetworkModel new]];
+
+    // * Needs the __block modifier, otherwise the block would capture the initial `nil` object.
+    // * Needs to be copied so it becomes a NSMallocBlock. NSStackBlock just works in debug, for some reason.
+    __block dispatch_block_t fetchFavoritesBlock = nil;
+    fetchFavoritesBlock = [^{
+        ARFavoritesNetworkModel *networkModel = [networkModels firstObject];
+        [networkModel getFavorites:^(NSArray *entities) {
+            for (id entity in entities) {
+                [self addEntityToSpotlightIndex:entity];
+            }
+            if (networkModel.allDownloaded) {
+                [networkModels removeObject:networkModel];
+            }
+            if (networkModels.count == 0) {
+                NSLog(@"Finished fetching all favorites.");
+                // Release block.
+                fetchFavoritesBlock = nil;
+            } else {
+                // Recursively call block.
+                ar_dispatch_on_queue(ARSearchAttributesQueue, fetchFavoritesBlock);
+            }
+        }
+                                    failure:^(NSError *error) {
+            NSLog(@"Failed to fetch favorites, cancelling: %@", error);
+            // Release block.
+            fetchFavoritesBlock = nil;
+        }];
+    } copy];
+
+    // Kick-off
+    ar_dispatch_on_queue(ARSearchAttributesQueue, fetchFavoritesBlock);
 }
 
 #pragma mark - CSSearchableIndex

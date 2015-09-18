@@ -29,4 +29,6 @@ typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *
 + (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id)entity;
 + (void)addEntityToSpotlightIndex:(id)entity;
 
++ (void)indexAllUsersFavorites;
+
 @end
