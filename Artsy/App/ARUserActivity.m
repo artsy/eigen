@@ -19,6 +19,7 @@ static NSString *const ARUserActivityTypeGene = @"net.artsy.artsy.gene";
 static NSString *const ARUserActivityTypeFair = @"net.artsy.artsy.fair";
 static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 
+static BOOL ARSpotlightAvailable = NO;
 
 static dispatch_queue_t ARSearchAttributesQueue = nil;
 static NSMutableSet *ARIndexedEntities = nil;
@@ -66,32 +67,40 @@ ARWebpageURLForEntity(id entity)
 
 + (void)load;
 {
-    ARSearchAttributesQueue = dispatch_queue_create("net.artsy.artsy.ARSearchAttributesQueue", DISPATCH_QUEUE_SERIAL);
+    ARSpotlightAvailable = NSClassFromString(@"CSSearchableIndex") != nil && [CSSearchableIndex isIndexingAvailable];
 
-    // Load/Initialize ARIndexedEntities db.
-    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
-        NSString *appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
-                                                                       NSUserDomainMask,
-                                                                       YES) firstObject];
-        appSupportDir = [appSupportDir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-        NSError *error = nil;
-        if ([[NSFileManager defaultManager] createDirectoryAtPath:appSupportDir
-                                      withIntermediateDirectories:YES
-                                                       attributes:nil
-                                                            error:&error]) {
-            ARIndexedEntitiesFile = [appSupportDir stringByAppendingPathComponent:@"ARIndexedEntitiesFile"];
-            NSArray *entities = [NSArray arrayWithContentsOfFile:ARIndexedEntitiesFile];
-            ARIndexedEntities = entities ? [NSMutableSet setWithArray:entities] : [NSMutableSet new];
-        } else {
-            ARErrorLog(@"Failed to create app support directory, will not store indexed entities: %@", error);
-            ARIndexedEntitiesFile = nil;
-            ARIndexedEntities = nil;
-        }
-    });
+    if (ARSpotlightAvailable) {
+        ARSearchAttributesQueue = dispatch_queue_create("net.artsy.artsy.ARSearchAttributesQueue", DISPATCH_QUEUE_SERIAL);
+
+        // Load/Initialize ARIndexedEntities db.
+        ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+            NSString *appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
+                                                                           NSUserDomainMask,
+                                                                           YES) firstObject];
+            appSupportDir = [appSupportDir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+            NSError *error = nil;
+            if ([[NSFileManager defaultManager] createDirectoryAtPath:appSupportDir
+                                          withIntermediateDirectories:YES
+                                                           attributes:nil
+                                                                error:&error]) {
+                ARIndexedEntitiesFile = [appSupportDir stringByAppendingPathComponent:@"ARIndexedEntitiesFile"];
+                NSArray *entities = [NSArray arrayWithContentsOfFile:ARIndexedEntitiesFile];
+                ARIndexedEntities = entities ? [NSMutableSet setWithArray:entities] : [NSMutableSet new];
+            } else {
+                ARErrorLog(@"Failed to create app support directory, will not store indexed entities: %@", error);
+                ARIndexedEntitiesFile = nil;
+                ARIndexedEntities = nil;
+            }
+        });
+    }
 }
 
 + (void)indexAllUsersFavorites;
 {
+    if (!ARSpotlightAvailable) {
+        return;
+    }
+
     NSMutableArray *networkModels = [NSMutableArray new];
     [networkModels addObject:[ARArtworkFavoritesNetworkModel new]];
     [networkModels addObject:[ARArtistFavoritesNetworkModel new]];
@@ -161,6 +170,9 @@ ARWebpageURLForEntity(id entity)
 
 + (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id)entity;
 {
+    if (!ARSpotlightAvailable) {
+        return;
+    }
     addOrRemove ? [self addEntityToSpotlightIndex:entity] : [self removeEntityFromSpotlightIndex:entity];
 }
 
@@ -364,7 +376,7 @@ ARWebpageURLForEntity(id entity)
     activity.webpageURL = ARWebpageURLForEntity(artwork);
     activity.userInfo = @{@"id" : artwork.artworkID};
 
-    if (ARUserActivity.isSpotlightIndexingAvailable) {
+    if (ARSpotlightAvailable) {
         activity.eligibleForPublicIndexing = YES;
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
@@ -390,7 +402,7 @@ ARWebpageURLForEntity(id entity)
     activity.webpageURL = ARWebpageURLForEntity(artist);
     activity.userInfo = @{@"id" : artist.artistID};
 
-    if (ARUserActivity.isSpotlightIndexingAvailable) {
+    if (ARSpotlightAvailable) {
         activity.eligibleForPublicIndexing = YES;
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
@@ -416,7 +428,7 @@ ARWebpageURLForEntity(id entity)
     activity.webpageURL = ARWebpageURLForEntity(gene);
     activity.userInfo = @{@"id" : gene.geneID};
 
-    if (ARUserActivity.isSpotlightIndexingAvailable) {
+    if (ARSpotlightAvailable) {
         activity.eligibleForPublicIndexing = YES;
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
@@ -442,7 +454,7 @@ ARWebpageURLForEntity(id entity)
     activity.webpageURL = ARWebpageURLForEntity(fair);
     activity.userInfo = @{@"id" : fair.fairID};
 
-    if (ARUserActivity.isSpotlightIndexingAvailable) {
+    if (ARSpotlightAvailable) {
         activity.eligibleForPublicIndexing = YES;
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
@@ -469,7 +481,7 @@ ARWebpageURLForEntity(id entity)
     activity.webpageURL = ARWebpageURLForEntity(show);
     activity.userInfo = @{@"id" : show.showID};
 
-    if (ARUserActivity.isSpotlightIndexingAvailable) {
+    if (ARSpotlightAvailable) {
         activity.eligibleForPublicIndexing = YES;
         activity.eligibleForSearch = YES;
         activity.eligibleForHandoff = YES;
@@ -495,11 +507,6 @@ ARWebpageURLForEntity(id entity)
         self.contentAttributeSet = attributeSet;
         self.needsSave = YES;
     });
-}
-
-+ (BOOL)isSpotlightIndexingAvailable
-{
-    return [NSUserActivity instancesRespondToSelector:@selector(isEligibleForSearch)];
 }
 
 NSString *stringByStrippingMarkdown(NSString *markdownString)
