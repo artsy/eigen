@@ -17,7 +17,6 @@ typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *
 /// Only the entities that don’t require a second model to build the search attributes are currently supported.
 /// This excludes Fair and Show models.
 + (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id)entity;
-+ (void)addEntityToSpotlightIndex:(id)entity;
 
 + (void)indexAllUsersFavorites;
 
