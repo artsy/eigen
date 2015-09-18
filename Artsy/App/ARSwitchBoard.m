@@ -72,6 +72,7 @@
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view on iPad.
 
+
     if ([UIDevice isPad]) {
         [self.routes addRoute:@"/:profile_id/artist/:id" handler:^BOOL(NSDictionary *parameters) {
             @_strongify(self)
@@ -82,6 +83,7 @@
             return YES;
         }];
     }
+
 
     [self.routes addRoute:@"/artwork/:id" handler:^BOOL(NSDictionary *parameters) {
         @_strongify(self)
@@ -129,6 +131,7 @@
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
     }];
+
 
     [self.routes addRoute:@"/" handler:^BOOL(NSDictionary *parameters) {
         [[ARTopMenuViewController sharedController] loadFeed];

@@ -4,12 +4,12 @@
 #import "ARSpinner.h"
 
 
-@interface TSMiniWebBrowser (Private)
-@property (nonatomic, readonly, strong) UIWebView *webView;
+@interface ARInternalMobileWebViewController ()
+- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 @end
 
 
-@interface ARPersonalizeWebViewController ()
+@interface ARPersonalizeWebViewController () <WKNavigationDelegate>
 @property (nonatomic, strong, readonly) ARSpinner *spinner;
 @end
 
@@ -19,6 +19,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     _spinner = [[ARSpinner alloc] init];
     [self.view addSubview:self.spinner];
     [self.spinner alignCenterWithView:self.webView];
@@ -29,41 +30,50 @@
     self.view.backgroundColor = [UIColor clearColor];
 }
 
-- (void)setupConstraints
+// Override ARExternalWebBrowserViewController's webview contstraints in viewWillLayoutSubviews
+
+- (void)viewWillLayoutSubviews
 {
     [self.webView constrainWidthToView:self.view predicate:@"-200"];
     [self.webView constrainHeightToView:self.view predicate:@"-200"];
-    [self.webView alignCenterWithView:self.view];
+    [self.webView alignCenterXWithView:self.view predicate:@"0"];
+    [self.webView alignCenterYWithView:self.view predicate:@"0"];
 }
 
-- (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    BOOL shouldLoad = [super webView:aWebView shouldStartLoadWithRequest:request navigationType:navigationType];
-    NSString *path = [request.URL lastPathComponent];
+    decisionHandler([self shouldLoadNavigationAction:navigationAction]);
+}
 
-    if (shouldLoad && [ARRouter isInternalURL:request.URL] && [path isEqualToString:ARPersonalizePath]) {
-        return YES;
+- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
+{
+    WKNavigationActionPolicy shouldLoad = [super shouldLoadNavigationAction:navigationAction];
+    NSURL *URL = navigationAction.request.URL;
+    NSString *path = [URL lastPathComponent];
 
-    } else if ([ARRouter isInternalURL:request.URL] && [path isEqualToString:@"/"]) {
+    if (shouldLoad == WKNavigationActionPolicyAllow && [ARRouter isInternalURL:URL] && [path isEqualToString:ARPersonalizePath]) {
+        return WKNavigationActionPolicyAllow;
+
+    } else if ([ARRouter isInternalURL:URL] && [path isEqualToString:@"/"]) {
         // Force onboarding is all push-state.
         // A new request to load the root page indicates that onboarding is complete.
 
-        [self exitOnboarding];
-        return NO;
+        [self.personalizeDelegate dismissOnboardingWithVoidAnimation:YES];
+        return WKNavigationActionPolicyCancel;
 
     } else {
-        return YES;
+        return WKNavigationActionPolicyAllow;
     }
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
     [self exitOnboarding];
 }
 
 - (void)exitOnboarding
 {
-    [self.personalizeDelegate dismissOnboardingWithVoidAnimation:YES];
+    [self.personalizeDelegate didSignUpAndLogin];
 }
 
 - (void)showLoading
