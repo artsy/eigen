@@ -20,4 +20,23 @@ typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *
 
 + (void)indexAllUsersFavorites;
 
++ (CSSearchableItemAttributeSet *)searchAttributesWithArtwork:(Artwork *)artwork
+                                            includeIdentifier:(BOOL)includeIdentifier
+                                                   completion:(ARSearchAttributesCompletionBlock)completion;
++ (CSSearchableItemAttributeSet *)searchAttributesWithArtist:(Artist *)artist
+                                           includeIdentifier:(BOOL)includeIdentifier
+                                                  completion:(ARSearchAttributesCompletionBlock)completion;
++ (CSSearchableItemAttributeSet *)searchAttributesWithGene:(Gene *)gene
+                                         includeIdentifier:(BOOL)includeIdentifier
+                                                completion:(ARSearchAttributesCompletionBlock)completion;
++ (CSSearchableItemAttributeSet *)searchAttributesWithFair:(Fair *)fair
+                                               withProfile:(Profile *)fairProfile
+                                         includeIdentifier:(BOOL)includeIdentifier
+                                                completion:(ARSearchAttributesCompletionBlock)completion;
++ (CSSearchableItemAttributeSet *)searchAttributesWithShow:(PartnerShow *)show
+                                                    inFair:(Fair *)fair
+                                         includeIdentifier:(BOOL)includeIdentifier
+                                                completion:(ARSearchAttributesCompletionBlock)completion;
+
+
 @end
