@@ -10,10 +10,39 @@ beforeAll(^{
     baseURL = [[ARRouter baseWebURL] absoluteString];
 });
 
+describe(@"With an Artwork", ^{
+    __block Artwork *artwork = nil;
+
+    beforeEach(^{
+        artwork = [Artwork modelWithJSON:@{
+            @"id": @"artwork_id",
+            @"title": @"Artwork Title",
+            @"artist":@{ @"id":@"artist_id" },
+            @"images":@[
+                  @{@"id": @"image_1_id",
+                    @"is_default": @NO,
+                    @"image_versions": @[@"small", @"square"]},
+                  @{@"id": @"image_2_id",
+                    @"is_default": @YES,
+                    @"image_versions": @[@"small", @"square"]}]
+        }];
+    });
+
+    it(@"creates an NSUserActivity", ^{
+        ARUserActivity *activity = [ARUserActivity activityWithArtwork:artwork becomeCurrent:NO];
+        NSURL *webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, artwork.publicArtsyPath]];
+
+        expect(activity.title).to.equal(@"Artwork Title");
+        expect(activity.webpageURL).to.equal(webpageURL);
+    });
+
+    it(@"creates a Spotlight attributes set", ^{
+        
+    });
+});
+
 it(@"creates an NSUserActivity", ^{
-    
-    it(@"for an artwork",^{
-    
+    it(@"for an artwork", ^{
         Artwork *model = [Artwork modelWithJSON:@{
             @"id": @"artwork_id",
             @"title": @"Artwork Title",
@@ -28,7 +57,7 @@ it(@"creates an NSUserActivity", ^{
         }];
         
         ARUserActivity *activity = [ARUserActivity activityWithArtwork:model becomeCurrent:NO];
-        NSURL* webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, model.publicArtsyPath]];
+        NSURL *webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, model.publicArtsyPath]];
     
         expect(activity.title).to.equal(@"Artwork Title");
         expect(activity.webpageURL).to.equal(webpageURL);
@@ -46,7 +75,7 @@ it(@"creates an NSUserActivity", ^{
         }];
         
         ARUserActivity *activity = [ARUserActivity activityWithArtist:model becomeCurrent:NO];
-        NSURL* webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, model.publicArtsyPath]];
+        NSURL *webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, model.publicArtsyPath]];
         
         expect(activity.title).to.equal(@"Artist Name");
         expect(activity.webpageURL).to.equal(webpageURL);
@@ -61,7 +90,7 @@ it(@"creates an NSUserActivity", ^{
         }];
         
         ARUserActivity *activity = [ARUserActivity activityWithGene:model becomeCurrent:NO];
-        NSURL* webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, model.publicArtsyPath]];
+        NSURL *webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, model.publicArtsyPath]];
         
         expect(activity.title).to.equal(@"Painting");
         expect(activity.webpageURL).to.equal(webpageURL);
@@ -77,7 +106,7 @@ it(@"creates an NSUserActivity", ^{
         }];
         
         ARUserActivity *activity = [ARUserActivity activityWithFair:model withProfile:nil becomeCurrent:NO];
-        NSURL* webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", baseURL, model.fairID]];
+        NSURL *webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", baseURL, model.fairID]];
         
         expect(activity.title).to.equal(@"The Fair Affair");
         expect(activity.webpageURL).to.equal(webpageURL);
@@ -112,10 +141,9 @@ it(@"creates an NSUserActivity", ^{
             @"end_at" : @"1976-02-02T15:00:00+00:00"
         }];
 
-        
         ARUserActivity *activity = [ARUserActivity activityWithShow:model inFair:nil becomeCurrent:NO];
-        NSURL* webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, model.publicArtsyPath]];
-        
+        NSURL *webpageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, model.publicArtsyPath]];
+
         expect(activity.title).to.equal(@"Some Show");
         expect(activity.webpageURL).to.equal(webpageURL);
     });
