@@ -157,7 +157,7 @@ describe(@"baseWebURL", ^{
     
     it(@"points to artsy web on ipad", ^{
         [ARTestContext stubDevice:ARDeviceTypePad];
-        expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://artsy.net"]);
+        expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://www.artsy.net"]);
         [ARTestContext stopStubbing];
     });
 });
