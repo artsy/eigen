@@ -29,45 +29,33 @@
 
     _borderWidth = borderWidth;
     _topBorder = [[UIView alloc] init];
-    [self.topBorder constrainHeight:NSStringWithFormat(@"%f", borderWidth)];
     self.topBorder.backgroundColor = [UIColor artsyLightGrey];
     [self addSubview:self.topBorder];
-    [self.topBorder alignCenterXWithView:self predicate:@"0"];
-    [self.topBorder constrainWidthToView:self predicate:@"0"];
-    [self alignTopEdgeWithView:self.topBorder predicate:@"0"];
 
     _primaryTitleLabel = [[UILabel alloc] init];
+    self.primaryTitleLabel.numberOfLines = 1;
     self.primaryTitleLabel.backgroundColor = [UIColor clearColor];
     self.primaryTitleLabel.font = [UIFont sansSerifFontWithSize:14];
     [self addSubview:self.primaryTitleLabel];
-    [self.primaryTitleLabel constrainTopSpaceToView:self.topBorder predicate:@"10"];
-    [self.primaryTitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
-    [self.primaryTitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
 
     _subtitleLabel = [[UILabel alloc] init];
+    self.subtitleLabel.numberOfLines = 1;
     self.subtitleLabel.backgroundColor = [UIColor clearColor];
     self.subtitleLabel.font = [UIFont serifFontWithSize:14];
     self.subtitleLabel.textColor = [UIColor blackColor];
     [self addSubview:self.subtitleLabel];
-    [self.subtitleLabel constrainTopSpaceToView:self.primaryTitleLabel predicate:@"0"];
-    [self.subtitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
-    [self.subtitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
 
     _arrowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MoreArrow"]];
     self.arrowView.backgroundColor = [UIColor clearColor];
     self.arrowView.contentMode = UIViewContentModeCenter;
     [self addSubview:self.arrowView];
-    [self.arrowView alignTrailingEdgeWithView:self predicate:@"0"];
-    [self.arrowView alignCenterYWithView:self predicate:@"0"];
 
     _bottomBorder = [[UIView alloc] init];
     [self.bottomBorder constrainHeight:NSStringWithFormat(@"%f", borderWidth)];
     self.bottomBorder.backgroundColor = [UIColor artsyLightGrey];
     [self addSubview:self.bottomBorder];
-    [self.bottomBorder constrainTopSpaceToView:self.subtitleLabel predicate:@"10"];
-    [self.bottomBorder alignCenterXWithView:self predicate:@"0"];
-    [self.bottomBorder constrainWidthToView:self predicate:@"0"];
-    [self alignBottomEdgeWithView:self.bottomBorder predicate:@"0"];
+
+    [self setNeedsUpdateConstraints];
 
     return self;
 }
@@ -100,6 +88,40 @@
     return self;
 }
 
+- (void)updateConstraints
+{
+    [super updateConstraints];
+
+    NSString *paddingHeight = @"12";
+    if (self.subtitle.length == 0) {
+        paddingHeight = @"20";
+    }
+
+    [self.topBorder constrainHeight:NSStringWithFormat(@"%f", self.borderWidth)];
+    [self.topBorder alignCenterXWithView:self predicate:@"0"];
+    [self.topBorder constrainWidthToView:self predicate:@"0"];
+    [self alignTopEdgeWithView:self.topBorder predicate:@"0"];
+
+    [self.primaryTitleLabel constrainTopSpaceToView:self.topBorder predicate:paddingHeight];
+    [self.primaryTitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
+    [self.primaryTitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
+
+
+    [self.subtitleLabel constrainTopSpaceToView:self.primaryTitleLabel predicate:@"0"];
+    [self.subtitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
+    [self.subtitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
+
+
+    [self.arrowView alignTrailingEdgeWithView:self predicate:@"0"];
+    [self.arrowView alignCenterYWithView:self predicate:@"0"];
+
+    [self.bottomBorder constrainHeight:NSStringWithFormat(@"%f", self.borderWidth)];
+    [self.bottomBorder constrainTopSpaceToView:self.subtitleLabel predicate:paddingHeight];
+    [self.bottomBorder alignCenterXWithView:self predicate:@"0"];
+    [self.bottomBorder constrainWidthToView:self predicate:@"0"];
+    [self alignBottomEdgeWithView:self.bottomBorder predicate:@"0"];
+}
+
 - (void)setTitle:(NSString *)title
 {
     _title = [title copy];
@@ -111,7 +133,12 @@
 {
     _subtitle = [subtitle copy];
 
-    [self.subtitleLabel setText:subtitle];
+    if (_subtitle) {
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.minimumLineHeight = 17;
+        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:_subtitle attributes:@{NSParagraphStyleAttributeName : paragraphStyle}];
+        self.subtitleLabel.attributedText = attrString;
+    }
 }
 
 #pragma mark - UIView
