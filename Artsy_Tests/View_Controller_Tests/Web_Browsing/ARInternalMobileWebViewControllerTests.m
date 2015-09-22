@@ -80,7 +80,7 @@ describe(@"initWithURL", ^{
 
         it(@"with a relative url on ipad", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"https://artsy.net/foo/bar");
+            expect([controller currentURL].absoluteString).to.equal(@"https://www.artsy.net/foo/bar");
         });
     });
 
