@@ -11,8 +11,6 @@
 #import <MMMarkdown/MMMarkdown.h>
 @import CoreSpotlight;
 
-NSString *stringByStrippingMarkdown(NSString *markdownString);
-
 static NSString *const ARUserActivityTypeArtwork = @"net.artsy.artsy.artwork";
 static NSString *const ARUserActivityTypeArtist = @"net.artsy.artsy.artist";
 static NSString *const ARUserActivityTypeGene = @"net.artsy.artsy.gene";
@@ -24,6 +22,22 @@ static BOOL ARSpotlightAvailable = NO;
 static dispatch_queue_t ARSearchAttributesQueue = nil;
 static NSMutableSet *ARIndexedEntities = nil;
 static NSString *ARIndexedEntitiesFile = nil;
+
+
+static NSString *
+ARStringByStrippingMarkdown(NSString *markdownString)
+{
+    NSError *error = nil;
+    NSString *renderedString = [MMMarkdown HTMLStringWithMarkdown:markdownString error:&error];
+    NSDictionary *importParams = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
+    NSData *stringData = [renderedString dataUsingEncoding:NSUnicodeStringEncoding];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:stringData options:importParams documentAttributes:NULL error:&error];
+    if (error) {
+        return nil;
+    }
+
+    return [attributedString.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
 
 
 static void
@@ -282,7 +296,7 @@ ARWebpageURLForEntity(id entity)
     attributeSet.title = artist.name;
 
     if (artist.blurb.length > 0) {
-        attributeSet.contentDescription = stringByStrippingMarkdown(artist.blurb);
+        attributeSet.contentDescription = ARStringByStrippingMarkdown(artist.blurb);
     } else {
         attributeSet.contentDescription = artist.birthday;
     }
@@ -301,7 +315,7 @@ ARWebpageURLForEntity(id entity)
     attributeSet.title = gene.name;
 
     if (gene.geneDescription.length > 0) {
-        attributeSet.contentDescription = stringByStrippingMarkdown(gene.geneDescription);
+        attributeSet.contentDescription = ARStringByStrippingMarkdown(gene.geneDescription);
     } else {
         attributeSet.contentDescription = @"Category on Artsy";
     }
@@ -507,20 +521,6 @@ ARWebpageURLForEntity(id entity)
         self.contentAttributeSet = attributeSet;
         self.needsSave = YES;
     });
-}
-
-NSString *stringByStrippingMarkdown(NSString *markdownString)
-{
-    NSError *error = nil;
-    NSString *renderedString = [MMMarkdown HTMLStringWithMarkdown:markdownString error:&error];
-    NSDictionary *importParams = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
-    NSData *stringData = [renderedString dataUsingEncoding:NSUnicodeStringEncoding];
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:stringData options:importParams documentAttributes:NULL error:&error];
-    if (error) {
-        return nil;
-    }
-
-    return attributedString.string;
 }
 
 @end
