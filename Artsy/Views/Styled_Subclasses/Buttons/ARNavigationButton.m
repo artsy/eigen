@@ -170,8 +170,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-    CGFloat labelMarginsHeight = 20;
-    CGFloat height = labelMarginsHeight + self.borderWidth + self.primaryTitleLabel.intrinsicContentSize.height + self.subtitleLabel.intrinsicContentSize.height;
+    CGFloat labelMarginsHeight = self.subtitle.length == 0 ? 40 : 24;
+    CGFloat subtitleHeight = self.subtitle.length == 0 ? 0 : self.subtitleLabel.intrinsicContentSize.height;
+    CGFloat height = labelMarginsHeight + self.borderWidth + self.primaryTitleLabel.intrinsicContentSize.height + subtitleHeight;
     height = MAX(height, self.arrowView.intrinsicContentSize.height);
     return CGSizeMake(280, height);
 }
@@ -187,6 +188,8 @@
         self.primaryTitleLabel.font = [UIFont serifFontWithSize:18];
         self.subtitleLabel.font = [UIFont serifFontWithSize:16];
     }
+
+    [self updateConstraints];
 
     return self;
 }

@@ -34,7 +34,7 @@ describe(@"ARNavigationButton", ^{
     describe(@"thick border", ^{
         beforeEach(^{
             _view = [[ARNavigationButton alloc] initWithFrame:frame withBorder:5];
-//            [_view setNeedsLayout];
+            [_view constrainWidth:@"280"];
         });
 
         it(@"title", ^{
@@ -52,6 +52,7 @@ describe(@"ARNavigationButton", ^{
     describe(@"no border", ^{
         beforeEach(^{
             _view = [[ARNavigationButton alloc] initWithFrame:frame withBorder:0];
+            [_view constrainWidth:@"280"];
         });
 
         it(@"title", ^{
