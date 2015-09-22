@@ -71,6 +71,7 @@ describe(@"ARNavigationButton", ^{
 describe(@"ARSerifNavigationButton", ^{
     beforeEach(^{
         _view = [[ARSerifNavigationButton alloc] initWithFrame:frame];
+        [_view constrainWidth:@"280"];
     });
 
     it(@"title", ^{
