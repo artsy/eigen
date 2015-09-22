@@ -63,7 +63,7 @@ static NSSet *artsyHosts = nil;
                     [[NSNotificationCenter defaultCenter] postNotificationName:ARNetworkAvailableNotification object:nil];
                     break;
             }
-        }];
+    }];
 
     // Ensure the keychain is empty incase you've uninstalled and cleared user data
     if (![[ARUserManager sharedManager] hasExistingAccount]) {
@@ -93,7 +93,8 @@ static NSSet *artsyHosts = nil;
 
     AFHTTPRequestSerializer *serializer = [[AFHTTPRequestSerializer alloc] init];
     NSString *userAgent = serializer.HTTPRequestHeaders[@"User-Agent"];
-    NSString *agentString = [NSString stringWithFormat:@"Artsy-Mobile/%@ Eigen/%@", version, build];
+    NSString *deviceName = [[UIDevice currentDevice] name];
+    NSString *agentString = [NSString stringWithFormat:@"Artsy-Mobile/%@ Eigen/%@ Device: %@", version, build, deviceName];
     userAgent = [userAgent stringByReplacingOccurrencesOfString:@"Artsy" withString:agentString];
 
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"UserAgent" : userAgent }];
