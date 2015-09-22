@@ -14,6 +14,8 @@ typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *
 + (instancetype)activityWithFair:(Fair *)fair withProfile:(Profile *)fairProfile becomeCurrent:(BOOL)becomeCurrent;
 + (instancetype)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent;
 
+/// All of these methods should only be used if Spotlight indexing is available.
+
 /// Only the entities that don’t require a second model to build the search attributes are currently supported.
 /// This excludes Fair and Show models.
 + (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id)entity;
