@@ -2,6 +2,7 @@
 
 
 @interface ARFavoritesNetworkModel ()
+@property (readwrite, nonatomic, assign) BOOL allDownloaded;
 @property (readwrite, nonatomic, assign) BOOL downloadLock;
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
 @end
@@ -36,7 +37,7 @@
         self.downloadLock = NO;
 
         if (items.count == 0) {
-            self->_allDownloaded = YES;
+            self.allDownloaded = YES;
         }
 
         if(success) success(items);
@@ -45,7 +46,7 @@
         @_strongify(self);
         if (!self) { return; }
 
-        self->_allDownloaded = YES;
+        self.allDownloaded = YES;
 
         self.downloadLock = NO;
 
