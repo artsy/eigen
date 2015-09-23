@@ -54,7 +54,6 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"StatusCell"];
     cell.textLabel.text = @[ @"Yes, I buy art", @"Interested in starting", @"Just looking and learning" ][indexPath.row];
-    [cell alignLeadingEdgeWithView:self predicate:@"0"];
     return cell;
 }
 

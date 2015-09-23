@@ -35,6 +35,11 @@
     return self;
 }
 
+- (UIEdgeInsets)layoutMargins
+{
+    return UIEdgeInsetsZero;
+}
+
 - (void)prepareForReuse
 {
     self.centerFixed = NO;
