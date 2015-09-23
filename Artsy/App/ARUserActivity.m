@@ -19,7 +19,7 @@ static NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 
 static BOOL ARSpotlightAvailable = NO;
 
-static dispatch_queue_t ARSearchAttributesQueue = nil;
+static dispatch_queue_t ARUserActivityQueue = nil;
 static NSMutableSet *ARIndexedEntities = nil;
 static NSString *ARIndexedEntitiesFile = nil;
 static CSSearchableIndex *ARSearchableIndex = nil;
@@ -54,7 +54,7 @@ ARSearchAttributesAddThumbnailData(CSSearchableItemAttributeSet *attributeSet,
                           options:0
                          progress:nil
                         completed:^(UIImage *image, NSError *_, SDImageCacheType __, BOOL ____, NSURL *_____) {
-        ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        ar_dispatch_on_queue(ARUserActivityQueue, ^{
             if (image) {
                 attributeSet.thumbnailData = UIImagePNGRepresentation(image);
             }
@@ -90,10 +90,10 @@ ARWebpageURLForEntity(id entity)
     if (ARSpotlightAvailable) {
         ARSearchableIndex = [CSSearchableIndex defaultSearchableIndex];
 
-        ARSearchAttributesQueue = dispatch_queue_create("net.artsy.artsy.ARSearchAttributesQueue", DISPATCH_QUEUE_SERIAL);
+        ARUserActivityQueue = dispatch_queue_create("net.artsy.artsy.ARUserActivityQueue", DISPATCH_QUEUE_SERIAL);
 
         // Load/Initialize ARIndexedEntities db.
-        ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        ar_dispatch_on_queue(ARUserActivityQueue, ^{
             NSString *appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
                                                                            NSUserDomainMask,
                                                                            YES) firstObject];
@@ -117,7 +117,7 @@ ARWebpageURLForEntity(id entity)
 
 + (void)disableIndexing;
 {
-    dispatch_sync(ARSearchAttributesQueue, ^{
+    dispatch_sync(ARUserActivityQueue, ^{
         ARSearchableIndex = nil;
         ARIndexedEntities = nil;
         ARIndexedEntitiesFile = nil;
@@ -164,7 +164,7 @@ ARWebpageURLForEntity(id entity)
     backgroundTask = [application beginBackgroundTaskWithExpirationHandler:finalizeBlock];
 
     // Kick-off
-    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+    ar_dispatch_on_queue(ARUserActivityQueue, ^{
         [self indexFavoritesPass:networkModels
                previouslyIndexed:previouslyIndexed
                    finalizeBlock:finalizeBlock];
@@ -177,7 +177,7 @@ ARWebpageURLForEntity(id entity)
 {
     ARFavoritesNetworkModel *networkModel = [networkModels firstObject];
     [networkModel getFavorites:^(NSArray *entities) {
-        ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        ar_dispatch_on_queue(ARUserActivityQueue, ^{
             for (id entity in entities) {
                 [self addEntityToSpotlightIndex:entity];
                 [previouslyIndexed removeObject:ARUniqueIdentifierForEntity(entity)];
@@ -195,7 +195,7 @@ ARWebpageURLForEntity(id entity)
                 finalizeBlock();
             } else {
                 // Recursively call
-                ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+                ar_dispatch_on_queue(ARUserActivityQueue, ^{
                     [self indexFavoritesPass:networkModels
                            previouslyIndexed:previouslyIndexed
                                finalizeBlock:finalizeBlock];
@@ -221,7 +221,7 @@ ARWebpageURLForEntity(id entity)
 
 + (void)addEntityToSpotlightIndex:(id)entity;
 {
-    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+    ar_dispatch_on_queue(ARUserActivityQueue, ^{
         [self searchAttributesWithEntity:entity completion:^(CSSearchableItemAttributeSet *attributeSet) {
             NSString *domainIdentifier = nil;
             if ([entity isKindOfClass:Artwork.class]) {
@@ -239,7 +239,7 @@ ARWebpageURLForEntity(id entity)
                 if (error) {
                     ARErrorLog(@"Failed to index entity `%@': %@", identifier, error);
                 } else {
-                    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+                    ar_dispatch_on_queue(ARUserActivityQueue, ^{
                         [self.indexedEntities addObject:identifier];
                         [self.indexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
                         ARActionLog(@"Indexed entity `%@'", identifier);
@@ -267,7 +267,7 @@ ARWebpageURLForEntity(id entity)
 
 + (void)removeEntityFromSpotlightIndex:(id)entity;
 {
-    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+    ar_dispatch_on_queue(ARUserActivityQueue, ^{
         NSString *identifier = ARUniqueIdentifierForEntity(entity);
         [self removeEntityByIdentifierFromSpotlightIndex:identifier];
     });
@@ -275,13 +275,13 @@ ARWebpageURLForEntity(id entity)
 
 + (void)removeEntityByIdentifierFromSpotlightIndex:(NSString *)identifier;
 {
-    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+    ar_dispatch_on_queue(ARUserActivityQueue, ^{
         [self.searchableIndex deleteSearchableItemsWithIdentifiers:@[identifier]
                                               completionHandler:^(NSError *error) {
             if (error) {
                 ARErrorLog(@"Failed to remove `%@' from index: %@", identifier, error);
             } else {
-                ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+                ar_dispatch_on_queue(ARUserActivityQueue, ^{
                     [self.indexedEntities removeObject:identifier];
                     [self.indexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
                     ARActionLog(@"Removed from index: %@", identifier);
@@ -294,7 +294,7 @@ ARWebpageURLForEntity(id entity)
 #pragma mark - CSSearchableItemAttributeSet
 
 //
-// Do NOT modify any of the returned CSSearchableItemAttributeSet objects on another queue than ARSearchAttributesQueue.
+// Do NOT modify any of the returned CSSearchableItemAttributeSet objects on another queue than ARUserActivityQueue.
 //
 
 + (CSSearchableItemAttributeSet *)searchAttributesWithArtwork:(Artwork *)artwork
