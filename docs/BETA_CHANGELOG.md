@@ -1,3 +1,7 @@
+## Next
+
+* Improved Spotlight support for favorites. - alloy
+
 ## 2.3.0 (2015.09.18)
 
 * Add support for Universal Links on iOS 9. - alloy
