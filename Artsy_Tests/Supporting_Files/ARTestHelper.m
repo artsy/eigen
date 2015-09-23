@@ -1,5 +1,5 @@
 #import "ARTestHelper.h"
-#import "ARUserActivity.h"
+#import "ARSpotlight.h"
 
 #import "ARRouter.h"
 #import "ARLogger.h"
@@ -25,7 +25,7 @@
     [ARRouter setup];
 
     // Disable this so that no actual changes are made to the index as side-effects of favoriting entities.
-    [ARUserActivity disableIndexing];
+    [ARSpotlight disableIndexing];
 
     /// Never run in tests
     [[iRate sharedInstance] setRatedThisVersion:YES];

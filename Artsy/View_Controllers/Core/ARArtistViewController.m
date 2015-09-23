@@ -13,6 +13,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARTextView.h"
 #import "ARArtistNetworkModel.h"
+#import "ARSpotlight.h"
 #import "ARUserActivity.h"
 
 static const NSInteger ARMinimumArtworksFor2Column = 5;
@@ -320,7 +321,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     Artist *artist = self.artist;
     [self.networkModel setFavoriteStatus:hearted
                                  success:^(id _) {
-        [ARUserActivity addToSpotlightIndex:hearted entity:artist];
+        [ARSpotlight addToSpotlightIndex:hearted entity:artist];
     }
                                  failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
