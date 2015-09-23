@@ -2,8 +2,24 @@
 #import "ARRouter.h"
 #import "Artwork.h"
 
+#import "ARArtworkFavoritesNetworkModel.h"
+#import "ARGeneFavoritesNetworkModel.h"
+#import "ARArtistFavoritesNetworkModel.h"
+#import "ARStubbedFavoritesNetworkModel.h"
+
 @import CoreSpotlight;
 @import SDWebImage;
+
+
+@interface ARUserActivity (Private)
++ (NSMutableSet *)indexedEntities;
++ (void)indexFavoritesPass:(NSMutableArray *)networkModels
+         previouslyIndexed:(NSMutableSet *)previouslyIndexed
+             finalizeBlock:(dispatch_block_t)finalizeBlock;
++ (void)addEntityToSpotlightIndex:(id)entity;
++ (void)removeEntityByIdentifierFromSpotlightIndex:(NSString *)identifier;
+@end
+
 
 static void
 StubThumbnailAtURL(id imageDownloaderMock, NSURL *URL)
@@ -17,6 +33,7 @@ StubThumbnailAtURL(id imageDownloaderMock, NSURL *URL)
         return YES;
     }]];
 }
+
 
 SpecBegin(ARUserActivity);
 
@@ -281,7 +298,7 @@ describe(@"With a Fair", ^{
         }];
         webpageURL = [NSURL URLWithString:@"https://www.artsy.net/a-fair-affair"];
         [[imageDownloaderMock reject] downloadImageWithURL:OCMOCK_ANY
-                                                   options:OCMOCK_ANY
+                                                   options:0
                                                   progress:OCMOCK_ANY
                                                  completed:OCMOCK_ANY];
     });
@@ -319,6 +336,11 @@ describe(@"With a Fair", ^{
                     }
                 }
             }];
+
+            // Because we reject from the beforeEach, this needs to be torn down and re-setup. Kinda ugly, but moving
+            // this out into its own `describe` block feels less consisten with the rest of the tests.
+            [imageDownloaderMock stopMocking];
+            imageDownloaderMock = [OCMockObject partialMockForObject:[SDWebImageManager sharedManager]];
             StubThumbnailAtURL(imageDownloaderMock, [NSURL URLWithString:fairProfile.iconURL]);
 
             attributeSet = [ARUserActivity searchAttributesWithFair:model
@@ -475,6 +497,135 @@ describe(@"With a Gene", ^{
                                                   includeIdentifier:NO
                                                          completion:^(CSSearchableItemAttributeSet *_) {}];
             expect(activity.contentAttributeSet.description).to.equal(attributeSet.description);
+        });
+    });
+});
+
+describe(@"Indexing favorites", ^{
+    __block id userActivityClassMock = nil;
+
+    beforeEach(^{
+        userActivityClassMock = [OCMockObject mockForClass:ARUserActivity.class];
+    });
+
+    afterEach(^{
+        [userActivityClassMock stopMocking];
+    });
+
+    describe(@"concerning Spotlight interfacing", ^{
+        __block id searchableIndexMock = nil;
+
+        beforeEach(^{
+            searchableIndexMock = [OCMockObject mockForClass:CSSearchableIndex.class];
+            [[[userActivityClassMock stub] andReturn:searchableIndexMock] searchableIndex];
+
+            model = [Gene modelWithJSON:@{
+                @"id": @"painting",
+                @"name": @"Painting",
+                @"image_url": @"https://localhost/image/version.jpg"
+            }];
+            webpageURL = [NSURL URLWithString:@"https://www.artsy.net/gene/painting"];
+            StubThumbnailAtURL(imageDownloaderMock, [model smallImageURL]);
+        });
+
+        afterEach(^{
+            [searchableIndexMock verifyWithDelay:5];
+            [searchableIndexMock stopMocking];
+        });
+
+        it(@"adds a favorite to the index", ^{
+            attributeSet = [ARUserActivity searchAttributesWithGene:model
+                                                  includeIdentifier:YES
+                                                         completion:^(CSSearchableItemAttributeSet *_) {}];
+
+            [[searchableIndexMock expect] indexSearchableItems:[OCMArg checkWithBlock:^BOOL(NSArray *items) {
+                CSSearchableItem *item = items[0];
+                // The actual attribute set has some hidden keys based on the information assigned to the CSSearchableItem,
+                // these are located at the start so instead we check if the expected string comes after the hidden ones.
+                NSString *expectedDescription = [attributeSet.description substringFromIndex:1];
+                return items.count == 1
+                        && [item.uniqueIdentifier isEqualToString:webpageURL.absoluteString]
+                            && [item.domainIdentifier isEqualToString:@"net.artsy.artsy.gene"]
+                                && [item.attributeSet.description rangeOfString:expectedDescription].location != NSNotFound;
+            }]
+                                          completionHandler:OCMOCK_ANY];
+
+            [ARUserActivity addToSpotlightIndex:YES entity:model];
+        });
+
+        it(@"removes a favorite from the index", ^{
+            [[searchableIndexMock expect] deleteSearchableItemsWithIdentifiers:@[webpageURL.absoluteString]
+                                                             completionHandler:OCMOCK_ANY];
+
+            [ARUserActivity addToSpotlightIndex:NO entity:model];
+        });
+    });
+
+    describe(@"from the backend API", ^{
+        __block NSMutableArray *networkModels = nil;
+
+        beforeEach(^{
+            networkModels = [NSMutableArray new];
+            [networkModels addObject:[[ARStubbedFavoritesNetworkModel alloc] initWithFavoritesStack:@[
+                @[[Artwork modelWithJSON:@{ @"id": @"artwork-1-1" }], [Artwork modelWithJSON:@{ @"id": @"artwork-1-2" }]],
+                @[[Artwork modelWithJSON:@{ @"id": @"artwork-2-1" }], [Artwork modelWithJSON:@{ @"id": @"artwork-2-2" }]],
+                @[[Artwork modelWithJSON:@{ @"id": @"artwork-3-1" }], [Artwork modelWithJSON:@{ @"id": @"artwork-3-2" }]],
+            ]]];
+            [networkModels addObject:[[ARStubbedFavoritesNetworkModel alloc] initWithFavoritesStack:@[
+                @[[Artist modelWithJSON:@{ @"id": @"artist-1-1" }], [Artist modelWithJSON:@{ @"id": @"artist-1-2" }]],
+                @[[Artist modelWithJSON:@{ @"id": @"artist-2-1" }], [Artist modelWithJSON:@{ @"id": @"artist-2-2" }]],
+                @[[Artist modelWithJSON:@{ @"id": @"artist-3-1" }], [Artist modelWithJSON:@{ @"id": @"artist-3-2" }]],
+            ]]];
+            [networkModels addObject:[[ARStubbedFavoritesNetworkModel alloc] initWithFavoritesStack:@[
+                @[[Gene modelWithJSON:@{ @"id": @"gene-1-1" }], [Gene modelWithJSON:@{ @"id": @"gene-1-2" }]],
+                @[[Gene modelWithJSON:@{ @"id": @"gene-2-1" }], [Gene modelWithJSON:@{ @"id": @"gene-2-2" }]],
+                @[[Gene modelWithJSON:@{ @"id": @"gene-3-1" }], [Gene modelWithJSON:@{ @"id": @"gene-3-2" }]],
+            ]]];
+        });
+
+        afterEach(^{
+            [userActivityClassMock verifyWithDelay:5];
+        });
+
+        it(@"kicks-off the indexer", ^{
+            id previouslyIndexedMock = [OCMockObject mockForClass:NSMutableSet.class];
+            [[[userActivityClassMock stub] andReturn:previouslyIndexedMock] indexedEntities];
+            [[[previouslyIndexedMock stub] andReturn:previouslyIndexedMock] mutableCopy];
+
+            [[userActivityClassMock expect] indexFavoritesPass:[OCMArg checkWithBlock:^BOOL(NSArray *networkModels) {
+                return [networkModels[0] isKindOfClass:ARArtworkFavoritesNetworkModel.class]
+                        && [networkModels[1] isKindOfClass:ARArtistFavoritesNetworkModel.class]
+                            && [networkModels[2] isKindOfClass:ARGeneFavoritesNetworkModel.class];
+            }]
+                                             previouslyIndexed:previouslyIndexedMock
+                                                 finalizeBlock:OCMOCK_ANY];
+
+            [ARUserActivity indexAllUsersFavorites];
+        });
+
+        it(@"indexes all of the user’s favorites", ^{
+            for (ARStubbedFavoritesNetworkModel *networkModel in networkModels) {
+                for (NSArray *page in networkModel.favoritesStack) {
+                    for (id entity in page) {
+                        [[userActivityClassMock expect] addEntityToSpotlightIndex:entity];
+                    }
+                }
+            }
+
+            [ARUserActivity indexFavoritesPass:networkModels previouslyIndexed:nil finalizeBlock:^{}];
+        });
+
+        it(@"removes favorites from the index that are no longer present in the remote list of favorites", ^{
+            NSMutableSet *previouslyIndexed = [NSMutableSet setWithArray:@[
+                @"https://www.artsy.net/artwork/remove-artwork",
+                @"https://www.artsy.net/artist/remove-artist",
+                @"https://www.artsy.net/gene/remove-gene",
+            ]];
+            for (NSString *identifier in previouslyIndexed.allObjects) {
+                [[userActivityClassMock expect] removeEntityByIdentifierFromSpotlightIndex:identifier];
+            }
+
+            [ARUserActivity indexFavoritesPass:networkModels previouslyIndexed:previouslyIndexed finalizeBlock:^{}];
         });
     });
 });
