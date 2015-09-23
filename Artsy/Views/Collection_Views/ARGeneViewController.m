@@ -204,7 +204,8 @@
     [self.view layoutIfNeeded];
     [self getNextGeneArtworks];
 
-    self.userActivity = [ARUserActivity activityWithGene:self.gene becomeCurrent:YES];
+    self.userActivity = [ARUserActivity activityWithGene:self.gene];
+    [self.userActivity becomeCurrent];
 }
 
 - (void)shareGene:(UIButton *)sender

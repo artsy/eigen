@@ -18,7 +18,7 @@ NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 //
 // TODO Test if this is still an issue in the iOS 9 GM and, if so, add a unit test.
 
-+ (instancetype)activityWithArtwork:(Artwork *)artwork becomeCurrent:(BOOL)becomeCurrent;
++ (instancetype)activityWithArtwork:(Artwork *)artwork;
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeArtwork];
     activity.title = artwork.name;
@@ -37,14 +37,10 @@ NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
         }];
     }
 
-    if (becomeCurrent) {
-        [activity becomeCurrent];
-    }
-
     return activity;
 }
 
-+ (instancetype)activityWithArtist:(Artist *)artist becomeCurrent:(BOOL)becomeCurrent;
++ (instancetype)activityWithArtist:(Artist *)artist;
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeArtist];
     activity.title = artist.name;
@@ -63,14 +59,10 @@ NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
         }];
     }
 
-    if (becomeCurrent) {
-        [activity becomeCurrent];
-    }
-
     return activity;
 }
 
-+ (instancetype)activityWithGene:(Gene *)gene becomeCurrent:(BOOL)becomeCurrent;
++ (instancetype)activityWithGene:(Gene *)gene;
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeGene];
     activity.title = gene.name;
@@ -89,14 +81,10 @@ NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
         }];
     }
 
-    if (becomeCurrent) {
-        [activity becomeCurrent];
-    }
-
     return activity;
 }
 
-+ (instancetype)activityWithFair:(Fair *)fair withProfile:(Profile *)fairProfile becomeCurrent:(BOOL)becomeCurrent;
++ (instancetype)activityWithFair:(Fair *)fair withProfile:(Profile *)fairProfile;
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeFair];
     activity.title = fair.name;
@@ -116,14 +104,10 @@ NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
         }];
     }
 
-    if (becomeCurrent) {
-        [activity becomeCurrent];
-    }
-
     return activity;
 }
 
-+ (instancetype)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent;
++ (instancetype)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair;
 {
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:ARUserActivityTypeShow];
     activity.title = show.name;
@@ -141,10 +125,6 @@ NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
                                                                   completion:^(CSSearchableItemAttributeSet *attributeSet) {
             [activity updateContentAttributeSet:attributeSet];
         }];
-    }
-
-    if (becomeCurrent) {
-        [activity becomeCurrent];
     }
 
     return activity;

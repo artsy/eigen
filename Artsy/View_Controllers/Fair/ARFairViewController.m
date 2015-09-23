@@ -215,7 +215,8 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
     [self.stackView.stackView addWhiteSpaceWithHeight:@"20"];
     [self viewDidLayoutSubviews];
 
-    self.userActivity = [ARUserActivity activityWithFair:self.fair withProfile:self.fairProfile becomeCurrent:YES];
+    self.userActivity = [ARUserActivity activityWithFair:self.fair withProfile:self.fairProfile];
+    [self.userActivity becomeCurrent];
 }
 
 #pragma mark - Private
