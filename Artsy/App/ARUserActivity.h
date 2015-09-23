@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 @class CSSearchableItemAttributeSet;
+@class CSSearchableIndex;
 
 typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *attributeSet);
 
@@ -15,6 +16,11 @@ typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *
 + (instancetype)activityWithShow:(PartnerShow *)show inFair:(Fair *)fair becomeCurrent:(BOOL)becomeCurrent;
 
 /// All of these methods should only be used if Spotlight indexing is available.
+
+/// This normally refers to the default index, but can be set to `nil` during testing, so no entities are indexed as
+/// side-effects of testing favoriting, by calling `disableIndexing`.
++ (CSSearchableIndex *)searchableIndex;
++ (void)disableIndexing;
 
 /// Only the entities that don’t require a second model to build the search attributes are currently supported.
 /// This excludes Fair and Show models.

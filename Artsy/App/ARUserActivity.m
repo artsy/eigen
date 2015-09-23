@@ -22,6 +22,7 @@ static BOOL ARSpotlightAvailable = NO;
 static dispatch_queue_t ARSearchAttributesQueue = nil;
 static NSMutableSet *ARIndexedEntities = nil;
 static NSString *ARIndexedEntitiesFile = nil;
+static CSSearchableIndex *ARSearchableIndex = nil;
 
 
 static NSString *
@@ -31,7 +32,10 @@ ARStringByStrippingMarkdown(NSString *markdownString)
     NSString *renderedString = [MMMarkdown HTMLStringWithMarkdown:markdownString error:&error];
     NSDictionary *importParams = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
     NSData *stringData = [renderedString dataUsingEncoding:NSUnicodeStringEncoding];
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:stringData options:importParams documentAttributes:NULL error:&error];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:stringData
+                                                                            options:importParams
+                                                                 documentAttributes:NULL
+                                                                              error:&error];
     if (error) {
         return nil;
     }
@@ -84,6 +88,8 @@ ARWebpageURLForEntity(id entity)
     ARSpotlightAvailable = NSClassFromString(@"CSSearchableIndex") != nil && [CSSearchableIndex isIndexingAvailable];
 
     if (ARSpotlightAvailable) {
+        ARSearchableIndex = [CSSearchableIndex defaultSearchableIndex];
+
         ARSearchAttributesQueue = dispatch_queue_create("net.artsy.artsy.ARSearchAttributesQueue", DISPATCH_QUEUE_SERIAL);
 
         // Load/Initialize ARIndexedEntities db.
@@ -109,6 +115,25 @@ ARWebpageURLForEntity(id entity)
     }
 }
 
++ (void)disableIndexing;
+{
+    dispatch_sync(ARSearchAttributesQueue, ^{
+        ARSearchableIndex = nil;
+        ARIndexedEntities = nil;
+        ARIndexedEntitiesFile = nil;
+    });
+}
+
++ (CSSearchableIndex *)searchableIndex;
+{
+    return ARSearchableIndex;
+}
+
++ (NSMutableSet *)indexedEntities;
+{
+    return ARIndexedEntities;
+}
+
 + (void)indexAllUsersFavorites;
 {
     if (!ARSpotlightAvailable) {
@@ -122,11 +147,7 @@ ARWebpageURLForEntity(id entity)
 
     // Remove entities from this list that are still favorites, by the end that leaves a list of entities that need to
     // be purged from the local index.
-    NSMutableSet *previouslyIndexed = [ARIndexedEntities mutableCopy];
-
-    // * Needs the __block modifier, otherwise the block would capture the initial `nil` object.
-    // * Needs to be copied so it becomes a NSMallocBlock. NSStackBlock just works in debug, for some reason.
-    __block dispatch_block_t fetchFavoritesBlock = nil;
+    NSMutableSet *previouslyIndexed = [self.indexedEntities mutableCopy];
 
     UIApplication *application = [UIApplication sharedApplication];
     __block UIBackgroundTaskIdentifier backgroundTask = UIBackgroundTaskInvalid;
@@ -139,14 +160,24 @@ ARWebpageURLForEntity(id entity)
 #endif
         [application endBackgroundTask:backgroundTask];
         backgroundTask = UIBackgroundTaskInvalid;
-        // Release work block.
-        fetchFavoritesBlock = nil;
     };
     backgroundTask = [application beginBackgroundTaskWithExpirationHandler:finalizeBlock];
 
-    fetchFavoritesBlock = [^{
-        ARFavoritesNetworkModel *networkModel = [networkModels firstObject];
-        [networkModel getFavorites:^(NSArray *entities) {
+    // Kick-off
+    ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+        [self indexFavoritesPass:networkModels
+               previouslyIndexed:previouslyIndexed
+                   finalizeBlock:finalizeBlock];
+    });
+}
+
++ (void)indexFavoritesPass:(NSMutableArray *)networkModels
+         previouslyIndexed:(NSMutableSet *)previouslyIndexed
+             finalizeBlock:(dispatch_block_t)finalizeBlock;
+{
+    ARFavoritesNetworkModel *networkModel = [networkModels firstObject];
+    [networkModel getFavorites:^(NSArray *entities) {
+        ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
             for (id entity in entities) {
                 [self addEntityToSpotlightIndex:entity];
                 [previouslyIndexed removeObject:ARUniqueIdentifierForEntity(entity)];
@@ -162,22 +193,20 @@ ARWebpageURLForEntity(id entity)
                     }
                 }
                 finalizeBlock();
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            } else if (fetchFavoritesBlock) {
-                // Recursively call block if it hasn’t been killed by the background task system yet.
-                ar_dispatch_on_queue(ARSearchAttributesQueue, fetchFavoritesBlock);
-#pragma clang diagnostic pop
+            } else {
+                // Recursively call
+                ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
+                    [self indexFavoritesPass:networkModels
+                           previouslyIndexed:previouslyIndexed
+                               finalizeBlock:finalizeBlock];
+                });
             }
-        }
-                           failure:^(NSError *error) {
-            ARErrorLog(@"Failed to fetch favorites, cancelling: %@", error);
-            finalizeBlock();
-        }];
-    } copy];
-
-    // Kick-off
-    ar_dispatch_on_queue(ARSearchAttributesQueue, fetchFavoritesBlock);
+        });
+    }
+                       failure:^(NSError *error) {
+        ARErrorLog(@"Failed to fetch favorites, cancelling: %@", error);
+        finalizeBlock();
+    }];
 }
 
 #pragma mark - CSSearchableIndex
@@ -206,13 +235,13 @@ ARWebpageURLForEntity(id entity)
             CSSearchableItem *item = [[CSSearchableItem alloc] initWithUniqueIdentifier:identifier
                                                                        domainIdentifier:domainIdentifier
                                                                            attributeSet:attributeSet];
-            [[CSSearchableIndex defaultSearchableIndex] indexSearchableItems:@[item] completionHandler:^(NSError *error) {
+            [self.searchableIndex indexSearchableItems:@[item] completionHandler:^(NSError *error) {
                 if (error) {
                     ARErrorLog(@"Failed to index entity `%@': %@", identifier, error);
                 } else {
                     ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
-                        [ARIndexedEntities addObject:identifier];
-                        [ARIndexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
+                        [self.indexedEntities addObject:identifier];
+                        [self.indexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
                         ARActionLog(@"Indexed entity `%@'", identifier);
                     });
                 }
@@ -247,14 +276,14 @@ ARWebpageURLForEntity(id entity)
 + (void)removeEntityByIdentifierFromSpotlightIndex:(NSString *)identifier;
 {
     ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
-        [[CSSearchableIndex defaultSearchableIndex] deleteSearchableItemsWithIdentifiers:@[identifier]
-                                                                       completionHandler:^(NSError *error) {
+        [self.searchableIndex deleteSearchableItemsWithIdentifiers:@[identifier]
+                                              completionHandler:^(NSError *error) {
             if (error) {
                 ARErrorLog(@"Failed to remove `%@' from index: %@", identifier, error);
             } else {
                 ar_dispatch_on_queue(ARSearchAttributesQueue, ^{
-                    [ARIndexedEntities removeObject:identifier];
-                    [ARIndexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
+                    [self.indexedEntities removeObject:identifier];
+                    [self.indexedEntities.allObjects writeToFile:ARIndexedEntitiesFile atomically:YES];
                     ARActionLog(@"Removed from index: %@", identifier);
                 });
             }
