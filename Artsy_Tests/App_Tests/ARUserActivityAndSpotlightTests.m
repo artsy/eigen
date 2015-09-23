@@ -1,9 +1,6 @@
 #import "ARUserActivity.h"
 #import "ARSpotlight.h"
 
-// #import "ARRouter.h"
-// #import "Artwork.h"
-
 #import "ARArtworkFavoritesNetworkModel.h"
 #import "ARGeneFavoritesNetworkModel.h"
 #import "ARArtistFavoritesNetworkModel.h"
@@ -105,7 +102,7 @@ describe(@"With an Artwork", ^{
 
     describe(@"concerning NSUserActivity generation", ^{
         beforeEach(^{
-            activity = [ARUserActivity activityWithArtwork:model becomeCurrent:NO];
+            activity = [ARUserActivity activityWithArtwork:model];
         });
 
         it(@"includes the URL", ^{
@@ -185,7 +182,7 @@ describe(@"With an Artist", ^{
 
     describe(@"concerning NSUserActivity generation", ^{
         beforeEach(^{
-            activity = [ARUserActivity activityWithArtist:model becomeCurrent:NO];
+            activity = [ARUserActivity activityWithArtist:model];
         });
 
         it(@"includes the URL", ^{
@@ -260,7 +257,7 @@ describe(@"With a Gene", ^{
 
     describe(@"concerning NSUserActivity generation", ^{
         beforeEach(^{
-            activity = [ARUserActivity activityWithGene:model becomeCurrent:NO];
+            activity = [ARUserActivity activityWithGene:model];
         });
 
         it(@"includes the URL", ^{
@@ -369,7 +366,7 @@ describe(@"With a Fair", ^{
 
     describe(@"concerning NSUserActivity generation", ^{
         beforeEach(^{
-            activity = [ARUserActivity activityWithFair:model withProfile:nil becomeCurrent:NO];
+            activity = [ARUserActivity activityWithFair:model withProfile:nil];
         });
 
         it(@"includes the URL", ^{
@@ -472,7 +469,7 @@ describe(@"With a Gene", ^{
 
     describe(@"concerning NSUserActivity generation", ^{
         beforeEach(^{
-            activity = [ARUserActivity activityWithShow:model inFair:nil becomeCurrent:NO];
+            activity = [ARUserActivity activityWithShow:model inFair:nil];
         });
 
         it(@"includes the URL", ^{
