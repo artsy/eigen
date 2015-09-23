@@ -1,5 +1,5 @@
 #import "ARTestHelper.h"
-#import "ARUserActivity.h"
+#import "ARSpotlight.h"
 
 
 @implementation ARTestHelper
@@ -18,7 +18,7 @@
     ARPerformWorkAsynchronously = NO;
 
     // Disable this so that no actual changes are made to the index as side-effects of favoriting entities.
-    [ARUserActivity disableIndexing];
+    [ARSpotlight disableIndexing];
 }
 
 @end

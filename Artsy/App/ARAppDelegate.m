@@ -30,7 +30,7 @@
 #import "ARNetworkConstants.h"
 #import "ArtsyAPI+Private.h"
 #import "ARFileUtils.h"
-#import "ARUserActivity.h"
+#import "ARSpotlight.h"
 
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
@@ -148,7 +148,7 @@ static ARAppDelegate *_sharedInstance = nil;
         if (!showOnboarding) {
             [self.remoteNotificationsDelegate registerForDeviceNotifications];
             if ([User currentUser]) {
-                [ARUserActivity indexAllUsersFavorites];
+                [ARSpotlight indexAllUsersFavorites];
             };
         }
 
@@ -218,7 +218,7 @@ static ARAppDelegate *_sharedInstance = nil;
             [self.remoteNotificationsDelegate registerForDeviceNotifications];
             if ([User currentUser]) {
                 [self.remoteNotificationsDelegate fetchNotificationCounts];
-                [ARUserActivity indexAllUsersFavorites];
+                [ARSpotlight indexAllUsersFavorites];
             }
         });
     }
