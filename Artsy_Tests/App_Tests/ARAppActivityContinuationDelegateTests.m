@@ -23,9 +23,9 @@ it(@"accepts Safari Handoff", ^{
     expect([delegate application:app willContinueUserActivityWithType:NSUserActivityTypeBrowsingWeb]).to.beTruthy();
 });
 
-//it(@"accepts Spotlight Handoff", ^{
-//    expect([delegate application:app willContinueUserActivityWithType:CSSearchableItemActionType]).to.beTruthy();
-//});
+it(@"accepts Spotlight Handoff", ^{
+   expect([delegate application:app willContinueUserActivityWithType:CSSearchableItemActionType]).to.beTruthy();
+});
 
 it(@"accepts any user activity with the Artsy prefix", ^{
     [@[@"artwork", @"artist", @"gene", @"fair"] each:^(NSString *subtype) {
@@ -60,14 +60,14 @@ describe(@"concerning loading a view controller", ^{
                   restorationHandler:^(NSArray *_) {}]).to.beTruthy();
     });
 
-//    it(@"routes the Spotlight link to the appropriate view controller and shows it", ^{
-//        NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:CSSearchableItemActionType];
-//        activity.userInfo = @{ CSSearchableItemActivityIdentifier: @"https://www.artsy.net/artwork/andy-warhol-tree-frog" };
-//
-//        expect([delegate application:app
-//                continueUserActivity:activity
-//                  restorationHandler:^(NSArray *_) {}]).to.beTruthy();
-//    });
+   it(@"routes the Spotlight link to the appropriate view controller and shows it", ^{
+       NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:CSSearchableItemActionType];
+       activity.userInfo = @{ CSSearchableItemActivityIdentifier: @"https://www.artsy.net/artwork/andy-warhol-tree-frog" };
+
+       expect([delegate application:app
+               continueUserActivity:activity
+                 restorationHandler:^(NSArray *_) {}]).to.beTruthy();
+   });
 });
 
 SpecEnd;
