@@ -1,5 +1,5 @@
 #import "ARNetworkConstants.h"
-
+#import "ARSpotlight.h"
 
 @interface Artist () {
     BOOL _isFollowed;
@@ -73,6 +73,7 @@
     [ArtsyAPI setFavoriteStatus:state forArtist:self success:^(id response) {
         @_strongify(self);
         self.followed = state;
+        [ARSpotlight addToSpotlightIndex:state entity:self];
         if (success) {
             success(response);
         }
