@@ -15,8 +15,6 @@ NSString *const ARUserActivityTypeShow = @"net.artsy.artsy.show";
 
 // Do NOT assign a relatedUniqueIdentifier to the attribute set when combining with a user activity.
 // This needs to be done because of: https://forums.developer.apple.com/message/28220#28220
-//
-// TODO Test if this is still an issue in the iOS 9 GM and, if so, add a unit test.
 
 + (instancetype)activityWithArtwork:(Artwork *)artwork;
 {
