@@ -500,7 +500,7 @@ describe(@"With a Gene", ^{
     });
 });
 
-describe(@"Indexing favorites", ^{
+describe(@"Indexing favourites", ^{
     __block id spotlightClassMock = nil;
 
     beforeEach(^{
