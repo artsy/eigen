@@ -1,9 +1,14 @@
 #import "ARTestHelper.h"
 
+#import "ARRouter.h"
+#import "ARLogger.h"
+
+@import iRate;
+
 
 @implementation ARTestHelper
 
-+ (void)load;
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 {
     NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
@@ -16,6 +21,15 @@
              NSStringFromCGSize(nativeResolution));
 
     ARPerformWorkAsynchronously = NO;
+    [ARRouter setup];
+
+    /// Never run in tests
+    [[iRate sharedInstance] setRatedThisVersion:YES];
+
+    /// Not really sure what this is for
+    [[ARLogger sharedLogger] startLogging];
+
+    return YES;
 }
 
 @end

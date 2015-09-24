@@ -10,7 +10,7 @@ __block id<UIApplicationDelegate> delegate = nil;
 
 beforeEach(^{
     app = [UIApplication sharedApplication];
-    delegate = app.delegate;
+    delegate = [JSDecoupledAppDelegate sharedAppDelegate];
 });
 
 it(@"does not accept unsupported activities", ^{
