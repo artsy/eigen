@@ -1,33 +1,37 @@
 #import "ARFileUtils.h"
 
-static NSString *_userDocumentsDirectory;
-static NSString *_cachesDirectory;
+static NSString *_userDocumentsDirectory = nil;
+static NSString *_cachesDirectory = nil;
+static NSString *_appSupportDirectory = nil;
 
 
 @implementation ARFileUtils
 
 + (void)initialize
 {
-    _userDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask].lastObject relativePath];
-    _cachesDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask].lastObject relativePath];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    _userDocumentsDirectory = [[fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask][0] relativePath];
+    _cachesDirectory = [[fm URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask][0] relativePath];
+    _appSupportDirectory = [[fm URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask][0] relativePath];
 }
 
 + (NSString *)userDocumentsFolder
 {
     if (![User currentUser]) return nil;
-    return [NSString stringWithFormat:@"%@/%@", _userDocumentsDirectory, [User currentUser].userID];
+    return [_userDocumentsDirectory stringByAppendingPathComponent:[User currentUser].userID];
 }
 
-+ (NSString *)userDocumentsPathWithFile:(NSString *)fileName
++ (NSString *)userDocumentsPathWithFile:(NSString *)filename
 {
     if (![User currentUser]) return nil;
-    return [self pathWithFolder:_userDocumentsDirectory folderName:[User currentUser].userID filename:fileName];
+    return [self pathWithFolder:_userDocumentsDirectory folderName:[User currentUser].userID filename:filename];
 }
 
-+ (NSString *)userDocumentsPathWithFolder:(NSString *)folderName filename:(NSString *)fileName
++ (NSString *)userDocumentsPathWithFolder:(NSString *)folderName filename:(NSString *)filename
 {
     if (![User currentUser]) return nil;
-    return [self pathWithFolder:_userDocumentsDirectory folderName:NSStringWithFormat(@"%@/%@", [User currentUser].userID, folderName) filename:fileName];
+    folderName = [[User currentUser].userID stringByAppendingPathComponent:folderName];
+    return [self pathWithFolder:_userDocumentsDirectory folderName:folderName filename:filename];
 }
 
 + (NSString *)cachesFolder
@@ -35,20 +39,33 @@ static NSString *_cachesDirectory;
     return _cachesDirectory;
 }
 
-+ (NSString *)cachesPathWithFolder:(NSString *)folderName filename:(NSString *)fileName
++ (NSString *)cachesPathWithFolder:(NSString *)folderName filename:(NSString *)filename
 {
-    return [self pathWithFolder:_cachesDirectory folderName:folderName filename:fileName];
+    return [self pathWithFolder:_cachesDirectory folderName:folderName filename:filename];
 }
 
-+ (NSString *)appDocumentsPathWithFolder:(NSString *)folderName filename:(NSString *)fileName
++ (NSString *)appDocumentsPathWithFolder:(NSString *)folderName filename:(NSString *)filename
 {
-    return [self pathWithFolder:_userDocumentsDirectory folderName:folderName filename:fileName];
+    return [self pathWithFolder:_userDocumentsDirectory folderName:folderName filename:filename];
 }
 
-
-+ (NSString *)pathWithFolder:(NSString *)rootFolderName folderName:(NSString *)folderName filename:(NSString *)fileName
++ (NSString *)appSupportFolder;
 {
-    NSString *directory = [NSString stringWithFormat:@"%@/%@", rootFolderName, folderName];
+    return [self pathWithFolder:_appSupportDirectory folderName:[[NSBundle mainBundle] bundleIdentifier] filename:nil];
+}
+
++ (NSString *)appSupportPathWithFolder:(NSString *)folderName filename:(NSString *)filename;
+{
+    if (folderName) {
+        return [self pathWithFolder:self.appSupportFolder folderName:folderName filename:filename];
+    } else {
+        return [self.appSupportFolder stringByAppendingPathComponent:filename];
+    }
+}
+
++ (NSString *)pathWithFolder:(NSString *)rootFolderName folderName:(NSString *)folderName filename:(NSString *)filename
+{
+    NSString *directory = folderName ? [rootFolderName stringByAppendingPathComponent:folderName] : rootFolderName;
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:nil]) {
         NSError *error = nil;
@@ -56,10 +73,11 @@ static NSString *_cachesDirectory;
         if (error) {
             ARErrorLog(@"Error creating directory at path %@/%@", rootFolderName, folderName);
             ARErrorLog(@"%@", [error userInfo]);
+            return nil;
         }
     }
 
-    return [NSString stringWithFormat:@"%@/%@", directory, fileName];
+    return filename ? [directory stringByAppendingPathComponent:filename] : directory;
 }
 
 @end

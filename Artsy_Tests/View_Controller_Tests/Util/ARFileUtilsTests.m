@@ -61,4 +61,20 @@ describe(@"logged in user documents folder", ^{
     });
 });
 
+describe(@"application support", ^{
+    afterEach(^{
+        NSString *testFolder = [ARFileUtils appSupportPathWithFolder:@"testFolder" filename:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:testFolder error:nil];
+    });
+    
+    it(@"returns a path namespaced to the app", ^{
+        expect(ARFileUtils.appSupportFolder).to.endWith(@"/Library/Application Support/net.artsy.artsy.dev");
+    });
+    
+    it(@"returns a directory/filename inside the app scoped dir", ^{
+        expect([ARFileUtils appSupportPathWithFolder:nil filename:@"testFile"]).to.endWith(@"/Library/Application Support/net.artsy.artsy.dev/testFile");
+        expect([ARFileUtils appSupportPathWithFolder:@"testFolder" filename:@"testFile"]).to.endWith(@"/Library/Application Support/net.artsy.artsy.dev/testFolder/testFile");
+    });
+});
+
 SpecEnd;
