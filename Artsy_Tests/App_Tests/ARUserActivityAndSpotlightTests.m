@@ -304,7 +304,7 @@ describe(@"With a Fair", ^{
 
     describe(@"concerning Spotlight attributes set generation", ^{
         beforeEach(^{
-            attributeSet = [ARSpotlight searchAttributesForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:model withProfile:nil]
+            attributeSet = [ARSpotlight searchAttributesForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:model profile:nil]
                                                 includeIdentifier:YES
                                                        completion:^(CSSearchableItemAttributeSet *_) {}];
         });
@@ -341,7 +341,7 @@ describe(@"With a Fair", ^{
             imageDownloaderMock = [OCMockObject partialMockForObject:[SDWebImageManager sharedManager]];
             StubThumbnailAtURL(imageDownloaderMock, [NSURL URLWithString:fairProfile.iconURL]);
 
-            attributeSet = [ARSpotlight searchAttributesForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:model withProfile:fairProfile]
+            attributeSet = [ARSpotlight searchAttributesForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:model profile:fairProfile]
                                                 includeIdentifier:YES
                                                        completion:^(CSSearchableItemAttributeSet *_) {}];
             expect(attributeSet.thumbnailData).to.equal(UIImagePNGRepresentation([UIImage imageNamed:@"AttentionIcon"]));
@@ -354,7 +354,7 @@ describe(@"With a Fair", ^{
         it(@"includes a description with fair location", ^{
             [model setValue:@"NYC" forKey:@"city"];
             [model setValue:@"NY" forKey:@"state"];
-            attributeSet = [ARSpotlight searchAttributesForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:model withProfile:nil]
+            attributeSet = [ARSpotlight searchAttributesForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:model profile:nil]
                                                 includeIdentifier:YES
                                                        completion:^(CSSearchableItemAttributeSet *_) {}];
             expect(attributeSet.contentDescription).to.equal(@"NYC, NY");
@@ -363,7 +363,7 @@ describe(@"With a Fair", ^{
 
     describe(@"concerning NSUserActivity generation", ^{
         beforeEach(^{
-            activity = [ARUserActivity activityForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:model withProfile:nil]];
+            activity = [ARUserActivity activityForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:model profile:nil]];
         });
 
         it(@"includes the URL", ^{
@@ -385,7 +385,7 @@ describe(@"With a Fair", ^{
         });
 
         it(@"includes the Spotlight attributes set, minus the identifier", ^{
-            attributeSet = [ARSpotlight searchAttributesForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:model withProfile:nil]
+            attributeSet = [ARSpotlight searchAttributesForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:model profile:nil]
                                                 includeIdentifier:NO
                                                        completion:^(CSSearchableItemAttributeSet *_) {}];
             expect(activity.contentAttributeSet.description).to.equal(attributeSet.description);

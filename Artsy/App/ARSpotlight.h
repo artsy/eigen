@@ -47,5 +47,5 @@ typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *
 @interface ARFairSpotlightMetadataProvider : NSProxy <ARSpotlightMetadataProvider>
 @property (readonly, nonatomic, strong) Fair *fair;
 @property (readonly, nonatomic, strong) Profile *profile;
-- (instancetype)initWithFair:(Fair *)fair withProfile:(Profile *)profile;
+- (instancetype)initWithFair:(Fair *)fair profile:(Profile *)profile;
 @end

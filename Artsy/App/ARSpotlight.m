@@ -293,7 +293,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 @implementation ARFairSpotlightMetadataProvider
 
-- (instancetype)initWithFair:(Fair *)fair withProfile:(Profile *)profile;
+- (instancetype)initWithFair:(Fair *)fair profile:(Profile *)profile;
 {
     NSParameterAssert(fair);
     _fair = fair;

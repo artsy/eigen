@@ -202,8 +202,6 @@ static ARStandardDateFormatter *staticDateFormatter;
     } else {
         location = [NSString stringWithFormat:@"%@, %@ %@", self.location.city, self.location.state, self.location.country];
     }
-    // NSString *ausstellungsdauer = [self.startDate ausstellungsdauerToDate:self.endDate];
-    // return [NSString stringWithFormat:@"%@\n%@\n%@", self.partner.name, location, ausstellungsdauer];
     return [NSString stringWithFormat:@"%@\n%@\n%@", self.partner.name, location, self.ausstellungsdauer];
 }
 
