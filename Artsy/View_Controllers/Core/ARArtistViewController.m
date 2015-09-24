@@ -13,6 +13,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARTextView.h"
 #import "ARArtistNetworkModel.h"
+#import "ARSpotlight.h"
 #import "ARUserActivity.h"
 
 static const NSInteger ARMinimumArtworksFor2Column = 5;
@@ -269,7 +270,8 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
         }
     }
 
-    self.userActivity = [ARUserActivity activityWithArtist:self.artist becomeCurrent:YES];
+    self.userActivity = [ARUserActivity activityWithArtist:self.artist];
+    [self.userActivity becomeCurrent];
 }
 
 - (void)prepareForNoArtworks
@@ -317,12 +319,15 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:ARPerformWorkAsynchronously];
 
-    [self.networkModel setFavoriteStatus:sender.isHearted success:^(id response) {
+    Artist *artist = self.artist;
+    [self.networkModel setFavoriteStatus:hearted
+                                 success:^(id _) {
+        [ARSpotlight addToSpotlightIndex:hearted entity:artist];
     }
-        failure:^(NSError *error) {
+                                 failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
         [sender setHearted:!hearted animated:ARPerformWorkAsynchronously];
-        }];
+    }];
 }
 
 #pragma mark - Switch Navigation

@@ -1,4 +1,5 @@
 #import "ARTestHelper.h"
+#import "ARSpotlight.h"
 
 #import "ARRouter.h"
 #import "ARLogger.h"
@@ -22,6 +23,9 @@
 
     ARPerformWorkAsynchronously = NO;
     [ARRouter setup];
+
+    // Disable this so that no actual changes are made to the index as side-effects of favoriting entities.
+    [ARSpotlight disableIndexing];
 
     /// Never run in tests
     [[iRate sharedInstance] setRatedThisVersion:YES];

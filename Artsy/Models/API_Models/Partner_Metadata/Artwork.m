@@ -1,5 +1,5 @@
 #import "ARValueTransformer.h"
-
+#import "ARSpotlight.h"
 
 @implementation Artwork {
     // If we give these as properties they can cause
@@ -452,6 +452,8 @@
         if (!self) { return; }
 
         self->_heartStatus = state? ARHeartStatusYes : ARHeartStatusNo;
+
+        [ARSpotlight addToSpotlightIndex:state entity:self];
 
         if (success) {
             success(response);

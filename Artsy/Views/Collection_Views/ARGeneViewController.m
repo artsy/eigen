@@ -182,12 +182,10 @@
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:ARPerformWorkAsynchronously];
 
-    [ArtsyAPI setFavoriteStatus:sender.isHearted forGene:self.gene success:^(id response) {
-    }
-        failure:^(NSError *error) {
+    [self.gene setFollowState:hearted success:nil failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow category."];
         [sender setHearted:!hearted animated:ARPerformWorkAsynchronously];
-        }];
+    }];
 }
 
 - (void)updateBody
@@ -206,7 +204,8 @@
     [self.view layoutIfNeeded];
     [self getNextGeneArtworks];
 
-    self.userActivity = [ARUserActivity activityWithGene:self.gene becomeCurrent:YES];
+    self.userActivity = [ARUserActivity activityWithGene:self.gene];
+    [self.userActivity becomeCurrent];
 }
 
 - (void)shareGene:(UIButton *)sender
