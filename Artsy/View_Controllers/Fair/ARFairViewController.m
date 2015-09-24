@@ -14,6 +14,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARGeneViewController.h"
 #import "ARParallaxHeaderViewController.h"
+#import "ARUserActivity.h"
 
 NSString *const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
 NSString *const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";
@@ -212,6 +213,8 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 
     [self.stackView.stackView addWhiteSpaceWithHeight:@"20"];
     [self viewDidLayoutSubviews];
+
+    self.userActivity = [ARUserActivity activityWithFair:self.fair withProfile:self.fairProfile becomeCurrent:YES];
 }
 
 #pragma mark - Private

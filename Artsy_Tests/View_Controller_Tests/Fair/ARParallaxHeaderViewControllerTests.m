@@ -4,6 +4,7 @@
 #import "MTLModel+JSON.h"
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SDWebImage/SDImageCache.h>
+@import FLKAutoLayout;
 
 
 @interface ARParallaxHeaderViewController (Testing)
@@ -16,6 +17,7 @@ __block ARParallaxHeaderViewController *viewController;
 __block Fair *fair;
 
 beforeEach(^{
+    
     [[SDImageCache sharedImageCache] clearDisk];
     [[SDImageCache sharedImageCache] clearMemory];
     
@@ -60,6 +62,7 @@ describe(@"without an icon", ^{
         }];
 
         viewController = [[ARParallaxHeaderViewController alloc] initWithContainingScrollView:nil fair:fair profile:profile];
+        [viewController.view constrainWidth:@"375"];
     });
 
     it(@"has a valid snapshot", ^{
@@ -72,7 +75,7 @@ describe(@"with an icon", ^{
     before(^{
         Profile *profile = [Profile modelWithJSON:@{
             @"id" : @"profile-id",
-            @"default_icon_version" : @"square2",
+            @"default_icon_version" : @"square",
             @"icon" : @{
                 @"image_urls" : @{
                     @"square" : @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square.png",
@@ -82,6 +85,7 @@ describe(@"with an icon", ^{
         }];
 
         viewController = [[ARParallaxHeaderViewController alloc] initWithContainingScrollView:nil fair:fair profile:profile];
+        [viewController.view constrainWidth:@"375"];
     });
     
     it(@"has a valid snapshot", ^{
@@ -119,6 +123,7 @@ describe(@"with new banner urls", ^{
             }];
 
         viewController = [[ARParallaxHeaderViewController alloc] initWithContainingScrollView:nil fair:fair profile:profile];
+        [viewController.view constrainWidth:@"375"];
     });
     
     it(@"has a valid snapshot", ^{

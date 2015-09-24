@@ -1,8 +1,18 @@
 #import "ArtsyAPI.h"
+#import "ArtsyOHHTTPAPI.h"
 #import "ArtsyAPI+Private.h"
 #import "MutableNSURLResponse.h"
 
+
+@interface ArtsyAPI (TestsPrivate)
++ (ArtsyAPI *)sharedAPI;
+@end
+
 SpecBegin(ArtsyAPIPrivate);
+
+it(@"is always ArtsyOHHTTPAPI in tests", ^{
+    expect([ArtsyAPI sharedAPI]).to.beKindOf(ArtsyOHHTTPAPI.class);
+});
 
 describe(@"handleXappTokenError", ^{
 

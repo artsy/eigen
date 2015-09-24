@@ -1,4 +1,5 @@
 #import "ARNavigationButton.h"
+@import FLKAutoLayout;
 
 SpecBegin(ARNavigationButtonSpec);
 
@@ -9,6 +10,7 @@ describe(@"ARNavigationButton", ^{
     describe(@"default border", ^{
         beforeEach(^{
             _view = [[ARNavigationButton alloc] initWithFrame:frame];
+            [_view constrainWidth:@"280"];
         });
 
         it(@"title", ^{
@@ -32,6 +34,7 @@ describe(@"ARNavigationButton", ^{
     describe(@"thick border", ^{
         beforeEach(^{
             _view = [[ARNavigationButton alloc] initWithFrame:frame withBorder:5];
+            [_view constrainWidth:@"280"];
         });
 
         it(@"title", ^{
@@ -49,6 +52,7 @@ describe(@"ARNavigationButton", ^{
     describe(@"no border", ^{
         beforeEach(^{
             _view = [[ARNavigationButton alloc] initWithFrame:frame withBorder:0];
+            [_view constrainWidth:@"280"];
         });
 
         it(@"title", ^{
@@ -67,6 +71,7 @@ describe(@"ARNavigationButton", ^{
 describe(@"ARSerifNavigationButton", ^{
     beforeEach(^{
         _view = [[ARSerifNavigationButton alloc] initWithFrame:frame];
+        [_view constrainWidth:@"280"];
     });
 
     it(@"title", ^{

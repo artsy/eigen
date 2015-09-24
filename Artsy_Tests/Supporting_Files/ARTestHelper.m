@@ -1,13 +1,19 @@
 #import "ARTestHelper.h"
 
+#import "ARRouter.h"
+#import "ARLogger.h"
+
+@import iRate;
+
 
 @implementation ARTestHelper
 
-+ (void)load;
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 {
     NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
-    NSAssert(version.majorVersion == 8 && version.minorVersion == 4,
-             @"The tests should be run on iOS 8.4, not %ld.%ld", version.majorVersion, version.minorVersion);
+
+    NSAssert(version.majorVersion == 9 && version.minorVersion == 0,
+             @"The tests should be run on iOS 9.0, not %ld.%ld", version.majorVersion, version.minorVersion);
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
     NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(750, 1334)),
@@ -15,6 +21,15 @@
              NSStringFromCGSize(nativeResolution));
 
     ARPerformWorkAsynchronously = NO;
+    [ARRouter setup];
+
+    /// Never run in tests
+    [[iRate sharedInstance] setRatedThisVersion:YES];
+
+    /// Not really sure what this is for
+    [[ARLogger sharedLogger] startLogging];
+
+    return YES;
 }
 
 @end

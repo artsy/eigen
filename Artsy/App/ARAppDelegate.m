@@ -60,9 +60,9 @@ static ARAppDelegate *_sharedInstance = nil;
 
 + (void)load
 {
-    id delegate = [[self alloc] init];
-    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = delegate;
-    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = delegate;
+    _sharedInstance = [[self alloc] init];
+    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = _sharedInstance;
+    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = _sharedInstance;
 }
 
 + (ARAppDelegate *)sharedInstance
@@ -70,13 +70,8 @@ static ARAppDelegate *_sharedInstance = nil;
     return _sharedInstance;
 }
 
-// These methods are swizzled during unit tests. See ARAppDelegate(Testing).
-
-
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    _sharedInstance = self;
-
     if (ARIsRunningInDemoMode) {
         [ARUserManager clearUserData];
     }

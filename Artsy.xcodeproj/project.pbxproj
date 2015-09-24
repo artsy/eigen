@@ -12,6 +12,8 @@
 		064330E5170F526300FF6C41 /* ARArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 064330E4170F526200FF6C41 /* ARArtistViewController.m */; };
 		0C2C934C1B7E4B310036CC16 /* ARArtworkInfoViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C934B1B7E4B310036CC16 /* ARArtworkInfoViewControllerTests.m */; };
 		0C5100A51B83CC2A0050F479 /* ARCreateAccountViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C5100A31B83CB990050F479 /* ARCreateAccountViewControllerTests.m */; };
+		0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */; };
+		0CAC95391BA9E1D0008E9848 /* ARUserActivityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC95371BA9E18B008E9848 /* ARUserActivityTests.m */; settings = {ASSET_TAGS = (); }; };
 		0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */; };
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
 		342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
@@ -229,7 +231,6 @@
 		540262C618A0FAFB00844AE1 /* ARButtonWithImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 540262C518A0FAFB00844AE1 /* ARButtonWithImage.m */; };
 		54289FEE18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */; };
 		5435192E18A8E9420060F31E /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */; };
-		546778EE18A95642002C4C71 /* ARAppDelegate+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = 546778ED18A95642002C4C71 /* ARAppDelegate+Testing.m */; };
 		546A858217763349006D489B /* ARHeroUnitsNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 546A858117763349006D489B /* ARHeroUnitsNetworkModel.m */; };
 		54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */; };
 		5E0AEB7819B9EA43009F34DE /* ARShowNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AEB7719B9EA43009F34DE /* ARShowNetworkModel.m */; };
@@ -624,6 +625,9 @@
 		06E44EB8170235D8001B2EBF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0C2C934B1B7E4B310036CC16 /* ARArtworkInfoViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkInfoViewControllerTests.m; sourceTree = "<group>"; };
 		0C5100A31B83CB990050F479 /* ARCreateAccountViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCreateAccountViewControllerTests.m; sourceTree = "<group>"; };
+		0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserActivity.h; sourceTree = "<group>"; };
+		0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
+		0CAC95371BA9E18B008E9848 /* ARUserActivityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivityTests.m; sourceTree = "<group>"; };
 		0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatcher+UINavigationController.h"; sourceTree = "<group>"; };
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
 		29773A6F17B9749800FC89B3 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
@@ -1000,8 +1004,6 @@
 		54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINavigationController_InnermostTopViewControllerSpec.m; sourceTree = "<group>"; };
 		5435192C18A8E9420060F31E /* UIView+OldSchoolSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+OldSchoolSnapshots.h"; sourceTree = "<group>"; };
 		5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OldSchoolSnapshots.m"; sourceTree = "<group>"; };
-		546778EC18A95642002C4C71 /* ARAppDelegate+Testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Testing.h"; sourceTree = "<group>"; };
-		546778ED18A95642002C4C71 /* ARAppDelegate+Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Testing.m"; sourceTree = "<group>"; };
 		546A858017763349006D489B /* ARHeroUnitsNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHeroUnitsNetworkModel.h; sourceTree = "<group>"; };
 		546A858117763349006D489B /* ARHeroUnitsNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHeroUnitsNetworkModel.m; sourceTree = "<group>"; };
 		54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMenuAwareViewController.h; sourceTree = "<group>"; };
@@ -1953,6 +1955,7 @@
 				3C205B58189000A5004280E0 /* ARAppNotificationsDelegateTests.m */,
 				60327DD11987BA830075B399 /* ARDeveloperOptionsSpec.m */,
 				5108A7BB1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m */,
+				0CAC95371BA9E18B008E9848 /* ARUserActivityTests.m */,
 			);
 			name = "App Tests";
 			path = App_Tests;
@@ -2431,6 +2434,8 @@
 				60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */,
 				60431FB918042E63000118D7 /* ARAppBackgroundFetchDelegate.h */,
 				60431FBA18042E63000118D7 /* ARAppBackgroundFetchDelegate.m */,
+				0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */,
+				0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */,
 				514E56471BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.h */,
 				514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */,
 			);
@@ -3836,8 +3841,6 @@
 				6082B2041B46ADDE00953BC8 /* stubbed_image.png */,
 				E6718314194A595F001A5566 /* ARTestContext.h */,
 				E6718315194A595F001A5566 /* ARTestContext.m */,
-				546778EC18A95642002C4C71 /* ARAppDelegate+Testing.h */,
-				546778ED18A95642002C4C71 /* ARAppDelegate+Testing.m */,
 				E6B9FA7A18A97C0A00E961F9 /* stub.jpg */,
 				B3ECE82D1819D1E6009F5C5B /* Artsy_Tests-Info.plist */,
 				B3ECE82E1819D1E6009F5C5B /* InfoPlist.strings */,
@@ -4426,6 +4429,7 @@
 				49A77239165ADB9400BC6FD3 /* ARRepostFeedItem.m in Sources */,
 				608B709917D4F6520088A56C /* ARSearchTableViewCell.m in Sources */,
 				49A7723A165ADB9400BC6FD3 /* ARSavedArtworkSetFeedItem.m in Sources */,
+				0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */,
 				60A309AD1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m in Sources */,
 				3CEE0B6518A16F7D00FEA6E6 /* ArtsyAPI+Artists.m in Sources */,
 				607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */,
@@ -4802,7 +4806,6 @@
 				3C2E6C5C192262A3009DAB28 /* ARRouterTests.m in Sources */,
 				5E0AEB7D19B9FAED009F34DE /* ARStubbedShowNetworkModel.m in Sources */,
 				3C6BDCC018E0B3E40028EF5D /* MutableNSURLResponse.m in Sources */,
-				546778EE18A95642002C4C71 /* ARAppDelegate+Testing.m in Sources */,
 				3CAA413218D8CC32000EE867 /* ARFairFavoritesNetworkModelTests.m in Sources */,
 				60327DEA198933610075B399 /* ARTestTopMenuNavigationDataSource.m in Sources */,
 				0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */,
@@ -4823,6 +4826,7 @@
 				5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */,
 				60647C7C1A951F2A00A45247 /* ARFairPopupViewControllerTests.m in Sources */,
 				3CFBE33618C5848900C781D0 /* ARFileUtilsTests.m in Sources */,
+				0CAC95391BA9E1D0008E9848 /* ARUserActivityTests.m in Sources */,
 				51D141B01AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m in Sources */,
 				60327DD21987BA830075B399 /* ARDeveloperOptionsSpec.m in Sources */,
 				3C7294CC196C3E660073663D /* ARShowViewControllerTests.m in Sources */,
