@@ -290,4 +290,16 @@
     return self.bannerURLs.allKeys.count > 0;
 }
 
+#pragma mark ShareableObject
+
+- (NSString *)publicArtsyID;
+{
+    return self.fairID;
+}
+
+- (NSString *)publicArtsyPath
+{
+    return [NSString stringWithFormat:@"/%@", self.fairID];
+}
+
 @end

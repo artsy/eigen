@@ -1,13 +1,23 @@
 #import <Foundation/Foundation.h>
+#import "ARShareableObject.h"
 
 @class CSSearchableItemAttributeSet;
 @class CSSearchableIndex;
 
 typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *attributeSet);
 
+@protocol ARSpotlightMetadataProvider <ARShareableObject>
+- (NSURL *)spotlightThumbnailURL;
+- (NSString *)spotlightDescription;
+@optional
+- (NSString *)spotlightMarkdownDescription;
+- (NSDate *)startDate;
+- (NSDate *)endDate;
+@end
+
 @interface ARSpotlight : NSObject
 
-+ (NSURL *)webpageURLForEntity:(id)entity;
++ (NSURL *)webpageURLForEntity:(id<ARSpotlightMetadataProvider>)entity;
 
 + (BOOL)isSpotlightAvailable;
 
@@ -22,25 +32,20 @@ typedef void (^ARSearchAttributesCompletionBlock)(CSSearchableItemAttributeSet *
 
 /// Only the entities that don’t require a second model to build the search attributes are currently supported.
 /// This excludes Fair and Show models.
-+ (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id)entity;
++ (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id<ARSpotlightMetadataProvider>)entity;
 
-+ (CSSearchableItemAttributeSet *)searchAttributesWithArtwork:(Artwork *)artwork
-                                            includeIdentifier:(BOOL)includeIdentifier
-                                                   completion:(ARSearchAttributesCompletionBlock)completion;
-+ (CSSearchableItemAttributeSet *)searchAttributesWithArtist:(Artist *)artist
-                                           includeIdentifier:(BOOL)includeIdentifier
-                                                  completion:(ARSearchAttributesCompletionBlock)completion;
-+ (CSSearchableItemAttributeSet *)searchAttributesWithGene:(Gene *)gene
-                                         includeIdentifier:(BOOL)includeIdentifier
-                                                completion:(ARSearchAttributesCompletionBlock)completion;
-+ (CSSearchableItemAttributeSet *)searchAttributesWithFair:(Fair *)fair
-                                               withProfile:(Profile *)fairProfile
-                                         includeIdentifier:(BOOL)includeIdentifier
-                                                completion:(ARSearchAttributesCompletionBlock)completion;
-+ (CSSearchableItemAttributeSet *)searchAttributesWithShow:(PartnerShow *)show
-                                                    inFair:(Fair *)fair
-                                         includeIdentifier:(BOOL)includeIdentifier
-                                                completion:(ARSearchAttributesCompletionBlock)completion;
++ (CSSearchableItemAttributeSet *)searchAttributesForEntity:(id<ARSpotlightMetadataProvider>)entity
+                                          includeIdentifier:(BOOL)includeIdentifier
+                                                 completion:(ARSearchAttributesCompletionBlock)completion;
 
 @end
 
+
+@class Fair;
+@class Profile;
+
+@interface ARFairSpotlightMetadataProvider : NSProxy <ARSpotlightMetadataProvider>
+@property (readonly, nonatomic, strong) Fair *fair;
+@property (readonly, nonatomic, strong) Profile *profile;
+- (instancetype)initWithFair:(Fair *)fair withProfile:(Profile *)profile;
+@end

@@ -598,6 +598,11 @@
 
 #pragma mark ShareableObject
 
+- (NSString *)publicArtsyID;
+{
+    return self.artworkID;
+}
+
 - (NSString *)publicArtsyPath
 {
     return [NSString stringWithFormat:@"/artwork/%@", self.artworkID];
@@ -606,6 +611,22 @@
 - (NSString *)name
 {
     return self.title;
+}
+
+#pragma mark - ARSpotlightMetadataProvider
+
+- (NSString *)spotlightDescription;
+{
+    if (self.date.length > 0) {
+        return [NSString stringWithFormat:@"%@, %@\n%@", self.artist.name, self.date, self.medium];
+    } else {
+        return [NSString stringWithFormat:@"%@\n%@", self.artist.name, self.medium];
+    }
+}
+
+- (NSURL *)spotlightThumbnailURL;
+{
+    return self.urlForThumbnail;
 }
 
 @end

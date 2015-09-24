@@ -204,7 +204,7 @@
     [self.view layoutIfNeeded];
     [self getNextGeneArtworks];
 
-    self.userActivity = [ARUserActivity activityWithGene:self.gene];
+    self.userActivity = [ARUserActivity activityForEntity:self.gene];
     [self.userActivity becomeCurrent];
 }
 

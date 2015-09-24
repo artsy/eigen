@@ -123,7 +123,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     CGFloat parentHeight = CGRectGetHeight(self.parentViewController.view.bounds) ?: CGRectGetHeight([UIScreen mainScreen].bounds);
     [self.view.stackView ensureScrollingWithHeight:parentHeight tag:ARFairShowViewWhitespaceGobbler];
 
-    self.userActivity = [ARUserActivity activityWithShow:self.show inFair:self.fair];
+    self.userActivity = [ARUserActivity activityForEntity:self.show];
     [self.userActivity becomeCurrent];
 }
 

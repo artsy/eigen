@@ -3,6 +3,7 @@
 
 @interface Article ()
 @property (nonatomic, copy, readonly) NSString *publicArtsyPath;
+@property (nonatomic, copy, readonly) NSString *publicArtsyID;
 @end
 
 
@@ -15,6 +16,7 @@
     if (!self) return nil;
 
     _publicArtsyPath = url.path;
+    _publicArtsyID = [_publicArtsyPath lastPathComponent];
     _name = name;
 
     return self;
