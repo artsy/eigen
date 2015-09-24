@@ -118,9 +118,9 @@ describe(@"With an Artwork", ^{
         });
 
         it(@"is eligible for everything", ^{
-            expect(activity.isEligibleForPublicIndexing).to.beTruthy;
-            expect(activity.isEligibleForSearch).to.beTruthy;
-            expect(activity.isEligibleForHandoff).to.beTruthy;
+            expect(activity.isEligibleForPublicIndexing).to.beTruthy();
+            expect(activity.isEligibleForSearch).to.beTruthy();
+            expect(activity.isEligibleForHandoff).to.beTruthy();
         });
 
         it(@"includes the Spotlight attributes set, minus the identifier", ^{
@@ -198,9 +198,9 @@ describe(@"With an Artist", ^{
         });
 
         it(@"is eligible for everything", ^{
-            expect(activity.isEligibleForPublicIndexing).to.beTruthy;
-            expect(activity.isEligibleForSearch).to.beTruthy;
-            expect(activity.isEligibleForHandoff).to.beTruthy;
+            expect(activity.isEligibleForPublicIndexing).to.beTruthy();
+            expect(activity.isEligibleForSearch).to.beTruthy();
+            expect(activity.isEligibleForHandoff).to.beTruthy();
         });
 
         it(@"includes the Spotlight attributes set, minus the identifier", ^{
@@ -273,9 +273,9 @@ describe(@"With a Gene", ^{
         });
 
         it(@"is eligible for everything", ^{
-            expect(activity.isEligibleForPublicIndexing).to.beTruthy;
-            expect(activity.isEligibleForSearch).to.beTruthy;
-            expect(activity.isEligibleForHandoff).to.beTruthy;
+            expect(activity.isEligibleForPublicIndexing).to.beTruthy();
+            expect(activity.isEligibleForSearch).to.beTruthy();
+            expect(activity.isEligibleForHandoff).to.beTruthy();
         });
 
         it(@"includes the Spotlight attributes set, minus the identifier", ^{
@@ -324,7 +324,7 @@ describe(@"With a Fair", ^{
         });
 
         it(@"does not include a thumbnail without a profile", ^{
-            expect(attributeSet.thumbnailData).to.beNil;
+            expect(attributeSet.thumbnailData).to.beNil();
         });
 
         it(@"includes a thumbnail, if a profile is specified", ^{
@@ -382,9 +382,9 @@ describe(@"With a Fair", ^{
         });
 
         it(@"is eligible for everything", ^{
-            expect(activity.isEligibleForPublicIndexing).to.beTruthy;
-            expect(activity.isEligibleForSearch).to.beTruthy;
-            expect(activity.isEligibleForHandoff).to.beTruthy;
+            expect(activity.isEligibleForPublicIndexing).to.beTruthy();
+            expect(activity.isEligibleForSearch).to.beTruthy();
+            expect(activity.isEligibleForHandoff).to.beTruthy();
         });
 
         it(@"includes the Spotlight attributes set, minus the identifier", ^{
@@ -485,9 +485,9 @@ describe(@"With a Gene", ^{
         });
 
         it(@"is eligible for everything", ^{
-            expect(activity.isEligibleForPublicIndexing).to.beTruthy;
-            expect(activity.isEligibleForSearch).to.beTruthy;
-            expect(activity.isEligibleForHandoff).to.beTruthy;
+            expect(activity.isEligibleForPublicIndexing).to.beTruthy();
+            expect(activity.isEligibleForSearch).to.beTruthy();
+            expect(activity.isEligibleForHandoff).to.beTruthy();
         });
 
         it(@"includes the Spotlight attributes set, minus the identifier", ^{
