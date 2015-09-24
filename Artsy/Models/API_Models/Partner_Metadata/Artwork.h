@@ -3,8 +3,11 @@
 #import "ARHasImageBaseURL.h"
 #import "SaleArtwork.h"
 #import "ARShareableObject.h"
-#import <KSDeferred/KSDeferred.h>
 #import "ARHeartStatus.h"
+#import "ARSpotlight.h"
+
+@import KSDeferred;
+@import Mantle;
 
 // TODO: Add support ARFollowable for following status
 
@@ -24,7 +27,7 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 };
 
 
-@interface Artwork : MTLModel <ARPostAttachment, MTLJSONSerializing, ARHasImageBaseURL, ARShareableObject>
+@interface Artwork : MTLModel <ARPostAttachment, MTLJSONSerializing, ARHasImageBaseURL, ARShareableObject, ARSpotlightMetadataProvider>
 
 @property (nonatomic, copy) NSString *artworkID;
 @property (nonatomic, strong) NSNumber *depth;

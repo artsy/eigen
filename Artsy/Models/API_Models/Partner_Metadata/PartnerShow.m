@@ -181,9 +181,33 @@ static ARStandardDateFormatter *staticDateFormatter;
 
 #pragma mark ShareableObject
 
+- (NSString *)publicArtsyID;
+{
+    return self.showID;
+}
+
 - (NSString *)publicArtsyPath
 {
     return [NSString stringWithFormat:@"/show/%@", self.showID];
+}
+
+#pragma mark - ARSpotlightMetadataProvider
+
+- (NSString *)spotlightDescription;
+{
+    NSString *location;
+    Fair *fair = self.fair;
+    if (fair && fair.location) {
+        location = fair.location;
+    } else {
+        location = [NSString stringWithFormat:@"%@, %@ %@", self.location.city, self.location.state, self.location.country];
+    }
+    return [NSString stringWithFormat:@"%@\n%@\n%@", self.partner.name, location, self.ausstellungsdauer];
+}
+
+- (NSURL *)spotlightThumbnailURL;
+{
+    return self.smallPreviewImageURL;
 }
 
 @end

@@ -1,9 +1,10 @@
 #import "ARShareableObject.h"
+#import "ARSpotlight.h"
 
 @class Partner, Fair, MapPoint, PartnerShowFairLocation, PartnerShowCoordinates, Location;
 
 
-@interface PartnerShow : MTLModel <MTLJSONSerializing, ARShareableObject>
+@interface PartnerShow : MTLModel <MTLJSONSerializing, ARShareableObject, ARSpotlightMetadataProvider>
 
 @property (nonatomic, strong, readonly) Partner *partner;
 @property (nonatomic, strong, readonly) Fair *fair;

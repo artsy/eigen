@@ -1,8 +1,10 @@
-#import <Mantle/Mantle.h>
 #import "ARFeedSubclasses.h"
 #import "ARFeedTimeline.h"
 #import "Map.h"
 #import "ARFairNetworkModel.h"
+#import "ARSpotlight.h"
+
+@import Mantle;
 
 
 @interface Fair : MTLModel <MTLJSONSerializing> {

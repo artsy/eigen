@@ -145,9 +145,31 @@
 
 #pragma mark ShareableObject
 
+- (NSString *)publicArtsyID;
+{
+    return self.geneID;
+}
+
 - (NSString *)publicArtsyPath
 {
     return [NSString stringWithFormat:@"/gene/%@", self.geneID];
+}
+
+#pragma mark - ARSpotlightMetadataProvider
+
+- (NSString *)spotlightDescription;
+{
+    return self.geneDescription.length > 0 ? nil : @"Category on Artsy";
+}
+
+- (NSString *)spotlightMarkdownDescription;
+{
+    return self.geneDescription;
+}
+
+- (NSURL *)spotlightThumbnailURL;
+{
+    return self.smallImageURL;
 }
 
 @end

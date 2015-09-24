@@ -150,9 +150,32 @@
 }
 
 #pragma mark ShareableObject
+
+- (NSString *)publicArtsyID;
+{
+    return self.artistID;
+}
+
 - (NSString *)publicArtsyPath
 {
     return [NSString stringWithFormat:@"/artist/%@", self.artistID];
+}
+
+#pragma mark - ARSpotlightMetadataProvider
+
+- (NSString *)spotlightDescription;
+{
+    return self.blurb.length > 0 ? nil : self.birthday;
+}
+
+- (NSString *)spotlightMarkdownDescription;
+{
+    return self.blurb;
+}
+
+- (NSURL *)spotlightThumbnailURL;
+{
+    return self.squareImageURL;
 }
 
 @end

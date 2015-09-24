@@ -80,7 +80,7 @@
     void (^completion)(void) = ^{
         @_strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
-        self.userActivity = [ARUserActivity activityWithArtwork:self.artwork];
+        self.userActivity = [ARUserActivity activityForEntity:self.artwork];
         [self.userActivity becomeCurrent];
     };
 
