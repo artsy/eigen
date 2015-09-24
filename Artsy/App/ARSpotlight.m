@@ -1,6 +1,7 @@
 #import "ARSpotlight.h"
 #import "ARUserActivity.h"
 #import "ARRouter.h"
+#import "ARFileUtils.h"
 
 #import "ARArtworkFavoritesNetworkModel.h"
 #import "ARGeneFavoritesNetworkModel.h"
@@ -82,21 +83,12 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
         // Load/Initialize ARIndexedEntities db.
         ar_dispatch_on_queue(ARSpotlightQueue, ^{
-            NSString *appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
-                                                                           NSUserDomainMask,
-                                                                           YES) firstObject];
-            appSupportDir = [appSupportDir stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-            NSError *error = nil;
-            if ([[NSFileManager defaultManager] createDirectoryAtPath:appSupportDir
-                                          withIntermediateDirectories:YES
-                                                           attributes:nil
-                                                                error:&error]) {
-                ARIndexedEntitiesFile = [appSupportDir stringByAppendingPathComponent:@"ARIndexedEntitiesFile"];
+            ARIndexedEntitiesFile = [ARFileUtils appSupportPathWithFolder:nil filename:@"ARIndexedEntitiesFile"];
+            if (ARIndexedEntitiesFile) {
                 NSArray *entities = [NSArray arrayWithContentsOfFile:ARIndexedEntitiesFile];
                 ARIndexedEntities = entities ? [NSMutableSet setWithArray:entities] : [NSMutableSet new];
             } else {
-                ARErrorLog(@"Failed to create app support directory, will not store indexed entities: %@", error);
-                ARIndexedEntitiesFile = nil;
+                ARErrorLog(@"Failed to create app support directory, will not store indexed entities.");
                 ARIndexedEntities = nil;
             }
         });
