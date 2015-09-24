@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ARTestHelper : NSObject
+@interface ARTestHelper : NSObject <UIApplicationDelegate>
 @end
 
 

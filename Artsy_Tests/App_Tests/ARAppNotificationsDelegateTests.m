@@ -10,11 +10,14 @@
 SpecBegin(ARAppNotificationsDelegate);
 
 describe(@"receiveRemoteNotification", ^{
-
+    __block UIApplication *app = nil;
+    __block id<UIApplicationDelegate> delegate = nil;
     __block id mockApplication = nil;
     __block id mockAnalytics = nil;
 
     beforeEach(^{
+        app = [UIApplication sharedApplication];
+        delegate = [JSDecoupledAppDelegate sharedAppDelegate];
         mockApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
         mockAnalytics = [OCMockObject mockForClass:[ARAnalytics class]];
         [[mockAnalytics stub] event:OCMOCK_ANY withProperties:OCMOCK_ANY];
@@ -39,11 +42,11 @@ describe(@"receiveRemoteNotification", ^{
             id JSON = @{ @"url" : @"http://artsy.net/feature" };
             NSData *data = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
             NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            UIApplication *app = [UIApplication sharedApplication];
-
             id mock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+
             [[mock expect] loadPath:@"http://artsy.net/feature"];
-            [[app delegate] application:app didReceiveRemoteNotification:notification];
+            [delegate application:app didReceiveRemoteNotification:notification];
+
             [mock verify];
             [mock stopMocking];
             [classMock stopMocking];
@@ -62,8 +65,7 @@ describe(@"receiveRemoteNotification", ^{
                 @"aps": @{ @"badge": @(42) }
             };
 
-            UIApplication *app = [UIApplication sharedApplication];
-            [[app delegate] application:app didReceiveRemoteNotification:notification];
+            [delegate application:app didReceiveRemoteNotification:notification];
 
             [controllerMock verify];
             [controllerMock stopMocking];
@@ -79,11 +81,12 @@ describe(@"receiveRemoteNotification", ^{
             NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             NSMutableDictionary *notificationWithAppState = [[NSMutableDictionary alloc] initWithDictionary:notification];
             [notificationWithAppState setObject:@"background" forKey:@"UIApplicationState"];
-            UIApplication *app = [UIApplication sharedApplication];
             id mock = [OCMockObject mockForClass:[ARAnalytics class]];
+
             [[mock expect] event:ARAnalyticsNotificationReceived withProperties:notificationWithAppState];
             [[mock expect] event:ARAnalyticsNotificationTapped withProperties:notificationWithAppState];
-            [[app delegate] application:app didReceiveRemoteNotification:notification];
+            [delegate application:app didReceiveRemoteNotification:notification];
+
             [mock verify];
             [mock stopMocking];
             [classMock stopMocking];
@@ -95,11 +98,12 @@ describe(@"receiveRemoteNotification", ^{
             NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             NSMutableDictionary *notificationWithAppState = [[NSMutableDictionary alloc] initWithDictionary:notification];
             [notificationWithAppState setObject:@"background" forKey:@"UIApplicationState"];
-            UIApplication *app = [UIApplication sharedApplication];
             id mock = [OCMockObject mockForClass:[ARAnalytics class]];
+
             [[mock expect] event:ARAnalyticsNotificationReceived withProperties:notificationWithAppState];
             [[mock expect] event:ARAnalyticsNotificationTapped withProperties:notificationWithAppState];
-            [[app delegate] application:app didReceiveRemoteNotification:notification];
+            [delegate application:app didReceiveRemoteNotification:notification];
+
             [mock verify];
             [mock stopMocking];
         });
@@ -109,12 +113,13 @@ describe(@"receiveRemoteNotification", ^{
             NSData *data = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
             NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             id mock = [OCMockObject mockForClass:[ARNotificationView class]];
+
             [[mock reject]
              showNoticeInView:OCMOCK_ANY
              title:OCMOCK_ANY
              response:OCMOCK_ANY];
-            UIApplication *app = [UIApplication sharedApplication];
-            [[app delegate] application:app didReceiveRemoteNotification:notification];
+            [delegate application:app didReceiveRemoteNotification:notification];
+
             [mock verify];
             [mock stopMocking];
         });
@@ -132,11 +137,12 @@ describe(@"receiveRemoteNotification", ^{
             NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             NSMutableDictionary *notificationWithAppState = [[NSMutableDictionary alloc] initWithDictionary:notification];
             [notificationWithAppState setObject:@"active" forKey:@"UIApplicationState"];
-            UIApplication *app = [UIApplication sharedApplication];
             id mock = [OCMockObject mockForClass:[ARAnalytics class]];
+
             [[mock expect] event:ARAnalyticsNotificationReceived withProperties:notificationWithAppState];
             [[mock reject] event:ARAnalyticsNotificationTapped withProperties:notificationWithAppState];
-            [[app delegate] application:app didReceiveRemoteNotification:notification];
+            [delegate application:app didReceiveRemoteNotification:notification];
+
             [mock verify];
             [mock stopMocking];
         });
@@ -146,12 +152,13 @@ describe(@"receiveRemoteNotification", ^{
             NSData *data = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
             NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             id mock = [OCMockObject mockForClass:[ARNotificationView class]];
+
             [[mock expect]
              showNoticeInView:OCMOCK_ANY
              title:@"hello world"
              response:OCMOCK_ANY];
-            UIApplication *app = [UIApplication sharedApplication];
-            [[app delegate] application:app didReceiveRemoteNotification:notification];
+            [delegate application:app didReceiveRemoteNotification:notification];
+
             [mock verify];
             [mock stopMocking];
         });
@@ -161,12 +168,13 @@ describe(@"receiveRemoteNotification", ^{
             NSData *data = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
             NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             id mock = [OCMockObject mockForClass:[ARNotificationView class]];
+
             [[mock expect]
              showNoticeInView:OCMOCK_ANY
              title:@"http://artsy.net/feature"
              response:OCMOCK_ANY];
-            UIApplication *app = [UIApplication sharedApplication];
-            [[app delegate] application:app didReceiveRemoteNotification:notification];
+            [delegate application:app didReceiveRemoteNotification:notification];
+
             [mock verify];
             [mock stopMocking];
         });
