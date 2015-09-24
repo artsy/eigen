@@ -3,5 +3,7 @@
 
 
 @interface ARPersonalizeWebViewController : ARInternalMobileWebViewController
+
 @property (atomic, weak) id<ARLoginSignupDelegate> personalizeDelegate;
+
 @end

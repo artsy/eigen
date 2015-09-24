@@ -6,6 +6,8 @@
 @interface ARTopMenuInternalMobileWebViewController () <ARTopMenuRootViewController>
 @property (nonatomic, assign) BOOL hasSuccessfullyLoadedLastRequest;
 @property (nonatomic, strong) NSDate *lastRequestLoadedAt;
+@property (nonatomic, strong) NSURLRequest *initialRequest;
+@property (nonatomic, strong) NSURLResponse *keyResponse;
 @end
 
 
@@ -22,7 +24,7 @@
 // thrown out every time the user changes tabs, but that the user also has a way to effectively ‘reload’ a webview.
 // This is needed because there could have been a connectivity/server error at the time of loading and also because
 // content needs to be refreshable.
-//
+
 - (BOOL)shouldBeReloaded;
 {
     return !self.hasSuccessfullyLoadedLastRequest || (self.isCurrentlyVisibleViewController && self.isContentStale);
@@ -57,18 +59,19 @@
 
 #pragma mark - Overrides
 
-- (instancetype)initWithURL:(NSURL *)url;
+- (instancetype)initWithURL:(NSURL *)URL;
 {
-    if ((self = [super initWithURL:url])) {
+    if ((self = [super initWithURL:URL])) {
         _hasSuccessfullyLoadedLastRequest = YES;
     }
     return self;
 }
 
-- (void)loadURL:(NSURL *)url
+- (void)loadURL:(NSURL *)URL
 {
     self.lastRequestLoadedAt = nil;
-    [super loadURL:url];
+    self.initialRequest = nil;
+    [super loadURL:URL];
 }
 
 - (void)viewWillAppear:(BOOL)animated;
@@ -83,12 +86,27 @@
     [self markRemoteNotificationsAsRead];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView;
-{
-    [super webViewDidFinishLoad:webView];
+// We want to be able to track the responses and the requests in
+// order to evaluate later the status code
 
-    NSCachedURLResponse *urlResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:webView.request];
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)urlResponse.response;
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+    [super webView:webView decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
+    self.initialRequest = self.initialRequest ?: navigationAction.request;
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler
+{
+    // Using .path to ensure http -> https is 👍
+    if ([navigationResponse.response.URL.path isEqual:self.initialRequest.URL.path]) {
+        self.keyResponse = navigationResponse.response;
+    }
+    decisionHandler(WKNavigationResponsePolicyAllow);
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
+{
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)self.keyResponse;
     NSInteger statusCode = httpResponse.statusCode;
     self.hasSuccessfullyLoadedLastRequest = statusCode >= 200 && statusCode < 300;
 
@@ -99,9 +117,11 @@
     [self markRemoteNotificationsAsRead];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error;
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-    [super webView:webView didFailLoadWithError:error];
+    [super webView:webView didFailNavigation:navigation withError:error];
+
+    self.hasSuccessfullyLoadedLastRequest = NO;
 
     // This happens when we cancel loading the request and route internally from ARInternalMobileWebViewController.
     if (error.code != NSURLErrorCancelled) {

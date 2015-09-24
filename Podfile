@@ -71,7 +71,6 @@ target 'Artsy' do
   pod 'libextobjc/EXTKeyPathCoding'
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
-  pod 'TPDWeakProxy'
 
   # X-Callback-Url support
   pod 'InterAppCommunication'
@@ -90,9 +89,6 @@ target 'Artsy' do
   # Facebook
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
-
-  # Martsy / Force integration
-  pod 'TSMiniWebBrowser@dblock', :head
 
   # Analytics
   pod 'ARAnalytics', '>= 3.6.2', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
