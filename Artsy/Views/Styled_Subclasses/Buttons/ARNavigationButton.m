@@ -90,36 +90,39 @@
 
 - (void)updateConstraints
 {
-    [super updateConstraints];
-
     NSString *paddingHeight = @"12";
     if (self.subtitle.length == 0) {
         paddingHeight = @"20";
     }
 
+    [self.topBorder removeConstraints:self.topBorder.constraints];
     [self.topBorder constrainHeight:NSStringWithFormat(@"%f", self.borderWidth)];
     [self.topBorder alignCenterXWithView:self predicate:@"0"];
     [self.topBorder constrainWidthToView:self predicate:@"0"];
     [self alignTopEdgeWithView:self.topBorder predicate:@"0"];
 
+    [self.primaryTitleLabel removeConstraints:self.primaryTitleLabel.constraints];
     [self.primaryTitleLabel constrainTopSpaceToView:self.topBorder predicate:paddingHeight];
     [self.primaryTitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
     [self.primaryTitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
 
-
+    [self.subtitleLabel removeConstraints:self.subtitleLabel.constraints];
     [self.subtitleLabel constrainTopSpaceToView:self.primaryTitleLabel predicate:@"0"];
     [self.subtitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
     [self.subtitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
 
-
+    [self.arrowView removeConstraints:self.arrowView.constraints];
     [self.arrowView alignTrailingEdgeWithView:self predicate:@"0"];
     [self.arrowView alignCenterYWithView:self predicate:@"0"];
 
+    [self.bottomBorder removeConstraints:self.bottomBorder.constraints];
     [self.bottomBorder constrainHeight:NSStringWithFormat(@"%f", self.borderWidth)];
     [self.bottomBorder constrainTopSpaceToView:self.subtitleLabel predicate:paddingHeight];
     [self.bottomBorder alignCenterXWithView:self predicate:@"0"];
     [self.bottomBorder constrainWidthToView:self predicate:@"0"];
     [self alignBottomEdgeWithView:self.bottomBorder predicate:@"0"];
+
+    [super updateConstraints];
 }
 
 - (void)setTitle:(NSString *)title
@@ -189,7 +192,7 @@
         self.subtitleLabel.font = [UIFont serifFontWithSize:16];
     }
 
-    [self updateConstraints];
+    [self setNeedsUpdateConstraints];
 
     return self;
 }
