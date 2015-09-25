@@ -1,6 +1,7 @@
 ## Next
 
 * Improved Spotlight support for favorites. - alloy
+* Make Native to desktop web Handoff work. - alloy
 
 ## 2.3.0 (2015.09.18)
 

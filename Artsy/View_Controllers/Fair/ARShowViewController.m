@@ -13,7 +13,7 @@
 #import "ARShowNetworkModel.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARFairMapPreviewButton.h"
-#import "ARUserActivity.h"
+#import "UIViewController+ARUserActivity.h"
 
 typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
     ARFairShowViewHeader = 1,
@@ -123,8 +123,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
     CGFloat parentHeight = CGRectGetHeight(self.parentViewController.view.bounds) ?: CGRectGetHeight([UIScreen mainScreen].bounds);
     [self.view.stackView ensureScrollingWithHeight:parentHeight tag:ARFairShowViewWhitespaceGobbler];
 
-    self.userActivity = [ARUserActivity activityForEntity:self.show];
-    [self.userActivity becomeCurrent];
+    [self ar_setDataLoaded];
 }
 
 - (void)addActionButtonsToStack
@@ -233,6 +232,18 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
         [self showDidLoad];
     }];
+}
+
+- (void)viewDidAppear:(BOOL)animated;
+{
+    [super viewDidAppear:animated];
+    self.ar_userActivityEntity = self.show;
+}
+
+- (void)viewWillDisappear:(BOOL)animated;
+{
+    [super viewWillDisappear:animated];
+    [self.userActivity invalidate];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator

@@ -9,7 +9,7 @@
 #import "ARGeneArtworksNetworkModel.h"
 #import "ARArtworkSetViewController.h"
 #import "ORStackView+ArtsyViews.h"
-#import "ARUserActivity.h"
+#import "UIViewController+ARUserActivity.h"
 
 
 @interface ARGeneViewController () <AREmbeddedModelsDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
@@ -85,6 +85,22 @@
     [self updateBody];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    self.artworksViewController.collectionView.scrollsToTop = YES;
+    [self.view setNeedsLayout];
+    [self.view layoutIfNeeded];
+
+    self.ar_userActivityEntity = self.gene;
+}
+
+- (void)viewWillDisappear:(BOOL)animated;
+{
+    [super viewWillDisappear:animated];
+    [self.userActivity invalidate];
+}
 
 - (void)loadGene
 {
@@ -93,6 +109,7 @@
         @_strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
         [self updateBody];
+        [self ar_setDataLoaded];
 
         if (self.gene.geneDescription.length == 0) {
             [self.headerContainerView removeSubview:self.descriptionTextView];
@@ -149,14 +166,6 @@
     self.artworksViewController.collectionView.showsVerticalScrollIndicator = YES;
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    self.artworksViewController.collectionView.scrollsToTop = YES;
-    [self.view setNeedsLayout];
-    [self.view layoutIfNeeded];
-}
-
 - (void)getNextGeneArtworks
 {
     [self.artworkCollection getNextArtworkPage:^(NSArray *artworks) {
@@ -203,9 +212,6 @@
     [self.view setNeedsLayout];
     [self.view layoutIfNeeded];
     [self getNextGeneArtworks];
-
-    self.userActivity = [ARUserActivity activityForEntity:self.gene];
-    [self.userActivity becomeCurrent];
 }
 
 - (void)shareGene:(UIButton *)sender

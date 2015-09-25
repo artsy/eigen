@@ -14,7 +14,7 @@
 #import "ARTextView.h"
 #import "ARArtistNetworkModel.h"
 #import "ARSpotlight.h"
-#import "ARUserActivity.h"
+#import "UIViewController+ARUserActivity.h"
 
 static const NSInteger ARMinimumArtworksFor2Column = 5;
 
@@ -213,6 +213,18 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     [self setArtworksHeight];
 }
 
+- (void)viewDidAppear:(BOOL)animated;
+{
+    [super viewDidAppear:animated];
+    self.ar_userActivityEntity = self.artist;
+}
+
+- (void)viewWillDisappear:(BOOL)animated;
+{
+    [super viewWillDisappear:animated];
+    [self.userActivity invalidate];
+}
+
 - (void)updateWithArtist
 {
     [self.nameLabel setText:self.artist.name];
@@ -270,8 +282,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
         }
     }
 
-    self.userActivity = [ARUserActivity activityForEntity:self.artist];
-    [self.userActivity becomeCurrent];
+    [self ar_setDataLoaded];
 }
 
 - (void)prepareForNoArtworks

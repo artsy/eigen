@@ -6,7 +6,7 @@
 #import "ARPostsViewController.h"
 #import "ARArtworkView.h"
 #import "ARArtworkViewController+ButtonActions.h"
-#import "ARUserActivity.h"
+#import "UIViewController+ARUserActivity.h"
 
 
 @interface ARArtworkViewController () <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>
@@ -80,8 +80,7 @@
     void (^completion)(void) = ^{
         @_strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
-        self.userActivity = [ARUserActivity activityForEntity:self.artwork];
-        [self.userActivity becomeCurrent];
+        [self ar_setDataLoaded];
     };
 
     [self.artwork onArtworkUpdate:^{
@@ -105,6 +104,14 @@
     [super viewDidAppear:ARPerformWorkAsynchronously && animated];
     CGRect frame = self.view.frame;
     [self.view.metadataView updateConstraintsIsLandscape:CGRectGetWidth(frame) > CGRectGetHeight(frame)];
+
+    self.ar_userActivityEntity = self.artwork;
+}
+
+- (void)viewWillDisappear:(BOOL)animated;
+{
+    [super viewWillDisappear:animated];
+    [self.userActivity invalidate];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

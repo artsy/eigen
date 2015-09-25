@@ -224,6 +224,8 @@
 		5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */; };
 		5168A7701B46D6D000FFBCBF /* NotificationsButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5168A76F1B46D6D000FFBCBF /* NotificationsButton@2x.png */; };
 		516CDA631BB32B6A001C02B2 /* ARSpotlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA621BB32B6A001C02B2 /* ARSpotlight.m */; settings = {ASSET_TAGS = (); }; };
+		516CDA691BB55B54001C02B2 /* UIViewController+WithLoadedData.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */; settings = {ASSET_TAGS = (); }; };
+		516CDA6C1BB56611001C02B2 /* UIViewController+ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA6B1BB56611001C02B2 /* UIViewController+ARUserActivity.m */; settings = {ASSET_TAGS = (); }; };
 		5174A03B1A859E2C006CD337 /* ARFairMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5174A03A1A859E2C006CD337 /* ARFairMapView.m */; };
 		518B421E1B57CF7100210A02 /* AttentionIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 518B421D1B57CF7100210A02 /* AttentionIcon@2x.png */; };
 		51D141B01AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141AF1AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m */; };
@@ -996,6 +998,10 @@
 		5168A76F1B46D6D000FFBCBF /* NotificationsButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationsButton@2x.png"; sourceTree = "<group>"; };
 		516CDA611BB32B6A001C02B2 /* ARSpotlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpotlight.h; sourceTree = "<group>"; };
 		516CDA621BB32B6A001C02B2 /* ARSpotlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpotlight.m; sourceTree = "<group>"; };
+		516CDA671BB55B54001C02B2 /* UIViewController+WithLoadedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WithLoadedData.h"; sourceTree = "<group>"; };
+		516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WithLoadedData.m"; sourceTree = "<group>"; };
+		516CDA6A1BB56611001C02B2 /* UIViewController+ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ARUserActivity.h"; sourceTree = "<group>"; };
+		516CDA6B1BB56611001C02B2 /* UIViewController+ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ARUserActivity.m"; sourceTree = "<group>"; };
 		5174A0391A859E2C006CD337 /* ARFairMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapView.h; sourceTree = "<group>"; };
 		5174A03A1A859E2C006CD337 /* ARFairMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapView.m; sourceTree = "<group>"; };
 		518B421D1B57CF7100210A02 /* AttentionIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AttentionIcon@2x.png"; sourceTree = "<group>"; };
@@ -1891,6 +1897,10 @@
 				E6A3500418AAEBFF0075398F /* NSKeyedUnarchiver+ErrorLogging.m */,
 				3CF144A218E3727F00B1A764 /* UIViewController+ScreenSize.h */,
 				3CF144A318E3727F00B1A764 /* UIViewController+ScreenSize.m */,
+				516CDA671BB55B54001C02B2 /* UIViewController+WithLoadedData.h */,
+				516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */,
+				516CDA6A1BB56611001C02B2 /* UIViewController+ARUserActivity.h */,
+				516CDA6B1BB56611001C02B2 /* UIViewController+ARUserActivity.m */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -4420,6 +4430,7 @@
 				60D83DEE189EE679001672E9 /* ARFairGuideViewController.m in Sources */,
 				609F98601AC105F30079FE21 /* WatchMessage.m in Sources */,
 				60B617D31815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m in Sources */,
+				516CDA6C1BB56611001C02B2 /* UIViewController+ARUserActivity.m in Sources */,
 				6044CFC8179DD3C200CE4132 /* ARTheme+HeightAdditions.m in Sources */,
 				60745DEA165802D9006CE156 /* ARUserManager.m in Sources */,
 				60CF980817BF79CA005ED59B /* ARArtistBiographyViewController.m in Sources */,
@@ -4568,6 +4579,7 @@
 				3C35CC80189FF20D00E3D8DE /* ArtsyAPI+OrderedSets.m in Sources */,
 				609F984A1AC0F4E60079FE21 /* WatchArtwork.m in Sources */,
 				CB260E8117C2C90900BF2012 /* ARCollectorStatusViewController.m in Sources */,
+				516CDA691BB55B54001C02B2 /* UIViewController+WithLoadedData.m in Sources */,
 				5EFF52BA1976CA6C00E2A563 /* ARSearchFieldButton.m in Sources */,
 				60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */,
 				3CD3679C189AC4F000285DF7 /* ARAspectRatioImageView.m in Sources */,

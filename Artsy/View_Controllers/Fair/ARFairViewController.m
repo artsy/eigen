@@ -14,7 +14,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARGeneViewController.h"
 #import "ARParallaxHeaderViewController.h"
-#import "ARUserActivity.h"
+#import "UIViewController+ARUserActivity.h"
 
 NSString *const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
 NSString *const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";
@@ -95,6 +95,18 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
     }];
 
     [super viewDidLoad];
+}
+
+- (void)viewDidAppear:(BOOL)animated;
+{
+    [super viewDidAppear:animated];
+    self.ar_userActivityEntity = [[ARFairSpotlightMetadataProvider alloc] initWithFair:self.fair profile:self.fairProfile];
+}
+
+- (void)viewWillDisappear:(BOOL)animated;
+{
+    [super viewWillDisappear:animated];
+    [self.userActivity invalidate];
 }
 
 - (BOOL)shouldAutorotate
@@ -215,8 +227,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
     [self.stackView.stackView addWhiteSpaceWithHeight:@"20"];
     [self viewDidLayoutSubviews];
 
-    self.userActivity = [ARUserActivity activityForEntity:[[ARFairSpotlightMetadataProvider alloc] initWithFair:self.fair profile:self.fairProfile]];
-    [self.userActivity becomeCurrent];
+    [self ar_setDataLoaded];
 }
 
 #pragma mark - Private
