@@ -255,7 +255,8 @@ it(@"creates an NSUserActivity", ^{
     
     ARFairViewController *vc = [[ARFairViewController alloc] initWithFair:fair];
     vc.view.frame = [[UIScreen mainScreen] bounds];
-    
+    [vc viewDidAppear:NO];
+
     expect(vc.userActivity).notTo.beNil();
     expect(vc.userActivity.title).to.equal(@"The Fair Affair");
 });

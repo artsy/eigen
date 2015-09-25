@@ -31,6 +31,7 @@ it(@"creates an NSUserActivity", ^{
     
     vc = [[ARGeneViewController alloc] initWithGeneID:@"painting"];
     vc.view.frame = [[UIScreen mainScreen] bounds];
+    [vc viewDidAppear:NO];
     
     expect(vc.userActivity).willNot.beNil();
     expect(vc.userActivity.title).to.equal(@"Painting");
