@@ -143,11 +143,44 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     [defaults synchronize];
 }
 
-- (void)loginWithUsername:(NSString *)username password:(NSString *)password
+- (void)saveSharedWebCredentialsWithUsername:(NSString *)username
+                                    password:(NSString *)password;
+{
+    NSString *host = ARRouter.baseWebURL.host;
+    SecAddSharedWebCredential((CFStringRef)host, (CFStringRef)username, (CFStringRef)password, ^(CFErrorRef error) {
+        if (error) {
+            ARErrorLog(@"Failed to save Shared Web Credentials: %@", (__bridge NSError *)error);
+        } else {
+#ifdef DEBUG
+            ARActionLog(@"Saved Shared Web Credentials for `%@' with `%@:%@'", host, username, password);
+#endif
+        }
+    });
+}
+
+- (void)loginWithUsername:(NSString *)username
+                 password:(NSString *)password
+   successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials
+                  gotUser:(void (^)(User *currentUser))gotUser
+    authenticationFailure:(void (^)(NSError *error))authenticationFailure
+           networkFailure:(void (^)(NSError *error))networkFailure;
+{
+    [self loginWithUsername:username
+                   password:password
+     successWithCredentials:credentials
+                    gotUser:gotUser
+      authenticationFailure:authenticationFailure
+             networkFailure:networkFailure
+   saveSharedWebCredentials:YES];
+}
+
+- (void)loginWithUsername:(NSString *)username
+                 password:(NSString *)password
    successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials
                   gotUser:(void (^)(User *currentUser))gotUser
     authenticationFailure:(void (^)(NSError *error))authenticationFailure
            networkFailure:(void (^)(NSError *error))networkFailure
+ saveSharedWebCredentials:(BOOL)saveSharedWebCredentials;
 {
     NSURLRequest *request = [ARRouter newOAuthRequestWithUsername:username password:password];
 
@@ -179,9 +212,12 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
                 [self storeUserData];
             }];
 
-            // Store the credentials for next app launch
-
+            // Store the credentials for next app/web launch
             [self saveUserOAuthToken:token expiryDate:expiryDate];
+            if (saveSharedWebCredentials) {
+                [self saveSharedWebCredentialsWithUsername:username password:password];
+            }
+
             gotUser(user);
 
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
@@ -339,7 +375,26 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     } failure:failure];
 }
 
-- (void)createUserWithName:(NSString *)name email:(NSString *)email password:(NSString *)password success:(void (^)(User *))success failure:(void (^)(NSError *error, id JSON))failure
+- (void)createUserWithName:(NSString *)name
+                     email:(NSString *)email
+                  password:(NSString *)password
+                   success:(void (^)(User *))success
+                   failure:(void (^)(NSError *error, id JSON))failure;
+{
+    [self createUserWithName:name
+                       email:email
+                    password:password
+                     success:success
+                     failure:failure
+    saveSharedWebCredentials:YES];
+}
+
+- (void)createUserWithName:(NSString *)name
+                     email:(NSString *)email
+                  password:(NSString *)password
+                   success:(void (^)(User *))success
+                   failure:(void (^)(NSError *error, id JSON))failure
+  saveSharedWebCredentials:(BOOL)saveSharedWebCredentials;
 {
     [ARAnalytics event:ARAnalyticsSignUpEmail];
 
@@ -362,8 +417,12 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              self.didCreateAccountThisSession = YES;
              self.currentUser = user;
              [self storeUserData];
-             
-             if(success) success(user);
+             if (saveSharedWebCredentials) {
+                 [self saveSharedWebCredentialsWithUsername:email password:password];
+             }
+
+             if (success) success(user);
+
              [ARAnalytics event:ARAnalyticsAccountCreated];
 
              ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustCreatedAnAccount];
