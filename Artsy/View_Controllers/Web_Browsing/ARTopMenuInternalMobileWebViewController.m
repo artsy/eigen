@@ -115,6 +115,7 @@
     }
 
     [self markRemoteNotificationsAsRead];
+    [super webView:webView didFinishNavigation:navigation];
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error

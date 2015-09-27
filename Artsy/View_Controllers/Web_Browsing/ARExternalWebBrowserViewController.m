@@ -31,6 +31,7 @@
 
     // So we can separate init, from view loading
     _initialURL = url;
+    self.automaticallyAdjustsScrollViewInsets = NO;
 
     return self;
 }
@@ -39,7 +40,12 @@
 {
     [super viewDidLoad];
 
-    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+    // Create a user content controller so that subclasses can add user scripts to it
+    _userContentController = [[WKUserContentController alloc] init];
+    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+    configuration.userContentController = self.userContentController;
+
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
     webView.navigationDelegate = self;
     [self.view addSubview:webView];
 
