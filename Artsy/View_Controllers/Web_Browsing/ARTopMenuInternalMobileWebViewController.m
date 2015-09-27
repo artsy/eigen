@@ -119,10 +119,6 @@
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-    [super webView:webView didFailNavigation:navigation withError:error];
-
-    self.hasSuccessfullyLoadedLastRequest = NO;
-
     // This happens when we cancel loading the request and route internally from ARInternalMobileWebViewController.
     if (error.code != NSURLErrorCancelled) {
         self.hasSuccessfullyLoadedLastRequest = NO;
