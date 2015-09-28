@@ -71,14 +71,6 @@ static void *ARProgressContext = &ARProgressContext;
     [super viewDidLoad];
     [self showLoading];
 
-//    NSString *source = @"var meta = document.createElement('meta'); \
-//    meta.name = 'viewport'; \
-//    meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'; \
-//    var head = document.getElementsByTagName('head')[0];\
-//    head.appendChild(meta);";
-//    WKUserScript *script = [[WKUserScript alloc] initWithSource:source injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
-//    [self.userContentController addUserScript:script];
-
     // KVO on progress for when we can show the page
     [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew & NSKeyValueObservingOptionOld context:ARProgressContext];
 }
@@ -151,8 +143,8 @@ static void *ARProgressContext = &ARProgressContext;
                 [self userDidSignUp];
             }];
         }
-        NSLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
-
+        
+        ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
         return WKNavigationActionPolicyCancel;
     }
 
@@ -164,7 +156,7 @@ static void *ARProgressContext = &ARProgressContext;
             CGRect position = (CGRect){.origin = lastTouchPointInView, .size = CGSizeZero};
             [self.shareValidator shareURL:URL inView:self.view frame:position];
 
-            NSLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
+            ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
             return WKNavigationActionPolicyCancel;
 
         } else {
@@ -173,12 +165,12 @@ static void *ARProgressContext = &ARProgressContext;
                 [self.navigationController pushViewController:viewController animated:YES];
             }
 
-            NSLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
+            ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
             return WKNavigationActionPolicyCancel;
         }
     }
 
-    NSLog(@"Martsy URL: Allowed - %@ - %@", URL, @(navigationAction.navigationType));
+    ARActionLog(@"Martsy URL: Allowed - %@ - %@", URL, @(navigationAction.navigationType));
     return WKNavigationActionPolicyAllow;
 }
 

@@ -40,12 +40,7 @@
 {
     [super viewDidLoad];
 
-    // Create a user content controller so that subclasses can add user scripts to it
-    _userContentController = [[WKUserContentController alloc] init];
-    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
-    configuration.userContentController = self.userContentController;
-
-    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
     webView.navigationDelegate = self;
     [self.view addSubview:webView];
 
