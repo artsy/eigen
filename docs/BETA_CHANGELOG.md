@@ -1,3 +1,10 @@
+## UNRELEASED
+
+* Adds a black background to internal web views - orta
+* Fixes to a crash on top internalVCs introduced in the 2015.09.25 beta - orta
+* Fixes a sneaky top margin appearing on internal web views - orta
+
+
 ## 2.3.0 (2015.09.26)
 
 * Add support for Shared Web Credentials. Available credentials are shown on the login view and entered/created credentials are saved for web use. - alloy

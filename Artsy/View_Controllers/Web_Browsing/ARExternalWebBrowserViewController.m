@@ -31,6 +31,7 @@
 
     // So we can separate init, from view loading
     _initialURL = url;
+    self.automaticallyAdjustsScrollViewInsets = NO;
 
     return self;
 }

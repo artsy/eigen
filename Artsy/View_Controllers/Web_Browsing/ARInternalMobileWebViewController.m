@@ -143,10 +143,11 @@ static void *ARProgressContext = &ARProgressContext;
                 [self userDidSignUp];
             }];
         }
+        
+        ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
         return WKNavigationActionPolicyCancel;
     }
 
-    NSLog(@"Martsy URL %@ - %@", URL, @(navigationAction.navigationType));
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
@@ -155,6 +156,7 @@ static void *ARProgressContext = &ARProgressContext;
             CGRect position = (CGRect){.origin = lastTouchPointInView, .size = CGSizeZero};
             [self.shareValidator shareURL:URL inView:self.view frame:position];
 
+            ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
             return WKNavigationActionPolicyCancel;
 
         } else {
@@ -162,9 +164,13 @@ static void *ARProgressContext = &ARProgressContext;
             if (viewController && ![self.navigationController.viewControllers containsObject:viewController]) {
                 [self.navigationController pushViewController:viewController animated:YES];
             }
+
+            ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
             return WKNavigationActionPolicyCancel;
         }
     }
+
+    ARActionLog(@"Martsy URL: Allowed - %@ - %@", URL, @(navigationAction.navigationType));
     return WKNavigationActionPolicyAllow;
 }
 
@@ -178,13 +184,6 @@ static void *ARProgressContext = &ARProgressContext;
 - (NSURLRequest *)requestWithURL:(NSURL *)URL
 {
     return [ARRouter requestForURL:URL];
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
-    return nil;
 }
 
 @end

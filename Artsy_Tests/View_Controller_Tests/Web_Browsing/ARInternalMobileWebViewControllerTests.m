@@ -128,13 +128,6 @@ describe(@"initWithURL", ^{
     });
 });
 
-describe(@"zooming", ^{
-    it(@"does not provide a view for zooming", ^{
-        ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/foo/bar"]];
-        expect([controller viewForZoomingInScrollView:controller.scrollView]).to.beNil();
-    });
-});
-
 describe(@"authenticated", ^{
     beforeEach(^{
         [ARUserManager stubAndLoginWithUsername];
