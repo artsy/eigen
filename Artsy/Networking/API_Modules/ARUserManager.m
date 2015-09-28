@@ -19,6 +19,8 @@ NSString *ARTrialUserNameKey = @"ARTrialUserName";
 NSString *ARTrialUserEmailKey = @"ARTrialUserEmail";
 NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 
+static BOOL ARUserManagerDisableSharedWebCredentials = NO;
+
 
 @interface ARUserManager ()
 @property (nonatomic, strong) NSObject<ARKeychainable> *keychain;
@@ -143,21 +145,6 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
     [defaults synchronize];
 }
 
-- (void)saveSharedWebCredentialsWithUsername:(NSString *)username
-                                    password:(NSString *)password;
-{
-    NSString *host = ARRouter.baseWebURL.host;
-    SecAddSharedWebCredential((CFStringRef)host, (CFStringRef)username, (CFStringRef)password, ^(CFErrorRef error) {
-        if (error) {
-            ARErrorLog(@"Failed to save Shared Web Credentials: %@", (__bridge NSError *)error);
-        } else {
-#ifdef DEBUG
-            ARActionLog(@"Saved Shared Web Credentials for `%@' with `%@:%@'", host, username, password);
-#endif
-        }
-    });
-}
-
 - (void)loginWithUsername:(NSString *)username
                  password:(NSString *)password
    successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials
@@ -215,7 +202,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
             // Store the credentials for next app/web launch
             [self saveUserOAuthToken:token expiryDate:expiryDate];
             if (saveSharedWebCredentials) {
-                [self saveSharedWebCredentialsWithUsername:username password:password];
+                [self saveSharedWebCredentialsWithEmail:username password:password];
             }
 
             gotUser(user);
@@ -418,7 +405,7 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
              self.currentUser = user;
              [self storeUserData];
              if (saveSharedWebCredentials) {
-                 [self saveSharedWebCredentialsWithUsername:email password:password];
+                 [self saveSharedWebCredentialsWithEmail:email password:password];
              }
 
              if (success) success(user);
@@ -661,6 +648,64 @@ NSString *ARTrialUserUUID = @"ARTrialUserUUID";
 - (void)resetTrialUserUUID
 {
     [self.keychain removeKeychainStringForKey:ARTrialUserUUID];
+}
+
+#pragma mark - Shared Web Credentials
+
+- (void)disableSharedWebCredentials;
+{
+    ARUserManagerDisableSharedWebCredentials = YES;
+}
+
+- (void)saveSharedWebCredentialsWithEmail:(NSString *)email
+                                 password:(NSString *)password;
+{
+    if (ARUserManagerDisableSharedWebCredentials) {
+        return;
+    }
+
+    NSString *host = ARRouter.baseWebURL.host;
+    SecAddSharedWebCredential((CFStringRef)host, (CFStringRef)email, (CFStringRef)password, ^(CFErrorRef error) {
+        if (error) {
+            ARErrorLog(@"Failed to save Shared Web Credentials: %@", (__bridge NSError *)error);
+        } else {
+#ifdef DEBUG
+            ARActionLog(@"Saved Shared Web Credentials for `%@' with `%@:%@'", host, email, password);
+#endif
+        }
+    });
+}
+
+- (void)tryLoginWithSharedWebCredentials:(void (^)(NSError *error))completion;
+{
+    if (ARUserManagerDisableSharedWebCredentials) {
+        NSDictionary *info = @{ NSLocalizedDescriptionKey: @"Developer chose to not use Shared Web Credentials." };
+        completion([NSError errorWithDomain:@"net.artsy.artsy.authentication" code:-1 userInfo:info]);
+        return;
+    }
+
+    SecRequestSharedWebCredential(NULL, NULL, ^(CFArrayRef credentials, CFErrorRef error) {
+        if (error) {
+            // Might just be that there are no credentials available. TODO make that not call the error callback?
+            ARErrorLog(@"Unable to fetch Shared Web Credentials: %@", (__bridge NSError *)error);
+            completion((__bridge NSError *)error);
+        } else {
+            NSDictionary *account = [(__bridge NSArray *)credentials firstObject];
+            if (account) {
+                [[ARUserManager sharedManager] loginWithUsername:account[(__bridge NSString *)kSecAttrAccount]
+                                                        password:account[(__bridge NSString *)kSecSharedPassword]
+                                          successWithCredentials:nil
+                                                         gotUser:^(User *currentUser) { completion(nil); }
+                                           authenticationFailure:^(NSError *e) { completion(e); }
+                                                  networkFailure:^(NSError *e) { completion(e); }
+                                        saveSharedWebCredentials:NO];
+            } else {
+                NSDictionary *info = @{ NSLocalizedDescriptionKey: @"User chose to not use Shared Web Credentials." };
+                completion([NSError errorWithDomain:@"net.artsy.artsy.authentication" code:-1 userInfo:info]);
+            }
+        }
+    });
+
 }
 
 @end

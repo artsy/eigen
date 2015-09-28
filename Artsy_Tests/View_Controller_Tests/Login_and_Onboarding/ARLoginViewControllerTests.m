@@ -34,7 +34,6 @@ describe(@"login view controller", ^{
     describe(@"snapshots", ^{
         beforeEach(^{
             controller = [[ARLoginViewController alloc] init];
-            controller.skipSharedWebCredentials = YES;
             controller.hideDefaultValues = YES;
         });
                    
@@ -56,7 +55,6 @@ describe(@"login view controller", ^{
     describe(@"initWithEmail", ^{
         beforeEach(^{
             controller = [[ARLoginViewController alloc] initWithEmail:[ARUserManager stubUserEmail]];
-            controller.skipSharedWebCredentials = YES;
             [controller view]; // loads view and calls viewDidLoad
         });
 
@@ -69,7 +67,6 @@ describe(@"login view controller", ^{
     describe(@"login", ^{
         beforeEach(^{
             controller = [[ARLoginViewController alloc] init];
-            controller.skipSharedWebCredentials = YES;
             [controller view]; // loads view and calls viewDidLoad
         });
 
@@ -215,7 +212,6 @@ describe(@"login view controller", ^{
     describe(@"forgot password", ^{
         beforeEach(^{
             controller = [[ARLoginViewController alloc] init];
-            controller.skipSharedWebCredentials = YES;
             [controller view]; // loads view and calls viewDidLoad
         });
 

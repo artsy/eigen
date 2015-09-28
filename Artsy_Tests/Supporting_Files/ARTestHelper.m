@@ -1,8 +1,9 @@
 #import "ARTestHelper.h"
-#import "ARSpotlight.h"
 
-#import "ARRouter.h"
 #import "ARLogger.h"
+#import "ARRouter.h"
+#import "ARSpotlight.h"
+#import "ARUserManager.h"
 
 @import iRate;
 
@@ -26,6 +27,10 @@
 
     // Disable this so that no actual changes are made to the index as side-effects of favoriting entities.
     [ARSpotlight disableIndexing];
+
+    // Shared Web Credentials involve async processes that trigger OS alerts and are generally hard to deal with.
+    // The related ARUserManager methods can still be invoked, they will just silently do nothing.
+    [[ARUserManager sharedManager] disableSharedWebCredentials];
 
     /// Never run in tests
     [[iRate sharedInstance] setRatedThisVersion:YES];
