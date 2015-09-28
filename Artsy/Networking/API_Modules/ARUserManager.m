@@ -686,7 +686,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
     SecRequestSharedWebCredential(NULL, NULL, ^(CFArrayRef credentials, CFErrorRef error) {
         if (error) {
-            // Might just be that there are no credentials available. TODO make that not call the error callback?
+            // An error might be as simple as there not being any credentials available.
             ARErrorLog(@"Unable to fetch Shared Web Credentials: %@", (__bridge NSError *)error);
             completion((__bridge NSError *)error);
         } else {
