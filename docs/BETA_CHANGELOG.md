@@ -5,6 +5,7 @@
 * Fixes a sneaky top margin appearing on internal web views - orta
 * Improve the use of Shared Web Credentials by trying it as early as possible, before even asking the user to sign-in. - alloy
 * Fix crash by disabling network logging in release mode completely. - alloy
+* Clean-up all compiler warnings for Xcode 7 / iOS 9 SDK. - alloy
 
 ## 2.3.0 (2015.09.26)
 
