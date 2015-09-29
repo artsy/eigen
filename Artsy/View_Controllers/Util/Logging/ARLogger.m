@@ -9,7 +9,11 @@
 
 + (BOOL)shouldLogNetworkRequests;
 {
+#ifdef DEBUG
     return ![ARDeveloperOptions options][@"suppress_network_logs"];
+#else
+    return NO;
+#endif
 }
 
 + (instancetype)sharedLogger
