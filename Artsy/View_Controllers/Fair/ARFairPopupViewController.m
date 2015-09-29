@@ -12,14 +12,20 @@
 
 @implementation ARFairPopupViewController
 
+AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
+
 - (instancetype)initWithFair:(Fair *)fair
 {
-    return [self initWithFairTitle:fair.name imageBackgroundURL:[NSURL URLWithString:fair.bannerAddress] slug:fair.fairID];
+    return [self initWithFairTitle:fair.name
+                imageBackgroundURL:[NSURL URLWithString:fair.bannerAddress]
+                              slug:fair.fairID];
 }
 
-- (instancetype)initWithFairTitle:(NSString *)title imageBackgroundURL:(NSURL *)url slug:(NSString *)slug
+- (instancetype)initWithFairTitle:(NSString *)title
+               imageBackgroundURL:(NSURL *)url
+                             slug:(NSString *)slug
 {
-    self = [super init];
+    self = [super initWithNibName:nil bundle:nil];
     if (!self) {
         return nil;
     }

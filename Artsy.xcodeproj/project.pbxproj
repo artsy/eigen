@@ -1002,6 +1002,7 @@
 		516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WithLoadedData.m"; sourceTree = "<group>"; };
 		516CDA6A1BB56611001C02B2 /* UIViewController+ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ARUserActivity.h"; sourceTree = "<group>"; };
 		516CDA6B1BB56611001C02B2 /* UIViewController+ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ARUserActivity.m"; sourceTree = "<group>"; };
+		5170C50B1BBAC1090043E601 /* ARMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMacros.h; sourceTree = "<group>"; };
 		5174A0391A859E2C006CD337 /* ARFairMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapView.h; sourceTree = "<group>"; };
 		5174A03A1A859E2C006CD337 /* ARFairMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapView.m; sourceTree = "<group>"; };
 		518B421D1B57CF7100210A02 /* AttentionIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AttentionIcon@2x.png"; sourceTree = "<group>"; };
@@ -2458,6 +2459,7 @@
 				516CDA621BB32B6A001C02B2 /* ARSpotlight.m */,
 				514E56471BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.h */,
 				514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */,
+				5170C50B1BBAC1090043E601 /* ARMacros.h */,
 			);
 			path = App;
 			sourceTree = "<group>";

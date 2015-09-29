@@ -42,11 +42,13 @@ typedef NS_ENUM(NSInteger, ARFairGuideViewOrder) {
 
 @dynamic view;
 
-#pragma mark - Lifecyce
+#pragma mark - Lifecycle
+
+AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (instancetype)initWithFair:(Fair *)fair
 {
-    self = [super init];
+    self = [super initWithNibName:nil bundle:nil];
     if (!self) {
         return nil;
     }

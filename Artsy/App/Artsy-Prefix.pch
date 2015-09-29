@@ -54,6 +54,7 @@
     #import "ARDispatchManager.h"
     #import "ARDeveloperOptions.h"
     #import "ARAutoLayoutDebugging.h"
+    #import "ARMacros.h"
 
 
     #ifdef DEBUG

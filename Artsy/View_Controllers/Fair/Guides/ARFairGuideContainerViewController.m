@@ -38,9 +38,11 @@
 
 const CGFloat kClosedMapHeight = 180.0f;
 
+AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
+
 - (instancetype)initWithFair:(Fair *)fair
 {
-    self = [super init];
+    self = [super initWithNibName:nil bundle:nil];
     if (!self) return nil;
 
     _fair = fair;
