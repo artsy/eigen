@@ -1,9 +1,10 @@
 #import "ARSignUpSplashViewController.h"
 #import "ARAppDelegate.h"
 #import "ARCrossfadingImageView.h"
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+#import "ARUserManager.h"
 #import "UIView+HitTestExpansion.h"
 
+@import UIAlertView_Blocks;
 
 @interface ARSignUpSplashTextViewController : UIViewController
 @property (nonatomic, readwrite) NSInteger index;
@@ -21,6 +22,8 @@
 @property (nonatomic) ARClearFlatButton *trialButton;
 @property (nonatomic) UIPageViewController *pageViewController;
 @property (nonatomic, strong, readwrite) UIPageControl *pageControl;
+@property (nonatomic, strong, readwrite) UIActivityIndicatorView *spinnerView;
+@property (nonatomic, strong, readwrite) UIImageView *logoView;
 @end
 
 
@@ -64,6 +67,62 @@
     [self.imageView alignToView:self.view];
     self.imageView.userInteractionEnabled = YES;
 
+}
+
+- (void)viewDidLoad
+{
+    NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", [UIDevice isPad] ? @"large" : @"small");
+    self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
+    self.logoView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:self.logoView];
+    [self.logoView alignCenterXWithView:self.view predicate:@"0"];
+    [self.logoView alignCenterYWithView:self.view predicate:[UIDevice isPad] ? @"-194" : @"-173"];
+
+    self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.view addSubview:self.spinnerView];
+    [self.spinnerView alignToView:self.view];
+    [self.spinnerView startAnimating];
+
+    NSArray *images = [self.pages map:^id(NSDictionary *object) {
+        return [object objectForKey:@"image"];
+    }];
+
+    self.imageView.images = images;
+
+    [super viewDidLoad];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.view.alpha = 0;
+    [UIView animateWithDuration:ARAnimationDuration animations:^{
+        self.view.alpha = 1;
+    }];
+
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [[ARUserManager sharedManager] tryLoginWithSharedWebCredentials:^(NSError *error) {
+        ar_dispatch_main_queue(^{
+            if (error) {
+                [UIView animateWithDuration:ARAnimationDuration animations:^{
+                    [self.spinnerView removeFromSuperview];
+                    self.spinnerView = nil;
+                    [self showControls];
+                }];
+            } else {
+                [self.delegate dismissOnboardingWithVoidAnimation:YES];
+            }
+        });
+    }];
+
+    [super viewDidAppear:animated];
+}
+
+- (void)showControls;
+{
     self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     self.pageViewController.dataSource = self;
     self.pageViewController.delegate = self;
@@ -81,21 +140,10 @@
         return [(UIView *)object isKindOfClass:[UIScrollView class]];
     }];
     scrollView.delegate = self;
-}
-
-- (void)viewDidLoad
-{
-    NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", [UIDevice isPad] ? @"large" : @"small");
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
-    logo.contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:logo];
-    [logo alignCenterXWithView:self.view predicate:@"0"];
-    [logo alignCenterYWithView:self.view predicate:[UIDevice isPad] ? @"-194" : @"-173"];
 
     self.pageControl = [self pageControlForPaging];
-
     [self.view addSubview:self.pageControl];
-    [self.pageControl constrainTopSpaceToView:logo predicate:[UIDevice isPad] ? @"290" : @"160"];
+    [self.pageControl constrainTopSpaceToView:self.logoView predicate:[UIDevice isPad] ? @"290" : @"160"];
     [self.pageControl alignCenterXWithView:self.view predicate:@"0"];
 
     self.signUpButton = [[ARWhiteFlatButton alloc] init];
@@ -121,24 +169,6 @@
     [self.logInButton ar_extendHitTestSizeByWidth:10 andHeight:10];
     [self.logInButton alignTrailingEdgeWithView:self.view predicate:[UIDevice isPad] ? @"-44" : @"-20"];
     [self.logInButton alignAttribute:NSLayoutAttributeCenterY toAttribute:NSLayoutAttributeBottom ofView:self.view predicate:[UIDevice isPad] ? @"-42" : @"-22"];
-
-    NSArray *images = [self.pages map:^id(NSDictionary *object) {
-        return [object objectForKey:@"image"];
-    }];
-
-    self.imageView.images = images;
-
-    [super viewDidLoad];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    self.view.alpha = 0;
-    [UIView animateWithDuration:ARAnimationDuration animations:^{
-        self.view.alpha = 1;
-    }];
-
-    [super viewWillAppear:animated];
 }
 
 #pragma Property overrides

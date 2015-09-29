@@ -28,6 +28,8 @@ extern NSString *const ARUserSessionStartedNotification;
 - (BOOL)hasValidAuthenticationToken;
 - (BOOL)hasValidXAppToken;
 
+- (void)disableSharedWebCredentials;
+- (void)tryLoginWithSharedWebCredentials:(void (^)(NSError *error))completion;
 
 - (void)startTrial:(void (^)())callback failure:(void (^)(NSError *error))failure;
 

@@ -313,25 +313,6 @@
 #endif
 
     [super viewDidAppear:animated];
-
-    if (!self.skipSharedWebCredentials) {
-        SecRequestSharedWebCredential(NULL, NULL, ^(CFArrayRef credentials, CFErrorRef error) {
-            if (error) {
-                ARErrorLog(@"Unable to fetch Shared Web Credentials: %@", (__bridge NSError *)error);
-            } else {
-                NSDictionary *account = [(__bridge NSArray *)credentials firstObject];
-                if (account) {
-                    ar_dispatch_main_queue(^{
-                        self.emailTextField.text = account[(__bridge NSString *)kSecAttrAccount];
-                        self.passwordTextField.secureTextEntry = YES;
-                        self.passwordTextField.text = account[(__bridge NSString *)kSecSharedPassword];
-                        self.passwordTextField.secureTextEntry = NO;
-                        [self textFieldDidChange:nil];
-                    });
-                }
-            }
-        });
-    }
 }
 
 - (void)autoLogIn:(id)sender
@@ -434,8 +415,7 @@
         networkFailure:^(NSError *error) {
         @_strongify(self);
         [self networkFailure:error];
-        }
-        saveSharedWebCredentials:!self.skipSharedWebCredentials];
+        }];
 }
 
 - (void)authenticationFailure

@@ -19,6 +19,8 @@ describe(@"signup splash", ^{
 
     it(@"has three pages", ^{
         sharedBefore();
+        [controller beginAppearanceTransition:YES animated:NO];
+        [controller endAppearanceTransition];
         expect(controller.view).notTo.beNil();
         expect(controller.pageCount).to.equal(3);
         expect(controller.pageControl.numberOfPages).to.equal(3);

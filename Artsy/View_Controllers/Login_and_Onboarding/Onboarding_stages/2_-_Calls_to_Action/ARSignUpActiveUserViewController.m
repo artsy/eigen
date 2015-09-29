@@ -1,10 +1,12 @@
 #import "ARSignUpActiveUserViewController.h"
 #import "AROnboardingNavBarView.h"
+#import "ARUserManager.h"
 
 
 @interface ARSignUpActiveUserViewController ()
 @property (nonatomic, strong) AROnboardingNavBarView *navView;
 @property (nonatomic, strong) NSString *message;
+@property (nonatomic, strong, readwrite) UIActivityIndicatorView *spinnerView;
 @end
 
 
@@ -68,19 +70,51 @@
 {
     self.view.backgroundColor = [UIColor clearColor];
 
+    self.bodyCopyLabel.hidden = YES;
+    self.bottomView.hidden = YES;
+
+    self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.view addSubview:self.spinnerView];
+    [self.spinnerView alignToView:self.view];
+    [self.spinnerView startAnimating];
+
+    [super viewDidLoad];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [[ARUserManager sharedManager] tryLoginWithSharedWebCredentials:^(NSError *error) {
+        ar_dispatch_main_queue(^{
+            if (error) {
+                [UIView animateWithDuration:ARAnimationDuration animations:^{
+                    [self.spinnerView removeFromSuperview];
+                    self.spinnerView = nil;
+                    [self showControls];
+                }];
+            } else {
+                [self.delegate dismissOnboardingWithVoidAnimation:YES];
+            }
+        });
+    }];
+
+    [super viewDidAppear:animated];
+}
+
+- (void)showControls;
+{
     AROnboardingNavBarView *navView = [[AROnboardingNavBarView alloc] init];
     [self.view addSubview:navView];
     self.navView = navView;
 
     [navView.title setText:@""];
 
-    [navView.back setImage:[UIImage imageNamed:@"CloseButtonLarge"] forState:UIControlStateNormal];
-    [navView.back setImage:[UIImage imageNamed:@"CloseButtonLargeHighlignted"] forState:UIControlStateHighlighted];
-    [navView.back addTarget:self action:@selector(goBackToApp:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navView.back setImage:[UIImage imageNamed:@"CloseButtonLarge"] forState:UIControlStateNormal];
+    [self.navView.back setImage:[UIImage imageNamed:@"CloseButtonLargeHighlignted"] forState:UIControlStateHighlighted];
+    [self.navView.back addTarget:self action:@selector(goBackToApp:) forControlEvents:UIControlEventTouchUpInside];
 
-    [navView.forward setTitle:@"LOG IN" forState:UIControlStateNormal];
-    [navView.forward addTarget:self action:@selector(goToLogin:) forControlEvents:UIControlEventTouchUpInside];
-    [navView.forward setEnabled:YES animated:NO];
+    [self.navView.forward setTitle:@"LOG IN" forState:UIControlStateNormal];
+    [self.navView.forward addTarget:self action:@selector(goToLogin:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navView.forward setEnabled:YES animated:NO];
 
     self.bodyCopyLabel.font = [UIFont serifFontWithSize:22];
     self.bodyCopyLabel.backgroundColor = [UIColor clearColor];
@@ -88,7 +122,8 @@
     self.bodyCopyLabel.lineHeight = 6;
     self.bodyCopyLabel.text = self.message;
 
-    [super viewDidLoad];
+    self.bodyCopyLabel.hidden = NO;
+    self.bottomView.hidden = NO;
 }
 
 - (BOOL)shouldAutorotate
