@@ -3,8 +3,7 @@
 
 @interface ARFairGuideContainerViewController : UIViewController
 
-- (instancetype)initWithFair:(Fair *)fair __attribute((objc_designated_initializer));
-- (instancetype)init __attribute__((unavailable("Designated Initializer initWithFair: must be used.")));
+- (instancetype)initWithFair:(Fair *)fair AR_VC_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, strong) Fair *fair;
 @property (nonatomic, assign) BOOL animatedTransitions; //Defaults to YES

@@ -332,7 +332,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     return [self.rootNavigationController shouldAutorotate];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return self.rootNavigationController.supportedInterfaceOrientations ?: ([UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait);
 }

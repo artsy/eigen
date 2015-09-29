@@ -9,14 +9,13 @@
 
 
 @interface ARProfileViewControllerTestsConcreteLayoutGuide : NSObject <UILayoutSupport>
-
 @property (nonatomic, assign) CGFloat length;
-
+@property (atomic, strong) NSLayoutYAxisAnchor *topAnchor;
+@property (atomic, strong) NSLayoutYAxisAnchor *bottomAnchor;
+@property (atomic, strong) NSLayoutDimension *heightAnchor;
 @end
 
-
 @implementation ARProfileViewControllerTestsConcreteLayoutGuide
-
 @end
 
 

@@ -10,6 +10,8 @@
 @implementation Article
 @synthesize name = _name;
 
+AR_OVERRIDE_SUPER_DESIGNATED_INITIALIZER(init);
+
 - (instancetype)initWithURL:(NSURL *)url name:(NSString *)name
 {
     self = [super init];

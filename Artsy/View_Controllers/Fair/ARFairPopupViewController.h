@@ -4,7 +4,7 @@
 @interface ARFairPopupViewController : UIViewController
 
 - (instancetype)initWithFair:(Fair *)fair;
-- (instancetype)initWithFairTitle:(NSString *)title imageBackgroundURL:(NSURL *)url slug:(NSString *)slug NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFairTitle:(NSString *)title imageBackgroundURL:(NSURL *)url slug:(NSString *)slug AR_VC_DESIGNATED_INITIALIZER;
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;

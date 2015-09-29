@@ -27,6 +27,7 @@
     #import "Constants.h"
     #import "Models.h"
     #import "Extensions.h"
+    #import "ARMacros.h"
     #import "ARTestContext.h"
     #import "ARTestHelper.h"
     #import "ARAutoLayoutDebugging.h"

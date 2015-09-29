@@ -113,11 +113,27 @@ target 'Artsy Tests' do
   pod 'OCMock'
 end
 
-# Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
 post_install do |installer|
+  # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['ENABLE_BITCODE'] = 'NO'
     end
+  end
+
+  # Remove frameworks dir that no longer exists in the iOS 9 SDK.
+  # This should be removed once we can update to CP 0.39.
+  Pathname.glob('Pods/Target Support Files/**/*.xcconfig').each do |xcconfig|
+    contents = xcconfig.read
+    xcconfig.open('w') do |file|
+      file.write contents.gsub('"$(SDKROOT)/Developer/Library/Frameworks"', '')
+    end
+  end
+
+  # Until this is fixed, ignore the warning https://github.com/specta/specta/pull/182
+  specta_file = Pathname.new('Pods/Specta/Specta/Specta/XCTest+Private.h')
+  contents = specta_file.read
+  specta_file.open('w') do |file|
+    file.write contents.sub("@protocol XCTestObservation <NSObject>\n@end", '')
   end
 end

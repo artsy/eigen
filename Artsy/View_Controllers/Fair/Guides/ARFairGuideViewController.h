@@ -17,8 +17,7 @@ typedef NS_ENUM(NSInteger, ARFairGuideSelectedTab) {
 
 @interface ARFairGuideViewController : UIViewController
 
-- (instancetype)initWithFair:(Fair *)fair __attribute((objc_designated_initializer));
-- (instancetype)init __attribute__((unavailable("Designated Initializer initWithFair: must be used.")));
+- (instancetype)initWithFair:(Fair *)fair AR_VC_DESIGNATED_INITIALIZER;
 
 - (void)fairDidLoad;
 

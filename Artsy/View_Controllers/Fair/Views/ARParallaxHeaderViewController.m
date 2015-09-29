@@ -25,6 +25,8 @@ const CGFloat ARParallaxHeaderViewIconImageViewDimension = 80.0f;
 
 @implementation ARParallaxHeaderViewController
 
+AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
+
 - (instancetype)initWithContainingScrollView:(UIScrollView *)containingScrollView fair:(id)fair profile:(Profile *)profile
 {
     self = [super initWithNibName:nil bundle:nil];
