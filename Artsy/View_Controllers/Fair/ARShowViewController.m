@@ -495,7 +495,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     return [UIDevice isPad];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
 }

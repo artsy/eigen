@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
                                                object:nil];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }

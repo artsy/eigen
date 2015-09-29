@@ -163,7 +163,7 @@
     [self.currentArtworkViewController setHasFinishedScrolling];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskAllButUpsideDown;
 }
@@ -178,7 +178,7 @@
     return UIInterfaceOrientationPortrait;
 }
 
-- (NSUInteger)pageViewControllerSupportedInterfaceOrientations:(UIPageViewController *)pageViewController
+- (UIInterfaceOrientationMask)pageViewControllerSupportedInterfaceOrientations:(UIPageViewController *)pageViewController
 {
     return [self supportedInterfaceOrientations];
 }
