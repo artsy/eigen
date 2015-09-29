@@ -66,15 +66,15 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2015.09.26</string>
+	<string>2015.09.29</string>
 	<key>FacebookAppID</key>
 	<string>308278682573501</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>GITCommitRev</key>
-	<string>096f788</string>
+	<string>7f45468</string>
 	<key>GITCommitSha</key>
-	<string>096f788acbca65b75af16b7a1495216c2650ed1c</string>
+	<string>7f4546896c90c83786f7f5a27a4ce734b2d58942</string>
 	<key>GITRemoteOriginURL</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
