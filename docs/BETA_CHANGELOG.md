@@ -4,6 +4,7 @@
 * Fixes to a crash on top internalVCs introduced in the 2015.09.25 beta - orta
 * Fixes a sneaky top margin appearing on internal web views - orta
 * Improve the use of Shared Web Credentials by trying it as early as possible, before even asking the user to sign-in. - alloy
+* Fix crash by disabling network logging in release mode completely. - alloy
 
 ## 2.3.0 (2015.09.26)
 
