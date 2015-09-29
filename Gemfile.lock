@@ -7,6 +7,16 @@ GIT
       aws-sdk-v1 (~> 1.52)
       mustache (~> 0.99)
 
+GIT
+  remote: https://github.com/orta/danger.git
+  revision: cf5443bbbeaf21e8f8b7de018a7c67c4cc9ae6ee
+  specs:
+    danger (0.1.0)
+      claide (~> 0.8)
+      colored
+      git (~> 1.2.9)
+      nap
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -144,6 +154,7 @@ GEM
     fui (0.3.0)
       gli
     fuzzy_match (2.0.4)
+    git (1.2.9.1)
     gli (2.13.2)
     highline (1.7.3)
     houston (2.2.3)
@@ -265,6 +276,7 @@ DEPENDENCIES
   cocoapods
   cocoapods-deintegrate
   cocoapods-keys
+  danger!
   fastlane
   fui
   houston
