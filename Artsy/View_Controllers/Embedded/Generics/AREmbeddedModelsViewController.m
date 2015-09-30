@@ -1,7 +1,7 @@
 #import "AREmbeddedModelsViewController.h"
 #import "ARItemThumbnailViewCell.h"
 #import "ARReusableLoadingView.h"
-
+#import "AREmbeddedModelsPreviewDelegate.h"
 
 @interface ARArtworkMasonryModule (Private)
 - (void)updateLayoutForSize:(CGSize)size;
@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
+@property (nonatomic, strong) AREmbeddedModelsPreviewDelegate *previewDelegate;
 
 // Private Accessors
 @property (nonatomic, strong, readwrite) Fair *fair;
@@ -35,6 +36,17 @@
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:UICollectionElementKindSectionHeader];
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:UICollectionElementKindSectionFooter];
     [self.view addSubview:self.collectionView];
+
+    if ([self respondsToSelector:@selector(registerForPreviewingWithDelegate:sourceView:)] &&
+        self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)  {
+        self.previewDelegate = [[AREmbeddedModelsPreviewDelegate alloc] initWithModelVC:self];
+
+        self.collectionView.backgroundColor = [UIColor artsyLightGrey];
+        self.view.backgroundColor = [UIColor artsyMediumGrey];
+
+        UIView *rootView = self.view.window.rootViewController.view;
+        [self registerForPreviewingWithDelegate:self.previewDelegate sourceView:rootView];
+    }
 
     [super viewDidLoad];
 }
