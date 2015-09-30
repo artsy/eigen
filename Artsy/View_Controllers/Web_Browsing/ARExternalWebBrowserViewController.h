@@ -1,4 +1,4 @@
-@import WebKit;
+#import <WebKit/WebKit.h>;
 
 
 @interface ARExternalWebBrowserViewController : UIViewController <WKNavigationDelegate>

@@ -1,8 +1,8 @@
 #import "ArtsyAPI+Private.h"
 #import "ARDispatchManager.h"
 
-@import ISO8601DateFormatter;
-@import UICKeyChainStore;
+#import <ISO8601DateFormatter/ISO8601DateFormatter.h>;
+#import <UICKeyChainStore/UICKeyChainStore.h>;
 
 @implementation ArtsyAPI
 

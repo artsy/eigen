@@ -10,7 +10,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARGeneViewController.h"
 #import "ARSearchFieldButton.h"
-
+#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 @interface ARFairMapViewController () <NAMapViewDelegate, ARFairSearchViewControllerDelegate, ARSearchFieldButtonDelegate>
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -124,9 +124,9 @@
     RAC(self.mapShowMapper, expandAnnotations) = RACObserve(self, expandAnnotations);
 
     // Due to a problem in the custom UIViewController transitions API (when the VC's view is a scrollview subclass)
-    @_weakify(self);
+    @weakify(self);
     [[self rac_signalForSelector:@selector(viewWillDisappear:)] subscribeNext:^(id x) {
-        @_strongify(self);
+        @strongify(self);
 
         CGPoint contentOffset = self.mapView.contentOffset;
 

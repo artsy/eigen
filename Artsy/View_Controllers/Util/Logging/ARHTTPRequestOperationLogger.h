@@ -1,4 +1,4 @@
-@import AFNetworkActivityLogger;
+#import <AFNetworkActivityLogger/AFNetworkActivityLogger.h>;
 
 
 @interface ARHTTPRequestOperationLogger : AFNetworkActivityLogger

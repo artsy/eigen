@@ -3,7 +3,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARArtworkViewController.h"
 
-@import CoreSpotlight;
+#import <CoreSpotlight/CoreSpotlight.h>;
 
 SpecBegin(ARAppActivityContinuationDelegate);
 

@@ -55,14 +55,14 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     self.view.stackView.bottomMarginHeight = 20;
     self.view.delegate = [ARScrollNavigationChief chief];
 
-    @_weakify(self);
+    @weakify(self);
     [self.networkModel getArtistForArtistID:self.artist.artistID success:^(Artist *artist) {
-        @_strongify(self);
+        @strongify(self);
         if (!self) { return; }
         self->_artist = artist;
         [self artistDidLoad];
     } failure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         [self artistDidLoad];
     }];
 }
@@ -85,9 +85,9 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
     [self addSubtitle];
 
-    @_weakify(self);
+    @weakify(self);
     [self.networkModel getShowsForArtistID:self.artist.artistID inFairID:self.fair.fairID success:^(NSArray *shows) {
-        @_strongify(self);
+        @strongify(self);
         if (!self) { return; }
 
         self->_partnerShows = shows;
@@ -158,9 +158,9 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)addMapButton
 {
-    @_weakify(self);
+    @weakify(self);
     [self.fair getFairMaps:^(NSArray *maps) {
-        @_strongify(self);
+        @strongify(self);
 
         Map *map = maps.firstObject;
         if (!map) { return; }
@@ -185,9 +185,9 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)mapButtonTapped:(id)mapButtonTapped
 {
-    @_weakify(self);
+    @weakify(self);
     [self.fair getFairMaps:^(NSArray *maps) {
-        @_strongify(self);
+        @strongify(self);
         ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.header selectedPartnerShows:self.partnerShows];
         [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }];

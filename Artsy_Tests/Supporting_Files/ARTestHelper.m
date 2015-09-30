@@ -5,7 +5,7 @@
 #import "ARSpotlight.h"
 #import "ARUserManager.h"
 
-@import iRate;
+#import <iRate;
 
 
 @implementation ARTestHelper

@@ -10,7 +10,7 @@
 
 #import "UIView+HitTestExpansion.h"
 
-@import NPKeyboardLayoutGuide;
+#import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 
 static const CGFloat ARMenuButtonDimension = 46;
 

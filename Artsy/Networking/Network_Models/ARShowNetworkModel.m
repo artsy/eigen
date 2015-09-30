@@ -26,9 +26,9 @@
 
 - (void)getShowInfo:(void (^)(PartnerShow *))success failure:(void (^)(NSError *))failure
 {
-   @_weakify(self);
+   @weakify(self);
     [ArtsyAPI getShowInfo:_show success:^(PartnerShow *show) {
-        @_strongify(self);
+        @strongify(self);
 
         if (!self.fair) {
             self.fair = show.fair;

@@ -1,5 +1,5 @@
 #import <Mantle/Mantle.h>
-@import CoreLocation;
+#import <CoreLocation/CoreLocation.h>;
 
 
 @interface PartnerShowCoordinates : MTLModel <MTLJSONSerializing>

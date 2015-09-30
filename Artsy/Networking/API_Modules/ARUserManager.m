@@ -1,5 +1,5 @@
-@import ISO8601DateFormatter;
-@import Adjust;
+#import <ISO8601DateFormatter/ISO8601DateFormatter.h>;
+#import <Adjust/Adjust.h>;
 
 #import "ARUserManager.h"
 #import "NSDate+Util.h"

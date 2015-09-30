@@ -6,8 +6,8 @@
 #import "ARArtistFavoritesNetworkModel.h"
 #import "ARStubbedFavoritesNetworkModel.h"
 
-@import CoreSpotlight;
-@import SDWebImage;
+#import <CoreSpotlight;
+#import <SDWebImage;
 
 
 @interface ARSpotlight (Private)

@@ -104,10 +104,10 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)updateArtistInfo
 {
-    @_weakify(self);
+    @weakify(self);
     [self.networkModel getArtistInfoWithSuccess:^(Artist *artist) {
 
-        @_strongify(self);
+        @strongify(self);
         if (!self) { return; }
 
         if (!artist) {
@@ -120,7 +120,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
         [self artistIsReady];
 
     } failure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         ARErrorLog(@"Could not update artist information: %@", error.localizedDescription);
         [self setIsGettingArtworks:NO displayMode:self.displayMode];
     }];
@@ -412,14 +412,14 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL showingForSale = (displayMode == ARArtistArtworksDisplayForSale);
     NSDictionary *params = (showingForSale) ? @{ @"filter[]" : @"for_sale" } : nil;
 
-    @_weakify(self);
+    @weakify(self);
     [self.networkModel getArtistArtworksAtPage:lastPage + 1 params:params success:^(NSArray *artworks) {
-        @_strongify(self);
+        @strongify(self);
         [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
         [self handleFetchedArtworks:artworks displayMode:self.displayMode];
         [self checkForAdditionalArtworksToFillView];
     } failure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         ARErrorLog(@"Could not get Artist Artworks: %@", error.localizedDescription);
         [self.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
         [self setIsGettingArtworks:NO displayMode:displayMode];
@@ -575,9 +575,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getRelatedArtists
 {
-    @_weakify(self);
+    @weakify(self);
     [self.networkModel getRelatedArtists:^(NSArray *artists) {
-        @_strongify(self);
+        @strongify(self);
         if (artists.count > 0 ) {
             [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration :^{
                 self.relatedTitle.alpha = 1;
@@ -590,9 +590,9 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getRelatedPosts
 {
-    @_weakify(self);
+    @weakify(self);
     [self.networkModel getRelatedPosts:^(NSArray *posts) {
-        @_strongify(self);
+        @strongify(self);
         if (posts.count > 0) {
             self.postsVC.posts = posts;
             [self.view.stackView addSubview:self.postsVC.view withTopMargin:@"20" sideMargin:@"40"];

@@ -113,7 +113,7 @@
 
 - (void)downloadShows
 {
-   @_weakify(self);
+   @weakify(self);
 
     NSString *path = self.pathForLocalShowStorage;
 
@@ -121,7 +121,7 @@
         NSMutableSet *shows = [[NSKeyedUnarchiver unarchiveObjectWithFile:path] mutableCopy];
 
         ar_dispatch_main_queue(^{
-            @_strongify(self);
+            @strongify(self);
             if (!self) { return; }
 
             [self willChangeValueForKey:@keypath(Fair.new, shows)];
@@ -157,11 +157,11 @@
         _showsFeed = [[ARFairShowFeed alloc] initWithFair:self];
     }
 
-   @_weakify(self);
+   @weakify(self);
 
     [self.networkModel getShowFeedItems:self.showsFeed success:^(NSOrderedSet *items) {
 
-        @_strongify(self);
+        @strongify(self);
         if(items.count > 0) {
             [self addFeedItemsToShows:items];
             [self downloadPastShowSet];
@@ -171,7 +171,7 @@
 
     } failure:^(NSError *error) {
 
-        @_strongify(self);
+        @strongify(self);
         ARErrorLog(@"failed to get shows %@", error.localizedDescription);
         [self performSelector:@selector(downloadPastShowSet) withObject:nil afterDelay:0.5];
     }];
@@ -204,9 +204,9 @@
 {
     [self willChangeValueForKey:@keypath(Fair.new, shows)];
 
-   @_weakify(self);
+   @weakify(self);
     [feedItems enumerateObjectsUsingBlock:^(ARPartnerShowFeedItem *feedItem, NSUInteger idx, BOOL *stop) {
-        @_strongify(self);
+        @strongify(self);
         if (!self) { return; }
 
         // So, you're asking, why is there C++ in my Obj-C?

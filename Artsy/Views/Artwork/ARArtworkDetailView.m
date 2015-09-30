@@ -41,15 +41,15 @@ typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
 - (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate>)delegate
 {
     _delegate = delegate;
-   @_weakify(self);
+   @weakify(self);
     [self.artwork onArtworkUpdate:^{
-        @_strongify(self);
+        @strongify(self);
         [self updateWithArtwork:self.artwork];
     } failure:nil];
     [self updateWithArtwork:self.artwork];
 
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-        @_strongify(self);
+        @strongify(self);
         [self updateWithSaleArtwork:saleArtwork];
     } failure:nil];
 }

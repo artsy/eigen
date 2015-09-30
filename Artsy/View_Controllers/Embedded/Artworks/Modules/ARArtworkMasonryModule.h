@@ -1,5 +1,5 @@
 #import "ARModelCollectionViewModule.h"
-@import ARCollectionViewMasonryLayout;
+#import <ARCollectionViewMasonryLayout/ARCollectionViewMasonryLayout.h>;
 
 typedef NS_ENUM(NSInteger, ARArtworkMasonryLayout) {
     ARArtworkMasonryLayout1Row,

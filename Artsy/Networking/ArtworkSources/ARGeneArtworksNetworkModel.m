@@ -31,10 +31,10 @@
 
     self.downloadLock = YES;
 
-   @_weakify(self);
+   @weakify(self);
 
     [self.gene getArtworksAtPage:self.currentPage success:^(NSArray *artworks) {
-        @_strongify(self);
+        @strongify(self);
         if (!self) { return; }
 
         self.currentPage++;

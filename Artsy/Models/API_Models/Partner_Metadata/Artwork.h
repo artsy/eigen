@@ -6,8 +6,8 @@
 #import "ARHeartStatus.h"
 #import "ARSpotlight.h"
 
-@import KSDeferred;
-@import Mantle;
+#import <KSDeferred/KSDeferred.h>
+#import <Mantle/Mantle.h>
 
 // TODO: Add support ARFollowable for following status
 

@@ -4,7 +4,7 @@
 #import "ARFairNetworkModel.h"
 #import "ARSpotlight.h"
 
-@import Mantle;
+#import <Mantle/Mantle.h>;
 
 
 @interface Fair : MTLModel <MTLJSONSerializing> {
