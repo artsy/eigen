@@ -6,9 +6,9 @@
 #import "ARArtistFavoritesNetworkModel.h"
 #import "ARStubbedFavoritesNetworkModel.h"
 
-#import <CoreSpotlight;
-#import <SDWebImage;
-
+#import <CoreSpotlight/CoreSpotlight.h>
+#import <SDWebImage/SDWebImageManager.h>
+#import <SDWebImage/SDWebImageDownloader.h>
 
 @interface ARSpotlight (Private)
 + (NSMutableSet *)indexedEntities;

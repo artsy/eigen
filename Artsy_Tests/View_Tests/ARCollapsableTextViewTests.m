@@ -1,4 +1,4 @@
-#import <FLKAutoLayout;
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>;
 #import "ARCollapsableTextView.h"
 
 

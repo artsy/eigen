@@ -3,7 +3,7 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "UIViewController+SimpleChildren.h"
-#import <FLKAutoLayout;
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import "ARFairViewController.h"
 #import "ARInternalMobileWebViewController.h"
 

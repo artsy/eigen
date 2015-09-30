@@ -5,7 +5,7 @@
     #import <Specta/Specta.h>
     #import "SpectaDSL+Sleep.h"
     #import <Expecta/Expecta.h>
-    #import <Expecta_Snapshots/EXPMatchers+FBSnapshotTest.h>
+    #import <Expecta+Snapshots/EXPMatchers+FBSnapshotTest.h>
     #import <OHHTTPStubs/OHHTTPStubs.h>
     #import <OCMock/OCMock.h>
 
