@@ -1,3 +1,8 @@
+### unreleased
+
+* Use static libs - orta
+
+
 ## 2.3.0 (2015.09.29)
 
 * Adds a black background to internal web views - orta
