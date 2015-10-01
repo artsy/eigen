@@ -5,10 +5,12 @@
 #import "ARTopMenuViewController.h"
 #import "ARSpotlight.h"
 
-@interface AREmbeddedModelsPreviewDelegate()
+
+@interface AREmbeddedModelsPreviewDelegate ()
 // Parent holds it
 @property (nonatomic, weak, readonly) AREmbeddedModelsViewController *modelVC;
 @end
+
 
 @implementation AREmbeddedModelsPreviewDelegate
 
@@ -22,13 +24,15 @@
     return self;
 }
 
-- (nullable UIViewController *)previewingContext:(id <UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location
+- (nullable UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location
 {
     UICollectionView *collectionView = self.modelVC.collectionView;
     CGPoint locationOnWindow = [collectionView convertPoint:location fromView:nil];
     NSIndexPath *index = [collectionView indexPathForItemAtPoint:locationOnWindow];
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:index];
-    if (!cell) { return nil; }
+    if (!cell) {
+        return nil;
+    }
 
     // Only show visible content, e.g. cropped images by tabs
     ARTopMenuViewController *topVC = [ARTopMenuViewController sharedController];
@@ -42,7 +46,7 @@
     return embed;
 }
 
-- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(AREmbeddedModelPreviewViewController *)viewControllerToCommit
+- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(AREmbeddedModelPreviewViewController *)viewControllerToCommit
 {
     id object = viewControllerToCommit.object;
     id viewController = nil;
@@ -69,6 +73,5 @@
         }
     }
 }
-
 
 @end
