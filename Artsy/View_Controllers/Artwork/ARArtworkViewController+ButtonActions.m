@@ -1,5 +1,5 @@
-@import ARAnalytics;
-@import Adjust;
+#import <ARAnalytics/ARAnalytics.h>
+#import <Adjust/Adjust.h>
 
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"
@@ -172,7 +172,7 @@
         editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
     }
 
-    @_weakify(self);
+    @weakify(self);
     [ArtsyAPI createPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID success:^(id JSON) {
 
         NSString *orderID = [JSON valueForKey:@"id"];
@@ -183,7 +183,7 @@
 
     }
     failure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
         [self tappedContactGallery];
     }];

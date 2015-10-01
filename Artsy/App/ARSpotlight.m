@@ -9,9 +9,9 @@
 
 #import "NSDate+DateRange.h"
 
-@import CoreSpotlight;
-@import MMMarkdown;
-@import SDWebImage;
+#import <CoreSpotlight/CoreSpotlight.h>
+#import <MMMarkdown/MMMarkdown.h>
+#import <SDWebImage/SDImageCache.h>
 
 
 static BOOL ARSpotlightAvailable = NO;

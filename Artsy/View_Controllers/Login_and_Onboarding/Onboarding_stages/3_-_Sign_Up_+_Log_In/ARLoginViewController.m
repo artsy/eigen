@@ -3,7 +3,7 @@
 #import "AROnboardingNavBarView.h"
 #import "ARAuthProviders.h"
 #import "UIViewController+FullScreenLoading.h"
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 #import "ARTextFieldWithPlaceholder.h"
 #import "ARSecureTextFieldWithPlaceholder.h"
 #import "UIView+HitTestExpansion.h"
@@ -163,7 +163,7 @@
 - (void)twitter:(id)sender
 {
     [self hideKeyboard];
-    @_weakify(self);
+    @weakify(self);
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
@@ -172,20 +172,20 @@
             secret:secret
             successWithCredentials:nil
             gotUser:^(User *currentUser) {
-                @_strongify(self);
+                @strongify(self);
                 [self loggedInWithType:ARLoginViewControllerLoginTypeTwitter user:currentUser];
             } authenticationFailure:^(NSError *error) {
-                @_strongify(self);
+                @strongify(self);
                 [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                 [self twitterError];
 
             } networkFailure:^(NSError *error) {
-                @_strongify(self);
+                @strongify(self);
                 [self failedToLoginToTwitter:error];
             }];
 
     } failure:^(NSError *error) {
-             @_strongify(self);
+             @strongify(self);
              [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
              [self twitterError];
     }];
@@ -208,14 +208,14 @@
     [self hideKeyboard];
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
-    @_weakify(self);
+    @weakify(self);
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
         [[ARUserManager sharedManager] loginWithFacebookToken:token
            successWithCredentials:nil gotUser:^(User *currentUser) {
-               @_strongify(self);
+               @strongify(self);
                 [self loggedInWithType:ARLoginViewControllerLoginTypeFacebook user:currentUser];
            } authenticationFailure:^(NSError *error) {
-               @_strongify(self);
+               @strongify(self);
 
                [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 
@@ -228,11 +228,11 @@
                }
 
            } networkFailure:^(NSError *error) {
-               @_strongify(self);
+               @strongify(self);
                [self failedToLoginToFacebook:error];
            }];
     } failure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
 
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
         [self fbError];
@@ -398,22 +398,22 @@
 
     self.loginButton.alpha = 0.5;
 
-    @_weakify(self);
+    @weakify(self);
     [[ARUserManager sharedManager] loginWithUsername:username
         password:password
         successWithCredentials:nil
         gotUser:^(User *currentUser) {
-        @_strongify(self);
+        @strongify(self);
         [self loggedInWithType:ARLoginViewControllerLoginTypeEmail user:currentUser];
         }
 
         authenticationFailure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         [self authenticationFailure];
         }
 
         networkFailure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         [self networkFailure:error];
         }];
 }

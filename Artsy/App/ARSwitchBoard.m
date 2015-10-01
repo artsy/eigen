@@ -1,6 +1,6 @@
 #import "ARRouter.h"
 #import <JLRoutes/JLRoutes.h>
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
 // View Controllers
 #import "ARArtworkSetViewController.h"
@@ -61,9 +61,9 @@
 
     _routes = [[JLRoutes alloc] init];
 
-    @_weakify(self);
+    @weakify(self);
     [self.routes addRoute:@"/artist/:id" handler:^BOOL(NSDictionary *parameters) {
-        @_strongify(self)
+        @strongify(self)
         ARArtistViewController *viewController = [self loadArtistWithID:parameters[@"id"]];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
@@ -75,7 +75,7 @@
 
     if ([UIDevice isPad]) {
         [self.routes addRoute:@"/:profile_id/artist/:id" handler:^BOOL(NSDictionary *parameters) {
-            @_strongify(self)
+            @strongify(self)
 
             Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
             ARArtistViewController *viewController = (id)[self loadArtistWithID:parameters[@"id"] inFair:fair];
@@ -86,7 +86,7 @@
 
 
     [self.routes addRoute:@"/artwork/:id" handler:^BOOL(NSDictionary *parameters) {
-        @_strongify(self)
+        @strongify(self)
         Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
         ARArtworkSetViewController *viewController = [self loadArtworkWithID:parameters[@"id"] inFair:fair];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
@@ -94,7 +94,7 @@
     }];
 
     [self.routes addRoute:@"/gene/:id" handler:^BOOL(NSDictionary *parameters) {
-        @_strongify(self)
+        @strongify(self)
         ARGeneViewController *viewController = [self loadGeneWithID:parameters[@"id"]];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
@@ -102,7 +102,7 @@
 
 
     [self.routes addRoute:@"/show/:id" handler:^BOOL(NSDictionary *parameters) {
-        @_strongify(self)
+        @strongify(self)
         ARShowViewController *viewController = [self loadShowWithID:parameters[@"id"]];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
@@ -112,7 +112,7 @@
 
         if ([UIDevice isPad]) { return NO; }
 
-        @_strongify(self);
+        @strongify(self);
 
         Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
         UIViewController *viewController = [self loadFairGuideWithFair:fair];
@@ -125,7 +125,7 @@
 
         if ([UIDevice isPad]) { return NO; }
 
-        @_strongify(self)
+        @strongify(self)
         Fair *fair = parameters[@"fair"] ?: [[Fair alloc] initWithFairID:parameters[@"profile_id"]];
         UIViewController *viewController = [self loadArtistInFairWithID:parameters[@"id"] fair:fair];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
@@ -158,7 +158,7 @@
 
     // This route will match any single path component and thus should be added last.
     [self.routes addRoute:@"/:profile_id" handler:^BOOL(NSDictionary *parameters) {
-        @_strongify(self);
+        @strongify(self);
         UIViewController *viewController = [self routeProfileWithID: parameters[@"profile_id"]];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;

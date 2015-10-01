@@ -1,5 +1,5 @@
-@import Artsy_UIColors;
-@import Artsy_UIFonts;
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
+#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 
 #import "UIImage+ImageFromColor.h"
 #import "UIImageView+AsyncImageLoading.h"

@@ -2,7 +2,7 @@
 #import "ARSearchViewController+Private.h"
 #import "ARSearchTableViewCell.h"
 #import "UIView+HitTestExpansion.h"
-
+#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 @interface ARSearchViewController () <UITextFieldDelegate, UITableViewDelegate>
 @property (readonly, nonatomic) UIActivityIndicatorView *activityIndicator;
@@ -206,9 +206,9 @@
 
 - (void)fetchSearchResults:(NSString *)text replace:(BOOL)replaceResults
 {
-    @_weakify(self);
+    @weakify(self);
     _searchRequest = [self searchWithQuery:text success:^(NSArray *results) {
-        @_strongify(self);
+        @strongify(self);
         [self addResults:results replace:replaceResults];
         [self finishSearching];
     } failure:^(NSError *error) {
@@ -272,13 +272,13 @@
 
 - (void)removeResultsViewAnimated:(BOOL)animated
 {
-    @_weakify(self);
+    @weakify(self);
 
     [UIView animateIf:animated duration:0.15:^{
-        @_strongify(self);
+        @strongify(self);
         self.resultsView.alpha = 0;
     } completion:^(BOOL finished) {
-        @_strongify(self);
+        @strongify(self);
         if (!self) { return; }
 
         self.resultsView.hidden = YES;
