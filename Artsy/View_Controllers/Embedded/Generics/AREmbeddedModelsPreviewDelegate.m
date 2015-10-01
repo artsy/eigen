@@ -1,6 +1,9 @@
 #import "AREmbeddedModelsPreviewDelegate.h"
 #import "AREmbeddedModelsViewController.h"
 #import "AREmbeddedModelPreviewViewController.h"
+#import "ARSwitchBoard.h"
+#import "ARTopMenuViewController.h"
+#import "ARSpotlight.h"
 
 @interface AREmbeddedModelsPreviewDelegate()
 // Parent holds it
@@ -16,24 +19,55 @@
         return nil;
     }
     _modelVC = modelVC;
-       self.modelVC.collectionView.backgroundColor = [UIColor artsyAttention];
     return self;
 }
 
 - (nullable UIViewController *)previewingContext:(id <UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location
 {
-    self.modelVC.collectionView.backgroundColor = [UIColor artsyPurple];
+    UICollectionView *collectionView = self.modelVC.collectionView;
+    CGPoint locationOnWindow = [collectionView convertPoint:location fromView:nil];
+    NSIndexPath *index = [collectionView indexPathForItemAtPoint:locationOnWindow];
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:index];
+    if (!cell) { return nil; }
 
-    AREmbeddedModelsViewController *embed = [[AREmbeddedModelsViewController alloc] init];
-    embed.preferredContentSize = CGSizeMake(400, 600);
-    previewingContext.sourceRect = CGRectMake(25, 25, 200, 200);
+    // Only show visible content, e.g. cropped images by tabs
+    ARTopMenuViewController *topVC = [ARTopMenuViewController sharedController];
+    CGRect visible = CGRectIntersection([cell convertRect:cell.bounds toView:nil], [topVC.tabContentView convertRect:topVC.tabContentView.bounds toView:nil]);
+    previewingContext.sourceRect = visible;
+
+    id object = [self.modelVC.items objectAtIndex:index.row];
+    AREmbeddedModelPreviewViewController *embed = [[AREmbeddedModelPreviewViewController alloc] initWithObject:object];
+    [embed updateWithCell:cell];
+
     return embed;
 }
 
-
-- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
+- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(AREmbeddedModelPreviewViewController *)viewControllerToCommit
 {
+    id object = viewControllerToCommit.object;
+    id viewController = nil;
+    ARSwitchBoard *switchBoard = [ARSwitchBoard sharedInstance];
 
+    if ([object isKindOfClass:Artwork.class]) {
+        NSArray *items = self.modelVC.items;
+
+        // TODO: Check for Fair context?
+        NSInteger index = [items indexOfObject:object];
+        viewController = [switchBoard loadArtworkSet:items inFair:nil atIndex:index];
+
+    } else if ([object isKindOfClass:Artist.class]) {
+        viewController = [switchBoard loadArtistWithID:[object artistID]];
+    } else if ([object isKindOfClass:Gene.class]) {
+        viewController = [switchBoard loadGene:object];
+    }
+
+    if (viewController) {
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+    } else {
+        if ([object respondsToSelector:@selector(publicArtsyPath)]) {
+            [switchBoard loadPath:[object publicArtsyPath]];
+        }
+    }
 }
 
 
