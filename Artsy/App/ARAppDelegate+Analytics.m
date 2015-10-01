@@ -412,6 +412,7 @@
                             ARAnalyticsProperties: ^NSDictionary*(ARInquireForArtworkViewController *controller, NSArray *parameters) {
                                 return @{
                                     @"errors" : [[parameters first] localizedDescription] ?: @"",
+                                    @"response" : [[parameters objectAtIndex:1] localizedDescription] ?: @"",
                                 };
                             }
                         },

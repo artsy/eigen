@@ -8,7 +8,6 @@
 #import "ARAppDelegate.h"
 #import "ARAnalyticsConstants.h"
 
-#define USE_LIVE_DATA 1
 // Future TODO: Don't use image alpha on contact image, use grayscale'd image.
 
 // The state of the form, for enabling / disabling
@@ -742,15 +741,10 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
         [self inquiryCompleted:message];
     };
 
-    void (^failure)(NSError *error) = ^(NSError *error) {
-        [self inquiryFailed:error];
+    void (^failure)(NSError *error, NSHTTPURLResponse *response) = ^(NSError *error, NSHTTPURLResponse *response) {
+        [self inquiryFailed:error response:response];
     };
 
-
-#if USE_LIVE_DATA == 0
-    [self performSelector:@selector(stubCompletionHandler:) withObject:success afterDelay:2];
-#endif
-#if USE_LIVE_DATA == 1
     ARAppDelegate *delegate = [ARAppDelegate sharedInstance];
 
     NSDictionary *analyticsDictionary = @{
@@ -776,12 +770,6 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
                                                 success:success
                                                 failure:failure];
     }
-#endif
-}
-
-- (void)stubCompletionHandler:(void (^)(id message))block
-{
-    block(nil);
 }
 
 - (UIColor *)inputTintColor
@@ -800,7 +788,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [self performSelector:@selector(removeFromHostViewController) withObject:nil afterDelay:2];
 }
 
-- (void)inquiryFailed:(NSError *)error
+- (void)inquiryFailed:(NSError *)error response:(NSHTTPURLResponse *)response
 {
     ARErrorLog(@"Error sending inquiry for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
     NSString *errorTitle, *errorMessage;
