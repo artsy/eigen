@@ -742,8 +742,8 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
         [self inquiryCompleted:message];
     };
 
-    void (^failure)(NSError *error, NSHTTPURLResponse *response) = ^(NSError *error, NSHTTPURLResponse *response) {
-        [self inquiryFailed:error response:response];
+    void (^failure)(NSError *error) = ^(NSError *error) {
+        [self inquiryFailed:error];
     };
 
     ARAppDelegate *delegate = [ARAppDelegate sharedInstance];
@@ -789,7 +789,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [self performSelector:@selector(removeFromHostViewController) withObject:nil afterDelay:2];
 }
 
-- (void)inquiryFailed:(NSError *)error response:(NSHTTPURLResponse *)response
+- (void)inquiryFailed:(NSError *)error
 {
     ARErrorLog(@"Error sending inquiry for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
     NSString *errorTitle, *errorMessage;

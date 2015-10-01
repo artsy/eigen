@@ -27,7 +27,7 @@ extern NSString *const ArtsyAPIInquiryAnalyticsLandingURL;  // Where the first w
                                       message:(NSString *)message
                           analyticsDictionary:(NSDictionary *)analyticsDictionary
                                       success:(void (^)(id message))success
-                                      failure:(void (^)(NSError *error, NSHTTPURLResponse *response))failure;
+                                      failure:(void (^)(NSError *error))failure;
 
 /// Send a request to an Artsy Representative inquiring about an artwork
 + (void)createRepresentativeArtworkInquiryForArtwork:(Artwork *)artwork
@@ -36,7 +36,7 @@ extern NSString *const ArtsyAPIInquiryAnalyticsLandingURL;  // Where the first w
                                              message:(NSString *)message
                                  analyticsDictionary:(NSDictionary *)analyticsDictionary
                                              success:(void (^)(id message))success
-                                             failure:(void (^)(NSError *error, NSHTTPURLResponse *response))failure;
+                                             failure:(void (^)(NSError *error))failure;
 
 /// Get "site features" (essentially site-wide labs)
 + (void)getSiteFeatures:(void (^)(NSArray *features))success failure:(void (^)(NSError *error))failure;

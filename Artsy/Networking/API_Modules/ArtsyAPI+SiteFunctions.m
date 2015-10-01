@@ -52,7 +52,7 @@ NSString *const ArtsyAPIInquiryAnalyticsLandingURL = @"ArtsyAPIInquiryAnalyticsL
                                       message:(NSString *)message
                           analyticsDictionary:(NSDictionary *)analyticsDictionary
                                       success:(void (^)(id message))success
-                                      failure:(void (^)(NSError *error, NSHTTPURLResponse *response))failure
+                                      failure:(void (^)(NSError *error))failure
 {
     [self createArtworkInquiryForArtwork:artwork name:name email:email message:message shouldContactGallery:YES analyticsDictionary:analyticsDictionary success:success failure:failure];
 }
@@ -63,7 +63,7 @@ NSString *const ArtsyAPIInquiryAnalyticsLandingURL = @"ArtsyAPIInquiryAnalyticsL
                                              message:(NSString *)message
                                  analyticsDictionary:(NSDictionary *)analyticsDictionary
                                              success:(void (^)(id message))success
-                                             failure:(void (^)(NSError *error, NSHTTPURLResponse *response))failure
+                                             failure:(void (^)(NSError *error))failure
 {
     [self createArtworkInquiryForArtwork:artwork name:name email:email message:message shouldContactGallery:NO analyticsDictionary:analyticsDictionary success:success failure:failure];
 }
@@ -75,12 +75,12 @@ NSString *const ArtsyAPIInquiryAnalyticsLandingURL = @"ArtsyAPIInquiryAnalyticsL
                   shouldContactGallery:(BOOL)shouldContactGallery
                    analyticsDictionary:(NSDictionary *)analyticsDictionary
                                success:(void (^)(id message))success
-                               failure:(void (^)(NSError *error, NSHTTPURLResponse *response))failure
+                               failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworkInquiryRequestForArtwork:artwork name:name email:email message:message analyticsDictionary:analyticsDictionary shouldContactGallery:shouldContactGallery];
     [self performRequest:request success:success failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         if (failure) {
-            failure(error, response);
+            failure(error);
         }
     }];
 }
