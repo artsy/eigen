@@ -1,4 +1,4 @@
-#import <OHHTTPStubs/OHHTTPStubs.h>;
+#import <OHHTTPStubs/OHHTTPStubs.h>
 #import "ArtsyOHHTTPAPI.h"
 
 #import "ARFilteredStackTrace.h"

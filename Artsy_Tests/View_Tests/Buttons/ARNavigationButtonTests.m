@@ -1,5 +1,5 @@
 #import "ARNavigationButton.h"
-#import <FLKAutoLayout/UIView+FLKAutoLAyout.h>;
+#import <FLKAutoLayout/UIView+FLKAutoLAyout.h>
 
 SpecBegin(ARNavigationButtonSpec);
 
