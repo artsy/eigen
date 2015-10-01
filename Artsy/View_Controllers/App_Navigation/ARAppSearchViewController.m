@@ -114,10 +114,12 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
 
 #pragma mark - ARMenuAwareViewController
 
-// The toolbar is hidden from ARAppSearchTransition _after_ the transition has finished, because otherwise there would
-// be a gap in the blurred background view.
-
 - (BOOL)hidesNavigationButtons
+{
+    return YES;
+}
+
+- (BOOL)prefersStatusBarHidden
 {
     return YES;
 }
