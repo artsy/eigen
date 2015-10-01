@@ -10,7 +10,7 @@
 #import "UIView+HitTestExpansion.h"
 #import "ARCustomEigenLabels.h"
 
-#import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>;
+#import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 
 //sigh
 #define EMAIL_TAG 111

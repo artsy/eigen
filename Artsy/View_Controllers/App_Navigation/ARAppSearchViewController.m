@@ -6,7 +6,7 @@
 #import "ARSearchViewController+Private.h"
 #import "UIView+HitTestExpansion.h"
 
-#import <FXBlurView/FXBlurView.h>;
+#import <FXBlurView/FXBlurView.h>
 
 static const NSInteger ARAppSearchParallaxDistance = 20;
 

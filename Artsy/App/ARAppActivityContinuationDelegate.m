@@ -1,5 +1,5 @@
 #import "ARAppActivityContinuationDelegate.h"
-#import <CoreSpotlight/CoreSpotlight.h>;
+#import <CoreSpotlight/CoreSpotlight.h>
 
 // Only available on iOS 9.
 static BOOL IsSpotlightActionTypeAvailable = NO;

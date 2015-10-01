@@ -1,5 +1,5 @@
-#import <ARAnalytics/ARAnalytics.h>;
-#import <Adjust/Adjust.h>;
+#import <ARAnalytics/ARAnalytics.h>
+#import <Adjust/Adjust.h>
 
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"

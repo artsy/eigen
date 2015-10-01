@@ -4,13 +4,13 @@
 #define ADMIN_MENU_ENABLED 1
 #endif
 
-#import <FBSDKCoreKit/FBSDKCoreKit.h>;
-#import <FBSDKLoginKit/FBSDKLoginKit.h>;
-#import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>;
-#import <iRate/iRate.h>;
-#import <AFOAuth1Client/AFOAuth1Client.h>;
-#import <UICKeyChainStore/UICKeyChainStore.h>;
-#import <Adjust/Adjust.h>;
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
+#import <iRate/iRate.h>
+#import <AFOAuth1Client/AFOAuth1Client.h>
+#import <UICKeyChainStore/UICKeyChainStore.h>
+#import <Adjust/Adjust.h>
 
 #import "ARAppWatchCommunicator.h"
 
