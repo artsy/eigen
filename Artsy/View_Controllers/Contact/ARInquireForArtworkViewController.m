@@ -1,5 +1,5 @@
-#import <Adjust/Adjust.h>;
-#import <ALPValidator/ALPValidator.h>;
+#import <Adjust/Adjust.h>
+#import <ALPValidator/ALPValidator.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 #import "ARInquireForArtworkViewController.h"

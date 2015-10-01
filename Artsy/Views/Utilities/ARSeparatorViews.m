@@ -1,5 +1,5 @@
 // There is a drawing class in there
-#import <Artsy+UILabels/UIView+ARDrawing.h>;
+#import <Artsy+UILabels/UIView+ARDrawing.h>
 
 
 @implementation ARSeparatorView

@@ -3,8 +3,7 @@
 #import "ARHasImageBaseURL.h"
 #import "ARSpotlight.h"
 
-#import <Mantle/Mantle.h>;
-
+#import <Mantle/Mantle.h>
 
 @interface Artist : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageURLs, ARSpotlightMetadataProvider>
 
