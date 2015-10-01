@@ -114,6 +114,12 @@
     _artistFavoritesNetworkModel = [[ARArtistFavoritesNetworkModel alloc] init];
     _geneFavoritesNetworkModel = [[ARGeneFavoritesNetworkModel alloc] init];
 
+    if (ARIsRunningInDemoMode) {
+        _artworkFavoritesNetworkModel.useSampleFavorites = YES;
+        _artistFavoritesNetworkModel.useSampleFavorites = YES;
+        _geneFavoritesNetworkModel.useSampleFavorites = YES;
+    }
+
     ARArtworkMasonryLayout layout = [self masonryLayoutForSize:self.view.frame.size];
     _artworksModule = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     _artworksModule.layoutProvider = self;
