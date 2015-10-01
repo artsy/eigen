@@ -410,8 +410,19 @@
                             ARAnalyticsEventName: ARAnalyticsInquiryError,
                             ARAnalyticsSelectorName: @"inquiryFailed:",
                             ARAnalyticsProperties: ^NSDictionary*(ARInquireForArtworkViewController *controller, NSArray *parameters) {
+
+                                NSError *error = [parameters first];
+                                NSData *data = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+                                NSDictionary *recoverySuggestion;
+                                NSString *responseString = @"";
+                                if (data) {
+                                    recoverySuggestion = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                    responseString = [recoverySuggestion objectForKey:@"message"];
+                                }
+        
                                 return @{
-                                    @"errors" : [[parameters first] localizedDescription] ?: @"",
+                                    @"errors" : [error localizedDescription] ?: @"",
+                                    @"response" : responseString,
                                 };
                             }
                         },

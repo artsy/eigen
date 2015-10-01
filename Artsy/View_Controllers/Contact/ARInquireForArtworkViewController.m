@@ -9,7 +9,6 @@
 #import "ARAppDelegate.h"
 #import "ARAnalyticsConstants.h"
 
-#define USE_LIVE_DATA 1
 // Future TODO: Don't use image alpha on contact image, use grayscale'd image.
 
 // The state of the form, for enabling / disabling
@@ -747,11 +746,6 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
         [self inquiryFailed:error];
     };
 
-
-#if USE_LIVE_DATA == 0
-    [self performSelector:@selector(stubCompletionHandler:) withObject:success afterDelay:2];
-#endif
-#if USE_LIVE_DATA == 1
     ARAppDelegate *delegate = [ARAppDelegate sharedInstance];
 
     NSDictionary *analyticsDictionary = @{
@@ -777,12 +771,6 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
                                                 success:success
                                                 failure:failure];
     }
-#endif
-}
-
-- (void)stubCompletionHandler:(void (^)(id message))block
-{
-    block(nil);
 }
 
 - (UIColor *)inputTintColor
