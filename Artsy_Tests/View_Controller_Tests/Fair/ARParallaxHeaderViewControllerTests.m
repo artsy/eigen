@@ -4,7 +4,7 @@
 #import "MTLModel+JSON.h"
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SDWebImage/SDImageCache.h>
-#import <FLKAutoLayout/UIView+FLKAutoLayout.h>;
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
 @interface ARParallaxHeaderViewController (Testing)
