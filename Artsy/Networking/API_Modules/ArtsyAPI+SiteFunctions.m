@@ -18,11 +18,7 @@ NSString *const ArtsyAPIInquiryAnalyticsLandingURL = @"ArtsyAPIInquiryAnalyticsL
                   failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(success);
-<<<<<<< HEAD
-    @_weakify(self);
-=======
-   @weakify(self);
->>>>>>> master
+    @weakify(self);
 
     NSURLRequest *request = [ARRouter newOnDutyRepresentativeRequest];
     [self performRequest:request success:^(NSArray *results) {
