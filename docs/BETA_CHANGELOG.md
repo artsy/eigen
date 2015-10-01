@@ -3,7 +3,7 @@
 * Adding compatibility strings to User-Agent to fix web fonts loading - jorystiefel
 * Use static libs - orta
 * Add HTTP response data to inquiry failure analytics - jorystiefel
-
+* Demo mode checks - orta
 
 ## 2.3.0 (2015.09.29)
 
