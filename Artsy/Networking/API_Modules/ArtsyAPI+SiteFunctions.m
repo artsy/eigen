@@ -18,11 +18,15 @@ NSString *const ArtsyAPIInquiryAnalyticsLandingURL = @"ArtsyAPIInquiryAnalyticsL
                   failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(success);
+<<<<<<< HEAD
     @_weakify(self);
+=======
+   @weakify(self);
+>>>>>>> master
 
     NSURLRequest *request = [ARRouter newOnDutyRepresentativeRequest];
     [self performRequest:request success:^(NSArray *results) {
-        @_strongify(self);
+        @strongify(self);
         if ([results count] == 0) {
             success(nil);
         } else {

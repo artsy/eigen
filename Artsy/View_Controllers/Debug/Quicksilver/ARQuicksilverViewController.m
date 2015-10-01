@@ -3,7 +3,7 @@
 #import "SearchResult.h"
 #import "ARSearchTableViewCell.h"
 #import "ARFileUtils.h"
-
+#import <AFNetworking/UIImageView+AFNetworking.h>
 
 @interface ARQuicksilverViewController ()
 
@@ -151,9 +151,9 @@
     } else {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
-        @_weakify(self);
+        @weakify(self);
         _searchRequest = [ArtsyAPI searchWithQuery:query success:^(NSArray *results) {
-            @_strongify(self);
+            @strongify(self);
             self.searchResults = [results copy];
             self.selectedIndex = 0;
 
@@ -188,11 +188,11 @@
 
     UIImage *placeholder = [UIImage imageNamed:@"SearchThumb_LightGray"];
 
-    @_weakify(cell);
+    @weakify(cell);
     [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:placeholder
 
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-         @_strongify(cell);
+         @strongify(cell);
          cell.imageView.image = image;
          [cell layoutSubviews];
 

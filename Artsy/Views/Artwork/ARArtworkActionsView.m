@@ -42,16 +42,16 @@
 - (void)setDelegate:(id<ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate>)delegate
 {
     _delegate = delegate;
-    @_weakify(self);
+    @weakify(self);
 
     KSPromise *artworkPromise = [self.artwork onArtworkUpdate:nil failure:nil];
     KSPromise *saleArtworkPromise = [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-        @_strongify(self);
+        @strongify(self);
         self.saleArtwork = saleArtwork;
     } failure:nil];
 
     [[KSPromise when:@[ artworkPromise, saleArtworkPromise ]] then:^id(id value) {
-        @_strongify(self);
+        @strongify(self);
         id returnable = nil;
         [self updateUI];
         return returnable;

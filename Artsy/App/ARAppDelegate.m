@@ -4,13 +4,13 @@
 #define ADMIN_MENU_ENABLED 1
 #endif
 
-@import FBSDKCoreKit;
-@import FBSDKLoginKit;
-@import ORKeyboardReactingApplication;
-@import iRate;
-@import AFOAuth1Client;
-@import UICKeyChainStore;
-@import Adjust;
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
+#import <iRate/iRate.h>
+#import <AFOAuth1Client/AFOAuth1Client.h>
+#import <UICKeyChainStore/UICKeyChainStore.h>
+#import <Adjust/Adjust.h>
 
 #import "ARAppWatchCommunicator.h"
 
@@ -40,8 +40,8 @@
 #import "ARBackButtonCallbackManager.h"
 
 #if ADMIN_MENU_ENABLED
-@import DHCShakeNotifier;
-@import VCRURLConnection;
+#import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
+#import <VCRURLConnection/VCR.h>
 #endif
 
 // demo

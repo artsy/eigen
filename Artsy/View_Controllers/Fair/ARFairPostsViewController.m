@@ -12,9 +12,9 @@
         return nil;
     }
 
-   @_weakify(self);
+   @weakify(self);
     [fair getPosts:^(ARFeedTimeline *feedTimeline) {
-        @_strongify(self);
+        @strongify(self);
         [self setFeedTimeline:feedTimeline];
     }];
 

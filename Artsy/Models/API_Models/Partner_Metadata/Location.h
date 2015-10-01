@@ -1,4 +1,4 @@
-@import CoreLocation;
+#import <CoreLocation/CoreLocation.h>
 
 
 @interface Location : MTLModel <MTLJSONSerializing>

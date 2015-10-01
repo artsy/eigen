@@ -1,6 +1,6 @@
-@import JLRoutes;
+#import <JLRoutes/JLRoutes.h>
 #import "ARExternalWebBrowserViewController.h"
-
+#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 @interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
 @property (nonatomic, readonly, strong) UIGestureRecognizer *gesture;

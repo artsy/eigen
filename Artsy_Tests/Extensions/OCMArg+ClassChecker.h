@@ -1,4 +1,4 @@
-@import OCMock;
+#import <OCMock/OCMock.h>
 
 
 @interface OCMArg (ClassChecker)

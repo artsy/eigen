@@ -10,7 +10,7 @@
 #import "UIView+HitTestExpansion.h"
 #import "ARCustomEigenLabels.h"
 
-@import NPKeyboardLayoutGuide;
+#import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 
 //sigh
 #define EMAIL_TAG 111
@@ -191,14 +191,14 @@
     NSString *username = self.email.text;
     NSString *password = self.password.text;
 
-    @_weakify(self);
+    @weakify(self);
     [[ARUserManager sharedManager] createUserWithName:self.name.text email:username password:password success:^(User *user) {
-        @_strongify(self);
+        @strongify(self);
         [self loginWithUserCredentialsWithSuccess:^{
             [self.delegate didSignUpAndLogin];
         }];
     } failure:^(NSError *error, id JSON) {
-        @_strongify(self);
+        @strongify(self);
         if (JSON
             && [JSON isKindOfClass:[NSDictionary class]]
             && ([JSON[@"error"] isEqualToString:@"User Already Exists"]
@@ -224,20 +224,20 @@
     NSString *username = self.email.text;
     NSString *password = self.password.text;
 
-    @_weakify(self);
+    @weakify(self);
     [[ARUserManager sharedManager] loginWithUsername:username
         password:password
         successWithCredentials:nil
         gotUser:^(User *currentUser) { success();
         }
         authenticationFailure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         [self setFormEnabled:YES];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t Log In" message:@"Please check your email and password." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         [alert show];
         }
         networkFailure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         [self setFormEnabled:YES];
         [self performSelector:_cmd withObject:self afterDelay:3];
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign up failed."];

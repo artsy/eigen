@@ -1,5 +1,6 @@
-@import Adjust;
-@import ALPValidator;
+#import <Adjust/Adjust.h>
+#import <ALPValidator/ALPValidator.h>
+#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 #import "ARInquireForArtworkViewController.h"
 #import "ARUserManager.h"
@@ -698,18 +699,18 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)getCurrentAdmin
 {
-    @_weakify(self);
+    @weakify(self);
     [ArtsyAPI getInquiryContact:^(User *contactStub) {
-        @_strongify(self);
+        @strongify(self);
         self.specialistNameLabel.text = contactStub.name;
 
     } withProfile:^(Profile *contactProfile) {
-        @_strongify(self);
+        @strongify(self);
         // Use a white BG because the square to circle looks ugly
         [self.specialistHeadImage ar_setImageWithURL:[NSURL URLWithString:contactProfile.iconURL] placeholderImage:[UIImage imageFromColor:[UIColor whiteColor]]];
 
     } failure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         ARErrorLog(@"Couldn't get an inquiry contact. %@", error.localizedDescription);
         [self performSelector:@selector(getCurrentAdmin) withObject:nil afterDelay:2];
     }];
@@ -839,9 +840,9 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     _emailValidator = [ALPValidator validatorWithType:ALPValidatorTypeString];
     [self.emailValidator addValidationToEnsureValidEmailWithInvalidMessage:NSLocalizedString(@"Please enter a valid email", nil)];
 
-    @_weakify(self);
+    @weakify(self);
     self.emailValidator.validatorStateChangedHandler = ^(ALPValidatorState newState) {
-        @_strongify(self);
+        @strongify(self);
         self.sendButton.enabled = self.emailValidator.isValid;
       // We can also use newState to determine what to do in more complex situations. Validator states include:
       // ALPValidatorValidationStateValid, ALPValidatorValidationStateInvalid, ALPValidatorValidationStateWaitingForRemote

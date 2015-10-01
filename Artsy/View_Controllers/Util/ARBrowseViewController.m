@@ -45,9 +45,9 @@
     [super viewDidAppear:animated];
 
     if (self.menuLinks.count < 1) {
-        @_weakify(self);
+        @weakify(self);
         [self.networkModel getBrowseFeaturedLinks:^(NSArray *links) {
-            @_strongify(self);
+            @strongify(self);
             [self.collectionView reloadData];
         } failure:nil];
     }

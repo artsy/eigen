@@ -107,7 +107,12 @@ describe(@"User-Agent", ^{
     __block NSString *userAgent = [[NSUserDefaults standardUserDefaults] valueForKey:@"UserAgent"];
 
     it(@"uses Artsy-Mobile hard-coded in Microgravity", ^{
-        expect(userAgent).to.beginWith(@"Artsy-Mobile/");
+        expect(userAgent).to.contain(@"Artsy-Mobile/");
+    });
+    
+    it(@"contains compatibility strings", ^{
+        expect(userAgent).to.contain(@"AppleWebKit/");
+        expect(userAgent).to.contain(@"KHTML");
     });
 
     it(@"uses Eigen", ^{

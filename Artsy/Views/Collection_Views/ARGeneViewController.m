@@ -10,7 +10,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ORStackView+ArtsyViews.h"
 #import "UIViewController+ARUserActivity.h"
-
+#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 @interface ARGeneViewController () <AREmbeddedModelsDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
 
@@ -104,9 +104,9 @@
 
 - (void)loadGene
 {
-    @_weakify(self);
+    @weakify(self);
     [self.gene updateGene:^{
-        @_strongify(self);
+        @strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
         [self updateBody];
         [self ar_setDataLoaded];

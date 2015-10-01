@@ -112,7 +112,7 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
     // avoid having to lookup a partner -> show server-side when possible
     PartnerShow *show = [fair findShowForPartner:partner];
 
-   @_weakify(self);
+   @weakify(self);
     return @{
         ARNavigationButtonClassKey : ARButtonWithImage.class,
         ARNavigationButtonPropertiesKey : @{
@@ -122,7 +122,7 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
             @keypath(ARButtonWithImage.new, imageURL) : (show ? [show imageURLWithFormatName:@"square"] : [NSNull null]) ?: [NSNull null]
         },
         ARNavigationButtonHandlerKey : ^(ARButtonWithImage *sender){
-            @_strongify(self);
+            @strongify(self);
     if (show) {
         [self handleShowButtonPress:show fair:fair];
     } else {
@@ -137,7 +137,7 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 
 - (id)navigationButtonForArtwork:(Artwork *)artwork inFair:(Fair *)fair
 {
-   @_weakify(self);
+   @weakify(self);
     return @{
         ARNavigationButtonClassKey : ARButtonWithImage.class,
         ARNavigationButtonPropertiesKey : @{
@@ -148,7 +148,7 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
             @keypath(ARButtonWithImage.new, subtitleFont) : [UIFont sansSerifFontWithSize:12]
         },
         ARNavigationButtonHandlerKey : ^(ARButtonWithImage *sender){
-            @_strongify(self);
+            @strongify(self);
     [self handleArtworkButtonPress:artwork fair:fair];
 }
 }
@@ -159,7 +159,7 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 
 - (id)navigationButtonForArtist:(Artist *)artist inFair:(Fair *)fair
 {
-   @_weakify(self);
+   @weakify(self);
     return @{
         ARNavigationButtonClassKey : ARButtonWithImage.class,
         ARNavigationButtonPropertiesKey : @{
@@ -170,7 +170,7 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
             @keypath(ARButtonWithImage.new, subtitleFont) : [UIFont serifFontWithSize:12]
         },
         ARNavigationButtonHandlerKey : ^(ARButtonWithImage *sender){
-            @_strongify(self);
+            @strongify(self);
     [self handleArtistButtonPress:artist fair:fair];
 }
 }
@@ -180,9 +180,9 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 - (void)handlePartnerButtonPress:(Partner *)partner fair:(Fair *)fair
 {
     ARFairShowFeed *feed = [[ARFairShowFeed alloc] initWithFair:fair partner:partner];
-   @_weakify(self);
+   @weakify(self);
     [feed getFeedItemsWithCursor:feed.cursor success:^(NSOrderedSet *parsed) {
-        @_strongify(self);
+        @strongify(self);
         ARPartnerShowFeedItem *showFeedItem = parsed.firstObject;
         if (feed && showFeedItem) { // check feed to retain it
             UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:showFeedItem.show fair:fair];

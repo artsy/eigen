@@ -75,10 +75,10 @@
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
     }
 
-    @_weakify(self);
+    @weakify(self);
 
     void (^completion)(void) = ^{
-        @_strongify(self);
+        @strongify(self);
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
         [self ar_setDataLoaded];
     };
@@ -139,9 +139,9 @@
 
 - (void)getRelatedPosts
 {
-    @_weakify(self);
+    @weakify(self);
     [self.artwork getRelatedPosts:^(NSArray *posts) {
-        @_strongify(self);
+        @strongify(self);
         [self updateWithRelatedPosts:posts];
     }];
 }

@@ -1,5 +1,5 @@
 #import "ARSearchResultsDataSource.h"
-
+#import <AFNetworking/UIImageView+AFNetworking.h>
 
 @implementation ARSearchResultsDataSource
 
@@ -34,10 +34,10 @@
 
     cell.textLabel.textColor = self.textColor ?: [UIColor whiteColor];
 
-   @_weakify(cell);
+   @weakify(cell);
     [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:self.placeholderImage
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-       @_strongify(cell);
+       @strongify(cell);
        cell.imageView.image = image;
        [cell layoutSubviews];
 

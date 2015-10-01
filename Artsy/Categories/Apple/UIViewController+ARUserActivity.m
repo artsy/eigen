@@ -5,9 +5,9 @@
 
 - (void)setAr_userActivityEntity:(id<ARSpotlightMetadataProvider>)entity;
 {
-    @_weakify(self);
+    @weakify(self);
     [self ar_withLoadedData:^{
-        @_strongify(self);
+        @strongify(self);
         if (self) {
             self.userActivity = [ARUserActivity activityForEntity:entity];
             [self.userActivity becomeCurrent];

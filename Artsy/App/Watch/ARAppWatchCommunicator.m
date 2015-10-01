@@ -11,7 +11,7 @@
 #import "WatchShow+ArtsyModels.h"
 #import "WatchArtwork.h"
 #import "WatchArtwork+ArtsyModels.h"
-@import CoreLocation;
+#import <CoreLocation/CoreLocation.h>
 
 
 @interface ARAppWatchCommunicator () <CLLocationManagerDelegate>
@@ -50,9 +50,9 @@
         case ARWatchMessageRequestBid: {
             WatchBiddingDetails *details = [[WatchBiddingDetails alloc] initWithDictionary:incoming.referenceObject];
 
-           @_weakify(self);
+           @weakify(self);
             [ARWatchBidNetworkModel bidWithDetails:details:^(BidderPosition *position) {
-                @_strongify(self);
+                @strongify(self);
                 [self validateTopBidderWithDetails:details completion:reply];
 
             } failure:^(NSError *error) {
