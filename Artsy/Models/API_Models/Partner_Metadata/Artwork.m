@@ -258,13 +258,13 @@
 
 - (void)updateArtwork
 {
-    @_weakify(self);
+    @weakify(self);
     __weak KSDeferred *deferred = _artworkUpdateDeferred;
 
     ar_dispatch_async(^{
         [ArtsyAPI getArtworkInfo:self.artworkID success:^(id artwork) {
             ar_dispatch_main_queue(^{
-                @_strongify(self);
+                @strongify(self);
                 [self mergeValuesForKeysFromModel:artwork];
                 [deferred resolveWithValue:self];
             });
@@ -283,7 +283,7 @@
 
 - (KSPromise *)onArtworkUpdate:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    @_weakify(self);
+    @weakify(self);
 
     if (!_artworkUpdateDeferred) {
         _artworkUpdateDeferred = [KSDeferred defer];
@@ -296,7 +296,7 @@
     } error:^id(NSError *error) {
         if (failure) { failure(error); }
 
-        @_strongify(self);
+        @strongify(self);
         ARErrorLog(@"Failed fetching full JSON for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
         return error;
     }];
@@ -312,7 +312,7 @@
 
 - (void)updateSaleArtwork
 {
-    @_weakify(self);
+    @weakify(self);
 
     KSDeferred *deferred = [self deferredSaleArtworkUpdate];
 
@@ -328,13 +328,13 @@
         }
 
         if (auction) {
-            @_strongify(self);
+            @strongify(self);
             [ArtsyAPI getAuctionArtworkWithSale:auction.saleID artwork:self.artworkID success:^(SaleArtwork *saleArtwork) {
                 saleArtwork.auction = auction;
                 [deferred resolveWithValue:saleArtwork];
 
             } failure:^(NSError *error) {
-                @_strongify(self);
+                @strongify(self);
                 ARErrorLog(@"Error fetching auction details for artwork %@: %@", self.artworkID, error.localizedDescription);
                 [deferred rejectWithError:error];
             }];
@@ -343,7 +343,7 @@
         }
 
     } failure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         [deferred rejectWithError:error];
         ARErrorLog(@"Error fetching sales for artwork %@: %@", self.artworkID, error.localizedDescription);
     }];
@@ -375,17 +375,17 @@
 
 - (void)updateFair
 {
-    @_weakify(self);
+    @weakify(self);
 
     KSDeferred *deferred = [self deferredFairUpdate];
     [ArtsyAPI getFairsForArtwork:self success:^(NSArray *fairs) {
-        @_strongify(self);
+        @strongify(self);
         // we're not checking for count > 0 cause we wanna fulfill with nil if no fairs
         Fair *fair = [fairs firstObject];
         self.fair = fair;
         [deferred resolveWithValue:fair];
     } failure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         [deferred rejectWithError:error];
         ARErrorLog(@"Couldn't get fairs for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
     }];
@@ -430,7 +430,7 @@
 
 - (void)updatePartnerShow;
 {
-    @_weakify(self);
+    @weakify(self);
 
     KSDeferred *deferred = [self deferredPartnerShowUpdate];
     [ArtsyAPI getShowsForArtworkID:self.artworkID inFairID:nil success:^(NSArray *shows) {
@@ -438,7 +438,7 @@
         PartnerShow *show = [shows firstObject];
         [deferred resolveWithValue:show];
     } failure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         [deferred rejectWithError:error];
         ARErrorLog(@"Couldn't get shows for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
     }];
@@ -446,9 +446,9 @@
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    @_weakify(self);
+    @weakify(self);
     [ArtsyAPI setFavoriteStatus:state forArtwork:self success:^(id response) {
-        @_strongify(self);
+        @strongify(self);
         if (!self) { return; }
 
         self->_heartStatus = state? ARHeartStatusYes : ARHeartStatusNo;
@@ -459,7 +459,7 @@
             success(response);
         }
     } failure:^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         if (!self) { return; }
 
         self->_heartStatus = ARHeartStatusNo;
@@ -479,12 +479,12 @@
         return;
     }
 
-    @_weakify(self);
+    @weakify(self);
 
     if (!_favDeferred) {
         KSDeferred *deferred = [KSDeferred defer];
         [ArtsyAPI checkFavoriteStatusForArtwork:self success:^(BOOL status) {
-            @_strongify(self);
+            @strongify(self);
             if (!self) { return; }
 
             self->_heartStatus = status ? ARHeartStatusYes : ARHeartStatusNo;
@@ -498,7 +498,7 @@
     }
 
     [_favDeferred.promise then:^(id value) {
-        @_strongify(self);
+        @strongify(self);
 
         success(self.heartStatus);
         return self;

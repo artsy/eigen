@@ -1,4 +1,4 @@
-@import AFNetworking;
+#import <AFNetworking/AFNetworking.h>
 
 
 @implementation AFHTTPRequestOperation (JSON)

@@ -1,8 +1,9 @@
 #import "ARAuthProviders.h"
 #import "ARNetworkConstants.h"
-@import AFOAuth1Client;
-@import FBSDKLoginKit;
-@import FBSDKCoreKit;
+#import <AFOAuth1Client/AFOAuth1Client.h>
+#import <AFOAuth1Client/AFOAuth1Token.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"

@@ -1,6 +1,6 @@
 #import "ARUserActivity.h"
 
-@import CoreSpotlight;
+#import <CoreSpotlight/CoreSpotlight.h>
 
 
 NSString *const ARUserActivityTypeArtwork = @"net.artsy.artsy.artwork";

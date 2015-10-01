@@ -1,8 +1,8 @@
 #import "ARNetworkErrorManager.h"
 #import "ARCustomEigenLabels.h"
 
-@import ARAnalytics;
-@import NPKeyboardLayoutGuide;
+#import <ARAnalytics/ARAnalytics.h>
+#import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 
 
 @interface ARNetworkErrorManager ()

@@ -1,4 +1,4 @@
-@import FODFormKit;
+#import <FODFormKit/FODTextInputCell.h>
 
 
 @interface ARTextInputCell : FODTextInputCell

@@ -16,9 +16,9 @@
 
     _representedObject = representedObject;
 
-    @_weakify(self);
+    @weakify(self);
     [self.representedObject getFollowState:^(ARHeartStatus status) {
-        @_strongify(self);
+        @strongify(self);
         if (!self) { return; }
 
         [self willChangeValueForKey:@"following"];
@@ -35,17 +35,17 @@
 {
     if (following == _following) return;
 
-   @_weakify(self);
+   @weakify(self);
     if (following) {
         [_representedObject followWithSuccess:nil failure:^(NSError *error) {
-            @_strongify(self);
+            @strongify(self);
             ARErrorLog(@"Error following %@ - %@", self.representedObject, error.localizedDescription);
             [self _setFollowing:NO];
         }];
 
     } else {
         [_representedObject unfollowWithSuccess:nil failure:^(NSError *error) {
-            @_strongify(self);
+            @strongify(self);
             ARErrorLog(@"Error following %@ - %@", self.representedObject, error.localizedDescription);
             [self _setFollowing:YES];
         }];

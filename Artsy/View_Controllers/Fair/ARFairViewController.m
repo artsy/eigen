@@ -87,10 +87,10 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
     self.stackView.delegate = [ARScrollNavigationChief chief];
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-    @_weakify(self);
+    @weakify(self);
 
     [_fair updateFair:^{
-        @_strongify(self);
+        @strongify(self);
         [self fairDidLoad];
     }];
 
@@ -155,13 +155,13 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
         return link.displayOnMobile;
     };
 
-    @_weakify(self);
+    @weakify(self);
 
     [self.fair getFairMaps:^(NSArray *maps) {
         [self.fair getOrderedSets:^(NSMutableDictionary *orderedSets) {
             for (OrderedSet *primarySet in orderedSets[@"primary"]) {
                 [primarySet getItems:^(NSArray *items) {
-                    @_strongify(self);
+                    @strongify(self);
                     NSArray *buttonDescriptions = [[items ?: @[]
                         select:displayOnMobile]
                         map:^(FeaturedLink *link) {
@@ -187,7 +187,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 
             for (OrderedSet *curatorSet in orderedSets[@"editorial"]) {
               [curatorSet getItems:^(NSArray *items) {
-                @_strongify(self);
+                @strongify(self);
                 self.editorialVC.buttonDescriptions = [[items select:displayOnMobile] map:^(FeaturedLink *link) {
                   return [self buttonDescriptionForFeaturedLink:link buttonClass:[ARButtonWithImage class]];
                 }];
@@ -202,7 +202,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 
             for (OrderedSet *curatorSet in orderedSets[@"curator"]) {
                 [curatorSet getItems:^(NSArray *items) {
-                    @_strongify(self);
+                    @strongify(self);
                     self.curatorVC.buttonDescriptions = [[items select:displayOnMobile] map:^(FeaturedLink *link) {
                         return [self buttonDescriptionForFeaturedLink:link buttonClass:[ARButtonWithCircularImage class]];
                     }];
@@ -239,7 +239,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 
 - (NSDictionary *)buttonDescriptionForMapLink
 {
-    @_weakify(self);
+    @weakify(self);
     return @{
         ARNavigationButtonClassKey : [ARButtonWithImage class],
         ARNavigationButtonPropertiesKey : @{
@@ -248,7 +248,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
             @keypath(ARButtonWithImage.new, image) : [UIImage imageNamed:@"MapIcon"]
         },
         ARNavigationButtonHandlerKey : ^(ARButtonWithImage *button){
-            @_strongify(self);
+            @strongify(self);
     ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair];
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -258,7 +258,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 
 - (NSDictionary *)buttonDescriptionForFeaturedLink:(FeaturedLink *)featuredLink buttonClass:(Class)buttonClass
 {
-    @_weakify(self);
+    @weakify(self);
     return @{
         ARNavigationButtonClassKey : buttonClass,
         ARNavigationButtonPropertiesKey : @{
@@ -268,7 +268,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
             @keypath(ARButtonWithImage.new, targetURL) : [NSURL URLWithString:featuredLink.href] ?: NSNull.null
         },
         ARNavigationButtonHandlerKey : ^(UIButton *button){
-            @_strongify(self);
+            @strongify(self);
     if ([button isKindOfClass:[ARButtonWithImage class]]) {
         ARButtonWithImage *buttonWithImage = (ARButtonWithImage *)button;
         [self buttonPressed:buttonWithImage];

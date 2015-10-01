@@ -107,16 +107,16 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
 - (void)setUpCallbacks
 {
-    @_weakify(self);
+    @weakify(self);
 
     void (^completion)(void) = ^{
-        @_strongify(self);
+        @strongify(self);
         [self.spinner fadeOutAnimated:ARPerformWorkAsynchronously];
         [self.stackView removeSubview:self.spinner];
     };
 
     [self.artwork onArtworkUpdate:^{
-        @_strongify(self);
+        @strongify(self);
         [self artworkUpdated];
 
         completion();
@@ -125,7 +125,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     }];
 
     [self.artwork onFairUpdate:^(Fair *fair) {
-        @_strongify(self);
+        @strongify(self);
         if (!self || !fair) return;
 
         [self.metadataView updateWithFair:fair];
@@ -133,7 +133,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     } failure:nil];
 
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-        @_strongify(self);
+        @strongify(self);
         if (saleArtwork.auctionState & ARAuctionStateUserIsBidder) {
             [ARAnalytics setUserProperty:@"has_placed_bid" toValue:@"true"];
             self.banner.auctionState = saleArtwork.auctionState;

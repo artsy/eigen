@@ -34,9 +34,9 @@
 
 - (void)getNewItems:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-   @_weakify(self);
+   @weakify(self);
     [_currentFeed getFeedItemsWithCursor:nil success:^(NSOrderedSet *parsedItems) {
-        @_strongify(self);
+        @strongify(self);
 
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [parsedItems count])];
         NSArray *newItems = [parsedItems array];
@@ -58,9 +58,9 @@
 
     self.currentlyLoadingCursor = self.currentFeed.cursor;
 
-   @_weakify(self);
+   @weakify(self);
     void (^successBlock)(id) = ^(NSOrderedSet *parsedItems) {
-        @_strongify(self);
+        @strongify(self);
         if (parsedItems.count) {
             [self.items addObjectsFromArray:[parsedItems array]];
             if (success) {
@@ -74,7 +74,7 @@
     };
 
     void (^failureBlock)(NSError *) = ^(NSError *error) {
-        @_strongify(self);
+        @strongify(self);
         self.currentlyLoadingCursor = nil;
         if (failure) {
             failure(error);

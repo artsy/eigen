@@ -1,8 +1,8 @@
 #import "OHHTTPStubs+Artsy.h"
 #import "ARRouter.h"
 
-@import OHHTTPStubs;
-@import AFNetworking;
+#import <OHHTTPStubs/OHHTTPStubs.h>
+#import <AFNetworking/AFNetworking.h>
 
 
 @implementation OHHTTPStubs (Artsy)

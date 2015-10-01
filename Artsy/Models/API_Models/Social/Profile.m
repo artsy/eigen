@@ -58,11 +58,11 @@
 
 - (void)updateProfile:(void (^)(void))success
 {
-    @_weakify(self);
+    @weakify(self);
 
     if (self.profileID) {
         [ArtsyAPI getProfileForProfileID:self.profileID success:^(Profile *profile) {
-            @_strongify(self);
+            @strongify(self);
 
             [self mergeValuesForKeysFromModel:profile];
             success();

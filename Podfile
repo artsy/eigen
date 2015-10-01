@@ -5,7 +5,6 @@ platform :ios, '8.0'
 
 # Yep.
 inhibit_all_warnings!
-use_frameworks!
 
 # Allows per-dev overrides
 local_podfile = "Podfile.local"

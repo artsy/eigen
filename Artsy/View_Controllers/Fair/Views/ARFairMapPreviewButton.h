@@ -1,4 +1,4 @@
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
 
 @class ARFairMapPreview, Map;
 

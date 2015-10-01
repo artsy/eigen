@@ -1,6 +1,6 @@
 #import "ARUserManager.h"
 #import "ARAppDelegate.h"
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
 static ARTrialController *instance;
 

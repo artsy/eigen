@@ -4,7 +4,7 @@
 #import "ARUserManager.h"
 #import "UIView+HitTestExpansion.h"
 
-@import UIAlertView_Blocks;
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
 @interface ARSignUpSplashTextViewController : UIViewController
 @property (nonatomic, readwrite) NSInteger index;

@@ -7,7 +7,7 @@
 #import "UIViewController+SimpleChildren.h"
 #import "ArtsyAPI+Private.h"
 #import "AROfflineView.h"
-
+#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <DRKonamiCode/DRKonamiGestureRecognizer.h>
 #import "ARKonamiKeyboardView.h"
 #import <ARASCIISwizzle/UIFont+ASCII.h>
@@ -51,10 +51,10 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
     _heroUnitVC = [[ARHeroUnitViewController alloc] init];
 
-    @_weakify(self);
+    @weakify(self);
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     self.networkNotificationObserver = [defaultCenter addObserverForName:ARNetworkUnavailableNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        @_strongify(self);
+        @strongify(self);
         if (self.feedTimeline.numberOfItems == 0) {
             // The offline view will be hidden when we load content.
             [self showOfflineView];
@@ -155,11 +155,11 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
         [self presentLoadingView];
     }
 
-    @_weakify(self);
+    @weakify(self);
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^{
-            @_strongify(self);
+            @strongify(self);
             [self.tableView reloadData];
             [self hideLoadingView];
             [self hideOfflineView];
@@ -238,10 +238,10 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 
     } else {
         self.feedLinkVC = [[ARFeedLinkUnitViewController alloc] init];
-        @_weakify(self);
+        @weakify(self);
         [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
             [self.feedLinkVC fetchLinks:^{
-                @_strongify(self);
+                @strongify(self);
                 if (![UIDevice isPad]) { [self layoutFeedLinks]; }
             }];
         }];
