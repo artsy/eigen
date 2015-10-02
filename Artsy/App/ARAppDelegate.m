@@ -116,6 +116,7 @@ static ARAppDelegate *_sharedInstance = nil;
     if (ARIsRunningInDemoMode) {
         [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
         [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
+
     } else if (showOnboarding) {
         [self fetchSiteFeatures];
         [self showTrialOnboardingWithState:ARInitialOnboardingStateSlideShow andContext:ARTrialContextNotTrial];

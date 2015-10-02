@@ -372,7 +372,9 @@ static const CGFloat ARMenuButtonDimension = 46;
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
-    if ((index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isTrialUser]) {
+    BOOL favoritesInDemoMode = (index == ARTopTabControllerIndexFavorites && ARIsRunningInDemoMode);
+    BOOL loggedOutBellOrFavorites = (index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isTrialUser];
+    if (!favoritesInDemoMode && loggedOutBellOrFavorites) {
         ARTrialContext context = (index == ARTopTabControllerIndexFavorites) ? ARTrialContextShowingFavorites : ARTrialContextNotifications;
         [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
             if (newUser) {

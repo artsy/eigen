@@ -1,7 +1,10 @@
 ### unreleased
 
+* Search hides the statusbar - orta
+* Adding compatibility strings to User-Agent to fix web fonts loading - jorystiefel
 * Use static libs - orta
-
+* Add HTTP response data to inquiry failure analytics - jorystiefel
+* Demo mode checks - orta
 
 ## 2.3.0 (2015.09.29)
 
@@ -11,7 +14,6 @@
 * Improve the use of Shared Web Credentials by trying it as early as possible, before even asking the user to sign-in. - alloy
 * Fix crash by disabling network logging in release mode completely. - alloy
 * Clean-up all compiler warnings for Xcode 7 / iOS 9 SDK. - alloy
-* Adding compatibility strings to User-Agent to fix web fonts loading - jorystiefel
 
 ## 2.3.0 (2015.09.26)
 

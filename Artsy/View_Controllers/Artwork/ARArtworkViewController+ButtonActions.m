@@ -1,5 +1,6 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import <Adjust/Adjust.h>
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"
@@ -16,6 +17,7 @@
 #import "ARFairMapViewController.h"
 #import "ARBidButton.h"
 #import "ARAnalyticsConstants.h"
+
 
 @implementation ARArtworkViewController (ButtonActions)
 
@@ -89,12 +91,22 @@
 
 - (void)tappedContactGallery
 {
+    if (ARIsRunningInDemoMode) {
+        [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
+        return;
+    }
+
     ARInquireForArtworkViewController *inquireVC = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:self.artwork fair:self.fair];
     [inquireVC presentFormWithInquiryURLRepresentation:[self inquiryURLRepresentation]];
 }
 
 - (void)tappedContactRepresentative
 {
+    if (ARIsRunningInDemoMode) {
+        [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
+        return;
+    }
+
     ARInquireForArtworkViewController *inquireVC = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:self.artwork fair:self.fair];
     [inquireVC presentFormWithInquiryURLRepresentation:[self inquiryURLRepresentation]];
 }
@@ -182,11 +194,11 @@
         [self.navigationController pushViewController:controller animated:YES];
 
     }
-    failure:^(NSError *error) {
+        failure:^(NSError *error) {
         @strongify(self);
         ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
         [self tappedContactGallery];
-    }];
+        }];
 }
 
 - (void)tappedAuctionResults
