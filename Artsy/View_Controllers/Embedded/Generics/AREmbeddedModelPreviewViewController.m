@@ -44,6 +44,12 @@
         image = [[(id)cell imageView] image];
     }
 
+    // get the Favorite status
+    if ([object isKindOfClass:Artwork.class]) {
+        [(Artwork *)object getFavoriteStatus:^(ARHeartStatus status) {
+        } failure:nil];
+    }
+
     // Take a few best guesses at a good thumbnail
 
     NSURL *url = nil;
