@@ -15,6 +15,7 @@
 #import "ARUserSettingsViewController.h"
 #import "ARArtistViewController.h"
 #import "ARAuctionArtworkResultsViewController.h"
+#import "ARAuctionWebViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
@@ -89,6 +90,13 @@
         @strongify(self)
         Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
         ARArtworkSetViewController *viewController = [self loadArtworkWithID:parameters[@"id"] inFair:fair];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+        return YES;
+    }];
+
+    [self.routes addRoute:@"/auction/:id" handler:^BOOL(NSDictionary *parameters) {
+        @strongify(self)
+        ARAuctionWebViewController *viewController = [self loadAuctionWithID:parameters[@"id"]];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
     }];
@@ -188,10 +196,18 @@
     return viewController;
 }
 
-- (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
+- (ARAuctionWebViewController *)loadAuctionWithID:(NSString *)auctionID;
+{
+    NSString *path = [NSString stringWithFormat:@"/auction/%@", auctionID];
+    NSURL *URL = [self resolveRelativeUrl:path];
+    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
+}
+
+- (ARAuctionWebViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
 {
     NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
-    return [self loadURL:[NSURL URLWithString:path]];
+    NSURL *URL = [self resolveRelativeUrl:path];
+    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
 }
 
 - (ARAuctionArtworkResultsViewController *)loadAuctionResultsForArtwork:(Artwork *)artwork

@@ -310,6 +310,11 @@
     return _saleArtworkUpdateDeferred;
 }
 
+- (void)resetDeferredSaleArtworkUpdate;
+{
+    _saleArtworkUpdateDeferred = nil;
+}
+
 - (void)updateSaleArtwork
 {
     @weakify(self);
@@ -349,9 +354,24 @@
     }];
 }
 
-- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success failure:(void (^)(NSError *error))failure
+- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success
+                           failure:(void (^)(NSError *error))failure
+{
+    return [self onSaleArtworkUpdate:success failure:failure allowCached:YES];
+}
+
+- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success
+                           failure:(void (^)(NSError *error))failure
+                       allowCached:(BOOL)allowCached;
 {
     KSDeferred *deferred = [self deferredSaleArtworkUpdate];
+
+    // If the work is not done yet, consider the incoming data to be uncached.
+    if (!allowCached && deferred.promise.fulfilled) {
+        [self resetDeferredSaleArtworkUpdate];
+        deferred = [self deferredSaleArtworkUpdate];
+    }
+
     return [deferred.promise then:^(id value) {
         if (success) {
             success(value);

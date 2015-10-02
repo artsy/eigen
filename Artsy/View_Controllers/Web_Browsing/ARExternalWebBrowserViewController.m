@@ -17,11 +17,6 @@
     self.webView.scrollView.delegate = nil;
 }
 
-- (void)loadURL:(NSURL *)URL;
-{
-    [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
-}
-
 - (instancetype)initWithURL:(NSURL *)url
 {
     self = [super init];
@@ -34,6 +29,16 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
 
     return self;
+}
+
+- (void)loadURL:(NSURL *)URL;
+{
+    [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
+}
+
+- (void)reload;
+{
+    [self loadURL:self.currentURL];
 }
 
 - (void)viewDidLoad

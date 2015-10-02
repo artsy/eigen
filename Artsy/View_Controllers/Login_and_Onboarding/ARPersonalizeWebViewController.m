@@ -4,11 +4,6 @@
 #import "ARSpinner.h"
 
 
-@interface ARInternalMobileWebViewController ()
-- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
-@end
-
-
 @interface ARPersonalizeWebViewController () <WKNavigationDelegate>
 @property (nonatomic, strong, readonly) ARSpinner *spinner;
 @end
@@ -38,11 +33,6 @@
     [self.webView constrainHeightToView:self.view predicate:@"-200"];
     [self.webView alignCenterXWithView:self.view predicate:@"0"];
     [self.webView alignCenterYWithView:self.view predicate:@"0"];
-}
-
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
-{
-    decisionHandler([self shouldLoadNavigationAction:navigationAction]);
 }
 
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
