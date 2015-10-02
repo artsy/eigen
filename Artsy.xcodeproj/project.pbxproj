@@ -452,6 +452,7 @@
 		60B79B85182C346700945FFF /* ARQuicksilverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B79B83182C346700945FFF /* ARQuicksilverViewController.xib */; };
 		60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B79B88182C54CE00945FFF /* ARQuicksilverSearchBar.m */; };
 		60BB9FE916695A8F001FA20A /* PhotoContentLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 49433300166920B3005AB483 /* PhotoContentLink.m */; };
+		60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */; };
 		60C26DEA1BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */; };
 		60C26DED1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C26DEC1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m */; };
 		60CE3CAB1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */; };
@@ -1400,6 +1401,8 @@
 		60B79B87182C54CE00945FFF /* ARQuicksilverSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARQuicksilverSearchBar.h; sourceTree = "<group>"; };
 		60B79B88182C54CE00945FFF /* ARQuicksilverSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARQuicksilverSearchBar.m; sourceTree = "<group>"; };
 		60BC390718182227003F34E7 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		60BC92F11BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARApplicationShortcutItemDelegate.h; sourceTree = "<group>"; };
+		60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARApplicationShortcutItemDelegate.m; sourceTree = "<group>"; };
 		60C26DE81BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmbeddedModelsPreviewDelegate.h; sourceTree = "<group>"; };
 		60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelsPreviewDelegate.m; sourceTree = "<group>"; };
 		60C26DEB1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmbeddedModelPreviewViewController.h; sourceTree = "<group>"; };
@@ -2455,6 +2458,8 @@
 				514E56471BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.h */,
 				514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */,
 				5170C50B1BBAC1090043E601 /* ARMacros.h */,
+				60BC92F11BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.h */,
+				60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -4653,6 +4658,7 @@
 				342F9D9296B47F66184FA760 /* NSDate+DateRange.m in Sources */,
 				3C33298D18AD3324006D28C0 /* ARFairSearchViewController.m in Sources */,
 				3C9F215F18B25D0D00D8898B /* ARSearchViewController.m in Sources */,
+				60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */,
 				E61446B1195A1CDC00BFB7C3 /* ARFollowableNetworkModel.m in Sources */,
 				3CCCC8A21899B412008015DD /* ArtsyAPI+Fairs.m in Sources */,
 				E667F12C18EC889F00503F50 /* ARLogFormatter.m in Sources */,
