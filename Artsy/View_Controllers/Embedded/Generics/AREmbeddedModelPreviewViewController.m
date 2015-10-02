@@ -23,6 +23,17 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    // get the Favorite status
+    if ([self.object isKindOfClass:Artwork.class]) {
+        [(Artwork *)self.object getFavoriteStatus:^(ARHeartStatus status) {
+        } failure:nil];
+    }
+}
+
 - (void)updateWithCell:(UICollectionViewCell *)cell
 {
     id object = self.object;
@@ -42,12 +53,6 @@
     UIImage *image = nil;
     if ([cell respondsToSelector:@selector(imageView)]) {
         image = [[(id)cell imageView] image];
-    }
-
-    // get the Favorite status
-    if ([object isKindOfClass:Artwork.class]) {
-        [(Artwork *)object getFavoriteStatus:^(ARHeartStatus status) {
-        } failure:nil];
     }
 
     // Take a few best guesses at a good thumbnail
