@@ -1,5 +1,6 @@
 ### unreleased
 
+* Search hides the statusbar - orta
 * Adding compatibility strings to User-Agent to fix web fonts loading - jorystiefel
 * Use static libs - orta
 * Add HTTP response data to inquiry failure analytics - jorystiefel
