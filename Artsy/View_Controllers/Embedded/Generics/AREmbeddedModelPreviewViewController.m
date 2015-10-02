@@ -1,5 +1,6 @@
 #import "AREmbeddedModelPreviewViewController.h"
 #import "ARAspectRatioImageView.h"
+#import "ARSharingController.h"
 
 
 @interface AREmbeddedModelPreviewViewController ()
@@ -68,11 +69,15 @@
 
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItemsForArtwork:(Artwork *)artwork
 {
-    NSString *favoriteText = artwork.heartStatus == ARHeartStatusYes ? @"Remove from Favorites" : @"Favorite";
-    UIPreviewActionStyle favoriteActionStyle = artwork.heartStatus == ARHeartStatusYes ? UIPreviewActionStyleDestructive : UIPreviewActionStyleDefault;
+    NSString *favoriteText = @"Favorite";
+    UIPreviewActionStyle favoriteActionStyle = UIPreviewActionStyleDefault;
+    if (artwork.heartStatus == ARHeartStatusYes) {
+        favoriteText = @"Remove from Favorites";
+        favoriteActionStyle = UIPreviewActionStyleDestructive;
+    }
 
     UIPreviewAction *favoriteAction = [UIPreviewAction actionWithTitle:favoriteText style:favoriteActionStyle handler:^(UIPreviewAction *_Nonnull action, UIViewController *_Nonnull previewViewController) {
-        [self tappedFavorite:previewViewController];
+        [self tappedFavorite];
     }];
 
     NSString *followText = artwork.artist.followed ? @"Unfollow " : @"Follow ";
@@ -80,10 +85,14 @@
     UIPreviewActionStyle followActionStyle = artwork.artist.followed ? UIPreviewActionStyleDestructive : UIPreviewActionStyleDefault;
 
     UIPreviewAction *followArtistAction = [UIPreviewAction actionWithTitle:followText style:followActionStyle handler:^(UIPreviewAction *_Nonnull action, UIViewController *_Nonnull previewViewController) {
-        [self tappedFollow:previewViewController];
+        [self tappedFollow];
     }];
 
-    return @[ favoriteAction, followArtistAction ];
+    UIPreviewAction *shareAction = [UIPreviewAction actionWithTitle:@"Share" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction *_Nonnull action, UIViewController *_Nonnull previewViewController) {
+        [self tappedArtworkShare];
+    }];
+
+    return @[ favoriteAction, followArtistAction, shareAction ];
 }
 
 - (CGSize)preferredContentSize
@@ -102,11 +111,11 @@
 
 #pragma mark - Actions
 
-- (void)tappedFavorite:(id)sender
+- (void)tappedFavorite
 {
     if ([User isTrialUser]) {
         [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser) {
-            [self tappedFavorite:sender];
+            [self tappedFavorite];
         }];
         return;
     }
@@ -120,11 +129,11 @@
     }
 }
 
-- (void)tappedFollow:(id)sender
+- (void)tappedFollow
 {
     if ([User isTrialUser]) {
         [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser) {
-            [self tappedFollow:sender];
+            [self tappedFollow];
         }];
         return;
     }
@@ -137,4 +146,21 @@
     }
 }
 
+- (void)tappedArtworkShare
+{
+    Artwork *artwork = (Artwork *)self.object;
+
+    NSURL *thumbnailImageURL = nil;
+    UIImage *image = nil;
+    if (artwork.defaultImage.downloadable) {
+        thumbnailImageURL = artwork.defaultImage.urlForThumbnailImage;
+        image = self.previewImageView.image;
+    } else if (artwork.canShareImage) {
+        thumbnailImageURL = artwork.defaultImage.urlForThumbnailImage;
+    }
+    ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:artwork
+                                                                            thumbnailImageURL:thumbnailImageURL
+                                                                                        image:image];
+    [sharingController presentActivityViewControllerFromView:self.view];
+}
 @end
