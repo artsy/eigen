@@ -59,31 +59,31 @@
 
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItems
 {
-    UIPreviewAction *favoriteAction = [UIPreviewAction actionWithTitle:@"Heart" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction *_Nonnull action, UIViewController *_Nonnull previewViewController) {
+    if ([self.object isKindOfClass:Artwork.class]) {
+        return [self previewActionItemsForArtwork:(Artwork *)self.object];
+    }
+
+    return nil;
+}
+
+- (NSArray<id<UIPreviewActionItem>> *)previewActionItemsForArtwork:(Artwork *)artwork
+{
+    NSString *favoriteText = artwork.heartStatus == ARHeartStatusYes ? @"Remove from Favorites" : @"Favorite";
+    UIPreviewActionStyle favoriteActionStyle = artwork.heartStatus == ARHeartStatusYes ? UIPreviewActionStyleDestructive : UIPreviewActionStyleDefault;
+
+    UIPreviewAction *favoriteAction = [UIPreviewAction actionWithTitle:favoriteText style:favoriteActionStyle handler:^(UIPreviewAction *_Nonnull action, UIViewController *_Nonnull previewViewController) {
         [self tappedFavorite:previewViewController];
     }];
 
-    return @[ favoriteAction ];
-}
+    NSString *followText = artwork.artist.followed ? @"Unfollow " : @"Follow ";
+    followText = [followText stringByAppendingString:artwork.artist.name];
+    UIPreviewActionStyle followActionStyle = artwork.artist.followed ? UIPreviewActionStyleDestructive : UIPreviewActionStyleDefault;
 
-- (void)tappedFavorite:(id)sender
-{
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser) {
-            [self tappedFavorite:sender];
-        }];
-        return;
-    }
+    UIPreviewAction *followArtistAction = [UIPreviewAction actionWithTitle:followText style:followActionStyle handler:^(UIPreviewAction *_Nonnull action, UIViewController *_Nonnull previewViewController) {
+        [self tappedFollow:previewViewController];
+    }];
 
-    if ([self.object isKindOfClass:Artwork.class]) {
-        Artwork *artwork = (Artwork *)self.object;
-
-        [artwork setFollowState:!artwork.heartStatus success:^(id json) {
-
-        } failure:^(NSError *error) {
-            [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to save artwork."];
-        }];
-    }
+    return @[ favoriteAction, followArtistAction ];
 }
 
 - (CGSize)preferredContentSize
@@ -98,6 +98,43 @@
     }
 
     return CGSizeMake(400, 400);
+}
+
+#pragma mark - Actions
+
+- (void)tappedFavorite:(id)sender
+{
+    if ([User isTrialUser]) {
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser) {
+            [self tappedFavorite:sender];
+        }];
+        return;
+    }
+
+    if ([self.object isKindOfClass:Artwork.class]) {
+        Artwork *artwork = (Artwork *)self.object;
+        BOOL isHearted = artwork.heartStatus == ARHeartStatusYes ? YES : NO;
+        [artwork setFollowState:!isHearted success:nil failure:^(NSError *error) {
+            [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to save artwork."];
+        }];
+    }
+}
+
+- (void)tappedFollow:(id)sender
+{
+    if ([User isTrialUser]) {
+        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser) {
+            [self tappedFollow:sender];
+        }];
+        return;
+    }
+
+    if ([self.object isKindOfClass:Artwork.class]) {
+        Artwork *artwork = (Artwork *)self.object;
+        [artwork.artist setFollowState:!artwork.artist.followed success:nil failure:^(NSError *error) {
+            [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
+        }];
+    }
 }
 
 @end
