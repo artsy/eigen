@@ -175,7 +175,8 @@ DEPENDENCIES:
   - ISO8601DateFormatter (HEAD)
   - JLRoutes
   - JSBadgeView
-  - JSDecoupledAppDelegate
+  - JSDecoupledAppDelegate (from `https://github.com/orta/JSDecoupledAppDelegate.git`,
+    branch `patch-1`)
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
   - libextobjc/EXTKeyPathCoding
@@ -215,6 +216,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/alloy/FLKAutoLayout.git
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
+  JSDecoupledAppDelegate:
+    :branch: patch-1
+    :git: https://github.com/orta/JSDecoupledAppDelegate.git
   Keys:
     :path: Pods/CocoaPodsKeys
   NAMapKit:
@@ -242,6 +246,9 @@ CHECKOUT OPTIONS:
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
     :git: https://github.com/1aurabrown/FODFormKit.git
+  JSDecoupledAppDelegate:
+    :commit: cd72cdfd4543a26b01dc229d6265737331696435
+    :git: https://github.com/orta/JSDecoupledAppDelegate.git
   NAMapKit:
     :commit: 62275386978db91b0e7ed8de755d15cef3e793b4
     :git: https://github.com/neilang/NAMapKit
