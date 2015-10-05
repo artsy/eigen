@@ -38,6 +38,10 @@ beforeEach(^{
 
 afterEach(^{
     [mockView stopMocking];
+
+    // Explicitely release the view now so that it won’t receive anymore notifications
+    // from e.g. ARAuctionWebViewController.
+    view = nil;
 });
 
 it(@"displays contact gallery for a for sale artwork", ^{

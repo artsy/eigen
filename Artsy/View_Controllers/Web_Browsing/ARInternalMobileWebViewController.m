@@ -90,6 +90,7 @@ static void *ARProgressContext = &ARProgressContext;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    // Check if the view has reached the DOMContentLoaded stage.
     if (context == ARProgressContext && [keyPath isEqualToString:@"estimatedProgress"]) {
         [self.webView evaluateJavaScript:@"document.readyState == \"interactive\"" completionHandler:^(id response, NSError *error) {
             if ([response boolValue]) {
@@ -118,14 +119,13 @@ static void *ARProgressContext = &ARProgressContext;
     self.webView.scrollView.backgroundColor = [UIColor blackColor];
 
     self.loaded = YES;
+
+    // There are certain edge-cases, not fully known atm, that make it so that the DOMContentLoaded hook isn’t
+    // triggered. Therefore, hide the loading view here for good measure.
+    [self hideLoading];
 }
 
 // Load a new internal web VC for each link we can do
-
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
-{
-    decisionHandler([self shouldLoadNavigationAction:navigationAction]);
-}
 
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {

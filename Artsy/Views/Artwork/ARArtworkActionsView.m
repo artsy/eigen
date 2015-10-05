@@ -26,6 +26,11 @@
 
 @implementation ARArtworkActionsView
 
+- (void)dealloc;
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (instancetype)initWithArtwork:(Artwork *)artwork
 {
     self = [super init];
@@ -56,6 +61,28 @@
         [self updateUI];
         return returnable;
     } error:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(artworkBidUpdated:)
+                                                 name:ARAuctionArtworkBidUpdatedNotification
+                                               object:nil];
+}
+
+- (void)artworkBidUpdated:(NSNotification *)notification;
+{
+    if ([notification.userInfo[ARAuctionArtworkIDKey] isEqualToString:self.artwork.artworkID]) {
+        // First clear the old status so the user is not confronted with out-of-date data, which could be worrisome to
+        // the user if they have just made a bid.
+        self.saleArtwork = nil;
+        [self updateUI];
+        // Then fetch the up-to-date data.
+        @weakify(self);
+        [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
+            @strongify(self);
+            self.saleArtwork = saleArtwork;
+            [self updateUI];
+        } failure:nil allowCached:NO];
+    }
 }
 
 - (void)updateUI
@@ -65,7 +92,6 @@
     }
 
     NSMutableArray *buttonsWhoseMarginCanChange = [NSMutableArray array];
-
 
     if ([self showAuctionControls]) {
         ARAuctionState state = self.saleArtwork.auctionState;

@@ -1,6 +1,7 @@
+#import "ARAppConstants.h"
+
 // Don't go wild, this is just a standard account I
 // signed up with one day.
-
 NSString *const ARTestAccountLogin = @"energy_test_bot@gmail.com";
 NSString *const ARTestAccountPassword = @"zaqwsxcde";
 
@@ -14,6 +15,10 @@ NSString *const AROAuthTokenKey = @"access_token";
 
 NSString *const ARNetworkAvailableNotification = @"network_available_notification";
 NSString *const ARNetworkUnavailableNotification = @"network_unavailable_notification";
+
+NSString *const ARAuctionArtworkBidUpdatedNotification = @"ARAuctionArtworkBidUpdated";
+NSString *const ARAuctionIDKey = @"ARAuctionID";
+NSString *const ARAuctionArtworkIDKey = @"ARAuctionArtworkID";
 
 NSString *const ARAPNSDeviceTokenKey = @"apns_device_token";
 

@@ -105,10 +105,17 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 - (void)updatePartnerShow;
 
 /// Adds a callback when the artwork has been update, does not trigger said update.
-- (KSPromise *)onArtworkUpdate:(void (^)(void))success failure:(void (^)(NSError *error))failure;
-- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success failure:(void (^)(NSError *error))failure;
-- (KSPromise *)onFairUpdate:(void (^)(Fair *fair))success failure:(void (^)(NSError *error))failure;
-- (KSPromise *)onPartnerShowUpdate:(void (^)(PartnerShow *show))success failure:(void (^)(NSError *error))failure;
+- (KSPromise *)onArtworkUpdate:(void (^)(void))success
+                       failure:(void (^)(NSError *error))failure;
+- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success
+                           failure:(void (^)(NSError *error))failure;
+- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success
+                           failure:(void (^)(NSError *error))failure
+                       allowCached:(BOOL)allowCached;
+- (KSPromise *)onFairUpdate:(void (^)(Fair *fair))success
+                    failure:(void (^)(NSError *error))failure;
+- (KSPromise *)onPartnerShowUpdate:(void (^)(PartnerShow *show))success
+                           failure:(void (^)(NSError *error))failure;
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure;
 - (void)getFavoriteStatus:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;

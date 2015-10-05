@@ -1,10 +1,15 @@
-### unreleased
+### Unreleased
+
+### 2.3.0 (2015.10.05)
 
 * Search hides the statusbar - orta
 * Adding compatibility strings to User-Agent to fix web fonts loading - jorystiefel
 * Use static libs - orta
 * Add HTTP response data to inquiry failure analytics - jorystiefel
 * Demo mode checks - orta
+* After bidding on an auction item move back from the bidding view to the artwork in question. - alloy
+* Update artwork views after bidding on that artwork. - alloy
+* Update auction views after bidding on an artwork in that auction. - alloy
 
 ## 2.3.0 (2015.09.29)
 
