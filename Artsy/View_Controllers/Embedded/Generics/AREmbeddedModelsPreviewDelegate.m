@@ -40,6 +40,13 @@
     previewingContext.sourceRect = visible;
 
     id object = [self.modelVC.items objectAtIndex:index.row];
+
+    // TODO: Add peek support for Artists, Genes
+    // Only Peek for artworks right now
+    if (![object isKindOfClass:Artwork.class]) {
+        return nil;
+    }
+
     AREmbeddedModelPreviewViewController *embed = [[AREmbeddedModelPreviewViewController alloc] initWithObject:object];
     [embed updateWithCell:cell];
 
