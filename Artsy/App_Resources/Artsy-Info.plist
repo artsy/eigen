@@ -8,11 +8,19 @@
 			<key>UIApplicationShortcutItemIconType</key>
 			<string>UIApplicationShortcutIconTypeSearch</string>
 			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>Artworks, Artists &amp; more.</string>
+			<string></string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Search</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>$(PRODUCT_BUNDLE_IDENTIFIER).search</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>Heart_Shortcut</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Favorites</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).favorites</string>
 		</dict>
 	</array>
 	<key>AppIdentifierPrefix</key>

@@ -1,6 +1,8 @@
 #import "ARApplicationShortcutItemDelegate.h"
 #import "ARTopMenuViewController.h"
 #import "ARNavigationController.h"
+#import "ARFavoritesViewController.h"
+
 
 @implementation ARApplicationShortcutItemDelegate
 
@@ -9,10 +11,20 @@
     [JSDecoupledAppDelegate sharedAppDelegate].shortcutItemDelegate = [[self alloc] init];
 }
 
+- (NSArray<UIApplicationShortcutItem *> *)shortcutItems
+{
+    UIApplicationShortcutItem *favoritesShortcut = [[UIApplicationShortcutItem alloc] initWithType:@"favorites" localizedTitle:@"Favorites"];
+
+    return @[ favoritesShortcut ];
+}
+
 - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler
 {
     if ([shortcutItem.type hasSuffix:@"search"]) {
         [self openSearch];
+        completionHandler(YES);
+    } else if ([shortcutItem.type hasSuffix:@"favorites"]) {
+        [self openFavorites];
         completionHandler(YES);
     }
 }
@@ -21,6 +33,26 @@
 {
     ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
     [rootNavigationController search:self];
+}
+
+- (void)openFavorites
+{
+    ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
+
+    if (!ARIsRunningInDemoMode && [User isTrialUser]) {
+        ARTrialContext context = ARTrialContextShowingFavorites;
+        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
+            if (newUser) {
+                [[ARTopMenuViewController sharedController].tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
+                
+            } else {
+                [rootNavigationController pushViewController:[[ARFavoritesViewController alloc] init] animated:NO];
+            }
+        }];
+        return;
+    }
+
+    [rootNavigationController pushViewController:[[ARFavoritesViewController alloc] init] animated:NO];
 }
 
 @end
