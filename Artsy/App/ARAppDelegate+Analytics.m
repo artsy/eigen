@@ -452,6 +452,13 @@
                     ARAnalyticsClass: ARSignUpActiveUserViewController.class,
                     ARAnalyticsDetails: @[
                         @{
+                            ARAnalyticsEventName: ARAnalyticsSignInWebCredentials,
+                            ARAnalyticsSelectorName: @"loggedInWithSharedCredentials",
+                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
+                                return @{@"active_user": @"true"};
+                            }
+                        },
+                        @{
                             ARAnalyticsEventName: ARAnalyticsTappedLogIn,
                             ARAnalyticsSelectorName: ARAnalyticsSelector(goToLogin:),
                             ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
@@ -686,6 +693,13 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsTappedSignUp,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(signUp:)),
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsSignInWebCredentials,
+                            ARAnalyticsSelectorName: @"loggedInWithSharedCredentials",
+                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpSplashViewController *controller, NSArray *_) {
+                                return @{@"active_user": @"true"};
+                            }
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsTryWithoutAccount,
