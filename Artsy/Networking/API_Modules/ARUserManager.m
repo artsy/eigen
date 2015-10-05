@@ -68,7 +68,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 }
 
 - (instancetype)init
-{
+{   
     self = [super init];
     if (!self) {
         return nil;

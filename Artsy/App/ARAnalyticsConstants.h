@@ -42,6 +42,7 @@ extern NSString *const ARAnalyticsOnboardingCompleted;
 extern NSString *const ARAnalyticsSignInEmail;
 extern NSString *const ARAnalyticsSignInTwitter;
 extern NSString *const ARAnalyticsSignInFacebook;
+extern NSString *const ARAnalyticsSignInWebCredentials;
 extern NSString *const ARAnalyticsSignInError;
 
 // Sign up

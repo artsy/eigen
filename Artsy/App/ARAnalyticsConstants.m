@@ -18,6 +18,7 @@ NSString *const ARAnalyticsTappedLogIn = @"Tapped log in";
 NSString *const ARAnalyticsSignInEmail = @"Login with email";
 NSString *const ARAnalyticsSignInTwitter = @"Login with twitter";
 NSString *const ARAnalyticsSignInFacebook = @"Login with facebook";
+NSString *const ARAnalyticsSignInWebCredentials = @"Login with web credentials";
 NSString *const ARAnalyticsSignInError = @"Login errors";
 
 NSString *const ARAnalyticsSignUpEmail = @"Sign up with email";

@@ -113,12 +113,18 @@
                     [self showControls];
                 }];
             } else {
+                [self loggedInWithSharedCredentials];
                 [self.delegate dismissOnboardingWithVoidAnimation:YES];
             }
         });
     }];
 
     [super viewDidAppear:animated];
+}
+
+- (void)loggedInWithSharedCredentials
+{
+    // This is a dummy method for ARAppDelegat+Analytics to hook into.
 }
 
 - (void)showControls;
