@@ -1,5 +1,7 @@
 ### Unreleased
 
+* Fix an issue where after 8 rotations our progress indicator would stop rotating, making it seem as if the progress was finished when it was actually not. - alloy
+
 ### 2.3.0 (2015.10.05)
 
 * Search hides the statusbar - orta

@@ -73,7 +73,7 @@ CGFloat RotationDuration = 0.9;
 
 - (void)startAnimating
 {
-    [self animate:HUGE_VAL];
+    [self animate:LONG_MAX];
 }
 
 - (void)animate:(NSInteger)times
