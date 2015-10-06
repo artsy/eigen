@@ -30,7 +30,9 @@
     // get the Favorite status
     if ([self.object isKindOfClass:Artwork.class]) {
         [(Artwork *)self.object getFavoriteStatus:^(ARHeartStatus status) {
-        } failure:nil];
+        } failure:^(NSError *error) {
+            [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to get artwork heart status."];
+        }];
     }
 }
 
