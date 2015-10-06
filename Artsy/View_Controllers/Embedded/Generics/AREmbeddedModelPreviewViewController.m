@@ -80,6 +80,14 @@
 
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItemsForArtwork:(Artwork *)artwork
 {
+    UIPreviewAction *shareAction = [UIPreviewAction actionWithTitle:@"Share" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction *_Nonnull action, UIViewController *_Nonnull previewViewController) {
+        [self tappedArtworkShare];
+    }];
+
+    if ([User isTrialUser]) {
+        return @[ shareAction ];
+    }
+
     NSString *favoriteText = @"Favorite";
     UIPreviewActionStyle favoriteActionStyle = UIPreviewActionStyleDefault;
     if (artwork.heartStatus == ARHeartStatusYes) {
@@ -99,9 +107,6 @@
         [self tappedFollow];
     }];
 
-    UIPreviewAction *shareAction = [UIPreviewAction actionWithTitle:@"Share" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction *_Nonnull action, UIViewController *_Nonnull previewViewController) {
-        [self tappedArtworkShare];
-    }];
 
     return @[ favoriteAction, followArtistAction, shareAction ];
 }

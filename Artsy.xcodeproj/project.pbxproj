@@ -14,7 +14,7 @@
 		0C5100A51B83CC2A0050F479 /* ARCreateAccountViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C5100A31B83CB990050F479 /* ARCreateAccountViewControllerTests.m */; };
 		0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */; };
 		0CAC95391BA9E1D0008E9848 /* ARUserActivityAndSpotlightTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */; };
-		0CD4E9AF1BC3053B005F0913 /* Heart_Shortcut.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CD4E9AE1BC3053B005F0913 /* Heart_Shortcut.png */; };
+		0CD4E9B11BC42675005F0913 /* Heart_Shortcut.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CD4E9B01BC42675005F0913 /* Heart_Shortcut.png */; };
 		0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */; };
 		1AE74AC3E4428F2CD96DD625 /* libPods-Artsy Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CD6775EF349E6B1D474AD7D /* libPods-Artsy Tests.a */; };
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
@@ -637,7 +637,7 @@
 		0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserActivity.h; sourceTree = "<group>"; };
 		0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
 		0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivityAndSpotlightTests.m; sourceTree = "<group>"; };
-		0CD4E9AE1BC3053B005F0913 /* Heart_Shortcut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Heart_Shortcut.png; sourceTree = "<group>"; };
+		0CD4E9B01BC42675005F0913 /* Heart_Shortcut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Heart_Shortcut.png; sourceTree = "<group>"; };
 		0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatcher+UINavigationController.h"; sourceTree = "<group>"; };
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
 		1C5A8C9C9A2E13968D1D0C58 /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3248,7 +3248,7 @@
 				E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */,
 				608B703917D4A1C70088A56C /* Heart_Black@2x.png */,
 				608B703717D4A1C70088A56C /* Heart_White@2x.png */,
-				0CD4E9AE1BC3053B005F0913 /* Heart_Shortcut.png */,
+				0CD4E9B01BC42675005F0913 /* Heart_Shortcut.png */,
 				5152C6581B500EA30018D4E4 /* HomeButton@2x.png */,
 				E6CD164918ABE291001254B5 /* Image_Shadow_Overlay@2x.png */,
 				6012313518B2E44A00B7667F /* MapButtonAction@2x.png */,
@@ -4240,7 +4240,7 @@
 				E66492D318B7D26B00531B8F /* Parallax_Overlay_Top@2x.png in Resources */,
 				E693BF8518A1949A00D464BC /* ARTextInputCellWithTitle.xib in Resources */,
 				3C4AE97E19094DAA009C0E8B /* MapAnnotation_Drink@2x.png in Resources */,
-				0CD4E9AF1BC3053B005F0913 /* Heart_Shortcut.png in Resources */,
+				0CD4E9B11BC42675005F0913 /* Heart_Shortcut.png in Resources */,
 				608B708A17D4A1C80088A56C /* SettingsButton@2x.png in Resources */,
 				3C4AE99719094F96009C0E8B /* ViewInRoom_Wall@2x.png in Resources */,
 				60B79B85182C346700945FFF /* ARQuicksilverViewController.xib in Resources */,
