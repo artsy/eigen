@@ -110,6 +110,16 @@
     [super viewDidLoad];
 }
 
+- (BOOL)shouldAutorotate;
+{
+    return [UIDevice isPad];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+{
+    return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark -
 #pragma mark UITextField
 
