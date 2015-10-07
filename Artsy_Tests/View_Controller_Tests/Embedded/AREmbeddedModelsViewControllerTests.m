@@ -1,11 +1,13 @@
 #import "AREmbeddedModelsViewController.h"
 #import "ARArtworkMasonryModule.h"
+#import "AREmbeddedModelsPreviewDelegate.h"
 
 
 @interface AREmbeddedModelsViewController (Testing)
 
 @property (nonatomic, strong, readwrite) UICollectionView *collectionView;
-
+@property (nonatomic, strong) AREmbeddedModelsPreviewDelegate *previewDelegate;
+@property (nonatomic, strong) id<UIViewControllerPreviewing> previewContext;
 @end
 
 
@@ -47,6 +49,20 @@ AREmbeddedModelsViewControllerWithLayout(ARArtworkMasonryLayout layout)
 }
 
 SpecBegin(AREmbeddedModelsViewController);
+
+it(@"registers artworks for peek pop", ^{
+    AREmbeddedModelsViewController *vc = AREmbeddedModelsViewControllerWithLayout(ARArtworkMasonryLayout2Column);
+    OCMockObject *mockVC = [OCMockObject partialMockForObject:vc];
+ 
+    [[mockVC expect] registerForPreviewingWithDelegate:OCMOCK_ANY sourceView:OCMOCK_ANY];
+    
+    [vc appendItems:@[
+        ArtworkWithImageAspectRatio(1),
+        ArtworkWithImageAspectRatio(1)
+    ]];
+    
+    [mockVC verify];
+});
 
 describe(@"masonry layout", ^{
     __block AREmbeddedModelsViewController *viewController = nil;

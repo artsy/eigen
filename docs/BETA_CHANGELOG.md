@@ -6,6 +6,8 @@
 
 ### 2.3.0 (2015.10.05)
 
+* 3D Touch Peek/pop support for artworks in grid views - jorystiefel
+* 3D Touch quick action menu items for Artsy icon on home screen - jorystiefel
 * Search hides the statusbar - orta
 * Adding compatibility strings to User-Agent to fix web fonts loading - jorystiefel
 * Use static libs - orta

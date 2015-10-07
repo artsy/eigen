@@ -1,7 +1,9 @@
 #import "AREmbeddedModelsViewController.h"
 #import "ARItemThumbnailViewCell.h"
 #import "ARReusableLoadingView.h"
-
+#import "AREmbeddedModelsPreviewDelegate.h"
+#import "AREmbeddedModelPreviewViewController.h"
+#import "ARTopMenuViewController.h"
 
 @interface ARArtworkMasonryModule (Private)
 - (void)updateLayoutForSize:(CGSize)size;
@@ -12,6 +14,7 @@
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
+@property (nonatomic, strong) AREmbeddedModelsPreviewDelegate *previewDelegate;
 
 // Private Accessors
 @property (nonatomic, strong, readwrite) Fair *fair;
@@ -35,6 +38,13 @@
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:UICollectionElementKindSectionHeader];
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:UICollectionElementKindSectionFooter];
     [self.view addSubview:self.collectionView];
+
+    if ([self respondsToSelector:@selector(registerForPreviewingWithDelegate:sourceView:)]) {
+        self.previewDelegate = [[AREmbeddedModelsPreviewDelegate alloc] initWithModelVC:self];
+
+        UIView *rootView = [ARTopMenuViewController sharedController].view;
+        [self registerForPreviewingWithDelegate:self.previewDelegate sourceView:rootView];
+    }
 
     [super viewDidLoad];
 }
