@@ -5,7 +5,7 @@
 
 @interface AREmbeddedModelPreviewViewController ()
 
-@property (nonatomic, strong, readwrite) id object;
+@property (nonatomic, strong, readwrite) id<ARShareableObject> object;
 @property (nonatomic, strong, readwrite) UIImageView *previewImageView;
 
 @end
@@ -83,7 +83,7 @@
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItemsForArtwork:(Artwork *)artwork
 {
     UIPreviewAction *shareAction = [UIPreviewAction actionWithTitle:@"Share" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction *_Nonnull action, UIViewController *_Nonnull previewViewController) {
-        [self tappedArtworkShare];
+        [self tappedShare];
     }];
 
     if ([User isTrialUser]) {
@@ -102,7 +102,9 @@
     }];
 
     NSString *followText = artwork.artist.followed ? @"Unfollow " : @"Follow ";
-    followText = [followText stringByAppendingString:artwork.artist.name];
+    if (artwork.artist.name.length > 0) {
+        followText = [followText stringByAppendingString:artwork.artist.name];
+    }
     UIPreviewActionStyle followActionStyle = artwork.artist.followed ? UIPreviewActionStyleDestructive : UIPreviewActionStyleDefault;
 
     UIPreviewAction *followArtistAction = [UIPreviewAction actionWithTitle:followText style:followActionStyle handler:^(UIPreviewAction *_Nonnull action, UIViewController *_Nonnull previewViewController) {
@@ -164,21 +166,31 @@
     }
 }
 
-- (void)tappedArtworkShare
+- (ARSharingController *)sharingController
 {
-    Artwork *artwork = (Artwork *)self.object;
-
     NSURL *thumbnailImageURL = nil;
     UIImage *image = nil;
-    if (artwork.defaultImage.downloadable) {
-        thumbnailImageURL = artwork.defaultImage.urlForThumbnailImage;
-        image = self.previewImageView.image;
-    } else if (artwork.canShareImage) {
-        thumbnailImageURL = artwork.defaultImage.urlForThumbnailImage;
+
+    if ([self.object isKindOfClass:Artwork.class]) {
+        Artwork *artwork = (Artwork *)self.object;
+        if (artwork.defaultImage.downloadable) {
+            thumbnailImageURL = artwork.defaultImage.urlForThumbnailImage;
+            image = self.previewImageView.image;
+        } else if (artwork.canShareImage) {
+            thumbnailImageURL = artwork.defaultImage.urlForThumbnailImage;
+        }
     }
-    ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:artwork
-                                                                            thumbnailImageURL:thumbnailImageURL
-                                                                                        image:image];
-    [sharingController presentActivityViewControllerFromView:self.view];
+
+    return [ARSharingController sharingControllerWithObject:self.object
+                                          thumbnailImageURL:thumbnailImageURL
+                                                      image:image];
+}
+
+- (void)tappedShare
+{
+    ARSharingController *sharingController = [self sharingController];
+    if (sharingController) {
+        [sharingController presentActivityViewControllerFromView:self.view];
+    }
 }
 @end

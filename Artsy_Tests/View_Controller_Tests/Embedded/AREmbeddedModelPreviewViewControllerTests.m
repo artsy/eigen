@@ -1,32 +1,73 @@
 #import "AREmbeddedModelPreviewViewController.h"
+#import "ARSharingController.h"
+#import "ARUserManager.h"
+#import "ARUserManager+Stubs.h"
+#import "ArtsyOHHTTPAPI.h"
+
+
+@interface AREmbeddedModelPreviewViewController (Tests)
+- (NSArray<id<UIPreviewActionItem>> *)previewActionItems;
+- (ARSharingController *)sharingController;
+@property (nonatomic, strong, readwrite) id<ARShareableObject> object;
+@end
+
 
 SpecBegin(AREmbeddedModelPreviewViewController);
 
+__block Artwork *artwork;
 
 describe(@"iPhone peek", ^{
+    
+    beforeEach(^{
+        artwork = [Artwork modelWithJSON:@{
+                    @"id" : @"artwork-id",
+                    @"title" : @"Artwork Title",
+                    @"artist" : @{
+                            @"name" : @"Jory Stiefel"
+                    }
+                  }];
+    });
 
     it(@"preview view controller displays artwork",^{
         
-        Artwork* artwork = [Artwork modelWithJSON:@{
-            @"id" : @"artwork-id",
-            @"title" : @"Artwork Title",
-            @"images" : @[
-                    @{@"id": @"image_1_id",
-                      @"is_default": @YES,
-                      @"image_versions": @[@"large"]},
-            ],
-        }];
-        [artwork updateArtwork];
-
         AREmbeddedModelPreviewViewController *vc = [[AREmbeddedModelPreviewViewController alloc] initWithObject:artwork];
         [vc updateWithCell:[[UICollectionViewCell alloc] init]];
-        
-        [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
-        [vc.view snapshotViewAfterScreenUpdates:YES];
-
+    
         expect(vc).to.haveValidSnapshot();
     });
-
+    
+    it(@"shows only Share button for trial user", ^{
+    
+        AREmbeddedModelPreviewViewController *vc = [[AREmbeddedModelPreviewViewController alloc] initWithObject:artwork];
+        NSArray* previewActions = [vc previewActionItems];
+    
+        for (UIPreviewAction* item in previewActions) {
+            expect(item.title).notTo.startWith(@"Follow");
+            expect(item.title).notTo.startWith(@"Like");
+        }
+    });
+    
+    it(@"shows favorite and follow buttons for logged in user", ^{
+    
+        [ARUserManager stubAndLoginWithUsername];
+        XCTAssert([User currentUser] != nil, @"Current user is nil even after stubbing.");
+        
+        AREmbeddedModelPreviewViewController *vc = [[AREmbeddedModelPreviewViewController alloc] initWithObject:artwork];
+        NSArray <id<UIPreviewActionItem>> *previewActions = [vc previewActionItems];
+    
+        expect(previewActions[0].title).to.startWith(@"Favorite");
+        expect(previewActions[1].title).to.startWith(@"Follow");
+    });
+    
+    it(@"passes artwork to share controller", ^{
+        
+        AREmbeddedModelPreviewViewController *vc = [[AREmbeddedModelPreviewViewController alloc] initWithObject:artwork];
+        [vc updateWithCell:[[UICollectionViewCell alloc] init]];
+        ARSharingController *sharingController = [vc sharingController];
+        
+        expect(sharingController.object).to.equal(artwork);
+        expect([sharingController.object name]).to.equal(artwork.title);
+    });
 });
 
 
