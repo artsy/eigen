@@ -1,5 +1,7 @@
 #import "ARAppActivityContinuationDelegate.h"
 #import <CoreSpotlight/CoreSpotlight.h>
+#import "ARAppDelegate.h"
+#import "ARUserManager.h"
 
 // Only available on iOS 9.
 static BOOL IsSpotlightActionTypeAvailable = NO;
@@ -28,9 +30,22 @@ static BOOL IsSpotlightActionTypeAvailable = NO;
         URL = userActivity.webpageURL;
     }
 
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL];
-    if (viewController) {
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+    dispatch_block_t showViewController = ^{
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL];
+        if (viewController) {
+            [[ARTopMenuViewController sharedController] pushViewController:viewController];
+        }
+    };
+
+    if ([[ARUserManager sharedManager] hasExistingAccount]) {
+        showViewController();
+    } else {
+        // This is (hopefully) an edge-case where the user did not launch the app yet since installing it, in which case
+        // we skip on-boarding and sign in as trial user.
+        [[ARUserManager sharedManager] startTrial:showViewController failure:^(NSError *error) {
+            // Don’t leave the user with an app in a broken state, so start on-boarding after all.
+            [(ARAppDelegate *)[[JSDecoupledAppDelegate sharedAppDelegate] appStateDelegate] showTrialOnboarding];
+        }];
     }
 
     return YES;
