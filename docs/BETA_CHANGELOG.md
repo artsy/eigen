@@ -1,5 +1,6 @@
 ### unreleased
 
+* Peek/pop support and quick action support for iPhone 6S - jorystiefel
 * Search hides the statusbar - orta
 * Adding compatibility strings to User-Agent to fix web fonts loading - jorystiefel
 * Use static libs - orta
