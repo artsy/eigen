@@ -2,6 +2,7 @@
 
 * Fix an issue where after 8 rotations our progress indicator would stop rotating, making it seem as if the progress was finished when it was actually not. - alloy
 * Don’t allow the search view to rotate on iPhone. - alloy
+* Automatically sign the user in as a trial user if they have not on-boarded yet when they come in through a user activity. - alloy
 
 ### 2.3.0 (2015.10.05)
 

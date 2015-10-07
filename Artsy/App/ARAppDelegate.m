@@ -119,7 +119,13 @@ static ARAppDelegate *_sharedInstance = nil;
 
     } else if (showOnboarding) {
         [self fetchSiteFeatures];
-        [self showTrialOnboardingWithState:ARInitialOnboardingStateSlideShow andContext:ARTrialContextNotTrial];
+
+        // Do not show the splash/onboarding when a user comes in through a user activity, as it breaks the expectation
+        // of the user to see the activity. This is probably just an edge-case, most people will probably launch the app
+        // after installing it.
+        if (launchOptions[UIApplicationLaunchOptionsUserActivityDictionaryKey] == nil) {
+            [self showTrialOnboarding];
+        }
     }
 
     ARShowFeedViewController *topVC = (id)ARTopMenuViewController.sharedController.rootNavigationController.topViewController;
@@ -173,6 +179,11 @@ static ARAppDelegate *_sharedInstance = nil;
 - (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
 {
     return [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+}
+
+- (void)showTrialOnboarding;
+{
+    [self showTrialOnboardingWithState:ARInitialOnboardingStateSlideShow andContext:ARTrialContextNotTrial];
 }
 
 - (void)finishDemoSplash

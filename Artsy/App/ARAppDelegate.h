@@ -20,6 +20,7 @@
 @property (strong, nonatomic, readonly) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readonly) NSString *landingURLRepresentation;
 
+- (void)showTrialOnboarding;
 - (void)showTrialOnboardingWithState:(enum ARInitialOnboardingState)state andContext:(enum ARTrialContext)context;
 
 // A sign-in is considered cancelled when the user taps the close button on a ARSignUpActiveUserViewController,

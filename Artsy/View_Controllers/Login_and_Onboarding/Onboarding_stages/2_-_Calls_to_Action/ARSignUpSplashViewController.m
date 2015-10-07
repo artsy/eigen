@@ -124,7 +124,7 @@
 
 - (void)loggedInWithSharedCredentials
 {
-    // This is a dummy method for ARAppDelegat+Analytics to hook into.
+    // This is a dummy method for ARAppDelegate+Analytics to hook into.
 }
 
 - (void)showControls;
