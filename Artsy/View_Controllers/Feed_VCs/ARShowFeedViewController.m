@@ -151,10 +151,6 @@ static CGFloat ARFeaturedShowsTitleHeightPhone = 40;
 - (void)refreshFeedItems
 {
     [ARAnalytics startTimingEvent:ARAnalyticsInitialFeedLoadTime];
-    if (!self.showingOfflineView) {
-        [self presentLoadingView];
-    }
-
     @weakify(self);
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
