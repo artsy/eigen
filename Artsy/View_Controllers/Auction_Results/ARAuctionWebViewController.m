@@ -33,10 +33,17 @@
         _auctionID = auctionID;
         _artworkID = artworkID;
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(artworkBidUpdated:)
-                                                     name:ARAuctionArtworkBidUpdatedNotification
-                                                   object:nil];
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc addObserver:self
+               selector:@selector(artworkBidUpdated:)
+                   name:ARAuctionArtworkBidUpdatedNotification
+                 object:nil];
+        if (artworkID) {
+            [nc addObserver:self
+                   selector:@selector(registrationUpdated:)
+                       name:ARAuctionArtworkRegistrationUpdatedNotification
+                     object:nil];
+        }
     }
     return self;
 }
@@ -46,6 +53,10 @@
     if (navigationAction.navigationType == WKNavigationTypeOther
             && [navigationAction.request.URL.fragment isEqualToString:@"confirm-bid"]) {
         [self bidHasBeenConfirmed];
+        return WKNavigationActionPolicyCancel;
+    } else if (navigationAction.navigationType == WKNavigationTypeOther
+        && [navigationAction.request.URL.lastPathComponent isEqualToString:@"confirm-registration"]) {
+        [self registrationHasBeenConfirmed];
         return WKNavigationActionPolicyCancel;
     } else {
         return [super shouldLoadNavigationAction:navigationAction];
@@ -74,6 +85,30 @@
             && (self.artworkID == nil || [info[ARAuctionArtworkIDKey] isEqualToString:self.artworkID])) {
         ARActionLog(@"Will reload due to auction artwork bid updated: %@ - auction:%@ - artwork:%@",
                     self, self.auctionID, self.artworkID);
+        [self reload];
+    }
+}
+
+- (void)registrationHasBeenConfirmed;
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+
+    // Ensure we don’t send a notification to ourselves.
+    // The observer can be removed, because this VC will be removed from the stack anyways.
+    [nc removeObserver:self];
+
+    [nc postNotificationName:ARAuctionArtworkRegistrationUpdatedNotification
+                      object:self
+                    userInfo:@{ ARAuctionIDKey:self.auctionID }];
+
+    [self.navigationController popViewControllerAnimated:ARPerformWorkAsynchronously];
+}
+
+- (void)registrationUpdated:(NSNotification *)notification;
+{
+    NSDictionary *info = notification.userInfo;
+    if ([info[ARAuctionIDKey] isEqualToString:self.auctionID]) {
+        ARActionLog(@"Will reload due to auction registration updated: %@ - auction:%@", self, self.auctionID);
         [self reload];
     }
 }
