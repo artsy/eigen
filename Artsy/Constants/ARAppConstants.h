@@ -14,6 +14,7 @@ extern NSString *const ARNetworkAvailableNotification;
 extern NSString *const ARNetworkUnavailableNotification;
 
 extern NSString *const ARAuctionArtworkBidUpdatedNotification;
+extern NSString *const ARAuctionArtworkRegistrationUpdatedNotification;
 extern NSString *const ARAuctionIDKey;
 extern NSString *const ARAuctionArtworkIDKey;
 

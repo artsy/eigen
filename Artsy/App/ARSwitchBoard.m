@@ -101,6 +101,13 @@
         return YES;
     }];
 
+    [self.routes addRoute:@"/auction-registration/:id" handler:^BOOL(NSDictionary *parameters) {
+        @strongify(self)
+        ARAuctionWebViewController *viewController = [self loadAuctionRegistrationWithID:parameters[@"id"]];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+        return YES;
+    }];
+
     [self.routes addRoute:@"/gene/:id" handler:^BOOL(NSDictionary *parameters) {
         @strongify(self)
         ARGeneViewController *viewController = [self loadGeneWithID:parameters[@"id"]];
@@ -199,6 +206,13 @@
 - (ARAuctionWebViewController *)loadAuctionWithID:(NSString *)auctionID;
 {
     NSString *path = [NSString stringWithFormat:@"/auction/%@", auctionID];
+    NSURL *URL = [self resolveRelativeUrl:path];
+    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
+}
+
+- (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
+{
+    NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
     NSURL *URL = [self resolveRelativeUrl:path];
     return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
 }
