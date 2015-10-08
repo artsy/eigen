@@ -139,14 +139,17 @@
     } else {
         // No auction controls
 
-        if ([self showPriceLabel] || [self showNotForSaleLabel]) {
+        if ([self showPriceLabel] || [self showNotForSaleLabel] || [self showContactForPrice]) {
             self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
 
             if ([self showNotForSaleLabel]) {
                 [self.priceView addNotForSaleLabel];
             }
 
-            if ([self showPriceLabel]) {
+            if ([self showContactForPrice]) {
+                [self.priceView addContactForPrice];
+                
+            } else if ([self showPriceLabel]) {
                 [self.priceView updatePriceWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
             }
 
@@ -323,19 +326,29 @@ return [navigationButtons copy];
 
 - (BOOL)showNotForSaleLabel
 {
-    return self.artwork.inquireable.boolValue && !self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
+    return self.artwork.inquireable.boolValue
+           && !self.artwork.sold.boolValue
+           && !self.artwork.forSale.boolValue;
 }
 
 - (BOOL)showPriceLabel
 {
-    // Check if a price is set OR the price should be hidden - this way we can show the "Contact For Price"
-    // message whether or not a price has been entered
-    return (self.artwork.price.length || self.artwork.isPriceHidden.boolValue) && !self.artwork.hasMultipleEditions && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
+    return self.artwork.price.length
+           && !self.artwork.hasMultipleEditions
+           && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
+}
+
+- (BOOL)showContactForPrice
+{
+    return self.artwork.availability == ARArtworkAvailabilityForSale
+           && self.artwork.isPriceHidden.boolValue;
 }
 
 - (BOOL)showContactButton
 {
-    return self.artwork.forSale.boolValue && !self.artwork.acquireable.boolValue && ![self showAuctionControls];
+    return self.artwork.forSale.boolValue
+           && !self.artwork.acquireable.boolValue
+           && ![self showAuctionControls];
 }
 
 - (BOOL)showBuyButton

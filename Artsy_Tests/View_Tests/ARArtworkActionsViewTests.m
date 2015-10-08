@@ -196,7 +196,7 @@ context(@"bidderStatus", ^{
 context(@"price view", ^{
     context(@"not at auction", ^{
         it(@"price", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"price" : @"$30,000", @"inquireable" : @(true)}];
+            view.artwork = [Artwork modelFromDictionary:@{ @"availability" : @(ARArtworkAvailabilityForSale), @"price" : @"$30,000", @"inquireable" : @(true)}];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -250,8 +250,8 @@ context(@"price view", ^{
             [view layoutIfNeeded];
             expect(view.priceView).to.haveValidSnapshot();
         });
-
     });
+
     context(@"at auction", ^{
         it(@"no bids", ^{
             view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000) }];

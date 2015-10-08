@@ -17,6 +17,17 @@
     return self;
 }
 
+- (void)addContactForPrice
+{
+    ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
+    row.priceLabel.font = [UIFont serifItalicFontWithSize:row.priceLabel.font.pointSize];
+    row.messageLabel.text = @"Price:";
+    row.priceLabel.text = @"Contact for Price";
+    row.margin = 16;
+    [self addSubview:row withTopMargin:@"0" sideMargin:@"0"];
+    [row alignLeadingEdgeWithView:self predicate:@"0"];
+}
+
 - (void)addNotForSaleLabel
 {
     ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
@@ -46,12 +57,7 @@
         row.priceLabel.font = [UIFont sansSerifFontWithSize:24];
     }
 
-    if (artwork.availability == ARArtworkAvailabilityForSale && artwork.isPriceHidden.boolValue) {
-        row.priceLabel.font = [UIFont serifItalicFontWithSize:row.priceLabel.font.pointSize];
-        row.priceLabel.text = @"Contact for Price";
-    } else {
-        row.priceLabel.text = artwork.price;
-    }
+    row.priceLabel.text = artwork.price;
 
     row.margin = artwork.sold.boolValue ? 10 : 16;
     [self addSubview:row withTopMargin:@"0" sideMargin:@"0"];
