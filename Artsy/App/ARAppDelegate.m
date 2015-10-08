@@ -63,7 +63,11 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     _sharedInstance = [[self alloc] init];
     [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = _sharedInstance;
-    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = _sharedInstance;
+
+    // TODO Until we drop iOS 8 support, we can’t really conform to the `JSApplicationURLResourceOpeningDelegate`
+    // protocol, as it means we would have to implement `application:openURL:options:` which seems tricky if we still
+    // have to implement `application:openURL:sourceApplication:annotation:` as well.
+    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
 }
 
 + (ARAppDelegate *)sharedInstance
