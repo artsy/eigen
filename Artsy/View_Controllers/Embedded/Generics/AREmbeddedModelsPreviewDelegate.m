@@ -30,7 +30,7 @@
     CGPoint locationOnWindow = [collectionView convertPoint:location fromView:nil];
     NSIndexPath *index = [collectionView indexPathForItemAtPoint:locationOnWindow];
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:index];
-    if (!cell) {
+    if (!cell || !cell.window) {
         return nil;
     }
 

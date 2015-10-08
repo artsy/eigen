@@ -1,3 +1,20 @@
+### 2.3.0
+
+* 3D Touch Peek/pop support for artworks in grid views - jorystiefel & orta
+* 3D Touch quick action menu items for Artsy icon on home screen - jorystiefel
+* Add support for Shared Web Credentials. Available credentials are shown on the login view and entered/created credentials are saved for web use. - alloy
+* Add support for Universal Links on iOS 9. - alloy
+* Add Native <-> Web Handoff support. - jorystiefel & alloy
+* Add Spotlight support for favorite artworks, artists, and genes. - jorystiefel & alloy
+* Convert all web views to use the modern, faster, and better WKWebView - orta
+* Fix an issue where after 8 rotations our progress indicator would stop rotating, making it seem as if the progress was finished when it was actually not. - alloy
+* Don’t allow the search view to rotate on iPhone. - alloy
+* Search hides the statusbar - orta
+* After bidding on an auction item move back from the bidding view to the artwork in question. - alloy
+* Update artwork views after bidding on that artwork. - alloy
+* Update auction views after bidding on an artwork in that auction. - alloy
+* Fix crash by disabling network logging in release mode completely. - alloy
+
 ## 2.2.1 (11/09/2015)
 
 * Fix bundle display name. - alloy
