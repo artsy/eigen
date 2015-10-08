@@ -75,9 +75,7 @@
     if ([notification.userInfo[ARAuctionArtworkIDKey] isEqualToString:self.artwork.artworkID]) {
         // First clear the old status so the user is not confronted with out-of-date data, which could be worrisome to
         // the user if they have just made a bid.
-        //        self.saleArtwork = nil;
-        //        [self.priceView removeFromSuperview];
-        //        self.priceView = nil;
+        self.saleArtwork = nil;
         for (UIView *subview in self.subviews) {
             [self removeSubview:subview];
         }
