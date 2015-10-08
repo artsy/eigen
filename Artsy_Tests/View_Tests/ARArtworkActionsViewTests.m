@@ -211,8 +211,11 @@ context(@"price view", ^{
             expect(view.priceView).to.haveValidSnapshot();
         });
 
-        it(@"sold but inquireable", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(true), @"inquireable": @(true), @"forSale": @(false) }];
+        // This is currently impossible when we conform strictly to the doc.
+        // As show price label would fail on the first check of `self.artwork.price.length`
+
+        pending(@"sold but inquireable", ^{
+            view.artwork = [Artwork modelFromDictionary:@{ @"availability" : @(ARArtworkAvailabilitySold), @"sold" : @(true), @"inquireable": @(true), @"forSale": @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
