@@ -51,7 +51,8 @@
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
     if (navigationAction.navigationType == WKNavigationTypeOther
-            && [navigationAction.request.URL.fragment isEqualToString:@"confirm-bid"]) {
+        && ([navigationAction.request.URL.fragment isEqualToString:@"confirm-bid"]
+            || [navigationAction.request.URL.lastPathComponent isEqualToString:@"confirm-bid"])) {
         [self bidHasBeenConfirmed];
         return WKNavigationActionPolicyCancel;
     } else if (navigationAction.navigationType == WKNavigationTypeOther
