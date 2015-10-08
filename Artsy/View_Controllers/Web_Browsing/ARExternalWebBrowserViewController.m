@@ -52,8 +52,15 @@
     NSURLRequest *initialRequest = [NSURLRequest requestWithURL:self.initialURL];
     [webView loadRequest:initialRequest];
 
-    webView.scrollView.delegate = self;
-    webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
+    UIScrollView *scrollView = webView.scrollView;
+    scrollView.delegate = self;
+    scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
+    // Work around bug in WKScrollView by setting private ivar directly: http://trac.webkit.org/changeset/188541
+    // Once this has been fixed, we can’t completely disable this workaround, only for those OS versions with the fix.
+    NSString *decelerationRateKey = [NSString stringWithFormat:@"%@%@ScrollDecelerationFactor", @"_", @"preferred"];
+    NSAssert([[scrollView valueForKey:decelerationRateKey] doubleValue] < (UIScrollViewDecelerationRateNormal - 0.005),
+             @"Expected the private value to not change, maybe this bug has been fixed?");
+    [scrollView setValue:@(UIScrollViewDecelerationRateNormal) forKey:decelerationRateKey];
 
     _webView = webView;
 }
