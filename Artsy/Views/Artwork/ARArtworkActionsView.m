@@ -85,6 +85,10 @@
     }
 }
 
+// The central state for a lot of this logic is in:
+// https://docs.google.com/document/d/1kQSHhCiFWxfVkSeql3GQA7UbBbhpNe-UyQ-c6q95Uq0/
+//
+
 - (void)updateUI
 {
     for (UIView *subview in self.subviews) {
@@ -121,7 +125,7 @@
 
         if ([self showBuyButton]) {
             self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
-            [self.priceView updateWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
+            [self.priceView updatePriceWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
             [self addSubview:self.priceView withTopMargin:@"4" sideMargin:@"0"];
 
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
@@ -133,9 +137,19 @@
         [self setupCountdownView];
 
     } else {
+        // No auction controls
+
         if ([self showPriceLabel] || [self showNotForSaleLabel]) {
             self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
-            [self.priceView updateWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
+
+            if ([self showNotForSaleLabel]) {
+                [self.priceView addNotForSaleLabel];
+            }
+
+            if ([self showPriceLabel]) {
+                [self.priceView updatePriceWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
+            }
+
             [self addSubview:self.priceView withTopMargin:@"4" sideMargin:@"0"];
         }
 
@@ -266,28 +280,32 @@
     NSMutableArray *navigationButtons = [[NSMutableArray alloc] init];
 
     if ([self showAuctionResultsButton]) {
-        [navigationButtons addObject:@{
-            ARNavigationButtonClassKey: ARNavigationButton.class,
-            ARNavigationButtonPropertiesKey: @{
-                @keypath(ARNavigationButton.new, title): @"Auction Results"
+        NSDictionary *results = @{
+            ARNavigationButtonClassKey : ARNavigationButton.class,
+            ARNavigationButtonPropertiesKey : @{
+                @keypath(ARNavigationButton.new, title) : @"Auction Results"
             },
-            ARNavigationButtonHandlerKey: ^(UIButton *sender) {
-                // This will pass the message up the responder chain
-                [self.delegate tappedAuctionResults];
+            ARNavigationButtonHandlerKey : ^(UIButton *sender){
+                    // This will pass the message up the responder chain
+                    [self.delegate tappedAuctionResults];
     }
-}];
+};
+[navigationButtons addObject:results];
 }
 if ([self showMoreInfoButton]) {
-        [navigationButtons addObject:@{
-            ARNavigationButtonClassKey: ARNavigationButton.class,
-            ARNavigationButtonPropertiesKey: @{
-                    @keypath(ARNavigationButton.new, title): @"More Info"
-                },
-            ARNavigationButtonHandlerKey: ^(UIButton *sender) {
+    NSDictionary *moreInfo = @{
+        ARNavigationButtonClassKey : ARNavigationButton.class,
+        ARNavigationButtonPropertiesKey : @{
+            @keypath(ARNavigationButton.new, title) : @"More Info"
+        },
+        ARNavigationButtonHandlerKey : ^(UIButton *sender){
                 // This will pass the message up the responder chain
                 [self.delegate tappedMoreInfo];
 }
-}];
+}
+;
+
+[navigationButtons addObject:moreInfo];
 }
 return [navigationButtons copy];
 }
@@ -298,11 +316,14 @@ return [navigationButtons copy];
     [self.inquireWithArtsyButton setEnabled:enabled animated:YES];
 }
 
+// Wonder where all this logic comes from?
+// See: https://docs.google.com/document/d/1kQSHhCiFWxfVkSeql3GQA7UbBbhpNe-UyQ-c6q95Uq0
+
 #pragma mark - Info Logic
 
 - (BOOL)showNotForSaleLabel
 {
-    return self.artwork.inquireable.boolValue && self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
+    return self.artwork.inquireable.boolValue && !self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
 }
 
 - (BOOL)showPriceLabel
@@ -331,7 +352,6 @@ return [navigationButtons copy];
 {
     return (self.saleArtwork != nil) && !self.artwork.sold.boolValue;
 }
-
 
 - (BOOL)showConditionsOfSale
 {

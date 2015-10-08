@@ -226,6 +226,7 @@ context(@"price view", ^{
             [view layoutIfNeeded];
             expect(view.priceView).to.haveValidSnapshot();
         });
+
         it(@"contact for price with no price", ^{
             view.artwork = [Artwork modelFromDictionary:@{ @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"isPriceHidden" : @(true) }];
             [view updateUI];
@@ -233,6 +234,23 @@ context(@"price view", ^{
             [view layoutIfNeeded];
             expect(view.priceView).to.haveValidSnapshot();
         });
+
+        it(@"not for sale", ^{
+            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false), @"inquireable": @(true), @"forSale": @(false)}];
+            [view updateUI];
+            [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+            [view layoutIfNeeded];
+            expect(view.priceView).to.haveValidSnapshot();
+        });
+
+        it(@"not for sale, but has a price to show", ^{
+            view.artwork = [Artwork modelFromDictionary:@{ @"price" : @"$30,000", @"isPriceHidden" : @(false), @"sold" : @(false), @"inquireable": @(true), @"forSale": @(false)}];
+            [view updateUI];
+            [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+            [view layoutIfNeeded];
+            expect(view.priceView).to.haveValidSnapshot();
+        });
+
     });
     context(@"at auction", ^{
         it(@"no bids", ^{

@@ -3,7 +3,7 @@
 
 @interface ARArtworkPriceView : ORStackView
 
-- (void)updateWithArtwork:(Artwork *)artwork;
-- (void)updateWithArtwork:(Artwork *)artwork andSaleArtwork:(SaleArtwork *)saleArtwork;
+- (void)addNotForSaleLabel;
+- (void)updatePriceWithArtwork:(Artwork *)artwork andSaleArtwork:(SaleArtwork *)saleArtwork;
 
 @end

@@ -17,12 +17,16 @@
     return self;
 }
 
-- (void)updateWithArtwork:(Artwork *)artwork
+- (void)addNotForSaleLabel
 {
-    [self updateWithArtwork:artwork andSaleArtwork:nil];
+    ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
+    row.messageLabel.text = @"Work is Not for Sale";
+    row.margin = 16;
+    [self addSubview:row withTopMargin:@"0" sideMargin:@"0"];
+    [row alignLeadingEdgeWithView:self predicate:@"0"];
 }
 
-- (void)updateWithArtwork:(Artwork *)artwork andSaleArtwork:(SaleArtwork *)saleArtwork
+- (void)updatePriceWithArtwork:(Artwork *)artwork andSaleArtwork:(SaleArtwork *)saleArtwork
 {
     ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
 
