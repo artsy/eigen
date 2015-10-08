@@ -196,7 +196,7 @@ context(@"bidderStatus", ^{
 context(@"price view", ^{
     context(@"not at auction", ^{
         it(@"price", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"price" : @"$30,000", @"inquireable" : @(true)}];
+            view.artwork = [Artwork modelFromDictionary:@{ @"availability" : @(ARArtworkAvailabilityForSale), @"price" : @"$30,000", @"inquireable" : @(true)}];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -211,8 +211,11 @@ context(@"price view", ^{
             expect(view.priceView).to.haveValidSnapshot();
         });
 
-        it(@"sold but inquireable", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(true), @"inquireable": @(true), @"forSale": @(false) }];
+        // This is currently impossible when we conform strictly to the doc.
+        // As show price label would fail on the first check of `self.artwork.price.length`
+
+        pending(@"sold but inquireable", ^{
+            view.artwork = [Artwork modelFromDictionary:@{ @"availability" : @(ARArtworkAvailabilitySold), @"sold" : @(true), @"inquireable": @(true), @"forSale": @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -226,6 +229,7 @@ context(@"price view", ^{
             [view layoutIfNeeded];
             expect(view.priceView).to.haveValidSnapshot();
         });
+
         it(@"contact for price with no price", ^{
             view.artwork = [Artwork modelFromDictionary:@{ @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"isPriceHidden" : @(true) }];
             [view updateUI];
@@ -233,7 +237,24 @@ context(@"price view", ^{
             [view layoutIfNeeded];
             expect(view.priceView).to.haveValidSnapshot();
         });
+
+        it(@"not for sale", ^{
+            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false), @"inquireable": @(true), @"forSale": @(false)}];
+            [view updateUI];
+            [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+            [view layoutIfNeeded];
+            expect(view.priceView).to.haveValidSnapshot();
+        });
+
+        it(@"not for sale, but has a price to show", ^{
+            view.artwork = [Artwork modelFromDictionary:@{ @"price" : @"$30,000", @"isPriceHidden" : @(false), @"sold" : @(false), @"inquireable": @(true), @"forSale": @(false)}];
+            [view updateUI];
+            [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+            [view layoutIfNeeded];
+            expect(view.priceView).to.haveValidSnapshot();
+        });
     });
+
     context(@"at auction", ^{
         it(@"no bids", ^{
             view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000) }];
