@@ -339,22 +339,29 @@ return [navigationButtons copy];
 
 - (BOOL)showNotForSaleLabel
 {
-    return self.artwork.inquireable.boolValue && !self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
+    return self.artwork.inquireable.boolValue
+           && !self.artwork.sold.boolValue
+           && !self.artwork.forSale.boolValue;
 }
 
 - (BOOL)showPriceLabel
 {
-    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
+    return self.artwork.price.length
+           && !self.artwork.hasMultipleEditions
+           && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
 }
 
 - (BOOL)showContactForPrice
 {
-    return self.artwork.availability == ARArtworkAvailabilityForSale && self.artwork.isPriceHidden.boolValue;
+    return self.artwork.availability == ARArtworkAvailabilityForSale
+           && self.artwork.isPriceHidden.boolValue;
 }
 
 - (BOOL)showContactButton
 {
-    return self.artwork.forSale.boolValue && !self.artwork.acquireable.boolValue && ![self showAuctionControls];
+    return self.artwork.forSale.boolValue
+           && !self.artwork.acquireable.boolValue
+           && ![self showAuctionControls];
 }
 
 - (BOOL)showBuyButton
