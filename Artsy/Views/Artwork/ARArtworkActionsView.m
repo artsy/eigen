@@ -6,6 +6,7 @@
 #import "ARNavigationButton.h"
 #import "ARAuctionBidderStateLabel.h"
 #import "ARBidButton.h"
+#import "ARSpinner.h"
 
 
 @interface ARArtworkActionsView () <ARCountdownViewDelegate>
@@ -20,6 +21,7 @@
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
 @property (nonatomic, strong) ARNavigationButtonsViewController *navigationButtonsVC;
+@property (nonatomic, strong) ARSpinner *spinner;
 
 @end
 
@@ -73,14 +75,25 @@
     if ([notification.userInfo[ARAuctionArtworkIDKey] isEqualToString:self.artwork.artworkID]) {
         // First clear the old status so the user is not confronted with out-of-date data, which could be worrisome to
         // the user if they have just made a bid.
-        self.saleArtwork = nil;
-        [self updateUI];
+        //        self.saleArtwork = nil;
+        //        [self.priceView removeFromSuperview];
+        //        self.priceView = nil;
+        for (UIView *subview in self.subviews) {
+            [self removeSubview:subview];
+        }
+        ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        self.spinner = spinner;
+        [self.spinner constrainHeight:@"100"];
+        [self.spinner fadeInAnimated:ARPerformWorkAsynchronously];
+        [self addSubview:self.spinner withTopMargin:@"0" sideMargin:@"0"];
+
         // Then fetch the up-to-date data.
         @weakify(self);
         [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
             @strongify(self);
             self.saleArtwork = saleArtwork;
             [self updateUI];
+            self.spinner = nil;
         } failure:nil allowCached:NO];
     }
 }
@@ -148,7 +161,7 @@
 
             if ([self showContactForPrice]) {
                 [self.priceView addContactForPrice];
-                
+
             } else if ([self showPriceLabel]) {
                 [self.priceView updatePriceWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
             }
@@ -326,29 +339,22 @@ return [navigationButtons copy];
 
 - (BOOL)showNotForSaleLabel
 {
-    return self.artwork.inquireable.boolValue
-           && !self.artwork.sold.boolValue
-           && !self.artwork.forSale.boolValue;
+    return self.artwork.inquireable.boolValue && !self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
 }
 
 - (BOOL)showPriceLabel
 {
-    return self.artwork.price.length
-           && !self.artwork.hasMultipleEditions
-           && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
+    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
 }
 
 - (BOOL)showContactForPrice
 {
-    return self.artwork.availability == ARArtworkAvailabilityForSale
-           && self.artwork.isPriceHidden.boolValue;
+    return self.artwork.availability == ARArtworkAvailabilityForSale && self.artwork.isPriceHidden.boolValue;
 }
 
 - (BOOL)showContactButton
 {
-    return self.artwork.forSale.boolValue
-           && !self.artwork.acquireable.boolValue
-           && ![self showAuctionControls];
+    return self.artwork.forSale.boolValue && !self.artwork.acquireable.boolValue && ![self showAuctionControls];
 }
 
 - (BOOL)showBuyButton
