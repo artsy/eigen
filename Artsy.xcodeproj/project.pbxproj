@@ -4978,7 +4978,7 @@
 					"-DAR_SHOW_ALL_DEBUG=1",
 					"-Werror=nonnull",
 				);
-				PROVISIONING_PROFILE = "09dca157-822f-4776-b30f-45f5f49c2810";
+				PROVISIONING_PROFILE = "d3a0cd2c-e754-449c-80a5-285c4bb5f504";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 			};
