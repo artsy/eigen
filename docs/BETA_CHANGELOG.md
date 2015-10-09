@@ -1,4 +1,4 @@
-### Unreleased
+### 2.3.0 (2015.10.08)
 
 * Fixes post-bidding bug on iPad, return to native artwork view instead of Force view - jorystiefel
 * Added "Not for Sale" to the Artwork's price information - orta
