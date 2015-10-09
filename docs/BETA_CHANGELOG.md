@@ -1,3 +1,7 @@
+### Unreleased
+
+* Reduce memory consumption while indexing all of the user’s favourites. - alloy
+
 ### 2.3.0 (2015.10.09)
 
 * Fix crash on iOS 8 when trying to workaround WKWebKit scroll deceleration bug. - alloy

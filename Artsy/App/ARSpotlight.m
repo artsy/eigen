@@ -100,6 +100,14 @@ ARStringByStrippingMarkdown(NSString *markdownString)
         return;
     }
 
+    // Disable eager decompression of images. With the amount we end up downloading, eager loading
+    // takes a whole lot of memory.
+    //
+    // TODO As this globally disables it, we should look at if this can be improved upon.
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    manager.imageCache.shouldDecompressImages = NO;
+    manager.imageDownloader.shouldDecompressImages = NO;
+
     NSMutableArray *networkModels = [NSMutableArray new];
     [networkModels addObject:[ARArtworkFavoritesNetworkModel new]];
     [networkModels addObject:[ARArtistFavoritesNetworkModel new]];
@@ -276,12 +284,28 @@ ARStringByStrippingMarkdown(NSString *markdownString)
                               options:0
                              progress:nil
                             completed:^(UIImage *image, NSError *_, SDImageCacheType __, BOOL ____, NSURL *_____) {
-            ar_dispatch_on_queue(ARSpotlightQueue, ^{
-                if (image) {
-                    attributeSet.thumbnailData = UIImagePNGRepresentation(image);
-                }
-                completion(attributeSet);
-            });
+            if (image) {
+                // Instead of dumping the image back to data, just have Spotlight load it from disk.
+                // This will save us a lot of memory.
+                NSString *cacheKey = [manager cacheKeyForURL:thumbnailURL];
+                // Need to use the block variant, to ensure that the cache has saved the file yet.
+                [manager.imageCache diskImageExistsWithKey:cacheKey completion:^(BOOL isInCache) {
+                    ar_dispatch_on_queue(ARSpotlightQueue, ^{
+                        if (isInCache) {
+                            NSString *cachePath = [manager.imageCache defaultCachePathForKey:cacheKey];
+                            attributeSet.thumbnailURL = [NSURL fileURLWithPath:cachePath];
+                        } else {
+                            // Cache miss, for some reason.
+                            attributeSet.thumbnailData = UIImagePNGRepresentation(image);
+                        }
+                        completion(attributeSet);
+                    });
+                }];
+            } else {
+                ar_dispatch_on_queue(ARSpotlightQueue, ^{
+                    completion(attributeSet);
+                });
+            }
         }];
     }
 
