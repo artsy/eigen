@@ -56,12 +56,24 @@
     UIScrollView *scrollView = webView.scrollView;
     scrollView.delegate = self;
     scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
+
     // Work around bug in WKScrollView by setting private ivar directly: http://trac.webkit.org/changeset/188541
     // Once this has been fixed, we can’t completely disable this workaround, only for those OS versions with the fix.
-    NSString *decelerationRateKey = [NSString stringWithFormat:@"%@%@ollDecelerationFactor", @"_pre", @"ferredScr"];
-    NSAssert([[scrollView valueForKey:decelerationRateKey] doubleValue] < (UIScrollViewDecelerationRateNormal - 0.001),
-             @"Expected the private value to not change, maybe this bug has been fixed?");
-    [scrollView setValue:@(UIScrollViewDecelerationRateNormal) forKey:decelerationRateKey];
+    if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){ 9, 0, 0 }]) {
+#ifndef DEBUG
+        @try {
+#endif
+            NSString *factorKey = [NSString stringWithFormat:@"%@%@ollDecelerationFactor", @"_pre", @"ferredScr"];
+            NSAssert([[scrollView valueForKey:factorKey] doubleValue] < (UIScrollViewDecelerationRateNormal - 0.001),
+                     @"Expected the private value to not change, maybe this bug has been fixed?");
+            [scrollView setValue:@(UIScrollViewDecelerationRateNormal) forKey:factorKey];
+#ifndef DEBUG
+        }
+        @catch (NSException *exception) {
+            ARErrorLog(@"Unable to apply workaround for WebKit bug: %@", exception);
+        }
+#endif
+    }
 
     _webView = webView;
 }
