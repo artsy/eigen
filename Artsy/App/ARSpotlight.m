@@ -100,6 +100,14 @@ ARStringByStrippingMarkdown(NSString *markdownString)
         return;
     }
 
+    // Disable eager decompression of images. With the amount we end up downloading, eager loading
+    // takes a whole lot of memory.
+    //
+    // TODO As this globally disables it, we should look at if this can be improved upon.
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    manager.imageCache.shouldDecompressImages = NO;
+    manager.imageDownloader.shouldDecompressImages = NO;
+
     NSMutableArray *networkModels = [NSMutableArray new];
     [networkModels addObject:[ARArtworkFavoritesNetworkModel new]];
     [networkModels addObject:[ARArtistFavoritesNetworkModel new]];
