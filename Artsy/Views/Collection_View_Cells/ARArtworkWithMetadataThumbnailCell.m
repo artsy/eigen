@@ -16,7 +16,7 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 
 + (CGFloat)heightForMetadataWithArtwork:(Artwork *)artwork
 {
-    return [self.class heightIncludingPriceLabel:[self.class showPriceLabelWithArtwork:artwork]] + ARArtworkCellMetadataMargin;
+    return [self heightIncludingPriceLabel:[self showPriceLabelWithArtwork:artwork]] + ARArtworkCellMetadataMargin;
 }
 
 + (CGFloat)heightIncludingPriceLabel:(BOOL)includePriceLabel
@@ -30,7 +30,7 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 
 + (BOOL)showPriceLabelWithArtwork:(Artwork *)artwork
 {
-    return artwork.price.length && !artwork.isPriceHidden && !artwork.sold.boolValue;
+    return artwork.price.length && !artwork.isPriceHidden.boolValue && !artwork.sold.boolValue;
 }
 
 - (void)prepareForReuse
