@@ -1,6 +1,7 @@
 ### Unreleased
 
 * Fix crash on iOS 8 when trying to workaround WKWebKit scroll deceleration bug. - alloy
+* Fix a layout bug in embedded models VC on iPad. - alloy 
 
 ### 2.3.0 (2015.10.08)
 
