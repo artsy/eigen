@@ -37,6 +37,7 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 {
     self.imageView.image = [ARFeedImageLoader defaultPlaceholder];
     [self.metadataView resetLabels];
+    [self.metadataView removeConstraints:self.metadataView.constraints];
 }
 
 - (void)setupWithRepresentedObject:(Artwork *)artwork
