@@ -278,7 +278,16 @@ ARStringByStrippingMarkdown(NSString *markdownString)
                             completed:^(UIImage *image, NSError *_, SDImageCacheType __, BOOL ____, NSURL *_____) {
             ar_dispatch_on_queue(ARSpotlightQueue, ^{
                 if (image) {
-                    attributeSet.thumbnailData = UIImagePNGRepresentation(image);
+                    // Instead of dumping the image back to data, just have Spotlight load it from disk.
+                    // This will save us a lot of memory.
+                    NSString *cacheKey = [manager cacheKeyForURL:thumbnailURL];
+                    if ([manager.imageCache diskImageExistsWithKey:cacheKey]) {
+                        NSString *cachePath = [manager.imageCache defaultCachePathForKey:cacheKey];
+                        attributeSet.thumbnailURL = [NSURL fileURLWithPath:cachePath];
+                    } else {
+                        // Cache miss, for some reason.
+                        attributeSet.thumbnailData = UIImagePNGRepresentation(image);
+                    }
                 }
                 completion(attributeSet);
             });
