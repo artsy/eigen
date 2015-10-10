@@ -1,2 +1,67 @@
 app_identifier 'net.artsy.artsy'
 username 'it@artsymail.com'
+
+# PATCH
+::FastlaneCore::Languages::ALL_LANGUAGES << 'zh-Hans'
+
+module ::Deliver
+  class UploadMetadata
+    def load_from_filesystem(options)
+      # Load localised data
+      Dir.glob(File.join(options[:metadata_path], "*")).each do |lng_folder|
+        next unless File.directory?(lng_folder) # We don't want to read txt as they are non localised
+
+        language = File.basename(lng_folder)
+        # PATCH Skip any non-lang folder
+        next unless FastlaneCore::Languages::ALL_LANGUAGES.include?(language)
+
+        (LOCALISED_VERSION_VALUES + LOCALISED_APP_VALUES).each do |key|
+          path = File.join(lng_folder, "#{key}.txt")
+          next unless File.exist?(path)
+
+          Helper.log.info "Loading '#{path}'..."
+          options[key] ||= {}
+          options[key][language] ||= File.read(path)
+        end
+      end
+
+      # Load non localised data
+      (NON_LOCALISED_VERSION_VALUES + NON_LOCALISED_APP_VALUES).each do |key|
+        path = File.join(options[:metadata_path], "#{key}.txt")
+        next unless File.exist?(path)
+
+        Helper.log.info "Loading '#{path}'..."
+        options[key] ||= File.read(path)
+      end
+    end
+  end
+
+  class UploadScreenshots
+    def collect_screenshots(options)
+      return [] if options[:skip_screenshots]
+
+      screenshots = []
+      extensions = '{png,jpg,jpeg}'
+      Dir.glob(File.join(options[:screenshots_path], "*"), File::FNM_CASEFOLD).sort.each do |lng_folder|
+        language = File.basename(lng_folder)
+        # PATCH Skip any non-lang folder
+        next unless FastlaneCore::Languages::ALL_LANGUAGES.include?(language)
+
+        files = Dir.glob(File.join(lng_folder, "*.#{extensions}"))
+        next if files.count == 0
+
+        prefer_framed = Dir.glob(File.join(lng_folder, '*_framed.#{extensions}')).count > 0
+
+        files.each do |path|
+          if prefer_framed && !path.downcase.include?("_framed.#{extensions}") && !path.downcase.include?("watch")
+            next
+          end
+
+          screenshots << AppScreenshot.new(path, language)
+        end
+      end
+
+      return screenshots
+    end
+  end
+end
