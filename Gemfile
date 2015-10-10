@@ -17,4 +17,5 @@ group :test do
 end
 
 group :distribution do
+  gem 'deliver'
 end
