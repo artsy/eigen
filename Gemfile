@@ -17,6 +17,4 @@ group :test do
 end
 
 group :distribution do
-  gem 'shenzhen'
-  gem 'fastlane'
 end
