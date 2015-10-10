@@ -1,0 +1,25 @@
+Not much, what’s new with you? We’re kidding, of course; so much is new. Our iOS team really went all out, leveraging the amazing (nay, magical) features of iOS 9. Here’s what’s new with Artsy for iOS v 2.3.0:
+
+BIDDING ON AUCTIONS (+ SOTHEBY’S PARTNERSHIP)
+We’ve made a number of improvements to make bidding more seamless from the app. Calling all art collectors: if you haven’t used Artsy for iOS to bid on an Artsy auction, now is a great time to start. Artsy is hosting it’s first collaborative auction with Sotheby’s, launching October 22. Learn more at artsy.net/InputOutput.
+
+SHARED LOGIN 
+If you’ve logged in to artsy.net (from Safari) on your phone, you’ll now be able to easily sign in using the same saved credentials.
+
+UNIVERSAL LINKS 
+What’s that, you ask? Any artsy.net link that you tap from your phone (emails, text messages, and such) will now automatically open DIRECTLY IN THE APP! Because, why launch Safari when you already have the app?
+
+HANDOFF 
+Users can switch between Desktop and the App while keeping the same content on the either screen. Is it magic? Pretty much.
+
+3D TOUCH (for iPhone 6s users)
+- Quick Actions - Launch Artsy search or favorites with one press from the home screen.
+- Peek and Pop - Follow, favorite, and share Artsy content using Peek/Pop in the app.
+
+SPOTLIGHT SEARCH
+Swipe down from the home screen to search your favorite art content. You just might see an Artsy result.
+
+OTHER ENHANCEMENTS -
+If all of that wasn’t enough, our iOS team has included several usability improvements and bug fixes.
+
+Thank you for all of the continues feedback you’ve sent us. As always, please share your ideas or questions with Artsy's mobile team by sending us a note at mobile@artsy.net. We read every email.
