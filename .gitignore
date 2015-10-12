@@ -33,6 +33,7 @@ Artsy.app.dSYM.zip
 Artsy.ipa
 fastlane/report.xml
 fastlane/Preview.html
+compiler_commands.json
 
 # Artsy Development APN certificate
 net.artsy.artsy.dev.pem

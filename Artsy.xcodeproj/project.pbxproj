@@ -4211,6 +4211,7 @@
 				49BA7DFD1655ABE600C06572 /* Resources */,
 				C01CD53C02BD8993A524C640 /* Embed Pods Frameworks */,
 				EAF62B3CECBE98B0B0CCB886 /* Copy Pods Resources */,
+				5150685F1BCC176300018352 /* Generate Compilation DB */,
 			);
 			buildRules = (
 			);
@@ -4586,7 +4587,22 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		EAF62B3CECBE98B0B0CCB886 /* Copy Pods Resources */ = {
+		5150685F1BCC176300018352 /* Generate Compilation DB */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Compilation DB";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi";
+			showEnvVarsInLog = 0;
+		};
+		6F1C8FA70791B0748D8B8B39 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5170,6 +5186,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_BUNDLE_IDENTIFIER = net.artsy.artsy;
+				CC = "${SRCROOT}/clang-with-compilation-db";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -5505,6 +5522,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_BUNDLE_IDENTIFIER = net.artsy.artsy.demo;
+				CC = "${SRCROOT}/clang-with-compilation-db";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -5625,6 +5643,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_BUNDLE_IDENTIFIER = net.artsy.artsy;
+				CC = "${SRCROOT}/clang-with-compilation-db";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
