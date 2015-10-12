@@ -1,5 +1,13 @@
 #import <CocoaLumberjack/DDLogMacros.h>
 
+#ifdef DEBUG
+static const int ddLogLevel = DDLogLevelVerbose;
+static const int httpLogLevel = AFLoggerLevelInfo;
+#else
+static const int ddLogLevel = DDLogLevelWarning;
+static const int httpLogLevel = AFLoggerLevelError;
+#endif
+
 // If you update this enum, update `contextMap` in the implementation too please
 typedef NS_ENUM(NSInteger, ARLogContext) {
     // starting at 1 because 0 is the default

@@ -1,5 +1,6 @@
 
 
+@class Post;
 
 @interface ArtsyAPI (Posts)
 

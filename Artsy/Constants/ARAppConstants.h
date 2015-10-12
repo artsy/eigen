@@ -29,3 +29,5 @@ typedef NS_OPTIONS(NSUInteger, ARAuctionState) {
 };
 
 extern BOOL ARPerformWorkAsynchronously;
+
+extern const BOOL ARIsRunningInDemoMode;

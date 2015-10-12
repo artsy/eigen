@@ -1,4 +1,5 @@
 
+@class OrderedSet;
 
 
 @interface ArtsyAPI (OrderedSets)

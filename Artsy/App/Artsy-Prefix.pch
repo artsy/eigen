@@ -18,13 +18,14 @@
     #import <SystemConfiguration/SystemConfiguration.h>
     #import <MobileCoreServices/MobileCoreServices.h>
 
+    #import "ARDefaults.h"
+    #import "ARAppConstants.h"
+    #import "ARViewTagConstants.h"
 
-    // Make all Swift files available in all ObjC files. Must be above all ObjC imports.
-    #import "Artsy-Swift.h"
-
-    #import "Constants.h"
     #import <AFNetworking/AFNetworking.h>
     #import <Mantle/Mantle.h>
+    #import <Mantle/metamacros.h>
+    #import <Mantle/EXTScope.h>
     #import <AFNetworkActivityLogger/AFNetworkActivityLogger.h>
     #import <CocoaLumberjack/CocoaLumberjack.h>
     #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -33,22 +34,84 @@
     #import <ReactiveCocoa/ReactiveCocoa.h>
     #import <NAMapKit/NAMapView.h>
     #import <EDColor/EDColor.h>
+    #import <libextobjc/EXTKeyPathCoding.h>
+    #import <libextobjc/EXTRuntimeExtensions.h>
 
-    #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
-    #import <Artsy_UIButtons/ARButtonSubclasses.h>
+    #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+    #import <Artsy-UIButtons/ARButtonSubclasses.h>
     #import <ObjectiveSugar/ObjectiveSugar.h>
 
     #import <ORStackView/ORStackScrollView.h>
     #import <ORStackView/ORTagBasedAutoStackView.h>
 
     #import "ArtsyAPI.h"
-    #import "Models.h"
-    #import "Categories.h"
-    #import "StyledSubclasses.h"
+    #import "ArtsyAPI+Artworks.h"
+    #import "ArtsyAPI+Browse.h"
+    #import "ArtsyAPI+CurrentUserFunctions.h"
+    #import "ArtsyAPI+DeviceTokens.h"
+    #import "ArtsyAPI+Feed.h"
+    #import "ArtsyAPI+Following.h"
+    #import "ArtsyAPI+Profiles.h"
+    #import "ArtsyAPI+Posts.h"
+    #import "ArtsyAPI+Artists.h"
+    #import "ArtsyAPI+Genes.h"
+    #import "ArtsyAPI+ListCollection.h"
+    #import "ArtsyAPI+RelatedModels.h"
+    #import "ArtsyAPI+SiteFunctions.h"
+    #import "ArtsyAPI+Search.h"
+    #import "ArtsyAPI+Sales.h"
+    #import "ArtsyAPI+Fairs.h"
+    #import "ArtsyAPI+OrderedSets.h"
+    #import "ArtsyAPI+Shows.h"
+    #import "ArtsyAPI+SystemTime.h"
+    #import "ArtsyAPI+ErrorHandlers.h"
+
+    #import "Artwork.h"
+    #import "Artist.h"
+    #import "User.h"
+    #import "ProfileOwner.h"
+    #import "Profile.h"
+    #import "Gene.h"
+    #import "Partner.h"
+    #import "PartnerShow.h"
+    #import "Sale.h"
+    #import "SaleArtwork.h"
+    #import "FairOrganizer.h"
+    #import "Fair.h"
+    #import "Post.h"
+    #import "SiteHeroUnit.h"
+    #import "SiteFeature.h"
+    #import "FeaturedLink.h"
+    #import "OrderedSet.h"
+    #import "Tag.h"
+    #import "AuctionLot.h"
+    #import "Video.h"
+    #import "Follow.h"
+    #import "PartnerShowFairLocation.h"
+    #import "MapFeature.h"
+    #import "SystemTime.h"
+    #import "Location.h"
+
+    #import "ARFonts.h"
+
+    #import "UIImage+ImageFromColor.h"
+    #import "UIImageView+AsyncImageLoading.h"
+    #import "UILabel+Typography.h"
+    #import "NSString+StringSize.h"
+    #import "UIDevice-Hardware.h"
+    #import "UIScrollView+HitTest.h"
+    #import "MTLModel+JSON.h"
+    #import "MTLModel+Dictionary.h"
+    #import "AFHTTPRequestOperation+JSON.h"
+
+    #import <Artsy+UILabels/ARLabelSubclasses.h>
+    #import <Artsy-UIButtons/ARButtonSubclasses.h>
+    #import "ARSeparatorViews.h"
+    #import "ARCustomEigenLabels.h"
+
     #import "AROptions.h"
     #import "ARTheme.h"
     #import "ARSwitchBoard.h"
-    #import "ARSwitchboard+Eigen.h"
     #import "ARNetworkErrorManager.h"
     #import "ARTrialController.h"
     #import "ARTopMenuViewController.h"
@@ -59,19 +122,26 @@
     #import "ARAutoLayoutDebugging.h"
     #import "ARMacros.h"
 
-    #ifdef DEBUG
-    static const int ddLogLevel = DDLogLevelVerbose;
-    static const int httpLogLevel = AFLoggerLevelInfo;
-    #else
-    static const int ddLogLevel = DDLogLevelWarning;
-    static const int httpLogLevel = AFLoggerLevelError;
-    #endif
-
-    #ifdef DEMO_MODE
-    static const BOOL ARIsRunningInDemoMode = YES;
-    #else
-    static const BOOL ARIsRunningInDemoMode = NO;
-    #endif
-
     #import "ARLogger.h"
 #endif
+
+// Given that we don't see eye to eye with the GitHub team
+// on dependency management, we can't use frameworks without
+// getting ambiguous warning when Mantle+RAC and @weakify
+// as they just throw it all in together.
+
+// We can work around this for now by having our own commands
+// but a more realistic approach is to migrate away from the APIs.
+
+
+//#define _weakify(...) \
+//    autoreleasepool {} \
+//    metamacro_foreach_cxt(rac_weakify_,, __weak, __VA_ARGS__)
+
+//#define _strongify(...) \
+    //try {} @finally {} \
+    //_Pragma("clang diagnostic push") \
+    //_Pragma("clang diagnostic ignored \"-Wshadow\"") \
+    //metamacro_foreach(rac_strongify_,, __VA_ARGS__) \
+    //_Pragma("clang diagnostic pop")
+
