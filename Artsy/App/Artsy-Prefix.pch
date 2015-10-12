@@ -1,147 +1,113 @@
-//
-//  Artsy-Prefix.pch
-//  Artsy
-//
-//  Created by Orta Therox on 07/31/2013.
-//  Copyright (c) 2013 Artsy. All rights reserved.
-//
-
 #import <Availability.h>
 
-#ifndef __IPHONE_8_3
-#warning "This project uses features only available in iOS SDK 8.3 and later."
-#endif
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
-#ifdef __OBJC__
-    #import <UIKit/UIKit.h>
-    #import <Foundation/Foundation.h>
-    #import <SystemConfiguration/SystemConfiguration.h>
-    #import <MobileCoreServices/MobileCoreServices.h>
+#import "ARDefaults.h"
+#import "ARAppConstants.h"
+#import "ARViewTagConstants.h"
 
-    #import "ARDefaults.h"
-    #import "ARAppConstants.h"
-    #import "ARViewTagConstants.h"
+#import <AFNetworking/AFNetworking.h>
+#import <Mantle/Mantle.h>
+#import <Mantle/metamacros.h>
+#import <Mantle/EXTScope.h>
+#import <AFNetworkActivityLogger/AFNetworkActivityLogger.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ORStackView/ORStackView.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <NAMapKit/NAMapView.h>
+#import <EDColor/EDColor.h>
+#import <libextobjc/EXTKeyPathCoding.h>
+#import <libextobjc/EXTRuntimeExtensions.h>
 
-    #import <AFNetworking/AFNetworking.h>
-    #import <Mantle/Mantle.h>
-    #import <Mantle/metamacros.h>
-    #import <Mantle/EXTScope.h>
-    #import <AFNetworkActivityLogger/AFNetworkActivityLogger.h>
-    #import <CocoaLumberjack/CocoaLumberjack.h>
-    #import <ObjectiveSugar/ObjectiveSugar.h>
-    #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-    #import <ORStackView/ORStackView.h>
-    #import <ReactiveCocoa/ReactiveCocoa.h>
-    #import <NAMapKit/NAMapView.h>
-    #import <EDColor/EDColor.h>
-    #import <libextobjc/EXTKeyPathCoding.h>
-    #import <libextobjc/EXTRuntimeExtensions.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
-    #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
-    #import <Artsy-UIButtons/ARButtonSubclasses.h>
-    #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <ORStackView/ORStackScrollView.h>
+#import <ORStackView/ORTagBasedAutoStackView.h>
 
-    #import <ORStackView/ORStackScrollView.h>
-    #import <ORStackView/ORTagBasedAutoStackView.h>
+#import "ArtsyAPI.h"
+#import "ArtsyAPI+Artworks.h"
+#import "ArtsyAPI+Browse.h"
+#import "ArtsyAPI+CurrentUserFunctions.h"
+#import "ArtsyAPI+DeviceTokens.h"
+#import "ArtsyAPI+Feed.h"
+#import "ArtsyAPI+Following.h"
+#import "ArtsyAPI+Profiles.h"
+#import "ArtsyAPI+Posts.h"
+#import "ArtsyAPI+Artists.h"
+#import "ArtsyAPI+Genes.h"
+#import "ArtsyAPI+ListCollection.h"
+#import "ArtsyAPI+RelatedModels.h"
+#import "ArtsyAPI+SiteFunctions.h"
+#import "ArtsyAPI+Search.h"
+#import "ArtsyAPI+Sales.h"
+#import "ArtsyAPI+Fairs.h"
+#import "ArtsyAPI+OrderedSets.h"
+#import "ArtsyAPI+Shows.h"
+#import "ArtsyAPI+SystemTime.h"
+#import "ArtsyAPI+ErrorHandlers.h"
 
-    #import "ArtsyAPI.h"
-    #import "ArtsyAPI+Artworks.h"
-    #import "ArtsyAPI+Browse.h"
-    #import "ArtsyAPI+CurrentUserFunctions.h"
-    #import "ArtsyAPI+DeviceTokens.h"
-    #import "ArtsyAPI+Feed.h"
-    #import "ArtsyAPI+Following.h"
-    #import "ArtsyAPI+Profiles.h"
-    #import "ArtsyAPI+Posts.h"
-    #import "ArtsyAPI+Artists.h"
-    #import "ArtsyAPI+Genes.h"
-    #import "ArtsyAPI+ListCollection.h"
-    #import "ArtsyAPI+RelatedModels.h"
-    #import "ArtsyAPI+SiteFunctions.h"
-    #import "ArtsyAPI+Search.h"
-    #import "ArtsyAPI+Sales.h"
-    #import "ArtsyAPI+Fairs.h"
-    #import "ArtsyAPI+OrderedSets.h"
-    #import "ArtsyAPI+Shows.h"
-    #import "ArtsyAPI+SystemTime.h"
-    #import "ArtsyAPI+ErrorHandlers.h"
+#import "Artwork.h"
+#import "Artist.h"
+#import "User.h"
+#import "ProfileOwner.h"
+#import "Profile.h"
+#import "Gene.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+#import "Sale.h"
+#import "SaleArtwork.h"
+#import "FairOrganizer.h"
+#import "Fair.h"
+#import "Post.h"
+#import "SiteHeroUnit.h"
+#import "SiteFeature.h"
+#import "FeaturedLink.h"
+#import "OrderedSet.h"
+#import "Tag.h"
+#import "AuctionLot.h"
+#import "Video.h"
+#import "Follow.h"
+#import "PartnerShowFairLocation.h"
+#import "MapFeature.h"
+#import "SystemTime.h"
+#import "Location.h"
 
-    #import "Artwork.h"
-    #import "Artist.h"
-    #import "User.h"
-    #import "ProfileOwner.h"
-    #import "Profile.h"
-    #import "Gene.h"
-    #import "Partner.h"
-    #import "PartnerShow.h"
-    #import "Sale.h"
-    #import "SaleArtwork.h"
-    #import "FairOrganizer.h"
-    #import "Fair.h"
-    #import "Post.h"
-    #import "SiteHeroUnit.h"
-    #import "SiteFeature.h"
-    #import "FeaturedLink.h"
-    #import "OrderedSet.h"
-    #import "Tag.h"
-    #import "AuctionLot.h"
-    #import "Video.h"
-    #import "Follow.h"
-    #import "PartnerShowFairLocation.h"
-    #import "MapFeature.h"
-    #import "SystemTime.h"
-    #import "Location.h"
+#import "ARFonts.h"
 
-    #import "ARFonts.h"
+#import "UIImage+ImageFromColor.h"
+#import "UIImageView+AsyncImageLoading.h"
+#import "UILabel+Typography.h"
+#import "NSString+StringSize.h"
+#import "UIDevice-Hardware.h"
+#import "UIScrollView+HitTest.h"
+#import "MTLModel+JSON.h"
+#import "MTLModel+Dictionary.h"
+#import "AFHTTPRequestOperation+JSON.h"
 
-    #import "UIImage+ImageFromColor.h"
-    #import "UIImageView+AsyncImageLoading.h"
-    #import "UILabel+Typography.h"
-    #import "NSString+StringSize.h"
-    #import "UIDevice-Hardware.h"
-    #import "UIScrollView+HitTest.h"
-    #import "MTLModel+JSON.h"
-    #import "MTLModel+Dictionary.h"
-    #import "AFHTTPRequestOperation+JSON.h"
+#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import "ARSeparatorViews.h"
+#import "ARCustomEigenLabels.h"
 
-    #import <Artsy+UILabels/ARLabelSubclasses.h>
-    #import <Artsy-UIButtons/ARButtonSubclasses.h>
-    #import "ARSeparatorViews.h"
-    #import "ARCustomEigenLabels.h"
+#import "AROptions.h"
+#import "ARTheme.h"
+#import "ARSwitchBoard.h"
+#import "ARNetworkErrorManager.h"
+#import "ARTrialController.h"
+#import "ARTopMenuViewController.h"
+#import "ARScrollNavigationChief.h"
+#import "ARSystemTime.h"
+#import "ARDispatchManager.h"
+#import "ARDeveloperOptions.h"
+#import "ARAutoLayoutDebugging.h"
+#import "ARMacros.h"
 
-    #import "AROptions.h"
-    #import "ARTheme.h"
-    #import "ARSwitchBoard.h"
-    #import "ARNetworkErrorManager.h"
-    #import "ARTrialController.h"
-    #import "ARTopMenuViewController.h"
-    #import "ARScrollNavigationChief.h"
-    #import "ARSystemTime.h"
-    #import "ARDispatchManager.h"
-    #import "ARDeveloperOptions.h"
-    #import "ARAutoLayoutDebugging.h"
-    #import "ARMacros.h"
-
-    #import "ARLogger.h"
-#endif
-
-// Given that we don't see eye to eye with the GitHub team
-// on dependency management, we can't use frameworks without
-// getting ambiguous warning when Mantle+RAC and @weakify
-// as they just throw it all in together.
-
-// We can work around this for now by having our own commands
-// but a more realistic approach is to migrate away from the APIs.
-
-
-//#define _weakify(...) \
-//    autoreleasepool {} \
-//    metamacro_foreach_cxt(rac_weakify_,, __weak, __VA_ARGS__)
-
-//#define _strongify(...) \
-    //try {} @finally {} \
-    //_Pragma("clang diagnostic push") \
-    //_Pragma("clang diagnostic ignored \"-Wshadow\"") \
-    //metamacro_foreach(rac_strongify_,, __VA_ARGS__) \
-    //_Pragma("clang diagnostic pop")
+#import "ARLogger.h"
 
