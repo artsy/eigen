@@ -467,15 +467,22 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (IBAction)search:(id)sender;
 {
+    // Attempt to fix problem of crash https://rink.hockeyapp.net/manage/apps/37029/app_versions/41/crash_reasons/46749845?type=overview
+    // If you rapidly press the search/close buttons, you will get a crash pushing the same VC twice
+    self.searchButton.enabled = NO;
+
     if (self.searchViewController == nil) {
         self.searchViewController = [ARAppSearchViewController sharedSearchViewController];
     }
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
 
-    if (navigationController.topViewController != self.searchViewController) {
-        [navigationController pushViewController:self.searchViewController
-                                        animated:ARPerformWorkAsynchronously];
-    }
+    [CATransaction begin];
+    [navigationController pushViewController:self.searchViewController
+                                    animated:ARPerformWorkAsynchronously];
+    [CATransaction setCompletionBlock:^{
+        self.searchButton.enabled = YES;
+    }];
+    [CATransaction commit];
 }
 
 @end
