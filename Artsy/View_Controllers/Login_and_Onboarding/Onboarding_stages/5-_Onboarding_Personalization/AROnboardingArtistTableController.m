@@ -1,4 +1,6 @@
 #import "AROnboardingArtistTableController.h"
+
+#import "Artist.h"
 #import "AROnboardingFollowableTableViewCell.h"
 
 static NSString *CellId = @"OnboardingArtistFollow";

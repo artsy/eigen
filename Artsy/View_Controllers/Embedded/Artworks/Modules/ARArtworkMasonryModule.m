@@ -1,4 +1,6 @@
 #import "ARArtworkMasonryModule.h"
+
+#import "Artwork.h"
 #import "ARReusableLoadingView.h"
 #import "ARItemThumbnailViewCell.h"
 #import "ARArtworkWithMetadataThumbnailCell.h"

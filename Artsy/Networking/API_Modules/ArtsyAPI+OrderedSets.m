@@ -1,5 +1,6 @@
 #import "ArtsyAPI+Private.h"
 #import "ARRouter.h"
+#import "OrderedSet.h"
 
 
 @implementation ArtsyAPI (OrderedSets)

@@ -1,11 +1,21 @@
 #import "ARRouter.h"
 #import "ARRouter+Private.h"
 
+#import "Artist.h"
+#import "Artwork.h"
 #import "ArtsyAPI+SiteFunctions.h"
 #import "ARDefaults.h"
 #import "ARNetworkConstants.h"
 #import "ARUserManager.h"
 #import "ARAppStatus.h"
+#import "Fair.h"
+#import "FairOrganizer.h"
+#import "Gene.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+#import "Profile.h"
+#import "User.h"
+
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Keys/ArtsyKeys.h>
 

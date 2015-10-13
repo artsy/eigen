@@ -3,7 +3,7 @@ typedef NS_ENUM(NSInteger, ARFeaturedLinkStyle) {
     ARFeaturedLinkLayoutDoubleRow,
 };
 
-@class ARBrowseFeaturedLinksCollectionViewController;
+@class ARBrowseFeaturedLinksCollectionViewController, FeaturedLink;
 
 @protocol ARBrowseFeaturedLinksCollectionViewControllerDelegate
 @required

@@ -8,9 +8,18 @@
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 #import <Adjust/Adjust.h>
 
+#import "Artist.h"
+#import "Artwork.h"
 #import "ARDefaults.h"
 #import "ARUserManager.h"
 #import "ARTopMenuNavigationDataSource.h"
+#import "Fair.h"
+#import "FairOrganizer.h"
+#import "FeaturedLink.h"
+#import "Gene.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+#import "Profile.h"
 
 // View Controllers
 #import "ARFairGuideViewController.h"

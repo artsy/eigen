@@ -1,5 +1,8 @@
 #import "ARArtworkThumbnailMetadataView.h"
 
+#import "Artist.h"
+#import "Artwork.h"
+
 static CGFloat ARMetadataFontSize;
 
 

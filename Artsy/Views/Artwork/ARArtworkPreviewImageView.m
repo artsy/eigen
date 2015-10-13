@@ -1,4 +1,6 @@
 #import "ARArtworkPreviewImageView.h"
+
+#import "Artwork.h"
 #import "ARFeedImageLoader.h"
 
 

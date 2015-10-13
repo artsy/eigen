@@ -1,5 +1,8 @@
 #import "ARFairMapAnnotation.h"
+
 #import "ARFairMapAnnotationView.h"
+#import "Partner.h"
+#import "PartnerShow.h"
 #import "UIView+HitTestExpansion.h"
 
 

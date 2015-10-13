@@ -1,6 +1,7 @@
 #import "ARAppNotificationsDelegate.h"
 
 #import "ArtsyAPI+Artworks.h"
+#import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
 #import "UIApplicationStateEnum.h"
 #import "ARNotificationView.h"

@@ -1,4 +1,12 @@
 #import "ARFairViewController.h"
+
+#import "Artist.h"
+#import "Artwork.h"
+#import "Fair.h"
+#import "FeaturedLink.h"
+#import "Gene.h"
+#import "PartnerShow.h"
+#import "Profile.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARNavigationButtonsViewController.h"
 #import "ARFairPostsViewController.h"
@@ -14,7 +22,9 @@
 #import "ARArtworkSetViewController.h"
 #import "ARGeneViewController.h"
 #import "ARParallaxHeaderViewController.h"
+#import "SiteFeature.h"
 #import "UIViewController+ARUserActivity.h"
+#import "OrderedSet.h"
 
 NSString *const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
 NSString *const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";

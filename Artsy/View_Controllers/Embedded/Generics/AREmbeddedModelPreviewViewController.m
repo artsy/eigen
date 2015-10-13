@@ -1,6 +1,11 @@
 #import "AREmbeddedModelPreviewViewController.h"
+
+#import "Artist.h"
+#import "Artwork.h"
 #import "ARAspectRatioImageView.h"
 #import "ARSharingController.h"
+#import "FeaturedLink.h"
+#import "User.h"
 
 
 @interface AREmbeddedModelPreviewViewController ()

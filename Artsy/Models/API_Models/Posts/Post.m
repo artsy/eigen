@@ -1,4 +1,4 @@
-
+#import "Post.h"
 
 
 @implementation Post

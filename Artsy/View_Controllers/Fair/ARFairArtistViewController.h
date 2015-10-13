@@ -1,3 +1,4 @@
+@class Artist;
 @protocol ARFairAwareObject;
 
 @protocol FairArtistNeworkModel <NSObject>

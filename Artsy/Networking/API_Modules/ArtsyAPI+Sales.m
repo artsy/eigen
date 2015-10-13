@@ -1,3 +1,4 @@
+#import "Artwork.h"
 #import "ArtsyAPI+Private.h"
 #import "ARRouter.h"
 

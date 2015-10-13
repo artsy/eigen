@@ -1,7 +1,13 @@
 #import "ARArtworkRelatedArtworksView.h"
+
+#import "Artist.h"
+#import "Artwork.h"
 #import "AREmbeddedModelsViewController.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARArtworkSetViewController.h"
+#import "PartnerShow.h"
+
+#import <KSDeferred/KSPromise.h>
 
 
 @interface ARArtworkRelatedArtworksView () <AREmbeddedModelsViewControllerDelegate>

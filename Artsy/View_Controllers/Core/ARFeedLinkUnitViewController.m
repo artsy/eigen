@@ -4,6 +4,9 @@
 #import "ARNavigationButton.h"
 #import "ARAppStatus.h"
 
+#import "FeaturedLink.h"
+#import "User.h"
+#import "ARAppConstants.h"
 
 @implementation ARFeedLinkUnitViewController
 

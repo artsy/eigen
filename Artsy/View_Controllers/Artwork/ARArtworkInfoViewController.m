@@ -1,4 +1,6 @@
 #import "ARArtworkInfoViewController.h"
+
+#import "Artwork.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARTextView.h"
 

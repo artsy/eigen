@@ -1,5 +1,4 @@
-/// Centralized sharing / tweeter / tracebooking point
-
+@protocol ARShareableObject;
 
 @interface ARSharingController : NSObject
 

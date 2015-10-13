@@ -1,4 +1,6 @@
 #import "ARGeneViewController.h"
+
+#import "ARAppConstants.h"
 #import "ARHeartButton.h"
 #import "ARTextView.h"
 #import "AREmbeddedModelsViewController.h"
@@ -10,6 +12,9 @@
 #import "ARArtworkSetViewController.h"
 #import "ORStackView+ArtsyViews.h"
 #import "UIViewController+ARUserActivity.h"
+#import "User.h"
+#import "Gene.h"
+
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 

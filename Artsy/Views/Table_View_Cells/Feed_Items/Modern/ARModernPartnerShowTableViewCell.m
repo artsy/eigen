@@ -3,6 +3,8 @@
 #import "ARPartnerShowFeedItem.h"
 #import "ARTheme+HeightAdditions.h"
 #import "ARArtworkSetViewController.h"
+#import "PartnerShow.h"
+
 /// The maximum amount of items before switching from Carousel to masonry
 static const NSInteger CarouselItemLimit = 4;
 static const CGFloat ARPartnerShowCellBottomMargin = 30;

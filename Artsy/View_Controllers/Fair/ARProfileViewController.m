@@ -1,6 +1,8 @@
 #import "ARProfileViewController.h"
 
 #import "ArtsyAPI+Profiles.h"
+#import "Fair.h"
+#import "Profile.h"
 
 #import "ARFairViewController.h"
 #import "ARInternalMobileWebViewController.h"

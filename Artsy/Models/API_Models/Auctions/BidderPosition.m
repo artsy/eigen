@@ -1,4 +1,6 @@
+#import "BidderPosition.h"
 
+#import "Bid.h"
 
 
 @implementation BidderPosition

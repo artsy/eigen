@@ -1,4 +1,6 @@
 #import "ARSignUpSplashViewController.h"
+
+#import "ARAppConstants.h"
 #import "ARAppDelegate.h"
 #import "ARCrossfadingImageView.h"
 #import "ARUserManager.h"

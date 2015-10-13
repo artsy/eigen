@@ -1,4 +1,6 @@
 #import "ARArtworkWithMetadataThumbnailCell.h"
+
+#import "Artwork.h"
 #import "ARArtworkThumbnailMetadataView.h"
 
 static const CGFloat ARArtworkCellMetadataMargin = 8;

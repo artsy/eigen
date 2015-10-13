@@ -1,9 +1,12 @@
 #import "ARBrowseCategoriesViewController.h"
 
 #import "ArtsyAPI+Genes.h"
+#import "ARAppConstants.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARBrowseFeaturedLinksCollectionViewController.h"
+#import "FeaturedLink.h"
+#import "OrderedSet.h"
 
 
 @interface ARBrowseCategoriesViewController () <ARBrowseFeaturedLinksCollectionViewControllerDelegate>

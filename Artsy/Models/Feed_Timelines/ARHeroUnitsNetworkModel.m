@@ -2,6 +2,8 @@
 #import "ArtsyAPI+Private.h"
 #import "ArtsyAPI+SiteFunctions.h"
 
+#import "SiteHeroUnit.h"
+
 static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey";
 
 

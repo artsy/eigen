@@ -1,4 +1,6 @@
+#import "Artwork.h"
 
+#import "Artist.h"
 #import "ArtsyAPI+Artworks.h"
 #import "ArtsyAPI+Following.h"
 #import "ArtsyAPI+RelatedModels.h"
@@ -7,6 +9,9 @@
 #import "ARDefaults.h"
 #import "ARValueTransformer.h"
 #import "ARSpotlight.h"
+#import "Fair.h"
+#import "Partner.h"
+#import "User.h"
 
 
 @implementation Artwork {

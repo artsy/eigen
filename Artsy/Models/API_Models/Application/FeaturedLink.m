@@ -1,4 +1,4 @@
-
+#import "FeaturedLink.h"
 
 
 @interface FeaturedLink ()

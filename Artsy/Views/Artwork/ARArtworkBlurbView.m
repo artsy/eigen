@@ -1,3 +1,4 @@
+#import "Artwork.h"
 #import "ARArtworkBlurbView.h"
 #import "ARTextView.h"
 #import "ORStackView+ArtsyViews.h"

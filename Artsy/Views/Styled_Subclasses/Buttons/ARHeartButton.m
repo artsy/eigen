@@ -1,5 +1,7 @@
 #import "ARHeartButton.h"
 
+#import "ARAppConstants.h"
+
 
 @interface ARHeartButton ()
 // Front = Active, back = inactive

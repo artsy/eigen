@@ -1,4 +1,7 @@
+#import "Map.h"
 
+#import "MapFeature.h"
+#import "Image.h"
 
 
 @interface Map ()

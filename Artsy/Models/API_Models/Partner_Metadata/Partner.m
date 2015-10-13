@@ -1,3 +1,4 @@
+#import "Partner.h"
 #import "ARValueTransformer.h"
 
 

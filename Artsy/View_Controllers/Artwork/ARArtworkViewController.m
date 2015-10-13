@@ -1,4 +1,6 @@
 #import "ARArtworkViewController.h"
+
+#import "Artwork.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARArtworkRelatedArtworksView.h"
 #import "ARArtworkBlurbView.h"

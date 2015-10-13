@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+#import "ARShareableObject.h"
 
 @interface Article : NSObject <ARShareableObject>
 

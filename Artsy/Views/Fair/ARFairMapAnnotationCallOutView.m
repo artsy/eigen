@@ -1,5 +1,7 @@
 #import "ARFairMapAnnotationCallOutView.h"
+
 #import "ARShowViewController.h"
+#import "PartnerShow.h"
 
 
 @interface ARFairMapAnnotationCallOutView ()

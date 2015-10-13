@@ -1,3 +1,5 @@
+#import "ARFeed.h"
+
 #import "ARFeedItems.h"
 
 static NSDictionary *StaticFeedItemMap;

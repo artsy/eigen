@@ -1,6 +1,8 @@
 #import "ARFairGuideContainerViewController.h"
 #import "ARFairGuideViewController.h"
 #import "ARFairMapViewController.h"
+#import "Fair.h"
+#import "User.h"
 
 #import "UIViewController+SimpleChildren.h"
 #import "UIViewController+FullScreenLoading.h"

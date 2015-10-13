@@ -1,6 +1,9 @@
+#import "User.h"
+
 #import "ARUserManager.h"
 #import "ArtsyAPI+CurrentUserFunctions.h"
 #import "ArtsyAPI+Profiles.h"
+#import "Profile.h"
 
 @implementation User
 

@@ -1,6 +1,7 @@
 #import "ARAppWatchCommunicator.h"
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
+#import "Artwork.h"
 #import "WatchBiddingDetails.h"
 #import "ARDefaults.h"
 #import "ARRouter.h"
@@ -8,6 +9,8 @@
 #import "ARUserManager.h"
 #import "WatchMessage.h"
 #import "ArtsyWatchAPI.h"
+#import "User.h"
+#import "PartnerShow.h"
 
 #import "WatchShow.h"
 #import "WatchShow+ArtsyModels.h"

@@ -1,3 +1,4 @@
+#import "ARAppConstants.h"
 #import "ARRouter.h"
 #import "Artsy-Swift.h"
 #import <JLRoutes/JLRoutes.h>
@@ -6,8 +7,21 @@
 
 #import "ARFairAwareObject.h"
 #import "ARFavoritesViewController.h"
+#import "Fair.h"
+#import "User.h"
+
+// View Controllers
+#import "ARArtworkSetViewController.h"
+#import "ARShowViewController.h"
+#import "ARFairArtistViewController.h"
+#import "ARGeneViewController.h"
+#import "ARArtworkInfoViewController.h"
+#import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
+
+#import <JLRoutes/JLRoutes.h>
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
 
 @interface ARSwitchBoard ()

@@ -1,5 +1,11 @@
 #import "ARArtworkDetailView.h"
+
+#import "Artist.h"
+#import "Artwork.h"
 #import "ARTextView.h"
+#import "Fair.h"
+#import "Partner.h"
+#import "PartnerShow.h"
 
 typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
     ARDetailArtistName = 1,

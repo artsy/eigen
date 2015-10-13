@@ -1,10 +1,12 @@
 #import "ARPersonalizeViewController.h"
 
+#import "Artist.h"
 #import "ArtsyAPI+Search.h"
 #import "AROnboardingGeneTableController.h"
 #import "AROnboardingArtistTableController.h"
 #import "AROnboardingSearchField.h"
 #import "AROnboardingFollowableTableViewCell.h"
+#import "Gene.h"
 
 static NSString *SearchCellId = @"OnboardingSearchCell";
 

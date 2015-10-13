@@ -1,4 +1,6 @@
 #import "ARViewInRoomViewController.h"
+
+#import "Artwork.h"
 #import "ARFeedImageLoader.h"
 #import "UIDevice-Hardware.h"
 

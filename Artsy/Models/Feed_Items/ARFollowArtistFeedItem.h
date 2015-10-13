@@ -1,5 +1,6 @@
 #import "ARFeedItem.h"
 
+@class Artist, Profile;
 
 @interface ARFollowArtistFeedItem : ARFeedItem <UIActivityItemSource>
 

@@ -1,6 +1,7 @@
 #import "ARSignUpActiveUserViewController.h"
 #import "AROnboardingNavBarView.h"
 #import "ARUserManager.h"
+#import "ARAppConstants.h"
 
 
 @interface ARSignUpActiveUserViewController ()

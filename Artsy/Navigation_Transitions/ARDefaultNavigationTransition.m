@@ -1,5 +1,7 @@
-#import "UIView+OldSchoolSnapshots.h"
 #import "ARDefaultNavigationTransition.h"
+
+#import "UIView+OldSchoolSnapshots.h"
+#import "ARAppConstants.h"
 
 #define FADE_MOVEMENT_X 8
 #define FADE_MOVEMENT_Y 16

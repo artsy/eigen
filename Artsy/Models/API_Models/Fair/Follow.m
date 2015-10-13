@@ -1,5 +1,7 @@
+#import "Follow.h"
 
-
+#import "Artist.h"
+#import "Profile.h"
 
 @implementation Follow
 

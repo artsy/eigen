@@ -1,5 +1,8 @@
 #import "ARArtworkPreviewActionsView.h"
+
+#import "Artwork.h"
 #import "ARHeartButton.h"
+#import "Fair.h"
 
 const CGFloat ARArtworkActionButtonSpacing = 8;
 

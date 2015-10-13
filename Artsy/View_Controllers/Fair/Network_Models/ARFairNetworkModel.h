@@ -1,4 +1,4 @@
-
+@class ARFairShowFeed, ARFeedTimeline, Fair;
 
 
 @interface ARFairNetworkModel : NSObject

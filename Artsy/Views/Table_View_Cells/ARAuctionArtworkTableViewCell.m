@@ -1,5 +1,7 @@
 #import "ARAuctionArtworkTableViewCell.h"
 
+#import "Artist.h"
+#import "Artwork.h"
 
 @interface ARAuctionArtworkTableViewCell ()
 @property (nonatomic, weak) UIView *separator;

@@ -1,6 +1,7 @@
 #import "ARArtworkMetadataView.h"
 #import "ARSplitStackView.h"
 #import "ARWhitespaceGobbler.h"
+#import "ARAppConstants.h"
 
 
 @interface ARArtworkMetadataView ()

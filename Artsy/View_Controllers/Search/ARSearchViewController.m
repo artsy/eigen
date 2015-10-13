@@ -1,5 +1,7 @@
 #import "ARSearchViewController.h"
 #import "ARSearchViewController+Private.h"
+
+#import "ARAppConstants.h"
 #import "ARSearchTableViewCell.h"
 #import "UIView+HitTestExpansion.h"
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>

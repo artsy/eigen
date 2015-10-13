@@ -1,6 +1,8 @@
 #import "ARPostFeedItemLinkView.h"
+
 #import "ARPostFeedItem.h"
 #import "ARAspectRatioImageView.h"
+#import "Profile.h"
 
 
 @implementation ARPostFeedItemLinkView

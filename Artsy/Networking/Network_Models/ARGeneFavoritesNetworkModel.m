@@ -2,6 +2,8 @@
 
 #import "ArtsyAPI+ListCollection.h"
 #import "ArtsyAPI+OrderedSets.h"
+#import "Gene.h"
+#import "OrderedSet.h"
 
 @implementation ARGeneFavoritesNetworkModel
 

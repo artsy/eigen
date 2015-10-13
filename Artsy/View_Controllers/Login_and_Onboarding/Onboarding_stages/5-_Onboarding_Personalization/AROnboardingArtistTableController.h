@@ -2,6 +2,8 @@
 /// and the Gene and Search ones in personalize
 
 
+@class Artist;
+
 @interface AROnboardingArtistTableController : NSObject <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, readonly) NSMutableOrderedSet *artists;

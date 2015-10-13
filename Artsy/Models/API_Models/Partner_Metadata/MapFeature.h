@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, ARMapFeatureType) {
 
 FOUNDATION_EXPORT NSString *NSStringFromARMapFeatureType(enum ARMapFeatureType featureType);
 
+@class Image;
 
 @interface MapFeature : MTLModel <MTLJSONSerializing>
 

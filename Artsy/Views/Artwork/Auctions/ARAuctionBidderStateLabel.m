@@ -1,4 +1,7 @@
 #import "ARAuctionBidderStateLabel.h"
+
+#import "SaleArtwork.h"
+
 #import <Artsy_UILabels/NSNumberFormatter+ARCurrency.h>
 
 

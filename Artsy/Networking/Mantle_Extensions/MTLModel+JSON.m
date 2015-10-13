@@ -1,4 +1,4 @@
-
+#import "ARFeedHostItem.h"
 
 
 @implementation MTLModel (JSON)

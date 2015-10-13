@@ -1,6 +1,7 @@
 #import "ARArtworkFavoritesNetworkModel.h"
 
 #import "ArtsyAPI+Artworks.h"
+#import "User.h"
 
 
 @implementation ARArtworkFavoritesNetworkModel

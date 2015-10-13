@@ -6,6 +6,7 @@
 #import "UIViewController+InnermostTopViewController.h"
 #import "UIViewController+SimpleChildren.h"
 
+#import "ARAppConstants.h"
 #import "ARAppSearchViewController.h"
 #import "ARNavigationTransitionController.h"
 #import "ARPendingOperationViewController.h"

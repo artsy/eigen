@@ -1,4 +1,7 @@
 #import "ARFavoritesViewController.h"
+
+#import "Artist.h"
+#import "ARAppConstants.h"
 #import "ARArtworkMasonryModule.h"
 #import "UIViewController+SimpleChildren.h"
 #import "AREmbeddedModelsViewController.h"

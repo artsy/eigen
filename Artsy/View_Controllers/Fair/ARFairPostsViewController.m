@@ -1,5 +1,9 @@
 #import "ARFairPostsViewController.h"
+
+#import "Fair.h"
+#import "ARFeedTimeline.h"
 #import "ARPostFeedItem.h"
+#import "ARPostFeedItemLinkView.h"
 #import "ORStackView+ArtsyViews.h"
 
 

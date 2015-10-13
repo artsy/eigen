@@ -1,6 +1,7 @@
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Private.h"
 
+#import "ARAppConstants.h"
 #import "ARDefaults.h"
 #import "ARDispatchManager.h"
 #import "ARRouter.h"

@@ -1,11 +1,16 @@
 #import "ARAppSearchViewController.h"
 
+#import "Artist.h"
+#import "Artwork.h"
 #import "ArtsyAPI+Search.h"
 #import "ARArtworkSetViewController.h"
 #import "ARArtistViewController.h"
 #import "ARGeneViewController.h"
 #import "ARParallaxEffect.h"
 #import "ARSearchViewController+Private.h"
+#import "Gene.h"
+#import "Profile.h"
+#import "SiteFeature.h"
 #import "UIView+HitTestExpansion.h"
 
 #import <FXBlurView/FXBlurView.h>

@@ -1,5 +1,11 @@
 #import "ARUserActivity.h"
 
+#import "Artist.h"
+#import "Artwork.h"
+#import "Fair.h"
+#import "Gene.h"
+#import "PartnerShow.h"
+
 #import <CoreSpotlight/CoreSpotlight.h>
 
 

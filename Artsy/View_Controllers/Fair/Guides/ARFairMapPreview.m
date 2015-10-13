@@ -1,7 +1,10 @@
 #import "ARFairMapPreview.h"
+
+#import "Image.h"
 #import "ARTiledImageDataSourceWithImage.h"
 #import "ARFairShowMapper.h"
 #import "ARFairMapZoomManager.h"
+#import "Map.h"
 
 
 @interface ARFairMapPreview ()

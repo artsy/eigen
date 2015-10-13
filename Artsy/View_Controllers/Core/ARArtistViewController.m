@@ -1,4 +1,7 @@
 #import "ARArtistViewController.h"
+
+#import "Artist.h"
+#import "ARAppConstants.h"
 #import "ARNavigationButton.h"
 #import "ARSwitchView.h"
 #import "ARSwitchView+Artist.h"
@@ -14,6 +17,8 @@
 #import "ARTextView.h"
 #import "ARArtistNetworkModel.h"
 #import "ARSpotlight.h"
+#import "User.h"
+
 #import "UIViewController+ARUserActivity.h"
 
 static const NSInteger ARMinimumArtworksFor2Column = 5;

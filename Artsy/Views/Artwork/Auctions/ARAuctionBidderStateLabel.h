@@ -1,5 +1,5 @@
 
-
+@class SaleArtwork;
 
 @interface ARAuctionBidderStateLabel : ARBorderLabel
 

@@ -1,10 +1,16 @@
 #import "ARTopMenuNavigationDataSource.h"
+
+#import "ARShowFeedViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARSimpleShowFeedViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARHeroUnitsNetworkModel.h"
 #import "ARHeroUnitViewController.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
+#import "ARFeedSubclasses.h"
+#import "FeaturedLink.h"
+#import "SiteHeroUnit.h"
+
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import "ARAppBackgroundFetchDelegate.h"
 

@@ -1,5 +1,10 @@
 #import "ARFairShowMapper.h"
 
+#import "Fair.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+#import "PartnerShowFairLocation.h"
+
 
 @interface ARFairShowMapper ()
 @property (readwrite, nonatomic, copy) NSSet *highlightedShows;

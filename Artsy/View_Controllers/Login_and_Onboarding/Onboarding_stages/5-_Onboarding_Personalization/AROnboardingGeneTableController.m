@@ -1,4 +1,6 @@
 #import "AROnboardingGeneTableController.h"
+
+#import "Gene.h"
 #import "AROnboardingFollowableTableViewCell.h"
 
 static NSString *CellId = @"OnboardingGeneFollow";

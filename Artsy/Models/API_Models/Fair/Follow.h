@@ -1,4 +1,4 @@
-
+@class Artist, Profile;
 
 
 @interface Follow : MTLModel <MTLJSONSerializing>

@@ -1,3 +1,4 @@
+#import "Artwork.h"
 #import "ARArtworkSetViewController.h"
 #import "ARViewInRoomViewController.h"
 #import "ARArtworkViewController.h"

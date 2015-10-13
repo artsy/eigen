@@ -1,4 +1,4 @@
-@class ARHeroUnitsNetworkModel;
+@class ARHeroUnitsNetworkModel, SiteHeroUnit;
 
 
 @interface ARHeroUnitViewController : UIViewController

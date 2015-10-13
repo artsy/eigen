@@ -1,4 +1,4 @@
-@class ARZoomView;
+@class ARZoomView, Image;
 
 @protocol ARZoomViewDelegate
 - (void)zoomViewFinished:(ARZoomView *)zoomView;

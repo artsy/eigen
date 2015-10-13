@@ -1,4 +1,6 @@
 #import "ARRelatedArtistsViewController.h"
+
+#import "Artist.h"
 #import "ARFavoriteItemViewCell.h"
 
 

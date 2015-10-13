@@ -1,3 +1,5 @@
+#import "SaleArtwork.h"
+
 static NSNumberFormatter *dollarFormatter;
 
 

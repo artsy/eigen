@@ -1,5 +1,8 @@
 #import "ARFairPopupViewController.h"
 
+#import "ARAppConstants.h"
+#import "Fair.h"
+
 
 @interface ARFairPopupViewController ()
 

@@ -1,4 +1,6 @@
 #import "ARArtworkActionsView.h"
+
+#import "Artwork.h"
 #import "ARArtworkPriceView.h"
 #import "ARArtworkAuctionPriceView.h"
 #import "ARCountdownView.h"
@@ -7,7 +9,9 @@
 #import "ARAuctionBidderStateLabel.h"
 #import "ARBidButton.h"
 #import "ARSpinner.h"
+#import "Partner.h"
 
+#import <KSDeferred/KSPromise.h>
 
 @interface ARArtworkActionsView () <ARCountdownViewDelegate>
 

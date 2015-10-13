@@ -1,5 +1,7 @@
 #import "ARImagePageViewController.h"
 
+#import "Image.h"
+
 
 @interface ARImageViewController : UIViewController
 

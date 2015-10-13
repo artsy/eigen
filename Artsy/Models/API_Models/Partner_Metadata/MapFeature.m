@@ -1,4 +1,7 @@
+#import "MapFeature.h"
+
 #import "ARValueTransformer.h"
+#import "Image.h"
 
 
 @implementation MapFeature

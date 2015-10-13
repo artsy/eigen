@@ -1,4 +1,5 @@
 #import "ArtsyAPI+OrderedSets.h"
+#import "OrderedSet.h"
 
 
 @implementation OrderedSet

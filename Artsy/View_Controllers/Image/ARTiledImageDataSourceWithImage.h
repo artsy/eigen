@@ -1,3 +1,5 @@
+#import "Image.h"
+
 #import <ARTiledImageView/ARTiledImageView.h>
 #import <ARTiledImageView/ARWebTiledImageDataSource.h>
 

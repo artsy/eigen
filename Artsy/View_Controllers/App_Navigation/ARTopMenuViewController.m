@@ -7,10 +7,13 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARUserManager.h"
 #import "ArtsyAPI+Private.h"
-#import <JSBadgeView/JSBadgeView.h>
+#import "ARAppConstants.h"
+#import "User.h"
 
 #import "UIView+HitTestExpansion.h"
 #import <objc/runtime.h>
+
+#import <JSBadgeView/JSBadgeView.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 
 static const CGFloat ARMenuButtonDimension = 46;

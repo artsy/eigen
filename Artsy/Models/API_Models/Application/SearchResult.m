@@ -1,5 +1,12 @@
 #import "SearchResult.h"
+
+#import "Artist.h"
+#import "Artwork.h"
 #import "ARRouter.h"
+#import "Gene.h"
+#import "PartnerShow.h"
+#import "Profile.h"
+#import "SiteFeature.h"
 
 static NSDictionary *classMap;
 

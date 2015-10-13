@@ -1,5 +1,7 @@
 #import "ARSwitchView.h"
 
+#import "ARAppConstants.h"
+
 
 @interface ARSwitchView ()
 @property (nonatomic, strong, readwrite) NSArray *buttons;

@@ -1,10 +1,16 @@
 #import "ARQuicksilverViewController.h"
 
+#import "Artist.h"
+#import "Artwork.h"
 #import "ArtsyAPI+Search.h"
 #import "ARContentViewControllers.h"
+#import "Gene.h"
 #import "SearchResult.h"
 #import "ARSearchTableViewCell.h"
 #import "ARFileUtils.h"
+#import "Profile.h"
+#import "SiteFeature.h"
+
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
 

@@ -1,5 +1,7 @@
 #import "ARPartnerShowFeedItem.h"
 
+#import "ARFeedHostItem.h"
+#import "PartnerShow.h"
 
 @interface ARPartnerShowFeedItem () <ARFeedHostItem>
 @property (nonatomic, strong) PartnerShow *show;

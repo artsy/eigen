@@ -1,5 +1,11 @@
 #import "ARFairArtistViewController.h"
+
+#import "Artist.h"
+#import "Fair.h"
+#import "Partner.h"
+#import "PartnerShow.h"
 #import "ORStackView+ArtsyViews.h"
+#import "ARAppConstants.h"
 #import "ARNavigationButton.h"
 #import "ARShowViewController.h"
 #import "AREmbeddedModelsViewController.h"
@@ -11,6 +17,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARFairMapPreviewButton.h"
 #import "ARFairArtistNetworkModel.h"
+#import "User.h"
 
 typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
     ARFairArtistTitle = 1,

@@ -8,12 +8,16 @@
 #import "ARRouter.h"
 #import "ARFileUtils.h"
 #import "ArtsyAPI+Private.h"
+#import "User.h"
+#import "ARAppConstants.h"
+
 #import "NSKeyedUnarchiver+ErrorLogging.h"
-#import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "ARCollectorStatusViewController.h"
 #import "ARKeychainable.h"
+
 #import "AFHTTPRequestOperation+JSON.h"
+#import <ARAnalytics/ARAnalytics.h>
 
 
 NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";

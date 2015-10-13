@@ -1,4 +1,6 @@
 #import "ARArtworkView.h"
+
+#import "Artwork.h"
 #import "ARSpinner.h"
 #import "ARAuctionBannerView.h"
 #import "ARWhitespaceGobbler.h"

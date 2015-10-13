@@ -2,6 +2,8 @@
 #import <ALPValidator/ALPValidator.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
+#import "Artist.h"
+#import "Artwork.h"
 #import "ArtsyAPI+SiteFunctions.h"
 #import "ARInquireForArtworkViewController.h"
 #import "ARUserManager.h"
@@ -9,6 +11,8 @@
 #import "UIView+HittestExpansion.h"
 #import "ARAppDelegate.h"
 #import "ARAnalyticsConstants.h"
+#import "Partner.h"
+#import "Profile.h"
 
 // Future TODO: Don't use image alpha on contact image, use grayscale'd image.
 

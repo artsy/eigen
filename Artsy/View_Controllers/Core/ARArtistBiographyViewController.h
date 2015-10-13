@@ -1,4 +1,4 @@
-
+@class Artist;
 
 
 @interface ARArtistBiographyViewController : UIViewController

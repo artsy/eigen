@@ -1,4 +1,7 @@
 #import "ARShowViewController.h"
+
+#import "Image.h"
+#import "ARAppConstants.h"
 #import "ARImagePageViewController.h"
 #import "ARFollowableNetworkModel.h"
 #import "ARFollowableButton.h"
@@ -14,6 +17,13 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARFairMapPreviewButton.h"
 #import "UIViewController+ARUserActivity.h"
+#import "Fair.h"
+#import "FairOrganizer.h"
+#import "Location.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+#import "Profile.h"
+#import "User.h"
 
 typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
     ARFairShowViewHeader = 1,

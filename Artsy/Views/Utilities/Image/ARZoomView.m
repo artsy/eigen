@@ -1,4 +1,6 @@
 #import "ARZoomView.h"
+
+#import "Image.h"
 #import "ARFeedImageLoader.h"
 #import "ARTiledImageDataSourceWithImage.h"
 

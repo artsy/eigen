@@ -1,3 +1,5 @@
+#import "SaleArtwork.h"
+
 extern NSString *const ARBidButtonRegisterStateTitle;
 extern NSString *const ARBidButtonRegisteredStateTitle;
 extern NSString *const ARBidButtonBiddingOpenStateTitle;

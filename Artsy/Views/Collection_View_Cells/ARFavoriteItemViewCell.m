@@ -1,5 +1,8 @@
 #import "ARFavoriteItemViewCell.h"
+
+#import "Artist.h"
 #import "ARFeedImageLoader.h"
+#import "FeaturedLink.h"
 
 static const CGFloat ARFavoriteCellMetadataMargin = 8;
 static const CGFloat ARFavoriteCellLabelHeight = 34;

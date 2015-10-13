@@ -1,4 +1,4 @@
-
+@class Image;
 
 
 @interface MapPoint : MTLModel <MTLJSONSerializing>
