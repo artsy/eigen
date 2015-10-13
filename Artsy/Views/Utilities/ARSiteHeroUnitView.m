@@ -1,4 +1,6 @@
 #import "ARSiteHeroUnitView.h"
+
+#import "ARFonts.h"
 #import "ARParallaxEffect.h"
 
 #define AR_HERO_TITLE_FONT 26

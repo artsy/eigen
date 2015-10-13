@@ -1,5 +1,8 @@
 #import <UIKit/UIKit.h>
 
+#import "ARMacros.h"
+
+@class Fair;
 
 @interface ARFairGuideContainerViewController : UIViewController
 

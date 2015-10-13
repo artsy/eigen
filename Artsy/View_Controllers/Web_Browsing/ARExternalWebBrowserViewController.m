@@ -2,7 +2,14 @@
 #import "ARWebViewCacheHost.h"
 #import "ARSwitchboard.h"
 #import "ARSwitchboard+Eigen.h"
+#import "ARLogger.h"
+#import "ARExternalWebBrowserViewController.h"
+
+#import "ARNavigationController.h"
+#import "ARScrollNavigationChief.h"
+
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
+#import <JLRoutes/JLRoutes.h>
 
 
 @interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>

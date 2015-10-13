@@ -1,4 +1,6 @@
+#import "ARMacros.h"
 
+@class Fair;
 
 
 @interface ARFairPopupViewController : UIViewController

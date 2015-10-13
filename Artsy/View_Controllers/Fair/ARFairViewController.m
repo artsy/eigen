@@ -25,6 +25,8 @@
 #import "SiteFeature.h"
 #import "UIViewController+ARUserActivity.h"
 #import "OrderedSet.h"
+#import "ARSwitchBoard.h"
+#import "ARScrollNavigationChief.h"
 
 NSString *const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
 NSString *const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";

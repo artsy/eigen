@@ -1,5 +1,6 @@
 #import "ARParallaxHeaderViewController.h"
 
+#import "ARCustomEigenLabels.h"
 #import "Fair.h"
 #import "Profile.h"
 

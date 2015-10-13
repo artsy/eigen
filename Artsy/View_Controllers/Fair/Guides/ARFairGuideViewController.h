@@ -1,4 +1,6 @@
-@class ARFairGuideViewController;
+#import "ARMacros.h"
+
+@class Fair, ARFairGuideViewController;
 
 @protocol ARFairGuideViewControllerDelegate <NSObject>
 

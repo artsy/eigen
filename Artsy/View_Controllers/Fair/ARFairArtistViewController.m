@@ -17,7 +17,11 @@
 #import "ARArtworkSetViewController.h"
 #import "ARFairMapPreviewButton.h"
 #import "ARFairArtistNetworkModel.h"
+#import "ARFonts.h"
 #import "User.h"
+#import "ARSwitchBoard.h"
+#import "ARTrialController.h"
+#import "ARScrollNavigationChief.h"
 
 typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
     ARFairArtistTitle = 1,

@@ -1,3 +1,4 @@
+#import "ARLogger.h"
 // Copyright (c) 2012-2013 Peter Steinberger (http://petersteinberger.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy

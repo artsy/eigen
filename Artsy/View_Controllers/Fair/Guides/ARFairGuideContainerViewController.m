@@ -3,6 +3,8 @@
 #import "ARFairMapViewController.h"
 #import "Fair.h"
 #import "User.h"
+#import "ARNavigationController.h"
+#import "ARScrollNavigationChief.h"
 
 #import "UIViewController+SimpleChildren.h"
 #import "UIViewController+FullScreenLoading.h"

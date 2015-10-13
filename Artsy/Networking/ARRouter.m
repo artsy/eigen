@@ -15,6 +15,8 @@
 #import "PartnerShow.h"
 #import "Profile.h"
 #import "User.h"
+#import "AROptions.h"
+#import "ARLogger.h"
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Keys/ArtsyKeys.h>

@@ -1,5 +1,8 @@
 #import "ARButtonWithImage.h"
+
 #import "ARFeedImageLoader.h"
+#import "ARFonts.h"
+#import "ARSeparatorViews.h"
 
 const CGFloat TitlesMargin = 5;
 

@@ -4,6 +4,7 @@
 #import "Artwork.h"
 #import "ARPageSubtitleView.h"
 #import "ARFeedStatusIndicatorTableViewCell.h"
+#import "ARCustomEigenLabels.h"
 
 static NSString *ARAuctionTableViewCellIdentifier = @"ARAuctionTableViewCellIdentifier";
 static NSString *ARAuctionTableViewHeaderIdentifier = @"ARAuctionTableViewHeaderIdentifier";

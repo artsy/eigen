@@ -15,7 +15,11 @@
 #import "ARAppDelegate+Analytics.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ARAppConstants.h"
+#import "ARFonts.h"
 #import "ARUserManager.h"
+#import "AROptions.h"
+#import "ARSwitchBoard.h"
+#import "ARTopMenuViewController.h"
 
 #import "UIViewController+InnermostTopViewController.h"
 #import "ARSimpleShowFeedViewController.h"
@@ -30,6 +34,9 @@
 #import "ARWebViewCacheHost.h"
 #import "ARAppStatus.h"
 #import "Artsy-Swift.h"
+#import "ARSystemTime.h"
+#import "ARDispatchManager.h"
+#import "ARLogger.h"
 
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"

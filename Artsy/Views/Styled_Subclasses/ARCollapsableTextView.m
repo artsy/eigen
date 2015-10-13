@@ -1,5 +1,7 @@
 #import "ARCollapsableTextView.h"
 
+#import "ARFonts.h"
+
 static const CGFloat ARCollapsableTextViewHeight = 80;
 
 

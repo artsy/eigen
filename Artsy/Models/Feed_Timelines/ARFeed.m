@@ -1,3 +1,4 @@
+#import "ARLogger.h"
 #import "ARFeed.h"
 
 #import "ARFeedItems.h"

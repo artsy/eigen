@@ -6,6 +6,8 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARArtworkSetViewController.h"
 #import "PartnerShow.h"
+#import "ARSwitchBoard.h"
+#import "ARLogger.h"
 
 #import <KSDeferred/KSPromise.h>
 

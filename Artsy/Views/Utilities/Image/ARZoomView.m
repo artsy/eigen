@@ -1,3 +1,4 @@
+#import "ARLogger.h"
 #import "ARZoomView.h"
 
 #import "Image.h"

@@ -1,5 +1,6 @@
-#import <ORStackView/ORStackView.h>
+#import <UIKit/UIKit.h>
 
+@class Fair;
 
 @interface ARFairSectionViewController : UIViewController
 

@@ -1,4 +1,4 @@
-@class Artist, FairOrganizer, Profile;
+@class Artist, Artwork, Fair, FairOrganizer, Gene, PartnerShow, Profile;
 
 
 @interface ARRouter : NSObject

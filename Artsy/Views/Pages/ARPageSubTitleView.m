@@ -1,5 +1,6 @@
 #import "ARPageSubTitleView.h"
 
+#import "ARTheme.h"
 
 @interface ARPageSubTitleView ()
 @property (nonatomic, assign) CGFloat margin;

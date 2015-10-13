@@ -12,6 +12,8 @@
 #import "Profile.h"
 #import "SiteFeature.h"
 #import "UIView+HitTestExpansion.h"
+#import "ARSwitchBoard.h"
+#import "ARMenuAwareViewController.h"
 
 #import <FXBlurView/FXBlurView.h>
 

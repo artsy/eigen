@@ -10,6 +10,8 @@
 #import "ARUserManager.h"
 #import "ARFileUtils.h"
 #import "ARRouter.h"
+#import "AROptions.h"
+
 #import "Artsy-Swift.h"
 
 #if DEBUG

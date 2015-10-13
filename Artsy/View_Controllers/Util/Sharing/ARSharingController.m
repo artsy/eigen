@@ -7,6 +7,7 @@
 #import "ARMessageItemProvider.h"
 #import "Gene.h"
 #import "PartnerShow.h"
+#import "ARTopMenuViewController.h"
 
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 

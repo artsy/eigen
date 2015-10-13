@@ -1,4 +1,7 @@
 #import "ARHTTPRequestOperationLogger.h"
+
+#import "ARLogger.h"
+
 #import <objc/runtime.h>
 
 

@@ -1,8 +1,12 @@
+#import "ARLogger.h"
 #import <CocoaLumberjack/DDASLLogger.h>
 #import <CocoaLumberjack/DDTTYLogger.h>
 #import <CocoaLumberjack/DDFileLogger.h>
+
+#import "ARFonts.h"
 #import "ARHTTPRequestOperationLogger.h"
 #import "ARLogFormatter.h"
+#import "ARDeveloperOptions.h"
 
 
 @implementation ARLogger

@@ -1,4 +1,4 @@
-@class ARHeartButton, ARArtworkInfoButton;
+@class Artwork, ARHeartButton, ARArtworkInfoButton, Fair;
 
 @protocol ARArtworkPreviewActionsViewDelegate <NSObject>
 

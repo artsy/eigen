@@ -1,5 +1,7 @@
 #import "ARNetworkErrorView.h"
 
+#import "ARFonts.h"
+
 
 @interface ARNetworkErrorView ()
 @property (nonatomic, strong) UILabel *errorText;

@@ -1,6 +1,7 @@
 #import "ARAnimatedTickView.h"
 
 #import "ARAppConstants.h"
+#import "ARFonts.h"
 
 #define TICK_DIMENSION 32
 

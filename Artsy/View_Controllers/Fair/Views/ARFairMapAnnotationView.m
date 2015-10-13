@@ -1,5 +1,6 @@
 #import "ARFairMapAnnotationView.h"
 
+#import "ARFonts.h"
 
 @interface ARFairMapAnnotationView ()
 @property (nonatomic, weak) UIImageView *mapFeatureView;

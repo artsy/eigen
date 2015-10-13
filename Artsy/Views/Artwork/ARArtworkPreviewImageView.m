@@ -2,6 +2,7 @@
 
 #import "Artwork.h"
 #import "ARFeedImageLoader.h"
+#import "ARFonts.h"
 
 
 @interface ARArtworkPreviewImageView ()

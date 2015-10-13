@@ -1,5 +1,7 @@
 #import "ARAuthProviders.h"
 #import "ARNetworkConstants.h"
+#import "ARLogger.h"
+
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <AFOAuth1Client/AFOAuth1Token.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>

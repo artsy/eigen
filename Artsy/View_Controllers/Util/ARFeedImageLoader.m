@@ -1,5 +1,7 @@
 #import "ARFeedImageLoader.h"
 
+#import "ARFonts.h"
+
 // From the gravity source
 
 //version :small, if: :is_processing_delayed? do

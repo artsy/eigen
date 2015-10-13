@@ -1,6 +1,7 @@
 #import "ARBrowseViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
+#import "ARSwitchBoard.h"
 
 
 @interface ARBrowseViewCell : ARBrowseFeaturedLinksCollectionViewCell

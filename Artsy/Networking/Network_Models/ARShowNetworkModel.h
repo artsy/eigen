@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+@class Fair, PartnerShow;
 
 @interface ARShowNetworkModel : NSObject
 

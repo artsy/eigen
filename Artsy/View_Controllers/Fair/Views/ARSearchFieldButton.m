@@ -1,5 +1,6 @@
 #import "ARSearchFieldButton.h"
 
+#import "ARFonts.h"
 
 @interface ARSearchFieldButton ()
 

@@ -2,6 +2,7 @@
 
 #import "Image.h"
 #import "ARAppConstants.h"
+#import "ARFonts.h"
 #import "ARImagePageViewController.h"
 #import "ARFollowableNetworkModel.h"
 #import "ARFollowableButton.h"
@@ -24,6 +25,9 @@
 #import "PartnerShow.h"
 #import "Profile.h"
 #import "User.h"
+#import "ARSwitchBoard.h"
+#import "ARTrialController.h"
+#import "ARScrollNavigationChief.h"
 
 typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
     ARFairShowViewHeader = 1,

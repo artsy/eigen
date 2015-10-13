@@ -9,6 +9,7 @@ extern const CGFloat AconstRiPhonePreviewImageWidth;
 
 @end
 
+@class Artwork;
 
 @interface ARArtworkPreviewImageView : UIImageView
 

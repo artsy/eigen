@@ -11,9 +11,12 @@
 #import "ARButtonWithImage.h"
 #import "ARShowViewController.h"
 #import "ARFairFavoritesNetworkModel+Private.h"
+#import "ARFonts.h"
 #import "ARPartnerShowFeedItem.h"
+#import "Partner.h"
 #import "PartnerShow.h"
 #import "Profile.h"
+#import "ARSwitchBoard.h"
 
 const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 

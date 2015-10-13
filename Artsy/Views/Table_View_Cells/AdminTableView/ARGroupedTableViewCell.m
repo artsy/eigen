@@ -1,5 +1,6 @@
 #import "ARGroupedTableViewCell.h"
 
+#import "ARFonts.h"
 
 @implementation ARGroupedTableViewCell
 

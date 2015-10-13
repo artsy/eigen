@@ -1,8 +1,10 @@
+#import "ARLogger.h"
 #import "ARInternalMobileWebViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegate.h"
+#import "ARSwitchBoard.h"
 
 static void *ARProgressContext = &ARProgressContext;
 

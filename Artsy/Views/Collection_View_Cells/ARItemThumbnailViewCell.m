@@ -1,3 +1,4 @@
+#import "ARLogger.h"
 #import "ARItemThumbnailViewCell.h"
 
 #import "ARHasImageBaseURL.h"

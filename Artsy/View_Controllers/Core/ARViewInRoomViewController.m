@@ -2,6 +2,7 @@
 
 #import "Artwork.h"
 #import "ARFeedImageLoader.h"
+#import "ARFonts.h"
 #import "UIDevice-Hardware.h"
 
 #define DEBUG_VIEW_IN_ROOM 0

@@ -1,3 +1,4 @@
+#import "ARLogger.h"
 #import "Fair.h"
 
 #import "ARAppConstants.h"
@@ -8,6 +9,8 @@
 #import "ARFairNetworkModel.h"
 #import "FairOrganizer.h"
 #import "PartnerShow.h"
+#import "Partner.h"
+#import "ARDispatchManager.h"
 
 
 @interface Fair () {

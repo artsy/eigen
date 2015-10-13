@@ -1,4 +1,4 @@
-@class AREmbeddedModelsViewController;
+@class AREmbeddedModelsViewController, Gene;
 
 
 @interface ARGeneArtworksNetworkModel : NSObject

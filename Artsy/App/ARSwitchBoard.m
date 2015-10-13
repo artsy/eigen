@@ -1,3 +1,5 @@
+#import "ARSwitchBoard.h"
+
 #import "ARAppConstants.h"
 #import "ARRouter.h"
 #import "Artsy-Swift.h"
@@ -19,6 +21,17 @@
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
+#import "ARFairGuideContainerViewController.h"
+#import "ARUserSettingsViewController.h"
+#import "ARArtistViewController.h"
+#import "ARAuctionArtworkResultsViewController.h"
+#import "ARAuctionWebViewController.h"
+#import "ARFavoritesViewController.h"
+#import "ARFairMapViewController.h"
+#import "ARProfileViewController.h"
+#import "ARTopMenuViewController.h"
+
+#import "ARTopMenuNavigationDataSource.h"
 
 #import <JLRoutes/JLRoutes.h>
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>

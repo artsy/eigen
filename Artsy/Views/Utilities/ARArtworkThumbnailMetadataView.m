@@ -2,6 +2,7 @@
 
 #import "Artist.h"
 #import "Artwork.h"
+#import "ARFonts.h"
 
 static CGFloat ARMetadataFontSize;
 

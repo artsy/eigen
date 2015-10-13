@@ -1,5 +1,6 @@
 #import "NSString+StringBetweenStrings.h"
 
+#import "ARLogger.h"
 
 @implementation NSString (StringBetweenStrings)
 

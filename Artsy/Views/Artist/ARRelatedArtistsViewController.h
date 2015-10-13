@@ -1,5 +1,5 @@
 
-
+@class Fair;
 
 @interface ARRelatedArtistsViewController : UIViewController
 

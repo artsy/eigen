@@ -1,3 +1,5 @@
+#import "ARDispatchManager.h"
+
 #import "ARAppConstants.h"
 
 void ar_dispatch_async(dispatch_block_t block)

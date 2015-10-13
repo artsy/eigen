@@ -6,7 +6,7 @@
     Has no intrinsic height as it will generate it based off the content at runtime.
  */
 
-@class ARArtworkDetailView, SaleArtwork;
+@class Artwork, ARArtworkDetailView, Fair, SaleArtwork;
 
 @protocol ARArtworkDetailViewDelegate <NSObject>
 - (void)artworkDetailView:(ARArtworkDetailView *)detailView shouldPresentViewController:(UIViewController *)viewController;

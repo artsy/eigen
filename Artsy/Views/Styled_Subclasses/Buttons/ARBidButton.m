@@ -1,5 +1,7 @@
 #import "ARBidButton.h"
 
+#import "ARFonts.h"
+
 NSString *const ARBidButtonRegisterStateTitle = @"REGISTER TO BID";
 NSString *const ARBidButtonRegisteredStateTitle = @"YOU ARE REGISTERED TO BID";
 NSString *const ARBidButtonBiddingOpenStateTitle = @"BID";

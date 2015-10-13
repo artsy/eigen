@@ -2,7 +2,7 @@
 #import "ARArtworkFlowModule.h"
 #import "ARArtworkMasonryModule.h"
 
-@class AREmbeddedModelsViewController;
+@class AREmbeddedModelsViewController, Fair;
 
 @protocol AREmbeddedModelsViewControllerDelegate <NSObject>
 

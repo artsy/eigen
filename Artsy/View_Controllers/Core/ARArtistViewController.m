@@ -1,3 +1,4 @@
+#import "ARLogger.h"
 #import "ARArtistViewController.h"
 
 #import "Artist.h"
@@ -18,6 +19,11 @@
 #import "ARArtistNetworkModel.h"
 #import "ARSpotlight.h"
 #import "User.h"
+#import "ARTheme.h"
+#import "ARSwitchBoard.h"
+#import "ARNetworkErrorManager.h"
+#import "ARTrialController.h"
+#import "ARScrollNavigationChief.h"
 
 #import "UIViewController+ARUserActivity.h"
 

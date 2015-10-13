@@ -1,3 +1,5 @@
+@class Artwork;
+
 /// Presents the related auction results for an artwork
 @interface ARAuctionArtworkResultsViewController : UITableViewController
 

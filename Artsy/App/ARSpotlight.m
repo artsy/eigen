@@ -12,6 +12,8 @@
 #import "ARArtworkFavoritesNetworkModel.h"
 #import "ARGeneFavoritesNetworkModel.h"
 #import "ARArtistFavoritesNetworkModel.h"
+#import "ARDispatchManager.h"
+#import "ARLogger.h"
 
 #import "NSDate+DateRange.h"
 

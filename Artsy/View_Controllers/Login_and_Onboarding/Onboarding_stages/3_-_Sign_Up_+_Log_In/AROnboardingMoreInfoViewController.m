@@ -7,6 +7,8 @@
 #import "UIViewController+FullScreenLoading.h"
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import "UIView+HitTestExpansion.h"
+#import "ARNetworkErrorManager.h"
+#import "ARLogger.h"
 
 //sigh
 #define EMAIL_TAG 111

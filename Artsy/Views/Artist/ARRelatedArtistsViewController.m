@@ -2,6 +2,7 @@
 
 #import "Artist.h"
 #import "ARFavoriteItemViewCell.h"
+#import "ARSwitchBoard.h"
 
 
 @interface ARRelatedArtistsViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>

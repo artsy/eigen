@@ -5,6 +5,7 @@
 #import "ARPostFeedItem.h"
 #import "ARPostFeedItemLinkView.h"
 #import "ORStackView+ArtsyViews.h"
+#import "ARSwitchBoard.h"
 
 
 @implementation ARFairPostsViewController

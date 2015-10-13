@@ -15,6 +15,8 @@
 #import "ARAnalyticsConstants.h"
 #import "ARCollectorStatusViewController.h"
 #import "ARKeychainable.h"
+#import "ARSystemTime.h"
+#import "ARLogger.h"
 
 #import "AFHTTPRequestOperation+JSON.h"
 #import <ARAnalytics/ARAnalytics.h>

@@ -2,6 +2,7 @@
 
 #import "ARAppConstants.h"
 #import "Fair.h"
+#import "ARSwitchBoard.h"
 
 
 @interface ARFairPopupViewController ()

@@ -2,6 +2,7 @@
 
 #import "Artist.h"
 #import "ARFeedImageLoader.h"
+#import "ARFonts.h"
 #import "FeaturedLink.h"
 
 static const CGFloat ARFavoriteCellMetadataMargin = 8;

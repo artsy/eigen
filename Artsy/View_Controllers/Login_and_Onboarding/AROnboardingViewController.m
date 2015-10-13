@@ -1,8 +1,10 @@
+#import "ARLogger.h"
 #import "AROnboardingViewController.h"
 
 #import "ARAppConstants.h"
 #import "ARAppDelegate.h"
 #import "ARDefaults.h"
+#import "ARFonts.h"
 #import "ARUserManager.h"
 #import "AROnboardingTransition.h"
 #import "AROnboardingViewControllers.h"
@@ -21,6 +23,8 @@
 #import "ArtsyAPI+Private.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
+#import "ARSwitchBoard.h"
+#import "ARDispatchManager.h"
 
 typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStageSlideshow,

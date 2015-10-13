@@ -14,6 +14,10 @@
 #import "UIViewController+ARUserActivity.h"
 #import "User.h"
 #import "Gene.h"
+#import "ARSwitchBoard.h"
+#import "ARNetworkErrorManager.h"
+#import "ARTrialController.h"
+#import "ARScrollNavigationChief.h"
 
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 

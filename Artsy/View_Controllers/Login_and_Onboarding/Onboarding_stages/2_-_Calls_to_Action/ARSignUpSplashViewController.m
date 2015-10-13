@@ -3,9 +3,11 @@
 #import "ARAppConstants.h"
 #import "ARAppDelegate.h"
 #import "ARCrossfadingImageView.h"
+#import "ARFonts.h"
 #import "ARUserManager.h"
 #import "UIView+HitTestExpansion.h"
 #import "ArtsyAPI+Private.h"
+#import "ARDispatchManager.h"
 
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 

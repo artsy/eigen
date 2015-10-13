@@ -9,6 +9,7 @@
 #import "ARArtworkView.h"
 #import "ARArtworkViewController+ButtonActions.h"
 #import "UIViewController+ARUserActivity.h"
+#import "ARScrollNavigationChief.h"
 
 
 @interface ARArtworkViewController () <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>

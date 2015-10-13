@@ -11,6 +11,8 @@
 #import "ARAnalyticsConstants.h"
 #import "UIView+HitTestExpansion.h"
 #import "ARCustomEigenLabels.h"
+#import "ARNetworkErrorManager.h"
+#import "ARTopMenuViewController.h"
 
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 

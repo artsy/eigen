@@ -3,6 +3,8 @@
 #import "ARPostFeedItem.h"
 #import "ARAspectRatioImageView.h"
 #import "Profile.h"
+#import "ARSeparatorViews.h"
+#import "ARTheme.h"
 
 
 @implementation ARPostFeedItemLinkView

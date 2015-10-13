@@ -1,4 +1,6 @@
+#import "ARCustomEigenLabels.h"
 
+#import "ARFonts.h"
 
 
 @interface ARLabel (Private)

@@ -3,6 +3,7 @@
 #import "Artist.h"
 #import "ARTextView.h"
 #import "ORStackView+ArtsyViews.h"
+#import "ARScrollNavigationChief.h"
 
 
 @interface ARArtistBiographyViewController () <ARTextViewDelegate>

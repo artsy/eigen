@@ -1,6 +1,7 @@
 #import "ARSwitchView.h"
 
 #import "ARAppConstants.h"
+#import "ARFonts.h"
 
 
 @interface ARSwitchView ()

@@ -1,4 +1,6 @@
 #import "ARLoginViewController.h"
+
+#import "ARFonts.h"
 #import "ARUserManager.h"
 #import "AROnboardingNavBarView.h"
 #import "ARAuthProviders.h"
@@ -7,6 +9,11 @@
 #import "ARTextFieldWithPlaceholder.h"
 #import "ARSecureTextFieldWithPlaceholder.h"
 #import "UIView+HitTestExpansion.h"
+#import "ARTheme.h"
+#import "ARNetworkErrorManager.h"
+#import "ARDispatchManager.h"
+#import "ARDeveloperOptions.h"
+#import "ARLogger.h"
 
 #define SPINNER_TAG 0x555
 

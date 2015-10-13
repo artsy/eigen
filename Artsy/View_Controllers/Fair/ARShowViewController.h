@@ -1,5 +1,5 @@
 
-
+@class Fair, PartnerShow;
 
 @interface ARShowViewController : UIViewController
 

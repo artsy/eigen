@@ -2,6 +2,8 @@
 
 #import "Artwork.h"
 #import "ARArtworkPriceRowView.h"
+
+#import "ARFonts.h"
 #import <Artsy_UILabels/UIView+ARDrawing.h>
 
 

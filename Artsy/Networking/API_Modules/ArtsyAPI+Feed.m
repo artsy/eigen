@@ -2,7 +2,7 @@
 #import "ARRouter.h"
 #import "ArtsyAPI+OrderedSets.h"
 #import "ArtsyAPI+Private.h"
-
+#import "ARDispatchManager.h"
 
 @implementation ArtsyAPI (Feed)
 

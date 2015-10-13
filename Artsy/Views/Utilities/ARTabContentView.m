@@ -1,5 +1,7 @@
 #import "ARTabContentView.h"
 
+#import "ARDispatchManager.h"
+
 static BOOL ARTabViewDirectionLeft = NO;
 static BOOL ARTabViewDirectionRight = YES;
 

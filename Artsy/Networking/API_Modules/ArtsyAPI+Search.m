@@ -1,3 +1,4 @@
+#import "ARLogger.h"
 #import "ArtsyAPI+Search.h"
 
 #import "Artist.h"

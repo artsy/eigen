@@ -1,5 +1,6 @@
 #import "ARAuctionBannerView.h"
 
+#import "ARFonts.h"
 
 @interface ARAuctionBannerView ()
 @property (nonatomic) UILabel *label;

@@ -1,5 +1,7 @@
 #import "ARSlideshowViewController.h"
+
 #import "ARSlideshowView.h"
+#import "ARDeveloperOptions.h"
 
 
 @interface ARSlideshowViewController ()

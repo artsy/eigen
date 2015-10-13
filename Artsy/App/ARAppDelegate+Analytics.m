@@ -20,6 +20,7 @@
 #import "Partner.h"
 #import "PartnerShow.h"
 #import "Profile.h"
+#import "ARFairMapAnnotation.h"
 
 // View Controllers
 #import "ARFairGuideViewController.h"

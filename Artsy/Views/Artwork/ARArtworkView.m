@@ -4,6 +4,10 @@
 #import "ARSpinner.h"
 #import "ARAuctionBannerView.h"
 #import "ARWhitespaceGobbler.h"
+#import "ARCustomEigenLabels.h"
+#import "ARNavigationController.h"
+#import "ARMenuAwareViewController.h"
+
 #import <ARAnalytics/ARAnalytics.h>
 
 

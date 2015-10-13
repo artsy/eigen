@@ -1,4 +1,7 @@
 #import "AROnboardingSearchField.h"
+
+#import "ARFonts.h"
+
 #define CLEAR_BUTTON_TAG 0xbada55
 
 

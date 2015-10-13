@@ -1,5 +1,7 @@
 #import "AROnboardingNavBarView.h"
 
+#import "ARFonts.h"
+
 
 @implementation AROnboardingNavBarView
 

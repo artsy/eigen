@@ -6,6 +6,7 @@ typedef NS_ENUM(NSInteger, ARInquireState) {
     ARInquireStatePartner
 };
 
+@class Artwork, Fair;
 
 @interface ARInquireForArtworkViewController : UIViewController <UITextViewDelegate>
 

@@ -1,3 +1,5 @@
+#import "ARScrollNavigationChief.h"
+
 typedef NS_ENUM(NSInteger, ARScrollDirection) {
     ARScrollDirectionUp = -1,
     ARScrollDirectionNeutral,

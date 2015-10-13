@@ -1,6 +1,8 @@
 #import "ARHeroUnitViewController.h"
 #import "ARSiteHeroUnitView.h"
 #import "ARHeroUnitsNetworkModel.h"
+#import "ARSwitchBoard.h"
+
 #import <SDWebImage/SDWebImagePrefetcher.h>
 
 const static CGFloat ARHeroUnitDotsHeight = 30;

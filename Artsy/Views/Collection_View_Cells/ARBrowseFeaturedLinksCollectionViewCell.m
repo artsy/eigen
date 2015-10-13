@@ -1,5 +1,6 @@
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
 
+#import "ARFonts.h"
 
 @interface ARBrowseFeaturedLinksCollectionViewCell ()
 @end

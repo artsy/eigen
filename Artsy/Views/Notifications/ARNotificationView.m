@@ -3,6 +3,9 @@
 
 #import "ARNotificationView.h"
 
+#import "ARFonts.h"
+#import "ARSeparatorViews.h"
+
 
 @interface ARNotificationView ()
 @property (nonatomic, strong) UILabel *titleLabel;

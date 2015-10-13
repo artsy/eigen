@@ -1,5 +1,7 @@
-@class Artist;
-@protocol ARFairAwareObject;
+#import "ARFairAwareObject.h"
+#import "ARMacros.h"
+
+@class Artist, Fair;
 
 @protocol FairArtistNeworkModel <NSObject>
 

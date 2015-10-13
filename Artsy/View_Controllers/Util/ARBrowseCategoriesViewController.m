@@ -7,6 +7,9 @@
 #import "ARBrowseFeaturedLinksCollectionViewController.h"
 #import "FeaturedLink.h"
 #import "OrderedSet.h"
+#import "ARSwitchBoard.h"
+#import "ARScrollNavigationChief.h"
+#import "ARLogger.h"
 
 
 @interface ARBrowseCategoriesViewController () <ARBrowseFeaturedLinksCollectionViewControllerDelegate>

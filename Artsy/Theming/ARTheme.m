@@ -1,3 +1,7 @@
+#import "ARTheme.h"
+
+#import "ARLogger.h"
+
 static NSMutableDictionary *staticThemes;
 static ARTheme *defaultTheme;
 

@@ -1,6 +1,6 @@
 #import <ORStackView/ORStackView.h>
 
-@class SaleArtwork;
+@class Artwork, SaleArtwork;
 
 @interface ARArtworkPriceView : ORStackView
 

@@ -12,6 +12,8 @@
 #import "Fair.h"
 #import "Partner.h"
 #import "User.h"
+#import "ARDispatchManager.h"
+#import "ARLogger.h"
 
 
 @implementation Artwork {

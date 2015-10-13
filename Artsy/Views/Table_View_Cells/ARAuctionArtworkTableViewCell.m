@@ -2,6 +2,9 @@
 
 #import "Artist.h"
 #import "Artwork.h"
+#import "ARFonts.h"
+#import "ARCustomEigenLabels.h"
+#import "AuctionLot.h"
 
 @interface ARAuctionArtworkTableViewCell ()
 @property (nonatomic, weak) UIView *separator;

@@ -8,8 +8,10 @@
 #import "SearchResult.h"
 #import "ARSearchTableViewCell.h"
 #import "ARFileUtils.h"
+#import "ARFonts.h"
 #import "Profile.h"
 #import "SiteFeature.h"
+#import "ARSwitchBoard.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 

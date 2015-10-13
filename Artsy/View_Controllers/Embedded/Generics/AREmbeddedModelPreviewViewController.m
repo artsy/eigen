@@ -6,6 +6,8 @@
 #import "ARSharingController.h"
 #import "FeaturedLink.h"
 #import "User.h"
+#import "ARNetworkErrorManager.h"
+#import "ARTrialController.h"
 
 
 @interface AREmbeddedModelPreviewViewController ()

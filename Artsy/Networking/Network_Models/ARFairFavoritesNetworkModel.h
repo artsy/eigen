@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class ARFairFavoritesNetworkModel;
+@class ARFairFavoritesNetworkModel, Fair;
 
 @protocol ARFairFavoritesNetworkModelDelegate <NSObject>
 

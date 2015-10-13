@@ -7,6 +7,8 @@
 #import "FairOrganizer.h"
 #import "Gene.h"
 #import "PartnerShow.h"
+#import "ARDispatchManager.h"
+#import "ARLogger.h"
 
 
 @implementation ArtsyAPI (Artworks)

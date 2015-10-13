@@ -1,5 +1,6 @@
 #import "ARDemoSplashViewController.h"
 
+#import "ARFonts.h"
 
 @interface ARDemoSplashViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;

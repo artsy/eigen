@@ -21,6 +21,9 @@
 #import "ARGeneViewController.h"
 #import "ARSearchFieldButton.h"
 #import "SiteFeature.h"
+#import "ARCustomEigenLabels.h"
+#import "ARSwitchBoard.h"
+#import "ARTopMenuViewController.h"
 
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 

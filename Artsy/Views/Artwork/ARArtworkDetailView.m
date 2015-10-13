@@ -1,7 +1,9 @@
 #import "ARArtworkDetailView.h"
 
+#import "ARCustomEigenLabels.h"
 #import "Artist.h"
 #import "Artwork.h"
+#import "ARFonts.h"
 #import "ARTextView.h"
 #import "Fair.h"
 #import "Partner.h"

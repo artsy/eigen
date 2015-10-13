@@ -1,3 +1,4 @@
+@class Gene;
 
 @interface ARGeneViewController : UIViewController
 

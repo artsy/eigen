@@ -10,10 +10,15 @@
 #import "ARAppSearchViewController.h"
 #import "ARNavigationTransitionController.h"
 #import "ARPendingOperationViewController.h"
+#import "ARNavigationController.h"
+#import "ARMenuAwareViewController.h"
+#import "ARTopMenuViewController.h"
+#import "ARScrollNavigationChief.h"
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
 
+@protocol ARMenuAwareViewController;
 
 @interface ARNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 

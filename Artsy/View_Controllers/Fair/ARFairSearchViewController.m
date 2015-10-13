@@ -1,10 +1,12 @@
 #import "ARFairSearchViewController.h"
 
 #import "ArtsyAPI+Search.h"
+#import "ARFonts.h"
 #import "ARSearchViewController+Private.h"
 #import "Fair.h"
 #import "Partner.h"
 #import "PartnerShow.h"
+#import "ARDispatchManager.h"
 
 
 @implementation ARFairSearchViewController

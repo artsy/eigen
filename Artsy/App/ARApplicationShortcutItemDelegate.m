@@ -5,7 +5,7 @@
 #import "ARNavigationController.h"
 #import "ARFavoritesViewController.h"
 #import "User.h"
-
+#import "ARTrialController.h"
 
 @implementation ARApplicationShortcutItemDelegate
 

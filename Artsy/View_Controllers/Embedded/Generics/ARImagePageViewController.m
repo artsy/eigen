@@ -1,5 +1,6 @@
 #import "ARImagePageViewController.h"
 
+#import "ARFonts.h"
 #import "Image.h"
 
 

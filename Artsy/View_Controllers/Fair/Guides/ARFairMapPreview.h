@@ -1,6 +1,6 @@
 #import "ARAnnotatedMapView.h"
 
-@class Map;
+@class Map, PartnerShow;
 
 @interface ARFairMapPreview : ARAnnotatedMapView
 

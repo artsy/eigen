@@ -1,5 +1,6 @@
 #import "ARNavigationButton.h"
 
+#import "ARFonts.h"
 
 @interface ARNavigationButton ()
 

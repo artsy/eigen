@@ -4,6 +4,10 @@
 #import "ARTheme+HeightAdditions.h"
 #import "ARArtworkSetViewController.h"
 #import "PartnerShow.h"
+#import "ARSeparatorViews.h"
+#import "AROptions.h"
+#import "Partner.h"
+#import "ARSwitchBoard.h"
 
 /// The maximum amount of items before switching from Carousel to masonry
 static const NSInteger CarouselItemLimit = 4;

@@ -5,6 +5,7 @@
 #import "Fair.h"
 #import "Gene.h"
 #import "PartnerShow.h"
+#import "ARDispatchManager.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 
