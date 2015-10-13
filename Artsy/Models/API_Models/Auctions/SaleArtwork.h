@@ -1,4 +1,6 @@
 #import <Mantle/Mantle.h>
+
+#import "ARAppConstants.h"
 #import "Sale.h"
 #import "Bidder.h"
 #import "BidderPosition.h"

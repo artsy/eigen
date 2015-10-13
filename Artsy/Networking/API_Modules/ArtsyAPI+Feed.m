@@ -1,5 +1,6 @@
 #import "ARFileUtils.h"
 #import "ARRouter.h"
+#import "ArtsyAPI+OrderedSets.h"
 #import "ArtsyAPI+Private.h"
 
 

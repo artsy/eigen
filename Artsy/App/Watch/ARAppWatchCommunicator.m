@@ -1,6 +1,8 @@
 #import "ARAppWatchCommunicator.h"
 #import <UICKeyChainStore/UICKeyChainStore.h>
+
 #import "WatchBiddingDetails.h"
+#import "ARDefaults.h"
 #import "ARRouter.h"
 #import "ARWatchBidNetworkModel.h"
 #import "ARUserManager.h"

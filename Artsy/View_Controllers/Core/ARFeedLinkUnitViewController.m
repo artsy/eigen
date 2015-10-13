@@ -1,4 +1,6 @@
 #import "ARFeedLinkUnitViewController.h"
+
+#import "ArtsyAPI+OrderedSets.h"
 #import "ARNavigationButton.h"
 #import "ARAppStatus.h"
 

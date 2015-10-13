@@ -1,5 +1,6 @@
 #import "ARShowNetworkModel.h"
 
+#import "ArtsyAPI+Shows.h"
 
 @interface ARShowNetworkModel ()
 

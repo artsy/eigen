@@ -1,3 +1,4 @@
+#import "ArtsyAPI.h"
 
 @class OrderedSet;
 

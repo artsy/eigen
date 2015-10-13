@@ -1,4 +1,6 @@
-@class Fair, Map;
+#import "ArtsyAPI.h"
+
+@class Fair;
 
 
 @interface ArtsyAPI (Fairs)

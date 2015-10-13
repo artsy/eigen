@@ -1,5 +1,6 @@
 #import "ARBrowseNetworkModel.h"
 
+#import "ArtsyAPI+Browse.h"
 
 @interface ARBrowseNetworkModel ()
 

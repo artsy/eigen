@@ -1,3 +1,6 @@
+#import "ArtsyAPI+Artworks.h"
+#import "ArtsyAPI+Following.h"
+#import "ArtsyAPI+RelatedModels.h"
 #import "ARNetworkConstants.h"
 #import "ARSpotlight.h"
 

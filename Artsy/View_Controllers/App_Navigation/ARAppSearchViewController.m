@@ -1,4 +1,6 @@
 #import "ARAppSearchViewController.h"
+
+#import "ArtsyAPI+Search.h"
 #import "ARArtworkSetViewController.h"
 #import "ARArtistViewController.h"
 #import "ARGeneViewController.h"

@@ -1,3 +1,5 @@
+#import "ArtsyAPI.h"
+
 @class Artwork, Artist, Gene, Fair, PartnerShow;
 
 @class AFHTTPRequestOperation;

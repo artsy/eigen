@@ -2,6 +2,7 @@
 #import <ALPValidator/ALPValidator.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
+#import "ArtsyAPI+SiteFunctions.h"
 #import "ARInquireForArtworkViewController.h"
 #import "ARUserManager.h"
 #import "UIViewController+ScreenSize.h"

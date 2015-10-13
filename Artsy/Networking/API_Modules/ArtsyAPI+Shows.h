@@ -1,5 +1,6 @@
+#import "ArtsyAPI.h"
 
-
+@class PartnerShow;
 
 @interface ArtsyAPI (Shows)
 

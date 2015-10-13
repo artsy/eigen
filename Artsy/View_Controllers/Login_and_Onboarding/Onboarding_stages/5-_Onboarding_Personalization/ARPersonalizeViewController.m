@@ -1,4 +1,6 @@
 #import "ARPersonalizeViewController.h"
+
+#import "ArtsyAPI+Search.h"
 #import "AROnboardingGeneTableController.h"
 #import "AROnboardingArtistTableController.h"
 #import "AROnboardingSearchField.h"

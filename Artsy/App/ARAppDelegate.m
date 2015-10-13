@@ -23,6 +23,7 @@
 #import "ARRouter.h"
 #import "ARNetworkConstants.h"
 #import "ArtsyAPI+Private.h"
+#import "ArtsyAPI+SiteFunctions.h"
 #import "ARFileUtils.h"
 #import "ARSpotlight.h"
 #import "ARWebViewCacheHost.h"

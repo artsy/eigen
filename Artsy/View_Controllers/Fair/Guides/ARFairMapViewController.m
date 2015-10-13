@@ -1,4 +1,7 @@
 #import "ARFairMapViewController.h"
+
+#import "ArtsyAPI+Artists.h"
+#import "ArtsyAPI+Shows.h"
 #import "ARTiledImageDataSourceWithImage.h"
 #import "ARFairMapView.h"
 #import "ARFairMapZoomManager.h"

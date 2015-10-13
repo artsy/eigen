@@ -1,5 +1,6 @@
 #import "ArtsyAPI+Private.h"
 #import "ARPostFeedItem.h"
+#import "ARRouter.h"
 
 
 @implementation ArtsyAPI (RelatedModels)

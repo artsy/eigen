@@ -1,3 +1,4 @@
+#import "ArtsyAPI+Shows.h"
 #import "ARStandardDateFormatter.h"
 #import "NSDate+DateRange.h"
 

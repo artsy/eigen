@@ -1,4 +1,6 @@
 #import "ARBrowseCategoriesViewController.h"
+
+#import "ArtsyAPI+Genes.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARBrowseFeaturedLinksCollectionViewController.h"

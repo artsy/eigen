@@ -1,4 +1,4 @@
-
+#import "ArtsyAPI+Profiles.h"
 
 
 @interface Profile () {

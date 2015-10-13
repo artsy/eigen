@@ -1,6 +1,7 @@
 #import "AROnboardingViewController.h"
 
 #import "ARAppDelegate.h"
+#import "ARDefaults.h"
 #import "ARUserManager.h"
 #import "AROnboardingTransition.h"
 #import "AROnboardingViewControllers.h"
@@ -15,6 +16,7 @@
 #import "ARPersonalizeWebViewController.h"
 #import "ARParallaxEffect.h"
 #import "NSString+StringCase.h"
+#import "ArtsyAPI+Genes.h"
 #import "ArtsyAPI+Private.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"

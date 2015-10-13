@@ -1,4 +1,7 @@
 #import "ARFairFavoritesNetworkModel.h"
+
+#import "ArtsyAPI+Artists.h"
+#import "ArtsyAPI+Fairs.h"
 #import "ARNavigationButtonsViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARButtonWithImage.h"

@@ -1,5 +1,6 @@
 #import "ArtsyAPI.h"
 
+@class Artist, Artwork, Fair;
 
 @interface ArtsyAPI (RelatedModels)
 

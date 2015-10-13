@@ -2,6 +2,7 @@
 #import "ARAppBackgroundFetchDelegate.h"
 #import "NSKeyedUnarchiver+ErrorLogging.h"
 
+#import "ArtsyAPI+Feed.h"
 
 @interface ARFeed ()
 - (NSOrderedSet *)parseItemsFromJSON:(NSDictionary *)result;

@@ -1,4 +1,4 @@
-
+#import "ArtsyAPI.h"
 
 
 @implementation ArtsyAPI (ErrorHandlers)

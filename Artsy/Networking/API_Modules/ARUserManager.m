@@ -2,6 +2,7 @@
 @import UICKeyChainStore;
 #import <Adjust/Adjust.h>
 
+#import "ARDefaults.h"
 #import "ARUserManager.h"
 #import "NSDate+Util.h"
 #import "ARRouter.h"

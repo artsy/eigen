@@ -7,6 +7,8 @@
 #import <HockeySDK_Source/BITHockeyManager.h>
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 #import <Adjust/Adjust.h>
+
+#import "ARDefaults.h"
 #import "ARUserManager.h"
 #import "ARTopMenuNavigationDataSource.h"
 

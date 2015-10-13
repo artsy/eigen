@@ -1,3 +1,10 @@
+
+#import "ArtsyAPI+Artworks.h"
+#import "ArtsyAPI+Following.h"
+#import "ArtsyAPI+RelatedModels.h"
+#import "ArtsyAPI+Sales.h"
+#import "ArtsyAPI+Shows.h"
+#import "ARDefaults.h"
 #import "ARValueTransformer.h"
 #import "ARSpotlight.h"
 

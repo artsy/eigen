@@ -1,14 +1,12 @@
-// View Controllers
 #import "ARProfileViewController.h"
+
+#import "ArtsyAPI+Profiles.h"
+
 #import "ARFairViewController.h"
 #import "ARInternalMobileWebViewController.h"
 
-// Categories
 #import "UIViewController+FullScreenLoading.h"
 #import "UIViewController+SimpleChildren.h"
-
-// Utilities
-
 
 @interface ARProfileViewController () <ARMenuAwareViewController>
 

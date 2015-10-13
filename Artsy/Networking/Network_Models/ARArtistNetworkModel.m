@@ -1,5 +1,8 @@
 #import "ARArtistNetworkModel.h"
 
+#import "ArtsyAPI+Artists.h"
+#import "ArtsyAPI+Artworks.h"
+#import "ArtsyAPI+Following.h"
 
 @implementation ARArtistNetworkModel
 

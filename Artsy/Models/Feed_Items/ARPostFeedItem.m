@@ -1,4 +1,6 @@
 #import "ARPostFeedItem.h"
+
+#import "ArtsyAPI+Posts.h"
 #import "ContentLink.h"
 #import "PostImage.h"
 

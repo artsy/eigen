@@ -1,5 +1,7 @@
 #import "ARGeneFavoritesNetworkModel.h"
 
+#import "ArtsyAPI+ListCollection.h"
+#import "ArtsyAPI+OrderedSets.h"
 
 @implementation ARGeneFavoritesNetworkModel
 

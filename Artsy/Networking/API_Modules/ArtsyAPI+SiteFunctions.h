@@ -4,7 +4,7 @@ extern NSString *const ArtsyAPIInquiryAnalyticsInquiryURL;  // Who made the inqu
 extern NSString *const ArtsyAPIInquiryAnalyticsReferralURL; // Where they came from before Artsy.app
 extern NSString *const ArtsyAPIInquiryAnalyticsLandingURL;  // Where the first went
 
-@class User, Profile;
+@class Artwork, Profile, User;
 
 
 @interface ArtsyAPI (SiteFunctions)

@@ -1,4 +1,6 @@
 #import "ARQuicksilverViewController.h"
+
+#import "ArtsyAPI+Search.h"
 #import "ARContentViewControllers.h"
 #import "SearchResult.h"
 #import "ARSearchTableViewCell.h"

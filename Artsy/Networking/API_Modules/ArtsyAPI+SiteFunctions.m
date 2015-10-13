@@ -1,4 +1,5 @@
 #import "ArtsyAPI+Private.h"
+#import "ARRouter.h"
 
 NSString *const ArtsyAPIInquiryAnalyticsInquiryURL = @"ArtsyAPIInquiryAnalyticsInquiryURL";
 NSString *const ArtsyAPIInquiryAnalyticsReferralURL = @"ArtsyAPIInquiryAnalyticsReferralURL";

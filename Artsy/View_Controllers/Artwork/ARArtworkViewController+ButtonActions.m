@@ -3,6 +3,7 @@
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
 #import "ARAuctionWebViewController.h"
+#import "ArtsyAPI+Artworks.h"
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"
 #import "ARArtworkInfoViewController.h"

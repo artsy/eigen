@@ -1,3 +1,4 @@
+#import "ArtsyAPI+Search.h"
 #import "ARRouter.h"
 #import "SearchResult.h"
 

@@ -1,5 +1,9 @@
+#import "ArtsyAPI.h"
 #import "ArtsyAPI+Private.h"
+
+#import "ARDefaults.h"
 #import "ARDispatchManager.h"
+#import "ARRouter.h"
 
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
