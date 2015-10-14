@@ -8,6 +8,7 @@
 #import "PartnerShow.h"
 #import "ARDispatchManager.h"
 
+#import "MTLModel+JSON.h"
 
 @implementation ARFairSearchViewController
 

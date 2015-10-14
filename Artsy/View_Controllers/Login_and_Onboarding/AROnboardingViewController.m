@@ -26,6 +26,8 @@
 #import "ARSwitchBoard.h"
 #import "ARDispatchManager.h"
 
+#import "UIDevice-Hardware.h"
+
 typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStageSlideshow,
     AROnboardingStageStart,

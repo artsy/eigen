@@ -3,6 +3,9 @@
 #import "ARFonts.h"
 #import "ARParallaxEffect.h"
 
+#import "UIImageView+AsyncImageLoading.h"
+#import "UIDevice-Hardware.h"
+
 #define AR_HERO_TITLE_FONT 26
 
 static ARParallaxEffect *backgroundParallax;

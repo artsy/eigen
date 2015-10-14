@@ -2,6 +2,7 @@
 
 #import "ARFonts.h"
 
+#import "UIDevice-Hardware.h"
 
 @implementation AROnboardingNavBarView
 

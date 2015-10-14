@@ -9,6 +9,9 @@
 #import "Partner.h"
 #import "ARSwitchBoard.h"
 
+#import "NSString+StringSize.h"
+#import "UIDevice-Hardware.h"
+
 /// The maximum amount of items before switching from Carousel to masonry
 static const NSInteger CarouselItemLimit = 4;
 static const CGFloat ARPartnerShowCellBottomMargin = 30;

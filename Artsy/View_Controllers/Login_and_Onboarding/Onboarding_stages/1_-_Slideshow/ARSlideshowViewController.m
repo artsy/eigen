@@ -3,6 +3,7 @@
 #import "ARSlideshowView.h"
 #import "ARDeveloperOptions.h"
 
+#import "UIDevice-Hardware.h"
 
 @interface ARSlideshowViewController ()
 @property (nonatomic, readonly) NSArray *slides;

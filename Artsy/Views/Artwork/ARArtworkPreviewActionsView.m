@@ -4,6 +4,8 @@
 #import "ARHeartButton.h"
 #import "Fair.h"
 
+#import "UIDevice-Hardware.h"
+
 const CGFloat ARArtworkActionButtonSpacing = 8;
 
 

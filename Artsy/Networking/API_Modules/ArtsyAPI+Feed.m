@@ -4,6 +4,8 @@
 #import "ArtsyAPI+Private.h"
 #import "ARDispatchManager.h"
 
+#import "AFHTTPRequestOperation+JSON.h"
+
 @implementation ArtsyAPI (Feed)
 
 + (void)getFeedResultsForMainFeedWithCursor:(NSString *)cursor success:(void (^)(id JSON))success failure:(void (^)(NSError *error))failure

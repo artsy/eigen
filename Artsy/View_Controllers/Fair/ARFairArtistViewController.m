@@ -23,6 +23,8 @@
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 
+#import "UIDevice-Hardware.h"
+
 typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
     ARFairArtistTitle = 1,
     ARFairArtistSubtitle,

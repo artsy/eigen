@@ -20,6 +20,7 @@
 #import <CoreSpotlight/CoreSpotlight.h>
 #import <MMMarkdown/MMMarkdown.h>
 #import <SDWebImage/SDImageCache.h>
+#import <SDWebImage/SDWebImageManager.h>
 
 
 static BOOL ARSpotlightAvailable = NO;

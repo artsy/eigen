@@ -4,7 +4,9 @@
 #import "ARReusableLoadingView.h"
 #import "ARItemThumbnailViewCell.h"
 #import "ARArtworkWithMetadataThumbnailCell.h"
+
 #import "UIViewController+InnermostTopViewController.h"
+#import "UIDevice-Hardware.h"
 
 
 @interface ARArtworkMasonryModule ()

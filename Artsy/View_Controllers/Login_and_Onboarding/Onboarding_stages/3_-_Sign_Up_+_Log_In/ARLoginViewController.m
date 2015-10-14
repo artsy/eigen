@@ -15,6 +15,8 @@
 #import "ARDeveloperOptions.h"
 #import "ARLogger.h"
 
+#import "UIDevice-Hardware.h"
+
 #define SPINNER_TAG 0x555
 
 

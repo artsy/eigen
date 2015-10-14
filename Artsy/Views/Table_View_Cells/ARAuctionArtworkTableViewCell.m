@@ -6,6 +6,9 @@
 #import "ARCustomEigenLabels.h"
 #import "AuctionLot.h"
 
+#import "UIImageView+AsyncImageLoading.h"
+#import "NSString+StringSize.h"
+
 @interface ARAuctionArtworkTableViewCell ()
 @property (nonatomic, weak) UIView *separator;
 @end

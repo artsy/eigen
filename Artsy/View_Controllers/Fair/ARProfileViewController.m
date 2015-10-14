@@ -11,6 +11,7 @@
 
 #import "UIViewController+FullScreenLoading.h"
 #import "UIViewController+SimpleChildren.h"
+#import "UIDevice-Hardware.h"
 
 
 @interface ARProfileViewController () <ARMenuAwareViewController>

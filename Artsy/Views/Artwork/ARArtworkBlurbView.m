@@ -1,7 +1,9 @@
 #import "Artwork.h"
 #import "ARArtworkBlurbView.h"
 #import "ARTextView.h"
+
 #import "ORStackView+ArtsyViews.h"
+#import "UIDevice-Hardware.h"
 
 @interface ARArtworkBlurbView () <ARTextViewDelegate>
 @property (nonatomic, strong) UILabel *aboutHeading;

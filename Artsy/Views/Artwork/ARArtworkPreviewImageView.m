@@ -4,6 +4,8 @@
 #import "ARFeedImageLoader.h"
 #import "ARFonts.h"
 
+#import "UIImage+ImageFromColor.h"
+#import "UIImageView+AsyncImageLoading.h"
 
 @interface ARArtworkPreviewImageView ()
 @property (nonatomic, strong, readwrite) NSArray *imageConstraints;

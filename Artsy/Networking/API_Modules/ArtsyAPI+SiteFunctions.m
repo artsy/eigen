@@ -6,6 +6,8 @@
 #import "SiteHeroUnit.h"
 #import "User.h"
 
+#import "MTLModel+JSON.h"
+
 NSString *const ArtsyAPIInquiryAnalyticsInquiryURL = @"ArtsyAPIInquiryAnalyticsInquiryURL";
 NSString *const ArtsyAPIInquiryAnalyticsReferralURL = @"ArtsyAPIInquiryAnalyticsReferralURL";
 NSString *const ArtsyAPIInquiryAnalyticsLandingURL = @"ArtsyAPIInquiryAnalyticsLandingURL";

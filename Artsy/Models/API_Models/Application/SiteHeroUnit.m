@@ -3,6 +3,7 @@
 #import "ARStandardDateFormatter.h"
 #import "ARSystemTime.h"
 
+#import "UIDevice-Hardware.h"
 
 @interface SiteHeroUnit ()
 @property (nonatomic, copy, readonly) NSString *buttonColorHex;

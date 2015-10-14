@@ -4,6 +4,7 @@
 #import "Fair.h"
 #import "ARSwitchBoard.h"
 
+#import "UIImageView+AsyncImageLoading.h"
 
 @interface ARFairPopupViewController ()
 

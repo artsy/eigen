@@ -13,6 +13,7 @@
 #import "AROptions.h"
 
 #import "Artsy-Swift.h"
+#import "UIDevice-Hardware.h"
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>

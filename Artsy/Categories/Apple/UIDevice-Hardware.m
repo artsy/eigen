@@ -1,3 +1,5 @@
+#import "UIDevice-Hardware.h"
+
 // Thanks to Emanuele Vulcano, Kevin Ballard/Eridius, Ryandjohnson, Matt Brown, etc.
 
 #include <sys/sysctl.h>

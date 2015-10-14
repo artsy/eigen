@@ -9,6 +9,8 @@
 #import "ARSwitchBoard.h"
 #import "ARLogger.h"
 
+#import "UIDevice-Hardware.h"
+
 #import <KSDeferred/KSPromise.h>
 
 

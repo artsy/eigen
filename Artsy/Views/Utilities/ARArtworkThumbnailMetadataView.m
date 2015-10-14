@@ -4,6 +4,8 @@
 #import "Artwork.h"
 #import "ARFonts.h"
 
+#import "UIDevice-Hardware.h"
+
 static CGFloat ARMetadataFontSize;
 
 

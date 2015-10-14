@@ -2,6 +2,8 @@
 
 #import "ARFonts.h"
 
+#import "UIImageView+AsyncImageLoading.h"
+
 @interface ARBrowseFeaturedLinksCollectionViewCell ()
 @end
 

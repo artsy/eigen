@@ -14,6 +14,8 @@
 #import "ARNetworkErrorManager.h"
 #import "ARTopMenuViewController.h"
 
+#import "UIDevice-Hardware.h"
+
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 
 //sigh

@@ -2,6 +2,7 @@
 #import "AROnboardingNavBarView.h"
 #import "ARTermsAndConditionsView.h"
 
+#import "UIDevice-Hardware.h"
 
 @interface ARSignupViewController () <UIAlertViewDelegate, UITextViewDelegate>
 @property (nonatomic) AROnboardingNavBarView *navbar;

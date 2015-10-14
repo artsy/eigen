@@ -9,6 +9,7 @@
 #import "ARNetworkErrorManager.h"
 #import "ARTrialController.h"
 
+#import "UIImageView+AsyncImageLoading.h"
 
 @interface AREmbeddedModelPreviewViewController ()
 

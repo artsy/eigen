@@ -11,6 +11,7 @@
 #import "UIViewController+ARUserActivity.h"
 #import "ARScrollNavigationChief.h"
 
+#import "UIDevice-Hardware.h"
 
 @interface ARArtworkViewController () <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>
 

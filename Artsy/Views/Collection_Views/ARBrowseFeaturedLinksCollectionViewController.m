@@ -1,6 +1,8 @@
 #import "ARBrowseFeaturedLinksCollectionViewController.h"
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
 
+#import "UIDevice-Hardware.h"
+
 static CGFloat const ARDoubleRowStyleSpacing = 11;
 
 

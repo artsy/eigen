@@ -14,6 +14,7 @@
 
 #import "UIView+HitTestExpansion.h"
 #import <objc/runtime.h>
+#import "UIDevice-Hardware.h"
 
 #import <JSBadgeView/JSBadgeView.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>

@@ -4,6 +4,7 @@
 #import "ARFonts.h"
 #import "ARLogger.h"
 
+#import "UIImage+ImageFromColor.h"
 
 @implementation UIImageView (AsyncImageLoading)
 

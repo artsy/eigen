@@ -26,6 +26,7 @@
 #import "ARScrollNavigationChief.h"
 
 #import "UIViewController+ARUserActivity.h"
+#import "UIDevice-Hardware.h"
 
 static const NSInteger ARMinimumArtworksFor2Column = 5;
 

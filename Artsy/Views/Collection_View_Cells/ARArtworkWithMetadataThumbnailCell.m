@@ -3,6 +3,8 @@
 #import "Artwork.h"
 #import "ARArtworkThumbnailMetadataView.h"
 
+#import "UIDevice-Hardware.h"
+
 static const CGFloat ARArtworkCellMetadataMargin = 8;
 
 

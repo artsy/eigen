@@ -10,6 +10,7 @@
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
 
+#import "MTLModel+JSON.h"
 
 @implementation ArtsyAPI (Artworks)
 

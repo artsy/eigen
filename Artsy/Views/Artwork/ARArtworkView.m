@@ -8,6 +8,8 @@
 #import "ARNavigationController.h"
 #import "ARMenuAwareViewController.h"
 
+#import "UIDevice-Hardware.h"
+
 #import <ARAnalytics/ARAnalytics.h>
 
 

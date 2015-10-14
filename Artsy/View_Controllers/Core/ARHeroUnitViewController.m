@@ -3,6 +3,8 @@
 #import "ARHeroUnitsNetworkModel.h"
 #import "ARSwitchBoard.h"
 
+#import "UIDevice-Hardware.h"
+
 #import <SDWebImage/SDWebImagePrefetcher.h>
 
 const static CGFloat ARHeroUnitDotsHeight = 30;

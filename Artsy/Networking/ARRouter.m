@@ -18,6 +18,8 @@
 #import "AROptions.h"
 #import "ARLogger.h"
 
+#import "UIDevice-Hardware.h"
+
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Keys/ArtsyKeys.h>
 

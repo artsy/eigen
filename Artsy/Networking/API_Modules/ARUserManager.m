@@ -18,7 +18,9 @@
 #import "ARSystemTime.h"
 #import "ARLogger.h"
 
+#import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
+
 #import <ARAnalytics/ARAnalytics.h>
 
 

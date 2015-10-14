@@ -33,6 +33,8 @@
 
 #import "ARTopMenuNavigationDataSource.h"
 
+#import "UIDevice-Hardware.h"
+
 #import <JLRoutes/JLRoutes.h>
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 

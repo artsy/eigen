@@ -21,6 +21,7 @@
 #import "ARScrollNavigationChief.h"
 #import "ARDispatchManager.h"
 
+#import "UIDevice-Hardware.h"
 
 @interface ARFavoritesViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARSwitchViewDelegate, ARArtworkMasonryLayoutProvider>
 

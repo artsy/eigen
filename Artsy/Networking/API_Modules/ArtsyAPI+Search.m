@@ -5,6 +5,8 @@
 #import "ARRouter.h"
 #import "SearchResult.h"
 
+#import "MTLModel+JSON.h"
+#import "AFHTTPRequestOperation+JSON.h"
 
 @implementation ArtsyAPI (Search)
 

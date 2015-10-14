@@ -8,6 +8,9 @@
 #import "ARNetworkErrorManager.h"
 #import "ARLogger.h"
 
+#import "MTLModel+JSON.h"
+#import "AFHTTPRequestOperation+JSON.h"
+
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 

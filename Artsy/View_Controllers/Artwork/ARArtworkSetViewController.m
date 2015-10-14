@@ -4,6 +4,7 @@
 #import "ARArtworkViewController.h"
 #import "ARTopMenuViewController.h"
 
+#import "UIDevice-Hardware.h"
 
 @interface ARArtworkSetViewController ()
 

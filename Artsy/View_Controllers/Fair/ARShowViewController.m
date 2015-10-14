@@ -29,6 +29,8 @@
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 
+#import "UIDevice-Hardware.h"
+
 typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
     ARFairShowViewHeader = 1,
     ARFairShowViewActionButtons,

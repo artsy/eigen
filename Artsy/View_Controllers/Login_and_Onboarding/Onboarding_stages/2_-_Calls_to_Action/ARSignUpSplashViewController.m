@@ -9,8 +9,10 @@
 #import "ArtsyAPI+Private.h"
 #import "ARDispatchManager.h"
 
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+#import "UIDevice-Hardware.h"
 
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
 @interface ARSignUpSplashTextViewController : UIViewController
 @property (nonatomic, readwrite) NSInteger index;

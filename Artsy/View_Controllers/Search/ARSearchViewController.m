@@ -5,7 +5,10 @@
 #import "ARAppConstants.h"
 #import "ARFonts.h"
 #import "ARSearchTableViewCell.h"
+
 #import "UIView+HitTestExpansion.h"
+#import "UIDevice-Hardware.h"
+
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 @interface ARSearchViewController () <UITextFieldDelegate, UITableViewDelegate>

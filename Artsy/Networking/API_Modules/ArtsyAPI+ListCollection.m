@@ -3,6 +3,7 @@
 #import "ARRouter.h"
 #import "Gene.h"
 
+#import "AFHTTPRequestOperation+JSON.h"
 
 @implementation ArtsyAPI (ListCollection)
 

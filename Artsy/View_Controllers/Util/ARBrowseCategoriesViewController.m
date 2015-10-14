@@ -11,6 +11,7 @@
 #import "ARScrollNavigationChief.h"
 #import "ARLogger.h"
 
+#import "UIDevice-Hardware.h"
 
 @interface ARBrowseCategoriesViewController () <ARBrowseFeaturedLinksCollectionViewControllerDelegate>
 @end

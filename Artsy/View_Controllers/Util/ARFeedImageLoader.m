@@ -2,6 +2,9 @@
 
 #import "ARFonts.h"
 
+#import "UIImage+ImageFromColor.h"
+#import "UIImageView+AsyncImageLoading.h"
+
 // From the gravity source
 
 //version :small, if: :is_processing_delayed? do

@@ -6,6 +6,8 @@
 #import "ARCustomEigenLabels.h"
 #import "ARTheme.h"
 
+#import "UIDevice-Hardware.h"
+
 
 @implementation ORStackView (ArtsyViews)
 

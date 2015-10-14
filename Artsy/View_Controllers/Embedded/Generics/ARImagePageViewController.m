@@ -3,6 +3,8 @@
 #import "ARFonts.h"
 #import "Image.h"
 
+#import "UIImageView+AsyncImageLoading.h"
+
 
 @interface ARImageViewController : UIViewController
 

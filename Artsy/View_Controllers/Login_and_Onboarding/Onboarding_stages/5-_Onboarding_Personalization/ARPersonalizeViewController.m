@@ -10,6 +10,8 @@
 #import "Gene.h"
 #import "ARLogger.h"
 
+#import "MTLModel+JSON.h"
+
 static NSString *SearchCellId = @"OnboardingSearchCell";
 
 

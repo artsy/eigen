@@ -2,6 +2,9 @@
 
 #import "ARFonts.h"
 
+#import "UILabel+Typography.h"
+#import "UIDevice-Hardware.h"
+
 
 @interface ARLabel (Private)
 - (void)setup;

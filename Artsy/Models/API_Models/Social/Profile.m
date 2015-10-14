@@ -7,6 +7,7 @@
 #import "ProfileOwner.h"
 #import "User.h"
 
+#import "MTLModel+JSON.h"
 
 @interface Profile () {
     BOOL _followed;

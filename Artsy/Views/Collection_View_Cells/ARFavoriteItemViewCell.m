@@ -5,6 +5,9 @@
 #import "ARFonts.h"
 #import "FeaturedLink.h"
 
+#import "UIImageView+AsyncImageLoading.h"
+#import "UIDevice-Hardware.h"
+
 static const CGFloat ARFavoriteCellMetadataMargin = 8;
 static const CGFloat ARFavoriteCellLabelHeight = 34;
 

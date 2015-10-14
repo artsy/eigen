@@ -4,6 +4,7 @@
 #import "ARHasImageBaseURL.h"
 #import "ARPostAttachment.h"
 
+#import "UIImageView+AsyncImageLoading.h"
 
 @interface ARItemThumbnailViewCell ()
 @property (nonatomic, strong) UIImageView *imageView;

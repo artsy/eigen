@@ -5,6 +5,8 @@
 #import "ARFeedImageLoader.h"
 #import "ARTiledImageDataSourceWithImage.h"
 
+#import "UIDevice-Hardware.h"
+
 #import <ARASCIISwizzle/UIImageView+ASCII.h>
 #import <ARAnalytics/ARAnalytics.h>
 

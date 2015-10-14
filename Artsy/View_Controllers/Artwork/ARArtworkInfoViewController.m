@@ -5,6 +5,8 @@
 #import "ARTextView.h"
 #import "ARScrollNavigationChief.h"
 
+#import "UIDevice-Hardware.h"
+
 
 @interface ARArtworkInfoViewController () <ARTextViewDelegate>
 @property (nonatomic, strong) Artwork *artwork;

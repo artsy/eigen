@@ -6,6 +6,8 @@
 #import "ARSeparatorViews.h"
 #import "ARTheme.h"
 
+#import "UIImageView+AsyncImageLoading.h"
+#import "UILabel+Typography.h"
 
 @implementation ARPostFeedItemLinkView
 

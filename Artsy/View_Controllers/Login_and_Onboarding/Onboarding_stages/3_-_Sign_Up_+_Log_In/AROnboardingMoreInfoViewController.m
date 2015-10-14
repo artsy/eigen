@@ -10,6 +10,8 @@
 #import "ARNetworkErrorManager.h"
 #import "ARLogger.h"
 
+#import "UIDevice-Hardware.h"
+
 //sigh
 #define EMAIL_TAG 111
 #define SOCIAL_TAG 222

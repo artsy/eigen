@@ -9,6 +9,8 @@
 #import "ARAppConstants.h"
 #import "ARSwitchBoard.h"
 
+#import "MTLModel+JSON.h"
+
 @implementation ARFeedLinkUnitViewController
 
 - (void)fetchLinks:(void (^)(void))completion

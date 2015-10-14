@@ -3,6 +3,7 @@
 #import "ARWhitespaceGobbler.h"
 #import "ARAppConstants.h"
 
+#import "UIDevice-Hardware.h"
 
 @interface ARArtworkMetadataView ()
 @property (nonatomic, strong) ARArtworkPreviewActionsView *artworkPreviewActions;

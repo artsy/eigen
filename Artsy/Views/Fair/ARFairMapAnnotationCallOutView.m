@@ -8,6 +8,7 @@
 #import "ARSwitchBoard.h"
 #import "ARTopMenuViewController.h"
 
+#import "UIImageView+AsyncImageLoading.h"
 
 @interface ARFairMapAnnotationCallOutView ()
 

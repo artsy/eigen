@@ -19,6 +19,10 @@
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
 
+#import "UIImage+ImageFromColor.h"
+#import "UIImageView+AsyncImageLoading.h"
+#import "UIDevice-Hardware.h"
+
 // Future TODO: Don't use image alpha on contact image, use grayscale'd image.
 
 // The state of the form, for enabling / disabling

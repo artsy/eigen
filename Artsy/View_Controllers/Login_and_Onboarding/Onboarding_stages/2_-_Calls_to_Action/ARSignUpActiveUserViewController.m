@@ -6,6 +6,7 @@
 #import "ARAppConstants.h"
 #import "ARDispatchManager.h"
 
+#import "UIDevice-Hardware.h"
 
 @interface ARSignUpActiveUserViewController ()
 @property (nonatomic, strong) AROnboardingNavBarView *navView;

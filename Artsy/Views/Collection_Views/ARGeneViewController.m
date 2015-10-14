@@ -19,6 +19,9 @@
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 
+#import "UILabel+Typography.h"
+#import "UIDevice-Hardware.h"
+
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 

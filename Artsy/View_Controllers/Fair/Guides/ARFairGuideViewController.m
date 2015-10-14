@@ -9,6 +9,8 @@
 #import "ARTheme.h"
 #import "ARTrialController.h"
 
+#import "UIDevice-Hardware.h"
+
 // Switch view width should be divisible by the number of items (in this case 3) for consistent rendering.
 static CGFloat const ARFairGuideSwitchviewWidth = 279;
 

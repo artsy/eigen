@@ -28,6 +28,8 @@
 #import "ARSwitchBoard.h"
 #import "ARScrollNavigationChief.h"
 
+#import "UIDevice-Hardware.h"
+
 NSString *const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
 NSString *const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";
 NSString *const ARFairHighlightArtistIDKey = @"ARFairHighlightArtistIDKey";

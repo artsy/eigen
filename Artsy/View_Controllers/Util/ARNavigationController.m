@@ -15,6 +15,8 @@
 #import "ARTopMenuViewController.h"
 #import "ARScrollNavigationChief.h"
 
+#import "UIDevice-Hardware.h"
+
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
 

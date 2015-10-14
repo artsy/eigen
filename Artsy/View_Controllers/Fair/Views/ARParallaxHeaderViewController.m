@@ -4,6 +4,8 @@
 #import "Fair.h"
 #import "Profile.h"
 
+#import "UIImageView+AsyncImageLoading.h"
+
 #import <SDWebImage/UIImageView+WebCache.h>
 
 const CGFloat ARParallaxHeaderViewBannerImageMissingImageHeight = 60.0;
