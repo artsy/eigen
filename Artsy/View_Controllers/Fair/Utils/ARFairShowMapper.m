@@ -5,6 +5,10 @@
 #import "PartnerShow.h"
 #import "PartnerShowFairLocation.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
+
 
 @interface ARFairShowMapper ()
 @property (readwrite, nonatomic, copy) NSSet *highlightedShows;

@@ -17,6 +17,11 @@
 
 #import "MTLModel+JSON.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
+#import <AFNetworking/AFNetworking.h>
+
 @implementation Artwork {
     // If we give these as properties they can cause
     // chaos with Mantle & State Resotoration.

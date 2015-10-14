@@ -18,6 +18,11 @@
 
 #import <JSBadgeView/JSBadgeView.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <objc/runtime.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static const CGFloat ARMenuButtonDimension = 46;
 

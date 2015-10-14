@@ -5,6 +5,8 @@
 #import "Gene.h"
 #import "OrderedSet.h"
 
+#import <Mantle/EXTScope.h>
+
 @implementation ARGeneFavoritesNetworkModel
 
 - (void)performNetworkRequestAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure

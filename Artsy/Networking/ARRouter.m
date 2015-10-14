@@ -22,6 +22,8 @@
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Keys/ArtsyKeys.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <AFNetworking/AFNetworking.h>
 
 static AFHTTPSessionManager *staticHTTPClient = nil;
 static NSSet *artsyHosts = nil;

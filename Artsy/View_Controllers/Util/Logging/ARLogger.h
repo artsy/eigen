@@ -1,4 +1,5 @@
 #import <CocoaLumberjack/DDLogMacros.h>
+#import <AFNetworkActivityLogger/AFNetworkActivityLogger.h>
 
 #ifdef DEBUG
 static const int ddLogLevel = DDLogLevelVerbose;

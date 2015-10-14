@@ -2,6 +2,8 @@
 
 #import "ARFonts.h"
 
+#import <EDColor/EDColor.h>
+
 NSString *const ARBidButtonRegisterStateTitle = @"REGISTER TO BID";
 NSString *const ARBidButtonRegisteredStateTitle = @"YOU ARE REGISTERED TO BID";
 NSString *const ARBidButtonBiddingOpenStateTitle = @"BID";

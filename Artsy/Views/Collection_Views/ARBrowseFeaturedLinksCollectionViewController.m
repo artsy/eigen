@@ -3,6 +3,8 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 static CGFloat const ARDoubleRowStyleSpacing = 11;
 
 

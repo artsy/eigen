@@ -2,6 +2,9 @@
 
 #import "ARFonts.h"
 
+#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 
 @interface ARNetworkErrorView ()
 @property (nonatomic, strong) UILabel *errorText;

@@ -6,6 +6,8 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 static CGFloat ARMetadataFontSize;
 
 

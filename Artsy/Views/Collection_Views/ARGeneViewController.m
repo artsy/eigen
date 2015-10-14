@@ -23,6 +23,8 @@
 #import "UIDevice-Hardware.h"
 
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Mantle/EXTScope.h>
 
 
 @interface ARGeneViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>

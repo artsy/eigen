@@ -25,6 +25,12 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <ORStackView/ORTagBasedAutoStackView.h>
+#import <ORStackView/ORStackScrollView.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
+
 typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
     ARFairArtistTitle = 1,
     ARFairArtistSubtitle,

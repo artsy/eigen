@@ -1,3 +1,5 @@
+#import <Mantle/Mantle.h>
+
 @class Artist, Profile;
 
 

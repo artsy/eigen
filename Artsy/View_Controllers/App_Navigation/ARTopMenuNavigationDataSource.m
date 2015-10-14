@@ -11,9 +11,10 @@
 #import "FeaturedLink.h"
 #import "SiteHeroUnit.h"
 #import "ARNavigationController.h"
+#import "ARAppBackgroundFetchDelegate.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
-#import "ARAppBackgroundFetchDelegate.h"
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static ARNavigationController *
 WebViewNavigationControllerWithPath(NSString *path)

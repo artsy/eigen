@@ -6,6 +6,8 @@
 
 #import "UIImageView+AsyncImageLoading.h"
 
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+
 @interface ARFairPopupViewController ()
 
 @property (nonatomic, copy, readonly) NSString *titleString;

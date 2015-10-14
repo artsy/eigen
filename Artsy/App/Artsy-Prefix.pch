@@ -3,27 +3,6 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
-#import <AFNetworking/AFNetworking.h>
-#import <Mantle/Mantle.h>
-#import <Mantle/metamacros.h>
-#import <Mantle/EXTScope.h>
-#import <AFNetworkActivityLogger/AFNetworkActivityLogger.h>
-#import <CocoaLumberjack/CocoaLumberjack.h>
-#import <ObjectiveSugar/ObjectiveSugar.h>
-#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <ORStackView/ORStackView.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
-#import <NAMapKit/NAMapView.h>
-#import <EDColor/EDColor.h>
-#import <libextobjc/EXTKeyPathCoding.h>
-#import <libextobjc/EXTRuntimeExtensions.h>
-
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
-#import <ObjectiveSugar/ObjectiveSugar.h>
-
-#import <ORStackView/ORStackScrollView.h>
-#import <ORStackView/ORTagBasedAutoStackView.h>
 
 
 
@@ -37,6 +16,27 @@
 
 
 
-#import <Artsy+UILabels/ARLabelSubclasses.h>
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

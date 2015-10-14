@@ -3,6 +3,9 @@
 #import "ARFonts.h"
 #import "ARSpinner.h"
 
+#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARPendingOperationViewController ()
 

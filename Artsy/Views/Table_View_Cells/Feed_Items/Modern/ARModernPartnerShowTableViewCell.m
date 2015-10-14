@@ -12,6 +12,9 @@
 #import "NSString+StringSize.h"
 #import "UIDevice-Hardware.h"
 
+#import <ORStackView/ORStackView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 /// The maximum amount of items before switching from Carousel to masonry
 static const NSInteger CarouselItemLimit = 4;
 static const CGFloat ARPartnerShowCellBottomMargin = 30;

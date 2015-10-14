@@ -31,6 +31,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
 
+#import <Mantle/EXTScope.h>
 
 @implementation ARArtworkViewController (ButtonActions)
 

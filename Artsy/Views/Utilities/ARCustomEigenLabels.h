@@ -1,4 +1,4 @@
-
+#import <Artsy+UILabels/ARLabelSubclasses.h>
 
 
 @interface ARArtworkTitleLabel : ARItalicsSerifLabel

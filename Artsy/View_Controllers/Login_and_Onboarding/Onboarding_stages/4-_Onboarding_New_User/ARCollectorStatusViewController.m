@@ -5,6 +5,7 @@
 #import "AROnboardingViewController.h"
 #import "UIViewController+ScreenSize.h"
 
+#import <Artsy+UILabels/ARLabelSubclasses.h>
 
 @interface ARCollectorStatusViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic) ARSerifLineHeightLabel *label;

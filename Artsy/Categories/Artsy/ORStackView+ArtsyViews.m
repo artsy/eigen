@@ -8,6 +8,7 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @implementation ORStackView (ArtsyViews)
 

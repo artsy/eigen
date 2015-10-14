@@ -11,6 +11,9 @@
 #import "UIDevice-Hardware.h"
 
 #import <ARAnalytics/ARAnalytics.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Mantle/EXTScope.h>
 
 
 @interface ARArtworkView ()

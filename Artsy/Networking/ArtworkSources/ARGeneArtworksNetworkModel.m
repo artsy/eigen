@@ -2,6 +2,7 @@
 
 #import "Gene.h"
 
+#import <Mantle/EXTScope.h>
 
 @interface ARGeneArtworksNetworkModel ()
 @property (nonatomic, assign) NSInteger currentPage;

@@ -1,5 +1,6 @@
 #import "ArtsyAPI.h"
 
+#import <AFNetworking/AFNetworking.h>
 
 @implementation ArtsyAPI (ErrorHandlers)
 

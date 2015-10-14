@@ -1,6 +1,8 @@
 #import "UIViewController+ARUserActivity.h"
 #import "ARUserActivity.h"
 
+#import <Mantle/EXTScope.h>
+
 @implementation UIViewController (ARUserActivity)
 
 - (void)setAr_userActivityEntity:(id<ARSpotlightMetadataProvider>)entity;

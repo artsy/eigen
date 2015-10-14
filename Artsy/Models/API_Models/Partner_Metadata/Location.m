@@ -1,5 +1,6 @@
 #import "Location.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation Location
 

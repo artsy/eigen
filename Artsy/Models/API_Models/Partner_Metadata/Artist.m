@@ -8,6 +8,8 @@
 #import "User.h"
 #import "ARSwitchBoard.h"
 
+#import <Mantle/EXTScope.h>
+
 @interface Artist () {
     BOOL _isFollowed;
 }

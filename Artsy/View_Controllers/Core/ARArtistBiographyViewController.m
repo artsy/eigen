@@ -5,6 +5,7 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARScrollNavigationChief.h"
 
+#import <ORStackView/ORStackScrollView.h>
 
 @interface ARArtistBiographyViewController () <ARTextViewDelegate>
 @property (nonatomic, strong, readwrite) Artist *artist;

@@ -7,6 +7,7 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARSwitchBoard.h"
 
+#import <Mantle/EXTScope.h>
 
 @implementation ARFairPostsViewController
 

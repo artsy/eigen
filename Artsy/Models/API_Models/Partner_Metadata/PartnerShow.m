@@ -8,6 +8,9 @@
 #import "PartnerShow.h"
 #import "PartnerShowFairLocation.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 static ARStandardDateFormatter *staticDateFormatter;
 
 

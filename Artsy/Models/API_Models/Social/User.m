@@ -5,6 +5,8 @@
 #import "ArtsyAPI+Profiles.h"
 #import "Profile.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
 @implementation User
 
 + (User *)currentUser

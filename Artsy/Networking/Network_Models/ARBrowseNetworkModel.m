@@ -2,6 +2,8 @@
 
 #import "ArtsyAPI+Browse.h"
 
+#import <Mantle/EXTScope.h>
+
 @interface ARBrowseNetworkModel ()
 
 @property (nonatomic, copy, readwrite) NSArray *links;

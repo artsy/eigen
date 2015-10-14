@@ -1,6 +1,7 @@
 #import "ArtsyAPI.h"
 
 @class PartnerShow;
+@class AFHTTPRequestOperation;
 
 @interface ArtsyAPI (Shows)
 

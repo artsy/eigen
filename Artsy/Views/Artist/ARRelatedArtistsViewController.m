@@ -6,6 +6,8 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 
 @interface ARRelatedArtistsViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 

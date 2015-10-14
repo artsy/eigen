@@ -6,7 +6,7 @@
 
 #import <Artsy_UILabels/UIView+ARDrawing.h>
 #import <Artsy_UILabels/NSNumberFormatter+ARCurrency.h>
-
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @implementation ARArtworkAuctionPriceView
 

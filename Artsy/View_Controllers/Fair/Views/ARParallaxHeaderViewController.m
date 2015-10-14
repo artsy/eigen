@@ -7,6 +7,9 @@
 #import "UIImageView+AsyncImageLoading.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Mantle/EXTScope.h>
 
 const CGFloat ARParallaxHeaderViewBannerImageMissingImageHeight = 60.0;
 const CGFloat ARParallaxHeaderViewBannerImageHeight = 180.0;

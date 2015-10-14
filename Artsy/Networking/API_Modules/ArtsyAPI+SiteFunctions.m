@@ -8,6 +8,8 @@
 
 #import "MTLModel+JSON.h"
 
+#import <Mantle/EXTScope.h>
+
 NSString *const ArtsyAPIInquiryAnalyticsInquiryURL = @"ArtsyAPIInquiryAnalyticsInquiryURL";
 NSString *const ArtsyAPIInquiryAnalyticsReferralURL = @"ArtsyAPIInquiryAnalyticsReferralURL";
 NSString *const ArtsyAPIInquiryAnalyticsLandingURL = @"ArtsyAPIInquiryAnalyticsLandingURL";

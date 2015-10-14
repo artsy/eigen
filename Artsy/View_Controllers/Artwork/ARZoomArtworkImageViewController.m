@@ -2,6 +2,9 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <Mantle/EXTScope.h>
+
 @interface ARZoomArtworkImageViewController () <ARZoomViewDelegate>
 
 @property (nonatomic, assign) BOOL popped;

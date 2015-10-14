@@ -18,6 +18,10 @@
 #import "Profile.h"
 #import "ARSwitchBoard.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
+
 const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 
 

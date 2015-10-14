@@ -28,6 +28,10 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Mantle/EXTScope.h>
+
 typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStageSlideshow,
     AROnboardingStageStart,

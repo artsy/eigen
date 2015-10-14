@@ -4,6 +4,8 @@
 
 #import "UIImageView+AsyncImageLoading.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 @interface ARBrowseFeaturedLinksCollectionViewCell ()
 @end
 

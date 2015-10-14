@@ -2,6 +2,8 @@
 
 #import "ARTheme.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 @interface ARPageSubTitleView ()
 @property (nonatomic, assign) CGFloat margin;
 @property (nonatomic, strong) UILabel *titleLabel;

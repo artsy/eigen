@@ -3,6 +3,7 @@
 #import "ARValueTransformer.h"
 #import "Image.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation MapFeature
 

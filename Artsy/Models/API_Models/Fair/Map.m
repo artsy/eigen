@@ -3,6 +3,7 @@
 #import "MapFeature.h"
 #import "Image.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface Map ()
 @property (nonatomic, strong) Image *image;

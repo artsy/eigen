@@ -1,4 +1,4 @@
-
+@class ARUppercaseButton;
 
 
 @interface AROnboardingNavBarView : UIView

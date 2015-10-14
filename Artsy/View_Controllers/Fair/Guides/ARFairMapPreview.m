@@ -6,6 +6,8 @@
 #import "ARFairMapZoomManager.h"
 #import "Map.h"
 
+#import <EDColor/EDColor.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @interface ARFairMapPreview ()
 @property (nonatomic, weak, readonly) Map *map;

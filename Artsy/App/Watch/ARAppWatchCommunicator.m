@@ -16,7 +16,10 @@
 #import "WatchShow+ArtsyModels.h"
 #import "WatchArtwork.h"
 #import "WatchArtwork+ArtsyModels.h"
+
 #import <CoreLocation/CoreLocation.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
 
 
 @interface ARAppWatchCommunicator () <CLLocationManagerDelegate>

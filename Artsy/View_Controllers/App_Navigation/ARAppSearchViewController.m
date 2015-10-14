@@ -16,6 +16,8 @@
 #import "ARMenuAwareViewController.h"
 
 #import <FXBlurView/FXBlurView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static const NSInteger ARAppSearchParallaxDistance = 20;
 

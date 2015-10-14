@@ -28,6 +28,13 @@
 #import "UIViewController+ARUserActivity.h"
 #import "UIDevice-Hardware.h"
 
+#import <ORStackView/ORTagBasedAutoStackView.h>
+#import <ORStackView/ORStackScrollView.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
+
 static const NSInteger ARMinimumArtworksFor2Column = 5;
 
 typedef NS_ENUM(NSInteger, ARArtistViewIndex) {

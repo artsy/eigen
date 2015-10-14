@@ -9,6 +9,8 @@
 
 #import "MTLModel+JSON.h"
 
+#import <Mantle/EXTScope.h>
+
 @interface Profile () {
     BOOL _followed;
 }

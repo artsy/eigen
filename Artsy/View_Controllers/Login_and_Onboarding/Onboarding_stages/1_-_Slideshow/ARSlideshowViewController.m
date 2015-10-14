@@ -5,6 +5,10 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
+
 @interface ARSlideshowViewController ()
 @property (nonatomic, readonly) NSArray *slides;
 @property (nonatomic) ARSlideshowView *view;

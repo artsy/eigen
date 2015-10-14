@@ -5,6 +5,8 @@
 #import "ORStackView+ArtsyViews.h"
 #import "UIDevice-Hardware.h"
 
+#import <Mantle/EXTScope.h>
+
 @interface ARArtworkBlurbView () <ARTextViewDelegate>
 @property (nonatomic, strong) UILabel *aboutHeading;
 @property (nonatomic, strong) ARTextView *blurbTextView;

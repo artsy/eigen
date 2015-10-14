@@ -1,6 +1,7 @@
 #import "Partner.h"
 #import "ARValueTransformer.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation Partner
 @synthesize imageURLs;

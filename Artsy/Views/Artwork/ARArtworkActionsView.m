@@ -13,6 +13,9 @@
 #import "ARSystemTime.h"
 
 #import <KSDeferred/KSPromise.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Mantle/EXTScope.h>
 
 @interface ARArtworkActionsView () <ARCountdownViewDelegate>
 

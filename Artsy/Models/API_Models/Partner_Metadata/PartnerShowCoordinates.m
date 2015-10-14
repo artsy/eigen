@@ -1,5 +1,6 @@
 #import "PartnerShowCoordinates.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation PartnerShowCoordinates
 

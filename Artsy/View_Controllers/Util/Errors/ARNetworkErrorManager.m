@@ -4,7 +4,7 @@
 
 #import <ARAnalytics/ARAnalytics.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
-
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARNetworkErrorManager ()
 @property (nonatomic, strong) UILabel *activeModalView;

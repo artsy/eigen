@@ -23,6 +23,10 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Mantle/EXTScope.h>
+
 @interface ARFavoritesViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARSwitchViewDelegate, ARArtworkMasonryLayoutProvider>
 
 @property (nonatomic, strong, readonly) AREmbeddedModelsViewController *embeddedItemsVC;

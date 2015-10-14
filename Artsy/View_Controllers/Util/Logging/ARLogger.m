@@ -8,6 +8,7 @@
 #import "ARLogFormatter.h"
 #import "ARDeveloperOptions.h"
 
+#import <EDColor/EDColor.h>
 
 @implementation ARLogger
 

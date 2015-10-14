@@ -31,6 +31,13 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <ORStackView/ORTagBasedAutoStackView.h>
+#import <ORStackView/ORStackScrollView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
+
 typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
     ARFairShowViewHeader = 1,
     ARFairShowViewActionButtons,

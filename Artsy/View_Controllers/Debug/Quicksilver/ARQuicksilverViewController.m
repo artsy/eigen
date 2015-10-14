@@ -14,6 +14,9 @@
 #import "ARSwitchBoard.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
+#import <AFNetworking/AFNetworking.h>
 
 
 @interface ARQuicksilverViewController ()

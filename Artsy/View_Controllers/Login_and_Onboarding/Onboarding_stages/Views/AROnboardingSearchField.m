@@ -43,7 +43,7 @@
     [super addSubview:view];
 
     if (!self.swizzledClear && [view class] == [UIButton class]) {
-        UIView *subview = (UIView *)view.subviews.first;
+        UIView *subview = (UIView *)view.subviews.firstObject;
         if ([subview class] == [UIImageView class]) {
             [self swizzleClearButton:(UIButton *)view];
         }
@@ -61,7 +61,7 @@
 
 - (void)swizzleClearButton:(UIButton *)button
 {
-    UIImageView *imageView = (UIImageView *)button.subviews.first;
+    UIImageView *imageView = (UIImageView *)button.subviews.firstObject;
     UIImage *image = [imageView image];
     UIImage *templated = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [button setImage:templated forState:UIControlStateNormal];

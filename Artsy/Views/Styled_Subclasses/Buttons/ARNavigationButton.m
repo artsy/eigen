@@ -2,6 +2,9 @@
 
 #import "ARFonts.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 @interface ARNavigationButton ()
 
 @property (nonatomic, strong, readonly) UILabel *primaryTitleLabel;

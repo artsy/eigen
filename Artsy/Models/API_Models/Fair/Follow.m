@@ -3,6 +3,8 @@
 #import "Artist.h"
 #import "Profile.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
 @implementation Follow
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey

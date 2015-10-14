@@ -10,6 +10,10 @@
 
 #import "MTLModel+JSON.h"
 
+#import <EDColor/EDColor.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 @implementation ARFairSearchViewController
 
 - (instancetype)initWithFair:(Fair *)fair

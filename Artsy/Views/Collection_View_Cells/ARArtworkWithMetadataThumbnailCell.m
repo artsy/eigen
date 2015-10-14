@@ -5,6 +5,8 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 static const CGFloat ARArtworkCellMetadataMargin = 8;
 
 

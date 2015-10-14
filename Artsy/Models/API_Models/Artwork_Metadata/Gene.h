@@ -5,6 +5,7 @@
 
 #import <Mantle/Mantle.h>
 
+@class AFHTTPRequestOperation;
 
 @interface Gene : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageBaseURL, ARSpotlightMetadataProvider>
 

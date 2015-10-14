@@ -1,6 +1,7 @@
 #import "ArtsyAPI+OrderedSets.h"
 #import "OrderedSet.h"
 
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @implementation OrderedSet
 

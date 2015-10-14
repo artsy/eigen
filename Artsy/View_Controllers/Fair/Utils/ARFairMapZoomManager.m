@@ -1,6 +1,7 @@
 #import "ARFairMapZoomManager.h"
-#import <ARTiledImageView/ARTiledImageView.h>
 
+#import <ARTiledImageView/ARTiledImageView.h>
+#import <NAMapKit/NAMapView.h>
 
 @implementation ARFairMapZoomManager
 

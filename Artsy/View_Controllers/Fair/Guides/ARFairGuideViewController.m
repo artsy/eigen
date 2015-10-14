@@ -11,6 +11,11 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <ORStackView/ORTagBasedAutoStackView.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 // Switch view width should be divisible by the number of items (in this case 3) for consistent rendering.
 static CGFloat const ARFairGuideSwitchviewWidth = 279;
 

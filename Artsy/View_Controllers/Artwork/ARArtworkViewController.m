@@ -13,6 +13,9 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <Mantle/EXTScope.h>
+
 @interface ARArtworkViewController () <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>
 
 @property (nonatomic, strong) ARArtworkView *view;

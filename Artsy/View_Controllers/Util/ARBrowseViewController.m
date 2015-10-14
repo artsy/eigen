@@ -5,6 +5,9 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Mantle/EXTScope.h>
+
 @interface ARBrowseViewCell : ARBrowseFeaturedLinksCollectionViewCell
 @end
 

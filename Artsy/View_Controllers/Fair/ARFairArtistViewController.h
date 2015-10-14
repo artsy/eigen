@@ -2,6 +2,7 @@
 #import "ARMacros.h"
 
 @class Artist, Fair;
+@class AFHTTPRequestOperation;
 
 @protocol FairArtistNeworkModel <NSObject>
 

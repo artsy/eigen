@@ -1,6 +1,7 @@
 #import <Adjust/Adjust.h>
 #import <ALPValidator/ALPValidator.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
 
 #import "Artist.h"
 #import "Artwork.h"
@@ -22,6 +23,11 @@
 #import "UIImage+ImageFromColor.h"
 #import "UIImageView+AsyncImageLoading.h"
 #import "UIDevice-Hardware.h"
+
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
 
 // Future TODO: Don't use image alpha on contact image, use grayscale'd image.
 

@@ -8,6 +8,8 @@
 #import "Profile.h"
 #import "SiteFeature.h"
 
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 static NSDictionary *classMap;
 
 

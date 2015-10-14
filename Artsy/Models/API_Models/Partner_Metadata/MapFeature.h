@@ -1,3 +1,5 @@
+#import <Mantle/Mantle.h>
+
 typedef NS_ENUM(NSInteger, ARMapFeatureType) {
     ARMapFeatureTypeDefault,
     ARMapFeatureTypeArtsy,

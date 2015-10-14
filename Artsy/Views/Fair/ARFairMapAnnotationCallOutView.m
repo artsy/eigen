@@ -10,6 +10,9 @@
 
 #import "UIImageView+AsyncImageLoading.h"
 
+#import <NAMapKit/NAMapView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 @interface ARFairMapAnnotationCallOutView ()
 
 @property (nonatomic, strong, readonly) UILabel *partnerLocation;

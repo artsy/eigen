@@ -7,6 +7,8 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <ORStackView/ORStackScrollView.h>
 
 @interface ARArtworkInfoViewController () <ARTextViewDelegate>
 @property (nonatomic, strong) Artwork *artwork;

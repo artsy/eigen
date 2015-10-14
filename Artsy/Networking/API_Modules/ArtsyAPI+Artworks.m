@@ -12,6 +12,9 @@
 
 #import "MTLModel+JSON.h"
 
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <AFNetworking/AFNetworking.h>
+
 @implementation ArtsyAPI (Artworks)
 
 + (void)getArtworkInfo:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure

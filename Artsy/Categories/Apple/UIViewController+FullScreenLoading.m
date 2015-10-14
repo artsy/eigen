@@ -3,6 +3,7 @@
 #import "AROptions.h"
 
 #import <objc/runtime.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
 @implementation UIViewController (FullScreenLoading)

@@ -8,6 +8,11 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 @interface ARSignUpActiveUserViewController ()
 @property (nonatomic, strong) AROnboardingNavBarView *navView;
 @property (nonatomic, strong) NSString *message;

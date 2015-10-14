@@ -1,3 +1,5 @@
+#import <ORStackView/ORTagBasedAutoStackView.h>
+
 /**
     The ARArtworkDetailView is a view for showing artwork metadata
     such such as artist name, artwork name, description, materials,

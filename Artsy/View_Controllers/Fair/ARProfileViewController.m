@@ -13,6 +13,9 @@
 #import "UIViewController+SimpleChildren.h"
 #import "UIDevice-Hardware.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Mantle/EXTScope.h>
 
 @interface ARProfileViewController () <ARMenuAwareViewController>
 

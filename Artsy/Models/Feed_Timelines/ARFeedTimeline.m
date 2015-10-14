@@ -2,6 +2,7 @@
 
 #import "ARFeedItem.h"
 
+#import <Mantle/EXTScope.h>
 
 @interface ARFeedTimeline ()
 @property (nonatomic, strong) ARFeed *currentFeed;

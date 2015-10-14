@@ -37,6 +37,8 @@
 
 #import <JLRoutes/JLRoutes.h>
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
 
 
 @interface ARSwitchBoard ()

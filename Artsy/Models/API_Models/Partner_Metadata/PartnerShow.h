@@ -1,7 +1,10 @@
+#import <Mantle/Mantle.h>
+
 #import "ARShareableObject.h"
 #import "ARSpotlight.h"
 
 @class Partner, Fair, MapPoint, PartnerShowFairLocation, PartnerShowCoordinates, Location;
+@class AFHTTPRequestOperation;
 
 
 @interface PartnerShow : MTLModel <MTLJSONSerializing, ARShareableObject, ARSpotlightMetadataProvider>

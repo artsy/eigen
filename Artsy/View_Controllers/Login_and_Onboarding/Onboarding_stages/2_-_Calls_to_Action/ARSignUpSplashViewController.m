@@ -11,8 +11,12 @@
 
 #import "UIDevice-Hardware.h"
 
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <Artsy+UILabels/ARLabelSubclasses.h>
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @interface ARSignUpSplashTextViewController : UIViewController
 @property (nonatomic, readwrite) NSInteger index;

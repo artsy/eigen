@@ -5,6 +5,8 @@
 #import "Fair.h"
 #import "OrderedSet.h"
 
+#import <Mantle/EXTScope.h>
+
 @implementation ARFairNetworkModel
 
 - (void)getFairInfo:(Fair *)fair success:(void (^)(Fair *))success failure:(void (^)(NSError *))failure

@@ -1,7 +1,7 @@
 #import "ArtsyAPI.h"
 
 @class Fair;
-
+@class AFHTTPRequestOperation;
 
 @interface ArtsyAPI (Fairs)
 

@@ -1,3 +1,5 @@
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+
 #import "SaleArtwork.h"
 
 extern NSString *const ARBidButtonRegisterStateTitle;

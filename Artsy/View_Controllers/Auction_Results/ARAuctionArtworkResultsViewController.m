@@ -8,6 +8,9 @@
 
 #import "UIDevice-Hardware.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Mantle/EXTScope.h>
+
 static NSString *ARAuctionTableViewCellIdentifier = @"ARAuctionTableViewCellIdentifier";
 static NSString *ARAuctionTableViewHeaderIdentifier = @"ARAuctionTableViewHeaderIdentifier";
 

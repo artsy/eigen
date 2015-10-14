@@ -12,6 +12,9 @@
 #import "UIDevice-Hardware.h"
 
 #import <KSDeferred/KSPromise.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <Mantle/EXTScope.h>
+#import <AFNetworking/AFNetworking.h>
 
 
 @interface ARArtworkRelatedArtworksView () <AREmbeddedModelsViewControllerDelegate>
