@@ -1,4 +1,4 @@
-### Unreleased
+### 2.3.0 (2015.10.15)
 
 * Reduce memory consumption while indexing all of the user’s favourites. - alloy
 * On iPad, ensure a native artwork view is shown after making a bid directly from the auction overview. - alloy
