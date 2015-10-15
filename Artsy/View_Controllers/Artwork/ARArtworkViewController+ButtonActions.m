@@ -113,7 +113,7 @@
 
 - (void)tappedAuctionInfo
 {
-    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/auction-info"]];
+    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/how-auctions-work"]];
     [[ARTopMenuViewController sharedController] pushViewController:viewController];
 }
 
