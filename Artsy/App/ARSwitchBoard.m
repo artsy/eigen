@@ -94,6 +94,13 @@
         return YES;
     }];
 
+    [self.routes addRoute:@"/auction-registration/:id" handler:^BOOL(NSDictionary *parameters) {
+        @strongify(self)
+        ARAuctionWebViewController *viewController = [self loadAuctionRegistrationWithID:parameters[@"id"]];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+        return YES;
+    }];
+
     [self.routes addRoute:@"/auction/:id" handler:^BOOL(NSDictionary *parameters) {
         @strongify(self)
         ARAuctionWebViewController *viewController = [self loadAuctionWithID:parameters[@"id"]];
@@ -101,9 +108,10 @@
         return YES;
     }];
 
-    [self.routes addRoute:@"/auction-registration/:id" handler:^BOOL(NSDictionary *parameters) {
+    [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:^BOOL(NSDictionary *parameters) {
         @strongify(self)
-        ARAuctionWebViewController *viewController = [self loadAuctionRegistrationWithID:parameters[@"id"]];
+        UIViewController *viewController = [self loadBidUIForArtwork:parameters[@"artwork_id"]
+                                                              inSale:parameters[@"id"]];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
         return YES;
     }];

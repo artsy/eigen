@@ -1,5 +1,7 @@
 #import "ARAuctionWebViewController.h"
 #import "ARAppConstants.h"
+#import "ARArtworkSetViewController.h"
+#import "ARArtworkViewController.h"
 
 @implementation ARAuctionWebViewController
 
@@ -64,6 +66,24 @@
     }
 }
 
+// On Force you can directly bid on a work from the auction overview. If that’s the case, then insert the artwork view
+// into the stack for the user to return to.
+- (void)ensureArtworkViewControllerIsLowerInStack;
+{
+    NSArray *stack = self.navigationController.viewControllers;
+
+    ARArtworkSetViewController *artworkViewController = stack[stack.count-2];
+    if ([artworkViewController isKindOfClass:ARArtworkSetViewController.class]
+            && [artworkViewController.currentArtworkViewController.artwork.artworkID isEqualToString:self.artworkID]) {
+        return;
+    }
+
+    artworkViewController = [[ARSwitchBoard sharedInstance] loadArtworkWithID:self.artworkID inFair:nil];
+    NSMutableArray *mutatedStack = [stack mutableCopy];
+    [mutatedStack insertObject:artworkViewController atIndex:stack.count-1];
+    self.navigationController.viewControllers = mutatedStack;
+}
+
 - (void)bidHasBeenConfirmed;
 {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -76,6 +96,7 @@
                       object:self
                     userInfo:@{ ARAuctionIDKey:self.auctionID, ARAuctionArtworkIDKey: self.artworkID }];
 
+    [self ensureArtworkViewControllerIsLowerInStack];
     [self.navigationController popViewControllerAnimated:ARPerformWorkAsynchronously];
 }
 
