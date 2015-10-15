@@ -5,7 +5,6 @@
 
 @interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
 @property (nonatomic, readonly, strong) UIGestureRecognizer *gesture;
-@property (nonatomic, readonly, strong) NSURL *initialURL;
 @end
 
 
