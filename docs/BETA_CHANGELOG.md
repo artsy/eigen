@@ -1,3 +1,7 @@
+### Unreleased
+
+* No longer encode the device’s name into the User-Agent as it might contain characters outside the allowed character set which may lead to encoding errors on the backend. - alloy
+
 ### 2.3.0 (2015.10.15)
 
 * Reduce memory consumption while indexing all of the user’s favourites. - alloy

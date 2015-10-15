@@ -93,8 +93,7 @@ static NSSet *artsyHosts = nil;
 
     AFHTTPRequestSerializer *serializer = [[AFHTTPRequestSerializer alloc] init];
     NSString *userAgent = serializer.HTTPRequestHeaders[@"User-Agent"];
-    NSString *deviceName = [[UIDevice currentDevice] name];
-    NSString *agentString = [NSString stringWithFormat:@"Mozilla/5.0 Artsy-Mobile/%@ Eigen/%@ Device: %@", version, build, deviceName];
+    NSString *agentString = [NSString stringWithFormat:@"Mozilla/5.0 Artsy-Mobile/%@ Eigen/%@", version, build];
     userAgent = [userAgent stringByReplacingOccurrencesOfString:@"Artsy" withString:agentString];
     userAgent = [userAgent stringByAppendingString:@"AppleWebKit/601.1.46 (KHTML, like Gecko)"];
 
