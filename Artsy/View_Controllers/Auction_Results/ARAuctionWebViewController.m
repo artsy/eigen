@@ -71,7 +71,6 @@
 - (void)ensureArtworkViewControllerIsLowerInStack;
 {
     NSArray *stack = self.navigationController.viewControllers;
-    NSAssert(stack.count > 1, @"Expected a larger stack.");
 
     ARArtworkSetViewController *artworkViewController = stack[stack.count-2];
     if ([artworkViewController isKindOfClass:ARArtworkSetViewController.class]

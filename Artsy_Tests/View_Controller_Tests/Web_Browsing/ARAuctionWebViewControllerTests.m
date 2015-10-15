@@ -1,5 +1,7 @@
 #import "ARAuctionWebViewController.h"
 #import "ARSwitchBoard.h"
+#import "ARArtworkSetViewController.h"
+#import "ARArtworkViewController.h"
 
 #import <OCMock/OCObserverMockObject.h>
 
@@ -86,11 +88,26 @@ describe(@"with an artwork", ^{
         });
 
         it(@"pops the VC from the stack once a bid has been confirmed", ^{
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[UIViewController new]];
+            ARArtworkSetViewController *artworkViewController = [[ARArtworkSetViewController alloc] initWithArtworkID:@"the-artwork"];
+            (void)artworkViewController.view; // Ensure there’s a currentArtworkViewController
+
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:artworkViewController];
             [navigationController pushViewController:controller animated:NO];
 
             [controller bidHasBeenConfirmed];
             expect(navigationController.viewControllers.count).to.equal(1);
+        });
+        
+        it(@"inserts an artwork view controller underneath the webview if there is none", ^{
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[UIViewController new]];
+            [navigationController pushViewController:controller animated:NO];
+
+            [controller bidHasBeenConfirmed];
+            expect(navigationController.viewControllers.count).to.equal(2);
+
+            ARArtworkSetViewController *artworkViewController = navigationController.viewControllers[1];
+            (void)artworkViewController.view; // Ensure there’s a currentArtworkViewController
+            expect(artworkViewController.currentArtworkViewController.artwork.artworkID).to.equal(@"the-artwork");
         });
     });
 
