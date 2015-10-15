@@ -5,6 +5,7 @@
 
 @property (readonly, nonatomic, strong) WKWebView *webView;
 @property (readonly, nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, readonly, strong) NSURL *initialURL;
 
 - (instancetype)initWithURL:(NSURL *)url;
 

@@ -6,7 +6,6 @@
 
 static void *ARProgressContext = &ARProgressContext;
 
-
 @interface ARInternalMobileWebViewController () <UIAlertViewDelegate, WKNavigationDelegate>
 @property (nonatomic, assign) BOOL loaded;
 @property (nonatomic, strong) ARInternalShareValidator *shareValidator;
@@ -178,7 +177,8 @@ static void *ARProgressContext = &ARProgressContext;
 
 - (void)userDidSignUp
 {
-    [self.webView loadRequest:[self requestWithURL:self.webView.URL]];
+    NSURL *url = self.webView.URL ?: self.initialURL;
+    [self.webView loadRequest:[self requestWithURL:url]];
 }
 
 - (NSURLRequest *)requestWithURL:(NSURL *)URL
