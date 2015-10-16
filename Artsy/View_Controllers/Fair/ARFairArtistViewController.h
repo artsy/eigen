@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 #import "ARFairAwareObject.h"
 #import "ARMacros.h"
 

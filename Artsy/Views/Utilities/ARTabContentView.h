@@ -1,4 +1,7 @@
+#import <UIKit/UIKit.h>
+
 @class ARTabContentView;
+
 @protocol ARTabViewDataSource <NSObject>
 @required
 - (UINavigationController *)viewControllerForTabContentView:(ARTabContentView *)tabContentView atIndex:(NSInteger)index;

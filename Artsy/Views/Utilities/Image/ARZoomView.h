@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 @class ARZoomView, Image;
 
 @protocol ARZoomViewDelegate

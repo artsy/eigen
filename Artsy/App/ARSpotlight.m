@@ -18,6 +18,7 @@
 #import "NSDate+DateRange.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 #import <MMMarkdown/MMMarkdown.h>
 #import <SDWebImage/SDImageCache.h>
 #import <SDWebImage/SDWebImageManager.h>

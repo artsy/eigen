@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 @protocol ARShareableObject;
 
 @interface ARSharingController : NSObject

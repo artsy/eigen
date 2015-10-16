@@ -1,3 +1,6 @@
+#import <UIKit/UIKit.h>
+
+
 @class Artwork, ARHeartButton, ARArtworkInfoButton, Fair;
 
 @protocol ARArtworkPreviewActionsViewDelegate <NSObject>

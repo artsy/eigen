@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 /// Handles presenting an artwork and dealing with some of the simpler interactions
 
 extern const CGFloat ARiPadPreviewImageWidth;

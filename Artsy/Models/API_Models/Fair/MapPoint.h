@@ -1,3 +1,4 @@
+#import <CoreGraphics/CoreGraphics.h>
 #import <Mantle/Mantle.h>
 
 @class Image;

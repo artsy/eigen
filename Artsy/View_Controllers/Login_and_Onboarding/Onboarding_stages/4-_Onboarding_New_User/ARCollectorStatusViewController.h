@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 #import "User.h"
 
 @class AROnboardingViewController;

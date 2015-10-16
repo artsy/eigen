@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 #import "ARFairAwareObject.h"
 
 @class Artist, Fair;

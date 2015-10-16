@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 #import "ARMenuAwareViewController.h"
 
 /// Has two main states, a decorated version with parallax & the dude,
