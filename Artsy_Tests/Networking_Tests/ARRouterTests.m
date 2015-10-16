@@ -127,10 +127,6 @@ describe(@"User-Agent", ^{
         expect(userAgent).to.contain([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]);
     });
 
-    it(@"preserves simulator information", ^{
-        expect(userAgent).to.contain(@"iPhone Simulator");
-    });
-
     it(@"is contained in requests sent out from router", ^{
 
         Artwork *artwork = [Artwork modelWithJSON:@{ @"id": @"artwork_id" }];

@@ -88,15 +88,16 @@ static NSSet *artsyHosts = nil;
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 
-    // Take the default from AFNetworking, and extend them all to include code names
-    // and individual build numbers
+    // Take the default from AFNetworking, and extend them all to include:
+    // * code names
+    // * version information
+    // * include big browser engine names so that scripts like that of fast.fonts.net WKWebView will load
 
     AFHTTPRequestSerializer *serializer = [[AFHTTPRequestSerializer alloc] init];
     NSString *userAgent = serializer.HTTPRequestHeaders[@"User-Agent"];
-    NSString *deviceName = [[UIDevice currentDevice] name];
-    NSString *agentString = [NSString stringWithFormat:@"Mozilla/5.0 Artsy-Mobile/%@ Eigen/%@ Device: %@", version, build, deviceName];
+    NSString *agentString = [NSString stringWithFormat:@"Mozilla/5.0 Artsy-Mobile/%@ Eigen/%@", version, build];
     userAgent = [userAgent stringByReplacingOccurrencesOfString:@"Artsy" withString:agentString];
-    userAgent = [userAgent stringByAppendingString:@"AppleWebKit/601.1.46 (KHTML, like Gecko)"];
+    userAgent = [userAgent stringByAppendingString:@" AppleWebKit/601.1.46 (KHTML, like Gecko)"];
 
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"UserAgent" : userAgent }];
     [self setHTTPHeader:@"User-Agent" value:userAgent];
