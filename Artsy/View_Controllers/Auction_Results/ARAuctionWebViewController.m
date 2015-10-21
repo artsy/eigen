@@ -50,20 +50,41 @@
     return self;
 }
 
+- (ARTrialContext)trialContextForRequestURL:(NSURL *)requestURL;
+{
+    for (NSString *param in [requestURL.query componentsSeparatedByString:@"&"]) {
+        NSArray *pair = [param componentsSeparatedByString:@"="];
+        // On Force when tapping a ‘bid’ button from an auction overview.
+        if (pair.count == 2
+                && [pair[0] isEqualToString:@"redirect_uri"] && [pair[1] isEqualToString:self.initialURL.path]) {
+            return ARTrialContextAuctionBid;
+        }
+    }
+    return [super trialContextForRequestURL:requestURL];
+}
+
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
-    if (navigationAction.navigationType == WKNavigationTypeOther
-        && ([navigationAction.request.URL.fragment isEqualToString:@"confirm-bid"]
-            || [navigationAction.request.URL.lastPathComponent isEqualToString:@"confirm-bid"])) {
-        [self bidHasBeenConfirmed];
-        return WKNavigationActionPolicyCancel;
-    } else if (navigationAction.navigationType == WKNavigationTypeOther
-        && [navigationAction.request.URL.lastPathComponent isEqualToString:@"confirm-registration"]) {
-        [self registrationHasBeenConfirmed];
-        return WKNavigationActionPolicyCancel;
-    } else {
-        return [super shouldLoadNavigationAction:navigationAction];
+    if (navigationAction.navigationType == WKNavigationTypeOther) {
+        NSURL *URL = navigationAction.request.URL;
+        // martsy uses the fragment, force uses a path component
+        if ([URL.fragment isEqualToString:@"confirm-bid"] || [URL.lastPathComponent isEqualToString:@"confirm-bid"]) {
+            [self bidHasBeenConfirmed];
+            return WKNavigationActionPolicyCancel;
+        }
+        if ([URL.lastPathComponent isEqualToString:@"confirm-registration"]) {
+            [self registrationHasBeenConfirmed];
+            return WKNavigationActionPolicyCancel;
+        }
+        if ([UIDevice isPad] && [User isTrialUser]) {
+            // On Force when tapping the ‘register to bid’ button.
+            if ([URL.path isEqualToString:[NSString stringWithFormat:@"/auction-registration/%@", self.auctionID]]) {
+                [self startLoginOrSignupWithTrialContext:ARTrialContextAuctionBid];
+                return WKNavigationActionPolicyCancel;
+            }
+        }
     }
+    return [super shouldLoadNavigationAction:navigationAction];
 }
 
 // On Force you can directly bid on a work from the auction overview. If that’s the case, then insert the artwork view
