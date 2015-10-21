@@ -55,7 +55,8 @@
     for (NSString *param in [requestURL.query componentsSeparatedByString:@"&"]) {
         NSArray *pair = [param componentsSeparatedByString:@"="];
         // On Force when tapping a ‘bid’ button from an auction overview.
-        if ([pair[0] isEqualToString:@"redirect_uri"] && [pair[1] isEqualToString:self.initialURL.path]) {
+        if (pair.count == 2
+                && [pair[0] isEqualToString:@"redirect_uri"] && [pair[1] isEqualToString:self.initialURL.path]) {
             return ARTrialContextAuctionBid;
         }
     }
