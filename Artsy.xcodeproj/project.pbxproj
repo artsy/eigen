@@ -216,6 +216,8 @@
 		510261711BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */; };
 		5108A7BC1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5108A7BB1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m */; };
 		5122D69A1A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5122D6991A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m */; };
+		512AB35B1BD7C7A100F92B9A /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 512AB35A1BD7C7A100F92B9A /* CoreSpotlight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		512AB35C1BD7C82F00F92B9A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06E44EB8170235D8001B2EBF /* MessageUI.framework */; };
 		513483551AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 513483541AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m */; };
 		5142071A1BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 514207191BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m */; };
 		5144331B1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5144331A1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m */; };
@@ -1020,6 +1022,7 @@
 		510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewControllerTests.m; sourceTree = "<group>"; };
 		5108A7BB1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppActivityContinuationDelegateTests.m; sourceTree = "<group>"; };
 		5122D6991A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapAnnotationViewTests.m; sourceTree = "<group>"; };
+		512AB35A1BD7C7A100F92B9A /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
 		513483541AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSPDFKitImproveRecursiveDescription.m; sourceTree = "<group>"; };
 		514207181BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStubbedFavoritesNetworkModel.h; sourceTree = "<group>"; };
 		514207191BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStubbedFavoritesNetworkModel.m; sourceTree = "<group>"; };
@@ -1734,6 +1737,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				512AB35C1BD7C82F00F92B9A /* MessageUI.framework in Frameworks */,
+				512AB35B1BD7C7A100F92B9A /* CoreSpotlight.framework in Frameworks */,
 				60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */,
 				60935A441A69CFE700129CE1 /* MobileCoreServices.framework in Frameworks */,
 				F7711B475C76B26BACB9F8BF /* Pods_Artsy.framework in Frameworks */,
@@ -2567,6 +2572,7 @@
 		49BA7E021655ABE600C06572 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				512AB35A1BD7C7A100F92B9A /* CoreSpotlight.framework */,
 				60476F4B1AD87DB200670502 /* UIKit.framework */,
 				60935A451A69CFEE00129CE1 /* WebKit.framework */,
 				60892CEC16B9A849004C1B47 /* Accelerate.framework */,
@@ -5186,7 +5192,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_BUNDLE_IDENTIFIER = net.artsy.artsy;
-				CC = "${SRCROOT}/clang-with-compilation-db";
+				CC = "${SRCROOT}/clang-with-eigen-additions";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -5227,7 +5233,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
@@ -5522,7 +5527,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_BUNDLE_IDENTIFIER = net.artsy.artsy.demo;
-				CC = "${SRCROOT}/clang-with-compilation-db";
+				CC = "${SRCROOT}/clang-with-eigen-additions";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -5551,7 +5556,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
@@ -5643,7 +5647,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_BUNDLE_IDENTIFIER = net.artsy.artsy;
-				CC = "${SRCROOT}/clang-with-compilation-db";
+				CC = "${SRCROOT}/clang-with-eigen-additions";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -5673,7 +5677,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
