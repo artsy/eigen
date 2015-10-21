@@ -1,4 +1,4 @@
-
+#import <Foundation/Foundation.h>
 
 
 @interface ARFavoritesNetworkModel : NSObject

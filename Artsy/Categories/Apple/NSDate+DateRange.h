@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+
 /// TODO: When iOS8 only remove and replace with improved NSDateFormatter
 
 
