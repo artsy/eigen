@@ -1,5 +1,6 @@
 #import "User.h"
 
+#import "ARMacros.h"
 #import "ARUserManager.h"
 #import "ArtsyAPI+CurrentUserFunctions.h"
 #import "ArtsyAPI+Profiles.h"

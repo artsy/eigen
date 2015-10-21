@@ -7,12 +7,12 @@
 #import "FeaturedLink.h"
 #import "User.h"
 #import "ARAppConstants.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 
 #import "MTLModel+JSON.h"
+#import "ARMacros.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import <Mantle/EXTScope.h>
 
 @implementation ARFeedLinkUnitViewController
 

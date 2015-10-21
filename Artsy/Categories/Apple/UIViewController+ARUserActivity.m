@@ -1,7 +1,6 @@
 #import "UIViewController+ARUserActivity.h"
 #import "ARUserActivity.h"
 
-#import <Mantle/EXTScope.h>
 
 @implementation UIViewController (ARUserActivity)
 

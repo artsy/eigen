@@ -4,7 +4,7 @@
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegate.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 
 static void *ARProgressContext = &ARProgressContext;
 

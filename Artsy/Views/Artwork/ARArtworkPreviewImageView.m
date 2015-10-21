@@ -7,7 +7,6 @@
 #import "UIImage+ImageFromColor.h"
 #import "UIImageView+AsyncImageLoading.h"
 
-#import <Mantle/EXTScope.h>
 
 @interface ARArtworkPreviewImageView ()
 @property (nonatomic, strong, readwrite) NSArray *imageConstraints;

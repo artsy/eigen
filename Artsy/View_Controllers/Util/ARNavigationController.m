@@ -15,14 +15,14 @@
 #import "ARTopMenuViewController.h"
 #import "ARScrollNavigationChief.h"
 
+#import "ARMacros.h"
 #import "UIDevice-Hardware.h"
 
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;

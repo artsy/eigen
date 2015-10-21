@@ -23,14 +23,13 @@
 #import "ArtsyAPI+Private.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
 
 #import "UIDevice-Hardware.h"
 
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Mantle/EXTScope.h>
 
 typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStageSlideshow,

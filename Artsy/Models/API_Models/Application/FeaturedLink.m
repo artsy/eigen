@@ -1,5 +1,7 @@
 #import "FeaturedLink.h"
 
+#import "ARMacros.h"
+
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface FeaturedLink ()

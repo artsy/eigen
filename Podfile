@@ -137,4 +137,24 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     `#{plist_buddy} -c "Set CFBundleShortVersionString #{version}" "Pods/Target Support Files/#{target}/Info.plist" > /dev/null 2>&1`
   end
+
+  # TODO:
+  # * ORStackView: Move Laura's changes into master and update
+  # * Send PRs for the rest
+  %w(
+    Pods/ORStackView/Classes/ios/ORStackView.h
+    Pods/ARAnalytics/ARAnalytics.h
+    Pods/ARTiledImageView/Classes/ARTiledImageViewDataSource.h
+    Pods/DRKonamiCode/Sources/DRKonamiGestureRecognizer.h
+    Pods/NAMapKit/NAMapKit/*.h
+  ).flat_map { |x| Dir.glob(x) }.each do |header|
+    addition = "#import <UIKit/UIKit.h>\n"
+    contents = File.read(header)
+    unless contents.include?(addition)
+      File.open(header, "w") do |file|
+        file.puts addition
+        file.puts contents
+      end
+    end
+  end
 end

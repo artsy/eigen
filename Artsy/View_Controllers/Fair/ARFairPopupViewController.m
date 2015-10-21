@@ -2,11 +2,11 @@
 
 #import "ARAppConstants.h"
 #import "Fair.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 
 #import "UIImageView+AsyncImageLoading.h"
 
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 
 @interface ARFairPopupViewController ()
 

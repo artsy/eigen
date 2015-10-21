@@ -2,6 +2,7 @@
 
 #import "MapFeature.h"
 #import "Image.h"
+#import "ARMacros.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 

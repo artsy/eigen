@@ -6,12 +6,11 @@
 #import "UIImageView+AsyncImageLoading.h"
 #import "UIDevice-Hardware.h"
 
-#import <Artsy+UILabels/ARLabelSubclasses.h>
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <Artsy_UILabels/ARLabelSubclasses.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <ORStackView/ORStackView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 
 #define AR_HERO_TITLE_FONT 26
 

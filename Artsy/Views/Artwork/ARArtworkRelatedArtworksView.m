@@ -6,14 +6,13 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARArtworkSetViewController.h"
 #import "PartnerShow.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
 
 #import "UIDevice-Hardware.h"
 
 #import <KSDeferred/KSPromise.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 #import <AFNetworking/AFNetworking.h>
 
 

@@ -2,7 +2,7 @@
 
 #import "ARFonts.h"
 
-#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <Artsy_UILabels/ARLabelSubclasses.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 

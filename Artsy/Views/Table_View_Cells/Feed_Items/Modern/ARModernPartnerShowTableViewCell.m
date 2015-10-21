@@ -7,7 +7,7 @@
 #import "ARSeparatorViews.h"
 #import "AROptions.h"
 #import "Partner.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 
 #import "NSString+StringSize.h"
 #import "UIDevice-Hardware.h"

@@ -1,7 +1,6 @@
 #import "ARLogger.h"
 #import "ARFollowableNetworkModel.h"
 
-#import <Mantle/EXTScope.h>
 
 @interface ARFollowableNetworkModel ()
 @end

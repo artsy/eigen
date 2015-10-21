@@ -1,5 +1,6 @@
 #import "ARAuctionResultsNetworkModel.h"
 
+#import "Artwork.h"
 
 @interface ARAuctionResultsNetworkModel ()
 @property (nonatomic, strong, readonly) Artwork *artwork;

@@ -1,5 +1,5 @@
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
-@import UICKeyChainStore;
+#import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Adjust/Adjust.h>
 
 #import "ARDefaults.h"

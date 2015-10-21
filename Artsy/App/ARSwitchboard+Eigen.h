@@ -13,7 +13,8 @@
     ARGeneViewController,
     ARUserSettingsViewController,
     ARAuctionWebViewController,
-    ARFairGuideContainerViewController;
+    ARFairGuideContainerViewController,
+    AuctionViewController;
 
 // Eigen model object forward decs
 @class ARPostFeedItem,

@@ -15,11 +15,11 @@
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
 
+#import "ARMacros.h"
 #import "MTLModel+JSON.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 #import <AFNetworking/AFNetworking.h>
 
 @implementation Artwork {

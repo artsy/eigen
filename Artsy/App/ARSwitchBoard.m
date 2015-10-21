@@ -22,7 +22,6 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairGuideContainerViewController.h"
-#import "ARUserSettingsViewController.h"
 #import "ARArtistViewController.h"
 #import "ARAuctionArtworkResultsViewController.h"
 #import "ARAuctionWebViewController.h"
@@ -33,12 +32,12 @@
 
 #import "ARTopMenuNavigationDataSource.h"
 
+#import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 
 #import <JLRoutes/JLRoutes.h>
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 
 
 @interface ARSwitchBoard ()
@@ -274,12 +273,10 @@
         } else {
             return [[ARExternalWebBrowserViewController alloc] initWithURL:url];
         }
-
-    } else {
-        /// It's probably an app link, offer to jump out
-        [self openURLInExternalService:url];
-        return nil;
     }
+    /// It's probably an app link, offer to jump out
+    [self openURLInExternalService:url];
+    return nil;
 }
 
 - (void)openURLInExternalService:(NSURL *)url

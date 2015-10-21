@@ -2,7 +2,7 @@
 
 #import "Artist.h"
 #import "ARFavoriteItemViewCell.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 
 #import "UIDevice-Hardware.h"
 

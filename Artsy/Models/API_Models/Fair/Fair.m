@@ -10,11 +10,12 @@
 #import "FairOrganizer.h"
 #import "PartnerShow.h"
 #import "Partner.h"
+
+#import "ARMacros.h"
 #import "ARDispatchManager.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 
 @interface Fair () {
     NSMutableSet *_showsLoadedFromArchive;

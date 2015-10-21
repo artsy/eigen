@@ -25,13 +25,12 @@
 #import "FairOrganizer.h"
 #import "Partner.h"
 #import "User.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARNetworkErrorManager.h"
 #import "ARTrialController.h"
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
 
-#import <Mantle/EXTScope.h>
 
 @implementation ARArtworkViewController (ButtonActions)
 

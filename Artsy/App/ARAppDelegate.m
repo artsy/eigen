@@ -37,6 +37,9 @@
 #import "ARSystemTime.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
+#import "FeaturedLink.h"
+#import "OrderedSet.h"
+#import "ArtsyAPI+OrderedSets.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -46,6 +49,7 @@
 
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <VCRURLConnection/VCR.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 // demo
 #import "ARDemoSplashViewController.h"

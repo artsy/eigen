@@ -1,6 +1,6 @@
 #import "ARMessageItemProvider.h"
 
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 
 
 @interface ARMessageItemProvider ()

@@ -3,7 +3,7 @@
 #import "ARAppConstants.h"
 #import "AROnboardingNavBarView.h"
 #import "UIViewController+FullScreenLoading.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 
 typedef NS_ENUM(NSInteger, ARScrollState) {
     ARScrollStateScrollingUp = -1,

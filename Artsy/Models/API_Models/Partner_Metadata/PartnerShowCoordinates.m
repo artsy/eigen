@@ -1,5 +1,7 @@
 #import "PartnerShowCoordinates.h"
 
+#import "ARMacros.h"
+
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation PartnerShowCoordinates

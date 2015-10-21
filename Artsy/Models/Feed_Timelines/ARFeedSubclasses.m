@@ -7,7 +7,6 @@
 #import "Partner.h"
 #import "ARDispatchManager.h"
 
-#import <Mantle/EXTScope.h>
 
 @interface ARFeed ()
 - (NSOrderedSet *)parseItemsFromJSON:(NSDictionary *)result;

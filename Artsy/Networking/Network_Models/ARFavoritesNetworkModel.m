@@ -1,6 +1,5 @@
 #import "ARFavoritesNetworkModel.h"
 
-#import <Mantle/EXTScope.h>
 
 @interface ARFavoritesNetworkModel ()
 @property (readwrite, nonatomic, assign) BOOL allDownloaded;

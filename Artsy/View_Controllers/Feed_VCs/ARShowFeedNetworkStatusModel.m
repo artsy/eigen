@@ -2,6 +2,11 @@
 #import "ARSimpleShowFeedViewController.h"
 #import "AROfflineView.h"
 
+#import "ARAppConstants.h"
+#import "ARMacros.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 
 @interface ARShowFeedNetworkStatusModel () <AROfflineViewDelegate>
 @property (nonatomic, weak, readwrite) ARSimpleShowFeedViewController *showFeedVC;

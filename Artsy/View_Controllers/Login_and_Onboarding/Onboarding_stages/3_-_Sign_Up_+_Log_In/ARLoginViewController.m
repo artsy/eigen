@@ -17,11 +17,10 @@
 
 #import "UIDevice-Hardware.h"
 
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <ORStackView/ORStackView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Mantle/EXTScope.h>
 
 #define SPINNER_TAG 0x555
 

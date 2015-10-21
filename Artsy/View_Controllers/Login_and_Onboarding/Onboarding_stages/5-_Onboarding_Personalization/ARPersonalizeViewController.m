@@ -12,10 +12,9 @@
 
 #import "MTLModel+JSON.h"
 
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 #import <AFNetworking/AFNetworking.h>
 
 static NSString *SearchCellId = @"OnboardingSearchCell";

@@ -2,7 +2,7 @@
 #import "ARTextView.h"
 
 #import "ARTheme.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
 
 #import <MMMarkdown/MMMarkdown.h>

@@ -1,6 +1,6 @@
 #import "ARActionButtonsView.h"
 
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 NSString *const ARActionButtonImageKey = @"ARActionButtonImageKey";

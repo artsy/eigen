@@ -5,7 +5,6 @@
 #import "Gene.h"
 #import "OrderedSet.h"
 
-#import <Mantle/EXTScope.h>
 
 @implementation ARGeneFavoritesNetworkModel
 

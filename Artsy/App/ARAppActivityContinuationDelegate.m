@@ -4,6 +4,7 @@
 #import "ARUserManager.h"
 #import "ARSwitchBoard.h"
 #import "ARTopMenuViewController.h"
+#import "ArtsyAPI.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 

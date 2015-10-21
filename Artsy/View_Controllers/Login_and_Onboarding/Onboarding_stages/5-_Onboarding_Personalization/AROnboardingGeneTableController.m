@@ -5,7 +5,6 @@
 #import "Gene.h"
 #import "ARLogger.h"
 
-#import <Mantle/EXTScope.h>
 
 static NSString *CellId = @"OnboardingGeneFollow";
 

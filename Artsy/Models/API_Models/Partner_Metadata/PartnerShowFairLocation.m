@@ -1,5 +1,7 @@
 #import "PartnerShowFairLocation.h"
 
+#import "ARMacros.h"
+
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface PartnerShowFairLocation ()

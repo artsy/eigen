@@ -1,6 +1,6 @@
 #import "ARTopMenuNavigationDataSource.h"
 
-#import "ARShowFeedViewController.h"
+#import "ARFeedTimeline.h"
 #import "ARBrowseViewController.h"
 #import "ARSimpleShowFeedViewController.h"
 #import "ARFavoritesViewController.h"

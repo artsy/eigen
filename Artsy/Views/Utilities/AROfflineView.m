@@ -4,7 +4,7 @@
 #import "ORStackView+ArtsyViews.h"
 
 #import <objc/message.h>
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 

@@ -20,20 +20,20 @@
 #import "ARSpotlight.h"
 #import "User.h"
 #import "ARTheme.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARNetworkErrorManager.h"
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 
 #import "UIViewController+ARUserActivity.h"
 #import "UIDevice-Hardware.h"
+#import "Artsy-Swift.h"
 
 #import <ORStackView/ORTagBasedAutoStackView.h>
 #import <ORStackView/ORStackScrollView.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 
 static const NSInteger ARMinimumArtworksFor2Column = 5;
 

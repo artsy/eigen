@@ -1,6 +1,8 @@
 #import "Partner.h"
 #import "ARValueTransformer.h"
 
+#import "ARMacros.h"
+
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation Partner

@@ -3,6 +3,8 @@
 #import "ARFollowableNetworkModel.h"
 #import "ARFonts.h"
 
+#import "ARMacros.h"
+
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface ARFollowableButton ()

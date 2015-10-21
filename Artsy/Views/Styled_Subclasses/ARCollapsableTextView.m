@@ -2,7 +2,7 @@
 
 #import "ARFonts.h"
 
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 static const CGFloat ARCollapsableTextViewHeight = 80;

@@ -3,7 +3,7 @@
 #import "ArtsyAPI+Profiles.h"
 #import "Fair.h"
 #import "Profile.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
 
 #import "ARFairViewController.h"
@@ -15,7 +15,6 @@
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Mantle/EXTScope.h>
 
 @interface ARProfileViewController () <ARMenuAwareViewController>
 

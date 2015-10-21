@@ -22,16 +22,16 @@
 #import "ARSearchFieldButton.h"
 #import "SiteFeature.h"
 #import "ARCustomEigenLabels.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
+#import "ARMacros.h"
 
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <EDColor/EDColor.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 
 
 @interface ARFairMapViewController () <NAMapViewDelegate, ARFairSearchViewControllerDelegate, ARSearchFieldButtonDelegate>

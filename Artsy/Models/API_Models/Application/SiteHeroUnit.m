@@ -3,6 +3,7 @@
 #import "ARStandardDateFormatter.h"
 #import "ARSystemTime.h"
 
+#import "ARMacros.h"
 #import "UIDevice-Hardware.h"
 
 #import <EDColor/EDColor.h>

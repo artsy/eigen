@@ -25,18 +25,18 @@
 #import "PartnerShow.h"
 #import "Profile.h"
 #import "User.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 
+#import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 
-#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <Artsy_UILabels/ARLabelSubclasses.h>
 #import <ORStackView/ORTagBasedAutoStackView.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 
 typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
     ARFairShowViewHeader = 1,

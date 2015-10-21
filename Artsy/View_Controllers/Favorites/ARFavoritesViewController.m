@@ -17,15 +17,14 @@
 #import "ARGeneViewController.h"
 #import "ARFavoriteItemViewCell.h"
 #import "ARFonts.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARScrollNavigationChief.h"
 #import "ARDispatchManager.h"
 
 #import "UIDevice-Hardware.h"
 
-#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <Artsy_UILabels/ARLabelSubclasses.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Mantle/EXTScope.h>
 
 @interface ARFavoritesViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARSwitchViewDelegate, ARArtworkMasonryLayoutProvider>
 

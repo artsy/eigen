@@ -19,17 +19,19 @@
 #import "ARFairArtistNetworkModel.h"
 #import "ARFonts.h"
 #import "User.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARSwitchboard+Eigen.h"
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 
 #import "UIDevice-Hardware.h"
 
-#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <Artsy_UILabels/ARLabelSubclasses.h>
 #import <ORStackView/ORTagBasedAutoStackView.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
+
+#import "Artsy-Swift.h"
 
 typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
     ARFairArtistTitle = 1,

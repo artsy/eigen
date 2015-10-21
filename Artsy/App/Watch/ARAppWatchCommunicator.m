@@ -19,7 +19,6 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 
 
 @interface ARAppWatchCommunicator () <CLLocationManagerDelegate>

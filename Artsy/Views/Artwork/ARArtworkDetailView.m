@@ -10,7 +10,6 @@
 #import "PartnerShow.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Mantle/EXTScope.h>
 
 typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
     ARDetailArtistName = 1,

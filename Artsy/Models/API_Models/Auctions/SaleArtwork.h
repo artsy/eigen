@@ -7,6 +7,7 @@
 #import "Bid.h"
 #import "ARAppConstants.h"
 
+@class Artwork;
 
 typedef NS_ENUM(NSInteger, ARReserveStatus) {
     ARReserveStatusNoReserve,

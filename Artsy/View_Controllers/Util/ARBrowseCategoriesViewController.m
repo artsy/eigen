@@ -7,7 +7,7 @@
 #import "ARBrowseFeaturedLinksCollectionViewController.h"
 #import "FeaturedLink.h"
 #import "OrderedSet.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARScrollNavigationChief.h"
 #import "ARLogger.h"
 

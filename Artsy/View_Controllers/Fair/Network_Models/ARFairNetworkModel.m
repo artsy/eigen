@@ -5,7 +5,6 @@
 #import "Fair.h"
 #import "OrderedSet.h"
 
-#import <Mantle/EXTScope.h>
 
 @implementation ARFairNetworkModel
 

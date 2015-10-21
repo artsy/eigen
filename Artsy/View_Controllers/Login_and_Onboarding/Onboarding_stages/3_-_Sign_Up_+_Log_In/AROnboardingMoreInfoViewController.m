@@ -12,11 +12,10 @@
 
 #import "UIDevice-Hardware.h"
 
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 
 //sigh
 #define EMAIL_TAG 111

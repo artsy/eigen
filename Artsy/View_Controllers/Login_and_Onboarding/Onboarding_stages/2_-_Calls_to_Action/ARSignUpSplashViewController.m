@@ -11,10 +11,10 @@
 
 #import "UIDevice-Hardware.h"
 
-#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <Artsy_UILabels/ARLabelSubclasses.h>
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 

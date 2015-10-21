@@ -2,7 +2,6 @@
 
 #import "ArtsyAPI+Browse.h"
 
-#import <Mantle/EXTScope.h>
 
 @interface ARBrowseNetworkModel ()
 

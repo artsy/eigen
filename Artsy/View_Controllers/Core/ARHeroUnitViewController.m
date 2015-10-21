@@ -1,14 +1,13 @@
 #import "ARHeroUnitViewController.h"
 #import "ARSiteHeroUnitView.h"
 #import "ARHeroUnitsNetworkModel.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 
 #import "UIDevice-Hardware.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Mantle/EXTScope.h>
 
 const static CGFloat ARHeroUnitDotsHeight = 30;
 const static CGFloat ARCarouselDelay = 10;

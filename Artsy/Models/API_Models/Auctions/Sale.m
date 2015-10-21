@@ -1,5 +1,6 @@
 #import "Sale.h"
 
+#import "ARMacros.h"
 #import "ArtsyAPI+Sales.h"
 #import "ARStandardDateFormatter.h"
 #import "BuyersPremium.h"

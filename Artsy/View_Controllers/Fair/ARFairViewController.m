@@ -25,17 +25,16 @@
 #import "SiteFeature.h"
 #import "UIViewController+ARUserActivity.h"
 #import "OrderedSet.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARScrollNavigationChief.h"
 
 #import "UIDevice-Hardware.h"
 
 #import <ORStackView/ORStackScrollView.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 
 NSString *const ARFairRefreshFavoritesNotification = @"ARFairRefreshFavoritesNotification";
 NSString *const ARFairHighlightArtworkIDKey = @"ARFairHighlightArtworkIDKey";

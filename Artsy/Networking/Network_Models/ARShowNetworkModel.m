@@ -4,7 +4,6 @@
 #import "Fair.h"
 #import "PartnerShow.h"
 
-#import <Mantle/EXTScope.h>
 
 @interface ARShowNetworkModel ()
 

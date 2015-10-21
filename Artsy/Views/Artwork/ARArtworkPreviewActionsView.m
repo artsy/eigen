@@ -7,7 +7,6 @@
 #import "UIDevice-Hardware.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Mantle/EXTScope.h>
 
 const CGFloat ARArtworkActionButtonSpacing = 8;
 

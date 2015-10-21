@@ -3,7 +3,6 @@
 #import "ARAppConstants.h"
 #import "ARFonts.h"
 
-#import <Mantle/EXTScope.h>
 
 @interface ARHeartButton ()
 // Front = Active, back = inactive

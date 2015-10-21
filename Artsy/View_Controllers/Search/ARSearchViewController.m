@@ -9,11 +9,10 @@
 #import "UIView+HitTestExpansion.h"
 #import "UIDevice-Hardware.h"
 
-#import <Artsy+UILabels/ARLabelSubclasses.h>
+#import <Artsy_UILabels/ARLabelSubclasses.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Mantle/EXTScope.h>
 #import <AFNetworking/AFNetworking.h>
 
 @interface ARSearchViewController () <UITextFieldDelegate, UITableViewDelegate>

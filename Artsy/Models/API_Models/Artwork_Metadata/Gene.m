@@ -5,7 +5,6 @@
 #import "User.h"
 #import "Gene.h"
 
-#import <Mantle/EXTScope.h>
 
 @interface Gene () {
     BOOL _isFollowed;

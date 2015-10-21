@@ -11,11 +11,10 @@
 #import "ARFonts.h"
 #import "Profile.h"
 #import "SiteFeature.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Mantle/EXTScope.h>
 #import <AFNetworking/AFNetworking.h>
 
 

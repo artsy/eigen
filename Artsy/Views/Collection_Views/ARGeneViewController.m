@@ -14,7 +14,7 @@
 #import "UIViewController+ARUserActivity.h"
 #import "User.h"
 #import "Gene.h"
-#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARNetworkErrorManager.h"
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
@@ -24,7 +24,6 @@
 
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Mantle/EXTScope.h>
 
 
 @interface ARGeneViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
