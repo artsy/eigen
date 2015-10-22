@@ -14,6 +14,7 @@ group :test do
   gem 'fui'
   gem 'xcpretty'
   gem 'second_curtain', :git => 'https://github.com/ashfurrow/second_curtain.git', :branch => 'improved_parse'
+  gem 'danger', :git => 'https://github.com/orta/danger.git'
 end
 
 group :distribution do

@@ -33,6 +33,7 @@ dependencies:
 
 test:
   pre:
+    - bundle exec danger
     - make ci
   override:
     - make test
