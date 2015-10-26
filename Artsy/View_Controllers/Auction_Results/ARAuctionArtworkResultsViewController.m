@@ -1,5 +1,6 @@
 #import "ARAuctionArtworkResultsViewController.h"
 #import "ARAuctionArtworkTableViewCell.h"
+#import "ARAuctionResultsNetworkModel.h"
 #import "ARPageSubtitleView.h"
 #import "ARFeedStatusIndicatorTableViewCell.h"
 
@@ -10,6 +11,7 @@ static const NSInteger ARArtworkIndex = 0;
 
 
 @interface ARAuctionArtworkResultsViewController ()
+@property (nonatomic, strong) ARAuctionResultsNetworkModel *network;
 @property (nonatomic, copy) NSArray *auctionResults;
 @end
 
@@ -24,9 +26,10 @@ static const NSInteger ARArtworkIndex = 0;
     }
 
     _artwork = artwork;
+    _network = [[ARAuctionResultsNetworkModel alloc] initWithArtwork:artwork];
 
-   @weakify(self);
-    [_artwork getRelatedAuctionResults:^(NSArray *auctionResults) {
+    @weakify(self);
+    [_network getRelatedAuctionResults:^(NSArray *auctionResults) {
         @strongify(self);
         self.auctionResults = auctionResults;
     }];
@@ -44,10 +47,12 @@ static const NSInteger ARArtworkIndex = 0;
 {
     UIView *container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100)];
     UILabel *warning = [[ARWarningView alloc] initWithFrame:CGRectZero];
+
     warning.text = @"Note: Auction results are an experimental feature with limited data.";
     [container addSubview:warning];
-    [warning alignTop:@"0" leading:@"0" bottom:@"-12" trailing:@"0" toView:container];
+    [warning alignTop:@"0" leading:@"60" bottom:@"-12" trailing:@"-60" toView:container];
 
+    container.backgroundColor = warning.backgroundColor;
     return container;
 }
 
@@ -117,20 +122,21 @@ static const NSInteger ARArtworkIndex = 0;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ARAuctionArtworkTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:ARAuctionTableViewCellIdentifier];
-
-    if (indexPath.section == ARArtworkIndex) {
-        [cell updateWithArtwork:self.artwork];
-    } else {
-        if (self.auctionResults.count) {
-            [cell updateWithAuctionResult:self.auctionResults[indexPath.row]];
-
-        } else {
-            return [ARFeedStatusIndicatorTableViewCell cellWithInitialState:ARFeedStatusStateLoading];
-        }
+    if (indexPath.section != ARArtworkIndex && self.auctionResults.count == 0) {
+        return [ARFeedStatusIndicatorTableViewCell cellWithInitialState:ARFeedStatusStateLoading];
     }
 
-    return cell;
+    return [self.tableView dequeueReusableCellWithIdentifier:ARAuctionTableViewCellIdentifier];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(ARAuctionArtworkTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == ARArtworkIndex) {
+        [cell updateWithArtwork:self.artwork];
+
+    } else if (self.auctionResults.count) {
+        [cell updateWithAuctionResult:self.auctionResults[indexPath.row]];
+    }
 }
 
 
