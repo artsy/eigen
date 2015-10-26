@@ -177,5 +177,6 @@
 + (NSURLRequest *)newUptimeURLRequest;
 + (NSURLRequest *)newSystemTimeRequest;
 + (NSURLRequest *)newRequestOutbidNotificationRequest;
++ (NSURLRequest *)newRequestForBlankPage;
 
 @end

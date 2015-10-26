@@ -962,4 +962,11 @@ static NSSet *artsyHosts = nil;
     return [self requestWithMethod:@"GET" path:@"/api/v1/" parameters:nil];
 }
 
++ (NSURLRequest *)newRequestForBlankPage
+{
+    NSURL *pageURL = [[ARRouter baseWebURL] URLByAppendingPathComponent:@"/dev/blank"];
+    return [NSURLRequest requestWithURL:pageURL];
+}
+
+
 @end

@@ -1,6 +1,7 @@
 #import <JLRoutes/JLRoutes.h>
 #import "ARExternalWebBrowserViewController.h"
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
+#import "ARWebViewCacheHost.h"
 
 
 @interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
@@ -45,7 +46,10 @@
 {
     [super viewDidLoad];
 
-    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+    ARWebViewCacheHost *webviewCache = [[ARWebViewCacheHost alloc] init];
+    WKWebView *webView = [webviewCache dequeueWebVewWithURL:self.initialURL];
+
+    //    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
     webView.navigationDelegate = self;
     [self.view addSubview:webView];
 
@@ -58,7 +62,7 @@
 
     // Work around bug in WKScrollView by setting private ivar directly: http://trac.webkit.org/changeset/188541
     // Once this has been fixed, we can’t completely disable this workaround, only for those OS versions with the fix.
-    if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){ 9, 0, 0 }]) {
+    if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9, 0, 0}]) {
 #ifndef DEBUG
         @try {
 #endif
