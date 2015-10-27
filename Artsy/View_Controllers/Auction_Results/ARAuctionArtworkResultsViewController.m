@@ -11,7 +11,7 @@ static const NSInteger ARArtworkIndex = 0;
 
 
 @interface ARAuctionArtworkResultsViewController ()
-@property (nonatomic, strong) ARAuctionResultsNetworkModel *network;
+@property (nonatomic, strong) NSObject<AuctionResultsNetworkModel> *network;
 @property (nonatomic, copy) NSArray *auctionResults;
 @end
 
@@ -27,18 +27,6 @@ static const NSInteger ARArtworkIndex = 0;
 
     _artwork = artwork;
     _network = [[ARAuctionResultsNetworkModel alloc] initWithArtwork:artwork];
-
-    @weakify(self);
-    [_network getRelatedAuctionResults:^(NSArray *auctionResults) {
-        @strongify(self);
-        self.auctionResults = auctionResults;
-    }];
-
-    [self.tableView registerClass:[ARAuctionArtworkTableViewCell class] forCellReuseIdentifier:ARAuctionTableViewCellIdentifier];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.allowsSelection = NO;
-    self.tableView.backgroundColor = [UIColor whiteColor];
-    self.tableView.tableHeaderView = [self createWarningView];
 
     return self;
 }
@@ -56,10 +44,22 @@ static const NSInteger ARArtworkIndex = 0;
     return container;
 }
 
-- (void)setAuctionResults:(NSArray *)auctionResults
+- (void)viewDidLoad
 {
-    _auctionResults = auctionResults;
-    [self.tableView reloadData];
+    [super viewDidLoad];
+
+    [self.tableView registerClass:ARAuctionArtworkTableViewCell.class forCellReuseIdentifier:ARAuctionTableViewCellIdentifier];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.allowsSelection = NO;
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.tableHeaderView = [self createWarningView];
+
+    @weakify(self);
+    [self.network getRelatedAuctionResults:^(NSArray *auctionResults) {
+        @strongify(self);
+        self.auctionResults = auctionResults;
+        [self.tableView reloadData];
+    }];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

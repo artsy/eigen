@@ -4,7 +4,7 @@
 
 - (instancetype)initWithArtwork:(Artwork *)artwork;
 
-- (void)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success;
+- (void)getRelatedAuctionResults:(void (^)(NSArray<AuctionLot *> *auctionResults))success;
 
 @end
 

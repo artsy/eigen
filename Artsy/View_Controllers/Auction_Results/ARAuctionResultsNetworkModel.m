@@ -19,7 +19,7 @@
     return self;
 }
 
-- (void)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success
+- (void)getRelatedAuctionResults:(void (^)(NSArray<AuctionLot *> *auctionResults))success;
 {
     [self.artwork getRelatedAuctionResults:success];
 }
