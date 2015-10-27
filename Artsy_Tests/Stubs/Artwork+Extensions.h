@@ -2,6 +2,6 @@
 
 
 @interface Artwork (Extensions)
-+ (id)stubbedArtwork;
-+ (id)stubbedArtworkJSON;
++ (instancetype)stubbedArtwork;
++ (NSDictionary *)stubbedArtworkJSON;
 @end
