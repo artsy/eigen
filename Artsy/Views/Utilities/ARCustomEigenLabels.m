@@ -95,7 +95,7 @@ static CGFloat ARWarningViewMargin = 8;
     [super layoutSubviews];
 
     CGRect frame = self.attentionSign.bounds;
-    frame.origin.x = ((CGRectGetWidth(self.bounds) - self.intrinsicContentSize.width) / 2) - ARWarningViewMargin;
+    frame.origin.x = MAX(0, ((CGRectGetWidth(self.bounds) - self.intrinsicContentSize.width) / 2) - ARWarningViewMargin);
     frame.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(frame)) / 2;
     self.attentionSign.frame = frame;
     self.attentionSign.tintColor = self.textColor;
