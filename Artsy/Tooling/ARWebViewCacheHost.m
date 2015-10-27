@@ -28,9 +28,8 @@
 
         // Wait one second, then start pre-caching if no
         // webviews have already been generated
-
         ar_dispatch_after(1, ^{
-            if (sharedInstance.webViews.count == 0) {
+            if (ARPerformWorkAsynchronously && sharedInstance.webViews.count == 0) {
                 [sharedInstance startPrecache];
             }
         });
@@ -87,7 +86,7 @@
     [shared.webViews addObject:webview];
 }
 
-- (WKWebView *)dequeueWebVewWithURL:(NSURL *)url
+- (WKWebView *)dequeueWebView
 {
     ARWebViewCacheHost *shared = [ARWebViewCacheHost sharedInstance];
 

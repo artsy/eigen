@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+@class WKWebView;
 
 // Problem: Hybrid Views can be slow
 
@@ -15,7 +16,6 @@
 @interface ARWebViewCacheHost : NSObject
 
 + (void)startup;
-
-- (WKWebView *)dequeueWebVewWithURL:(NSURL *)url;
+- (WKWebView *)dequeueWebView;
 
 @end
