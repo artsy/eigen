@@ -49,7 +49,7 @@
     ARWebViewCacheHost *webviewCache = [[ARWebViewCacheHost alloc] init];
     WKWebView *webView = [webviewCache dequeueWebVewWithURL:self.initialURL];
 
-    //    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+    webView.frame = self.view.bounds;
     webView.navigationDelegate = self;
     [self.view addSubview:webView];
 

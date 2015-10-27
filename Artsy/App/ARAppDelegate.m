@@ -31,6 +31,7 @@
 #import "ArtsyAPI+Private.h"
 #import "ARFileUtils.h"
 #import "ARSpotlight.h"
+#import "ARWebViewCacheHost.h"
 
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
@@ -159,6 +160,8 @@ static ARAppDelegate *_sharedInstance = nil;
                                                                    inApplicationState:UIApplicationStateInactive];
         }
     }];
+
+    [ARWebViewCacheHost startup];
 
     return YES;
 }

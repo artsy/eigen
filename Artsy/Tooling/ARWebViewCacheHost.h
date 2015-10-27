@@ -14,6 +14,8 @@
 
 @interface ARWebViewCacheHost : NSObject
 
++ (void)startup;
+
 - (WKWebView *)dequeueWebVewWithURL:(NSURL *)url;
 
 @end

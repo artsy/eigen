@@ -1,5 +1,5 @@
-### 2.3.1 (2015.10.16)
+### 2.4.0
 
-* No longer encode the device’s name into the User-Agent as it might contain characters outside the allowed character set which may lead to encoding errors on the backend. - alloy
-* Reload auction webview that had not yet finished loading when the user chose to sign up/in. - orta
-* On iPad skip onboarding when signing-up when trying to bid. - alloy
+* Caches website content from martsy/force, vastly speeding up hybrid pages - orta
+
+

@@ -3,13 +3,18 @@
 #import "ARRouter.h"
 
 
-@interface ARWebViewCacheHost ()
+@interface ARWebViewCacheHost () <WKNavigationDelegate>
 @property (nonatomic, strong, nonnull) WKProcessPool *processPool;
 @property (nonatomic, copy, nonnull) NSMutableArray<WKWebView *> *webViews;
 @end
 
 
 @implementation ARWebViewCacheHost
+
++ (void)startup
+{
+    [self sharedInstance];
+}
 
 /// This class exposes an API that hides the behind the scene singleton-ness.
 
@@ -43,6 +48,7 @@
     }
 
     _processPool = [[WKProcessPool alloc] init];
+    _webViews = [NSMutableArray array];
 
     return self;
 }
@@ -59,6 +65,7 @@
 
     CGRect deviceBounds = [UIScreen mainScreen].bounds;
     WKWebView *webView = [[WKWebView alloc] initWithFrame:deviceBounds configuration:config];
+    webView.navigationDelegate = self;
 
     return webView;
 }
@@ -85,26 +92,13 @@
     ARWebViewCacheHost *shared = [ARWebViewCacheHost sharedInstance];
 
     if (shared.webViews.count == 0) {
+        // Add three to the cache
         [shared startPrecache];
-        return [shared spawnWebview];
-    }
-
-    WKWebView *foundWebview = [shared.webViews detect:^BOOL(WKWebView *webview) {
-        return [webview.URL isEqual: url];
-    }];
-
-    if (foundWebview) {
-        [shared.webViews removeObject:foundWebview];
-        [shared addNewWebViewToCache];
-        return foundWebview;
     }
 
     WKWebView *first = shared.webViews.firstObject;
-    if (!first) {
-        NSLog(@"Could not find a webview, returning new uncached webview");
-        return [shared spawnWebview];
-    }
-
+    [shared.webViews removeObject:first];
+    [shared addNewWebViewToCache];
     return first;
 }
 
