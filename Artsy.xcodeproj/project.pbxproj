@@ -267,6 +267,7 @@
 		5EFF52BA1976CA6C00E2A563 /* ARSearchFieldButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF52B91976CA6C00E2A563 /* ARSearchFieldButton.m */; };
 		5EFF52BE197916C800E2A563 /* ARPendingOperationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF52BD197916C800E2A563 /* ARPendingOperationViewController.m */; };
 		6001414817CA33C100612DB4 /* ARArtworkRelatedArtworksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6001414717CA33C100612DB4 /* ARArtworkRelatedArtworksView.m */; };
+		60026AF21BDE3EFB0040257C /* ARWebViewCacheHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 60026AF11BDE3EFB0040257C /* ARWebViewCacheHost.m */; };
 		60026AF51BDE912C0040257C /* ARAuctionResultsNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60026AF41BDE912C0040257C /* ARAuctionResultsNetworkModel.m */; };
 		60026AF91BDF76040040257C /* ARAuctionArtworkResultsViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60026AF71BDE97320040257C /* ARAuctionArtworkResultsViewControllerSpec.m */; };
 		600415C917C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 600415C817C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m */; };
@@ -284,6 +285,7 @@
 		60215FD817CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60215FD617CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib */; };
 		6021F97F17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021F97E17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m */; };
 		60229B4E1683BE280072DC12 /* ARSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 60229B4D1683BE280072DC12 /* ARSpinner.m */; };
+		6022F5AE1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6022F5AD1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m */; };
 		60289229176BE98C00512977 /* ARViewInRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60289228176BE98C00512977 /* ARViewInRoomViewController.m */; };
 		6029E9F51993D726002D42C3 /* ARAppSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6029E9F41993D726002D42C3 /* ARAppSearchViewController.m */; };
 		602BC089168E0C0E00069FDB /* ARReusableLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 602BC088168E0C0D00069FDB /* ARReusableLoadingView.m */; };
@@ -1082,6 +1084,8 @@
 		5EFF52BD197916C800E2A563 /* ARPendingOperationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPendingOperationViewController.m; sourceTree = "<group>"; };
 		6001414617CA33C100612DB4 /* ARArtworkRelatedArtworksView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkRelatedArtworksView.h; sourceTree = "<group>"; };
 		6001414717CA33C100612DB4 /* ARArtworkRelatedArtworksView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkRelatedArtworksView.m; sourceTree = "<group>"; };
+		60026AF01BDE3EFB0040257C /* ARWebViewCacheHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWebViewCacheHost.h; sourceTree = "<group>"; };
+		60026AF11BDE3EFB0040257C /* ARWebViewCacheHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWebViewCacheHost.m; sourceTree = "<group>"; };
 		60026AF31BDE912C0040257C /* ARAuctionResultsNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionResultsNetworkModel.h; sourceTree = "<group>"; };
 		60026AF41BDE912C0040257C /* ARAuctionResultsNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionResultsNetworkModel.m; sourceTree = "<group>"; };
 		60026AF71BDE97320040257C /* ARAuctionArtworkResultsViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARAuctionArtworkResultsViewControllerSpec.m; path = Auction_Results/ARAuctionArtworkResultsViewControllerSpec.m; sourceTree = "<group>"; };
@@ -1116,6 +1120,7 @@
 		6021F97E17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkWithMetadataThumbnailCell.m; sourceTree = "<group>"; };
 		60229B4C1683BE280072DC12 /* ARSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpinner.h; sourceTree = "<group>"; };
 		60229B4D1683BE280072DC12 /* ARSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpinner.m; sourceTree = "<group>"; };
+		6022F5AD1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWebViewCacheHostSpec.m; sourceTree = "<group>"; };
 		6025B42E1655FACA00845975 /* SenTestingKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		6025B4481655FBA900845975 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		60289227176BE98C00512977 /* ARViewInRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewInRoomViewController.h; sourceTree = "<group>"; };
@@ -2002,6 +2007,7 @@
 				60327DD11987BA830075B399 /* ARDeveloperOptionsSpec.m */,
 				5108A7BB1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m */,
 				0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */,
+				6022F5AD1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m */,
 			);
 			name = "App Tests";
 			path = App_Tests;
@@ -2703,6 +2709,15 @@
 			path = Menu;
 			sourceTree = "<group>";
 		};
+		60026AEF1BDE3ED60040257C /* Webview Caching */ = {
+			isa = PBXGroup;
+			children = (
+				60026AF01BDE3EFB0040257C /* ARWebViewCacheHost.h */,
+				60026AF11BDE3EFB0040257C /* ARWebViewCacheHost.m */,
+			);
+			name = "Webview Caching";
+			sourceTree = "<group>";
+		};
 		60026AF61BDE97110040257C /* Auction Results */ = {
 			isa = PBXGroup;
 			children = (
@@ -2923,6 +2938,7 @@
 		60327DCA1987AD140075B399 /* Tooling */ = {
 			isa = PBXGroup;
 			children = (
+				60026AEF1BDE3ED60040257C /* Webview Caching */,
 				60327DCB1987AD240075B399 /* ARDispatchManager.h */,
 				60327DCC1987AD240075B399 /* ARDispatchManager.m */,
 				60327DCE1987B7940075B399 /* ARDeveloperOptions.h */,
@@ -4684,6 +4700,7 @@
 				609F98611AC106030079FE21 /* WatchBiddingDetails.m in Sources */,
 				609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */,
 				605B11B217CFD78400334196 /* AROnboardingWebViewController.m in Sources */,
+				60026AF21BDE3EFB0040257C /* ARWebViewCacheHost.m in Sources */,
 				342F971CCE09F6261F8460AF /* ARFairViewController.m in Sources */,
 				342F9CDD0CDC753B394F3CFC /* Fair.m in Sources */,
 				342F9D3F000632CC30AC5260 /* ARNavigationButtonsViewController.m in Sources */,
@@ -4813,6 +4830,7 @@
 				E6F84D021A0AB40500BF99A3 /* ARSignUpActiveUserViewControllerTests.m in Sources */,
 				3C6BDCC318E0B8D50028EF5D /* ARInquireForArtworkViewControllerTests.m in Sources */,
 				5142071A1BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m in Sources */,
+				6022F5AE1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m in Sources */,
 				3C205B59189000A5004280E0 /* ARAppNotificationsDelegateTests.m in Sources */,
 				D322204B1B4F0352008C2FBF /* ARCollapsableTextViewTests.m in Sources */,
 				E655E4B8194B4BEF00F2B7DA /* ARArtworkFavoritesNetworkModelTests.m in Sources */,
@@ -4996,7 +5014,7 @@
 					"-DAR_SHOW_ALL_DEBUG=1",
 					"-Werror=nonnull",
 				);
-				PROVISIONING_PROFILE = "d3a0cd2c-e754-449c-80a5-285c4bb5f504";
+				PROVISIONING_PROFILE = "09dca157-822f-4776-b30f-45f5f49c2810";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 			};

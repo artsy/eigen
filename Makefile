@@ -100,7 +100,7 @@ distribute:
 	 -F notes_type=1 \
 	 -F ipa=@$(IPA) \
 	 -F dsym=@$(DSYM) \
-	 -H 'X-HockeyAppToken: $(HOCKEYAPP_TOKEN)' \
+	 -H 'X-HockeyAppToken: $(HOCKEY_API_TOKEN)' \
 	 https://rink.hockeyapp.net/api/2/apps/upload \
 	 | grep -v "errors"
 
