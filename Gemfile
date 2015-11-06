@@ -13,7 +13,7 @@ end
 group :test do
   gem 'fui'
   gem 'xcpretty'
-  gem 'second_curtain', :git => 'https://github.com/ashfurrow/second_curtain.git', :branch => 'improved_parse'
+  gem 'second_curtain'
 end
 
 group :distribution do
