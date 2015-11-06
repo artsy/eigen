@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: "7.0"
+    version: "7.1"
   environment:
     # Private repo access
     GITHUB_API_KEY: secret
@@ -36,3 +36,5 @@ test:
     - make ci
   override:
     - make test
+  post:
+    - bash <(curl -s https://codecov.io/bash)
