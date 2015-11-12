@@ -6,6 +6,7 @@
 @property (nonatomic, copy) NSString *currentlyLoadingCursor;
 @property (nonatomic, strong) id representedObject;
 @property (nonatomic, strong) NSMutableOrderedSet *items; // set enforces uniqueness of feed items
+@property (nonatomic, assign) BOOL networking;
 @end
 
 
@@ -32,9 +33,9 @@
 
 // Should this have a "no more items" block? - ./
 
-- (void)getNewItems:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)getNewItems:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure
 {
-   @weakify(self);
+    @weakify(self);
     [_currentFeed getFeedItemsWithCursor:nil success:^(NSOrderedSet *parsedItems) {
         @strongify(self);
 
@@ -42,13 +43,17 @@
         NSArray *newItems = [parsedItems array];
         [self.items insertObjects:newItems atIndexes:indexSet];
         if (success) {
-            success();
+            success(newItems);
         }
     } failure:failure];
 }
 
-- (void)getNextPage:(void (^)())success failure:(void (^)(NSError *error))failure completion:(void (^)())completion
+- (void)getNextPage:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure completion:(void (^)())completion
 {
+    if (self.networking) {
+        return;
+    }
+
     if (![self hasNext]) {
         if (completion) {
             completion();
@@ -56,15 +61,17 @@
         return;
     }
 
+    self.networking = true;
     self.currentlyLoadingCursor = self.currentFeed.cursor;
 
-   @weakify(self);
+    @weakify(self);
     void (^successBlock)(id) = ^(NSOrderedSet *parsedItems) {
         @strongify(self);
+        self.networking = NO;
         if (parsedItems.count) {
             [self.items addObjectsFromArray:[parsedItems array]];
             if (success) {
-                success();
+                success([parsedItems array]);
             }
         } else {
             if (completion) {
@@ -75,6 +82,7 @@
 
     void (^failureBlock)(NSError *) = ^(NSError *error) {
         @strongify(self);
+        self.networking = NO;
         self.currentlyLoadingCursor = nil;
         if (failure) {
             failure(error);

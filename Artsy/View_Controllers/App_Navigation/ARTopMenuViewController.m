@@ -396,7 +396,7 @@ static const CGFloat ARMenuButtonDimension = 46;
         if (controller.viewControllers.count == 1) {
             UIScrollView *scrollView = nil;
             if (index == ARTopTabControllerIndexFeed) {
-                scrollView = [(ARShowFeedViewController *)[controller.childViewControllers objectAtIndex:0] tableView];
+                scrollView = [(ARSimpleShowFeedViewController *)[controller.childViewControllers objectAtIndex:0] tableView];
             } else if (index == ARTopTabControllerIndexBrowse) {
                 scrollView = [(ARBrowseViewController *)[controller.childViewControllers objectAtIndex:0] collectionView];
             } else if (index == ARTopTabControllerIndexFavorites) {

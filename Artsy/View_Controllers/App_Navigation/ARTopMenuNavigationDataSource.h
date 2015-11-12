@@ -1,6 +1,6 @@
 #import "ARTabContentView.h"
 
-@class ARShowFeedViewController, ARNavigationController;
+@class ARSimpleShowFeedViewController, ARNavigationController;
 
 typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
     ARTopTabControllerIndexFeed,
@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
 
 @interface ARTopMenuNavigationDataSource : NSObject <ARTabViewDataSource>
 
-@property (readwrite, nonatomic, strong) ARShowFeedViewController *showFeedViewController;
+@property (readwrite, nonatomic, strong) ARSimpleShowFeedViewController *showFeedViewController;
 
 - (void)prefetchBrowse;
 - (void)prefetchHeroUnits;

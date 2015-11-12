@@ -11,8 +11,8 @@
 
 - (id)initWithFeed:(ARFeed *)feed;
 - (ARFeedItem *)itemAtIndex:(NSInteger)index;
-- (void)getNewItems:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)getNextPage:(void (^)())success failure:(void (^)(NSError *error))failure completion:(void (^)())completion;
+- (void)getNewItems:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure;
+- (void)getNextPage:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure completion:(void (^)())completion;
 - (void)removeAllItems;
 
 @property (nonatomic, assign) BOOL hasNext;

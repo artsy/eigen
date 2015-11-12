@@ -1,8 +1,9 @@
 #import "ARTopMenuNavigationDataSource.h"
-#import "ARShowFeedViewController.h"
 #import "ARBrowseViewController.h"
+#import "ARSimpleShowFeedViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARHeroUnitsNetworkModel.h"
+#import "ARHeroUnitViewController.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
 #import <SDWebImage/SDWebImagePrefetcher.h>
 
@@ -50,8 +51,9 @@ WebViewNavigationControllerWithPath(NSString *path)
 
     ARShowFeed *showFeed = [[ARShowFeed alloc] init];
     ARFeedTimeline *showFeedTimeline = [[ARFeedTimeline alloc] initWithFeed:showFeed];
-    _showFeedViewController = [[ARShowFeedViewController alloc] initWithFeedTimeline:showFeedTimeline];
-    _showFeedViewController.heroUnitDatasource = [[ARHeroUnitsNetworkModel alloc] init];
+    _showFeedViewController = [[ARSimpleShowFeedViewController alloc] initWithFeedTimeline:showFeedTimeline];
+    _showFeedViewController.heroUnitVC.heroUnitNetworkModel = [[ARHeroUnitsNetworkModel alloc] init];
+
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:_showFeedViewController];
 
     _showsNavigationController = WebViewNavigationControllerWithPath(@"/shows");
@@ -80,7 +82,7 @@ WebViewNavigationControllerWithPath(NSString *path)
 
 - (void)prefetchHeroUnits
 {
-    [self.showFeedViewController.heroUnitDatasource getHeroUnitsWithSuccess:^(NSArray *heroUnits) {
+    [self.showFeedViewController.heroUnitVC.heroUnitNetworkModel getHeroUnitsWithSuccess:^(NSArray *heroUnits) {
         NSArray *urls = [heroUnits map:^id(SiteHeroUnit *unit) {
             return unit.preferredImageURL;
         }];
