@@ -112,11 +112,6 @@ static ARTrialController *instance;
     }
 }
 
-+ (void)startTrialWithCompletion:(void (^)(void))completion failure:(void (^)(NSError *error))failure
-{
-    [[ARUserManager sharedManager] startTrial:completion failure:failure];
-}
-
 + (void)extendTrial
 {
     [instance extendTrial];

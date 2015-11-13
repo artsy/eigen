@@ -21,7 +21,5 @@
 /// Performs a series of requests then runs the success block
 + (void)getRequests:(NSArray *)requests success:(void (^)(NSArray *operations))completed;
 
-+ (void)getXappTokenWithCompletion:(void (^)(NSString *xappToken, NSDate *expirationDate))callback;
-+ (void)getXappTokenWithCompletion:(void (^)(NSString *xappToken, NSDate *expirationDate))callback failure:(void (^)(NSError *error))failure;
 + (void)handleXappTokenError:(NSError *)error;
 @end

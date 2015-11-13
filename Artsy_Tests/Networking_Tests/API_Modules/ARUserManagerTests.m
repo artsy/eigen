@@ -244,33 +244,6 @@ describe(@"clearUserData", ^{
     });
 });
 
-describe(@"startTrial", ^{
-    beforeEach(^{
-        [ARUserManager stubXappToken:[ARUserManager stubXappToken] expiresIn:[ARUserManager stubXappTokenExpiresIn]];
-
-        [[ARUserManager sharedManager] startTrial:^{
-
-        } failure:^(NSError *error) {
-            failure(@"startTrial should not fail");
-        }];
-    });
-
-    it(@"sets an xapp token", ^{
-        NSString *xapp = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenKeychainKey];
-        expect([ARUserManager stubXappToken]).to.equal(xapp);
-    });
-
-    // Right now the Xapp call in tests is a stub that just returns a string straight away
-    // so it doesn't set an expiry date
-
-    pending(@"sets expiry date", ^{
-        ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
-        NSDate *expiryDate = [dateFormatter dateFromString:[ARUserManager stubXappTokenExpiresIn]];
-
-        expect([expiryDate isEqualToDate:[[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenExpiryDateDefault]]).to.beTruthy();
-    });
-});
-
 describe(@"createUserWithName", ^{
     beforeEach(^{
         [ARUserManager stubXappToken:[ARUserManager stubXappToken] expiresIn:[ARUserManager stubXappTokenExpiresIn]];

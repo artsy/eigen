@@ -3,6 +3,7 @@
 #import "ARCrossfadingImageView.h"
 #import "ARUserManager.h"
 #import "UIView+HitTestExpansion.h"
+#import "ArtsyAPI+Private.h"
 
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
@@ -280,11 +281,11 @@
 {
     [self setFormEnabled:NO animated:YES];
 
-    [ARTrialController startTrialWithCompletion:^{
+    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         // Load normal app
         [self.delegate dismissOnboardingWithVoidAnimation:YES];
-    }
-        failure:^(NSError *error) {
+
+    } failure:^(NSError *error) {
         [UIAlertView showWithTitle:@"Couldn’t Reach Artsy"
                            message:error.localizedDescription
                  cancelButtonTitle:@"Retry"
@@ -292,7 +293,7 @@
                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                               [self performSelector:@selector(enableForm) withObject:nil];
                           }];
-        }];
+    }];
 }
 
 - (void)enableForm
