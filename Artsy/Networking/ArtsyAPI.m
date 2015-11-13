@@ -165,8 +165,6 @@
 
     }
     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        [UICKeyChainStore removeItemForKey:ARXAppTokenKeychainKey];
-        [ARRouter setXappToken:nil];
 
         //TODO: handle this less stupid
         ARErrorLog(@"Couldn't get an Xapp token.");
