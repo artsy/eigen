@@ -13,3 +13,4 @@
 * Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done loading. - alloy
 * Remove opaque background from Search keyboard. - 1aurabrown
 * Adds local downloading of the shows feed for instant loading on the next run - orta
+* Total Re-write for the show feed - orta
