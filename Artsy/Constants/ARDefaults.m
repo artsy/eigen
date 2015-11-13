@@ -9,7 +9,9 @@ NSString *const ARUseStagingDefault = @"ARUseStagingDefault";
 NSString *const AROAuthTokenDefault = @"AROAuthToken";
 NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
 
-NSString *const ARXAppTokenDefault = @"ARXAppTokenDefault";
+// Yes, there's inconsitency here. We migrated this to keychain, but wanted
+// to keep backwards compatability.
+NSString *const ARXAppTokenKeychainKey = @"ARXAppTokenDefault";
 NSString *const ARXAppTokenExpiryDateDefault = @"ARXAppTokenExpiryDateDefault";
 
 NSString *const AROnboardingSkipPersonalizeDefault = @"eigen-onboard-skip-personalize";

@@ -12,6 +12,7 @@
 #import "ARCollectorStatusViewController.h"
 #import "ARKeychainable.h"
 #import "AFHTTPRequestOperation+JSON.h"
+#import <UICKeychainStore/UICKeychainStore.h>
 
 NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";
 
@@ -121,7 +122,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 - (BOOL)hasValidXAppToken
 {
-    NSString *xapp = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenDefault];
+    NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
     NSDate *expiryDate = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenExpiryDateDefault];
 
     BOOL tokenValid = expiryDate && [[[ARSystemTime date] GMTDate] earlierDate:expiryDate] != expiryDate;
@@ -140,7 +141,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:expiryDate forKey:AROAuthTokenExpiryDateDefault];
 
-    [defaults removeObjectForKey:ARXAppTokenDefault];
+    [defaults removeObjectForKey:ARXAppTokenKeychainKey];
     [defaults removeObjectForKey:ARXAppTokenExpiryDateDefault];
     [defaults synchronize];
 }
@@ -355,7 +356,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [self.keychain removeKeychainStringForKey:AROAuthTokenDefault];
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        [[NSUserDefaults standardUserDefaults] setObject:xappToken forKey:ARXAppTokenDefault];
+        [[NSUserDefaults standardUserDefaults] setObject:xappToken forKey:ARXAppTokenKeychainKey];
         [[NSUserDefaults standardUserDefaults] setObject:expirationDate forKey:ARXAppTokenExpiryDateDefault];
         [[NSUserDefaults standardUserDefaults] synchronize];
         callback();
@@ -554,7 +555,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [ARDefaults resetDefaults];
 
     [manager.keychain removeKeychainStringForKey:AROAuthTokenDefault];
-    [manager.keychain removeKeychainStringForKey:ARXAppTokenDefault];
+    [manager.keychain removeKeychainStringForKey:ARXAppTokenKeychainKey];
 
     [manager deleteHTTPCookies];
     [ARRouter setAuthToken:nil];

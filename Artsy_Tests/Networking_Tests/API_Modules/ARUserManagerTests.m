@@ -256,7 +256,7 @@ describe(@"startTrial", ^{
     });
 
     it(@"sets an xapp token", ^{
-        NSString *xapp = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenDefault];
+        NSString *xapp = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenKeychainKey];
         expect([ARUserManager stubXappToken]).to.equal(xapp);
     });
 
