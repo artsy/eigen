@@ -7,8 +7,9 @@
 
 @property (nonatomic, readonly, getter=isShowingOfflineView) BOOL showingOfflineView;
 
-@property (nonatomic, strong) AROfflineView *offlineView;
+@property (nonatomic, readonly, strong) AROfflineView *offlineView;
 
+- (void)showOfflineViewIfNeeded;
 - (void)showOfflineView;
 - (void)hideOfflineView;
 

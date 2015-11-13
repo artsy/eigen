@@ -6,8 +6,7 @@
 @interface ARShowFeedNetworkStatusModel () <AROfflineViewDelegate>
 @property (nonatomic, weak, readwrite) ARSimpleShowFeedViewController *showFeedVC;
 
-@property (nonatomic, readwrite, getter=isSh owingOfflineView) BOOL showingOfflineView;
-@property (nonatomic, strong) id networkNotificationObserver;
+@property (nonatomic, readwrite, getter=isShowingOfflineView) BOOL showingOfflineView;
 @end
 
 
@@ -22,19 +21,8 @@
 
     self.showFeedVC = showFeedVC;
 
-    @weakify(self);
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-    self.networkNotificationObserver = [defaultCenter addObserverForName:ARNetworkUnavailableNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        @strongify(self);
-
-        id <UITableViewDataSource> dataSource = self.showFeedVC.tableView.dataSource;
-        BOOL feedViewHasItems = [dataSource tableView:self.showFeedVC.tableView numberOfRowsInSection:0] > 0;
-
-        if (feedViewHasItems == NO) {
-            // The offline view will be hidden when we load content.
-            [self showOfflineView];
-        }
-    }];
+    [defaultCenter addObserver:self selector:@selector(showOfflineViewIfNeeded) name:ARNetworkUnavailableNotification object:nil];
 
     return self;
 }
@@ -42,7 +30,7 @@
 - (void)dealloc
 {
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter removeObserver:self.networkNotificationObserver];
+    [defaultCenter removeObserver:self];
 }
 
 - (void)setShowingOfflineView:(BOOL)showingOfflineView
@@ -54,13 +42,24 @@
     [self.showFeedVC didChangeValueForKey:@keypath(self.showFeedVC, hidesToolbarMenu)];
 }
 
+- (void)showOfflineViewIfNeeded
+{
+    id<UITableViewDataSource> dataSource = self.showFeedVC.tableView.dataSource;
+    BOOL feedViewHasItems = [dataSource tableView:self.showFeedVC.tableView numberOfRowsInSection:0] > 0;
+
+    if (feedViewHasItems == NO) {
+        // The offline view will be hidden when we load content.
+        [self showOfflineView];
+    }
+}
+
 - (void)showOfflineView
 {
     UIView *hostView = self.showFeedVC.view;
     self.showingOfflineView = YES;
 
     if (self.offlineView == nil) {
-        self.offlineView = [[AROfflineView alloc] initWithFrame:hostView.bounds];
+        _offlineView = [[AROfflineView alloc] initWithFrame:hostView.bounds];
         self.offlineView.delegate = self;
     }
 
@@ -77,7 +76,7 @@
 
     [self.offlineView removeFromSuperview];
 
-    self.offlineView = nil;
+    _offlineView = nil;
 }
 
 - (void)offlineViewDidRequestRefresh:(AROfflineView *)offlineView;

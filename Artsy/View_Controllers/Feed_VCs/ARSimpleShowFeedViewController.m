@@ -142,14 +142,18 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
             [self.tableView reloadData];
 
             [self loadNextFeedPage];
-            [self.heroUnitVC.heroUnitNetworkModel getHeroUnits];
+            [self.heroUnitVC.heroUnitNetworkModel downloadHeroUnits];
+            [self.networkStatus hideOfflineView];
 
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
 
         } failure:^(NSError *error) {
             ARErrorLog(@"There was an error getting newest items for the feed: %@", error.localizedDescription);
 
+            // So that it won't stop the first one
             [self.networkStatus.offlineView refreshFailed];
+            [self.networkStatus showOfflineViewIfNeeded];
+            
             [self performSelector:@selector(refreshFeedItems) withObject:nil afterDelay:3];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
         }];
@@ -167,6 +171,8 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
         [self.tableView reloadData];
 
     } failure:^(NSError *error) {
+        ARErrorLog(@"There was an error getting next feed page: %@", error.localizedDescription);
+        [ARNetworkErrorManager presentActiveError:error withMessage:@"We're having trouble accessing the show feed."];
 
     } completion:^{
 

@@ -24,7 +24,7 @@ static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey
     return self;
 }
 
-- (void)getHeroUnits
+- (void)downloadHeroUnits
 {
     [self getHeroUnitsWithSuccess:nil failure:nil];
 }
