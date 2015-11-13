@@ -188,7 +188,8 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
         cell.delegate = self;
     }];
 
-    data.height = 400;
+    BOOL useLandscape = self.view.bounds.size.width > self.view.bounds.size.height;
+    data.height = [ARModernPartnerShowTableViewCell heightForItem:show useLandscapeValues:useLandscape];
     [self.section addCellData:data];
 }
 
