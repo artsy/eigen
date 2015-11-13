@@ -1,12 +1,13 @@
 #import <UIKit/UIKit.h>
 #import <ARGenericTableViewController/ARGenericTableViewController.h>
+#import "ARMenuAwareViewController.h"
 
 @class ARFeedLinkUnitViewController, ARHeroUnitViewController;
 
 /// Shows a collection of shows from an ARFeedTimeline
 
 
-@interface ARSimpleShowFeedViewController : ARGenericTableViewController <ARMenuAwareViewController, ARNetworkErrorAwareViewController>
+@interface ARSimpleShowFeedViewController : ARGenericTableViewController <ARMenuAwareViewController>
 
 /// PagingViewController of tappable headline images
 @property (nonatomic, strong, readonly) ARHeroUnitViewController *heroUnitVC;

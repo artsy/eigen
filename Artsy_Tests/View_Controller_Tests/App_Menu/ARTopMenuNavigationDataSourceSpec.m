@@ -2,7 +2,7 @@
 #import "ARNavigationController.h"
 #import "ARBrowseViewController.h"
 #import "ARFavoritesViewController.h"
-#import "ARShowFeedViewController.h"
+#import "ARSimpleShowFeedViewController.h"
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Artworks.h"
 
@@ -25,7 +25,7 @@ before(^{
 it(@"uses a single feed vc", ^{
     ARNavigationController *navigationController = [navDataSource feedNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
-    expect(rootVC).to.beKindOf([ARShowFeedViewController class]);
+    expect(rootVC).to.beKindOf([ARSimpleShowFeedViewController class]);
 
     ARNavigationController *newNavigationController = [navDataSource feedNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];

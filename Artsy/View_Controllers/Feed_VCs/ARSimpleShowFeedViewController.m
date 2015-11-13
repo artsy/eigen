@@ -21,7 +21,8 @@
 static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 
 
-@interface ARSimpleShowFeedViewController () <ARModernPartnerShowTableViewCellDelegate>
+@interface ARSimpleShowFeedViewController () <ARModernPartnerShowTableViewCellDelegate, ARNetworkErrorAwareViewController>
+
 @end
 
 
