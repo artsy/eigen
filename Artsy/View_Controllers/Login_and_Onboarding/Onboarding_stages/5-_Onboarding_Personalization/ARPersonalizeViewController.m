@@ -41,7 +41,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     if (self) {
         _searchResults = [NSMutableArray array];
         if (!genes || genes.count == 0) {
-            NSArray *fallbackGenes = @[ @"Photography", @"Bauhaus", @"Dada", @"Glitch Aesthetic", @"Computer Art", @"Op Art", @"Minimalism" ];
+            NSArray *fallbackGenes = @[ @"Photography", @"Bauhaus", @"Dada", @"Glitch Aesthetic", @"Early Computer Art", @"Op Art", @"Minimalism" ];
             ARActionLog(@"Using fallback genes in 'Personalize'");
             // Convert names to Gene Objects
             _genesToFollow = [fallbackGenes map:^id(NSString *name) {
