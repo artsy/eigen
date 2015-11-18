@@ -35,13 +35,13 @@
         NSURLSession *session = [NSURLSession sharedSession];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             id JSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-            if ([JSON isKindOfClass:[NSDictionary class]]) {
+            if ([JSON isKindOfClass:NSDictionary.class]) {
 
                 // Save the downloaded JSON to a known place for ARShowFeed to grab
                 // when the app is opened
 
                 NSString *path = [self.class pathForDownloadedShowFeed];
-                [NSKeyedArchiver archiveRootObject:JSON toFile:path];
+                [data writeToFile:path atomically:YES];
 
                 ARActionLog(@"Downloaded show feed in the background");
 

@@ -92,6 +92,11 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
     }];
 
     _section = [[ARSectionData alloc] init];
+
+    /// Deal with background cached'd data
+    for (ARPartnerShowFeedItem *show in self.feedTimeline.items) {
+        [self addShowToTable:show];
+    }
     self.tableViewData = [[ARTableViewData alloc] initWithSectionDataArray:@[ self.section ]];
 }
 

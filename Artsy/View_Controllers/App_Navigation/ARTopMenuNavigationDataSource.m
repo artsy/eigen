@@ -6,6 +6,7 @@
 #import "ARHeroUnitViewController.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
 #import <SDWebImage/SDWebImagePrefetcher.h>
+#import "ARAppBackgroundFetchDelegate.h"
 
 static ARNavigationController *
 WebViewNavigationControllerWithPath(NSString *path)
@@ -49,7 +50,8 @@ WebViewNavigationControllerWithPath(NSString *path)
         _badgeCounts[i] = 0;
     }
 
-    ARShowFeed *showFeed = [[ARShowFeed alloc] init];
+    NSString *filePath = [ARAppBackgroundFetchDelegate pathForDownloadedShowFeed];
+    ARShowFeed *showFeed = [[ARShowFeed alloc] initWithFileAtPath:filePath];
     ARFeedTimeline *showFeedTimeline = [[ARFeedTimeline alloc] initWithFeed:showFeed];
     _showFeedViewController = [[ARSimpleShowFeedViewController alloc] initWithFeedTimeline:showFeedTimeline];
     _showFeedViewController.heroUnitVC.heroUnitNetworkModel = [[ARHeroUnitsNetworkModel alloc] init];
