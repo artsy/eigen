@@ -17,5 +17,7 @@ group :test do
 end
 
 group :distribution do
-  gem 'deliver'
+  #gem 'deliver'
+  gem 'fastlane_core', :git => 'https://github.com/alloy/fastlane_core.git', :branch => 'update-simplified-chinese-language-code'
+  gem 'deliver', :git => 'https://github.com/alloy/deliver.git', :branch => 'only-include-known-languages'
 end
