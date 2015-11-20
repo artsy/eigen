@@ -14,3 +14,6 @@
 * Remove opaque background from Search keyboard. - 1aurabrown
 * Adds local downloading of the shows feed for instant loading on the next run - orta
 * Total Re-write for the show feed - orta
+* Total Re-write for the show feed - orta
+* Adds local downloading of the shows feed for instant loading on the next run - orta
+
