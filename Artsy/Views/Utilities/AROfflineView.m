@@ -1,8 +1,6 @@
 #import "AROfflineView.h"
 #import "ORStackView+ArtsyViews.h"
 
-#import <objc/message.h>
-
 
 @interface AROfflineView ()
 @property (readonly, nonatomic, strong) ARMenuButton *refreshButton;
@@ -83,6 +81,7 @@
 
 // Don’t immediately stop the animation, instead let it do a full rotation so that the user has the feeling we at least
 // tried when a connection fails immediately again.
+
 - (void)refreshFailed;
 {
     self.stopRotating = YES;

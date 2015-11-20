@@ -23,6 +23,7 @@
 #import "ARUserManager.h"
 
 #import "UIViewController+InnermostTopViewController.h"
+#import "ARSimpleShowFeedViewController.h"
 #import "ARAdminSettingsViewController.h"
 #import "ARQuicksilverViewController.h"
 #import "ARRouter.h"
@@ -47,7 +48,6 @@
 
 // demo
 #import "ARDemoSplashViewController.h"
-#import "ARShowFeedViewController.h"
 
 
 @interface ARAppDelegate ()
@@ -133,7 +133,7 @@ static ARAppDelegate *_sharedInstance = nil;
         }
     }
 
-    ARShowFeedViewController *topVC = (id)ARTopMenuViewController.sharedController.rootNavigationController.topViewController;
+    ARSimpleShowFeedViewController *topVC = (id)ARTopMenuViewController.sharedController.rootNavigationController.topViewController;
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         // Sync clock with server
         [ARSystemTime sync];

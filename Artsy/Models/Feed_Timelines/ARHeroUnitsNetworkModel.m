@@ -24,6 +24,11 @@ static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey
     return self;
 }
 
+- (void)downloadHeroUnits
+{
+    [self getHeroUnitsWithSuccess:nil failure:nil];
+}
+
 - (void)getHeroUnitsWithSuccess:(void (^)(NSArray *heroUnits))success failure:(void (^)(NSError *error))failure
 {
     if (self.isLoading) {
