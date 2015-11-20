@@ -40,9 +40,13 @@ static BOOL IsSpotlightActionTypeAvailable = NO;
     if ([[ARUserManager sharedManager] hasExistingAccount]) {
         showViewController();
     } else {
+
         // This is (hopefully) an edge-case where the user did not launch the app yet since installing it, in which case
         // we skip on-boarding and sign in as trial user.
-        [[ARUserManager sharedManager] startTrial:showViewController failure:^(NSError *error) {
+        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+            showViewController();
+
+        } failure:^(NSError *error) {
             // Don’t leave the user with an app in a broken state, so start on-boarding after all.
             [(ARAppDelegate *)[[JSDecoupledAppDelegate sharedAppDelegate] appStateDelegate] showTrialOnboarding];
         }];

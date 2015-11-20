@@ -20,9 +20,6 @@ typedef NS_ENUM(NSInteger, ARTrialContext) {
 /// Shows the sign up, with optional completion block to be triggered after signup or login.
 + (void)presentTrialWithContext:(enum ARTrialContext)context success:(void (^)(BOOL newUser))success;
 
-/// Get the guest authentication token and run the completion block
-+ (void)startTrialWithCompletion:(void (^)(void))completion failure:(void (^)(NSError *error))failure;
-
 /// No-op if you didn't have a trial account before signing up
 /// otherwise will run the "favorite" artwork or whatever started the splash
 

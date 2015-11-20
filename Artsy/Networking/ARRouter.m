@@ -68,7 +68,7 @@ static NSSet *artsyHosts = nil;
     // Ensure the keychain is empty incase you've uninstalled and cleared user data
     if (![[ARUserManager sharedManager] hasExistingAccount]) {
         [UICKeyChainStore removeItemForKey:AROAuthTokenDefault];
-        [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
+        [UICKeyChainStore removeItemForKey:ARXAppTokenKeychainKey];
     }
 
     NSString *token = [UICKeyChainStore stringForKey:AROAuthTokenDefault];
@@ -78,7 +78,7 @@ static NSSet *artsyHosts = nil;
 
     } else {
         ARActionLog(@"Found trial XApp token in keychain");
-        NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenDefault];
+        NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
         [ARRouter setXappToken:xapp];
     }
 }

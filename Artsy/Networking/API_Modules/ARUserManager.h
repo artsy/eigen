@@ -31,8 +31,6 @@ extern NSString *const ARUserSessionStartedNotification;
 - (void)disableSharedWebCredentials;
 - (void)tryLoginWithSharedWebCredentials:(void (^)(NSError *error))completion;
 
-- (void)startTrial:(void (^)())callback failure:(void (^)(NSError *error))failure;
-
 - (void)loginWithUsername:(NSString *)username
                  password:(NSString *)password
    successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials

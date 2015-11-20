@@ -83,7 +83,7 @@
         
         if ([recoverySuggestion[@"error"] isEqualToString:@"Unauthorized"] && [recoverySuggestion[@"text"] isEqualToString:@"The XAPP token is invalid or has expired."]) {
             ARActionLog(@"Resetting XAPP token after error: %@", error.localizedDescription);
-            [UICKeyChainStore removeItemForKey:ARXAppTokenDefault];
+            [UICKeyChainStore removeItemForKey:ARXAppTokenKeychainKey];
             [ARRouter setXappToken:nil];
         }
     }
@@ -127,7 +127,7 @@
     // Check if we already have a token for xapp or oauth and run the block
 
     NSDate *date = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenExpiryDateDefault];
-    NSString *xappToken = [UICKeyChainStore stringForKey:ARXAppTokenDefault];
+    NSString *xappToken = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
     NSString *oauthToken = [UICKeyChainStore stringForKey:AROAuthTokenDefault];
 
     if (date && (xappToken || oauthToken)) {
@@ -146,7 +146,7 @@
         ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
         NSDate *expiryDate = [dateFormatter dateFromString:date];
 
-        NSString *oldxToken = [UICKeyChainStore stringForKey:ARXAppTokenDefault];
+        NSString *oldxToken = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
         if (oldxToken) {
             if (callback) {
                 callback(token, expiryDate);
@@ -155,7 +155,7 @@
         }
 
         [ARRouter setXappToken:token];
-        [UICKeyChainStore setString:token forKey:ARXAppTokenDefault];
+        [UICKeyChainStore setString:token forKey:ARXAppTokenKeychainKey];
         [[NSUserDefaults standardUserDefaults] setObject:expiryDate forKey:ARXAppTokenExpiryDateDefault];
         [[NSUserDefaults standardUserDefaults] synchronize];
 

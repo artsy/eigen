@@ -17,14 +17,14 @@ it(@"is always ArtsyOHHTTPAPI in tests", ^{
 describe(@"handleXappTokenError", ^{
 
     it(@"doesn't reset XAPP token on non-401 errors", ^{
-        [UICKeyChainStore setString:@"xapp token" forKey:ARXAppTokenDefault];
+        [UICKeyChainStore setString:@"xapp token" forKey:ARXAppTokenKeychainKey];
         NSError *error = [[NSError alloc] initWithDomain:NSURLErrorDomain code:302 userInfo:@{}];
         [ArtsyAPI handleXappTokenError:error];
-        expect([UICKeyChainStore stringForKey:ARXAppTokenDefault]).to.equal(@"xapp token");
+        expect([UICKeyChainStore stringForKey:ARXAppTokenKeychainKey]).to.equal(@"xapp token");
     });
 
     it(@"resets XAPP token on error", ^{
-        [UICKeyChainStore setString:@"value" forKey:ARXAppTokenDefault];
+        [UICKeyChainStore setString:@"value" forKey:ARXAppTokenKeychainKey];
         id mock = [OCMockObject mockForClass:[ARRouter class]];
         [[mock expect] setXappToken:nil];
 
@@ -37,7 +37,7 @@ describe(@"handleXappTokenError", ^{
         [ArtsyAPI handleXappTokenError:error];
         [mock verify];
         [mock stopMocking];
-        expect([UICKeyChainStore stringForKey:ARXAppTokenDefault]).to.beNil();
+        expect([UICKeyChainStore stringForKey:ARXAppTokenKeychainKey]).to.beNil();
     });
 });
 
