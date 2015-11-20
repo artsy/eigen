@@ -72,8 +72,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (NSURL *)webpageURLForEntity:(id<ARSpotlightMetadataProvider>)entity;
 {
-    NSString *path = entity.publicArtsyPath ?: @"";
-    return [[ARRouter baseDesktopWebURL] URLByAppendingPathComponent:path];
+    return [[ARRouter baseDesktopWebURL] URLByAppendingPathComponent:entity.publicArtsyPath];
 }
 
 + (void)disableIndexing;
