@@ -5,4 +5,5 @@
 * Potential fix for seeing no API requests get through - orta
 * Total Re-write for the show feed - orta
 * Adds local downloading of the shows feed for instant loading on the next run - orta
+* Fix crash due to `nil` in analytics data. - alloy
 
