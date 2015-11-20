@@ -421,8 +421,8 @@
                                 }
         
                                 return @{
-                                    @"errors" : [error localizedDescription] ?: @"",
-                                    @"response" : responseString,
+                                    @"errors" : ([error localizedDescription] ?: [error description]) ?: @"",
+                                    @"response" : responseString ?: @"",
                                 };
                             }
                         },
