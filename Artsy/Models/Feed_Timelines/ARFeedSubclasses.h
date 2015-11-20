@@ -4,7 +4,7 @@
 
 
 @interface ARFileFeed : ARFeed
-- (instancetype)initWithNamedFile:(NSString *)fileName;
+- (instancetype)initWithFileAtPath:(NSString *)fileName;
 @end
 
 

@@ -1,4 +1,6 @@
+
 #import "ARAppBackgroundFetchDelegate.h"
+#import "NSKeyedUnarchiver+ErrorLogging.h"
 
 
 @interface ARFeed ()
@@ -7,33 +9,31 @@
 
 
 @interface ARFileFeed ()
-@property (nonatomic, copy) id JSON;
 @end
 
 
 @implementation ARFileFeed
 
-- (instancetype)initWithNamedFile:(NSString *)fileName
+- (instancetype)initWithFileAtPath:(NSString *)fileName
 {
     self = [super init];
     if (!self) {
         return nil;
     }
 
-    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:fileName ofType:@"json"]];
+    NSData *data = [NSData dataWithContentsOfFile:fileName];
     NSError *error = nil;
-    _JSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+    if (data == nil) return self;
+
+    id JSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+    if (error) {
+        return self;
+    }
+
+    [self parseItemsFromJSON:JSON];
+    [[NSFileManager defaultManager] removeItemAtPath:fileName error:nil];
 
     return self;
-}
-
-- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
-{
-    if (success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            success([self parseItemsFromJSON:self.JSON]);
-        });
-    }
 }
 
 @end
@@ -49,48 +49,9 @@
 
 @implementation ARShowFeed
 
-- (instancetype)init
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-
-    //NSString *fetchBackgroundFilePath = [ARAppBackgroundFetchDelegate pathForDownloadedShowFeed];
-    //self.JSON = [NSKeyedUnarchiver unarchiveObjectWithFile:fetchBackgroundFilePath];
-
-    return self;
-}
-
-
 - (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
 {
-   @weakify(self);
-    if (self.JSON) {
-        // We may get asked multiple times before we finished extracting the data
-
-        if (self.parsing) {
-            return;
-        }
-
-        self.parsing = YES;
-
-        // If we've background fetch'd a copy of the feed, we should use that on the first grab of show data
-
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            @strongify(self);
-            NSOrderedSet *items = [self parseItemsFromJSON:self.JSON];
-
-            dispatch_async(dispatch_get_main_queue(), ^{
-                success(items);
-            });
-
-            [[NSFileManager defaultManager] removeItemAtPath:[ARAppBackgroundFetchDelegate pathForDownloadedShowFeed] error:nil];
-            self.JSON = nil;
-        });
-
-        return;
-    }
+    @weakify(self);
 
     NSInteger pageSize = (cursor) ? 4 : 1;
     [ArtsyAPI getFeedResultsForShowsWithCursor:cursor pageSize:pageSize success:^(id JSON) {
@@ -131,7 +92,7 @@
 
 - (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
 {
-   @weakify(self);
+    @weakify(self);
     [ArtsyAPI getFeedResultsForProfile:self.profile withCursor:cursor success:^(id JSON) {
         @strongify(self);
         success([self parseItemsFromJSON:JSON]);
@@ -164,7 +125,7 @@
 
 - (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
 {
-   @weakify(self);
+    @weakify(self);
     [ArtsyAPI getFeedResultsForFairOrganizer:self.fairOrganizer withCursor:cursor success:^(id JSON) {
         ar_dispatch_async(^{
             @strongify(self);
@@ -210,7 +171,7 @@
 
 - (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
 {
-   @weakify(self);
+    @weakify(self);
 
     [ArtsyAPI getFeedResultsForFairShows:self.fair partnerID:self.partner.partnerID withCursor:cursor success:^(id JSON) {
         ar_dispatch_async(^{

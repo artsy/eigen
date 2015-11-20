@@ -9,13 +9,15 @@
 
 @interface ARFeedTimeline : NSObject
 
-- (id)initWithFeed:(ARFeed *)feed;
+- (instancetype)initWithFeed:(ARFeed *)feed;
 - (ARFeedItem *)itemAtIndex:(NSInteger)index;
+
 - (void)getNewItems:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure;
 - (void)getNextPage:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure completion:(void (^)())completion;
 - (void)removeAllItems;
 
-@property (nonatomic, assign) BOOL hasNext;
-@property (nonatomic, assign) NSInteger numberOfItems;
-@property (nonatomic, assign, getter=isLoading) BOOL loading;
+@property (nonatomic, strong, readonly) NSMutableOrderedSet *items;
+@property (nonatomic, assign, readonly) BOOL hasNext;
+@property (nonatomic, assign, readonly) NSInteger numberOfItems;
+@property (nonatomic, assign, readonly, getter=isLoading) BOOL loading;
 @end

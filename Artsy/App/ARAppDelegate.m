@@ -109,6 +109,15 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    UIApplicationState state = application.applicationState;
+    if (state == UIApplicationStateBackground) {
+        // App is doing a background fetch
+        return YES;
+    }
+
+    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+
+
     _landingURLRepresentation = self.landingURLRepresentation ?: @"https://artsy.net";
 
     [[ARLogger sharedLogger] startLogging];
