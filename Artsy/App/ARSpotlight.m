@@ -72,7 +72,8 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (NSURL *)webpageURLForEntity:(id<ARSpotlightMetadataProvider>)entity;
 {
-    return [[ARRouter baseDesktopWebURL] URLByAppendingPathComponent:entity.publicArtsyPath];
+    NSString *path = entity.publicArtsyPath ?: @"";
+    return [[ARRouter baseDesktopWebURL] URLByAppendingPathComponent:path];
 }
 
 + (void)disableIndexing;
@@ -171,10 +172,10 @@ ARStringByStrippingMarkdown(NSString *markdownString)
             }
         });
     }
-                       failure:^(NSError *error) {
+        failure:^(NSError *error) {
         ARErrorLog(@"Failed to fetch favorites, cancelling: %@", error);
         finalizeBlock();
-    }];
+        }];
 }
 
 #pragma mark - CSSearchableIndex
@@ -306,7 +307,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
                     completion(attributeSet);
                 });
             }
-        }];
+                            }];
     }
 
     return attributeSet;
@@ -347,4 +348,3 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 }
 
 @end
-
