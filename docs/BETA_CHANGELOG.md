@@ -1,4 +1,4 @@
-### 2.4.0
+### 2.3.2
 
 * Caches website content from martsy/force, vastly speeding up hybrid pages - orta
 * Layout fixes for the Auction Results for an Artwork - orta
