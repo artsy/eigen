@@ -4,6 +4,9 @@ gem 'cocoapods'
 gem 'cocoapods-keys'
 gem 'cocoapods-deintegrate'
 
+# 1.6.7 contains the OS X build fix.
+gem 'nokogiri', '1.6.7.rc4'
+
 group :development do
   gem 'houston'
   # Depends on older xcodeproj gem that is incompatible with current CocoaPods.
