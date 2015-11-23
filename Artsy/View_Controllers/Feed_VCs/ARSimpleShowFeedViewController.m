@@ -11,6 +11,7 @@
 #import "AROfflineView.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 
@@ -27,9 +28,8 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 
 
 @interface ARSimpleShowFeedViewController ()
-@property (nonatomic, readonly, strong) ARSectionData *section;
-@property (nonatomic, readonly, strong) ORStackView *headerStackView;
-
+@property (nonatomic, strong) ARSectionData *section;
+@property (nonatomic, strong) ORStackView *headerStackView;
 @property (nonatomic, strong) ARFeedTimeline *feedTimeline;
 @property (nonatomic, strong) ARShowFeedNetworkStatusModel *networkStatus;
 
@@ -56,19 +56,34 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
-    self.tableView.backgroundColor = [UIColor blackColor];
     [self registerClass:ARModernPartnerShowTableViewCell.class forCellReuseIdentifier:ARShowCellIdentifier];
 
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = [UIColor clearColor];
+
+    // Add the hero unit view behind the tableview and inset the tableview.
+    // This is so the tableview will initially start below the hero unit, but scroll
+    // *over* the hero unit view.
+    [self ar_addModernChildViewController:self.heroUnitVC intoView:self.view belowSubview:self.tableView];
+    [self.heroUnitVC.view alignLeading:@"0" trailing:@"0" toView:self.view];
+    [self.heroUnitVC.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = 20 + self.heroUnitVC.preferredContentSize.height;
+    self.tableView.contentInset = insets;
+    // Ensure that the table view begins at the correct offset to avoid covering part of the hero unit.
+    CGPoint offset = self.tableView.contentOffset;
+    offset.y = -insets.top;
+    self.tableView.contentOffset = offset;
+
     ORStackView *stack = [[ORStackView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
-    [stack addViewController:self.heroUnitVC toParent:self withTopMargin:@"0" sideMargin:@"0"];
+    stack.backgroundColor = [UIColor whiteColor];
     [stack addViewController:self.feedLinkVC toParent:self withTopMargin:@"20" sideMargin:@"40"];
 
     ARPageSubTitleView *featuredShowsLabel = [[ARPageSubTitleView alloc] initWithTitle:@"Current Shows"];
     [featuredShowsLabel constrainHeight:@"40"];
     [stack addSubview:featuredShowsLabel withTopMargin:@"20" sideMargin:@"40"];
 
-    _headerStackView = stack;
+    self.headerStackView = stack;
 
     self.tableView.tableHeaderView = [self wrapperForHeaderStack];
 
@@ -82,7 +97,6 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
     [footerView startIndeterminateAnimated:NO];
     self.tableView.tableFooterView = footerView;
 
-
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedLinkVC fetchLinks:^{
 
@@ -91,7 +105,7 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
         }];
     }];
 
-    _section = [[ARSectionData alloc] init];
+    self.section = [[ARSectionData alloc] init];
 
     /// Deal with background cached'd data
     for (ARPartnerShowFeedItem *show in self.feedTimeline.items) {
@@ -130,7 +144,6 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
     [super viewWillAppear:animated];
 
     self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
-    self.tableView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)refreshFeedItems
