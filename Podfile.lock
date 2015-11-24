@@ -265,7 +265,7 @@ SPEC CHECKSUMS:
   Adjust: 2c3d4db6047c6bba68d7c5ede63fbdc989eb57b7
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  AFOAuth1Client: 67c1e4718082d6b244b3f837452eb79f36a48003
+  AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   Analytics: 5edafd4c09d14c3002c754bfdde5535dc3b1320f
   ARAnalytics: 697797d915d0afadf27f79563b262557cbe3d378
@@ -288,7 +288,7 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 57e37106af12c9e264e473dcb75d7decdbb07fe4
   FBSnapshotTestCase: 3dc3899168747a0319c5278f5b3445c13a6532dd
   FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
-  FODFormKit: c3feff74feb08c54ce2d4a27d67f2e089f0b231d
+  FODFormKit: 71e58c63b3ca279616671ab087fd721facf53a78
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   HockeySDK-Source: d620f330b23691017c141de6e25e5cdc8c67848c
   InterAppCommunication: 3239945b30e9dc5f91ef8be057fbcae4e3398e5c
@@ -309,7 +309,7 @@ SPEC CHECKSUMS:
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
-  ORStackView: 5df6b1b990b0648d8ef6f69f89361ea8648e8f64
+  ORStackView: 752d81ca2e2a0bd6c01a2ece30fd24923434be1e
   ReactiveCocoa: fbe689fe218063b7bbed41032912c9ca4fdbe172
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
