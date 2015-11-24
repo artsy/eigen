@@ -1,4 +1,8 @@
-### 2.3.2
+### Unreleased
+
+* Don’t scroll hero units on shows feed. - alloy
+
+### 2.3.2 (2015.11.20)
 
 * Caches website content from martsy/force, vastly speeding up hybrid pages - orta
 * Layout fixes for the Auction Results for an Artwork - orta
