@@ -14,6 +14,8 @@
 #import "AFHTTPRequestOperation+JSON.h"
 #import <UICKeychainStore/UICKeychainStore.h>
 
+#import <Analytics/SEGAnalytics.h>
+
 NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";
 
 NSString *ARTrialUserNameKey = @"ARTrialUserName";
@@ -44,28 +46,37 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 + (BOOL)didCreateAccountThisSession
 {
-    return [self.class sharedManager].didCreateAccountThisSession;
+    return self.sharedManager.didCreateAccountThisSession;
 }
 
 + (void)identifyAnalyticsUser
 {
-    NSString *analyticsUserID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    [ARAnalytics identifyUserWithID:analyticsUserID andEmailAddress:nil];
+    [SEGAnalytics debug:YES];
 
     User *user = [User currentUser];
-    if (user) {
-        [ARAnalytics setUserProperty:@"$email" toValue:user.email];
-        [ARAnalytics setUserProperty:@"user_id" toValue:user.userID];
-        [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
-        [ARAnalytics addEventSuperProperties:@{ @"user_id" : user.userID ?: @"",
-                                                @"user_uuid" : ARUserManager.sharedManager.trialUserUUID ?: @"",
-                                                @"collector_level" : [ARCollectorStatusViewController stringFromCollectorLevel:user.collectorLevel] ?: @"",
-                                                @"is_trial_user" : @(NO) }];
-    } else {
-        [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
-        [ARAnalytics addEventSuperProperties:@{ @"user_uuid" : ARUserManager.sharedManager.trialUserUUID ?: @"",
-                                                @"is_trial_user" : @(YES) }];
-    }
+    [[SEGAnalytics sharedAnalytics] identify:user.userID
+                                      traits:@{ @"email": user.email ?: @"",
+                                                @"is_trial_user": @(user == nil),
+                                                @"collector_level" : [ARCollectorStatusViewController stringFromCollectorLevel:user.collectorLevel] ?: @"" }
+                                     options:@{ @"anonymousId": self.sharedManager.trialUserUUID }];
+    
+//    NSString *analyticsUserID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//    [ARAnalytics identifyUserWithID:analyticsUserID andEmailAddress:nil];
+//
+//    User *user = [User currentUser];
+//    if (user) {
+//        [ARAnalytics setUserProperty:@"$email" toValue:user.email];
+//        [ARAnalytics setUserProperty:@"user_id" toValue:user.userID];
+//        [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
+//        [ARAnalytics addEventSuperProperties:@{ @"user_id" : user.userID ?: @"",
+//                                                @"user_uuid" : ARUserManager.sharedManager.trialUserUUID ?: @"",
+//                                                @"collector_level" : [ARCollectorStatusViewController stringFromCollectorLevel:user.collectorLevel] ?: @"",
+//                                                @"is_trial_user" : @(NO) }];
+//    } else {
+//        [ARAnalytics setUserProperty:@"user_uuid" toValue:[ARUserManager sharedManager].trialUserUUID];
+//        [ARAnalytics addEventSuperProperties:@{ @"user_uuid" : ARUserManager.sharedManager.trialUserUUID ?: @"",
+//                                                @"is_trial_user" : @(YES) }];
+//    }
 }
 
 - (instancetype)init
