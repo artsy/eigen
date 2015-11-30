@@ -1,3 +1,10 @@
+### 2.3.2
+
+* The home screen now refreshes its data periodically while in the background, so that the newest data is available when you launch the app. - orta
+* Performance improvements for the views that show web content. - orta
+* UI layout fixes for the ‘Auction Results’ page of an artwork. - orta
+* Various crash fixes throughout the app. - orta & alloy
+
 ### 2.3.0
 
 * 3D Touch Peek/pop support for artworks in grid views - jorystiefel & orta
