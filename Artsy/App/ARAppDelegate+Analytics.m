@@ -979,11 +979,11 @@
                     ARAnalyticsClass: ARSignupViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsSignUpTwitter,
+                            ARAnalyticsEventName: ARAnalyticsSignUpFacebook,
                             ARAnalyticsSelectorName: ARAnalyticsSelector(fb:),
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsSignUpFacebook,
+                            ARAnalyticsEventName: ARAnalyticsSignUpTwitter,
                             ARAnalyticsSelectorName: ARAnalyticsSelector(twitter:),
                         },
                         @{
