@@ -15,6 +15,7 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+*.xcscmblueprint
 Pods
 .pt
 .build
@@ -37,4 +38,3 @@ fastlane/Preview.html
 # Artsy Development APN certificate
 net.artsy.artsy.dev.pem
 .clang-format
-Artsy.xcworkspace/xcshareddata/Artsy.xcscmblueprint
