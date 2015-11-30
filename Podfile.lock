@@ -234,7 +234,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
   ARGenericTableViewController:
-    :commit: 5349bb7130eb4ccc848cd5788fe9f5fe17f675ba
+    :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
     :git: https://github.com/orta/ARGenericTableViewController.git
   ARTiledImageView:
     :commit: 1a31b864d1d56b1aaed0816c10bb55cf2e078bb8
