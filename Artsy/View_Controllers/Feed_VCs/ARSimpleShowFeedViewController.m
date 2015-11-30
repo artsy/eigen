@@ -9,6 +9,7 @@
 #import "ARReusableLoadingView.h"
 #import "ARPartnerShowFeedItem.h"
 #import "AROfflineView.h"
+#import "ARTopTapThroughTableView.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
@@ -51,6 +52,11 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
     _networkStatus = [[ARShowFeedNetworkStatusModel alloc] initWithShowFeedVC:self];
 
     return self;
+}
+
+- (Class)classForTableView
+{
+    return [ARTopTapThroughTableView class];
 }
 
 - (void)viewDidLoad
