@@ -90,8 +90,8 @@ target 'Artsy' do
   pod 'FBSDKLoginKit'
 
   # Analytics
-  pod 'Analytics', :path => '/Users/eloy/tmp/analytics-ios'
-  pod 'ARAnalytics', '>= 3.6.2', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  pod 'Analytics', :head
+  pod 'ARAnalytics', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-optional-anonymous-id', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'
