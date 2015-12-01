@@ -103,10 +103,12 @@ PODS:
   - KSDeferred (0.2.0)
   - libextobjc/EXTKeyPathCoding (0.4):
     - libextobjc/RuntimeExtensions
+  - libextobjc/EXTScope (0.4):
+    - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4)
-  - Mantle (1.5.3):
-    - Mantle/extobjc (= 1.5.3)
-  - Mantle/extobjc (1.5.3)
+  - Mantle (2.0.6):
+    - Mantle/extobjc (= 2.0.6)
+  - Mantle/extobjc (2.0.6)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.2)
   - NAMapKit (3.1.1):
@@ -179,7 +181,8 @@ DEPENDENCIES:
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
   - libextobjc/EXTKeyPathCoding
-  - Mantle
+  - libextobjc/EXTScope
+  - Mantle (~> 2.0.5)
   - MMMarkdown
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`, commit `62275386978db91b0e7ed8de755d15cef3e793b4`)
@@ -305,7 +308,7 @@ SPEC CHECKSUMS:
   Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   libextobjc: f2802d4262f6885570df9799747409ceb1de602c
-  Mantle: 7dddb082367d3e13bd244636d56838481c4552fe
+  Mantle: 299966b00759634931699f69cb6a30b9239b944d
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: 4f57bea305c1795d2d6b8a6d6b31c59b1a08114f

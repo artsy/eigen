@@ -46,7 +46,7 @@ target 'Artsy' do
   pod 'JLRoutes'
   pod 'JSBadgeView'
   pod 'JSDecoupledAppDelegate', :git => 'https://github.com/orta/JSDecoupledAppDelegate.git', :branch => 'patch-1'
-  pod 'Mantle'
+  pod 'Mantle', '~> 2.0.5'
   pod 'MMMarkdown'
   pod 'NPKeyboardLayoutGuide'
   pod 'ReactiveCocoa'
@@ -67,7 +67,7 @@ target 'Artsy' do
 
   # Language Enhancments
   pod 'KSDeferred'
-  pod 'libextobjc/EXTKeyPathCoding'
+  pod 'libextobjc', :subspecs => ['EXTKeyPathCoding', 'EXTScope']
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
