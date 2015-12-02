@@ -14,8 +14,6 @@
 #import "AFHTTPRequestOperation+JSON.h"
 #import <UICKeychainStore/UICKeychainStore.h>
 
-#import <Analytics/SEGAnalytics.h>
-
 NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";
 
 NSString *ARTrialUserNameKey = @"ARTrialUserName";
@@ -51,8 +49,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 + (void)identifyAnalyticsUser
 {
-    [SEGAnalytics debug:YES];
-
     User *user = [User currentUser];
 
     if (user) {
