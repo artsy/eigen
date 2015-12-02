@@ -121,19 +121,13 @@ post_install do |installer|
     end
   end
 
-  # Remove frameworks dir that no longer exists in the iOS 9 SDK.
-  # This should be removed once we can update to CP 0.39.
-  Pathname.glob('Pods/Target Support Files/**/*.xcconfig').each do |xcconfig|
-    contents = xcconfig.read
-    xcconfig.open('w') do |file|
-      file.write contents.gsub('"$(SDKROOT)/Developer/Library/Frameworks"', '')
-    end
-  end
-
   # Until this is fixed, ignore the warning https://github.com/specta/specta/pull/182
+  specta_removal = "@protocol XCTestObservation <NSObject>\n@end"
   specta_file = Pathname.new('Pods/Specta/Specta/Specta/XCTest+Private.h')
   contents = specta_file.read
-  specta_file.open('w') do |file|
-    file.write contents.sub("@protocol XCTestObservation <NSObject>\n@end", '')
+  if contents.include?(specta_removal)
+    specta_file.open('w') do |file|
+      file.write contents.sub(specta_removal, '')
+    end
   end
 end
