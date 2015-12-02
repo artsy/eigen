@@ -120,14 +120,4 @@ post_install do |installer|
       config.build_settings['ENABLE_BITCODE'] = 'NO'
     end
   end
-
-  # Until this is fixed, ignore the warning https://github.com/specta/specta/pull/182
-  specta_removal = "@protocol XCTestObservation <NSObject>\n@end"
-  specta_file = Pathname.new('Pods/Specta/Specta/Specta/XCTest+Private.h')
-  contents = specta_file.read
-  if contents.include?(specta_removal)
-    specta_file.open('w') do |file|
-      file.write contents.sub(specta_removal, '')
-    end
-  end
 end
