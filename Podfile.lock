@@ -146,12 +146,10 @@ DEPENDENCIES:
   - AFOAuth1Client (from `https://github.com/lxcid/AFOAuth1Client.git`, tag `0.4.0`)
   - ALPValidator
   - Analytics (HEAD)
-  - ARAnalytics/Adjust (from `https://github.com/alloy/ARAnalytics.git`, branch `add-optional-anonymous-id`)
-  - ARAnalytics/DSL (from `https://github.com/alloy/ARAnalytics.git`, branch `add-optional-anonymous-id`)
-  - ARAnalytics/HockeyApp (from `https://github.com/alloy/ARAnalytics.git`, branch
-    `add-optional-anonymous-id`)
-  - ARAnalytics/Segmentio (from `https://github.com/alloy/ARAnalytics.git`, branch
-    `add-optional-anonymous-id`)
+  - ARAnalytics/Adjust (from `https://github.com/orta/ARAnalytics.git`)
+  - ARAnalytics/DSL (from `https://github.com/orta/ARAnalytics.git`)
+  - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`)
+  - ARAnalytics/Segmentio (from `https://github.com/orta/ARAnalytics.git`)
   - ARASCIISwizzle
   - ARCollectionViewMasonryLayout
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
@@ -206,8 +204,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
   ARAnalytics:
-    :branch: add-optional-anonymous-id
-    :git: https://github.com/alloy/ARAnalytics.git
+    :git: https://github.com/orta/ARAnalytics.git
   ARGenericTableViewController:
     :git: https://github.com/orta/ARGenericTableViewController.git
   ARTiledImageView:
@@ -239,8 +236,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
   ARAnalytics:
-    :commit: 6a591da27ed96df5715d0299dd0e8489914ba876
-    :git: https://github.com/alloy/ARAnalytics.git
+    :commit: 075ba4a25cd37860a0d2f54b90e9a450bc0cbbd9
+    :git: https://github.com/orta/ARAnalytics.git
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
     :git: https://github.com/orta/ARGenericTableViewController.git

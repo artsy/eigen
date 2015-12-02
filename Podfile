@@ -91,7 +91,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Analytics', :head
-  pod 'ARAnalytics', :git => 'https://github.com/alloy/ARAnalytics.git', :branch => 'add-optional-anonymous-id', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  pod 'ARAnalytics', :git => 'https://github.com/orta/ARAnalytics.git', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'
