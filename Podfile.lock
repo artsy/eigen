@@ -236,7 +236,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
   ARAnalytics:
-    :commit: 075ba4a25cd37860a0d2f54b90e9a450bc0cbbd9
+    :commit: 81de95a7e1c9aa6a318bf15009a4137206bf370d
     :git: https://github.com/orta/ARAnalytics.git
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
