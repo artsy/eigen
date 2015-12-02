@@ -46,7 +46,7 @@ target 'Artsy' do
   pod 'JLRoutes'
   pod 'JSBadgeView'
   pod 'JSDecoupledAppDelegate', :git => 'https://github.com/orta/JSDecoupledAppDelegate.git', :branch => 'patch-1'
-  pod 'Mantle', '~> 2.0.5'
+  pod 'Mantle', '~> 1.5.6'
   pod 'MMMarkdown'
   pod 'NPKeyboardLayoutGuide'
   pod 'ReactiveCocoa'
