@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, ARCollectorLevel) {
 
 @property (nonatomic, copy, readonly) NSString *defaultProfileID;
 @property (nonatomic, assign) ARCollectorLevel collectorLevel;
-@property (nonatomic, assign) NSInteger priceRange; //upper limit in $
+@property (nonatomic, copy) NSString *priceRange;
 
 @property (nonatomic, readonly) BOOL receiveWeeklyEmail;
 @property (nonatomic, readonly) BOOL receiveFollowArtistsEmail;

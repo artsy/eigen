@@ -3,7 +3,7 @@
 
 @interface ARValueTransformer : MTLValueTransformer
 
-+ (instancetype)enumValueTransformerWithMap:(NSDictionary *)types;
-+ (instancetype)whitespaceTrimmingTransformer;
++ (NSValueTransformer *)enumValueTransformerWithMap:(NSDictionary *)types;
++ (NSValueTransformer *)whitespaceTrimmingTransformer;
 
 @end

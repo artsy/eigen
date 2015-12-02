@@ -93,7 +93,7 @@
 - (void)setNilValueForKey:(NSString *)key
 {
     if ([key isEqualToString:@"priceRange"]) {
-        [self setValue:@(-1) forKey:key];
+        [self setValue:@"-1" forKey:key];
     } else {
         [super setNilValueForKey:key];
     }

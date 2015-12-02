@@ -46,7 +46,7 @@ target 'Artsy' do
   pod 'JLRoutes'
   pod 'JSBadgeView'
   pod 'JSDecoupledAppDelegate', :git => 'https://github.com/orta/JSDecoupledAppDelegate.git', :branch => 'patch-1'
-  pod 'Mantle'
+  pod 'Mantle', '~> 2.0.5'
   pod 'MMMarkdown'
   pod 'NPKeyboardLayoutGuide'
   pod 'ReactiveCocoa'
@@ -67,7 +67,7 @@ target 'Artsy' do
 
   # Language Enhancments
   pod 'KSDeferred'
-  pod 'libextobjc/EXTKeyPathCoding'
+  pod 'libextobjc', :subspecs => ['EXTKeyPathCoding', 'EXTScope']
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
@@ -90,7 +90,8 @@ target 'Artsy' do
   pod 'FBSDKLoginKit'
 
   # Analytics
-  pod 'ARAnalytics', '>= 3.6.2', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  pod 'Analytics', :head
+  pod 'ARAnalytics', :git => 'https://github.com/orta/ARAnalytics.git', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'
@@ -120,19 +121,13 @@ post_install do |installer|
     end
   end
 
-  # Remove frameworks dir that no longer exists in the iOS 9 SDK.
-  # This should be removed once we can update to CP 0.39.
-  Pathname.glob('Pods/Target Support Files/**/*.xcconfig').each do |xcconfig|
-    contents = xcconfig.read
-    xcconfig.open('w') do |file|
-      file.write contents.gsub('"$(SDKROOT)/Developer/Library/Frameworks"', '')
-    end
-  end
-
   # Until this is fixed, ignore the warning https://github.com/specta/specta/pull/182
+  specta_removal = "@protocol XCTestObservation <NSObject>\n@end"
   specta_file = Pathname.new('Pods/Specta/Specta/Specta/XCTest+Private.h')
   contents = specta_file.read
-  specta_file.open('w') do |file|
-    file.write contents.sub("@protocol XCTestObservation <NSObject>\n@end", '')
+  if contents.include?(specta_removal)
+    specta_file.open('w') do |file|
+      file.write contents.sub(specta_removal, '')
+    end
   end
 end

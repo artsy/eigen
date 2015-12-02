@@ -323,7 +323,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     [ARAnalytics setUserProperty:ARAnalyticsPriceRangeProperty toValue:stringRange];
 
     User *user = [User currentUser];
-    user.priceRange = range;
+    user.priceRange = stringRange;
 
     [user setRemoteUpdatePriceRange:range success:nil failure:^(NSError *error) {
         ARErrorLog(@"Error updating price range");

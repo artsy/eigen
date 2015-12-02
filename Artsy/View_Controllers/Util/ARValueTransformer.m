@@ -3,7 +3,7 @@
 
 @implementation ARValueTransformer
 
-+ (instancetype)enumValueTransformerWithMap:(NSDictionary *)types
++ (NSValueTransformer *)enumValueTransformerWithMap:(NSDictionary *)types
 {
     return [self.class reversibleTransformerWithForwardBlock:^(NSString *str) {
         return types[str];
@@ -12,7 +12,7 @@
     }];
 }
 
-+ (instancetype)whitespaceTrimmingTransformer
++ (NSValueTransformer *)whitespaceTrimmingTransformer
 {
     return [self.class transformerWithBlock:^id(NSString *str) {
         return [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
