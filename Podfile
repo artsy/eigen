@@ -46,7 +46,7 @@ target 'Artsy' do
   pod 'JLRoutes'
   pod 'JSBadgeView'
   pod 'JSDecoupledAppDelegate', :git => 'https://github.com/orta/JSDecoupledAppDelegate.git', :branch => 'patch-1'
-  pod 'Mantle', '~> 2.0.5'
+  pod 'Mantle', '~> 1.5.6'
   pod 'MMMarkdown'
   pod 'NPKeyboardLayoutGuide'
   pod 'ReactiveCocoa'
@@ -118,16 +118,6 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['ENABLE_BITCODE'] = 'NO'
-    end
-  end
-
-  # Until this is fixed, ignore the warning https://github.com/specta/specta/pull/182
-  specta_removal = "@protocol XCTestObservation <NSObject>\n@end"
-  specta_file = Pathname.new('Pods/Specta/Specta/Specta/XCTest+Private.h')
-  contents = specta_file.read
-  if contents.include?(specta_removal)
-    specta_file.open('w') do |file|
-      file.write contents.sub(specta_removal, '')
     end
   end
 end

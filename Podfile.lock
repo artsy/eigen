@@ -106,9 +106,9 @@ PODS:
   - libextobjc/EXTScope (0.4):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4)
-  - Mantle (2.0.6):
-    - Mantle/extobjc (= 2.0.6)
-  - Mantle/extobjc (2.0.6)
+  - Mantle (1.5.6):
+    - Mantle/extobjc (= 1.5.6)
+  - Mantle/extobjc (1.5.6)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.2)
   - NAMapKit (3.1.1):
@@ -132,7 +132,7 @@ PODS:
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
-  - Specta (1.0.3)
+  - Specta (1.0.5)
   - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
   - UIView+BooleanAnimations (1.0.2)
@@ -180,7 +180,7 @@ DEPENDENCIES:
   - KSDeferred
   - libextobjc/EXTKeyPathCoding
   - libextobjc/EXTScope
-  - Mantle (~> 2.0.5)
+  - Mantle (~> 1.5.6)
   - MMMarkdown
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`, commit `62275386978db91b0e7ed8de755d15cef3e793b4`)
@@ -236,7 +236,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
   ARAnalytics:
-    :commit: 075ba4a25cd37860a0d2f54b90e9a450bc0cbbd9
+    :commit: 81de95a7e1c9aa6a318bf15009a4137206bf370d
     :git: https://github.com/orta/ARAnalytics.git
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
@@ -305,7 +305,7 @@ SPEC CHECKSUMS:
   Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   libextobjc: f2802d4262f6885570df9799747409ceb1de602c
-  Mantle: 299966b00759634931699f69cb6a30b9239b944d
+  Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: 4f57bea305c1795d2d6b8a6d6b31c59b1a08114f
@@ -318,7 +318,7 @@ SPEC CHECKSUMS:
   ReactiveCocoa: fbe689fe218063b7bbed41032912c9ca4fdbe172
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
-  Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
+  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97

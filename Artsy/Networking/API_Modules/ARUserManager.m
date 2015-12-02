@@ -55,7 +55,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         NSString *collectorLevel = [ARCollectorStatusViewController stringFromCollectorLevel:user.collectorLevel];
         [ARAnalytics setUserProperty:@"collector_level" toValue:collectorLevel];
     }
-    [ARAnalytics setUserProperty:@"is_trial_user" toValue:(NSString *)@(user == nil)];
+    [ARAnalytics setUserProperty:@"is_trial_user" toValue:@(user == nil)];
 
     [ARAnalytics identifyUserWithID:user.userID
                         anonymousID:self.sharedManager.trialUserUUID
