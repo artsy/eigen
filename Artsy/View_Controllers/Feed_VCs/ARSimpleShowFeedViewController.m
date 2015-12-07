@@ -134,7 +134,7 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 
     [stack updateConstraints];
     wrapper.frame = (CGRect){
-        .size = [stack systemLayoutSizeFittingSize:self.view.bounds.size],
+        .size = [stack systemLayoutSizeFittingSize:CGSizeZero],
         .origin = CGPointZero};
 
     stack.frame = wrapper.bounds;
