@@ -1,3 +1,7 @@
+### 2.3.3
+
+* Fixes extra whitespace when we have no feed links on the show feed - orta
+
 ### 2.3.2 (2015.12.01)
 
 * Allow touch events to pass through shows feed to hero units. - alloy
@@ -14,4 +18,3 @@
 * Total Re-write for the show feed - orta
 * Adds local downloading of the shows feed for instant loading on the next run - orta
 * Fix crash due to `nil` in analytics data. - alloy
-
