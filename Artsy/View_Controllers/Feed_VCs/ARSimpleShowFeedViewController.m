@@ -10,7 +10,7 @@
 #import "ARPartnerShowFeedItem.h"
 #import "AROfflineView.h"
 #import "ARTopTapThroughTableView.h"
-
+#import "ARUserManager.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <ARAnalytics/ARAnalytics.h>
@@ -73,9 +73,11 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
     [self ar_addModernChildViewController:self.heroUnitVC intoView:self.view belowSubview:self.tableView];
     [self.heroUnitVC.view alignLeading:@"0" trailing:@"0" toView:self.view];
     [self.heroUnitVC.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
+
     UIEdgeInsets insets = self.tableView.contentInset;
     insets.top = 20 + self.heroUnitVC.preferredContentSize.height;
     self.tableView.contentInset = insets;
+
     // Ensure that the table view begins at the correct offset to avoid covering part of the hero unit.
     CGPoint offset = self.tableView.contentOffset;
     offset.y = -insets.top;
@@ -98,7 +100,6 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 
     // Older builds used to assume that one day you might hit the end of the feed. ( 'Cause you could in 1.0. )
     // I think it's now a safe assumption that you can never hit the end of the shows feed. :tada:
-
     ARReusableLoadingView *footerView = [[ARReusableLoadingView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
     [footerView startIndeterminateAnimated:NO];
     self.tableView.tableFooterView = footerView;
@@ -173,7 +174,11 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
 
         } failure:^(NSError *error) {
-            ARErrorLog(@"There was an error getting newest items for the feed: %@", error.localizedDescription);
+            @strongify(self);
+
+            NSHTTPURLResponse *response = error.userInfo[AFURLResponseSerializationErrorDomain]
+                                          ?: error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
+            ARErrorLog(@"There was a %@ error getting newest items for the feed: %@", @(response.statusCode), error.localizedDescription);
 
             // So that it won't stop the first one
             [self.networkStatus.offlineView refreshFailed];
@@ -181,6 +186,11 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
             
             [self performSelector:@selector(refreshFeedItems) withObject:nil afterDelay:3];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
+
+            if ([User isTrialUser] == false && response.statusCode == 401) {
+                // If you have changed your password
+                [self offerLogoutForExpiredCredentials];
+            }
         }];
     } failure:^(NSError *error) {
         [self.networkStatus.offlineView refreshFailed];
@@ -217,6 +227,21 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
     [self.section addCellData:data];
 }
 
+- (void)offerLogoutForExpiredCredentials
+{
+    if (self.presentedViewController) {
+        return;
+    }
+
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"About to Log Out" message:@"Your Artsy credentials are out of date." preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Log Out" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *_Nonnull action) {
+        
+        [ARUserManager logout];
+    }]];
+
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 #pragma mark - ARMenuAwareViewController
 
 - (BOOL)hidesBackButton
@@ -244,9 +269,7 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    // nav transitions wanna send us scroll events after the transition and we are all like
-    // nuh-uh
-
+    // nav transitions wanna send us scroll events after the transition and we are all like nuh-uh
     if (self.navigationController.topViewController == self && scrollView == self.tableView) {
         [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
     }
