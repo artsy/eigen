@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Artsy</string>
+	<string>${SPRINGBOARD_DISPLAY_NAME}</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
