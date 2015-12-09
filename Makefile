@@ -67,7 +67,6 @@ format-objc-files-in-repo.sh.bundler:
 	bundle install
 
 ipa: set_git_properties change_version_to_date
-	$(PLIST_BUDDY) -c "Set CFBundleDisplayName $(BUNDLE_NAME)" $(APP_PLIST)
 	ipa build --scheme $(SCHEME) --configuration $(CONFIGURATION) -t --verbose
 
 stamp_date:
@@ -115,11 +114,9 @@ next: update_bundle_version set_git_properties change_version_to_date set_target
 
 deploy: ipa distribute
 
-alpha: BUNDLE_NAME = 'Artsy α'
 alpha: NOTIFY = 0
 alpha: stamp_date deploy
 
-beta: BUNDLE_NAME = 'Artsy β'
 beta: NOTIFY = 1
 beta: deploy
 
