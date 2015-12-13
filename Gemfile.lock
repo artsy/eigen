@@ -21,6 +21,16 @@ GIT
       xcodeproj (~> 0.28.2)
 
 GIT
+  remote: https://github.com/CocoaPods/Core.git
+  revision: c83a2df3f9180d0d22ebf6d1daa912771bd14a37
+  branch: seg-podfile-refactor
+  specs:
+    cocoapods-core (0.39.0)
+      activesupport (>= 4.0.2)
+      fuzzy_match (~> 2.0.4)
+      nap (~> 1.0)
+
+GIT
   remote: https://github.com/CocoaPods/cocoapods-deintegrate.git
   revision: a0c2a243ecd2006b56d59105c8680ab0991d7c32
   specs:
@@ -75,10 +85,6 @@ GEM
       nokogiri (>= 1.4.4)
     babosa (1.0.2)
     claide (0.9.1)
-    cocoapods-core (0.39.0)
-      activesupport (>= 4.0.2)
-      fuzzy_match (~> 2.0.4)
-      nap (~> 1.0)
     cocoapods-downloader (0.9.3)
     cocoapods-keys (1.6.0)
       dotenv
@@ -182,6 +188,7 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods!
+  cocoapods-core!
   cocoapods-deintegrate!
   cocoapods-keys
   deliver!
@@ -193,4 +200,4 @@ DEPENDENCIES
   xcpretty
 
 BUNDLED WITH
-   1.10.6
+   1.11.0

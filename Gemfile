@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'cocoapods', :git => "https://github.com/CocoaPods/CocoaPods.git", :branch => "seg-podfile-refactor"
+gem 'cocoapods-core', :git => "https://github.com/CocoaPods/Core.git", :branch => "seg-podfile-refactor"
 gem 'cocoapods-keys'
 gem 'cocoapods-deintegrate', :git => "https://github.com/CocoaPods/cocoapods-deintegrate.git"
 
