@@ -31,6 +31,15 @@ GIT
       nap (~> 1.0)
 
 GIT
+  remote: https://github.com/CocoaPods/Xcodeproj.git
+  revision: 0dbacb0eaf3ecfd1d1298180c53fe26459f705c3
+  specs:
+    xcodeproj (0.28.2)
+      activesupport (>= 3)
+      claide (~> 0.9.1)
+      colored (~> 1.2)
+
+GIT
   remote: https://github.com/CocoaPods/cocoapods-deintegrate.git
   revision: a0c2a243ecd2006b56d59105c8680ab0991d7c32
   specs:
@@ -176,10 +185,6 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
-    xcodeproj (0.28.2)
-      activesupport (>= 3)
-      claide (~> 0.9.1)
-      colored (~> 1.2)
     xcpretty (0.2.1)
       rouge (~> 1.8)
 
@@ -197,6 +202,7 @@ DEPENDENCIES
   houston
   nokogiri (= 1.6.7.rc4)
   second_curtain
+  xcodeproj!
   xcpretty
 
 BUNDLED WITH

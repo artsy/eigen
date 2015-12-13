@@ -91,7 +91,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Analytics', :head
-  pod 'ARAnalytics', :git => 'https://github.com/orta/ARAnalytics.git', :commit => "10870c9fdd0bb34d8a9c9f29017d0da33d2c19f9", :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  # pod 'ARAnalytics', :git => 'https://github.com/orta/ARAnalytics.git', :commit => "10870c9fdd0bb34d8a9c9f29017d0da33d2c19f9", :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'
