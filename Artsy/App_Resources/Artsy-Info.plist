@@ -72,9 +72,9 @@
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>GITCommitRev</key>
-	<string>d062708</string>
+	<string>b6d034c</string>
 	<key>GITCommitSha</key>
-	<string>d06270882aadec8f03927455a5229b53dd0a73c8</string>
+	<string>b6d034c8997e105d60ebf6549ff011ed27b2270d</string>
 	<key>GITRemoteOriginURL</key>
 	<string>https://github.com/artsy/eigen.git</string>
 	<key>LSRequiresIPhoneOS</key>

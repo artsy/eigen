@@ -72,7 +72,6 @@ build:
 test:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug build test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
 
-
 ### CI
 
 lint:
@@ -83,6 +82,10 @@ ci: build
 
 deploy_if_beta_branch:
 	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make certs; make distribute; fi
+
+deploy:
+	git push upstream "$(LOCAL_BRANCH):beta"
+
 
 ### Utility functions
 
