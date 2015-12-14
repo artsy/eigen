@@ -18,11 +18,10 @@
         return nil;
     }
 
-   @weakify(self);
-
+   __weak typeof (self) wself = self;
     [artwork onArtworkUpdate:^{
-        @strongify(self);
-        [self updateWithArtwork:artwork];
+        __strong typeof (wself) sself = wself;
+        [sself updateWithArtwork:artwork];
     } failure:nil];
 
     return self;

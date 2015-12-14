@@ -12,10 +12,10 @@
         return nil;
     }
 
-   @weakify(self);
+   __weak typeof (self) wself = self;
     [fair getPosts:^(ARFeedTimeline *feedTimeline) {
-        @strongify(self);
-        [self setFeedTimeline:feedTimeline];
+        __strong typeof (wself) sself = wself;
+        [sself setFeedTimeline:feedTimeline];
     }];
 
     return self;

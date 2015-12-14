@@ -191,28 +191,28 @@
     NSString *username = self.email.text;
     NSString *password = self.password.text;
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [[ARUserManager sharedManager] createUserWithName:self.name.text email:username password:password success:^(User *user) {
-        @strongify(self);
-        [self loginWithUserCredentialsWithSuccess:^{
-            [self.delegate didSignUpAndLogin];
+        __strong typeof (wself) sself = wself;
+        [sself loginWithUserCredentialsWithSuccess:^{
+            [sself.delegate didSignUpAndLogin];
         }];
     } failure:^(NSError *error, id JSON) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         if (JSON
             && [JSON isKindOfClass:[NSDictionary class]]
             && ([JSON[@"error"] isEqualToString:@"User Already Exists"]
                 || [JSON[@"error"] isEqualToString:@"User Already Invited"])) {
-                NSString *source = [self existingAccountSource:JSON];
-                [self accountExists:source];
+                NSString *source = [sself existingAccountSource:JSON];
+                [sself accountExists:source];
 
         } else {
-            [self setFormEnabled:YES];
+            [sself setFormEnabled:YES];
 
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t create your account" message:@"Please check your email address & password" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
             [alert show];
 
-            [self.email becomeFirstResponder];
+            [sself.email becomeFirstResponder];
         }
 
         [ARAnalytics event:ARAnalyticsSignUpError];
@@ -224,22 +224,22 @@
     NSString *username = self.email.text;
     NSString *password = self.password.text;
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [[ARUserManager sharedManager] loginWithUsername:username
         password:password
         successWithCredentials:nil
         gotUser:^(User *currentUser) { success();
         }
         authenticationFailure:^(NSError *error) {
-        @strongify(self);
-        [self setFormEnabled:YES];
+        __strong typeof (wself) sself = wself;
+        [sself setFormEnabled:YES];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t Log In" message:@"Please check your email and password." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         [alert show];
         }
         networkFailure:^(NSError *error) {
-        @strongify(self);
-        [self setFormEnabled:YES];
-        [self performSelector:_cmd withObject:self afterDelay:3];
+        __strong typeof (wself) sself = wself;
+        [sself setFormEnabled:YES];
+        [sself performSelector:_cmd withObject:self afterDelay:3];
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign up failed."];
         }];
 }

@@ -55,15 +55,15 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     self.view.stackView.bottomMarginHeight = 20;
     self.view.delegate = [ARScrollNavigationChief chief];
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.networkModel getArtistForArtistID:self.artist.artistID success:^(Artist *artist) {
-        @strongify(self);
-        if (!self) { return; }
-        self->_artist = artist;
-        [self artistDidLoad];
+        __strong typeof (wself) sself = wself;
+        if (!sself) { return; }
+        sself->_artist = artist;
+        [sself artistDidLoad];
     } failure:^(NSError *error) {
-        @strongify(self);
-        [self artistDidLoad];
+        __strong typeof (wself) sself = wself;
+        [sself artistDidLoad];
     }];
 }
 
@@ -85,21 +85,21 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
     [self addSubtitle];
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.networkModel getShowsForArtistID:self.artist.artistID inFairID:self.fair.fairID success:^(NSArray *shows) {
-        @strongify(self);
-        if (!self) { return; }
+        __strong typeof (wself) sself = wself;
+        if (!sself) { return; }
 
-        self->_partnerShows = shows;
+        sself->_partnerShows = shows;
 
-        [self addMapButton];
-        [self addFollowButton];
-        [self addArtistOnArtsyButton];
+        [sself addMapButton];
+        [sself addFollowButton];
+        [sself addArtistOnArtsyButton];
 
         [shows eachWithIndex:^(PartnerShow *show, NSUInteger index) {
-            [self.view.stackView addGenericSeparatorWithSideMargin:@"40" tag:ARFairArtistShows + index * 3];
-            [self addNavigationButtonForShowToStack:show tag:ARFairArtistShows + index * 3 + 1];
-            [self addArtworksForShowToStack:show tag:ARFairArtistShows + index * 3 + 2];
+            [sself.view.stackView addGenericSeparatorWithSideMargin:@"40" tag:ARFairArtistShows + index * 3];
+            [sself addNavigationButtonForShowToStack:show tag:ARFairArtistShows + index * 3 + 1];
+            [sself addArtworksForShowToStack:show tag:ARFairArtistShows + index * 3 + 2];
         }];
     } failure:nil];
 
@@ -158,38 +158,38 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)addMapButton
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.fair getFairMaps:^(NSArray *maps) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
         Map *map = maps.firstObject;
         if (!map) { return; }
 
         // Reset follow button to have a top-margin of just 10 now that there will be a map.
-        for (UIView *stackEntry in self.view.stackView.subviews) {
+        for (UIView *stackEntry in sself.view.stackView.subviews) {
           if (stackEntry.tag == ARFairArtistFollow) {
-            [self.view.stackView removeSubview:stackEntry];
-            [self.view.stackView addSubview:stackEntry withTopMargin:@"10" sideMargin:@"40"];
+            [sself.view.stackView removeSubview:stackEntry];
+            [sself.view.stackView addSubview:stackEntry withTopMargin:@"10" sideMargin:@"40"];
             break;
           }
         }
 
-        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 85);
+        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(sself.view.frame), 85);
         ARFairMapPreviewButton *mapButton = [[ARFairMapPreviewButton alloc] initWithFrame:frame map:map];
         mapButton.tag = ARFairArtistMapPreview;
-        [mapButton.mapPreview addShows:self.partnerShows animated:NO];
+        [mapButton.mapPreview addShows:sself.partnerShows animated:NO];
         [mapButton addTarget:self action:@selector(mapButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view.stackView addSubview:mapButton withTopMargin:@"30" sideMargin:@"40"];
+        [sself.view.stackView addSubview:mapButton withTopMargin:@"30" sideMargin:@"40"];
     }];
 }
 
 - (void)mapButtonTapped:(id)mapButtonTapped
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.fair getFairMaps:^(NSArray *maps) {
-        @strongify(self);
-        ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.header selectedPartnerShows:self.partnerShows];
-        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+        __strong typeof (wself) sself = wself;
+        ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:sself.fair title:sself.header selectedPartnerShows:sself.partnerShows];
+        [sself.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }];
 }
 

@@ -107,17 +107,17 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
 - (void)setUpCallbacks
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     void (^completion)(void) = ^{
-        @strongify(self);
-        [self.spinner fadeOutAnimated:ARPerformWorkAsynchronously];
-        [self.stackView removeSubview:self.spinner];
+        __strong typeof (wself) sself = wself;
+        [sself.spinner fadeOutAnimated:ARPerformWorkAsynchronously];
+        [sself.stackView removeSubview:sself.spinner];
     };
 
     [self.artwork onArtworkUpdate:^{
-        @strongify(self);
-        [self artworkUpdated];
+        __strong typeof (wself) sself = wself;
+        [sself artworkUpdated];
 
         completion();
     } failure:^(NSError *error) {
@@ -125,21 +125,21 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     }];
 
     [self.artwork onFairUpdate:^(Fair *fair) {
-        @strongify(self);
-        if (!self || !fair) return;
+        __strong typeof (wself) sself = wself;
+        if (!sself || !fair) return;
 
-        [self.metadataView updateWithFair:fair];
-        [self.stackView layoutIfNeeded];
+        [sself.metadataView updateWithFair:fair];
+        [sself.stackView layoutIfNeeded];
     } failure:nil];
 
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         if (saleArtwork.auctionState & ARAuctionStateUserIsBidder) {
             [ARAnalytics setUserProperty:@"has_placed_bid" toValue:@"true"];
-            self.banner.auctionState = saleArtwork.auctionState;
+            sself.banner.auctionState = saleArtwork.auctionState;
             [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration :^{
-                [self.banner updateHeightConstraint];
-                [self.stackView layoutIfNeeded];
+                [sself.banner updateHeightConstraint];
+                [sself.stackView layoutIfNeeded];
             }];
         }
     } failure:nil];

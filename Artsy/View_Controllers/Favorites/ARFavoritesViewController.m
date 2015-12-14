@@ -295,11 +295,11 @@
     if (networkModel.allDownloaded) {
         return;
     };
-    @weakify(self);
+    __weak typeof (self) wself = self;
     ar_dispatch_on_queue(self.artworkPageQueue, ^{
         [self.activeNetworkModel getFavorites:^(NSArray *items){
-            @strongify(self);
-            [self addItems:items toModule:module];
+            __strong typeof (wself) sself = wself;
+            [sself addItems:items toModule:module];
         } failure:nil];
     });
 }

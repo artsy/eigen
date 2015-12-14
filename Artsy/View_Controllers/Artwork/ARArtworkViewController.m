@@ -75,12 +75,12 @@
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
     }
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     void (^completion)(void) = ^{
-        @strongify(self);
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
-        [self ar_setDataLoaded];
+        __strong typeof (wself) sself = wself;
+        [sself ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
+        [sself ar_setDataLoaded];
     };
 
     [self.artwork onArtworkUpdate:^{
@@ -139,10 +139,10 @@
 
 - (void)getRelatedPosts
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.artwork getRelatedPosts:^(NSArray *posts) {
-        @strongify(self);
-        [self updateWithRelatedPosts:posts];
+        __strong typeof (wself) sself = wself;
+        [sself updateWithRelatedPosts:posts];
     }];
 }
 

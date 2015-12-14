@@ -6,11 +6,10 @@
 - (void)performNetworkRequestAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure
 {
     if (self.useSampleFavorites) {
-        @weakify(self);
+        __weak typeof (self) wself = self;
 
         [ArtsyAPI getOrderedSetWithKey:@"personalize:suggested-artists" success:^(OrderedSet *set) {
-            @strongify(self);
-            if (!self) { return; }
+            if (!wself) { return; }
 
             [ArtsyAPI getOrderedSetItems:set.orderedSetID.copy atPage:page withType:Artist.class success:success failure:failure];
 

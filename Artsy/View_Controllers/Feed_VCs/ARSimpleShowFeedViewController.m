@@ -155,33 +155,35 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 - (void)refreshFeedItems
 {
     [ARAnalytics startTimingEvent:ARAnalyticsInitialFeedLoadTime];
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^(NSArray *items) {
-            @strongify(self);
+            __strong typeof (wself) sself = wself;
 
             for (ARPartnerShowFeedItem *show in items) {
-                [self addShowToTable:show];
+                [sself addShowToTable:show];
             }
-            [self.tableView reloadData];
+            [sself.tableView reloadData];
 
-            [self loadNextFeedPage];
-            [self.heroUnitVC.heroUnitNetworkModel downloadHeroUnits];
-            [self.networkStatus hideOfflineView];
+            [sself loadNextFeedPage];
+            [sself.heroUnitVC.heroUnitNetworkModel downloadHeroUnits];
+            [sself.networkStatus hideOfflineView];
 
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
 
         } failure:^(NSError *error) {
+            __strong typeof (wself) sself = wself;
             ARErrorLog(@"There was an error getting newest items for the feed: %@", error.localizedDescription);
 
             // So that it won't stop the first one
-            [self.networkStatus.offlineView refreshFailed];
-            [self.networkStatus showOfflineViewIfNeeded];
+            [sself.networkStatus.offlineView refreshFailed];
+            [sself.networkStatus showOfflineViewIfNeeded];
             
-            [self performSelector:@selector(refreshFeedItems) withObject:nil afterDelay:3];
+            [sself performSelector:@selector(refreshFeedItems) withObject:nil afterDelay:3];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
         }];
+        
     } failure:^(NSError *error) {
         [self.networkStatus.offlineView refreshFailed];
     }];

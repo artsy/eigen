@@ -42,11 +42,7 @@
     [self.label alignTop:@"2" bottom:@"0" toView:self];
 
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] init];
-   @weakify(self);
-    [recognizer.rac_gestureSignal subscribeNext:^(id _) {
-        @strongify(self);
-        [self.delegate searchFieldButtonWasPressed:self];
-    }];
+    [recognizer addTarget:self.delegate action:@selector(searchFieldButtonWasPressed:)];
     [self addGestureRecognizer:recognizer];
 
     return self;

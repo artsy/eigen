@@ -216,11 +216,11 @@
 
 - (void)fetchSearchResults:(NSString *)text replace:(BOOL)replaceResults
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     _searchRequest = [self searchWithQuery:text success:^(NSArray *results) {
-        @strongify(self);
-        [self addResults:results replace:replaceResults];
-        [self finishSearching];
+        __strong typeof (wself) sself = wself;
+        [sself addResults:results replace:replaceResults];
+        [sself finishSearching];
     } failure:^(NSError *error) {
         if (error.code != NSURLErrorCancelled) {
             [self presentNoResults];
@@ -282,16 +282,16 @@
 
 - (void)removeResultsViewAnimated:(BOOL)animated
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     [UIView animateIf:animated duration:0.15:^{
-        @strongify(self);
-        self.resultsView.alpha = 0;
+        __strong typeof (wself) sself = wself;
+        sself.resultsView.alpha = 0;
     } completion:^(BOOL finished) {
-        @strongify(self);
-        if (!self) { return; }
+        __strong typeof (wself) sself = wself;
+        if (!sself) { return; }
 
-        self.resultsView.hidden = YES;
+        sself.resultsView.hidden = YES;
     }];
 }
 

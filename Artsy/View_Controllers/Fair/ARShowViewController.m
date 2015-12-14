@@ -154,24 +154,23 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (NSDictionary *)descriptionForMapButton
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     return @{
         ARActionButtonImageKey : @"MapButtonAction",
         ARActionButtonHandlerKey : ^(ARCircularActionButton *sender){
-            @strongify(self);
-    [self handleMapButtonPress:sender];
-}
-}
-;
+            __strong typeof (wself) sself = wself;
+            [sself handleMapButtonPress:sender];
+        }
+    };
 }
 
 - (void)handleMapButtonPress:(ARCircularActionButton *)sender
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
-        @strongify(self);
-        ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.show.title selectedPartnerShows:@[self.show]];
-        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+        __strong typeof (wself) sself = wself;
+        ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:sself.fair title:sself.show.title selectedPartnerShows:@[sself.show]];
+        [sself.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }];
 }
 
@@ -215,22 +214,19 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.showNetworkModel getShowInfo:^(PartnerShow *show) {
-        @strongify(self);
-        if (!self) { return; }
+        __strong typeof (wself) sself = wself;
+        if (!sself) { return; }
 
-        [self.show mergeValuesForKeysFromModel:show];
+        [sself.show mergeValuesForKeysFromModel:show];
 
-        if (!self.fair) {
-            self->_fair = show.fair;
-        }
+        if (!sself.fair) { sself->_fair = show.fair; }
 
         [self showDidLoad];
     } failure:^(NSError *error) {
-        @strongify(self);
-
-        [self showDidLoad];
+        __strong typeof (wself) sself = wself;
+        [sself showDidLoad];
     }];
 }
 
@@ -369,14 +365,14 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     self.showArtworksViewController.showTrailingLoadingIndicator = YES;
     [self.view.stackView addViewController:self.showArtworksViewController toParent:self withTopMargin:@"0" sideMargin:nil];
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self getArtworksAtPage:1 onArtworks:^(NSArray *artworks) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         if (artworks.count > 0) {
-            [self.showArtworksViewController appendItems:artworks];
+            [sself.showArtworksViewController appendItems:artworks];
         } else {
-            self.showArtworksViewController.showTrailingLoadingIndicator = NO;
-            [self.showArtworksViewController.view invalidateIntrinsicContentSize];
+            sself.showArtworksViewController.showTrailingLoadingIndicator = NO;
+            [sself.showArtworksViewController.view invalidateIntrinsicContentSize];
         }
     }];
 }
@@ -385,12 +381,12 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 {
     NSParameterAssert(onArtworks);
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.showNetworkModel getArtworksAtPage:page success:^(NSArray *artworks) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         onArtworks(artworks);
         if (artworks.count > 0) {
-            [self getArtworksAtPage:page + 1 onArtworks:onArtworks];
+            [sself getArtworksAtPage:page + 1 onArtworks:onArtworks];
         }
     } failure:nil];
 }
@@ -416,19 +412,19 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (void)addMapPreview
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
         Map *map = maps.firstObject;
         if (!map) { return; }
 
-        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 85);
+        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(sself.view.frame), 85);
         ARFairMapPreviewButton *mapButton = [[ARFairMapPreviewButton alloc] initWithFrame:frame map:map];
         mapButton.tag = ARFairShowViewMapPreview;
-        [mapButton.mapPreview addHighlightedShow:self.show animated:NO];
+        [mapButton.mapPreview addHighlightedShow:sself.show animated:NO];
         [mapButton addTarget:self action:@selector(handleMapButtonPress:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view.stackView addSubview:mapButton withTopMargin:@"30" sideMargin:@"40"];
+        [sself.view.stackView addSubview:mapButton withTopMargin:@"30" sideMargin:@"40"];
     }];
 }
 

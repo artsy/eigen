@@ -120,22 +120,22 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     }
 
     if (![self hasNewStyledBanner] && [self hasIconImage]) {
-       @weakify(self);
+       __weak typeof (self) wself = self;
         [self.iconImageView ar_setImageWithURL:[NSURL URLWithString:[self.profile iconURL]] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            @strongify(self);
+            __strong typeof (wself) sself = wself;
             if (image) {
-                [self.iconImageView alignBottomEdgeWithView:self.view predicate:@"0"];
-                [self.iconImageView alignLeadingEdgeWithView:self.view predicate:@"20"];
-                [self.iconImageView constrainWidth:@"80"];
-                [self.iconImageView constrainHeight:@"80"];
+                [sself.iconImageView alignBottomEdgeWithView:sself.view predicate:@"0"];
+                [sself.iconImageView alignLeadingEdgeWithView:sself.view predicate:@"20"];
+                [sself.iconImageView constrainWidth:@"80"];
+                [sself.iconImageView constrainHeight:@"80"];
 
-                [self.titleLabel constrainLeadingSpaceToView:self.iconImageView predicate:@"20"];
+                [sself.titleLabel constrainLeadingSpaceToView:sself.iconImageView predicate:@"20"];
 
                 // Necessary, since the icons will sometimes be transparent GIFs
-                self.iconImageView.backgroundColor = [UIColor whiteColor];
+                sself.iconImageView.backgroundColor = [UIColor whiteColor];
             } else {
-                [self.titleLabel alignLeadingEdgeWithView:self.view predicate:@"20"];
-                [self.iconImageView removeFromSuperview];
+                [sself.titleLabel alignLeadingEdgeWithView:sself.view predicate:@"20"];
+                [sself.iconImageView removeFromSuperview];
             }
         }];
     }

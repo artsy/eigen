@@ -247,12 +247,12 @@
 
 - (void)rebuildPartnerToShowsMap
 {
-   @weakify(self);
+   __weak typeof (self) wself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
         NSMapTable *result = [NSMapTable strongToStrongObjectsMapTable];
-        for(PartnerShow *show in self.shows) {
+        for(PartnerShow *show in sself.shows) {
             if (show.partner) {
                 NSMutableArray *shows = [result objectForKey:show.partner];
                 if (!shows) {

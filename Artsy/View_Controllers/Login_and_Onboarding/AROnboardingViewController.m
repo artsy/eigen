@@ -79,15 +79,12 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     self.screenSwipeGesture.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:self.screenSwipeGesture];
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        @strongify(self);
-
-       @weakify(self);
         [ArtsyAPI getPersonalizeGenesWithSuccess:^(NSArray *genes) {
-            @strongify(self);
-            self.genesForPersonalize = genes;
+            __strong typeof (wself) sself = wself;
+            sself.genesForPersonalize = genes;
         } failure:^(NSError *error) {
             ARErrorLog(@"Couldn't get personalize genes. Error: %@", error.localizedDescription);
         }];
@@ -336,12 +333,12 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     self.backgroundWidthConstraint.constant = 0;
     self.backgroundHeightConstraint.constant = 0;
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
-        @strongify(self);
-        [self.backgroundView layoutIfNeeded];
-        self.backgroundView.alpha = 1;
-        self.backgroundView.backgroundColor = [UIColor clearColor];
+        __strong typeof (wself) sself = wself;
+        [sself.backgroundView layoutIfNeeded];
+        sself.backgroundView.alpha = 1;
+        sself.backgroundView.backgroundColor = [UIColor clearColor];
     } completion:^(BOOL finished) {
         self.backgroundView.image = self.backgroundImage;
         if (completion != nil) { completion(); };
@@ -382,24 +379,24 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 - (void)signUpWithFacebook
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
         AROnboardingMoreInfoViewController *more = [[AROnboardingMoreInfoViewController alloc] initForFacebookWithToken:token email:email name:name];
         more.delegate = self;
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        [self pushViewController:more animated:YES];
+        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        [sself pushViewController:more animated:YES];
 
     } failure:^(NSError *error) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 
         NSString * reason = error.userInfo[@"com.facebook.sdk:ErrorLoginFailedReason"];
         if (![reason isEqualToString:@"com.facebook.sdk:UserLoginCancelled"]) {
-            [self fbError];
+            [sself fbError];
         }
     }];
 }
@@ -408,21 +405,21 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [ARAuthProviders getReverseAuthTokenForTwitter:^(NSString *token, NSString *secret) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
         AROnboardingMoreInfoViewController *more = [[AROnboardingMoreInfoViewController alloc]
                                                     initForTwitterWithToken:token andSecret:secret];
         more.delegate = self;
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        [self pushViewController:more animated:YES];
+        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        [sself pushViewController:more animated:YES];
 
     } failure:^(NSError *error) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        [self twitterError];
+        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        [sself twitterError];
     }];
 }
 
@@ -559,13 +556,13 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
     self.backgroundWidthConstraint.constant = offset * 2;
     self.backgroundHeightConstraint.constant = offset * 2;
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
-        @strongify(self);
-        [self.backgroundView layoutIfNeeded];
-        self.backgroundView.image = blurImage;
-        self.backgroundView.alpha = 0.3;
-        self.backgroundView.backgroundColor = [UIColor blackColor];
+        __strong typeof (wself) sself = wself;
+        [sself.backgroundView layoutIfNeeded];
+        sself.backgroundView.image = blurImage;
+        sself.backgroundView.alpha = 0.3;
+        sself.backgroundView.backgroundColor = [UIColor blackColor];
     }];
 }
 
