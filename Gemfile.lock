@@ -95,7 +95,13 @@ GEM
       gli
     fuzzy_match (2.0.4)
     gli (2.13.2)
-    highline (1.7.3)
+    gym (1.2.0)
+      fastlane_core (>= 0.25.0, < 1.0.0)
+      plist
+      rubyzip (>= 1.1.7)
+      terminal-table
+      xcpretty (>= 0.2.1)
+    highline (1.7.8)
     houston (2.2.3)
       commander (~> 4.1)
       json
@@ -124,11 +130,17 @@ GEM
       mini_portile2 (~> 2.0.0.rc2)
     osx_keychain (1.0.1)
       RubyInline (~> 3)
+    pilot (1.2.0)
+      credentials_manager (>= 0.3.0)
+      fastlane_core (>= 0.16.1, < 1.0.0)
+      spaceship (>= 0.16.0, < 1.0.0)
+      terminal-table (~> 1.4.5)
     plist (3.1.0)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rouge (1.10.1)
     rubyzip (1.1.7)
     second_curtain (0.5.0)
       aws-sdk-v1 (~> 1.52)
@@ -162,7 +174,8 @@ GEM
       activesupport (>= 3)
       claide (~> 0.9.1)
       colored (~> 1.2)
-    xcpretty (0.1.11)
+    xcpretty (0.2.1)
+      rouge (~> 1.8)
 
 PLATFORMS
   ruby
@@ -173,9 +186,11 @@ DEPENDENCIES
   cocoapods-keys
   deliver
   fui
+  gym
   houston
   match
   nokogiri (= 1.6.7.rc4)
+  pilot
   second_curtain
   xcpretty
 

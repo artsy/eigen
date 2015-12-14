@@ -22,4 +22,6 @@ end
 group :distribution do
   gem 'deliver'
   gem 'match'
+  gem 'pilot'
+  gem 'gym'
 end
