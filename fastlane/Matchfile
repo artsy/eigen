@@ -1,0 +1,10 @@
+git_url "https://github.com/artsy/mobile_code_signing"
+
+# The default type, can be: appstore, adhoc or development
+type "development"
+
+app_identifier "net.artsy.artsy"
+username "it@artsymail.com"
+
+# For all available options run `match --help`
+# Remove the # in the beginning of the line to enable the other options
