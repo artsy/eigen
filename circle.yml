@@ -37,3 +37,5 @@ test:
     - make ci
   override:
     - make test
+  post:
+    - make deploy_if_beta_branch

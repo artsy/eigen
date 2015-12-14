@@ -27,8 +27,7 @@ all: ci
 
 appstore: update_bundle_version set_git_properties change_version_to_date
 next: update_bundle_version set_git_properties change_version_to_date
-deploy: ipa distribute
-beta: deploy
+beta: ipa distribute
 
 ### General setup
 
@@ -65,7 +64,6 @@ distribute:
 	./config/generate_changelog_short.rb
 	bundle exec pilot upload -i build/Artsy.ipa --changelog <$(CHANGELOG_SHORT)
 
-
 ### General Xcode tooling
 
 build:
@@ -82,7 +80,9 @@ lint:
 
 ci: CONFIGURATION = Debug
 ci: build
-	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi
+
+deploy_if_beta_branch:
+	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make certs; make distribute; fi
 
 ### Utility functions
 
