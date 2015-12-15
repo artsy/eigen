@@ -61,7 +61,7 @@ ipa: set_git_properties change_version_to_date
 
 distribute:
 	./config/generate_changelog_short.rb
-	bundle exec pilot upload -i build/Artsy.ipa --changelog "$(<CHANGELOG_SHORT.md)"
+	bundle exec pilot upload -i build/Artsy.ipa
 
 ### General Xcode tooling
 
@@ -80,7 +80,7 @@ ci: CONFIGURATION = Debug
 ci: build
 
 deploy_if_beta_branch:
-	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make certs; make distribute; fi
+	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make certs; make ipa; make distribute; fi
 
 deploy:
 	git push upstream "$(LOCAL_BRANCH):beta"
