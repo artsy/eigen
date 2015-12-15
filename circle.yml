@@ -36,3 +36,5 @@ test:
     - make ci
   override:
     - make test
+  post:
+    - bash <(curl -s https://codecov.io/bash)
