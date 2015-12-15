@@ -33,10 +33,9 @@ dependencies:
     - Pods
 
 test:
-  # pre:
-  #   - make ci
-  # override:
-  #   - make test
-  # post:
+  pre:
+    - make ci
   override:
+    - make test
+  post:
     - make deploy_if_beta_branch
