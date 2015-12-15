@@ -13,7 +13,6 @@ DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
 DATE_VERSION = $(shell date "+%Y.%m.%d")
 
 CHANGELOG = CHANGELOG.md
-CHANGELOG_SHORT = CHANGELOG_SHORT.md
 
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo $(shell whoami)-$(shell git rev-parse --abbrev-ref HEAD))
@@ -62,7 +61,7 @@ ipa: set_git_properties change_version_to_date
 
 distribute:
 	./config/generate_changelog_short.rb
-	bundle exec pilot upload -i build/Artsy.ipa --changelog <$(CHANGELOG_SHORT)
+	bundle exec pilot upload -i build/Artsy.ipa --changelog "$(<CHANGELOG_SHORT.md)"
 
 ### General Xcode tooling
 
