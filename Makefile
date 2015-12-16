@@ -13,7 +13,6 @@ DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
 DATE_VERSION = $(shell date "+%Y.%m.%d")
 
 CHANGELOG = CHANGELOG.md
-CHANGELOG_SHORT = CHANGELOG_SHORT.md
 
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo $(shell whoami)-$(shell git rev-parse --abbrev-ref HEAD))
@@ -27,8 +26,7 @@ all: ci
 
 appstore: update_bundle_version set_git_properties change_version_to_date
 next: update_bundle_version set_git_properties change_version_to_date
-deploy: ipa distribute
-beta: deploy
+beta: ipa distribute
 
 ### General setup
 
@@ -63,8 +61,7 @@ ipa: set_git_properties change_version_to_date
 
 distribute:
 	./config/generate_changelog_short.rb
-	bundle exec pilot upload -i build/Artsy.ipa --changelog <$(CHANGELOG_SHORT)
-
+	bundle exec pilot upload -i build/Artsy.ipa --username it@artsymail.com
 
 ### General Xcode tooling
 
@@ -74,7 +71,6 @@ build:
 test:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug build test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
 
-
 ### CI
 
 lint:
@@ -82,7 +78,13 @@ lint:
 
 ci: CONFIGURATION = Debug
 ci: build
-	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi
+
+deploy_if_beta_branch:
+	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make certs; make ipa; make distribute; fi
+
+deploy:
+	git push upstream "$(LOCAL_BRANCH):beta"
+
 
 ### Utility functions
 
