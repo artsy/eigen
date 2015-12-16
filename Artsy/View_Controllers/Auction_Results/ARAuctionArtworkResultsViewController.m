@@ -54,11 +54,11 @@ static const NSInteger ARArtworkIndex = 0;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = [self createWarningView];
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.network getRelatedAuctionResults:^(NSArray *auctionResults) {
-        @strongify(self);
-        self.auctionResults = auctionResults;
-        [self.tableView reloadData];
+        __strong typeof (wself) sself = wself;
+        sself.auctionResults = auctionResults;
+        [sself.tableView reloadData];
     }];
 }
 

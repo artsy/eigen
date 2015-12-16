@@ -38,12 +38,12 @@
 {
     [super viewDidLoad];
 
-    @weakify(self)
+    __weak typeof (self) wself = self;
         // On the first viewWillAppear:
-        [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
-        @strongify(self);
-        [self loadProfile];
-        }];
+    [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
+        __strong typeof (wself) sself = wself;
+        [sself loadProfile];
+    }];
 }
 
 - (void)loadProfile

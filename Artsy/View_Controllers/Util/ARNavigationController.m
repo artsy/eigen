@@ -378,17 +378,17 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     }
     [self ar_addModernChildViewController:self.pendingOperationViewController];
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     return [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         RACSubject *completionSubject = [RACSubject subject];
 
-        [UIView animateIf:self.animatesLayoverChanges duration:ARAnimationDuration :^{
-            self.pendingOperationViewController.view.alpha = 0.0;
+        [UIView animateIf:sself.animatesLayoverChanges duration:ARAnimationDuration :^{
+            sself.pendingOperationViewController.view.alpha = 0.0;
         } completion:^(BOOL finished) {
-            [self ar_removeChildViewController:self.pendingOperationViewController];
-            self.pendingOperationViewController = nil;
+            [sself ar_removeChildViewController:self.pendingOperationViewController];
+            sself.pendingOperationViewController = nil;
             [completionSubject sendCompleted];
         }];
 

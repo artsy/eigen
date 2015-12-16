@@ -19,6 +19,7 @@ machine:
     AdjustProductionAppToken: "-"
     SegmentProductionWriteKey: "-"
     SegmentDevWriteKey: "-"
+
   post:
     - echo "machine github.com login $GITHUB_API_KEY" > ~/.netrc
     - chmod 600 ~/.netrc

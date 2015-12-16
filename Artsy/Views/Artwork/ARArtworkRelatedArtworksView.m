@@ -79,7 +79,7 @@
     self.artwork = artwork;
     self.hasRequested = YES;
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     // TODO: refactor these callbacks to return so we can use
     // results from the values array in a `when`
@@ -94,32 +94,32 @@
     } failure:nil];
 
     [[KSPromise when:@[ salePromise, fairPromise, partnerShowPromise ]] then:^id(id value) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
         if (show) {
-            [self addSectionsForShow:show];
+            [sself addSectionsForShow:show];
             return show;
         }
 
-        Sale *auction = self.saleArtwork.auction;
+        Sale *auction = sself.saleArtwork.auction;
         if (auction) {
-            [self addSectionsForAuction:auction];
+            [sself addSectionsForAuction:auction];
             return auction;
         }
 
-        Fair *fair = self.fair ?: self.artwork.fair;
+        Fair *fair = sself.fair ?: sself.artwork.fair;
         if (fair) {
-            [self addSectionsForFair:fair];
+            [sself addSectionsForFair:fair];
             return fair;
         }
 
-        [self addSectionWithRelatedArtworks];
+        [sself addSectionWithRelatedArtworks];
         return nil;
 
     } error:^id(NSError *error) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         ARErrorLog(@"Error fetching sale/fair for %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
-        [self addSectionWithRelatedArtworks];
+        [sself addSectionWithRelatedArtworks];
         return error;
     }];
 }
@@ -133,17 +133,17 @@
 
 - (void)addSectionsForFair:(Fair *)fair;
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self addRelatedArtworkRequest:[self.artwork getFeaturedShowsAtFair:fair success:^(NSArray *shows) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         for (PartnerShow *show in shows) {
-            [self addSectionWithOtherArtworksInShow:show];
+            [sself addSectionWithOtherArtworksInShow:show];
         }
     }]];
 
     [self addRelatedArtworkRequest:[self.artwork getRelatedFairArtworks:fair success:^(NSArray *artworks) {
-        @strongify(self);
-        [self addSectionWithTag:ARRelatedArtworksSameFair artworks:artworks heading:@"Other works in fair"];
+        __strong typeof (wself) sself = wself;
+        [sself addSectionWithTag:ARRelatedArtworksSameFair artworks:artworks heading:@"Other works in fair"];
     }]];
 }
 
@@ -156,31 +156,31 @@
 
 - (void)addSectionsForAuction:(Sale *)auction;
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self addRelatedArtworkRequest:[auction getArtworks:^(NSArray *artworks) {
-        @strongify(self);
-        [self addSectionWithTag:ARRelatedArtworksSameAuction artworks:artworks heading:@"Other works in auction"];
+        __strong typeof (wself) sself = wself;
+        [sself addSectionWithTag:ARRelatedArtworksSameAuction artworks:artworks heading:@"Other works in auction"];
     }]];
 }
 
 - (void)addSectionWithOtherArtworksInShow:(PartnerShow *)show;
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self getArtworksInShow:show atPage:1 success:^(NSArray *artworks) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         ARArtworkRelatedArtworksContentView *view = [self addSectionWithTag:ARRelatedArtworksSameShow artworks:artworks heading:@"Other works in show"];
-        [self addArtworksInShow:show atPage:2 toView:view];
+        [sself addArtworksInShow:show atPage:2 toView:view];
     }];
 }
 
 - (void)addArtworksInShow:(PartnerShow *)show atPage:(NSInteger)page toView:(ARArtworkRelatedArtworksContentView *)view
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self getArtworksInShow:show atPage:page success:^(NSArray *artworks) {
         if (!artworks.count > 0) { return; }
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         [view.artworksVC appendItems:artworks];
-        [self addArtworksInShow:show atPage:page+1 toView:view];
+        [sself addArtworksInShow:show atPage:page+1 toView:view];
     }];
 }
 
@@ -195,21 +195,21 @@
         return;
     }
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self addRelatedArtworkRequest:[self.artwork.artist getArtworksAtPage:1 andParams:nil success:^(NSArray *artworks) {
-        @strongify(self);
-        [self addSectionWithTag:ARRelatedArtworksArtistArtworks
+        __strong typeof (wself) sself = wself;
+        [sself addSectionWithTag:ARRelatedArtworksArtistArtworks
                        artworks:artworks
-                        heading:[NSString stringWithFormat:@"Other works by %@", self.artwork.artist.name]];
+                        heading:[NSString stringWithFormat:@"Other works by %@", sself.artwork.artist.name]];
     }]];
 }
 
 - (void)addSectionWithRelatedArtworks;
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self addRelatedArtworkRequest:[self.artwork getRelatedArtworks:^(NSArray *artworks) {
-        @strongify(self);
-        [self addSectionWithTag:ARRelatedArtworks artworks:artworks heading:@"Related artworks"];
+        __strong typeof (wself) sself = wself;
+        [sself addSectionWithTag:ARRelatedArtworks artworks:artworks heading:@"Related artworks"];
     }]];
 }
 

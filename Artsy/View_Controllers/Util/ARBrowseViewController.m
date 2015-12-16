@@ -45,10 +45,10 @@
     [super viewDidAppear:animated];
 
     if (self.menuLinks.count < 1) {
-        @weakify(self);
+        __weak typeof (self) wself = self;
         [self.networkModel getBrowseFeaturedLinks:^(NSArray *links) {
-            @strongify(self);
-            [self.collectionView reloadData];
+            __strong typeof (wself) sself = wself;
+            [sself.collectionView reloadData];
         } failure:nil];
     }
 }

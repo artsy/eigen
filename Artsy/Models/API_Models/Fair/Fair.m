@@ -113,7 +113,7 @@
 
 - (void)downloadShows
 {
-   @weakify(self);
+   __weak typeof (self) wself = self;
 
     NSString *path = self.pathForLocalShowStorage;
 
@@ -121,20 +121,20 @@
         NSMutableSet *shows = [[NSKeyedUnarchiver unarchiveObjectWithFile:path] mutableCopy];
 
         ar_dispatch_main_queue(^{
-            @strongify(self);
-            if (!self) { return; }
+            __strong typeof (wself) sself = wself;
+            if (!sself) { return; }
 
-            [self willChangeValueForKey:@keypath(Fair.new, shows)];
-            self->_showsLoadedFromArchive = shows ? [NSMutableSet setWithSet:shows] : nil;
-            self.shows = shows ?: [NSMutableSet set];
-            [self didChangeValueForKey:@keypath(Fair.new, shows)];
+            [sself willChangeValueForKey:@keypath(Fair.new, shows)];
+            sself->_showsLoadedFromArchive = shows ? [NSMutableSet setWithSet:shows] : nil;
+            sself.shows = shows ?: [NSMutableSet set];
+            [sself didChangeValueForKey:@keypath(Fair.new, shows)];
 
             // download once an hour at the most
             NSError *error = nil;
             NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
             NSTimeInterval distanceBetweenDatesSeconds = error ? -1 : [[NSDate date] timeIntervalSinceDate:[attributes fileModificationDate]];
             if (distanceBetweenDatesSeconds < 0 || distanceBetweenDatesSeconds / 3600.f > 1) {
-                [self downloadPastShowSet];
+                [sself downloadPastShowSet];
             }
         });
     });
@@ -157,23 +157,23 @@
         _showsFeed = [[ARFairShowFeed alloc] initWithFair:self];
     }
 
-   @weakify(self);
+   __weak typeof (self) wself = self;
 
     [self.networkModel getShowFeedItems:self.showsFeed success:^(NSOrderedSet *items) {
 
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         if(items.count > 0) {
-            [self addFeedItemsToShows:items];
-            [self downloadPastShowSet];
+            [sself addFeedItemsToShows:items];
+            [sself downloadPastShowSet];
         } else {
-            [self finishedDownloadingShows];
+            [sself finishedDownloadingShows];
         }
 
     } failure:^(NSError *error) {
 
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         ARErrorLog(@"failed to get shows %@", error.localizedDescription);
-        [self performSelector:@selector(downloadPastShowSet) withObject:nil afterDelay:0.5];
+        [sself performSelector:@selector(downloadPastShowSet) withObject:nil afterDelay:0.5];
     }];
 }
 
@@ -204,20 +204,20 @@
 {
     [self willChangeValueForKey:@keypath(Fair.new, shows)];
 
-   @weakify(self);
+   __weak typeof (self) wself = self;
     [feedItems enumerateObjectsUsingBlock:^(ARPartnerShowFeedItem *feedItem, NSUInteger idx, BOOL *stop) {
-        @strongify(self);
-        if (!self) { return; }
+        __strong typeof (wself) sself = wself;
+        if (!sself) { return; }
 
         // So, you're asking, why is there C++ in my Obj-C?
         // Well we want to be able to _update_ objects in a mutable set, which is a lower level API
         // than just adding. Uses toll-free bridging to switch to CF and updates the set.        ./
 
         if (feedItem.show) {
-            if (self->_showsLoadedFromArchive) {
-                [self->_showsLoadedFromArchive removeObject:feedItem.show];
+            if (sself->_showsLoadedFromArchive) {
+                [sself->_showsLoadedFromArchive removeObject:feedItem.show];
             }
-            CFSetSetValue((__bridge CFMutableSetRef)self.shows, (__bridge const void *)feedItem.show);
+            CFSetSetValue((__bridge CFMutableSetRef)sself.shows, (__bridge const void *)feedItem.show);
         }
     }];
 

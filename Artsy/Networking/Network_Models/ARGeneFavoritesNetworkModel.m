@@ -6,11 +6,11 @@
 - (void)performNetworkRequestAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure
 {
     if (self.useSampleFavorites) {
-       @weakify(self);
+       __weak typeof (self) wself = self;
 
         [ArtsyAPI getOrderedSetWithKey:@"favorites:suggested-genes" success:^(OrderedSet *set) {
-            @strongify(self);
-            if (!self) { return; }
+            __strong typeof (wself) sself = wself;
+            if (!sself) { return; }
 
             [ArtsyAPI getOrderedSetItems:set.orderedSetID.copy atPage:page withType:Gene.class success:success failure:failure];
 

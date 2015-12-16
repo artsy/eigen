@@ -130,10 +130,10 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     self.artistTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.artistTableView.scrollEnabled = NO;
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.artistController setPostRemoveBlock:^{
-        @strongify(self);
-        [self updateArtistTableViewAnimated:YES];
+        __strong typeof (wself) sself = wself;
+        [sself updateArtistTableViewAnimated:YES];
     }];
 
     [self.scrollView addSubview:self.artistTableView];

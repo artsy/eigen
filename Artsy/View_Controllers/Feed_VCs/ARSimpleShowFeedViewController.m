@@ -156,35 +156,34 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 - (void)refreshFeedItems
 {
     [ARAnalytics startTimingEvent:ARAnalyticsInitialFeedLoadTime];
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^(NSArray *items) {
-            @strongify(self);
+            __strong typeof (wself) sself = wself;
 
             for (ARPartnerShowFeedItem *show in items) {
-                [self addShowToTable:show];
+                [sself addShowToTable:show];
             }
-            [self.tableView reloadData];
+            [sself.tableView reloadData];
 
-            [self loadNextFeedPage];
-            [self.heroUnitVC.heroUnitNetworkModel downloadHeroUnits];
-            [self.networkStatus hideOfflineView];
+            [sself loadNextFeedPage];
+            [sself.heroUnitVC.heroUnitNetworkModel downloadHeroUnits];
+            [sself.networkStatus hideOfflineView];
 
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
 
         } failure:^(NSError *error) {
-            @strongify(self);
-
             NSHTTPURLResponse *response = error.userInfo[AFURLResponseSerializationErrorDomain]
                                           ?: error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
             ARErrorLog(@"There was a %@ error getting newest items for the feed: %@", @(response.statusCode), error.localizedDescription);
+            __strong typeof (wself) sself = wself;
 
             // So that it won't stop the first one
-            [self.networkStatus.offlineView refreshFailed];
-            [self.networkStatus showOfflineViewIfNeeded];
-            
-            [self performSelector:@selector(refreshFeedItems) withObject:nil afterDelay:3];
+            [sself.networkStatus.offlineView refreshFailed];
+            [sself.networkStatus showOfflineViewIfNeeded];
+
+            [sself performSelector:@selector(refreshFeedItems) withObject:nil afterDelay:3];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
 
             if ([User isTrialUser] == false && response.statusCode == 401) {
@@ -192,6 +191,7 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
                 [self offerLogoutForExpiredCredentials];
             }
         }];
+
     } failure:^(NSError *error) {
         [self.networkStatus.offlineView refreshFailed];
     }];
@@ -235,7 +235,7 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"About to Log Out" message:@"Your Artsy credentials are out of date." preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Log Out" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *_Nonnull action) {
-        
+
         [ARUserManager logout];
     }]];
 

@@ -104,21 +104,21 @@
 
 - (void)loadGene
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.gene updateGene:^{
-        @strongify(self);
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
-        [self updateBody];
-        [self ar_setDataLoaded];
+        __strong typeof (wself) sself = wself;
+        [sself ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
+        [sself updateBody];
+        [sself ar_setDataLoaded];
 
-        if (self.gene.geneDescription.length == 0) {
-            [self.headerContainerView removeSubview:self.descriptionTextView];
+        if (sself.gene.geneDescription.length == 0) {
+            [sself.headerContainerView removeSubview:sself.descriptionTextView];
         } else {
-            [self.headerContainerView removeSubview:self.titleSeparator];
+            [sself.headerContainerView removeSubview:sself.titleSeparator];
         }
 
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
+        [sself.view setNeedsLayout];
+        [sself.view layoutIfNeeded];
     }];
 }
 

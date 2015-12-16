@@ -27,28 +27,28 @@
     }
 
     _downloadLock = YES;
-   @weakify(self);
+   __weak typeof (self) wself = self;
 
     [self performNetworkRequestAtPage:self.currentPage withSuccess:^(NSArray *items) {
-        @strongify(self);
-        if (!self) { return; }
+        __strong typeof (wself) sself = wself;
+        if (!sself) { return; }
 
-        self.currentPage++;
-        self.downloadLock = NO;
+        sself.currentPage++;
+        sself.downloadLock = NO;
 
         if (items.count == 0) {
-            self.allDownloaded = YES;
+            sself.allDownloaded = YES;
         }
 
         if(success) success(items);
 
     } failure:^(NSError *error) {
-        @strongify(self);
-        if (!self) { return; }
+        __strong typeof (wself) sself = wself;
+        if (!sself) { return; }
 
-        self.allDownloaded = YES;
+        sself.allDownloaded = YES;
 
-        self.downloadLock = NO;
+        sself.downloadLock = NO;
 
         if(success) success(@[]);
     }];

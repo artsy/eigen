@@ -49,18 +49,18 @@
 - (void)setDelegate:(id<ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate>)delegate
 {
     _delegate = delegate;
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     KSPromise *artworkPromise = [self.artwork onArtworkUpdate:nil failure:nil];
     KSPromise *saleArtworkPromise = [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-        @strongify(self);
-        self.saleArtwork = saleArtwork;
+        __strong typeof (wself) sself = wself;
+        sself.saleArtwork = saleArtwork;
     } failure:nil];
 
     [[KSPromise when:@[ artworkPromise, saleArtworkPromise ]] then:^id(id value) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         id returnable = nil;
-        [self updateUI];
+        [sself updateUI];
         return returnable;
     } error:nil];
 
@@ -86,12 +86,12 @@
         [self addSubview:self.spinner withTopMargin:@"0" sideMargin:@"0"];
 
         // Then fetch the up-to-date data.
-        @weakify(self);
+        __weak typeof (self) wself = self;
         [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-            @strongify(self);
-            self.saleArtwork = saleArtwork;
-            [self updateUI];
-            self.spinner = nil;
+            __strong typeof (wself) sself = wself;
+            sself.saleArtwork = saleArtwork;
+            [sself updateUI];
+            sself.spinner = nil;
         } failure:nil allowCached:NO];
     }
 }

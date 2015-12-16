@@ -16,14 +16,14 @@
 
     _representedObject = representedObject;
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self.representedObject getFollowState:^(ARHeartStatus status) {
-        @strongify(self);
-        if (!self) { return; }
+        __strong typeof (wself) sself = wself;
+        if (!sself) { return; }
 
-        [self willChangeValueForKey:@"following"];
-        self->_following = (status == ARHeartStatusYes);
-        [self didChangeValueForKey:@"following"];
+        [sself willChangeValueForKey:@"following"];
+        sself->_following = (status == ARHeartStatusYes);
+        [sself didChangeValueForKey:@"following"];
     } failure:^(NSError *error) {
         ARErrorLog(@"Error checking follow status for %@ - %@", self.representedObject, error.localizedDescription);
     }];
@@ -35,19 +35,19 @@
 {
     if (following == _following) return;
 
-   @weakify(self);
+   __weak typeof (self) wself = self;
     if (following) {
         [_representedObject followWithSuccess:nil failure:^(NSError *error) {
-            @strongify(self);
-            ARErrorLog(@"Error following %@ - %@", self.representedObject, error.localizedDescription);
-            [self _setFollowing:NO];
+            __strong typeof (wself) sself = wself;
+            ARErrorLog(@"Error following %@ - %@", sself.representedObject, error.localizedDescription);
+            [sself _setFollowing:NO];
         }];
 
     } else {
         [_representedObject unfollowWithSuccess:nil failure:^(NSError *error) {
-            @strongify(self);
-            ARErrorLog(@"Error following %@ - %@", self.representedObject, error.localizedDescription);
-            [self _setFollowing:YES];
+            __strong typeof (wself) sself = wself;
+            ARErrorLog(@"Error following %@ - %@", sself.representedObject, error.localizedDescription);
+            [sself _setFollowing:YES];
         }];
     }
 

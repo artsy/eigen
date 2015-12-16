@@ -5,12 +5,12 @@
 
 - (void)setAr_userActivityEntity:(id<ARSpotlightMetadataProvider>)entity;
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [self ar_withLoadedData:^{
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         if (self) {
-            self.userActivity = [ARUserActivity activityForEntity:entity];
-            [self.userActivity becomeCurrent];
+            sself.userActivity = [ARUserActivity activityForEntity:entity];
+            [sself.userActivity becomeCurrent];
         }
     }];
 }

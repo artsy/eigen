@@ -88,17 +88,17 @@
 
     _status = status;
 
-   @weakify(self);
+   __weak typeof (self) wself = self;
     void (^animation)() = ^() {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         if (status == ARHeartStatusYes) {
-            [self.backView removeFromSuperview];
-            [self addSubview:self.frontView];
-            self.layer.borderWidth = 0;
+            [sself.backView removeFromSuperview];
+            [sself addSubview:self.frontView];
+            sself.layer.borderWidth = 0;
         } else {
-            [self.frontView removeFromSuperview];
-            [self addSubview:self.backView];
-            self.layer.borderWidth = 1;
+            [sself.frontView removeFromSuperview];
+            [sself addSubview:self.backView];
+            sself.layer.borderWidth = 1;
         }
     };
 

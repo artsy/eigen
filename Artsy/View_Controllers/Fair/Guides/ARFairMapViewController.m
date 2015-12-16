@@ -124,14 +124,14 @@
     RAC(self.mapShowMapper, expandAnnotations) = RACObserve(self, expandAnnotations);
 
     // Due to a problem in the custom UIViewController transitions API (when the VC's view is a scrollview subclass)
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [[self rac_signalForSelector:@selector(viewWillDisappear:)] subscribeNext:^(id x) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
-        CGPoint contentOffset = self.mapView.contentOffset;
+        CGPoint contentOffset = sself.mapView.contentOffset;
 
         [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id x) {
-            [self.mapView setContentOffset:contentOffset animated:NO];
+            [sself.mapView setContentOffset:contentOffset animated:NO];
         }];
     }];
 

@@ -151,15 +151,15 @@
     } else {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
-        @weakify(self);
+        __weak typeof (self) wself = self;
         _searchRequest = [ArtsyAPI searchWithQuery:query success:^(NSArray *results) {
-            @strongify(self);
-            self.searchResults = [results copy];
-            self.selectedIndex = 0;
+            __strong typeof (wself) sself = wself;
+            sself.searchResults = [results copy];
+            sself.selectedIndex = 0;
 
             [controller.searchResultsTableView reloadData];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            [self setHighlight:YES forCellAtIndex:0];
+            [sself setHighlight:YES forCellAtIndex:0];
 
         } failure:^(NSError *error) {
             if (error.code != NSURLErrorCancelled) {

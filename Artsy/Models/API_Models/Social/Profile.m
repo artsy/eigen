@@ -58,13 +58,13 @@
 
 - (void)updateProfile:(void (^)(void))success
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     if (self.profileID) {
         [ArtsyAPI getProfileForProfileID:self.profileID success:^(Profile *profile) {
-            @strongify(self);
+            __strong typeof (wself) sself = wself;
 
-            [self mergeValuesForKeysFromModel:profile];
+            [sself mergeValuesForKeysFromModel:profile];
             success();
 
         } failure:^(NSError *error) {

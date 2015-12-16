@@ -75,24 +75,3 @@
 
     #import "ARLogger.h"
 #endif
-
-// Given that we don't see eye to eye with the GitHub team
-// on dependency management, we can't use frameworks without
-// getting ambiguous warning when Mantle+RAC and @weakify
-// as they just throw it all in together.
-
-// We can work around this for now by having our own commands
-// but a more realistic approach is to migrate away from the APIs.
-
-
-//#define _weakify(...) \
-//    autoreleasepool {} \
-//    metamacro_foreach_cxt(rac_weakify_,, __weak, __VA_ARGS__)
-
-#define _strongify(...) \
-    try {} @finally {} \
-    _Pragma("clang diagnostic push") \
-    _Pragma("clang diagnostic ignored \"-Wshadow\"") \
-    metamacro_foreach(rac_strongify_,, __VA_ARGS__) \
-    _Pragma("clang diagnostic pop")
-
