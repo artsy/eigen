@@ -258,15 +258,15 @@
 
 - (void)updateArtwork
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     __weak KSDeferred *deferred = _artworkUpdateDeferred;
 
     ar_dispatch_async(^{
         [ArtsyAPI getArtworkInfo:self.artworkID success:^(id artwork) {
             ar_dispatch_main_queue(^{
-                @strongify(self);
-                [self mergeValuesForKeysFromModel:artwork];
-                [deferred resolveWithValue:self];
+                __strong typeof (wself) sself = wself;
+                [sself mergeValuesForKeysFromModel:artwork];
+                [deferred resolveWithValue:sself];
             });
         } failure:^(NSError *error) {
             ar_dispatch_main_queue(^{
@@ -283,7 +283,7 @@
 
 - (KSPromise *)onArtworkUpdate:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     if (!_artworkUpdateDeferred) {
         _artworkUpdateDeferred = [KSDeferred defer];
@@ -296,8 +296,8 @@
     } error:^id(NSError *error) {
         if (failure) { failure(error); }
 
-        @strongify(self);
-        ARErrorLog(@"Failed fetching full JSON for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
+        __strong typeof (wself) sself = wself;
+        ARErrorLog(@"Failed fetching full JSON for artwork %@. Error: %@", sself.artworkID, error.localizedDescription);
         return error;
     }];
 }
@@ -317,8 +317,8 @@
 
 - (void)updateSaleArtwork
 {
-    @weakify(self);
-
+    __weak typeof (self) wself = self;
+    NSString *artworkID = self.artworkID;
     KSDeferred *deferred = [self deferredSaleArtworkUpdate];
 
     [ArtsyAPI getSalesWithArtwork:self.artworkID success:^(NSArray *sales) {
@@ -333,14 +333,13 @@
         }
 
         if (auction) {
-            @strongify(self);
-            [ArtsyAPI getAuctionArtworkWithSale:auction.saleID artwork:self.artworkID success:^(SaleArtwork *saleArtwork) {
+            __strong typeof (wself) sself = wself;
+            [ArtsyAPI getAuctionArtworkWithSale:auction.saleID artwork:sself.artworkID success:^(SaleArtwork *saleArtwork) {
                 saleArtwork.auction = auction;
                 [deferred resolveWithValue:saleArtwork];
 
             } failure:^(NSError *error) {
-                @strongify(self);
-                ARErrorLog(@"Error fetching auction details for artwork %@: %@", self.artworkID, error.localizedDescription);
+                ARErrorLog(@"Error fetching auction details for artwork %@: %@", artworkID, error.localizedDescription);
                 [deferred rejectWithError:error];
             }];
         } else {
@@ -348,9 +347,8 @@
         }
 
     } failure:^(NSError *error) {
-        @strongify(self);
         [deferred rejectWithError:error];
-        ARErrorLog(@"Error fetching sales for artwork %@: %@", self.artworkID, error.localizedDescription);
+        ARErrorLog(@"Error fetching sales for artwork %@: %@", artworkID, error.localizedDescription);
     }];
 }
 
@@ -395,19 +393,19 @@
 
 - (void)updateFair
 {
-    @weakify(self);
-
+    __weak typeof (self) wself = self;
+    NSString *artworkID = self.artworkID;
     KSDeferred *deferred = [self deferredFairUpdate];
+
     [ArtsyAPI getFairsForArtwork:self success:^(NSArray *fairs) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         // we're not checking for count > 0 cause we wanna fulfill with nil if no fairs
         Fair *fair = [fairs firstObject];
-        self.fair = fair;
+        sself.fair = fair;
         [deferred resolveWithValue:fair];
     } failure:^(NSError *error) {
-        @strongify(self);
         [deferred rejectWithError:error];
-        ARErrorLog(@"Couldn't get fairs for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
+        ARErrorLog(@"Couldn't get fairs for artwork %@. Error: %@", artworkID, error.localizedDescription);
     }];
 }
 
@@ -450,28 +448,27 @@
 
 - (void)updatePartnerShow;
 {
-    @weakify(self);
+    NSString *artworkID = self.artworkID;
 
     KSDeferred *deferred = [self deferredPartnerShowUpdate];
-    [ArtsyAPI getShowsForArtworkID:self.artworkID inFairID:nil success:^(NSArray *shows) {
+    [ArtsyAPI getShowsForArtworkID:artworkID inFairID:nil success:^(NSArray *shows) {
         // we're not checking for count > 0 cause we wanna fulfill with nil if no shows
         PartnerShow *show = [shows firstObject];
         [deferred resolveWithValue:show];
     } failure:^(NSError *error) {
-        @strongify(self);
         [deferred rejectWithError:error];
-        ARErrorLog(@"Couldn't get shows for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
+        ARErrorLog(@"Couldn't get shows for artwork %@. Error: %@", artworkID, error.localizedDescription);
     }];
 }
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [ArtsyAPI setFavoriteStatus:state forArtwork:self success:^(id response) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         if (!self) { return; }
 
-        self->_heartStatus = state? ARHeartStatusYes : ARHeartStatusNo;
+        sself->_heartStatus = state? ARHeartStatusYes : ARHeartStatusNo;
 
         [ARSpotlight addToSpotlightIndex:state entity:self];
 
@@ -479,10 +476,10 @@
             success(response);
         }
     } failure:^(NSError *error) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         if (!self) { return; }
 
-        self->_heartStatus = ARHeartStatusNo;
+        sself->_heartStatus = ARHeartStatusNo;
 
         if (failure) {
             failure(error);
@@ -499,15 +496,15 @@
         return;
     }
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
 
     if (!_favDeferred) {
         KSDeferred *deferred = [KSDeferred defer];
         [ArtsyAPI checkFavoriteStatusForArtwork:self success:^(BOOL status) {
-            @strongify(self);
-            if (!self) { return; }
+            __strong typeof (wself) sself = wself;
+            if (!sself) { return; }
 
-            self->_heartStatus = status ? ARHeartStatusYes : ARHeartStatusNo;
+            sself->_heartStatus = status ? ARHeartStatusYes : ARHeartStatusNo;
 
             [deferred resolveWithValue:@(status)];
         } failure:^(NSError *error) {
@@ -518,17 +515,18 @@
     }
 
     [_favDeferred.promise then:^(id value) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
-        success(self.heartStatus);
+        success(sself.heartStatus);
         return self;
     } error:^(NSError *error) {
         // Its a 404 if you have no artworks
+        __strong typeof (wself) sself = wself;
         NSHTTPURLResponse *response = [error userInfo][AFNetworkingOperationFailingURLResponseErrorKey];
         if (response.statusCode == 404) {
             success(ARHeartStatusNo);
         } else {
-            ARErrorLog(@"Failed fetching favorite status for artwork %@. Error: %@", self.artworkID, error.localizedDescription);
+            ARErrorLog(@"Failed fetching favorite status for artwork %@. Error: %@", sself.artworkID, error.localizedDescription);
             failure(error);
         }
         return error;

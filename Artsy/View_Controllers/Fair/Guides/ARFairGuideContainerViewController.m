@@ -60,44 +60,44 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-   @weakify(self);
+   __weak typeof (self) wself = self;
     [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
-        @strongify(self);
-        [self downloadContent];
+        __strong typeof (wself) sself = wself;
+        [sself downloadContent];
     }];
 
     [[RACSignal combineLatest:@[ RACObserve(self, mapsLoaded), RACObserve(self, fairLoaded) ]] subscribeNext:^(id x) {
-        @strongify(self);
-        [self checkForDataLoaded];
+        __strong typeof (wself) sself = wself;
+        [sself checkForDataLoaded];
     }];
 
     // Every time the mapCollapsed property changes, we want to setup the constraints.
     // We skip the first time because we don't want to fire immediately.
     [[[RACObserve(self, mapCollapsed) skip:1] distinctUntilChanged] subscribeNext:^(id _) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
         CGFloat height = 0;
-        if (self.mapCollapsed) {
+        if (sself.mapCollapsed) {
             height = kClosedMapHeight;
         }
-        [self.fairMapViewController centerMap:0.5 inFrameOfHeight:height animated:YES];
+        [sself.fairMapViewController centerMap:0.5 inFrameOfHeight:height animated:YES];
 
-        BOOL parentButtonsVisible = (self.mapCollapsed == YES);
+        BOOL parentButtonsVisible = (sself.mapCollapsed == YES);
         if (parentButtonsVisible == NO) {
             // We want to swap the visibility of our back button and the parent one
             // immediately if it's disappearing, but after the animation if it's appearing
-            [self updateBackButtonAlpha];
+            [sself updateBackButtonAlpha];
         }
 
-        [UIView animateIf:self.animatedTransitions
+        [UIView animateIf:sself.animatedTransitions
              duration:0.3f :^{
-                 self.fairMapViewController.titleHidden = self.mapCollapsed;
-                 [self setupContraints];
-                 [self setBackButtonRotation];
+                 sself.fairMapViewController.titleHidden = self.mapCollapsed;
+                 [sself setupContraints];
+                 [sself setBackButtonRotation];
 
              } completion:^(BOOL finished) {
                  if (parentButtonsVisible) {
-                     [self updateBackButtonAlpha];
+                     [sself updateBackButtonAlpha];
                  }
              }];
     }];

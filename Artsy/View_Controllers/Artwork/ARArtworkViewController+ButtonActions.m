@@ -184,7 +184,7 @@
         editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
     }
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [ArtsyAPI createPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID success:^(id JSON) {
 
         NSString *orderID = [JSON valueForKey:@"id"];
@@ -195,10 +195,10 @@
 
     }
         failure:^(NSError *error) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
-        [self tappedContactGallery];
-        }];
+        [sself tappedContactGallery];
+    }];
 }
 
 - (void)tappedAuctionResults

@@ -35,13 +35,13 @@
 
 - (void)getNewItems:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [_currentFeed getFeedItemsWithCursor:nil success:^(NSOrderedSet *parsedItems) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
 
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [parsedItems count])];
         NSArray *newItems = [parsedItems array];
-        [self.items insertObjects:newItems atIndexes:indexSet];
+        [sself.items insertObjects:newItems atIndexes:indexSet];
         if (success) {
             success(newItems);
         }
@@ -64,12 +64,12 @@
     self.networking = true;
     self.currentlyLoadingCursor = self.currentFeed.cursor;
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     void (^successBlock)(id) = ^(NSOrderedSet *parsedItems) {
-        @strongify(self);
-        self.networking = NO;
+        __strong typeof (wself) sself = wself;
+        sself.networking = NO;
         if (parsedItems.count) {
-            [self.items addObjectsFromArray:[parsedItems array]];
+            [sself.items addObjectsFromArray:[parsedItems array]];
             if (success) {
                 success([parsedItems array]);
             }
@@ -81,9 +81,9 @@
     };
 
     void (^failureBlock)(NSError *) = ^(NSError *error) {
-        @strongify(self);
-        self.networking = NO;
-        self.currentlyLoadingCursor = nil;
+        __strong typeof (wself) sself = wself;
+        sself.networking = NO;
+        sself.currentlyLoadingCursor = nil;
         if (failure) {
             failure(error);
         }

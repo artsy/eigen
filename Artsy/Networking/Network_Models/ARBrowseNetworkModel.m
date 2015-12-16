@@ -12,12 +12,12 @@
 
 - (void)getBrowseFeaturedLinks:(void (^)(NSArray *links))success failure:(void (^)(NSError *error))failure;
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [ArtsyAPI getBrowseMenuFeedLinksWithSuccess:^(NSArray *links) {
-        @strongify(self);
-        self.links = links;
+        __strong typeof (wself) sself = wself;
+        sself.links = links;
         if (success) {
-            success(self.links);
+            success(sself.links);
         }
     } failure:failure];
 }

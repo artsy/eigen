@@ -31,11 +31,11 @@
 
     self.downloadLock = YES;
 
-   @weakify(self);
+   __weak typeof (self) wself = self;
 
     [self.gene getArtworksAtPage:self.currentPage success:^(NSArray *artworks) {
-        @strongify(self);
-        if (!self) { return; }
+        __strong typeof (wself) sself = wself;
+        if (!sself) { return; }
 
         self.currentPage++;
         self.downloadLock = NO;

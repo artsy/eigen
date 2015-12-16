@@ -699,20 +699,20 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)getCurrentAdmin
 {
-    @weakify(self);
+    __weak typeof (self) wself = self;
     [ArtsyAPI getInquiryContact:^(User *contactStub) {
-        @strongify(self);
-        self.specialistNameLabel.text = contactStub.name;
+        __strong typeof (wself) sself = wself;
+        sself.specialistNameLabel.text = contactStub.name;
 
     } withProfile:^(Profile *contactProfile) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         // Use a white BG because the square to circle looks ugly
-        [self.specialistHeadImage ar_setImageWithURL:[NSURL URLWithString:contactProfile.iconURL] placeholderImage:[UIImage imageFromColor:[UIColor whiteColor]]];
+        [sself.specialistHeadImage ar_setImageWithURL:[NSURL URLWithString:contactProfile.iconURL] placeholderImage:[UIImage imageFromColor:[UIColor whiteColor]]];
 
     } failure:^(NSError *error) {
-        @strongify(self);
+        __strong typeof (wself) sself = wself;
         ARErrorLog(@"Couldn't get an inquiry contact. %@", error.localizedDescription);
-        [self performSelector:@selector(getCurrentAdmin) withObject:nil afterDelay:2];
+        [sself performSelector:@selector(getCurrentAdmin) withObject:nil afterDelay:2];
     }];
 }
 
@@ -840,10 +840,10 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     _emailValidator = [ALPValidator validatorWithType:ALPValidatorTypeString];
     [self.emailValidator addValidationToEnsureValidEmailWithInvalidMessage:NSLocalizedString(@"Please enter a valid email", nil)];
 
-    @weakify(self);
+    __weak typeof (self) wself = self;
     self.emailValidator.validatorStateChangedHandler = ^(ALPValidatorState newState) {
-        @strongify(self);
-        self.sendButton.enabled = self.emailValidator.isValid;
+        __strong typeof (wself) sself = wself;
+        sself.sendButton.enabled = sself.emailValidator.isValid;
       // We can also use newState to determine what to do in more complex situations. Validator states include:
       // ALPValidatorValidationStateValid, ALPValidatorValidationStateInvalid, ALPValidatorValidationStateWaitingForRemote
     };
