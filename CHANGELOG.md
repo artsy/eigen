@@ -1,3 +1,7 @@
+### 2.3.3
+
+* [dev] Converted all `@weakify`/`@strongify` to use `sself` and `wself` instead. - orta
+
 ### 2.3.2
 
 * The home screen now refreshes its data periodically while in the background, so that the newest data is available when you launch the app. - orta
