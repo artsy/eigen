@@ -8,7 +8,7 @@ inhibit_all_warnings!
 
 # Allows per-dev overrides
 local_podfile = "Podfile.local"
-eval(File.open(local_podfile).read) if File.exist? local_podfile
+eval(File.read(local_podfile)) if File.exist? local_podfile
 
 plugin 'cocoapods-keys', {
     :project => "Artsy",
