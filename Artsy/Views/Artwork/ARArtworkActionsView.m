@@ -49,7 +49,7 @@
 - (void)setDelegate:(id<ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate>)delegate
 {
     _delegate = delegate;
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     KSPromise *artworkPromise = [self.artwork onArtworkUpdate:nil failure:nil];
     KSPromise *saleArtworkPromise = [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
@@ -86,7 +86,7 @@
         [self addSubview:self.spinner withTopMargin:@"0" sideMargin:@"0"];
 
         // Then fetch the up-to-date data.
-        __weak typeof (self) wself = self;
+        __weak typeof(self) wself = self;
         [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
             __strong typeof (wself) sself = wself;
             sself.saleArtwork = saleArtwork;
@@ -337,29 +337,22 @@ return [navigationButtons copy];
 
 - (BOOL)showNotForSaleLabel
 {
-    return self.artwork.inquireable.boolValue
-           && !self.artwork.sold.boolValue
-           && !self.artwork.forSale.boolValue;
+    return self.artwork.inquireable.boolValue && !self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
 }
 
 - (BOOL)showPriceLabel
 {
-    return self.artwork.price.length
-           && !self.artwork.hasMultipleEditions
-           && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
+    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
 }
 
 - (BOOL)showContactForPrice
 {
-    return self.artwork.availability == ARArtworkAvailabilityForSale
-           && self.artwork.isPriceHidden.boolValue;
+    return self.artwork.availability == ARArtworkAvailabilityForSale && self.artwork.isPriceHidden.boolValue;
 }
 
 - (BOOL)showContactButton
 {
-    return self.artwork.forSale.boolValue
-           && !self.artwork.acquireable.boolValue
-           && ![self showAuctionControls];
+    return self.artwork.forSale.boolValue && !self.artwork.acquireable.boolValue && ![self showAuctionControls];
 }
 
 - (BOOL)showBuyButton
@@ -367,9 +360,13 @@ return [navigationButtons copy];
     return self.artwork.acquireable.boolValue;
 }
 
+// We differentiate from martsy here
+// see https://github.com/artsy/eigen/issues/857
+// awaiting consolidation in the doc.
+
 - (BOOL)showInquireButton
 {
-    return self.artwork.inquireable.boolValue;
+    return self.artwork.inquireable.boolValue && self.artwork.availability == ARArtworkAvailabilityForSale;
 }
 
 - (BOOL)showAuctionControls

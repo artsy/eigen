@@ -24,7 +24,7 @@ all: ci
 
 ### Aliases
 
-appstore: update_bundle_version set_git_properties change_version_to_date
+appstore: update_bundle_version set_git_properties change_version_to_date ship_appstore
 next: update_bundle_version set_git_properties change_version_to_date
 beta: ipa distribute
 
@@ -61,6 +61,9 @@ ipa: set_git_properties change_version_to_date
 
 distribute:
 	bundle exec pilot upload -i build/Artsy.ipa --changelog "$(shell ./config/generate_changelog_short.rb)"
+
+ship_appstore:
+	bundle exec deliver -i build/Artsy.ipa --submit_for_review
 
 ### General Xcode tooling
 
