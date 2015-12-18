@@ -67,6 +67,19 @@ it(@"displays buy now for an acquireable work with pricing", ^{
     expect(view).to.haveValidSnapshotNamed(@"buy");
 });
 
+it(@"hides ask a specialist if inquirable but artwork is not for sale ", ^{
+    view.artwork = [Artwork modelWithJSON:@{
+        @"id" : @"artwork-id",
+        @"title" : @"Artwork Title",
+        @"availability" : @"sold",
+        @"inquireable" : @YES
+    }];
+    [view updateUI];
+    [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    expect(view).to.haveValidSnapshotNamed(@"inquireable-not-not-actually");
+});
+
+
 it(@"displays contact seller when the partner is not a gallery", ^{
     view.artwork = [Artwork modelWithJSON:@{
        @"id" : @"artwork-id",
