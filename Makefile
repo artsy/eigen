@@ -60,8 +60,7 @@ ipa: set_git_properties change_version_to_date
 	bundle exec gym
 
 distribute:
-	./config/generate_changelog_short.rb
-	bundle exec pilot upload -i build/Artsy.ipa --changelog "$(shell cat CHANGELOG_SHORT.md)"
+	bundle exec pilot upload -i build/Artsy.ipa --changelog "$(shell ./config/generate_changelog_short.rb)"
 
 ship_appstore:
 	bundle exec deliver -i build/Artsy.ipa --submit_for_review
