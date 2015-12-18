@@ -31,7 +31,6 @@ Artsy.xcodeproj/project.xcworkspace/xcshareddata/
 vendor/
 Artsy.app.dSYM.zip
 Artsy.ipa
-CHANGELOG_SHORT.md
 fastlane/report.xml
 fastlane/Preview.html
 
