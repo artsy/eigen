@@ -7,6 +7,10 @@
 
 - (BOOL)isBetaOrDev
 {
+#if TARGET_IPHONE_SIMULATOR
+    return YES;
+#endif
+
     NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
     NSString *receiptURLString = [receiptURL path];
     return ([receiptURLString rangeOfString:@"sandboxReceipt"].location != NSNotFound);
