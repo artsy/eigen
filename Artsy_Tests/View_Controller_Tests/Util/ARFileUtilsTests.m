@@ -61,20 +61,29 @@ describe(@"logged in user documents folder", ^{
     });
 });
 
-describe(@"application support", ^{
+pending(@"application support", ^{
+    __block NSString *bundleID;
     afterEach(^{
+        bundleID = [[NSBundle bundleForClass:Artwork.class] bundleIdentifier];
+        
         NSString *testFolder = [ARFileUtils appSupportPathWithFolder:@"testFolder" filename:nil];
         [[NSFileManager defaultManager] removeItemAtPath:testFolder error:nil];
     });
     
     it(@"returns a path namespaced to the app", ^{
-        expect(ARFileUtils.appSupportFolder).to.endWith(@"/Library/Application Support/net.artsy.artsy.dev");
+        expect([ARFileUtils appSupportFolder]).to.contain(bundleID);
     });
     
-    it(@"returns a directory/filename inside the app scoped dir", ^{
-        expect([ARFileUtils appSupportPathWithFolder:nil filename:@"testFile"]).to.endWith(@"/Library/Application Support/net.artsy.artsy.dev/testFile");
-        expect([ARFileUtils appSupportPathWithFolder:@"testFolder" filename:@"testFile"]).to.endWith(@"/Library/Application Support/net.artsy.artsy.dev/testFolder/testFile");
+    it(@"returns a ignores the directory /filename inside the app scoped dir", ^{
+        expect([ARFileUtils appSupportPathWithFolder:nil filename:@"testFile"]).to.endWith([bundleID stringByAppendingString:@"/testFile"]);
     });
+
+    it(@"returns a directory/filename inside the app scoped dir", ^{
+        NSString *path = [ARFileUtils appSupportPathWithFolder:@"testFolder" filename:@"testFile"];
+        expect(path).toNot.endWith([bundleID stringByAppendingString:@"/testFile"]);
+        expect(path).to.contain(@"/testFolder/");
+    });
+
 });
 
 SpecEnd;
