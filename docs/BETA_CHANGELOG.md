@@ -1,20 +1,7 @@
 ### 2.3.3
 
 * Fixes extra whitespace when we have no feed links on the show feed - orta
-
-### 2.3.2 (2015.12.01)
-
-* Allow touch events to pass through shows feed to hero units. - alloy
-
-### 2.3.2 (2015.11.30)
-
-* Don’t scroll hero units on shows feed. - alloy
-
-### 2.3.2 (2015.11.20)
-
-* Caches website content from martsy/force, vastly speeding up hybrid pages - orta
-* Layout fixes for the Auction Results for an Artwork - orta
-* Potential fix for seeing no API requests get through - orta
-* Total Re-write for the show feed - orta
-* Adds local downloading of the shows feed for instant loading on the next run - orta
-* Fix crash due to `nil` in analytics data. - alloy
+*  Converted all `@weakify`/`@strongify` to use `sself` and `wself` instead. - orta
+* Reduced the time for networking retries on the show feed - orta
+* Hidden the inquire button for inquirable artworks which are not for sale - orta
+* If a user changes their password on the web, provide a log out button on the feed - orta
