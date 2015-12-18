@@ -1,12 +1,15 @@
 #import "ARFeedLinkUnitViewController.h"
 #import "ARNavigationButton.h"
+#import "ARAppStatus.h"
 
 
 @implementation ARFeedLinkUnitViewController
 
 - (void)fetchLinks:(void (^)(void))completion
 {
-    if (ARIsRunningInDemoMode) {
+    ARAppStatus *status = [[ARAppStatus alloc] init];
+
+    if ([status isDemo]) {
         FeaturedLink *link = [self defaultFeedLink];
         [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:@[ link ]]];
 
@@ -16,7 +19,7 @@
         return;
     }
 
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     // edit set here: http://admin.artsy.net/set/52277573c9dc24da5b00020c
     [ArtsyAPI getOrderedSetItemsWithKey:@"eigen:feed-links" success:^(NSArray *items) {
@@ -38,8 +41,7 @@
         }];
     }
 
-    NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
-    if ([bundleID containsString:@".dev"] || [bundleID containsString:@".beta"]) {
+    if ([status isBetaOrDev]) {
         // edit set here: http://admin.artsy.net/set/5308e7be9c18db75fd000343
         [ArtsyAPI getOrderedSetItemsWithKey:@"eigen:beta-feed-links" success:^(NSArray *items) {
             __strong typeof (wself) sself = wself;
@@ -53,7 +55,7 @@
 
 - (NSArray *)phoneNavigationForFeaturedLinks:(NSArray *)featuredLinks
 {
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     NSMutableArray *phoneNavigation = [NSMutableArray array];
     for (FeaturedLink *featuredLink in featuredLinks) {
         [phoneNavigation addObject:@{

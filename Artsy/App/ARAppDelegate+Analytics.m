@@ -54,6 +54,7 @@
 #import "ARSwitchView.h"
 #import "ARSwitchView+Favorites.h"
 #import "ARSwitchView+Artist.h"
+#import "ARAppStatus.h"
 
 // Models
 #import "ARFairFavoritesNetworkModel+Private.h"
@@ -69,11 +70,12 @@
 - (void)setupAnalytics
 {
     ArtsyKeys *keys = [[ArtsyKeys alloc] init];
+    ARAppStatus *status = [[ARAppStatus alloc] init];
+
     NSString *segmentWriteKey = keys.segmentProductionWriteKey;
     NSString *environment = ADJEnvironmentProduction;
 
-    NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
-    if ([bundleID containsString:@".dev"] || [bundleID containsString:@".beta"]) {
+    if ([status isBetaOrDev]) {
         segmentWriteKey = keys.segmentDevWriteKey;
         environment = ADJEnvironmentSandbox;
     }

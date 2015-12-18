@@ -1,9 +1,3 @@
-#ifdef STORE
-#define ADMIN_MENU_ENABLED 0
-#else
-#define ADMIN_MENU_ENABLED 1
-#endif
-
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
@@ -33,6 +27,7 @@
 #import "ARFileUtils.h"
 #import "ARSpotlight.h"
 #import "ARWebViewCacheHost.h"
+#import "ARAppStatus.h"
 
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
@@ -41,10 +36,8 @@
 #import <InterAppCommunication/IACManager.h>
 #import "ARBackButtonCallbackManager.h"
 
-#if ADMIN_MENU_ENABLED
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <VCRURLConnection/VCR.h>
-#endif
 
 // demo
 #import "ARDemoSplashViewController.h"
@@ -293,7 +286,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupAdminTools
 {
-#if ADMIN_MENU_ENABLED
+    ARAppStatus *status = [[ARAppStatus alloc] init];
+    if (![status isBetaOrDev]) {
+        return;
+    }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:DHCSHakeNotificationName object:nil];
 
@@ -314,8 +310,6 @@ static ARAppDelegate *_sharedInstance = nil;
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORDeleteKey:^{
         [ARTopMenuViewController.sharedController.rootNavigationController popViewControllerAnimated:YES];
     }];
-
-#endif
 }
 
 - (void)setupRatingTool

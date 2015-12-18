@@ -336,6 +336,7 @@
 		606E3F951BF3CA5600D3055E /* ARTimelineNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 606E3F941BF3CA5600D3055E /* ARTimelineNetworkModel.m */; };
 		606E3F981BF4DDBE00D3055E /* ARShowFeedNetworkStatusModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 606E3F971BF4DDBE00D3055E /* ARShowFeedNetworkStatusModel.m */; };
 		60745DEA165802D9006CE156 /* ARUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60745DE9165802D9006CE156 /* ARUserManager.m */; };
+		607BF5AB1C2413810034B519 /* ARAppStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 607BF5AA1C2413810034B519 /* ARAppStatus.m */; };
 		607D754A17C239E700CA1D41 /* ArtsyAPI+Following.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D754917C239E700CA1D41 /* ArtsyAPI+Following.m */; };
 		607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D756A17C3816600CA1D41 /* ArtsyAPI+ListCollection.m */; };
 		607D756E17C3873700CA1D41 /* ARFavoriteItemViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D756D17C3873700CA1D41 /* ARFavoriteItemViewCell.m */; };
@@ -1220,6 +1221,8 @@
 		606E3F971BF4DDBE00D3055E /* ARShowFeedNetworkStatusModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShowFeedNetworkStatusModel.m; sourceTree = "<group>"; };
 		60745DE8165802D9006CE156 /* ARUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserManager.h; sourceTree = "<group>"; };
 		60745DE9165802D9006CE156 /* ARUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserManager.m; sourceTree = "<group>"; };
+		607BF5A91C2413810034B519 /* ARAppStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppStatus.h; sourceTree = "<group>"; };
+		607BF5AA1C2413810034B519 /* ARAppStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppStatus.m; sourceTree = "<group>"; };
 		607D754817C239E700CA1D41 /* ArtsyAPI+Following.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Following.h"; sourceTree = "<group>"; };
 		607D754917C239E700CA1D41 /* ArtsyAPI+Following.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Following.m"; sourceTree = "<group>"; };
 		607D756917C3816600CA1D41 /* ArtsyAPI+ListCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+ListCollection.h"; sourceTree = "<group>"; };
@@ -2491,6 +2494,8 @@
 				5170C50B1BBAC1090043E601 /* ARMacros.h */,
 				60BC92F11BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.h */,
 				60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */,
+				607BF5A91C2413810034B519 /* ARAppStatus.h */,
+				607BF5AA1C2413810034B519 /* ARAppStatus.m */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -4568,6 +4573,7 @@
 				60327DE11987FF490075B399 /* ARTopMenuNavigationDataSource.m in Sources */,
 				CBB469D0181F1F1200B5692B /* Bid.m in Sources */,
 				499A58A516669CD6004B0E2F /* ARPostFeedItem.m in Sources */,
+				607BF5AB1C2413810034B519 /* ARAppStatus.m in Sources */,
 				3CAA412F18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m in Sources */,
 				60B79B84182C346700945FFF /* ARQuicksilverViewController.m in Sources */,
 				CB206F7717C5A5AD00A4FDC4 /* AROnboardingGeneTableController.m in Sources */,
