@@ -1,3 +1,5 @@
 {
-  "userBlacklist": ["1aurabrown", "jorystiefel"]
+  "maxReviewers": 1,
+  "requiredOrgs": ["artsy"],
+  "userBlacklist": ["1aurabrown"]
 }

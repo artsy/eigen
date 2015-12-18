@@ -29,7 +29,6 @@
         _refreshButton = [ARMenuButton new];
         [_refreshButton setBorderColor:[UIColor artsyLightGrey] forState:UIControlStateNormal animated:NO];
         [_refreshButton setBackgroundColor:[UIColor whiteColor] forState:UIControlStateNormal animated:NO];
-        // [button ar_extendHitTestSizeByWidth:10 andHeight:10];
         [_refreshButton setImage:buttonIcon forState:UIControlStateNormal];
         [_refreshButton addTarget:self action:@selector(forceRefreshFeedItems:) forControlEvents:UIControlEventTouchUpInside];
         _refreshButton.adjustsImageWhenDisabled = NO;

@@ -8,7 +8,7 @@
 <a href="http://iphone.artsy.net"><img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg"></a>
 
 
-I'm in your [phone](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) or [ipad](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) letting you browse the arts. 
+I'm in your [phone](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) or [ipad](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) letting you browse the arts.
 
 ### Docs
 
@@ -27,11 +27,12 @@ bundle exec pod install
 open Artsy.xcworkspace
 ```
 
-This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Build > Run`. 
+This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Build > Run`.
 
 ### Work at Artsy?
 
-Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander).
+Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander). Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be true too.
+
 
 ### Don't work at Artsy?
 
