@@ -61,7 +61,7 @@ ipa: set_git_properties change_version_to_date
 
 distribute:
 	./config/generate_changelog_short.rb
-	bundle exec pilot upload -i build/Artsy.ipa --username it@artsymail.com
+	bundle exec pilot upload -i build/Artsy.ipa --changelog "$(shell cat CHANGELOG_SHORT.md)"
 
 ### General Xcode tooling
 
