@@ -155,8 +155,9 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 
 - (void)refreshFeedItems
 {
+    // This will get overwritten on event next refresh, so no need to cancel
     [ARAnalytics startTimingEvent:ARAnalyticsInitialFeedLoadTime];
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.feedTimeline getNewItems:^(NSArray *items) {
@@ -182,8 +183,8 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
             // So that it won't stop the first one
             [sself.networkStatus.offlineView refreshFailed];
             [sself.networkStatus showOfflineViewIfNeeded];
-
-            [sself performSelector:@selector(refreshFeedItems) withObject:nil afterDelay:3];
+            
+            [sself performSelector:@selector(refreshFeedItems) withObject:nil afterDelay:1];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
 
             if ([User isTrialUser] == false && response.statusCode == 401) {
