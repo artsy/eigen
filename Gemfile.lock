@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CocoaPods/CocoaPods.git
-  revision: cd49b659b4bcfc49d439a86789ab9778e3b37fc8
+  revision: 2a6d86a82b43c07699601c0a7cfaa7e3f892a647
   branch: seg-podfile-refactor
   specs:
     cocoapods (0.39.0)
