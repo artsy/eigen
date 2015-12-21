@@ -187,17 +187,6 @@ describe(@"ARSwitchboard", ^{
             [switchboard routeInternalURL:profileURL fair:nil];
         });
 
-        it(@"routes artsy.net to Home", ^{
-            [[controllerMock expect] loadFeed];
-            [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net"] fair:nil];
-        });
-
-
-        it(@"routes artsy.net/ to Home", ^{
-            [[controllerMock expect] loadFeed];
-            [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/"] fair:nil];
-        });
-
         it(@"routes artists", ^{
             [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/artistname/artworks" withParams:@{ @"page" : @"1", @"size" : @"10" } withResponse:@[]];
             [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/artists" withParams:@{ @"artist[]" : @"artistname" } withResponse:@[]];

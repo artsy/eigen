@@ -96,7 +96,7 @@ PODS:
   - InterAppCommunication (1.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (HEAD based on 0.7)
-  - JLRoutes (1.5)
+  - JLRoutes (2.0.0)
   - JSBadgeView (1.4.1)
   - JSDecoupledAppDelegate (1.1.0)
   - Keys (1.0.0)
@@ -172,7 +172,7 @@ DEPENDENCIES:
   - InterAppCommunication
   - iRate
   - ISO8601DateFormatter (HEAD)
-  - JLRoutes
+  - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
   - JSBadgeView
   - JSDecoupledAppDelegate (from `https://github.com/orta/JSDecoupledAppDelegate.git`,
     branch `patch-1`)
@@ -220,6 +220,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/alloy/FLKAutoLayout.git
   FODFormKit:
     :git: https://github.com/1aurabrown/FODFormKit.git
+  JLRoutes:
+    :git: https://github.com/orta/JLRoutes.git
   JSDecoupledAppDelegate:
     :branch: patch-1
     :git: https://github.com/orta/JSDecoupledAppDelegate.git
@@ -256,6 +258,9 @@ CHECKOUT OPTIONS:
   FODFormKit:
     :commit: 4607940c98a3200fbc0414577b74f511c9a5774d
     :git: https://github.com/1aurabrown/FODFormKit.git
+  JLRoutes:
+    :commit: 5a6df1a795766a4d3e586508e86ec9271d3ef3d9
+    :git: https://github.com/orta/JLRoutes.git
   JSDecoupledAppDelegate:
     :commit: cd72cdfd4543a26b01dc229d6265737331696435
     :git: https://github.com/orta/JSDecoupledAppDelegate.git
@@ -299,7 +304,7 @@ SPEC CHECKSUMS:
   InterAppCommunication: 3239945b30e9dc5f91ef8be057fbcae4e3398e5c
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
-  JLRoutes: 5a6096ec514f105fc906f9334c90d8276fe13687
+  JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
   JSDecoupledAppDelegate: ec2e9480b893fa27ba3db5b12d51a6d5803c550b
   Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe

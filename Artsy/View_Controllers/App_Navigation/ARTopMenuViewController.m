@@ -303,10 +303,6 @@ static const CGFloat ARMenuButtonDimension = 46;
 
 #pragma mark - Pushing VCs
 
-- (void)loadFeed
-{
-}
-
 - (void)pushViewController:(UIViewController *)viewController
 {
     [self pushViewController:viewController animated:YES];

@@ -43,7 +43,7 @@ target 'Artsy' do
   pod 'FXBlurView'
   pod 'iRate'
   pod 'ISO8601DateFormatter', :head
-  pod 'JLRoutes'
+  pod 'JLRoutes', :git => 'https://github.com/orta/JLRoutes.git'
   pod 'JSBadgeView'
   pod 'JSDecoupledAppDelegate', :git => 'https://github.com/orta/JSDecoupledAppDelegate.git', :branch => 'patch-1'
   pod 'Mantle', '~> 1.5.6'

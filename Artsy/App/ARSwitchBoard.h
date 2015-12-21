@@ -17,9 +17,7 @@
 
 /**
  The Switchboard is the internal API for loading different native views
-  it does this mostly by using either an internal Sinatra like-router, or
-  by directly passing the message on to whichever ARNavigationContainer compliant
-  object we want.
+  it does this mostly by using either an internal Sinatra like-router
 */
 
 
@@ -69,11 +67,17 @@
 - (UIViewController *)loadURL:(NSURL *)url;
 - (UIViewController *)loadURL:(NSURL *)url fair:(Fair *)fair;
 
+/// Can the Switchboard handle a URL?
+- (BOOL)canRouteURL:(NSURL *)url;
+
 - (ARUserSettingsViewController *)loadUserSettings;
 
 - (NSURL *)resolveRelativeUrl:(NSString *)path;
 
 /// Buy artwork
 - (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken;
+
+/// TODO? Is it really the job of ARSwitchboard?
+- (void)presentViewController:(UIViewController *)controller;
 
 @end

@@ -7,7 +7,6 @@
 */
 
 #import "ARMenuAwareViewController.h"
-#import "ARNavigationContainer.h"
 #import "ARNavigationController.h"
 #import "ARBackButtonCallbackManager.h"
 #import "ARTopMenuNavigationDataSource.h"
@@ -15,7 +14,7 @@
 @class ARTabContentView;
 
 
-@interface ARTopMenuViewController : UIViewController <ARMenuAwareViewController, ARNavigationContainer, UIViewControllerTransitioningDelegate>
+@interface ARTopMenuViewController : UIViewController <ARMenuAwareViewController, UIViewControllerTransitioningDelegate>
 
 /// The main interface of the app
 + (ARTopMenuViewController *)sharedController;
