@@ -1,6 +1,3 @@
-### 2.3.3
-
-* [dev] Converted all `@weakify`/`@strongify` to use `sself` and `wself` instead. - orta
 
 ### 2.3.2
 
