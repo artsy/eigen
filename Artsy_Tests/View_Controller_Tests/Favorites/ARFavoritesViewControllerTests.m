@@ -9,6 +9,7 @@
 #import "ARSwitchView+Favorites.h"
 #import "ARGeneFavoritesNetworkModel.h"
 #import "ARSwitchBoard.h"
+#import "ARSwitchboard+Eigen.h"
 
 
 @interface ARFavoritesViewController ()

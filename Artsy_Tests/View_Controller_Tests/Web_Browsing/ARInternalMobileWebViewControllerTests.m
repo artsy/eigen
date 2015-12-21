@@ -5,6 +5,7 @@
 #import "ARNetworkConstants.h"
 #import "ARTrialController.h"
 #import "ARSwitchBoard.h"
+#import "ARSwitchboard+Eigen.h"
 #import "ARInternalShareValidator.h"
 
 static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavigationType type)

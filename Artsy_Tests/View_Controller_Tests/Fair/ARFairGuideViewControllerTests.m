@@ -1,6 +1,7 @@
 #import "ARFairAwareObject.h"
 #import "ARFairGuideViewController.h"
 #import "ARSwitchBoard.h"
+#import "ARSwitchboard+Eigen.h"
 
 
 @interface ARFairGuideViewController (Testing)

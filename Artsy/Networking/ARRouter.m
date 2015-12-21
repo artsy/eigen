@@ -116,6 +116,8 @@ static NSSet *artsyHosts = nil;
     return (!url.scheme || ([url.scheme isEqual:@"http"] || [url.scheme isEqual:@"https"]));
 }
 
+/// TODO: don't allow Special Apple URLs? iTMS / maps.apple?
+
 + (BOOL)isInternalURL:(NSURL *)url
 {
     // Is it a touch link?

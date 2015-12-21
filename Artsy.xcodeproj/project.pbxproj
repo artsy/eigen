@@ -307,6 +307,7 @@
 		6037442516D4227500AE7788 /* ARSwitchBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6037442416D4227500AE7788 /* ARSwitchBoard.m */; };
 		60388703189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 60388702189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m */; };
 		60388706189C103F00D3EEAA /* ARFairMapZoomManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60388705189C103F00D3EEAA /* ARFairMapZoomManager.m */; };
+		6038B78A1C2856BA00359F3B /* ARSwitchboard+Eigen.m in Sources */ = {isa = PBXBuildFile; fileRef = 6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */; };
 		603B3AEB1774A25700BA5BD3 /* ARNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */; };
 		603B55A117D64A1B00566935 /* ARArtworkPriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 603B55A017D64A1B00566935 /* ARArtworkPriceView.m */; };
 		603D7C05195884C100ACA840 /* ARAuctionBidderStateLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 603D7C04195884C100ACA840 /* ARAuctionBidderStateLabel.m */; };
@@ -1167,6 +1168,8 @@
 		60388702189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTiledImageDataSourceWithImage.m; sourceTree = "<group>"; };
 		60388704189C103F00D3EEAA /* ARFairMapZoomManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapZoomManager.h; sourceTree = "<group>"; };
 		60388705189C103F00D3EEAA /* ARFairMapZoomManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapZoomManager.m; sourceTree = "<group>"; };
+		6038B7881C2856BA00359F3B /* ARSwitchboard+Eigen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchboard+Eigen.h"; sourceTree = "<group>"; };
+		6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchboard+Eigen.m"; sourceTree = "<group>"; };
 		603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARNavigationController.h; sourceTree = "<group>"; };
 		603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARNavigationController.m; sourceTree = "<group>"; };
 		603B559F17D64A1B00566935 /* ARArtworkPriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkPriceView.h; sourceTree = "<group>"; };
@@ -2478,6 +2481,8 @@
 				5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */,
 				6037442316D4227500AE7788 /* ARSwitchBoard.h */,
 				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
+				6038B7881C2856BA00359F3B /* ARSwitchboard+Eigen.h */,
+				6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */,
 				6088B75217D1DBAC00E4BB67 /* ARAnalyticsConstants.h */,
 				6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */,
 				60431FB618042A1E000118D7 /* ARAppNotificationsDelegate.h */,
@@ -4640,6 +4645,7 @@
 				609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */,
 				CB8D9D4417CEA7B900F3286B /* AROnboardingMoreInfoViewController.m in Sources */,
 				5EDB120B197E691100E241F0 /* ARParallaxHeaderViewController.m in Sources */,
+				6038B78A1C2856BA00359F3B /* ARSwitchboard+Eigen.m in Sources */,
 				609F984D1AC0F50D0079FE21 /* WatchArtwork+ArtsyModels.m in Sources */,
 				60215FD717CDF9FA000F3A62 /* ARSignUpActiveUserViewController.m in Sources */,
 				600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */,
