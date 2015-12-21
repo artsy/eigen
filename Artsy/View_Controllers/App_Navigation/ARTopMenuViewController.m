@@ -77,13 +77,6 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     NSArray *buttons = @[ homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
 
-    //#ifdef DEBUG
-    //// Show the hit areas
-    //for (UIButton *button in buttons) {
-    //[button ar_visualizeHitTestArea];
-    //}
-    //#endif
-
     UIView *tabContainer = [[UIView alloc] init];
     self.tabContainer = tabContainer;
     self.tabContainer.backgroundColor = [UIColor blackColor];
@@ -139,6 +132,27 @@ static const CGFloat ARMenuButtonDimension = 46;
     // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
     // be assured that any VCs guide can be trusted.
     (void)self.keyboardLayoutGuide;
+
+    [self registerWithSwitchBoard:[ARSwitchBoard sharedInstance]];
+}
+
+- (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
+{
+    NSDictionary *menuToPaths = @{
+        @(ARTopTabControllerIndexFeed) : @"/",
+        @(ARTopTabControllerIndexBrowse) : @"/browse",
+        @(ARTopTabControllerIndexMagazine) : @"/articles",
+        @(ARTopTabControllerIndexFavorites) : @"/favorites",
+        @(ARTopTabControllerIndexShows) : @"/shows",
+        @(ARTopTabControllerIndexNotifications) : @"/works-for-you",
+    };
+
+    for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
+        [switchboard registerPathCallbackAtPath:menuToPaths[tabIndex] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
+            [self presentRootViewControllerAtIndex:tabIndex.integerValue animated:NO];
+            return self.rootNavigationController.topViewController;
+        }];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

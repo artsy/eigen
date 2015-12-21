@@ -155,9 +155,19 @@ describe(@"ARSwitchboard", ^{
         });
     });
 
-    describe(@"routeInternalURL", ^{
-        __block id classMock;
+    describe(@"adding a new route", ^{
+        it(@"supports adding via the register method", ^{
+            UIViewController *newVC = [[UIViewController alloc] init];
+            id subject = [switchboard loadPath:@"thingy"];
+            expect(subject).to.beNull();
+            [switchboard registerPathCallbackAtPath:@"/thingy" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
+                return newVC;
+            }];
+            expect([switchboard loadPath:@"thingy"]).to.equal(newVC);
+        });
+    });
 
+    describe(@"routeInternalURL", ^{
         it(@"routes /favorites", ^{
             id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/favorites"] fair:nil];
             expect(subject).to.beKindOf(ARFavoritesViewController.class);
@@ -198,9 +208,8 @@ describe(@"ARSwitchboard", ^{
                 switchboard = [[ARSwitchBoard alloc] init];
                 id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
                 expect(viewController).to.beKindOf([ARInternalMobileWebViewController class]);
-
             }];
-;        });
+        });
 
         it(@"routes shows", ^{
             id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/show/show-id"] fair:nil];

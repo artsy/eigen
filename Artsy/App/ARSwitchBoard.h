@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// A shared instance object
 + (instancetype)sharedInstance;
 
+/// Allows other objects to hook into the switchboard
+- (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
+
 /// Load a path relative to the baseURL through the router
 - (UIViewController *)loadPath:(NSString *)path;
 

@@ -51,46 +51,6 @@
 
     __weak typeof(self) wself = self;
 
-    /// TODO: Handle the cases for when the route is the root VC
-    /// of a menu item
-    //
-    //    [self.routes addRoute:@"/works-for-you" handler:JLRouteParams {
-    //        __strong typeof (wself) sself = wself;
-    //        Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-    //        return nil
-    //    }];
-    //
-    //    [self.routes addRoute:@"/artwork/:id" handler:JLRouteParams {
-    //        __strong typeof (wself) sself = wself;
-    //        Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-    //        return [sself loadArtworkWithID:parameters[@"id"] inFair:fair];;
-    //    }];
-    //
-    //    [self.routes addRoute:@"/artwork/:id" handler:JLRouteParams {
-    //        __strong typeof (wself) sself = wself;
-    //        Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-    //        return [sself loadArtworkWithID:parameters[@"id"] inFair:fair];;
-    //    }];
-    //
-    //    if ([url.path isEqualToString:@""]) {
-    //        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
-    //        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications] rootViewController];
-    //    }
-    //    if ([url.path isEqualToString:@"/articles"]) {
-    //        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
-    //        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexMagazine] rootViewController];
-    //    }
-    //    if ([url.path isEqualToString:@"/shows"]) {
-    //        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
-    //        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexShows] rootViewController];
-    //    }
-    //
-    //    [self.routes addRoute:@"/" handler:JLRouteParams {
-    //
-    //        return nil;
-    //    }];
-
-
     [self.routes addRoute:@"/artist/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadArtistWithID:parameters[@"id"]];
@@ -98,7 +58,6 @@
 
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view on iPad.
-
 
     if ([UIDevice isPad]) {
         [self.routes addRoute:@"/:profile_id/artist/:id" handler:JLRouteParams {
@@ -108,7 +67,6 @@
             return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
         }];
     }
-
 
     [self.routes addRoute:@"/artwork/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
@@ -142,14 +100,14 @@
         return [sself loadShowWithID:parameters[@"id"]];;
     }];
 
-    [self.routes addRoute:@"/:profile_id/for-you" handler:JLRouteParams {
-
-        if ([UIDevice isPad]) { return NO; }
-
-        __strong typeof (wself) sself = wself;
-        Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-        return [sself loadFairGuideWithFair:fair];
-    }];
+    // We don't show a native fairs UI for iPad
+    if (![UIDevice isPad]) {
+        [self.routes addRoute:@"/:profile_id/for-you" handler:JLRouteParams {
+            __strong typeof (wself) sself = wself;
+            Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
+            return [sself loadFairGuideWithFair:fair];
+        }];
+    }
 
     [self.routes addRoute:@"/:profile_id/browse/artist/:id" handler:JLRouteParams {
         if ([UIDevice isPad]) { return NO; }
@@ -159,25 +117,25 @@
         return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
     }];
 
-    [self.routes addRoute:@"/favorites" handler:JLRouteParams {
-        return [[ARFavoritesViewController alloc] init];
-    }];
-
-    [self.routes addRoute:@"/browse" handler:JLRouteParams {
-        return [[ARBrowseCategoriesViewController alloc] init];
-    }];
-
     [self.routes addRoute:@"/categories" handler:JLRouteParams {
         return [[ARBrowseCategoriesViewController alloc] init];;
     }];
 
     // This route will match any single path component and thus should be added last.
-    [self.routes addRoute:@"/:profile_id" handler:JLRouteParams {
+    [self.routes addRoute:@"/:profile_id" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself routeProfileWithID: parameters[@"profile_id"]];
     }];
 
     return self;
+}
+
+- (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
+{
+    BOOL alreadyAdded = [self.routes canRouteURL:[self resolveRelativeUrl:path]];
+    if (!alreadyAdded) {
+        [self.routes addRoute:path handler:callback];
+    }
 }
 
 - (BOOL)canRouteURL:(NSURL *)url
