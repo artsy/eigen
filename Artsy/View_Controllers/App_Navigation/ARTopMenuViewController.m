@@ -49,6 +49,8 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     _navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
 
+    // TODO: Turn into custom view?
+
     ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *showsButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
@@ -76,13 +78,6 @@ static const CGFloat ARMenuButtonDimension = 46;
     [notificationsButton ar_extendHitTestSizeByWidth:10 andHeight:0];
 
     NSArray *buttons = @[ homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
-
-    //#ifdef DEBUG
-    //// Show the hit areas
-    //for (UIButton *button in buttons) {
-    //[button ar_visualizeHitTestArea];
-    //}
-    //#endif
 
     UIView *tabContainer = [[UIView alloc] init];
     self.tabContainer = tabContainer;
@@ -139,6 +134,27 @@ static const CGFloat ARMenuButtonDimension = 46;
     // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
     // be assured that any VCs guide can be trusted.
     (void)self.keyboardLayoutGuide;
+
+    [self registerWithSwitchBoard:[ARSwitchBoard sharedInstance]];
+}
+
+- (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
+{
+    NSDictionary *menuToPaths = @{
+        @(ARTopTabControllerIndexFeed) : @"/",
+        @(ARTopTabControllerIndexBrowse) : @"/browse",
+        @(ARTopTabControllerIndexMagazine) : @"/articles",
+        @(ARTopTabControllerIndexFavorites) : @"/favorites",
+        @(ARTopTabControllerIndexShows) : @"/shows",
+        @(ARTopTabControllerIndexNotifications) : @"/works-for-you",
+    };
+
+    for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
+        [switchboard registerPathCallbackAtPath:menuToPaths[tabIndex] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
+            [self.tabContentView setCurrentViewIndex:tabIndex.integerValue animated:NO];
+            return self.rootNavigationController.topViewController;
+        }];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -146,8 +162,8 @@ static const CGFloat ARMenuButtonDimension = 46;
     [super viewWillAppear:animated];
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.navigationDataSource prefetchBrowse];
+        [self.navigationDataSource prefetchHeroUnits];
     }];
-    [self.navigationDataSource prefetchHeroUnits];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -302,10 +318,6 @@ static const CGFloat ARMenuButtonDimension = 46;
 //}
 
 #pragma mark - Pushing VCs
-
-- (void)loadFeed
-{
-}
 
 - (void)pushViewController:(UIViewController *)viewController
 {

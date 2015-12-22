@@ -1,7 +1,8 @@
-#import <JLRoutes/JLRoutes.h>
 #import "ARExternalWebBrowserViewController.h"
-#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import "ARWebViewCacheHost.h"
+#import "ARSwitchboard.h"
+#import "ARSwitchboard+Eigen.h"
+#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 
 @interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
@@ -145,8 +146,9 @@
 {
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         NSURL *URL = navigationAction.request.URL;
-        if ([JLRoutes canRouteURL:URL]) {
-            [JLRoutes routeURL:URL];
+        ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
+        if ([switchboard canRouteURL:URL]) {
+            [switchboard presentViewController:[switchboard loadURL:URL]];
             return WKNavigationActionPolicyCancel;
         }
     }

@@ -1,6 +1,7 @@
 #import "ARFairPostsViewController.h"
 #import "ARPostFeedItemLinkView.h"
 #import "ARSwitchBoard.h"
+#import "ARSwitchboard+Eigen.h"
 #import "ARPostFeedItem.h"
 
 SpecBegin(ARFairPostsViewController);

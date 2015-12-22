@@ -67,10 +67,6 @@ Network:
     some APIS take ID strings, other takes model objects. Could be unified if there's a base model.
     caching? local cache, get cache first then re-run with network layer.
 
-ARSwitchBoard
-    should return controllers, not doing the pushing itself, this also is easier re: parallax nav
-    async view controllers are a problem - could be a quantum view controller pattern for doing this.
-
 Overall
     things hidden in things
     martsy: get an API that accepts a URL, it should respond with the model object or nil if noth 

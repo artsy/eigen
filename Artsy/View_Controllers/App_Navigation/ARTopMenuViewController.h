@@ -1,13 +1,10 @@
 /** Is the App's Root View Controller.
 
-    The Top MenuVC is a member of the ARNavigationContainer protocol, this means it supports
-    the standard way of pushing new view controllers into a stack using the ARSwitchBoard API.
-
-    It currently handles the status bar API, and the Menu / Back button.
+    It holds multiple navigation controllers for the menu.
+    It also handles the status bar API, and the Menu / Back button.
 */
 
 #import "ARMenuAwareViewController.h"
-#import "ARNavigationContainer.h"
 #import "ARNavigationController.h"
 #import "ARBackButtonCallbackManager.h"
 #import "ARTopMenuNavigationDataSource.h"
@@ -15,7 +12,7 @@
 @class ARTabContentView;
 
 
-@interface ARTopMenuViewController : UIViewController <ARMenuAwareViewController, ARNavigationContainer, UIViewControllerTransitioningDelegate>
+@interface ARTopMenuViewController : UIViewController <ARMenuAwareViewController, UIViewControllerTransitioningDelegate>
 
 /// The main interface of the app
 + (ARTopMenuViewController *)sharedController;

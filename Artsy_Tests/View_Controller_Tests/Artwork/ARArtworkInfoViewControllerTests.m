@@ -1,6 +1,7 @@
 #import "ARArtworkInfoViewController.h"
 #import "ARTextView.h"
 #import "ARSwitchBoard.h"
+#import "ARSwitchboard+Eigen.h"
 #import "ARExternalWebBrowserViewController.h"
 #import "EXPMatcher+UINavigationController.h"
 

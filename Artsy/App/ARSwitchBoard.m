@@ -1,26 +1,12 @@
 #import "ARRouter.h"
 #import <JLRoutes/JLRoutes.h>
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import "ARSwitchboard+Eigen.h"
+#import "ARTopMenuNavigationDataSource.h"
 
-// View Controllers
-#import "ARArtworkSetViewController.h"
-#import "ARShowViewController.h"
-#import "ARFairArtistViewController.h"
-#import "ARGeneViewController.h"
-#import "ARArtworkInfoViewController.h"
-#import "ARBrowseViewController.h"
+#import "ARFairAwareObject.h"
+#import "ARFavoritesViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
-#import "ARFairGuideContainerViewController.h"
-#import "ARUserSettingsViewController.h"
-#import "ARArtistViewController.h"
-#import "ARAuctionArtworkResultsViewController.h"
-#import "ARAuctionWebViewController.h"
-#import "ARFavoritesViewController.h"
-#import "ARFairMapViewController.h"
-#import "ARProfileViewController.h"
-
-#import "ARTopMenuNavigationDataSource.h"
 
 
 @interface ARSwitchBoard ()
@@ -52,6 +38,7 @@
     return sharedInstance;
 }
 
+#define JLRouteParams ^id _Nullable(NSDictionary *_Nullable parameters)
 
 - (id)init
 {
@@ -62,273 +49,104 @@
 
     _routes = [[JLRoutes alloc] init];
 
-    __weak typeof (self) wself = self;
-    [self.routes addRoute:@"/artist/:id" handler:^BOOL(NSDictionary *parameters) {
+    __weak typeof(self) wself = self;
+
+    [self.routes addRoute:@"/artist/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        ARArtistViewController *viewController = [sself loadArtistWithID:parameters[@"id"]];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
+        return [sself loadArtistWithID:parameters[@"id"]];
     }];
 
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view on iPad.
 
-
     if ([UIDevice isPad]) {
-        [self.routes addRoute:@"/:profile_id/artist/:id" handler:^BOOL(NSDictionary *parameters) {
+        [self.routes addRoute:@"/:profile_id/artist/:id" handler:JLRouteParams {
             __strong typeof (wself) sself = wself;
 
             Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-            ARArtistViewController *viewController = (id)[sself loadArtistWithID:parameters[@"id"] inFair:fair];
-            [[ARTopMenuViewController sharedController] pushViewController:viewController];
-            return YES;
+            return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
         }];
     }
 
-
-    [self.routes addRoute:@"/artwork/:id" handler:^BOOL(NSDictionary *parameters) {
+    [self.routes addRoute:@"/artwork/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-        ARArtworkSetViewController *viewController = [sself loadArtworkWithID:parameters[@"id"] inFair:fair];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
+        return [sself loadArtworkWithID:parameters[@"id"] inFair:fair];
     }];
 
-    [self.routes addRoute:@"/auction-registration/:id" handler:^BOOL(NSDictionary *parameters) {
+    [self.routes addRoute:@"/auction-registration/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        ARAuctionWebViewController *viewController = [sself loadAuctionRegistrationWithID:parameters[@"id"]];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
+        return [sself loadAuctionRegistrationWithID:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/auction/:id" handler:^BOOL(NSDictionary *parameters) {
+    [self.routes addRoute:@"/auction/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        ARAuctionWebViewController *viewController = [sself loadAuctionWithID:parameters[@"id"]];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
+        return [sself loadAuctionWithID:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:^BOOL(NSDictionary *parameters) {
+    [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        UIViewController *viewController = [sself loadBidUIForArtwork:parameters[@"artwork_id"]
-                                                              inSale:parameters[@"id"]];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
+        return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/gene/:id" handler:^BOOL(NSDictionary *parameters) {
+    [self.routes addRoute:@"/gene/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        ARGeneViewController *viewController = [sself loadGeneWithID:parameters[@"id"]];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
+        return [sself loadGeneWithID:parameters[@"id"]];
     }];
 
 
-    [self.routes addRoute:@"/show/:id" handler:^BOOL(NSDictionary *parameters) {
+    [self.routes addRoute:@"/show/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        ARShowViewController *viewController = [sself loadShowWithID:parameters[@"id"]];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
+        return [sself loadShowWithID:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/:profile_id/for-you" handler:^BOOL(NSDictionary *parameters) {
+    // We don't show a native fairs UI for iPad
+    if (![UIDevice isPad]) {
+        [self.routes addRoute:@"/:profile_id/for-you" handler:JLRouteParams {
+            __strong typeof (wself) sself = wself;
+            Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
+            return [sself loadFairGuideWithFair:fair];
+        }];
 
-        if ([UIDevice isPad]) { return NO; }
+        [self.routes addRoute:@"/:profile_id/browse/artist/:id" handler:JLRouteParams {
+            __strong typeof (wself) sself = wself;
+            Fair *fair = parameters[@"fair"] ?: [[Fair alloc] initWithFairID:parameters[@"profile_id"]];
+            return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
+        }];
+    }
 
-        __strong typeof (wself) sself = wself;
-
-        Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-        UIViewController *viewController = [sself loadFairGuideWithFair:fair];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-
-        return YES;
-    }];
-
-    [self.routes addRoute:@"/:profile_id/browse/artist/:id" handler:^BOOL(NSDictionary *parameters) {
-
-        if ([UIDevice isPad]) { return NO; }
-
-        __strong typeof (wself) sself = wself;
-        Fair *fair = parameters[@"fair"] ?: [[Fair alloc] initWithFairID:parameters[@"profile_id"]];
-        UIViewController *viewController = [sself loadArtistInFairWithID:parameters[@"id"] fair:fair];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
-    }];
-
-
-    [self.routes addRoute:@"/" handler:^BOOL(NSDictionary *parameters) {
-        [[ARTopMenuViewController sharedController] loadFeed];
-        return YES;
-    }];
-
-    [self.routes addRoute:@"/favorites" handler:^BOOL(NSDictionary *parameters) {
-        ARFavoritesViewController *viewController = [[ARFavoritesViewController alloc] init];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
-    }];
-
-    [self.routes addRoute:@"/browse" handler:^BOOL(NSDictionary *parameters) {
-        ARBrowseCategoriesViewController *viewController = [[ARBrowseCategoriesViewController alloc] init];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
-    }];
-
-    [self.routes addRoute:@"/categories" handler:^BOOL(NSDictionary *parameters) {
-        ARBrowseCategoriesViewController *viewController = [[ARBrowseCategoriesViewController alloc] init];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
+    [self.routes addRoute:@"/categories" handler:JLRouteParams {
+        return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
     // This route will match any single path component and thus should be added last.
-    [self.routes addRoute:@"/:profile_id" handler:^BOOL(NSDictionary *parameters) {
+    [self.routes addRoute:@"/:profile_id" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        UIViewController *viewController = [sself routeProfileWithID: parameters[@"profile_id"]];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        return YES;
+        return [sself routeProfileWithID: parameters[@"profile_id"]];
     }];
+
+    // The menu items' paths are added in ARTopMenuViewController
 
     return self;
 }
 
-#pragma mark -
-#pragma mark Artworks
-
-- (ARArtworkSetViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair
+- (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
 {
-    ARArtworkSetViewController *viewController = [[ARArtworkSetViewController alloc] initWithArtwork:artwork fair:fair];
-    return viewController;
+    // By putting the priority at 1, it is higher than
+    // - "JLRoute /:profile_id (0)",
+    // which globs all root level paths
+    [self.routes addRoute:path priority:1 handler:callback];
 }
 
-- (ARArtworkSetViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair
+- (BOOL)canRouteURL:(NSURL *)url
 {
-    ARArtworkSetViewController *viewController = [[ARArtworkSetViewController alloc] initWithArtworkID:artworkID fair:fair];
-    return viewController;
+    return [self.routes canRouteURL:url];
 }
 
-- (ARArtworkSetViewController *)loadArtworkSet:(NSArray *)artworkSet inFair:(Fair *)fair atIndex:(NSInteger)index
+- (void)presentViewController:(UIViewController *)controller
 {
-    ARArtworkSetViewController *viewController = [[ARArtworkSetViewController alloc] initWithArtworkSet:artworkSet fair:fair atIndex:index];
-    return viewController;
-}
-
-- (ARAuctionWebViewController *)loadAuctionWithID:(NSString *)auctionID;
-{
-    NSString *path = [NSString stringWithFormat:@"/auction/%@", auctionID];
-    NSURL *URL = [self resolveRelativeUrl:path];
-    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
-}
-
-- (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
-{
-    NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
-    NSURL *URL = [self resolveRelativeUrl:path];
-    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
-}
-
-- (ARAuctionWebViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
-{
-    NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
-    NSURL *URL = [self resolveRelativeUrl:path];
-    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
-}
-
-- (ARAuctionArtworkResultsViewController *)loadAuctionResultsForArtwork:(Artwork *)artwork
-{
-    ARAuctionArtworkResultsViewController *viewController = [[ARAuctionArtworkResultsViewController alloc] initWithArtwork:artwork];
-    return viewController;
-}
-
-- (ARArtworkInfoViewController *)loadMoreInfoForArtwork:(Artwork *)artwork
-{
-    ARArtworkInfoViewController *viewController = [[ARArtworkInfoViewController alloc] initWithArtwork:artwork];
-    return viewController;
-}
-
-- (ARShowViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair
-{
-    ARShowViewController *viewController = [[ARShowViewController alloc] initWithShow:show fair:fair];
-    return viewController;
-}
-
-- (ARShowViewController *)loadShow:(PartnerShow *)show
-{
-    return [self loadShow:show fair:nil];
-}
-
-- (ARShowViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair
-{
-    ARShowViewController *viewController = [[ARShowViewController alloc] initWithShowID:showID fair:fair];
-    return viewController;
-}
-
-- (ARShowViewController *)loadShowWithID:(NSString *)showID
-{
-    return [self loadShowWithID:showID fair:nil];
-}
-
-#pragma mark -
-#pragma mark Partner
-
-- (UIViewController *)loadPartnerWithID:(NSString *)partnerID
-{
-    return [self loadPath:partnerID];
-}
-
-#pragma mark -
-#pragma mark Genes
-
-- (ARGeneViewController *)loadGene:(Gene *)gene
-{
-    ARGeneViewController *viewController = [[ARGeneViewController alloc] initWithGene:gene];
-    return viewController;
-}
-
-
-- (ARGeneViewController *)loadGeneWithID:(NSString *)geneID
-{
-    ARGeneViewController *viewController = [[ARGeneViewController alloc] initWithGeneID:geneID];
-    return viewController;
-}
-
-#pragma mark -
-#pragma mark Artists
-
-- (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair
-{
-    if (fair) {
-        ARFairArtistViewController *viewController = [[ARFairArtistViewController alloc] initWithArtistID:artistID fair:fair];
-        return viewController;
-    } else {
-        ARArtistViewController *viewController = [[ARArtistViewController alloc] initWithArtistID:artistID];
-        return viewController;
-    }
-}
-
-- (ARFairMapViewController *)loadMapInFair:(Fair *)fair
-{
-    ARFairMapViewController *viewController = [[ARFairMapViewController alloc] initWithFair:fair];
-    return viewController;
-}
-
-- (ARFairMapViewController *)loadMapInFair:(Fair *)fair title:(NSString *)title selectedPartnerShows:(NSArray *)selectedPartnerShows
-{
-    ARFairMapViewController *viewController = [[ARFairMapViewController alloc] initWithFair:fair title:title selectedPartnerShows:selectedPartnerShows];
-    if (title) {
-        viewController.expandAnnotations = NO;
-    }
-    return viewController;
-}
-
-- (ARArtistViewController *)loadArtistWithID:(NSString *)artistID
-{
-    ARArtistViewController *viewController = [[ARArtistViewController alloc] initWithArtistID:artistID];
-    return viewController;
-}
-
-- (ARFairArtistViewController *)loadArtistInFairWithID:(NSString *)artistID fair:(Fair *)fair
-{
-    ARFairArtistViewController *viewController = [[ARFairArtistViewController alloc] initWithArtistID:artistID fair:fair];
-    return viewController;
+    ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
+    [menuController pushViewController:controller];
 }
 
 #pragma mark -
@@ -353,29 +171,25 @@
 {
     NSParameterAssert(url);
 
-    // May be nil by the end of the method
-    UIViewController *viewController;
-
+    /// Is it an Artsy URL, or a purely relative path?
     if ([ARRouter isInternalURL:url] || url.scheme == nil) {
+        /// Normalize URL ( e.g. m.artsy.net -> staging-m.artsy.net
         NSURL *fixedURL = [self fixHostForURL:url];
-        viewController = [self routeInternalURL:fixedURL fair:fair];
+        return [self routeInternalURL:fixedURL fair:fair];
+
     } else if ([ARRouter isWebURL:url]) {
+        /// Is is a webpage we could open in webkit?
         if (ARIsRunningInDemoMode) {
             [[UIApplication sharedApplication] openURL:url];
         } else {
-            viewController = [[ARExternalWebBrowserViewController alloc] initWithURL:url];
+            return [[ARExternalWebBrowserViewController alloc] initWithURL:url];
         }
+
     } else {
+        /// It's probably an app link, offer to jump out
         [self openURLInExternalService:url];
+        return nil;
     }
-
-    return viewController;
-}
-
-- (ARProfileViewController *)routeProfileWithID:(NSString *)profileID
-{
-    NSParameterAssert(profileID);
-    return [[ARProfileViewController alloc] initWithProfileID:profileID];
 }
 
 - (void)openURLInExternalService:(NSURL *)url
@@ -387,44 +201,29 @@
     messsage = [messsage stringByReplacingOccurrencesOfString:@"http://" withString:@""];
     messsage = [messsage stringByReplacingOccurrencesOfString:@"https://" withString:@""];
 
-    [UIAlertView showWithTitle:title message:messsage cancelButtonTitle:@"Go back to Artsy" otherButtonTitles:@[ @"Open" ] tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if (buttonIndex == 1) {
-            [[UIApplication sharedApplication] openURL:url];
-        }
-    }];
+    ARTopMenuViewController *presentationVC = [ARTopMenuViewController sharedController];
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:messsage preferredStyle:UIAlertControllerStyleActionSheet];
+
+    [controller addAction:[UIAlertAction actionWithTitle:@"Open" style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action) {
+        [[UIApplication sharedApplication] openURL:url];
+    }]];
+
+    [controller addAction:[UIAlertAction actionWithTitle:@"Go back to Artsy" style:UIAlertActionStyleCancel handler:^(UIAlertAction *_Nonnull action) {
+        [presentationVC dismissViewControllerAnimated:YES completion:nil];
+    }]];
+
+    [presentationVC presentViewController:controller animated:YES completion:nil];
 }
 
-#pragma mark -
-#pragma mark Fair
-
-- (ARFairGuideContainerViewController *)loadFairGuideWithFair:(Fair *)fair
-{
-    ARFairGuideContainerViewController *viewController = [[ARFairGuideContainerViewController alloc] initWithFair:fair];
-    return viewController;
-}
-
-// use the internal router
 - (UIViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
 {
-    // Can't be routed in the JLRoutes usage at the top, because we can't return view controller instances from there.
-    if ([url.path isEqualToString:@"/works-for-you"]) {
-        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
-        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications] rootViewController];
-    }
-    if ([url.path isEqualToString:@"/articles"]) {
-        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
-        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexMagazine] rootViewController];
-    }
-    if ([url.path isEqualToString:@"/shows"]) {
-        ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
-        return [[menuController rootNavigationControllerAtIndex:ARTopTabControllerIndexShows] rootViewController];
+    // Use the internal JLRouter for the actual routing
+    id routedViewController = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
+    if (routedViewController) {
+        return routedViewController;
     }
 
-    BOOL routed = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
-    if (routed) {
-        return nil;
-    }
-
+    // We couldn't find one? Well, then we should present it as a martsy view
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
     viewController.fair = fair;
     return viewController;
@@ -447,20 +246,6 @@
         return [NSURL URLWithString:newURLString];
     }
     return url;
-}
-
-
-- (ARUserSettingsViewController *)loadUserSettings
-{
-    ARUserSettingsViewController *viewController = [[ARUserSettingsViewController alloc] initWithUser:[User currentUser]];
-    return viewController;
-}
-
-
-- (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken
-{
-    NSString *path = [NSString stringWithFormat:@"/order/%@/resume?token=%@", orderID, resumeToken];
-    return [self loadPath:path];
 }
 
 @end

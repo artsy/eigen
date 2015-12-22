@@ -83,11 +83,9 @@
     UIViewController *viewController = nil;
 
     if (url) {
-        // Theoretically the way JLRoutes works could mean that a view controller would immediately get shown if it mached a
-        // route, which would be bad, because it should only happen when the user actually tapped the notification. But
-        // right now we're only expecting notifications for ‘works for you’, which is not routed that way.
         viewController = [ARSwitchBoard.sharedInstance loadPath:url];
 
+        /// Always set the badge count if we can
         NSInteger tabIndex = [[ARTopMenuViewController sharedController] indexOfRootViewController:viewController];
         if (tabIndex != NSNotFound) {
             NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];

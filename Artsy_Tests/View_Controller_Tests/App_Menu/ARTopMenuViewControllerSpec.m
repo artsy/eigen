@@ -10,11 +10,13 @@
 #import "ARBrowseViewController.h"
 #import "ARBackButtonCallbackManager.h"
 #import <JSBadgeView/JSBadgeView.h>
+#import "ARSwitchBoard.h"
 
 
 @interface ARTopMenuNavigationDataSource (Test)
 @property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
 @property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
+
 @end
 
 
@@ -26,6 +28,7 @@
 @interface ARTopMenuViewController (Testing) <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 - (JSBadgeView *)badgeForButtonAtIndex:(NSInteger)index createIfNecessary:(BOOL)createIfNecessary;
+@property (readwrite, nonatomic, assign) enum ARTopTabControllerIndex selectedTabIndex;
 @end
 
 SpecBegin(ARTopMenuViewController);
@@ -237,6 +240,37 @@ describe(@"navigation", ^{
            itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexFavorites]});
        });
    });
+
+    describe(@"routing", ^{
+        before(^{
+            [ARUserManager stubAndLoginWithUsername];
+        });
+        after(^{
+            [ARUserManager clearUserData];
+        });
+
+        it(@"supports routing to paths", ^{
+            NSDictionary *menuToPaths = @{
+                @(ARTopTabControllerIndexFeed): @"/",
+                @(ARTopTabControllerIndexBrowse): @"/browse",
+                @(ARTopTabControllerIndexMagazine): @"/articles",
+                @(ARTopTabControllerIndexFavorites): @"/favorites",
+                @(ARTopTabControllerIndexShows): @"/shows",
+                @(ARTopTabControllerIndexNotifications): @"/works-for-you",
+            };
+
+            ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
+            for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
+                id viewcontroller = [switchboard loadPath:menuToPaths[tabIndex]];
+                expect(viewcontroller).to.beTruthy();
+                NSLog(@"VC: %@ %@", tabIndex, viewcontroller);
+                if (tabIndex.integerValue != [ARTopMenuViewController sharedController].selectedTabIndex) {
+
+                }
+                expect([ARTopMenuViewController sharedController].selectedTabIndex).to.equal(tabIndex.integerValue);
+            }
+        });
+    });
 });
 
 SpecEnd;

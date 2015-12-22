@@ -1,4 +1,5 @@
 #import "ARSwitchBoard.h"
+#import "ARSwitchboard+Eigen.h"
 #import "AROptions.h"
 #import "ARRouter.h"
 #import "ArtsyAPI.h"
@@ -154,115 +155,55 @@ describe(@"ARSwitchboard", ^{
         });
     });
 
+    describe(@"adding a new route", ^{
+        it(@"supports adding via the register method", ^{
+            UIViewController *newVC = [[UIViewController alloc] init];
+            id subject = [switchboard loadPath:@"thingy"];
+            // Yeah, so, we have this awkward catch-all profile class for any route
+            // thus if the route isn't registered, it'll go to that
+            expect(subject).to.beAKindOf(ARProfileViewController.class);
+            [switchboard registerPathCallbackAtPath:@"/thingy" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
+                return newVC;
+            }];
+            expect([switchboard loadPath:@"thingy"]).to.equal(newVC);
+        });
+    });
+
     describe(@"routeInternalURL", ^{
-        __block id classMock;
-        __block __strong id controllerMock;
-
-        before(^{
-            controllerMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
-            classMock = [OCMockObject mockForClass:[ARTopMenuViewController class]];
-            [[[classMock stub] andReturn:controllerMock] sharedController];
-        });
-
-        after(^{
-            [controllerMock verify];
-            [controllerMock stopMocking];
-            [classMock stopMocking];
-        });
-
-        it(@"routes /favorites", ^{
-            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARFavoritesViewController class]]];
-            [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/favorites"] fair:nil];
-        });
-
-        it(@"routes /browse", ^{
-            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARBrowseCategoriesViewController class]]];
-            [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/browse"] fair:nil];
-        });
-
         it(@"routes profiles", ^{
             // See aditional tests for profile routing below.
-            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARProfileViewController class]]];
             NSURL *profileURL = [[NSURL alloc] initWithString:@"http://artsy.net/myprofile"];
-            [switchboard routeInternalURL:profileURL fair:nil];
-        });
+            id subject = [switchboard routeInternalURL:profileURL fair:nil];
+            expect(subject).to.beKindOf(ARProfileViewController.class);
 
-        it(@"routes artsy.net to Home", ^{
-            [[controllerMock expect] loadFeed];
-            [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net"] fair:nil];
-        });
-
-
-        it(@"routes artsy.net/ to Home", ^{
-            [[controllerMock expect] loadFeed];
-            [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/"] fair:nil];
         });
 
         it(@"routes artists", ^{
-            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/artistname/artworks" withParams:@{ @"page" : @"1", @"size" : @"10" } withResponse:@[]];
-            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/artists" withParams:@{ @"artist[]" : @"artistname" } withResponse:@[]];
-            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withParams:@{ @"artist[]" : @"artistname" } withResponse:@[]];
-            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARArtistViewController class]]];
-            [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artist/artistname"] fair:nil];
+            id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artist/artistname"] fair:nil];
+            expect(subject).to.beKindOf(ARArtistViewController.class);
         });
 
         it(@"routes artists in a gallery context on iPad", ^{
-            [ARTestContext stubDevice:ARDeviceTypePad];
-            switchboard = [[ARSwitchBoard alloc] init];
-            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artist/artistname/artworks" withParams:@{ @"page" : @"1", @"size" : @"10" } withResponse:@[]];
-            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/artists" withParams:@{ @"artist[]" : @"artistname" } withResponse:@[]];
-            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/posts" withParams:@{ @"artist[]" : @"artistname" } withResponse:@[]];
+            [ARTestContext useDevice:ARDeviceTypePad :^{
+                // Now we're in a different context, need to recreate switchboard
+                switchboard = [[ARSwitchBoard alloc] init];
 
-            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARArtistViewController class]]];
-
-            id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
-            expect(viewController).to.beNil();
-            [ARTestContext stopStubbing];
+                id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
+                expect(viewController).to.beKindOf(ARArtistViewController.class);
+            }];
         });
 
         it(@"does not route artists in a gallery context on iPhone", ^{
-            [ARTestContext stubDevice:ARDeviceTypePhone5];
-            switchboard = [[ARSwitchBoard alloc] init];
-            [[controllerMock reject] pushViewController:[OCMArg checkForClass:[ARArtistViewController class]]];
-            id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
-            expect(viewController).to.beKindOf([ARInternalMobileWebViewController class]);
-            [ARTestContext stopStubbing];
+            [ARTestContext useDevice:ARDeviceTypePhone5 :^{
+                switchboard = [[ARSwitchBoard alloc] init];
+                id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
+                expect(viewController).to.beKindOf([ARInternalMobileWebViewController class]);
+            }];
         });
 
         it(@"routes shows", ^{
-            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARShowViewController class]]];
             id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/show/show-id"] fair:nil];
-            expect(viewController).to.beNil();
-        });
-
-        describe(@"routing to existing top-menu root view controllers", ^{
-            __block ARNavigationController *navigationController = nil;
-
-            beforeEach(^{
-                UIViewController *rootViewController = [UIViewController new];
-                navigationController = [[ARNavigationController alloc] initWithRootViewController:rootViewController];
-            });
-
-            it(@"routes works-for-you", ^{
-                [[[controllerMock expect] andReturn:navigationController] rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications];
-
-                id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/works-for-you"] fair:nil];
-                expect(viewController).to.equal(navigationController.rootViewController);
-            });
-
-            it(@"routes shows", ^{
-                [[[controllerMock expect] andReturn:navigationController] rootNavigationControllerAtIndex:ARTopTabControllerIndexShows];
-
-                id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/shows"] fair:nil];
-                expect(viewController).to.equal(navigationController.rootViewController);
-            });
-
-            it(@"routes articles", ^{
-                [[[controllerMock expect] andReturn:navigationController] rootNavigationControllerAtIndex:ARTopTabControllerIndexMagazine];
-
-                id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/articles"] fair:nil];
-                expect(viewController).to.equal(navigationController.rootViewController);
-            });
+            expect(viewController).to.beKindOf(ARShowViewController.class);
         });
 
         context(@"fairs", ^{
@@ -279,22 +220,21 @@ describe(@"ARSwitchboard", ^{
 
                 it(@"routes fair guide", ^{
                     Fair *fair = [OCMockObject mockForClass:[Fair class]];
-                    [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARFairGuideContainerViewController class]]];
                     id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/fair-id/for-you"] fair:fair];
-                    expect(viewController).to.beNil();
+                    expect(viewController).to.beKindOf(ARFairGuideContainerViewController.class);
                 });
 
                 it(@"routes fair artists", ^{
                     Fair *fair = [OCMockObject mockForClass:[Fair class]];
-                    [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARFairArtistViewController class]]];
                     id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/the-armory-show/browse/artist/artist-id"] fair:fair];
-                    expect(viewController).to.beNil();
+                    expect(viewController).to.beKindOf(ARFairArtistViewController.class);
                 });
 
-                it(@"forwards fair for non-native views", ^{
+                it(@"forwards fair views to martsy for non-native views", ^{
                     Fair *fair = [OCMockObject mockForClass:[Fair class]];
                     ARInternalMobileWebViewController *viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/the-armory-show/browse/artists"] fair:fair];
                     expect(viewController.fair).to.equal(fair);
+                    expect(viewController).to.beKindOf(ARInternalMobileWebViewController.class);
                 });
             });
 
@@ -310,7 +250,7 @@ describe(@"ARSwitchboard", ^{
 
                 it(@"doesn't route fair guide", ^{
                     Fair *fair = [OCMockObject mockForClass:[Fair class]];
-                    [[controllerMock reject] pushViewController:OCMOCK_ANY];
+
                     ARInternalMobileWebViewController *viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/fair-id/for-you"] fair:fair];
                     expect(viewController).to.beKindOf([ARInternalMobileWebViewController class]);
                     expect(viewController.fair).to.equal(fair);
@@ -318,7 +258,7 @@ describe(@"ARSwitchboard", ^{
 
                 it(@"doesn't route fair artists", ^{
                     Fair *fair = [OCMockObject mockForClass:[Fair class]];
-                    [[controllerMock reject] pushViewController:OCMOCK_ANY];
+
                     ARInternalMobileWebViewController *viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/the-armory-show/browse/artist/artist-id"] fair:fair];
                     expect(viewController).to.beKindOf([ARInternalMobileWebViewController class]);
                     expect(viewController.fair).to.equal(fair);
@@ -326,24 +266,20 @@ describe(@"ARSwitchboard", ^{
             });
         });
 
-
         it(@"routes artworks", ^{
-            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARArtworkSetViewController class]]];
-            [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artwork/artworkID"] fair:nil];
+            id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artwork/artworkID"] fair:nil];
+            expect(subject).to.beKindOf(ARArtworkSetViewController.class);
         });
 
         it(@"routes artworks and retains fair context", ^{
             Fair *fair = [Fair modelWithJSON:@{}];
-            [[controllerMock expect] pushViewController:[OCMArg checkWithBlock:^BOOL(ARArtworkSetViewController *sut) {
-                return sut.fair == fair;
-            }]];
-            [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artwork/artworkID"] fair:fair];
+            ARArtworkSetViewController *subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artwork/artworkID"] fair:fair];
+            expect(subject.fair).to.equal(fair);
         });
 
         it(@"routes genes", ^{
-            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/gene/surrealism" withResponse:@{ @"id" : @"surrealism", @"name" : @"Surrealism" }];
-            [[controllerMock expect] pushViewController:[OCMArg checkForClass:[ARGeneViewController class]]];
-            [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
+            id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
+            expect(subject).to.beAKindOf(ARGeneViewController.class);
         });
     });
 
@@ -353,12 +289,6 @@ describe(@"ARSwitchboard", ^{
 
         before(^{
             mockProfileVC = [OCMockObject mockForClass:[ARProfileViewController class]];
-        });
-
-        describe(@"with nil profileID", ^{
-            it(@"raises exception", ^{
-                expect(^{[switchboard routeProfileWithID:nil];}).to.raise(@"NSInternalInconsistencyException");
-            });
         });
 
         describe(@"with a non-fair profile", ^{
@@ -372,7 +302,7 @@ describe(@"ARSwitchboard", ^{
                                                                                                     @"owner_type" : @"FairOrganizer" }];
             });
 
-            it(@"does not load martsy", ^{
+            it(@"internally does not load martsy", ^{
                 [[mockProfileVC reject] showViewController:[OCMArg checkForClass:[ARInternalMobileWebViewController class]]];
                 [switchboard routeProfileWithID:@"myfairprofile"];
             });

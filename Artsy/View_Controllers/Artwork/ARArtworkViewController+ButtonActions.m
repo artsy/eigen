@@ -2,6 +2,7 @@
 #import <Adjust/Adjust.h>
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
+#import "ARAuctionWebViewController.h"
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"
 #import "ARArtworkInfoViewController.h"
@@ -145,8 +146,8 @@
     ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustSentArtworkInquiry];
     [Adjust trackEvent:event];
 
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadBidUIForArtwork:self.artwork.artworkID
-                                                                                  inSale:saleArtwork.auction.saleID];
+    ARAuctionWebViewController *viewController = [ARSwitchBoard.sharedInstance loadBidUIForArtwork:self.artwork.artworkID
+                                                                                            inSale:saleArtwork.auction.saleID];
     [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
@@ -184,7 +185,7 @@
         editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
     }
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI createPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID success:^(id JSON) {
 
         NSString *orderID = [JSON valueForKey:@"id"];
@@ -198,7 +199,7 @@
         __strong typeof (wself) sself = wself;
         ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
         [sself tappedContactGallery];
-    }];
+        }];
 }
 
 - (void)tappedAuctionResults
@@ -221,7 +222,7 @@
     if (self.fair) {
         [ArtsyAPI getShowsForArtworkID:self.artwork.artworkID inFairID:self.fair.fairID success:^(NSArray *shows) {
             if (shows.count > 0) {
-                UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:shows.firstObject fair:self.fair];
+                UIViewController *viewController = [ARSwitchBoard.sharedInstance loadShow:shows.firstObject fair:self.fair];
                 [self.navigationController pushViewController:viewController animated:YES];
             }
         } failure:^(NSError *error){

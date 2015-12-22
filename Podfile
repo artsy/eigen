@@ -43,7 +43,7 @@ target 'Artsy' do
   pod 'FXBlurView'
   pod 'iRate'
   pod 'ISO8601DateFormatter', :head
-  pod 'JLRoutes'
+  pod 'JLRoutes', :git => 'https://github.com/orta/JLRoutes.git'
   pod 'JSBadgeView'
   pod 'JSDecoupledAppDelegate', :git => 'https://github.com/orta/JSDecoupledAppDelegate.git', :branch => 'patch-1'
   pod 'Mantle', '~> 1.5.6'
@@ -63,7 +63,7 @@ target 'Artsy' do
   # UIAlertView is deprecated for iOS8 APIs
   pod 'UIAlertView+Blocks'
   # Code isn't used, and should be removed
-  pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
+  pod 'FODFormKit', :git => 'https://github.com/1aurabrown/t.git'
 
   # Language Enhancments
   pod 'KSDeferred'
