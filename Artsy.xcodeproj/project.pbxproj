@@ -134,7 +134,6 @@
 		3C990C8818CF8E9000BF4C44 /* ARFairMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C990C8718CF8E9000BF4C44 /* ARFairMapAnnotation.m */; };
 		3C9F215F18B25D0D00D8898B /* ARSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9F215E18B25D0D00D8898B /* ARSearchViewController.m */; };
 		3CA0A17D18EF633900C361E5 /* ARArtistViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA0A17C18EF633900C361E5 /* ARArtistViewControllerTests.m */; };
-		3CA17D591901A4900010C9F5 /* SpectaDSL+Sleep.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA17D581901A4900010C9F5 /* SpectaDSL+Sleep.m */; };
 		3CA1E820188465F0003C622D /* Sale+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA1E81F188465F0003C622D /* Sale+Extensions.m */; };
 		3CA1E8231884663E003C622D /* Bid+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA1E8221884663E003C622D /* Bid+Extensions.m */; };
 		3CA1E82518846B3A003C622D /* SaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA1E82418846B3A003C622D /* SaleTests.m */; };
@@ -833,8 +832,6 @@
 		3C9F215D18B25D0D00D8898B /* ARSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSearchViewController.h; sourceTree = "<group>"; };
 		3C9F215E18B25D0D00D8898B /* ARSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSearchViewController.m; sourceTree = "<group>"; };
 		3CA0A17C18EF633900C361E5 /* ARArtistViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtistViewControllerTests.m; sourceTree = "<group>"; };
-		3CA17D571901A4900010C9F5 /* SpectaDSL+Sleep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SpectaDSL+Sleep.h"; sourceTree = "<group>"; };
-		3CA17D581901A4900010C9F5 /* SpectaDSL+Sleep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SpectaDSL+Sleep.m"; sourceTree = "<group>"; };
 		3CA1E81E188465F0003C622D /* Sale+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Sale+Extensions.h"; sourceTree = "<group>"; };
 		3CA1E81F188465F0003C622D /* Sale+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Sale+Extensions.m"; sourceTree = "<group>"; };
 		3CA1E8211884663E003C622D /* Bid+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bid+Extensions.h"; sourceTree = "<group>"; };
@@ -2046,8 +2043,6 @@
 				5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */,
 				3C6BDCBE18E0B3E40028EF5D /* MutableNSURLResponse.h */,
 				3C6BDCBF18E0B3E40028EF5D /* MutableNSURLResponse.m */,
-				3CA17D571901A4900010C9F5 /* SpectaDSL+Sleep.h */,
-				3CA17D581901A4900010C9F5 /* SpectaDSL+Sleep.m */,
 				608EE3D919954CEB001F4FE0 /* UIViewController+Testing.h */,
 				608EE3DA19954CEB001F4FE0 /* UIViewController+Testing.m */,
 				E61E772419A5477300C55E14 /* ARExpectaExtensions.h */,
@@ -4872,7 +4867,6 @@
 				3CE7F34418A99E6D002BA993 /* SiteHeroUnitTests.m in Sources */,
 				5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */,
 				D3C8C2061B66D2FF004CAD7F /* ARImageTests.m in Sources */,
-				3CA17D591901A4900010C9F5 /* SpectaDSL+Sleep.m in Sources */,
 				3CE75A0B18B6367F00885355 /* ARValueTransformerTests.m in Sources */,
 				3CA1E820188465F0003C622D /* Sale+Extensions.m in Sources */,
 				E61E773919A7E8D500C55E14 /* ARGeneViewControllerTests.m in Sources */,

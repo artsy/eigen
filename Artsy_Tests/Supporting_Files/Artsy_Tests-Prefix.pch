@@ -3,16 +3,15 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <Specta/Specta.h>
-    #import "SpectaDSL+Sleep.h"
     #import <Expecta/Expecta.h>
-    #import <Expecta+Snapshots/EXPMatchers+FBSnapshotTest.h>
+    #import <Expecta_Snapshots/EXPMatchers+FBSnapshotTest.h>
     #import <OHHTTPStubs/OHHTTPStubs.h>
     #import <OCMock/OCMock.h>
 
     // Pods that come in from the other target
     #import <AFNetworking/AFNetworking.h>
     #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
-    #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+    #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
     #import <UICKeyChainStore/UICKeyChainStore.h>
     #import <Mantle/Mantle.h>
     #import <Mantle/MTLJSONAdapter.h>

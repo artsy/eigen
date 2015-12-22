@@ -5,7 +5,7 @@
 #import "ARUserManager.h"
 #import "AROnboardingViewController.h"
 #import "UIViewController+FullScreenLoading.h"
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import "UIView+HitTestExpansion.h"
 
 //sigh
@@ -210,7 +210,7 @@
         return;
     }
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self setFormEnabled:NO];
     if (self.provider == ARAuthProviderFacebook) {
         [[ARUserManager sharedManager] createUserViaFacebookWithToken:self.token
@@ -278,7 +278,7 @@
               __strong typeof (wself) sself = wself;
               [sself setFormEnabled:YES];
           }];
-        }];
+            }];
     }
 }
 
@@ -303,7 +303,7 @@
 - (void)loginWithTwitterCredential
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [[ARUserManager sharedManager] loginWithTwitterToken:self.token
         secret:self.secret
@@ -318,18 +318,18 @@
           //TODO: handle me
 
         }
-    networkFailure:^(NSError *error) {
+        networkFailure:^(NSError *error) {
         __strong typeof (wself) sself = wself;
         [sself setFormEnabled:YES];
         [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign up failed."];
-    }];
+        }];
 }
 
 - (void)loginWithFacebookCredential
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [[ARUserManager sharedManager] loginWithFacebookToken:self.token successWithCredentials:nil
         gotUser:^(User *currentUser) {

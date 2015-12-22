@@ -1,4 +1,5 @@
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
+@import UICKeyChainStore;
 #import <Adjust/Adjust.h>
 
 #import "ARUserManager.h"
@@ -12,7 +13,7 @@
 #import "ARCollectorStatusViewController.h"
 #import "ARKeychainable.h"
 #import "AFHTTPRequestOperation+JSON.h"
-#import <UICKeychainStore/UICKeychainStore.h>
+
 
 NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";
 
@@ -55,7 +56,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         NSString *collectorLevel = [ARCollectorStatusViewController stringFromCollectorLevel:user.collectorLevel];
         [ARAnalytics setUserProperty:@"collector_level" toValue:collectorLevel];
     }
-    
+
     [ARAnalytics setUserProperty:@"is_trial_user" toValue:@(user == nil)];
 
     [ARAnalytics identifyUserWithID:user.userID
@@ -64,7 +65,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 }
 
 - (instancetype)init
-{   
+{
     self = [super init];
     if (!self) {
         return nil;
@@ -148,12 +149,12 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
            networkFailure:(void (^)(NSError *error))networkFailure;
 {
     [self loginWithUsername:username
-                   password:password
-     successWithCredentials:credentials
-                    gotUser:gotUser
-      authenticationFailure:authenticationFailure
-             networkFailure:networkFailure
-   saveSharedWebCredentials:YES];
+                        password:password
+          successWithCredentials:credentials
+                         gotUser:gotUser
+           authenticationFailure:authenticationFailure
+                  networkFailure:networkFailure
+        saveSharedWebCredentials:YES];
 }
 
 - (void)loginWithUsername:(NSString *)username
@@ -352,11 +353,11 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
                    failure:(void (^)(NSError *error, id JSON))failure;
 {
     [self createUserWithName:name
-                       email:email
-                    password:password
-                     success:success
-                     failure:failure
-    saveSharedWebCredentials:YES];
+                           email:email
+                        password:password
+                         success:success
+                         failure:failure
+        saveSharedWebCredentials:YES];
 }
 
 - (void)createUserWithName:(NSString *)name
@@ -662,7 +663,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 - (void)tryLoginWithSharedWebCredentials:(void (^)(NSError *error))completion;
 {
     if (ARUserManagerDisableSharedWebCredentials) {
-        NSDictionary *info = @{ NSLocalizedDescriptionKey: @"Developer chose to not use Shared Web Credentials." };
+        NSDictionary *info = @{NSLocalizedDescriptionKey : @"Developer chose to not use Shared Web Credentials."};
         completion([NSError errorWithDomain:@"net.artsy.artsy.authentication" code:-1 userInfo:info]);
         return;
     }
@@ -688,7 +689,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
             }
         }
     });
-
 }
 
 @end

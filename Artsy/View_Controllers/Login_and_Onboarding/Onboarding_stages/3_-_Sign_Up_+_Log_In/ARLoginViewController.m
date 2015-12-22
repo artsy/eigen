@@ -3,7 +3,7 @@
 #import "AROnboardingNavBarView.h"
 #import "ARAuthProviders.h"
 #import "UIViewController+FullScreenLoading.h"
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import "ARTextFieldWithPlaceholder.h"
 #import "ARSecureTextFieldWithPlaceholder.h"
 #import "UIView+HitTestExpansion.h"
@@ -163,7 +163,7 @@
 - (void)twitter:(id)sender
 {
     [self hideKeyboard];
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
@@ -208,7 +208,7 @@
     [self hideKeyboard];
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
         [[ARUserManager sharedManager] loginWithFacebookToken:token
            successWithCredentials:nil gotUser:^(User *currentUser) {
@@ -398,7 +398,7 @@
 
     self.loginButton.alpha = 0.5;
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [[ARUserManager sharedManager] loginWithUsername:username
         password:password
         successWithCredentials:nil
