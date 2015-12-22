@@ -2,7 +2,6 @@
 #import "ARArtistViewController.h"
 #import "ARSimpleShowFeedViewController.h"
 #import "ARAdminSettingsViewController.h"
-#import "ARUserSettingsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARExternalWebBrowserViewController.h"
 #import "ARViewInRoomViewController.h"

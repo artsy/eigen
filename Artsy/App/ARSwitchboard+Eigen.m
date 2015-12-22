@@ -10,7 +10,6 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairGuideContainerViewController.h"
-#import "ARUserSettingsViewController.h"
 #import "ARArtistViewController.h"
 #import "ARAuctionArtworkResultsViewController.h"
 #import "ARAuctionWebViewController.h"
@@ -163,12 +162,6 @@
 - (ARFairGuideContainerViewController *)loadFairGuideWithFair:(Fair *)fair
 {
     return [[ARFairGuideContainerViewController alloc] initWithFair:fair];
-}
-
-
-- (ARUserSettingsViewController *)loadUserSettings
-{
-    return [[ARUserSettingsViewController alloc] initWithUser:[User currentUser]];
 }
 
 
