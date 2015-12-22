@@ -49,6 +49,8 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     _navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
 
+    // TODO: Turn into custom view?
+
     ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *showsButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
@@ -149,7 +151,7 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabIndex] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
-            [self presentRootViewControllerAtIndex:tabIndex.integerValue animated:NO];
+            [self.tabContentView setCurrentViewIndex:tabIndex.integerValue animated:NO];
             return self.rootNavigationController.topViewController;
         }];
     }
@@ -160,8 +162,8 @@ static const CGFloat ARMenuButtonDimension = 46;
     [super viewWillAppear:animated];
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [self.navigationDataSource prefetchBrowse];
+        [self.navigationDataSource prefetchHeroUnits];
     }];
-    [self.navigationDataSource prefetchHeroUnits];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator

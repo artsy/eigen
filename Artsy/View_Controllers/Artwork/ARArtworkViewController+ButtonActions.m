@@ -222,7 +222,7 @@
     if (self.fair) {
         [ArtsyAPI getShowsForArtworkID:self.artwork.artworkID inFairID:self.fair.fairID success:^(NSArray *shows) {
             if (shows.count > 0) {
-                UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:shows.firstObject fair:self.fair];
+                UIViewController *viewController = [ARSwitchBoard.sharedInstance loadShow:shows.firstObject fair:self.fair];
                 [self.navigationController pushViewController:viewController animated:YES];
             }
         } failure:^(NSError *error){

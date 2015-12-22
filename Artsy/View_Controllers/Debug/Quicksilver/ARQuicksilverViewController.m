@@ -5,6 +5,7 @@
 #import "ARFileUtils.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
+
 @interface ARQuicksilverViewController ()
 
 @property (nonatomic, assign, readwrite) NSInteger selectedIndex;
@@ -151,7 +152,7 @@
     } else {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
-        __weak typeof (self) wself = self;
+        __weak typeof(self) wself = self;
         _searchRequest = [ArtsyAPI searchWithQuery:query success:^(NSArray *results) {
             __strong typeof (wself) sself = wself;
             sself.searchResults = [results copy];
@@ -232,7 +233,7 @@
 
     } else if (result.model == [SiteFeature class]) {
         NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
-        controller = [[ARSwitchBoard sharedInstance] loadPath:path];
+        controller = [ARSwitchBoard.sharedInstance loadPath:path];
     }
 
     [self.navigationController pushViewController:controller animated:YES];

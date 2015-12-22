@@ -26,7 +26,8 @@ Edit `Artsy/Classes/View Controllers/ARTopMenuViewController+DeveloperExtras.m` 
 ```objc
 - (void)runDeveloperExtras
 {
-    [ARSwitchBoard loadFairWithID:@"the-armory-show-2014"];
+    UIViewController *controller = [ARSwitchBoard loadFairWithID:@"the-armory-show-2014"];
+    [self.navigationViewController pushViewController:controller animated:YES];
 }
 ```
 

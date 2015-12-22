@@ -12,6 +12,7 @@
 #import "ARSearchFieldButton.h"
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
+
 @interface ARFairMapViewController () <NAMapViewDelegate, ARFairSearchViewControllerDelegate, ARSearchFieldButtonDelegate>
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong, readwrite) ARFairMapView *mapView;
@@ -124,7 +125,7 @@
     RAC(self.mapShowMapper, expandAnnotations) = RACObserve(self, expandAnnotations);
 
     // Due to a problem in the custom UIViewController transitions API (when the VC's view is a scrollview subclass)
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [[self rac_signalForSelector:@selector(viewWillDisappear:)] subscribeNext:^(id x) {
         __strong typeof (wself) sself = wself;
 
@@ -263,21 +264,22 @@
 
 - (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query
 {
+    ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
     if (result.model == [Artwork class]) {
-        UIViewController *controller = [[ARSwitchBoard sharedInstance] loadArtworkWithID:result.modelID inFair:self.fair];
+        UIViewController *controller = [switchboard loadArtworkWithID:result.modelID inFair:self.fair];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (result.model == [Artist class]) {
         Artist *artist = [[Artist alloc] initWithArtistID:result.modelID];
         [self selectedArtist:artist];
     } else if (result.model == [Gene class]) {
-        UIViewController *controller = [[ARSwitchBoard sharedInstance] loadGeneWithID:result.modelID];
+        UIViewController *controller = [switchboard loadGeneWithID:result.modelID];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (result.model == [Profile class]) {
-        UIViewController *controller = [ARSwitchBoard.sharedInstance routeProfileWithID:result.modelID];
+        UIViewController *controller = [switchboard routeProfileWithID:result.modelID];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (result.model == [SiteFeature class]) {
         NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
-        UIViewController *controller = [[ARSwitchBoard sharedInstance] loadPath:path];
+        UIViewController *controller = [switchboard loadPath:path];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (result.model == [PartnerShow class]) {
         PartnerShow *partnerShow = [[PartnerShow alloc] initWithShowID:result.modelID];
