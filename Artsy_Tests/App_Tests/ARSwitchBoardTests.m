@@ -159,7 +159,9 @@ describe(@"ARSwitchboard", ^{
         it(@"supports adding via the register method", ^{
             UIViewController *newVC = [[UIViewController alloc] init];
             id subject = [switchboard loadPath:@"thingy"];
-            expect(subject).to.beNull();
+            // Yeah, so, we have this awkward catch-all profile class for any route
+            // thus if the route isn't registered, it'll go to that
+            expect(subject).to.beAKindOf(ARProfileViewController.class);
             [switchboard registerPathCallbackAtPath:@"/thingy" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
                 return newVC;
             }];
@@ -168,17 +170,6 @@ describe(@"ARSwitchboard", ^{
     });
 
     describe(@"routeInternalURL", ^{
-        it(@"routes /favorites", ^{
-            id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/favorites"] fair:nil];
-            expect(subject).to.beKindOf(ARFavoritesViewController.class);
-        });
-
-        it(@"routes /browse", ^{
-            id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/browse"] fair:nil];
-            expect(subject).to.beKindOf(ARBrowseCategoriesViewController.class);
-
-        });
-
         it(@"routes profiles", ^{
             // See aditional tests for profile routing below.
             NSURL *profileURL = [[NSURL alloc] initWithString:@"http://artsy.net/myprofile"];
@@ -199,7 +190,6 @@ describe(@"ARSwitchboard", ^{
 
                 id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
                 expect(viewController).to.beKindOf(ARArtistViewController.class);
-
             }];
         });
 
@@ -214,36 +204,6 @@ describe(@"ARSwitchboard", ^{
         it(@"routes shows", ^{
             id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/show/show-id"] fair:nil];
             expect(viewController).to.beKindOf(ARShowViewController.class);
-        });
-
-        describe(@"routing to existing top-menu root view controllers", ^{
-            __block ARNavigationController *navigationController = nil;
-
-//            beforeEach(^{
-//                UIViewController *rootViewController = [UIViewController new];
-//                navigationController = [[ARNavigationController alloc] initWithRootViewController:rootViewController];
-//            });
-//
-//            it(@"routes works-for-you", ^{
-//                [[[controllerMock expect] andReturn:navigationController] rootNavigationControllerAtIndex:ARTopTabControllerIndexNotifications];
-//
-//                id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/works-for-you"] fair:nil];
-//                expect(viewController).to.equal(navigationController.rootViewController);
-//            });
-//
-//            it(@"routes shows", ^{
-//                [[[controllerMock expect] andReturn:navigationController] rootNavigationControllerAtIndex:ARTopTabControllerIndexShows];
-//
-//                id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/shows"] fair:nil];
-//                expect(viewController).to.equal(navigationController.rootViewController);
-//            });
-//
-//            it(@"routes articles", ^{
-//                [[[controllerMock expect] andReturn:navigationController] rootNavigationControllerAtIndex:ARTopTabControllerIndexMagazine];
-//
-//                id viewController = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/articles"] fair:nil];
-//                expect(viewController).to.equal(navigationController.rootViewController);
-//            });
         });
 
         context(@"fairs", ^{

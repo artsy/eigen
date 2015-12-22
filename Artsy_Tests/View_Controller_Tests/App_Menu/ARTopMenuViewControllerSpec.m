@@ -242,8 +242,14 @@ describe(@"navigation", ^{
    });
 
     describe(@"routing", ^{
-        it(@"supports routing to paths", ^{
+        before(^{
+            [ARUserManager stubAndLoginWithUsername];
+        });
+        after(^{
+            [ARUserManager clearUserData];
+        });
 
+        it(@"supports routing to paths", ^{
             NSDictionary *menuToPaths = @{
                 @(ARTopTabControllerIndexFeed): @"/",
                 @(ARTopTabControllerIndexBrowse): @"/browse",
@@ -257,6 +263,10 @@ describe(@"navigation", ^{
             for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
                 id viewcontroller = [switchboard loadPath:menuToPaths[tabIndex]];
                 expect(viewcontroller).to.beTruthy();
+                NSLog(@"VC: %@ %@", tabIndex, viewcontroller);
+                if (tabIndex.integerValue != [ARTopMenuViewController sharedController].selectedTabIndex) {
+
+                }
                 expect([ARTopMenuViewController sharedController].selectedTabIndex).to.equal(tabIndex.integerValue);
             }
         });

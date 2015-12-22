@@ -71,7 +71,7 @@
     [self.routes addRoute:@"/artwork/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-        return [sself loadArtworkWithID:parameters[@"id"] inFair:fair];;
+        return [sself loadArtworkWithID:parameters[@"id"] inFair:fair];
     }];
 
     [self.routes addRoute:@"/auction-registration/:id" handler:JLRouteParams {
@@ -97,7 +97,7 @@
 
     [self.routes addRoute:@"/show/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        return [sself loadShowWithID:parameters[@"id"]];;
+        return [sself loadShowWithID:parameters[@"id"]];
     }];
 
     // We don't show a native fairs UI for iPad
@@ -107,18 +107,16 @@
             Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
             return [sself loadFairGuideWithFair:fair];
         }];
+
+        [self.routes addRoute:@"/:profile_id/browse/artist/:id" handler:JLRouteParams {
+            __strong typeof (wself) sself = wself;
+            Fair *fair = parameters[@"fair"] ?: [[Fair alloc] initWithFairID:parameters[@"profile_id"]];
+            return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
+        }];
     }
 
-    [self.routes addRoute:@"/:profile_id/browse/artist/:id" handler:JLRouteParams {
-        if ([UIDevice isPad]) { return NO; }
-
-        __strong typeof (wself) sself = wself;
-        Fair *fair = parameters[@"fair"] ?: [[Fair alloc] initWithFairID:parameters[@"profile_id"]];
-        return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
-    }];
-
     [self.routes addRoute:@"/categories" handler:JLRouteParams {
-        return [[ARBrowseCategoriesViewController alloc] init];;
+        return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
     // This route will match any single path component and thus should be added last.
@@ -127,15 +125,17 @@
         return [sself routeProfileWithID: parameters[@"profile_id"]];
     }];
 
+    // The menu items' paths are added in ARTopMenuViewController
+
     return self;
 }
 
 - (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
 {
-    BOOL alreadyAdded = [self.routes canRouteURL:[self resolveRelativeUrl:path]];
-    if (!alreadyAdded) {
-        [self.routes addRoute:path handler:callback];
-    }
+    // By putting the priority at 1, it is higher than
+    // - "JLRoute /:profile_id (0)",
+    // which globs all root level paths
+    [self.routes addRoute:path priority:1 handler:callback];
 }
 
 - (BOOL)canRouteURL:(NSURL *)url
@@ -173,7 +173,7 @@
 
     /// Is it an Artsy URL, or a purely relative path?
     if ([ARRouter isInternalURL:url] || url.scheme == nil) {
-        /// Normalize URL ( e.g. m.artsy.net -> stanging-m.artsyn.net
+        /// Normalize URL ( e.g. m.artsy.net -> staging-m.artsy.net
         NSURL *fixedURL = [self fixHostForURL:url];
         return [self routeInternalURL:fixedURL fair:fair];
 
