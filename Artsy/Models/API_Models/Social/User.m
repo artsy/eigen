@@ -17,16 +17,16 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(User.new, userID) : @"id",
-        @keypath(User.new, email) : @"email",
-        @keypath(User.new, name) : @"name",
-        @keypath(User.new, phone) : @"phone",
-        @keypath(User.new, defaultProfileID) : @"default_profile_id",
-        @keypath(User.new, receiveWeeklyEmail) : @"receive_weekly_email",
-        @keypath(User.new, receiveFollowArtistsEmail) : @"receive_follow_artists_email",
-        @keypath(User.new, receiveFollowArtistsEmailAll) : @"receive_follow_artists_email_all",
-        @keypath(User.new, receiveFollowUsersEmail) : @"receive_follow_users_email",
-        @keypath(User.new, priceRange) : @"price_range"
+        ar_keypath(User.new, userID) : @"id",
+        ar_keypath(User.new, email) : @"email",
+        ar_keypath(User.new, name) : @"name",
+        ar_keypath(User.new, phone) : @"phone",
+        ar_keypath(User.new, defaultProfileID) : @"default_profile_id",
+        ar_keypath(User.new, receiveWeeklyEmail) : @"receive_weekly_email",
+        ar_keypath(User.new, receiveFollowArtistsEmail) : @"receive_follow_artists_email",
+        ar_keypath(User.new, receiveFollowArtistsEmailAll) : @"receive_follow_artists_email_all",
+        ar_keypath(User.new, receiveFollowUsersEmail) : @"receive_follow_users_email",
+        ar_keypath(User.new, priceRange) : @"price_range"
     };
 }
 

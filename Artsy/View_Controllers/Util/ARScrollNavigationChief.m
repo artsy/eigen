@@ -56,9 +56,9 @@ static ARScrollNavigationChief *instance;
         return;
     }
 
-    [self willChangeValueForKey:@keypath(self, allowsMenuButtons)];
+    [self willChangeValueForKey:ar_keypath(self, allowsMenuButtons)];
     _allowsMenuButtons = allowsMenuButtons;
-    [self didChangeValueForKey:@keypath(self, allowsMenuButtons)];
+    [self didChangeValueForKey:ar_keypath(self, allowsMenuButtons)];
 }
 
 - (void)setChiefsTargetScrollView:(UIScrollView *)view

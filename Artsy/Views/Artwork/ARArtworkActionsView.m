@@ -297,7 +297,7 @@
         NSDictionary *results = @{
             ARNavigationButtonClassKey : ARNavigationButton.class,
             ARNavigationButtonPropertiesKey : @{
-                @keypath(ARNavigationButton.new, title) : @"Auction Results"
+                ar_keypath(ARNavigationButton.new, title) : @"Auction Results"
             },
             ARNavigationButtonHandlerKey : ^(UIButton *sender){
                     // This will pass the message up the responder chain
@@ -310,7 +310,7 @@ if ([self showMoreInfoButton]) {
     NSDictionary *moreInfo = @{
         ARNavigationButtonClassKey : ARNavigationButton.class,
         ARNavigationButtonPropertiesKey : @{
-            @keypath(ARNavigationButton.new, title) : @"More Info"
+            ar_keypath(ARNavigationButton.new, title) : @"More Info"
         },
         ARNavigationButtonHandlerKey : ^(UIButton *sender){
                 // This will pass the message up the responder chain

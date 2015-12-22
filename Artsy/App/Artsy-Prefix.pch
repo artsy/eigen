@@ -19,7 +19,6 @@
     #import <MobileCoreServices/MobileCoreServices.h>
 
     #import "Constants.h"
-
     #import <AFNetworking/AFNetworking.h>
     #import <Mantle/Mantle.h>
     #import <AFNetworkActivityLogger/AFNetworkActivityLogger.h>
@@ -30,9 +29,6 @@
     #import <ReactiveCocoa/ReactiveCocoa.h>
     #import <NAMapKit/NAMapView.h>
     #import <EDColor/EDColor.h>
-    #import <libextobjc/EXTKeyPathCoding.h>
-    #import <libextobjc/EXTRuntimeExtensions.h>
-    #import <libextobjc/EXTScope.h>
 
     #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
     #import <Artsy-UIButtons/ARButtonSubclasses.h>

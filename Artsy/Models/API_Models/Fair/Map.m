@@ -11,8 +11,8 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(Map.new, features) : @"map_features",
-        @keypath(Map.new, mapID) : @"id",
+        ar_keypath(Map.new, features) : @"map_features",
+        ar_keypath(Map.new, mapID) : @"id",
     };
 }
 

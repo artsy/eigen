@@ -54,7 +54,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     // We don't check the chief when we do transitions because the buttons
     // should be always visible on pop and the scrollsviews should be at the
     // top on push anyways.
-    [ARScrollNavigationChief.chief addObserver:self forKeyPath:@keypath(ARScrollNavigationChief.chief, allowsMenuButtons) options:NSKeyValueObservingOptionNew context:ARNavigationControllerScrollingChiefContext];
+    [ARScrollNavigationChief.chief addObserver:self forKeyPath:ar_keypath(ARScrollNavigationChief.chief, allowsMenuButtons) options:NSKeyValueObservingOptionNew context:ARNavigationControllerScrollingChiefContext];
 
     _animatesLayoverChanges = YES;
 
@@ -63,7 +63,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
 
 - (void)dealloc
 {
-    [ARScrollNavigationChief.chief removeObserver:self forKeyPath:@keypath(ARScrollNavigationChief.chief, allowsMenuButtons) context:ARNavigationControllerScrollingChiefContext];
+    [ARScrollNavigationChief.chief removeObserver:self forKeyPath:ar_keypath(ARScrollNavigationChief.chief, allowsMenuButtons) context:ARNavigationControllerScrollingChiefContext];
     [self observeViewController:NO];
 }
 
@@ -268,7 +268,7 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
     button.layer.opacity = opacity;
     if (animated) {
         CABasicAnimation *fade = [CABasicAnimation animation];
-        fade.keyPath = @keypath(button.layer, opacity);
+        fade.keyPath = ar_keypath(button.layer, opacity);
         fade.fromValue = @([(CALayer *)button.layer.presentationLayer opacity]);
         fade.toValue = @(opacity);
         fade.duration = ARAnimationDuration;
@@ -378,7 +378,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     }
     [self ar_addModernChildViewController:self.pendingOperationViewController];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     return [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
         __strong typeof (wself) sself = wself;
@@ -403,9 +403,9 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     UIViewController<ARMenuAwareViewController> *vc = self.observedViewController;
 
     NSArray *keyPaths = @[
-        @keypath(vc, hidesNavigationButtons),
-        @keypath(vc, hidesBackButton),
-        @keypath(vc, hidesToolbarMenu)
+        ar_keypath(vc, hidesNavigationButtons),
+        ar_keypath(vc, hidesBackButton),
+        ar_keypath(vc, hidesToolbarMenu)
     ];
 
     [keyPaths each:^(NSString *keyPath) {

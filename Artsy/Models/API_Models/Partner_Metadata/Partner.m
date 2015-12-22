@@ -7,12 +7,12 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(Partner.new, name) : @"name",
-        @keypath(Partner.new, shortName) : @"short_name",
-        @keypath(Partner.new, partnerID) : @"id",
-        @keypath(Partner.new, defaultProfilePublic) : @"default_profile_public",
-        @keypath(Partner.new, profileID) : @"default_profile_id",
-        @keypath(Partner.new, imageURLs) : @"image_urls",
+        ar_keypath(Partner.new, name) : @"name",
+        ar_keypath(Partner.new, shortName) : @"short_name",
+        ar_keypath(Partner.new, partnerID) : @"id",
+        ar_keypath(Partner.new, defaultProfilePublic) : @"default_profile_public",
+        ar_keypath(Partner.new, profileID) : @"default_profile_id",
+        ar_keypath(Partner.new, imageURLs) : @"image_urls",
     };
 }
 

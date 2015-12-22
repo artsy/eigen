@@ -24,22 +24,22 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(Fair.new, name) : @"name",
-        @keypath(Fair.new, fairID) : @"id",
-        @keypath(Fair.new, defaultProfileID) : @"default_profile_id",
-        @keypath(Fair.new, organizer) : @"organizer",
-        @keypath(Fair.new, startDate) : @"start_at",
-        @keypath(Fair.new, endDate) : @"end_at",
-        @keypath(Fair.new, city) : @"location.city",
-        @keypath(Fair.new, state) : @"location.state",
-        @keypath(Fair.new, imageURLs) : @"image_urls",
-        @keypath(Fair.new, bannerURLs) : @"banner_image_urls",
-        @keypath(Fair.new, partnersCount) : @"partners_count",
+        ar_keypath(Fair.new, name) : @"name",
+        ar_keypath(Fair.new, fairID) : @"id",
+        ar_keypath(Fair.new, defaultProfileID) : @"default_profile_id",
+        ar_keypath(Fair.new, organizer) : @"organizer",
+        ar_keypath(Fair.new, startDate) : @"start_at",
+        ar_keypath(Fair.new, endDate) : @"end_at",
+        ar_keypath(Fair.new, city) : @"location.city",
+        ar_keypath(Fair.new, state) : @"location.state",
+        ar_keypath(Fair.new, imageURLs) : @"image_urls",
+        ar_keypath(Fair.new, bannerURLs) : @"banner_image_urls",
+        ar_keypath(Fair.new, partnersCount) : @"partners_count",
 
         // Hide these from Mantle
         //
         // This can be removed in Mantle 2.0 which won't have implicit mapping
-        @keypath(Fair.new, maps) : NSNull.null,
+        ar_keypath(Fair.new, maps) : NSNull.null,
     };
 }
 
@@ -113,7 +113,7 @@
 
 - (void)downloadShows
 {
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     NSString *path = self.pathForLocalShowStorage;
 
@@ -124,10 +124,10 @@
             __strong typeof (wself) sself = wself;
             if (!sself) { return; }
 
-            [sself willChangeValueForKey:@keypath(Fair.new, shows)];
+            [sself willChangeValueForKey:ar_keypath(Fair.new, shows)];
             sself->_showsLoadedFromArchive = shows ? [NSMutableSet setWithSet:shows] : nil;
             sself.shows = shows ?: [NSMutableSet set];
-            [sself didChangeValueForKey:@keypath(Fair.new, shows)];
+            [sself didChangeValueForKey:ar_keypath(Fair.new, shows)];
 
             // download once an hour at the most
             NSError *error = nil;
@@ -142,7 +142,7 @@
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
 {
-    if ([key isEqualToString:@keypath(Fair.new, shows)]) {
+    if ([key isEqualToString:ar_keypath(Fair.new, shows)]) {
         return NO;
     }
 
@@ -157,7 +157,7 @@
         _showsFeed = [[ARFairShowFeed alloc] initWithFair:self];
     }
 
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [self.networkModel getShowFeedItems:self.showsFeed success:^(NSOrderedSet *items) {
 
@@ -185,10 +185,10 @@
 - (void)finishedDownloadingShows
 {
     if (_showsLoadedFromArchive && _showsLoadedFromArchive.count > 0) {
-        [self willChangeValueForKey:@keypath(Fair.new, shows)];
+        [self willChangeValueForKey:ar_keypath(Fair.new, shows)];
         // remove any shows that were loaded from archive, but not downloaded
         [(NSMutableSet *)self.shows minusSet:_showsLoadedFromArchive];
-        [self didChangeValueForKey:@keypath(Fair.new, shows)];
+        [self didChangeValueForKey:ar_keypath(Fair.new, shows)];
     }
 
     if (!ARIsRunningInDemoMode) {
@@ -202,9 +202,9 @@
 
 - (void)addFeedItemsToShows:(NSOrderedSet *)feedItems
 {
-    [self willChangeValueForKey:@keypath(Fair.new, shows)];
+    [self willChangeValueForKey:ar_keypath(Fair.new, shows)];
 
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [feedItems enumerateObjectsUsingBlock:^(ARPartnerShowFeedItem *feedItem, NSUInteger idx, BOOL *stop) {
         __strong typeof (wself) sself = wself;
         if (!sself) { return; }
@@ -221,7 +221,7 @@
         }
     }];
 
-    [self didChangeValueForKey:@keypath(Fair.new, shows)];
+    [self didChangeValueForKey:ar_keypath(Fair.new, shows)];
 }
 
 - (void)getOrderedSets:(void (^)(NSMutableDictionary *))success

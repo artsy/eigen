@@ -25,13 +25,13 @@
 
 - (void)setupKVOOnNetworkModel:(ARFollowableNetworkModel *)model
 {
-    [model addObserver:self forKeyPath:@keypath(ARFollowableNetworkModel.new, following) options:NSKeyValueObservingOptionNew context:nil];
+    [model addObserver:self forKeyPath:ar_keypath(ARFollowableNetworkModel.new, following) options:NSKeyValueObservingOptionNew context:nil];
     self.model = model;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(ARFollowableNetworkModel *)followableNetworkModel change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@keypath(ARFollowableNetworkModel.new, following)]) {
+    if ([keyPath isEqualToString:ar_keypath(ARFollowableNetworkModel.new, following)]) {
         [self setFollowingStatus:followableNetworkModel.isFollowing];
     }
 }
@@ -67,7 +67,7 @@
 
 - (void)dealloc
 {
-    [self.model removeObserver:self forKeyPath:@keypath(ARFollowableNetworkModel.new, following)];
+    [self.model removeObserver:self forKeyPath:ar_keypath(ARFollowableNetworkModel.new, following)];
 }
 
 - (CGSize)intrinsicContentSize

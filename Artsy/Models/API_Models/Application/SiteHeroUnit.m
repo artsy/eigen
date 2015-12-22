@@ -12,25 +12,25 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(SiteHeroUnit.new, siteHeroUnitID) : @"id",
-        @keypath(SiteHeroUnit.new, heading) : @"heading",
-        @keypath(SiteHeroUnit.new, title) : @"mobile_title",
-        @keypath(SiteHeroUnit.new, titleImageAddress) : @"title_image_retina_url",
-        @keypath(SiteHeroUnit.new, body) : @"mobile_description",
-        @keypath(SiteHeroUnit.new, backgroundColor) : @"menu_color_class",
-        @keypath(SiteHeroUnit.new, mobileBackgroundColor) : @"mobile_menu_color_class",
-        @keypath(SiteHeroUnit.new, name) : @"name",
-        @keypath(SiteHeroUnit.new, link) : @"link",
-        @keypath(SiteHeroUnit.new, linkText) : @"link_text",
-        @keypath(SiteHeroUnit.new, buttonColorHex) : @"link_color_off_hex",
-        @keypath(SiteHeroUnit.new, inverseButtonColorHex) : @"link_color_hover_hex",
-        @keypath(SiteHeroUnit.new, creditLine) : @"credit_line",
-        @keypath(SiteHeroUnit.new, mobileBackgroundImageAddress) : @"background_image_mobile_url",
-        @keypath(SiteHeroUnit.new, backgroundImageAddress) : @"background_image_url",
-        @keypath(SiteHeroUnit.new, position) : @"position",
-        @keypath(SiteHeroUnit.new, startDate) : @"start_at",
-        @keypath(SiteHeroUnit.new, endDate) : @"end_at",
-        @keypath(SiteHeroUnit.new, alignment) : @"type"
+        ar_keypath(SiteHeroUnit.new, siteHeroUnitID) : @"id",
+        ar_keypath(SiteHeroUnit.new, heading) : @"heading",
+        ar_keypath(SiteHeroUnit.new, title) : @"mobile_title",
+        ar_keypath(SiteHeroUnit.new, titleImageAddress) : @"title_image_retina_url",
+        ar_keypath(SiteHeroUnit.new, body) : @"mobile_description",
+        ar_keypath(SiteHeroUnit.new, backgroundColor) : @"menu_color_class",
+        ar_keypath(SiteHeroUnit.new, mobileBackgroundColor) : @"mobile_menu_color_class",
+        ar_keypath(SiteHeroUnit.new, name) : @"name",
+        ar_keypath(SiteHeroUnit.new, link) : @"link",
+        ar_keypath(SiteHeroUnit.new, linkText) : @"link_text",
+        ar_keypath(SiteHeroUnit.new, buttonColorHex) : @"link_color_off_hex",
+        ar_keypath(SiteHeroUnit.new, inverseButtonColorHex) : @"link_color_hover_hex",
+        ar_keypath(SiteHeroUnit.new, creditLine) : @"credit_line",
+        ar_keypath(SiteHeroUnit.new, mobileBackgroundImageAddress) : @"background_image_mobile_url",
+        ar_keypath(SiteHeroUnit.new, backgroundImageAddress) : @"background_image_url",
+        ar_keypath(SiteHeroUnit.new, position) : @"position",
+        ar_keypath(SiteHeroUnit.new, startDate) : @"start_at",
+        ar_keypath(SiteHeroUnit.new, endDate) : @"end_at",
+        ar_keypath(SiteHeroUnit.new, alignment) : @"type"
     };
 }
 

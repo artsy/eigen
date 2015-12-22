@@ -87,7 +87,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
     self.stackView.delegate = [ARScrollNavigationChief chief];
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [_fair updateFair:^{
         __strong typeof (wself) sself = wself;
@@ -155,7 +155,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
         return link.displayOnMobile;
     };
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [self.fair getFairMaps:^(NSArray *maps) {
         [self.fair getOrderedSets:^(NSMutableDictionary *orderedSets) {
@@ -240,16 +240,16 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 
 - (NSDictionary *)buttonDescriptionForMapLink
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     return @{
         ARNavigationButtonClassKey : [ARButtonWithImage class],
         ARNavigationButtonPropertiesKey : @{
-            @keypath(ARButtonWithImage.new, title) : @"Map",
-            @keypath(ARButtonWithImage.new, subtitle) : @"Find your way",
-            @keypath(ARButtonWithImage.new, image) : [UIImage imageNamed:@"MapIcon"]
+            ar_keypath(ARButtonWithImage.new, title) : @"Map",
+            ar_keypath(ARButtonWithImage.new, subtitle) : @"Find your way",
+            ar_keypath(ARButtonWithImage.new, image) : [UIImage imageNamed:@"MapIcon"]
         },
         ARNavigationButtonHandlerKey : ^(ARButtonWithImage *button){
-            __strong typeof (wself) sself = wself;
+            __strong typeof(wself) sself = wself;
     ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair];
     [sself.navigationController pushViewController:viewController animated:YES];
 }
@@ -259,17 +259,17 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 
 - (NSDictionary *)buttonDescriptionForFeaturedLink:(FeaturedLink *)featuredLink buttonClass:(Class)buttonClass
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     return @{
         ARNavigationButtonClassKey : buttonClass,
         ARNavigationButtonPropertiesKey : @{
-            @keypath(ARButtonWithImage.new, title) : featuredLink.title ?: NSNull.null,
-            @keypath(ARButtonWithImage.new, subtitle) : featuredLink.subtitle ?: NSNull.null,
-            @keypath(ARButtonWithImage.new, imageURL) : featuredLink.smallSquareImageURL ?: NSNull.null,
-            @keypath(ARButtonWithImage.new, targetURL) : [NSURL URLWithString:featuredLink.href] ?: NSNull.null
+            ar_keypath(ARButtonWithImage.new, title) : featuredLink.title ?: NSNull.null,
+            ar_keypath(ARButtonWithImage.new, subtitle) : featuredLink.subtitle ?: NSNull.null,
+            ar_keypath(ARButtonWithImage.new, imageURL) : featuredLink.smallSquareImageURL ?: NSNull.null,
+            ar_keypath(ARButtonWithImage.new, targetURL) : [NSURL URLWithString:featuredLink.href] ?: NSNull.null
         },
         ARNavigationButtonHandlerKey : ^(UIButton *button){
-            __strong typeof (wself) sself = wself;
+            __strong typeof(wself) sself = wself;
     if ([button isKindOfClass:[ARButtonWithImage class]]) {
         ARButtonWithImage *buttonWithImage = (ARButtonWithImage *)button;
         [sself buttonPressed:buttonWithImage];

@@ -112,42 +112,43 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
     // avoid having to lookup a partner -> show server-side when possible
     PartnerShow *show = [fair findShowForPartner:partner];
 
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     return @{
         ARNavigationButtonClassKey : ARButtonWithImage.class,
         ARNavigationButtonPropertiesKey : @{
-            @keypath(ARButtonWithImage.new, title) : partner.name ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, subtitle) : (show ? show.locationInFair : [NSNull null]) ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, image) : show ? [NSNull null] : [UIImage imageNamed:@"SearchThumb_LightGrey"],
-            @keypath(ARButtonWithImage.new, imageURL) : (show ? [show imageURLWithFormatName:@"square"] : [NSNull null]) ?: [NSNull null]
+            ar_keypath(ARButtonWithImage.new, title) : partner.name ?: [NSNull null],
+            ar_keypath(ARButtonWithImage.new, subtitle) : (show ? show.locationInFair : [NSNull null]) ?: [NSNull null],
+            ar_keypath(ARButtonWithImage.new, image) : show ? [NSNull null] : [UIImage imageNamed:@"SearchThumb_LightGrey"],
+            ar_keypath(ARButtonWithImage.new, imageURL) : (show ? [show imageURLWithFormatName:@"square"] : [NSNull null]) ?: [NSNull null]
         },
         ARNavigationButtonHandlerKey : ^(ARButtonWithImage *sender){
-            __strong typeof (wself) sself = wself;
-            if (show) {
-                [sself handleShowButtonPress:show fair:fair];
-            } else {
-                [sself handlePartnerButtonPress:partner fair:fair];
-            }
-        }
-    };
+            __strong typeof(wself) sself = wself;
+    if (show) {
+        [sself handleShowButtonPress:show fair:fair];
+    } else {
+        [sself handlePartnerButtonPress:partner fair:fair];
+    }
+}
+}
+;
 }
 
 // Artwork = italics serif title, sansserif subtitle // name | artist name
 
 - (id)navigationButtonForArtwork:(Artwork *)artwork inFair:(Fair *)fair
 {
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     return @{
         ARNavigationButtonClassKey : ARButtonWithImage.class,
         ARNavigationButtonPropertiesKey : @{
-            @keypath(ARButtonWithImage.new, title) : artwork.title ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, subtitle) : [artwork.artist.name uppercaseString] ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, imageURL) : [artwork.defaultImage urlForSquareImage] ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, titleFont) : [UIFont serifItalicFontWithSize:12],
-            @keypath(ARButtonWithImage.new, subtitleFont) : [UIFont sansSerifFontWithSize:12]
+            ar_keypath(ARButtonWithImage.new, title) : artwork.title ?: [NSNull null],
+            ar_keypath(ARButtonWithImage.new, subtitle) : [artwork.artist.name uppercaseString] ?: [NSNull null],
+            ar_keypath(ARButtonWithImage.new, imageURL) : [artwork.defaultImage urlForSquareImage] ?: [NSNull null],
+            ar_keypath(ARButtonWithImage.new, titleFont) : [UIFont serifItalicFontWithSize:12],
+            ar_keypath(ARButtonWithImage.new, subtitleFont) : [UIFont sansSerifFontWithSize:12]
         },
         ARNavigationButtonHandlerKey : ^(ARButtonWithImage *sender){
-            __strong typeof (wself) sself = wself;
+            __strong typeof(wself) sself = wself;
     [sself handleArtworkButtonPress:artwork fair:fair];
 }
 }
@@ -158,18 +159,18 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 
 - (id)navigationButtonForArtist:(Artist *)artist inFair:(Fair *)fair
 {
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     return @{
         ARNavigationButtonClassKey : ARButtonWithImage.class,
         ARNavigationButtonPropertiesKey : @{
-            @keypath(ARButtonWithImage.new, title) : [artist.name uppercaseString] ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, subtitle) : @"", // TODO: number of works exhibited at this fair
-            @keypath(ARButtonWithImage.new, imageURL) : [artist squareImageURL] ?: [NSNull null],
-            @keypath(ARButtonWithImage.new, titleFont) : [UIFont sansSerifFontWithSize:12],
-            @keypath(ARButtonWithImage.new, subtitleFont) : [UIFont serifFontWithSize:12]
+            ar_keypath(ARButtonWithImage.new, title) : [artist.name uppercaseString] ?: [NSNull null],
+            ar_keypath(ARButtonWithImage.new, subtitle) : @"", // TODO: number of works exhibited at this fair
+            ar_keypath(ARButtonWithImage.new, imageURL) : [artist squareImageURL] ?: [NSNull null],
+            ar_keypath(ARButtonWithImage.new, titleFont) : [UIFont sansSerifFontWithSize:12],
+            ar_keypath(ARButtonWithImage.new, subtitleFont) : [UIFont serifFontWithSize:12]
         },
         ARNavigationButtonHandlerKey : ^(ARButtonWithImage *sender){
-            __strong typeof (wself) sself = wself;
+            __strong typeof(wself) sself = wself;
     [sself handleArtistButtonPress:artist fair:fair];
 }
 }
@@ -179,7 +180,7 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 - (void)handlePartnerButtonPress:(Partner *)partner fair:(Fair *)fair
 {
     ARFairShowFeed *feed = [[ARFairShowFeed alloc] initWithFair:fair partner:partner];
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [feed getFeedItemsWithCursor:feed.cursor success:^(NSOrderedSet *parsed) {
         __strong typeof (wself) sself = wself;
         ARPartnerShowFeedItem *showFeedItem = parsed.firstObject;
