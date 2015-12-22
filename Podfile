@@ -63,7 +63,7 @@ target 'Artsy' do
   # UIAlertView is deprecated for iOS8 APIs
   pod 'UIAlertView+Blocks'
   # Code isn't used, and should be removed
-  pod 'FODFormKit', :git => 'https://github.com/1aurabrown/FODFormKit.git'
+  pod 'FODFormKit', :git => 'https://github.com/1aurabrown/t.git'
 
   # Language Enhancments
   pod 'KSDeferred'
