@@ -118,4 +118,13 @@ post_install do |installer|
       config.build_settings['ENABLE_BITCODE'] = 'NO'
     end
   end
+
+  app_plist = "Artsy/App_Resources/Artsy-Info.plist"
+  plist_buddy = "/usr/libexec/PlistBuddy"
+  version = `#{plist_buddy} -c "Print CFBundleShortVersionString" #{app_plist}`.strip
+  puts "Updating CocoaPods' version numbers to #{version}"
+
+  installer.pods_project.targets.each do |target|
+    `#{plist_buddy} -c "Set CFBundleShortVersionString #{version}" "Pods/Target Support Files/#{target}/Info.plist"`
+  end
 end
