@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CocoaPods/CocoaPods.git
-  revision: 2a6d86a82b43c07699601c0a7cfaa7e3f892a647
+  revision: 010cda1ba964d562d497d79ecb4914a5fe4c43ef
   branch: seg-podfile-refactor
   specs:
     cocoapods (0.39.0)
@@ -22,7 +22,7 @@ GIT
 
 GIT
   remote: https://github.com/CocoaPods/Core.git
-  revision: c83a2df3f9180d0d22ebf6d1daa912771bd14a37
+  revision: 930de7aeb3f50eccf6d65b4d479daa3f5a956f87
   branch: seg-podfile-refactor
   specs:
     cocoapods-core (0.39.0)
@@ -168,7 +168,7 @@ GEM
     sentry-raven (0.15.2)
       faraday (>= 0.7.6)
     slop (3.6.0)
-    spaceship (0.17.0)
+    spaceship (0.18.1)
       colored
       credentials_manager (>= 0.9.0)
       faraday (~> 0.9)
