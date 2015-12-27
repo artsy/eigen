@@ -3,6 +3,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '8.0'
 
+install! 'cocoapods', :deterministic_uuids => false
+
 # Yep.
 inhibit_all_warnings!
 
@@ -53,11 +55,11 @@ target 'Artsy' do
   pod 'UICKeyChainStore'
 
   # Core owned by Artsy
-  pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView', :commit => '1a31b864d1d56b1aaed0816c10bb55cf2e078bb8'
+  pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
   pod 'ARCollectionViewMasonryLayout'
   pod 'ORStackView', :git => 'https://github.com/1aurabrown/ORStackView.git'
   pod 'UIView+BooleanAnimations'
-  pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit', :commit => '62275386978db91b0e7ed8de755d15cef3e793b4'
+  pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit'
 
   # Deprecated:
   # UIAlertView is deprecated for iOS8 APIs
@@ -91,7 +93,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Analytics', :head
-  # pod 'ARAnalytics', :git => 'https://github.com/orta/ARAnalytics.git', :commit => "10870c9fdd0bb34d8a9c9f29017d0da33d2c19f9", :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  pod 'ARAnalytics', :git => 'https://github.com/orta/ARAnalytics.git', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'
@@ -101,16 +103,18 @@ target 'Artsy' do
   # Easter Eggs
   pod 'ARASCIISwizzle'
   pod 'DRKonamiCode'
-end
 
-target 'Artsy Tests' do
-  pod 'FBSnapshotTestCase'
-  pod 'Expecta+Snapshots'
-  pod 'OHHTTPStubs'
-  pod 'XCTest+OHHTTPStubSuiteCleanUp'
-  pod 'Specta'
-  pod 'Expecta'
-  pod 'OCMock'
+  target 'Artsy Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase'
+    pod 'Expecta+Snapshots'
+    pod 'OHHTTPStubs'
+    pod 'XCTest+OHHTTPStubSuiteCleanUp'
+    pod 'Specta'
+    pod 'Expecta'
+    pod 'OCMock'
+  end
 end
 
 post_install do |installer|

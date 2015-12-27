@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CocoaPods/CocoaPods.git
-  revision: 010cda1ba964d562d497d79ecb4914a5fe4c43ef
+  revision: 3cf3dbcde978d1666a8b007fe1eaae3c3ff42ab8
   branch: seg-podfile-refactor
   specs:
     cocoapods (0.39.0)
@@ -22,7 +22,7 @@ GIT
 
 GIT
   remote: https://github.com/CocoaPods/Core.git
-  revision: 930de7aeb3f50eccf6d65b4d479daa3f5a956f87
+  revision: 9fd6c128f989655cf48b07f7145d73ad02ab0694
   branch: seg-podfile-refactor
   specs:
     cocoapods-core (0.39.0)
@@ -32,7 +32,7 @@ GIT
 
 GIT
   remote: https://github.com/CocoaPods/Xcodeproj.git
-  revision: 0dbacb0eaf3ecfd1d1298180c53fe26459f705c3
+  revision: ffeadb7ca0edc5afafbac0304cf088c4e4b75ae5
   specs:
     xcodeproj (0.28.2)
       activesupport (>= 3)
@@ -206,4 +206,4 @@ DEPENDENCIES
   xcpretty
 
 BUNDLED WITH
-   1.11.0
+   1.11.2
