@@ -9,10 +9,6 @@ install! 'cocoapods', :deterministic_uuids => false
 # Yep.
 inhibit_all_warnings!
 
-# Allows per-dev overrides
-local_podfile = "Podfile.local"
-eval(File.read(local_podfile)) if File.exist? local_podfile
-
 plugin 'cocoapods-keys', {
     :project => "Artsy",
     :target => "Artsy",
@@ -45,7 +41,7 @@ target 'Artsy' do
   pod 'FLKAutoLayout', :git => 'https://github.com/alloy/FLKAutoLayout.git', :branch => 'add-support-for-layout-guides-take-2'
   pod 'FXBlurView'
   pod 'iRate'
-  pod 'ISO8601DateFormatter', :head
+  pod 'ISO8601DateFormatter', :git => "https://github.com/orta/iso-8601-date-formatter"
   pod 'JLRoutes', :git => 'https://github.com/orta/JLRoutes.git'
   pod 'JSBadgeView'
   pod 'JSDecoupledAppDelegate', :git => 'https://github.com/orta/JSDecoupledAppDelegate.git', :branch => 'patch-1'
@@ -90,7 +86,7 @@ target 'Artsy' do
   pod 'FBSDKLoginKit'
 
   # Analytics
-  pod 'Analytics', :head
+  pod 'Analytics', :git => "https://github.com/segmentio/analytics-ios.git"
   pod 'ARAnalytics', :git => 'https://github.com/orta/ARAnalytics.git', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
