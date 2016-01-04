@@ -1,11 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods', :git => "https://github.com/CocoaPods/CocoaPods.git", :branch => "seg-podfile-refactor"
-gem 'cocoapods-core', :git => "https://github.com/CocoaPods/Core.git", :branch => "seg-podfile-refactor"
-gem 'xcodeproj', :git => "https://github.com/CocoaPods/Xcodeproj.git"
-
+gem 'cocoapods', "1.0.0.beta.1"
 gem 'cocoapods-keys'
-gem 'cocoapods-deintegrate', :git => "https://github.com/CocoaPods/cocoapods-deintegrate.git"
 
 # 1.6.7 contains the OS X build fix.
 gem 'nokogiri', '1.6.7.rc4'
