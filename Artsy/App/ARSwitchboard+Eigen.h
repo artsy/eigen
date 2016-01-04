@@ -67,10 +67,6 @@
 - (ARShowViewController *)loadShowWithID:(NSString *)showID;
 - (ARShowViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair;
 
-/// Should show a user settings VC - not used currently
-/// TODO: remove ARUserSettingsViewController + dependant pods
-- (ARUserSettingsViewController *)loadUserSettings;
-
 /// Buy artwork
 - (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken;
 
