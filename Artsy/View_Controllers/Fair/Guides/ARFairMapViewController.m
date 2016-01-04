@@ -60,8 +60,8 @@
 - (void)dealloc
 {
     if (_mapShowMapper) {
-        [_fair removeObserver:_mapShowMapper forKeyPath:@keypath(Fair.new, shows)];
-        [_fair removeObserver:self forKeyPath:@keypath(Fair.new, shows)];
+        [_fair removeObserver:_mapShowMapper forKeyPath:ar_keypath(Fair.new, shows)];
+        [_fair removeObserver:self forKeyPath:ar_keypath(Fair.new, shows)];
     }
 }
 
@@ -91,8 +91,8 @@
     _mapZoomManager = [[ARFairMapZoomManager alloc] initWithMap:self.mapView dataSource:self.mapDataSource];
 
     _mapShowMapper = [[ARFairShowMapper alloc] initWithMapView:mapView map:self.fair.maps.firstObject imageSize:[self.mapDataSource imageSizeForImageView:nil]];
-    [self.fair addObserver:self.mapShowMapper forKeyPath:@keypath(Fair.new, shows) options:NSKeyValueObservingOptionNew context:nil];
-    [self.fair addObserver:self forKeyPath:@keypath(Fair.new, shows) options:NSKeyValueObservingOptionNew context:nil];
+    [self.fair addObserver:self.mapShowMapper forKeyPath:ar_keypath(Fair.new, shows) options:NSKeyValueObservingOptionNew context:nil];
+    [self.fair addObserver:self forKeyPath:ar_keypath(Fair.new, shows) options:NSKeyValueObservingOptionNew context:nil];
 
     [self.mapZoomManager setMaxMinZoomScalesForCurrentBounds];
     [self.mapZoomManager zoomToFitAnimated:NO];
@@ -331,7 +331,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(Fair *)fair change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@keypath(Fair.new, shows)]) {
+    if ([keyPath isEqualToString:ar_keypath(Fair.new, shows)]) {
         // perform the selection on map once we have shows downloaded or loaded from cache
         if (self.selectedPartnerShows) {
             [self.mapShowMapper selectPartnerShows:self.selectedPartnerShows animated:YES];

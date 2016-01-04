@@ -34,7 +34,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(Fair *)fair change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@keypath(Fair.new, shows)]) {
+    if ([keyPath isEqualToString:ar_keypath(Fair.new, shows)]) {
         [self addShows:fair.shows];
     }
 }
@@ -231,7 +231,7 @@
         return [self showIsSaved:show];
     }];
 
-    NSArray *partners = [favorites valueForKeyPath:@keypath(PartnerShow.new, partner)];
+    NSArray *partners = [favorites valueForKeyPath:ar_keypath(PartnerShow.new, partner)];
     [self zoomToFitPartners:partners animated:animated];
 }
 
@@ -247,7 +247,7 @@
 
 - (void)rebuildPartnerToShowsMap
 {
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         __strong typeof (wself) sself = wself;
 

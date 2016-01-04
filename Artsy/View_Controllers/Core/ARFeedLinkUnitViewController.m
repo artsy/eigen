@@ -61,8 +61,8 @@
         [phoneNavigation addObject:@{
             ARNavigationButtonClassKey: ARSerifNavigationButton.class,
             ARNavigationButtonPropertiesKey: @{
-                @keypath(ARSerifNavigationButton.new, title): featuredLink.title,
-                @keypath(ARSerifNavigationButton.new, subtitle): featuredLink.subtitle
+                ar_keypath(ARSerifNavigationButton.new, title): featuredLink.title,
+                ar_keypath(ARSerifNavigationButton.new, subtitle): featuredLink.subtitle
             },
             ARNavigationButtonHandlerKey: ^(UIButton *sender) {
                 __strong typeof (wself) sself = wself;

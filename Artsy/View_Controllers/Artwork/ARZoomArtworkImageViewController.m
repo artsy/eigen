@@ -71,10 +71,11 @@
     // throttle: is necessary to push this to the next runloop invocation.
     // Well, technically we need to delay it at least 2 invocations, at least on iOS 7.
     // Since it's not good to rely on iOS implementation details, this inperceptable delay will do.
-    @weakify(zoomView);
+    __weak typeof(zoomView) wZoomView = zoomView;
+
     [[[viewFrameSignal skip:1] throttle:0.01] subscribeNext:^(id x) {
-        @strongify(zoomView);
-        
+
+        __strong typeof (wZoomView) zoomView = wZoomView;
         CGRect frame = [x CGRectValue];
         CGSize size = frame.size;
         

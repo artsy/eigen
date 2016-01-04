@@ -65,7 +65,6 @@ target 'Artsy' do
 
   # Language Enhancments
   pod 'KSDeferred'
-  pod 'libextobjc', :subspecs => ['EXTKeyPathCoding', 'EXTScope']
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 

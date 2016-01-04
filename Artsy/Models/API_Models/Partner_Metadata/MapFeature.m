@@ -6,7 +6,7 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(MapFeature.new, featureType) : @"feature_type",
+        ar_keypath(MapFeature.new, featureType) : @"feature_type",
     };
 }
 

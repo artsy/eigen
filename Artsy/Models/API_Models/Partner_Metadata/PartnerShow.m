@@ -27,22 +27,22 @@ static ARStandardDateFormatter *staticDateFormatter;
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(PartnerShow.new, showID) : @"id",
-        @keypath(PartnerShow.new, partner) : @"partner",
-        @keypath(PartnerShow.new, artworks) : @"artworks",
-        @keypath(PartnerShow.new, artists) : @"artists",
-        @keypath(PartnerShow.new, fair) : @"fair",
-        @keypath(PartnerShow.new, installationShots) : @"installation_shots",
-        @keypath(PartnerShow.new, posts) : @"posts",
-        @keypath(PartnerShow.new, name) : @"name",
-        @keypath(PartnerShow.new, startDate) : @"start_at",
-        @keypath(PartnerShow.new, endDate) : @"end_at",
-        @keypath(PartnerShow.new, imageAddress) : @"image_url",
-        @keypath(PartnerShow.new, imageVersions) : @"image_versions",
-        @keypath(PartnerShow.new, location) : @"location",
-        @keypath(PartnerShow.new, locationInFair) : @"fair_location.display",
-        @keypath(PartnerShow.new, fairLocation) : @"fair_location",
-        @keypath(PartnerShow.new, officialDescription) : @"description",
+        ar_keypath(PartnerShow.new, showID) : @"id",
+        ar_keypath(PartnerShow.new, partner) : @"partner",
+        ar_keypath(PartnerShow.new, artworks) : @"artworks",
+        ar_keypath(PartnerShow.new, artists) : @"artists",
+        ar_keypath(PartnerShow.new, fair) : @"fair",
+        ar_keypath(PartnerShow.new, installationShots) : @"installation_shots",
+        ar_keypath(PartnerShow.new, posts) : @"posts",
+        ar_keypath(PartnerShow.new, name) : @"name",
+        ar_keypath(PartnerShow.new, startDate) : @"start_at",
+        ar_keypath(PartnerShow.new, endDate) : @"end_at",
+        ar_keypath(PartnerShow.new, imageAddress) : @"image_url",
+        ar_keypath(PartnerShow.new, imageVersions) : @"image_versions",
+        ar_keypath(PartnerShow.new, location) : @"location",
+        ar_keypath(PartnerShow.new, locationInFair) : @"fair_location.display",
+        ar_keypath(PartnerShow.new, fairLocation) : @"fair_location",
+        ar_keypath(PartnerShow.new, officialDescription) : @"description",
     };
 }
 

@@ -25,7 +25,7 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(SystemTime.new, utcOffset) : @"utc_offset",
+        ar_keypath(SystemTime.new, utcOffset) : @"utc_offset",
     };
 }
 

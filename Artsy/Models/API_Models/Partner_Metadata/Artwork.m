@@ -1,6 +1,7 @@
 #import "ARValueTransformer.h"
 #import "ARSpotlight.h"
 
+
 @implementation Artwork {
     // If we give these as properties they can cause
     // chaos with Mantle & State Resotoration.
@@ -30,23 +31,23 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(Artwork.new, artworkID) : @"id",
-        @keypath(Artwork.new, auctionResultCount) : @"comparables_count",
-        @keypath(Artwork.new, canShareImage) : @"can_share_image",
-        @keypath(Artwork.new, collectingInstitution) : @"collecting_institution",
-        @keypath(Artwork.new, defaultImage) : @"images",
-        @keypath(Artwork.new, additionalInfo) : @"additional_information",
-        @keypath(Artwork.new, dimensionsCM) : @"dimensions.cm",
-        @keypath(Artwork.new, dimensionsInches) : @"dimensions.in",
-        @keypath(Artwork.new, displayTitle) : @"display",
-        @keypath(Artwork.new, editionSets) : @"edition_sets",
-        @keypath(Artwork.new, exhibitionHistory) : @"exhibition_history",
-        @keypath(Artwork.new, forSale) : @"forsale",
-        @keypath(Artwork.new, imageRights) : @"image_rights",
-        @keypath(Artwork.new, published) : @"published",
-        @keypath(Artwork.new, saleMessage) : @"sale_message",
-        @keypath(Artwork.new, sold) : @"sold",
-        @keypath(Artwork.new, isPriceHidden) : @"price_hidden"
+        ar_keypath(Artwork.new, artworkID) : @"id",
+        ar_keypath(Artwork.new, auctionResultCount) : @"comparables_count",
+        ar_keypath(Artwork.new, canShareImage) : @"can_share_image",
+        ar_keypath(Artwork.new, collectingInstitution) : @"collecting_institution",
+        ar_keypath(Artwork.new, defaultImage) : @"images",
+        ar_keypath(Artwork.new, additionalInfo) : @"additional_information",
+        ar_keypath(Artwork.new, dimensionsCM) : @"dimensions.cm",
+        ar_keypath(Artwork.new, dimensionsInches) : @"dimensions.in",
+        ar_keypath(Artwork.new, displayTitle) : @"display",
+        ar_keypath(Artwork.new, editionSets) : @"edition_sets",
+        ar_keypath(Artwork.new, exhibitionHistory) : @"exhibition_history",
+        ar_keypath(Artwork.new, forSale) : @"forsale",
+        ar_keypath(Artwork.new, imageRights) : @"image_rights",
+        ar_keypath(Artwork.new, published) : @"published",
+        ar_keypath(Artwork.new, saleMessage) : @"sale_message",
+        ar_keypath(Artwork.new, sold) : @"sold",
+        ar_keypath(Artwork.new, isPriceHidden) : @"price_hidden"
     };
 }
 
@@ -258,7 +259,7 @@
 
 - (void)updateArtwork
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     __weak KSDeferred *deferred = _artworkUpdateDeferred;
 
     ar_dispatch_async(^{
@@ -283,7 +284,7 @@
 
 - (KSPromise *)onArtworkUpdate:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     if (!_artworkUpdateDeferred) {
         _artworkUpdateDeferred = [KSDeferred defer];
@@ -317,7 +318,7 @@
 
 - (void)updateSaleArtwork
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     NSString *artworkID = self.artworkID;
     KSDeferred *deferred = [self deferredSaleArtworkUpdate];
 
@@ -393,7 +394,7 @@
 
 - (void)updateFair
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     NSString *artworkID = self.artworkID;
     KSDeferred *deferred = [self deferredFairUpdate];
 
@@ -463,7 +464,7 @@
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI setFavoriteStatus:state forArtwork:self success:^(id response) {
         __strong typeof (wself) sself = wself;
         if (!self) { return; }
@@ -496,7 +497,7 @@
         return;
     }
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     if (!_favDeferred) {
         KSDeferred *deferred = [KSDeferred defer];

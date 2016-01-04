@@ -6,7 +6,7 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(Follow.new, followID) : @"id"
+        ar_keypath(Follow.new, followID) : @"id"
     };
 }
 

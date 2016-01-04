@@ -37,9 +37,9 @@
 {
     // Force the containing VC to re-evaluate the state of the menu buttons.
 
-    [self.showFeedVC willChangeValueForKey:@keypath(self.showFeedVC, hidesToolbarMenu)];
+    [self.showFeedVC willChangeValueForKey:ar_keypath(self.showFeedVC, hidesToolbarMenu)];
     _showingOfflineView = showingOfflineView;
-    [self.showFeedVC didChangeValueForKey:@keypath(self.showFeedVC, hidesToolbarMenu)];
+    [self.showFeedVC didChangeValueForKey:ar_keypath(self.showFeedVC, hidesToolbarMenu)];
 }
 
 - (void)showOfflineViewIfNeeded

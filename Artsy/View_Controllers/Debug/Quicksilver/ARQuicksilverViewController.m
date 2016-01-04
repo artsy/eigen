@@ -189,11 +189,13 @@
 
     UIImage *placeholder = [UIImage imageNamed:@"SearchThumb_LightGray"];
 
-    @weakify(cell);
+
+    __weak typeof(cell) wcell = cell;
+
     [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:placeholder
 
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-         @strongify(cell);
+        __weak typeof (wcell) cell = wcell;
          cell.imageView.image = image;
          [cell layoutSubviews];
 

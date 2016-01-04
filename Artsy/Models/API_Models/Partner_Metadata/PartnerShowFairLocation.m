@@ -10,7 +10,7 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @keypath(PartnerShowFairLocation.new, mapPoints) : @"map_points",
+        ar_keypath(PartnerShowFairLocation.new, mapPoints) : @"map_points",
     };
 }
 

@@ -100,11 +100,6 @@ PODS:
   - JSDecoupledAppDelegate (1.1.0)
   - Keys (1.0.0)
   - KSDeferred (0.2.0)
-  - libextobjc/EXTKeyPathCoding (0.4):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTScope (0.4):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/RuntimeExtensions (0.4)
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
   - Mantle/extobjc (1.5.6)
@@ -176,8 +171,6 @@ DEPENDENCIES:
     branch `patch-1`)
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
-  - libextobjc/EXTKeyPathCoding
-  - libextobjc/EXTScope
   - Mantle (~> 1.5.6)
   - MMMarkdown
   - MultiDelegate
@@ -301,7 +294,6 @@ SPEC CHECKSUMS:
   JSDecoupledAppDelegate: ec2e9480b893fa27ba3db5b12d51a6d5803c550b
   Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
-  libextobjc: f2802d4262f6885570df9799747409ceb1de602c
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4

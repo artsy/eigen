@@ -9,7 +9,7 @@
 #import <JSBadgeView/JSBadgeView.h>
 
 #import "UIView+HitTestExpansion.h"
-
+#import <objc/runtime.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 
 static const CGFloat ARMenuButtonDimension = 46;
