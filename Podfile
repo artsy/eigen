@@ -71,9 +71,9 @@ target 'Artsy' do
   pod 'InterAppCommunication'
 
   # Artsy Spec repo stuff
-  pod 'Artsy-UIButtons'
+  pod 'Artsy-UIButtons', :git => "https://github.com/artsy/Artsy-UIButtons.git"
   pod 'Artsy+UIColors'
-  pod 'Artsy+UILabels', '>= 1.3.2'
+  pod 'Artsy+UILabels', :git => "https://github.com/artsy/Artsy-UILabels.git"
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git", :branch => "old_fonts_new_lib"
@@ -82,12 +82,12 @@ target 'Artsy' do
   end
 
   # Facebook
-  pod 'FBSDKCoreKit'
-  pod 'FBSDKLoginKit'
+  pod 'FBSDKCoreKit', '4.9.0-beta2'
+  pod 'FBSDKLoginKit', '4.9.0-beta2'
 
   # Analytics
   pod 'Analytics', :git => "https://github.com/segmentio/analytics-ios.git"
-  pod 'ARAnalytics', :git => 'https://github.com/orta/ARAnalytics.git', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  pod 'ARAnalytics', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'
