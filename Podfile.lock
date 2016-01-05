@@ -90,7 +90,7 @@ PODS:
   - ISO8601DateFormatter (0.7.1)
   - JLRoutes (2.0.0)
   - JSBadgeView (1.4.1)
-  - JSDecoupledAppDelegate (1.1.0)
+  - JSDecoupledAppDelegate (1.2.0)
   - Keys (1.0.0)
   - KSDeferred (0.2.0)
   - Mantle (1.5.6):
@@ -133,10 +133,10 @@ DEPENDENCIES:
   - AFOAuth1Client (from `https://github.com/lxcid/AFOAuth1Client.git`, tag `0.4.0`)
   - ALPValidator
   - Analytics (from `https://github.com/segmentio/analytics-ios.git`)
-  - ARAnalytics/Adjust
-  - ARAnalytics/DSL
-  - ARAnalytics/HockeyApp
-  - ARAnalytics/Segmentio
+  - ARAnalytics/Adjust (from `https://github.com/orta/ARAnalytics.git`)
+  - ARAnalytics/DSL (from `https://github.com/orta/ARAnalytics.git`)
+  - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`)
+  - ARAnalytics/Segmentio (from `https://github.com/orta/ARAnalytics.git`)
   - ARASCIISwizzle
   - ARCollectionViewMasonryLayout
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
@@ -160,8 +160,7 @@ DEPENDENCIES:
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
   - JSBadgeView
-  - JSDecoupledAppDelegate (from `https://github.com/orta/JSDecoupledAppDelegate.git`,
-    branch `patch-1`)
+  - JSDecoupledAppDelegate
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
   - Mantle (~> 1.5.6)
@@ -189,6 +188,8 @@ EXTERNAL SOURCES:
     :tag: 0.4.0
   Analytics:
     :git: https://github.com/segmentio/analytics-ios.git
+  ARAnalytics:
+    :git: https://github.com/orta/ARAnalytics.git
   ARGenericTableViewController:
     :git: https://github.com/orta/ARGenericTableViewController.git
   ARTiledImageView:
@@ -209,9 +210,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/orta/iso-8601-date-formatter
   JLRoutes:
     :git: https://github.com/orta/JLRoutes.git
-  JSDecoupledAppDelegate:
-    :branch: patch-1
-    :git: https://github.com/orta/JSDecoupledAppDelegate.git
   Keys:
     :path: Pods/CocoaPodsKeys
   NAMapKit:
@@ -226,6 +224,9 @@ CHECKOUT OPTIONS:
   Analytics:
     :commit: 12caa5c788ffaa1d3ccf16eb98005ccc0e78d0fe
     :git: https://github.com/segmentio/analytics-ios.git
+  ARAnalytics:
+    :commit: 794105564dee28220252455c8b80d7d6ccb327d4
+    :git: https://github.com/orta/ARAnalytics.git
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
     :git: https://github.com/orta/ARGenericTableViewController.git
@@ -253,9 +254,6 @@ CHECKOUT OPTIONS:
   JLRoutes:
     :commit: 5a6df1a795766a4d3e586508e86ec9271d3ef3d9
     :git: https://github.com/orta/JLRoutes.git
-  JSDecoupledAppDelegate:
-    :commit: cd72cdfd4543a26b01dc229d6265737331696435
-    :git: https://github.com/orta/JSDecoupledAppDelegate.git
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
@@ -297,7 +295,7 @@ SPEC CHECKSUMS:
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
-  JSDecoupledAppDelegate: ec2e9480b893fa27ba3db5b12d51a6d5803c550b
+  JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2

@@ -44,7 +44,7 @@ target 'Artsy' do
   pod 'ISO8601DateFormatter', :git => "https://github.com/orta/iso-8601-date-formatter"
   pod 'JLRoutes', :git => 'https://github.com/orta/JLRoutes.git'
   pod 'JSBadgeView'
-  pod 'JSDecoupledAppDelegate', :git => 'https://github.com/orta/JSDecoupledAppDelegate.git', :branch => 'patch-1'
+  pod 'JSDecoupledAppDelegate'
   pod 'Mantle', '~> 1.5.6'
   pod 'MMMarkdown'
   pod 'NPKeyboardLayoutGuide'
@@ -87,7 +87,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Analytics', :git => "https://github.com/segmentio/analytics-ios.git"
-  pod 'ARAnalytics', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  pod 'ARAnalytics', :git=> "https://github.com/orta/ARAnalytics.git", :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'
