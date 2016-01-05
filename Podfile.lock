@@ -133,10 +133,12 @@ DEPENDENCIES:
   - AFOAuth1Client (from `https://github.com/lxcid/AFOAuth1Client.git`, tag `0.4.0`)
   - ALPValidator
   - Analytics (from `https://github.com/segmentio/analytics-ios.git`)
-  - ARAnalytics/Adjust (from `https://github.com/orta/ARAnalytics.git`)
-  - ARAnalytics/DSL (from `https://github.com/orta/ARAnalytics.git`)
-  - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`)
-  - ARAnalytics/Segmentio (from `https://github.com/orta/ARAnalytics.git`)
+  - ARAnalytics/Adjust (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
+  - ARAnalytics/DSL (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
+  - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`, commit
+    `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
+  - ARAnalytics/Segmentio (from `https://github.com/orta/ARAnalytics.git`, commit
+    `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARASCIISwizzle
   - ARCollectionViewMasonryLayout
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
@@ -189,6 +191,7 @@ EXTERNAL SOURCES:
   Analytics:
     :git: https://github.com/segmentio/analytics-ios.git
   ARAnalytics:
+    :commit: 6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e
     :git: https://github.com/orta/ARAnalytics.git
   ARGenericTableViewController:
     :git: https://github.com/orta/ARGenericTableViewController.git
@@ -225,7 +228,7 @@ CHECKOUT OPTIONS:
     :commit: 12caa5c788ffaa1d3ccf16eb98005ccc0e78d0fe
     :git: https://github.com/segmentio/analytics-ios.git
   ARAnalytics:
-    :commit: 794105564dee28220252455c8b80d7d6ccb327d4
+    :commit: 6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e
     :git: https://github.com/orta/ARAnalytics.git
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf

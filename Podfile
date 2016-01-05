@@ -87,7 +87,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Analytics', :git => "https://github.com/segmentio/analytics-ios.git"
-  pod 'ARAnalytics', :git=> "https://github.com/orta/ARAnalytics.git", :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  pod 'ARAnalytics', :git=> "https://github.com/orta/ARAnalytics.git", :commit => "6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e", :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'
