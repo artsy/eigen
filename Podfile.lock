@@ -160,7 +160,8 @@ DEPENDENCIES:
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
   - JSBadgeView
-  - JSDecoupledAppDelegate (from `https://github.com/orta/JSDecoupledAppDelegate.git`, branch `patch-1`)
+  - JSDecoupledAppDelegate (from `https://github.com/orta/JSDecoupledAppDelegate.git`,
+    branch `patch-1`)
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
   - Mantle (~> 1.5.6)
@@ -297,7 +298,7 @@ SPEC CHECKSUMS:
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
   JSDecoupledAppDelegate: ec2e9480b893fa27ba3db5b12d51a6d5803c550b
-  Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
+  Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
@@ -319,6 +320,4 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: a686eb44aad2f65861ecb952e0a95f9168349912
-
-COCOAPODS: 1.0.0.beta.1
+COCOAPODS: 0.39.0

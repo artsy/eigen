@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods', "1.0.0.beta.1"
+gem 'cocoapods', "~> 0.39"
 gem 'cocoapods-keys'
 
 # 1.6.7 contains the OS X build fix.

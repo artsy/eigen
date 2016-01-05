@@ -4,7 +4,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-install! 'cocoapods', :deterministic_uuids => false
+# install! 'cocoapods', :deterministic_uuids => false
 
 # Yep.
 inhibit_all_warnings!
@@ -98,18 +98,18 @@ target 'Artsy' do
   pod 'ARASCIISwizzle'
   pod 'DRKonamiCode'
 
-  target 'Artsy Tests' do
-    inherit! :search_paths
-
-    pod 'FBSnapshotTestCase'
-    pod 'Expecta+Snapshots'
-    pod 'OHHTTPStubs'
-    pod 'XCTest+OHHTTPStubSuiteCleanUp'
-    pod 'Specta'
-    pod 'Expecta'
-    pod 'OCMock'
-  end
 end
+
+target 'Artsy Tests' do
+  pod 'FBSnapshotTestCase'
+  pod 'Expecta+Snapshots'
+  pod 'OHHTTPStubs'
+  pod 'XCTest+OHHTTPStubSuiteCleanUp'
+  pod 'Specta'
+  pod 'Expecta'
+  pod 'OCMock'
+end
+
 
 post_install do |installer|
   # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
