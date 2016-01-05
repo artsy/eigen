@@ -33,7 +33,6 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
 @property (nonatomic, strong) ORStackView *headerStackView;
 @property (nonatomic, strong) ARFeedTimeline *feedTimeline;
 @property (nonatomic, strong) ARShowFeedNetworkStatusModel *networkStatus;
-
 @end
 
 
@@ -119,6 +118,9 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
         [self addShowToTable:show];
     }
     self.tableViewData = [[ARTableViewData alloc] initWithSectionDataArray:@[ self.section ]];
+
+    // And to wrap this up, grab first few feed items
+    [self refreshFeedItems];
 }
 
 - (UIView *)wrapperForHeaderStack

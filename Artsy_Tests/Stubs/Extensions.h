@@ -1,6 +1,7 @@
 #import "Sale+Extensions.h"
 #import "Bid+Extensions.h"
 #import "SaleArtwork+Extensions.h"
+#import "Show+Extensions.h"
 #import "OHHTTPStubs+Artsy.h"
 #import "OCMArg+ClassChecker.h"
 #import "ARExpectaExtensions.h"
