@@ -21,7 +21,6 @@
 #import "ARAdminSettingsViewController.h"
 #import "ARQuicksilverViewController.h"
 #import "ARRouter.h"
-#import "UIViewController+ARStateRestoration.h"
 #import "ARNetworkConstants.h"
 #import "ArtsyAPI+Private.h"
 #import "ARFileUtils.h"
@@ -46,6 +45,7 @@
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
+@property (strong, nonatomic, readwrite) NSDictionary *initialLaunchOptions;
 @end
 
 
@@ -69,6 +69,8 @@ static ARAppDelegate *_sharedInstance = nil;
     return _sharedInstance;
 }
 
+/// These are the pre-requisites for doing any background networking with Eigen.
+
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     if (ARIsRunningInDemoMode) {
@@ -78,13 +80,27 @@ static ARAppDelegate *_sharedInstance = nil;
     [ARDefaults setup];
     [ARRouter setup];
 
+    self.initialLaunchOptions = launchOptions;
+    return YES;
+}
+
+/// This is called when we are going to present a user interface, which
+/// is both on traditional app launch, and every time we are backgrounded and back.
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    // In case everything's already set up
+    if (self.window) {
+        return;
+    }
+
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
 
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [ARTopMenuViewController sharedController];
-
-    [self.viewController setupRestorationIdentifierAndClass];
+    self.window.rootViewController = self.viewController;
+    [self.window makeKeyAndVisible];
 
     [self setupAdminTools];
 
@@ -92,24 +108,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [self setupRatingTool];
     [self countNumberOfRuns];
 
-    self.window.rootViewController = self.viewController;
-
-    [self.window makeKeyAndVisible];
-
-    return YES;
-}
-
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    UIApplicationState state = application.applicationState;
-    if (state == UIApplicationStateBackground) {
-        // App is doing a background fetch
-        return YES;
-    }
-
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-
 
     _landingURLRepresentation = self.landingURLRepresentation ?: @"https://artsy.net";
 
@@ -130,18 +129,14 @@ static ARAppDelegate *_sharedInstance = nil;
         // Do not show the splash/onboarding when a user comes in through a user activity, as it breaks the expectation
         // of the user to see the activity. This is probably just an edge-case, most people will probably launch the app
         // after installing it.
-        if (launchOptions[UIApplicationLaunchOptionsUserActivityDictionaryKey] == nil) {
+        if (self.initialLaunchOptions[UIApplicationLaunchOptionsUserActivityDictionaryKey] == nil) {
             [self showTrialOnboarding];
         }
     }
 
-    ARSimpleShowFeedViewController *topVC = (id)ARTopMenuViewController.sharedController.rootNavigationController.topViewController;
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         // Sync clock with server
         [ARSystemTime sync];
-
-        // Start doing the network calls to grab the feed
-        [topVC refreshFeedItems];
 
         // Register for push notifications as early as possible, but not on top of the onboarding view, in which case it
         // will be called from the -finishOnboardingAnimated: callback.
@@ -155,7 +150,7 @@ static ARAppDelegate *_sharedInstance = nil;
             };
         }
 
-        NSDictionary *remoteNotification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+        NSDictionary *remoteNotification = self.initialLaunchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
         if (remoteNotification) {
             // The app was not running, so considering it to be in the UIApplicationStateInactive state.
             [self.remoteNotificationsDelegate applicationDidReceiveRemoteNotification:remoteNotification
@@ -164,11 +159,10 @@ static ARAppDelegate *_sharedInstance = nil;
     }];
 
     [ARWebViewCacheHost startup];
-
-    return YES;
+    [self registerNewSessionOpened];
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
+- (void)registerNewSessionOpened
 {
     [ARTrialController extendTrial];
     [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
@@ -178,6 +172,13 @@ static ARAppDelegate *_sharedInstance = nil;
             [self.remoteNotificationsDelegate fetchNotificationCounts];
         }];
     }
+}
+
+/// This happens every time we come _back_ to the app from the background
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    [self registerNewSessionOpened];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

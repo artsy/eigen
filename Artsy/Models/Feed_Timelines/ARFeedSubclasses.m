@@ -51,14 +51,14 @@
 
 - (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     NSInteger pageSize = (cursor) ? 4 : 1;
     [ArtsyAPI getFeedResultsForShowsWithCursor:cursor pageSize:pageSize success:^(id JSON) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        ar_dispatch_async(^{
             __strong typeof (wself) sself = wself;
             NSOrderedSet *items = [sself parseItemsFromJSON:JSON];
-            dispatch_async(dispatch_get_main_queue(), ^{
+            ar_dispatch_main_queue(^{
                 success(items);
             });
         });
@@ -92,7 +92,7 @@
 
 - (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI getFeedResultsForProfile:self.profile withCursor:cursor success:^(id JSON) {
         __strong typeof (wself) sself = wself;
         success([sself parseItemsFromJSON:JSON]);
@@ -125,7 +125,7 @@
 
 - (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI getFeedResultsForFairOrganizer:self.fairOrganizer withCursor:cursor success:^(id JSON) {
         ar_dispatch_async(^{
             __strong typeof (wself) sself = wself;
@@ -171,7 +171,7 @@
 
 - (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [ArtsyAPI getFeedResultsForFairShows:self.fair partnerID:self.partner.partnerID withCursor:cursor success:^(id JSON) {
         ar_dispatch_async(^{

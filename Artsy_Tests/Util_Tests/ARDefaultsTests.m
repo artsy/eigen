@@ -2,7 +2,7 @@
 
 SpecBegin(ARDefaults);
 
-it(@"rests user defaults", ^{
+it(@"resets user defaults", ^{
     [[NSUserDefaults standardUserDefaults] setValue:@1 forKey:@"Test Value"];
     expect([[NSUserDefaults standardUserDefaults] valueForKey:@"Test Value"]).to.equal(@1);
     [ARDefaults resetDefaults];

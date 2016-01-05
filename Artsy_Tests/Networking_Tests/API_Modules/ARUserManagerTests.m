@@ -123,6 +123,7 @@ describe(@"login", ^{
 
 describe(@"clearUserData", ^{
     describe(@"unsetting user defaults", ^{
+
         before(^{
             [[NSUserDefaults standardUserDefaults] setValue:@"test value" forKey:@"TestKey"];
         });
@@ -148,17 +149,9 @@ describe(@"clearUserData", ^{
             expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beFalsy();
             expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.beNil();
         });
-
-        it(@"does not set use staging if it was not set before", ^{
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beNil();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.equal(@"test value");
-            [ARUserManager clearUserData];
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beNil();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.beNil();
-        });
     });
 
-    describe(@"clearUserDAtaAndSetUserStaging", ^{
+    describe(@"clearUserDataAndSetUserStaging", ^{
         before(^{
             [[NSUserDefaults standardUserDefaults] setValue:@"test value" forKey:@"TestKey"];
         });
@@ -183,14 +176,6 @@ describe(@"clearUserData", ^{
             expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.beNil();
         });
 
-        it(@"does not set staging value passed is nil", ^{
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beNil();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.equal(@"test value");
-            [ARUserManager clearUserData:[ARUserManager sharedManager] useStaging:nil];
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beNil();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.beNil();
-        });
-        
     });
 
     describe(@"with email and password", ^{

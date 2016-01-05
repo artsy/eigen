@@ -29,7 +29,6 @@
 		342F925E34CAC3E5DB8E5F52 /* ARFairMapViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F92647D726C0DC289B1F3 /* ARFairMapViewControllerTests.m */; };
 		342F9272F2C534C1DFE2EB95 /* ARParallaxEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9A7210CFDD1C15CFBE3C /* ARParallaxEffect.m */; };
 		342F9276A48EA339833228D8 /* ARArtworkDetailViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F3C689C41D4B941B665 /* ARArtworkDetailViewTests.m */; };
-		342F92A94769B065A53C6735 /* UIViewController+ARStateRestoration.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F992BB6F28B5BE6477E3F /* UIViewController+ARStateRestoration.m */; };
 		342F92E8397ACCA0D2EFF1CB /* MapPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F976360A7DAA65AF7D755 /* MapPoint.m */; };
 		342F9308EE5B3487AE62276D /* ARShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966895F2D8BDFA7B39B1 /* ARShowViewController.m */; };
 		342F94077E27A45531E7A76F /* ARBidButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9629B03A1BEB6888BD4B /* ARBidButton.m */; };
@@ -710,11 +709,9 @@
 		342F987C1CACE95AAD292717 /* UIImage+ImageFromColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageFromColor.m"; sourceTree = "<group>"; };
 		342F98950528061D8AE370EA /* MTLModel+Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MTLModel+Dictionary.m"; sourceTree = "<group>"; };
 		342F98A73E2E1162514B5A24 /* ARScrollNavigationChief.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScrollNavigationChief.m; sourceTree = "<group>"; };
-		342F992BB6F28B5BE6477E3F /* UIViewController+ARStateRestoration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ARStateRestoration.m"; sourceTree = "<group>"; };
 		342F994893B9660BEA23C18D /* ARFairViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairViewController.h; sourceTree = "<group>"; };
 		342F995897B0B106E59A39A0 /* ARFairMapAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapAnnotationView.h; sourceTree = "<group>"; };
 		342F9960EEF42063F7494D42 /* ARTrialController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTrialController.h; sourceTree = "<group>"; };
-		342F997FDCA4513495F1E949 /* UIViewController+ARStateRestoration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ARStateRestoration.h"; sourceTree = "<group>"; };
 		342F9983D46712773FC71FC3 /* Fair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fair.h; sourceTree = "<group>"; };
 		342F9A069BB0267F7BF6F260 /* UIView+HitTestExpansion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HitTestExpansion.h"; sourceTree = "<group>"; };
 		342F9A17225A44AC4BE26303 /* PartnerShowFairLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerShowFairLocation.m; sourceTree = "<group>"; };
@@ -1766,7 +1763,6 @@
 				D3F3FA1E1AAE1BFC00E88359 /* ARBrowseViewController.m */,
 				342F9D63C266DC8B9A46A4F5 /* Emumerations */,
 				342F949FC80594AFFBBE1017 /* Errors */,
-				342F929D496BA3C99B4DB11A /* State Restoration */,
 				342F9BBA54BBCF5FE29C8684 /* ARParallaxEffect.h */,
 				342F9A7210CFDD1C15CFBE3C /* ARParallaxEffect.m */,
 				342F955C47585DAE288DCC7F /* ARScrollNavigationChief.h */,
@@ -1787,16 +1783,6 @@
 				3CFB078A18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m */,
 			);
 			path = Util;
-			sourceTree = "<group>";
-		};
-		342F929D496BA3C99B4DB11A /* State Restoration */ = {
-			isa = PBXGroup;
-			children = (
-				342F997FDCA4513495F1E949 /* UIViewController+ARStateRestoration.h */,
-				342F992BB6F28B5BE6477E3F /* UIViewController+ARStateRestoration.m */,
-			);
-			name = "State Restoration";
-			path = State_Restoration;
 			sourceTree = "<group>";
 		};
 		342F93B0E900CB6BC98011DE /* Views */ = {
@@ -4741,7 +4727,6 @@
 				D3F3FA1F1AAE1BFC00E88359 /* ARBrowseViewController.m in Sources */,
 				342F9667FC693B47498549FE /* UIApplicationStateEnum.m in Sources */,
 				342F9D1673764FE7442062AC /* ARNetworkErrorManager.m in Sources */,
-				342F92A94769B065A53C6735 /* UIViewController+ARStateRestoration.m in Sources */,
 				D37E4CFB1A92AC5A00023E2C /* ARAnnotatedMapView.m in Sources */,
 				609F985C1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m in Sources */,
 				E6E07D6D195DF5D800403D2B /* ARSwitchView+Favorites.m in Sources */,

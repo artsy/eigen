@@ -34,6 +34,11 @@
 
         NSURLSession *session = [NSURLSession sharedSession];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (!data) {
+                completionHandler(UIBackgroundFetchResultFailed);
+                return;
+            }
+
             id JSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
             if ([JSON isKindOfClass:NSDictionary.class]) {
 
