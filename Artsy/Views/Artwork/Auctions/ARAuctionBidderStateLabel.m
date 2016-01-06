@@ -1,5 +1,5 @@
 #import "ARAuctionBidderStateLabel.h"
-#import <Artsy+UILabels/NSNumberFormatter+ARCurrency.h>
+#import <Artsy_UILabels/NSNumberFormatter+ARCurrency.h>
 
 
 @implementation ARAuctionBidderStateLabel

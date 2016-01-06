@@ -1,10 +1,12 @@
-#import <Artsy+UIColors/UIColor+ArtsyColors.h>
-#if __has_include(<Artsy+UIFonts/UIFont+ArtsyFonts.h>)
-#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
+#pragma Formatter Exempt
+
+#import <Artsy_UIColors/UIColor+ArtsyColors.h>
+#if __has_include(<Artsy_UIFonts/UIFont+ArtsyFonts.h>)
+#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #endif
 
-#if __has_include(<Artsy+OSSUIFonts/UIFont+OSSArtsyFonts.h>)
-#import <Artsy+OSSUIFonts/UIFont+OSSArtsyFonts.h>
+#if __has_include(<Artsy_OSSUIFonts/UIFont+OSSArtsyFonts.h>)
+#import <Artsy_OSSUIFonts/UIFont+OSSArtsyFonts.h>
 #endif
 #import "UIImage+ImageFromColor.h"
 #import "UIImageView+AsyncImageLoading.h"

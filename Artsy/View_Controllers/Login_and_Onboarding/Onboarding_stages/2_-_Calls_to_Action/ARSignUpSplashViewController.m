@@ -5,7 +5,8 @@
 #import "UIView+HitTestExpansion.h"
 #import "ArtsyAPI+Private.h"
 
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+
 
 @interface ARSignUpSplashTextViewController : UIViewController
 @property (nonatomic, readwrite) NSInteger index;
@@ -67,7 +68,6 @@
     [self.view addSubview:self.imageView];
     [self.imageView alignToView:self.view];
     self.imageView.userInteractionEnabled = YES;
-
 }
 
 - (void)viewDidLoad

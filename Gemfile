@@ -1,8 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods'
+gem 'cocoapods', "~> 0.39"
 gem 'cocoapods-keys'
-gem 'cocoapods-deintegrate'
 
 # 1.6.7 contains the OS X build fix.
 gem 'nokogiri', '1.6.7.rc4'

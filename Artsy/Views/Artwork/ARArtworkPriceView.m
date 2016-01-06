@@ -1,6 +1,6 @@
 #import "ARArtworkPriceView.h"
 #import "ARArtworkPriceRowView.h"
-#import <Artsy+UILabels/UIView+ARDrawing.h>
+#import <Artsy_UILabels/UIView+ARDrawing.h>
 
 
 @interface ARArtworkPriceView ()

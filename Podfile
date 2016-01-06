@@ -2,13 +2,12 @@ source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '8.0'
+use_frameworks!
+
+# install! 'cocoapods', :deterministic_uuids => false
 
 # Yep.
 inhibit_all_warnings!
-
-# Allows per-dev overrides
-local_podfile = "Podfile.local"
-eval(File.read(local_podfile)) if File.exist? local_podfile
 
 plugin 'cocoapods-keys', {
     :project => "Artsy",
@@ -42,10 +41,10 @@ target 'Artsy' do
   pod 'FLKAutoLayout', :git => 'https://github.com/alloy/FLKAutoLayout.git', :branch => 'add-support-for-layout-guides-take-2'
   pod 'FXBlurView'
   pod 'iRate'
-  pod 'ISO8601DateFormatter', :head
+  pod 'ISO8601DateFormatter', :git => "https://github.com/orta/iso-8601-date-formatter"
   pod 'JLRoutes', :git => 'https://github.com/orta/JLRoutes.git'
   pod 'JSBadgeView'
-  pod 'JSDecoupledAppDelegate', :git => 'https://github.com/orta/JSDecoupledAppDelegate.git', :branch => 'patch-1'
+  pod 'JSDecoupledAppDelegate'
   pod 'Mantle', '~> 1.5.6'
   pod 'MMMarkdown'
   pod 'NPKeyboardLayoutGuide'
@@ -53,11 +52,11 @@ target 'Artsy' do
   pod 'UICKeyChainStore'
 
   # Core owned by Artsy
-  pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView', :commit => '1a31b864d1d56b1aaed0816c10bb55cf2e078bb8'
+  pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
   pod 'ARCollectionViewMasonryLayout'
   pod 'ORStackView', :git => 'https://github.com/1aurabrown/ORStackView.git'
   pod 'UIView+BooleanAnimations'
-  pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit', :commit => '62275386978db91b0e7ed8de755d15cef3e793b4'
+  pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit'
 
   # Deprecated:
   # UIAlertView is deprecated for iOS8 APIs
@@ -72,9 +71,9 @@ target 'Artsy' do
   pod 'InterAppCommunication'
 
   # Artsy Spec repo stuff
-  pod 'Artsy-UIButtons'
+  pod 'Artsy-UIButtons', :git => "https://github.com/artsy/Artsy-UIButtons.git"
   pod 'Artsy+UIColors'
-  pod 'Artsy+UILabels', '>= 1.3.2'
+  pod 'Artsy+UILabels', :git => "https://github.com/artsy/Artsy-UILabels.git"
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git", :branch => "old_fonts_new_lib"
@@ -83,12 +82,12 @@ target 'Artsy' do
   end
 
   # Facebook
-  pod 'FBSDKCoreKit'
-  pod 'FBSDKLoginKit'
+  pod 'FBSDKCoreKit', '4.9.0-beta2'
+  pod 'FBSDKLoginKit', '4.9.0-beta2'
 
   # Analytics
-  pod 'Analytics', :head
-  pod 'ARAnalytics', :git => 'https://github.com/orta/ARAnalytics.git', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  pod 'Analytics', :git => "https://github.com/segmentio/analytics-ios.git"
+  pod 'ARAnalytics', :git=> "https://github.com/orta/ARAnalytics.git", :commit => "6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e", :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'
@@ -98,6 +97,7 @@ target 'Artsy' do
   # Easter Eggs
   pod 'ARASCIISwizzle'
   pod 'DRKonamiCode'
+
 end
 
 target 'Artsy Tests' do
@@ -110,11 +110,21 @@ target 'Artsy Tests' do
   pod 'OCMock'
 end
 
+
 post_install do |installer|
   # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['ENABLE_BITCODE'] = 'NO'
     end
+  end
+
+  app_plist = "Artsy/App_Resources/Artsy-Info.plist"
+  plist_buddy = "/usr/libexec/PlistBuddy"
+  version = `#{plist_buddy} -c "Print CFBundleShortVersionString" #{app_plist}`.strip
+  puts "Updating CocoaPods' version numbers to #{version}"
+
+  installer.pods_project.targets.each do |target|
+    `#{plist_buddy} -c "Set CFBundleShortVersionString #{version}" "Pods/Target Support Files/#{target}/Info.plist"`
   end
 end

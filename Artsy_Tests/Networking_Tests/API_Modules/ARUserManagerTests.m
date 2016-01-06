@@ -161,7 +161,7 @@ describe(@"clearUserData", ^{
         });
 
         it(@"explicitly sets staging default to yes", ^{
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beTruthy();
+            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beNil();
             expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.equal(@"test value");
             [ARUserManager clearUserData:[ARUserManager sharedManager] useStaging:@(YES)];
             expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beTruthy();
@@ -169,7 +169,7 @@ describe(@"clearUserData", ^{
         });
         
         it(@"explicitly sets staging default to no", ^{
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beTruthy();
+            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beNil();
             expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.equal(@"test value");
             [ARUserManager clearUserData:[ARUserManager sharedManager] useStaging:@(NO)];
             expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beFalsy();

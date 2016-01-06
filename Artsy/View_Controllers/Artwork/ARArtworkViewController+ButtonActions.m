@@ -1,6 +1,6 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import <Adjust/Adjust.h>
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
 #import "ARAuctionWebViewController.h"
 #import "ARArtworkViewController+ButtonActions.h"

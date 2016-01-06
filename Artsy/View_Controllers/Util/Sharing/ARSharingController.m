@@ -2,7 +2,7 @@
 #import "ARURLItemProvider.h"
 #import "ARImageItemProvider.h"
 #import "ARMessageItemProvider.h"
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
 
 @interface ARSharingController ()
