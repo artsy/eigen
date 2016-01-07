@@ -16,6 +16,7 @@ group :test do
   gem 'fui'
   gem 'xcpretty'
   gem 'second_curtain'
+  gem 'danger', :git => "https://github.com/KrauseFx/danger.git", :branch => "github_api"
 end
 
 group :distribution do
