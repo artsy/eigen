@@ -20,6 +20,9 @@
     #import <ORStackView/ORTagBasedAutoStackView.h>
     #import <ReactiveCocoa/ReactiveCocoa.h>
 
+    // Needed to "see" Swift files in the unit test target.
+    #import "Artsy-Swift.h"
+
     // Headers
     #import "MTLModel+JSON.h"
     #import "MTLModel+Dictionary.h"

@@ -44,7 +44,7 @@
 
 - (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
 
-- (ARAuctionWebViewController *)loadAuctionWithID:(NSString *)auctionID;
+- (AuctionViewController *)loadAuctionWithID:(NSString *)auctionID;
 
 - (ARAuctionWebViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
 /// Load the auction results for an artwork on to the stack

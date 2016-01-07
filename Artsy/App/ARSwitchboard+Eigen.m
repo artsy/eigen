@@ -38,11 +38,9 @@
     return [[ARArtworkSetViewController alloc] initWithArtworkSet:artworkSet fair:fair atIndex:index];
 }
 
-- (ARAuctionWebViewController *)loadAuctionWithID:(NSString *)auctionID;
+- (AuctionViewController *)loadAuctionWithID:(NSString *)auctionID
 {
-    NSString *path = [NSString stringWithFormat:@"/auction/%@", auctionID];
-    NSURL *URL = [self resolveRelativeUrl:path];
-    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
+    return [[AuctionViewController alloc] initWithAuctionID:auctionID];
 }
 
 - (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;

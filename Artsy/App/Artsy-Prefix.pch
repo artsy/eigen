@@ -18,6 +18,10 @@
     #import <SystemConfiguration/SystemConfiguration.h>
     #import <MobileCoreServices/MobileCoreServices.h>
 
+
+    // Make all Swift files available in all ObjC files. Must be above all ObjC imports.
+    #import "Artsy-Swift.h"
+
     #import "Constants.h"
     #import <AFNetworking/AFNetworking.h>
     #import <Mantle/Mantle.h>
@@ -54,7 +58,6 @@
     #import "ARDeveloperOptions.h"
     #import "ARAutoLayoutDebugging.h"
     #import "ARMacros.h"
-
 
     #ifdef DEBUG
     static const int ddLogLevel = DDLogLevelVerbose;
