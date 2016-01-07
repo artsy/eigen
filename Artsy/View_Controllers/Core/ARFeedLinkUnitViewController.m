@@ -7,9 +7,7 @@
 
 - (void)fetchLinks:(void (^)(void))completion
 {
-    ARAppStatus *status = [[ARAppStatus alloc] init];
-
-    if ([status isDemo]) {
+    if (ARAppStatus.isDemo) {
         FeaturedLink *link = [self defaultFeedLink];
         [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:@[ link ]]];
 
@@ -41,7 +39,7 @@
         }];
     }
 
-    if ([status isBetaOrDev]) {
+    if (ARAppStatus.isBetaOrDev) {
         // edit set here: http://admin.artsy.net/set/5308e7be9c18db75fd000343
         [ArtsyAPI getOrderedSetItemsWithKey:@"eigen:beta-feed-links" success:^(NSArray *items) {
             __strong typeof (wself) sself = wself;

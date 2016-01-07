@@ -6,9 +6,9 @@
 @interface ARAppStatus : NSObject
 
 /// Is the app running on Testflight or locally as a developer.
-- (BOOL)isBetaOrDev;
++ (BOOL)isBetaOrDev;
 
 /// Is the app a demo release.
-- (BOOL)isDemo;
++ (BOOL)isDemo;
 
 @end
