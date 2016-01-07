@@ -7,7 +7,7 @@ gem 'cocoapods-keys'
 gem 'nokogiri', '1.6.7.rc4'
 
 group :development do
-  gem 'houston'
+  gem 'lowdown'
   # Depends on older xcodeproj gem that is incompatible with current CocoaPods.
   #gem 'synx', :git => "https://github.com/orta/synx", :branch => "spaces_to-underscores"
 end

@@ -102,13 +102,13 @@ GEM
       terminal-table
       xcpretty (>= 0.2.1)
     highline (1.7.8)
-    houston (2.2.3)
-      commander (~> 4.1)
-      json
+    http-2 (0.8.0)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
     json (1.8.3)
+    lowdown (0.0.4)
+      http-2 (>= 0.8)
     match (0.2.4)
       cert (>= 1.2.7, < 2.0.0)
       credentials_manager (>= 0.13.0, < 1.0.0)
@@ -186,7 +186,7 @@ DEPENDENCIES
   deliver
   fui
   gym
-  houston
+  lowdown
   match
   nokogiri (= 1.6.7.rc4)
   pilot
