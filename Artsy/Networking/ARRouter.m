@@ -2,6 +2,7 @@
 #import "ARRouter.h"
 #import "ARRouter+Private.h"
 #import "ARUserManager.h"
+#import "ARAppStatus.h"
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Keys/ArtsyKeys.h>
 
@@ -867,7 +868,8 @@ static NSSet *artsyHosts = nil;
     NSDictionary *params = @{
         @"name" : device,
         @"token" : token,
-        @"app_id" : bundleID
+        @"app_id" : bundleID,
+        @"production": ARAppStatus.isBetaOrDev ? @"false" : @"true"
     };
     return [self requestWithMethod:@"POST" path:ARNewDeviceURL parameters:params];
 }

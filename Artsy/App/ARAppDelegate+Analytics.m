@@ -70,12 +70,11 @@
 - (void)setupAnalytics
 {
     ArtsyKeys *keys = [[ArtsyKeys alloc] init];
-    ARAppStatus *status = [[ARAppStatus alloc] init];
 
     NSString *segmentWriteKey = keys.segmentProductionWriteKey;
     NSString *environment = ADJEnvironmentProduction;
 
-    if ([status isBetaOrDev]) {
+    if (ARAppStatus.isBetaOrDev) {
         segmentWriteKey = keys.segmentDevWriteKey;
         environment = ADJEnvironmentSandbox;
     }
