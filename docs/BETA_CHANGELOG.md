@@ -2,6 +2,7 @@
 
 * Added Dangerfile to the repo - orta
 * Send dsym to hockey - orta
+* Autoplay HTML5 videos in web views - orta
 
 ### 2.3.2
 
