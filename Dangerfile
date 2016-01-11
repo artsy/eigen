@@ -1,6 +1,6 @@
 warn("PR is classed as Work in Progress") if pr_title.include? "[WIP]"
 
-if lines_of_code > 50 && !files_modified.include?("docs/BETA_CHANGELOG.md")
+if lines_of_code > 50 && !files_modified.include?("CHANGELOG.yml")
   fail("No CHANGELOG changes made")
 end
 

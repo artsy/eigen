@@ -1,11 +1,15 @@
+require 'yaml'
+
 lane :ship_beta do
   verify_pod_keys
 
-  readme = File.read("../CHANGELOG.md")
-  beta_readme = File.read("../docs/BETA_CHANGELOG.md")
+  readme_yaml = File.read("../CHANGELOG.yml")
+  readme_data = YAML.load(readme_yaml)
 
-  mini_readme = readme.split("\n## ")[0..1].join("\n## ")
-  generated_changelog = beta_readme + "\n\n-------\n" + mini_readme
+  latest_version = readme_data["upcoming"]["version"]
+
+  upcoming = readme_data["upcoming"]
+  beta_readme =  "## #{upcoming["version"]} \n\n - #{upcoming["notes"].join "\n - "} \n\n"
 
   # Build
   gym
@@ -17,8 +21,8 @@ lane :ship_beta do
   slack message: "There is a new Eigen beta available. Grab it from Testflight on your iOS device.",
         channel: "artsy-ios",
         payload: {
-          'What\'s new' => beta_readme,
+          'Version' => latest_version,
+          'What\'s new' => beta_readme
         },
         default_payloads: []
-
 end
