@@ -22,4 +22,11 @@ class AuctionViewController: UIViewController {
         view.backgroundColor = .whiteColor()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    }
 }

@@ -245,6 +245,8 @@
 		5E0AEB7D19B9FAED009F34DE /* ARStubbedShowNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AEB7C19B9FAED009F34DE /* ARStubbedShowNetworkModel.m */; };
 		5E284609194A2E58007274AB /* ARFairGuideContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */; };
 		5E47F34E1C3ECAA600EC0751 /* AuctionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */; };
+		5E47F3541C44358600EC0751 /* AuctionBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3531C44358600EC0751 /* AuctionBannerView.swift */; };
+		5E47F3561C4435C100EC0751 /* AuctionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3551C4435C100EC0751 /* AuctionTitleView.swift */; };
 		5E50987D18F82FCF001AC704 /* AROfflineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E50987C18F82FCF001AC704 /* AROfflineView.m */; };
 		5E6621DD19768F750064FC52 /* MapIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6621DC19768F750064FC52 /* MapIcon@2x.png */; };
 		5E71AFC7195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */; };
@@ -1043,6 +1045,8 @@
 		5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewController.m; sourceTree = "<group>"; };
 		5E47F34C1C3ECAA500EC0751 /* Artsy-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artsy-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionViewController.swift; path = Auction/AuctionViewController.swift; sourceTree = "<group>"; };
+		5E47F3531C44358600EC0751 /* AuctionBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionBannerView.swift; path = Auction/AuctionBannerView.swift; sourceTree = "<group>"; };
+		5E47F3551C4435C100EC0751 /* AuctionTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionTitleView.swift; path = Auction/AuctionTitleView.swift; sourceTree = "<group>"; };
 		5E50987B18F82FCF001AC704 /* AROfflineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROfflineView.h; sourceTree = "<group>"; };
 		5E50987C18F82FCF001AC704 /* AROfflineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROfflineView.m; sourceTree = "<group>"; };
 		5E6621DC19768F750064FC52 /* MapIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapIcon@2x.png"; sourceTree = "<group>"; };
@@ -2635,6 +2639,15 @@
 			name = Auction;
 			sourceTree = "<group>";
 		};
+		5E47F3521C4433BF00EC0751 /* Auction */ = {
+			isa = PBXGroup;
+			children = (
+				5E47F3531C44358600EC0751 /* AuctionBannerView.swift */,
+				5E47F3551C4435C100EC0751 /* AuctionTitleView.swift */,
+			);
+			name = Auction;
+			sourceTree = "<group>";
+		};
 		5EBDC94F19794D6C0082C514 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -3263,6 +3276,7 @@
 				3CD36796189A9AD600285DF7 /* Post */,
 				60E6447017BE41A0004486B3 /* Artist */,
 				49F45191176B9B2F0041A4B4 /* Artwork */,
+				5E47F3521C4433BF00EC0751 /* Auction */,
 				342F9D35D55EDEA5EA203296 /* Styled Subclasses */,
 				60E5D8881694ED0B00BDC57E /* SwitchViews */,
 				60F1C50F17C0EDA7000938F7 /* Collection Views */,
@@ -4677,6 +4691,7 @@
 				3C35CC7B189FF05E00E3D8DE /* OrderedSet.m in Sources */,
 				60903CC4175CE21A002AB800 /* AROptions.m in Sources */,
 				60903CCB175CE766002AB800 /* ARAdminSettingsViewController.m in Sources */,
+				5E47F3561C4435C100EC0751 /* AuctionTitleView.swift in Sources */,
 				60F1C51517C0EFD7000938F7 /* ARBrowseFeaturedLinksCollectionViewCell.m in Sources */,
 				60903CCF175CF088002AB800 /* ARGroupedTableViewCell.m in Sources */,
 				49F0C67B17B9706000721244 /* AROnboardingViewController.m in Sources */,
@@ -4735,6 +4750,7 @@
 				E6C13AC41A23AB160050AB53 /* ARPersonalizeWebViewController.m in Sources */,
 				60A309A21AC98BF3000783C1 /* Article.m in Sources */,
 				342F9F54666BFDFF200E31AE /* UIView+HitTestExpansion.m in Sources */,
+				5E47F3541C44358600EC0751 /* AuctionBannerView.swift in Sources */,
 				342F9BBE60676CEC2AD66C5A /* NSString+StringCase.m in Sources */,
 				514E56491BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m in Sources */,
 				342F9CEA884D36A98BE6BA96 /* NSString+StringSize.m in Sources */,
