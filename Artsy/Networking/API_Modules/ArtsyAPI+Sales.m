@@ -19,4 +19,12 @@
     return [self getRequest:request parseIntoAnArrayOfClass:[Artwork class] withKey:@"artwork" success:success failure:failure];
 }
 
++ (void)getSaleWithID:(NSString *)saleID
+              success:(void (^)(Sale *sale))success
+              failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter requestForSaleID:saleID];
+    [self getRequest:request parseIntoAClass:[Sale class] success:success failure:failure];
+}
+
 @end

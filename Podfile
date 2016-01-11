@@ -101,6 +101,9 @@ target 'Artsy' do
   pod 'ARASCIISwizzle'
   pod 'DRKonamiCode'
 
+  # Swift pods 🎉
+  pod 'Result'
+
 end
 
 target 'Artsy Tests' do

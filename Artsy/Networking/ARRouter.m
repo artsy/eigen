@@ -869,7 +869,7 @@ static NSSet *artsyHosts = nil;
         @"name" : device,
         @"token" : token,
         @"app_id" : bundleID,
-        @"production": ARAppStatus.isBetaOrDev ? @"false" : @"true"
+        @"production" : ARAppStatus.isBetaOrDev ? @"false" : @"true"
     };
     return [self requestWithMethod:@"POST" path:ARNewDeviceURL parameters:params];
 }
@@ -906,6 +906,14 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)saleArtworkRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID
 {
     NSString *path = [NSString stringWithFormat:ARSaleArtworkForSaleAndArtworkURLFormat, saleID, artworkID];
+    NSMutableURLRequest *req = [self requestWithMethod:@"GET" path:path parameters:nil];
+    req.cachePolicy = NSURLRequestReloadIgnoringCacheData;
+    return req;
+}
+
++ (NSURLRequest *)requestForSaleID:(NSString *)saleID
+{
+    NSString *path = [NSString stringWithFormat:ARSaleURLFormat, saleID];
     NSMutableURLRequest *req = [self requestWithMethod:@"GET" path:path parameters:nil];
     req.cachePolicy = NSURLRequestReloadIgnoringCacheData;
     return req;

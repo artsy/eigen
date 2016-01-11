@@ -3,6 +3,7 @@
 #import "Bidder.h"
 #import "BidderPosition.h"
 #import "Bid.h"
+#import "ARAppConstants.h"
 
 
 typedef NS_ENUM(NSInteger, ARReserveStatus) {

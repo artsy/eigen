@@ -1,17 +1,21 @@
 import UIKit
 
 class AuctionViewController: UIViewController {
-    let auctionID: String
+    let saleID: String
 
-    init(auctionID: String) {
-        self.auctionID = auctionID
+    lazy var networkModel: AuctionNetworkModel = {
+        return AuctionNetworkModel(saleID: self.saleID)
+    }()
+
+    init(saleID: String) {
+        self.saleID = saleID
 
         super.init(nibName: nil, bundle: nil)
     }
 
     // Required by Swift compiler, sadly.
     required init?(coder aDecoder: NSCoder) {
-        self.auctionID = ""
+        self.saleID = ""
         super.init(coder: aDecoder)
         return nil
     }
@@ -24,9 +28,12 @@ class AuctionViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-    }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+        ar_presentIndeterminateLoadingIndicatorAnimated(animated)
+        networkModel.fetchSale { result in
+            self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
+
+            print(result)
+        }
     }
 }

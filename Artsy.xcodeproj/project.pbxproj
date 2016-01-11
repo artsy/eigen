@@ -247,6 +247,7 @@
 		5E47F34E1C3ECAA600EC0751 /* AuctionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */; };
 		5E47F3541C44358600EC0751 /* AuctionBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3531C44358600EC0751 /* AuctionBannerView.swift */; };
 		5E47F3561C4435C100EC0751 /* AuctionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3551C4435C100EC0751 /* AuctionTitleView.swift */; };
+		5E47F3581C44378E00EC0751 /* AuctionNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3571C44378E00EC0751 /* AuctionNetworkModel.swift */; };
 		5E50987D18F82FCF001AC704 /* AROfflineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E50987C18F82FCF001AC704 /* AROfflineView.m */; };
 		5E6621DD19768F750064FC52 /* MapIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6621DC19768F750064FC52 /* MapIcon@2x.png */; };
 		5E71AFC7195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */; };
@@ -1047,6 +1048,7 @@
 		5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionViewController.swift; path = Auction/AuctionViewController.swift; sourceTree = "<group>"; };
 		5E47F3531C44358600EC0751 /* AuctionBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionBannerView.swift; path = Auction/AuctionBannerView.swift; sourceTree = "<group>"; };
 		5E47F3551C4435C100EC0751 /* AuctionTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionTitleView.swift; path = Auction/AuctionTitleView.swift; sourceTree = "<group>"; };
+		5E47F3571C44378E00EC0751 /* AuctionNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionNetworkModel.swift; path = Auction/AuctionNetworkModel.swift; sourceTree = "<group>"; };
 		5E50987B18F82FCF001AC704 /* AROfflineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROfflineView.h; sourceTree = "<group>"; };
 		5E50987C18F82FCF001AC704 /* AROfflineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROfflineView.m; sourceTree = "<group>"; };
 		5E6621DC19768F750064FC52 /* MapIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapIcon@2x.png"; sourceTree = "<group>"; };
@@ -2635,6 +2637,7 @@
 			isa = PBXGroup;
 			children = (
 				5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */,
+				5E47F3571C44378E00EC0751 /* AuctionNetworkModel.swift */,
 			);
 			name = Auction;
 			sourceTree = "<group>";
@@ -4793,6 +4796,7 @@
 				342F9C00DD759E6DEA845426 /* ARImagePageViewController.m in Sources */,
 				5E284609194A2E58007274AB /* ARFairGuideContainerViewController.m in Sources */,
 				342F9CF7231DFEF359B2D829 /* ARFollowableButton.m in Sources */,
+				5E47F3581C44378E00EC0751 /* AuctionNetworkModel.swift in Sources */,
 				342F9654C7AF4AEF8C21BC11 /* ARActionButtonsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
