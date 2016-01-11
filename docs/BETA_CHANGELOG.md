@@ -1,6 +1,7 @@
 ### 2.4.0
 
 * Added Dangerfile to the repo - orta
+* Autoplay HTML5 videos in web views - orta
 
 ### 2.3.2
 
