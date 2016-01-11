@@ -50,12 +50,12 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)loadView
 {
-    self.view = [[ORStackScrollView alloc] initWithStackViewClass:[ORTagBasedAutoStackView class]];
+    [self setupTaggedStackView];
+
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.stackView.bottomMarginHeight = 20;
-    self.view.delegate = [ARScrollNavigationChief chief];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.networkModel getArtistForArtistID:self.artist.artistID success:^(Artist *artist) {
         __strong typeof (wself) sself = wself;
         if (!sself) { return; }
@@ -85,7 +85,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
     [self addSubtitle];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.networkModel getShowsForArtistID:self.artist.artistID inFairID:self.fair.fairID success:^(NSArray *shows) {
         __strong typeof (wself) sself = wself;
         if (!sself) { return; }
@@ -158,7 +158,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)addMapButton
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.fair getFairMaps:^(NSArray *maps) {
         __strong typeof (wself) sself = wself;
 
@@ -185,7 +185,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)mapButtonTapped:(id)mapButtonTapped
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.fair getFairMaps:^(NSArray *maps) {
         __strong typeof (wself) sself = wself;
         ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:sself.fair title:sself.header selectedPartnerShows:sself.partnerShows];

@@ -97,10 +97,7 @@ static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 - (void)loadView
 {
-    self.view = [[ORStackScrollView alloc] initWithStackViewClass:[ORTagBasedAutoStackView class]];
-    self.view.backgroundColor = [UIColor blackColor];
-    self.view.stackView.backgroundColor = [UIColor whiteColor];
-    self.view.delegate = [ARScrollNavigationChief chief];
+    [self setupTaggedStackView];
 }
 
 - (void)showDidLoad
@@ -154,19 +151,20 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (NSDictionary *)descriptionForMapButton
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     return @{
         ARActionButtonImageKey : @"MapButtonAction",
         ARActionButtonHandlerKey : ^(ARCircularActionButton *sender){
-            __strong typeof (wself) sself = wself;
-            [sself handleMapButtonPress:sender];
-        }
-    };
+            __strong typeof(wself) sself = wself;
+    [sself handleMapButtonPress:sender];
+}
+}
+;
 }
 
 - (void)handleMapButtonPress:(ARCircularActionButton *)sender
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
         __strong typeof (wself) sself = wself;
         ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:sself.fair title:sself.show.title selectedPartnerShows:@[sself.show]];
@@ -214,7 +212,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
     [self ar_presentIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.showNetworkModel getShowInfo:^(PartnerShow *show) {
         __strong typeof (wself) sself = wself;
         if (!sself) { return; }
@@ -365,7 +363,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     self.showArtworksViewController.showTrailingLoadingIndicator = YES;
     [self.view.stackView addViewController:self.showArtworksViewController toParent:self withTopMargin:@"0" sideMargin:nil];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self getArtworksAtPage:1 onArtworks:^(NSArray *artworks) {
         __strong typeof (wself) sself = wself;
         if (artworks.count > 0) {
@@ -381,7 +379,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 {
     NSParameterAssert(onArtworks);
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.showNetworkModel getArtworksAtPage:page success:^(NSArray *artworks) {
         __strong typeof (wself) sself = wself;
         onArtworks(artworks);
@@ -412,7 +410,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (void)addMapPreview
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
         __strong typeof (wself) sself = wself;
 

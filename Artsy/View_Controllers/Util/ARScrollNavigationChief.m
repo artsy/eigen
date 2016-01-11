@@ -33,6 +33,11 @@ static ARScrollNavigationChief *instance;
     return instance;
 }
 
++ (ARScrollNavigationChief *)getChief
+{
+    return [self chief];
+}
+
 - (id)init
 {
     self = [super init];
