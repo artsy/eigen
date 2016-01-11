@@ -9,6 +9,9 @@ use_frameworks!
 # Yep.
 inhibit_all_warnings!
 
+# Note: These should be reflected _accurately_ in the environment of
+#       the continuous build server.
+
 plugin 'cocoapods-keys', {
     :project => "Artsy",
     :target => "Artsy",
