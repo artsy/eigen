@@ -60,10 +60,11 @@ class AuctionViewController: UIViewController {
 
 extension AuctionViewController {
     func setupForSale(sale: Sale) {
-        let viewModel = SaleViewModel(sale: sale)
+        let saleViewModel = SaleViewModel(sale: sale)
+        self.saleViewModel = saleViewModel
 
-        [ (AuctionBannerView(viewModel: viewModel), ViewTags.Banner),
-          (AuctionTitleView(viewModel: viewModel), .Title),
+        [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
+          (AuctionTitleView(viewModel: saleViewModel), .Title),
           (ARWhitespaceGobbler(), .WhitespaceGobbler)
         ].forEach { (view, tag) in
             view.tag = tag.rawValue
