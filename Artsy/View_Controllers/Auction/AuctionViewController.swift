@@ -1,7 +1,11 @@
 import UIKit
+import ORStackView
 
 class AuctionViewController: UIViewController {
     let saleID: String
+    var saleViewModel: SaleViewModel?
+
+    var stackScrollView: ORStackScrollView!
 
     lazy var networkModel: AuctionNetworkModel = {
         return AuctionNetworkModel(saleID: self.saleID)
@@ -20,6 +24,11 @@ class AuctionViewController: UIViewController {
         return nil
     }
 
+    override func loadView() {
+        super.loadView()
+        stackScrollView = setupTaggedStackView()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,7 +42,32 @@ class AuctionViewController: UIViewController {
         networkModel.fetchSale { result in
             self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
 
-            print(result)
+            switch result {
+            case .Success(let sale):
+                self.setupForSale(sale)
+            case .Failure(_):
+                break // TODO: How to handle error?
+            }
+        }
+    }
+
+    enum ViewTags: Int {
+        case Banner = 0, Title
+        
+        case WhitespaceGobbler
+    }
+}
+
+extension AuctionViewController {
+    func setupForSale(sale: Sale) {
+        let viewModel = SaleViewModel(sale: sale)
+
+        [ (AuctionBannerView(viewModel: viewModel), ViewTags.Banner),
+          (AuctionTitleView(viewModel: viewModel), .Title),
+          (ARWhitespaceGobbler(), .WhitespaceGobbler)
+        ].forEach { (view, tag) in
+            view.tag = tag.rawValue
+            self.stackScrollView.stackView.addSubview(view, withTopMargin: "0")
         }
     }
 }
