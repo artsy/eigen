@@ -1,8 +1,8 @@
 lane :ship_beta do
   verify_pod_keys
 
-  readme = File.read("./CHANGELOG.md")
-  beta_readme = File.read("./docs/BETA_CHANGELOG.md")
+  readme = File.read("../CHANGELOG.md")
+  beta_readme = File.read("../docs/BETA_CHANGELOG.md")
 
   mini_readme = readme.split("\n## ")[0..1].join("\n## ")
   generated_changelog = beta_readme + "\n\n-------\n" + mini_readme

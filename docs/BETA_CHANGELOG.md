@@ -1,6 +1,7 @@
 ### 2.4.0
 
 * Added Dangerfile to the repo - orta
+* Send dsym to hockey - orta
 
 ### 2.3.2
 
