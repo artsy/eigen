@@ -1,0 +1,24 @@
+lane :ship_beta do
+  verify_pod_keys
+
+  readme = File.read("./CHANGELOG.md")
+  beta_readme = File.read("./docs/BETA_CHANGELOG.md")
+
+  mini_readme = readme.split("\n## ")[0..1].join("\n## ")
+  generated_changelog = beta_readme + "\n\n-------\n" + mini_readme
+
+  # Build
+  gym
+
+  # Ship to hockey first, testflight has to wait: "processing"
+  hockey notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN']
+  pilot changelog: readme
+
+  slack message: "There is a new Eigen beta available. Grab it from Testflight on your iOS device.",
+        channel: "artsy-ios",
+        payload: {
+          'What\'s new' => beta_readme,
+        },
+        default_payloads: []
+
+end
