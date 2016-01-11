@@ -27,4 +27,14 @@ it(@"it generates a webviews that is already requesting a blank url", ^{
     expect(url.path).to.equal(@"/dev/blank");
 });
 
+it(@"it autoplays HTML5 content (used in super-posts)", ^{
+    sut = [[ARWebViewCacheHost alloc] init];
+
+    WKWebView *webView = [sut dequeueWebView];
+    [webView stopLoading];
+
+    expect(webView.configuration.requiresUserActionForMediaPlayback).to.equal(NO);
+});
+
+
 SpecEnd
