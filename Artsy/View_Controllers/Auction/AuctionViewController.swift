@@ -67,7 +67,7 @@ extension AuctionViewController {
           (ARWhitespaceGobbler(), .WhitespaceGobbler)
         ].forEach { (view, tag) in
             view.tag = tag.rawValue
-            self.stackScrollView.stackView.addSubview(view, withTopMargin: "0")
+            self.stackScrollView.stackView.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
     }
 }

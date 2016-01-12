@@ -22,22 +22,34 @@ class AuctionBannerView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    // TODO: Remove this, it shouldn't be required after Autolayout constraints are finished.
-    override func intrinsicContentSize() -> CGSize {
-        return CGSize(width: UIViewNoIntrinsicMetric, height: 197)
-    }
 }
 
 extension AuctionBannerView {
     private func setupViews() {
+
+        // Add all as subviews to self.
         [backgroundImageView, darkeningView, logoImageView].forEach(^addSubview)
 
+        // Background + darkening view always cover self totally.
         backgroundImageView.alignToView(self)
         darkeningView.alignToView(self)
-        logoImageView.alignTop("30", bottom: "30", toView: self)
 
+        // Device-specific layout for logo & countdown views.
+        if UIDevice.isPad() {
+            
+
+            // TODO: Countdown view
+        } else {
+            logoImageView.alignTop("30", bottom: "-30", toView: self)
+            logoImageView.alignCenterXWithView(self, predicate: "0")
+            logoImageView.constrainHeight("70")
+
+            // TODO: Countdown view
+        }
+
+        // Start any necessary image downloads.
         backgroundImageView.sd_setImageWithURL(viewModel.backgroundImageURL)
+        logoImageView.sd_setImageWithURL(viewModel.profileImageURL)
     }
 }
 
