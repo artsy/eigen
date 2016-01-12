@@ -34,22 +34,33 @@ extension AuctionBannerView {
         backgroundImageView.alignToView(self)
         darkeningView.alignToView(self)
 
+        logoImageView.constrainWidth(nil, height: "70")
+
         // Device-specific layout for logo & countdown views.
         if UIDevice.isPad() {
-            
+            // Bottom lefthand corner with 40pt margin.
+            logoImageView.alignLeadingEdgeWithView(self, predicate: "40")
+            logoImageView.alignBottomEdgeWithView(self, predicate: "-40")
+
+            // Must constraint self to 200pt tall on iPad, since our view hierarchy doesn't provide any height constraint and in its abses, defaults to the background image's height.
+            constrainHeight("200")
 
             // TODO: Countdown view
         } else {
+            // Logo is centred horizontally with 30pt above/below.
             logoImageView.alignTop("30", bottom: "-30", toView: self)
             logoImageView.alignCenterXWithView(self, predicate: "0")
-            logoImageView.constrainHeight("70")
 
             // TODO: Countdown view
         }
 
         // Start any necessary image downloads.
         backgroundImageView.sd_setImageWithURL(viewModel.backgroundImageURL)
-        logoImageView.sd_setImageWithURL(viewModel.profileImageURL)
+        logoImageView.sd_setImageWithURL(viewModel.profileImageURL) { [weak logoImageView] (image, _, _, _) in
+            // This keeps the image view constrained to the image's aspect ratio, which allows us to 'left align' this on iPad.
+            let aspectRatio = image.size.width / image.size.height
+            logoImageView?.constrainAspectRatio("\(aspectRatio)")
+        }
     }
 }
 
