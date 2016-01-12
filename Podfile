@@ -102,7 +102,7 @@ target 'Artsy' do
   pod 'DRKonamiCode'
 
   # Swift pods 🎉
-  pod 'Result'
+  # Nothing yet 😢
 
 end
 
