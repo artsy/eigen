@@ -43,8 +43,8 @@ class AuctionViewController: UIViewController {
             self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
 
             switch result {
-            case .Success(let sale):
-                self.setupForSale(sale)
+            case .Success(let saleViewModel):
+                self.setupForSale(saleViewModel)
             case .Failure(_):
                 break // TODO: How to handle error?
             }
@@ -59,8 +59,7 @@ class AuctionViewController: UIViewController {
 }
 
 extension AuctionViewController {
-    func setupForSale(sale: Sale) {
-        let saleViewModel = SaleViewModel(sale: sale)
+    func setupForSale(saleViewModel: SaleViewModel) {
         self.saleViewModel = saleViewModel
 
         [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),

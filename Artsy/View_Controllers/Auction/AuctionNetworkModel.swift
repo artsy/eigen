@@ -15,10 +15,11 @@ class AuctionNetworkModel {
         self.saleID = saleID
     }
 
-    func fetchSale(callback: Result<Sale> -> Void) {
+    func fetchSale(callback: Result<SaleViewModel> -> Void) {
         ArtsyAPI.getSaleWithID(saleID,
             success: { sale in
-                callback(.Success(sale))
+                let saleViewModel = SaleViewModel(sale: sale)
+                callback(.Success(saleViewModel))
             },
             failure: { error in
                 callback(.Failure(error))
