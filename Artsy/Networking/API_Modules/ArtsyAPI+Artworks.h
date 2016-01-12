@@ -1,5 +1,7 @@
 @class Artwork, Artist, Gene, Fair, PartnerShow;
 
+@class AFHTTPRequestOperation;
+
 
 @interface ArtsyAPI (Artworks)
 

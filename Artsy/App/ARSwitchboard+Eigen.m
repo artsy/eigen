@@ -38,9 +38,9 @@
     return [[ARArtworkSetViewController alloc] initWithArtworkSet:artworkSet fair:fair atIndex:index];
 }
 
-- (AuctionViewController *)loadAuctionWithID:(NSString *)auctionID
+- (AuctionViewController *)loadAuctionWithID:(NSString *)saleID
 {
-    return [[AuctionViewController alloc] initWithAuctionID:auctionID];
+    return [[AuctionViewController alloc] initWithSaleID:saleID];
 }
 
 - (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;

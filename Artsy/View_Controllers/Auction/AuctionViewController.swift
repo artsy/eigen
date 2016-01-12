@@ -1,19 +1,32 @@
 import UIKit
+import ORStackView
 
 class AuctionViewController: UIViewController {
-    let auctionID: String
+    let saleID: String
+    var saleViewModel: SaleViewModel?
 
-    init(auctionID: String) {
-        self.auctionID = auctionID
+    var stackScrollView: ORStackScrollView!
+
+    lazy var networkModel: AuctionNetworkModel = {
+        return AuctionNetworkModel(saleID: self.saleID)
+    }()
+
+    init(saleID: String) {
+        self.saleID = saleID
 
         super.init(nibName: nil, bundle: nil)
     }
 
     // Required by Swift compiler, sadly.
     required init?(coder aDecoder: NSCoder) {
-        self.auctionID = ""
+        self.saleID = ""
         super.init(coder: aDecoder)
         return nil
+    }
+
+    override func loadView() {
+        super.loadView()
+        stackScrollView = setupTaggedStackView()
     }
 
     override func viewDidLoad() {
@@ -22,4 +35,40 @@ class AuctionViewController: UIViewController {
         view.backgroundColor = .whiteColor()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        ar_presentIndeterminateLoadingIndicatorAnimated(animated)
+        networkModel.fetchSale { result in
+            self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
+
+            switch result {
+            case .Success(let sale):
+                self.setupForSale(sale)
+            case .Failure(_):
+                break // TODO: How to handle error?
+            }
+        }
+    }
+
+    enum ViewTags: Int {
+        case Banner = 0, Title
+        
+        case WhitespaceGobbler
+    }
+}
+
+extension AuctionViewController {
+    func setupForSale(sale: Sale) {
+        let saleViewModel = SaleViewModel(sale: sale)
+        self.saleViewModel = saleViewModel
+
+        [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
+          (AuctionTitleView(viewModel: saleViewModel), .Title),
+          (ARWhitespaceGobbler(), .WhitespaceGobbler)
+        ].forEach { (view, tag) in
+            view.tag = tag.rawValue
+            self.stackScrollView.stackView.addSubview(view, withTopMargin: "0")
+        }
+    }
 }

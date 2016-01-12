@@ -88,15 +88,12 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 {
     [super loadView];
 
-    self.view = [[ORStackScrollView alloc] initWithStackViewClass:[ORTagBasedAutoStackView class]];
+    [self setupTaggedStackView];
 
     self.view.scrollsToTop = NO;
     self.view.scrollEnabled = YES;
-    self.view.delegate = [ARScrollNavigationChief chief];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    self.view.backgroundColor = [UIColor blackColor];
-    self.view.stackView.backgroundColor = [UIColor whiteColor];
     self.view.stackView.bottomMarginHeight = 20;
 
     [self.view.stackView constrainHeightToView:self.view predicate:@">=-20"];
@@ -104,7 +101,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)updateArtistInfo
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.networkModel getArtistInfoWithSuccess:^(Artist *artist) {
 
         __strong typeof (wself) sself = wself;
@@ -332,13 +329,13 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
     Artist *artist = self.artist;
     [self.networkModel setFavoriteStatus:hearted
-                                 success:^(id _) {
+        success:^(id _) {
         [ARSpotlight addToSpotlightIndex:hearted entity:artist];
-    }
-                                 failure:^(NSError *error) {
+        }
+        failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
         [sender setHearted:!hearted animated:ARPerformWorkAsynchronously];
-    }];
+        }];
 }
 
 #pragma mark - Switch Navigation
@@ -412,7 +409,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     BOOL showingForSale = (displayMode == ARArtistArtworksDisplayForSale);
     NSDictionary *params = (showingForSale) ? @{ @"filter[]" : @"for_sale" } : nil;
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.networkModel getArtistArtworksAtPage:lastPage + 1 params:params success:^(NSArray *artworks) {
         __strong typeof (wself) sself = wself;
         [sself.artworkVC ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
@@ -575,7 +572,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getRelatedArtists
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.networkModel getRelatedArtists:^(NSArray *artists) {
         __strong typeof (wself) sself = wself;
         if (artists.count > 0 ) {
@@ -590,7 +587,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)getRelatedPosts
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.networkModel getRelatedPosts:^(NSArray *posts) {
         __strong typeof (wself) sself = wself;
         if (posts.count > 0) {

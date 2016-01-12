@@ -35,6 +35,7 @@ extern NSString *const ARSalesForArtworkURL;
 extern NSString *const ARMyBiddersURL;
 extern NSString *const ARBidderPositionsForSaleAndArtworkURL;
 extern NSString *const ARSaleArtworkForSaleAndArtworkURLFormat;
+extern NSString *const ARSaleURLFormat;
 extern NSString *const ARSaleArtworksURLFormat;
 extern NSString *const ARArtworkFairsURLFormat;
 
