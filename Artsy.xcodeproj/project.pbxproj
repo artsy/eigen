@@ -265,6 +265,7 @@
 		5ECFA8E81907E26E000B92EA /* ARSwitchView+Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFA8E71907E26E000B92EA /* ARSwitchView+Artist.m */; };
 		5ECFA8EA1907E9AB000B92EA /* ARSwitchViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFA8E91907E9AB000B92EA /* ARSwitchViewTests.m */; };
 		5ECFA8EF1907FC6C000B92EA /* ARSwitchView+FairGuide.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFA8EE1907FC6C000B92EA /* ARSwitchView+FairGuide.m */; };
+		5ED9EC021C458E9500C979A6 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */; };
 		5EDB120B197E691100E241F0 /* ARParallaxHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB120A197E691100E241F0 /* ARParallaxHeaderViewController.m */; };
 		5EE5DE14190167A400040B84 /* ARProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE5DE13190167A400040B84 /* ARProfileViewController.m */; };
 		5EFE2BE41910FC81003B5EEA /* ARAppDelegate+Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */; };
@@ -1073,6 +1074,7 @@
 		5ECFA8E91907E9AB000B92EA /* ARSwitchViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchViewTests.m; sourceTree = "<group>"; };
 		5ECFA8ED1907FC6C000B92EA /* ARSwitchView+FairGuide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchView+FairGuide.h"; sourceTree = "<group>"; };
 		5ECFA8EE1907FC6C000B92EA /* ARSwitchView+FairGuide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchView+FairGuide.m"; sourceTree = "<group>"; };
+		5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftExtensions.swift; sourceTree = "<group>"; };
 		5EDB1209197E691100E241F0 /* ARParallaxHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARParallaxHeaderViewController.h; sourceTree = "<group>"; };
 		5EDB120A197E691100E241F0 /* ARParallaxHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARParallaxHeaderViewController.m; sourceTree = "<group>"; };
 		5EE5DE12190167A400040B84 /* ARProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARProfileViewController.h; sourceTree = "<group>"; };
@@ -2489,6 +2491,7 @@
 				60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */,
 				607BF5A91C2413810034B519 /* ARAppStatus.h */,
 				607BF5AA1C2413810034B519 /* ARAppStatus.m */,
+				5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -4609,6 +4612,7 @@
 				60E6447617BE424E004486B3 /* ARSwitchView.m in Sources */,
 				3CF144A418E3727F00B1A764 /* UIViewController+ScreenSize.m in Sources */,
 				603B55A117D64A1B00566935 /* ARArtworkPriceView.m in Sources */,
+				5ED9EC021C458E9500C979A6 /* SwiftExtensions.swift in Sources */,
 				6001414817CA33C100612DB4 /* ARArtworkRelatedArtworksView.m in Sources */,
 				607D754A17C239E700CA1D41 /* ArtsyAPI+Following.m in Sources */,
 				E67655261900660500F9A704 /* ARWhitespaceGobbler.m in Sources */,
