@@ -8,6 +8,13 @@
 
 
 @interface ARCountdownView : UIView
+
+/// Set up countdown view with a specific colour, applied to all labels.
+- (instancetype)initWithColor:(UIColor *)color;
+
+/// Set up countdown view with basic, default colours. Useful over white backgrounds.
+- (instancetype)init;
+
 - (void)startTimer;
 - (void)stopTimer;
 

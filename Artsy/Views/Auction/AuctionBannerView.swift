@@ -10,7 +10,7 @@ class AuctionBannerView: UIView {
     private let backgroundImageView = UIImageView()
     private let darkeningView = DarkeningView()
     private let logoImageView = UIImageView()
-    private let countdownView = ARCountdownView()
+    private let countdownView = ARCountdownView(color: .whiteColor())
 
     init(viewModel: SaleViewModel) {
         self.viewModel = viewModel
