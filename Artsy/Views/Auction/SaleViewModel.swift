@@ -16,4 +16,8 @@ extension SaleViewModel {
     var profileImageURL: NSURL! {
         return NSURL(string: "https://d32dm0rphc51dk.cloudfront.net/n9QgQtio1Rrp-vaKGJH7aA/square140.png")
     }
+
+    var closingDate: NSDate {
+        return sale.endDate
+    }
 }

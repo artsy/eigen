@@ -8,6 +8,7 @@
 #import "ARScrollNavigationChief.h"
 #import "ARWhitespaceGobbler.h"
 #import "UIDevice-Hardware.h"
+#import "ARCountdownView.h"
 
 // Models. Importing Models.h is a no-go, since each header implicitly relies on a bunch of stuff imported from the PCH.
 #import "Sale.h"
