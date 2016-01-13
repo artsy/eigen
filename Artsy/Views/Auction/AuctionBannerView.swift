@@ -28,7 +28,7 @@ extension AuctionBannerView {
     private func setupViews() {
 
         // Add all as subviews to self.
-        [backgroundImageView, darkeningView, logoImageView].forEach(^addSubview)
+        [backgroundImageView, darkeningView, logoImageView].forEach(apply(addSubview))
 
         // Background + darkening view always cover self totally.
         backgroundImageView.alignToView(self)
