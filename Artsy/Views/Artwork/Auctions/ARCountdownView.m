@@ -45,6 +45,7 @@
     [labelsContainer constrainTopSpaceToView:self.countdown predicate:@"0"];
     [labelsContainer alignCenterXWithView:self predicate:@"0"];
     [labelsContainer alignBottomEdgeWithView:self predicate:@"0"];
+    [labelsContainer alignLeading:@"0" trailing:@"0" toView:self];
 
     NSMutableArray *labels = [NSMutableArray array];
     [@[ @"Days", @"Hrs", @"Min", @"Sec" ] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
