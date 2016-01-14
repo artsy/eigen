@@ -10,21 +10,26 @@
 
 @implementation ARCountdownView
 
-- (instancetype)init
+- (instancetype)initWithColor:(UIColor *)color
 {
     self = [super init];
     if (self) {
-        [self setupSubviews];
+        [self setupSubviewsWithColor:color];
     }
     return self;
 }
 
-- (void)setupSubviews
+- (instancetype)init
+{
+    return [self initWithColor:nil];
+}
+
+- (void)setupSubviewsWithColor:(UIColor *)color
 {
     self.headingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.headingLabel.textAlignment = NSTextAlignmentCenter;
     self.headingLabel.font = [UIFont smallCapsSerifFontWithSize:14];
-    self.headingLabel.textColor = [UIColor blackColor];
+    self.headingLabel.textColor = color ?: [UIColor blackColor];
 
     [self addSubview:self.headingLabel];
     [self.headingLabel alignTopEdgeWithView:self predicate:@"0"];
@@ -32,7 +37,7 @@
 
     self.countdown = [[UILabel alloc] initWithFrame:CGRectZero];
     self.countdown.font = [UIFont sansSerifFontWithSize:20];
-    self.countdown.textColor = [UIColor blackColor];
+    self.countdown.textColor = color ?: [UIColor blackColor];
     self.countdown.text = [self countdownString];
     self.countdown.textAlignment = NSTextAlignmentCenter;
 
@@ -45,12 +50,13 @@
     [labelsContainer constrainTopSpaceToView:self.countdown predicate:@"0"];
     [labelsContainer alignCenterXWithView:self predicate:@"0"];
     [labelsContainer alignBottomEdgeWithView:self predicate:@"0"];
+    [labelsContainer alignLeading:@"0" trailing:@"0" toView:self];
 
     NSMutableArray *labels = [NSMutableArray array];
     [@[ @"Days", @"Hrs", @"Min", @"Sec" ] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.text = [obj uppercaseString];
-        label.textColor = [UIColor artsyHeavyGrey];
+        label.textColor = color ?: [UIColor artsyHeavyGrey];
         label.font = [UIFont sansSerifFontWithSize:8];
         label.textAlignment = NSTextAlignmentCenter;
         [labelsContainer addSubview:label];

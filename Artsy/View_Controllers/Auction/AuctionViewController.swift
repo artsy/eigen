@@ -7,6 +7,8 @@ class AuctionViewController: UIViewController {
 
     var stackScrollView: ORStackScrollView!
 
+    var willAppearToken: dispatch_once_t = 0
+
     lazy var networkModel: AuctionNetworkModel = {
         return AuctionNetworkModel(saleID: self.saleID)
     }()
@@ -38,15 +40,17 @@ class AuctionViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        ar_presentIndeterminateLoadingIndicatorAnimated(animated)
-        networkModel.fetchSale { result in
-            self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
+        dispatch_once(&willAppearToken) { () -> Void in
+            self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
+            self.networkModel.fetchSale { result in
+                self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
 
-            switch result {
-            case .Success(let sale):
-                self.setupForSale(sale)
-            case .Failure(_):
-                break // TODO: How to handle error?
+                switch result {
+                case .Success(let saleViewModel):
+                    self.setupForSale(saleViewModel)
+                case .Failure(_):
+                    break // TODO: How to handle error?
+                }
             }
         }
     }
@@ -59,8 +63,7 @@ class AuctionViewController: UIViewController {
 }
 
 extension AuctionViewController {
-    func setupForSale(sale: Sale) {
-        let saleViewModel = SaleViewModel(sale: sale)
+    func setupForSale(saleViewModel: SaleViewModel) {
         self.saleViewModel = saleViewModel
 
         [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
@@ -68,7 +71,7 @@ extension AuctionViewController {
           (ARWhitespaceGobbler(), .WhitespaceGobbler)
         ].forEach { (view, tag) in
             view.tag = tag.rawValue
-            self.stackScrollView.stackView.addSubview(view, withTopMargin: "0")
+            self.stackScrollView.stackView.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
     }
 }

@@ -4,6 +4,7 @@ upcoming:
     - Added Dangerfile to the repo - orta
     - Send dsym to hockey - orta
     - Converted CHANGELOG to yaml - orta
+    - New (native) auction banner view - ash
 
 releases:
 - version: 2.3.3
