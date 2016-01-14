@@ -49,7 +49,7 @@ extension AuctionBannerView {
         backgroundImageView.alignToView(self)
         darkeningView.alignToView(self)
 
-        logoImageView.constrainWidth(nil, height: "70")
+        logoImageView.constrainHeight("70")
 
         // Device-specific layout for logo & countdown views.
         if UIDevice.isPad() {
