@@ -36,7 +36,7 @@ Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](
 
 ### Don't work at Artsy?
 
-We're actively looking for 2 more [mobile developers](https://www.artsy.net/job/mobile-engineer) to join our [team](https://github.com/artsy/mobile/). Want work in NYC, and do impactful work in the open? Get in contact.
+We're actively looking for 2 more [mobile developers](https://www.artsy.net/job/mobile-engineer) to join our [team](https://github.com/artsy/mobile/). Want to work in NYC, and do impactful work in the open? Get in contact.
 
 ### Thanks
 
