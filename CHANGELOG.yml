@@ -2,6 +2,8 @@ upcoming:
   version: 2.5.0
   notes:
     - Added Dangerfile to the repo, updated to 0.2.1 - orta
+    - Added Dangerfile to the repo - orta
+    - Add support for iOS9 facebook - orta
     - Send dsym to hockey - orta
     - Converted CHANGELOG to yaml - orta
     - New (native) auction banner view - ash
