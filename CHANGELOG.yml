@@ -4,6 +4,7 @@ upcoming:
     - Added Dangerfile to the repo - orta
     - Send dsym to hockey - orta
     - Converted CHANGELOG to yaml - orta
+    - Use match created certs for all code-signing - orta
     - New (native) auction banner view - ash
 
 releases:
