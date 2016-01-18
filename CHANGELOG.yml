@@ -1,7 +1,7 @@
 upcoming:
   version: 2.5.0
   notes:
-    - Added Dangerfile to the repo - orta
+    - Added Dangerfile to the repo, updated to 0.2.1 - orta
     - Send dsym to hockey - orta
     - Converted CHANGELOG to yaml - orta
     - New (native) auction banner view - ash
