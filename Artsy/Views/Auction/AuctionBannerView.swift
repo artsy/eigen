@@ -52,7 +52,7 @@ extension AuctionBannerView {
         logoImageView.constrainHeight("70")
 
         // Device-specific layout for logo & countdown views.
-        if UIDevice.isPad() {
+        if traitCollection.horizontalSizeClass == .Regular {
             // Bottom lefthand corner with 40pt margin.
             logoImageView.alignLeadingEdgeWithView(self, predicate: "40")
             logoImageView.alignBottomEdgeWithView(self, predicate: "-40")
