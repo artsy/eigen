@@ -82,7 +82,7 @@ NSString *const ARSiteHeroUnitsURL = @"/api/v1/site_hero_units";
 NSString *const AROnDutyRepresentativesURL = @"/api/v1/admins/available_representatives";
 NSString *const ARArtworkInquiryRequestURL = @"/api/v1/me/artwork_inquiry_request";
 
-NSString *const ARGeneArtworksURLFormat = @"/api/v1/search/filtered/gene/%@";
+NSString *const ARGeneArtworksURL = @"/api/v1/filter/artworks";
 NSString *const ARShowArtworksURLFormat = @"/api/v1/partner/%@/show/%@/artworks";
 NSString *const ARShowImagesURLFormat = @"/api/v1/partner_show/%@/images";
 

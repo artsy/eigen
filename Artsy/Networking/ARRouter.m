@@ -843,11 +843,9 @@ static NSSet *artsyHosts = nil;
 {
     NSDictionary *params = @{
         @"page" : @(page),
-        @"sort" : @"-date_added"
+        @"gene_id" : gene
     };
-    NSString *url = [NSString stringWithFormat:ARGeneArtworksURLFormat, gene];
-
-    return [self requestWithMethod:@"GET" path:url parameters:params];
+    return [self requestWithMethod:@"GET" path:ARGeneArtworksURL parameters:params];
 }
 
 + (NSURLRequest *)newForgotPasswordRequestWithEmail:(NSString *)email
