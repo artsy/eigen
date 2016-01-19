@@ -24,6 +24,8 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 @property (nonatomic, assign) enum ARInquireState state;
 @property (nonatomic, strong) Artwork *artwork;
+@property (nonatomic, strong) User *user;
+
 
 @property (nonatomic, strong) UIViewController *hostController;
 @property (nonatomic, strong) NSString *inquiryURLRepresentation;
@@ -146,7 +148,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [self createMessages];
     [self createTopMenu];
 
-    if (![ARUserManager sharedManager].currentUser) {
+    if (!self.user) {
         [self createNameEmailForm];
     }
 
@@ -522,13 +524,24 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)createUserSignature
 {
-    User *currentUser = [User currentUser];
+    User *currentUser = self.user;
     if (currentUser) {
         UILabel *userSignature = [[UILabel alloc] init];
         userSignature.font = self.textView.font;
         userSignature.textColor = [UIColor artsyHeavyGrey];
         userSignature.text = currentUser.name ?: currentUser.email;
+
+        // We dont have access to whether the user is an admin in a User
+        // but, given our policy of only having artsy emails
+        // for admins, we can rely on that as an indicator.
+
+        if ([currentUser.email containsString:@"@artsymail"] || [currentUser.email containsString:@"@artsy.net"]) {
+            userSignature.textColor = [UIColor artsyRed];
+            userSignature.text = @"Note: This will fail, admins cannot inquire.";
+        }
+
         [self.inquiryFormView addSubview:userSignature];
+
         [userSignature constrainTopSpaceToView:self.contentView predicate:@"10"];
         [userSignature alignLeadingEdgeWithView:self.contentView predicate:@"5"];
         _userSignature = userSignature;
@@ -699,7 +712,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)getCurrentAdmin
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI getInquiryContact:^(User *contactStub) {
         __strong typeof (wself) sself = wself;
         sself.specialistNameLabel.text = contactStub.name;
@@ -796,6 +809,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     // think we need to return JSON in this error to not do this
     errorTitle = @"Error Sending Message";
     errorMessage = @"Please try again or email\nsupport@artsy.net if the issue persists";
+
     [self setStatusWithTitle:errorTitle body:errorMessage];
     [self presentFailureButtons];
 }
@@ -840,7 +854,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     _emailValidator = [ALPValidator validatorWithType:ALPValidatorTypeString];
     [self.emailValidator addValidationToEnsureValidEmailWithInvalidMessage:NSLocalizedString(@"Please enter a valid email", nil)];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     self.emailValidator.validatorStateChangedHandler = ^(ALPValidatorState newState) {
         __strong typeof (wself) sself = wself;
         sself.sendButton.enabled = sself.emailValidator.isValid;
@@ -852,6 +866,13 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 - (NSString *)body
 {
     return self.textView.text;
+}
+
+#pragma mark - DI
+
+- (User *)user
+{
+    return _user ?: [User currentUser];
 }
 
 @end
