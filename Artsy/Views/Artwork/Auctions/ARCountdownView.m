@@ -30,6 +30,8 @@
     if (self) {
         self.color = color;
         self.translatesAutoresizingMaskIntoConstraints = NO;
+
+        [self setupSubviews];
     }
     return self;
 }
@@ -47,7 +49,7 @@
         [object removeFromSuperview];
     }];
 
-    [self setupSubviewsWithColor:self.color];
+    [self setupSubviews];
 
     // If we were counting down, we need to update our labels immediately.
     if (self.timer) {
@@ -55,7 +57,7 @@
     }
 }
 
-- (void)setupSubviewsWithColor:(UIColor *)color
+- (void)setupSubviews
 {
     // Assume iPhone
     CGFloat headerFontSize = 7;
@@ -76,10 +78,10 @@
     self.headingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.headingLabel.textAlignment = NSTextAlignmentCenter;
     self.headingLabel.font = [UIFont sansSerifFontWithSize:headerFontSize];
-    self.headingLabel.textColor = color ?: [UIColor blackColor];
+    self.headingLabel.textColor = self.color ?: [UIColor blackColor];
     self.headingLabel.text = [self.heading uppercaseString];
 
-    UIColor *valueColor = color ?: [UIColor blackColor];
+    UIColor *valueColor = self.color ?: [UIColor blackColor];
     [self addSubview:self.headingLabel];
     [self.headingLabel alignTopEdgeWithView:self predicate:@"0"];
     [self.headingLabel alignCenterXWithView:self predicate:@"0"];
@@ -119,7 +121,7 @@
         return [string uppercaseString];
     }];
 
-    UIColor *unitColor = color ?: [UIColor artsyHeavyGrey];
+    UIColor *unitColor = self.color ?: [UIColor artsyHeavyGrey];
     NSMutableArray *unitLabels = [NSMutableArray array];
     [units enumerateObjectsUsingBlock:^(id unit, NSUInteger idx, BOOL *stop) {
         UILabel *unitLabel = [ARCountdownView unitLabelWithSize:unitFontSize color:unitColor];
@@ -171,6 +173,7 @@
         [self stopTimer];
         [self.delegate countdownViewDidFinish:self];
         [self updateDays:0 hours:0 mintues:0 seconds:0];
+        return;
     }
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSCalendarUnit dhms = NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
