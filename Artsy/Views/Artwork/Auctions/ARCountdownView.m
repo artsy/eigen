@@ -8,13 +8,16 @@
 @property (nonatomic, strong) UILabel *minutesValueLabel;
 @property (nonatomic, strong) UILabel *secondsValueLabel;
 @property (nonatomic, strong) UILabel *headingLabel;
+
+@property (nonatomic, strong) UIColor *color;
+
 @end
 
 
-@interface NSArray <__covariant ObjectType> (InBetween)
+@interface NSArray <__covariant ObjectType>(InBetween)
 
 /// Enumerates over an array passing pairwise elements at (0,1) (1,2)...(n-1, n).
-- (void)betweenObjects : (void (^)(ObjectType lhs, ObjectType rhs))block;
+- (void)betweenObjects:(void (^)(ObjectType lhs, ObjectType rhs))block;
 
 @end
 
@@ -25,7 +28,8 @@
 {
     self = [super init];
     if (self) {
-        [self setupSubviewsWithColor:color];
+        self.color = color;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return self;
 }
@@ -35,10 +39,24 @@
     return [self initWithColor:nil];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self.subviews each:^(id object) {
+        [object removeFromSuperview];
+    }];
+
+    [self setupSubviewsWithColor:self.color];
+
+    // If we were counting down, we need to update our labels immediately.
+    if (self.timer) {
+        [self tick:self.timer];
+    }
+}
+
 - (void)setupSubviewsWithColor:(UIColor *)color
 {
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-
     // Assume iPhone
     CGFloat headerFontSize = 7;
     CGFloat numberFontSize = 18;
@@ -47,7 +65,7 @@
     NSString *interNumberSpacing = @"10";
 
     // Check for iPad
-    if ([UIDevice isPad]) {
+    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
         headerFontSize = 11;
         numberFontSize = 25;
         unitFontSize = 11;
@@ -59,6 +77,7 @@
     self.headingLabel.textAlignment = NSTextAlignmentCenter;
     self.headingLabel.font = [UIFont sansSerifFontWithSize:headerFontSize];
     self.headingLabel.textColor = color ?: [UIColor blackColor];
+    self.headingLabel.text = [self.heading uppercaseString];
 
     UIColor *valueColor = color ?: [UIColor blackColor];
     [self addSubview:self.headingLabel];
@@ -115,11 +134,6 @@
     }];
 
     [UIView alignBottomEdgesOfViews:[unitLabels arrayByAddingObject:self]];
-
-    // TODO: Needed?
-    //    [UIView spaceOutViewsHorizontally:labels predicate:@"0"];
-    // TODO: Do replicate this? Necessary?
-    //    [UIView alignTopAndBottomEdgesOfViews:[labels arrayByAddingObject:labelsContainer]];
 }
 
 - (void)startTimer

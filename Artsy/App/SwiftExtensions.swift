@@ -4,3 +4,7 @@
 func apply<T>(closure: T -> Void)(instance: T) {
     closure(instance)
 }
+
+func apply<T>(closure: T -> Void -> Void)(instance: T) {
+    closure(instance)()
+}
