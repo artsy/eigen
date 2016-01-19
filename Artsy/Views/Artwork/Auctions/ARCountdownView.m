@@ -1,4 +1,5 @@
 #import "ARCountdownView.h"
+#import "NSArray+Additions.h"
 
 
 @interface ARCountdownView ()
@@ -10,19 +11,12 @@
 @property (nonatomic, strong) UILabel *headingLabel;
 
 @property (nonatomic, strong) UIColor *color;
-
-@end
-
-
-@interface NSArray <__covariant ObjectType>(InBetween)
-
-/// Enumerates over an array passing pairwise elements at (0,1) (1,2)...(n-1, n).
-- (void)betweenObjects:(void (^)(ObjectType lhs, ObjectType rhs))block;
-
 @end
 
 
 @implementation ARCountdownView
+
+#pragma mark - Initializers & UIView lifecycle
 
 - (instancetype)initWithColor:(UIColor *)color
 {
@@ -41,32 +35,36 @@
     return [self initWithColor:nil];
 }
 
+// Called when changing from compact to regular, on iPad multitasking for example. Also called when we've been
+// added to a view hierarchy that specifies a new trait collection.
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
 
+    // Remove all our views and replace them with new ones in setupSubviews.
     [self.subviews each:^(id object) {
         [object removeFromSuperview];
     }];
-
     [self setupSubviews];
 
     // If we were counting down, we need to update our labels immediately.
     if (self.timer) {
-        [self tick:self.timer];
+        [self updateCountdown];
     }
 }
 
+#pragma mark - Private methods
+
 - (void)setupSubviews
 {
-    // Assume iPhone
+    // Assume compact design.
     CGFloat headerFontSize = 7;
     CGFloat numberFontSize = 18;
     CGFloat unitFontSize = 7;
     NSString *interitemSpacing = @"6";
     NSString *interNumberSpacing = @"10";
 
-    // Check for iPad
+    // Check for regulard (note: UIUserInterfaceSizeClassUnspecified falls back to compact).
     if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
         headerFontSize = 11;
         numberFontSize = 25;
@@ -75,17 +73,19 @@
         interNumberSpacing = @"15";
     }
 
+    // Create header, add to hierarchy, constrain.
     self.headingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.headingLabel.textAlignment = NSTextAlignmentCenter;
     self.headingLabel.font = [UIFont sansSerifFontWithSize:headerFontSize];
     self.headingLabel.textColor = self.color ?: [UIColor blackColor];
     self.headingLabel.text = [self.heading uppercaseString];
 
-    UIColor *valueColor = self.color ?: [UIColor blackColor];
     [self addSubview:self.headingLabel];
     [self.headingLabel alignTopEdgeWithView:self predicate:@"0"];
     [self.headingLabel alignCenterXWithView:self predicate:@"0"];
 
+    // Set up number labels, the ones that actually count down.
+    UIColor *valueColor = self.color ?: [UIColor blackColor];
     self.daysValueLabel = [ARCountdownView valueLabelWithSize:numberFontSize color:valueColor];
     self.hoursValueLabel = [ARCountdownView valueLabelWithSize:numberFontSize color:valueColor];
     self.minutesValueLabel = [ARCountdownView valueLabelWithSize:numberFontSize color:valueColor];
@@ -98,7 +98,7 @@
         [label constrainTopSpaceToView:self.headingLabel predicate:interitemSpacing];
     }];
 
-    // Add colons and inter-item constraints
+    // Add colons and inter-item constraints.
     [valueLabels betweenObjects:^(UIView *lhs, UIView *rhs) {
         UILabel *colonLabel = [ARCountdownView valueLabelWithSize:numberFontSize color:valueColor];
         colonLabel.text = @":";
@@ -116,7 +116,7 @@
     [UIView equalWidthForViews:valueLabels];
 
 
-    // Add unit labels at the bottom
+    // Add unit labels under the number labels
     NSArray<NSString *> *units = [@[ @"Days", @"Hrs", @"Min", @"Sec" ] map:^id(id string) {
         return [string uppercaseString];
     }];
@@ -138,11 +138,23 @@
     [UIView alignBottomEdgesOfViews:[unitLabels arrayByAddingObject:self]];
 }
 
+#pragma mark - Overridden properties
+
+- (void)setHeading:(NSString *)heading
+{
+    _heading = [heading copy];
+    self.headingLabel.text = [heading uppercaseString];
+}
+
+#pragma mark - Public methods
+
 - (void)startTimer
 {
     if (self.timer) {
+        // Timer is already running, return.
         return;
     }
+
     self.timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(tick:) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
     [self tick:self.timer];
@@ -154,11 +166,7 @@
     self.timer = nil;
 }
 
-- (void)setHeading:(NSString *)heading
-{
-    _heading = [heading copy];
-    self.headingLabel.text = [heading uppercaseString];
-}
+#pragma mark - Private timer-related methods
 
 - (void)tick:(NSTimer *)timer
 {
@@ -168,7 +176,6 @@
 - (void)updateCountdown
 {
     NSDate *now = [ARSystemTime date];
-    //TODO: better "failure" state here?
     if ([now compare:self.targetDate] != NSOrderedAscending) {
         [self stopTimer];
         [self.delegate countdownViewDidFinish:self];
@@ -192,6 +199,8 @@
     self.secondsValueLabel.text = [NSString stringWithFormat:@"%02ld", seconds];
 }
 
+#pragma mark - Private class methods
+
 + (UILabel *)valueLabelWithSize:(CGFloat)fontSize color:(UIColor *)color
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -210,18 +219,6 @@
     label.textAlignment = NSTextAlignmentCenter;
     label.translatesAutoresizingMaskIntoConstraints = NO;
     return label;
-}
-
-@end
-
-
-@implementation NSArray (InBetween)
-
-- (void)betweenObjects:(void (^)(id lhs, id rhs))block
-{
-    for (NSInteger i = 0; i < self.count - 1; i++) {
-        block(self[i], self[i + 1]);
-    }
 }
 
 @end
