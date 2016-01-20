@@ -3,6 +3,7 @@ upcoming:
   notes:
     - Added Dangerfile to the repo - orta
     - Send dsym to hockey - orta
+    - Users with Artsy emails get a warning that their inquiry may fail - orta
     - Converted CHANGELOG to yaml - orta
     - New (native) auction banner view - ash
 
