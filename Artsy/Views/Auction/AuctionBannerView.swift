@@ -39,7 +39,7 @@ class AuctionBannerView: UIView {
         super.traitCollectionDidChange(previousTraitCollection)
 
         // Remove all subviews and call setupViews() again to start from scratch.
-        subviews.forEach(apply(UIView.removeFromSuperview))
+        subviews.forEach { $0.removeFromSuperview() }
         setupViews()
     }
 }

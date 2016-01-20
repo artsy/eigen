@@ -117,9 +117,7 @@
 
 
     // Add unit labels under the number labels
-    NSArray<NSString *> *units = [@[ @"Days", @"Hrs", @"Min", @"Sec" ] map:^id(id string) {
-        return [string uppercaseString];
-    }];
+    NSArray<NSString *> *units = @[ @"DAYS", @"HRS", @"MIN", @"SEC" ];
 
     UIColor *unitColor = self.color ?: [UIColor artsyHeavyGrey];
     NSMutableArray *unitLabels = [NSMutableArray array];
