@@ -8,7 +8,6 @@
 #import "AROnboardingViewController.h"
 #import "ARStubbedBrowseNetworkModel.h"
 #import "ARBrowseViewController.h"
-#import "ARBackButtonCallbackManager.h"
 #import <JSBadgeView/JSBadgeView.h>
 #import "ARSwitchBoard.h"
 
@@ -72,15 +71,6 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/xapp_token" withResponse:@{}];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/site_hero_units" withResponse:@[@{ @"heading": @"something" }]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@{}];
-    });
-
-    it(@"removes x-callback-url callbacks", ^{
-        ARBackButtonCallbackManager *manager = [[ARBackButtonCallbackManager alloc] initWithViewController:[[UIViewController alloc] init] andBackBlock:^{}];
-
-        [ARTopMenuViewController sharedController].backButtonCallbackManager = manager;
-
-        [sut tabContentView:sut.tabContentView shouldChangeToIndex:tab];
-        expect([ARTopMenuViewController sharedController].backButtonCallbackManager).to.beNil();
     });
 
     it(@"is selectable when not selected", ^{

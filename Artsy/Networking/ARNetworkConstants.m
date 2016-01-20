@@ -10,7 +10,6 @@ NSString *const ARPersonalizePath = @"personalize";
 
 NSString *const ARTwitterCallbackPath = @"artsy://twitter-callback";
 
-NSString *const ARArtsyXCallbackUrlScheme = @"artsy-x-callback-url";
 NSString *const ARAuthHeader = @"X-Access-Token";
 NSString *const ARXappHeader = @"X-Xapp-Token";
 NSString *const ARTotalHeader = @"X-Total-Count";

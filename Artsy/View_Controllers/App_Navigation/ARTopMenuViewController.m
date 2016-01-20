@@ -398,10 +398,6 @@ static const CGFloat ARMenuButtonDimension = 46;
         return NO;
     }
 
-    // Remove any existing x-callback-url actions if you change tabs or pop to the root.
-
-    [ARTopMenuViewController sharedController].backButtonCallbackManager = nil;
-
     if (index == _selectedTabIndex) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
 
