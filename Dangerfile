@@ -8,8 +8,3 @@ end
 if lines_of_code > 50 && !pr_title.include?("📱")
    warn("Needs testing on a Phone if change is non-trivial")
 end
-
-message "LOC: #{lines_of_code}"
-message "Mod: #{files_modified}"
-message "Added: #{files_added}"
-message "Added: #{files_removed}"
