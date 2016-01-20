@@ -6,6 +6,7 @@ upcoming:
     - Add support for iOS9 facebook - orta
     - Send dsym to hockey - orta
     - Converted CHANGELOG to yaml - orta
+    - Remove x-callback support now that it's part of the OS - orta
     - New (native) auction banner view - ash
     - Use artworks/filter for the genes artworks - orta
 

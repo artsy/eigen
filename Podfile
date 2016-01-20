@@ -70,9 +70,6 @@ target 'Artsy' do
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
-  # X-Callback-Url support
-  pod 'InterAppCommunication'
-
   # Artsy Spec repo stuff
   pod 'Artsy-UIButtons', :git => "https://github.com/artsy/Artsy-UIButtons.git"
   pod 'Artsy+UIColors'

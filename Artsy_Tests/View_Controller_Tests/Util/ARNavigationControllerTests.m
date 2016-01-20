@@ -1,7 +1,6 @@
 #import "ARNavigationController.h"
 #import "UIViewController+SimpleChildren.h"
 #import "ARPendingOperationViewController.h"
-#import "ARBackButtonCallbackManager.h"
 #import "ARTopMenuViewController.h"
 #import "ARAppSearchViewController.h"
 
@@ -71,36 +70,6 @@ describe(@"stack manipulation", ^{
         [navigationController pushViewController:viewController2 animated:NO];
         [navigationController removeViewControllerFromStack:navigationController.rootViewController];
         expect(navigationController.viewControllers).to.equal(@[viewController2]);
-    });
-
-    describe(@"back", ^{
-        it(@"pops the top view controller", ^{
-            UIViewController *viewController2 = [[UIViewController alloc] init];
-            [navigationController pushViewController:viewController2 animated:NO];
-
-            expect(navigationController.childViewControllers.count).to.equal(2);
-
-            OCMockObject *navMock = [OCMockObject partialMockForObject:navigationController];
-            [[[navMock expect] ignoringNonObjectArgs] popViewControllerAnimated:NO] ;
-
-            [navigationController back:nil];
-
-            [navMock verify];
-        });
-
-        it(@"checks for backbutton x-callback-url callback", ^{
-            UIViewController *viewController2 = [[UIViewController alloc] init];
-            [navigationController pushViewController:viewController2 animated:NO];
-
-            id managerStub = [OCMockObject niceMockForClass:[ARBackButtonCallbackManager class]];
-            [[managerStub expect] handleBackForViewController:[OCMArg any]];
-
-            [ARTopMenuViewController sharedController].backButtonCallbackManager = managerStub;
-
-            [navigationController back:nil];
-
-            [managerStub verify];
-        });
     });
 });
 
