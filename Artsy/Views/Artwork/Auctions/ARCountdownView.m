@@ -179,7 +179,7 @@
     if ([now compare:self.targetDate] != NSOrderedAscending) {
         [self stopTimer];
         [self.delegate countdownViewDidFinish:self];
-        [self updateDays:0 hours:0 mintues:0 seconds:0];
+        [self updateDays:0 hours:0 minutes:0 seconds:0];
         return;
     }
     NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -188,10 +188,10 @@
                                                fromDate:now
                                                  toDate:self.targetDate
                                                 options:0];
-    [self updateDays:components.day hours:components.hour mintues:components.minute seconds:components.second];
+    [self updateDays:components.day hours:components.hour minutes:components.minute seconds:components.second];
 }
 
-- (void)updateDays:(NSInteger)days hours:(NSInteger)hours mintues:(NSInteger)minutes seconds:(NSInteger)seconds
+- (void)updateDays:(NSInteger)days hours:(NSInteger)hours minutes:(NSInteger)minutes seconds:(NSInteger)seconds
 {
     self.daysValueLabel.text = [NSString stringWithFormat:@"%02ld", days];
     self.hoursValueLabel.text = [NSString stringWithFormat:@"%02ld", hours];
