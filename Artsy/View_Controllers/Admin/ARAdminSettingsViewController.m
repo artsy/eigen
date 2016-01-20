@@ -1,3 +1,6 @@
+#import <HockeySDK_Source/HockeySDK.h>
+#import <HockeySDK_Source/BITFeedbackManager.h>
+
 #import "ARAdminSettingsViewController.h"
 #import "ARGroupedTableViewCell.h"
 #import "ARAnimatedTickView.h"
@@ -5,6 +8,7 @@
 #import "ARUserManager.h"
 #import "ARFileUtils.h"
 #import "ARRouter.h"
+#import "Artsy-Swift.h"
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>
@@ -34,7 +38,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 
     [miscSectionData addCellData:[self generateLogOut]];
     [miscSectionData addCellData:[self generateOnboarding]];
-    [miscSectionData addCellData:[self generateEmailData]];
+    [miscSectionData addCellData:[self generateFeedback]];
     [miscSectionData addCellData:[self generateRestart]];
     [miscSectionData addCellData:[self generateStagingSwitch]];
 #if !TARGET_IPHONE_SIMULATOR
@@ -81,18 +85,22 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     return onboardingData;
 }
 
-- (ARCellData *)generateEmailData
+
+- (ARCellData *)generateFeedback
 {
     ARCellData *emailData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
     [emailData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Email Artsy Developers";
+        cell.textLabel.text = @"Provide Feedback";
     }];
 
     [emailData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        [self emailTapped];
+        ARHockeyFeedbackDelegate *feedback = [[ARHockeyFeedbackDelegate alloc] init];
+        [feedback showFeedback:nil];
+
     }];
     return emailData;
 }
+
 
 - (ARCellData *)generateRestart
 {
@@ -240,43 +248,6 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     [delegate showTrialOnboardingWithState:ARInitialOnboardingStateSlideShow andContext:ARTrialContextNotTrial];
 
     [self.navigationController popViewControllerAnimated:NO];
-}
-
-#pragma mark -
-#pragma mark Email functions
-
-- (void)emailTapped
-{
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"mail" ofType:@"html"];
-    NSError *error = nil;
-    NSString *body = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
-    body = [body stringByReplacingOccurrencesOfString:@"{{Device}}" withString:[[UIDevice currentDevice] platformString]];
-    body = [body stringByReplacingOccurrencesOfString:@"{{iOS Version}}" withString:[[UIDevice currentDevice] systemVersion]];
-    body = [body stringByReplacingOccurrencesOfString:@"{{Version}}" withString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
-    [self sendMail:@[ @"mobile@artsymail.com" ] subject:@"Artsy Mobile Feedback" body:body];
-}
-
-- (void)sendMail:(NSArray *)toRecipients subject:(NSString *)subject body:(NSString *)body
-{
-    if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
-        [controller setToRecipients:toRecipients];
-        [controller setSubject:subject];
-        [controller setMessageBody:body isHTML:YES];
-        controller.mailComposeDelegate = self;
-        [self presentViewController:controller animated:YES completion:^{
-        }];
-
-    } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Your device is unable to send email." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-    }
-}
-
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    [self dismissViewControllerAnimated:YES completion:^{
-    }];
 }
 
 - (BOOL)shouldAutorotate
