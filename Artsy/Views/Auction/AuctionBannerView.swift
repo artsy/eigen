@@ -16,7 +16,8 @@ class AuctionBannerView: UIView {
         self.viewModel = viewModel
         super.init(frame: CGRect.zero)
 
-        setupViews()
+        countdownView.targetDate = viewModel.closingDate
+        countdownView.heading = "Closing In"
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -33,14 +34,18 @@ class AuctionBannerView: UIView {
             countdownView.stopTimer()
         }
     }
+
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Remove all subviews and call setupViews() again to start from scratch.
+        subviews.forEach { $0.removeFromSuperview() }
+        setupViews()
+    }
 }
 
 extension AuctionBannerView {
     private func setupViews() {
-
-        // Configure views.
-        countdownView.targetDate = viewModel.closingDate
-        countdownView.heading = "Closing In"
 
         // Add all as subviews to self.
         [backgroundImageView, darkeningView, logoImageView, countdownView].forEach(apply(addSubview))
