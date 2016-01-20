@@ -33,9 +33,6 @@
 #import "AREndOfLineInternalMobileWebViewController.h"
 #import "ARDefaults+SiteFeatures.h"
 
-#import <InterAppCommunication/IACManager.h>
-#import "ARBackButtonCallbackManager.h"
-
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <VCRURLConnection/VCR.h>
 
@@ -117,7 +114,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
     [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
-    [self setupXCallbackUrlManager];
 
     // This has to be checked *before* creating the first Xapp token.
     BOOL showOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
@@ -246,48 +242,6 @@ static ARAppDelegate *_sharedInstance = nil;
     [self.viewController presentViewController:onboardVC animated:NO completion:nil];
 }
 
-- (void)setupXCallbackUrlManager
-{
-    IACManager *sharedManager = [IACManager sharedManager];
-    sharedManager.callbackURLScheme = ARArtsyXCallbackUrlScheme;
-
-    [sharedManager handleAction:@"open" withBlock:^(NSDictionary *inputParameters, IACSuccessBlock success, IACFailureBlock failure) {
-        NSString *urlString = inputParameters[@"url"];
-        NSURL *url = [NSURL URLWithString:urlString];
-
-        NSDictionary *errorDict;
-
-        if (!urlString.length > 0) {
-            errorDict = @{NSLocalizedDescriptionKey: @"No URL was provided. Provide an Artsy URL in the `url` parameter."};
-        } else if (!url) {
-            errorDict = @{NSLocalizedDescriptionKey: @"The URL provided was malformed. Provide an Artsy URL in the `url` parameter."};
-        } else if (![ARRouter isInternalURL:url]) {
-            errorDict = @{NSLocalizedDescriptionKey: @"The URL provided was not an Artsy URL. Provide an Artsy URL in the `url` parameter."};
-        }
-
-        if (errorDict) {
-            failure([NSError errorWithDomain:@"net.artsy.artsy.x-callback-url" code:400 userInfo:errorDict]);
-            return;
-        }
-
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:url];
-        if (viewController) {
-            // This happens when the URL is routed to a web view.
-            [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
-        } else {
-            // This happens if JLRoutes found a route for the URL.
-            viewController = [ARTopMenuViewController sharedController].rootNavigationController.ar_innermostTopViewController;
-        }
-
-        ARBackButtonCallbackManager *manager = [[ARBackButtonCallbackManager alloc] initWithViewController:viewController andBackBlock:^{
-            success(nil, NO);
-            [ARTopMenuViewController sharedController].backButtonCallbackManager = nil;
-        }];
-
-        [ARTopMenuViewController sharedController].backButtonCallbackManager = manager;
-    }];
-}
-
 - (void)setupAdminTools
 {
     if (!ARAppStatus.isBetaOrDev) {
@@ -334,10 +288,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [self lookAtURLForAnalytics:url];
 
-    // X-Callback-Url
-    if ([[IACManager sharedManager] handleOpenURL:url]) {
-        return YES;
-    }
 
     // Twitter SSO
     if ([[url absoluteString] hasPrefix:ARTwitterCallbackPath]) {

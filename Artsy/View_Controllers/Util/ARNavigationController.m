@@ -450,18 +450,10 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     if (self.isAnimatingTransition) return;
 
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
-
-    UIViewController *poppedVC;
     if (navigationController.viewControllers.count > 1) {
-        poppedVC = [navigationController popViewControllerAnimated:YES];
+        [navigationController popViewControllerAnimated:YES];
     } else {
-        poppedVC = [navigationController.navigationController popViewControllerAnimated:YES];
-    }
-
-    ARBackButtonCallbackManager *backButtonCallbackManager = [ARTopMenuViewController sharedController].backButtonCallbackManager;
-
-    if (backButtonCallbackManager) {
-        [backButtonCallbackManager handleBackForViewController:poppedVC];
+        [navigationController.navigationController popViewControllerAnimated:YES];
     }
 }
 

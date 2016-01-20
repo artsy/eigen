@@ -1,3 +1,15 @@
+GIT
+  remote: https://github.com/KrauseFx/danger.git
+  revision: 3f6b15de736763f3c6f94a93f21f621b52d56688
+  branch: circle_2
+  specs:
+    danger (0.2.1)
+      claide (~> 0.8)
+      colored
+      git (~> 1.2.9)
+      nap
+      octokit
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -62,12 +74,6 @@ GEM
       colored
       highline (>= 1.7.1)
       security
-    danger (0.2.1)
-      claide (~> 0.8)
-      colored
-      git (~> 1.2.9)
-      nap
-      octokit
     deliver (1.6.6)
       credentials_manager (>= 0.12.0, < 1.0.0)
       fastimage (~> 1.6)
@@ -308,7 +314,7 @@ PLATFORMS
 DEPENDENCIES
   cocoapods (~> 0.39)
   cocoapods-keys
-  danger
+  danger!
   deliver
   fastlane
   fui
