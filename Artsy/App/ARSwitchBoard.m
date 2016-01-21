@@ -35,6 +35,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[ARSwitchBoard alloc] init];
+        [sharedInstance updateRoutes];
     });
 
     return sharedInstance;
@@ -151,9 +152,9 @@
 
 - (void)registerEchoRouteForKey:(NSString *)key handler:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback
 {
-    NSString *value = self.echo.routes[key];
-    NSAssert(value != nil, @"You have to have the same named route in Echo in order to use dynamic routing");
-    [self.routes addRoute:value handler:callback];
+    Route *route = self.echo.routes[key];
+    NSAssert(route != nil, @"You have to have the same named route in Echo in order to use dynamic routing");
+    [self.routes addRoute:route.path handler:callback];
 }
 
 - (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
