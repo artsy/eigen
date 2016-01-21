@@ -2462,37 +2462,15 @@
 		49A7723E165ADBF700BC6FD3 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				609F984E1AC0F5950079FE21 /* Watch */,
-				60903CC2175CE21A002AB800 /* AROptions.h */,
-				60903CC3175CE21A002AB800 /* AROptions.m */,
-				608B2F5D1657D0500046956C /* main.m */,
-				49BA7E111655ABE600C06572 /* Artsy-Prefix.pch */,
 				49BA7E121655ABE600C06572 /* ARAppDelegate.h */,
 				49BA7E131655ABE600C06572 /* ARAppDelegate.m */,
-				5EFE2BE21910FC81003B5EEA /* ARAppDelegate+Analytics.h */,
-				5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */,
-				6037442316D4227500AE7788 /* ARSwitchBoard.h */,
-				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
-				6038B7881C2856BA00359F3B /* ARSwitchboard+Eigen.h */,
-				6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */,
-				6088B75217D1DBAC00E4BB67 /* ARAnalyticsConstants.h */,
-				6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */,
-				60431FB618042A1E000118D7 /* ARAppNotificationsDelegate.h */,
-				60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */,
-				60431FB918042E63000118D7 /* ARAppBackgroundFetchDelegate.h */,
-				60431FBA18042E63000118D7 /* ARAppBackgroundFetchDelegate.m */,
-				0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */,
-				0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */,
-				516CDA611BB32B6A001C02B2 /* ARSpotlight.h */,
-				516CDA621BB32B6A001C02B2 /* ARSpotlight.m */,
-				514E56471BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.h */,
-				514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */,
-				5170C50B1BBAC1090043E601 /* ARMacros.h */,
-				60BC92F11BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.h */,
-				60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */,
-				607BF5A91C2413810034B519 /* ARAppStatus.h */,
-				607BF5AA1C2413810034B519 /* ARAppStatus.m */,
-				5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */,
+				60A0E9FF1C5107DB002754A8 /* Routing */,
+				60A0E9FE1C5107B2002754A8 /* Setup */,
+				60A0E9FD1C510758002754A8 /* Force Touch */,
+				60A0E9FB1C51070F002754A8 /* Analytics */,
+				60A0E9FA1C5106EB002754A8 /* App UIActivities + Search */,
+				60A0E9F91C5106CC002754A8 /* App Delegate Responsibilities */,
+				609F984E1AC0F5950079FE21 /* Watch */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -3609,6 +3587,76 @@
 				609F98541AC0F5B90079FE21 /* ArtsyWatchAPI.m */,
 			);
 			path = Watch;
+			sourceTree = "<group>";
+		};
+		60A0E9F91C5106CC002754A8 /* App Delegate Responsibilities */ = {
+			isa = PBXGroup;
+			children = (
+				60431FB618042A1E000118D7 /* ARAppNotificationsDelegate.h */,
+				60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */,
+				60431FB918042E63000118D7 /* ARAppBackgroundFetchDelegate.h */,
+				60431FBA18042E63000118D7 /* ARAppBackgroundFetchDelegate.m */,
+			);
+			name = "App Delegate Responsibilities";
+			sourceTree = "<group>";
+		};
+		60A0E9FA1C5106EB002754A8 /* App UIActivities + Search */ = {
+			isa = PBXGroup;
+			children = (
+				516CDA611BB32B6A001C02B2 /* ARSpotlight.h */,
+				516CDA621BB32B6A001C02B2 /* ARSpotlight.m */,
+				0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */,
+				0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */,
+				514E56471BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.h */,
+				514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */,
+			);
+			name = "App UIActivities + Search";
+			sourceTree = "<group>";
+		};
+		60A0E9FB1C51070F002754A8 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				5EFE2BE21910FC81003B5EEA /* ARAppDelegate+Analytics.h */,
+				5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */,
+				6088B75217D1DBAC00E4BB67 /* ARAnalyticsConstants.h */,
+				6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */,
+			);
+			name = Analytics;
+			sourceTree = "<group>";
+		};
+		60A0E9FD1C510758002754A8 /* Force Touch */ = {
+			isa = PBXGroup;
+			children = (
+				60BC92F11BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.h */,
+				60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */,
+			);
+			name = "Force Touch";
+			sourceTree = "<group>";
+		};
+		60A0E9FE1C5107B2002754A8 /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+				49BA7E111655ABE600C06572 /* Artsy-Prefix.pch */,
+				608B2F5D1657D0500046956C /* main.m */,
+				5170C50B1BBAC1090043E601 /* ARMacros.h */,
+				5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */,
+				60903CC2175CE21A002AB800 /* AROptions.h */,
+				60903CC3175CE21A002AB800 /* AROptions.m */,
+				607BF5A91C2413810034B519 /* ARAppStatus.h */,
+				607BF5AA1C2413810034B519 /* ARAppStatus.m */,
+			);
+			name = Setup;
+			sourceTree = "<group>";
+		};
+		60A0E9FF1C5107DB002754A8 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				6037442316D4227500AE7788 /* ARSwitchBoard.h */,
+				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
+				6038B7881C2856BA00359F3B /* ARSwitchboard+Eigen.h */,
+				6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */,
+			);
+			name = Routing;
 			sourceTree = "<group>";
 		};
 		60B617CA181598F400EBDC51 /* Auction Results */ = {
