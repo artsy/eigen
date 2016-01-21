@@ -60,7 +60,7 @@
 - (WKWebView *)spawnWebview
 {
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-    // iOS9 only
+    // iOS8 doesn't support this
     if ([config respondsToSelector:@selector(setRequiresUserActionForMediaPlayback:)]) {
         config.requiresUserActionForMediaPlayback = NO;
     }

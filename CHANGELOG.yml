@@ -4,6 +4,7 @@ upcoming:
     - Added Dangerfile to the repo, updated to 0.2.1 - orta
     - Added Dangerfile to the repo - orta
     - Add support for iOS9 facebook - orta
+    - Support deprecating iOS8 - orta
     - Send dsym to hockey - orta
     - Converted CHANGELOG to yaml - orta
     - Remove x-callback support now that it's part of the OS - orta
