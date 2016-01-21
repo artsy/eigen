@@ -4,6 +4,7 @@ upcoming:
     - Added Dangerfile to the repo, updated to 0.2.1 - orta
     - Added Dangerfile to the repo - orta
     - Add support for iOS9 facebook - orta
+    - Support deprecating iOS8 - orta
     - Send dsym to hockey - orta
     - Users with Artsy emails get a warning that their inquiry may fail - orta
     - Converted CHANGELOG to yaml - orta
