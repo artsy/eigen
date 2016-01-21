@@ -453,6 +453,8 @@
 		609F98601AC105F30079FE21 /* WatchMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97FB1AC0F3190079FE21 /* WatchMessage.m */; };
 		609F98611AC106030079FE21 /* WatchBiddingDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97FF1AC0F3450079FE21 /* WatchBiddingDetails.m */; };
 		60A0AD4A1797FD2E00E976B7 /* ARThemedFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A0AD491797FD2E00E976B7 /* ARThemedFactory.m */; };
+		60A0EA011C510975002754A8 /* ArtsyEcho.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A0EA001C510975002754A8 /* ArtsyEcho.swift */; };
+		60A0EA031C511C31002754A8 /* Echo.json in Resources */ = {isa = PBXBuildFile; fileRef = 60A0EA021C511C31002754A8 /* Echo.json */; };
 		60A224FC17CE040B00233CA1 /* AROnboardingTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */; };
 		60A309A21AC98BF3000783C1 /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A11AC98BF3000783C1 /* Article.m */; };
 		60A309A81AC999DE000783C1 /* ARInternalShareValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */; };
@@ -1399,6 +1401,8 @@
 		609F985E1AC1054D0079FE21 /* PartnerShowCoordinates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerShowCoordinates.m; sourceTree = "<group>"; };
 		60A0AD481797FD2E00E976B7 /* ARThemedFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARThemedFactory.h; sourceTree = "<group>"; };
 		60A0AD491797FD2E00E976B7 /* ARThemedFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARThemedFactory.m; sourceTree = "<group>"; };
+		60A0EA001C510975002754A8 /* ArtsyEcho.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtsyEcho.swift; sourceTree = "<group>"; };
+		60A0EA021C511C31002754A8 /* Echo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Echo.json; sourceTree = "<group>"; };
 		60A224FA17CE040B00233CA1 /* AROnboardingTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingTransition.h; sourceTree = "<group>"; };
 		60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingTransition.m; sourceTree = "<group>"; };
 		60A224FD17CE0E1B00233CA1 /* AROnboardingViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AROnboardingViewControllers.h; sourceTree = "<group>"; };
@@ -3655,6 +3659,8 @@
 				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
 				6038B7881C2856BA00359F3B /* ARSwitchboard+Eigen.h */,
 				6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */,
+				60A0EA001C510975002754A8 /* ArtsyEcho.swift */,
+				60A0EA021C511C31002754A8 /* Echo.json */,
 			);
 			name = Routing;
 			sourceTree = "<group>";
@@ -4366,6 +4372,7 @@
 				3C4AE98219094DAA009C0E8B /* MapAnnotation_Info@2x.png in Resources */,
 				E6FFEAB819C7925600A0D7DE /* splash_2@2x~iphone.jpg in Resources */,
 				608B708317D4A1C80088A56C /* MoreArrow@2x.png in Resources */,
+				60A0EA031C511C31002754A8 /* Echo.json in Resources */,
 				3C4AE9A619098916009C0E8B /* MapAnnotationCallout_Anchor@2x.png in Resources */,
 				E691020019C9E17B0048149C /* SearchIcon_White@2x.png in Resources */,
 				E6FFEAAF19C7925600A0D7DE /* onboard_1@2x~ipad.jpg in Resources */,
@@ -4823,6 +4830,7 @@
 				342F9D1673764FE7442062AC /* ARNetworkErrorManager.m in Sources */,
 				D37E4CFB1A92AC5A00023E2C /* ARAnnotatedMapView.m in Sources */,
 				609F985C1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m in Sources */,
+				60A0EA011C510975002754A8 /* ArtsyEcho.swift in Sources */,
 				E6E07D6D195DF5D800403D2B /* ARSwitchView+Favorites.m in Sources */,
 				60327DC91987AAD00075B399 /* ARTabContentView.m in Sources */,
 				60388706189C103F00D3EEAA /* ARFairMapZoomManager.m in Sources */,

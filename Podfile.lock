@@ -2,6 +2,8 @@ PODS:
   - Adjust (4.5.0):
     - Adjust/Core (= 4.5.0)
   - Adjust/Core (4.5.0)
+  - Aerodramus (0.1.0):
+    - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
     - AFNetworking/NSURLConnection (~> 2.0)
     - AFNetworking/NSURLSession (~> 2.0)
@@ -85,7 +87,6 @@ PODS:
   - FLKAutoLayout (0.2.1)
   - FXBlurView (1.6.1)
   - HockeySDK-Source (3.8.5)
-  - InterAppCommunication (1.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
   - JLRoutes (2.0.0)
@@ -128,6 +129,7 @@ PODS:
     - OHHTTPStubs
 
 DEPENDENCIES:
+  - Aerodramus (from `https://github.com/artsy/Aerodramus.git`, branch `tests`)
   - AFNetworkActivityLogger
   - AFNetworking (~> 2.5)
   - AFOAuth1Client (from `https://github.com/lxcid/AFOAuth1Client.git`, tag `0.4.0`)
@@ -157,7 +159,6 @@ DEPENDENCIES:
   - FBSnapshotTestCase
   - FLKAutoLayout (from `https://github.com/alloy/FLKAutoLayout.git`, branch `add-support-for-layout-guides-take-2`)
   - FXBlurView
-  - InterAppCommunication
   - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
@@ -185,6 +186,9 @@ DEPENDENCIES:
   - XCTest+OHHTTPStubSuiteCleanUp
 
 EXTERNAL SOURCES:
+  Aerodramus:
+    :branch: tests
+    :git: https://github.com/artsy/Aerodramus.git
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
@@ -221,6 +225,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/1aurabrown/ORStackView.git
 
 CHECKOUT OPTIONS:
+  Aerodramus:
+    :commit: ea0396fdc89aff4258dbd9234336273daf18f970
+    :git: https://github.com/artsy/Aerodramus.git
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
@@ -266,6 +273,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Adjust: 297176446c127f1232b9591b2b37cdc4796850b8
+  Aerodramus: e6cd0bcbd5419aa7e666afbfc9d6e62fd77d7645
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
@@ -293,7 +301,6 @@ SPEC CHECKSUMS:
   FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   HockeySDK-Source: 85233ef10090148e5571f7a0a82deb8213b1691e
-  InterAppCommunication: 3239945b30e9dc5f91ef8be057fbcae4e3398e5c
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
