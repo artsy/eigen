@@ -4,11 +4,14 @@
 
 @interface ARInquireForArtworkViewController (Testing)
 
+@property (nonatomic, strong) User *user;
+
 @property (nonatomic, strong, readonly) UITextField *emailInput;
 @property (nonatomic, strong, readonly) UITextField *nameInput;
 
 @property (nonatomic, strong, readonly) UILabel *messageTitleLabel;
 @property (nonatomic, strong, readonly) UILabel *messageBodyLabel;
+@property (nonatomic, strong, readonly) UILabel *userSignature;
 
 @property (nonatomic, strong, readonly) UIButton *failureDismissButton;
 @property (nonatomic, strong, readonly) UIButton *failureTryAgainButton;
@@ -86,6 +89,15 @@ describe(@"logged in", ^{
         ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         return vc;
+    });
+});
+
+describe(@"as an admin", ^{
+    it(@"shows a warning in the user signature about failing", ^{
+        ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:museumGallery fair:nil];
+        vc.user = [User modelWithJSON:@{ @"email" : @"orta@artsymail.net" }];
+        [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        expect(vc.userSignature.text).to.contain(@"will fail");
     });
 });
 
