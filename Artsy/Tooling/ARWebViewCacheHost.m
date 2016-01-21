@@ -60,7 +60,10 @@
 - (WKWebView *)spawnWebview
 {
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-    config.requiresUserActionForMediaPlayback = NO;
+    // iOS9 only
+    if ([config respondsToSelector:@selector(setRequiresUserActionForMediaPlayback:)]) {
+        config.requiresUserActionForMediaPlayback = NO;
+    }
     config.processPool = [ARWebViewCacheHost sharedInstance].processPool;
 
     CGRect deviceBounds = [UIScreen mainScreen].bounds;
