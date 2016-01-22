@@ -67,11 +67,19 @@ extension AuctionViewController {
         self.saleViewModel = saleViewModel
 
         [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
-          (AuctionTitleView(viewModel: saleViewModel), .Title),
+          (AuctionTitleView(viewModel: saleViewModel, delegate: self), .Title),
           (ARWhitespaceGobbler(), .WhitespaceGobbler)
         ].forEach { (view, tag) in
             view.tag = tag.rawValue
             self.stackScrollView.stackView.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
+    }
+}
+
+extension AuctionViewController: AuctionTitleViewDelegate {
+    func buttonPressed() {
+        let refineViewController = AuctionRefineViewController()
+        refineViewController.modalPresentationStyle = .FormSheet
+        presentViewController(refineViewController, animated: true, completion: nil)
     }
 }
