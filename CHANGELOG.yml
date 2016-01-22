@@ -6,6 +6,7 @@ upcoming:
     - Add support for iOS9 facebook - orta
     - Support deprecating iOS8 - orta
     - Send dsym to hockey - orta
+    - Make native auctions view default to off - orta
     - Users with Artsy emails get a warning that their inquiry may fail - orta
     - Converted CHANGELOG to yaml - orta
     - Remove x-callback support now that it's part of the OS - orta
