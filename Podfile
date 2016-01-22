@@ -125,9 +125,7 @@ post_install do |installer|
   app_plist = "Artsy/App_Resources/Artsy-Info.plist"
   plist_buddy = "/usr/libexec/PlistBuddy"
   version = `#{plist_buddy} -c "Print CFBundleShortVersionString" #{app_plist}`.strip
-  puts "Updating CocoaPods' version numbers to #{version}"
-
   installer.pods_project.targets.each do |target|
-    `#{plist_buddy} -c "Set CFBundleShortVersionString #{version}" "Pods/Target Support Files/#{target}/Info.plist"`
+    `#{plist_buddy} -c "Set CFBundleShortVersionString #{version}" "Pods/Target Support Files/#{target}/Info.plist" > /dev/null 2>&1`
   end
 end
