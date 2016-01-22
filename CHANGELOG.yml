@@ -1,5 +1,5 @@
 upcoming:
-  version: 2.5.0
+  version: 2.4.0
   notes:
     - Added Dangerfile to the repo, updated to 0.2.1 - orta
     - Added Dangerfile to the repo - orta
@@ -11,6 +11,7 @@ upcoming:
     - Remove x-callback support now that it's part of the OS - orta
     - New (native) auction banner view - ash
     - Use artworks/filter for the genes artworks - orta
+    - Fixes issue opening ‘works for you’ from a push notification - alloy
 
 releases:
 - version: 2.3.3

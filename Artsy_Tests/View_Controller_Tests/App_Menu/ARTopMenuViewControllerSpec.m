@@ -10,6 +10,7 @@
 #import "ARBrowseViewController.h"
 #import <JSBadgeView/JSBadgeView.h>
 #import "ARSwitchBoard.h"
+#import "ARFavoritesViewController.h"
 
 
 @interface ARTopMenuNavigationDataSource (Test)
@@ -252,12 +253,11 @@ describe(@"navigation", ^{
             ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
             for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
                 id viewcontroller = [switchboard loadPath:menuToPaths[tabIndex]];
-                expect(viewcontroller).to.beTruthy();
-                NSLog(@"VC: %@ %@", tabIndex, viewcontroller);
-                if (tabIndex.integerValue != [ARTopMenuViewController sharedController].selectedTabIndex) {
-
+                if (tabIndex.integerValue == ARTopTabControllerIndexFavorites) {
+                    expect(viewcontroller).to.beAKindOf(ARFavoritesViewController.class);
+                } else {
+                    expect(viewcontroller).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController);
                 }
-                expect([ARTopMenuViewController sharedController].selectedTabIndex).to.equal(tabIndex.integerValue);
             }
         });
     });
