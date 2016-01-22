@@ -79,7 +79,14 @@ extension AuctionViewController {
 extension AuctionViewController: AuctionTitleViewDelegate {
     func buttonPressed() {
         let refineViewController = AuctionRefineViewController()
+        refineViewController.delegate = self
         refineViewController.modalPresentationStyle = .FormSheet
         presentViewController(refineViewController, animated: true, completion: nil)
+    }
+}
+
+extension AuctionViewController: AuctionRefineViewControllerDelegate {
+    func userDidCancel(_: AuctionRefineViewController) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }
