@@ -12,6 +12,7 @@ upcoming:
     - New (native) auction banner view - ash
     - Use artworks/filter for the genes artworks - orta
     - Fixes issue opening ‘works for you’ from a push notification - alloy
+    - Fixes crash on iPad when presenting an alert about opening an external URL - alloy
 
 releases:
 - version: 2.3.3
