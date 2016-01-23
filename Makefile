@@ -86,7 +86,7 @@ deploy_if_beta_branch:
 
 deploy:
 	git push upstream "$(LOCAL_BRANCH):beta"
-
+  open "https://circleci.com/gh/artsy/eigen/tree/beta"
 
 ### Utility functions
 
