@@ -52,14 +52,11 @@ artsy:
 	config/spacecommander/setup-repo.sh
 
 certs:
-	bundle exec match appstore --readonly
+	bundle exec fastlane certs
 
 ### Fastlane Distrubution + Building
 
-ipa: set_git_properties change_version_to_date
-	bundle exec gym
-
-distribute:
+distribute: set_git_properties change_version_to_date
 	bundle exec fastlane ship_beta
 
 ship_appstore:
@@ -68,10 +65,10 @@ ship_appstore:
 ### General Xcode tooling
 
 build:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator build | tee $(CIRCLE_ARTIFACTS)/xcode_build_raw.log | bundle exec xcpretty -c
+	# set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator build | tee $(CIRCLE_ARTIFACTS)/xcode_build_raw.log | bundle exec xcpretty -c
 
 test:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug build test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
+	# set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug build test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
 
 ### CI
 
@@ -82,7 +79,7 @@ ci: CONFIGURATION = Debug
 ci: build
 
 deploy_if_beta_branch:
-	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make certs; make ipa; make distribute; fi
+	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi
 
 deploy:
 	git push upstream "$(LOCAL_BRANCH):beta"
