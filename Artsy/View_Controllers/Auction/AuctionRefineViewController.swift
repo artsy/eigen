@@ -2,13 +2,16 @@ import UIKit
 import Artsy_UIButtons
 import Artsy_UILabels
 import Artsy_UIFonts
+import ORStackView
 
 protocol AuctionRefineViewControllerDelegate: class {
     func userDidCancel(controller: AuctionRefineViewController)
+    func userDidApply(controller: AuctionRefineViewController)
 }
 
 class AuctionRefineViewController: UIViewController {
     weak var delegate: AuctionRefineViewControllerDelegate?
+    let orderings = SwitchValues.allSwitchValues()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,9 +40,16 @@ extension AuctionRefineViewController {
     func userDidCancel() {
         delegate?.userDidCancel(self)
     }
+
+    func userDidPressApply() {
+        delegate?.userDidApply(self)
+    }
 }
 
+private let CellIdentifier = "Cell"
+
 private extension AuctionRefineViewController {
+
     func setupViews() {
         let cancelButton = self.cancelButton()
         view.addSubview(cancelButton)
@@ -50,6 +60,11 @@ private extension AuctionRefineViewController {
         view.addSubview(titleLabel)
         titleLabel.alignTopEdgeWithView(view, predicate: "20")
         titleLabel.alignLeadingEdgeWithView(view, predicate: "20")
+
+        let stackView = self.stackView()
+        view.addSubview(stackView)
+        stackView.alignBottomEdgeWithView(view, predicate: "-20")
+        stackView.alignLeading("0", trailing: "0", toView: view)
     }
 
     func cancelButton() -> UIButton {
@@ -66,5 +81,76 @@ private extension AuctionRefineViewController {
         titleLabel.font = UIFont.serifFontWithSize(20)
         titleLabel.text = "Refine"
         return titleLabel
+    }
+
+    func subtitleLabel(text: String) -> UILabel {
+        let label = ARSansSerifLabel()
+        label.font = UIFont.sansSerifFontWithSize(20) // TODO: Double check this height, seems large.
+        label.text = text
+        return label
+    }
+
+    func stackView() -> ORStackView {
+        let stackView = ORStackView()
+
+        stackView.addSubview(subtitleLabel("Sort"), withTopMargin: "20", sideMargin: "40")
+
+        stackView.addSubview(Separator(), withTopMargin: "10", sideMargin: "0")
+
+        let tableView = UITableView()
+        tableView.registerClass(AuctionRefineTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+        tableView.scrollEnabled = false
+        tableView.separatorColor = .artsyLightGrey()
+        tableView.separatorInset = UIEdgeInsetsZero
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.constrainHeight("\(44*orderings.count - 1)") // -1 to cut off the bottom-most separator
+        stackView.addSubview(tableView, withTopMargin: "0", sideMargin: "40")
+
+        stackView.addSubview(Separator(), withTopMargin: "0", sideMargin: "0")
+
+        let applyButton = ARBlackFlatButton()
+        applyButton.setTitle("Apply", forState: .Normal)
+        applyButton.addTarget(self, action: "userDidPressApply", forControlEvents: .TouchUpInside)
+        stackView.addSubview(applyButton, withTopMargin: "20", sideMargin: "40")
+
+        return stackView
+    }
+}
+
+extension AuctionRefineViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return orderings.count
+    }
+
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier, forIndexPath: indexPath)
+
+        cell.textLabel?.text = orderings[indexPath.row].rawValue
+
+        return cell
+    }
+
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.layoutMargins = UIEdgeInsetsZero
+        cell.preservesSuperviewLayoutMargins = false
+        cell.textLabel?.font = UIFont.serifFontWithSize(16)
+    }
+}
+
+class AuctionRefineTableViewCell: UITableViewCell {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        textLabel?.frame.origin.x = 0
+    }
+}
+
+private class Separator: UIView {
+    private override func willMoveToSuperview(newSuperview: UIView?) {
+        backgroundColor = .artsyLightGrey()
+    }
+
+    private override func intrinsicContentSize() -> CGSize {
+        return CGSize(width: UIViewNoIntrinsicMetric, height: 1)
     }
 }

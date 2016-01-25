@@ -89,4 +89,9 @@ extension AuctionViewController: AuctionRefineViewControllerDelegate {
     func userDidCancel(_: AuctionRefineViewController) {
         dismissViewControllerAnimated(true, completion: nil)
     }
+
+    func userDidApply(_: AuctionRefineViewController) {
+        // TODO: Apply refined
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 }
