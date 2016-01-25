@@ -23,6 +23,13 @@ class AuctionRefineViewController: UIViewController {
 
         // Removes our rounded corners
         presentationController?.presentedView()?.layer.cornerRadius = 0
+        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: animated ? .Slide : .None)
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: animated ? .Slide : .None)
     }
 }
 
@@ -34,20 +41,30 @@ extension AuctionRefineViewController {
 
 private extension AuctionRefineViewController {
     func setupViews() {
-        // TODO: Get image from Katarina? This one is 45x45 instead of 40x40. We can then remove the size constraints, too.
-        let cancelButton = ARCircularActionButton(imageName: "TextfieldClearButton")
-        cancelButton.addTarget(self, action: "userDidCancel", forControlEvents: .TouchUpInside)
+        let cancelButton = self.cancelButton()
         view.addSubview(cancelButton)
         cancelButton.alignTopEdgeWithView(view, predicate: "10")
         cancelButton.alignTrailingEdgeWithView(view, predicate: "-10")
-        cancelButton.constrainWidth("40", height: "40")
 
-        let titleLabel = ARSerifLabel()
-        titleLabel.font = UIFont.serifFontWithSize(20)
-        titleLabel.text = "Refine"
+        let titleLabel = self.titleLabel()
         view.addSubview(titleLabel)
         titleLabel.alignTopEdgeWithView(view, predicate: "20")
         titleLabel.alignLeadingEdgeWithView(view, predicate: "20")
     }
 
+    func cancelButton() -> UIButton {
+        let cancelButton = UIButton(type: .Custom)
+        cancelButton.setImage(UIImage(named: "RefineCancelButton"), forState: .Normal)
+        cancelButton.imageView?.contentMode = .ScaleAspectFit
+        cancelButton.ar_extendHitTestSizeByWidth(4, andHeight: 4) // To expand to required 44pt hit area
+        cancelButton.addTarget(self, action: "userDidCancel", forControlEvents: .TouchUpInside)
+        return cancelButton
+    }
+
+    func titleLabel() -> UILabel {
+        let titleLabel = ARSerifLabel()
+        titleLabel.font = UIFont.serifFontWithSize(20)
+        titleLabel.text = "Refine"
+        return titleLabel
+    }
 }

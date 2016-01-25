@@ -253,6 +253,8 @@
 		5E50987D18F82FCF001AC704 /* AROfflineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E50987C18F82FCF001AC704 /* AROfflineView.m */; };
 		5E5B841F1C52DEC40005CBC7 /* AuctionOrdering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */; };
 		5E6621DD19768F750064FC52 /* MapIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6621DC19768F750064FC52 /* MapIcon@2x.png */; };
+		5E6BA6E91C56B5D700B942C1 /* RefineCancelButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E71C56B5D700B942C1 /* RefineCancelButton@2x.png */; };
+		5E6BA6EA1C56B5D700B942C1 /* RefineCancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E81C56B5D700B942C1 /* RefineCancelButton.png */; };
 		5E71AFC7195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */; };
 		5E8A03B51C52B60900EAF18B /* AuctionRefineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */; };
 		5E9A782019068EDF00734E1B /* ARProfileViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */; };
@@ -1066,6 +1068,8 @@
 		5E50987C18F82FCF001AC704 /* AROfflineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROfflineView.m; sourceTree = "<group>"; };
 		5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionOrdering.swift; path = Auction/AuctionOrdering.swift; sourceTree = "<group>"; };
 		5E6621DC19768F750064FC52 /* MapIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapIcon@2x.png"; sourceTree = "<group>"; };
+		5E6BA6E71C56B5D700B942C1 /* RefineCancelButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RefineCancelButton@2x.png"; sourceTree = "<group>"; };
+		5E6BA6E81C56B5D700B942C1 /* RefineCancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RefineCancelButton.png; sourceTree = "<group>"; };
 		5E71AF231912826B008B1426 /* ARPersonalizeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARPersonalizeViewController.h; sourceTree = "<group>"; };
 		5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewControllerTests.m; sourceTree = "<group>"; };
 		5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineViewController.swift; path = Auction/AuctionRefineViewController.swift; sourceTree = "<group>"; };
@@ -3365,6 +3369,8 @@
 				605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */,
 				605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */,
 				E65BB5221A408A29004C4DB4 /* TextfieldClearButton.png */,
+				5E6BA6E71C56B5D700B942C1 /* RefineCancelButton@2x.png */,
+				5E6BA6E81C56B5D700B942C1 /* RefineCancelButton.png */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -4286,6 +4292,7 @@
 				6012313618B2E44A00B7667F /* MapButtonAction@2x.png in Resources */,
 				608B706317D4A1C80088A56C /* ActionButton@2x.png in Resources */,
 				60215FD817CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib in Resources */,
+				5E6BA6EA1C56B5D700B942C1 /* RefineCancelButton.png in Resources */,
 				49BA7E0E1655ABE600C06572 /* InfoPlist.strings in Resources */,
 				3C4AE99419094F96009C0E8B /* ViewInRoom_Bench@2x.png in Resources */,
 				608B708117D4A1C80088A56C /* MenuHamburger@2x.png in Resources */,
@@ -4336,6 +4343,7 @@
 				608B709417D4A1C80088A56C /* CloseButtonLarge@2x.png in Resources */,
 				608B708017D4A1C80088A56C /* MenuClose@2x.png in Resources */,
 				60D8E63C18D256BB0040BEFD /* ARDemoSplashViewController.xib in Resources */,
+				5E6BA6E91C56B5D700B942C1 /* RefineCancelButton@2x.png in Resources */,
 				3C4AE98219094DAA009C0E8B /* MapAnnotation_Info@2x.png in Resources */,
 				E6FFEAB819C7925600A0D7DE /* splash_2@2x~iphone.jpg in Resources */,
 				608B708317D4A1C80088A56C /* MoreArrow@2x.png in Resources */,
