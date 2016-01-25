@@ -2,6 +2,7 @@ NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent"
 NSString *const AROptionsUseVCR = @"Use offline recording";
 NSString *const AROptionsSettingsMenu = @"Enable user settings";
 NSString *const AROptionsTappingPartnerSendsToPartner = @"Partner name in feed goes to partner";
+NSString *const AROptionsUseNativeAuctions = @"Use Native Auction View";
 
 
 @implementation AROptions
@@ -11,7 +12,8 @@ NSString *const AROptionsTappingPartnerSendsToPartner = @"Partner name in feed g
     return @[
         AROptionsUseVCR,
         AROptionsSettingsMenu,
-        AROptionsTappingPartnerSendsToPartner
+        AROptionsTappingPartnerSendsToPartner,
+        AROptionsUseNativeAuctions
     ];
 }
 

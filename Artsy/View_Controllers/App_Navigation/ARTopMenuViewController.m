@@ -45,9 +45,9 @@ static const CGFloat ARMenuButtonDimension = 46;
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor blackColor];
-    _selectedTabIndex = -1;
+    self.selectedTabIndex = -1;
 
-    _navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
+    self.navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
 
     // TODO: Turn into custom view?
 
@@ -151,8 +151,7 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabIndex] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
-            [self.tabContentView setCurrentViewIndex:tabIndex.integerValue animated:NO];
-            return self.rootNavigationController.topViewController;
+            return [self rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController;
         }];
     }
 }
@@ -329,7 +328,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
     NSInteger index = [self indexOfRootViewController:viewController];
     if (index != NSNotFound) {
-        [self presentRootViewControllerAtIndex:index animated:animated];
+        [self presentRootViewControllerAtIndex:index animated:(animated && index != self.selectedTabIndex)];
     } else {
         [self.rootNavigationController pushViewController:viewController animated:animated];
     }
@@ -379,7 +378,7 @@ static const CGFloat ARMenuButtonDimension = 46;
 
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeSelectedIndex:(NSInteger)index
 {
-    _selectedTabIndex = index;
+    self.selectedTabIndex = index;
 }
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
@@ -398,7 +397,7 @@ static const CGFloat ARMenuButtonDimension = 46;
         return NO;
     }
 
-    if (index == _selectedTabIndex) {
+    if (index == self.selectedTabIndex) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
 
         if (controller.viewControllers.count == 1) {

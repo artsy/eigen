@@ -38,9 +38,14 @@
     return [[ARArtworkSetViewController alloc] initWithArtworkSet:artworkSet fair:fair atIndex:index];
 }
 
-- (AuctionViewController *)loadAuctionWithID:(NSString *)saleID
+- (UIViewController *)loadAuctionWithID:(NSString *)saleID
 {
-    return [[AuctionViewController alloc] initWithSaleID:saleID];
+    if ([AROptions boolForOption:AROptionsUseNativeAuctions]) {
+        return [[AuctionViewController alloc] initWithSaleID:saleID];
+    }
+    NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
+    NSURL *URL = [self resolveRelativeUrl:path];
+    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
 }
 
 - (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
