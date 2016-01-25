@@ -86,7 +86,7 @@ extension AuctionViewController: AuctionTitleViewDelegate {
     func buttonPressed() {
         let refineViewController = AuctionRefineViewController()
         refineViewController.delegate = self
-        refineViewController.initialSettings = self.refineSettings
+        refineViewController.initialSettings = refineSettings
         refineViewController.modalPresentationStyle = .FormSheet
         presentViewController(refineViewController, animated: true, completion: nil)
     }

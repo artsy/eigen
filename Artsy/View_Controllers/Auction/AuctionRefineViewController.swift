@@ -13,7 +13,13 @@ class AuctionRefineViewController: UIViewController {
     weak var delegate: AuctionRefineViewControllerDelegate?
     var applyButton: UIButton?
 
-    var initialSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber)
+    var initialSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber) {
+        didSet {
+            // Our "current settings" _must_ be set to our initial settings.
+            // Normally we'd use a lazy property for currentSettings but lazy properties can't have observers.
+            currentSettings = initialSettings
+        }
+    }
     var currentSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber) {
         didSet {
             applyButton?.enabled = currentSettings != initialSettings
@@ -76,7 +82,7 @@ private extension AuctionRefineViewController {
 
     func cancelButton() -> UIButton {
         let cancelButton = UIButton(type: .Custom)
-        cancelButton.setImage(UIImage(named: "RefineCancelButton"), forState: .Normal)
+        cancelButton.setImage(UIImage(named: "AuctionRefineCancelButton"), forState: .Normal)
         cancelButton.imageView?.contentMode = .ScaleAspectFit
         cancelButton.ar_extendHitTestSizeByWidth(4, andHeight: 4) // To expand to required 44pt hit area
         cancelButton.addTarget(self, action: "userDidCancel", forControlEvents: .TouchUpInside)
@@ -92,7 +98,7 @@ private extension AuctionRefineViewController {
 
     func subtitleLabel(text: String) -> UILabel {
         let label = ARSansSerifLabel()
-        label.font = UIFont.sansSerifFontWithSize(20) // TODO: Double check this height, seems large.
+        label.font = UIFont.sansSerifFontWithSize(12)
         label.text = text
         return label
     }
@@ -111,13 +117,14 @@ private extension AuctionRefineViewController {
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.dataSource = self
         tableView.delegate = self
-        let tableViewHeight = 44 * AuctionOrderingSwitchValue.allSwitchValues().count - 1 // -1 to cut off the bottom-most separator
+        let tableViewHeight = 44 * AuctionOrderingSwitchValue.allSwitchValues().count - 1 // -1 to cut off the bottom-most separator that we'll manually add below.
         tableView.constrainHeight("\(tableViewHeight)")
         stackView.addSubview(tableView, withTopMargin: "0", sideMargin: "40")
 
         stackView.addSubview(Separator(), withTopMargin: "0", sideMargin: "0")
 
         let applyButton = ARBlackFlatButton()
+        applyButton.enabled = false
         applyButton.setTitle("Apply", forState: .Normal)
         applyButton.addTarget(self, action: "userDidPressApply", forControlEvents: .TouchUpInside)
         stackView.addSubview(applyButton, withTopMargin: "20", sideMargin: "40")
@@ -145,11 +152,21 @@ extension AuctionRefineViewController: UITableViewDataSource, UITableViewDelegat
         cell.layoutMargins = UIEdgeInsetsZero
         cell.preservesSuperviewLayoutMargins = false
         cell.textLabel?.font = UIFont.serifFontWithSize(16)
+        cell.checked = currentSettings.ordering == AuctionOrderingSwitchValue.allSwitchValues()[indexPath.row]
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+        if let oldCheckedCellIndex = AuctionOrderingSwitchValue.allSwitchValues().indexOf(currentSettings.ordering) {
+            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: oldCheckedCellIndex, inSection: 0))
+            cell?.checked = false
+        }
+
         currentSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.fromInt(indexPath.row))
+
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.checked = true
     }
 }
 
@@ -157,6 +174,21 @@ class AuctionRefineTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         textLabel?.frame.origin.x = 0
+    }
+}
+
+extension UITableViewCell {
+    var checked: Bool {
+        set(value) {
+            if value {
+                accessoryView = UIImageView(image: UIImage(named: "AuctionRefineCheck"))
+            } else {
+                accessoryView = nil
+            }
+        }
+        get {
+            return accessoryView != nil
+        }
     }
 }
 
