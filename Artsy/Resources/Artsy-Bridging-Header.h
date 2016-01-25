@@ -9,5 +9,9 @@
 #import "ARWhitespaceGobbler.h"
 #import "ARCountdownView.h"
 
+// Perhaps in the future we could use https://github.com/orta/ar_dispatch/ for now though eigen does more than this lib
+#import "ARDispatchManager.h"
+
+
 // Models. Importing Models.h is a no-go, since each header implicitly relies on a bunch of stuff imported from the PCH.
 #import "Sale.h"

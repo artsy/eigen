@@ -27,6 +27,7 @@
 #import "ARSpotlight.h"
 #import "ARWebViewCacheHost.h"
 #import "ARAppStatus.h"
+#import "Artsy-Swift.h"
 
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
@@ -43,6 +44,8 @@
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
 @property (strong, nonatomic, readwrite) NSDictionary *initialLaunchOptions;
+@property (strong, nonatomic, readwrite) ARHockeyFeedbackDelegate *feedbackDelegate;
+
 @end
 
 
@@ -265,6 +268,9 @@ static ARAppDelegate *_sharedInstance = nil;
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORDeleteKey:^{
         [ARTopMenuViewController.sharedController.rootNavigationController popViewControllerAnimated:YES];
     }];
+
+    self.feedbackDelegate = [[ARHockeyFeedbackDelegate alloc] init];
+    [self.feedbackDelegate listenForScreenshots];
 }
 
 - (void)setupRatingTool
