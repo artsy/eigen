@@ -4,10 +4,15 @@ import ORStackView
 class AuctionViewController: UIViewController {
     let saleID: String
     var saleViewModel: SaleViewModel?
+    var appeared = false
 
     var stackScrollView: ORStackScrollView!
 
-    var willAppearToken: dispatch_once_t = 0
+    var refineSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber) {
+        didSet {
+            // TODO: Apply settings
+        }
+    }
 
     lazy var networkModel: AuctionNetworkModel = {
         return AuctionNetworkModel(saleID: self.saleID)
@@ -40,17 +45,18 @@ class AuctionViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        dispatch_once(&willAppearToken) { () -> Void in
-            self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
-            self.networkModel.fetchSale { result in
-                self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
+        guard appeared == false else { return }
+        appeared = true
 
-                switch result {
-                case .Success(let saleViewModel):
-                    self.setupForSale(saleViewModel)
-                case .Failure(_):
-                    break // TODO: How to handle error?
-                }
+        self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
+        self.networkModel.fetchSale { result in
+            self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
+
+            switch result {
+            case .Success(let saleViewModel):
+                self.setupForSale(saleViewModel)
+            case .Failure(_):
+                break // TODO: How to handle error?
             }
         }
     }
@@ -80,18 +86,19 @@ extension AuctionViewController: AuctionTitleViewDelegate {
     func buttonPressed() {
         let refineViewController = AuctionRefineViewController()
         refineViewController.delegate = self
+        refineViewController.initialSettings = self.refineSettings
         refineViewController.modalPresentationStyle = .FormSheet
         presentViewController(refineViewController, animated: true, completion: nil)
     }
 }
 
 extension AuctionViewController: AuctionRefineViewControllerDelegate {
-    func userDidCancel(_: AuctionRefineViewController) {
+    func userDidCancel(controller: AuctionRefineViewController) {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
-    func userDidApply(_: AuctionRefineViewController) {
-        // TODO: Apply refined
+    func userDidApply(settings: AuctionRefineSettings, controller: AuctionRefineViewController) {
+        refineSettings = settings
         dismissViewControllerAnimated(true, completion: nil)
     }
 }

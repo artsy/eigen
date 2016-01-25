@@ -6,7 +6,7 @@ protocol AuctionOrderable {
     var currentBid: Int { get }
 }
 
-enum SwitchValues: String {
+enum AuctionOrderingSwitchValue: String {
     case LotNumber = "Grid"
     case ArtistAlphabetical = "Artist A–Z"
     case MostBids = "Most Bids"
@@ -31,12 +31,13 @@ enum SwitchValues: String {
         }
     }
 
-    static func allSwitchValues() -> [SwitchValues] {
-        return [LotNumber, ArtistAlphabetical, LeastBids, MostBids, HighestCurrentBid, LowestCurrentBid]
+    static func fromInt(value: Int) -> AuctionOrderingSwitchValue {
+        guard value < allSwitchValues().count else { return .LotNumber } // Lot number is a safe default
+        return allSwitchValues()[value]
     }
 
-    static func allSwitchValueNames() -> [String] {
-        return allSwitchValues().map { $0.rawValue }
+    static func allSwitchValues() -> [AuctionOrderingSwitchValue] {
+        return [LotNumber, ArtistAlphabetical, LeastBids, MostBids, HighestCurrentBid, LowestCurrentBid]
     }
 }
 

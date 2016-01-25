@@ -6,12 +6,19 @@ import ORStackView
 
 protocol AuctionRefineViewControllerDelegate: class {
     func userDidCancel(controller: AuctionRefineViewController)
-    func userDidApply(controller: AuctionRefineViewController)
+    func userDidApply(settings: AuctionRefineSettings, controller: AuctionRefineViewController)
 }
 
 class AuctionRefineViewController: UIViewController {
     weak var delegate: AuctionRefineViewControllerDelegate?
-    let orderings = SwitchValues.allSwitchValues()
+    var applyButton: UIButton?
+
+    var initialSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber)
+    var currentSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber) {
+        didSet {
+            applyButton?.enabled = currentSettings != initialSettings
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +49,7 @@ extension AuctionRefineViewController {
     }
 
     func userDidPressApply() {
-        delegate?.userDidApply(self)
+        delegate?.userDidApply(currentSettings, controller: self)
     }
 }
 
@@ -104,7 +111,8 @@ private extension AuctionRefineViewController {
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.constrainHeight("\(44*orderings.count - 1)") // -1 to cut off the bottom-most separator
+        let tableViewHeight = 44 * AuctionOrderingSwitchValue.allSwitchValues().count - 1 // -1 to cut off the bottom-most separator
+        tableView.constrainHeight("\(tableViewHeight)")
         stackView.addSubview(tableView, withTopMargin: "0", sideMargin: "40")
 
         stackView.addSubview(Separator(), withTopMargin: "0", sideMargin: "0")
@@ -114,19 +122,21 @@ private extension AuctionRefineViewController {
         applyButton.addTarget(self, action: "userDidPressApply", forControlEvents: .TouchUpInside)
         stackView.addSubview(applyButton, withTopMargin: "20", sideMargin: "40")
 
+        self.applyButton = applyButton
+
         return stackView
     }
 }
 
 extension AuctionRefineViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return orderings.count
+        return AuctionOrderingSwitchValue.allSwitchValues().count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier, forIndexPath: indexPath)
 
-        cell.textLabel?.text = orderings[indexPath.row].rawValue
+        cell.textLabel?.text = AuctionOrderingSwitchValue.allSwitchValues()[indexPath.row].rawValue
 
         return cell
     }
@@ -135,6 +145,11 @@ extension AuctionRefineViewController: UITableViewDataSource, UITableViewDelegat
         cell.layoutMargins = UIEdgeInsetsZero
         cell.preservesSuperviewLayoutMargins = false
         cell.textLabel?.font = UIFont.serifFontWithSize(16)
+    }
+
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        currentSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.fromInt(indexPath.row))
     }
 }
 
