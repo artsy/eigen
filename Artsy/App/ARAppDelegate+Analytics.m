@@ -85,8 +85,9 @@
     [Adjust appDidLaunch:adjustConfig];
 
 #if DEBUG
-    [[BITHockeyManager sharedHockeyManager] setDisableUpdateManager:YES];
-    [[BITHockeyManager sharedHockeyManager] setDisableCrashManager: YES];
+    BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
+    hockey.disableUpdateManager = YES;
+    hockey.disableCrashManager = YES;
 #endif
 
     ARAnalyticsPropertiesBlock fairAndProfileIDBlock = ^NSDictionary*(ARFairGuideViewController *controller, NSArray *_) {

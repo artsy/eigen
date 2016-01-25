@@ -279,6 +279,12 @@
 		60026AF91BDF76040040257C /* ARAuctionArtworkResultsViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60026AF71BDE97320040257C /* ARAuctionArtworkResultsViewControllerSpec.m */; };
 		600415C917C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 600415C817C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m */; };
 		600A734317DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 600A734217DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m */; };
+		600B8B3B1C4F963D00776F84 /* ARHockeyFeedbackDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600B8B3A1C4F963D00776F84 /* ARHockeyFeedbackDelegate.swift */; };
+		600B8B401C4FCEE000776F84 /* push_notifications.md in Sources */ = {isa = PBXBuildFile; fileRef = 600B8B3C1C4FCEE000776F84 /* push_notifications.md */; };
+		600B8B411C4FCEE000776F84 /* welcome_to_eigen_beta.md in Sources */ = {isa = PBXBuildFile; fileRef = 600B8B3D1C4FCEE000776F84 /* welcome_to_eigen_beta.md */; };
+		600B8B421C4FCEE000776F84 /* notifications.md in Sources */ = {isa = PBXBuildFile; fileRef = 600B8B3E1C4FCEE000776F84 /* notifications.md */; };
+		600B8B431C4FCEE000776F84 /* thanks.md in Sources */ = {isa = PBXBuildFile; fileRef = 600B8B3F1C4FCEE000776F84 /* thanks.md */; };
+		600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */ = {isa = PBXBuildFile; fileRef = 600B8B441C4FCEEC00776F84 /* CHANGELOG.yml */; };
 		600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 600EE29C16B3003F002E9F9A /* ARNavigationButton.m */; };
 		6012313418B153C500B7667F /* ARFairArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6012313318B153C500B7667F /* ARFairArtistViewController.m */; };
 		6012313618B2E44A00B7667F /* MapButtonAction@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6012313518B2E44A00B7667F /* MapButtonAction@2x.png */; };
@@ -1101,6 +1107,12 @@
 		600415C817C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+RelatedModels.m"; sourceTree = "<group>"; };
 		600A734117DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+DeviceTokens.h"; sourceTree = "<group>"; };
 		600A734217DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+DeviceTokens.m"; sourceTree = "<group>"; };
+		600B8B3A1C4F963D00776F84 /* ARHockeyFeedbackDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARHockeyFeedbackDelegate.swift; sourceTree = "<group>"; };
+		600B8B3C1C4FCEE000776F84 /* push_notifications.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = push_notifications.md; sourceTree = "<group>"; };
+		600B8B3D1C4FCEE000776F84 /* welcome_to_eigen_beta.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = welcome_to_eigen_beta.md; sourceTree = "<group>"; };
+		600B8B3E1C4FCEE000776F84 /* notifications.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = notifications.md; sourceTree = "<group>"; };
+		600B8B3F1C4FCEE000776F84 /* thanks.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = thanks.md; sourceTree = "<group>"; };
+		600B8B441C4FCEEC00776F84 /* CHANGELOG.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.yml; sourceTree = SOURCE_ROOT; };
 		600EE29C16B3003F002E9F9A /* ARNavigationButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationButton.m; sourceTree = "<group>"; };
 		600EE29D16B3003F002E9F9A /* ARNavigationButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNavigationButton.h; sourceTree = "<group>"; };
 		6012313218B153C500B7667F /* ARFairArtistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairArtistViewController.h; sourceTree = "<group>"; };
@@ -1195,7 +1207,6 @@
 		6044CFC3179D64F500CE4132 /* Theme.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Theme.json; sourceTree = "<group>"; };
 		6044CFC6179DD3C200CE4132 /* ARTheme+HeightAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTheme+HeightAdditions.h"; sourceTree = "<group>"; };
 		6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTheme+HeightAdditions.m"; sourceTree = "<group>"; };
-		60466F761A698B96004CAA93 /* BETA_CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = BETA_CHANGELOG.md; sourceTree = "<group>"; };
 		60476F4B1AD87DB200670502 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Artwork_Icon_Share@2x.png"; sourceTree = "<group>"; };
 		605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallMoreVerticalArrow.png; sourceTree = "<group>"; };
@@ -1443,7 +1454,6 @@
 		60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelsPreviewDelegate.m; sourceTree = "<group>"; };
 		60C26DEB1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmbeddedModelPreviewViewController.h; sourceTree = "<group>"; };
 		60C26DEC1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelPreviewViewController.m; sourceTree = "<group>"; };
-		60C4BD6317B3B91800D79058 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
 		60CAA3741782D87B00CA3DA8 /* ARContentViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARContentViewControllers.h; sourceTree = "<group>"; };
 		60CE3CA91B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyOHHTTPAPI.h; sourceTree = "<group>"; };
 		60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyOHHTTPAPI.m; sourceTree = "<group>"; };
@@ -2493,6 +2503,7 @@
 				607BF5A91C2413810034B519 /* ARAppStatus.h */,
 				607BF5AA1C2413810034B519 /* ARAppStatus.m */,
 				5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */,
+				600B8B3A1C4F963D00776F84 /* ARHockeyFeedbackDelegate.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -3828,6 +3839,11 @@
 		60FFE3D5188E916C0012B485 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
+				600B8B441C4FCEEC00776F84 /* CHANGELOG.yml */,
+				600B8B3C1C4FCEE000776F84 /* push_notifications.md */,
+				600B8B3D1C4FCEE000776F84 /* welcome_to_eigen_beta.md */,
+				600B8B3E1C4FCEE000776F84 /* notifications.md */,
+				600B8B3F1C4FCEE000776F84 /* thanks.md */,
 				60FFE3D6188E91C50012B485 /* certs.md */,
 				60FFE3D7188E91C50012B485 /* deploy_to_app_store.md */,
 				60FFE3D8188E91C50012B485 /* deploy_to_beta.md */,
@@ -3836,8 +3852,6 @@
 				60FFE3DD188E921A0012B485 /* eigen_tips.md */,
 				60FFE3DA188E91C50012B485 /* README.md */,
 				60E6446F17BE219E004486B3 /* HACKS.md */,
-				60466F761A698B96004CAA93 /* BETA_CHANGELOG.md */,
-				60C4BD6317B3B91800D79058 /* CHANGELOG.md */,
 				60A612B918969307008FC19D /* overview.md */,
 			);
 			name = Documentation;
@@ -4233,6 +4247,7 @@
 				3C4AE98319094DAA009C0E8B /* MapAnnotation_Installation@2x.png in Resources */,
 				E6FFEAB319C7925600A0D7DE /* onboard_3@2x~ipad.jpg in Resources */,
 				608B706D17D4A1C80088A56C /* Artwork_Icon_VIR.png in Resources */,
+				600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */,
 				608B707B17D4A1C80088A56C /* FooterBackground@2x.png in Resources */,
 				3C4AE99319094F96009C0E8B /* ViewInRoom_BaseNoBench@2x.png in Resources */,
 				E6FFEAB019C7925600A0D7DE /* onboard_1@2x~iphone.jpg in Resources */,
@@ -4508,6 +4523,7 @@
 				60A224FC17CE040B00233CA1 /* AROnboardingTransition.m in Sources */,
 				6088B75417D1DBAC00E4BB67 /* ARAnalyticsConstants.m in Sources */,
 				3CF144AE18E460EF00B1A764 /* ArtsyAPI+SystemTime.m in Sources */,
+				600B8B411C4FCEE000776F84 /* welcome_to_eigen_beta.md in Sources */,
 				83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */,
 				49A77221165ADB6E00BC6FD3 /* ARFeedTimeline.m in Sources */,
 				49A77235165ADB9400BC6FD3 /* ARFeedItem.m in Sources */,
@@ -4716,6 +4732,7 @@
 				5E50987D18F82FCF001AC704 /* AROfflineView.m in Sources */,
 				E6C0316018B291AB00137242 /* ARButtonWithCircularImage.m in Sources */,
 				60903CD5175CF23F002AB800 /* ARTickedTableViewCell.m in Sources */,
+				600B8B431C4FCEE000776F84 /* thanks.md in Sources */,
 				E61446AD195A1CDC00BFB7C3 /* ARArtworkFavoritesNetworkModel.m in Sources */,
 				60903CD8175CF27D002AB800 /* ARAdminTableViewCell.m in Sources */,
 				60903CDD175DE1C2002AB800 /* ARFeed.m in Sources */,
@@ -4751,6 +4768,7 @@
 				3CCCC8A21899B412008015DD /* ArtsyAPI+Fairs.m in Sources */,
 				E667F12C18EC889F00503F50 /* ARLogFormatter.m in Sources */,
 				342F961978DD1D771928472A /* UIDevice-Hardware.m in Sources */,
+				600B8B421C4FCEE000776F84 /* notifications.md in Sources */,
 				60026AF51BDE912C0040257C /* ARAuctionResultsNetworkModel.m in Sources */,
 				342F90AEE6950A52210D2DC2 /* UILabel+Typography.m in Sources */,
 				3C6CB60918ABD8D2008DFE3B /* ARPostsViewController.m in Sources */,
@@ -4772,6 +4790,7 @@
 				342F979DA15866BB8A70CC23 /* ORStackView+ArtsyViews.m in Sources */,
 				D3F3FA1F1AAE1BFC00E88359 /* ARBrowseViewController.m in Sources */,
 				342F9667FC693B47498549FE /* UIApplicationStateEnum.m in Sources */,
+				600B8B3B1C4F963D00776F84 /* ARHockeyFeedbackDelegate.swift in Sources */,
 				342F9D1673764FE7442062AC /* ARNetworkErrorManager.m in Sources */,
 				D37E4CFB1A92AC5A00023E2C /* ARAnnotatedMapView.m in Sources */,
 				609F985C1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m in Sources */,
@@ -4803,6 +4822,7 @@
 				342F949383329F78F589BE53 /* MTLModel+Dictionary.m in Sources */,
 				342F996B2CF23951168534AD /* Follow.m in Sources */,
 				342F9308EE5B3487AE62276D /* ARShowViewController.m in Sources */,
+				600B8B401C4FCEE000776F84 /* push_notifications.md in Sources */,
 				609F984B1AC0F4EB0079FE21 /* WatchShow.m in Sources */,
 				342F953528DFA7BCEAC0552A /* ArtsyAPI+Shows.m in Sources */,
 				342F9C00DD759E6DEA845426 /* ARImagePageViewController.m in Sources */,

@@ -2,7 +2,6 @@ upcoming:
   version: 2.4.0
   notes:
     - Added Dangerfile to the repo, updated to 0.2.1 - orta
-    - Added Dangerfile to the repo - orta
     - Add support for iOS9 facebook - orta
     - Support deprecating iOS8 - orta
     - Send dsym to hockey - orta
@@ -12,6 +11,8 @@ upcoming:
     - Remove x-callback support now that it's part of the OS - orta
     - New (native) auction banner view - ash
     - Use artworks/filter for the genes artworks - orta
+    - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger - orta
+
     - Fixes issue opening ‘works for you’ from a push notification - alloy
     - Fixes crash on iPad when presenting an alert about opening an external URL - alloy
 
