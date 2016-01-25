@@ -9,7 +9,10 @@ class ARHockeyFeedbackDelegate: NSObject {
         let mainQueue = NSOperationQueue.mainQueue()
         let notifications = NSNotificationCenter.defaultCenter()
         notifications.addObserverForName(UIApplicationUserDidTakeScreenshotNotification, object: nil, queue: mainQueue) { notification in
-            ar_dispatch_after(1.5, self.showFeedbackWithRecentScreenshot)
+            // When I looked at how Hockey did this, I found that they would delay by a second
+            // presumably it can take a second to have the image saved in the asset store before
+            // we can pull it out again.
+            ar_dispatch_after(1, self.showFeedbackWithRecentScreenshot)
         }
     }
 
