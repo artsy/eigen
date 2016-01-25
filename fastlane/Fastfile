@@ -16,7 +16,7 @@ lane :ship_beta do
 
   # Ship to hockey first, testflight has to wait: "processing"
   hockey notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN'], public_identifier: ENV['HockeyAppLiveID']
-  pilot changelog: readme
+  pilot changelog: beta_readme
 
   slack message: "There is a new Eigen beta available. Grab it from Testflight on your iOS device.",
         channel: "artsy-ios",
