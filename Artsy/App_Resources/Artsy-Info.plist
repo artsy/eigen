@@ -66,17 +66,24 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2016.01.06</string>
+	<string>2016.01.25</string>
 	<key>FacebookAppID</key>
 	<string>308278682573501</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>GITCommitRev</key>
-	<string>131e0b6</string>
+	<string>aa7255f</string>
 	<key>GITCommitSha</key>
-	<string>131e0b60ca1001a3334f6d6350f8722101bb6c4f</string>
+	<string>aa7255fd98a7abc5a562d878fbfcc418cabe1943</string>
 	<key>GITRemoteOriginURL</key>
 	<string>https://github.com/artsy/eigen.git</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -168,12 +175,5 @@
 			</dict>
 		</dict>
 	</array>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>fbapi</string>
-        <string>fb-messenger-api</string>
-        <string>fbauth2</string>
-        <string>fbshareextension</string>
-    </array>
 </dict>
 </plist>
