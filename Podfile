@@ -99,7 +99,7 @@ target 'Artsy' do
   pod 'DRKonamiCode'
 
   # Swift pods 🎉
-  # Nothing yet 😢
+  pod 'Then'
 
 end
 
@@ -111,6 +111,11 @@ target 'Artsy Tests' do
   pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
+
+  # Swift pods 🎉
+  pod 'Quick'
+  pod 'Nimble'
+  pod 'Nimble-Snapshots', '~> 3.0.0'
 end
 
 

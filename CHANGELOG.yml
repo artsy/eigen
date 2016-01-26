@@ -10,6 +10,7 @@ upcoming:
     - Converted CHANGELOG to yaml - orta
     - Remove x-callback support now that it's part of the OS - orta
     - New (native) auction banner view - ash
+    - New (native) auction refine controls - ash
     - Use artworks/filter for the genes artworks - orta
     - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger - orta
 

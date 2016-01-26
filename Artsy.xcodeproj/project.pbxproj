@@ -251,8 +251,13 @@
 		5E47F35B1C4444A900EC0751 /* SaleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F35A1C4444A900EC0751 /* SaleViewModel.swift */; };
 		5E47F35D1C444E3300EC0751 /* UIViewController+ORStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F35C1C444E3300EC0751 /* UIViewController+ORStackView.swift */; };
 		5E50987D18F82FCF001AC704 /* AROfflineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E50987C18F82FCF001AC704 /* AROfflineView.m */; };
+		5E5B841F1C52DEC40005CBC7 /* AuctionOrdering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */; };
 		5E6621DD19768F750064FC52 /* MapIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6621DC19768F750064FC52 /* MapIcon@2x.png */; };
+		5E6BA6E91C56B5D700B942C1 /* AuctionRefineCancelButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E71C56B5D700B942C1 /* AuctionRefineCancelButton@2x.png */; };
+		5E6BA6EA1C56B5D700B942C1 /* AuctionRefineCancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E81C56B5D700B942C1 /* AuctionRefineCancelButton.png */; };
 		5E71AFC7195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */; };
+		5E8A03B51C52B60900EAF18B /* AuctionRefineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */; };
+		5E8D453A1C57EE4400ACBDE6 /* AuctionRefineViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED05A7A1C57ED1F0042785A /* AuctionRefineViewControllerTests.swift */; };
 		5E9A782019068EDF00734E1B /* ARProfileViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */; };
 		5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */; };
 		5EA250631C4EDBE7001E4950 /* ARCountdownViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA250621C4EDBE7001E4950 /* ARCountdownViewTests.m */; };
@@ -270,6 +275,9 @@
 		5ED9EC021C458E9500C979A6 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */; };
 		5EDB120B197E691100E241F0 /* ARParallaxHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB120A197E691100E241F0 /* ARParallaxHeaderViewController.m */; };
 		5EE5DE14190167A400040B84 /* ARProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE5DE13190167A400040B84 /* ARProfileViewController.m */; };
+		5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */; };
+		5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */; };
+		5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */; };
 		5EFE2BE41910FC81003B5EEA /* ARAppDelegate+Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */; };
 		5EFF52BA1976CA6C00E2A563 /* ARSearchFieldButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF52B91976CA6C00E2A563 /* ARSearchFieldButton.m */; };
 		5EFF52BE197916C800E2A563 /* ARPendingOperationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF52BD197916C800E2A563 /* ARPendingOperationViewController.m */; };
@@ -1062,9 +1070,13 @@
 		5E47F35C1C444E3300EC0751 /* UIViewController+ORStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+ORStackView.swift"; sourceTree = "<group>"; };
 		5E50987B18F82FCF001AC704 /* AROfflineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROfflineView.h; sourceTree = "<group>"; };
 		5E50987C18F82FCF001AC704 /* AROfflineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROfflineView.m; sourceTree = "<group>"; };
+		5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionOrdering.swift; path = Auction/AuctionOrdering.swift; sourceTree = "<group>"; };
 		5E6621DC19768F750064FC52 /* MapIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapIcon@2x.png"; sourceTree = "<group>"; };
+		5E6BA6E71C56B5D700B942C1 /* AuctionRefineCancelButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AuctionRefineCancelButton@2x.png"; sourceTree = "<group>"; };
+		5E6BA6E81C56B5D700B942C1 /* AuctionRefineCancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AuctionRefineCancelButton.png; sourceTree = "<group>"; };
 		5E71AF231912826B008B1426 /* ARPersonalizeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARPersonalizeViewController.h; sourceTree = "<group>"; };
 		5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewControllerTests.m; sourceTree = "<group>"; };
+		5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineViewController.swift; path = Auction/AuctionRefineViewController.swift; sourceTree = "<group>"; };
 		5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARProfileViewControllerTests.m; sourceTree = "<group>"; };
 		5E9A78211906BA3D00734E1B /* OCMArg+ClassChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCMArg+ClassChecker.h"; sourceTree = "<group>"; };
 		5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OCMArg+ClassChecker.m"; sourceTree = "<group>"; };
@@ -1083,12 +1095,16 @@
 		5ECFA8E91907E9AB000B92EA /* ARSwitchViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchViewTests.m; sourceTree = "<group>"; };
 		5ECFA8ED1907FC6C000B92EA /* ARSwitchView+FairGuide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchView+FairGuide.h"; sourceTree = "<group>"; };
 		5ECFA8EE1907FC6C000B92EA /* ARSwitchView+FairGuide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchView+FairGuide.m"; sourceTree = "<group>"; };
+		5ED05A7A1C57ED1F0042785A /* AuctionRefineViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionRefineViewControllerTests.swift; sourceTree = "<group>"; };
 		5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftExtensions.swift; sourceTree = "<group>"; };
 		5EDB1209197E691100E241F0 /* ARParallaxHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARParallaxHeaderViewController.h; sourceTree = "<group>"; };
 		5EDB120A197E691100E241F0 /* ARParallaxHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARParallaxHeaderViewController.m; sourceTree = "<group>"; };
 		5EE5DE12190167A400040B84 /* ARProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARProfileViewController.h; sourceTree = "<group>"; };
 		5EE5DE13190167A400040B84 /* ARProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARProfileViewController.m; sourceTree = "<group>"; };
 		5EE5DE1519019EFD00040B84 /* ARFairAwareObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARFairAwareObject.h; sourceTree = "<group>"; };
+		5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineSettings.swift; path = Auction/AuctionRefineSettings.swift; sourceTree = "<group>"; };
+		5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AuctionRefineCheck.png; sourceTree = "<group>"; };
+		5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AuctionRefineCheck@2x.png"; sourceTree = "<group>"; };
 		5EFE2BE21910FC81003B5EEA /* ARAppDelegate+Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Analytics.h"; sourceTree = "<group>"; };
 		5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Analytics.m"; sourceTree = "<group>"; };
 		5EFF52B81976CA6C00E2A563 /* ARSearchFieldButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSearchFieldButton.h; sourceTree = "<group>"; };
@@ -2253,6 +2269,7 @@
 		3CB97D8D18870979008C44FE /* View Controller Tests */ = {
 			isa = PBXGroup;
 			children = (
+				5ED05A791C57ED110042785A /* Auctions */,
 				60026AF61BDE97110040257C /* Auction Results */,
 				E61E773A19A7E8DB00C55E14 /* Gene */,
 				E6BC2C3A197EDBA80063ED3C /* Browse */,
@@ -2658,6 +2675,9 @@
 			children = (
 				5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */,
 				5E47F3571C44378E00EC0751 /* AuctionNetworkModel.swift */,
+				5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */,
+				5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */,
+				5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */,
 			);
 			name = Auction;
 			sourceTree = "<group>";
@@ -2689,6 +2709,14 @@
 				3C4AE9A319096CED009C0E8B /* ARFairMapAnnotationCallOutView.m */,
 			);
 			path = Fair;
+			sourceTree = "<group>";
+		};
+		5ED05A791C57ED110042785A /* Auctions */ = {
+			isa = PBXGroup;
+			children = (
+				5ED05A7A1C57ED1F0042785A /* AuctionRefineViewControllerTests.swift */,
+			);
+			name = Auctions;
 			sourceTree = "<group>";
 		};
 		600249F0166CFCCE007E6E9A /* Core */ = {
@@ -3359,6 +3387,10 @@
 				605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */,
 				605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */,
 				E65BB5221A408A29004C4DB4 /* TextfieldClearButton.png */,
+				5E6BA6E71C56B5D700B942C1 /* AuctionRefineCancelButton@2x.png */,
+				5E6BA6E81C56B5D700B942C1 /* AuctionRefineCancelButton.png */,
+				5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */,
+				5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -4280,6 +4312,7 @@
 				6012313618B2E44A00B7667F /* MapButtonAction@2x.png in Resources */,
 				608B706317D4A1C80088A56C /* ActionButton@2x.png in Resources */,
 				60215FD817CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib in Resources */,
+				5E6BA6EA1C56B5D700B942C1 /* AuctionRefineCancelButton.png in Resources */,
 				49BA7E0E1655ABE600C06572 /* InfoPlist.strings in Resources */,
 				3C4AE99419094F96009C0E8B /* ViewInRoom_Bench@2x.png in Resources */,
 				608B708117D4A1C80088A56C /* MenuHamburger@2x.png in Resources */,
@@ -4297,6 +4330,7 @@
 				3C4AE97F19094DAA009C0E8B /* MapAnnotation_Food@2x.png in Resources */,
 				E620C74819C746530064A0FF /* Images.xcassets in Resources */,
 				3CAC639F190AA87A00B17325 /* MapAnnotationCallout_Partner@2x.png in Resources */,
+				5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */,
 				518B421E1B57CF7100210A02 /* AttentionIcon@2x.png in Resources */,
 				E66492D318B7D26B00531B8F /* Parallax_Overlay_Top@2x.png in Resources */,
 				3C4AE97E19094DAA009C0E8B /* MapAnnotation_Drink@2x.png in Resources */,
@@ -4309,6 +4343,7 @@
 				3C4AE99519094F96009C0E8B /* ViewInRoom_Man_3@2x.png in Resources */,
 				608B706B17D4A1C80088A56C /* Heart_Black@2x.png in Resources */,
 				3C4AE96719094969009C0E8B /* SearchIcon_HeavyGrey@2x.png in Resources */,
+				5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */,
 				3C4AE96B19094969009C0E8B /* SearchThumb_LightGrey@2x.png in Resources */,
 				51DA12251B596035001B6F2A /* RefreshIcon@2x.png in Resources */,
 				608B706E17D4A1C80088A56C /* Artwork_Icon_VIR@2x.png in Resources */,
@@ -4330,6 +4365,7 @@
 				608B709417D4A1C80088A56C /* CloseButtonLarge@2x.png in Resources */,
 				608B708017D4A1C80088A56C /* MenuClose@2x.png in Resources */,
 				60D8E63C18D256BB0040BEFD /* ARDemoSplashViewController.xib in Resources */,
+				5E6BA6E91C56B5D700B942C1 /* AuctionRefineCancelButton@2x.png in Resources */,
 				3C4AE98219094DAA009C0E8B /* MapAnnotation_Info@2x.png in Resources */,
 				E6FFEAB819C7925600A0D7DE /* splash_2@2x~iphone.jpg in Resources */,
 				608B708317D4A1C80088A56C /* MoreArrow@2x.png in Resources */,
@@ -4587,6 +4623,7 @@
 				4953E83B16681A4200A09726 /* ContentLink.m in Sources */,
 				494332FD16692010005AB483 /* VideoContentLink.m in Sources */,
 				E676B2EB18D0CC330057B4E1 /* ARURLItemProvider.m in Sources */,
+				5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */,
 				60A49F601676559300B9B95D /* ARNetworkConstants.m in Sources */,
 				E61446B0195A1CDC00BFB7C3 /* ARFavoritesNetworkModel.m in Sources */,
 				60431FB818042A1E000118D7 /* ARAppNotificationsDelegate.m in Sources */,
@@ -4656,6 +4693,7 @@
 				604166AD16C1D20900CFBD2F /* ArtsyAPI+Artworks.m in Sources */,
 				E66EE4AF196460620081ED0C /* ARFavoriteItemModule.m in Sources */,
 				605B11B517CFE7CC00334196 /* ARTermsAndConditionsView.m in Sources */,
+				5E8A03B51C52B60900EAF18B /* AuctionRefineViewController.swift in Sources */,
 				604166B116C1D47100CFBD2F /* ArtsyAPI+CurrentUserFunctions.m in Sources */,
 				603B3AEB1774A25700BA5BD3 /* ARNavigationController.m in Sources */,
 				49EF164716C568EA00460BD7 /* Profile.m in Sources */,
@@ -4720,6 +4758,7 @@
 				E61446AC195A1CDC00BFB7C3 /* ARArtistFavoritesNetworkModel.m in Sources */,
 				3C6CB61018ABFB8D008DFE3B /* ARRelatedArtistsViewController.m in Sources */,
 				3C35CC7B189FF05E00E3D8DE /* OrderedSet.m in Sources */,
+				5E5B841F1C52DEC40005CBC7 /* AuctionOrdering.swift in Sources */,
 				60903CC4175CE21A002AB800 /* AROptions.m in Sources */,
 				60903CCB175CE766002AB800 /* ARAdminSettingsViewController.m in Sources */,
 				5E47F3561C4435C100EC0751 /* AuctionTitleView.swift in Sources */,
@@ -4928,6 +4967,7 @@
 				3C2E6C5C192262A3009DAB28 /* ARRouterTests.m in Sources */,
 				5E0AEB7D19B9FAED009F34DE /* ARStubbedShowNetworkModel.m in Sources */,
 				3C6BDCC018E0B3E40028EF5D /* MutableNSURLResponse.m in Sources */,
+				5E8D453A1C57EE4400ACBDE6 /* AuctionRefineViewControllerTests.swift in Sources */,
 				3CAA413218D8CC32000EE867 /* ARFairFavoritesNetworkModelTests.m in Sources */,
 				60327DEA198933610075B399 /* ARTestTopMenuNavigationDataSource.m in Sources */,
 				0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */,
