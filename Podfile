@@ -99,7 +99,7 @@ target 'Artsy' do
   pod 'DRKonamiCode'
 
   # Swift pods 🎉
-  # Nothing yet 😢
+  pod 'Then'
 
 end
 

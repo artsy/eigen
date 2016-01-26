@@ -3,6 +3,7 @@ import Artsy_UIButtons
 import Artsy_UILabels
 import Artsy_UIFonts
 import ORStackView
+import Then
 
 protocol AuctionRefineViewControllerDelegate: class {
     func userDidCancel(controller: AuctionRefineViewController)
@@ -69,7 +70,10 @@ private extension AuctionRefineViewController {
         cancelButton.alignTopEdgeWithView(view, predicate: "10")
         cancelButton.alignTrailingEdgeWithView(view, predicate: "-10")
 
-        let titleLabel = self.titleLabel()
+        let titleLabel = ARSerifLabel().then {
+            $0.font = UIFont.serifFontWithSize(20)
+            $0.text = "Refine"
+        }
         view.addSubview(titleLabel)
         titleLabel.alignTopEdgeWithView(view, predicate: "20")
         titleLabel.alignLeadingEdgeWithView(view, predicate: "20")
@@ -89,13 +93,6 @@ private extension AuctionRefineViewController {
         return cancelButton
     }
 
-    func titleLabel() -> UILabel {
-        let titleLabel = ARSerifLabel()
-        titleLabel.font = UIFont.serifFontWithSize(20)
-        titleLabel.text = "Refine"
-        return titleLabel
-    }
-
     func subtitleLabel(text: String) -> UILabel {
         let label = ARSansSerifLabel()
         label.font = UIFont.sansSerifFontWithSize(12)
@@ -108,25 +105,27 @@ private extension AuctionRefineViewController {
 
         stackView.addSubview(subtitleLabel("Sort"), withTopMargin: "20", sideMargin: "40")
 
-        stackView.addSubview(Separator(), withTopMargin: "10", sideMargin: "0")
+        stackView.addSubview(ARSeparatorView(), withTopMargin: "10", sideMargin: "0")
 
-        let tableView = UITableView()
-        tableView.registerClass(AuctionRefineTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
-        tableView.scrollEnabled = false
-        tableView.separatorColor = .artsyLightGrey()
-        tableView.separatorInset = UIEdgeInsetsZero
-        tableView.dataSource = self
-        tableView.delegate = self
-        let tableViewHeight = 44 * AuctionOrderingSwitchValue.allSwitchValues().count - 1 // -1 to cut off the bottom-most separator that we'll manually add below.
-        tableView.constrainHeight("\(tableViewHeight)")
+        let tableView = UITableView().then {
+            $0.registerClass(AuctionRefineTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+            $0.scrollEnabled = false
+            $0.separatorColor = .artsyLightGrey()
+            $0.separatorInset = UIEdgeInsetsZero
+            $0.dataSource = self
+            $0.delegate = self
+            let tableViewHeight = 44 * AuctionOrderingSwitchValue.allSwitchValues().count - 1 // -1 to cut off the bottom-most separator that we'll manually add below.
+            $0.constrainHeight("\(tableViewHeight)")
+        }
         stackView.addSubview(tableView, withTopMargin: "0", sideMargin: "40")
 
-        stackView.addSubview(Separator(), withTopMargin: "0", sideMargin: "0")
+        stackView.addSubview(ARSeparatorView(), withTopMargin: "0", sideMargin: "0")
 
-        let applyButton = ARBlackFlatButton()
-        applyButton.enabled = false
-        applyButton.setTitle("Apply", forState: .Normal)
-        applyButton.addTarget(self, action: "userDidPressApply", forControlEvents: .TouchUpInside)
+        let applyButton = ARBlackFlatButton().then {
+            $0.enabled = false
+            $0.setTitle("Apply", forState: .Normal)
+            $0.addTarget(self, action: "userDidPressApply", forControlEvents: .TouchUpInside)
+        }
         stackView.addSubview(applyButton, withTopMargin: "20", sideMargin: "40")
 
         self.applyButton = applyButton
@@ -158,13 +157,16 @@ extension AuctionRefineViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
+        // Un-check formerly selected cell.
         if let oldCheckedCellIndex = AuctionOrderingSwitchValue.allSwitchValues().indexOf(currentSettings.ordering) {
             let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: oldCheckedCellIndex, inSection: 0))
             cell?.checked = false
         }
 
+        // Change setting.
         currentSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.fromInt(indexPath.row))
 
+        // Check newly selected cell.
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         cell?.checked = true
     }
@@ -189,15 +191,5 @@ extension UITableViewCell {
         get {
             return accessoryView != nil
         }
-    }
-}
-
-private class Separator: UIView {
-    private override func willMoveToSuperview(newSuperview: UIView?) {
-        backgroundColor = .artsyLightGrey()
-    }
-
-    private override func intrinsicContentSize() -> CGSize {
-        return CGSize(width: UIViewNoIntrinsicMetric, height: 1)
     }
 }
