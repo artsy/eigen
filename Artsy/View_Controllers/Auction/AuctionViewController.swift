@@ -1,5 +1,6 @@
 import UIKit
 import ORStackView
+import Then
 
 class AuctionViewController: UIViewController {
     let saleID: String
@@ -8,6 +9,7 @@ class AuctionViewController: UIViewController {
 
     var stackScrollView: ORStackScrollView!
 
+    // TODO: These need to be set to defaultRefineSettings() when we have enough data loaded to calculate it.
     var refineSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber) {
         didSet {
             // TODO: Apply settings
@@ -80,14 +82,20 @@ extension AuctionViewController {
             self.stackScrollView.stackView.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
     }
+
+    func defaultRefineSettings() -> AuctionRefineSettings {
+        // TODO: calculate min/max based on sale artworks.
+        // TODO: Since this doesn't change, we should cache the value instead of recomputing every time.
+        return AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber)
+    }
 }
 
 extension AuctionViewController: AuctionTitleViewDelegate {
     func buttonPressed() {
-        let refineViewController = AuctionRefineViewController()
-        refineViewController.delegate = self
-        refineViewController.initialSettings = refineSettings
-        refineViewController.modalPresentationStyle = .FormSheet
+        let refineViewController = AuctionRefineViewController(defaultSettings: defaultRefineSettings(), initialSettings: refineSettings).then {
+            $0.delegate = self
+            $0.modalPresentationStyle = .FormSheet
+        }
         presentViewController(refineViewController, animated: true, completion: nil)
     }
 }
