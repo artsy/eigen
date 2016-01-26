@@ -11,6 +11,7 @@ class AuctionRefineViewController: UIViewController {
     var resetButton: UIButton?
     var sortTableView: UITableView?
 
+    // defaultSettings also implies min/max price ranges
     var defaultSettings: AuctionRefineSettings
     var initialSettings: AuctionRefineSettings
     var currentSettings: AuctionRefineSettings {
@@ -47,12 +48,15 @@ class AuctionRefineViewController: UIViewController {
 
         // Removes our rounded corners
         presentationController?.presentedView()?.layer.cornerRadius = 0
+
+        // TODO: Only necessary on iPhone.
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: animated ? .Slide : .None)
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
+        // TODO: Fix this, should be `false`
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: animated ? .Slide : .None)
     }
 }

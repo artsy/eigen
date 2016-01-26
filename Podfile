@@ -53,6 +53,7 @@ target 'Artsy' do
   pod 'NPKeyboardLayoutGuide'
   pod 'ReactiveCocoa'
   pod 'UICKeyChainStore'
+  pod 'TTRangeSlider'
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'

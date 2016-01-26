@@ -2,6 +2,7 @@ import Artsy_UIButtons
 import Artsy_UILabels
 import Artsy_UIFonts
 import ORStackView
+import TTRangeSlider
 import Then
 
 private let CellIdentifier = "Cell"
@@ -83,6 +84,14 @@ private extension AuctionRefineViewController {
 
         stackView.addSubview(ARSeparatorView(), withTopMargin: "0", sideMargin: "0")
 
+        stackView.addSubview(subtitleLabel("Price"), withTopMargin: "20", sideMargin: "40")
+
+        let priceExplainLabel = ARSerifLabel().then {
+            $0.font = UIFont.serifItalicFontWithSize(15)
+            $0.text = "Based on the low estimates of the works"
+        }
+        stackView.addSubview(priceExplainLabel, withTopMargin: "10", sideMargin: "40")
+
         let applyButton = ARBlackFlatButton().then {
             $0.enabled = false
             $0.setTitle("Apply", forState: .Normal)
@@ -148,7 +157,7 @@ extension AuctionRefineViewController: UITableViewDataSource, UITableViewDelegat
         }
 
         // Change setting.
-        currentSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.fromInt(indexPath.row))
+        currentSettings = currentSettings.settingsWithOrdering(AuctionOrderingSwitchValue.fromInt(indexPath.row))
 
         // Check newly selected cell.
         let cell = tableView.cellForRowAtIndexPath(indexPath)
