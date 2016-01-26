@@ -2,7 +2,7 @@
 
 // You can tell git to ignore changes to this file by running
 //
-//   git update-index --assume-unchanged Artsy/Classes/View\ Controllers/ARTopMenuViewController+DeveloperExtras.m
+//   git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
 
 
 @implementation ARTopMenuViewController (DeveloperExtras)

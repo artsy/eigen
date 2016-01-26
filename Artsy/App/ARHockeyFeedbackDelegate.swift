@@ -18,15 +18,19 @@ class ARHockeyFeedbackDelegate: NSObject {
 
     func showFeedback(image:UIImage? = nil) {
         let hockeyProvider = ARAnalytics.providerInstanceOfClass(HockeyAppProvider.self)
-        let processID = NSProcessInfo.processInfo().processIdentifier
-        let messages = hockeyProvider.messagesForProcessID(UInt(processID)) as! [String]
-        let message = messages.joinWithSeparator("\n")
-        let data = message .dataUsingEncoding(NSUTF8StringEncoding)!
+        var analyticsLog: BITHockeyAttachment?
 
-        var items:[AnyObject] = [data]
-        if let screenshot = image {
-            items.append(screenshot)
+        let processID = NSProcessInfo.processInfo().processIdentifier
+        if let messages = hockeyProvider.messagesForProcessID(UInt(processID)) as? [String] {
+            let message = messages.joinWithSeparator("\n")
+            let data = message.dataUsingEncoding(NSUTF8StringEncoding)!
+            analyticsLog = BITHockeyAttachment(filename: "analytics_log.txt", hockeyAttachmentData: data, contentType: "text")
         }
+
+        let initialMessage = "Hey there\nI have some feedback:\n\n"
+
+        // Create an array of optionals, then flatmap them to be only real values
+        let items = ([initialMessage, image, analyticsLog] as [AnyObject?]).flatMap{ $0 }
 
         let vc = BITHockeyManager.sharedHockeyManager().feedbackManager
         vc.showFeedbackComposeViewWithPreparedItems(items)
@@ -41,6 +45,7 @@ class ARHockeyFeedbackDelegate: NSObject {
             self.showFeedback()
             return
         }
+
         PHImageManager.defaultManager().requestImageForAsset(result, targetSize: UIScreen.mainScreen().bounds.size, contentMode: .AspectFit, options: nil) { image, info in
             self.showFeedback(image)
         }
