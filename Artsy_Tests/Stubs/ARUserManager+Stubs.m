@@ -1,5 +1,6 @@
 #import "ARUserManager+Stubs.h"
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SDWebImage/SDWebImageManager.h>
 
 
 @implementation ARUserManager (Stubs)
@@ -51,6 +52,8 @@
            authenticationFailure:(void (^)(NSError *error))authFail
                   networkFailure:(void (^)(NSError *error))networkFailure
 {
+    [[SDWebImageManager sharedManager] cancelAll];
+
     __block BOOL done = NO;
     [[ARUserManager sharedManager]
         loginWithUsername:[ARUserManager stubUserEmail]
