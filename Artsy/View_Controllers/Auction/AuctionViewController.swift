@@ -9,12 +9,12 @@ class AuctionViewController: UIViewController {
 
     var stackScrollView: ORStackScrollView!
 
-    // TODO: These need to be set to defaultRefineSettings() when we have enough data loaded to calculate it.
-    var refineSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber) {
-        didSet {
-            // TODO: Apply settings
-        }
-    }
+    var _defaultRefineSettings: AuctionRefineSettings!
+
+    // Our refine settings are (by defualt) the default refine setings.
+    lazy var refineSettings: AuctionRefineSettings = {
+        return self.defaultRefineSettings()
+    }()
 
     lazy var networkModel: AuctionNetworkModel = {
         return AuctionNetworkModel(saleID: self.saleID)
@@ -84,9 +84,13 @@ extension AuctionViewController {
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {
-        // TODO: calculate min/max based on sale artworks.
-        // TODO: Since this doesn't change, we should cache the value instead of recomputing every time.
-        return AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber)
+        guard let defaultSettings = _defaultRefineSettings else {
+            // TODO: calculate min/max based on sale artworks. We're just using 100/100,000 for now.
+            let defaultSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber, range: (min: 100, max: 100_000))
+            _defaultRefineSettings = defaultSettings
+            return defaultSettings
+        }
+        return defaultSettings
     }
 }
 
@@ -95,6 +99,7 @@ extension AuctionViewController: AuctionTitleViewDelegate {
         let refineViewController = AuctionRefineViewController(defaultSettings: defaultRefineSettings(), initialSettings: refineSettings).then {
             $0.delegate = self
             $0.modalPresentationStyle = .FormSheet
+            $0.changeStatusBar = self.traitCollection.horizontalSizeClass == .Compact
         }
         presentViewController(refineViewController, animated: true, completion: nil)
     }
