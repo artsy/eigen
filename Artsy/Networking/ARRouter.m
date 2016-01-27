@@ -843,7 +843,8 @@ static NSSet *artsyHosts = nil;
 {
     NSDictionary *params = @{
         @"page" : @(page),
-        @"gene_id" : gene
+        @"gene_id" : gene,
+        @"size" : @10
     };
     return [self requestWithMethod:@"GET" path:ARGeneArtworksURL parameters:params];
 }
