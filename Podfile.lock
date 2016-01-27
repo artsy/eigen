@@ -179,7 +179,7 @@ DEPENDENCIES:
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
   - Mantle (~> 1.5.6)
-  - MARKRangeSlider (from `../MARKRangeSlider`)
+  - MARKRangeSlider (from `https://github.com/ashfurrow/MARKRangeSlider.git`)
   - MMMarkdown
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`)
@@ -237,7 +237,7 @@ EXTERNAL SOURCES:
   Keys:
     :path: Pods/CocoaPodsKeys
   MARKRangeSlider:
-    :path: ../MARKRangeSlider
+    :git: https://github.com/ashfurrow/MARKRangeSlider.git
   NAMapKit:
     :git: https://github.com/neilang/NAMapKit
   ORStackView:
@@ -283,6 +283,9 @@ CHECKOUT OPTIONS:
   JLRoutes:
     :commit: 5a6df1a795766a4d3e586508e86ec9271d3ef3d9
     :git: https://github.com/orta/JLRoutes.git
+  MARKRangeSlider:
+    :commit: aefbeb181b62c8c257a7d0ada1e75834489b1909
+    :git: https://github.com/ashfurrow/MARKRangeSlider.git
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit

@@ -110,8 +110,12 @@ private extension UISetup {
             stackView.addSubview(labelContainer, withTopMargin: "10", sideMargin: "40")
 
             let slider = MARKRangeSlider().then {
+                $0.rangeImage = UIImage(named: "Range")
+                $0.trackImage = UIImage(named: "Track")
+                $0.rightThumbImage = UIImage(named: "Thumb")
+                $0.leftThumbImage = $0.rightThumbImage
                 $0.addTarget(self, action: "sliderValueDidChange:", forControlEvents: .ValueChanged)
-                
+
                 let range = self.defaultSettings.range
                 $0.setMinValue(CGFloat(range.min), maxValue: CGFloat(range.max))
 
@@ -141,7 +145,7 @@ private extension UISetup {
             maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
             maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0").forEach(setConstraintPriority(.StayWithinFrame))
 
-            // Make sure they don't touch!
+            // Make sure they don't touch! Shouldn't be necessary since they'll be 10% appart, but this is "just in case" make sure the labels never overlap.
             minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10")
 
             self.minLabel = minLabel

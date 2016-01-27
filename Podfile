@@ -54,7 +54,7 @@ target 'Artsy' do
   pod 'NPKeyboardLayoutGuide'
   pod 'ReactiveCocoa'
   pod 'UICKeyChainStore'
-  pod 'MARKRangeSlider', :path => '../MARKRangeSlider' # :git => 'https://github.com/ashfurrow/MARKRangeSlider.git'
+  pod 'MARKRangeSlider', :git => 'https://github.com/ashfurrow/MARKRangeSlider.git' # Pending https://github.com/vadymmarkov/MARKRangeSlider/pull/22
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
