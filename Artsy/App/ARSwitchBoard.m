@@ -12,8 +12,8 @@
 
 @interface ARSwitchBoard ()
 
-@property (readonly, nonatomic, copy) JLRoutes *routes;
-@property (readonly, nonatomic, copy) Aerodramus *echo;
+@property (nonatomic, strong) JLRoutes *routes;
+@property (nonatomic, strong) Aerodramus *echo;
 
 @end
 
@@ -61,14 +61,15 @@
     Aerodramus *aero = self.echo;
     [aero setup];
 
-    NSArray *currentRoutes = self.echo.routes.copy;
+    NSArray *currentRoutes = self.echo.routes.allValues.copy;
+    __weak typeof(self) wself = self;
 
     [aero checkForUpdates:^(BOOL updatedDataOnServer) {
         if (!updatedDataOnServer) return;
 
         [aero update:^(BOOL updated, NSError *error) {
-            [self removeEchoRoutes:currentRoutes];
-            [self updateRoutes];
+            [wself removeEchoRoutes:currentRoutes];
+            [wself updateRoutes];
         }];
     }];
 }
@@ -174,9 +175,11 @@
 - (void)registerEchoRouteForKey:(NSString *)key handler:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback
 {
     Route *route = self.echo.routes[key];
-    NSAssert(route != nil, @"You have to have the same named route in Echo in order to use dynamic routing");
-
-    [self.routes addRoute:route.path handler:callback];
+    if (route != nil) {
+        [self.routes addRoute:route.path handler:callback];
+    } else {
+        NSLog(@"You have to have the same named route in Echo in order to use dynamic routing");
+    }
 }
 
 - (void)removeEchoRoutes:(NSArray<Route *> *)routes

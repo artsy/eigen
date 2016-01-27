@@ -10,4 +10,4 @@ if lines_of_code > 50 && !pr_title.include?("📱")
 end
 
 fail("fdescribe left in tests") if `grep -r fdescribe Artsy_Tests/`.length
-fail("fit left in tests") if `grep -r fit(@" Artsy_Tests/`.length
+fail("fit left in tests") if `grep -r fit(@ Artsy_Tests/`.length

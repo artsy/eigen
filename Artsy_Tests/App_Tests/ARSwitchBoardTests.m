@@ -47,7 +47,7 @@ SpecBegin(ARSwitchBoard);
 
 __block ARSwitchBoard *switchboard;
 
-fdescribe(@"ARSwitchboard", ^{
+describe(@"ARSwitchboard", ^{
 
     beforeEach(^{
         switchboard = [[ARSwitchBoard alloc] init];
