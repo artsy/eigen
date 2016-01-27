@@ -4,6 +4,7 @@ import Artsy_UIFonts
 import ORStackView
 import TTRangeSlider
 import Then
+import MARKRangeSlider
 
 private let CellIdentifier = "Cell"
 
@@ -26,6 +27,11 @@ extension AuctionRefineViewController {
         view.addSubview(stackView)
         stackView.alignBottomEdgeWithView(view, predicate: "-20")
         stackView.alignLeading("0", trailing: "0", toView: view)
+    }
+
+    func updatePriceLabels() {
+        minLabel?.text = NSNumberFormatter.currencyStringForDollarCents(currentSettings.range.min)
+        maxLabel?.text = NSNumberFormatter.currencyStringForDollarCents(currentSettings.range.max)
     }
 }
 
@@ -87,13 +93,59 @@ private extension UISetup {
 
         stackView.addSubview(ARSeparatorView(), withTopMargin: "0", sideMargin: "0")
 
-        stackView.addSubview(subtitleLabel("Price"), withTopMargin: "20", sideMargin: "40")
+        // Price section
+        do {
+            stackView.addSubview(subtitleLabel("Price"), withTopMargin: "20", sideMargin: "40")
 
-        let priceExplainLabel = ARSerifLabel().then {
-            $0.font = UIFont.serifItalicFontWithSize(15)
-            $0.text = "Based on the low estimates of the works"
+            let priceExplainLabel = ARSerifLabel().then {
+                $0.font = UIFont.serifItalicFontWithSize(15)
+                $0.text = "Based on the low estimates of the works"
+            }
+            stackView.addSubview(priceExplainLabel, withTopMargin: "10", sideMargin: "40")
+
+            let labelContainer = UIView().then {
+                $0.constrainHeight("20")
+                $0.translatesAutoresizingMaskIntoConstraints = false
+            }
+            stackView.addSubview(labelContainer, withTopMargin: "10", sideMargin: "40")
+
+            let slider = MARKRangeSlider().then {
+                let range = self.defaultSettings.range
+                $0.setMinValue(CGFloat(range.min), maxValue: CGFloat(range.max))
+                $0.addTarget(self, action: "sliderValueDidChange:", forControlEvents: .ValueChanged)
+            }
+            stackView.addSubview(slider, withTopMargin: "10", sideMargin: "40")
+
+            // Max/min labels
+            let minLabel = ARItalicsSerifLabel().then {
+                $0.font = UIFont.serifFontWithSize(15)
+                return
+            }
+            labelContainer.addSubview(minLabel)
+
+            minLabel.alignCenterYWithView(labelContainer, predicate: "0")
+            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0").forEach(setConstraintPriority(200))
+            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0").forEach(setConstraintPriority(800))
+
+            let maxLabel = ARItalicsSerifLabel().then {
+                $0.font = UIFont.serifFontWithSize(15)
+                return
+            }
+            labelContainer.addSubview(maxLabel)
+
+            maxLabel.alignCenterYWithView(labelContainer, predicate: "0")
+            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0").forEach(setConstraintPriority(200))
+            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0").forEach(setConstraintPriority(800))
+
+            // Make sure they don't touch!
+            // TODO: This needs cleanup
+            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10")
+
+            self.minLabel = minLabel
+            self.maxLabel = maxLabel
+            
+            updatePriceLabels()
         }
-        stackView.addSubview(priceExplainLabel, withTopMargin: "10", sideMargin: "40")
 
         let applyButton = ARBlackFlatButton().then {
             $0.enabled = false
@@ -127,6 +179,14 @@ private extension UISetup {
         self.sortTableView = tableView
 
         return stackView
+    }
+}
+
+private typealias SliderView = AuctionRefineViewController
+extension SliderView {
+    func sliderValueDidChange(slider: MARKRangeSlider) {
+        let range = (min: Int(slider.leftValue), max: Int(slider.rightValue))
+        currentSettings = currentSettings.settingsWithRange(range)
     }
 }
 
@@ -189,4 +249,9 @@ extension UITableViewCell {
             return accessoryView != nil
         }
     }
+}
+
+// Decreates priority of the constraint, using AnyObject! because of FLKAutoLayout
+private func setConstraintPriority(priority: UILayoutPriority)(constraint: AnyObject!) {
+    (constraint as? NSLayoutConstraint)?.priority = priority
 }

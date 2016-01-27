@@ -7,6 +7,8 @@ protocol AuctionRefineViewControllerDelegate: class {
 
 class AuctionRefineViewController: UIViewController {
     weak var delegate: AuctionRefineViewControllerDelegate?
+    var minLabel: UILabel?
+    var maxLabel: UILabel?
     var applyButton: UIButton?
     var resetButton: UIButton?
     var sortTableView: UITableView?
@@ -19,6 +21,8 @@ class AuctionRefineViewController: UIViewController {
             // Handle Apply/Clear button enabledness
             let settingsDiffer = currentSettings != initialSettings
             [applyButton, resetButton].forEach { $0?.enabled = settingsDiffer }
+
+            updatePriceLabels()
         }
     }
 

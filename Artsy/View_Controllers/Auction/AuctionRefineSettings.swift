@@ -1,11 +1,17 @@
 struct AuctionRefineSettings {
+    typealias Range = (min: Int, max: Int)
+
     let ordering: AuctionOrderingSwitchValue
-    let range: (min: Int, max: Int)
+    let range: Range
 }
 
 extension AuctionRefineSettings {
     func settingsWithOrdering(ordering: AuctionOrderingSwitchValue) -> AuctionRefineSettings {
         return AuctionRefineSettings(ordering: ordering, range: self.range)
+    }
+
+    func settingsWithRange(range: Range) -> AuctionRefineSettings {
+        return AuctionRefineSettings(ordering: self.ordering, range: range)
     }
 }
 
