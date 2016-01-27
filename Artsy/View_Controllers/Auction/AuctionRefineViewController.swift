@@ -20,10 +20,7 @@ class AuctionRefineViewController: UIViewController {
     var initialSettings: AuctionRefineSettings
     var currentSettings: AuctionRefineSettings {
         didSet {
-            // Handle Apply/Clear button enabledness
-            let settingsDiffer = currentSettings != initialSettings
-            [applyButton, resetButton].forEach { $0?.enabled = settingsDiffer }
-
+            updateButtonEnabledStates()
             updatePriceLabels()
         }
     }

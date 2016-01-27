@@ -32,6 +32,11 @@ extension AuctionRefineViewController {
         minLabel?.text = NSNumberFormatter.currencyStringForDollarCents(currentSettings.range.min)
         maxLabel?.text = NSNumberFormatter.currencyStringForDollarCents(currentSettings.range.max)
     }
+
+    func updateButtonEnabledStates() {
+        let settingsDiffer = currentSettings != defaultSettings
+        [applyButton, resetButton].forEach { $0?.enabled = settingsDiffer }
+    }
 }
 
 private typealias UserInteraction = AuctionRefineViewController
@@ -52,6 +57,7 @@ extension UserInteraction {
 
         slider?.setLeftValue(CGFloat(defaultSettings.range.min), rightValue: CGFloat(defaultSettings.range.max))
         updatePriceLabels()
+        updateButtonEnabledStates()
     }
 }
 
