@@ -34,8 +34,11 @@ extension AuctionRefineViewController {
     }
 
     func updateButtonEnabledStates() {
-        let settingsDiffer = currentSettings != defaultSettings
-        [applyButton, resetButton].forEach { $0?.enabled = settingsDiffer }
+        let settingsDifferFromDefault = currentSettings != defaultSettings
+        let settingsDifferFromInitial = currentSettings != initialSettings
+
+        applyButton?.enabled = settingsDifferFromInitial
+        resetButton?.enabled = settingsDifferFromDefault
     }
 }
 
@@ -195,6 +198,8 @@ private extension UISetup {
         self.applyButton = applyButton
         self.resetButton = resetButton
         self.sortTableView = tableView
+
+        updateButtonEnabledStates()
 
         return stackView
     }
