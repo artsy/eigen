@@ -1,153 +1,160 @@
 upcoming:
-  version: 2.4.0
-  notes:
-    - Added Dangerfile to the repo, updated to 0.2.1 - orta
-    - Add support for iOS9 facebook - orta
-    - Support deprecating iOS8 - orta
-    - Send dsym to hockey - orta
-    - Make native auctions view default to off - orta
-    - Users with Artsy emails get a warning that their inquiry may fail - orta
-    - Converted CHANGELOG to yaml - orta
-    - Remove x-callback support now that it's part of the OS - orta
-    - New (native) auction banner view - ash
-    - New (native) auction refine controls - ash
-    - Use artworks/filter for the genes artworks - orta
+  version: 2.3.5
+  details: Ideally a small release for iOS8 + Push fixes.
+  dev:
+    - Updated Danger - orta
     - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger - orta
 
+  notes:
+    - Remove x-callback support now that it's part of the OS - orta
+    - Use artworks/filter for the genes artworks - orta
+    - Support deprecating iOS8, and fix an iOS 8 launch crash - orta
     - Fixes issue opening ‘works for you’ from a push notification - alloy
     - Fixes crash on iPad when presenting an alert about opening an external URL - alloy
 
 releases:
-- version: 2.3.3
-  date: Dec 1, 2015
-  notes:
-    - Fixes extra whitespace when we have no feed links on the show feed - orta
-    - Reduced the time for networking retries on the show feed - orta
-    - Hidden the inquire button for inquirable artworks which are not for sale - orta
-    - If a user changes their password on the web, provide a log out button on the feed - orta
+  - version: 2.3.4
+    date: Jan 26, 2016
+    notes:
+      - Add support for iOS9 facebook - orta
+      - auction banner view - ash
+      - auction refine controls - ash
+      - Send dsym to hockey - orta
+      - Make native auctions view default to off - orta
+      - Users with Artsy emails get a warning that their inquiry may fail - orta
+      - Converted CHANGELOG to yaml - orta
+      - Added Dangerfile to the repo, updated to 0.2.1 - orta
 
-- version: 2.3.2
-  date: Dec 1, 2015
-  notes:
-    - Converted our routing engine to only handle the creation of view controllers and not showing them - orta
-    - Removed the settings view controller that isn't used - orta
-    - Removed the direct dependency on `libextobjc` from the app - orta
-    - Background data isn't parsed to JSON if we don't recieve a response - orta
-    - Restructured app launch to ensure no conflicts with background downloads - orta
-    - Correct development and store code sign/provisioning issues. - alloy
-    - Slightly optimize app status (beta or dev vs app store) implementation. - alloy
-    - Include beta or dev vs app store flag in push notification registration. - alloy
+  - version: 2.3.3
+    date: Jan 13, 2016
+    notes:
+      - Fixes extra whitespace when we have no feed links on the show feed - orta
+      - Reduced the time for networking retries on the show feed - orta
+      - Hidden the inquire button for inquirable artworks which are not for sale - orta
+      - If a user changes their password on the web, provide a log out button on the feed - orta
+
+  - version: 2.3.2
+    date: Dec 1, 2015
+    notes:
+      - Converted our routing engine to only handle the creation of view controllers and not showing them - orta
+      - Removed the settings view controller that isn't used - orta
+      - Removed the direct dependency on `libextobjc` from the app - orta
+      - Background data isn't parsed to JSON if we don't recieve a response - orta
+      - Restructured app launch to ensure no conflicts with background downloads - orta
+      - Correct development and store code sign/provisioning issues. - alloy
+      - Slightly optimize app status (beta or dev vs app store) implementation. - alloy
+      - Include beta or dev vs app store flag in push notification registration. - alloy
 
 
-- version: 2.3.1
-  date: Oct 21, 2015
-  notes:
-    - The home screen now refreshes its data periodically while in the background, so that the newest data is available when you launch the app. - orta
-    - Performance improvements for the views that show web content. - orta
-    - UI layout fixes for the ‘Auction Results’ page of an artwork. - orta
-    - Various crash fixes throughout the app. - orta & alloy
+  - version: 2.3.1
+    date: Oct 21, 2015
+    notes:
+      - The home screen now refreshes its data periodically while in the background, so that the newest data is available when you launch the app. - orta
+      - Performance improvements for the views that show web content. - orta
+      - UI layout fixes for the ‘Auction Results’ page of an artwork. - orta
+      - Various crash fixes throughout the app. - orta & alloy
 
-- version: 2.3.0
-  date: Oct 15, 2015
-  notes:
-    - 3D Touch Peek/pop support for artworks in grid views - jorystiefel & orta
-    - 3D Touch quick action menu items for Artsy icon on home screen - jorystiefel
-    - Add support for Shared Web Credentials. Available credentials are shown on the login view and entered/created credentials are saved for web use. - alloy
-    - Add support for Universal Links on iOS 9. - alloy
-    - Add Native <-> Web Handoff support. - jorystiefel & alloy
-    - Add Spotlight support for favorite artworks, artists, and genes. - jorystiefel & alloy
-    - Convert all web views to use the modern, faster, and better WKWebView - orta
-    - Fix an issue where after 8 rotations our progress indicator would stop rotating, making it seem as if the progress was finished when it was actually not. - alloy
-    - Don’t allow the search view to rotate on iPhone. - alloy
-    - Search hides the statusbar - orta
-    - After bidding on an auction item move back from the bidding view to the artwork in question. - alloy
-    - Update artwork views after bidding on that artwork. - alloy
-    - Update auction views after bidding on an artwork in that auction. - alloy
-    - Fix crash by disabling network logging in release mode completely. - alloy
+  - version: 2.3.0
+    date: Oct 15, 2015
+    notes:
+      - 3D Touch Peek/pop support for artworks in grid views - jorystiefel & orta
+      - 3D Touch quick action menu items for Artsy icon on home screen - jorystiefel
+      - Add support for Shared Web Credentials. Available credentials are shown on the login view and entered/created credentials are saved for web use. - alloy
+      - Add support for Universal Links on iOS 9. - alloy
+      - Add Native <-> Web Handoff support. - jorystiefel & alloy
+      - Add Spotlight support for favorite artworks, artists, and genes. - jorystiefel & alloy
+      - Convert all web views to use the modern, faster, and better WKWebView - orta
+      - Fix an issue where after 8 rotations our progress indicator would stop rotating, making it seem as if the progress was finished when it was actually not. - alloy
+      - Don’t allow the search view to rotate on iPhone. - alloy
+      - Search hides the statusbar - orta
+      - After bidding on an auction item move back from the bidding view to the artwork in question. - alloy
+      - Update artwork views after bidding on that artwork. - alloy
+      - Update auction views after bidding on an artwork in that auction. - alloy
+      - Fix crash by disabling network logging in release mode completely. - alloy
 
-- version: 2.2.1
-  date: 9 Nov, 2015
-  notes:
-    - Fix bundle display name. - alloy
-    - Remove `?foo=bar` parameter from Martsy calls - jorystiefel
+  - version: 2.2.1
+    date: 9 Nov, 2015
+    notes:
+      - Fix bundle display name. - alloy
+      - Remove `?foo=bar` parameter from Martsy calls - jorystiefel
 
-- version: 2.2.0
-  date: 11 Sept, 2015
-  notes:
-    - Don’t show a progress indicator when navigating back to a web view that was not yet fully done loading. - alloy
-    - Reload a web view that was not fully done loading when the user navigated away, ensuring the user doesn’t get to see broken pages. - alloy
-    - Fix push notification registration after initial on-boarding for trial users. - alloy
-    - Show price in artwork grid views - jorystiefel
-    - Fix crash related to search icon being pressed again before search view was fully dismissed - jorystiefel
-    - Ensure that a dollar sign is always used when displaying dollar prices. - alloy
-    - Fix "Contact for Price" not showing on artworks - jorystiefel
-    - Fix notification count getting stuck on app badge. - alloy
-    - Fix auto-advance on home feed hero carousel and don't lose carousel position when navigating away - jorystiefel
-    - Skip onboarding flow when registering to bid on iPhone - jorystiefel
-    - Fix artwork zoom bug and only zoom if we have a big enough tiled image for iPad screen - 1aurabrown
-    - Add Artwork "Exhibition History" section to More Info view - jorystiefel
-    - Add a warning message when creating account if password too short or email doesn't validate - jorystiefel
-    - Enable Markdown rendering in Artwork More Information screen - jorystiefel
-    - iOS 9 - Fix FLKAutoLayout issues with top and bottom layout guides. - alloy
-    - iOS 9 - Allow non-SSL connections to any domain. This is needed for now as we might present non-SSL sites in the eternal web browser. - alloy
-    - iOS 9 - Fix tab bar not showing. - alloy
-    - iOS 9 - Fix search view text field not showing. - alloy
-    - iOS 9 - Fix artwork view layout on first launch. - alloy
-    - iOS 9 - Fix artwork view layout after rotating into and out of VIR. - alloy
-    - iOS 9 - Fix layout of artwork set view after rotating into and out of VIR. - alloy
-    - iOS 9 - Fix layout of onboarding views. - alloy
-    - iOS 9 - Fix artist view not getting a frame when opened from a search result. - alloy
-    - iOS 9 - Ensure cells on genes overview are all properly sized on first launch. - alloy
-    - iOS 9 - Ensure navigation buttons are shown/hidden on gene view when scrolling. - alloy
-    - iOS 9 - Fix views where undefined behaviour of FLKAutoLayout constraints was being depended on. - alloy
+  - version: 2.2.0
+    date: 11 Sept, 2015
+    notes:
+      - Don’t show a progress indicator when navigating back to a web view that was not yet fully done loading. - alloy
+      - Reload a web view that was not fully done loading when the user navigated away, ensuring the user doesn’t get to see broken pages. - alloy
+      - Fix push notification registration after initial on-boarding for trial users. - alloy
+      - Show price in artwork grid views - jorystiefel
+      - Fix crash related to search icon being pressed again before search view was fully dismissed - jorystiefel
+      - Ensure that a dollar sign is always used when displaying dollar prices. - alloy
+      - Fix "Contact for Price" not showing on artworks - jorystiefel
+      - Fix notification count getting stuck on app badge. - alloy
+      - Fix auto-advance on home feed hero carousel and don't lose carousel position when navigating away - jorystiefel
+      - Skip onboarding flow when registering to bid on iPhone - jorystiefel
+      - Fix artwork zoom bug and only zoom if we have a big enough tiled image for iPad screen - 1aurabrown
+      - Add Artwork "Exhibition History" section to More Info view - jorystiefel
+      - Add a warning message when creating account if password too short or email doesn't validate - jorystiefel
+      - Enable Markdown rendering in Artwork More Information screen - jorystiefel
+      - iOS 9 - Fix FLKAutoLayout issues with top and bottom layout guides. - alloy
+      - iOS 9 - Allow non-SSL connections to any domain. This is needed for now as we might present non-SSL sites in the eternal web browser. - alloy
+      - iOS 9 - Fix tab bar not showing. - alloy
+      - iOS 9 - Fix search view text field not showing. - alloy
+      - iOS 9 - Fix artwork view layout on first launch. - alloy
+      - iOS 9 - Fix artwork view layout after rotating into and out of VIR. - alloy
+      - iOS 9 - Fix layout of artwork set view after rotating into and out of VIR. - alloy
+      - iOS 9 - Fix layout of onboarding views. - alloy
+      - iOS 9 - Fix artist view not getting a frame when opened from a search result. - alloy
+      - iOS 9 - Ensure cells on genes overview are all properly sized on first launch. - alloy
+      - iOS 9 - Ensure navigation buttons are shown/hidden on gene view when scrolling. - alloy
+      - iOS 9 - Fix views where undefined behaviour of FLKAutoLayout constraints was being depended on. - alloy
 
-- version: 2.1.0
-  date:  Jul 23, 2015
-  notes:
-    - Fix broken iPad orientation for Categories view - 1aurabrown
-    - Adds ‘bell’ notifications tab and show notification count. - alloy
-    - Move search button from tab bar to navigation bar. - alloy
-    - Replace add/removeConstraint with activate/deactivateConstraints in ARArtworkPreviewImage View in hopes of fixing autolayout crash - 1aurabrown
-    - Reduced the filesize of the Artsy Loading screen - orta
-    - Load all artworks in an artwork's show in the "artwork related artworks" view. - 1aurabrown
-    - Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done loading. - alloy
-    - Remove opaque background from Search keyboard. - 1aurabrown
-    - Reduce height of inquiry form on iPad - 1aurabrown
-    - Fix ARCollapsableTextView not expanding to full height - 1aurabrown
-    - Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
-    - Fix personalize search bar. - 1aurabrown
-    - Fix a crash caused by allowing the user to tap artworks in the ‘For Sale’ section of an artist that were actually stale cells of the ‘Artworks’ tab. The stale cells were being shown because of assumptions about the artworks being loaded before the end of the tab switch animation, which was prone to breakage on slow connections. - alloy
-    - Fix a crash caused by not guarding against `nil` values in show/partner analytics data. - alloy
-    - Force the feed view controller to load its content when the network becomes available. - alloy
-    - Don't use square placeholder image for artwork image preview. - 1aurabrown
+  - version: 2.1.0
+    date:  Jul 23, 2015
+    notes:
+      - Fix broken iPad orientation for Categories view - 1aurabrown
+      - Adds ‘bell’ notifications tab and show notification count. - alloy
+      - Move search button from tab bar to navigation bar. - alloy
+      - Replace add/removeConstraint with activate/deactivateConstraints in ARArtworkPreviewImage View in hopes of fixing autolayout crash - 1aurabrown
+      - Reduced the filesize of the Artsy Loading screen - orta
+      - Load all artworks in an artwork's show in the "artwork related artworks" view. - 1aurabrown
+      - Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done loading. - alloy
+      - Remove opaque background from Search keyboard. - 1aurabrown
+      - Reduce height of inquiry form on iPad - 1aurabrown
+      - Fix ARCollapsableTextView not expanding to full height - 1aurabrown
+      - Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
+      - Fix personalize search bar. - 1aurabrown
+      - Fix a crash caused by allowing the user to tap artworks in the ‘For Sale’ section of an artist that were actually stale cells of the ‘Artworks’ tab. The stale cells were being shown because of assumptions about the artworks being loaded before the end of the tab switch animation, which was prone to breakage on slow connections. - alloy
+      - Fix a crash caused by not guarding against `nil` values in show/partner analytics data. - alloy
+      - Force the feed view controller to load its content when the network becomes available. - alloy
+      - Don't use square placeholder image for artwork image preview. - 1aurabrown
 
-- version: 2.0.1
-  date: Jun 26, 2015
-  notes:
-    - Fix user credential storage so the user is only asked for it once - orta & alloy
-    - Fair Artists links in Martsy outside of a fair will resolve correctly to their fair - orta
-    - Make registration for push notifications work on iOS 8 and up and save devices of both trial and registered users on the server. - alloy
-    - Ensure that tapping /sign_up or /log_in from a webview doesn't push a new webview. - 1aurabrown
-    - Zoom artwork to fullscreen when changing orientation on iPad from portrait to landscape. - alloy
-    - Attempt to fix a crash where a deallocated internal webview controller still receives messages. - alloy
-    - Attempt to pin-point correlation with auto layout crash by reverting placeholder artwork images at real size. - alloy
+  - version: 2.0.1
+    date: Jun 26, 2015
+    notes:
+      - Fix user credential storage so the user is only asked for it once - orta & alloy
+      - Fair Artists links in Martsy outside of a fair will resolve correctly to their fair - orta
+      - Make registration for push notifications work on iOS 8 and up and save devices of both trial and registered users on the server. - alloy
+      - Ensure that tapping /sign_up or /log_in from a webview doesn't push a new webview. - 1aurabrown
+      - Zoom artwork to fullscreen when changing orientation on iPad from portrait to landscape. - alloy
+      - Attempt to fix a crash where a deallocated internal webview controller still receives messages. - alloy
+      - Attempt to pin-point correlation with auto layout crash by reverting placeholder artwork images at real size. - alloy
 
-- version: 2.0.1
-  date: Jun 5, 2015
-  notes:
-    - Add iPad support - 1aurabrown
-    - Drop iOS 7 support - ashfurrow
-    - Fixes artworks on artist page displaying duplicate results - ash
-    - Remove ability to zoom internal web views - 1aurabrown
-    - Add Conditions of Sale link to works at auction - 1aurabrown
-    - Add top rule to main nav to separate it from black content - 1aurabrown
-    - Fix buttons that have a partial underlined title on iOS 8.0, 8.1, and 8.2 - alloy
-    - Add ability to paginate left and right by tapping hero unit page control - 1aurabrown
-    - Remove progress indicator from martsy views as soon as the state of the webview is at DOMContentLoaded - alloy
-    - Really only show artworks that are for sale on an artist’s ‘for sale’ tab - alloy
-    - Re-fetch hero units every time they will appear - 1aurabrown
-    - Ensure artworks in a collection view do not stick out too much to the right - alloy
-    - Add `x-callback-url` infrastructure which for now allows external applications to open an artwork in a native view - 1aurabrown
-    - Make sure internal web views are not zoomable - 1aurabrown
-    - Fix autolayout-related crashes and failing tests - 1aurabrown
-    - Fix buggy swiping between artworks - 1aurabrown
+  - version: 2.0.1
+    date: Jun 5, 2015
+    notes:
+      - Add iPad support - 1aurabrown
+      - Drop iOS 7 support - ashfurrow
+      - Fixes artworks on artist page displaying duplicate results - ash
+      - Remove ability to zoom internal web views - 1aurabrown
+      - Add Conditions of Sale link to works at auction - 1aurabrown
+      - Add top rule to main nav to separate it from black content - 1aurabrown
+      - Fix buttons that have a partial underlined title on iOS 8.0, 8.1, and 8.2 - alloy
+      - Add ability to paginate left and right by tapping hero unit page control - 1aurabrown
+      - Remove progress indicator from martsy views as soon as the state of the webview is at DOMContentLoaded - alloy
+      - Really only show artworks that are for sale on an artist’s ‘for sale’ tab - alloy
+      - Re-fetch hero units every time they will appear - 1aurabrown
+      - Ensure artworks in a collection view do not stick out too much to the right - alloy
+      - Add `x-callback-url` infrastructure which for now allows external applications to open an artwork in a native view - 1aurabrown
+      - Make sure internal web views are not zoomable - 1aurabrown
+      - Fix autolayout-related crashes and failing tests - 1aurabrown
+      - Fix buggy swiping between artworks - 1aurabrown
