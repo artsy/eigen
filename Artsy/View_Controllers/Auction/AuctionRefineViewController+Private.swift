@@ -29,7 +29,9 @@ extension AuctionRefineViewController {
     }
 }
 
-extension AuctionRefineViewController {
+private typealias UserInteraction = AuctionRefineViewController
+extension UserInteraction {
+
     func userDidCancel() {
         delegate?.userDidCancel(self)
     }
@@ -45,7 +47,8 @@ extension AuctionRefineViewController {
     }
 }
 
-private extension AuctionRefineViewController {
+private typealias UISetup = AuctionRefineViewController
+private extension UISetup {
 
     func cancelButton() -> UIButton {
         let cancelButton = UIButton(type: .Custom)
@@ -127,7 +130,8 @@ private extension AuctionRefineViewController {
     }
 }
 
-extension AuctionRefineViewController: UITableViewDataSource, UITableViewDelegate {
+private typealias TableView = AuctionRefineViewController
+extension TableView: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return AuctionOrderingSwitchValue.allSwitchValues().count
     }
