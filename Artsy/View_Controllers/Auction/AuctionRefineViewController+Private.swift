@@ -2,7 +2,6 @@ import Artsy_UIButtons
 import Artsy_UILabels
 import Artsy_UIFonts
 import ORStackView
-import TTRangeSlider
 import Then
 import MARKRangeSlider
 
@@ -46,10 +45,13 @@ extension UserInteraction {
         delegate?.userDidApply(currentSettings, controller: self)
     }
 
-    func userDidPressClear() {
+    func userDidPressReset() {
         // Reset all UI back to its default settings, including a hard reload on the table view.
         currentSettings = defaultSettings
         sortTableView?.reloadData()
+
+        slider?.setLeftValue(CGFloat(defaultSettings.range.min), rightValue: CGFloat(defaultSettings.range.max))
+        updatePriceLabels()
     }
 }
 
@@ -133,7 +135,7 @@ private extension UISetup {
             }
             labelContainer.addSubview(minLabel)
 
-            minLabel.alignCenterYWithView(labelContainer, predicate: "0")
+            minLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
             minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
             minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0").forEach(setConstraintPriority(.StayWithinFrame))
 
@@ -143,15 +145,16 @@ private extension UISetup {
             }
             labelContainer.addSubview(maxLabel)
 
-            maxLabel.alignCenterYWithView(labelContainer, predicate: "0")
+            maxLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
             maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
             maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0").forEach(setConstraintPriority(.StayWithinFrame))
 
             // Make sure they don't touch! Shouldn't be necessary since they'll be 10% appart, but this is "just in case" make sure the labels never overlap.
-            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10")
+            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10").forEach(setConstraintPriority(.DoNotOverlap))
 
             self.minLabel = minLabel
             self.maxLabel = maxLabel
+            self.slider = slider
             
             updatePriceLabels()
         }
@@ -168,7 +171,7 @@ private extension UISetup {
             $0.setBorderColor(.artsyLightGrey(), forState: .Normal)
             $0.setBorderColor(UIColor.artsyLightGrey().colorWithAlphaComponent(0.5), forState: .Disabled)
             $0.layer.borderWidth = 1
-            $0.addTarget(self, action: "userDidPressClear", forControlEvents: .TouchUpInside)
+            $0.addTarget(self, action: "userDidPressReset", forControlEvents: .TouchUpInside)
         }
 
         let buttonContainer = UIView()

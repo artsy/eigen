@@ -1,4 +1,5 @@
 import UIKit
+import MARKRangeSlider
 
 protocol AuctionRefineViewControllerDelegate: class {
     func userDidCancel(controller: AuctionRefineViewController)
@@ -9,6 +10,7 @@ class AuctionRefineViewController: UIViewController {
     weak var delegate: AuctionRefineViewControllerDelegate?
     var minLabel: UILabel?
     var maxLabel: UILabel?
+    var slider: MARKRangeSlider?
     var applyButton: UIButton?
     var resetButton: UIButton?
     var sortTableView: UITableView?
