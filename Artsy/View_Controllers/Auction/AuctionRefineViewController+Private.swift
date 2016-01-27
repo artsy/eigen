@@ -110,9 +110,13 @@ private extension UISetup {
             stackView.addSubview(labelContainer, withTopMargin: "10", sideMargin: "40")
 
             let slider = MARKRangeSlider().then {
+                $0.addTarget(self, action: "sliderValueDidChange:", forControlEvents: .ValueChanged)
+                
                 let range = self.defaultSettings.range
                 $0.setMinValue(CGFloat(range.min), maxValue: CGFloat(range.max))
-                $0.addTarget(self, action: "sliderValueDidChange:", forControlEvents: .ValueChanged)
+
+                // Make sure they don't touch by keeping them minimum 10% apart
+                $0.minimumDistance = CGFloat(range.max - range.min) / 10.0
             }
             stackView.addSubview(slider, withTopMargin: "10", sideMargin: "40")
 
@@ -124,8 +128,8 @@ private extension UISetup {
             labelContainer.addSubview(minLabel)
 
             minLabel.alignCenterYWithView(labelContainer, predicate: "0")
-            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0").forEach(setConstraintPriority(200))
-            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0").forEach(setConstraintPriority(800))
+            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
+            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0").forEach(setConstraintPriority(.StayWithinFrame))
 
             let maxLabel = ARItalicsSerifLabel().then {
                 $0.font = UIFont.serifFontWithSize(15)
@@ -134,11 +138,10 @@ private extension UISetup {
             labelContainer.addSubview(maxLabel)
 
             maxLabel.alignCenterYWithView(labelContainer, predicate: "0")
-            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0").forEach(setConstraintPriority(200))
-            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0").forEach(setConstraintPriority(800))
+            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
+            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0").forEach(setConstraintPriority(.StayWithinFrame))
 
             // Make sure they don't touch!
-            // TODO: This needs cleanup
             minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10")
 
             self.minLabel = minLabel
@@ -187,6 +190,17 @@ extension SliderView {
     func sliderValueDidChange(slider: MARKRangeSlider) {
         let range = (min: Int(slider.leftValue), max: Int(slider.rightValue))
         currentSettings = currentSettings.settingsWithRange(range)
+    }
+
+    enum SliderPriorities: UILayoutPriority {
+        case StayWithinFrame = 475
+        case DoNotOverlap = 450
+        case StayCenteredOverThumb = 425
+    }
+
+    // Sets priority of the constraint, using AnyObject! because of FLKAutoLayout
+    func setConstraintPriority(priority: SliderPriorities)(constraint: AnyObject!) {
+        (constraint as? NSLayoutConstraint)?.priority = priority.rawValue
     }
 }
 
@@ -249,9 +263,4 @@ extension UITableViewCell {
             return accessoryView != nil
         }
     }
-}
-
-// Decreates priority of the constraint, using AnyObject! because of FLKAutoLayout
-private func setConstraintPriority(priority: UILayoutPriority)(constraint: AnyObject!) {
-    (constraint as? NSLayoutConstraint)?.priority = priority
 }
