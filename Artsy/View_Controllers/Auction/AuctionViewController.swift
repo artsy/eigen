@@ -99,6 +99,7 @@ extension AuctionViewController: AuctionTitleViewDelegate {
         let refineViewController = AuctionRefineViewController(defaultSettings: defaultRefineSettings(), initialSettings: refineSettings).then {
             $0.delegate = self
             $0.modalPresentationStyle = .FormSheet
+            $0.changeStatusBar = self.traitCollection.horizontalSizeClass == .Compact
         }
         presentViewController(refineViewController, animated: true, completion: nil)
     }
