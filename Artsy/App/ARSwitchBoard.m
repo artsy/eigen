@@ -261,7 +261,7 @@
     messsage = [messsage stringByReplacingOccurrencesOfString:@"https://" withString:@""];
 
     ARTopMenuViewController *presentationVC = [ARTopMenuViewController sharedController];
-    UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:messsage preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:messsage preferredStyle:UIAlertControllerStyleAlert];
 
     [controller addAction:[UIAlertAction actionWithTitle:@"Open" style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action) {
         [[UIApplication sharedApplication] openURL:url];

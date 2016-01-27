@@ -60,7 +60,10 @@
 - (WKWebView *)spawnWebview
 {
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-    config.requiresUserActionForMediaPlayback = NO;
+    // iOS8 doesn't support this
+    if ([config respondsToSelector:@selector(setRequiresUserActionForMediaPlayback:)]) {
+        config.requiresUserActionForMediaPlayback = NO;
+    }
     config.processPool = [ARWebViewCacheHost sharedInstance].processPool;
 
     CGRect deviceBounds = [UIScreen mainScreen].bounds;

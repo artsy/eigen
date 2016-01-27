@@ -76,14 +76,18 @@ PODS:
   - DRKonamiCode (1.1.0)
   - EDColor (0.4.0)
   - Expecta (1.0.0)
-  - Expecta+Snapshots (1.3.4):
+  - Expecta+Snapshots (2.0.0):
     - Expecta (~> 1.0)
-    - FBSnapshotTestCase (~> 1.8)
+    - FBSnapshotTestCase/Core (~> 2.0.3)
   - FBSDKCoreKit (4.9.0-beta2):
     - Bolts (~> 1.5)
   - FBSDKLoginKit (4.9.0-beta2):
     - FBSDKCoreKit (~> 4.9.0-beta)
-  - FBSnapshotTestCase (1.8.1)
+  - FBSnapshotTestCase (2.0.7):
+    - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
+  - FBSnapshotTestCase/Core (2.0.7)
+  - FBSnapshotTestCase/SwiftSupport (2.0.7):
+    - FBSnapshotTestCase/Core
   - FLKAutoLayout (0.2.1)
   - FXBlurView (1.6.1)
   - HockeySDK-Source (3.8.5)
@@ -102,6 +106,11 @@ PODS:
   - NAMapKit (3.2.0):
     - ARTiledImageView
     - SDWebImage
+  - Nimble (3.1.0)
+  - Nimble-Snapshots (3.0.0):
+    - FBSnapshotTestCase (~> 2.0.7)
+    - Nimble
+    - Quick
   - NPKeyboardLayoutGuide (1.0.0)
   - ObjectiveSugar (1.1.0)
   - OCMock (2.2.4)
@@ -109,6 +118,7 @@ PODS:
   - ORKeyboardReactingApplication (0.5.3)
   - ORStackView (2.0.0):
     - FLKAutoLayout (~> 0.1)
+  - Quick (0.9.0)
   - ReactiveCocoa (2.3):
     - ReactiveCocoa/UI (= 2.3)
   - ReactiveCocoa/Core (2.3):
@@ -121,6 +131,7 @@ PODS:
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
   - Specta (1.0.5)
+  - Then (1.0.0)
   - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
   - UIView+BooleanAnimations (1.0.2)
@@ -170,15 +181,19 @@ DEPENDENCIES:
   - MMMarkdown
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`)
+  - Nimble
+  - Nimble-Snapshots (~> 3.0.0)
   - NPKeyboardLayoutGuide
   - ObjectiveSugar
   - OCMock
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (from `https://github.com/1aurabrown/ORStackView.git`)
+  - Quick
   - ReactiveCocoa
   - SDWebImage (>= 3.7.2)
   - Specta
+  - Then
   - UIAlertView+Blocks
   - UICKeyChainStore
   - UIView+BooleanAnimations
@@ -294,10 +309,10 @@ SPEC CHECKSUMS:
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: 89d19a013279a5604d61650721c15f20fefaaf00
   Expecta: 32604574add2c46a36f8d2f716b6c5736eb75024
-  Expecta+Snapshots: ca15bfb57e7a0f78f86c7699c2c54ffacfa4ad2a
+  Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
   FBSDKCoreKit: d49cbf69741e3c5732166ec9ff4cbd9b288dd53e
   FBSDKLoginKit: d32e83c0d2d39ef74a942543cacae2dc4de7d088
-  FBSnapshotTestCase: 3dc3899168747a0319c5278f5b3445c13a6532dd
+  FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
   FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   HockeySDK-Source: 85233ef10090148e5571f7a0a82deb8213b1691e
@@ -312,16 +327,20 @@ SPEC CHECKSUMS:
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: bdcb666fa84122eed344661b132e1d93dbafac71
+  Nimble: 79d40f4d69d47314229bbabacaa02b8838c779b9
+  Nimble-Snapshots: ab41dd737dcd33a0b0cb005a30465fef70b7207a
   NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: 752d81ca2e2a0bd6c01a2ece30fd24923434be1e
+  Quick: 332eb1da73125a2106dd637424c803f2ae97e4a9
   ReactiveCocoa: 81ee2fb7df2dfc6bd52b5d70473662195e20ca7d
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
+  Then: 291c4c489fb76349a987c0f1769a30b3551d091e
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97

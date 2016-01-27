@@ -1,7 +1,6 @@
 GIT
   remote: https://github.com/KrauseFx/danger.git
-  revision: 3f6b15de736763f3c6f94a93f21f621b52d56688
-  branch: circle_2
+  revision: df58dcbad790cc14010fe1343e9511fce206597a
   specs:
     danger (0.2.1)
       claide (~> 0.8)

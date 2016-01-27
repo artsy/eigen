@@ -4,6 +4,7 @@
 
 @interface ARCountdownView ()
 @property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) NSNumberFormatter *formatter;
 @property (nonatomic, strong) UILabel *daysValueLabel;
 @property (nonatomic, strong) UILabel *hoursValueLabel;
 @property (nonatomic, strong) UILabel *minutesValueLabel;
@@ -24,6 +25,8 @@
     if (self) {
         self.color = color;
         self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.formatter = [[NSNumberFormatter alloc] init];
+        self.formatter.minimumIntegerDigits = 2;
 
         [self setupSubviews];
     }
@@ -191,10 +194,10 @@
 
 - (void)updateDays:(NSInteger)days hours:(NSInteger)hours minutes:(NSInteger)minutes seconds:(NSInteger)seconds
 {
-    self.daysValueLabel.text = [NSString stringWithFormat:@"%02ld", days];
-    self.hoursValueLabel.text = [NSString stringWithFormat:@"%02ld", hours];
-    self.minutesValueLabel.text = [NSString stringWithFormat:@"%02ld", minutes];
-    self.secondsValueLabel.text = [NSString stringWithFormat:@"%02ld", seconds];
+    self.daysValueLabel.text = [self.formatter stringFromNumber:@(days)];
+    self.hoursValueLabel.text = [self.formatter stringFromNumber:@(hours)];
+    self.minutesValueLabel.text = [self.formatter stringFromNumber:@(minutes)];
+    self.secondsValueLabel.text = [self.formatter stringFromNumber:@(seconds)];
 }
 
 #pragma mark - Private class methods
