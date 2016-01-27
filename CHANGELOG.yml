@@ -9,7 +9,7 @@ upcoming:
     - Users with Artsy emails get a warning that their inquiry may fail - orta
     - Converted CHANGELOG to yaml - orta
     - Remove x-callback support now that it's part of the OS - orta
-	- Support changing routes at runtime instead of compile time with Echo - orta
+    - Support changing routes at runtime instead of compile time with Echo - orta
     - New (native) auction banner view - ash
     - New (native) auction refine controls - ash
     - Use artworks/filter for the genes artworks - orta
