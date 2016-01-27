@@ -7,8 +7,8 @@ import Artsy
 
 class AuctionRefineViewControllerSpec: QuickSpec {
     override func spec() {
-        let defaultSettings = AuctionRefineSettings(ordering: .LotNumber)
-        let differentSettings = AuctionRefineSettings(ordering: .ArtistAlphabetical)
+        let defaultSettings = AuctionRefineSettings(ordering: .LotNumber, range: (min: 100, max: 100_000))
+        let differentSettings = AuctionRefineSettings(ordering: .ArtistAlphabetical, range: (min: 100, max: 50_000))
 
         it("looks good by default") {
             let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings)
@@ -16,18 +16,9 @@ class AuctionRefineViewControllerSpec: QuickSpec {
             expect(subject).to( haveValidSnapshot() )
         }
 
-        it("looks good when configured with options") {
-            let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: differentSettings)
-
-            expect(subject).to( haveValidSnapshot() )
-        }
-
         it("looks good when configured with options and changed options") {
-            let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings)
+            let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: differentSettings)
             
-            subject.loadViewProgrammatically()
-            subject.currentSettings = differentSettings
-
             expect(subject).to( haveValidSnapshot() )
         }
     }

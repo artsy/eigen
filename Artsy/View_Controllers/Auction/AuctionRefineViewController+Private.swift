@@ -116,11 +116,13 @@ private extension UISetup {
                 $0.leftThumbImage = $0.rightThumbImage
                 $0.addTarget(self, action: "sliderValueDidChange:", forControlEvents: .ValueChanged)
 
-                let range = self.defaultSettings.range
-                $0.setMinValue(CGFloat(range.min), maxValue: CGFloat(range.max))
+                let maxRange = self.defaultSettings.range
+                let initialRange = initialSettings.range
+                $0.setMinValue(CGFloat(maxRange.min), maxValue: CGFloat(maxRange.max))
+                $0.setLeftValue(CGFloat(initialRange.min), rightValue: CGFloat(initialRange.max))
 
                 // Make sure they don't touch by keeping them minimum 10% apart
-                $0.minimumDistance = CGFloat(range.max - range.min) / 10.0
+                $0.minimumDistance = CGFloat(maxRange.max - maxRange.min) / 10.0
             }
             stackView.addSubview(slider, withTopMargin: "10", sideMargin: "40")
 
