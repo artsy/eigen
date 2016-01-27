@@ -1,4 +1,5 @@
 #import "ARRouter.h"
+#import "Artsy-Swift.h"
 #import <JLRoutes/JLRoutes.h>
 #import "ARSwitchboard+Eigen.h"
 #import "ARTopMenuNavigationDataSource.h"
@@ -11,7 +12,8 @@
 
 @interface ARSwitchBoard ()
 
-@property (readonly, nonatomic, copy) JLRoutes *routes;
+@property (nonatomic, strong) JLRoutes *routes;
+@property (nonatomic, strong) Aerodramus *echo;
 
 @end
 
@@ -33,6 +35,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[ARSwitchBoard alloc] init];
+        [sharedInstance updateRoutes];
     });
 
     return sharedInstance;
@@ -48,10 +51,47 @@
     }
 
     _routes = [[JLRoutes alloc] init];
+    _echo = [[ArtsyEcho alloc] init];
+
+    return self;
+}
+
+- (void)setupEcho
+{
+    Aerodramus *aero = self.echo;
+    [aero setup];
+
+    NSArray *currentRoutes = self.echo.routes.allValues.copy;
+    __weak typeof(self) wself = self;
+
+    [aero checkForUpdates:^(BOOL updatedDataOnServer) {
+        if (!updatedDataOnServer) return;
+
+        [aero update:^(BOOL updated, NSError *error) {
+            [wself removeEchoRoutes:currentRoutes];
+            [wself updateRoutes];
+        }];
+    }];
+}
+
+/// It is expected that changes to these values will be shipped along with updated JSON from Echo
+/// in the form of Echo.json which is embedded inside the app.
+
+/// Given the tie of 1 to 1 for the echo keys to a website, it didn't feel like it needed
+/// the extra abstraction in the form of turning them into constants
+
+/// Note: to embed the latest JSON from the production server run: `make update_echo`
+
+- (void)updateRoutes
+{
+    // Allow lazy grabbing of local JSON etc, so that we can DI echo.
+    if (self.echo.name == nil) {
+        [self setupEcho];
+    }
 
     __weak typeof(self) wself = self;
 
-    [self.routes addRoute:@"/artist/:id" handler:JLRouteParams {
+    [self registerEchoRouteForKey:@"ARArtistRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadArtistWithID:parameters[@"id"]];
     }];
@@ -60,7 +100,7 @@
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view on iPad.
 
     if ([UIDevice isPad]) {
-        [self.routes addRoute:@"/:profile_id/artist/:id" handler:JLRouteParams {
+        [self registerEchoRouteForKey:@"ARProfileArtistRoute" handler:JLRouteParams {
             __strong typeof (wself) sself = wself;
 
             Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
@@ -68,66 +108,85 @@
         }];
     }
 
-    [self.routes addRoute:@"/artwork/:id" handler:JLRouteParams {
+    [self registerEchoRouteForKey:@"ARArtworkRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
         return [sself loadArtworkWithID:parameters[@"id"] inFair:fair];
     }];
 
-    [self.routes addRoute:@"/auction-registration/:id" handler:JLRouteParams {
+    [self registerEchoRouteForKey:@"ARAuctionRegistrationRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadAuctionRegistrationWithID:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/auction/:id" handler:JLRouteParams {
+    [self registerEchoRouteForKey:@"ARAuctionRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadAuctionWithID:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:JLRouteParams {
+    [self registerEchoRouteForKey:@"ARAuctionBidArtworkRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/gene/:id" handler:JLRouteParams {
+    [self registerEchoRouteForKey:@"ARGeneRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadGeneWithID:parameters[@"id"]];
     }];
 
-
-    [self.routes addRoute:@"/show/:id" handler:JLRouteParams {
+    [self registerEchoRouteForKey:@"ARShowRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadShowWithID:parameters[@"id"]];
     }];
 
     // We don't show a native fairs UI for iPad
     if (![UIDevice isPad]) {
-        [self.routes addRoute:@"/:profile_id/for-you" handler:JLRouteParams {
+        [self registerEchoRouteForKey:@"ARFairProfileForYouRoute" handler:JLRouteParams {
             __strong typeof (wself) sself = wself;
             Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
             return [sself loadFairGuideWithFair:fair];
         }];
 
-        [self.routes addRoute:@"/:profile_id/browse/artist/:id" handler:JLRouteParams {
+        [self registerEchoRouteForKey:@"ARFairBrowseArtistRoute" handler:JLRouteParams {
             __strong typeof (wself) sself = wself;
             Fair *fair = parameters[@"fair"] ?: [[Fair alloc] initWithFairID:parameters[@"profile_id"]];
             return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
         }];
     }
 
-    [self.routes addRoute:@"/categories" handler:JLRouteParams {
+    [self registerEchoRouteForKey:@"ARBrowseCategoriesRoute" handler:JLRouteParams {
         return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
+
     // This route will match any single path component and thus should be added last.
+    // It doesn't need to run through echo, as it's pretty much here to stay forever.
     [self.routes addRoute:@"/:profile_id" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself routeProfileWithID: parameters[@"profile_id"]];
     }];
 
     // The menu items' paths are added in ARTopMenuViewController
+}
 
-    return self;
+/// For making changes to the router, see http://echo-web-production.herokuapp.com/
+/// it uses HTTP basic auth, you can get the creds from 1Password under "Echo Web Production"
+
+- (void)registerEchoRouteForKey:(NSString *)key handler:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback
+{
+    Route *route = self.echo.routes[key];
+    if (route != nil) {
+        [self.routes addRoute:route.path handler:callback];
+    } else {
+        NSLog(@"You have to have the same named route in Echo in order to use dynamic routing");
+    }
+}
+
+- (void)removeEchoRoutes:(NSArray<Route *> *)routes
+{
+    for (Route *route in routes) {
+        [self.routes removeRoute:route.path];
+    }
 }
 
 - (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;

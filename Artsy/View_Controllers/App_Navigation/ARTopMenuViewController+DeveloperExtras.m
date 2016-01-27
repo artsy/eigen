@@ -12,13 +12,6 @@
 
 - (void)runDeveloperExtras
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [AROptions setBool:YES forOption:AROptionsUseNativeAuctions];
-        ARSwitchBoard *switchBoard = [ARSwitchBoard sharedInstance];
-        UIViewController *viewController = [switchBoard loadAuctionWithID:@"los-angeles-modern-auctions-march-2015"];
-        [switchBoard presentViewController:viewController];
-    });
 }
 
 @end

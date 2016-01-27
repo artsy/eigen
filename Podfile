@@ -25,7 +25,8 @@ plugin 'cocoapods-keys', {
         "ArtsyTwitterStagingSecret",
         "SegmentProductionWriteKey",
         "SegmentDevWriteKey",
-        "AdjustProductionAppToken"
+        "AdjustProductionAppToken",
+        "ArtsyEchoProductionToken",
     ]
 }
 
@@ -61,6 +62,7 @@ target 'Artsy' do
   pod 'ORStackView', :git => 'https://github.com/1aurabrown/ORStackView.git'
   pod 'UIView+BooleanAnimations'
   pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit'
+  pod 'Aerodramus', :git => 'https://github.com/artsy/Aerodramus.git', :branch => 'tests'
 
   # Deprecated:
   # UIAlertView is deprecated for iOS8 APIs
