@@ -5,7 +5,7 @@ struct AuctionRefineSettings: Equatable {
     // TODO: This is a temporary initializer until we have price range finished.
     init(ordering: AuctionOrderingSwitchValue) {
         self.ordering = ordering
-        self.range = (min: 0, max: 0)
+        self.range = (min: 0, max: 100)
     }
 }
 

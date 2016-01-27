@@ -240,6 +240,8 @@
 		5435192E18A8E9420060F31E /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */; };
 		546A858217763349006D489B /* ARHeroUnitsNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 546A858117763349006D489B /* ARHeroUnitsNetworkModel.m */; };
 		54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */; };
+		5E088DAE1C58072B00C448D7 /* AuctionRefineViewController+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E088DAD1C58072B00C448D7 /* AuctionRefineViewController+Private.swift */; };
+		5E088DB11C58145600C448D7 /* UIViewController+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E088DAF1C58141D00C448D7 /* UIViewController+Tests.swift */; };
 		5E0AEB7819B9EA43009F34DE /* ARShowNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AEB7719B9EA43009F34DE /* ARShowNetworkModel.m */; };
 		5E0AEB7A19B9EF57009F34DE /* ARShowNetworkModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AEB7919B9EF57009F34DE /* ARShowNetworkModelTests.m */; };
 		5E0AEB7D19B9FAED009F34DE /* ARStubbedShowNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AEB7C19B9FAED009F34DE /* ARStubbedShowNetworkModel.m */; };
@@ -1054,6 +1056,8 @@
 		54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMenuAwareViewController.h; sourceTree = "<group>"; };
 		54B7477318A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTopMenuViewController+DeveloperExtras.h"; sourceTree = "<group>"; };
 		54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTopMenuViewController+DeveloperExtras.m"; sourceTree = "<group>"; };
+		5E088DAD1C58072B00C448D7 /* AuctionRefineViewController+Private.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "AuctionRefineViewController+Private.swift"; path = "Auction/AuctionRefineViewController+Private.swift"; sourceTree = "<group>"; };
+		5E088DAF1C58141D00C448D7 /* UIViewController+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Tests.swift"; sourceTree = "<group>"; };
 		5E0AEB7619B9EA43009F34DE /* ARShowNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARShowNetworkModel.h; sourceTree = "<group>"; };
 		5E0AEB7719B9EA43009F34DE /* ARShowNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShowNetworkModel.m; sourceTree = "<group>"; };
 		5E0AEB7919B9EF57009F34DE /* ARShowNetworkModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShowNetworkModelTests.m; sourceTree = "<group>"; };
@@ -2092,6 +2096,7 @@
 				E61E772519A5477300C55E14 /* ARExpectaExtensions.m */,
 				0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */,
 				0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */,
+				5E088DAF1C58141D00C448D7 /* UIViewController+Tests.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2676,6 +2681,7 @@
 				5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */,
 				5E47F3571C44378E00EC0751 /* AuctionNetworkModel.swift */,
 				5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */,
+				5E088DAD1C58072B00C448D7 /* AuctionRefineViewController+Private.swift */,
 				5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */,
 				5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */,
 			);
@@ -4859,6 +4865,7 @@
 				342F917E6CFBD49D6F43873D /* ARCollapsableTextView.m in Sources */,
 				342F97971D28FDC703392765 /* MTLModel+JSON.m in Sources */,
 				342F949383329F78F589BE53 /* MTLModel+Dictionary.m in Sources */,
+				5E088DAE1C58072B00C448D7 /* AuctionRefineViewController+Private.swift in Sources */,
 				342F996B2CF23951168534AD /* Follow.m in Sources */,
 				342F9308EE5B3487AE62276D /* ARShowViewController.m in Sources */,
 				600B8B401C4FCEE000776F84 /* push_notifications.md in Sources */,
@@ -4957,6 +4964,7 @@
 				5EA250631C4EDBE7001E4950 /* ARCountdownViewTests.m in Sources */,
 				3CE7F34418A99E6D002BA993 /* SiteHeroUnitTests.m in Sources */,
 				5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */,
+				5E088DB11C58145600C448D7 /* UIViewController+Tests.swift in Sources */,
 				D3C8C2061B66D2FF004CAD7F /* ARImageTests.m in Sources */,
 				3CE75A0B18B6367F00885355 /* ARValueTransformerTests.m in Sources */,
 				3CA1E820188465F0003C622D /* Sale+Extensions.m in Sources */,
