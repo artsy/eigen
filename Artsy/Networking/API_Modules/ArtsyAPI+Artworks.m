@@ -27,7 +27,7 @@
 + (AFHTTPRequestOperation *)getArtworksForGene:(Gene *)gene atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworksFromGeneRequest:gene.geneID atPage:page];
-    return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
+    return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class fromDictionaryWithKey:@"hits" success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getAuctionComparablesForArtwork:(Artwork *)artwork success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
@@ -46,12 +46,11 @@
 
 + (void)getAuctionArtworkWithSale:(NSString *)saleID artwork:(NSString *)artworkID success:(void (^)(id auctionArtwork))success failure:(void (^)(NSError *error))failure
 {
-
     NSURLRequest *saleArtworkRequest = [ARRouter saleArtworkRequestForSaleID:saleID artworkID:artworkID];
     NSURLRequest *biddersRequest = [ARRouter biddersRequest];
     NSURLRequest *bidderPositionRequest = [ARRouter bidderPositionsRequestForSaleID:saleID artworkID:artworkID];
 
-    [self getRequests:@[saleArtworkRequest, biddersRequest, bidderPositionRequest] success:^(NSArray *operations) {
+    [self getRequests:@[ saleArtworkRequest, biddersRequest, bidderPositionRequest ] success:^(NSArray *operations) {
 
         // Doing all parsing here since completion blocks fire async per: https://github.com/AFNetworking/AFNetworking/issues/362
         ar_dispatch_async(^{
