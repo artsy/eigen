@@ -52,7 +52,8 @@ artsy:
 	config/spacecommander/setup-repo.sh
 
 certs:
-	bundle exec match appstore --readonly
+	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
+	bundle exec match appstore
 
 ### Fastlane Distrubution + Building
 
@@ -61,9 +62,6 @@ ipa: set_git_properties change_version_to_date
 
 distribute:
 	bundle exec fastlane ship_beta
-
-ship_appstore:
-	bundle exec deliver -i build/Artsy.ipa --submit_for_review
 
 ### General Xcode tooling
 
