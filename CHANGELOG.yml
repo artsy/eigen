@@ -14,6 +14,7 @@ upcoming:
     - New (native) auction refine controls - ash
     - Use artworks/filter for the genes artworks - orta
     - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger - orta
+    - Fix Genome Artworks API - orta
     - Fixes issue opening ‘works for you’ from a push notification - alloy
     - Fixes crash on iPad when presenting an alert about opening an external URL - alloy
 
