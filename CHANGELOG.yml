@@ -7,6 +7,9 @@ upcoming:
 
   notes:
     - Remove x-callback support now that it's part of the OS - orta
+    - Support changing routes at runtime instead of compile time with Echo - orta
+    - New (native) auction banner view - ash
+    - New (native) auction refine controls - ash
     - Use artworks/filter for the genes artworks - orta
     - Support deprecating iOS8, and fix an iOS 8 launch crash - orta
     - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger - orta

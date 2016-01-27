@@ -25,6 +25,7 @@
 - (NSURL *)resolveRelativeUrl:(NSString *)path;
 - (id)routeInternalURL:(NSURL *)url fair:(Fair *)fair;
 - (void)openURLInExternalService:(NSURL *)url;
+- (void)updateRoutes;
 @end
 
 
@@ -50,6 +51,7 @@ describe(@"ARSwitchboard", ^{
 
     beforeEach(^{
         switchboard = [[ARSwitchBoard alloc] init];
+        [switchboard updateRoutes];
     });
 
     describe(@"resolveRelativeUrl", ^{
@@ -187,6 +189,7 @@ describe(@"ARSwitchboard", ^{
             [ARTestContext useDevice:ARDeviceTypePad :^{
                 // Now we're in a different context, need to recreate switchboard
                 switchboard = [[ARSwitchBoard alloc] init];
+                [switchboard updateRoutes];
 
                 id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
                 expect(viewController).to.beKindOf(ARArtistViewController.class);
@@ -212,6 +215,7 @@ describe(@"ARSwitchboard", ^{
                 before(^{
                     [ARTestContext stubDevice:ARDeviceTypePhone5];
                     switchboard = [[ARSwitchBoard alloc] init];
+                    [switchboard updateRoutes];
                 });
 
                 after(^{
