@@ -56,16 +56,38 @@
     return self;
 }
 
+- (void)setupEcho
+{
+    Aerodramus *aero = self.echo;
+    [aero setup];
+
+    NSArray *currentRoutes = self.echo.routes.copy;
+
+    [aero checkForUpdates:^(BOOL updatedDataOnServer) {
+        if (!updatedDataOnServer) return;
+
+        [aero update:^(BOOL updated, NSError *error) {
+            [self removeEchoRoutes:currentRoutes];
+            [self updateRoutes];
+        }];
+    }];
+}
+
 /// It is expected that changes to these values will be shipped along with updated JSON from Echo
 /// in the form of Echo.json which is embedded inside the app.
 
 /// Given the tie of 1 to 1 for the echo keys to a website, it didn't feel like it needed
 /// the extra abstraction in the form of turning them into constants
 
-/// Note to embed the latest JSON from the production server run: `make update_echo`
+/// Note: to embed the latest JSON from the production server run: `make update_echo`
 
 - (void)updateRoutes
 {
+    // Allow lazy grabbing of local JSON etc, so that we can DI echo.
+    if (self.echo.name == nil) {
+        [self setupEcho];
+    }
+
     __weak typeof(self) wself = self;
 
     [self registerEchoRouteForKey:@"ARArtistRoute" handler:JLRouteParams {
@@ -77,7 +99,7 @@
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view on iPad.
 
     if ([UIDevice isPad]) {
-        [self.routes addRoute:@"ARProfileArtistRoute" handler:JLRouteParams {
+        [self registerEchoRouteForKey:@"ARProfileArtistRoute" handler:JLRouteParams {
             __strong typeof (wself) sself = wself;
 
             Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
@@ -138,7 +160,6 @@
 
     // This route will match any single path component and thus should be added last.
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
-
     [self.routes addRoute:@"/:profile_id" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself routeProfileWithID: parameters[@"profile_id"]];
@@ -154,7 +175,15 @@
 {
     Route *route = self.echo.routes[key];
     NSAssert(route != nil, @"You have to have the same named route in Echo in order to use dynamic routing");
+
     [self.routes addRoute:route.path handler:callback];
+}
+
+- (void)removeEchoRoutes:(NSArray<Route *> *)routes
+{
+    for (Route *route in routes) {
+        [self.routes removeRoute:route.path];
+    }
 }
 
 - (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
