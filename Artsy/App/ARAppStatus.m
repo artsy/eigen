@@ -26,4 +26,14 @@
     return ARIsRunningInDemoMode;
 }
 
++ (BOOL)isRunningTests
+{
+    static BOOL isRunningTests = NO;
+    static dispatch_once_t onceToken = 0;
+    dispatch_once(&onceToken, ^{
+        isRunningTests = [[NSProcessInfo processInfo] environment][@"XCInjectBundle"] != nil;
+    });
+    return isRunningTests;
+}
+
 @end

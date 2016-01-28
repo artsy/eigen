@@ -1,5 +1,6 @@
 #import "ARTopMenuViewController+DeveloperExtras.h"
 #import "ARContentViewControllers.h"
+#import "ARAppStatus.h"
 
 #import "UIViewController+FullScreenLoading.h"
 #import "ARTabContentView.h"
@@ -300,7 +301,9 @@ static const CGFloat ARMenuButtonDimension = 46;
     [super viewDidAppear:animated];
 
 #ifdef DEBUG
-    [self runDeveloperExtras];
+    if ([ARAppStatus isRunningTests] == NO) {
+        [self runDeveloperExtras];
+    }
 #endif
 }
 
