@@ -12,7 +12,8 @@
 #import "UIViewController+ARUserActivity.h"
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
-@interface ARGeneViewController () <AREmbeddedModelsDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
+
+@interface ARGeneViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
 
 @property (nonatomic, strong) ARGeneArtworksNetworkModel *artworkCollection;
 
@@ -104,7 +105,7 @@
 
 - (void)loadGene
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.gene updateGene:^{
         __strong typeof (wself) sself = wself;
         [sself ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
@@ -265,7 +266,7 @@
     }
 }
 
-#pragma mark - AREmbeddedModelsDelegate
+#pragma mark - AREmbeddedModelsViewControllerDelegate
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {

@@ -7,9 +7,10 @@ class AuctionViewController: UIViewController {
     var saleViewModel: SaleViewModel?
     var appeared = false
 
-    var stackScrollView: ORStackScrollView!
+    var headerStack: ORStackView!
 
     var _defaultRefineSettings: AuctionRefineSettings!
+    private var artworksViewController: ARModelInfiniteScrollViewController!
 
     // Our refine settings are (by defualt) the default refine setings.
     lazy var refineSettings: AuctionRefineSettings = {
@@ -33,15 +34,15 @@ class AuctionViewController: UIViewController {
         return nil
     }
 
-    override func loadView() {
-        super.loadView()
-        stackScrollView = setupTaggedStackView()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .whiteColor()
+        headerStack = ORTagBasedAutoStackView()
+        artworksViewController = ARModelInfiniteScrollViewController()
+        ar_addAlignedModernChildViewController(artworksViewController)
+
+        artworksViewController.headerStackView = headerStack
+        artworksViewController.modelViewController.delegate = self
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -72,6 +73,10 @@ class AuctionViewController: UIViewController {
 
 extension AuctionViewController {
     func setupForSale(saleViewModel: SaleViewModel) {
+
+        // TODO: Sale is currently private on the SVM
+        // artworksViewController.spotlightEntity = saleViewModel.sale
+
         self.saleViewModel = saleViewModel
 
         [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
@@ -79,8 +84,9 @@ extension AuctionViewController {
           (ARWhitespaceGobbler(), .WhitespaceGobbler)
         ].forEach { (view, tag) in
             view.tag = tag.rawValue
-            self.stackScrollView.stackView.addSubview(view, withTopMargin: "0", sideMargin: "0")
+            headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
+        artworksViewController.invalidateHeaderHeight()
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {
@@ -113,5 +119,19 @@ extension AuctionViewController: AuctionRefineViewControllerDelegate {
     func userDidApply(settings: AuctionRefineSettings, controller: AuctionRefineViewController) {
         refineSettings = settings
         dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
+    func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
+        // TODO
+    }
+
+    func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    func embeddedModelsViewControllerDidScrollPastEdge(controller: AREmbeddedModelsViewController!) {
+        print("OK asking for stuff")
     }
 }

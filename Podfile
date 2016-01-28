@@ -58,7 +58,7 @@ target 'Artsy' do
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
-  pod 'ARCollectionViewMasonryLayout'
+  pod 'ARCollectionViewMasonryLayout', :git => "http://github.com/ashfurrow/ARCollectionViewMasonryLayout"
   pod 'ORStackView', :git => 'https://github.com/1aurabrown/ORStackView.git'
   pod 'UIView+BooleanAnimations'
   pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit'

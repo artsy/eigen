@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
 static const NSInteger ARFairShowMaximumNumberOfHeadlineImages = 5;
 
 
-@interface ARShowViewController () <AREmbeddedModelsDelegate, ARArtworkMasonryLayoutProvider>
+@interface ARShowViewController () <AREmbeddedModelsViewControllerDelegate, ARArtworkMasonryLayoutProvider>
 @property (nonatomic, strong, readonly) ORStackScrollView *view;
 @property (nonatomic, strong, readonly) ARImagePageViewController *imagePageViewController;
 @property (nonatomic, strong, readonly) ARFollowableNetworkModel *followableNetwork;
@@ -505,7 +505,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     return _showNetworkModel;
 }
 
-#pragma mark - AREmbeddedModelsDelegate
+#pragma mark - AREmbeddedModelsViewControllerDelegate
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {

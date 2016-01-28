@@ -4,7 +4,7 @@
 
 @class AREmbeddedModelsViewController;
 
-@protocol AREmbeddedModelsDelegate <NSObject>
+@protocol AREmbeddedModelsViewControllerDelegate <NSObject>
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController;
 
@@ -27,7 +27,7 @@
 @interface AREmbeddedModelsViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource>
 
 /// An optional delegate for actions
-@property (nonatomic, weak) id<AREmbeddedModelsDelegate> delegate;
+@property (nonatomic, weak) id<AREmbeddedModelsViewControllerDelegate> delegate;
 
 /// The items shown by the embedded models VC
 @property (nonatomic, copy, readonly) NSArray *items;

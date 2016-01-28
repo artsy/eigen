@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 // TODO: Add ARFollowableNetworkModel for following status
 
 
-@interface ARArtistViewController () <UIScrollViewDelegate, AREmbeddedModelsDelegate, ARPostsViewControllerDelegate, ARSwitchViewDelegate>
+@interface ARArtistViewController () <UIScrollViewDelegate, AREmbeddedModelsViewControllerDelegate, ARPostsViewControllerDelegate, ARSwitchViewDelegate>
 @property (nonatomic, strong) ORStackScrollView *view;
 @property (nonatomic, assign) enum ARArtistArtworksDisplayMode displayMode;
 
@@ -597,7 +597,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     }];
 }
 
-#pragma mark - AREmbeddedModelsDelegate
+#pragma mark - AREmbeddedModelsViewControllerDelegate
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {

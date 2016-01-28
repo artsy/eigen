@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
 };
 
 
-@interface ARFairArtistViewController () <AREmbeddedModelsDelegate>
+@interface ARFairArtistViewController () <AREmbeddedModelsViewControllerDelegate>
 @property (nonatomic, strong, readonly) ORStackScrollView *view;
 @property (nonatomic, strong, readonly) ARFollowableNetworkModel *followableNetwork;
 @property (nonatomic, strong, readwrite) NSObject<FairArtistNeworkModel> *networkModel;

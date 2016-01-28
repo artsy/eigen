@@ -10,7 +10,7 @@ static CGFloat pregeneratedMargins = 0;
 static CGFloat ARPartnerShowCellSideMargin;
 
 
-@interface ARModernPartnerShowTableViewCell () <AREmbeddedModelsDelegate>
+@interface ARModernPartnerShowTableViewCell () <AREmbeddedModelsViewControllerDelegate>
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworkThumbnailsVC;
 
 @property (nonatomic, strong) ORStackView *stackView;
@@ -200,7 +200,7 @@ static CGFloat ARPartnerShowCellSideMargin;
     }
 }
 
-#pragma mark - AREmbeddedModelsDelegate
+#pragma mark - AREmbeddedModelsViewControllerDelegate
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {

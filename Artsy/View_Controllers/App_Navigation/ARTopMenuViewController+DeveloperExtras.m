@@ -1,4 +1,5 @@
 #import "ARTopMenuViewController+DeveloperExtras.h"
+#import "Artsy-Swift.h"
 
 // You can tell git to ignore changes to this file by running
 //
@@ -12,6 +13,8 @@
 
 - (void)runDeveloperExtras
 {
+    AuctionViewController *auctionVC = [[AuctionViewController alloc] initWithSaleID:@"los-angeles-modern-auctions-march-2015"];
+    [[ARTopMenuViewController sharedController] pushViewController:auctionVC animated:NO];
 }
 
 @end
