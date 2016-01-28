@@ -153,7 +153,7 @@
 
 - (void)appendItems:(NSArray *)items
 {
-    if (!self && !self.collectionView) {
+    if ((!self && !self.collectionView) || items.count == 0) {
         return;
     }
 

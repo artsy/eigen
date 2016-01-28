@@ -15,7 +15,7 @@
 #import "ARFavoriteItemViewCell.h"
 
 
-@interface ARFavoritesViewController () <AREmbeddedModelsDelegate, UIScrollViewDelegate, ARSwitchViewDelegate, ARArtworkMasonryLayoutProvider>
+@interface ARFavoritesViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARSwitchViewDelegate, ARArtworkMasonryLayoutProvider>
 
 @property (nonatomic, strong, readonly) AREmbeddedModelsViewController *embeddedItemsVC;
 @property (nonatomic, strong, readonly) UILabel *noFavoritesInfoLabel;
@@ -295,7 +295,7 @@
     if (networkModel.allDownloaded) {
         return;
     };
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     ar_dispatch_on_queue(self.artworkPageQueue, ^{
         [self.activeNetworkModel getFavorites:^(NSArray *items){
             __strong typeof (wself) sself = wself;
@@ -319,7 +319,7 @@
     return [UIDevice isPad];
 }
 
-#pragma mark - AREmbeddedModelsDelegate
+#pragma mark - AREmbeddedModelsViewControllerDelegate
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {
