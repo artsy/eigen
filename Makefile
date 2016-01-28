@@ -53,7 +53,7 @@ artsy:
 
 certs:
 	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
-	bundle exec match appstore
+	bundle exec match appstore --force
 
 ### Fastlane Distrubution + Building
 
