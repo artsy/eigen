@@ -9,7 +9,6 @@ class AuctionViewController: UIViewController {
 
     var headerStack: ORStackView!
 
-    var geneNetworkModel: ARGeneArtworksNetworkModel!
     var _defaultRefineSettings: AuctionRefineSettings!
     private var artworksViewController: ARModelInfiniteScrollViewController!
 
@@ -38,17 +37,12 @@ class AuctionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let gene = Gene(geneID: "humor")
-        geneNetworkModel = ARGeneArtworksNetworkModel(gene: gene)
-
         headerStack = ORTagBasedAutoStackView()
         artworksViewController = ARModelInfiniteScrollViewController()
         ar_addAlignedModernChildViewController(artworksViewController)
 
         artworksViewController.headerStackView = headerStack
         artworksViewController.modelViewController.delegate = self
-
-        getNextGenes()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -58,15 +52,10 @@ class AuctionViewController: UIViewController {
         appeared = true
 
         self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
-        self.networkModel.fetchSale { result in
-            self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
-
-            switch result {
-            case .Success(let saleViewModel):
-                self.setupForSale(saleViewModel)
-            case .Failure(_):
-                break // TODO: How to handle error?
-            }
+        self.networkModel.fetch().next { saleViewModel in
+            self.setupForSale(saleViewModel)
+        }.error { error in
+            // TODO: Error-handling somehow
         }
     }
 
@@ -79,7 +68,6 @@ class AuctionViewController: UIViewController {
 
 extension AuctionViewController {
     func setupForSale(saleViewModel: SaleViewModel) {
-
         // TODO: Sale is currently private on the SVM
         // artworksViewController.spotlightEntity = saleViewModel.sale
 
@@ -93,6 +81,12 @@ extension AuctionViewController {
             headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
         artworksViewController.invalidateHeaderHeight()
+
+        // TODO:
+        self.artworksViewController.modelViewController.appendItems([])
+        self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
+
+        self.ar_removeIndeterminateLoadingIndicatorAnimated(true) // TODO: Animatd?
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {
@@ -135,16 +129,5 @@ extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
 
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
         navigationController?.pushViewController(viewController, animated: true)
-    }
-
-    func getNextGenes() {
-        geneNetworkModel.getNextArtworkPage { artworks in
-            self.artworksViewController.modelViewController.appendItems(artworks)
-            self.artworksViewController.modelViewController.showTrailingLoadingIndicator = (artworks.count != 0)
-        }
-    }
-
-    func embeddedModelsViewControllerDidScrollPastEdge(controller: AREmbeddedModelsViewController!) {
-        getNextGenes()
     }
 }

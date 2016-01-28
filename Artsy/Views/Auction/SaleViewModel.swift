@@ -2,9 +2,11 @@ import Foundation
 
 class SaleViewModel {
     private let sale: Sale
+    private let saleArtworks: [SaleArtwork]
 
-    init(sale: Sale) {
+    init(sale: Sale, saleArtworks: [SaleArtwork]) {
         self.sale = sale
+        self.saleArtworks = saleArtworks
     }
 }
 
@@ -19,5 +21,16 @@ extension SaleViewModel {
 
     var closingDate: NSDate {
         return sale.endDate
+    }
+
+    var numberOfLots: Int {
+        return saleArtworks.count
+    }
+
+    // TODO: Temporary, shouldn't be exposing raw models 😬
+    var artworks: [String] {
+        return saleArtworks.map { saleArtwork in
+            return saleArtwork.saleArtworkID
+        }
     }
 }

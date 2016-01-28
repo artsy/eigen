@@ -27,4 +27,12 @@
     [self getRequest:request parseIntoAClass:[Sale class] success:success failure:failure];
 }
 
++ (void)getSaleArtworksWithSale:(Sale *)sale
+                        success:(void (^)(NSArray<SaleArtwork *> *sale))success
+                        failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter artworksForSaleRequest:sale.saleID];
+    [self getRequest:request parseIntoAnArrayOfClass:[SaleArtwork class] success:success failure:failure];
+}
+
 @end

@@ -1,12 +1,6 @@
 import Foundation
+import Interstellar
 
-// TODO: This should be removed when we decide on architecture in https://github.com/artsy/mobile/issues/65
-enum Result<T> {
-    case Success(T)
-    case Failure(ErrorType)
-}
-
-// TODO: Yeah, so https://github.com/artsy/mobile/issues/65
 class AuctionNetworkModel {
 
     let saleID: String
@@ -15,14 +9,35 @@ class AuctionNetworkModel {
         self.saleID = saleID
     }
 
-    func fetchSale(callback: Result<SaleViewModel> -> Void) {
+    func fetch() -> Signal<SaleViewModel> {
+        let signal = Signal(saleID)
+
+        return signal.flatMap(fetchSale)
+            .flatMap(fetchSaleArtworks)
+    }
+}
+
+private extension AuctionNetworkModel {
+
+    func fetchSale(saleID: String, callback: Result<Sale> -> Void) {
         ArtsyAPI.getSaleWithID(saleID,
             success: { sale in
-                let saleViewModel = SaleViewModel(sale: sale)
-                callback(.Success(saleViewModel))
+                callback(.Success(sale))
             },
             failure: { error in
-                callback(.Failure(error))
+                callback(.Error(error))
+            }
+        )
+    }
+
+    func fetchSaleArtworks(sale: Sale, callback: Result<SaleViewModel> -> Void) {
+        ArtsyAPI.getSaleArtworksWithSale(sale,
+            success: { (saleArtworks) in
+                let viewModel = SaleViewModel(sale: sale, saleArtworks: saleArtworks)
+                callback(.Success(viewModel))
+            },
+            failure: { error in
+                callback(.Error(error))
             }
         )
     }
