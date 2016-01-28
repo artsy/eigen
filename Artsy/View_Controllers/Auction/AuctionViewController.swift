@@ -9,6 +9,7 @@ class AuctionViewController: UIViewController {
 
     var headerStack: ORStackView!
 
+    var geneNetworkModel: ARGeneArtworksNetworkModel!
     var _defaultRefineSettings: AuctionRefineSettings!
     private var artworksViewController: ARModelInfiniteScrollViewController!
 
@@ -37,12 +38,17 @@ class AuctionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let gene = Gene(geneID: "humor")
+        geneNetworkModel = ARGeneArtworksNetworkModel(gene: gene)
+
         headerStack = ORTagBasedAutoStackView()
         artworksViewController = ARModelInfiniteScrollViewController()
         ar_addAlignedModernChildViewController(artworksViewController)
 
         artworksViewController.headerStackView = headerStack
         artworksViewController.modelViewController.delegate = self
+
+        getNextGenes()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -131,7 +137,14 @@ extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
         navigationController?.pushViewController(viewController, animated: true)
     }
 
+    func getNextGenes() {
+        geneNetworkModel.getNextArtworkPage { artworks in
+            self.artworksViewController.modelViewController.appendItems(artworks)
+            self.artworksViewController.modelViewController.showTrailingLoadingIndicator = (artworks.count != 0)
+        }
+    }
+
     func embeddedModelsViewControllerDidScrollPastEdge(controller: AREmbeddedModelsViewController!) {
-        print("OK asking for stuff")
+        getNextGenes()
     }
 }
