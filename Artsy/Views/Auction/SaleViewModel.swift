@@ -28,9 +28,9 @@ extension SaleViewModel {
     }
 
     // TODO: Temporary, shouldn't be exposing raw models 😬
-    var artworks: [String] {
+    var artworks: [Artwork] {
         return saleArtworks.map { saleArtwork in
-            return saleArtwork.saleArtworkID
+            return saleArtwork.artwork
         }
     }
 }

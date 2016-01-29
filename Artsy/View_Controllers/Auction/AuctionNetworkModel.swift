@@ -31,6 +31,7 @@ private extension AuctionNetworkModel {
     }
 
     func fetchSaleArtworks(sale: Sale, callback: Result<SaleViewModel> -> Void) {
+        // TODO: Download them _all_
         ArtsyAPI.getSaleArtworksWithSale(sale,
             success: { (saleArtworks) in
                 let viewModel = SaleViewModel(sale: sale, saleArtworks: saleArtworks)
