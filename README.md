@@ -34,10 +34,6 @@ This will set you up on our staging server, you will have a running version of t
 Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander). Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be true too.
 
 
-### Don't work at Artsy?
-
-We're actively looking for 2 more [mobile developers](https://www.artsy.net/job/mobile-engineer) to join our [team](https://github.com/artsy/mobile/). Want to work in NYC, and do impactful work in the open? Get in contact.
-
 ### Thanks
 
 **Copyright**: 2012-2015, Artsy. Thanks to all [our contributors](/docs/thanks.md).
