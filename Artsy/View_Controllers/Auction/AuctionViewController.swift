@@ -82,11 +82,10 @@ extension AuctionViewController {
         }
         artworksViewController.invalidateHeaderHeight()
 
-        // TODO:
-        self.artworksViewController.modelViewController.appendItems([])
+        self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)
         self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
 
-        self.ar_removeIndeterminateLoadingIndicatorAnimated(true) // TODO: Animatd?
+        self.ar_removeIndeterminateLoadingIndicatorAnimated(true) // TODO: Animated?
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {

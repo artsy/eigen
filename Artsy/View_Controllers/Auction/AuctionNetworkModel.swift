@@ -12,7 +12,9 @@ class AuctionNetworkModel {
     func fetch() -> Signal<SaleViewModel> {
         let signal = Signal(saleID)
 
-        return signal.flatMap(fetchSale)
+        // Based on the saleID signal, fetch the sale, then pass that result on to fetch the sale artworks.
+        return signal
+            .flatMap(fetchSale)
             .flatMap(fetchSaleArtworks)
     }
 }
