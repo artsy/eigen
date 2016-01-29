@@ -91,12 +91,7 @@ PODS:
   - FLKAutoLayout (0.2.1)
   - FXBlurView (1.6.1)
   - HockeySDK-Source (3.8.5)
-  - Interstellar (1.4.0):
-    - Interstellar/Core (= 1.4.0)
-    - Interstellar/Warpdrive (= 1.4.0)
   - Interstellar/Core (1.4.0)
-  - Interstellar/Warpdrive (1.4.0):
-    - Interstellar/Core
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
   - JLRoutes (2.0.0)
@@ -177,7 +172,7 @@ DEPENDENCIES:
   - FBSnapshotTestCase
   - FLKAutoLayout (from `https://github.com/alloy/FLKAutoLayout.git`, branch `add-support-for-layout-guides-take-2`)
   - FXBlurView
-  - Interstellar
+  - Interstellar/Core
   - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
