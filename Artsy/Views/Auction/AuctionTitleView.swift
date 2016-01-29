@@ -26,13 +26,6 @@ class AuctionTitleView: UIView {
         super.traitCollectionDidChange(previousTraitCollection)
 
         subviews.forEach { $0.removeFromSuperview() }
-
-        let button = UIButton(type: .System)
-        button.setTitle("Refine", forState: .Normal)
-        button.addTarget(delegate, action: "buttonPressed", forControlEvents: .TouchUpInside)
-
-        addSubview(button)
-        button.alignToView(self)
     }
 
     // Just temporary until we have real contents.

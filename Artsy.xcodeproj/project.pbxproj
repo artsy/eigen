@@ -1073,7 +1073,7 @@
 		5E17B1971C5965CC00CE6E98 /* Thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Thumb@2x.png"; sourceTree = "<group>"; };
 		5E284607194A2E58007274AB /* ARFairGuideContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairGuideContainerViewController.h; sourceTree = "<group>"; };
 		5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewController.m; sourceTree = "<group>"; };
-		5E47F34C1C3ECAA500EC0751 /* Artsy-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artsy-Bridging-Header.h"; sourceTree = "<group>"; };
+		5E47F34C1C3ECAA500EC0751 /* Artsy-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Artsy-Bridging-Header.h"; path = "../Resources/Artsy-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionViewController.swift; path = Auction/AuctionViewController.swift; sourceTree = "<group>"; };
 		5E47F3531C44358600EC0751 /* AuctionBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionBannerView.swift; path = Auction/AuctionBannerView.swift; sourceTree = "<group>"; };
 		5E47F3551C4435C100EC0751 /* AuctionTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionTitleView.swift; path = Auction/AuctionTitleView.swift; sourceTree = "<group>"; };
@@ -2507,6 +2507,7 @@
 		49A7723E165ADBF700BC6FD3 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				5E47F34C1C3ECAA500EC0751 /* Artsy-Bridging-Header.h */,
 				49BA7E121655ABE600C06572 /* ARAppDelegate.h */,
 				49BA7E131655ABE600C06572 /* ARAppDelegate.m */,
 				60A0E9FF1C5107DB002754A8 /* Routing */,
@@ -3300,7 +3301,6 @@
 				608B703017D4A10F0088A56C /* Assets */,
 				60059B2017CE9CEE00BE132D /* Onboarding */,
 				0631FA6E1705E77F000A5ED3 /* mail.html */,
-				5E47F34C1C3ECAA500EC0751 /* Artsy-Bridging-Header.h */,
 			);
 			path = Resources;
 			sourceTree = "<group>";

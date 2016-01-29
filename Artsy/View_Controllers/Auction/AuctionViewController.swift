@@ -104,6 +104,22 @@ extension AuctionViewController {
         }
         return defaultSettings
     }
+
+    func generateStickyHeader() -> UIView {
+        let header = UIView()
+
+        let button = UIButton(type: .System)
+        button.setTitle("Refine", forState: .Normal)
+        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+
+        header.addSubview(button)
+        button.alignTop("0", bottom: "0", toView: header)
+        button.alignTrailingEdgeWithView(header, predicate: "10")
+
+        let title = ARSerig
+
+        return header
+    }
 }
 
 extension AuctionViewController: AuctionTitleViewDelegate {

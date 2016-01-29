@@ -24,6 +24,7 @@
 
 #import "UIViewController+SimpleChildren.h"
 #import "UIViewController+ARUserActivity.h"
+#import "ARCustomEigenLabels.h"
 
 // Temporary for building out auctionVC
 #import "ARGeneArtworksNetworkModel.h"

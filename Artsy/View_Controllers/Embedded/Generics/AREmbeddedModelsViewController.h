@@ -49,6 +49,10 @@
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, assign) CGFloat headerHeight;
 
+/// Sticky Header View for when the view controller is basically another VCs view.
+@property (nonatomic, strong) UIView *stickyHeaderView;
+@property (nonatomic, assign) CGFloat stickyHeaderHeight;
+
 /// Shows a progress indicator, only works in masonry
 @property (nonatomic, assign) BOOL showTrailingLoadingIndicator;
 

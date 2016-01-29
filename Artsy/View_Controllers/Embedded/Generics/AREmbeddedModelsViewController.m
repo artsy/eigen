@@ -217,6 +217,13 @@
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
+- (void)setStickyHeaderHeight:(CGFloat)stickyHeaderHeight
+{
+    _stickyHeaderHeight = stickyHeaderHeight;
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
+
 #pragma mark - UIScrollViewDelegate methods
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -305,6 +312,7 @@
             [self.headerView alignLeading:@"0" trailing:@"0" toView:view];
         }
         return view;
+
     } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
         UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kind forIndexPath:indexPath];
         if (view.subviews.count == 0) {
@@ -315,9 +323,20 @@
             [loadingView alignLeading:@"0" trailing:@"0" toView:view];
         }
         return view;
-    } else {
-        return nil;
+
+    } else if ([kind isEqualToString:ARCollectionElementKindSectionStickyHeader]) {
+        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kind forIndexPath:indexPath];
+        view.backgroundColor = [UIColor artsyAttention];
+        return view;
     }
+
+    NSAssert(YES, @"Should not be able to get here");
+    return nil;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForStickyHeaderInSection:(NSInteger)section
+{
+    return self.stickyHeaderView ? CGSizeMake(CGRectGetWidth(self.collectionView.bounds), self.stickyHeaderHeight) : CGSizeZero;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section

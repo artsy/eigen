@@ -62,13 +62,10 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
 
     // This class can handle dealing with UIActivities for you
     // in order to use it, set the spotlight entity and when it has full
-    // metadata, call `ar_setDataLoaded()` on this VC
+    // metadata, call `ar_setDataLoaded()` on this VC. This should be set
+    // before presenting the view controller. 
 
-    var spotlightEntity: ARSpotlightMetadataProvider? {
-        didSet(value) {
-            setAr_userActivityEntity(value);
-        }
-    }
+    var spotlightEntity: ARSpotlightMetadataProvider?
 
     // Lets someone come back to this VC and the activity is re-triggered
     override func viewDidAppear(animated: Bool) {
@@ -78,7 +75,7 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
         view.setNeedsLayout()
         view.layoutIfNeeded()
 
-        setAr_userActivityEntity(spotlightEntity)
+        if spotlightEntity != nil { setAr_userActivityEntity(spotlightEntity) }
     }
 
     // Activity is done when this VC has left
