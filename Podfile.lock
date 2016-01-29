@@ -154,7 +154,8 @@ DEPENDENCIES:
   - ARAnalytics/Segmentio (from `https://github.com/orta/ARAnalytics.git`, commit
     `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARASCIISwizzle
-  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`)
+  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`,
+    branch `modern`)
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`)
   - Artsy+UIColors
@@ -215,6 +216,7 @@ EXTERNAL SOURCES:
     :commit: 6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e
     :git: https://github.com/orta/ARAnalytics.git
   ARCollectionViewMasonryLayout:
+    :branch: modern
     :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
   ARGenericTableViewController:
     :git: https://github.com/orta/ARGenericTableViewController.git
@@ -257,7 +259,7 @@ CHECKOUT OPTIONS:
     :commit: 6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e
     :git: https://github.com/orta/ARAnalytics.git
   ARCollectionViewMasonryLayout:
-    :commit: 29d7e1d3a156fb9ebd5f36b7889229f54991bcb3
+    :commit: 20d5a30f3f03d558396c2c286bc22b811418e721
     :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf

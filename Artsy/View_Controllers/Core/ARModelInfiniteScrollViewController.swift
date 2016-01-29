@@ -76,9 +76,9 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        // Deal with rotations that could have happened in the background
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
+//        // Deal with rotations that could have happened in the background
+//        view.setNeedsLayout()
+//        view.layoutIfNeeded()
 
         if spotlightEntity != nil { setAr_userActivityEntity(spotlightEntity) }
     }

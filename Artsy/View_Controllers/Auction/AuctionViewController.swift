@@ -77,6 +77,9 @@ class AuctionViewController: UIViewController {
         
         case WhitespaceGobbler
     }
+
+    // can be on the subclass too
+    var stickyHeaderHeight: NSLayoutConstraint!
 }
 
 extension AuctionViewController {
@@ -109,12 +112,13 @@ extension AuctionViewController {
         return defaultSettings
     }
 
+
     // Move into a view subclass
     func generateStickyHeader() -> UIView {
         let header = UIView()
         header.backgroundColor = .whiteColor()
 
-        let button = ARWhiteFlatButton().then {
+        let _ = ARWhiteFlatButton().then {
             $0.setTitle("Refine", forState: .Normal)
             $0.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
             $0.setBorderColor(.artsyLightGrey(), forState: .Normal)
@@ -128,34 +132,34 @@ extension AuctionViewController {
             $0.constrainWidth("60")
         }
 
-        let title = ARItalicsSerifLabel().then {
+        let _ = ARItalicsSerifLabel().then {
             header.addSubview($0)
             $0.alignBottomEdgeWithView(header, predicate: "-15")
             $0.alignLeadingEdgeWithView(header, predicate: "20")
             $0.text = "Hey there"
         }
 
-        let modelTitle = ARSansSerifLabel().then {
+        let _ = ARSansSerifLabel().then {
             header.addSubview($0)
             $0.alignTopEdgeWithView(header, predicate: "18")
             $0.alignCenterXWithView(header, predicate: "0")
             $0.text = "VC Title"
         }
 
-        let topSeperator  = ARSeparatorView().then {
+        let _ = ARSeparatorView().then {
             header.addSubview($0)
             $0.alignBottom("-55", trailing: "0", toView: header)
             $0.constrainWidthToView(header, predicate: "0")
         }
 
 
-        let bottomSeparator  = ARSeparatorView().then {
+        let _ = ARSeparatorView().then {
             header.addSubview($0)
             $0.alignBottom("0", trailing: "0", toView: header)
             $0.constrainWidthToView(header, predicate: "0")
         }
 
-        header.constrainHeight("120")
+        stickyHeaderHeight = header.constrainHeight("60").first as! NSLayoutConstraint
         return header
     }
 }
@@ -203,5 +207,9 @@ extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
 
     func embeddedModelsViewControllerDidScrollPastEdge(controller: AREmbeddedModelsViewController!) {
         getNextGenes()
+    }
+
+    func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, stickyHeaderDidChangeStickyness isAttatchedToLeadingEdge: Bool) {
+        stickyHeaderHeight.constant = isAttatchedToLeadingEdge ? 120 : 60
     }
 }
