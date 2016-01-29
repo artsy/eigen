@@ -326,7 +326,11 @@
 
     } else if ([kind isEqualToString:ARCollectionElementKindSectionStickyHeader]) {
         UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kind forIndexPath:indexPath];
-        view.backgroundColor = [UIColor artsyAttention];
+        if (view.subviews.count == 0) {
+            [view addSubview:self.stickyHeaderView];
+            [self.stickyHeaderView alignTopEdgeWithView:view predicate:@"0"];
+            [self.stickyHeaderView alignLeading:@"0" trailing:@"0" toView:view];
+        }
         return view;
     }
 

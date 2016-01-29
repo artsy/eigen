@@ -1,6 +1,7 @@
 import UIKit
 import ORStackView
 import Then
+import Artsy_UILabels
 
 class AuctionViewController: UIViewController {
     let saleID: String
@@ -9,7 +10,7 @@ class AuctionViewController: UIViewController {
 
     var headerStack: ORStackView!
 
-    var geneNetworkModel: ARGeneArtworksNetworkModel!
+    var geneNetworkModel: ARArtistNetworkModel!
     var _defaultRefineSettings: AuctionRefineSettings!
     private var artworksViewController: ARModelInfiniteScrollViewController!
 
@@ -38,8 +39,8 @@ class AuctionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let gene = Gene(geneID: "humor")
-        geneNetworkModel = ARGeneArtworksNetworkModel(gene: gene)
+        let artist = Artist(artistID: "banksy")
+        geneNetworkModel = ARArtistNetworkModel(artist: artist)
 
         headerStack = ORTagBasedAutoStackView()
         artworksViewController = ARModelInfiniteScrollViewController()
@@ -92,6 +93,8 @@ extension AuctionViewController {
             view.tag = tag.rawValue
             headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
+
+        artworksViewController.stickyHeaderView = generateStickyHeader()
         artworksViewController.invalidateHeaderHeight()
     }
 
@@ -107,6 +110,7 @@ extension AuctionViewController {
 
     func generateStickyHeader() -> UIView {
         let header = UIView()
+        header.backgroundColor = .whiteColor()
 
         let button = UIButton(type: .System)
         button.setTitle("Refine", forState: .Normal)
@@ -114,10 +118,15 @@ extension AuctionViewController {
 
         header.addSubview(button)
         button.alignTop("0", bottom: "0", toView: header)
-        button.alignTrailingEdgeWithView(header, predicate: "10")
+        button.alignTrailingEdgeWithView(header, predicate: "-10")
 
-        let title = ARSerig
+        let title = ARSerifLabel()
+        header.addSubview(title)
+        title.alignTop("0", bottom: "0", toView: header)
+        title.alignLeadingEdgeWithView(header, predicate: "10")
+        title.text = "Hey there"
 
+        header.constrainHeight("32")
         return header
     }
 }
@@ -154,9 +163,12 @@ extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
     }
 
     func getNextGenes() {
-        geneNetworkModel.getNextArtworkPage { artworks in
+        geneNetworkModel.getArtistArtworksAtPage(1, params: [:], success: { artworks in
             self.artworksViewController.modelViewController.appendItems(artworks)
             self.artworksViewController.modelViewController.showTrailingLoadingIndicator = (artworks.count != 0)
+
+        }) { error in
+
         }
     }
 

@@ -19,7 +19,12 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
         }
     }
 
-    var headerStickyView: UIView?
+    var stickyHeaderView: UIView? {
+        didSet {
+            modelViewController.stickyHeaderView = stickyHeaderView
+            viewDidLayoutSubviews()
+        }
+    }
 
     var modelViewController : AREmbeddedModelsViewController!
 
@@ -88,6 +93,7 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     func invalidateHeaderHeight() {
         // Ensure the lazy loading of the stack views is done if needed
         headerStackView.layoutIfNeeded()
+        stickyHeaderView?.layoutIfNeeded()
         viewDidLayoutSubviews()
     }
 
@@ -95,11 +101,16 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     // orientation changes, or when the view has been invalidated
 
     override func viewDidLayoutSubviews() {
-        let height = headerStackView.bounds.height
-
-        // Changing this is time-expensive-ish
-        if modelViewController.headerHeight != height {
-            modelViewController.headerHeight = height
+        // Changing these are time-expensive-ish
+        let headerHeight = headerStackView.bounds.height
+        if modelViewController.headerHeight != headerHeight {
+            modelViewController.headerHeight = headerHeight
         }
+
+        let stickyHeaderHeight = stickyHeaderView?.bounds.height ?? 0
+        if modelViewController.stickyHeaderHeight != stickyHeaderHeight {
+            modelViewController.stickyHeaderHeight = stickyHeaderHeight
+        }
+
     }
 }
