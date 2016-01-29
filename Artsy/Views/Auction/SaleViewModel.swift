@@ -33,4 +33,25 @@ extension SaleViewModel {
             return saleArtwork.artwork
         }
     }
+
+    /// Provides a range of the smallest-to-largest low estimates.
+    var lowEstimateRange: AuctionRefineSettings.Range {
+        return (min: self.smallestLowEstimate, max: self.largestLowEstimate)
+    }
+}
+
+/// Private helpers for SaleViewModel
+private extension SaleViewModel {
+
+    var smallestLowEstimate: Int {
+        return lowEstimates.reduce(Int.max, combine: min)
+    }
+
+    var largestLowEstimate: Int {
+        return lowEstimates.reduce(Int.min, combine: max)
+    }
+
+    var lowEstimates: [Int] {
+        return saleArtworks.map { Int($0.lowEstimateCents) }
+    }
 }

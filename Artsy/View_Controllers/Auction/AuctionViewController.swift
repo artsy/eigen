@@ -4,15 +4,18 @@ import Then
 
 class AuctionViewController: UIViewController {
     let saleID: String
-    var saleViewModel: SaleViewModel?
+    var saleViewModel: SaleViewModel!
     var appeared = false
 
     var headerStack: ORStackView!
 
-    var _defaultRefineSettings: AuctionRefineSettings!
+    /// Variable for storing lazily-computed default refine settings. 
+    /// Should not be accessed directly, call defaultRefineSettings() instead.
+    private var _defaultRefineSettings: AuctionRefineSettings?
     private var artworksViewController: ARModelInfiniteScrollViewController!
 
-    // Our refine settings are (by defualt) the default refine setings.
+    /// Current refine settings.
+    /// Our refine settings are (by default) the defaultRefineSettings().
     lazy var refineSettings: AuctionRefineSettings = {
         return self.defaultRefineSettings()
     }()
@@ -90,8 +93,7 @@ extension AuctionViewController {
 
     func defaultRefineSettings() -> AuctionRefineSettings {
         guard let defaultSettings = _defaultRefineSettings else {
-            // TODO: calculate min/max based on sale artworks. We're just using 100/100,000 for now.
-            let defaultSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber, range: (min: 100, max: 100_000))
+            let defaultSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber, range: self.saleViewModel.lowEstimateRange)
             _defaultRefineSettings = defaultSettings
             return defaultSettings
         }
