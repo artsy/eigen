@@ -2,6 +2,7 @@ import UIKit
 import ORStackView
 import Then
 import Artsy_UILabels
+import Artsy_UIButtons
 
 class AuctionViewController: UIViewController {
     let saleID: String
@@ -108,25 +109,53 @@ extension AuctionViewController {
         return defaultSettings
     }
 
+    // Move into a view subclass
     func generateStickyHeader() -> UIView {
         let header = UIView()
         header.backgroundColor = .whiteColor()
 
-        let button = UIButton(type: .System)
-        button.setTitle("Refine", forState: .Normal)
-        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+        let button = ARWhiteFlatButton().then {
+            $0.setTitle("Refine", forState: .Normal)
+            $0.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+            $0.setBorderColor(.artsyLightGrey(), forState: .Normal)
+            $0.setBorderColor(UIColor.artsyLightGrey().colorWithAlphaComponent(0.5), forState: .Disabled)
+            $0.layer.borderWidth = 1;
+            header.addSubview($0)
 
-        header.addSubview(button)
-        button.alignTop("0", bottom: "0", toView: header)
-        button.alignTrailingEdgeWithView(header, predicate: "-10")
+            $0.alignBottom("-15", trailing: "-20", toView: header)
+            $0.constrainHeight("24")
+            $0.ar_extendHitTestSizeByWidth(0, andHeight: 10)
+            $0.constrainWidth("60")
+        }
 
-        let title = ARSerifLabel()
-        header.addSubview(title)
-        title.alignTop("0", bottom: "0", toView: header)
-        title.alignLeadingEdgeWithView(header, predicate: "10")
-        title.text = "Hey there"
+        let title = ARItalicsSerifLabel().then {
+            header.addSubview($0)
+            $0.alignBottomEdgeWithView(header, predicate: "-15")
+            $0.alignLeadingEdgeWithView(header, predicate: "20")
+            $0.text = "Hey there"
+        }
 
-        header.constrainHeight("32")
+        let modelTitle = ARSansSerifLabel().then {
+            header.addSubview($0)
+            $0.alignTopEdgeWithView(header, predicate: "18")
+            $0.alignCenterXWithView(header, predicate: "0")
+            $0.text = "VC Title"
+        }
+
+        let topSeperator  = ARSeparatorView().then {
+            header.addSubview($0)
+            $0.alignBottom("-55", trailing: "0", toView: header)
+            $0.constrainWidthToView(header, predicate: "0")
+        }
+
+
+        let bottomSeparator  = ARSeparatorView().then {
+            header.addSubview($0)
+            $0.alignBottom("0", trailing: "0", toView: header)
+            $0.constrainWidthToView(header, predicate: "0")
+        }
+
+        header.constrainHeight("120")
         return header
     }
 }
