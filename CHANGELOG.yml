@@ -16,6 +16,8 @@ upcoming:
     - Fix Genome Artworks API - orta
     - Fixes issue opening ‘works for you’ from a push notification - alloy
     - Fixes crash on iPad when presenting an alert about opening an external URL - alloy
+    - Auction's refine view uses metric 'k' suffix for amounts great than a thousand dollars - ash
+    - Auction view now downloads sale artworks for the sale - ash
 
 releases:
   - version: 2.3.4
