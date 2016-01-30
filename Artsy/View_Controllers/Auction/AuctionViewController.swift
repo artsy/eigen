@@ -4,16 +4,18 @@ import Then
 
 class AuctionViewController: UIViewController {
     let saleID: String
-    var saleViewModel: SaleViewModel?
+    var saleViewModel: SaleViewModel!
     var appeared = false
 
     var headerStack: ORStackView!
 
-    var geneNetworkModel: ARGeneArtworksNetworkModel!
-    var _defaultRefineSettings: AuctionRefineSettings!
+    /// Variable for storing lazily-computed default refine settings. 
+    /// Should not be accessed directly, call defaultRefineSettings() instead.
+    private var _defaultRefineSettings: AuctionRefineSettings?
     private var artworksViewController: ARModelInfiniteScrollViewController!
 
-    // Our refine settings are (by defualt) the default refine setings.
+    /// Current refine settings.
+    /// Our refine settings are (by default) the defaultRefineSettings().
     lazy var refineSettings: AuctionRefineSettings = {
         return self.defaultRefineSettings()
     }()
@@ -38,17 +40,12 @@ class AuctionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let gene = Gene(geneID: "humor")
-        geneNetworkModel = ARGeneArtworksNetworkModel(gene: gene)
-
         headerStack = ORTagBasedAutoStackView()
         artworksViewController = ARModelInfiniteScrollViewController()
         ar_addAlignedModernChildViewController(artworksViewController)
 
         artworksViewController.headerStackView = headerStack
         artworksViewController.modelViewController.delegate = self
-
-        getNextGenes()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -58,15 +55,10 @@ class AuctionViewController: UIViewController {
         appeared = true
 
         self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
-        self.networkModel.fetchSale { result in
-            self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
-
-            switch result {
-            case .Success(let saleViewModel):
-                self.setupForSale(saleViewModel)
-            case .Failure(_):
-                break // TODO: How to handle error?
-            }
+        self.networkModel.fetch().next { saleViewModel in
+            self.setupForSale(saleViewModel)
+        }.error { error in
+            // TODO: Error-handling somehow
         }
     }
 
@@ -79,7 +71,6 @@ class AuctionViewController: UIViewController {
 
 extension AuctionViewController {
     func setupForSale(saleViewModel: SaleViewModel) {
-
         // TODO: Sale is currently private on the SVM
         // artworksViewController.spotlightEntity = saleViewModel.sale
 
@@ -93,12 +84,16 @@ extension AuctionViewController {
             headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
         artworksViewController.invalidateHeaderHeight()
+
+        self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)
+        self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
+
+        self.ar_removeIndeterminateLoadingIndicatorAnimated(true) // TODO: Animated?
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {
         guard let defaultSettings = _defaultRefineSettings else {
-            // TODO: calculate min/max based on sale artworks. We're just using 100/100,000 for now.
-            let defaultSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber, range: (min: 100, max: 100_000))
+            let defaultSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber, range: self.saleViewModel.lowEstimateRange)
             _defaultRefineSettings = defaultSettings
             return defaultSettings
         }
@@ -135,16 +130,5 @@ extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
 
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
         navigationController?.pushViewController(viewController, animated: true)
-    }
-
-    func getNextGenes() {
-        geneNetworkModel.getNextArtworkPage { artworks in
-            self.artworksViewController.modelViewController.appendItems(artworks)
-            self.artworksViewController.modelViewController.showTrailingLoadingIndicator = (artworks.count != 0)
-        }
-    }
-
-    func embeddedModelsViewControllerDidScrollPastEdge(controller: AREmbeddedModelsViewController!) {
-        getNextGenes()
     }
 }

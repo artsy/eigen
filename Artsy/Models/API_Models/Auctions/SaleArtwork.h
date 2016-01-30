@@ -33,5 +33,6 @@ typedef NS_ENUM(NSInteger, ARReserveStatus) {
 @property (nonatomic, copy, readonly) NSNumber *lotNumber;
 @property (nonatomic, assign, readonly) ARAuctionState auctionState;
 @property (nonatomic, assign) ARReserveStatus reserveStatus;
+@property (nonatomic, strong, readonly) Artwork *artwork;
 
 @end

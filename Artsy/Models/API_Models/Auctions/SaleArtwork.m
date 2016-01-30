@@ -21,15 +21,15 @@ static NSNumberFormatter *dollarFormatter;
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @"saleArtworkID" : @"id",
-        @"openingBidCents" : @"opening_bid_cents",
-        @"minimumNextBidCents" : @"minimum_next_bid_cents",
-        @"saleHighestBid" : @"highest_bid",
-        @"artworkNumPositions" : @"bidder_positions_count",
-        @"lowEstimateCents" : @"low_estimate_cents",
-        @"highEstimateCents" : @"high_estimate_cents",
-        @"reserveStatus" : @"reserve_status",
-        @"lotNumber" : @"lot_number"
+        ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
+        ar_keypath(SaleArtwork.new, openingBidCents) : @"opening_bid_cents",
+        ar_keypath(SaleArtwork.new, minimumNextBidCents) : @"minimum_next_bid_cents",
+        ar_keypath(SaleArtwork.new, saleHighestBid) : @"highest_bid",
+        ar_keypath(SaleArtwork.new, artworkNumPositions) : @"bidder_positions_count",
+        ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
+        ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
+        ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
+        ar_keypath(SaleArtwork.new, lotNumber) : @"lot_number"
     };
 }
 
@@ -88,6 +88,11 @@ static NSNumberFormatter *dollarFormatter;
         if (!type) { type = @0; }
         return [types allKeysForObject:type].lastObject;
     }];
+}
+
++ (NSValueTransformer *)artworkJSONTransformer
+{
+    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:Artwork.class];
 }
 
 - (void)setPositions:(NSArray *)positions

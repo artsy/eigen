@@ -103,6 +103,7 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then'
+  pod 'Interstellar/Core'
 
 end
 

@@ -8,8 +8,8 @@ import MARKRangeSlider
 
 class AuctionRefineViewControllerSpec: QuickSpec {
     override func spec() {
-        let defaultSettings = AuctionRefineSettings(ordering: .LotNumber, range: (min: 100, max: 100_000))
-        let differentSettings = AuctionRefineSettings(ordering: .ArtistAlphabetical, range: (min: 100, max: 50_000))
+        let defaultSettings = AuctionRefineSettings(ordering: .LotNumber, range: (min: 500_00, max: 100_000_00))
+        let differentSettings = AuctionRefineSettings(ordering: .ArtistAlphabetical, range: (min: 500_00, max: 50_000_00))
 
         it("looks good by default") {
             let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings)
