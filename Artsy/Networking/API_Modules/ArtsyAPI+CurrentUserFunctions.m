@@ -1,4 +1,5 @@
 #import "ArtsyAPI+Private.h"
+#import "ARUserManager.h"
 
 
 @implementation ArtsyAPI (CurrentUserFunctions)
@@ -13,5 +14,23 @@
     [self getRequest:request parseIntoAClass:[User class] success:success failure:failure];
 }
 
++ (void)getCurrentUserRegistrationStatusForSale:(NSString *)saleID success:(void (^)(ArtsyAPISaleRegistrationStatus status))success failure:(void (^)(NSError *error))failure
+{
+    if ([[ARUserManager sharedManager] currentUser]) {
+        success(ArtsyAPISaleRegistrationStatusNotLoggedIn);
+        return;
+    }
+
+    NSURLRequest *request = [ARRouter biddersRequestForSale:saleID];
+    [self getRequest:request parseIntoAnArrayOfClass:[Bidder class] success:^(id bidders) {
+        ArtsyAPISaleRegistrationStatus status = ArtsyAPISaleRegistrationStatusNotRegistered;
+
+        if ([bidders count] > 0) {
+            status = ArtsyAPISaleRegistrationStatusRegistered;
+        }
+
+        success(status);
+    } failure:failure];
+}
 
 @end

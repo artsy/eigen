@@ -899,7 +899,17 @@ static NSSet *artsyHosts = nil;
 
 + (NSURLRequest *)biddersRequest
 {
-    return [self requestWithMethod:@"GET" path:ARMyBiddersURL parameters:nil];
+    return [self biddersRequestForSale:nil];
+}
+
++ (NSURLRequest *)biddersRequestForSale:(NSString *)saleID
+{
+    NSDictionary *params;
+    if (saleID) {
+        params = @{ @"sale_id" : saleID };
+    }
+
+    return [self requestWithMethod:@"GET" path:ARMyBiddersURL parameters:params];
 }
 
 + (NSURLRequest *)bidderPositionsRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID
