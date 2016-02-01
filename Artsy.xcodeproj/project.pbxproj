@@ -269,6 +269,8 @@
 		5EA250631C4EDBE7001E4950 /* ARCountdownViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA250621C4EDBE7001E4950 /* ARCountdownViewTests.m */; };
 		5EA250661C4EE95B001E4950 /* NSArray+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA250651C4EE95B001E4950 /* NSArray+Additions.m */; };
 		5EA7BC251C5FFA86009C52C9 /* InterstellarExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA7BC241C5FFA86009C52C9 /* InterstellarExtensions.swift */; };
+		5EA7BC271C5FFB97009C52C9 /* AuctionRegistrationStatusNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA7BC261C5FFB97009C52C9 /* AuctionRegistrationStatusNetworkModel.swift */; };
+		5EA7BC291C600144009C52C9 /* AuctionSaleNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA7BC281C600144009C52C9 /* AuctionSaleNetworkModel.swift */; };
 		5EB33E74197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB33E73197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m */; };
 		5EB33E77197EBFEB00706EB1 /* wide.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5EB33E75197EBFEB00706EB1 /* wide.jpg */; };
 		5EB33E78197EBFEB00706EB1 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EB33E76197EBFEB00706EB1 /* square.png */; };
@@ -1098,6 +1100,8 @@
 		5EA250641C4EE95B001E4950 /* NSArray+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Additions.h"; sourceTree = "<group>"; };
 		5EA250651C4EE95B001E4950 /* NSArray+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Additions.m"; sourceTree = "<group>"; };
 		5EA7BC241C5FFA86009C52C9 /* InterstellarExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstellarExtensions.swift; sourceTree = "<group>"; };
+		5EA7BC261C5FFB97009C52C9 /* AuctionRegistrationStatusNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionRegistrationStatusNetworkModel.swift; sourceTree = "<group>"; };
+		5EA7BC281C600144009C52C9 /* AuctionSaleNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionSaleNetworkModel.swift; path = Auction/AuctionSaleNetworkModel.swift; sourceTree = "<group>"; };
 		5EB33E73197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARParallaxHeaderViewControllerTests.m; sourceTree = "<group>"; };
 		5EB33E75197EBFEB00706EB1 /* wide.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wide.jpg; sourceTree = "<group>"; };
 		5EB33E76197EBFEB00706EB1 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
@@ -2672,9 +2676,8 @@
 		5E47F34B1C3EC98200EC0751 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
+				5EA7BC2A1C60024D009C52C9 /* Networking */,
 				5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */,
-				5E47F3571C44378E00EC0751 /* AuctionNetworkModel.swift */,
-				5EC9298A1C5FF9BE0015133E /* AuctionSaleArtworksNetworkModel.swift */,
 				5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */,
 				5E088DAD1C58072B00C448D7 /* AuctionRefineViewController+Private.swift */,
 				5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */,
@@ -2691,6 +2694,17 @@
 				5E47F35A1C4444A900EC0751 /* SaleViewModel.swift */,
 			);
 			name = Auction;
+			sourceTree = "<group>";
+		};
+		5EA7BC2A1C60024D009C52C9 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				5E47F3571C44378E00EC0751 /* AuctionNetworkModel.swift */,
+				5EA7BC281C600144009C52C9 /* AuctionSaleNetworkModel.swift */,
+				5EC9298A1C5FF9BE0015133E /* AuctionSaleArtworksNetworkModel.swift */,
+				5EA7BC261C5FFB97009C52C9 /* AuctionRegistrationStatusNetworkModel.swift */,
+			);
+			name = Networking;
 			sourceTree = "<group>";
 		};
 		5EBDC94F19794D6C0082C514 /* Views */ = {
@@ -4782,6 +4796,7 @@
 				E66EE4AF196460620081ED0C /* ARFavoriteItemModule.m in Sources */,
 				605B11B517CFE7CC00334196 /* ARTermsAndConditionsView.m in Sources */,
 				5E8A03B51C52B60900EAF18B /* AuctionRefineViewController.swift in Sources */,
+				5EA7BC271C5FFB97009C52C9 /* AuctionRegistrationStatusNetworkModel.swift in Sources */,
 				604166B116C1D47100CFBD2F /* ArtsyAPI+CurrentUserFunctions.m in Sources */,
 				603B3AEB1774A25700BA5BD3 /* ARNavigationController.m in Sources */,
 				49EF164716C568EA00460BD7 /* Profile.m in Sources */,
@@ -4853,6 +4868,7 @@
 				60F1C51517C0EFD7000938F7 /* ARBrowseFeaturedLinksCollectionViewCell.m in Sources */,
 				60903CCF175CF088002AB800 /* ARGroupedTableViewCell.m in Sources */,
 				49F0C67B17B9706000721244 /* AROnboardingViewController.m in Sources */,
+				5EA7BC291C600144009C52C9 /* AuctionSaleNetworkModel.swift in Sources */,
 				CB11525B17C815210093D864 /* AROnboardingFollowableTableViewCell.m in Sources */,
 				60903CD2175CF095002AB800 /* ARAnimatedTickView.m in Sources */,
 				546A858217763349006D489B /* ARHeroUnitsNetworkModel.m in Sources */,
