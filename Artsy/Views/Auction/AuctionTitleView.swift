@@ -1,4 +1,8 @@
 import UIKit
+import Artsy_UIButtons
+import Artsy_UILabels
+import Artsy_UIFonts
+import FLKAutoLayout
 
 protocol AuctionTitleViewDelegate: class {
     // Just temporary, to test refine button.
@@ -6,16 +10,25 @@ protocol AuctionTitleViewDelegate: class {
 }
 
 class AuctionTitleView: UIView {
-    let viewModel: SaleViewModel
     unowned let delegate: AuctionTitleViewDelegate
 
-    init(viewModel: SaleViewModel, delegate: AuctionTitleViewDelegate) {
+    let viewModel: SaleViewModel
+    var registrationStatus: ArtsyAPISaleRegistrationStatus? {
+        didSet {
+            // TODO: Update button title
+        }
+    }
+
+    var registrationButton: UIButton!
+
+    init(viewModel: SaleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatus?, delegate: AuctionTitleViewDelegate) {
         self.viewModel = viewModel
         self.delegate = delegate
+        self.registrationStatus = registrationStatus
 
         super.init(frame: CGRect.zero)
 
-        backgroundColor = .orangeColor()
+        setupViews()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -25,18 +38,27 @@ class AuctionTitleView: UIView {
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
+        // Remove all subviews and call setupViews() again to start from scratch.
         subviews.forEach { $0.removeFromSuperview() }
-
-        let button = UIButton(type: .System)
-        button.setTitle("Refine", forState: .Normal)
-        button.addTarget(delegate, action: "buttonPressed", forControlEvents: .TouchUpInside)
-
-        addSubview(button)
-        button.alignToView(self)
+        setupViews()
     }
+}
 
-    // Just temporary until we have real contents.
-    override func intrinsicContentSize() -> CGSize {
-        return CGSize(width: 100, height: 100)
+private extension AuctionTitleView {
+    func setupViews() {
+        let regularSize = traitCollection.horizontalSizeClass == .Regular
+
+        let titleLabel = ARSerifLabel().then {
+            $0.text = self.viewModel.displayName
+            $0.font = UIFont.serifFontWithSize(regularSize ? 20 : 30)
+        }
+        addSubview(titleLabel)
+
+        if regularSize {
+
+        } else {
+            
+        }
+        
     }
 }

@@ -47,6 +47,10 @@ extension AuctionBannerView {
         let countdownView = ARCountdownView(color: .whiteColor()).then {
             $0.targetDate = self.viewModel.closingDate
             $0.heading = "Closing In"
+            
+            if let _ = self.superview {
+                $0.startTimer()
+            }
         }
         self.countdownView = countdownView
 

@@ -77,7 +77,7 @@ extension AuctionViewController {
         self.saleViewModel = saleViewModel
 
         [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
-          (AuctionTitleView(viewModel: saleViewModel, delegate: self), .Title),
+          (AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self), .Title),
           (ARWhitespaceGobbler(), .WhitespaceGobbler)
         ].forEach { (view, tag) in
             view.tag = tag.rawValue
