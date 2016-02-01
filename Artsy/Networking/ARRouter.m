@@ -890,6 +890,13 @@ static NSSet *artsyHosts = nil;
     return [self requestWithMethod:@"GET" path:url parameters:nil];
 }
 
++ (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize
+{
+    NSString *url = [NSString stringWithFormat:ARSaleArtworksURLFormat, saleID];
+    return [self requestWithMethod:@"GET" path:url parameters:@{ @"size" : @(pageSize),
+                                                                 @"page" : @(page) }];
+}
+
 + (NSURLRequest *)biddersRequest
 {
     return [self requestWithMethod:@"GET" path:ARMyBiddersURL parameters:nil];

@@ -150,6 +150,7 @@
 
 + (NSURLRequest *)salesWithArtworkRequest:(NSString *)artworkID;
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID;
++ (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize;
 + (NSURLRequest *)biddersRequest;
 + (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents;
 + (NSURLRequest *)bidderPositionsRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID;
