@@ -15,11 +15,16 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     var headerStackView: ORStackView!  {
         didSet {
             modelViewController.headerView = headerStackView
-            viewDidLayoutSubviews() // trigger the height being set
+            invalidateHeaderHeight() // trigger the height being set
         }
     }
 
-    var headerStickyView: UIView?
+    var stickyHeaderView: UIView? {
+        didSet {
+            modelViewController.stickyHeaderView = stickyHeaderView
+            invalidateHeaderHeight()
+        }
+    }
 
     var modelViewController : AREmbeddedModelsViewController!
 
@@ -62,23 +67,21 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
 
     // This class can handle dealing with UIActivities for you
     // in order to use it, set the spotlight entity and when it has full
-    // metadata, call `ar_setDataLoaded()` on this VC
+    // metadata, call `ar_setDataLoaded()` on this VC. This should be set
+    // before presenting the view controller. 
 
-    var spotlightEntity: ARSpotlightMetadataProvider? {
-        didSet(value) {
-            setAr_userActivityEntity(value);
-        }
-    }
+    var spotlightEntity: ARSpotlightMetadataProvider?
 
     // Lets someone come back to this VC and the activity is re-triggered
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
         // Deal with rotations that could have happened in the background
+        // TODO: is this moving the collectionview back up to the top on a refine pop?
         view.setNeedsLayout()
         view.layoutIfNeeded()
 
-        setAr_userActivityEntity(spotlightEntity)
+        if spotlightEntity != nil { setAr_userActivityEntity(spotlightEntity) }
     }
 
     // Activity is done when this VC has left
@@ -89,20 +92,21 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
 
     // A simpler API to explain what is really happening for other objects
     func invalidateHeaderHeight() {
-        // Ensure the lazy loading of the stack views is done if needed
+        // Ensure the lazy loading of the stack views is done before
+        // relying on their bounds
         headerStackView.layoutIfNeeded()
+        stickyHeaderView?.layoutIfNeeded()
+
         viewDidLayoutSubviews()
     }
 
     // Handle changing the height of the header stackview on 
     // orientation changes, or when the view has been invalidated
-
     override func viewDidLayoutSubviews() {
-        let height = headerStackView.bounds.height
+        let headerHeight = headerStackView.bounds.height
+        modelViewController.headerHeight = headerHeight
 
-        // Changing this is time-expensive-ish
-        if modelViewController.headerHeight != height {
-            modelViewController.headerHeight = height
-        }
+        let stickyHeaderHeight = stickyHeaderView?.bounds.height ?? 0
+        modelViewController.stickyHeaderHeight = stickyHeaderHeight
     }
 }
