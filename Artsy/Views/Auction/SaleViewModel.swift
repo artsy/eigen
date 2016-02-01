@@ -27,6 +27,10 @@ extension SaleViewModel {
         return saleArtworks.count
     }
 
+    var name: String {
+        return sale.name
+    }
+
     // TODO: Temporary, shouldn't be exposing raw models 😬
     var artworks: [Artwork] {
         return saleArtworks.map { saleArtwork in

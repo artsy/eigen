@@ -12,11 +12,9 @@ class AuctionViewController: UIViewController {
     lazy var stickyHeader: ScrollingStickyHeaderView = {
         // Eh, when we start connecting data this'll have to move whenever
         // so ok for now
-        return ScrollingStickyHeaderView().then{
-            $0.titleLabel.text = "VC Header"
-            $0.subtitleLabel.text = "Loadsa works"
+        return ScrollingStickyHeaderView().then {
+            $0.button.enabled = false
             $0.button.setTitle("Refine", forState: .Normal)
-            $0.button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
         }
     }()
 
@@ -88,7 +86,7 @@ extension AuctionViewController {
         self.saleViewModel = saleViewModel
 
         [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
-          (AuctionTitleView(viewModel: saleViewModel, delegate: self), .Title),
+          (AuctionTitleView(viewModel: saleViewModel), .Title),
           (ARWhitespaceGobbler(), .WhitespaceGobbler)
         ].forEach { (view, tag) in
             view.tag = tag.rawValue
@@ -96,6 +94,9 @@ extension AuctionViewController {
         }
 
         artworksViewController.stickyHeaderView = stickyHeader
+        stickyHeader.titleLabel.text = saleViewModel.name
+        stickyHeader.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
+        stickyHeader.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
         artworksViewController.invalidateHeaderHeight()
 
         self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)
@@ -112,10 +113,8 @@ extension AuctionViewController {
         }
         return defaultSettings
     }
-}
 
-extension AuctionViewController: AuctionTitleViewDelegate {
-    func buttonPressed() {
+    func showRefineTapped() {
         let refineViewController = AuctionRefineViewController(defaultSettings: defaultRefineSettings(), initialSettings: refineSettings).then {
             $0.delegate = self
             $0.modalPresentationStyle = .FormSheet
@@ -124,6 +123,7 @@ extension AuctionViewController: AuctionTitleViewDelegate {
         presentViewController(refineViewController, animated: true, completion: nil)
     }
 }
+
 
 extension AuctionViewController: AuctionRefineViewControllerDelegate {
     func userDidCancel(controller: AuctionRefineViewController) {

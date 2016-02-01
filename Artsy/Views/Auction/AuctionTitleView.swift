@@ -1,17 +1,10 @@
 import UIKit
 
-protocol AuctionTitleViewDelegate: class {
-    // Just temporary, to test refine button.
-    func buttonPressed()
-}
-
 class AuctionTitleView: UIView {
     let viewModel: SaleViewModel
-    unowned let delegate: AuctionTitleViewDelegate
 
-    init(viewModel: SaleViewModel, delegate: AuctionTitleViewDelegate) {
+    init(viewModel: SaleViewModel) {
         self.viewModel = viewModel
-        self.delegate = delegate
 
         super.init(frame: CGRect.zero)
 
