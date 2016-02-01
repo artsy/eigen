@@ -15,14 +15,14 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     var headerStackView: ORStackView!  {
         didSet {
             modelViewController.headerView = headerStackView
-            viewDidLayoutSubviews() // trigger the height being set
+            invalidateHeaderHeight() // trigger the height being set
         }
     }
 
     var stickyHeaderView: UIView? {
         didSet {
             modelViewController.stickyHeaderView = stickyHeaderView
-            viewDidLayoutSubviews()
+            invalidateHeaderHeight()
         }
     }
 
@@ -76,9 +76,10 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-//        // Deal with rotations that could have happened in the background
-//        view.setNeedsLayout()
-//        view.layoutIfNeeded()
+        // Deal with rotations that could have happened in the background
+        // TODO: is this moving the collectionview back up to the top on a refine pop?
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
 
         if spotlightEntity != nil { setAr_userActivityEntity(spotlightEntity) }
     }
@@ -91,26 +92,21 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
 
     // A simpler API to explain what is really happening for other objects
     func invalidateHeaderHeight() {
-        // Ensure the lazy loading of the stack views is done if needed
+        // Ensure the lazy loading of the stack views is done before
+        // relying on their bounds
         headerStackView.layoutIfNeeded()
         stickyHeaderView?.layoutIfNeeded()
+
         viewDidLayoutSubviews()
     }
 
     // Handle changing the height of the header stackview on 
     // orientation changes, or when the view has been invalidated
-
     override func viewDidLayoutSubviews() {
-        // Changing these are time-expensive-ish
         let headerHeight = headerStackView.bounds.height
-        if modelViewController.headerHeight != headerHeight {
-            modelViewController.headerHeight = headerHeight
-        }
+        modelViewController.headerHeight = headerHeight
 
         let stickyHeaderHeight = stickyHeaderView?.bounds.height ?? 0
-        if modelViewController.stickyHeaderHeight != stickyHeaderHeight {
-            modelViewController.stickyHeaderHeight = stickyHeaderHeight
-        }
-
+        modelViewController.stickyHeaderHeight = stickyHeaderHeight
     }
 }

@@ -8,15 +8,7 @@ class AuctionViewController: UIViewController {
     var appeared = false
 
     var headerStack: ORStackView!
-
-    lazy var stickyHeader: ScrollingStickyHeaderView = {
-        // Eh, when we start connecting data this'll have to move whenever
-        // so ok for now
-        return ScrollingStickyHeaderView().then {
-            $0.button.enabled = false
-            $0.button.setTitle("Refine", forState: .Normal)
-        }
-    }()
+    var stickyHeader: ScrollingStickyHeaderView!
 
     /// Variable for storing lazily-computed default refine settings. 
     /// Should not be accessed directly, call defaultRefineSettings() instead.
@@ -93,10 +85,15 @@ extension AuctionViewController {
             headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
 
+        stickyHeader = ScrollingStickyHeaderView().then {
+            $0.toggleAttatched(false, animated:false)
+            $0.button.setTitle("Refine", forState: .Normal)
+            $0.titleLabel.text = saleViewModel.name
+            $0.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
+            $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
+        }
+
         artworksViewController.stickyHeaderView = stickyHeader
-        stickyHeader.titleLabel.text = saleViewModel.name
-        stickyHeader.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
-        stickyHeader.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
         artworksViewController.invalidateHeaderHeight()
 
         self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)

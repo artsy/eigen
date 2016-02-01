@@ -42,9 +42,18 @@ class ScrollingStickyHeaderView: UIView {
         }
 
         titleLabel.then {
+            $0.textAlignment = .Center
             self.addSubview($0)
-            $0.alignTopEdgeWithView(self, predicate: "18")
+            $0.alignTopEdgeWithView(self, predicate: "4")
             $0.alignCenterXWithView(self, predicate: "0")
+            $0.constrainWidthToView(self, predicate: "-128")
+            $0.constrainHeight("60")
+        }
+
+        subtitleLabel.then {
+            self.addSubview($0)
+            $0.alignLeadingEdgeWithView(self, predicate: "20")
+            $0.alignBottomEdgeWithView(self, predicate: "-18")
         }
 
         topSeparator.then {

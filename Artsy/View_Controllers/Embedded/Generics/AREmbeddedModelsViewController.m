@@ -340,7 +340,6 @@
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout stickyHeaderHasChangedStickyness:(BOOL)isAttachedToLeadingEdge
 {
-    NSLog(@"isAttachedToLeadingEdge: (%@)", @(isAttachedToLeadingEdge));
     if (self.delegate && [self.delegate respondsToSelector:@selector(embeddedModelsViewController:stickyHeaderDidChangeStickyness:)]) {
         [self.delegate embeddedModelsViewController:self stickyHeaderDidChangeStickyness:isAttachedToLeadingEdge];
     }

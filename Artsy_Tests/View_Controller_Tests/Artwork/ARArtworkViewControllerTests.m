@@ -58,7 +58,7 @@ describe(@"with related artworks", ^{
         
         
         [ARTestContext useDevice:ARDeviceTypePhone6 :^{
-            
+    
             vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
