@@ -66,8 +66,6 @@ describe(@"with related artworks", ^{
             
             expect([(ARArtworkView *)vc.view relatedArtworksView]).to.haveValidSnapshot();
         }];
-
-        
     });
 
     describe(@"iPhone", ^{
