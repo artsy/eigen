@@ -1,8 +1,6 @@
 import UIKit
 import ORStackView
 import Then
-import Artsy_UILabels
-import Artsy_UIButtons
 
 class AuctionViewController: UIViewController {
     let saleID: String
@@ -10,6 +8,17 @@ class AuctionViewController: UIViewController {
     var appeared = false
 
     var headerStack: ORStackView!
+
+    lazy var stickyHeader: ScrollingStickyHeaderView = {
+        // Eh, when we start connecting data this'll have to move whenever
+        // so ok for now
+        return ScrollingStickyHeaderView().then{
+            $0.titleLabel.text = "VC Header"
+            $0.subtitleLabel.text = "Loadsa works"
+            $0.button.setTitle("Refine", forState: .Normal)
+            $0.button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+        }
+    }()
 
     var geneNetworkModel: ARArtistNetworkModel!
     var _defaultRefineSettings: AuctionRefineSettings!
@@ -26,7 +35,6 @@ class AuctionViewController: UIViewController {
 
     init(saleID: String) {
         self.saleID = saleID
-
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -78,8 +86,6 @@ class AuctionViewController: UIViewController {
         case WhitespaceGobbler
     }
 
-    // can be on the subclass too
-    var stickyHeaderHeight: NSLayoutConstraint!
 }
 
 extension AuctionViewController {
@@ -98,7 +104,7 @@ extension AuctionViewController {
             headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
 
-        artworksViewController.stickyHeaderView = generateStickyHeader()
+        artworksViewController.stickyHeaderView = stickyHeader
         artworksViewController.invalidateHeaderHeight()
     }
 
@@ -110,57 +116,6 @@ extension AuctionViewController {
             return defaultSettings
         }
         return defaultSettings
-    }
-
-
-    // Move into a view subclass
-    func generateStickyHeader() -> UIView {
-        let header = UIView()
-        header.backgroundColor = .whiteColor()
-
-        let _ = ARWhiteFlatButton().then {
-            $0.setTitle("Refine", forState: .Normal)
-            $0.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
-            $0.setBorderColor(.artsyLightGrey(), forState: .Normal)
-            $0.setBorderColor(UIColor.artsyLightGrey().colorWithAlphaComponent(0.5), forState: .Disabled)
-            $0.layer.borderWidth = 1;
-            header.addSubview($0)
-
-            $0.alignBottom("-15", trailing: "-20", toView: header)
-            $0.constrainHeight("24")
-            $0.ar_extendHitTestSizeByWidth(0, andHeight: 10)
-            $0.constrainWidth("60")
-        }
-
-        let _ = ARItalicsSerifLabel().then {
-            header.addSubview($0)
-            $0.alignBottomEdgeWithView(header, predicate: "-15")
-            $0.alignLeadingEdgeWithView(header, predicate: "20")
-            $0.text = "Hey there"
-        }
-
-        let _ = ARSansSerifLabel().then {
-            header.addSubview($0)
-            $0.alignTopEdgeWithView(header, predicate: "18")
-            $0.alignCenterXWithView(header, predicate: "0")
-            $0.text = "VC Title"
-        }
-
-        let _ = ARSeparatorView().then {
-            header.addSubview($0)
-            $0.alignBottom("-55", trailing: "0", toView: header)
-            $0.constrainWidthToView(header, predicate: "0")
-        }
-
-
-        let _ = ARSeparatorView().then {
-            header.addSubview($0)
-            $0.alignBottom("0", trailing: "0", toView: header)
-            $0.constrainWidthToView(header, predicate: "0")
-        }
-
-        stickyHeaderHeight = header.constrainHeight("60").first as! NSLayoutConstraint
-        return header
     }
 }
 
@@ -210,6 +165,7 @@ extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
     }
 
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, stickyHeaderDidChangeStickyness isAttatchedToLeadingEdge: Bool) {
-        stickyHeaderHeight.constant = isAttatchedToLeadingEdge ? 120 : 60
+        stickyHeader.stickyHeaderHeight.constant = isAttatchedToLeadingEdge ? 120 : 60
+        stickyHeader.toggleAttatched(isAttatchedToLeadingEdge, animated: true)
     }
 }
