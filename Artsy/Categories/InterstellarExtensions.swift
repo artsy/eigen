@@ -13,8 +13,8 @@ extension Signal {
     /// Useful for injecting side-effects into a signal chain.
     func inject<OtherType>(signal: Signal<OtherType>) -> Signal<T> {
         return self.flatMap { (originalElement, callback) in
-            return signal.map { _ in
-                return originalElement
+            return signal.next { _ in
+                callback(.Success(originalElement))
             }
         }
     }
