@@ -1,3 +1,4 @@
+#import "ARLogger.h"
 #import "ARLogFormatter.h"
 
 // Human-readable context names for file loggers

@@ -1,4 +1,6 @@
-@class Profile, User;
+#import "ArtsyAPI.h"
+
+@class User;
 
 typedef enum : NSUInteger {
     ArtsyAPISaleRegistrationStatusNotLoggedIn,

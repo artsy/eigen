@@ -1,3 +1,26 @@
+#import <UIKit/UIKit.h>
+
+#import "ARFairAwareObject.h"
+
+@class Artwork;
+@class ARPostFeedItem;
+@class ARFollowArtistFeedItem;
+@class Fair;
+@class Gene;
+@class PartnerShow;
+
+// View Controller Forward Declarations
+
+@class ARArtworkSetViewController;
+@class ARShowViewController;
+@class ARFairArtistViewController;
+@class ARArtistViewController;
+@class ARArtworkInfoViewController;
+@class ARAuctionArtworkResultsViewController;
+@class ARFairMapViewController;
+@class ARGeneViewController;
+@class ARUserSettingsViewController;
+
 /**
  The Switchboard is the internal API for loading different native views
   it does this mostly by using either an internal Sinatra like-router

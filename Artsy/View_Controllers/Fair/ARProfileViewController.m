@@ -1,14 +1,20 @@
-// View Controllers
 #import "ARProfileViewController.h"
+
+#import "ArtsyAPI+Profiles.h"
+#import "Fair.h"
+#import "Profile.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARLogger.h"
+
 #import "ARFairViewController.h"
 #import "ARInternalMobileWebViewController.h"
 
-// Categories
 #import "UIViewController+FullScreenLoading.h"
 #import "UIViewController+SimpleChildren.h"
+#import "UIDevice-Hardware.h"
 
-// Utilities
-
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARProfileViewController () <ARMenuAwareViewController>
 

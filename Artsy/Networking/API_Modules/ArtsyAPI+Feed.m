@@ -1,7 +1,10 @@
 #import "ARFileUtils.h"
 #import "ARRouter.h"
+#import "ArtsyAPI+OrderedSets.h"
 #import "ArtsyAPI+Private.h"
+#import "ARDispatchManager.h"
 
+#import "AFHTTPRequestOperation+JSON.h"
 
 @implementation ArtsyAPI (Feed)
 

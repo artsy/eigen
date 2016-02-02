@@ -1,3 +1,6 @@
+#import <Foundation/Foundation.h>
+
+
 @protocol ARFeedHostItem <NSObject>
 
 /// The selector that is used to pass the hosted object back to the

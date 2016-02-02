@@ -1,4 +1,5 @@
 #import "ARZoomView.h"
+#import "ARMenuAwareViewController.h"
 
 
 @interface ARZoomArtworkImageViewController : UIViewController <ARMenuAwareViewController>

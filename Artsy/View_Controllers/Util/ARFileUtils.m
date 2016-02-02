@@ -1,4 +1,6 @@
+#import "ARLogger.h"
 #import "ARFileUtils.h"
+#import "User.h"
 
 static NSString *_userDocumentsDirectory = nil;
 static NSString *_cachesDirectory = nil;

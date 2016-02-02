@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 @class ARPostsViewController;
 
 @protocol ARPostsViewControllerDelegate <NSObject>

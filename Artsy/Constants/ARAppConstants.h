@@ -1,3 +1,6 @@
+#import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
+
 extern NSString *const ARTestAccountLogin;
 extern NSString *const ARTestAccountPassword;
 
@@ -29,3 +32,5 @@ typedef NS_OPTIONS(NSUInteger, ARAuctionState) {
 };
 
 extern BOOL ARPerformWorkAsynchronously;
+
+extern const BOOL ARIsRunningInDemoMode;

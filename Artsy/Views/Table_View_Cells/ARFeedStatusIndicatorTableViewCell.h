@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 typedef NS_ENUM(NSUInteger, ARFeedStatusState) {
     ARFeedStatusStateLoading = 1,
     ARFeedStatusStateNetworkError,

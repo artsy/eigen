@@ -1,7 +1,13 @@
+#import "ARLogger.h"
 #import "ARAuctionWebViewController.h"
 #import "ARAppConstants.h"
 #import "ARArtworkSetViewController.h"
 #import "ARArtworkViewController.h"
+#import "User.h"
+#import "Artwork.h"
+#import "ARSwitchBoard+Eigen.h"
+
+#import "UIDevice-Hardware.h"
 
 @implementation ARAuctionWebViewController
 

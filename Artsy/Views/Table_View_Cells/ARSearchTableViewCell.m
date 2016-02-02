@@ -1,5 +1,6 @@
 #import "ARSearchTableViewCell.h"
 
+#import "ARFonts.h"
 
 @implementation ARSearchTableViewCell
 

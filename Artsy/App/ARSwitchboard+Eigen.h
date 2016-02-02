@@ -13,7 +13,8 @@
     ARGeneViewController,
     ARUserSettingsViewController,
     ARAuctionWebViewController,
-    ARFairGuideContainerViewController;
+    ARFairGuideContainerViewController,
+    AuctionViewController;
 
 // Eigen model object forward decs
 @class ARPostFeedItem,
@@ -44,7 +45,7 @@
 
 - (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
 
-- (AuctionViewController *)loadAuctionWithID:(NSString *)auctionID;
+- (UIViewController *)loadAuctionWithID:(NSString *)auctionID;
 
 - (ARAuctionWebViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
 /// Load the auction results for an artwork on to the stack

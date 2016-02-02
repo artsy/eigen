@@ -1,5 +1,8 @@
 #import "ARPublishedArtworkSetFeedItem.h"
 
+#import "Artist.h"
+#import "Artwork.h"
+#import "Gene.h"
 
 @implementation ARPublishedArtworkSetFeedItem
 

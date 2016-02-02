@@ -1,11 +1,11 @@
 #import "ARFairSectionViewController.h"
-#import "ARPostFeedItemLinkView.h"
 
 @protocol ARFairPostsViewControllerDelegate
 @required
 - (void)didSelectPost:(NSString *)postURL;
 @end
 
+@class ARFeedTimeline;
 
 @interface ARFairPostsViewController : ARFairSectionViewController
 

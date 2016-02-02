@@ -1,7 +1,8 @@
 // Shows contact buttons, or buy buttons, or edition prices, etc
 
 #import <ORStackView/ORStackView.h>
-@class ARArtworkActionsView;
+
+@class Artwork, ARArtworkActionsView;
 
 @protocol ARArtworkActionsViewDelegate <NSObject>
 - (void)didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView;

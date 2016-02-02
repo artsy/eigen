@@ -1,3 +1,7 @@
+#import "ARHeartStatus.h"
+
+@class Artist;
+
 /// The API for the ArtistViewController
 
 @protocol ARArtistNetworkModelable <NSObject>

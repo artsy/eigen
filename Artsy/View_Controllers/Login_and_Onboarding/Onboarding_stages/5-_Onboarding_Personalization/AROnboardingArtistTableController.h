@@ -1,6 +1,10 @@
+#import <UIKit/UIKit.h>
+
 /// This exists purely because we don't want to have to disambiguate between this tableView
 /// and the Gene and Search ones in personalize
 
+
+@class Artist;
 
 @interface AROnboardingArtistTableController : NSObject <UITableViewDataSource, UITableViewDelegate>
 

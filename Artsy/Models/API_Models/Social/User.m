@@ -1,5 +1,12 @@
-#import "ARUserManager.h"
+#import "User.h"
 
+#import "ARMacros.h"
+#import "ARUserManager.h"
+#import "ArtsyAPI+CurrentUserFunctions.h"
+#import "ArtsyAPI+Profiles.h"
+#import "Profile.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation User
 

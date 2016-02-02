@@ -1,5 +1,6 @@
 #import "ARViewInRoomTransition.h"
 
+#import "Artwork.h"
 #import "ARViewInRoomViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARFeedImageLoader.h"

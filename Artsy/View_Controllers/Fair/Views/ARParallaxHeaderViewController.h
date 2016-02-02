@@ -1,5 +1,9 @@
 #import <UIKit/UIKit.h>
 
+#import "ARMacros.h"
+
+@class Fair, Profile;
+
 
 @interface ARParallaxHeaderViewController : UIViewController
 

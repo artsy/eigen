@@ -1,4 +1,8 @@
+#import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
 
+@class Artist, Artwork, Fair, FairOrganizer, Gene, PartnerShow, Profile;
+@class AFHTTPSessionManager;
 
 
 @interface ARRouter : NSObject

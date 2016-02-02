@@ -24,3 +24,9 @@ NSString *const ARAuctionArtworkIDKey = @"ARAuctionArtworkID";
 NSString *const ARAPNSDeviceTokenKey = @"apns_device_token";
 
 BOOL ARPerformWorkAsynchronously = YES;
+
+#ifdef DEMO_MODE
+const BOOL ARIsRunningInDemoMode = YES;
+#else
+const BOOL ARIsRunningInDemoMode = NO;
+#endif

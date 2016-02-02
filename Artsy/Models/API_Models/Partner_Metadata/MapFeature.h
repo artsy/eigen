@@ -1,3 +1,6 @@
+#import <CoreGraphics/CoreGraphics.h>
+#import <Mantle/Mantle.h>
+
 typedef NS_ENUM(NSInteger, ARMapFeatureType) {
     ARMapFeatureTypeDefault,
     ARMapFeatureTypeArtsy,
@@ -23,6 +26,7 @@ typedef NS_ENUM(NSInteger, ARMapFeatureType) {
 
 FOUNDATION_EXPORT NSString *NSStringFromARMapFeatureType(enum ARMapFeatureType featureType);
 
+@class Image;
 
 @interface MapFeature : MTLModel <MTLJSONSerializing>
 

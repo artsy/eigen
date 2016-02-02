@@ -1,4 +1,6 @@
 #import "ARGeneViewController.h"
+
+#import "ARAppConstants.h"
 #import "ARHeartButton.h"
 #import "ARTextView.h"
 #import "AREmbeddedModelsViewController.h"
@@ -10,7 +12,18 @@
 #import "ARArtworkSetViewController.h"
 #import "ORStackView+ArtsyViews.h"
 #import "UIViewController+ARUserActivity.h"
+#import "User.h"
+#import "Gene.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARNetworkErrorManager.h"
+#import "ARTrialController.h"
+#import "ARScrollNavigationChief.h"
+
+#import "UILabel+Typography.h"
+#import "UIDevice-Hardware.h"
+
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
 @interface ARGeneViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>

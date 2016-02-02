@@ -1,12 +1,14 @@
-/// The InquireForArtworkVC is a modal view which allows
-/// the user to contact either the gallery or their representative
+#import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, ARInquireState) {
     ARInquireStateRepresentative,
     ARInquireStatePartner
 };
 
+@class Artwork, Fair;
 
+/// The InquireForArtworkVC is a modal view which allows
+/// the user to contact either the gallery or their representative
 @interface ARInquireForArtworkViewController : UIViewController <UITextViewDelegate>
 
 /// Create a Inquire form for contacting an artsy specialist

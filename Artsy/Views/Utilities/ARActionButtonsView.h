@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 typedef void (^ARActionButtonHandler)(UIButton *button);
 
 extern NSString *const ARActionButtonImageKey;

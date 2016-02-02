@@ -1,4 +1,6 @@
+#import <Mantle/Mantle.h>
 
+@class Artist, Profile;
 
 
 @interface Follow : MTLModel <MTLJSONSerializing>

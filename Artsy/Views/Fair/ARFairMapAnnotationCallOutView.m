@@ -1,6 +1,17 @@
 #import "ARFairMapAnnotationCallOutView.h"
-#import "ARShowViewController.h"
 
+#import "ARFonts.h"
+#import "ARShowViewController.h"
+#import "PartnerShow.h"
+#import "ARTheme.h"
+#import "ARFairMapAnnotation.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARTopMenuViewController.h"
+
+#import "UIImageView+AsyncImageLoading.h"
+
+#import <NAMapKit/NAMapView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARFairMapAnnotationCallOutView ()
 

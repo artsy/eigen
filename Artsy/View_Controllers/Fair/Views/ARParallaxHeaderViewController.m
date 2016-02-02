@@ -1,5 +1,14 @@
 #import "ARParallaxHeaderViewController.h"
+
+#import "ARCustomEigenLabels.h"
+#import "Fair.h"
+#import "Profile.h"
+
+#import "UIImageView+AsyncImageLoading.h"
+
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 const CGFloat ARParallaxHeaderViewBannerImageMissingImageHeight = 60.0;
 const CGFloat ARParallaxHeaderViewBannerImageHeight = 180.0;

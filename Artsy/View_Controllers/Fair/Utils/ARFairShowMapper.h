@@ -1,6 +1,8 @@
 #import "ARAnnotatedMapView.h"
 #import "ARFairMapAnnotationView.h"
 
+@class Map, MapPoint, PartnerShow;
+
 
 @interface ARFairShowMapper : NSObject
 

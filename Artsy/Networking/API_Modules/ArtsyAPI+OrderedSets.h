@@ -1,5 +1,7 @@
+#import "ArtsyAPI.h"
 
-
+@class OrderedSet;
+@class AFHTTPRequestOperation;
 
 @interface ArtsyAPI (OrderedSets)
 

@@ -1,6 +1,18 @@
 #import "ARFairSearchViewController.h"
-#import "ARSearchViewController+Private.h"
 
+#import "ArtsyAPI+Search.h"
+#import "ARFonts.h"
+#import "ARSearchViewController+Private.h"
+#import "Fair.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+#import "ARDispatchManager.h"
+
+#import "MTLModel+JSON.h"
+
+#import <EDColor/EDColor.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @implementation ARFairSearchViewController
 

@@ -1,5 +1,8 @@
-@class AROnboardingViewController;
+#import <UIKit/UIKit.h>
 
+#import "User.h"
+
+@class AROnboardingViewController;
 
 @interface ARCollectorStatusViewController : UIViewController
 

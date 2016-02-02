@@ -1,5 +1,10 @@
+#import "Map.h"
 
+#import "MapFeature.h"
+#import "Image.h"
+#import "ARMacros.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface Map ()
 @property (nonatomic, strong) Image *image;

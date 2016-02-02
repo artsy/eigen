@@ -1,5 +1,9 @@
 #import "ArtsyAPI+Private.h"
+#import "ArtsyAPI+CurrentUserFunctions.h"
 #import "ARUserManager.h"
+#import "ARRouter.h"
+#import "User.h"
+#import "Bidder.h"
 
 
 @implementation ArtsyAPI (CurrentUserFunctions)

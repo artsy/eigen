@@ -1,5 +1,7 @@
+#import "ARFeedHostItem.h"
 
-
+#import <Mantle/Mantle.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @implementation MTLModel (JSON)
 

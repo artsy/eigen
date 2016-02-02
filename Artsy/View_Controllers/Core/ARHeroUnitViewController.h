@@ -1,4 +1,6 @@
-@class ARHeroUnitsNetworkModel;
+#import <UIKit/UIKit.h>
+
+@class ARHeroUnitsNetworkModel, SiteHeroUnit;
 
 
 @interface ARHeroUnitViewController : UIViewController

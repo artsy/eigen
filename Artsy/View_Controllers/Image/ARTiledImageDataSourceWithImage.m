@@ -1,4 +1,7 @@
 #import "ARTiledImageDataSourceWithImage.h"
+
+#import "Artwork.h"
+
 #import <ARAnalytics/ARAnalytics.h>
 
 

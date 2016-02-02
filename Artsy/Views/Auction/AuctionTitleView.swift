@@ -5,8 +5,6 @@ import Artsy_UIFonts
 import FLKAutoLayout
 
 protocol AuctionTitleViewDelegate: class {
-    // Just temporary, to test refine button.
-    func buttonPressed()
 }
 
 class AuctionTitleView: UIView {
@@ -55,6 +53,7 @@ private extension AuctionTitleView {
         addSubview(titleLabel)
 
         if regularSize {
+
 
         } else {
             

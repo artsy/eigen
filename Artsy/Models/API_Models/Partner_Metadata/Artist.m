@@ -1,5 +1,13 @@
+#import "Artist.h"
+
+#import "ArtsyAPI+Artworks.h"
+#import "ArtsyAPI+Following.h"
+#import "ArtsyAPI+RelatedModels.h"
 #import "ARNetworkConstants.h"
 #import "ARSpotlight.h"
+#import "User.h"
+#import "ARSwitchBoard.h"
+
 
 @interface Artist () {
     BOOL _isFollowed;

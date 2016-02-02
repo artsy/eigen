@@ -1,5 +1,6 @@
 #import "ArtsyAPI.h"
 
+@class AFHTTPRequestOperation;
 
 @interface ArtsyAPI (Search)
 

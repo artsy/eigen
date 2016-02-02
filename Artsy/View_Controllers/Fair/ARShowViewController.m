@@ -1,4 +1,8 @@
 #import "ARShowViewController.h"
+
+#import "Image.h"
+#import "ARAppConstants.h"
+#import "ARFonts.h"
 #import "ARImagePageViewController.h"
 #import "ARFollowableNetworkModel.h"
 #import "ARFollowableButton.h"
@@ -14,6 +18,25 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARFairMapPreviewButton.h"
 #import "UIViewController+ARUserActivity.h"
+#import "Fair.h"
+#import "FairOrganizer.h"
+#import "Location.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+#import "Profile.h"
+#import "User.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARTrialController.h"
+#import "ARScrollNavigationChief.h"
+
+#import "Artsy-Swift.h"
+#import "UIDevice-Hardware.h"
+
+#import <Artsy_UILabels/ARLabelSubclasses.h>
+#import <ORStackView/ORTagBasedAutoStackView.h>
+#import <ORStackView/ORStackScrollView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 typedef NS_ENUM(NSInteger, ARFairShowViewIndex) {
     ARFairShowViewHeader = 1,

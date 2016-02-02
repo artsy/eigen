@@ -1,3 +1,6 @@
+#import <Foundation/Foundation.h>
+
+
 NSInteger const ARSwitchViewFavoriteArtworksIndex = 0;
 NSInteger const ARSwitchViewFavoriteArtistsIndex = 1;
 NSInteger const ARSwitchViewFavoriteCategoriesIndex = 2;

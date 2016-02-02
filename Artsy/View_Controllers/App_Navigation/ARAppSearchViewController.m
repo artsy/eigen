@@ -1,12 +1,23 @@
 #import "ARAppSearchViewController.h"
+
+#import "Artist.h"
+#import "Artwork.h"
+#import "ArtsyAPI+Search.h"
 #import "ARArtworkSetViewController.h"
 #import "ARArtistViewController.h"
 #import "ARGeneViewController.h"
 #import "ARParallaxEffect.h"
 #import "ARSearchViewController+Private.h"
+#import "Gene.h"
+#import "Profile.h"
+#import "SiteFeature.h"
 #import "UIView+HitTestExpansion.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARMenuAwareViewController.h"
 
 #import <FXBlurView/FXBlurView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static const NSInteger ARAppSearchParallaxDistance = 20;
 

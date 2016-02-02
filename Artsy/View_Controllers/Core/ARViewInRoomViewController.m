@@ -1,6 +1,11 @@
 #import "ARViewInRoomViewController.h"
+
+#import "Artwork.h"
 #import "ARFeedImageLoader.h"
+#import "ARFonts.h"
 #import "UIDevice-Hardware.h"
+
+#import <EDColor/EDColor.h>
 
 #define DEBUG_VIEW_IN_ROOM 0
 

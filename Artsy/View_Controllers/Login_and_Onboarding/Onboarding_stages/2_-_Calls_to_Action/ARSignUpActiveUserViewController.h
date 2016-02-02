@@ -2,6 +2,7 @@
 #import "ARTrialController.h"
 #import "ARTermsAndConditionsView.h"
 
+@class ARSerifLineHeightLabel;
 
 @interface ARSignUpActiveUserViewController : UIViewController
 

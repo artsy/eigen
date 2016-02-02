@@ -1,4 +1,6 @@
+#import <UIKit/UIKit.h>
 
+@class ARUppercaseButton;
 
 
 @interface AROnboardingNavBarView : UIView

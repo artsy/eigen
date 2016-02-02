@@ -17,6 +17,9 @@
 #import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
 
+#import "Artsy-Swift.h"
+#import "AROptions.h"
+
 
 @implementation ARSwitchBoard (Eigen)
 

@@ -1,5 +1,6 @@
+#import "ArtsyAPI.h"
 
-
+@class Post;
 
 @interface ArtsyAPI (Posts)
 

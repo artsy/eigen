@@ -1,4 +1,4 @@
-@class ARArtworkViewController;
+@class Artwork, ARArtworkViewController, Fair;
 
 
 @interface ARArtworkSetViewController : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate>

@@ -1,5 +1,9 @@
+#import "Artist.h"
 #import "ArtsyAPI+Private.h"
+#import "ARRouter.h"
+#import "Gene.h"
 
+#import "AFHTTPRequestOperation+JSON.h"
 
 @implementation ArtsyAPI (ListCollection)
 

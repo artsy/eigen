@@ -8,6 +8,7 @@ class AuctionViewController: UIViewController {
     var appeared = false
 
     var headerStack: ORStackView!
+    var stickyHeader: ScrollingStickyHeaderView!
 
     /// Variable for storing lazily-computed default refine settings. 
     /// Should not be accessed directly, call defaultRefineSettings() instead.
@@ -26,7 +27,6 @@ class AuctionViewController: UIViewController {
 
     init(saleID: String) {
         self.saleID = saleID
-
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -67,6 +67,7 @@ class AuctionViewController: UIViewController {
         
         case WhitespaceGobbler
     }
+
 }
 
 extension AuctionViewController {
@@ -83,6 +84,16 @@ extension AuctionViewController {
             view.tag = tag.rawValue
             headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
+
+        stickyHeader = ScrollingStickyHeaderView().then {
+            $0.toggleAttatched(false, animated:false)
+            $0.button.setTitle("Refine", forState: .Normal)
+            $0.titleLabel.text = saleViewModel.displayName
+            $0.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
+            $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
+        }
+
+        artworksViewController.stickyHeaderView = stickyHeader
         artworksViewController.invalidateHeaderHeight()
 
         self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)
@@ -99,10 +110,8 @@ extension AuctionViewController {
         }
         return defaultSettings
     }
-}
 
-extension AuctionViewController: AuctionTitleViewDelegate {
-    func buttonPressed() {
+    func showRefineTapped() {
         let refineViewController = AuctionRefineViewController(defaultSettings: defaultRefineSettings(), initialSettings: refineSettings).then {
             $0.delegate = self
             $0.modalPresentationStyle = .FormSheet
@@ -112,6 +121,11 @@ extension AuctionViewController: AuctionTitleViewDelegate {
     }
 }
 
+extension AuctionViewController: AuctionTitleViewDelegate {
+
+}
+
+// TODO: Alias these extensions
 extension AuctionViewController: AuctionRefineViewControllerDelegate {
     func userDidCancel(controller: AuctionRefineViewController) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -130,5 +144,10 @@ extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
 
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
         navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, stickyHeaderDidChangeStickyness isAttatchedToLeadingEdge: Bool) {
+        stickyHeader.stickyHeaderHeight.constant = isAttatchedToLeadingEdge ? 120 : 60
+        stickyHeader.toggleAttatched(isAttatchedToLeadingEdge, animated: true)
     }
 }

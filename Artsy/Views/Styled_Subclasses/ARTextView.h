@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 @class ARTextView;
 
 @protocol ARTextViewDelegate <NSObject>

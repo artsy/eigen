@@ -1,5 +1,11 @@
 #import "ARSearchFieldButton.h"
 
+#import "ARFonts.h"
+
+#import <Artsy_UILabels/ARLabelSubclasses.h>
+#import <EDColor/EDColor.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARSearchFieldButton ()
 

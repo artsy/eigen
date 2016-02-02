@@ -1,5 +1,8 @@
 #import "ArtsyAPI.h"
 
+@class Sale, SaleArtwork;
+@class AFHTTPRequestOperation;
+
 
 @interface ArtsyAPI (Sales)
 

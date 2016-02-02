@@ -3,6 +3,7 @@
 #import "ARRouter.h"
 #import "ARSpinner.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARPersonalizeWebViewController () <WKNavigationDelegate>
 @property (nonatomic, strong, readonly) ARSpinner *spinner;
