@@ -1,5 +1,19 @@
+#import "Artist.h"
+#import "Artwork.h"
 #import "ArtsyAPI+Private.h"
+#import "ARRouter.h"
+#import "AuctionLot.h"
+#import "Fair.h"
+#import "FairOrganizer.h"
+#import "Gene.h"
+#import "PartnerShow.h"
+#import "ARDispatchManager.h"
+#import "ARLogger.h"
 
+#import "MTLModel+JSON.h"
+
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <AFNetworking/AFNetworking.h>
 
 @implementation ArtsyAPI (Artworks)
 

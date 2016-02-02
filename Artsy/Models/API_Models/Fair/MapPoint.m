@@ -1,4 +1,6 @@
+#import "MapPoint.h"
 
+#import "Image.h"
 
 
 @implementation MapPoint

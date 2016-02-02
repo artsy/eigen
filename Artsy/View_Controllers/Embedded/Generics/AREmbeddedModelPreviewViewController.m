@@ -1,7 +1,17 @@
 #import "AREmbeddedModelPreviewViewController.h"
+
+#import "Artist.h"
+#import "Artwork.h"
 #import "ARAspectRatioImageView.h"
 #import "ARSharingController.h"
+#import "FeaturedLink.h"
+#import "User.h"
+#import "ARNetworkErrorManager.h"
+#import "ARTrialController.h"
 
+#import "UIImageView+AsyncImageLoading.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface AREmbeddedModelPreviewViewController ()
 

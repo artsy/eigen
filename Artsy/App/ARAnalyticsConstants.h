@@ -1,4 +1,6 @@
-// Glbal
+#import <Foundation/Foundation.h>
+
+// Global
 
 extern NSString *const ARAnalyticsBackTapped;
 

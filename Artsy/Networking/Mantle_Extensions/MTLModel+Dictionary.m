@@ -1,5 +1,4 @@
-
-
+#import <Mantle/Mantle.h>
 
 @implementation MTLModel (Dictionary)
 

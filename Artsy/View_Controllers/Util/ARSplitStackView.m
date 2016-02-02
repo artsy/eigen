@@ -1,5 +1,6 @@
 #import "ARSplitStackView.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARSplitStackView ()
 @end

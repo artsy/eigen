@@ -1,3 +1,5 @@
+@class Fair;
+
 @protocol ARFairAwareObject <NSObject>
 
 - (Fair *)fair;

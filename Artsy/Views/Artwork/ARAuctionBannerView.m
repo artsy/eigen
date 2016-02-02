@@ -1,5 +1,8 @@
 #import "ARAuctionBannerView.h"
 
+#import "ARFonts.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARAuctionBannerView ()
 @property (nonatomic) UILabel *label;

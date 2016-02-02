@@ -1,7 +1,11 @@
 #import "ARFairMapAnnotation.h"
+
 #import "ARFairMapAnnotationView.h"
+#import "Partner.h"
+#import "PartnerShow.h"
 #import "UIView+HitTestExpansion.h"
 
+#import <NAMapKit/NAMapView.h>
 
 @interface ARFairMapAnnotation ()
 @property (nonatomic, readonly) ARFairMapAnnotationView *view;

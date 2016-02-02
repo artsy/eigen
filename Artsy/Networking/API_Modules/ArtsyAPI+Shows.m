@@ -1,4 +1,7 @@
+#import "Artwork.h"
 #import "ArtsyAPI+Private.h"
+#import "ARRouter.h"
+#import "PartnerShow.h"
 
 
 @implementation ArtsyAPI (Shows)

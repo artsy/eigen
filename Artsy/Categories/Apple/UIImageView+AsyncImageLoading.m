@@ -1,7 +1,10 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <objc/runtime.h>
+
+#import "ARFonts.h"
 #import "ARLogger.h"
 
+#import "UIImage+ImageFromColor.h"
 
 @implementation UIImageView (AsyncImageLoading)
 

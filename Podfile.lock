@@ -273,10 +273,10 @@ CHECKOUT OPTIONS:
     :commit: 39f47deebf947aa4c07727fdf2b69e2feff17428
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Artsy+UILabels:
-    :commit: dd87214947d54d74001774bf563fa64d9c834d9d
+    :commit: 706e6e85af5d9af18f2af024d31550ba9b1584be
     :git: https://github.com/artsy/Artsy-UILabels.git
   Artsy-UIButtons:
-    :commit: 65dc46b5fc86976191ae92d7a3426c39592596a2
+    :commit: e5b75a8bbcc0ffbbb4029a7298f84a089937ea4d
     :git: https://github.com/artsy/Artsy-UIButtons.git
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c

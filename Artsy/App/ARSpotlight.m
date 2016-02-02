@@ -1,17 +1,27 @@
 #import "ARSpotlight.h"
+
+#import "Artist.h"
+#import "Artwork.h"
 #import "ARUserActivity.h"
 #import "ARRouter.h"
 #import "ARFileUtils.h"
+#import "Fair.h"
+#import "Gene.h"
+#import "Profile.h"
 
 #import "ARArtworkFavoritesNetworkModel.h"
 #import "ARGeneFavoritesNetworkModel.h"
 #import "ARArtistFavoritesNetworkModel.h"
+#import "ARDispatchManager.h"
+#import "ARLogger.h"
 
 #import "NSDate+DateRange.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 #import <MMMarkdown/MMMarkdown.h>
 #import <SDWebImage/SDImageCache.h>
+#import <SDWebImage/SDWebImageManager.h>
 
 
 static BOOL ARSpotlightAvailable = NO;

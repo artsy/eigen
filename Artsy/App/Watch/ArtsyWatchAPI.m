@@ -1,5 +1,9 @@
 #import "ArtsyWatchAPI.h"
 
+#import "MTLModel+JSON.h"
+
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 /// Hopefully temporary
 
 /// As we don't have our API ported to NSURLSession / AFNetworking 2.0

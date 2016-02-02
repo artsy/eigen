@@ -1,5 +1,13 @@
-#import "ARStandardDateFormatter.h"
+#import "SiteHeroUnit.h"
 
+#import "ARStandardDateFormatter.h"
+#import "ARSystemTime.h"
+
+#import "ARMacros.h"
+#import "UIDevice-Hardware.h"
+
+#import <EDColor/EDColor.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface SiteHeroUnit ()
 @property (nonatomic, copy, readonly) NSString *buttonColorHex;

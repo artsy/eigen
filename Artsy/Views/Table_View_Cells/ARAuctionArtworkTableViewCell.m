@@ -1,5 +1,13 @@
 #import "ARAuctionArtworkTableViewCell.h"
 
+#import "Artist.h"
+#import "Artwork.h"
+#import "ARFonts.h"
+#import "ARCustomEigenLabels.h"
+#import "AuctionLot.h"
+
+#import "UIImageView+AsyncImageLoading.h"
+#import "NSString+StringSize.h"
 
 @interface ARAuctionArtworkTableViewCell ()
 @property (nonatomic, weak) UIView *separator;

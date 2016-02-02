@@ -1,7 +1,14 @@
 #import "ARArtworkInfoViewController.h"
+
+#import "Artwork.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARTextView.h"
+#import "ARScrollNavigationChief.h"
 
+#import "UIDevice-Hardware.h"
+
+#import <Artsy_UILabels/ARLabelSubclasses.h>
+#import <ORStackView/ORStackScrollView.h>
 
 @interface ARArtworkInfoViewController () <ARTextViewDelegate>
 @property (nonatomic, strong) Artwork *artwork;

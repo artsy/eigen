@@ -1,7 +1,11 @@
 #import "ARArtworkMetadataView.h"
 #import "ARSplitStackView.h"
 #import "ARWhitespaceGobbler.h"
+#import "ARAppConstants.h"
 
+#import "UIDevice-Hardware.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARArtworkMetadataView ()
 @property (nonatomic, strong) ARArtworkPreviewActionsView *artworkPreviewActions;

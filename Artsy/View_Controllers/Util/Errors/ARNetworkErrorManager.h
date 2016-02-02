@@ -1,3 +1,6 @@
+#import <Foundation/Foundation.h>
+
+
 @protocol ARNetworkErrorAwareViewController
 @property (readonly, nonatomic, assign) BOOL shouldShowActiveNetworkError;
 @end

@@ -1,7 +1,10 @@
+#import <UIKit/UIKit.h>
+
 /// We want the Artwork View Controller to allow rotation, but
 /// in order for this to happen by default *every* other view in the
 /// heirarchy has to support this. So in this case we only check the top VC.
 
+@class RACCommand;
 
 @interface ARNavigationController : UINavigationController
 

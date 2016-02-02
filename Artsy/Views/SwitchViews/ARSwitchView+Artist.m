@@ -1,5 +1,7 @@
 #import "ARSwitchView+Artist.h"
 
+#import "ARFonts.h"
+
 NSInteger ARSwitchViewArtistButtonIndex = 0;
 NSInteger ARSwitchViewForSaleButtonIndex = 1;
 

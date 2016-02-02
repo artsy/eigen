@@ -1,5 +1,7 @@
 #import "WatchArtwork+ArtsyModels.h"
 
+#import "Artist.h"
+#import "Artwork.h"
 
 @implementation WatchArtwork (FromArtwork)
 

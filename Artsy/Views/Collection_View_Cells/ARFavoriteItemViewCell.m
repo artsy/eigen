@@ -1,5 +1,14 @@
 #import "ARFavoriteItemViewCell.h"
+
+#import "Artist.h"
 #import "ARFeedImageLoader.h"
+#import "ARFonts.h"
+#import "FeaturedLink.h"
+
+#import "UIImageView+AsyncImageLoading.h"
+#import "UIDevice-Hardware.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 static const CGFloat ARFavoriteCellMetadataMargin = 8;
 static const CGFloat ARFavoriteCellLabelHeight = 34;

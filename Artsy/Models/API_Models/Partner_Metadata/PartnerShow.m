@@ -1,5 +1,17 @@
+#import "Artwork.h"
+#import "ArtsyAPI+Shows.h"
 #import "ARStandardDateFormatter.h"
+#import "Fair.h"
+#import "Location.h"
 #import "NSDate+DateRange.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+#import "PartnerShowFairLocation.h"
+
+#import "ARMacros.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static ARStandardDateFormatter *staticDateFormatter;
 

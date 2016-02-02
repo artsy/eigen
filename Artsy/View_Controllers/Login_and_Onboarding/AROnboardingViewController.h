@@ -1,5 +1,6 @@
 #import "ARNavigationController.h"
 #import "ARTrialController.h"
+#import "User.h"
 
 @class ARSignUpSplashViewController;
 

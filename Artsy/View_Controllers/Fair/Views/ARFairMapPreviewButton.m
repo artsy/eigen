@@ -1,7 +1,10 @@
 #import "ARFairMapPreviewButton.h"
+
 #import "ARFairMapPreview.h"
+#import "ARFonts.h"
 #import "Map.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARFairMapPreviewButton ()
 @end

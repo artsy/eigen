@@ -1,3 +1,5 @@
+#import "UIImage+ImageFromColor.h"
+
 static NSCache *imageCache;
 
 

@@ -1,8 +1,18 @@
 #import "ARArtworkView.h"
+
+#import "Artwork.h"
 #import "ARSpinner.h"
 #import "ARAuctionBannerView.h"
 #import "ARWhitespaceGobbler.h"
+#import "ARCustomEigenLabels.h"
+#import "ARNavigationController.h"
+#import "ARMenuAwareViewController.h"
+
+#import "UIDevice-Hardware.h"
+
 #import <ARAnalytics/ARAnalytics.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
 @interface ARArtworkView ()

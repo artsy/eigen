@@ -1,5 +1,7 @@
-#import "ARRouter.h"
+//#import "ARRouter.h"
+#import "ArtsyAPI.h"
 
+@class AFHTTPRequestOperation;
 
 @interface ArtsyAPI (Private)
 

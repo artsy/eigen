@@ -1,7 +1,12 @@
 #import "ARAppActivityContinuationDelegate.h"
-#import <CoreSpotlight/CoreSpotlight.h>
+
 #import "ARAppDelegate.h"
 #import "ARUserManager.h"
+#import "ARSwitchBoard.h"
+#import "ARTopMenuViewController.h"
+#import "ArtsyAPI.h"
+
+#import <CoreSpotlight/CoreSpotlight.h>
 
 // Only available on iOS 9.
 static BOOL IsSpotlightActionTypeAvailable = NO;

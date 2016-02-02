@@ -1,5 +1,6 @@
 #import "AROnboardingTableViewCell.h"
 
+#import "ARFonts.h"
 
 @interface AROnboardingTableViewCell ()
 @property (nonatomic) BOOL centerFixed;

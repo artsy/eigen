@@ -1,4 +1,7 @@
+#import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
 #import <Mantle/Mantle.h>
+
 #import "ARHasImageBaseURL.h"
 
 

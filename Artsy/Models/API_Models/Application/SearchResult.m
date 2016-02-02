@@ -1,5 +1,14 @@
 #import "SearchResult.h"
+
+#import "Artist.h"
+#import "Artwork.h"
 #import "ARRouter.h"
+#import "Gene.h"
+#import "PartnerShow.h"
+#import "Profile.h"
+#import "SiteFeature.h"
+
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static NSDictionary *classMap;
 

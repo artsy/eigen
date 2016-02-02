@@ -1,8 +1,19 @@
+#import "ARLogger.h"
 #import "ARSearchViewController.h"
 #import "ARSearchViewController+Private.h"
+
+#import "ARAppConstants.h"
+#import "ARFonts.h"
 #import "ARSearchTableViewCell.h"
+
 #import "UIView+HitTestExpansion.h"
+#import "UIDevice-Hardware.h"
+
+#import <Artsy_UILabels/ARLabelSubclasses.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <AFNetworking/AFNetworking.h>
 
 @interface ARSearchViewController () <UITextFieldDelegate, UITableViewDelegate>
 @property (readonly, nonatomic) UIActivityIndicatorView *activityIndicator;

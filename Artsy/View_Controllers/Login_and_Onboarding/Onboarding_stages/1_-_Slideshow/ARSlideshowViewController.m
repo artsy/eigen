@@ -1,5 +1,12 @@
 #import "ARSlideshowViewController.h"
+
 #import "ARSlideshowView.h"
+#import "ARDeveloperOptions.h"
+
+#import "UIDevice-Hardware.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 
 @interface ARSlideshowViewController ()

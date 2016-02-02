@@ -1,11 +1,21 @@
 #import "ARFairGuideContainerViewController.h"
 #import "ARFairGuideViewController.h"
 #import "ARFairMapViewController.h"
+#import "Fair.h"
+#import "User.h"
+#import "ARNavigationController.h"
+#import "ARScrollNavigationChief.h"
 
 #import "UIViewController+SimpleChildren.h"
 #import "UIViewController+FullScreenLoading.h"
 
 #import "UIView+HitTestExpansion.h"
+
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 
 @interface ARFairGuideContainerViewController () <ARFairGuideViewControllerDelegate, UIScrollViewDelegate>

@@ -1,5 +1,6 @@
 #import "Article.h"
 
+#import "ARMacros.h"
 
 @interface Article ()
 @property (nonatomic, copy, readonly) NSString *publicArtsyPath;

@@ -1,4 +1,8 @@
-@class ARFairGuideViewController;
+#import "ARMacros.h"
+
+#import <ORStackView/ORStackScrollView.h>
+
+@class Fair, ARFairGuideViewController;
 
 @protocol ARFairGuideViewControllerDelegate <NSObject>
 
