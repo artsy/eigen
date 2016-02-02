@@ -4,32 +4,16 @@ import Interstellar
 /// Network model responsible for fetching the Sale from the API.
 class AuctionSaleNetworkModel {
 
-    let saleID: String
     var sale: Sale?
 
-    init(saleID: String) {
-        self.saleID = saleID
-    }
-
-    func fetchSale() -> Signal<Sale> {
-        let signal = Signal(saleID)
+    func fetchSale(saleID: String, callback: Result<Sale> -> Void) {
 
         // Based on the saleID signal, fetch the sale
-        return signal
-            .flatMap(fetchSaleModel)
-            .next { sale in
-                self.sale = sale
-            }
+        ArtsyAPI.getSaleWithID(saleID,
+            success: { sale in
+                callback(.Success(sale))
+            },
+            failure: passOnFailure(callback)
+        )
     }
-}
-
-
-/// Fetches sale based on saleID.
-private func fetchSaleModel(saleID: String, callback: Result<Sale> -> Void) {
-    ArtsyAPI.getSaleWithID(saleID,
-        success: { sale in
-            callback(.Success(sale))
-        },
-        failure: passOnFailure(callback)
-    )
 }

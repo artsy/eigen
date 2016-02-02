@@ -4,28 +4,15 @@ import Interstellar
 /// Network model responsible for fetching the registration status from the API.
 class AuctionRegistrationStatusNetworkModel {
 
-    let saleID: String
     var registrationStatus: ArtsyAPISaleRegistrationStatus?
 
-    init(saleID: String) {
-        self.saleID = saleID
-    }
 
-    func fetchRegistrationStatus() -> Signal<ArtsyAPISaleRegistrationStatus> {
-        let signal = Signal(saleID)
+    func fetchRegistrationStatus(saleID: String, callback: Result<ArtsyAPISaleRegistrationStatus> -> Void) {
 
         // Based on the saleID signal, fetch the sale registration status.
-        return signal
-            .flatMap(fetchSaleRegistrationStatus)
-            .next { registrationStatus in
-                self.registrationStatus = registrationStatus
-            }
+        ArtsyAPI.getCurrentUserRegistrationStatusForSale(saleID,
+            success: { registrationStatus in
+                callback(.Success(registrationStatus))
+            }, failure: passOnFailure(callback))
     }
-}
-
-private func fetchSaleRegistrationStatus(saleID: String, callback: Result<ArtsyAPISaleRegistrationStatus> -> Void) {
-    ArtsyAPI.getCurrentUserRegistrationStatusForSale(saleID,
-        success: { registrationStatus in
-            callback(.Success(registrationStatus))
-        }, failure: passOnFailure(callback))
 }

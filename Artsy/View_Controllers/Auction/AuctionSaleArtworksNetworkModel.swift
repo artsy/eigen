@@ -4,41 +4,26 @@ import Interstellar
 /// Network model responsible for fetching the SaleArtworks from the API.
 class AuctionSaleArtworksNetworkModel {
 
-    let saleID: String
     var saleArtworks: [SaleArtwork]?
 
-    init(saleID: String) {
-        self.saleID = saleID
-    }
+    func fetchSaleArtworks(saleID: String, callback: Result<[SaleArtwork]> -> Void) {
 
-    func fetchSaleArtworks() -> Signal<[SaleArtwork]> {
-        let signal = Signal(saleID)
-
-        // Based on the saleID signal, fetch the SaleArtwork models.
-        return signal
-            .flatMap(fetchSaleArtworkModels)
-            .next { saleArtworks in
-                self.saleArtworks = saleArtworks
+        /// Fetches all the sale artworks associated with the sale.
+        /// This serves as a trampoline for the actual recursive call.
+        fetchPage(1, forSaleID: saleID, alreadyFetched: []) { result in
+            switch result {
+            case .Success(let saleArtworks):
+                callback(.Success(saleArtworks))
+            case .Error(let error):
+                callback(.Error(error))
             }
+        }
     }
 }
 
 
 /// Number of sale artworks to fetch at once.
 private let PageSize = 10
-
-/// Fetches all the sale artworks associated with the sale.
-/// This serves as a trampoline for the actual recursive call.
-private func fetchSaleArtworkModels(saleID: String, callback: Result<[SaleArtwork]> -> Void) {
-    fetchPage(1, forSaleID: saleID, alreadyFetched: []) { result in
-        switch result {
-        case .Success(let saleArtworks):
-            callback(.Success(saleArtworks))
-        case .Error(let error):
-            callback(.Error(error))
-        }
-    }
-}
 
 /// Recursively calls itself with page+1 until the count of the returned array is < pageSize.
 private func fetchPage(page: Int, forSaleID saleID: String, alreadyFetched: [SaleArtwork], callback: Result<[SaleArtwork]> -> Void) {
