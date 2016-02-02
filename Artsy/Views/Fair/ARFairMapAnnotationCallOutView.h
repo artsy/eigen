@@ -1,5 +1,6 @@
-#import "ARFairMapAnnotation.h"
+#import <UIKit/UIKit.h>
 
+@class ARFairMapAnnotation, Fair, NAMapView;
 
 @interface ARFairMapAnnotationCallOutView : UIView
 

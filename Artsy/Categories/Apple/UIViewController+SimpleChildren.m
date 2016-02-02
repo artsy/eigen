@@ -1,4 +1,6 @@
 #import "UIViewController+SimpleChildren.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 
 

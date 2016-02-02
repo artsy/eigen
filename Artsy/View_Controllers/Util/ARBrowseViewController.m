@@ -1,7 +1,11 @@
 #import "ARBrowseViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
+#import "ARSwitchBoard+Eigen.h"
 
+#import "UIDevice-Hardware.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARBrowseViewCell : ARBrowseFeaturedLinksCollectionViewCell
 @end

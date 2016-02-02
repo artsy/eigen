@@ -1,4 +1,8 @@
 #import "WatchShow+ArtsyModels.h"
+
+#import "Location.h"
+#import "Partner.h"
+#import "PartnerShow.h"
 #import "PartnerShowCoordinates.h"
 
 

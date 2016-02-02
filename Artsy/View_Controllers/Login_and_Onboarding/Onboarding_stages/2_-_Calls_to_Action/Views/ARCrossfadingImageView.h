@@ -1,4 +1,4 @@
-
+#import <UIKit/UIKit.h>
 
 
 @interface ARCrossfadingImageView : UIImageView

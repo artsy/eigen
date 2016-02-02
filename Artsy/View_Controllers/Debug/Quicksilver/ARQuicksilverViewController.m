@@ -1,9 +1,21 @@
 #import "ARQuicksilverViewController.h"
+
+#import "Artist.h"
+#import "Artwork.h"
+#import "ArtsyAPI+Search.h"
 #import "ARContentViewControllers.h"
+#import "Gene.h"
 #import "SearchResult.h"
 #import "ARSearchTableViewCell.h"
 #import "ARFileUtils.h"
+#import "ARFonts.h"
+#import "Profile.h"
+#import "SiteFeature.h"
+#import "ARSwitchBoard+Eigen.h"
+
 #import <AFNetworking/UIImageView+AFNetworking.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <AFNetworking/AFNetworking.h>
 
 
 @interface ARQuicksilverViewController ()

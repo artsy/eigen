@@ -1,9 +1,14 @@
+#import <UIKit/UIKit.h>
+
+#import "ARMenuAwareViewController.h"
+
 /// Has two main states, a decorated version with parallax & the dude,
 /// and a simple VIR. The simple VIR has a back button.
 
 /// Has a corrosponding push animation: ARViewInRoomTransition which handles
 /// switching to and from both versions.
 
+@class Artwork;
 
 @interface ARViewInRoomViewController : UIViewController <ARMenuAwareViewController>
 

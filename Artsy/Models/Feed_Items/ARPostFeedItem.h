@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 #import "ARFeedItem.h"
 #import "User.h"
 

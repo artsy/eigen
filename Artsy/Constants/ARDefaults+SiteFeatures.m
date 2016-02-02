@@ -1,5 +1,7 @@
 #import "ARDefaults+SiteFeatures.h"
 
+#import "SiteFeature.h"
+
 
 @implementation ARDefaults (SiteFeatures)
 

@@ -1,5 +1,8 @@
 #import "ARTopMenuInternalMobileWebViewController.h"
 
+#import "ARTopMenuNavigationDataSource.h"
+#import "ARTopMenuViewController.h"
+
 #define MAX_AGE 3600 // 1 hour
 
 

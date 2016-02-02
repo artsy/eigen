@@ -1,4 +1,6 @@
 #import "ARArtworkViewController.h"
+
+#import "Artwork.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARArtworkRelatedArtworksView.h"
 #import "ARArtworkBlurbView.h"
@@ -7,7 +9,11 @@
 #import "ARArtworkView.h"
 #import "ARArtworkViewController+ButtonActions.h"
 #import "UIViewController+ARUserActivity.h"
+#import "ARScrollNavigationChief.h"
 
+#import "UIDevice-Hardware.h"
+
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 
 @interface ARArtworkViewController () <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>
 

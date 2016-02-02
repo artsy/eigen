@@ -1,3 +1,6 @@
+#import "ARSwitchBoard.h"
+
+#import "ARAppConstants.h"
 #import "ARRouter.h"
 #import "Artsy-Swift.h"
 #import <JLRoutes/JLRoutes.h>
@@ -6,8 +9,35 @@
 
 #import "ARFairAwareObject.h"
 #import "ARFavoritesViewController.h"
+#import "Fair.h"
+#import "User.h"
+
+// View Controllers
+#import "ARArtworkSetViewController.h"
+#import "ARShowViewController.h"
+#import "ARFairArtistViewController.h"
+#import "ARGeneViewController.h"
+#import "ARArtworkInfoViewController.h"
+#import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
+#import "ARFairGuideContainerViewController.h"
+#import "ARArtistViewController.h"
+#import "ARAuctionArtworkResultsViewController.h"
+#import "ARAuctionWebViewController.h"
+#import "ARFavoritesViewController.h"
+#import "ARFairMapViewController.h"
+#import "ARProfileViewController.h"
+#import "ARTopMenuViewController.h"
+
+#import "ARTopMenuNavigationDataSource.h"
+
+#import "Artsy-Swift.h"
+#import "UIDevice-Hardware.h"
+
+#import <JLRoutes/JLRoutes.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 
 @interface ARSwitchBoard ()
@@ -243,12 +273,10 @@
         } else {
             return [[ARExternalWebBrowserViewController alloc] initWithURL:url];
         }
-
-    } else {
-        /// It's probably an app link, offer to jump out
-        [self openURLInExternalService:url];
-        return nil;
     }
+    /// It's probably an app link, offer to jump out
+    [self openURLInExternalService:url];
+    return nil;
 }
 
 - (void)openURLInExternalService:(NSURL *)url

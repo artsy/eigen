@@ -1,6 +1,11 @@
+#import "ARLogger.h"
 #import "ARZoomView.h"
+
+#import "Image.h"
 #import "ARFeedImageLoader.h"
 #import "ARTiledImageDataSourceWithImage.h"
+
+#import "UIDevice-Hardware.h"
 
 #import <ARASCIISwizzle/UIImageView+ASCII.h>
 #import <ARAnalytics/ARAnalytics.h>

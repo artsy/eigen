@@ -1,5 +1,7 @@
 #import "ARAdminTableViewCell.h"
 
+#import "ARFonts.h"
+
 CGFloat ARTableViewCellSettingsHeight = 60;
 
 

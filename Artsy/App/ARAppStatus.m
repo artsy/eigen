@@ -1,5 +1,6 @@
 #import "ARAppStatus.h"
 
+#import "ARAppConstants.h"
 
 @implementation ARAppStatus
 

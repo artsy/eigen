@@ -1,5 +1,7 @@
 #import "ARGeneArtworksNetworkModel.h"
 
+#import "Gene.h"
+
 
 @interface ARGeneArtworksNetworkModel ()
 @property (nonatomic, assign) NSInteger currentPage;

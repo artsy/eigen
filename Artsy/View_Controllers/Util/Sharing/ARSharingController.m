@@ -1,7 +1,14 @@
 #import "ARSharingController.h"
+
+#import "Artist.h"
+#import "Artwork.h"
 #import "ARURLItemProvider.h"
 #import "ARImageItemProvider.h"
 #import "ARMessageItemProvider.h"
+#import "Gene.h"
+#import "PartnerShow.h"
+#import "ARTopMenuViewController.h"
+
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
 

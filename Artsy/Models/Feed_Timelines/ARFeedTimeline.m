@@ -1,5 +1,6 @@
-#import "ARFeedItem.h"
+#import "ARFeedTimeline.h"
 
+#import "ARFeedItem.h"
 
 @interface ARFeedTimeline ()
 @property (nonatomic, strong) ARFeed *currentFeed;

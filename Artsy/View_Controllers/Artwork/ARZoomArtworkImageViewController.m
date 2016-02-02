@@ -1,5 +1,8 @@
 #import "ARZoomArtworkImageViewController.h"
 
+#import "UIDevice-Hardware.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface ARZoomArtworkImageViewController () <ARZoomViewDelegate>
 

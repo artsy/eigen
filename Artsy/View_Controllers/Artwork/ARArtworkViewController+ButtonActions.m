@@ -3,6 +3,9 @@
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
 #import "ARAuctionWebViewController.h"
+#import "Artist.h"
+#import "Artwork.h"
+#import "ArtsyAPI+Artworks.h"
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"
 #import "ARArtworkInfoViewController.h"
@@ -18,6 +21,15 @@
 #import "ARFairMapViewController.h"
 #import "ARBidButton.h"
 #import "ARAnalyticsConstants.h"
+#import "Fair.h"
+#import "FairOrganizer.h"
+#import "Partner.h"
+#import "User.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARNetworkErrorManager.h"
+#import "ARTrialController.h"
+#import "ARTopMenuViewController.h"
+#import "ARLogger.h"
 
 
 @implementation ARArtworkViewController (ButtonActions)

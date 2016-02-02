@@ -1,5 +1,6 @@
+#import <UIKit/UIKit.h>
 
-
+@class Fair;
 
 @interface ARRelatedArtistsViewController : UIViewController
 

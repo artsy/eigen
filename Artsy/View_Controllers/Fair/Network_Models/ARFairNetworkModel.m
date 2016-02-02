@@ -1,5 +1,10 @@
 #import "ARFairNetworkModel.h"
 
+#import "ArtsyAPI+Fairs.h"
+#import "ArtsyAPI+OrderedSets.h"
+#import "Fair.h"
+#import "OrderedSet.h"
+
 
 @implementation ARFairNetworkModel
 

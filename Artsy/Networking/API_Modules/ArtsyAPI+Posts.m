@@ -1,4 +1,6 @@
 #import "ArtsyAPI+Private.h"
+#import "ARRouter.h"
+#import "Post.h"
 
 
 @implementation ArtsyAPI (Posts)

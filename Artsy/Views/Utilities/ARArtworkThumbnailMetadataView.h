@@ -1,5 +1,7 @@
 #import "ARPostAttachment.h"
+#import "ARCustomEigenLabels.h"
 
+@class Artwork;
 
 @interface ARArtworkThumbnailMetadataView : UIView
 

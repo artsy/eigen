@@ -1,3 +1,4 @@
+#import "ARLogger.h"
 #import "ARCrossfadingImageView.h"
 
 typedef NS_ENUM(NSInteger, ARDirection) {

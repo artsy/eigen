@@ -1,3 +1,5 @@
+#import <ORStackView/ORTagBasedAutoStackView.h>
+
 /**
     The ARArtworkDetailView is a view for showing artwork metadata
     such such as artist name, artwork name, description, materials,
@@ -6,7 +8,7 @@
     Has no intrinsic height as it will generate it based off the content at runtime.
  */
 
-@class ARArtworkDetailView;
+@class Artwork, ARArtworkDetailView, Fair, SaleArtwork;
 
 @protocol ARArtworkDetailViewDelegate <NSObject>
 - (void)artworkDetailView:(ARArtworkDetailView *)detailView shouldPresentViewController:(UIViewController *)viewController;

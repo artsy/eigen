@@ -1,4 +1,6 @@
 #import "ARArtworkFlowModule.h"
+
+#import "ARPostAttachment.h"
 #import "ARItemThumbnailViewCell.h"
 #import "ARArtworkWithMetadataThumbnailCell.h"
 

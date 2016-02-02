@@ -1,7 +1,6 @@
 #import "ARFeed.h"
 
-/// For taking a feed from a file
-
+@class Fair, FairOrganizer, Partner, Profile;
 
 @interface ARFileFeed : ARFeed
 - (instancetype)initWithFileAtPath:(NSString *)fileName;

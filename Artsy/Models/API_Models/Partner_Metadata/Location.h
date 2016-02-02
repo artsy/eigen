@@ -1,5 +1,5 @@
 #import <CoreLocation/CoreLocation.h>
-
+#import <Mantle/Mantle.h>
 
 @interface Location : MTLModel <MTLJSONSerializing>
 

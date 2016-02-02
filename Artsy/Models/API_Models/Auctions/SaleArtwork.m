@@ -1,3 +1,11 @@
+#import "SaleArtwork.h"
+
+#import "Artwork.h"
+
+#import "ARMacros.h"
+#import "ARSystemTime.h"
+#import "ARLogger.h"
+
 static NSNumberFormatter *dollarFormatter;
 
 

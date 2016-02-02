@@ -1,5 +1,8 @@
 #import "ARPageSubTitleView.h"
 
+#import "ARTheme.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARPageSubTitleView ()
 @property (nonatomic, assign) CGFloat margin;

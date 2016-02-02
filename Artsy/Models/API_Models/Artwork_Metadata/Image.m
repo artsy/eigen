@@ -1,3 +1,5 @@
+#import "Image.h"
+
 static NSInteger ARTiledZoomMinLevel = 11;
 
 

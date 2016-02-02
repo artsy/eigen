@@ -1,5 +1,10 @@
 #import "ARNetworkErrorView.h"
 
+#import "ARFonts.h"
+
+#import <Artsy_UILabels/ARLabelSubclasses.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 
 @interface ARNetworkErrorView ()
 @property (nonatomic, strong) UILabel *errorText;

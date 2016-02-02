@@ -1,5 +1,6 @@
 #import "ARTheme+HeightAdditions.h"
 
+#import "ARLogger.h"
 
 @interface ARTheme ()
 - (id)itemWithKey:(id<NSCopying>)key;

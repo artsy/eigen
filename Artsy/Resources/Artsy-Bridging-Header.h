@@ -26,4 +26,8 @@
 #import "UIViewController+ARUserActivity.h"
 
 // Temporary for building out auctionVC
+#import "ARArtistNetworkModel.h"
 #import "ARGeneArtworksNetworkModel.h"
+
+// Libraries
+#import <Aerodramus/Aerodramus.h>

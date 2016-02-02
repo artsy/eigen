@@ -1,3 +1,10 @@
+#import "ARTheme.h"
+
+#import "ARLogger.h"
+
+#import <EDColor/EDColor.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 static NSMutableDictionary *staticThemes;
 static ARTheme *defaultTheme;
 

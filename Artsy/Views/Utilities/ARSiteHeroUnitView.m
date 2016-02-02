@@ -1,5 +1,16 @@
 #import "ARSiteHeroUnitView.h"
+
+#import "ARFonts.h"
 #import "ARParallaxEffect.h"
+
+#import "UIImageView+AsyncImageLoading.h"
+#import "UIDevice-Hardware.h"
+
+#import <Artsy_UILabels/ARLabelSubclasses.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <ORStackView/ORStackView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 #define AR_HERO_TITLE_FONT 26
 

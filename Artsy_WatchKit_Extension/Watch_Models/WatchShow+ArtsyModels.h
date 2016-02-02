@@ -1,7 +1,6 @@
 #import "WatchShow.h"
 
-/// This file is only in the Artsy Target
-
+@class PartnerShow;
 
 @interface WatchShow (FromShow)
 

@@ -1,6 +1,8 @@
 #import "ARFairMapAnnotationCallOutView.h"
 #import <NAMapKit/NAMapView.h>
 
+#import "ARFairMapAnnotation.h"
+
 SpecBegin(ARFairMapAnnotationCallOutView);
 
 __block ARFairMapAnnotationCallOutView *view;

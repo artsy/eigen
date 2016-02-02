@@ -1,5 +1,12 @@
 #import "ARSwitchView.h"
 
+#import "ARAppConstants.h"
+#import "ARFonts.h"
+
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 
 @interface ARSwitchView ()
 @property (nonatomic, strong, readwrite) NSArray *buttons;

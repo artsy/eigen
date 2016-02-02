@@ -1,4 +1,10 @@
-@protocol ARFairAwareObject;
+#import <UIKit/UIKit.h>
+
+#import "ARFairAwareObject.h"
+#import "ARMacros.h"
+
+@class Artist, Fair;
+@class AFHTTPRequestOperation;
 
 @protocol FairArtistNeworkModel <NSObject>
 

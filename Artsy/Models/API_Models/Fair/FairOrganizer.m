@@ -1,4 +1,4 @@
-
+#import "FairOrganizer.h"
 
 
 @implementation FairOrganizer

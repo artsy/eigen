@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 @interface AFHTTPRequestOperation (JSON)
 

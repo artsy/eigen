@@ -1,9 +1,10 @@
 #import "ARNetworkErrorManager.h"
 #import "ARCustomEigenLabels.h"
+#import "ARTopMenuViewController.h"
 
 #import <ARAnalytics/ARAnalytics.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
-
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARNetworkErrorManager ()
 @property (nonatomic, strong) UILabel *activeModalView;

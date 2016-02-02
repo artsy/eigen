@@ -1,5 +1,10 @@
 #import "ARArtworkPriceRowView.h"
 
+#import "ARFonts.h"
+
+#import <Artsy_UILabels/ARLabelSubclasses.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @interface ARArtworkPriceRowView ()
 @property (nonatomic, strong, readonly) ARSerifLabel *bidStatusLabel;

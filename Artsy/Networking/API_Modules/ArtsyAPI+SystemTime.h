@@ -1,5 +1,7 @@
 #import "ArtsyAPI.h"
 
+@class SystemTime;
+
 
 @interface ArtsyAPI (SystemTime)
 

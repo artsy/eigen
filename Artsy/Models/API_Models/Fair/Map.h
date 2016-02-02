@@ -1,5 +1,7 @@
+#import <Mantle/Mantle.h>
 #import "ARFeedHostItem.h"
 
+@class Image;
 
 @interface Map : MTLModel <MTLJSONSerializing, ARFeedHostItem>
 

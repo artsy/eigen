@@ -1,9 +1,11 @@
+#import <UIKit/UIKit.h>
+
 typedef NS_ENUM(NSInteger, ARFeaturedLinkStyle) {
     ARFeaturedLinkLayoutSingleRow,
     ARFeaturedLinkLayoutDoubleRow,
 };
 
-@class ARBrowseFeaturedLinksCollectionViewController;
+@class ARBrowseFeaturedLinksCollectionViewController, FeaturedLink;
 
 @protocol ARBrowseFeaturedLinksCollectionViewControllerDelegate
 @required

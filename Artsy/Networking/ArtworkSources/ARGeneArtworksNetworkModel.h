@@ -1,4 +1,7 @@
-@class AREmbeddedModelsViewController;
+#import <Foundation/Foundation.h>
+
+
+@class AREmbeddedModelsViewController, Gene;
 
 
 @interface ARGeneArtworksNetworkModel : NSObject

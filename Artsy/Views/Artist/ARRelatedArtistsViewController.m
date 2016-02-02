@@ -1,5 +1,12 @@
 #import "ARRelatedArtistsViewController.h"
+
+#import "Artist.h"
 #import "ARFavoriteItemViewCell.h"
+#import "ARSwitchBoard+Eigen.h"
+
+#import "UIDevice-Hardware.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
 @interface ARRelatedArtistsViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>

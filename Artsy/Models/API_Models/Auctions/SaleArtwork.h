@@ -1,10 +1,13 @@
 #import <Mantle/Mantle.h>
+
+#import "ARAppConstants.h"
 #import "Sale.h"
 #import "Bidder.h"
 #import "BidderPosition.h"
 #import "Bid.h"
 #import "ARAppConstants.h"
 
+@class Artwork;
 
 typedef NS_ENUM(NSInteger, ARReserveStatus) {
     ARReserveStatusNoReserve,

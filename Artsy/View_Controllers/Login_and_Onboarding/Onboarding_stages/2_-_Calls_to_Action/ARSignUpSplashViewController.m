@@ -1,12 +1,22 @@
 #import "ARSignUpSplashViewController.h"
+
+#import "ARAppConstants.h"
 #import "ARAppDelegate.h"
 #import "ARCrossfadingImageView.h"
+#import "ARFonts.h"
 #import "ARUserManager.h"
 #import "UIView+HitTestExpansion.h"
 #import "ArtsyAPI+Private.h"
+#import "ARDispatchManager.h"
 
+#import "UIDevice-Hardware.h"
+
+#import <Artsy_UILabels/ARLabelSubclasses.h>
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
-
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @interface ARSignUpSplashTextViewController : UIViewController
 @property (nonatomic, readwrite) NSInteger index;

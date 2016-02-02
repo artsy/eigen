@@ -1,8 +1,9 @@
-#import "AuctionLot.h"
+#import <UIKit/UIKit.h>
 
 /// A cell for showing an auction result, either from an artwork
 /// or from a auction lot.
 
+@class Artwork, AuctionLot;
 
 @interface ARAuctionArtworkTableViewCell : UITableViewCell
 

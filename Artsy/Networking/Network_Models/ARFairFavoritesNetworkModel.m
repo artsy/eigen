@@ -1,10 +1,27 @@
 #import "ARFairFavoritesNetworkModel.h"
+
+#import "Artist.h"
+#import "Artwork.h"
+#import "ArtsyAPI+Artists.h"
+#import "ArtsyAPI+Fairs.h"
+#import "Fair.h"
+#import "Follow.h"
 #import "ARNavigationButtonsViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARButtonWithImage.h"
 #import "ARShowViewController.h"
 #import "ARFairFavoritesNetworkModel+Private.h"
+#import "ARFonts.h"
 #import "ARPartnerShowFeedItem.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+#import "Profile.h"
+#import "ARSwitchBoard+Eigen.h"
+
+#import "ARMacros.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 

@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 /// This exists purely because we don't want to have to disambiguate between this tableView
 /// and the Artist and Search ones in personalize
 

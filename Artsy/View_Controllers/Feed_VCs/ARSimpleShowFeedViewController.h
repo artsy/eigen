@@ -2,7 +2,7 @@
 #import <ARGenericTableViewController/ARGenericTableViewController.h>
 #import "ARMenuAwareViewController.h"
 
-@class ARFeedLinkUnitViewController, ARHeroUnitViewController;
+@class ARFeedLinkUnitViewController, ARHeroUnitViewController, ARFeedTimeline;
 
 /// Shows a collection of shows from an ARFeedTimeline
 

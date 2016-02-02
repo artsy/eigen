@@ -1,6 +1,7 @@
 #import "ContentLink.h"
 #import "VideoContentLink.h"
 #import "PhotoContentLink.h"
+#import "ARLogger.h"
 
 
 @implementation ContentLink

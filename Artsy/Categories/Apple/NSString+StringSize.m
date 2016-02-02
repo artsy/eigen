@@ -1,4 +1,4 @@
-
+#import <UIKit/UIKit.h>
 
 
 @implementation NSString (StringSize)

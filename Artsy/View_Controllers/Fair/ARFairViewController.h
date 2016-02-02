@@ -1,6 +1,8 @@
+#import <UIKit/UIKit.h>
+
 #import "ARMenuAwareViewController.h"
 
-@class Fair;
+@class Fair, Profile;
 @class ARNavigationButtonsViewController;
 
 extern NSString *const ARFairRefreshFavoritesNotification;

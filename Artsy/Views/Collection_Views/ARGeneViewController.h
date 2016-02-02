@@ -1,3 +1,6 @@
+#import <UIKit/UIKit.h>
+
+@class Gene;
 
 @interface ARGeneViewController : UIViewController
 

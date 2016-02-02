@@ -1,5 +1,15 @@
 #import "ARFairShowMapper.h"
 
+#import "Fair.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+#import "PartnerShowFairLocation.h"
+
+#import "ARMacros.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 
 @interface ARFairShowMapper ()
 @property (readwrite, nonatomic, copy) NSSet *highlightedShows;

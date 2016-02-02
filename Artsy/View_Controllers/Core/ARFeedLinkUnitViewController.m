@@ -1,7 +1,18 @@
 #import "ARFeedLinkUnitViewController.h"
+
+#import "ArtsyAPI+OrderedSets.h"
 #import "ARNavigationButton.h"
 #import "ARAppStatus.h"
 
+#import "FeaturedLink.h"
+#import "User.h"
+#import "ARAppConstants.h"
+#import "ARSwitchBoard+Eigen.h"
+
+#import "MTLModel+JSON.h"
+#import "ARMacros.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation ARFeedLinkUnitViewController
 
