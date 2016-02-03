@@ -85,19 +85,19 @@ extension AuctionViewController {
             headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
 
-//        stickyHeader = ScrollingStickyHeaderView().then {
-//            $0.toggleAttatched(false, animated:false)
-//            $0.button.setTitle("Refine", forState: .Normal)
-//            $0.titleLabel.text = saleViewModel.displayName
-//            $0.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
-//            $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
-//        }
-//
-//        artworksViewController.stickyHeaderView = stickyHeader
-//        artworksViewController.invalidateHeaderHeight()
-//
-//        self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)
-//        self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
+        stickyHeader = ScrollingStickyHeaderView().then {
+            $0.toggleAttatched(false, animated:false)
+            $0.button.setTitle("Refine", forState: .Normal)
+            $0.titleLabel.text = saleViewModel.displayName
+            $0.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
+            $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
+        }
+
+        artworksViewController.stickyHeaderView = stickyHeader
+        artworksViewController.invalidateHeaderHeight()
+
+        self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)
+        self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
 
         self.ar_removeIndeterminateLoadingIndicatorAnimated(true) // TODO: Animated?
     }
@@ -132,7 +132,6 @@ extension TitleCallbacks: AuctionTitleViewDelegate {
     }
 }
 
-// TODO: Alias these extensions
 private typealias RefineSettings = AuctionViewController
 extension RefineSettings: AuctionRefineViewControllerDelegate {
     func userDidCancel(controller: AuctionRefineViewController) {
