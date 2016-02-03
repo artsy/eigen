@@ -9,6 +9,7 @@ upcoming:
     - Registration status on auction page - ash
     - Removes rotation support on refine auction listings view for iPhone - ash
     - Remove prefix header from app target. - alloy
+    - Additional work on the auction title view - ash
 
   notes:
     - Remove x-callback support now that it's part of the OS - orta
