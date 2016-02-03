@@ -253,6 +253,8 @@
 		5E17B1991C5965CC00CE6E98 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E17B1971C5965CC00CE6E98 /* Thumb@2x.png */; };
 		5E20BB651C62BF8300C6D781 /* AuctionColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20BB641C62BF8300C6D781 /* AuctionColors.swift */; };
 		5E20BB671C62C00D00C6D781 /* AuctionCircularButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20BB661C62C00D00C6D781 /* AuctionCircularButtons.swift */; };
+		5E20BB6A1C62C81600C6D781 /* CircularInfoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */; };
+		5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB691C62C81600C6D781 /* CircularInfoButton.png */; };
 		5E284609194A2E58007274AB /* ARFairGuideContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */; };
 		5E47F34E1C3ECAA600EC0751 /* AuctionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */; };
 		5E47F3541C44358600EC0751 /* AuctionBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3531C44358600EC0751 /* AuctionBannerView.swift */; };
@@ -1084,6 +1086,8 @@
 		5E17B1971C5965CC00CE6E98 /* Thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Thumb@2x.png"; sourceTree = "<group>"; };
 		5E20BB641C62BF8300C6D781 /* AuctionColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionColors.swift; sourceTree = "<group>"; };
 		5E20BB661C62C00D00C6D781 /* AuctionCircularButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionCircularButtons.swift; sourceTree = "<group>"; };
+		5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CircularInfoButton@2x.png"; sourceTree = "<group>"; };
+		5E20BB691C62C81600C6D781 /* CircularInfoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CircularInfoButton.png; sourceTree = "<group>"; };
 		5E284607194A2E58007274AB /* ARFairGuideContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairGuideContainerViewController.h; sourceTree = "<group>"; };
 		5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewController.m; sourceTree = "<group>"; };
 		5E47F34C1C3ECAA500EC0751 /* Artsy-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Artsy-Bridging-Header.h"; path = "../Resources/Artsy-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -3422,6 +3426,8 @@
 				E65BB5221A408A29004C4DB4 /* TextfieldClearButton.png */,
 				5E6BA6E71C56B5D700B942C1 /* CircularCancelButton@2x.png */,
 				5E6BA6E81C56B5D700B942C1 /* CircularCancelButton.png */,
+				5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */,
+				5E20BB691C62C81600C6D781 /* CircularInfoButton.png */,
 				5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */,
 				5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */,
 				5E17B1961C5965CC00CE6E98 /* Thumb.png */,
@@ -4424,6 +4430,7 @@
 				608B706317D4A1C80088A56C /* ActionButton@2x.png in Resources */,
 				5E17B1951C59645E00CE6E98 /* Track@2x.png in Resources */,
 				60215FD817CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib in Resources */,
+				5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */,
 				5E6BA6EA1C56B5D700B942C1 /* CircularCancelButton.png in Resources */,
 				49BA7E0E1655ABE600C06572 /* InfoPlist.strings in Resources */,
 				3C4AE99419094F96009C0E8B /* ViewInRoom_Bench@2x.png in Resources */,
@@ -4461,6 +4468,7 @@
 				51DA12251B596035001B6F2A /* RefreshIcon@2x.png in Resources */,
 				608B706E17D4A1C80088A56C /* Artwork_Icon_VIR@2x.png in Resources */,
 				E6FFEAB619C7925600A0D7DE /* splash_1@2x~iphone.jpg in Resources */,
+				5E20BB6A1C62C81600C6D781 /* CircularInfoButton@2x.png in Resources */,
 				605002E917D9F5DC00C090B8 /* SmallMoreVerticalArrow.png in Resources */,
 				605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */,
 				E6CD164A18ABE291001254B5 /* Image_Shadow_Overlay@2x.png in Resources */,

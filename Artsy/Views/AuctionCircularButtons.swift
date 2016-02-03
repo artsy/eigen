@@ -1,5 +1,6 @@
 import Foundation
 import Artsy_UIButtons
+import FLKAutoLayout
 
 @objc enum CircularButtonType: NSInteger {
     case Cancel
@@ -23,7 +24,7 @@ extension UIButton {
         let button = UIButton(type: .Custom)
         button.setImage(type.image, forState: .Normal)
         button.imageView?.contentMode = .ScaleAspectFit
-        button.ar_extendHitTestSizeByWidth(4, andHeight: 4) // To expand to required 44pt hit area (images are 40x40)
+        button.ar_extendHitTestSizeByWidth(4, andHeight: 4) // To expand to required 44pt hit area (images are 40x40).
         return button
     }
 }
