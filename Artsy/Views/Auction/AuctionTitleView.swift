@@ -3,7 +3,6 @@ import Artsy_UIButtons
 import Artsy_UILabels
 import Artsy_UIFonts
 import FLKAutoLayout
-import EDColor
 
 protocol AuctionTitleViewDelegate: class {
     func userDidPressInfo(titleView: AuctionTitleView)
@@ -127,7 +126,7 @@ private extension AuctionTitleView {
                 $0.textAlignment = regularSize ? .Center : .Left
 
                 // TODO: Abstract colour out to constant.
-                $0.textColor = UIColor(hex: 0x16d047)
+                $0.textColor = .auctionGreen()
             }
             container.addSubview(registeredToBidLabel)
 
