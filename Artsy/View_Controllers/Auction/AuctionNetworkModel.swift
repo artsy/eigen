@@ -31,7 +31,7 @@ class AuctionNetworkModel {
             }
             .next { saleViewModel in
                 // Store the SaleViewModel
-                self.saleViewModel = saleViewModel
+                self.saleViewModel = saleViewModel 
             }
 
         return fetchRegistrationStatus.flatMap { (_, callback) in // Note we discard the status, we don't care.

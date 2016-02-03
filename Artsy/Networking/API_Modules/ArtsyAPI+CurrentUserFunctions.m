@@ -27,12 +27,7 @@
 
     NSURLRequest *request = [ARRouter biddersRequestForSale:saleID];
     [self getRequest:request parseIntoAnArrayOfClass:[Bidder class] success:^(id bidders) {
-        ArtsyAPISaleRegistrationStatus status = ArtsyAPISaleRegistrationStatusNotRegistered;
-
-        if ([bidders count] > 0) {
-            status = ArtsyAPISaleRegistrationStatusRegistered;
-        }
-
+        ArtsyAPISaleRegistrationStatus status = ([bidders count] > 0) ? ArtsyAPISaleRegistrationStatusRegistered : ArtsyAPISaleRegistrationStatusNotRegistered;
         success(status);
     } failure:failure];
 }
