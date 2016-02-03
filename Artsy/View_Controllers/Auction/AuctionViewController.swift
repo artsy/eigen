@@ -85,19 +85,19 @@ extension AuctionViewController {
             headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
 
-        stickyHeader = ScrollingStickyHeaderView().then {
-            $0.toggleAttatched(false, animated:false)
-            $0.button.setTitle("Refine", forState: .Normal)
-            $0.titleLabel.text = saleViewModel.displayName
-            $0.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
-            $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
-        }
-
-        artworksViewController.stickyHeaderView = stickyHeader
-        artworksViewController.invalidateHeaderHeight()
-
-        self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)
-        self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
+//        stickyHeader = ScrollingStickyHeaderView().then {
+//            $0.toggleAttatched(false, animated:false)
+//            $0.button.setTitle("Refine", forState: .Normal)
+//            $0.titleLabel.text = saleViewModel.displayName
+//            $0.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
+//            $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
+//        }
+//
+//        artworksViewController.stickyHeaderView = stickyHeader
+//        artworksViewController.invalidateHeaderHeight()
+//
+//        self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)
+//        self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
 
         self.ar_removeIndeterminateLoadingIndicatorAnimated(true) // TODO: Animated?
     }
@@ -121,12 +121,20 @@ extension AuctionViewController {
     }
 }
 
-extension AuctionViewController: AuctionTitleViewDelegate {
+private typealias TitleCallbacks = AuctionViewController
+extension TitleCallbacks: AuctionTitleViewDelegate {
+    func userDidPressInfo(titleView: AuctionTitleView) {
+        // TODO:
+    }
 
+    func userDidPressRegister(titleView: AuctionTitleView) {
+        // TODO: We've got to make sure the user is logged in before booting them out to martsy
+    }
 }
 
 // TODO: Alias these extensions
-extension AuctionViewController: AuctionRefineViewControllerDelegate {
+private typealias RefineSettings = AuctionViewController
+extension RefineSettings: AuctionRefineViewControllerDelegate {
     func userDidCancel(controller: AuctionRefineViewController) {
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -137,7 +145,8 @@ extension AuctionViewController: AuctionRefineViewControllerDelegate {
     }
 }
 
-extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
+private typealias EmbeddedModelCallbacks = AuctionViewController
+extension EmbeddedModelCallbacks: AREmbeddedModelsViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
         // TODO
     }
