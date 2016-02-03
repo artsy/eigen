@@ -20,7 +20,7 @@
 
 + (void)getCurrentUserRegistrationStatusForSale:(NSString *)saleID success:(void (^)(ArtsyAPISaleRegistrationStatus status))success failure:(void (^)(NSError *error))failure
 {
-    if ([[ARUserManager sharedManager] currentUser]) {
+    if ([[ARUserManager sharedManager] currentUser] == nil) {
         success(ArtsyAPISaleRegistrationStatusNotLoggedIn);
         return;
     }
