@@ -94,6 +94,7 @@ private extension AuctionTitleView {
             titleLabel.alignCenterXWithView(container, predicate: "0")
         } else {
             // TODO: iPhone
+            titleLabel.alignLeadingEdgeWithView(container, predicate: "0")
         }
 
         // Info button always on left edge
@@ -125,7 +126,6 @@ private extension AuctionTitleView {
                 $0.font = UIFont.serifFontWithSize(16)
                 $0.textAlignment = regularSize ? .Center : .Left
 
-                // TODO: Abstract colour out to constant.
                 $0.textColor = .auctionGreen()
             }
             container.addSubview(registeredToBidLabel)
@@ -137,11 +137,7 @@ private extension AuctionTitleView {
     }
 
     func infoButton() -> UIButton {
-        // TODO: this is copied from the Refine VC, find a better abstraction
-        let cancelButton = UIButton(type: .Custom)
-        cancelButton.setImage(UIImage(named: "AuctionRefineCancelButton"), forState: .Normal)
-        cancelButton.imageView?.contentMode = .ScaleAspectFit
-        cancelButton.ar_extendHitTestSizeByWidth(4, andHeight: 4) // To expand to required 44pt hit area
+        let cancelButton = UIButton.circularButton(.Info)
         cancelButton.addTarget(self, action: "userDidPressInfo", forControlEvents: .TouchUpInside)
         return cancelButton
     }

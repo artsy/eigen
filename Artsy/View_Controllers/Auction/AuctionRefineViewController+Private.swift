@@ -68,10 +68,7 @@ private typealias UISetup = AuctionRefineViewController
 private extension UISetup {
 
     func cancelButton() -> UIButton {
-        let cancelButton = UIButton(type: .Custom)
-        cancelButton.setImage(UIImage(named: "AuctionRefineCancelButton"), forState: .Normal)
-        cancelButton.imageView?.contentMode = .ScaleAspectFit
-        cancelButton.ar_extendHitTestSizeByWidth(4, andHeight: 4) // To expand to required 44pt hit area
+        let cancelButton = UIButton.circularButton(.Cancel)
         cancelButton.addTarget(self, action: "userDidCancel", forControlEvents: .TouchUpInside)
         return cancelButton
     }
