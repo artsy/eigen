@@ -16,7 +16,7 @@
 #import "ARDispatchManager.h"
 
 
-// Models. Importing Models.h is a no-go, since each header implicitly relies on a bunch of stuff imported from the PCH.
+// Models.
 #import "Sale.h"
 
 #import "Artwork.h"
@@ -25,6 +25,17 @@
 
 #import "UIViewController+SimpleChildren.h"
 #import "UIViewController+ARUserActivity.h"
+
+
+// For building out Auction Information VC
+
+#import "ARNavigationButtonsViewController.h"
+#import "ARNavigationButton.h"
+
+#import "ARTextView.h"
+
+#import "ARThemedFactory.h"
+#import "ARFonts.h"
 
 // Temporary for building out auctionVC
 #import "ARArtistNetworkModel.h"
