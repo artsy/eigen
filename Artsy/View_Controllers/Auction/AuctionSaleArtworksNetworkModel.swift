@@ -17,6 +17,7 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
         fetchPage(1, forSaleID: saleID, alreadyFetched: []) { result in
             switch result {
             case .Success(let saleArtworks):
+                self.saleArtworks = saleArtworks
                 callback(.Success(saleArtworks))
             case .Error(let error):
                 callback(.Error(error))
@@ -27,7 +28,7 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
 
 
 /// Number of sale artworks to fetch at once.
-private let PageSize = 10
+private let PageSize = 100
 
 /// Recursively calls itself with page+1 until the count of the returned array is < pageSize.
 private func fetchPage(page: Int, forSaleID saleID: String, alreadyFetched: [SaleArtwork], callback: Result<[SaleArtwork]> -> Void) {
