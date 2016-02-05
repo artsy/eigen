@@ -78,8 +78,7 @@ extension AuctionViewController {
         self.saleViewModel = saleViewModel
 
         [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
-          (AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self), .Title),
-          (ARWhitespaceGobbler(), .WhitespaceGobbler)
+          (AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self), .Title)
         ].forEach { (view, tag) in
             view.tag = tag.rawValue
             headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")

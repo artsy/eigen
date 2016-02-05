@@ -78,7 +78,7 @@ private extension AuctionTitleView {
         // Stack them on top of eachother and constrain top/bottom edges
         titleView.alignTopEdgeWithView(self, predicate: "\(topSpacing)")
         bottomView.alignAttribute(.Top, toAttribute: .Bottom, ofView: titleView, predicate: "20")
-        bottomView.alignAttribute(.Bottom, toAttribute: .Bottom, ofView: self, predicate: "10")
+        bottomView.alignAttribute(.Bottom, toAttribute: .Bottom, ofView: self, predicate: "-10")
 
         // Make them each full-width
         [titleView, bottomView].forEach {
