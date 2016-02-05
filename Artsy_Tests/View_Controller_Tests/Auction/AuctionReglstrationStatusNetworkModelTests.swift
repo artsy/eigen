@@ -69,5 +69,22 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
 
             expect(registrationStatus) == ArtsyAPISaleRegistrationStatusNotLoggedIn
         }
+
+
+
+        it("caches the fetched result") {
+            ARUserManager.stubAndLoginWithUsername()
+            OHHTTPStubs.stubJSONResponseAtPath("/api/v1/me/bidders", withResponse: bidderJSON)
+
+            let subject = AuctionRegistrationStatusNetworkModel()
+
+            waitUntil { done in
+                subject.fetchRegistrationStatus("whatever", callback: { result in
+                    done()
+                })
+            }
+
+            expect(subject.registrationStatus) == ArtsyAPISaleRegistrationStatusRegistered
+        }
     }
 }

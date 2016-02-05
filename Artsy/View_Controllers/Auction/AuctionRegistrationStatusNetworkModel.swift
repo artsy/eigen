@@ -16,6 +16,7 @@ class AuctionRegistrationStatusNetworkModel: AuctionRegistrationStatusNetworkMod
         // Based on the saleID signal, fetch the sale registration status.
         ArtsyAPI.getCurrentUserRegistrationStatusForSale(saleID,
             success: { registrationStatus in
+                self.registrationStatus = registrationStatus
                 callback(.Success(registrationStatus))
             }, failure: passOnFailure(callback))
     }
