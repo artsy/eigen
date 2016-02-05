@@ -1,5 +1,7 @@
 #import "ARSerifNavigationViewController.h"
 #import "ARFonts.h"
+#import "Artsy-Swift.h"
+#import "UIDevice-Hardware.h"
 
 
 @interface ARSerifNavigationViewController ()
@@ -34,6 +36,21 @@
     UIImage *backImage = [UIImage imageNamed:@""];
     [appearance setBackButtonBackgroundImage:backImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [appearance setBackgroundImage:backImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+}
+
+- (BOOL)definesPresentationContext
+{
+    return YES;
+}
+
+- (UIModalPresentationStyle)modalPresentationStyle
+{
+    return [UIDevice isPad] ? UIModalPresentationFormSheet : UIModalPresentationFullScreen;
+}
+
+- (void)didMoveToParentViewController:(nullable UIViewController *)parent
+{
+    [super didMoveToParentViewController:parent];
 }
 
 @end

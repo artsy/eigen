@@ -522,6 +522,7 @@
 		60D90A0517C2109A0073D5B9 /* FeaturedLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D90A0417C2109A0073D5B9 /* FeaturedLink.m */; };
 		60D90A0817C2182F0073D5B9 /* ARExternalWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D90A0717C2182F0073D5B9 /* ARExternalWebBrowserViewController.m */; };
 		60D90A0B17C218930073D5B9 /* ARInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */; };
+		60DCDAD71C6533DF00BB61D7 /* ARSerifNavigationViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DCDAD51C6533A900BB61D7 /* ARSerifNavigationViewControllerSpec.m */; };
 		60DE2DE11677B30700621540 /* ARLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F711657D2DF0046956C /* ARLoginViewController.m */; };
 		60E6447617BE424E004486B3 /* ARSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E6447517BE424E004486B3 /* ARSwitchView.m */; };
 		60E719FE1B4C6032008948FA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60E719FD1B4C6032008948FA /* Launch Screen.xib */; };
@@ -1543,6 +1544,7 @@
 		60D90A0717C2182F0073D5B9 /* ARExternalWebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExternalWebBrowserViewController.m; sourceTree = "<group>"; };
 		60D90A0917C218930073D5B9 /* ARInternalMobileWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalMobileWebViewController.h; sourceTree = "<group>"; };
 		60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalMobileWebViewController.m; sourceTree = "<group>"; };
+		60DCDAD51C6533A900BB61D7 /* ARSerifNavigationViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSerifNavigationViewControllerSpec.m; path = Components/ARSerifNavigationViewControllerSpec.m; sourceTree = "<group>"; };
 		60DE2DDE1677B26A00621540 /* ARLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLoginViewController.h; sourceTree = "<group>"; };
 		60E6446F17BE219E004486B3 /* HACKS.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = HACKS.md; path = ../HACKS.md; sourceTree = "<group>"; };
 		60E6447417BE424E004486B3 /* ARSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSwitchView.h; sourceTree = "<group>"; };
@@ -2334,6 +2336,7 @@
 		3CB97D8D18870979008C44FE /* View Controller Tests */ = {
 			isa = PBXGroup;
 			children = (
+				60DCDAD41C65339600BB61D7 /* Components */,
 				5ED05A791C57ED110042785A /* Auctions */,
 				60026AF61BDE97110040257C /* Auction Results */,
 				E61E773A19A7E8DB00C55E14 /* Gene */,
@@ -3983,6 +3986,14 @@
 			path = Demo;
 			sourceTree = "<group>";
 		};
+		60DCDAD41C65339600BB61D7 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				60DCDAD51C6533A900BB61D7 /* ARSerifNavigationViewControllerSpec.m */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
 		60E5D8881694ED0B00BDC57E /* SwitchViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -5252,6 +5263,7 @@
 				608EE3DB19954CEB001F4FE0 /* UIViewController+Testing.m in Sources */,
 				5122D69A1A89E5F800DA2704 /* ARFairMapAnnotationViewTests.m in Sources */,
 				342F9E0892E99A2F66657964 /* Artwork+Extensions.m in Sources */,
+				60DCDAD71C6533DF00BB61D7 /* ARSerifNavigationViewControllerSpec.m in Sources */,
 				342F9715E899AC7D24E70734 /* ORStackViewArtsyCategoriesTests.m in Sources */,
 				342F925E34CAC3E5DB8E5F52 /* ARFairMapViewControllerTests.m in Sources */,
 				342F99FA4B25031ABC0613DA /* ARTiledImageDataSourceWithImageTests.m in Sources */,
