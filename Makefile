@@ -3,7 +3,7 @@ SCHEME = Artsy
 CONFIGURATION = Beta
 APP_PLIST = Artsy/App_Resources/Artsy-Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
-DEVICE_HOST = platform='iOS Simulator',OS='9.0',name='iPhone 6'
+DEVICE_HOST = platform='iOS Simulator',OS='9.2',name='iPhone 6'
 
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
 GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
@@ -26,7 +26,6 @@ all: ci
 
 appstore: update_bundle_version set_git_properties change_version_to_date ship_appstore
 next: update_bundle_version set_git_properties change_version_to_date
-beta: ipa distribute
 
 ### General setup
 
@@ -81,7 +80,7 @@ ci: CONFIGURATION = Debug
 ci: build
 
 deploy_if_beta_branch:
-	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make certs; make ipa; make distribute; fi
+	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi
 
 deploy:
 	git push upstream "$(LOCAL_BRANCH):beta"
