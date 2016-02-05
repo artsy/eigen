@@ -507,6 +507,7 @@
 		60BB9FE916695A8F001FA20A /* PhotoContentLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 49433300166920B3005AB483 /* PhotoContentLink.m */; };
 		60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */; };
 		60C1C3101C5F497700EC98EE /* ScrollingStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C30F1C5F497700EC98EE /* ScrollingStickyHeaderView.swift */; };
+		60C1C3181C5FA34400EC98EE /* ARSerifNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C3171C5FA34400EC98EE /* ARSerifNavigationViewController.m */; };
 		60C26DEA1BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */; };
 		60C26DED1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C26DEC1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m */; };
 		60C5ADB91C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C5ADB81C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift */; };
@@ -1514,6 +1515,8 @@
 		60BC92F11BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARApplicationShortcutItemDelegate.h; sourceTree = "<group>"; };
 		60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARApplicationShortcutItemDelegate.m; sourceTree = "<group>"; };
 		60C1C30F1C5F497700EC98EE /* ScrollingStickyHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingStickyHeaderView.swift; sourceTree = "<group>"; };
+		60C1C3161C5FA34400EC98EE /* ARSerifNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSerifNavigationViewController.h; sourceTree = "<group>"; };
+		60C1C3171C5FA34400EC98EE /* ARSerifNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSerifNavigationViewController.m; sourceTree = "<group>"; };
 		60C26DE81BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmbeddedModelsPreviewDelegate.h; sourceTree = "<group>"; };
 		60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelsPreviewDelegate.m; sourceTree = "<group>"; };
 		60C26DEB1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmbeddedModelPreviewViewController.h; sourceTree = "<group>"; };
@@ -2726,6 +2729,7 @@
 			isa = PBXGroup;
 			children = (
 				5EA7BC2A1C60024D009C52C9 /* Networking */,
+				60C1C3111C5F9C6500EC98EE /* Auction Presentation */,
 				5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */,
 				5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */,
 				5E088DAD1C58072B00C448D7 /* AuctionRefineViewController+Private.swift */,
@@ -3419,6 +3423,8 @@
 		608B703017D4A10F0088A56C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				60C1C31A1C5FB00A00EC98EE /* Auctions */,
+				60C1C3191C5FAF6B00EC98EE /* Modal */,
 				60E719FF1B4C60A0008948FA /* Launch */,
 				608B703117D4A1C70088A56C /* ActionButton@2x.png */,
 				518B421D1B57CF7100210A02 /* AttentionIcon@2x.png */,
@@ -3921,6 +3927,33 @@
 			);
 			name = "Web Browsing";
 			path = Web_Browsing;
+			sourceTree = "<group>";
+		};
+		60C1C3111C5F9C6500EC98EE /* Auction Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				60C1C3161C5FA34400EC98EE /* ARSerifNavigationViewController.h */,
+				60C1C3171C5FA34400EC98EE /* ARSerifNavigationViewController.m */,
+			);
+			name = "Auction Presentation";
+			sourceTree = "<group>";
+		};
+		60C1C3191C5FAF6B00EC98EE /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Modal;
+			sourceTree = "<group>";
+		};
+		60C1C31A1C5FB00A00EC98EE /* Auctions */ = {
+			isa = PBXGroup;
+			children = (
+				5E6BA6E71C56B5D700B942C1 /* AuctionRefineCancelButton@2x.png */,
+				5E6BA6E81C56B5D700B942C1 /* AuctionRefineCancelButton.png */,
+				5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */,
+				5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */,
+			);
+			name = Auctions;
 			sourceTree = "<group>";
 		};
 		60D83DEF189EE9BF001672E9 /* Guides */ = {
@@ -4980,6 +5013,7 @@
 				342F971CCE09F6261F8460AF /* ARFairViewController.m in Sources */,
 				342F9CDD0CDC753B394F3CFC /* Fair.m in Sources */,
 				342F9D3F000632CC30AC5260 /* ARNavigationButtonsViewController.m in Sources */,
+				60C1C3181C5FA34400EC98EE /* ARSerifNavigationViewController.m in Sources */,
 				342F9D9296B47F66184FA760 /* NSDate+DateRange.m in Sources */,
 				3C33298D18AD3324006D28C0 /* ARFairSearchViewController.m in Sources */,
 				3C9F215F18B25D0D00D8898B /* ARSearchViewController.m in Sources */,
