@@ -66,4 +66,12 @@ class AuctionRefineViewController: UIViewController {
             UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: animated ? .Slide : .None)
         }
     }
+
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return traitDependentSupportedInterfaceOrientations
+    }
+
+    override func shouldAutorotate() -> Bool {
+        return traitDependentAutorotateSupport
+    }
 }
