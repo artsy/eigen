@@ -10,6 +10,11 @@ sudo gem install fastlane
 fastlane ship_beta
 ```
 
+### setup_for_app_store
+```
+fastlane setup_for_app_store
+```
+
 
 ----
 
