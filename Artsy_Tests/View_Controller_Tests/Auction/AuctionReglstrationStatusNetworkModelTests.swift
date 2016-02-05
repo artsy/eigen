@@ -7,7 +7,7 @@ import OHHTTPStubs
 @testable
 import Artsy
 
-class AuctionReglstrationStatusNetworkModelSpec: QuickSpec {
+class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
     override func spec() {
         let bidderJSON: NSArray = [["id": "bidder", "sale": ["id": "sale"]]]
 

@@ -15,6 +15,7 @@ class AuctionSaleNetworkModel: AuctionSaleNetworkModelType {
         // Based on the saleID signal, fetch the sale
         ArtsyAPI.getSaleWithID(saleID,
             success: { sale in
+                self.sale = sale
                 callback(.Success(sale))
             },
             failure: passOnFailure(callback)
