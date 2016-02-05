@@ -1,11 +1,15 @@
 import Foundation
 import Interstellar
 
+protocol AuctionRegistrationStatusNetworkModelType {
+    func fetchRegistrationStatus(saleID: String, callback: Result<ArtsyAPISaleRegistrationStatus> -> Void)
+    var registrationStatus: ArtsyAPISaleRegistrationStatus? { get }
+}
+
 /// Network model responsible for fetching the registration status from the API.
-class AuctionRegistrationStatusNetworkModel {
+class AuctionRegistrationStatusNetworkModel: AuctionRegistrationStatusNetworkModelType {
 
-    var registrationStatus: ArtsyAPISaleRegistrationStatus?
-
+    private(set) var registrationStatus: ArtsyAPISaleRegistrationStatus?
 
     func fetchRegistrationStatus(saleID: String, callback: Result<ArtsyAPISaleRegistrationStatus> -> Void) {
 

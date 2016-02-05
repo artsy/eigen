@@ -9,9 +9,9 @@ class AuctionNetworkModel {
     var saleViewModel: SaleViewModel?
 
     // Each one of these network models performs their request to fetch exactly one thing, and then store it locally.
-    private let saleNetworkModel = AuctionSaleNetworkModel()
-    private let saleArtworksNetworkModel = AuctionSaleArtworksNetworkModel()
-    private let registrationStatusNetworkModel = AuctionRegistrationStatusNetworkModel()
+    lazy var saleNetworkModel: AuctionSaleNetworkModelType = AuctionSaleNetworkModel()
+    lazy var saleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType = AuctionSaleArtworksNetworkModel()
+    lazy var registrationStatusNetworkModel: AuctionRegistrationStatusNetworkModelType = AuctionRegistrationStatusNetworkModel()
 
     init(saleID: String) {
         self.saleID = saleID

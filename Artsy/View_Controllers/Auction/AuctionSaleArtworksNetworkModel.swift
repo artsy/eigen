@@ -1,8 +1,12 @@
 import Foundation
 import Interstellar
 
+protocol AuctionSaleArtworksNetworkModelType {
+    func fetchSaleArtworks(saleID: String, callback: Result<[SaleArtwork]> -> Void)
+}
+
 /// Network model responsible for fetching the SaleArtworks from the API.
-class AuctionSaleArtworksNetworkModel {
+class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
 
     var saleArtworks: [SaleArtwork]?
 
