@@ -5,6 +5,7 @@
 #import "ARZoomArtworkImageViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARArtworkViewController.h"
+#import "ARDispatchManager.h"
 
 
 @implementation ARZoomImageTransition

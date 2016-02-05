@@ -1,5 +1,9 @@
 #import "ARArtistFavoritesNetworkModel.h"
 
+#import "ArtsyAPI+ListCollection.h"
+#import "ArtsyAPI+OrderedSets.h"
+#import "OrderedSet.h"
+#import "Artist.h"
 
 @implementation ARArtistFavoritesNetworkModel
 

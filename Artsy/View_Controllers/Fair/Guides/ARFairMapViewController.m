@@ -1,4 +1,14 @@
 #import "ARFairMapViewController.h"
+
+#import "Artist.h"
+#import "Artwork.h"
+#import "Fair.h"
+#import "Gene.h"
+#import "Image.h"
+#import "PartnerShow.h"
+#import "Profile.h"
+#import "ArtsyAPI+Artists.h"
+#import "ArtsyAPI+Shows.h"
 #import "ARTiledImageDataSourceWithImage.h"
 #import "ARFairMapView.h"
 #import "ARFairMapZoomManager.h"
@@ -10,7 +20,18 @@
 #import "ARArtworkSetViewController.h"
 #import "ARGeneViewController.h"
 #import "ARSearchFieldButton.h"
+#import "SiteFeature.h"
+#import "ARCustomEigenLabels.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARTopMenuViewController.h"
+#import "ARMacros.h"
+
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <EDColor/EDColor.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 
 @interface ARFairMapViewController () <NAMapViewDelegate, ARFairSearchViewControllerDelegate, ARSearchFieldButtonDelegate>

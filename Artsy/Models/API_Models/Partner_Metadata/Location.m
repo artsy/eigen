@@ -1,5 +1,8 @@
 #import "Location.h"
 
+#import "ARMacros.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation Location
 

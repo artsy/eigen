@@ -1,5 +1,11 @@
 #import "ARArtworkWithMetadataThumbnailCell.h"
+
+#import "Artwork.h"
 #import "ARArtworkThumbnailMetadataView.h"
+
+#import "UIDevice-Hardware.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 static const CGFloat ARArtworkCellMetadataMargin = 8;
 

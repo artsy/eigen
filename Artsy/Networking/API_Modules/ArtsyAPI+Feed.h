@@ -1,6 +1,6 @@
 #import "ArtsyAPI.h"
-#import "Models.h"
 
+@class Fair, FairOrganizer, Profile;
 
 @interface ArtsyAPI (Feed)
 

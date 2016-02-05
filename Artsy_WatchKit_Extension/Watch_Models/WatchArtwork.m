@@ -1,8 +1,7 @@
 #import "WatchArtwork.h"
 #import <UIKit/UIKit.h>
-#if __has_include(<Artsy+UIFonts/UIFont+ArtsyFonts.h>)
-#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
-#endif
+
+#import "ARFonts.h"
 
 
 @implementation WatchArtwork

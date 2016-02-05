@@ -1,5 +1,7 @@
 // Note: these should be moved into NSFileManager categories
 
+#import <Foundation/Foundation.h>
+
 
 @interface ARFileUtils : NSObject
 

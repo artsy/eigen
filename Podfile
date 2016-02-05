@@ -25,7 +25,8 @@ plugin 'cocoapods-keys', {
         "ArtsyTwitterStagingSecret",
         "SegmentProductionWriteKey",
         "SegmentDevWriteKey",
-        "AdjustProductionAppToken"
+        "AdjustProductionAppToken",
+        "ArtsyEchoProductionToken",
     ]
 }
 
@@ -53,13 +54,15 @@ target 'Artsy' do
   pod 'NPKeyboardLayoutGuide'
   pod 'ReactiveCocoa'
   pod 'UICKeyChainStore'
+  pod 'MARKRangeSlider'
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
-  pod 'ARCollectionViewMasonryLayout'
+  pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout', :branch => "modern"
   pod 'ORStackView', :git => 'https://github.com/1aurabrown/ORStackView.git'
   pod 'UIView+BooleanAnimations'
   pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit'
+  pod 'Aerodramus', :git => 'https://github.com/artsy/Aerodramus.git', :branch => 'tests'
 
   # Deprecated:
   # UIAlertView is deprecated for iOS8 APIs
@@ -100,6 +103,7 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then'
+  pod 'Interstellar/Core'
 
 end
 
@@ -132,5 +136,25 @@ post_install do |installer|
   version = `#{plist_buddy} -c "Print CFBundleShortVersionString" #{app_plist}`.strip
   installer.pods_project.targets.each do |target|
     `#{plist_buddy} -c "Set CFBundleShortVersionString #{version}" "Pods/Target Support Files/#{target}/Info.plist" > /dev/null 2>&1`
+  end
+
+  # TODO:
+  # * ORStackView: Move Laura's changes into master and update
+  # * Send PRs for the rest
+  %w(
+    Pods/ORStackView/Classes/ios/ORStackView.h
+    Pods/ARAnalytics/ARAnalytics.h
+    Pods/ARTiledImageView/Classes/ARTiledImageViewDataSource.h
+    Pods/DRKonamiCode/Sources/DRKonamiGestureRecognizer.h
+    Pods/NAMapKit/NAMapKit/*.h
+  ).flat_map { |x| Dir.glob(x) }.each do |header|
+    addition = "#import <UIKit/UIKit.h>\n"
+    contents = File.read(header)
+    unless contents.include?(addition)
+      File.open(header, "w") do |file|
+        file.puts addition
+        file.puts contents
+      end
+    end
   end
 end

@@ -1,3 +1,5 @@
+#import "AROptions.h"
+
 NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent";
 NSString *const AROptionsUseVCR = @"Use offline recording";
 NSString *const AROptionsSettingsMenu = @"Enable user settings";

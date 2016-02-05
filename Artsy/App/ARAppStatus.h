@@ -11,4 +11,6 @@
 /// Is the app a demo release.
 + (BOOL)isDemo;
 
+/// Is the app running tests?
++ (BOOL)isRunningTests;
 @end

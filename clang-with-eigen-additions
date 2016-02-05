@@ -1,0 +1,18 @@
+#!/bin/sh
+
+CLANG="${DT_TOOLCHAIN_DIR}/usr/bin/clang"
+
+if type -p clang-compilation-database-tool > /dev/null 2>&1; then
+  clang-compilation-database-tool dump ${CLANG} $@
+fi
+
+if type -p ccache > /dev/null 2>&1; then
+  export CCACHE_MAXSIZE=10G
+  export CCACHE_CPP2=true
+  export CCACHE_HARDLINK=true
+  export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime,file_stat_matches
+  exec ccache ${CLANG} "$@"
+else
+  exec ${CLANG} $@
+fi
+

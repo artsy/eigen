@@ -1,6 +1,6 @@
 #import "ARFeedItem.h"
-#import "Gene.h"
 
+@class Artist, Gene;
 
 @interface ARPublishedArtworkSetFeedItem : ARFeedItem
 

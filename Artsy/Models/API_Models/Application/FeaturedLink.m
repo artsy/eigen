@@ -1,5 +1,8 @@
+#import "FeaturedLink.h"
 
+#import "ARMacros.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface FeaturedLink ()
 @property (nonatomic, copy, readonly) NSString *urlFormatString;

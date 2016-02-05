@@ -1,4 +1,13 @@
+#import "Profile.h"
 
+#import "ArtsyAPI+Profiles.h"
+#import "Fair.h"
+#import "FairOrganizer.h"
+#import "Partner.h"
+#import "ProfileOwner.h"
+#import "User.h"
+
+#import "MTLModel+JSON.h"
 
 
 @interface Profile () {

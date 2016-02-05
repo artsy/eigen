@@ -1,10 +1,22 @@
 #import "ARArtworkRelatedArtworksView.h"
+
+#import "Artist.h"
+#import "Artwork.h"
 #import "AREmbeddedModelsViewController.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARArtworkSetViewController.h"
+#import "PartnerShow.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARLogger.h"
+
+#import "UIDevice-Hardware.h"
+
+#import <KSDeferred/KSPromise.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+#import <AFNetworking/AFNetworking.h>
 
 
-@interface ARArtworkRelatedArtworksView () <AREmbeddedModelsDelegate>
+@interface ARArtworkRelatedArtworksView () <AREmbeddedModelsViewControllerDelegate>
 @property (nonatomic, assign) BOOL hasRequested;
 @property (nonatomic, assign) BOOL hasArtworks;
 @property (nonatomic, strong) Artwork *artwork;
@@ -79,7 +91,7 @@
     self.artwork = artwork;
     self.hasRequested = YES;
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     // TODO: refactor these callbacks to return so we can use
     // results from the values array in a `when`
@@ -133,7 +145,7 @@
 
 - (void)addSectionsForFair:(Fair *)fair;
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self addRelatedArtworkRequest:[self.artwork getFeaturedShowsAtFair:fair success:^(NSArray *shows) {
         __strong typeof (wself) sself = wself;
         for (PartnerShow *show in shows) {
@@ -156,7 +168,7 @@
 
 - (void)addSectionsForAuction:(Sale *)auction;
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self addRelatedArtworkRequest:[auction getArtworks:^(NSArray *artworks) {
         __strong typeof (wself) sself = wself;
         [sself addSectionWithTag:ARRelatedArtworksSameAuction artworks:artworks heading:@"Other works in auction"];
@@ -165,7 +177,7 @@
 
 - (void)addSectionWithOtherArtworksInShow:(PartnerShow *)show;
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self getArtworksInShow:show atPage:1 success:^(NSArray *artworks) {
         __strong typeof (wself) sself = wself;
         ARArtworkRelatedArtworksContentView *view = [self addSectionWithTag:ARRelatedArtworksSameShow artworks:artworks heading:@"Other works in show"];
@@ -175,7 +187,7 @@
 
 - (void)addArtworksInShow:(PartnerShow *)show atPage:(NSInteger)page toView:(ARArtworkRelatedArtworksContentView *)view
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self getArtworksInShow:show atPage:page success:^(NSArray *artworks) {
         if (!artworks.count > 0) { return; }
         __strong typeof (wself) sself = wself;
@@ -195,7 +207,7 @@
         return;
     }
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self addRelatedArtworkRequest:[self.artwork.artist getArtworksAtPage:1 andParams:nil success:^(NSArray *artworks) {
         __strong typeof (wself) sself = wself;
         [sself addSectionWithTag:ARRelatedArtworksArtistArtworks
@@ -206,7 +218,7 @@
 
 - (void)addSectionWithRelatedArtworks;
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self addRelatedArtworkRequest:[self.artwork getRelatedArtworks:^(NSArray *artworks) {
         __strong typeof (wself) sself = wself;
         [sself addSectionWithTag:ARRelatedArtworks artworks:artworks heading:@"Related artworks"];
@@ -281,7 +293,7 @@
     }
 }
 
-#pragma mark - AREmbeddedModelsDelegate
+#pragma mark - AREmbeddedModelsViewControllerDelegate
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller
          shouldPresentViewController:(UIViewController *)viewController

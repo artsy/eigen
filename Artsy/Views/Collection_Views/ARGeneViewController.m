@@ -1,4 +1,6 @@
 #import "ARGeneViewController.h"
+
+#import "ARAppConstants.h"
 #import "ARHeartButton.h"
 #import "ARTextView.h"
 #import "AREmbeddedModelsViewController.h"
@@ -10,9 +12,21 @@
 #import "ARArtworkSetViewController.h"
 #import "ORStackView+ArtsyViews.h"
 #import "UIViewController+ARUserActivity.h"
-#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
+#import "User.h"
+#import "Gene.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARNetworkErrorManager.h"
+#import "ARTrialController.h"
+#import "ARScrollNavigationChief.h"
 
-@interface ARGeneViewController () <AREmbeddedModelsDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
+#import "UILabel+Typography.h"
+#import "UIDevice-Hardware.h"
+
+#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
+
+@interface ARGeneViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
 
 @property (nonatomic, strong) ARGeneArtworksNetworkModel *artworkCollection;
 
@@ -104,7 +118,7 @@
 
 - (void)loadGene
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.gene updateGene:^{
         __strong typeof (wself) sself = wself;
         [sself ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
@@ -265,7 +279,7 @@
     }
 }
 
-#pragma mark - AREmbeddedModelsDelegate
+#pragma mark - AREmbeddedModelsViewControllerDelegate
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {

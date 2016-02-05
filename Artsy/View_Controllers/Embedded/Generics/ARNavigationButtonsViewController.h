@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 typedef void (^ARNavigationButtonHandler)(UIButton *button);
 
 // This key tells ARNavigationButtonsViewController which UIButton subclass to

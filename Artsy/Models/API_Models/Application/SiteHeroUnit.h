@@ -1,3 +1,4 @@
+#import <UIKit/UIKit.h>
 #import <Mantle/Mantle.h>
 
 typedef NS_ENUM(NSInteger, ARHeroUnitImageColor) {

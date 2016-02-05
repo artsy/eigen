@@ -1,5 +1,13 @@
 #import "ARArtworkThumbnailMetadataView.h"
 
+#import "Artist.h"
+#import "Artwork.h"
+#import "ARFonts.h"
+
+#import "UIDevice-Hardware.h"
+
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 static CGFloat ARMetadataFontSize;
 
 

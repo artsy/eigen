@@ -1,8 +1,14 @@
 #import "ARAuctionArtworkResultsViewController.h"
 #import "ARAuctionArtworkTableViewCell.h"
 #import "ARAuctionResultsNetworkModel.h"
+#import "Artwork.h"
 #import "ARPageSubtitleView.h"
 #import "ARFeedStatusIndicatorTableViewCell.h"
+#import "ARCustomEigenLabels.h"
+
+#import "UIDevice-Hardware.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 static NSString *ARAuctionTableViewCellIdentifier = @"ARAuctionTableViewCellIdentifier";
 static NSString *ARAuctionTableViewHeaderIdentifier = @"ARAuctionTableViewHeaderIdentifier";

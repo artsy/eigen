@@ -1,4 +1,7 @@
 #import "ARFavoritesViewController.h"
+
+#import "Artist.h"
+#import "ARAppConstants.h"
 #import "ARArtworkMasonryModule.h"
 #import "UIViewController+SimpleChildren.h"
 #import "AREmbeddedModelsViewController.h"
@@ -13,9 +16,17 @@
 #import "ARArtistViewController.h"
 #import "ARGeneViewController.h"
 #import "ARFavoriteItemViewCell.h"
+#import "ARFonts.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARScrollNavigationChief.h"
+#import "ARDispatchManager.h"
 
+#import "UIDevice-Hardware.h"
 
-@interface ARFavoritesViewController () <AREmbeddedModelsDelegate, UIScrollViewDelegate, ARSwitchViewDelegate, ARArtworkMasonryLayoutProvider>
+#import <Artsy_UILabels/ARLabelSubclasses.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
+@interface ARFavoritesViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARSwitchViewDelegate, ARArtworkMasonryLayoutProvider>
 
 @property (nonatomic, strong, readonly) AREmbeddedModelsViewController *embeddedItemsVC;
 @property (nonatomic, strong, readonly) UILabel *noFavoritesInfoLabel;
@@ -295,7 +306,7 @@
     if (networkModel.allDownloaded) {
         return;
     };
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     ar_dispatch_on_queue(self.artworkPageQueue, ^{
         [self.activeNetworkModel getFavorites:^(NSArray *items){
             __strong typeof (wself) sself = wself;
@@ -319,7 +330,7 @@
     return [UIDevice isPad];
 }
 
-#pragma mark - AREmbeddedModelsDelegate
+#pragma mark - AREmbeddedModelsViewControllerDelegate
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {

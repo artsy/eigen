@@ -1,4 +1,6 @@
+#import "Artwork.h"
 #import "ArtsyAPI+Private.h"
+#import "ARRouter.h"
 
 
 @implementation ArtsyAPI (Sales)
@@ -25,6 +27,16 @@
 {
     NSURLRequest *request = [ARRouter requestForSaleID:saleID];
     [self getRequest:request parseIntoAClass:[Sale class] success:success failure:failure];
+}
+
++ (void)getSaleArtworksWithSale:(Sale *)sale
+                           page:(NSInteger)page
+                       pageSize:(NSInteger)pageSize
+                        success:(void (^)(NSArray<SaleArtwork *> *sale))success
+                        failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter artworksForSaleRequest:sale.saleID page:page pageSize:pageSize];
+    [self getRequest:request parseIntoAnArrayOfClass:[SaleArtwork class] success:success failure:failure];
 }
 
 @end

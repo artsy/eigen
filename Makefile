@@ -45,6 +45,7 @@ oss:
 	bundle exec pod keys set "SegmentProductionWriteKey" "-"
 	bundle exec pod keys set "SegmentDevWriteKey" "-"
 	bundle exec pod keys set "AdjustProductionAppToken" "-"
+	bundle exec pod keys set "ArtsyEchoProductionToken" "-"
 
 artsy:
 	git submodule init
@@ -86,6 +87,7 @@ deploy:
 	git push upstream "$(LOCAL_BRANCH):beta"
 
 
+
 ### Utility functions
 
 update_bundle_version:
@@ -108,6 +110,10 @@ set_git_properties:
 	$(PLIST_BUDDY) -c "Set GITCommitRev $(GIT_COMMIT_REV)" $(APP_PLIST)
 	$(PLIST_BUDDY) -c "Set GITCommitSha $(GIT_COMMIT_SHA)" $(APP_PLIST)
 	$(PLIST_BUDDY) -c "Set GITRemoteOriginURL $(GIT_REMOTE_ORIGIN_URL)" $(APP_PLIST)
+
+update_echo:
+	curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell bundle exec pod keys get ArtsyEchoProductionToken)" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
+
 
 ### Useful commands
 

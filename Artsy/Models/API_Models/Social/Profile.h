@@ -1,5 +1,8 @@
+#import "ARFollowable.h"
+
 #import <Mantle/Mantle.h>
-#import "ProfileOwner.h"
+
+@protocol ProfileOwner;
 
 /// A profile is a model that represents something
 /// a user can log in to, like a User account or a Partner account.

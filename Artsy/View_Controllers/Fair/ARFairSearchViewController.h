@@ -1,6 +1,6 @@
 #import "ARSearchViewController.h"
 
-@class ARFairSearchViewController;
+@class ARFairSearchViewController, Fair;
 
 @protocol ARFairSearchViewControllerDelegate <NSObject>
 - (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query;

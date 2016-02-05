@@ -1,8 +1,11 @@
 #import "ARApplicationShortcutItemDelegate.h"
+
+#import "ARAppConstants.h"
 #import "ARTopMenuViewController.h"
 #import "ARNavigationController.h"
 #import "ARFavoritesViewController.h"
-
+#import "User.h"
+#import "ARTrialController.h"
 
 @implementation ARApplicationShortcutItemDelegate
 

@@ -5,6 +5,8 @@
 
 #import <Mantle/Mantle.h>
 
+@class AFHTTPRequestOperation;
+
 @interface Artist : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageURLs, ARSpotlightMetadataProvider>
 
 @property (readonly, nonatomic, copy) NSString *artistID;

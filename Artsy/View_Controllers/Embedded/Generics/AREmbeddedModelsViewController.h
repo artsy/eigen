@@ -2,9 +2,9 @@
 #import "ARArtworkFlowModule.h"
 #import "ARArtworkMasonryModule.h"
 
-@class AREmbeddedModelsViewController;
+@class AREmbeddedModelsViewController, Fair;
 
-@protocol AREmbeddedModelsDelegate <NSObject>
+@protocol AREmbeddedModelsViewControllerDelegate <NSObject>
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController;
 
@@ -14,9 +14,12 @@
 
 @optional
 
-/// This message gets passed if the edge is reached. Currently
-/// unimplemented, may be moved to a block property.
+/// This message gets passed if the edge is reached.
 - (void)embeddedModelsViewControllerDidScrollPastEdge:(AREmbeddedModelsViewController *)controller;
+
+/// This message gets passed if the associated sticky header has changed it's stickyness
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller stickyHeaderDidChangeStickyness:(BOOL)isAttatchedToLeadingEdge;
+
 @end
 
 
@@ -27,7 +30,7 @@
 @interface AREmbeddedModelsViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource>
 
 /// An optional delegate for actions
-@property (nonatomic, weak) id<AREmbeddedModelsDelegate> delegate;
+@property (nonatomic, weak) id<AREmbeddedModelsViewControllerDelegate> delegate;
 
 /// The items shown by the embedded models VC
 @property (nonatomic, copy, readonly) NSArray *items;
@@ -48,6 +51,10 @@
 /// Header View for when the view controller is basically another VCs view.
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, assign) CGFloat headerHeight;
+
+/// Sticky Header View for when the view controller is basically another VCs view.
+@property (nonatomic, strong) UIView *stickyHeaderView;
+@property (nonatomic, assign) CGFloat stickyHeaderHeight;
 
 /// Shows a progress indicator, only works in masonry
 @property (nonatomic, assign) BOOL showTrailingLoadingIndicator;

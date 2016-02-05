@@ -11,8 +11,8 @@ class ARHockeyFeedbackDelegate: NSObject {
         notifications.addObserverForName(UIApplicationUserDidTakeScreenshotNotification, object: nil, queue: mainQueue) { notification in
             // When I looked at how Hockey did this, I found that they would delay by a second
             // presumably it can take a second to have the image saved in the asset store before
-            // we can pull it out again.
-            ar_dispatch_after(1, self.showFeedbackWithRecentScreenshot)
+            // we can pull it out again. We might be able to get away with 0.5.
+            ar_dispatch_after(0.5, self.showFeedbackWithRecentScreenshot)
         }
     }
 
@@ -46,7 +46,9 @@ class ARHockeyFeedbackDelegate: NSObject {
             return
         }
 
-        PHImageManager.defaultManager().requestImageForAsset(result, targetSize: UIScreen.mainScreen().bounds.size, contentMode: .AspectFit, options: nil) { image, info in
+        let options = PHImageRequestOptions()
+        options.synchronous = true
+        PHImageManager.defaultManager().requestImageForAsset(result, targetSize: UIScreen.mainScreen().bounds.size, contentMode: .AspectFit, options: options) { image, info in
             self.showFeedback(image)
         }
     }

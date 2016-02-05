@@ -1,5 +1,12 @@
 #import "ARArtworkPreviewActionsView.h"
+
+#import "Artwork.h"
 #import "ARHeartButton.h"
+#import "Fair.h"
+
+#import "UIDevice-Hardware.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 const CGFloat ARArtworkActionButtonSpacing = 8;
 

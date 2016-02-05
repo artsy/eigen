@@ -6,13 +6,28 @@
 #import "UIViewController+InnermostTopViewController.h"
 #import "UIViewController+SimpleChildren.h"
 
+#import "ARAppConstants.h"
 #import "ARAppSearchViewController.h"
 #import "ARNavigationTransitionController.h"
 #import "ARPendingOperationViewController.h"
+#import "ARNavigationController.h"
+#import "ARMenuAwareViewController.h"
+#import "ARTopMenuViewController.h"
+#import "ARScrollNavigationChief.h"
+
+#import "ARMacros.h"
+#import "UIDevice-Hardware.h"
+
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
 
+@protocol ARMenuAwareViewController;
 
 @interface ARNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 

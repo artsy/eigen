@@ -1,10 +1,13 @@
 #import <Mantle/Mantle.h>
+
+#import "ARAppConstants.h"
 #import "Sale.h"
 #import "Bidder.h"
 #import "BidderPosition.h"
 #import "Bid.h"
 #import "ARAppConstants.h"
 
+@class Artwork;
 
 typedef NS_ENUM(NSInteger, ARReserveStatus) {
     ARReserveStatusNoReserve,
@@ -33,5 +36,6 @@ typedef NS_ENUM(NSInteger, ARReserveStatus) {
 @property (nonatomic, copy, readonly) NSNumber *lotNumber;
 @property (nonatomic, assign, readonly) ARAuctionState auctionState;
 @property (nonatomic, assign) ARReserveStatus reserveStatus;
+@property (nonatomic, strong, readonly) Artwork *artwork;
 
 @end

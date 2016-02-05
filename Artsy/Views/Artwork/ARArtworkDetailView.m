@@ -1,5 +1,15 @@
 #import "ARArtworkDetailView.h"
+
+#import "ARCustomEigenLabels.h"
+#import "Artist.h"
+#import "Artwork.h"
+#import "ARFonts.h"
 #import "ARTextView.h"
+#import "Fair.h"
+#import "Partner.h"
+#import "PartnerShow.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
     ARDetailArtistName = 1,

@@ -1,4 +1,4 @@
-
+#import "Bidder.h"
 
 
 @implementation Bidder

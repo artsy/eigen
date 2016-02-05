@@ -1,5 +1,8 @@
+#import <UIKit/UIKit.h>
+
 #import "ARFairAwareObject.h"
 
+@class Artist, Fair;
 
 @interface ARArtistViewController : UIViewController <ARFairAwareObject>
 

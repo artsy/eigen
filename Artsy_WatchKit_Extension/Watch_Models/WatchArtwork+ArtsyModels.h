@@ -1,8 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "WatchArtwork.h"
 
-/// This file is only in the Artsy Target
-
+@class Artwork;
 
 @interface WatchArtwork (FromArtwork)
 

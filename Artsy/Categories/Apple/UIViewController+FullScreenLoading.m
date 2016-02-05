@@ -1,6 +1,9 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARReusableLoadingView.h"
+#import "AROptions.h"
+
 #import <objc/runtime.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
 @implementation UIViewController (FullScreenLoading)

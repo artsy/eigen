@@ -2,6 +2,8 @@ PODS:
   - Adjust (4.5.0):
     - Adjust/Core (= 4.5.0)
   - Adjust/Core (4.5.0)
+  - Aerodramus (0.1.0):
+    - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
     - AFNetworking/NSURLConnection (~> 2.0)
     - AFNetworking/NSURLSession (~> 2.0)
@@ -89,6 +91,7 @@ PODS:
   - FLKAutoLayout (0.2.1)
   - FXBlurView (1.6.1)
   - HockeySDK-Source (3.8.5)
+  - Interstellar/Core (1.4.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
   - JLRoutes (2.0.0)
@@ -99,6 +102,7 @@ PODS:
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
   - Mantle/extobjc (1.5.6)
+  - MARKRangeSlider (1.0.1)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.2)
   - NAMapKit (3.2.0):
@@ -138,6 +142,7 @@ PODS:
     - OHHTTPStubs
 
 DEPENDENCIES:
+  - Aerodramus (from `https://github.com/artsy/Aerodramus.git`, branch `tests`)
   - AFNetworkActivityLogger
   - AFNetworking (~> 2.5)
   - AFOAuth1Client (from `https://github.com/lxcid/AFOAuth1Client.git`, tag `0.4.0`)
@@ -150,7 +155,8 @@ DEPENDENCIES:
   - ARAnalytics/Segmentio (from `https://github.com/orta/ARAnalytics.git`, commit
     `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARASCIISwizzle
-  - ARCollectionViewMasonryLayout
+  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`,
+    branch `modern`)
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`)
   - Artsy+UIColors
@@ -167,6 +173,7 @@ DEPENDENCIES:
   - FBSnapshotTestCase
   - FLKAutoLayout (from `https://github.com/alloy/FLKAutoLayout.git`, branch `add-support-for-layout-guides-take-2`)
   - FXBlurView
+  - Interstellar/Core
   - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
@@ -175,6 +182,7 @@ DEPENDENCIES:
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
   - Mantle (~> 1.5.6)
+  - MARKRangeSlider
   - MMMarkdown
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`)
@@ -198,6 +206,9 @@ DEPENDENCIES:
   - XCTest+OHHTTPStubSuiteCleanUp
 
 EXTERNAL SOURCES:
+  Aerodramus:
+    :branch: tests
+    :git: https://github.com/artsy/Aerodramus.git
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
@@ -206,6 +217,9 @@ EXTERNAL SOURCES:
   ARAnalytics:
     :commit: 6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e
     :git: https://github.com/orta/ARAnalytics.git
+  ARCollectionViewMasonryLayout:
+    :branch: modern
+    :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
   ARGenericTableViewController:
     :git: https://github.com/orta/ARGenericTableViewController.git
   ARTiledImageView:
@@ -234,6 +248,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/1aurabrown/ORStackView.git
 
 CHECKOUT OPTIONS:
+  Aerodramus:
+    :commit: d2a338d071e00fe9f16fdd89c59540cf295bc491
+    :git: https://github.com/artsy/Aerodramus.git
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
@@ -243,6 +260,9 @@ CHECKOUT OPTIONS:
   ARAnalytics:
     :commit: 6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e
     :git: https://github.com/orta/ARAnalytics.git
+  ARCollectionViewMasonryLayout:
+    :commit: a9dc52b13e32d064c49528ff9a3bd5aa65c02cd5
+    :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
     :git: https://github.com/orta/ARGenericTableViewController.git
@@ -253,10 +273,10 @@ CHECKOUT OPTIONS:
     :commit: 39f47deebf947aa4c07727fdf2b69e2feff17428
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Artsy+UILabels:
-    :commit: dd87214947d54d74001774bf563fa64d9c834d9d
+    :commit: 706e6e85af5d9af18f2af024d31550ba9b1584be
     :git: https://github.com/artsy/Artsy-UILabels.git
   Artsy-UIButtons:
-    :commit: 65dc46b5fc86976191ae92d7a3426c39592596a2
+    :commit: e5b75a8bbcc0ffbbb4029a7298f84a089937ea4d
     :git: https://github.com/artsy/Artsy-UIButtons.git
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
@@ -279,6 +299,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Adjust: 297176446c127f1232b9591b2b37cdc4796850b8
+  Aerodramus: e6cd0bcbd5419aa7e666afbfc9d6e62fd77d7645
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
@@ -306,6 +327,7 @@ SPEC CHECKSUMS:
   FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   HockeySDK-Source: 85233ef10090148e5571f7a0a82deb8213b1691e
+  Interstellar: 40fc666872436d6c1b3524c59437ebdb5dec1c6a
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
@@ -314,6 +336,7 @@ SPEC CHECKSUMS:
   Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
+  MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: bdcb666fa84122eed344661b132e1d93dbafac71

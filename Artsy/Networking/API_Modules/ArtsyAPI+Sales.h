@@ -1,5 +1,8 @@
 #import "ArtsyAPI.h"
 
+@class Sale, SaleArtwork;
+@class AFHTTPRequestOperation;
+
 
 @interface ArtsyAPI (Sales)
 
@@ -14,5 +17,12 @@
 + (void)getSaleWithID:(NSString *)saleID
               success:(void (^)(Sale *sale))success
               failure:(void (^)(NSError *error))failure;
+
++ (void)getSaleArtworksWithSale:(Sale *)sale
+                           page:(NSInteger)page
+                       pageSize:(NSInteger)pageSize
+                        success:(void (^)(NSArray<SaleArtwork *> *sale))success
+                        failure:(void (^)(NSError *error))failure;
+
 
 @end

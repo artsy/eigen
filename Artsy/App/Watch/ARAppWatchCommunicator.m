@@ -1,17 +1,24 @@
 #import "ARAppWatchCommunicator.h"
 #import <UICKeyChainStore/UICKeyChainStore.h>
+
+#import "Artwork.h"
 #import "WatchBiddingDetails.h"
+#import "ARDefaults.h"
 #import "ARRouter.h"
 #import "ARWatchBidNetworkModel.h"
 #import "ARUserManager.h"
 #import "WatchMessage.h"
 #import "ArtsyWatchAPI.h"
+#import "User.h"
+#import "PartnerShow.h"
 
 #import "WatchShow.h"
 #import "WatchShow+ArtsyModels.h"
 #import "WatchArtwork.h"
 #import "WatchArtwork+ArtsyModels.h"
+
 #import <CoreLocation/CoreLocation.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 
 @interface ARAppWatchCommunicator () <CLLocationManagerDelegate>

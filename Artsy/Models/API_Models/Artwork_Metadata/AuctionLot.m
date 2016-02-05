@@ -1,3 +1,5 @@
+#import "AuctionLot.h"
+
 #import "ARStandardDateFormatter.h"
 
 

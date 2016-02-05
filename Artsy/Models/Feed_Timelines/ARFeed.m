@@ -1,4 +1,9 @@
+#import "ARLogger.h"
+#import "ARFeed.h"
+
 #import "ARFeedItems.h"
+
+#import "MTLModel+JSON.h"
 
 static NSDictionary *StaticFeedItemMap;
 static NSSet *StaticFeedItemTypes;

@@ -3,6 +3,10 @@
 
 #import "ARNotificationView.h"
 
+#import "ARFonts.h"
+#import "ARSeparatorViews.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARNotificationView ()
 @property (nonatomic, strong) UILabel *titleLabel;

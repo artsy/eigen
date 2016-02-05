@@ -1,5 +1,11 @@
+#import "ARLogger.h"
 #import "ARHeroUnitsNetworkModel.h"
 #import "ArtsyAPI+Private.h"
+#import "ArtsyAPI+SiteFunctions.h"
+
+#import "SiteHeroUnit.h"
+
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static NSString *ARHeroUnitsDataSourceItemsKey = @"ARHeroUnitsDataSourceItemsKey";
 

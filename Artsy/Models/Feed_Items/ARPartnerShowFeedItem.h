@@ -1,6 +1,6 @@
 #import "ARFeedItem.h"
-#import "Partner.h"
 
+@class PartnerShow;
 
 @interface ARPartnerShowFeedItem : ARFeedItem
 

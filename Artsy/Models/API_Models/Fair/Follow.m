@@ -1,5 +1,11 @@
+#import "Follow.h"
 
+#import "Artist.h"
+#import "Profile.h"
 
+#import "ARMacros.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation Follow
 

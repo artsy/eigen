@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 
 @interface UIViewController (SimpleChildren)
@@ -15,6 +15,10 @@
 
 /// For Auto-Layout child view controllers. The other methods aren't deprecated yet but you shouldn't be using them.
 - (void)ar_addModernChildViewController:(UIViewController *)controller;
+
+/// For Auto-Layout child view controllers. This will align the view controller 1 to 1 with the host.
+- (void)ar_addAlignedModernChildViewController:(UIViewController *)controller;
+
 
 /// For Auto Layout, adds the childVC but allows you to place the view inside another view
 - (void)ar_addModernChildViewController:(UIViewController *)controller intoView:(UIView *)view;

@@ -1,9 +1,21 @@
+#import "ARLogger.h"
+#import "Fair.h"
+
+#import "ARAppConstants.h"
 #import "ARStandardDateFormatter.h"
 #import "NSDate+DateRange.h"
 #import "ARPartnerShowFeedItem.h"
 #import "ARFileUtils.h"
 #import "ARFairNetworkModel.h"
+#import "FairOrganizer.h"
+#import "PartnerShow.h"
+#import "Partner.h"
 
+#import "ARMacros.h"
+#import "ARDispatchManager.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @interface Fair () {
     NSMutableSet *_showsLoadedFromArchive;

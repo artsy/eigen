@@ -1,5 +1,7 @@
 #import "ARMessageItemProvider.h"
 
+#import "ARSwitchBoard+Eigen.h"
+
 
 @interface ARMessageItemProvider ()
 @property (nonatomic, strong, readonly) NSString *path;

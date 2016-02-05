@@ -1,6 +1,11 @@
+#import "ARFeedSubclasses.h"
 
 #import "ARAppBackgroundFetchDelegate.h"
 #import "NSKeyedUnarchiver+ErrorLogging.h"
+
+#import "ArtsyAPI+Feed.h"
+#import "Partner.h"
+#import "ARDispatchManager.h"
 
 
 @interface ARFeed ()

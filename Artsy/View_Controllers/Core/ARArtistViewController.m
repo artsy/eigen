@@ -1,4 +1,8 @@
+#import "ARLogger.h"
 #import "ARArtistViewController.h"
+
+#import "Artist.h"
+#import "ARAppConstants.h"
 #import "ARNavigationButton.h"
 #import "ARSwitchView.h"
 #import "ARSwitchView+Artist.h"
@@ -14,7 +18,22 @@
 #import "ARTextView.h"
 #import "ARArtistNetworkModel.h"
 #import "ARSpotlight.h"
+#import "User.h"
+#import "ARTheme.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARNetworkErrorManager.h"
+#import "ARTrialController.h"
+#import "ARScrollNavigationChief.h"
+
 #import "UIViewController+ARUserActivity.h"
+#import "UIDevice-Hardware.h"
+#import "Artsy-Swift.h"
+
+#import <ORStackView/ORTagBasedAutoStackView.h>
+#import <ORStackView/ORStackScrollView.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static const NSInteger ARMinimumArtworksFor2Column = 5;
 
@@ -40,7 +59,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 // TODO: Add ARFollowableNetworkModel for following status
 
 
-@interface ARArtistViewController () <UIScrollViewDelegate, AREmbeddedModelsDelegate, ARPostsViewControllerDelegate, ARSwitchViewDelegate>
+@interface ARArtistViewController () <UIScrollViewDelegate, AREmbeddedModelsViewControllerDelegate, ARPostsViewControllerDelegate, ARSwitchViewDelegate>
 @property (nonatomic, strong) ORStackScrollView *view;
 @property (nonatomic, assign) enum ARArtistArtworksDisplayMode displayMode;
 
@@ -597,7 +616,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
     }];
 }
 
-#pragma mark - AREmbeddedModelsDelegate
+#pragma mark - AREmbeddedModelsViewControllerDelegate
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {

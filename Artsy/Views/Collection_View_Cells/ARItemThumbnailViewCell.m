@@ -1,5 +1,12 @@
+#import "ARLogger.h"
 #import "ARItemThumbnailViewCell.h"
 
+#import "ARHasImageBaseURL.h"
+#import "ARPostAttachment.h"
+
+#import "UIImageView+AsyncImageLoading.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARItemThumbnailViewCell ()
 @property (nonatomic, strong) UIImageView *imageView;

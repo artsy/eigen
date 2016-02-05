@@ -1,4 +1,4 @@
-
+#import "Bid.h"
 
 
 @implementation Bid

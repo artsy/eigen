@@ -1,6 +1,7 @@
 #import "ARFavoriteItemModule.h"
 #import "ARFavoriteItemViewCell.h"
 
+#import "UIDevice-Hardware.h"
 
 @implementation ARFavoriteItemModule
 

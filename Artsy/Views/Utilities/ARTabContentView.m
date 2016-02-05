@@ -1,5 +1,9 @@
 #import "ARTabContentView.h"
 
+#import "ARDispatchManager.h"
+
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
 static BOOL ARTabViewDirectionLeft = NO;
 static BOOL ARTabViewDirectionRight = YES;
 

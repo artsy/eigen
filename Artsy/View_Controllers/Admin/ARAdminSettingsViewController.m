@@ -2,13 +2,20 @@
 #import <HockeySDK_Source/BITFeedbackManager.h>
 
 #import "ARAdminSettingsViewController.h"
+
+#import "ARDefaults.h"
 #import "ARGroupedTableViewCell.h"
 #import "ARAnimatedTickView.h"
 #import "ARAppDelegate.h"
 #import "ARUserManager.h"
 #import "ARFileUtils.h"
 #import "ARRouter.h"
+#import "AROptions.h"
+
 #import "Artsy-Swift.h"
+#import "UIDevice-Hardware.h"
+
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>

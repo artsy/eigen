@@ -1,4 +1,6 @@
-@class AROfflineView;
+#import <Foundation/Foundation.h>
+
+@class ARSimpleShowFeedViewController, AROfflineView;
 
 
 @interface ARShowFeedNetworkStatusModel : NSObject

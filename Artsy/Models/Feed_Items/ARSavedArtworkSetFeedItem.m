@@ -1,5 +1,8 @@
 #import "ARSavedArtworkSetFeedItem.h"
 
+#import "Artwork.h"
+#import "Profile.h"
+
 
 @implementation ARSavedArtworkSetFeedItem
 + (NSDictionary *)JSONKeyPathsByPropertyKey

@@ -6,6 +6,7 @@
 
 #import <Mantle/Mantle.h>
 
+@class PartnerShow;
 
 @interface Fair : MTLModel <MTLJSONSerializing> {
     ARFairNetworkModel *_networkModel;

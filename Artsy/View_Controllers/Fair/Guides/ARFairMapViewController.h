@@ -1,6 +1,8 @@
+#import <UIKit/UIKit.h>
+
 #import "ARMenuAwareViewController.h"
 
-@class ARTiledImageDataSourceWithImage, ARFairMapZoomManager, ARFairShowMapper, ARFairMapAnnotation;
+@class ARTiledImageDataSourceWithImage, ARFairMapZoomManager, ARFairShowMapper, ARFairMapAnnotation, Fair;
 
 
 @interface ARFairMapViewController : UIViewController <ARMenuAwareViewController>

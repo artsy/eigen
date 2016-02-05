@@ -4,17 +4,22 @@ import Then
 
 class AuctionViewController: UIViewController {
     let saleID: String
-    var saleViewModel: SaleViewModel?
+    var saleViewModel: SaleViewModel!
     var appeared = false
 
-    var stackScrollView: ORStackScrollView!
+    var headerStack: ORStackView!
+    var stickyHeader: ScrollingStickyHeaderView!
 
-    // TODO: These need to be set to defaultRefineSettings() when we have enough data loaded to calculate it.
-    var refineSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber) {
-        didSet {
-            // TODO: Apply settings
-        }
-    }
+    /// Variable for storing lazily-computed default refine settings. 
+    /// Should not be accessed directly, call defaultRefineSettings() instead.
+    private var _defaultRefineSettings: AuctionRefineSettings?
+    private var artworksViewController: ARModelInfiniteScrollViewController!
+
+    /// Current refine settings.
+    /// Our refine settings are (by default) the defaultRefineSettings().
+    lazy var refineSettings: AuctionRefineSettings = {
+        return self.defaultRefineSettings()
+    }()
 
     lazy var networkModel: AuctionNetworkModel = {
         return AuctionNetworkModel(saleID: self.saleID)
@@ -22,7 +27,6 @@ class AuctionViewController: UIViewController {
 
     init(saleID: String) {
         self.saleID = saleID
-
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -33,15 +37,15 @@ class AuctionViewController: UIViewController {
         return nil
     }
 
-    override func loadView() {
-        super.loadView()
-        stackScrollView = setupTaggedStackView()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .whiteColor()
+        headerStack = ORTagBasedAutoStackView()
+        artworksViewController = ARModelInfiniteScrollViewController()
+        ar_addAlignedModernChildViewController(artworksViewController)
+
+        artworksViewController.headerStackView = headerStack
+        artworksViewController.modelViewController.delegate = self
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -51,15 +55,10 @@ class AuctionViewController: UIViewController {
         appeared = true
 
         self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
-        self.networkModel.fetchSale { result in
-            self.ar_removeIndeterminateLoadingIndicatorAnimated(animated)
-
-            switch result {
-            case .Success(let saleViewModel):
-                self.setupForSale(saleViewModel)
-            case .Failure(_):
-                break // TODO: How to handle error?
-            }
+        self.networkModel.fetch().next { saleViewModel in
+            self.setupForSale(saleViewModel)
+        }.error { error in
+            // TODO: Error-handling somehow
         }
     }
 
@@ -68,37 +67,60 @@ class AuctionViewController: UIViewController {
         
         case WhitespaceGobbler
     }
+
 }
 
 extension AuctionViewController {
     func setupForSale(saleViewModel: SaleViewModel) {
+        // TODO: Sale is currently private on the SVM
+        // artworksViewController.spotlightEntity = saleViewModel.sale
+
         self.saleViewModel = saleViewModel
 
         [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
-          (AuctionTitleView(viewModel: saleViewModel, delegate: self), .Title),
+          (AuctionTitleView(viewModel: saleViewModel), .Title),
           (ARWhitespaceGobbler(), .WhitespaceGobbler)
         ].forEach { (view, tag) in
             view.tag = tag.rawValue
-            self.stackScrollView.stackView.addSubview(view, withTopMargin: "0", sideMargin: "0")
+            headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
         }
+
+        stickyHeader = ScrollingStickyHeaderView().then {
+            $0.toggleAttatched(false, animated:false)
+            $0.button.setTitle("Refine", forState: .Normal)
+            $0.titleLabel.text = saleViewModel.name
+            $0.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
+            $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
+        }
+
+        artworksViewController.stickyHeaderView = stickyHeader
+        artworksViewController.invalidateHeaderHeight()
+
+        self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)
+        self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
+
+        self.ar_removeIndeterminateLoadingIndicatorAnimated(true) // TODO: Animated?
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {
-        // TODO: calculate min/max based on sale artworks.
-        // TODO: Since this doesn't change, we should cache the value instead of recomputing every time.
-        return AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber)
+        guard let defaultSettings = _defaultRefineSettings else {
+            let defaultSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber, range: self.saleViewModel.lowEstimateRange)
+            _defaultRefineSettings = defaultSettings
+            return defaultSettings
+        }
+        return defaultSettings
     }
-}
 
-extension AuctionViewController: AuctionTitleViewDelegate {
-    func buttonPressed() {
+    func showRefineTapped() {
         let refineViewController = AuctionRefineViewController(defaultSettings: defaultRefineSettings(), initialSettings: refineSettings).then {
             $0.delegate = self
             $0.modalPresentationStyle = .FormSheet
+            $0.changeStatusBar = self.traitCollection.horizontalSizeClass == .Compact
         }
         presentViewController(refineViewController, animated: true, completion: nil)
     }
 }
+
 
 extension AuctionViewController: AuctionRefineViewControllerDelegate {
     func userDidCancel(controller: AuctionRefineViewController) {
@@ -108,5 +130,20 @@ extension AuctionViewController: AuctionRefineViewControllerDelegate {
     func userDidApply(settings: AuctionRefineSettings, controller: AuctionRefineViewController) {
         refineSettings = settings
         dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
+    func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
+        // TODO
+    }
+
+    func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, stickyHeaderDidChangeStickyness isAttatchedToLeadingEdge: Bool) {
+        stickyHeader.stickyHeaderHeight.constant = isAttatchedToLeadingEdge ? 120 : 60
+        stickyHeader.toggleAttatched(isAttatchedToLeadingEdge, animated: true)
     }
 }

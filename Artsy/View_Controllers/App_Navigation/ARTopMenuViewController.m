@@ -1,16 +1,29 @@
 #import "ARTopMenuViewController+DeveloperExtras.h"
 #import "ARContentViewControllers.h"
+#import "ARAppStatus.h"
 
 #import "UIViewController+FullScreenLoading.h"
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARUserManager.h"
 #import "ArtsyAPI+Private.h"
-#import <JSBadgeView/JSBadgeView.h>
+#import "ARAppConstants.h"
+#import "ARFonts.h"
+#import "User.h"
+#import "ARTrialController.h"
+#import "ARSwitchBoard.h"
 
 #import "UIView+HitTestExpansion.h"
 #import <objc/runtime.h>
+#import "UIDevice-Hardware.h"
+
+#import <JSBadgeView/JSBadgeView.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <objc/runtime.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static const CGFloat ARMenuButtonDimension = 46;
 
@@ -300,7 +313,9 @@ static const CGFloat ARMenuButtonDimension = 46;
     [super viewDidAppear:animated];
 
 #ifdef DEBUG
-    [self runDeveloperExtras];
+    if ([ARAppStatus isRunningTests] == NO) {
+        [self runDeveloperExtras];
+    }
 #endif
 }
 

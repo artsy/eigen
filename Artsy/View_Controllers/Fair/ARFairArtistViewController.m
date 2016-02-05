@@ -1,5 +1,11 @@
 #import "ARFairArtistViewController.h"
+
+#import "Artist.h"
+#import "Fair.h"
+#import "Partner.h"
+#import "PartnerShow.h"
 #import "ORStackView+ArtsyViews.h"
+#import "ARAppConstants.h"
 #import "ARNavigationButton.h"
 #import "ARShowViewController.h"
 #import "AREmbeddedModelsViewController.h"
@@ -11,6 +17,21 @@
 #import "ARArtworkSetViewController.h"
 #import "ARFairMapPreviewButton.h"
 #import "ARFairArtistNetworkModel.h"
+#import "ARFonts.h"
+#import "User.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARSwitchboard+Eigen.h"
+#import "ARTrialController.h"
+#import "ARScrollNavigationChief.h"
+
+#import "UIDevice-Hardware.h"
+
+#import <Artsy_UILabels/ARLabelSubclasses.h>
+#import <ORStackView/ORTagBasedAutoStackView.h>
+#import <ORStackView/ORStackScrollView.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
+
+#import "Artsy-Swift.h"
 
 typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
     ARFairArtistTitle = 1,
@@ -23,7 +44,7 @@ typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
 };
 
 
-@interface ARFairArtistViewController () <AREmbeddedModelsDelegate>
+@interface ARFairArtistViewController () <AREmbeddedModelsViewControllerDelegate>
 @property (nonatomic, strong, readonly) ORStackScrollView *view;
 @property (nonatomic, strong, readonly) ARFollowableNetworkModel *followableNetwork;
 @property (nonatomic, strong, readwrite) NSObject<FairArtistNeworkModel> *networkModel;

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "WatchBiddingDetails.h"
 
+@class BidderPosition, WatchBiddingDetails;
 
 @interface ARWatchBidNetworkModel : NSObject
 

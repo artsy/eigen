@@ -1,6 +1,12 @@
+#import "ARLogger.h"
+#import "ArtsyAPI+Search.h"
+
+#import "Artist.h"
 #import "ARRouter.h"
 #import "SearchResult.h"
 
+#import "MTLModel+JSON.h"
+#import "AFHTTPRequestOperation+JSON.h"
 
 @implementation ArtsyAPI (Search)
 

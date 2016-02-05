@@ -1,3 +1,6 @@
+#import <UIKit/UIKit.h>
+
+
 @class AROnboardingViewController;
 
 typedef NS_ENUM(NSInteger, AROnboardingMoreInfoViewControllerLoginType) {

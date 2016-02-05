@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /// The factory is so that we can have one place that a lot of the
 /// common theme related views are created. This is mainly

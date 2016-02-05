@@ -1,5 +1,6 @@
 #import "ARTermsAndConditionsView.h"
 
+#import "ARFonts.h"
 
 @implementation ARTermsAndConditionsView
 

@@ -1,4 +1,6 @@
+#import "ArtsyAPI.h"
 
+@class Artist;
 
 
 @interface ArtsyAPI (Artists)

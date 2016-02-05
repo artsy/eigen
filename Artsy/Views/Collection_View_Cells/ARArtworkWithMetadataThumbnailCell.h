@@ -3,7 +3,7 @@
 #import "ARItemThumbnailViewCell.h"
 #import "ARFeedImageLoader.h"
 
-@class ARArtworkThumbnailMetadataView;
+@class Artwork, ARArtworkThumbnailMetadataView;
 
 
 @interface ARArtworkWithMetadataThumbnailCell : ARItemThumbnailViewCell

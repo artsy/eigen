@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+@class Artwork, AuctionLot;
+
 @protocol AuctionResultsNetworkModel <NSObject>
 
 - (instancetype)initWithArtwork:(Artwork *)artwork;

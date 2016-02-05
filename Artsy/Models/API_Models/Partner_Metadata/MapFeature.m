@@ -1,5 +1,11 @@
-#import "ARValueTransformer.h"
+#import "MapFeature.h"
 
+#import "ARValueTransformer.h"
+#import "Image.h"
+
+#import "ARMacros.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation MapFeature
 

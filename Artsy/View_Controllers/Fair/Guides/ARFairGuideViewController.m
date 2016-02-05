@@ -4,6 +4,17 @@
 #import "ARSwitchView+FairGuide.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARFairFavoritesNetworkModel.h"
+#import "ARFonts.h"
+#import "User.h"
+#import "ARTheme.h"
+#import "ARTrialController.h"
+
+#import "UIDevice-Hardware.h"
+
+#import <ORStackView/ORTagBasedAutoStackView.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 // Switch view width should be divisible by the number of items (in this case 3) for consistent rendering.
 static CGFloat const ARFairGuideSwitchviewWidth = 279;
@@ -21,6 +32,8 @@ typedef NS_ENUM(NSInteger, ARFairGuideViewOrder) {
     ARFairGuideViewAllExhibitors,
     ARFairGuideViewWhitespace
 };
+
+@class User;
 
 
 @interface ARFairGuideViewController () <ARSwitchViewDelegate, ARFairFavoritesNetworkModelDelegate>

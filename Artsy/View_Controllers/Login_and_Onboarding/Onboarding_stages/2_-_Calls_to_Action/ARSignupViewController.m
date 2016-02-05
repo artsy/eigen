@@ -2,6 +2,11 @@
 #import "AROnboardingNavBarView.h"
 #import "ARTermsAndConditionsView.h"
 
+#import "UIDevice-Hardware.h"
+
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @interface ARSignupViewController () <UIAlertViewDelegate, UITextViewDelegate>
 @property (nonatomic) AROnboardingNavBarView *navbar;

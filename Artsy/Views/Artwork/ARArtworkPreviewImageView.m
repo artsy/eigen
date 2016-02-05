@@ -1,5 +1,11 @@
 #import "ARArtworkPreviewImageView.h"
+
+#import "Artwork.h"
 #import "ARFeedImageLoader.h"
+#import "ARFonts.h"
+
+#import "UIImage+ImageFromColor.h"
+#import "UIImageView+AsyncImageLoading.h"
 
 
 @interface ARArtworkPreviewImageView ()

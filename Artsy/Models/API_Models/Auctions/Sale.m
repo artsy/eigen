@@ -1,5 +1,10 @@
+#import "Sale.h"
+
+#import "ARMacros.h"
+#import "ArtsyAPI+Sales.h"
 #import "ARStandardDateFormatter.h"
 #import "BuyersPremium.h"
+#import "ARSystemTime.h"
 
 
 @implementation Sale
@@ -7,11 +12,11 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @"saleID" : @"id",
-        @"isAuction" : @"is_auction",
-        @"startDate" : @"start_at",
-        @"endDate" : @"end_at",
-        @"buyersPremium" : @"buyers_premium"
+        ar_keypath(Sale.new, saleID) : @"id",
+        ar_keypath(Sale.new, isAuction) : @"is_auction",
+        ar_keypath(Sale.new, startDate) : @"start_at",
+        ar_keypath(Sale.new, endDate) : @"end_at",
+        ar_keypath(Sale.new, buyersPremium) : @"buyers_premium"
     };
 }
 

@@ -1,3 +1,6 @@
+#import <Foundation/Foundation.h>
+
+
 // All the options as consts
 extern NSString *const AROptionsLoadingScreenAlpha;
 extern NSString *const AROptionsUseVCR;

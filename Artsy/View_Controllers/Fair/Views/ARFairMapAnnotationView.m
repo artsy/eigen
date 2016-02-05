@@ -1,5 +1,10 @@
 #import "ARFairMapAnnotationView.h"
 
+#import "ARFonts.h"
+
+#import <NAMapKit/NAMapView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @interface ARFairMapAnnotationView ()
 @property (nonatomic, weak) UIImageView *mapFeatureView;

@@ -1,10 +1,14 @@
+#import "ARLogger.h"
 #import "AREmbeddedModelsViewController.h"
+
+#import "ARAppConstants.h"
 #import "ARItemThumbnailViewCell.h"
 #import "ARReusableLoadingView.h"
 #import "AREmbeddedModelsPreviewDelegate.h"
 #import "AREmbeddedModelPreviewViewController.h"
 #import "ARTopMenuViewController.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARArtworkMasonryModule (Private)
 - (void)updateLayoutForSize:(CGSize)size;
@@ -153,7 +157,7 @@
 
 - (void)appendItems:(NSArray *)items
 {
-    if (!self && !self.collectionView) {
+    if ((!self && !self.collectionView) || items.count == 0) {
         return;
     }
 
@@ -216,6 +220,13 @@
     _headerHeight = headerHeight;
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
+
+- (void)setStickyHeaderHeight:(CGFloat)stickyHeaderHeight
+{
+    _stickyHeaderHeight = stickyHeaderHeight;
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
 
 #pragma mark - UIScrollViewDelegate methods
 
@@ -305,6 +316,7 @@
             [self.headerView alignLeading:@"0" trailing:@"0" toView:view];
         }
         return view;
+
     } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
         UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kind forIndexPath:indexPath];
         if (view.subviews.count == 0) {
@@ -315,9 +327,31 @@
             [loadingView alignLeading:@"0" trailing:@"0" toView:view];
         }
         return view;
-    } else {
-        return nil;
+
+    } else if ([kind isEqualToString:ARCollectionElementKindSectionStickyHeader]) {
+        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kind forIndexPath:indexPath];
+        if (view.subviews.count == 0) {
+            [view addSubview:self.stickyHeaderView];
+            [self.stickyHeaderView alignTopEdgeWithView:view predicate:@"0"];
+            [self.stickyHeaderView alignLeading:@"0" trailing:@"0" toView:view];
+        }
+        return view;
     }
+
+    NSAssert(YES, @"Should not be able to get here");
+    return nil;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout stickyHeaderHasChangedStickyness:(BOOL)isAttachedToLeadingEdge
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(embeddedModelsViewController:stickyHeaderDidChangeStickyness:)]) {
+        [self.delegate embeddedModelsViewController:self stickyHeaderDidChangeStickyness:isAttachedToLeadingEdge];
+    }
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForStickyHeaderInSection:(NSInteger)section
+{
+    return self.stickyHeaderView ? CGSizeMake(CGRectGetWidth(self.collectionView.bounds), self.stickyHeaderHeight) : CGSizeZero;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
