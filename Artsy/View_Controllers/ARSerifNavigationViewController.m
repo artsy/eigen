@@ -2,14 +2,17 @@
 #import "ARFonts.h"
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import "ARTopMenuViewController.h"
 
 
 @interface ARSerifNavigationBar : UINavigationBar
 @end
 
 
-@interface ARSerifNavigationViewController ()
-
+@interface ARSerifNavigationViewController () <UINavigationControllerDelegate>
+@property (nonatomic, strong) UIBarButtonItem *exitButton;
+@property (nonatomic, strong) UIBarButtonItem *backButton;
 @end
 
 
@@ -27,24 +30,65 @@
         return nil;
     }
 
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+
+    UIButton *exit = [[ARCircularActionButton alloc] initWithImageName:nil];
+    UIImage *image = [[UIImage imageNamed:@"CloseButtonLargeHighlighted"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    exit.frame = CGRectMake(0, 0, 40, 40);
+    [exit setImage:image forState:UIControlStateNormal];
+    [exit addTarget:self action:@selector(closeModal) forControlEvents:UIControlEventTouchUpInside];
+    self.exitButton = [[UIBarButtonItem alloc] initWithCustomView:exit];
+
+    UIButton *back = [[ARCircularActionButton alloc] initWithImageName:nil];
+    image = [[UIImage imageNamed:@"BackArrow_Highlighted"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    back.frame = CGRectMake(0, 0, 40, 40);
+    [back setImage:image forState:UIControlStateNormal];
+    [back addTarget:self action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    self.backButton = [[UIBarButtonItem alloc] initWithCustomView:back];
+
     [self setViewControllers:@[ rootViewController ]];
+    [self.navigationBar.topItem setRightBarButtonItem:self.exitButton];
+    self.delegate = self;
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }
 
 + (void)setupAppearance
 {
-    // Buttons
-    UIBarButtonItem *buttons = [UIBarButtonItem appearanceWhenContainedIn:self.class, nil];
     UINavigationBar *nav = [UINavigationBar appearanceWhenContainedIn:self.class, nil];
-
-    [nav setBarTintColor:UIColor.whiteColor];
+    [nav setBarTintColor:UIColor.blackColor];
     [nav setTintColor:UIColor.blackColor];
     [nav setTitleTextAttributes:@{
         NSForegroundColorAttributeName : UIColor.blackColor,
         NSFontAttributeName : [UIFont serifFontWithSize:20]
     }];
+    [nav setTitleVerticalPositionAdjustment:-8 forBarMetrics:UIBarMetricsDefault];
+}
 
-    [buttons setBackgroundVerticalPositionAdjustment:-15 forBarMetrics:UIBarMetricsDefault];
+- (void)closeModal
+{
+    [self.presentingViewController dismissViewControllerAnimated:self completion:^{
+    }];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    viewController.navigationItem.hidesBackButton = YES;
+    viewController.navigationItem.rightBarButtonItem = self.exitButton;
+
+    if (navigationController.viewControllers.count > 1) {
+        viewController.navigationItem.leftBarButtonItem = self.backButton;
+    }
+}
+
+- (BOOL)wantsFullScreenLayout
+{
+    return YES;
 }
 
 - (BOOL)definesPresentationContext
@@ -57,6 +101,7 @@
     return [UIDevice isPad] ? UIModalPresentationFormSheet : UIModalPresentationFullScreen;
 }
 
+
 @end
 
 
@@ -68,29 +113,14 @@
     if (!self) return nil;
 
     self.translucent = NO;
-    [self removeNavigationBarShadow];
-    [self tintColorDidChange];
+    self.backgroundColor = [UIColor whiteColor];
 
     return self;
 }
 
-- (void)removeNavigationBarShadow
-{
-    // Removes a single line from the nav bar.
-
-    for (UIView *view in self.subviews) {
-        for (UIView *view2 in view.subviews) {
-            if ([view2 isKindOfClass:[UIImageView class]] && view2.frame.size.height < 2) {
-                [view2 removeFromSuperview];
-                return;
-            }
-        }
-    }
-}
-
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    size.height = 64;
+    size.height = 60;
     size.width = self.superview.bounds.size.width;
     return size;
 }
@@ -126,15 +156,6 @@
     CGRect newFrame = viewToCenter.frame;
     newFrame.origin.y = roundf(barMidpoint - viewMidpoint);
     viewToCenter.frame = newFrame;
-}
-
-- (void)addSubview:(UIView *)view
-{
-    [super addSubview:view];
-
-    // This fixes the custom back button background not showing
-    // http://stackoverflow.com/questions/18824887/ios-7-custom-back-button/19452709#19452709
-    [view setNeedsDisplay];
 }
 
 @end
