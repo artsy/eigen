@@ -1,6 +1,7 @@
 GIT
   remote: https://github.com/KrauseFx/danger.git
-  revision: 85decc721ff50bf57abdf078db7b8ca574080a94
+  revision: c132d7474860125f2eb78b2c858eedad791877d4
+  branch: local_test
   specs:
     danger (0.2.1)
       claide
@@ -137,11 +138,8 @@ GEM
       fastimage (~> 1.6.3)
       fastlane_core (>= 0.16.0, < 1.0.0)
       mini_magick (~> 4.0.2)
-    fui (0.3.0)
-      gli
     fuzzy_match (2.0.4)
     git (1.2.9.1)
-    gli (2.13.4)
     google-api-client (0.8.6)
       activesupport (>= 3.2)
       addressable (~> 2.3)
@@ -313,10 +311,8 @@ DEPENDENCIES
   danger!
   deliver
   fastlane
-  fui
   gym
   lowdown
-  match
   nokogiri (= 1.6.7.rc4)
   pilot
   second_curtain

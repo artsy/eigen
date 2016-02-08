@@ -18,7 +18,7 @@ LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo $(shell whoami)-$(shell git rev-parse --abbrev-ref HEAD))
 
 
-.PHONY: all build ci test lint oss pr artsy
+.PHONY: all build ci test oss pr artsy
 
 all: ci
 
@@ -72,9 +72,6 @@ test:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug build test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
 
 ### CI
-
-lint:
-	bundle exec fui --path Artsy find
 
 ci: CONFIGURATION = Debug
 ci: build
