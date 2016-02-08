@@ -112,6 +112,11 @@ static ARAppDelegate *_sharedInstance = nil;
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
 
+    // This cannot be moved after the view setup code, as it
+    // relies on swizzling alloc on new objects, thus should be
+    // one of the first things that happen.
+    [self setupAnalytics];
+
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [ARTopMenuViewController sharedController];
     self.window.rootViewController = self.viewController;
@@ -119,7 +124,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [self setupAdminTools];
 
-    [self setupAnalytics];
     [self setupRatingTool];
     [self countNumberOfRuns];
 

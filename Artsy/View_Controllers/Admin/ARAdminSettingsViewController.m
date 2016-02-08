@@ -1,5 +1,6 @@
 #import <HockeySDK_Source/HockeySDK.h>
 #import <HockeySDK_Source/BITFeedbackManager.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "ARAdminSettingsViewController.h"
 

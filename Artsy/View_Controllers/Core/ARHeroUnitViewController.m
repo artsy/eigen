@@ -22,7 +22,6 @@ const static CGFloat ARCarouselDelay = 10;
 
 
 @interface ARSiteHeroUnitViewController ()
-- (instancetype)initWithHeroUnit:(SiteHeroUnit *)heroUnit andIndex:(NSInteger)index;
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, strong, readwrite) SiteHeroUnit *heroUnit;
 @end
@@ -159,7 +158,7 @@ const static CGFloat ARCarouselDelay = 10;
 - (void)goToHeroUnit:(UIViewController *)vc withDirection:(UIPageViewControllerNavigationDirection)direction
 {
     self.pageViewController.view.userInteractionEnabled = NO;
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.pageViewController setViewControllers:@[ vc ] direction:direction animated:YES completion:^(BOOL finished) {
         __strong typeof (wself) sself = wself;
         [sself.pageControl setCurrentPage:[sself currentViewController].index];
@@ -251,6 +250,7 @@ const static CGFloat ARCarouselDelay = 10;
     [self.view addGestureRecognizer:tapGesture];
 
     ARSiteHeroUnitView *heroUnitView = [[ARSiteHeroUnitView alloc] initWithFrame:self.view.bounds unit:self.heroUnit];
+
     // We can't use autoresizing masks in a view controller contained in a UIPageViewController
     // See: http://stackoverflow.com/questions/17729336/uipageviewcontroller-auto-layout-rotation-issue
     heroUnitView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

@@ -168,7 +168,7 @@ private extension AuctionTitleView {
         registerButton.alignCenterXWithView(container, predicate: "0")
         registrationLabel.alignCenterXWithView(container, predicate: "0")
 
-        // Staack the register button on top of the label, and constrain them to the container.
+        // Stack the register button on top of the label, and constrain them to the container.
         registerButton.alignTopEdgeWithView(container, predicate: "0")
         registrationLabel.constrainTopSpaceToView(registerButton, predicate: "10")
         registrationLabel.alignBottomEdgeWithView(container, predicate: "0")

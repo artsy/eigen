@@ -12,14 +12,14 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
-#define AR_HERO_TITLE_FONT 26
-
 static ARParallaxEffect *backgroundParallax;
 static const NSInteger ARHeroUnitParallaxDistance = 30;
 static const CGFloat ARHeroUnitBottomMargin = 34;
 static const CGFloat ARHeroUnitDescriptionButtonMargin = 25;
 static const CGFloat ARHeroUnitButtonCreditMargin = 21;
 static const CGFloat ARHeroUnitTopMargin = 97;
+static const CGFloat ARHeroCompactTitleFontSize = 26;
+
 static CGFloat ARHeroUnitSideMargin;
 static CGFloat ARHeroUnitHeadingTitleMargin;
 static CGFloat ARHeroUnitTitleDescriptionMargin;
@@ -136,7 +136,7 @@ static CGFloat ARHeroUnitDescriptionFont;
 - (UILabel *)createTitleLabelWithText:(NSString *)text
 {
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.font = [UIFont sansSerifFontWithSize:AR_HERO_TITLE_FONT];
+    titleLabel.font = [UIFont sansSerifFontWithSize:ARHeroCompactTitleFontSize];
 
     NSMutableAttributedString *attributedTitle = nil;
     NSString *title = [text stringByReplacingOccurrencesOfString:@"\n\n" withString:@"\n"];

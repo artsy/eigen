@@ -13,16 +13,14 @@ group :development do
 end
 
 group :test do
-  gem 'fui'
   gem 'xcpretty'
   gem 'second_curtain'
-  gem 'danger', :git => "https://github.com/KrauseFx/danger.git", :branch => "funky_circles"
+  gem 'danger', :git => "https://github.com/KrauseFx/danger.git", :branch => "local_test"
 end
 
 group :distribution do
-  gem 'deliver'
-  gem 'match'
-  gem 'pilot'
-  gem 'gym'
-  gem 'fastlane'
+  gem 'deliver' # hockey
+  gem 'pilot' # itunes connect
+  gem 'gym' # building IPAs
+  gem 'fastlane' # infrastructre
 end
