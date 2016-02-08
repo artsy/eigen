@@ -56,6 +56,7 @@
 #import "ARBrowseViewController.h"
 #import "ARSearchViewController.h"
 #import "ARNavigationController.h"
+#import "ARHeroUnitViewController.h"
 
 // Views
 #import "ARHeartButton.h"
@@ -92,10 +93,13 @@
         environment = ADJEnvironmentSandbox;
     }
 
-    // Skipping ARAnalytics because Adjust has its own expectations
-    // around event names being < 6 chars
-    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:keys.adjustProductionAppToken environment:environment];
-    [Adjust appDidLaunch:adjustConfig];
+    if (ARAppStatus.isRunningTests == NO) {
+        // Skipping ARAnalytics because Adjust has its own expectations
+        // around event names being < 6 chars
+
+        ADJConfig *adjustConfig = [ADJConfig configWithAppToken:keys.adjustProductionAppToken environment:environment];
+        [Adjust appDidLaunch:adjustConfig];
+    }
 
 #if DEBUG
     BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
@@ -760,14 +764,14 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARSiteHeroUnitView.class,
+                    ARAnalyticsClass: ARSiteHeroUnitViewController.class,
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: ARAnalyticsTappedHeroUnit,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedView:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARSiteHeroUnitView *view, NSArray *_){
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedUnit:)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARSiteHeroUnitViewController *vc, NSArray *_){
                                 return @{
-                                    @"destination" : view.linkAddress ?: @""
+                                    @"destination" : vc.heroUnit.link ?: @""
                                 };
                             },
                         }

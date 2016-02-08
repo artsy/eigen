@@ -1,4 +1,12 @@
 upcoming:
+  version: 2.3.6
+  details: Analytics + Auction Overview (?)
+  dev:
+    - Nothing so far
+  notes:
+    - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
+
+releases:
   version: 2.3.5
   details: Ideally a small release for iOS8 + Push fixes.
   dev:
@@ -23,7 +31,6 @@ upcoming:
     - Auction's refine view uses metric 'k' suffix for amounts great than a thousand dollars - ash
     - Auction view now downloads sale artworks for the sale - ash
 
-releases:
   - version: 2.3.4
     date: Jan 26, 2016
     notes:
