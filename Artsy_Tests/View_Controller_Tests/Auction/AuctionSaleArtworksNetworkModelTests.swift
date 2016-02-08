@@ -45,7 +45,7 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
             expect(subject.saleArtworks?.first?.saleArtworkID) == saleArtworkID
         }
 
-        fit("loads the second page, if necessary") {
+        it("loads the second page, if necessary") {
             var callNumber = 0
             OHHTTPStubs.stubRequestsPassingTest({ request in
                     return request.URL?.path?.containsString("/api/v1/sale/\(saleID)/sale_artworks") ?? false

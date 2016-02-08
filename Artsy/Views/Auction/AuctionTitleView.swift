@@ -29,6 +29,8 @@ class AuctionTitleView: UIView {
 
         super.init(frame: CGRect.zero)
 
+        self.translatesAutoresizingMaskIntoConstraints = false
+
         setupViews()
     }
 
@@ -122,7 +124,7 @@ private extension AuctionTitleView {
         let container = UIView()
 
         // We're assuming a missing registration status means that the user isn't registered. We'll let our delegate handle the interaction for that.
-        let needsToRegister = registrationStatus ?? ArtsyAPISaleRegistrationStatusNotRegistered == ArtsyAPISaleRegistrationStatusRegistered
+        let needsToRegister = (registrationStatus ?? ArtsyAPISaleRegistrationStatusNotRegistered) != ArtsyAPISaleRegistrationStatusRegistered
 
         // For registered users, we display the "Approved to bid"
         // For all other cases (not logged in / not registered), we show the "Register" button

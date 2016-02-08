@@ -115,6 +115,7 @@ target 'Artsy Tests' do
   pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
+  pod 'Forgeries/Mocks', git: 'https://github.com/ashfurrow/Forgeries.git', branch: 'frameworks'
 
   # Swift pods 🎉
   pod 'Quick'
