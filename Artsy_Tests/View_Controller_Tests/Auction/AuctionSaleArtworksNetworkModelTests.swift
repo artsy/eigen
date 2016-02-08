@@ -19,10 +19,6 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
             subject = AuctionSaleArtworksNetworkModel()
         }
 
-        afterEach {
-            OHHTTPStubs.removeAllStubs()
-        }
-
         it("returns fetches the sale artworks") {
             OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/\(saleID)/sale_artworks", withResponse: saleArtworksJSON)
 

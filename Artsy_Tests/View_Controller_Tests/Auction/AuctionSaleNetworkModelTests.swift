@@ -12,10 +12,6 @@ class AuctionSaleNetworkModelSpec: QuickSpec {
         let saleID = "sale_id"
         let saleJSON: NSDictionary = ["id": saleID]
 
-        afterEach {
-            OHHTTPStubs.removeAllStubs()
-        }
-
         it("returns fetches the sale") {
             OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/\(saleID)", withResponse: saleJSON)
 

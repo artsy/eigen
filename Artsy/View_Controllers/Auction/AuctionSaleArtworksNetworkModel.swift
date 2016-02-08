@@ -47,7 +47,7 @@ private func fetchPage(page: Int, forSaleID saleID: String, alreadyFetched: [Sal
                 fetchPage(nextPage, forSaleID: saleID, alreadyFetched: totalFetchedSoFar, callback: callback)
             }
         },
-        failure: passOnFailure(callback)
+        failure: invokeCallbackWithFailure(callback)
     )
 }
 

@@ -18,6 +18,6 @@ class AuctionRegistrationStatusNetworkModel: AuctionRegistrationStatusNetworkMod
             success: { registrationStatus in
                 self.registrationStatus = registrationStatus
                 callback(.Success(registrationStatus))
-            }, failure: passOnFailure(callback))
+            }, failure: invokeCallbackWithFailure(callback))
     }
 }

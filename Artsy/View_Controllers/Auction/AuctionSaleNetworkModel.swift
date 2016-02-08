@@ -18,7 +18,7 @@ class AuctionSaleNetworkModel: AuctionSaleNetworkModelType {
                 self.sale = sale
                 callback(.Success(sale))
             },
-            failure: passOnFailure(callback)
+            failure: invokeCallbackWithFailure(callback)
         )
     }
 }

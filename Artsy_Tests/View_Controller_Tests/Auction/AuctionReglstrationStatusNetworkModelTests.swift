@@ -12,7 +12,6 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
         let bidderJSON: NSArray = [["id": "bidder", "sale": ["id": "sale"]]]
 
         afterEach {
-            OHHTTPStubs.removeAllStubs()
             ARUserManager.clearUserData()
         }
 
