@@ -5,7 +5,7 @@ SpecBegin(ARSerifNavigationViewController);
 
 __block ARSerifNavigationViewController *subject;
 
-fdescribe(@"", ^{
+describe(@"", ^{
 
     it(@"shows as a form in the center", ^{
 
@@ -44,7 +44,7 @@ fdescribe(@"", ^{
 
             // The host.view is useless here, we're not
             // adding to it, contrary what you'd expect
-            expect(window).to.recordSnapshot();
+            expect(window).to.haveValidSnapshot();
 
             // It sticks around otherwise.
             window.hidden = YES;
@@ -65,7 +65,7 @@ fdescribe(@"", ^{
         subject = [[ARSerifNavigationViewController alloc] initWithRootViewController:insideVC];
         [subject pushViewController:secondVC animated:NO];
 
-        expect(subject).to.recordSnapshot();
+        expect(subject).to.haveValidSnapshot();
     });
 });
 

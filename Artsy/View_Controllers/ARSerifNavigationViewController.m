@@ -13,6 +13,7 @@
 @interface ARSerifNavigationViewController () <UINavigationControllerDelegate>
 @property (nonatomic, strong) UIBarButtonItem *exitButton;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
+@property (nonatomic, assign) BOOL oldStatusBarHiddenStatus;
 @end
 
 
@@ -35,13 +36,14 @@
     UIButton *exit = [[ARCircularActionButton alloc] initWithImageName:nil];
     UIImage *image = [[UIImage imageNamed:@"CloseButtonLargeHighlighted"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     exit.frame = CGRectMake(0, 0, 40, 40);
+    exit.layer.cornerRadius = 40 * .5f;
+
     [exit setImage:image forState:UIControlStateNormal];
     [exit addTarget:self action:@selector(closeModal) forControlEvents:UIControlEventTouchUpInside];
     self.exitButton = [[UIBarButtonItem alloc] initWithCustomView:exit];
 
-    UIButton *back = [[ARCircularActionButton alloc] initWithImageName:nil];
+    UIButton *back = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     image = [[UIImage imageNamed:@"BackArrow_Highlighted"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    back.frame = CGRectMake(0, 0, 40, 40);
     [back setImage:image forState:UIControlStateNormal];
     [back addTarget:self action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     self.backButton = [[UIBarButtonItem alloc] initWithCustomView:back];
@@ -55,13 +57,29 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+
+    UIApplication *app = [UIApplication sharedApplication];
+    self.oldStatusBarHiddenStatus = app.statusBarHidden;
+    [app setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+
+    if ([UIDevice isPad]) {
+        self.view.layer.cornerRadius = 0;
+        self.view.superview.layer.cornerRadius = 0;
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    UIApplication *app = [UIApplication sharedApplication];
+    [app setStatusBarHidden:app.statusBarHidden withAnimation:UIStatusBarAnimationNone];
 }
 
 + (void)setupAppearance
 {
     UINavigationBar *nav = [UINavigationBar appearanceWhenContainedIn:self.class, nil];
-    [nav setBarTintColor:UIColor.blackColor];
+    [nav setBarTintColor:UIColor.whiteColor];
     [nav setTintColor:UIColor.blackColor];
     [nav setTitleTextAttributes:@{
         NSForegroundColorAttributeName : UIColor.blackColor,
@@ -72,8 +90,7 @@
 
 - (void)closeModal
 {
-    [self.presentingViewController dismissViewControllerAnimated:self completion:^{
-    }];
+    [self.presentingViewController dismissViewControllerAnimated:self completion:nil];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -100,7 +117,6 @@
 {
     return [UIDevice isPad] ? UIModalPresentationFormSheet : UIModalPresentationFullScreen;
 }
-
 
 @end
 
