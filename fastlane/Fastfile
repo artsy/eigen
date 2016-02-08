@@ -1,6 +1,7 @@
 require 'yaml'
 
 lane :ship_beta do
+  setup_for_app_store
   verify_pod_keys
 
   readme_yaml = File.read("../CHANGELOG.yml")
@@ -11,18 +12,79 @@ lane :ship_beta do
   upcoming = readme_data["upcoming"]
   beta_readme =  "## #{upcoming["version"]} \n\n - #{upcoming["notes"].join "\n - "} \n\n"
 
-  # Build
+  # Builds the app
   gym
 
-  # Ship to hockey first, testflight has to wait: "processing"
-  hockey notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN']
-  pilot changelog: readme
+  # Find out how many builds we've sent for this version
+  # if it's zero, it will raise an exception
+  build_version = 0
+  begin
+    number_of_betas_for_version = latest_testflight_build_number(version: latest_version)
+    build_version = number_of_betas_for_version + 1
+  rescue
+  end
 
+  # Do a tag, we use a http git remote so we can have push access
+  # as the default remote for circle is read-only
+  add_git_tag tag: "#{latest_version}-#{build_version}"
+  `git remote add http https://github.com/artsy/eigen.git`
+  `git push http --tags`
+
+  # Ship to hockey first, testflight has to wait for processing
+  hockey(
+    notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN'],
+    public_identifier: ENV['HockeyAppLiveID'], repository_url: "https://github.com/artsy/eigen.git",
+    commit_sha: `git rev-parse HEAD`.strip
+  )
+
+  pilot changelog: beta_readme
+
+  # Let us know everything has finished
   slack message: "There is a new Eigen beta available. Grab it from Testflight on your iOS device.",
-        channel: "artsy-ios",
+        channel: "collector-gmv-ios",
         payload: {
           'Version' => latest_version,
           'What\'s new' => beta_readme
         },
         default_payloads: []
+end
+
+## We want to have a simpler version of Fastlane's match
+## this does it in a pretty reasonable amount of code.
+
+lane :setup_for_app_store do
+  app_name = "eigen"
+  signing_root = "signing"
+
+  `git clone https://github.com/artsy/mobile_code_signing.git #{signing_root}`
+
+  # prints out the codesigning identities
+  system "security find-identity -v -p codesigning"
+
+  # Install the iOS distribution certificate, -A
+  system "security import #{signing_root}/ios_distribution.cer  -k ~/Library/Keychains/login.keychain -A"
+
+  # Move our provisioning profile in
+  profile_path = File.expand_path("~") + "/Library/MobileDevice/Provisioning Profiles/"
+  destination = profile_path + "/" + app_name + ".mobileprovision"
+  profile = Dir.glob(signing_root + "/profiles/" + app_name + "/*").first
+
+  # Ensure folder exists
+  unless File.directory?(profile_path)
+    FileUtils.mkdir_p(profile_path)
+  end
+
+  # Migrate it in
+  FileUtils.copy profile, destination
+  puts "Installed Profile"
+
+  # Install the key
+  key = Dir.glob(signing_root + "/keys/" + app_name + "/*").first
+  system "security import #{key} -k ~/Library/Keychains/login.keychain -P #{ENV['MATCH_PASSWORD']}  -A "
+
+  # prints out the codesigning identities
+  system "security find-identity -v -p codesigning"
+
+  # Clean-up
+  `rm -rf #{signing_root}`
 end

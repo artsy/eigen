@@ -3,7 +3,7 @@ SCHEME = Artsy
 CONFIGURATION = Beta
 APP_PLIST = Artsy/App_Resources/Artsy-Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
-DEVICE_HOST = platform='iOS Simulator',OS='9.0',name='iPhone 6'
+DEVICE_HOST = platform='iOS Simulator',OS='9.2',name='iPhone 6'
 
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
 GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
@@ -18,7 +18,7 @@ LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo $(shell whoami)-$(shell git rev-parse --abbrev-ref HEAD))
 
 
-.PHONY: all build ci test lint oss pr artsy
+.PHONY: all build ci test oss pr artsy
 
 all: ci
 
@@ -26,7 +26,6 @@ all: ci
 
 appstore: update_bundle_version set_git_properties change_version_to_date ship_appstore
 next: update_bundle_version set_git_properties change_version_to_date
-beta: ipa distribute
 
 ### General setup
 
@@ -53,7 +52,8 @@ artsy:
 	config/spacecommander/setup-repo.sh
 
 certs:
-	bundle exec match appstore --readonly
+	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
+	bundle exec match appstore
 
 ### Fastlane Distrubution + Building
 
@@ -63,27 +63,21 @@ ipa: set_git_properties change_version_to_date
 distribute:
 	bundle exec fastlane ship_beta
 
-ship_appstore:
-	bundle exec deliver -i build/Artsy.ipa --submit_for_review
-
 ### General Xcode tooling
 
 build:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator build | tee $(CIRCLE_ARTIFACTS)/xcode_build_raw.log | bundle exec xcpretty -c
+	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator build -destination $(DEVICE_HOST) | tee $(CIRCLE_ARTIFACTS)/xcode_build_raw.log | bundle exec xcpretty -c
 
 test:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug build test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
 
 ### CI
 
-lint:
-	bundle exec fui --path Artsy find
-
 ci: CONFIGURATION = Debug
 ci: build
 
 deploy_if_beta_branch:
-	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make certs; make ipa; make distribute; fi
+	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi
 
 deploy:
 	git push upstream "$(LOCAL_BRANCH):beta"

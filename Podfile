@@ -131,6 +131,17 @@ post_install do |installer|
     end
   end
 
+  # CI was having trouble shipping signed builds
+  # https://github.com/CocoaPods/CocoaPods/issues/4011
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = ""
+      config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
+      config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
+    end
+  end
+
+
   app_plist = "Artsy/App_Resources/Artsy-Info.plist"
   plist_buddy = "/usr/libexec/PlistBuddy"
   version = `#{plist_buddy} -c "Print CFBundleShortVersionString" #{app_plist}`.strip

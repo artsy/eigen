@@ -1,5 +1,0 @@
-git_url "https://github.com/artsy/mobile_code_signing"
-type "development"
-
-app_identifier "net.artsy.artsy"
-username "it@artsymail.com"

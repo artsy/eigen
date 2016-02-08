@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: "7.0"
+    version: "7.2"
   environment:
     # Public - Yay
     UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
@@ -9,10 +9,11 @@ machine:
     AWS_ACCESS_KEY_ID: from_admin
     AWS_SECRET_ACCESS_KEY: from_admin
     DANGER_GITHUB_API_TOKEN: from_admin
-    FASTLANE_PASSWORD: from_admin
-    FASTLANE_USERNAME: from_admin
     GITHUB_API_KEY : from_admin
     MATCH_PASSWORD : from_admin
+    HOCKEY_API_TOKEN : from_admin
+    FASTLANE_USERNAME : from_admin
+    FASTLANE_PASSWORD : from_admin
     ArtsyAPIClientSecret: from_admin
     ArtsyAPIClientKey: from_admin
     ArtsyFacebookAppID: from_admin
@@ -42,6 +43,6 @@ test:
     - make ci
   override:
     - make test
-    - bundle exec danger
+    - bundle exec danger --verbose
   post:
     - make deploy_if_beta_branch
