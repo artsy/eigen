@@ -41,10 +41,8 @@ class AuctionInformationViewController : UIViewController {
         self.auctionInformation = auctionInformation
         self.scrollView = ORStackScrollView()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        // Custom initialization
     }
 
-    // Required by Swift compiler, sadly.
     required init?(coder aDecoder: NSCoder) {
         fatalError()
     }
@@ -55,9 +53,9 @@ class AuctionInformationViewController : UIViewController {
         self.view.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(self.scrollView)
         
-        self.scrollView.alignTopEdgeWithView(self.flk_topLayoutGuide(), predicate: "0")
+        self.scrollView.constrainTopSpaceToView(self.flk_topLayoutGuide(), predicate: "0")
         self.scrollView.alignLeading("0", trailing: "0", toView: self.view)
-        self.scrollView.alignBottomEdgeWithView(self.flk_bottomLayoutGuide(), predicate: "0")
+        self.scrollView.constrainBottomSpaceToView(self.flk_bottomLayoutGuide(), predicate: "0")
         
         let stackView = self.scrollView.stackView
         
@@ -91,7 +89,9 @@ class AuctionInformationViewController : UIViewController {
         auctionBeginsLabel.text = self.auctionInformation.startsAt
         stackView.addSubview(auctionBeginsLabel, withTopMargin: "10", sideMargin: "40")
         
-        let faqButtonDescription = [ARNavigationButtonClassKey: ARNavigationButton.self, ARNavigationButtonPropertiesKey: ["title": "AUCTIONS FAQ"], ARNavigationButtonHandlerKey: toBlock({ (_) -> Void in print("TAPPED FAQ") })]
+        let faqButtonDescription = [ARNavigationButtonClassKey: ARNavigationButton.self, ARNavigationButtonPropertiesKey: ["title": "AUCTIONS FAQ"], ARNavigationButtonHandlerKey: toBlock({ (_) -> Void in
+            self.navigationController?.pushViewController(AuctionInformationFAQViewController(entries: self.auctionInformation.FAQEntries), animated: true)
+        })]
         let contactButtonDescription = [ARNavigationButtonClassKey: ARNavigationButton.self, ARNavigationButtonPropertiesKey: ["title": "CONTACT"], ARNavigationButtonHandlerKey: toBlock({ (_) -> Void in print("TAPPED CONTACT") })]
         let buttonsViewController = ARNavigationButtonsViewController(buttonDescriptions: [faqButtonDescription, contactButtonDescription])
 
@@ -100,5 +100,122 @@ class AuctionInformationViewController : UIViewController {
     
     func toBlock(closure: @convention (block) UIButton -> Void) -> AnyObject {
         return unsafeBitCast(closure, AnyObject.self)
+    }
+}
+
+class AuctionInformationFAQView : UIView {
+    var tapHandler: (AuctionInformationFAQView) -> Void
+    var contentHeightConstraint: NSLayoutConstraint
+
+    required init(entry: AuctionInformationFAQEntry, tapHandler: (AuctionInformationFAQView) -> Void) {
+        self.tapHandler = tapHandler
+        
+        let topBorder = UIView()
+        topBorder.backgroundColor = UIColor.artsyLightGrey()
+
+        let titleButton = UIButton(type: .Custom)
+
+        let titleLabel = UILabel()
+        titleLabel.text = entry.name.uppercaseString
+        titleLabel.numberOfLines = 1
+        titleLabel.backgroundColor = UIColor.clearColor()
+        titleLabel.font = UIFont.sansSerifFontWithSize(12)
+        
+        let contentView = ARTextView()
+        contentView.scrollEnabled = true
+        contentView.setMarkdownString(entry.content)
+        
+        self.contentHeightConstraint = contentView.constrainHeight("0").first as! NSLayoutConstraint
+
+        super.init(frame: CGRectZero)
+        
+        titleButton.addTarget(self, action: "didTapButton:", forControlEvents: .TouchUpInside)
+        
+        self.addSubview(topBorder)
+        self.addSubview(titleButton)
+        titleButton.addSubview(titleLabel)
+        self.addSubview(contentView)
+        
+        topBorder.constrainHeight("1")
+        topBorder.alignTopEdgeWithView(self, predicate: "0")
+        topBorder.alignLeading("0", trailing: "0", toView: self)
+        
+        titleLabel.alignTop("0", bottom: "0", toView: titleButton)
+        titleLabel.alignLeading("40", trailing: "-40", toView: titleButton)
+        
+        titleButton.constrainHeight("50")
+        titleButton.constrainTopSpaceToView(topBorder, predicate: "0")
+        titleButton.alignLeading("0", trailing: "0", toView: self)
+        
+        contentView.constrainTopSpaceToView(titleButton, predicate: "0")
+        // Inset the text with text container insets, instead of leading/traling constraints, so that the
+        // text view’s scroll bar is all the way the side of the entry view.
+        contentView.textContainerInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
+        contentView.alignLeading("0", trailing: "0", toView: self)
+        
+        self.alignBottomEdgeWithView(contentView, predicate: "0")
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
+    
+    func expand() {
+        self.contentHeightConstraint.active = false
+    }
+    
+    func collapse() {
+        self.contentHeightConstraint.active = true
+    }
+    
+    func didTapButton(button: UIButton) {
+        self.tapHandler(self)
+    }
+}
+
+class AuctionInformationFAQViewController : UIViewController {
+    var entries: [AuctionInformationFAQEntry]
+    var stackView: ORStackView
+    var currentlyExpandedEntryView: AuctionInformationFAQView?
+    
+    required init(entries: [AuctionInformationFAQEntry]) {
+        self.entries = entries;
+        self.stackView = ORStackView()
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.addSubview(self.stackView)
+        
+        self.stackView.constrainTopSpaceToView(self.flk_topLayoutGuide(), predicate: "0")
+        self.stackView.alignLeading("0", trailing: "0", toView: self.view)
+        self.stackView.constrainBottomSpaceToView(self.flk_bottomLayoutGuide(), predicate: "0")
+        
+        self.entries.forEach { (entry) -> () in
+            let entryView = AuctionInformationFAQView(entry: entry) { [unowned self] in self.expandView($0) }
+            self.stackView.addSubview(entryView, withTopMargin: "0", sideMargin: "0")
+        }
+
+        self.currentlyExpandedEntryView = self.stackView.subviews.first as? AuctionInformationFAQView
+        self.currentlyExpandedEntryView!.expand()
+    }
+    
+    func expandView(viewToExpand: AuctionInformationFAQView) {
+        let previouslyExpandedEntryView = self.currentlyExpandedEntryView
+        self.currentlyExpandedEntryView = viewToExpand
+
+        UIView.animateWithDuration(0.25, animations: {
+            // Do it in this order, otherwise we’d get unsatisfiable constraints.
+            self.currentlyExpandedEntryView!.expand()
+            previouslyExpandedEntryView!.collapse()
+            self.stackView.layoutIfNeeded()
+        })
     }
 }
