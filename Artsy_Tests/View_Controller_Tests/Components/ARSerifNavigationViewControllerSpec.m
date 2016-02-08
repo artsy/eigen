@@ -4,8 +4,6 @@
 SpecBegin(ARSerifNavigationViewController);
 
 __block ARSerifNavigationViewController *subject;
-__block UIViewController *host;
-__block UIWindow *window;
 
 fdescribe(@"", ^{
 
@@ -32,6 +30,7 @@ fdescribe(@"", ^{
             host.view.backgroundColor = [UIColor whiteColor];
             UIViewController *insideVC = [[UIViewController alloc] init];
             insideVC.view.backgroundColor = [UIColor greenColor];
+            insideVC.title = @"Title";
 
             // The presentation _probably_ requires a run-loop tick
             // and so the waitUntil will delay this test to let it run.
@@ -52,6 +51,21 @@ fdescribe(@"", ^{
             window = nil;
         }];
 
+    });
+
+    it(@"handles the back button correctly", ^{
+        UIViewController *insideVC = [[UIViewController alloc] init];
+        insideVC.view.backgroundColor = [UIColor greenColor];
+        insideVC.title = @"Title";
+
+        UIViewController *secondVC = [[UIViewController alloc] init];
+        secondVC.view.backgroundColor = [UIColor debugColourBlue];
+        secondVC.title = @"Title3";
+
+        subject = [[ARSerifNavigationViewController alloc] initWithRootViewController:insideVC];
+        [subject pushViewController:secondVC animated:NO];
+
+        expect(subject).to.recordSnapshot();
     });
 });
 
