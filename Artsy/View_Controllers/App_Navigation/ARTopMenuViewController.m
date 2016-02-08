@@ -8,6 +8,7 @@
 #import "ARUserManager.h"
 #import "ArtsyAPI+Private.h"
 #import "ARAppConstants.h"
+#import "ARAnalyticsConstants.h"
 #import "ARFonts.h"
 #import "User.h"
 #import "ARTrialController.h"
@@ -70,6 +71,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     ARNavigationTabButton *magazineButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
+    notificationsButton.tag = ARNavButtonNotificationsTag;
 
     [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateNormal];
     [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateSelected];

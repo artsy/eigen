@@ -1225,6 +1225,12 @@
                             ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
                                 return [parameters.firstObject integerValue] == ARTopTabControllerIndexNotifications;
                             },
+                        },@{
+                            ARAnalyticsPageName: @"Bell Tapped",
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(buttonTapped:),
+                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
+                                return [parameters.firstObject tag] == ARNavButtonNotificationsTag;
+                            }
                         }
                     ]
                 },

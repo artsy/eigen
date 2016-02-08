@@ -122,4 +122,4 @@ NSString *const ARAdjustSentArtworkInquiry = @"duxtlx";
 NSString *const ARAdjustFirstUserInstall = @"kju96h";
 NSString *const ARAdjustTappedBidButton = @"w5e24e";
 
-
+NSInteger const ARNavButtonNotificationsTag = (NSInteger)&ARNavButtonNotificationsTag;
