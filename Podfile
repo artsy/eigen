@@ -115,6 +115,7 @@ target 'Artsy Tests' do
   pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
+  pod 'Forgeries/Mocks'
 
   # Swift pods 🎉
   pod 'Quick'

@@ -89,6 +89,10 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.0.7):
     - FBSnapshotTestCase/Core
   - FLKAutoLayout (0.2.1)
+  - Forgeries/Core (0.6.1)
+  - Forgeries/Mocks (0.6.1):
+    - Forgeries/Core
+    - OCMock
   - FXBlurView (1.6.1)
   - HockeySDK-Source (3.8.5)
   - Interstellar/Core (1.4.0)
@@ -172,6 +176,7 @@ DEPENDENCIES:
   - FBSDKLoginKit (= 4.9.0-beta2)
   - FBSnapshotTestCase
   - FLKAutoLayout (from `https://github.com/alloy/FLKAutoLayout.git`, branch `add-support-for-layout-guides-take-2`)
+  - Forgeries/Mocks
   - FXBlurView
   - Interstellar/Core
   - iRate
@@ -325,6 +330,7 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: d32e83c0d2d39ef74a942543cacae2dc4de7d088
   FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
   FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
+  Forgeries: f5c991dda5977f42d11fa9313fd1e17bc3edbb27
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   HockeySDK-Source: 85233ef10090148e5571f7a0a82deb8213b1691e
   Interstellar: 40fc666872436d6c1b3524c59437ebdb5dec1c6a

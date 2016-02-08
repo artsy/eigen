@@ -27,7 +27,7 @@ extension SaleViewModel {
         return saleArtworks.count
     }
 
-    var name: String {
+    var displayName: String {
         return sale.name
     }
 

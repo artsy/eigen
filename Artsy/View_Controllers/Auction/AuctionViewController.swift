@@ -78,8 +78,7 @@ extension AuctionViewController {
         self.saleViewModel = saleViewModel
 
         [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
-          (AuctionTitleView(viewModel: saleViewModel), .Title),
-          (ARWhitespaceGobbler(), .WhitespaceGobbler)
+          (AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self), .Title)
         ].forEach { (view, tag) in
             view.tag = tag.rawValue
             headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
@@ -88,7 +87,7 @@ extension AuctionViewController {
         stickyHeader = ScrollingStickyHeaderView().then {
             $0.toggleAttatched(false, animated:false)
             $0.button.setTitle("Refine", forState: .Normal)
-            $0.titleLabel.text = saleViewModel.name
+            $0.titleLabel.text = saleViewModel.displayName
             $0.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
             $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
         }
@@ -121,8 +120,19 @@ extension AuctionViewController {
     }
 }
 
+private typealias TitleCallbacks = AuctionViewController
+extension TitleCallbacks: AuctionTitleViewDelegate {
+    func userDidPressInfo(titleView: AuctionTitleView) {
+        // TODO:
+    }
 
-extension AuctionViewController: AuctionRefineViewControllerDelegate {
+    func userDidPressRegister(titleView: AuctionTitleView) {
+        // TODO: We've got to make sure the user is logged in before booting them out to martsy
+    }
+}
+
+private typealias RefineSettings = AuctionViewController
+extension RefineSettings: AuctionRefineViewControllerDelegate {
     func userDidCancel(controller: AuctionRefineViewController) {
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -133,7 +143,8 @@ extension AuctionViewController: AuctionRefineViewControllerDelegate {
     }
 }
 
-extension AuctionViewController: AREmbeddedModelsViewControllerDelegate {
+private typealias EmbeddedModelCallbacks = AuctionViewController
+extension EmbeddedModelCallbacks: AREmbeddedModelsViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
         // TODO
     }
