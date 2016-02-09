@@ -18,3 +18,12 @@ fail("Developer Specific file shouldn't be changed") if files_modified.include?(
 made_analytics_changes = files_modified.include?("/Artsy/App/ARAppDelegate+Analytics.m")
 made_analytics_specs_changes = files_modified.include?("/Artsy_Tests/Analytics_Tests/ARAppAnalyticsSpec.m")
 fail("Analytics changes should have reflected specs changes") if made_analytics_changes and !made_analytics_specs_changes
+
+# CHANGELOG should lint
+require "YAML"
+begin
+  readme_yaml = File.read "CHANGELOG.yml"
+  readme_data = YAML.load readme_yaml
+rescue e
+  fail("CHANGELOG isn't legit YAML")
+end
