@@ -154,7 +154,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [self.view addSubview:self.backgroundView];
 
     // Make the background view a square equal to the longest dimension of self.view, regardless of orientation.
-    // This is to ensure that the background view completely coveres the view behind it when rotating.
+    // This is to ensure that the background view completely covers the view behind it when rotating.
     [self.backgroundView constrainWidthToView:self.view predicate:@">=0"];
     [self.backgroundView constrainHeightToView:self.view predicate:@">=0"];
     [self.backgroundView alignAttribute:NSLayoutAttributeHeight toAttribute:NSLayoutAttributeWidth ofView:self.backgroundView predicate:@"0"];

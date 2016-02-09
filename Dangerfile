@@ -9,7 +9,7 @@ warn("Needs testing on a Phone if change is non-trivial") if lines_of_code > 50 
 
 # Don't let testing shortcuts get into master
 fail("fdescribe left in tests") if `grep -r fdescribe Artsy_Tests/`.length > 1
-fail("fit left in tests") if `grep -r fit(@ Artsy_Tests/`.length > 1
+fail("fit left in tests") if `grep -r "fit(@" Artsy_Tests/`.length > 1
 
 # Devs shouldn't ship changes to this file
 fail("Developer Specific file shouldn't be changed") if files_modified.include?("Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m")
