@@ -1,4 +1,5 @@
 #import "ARCountdownView.h"
+@import Forgeries;
 
 SpecBegin(ARCountdownView);
 
@@ -24,10 +25,7 @@ it(@"looks ok when configured with a custom colour", ^{
 it(@"looks ok on a regular size class", ^{
     ARCountdownView *subject = [[ARCountdownView alloc] init];
     subject.targetDate = [NSDate distantPast];
-    // Need to trick it into thinking its on an iPad
-    id partialMock = [OCMockObject partialMockForObject:subject];
-    [[[partialMock stub] andReturn:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular]] traitCollection];
-    [subject traitCollectionDidChange:nil];
+    [subject stubHorizontalSizeClass:UIUserInterfaceSizeClassRegular];
 
     [subject startTimer];
 

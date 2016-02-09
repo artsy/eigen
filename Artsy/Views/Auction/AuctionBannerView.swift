@@ -6,18 +6,11 @@ import SDWebImage
 class AuctionBannerView: UIView {
     let viewModel: SaleViewModel
 
-    // Note: These are in order as they'll be in the view hierarchy (ie: first in the list is at the back)
-    private let backgroundImageView = UIImageView()
-    private let darkeningView = DarkeningView()
-    private let logoImageView = UIImageView()
-    private let countdownView = ARCountdownView(color: .whiteColor())
+    private var countdownView: ARCountdownView?
 
     init(viewModel: SaleViewModel) {
         self.viewModel = viewModel
         super.init(frame: CGRect.zero)
-
-        countdownView.targetDate = viewModel.closingDate
-        countdownView.heading = "Closing In"
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -29,9 +22,9 @@ class AuctionBannerView: UIView {
 
         // Countdown view only counts down when we have a superview.
         if let _ = newSuperview {
-            countdownView.startTimer()
+            countdownView?.startTimer()
         } else {
-            countdownView.stopTimer()
+            countdownView?.stopTimer()
         }
     }
 
@@ -46,6 +39,20 @@ class AuctionBannerView: UIView {
 
 extension AuctionBannerView {
     private func setupViews() {
+
+        // Note: These are in order as they'll be in the view hierarchy (ie: first in the list is at the back)
+        let backgroundImageView = UIImageView()
+        let darkeningView = DarkeningView()
+        let logoImageView = UIImageView()
+        let countdownView = ARCountdownView(color: .whiteColor()).then {
+            $0.targetDate = self.viewModel.closingDate
+            $0.heading = "Closing In"
+            
+            if let _ = self.superview {
+                $0.startTimer()
+            }
+        }
+        self.countdownView = countdownView
 
         // Add all as subviews to self.
         [backgroundImageView, darkeningView, logoImageView, countdownView].forEach(apply(addSubview))
