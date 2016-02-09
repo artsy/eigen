@@ -3,6 +3,9 @@ upcoming:
   details: Analytics + Auction Overview (?)
   dev:
     - Adds an analytics event for Bell Tapped which is only for the tap - orta
+    - Registration status on auction page - ash
+    - Additional work on the auction title view - ash
+    - Removes rotation support on refine auction listings view for iPhone - ash
   notes:
     - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
 
@@ -13,21 +16,7 @@ releases:
       - Updated Danger - orta
       - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger - orta
       - View Controllers can now add sticky headers to collections of Artworks/Models - orta
-      - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger the feedback mechanism - orta
-      - Removes rotation support on refine auction listings view for iPhone - ash
       - Remove prefix header from app target. - alloy
-  version: 2.3.5
-  details: Ideally a small release for iOS8 + Push fixes.
-  dev:
-    - Updated Danger - orta
-    - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger - orta
-    - View Controllers can now add sticky headers to collections of Artworks/Models - orta
-    - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger the feedback mechanism - orta
-    - Registration status on auction page - ash
-    - Removes rotation support on refine auction listings view for iPhone - ash
-    - Remove prefix header from app target. - alloy
-    - Additional work on the auction title view - ash
-
     notes:
       - Remove x-callback support now that it's part of the OS - orta
       - Support changing routes at runtime instead of compile time with Echo - orta
