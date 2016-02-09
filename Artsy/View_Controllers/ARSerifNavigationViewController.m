@@ -4,6 +4,7 @@
 #import "UIDevice-Hardware.h"
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import "ARTopMenuViewController.h"
+@import Artsy_UILabels;
 
 
 @interface ARSerifNavigationBar : UINavigationBar
@@ -14,6 +15,8 @@
 @property (nonatomic, strong) UIBarButtonItem *exitButton;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 @property (nonatomic, assign) BOOL oldStatusBarHiddenStatus;
+@property (nonatomic, strong) UIApplication *sharedApplication;
+
 @end
 
 
@@ -58,7 +61,7 @@
 {
     [super viewWillAppear:animated];
 
-    UIApplication *app = [UIApplication sharedApplication];
+    UIApplication *app = self.sharedApplication;
     self.oldStatusBarHiddenStatus = app.statusBarHidden;
     [app setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 
@@ -72,7 +75,7 @@
 {
     [super viewWillDisappear:animated];
 
-    UIApplication *app = [UIApplication sharedApplication];
+    UIApplication *app = self.sharedApplication;
     [app setStatusBarHidden:app.statusBarHidden withAnimation:UIStatusBarAnimationNone];
 }
 
@@ -95,11 +98,24 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    viewController.navigationItem.hidesBackButton = YES;
-    viewController.navigationItem.rightBarButtonItem = self.exitButton;
+    UINavigationItem *nav = viewController.navigationItem;
+    nav.hidesBackButton = YES;
+    nav.rightBarButtonItem = self.exitButton;
 
     if (navigationController.viewControllers.count > 1) {
-        viewController.navigationItem.leftBarButtonItem = self.backButton;
+        nav.leftBarButtonItem = self.backButton;
+
+    } else {
+        // For single views we want a left aligned title
+        // 16 because the nav applies it's own margin too
+
+        UILabel *label = [[ARSerifLabel alloc] initWithFrame:CGRectMake(16, 0, 800, 60)];
+        label.font = [UIFont serifFontWithSize:20];
+        label.text = nav.title;
+
+        UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 800, 60)];
+        [titleMarginWrapper addSubview:label];
+        nav.titleView = titleMarginWrapper;
     }
 }
 
@@ -116,6 +132,11 @@
 - (UIModalPresentationStyle)modalPresentationStyle
 {
     return [UIDevice isPad] ? UIModalPresentationFormSheet : UIModalPresentationFullScreen;
+}
+
+- (UIApplication *)sharedApp
+{
+    return _sharedApplication ?: [UIApplication sharedApplication];
 }
 
 @end

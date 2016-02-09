@@ -1,5 +1,11 @@
 #import "ARSerifNavigationViewController.h"
 @import Artsy_UIColors;
+@import Forgeries;
+
+
+@interface ARSerifNavigationViewController ()
+@property (nonatomic, strong) UIApplication *sharedApplication;
+@end
 
 SpecBegin(ARSerifNavigationViewController);
 
@@ -66,6 +72,38 @@ describe(@"", ^{
         [subject pushViewController:secondVC animated:NO];
 
         expect(subject).to.haveValidSnapshot();
+    });
+
+    describe(@"status bar", ^{
+        before(^{
+            UIApplication *app = [[ForgeriesApplication alloc] init];
+            UIViewController *insideVC = [[UIViewController alloc] init];
+
+            subject = [[ARSerifNavigationViewController alloc] initWithRootViewController:insideVC];
+            subject.sharedApplication = app;
+        });
+
+        it(@"sets the status bar to hidden", ^{
+            [subject.sharedApplication setStatusBarHidden:NO];
+
+            [subject beginAppearanceTransition:YES animated:NO];
+            [subject endAppearanceTransition];
+
+            expect(subject.sharedApplication.isStatusBarHidden).to.equal(YES);
+        });
+
+        it(@"returns the hidden back to the original value", ^{
+            BOOL originalHidden = YES;
+            [subject.sharedApplication setStatusBarHidden:originalHidden];
+
+            [subject beginAppearanceTransition:YES animated:NO];
+            [subject endAppearanceTransition];
+            expect(subject.sharedApplication.isStatusBarHidden).to.equal(YES);
+
+            [subject beginAppearanceTransition:NO animated:NO];
+            [subject endAppearanceTransition];
+            expect(subject.sharedApplication.isStatusBarHidden).to.equal(originalHidden);
+        });
     });
 });
 
