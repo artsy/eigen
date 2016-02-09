@@ -24,7 +24,7 @@
 
 + (void)initialize
 {
-    UINavigationBar *nav = [UINavigationBar appearanceWhenContainedIn:self.class, nil];
+    UINavigationBar *nav = [ARSerifNavigationBar appearanceWhenContainedIn:self.class, nil];
     [nav setBarTintColor:UIColor.whiteColor];
     [nav setTintColor:UIColor.blackColor];
     [nav setTitleTextAttributes:@{
@@ -77,7 +77,7 @@
     self.oldStatusBarHiddenStatus = app.statusBarHidden;
     [app setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 
-    if ([self shouldShowInForm]) {
+    if (self.shouldShowInForm) {
         self.view.layer.cornerRadius = 0;
         self.view.superview.layer.cornerRadius = 0;
     }
@@ -131,7 +131,7 @@
 
 - (UIModalPresentationStyle)modalPresentationStyle
 {
-    return [self shouldShowInForm] ? UIModalPresentationFormSheet : UIModalPresentationFullScreen;
+    return self.shouldShowInForm ? UIModalPresentationFormSheet : UIModalPresentationFullScreen;
 }
 
 - (UIApplication *)sharedApp
@@ -141,7 +141,7 @@
 
 - (BOOL)shouldAutorotate
 {
-    return [self shouldShowInForm];
+    return self.shouldShowInForm;
 }
 
 @end
