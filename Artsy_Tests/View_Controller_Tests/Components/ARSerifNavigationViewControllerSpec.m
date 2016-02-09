@@ -43,6 +43,8 @@ describe(@"", ^{
 
             waitUntil(^(DoneCallback done) {
                 subject = [[ARSerifNavigationViewController alloc] initWithRootViewController:insideVC];
+                [subject stubHorizontalSizeClass:UIUserInterfaceSizeClassRegular];
+
                 [host presentViewController:subject animated:NO completion:^{
                     done();
                 }];

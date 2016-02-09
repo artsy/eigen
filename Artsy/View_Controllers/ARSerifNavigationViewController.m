@@ -22,13 +22,20 @@
 
 @implementation ARSerifNavigationViewController
 
++ (void)initialize
+{
+    UINavigationBar *nav = [UINavigationBar appearanceWhenContainedIn:self.class, nil];
+    [nav setBarTintColor:UIColor.whiteColor];
+    [nav setTintColor:UIColor.blackColor];
+    [nav setTitleTextAttributes:@{
+        NSForegroundColorAttributeName : UIColor.blackColor,
+        NSFontAttributeName : [UIFont serifFontWithSize:20]
+    }];
+    [nav setTitleVerticalPositionAdjustment:-8 forBarMetrics:UIBarMetricsDefault];
+}
+
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {
-    static dispatch_once_t dispatchOnceLocker = 0;
-    dispatch_once(&dispatchOnceLocker, ^{
-        [ARSerifNavigationViewController setupAppearance];
-    });
-
     self = [super initWithNavigationBarClass:ARSerifNavigationBar.class toolbarClass:nil];
     if (!self) {
         return nil;
@@ -57,6 +64,11 @@
     return self;
 }
 
+- (BOOL)shouldShowInForm
+{
+    return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -65,7 +77,7 @@
     self.oldStatusBarHiddenStatus = app.statusBarHidden;
     [app setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 
-    if ([UIDevice isPad]) {
+    if ([self shouldShowInForm]) {
         self.view.layer.cornerRadius = 0;
         self.view.superview.layer.cornerRadius = 0;
     }
@@ -77,18 +89,6 @@
 
     UIApplication *app = self.sharedApplication;
     [app setStatusBarHidden:app.statusBarHidden withAnimation:UIStatusBarAnimationNone];
-}
-
-+ (void)setupAppearance
-{
-    UINavigationBar *nav = [UINavigationBar appearanceWhenContainedIn:self.class, nil];
-    [nav setBarTintColor:UIColor.whiteColor];
-    [nav setTintColor:UIColor.blackColor];
-    [nav setTitleTextAttributes:@{
-        NSForegroundColorAttributeName : UIColor.blackColor,
-        NSFontAttributeName : [UIFont serifFontWithSize:20]
-    }];
-    [nav setTitleVerticalPositionAdjustment:-8 forBarMetrics:UIBarMetricsDefault];
 }
 
 - (void)closeModal
@@ -131,12 +131,17 @@
 
 - (UIModalPresentationStyle)modalPresentationStyle
 {
-    return [UIDevice isPad] ? UIModalPresentationFormSheet : UIModalPresentationFullScreen;
+    return [self shouldShowInForm] ? UIModalPresentationFormSheet : UIModalPresentationFullScreen;
 }
 
 - (UIApplication *)sharedApp
 {
     return _sharedApplication ?: [UIApplication sharedApplication];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [self shouldShowInForm];
 }
 
 @end
