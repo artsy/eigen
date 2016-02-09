@@ -32,6 +32,8 @@
 #import "ARNavigationButtonsViewController.h"
 #import "ARNavigationButton.h"
 
+#import "ARSerifNavigationViewController.h"
+
 #import "ARTextView.h"
 
 #import "ARThemedFactory.h"
