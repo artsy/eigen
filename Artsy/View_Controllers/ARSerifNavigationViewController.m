@@ -24,14 +24,16 @@
 
 + (void)initialize
 {
-    UINavigationBar *nav = [ARSerifNavigationBar appearanceWhenContainedIn:self.class, nil];
-    [nav setBarTintColor:UIColor.whiteColor];
-    [nav setTintColor:UIColor.blackColor];
-    [nav setTitleTextAttributes:@{
-        NSForegroundColorAttributeName : UIColor.blackColor,
-        NSFontAttributeName : [UIFont serifFontWithSize:20]
-    }];
-    [nav setTitleVerticalPositionAdjustment:-8 forBarMetrics:UIBarMetricsDefault];
+    if (self == ARSerifNavigationViewController.class) {
+        UINavigationBar *nav = [ARSerifNavigationBar appearanceWhenContainedIn:self.class, nil];
+        [nav setBarTintColor:UIColor.whiteColor];
+        [nav setTintColor:UIColor.blackColor];
+        [nav setTitleTextAttributes:@{
+            NSForegroundColorAttributeName : UIColor.blackColor,
+            NSFontAttributeName : [UIFont serifFontWithSize:20]
+        }];
+        [nav setTitleVerticalPositionAdjustment:-8 forBarMetrics:UIBarMetricsDefault];
+    }
 }
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController

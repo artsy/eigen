@@ -293,7 +293,7 @@ CHECKOUT OPTIONS:
     :commit: dd2cd4fe901ff5dcfc47c2c29c7746779fc12b64
     :git: https://github.com/alloy/FLKAutoLayout.git
   Forgeries:
-    :commit: 85b2bdb4026f21061d04975815e5d59510859bfc
+    :commit: 49d17e014367b64d8a91dbe10f28f5d59c7aefb3
     :git: https://github.com/ashfurrow/Forgeries.git
   ISO8601DateFormatter:
     :commit: 1a48b819c85903ded669e74e476aceffebf311fc
