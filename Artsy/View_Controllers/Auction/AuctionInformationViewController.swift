@@ -89,26 +89,38 @@ class AuctionInformationViewController : UIViewController {
         auctionBeginsLabel.text = self.auctionInformation.startsAt
         stackView.addSubview(auctionBeginsLabel, withTopMargin: "10", sideMargin: "40")
         
-        let faqButtonDescription = [ARNavigationButtonClassKey: ARNavigationButton.self, ARNavigationButtonPropertiesKey: ["title": "AUCTIONS FAQ"], ARNavigationButtonHandlerKey: toBlock({ [unowned self] (_) -> Void in self.showFAQ(true) })]
-        let contactButtonDescription = [ARNavigationButtonClassKey: ARNavigationButton.self, ARNavigationButtonPropertiesKey: ["title": "CONTACT"], ARNavigationButtonHandlerKey: toBlock({ (_) -> Void in print("TAPPED CONTACT") })]
+        let faqButtonDescription = [ARNavigationButtonClassKey: ARNavigationButton.self,
+                                    ARNavigationButtonPropertiesKey: ["title": "AUCTIONS FAQ"],
+                                    ARNavigationButtonHandlerKey: toBlock({ [unowned self] (_) in self.showFAQ(true) })]
+        let contactButtonDescription = [ARNavigationButtonClassKey: ARNavigationButton.self,
+                                        ARNavigationButtonPropertiesKey: ["title": "CONTACT"],
+                                        ARNavigationButtonHandlerKey: toBlock({ (_) in print("TAPPED CONTACT") })]
         let buttonsViewController = ARNavigationButtonsViewController(buttonDescriptions: [faqButtonDescription, contactButtonDescription])
 
         stackView.addViewController(buttonsViewController, toParent: self, withTopMargin: "20", sideMargin: "40")
     }
     
-    func showFAQ(animated: Bool) {
+    func showFAQ(animated: Bool) -> FAQViewController {
         let controller = FAQViewController(entries: self.auctionInformation.FAQEntries)
         self.navigationController?.pushViewController(controller, animated: animated)
+        return controller
     }
     
     private func toBlock(closure: @convention (block) UIButton -> Void) -> AnyObject {
         return unsafeBitCast(closure, AnyObject.self)
     }
     
+}
+
+extension AuctionInformationViewController {
     class FAQViewController : UIViewController {
         var entries: [AuctionInformation.FAQEntry]
         var stackView: ORStackView
         var currentlyExpandedEntryView: EntryView?
+        
+        var entryViews: [EntryView] {
+            return self.stackView.subviews as! [EntryView]
+        }
         
         required init(entries: [AuctionInformation.FAQEntry]) {
             self.entries = entries;
@@ -130,12 +142,12 @@ class AuctionInformationViewController : UIViewController {
             self.stackView.alignLeading("0", trailing: "0", toView: self.view)
             self.stackView.constrainBottomSpaceToView(self.flk_bottomLayoutGuide(), predicate: "0")
             
-            self.entries.forEach { (entry) -> () in
+            self.entries.forEach { (entry) in
                 let entryView = EntryView(entry: entry) { [unowned self] in self.expandView($0) }
                 self.stackView.addSubview(entryView, withTopMargin: "0", sideMargin: "0")
             }
             
-            self.currentlyExpandedEntryView = self.stackView.subviews.first as? EntryView
+            self.currentlyExpandedEntryView = self.entryViews.first
             self.currentlyExpandedEntryView!.expand()
         }
         
@@ -152,12 +164,14 @@ class AuctionInformationViewController : UIViewController {
                 })
             }
         }
-        
+
         class EntryView : UIView {
+            public var entry: AuctionInformation.FAQEntry
             var tapHandler: (EntryView) -> Void
             var contentHeightConstraint: NSLayoutConstraint
             
             required init(entry: AuctionInformation.FAQEntry, tapHandler: (EntryView) -> Void) {
+                self.entry = entry
                 self.tapHandler = tapHandler
                 
                 let topBorder = UIView()
@@ -179,7 +193,7 @@ class AuctionInformationViewController : UIViewController {
                 
                 super.init(frame: CGRectZero)
                 
-                titleButton.addTarget(self, action: "didTapButton:", forControlEvents: .TouchUpInside)
+                titleButton.addTarget(self, action: "didTap", forControlEvents: .TouchUpInside)
                 
                 self.addSubview(topBorder)
                 self.addSubview(titleButton)
@@ -218,7 +232,7 @@ class AuctionInformationViewController : UIViewController {
                 self.contentHeightConstraint.active = true
             }
             
-            func didTapButton(button: UIButton) {
+            func didTap() {
                 self.tapHandler(self)
             }
         }

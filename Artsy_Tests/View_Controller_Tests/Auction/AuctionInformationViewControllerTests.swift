@@ -37,8 +37,13 @@ class AuctionInformationViewControllerSpec: QuickSpec {
         }
         
         it("has a FAQ view that answers questions about the auction") {
-            informationController.showFAQ(false)
-            expect(navigationController).to( haveValidSnapshot() )
+            let FAQController = informationController.showFAQ(false)
+            expect(navigationController).to( haveValidSnapshot(named: "FAQ Initial Entry") )
+
+            FAQController.entryViews.forEach({ (entryView) in
+                entryView.didTap()
+                expect(navigationController).to( haveValidSnapshot(named: "FAQ Entry: \(entryView.entry.name)"))
+            })
         }
     }
 }
