@@ -15,7 +15,7 @@ end
 group :test do
   gem 'xcpretty'
   gem 'second_curtain'
-  gem 'danger', :git => "https://github.com/KrauseFx/danger.git", :branch => "local_test"
+  gem 'danger', :git => "https://github.com/danger/danger.git"
 end
 
 group :distribution do

@@ -1,7 +1,6 @@
 GIT
-  remote: https://github.com/KrauseFx/danger.git
-  revision: c132d7474860125f2eb78b2c858eedad791877d4
-  branch: local_test
+  remote: https://github.com/danger/danger.git
+  revision: 3f5d9c21f92f6d9e5c64939d5ece12db30899575
   specs:
     danger (0.2.1)
       claide
@@ -224,7 +223,7 @@ GEM
     pem (1.2.0)
       fastlane_core (>= 0.36.1, < 1.0.0)
       spaceship (>= 0.19.3, < 1.0.0)
-    pilot (1.2.1)
+    pilot (1.3.0)
       credentials_manager (>= 0.3.0)
       fastlane_core (>= 0.31.0, < 1.0.0)
       spaceship (>= 0.16.0, < 1.0.0)
@@ -271,7 +270,7 @@ GEM
       fastlane_core (>= 0.30.0, < 1.0.0)
       plist (~> 3.1.0)
       xcpretty (>= 0.2.1)
-    spaceship (0.19.3)
+    spaceship (0.19.4)
       colored
       credentials_manager (>= 0.9.0)
       faraday (~> 0.9)

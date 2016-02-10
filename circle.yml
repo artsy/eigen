@@ -43,6 +43,6 @@ test:
     - make ci
   override:
     - make test
-    - bundle exec danger --verbose
+    - bundle exec danger --verbose --base=master
   post:
     - make deploy_if_beta_branch

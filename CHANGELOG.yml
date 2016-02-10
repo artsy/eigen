@@ -6,6 +6,7 @@ upcoming:
     - Registration status on auction page - ash
     - Additional work on the auction title view - ash
     - Removes rotation support on refine auction listings view for iPhone - ash
+    - Updated Danger to use new org - orta
   notes:
     - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
 
