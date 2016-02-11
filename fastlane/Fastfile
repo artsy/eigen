@@ -1,4 +1,5 @@
 require 'yaml'
+require 'spaceship'
 
 lane :ship_beta do
   setup_for_app_store
@@ -19,6 +20,7 @@ lane :ship_beta do
   # if it's zero, it will raise an exception
   build_version = 0
   begin
+    Spaceship::Tunes.login(ENV["FASTLANE_USERNAME"], ENV["FASTLANE_PASSWORD"])
     app = Spaceship::Tunes::Application.find("net.artsy.artsy")
     train = app.build_trains[latest_version]
     build_version = train.builds.count + 1
