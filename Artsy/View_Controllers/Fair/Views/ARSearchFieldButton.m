@@ -7,6 +7,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
+
 @interface ARSearchFieldButton ()
 
 @property (nonatomic, strong) UIImageView *imageView;
@@ -47,11 +48,20 @@
     [self.label alignTrailingEdgeWithView:self predicate:@"0"];
     [self.label alignTop:@"2" bottom:@"0" toView:self];
 
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] init];
-    [recognizer addTarget:self.delegate action:@selector(searchFieldButtonWasPressed:)];
-    [self addGestureRecognizer:recognizer];
-
     return self;
+}
+
+- (void)setDelegate:(id<ARSearchFieldButtonDelegate>)delegate
+{
+    _delegate = delegate;
+
+    for (UIGestureRecognizer *gesture in self.gestureRecognizers.copy) {
+        [self removeGestureRecognizer:gesture];
+    }
+
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] init];
+    [recognizer addTarget:delegate action:@selector(searchFieldButtonWasPressed:)];
+    [self addGestureRecognizer:recognizer];
 }
 
 - (CGSize)intrinsicContentSize

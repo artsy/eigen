@@ -9,6 +9,7 @@ upcoming:
     - Updated Danger to use new org - orta
   notes:
     - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
+    - Fix for search button in Fairs - orta
 
 releases:
   - version: 2.3.5
