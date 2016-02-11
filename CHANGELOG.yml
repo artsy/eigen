@@ -10,6 +10,7 @@ upcoming:
   notes:
     - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
     - Fix for search button in Fairs - orta
+    - Hero units are the same height as mobile web artsy - orta
 
 releases:
   - version: 2.3.5
