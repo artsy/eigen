@@ -50,6 +50,7 @@ artsy:
 	git submodule init
 	git submodule update
 	config/spacecommander/setup-repo.sh
+	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
 
 certs:
 	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
