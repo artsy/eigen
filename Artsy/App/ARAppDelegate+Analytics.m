@@ -945,7 +945,7 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsAccountCreated,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(signupDone)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(didSignUpAndLogin)),
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingStartedCollectorLevel,
@@ -1403,7 +1403,7 @@
                                     tab = @"Exhibitors";
                                 }
 
-                                return @{ @"tab": tab };
+                                return @{ @"tab": tab, @"slug": controller.fair.fairID ?: @"" };
                             }
                         }
                     ]

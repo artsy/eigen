@@ -376,8 +376,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
                    failure:(void (^)(NSError *error, id JSON))failure
   saveSharedWebCredentials:(BOOL)saveSharedWebCredentials;
 {
-    [ARAnalytics event:ARAnalyticsSignUpEmail];
-
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         
         ARActionLog(@"Got Xapp. Creating a new user account.");
@@ -386,6 +384,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              NSError *error;
+             [ARAnalytics event:ARAnalyticsSignUpEmail];
+
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
                  ARErrorLog(@"Couldn't create user model from fresh user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
