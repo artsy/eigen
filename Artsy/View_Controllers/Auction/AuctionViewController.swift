@@ -132,7 +132,9 @@ extension AuctionViewController {
 private typealias TitleCallbacks = AuctionViewController
 extension TitleCallbacks: AuctionTitleViewDelegate {
     func userDidPressInfo(titleView: AuctionTitleView) {
-        // TODO:
+        // TODO: Don’t use AuctionInformationViewController with static content.
+        let controller = ARSerifNavigationViewController(rootViewController: AuctionInformationViewController())
+        presentViewController(controller, animated: true, completion: nil)
     }
 
     func userDidPressRegister(titleView: AuctionTitleView) {
