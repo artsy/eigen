@@ -19,8 +19,9 @@ lane :ship_beta do
   # if it's zero, it will raise an exception
   build_version = 0
   begin
-    number_of_betas_for_version = latest_testflight_build_number(version: latest_version)
-    build_version = number_of_betas_for_version + 1
+    app = Spaceship::Tunes::Application.find("net.artsy.artsy")
+    train = app.build_trains[latest_version]
+    build_version = train.builds.count + 1
   rescue
   end
 
