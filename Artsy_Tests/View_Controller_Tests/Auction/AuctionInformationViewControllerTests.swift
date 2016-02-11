@@ -40,10 +40,12 @@ class AuctionInformationViewControllerSpec: QuickSpec {
             let FAQController = informationController.showFAQ(false)
             expect(navigationController).to( haveValidSnapshot(named: "FAQ Initial Entry") )
 
-            FAQController.entryViews.forEach({ (entryView) in
+            for (var i = 0; i < FAQController.entryViews.count; i++) {
+                let entryView = FAQController.entryViews[i]
                 entryView.didTap()
-                expect(navigationController).to( haveValidSnapshot(named: "FAQ Entry: \(entryView.entry.name)"))
-            })
+                let entry = FAQEntries[i]
+                expect(navigationController).to( haveValidSnapshot(named: "FAQ Entry: \(entry.name)"))
+            }
         }
     }
 }

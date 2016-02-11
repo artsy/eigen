@@ -142,8 +142,10 @@ extension AuctionInformationViewController {
             self.stackView.alignLeading("0", trailing: "0", toView: self.view)
             self.stackView.constrainBottomSpaceToView(self.flk_bottomLayoutGuide(), predicate: "0")
             
-            self.entries.forEach { (entry) in
+            for (var i = 0; i < self.entries.count; i++) {
+                let entry = self.entries[i]
                 let entryView = EntryView(entry: entry) { [unowned self] in self.expandView($0) }
+                entryView.tag = i
                 self.stackView.addSubview(entryView, withTopMargin: "0", sideMargin: "0")
             }
             
@@ -166,12 +168,10 @@ extension AuctionInformationViewController {
         }
 
         class EntryView : UIView {
-            public var entry: AuctionInformation.FAQEntry
             var tapHandler: (EntryView) -> Void
             var contentHeightConstraint: NSLayoutConstraint
             
             required init(entry: AuctionInformation.FAQEntry, tapHandler: (EntryView) -> Void) {
-                self.entry = entry
                 self.tapHandler = tapHandler
                 
                 let topBorder = UIView()
