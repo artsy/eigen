@@ -17,6 +17,8 @@ fail("fit left in tests") if `grep -r "fit(@" Artsy_Tests/`.length > 1
 
 # Devs shouldn't ship changes to this file
 fail("Developer Specific file shouldn't be changed") if files_modified.include?("Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m")
+# And pay extra attention anyway
+message('Analytics dict changed, double check for ?: @""` on new entries') if files_modified.include?("Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m")
 
 # Did you make analytics changes? Well you should also include a change to our analytics spec
 made_analytics_changes = files_modified.include?("/Artsy/App/ARAppDelegate+Analytics.m")
