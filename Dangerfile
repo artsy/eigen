@@ -1,8 +1,12 @@
+# Sometimes its a README fix, or something like that - which isn't relevant for
+# including in a CHANGELOG for example
+declared_trivial = pr_title.include? "#trivial"
+
 # Just to let people know
 warn("PR is classed as Work in Progress") if pr_title.include? "[WIP]"
 
 # Oi, CHANGELOGs please
-fail("No CHANGELOG changes made") if lines_of_code > 50 && !files_modified.include?("CHANGELOG.yml")
+fail("No CHANGELOG changes made") if lines_of_code > 50 && !files_modified.include?("CHANGELOG.yml") && !declared_trivial
 
 # Stop skipping some manual testing
 warn("Needs testing on a Phone if change is non-trivial") if lines_of_code > 50 && !pr_title.include?("📱")
