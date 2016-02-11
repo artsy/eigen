@@ -119,7 +119,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [ARTopMenuViewController sharedController];
-    self.window.rootViewController = [[AuctionInformationViewController alloc] init];
+    self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 
     [self setupAdminTools];
