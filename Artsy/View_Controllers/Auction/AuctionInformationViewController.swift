@@ -26,9 +26,10 @@ class AuctionInformationViewController : UIViewController {
         self.auctionInformation = auctionInformation
         self.scrollView = ORStackScrollView()
         super.init(nibName: nil, bundle: nil)
+        self.title = "Auction Information"
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override convenience init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         let FAQEntries = [
             AuctionInformation.FAQEntry(name: "Bidding", content: "# BIDDING\n\n## How do I Register for an Auction?\n\nAll bidders need to register by completing an online form and providing all required information, such as their full name, contact information, and credit card details. Sometimes additional information may be required, and we’ll notify you of additional requirements when they apply.\n\n## How do I place a bid?\n\nBidding on Artsy is easy with our automatic bidding system. Enter any bid amount as long as it is greater than or equal to the next minimum bid shown on the bidding screen, then click the “Bid” button. This will automatically place a bid for you at the next increment and save the amount you entered (if higher) as your “Maximum Bid.” \n\n## What is a Maximum Bid?\n\nIf you enter a bid amount higher than the next minimum bid, the amount you enter is treated as your “Maximum Bid.” Entering a Maximum Bid does not necessarily mean you will pay that price, and you may pay less. As the auction progresses, our system will bid automatically for you against other bidders, according to our automatic bidding increments (see below), up to (but not exceeding) your Maximum Bid, only as much as necessary to maintain your position as highest bidder.  If two bidders attempt to enter the same Maximum Bid, the first bidder to enter that amount will be the winner. \n\n## What are Bidding Increments?\n\nOur automatic bidding increments determine the next minimum bid that can be placed. They are based on the current bid of each item and increase at the following intervals, when the current bid is:\n\nUnder $1,000:  $50  \n$1,000 - $1,999: $100  \n$2,000 - $4,999: $250  \n$5,000 - $9,999: $500  \n$10,000 - $19,999: $1,000  \n$20,000 - $49,999: $2,000   \n$50,000 - $99,999: $5,000  \nAt or above $100,000: $10,000\n\nNote: Our usual bidding increments are listed above, but from time to time we may increase, decrease, add or remove increments in order to help test new bidding features, optimize the bidding experience or for other purposes. This may occur before, during or after any auction. \n\n## What is a Reserve Price?\n\nA reserve price (also known as a \"reserve\") is the confidential minimum price below which the item may not be sold in the auction. If an item has a reserve, this will be indicated on the bidding screen where you enter your bid. When you bid on an item with a reserve, if your Maximum Bid meets or exceeds the reserve, your bid will be increased to meet the reserve (according to our automatic bidding increments), and bidding will continue from there. If an item is offered with a reserve, Artsy will be authorized to bid on the seller's behalf, up to the amount of the reserve."),
             AuctionInformation.FAQEntry(name: "Buyer’s Premium, Taxes & Fees", content: "# BUYER'S PREMIUM, TAXES & FEES\n\n## What is a buyer’s premium?\nA buyer’s premium is an additional charge the winning bidder pays on top of the item's hammer price. If an item has a buyer's premium, this will be indicated on the bidding screen where you enter your bid, along with the rate of the buyer's premium. The buyer's premium is calculated as a percentage of the item's hammer price.\n\n## What about taxes?\nBuyers are responsible for paying all sales and use taxes, VAT and any other taxes that apply to their purchases. Applicable taxes will be added to the winning bidder’s invoice after the auction. \n"),
@@ -39,9 +40,7 @@ class AuctionInformationViewController : UIViewController {
         
         let auctionInformation = AuctionInformation(partnerName: "Sotheby’s", title: "Sotheby’s Boundless Contemporary", description: "On Thursday, November 12, Swiss Institute will host their Annual Benefit Dinner & Auction–the most important fundraising event of the year–with proceeds going directly towards supporting their innovative exhibitions and programs. Since 1986, Swiss Institute has been dedicated to promoting forward-thinking and experimental art.", startsAt: "January 26 6:00PM EST", contact: "TODO Markdown?", FAQEntries: FAQEntries)
         
-        self.auctionInformation = auctionInformation
-        self.scrollView = ORStackScrollView()
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.init(auctionInformation: auctionInformation)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -59,11 +58,6 @@ class AuctionInformationViewController : UIViewController {
         self.scrollView.constrainBottomSpaceToView(self.flk_bottomLayoutGuide(), predicate: "0")
         
         let stackView = self.scrollView.stackView
-        
-        let titleLabel = UILabel()
-        titleLabel.font = UIFont.serifFontWithSize(18)
-        titleLabel.text = "Auction Information"
-        stackView.addSubview(titleLabel, withTopMargin: "20", sideMargin: "40")
 
         let partnerNameLabel = UILabel()
         partnerNameLabel.font = UIFont.serifSemiBoldFontWithSize(48)
@@ -143,6 +137,7 @@ extension AuctionInformationViewController {
             self.entries = entries;
             self.stackView = ORStackView()
             super.init(nibName: nil, bundle: nil)
+            self.title = "Auction FAQ"
         }
         
         required init?(coder aDecoder: NSCoder) {
