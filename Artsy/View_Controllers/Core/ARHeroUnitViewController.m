@@ -31,7 +31,7 @@ const static CGFloat ARCarouselDelay = 10;
 
 + (CGFloat)heroUnitHeight
 {
-    return [UIDevice isPad] ? 380 : 232;
+    return [UIDevice isPad] ? 380 : 252;
 }
 
 - (void)loadView
