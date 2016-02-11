@@ -35,8 +35,5 @@ end
 # So if there's snapshot fails, we should also fail danger, but we can make the thing clickable in a comment instead of hidden in the log
 # Note: this may break in a future build of Danger, I am debating sandboxing the runner from ENV vars.
 build_log = File.read( File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_test_raw.log") )
-eigen_prefix = "https://eigen-ci.s3.amazonaws.com/"
-if build_log.include? "Failures: #{eigen_prefix}"
-  url = eigen_prefix + build_log.split("Failures: #{eigen_prefix}").last.split(" ")
-  fail("There were snapshot errors, see #{url}")
-end
+snapshots_url = build_log.match(%r{https://eigen-ci.s3.amazonaws.com/\d+/index.html})
+fail("There were snapshot errors, see #{snapshots_url}") if snapshots_url
