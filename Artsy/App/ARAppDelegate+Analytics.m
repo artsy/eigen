@@ -135,7 +135,6 @@
                                 return @{
                                      @"profile_id" : controller.fair.organizer.profileID ?: @"",
                                      @"fair_id" : controller.fair.fairID ?: @"",
-                                     @"slug": controller.fair.fairID ?: @""
                                  };
                             }
                         },
@@ -1287,9 +1286,7 @@
                                 // Fair artists only show all
                                 NSString *fairID = controller.fair.fairID ?: @"";
                                 NSString *artistID = controller.artist.artistID ?: @"";
-                                return @{ @"fair_slug": fairID,
-                                          @"artist_slug": artistID,
-                                          @"slug": [NSString stringWithFormat:@"%@/%@", fairID, artistID]};
+                                return @{ @"fair_slug": fairID, @"artist_slug": artistID};
                             }
                         }
                     ]
@@ -1302,7 +1299,7 @@
                             ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *_) {
                                 // Displays all by default
                                 NSString *artistID = controller.artist.artistID ?: @"";
-                                return @{ @"tab": @"All", @"artist_slug":artistID, @"slug": artistID };
+                                return @{ @"tab": @"All", @"artist_slug": artistID };
                             }
                         },
                         @{
@@ -1310,13 +1307,15 @@
                             ARAnalyticsSelectorName: ARAnalyticsSelector(switchView:didPressButtonAtIndex:animated:),
                             ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *parameters) {
                                 NSInteger index = [parameters[1] integerValue];
+                                NSString *artistID = controller.artist.artistID ?: @"";
+
                                 NSString *tab = @"";
                                 if (index == ARSwitchViewArtistButtonIndex) {
                                     tab = @"All";
                                 } else if (index == ARSwitchViewForSaleButtonIndex) {
                                     tab = @"For Sale";
                                 }
-                                return @{ @"tab": tab };
+                                return @{ @"tab": tab, @"artist_slug":artistID };
                             }
                         }
                     ]
@@ -1418,8 +1417,7 @@
                         @{
                             ARAnalyticsPageName: @"Artist Biography",
                             ARAnalyticsProperties: ^NSDictionary *(ARArtistBiographyViewController *controller, NSArray *_) {
-                                return @{ @"artist_slug": controller.artist.artistID ?: @"",
-                                          @"slug": controller.artist.artistID ?: @"" };
+                                return @{ @"artist_slug": controller.artist.artistID ?: @"" };
                             }
                         }
                     ]
@@ -1454,11 +1452,11 @@
                         @{
                             ARAnalyticsPageName: @"internal_mobile_web", // convert to Mobile Web? This is backwards compat as-is
                             ARAnalyticsProperties: ^NSDictionary *(ARInternalMobileWebViewController *controller, NSArray *_) {
-                                    return @{ @"slug": controller.initialURL.absoluteString ?: @"" };
-                                }
+                                return @{ @"slug": controller.initialURL.path ?: @"" };
                             }
-                        ]
-                    },
+                        }
+                    ]
+                },
 
             ]
         }
