@@ -107,13 +107,6 @@
     hockey.disableCrashManager = YES;
 #endif
 
-    ARAnalyticsPropertiesBlock fairAndProfileIDBlock = ^NSDictionary*(ARFairGuideViewController *controller, NSArray *_) {
-        return @{
-             @"profile_id" : controller.fair.organizer.profileID ?: @"",
-             @"fair_id" : controller.fair.fairID ?: @"",
-        };
-    };
-
     ARAnalyticsEventShouldFireBlock heartedShouldFireBlock = ^BOOL(id controller, NSArray *parameters) {
         ARHeartButton *sender = parameters.firstObject;
         return sender.isHearted;
@@ -138,7 +131,13 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairGuideView,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsProperties: fairAndProfileIDBlock
+                            ARAnalyticsProperties: ^NSDictionary*(ARFairGuideViewController *controller, NSArray *_) {
+                                return @{
+                                     @"profile_id" : controller.fair.organizer.profileID ?: @"",
+                                     @"fair_id" : controller.fair.fairID ?: @"",
+                                     @"slug": controller.fair.fairID ?: @""
+                                 };
+                            }
                         },
                     ]
                 },
@@ -813,7 +812,8 @@
                             ARAnalyticsProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *_){
                                 return @{
                                     @"artist_id" : controller.artist.artistID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @""
+                                    @"fair_id" : controller.fair.fairID ?: @"",
+                                    @"slug" : controller.artist.artistID ?: @"",
                                 };
                             },
                         },
@@ -1285,8 +1285,11 @@
                             ARAnalyticsSelectorName: @"artistDidLoad",
                             ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *_) {
                                 // Fair artists only show all
-                                return @{ @"fair_slug": controller.fair.fairID ?: @"",
-                                          @"artist_slug": controller.artist.artistID ?: @"" };
+                                NSString *fairID = controller.fair.fairID ?: @"";
+                                NSString *artistID = controller.artist.artistID ?: @"";
+                                return @{ @"fair_slug": fairID,
+                                          @"artist_slug": artistID,
+                                          @"slug": [NSString stringWithFormat:@"%@/%@", fairID, artistID]};
                             }
                         }
                     ]
@@ -1297,8 +1300,9 @@
                         @{
                             ARAnalyticsPageName: @"Artist",
                             ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *_) {
-                                // Displays all by deafult
-                                return @{ @"tab": @"All" };
+                                // Displays all by default
+                                NSString *artistID = controller.artist.artistID ?: @"";
+                                return @{ @"tab": @"All", @"artist_slug":artistID, @"slug": artistID };
                             }
                         },
                         @{
@@ -1414,7 +1418,8 @@
                         @{
                             ARAnalyticsPageName: @"Artist Biography",
                             ARAnalyticsProperties: ^NSDictionary *(ARArtistBiographyViewController *controller, NSArray *_) {
-                                return @{ @"artist_slug": controller.artist.artistID };
+                                return @{ @"artist_slug": controller.artist.artistID ?: @"",
+                                          @"slug": controller.artist.artistID ?: @"" };
                             }
                         }
                     ]
@@ -1437,11 +1442,24 @@
                             ARAnalyticsPageName: @"Auction results",
                             ARAnalyticsProperties: ^NSDictionary *(ARAuctionArtworkResultsViewController *controller, NSArray *_) {
                                 return @{ @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                          @"artwork_slug": controller.artwork.artworkID };
+                                          @"artwork_slug": controller.artwork.artworkID ?: @"",
+                                          @"slug": controller.artwork.artworkID ?: @""};
                             }
                         }
                     ]
-                }
+                },
+                @{
+                    ARAnalyticsClass: ARInternalMobileWebViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"internal_mobile_web", // convert to Mobile Web? This is backwards compat as-is
+                            ARAnalyticsProperties: ^NSDictionary *(ARInternalMobileWebViewController *controller, NSArray *_) {
+                                    return @{ @"slug": controller.initialURL.absoluteString ?: @"" };
+                                }
+                            }
+                        ]
+                    },
+
             ]
         }
     ];
