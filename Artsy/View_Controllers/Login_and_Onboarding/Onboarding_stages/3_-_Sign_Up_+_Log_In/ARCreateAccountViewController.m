@@ -202,7 +202,7 @@
     NSString *username = self.email.text;
     NSString *password = self.password.text;
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [[ARUserManager sharedManager] createUserWithName:self.name.text email:username password:password success:^(User *user) {
         __strong typeof (wself) sself = wself;
         [sself loginWithUserCredentialsWithSuccess:^{
@@ -225,8 +225,6 @@
 
             [sself.email becomeFirstResponder];
         }
-
-        [ARAnalytics event:ARAnalyticsSignUpError];
     }];
 }
 
@@ -235,7 +233,7 @@
     NSString *username = self.email.text;
     NSString *password = self.password.text;
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [[ARUserManager sharedManager] loginWithUsername:username
         password:password
         successWithCredentials:nil

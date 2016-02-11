@@ -1,5 +1,10 @@
 #import <Foundation/Foundation.h>
 
+// If you are adding analytics, you may need to
+// update the schema for our analytics team:
+// https://docs.google.com/spreadsheets/u/1/d/1bLbeOgVFaWzLSjxLOBDNOKs757-zBGoLSM1lIz3OPiI/edit#gid=497747862
+//
+
 // Global
 
 extern NSString *const ARAnalyticsBackTapped;
@@ -20,11 +25,6 @@ extern NSString *const ARAnalyticsNotificationTapped;
 
 extern NSString *const ARAnalyticsFreshInstall;
 
-// Initial Splash Screen only, not trial splash
-
-extern NSString *const ARAnalyticsTappedSignUp;
-extern NSString *const ARAnalyticsTappedLogIn;
-
 // Onboarding
 
 extern NSString *const ARAnalyticsSlideshowStarted;
@@ -39,7 +39,14 @@ extern NSString *const ARAnalyticsOnboardingStartedPriceRange;
 extern NSString *const ARAnalyticsOnboardingCompletedPriceRange;
 extern NSString *const ARAnalyticsOnboardingCompleted;
 
-// Sign in
+// These are used whenever there is a button to tap
+// for sign in, or create account
+
+extern NSString *const ARAnalyticsTappedSignUp;
+extern NSString *const ARAnalyticsTappedLogIn;
+
+
+// Note: Sign in / Sign up analyics live entirely in ARUserManager
 
 extern NSString *const ARAnalyticsSignInEmail;
 extern NSString *const ARAnalyticsSignInTwitter;
