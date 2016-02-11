@@ -6,6 +6,7 @@
 #import "ARUserManager.h"
 
 #import <iRate/iRate.h>
+#import "ARFonts.h"
 
 
 @implementation ARTestHelper
@@ -37,6 +38,16 @@
 
     /// Not really sure what this is for
     [[ARLogger sharedLogger] startLogging];
+
+    // Occasionally we get font issues in snapshots, this _potentially_
+    // could be a fix for this.
+    __unused UIFont *font = [UIFont serifBoldItalicFontWithSize:12];
+    font = [UIFont serifBoldFontWithSize:12];
+    font = [UIFont serifSemiBoldFontWithSize:12];
+    font = [UIFont serifFontWithSize:12];
+    font = [UIFont serifItalicFontWithSize:12];
+    font = [UIFont sansSerifFontWithSize:12];
+    font = [UIFont smallCapsSerifFontWithSize:12];
 
     return YES;
 }
