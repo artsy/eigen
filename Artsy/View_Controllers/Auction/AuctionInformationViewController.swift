@@ -1,4 +1,5 @@
 import UIKit
+import MessageUI
 import ORStackView
 
 typealias MarkdownString = String
@@ -94,7 +95,7 @@ class AuctionInformationViewController : UIViewController {
                                     ARNavigationButtonHandlerKey: toBlock({ [unowned self] (_) in self.showFAQ(true) })]
         let contactButtonDescription = [ARNavigationButtonClassKey: ARNavigationButton.self,
                                         ARNavigationButtonPropertiesKey: ["title": "CONTACT"],
-                                        ARNavigationButtonHandlerKey: toBlock({ (_) in print("TAPPED CONTACT") })]
+                                        ARNavigationButtonHandlerKey: toBlock({ [unowned self] (_) in self.showContact(true) })]
         let buttonsViewController = ARNavigationButtonsViewController(buttonDescriptions: [faqButtonDescription, contactButtonDescription])
 
         stackView.addViewController(buttonsViewController, toParent: self, withTopMargin: "20", sideMargin: "40")
@@ -106,10 +107,26 @@ class AuctionInformationViewController : UIViewController {
         return controller
     }
     
+    func showContact(animated: Bool) {
+        if (MFMailComposeViewController.canSendMail()) {
+            let controller = MFMailComposeViewController()
+            controller.mailComposeDelegate = self
+            controller.setToRecipients(["inquiries@artsy.net"])
+            controller.setSubject("Questions about “\(self.auctionInformation.title)”")
+            self.presentViewController(controller, animated: animated, completion: nil)
+        }
+    }
+
     private func toBlock(closure: @convention (block) UIButton -> Void) -> AnyObject {
         return unsafeBitCast(closure, AnyObject.self)
     }
-    
+}
+
+private typealias MailCompositionCallbacks = AuctionInformationViewController
+extension MailCompositionCallbacks: MFMailComposeViewControllerDelegate {
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 }
 
 extension AuctionInformationViewController {
