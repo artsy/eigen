@@ -483,24 +483,24 @@
                             }
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsSignUpEmail,
+                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
                             ARAnalyticsSelectorName: @"signUpWithEmail:",
                             ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true"};
+                                return @{@"active_user": @"true", @"type": @"email"};
                             }
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsSignUpFacebook,
+                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
                             ARAnalyticsSelectorName: @"connectWithFacebook:",
                             ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true"};
+                                return @{@"active_user": @"true", @"type": @"facebook"};
                             }
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsSignUpTwitter,
+                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
                             ARAnalyticsSelectorName: @"connectWithTwitter:",
                             ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true"};
+                                return @{@"active_user": @"true", @"type": @"email"};
                             }
                         },
                     ]
@@ -812,7 +812,6 @@
                                 return @{
                                     @"artist_id" : controller.artist.artistID ?: @"",
                                     @"fair_id" : controller.fair.fairID ?: @"",
-                                    @"slug" : controller.artist.artistID ?: @"",
                                 };
                             },
                         },
@@ -943,10 +942,6 @@
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(splashDoneWithLogin:)),
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsAccountCreated,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(didSignUpAndLogin)),
-                        },
-                        @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingStartedCollectorLevel,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(collectorLevel)),
                         },
@@ -997,16 +992,26 @@
                     ARAnalyticsClass: ARSignupViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsSignUpFacebook,
+                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
                             ARAnalyticsSelectorName: ARAnalyticsSelector(fb:),
+                            ARAnalyticsProperties: ^NSDictionary*(ARSignupViewController *controller, NSArray *parameters){
+                                return @{ @"type" : @"facebook" };
+                            }
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsSignUpTwitter,
+                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
                             ARAnalyticsSelectorName: ARAnalyticsSelector(twitter:),
+                            ARAnalyticsProperties: ^NSDictionary*(ARSignupViewController *controller, NSArray *parameters){
+                                return @{ @"type" : @"twitter" };
+                            }
+
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsSignUpEmail,
+                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
                             ARAnalyticsSelectorName: ARAnalyticsSelector(email:),
+                            ARAnalyticsProperties: ^NSDictionary*(ARSignupViewController *controller, NSArray *parameters){
+                                return @{ @"type" : @"email" };
+                            }
                         },
                     ]
                 },
@@ -1440,8 +1445,7 @@
                             ARAnalyticsPageName: @"Auction results",
                             ARAnalyticsProperties: ^NSDictionary *(ARAuctionArtworkResultsViewController *controller, NSArray *_) {
                                 return @{ @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                          @"artwork_slug": controller.artwork.artworkID ?: @"",
-                                          @"slug": controller.artwork.artworkID ?: @""};
+                                          @"artwork_slug": controller.artwork.artworkID ?: @""};
                             }
                         }
                     ]

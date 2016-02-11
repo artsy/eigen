@@ -12,6 +12,7 @@ upcoming:
     - Added slug analytics to a few view controllers - orta
     - Fix for search button in Fairs - orta
     - Hero units are the same height as mobile web artsy - orta
+    - More analytics work around sign up / log in - orta
 
 releases:
   - version: 2.3.5

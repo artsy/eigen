@@ -17,13 +17,18 @@ fail("fit left in tests") if `grep -r "fit(@" Artsy_Tests/`.length > 1
 
 # Devs shouldn't ship changes to this file
 fail("Developer Specific file shouldn't be changed") if files_modified.include?("Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m")
-# And pay extra attention anyway
-message('Analytics dict changed, double check for ?: @""` on new entries') if files_modified.include?("Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m")
 
 # Did you make analytics changes? Well you should also include a change to our analytics spec
 made_analytics_changes = files_modified.include?("/Artsy/App/ARAppDelegate+Analytics.m")
 made_analytics_specs_changes = files_modified.include?("/Artsy_Tests/Analytics_Tests/ARAppAnalyticsSpec.m")
-fail("Analytics changes should have reflected specs changes") if made_analytics_changes and !made_analytics_specs_changes
+if made_analytics_changes
+    fail("Analytics changes should have reflected specs changes") if !made_analytics_specs_changes
+
+    # And pay extra attention anyway
+    message('Analytics dict changed, double check for ?: `@""` on new entries')
+    message('Also, double check the [Analytics Eigen schema](https://docs.google.com/spreadsheets/u/1/d/1bLbeOgVFaWzLSjxLOBDNOKs757-zBGoLSM1lIz3OPiI/edit#gid=497747862) if the changes are non-trivial.')
+end
+
 
 # CHANGELOG should lint
 require "YAML"
