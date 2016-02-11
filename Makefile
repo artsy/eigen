@@ -56,7 +56,7 @@ certs:
 	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
 
-distribute:  set_git_properties change_version_to_date
+distribute:  change_version_to_date set_git_properties
 	bundle exec fastlane ship_beta
 
 ### General Xcode tooling
