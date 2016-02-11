@@ -36,4 +36,4 @@ end
 # Note: this may break in a future build of Danger, I am debating sandboxing the runner from ENV vars.
 build_log = File.read( File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_test_raw.log") )
 snapshots_url = build_log.match(%r{https://eigen-ci.s3.amazonaws.com/\d+/index.html})
-fail("There were snapshot errors, see #{snapshots_url}") if snapshots_url
+fail("There were [snapshot errors](#{snapshots_url})") if snapshots_url
