@@ -35,7 +35,7 @@ lane :ship_beta do
 
   add_git_tag tag: tag
   `git remote add http https://github.com/artsy/eigen.git`
-  `git push http --tags`
+  `git push http #{tag}`
 
   # Ship to hockey first, testflight has to wait for processing
   hockey notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN'],
