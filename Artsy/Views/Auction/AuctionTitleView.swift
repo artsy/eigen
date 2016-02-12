@@ -4,13 +4,13 @@ import Artsy_UILabels
 import Artsy_UIFonts
 import FLKAutoLayout
 
-protocol AuctionTitleViewDelegate: class {
-    func userDidPressInfo(titleView: AuctionTitleView)
+@objc protocol AuctionTitleViewDelegate: class {
+    optional func userDidPressInfo(titleView: AuctionTitleView)
     func userDidPressRegister(titleView: AuctionTitleView)
 }
 
 class AuctionTitleView: UIView {
-    unowned let delegate: AuctionTitleViewDelegate
+    weak var delegate: AuctionTitleViewDelegate!
 
     let viewModel: SaleViewModel
     var registrationStatus: ArtsyAPISaleRegistrationStatus? {
@@ -21,11 +21,13 @@ class AuctionTitleView: UIView {
     }
 
     var registrationButton: UIButton!
+    var fullWidth: Bool
 
-    init(viewModel: SaleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatus?, delegate: AuctionTitleViewDelegate) {
+    init(viewModel: SaleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatus?, delegate: AuctionTitleViewDelegate, fullWidth: Bool) {
         self.viewModel = viewModel
         self.delegate = delegate
         self.registrationStatus = registrationStatus
+        self.fullWidth = fullWidth
 
         super.init(frame: CGRect.zero)
 
@@ -48,11 +50,11 @@ class AuctionTitleView: UIView {
 private typealias UserInteraction = AuctionTitleView
 extension UserInteraction {
     func userDidPressInfo() {
-        delegate.userDidPressInfo(self)
+        delegate!.userDidPressInfo!(self)
     }
 
     func userDidPressRegister() {
-        delegate.userDidPressRegister(self)
+        delegate!.userDidPressRegister(self)
     }
 }
 
@@ -66,30 +68,25 @@ private extension AuctionTitleView {
         // or it could just be a label. We don't care in this function, we just stack
         // the title view and bottom view on top of eachother.
 
-        let regularSize = traitCollection.horizontalSizeClass == .Regular
-
-        let topSpacing = regularSize ? 30 : 20
-        let sideSpacing = regularSize ? 40 : 20
-
-        let titleView = self.titleView(regularSize)
+        let titleView = self.titleView()
         addSubview(titleView)
 
-        let bottomView = self.bottomView(regularSize)
+        let bottomView = self.bottomView()
         addSubview(bottomView)
 
         // Stack them on top of eachother and constrain top/bottom edges
-        titleView.alignTopEdgeWithView(self, predicate: "\(topSpacing)")
-        bottomView.alignAttribute(.Top, toAttribute: .Bottom, ofView: titleView, predicate: "20")
+        titleView.alignTopEdgeWithView(self, predicate: "0")
+        bottomView.alignAttribute(.Top, toAttribute: .Bottom, ofView: titleView, predicate: "10")
         bottomView.alignAttribute(.Bottom, toAttribute: .Bottom, ofView: self, predicate: "-10")
 
         // Make them each full-width
-        [titleView, bottomView].forEach {
-            $0.alignLeading("\(sideSpacing)", trailing: "\(-sideSpacing)", toView: self)
-        }
+        titleView.alignLeading("0", trailing: "0", toView: self)
+        bottomView.alignLeading("0", trailing: "0", toView: self)
     }
 
-    func titleView(regularSize: Bool) -> UIView {
+    func titleView() -> UIView {
         let container = UIView()
+        let regularSize = traitCollection.horizontalSizeClass == .Regular
 
         let titleLabel = ARSerifLabel().then {
             $0.text = self.viewModel.displayName
@@ -97,30 +94,35 @@ private extension AuctionTitleView {
         }
         container.addSubview(titleLabel)
 
-        let infoButton = UIButton.circularButton(.Info)
-        infoButton.addTarget(self, action: "userDidPressInfo", forControlEvents: .TouchUpInside)
-        container.addSubview(infoButton)
-
-        // Vertically align both label and button
-        infoButton.alignCenterYWithView(titleLabel, predicate: "0")
-
-        if regularSize {
-            titleLabel.alignCenterXWithView(container, predicate: "0")
-        } else {
+        if fullWidth {
             titleLabel.alignLeadingEdgeWithView(container, predicate: "0")
+        } else {
+            titleLabel.alignCenterXWithView(container, predicate: "0")
         }
 
-        // Info button always on right edge
-        infoButton.alignTrailingEdgeWithView(container, predicate: "0")
-        infoButton.alignTop("0", bottom: "0", toView: container)
+        let infoDelegate = delegate
+        if infoDelegate != nil && ((infoDelegate as AnyObject).respondsToSelector(Selector("userDidPressInfo:"))) {
+            let infoButton = UIButton.circularButton(.Info)
+            infoButton.addTarget(self, action: "userDidPressInfo", forControlEvents: .TouchUpInside)
+            container.addSubview(infoButton)
 
-        // Ensure button doesn't overlap with title
-        infoButton.constrainLeadingSpaceToView(titleLabel, predicate: ">= \(regularSize ? 20 : 30)@400")
+            // Vertically align both label and button
+            infoButton.alignCenterYWithView(titleLabel, predicate: "0")
+
+            // Info button always on right edge
+            infoButton.alignTrailingEdgeWithView(container, predicate: "0")
+            infoButton.alignTop("0", bottom: "0", toView: container)
+
+            // Ensure button doesn't overlap with title
+            infoButton.constrainLeadingSpaceToView(titleLabel, predicate: ">= \(regularSize ? 20 : 30)@400")
+        } else {
+            container.alignTop("0", bottom: "0", toView: titleLabel)
+        }
 
         return container
     }
 
-    func bottomView(regularSize: Bool) -> UIView {
+    func bottomView() -> UIView {
         let container = UIView()
 
         // We're assuming a missing registration status means that the user isn't registered. We'll let our delegate handle the interaction for that.
@@ -129,7 +131,7 @@ private extension AuctionTitleView {
         // For registered users, we display the "Approved to bid"
         // For all other cases (not logged in / not registered), we show the "Register" button
         if needsToRegister {
-            let registerView = self.registerView(regularSize)
+            let registerView = self.registerView()
             container.addSubview(registerView)
 
             // The design calls for an extra 10pt on top of the register button, but not just the label.
@@ -138,7 +140,7 @@ private extension AuctionTitleView {
             let registeredToBidLabel = ARSerifLabel().then {
                 $0.text = "Approved to Bid"
                 $0.font = UIFont.serifFontWithSize(16)
-                $0.textAlignment = regularSize ? .Center : .Left
+                $0.textAlignment = fullWidth ? .Left : .Center
 
                 $0.textColor = .auctionGreen()
             }
@@ -150,7 +152,7 @@ private extension AuctionTitleView {
         return container
     }
 
-    func registerView(regularSize: Bool) -> UIView {
+    func registerView() -> UIView {
         let container = UIView()
 
         let registerButton = ARBlackFlatButton().then {
@@ -175,18 +177,19 @@ private extension AuctionTitleView {
         registrationLabel.constrainTopSpaceToView(registerButton, predicate: "10")
         registrationLabel.alignBottomEdgeWithView(container, predicate: "0")
 
-        // We need to add left/right rules for iPad.
-        if regularSize {
+        if fullWidth {
+            registerButton.alignLeading("0", trailing: "0", toView: container)
+        } else {
             let leftRule = ARSeparatorView()
             container.addSubview(leftRule)
-
+            
             leftRule.alignLeadingEdgeWithView(container, predicate: "0")
             leftRule.constrainTrailingSpaceToView(registerButton, predicate: "-16")
             leftRule.alignCenterYWithView(registerButton, predicate: "0")
-
+            
             let rightRule = ARSeparatorView()
             container.addSubview(rightRule)
-
+            
             rightRule.constrainLeadingSpaceToView(registerButton, predicate: "16")
             rightRule.alignTrailingEdgeWithView(container, predicate: "0")
             rightRule.alignCenterYWithView(registerButton, predicate: "0")
