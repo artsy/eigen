@@ -1,6 +1,11 @@
 import Foundation
 import Interstellar
 
+protocol AuctionNetworkModelType {
+    func fetch() -> Signal<SaleViewModel>
+    var registrationStatus: ArtsyAPISaleRegistrationStatus? { get }
+}
+
 /// Network model for everything auction-related. 
 /// It delegates out to other network models and doesn't itself perform any networking.
 class AuctionNetworkModel {
@@ -15,6 +20,12 @@ class AuctionNetworkModel {
 
     init(saleID: String) {
         self.saleID = saleID
+    }
+}
+
+extension AuctionNetworkModel: AuctionNetworkModelType {
+    var registrationStatus: ArtsyAPISaleRegistrationStatus? {
+        return self.registrationStatusNetworkModel.registrationStatus
     }
 
     func fetch() -> Signal<SaleViewModel> {
@@ -31,17 +42,11 @@ class AuctionNetworkModel {
             }
             .next { saleViewModel in
                 // Store the SaleViewModel
-                self.saleViewModel = saleViewModel 
-            }
+                self.saleViewModel = saleViewModel
+        }
 
         return fetchRegistrationStatus.flatMap { (_, callback) in // Note we discard the status, we don't care.
             createViewModel.subscribe(callback)
         }
-    }
-}
-
-extension AuctionNetworkModel {
-    var registrationStatus: ArtsyAPISaleRegistrationStatus? {
-        return self.registrationStatusNetworkModel.registrationStatus
     }
 }

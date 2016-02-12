@@ -5,6 +5,8 @@ typedef NS_ENUM(NSInteger, ARDeviceType) {
     ARDeviceTypePad
 };
 
+@class OCMockObject;
+
 
 @interface ARTestContext : NSObject
 
@@ -16,5 +18,11 @@ typedef NS_ENUM(NSInteger, ARDeviceType) {
 
 /// Stops the partial mocks for Apple's objects
 + (void)stopStubbing;
+
+/// Freeze time returned from [NSDate date] class method. Returns the mock so time may be unfrozen.
++ (OCMockObject *)freezeTime;
+
+/// Freeze time returned from [NSDate date] class method. Returns the mock so time may be unfrozen.
++ (OCMockObject *)freezeTime:(NSDate *)now;
 
 @end

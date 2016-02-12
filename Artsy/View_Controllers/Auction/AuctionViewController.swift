@@ -10,6 +10,8 @@ class AuctionViewController: UIViewController {
     var headerStack: ORStackView!
     var stickyHeader: ScrollingStickyHeaderView!
 
+    var allowAnimations = true
+
     /// Variable for storing lazily-computed default refine settings. 
     /// Should not be accessed directly, call defaultRefineSettings() instead.
     private var _defaultRefineSettings: AuctionRefineSettings?
@@ -21,7 +23,7 @@ class AuctionViewController: UIViewController {
         return self.defaultRefineSettings()
     }()
 
-    lazy var networkModel: AuctionNetworkModel = {
+    lazy var networkModel: AuctionNetworkModelType = {
         return AuctionNetworkModel(saleID: self.saleID)
     }()
 
@@ -55,6 +57,7 @@ class AuctionViewController: UIViewController {
         appeared = true
 
         self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
+        
         self.networkModel.fetch().next { saleViewModel in
             self.setupForSale(saleViewModel)
         }.error { error in
@@ -98,7 +101,7 @@ extension AuctionViewController {
         displayItems(saleViewModel.artworks)
         self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
 
-        self.ar_removeIndeterminateLoadingIndicatorAnimated(true) // TODO: Animated?
+        self.ar_removeIndeterminateLoadingIndicatorAnimated(allowAnimations)
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {

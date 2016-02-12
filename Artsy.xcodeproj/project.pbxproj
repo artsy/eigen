@@ -301,6 +301,7 @@
 		5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */; };
 		5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */; };
 		5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */; };
+		5EFD54DA1C6E34890089DEED /* AuctionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFD54D91C6E34890089DEED /* AuctionViewControllerTests.swift */; };
 		5EFE2BE41910FC81003B5EEA /* ARAppDelegate+Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */; };
 		5EFF52BA1976CA6C00E2A563 /* ARSearchFieldButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF52B91976CA6C00E2A563 /* ARSearchFieldButton.m */; };
 		5EFF52BE197916C800E2A563 /* ARPendingOperationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF52BD197916C800E2A563 /* ARPendingOperationViewController.m */; };
@@ -1156,6 +1157,7 @@
 		5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineSettings.swift; path = Auction/AuctionRefineSettings.swift; sourceTree = "<group>"; };
 		5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AuctionRefineCheck.png; sourceTree = "<group>"; };
 		5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AuctionRefineCheck@2x.png"; sourceTree = "<group>"; };
+		5EFD54D91C6E34890089DEED /* AuctionViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionViewControllerTests.swift; path = Auction/AuctionViewControllerTests.swift; sourceTree = "<group>"; };
 		5EFE2BE21910FC81003B5EEA /* ARAppDelegate+Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Analytics.h"; sourceTree = "<group>"; };
 		5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Analytics.m"; sourceTree = "<group>"; };
 		5EFF52B81976CA6C00E2A563 /* ARSearchFieldButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSearchFieldButton.h; sourceTree = "<group>"; };
@@ -2797,6 +2799,7 @@
 		5ED05A791C57ED110042785A /* Auctions */ = {
 			isa = PBXGroup;
 			children = (
+				5EFD54D91C6E34890089DEED /* AuctionViewControllerTests.swift */,
 				5E20BB771C655DF500C6D781 /* AuctionRefineViewControllerTests.swift */,
 				5EF64A371C6D68530045B088 /* SaleViewModelTests.swift */,
 				5E20BB6C1C654EEA00C6D781 /* Networking */,
@@ -5133,6 +5136,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EFD54DA1C6E34890089DEED /* AuctionViewControllerTests.swift in Sources */,
 				3CB97D8F1887099E008C44FE /* ARLoginViewControllerTests.m in Sources */,
 				3C6AA7CB1885F38D00501F07 /* SaleArtwork+Extensions.m in Sources */,
 				60E738741C64ACA000AC381B /* ARAppAnalyticsSpec.m in Sources */,
