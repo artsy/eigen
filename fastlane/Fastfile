@@ -30,7 +30,10 @@ lane :ship_beta do
 
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
-  add_git_tag tag: "#{latest_version}-#{build_version}"
+  tag = "#{latest_version}-#{build_version}"
+  `git tag -d "#{tag}"`
+
+  add_git_tag tag: tag
   `git remote add http https://github.com/artsy/eigen.git`
   `git push http --tags`
 
