@@ -72,7 +72,7 @@ class AuctionViewController: UIViewController {
 
 extension AuctionViewController {
     func setupForSale(saleViewModel: SaleViewModel) {
-        // TODO: Sale is currently private on the SVM
+        // TODO: Sale is currently private on the SaleViewModel, also Sale will need to be extended to conform to ARSpotlightMetadataProvider
         // artworksViewController.spotlightEntity = saleViewModel.sale
 
         self.saleViewModel = saleViewModel
@@ -95,7 +95,7 @@ extension AuctionViewController {
         artworksViewController.stickyHeaderView = stickyHeader
         artworksViewController.invalidateHeaderHeight()
 
-        self.artworksViewController.modelViewController.appendItems(saleViewModel.artworks)
+        displayItems(saleViewModel.artworks)
         self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
 
         self.ar_removeIndeterminateLoadingIndicatorAnimated(true) // TODO: Animated?
@@ -118,6 +118,12 @@ extension AuctionViewController {
         }
         presentViewController(refineViewController, animated: true, completion: nil)
     }
+
+    // TODO: This needs to be a SaleArtwork. Don't know how yet.
+    func displayItems(items: [Artwork]) {
+        artworksViewController.modelViewController.resetItems()
+        artworksViewController.modelViewController.appendItems(items)
+    }
 }
 
 private typealias TitleCallbacks = AuctionViewController
@@ -139,6 +145,9 @@ extension RefineSettings: AuctionRefineViewControllerDelegate {
 
     func userDidApply(settings: AuctionRefineSettings, controller: AuctionRefineViewController) {
         refineSettings = settings
+
+        let items = saleViewModel.refinedArtworks(settings)
+        displayItems(items)
         dismissViewControllerAnimated(true, completion: nil)
     }
 }

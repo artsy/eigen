@@ -202,4 +202,13 @@ describe(@"masonry layout", ^{
     });
 });
 
+it(@"resets items", ^{
+    AREmbeddedModelsViewController *subject = AREmbeddedModelsViewControllerWithLayout(ARArtworkMasonryLayout2Column);
+    [subject appendItems:@[ArtworkWithImageAspectRatio(1)]];
+
+    [subject resetItems];
+
+    expect(subject.items.count).to.equal(0);
+});
+
 SpecEnd;

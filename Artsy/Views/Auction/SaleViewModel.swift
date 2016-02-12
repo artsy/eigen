@@ -42,6 +42,15 @@ extension SaleViewModel {
     var lowEstimateRange: AuctionRefineSettings.Range {
         return (min: self.smallestLowEstimate, max: self.largestLowEstimate)
     }
+
+    // TODO: Temporary, will need to be SaleArtworks instead.
+    func refinedArtworks(refineSettings: AuctionRefineSettings) -> [Artwork] {
+        return saleArtworks
+            .filter(SaleArtwork.includedInRefineSettings(refineSettings))
+            .map { saleArtwork in
+                return saleArtwork.artwork
+            }
+    }
 }
 
 /// Private helpers for SaleViewModel
@@ -56,6 +65,23 @@ private extension SaleViewModel {
     }
 
     var lowEstimates: [Int] {
-        return saleArtworks.map { Int($0.lowEstimateCents) }
+        // lowEstimateCents is an NSNumber! and I want to make sure we don't unwrap one that's nil.
+        return saleArtworks.flatMap { saleArtwork in
+            if saleArtwork.lowEstimateCents == nil {
+                return nil
+            }
+
+            return Int(saleArtwork.lowEstimateCents)
+        }
+    }
+}
+
+private extension SaleArtwork {
+    class func includedInRefineSettings(refineSettings: AuctionRefineSettings) -> SaleArtwork -> Bool {
+        return { saleArtwork in
+            // Includes iff the sale artwork's low estimate is within the range, inclusive.
+            let (min, max) = (refineSettings.range.min, refineSettings.range.max)
+            return (min...max) ~= (saleArtwork.lowEstimateCents as Int)
+        }
     }
 }

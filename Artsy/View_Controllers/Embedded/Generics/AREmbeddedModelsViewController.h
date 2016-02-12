@@ -35,6 +35,9 @@
 /// The items shown by the embedded models VC
 @property (nonatomic, copy, readonly) NSArray *items;
 
+/// Removes items and collectionview items
+- (void)resetItems;
+
 /// Appends items and inserts the collectionview items
 - (void)appendItems:(NSArray *)items;
 

@@ -155,6 +155,18 @@
     return [self.activeModule items];
 }
 
+- (void)resetItems
+{
+    if (!self && !self.collectionView) {
+        return;
+    }
+
+    self.activeModule.items = @[];
+    [self.collectionView reloadData];
+
+    [self postItemChangeCleanup];
+}
+
 - (void)appendItems:(NSArray *)items
 {
     if ((!self && !self.collectionView) || items.count == 0) {
@@ -188,6 +200,12 @@
     //        [CATransaction commit];
     //    }
 
+    [self postItemChangeCleanup];
+}
+
+// Actions that need to be performed after updating our active module's items.
+- (void)postItemChangeCleanup
+{
     [self updateViewConstraints];
     [self.view.superview setNeedsUpdateConstraints];
 }
