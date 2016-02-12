@@ -11,7 +11,8 @@ lane :ship_beta do
   latest_version = readme_data["upcoming"]["version"]
 
   upcoming = readme_data["upcoming"]
-  beta_readme =  "## #{upcoming["version"]} \n\n - #{upcoming["notes"].join "\n - "} \n\n"
+  commit =  `git log -n1 --format='%h'`.strip
+  beta_readme =  "## #{upcoming["version"]} - #{commit} \n\n - #{upcoming["notes"].join "\n - "} \n\n"
 
   # Builds the app
   gym

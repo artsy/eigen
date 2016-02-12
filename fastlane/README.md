@@ -5,11 +5,6 @@ fastlane documentation
 sudo gem install fastlane
 ```
 # Available Actions
-### spacey
-```
-fastlane spacey
-```
-
 ### ship_beta
 ```
 fastlane ship_beta
