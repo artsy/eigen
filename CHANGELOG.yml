@@ -8,6 +8,7 @@ upcoming:
     - Removes rotation support on refine auction listings view for iPhone - ash
     - Updated Danger to use new org - orta
   notes:
+    - Users may now refine sale artworks on native auction view by their low estimates - ash
     - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
     - Fix for crasher when linking to "/" on a hero unit - orta
     - Added slug analytics to a few view controllers - orta
