@@ -32,8 +32,12 @@ class AuctionInformationViewControllerSpec: QuickSpec {
             navigationController = ARSerifNavigationViewController(rootViewController: informationController)
         }
         
-        it("has a root view that shows information about the auction") {
-            expect(navigationController).to( haveValidSnapshot() )
+        ["iPhone": ARDeviceType.Phone6.rawValue, "iPad": ARDeviceType.Pad.rawValue].forEach { (deviceName, deviceType) in
+            it("has a root view that shows information about the auction and looks good on \(deviceName)") {
+                ARTestContext.useDevice(ARDeviceType(rawValue: deviceType)!) {
+                    expect(navigationController).to( haveValidSnapshot() )
+                }
+            }
         }
         
         it("has a FAQ view that answers questions about the auction") {

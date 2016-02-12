@@ -59,16 +59,17 @@ class AuctionInformationViewController : UIViewController {
         
         let stackView = self.scrollView.stackView
 
+        // TODO: What is the required font size?
         let partnerNameLabel = UILabel()
         partnerNameLabel.font = UIFont.serifSemiBoldFontWithSize(48)
         partnerNameLabel.text = self.auctionInformation.partnerName
         stackView.addSubview(partnerNameLabel, withTopMargin: "26", sideMargin: "40")
         
-        // TODO sale name/reg unit
-        let auctionTitleLabel = UILabel()
-        auctionTitleLabel.font = UIFont.serifFontWithSize(18)
-        auctionTitleLabel.text = "TODO SALE NAME/REG UNIT"
-        stackView.addSubview(auctionTitleLabel, withTopMargin: "20", sideMargin: "40")
+        // TODO: Make this work for real.
+        let sale = try! Sale(dictionary: ["name": self.auctionInformation.title], error: Void())
+        let viewModel = SaleViewModel(sale: sale, saleArtworks: [])
+        let auctionTitleView = AuctionTitleView(viewModel: viewModel, registrationStatus: nil, delegate: self, fullWidth: true)
+        stackView.addSubview(auctionTitleView, withTopMargin: "20", sideMargin: "40")
         
         let auctionDescriptionView = ARTextView()
         auctionDescriptionView.setMarkdownString(self.auctionInformation.description)
@@ -120,6 +121,14 @@ private typealias MailCompositionCallbacks = AuctionInformationViewController
 extension MailCompositionCallbacks: MFMailComposeViewControllerDelegate {
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+private typealias TitleCallbacks = AuctionInformationViewController
+extension TitleCallbacks: AuctionTitleViewDelegate {
+    func userDidPressRegister(titleView: AuctionTitleView) {
+        // TODO: We've got to make sure the user is logged in before booting them out to martsy.
+        //       Possibly merge this somehow with the callback in AuctionViewController.
     }
 }
 
