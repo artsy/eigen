@@ -31,25 +31,14 @@ extension SaleViewModel {
         return sale.name
     }
 
-    // TODO: Temporary, shouldn't be exposing raw models 😬
-    var artworks: [Artwork] {
-        return saleArtworks.map { saleArtwork in
-            return saleArtwork.artwork
-        }
-    }
-
     /// Provides a range of the smallest-to-largest low estimates.
     var lowEstimateRange: AuctionRefineSettings.Range {
         return (min: self.smallestLowEstimate, max: self.largestLowEstimate)
     }
 
-    // TODO: Temporary, will need to be SaleArtworks instead.
-    func refinedArtworks(refineSettings: AuctionRefineSettings) -> [Artwork] {
-        return saleArtworks
-            .filter(SaleArtwork.includedInRefineSettings(refineSettings))
-            .map { saleArtwork in
-                return saleArtwork.artwork
-            }
+    // TODO: Should not be exposing raw models.
+    func refinedSaleArtworks(refineSettings: AuctionRefineSettings) -> [SaleArtwork] {
+        return saleArtworks.filter(SaleArtwork.includedInRefineSettings(refineSettings))
     }
 }
 

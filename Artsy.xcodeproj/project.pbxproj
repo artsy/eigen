@@ -242,6 +242,8 @@
 		5435192E18A8E9420060F31E /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */; };
 		546A858217763349006D489B /* ARHeroUnitsNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 546A858117763349006D489B /* ARHeroUnitsNetworkModel.m */; };
 		54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */; };
+		5E0846D71C6E474800855667 /* ARSaleArtworkItemFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0846D61C6E474800855667 /* ARSaleArtworkItemFlowModule.m */; };
+		5E0846DA1C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0846D91C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m */; };
 		5E088DAE1C58072B00C448D7 /* AuctionRefineViewController+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E088DAD1C58072B00C448D7 /* AuctionRefineViewController+Private.swift */; };
 		5E088DB11C58145600C448D7 /* UIViewController+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E088DAF1C58141D00C448D7 /* UIViewController+Tests.swift */; };
 		5E0AEB7819B9EA43009F34DE /* ARShowNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AEB7719B9EA43009F34DE /* ARShowNetworkModel.m */; };
@@ -1084,6 +1086,10 @@
 		54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMenuAwareViewController.h; sourceTree = "<group>"; };
 		54B7477318A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTopMenuViewController+DeveloperExtras.h"; sourceTree = "<group>"; };
 		54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTopMenuViewController+DeveloperExtras.m"; sourceTree = "<group>"; };
+		5E0846D51C6E474800855667 /* ARSaleArtworkItemFlowModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARSaleArtworkItemFlowModule.h; path = Sale_Artworks/ARSaleArtworkItemFlowModule.h; sourceTree = "<group>"; };
+		5E0846D61C6E474800855667 /* ARSaleArtworkItemFlowModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSaleArtworkItemFlowModule.m; path = Sale_Artworks/ARSaleArtworkItemFlowModule.m; sourceTree = "<group>"; };
+		5E0846D81C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSaleArtworkFlowCollectionViewCell.h; sourceTree = "<group>"; };
+		5E0846D91C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSaleArtworkFlowCollectionViewCell.m; sourceTree = "<group>"; };
 		5E088DAD1C58072B00C448D7 /* AuctionRefineViewController+Private.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "AuctionRefineViewController+Private.swift"; path = "Auction/AuctionRefineViewController+Private.swift"; sourceTree = "<group>"; };
 		5E088DAF1C58141D00C448D7 /* UIViewController+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Tests.swift"; sourceTree = "<group>"; };
 		5E0AEB7619B9EA43009F34DE /* ARShowNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARShowNetworkModel.h; sourceTree = "<group>"; };
@@ -2586,6 +2592,8 @@
 				60F1C51417C0EFD7000938F7 /* ARBrowseFeaturedLinksCollectionViewCell.m */,
 				607D756C17C3873700CA1D41 /* ARFavoriteItemViewCell.h */,
 				607D756D17C3873700CA1D41 /* ARFavoriteItemViewCell.m */,
+				5E0846D81C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.h */,
+				5E0846D91C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m */,
 			);
 			name = "Collection View Cells";
 			path = Collection_View_Cells;
@@ -2719,6 +2727,15 @@
 				601F029417F336AB00EB3E83 /* ARArtworkBlurbView.m */,
 			);
 			path = Artwork;
+			sourceTree = "<group>";
+		};
+		5E0846D21C6E462C00855667 /* Sale Artworks */ = {
+			isa = PBXGroup;
+			children = (
+				5E0846D51C6E474800855667 /* ARSaleArtworkItemFlowModule.h */,
+				5E0846D61C6E474800855667 /* ARSaleArtworkItemFlowModule.m */,
+			);
+			name = "Sale Artworks";
 			sourceTree = "<group>";
 		};
 		5E20BB6C1C654EEA00C6D781 /* Networking */ = {
@@ -3045,6 +3062,7 @@
 		6016C18D178C2B46008EC8E7 /* Embedded */ = {
 			isa = PBXGroup;
 			children = (
+				5E0846D21C6E462C00855667 /* Sale Artworks */,
 				E66EE4AC196460530081ED0C /* Favorites */,
 				6016C191178C2BD9008EC8E7 /* Artworks */,
 				342F9FE0B50F629107FA5E5A /* Generics */,
@@ -3957,10 +3975,6 @@
 		60C1C31A1C5FB00A00EC98EE /* Auctions */ = {
 			isa = PBXGroup;
 			children = (
-				5E6BA6E71C56B5D700B942C1 /* AuctionRefineCancelButton@2x.png */,
-				5E6BA6E81C56B5D700B942C1 /* AuctionRefineCancelButton.png */,
-				5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */,
-				5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */,
 			);
 			name = Auctions;
 			sourceTree = "<group>";
@@ -4796,6 +4810,7 @@
 				608B709917D4F6520088A56C /* ARSearchTableViewCell.m in Sources */,
 				49A7723A165ADB9400BC6FD3 /* ARSavedArtworkSetFeedItem.m in Sources */,
 				0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */,
+				5E0846DA1C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m in Sources */,
 				60A309AD1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m in Sources */,
 				3CEE0B6518A16F7D00FEA6E6 /* ArtsyAPI+Artists.m in Sources */,
 				607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */,
@@ -4949,6 +4964,7 @@
 				60F1C51817C0F3DE000938F7 /* ArtsyAPI+Browse.m in Sources */,
 				062C202116DD76C90095A7EC /* ARZoomView.m in Sources */,
 				E6A3500518AAEBFF0075398F /* NSKeyedUnarchiver+ErrorLogging.m in Sources */,
+				5E0846D71C6E474800855667 /* ARSaleArtworkItemFlowModule.m in Sources */,
 				60C26DED1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m in Sources */,
 				5E20BB651C62BF8300C6D781 /* AuctionColors.swift in Sources */,
 				3CCCC89B18996DD4008015DD /* Post.m in Sources */,

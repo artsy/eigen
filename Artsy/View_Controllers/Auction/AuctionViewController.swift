@@ -15,7 +15,7 @@ class AuctionViewController: UIViewController {
     /// Variable for storing lazily-computed default refine settings. 
     /// Should not be accessed directly, call defaultRefineSettings() instead.
     private var _defaultRefineSettings: AuctionRefineSettings?
-    private var artworksViewController: ARModelInfiniteScrollViewController!
+    private var saleArtworksViewController: ARModelInfiniteScrollViewController!
 
     /// Current refine settings.
     /// Our refine settings are (by default) the defaultRefineSettings().
@@ -43,11 +43,12 @@ class AuctionViewController: UIViewController {
         super.viewDidLoad()
 
         headerStack = ORTagBasedAutoStackView()
-        artworksViewController = ARModelInfiniteScrollViewController()
-        ar_addAlignedModernChildViewController(artworksViewController)
+        saleArtworksViewController = ARModelInfiniteScrollViewController()
 
-        artworksViewController.headerStackView = headerStack
-        artworksViewController.modelViewController.delegate = self
+        ar_addAlignedModernChildViewController(saleArtworksViewController)
+
+        saleArtworksViewController.headerStackView = headerStack
+        saleArtworksViewController.modelViewController.delegate = self
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -63,6 +64,13 @@ class AuctionViewController: UIViewController {
         }.error { error in
             // TODO: Error-handling somehow
         }
+    }
+
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // TODO: Should switch based on refine settings
+//        artworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: self.traitCollection)
     }
 
     enum ViewTags: Int {
@@ -95,11 +103,11 @@ extension AuctionViewController {
             $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
         }
 
-        artworksViewController.stickyHeaderView = stickyHeader
-        artworksViewController.invalidateHeaderHeight()
+        saleArtworksViewController.stickyHeaderView = stickyHeader
+        saleArtworksViewController.invalidateHeaderHeight()
 
-        displayItems(saleViewModel.artworks)
-        self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
+        displayCurrentItems()
+        saleArtworksViewController.modelViewController.showTrailingLoadingIndicator = false
 
         self.ar_removeIndeterminateLoadingIndicatorAnimated(allowAnimations)
     }
@@ -123,9 +131,14 @@ extension AuctionViewController {
     }
 
     // TODO: This needs to be a SaleArtwork. Don't know how yet.
-    func displayItems(items: [Artwork]) {
-        artworksViewController.modelViewController.resetItems()
-        artworksViewController.modelViewController.appendItems(items)
+    func displayCurrentItems() {
+        let items = saleViewModel.refinedSaleArtworks(refineSettings)
+
+        // TODO: Depends on current refineSettings
+        saleArtworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: self.traitCollection)
+
+        saleArtworksViewController.modelViewController.resetItems()
+        saleArtworksViewController.modelViewController.appendItems(items)
     }
 }
 
@@ -149,8 +162,7 @@ extension RefineSettings: AuctionRefineViewControllerDelegate {
     func userDidApply(settings: AuctionRefineSettings, controller: AuctionRefineViewController) {
         refineSettings = settings
 
-        let items = saleViewModel.refinedArtworks(settings)
-        displayItems(items)
+        displayCurrentItems()
         dismissViewControllerAnimated(true, completion: nil)
     }
 }
