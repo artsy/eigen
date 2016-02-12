@@ -21,7 +21,7 @@ class AuctionViewController: UIViewController {
         return self.defaultRefineSettings()
     }()
 
-    lazy var networkModel: AuctionNetworkModel = {
+    lazy var networkModel: AuctionNetworkModelType = {
         return AuctionNetworkModel(saleID: self.saleID)
     }()
 
