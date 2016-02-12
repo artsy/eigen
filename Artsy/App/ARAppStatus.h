@@ -8,6 +8,9 @@
 /// Is the app running on Testflight or locally as a developer.
 + (BOOL)isBetaOrDev;
 
+/// Is the app running on Testflight, locally as a developer or an Artsymail email.
++ (BOOL)isBetaDevOrAdmin;
+
 /// Is the app a demo release.
 + (BOOL)isDemo;
 
