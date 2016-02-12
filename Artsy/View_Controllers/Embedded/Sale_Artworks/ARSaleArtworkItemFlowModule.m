@@ -4,7 +4,7 @@
 
 @implementation ARSaleArtworkItemFlowModule
 
-- (instancetype)initWithTraitCollection:(UITraitCollection *)traitCollection
+- (instancetype)initWithTraitCollection:(UITraitCollection *)traitCollection width:(CGFloat)width
 {
     self = [super init];
     if (!self) {
@@ -14,9 +14,8 @@
     _traitCollection = traitCollection;
 
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    CGFloat sideMargin = traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad ? 50 : 20;
-    layout.sectionInset = UIEdgeInsetsMake(20, sideMargin, 20, sideMargin);
-    layout.itemSize = CGSizeMake(300, 120);
+    layout.itemSize = CGSizeMake(width, 120);
+    layout.minimumLineSpacing = 0;
 
     _moduleLayout = layout;
     return self;

@@ -70,7 +70,7 @@ class AuctionViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
 
         // TODO: Should switch based on refine settings
-//        artworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: self.traitCollection)
+//        saleArtworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: self.traitCollection)
     }
 
     enum ViewTags: Int {
@@ -130,12 +130,11 @@ extension AuctionViewController {
         presentViewController(refineViewController, animated: true, completion: nil)
     }
 
-    // TODO: This needs to be a SaleArtwork. Don't know how yet.
     func displayCurrentItems() {
         let items = saleViewModel.refinedSaleArtworks(refineSettings)
 
-        // TODO: Depends on current refineSettings
-        saleArtworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: self.traitCollection)
+        // TODO: Module depends on current refineSettings
+        saleArtworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: self.traitCollection, width: self.view.bounds.size.width - 40)
 
         saleArtworksViewController.modelViewController.resetItems()
         saleArtworksViewController.modelViewController.appendItems(items)
