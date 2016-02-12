@@ -11,7 +11,7 @@ lane :ship_beta do
   latest_version = readme_data["upcoming"]["version"]
 
   upcoming = readme_data["upcoming"]
-  commit =  `git log -n1 --format='%h'`.strip
+  commit =  `git rev-parse HEAD`.strip
   beta_readme =  "## #{upcoming["version"]} - #{commit} \n\n - #{upcoming["notes"].join "\n - "} \n\n"
 
   # Builds the app
@@ -37,8 +37,15 @@ lane :ship_beta do
   # Ship to hockey first, testflight has to wait for processing
   hockey(
     notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN'],
-    public_identifier: ENV['HockeyAppLiveID'], repository_url: "https://github.com/artsy/eigen.git",
-    commit_sha: `git rev-parse HEAD`.strip
+    public_identifier: ENV['HockeyAppLiveID'],
+    repository_url: "https://github.com/artsy/eigen.git", commit_sha: commit
+  )
+
+  # Do both beta / store, as right now any build can migrate across
+  hockey(
+    notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN'],
+    public_identifier: ENV['HockeyAppBetaID'],
+    repository_url: "https://github.com/artsy/eigen.git", commit_sha: commit
   )
 
   pilot changelog: beta_readme
