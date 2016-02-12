@@ -264,7 +264,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupAdminTools
 {
-    if (!ARAppStatus.isBetaOrDev) {
+    if (!ARAppStatus.isBetaDevOrAdmin) {
         return;
     }
 

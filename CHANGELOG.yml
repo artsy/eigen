@@ -13,6 +13,7 @@ upcoming:
     - Fix for search button in Fairs - orta
     - Hero units are the same height as mobile web artsy - orta
     - More analytics work around sign up / log in - orta
+    - Users with an Artsymail email can access the admin menu - orta
 
 releases:
   - version: 2.3.5
