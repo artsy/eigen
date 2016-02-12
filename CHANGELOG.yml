@@ -9,6 +9,7 @@ upcoming:
     - Updated Danger to use new org - orta
   notes:
     - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
+    - Fix for crasher when linking to "/" on a hero unit - orta
     - Added slug analytics to a few view controllers - orta
     - Fix for search button in Fairs - orta
     - Hero units are the same height as mobile web artsy - orta
