@@ -7,6 +7,7 @@ upcoming:
     - Additional work on the auction title view - ash
     - Removes rotation support on refine auction listings view for iPhone - ash
     - Updated Danger to use new org - orta
+    - Adds unit tests for auction view controller - ash
   notes:
     - Users may now refine sale artworks on native auction view by their low estimates - ash
     - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
