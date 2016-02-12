@@ -53,14 +53,14 @@ class AuctionTitleViewSpec: QuickSpec {
             }
         }
 
-        describe("Regular") {
+        describe("with the registration button having side insets") {
             beforeEach {
                 fullWidth = false
             }
             itBehavesLike("title view")
         }
 
-        describe("compact") {
+        describe("with the registration button spanning the full width") {
             beforeEach {
                 fullWidth = true
             }
