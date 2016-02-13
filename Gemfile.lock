@@ -1,13 +1,14 @@
 GIT
   remote: https://github.com/danger/danger.git
-  revision: a3eae2338f9e3e167274d82e5664aa3e3e8ee2b3
+  revision: c8b08b95ae48872b91846301ab25a94164a04171
   specs:
-    danger (0.2.1)
+    danger (0.3.0)
       claide
       colored
+      faraday
       git (~> 1.2.9)
-      nap
       octokit
+      redcarpet
 
 GEM
   remote: https://rubygems.org/
@@ -236,6 +237,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    redcarpet (3.3.4)
     retriable (1.4.1)
     rouge (1.10.1)
     rubyzip (1.1.7)
