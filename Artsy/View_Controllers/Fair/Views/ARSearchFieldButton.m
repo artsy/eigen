@@ -66,7 +66,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(UIViewNoIntrinsicMetric, 32);
+    return CGSizeMake(UIViewNoIntrinsicMetric, 48);
 }
 
 @end
