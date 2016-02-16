@@ -18,6 +18,7 @@ upcoming:
     - Hero units are the same height as mobile web artsy - orta
     - More analytics work around sign up / log in - orta
     - Users with an Artsymail email can access the admin menu - orta
+    - Show auction information, such as a description, FAQ, and contact - alloy
 
 releases:
   - version: 2.3.5

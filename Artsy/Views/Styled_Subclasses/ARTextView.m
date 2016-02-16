@@ -26,6 +26,8 @@
     self.tintColor = [UIColor blackColor];
     self.delegate = self;
     self.opaque = YES;
+    self.textContainerInset = UIEdgeInsetsZero;
+    self.textContainer.lineFragmentPadding = 0;
 
     return self;
 }

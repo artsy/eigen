@@ -62,6 +62,7 @@
 
     [self setViewControllers:@[ rootViewController ]];
     [self.navigationBar.topItem setRightBarButtonItem:self.exitButton];
+
     self.delegate = self;
     return self;
 }
@@ -108,16 +109,25 @@
         nav.leftBarButtonItem = self.backButton;
 
     } else {
-        // For single views we want a left aligned title
-        // 16 because the nav applies it's own margin too
-
-        UILabel *label = [[ARSerifLabel alloc] initWithFrame:CGRectMake(16, 0, 800, 60)];
+        // On the root view, we want a left aligned title.
+        UILabel *label = [ARSerifLabel new];
         label.font = [UIFont serifFontWithSize:20];
         label.text = nav.title;
+        // Only make it as wide as necessary, otherwise it might cover the right bar button item.
+        [label sizeToFit];
 
-        UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 800, 60)];
+        // At the time of writing, 4 is the additional x offset that a UILabel in a left bar button needs
+        // to align to the content of e.g. AuctionInformationViewController.
+        static CGFloat xOffset = 4;
+        CGRect labelFrame = label.bounds;
+        label.frame = CGRectOffset(labelFrame, xOffset, 0);
+        UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){ CGPointZero, { CGRectGetWidth(labelFrame) + xOffset, CGRectGetHeight(labelFrame) } }];
         [titleMarginWrapper addSubview:label];
-        nav.titleView = titleMarginWrapper;
+
+        nav.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:titleMarginWrapper];
+
+        // Just a dummy view to ensure that the navigation bar doesn’t create a new title view.
+        nav.titleView = [UIView new];
     }
 }
 
