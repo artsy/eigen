@@ -4,10 +4,14 @@
 @import EDColor;
 @import SDWebImage;
 @import FLKAutoLayout;
+@import ObjectiveSugar;
 
 #import "SaleArtwork.h"
 #import "Artwork.h"
+#import "Artist.h"
 #import "Image.h"
+#import "NSArray+Additions.h"
+#import "ARAspectRatioImageView.h"
 
 #import "ARSeparatorViews.h"
 
@@ -19,7 +23,7 @@
 @property (nonatomic, assign) BOOL hasConstrainedSubviews;
 
 @property (nonatomic, strong) ARSeparatorView *separatorView;
-@property (nonatomic, strong) UIImageView *artworkImageView;
+@property (nonatomic, strong) ARAspectRatioImageView *artworkImageView;
 @property (nonatomic, strong) ARSansSerifLabel *lotNumberLabel;
 @property (nonatomic, strong) ARSerifLabel *artistNameLabel;
 @property (nonatomic, strong) ARSerifLabel *artworkNameLabel;
@@ -32,10 +36,13 @@
 
 - (void)createSubviews
 {
+    self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.contentView alignToView:self];
+
     self.separatorView = [[ARSeparatorView alloc] init];
     [self.contentView addSubview:self.separatorView];
 
-    self.artworkImageView = [[UIImageView alloc] init];
+    self.artworkImageView = [[ARAspectRatioImageView alloc] init];
     self.artworkImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.artworkImageView.clipsToBounds = YES;
     [self.contentView addSubview:self.artworkImageView];
@@ -72,7 +79,8 @@
     [self.separatorView alignLeading:@"0" trailing:@"0" toView:self.contentView];
 
     [self.artworkImageView constrainWidth:@"140"];
-    [self.artworkImageView alignTop:@"10" bottom:@"-10" toView:self.contentView];
+    [self.artworkImageView constrainHeight:@"100"];
+    [self.artworkImageView alignTop:@"10@800" bottom:@"-10@800" toView:self.contentView];
     [self.artworkImageView alignLeadingEdgeWithView:self.contentView predicate:@"0"];
 }
 
@@ -89,10 +97,14 @@
 
 - (void)setupWithRepresentedObject:(id)object
 {
+    // TODO: Shouldn't have access to raw models
     SaleArtwork *saleArtwork = object;
+
     [self.artworkImageView sd_setImageWithURL:saleArtwork.artwork.defaultImage.urlForThumbnailImage];
 
-    // TODO: Shouldn't have access to raw models :\
+    self.artistNameLabel.text = saleArtwork.artwork.artist.name;
+    self.artworkNameLabel.text = saleArtwork.artwork.name;
+    self.estimateLabel.text = saleArtwork.estimateString;
     self.lotNumberLabel.text = saleArtwork.lotNumber.stringValue;
 }
 
@@ -115,7 +127,31 @@
 - (void)constrainViews
 {
     [super constrainViews];
-    // TODO: iPhone layout.
+
+    NSArray *views = @[ self.lotNumberLabel, self.artistNameLabel, self.artworkNameLabel, self.estimateLabel ];
+
+    UIView *container = [UIView new];
+    [self.contentView addSubview:container];
+
+    // Add the views to the container and align them horizontally.
+    [views each:^(id object) {
+        [container addSubview:object];
+        [object alignLeading:@"0" trailing:@"0" toView:container];
+    }];
+
+    // Stack the labels on top of eachother.
+    [views betweenObjects:^(id lhs, id rhs) {
+        [lhs constrainBottomSpaceToView:rhs predicate:@"0"];
+    }];
+
+    // Align the labels to the top/bottom of the container
+    [views.firstObject alignTopEdgeWithView:container predicate:@"0"];
+    [views.lastObject alignBottomEdgeWithView:container predicate:@"0"];
+
+    // Position labels right of the image view
+    [container constrainLeadingSpaceToView:self.artworkImageView predicate:@"20"];
+    [container alignTrailingEdgeWithView:self.contentView predicate:@"0"];
+    [container alignCenterYWithView:self.artworkImageView predicate:@"0"];
 }
 
 @end
