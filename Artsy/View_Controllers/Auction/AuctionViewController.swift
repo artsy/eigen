@@ -137,8 +137,12 @@ extension AuctionViewController {
     func displayCurrentItems() {
         let items = saleViewModel.refinedSaleArtworks(refineSettings)
 
+
+        let compactSize = traitCollection.horizontalSizeClass == .Compact
+        let sideSpacing: CGFloat = compactSize ? 40 : 80
+
         // TODO: Module depends on current refineSettings
-        saleArtworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: self.traitCollection, width: self.view.bounds.size.width - 40)
+        saleArtworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: self.traitCollection, width: self.view.bounds.size.width - sideSpacing)
 
         saleArtworksViewController.modelViewController.resetItems()
         saleArtworksViewController.modelViewController.appendItems(items)

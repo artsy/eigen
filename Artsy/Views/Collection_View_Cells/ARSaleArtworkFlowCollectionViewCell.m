@@ -28,6 +28,7 @@
 @property (nonatomic, strong) ARSerifLabel *artistNameLabel;
 @property (nonatomic, strong) ARSerifLabel *artworkNameLabel;
 @property (nonatomic, strong) ARSerifLabel *estimateLabel;
+@property (nonatomic, strong) ARSerifLabel *numberOfBidsLabel;
 
 @end
 
@@ -66,10 +67,17 @@
     self.artworkNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artworkNameLabel];
 
+    UIColor *lightGrey = [UIColor colorWithHex:0x999999];
+
     self.estimateLabel = [[ARSerifLabel alloc] init];
     self.estimateLabel.font = serifFont;
-    self.estimateLabel.textColor = [UIColor colorWithHex:0x999999];
+    self.estimateLabel.textColor = lightGrey;
     [self.contentView addSubview:self.estimateLabel];
+
+    self.numberOfBidsLabel = [[ARSerifLabel alloc] init];
+    self.numberOfBidsLabel.font = serifFont;
+    self.numberOfBidsLabel.textColor = lightGrey;
+    // Note: We are NOT adding this to our view hierarchy, it is subclass-specific.
 }
 
 - (void)constrainViews
@@ -104,8 +112,9 @@
 
     self.artistNameLabel.text = saleArtwork.artwork.artist.name;
     self.artworkNameLabel.text = saleArtwork.artwork.name;
-    self.estimateLabel.text = saleArtwork.estimateString;
+    self.estimateLabel.text = @"$11,000"; // saleArtwork.estimateString;
     self.lotNumberLabel.text = saleArtwork.lotNumber.stringValue;
+    self.numberOfBidsLabel.text = saleArtwork.numberOfBidsString;
 }
 
 @end
@@ -116,7 +125,28 @@
 - (void)constrainViews
 {
     [super constrainViews];
-    // TODO: iPad layout.
+
+    UIView *container = [UIView new];
+    [self.contentView addSubview:container];
+
+    NSArray *views = @[ self.lotNumberLabel, self.artistNameLabel, self.artworkNameLabel, self.estimateLabel, self.numberOfBidsLabel ];
+
+    // Vertically centre everything.
+    [views each:^(id object) {
+        [container addSubview:object];
+        [object alignCenterYWithView:container predicate:@"0"];
+    }];
+
+    // Align the labels to the top/bottom of the container
+    [views.firstObject alignLeadingEdgeWithView:container predicate:@"0"];
+    [views.lastObject alignTrailingEdgeWithView:container predicate:@"0"];
+
+    // Spread everything within the container out.
+    [UIView spaceOutViewsHorizontally:views predicate:@"100@1"];
+
+    [container alignTrailingEdgeWithView:self.contentView predicate:@"-20"];
+    [container constrainLeadingSpaceToView:self.artworkImageView predicate:@"40"];
+    [container alignTop:@"0" bottom:@"0" toView:self.contentView];
 }
 
 @end
