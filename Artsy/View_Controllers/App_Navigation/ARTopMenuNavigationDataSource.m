@@ -12,6 +12,7 @@
 #import "SiteHeroUnit.h"
 #import "ARNavigationController.h"
 #import "ARAppBackgroundFetchDelegate.h"
+#import "ARNotificationsViewController.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -37,7 +38,6 @@ WebViewNavigationControllerWithPath(NSString *path)
 @property (readonly, nonatomic, strong) ARNavigationController *showsNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *magazineNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *notificationsNavigationController;
 
 @end
 
@@ -73,8 +73,6 @@ WebViewNavigationControllerWithPath(NSString *path)
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
 
     _magazineNavigationController = WebViewNavigationControllerWithPath(@"/articles");
-
-    _notificationsNavigationController = WebViewNavigationControllerWithPath(@"/works-for-you");
 
     return self;
 }
@@ -112,6 +110,12 @@ WebViewNavigationControllerWithPath(NSString *path)
     // https://github.com/artsy/eigen/issues/287#issuecomment-88036710
     ARFavoritesViewController *favoritesViewController = [[ARFavoritesViewController alloc] init];
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
+}
+
+- (ARNavigationController *)notificationsNavigationController
+{
+    ARNotificationsViewController *notificationsViewController = [[ARNotificationsViewController alloc] init];
+    return [[ARNavigationController alloc] initWithRootViewController:notificationsViewController];
 }
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
