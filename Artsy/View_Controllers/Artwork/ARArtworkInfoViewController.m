@@ -81,7 +81,7 @@
     ARTextView *textView = [[ARTextView alloc] init];
     textView.viewControllerDelegate = self;
     [textView setMarkdownString:text];
-    [self.view.stackView addSubview:textView withTopMargin:@"0" sideMargin:@"30"];
+    [self.view.stackView addSubview:textView withTopMargin:@"10" sideMargin:@"40"];
 }
 
 - (NSDictionary *)dictionaryForAnalytics

@@ -19,19 +19,19 @@ class SaleViewModelTests: QuickSpec {
             }
 
             it("includes high and low inclusive") {
-                let refinedArtworks = subject.refinedArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 500, max: 1500)))
+                let refinedArtworks = subject.refinedSaleArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 500, max: 1500)))
 
                 expect(refinedArtworks.count) == 2
             }
 
             it("excludes low low estimates") {
-                let refinedArtworks = subject.refinedArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 1000, max: 1500)))
+                let refinedArtworks = subject.refinedSaleArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 1000, max: 1500)))
 
                 expect(refinedArtworks.count) == 1
             }
 
             it("excludes high low estimates") {
-                let refinedArtworks = subject.refinedArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 500, max: 1000)))
+                let refinedArtworks = subject.refinedSaleArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 500, max: 1000)))
 
                 expect(refinedArtworks.count) == 1
             }

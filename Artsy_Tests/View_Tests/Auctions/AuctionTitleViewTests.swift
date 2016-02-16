@@ -11,64 +11,69 @@ class AuctionTitleViewSpec: QuickSpec {
     override func spec() {
         let sale = try! Sale(dictionary: ["name": "The 🎉 Sale"], error: Void())
         let viewModel = SaleViewModel(sale: sale, saleArtworks: [])
+        
+        let delegate = Test_AuctionTitleViewDelegate()
+        var fullWidth: Bool!
 
         sharedExamples("title view") { (context: SharedExampleContext) in
-            var horizontalSizeClass: UIUserInterfaceSizeClass!
-
-            beforeEach {
-                let rawValue = context()["horizontalSizeClass"] as! Int
-                horizontalSizeClass = UIUserInterfaceSizeClass(rawValue: rawValue)
-            }
-
             it("looks good without a registration status") {
-                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: nil, delegate: Test_EmptyAuctionTitleViewDelegate())
-                subject.stubHorizontalSizeClass(horizontalSizeClass)
+                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: nil, delegate: delegate, fullWidth: fullWidth)
                 subject.bounds.size.width = 400
 
                 expect(subject).to( haveValidSnapshot() )
             }
 
             it("looks good with a logged out registration status") {
-                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusNotLoggedIn, delegate: Test_EmptyAuctionTitleViewDelegate())
-                subject.stubHorizontalSizeClass(horizontalSizeClass)
+                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusNotLoggedIn, delegate: delegate, fullWidth: fullWidth)
                 subject.bounds.size.width = 400
 
                 expect(subject).to( haveValidSnapshot() )
             }
 
             it("looks good with a not registered registration status") {
-                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusNotRegistered, delegate: Test_EmptyAuctionTitleViewDelegate())
-                subject.stubHorizontalSizeClass(horizontalSizeClass)
+                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusNotRegistered, delegate: delegate, fullWidth: fullWidth)
                 subject.bounds.size.width = 400
 
                 expect(subject).to( haveValidSnapshot() )
             }
 
             it("looks good with a registered registration status") {
-                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered, delegate: Test_EmptyAuctionTitleViewDelegate())
-                subject.stubHorizontalSizeClass(horizontalSizeClass)
+                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered, delegate: delegate, fullWidth: fullWidth)
                 subject.bounds.size.width = 400
 
                 expect(subject).to( haveValidSnapshot() )
             }
-        }
-
-        describe("Regular") {
-            itBehavesLike("title view") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.Regular.rawValue] as NSDictionary
+            
+            it("looks good without a info button") {
+                let delegateWithoutInfo = Test_AuctionTitleViewDelegateWithoutInfo()
+                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered, delegate: delegateWithoutInfo, fullWidth: fullWidth)
+                subject.bounds.size.width = 400
+                
+                expect(subject).to( haveValidSnapshot() )
             }
         }
 
-        describe("compact") {
-            itBehavesLike("title view") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.Compact.rawValue] as NSDictionary
+        describe("with the registration button having side insets") {
+            beforeEach {
+                fullWidth = false
             }
+            itBehavesLike("title view")
+        }
 
+        describe("with the registration button spanning the full width") {
+            beforeEach {
+                fullWidth = true
+            }
+            itBehavesLike("title view")
         }
     }
 }
 
-class Test_EmptyAuctionTitleViewDelegate: AuctionTitleViewDelegate {
-    func userDidPressInfo(titleView: AuctionTitleView) { }
-    func userDidPressRegister(titleView: AuctionTitleView) { }
+class Test_AuctionTitleViewDelegate: AuctionTitleViewDelegate {
+    @objc func userDidPressInfo(titleView: AuctionTitleView) { }
+    @objc func userDidPressRegister(titleView: AuctionTitleView) { }
+}
+
+class Test_AuctionTitleViewDelegateWithoutInfo: AuctionTitleViewDelegate {
+    @objc func userDidPressRegister(titleView: AuctionTitleView) { }
 }

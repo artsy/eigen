@@ -2,6 +2,7 @@ upcoming:
   version: 2.3.6
   details: Analytics + Auction Overview (?)
   dev:
+    - Made the searchbar larger in fair views on iPhone - maxim
     - Adds an analytics event for Bell Tapped which is only for the tap - orta
     - Registration status on auction page - ash
     - Additional work on the auction title view - ash
@@ -17,6 +18,7 @@ upcoming:
     - Hero units are the same height as mobile web artsy - orta
     - More analytics work around sign up / log in - orta
     - Users with an Artsymail email can access the admin menu - orta
+    - Show auction information, such as a description, FAQ, and contact - alloy
 
 releases:
   - version: 2.3.5

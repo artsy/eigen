@@ -14,6 +14,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
+
 @implementation ARFairSearchViewController
 
 - (instancetype)initWithFair:(Fair *)fair
@@ -48,10 +49,16 @@
     // fair search is a solid grey background
     UIView *searchBox = [[UIView alloc] init];
     searchBox.backgroundColor = [UIColor colorWithHex:0xf2f2f2];
+
+    [searchBox constrainHeight:@"44"];
+
     [self.view insertSubview:searchBox atIndex:0];
-    [searchBox alignLeadingEdgeWithView:self.searchIcon predicate:@"-4"];
-    [searchBox alignTrailingEdgeWithView:self.textField predicate:@"4"];
-    [searchBox alignTop:@"-8" bottom:@"8" toView:self.textField];
+
+    [self.view alignLeadingEdgeWithView:searchBox predicate:@"-10"];
+    [searchBox alignTrailingEdgeWithView:self.closeButton predicate:@"-46"];
+    [self.view alignTopEdgeWithView:searchBox predicate:@"-10"];
+
+    [searchBox alignCenterYWithView:self.searchBoxView predicate:@"0"];
 }
 
 - (void)fetchSearchResults:(NSString *)text replace:(BOOL)replaceResults

@@ -88,12 +88,16 @@ extension AuctionViewController {
 
         self.saleViewModel = saleViewModel
 
-        [ (AuctionBannerView(viewModel: saleViewModel), ViewTags.Banner),
-          (AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self), .Title)
-        ].forEach { (view, tag) in
-            view.tag = tag.rawValue
-            headerStack.addSubview(view, withTopMargin: "0", sideMargin: "0")
-        }
+        let bannerView = AuctionBannerView(viewModel: saleViewModel)
+        bannerView.tag = ViewTags.Banner.rawValue
+        headerStack.addSubview(bannerView, withTopMargin: "0", sideMargin: "0")
+
+        let compactSize = traitCollection.horizontalSizeClass == .Compact
+        let topSpacing = compactSize ? 20 : 30
+        let sideSpacing = compactSize ? 40 : 80
+        let titleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self, fullWidth: compactSize)
+        titleView.tag = ViewTags.Title.rawValue
+        headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
 
         stickyHeader = ScrollingStickyHeaderView().then {
             $0.toggleAttatched(false, animated:false)
@@ -144,7 +148,9 @@ extension AuctionViewController {
 private typealias TitleCallbacks = AuctionViewController
 extension TitleCallbacks: AuctionTitleViewDelegate {
     func userDidPressInfo(titleView: AuctionTitleView) {
-        // TODO:
+        // TODO: Don’t use AuctionInformationViewController with static content.
+        let controller = ARSerifNavigationViewController(rootViewController: AuctionInformationViewController())
+        presentViewController(controller, animated: true, completion: nil)
     }
 
     func userDidPressRegister(titleView: AuctionTitleView) {
