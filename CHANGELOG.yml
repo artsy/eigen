@@ -2,6 +2,7 @@ upcoming:
   version: 2.3.6
   details: Analytics + Auction Overview (?)
   dev:
+    - Added a switch between web and native works for you view - maxim
     - Made the searchbar larger in fair views on iPhone - maxim
     - Adds an analytics event for Bell Tapped which is only for the tap - orta
     - Registration status on auction page - ash
