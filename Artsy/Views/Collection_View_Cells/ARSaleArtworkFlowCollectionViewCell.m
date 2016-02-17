@@ -158,7 +158,7 @@
 
     // We constrain the leading space to the image view, then the trailing space to the lot number label, and store them for later configuration (the predicates here don't matter).
     self.largeConstraintsToUpdate = [self.largeConstraintsToUpdate arrayByAddingObjectsFromArray:[artworkLabelsContainer constrainLeadingSpaceToView:self.artworkImageView predicate:@"0"]];
-    self.largeConstraintsToUpdate = [self.largeConstraintsToUpdate arrayByAddingObjectsFromArray:[artworkLabelsContainer constrainTrailingSpaceToView:self.lotNumberLabel predicate:@"0"]];
+    self.largeConstraintsToUpdate = [self.largeConstraintsToUpdate arrayByAddingObjectsFromArray:[self.lotNumberLabel constrainLeadingSpaceToView:artworkLabelsContainer predicate:@"0"]];
 
     // Number of bids label is Regular cell specific, so: add it, constraint it to the trailing edge, and store the constrain for later configuration (the predicate doesn't matter).
     [self.contentView addSubview:self.numberOfBidsLabel];

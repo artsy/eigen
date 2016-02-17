@@ -157,8 +157,8 @@ static NSNumberFormatter *dollarFormatter;
 
 - (NSString *)numberOfBidsString
 {
-    NSString *bidsString = (self.bidCount ?: @(0)).stringValue;
-    return [NSString stringWithFormat:@"(%@)", bidsString];
+    NSInteger bids = self.bidCount.integerValue ?: 0;
+    return [NSString stringWithFormat:@"(%@ Bid%@)", @(bids), bids != 1 ? @"s" : @""];
 }
 
 - (NSString *)highestOrStartingBidString
