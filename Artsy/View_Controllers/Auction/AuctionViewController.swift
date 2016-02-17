@@ -47,6 +47,10 @@ class AuctionViewController: UIViewController {
 
         ar_addAlignedModernChildViewController(saleArtworksViewController)
 
+        // Disable the vertical offset for status bar.
+        automaticallyAdjustsScrollViewInsets = false
+        saleArtworksViewController.automaticallyAdjustsScrollViewInsets = false
+
         saleArtworksViewController.headerStackView = headerStack
         saleArtworksViewController.showTrailingLoadingIndicator = false
         saleArtworksViewController.delegate = self
