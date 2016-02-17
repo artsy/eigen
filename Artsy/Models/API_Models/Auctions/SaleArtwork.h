@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, ARReserveStatus) {
 - (BOOL)hasEstimate;
 - (NSString *)estimateString;
 - (NSString *)numberOfBidsString;
+- (NSString *)highestOrStartingBidString;
 
 @property (nonatomic, copy, readonly) NSString *saleArtworkID;
 @property (nonatomic, strong) Sale *auction;

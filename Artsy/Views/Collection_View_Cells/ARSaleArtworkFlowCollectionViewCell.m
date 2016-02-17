@@ -112,7 +112,7 @@
 
     self.artistNameLabel.text = saleArtwork.artwork.artist.name;
     self.artworkNameLabel.text = saleArtwork.artwork.name;
-    self.estimateLabel.text = @"$11,000"; // saleArtwork.estimateString;
+    self.estimateLabel.text = saleArtwork.highestOrStartingBidString;
     self.lotNumberLabel.text = saleArtwork.lotNumber.stringValue;
     self.numberOfBidsLabel.text = saleArtwork.numberOfBidsString;
 }

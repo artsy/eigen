@@ -6,6 +6,9 @@
 #import "ARSystemTime.h"
 #import "ARLogger.h"
 
+// For its number formatter
+@import Artsy_UILabels;
+
 static NSNumberFormatter *dollarFormatter;
 
 
@@ -156,6 +159,18 @@ static NSNumberFormatter *dollarFormatter;
 {
     NSString *bidsString = (self.bidCount ?: @(0)).stringValue;
     return [NSString stringWithFormat:@"(%@)", bidsString];
+}
+
+- (NSString *)highestOrStartingBidString
+{
+    NSNumber *number;
+    if (self.bidCount == 0) {
+        number = self.openingBidCents;
+    } else {
+        number = self.saleHighestBid.cents;
+    }
+
+    return [NSNumberFormatter currencyStringForDollarCents:number];
 }
 
 - (BOOL)isEqual:(id)object
