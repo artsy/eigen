@@ -11,12 +11,15 @@ class SaleViewModel {
 }
 
 extension SaleViewModel {
-    var backgroundImageURL: NSURL! {
-        return NSURL(string: "https://d32dm0rphc51dk.cloudfront.net/BLv_dHIIVvShtDB8GCxFdg/large_rectangle.jpg")!
+    var backgroundImageURL: NSURL? {
+        guard let bannerURL = sale.bannerImageURLString() else { return nil }
+        return NSURL(string: bannerURL)
     }
 
-    var profileImageURL: NSURL! {
-        return NSURL(string: "https://d32dm0rphc51dk.cloudfront.net/n9QgQtio1Rrp-vaKGJH7aA/square140.png")
+    var profileImageURL: NSURL? {
+        guard let profile = sale.profile else { return nil }
+        guard let avatarURL = profile.avatarURLString() else { return nil }
+        return NSURL(string: avatarURL)
     }
 
     var closingDate: NSDate {
@@ -31,24 +34,17 @@ extension SaleViewModel {
         return sale.name
     }
 
-    // TODO: Temporary, shouldn't be exposing raw models 😬
-    var artworks: [Artwork] {
-        return saleArtworks.map { saleArtwork in
-            return saleArtwork.artwork
-        }
-    }
-
     /// Provides a range of the smallest-to-largest low estimates.
     var lowEstimateRange: AuctionRefineSettings.Range {
         return (min: self.smallestLowEstimate, max: self.largestLowEstimate)
     }
 
-    // TODO: Temporary, will need to be SaleArtworks instead.
-    func refinedArtworks(refineSettings: AuctionRefineSettings) -> [Artwork] {
+    // TODO: Should not be exposing raw models.
+    func refinedSaleArtworks(refineSettings: AuctionRefineSettings) -> [SaleArtworkViewModel] {
         return saleArtworks
             .filter(SaleArtwork.includedInRefineSettings(refineSettings))
             .map { saleArtwork in
-                return saleArtwork.artwork
+                return SaleArtworkViewModel(saleArtwork: saleArtwork)
             }
     }
 }

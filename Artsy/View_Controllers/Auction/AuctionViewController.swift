@@ -15,7 +15,7 @@ class AuctionViewController: UIViewController {
     /// Variable for storing lazily-computed default refine settings. 
     /// Should not be accessed directly, call defaultRefineSettings() instead.
     private var _defaultRefineSettings: AuctionRefineSettings?
-    private var artworksViewController: ARModelInfiniteScrollViewController!
+    private var saleArtworksViewController: ARModelInfiniteScrollViewController!
 
     /// Current refine settings.
     /// Our refine settings are (by default) the defaultRefineSettings().
@@ -43,11 +43,17 @@ class AuctionViewController: UIViewController {
         super.viewDidLoad()
 
         headerStack = ORTagBasedAutoStackView()
-        artworksViewController = ARModelInfiniteScrollViewController()
-        ar_addAlignedModernChildViewController(artworksViewController)
+        saleArtworksViewController = ARModelInfiniteScrollViewController()
 
-        artworksViewController.headerStackView = headerStack
-        artworksViewController.modelViewController.delegate = self
+        ar_addAlignedModernChildViewController(saleArtworksViewController)
+
+        // Disable the vertical offset for status bar.
+        automaticallyAdjustsScrollViewInsets = false
+        saleArtworksViewController.automaticallyAdjustsScrollViewInsets = false
+
+        saleArtworksViewController.headerStackView = headerStack
+        saleArtworksViewController.showTrailingLoadingIndicator = false
+        saleArtworksViewController.delegate = self
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -58,11 +64,28 @@ class AuctionViewController: UIViewController {
 
         self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
         
-        self.networkModel.fetch().next { saleViewModel in
-            self.setupForSale(saleViewModel)
+        self.networkModel.fetch().next { [weak self] saleViewModel in
+            self?.setupForSale(saleViewModel)
         }.error { error in
             // TODO: Error-handling somehow
         }
+    }
+
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard saleViewModel != nil else {
+            // We can't set up our current saleArtworksViewController if it has no models.
+            return
+        }
+
+        displayCurrentItems()
+    }
+
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+
+        displayCurrentItems(size.width)
     }
 
     enum ViewTags: Int {
@@ -74,6 +97,7 @@ class AuctionViewController: UIViewController {
 }
 
 extension AuctionViewController {
+
     func setupForSale(saleViewModel: SaleViewModel) {
         // TODO: Sale is currently private on the SaleViewModel, also Sale will need to be extended to conform to ARSpotlightMetadataProvider
         // artworksViewController.spotlightEntity = saleViewModel.sale
@@ -86,7 +110,6 @@ extension AuctionViewController {
 
         let compactSize = traitCollection.horizontalSizeClass == .Compact
         let topSpacing = compactSize ? 20 : 30
-        let sideSpacing = compactSize ? 40 : 80
         let titleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self, fullWidth: compactSize)
         titleView.tag = ViewTags.Title.rawValue
         headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
@@ -99,11 +122,10 @@ extension AuctionViewController {
             $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
         }
 
-        artworksViewController.stickyHeaderView = stickyHeader
-        artworksViewController.invalidateHeaderHeight()
+        saleArtworksViewController.stickyHeaderView = stickyHeader
+        saleArtworksViewController.invalidateHeaderHeight()
 
-        displayItems(saleViewModel.artworks)
-        self.artworksViewController.modelViewController.showTrailingLoadingIndicator = false
+        displayCurrentItems()
 
         self.ar_removeIndeterminateLoadingIndicatorAnimated(allowAnimations)
     }
@@ -126,10 +148,21 @@ extension AuctionViewController {
         presentViewController(refineViewController, animated: true, completion: nil)
     }
 
-    // TODO: This needs to be a SaleArtwork. Don't know how yet.
-    func displayItems(items: [Artwork]) {
-        artworksViewController.modelViewController.resetItems()
-        artworksViewController.modelViewController.appendItems(items)
+    var sideSpacing: CGFloat {
+        let compactSize = traitCollection.horizontalSizeClass == .Compact
+        return compactSize ? 40 : 80
+    }
+
+    // viewWidth allows callers to define widths that our view _will_ become. Use nil to fallback to current view's width.
+    func displayCurrentItems(viewWidth: CGFloat? = nil) {
+        let items = saleViewModel.refinedSaleArtworks(refineSettings)
+
+        let viewWidth = viewWidth ?? self.view.bounds.size.width
+
+        // TODO: Module depends on current refineSettings
+        saleArtworksViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
+
+        saleArtworksViewController.items = items
     }
 }
 
@@ -155,14 +188,13 @@ extension RefineSettings: AuctionRefineViewControllerDelegate {
     func userDidApply(settings: AuctionRefineSettings, controller: AuctionRefineViewController) {
         refineSettings = settings
 
-        let items = saleViewModel.refinedArtworks(settings)
-        displayItems(items)
+        displayCurrentItems()
         dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
 private typealias EmbeddedModelCallbacks = AuctionViewController
-extension EmbeddedModelCallbacks: AREmbeddedModelsViewControllerDelegate {
+extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
         // TODO
     }

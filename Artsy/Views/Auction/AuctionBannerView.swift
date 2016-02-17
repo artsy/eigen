@@ -41,7 +41,10 @@ extension AuctionBannerView {
     private func setupViews() {
 
         // Note: These are in order as they'll be in the view hierarchy (ie: first in the list is at the back)
-        let backgroundImageView = UIImageView()
+        let backgroundImageView = UIImageView().then {
+            $0.contentMode = .ScaleAspectFill
+            $0.clipsToBounds = true
+        }
         let darkeningView = DarkeningView()
         let logoImageView = UIImageView()
         let countdownView = ARCountdownView(color: .whiteColor()).then {
@@ -90,6 +93,7 @@ extension AuctionBannerView {
         // Start any necessary image downloads.
         backgroundImageView.sd_setImageWithURL(viewModel.backgroundImageURL)
         logoImageView.sd_setImageWithURL(viewModel.profileImageURL) { [weak logoImageView] (image, _, _, _) in
+            guard let image = image else { return }
             // This keeps the image view constrained to the image's aspect ratio, which allows us to 'left align' this on iPad.
             let aspectRatio = image.size.width / image.size.height
             logoImageView?.constrainAspectRatio("\(aspectRatio)")

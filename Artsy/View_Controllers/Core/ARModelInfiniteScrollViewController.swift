@@ -10,6 +10,8 @@ import ORStackView
 
 /// TODO: Migrate the loading spinner to here?
 
+@objc protocol ARModelInfiniteScrollViewControllerDelegate: AREmbeddedModelsViewControllerDelegate { }
+
 class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegate {
 
     var headerStackView: ORStackView!  {
@@ -26,7 +28,7 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
         }
     }
 
-    var modelViewController : AREmbeddedModelsViewController!
+    private var modelViewController : AREmbeddedModelsViewController!
 
     override func viewDidLoad() {
         let controller = defaultScrollingViewController()
@@ -94,7 +96,9 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     func invalidateHeaderHeight() {
         // Ensure the lazy loading of the stack views is done before
         // relying on their bounds
+        headerStackView.setNeedsLayout()
         headerStackView.layoutIfNeeded()
+        stickyHeaderView?.setNeedsLayout()
         stickyHeaderView?.layoutIfNeeded()
 
         viewDidLayoutSubviews()
@@ -108,5 +112,49 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
 
         let stickyHeaderHeight = stickyHeaderView?.bounds.height ?? 0
         modelViewController.stickyHeaderHeight = stickyHeaderHeight
+    }
+}
+
+private typealias PublicComputedProperties = ARModelInfiniteScrollViewController
+extension PublicComputedProperties {
+    var activeModule: ARModelCollectionViewModule {
+        get {
+            return modelViewController.activeModule
+        }
+
+        set {
+            modelViewController.activeModule = newValue
+        }
+    }
+
+    var items: [AnyObject] {
+        get {
+            return modelViewController.items
+        }
+
+        set {
+            modelViewController.resetItems()
+            modelViewController.appendItems(newValue)
+        }
+    }
+
+    var showTrailingLoadingIndicator: Bool {
+        get {
+            return modelViewController.showTrailingLoadingIndicator
+        }
+
+        set {
+            modelViewController.showTrailingLoadingIndicator = newValue
+        }
+    }
+
+    var delegate: ARModelInfiniteScrollViewControllerDelegate? {
+        get {
+            return modelViewController.delegate as? ARModelInfiniteScrollViewControllerDelegate
+        }
+
+        set {
+            modelViewController.delegate = newValue
+        }
     }
 }

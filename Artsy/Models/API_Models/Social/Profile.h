@@ -16,6 +16,7 @@
 @property (nonatomic, strong, readonly) NSObject<ProfileOwner> *profileOwner;
 
 - (NSString *)iconURL;
+- (NSString *)avatarURLString;
 - (instancetype)initWithProfileID:(NSString *)profileID;
 - (void)updateProfile:(void (^)(void))success;
 - (NSString *)profileName;
