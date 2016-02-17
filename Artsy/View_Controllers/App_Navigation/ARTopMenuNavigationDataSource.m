@@ -13,6 +13,7 @@
 #import "ARNavigationController.h"
 #import "ARAppBackgroundFetchDelegate.h"
 #import "ARNotificationsViewController.h"
+#import "AROptions.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -132,7 +133,11 @@ WebViewNavigationControllerWithPath(NSString *path)
         case ARTopTabControllerIndexFavorites:
             return self.favoritesNavigationController;
         case ARTopTabControllerIndexNotifications:
-            return self.notificationsNavigationController;
+            if ([AROptions boolForOption:AROptionsUseNativeForYou]) {
+                return self.notificationsNavigationController;
+            } else {
+                return WebViewNavigationControllerWithPath(@"/works-for-you");
+            }
     }
 
     return nil;
