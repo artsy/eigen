@@ -49,7 +49,7 @@ describe(@"propertiess", ^{
         expect([auction hasBuyersPremium]).to.beFalsy();
     });
 
-    it(@"has a buyers premium", ^{
+    it(@"returns a banner image", ^{
         NSString *urlString = @"http://example.com";
         auction = [Sale modelWithJSON:@{
             @"image_urls" : @{
