@@ -12,7 +12,7 @@
 #import "SiteHeroUnit.h"
 #import "ARNavigationController.h"
 #import "ARAppBackgroundFetchDelegate.h"
-#import "ARNotificationsViewController.h"
+#import "ARWorksForYouViewController.h"
 #import "AROptions.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
@@ -118,10 +118,10 @@ WebViewNavigationControllerWithPath(NSString *path)
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
 }
 
-- (ARNavigationController *)notificationsNavigationController
+- (ARNavigationController *)worksForYouViewController
 {
-    ARNotificationsViewController *notificationsViewController = [[ARNotificationsViewController alloc] init];
-    return [[ARNavigationController alloc] initWithRootViewController:notificationsViewController];
+    ARWorksForYouViewController *worksForYouViewController = [[ARWorksForYouViewController alloc] init];
+    return [[ARNavigationController alloc] initWithRootViewController:worksForYouViewController];
 }
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
@@ -139,7 +139,7 @@ WebViewNavigationControllerWithPath(NSString *path)
             return self.favoritesNavigationController;
         case ARTopTabControllerIndexNotifications:
             if ([AROptions boolForOption:AROptionsUseNativeForYou]) {
-                return self.notificationsNavigationController;
+                return self.worksForYouViewController;
             } else {
                 return self.oldWorksForYouNavigationController;
             }

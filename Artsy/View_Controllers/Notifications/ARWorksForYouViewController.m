@@ -6,7 +6,7 @@
 //  Copyright © 2016 Artsy. All rights reserved.
 //
 
-#import "ARNotificationsViewController.h"
+#import "ARWorksForYouViewController.h"
 #import "ORStackView.h"
 #import "ARLabelSubclasses.h"
 
@@ -16,12 +16,12 @@
 static NSString *ARArtworksByArtistCellIdentifier = @"ARArtworksByArtistCellIdentifier";
 
 
-@interface ARNotificationsViewController ()
+@interface ARWorksForYouViewController ()
 
 @end
 
 
-@implementation ARNotificationsViewController
+@implementation ARWorksForYouViewController
 
 - (void)viewDidLoad
 {
