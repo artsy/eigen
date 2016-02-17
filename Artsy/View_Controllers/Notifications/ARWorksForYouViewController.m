@@ -1,11 +1,3 @@
-//
-//  ARNotificationsViewController.m
-//  Artsy
-//
-//  Created by Maxim Cramer on 16/02/2016.
-//  Copyright © 2016 Artsy. All rights reserved.
-//
-
 #import "ARWorksForYouViewController.h"
 #import "ORStackView.h"
 #import "ARLabelSubclasses.h"
