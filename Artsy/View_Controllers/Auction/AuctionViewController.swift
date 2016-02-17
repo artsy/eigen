@@ -48,7 +48,8 @@ class AuctionViewController: UIViewController {
         ar_addAlignedModernChildViewController(saleArtworksViewController)
 
         saleArtworksViewController.headerStackView = headerStack
-        saleArtworksViewController.modelViewController.delegate = self
+        saleArtworksViewController.showTrailingLoadingIndicator = false
+        saleArtworksViewController.delegate = self
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -121,7 +122,6 @@ extension AuctionViewController {
         saleArtworksViewController.invalidateHeaderHeight()
 
         displayCurrentItems()
-        saleArtworksViewController.modelViewController.showTrailingLoadingIndicator = false
 
         self.ar_removeIndeterminateLoadingIndicatorAnimated(allowAnimations)
     }
@@ -149,19 +149,16 @@ extension AuctionViewController {
         return compactSize ? 40 : 80
     }
 
-    func setupSaleArtworksLayout(viewWidth: CGFloat) {
-        // TODO: Module depends on current refineSettings
-        saleArtworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
-    }
-
+    // viewWidth allows callers to define widths that our view _will_ become. Use nil to fallback to current view's width.
     func displayCurrentItems(viewWidth: CGFloat? = nil) {
         let items = saleViewModel.refinedSaleArtworks(refineSettings)
 
         let viewWidth = viewWidth ?? self.view.bounds.size.width
-        setupSaleArtworksLayout(viewWidth)
 
-        saleArtworksViewController.modelViewController.resetItems()
-        saleArtworksViewController.modelViewController.appendItems(items)
+        // TODO: Module depends on current refineSettings
+        saleArtworksViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
+
+        saleArtworksViewController.items = items
     }
 }
 
@@ -193,7 +190,7 @@ extension RefineSettings: AuctionRefineViewControllerDelegate {
 }
 
 private typealias EmbeddedModelCallbacks = AuctionViewController
-extension EmbeddedModelCallbacks: AREmbeddedModelsViewControllerDelegate {
+extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
         // TODO
     }
