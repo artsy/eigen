@@ -6,8 +6,10 @@
 #import "Partner.h"
 #import "ProfileOwner.h"
 #import "User.h"
+#import "ARMacros.h"
 
 #import "MTLModel+JSON.h"
+@import ObjectiveSugar;
 
 
 @interface Profile () {
@@ -30,12 +32,12 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @"profileID" : @"id",
-        @"ownerJSON" : @"owner",
-        @"ownerClassString" : @"owner_type",
-        @"followCount" : @"follow_count",
-        @"iconVersion" : @"default_icon_version",
-        @"iconURLs" : @"icon.image_urls",
+        ar_keypath(Profile.new, profileID) : @"id",
+        ar_keypath(Profile.new, ownerJSON) : @"owner",
+        ar_keypath(Profile.new, ownerClassString) : @"owner_type",
+        ar_keypath(Profile.new, followCount) : @"follow_count",
+        ar_keypath(Profile.new, iconVersion) : @"default_icon_version",
+        ar_keypath(Profile.new, iconURLs) : @"icon.image_urls",
     };
 }
 
@@ -67,7 +69,7 @@
 
 - (void)updateProfile:(void (^)(void))success
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     if (self.profileID) {
         [ArtsyAPI getProfileForProfileID:self.profileID success:^(Profile *profile) {
@@ -95,6 +97,14 @@
         }
     }
     return nil;
+}
+
+- (NSString *)avatarURLString
+{
+    NSArray *desiredVersions = @[ @"square", @"square140", @"large" ];
+    NSArray *possibleVersions = [desiredVersions intersectionWithArray:[self.iconURLs allKeys]];
+    // If we can't find one of our desired values, default to the first available icon URL.
+    return [self.iconURLs objectForKey:possibleVersions.firstObject] ?: [[self.iconURLs allValues] firstObject];
 }
 
 - (NSString *)description

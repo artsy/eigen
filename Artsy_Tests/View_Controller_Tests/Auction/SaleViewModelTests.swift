@@ -11,6 +11,24 @@ class SaleViewModelTests: QuickSpec {
             testSaleArtworkEstimateAt(1500)
         ]
 
+        it("returns correct banner image") {
+            let url = "http://example.com"
+            sale.setValue(["wide": url] as NSDictionary, forKey: "imageURLs")
+
+            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks)
+
+            expect(subject.backgroundImageURL?.absoluteString) == url
+        }
+
+        it("returns correct avatar image") {
+            let url = "http://example.com"
+            sale.profile = try! Profile(dictionary:  ["iconURLs": ["square": url]], error: Void())
+
+            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks)
+
+            expect(subject.profileImageURL?.absoluteString) == url
+        }
+
         describe("pruning items when refining") {
             var subject: SaleViewModel!
 

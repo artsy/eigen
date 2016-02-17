@@ -11,12 +11,15 @@ class SaleViewModel {
 }
 
 extension SaleViewModel {
-    var backgroundImageURL: NSURL! {
-        return NSURL(string: "https://d32dm0rphc51dk.cloudfront.net/BLv_dHIIVvShtDB8GCxFdg/large_rectangle.jpg")!
+    var backgroundImageURL: NSURL? {
+        guard let bannerURL = sale.bannerImageURLString() else { return nil }
+        return NSURL(string: bannerURL)
     }
 
-    var profileImageURL: NSURL! {
-        return NSURL(string: "https://d32dm0rphc51dk.cloudfront.net/n9QgQtio1Rrp-vaKGJH7aA/square140.png")
+    var profileImageURL: NSURL? {
+        guard let profile = sale.profile else { return nil }
+        guard let avatarURL = profile.avatarURLString() else { return nil }
+        return NSURL(string: avatarURL)
     }
 
     var closingDate: NSDate {
