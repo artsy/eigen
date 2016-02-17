@@ -2,7 +2,7 @@
 #import "ORStackView.h"
 #import "ARLabelSubclasses.h"
 
-#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <ORStackView/ORStackView.h>
 
 
 static NSString *ARArtworksByArtistCellIdentifier = @"ARArtworksByArtistCellIdentifier";
