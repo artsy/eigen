@@ -94,7 +94,9 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     func invalidateHeaderHeight() {
         // Ensure the lazy loading of the stack views is done before
         // relying on their bounds
+        headerStackView.setNeedsLayout()
         headerStackView.layoutIfNeeded()
+        stickyHeaderView?.setNeedsLayout()
         stickyHeaderView?.layoutIfNeeded()
 
         viewDidLayoutSubviews()
