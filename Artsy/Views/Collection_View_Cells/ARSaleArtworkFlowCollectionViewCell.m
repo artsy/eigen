@@ -101,6 +101,8 @@
         [self createSubviews];
         [self constrainViews];
     }
+
+    NSLog(@"Applying %@", layoutAttributes);
 }
 
 - (void)setupWithRepresentedObject:(id)object

@@ -4,6 +4,7 @@ import Then
 
 class AuctionViewController: UIViewController {
     let saleID: String
+    var hasLoadedSaleViewModel = false
     var saleViewModel: SaleViewModel!
     var appeared = false
 
@@ -70,7 +71,18 @@ class AuctionViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
 
         // TODO: Should switch based on refine settings
-//        saleArtworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: self.traitCollection)
+        guard hasLoadedSaleViewModel else {
+            // We can't set up our current saleArtworksViewController if it has no models.
+            return
+        }
+
+        displayCurrentItems()
+    }
+
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+
+        displayCurrentItems(size.width)
     }
 
     enum ViewTags: Int {
@@ -82,10 +94,21 @@ class AuctionViewController: UIViewController {
 }
 
 extension AuctionViewController {
+    var sideSpacing: CGFloat {
+        let compactSize = traitCollection.horizontalSizeClass == .Compact
+        return compactSize ? 40 : 80
+    }
+
+    func setupSaleArtworksLayout(viewWidth: CGFloat) {
+        // TODO: Module depends on current refineSettings
+        saleArtworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
+    }
+
     func setupForSale(saleViewModel: SaleViewModel) {
         // TODO: Sale is currently private on the SaleViewModel, also Sale will need to be extended to conform to ARSpotlightMetadataProvider
         // artworksViewController.spotlightEntity = saleViewModel.sale
 
+        hasLoadedSaleViewModel = true
         self.saleViewModel = saleViewModel
 
         let bannerView = AuctionBannerView(viewModel: saleViewModel)
@@ -94,7 +117,6 @@ extension AuctionViewController {
 
         let compactSize = traitCollection.horizontalSizeClass == .Compact
         let topSpacing = compactSize ? 20 : 30
-        let sideSpacing = compactSize ? 40 : 80
         let titleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self, fullWidth: compactSize)
         titleView.tag = ViewTags.Title.rawValue
         headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
@@ -134,15 +156,11 @@ extension AuctionViewController {
         presentViewController(refineViewController, animated: true, completion: nil)
     }
 
-    func displayCurrentItems() {
+    func displayCurrentItems(viewWidth: CGFloat? = nil) {
         let items = saleViewModel.refinedSaleArtworks(refineSettings)
 
-
-        let compactSize = traitCollection.horizontalSizeClass == .Compact
-        let sideSpacing: CGFloat = compactSize ? 40 : 80
-
-        // TODO: Module depends on current refineSettings
-        saleArtworksViewController.modelViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: self.traitCollection, width: self.view.bounds.size.width - sideSpacing)
+        let viewWidth = viewWidth ?? self.view.bounds.size.width
+        setupSaleArtworksLayout(viewWidth)
 
         saleArtworksViewController.modelViewController.resetItems()
         saleArtworksViewController.modelViewController.appendItems(items)
