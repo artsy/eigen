@@ -136,30 +136,40 @@
 
     self.largeConstraintsToUpdate = @[];
 
+    // We need a container for the vertical stack of artist/artwork name.
     UIView *artworkLabelsContainer = [UIView new];
     [self.contentView addSubview:artworkLabelsContainer];
     [artworkLabelsContainer addSubview:self.artistNameLabel];
     [artworkLabelsContainer addSubview:self.artworkNameLabel];
+    [artworkLabelsContainer constrainWidth:@"250"];
+
+    // Align the artist name to the top, the artowkr name to the bottom, and both to the leading/trailing edges. Then stack them one atop the other.
     [self.artistNameLabel alignTopEdgeWithView:artworkLabelsContainer predicate:@"0"];
     [self.artworkNameLabel alignBottomEdgeWithView:artworkLabelsContainer predicate:@"0"];
     [self.artistNameLabel alignLeading:@"0" trailing:@"0" toView:artworkLabelsContainer];
     [self.artworkNameLabel alignLeading:@"0" trailing:@"0" toView:artworkLabelsContainer];
-    [UIView spaceOutViewsVertically:@[ self.artistNameLabel, self.artworkNameLabel ] predicate:@"0"];
+    [self.artistNameLabel constrainBottomSpaceToView:self.artworkNameLabel predicate:@"0"];
+
+    // We constrain the leading space to the image view, then the trailing space to the lot number label, and store them for later configuration (the predicates here don't matter).
     self.largeConstraintsToUpdate = [self.largeConstraintsToUpdate arrayByAddingObjectsFromArray:[artworkLabelsContainer constrainLeadingSpaceToView:self.artworkImageView predicate:@"0"]];
+    self.largeConstraintsToUpdate = [self.largeConstraintsToUpdate arrayByAddingObjectsFromArray:[artworkLabelsContainer constrainTrailingSpaceToView:self.lotNumberLabel predicate:@"0"]];
 
-    self.largeConstraintsToUpdate = [self.largeConstraintsToUpdate arrayByAddingObjectsFromArray:[self.lotNumberLabel constrainLeadingSpaceToView:artworkLabelsContainer predicate:@"0"]];
-
+    // Number of bids label is Regular cell specific, so: add it, constraint it to the trailing edge, and store the constrain for later configuration (the predicate doesn't matter).
     [self.contentView addSubview:self.numberOfBidsLabel];
     self.smallConstraintsToUpdate = [self.numberOfBidsLabel alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeTrailing ofView:self.contentView predicate:@"-40"];
 
-    // Centre necessary views vertically.
-    [@[ artworkLabelsContainer, self.lotNumberLabel, self.numberOfBidsLabel ] each:^(id object) {
+    // Center the current bid label's text, give it a low content hugging priority so it'll expand to fill the horizontal space, then constrain leading/trailing space appropriately.
+    self.currentOrStartingBidLabel.textAlignment = NSTextAlignmentCenter;
+    [self.currentOrStartingBidLabel setContentHuggingPriority:10 forAxis:UILayoutConstraintAxisHorizontal];
+    [self.currentOrStartingBidLabel constrainLeadingSpaceToView:self.lotNumberLabel predicate:@"0"];
+    [self.currentOrStartingBidLabel constrainTrailingSpaceToView:self.numberOfBidsLabel predicate:@"0"];
+
+    // Centre all necessary views vertically.
+    [@[ artworkLabelsContainer, self.lotNumberLabel, self.currentOrStartingBidLabel, self.numberOfBidsLabel ] each:^(id object) {
         [object alignCenterYWithView:self.artworkImageView predicate:@"0"];
     }];
 
-    self.currentOrStartingBidLabel.textAlignment = NSTextAlignmentCenter;
-
-
+    // Configure mutable constraints based on layout attributes.
     [self updateConstraintConstantsForLayoutAttributes:layoutAttributes];
 }
 
