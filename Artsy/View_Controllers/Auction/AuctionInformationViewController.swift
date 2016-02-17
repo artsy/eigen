@@ -155,7 +155,7 @@ extension AuctionInformationViewController {
             
             self.stackView.constrainTopSpaceToView(self.flk_topLayoutGuide(), predicate: "0")
             self.stackView.alignLeading("0", trailing: "0", toView: self.view)
-            self.stackView.constrainBottomSpaceToView(self.flk_bottomLayoutGuide(), predicate: "0")
+            self.stackView.constrainBottomSpaceToView(self.flk_bottomLayoutGuide(), predicate: "-40")
             
             for (var i = 0; i < self.entries.count; i++) {
                 let entry = self.entries[i]
@@ -189,6 +189,7 @@ extension AuctionInformationViewController {
         class EntryView : UIView {
             var tapHandler: (EntryView) -> Void
             var contentHeightConstraint: NSLayoutConstraint
+            var tapDirection: UIImageView
             
             required init(entry: AuctionInformation.FAQEntry, textDelegate: ARTextViewDelegate, tapHandler: (EntryView) -> Void) {
                 self.tapHandler = tapHandler
@@ -203,6 +204,9 @@ extension AuctionInformationViewController {
                 titleLabel.numberOfLines = 1
                 titleLabel.backgroundColor = UIColor.clearColor()
                 titleLabel.font = UIFont.sansSerifFontWithSize(12)
+
+                let arrowIndicator = UIImageView(image: UIImage(named:"navigation_more_arrow_vertical"))
+                self.tapDirection = arrowIndicator
                 
                 let contentView = ARTextView()
                 contentView.scrollEnabled = true
@@ -217,26 +221,30 @@ extension AuctionInformationViewController {
                 
                 titleButton.addTarget(self, action: "didTap", forControlEvents: .TouchUpInside)
                 
-                self.addSubview(topBorder)
-                self.addSubview(titleButton)
+                addSubview(topBorder)
+                addSubview(titleButton)
                 titleButton.addSubview(titleLabel)
-                self.addSubview(contentView)
+                titleButton.addSubview(arrowIndicator)
+                addSubview(contentView)
                 
                 topBorder.constrainHeight("1")
                 topBorder.alignTopEdgeWithView(self, predicate: "0")
-                topBorder.alignLeading("0", trailing: "0", toView: self)
+                topBorder.alignLeading("20", trailing: "-20", toView: self)
                 
                 titleLabel.alignTop("0", bottom: "0", toView: titleButton)
-                titleLabel.alignLeading("40", trailing: "-40", toView: titleButton)
+                titleLabel.alignLeading("20", trailing: "-20", toView: titleButton)
                 
                 titleButton.constrainHeight("50")
                 titleButton.constrainTopSpaceToView(topBorder, predicate: "0")
                 titleButton.alignLeading("0", trailing: "0", toView: self)
-                
+
+                arrowIndicator.alignTrailingEdgeWithView(titleButton, predicate: "-20")
+                arrowIndicator.constrainTopSpaceToView(topBorder, predicate: "22")
+
                 contentView.constrainTopSpaceToView(titleButton, predicate: "0")
                 // Inset the text with text container insets, instead of leading/traling constraints, so that the
                 // text view’s scroll bar is all the way the side of the entry view.
-                contentView.textContainerInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
+                contentView.textContainerInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
                 contentView.alignLeading("0", trailing: "0", toView: self)
                 
                 self.alignBottomEdgeWithView(contentView, predicate: "0")
@@ -250,10 +258,13 @@ extension AuctionInformationViewController {
             
             func expand() {
                 self.contentHeightConstraint.active = false
+                self.tapDirection.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+
             }
             
             func collapse() {
                 self.contentHeightConstraint.active = true
+                self.tapDirection.transform = CGAffineTransformIdentity
             }
             
             func didTap() {

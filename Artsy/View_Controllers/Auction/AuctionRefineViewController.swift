@@ -6,6 +6,8 @@ protocol AuctionRefineViewControllerDelegate: class {
     func userDidApply(settings: AuctionRefineSettings, controller: AuctionRefineViewController)
 }
 
+// TODO: Move into a navigation
+
 class AuctionRefineViewController: UIViewController {
     weak var delegate: AuctionRefineViewControllerDelegate?
     var minLabel: UILabel?
