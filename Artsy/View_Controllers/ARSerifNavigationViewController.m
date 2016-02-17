@@ -96,7 +96,7 @@
 
 - (void)closeModal
 {
-    [self.presentingViewController dismissViewControllerAnimated:self completion:nil];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -121,7 +121,7 @@
         static CGFloat xOffset = 4;
         CGRect labelFrame = label.bounds;
         label.frame = CGRectOffset(labelFrame, xOffset, 0);
-        UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){ CGPointZero, { CGRectGetWidth(labelFrame) + xOffset, CGRectGetHeight(labelFrame) } }];
+        UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {CGRectGetWidth(labelFrame) + xOffset, CGRectGetHeight(labelFrame)}}];
         [titleMarginWrapper addSubview:label];
 
         nav.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:titleMarginWrapper];
@@ -146,7 +146,7 @@
     return self.shouldShowInForm ? UIModalPresentationFormSheet : UIModalPresentationFullScreen;
 }
 
-- (UIApplication *)sharedApp
+- (UIApplication *)sharedApplication
 {
     return _sharedApplication ?: [UIApplication sharedApplication];
 }
