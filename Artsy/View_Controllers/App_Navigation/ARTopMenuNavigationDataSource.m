@@ -40,6 +40,9 @@ WebViewNavigationControllerWithPath(NSString *path)
 @property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *magazineNavigationController;
 
+// webview controller, keeping this here for the tests, will be removed once we switch to native proper
+@property (readonly, nonatomic, strong) ARNavigationController *oldWorksForYouNavigationController;
+
 @end
 
 
@@ -74,6 +77,8 @@ WebViewNavigationControllerWithPath(NSString *path)
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
 
     _magazineNavigationController = WebViewNavigationControllerWithPath(@"/articles");
+
+    _oldWorksForYouNavigationController = WebViewNavigationControllerWithPath(@"/works-for-you");
 
     return self;
 }
@@ -136,7 +141,7 @@ WebViewNavigationControllerWithPath(NSString *path)
             if ([AROptions boolForOption:AROptionsUseNativeForYou]) {
                 return self.notificationsNavigationController;
             } else {
-                return WebViewNavigationControllerWithPath(@"/works-for-you");
+                return self.oldWorksForYouNavigationController;
             }
     }
 
