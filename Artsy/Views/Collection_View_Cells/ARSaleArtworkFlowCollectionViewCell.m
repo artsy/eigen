@@ -27,7 +27,7 @@
 @property (nonatomic, strong) ARSansSerifLabel *lotNumberLabel;
 @property (nonatomic, strong) ARSerifLabel *artistNameLabel;
 @property (nonatomic, strong) ARSerifLabel *artworkNameLabel;
-@property (nonatomic, strong) ARSerifLabel *estimateLabel;
+@property (nonatomic, strong) ARSerifLabel *currentOrStartingBidLabel;
 @property (nonatomic, strong) ARSerifLabel *numberOfBidsLabel;
 
 @end
@@ -63,16 +63,16 @@
     [self.contentView addSubview:self.artistNameLabel];
 
     self.artworkNameLabel = [[ARSerifLabel alloc] init];
-    self.artworkNameLabel.font = serifFont;
+    self.artworkNameLabel.font = [UIFont serifItalicFontWithSize:serifFont.pointSize];
     self.artworkNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artworkNameLabel];
 
     UIColor *lightGrey = [UIColor colorWithHex:0x999999];
 
-    self.estimateLabel = [[ARSerifLabel alloc] init];
-    self.estimateLabel.font = serifFont;
-    self.estimateLabel.textColor = lightGrey;
-    [self.contentView addSubview:self.estimateLabel];
+    self.currentOrStartingBidLabel = [[ARSerifLabel alloc] init];
+    self.currentOrStartingBidLabel.font = serifFont;
+    self.currentOrStartingBidLabel.textColor = lightGrey;
+    [self.contentView addSubview:self.currentOrStartingBidLabel];
 
     self.numberOfBidsLabel = [[ARSerifLabel alloc] init];
     self.numberOfBidsLabel.font = serifFont;
@@ -80,7 +80,7 @@
     // Note: We are NOT adding this to our view hierarchy, it is subclass-specific.
 }
 
-- (void)constrainViews
+- (void)constrainViewsWithLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
     // The image view's and separator's layouts are the only one the Regular/Compact subclasses share in common.
     [self.separatorView alignTopEdgeWithView:self.contentView predicate:@"0"];
@@ -99,10 +99,8 @@
     if (self.artworkImageView == nil) {
         // Infer that if the artworkImageView is nil, then we need to create the rest of our view hierarchy, too.
         [self createSubviews];
-        [self constrainViews];
+        [self constrainViewsWithLayoutAttributes:layoutAttributes];
     }
-
-    NSLog(@"Applying %@", layoutAttributes);
 }
 
 - (void)setupWithRepresentedObject:(id)object
@@ -114,7 +112,7 @@
 
     self.artistNameLabel.text = saleArtwork.artwork.artist.name;
     self.artworkNameLabel.text = saleArtwork.artwork.name;
-    self.estimateLabel.text = saleArtwork.highestOrStartingBidString;
+    self.currentOrStartingBidLabel.text = saleArtwork.highestOrStartingBidString;
     self.lotNumberLabel.text = saleArtwork.lotNumber.stringValue;
     self.numberOfBidsLabel.text = saleArtwork.numberOfBidsString;
 }
@@ -122,33 +120,66 @@
 @end
 
 
+@interface ARSaleArtworkFlowCollectionViewRegularCell ()
+
+@property (nonatomic, strong) NSArray *largeConstraintsToUpdate;
+@property (nonatomic, strong) NSArray *smallConstraintsToUpdate;
+
+@end
+
+
 @implementation ARSaleArtworkFlowCollectionViewRegularCell
 
-- (void)constrainViews
+- (void)constrainViewsWithLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
-    [super constrainViews];
+    [super constrainViewsWithLayoutAttributes:layoutAttributes];
 
-    UIView *container = [UIView new];
-    [self.contentView addSubview:container];
+    self.largeConstraintsToUpdate = @[];
 
-    NSArray *views = @[ self.lotNumberLabel, self.artistNameLabel, self.artworkNameLabel, self.estimateLabel, self.numberOfBidsLabel ];
+    UIView *artworkLabelsContainer = [UIView new];
+    [self.contentView addSubview:artworkLabelsContainer];
+    [artworkLabelsContainer addSubview:self.artistNameLabel];
+    [artworkLabelsContainer addSubview:self.artworkNameLabel];
+    [self.artistNameLabel alignTopEdgeWithView:artworkLabelsContainer predicate:@"0"];
+    [self.artworkNameLabel alignBottomEdgeWithView:artworkLabelsContainer predicate:@"0"];
+    [self.artistNameLabel alignLeading:@"0" trailing:@"0" toView:artworkLabelsContainer];
+    [self.artworkNameLabel alignLeading:@"0" trailing:@"0" toView:artworkLabelsContainer];
+    [UIView spaceOutViewsVertically:@[ self.artistNameLabel, self.artworkNameLabel ] predicate:@"0"];
+    self.largeConstraintsToUpdate = [self.largeConstraintsToUpdate arrayByAddingObjectsFromArray:[artworkLabelsContainer constrainLeadingSpaceToView:self.artworkImageView predicate:@"0"]];
 
-    // Vertically centre everything.
-    [views each:^(id object) {
-        [container addSubview:object];
-        [object alignCenterYWithView:container predicate:@"0"];
+    self.largeConstraintsToUpdate = [self.largeConstraintsToUpdate arrayByAddingObjectsFromArray:[self.lotNumberLabel constrainLeadingSpaceToView:artworkLabelsContainer predicate:@"0"]];
+
+    [self.contentView addSubview:self.numberOfBidsLabel];
+    self.smallConstraintsToUpdate = [self.numberOfBidsLabel alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeTrailing ofView:self.contentView predicate:@"-40"];
+
+    // Centre necessary views vertically.
+    [@[ artworkLabelsContainer, self.lotNumberLabel, self.numberOfBidsLabel ] each:^(id object) {
+        [object alignCenterYWithView:self.artworkImageView predicate:@"0"];
     }];
 
-    // Align the labels to the top/bottom of the container
-    [views.firstObject alignLeadingEdgeWithView:container predicate:@"0"];
-    [views.lastObject alignTrailingEdgeWithView:container predicate:@"0"];
+    self.currentOrStartingBidLabel.textAlignment = NSTextAlignmentCenter;
 
-    // Spread everything within the container out.
-    [UIView spaceOutViewsHorizontally:views predicate:@"100@1"];
 
-    [container alignTrailingEdgeWithView:self.contentView predicate:@"-20"];
-    [container constrainLeadingSpaceToView:self.artworkImageView predicate:@"40"];
-    [container alignTop:@"0" bottom:@"0" toView:self.contentView];
+    [self updateConstraintConstantsForLayoutAttributes:layoutAttributes];
+}
+
+- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
+{
+    [super applyLayoutAttributes:layoutAttributes];
+    [self updateConstraintConstantsForLayoutAttributes:layoutAttributes];
+}
+
+- (void)updateConstraintConstantsForLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
+{
+    CGFloat largeConstant = layoutAttributes.size.width > 900 ? 80 : 40;
+    [self.largeConstraintsToUpdate each:^(NSLayoutConstraint *constraint) {
+        constraint.constant = largeConstant;
+    }];
+
+    CGFloat smallConstant = layoutAttributes.size.width > 900 ? -40 : -20;
+    [self.smallConstraintsToUpdate each:^(NSLayoutConstraint *constraint) {
+        constraint.constant = smallConstant;
+    }];
 }
 
 @end
@@ -156,11 +187,11 @@
 
 @implementation ARSaleArtworkFlowCollectionViewCompactCell
 
-- (void)constrainViews
+- (void)constrainViewsWithLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
-    [super constrainViews];
+    [super constrainViewsWithLayoutAttributes:layoutAttributes];
 
-    NSArray *views = @[ self.lotNumberLabel, self.artistNameLabel, self.artworkNameLabel, self.estimateLabel ];
+    NSArray *views = @[ self.lotNumberLabel, self.artistNameLabel, self.artworkNameLabel, self.currentOrStartingBidLabel ];
 
     UIView *container = [UIView new];
     [self.contentView addSubview:container];
