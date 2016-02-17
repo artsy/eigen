@@ -37,8 +37,12 @@ extension SaleViewModel {
     }
 
     // TODO: Should not be exposing raw models.
-    func refinedSaleArtworks(refineSettings: AuctionRefineSettings) -> [SaleArtwork] {
-        return saleArtworks.filter(SaleArtwork.includedInRefineSettings(refineSettings))
+    func refinedSaleArtworks(refineSettings: AuctionRefineSettings) -> [SaleArtworkViewModel] {
+        return saleArtworks
+            .filter(SaleArtwork.includedInRefineSettings(refineSettings))
+            .map { saleArtwork in
+                return SaleArtworkViewModel(saleArtwork: saleArtwork)
+            }
     }
 }
 

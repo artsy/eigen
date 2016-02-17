@@ -12,6 +12,8 @@
 #import "Image.h"
 #import "NSArray+Additions.h"
 #import "ARAspectRatioImageView.h"
+#import "UIImageView+AsyncImageLoading.h"
+#import "Artsy-Swift.h"
 
 #import "ARSeparatorViews.h"
 
@@ -105,22 +107,21 @@
 
 - (void)setupWithRepresentedObject:(id)object
 {
-    // TODO: Shouldn't have access to raw models
-    SaleArtwork *saleArtwork = object;
+    SaleArtworkViewModel *saleArtworkViewModel = object;
 
-    [self.artworkImageView sd_setImageWithURL:saleArtwork.artwork.defaultImage.urlForThumbnailImage];
+    [self.artworkImageView ar_setImageWithURL:saleArtworkViewModel.thumbnailURL];
 
-    self.artistNameLabel.text = saleArtwork.artwork.artist.name;
-    self.artworkNameLabel.text = saleArtwork.artwork.name;
-    self.currentOrStartingBidLabel.text = [self currentOrStartingBidLabelTextForSaleArtwork:saleArtwork];
-    self.lotNumberLabel.text = saleArtwork.lotNumber.stringValue;
-    self.numberOfBidsLabel.text = saleArtwork.numberOfBidsString;
+    self.artistNameLabel.text = saleArtworkViewModel.artistName;
+    self.artworkNameLabel.text = saleArtworkViewModel.artworkName;
+    self.currentOrStartingBidLabel.text = [self currentOrStartingBidLabelTextForSaleArtwork:saleArtworkViewModel];
+    self.lotNumberLabel.text = saleArtworkViewModel.lotNumber;
+    self.numberOfBidsLabel.text = saleArtworkViewModel.numberOfBids;
 }
 
 // This is an override point for subclasses
-- (NSString *)currentOrStartingBidLabelTextForSaleArtwork:(SaleArtwork *)saleArtwork
+- (NSString *)currentOrStartingBidLabelTextForSaleArtwork:(SaleArtworkViewModel *)saleArtworkViewModel
 {
-    return saleArtwork.highestOrStartingBidString;
+    return [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:NO];
 }
 
 @end
@@ -203,9 +204,9 @@
 
 @implementation ARSaleArtworkFlowCollectionViewCompactCell
 
-- (NSString *)currentOrStartingBidLabelTextForSaleArtwork:(SaleArtwork *)saleArtwork
+- (NSString *)currentOrStartingBidLabelTextForSaleArtwork:(SaleArtworkViewModel *)saleArtworkViewModel
 {
-    return [NSString stringWithFormat:@"%@ %@", saleArtwork.highestOrStartingBidString, saleArtwork.numberOfBidsString];
+    return [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:YES];
 }
 
 - (void)constrainViewsWithLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes

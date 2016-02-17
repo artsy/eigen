@@ -18,6 +18,10 @@
 
 // Models.
 #import "Sale.h"
+#import "SaleArtwork.h"
+#import "Artwork.h"
+#import "Artist.h"
+#import "Profile.h"
 
 #import "Artwork.h"
 #import "AREmbeddedModelsViewController.h"
