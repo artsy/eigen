@@ -10,7 +10,7 @@ import Foundation
 
 private typealias PublicComputedProperties = SaleArtworkViewModel
 extension PublicComputedProperties {
-    var thumbnailURL: NSURL! {
+    var thumbnailURL: NSURL? {
         return saleArtwork.artwork.defaultImage.urlForThumbnailImage()
     }
 
@@ -19,7 +19,7 @@ extension PublicComputedProperties {
     }
 
     var artworkName: String {
-        return saleArtwork.artwork.name()
+        return saleArtwork.artwork.title
     }
 
     var lotNumber: String {
