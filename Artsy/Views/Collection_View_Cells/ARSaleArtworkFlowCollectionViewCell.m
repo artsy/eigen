@@ -112,9 +112,15 @@
 
     self.artistNameLabel.text = saleArtwork.artwork.artist.name;
     self.artworkNameLabel.text = saleArtwork.artwork.name;
-    self.currentOrStartingBidLabel.text = saleArtwork.highestOrStartingBidString;
+    self.currentOrStartingBidLabel.text = [self currentOrStartingBidLabelTextForSaleArtwork:saleArtwork];
     self.lotNumberLabel.text = saleArtwork.lotNumber.stringValue;
     self.numberOfBidsLabel.text = saleArtwork.numberOfBidsString;
+}
+
+// This is an override point for subclasses
+- (NSString *)currentOrStartingBidLabelTextForSaleArtwork:(SaleArtwork *)saleArtwork
+{
+    return saleArtwork.highestOrStartingBidString;
 }
 
 @end
@@ -196,6 +202,11 @@
 
 
 @implementation ARSaleArtworkFlowCollectionViewCompactCell
+
+- (NSString *)currentOrStartingBidLabelTextForSaleArtwork:(SaleArtwork *)saleArtwork
+{
+    return [NSString stringWithFormat:@"%@ %@", saleArtwork.highestOrStartingBidString, saleArtwork.numberOfBidsString];
+}
 
 - (void)constrainViewsWithLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
