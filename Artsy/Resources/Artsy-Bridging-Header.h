@@ -37,6 +37,5 @@
 #import "ARTextView.h"
 #import "ARFonts.h"
 
-// Temporary for building out auctionVC
-#import "ARArtistNetworkModel.h"
-#import "ARGeneArtworksNetworkModel.h"
+#import "ARSwitchBoard.h"
+#import "ARTrialController.h"

@@ -7,9 +7,9 @@ typealias MarkdownString = String
 struct AuctionInformation {
     let partnerName: String
     let title: String
-    let description: MarkdownString // TODO markdown ?
+    let description: MarkdownString
     let startsAt: String
-    let contact: MarkdownString // TODO markdown ?
+    let contact: MarkdownString
     let FAQEntries: [FAQEntry]
     
     struct FAQEntry {
@@ -20,6 +20,8 @@ struct AuctionInformation {
 
 class AuctionInformationViewController : UIViewController {
     var auctionInformation: AuctionInformation
+    var titleViewDelegate: AuctionTitleViewDelegate?
+
     var scrollView: ORStackScrollView
 
     required init(auctionInformation: AuctionInformation) {
@@ -59,7 +61,7 @@ class AuctionInformationViewController : UIViewController {
         
         let stackView = self.scrollView.stackView
 
-        // TODO: What is the required font size?
+        // TODO: convert to an image once we have profile data
         let partnerNameLabel = UILabel()
         partnerNameLabel.font = UIFont.serifSemiBoldFontWithSize(48)
         partnerNameLabel.text = self.auctionInformation.partnerName
@@ -68,7 +70,7 @@ class AuctionInformationViewController : UIViewController {
         // TODO: Make this work for real.
         let sale = try! Sale(dictionary: ["name": self.auctionInformation.title], error: Void())
         let viewModel = SaleViewModel(sale: sale, saleArtworks: [])
-        let auctionTitleView = AuctionTitleView(viewModel: viewModel, registrationStatus: nil, delegate: self, fullWidth: true)
+        let auctionTitleView = AuctionTitleView(viewModel: viewModel, registrationStatus: nil, delegate: titleViewDelegate, fullWidth: true, showAdditionalInformation: false)
         stackView.addSubview(auctionTitleView, withTopMargin: "20", sideMargin: "40")
         
         let auctionDescriptionView = ARTextView()
@@ -101,7 +103,7 @@ class AuctionInformationViewController : UIViewController {
         self.navigationController?.pushViewController(controller, animated: animated)
         return controller
     }
-    
+
     func showContact(animated: Bool) {
         if (MFMailComposeViewController.canSendMail()) {
             let controller = MFMailComposeViewController()
@@ -124,16 +126,8 @@ extension MailCompositionCallbacks: MFMailComposeViewControllerDelegate {
     }
 }
 
-private typealias TitleCallbacks = AuctionInformationViewController
-extension TitleCallbacks: AuctionTitleViewDelegate {
-    func userDidPressRegister(titleView: AuctionTitleView) {
-        // TODO: We've got to make sure the user is logged in before booting them out to martsy.
-        //       Possibly merge this somehow with the callback in AuctionViewController.
-    }
-}
-
 extension AuctionInformationViewController {
-    class FAQViewController : UIViewController {
+    class FAQViewController : UIViewController, ARTextViewDelegate {
         var entries: [AuctionInformation.FAQEntry]
         var stackView: ORStackView
         var currentlyExpandedEntryView: EntryView?
@@ -165,13 +159,17 @@ extension AuctionInformationViewController {
             
             for (var i = 0; i < self.entries.count; i++) {
                 let entry = self.entries[i]
-                let entryView = EntryView(entry: entry) { [unowned self] in self.expandView($0) }
+                let entryView = EntryView(entry: entry, textDelegate: self) { [unowned self] in self.expandView($0) }
                 entryView.tag = i
                 self.stackView.addSubview(entryView, withTopMargin: "0", sideMargin: "0")
             }
             
             self.currentlyExpandedEntryView = self.entryViews.first
             self.currentlyExpandedEntryView!.expand()
+        }
+
+        func textView(textView: ARTextView!, shouldOpenViewController viewController: UIViewController!) {
+            self.navigationController?.pushViewController(viewController, animated: true)
         }
         
         func expandView(viewToExpand: EntryView) {
@@ -192,11 +190,11 @@ extension AuctionInformationViewController {
             var tapHandler: (EntryView) -> Void
             var contentHeightConstraint: NSLayoutConstraint
             
-            required init(entry: AuctionInformation.FAQEntry, tapHandler: (EntryView) -> Void) {
+            required init(entry: AuctionInformation.FAQEntry, textDelegate: ARTextViewDelegate, tapHandler: (EntryView) -> Void) {
                 self.tapHandler = tapHandler
                 
                 let topBorder = UIView()
-                topBorder.backgroundColor = UIColor.artsyLightGrey()
+                topBorder.backgroundColor = .artsyLightGrey()
                 
                 let titleButton = UIButton(type: .Custom)
                 
@@ -208,7 +206,10 @@ extension AuctionInformationViewController {
                 
                 let contentView = ARTextView()
                 contentView.scrollEnabled = true
-                contentView.setMarkdownString(entry.content)
+                /// The API comes with headers we should remove
+                let content = entry.content.stringByRemovingLinesMatching { $0.hasPrefix("#") }
+                contentView.setMarkdownString(content)
+                contentView.viewControllerDelegate = textDelegate
                 
                 self.contentHeightConstraint = contentView.constrainHeight("0").first as! NSLayoutConstraint
                 
@@ -240,6 +241,8 @@ extension AuctionInformationViewController {
                 
                 self.alignBottomEdgeWithView(contentView, predicate: "0")
             }
+
+
             
             required init?(coder aDecoder: NSCoder) {
                 fatalError()
@@ -257,5 +260,12 @@ extension AuctionInformationViewController {
                 self.tapHandler(self)
             }
         }
+    }
+}
+
+extension String {
+    func stringByRemovingLinesMatching(matcher: (String) -> (Bool)) -> String {
+        let lines = self.componentsSeparatedByString("\n")
+        return lines.filter { matcher($0) == false }.joinWithSeparator("\n")
     }
 }

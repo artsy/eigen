@@ -10,9 +10,11 @@ import FLKAutoLayout
 }
 
 class AuctionTitleView: UIView {
-    weak var delegate: AuctionTitleViewDelegate!
+    weak var delegate: AuctionTitleViewDelegate?
 
     let viewModel: SaleViewModel
+    let showAdditionalInformation: Bool
+
     var registrationStatus: ArtsyAPISaleRegistrationStatus? {
         didSet {
             // Based on new registration status, we'll reconstruct our whole hierarchy from scratch to reflect the new status.
@@ -23,11 +25,12 @@ class AuctionTitleView: UIView {
     var registrationButton: UIButton!
     var fullWidth: Bool
 
-    init(viewModel: SaleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatus?, delegate: AuctionTitleViewDelegate, fullWidth: Bool) {
+    init(viewModel: SaleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatus?, delegate: AuctionTitleViewDelegate?, fullWidth: Bool, showAdditionalInformation: Bool) {
         self.viewModel = viewModel
         self.delegate = delegate
         self.registrationStatus = registrationStatus
         self.fullWidth = fullWidth
+        self.showAdditionalInformation = showAdditionalInformation
 
         super.init(frame: CGRect.zero)
 
@@ -50,11 +53,11 @@ class AuctionTitleView: UIView {
 private typealias UserInteraction = AuctionTitleView
 extension UserInteraction {
     func userDidPressInfo() {
-        delegate!.userDidPressInfo!(self)
+        delegate?.userDidPressInfo?(self)
     }
 
     func userDidPressRegister() {
-        delegate!.userDidPressRegister(self)
+        delegate?.userDidPressRegister(self)
     }
 }
 
@@ -100,8 +103,7 @@ private extension AuctionTitleView {
             titleLabel.alignCenterXWithView(container, predicate: "0")
         }
 
-        let infoDelegate = delegate
-        if infoDelegate != nil && ((infoDelegate as AnyObject).respondsToSelector(Selector("userDidPressInfo:"))) {
+        if showAdditionalInformation {
             let infoButton = UIButton.circularButton(.Info)
             infoButton.addTarget(self, action: "userDidPressInfo", forControlEvents: .TouchUpInside)
             container.addSubview(infoButton)
