@@ -541,7 +541,7 @@
 		60F63AB71C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F63AB61C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift */; };
 		60F8FFC1197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F8FFC0197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m */; };
 		60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FAEF42179843080031C88B /* ARFavoritesViewController.m */; };
-		663AD39E1C7343BA000B191F /* ARNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 663AD39D1C7343BA000B191F /* ARNotificationsViewController.m */; };
+		663AD39E1C7343BA000B191F /* ARWorksForYouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 663AD39D1C7343BA000B191F /* ARWorksForYouViewController.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		973C2A577CA2308F0CCCF097 /* Pods_Artsy_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F393F6E8F72F1A7CCF0264 /* Pods_Artsy_Tests.framework */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
@@ -1585,8 +1585,8 @@
 		60FFE3DA188E91C50012B485 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		60FFE3DC188E91F20012B485 /* getting_confident.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = getting_confident.md; sourceTree = "<group>"; };
 		60FFE3DD188E921A0012B485 /* eigen_tips.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = eigen_tips.md; sourceTree = "<group>"; };
-		663AD39C1C7343BA000B191F /* ARNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARNotificationsViewController.h; path = Artsy/View_Controllers/Notifications/ARNotificationsViewController.h; sourceTree = SOURCE_ROOT; };
-		663AD39D1C7343BA000B191F /* ARNotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARNotificationsViewController.m; path = Artsy/View_Controllers/Notifications/ARNotificationsViewController.m; sourceTree = SOURCE_ROOT; };
+		663AD39C1C7343BA000B191F /* ARWorksForYouViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARWorksForYouViewController.h; path = Artsy/View_Controllers/Notifications/ARWorksForYouViewController.h; sourceTree = SOURCE_ROOT; };
+		663AD39D1C7343BA000B191F /* ARWorksForYouViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARWorksForYouViewController.m; path = Artsy/View_Controllers/Notifications/ARWorksForYouViewController.m; sourceTree = SOURCE_ROOT; };
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		88C6A94A03DFA05A59959443 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
@@ -4137,8 +4137,8 @@
 		663AD39B1C7342D8000B191F /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				663AD39C1C7343BA000B191F /* ARNotificationsViewController.h */,
-				663AD39D1C7343BA000B191F /* ARNotificationsViewController.m */,
+				663AD39C1C7343BA000B191F /* ARWorksForYouViewController.h */,
+				663AD39D1C7343BA000B191F /* ARWorksForYouViewController.m */,
 			);
 			name = Notifications;
 			path = Favorites;
@@ -4926,7 +4926,7 @@
 				6021F97F17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m in Sources */,
 				3CFB079118EB585B00792024 /* ARTile+ASCII.m in Sources */,
 				3CFB078B18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m in Sources */,
-				663AD39E1C7343BA000B191F /* ARNotificationsViewController.m in Sources */,
+				663AD39E1C7343BA000B191F /* ARWorksForYouViewController.m in Sources */,
 				5E47F34E1C3ECAA600EC0751 /* AuctionViewController.swift in Sources */,
 				607E2E7B17C8C9FE00396120 /* ARArtworkDetailView.m in Sources */,
 				CB206F7417C569E800A4FDC4 /* ARPersonalizeViewController.m in Sources */,
