@@ -164,7 +164,7 @@ static NSNumberFormatter *dollarFormatter;
 - (NSString *)highestOrStartingBidString
 {
     NSNumber *number;
-    if (self.bidCount == 0) {
+    if (self.bidCount.integerValue == 0) {
         number = self.openingBidCents;
     } else {
         number = self.saleHighestBid.cents;
