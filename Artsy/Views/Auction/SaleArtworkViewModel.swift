@@ -34,6 +34,10 @@ extension PublicComputedProperties {
         return saleArtwork.numberOfBidsString()
     }
 
+    var artworkID: String {
+        return saleArtwork.artwork.artworkID
+    }
+
     func currentOrStartingBidWithNumberOfBids(includeNumberOfBids: Bool) -> String {
         let bidString = saleArtwork.highestOrStartingBidString()
         if includeNumberOfBids {

@@ -67,5 +67,9 @@ class SaleArtworkViewModelTests: QuickSpec {
         it("returns starting bid alone") {
             expect(subject.currentOrStartingBidWithNumberOfBids(true)) == "$1,000 (4 Bids)"
         }
+
+        it("returns artwork ID") {
+            expect(subject.artworkID) == "artwork_id"
+        }
     }
 }

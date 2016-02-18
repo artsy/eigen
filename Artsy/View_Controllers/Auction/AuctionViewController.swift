@@ -214,7 +214,11 @@ extension RefineSettings: AuctionRefineViewControllerDelegate {
 private typealias EmbeddedModelCallbacks = AuctionViewController
 extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
-        // TODO
+        let item = saleArtworksViewController.items[Int(index)] as? SaleArtworkViewModel
+        guard let artworkID = item?.artworkID else { return }
+
+        let viewController = ARSwitchBoard.sharedInstance().loadArtworkWithID(artworkID, inFair: nil)
+        navigationController?.pushViewController(viewController, animated: allowAnimations)
     }
 
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
