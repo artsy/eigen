@@ -1,20 +1,11 @@
 #import "ARWorksForYouViewController.h"
+<<<<<<< HEAD
+=======
+#import "ORStackView.h"
+>>>>>>> 328cbea06bfd179730e53d60797459b0e1d08901
 #import "ARLabelSubclasses.h"
 
-#import <ORStackView/ORStackView.h>
-
-
-static NSString *ARArtworksByArtistCellIdentifier = @"ARArtworksByArtistCellIdentifier";
-
-
-@interface ARWorksForYouViewController ()
-
-@end
-
-
-@implementation ARWorksForYouViewController
-
-- (void)viewDidLoad
+#import <ORStackView/ORStackView.h> static NSString *ARArtworksByArtistCellIdentifier = @"ARArtworksByArtistCellIdentifier"; @interface ARWorksForYouViewController() @end @implementation ARWorksForYouViewController - (void) viewDidLoad
 {
     [super viewDidLoad];
 
