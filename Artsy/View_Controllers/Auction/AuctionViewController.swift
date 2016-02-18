@@ -158,8 +158,12 @@ extension AuctionViewController {
 
         let viewWidth = viewWidth ?? self.view.bounds.size.width
 
-        // TODO: Module depends on current refineSettings
-        saleArtworksViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
+        switch refineSettings.ordering.layoutType {
+        case .Grid:
+            saleArtworksViewController.activeModule = ARSaleArtworkItemMasonryModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
+        case .List:
+            saleArtworksViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
+        }
 
         saleArtworksViewController.items = items
         stickyHeader.subtitleLabel.text = saleViewModel.subtitleForRefineSettings(refineSettings, defaultRefineSettings: defaultRefineSettings())
