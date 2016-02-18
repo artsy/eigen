@@ -281,17 +281,3 @@ private extension UITableViewCell {
         }
     }
 }
-
-private extension Int {
-    /// Turns a thousand dollars' worth of cents (like 1_000_00) into "$1k", etc.
-    func metricSuffixify() -> String {
-        guard self > 1000_00 else { return NSNumberFormatter.currencyStringForDollarCents(self) }
-
-        // currencyStringForDollarCents will round something like 1500_00 up to $2000, but we want to round _down_.
-        // So we divide by 1000_00 to turn us into dollars momentarily, then back into cents
-        let dollarsK = Int(floor(Float(self) / Float(1000_00)))
-        let cents = Int(dollarsK) * 1_00
-
-        return NSNumberFormatter.currencyStringForDollarCents(cents) + "k"
-    }
-}

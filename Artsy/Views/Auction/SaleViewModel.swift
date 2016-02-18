@@ -1,4 +1,5 @@
 import Foundation
+import Artsy_UILabels
 
 class SaleViewModel {
     private let sale: Sale
@@ -39,13 +40,46 @@ extension SaleViewModel {
         return (min: self.smallestLowEstimate, max: self.largestLowEstimate)
     }
 
-    // TODO: Should not be exposing raw models.
     func refinedSaleArtworks(refineSettings: AuctionRefineSettings) -> [SaleArtworkViewModel] {
-        return saleArtworks
+        return refineSettings.ordering.sortSaleArtworks(saleArtworks)
             .filter(SaleArtwork.includedInRefineSettings(refineSettings))
             .map { saleArtwork in
                 return SaleArtworkViewModel(saleArtwork: saleArtwork)
             }
+    }
+
+    func subtitleForRefineSettings(refineSettings: AuctionRefineSettings, defaultRefineSettings: AuctionRefineSettings) -> String {
+        var subtitle = "\(numberOfLots) Lots"
+
+        switch refineSettings.ordering {
+        case .LotNumber: break
+        default:
+            subtitle += "・\(refineSettings.ordering.rawValue)"
+        }
+
+        if refineSettings.range.min != defaultRefineSettings.range.min ||
+           refineSettings.range.max != defaultRefineSettings.range.max {
+            let min = refineSettings.range.min.roundCentsToNearestThousandAndFormat()
+            let max = refineSettings.range.max.roundCentsToNearestThousandAndFormat()
+            subtitle += "・\(min)–\(max)"
+        }
+
+        return subtitle
+    }
+}
+
+extension SaleArtwork: AuctionOrderable {
+    var bids: Int {
+        return bidCount as Int
+    }
+
+    var artistName: String {
+        return artwork.artist.name
+    }
+
+    var currentBid: Int {
+        guard let saleHighestBid = self.saleHighestBid else { return 0 }
+        return saleHighestBid.cents as Int
     }
 }
 

@@ -22,6 +22,7 @@ upcoming:
     - Users with an Artsymail email can access the admin menu - orta
     - Show auction information, such as a description, FAQ, and contact - alloy
     - Auction listings list layout works - ash
+    - Auction listings sort works - ash
 
 releases:
   - version: 2.3.5
