@@ -70,6 +70,7 @@
 {
     [self.artworkImageView alignTopEdgeWithView:self.contentView predicate:@"0"];
     [self.artworkImageView alignLeading:@"0" trailing:@"0" toView:self.contentView];
+    [self.artworkImageView alignBottomEdgeWithView:self.contentView predicate:@(-[ARSaleArtworkMasonryCollectionViewCell paddingForMetadata]).stringValue];
 
     NSArray *labels = @[ self.lotNumberLabel, self.artistNameLabel, self.artworkNameLabel, self.currentOrStartingBidLabel ];
 
