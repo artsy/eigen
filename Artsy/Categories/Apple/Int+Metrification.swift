@@ -28,7 +28,7 @@ extension Int {
     }
 
     // Removes three significant digits from number.
-    func removeKSignificantDigits() -> Int {
+    private func removeKSignificantDigits() -> Int {
         return roundCentsToNearestThousand() / 1000
     }
 }
