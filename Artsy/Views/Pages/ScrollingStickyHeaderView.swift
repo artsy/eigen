@@ -16,6 +16,9 @@ class ScrollingStickyHeaderView: UIView {
 
     var stickyHeaderHeight: NSLayoutConstraint!
 
+    var trailingConstraints: NSArray?
+    var leadingConstraints: NSArray?
+
     init() {
         button = ARWhiteFlatButton().then {
             $0.setBorderColor(.artsyLightGrey(), forState: .Normal)
@@ -35,7 +38,8 @@ class ScrollingStickyHeaderView: UIView {
 
         button.then {
             self.addSubview($0)
-            $0.alignBottom("-15", trailing: "-20", toView: self)
+            self.trailingConstraints = $0.alignTrailingEdgeWithView(self, predicate: "-20")
+            $0.alignBottomEdgeWithView(self, predicate: "-15")
             $0.constrainHeight("24")
             $0.ar_extendHitTestSizeByWidth(0, andHeight: 10)
             $0.constrainWidth("60")
@@ -52,7 +56,7 @@ class ScrollingStickyHeaderView: UIView {
 
         subtitleLabel.then {
             self.addSubview($0)
-            $0.alignLeadingEdgeWithView(self, predicate: "20")
+            self.leadingConstraints = $0.alignLeadingEdgeWithView(self, predicate: "20")
             $0.alignBottomEdgeWithView(self, predicate: "-18")
         }
 
@@ -66,6 +70,18 @@ class ScrollingStickyHeaderView: UIView {
             self.addSubview($0)
             $0.alignBottom("0", trailing: "0", toView: self)
             $0.constrainWidthToView(self, predicate: "0")
+        }
+    }
+
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        let margin: CGFloat = traitCollection.horizontalSizeClass == .Compact ? 20 : 40
+        trailingConstraints?.forEach { constraint in
+            (constraint as? NSLayoutConstraint)?.constant = -margin
+        }
+        leadingConstraints?.forEach { constraint in
+            (constraint as? NSLayoutConstraint)?.constant = margin
         }
     }
 
