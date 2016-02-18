@@ -1146,6 +1146,7 @@
 		5E79FCB31C761E1A003D5D65 /* ARSaleArtworkItemMasonryModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSaleArtworkItemMasonryModule.m; path = Sale_Artworks/ARSaleArtworkItemMasonryModule.m; sourceTree = "<group>"; };
 		5E79FCB51C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSaleArtworkMasonryCollectionViewCell.h; sourceTree = "<group>"; };
 		5E79FCB61C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSaleArtworkMasonryCollectionViewCell.m; sourceTree = "<group>"; };
+		5E79FCB81C764780003D5D65 /* ARSaleArtworkItemWidthDependentModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSaleArtworkItemWidthDependentModule.h; sourceTree = "<group>"; };
 		5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineViewController.swift; path = Auction/AuctionRefineViewController.swift; sourceTree = "<group>"; };
 		5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARProfileViewControllerTests.m; sourceTree = "<group>"; };
 		5E9A78211906BA3D00734E1B /* OCMArg+ClassChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCMArg+ClassChecker.h"; sourceTree = "<group>"; };
@@ -2771,6 +2772,7 @@
 		5E0846D21C6E462C00855667 /* Sale Artworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E79FCB81C764780003D5D65 /* ARSaleArtworkItemWidthDependentModule.h */,
 				5E0846D51C6E474800855667 /* ARSaleArtworkItemFlowModule.h */,
 				5E0846D61C6E474800855667 /* ARSaleArtworkItemFlowModule.m */,
 				5E79FCB21C761E1A003D5D65 /* ARSaleArtworkItemMasonryModule.h */,

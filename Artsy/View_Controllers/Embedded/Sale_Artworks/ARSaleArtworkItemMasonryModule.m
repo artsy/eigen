@@ -4,6 +4,11 @@
 
 @import ARCollectionViewMasonryLayout;
 
+CGFloat marginForTraitCollection(UITraitCollection *traitCollection)
+{
+    return (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact ? 20 : 40);
+}
+
 
 @interface ARSaleArtworkItemMasonryModule () <ARCollectionViewMasonryLayoutDelegate>
 
@@ -21,15 +26,9 @@
 
     _traitCollection = traitCollection;
 
-    //    self.moduleLayout.itemMargins = [self.class itemMarginsforLayout:self.layout];
-    //    self.moduleLayout.rank = [self.class rankForlayout:self.layout];
-    //    self.moduleLayout.dimensionLength = [self.class dimensionForlayout:self.layout useLandscapeValues:useLandscapeValues];
-    //    self.moduleLayout.contentInset = [self.class edgeInsetsForlayout:self.layout];
-
     ARCollectionViewMasonryLayout *layout = [[ARCollectionViewMasonryLayout alloc] initWithDirection:ARCollectionViewMasonryLayoutDirectionVertical];
-    //    layout.itemSize = CGSizeMake(width, 120); // This is unused, might be a nice place to stash some value.
 
-    CGFloat margin = traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact ? 20 : 40;
+    CGFloat margin = marginForTraitCollection(traitCollection);
     CGFloat verticalEdgeInset = traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact ? 14 : 20;
 
     layout.itemMargins = CGSizeMake(margin, verticalEdgeInset);
@@ -51,6 +50,15 @@
     CGFloat staticDimension = collectionViewLayout.dimensionLength;
     SaleArtworkViewModel *viewModel = self.items[indexPath.row];
     return staticDimension / viewModel.aspectRatio + [ARSaleArtworkMasonryCollectionViewCell paddingForMetadata];
+}
+
+#pragma mark - ARSaleArtworkItemWidthDependentModule
+
+- (void)setWidth:(CGFloat)width
+{
+    CGFloat margin = marginForTraitCollection(self.traitCollection);
+    ARCollectionViewMasonryLayout *layout = (ARCollectionViewMasonryLayout *)self.moduleLayout;
+    layout.dimensionLength = (width - (layout.rank - 1) * margin) / layout.rank;
 }
 
 @end

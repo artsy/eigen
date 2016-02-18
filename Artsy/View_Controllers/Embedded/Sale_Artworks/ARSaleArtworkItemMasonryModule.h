@@ -1,7 +1,8 @@
 #import "ARModelCollectionViewModule.h"
+#import "ARSaleArtworkItemWidthDependentModule.h"
 
 
-@interface ARSaleArtworkItemMasonryModule : ARModelCollectionViewModule
+@interface ARSaleArtworkItemMasonryModule : ARModelCollectionViewModule <ARSaleArtworkItemWidthDependentModule>
 
 - (instancetype)initWithTraitCollection:(UITraitCollection *)traitCollection width:(CGFloat)width;
 
