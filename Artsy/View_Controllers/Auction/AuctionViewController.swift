@@ -88,6 +88,8 @@ class AuctionViewController: UIViewController {
         displayCurrentItems(size.width)
     }
 
+//    override func shou
+
     enum ViewTags: Int {
         case Banner = 0, Title
         

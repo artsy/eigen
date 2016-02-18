@@ -5,4 +5,6 @@
 
 - (void)setupWithRepresentedObject:(id)object;
 
++ (CGFloat)paddingForMetadata;
+
 @end

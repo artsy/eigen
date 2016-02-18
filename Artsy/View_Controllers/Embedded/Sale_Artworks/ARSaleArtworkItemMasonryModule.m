@@ -1,5 +1,6 @@
 #import "ARSaleArtworkItemMasonryModule.h"
 #import "ARSaleArtworkMasonryCollectionViewCell.h"
+#import "Artsy-Swift.h"
 
 @import ARCollectionViewMasonryLayout;
 
@@ -33,7 +34,7 @@
 
     layout.itemMargins = CGSizeMake(margin, verticalEdgeInset);
     layout.rank = traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact ? 2 : 3;
-    layout.dimensionLength = (width - (layout.rank + 1) * margin) / layout.rank;
+    layout.dimensionLength = (width - (layout.rank - 1) * margin) / layout.rank;
     layout.contentInset = UIEdgeInsetsMake(verticalEdgeInset, 0, verticalEdgeInset, 0);
 
     _moduleLayout = layout;
@@ -47,8 +48,9 @@
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ARCollectionViewMasonryLayout *)collectionViewLayout variableDimensionForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: this is just random for now
-    return (indexPath.row % 2) * 50;
+    CGFloat staticDimension = collectionViewLayout.dimensionLength;
+    SaleArtworkViewModel *viewModel = self.items[indexPath.row];
+    return staticDimension / viewModel.aspectRatio + [ARSaleArtworkMasonryCollectionViewCell paddingForMetadata];
 }
 
 @end

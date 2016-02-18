@@ -31,8 +31,6 @@
 
 - (void)createSubviews
 {
-    self.backgroundColor = [UIColor artsyPurple];
-
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView alignToView:self];
 
@@ -70,10 +68,22 @@
 
 - (void)constrainViewsWithLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
-    //    [self.artworkImageView constrainWidth:@"140"];
-    //    [self.artworkImageView constrainHeight:@"100"];
-    //    [self.artworkImageView alignTop:@"10@800" bottom:@"-10@800" toView:self.contentView];
-    //    [self.artworkImageView alignLeadingEdgeWithView:self.contentView predicate:@"0"];
+    [self.artworkImageView alignTopEdgeWithView:self.contentView predicate:@"0"];
+    [self.artworkImageView alignLeading:@"0" trailing:@"0" toView:self.contentView];
+
+    NSArray *labels = @[ self.lotNumberLabel, self.artistNameLabel, self.artworkNameLabel, self.currentOrStartingBidLabel ];
+
+    // Stick the first label under the image view, plus ten points.
+    [[labels firstObject] alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.artworkImageView predicate:@"10"];
+
+    // Stack the labels on top of eachother.
+    [labels betweenObjects:^(id lhs, id rhs) {
+        [lhs alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeTop ofView:rhs predicate:@"0"];
+    }];
+
+    [labels each:^(id object) {
+        [object alignLeading:@"0" trailing:@"0" toView:self.contentView];
+    }];
 }
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
@@ -89,14 +99,20 @@
 
 - (void)setupWithRepresentedObject:(id)object
 {
-    //    SaleArtworkViewModel *saleArtworkViewModel = object;
-    //
-    //    [self.artworkImageView ar_setImageWithURL:saleArtworkViewModel.thumbnailURL];
-    //
-    //    self.artistNameLabel.text = saleArtworkViewModel.artistName;
-    //    self.artworkNameLabel.text = saleArtworkViewModel.artworkName;
-    //    self.currentOrStartingBidLabel.text = [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:YES];
-    //    self.lotNumberLabel.text = saleArtworkViewModel.lotNumber;
+    SaleArtworkViewModel *saleArtworkViewModel = object;
+
+    [self.artworkImageView ar_setImageWithURL:saleArtworkViewModel.thumbnailURL];
+
+    self.artistNameLabel.text = saleArtworkViewModel.artistName;
+    self.artworkNameLabel.text = saleArtworkViewModel.artworkName;
+    self.currentOrStartingBidLabel.text = [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:YES];
+    self.lotNumberLabel.text = saleArtworkViewModel.lotNumber;
+}
+
++ (CGFloat)paddingForMetadata
+{
+    // 3 labels @14pt + 1 label @10pt + 10pt padding under image  = 62
+    return 62;
 }
 
 @end
