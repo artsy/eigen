@@ -12,6 +12,8 @@
 #import "SiteHeroUnit.h"
 #import "ARNavigationController.h"
 #import "ARAppBackgroundFetchDelegate.h"
+#import "ARWorksForYouViewController.h"
+#import "AROptions.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -37,7 +39,9 @@ WebViewNavigationControllerWithPath(NSString *path)
 @property (readonly, nonatomic, strong) ARNavigationController *showsNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *magazineNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *notificationsNavigationController;
+
+// webview controller, keeping this here for the tests, will be removed once we switch to native proper
+@property (readonly, nonatomic, strong) ARNavigationController *oldWorksForYouNavigationController;
 
 @end
 
@@ -74,7 +78,7 @@ WebViewNavigationControllerWithPath(NSString *path)
 
     _magazineNavigationController = WebViewNavigationControllerWithPath(@"/articles");
 
-    _notificationsNavigationController = WebViewNavigationControllerWithPath(@"/works-for-you");
+    _oldWorksForYouNavigationController = WebViewNavigationControllerWithPath(@"/works-for-you");
 
     return self;
 }
@@ -114,6 +118,12 @@ WebViewNavigationControllerWithPath(NSString *path)
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
 }
 
+- (ARNavigationController *)worksForYouViewController
+{
+    ARWorksForYouViewController *worksForYouViewController = [[ARWorksForYouViewController alloc] init];
+    return [[ARNavigationController alloc] initWithRootViewController:worksForYouViewController];
+}
+
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 {
     switch (index) {
@@ -128,7 +138,11 @@ WebViewNavigationControllerWithPath(NSString *path)
         case ARTopTabControllerIndexFavorites:
             return self.favoritesNavigationController;
         case ARTopTabControllerIndexNotifications:
-            return self.notificationsNavigationController;
+            if ([AROptions boolForOption:AROptionsUseNativeForYou]) {
+                return self.worksForYouViewController;
+            } else {
+                return self.oldWorksForYouNavigationController;
+            }
     }
 
     return nil;
