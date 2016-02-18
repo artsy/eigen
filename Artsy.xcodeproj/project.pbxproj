@@ -281,6 +281,7 @@
 		5E6BA6EA1C56B5D700B942C1 /* CircularCancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E81C56B5D700B942C1 /* CircularCancelButton.png */; };
 		5E71AFC7195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */; };
 		5E73C93A1C6933FA00496C7C /* AuctionTitleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E73C9391C6933FA00496C7C /* AuctionTitleViewTests.swift */; };
+		5E79FCB11C7612D8003D5D65 /* Int+Metrification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */; };
 		5E8A03B51C52B60900EAF18B /* AuctionRefineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */; };
 		5E9A782019068EDF00734E1B /* ARProfileViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */; };
 		5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */; };
@@ -1138,6 +1139,7 @@
 		5E71AF231912826B008B1426 /* ARPersonalizeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARPersonalizeViewController.h; sourceTree = "<group>"; };
 		5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewControllerTests.m; sourceTree = "<group>"; };
 		5E73C9391C6933FA00496C7C /* AuctionTitleViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionTitleViewTests.swift; path = Auctions/AuctionTitleViewTests.swift; sourceTree = "<group>"; };
+		5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Metrification.swift"; sourceTree = "<group>"; };
 		5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineViewController.swift; path = Auction/AuctionRefineViewController.swift; sourceTree = "<group>"; };
 		5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARProfileViewControllerTests.m; sourceTree = "<group>"; };
 		5E9A78211906BA3D00734E1B /* OCMArg+ClassChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCMArg+ClassChecker.h"; sourceTree = "<group>"; };
@@ -2055,6 +2057,7 @@
 				516CDA6B1BB56611001C02B2 /* UIViewController+ARUserActivity.m */,
 				5EA250641C4EE95B001E4950 /* NSArray+Additions.h */,
 				5EA250651C4EE95B001E4950 /* NSArray+Additions.m */,
+				5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -5096,6 +5099,7 @@
 				342F961978DD1D771928472A /* UIDevice-Hardware.m in Sources */,
 				60026AF51BDE912C0040257C /* ARAuctionResultsNetworkModel.m in Sources */,
 				342F90AEE6950A52210D2DC2 /* UILabel+Typography.m in Sources */,
+				5E79FCB11C7612D8003D5D65 /* Int+Metrification.swift in Sources */,
 				3C6CB60918ABD8D2008DFE3B /* ARPostsViewController.m in Sources */,
 				342F96505F255C0F443B5EAA /* UIViewController+SimpleChildren.m in Sources */,
 				342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */,

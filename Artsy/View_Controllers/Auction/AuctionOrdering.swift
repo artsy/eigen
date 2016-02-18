@@ -14,7 +14,7 @@ enum AuctionOrderingSwitchValue: String {
     case HighestCurrentBid = "Highest Bid"
     case LowestCurrentBid = "Lowest Bid"
 
-    func sortSaleArtworks(saleArtworks: [AuctionOrderable]) -> [AuctionOrderable] {
+    func sortSaleArtworks<T: AuctionOrderable>(saleArtworks: [T]) -> [T] {
         switch self {
         case LotNumber:
             return saleArtworks

@@ -119,7 +119,6 @@ extension AuctionViewController {
             $0.button.setTitle("Refine", forState: .Normal)
             $0.titleLabel.text = saleViewModel.displayName
             $0.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
-            $0.subtitleLabel.text = "\(saleViewModel.numberOfLots) works"
         }
 
         saleArtworksViewController.stickyHeaderView = stickyHeader
@@ -163,6 +162,7 @@ extension AuctionViewController {
         saleArtworksViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
 
         saleArtworksViewController.items = items
+        stickyHeader.subtitleLabel.text = saleViewModel.subtitleForRefineSettings(refineSettings, defaultRefineSettings: defaultRefineSettings())
     }
 }
 
