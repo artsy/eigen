@@ -4,6 +4,8 @@
 #import "ARWorksForYouNetworkModel.h"
 #import "ARDispatchManager.h"
 #import "ARWorksForYouNotificationItem.h"
+#import "ARArtworkSetViewController.h"
+#import "ARSwitchBoard+Eigen.h"
 
 
 #import <ORStackView/ORStackView.h>
@@ -130,11 +132,13 @@
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
 {
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
-    // push artwork
+    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:controller.items inFair:nil atIndex:index];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 @end
