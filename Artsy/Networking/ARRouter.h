@@ -186,4 +186,8 @@
 + (NSURLRequest *)newRequestOutbidNotificationRequest;
 + (NSURLRequest *)newRequestForBlankPage;
 
+#pragma mark - Pages
+
++ (NSURLRequest *)newRequestForPageContent:(NSString *)slug;
+
 @end

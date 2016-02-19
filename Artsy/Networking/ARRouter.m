@@ -1018,5 +1018,10 @@ static NSSet *artsyHosts = nil;
     return [NSURLRequest requestWithURL:pageURL];
 }
 
++ (NSURLRequest *)newRequestForPageContent:(NSString *)slug
+{
+    NSString *url = [NSString stringWithFormat:ARPageURLFormat, slug];
+    return [self requestWithMethod:@"GET" path:url parameters:nil];
+}
 
 @end

@@ -4,6 +4,8 @@
 
 #import "UIViewController+FullScreenLoading.h"
 #import "ArtsyAPI+Sales.h"
+#import "ArtsyAPI+Pages.h"
+
 
 #import "ARScrollNavigationChief.h"
 #import "ARWhitespaceGobbler.h"
