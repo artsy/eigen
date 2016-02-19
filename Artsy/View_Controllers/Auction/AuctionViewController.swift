@@ -188,10 +188,7 @@ extension AuctionViewController {
 private typealias TitleCallbacks = AuctionViewController
 extension TitleCallbacks: AuctionTitleViewDelegate {
     func userDidPressInfo(titleView: AuctionTitleView) {
-
-
         let auctionInforVC = AuctionInformationViewController(saleViewModel: saleViewModel)
-
         auctionInforVC.titleViewDelegate = self
 
         let controller = ARSerifNavigationViewController(rootViewController: auctionInforVC)
