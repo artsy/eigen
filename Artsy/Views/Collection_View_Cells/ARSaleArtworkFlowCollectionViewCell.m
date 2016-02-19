@@ -2,14 +2,9 @@
 @import Artsy_UIFonts;
 @import Artsy_UIColors;
 @import EDColor;
-@import SDWebImage;
 @import FLKAutoLayout;
 @import ObjectiveSugar;
 
-#import "SaleArtwork.h"
-#import "Artwork.h"
-#import "Artist.h"
-#import "Image.h"
 #import "NSArray+Additions.h"
 #import "ARAspectRatioImageView.h"
 #import "UIImageView+AsyncImageLoading.h"
@@ -21,8 +16,6 @@
 
 
 @interface ARSaleArtworkFlowCollectionViewCell ()
-
-@property (nonatomic, assign) BOOL hasConstrainedSubviews;
 
 @property (nonatomic, strong) ARSeparatorView *separatorView;
 @property (nonatomic, strong) ARAspectRatioImageView *artworkImageView;

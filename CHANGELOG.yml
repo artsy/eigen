@@ -2,6 +2,7 @@ upcoming:
   version: 2.3.6
   details: Analytics + Auction Overview (?)
   dev:
+    - Added a switch between native and martsy works for you view - maxim
     - Made the searchbar larger in fair views on iPhone - maxim
     - Adds an analytics event for Bell Tapped which is only for the tap - orta
     - Registration status on auction page - ash
@@ -10,6 +11,7 @@ upcoming:
     - Updated Danger to use new org - orta
     - Adds unit tests for auction view controller - ash
     - Dev Extras are only ever called once - ash
+    - New navigation button abstraction for Swift - ash
   notes:
     - Users may now refine sale artworks on native auction view by their low estimates - ash
     - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
@@ -21,6 +23,8 @@ upcoming:
     - Users with an Artsymail email can access the admin menu - orta
     - Show auction information, such as a description, FAQ, and contact - alloy
     - Auction listings list layout works - ash
+    - Auction listings sort works - ash
+    - Auction listings use appropriate layout (list vs grid view) - ash
 
 releases:
   - version: 2.3.5

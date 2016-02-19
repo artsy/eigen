@@ -5,6 +5,7 @@ import UIKit
 import Interstellar
 import Forgeries
 import OCMock
+import Mantle
 @testable
 import Artsy
 
@@ -78,6 +79,128 @@ class AuctionViewControllerTests: QuickSpec {
                     expect(subject).to( haveValidSnapshot() )
                 }
             }
+
+            it("looks good when sorting by Artist A-Z") {
+                let subject = AuctionViewController(saleID: sale.saleID)
+                subject.allowAnimations = false
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered)
+
+                // Need to use the device when stubbing to use proper screen size.
+                ARTestContext.useDevice(device) {
+                    subject.stubHorizontalSizeClass(horizontalSizeClass)
+                    subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling deafultRefineSettings()
+                    subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.ArtistAlphabetical)
+                    expect(subject).to( haveValidSnapshot() )
+                }
+
+            }
+
+            it("looks good when filtering based on price") {
+                let subject = AuctionViewController(saleID: sale.saleID)
+                subject.allowAnimations = false
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered)
+
+                // Need to use the device when stubbing to use proper screen size.
+                ARTestContext.useDevice(device) {
+                    subject.stubHorizontalSizeClass(horizontalSizeClass)
+                    subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling deafultRefineSettings()
+                    subject.refineSettings = subject.defaultRefineSettings().settingsWithRange((min: 1000, max: 1000_000))
+                    expect(subject).to( haveValidSnapshot() )
+                }
+
+            }
+
+            it("looks good when sorting by Artist A-Z and filtering based on price") {
+                let subject = AuctionViewController(saleID: sale.saleID)
+                subject.allowAnimations = false
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered)
+
+                // Need to use the device when stubbing to use proper screen size.
+                ARTestContext.useDevice(device) {
+                    subject.stubHorizontalSizeClass(horizontalSizeClass)
+                    subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling deafultRefineSettings()
+                    subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.ArtistAlphabetical).settingsWithRange((min: 1000, max: 1000_000))
+                    expect(subject).to( haveValidSnapshot() )
+                }
+            }
+
+            describe("sorting") {
+                var subject: AuctionViewController!
+
+                beforeEach {
+                    saleViewModel = SaleViewModel(sale: sale, saleArtworks: [
+                        test_saleArtworkWithLotNumber(1, artistName: "Ash", bidCount: 0, highestBidCents: 100_00),
+                        test_saleArtworkWithLotNumber(2, artistName: "Orta", bidCount: 4, highestBidCents: 1000_00),
+                        test_saleArtworkWithLotNumber(3, artistName: "Sarah", bidCount: 2, highestBidCents: 50_00),
+                        test_saleArtworkWithLotNumber(4, artistName: "Eloy", bidCount: 17, highestBidCents: 1000_000_00),
+                        test_saleArtworkWithLotNumber(5, artistName: "Maxim", bidCount: 6, highestBidCents: 5011_00),
+                    ])
+
+                    subject = AuctionViewController(saleID: sale.saleID)
+                    subject.allowAnimations = false
+                    subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered)
+                }
+
+                it("sorts by lot number") {
+                    // Need to use the device when stubbing to use proper screen size.
+                    ARTestContext.useDevice(device) {
+                        subject.stubHorizontalSizeClass(horizontalSizeClass)
+                        subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling deafultRefineSettings()
+                        subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.LotNumber)
+                        expect(subject).to( haveValidSnapshot() )
+                    }
+                }
+
+                it("sorts by artist name") {
+                    // Need to use the device when stubbing to use proper screen size.
+                    ARTestContext.useDevice(device) {
+                        subject.stubHorizontalSizeClass(horizontalSizeClass)
+                        subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling deafultRefineSettings()
+                        subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.ArtistAlphabetical)
+                        expect(subject).to( haveValidSnapshot() )
+                    }
+                }
+
+                it("sorts by most bids") {
+                    // Need to use the device when stubbing to use proper screen size.
+                    ARTestContext.useDevice(device) {
+                        subject.stubHorizontalSizeClass(horizontalSizeClass)
+                        subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling deafultRefineSettings()
+                        subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.MostBids)
+                        expect(subject).to( haveValidSnapshot() )
+                    }
+                }
+
+                it("sorts by least bids") {
+                    // Need to use the device when stubbing to use proper screen size.
+                    ARTestContext.useDevice(device) {
+                        subject.stubHorizontalSizeClass(horizontalSizeClass)
+                        subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling deafultRefineSettings()
+                        subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.LeastBids)
+                        expect(subject).to( haveValidSnapshot() )
+                    }
+                }
+                
+                it("sorts by highest bid") {
+                    // Need to use the device when stubbing to use proper screen size.
+                    ARTestContext.useDevice(device) {
+                        subject.stubHorizontalSizeClass(horizontalSizeClass)
+                        subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling deafultRefineSettings()
+                        subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.HighestCurrentBid)
+                        expect(subject).to( haveValidSnapshot() )
+                    }
+                }
+                
+                it("sorts by lowest bid") {
+                    // Need to use the device when stubbing to use proper screen size.
+                    ARTestContext.useDevice(device) {
+                        subject.stubHorizontalSizeClass(horizontalSizeClass)
+                        subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling deafultRefineSettings()
+                        subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.LowestCurrentBid)
+                        expect(subject).to( haveValidSnapshot() )
+                    }
+                }
+            }
         }
 
 
@@ -108,3 +231,41 @@ class Test_AuctionNetworkModel: AuctionNetworkModelType {
         return Signal(saleViewModel)
     }
 }
+
+
+func test_saleArtworkWithLotNumber(lotNumber: Int, artistName: String, bidCount: Int, highestBidCents: Int) -> SaleArtwork {
+
+    let artistJSON: NSDictionary = [
+        "id": "artist_id",
+        "name": artistName
+    ]
+    let imagesJSON: NSArray = [
+        [
+            "id": "image_1_id",
+            "is_default": true,
+            "image_url": "http://example.com/:version.jpg",
+            "image_versions": ["large"],
+            "aspect_ratio": 1.5
+        ]
+    ]
+    let artworkJSON: NSDictionary = [
+        "id": "artwork_id",
+        "artist": artistJSON,
+        "title": "roly poly",
+        "images": imagesJSON,
+    ]
+    let saleArtwork = SaleArtwork(JSON:
+        [
+            "id": "sale",
+            "artwork": artworkJSON,
+            "lot_number": lotNumber,
+            "bidder_positions_count": bidCount,
+            "low_estimate_cents": 1_000_000_00,
+            "highest_bid": ["id": "bid-id", "amount_cents": highestBidCents],
+            "opening_bid_cents": 100_00
+        ]
+    )
+
+    return saleArtwork
+}
+

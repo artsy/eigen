@@ -47,4 +47,13 @@
     return collectionViewLayout.itemSize.height;
 }
 
+#pragma mark - ARSaleArtworkItemWidthDependentModule
+
+- (void)setWidth:(CGFloat)width
+{
+    ARCollectionViewMasonryLayout *layout = (ARCollectionViewMasonryLayout *)self.moduleLayout;
+    layout.itemSize = CGSizeMake(width, 120);
+    layout.dimensionLength = layout.itemSize.width;
+}
+
 @end

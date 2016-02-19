@@ -85,13 +85,19 @@ class AuctionInformationViewController : UIViewController {
         auctionBeginsLabel.text = self.auctionInformation.startsAt
         stackView.addSubview(auctionBeginsLabel, withTopMargin: "10", sideMargin: "40")
         
-        let faqButtonDescription = [ARNavigationButtonClassKey: ARNavigationButton.self,
-                                    ARNavigationButtonPropertiesKey: ["title": "AUCTIONS FAQ"],
-                                    ARNavigationButtonHandlerKey: toBlock({ [unowned self] (_) in self.showFAQ(true) })]
-        let contactButtonDescription = [ARNavigationButtonClassKey: ARNavigationButton.self,
-                                        ARNavigationButtonPropertiesKey: ["title": "CONTACT"],
-                                        ARNavigationButtonHandlerKey: toBlock({ [unowned self] (_) in self.showContact(true) })]
-        let buttonsViewController = ARNavigationButtonsViewController(buttonDescriptions: [faqButtonDescription, contactButtonDescription])
+        let faqButtonDescription = NavigationButton(
+            buttonClass: ARNavigationButton.self,
+            properties: ["title": "AUCTIONS FAQ"],
+            handler: { [unowned self] _ in self.showFAQ(true)  }
+        )
+
+        let contactButtonDescription = NavigationButton(
+            buttonClass: ARNavigationButton.self,
+            properties: ["title": "CONTACT"],
+            handler: { [unowned self] _ in self.showContact(true)  }
+        )
+
+        let buttonsViewController = ARNavigationButtonsViewController.viewController(withButtons: [faqButtonDescription, contactButtonDescription])
 
         stackView.addViewController(buttonsViewController, toParent: self, withTopMargin: "20", sideMargin: "40")
     }
@@ -110,10 +116,6 @@ class AuctionInformationViewController : UIViewController {
             controller.setSubject("Questions about “\(self.auctionInformation.title)”")
             self.presentViewController(controller, animated: animated, completion: nil)
         }
-    }
-
-    private func toBlock(closure: @convention (block) UIButton -> Void) -> AnyObject {
-        return unsafeBitCast(closure, AnyObject.self)
     }
 }
 
