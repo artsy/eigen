@@ -316,7 +316,10 @@ static const CGFloat ARMenuButtonDimension = 46;
 
 #ifdef DEBUG
     if ([ARAppStatus isRunningTests] == NO) {
-        [self runDeveloperExtras];
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            [self runDeveloperExtras];
+        });
     }
 #endif
 }

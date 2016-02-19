@@ -5,6 +5,17 @@
 #import "ARStandardDateFormatter.h"
 #import "BuyersPremium.h"
 #import "ARSystemTime.h"
+#import "Profile.h"
+#import "Bid.h"
+
+@import ObjectiveSugar;
+
+
+@interface Sale ()
+
+@property (nonatomic, copy) NSDictionary *imageURLs;
+
+@end
 
 
 @implementation Sale
@@ -16,8 +27,15 @@
         ar_keypath(Sale.new, isAuction) : @"is_auction",
         ar_keypath(Sale.new, startDate) : @"start_at",
         ar_keypath(Sale.new, endDate) : @"end_at",
-        ar_keypath(Sale.new, buyersPremium) : @"buyers_premium"
+        ar_keypath(Sale.new, buyersPremium) : @"buyers_premium",
+        ar_keypath(Sale.new, imageURLs) : @"image_urls",
+        ar_keypath(Sale.new, saleDescription) : @"description",
     };
+}
+
++ (NSValueTransformer *)profileJSONTransformer
+{
+    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:Profile.class];
 }
 
 + (NSValueTransformer *)startDateJSONTransformer
@@ -32,7 +50,7 @@
 
 + (NSValueTransformer *)highestBidJSONTransformer
 {
-    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:BuyersPremium.class];
+    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:Bid.class];
 }
 
 - (BOOL)isCurrentlyActive
@@ -40,6 +58,13 @@
     NSDate *now = [ARSystemTime date];
     return (([now compare:self.startDate] != NSOrderedAscending) &&
             ([now compare:self.endDate] != NSOrderedDescending));
+}
+
+- (NSString *)bannerImageURLString
+{
+    NSArray *desiredVersions = @[ @"wide", @"large_rectangle", @"square" ];
+    NSArray *possibleVersions = [desiredVersions intersectionWithArray:[self.imageURLs allKeys]];
+    return [self.imageURLs objectForKey:possibleVersions.firstObject];
 }
 
 - (BOOL)isEqual:(id)object

@@ -6,6 +6,9 @@
 #import "ARSystemTime.h"
 #import "ARLogger.h"
 
+// For its number formatter
+@import Artsy_UILabels;
+
 static NSNumberFormatter *dollarFormatter;
 
 
@@ -37,7 +40,8 @@ static NSNumberFormatter *dollarFormatter;
         ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
         ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
         ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
-        ar_keypath(SaleArtwork.new, lotNumber) : @"lot_number"
+        ar_keypath(SaleArtwork.new, lotNumber) : @"lot_number",
+        ar_keypath(SaleArtwork.new, bidCount) : @"bidder_positions_count"
     };
 }
 
@@ -149,6 +153,24 @@ static NSNumberFormatter *dollarFormatter;
         ret = @"$0";
     }
     return [NSString stringWithFormat:@"Estimate: %@", ret];
+}
+
+- (NSString *)numberOfBidsString
+{
+    NSInteger bids = self.bidCount.integerValue ?: 0;
+    return [NSString stringWithFormat:@"(%@ Bid%@)", @(bids), bids != 1 ? @"s" : @""];
+}
+
+- (NSString *)highestOrStartingBidString
+{
+    NSNumber *number;
+    if (self.bidCount.integerValue == 0) {
+        number = self.openingBidCents;
+    } else {
+        number = self.saleHighestBid.cents;
+    }
+
+    return [NSNumberFormatter currencyStringForDollarCents:number];
 }
 
 - (BOOL)isEqual:(id)object

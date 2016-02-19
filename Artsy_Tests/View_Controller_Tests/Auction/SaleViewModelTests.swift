@@ -11,6 +11,24 @@ class SaleViewModelTests: QuickSpec {
             testSaleArtworkEstimateAt(1500)
         ]
 
+        it("returns correct banner image") {
+            let url = "http://example.com"
+            sale.setValue(["wide": url] as NSDictionary, forKey: "imageURLs")
+
+            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks)
+
+            expect(subject.backgroundImageURL?.absoluteString) == url
+        }
+
+        it("returns correct avatar image") {
+            let url = "http://example.com"
+            sale.profile = try! Profile(dictionary:  ["iconURLs": ["square": url]], error: Void())
+
+            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks)
+
+            expect(subject.profileImageURL?.absoluteString) == url
+        }
+
         describe("pruning items when refining") {
             var subject: SaleViewModel!
 
@@ -19,19 +37,19 @@ class SaleViewModelTests: QuickSpec {
             }
 
             it("includes high and low inclusive") {
-                let refinedArtworks = subject.refinedArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 500, max: 1500)))
+                let refinedArtworks = subject.refinedSaleArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 500, max: 1500)))
 
                 expect(refinedArtworks.count) == 2
             }
 
             it("excludes low low estimates") {
-                let refinedArtworks = subject.refinedArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 1000, max: 1500)))
+                let refinedArtworks = subject.refinedSaleArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 1000, max: 1500)))
 
                 expect(refinedArtworks.count) == 1
             }
 
             it("excludes high low estimates") {
-                let refinedArtworks = subject.refinedArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 500, max: 1000)))
+                let refinedArtworks = subject.refinedSaleArtworks(AuctionRefineSettings(ordering: .LotNumber, range: (min: 500, max: 1000)))
 
                 expect(refinedArtworks.count) == 1
             }

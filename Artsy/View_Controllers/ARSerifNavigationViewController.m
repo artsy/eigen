@@ -2,6 +2,7 @@
 #import "ARFonts.h"
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
+#import "UIImage+ImageFromColor.h"
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import "ARTopMenuViewController.h"
 @import Artsy_UILabels;
@@ -86,7 +87,7 @@
     [super viewWillDisappear:animated];
 
     UIApplication *app = self.sharedApplication;
-    [app setStatusBarHidden:app.statusBarHidden withAnimation:UIStatusBarAnimationNone];
+    [app setStatusBarHidden:self.oldStatusBarHiddenStatus withAnimation:UIStatusBarAnimationNone];
 }
 
 - (void)closeModal
@@ -214,16 +215,9 @@
 
 - (void)hideNavigationBarShadow:(BOOL)hide
 {
-    // Removes a single line from the nav bar.
-
-    for (UIView *view in self.subviews) {
-        for (UIView *view2 in view.subviews) {
-            if ([view2 isKindOfClass:[UIImageView class]] && view2.frame.size.height < 2) {
-                view2.hidden = hide;
-            }
-        }
-    }
+    UIColor *color = hide ? [UIColor whiteColor] : [UIColor artsyMediumGrey];
+    [self setBackgroundImage:[UIImage imageFromColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+    self.shadowImage = [UIImage imageFromColor:color];
 }
-
 
 @end

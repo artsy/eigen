@@ -145,6 +145,29 @@ describe(@"imageURL", ^{
         it(@"uses the specified icon version", ^{
             expect(profile.iconURL).to.equal(@"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/large.png");
         });
+
+        it(@"uses the square avatar icon version", ^{
+            expect(profile.avatarURLString).to.equal(@"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square.png");
+        });
+    });
+
+
+    describe(@"with only a large image", ^{
+        before(^{
+            profile = [Profile modelWithJSON:@{
+                @"id" : @"profile-id",
+                @"default_icon_version" : @"large",
+                @"icon" : @{
+                    @"image_urls" : @{
+                        @"large" : @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/large.png"
+                    }
+                }
+            }];
+        });
+
+        it(@"uses the square avatar icon version", ^{
+            expect(profile.iconURL).to.equal(@"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/large.png");
+        });
     });
 
     describe(@"with no image", ^{

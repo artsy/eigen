@@ -5,7 +5,7 @@ import Artsy_UIFonts
 import FLKAutoLayout
 
 @objc protocol AuctionTitleViewDelegate: class {
-    optional func userDidPressInfo(titleView: AuctionTitleView)
+    func userDidPressInfo(titleView: AuctionTitleView)
     func userDidPressRegister(titleView: AuctionTitleView)
 }
 
@@ -53,7 +53,7 @@ class AuctionTitleView: UIView {
 private typealias UserInteraction = AuctionTitleView
 extension UserInteraction {
     func userDidPressInfo() {
-        delegate?.userDidPressInfo?(self)
+        delegate?.userDidPressInfo(self)
     }
 
     func userDidPressRegister() {

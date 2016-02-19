@@ -21,6 +21,8 @@ typedef NS_ENUM(NSInteger, ARReserveStatus) {
 - (BidderPosition *)userMaxBidderPosition;
 - (BOOL)hasEstimate;
 - (NSString *)estimateString;
+- (NSString *)numberOfBidsString;
+- (NSString *)highestOrStartingBidString;
 
 @property (nonatomic, copy, readonly) NSString *saleArtworkID;
 @property (nonatomic, strong) Sale *auction;
@@ -33,6 +35,7 @@ typedef NS_ENUM(NSInteger, ARReserveStatus) {
 @property (nonatomic, strong) NSNumber *minimumNextBidCents;
 @property (nonatomic, strong) NSNumber *lowEstimateCents;
 @property (nonatomic, strong) NSNumber *highEstimateCents;
+@property (nonatomic, strong) NSNumber *bidCount;
 @property (nonatomic, copy, readonly) NSNumber *lotNumber;
 @property (nonatomic, assign, readonly) ARAuctionState auctionState;
 @property (nonatomic, assign) ARReserveStatus reserveStatus;

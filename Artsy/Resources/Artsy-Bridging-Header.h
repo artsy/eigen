@@ -18,10 +18,15 @@
 
 // Models.
 #import "Sale.h"
+#import "SaleArtwork.h"
+#import "Artwork.h"
+#import "Artist.h"
+#import "Profile.h"
 
 #import "Artwork.h"
 #import "AREmbeddedModelsViewController.h"
 #import "ARArtworkMasonryModule.h"
+#import "ARSaleArtworkItemFlowModule.h"
 
 #import "UIViewController+SimpleChildren.h"
 #import "UIViewController+ARUserActivity.h"

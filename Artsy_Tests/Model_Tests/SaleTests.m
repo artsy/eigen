@@ -48,6 +48,16 @@ describe(@"propertiess", ^{
         auction = [Sale modelWithJSON:@{}];
         expect([auction hasBuyersPremium]).to.beFalsy();
     });
+
+    it(@"returns a banner image", ^{
+        NSString *urlString = @"http://example.com";
+        auction = [Sale modelWithJSON:@{
+            @"image_urls" : @{
+                @"wide" : urlString
+            }
+        }];
+        expect([auction bannerImageURLString]).to.equal(urlString);
+    });
 });
 
 
