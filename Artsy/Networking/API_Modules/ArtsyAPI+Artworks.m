@@ -15,6 +15,7 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
 
+
 @implementation ArtsyAPI (Artworks)
 
 + (void)getArtworkInfo:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure
@@ -38,10 +39,10 @@
     [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
 }
 
-+ (void)getRecommendedArtworksForUser:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void(^)(NSError *error))failure
++ (AFHTTPRequestOperation *)getRecommendedArtworksForUser:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworksForYouRequestWithID:userID page:page];
-    [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
+    return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getArtworksForGene:(Gene *)gene atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure

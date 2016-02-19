@@ -3,6 +3,7 @@
 @class Artwork, Artist, Gene, Fair, PartnerShow;
 @class AFHTTPRequestOperation;
 
+
 @interface ArtsyAPI (Artworks)
 
 + (void)getArtworkInfo:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure;
@@ -11,8 +12,7 @@
 
 + (void)getArtworkFromUserFavorites:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
 
-/// Get 'Artworks For You' for user
-+ (void)getRecommendedArtworksForUser:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void(^)(NSError *error))failure;
++ (AFHTTPRequestOperation *)getRecommendedArtworksForUser:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
 
 + (AFHTTPRequestOperation *)getFairsForArtwork:(Artwork *)artwork success:(void (^)(NSArray *fairs))success failure:(void (^)(NSError *error))failure;
 + (AFHTTPRequestOperation *)getShowsForArtworkID:(NSString *)artworkID inFairID:(NSString *)fairID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure;
