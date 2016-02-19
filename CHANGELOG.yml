@@ -25,6 +25,7 @@ upcoming:
     - Auction listings list layout works - ash
     - Auction listings sort works - ash
     - Auction listings use appropriate layout (list vs grid view) - ash
+    - Tapping on an auction lot takes you to that artwork's view - ash
 
 releases:
   - version: 2.3.5

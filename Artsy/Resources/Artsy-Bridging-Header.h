@@ -12,6 +12,10 @@
 #import "ARSeparatorViews.h"
 #import "ArtsyAPI+CurrentUserFunctions.h"
 #import "ARSaleArtworkItemWidthDependentModule.h"
+#import "ARArtworkSetViewController.h"
+#import "Fair.h" // Required by the switchboard's loadArtworkWithID(inFair:) function, even if we just pass nil in as a fair.
+
+#import "ARSwitchboard+Eigen.h"
 
 // Perhaps in the future we could use https://github.com/orta/ar_dispatch/ for now though eigen does more than this lib
 #import "ARDispatchManager.h"
