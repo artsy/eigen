@@ -19,7 +19,8 @@
 @property (nonatomic, strong) ORStackScrollView *view;
 
 @property (nonatomic, strong, readonly) ARWorksForYouNetworkModel *worksForYouNetworkModel;
-@property (nonatomic, strong) ORStackView *mainStack;
+@property (nonatomic, strong) dispatch_queue_t worksForYouPageQueue;
+@property (nonatomic, assign) BOOL worksForYouPageQueueSuspended;
 
 @end
 
@@ -32,6 +33,23 @@
 {
     self.view = [[ORStackScrollView alloc] init];
 }
+
+- (void)resumePageQueue
+{
+    if (self.worksForYouPageQueue && self.worksForYouPageQueueSuspended) {
+        dispatch_resume(self.worksForYouPageQueue);
+        _worksForYouPageQueueSuspended = NO;
+    }
+}
+
+- (void)suspendPageQueue
+{
+    if (self.worksForYouPageQueue && !self.worksForYouPageQueueSuspended) {
+        dispatch_suspend(self.worksForYouPageQueue);
+        _worksForYouPageQueueSuspended = YES;
+    }
+}
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -47,6 +65,7 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.directionalLockEnabled = YES;
+    self.view.delegate = self;
 
     _worksForYouNetworkModel = [[ARWorksForYouNetworkModel alloc] init];
 
@@ -59,6 +78,13 @@
     titleLabel.text = @"Works by artists you follow";
     titleLabel.textColor = [UIColor blackColor];
     [self.view.stackView addSubview:titleLabel withTopMargin:@"50" sideMargin:@"20"];
+
+
+    if (!self.worksForYouPageQueue) {
+        self.worksForYouPageQueue = dispatch_queue_create("Works For You Pages", NULL);
+    } else {
+        [self resumePageQueue];
+    }
 
     [self getNextItemSet];
 }
@@ -116,10 +142,17 @@
 
 - (void)getNextItemSet
 {
-    // TODO: add the paging queueing here
-    [self.worksForYouNetworkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *notificationItems) {
-        [self addNotificationItems:notificationItems];
-    } failure:nil];
+    if (self.worksForYouNetworkModel.allDownloaded) {
+        return;
+    };
+
+    __weak typeof(self) wself = self;
+    ar_dispatch_on_queue(self.worksForYouPageQueue, ^{
+        [self.worksForYouNetworkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *notificationItems) {
+            __strong typeof (wself) sself = wself;
+            [sself addNotificationItems:notificationItems];
+        } failure:nil];
+    });
 }
 
 
@@ -127,6 +160,15 @@
 {
     // PUT /api/v1/me/notifications
 }
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if ((scrollView.contentSize.height - scrollView.contentOffset.y) < scrollView.bounds.size.height) {
+        [self getNextItemSet];
+    }
+}
+
 
 #pragma mark - AREmbeddedViewController delegate methods
 
