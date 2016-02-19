@@ -22,6 +22,7 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
 
+
 @implementation Artwork {
     // If we give these as properties they can cause
     // chaos with Mantle & State Resotoration.
@@ -67,7 +68,8 @@
         ar_keypath(Artwork.new, published) : @"published",
         ar_keypath(Artwork.new, saleMessage) : @"sale_message",
         ar_keypath(Artwork.new, sold) : @"sold",
-        ar_keypath(Artwork.new, isPriceHidden) : @"price_hidden"
+        ar_keypath(Artwork.new, isPriceHidden) : @"price_hidden",
+        ar_keypath(Artwork.new, publishedAt) : @"published_changed_at"
     };
 }
 

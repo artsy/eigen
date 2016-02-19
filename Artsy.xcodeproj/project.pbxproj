@@ -555,6 +555,8 @@
 		60F63AB71C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F63AB61C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift */; };
 		60F8FFC1197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F8FFC0197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m */; };
 		60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FAEF42179843080031C88B /* ARFavoritesViewController.m */; };
+		833D53C71C75DFA900D63ADB /* ARWorksForYouNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */; };
+		833D53CB1C760B5400D63ADB /* ARWorksForYouNotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */; };
 		6615518D1C75DD47007EE049 /* ARWorksForYouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
@@ -1616,6 +1618,10 @@
 		6615518B1C75DD47007EE049 /* ARWorksForYouViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARWorksForYouViewController.h; path = Artsy/View_Controllers/WorksForYou/ARWorksForYouViewController.h; sourceTree = SOURCE_ROOT; };
 		6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARWorksForYouViewController.m; path = Artsy/View_Controllers/WorksForYou/ARWorksForYouViewController.m; sourceTree = SOURCE_ROOT; };
 		744E9123C8D65C3413D20A6A /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
+		833D53C51C75DFA900D63ADB /* ARWorksForYouNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWorksForYouNetworkModel.h; sourceTree = "<group>"; };
+		833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNetworkModel.m; sourceTree = "<group>"; };
+		833D53C91C760B5400D63ADB /* ARWorksForYouNotificationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWorksForYouNotificationItem.h; sourceTree = "<group>"; };
+		833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNotificationItem.m; sourceTree = "<group>"; };
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		8B326C42C9FD28482DC62431 /* Pods_Artsy_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2003,6 +2009,8 @@
 		342F99296B0CBCEF0CDA9ECA /* Network_Models */ = {
 			isa = PBXGroup;
 			children = (
+				833D53C51C75DFA900D63ADB /* ARWorksForYouNetworkModel.h */,
+				833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */,
 				E614469D195A1CDC00BFB7C3 /* ARArtistFavoritesNetworkModel.h */,
 				E614469E195A1CDC00BFB7C3 /* ARArtistFavoritesNetworkModel.m */,
 				E614469F195A1CDC00BFB7C3 /* ARArtworkFavoritesNetworkModel.h */,
@@ -3421,6 +3429,7 @@
 		608B2F6B1657D1A00046956C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				833D53C81C760B0F00D63ADB /* Works For You */,
 				60B6F14E16639607007C9587 /* API Models */,
 				4953E8341668022E00A09726 /* Protocols */,
 				60903CD9175DE136002AB800 /* Feed Item Models */,
@@ -4179,11 +4188,13 @@
 		6615518A1C75DD1E007EE049 /* WorksForYou */ = {
 			isa = PBXGroup;
 			children = (
+				833D53C91C760B5400D63ADB /* ARWorksForYouNotificationItem.h */,
+				833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */,
 				6615518B1C75DD47007EE049 /* ARWorksForYouViewController.h */,
 				6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */,
 			);
 			name = WorksForYou;
-			path = Favorites;
+			path = WorksForYou;
 			sourceTree = "<group>";
 		};
 		B31BBE0F181EF9F7001C623C /* View Tests */ = {
@@ -4854,6 +4865,7 @@
 				601C317816582BA30013E061 /* ARRouter.m in Sources */,
 				6615518D1C75DD47007EE049 /* ARWorksForYouViewController.m in Sources */,
 				60A224FC17CE040B00233CA1 /* AROnboardingTransition.m in Sources */,
+				833D53CB1C760B5400D63ADB /* ARWorksForYouNotificationItem.m in Sources */,
 				6088B75417D1DBAC00E4BB67 /* ARAnalyticsConstants.m in Sources */,
 				3CF144AE18E460EF00B1A764 /* ArtsyAPI+SystemTime.m in Sources */,
 				83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */,
@@ -5163,6 +5175,7 @@
 				342F92E8397ACCA0D2EFF1CB /* MapPoint.m in Sources */,
 				60C26DEA1BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m in Sources */,
 				342F90FACF8AABA704AF5FC1 /* PartnerShowFairLocation.m in Sources */,
+				833D53C71C75DFA900D63ADB /* ARWorksForYouNetworkModel.m in Sources */,
 				342F9F5789AD65AD09205030 /* MapFeature.m in Sources */,
 				342F97CF4D0BD118671622A0 /* ARFairMapAnnotationView.m in Sources */,
 				342F95DB4E709752C0EC1FE2 /* Map.m in Sources */,
