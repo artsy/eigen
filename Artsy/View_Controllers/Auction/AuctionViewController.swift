@@ -171,9 +171,8 @@ private typealias TitleCallbacks = AuctionViewController
 extension TitleCallbacks: AuctionTitleViewDelegate {
     func userDidPressInfo(titleView: AuctionTitleView) {
 
-        let auctionInformation = AuctionInformation(partnerName: "Sotheby’s", title: "Sotheby’s Boundless Contemporary", description: "On Thursday, November 12, Swiss Institute will host their Annual Benefit Dinner & Auction–the most important fundraising event of the year–with proceeds going directly towards supporting their innovative exhibitions and programs. Since 1986, Swiss Institute has been dedicated to promoting forward-thinking and experimental art.", startsAt: "January 26 6:00PM EST", contact: "TODO Markdown?", FAQEntries: [])
 
-        let auctionInforVC = AuctionInformationViewController(auctionInformation: auctionInformation, saleViewModel: saleViewModel)
+        let auctionInforVC = AuctionInformationViewController(saleViewModel: saleViewModel)
 
         auctionInforVC.titleViewDelegate = self
 

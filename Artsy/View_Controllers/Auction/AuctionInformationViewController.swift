@@ -6,13 +6,6 @@ import Interstellar
 typealias MarkdownString = String
 
 struct AuctionInformation {
-    let partnerName: String
-    let title: String
-    let description: MarkdownString
-    let startsAt: String
-    let contact: MarkdownString
-    let FAQEntries: [FAQEntry]
-    
     struct FAQEntry {
         let name: String
         let slug: String
@@ -27,15 +20,13 @@ struct AuctionInformation {
 }
 
 class AuctionInformationViewController : UIViewController {
-    var auctionInformation: AuctionInformation
     var titleViewDelegate: AuctionTitleViewDelegate?
     var saleViewModel: SaleViewModel
     let FAQEntries: [AuctionInformation.FAQEntry]
 
     var scrollView: ORStackScrollView
 
-    init(auctionInformation: AuctionInformation, saleViewModel: SaleViewModel) {
-        self.auctionInformation = auctionInformation
+    init(saleViewModel: SaleViewModel) {
         self.scrollView = ORStackScrollView()
         self.saleViewModel = saleViewModel;
 
@@ -69,9 +60,11 @@ class AuctionInformationViewController : UIViewController {
 
         let partnerNameThumbnail = UIImageView()
         stackView.addSubview(partnerNameThumbnail, withTopMargin: "20")
-        partnerNameThumbnail.constrainLeadingSpaceToView(view, predicate: "20")
+        partnerNameThumbnail.ar_setImageWithURL(saleViewModel.profileImageURL)
+        partnerNameThumbnail.alignLeadingEdgeWithView(view, predicate: "20")
         partnerNameThumbnail.constrainWidth("50")
-        
+        partnerNameThumbnail.constrainHeight("50")
+
         let auctionTitleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: nil, delegate: titleViewDelegate, fullWidth: true, showAdditionalInformation: false)
         stackView.addSubview(auctionTitleView, withTopMargin: "20", sideMargin: "40")
         
@@ -114,7 +107,7 @@ class AuctionInformationViewController : UIViewController {
             let controller = MFMailComposeViewController()
             controller.mailComposeDelegate = self
             controller.setToRecipients(["inquiries@artsy.net"])
-            controller.setSubject("Questions about “\(auctionInformation.title)”")
+            controller.setSubject("Questions about “\(saleViewModel.displayName)”")
             self.presentViewController(controller, animated: animated, completion: nil)
         }
     }
