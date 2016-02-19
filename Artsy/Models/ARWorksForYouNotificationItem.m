@@ -2,10 +2,12 @@
 #import "Artwork.h"
 #import "Artist.h"
 
+
 @interface ARWorksForYouNotificationItem ()
 @property (nonatomic, strong) Artist *artist;
 @property (nonatomic, strong) NSArray<Artwork *> *artworks;
 @end
+
 
 @implementation ARWorksForYouNotificationItem
 
@@ -21,7 +23,7 @@
     return self;
 }
 
-- (NSString *)numberOfWorksString
+- (NSString *)formattedNumberOfWorks
 {
     NSInteger artworkCount = self.artworks.count;
 
