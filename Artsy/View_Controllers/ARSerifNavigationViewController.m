@@ -2,12 +2,15 @@
 #import "ARFonts.h"
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
+#import "UIImage+ImageFromColor.h"
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import "ARTopMenuViewController.h"
 @import Artsy_UILabels;
 
 
 @interface ARSerifNavigationBar : UINavigationBar
+/// Show/hides the underline from a navigation bar
+- (void)hideNavigationBarShadow:(BOOL)hide;
 @end
 
 
@@ -46,7 +49,7 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
     UIButton *exit = [[ARCircularActionButton alloc] initWithImageName:nil];
-    UIImage *image = [[UIImage imageNamed:@"CloseButtonLargeHighlighted"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [[UIImage imageNamed:@"serif_modal_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     exit.frame = CGRectMake(0, 0, 40, 40);
     exit.layer.cornerRadius = 40 * .5f;
 
@@ -54,7 +57,7 @@
     [exit addTarget:self action:@selector(closeModal) forControlEvents:UIControlEventTouchUpInside];
     self.exitButton = [[UIBarButtonItem alloc] initWithCustomView:exit];
 
-    UIButton *back = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    UIButton *back = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 40)];
     image = [[UIImage imageNamed:@"BackArrow_Highlighted"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [back setImage:image forState:UIControlStateNormal];
     [back addTarget:self action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
@@ -67,11 +70,6 @@
     return self;
 }
 
-- (BOOL)shouldShowInForm
-{
-    return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -80,10 +78,8 @@
     self.oldStatusBarHiddenStatus = app.statusBarHidden;
     [app setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 
-    if (self.shouldShowInForm) {
-        self.view.layer.cornerRadius = 0;
-        self.view.superview.layer.cornerRadius = 0;
-    }
+    self.view.layer.cornerRadius = 0;
+    self.view.superview.layer.cornerRadius = 0;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -91,12 +87,12 @@
     [super viewWillDisappear:animated];
 
     UIApplication *app = self.sharedApplication;
-    [app setStatusBarHidden:app.statusBarHidden withAnimation:UIStatusBarAnimationNone];
+    [app setStatusBarHidden:self.oldStatusBarHiddenStatus withAnimation:UIStatusBarAnimationNone];
 }
 
 - (void)closeModal
 {
-    [self.presentingViewController dismissViewControllerAnimated:self completion:nil];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -105,8 +101,11 @@
     nav.hidesBackButton = YES;
     nav.rightBarButtonItem = self.exitButton;
 
+    ARSerifNavigationBar *navBar = (id)self.navigationBar;
+
     if (navigationController.viewControllers.count > 1) {
         nav.leftBarButtonItem = self.backButton;
+        [navBar hideNavigationBarShadow:false];
 
     } else {
         // On the root view, we want a left aligned title.
@@ -121,13 +120,15 @@
         static CGFloat xOffset = 4;
         CGRect labelFrame = label.bounds;
         label.frame = CGRectOffset(labelFrame, xOffset, 0);
-        UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){ CGPointZero, { CGRectGetWidth(labelFrame) + xOffset, CGRectGetHeight(labelFrame) } }];
+        UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {CGRectGetWidth(labelFrame) + xOffset, CGRectGetHeight(labelFrame)}}];
         [titleMarginWrapper addSubview:label];
 
         nav.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:titleMarginWrapper];
 
         // Just a dummy view to ensure that the navigation bar doesn’t create a new title view.
         nav.titleView = [UIView new];
+
+        [navBar hideNavigationBarShadow:true];
     }
 }
 
@@ -143,17 +144,17 @@
 
 - (UIModalPresentationStyle)modalPresentationStyle
 {
-    return self.shouldShowInForm ? UIModalPresentationFormSheet : UIModalPresentationFullScreen;
+    return UIModalPresentationFormSheet;
 }
 
-- (UIApplication *)sharedApp
+- (UIApplication *)sharedApplication
 {
     return _sharedApplication ?: [UIApplication sharedApplication];
 }
 
 - (BOOL)shouldAutorotate
 {
-    return self.shouldShowInForm;
+    return [self traitDependentAutorotateSupport];
 }
 
 @end
@@ -210,6 +211,13 @@
     CGRect newFrame = viewToCenter.frame;
     newFrame.origin.y = roundf(barMidpoint - viewMidpoint);
     viewToCenter.frame = newFrame;
+}
+
+- (void)hideNavigationBarShadow:(BOOL)hide
+{
+    UIColor *color = hide ? [UIColor whiteColor] : [UIColor artsyMediumGrey];
+    [self setBackgroundImage:[UIImage imageFromColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+    self.shadowImage = [UIImage imageFromColor:color];
 }
 
 @end

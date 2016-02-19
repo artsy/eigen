@@ -8,6 +8,7 @@ typedef NS_ENUM(NSInteger, ARTrialContext) {
     ARTrialContextRepresentativeInquiry,
     ARTrialContextPeriodical,
     ARTrialContextAuctionBid,
+    ARTrialContextAuctionRegistration,
     ARTrialContextFavoriteProfile,
     ARTrialContextArtworkOrder,
     ARTrialContextFairGuide,

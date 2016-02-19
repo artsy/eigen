@@ -376,6 +376,10 @@
 		605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */; };
 		605002E917D9F5DC00C090B8 /* SmallMoreVerticalArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */; };
 		605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */; };
+		605191931C7525AF0002E11A /* serif_modal_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605191921C7525AF0002E11A /* serif_modal_close@2x.png */; };
+		605191951C7525D50002E11A /* navigation_more_arrow_horizontal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605191941C7525D50002E11A /* navigation_more_arrow_horizontal@2x.png */; };
+		605191971C7526200002E11A /* navigation_more_arrow_vertical@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605191961C7526200002E11A /* navigation_more_arrow_vertical@2x.png */; };
+		6051919A1C7760500002E11A /* ArtsyAPI+Pages.m in Sources */ = {isa = PBXBuildFile; fileRef = 605191991C7760500002E11A /* ArtsyAPI+Pages.m */; };
 		605B11B217CFD78400334196 /* AROnboardingWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B11B117CFD78400334196 /* AROnboardingWebViewController.m */; };
 		605B11B517CFE7CC00334196 /* ARTermsAndConditionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */; };
 		60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C661A8BB9AE00A45247 /* BuyersPremium.m */; };
@@ -555,9 +559,9 @@
 		60F63AB71C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F63AB61C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift */; };
 		60F8FFC1197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F8FFC0197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m */; };
 		60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FAEF42179843080031C88B /* ARFavoritesViewController.m */; };
+		6615518D1C75DD47007EE049 /* ARWorksForYouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */; };
 		833D53C71C75DFA900D63ADB /* ARWorksForYouNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */; };
 		833D53CB1C760B5400D63ADB /* ARWorksForYouNotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */; };
-		6615518D1C75DD47007EE049 /* ARWorksForYouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
@@ -1311,6 +1315,11 @@
 		605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Artwork_Icon_Share@2x.png"; sourceTree = "<group>"; };
 		605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallMoreVerticalArrow.png; sourceTree = "<group>"; };
 		605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SmallMoreVerticalArrow@2x.png"; sourceTree = "<group>"; };
+		605191921C7525AF0002E11A /* serif_modal_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "serif_modal_close@2x.png"; sourceTree = "<group>"; };
+		605191941C7525D50002E11A /* navigation_more_arrow_horizontal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigation_more_arrow_horizontal@2x.png"; sourceTree = "<group>"; };
+		605191961C7526200002E11A /* navigation_more_arrow_vertical@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigation_more_arrow_vertical@2x.png"; sourceTree = "<group>"; };
+		605191981C7760500002E11A /* ArtsyAPI+Pages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Pages.h"; sourceTree = "<group>"; };
+		605191991C7760500002E11A /* ArtsyAPI+Pages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Pages.m"; sourceTree = "<group>"; };
 		60567B2A167F8F9E009D205A /* ARFeedItems.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARFeedItems.h; sourceTree = "<group>"; };
 		605B11B017CFD78400334196 /* AROnboardingWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingWebViewController.h; sourceTree = "<group>"; };
 		605B11B117CFD78400334196 /* AROnboardingWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingWebViewController.m; sourceTree = "<group>"; };
@@ -3297,6 +3306,16 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		605191911C7525A50002E11A /* Serif Nav */ = {
+			isa = PBXGroup;
+			children = (
+				605191961C7526200002E11A /* navigation_more_arrow_vertical@2x.png */,
+				605191921C7525AF0002E11A /* serif_modal_close@2x.png */,
+				605191941C7525D50002E11A /* navigation_more_arrow_horizontal@2x.png */,
+			);
+			name = "Serif Nav";
+			sourceTree = "<group>";
+		};
 		606B6E3A1ADC14A400A12E08 /* Network Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -3429,7 +3448,6 @@
 		608B2F6B1657D1A00046956C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				833D53C81C760B0F00D63ADB /* Works For You */,
 				60B6F14E16639607007C9587 /* API Models */,
 				4953E8341668022E00A09726 /* Protocols */,
 				60903CD9175DE136002AB800 /* Feed Item Models */,
@@ -3487,6 +3505,7 @@
 		608B703017D4A10F0088A56C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				605191911C7525A50002E11A /* Serif Nav */,
 				60C1C31A1C5FB00A00EC98EE /* Auctions */,
 				60C1C3191C5FAF6B00EC98EE /* Modal */,
 				60E719FF1B4C60A0008948FA /* Launch */,
@@ -3941,6 +3960,8 @@
 				3CB37D96192246B500089A1D /* ArtsyAPI+ErrorHandlers.m */,
 				608AABDA1B3884C600855A1C /* ARKeychainable.h */,
 				608AABDB1B3884C600855A1C /* ARKeychainable.m */,
+				605191981C7760500002E11A /* ArtsyAPI+Pages.h */,
+				605191991C7760500002E11A /* ArtsyAPI+Pages.m */,
 			);
 			name = "API Modules";
 			path = API_Modules;
@@ -4193,7 +4214,6 @@
 				6615518B1C75DD47007EE049 /* ARWorksForYouViewController.h */,
 				6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */,
 			);
-			name = WorksForYou;
 			path = WorksForYou;
 			sourceTree = "<group>";
 		};
@@ -4607,6 +4627,7 @@
 				608B708C17D4A1C80088A56C /* SidebarButtonHighlightBG@2x.png in Resources */,
 				3C4AE98819094DAA009C0E8B /* MapAnnotation_Transport@2x.png in Resources */,
 				5E17B1991C5965CC00CE6E98 /* Thumb@2x.png in Resources */,
+				605191931C7525AF0002E11A /* serif_modal_close@2x.png in Resources */,
 				E6543CDB18AD795E00A6B9AF /* Parallax_Overlay_Bottom@2x.png in Resources */,
 				5E6621DD19768F750064FC52 /* MapIcon@2x.png in Resources */,
 				E60673B319BE4E8C00EF05EB /* full_logo_white_small@2x.png in Resources */,
@@ -4629,6 +4650,8 @@
 				3C4AE98919094DAA009C0E8B /* MapAnnotation_Default@2x.png in Resources */,
 				3C4AE99519094F96009C0E8B /* ViewInRoom_Man_3@2x.png in Resources */,
 				608B706B17D4A1C80088A56C /* Heart_Black@2x.png in Resources */,
+				605191971C7526200002E11A /* navigation_more_arrow_vertical@2x.png in Resources */,
+				605191951C7525D50002E11A /* navigation_more_arrow_horizontal@2x.png in Resources */,
 				3C4AE96719094969009C0E8B /* SearchIcon_HeavyGrey@2x.png in Resources */,
 				5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */,
 				3C4AE96B19094969009C0E8B /* SearchThumb_LightGrey@2x.png in Resources */,
@@ -4973,6 +4996,7 @@
 				3CF0774618DC6585009E18E4 /* ARKonamiKeyboardView.m in Sources */,
 				60838EB51773547700869F6E /* ARViewInRoomTransition.m in Sources */,
 				5ECFA8E81907E26E000B92EA /* ARSwitchView+Artist.m in Sources */,
+				6051919A1C7760500002E11A /* ArtsyAPI+Pages.m in Sources */,
 				601F029817F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m in Sources */,
 				E619969C19B9099400DB273C /* UIScrollView+HitTest.m in Sources */,
 				B3DDE9C418313CFF0012819F /* ARArtworkPriceRowView.m in Sources */,

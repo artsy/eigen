@@ -23,19 +23,20 @@ tmtags
 tmtagsHistory
 config/releasenotes.txt
 .bundle
-/Classes/View\ Controllers/ARTopMenuViewController+DeveloperExtras.m
 Podfile.local
 chairs/
 .github
 Artsy.xcodeproj/project.xcworkspace/xcshareddata/
 vendor/
-Artsy.app.dSYM.zip
-Artsy.ipa
-fastlane/report.xml
-fastlane/Preview.html
 compiler_commands.json
 
 # Artsy Development APN certificate
 net.artsy.artsy.dev.pem
 .clang-format
+
+# Fastlane
 Preview.html
+fastlane/report.xml
+fastlane/Preview.html
+
+Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m

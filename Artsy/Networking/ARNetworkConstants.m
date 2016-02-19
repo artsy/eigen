@@ -111,3 +111,4 @@ NSString *const ARShowsFeaturingArtistsURLFormat = @"/api/v1/fair/%@/shows";
 NSString *const ARSystemTimeURL = @"/api/v1/system/time";
 
 NSString *const ARCreatePendingOrderURL = @"/api/v1/me/order/pending/items";
+NSString *const ARPageURLFormat = @"/api/v1/page/%@";

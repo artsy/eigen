@@ -101,3 +101,4 @@ extern NSString *const ARSystemTimeURL;
 extern NSString *const ARSuggestedHomepageArtworks;
 
 extern NSString *const ARCreatePendingOrderURL;
+extern NSString *const ARPageURLFormat;

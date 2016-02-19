@@ -89,6 +89,8 @@ static ARTrialController *instance;
             return @"";
         case ARTrialContextAuctionBid:
             return @"auction_bid";
+        case ARTrialContextAuctionRegistration:
+            return @"auction_registration";
         case ARTrialContextFavoriteProfile:
             return @"favoriting_profile";
         case ARTrialContextArtworkOrder:

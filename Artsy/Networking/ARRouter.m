@@ -446,11 +446,11 @@ static NSSet *artsyHosts = nil;
 + (NSURLRequest *)newArtworksForYouRequestWithID:(NSString *)userID page:(NSInteger)page
 {
     NSDictionary *params = @{
-     @"since" : @30,
-     @"page" : @(page),
-     @"sort" : @"published_at",
-     @"type" : @"ArtworkPublished",
-     @"user_id" : userID ?: @"",
+        @"since" : @30,
+        @"page" : @(page),
+        @"sort" : @"published_at",
+        @"type" : @"ArtworkPublished",
+        @"user_id" : userID ?: @"",
     };
 
     return [self requestWithMethod:@"GET" path:ARNotificationsURL parameters:params];
@@ -1031,5 +1031,10 @@ static NSSet *artsyHosts = nil;
     return [NSURLRequest requestWithURL:pageURL];
 }
 
++ (NSURLRequest *)newRequestForPageContent:(NSString *)slug
+{
+    NSString *url = [NSString stringWithFormat:ARPageURLFormat, slug];
+    return [self requestWithMethod:@"GET" path:url parameters:nil];
+}
 
 @end
