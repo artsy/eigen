@@ -86,6 +86,7 @@
         [self resumePageQueue];
     }
 
+    // this should probably be fancier
     [self getNextItemSet];
 }
 
@@ -159,6 +160,7 @@
 - (void)markNotificationsAsRead
 {
     // PUT /api/v1/me/notifications
+    // will go in network model
 }
 
 
