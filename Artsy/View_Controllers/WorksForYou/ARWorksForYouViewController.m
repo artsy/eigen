@@ -14,13 +14,11 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 
-@interface ARWorksForYouViewController ()
+@interface ARWorksForYouViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) ORStackScrollView *view;
 
 @property (nonatomic, strong, readonly) ARWorksForYouNetworkModel *worksForYouNetworkModel;
-@property (nonatomic, strong) dispatch_queue_t worksForYouPageQueue;
-@property (nonatomic, assign) BOOL worksForYouPageQueueSuspended;
 
 @end
 
@@ -33,23 +31,6 @@
 {
     self.view = [[ORStackScrollView alloc] init];
 }
-
-- (void)resumePageQueue
-{
-    if (self.worksForYouPageQueue && self.worksForYouPageQueueSuspended) {
-        dispatch_resume(self.worksForYouPageQueue);
-        _worksForYouPageQueueSuspended = NO;
-    }
-}
-
-- (void)suspendPageQueue
-{
-    if (self.worksForYouPageQueue && !self.worksForYouPageQueueSuspended) {
-        dispatch_suspend(self.worksForYouPageQueue);
-        _worksForYouPageQueueSuspended = YES;
-    }
-}
-
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -80,13 +61,6 @@
     titleLabel.text = @"Works by artists you follow";
     titleLabel.textColor = [UIColor blackColor];
     [self.view.stackView addSubview:titleLabel withTopMargin:@"50" sideMargin:@"20"];
-
-
-    if (!self.worksForYouPageQueue) {
-        self.worksForYouPageQueue = dispatch_queue_create("Works For You Pages", NULL);
-    } else {
-        [self resumePageQueue];
-    }
 
     // this should probably be fancier
     [self getNextItemSet];
@@ -150,12 +124,10 @@
     };
 
     __weak typeof(self) wself = self;
-    ar_dispatch_on_queue(self.worksForYouPageQueue, ^{
-        [self.worksForYouNetworkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *notificationItems) {
-            __strong typeof (wself) sself = wself;
-            [sself addNotificationItems:notificationItems];
-        } failure:nil];
-    });
+    [self.worksForYouNetworkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *notificationItems) {
+        __strong typeof (wself) sself = wself;
+        [sself addNotificationItems:notificationItems];
+    } failure:nil];
 }
 
 

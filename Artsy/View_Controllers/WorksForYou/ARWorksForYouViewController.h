@@ -2,6 +2,6 @@
 #import "AREmbeddedModelsViewController.h"
 
 
-@interface ARWorksForYouViewController : UIViewController <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate>
+@interface ARWorksForYouViewController : UIViewController
 
 @end
