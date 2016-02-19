@@ -443,6 +443,19 @@ static NSSet *artsyHosts = nil;
     return [self requestWithMethod:@"GET" path:url parameters:params];
 }
 
++ (NSURLRequest *)newArtworksForYouRequestWithID:(NSString *)userID page:(NSInteger)page
+{
+    NSDictionary *params = @{
+        @"since" : @30,
+        @"page" : @(page),
+        @"sort" : @"published_at",
+        @"type" : @"ArtworkPublished",
+        @"user_id" : userID ?: @"",
+    };
+
+    return [self requestWithMethod:@"GET" path:ARNotificationsURL parameters:params];
+}
+
 + (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents
 {
     NSDictionary *params = @{ @"sale_id" : saleID,

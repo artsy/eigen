@@ -14,6 +14,10 @@ extension PublicComputedProperties {
         return saleArtwork.artwork.defaultImage.urlForThumbnailImage()
     }
 
+    var aspectRatio: CGFloat {
+        return saleArtwork.artwork.defaultImage.aspectRatio
+    }
+
     var artistName: String {
         return saleArtwork.artwork.artist.name
     }
@@ -28,6 +32,10 @@ extension PublicComputedProperties {
 
     var numberOfBids: String {
         return saleArtwork.numberOfBidsString()
+    }
+
+    var artworkID: String {
+        return saleArtwork.artwork.artworkID
     }
 
     func currentOrStartingBidWithNumberOfBids(includeNumberOfBids: Bool) -> String {

@@ -15,7 +15,9 @@ class AuctionViewController: UIViewController {
     /// Variable for storing lazily-computed default refine settings. 
     /// Should not be accessed directly, call defaultRefineSettings() instead.
     private var _defaultRefineSettings: AuctionRefineSettings?
+
     private var saleArtworksViewController: ARModelInfiniteScrollViewController!
+    private var activeModule: ARSaleArtworkItemWidthDependentModule?
 
     /// Current refine settings.
     /// Our refine settings are (by default) the defaultRefineSettings().
@@ -85,7 +87,15 @@ class AuctionViewController: UIViewController {
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
 
-        displayCurrentItems(size.width)
+        activeModule?.setWidth(size.width - sideSpacing)
+    }
+
+    override func shouldAutorotate() -> Bool {
+        return traitDependentAutorotateSupport
+    }
+
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return traitDependentSupportedInterfaceOrientations
     }
 
     enum ViewTags: Int {
@@ -153,14 +163,22 @@ extension AuctionViewController {
         return compactSize ? 40 : 80
     }
 
-    // viewWidth allows callers to define widths that our view _will_ become. Use nil to fallback to current view's width.
-    func displayCurrentItems(viewWidth: CGFloat? = nil) {
+    /// Displays the current items, sorted/filtered through the current refine settings.
+    func displayCurrentItems() {
         let items = saleViewModel.refinedSaleArtworks(refineSettings)
 
-        let viewWidth = viewWidth ?? self.view.bounds.size.width
+        let viewWidth = self.view.bounds.size.width
 
-        // TODO: Module depends on current refineSettings
-        saleArtworksViewController.activeModule = ARSaleArtworkItemFlowModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
+        let newModule: ARModelCollectionViewModule
+        switch refineSettings.ordering.layoutType {
+        case .Grid:
+            newModule = ARSaleArtworkItemMasonryModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
+        case .List:
+            newModule = ARSaleArtworkItemFlowModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
+        }
+
+        saleArtworksViewController.activeModule = newModule
+        activeModule = newModule as? ARSaleArtworkItemWidthDependentModule // Conditional cast always succeeds, but the compiler will complain otherwise.
 
         saleArtworksViewController.items = items
         stickyHeader.subtitleLabel.text = saleViewModel.subtitleForRefineSettings(refineSettings, defaultRefineSettings: defaultRefineSettings())
@@ -213,7 +231,11 @@ extension RefineSettings: AuctionRefineViewControllerDelegate {
 private typealias EmbeddedModelCallbacks = AuctionViewController
 extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
-        // TODO
+        let item = saleArtworksViewController.items[Int(index)] as? SaleArtworkViewModel
+        guard let artworkID = item?.artworkID else { return }
+
+        let viewController = ARSwitchBoard.sharedInstance().loadArtworkWithID(artworkID, inFair: nil)
+        navigationController?.pushViewController(viewController, animated: allowAnimations)
     }
 
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {

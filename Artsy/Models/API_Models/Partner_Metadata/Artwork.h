@@ -87,6 +87,7 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 @property (nonatomic, copy) NSString *blurb;
 
 @property (nonatomic, strong) NSDate *updatedAt;
+@property (nonatomic, strong) NSDate *publishedAt;
 
 @property (nonatomic, strong) Image *defaultImage;
 

@@ -11,6 +11,7 @@ upcoming:
     - Updated Danger to use new org - orta
     - Adds unit tests for auction view controller - ash
     - Dev Extras are only ever called once - ash
+    - New navigation button abstraction for Swift - ash
   notes:
     - Users may now refine sale artworks on native auction view by their low estimates - ash
     - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
@@ -23,6 +24,8 @@ upcoming:
     - Show auction information, such as a description, FAQ, and contact - alloy
     - Auction listings list layout works - ash
     - Auction listings sort works - ash
+    - Auction listings use appropriate layout (list vs grid view) - ash
+    - Tapping on an auction lot takes you to that artwork's view - ash
 
 releases:
   - version: 2.3.5

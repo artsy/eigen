@@ -31,6 +31,19 @@ enum AuctionOrderingSwitchValue: String {
         }
     }
 
+    enum LayoutType {
+        case Grid, List
+    }
+}
+
+extension AuctionOrderingSwitchValue {
+    var layoutType: LayoutType {
+        switch self {
+        case LotNumber: return .Grid
+        default: return .List
+        }
+    }
+
     static func fromInt(value: Int) -> AuctionOrderingSwitchValue {
         guard value < allSwitchValues().count else { return .LotNumber } // Lot number is a safe default
         return allSwitchValues()[value]
