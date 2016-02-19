@@ -62,6 +62,13 @@
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "TZ"
+            value = "Europe/London"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -94,11 +101,6 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "ARAutoLayoutDebuggingEnabled"
-            value = "1"
-            isEnabled = "NO">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "ARAutoLayoutDebuggingLog"
             value = "1"
             isEnabled = "NO">
          </EnvironmentVariable>
