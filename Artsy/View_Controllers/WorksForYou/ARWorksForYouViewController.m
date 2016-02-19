@@ -65,6 +65,8 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.directionalLockEnabled = YES;
+    self.view.alwaysBounceHorizontal = NO;
+    self.view.showsHorizontalScrollIndicator = NO;
     self.view.delegate = self;
 
     _worksForYouNetworkModel = [[ARWorksForYouNetworkModel alloc] init];
