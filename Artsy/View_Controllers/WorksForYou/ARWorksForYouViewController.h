@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
+#import "AREmbeddedModelsViewController.h"
 
 
-@interface ARWorksForYouViewController : UIViewController
+@interface ARWorksForYouViewController : UIViewController <AREmbeddedModelsViewControllerDelegate>
 
 @end
