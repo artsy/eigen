@@ -31,7 +31,7 @@ PODS:
   - AFOAuth1Client (0.4.0):
     - AFNetworking (~> 2.5)
   - ALPValidator (0.0.3)
-  - Analytics (3.0.3)
+  - Analytics (3.0.7)
   - ARAnalytics/Adjust (3.9.0):
     - Adjust
     - ARAnalytics/CoreIOS
@@ -151,7 +151,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.5)
   - AFOAuth1Client (from `https://github.com/lxcid/AFOAuth1Client.git`, tag `0.4.0`)
   - ALPValidator
-  - Analytics (from `https://github.com/segmentio/analytics-ios.git`)
+  - Analytics
   - ARAnalytics/Adjust (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARAnalytics/DSL (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`, commit
@@ -217,8 +217,6 @@ EXTERNAL SOURCES:
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
-  Analytics:
-    :git: https://github.com/segmentio/analytics-ios.git
   ARAnalytics:
     :commit: 6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e
     :git: https://github.com/orta/ARAnalytics.git
@@ -262,9 +260,6 @@ CHECKOUT OPTIONS:
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
-  Analytics:
-    :commit: 12caa5c788ffaa1d3ccf16eb98005ccc0e78d0fe
-    :git: https://github.com/segmentio/analytics-ios.git
   ARAnalytics:
     :commit: 6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e
     :git: https://github.com/orta/ARAnalytics.git
@@ -315,7 +310,7 @@ SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
-  Analytics: 7a5f10f6a2dd313d650f5db2642d9f967da3c693
+  Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
   ARAnalytics: ab25a3d8c6c950f69f25100de470614b6a7d6d9b
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
