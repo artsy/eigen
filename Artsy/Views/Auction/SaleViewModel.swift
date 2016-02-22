@@ -76,6 +76,15 @@ extension SaleViewModel {
     }
 }
 
+/// Allows us to support spotlight indexing
+
+extension SaleViewModel {
+    func registerSaleAsActiveActivity(viewController: UIViewController?) {
+        viewController?.setAr_userActivityEntity(sale)
+    }
+}
+
+
 extension SaleArtwork: AuctionOrderable {
     var bids: Int {
         return bidCount as Int

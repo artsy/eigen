@@ -68,9 +68,15 @@ class AuctionViewController: UIViewController {
         
         self.networkModel.fetch().next { [weak self] saleViewModel in
             self?.setupForSale(saleViewModel)
+            saleViewModel.registerSaleAsActiveActivity(self)
         }.error { error in
             // TODO: Error-handling somehow
         }
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        userActivity?.invalidate()
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -109,7 +115,6 @@ class AuctionViewController: UIViewController {
 extension AuctionViewController {
 
     func setupForSale(saleViewModel: SaleViewModel) {
-        // TODO: Sale is currently private on the SaleViewModel, also Sale will need to be extended to conform to ARSpotlightMetadataProvider
         // artworksViewController.spotlightEntity = saleViewModel.sale
 
         self.saleViewModel = saleViewModel
@@ -137,7 +142,7 @@ extension AuctionViewController {
 
         displayCurrentItems()
 
-        self.ar_removeIndeterminateLoadingIndicatorAnimated(allowAnimations)
+        ar_removeIndeterminateLoadingIndicatorAnimated(allowAnimations)
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {
