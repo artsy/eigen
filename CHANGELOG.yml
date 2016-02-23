@@ -8,6 +8,7 @@ upcoming:
     - Additional work on the auction title view - ash
     - Removes rotation support on refine auction listings view for iPhone - ash
   notes:
+    - Support breaking out of the router sandboxing when there's a link with ?eigen_escape_sandbox' - orta
     - Users may now refine sale artworks on native auction view by their low estimates - ash
     - Show auction information, such as a description, FAQ, and contact - alloy
     - Auction listings list layout works - ash

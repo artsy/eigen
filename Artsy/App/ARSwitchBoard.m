@@ -40,6 +40,9 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 
+NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
+
+
 @interface ARSwitchBoard ()
 
 @property (nonatomic, strong) JLRoutes *routes;
@@ -267,13 +270,15 @@
         return [self routeInternalURL:fixedURL fair:fair];
 
     } else if ([ARRouter isWebURL:url]) {
-        /// Is is a webpage we could open in webkit?
-        if (ARIsRunningInDemoMode) {
+        /// Is is a webpage we could open in webkit?, or need to break out to safari (see PR #1195)
+        if (ARIsRunningInDemoMode || [url.query containsString:AREscapeSandboxQueryString]) {
             [[UIApplication sharedApplication] openURL:url];
+            return nil;
         } else {
             return [[ARExternalWebBrowserViewController alloc] initWithURL:url];
         }
     }
+
     /// It's probably an app link, offer to jump out
     [self openURLInExternalService:url];
     return nil;

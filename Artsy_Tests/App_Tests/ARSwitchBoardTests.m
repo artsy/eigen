@@ -118,7 +118,16 @@ describe(@"ARSwitchboard", ^{
                 [switchboard loadURL:internalURL];
                 [switchboardMock verify];
             });
+        });
 
+        it(@"handles breaking out of the eigen routing sandbox when needed", ^{
+            id sharedAppMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+            [[sharedAppMock expect] openURL:OCMOCK_ANY];
+
+            NSURL *internalURL = [[NSURL alloc] initWithString:@"http://mysitethatmustbeopenedinsafari.com?eigen_escape_sandbox=true"];
+            [switchboard loadURL:internalURL];
+            
+            [sharedAppMock verify];
         });
 
         describe(@"with applewebdata urls", ^{
