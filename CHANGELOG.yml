@@ -7,6 +7,7 @@ upcoming:
     - Made the searchbar larger in fair views on iPhone - maxim
     - Additional work on the auction title view - ash
     - Removes rotation support on refine auction listings view for iPhone - ash
+    - Developers can choose to have a custom url for their staging environment - orta
   notes:
     - Users may now refine sale artworks on native auction view by their low estimates - ash
     - Show auction information, such as a description, FAQ, and contact - alloy

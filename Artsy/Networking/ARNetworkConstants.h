@@ -3,7 +3,6 @@ extern NSString *const ARBaseMobileWebURL;
 extern NSString *const ARBaseApiURL;
 extern NSString *const ARStagingBaseWebURL;
 extern NSString *const ARStagingBaseMobileWebURL;
-extern NSString *const ARStagingBaseApiURL;
 
 extern NSString *const ARPersonalizePath;
 

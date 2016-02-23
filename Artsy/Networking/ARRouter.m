@@ -48,7 +48,8 @@ static NSSet *artsyHosts = nil;
 + (NSURL *)baseApiURL
 {
     if ([AROptions boolForOption:ARUseStagingDefault]) {
-        return [NSURL URLWithString:ARStagingBaseApiURL];
+        NSString *stagingBaseAPI = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingAPIURLDefault];
+        return [NSURL URLWithString:stagingBaseAPI];
     } else {
         return [NSURL URLWithString:ARBaseApiURL];
     }

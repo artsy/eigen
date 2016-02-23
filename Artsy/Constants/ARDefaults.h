@@ -1,5 +1,6 @@
 extern NSString *const ARUserIdentifierDefault;
 extern NSString *const ARUseStagingDefault;
+extern NSString *const ARStagingAPIURLDefault;
 
 extern NSString *const AROAuthTokenDefault;
 extern NSString *const AROAuthTokenExpiryDateDefault;

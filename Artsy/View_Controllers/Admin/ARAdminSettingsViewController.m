@@ -61,6 +61,9 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     ARSectionData *vcrSection = [self createVCRSection];
     [tableViewData addSectionData:vcrSection];
 
+    ARSectionData *developerSection = [self createDeveloperSection];
+    [tableViewData addSectionData:developerSection];
+
     self.tableViewData = tableViewData;
     self.tableView.contentInset = UIEdgeInsetsMake(88, 0, 0, 0);
 }
@@ -183,6 +186,45 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     }
     return labsSectionData;
 }
+
+- (ARSectionData *)createDeveloperSection
+{
+    ARSectionData *labsSectionData = [[ARSectionData alloc] init];
+    labsSectionData.headerTitle = @"Developer";
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *stagingAddress = [defaults stringForKey:ARStagingAPIURLDefault];
+
+    ARCellData *stagingURL = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
+    [stagingURL setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = [NSString stringWithFormat:@"Staging URL: %@", stagingAddress];
+    }];
+
+    [stagingURL setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Change URL" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+        [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            textField.text = stagingAddress;
+        }];
+
+        [controller addAction:[UIAlertAction actionWithTitle:@"Save + Log out" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            UITextField *newStagingTextField = [controller textFields].firstObject;
+            [defaults setObject:newStagingTextField.text forKey:ARStagingAPIURLDefault];
+            [defaults synchronize];
+            exit(0);
+        }]];
+
+        [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        }]];
+        
+        [self presentViewController:controller animated:YES completion:nil];
+    }];
+
+    [labsSectionData addCellData:stagingURL];
+
+    return labsSectionData;
+}
+
 
 - (ARSectionData *)createVCRSection
 {
