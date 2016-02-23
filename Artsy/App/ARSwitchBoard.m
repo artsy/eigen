@@ -44,6 +44,7 @@
 
 @property (nonatomic, strong) JLRoutes *routes;
 @property (nonatomic, strong) Aerodramus *echo;
+@property (nonatomic, strong) UIApplication *sharedApplication;
 
 @end
 
@@ -268,12 +269,14 @@
 
     } else if ([ARRouter isWebURL:url]) {
         /// Is is a webpage we could open in webkit?
-        if (ARIsRunningInDemoMode) {
-            [[UIApplication sharedApplication] openURL:url];
+        if (ARIsRunningInDemoMode || [url.query containsString:@"eigen_escape_sandbox"]) {
+            [self.sharedApplication openURL:url];
+            return nil;
         } else {
             return [[ARExternalWebBrowserViewController alloc] initWithURL:url];
         }
     }
+
     /// It's probably an app link, offer to jump out
     [self openURLInExternalService:url];
     return nil;
@@ -333,6 +336,13 @@
         return [NSURL URLWithString:newURLString];
     }
     return url;
+}
+
+#pragma mark DI -
+
+- (UIApplication *)sharedApplication
+{
+    return _sharedApplication ?: [UIApplication sharedApplication];
 }
 
 @end

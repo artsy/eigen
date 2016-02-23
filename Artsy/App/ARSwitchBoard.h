@@ -44,10 +44,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIViewController *)loadPath:(NSString *)path fair:(Fair *_Nullable)fair;
 
 /// Send an URL through the router
-- (UIViewController *)loadURL:(NSURL *)url;
+- (UIViewController *_Nullable)loadURL:(NSURL *)url;
 
 /// Send an URL through the router with an optional fair object
-- (UIViewController *)loadURL:(NSURL *)url fair:(Fair *_Nullable)fair;
+- (UIViewController *_Nullable)loadURL:(NSURL *)url fair:(Fair *_Nullable)fair;
 
 /// Can the Switchboard handle a URL?
 - (BOOL)canRouteURL:(NSURL *)url;
