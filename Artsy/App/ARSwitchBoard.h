@@ -23,10 +23,10 @@
 
 /**
  The Switchboard is the internal API for loading different native views
-  it does this mostly by using either an internal Sinatra like-router
+  it does this mostly by using either an internal Sinatra like-router.
+ 
+ Note: You cannot assume that the viewcontroller you get back exists.
 */
-
-NS_ASSUME_NONNULL_BEGIN
 
 
 @interface ARSwitchBoard : NSObject
@@ -59,5 +59,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)presentViewController:(UIViewController *)controller;
 
 @end
-
-NS_ASSUME_NONNULL_END

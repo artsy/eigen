@@ -80,7 +80,8 @@ extension SaleViewModel {
 
 extension SaleViewModel {
     func registerSaleAsActiveActivity(viewController: UIViewController?) {
-        viewController?.setAr_userActivityEntity(sale)
+//        viewController?.userActivity = ARUserActivity(forEntity: sale)
+//        viewController?.userActivity?.becomeCurrent()
     }
 }
 
