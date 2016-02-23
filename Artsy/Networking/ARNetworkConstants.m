@@ -4,9 +4,6 @@ NSString *const ARBaseDesktopWebURL = @"https://www.artsy.net";
 NSString *const ARBaseMobileWebURL = @"https://m.artsy.net";
 NSString *const ARBaseApiURL = @"https://api.artsy.net";
 
-NSString *const ARStagingBaseWebURL = @"https://staging.artsy.net";
-NSString *const ARStagingBaseMobileWebURL = @"http://m-staging.artsy.net";
-
 NSString *const ARPersonalizePath = @"personalize";
 
 NSString *const ARTwitterCallbackPath = @"artsy://twitter-callback";

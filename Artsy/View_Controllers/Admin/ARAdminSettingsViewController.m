@@ -192,36 +192,11 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
     labsSectionData.headerTitle = @"Developer";
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *stagingAddress = [defaults stringForKey:ARStagingAPIURLDefault];
+    ARCellData *stagingAPI = [self cellDataWithName:@"API" defaultKey:ARStagingAPIURLDefault];
+    ARCellData *stagingPhoneWeb = [self cellDataWithName:@"Phone Web" defaultKey:ARStagingPhoneWebURLDefault];
+    ARCellData *stagingPadWeb = [self cellDataWithName:@"Pad Web" defaultKey:ARStagingPadWebURLDefault];
 
-    ARCellData *stagingURL = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
-    [stagingURL setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = [NSString stringWithFormat:@"Staging URL: %@", stagingAddress];
-    }];
-
-    [stagingURL setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Change URL" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-        [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = stagingAddress;
-        }];
-
-        [controller addAction:[UIAlertAction actionWithTitle:@"Save + Log out" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            UITextField *newStagingTextField = [controller textFields].firstObject;
-            [defaults setObject:newStagingTextField.text forKey:ARStagingAPIURLDefault];
-            [defaults synchronize];
-            exit(0);
-        }]];
-
-        [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        }]];
-        
-        [self presentViewController:controller animated:YES completion:nil];
-    }];
-
-    [labsSectionData addCellData:stagingURL];
-
+    [labsSectionData addCellDataFromArray:@[ stagingAPI, stagingPhoneWeb, stagingPadWeb ]];
     return labsSectionData;
 }
 
@@ -303,6 +278,40 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 - (BOOL)shouldAutorotate
 {
     return NO;
+}
+
+- (ARCellData *)cellDataWithName:(NSString *)name defaultKey:(NSString *)key
+{
+    ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *value = [defaults stringForKey:key];
+
+    [cell setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = [NSString stringWithFormat:@"%@: %@", name, value];
+    }];
+
+    [cell setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:name message:@"" preferredStyle:UIAlertControllerStyleAlert];
+
+        [controller addAction:[UIAlertAction actionWithTitle:@"Save + Restart" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            UITextField *theTextField = [controller textFields].firstObject;
+            [defaults setObject:theTextField.text forKey:key];
+            [defaults synchronize];
+            exit(0);
+        }]];
+
+        [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        }]];
+
+        [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            textField.text = value;
+        }];
+
+        [self presentViewController:controller animated:YES completion:nil];
+    }];
+    return cell;
 }
 
 @end
