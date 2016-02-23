@@ -26,7 +26,6 @@
 - (id)routeInternalURL:(NSURL *)url fair:(Fair *)fair;
 - (void)openURLInExternalService:(NSURL *)url;
 - (void)updateRoutes;
-@property (nonatomic, strong) UIApplication *sharedApplication;
 @end
 
 
