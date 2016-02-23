@@ -18,12 +18,13 @@
 #import <AFNetworking/AFNetworking.h>
 
 
-@interface ARQuicksilverViewController ()
+@interface ARQuicksilverViewController () <ARMenuAwareViewController, UISearchControllerDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, assign, readwrite) NSInteger selectedIndex;
 @property (nonatomic, copy, readwrite) NSArray *searchResults;
-@property (nonatomic, copy, readonly) NSArray *resultsHistory;
+@property (nonatomic, copy, readwrite) NSArray *resultsHistory;
 @property (nonatomic, strong, readonly) AFHTTPRequestOperation *searchRequest;
+@property (strong, nonatomic) UISearchController *searchController;
 
 @end
 
@@ -49,22 +50,32 @@
     [super viewDidLoad];
 
     NSString *path = [ARFileUtils appDocumentsPathWithFolder:@"dev" filename:@"quicksilver_history"];
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    _resultsHistory = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-
-    if (!self.resultsHistory) {
-        _resultsHistory = @[];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        NSData *data = [NSData dataWithContentsOfFile:path];
+        self.resultsHistory = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    } else {
+        self.resultsHistory = @[];
     }
+
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.searchBar.delegate = self;
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+
+    [self.tableView registerClass:[ARSearchTableViewCell class] forCellReuseIdentifier:@"SearchCell"];
+    self.tableView.backgroundColor = [UIColor blackColor];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [self.searchDisplayController.searchResultsTableView reloadData];
-#pragma clang diagnostic pop
-    [self.searchBar becomeFirstResponder];
+
+    [self presentViewController:self.searchController animated:NO completion:nil];
+    [self.searchController.searchBar becomeFirstResponder];
 
     [self setHighlight:YES forCellAtIndex:self.selectedIndex];
 }
@@ -97,34 +108,33 @@
 - (void)setHighlight:(BOOL)highlight forCellAtIndex:(NSInteger)index
 {
     NSIndexPath *path = [NSIndexPath indexPathForRow:index inSection:0];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    UITableViewCell *cell = [self.searchDisplayController.searchResultsTableView cellForRowAtIndexPath:path];
-#pragma clang diagnostic pop
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
 
     UIColor *background = highlight ? [UIColor darkGrayColor] : [UIColor blackColor];
     [cell setBackgroundColor:background];
 }
 
-- (void)searchBarReturnPressed:(ARQuicksilverSearchBar *)searchBar
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    [searchBar resignFirstResponder];
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
     if ([searchBar.text hasPrefix:@"/"]) {
+        [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+        [self addObjectToRecents:searchBar.text];
         id controller = [ARSwitchBoard.sharedInstance loadPath:searchBar.text];
         [self.navigationController pushViewController:controller animated:YES];
         return;
     }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    UITableView *tableView = self.searchDisplayController.searchResultsTableView;
-#pragma clang diagnostic pop
     NSIndexPath *path = [NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:path];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
     [cell setBackgroundColor:[UIColor grayColor]];
 
-    [self tableView:tableView didSelectRowAtIndexPath:path];
+    [self tableView:self.tableView didSelectRowAtIndexPath:path];
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
@@ -132,34 +142,16 @@
     return self.contentArray.count;
 }
 
-- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-    controller.searchResultsTableView.hidden = NO;
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView
-{
-    // We need to prevent the resultsTable from hiding if the search is still active
-    if (controller.active == YES) {
-        tableView.hidden = NO;
-    }
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView
-{
-    [controller.searchResultsTableView registerClass:[ARSearchTableViewCell class] forCellReuseIdentifier:@"SearchCell"];
-    tableView.backgroundColor = [UIColor blackColor];
-}
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)query
-{
+    NSString *query = searchController.searchBar.text;
     if (self.searchRequest) {
         [self.searchRequest cancel];
     }
 
     if (query.length == 0) {
         self.searchResults = nil;
-        [controller.searchResultsTableView reloadData];
+        [self.tableView reloadData];
 
     } else {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -170,9 +162,10 @@
             sself.searchResults = [results copy];
             sself.selectedIndex = 0;
 
-            [controller.searchResultsTableView reloadData];
+            [self.tableView reloadData];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             [sself setHighlight:YES forCellAtIndex:0];
+            [self.tableView reloadData];
 
         } failure:^(NSError *error) {
             if (error.code != NSURLErrorCancelled) {
@@ -180,14 +173,18 @@
             }
         }];
     }
-
-    return NO;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell"];
     SearchResult *result = self.contentArray[indexPath.row];
+
+    if ([result isKindOfClass:NSString.class]) {
+        cell.textLabel.text = (id)result;
+        cell.imageView.image = nil;
+        return cell;
+    }
 
     BOOL published = result.isPublished.boolValue;
     if (!published) {
@@ -203,7 +200,6 @@
 
 
     __weak typeof(cell) wcell = cell;
-
     [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:placeholder
 
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -219,21 +215,37 @@
 
 - (NSArray *)contentArray
 {
-    return (self.searchBar.text.length == 0) ? self.resultsHistory : self.searchResults;
+    return (self.searchController.searchBar.text.length == 0) ? self.resultsHistory : self.searchResults;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)addObjectToRecents:(id)object
 {
-    SearchResult *result = self.contentArray[indexPath.row];
-    _resultsHistory = [self.resultsHistory arrayByAddingObject:result];
+    NSMutableArray *mutableArray = [self.resultsHistory mutableCopy];
+    [mutableArray removeObject:object];
+    [mutableArray insertObject:object atIndex:0];
+
+    self.resultsHistory = mutableArray.copy;
 
     NSString *path = [ARFileUtils appDocumentsPathWithFolder:@"dev" filename:@"quicksilver_history"];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.resultsHistory];
     [data writeToFile:path atomically:YES];
 
+    [self.tableView reloadData];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+
+    SearchResult *result = self.contentArray[indexPath.row];
+    [self addObjectToRecents:result];
+
     UIViewController *controller = nil;
 
-    if (result.model == [Artwork class]) {
+    if ([result isKindOfClass:NSString.class]) {
+        controller = [ARSwitchBoard.sharedInstance loadPath:(id)result];
+
+    } else if (result.model == [Artwork class]) {
         controller = [[ARArtworkSetViewController alloc] initWithArtworkID:result.modelID];
 
     } else if (result.model == [Artist class]) {
