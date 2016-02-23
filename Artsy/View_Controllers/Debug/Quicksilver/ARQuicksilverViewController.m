@@ -1,5 +1,4 @@
 #import "ARQuicksilverViewController.h"
-
 #import "Artist.h"
 #import "Artwork.h"
 #import "ArtsyAPI+Search.h"
@@ -16,6 +15,7 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
+#import <objc/runtime.h>
 
 
 @interface ARQuicksilverViewController () <ARMenuAwareViewController, UISearchControllerDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating>
@@ -61,6 +61,10 @@
     self.searchController.searchResultsUpdater = self;
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.searchBar.delegate = self;
+
+    object_setClass(self.searchController.searchBar, [ARQuicksilverSearchBar class]);
+    [(ARQuicksilverSearchBar *)self.searchController.searchBar setUpDownDelegate:self];
+
     self.tableView.tableHeaderView = self.searchController.searchBar;
 
     self.tableView.dataSource = self;
@@ -79,6 +83,8 @@
 
     [self setHighlight:YES forCellAtIndex:self.selectedIndex];
 }
+
+#pragma mark Quicksilver Search bar delegate stuff -
 
 - (void)searchBarDownPressed:(ARQuicksilverSearchBar *)searchBar
 {
@@ -100,27 +106,7 @@
     [self setHighlight:YES forCellAtIndex:self.selectedIndex];
 }
 
-- (void)searchBarEscapePressed:(ARQuicksilverSearchBar *)searchBar
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)setHighlight:(BOOL)highlight forCellAtIndex:(NSInteger)index
-{
-    NSIndexPath *path = [NSIndexPath indexPathForRow:index inSection:0];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-
-    UIColor *background = highlight ? [UIColor darkGrayColor] : [UIColor blackColor];
-    [cell setBackgroundColor:background];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarReturnPressed:(ARQuicksilverSearchBar *)searchBar;
 {
     if ([searchBar.text hasPrefix:@"/"]) {
         [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
@@ -136,6 +122,30 @@
 
     [self tableView:self.tableView didSelectRowAtIndexPath:path];
 }
+
+- (void)searchBarEscapePressed:(ARQuicksilverSearchBar *)searchBar
+{
+    [self searchBarCancelButtonClicked:searchBar];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark Up / down highlighting
+
+- (void)setHighlight:(BOOL)highlight forCellAtIndex:(NSInteger)index
+{
+    NSIndexPath *path = [NSIndexPath indexPathForRow:index inSection:0];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
+
+    UIColor *background = highlight ? [UIColor darkGrayColor] : [UIColor blackColor];
+    [cell setBackgroundColor:background];
+}
+
+#pragma mark TableView DataSource/Delegate bits
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
 {
@@ -213,26 +223,6 @@
     return cell;
 }
 
-- (NSArray *)contentArray
-{
-    return (self.searchController.searchBar.text.length == 0) ? self.resultsHistory : self.searchResults;
-}
-
-- (void)addObjectToRecents:(id)object
-{
-    NSMutableArray *mutableArray = [self.resultsHistory mutableCopy];
-    [mutableArray removeObject:object];
-    [mutableArray insertObject:object atIndex:0];
-
-    self.resultsHistory = mutableArray.copy;
-
-    NSString *path = [ARFileUtils appDocumentsPathWithFolder:@"dev" filename:@"quicksilver_history"];
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.resultsHistory];
-    [data writeToFile:path atomically:YES];
-
-    [self.tableView reloadData];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
@@ -264,5 +254,26 @@
 
     [self.navigationController pushViewController:controller animated:YES];
 }
+
+- (NSArray *)contentArray
+{
+    return (self.searchController.searchBar.text.length == 0) ? self.resultsHistory : self.searchResults;
+}
+
+- (void)addObjectToRecents:(id)object
+{
+    NSMutableArray *mutableArray = [self.resultsHistory mutableCopy];
+    [mutableArray removeObject:object];
+    [mutableArray insertObject:object atIndex:0];
+
+    self.resultsHistory = mutableArray.copy;
+
+    NSString *path = [ARFileUtils appDocumentsPathWithFolder:@"dev" filename:@"quicksilver_history"];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.resultsHistory];
+    [data writeToFile:path atomically:YES];
+
+    [self.tableView reloadData];
+}
+
 
 @end
