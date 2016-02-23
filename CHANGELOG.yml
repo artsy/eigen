@@ -6,6 +6,7 @@ upcoming:
     - Added a switch between native and martsy works for you view - maxim
     - Made the searchbar larger in fair views on iPhone - maxim
     - Additional work on the auction title view - ash
+    - Quicksilver is now accessible to non-Eigen devs - orta 
     - Removes rotation support on refine auction listings view for iPhone - ash
   notes:
     - Support breaking out of the router sandboxing when there's a link with ?eigen_escape_sandbox' - orta

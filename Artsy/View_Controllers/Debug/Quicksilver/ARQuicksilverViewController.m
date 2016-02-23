@@ -62,6 +62,8 @@
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.searchBar.delegate = self;
 
+    // We can't set a subclass object to the searchBar, but we can dynamically change it's class
+    // assuming we don't make changes to what would typically be alloc'd.
     object_setClass(self.searchController.searchBar, [ARQuicksilverSearchBar class]);
     [(ARQuicksilverSearchBar *)self.searchController.searchBar setUpDownDelegate:self];
 
