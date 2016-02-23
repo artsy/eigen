@@ -47,7 +47,7 @@ static NSString *hostFromString(NSString *string)
     NSString *stagingMobile = hostFromString([defaults stringForKey:ARStagingPhoneWebURLDefault]);
     NSString *stagingAPI = hostFromString([defaults stringForKey:ARStagingAPIURLDefault]);
 
-    artsyHosts = [NSSet setWithArray:@[ productionAPI, productionHost, productionMobile, stagingAPI, stagingHost, stagingMobile ]];
+    artsyHosts = [NSSet setWithArray:@[ @"artsy.net", productionAPI, productionHost, productionMobile, stagingAPI, stagingHost, stagingMobile ]];
 
     [ARRouter setupWithBaseApiURL:[ARRouter baseApiURL]];
 
