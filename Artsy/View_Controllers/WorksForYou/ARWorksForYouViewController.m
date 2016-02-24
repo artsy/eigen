@@ -6,10 +6,11 @@
 #import "ARWorksForYouNotificationItem.h"
 #import "ARArtworkSetViewController.h"
 #import "ARSwitchBoard+Eigen.h"
-
+#import "ARFonts.h"
 
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>
+#import <ORStackView/ORSplitStackView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -80,14 +81,19 @@
     // this is currently nil - TODO: fix
     ARSansSerifLabel *dateLabel = [[ARSansSerifLabel alloc] initWithFrame:CGRectZero];
     dateLabel.text = [df stringFromDate:notificationItem.date];
-    dateLabel.textColor = [UIColor darkGrayColor];
+    dateLabel.textColor = [UIColor lightGrayColor];
+    dateLabel.textAlignment = NSTextAlignmentRight;
+    dateLabel.font = [UIFont sansSerifFontWithSize:dateLabel.font.pointSize - 3];
 
     ARSerifLabel *numberOfWorksAddedLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     numberOfWorksAddedLabel.text = notificationItem.formattedNumberOfWorks;
-    numberOfWorksAddedLabel.textColor = [UIColor darkGrayColor];
+    numberOfWorksAddedLabel.textColor = [UIColor lightGrayColor];
 
-    [worksByArtistView addSubview:artistNameLabel withTopMargin:@"10" sideMargin:@"0"];
-    [worksByArtistView addSubview:dateLabel withTopMargin:@"10" sideMargin:@"0"];
+    ORSplitStackView *ssv = [[ORSplitStackView alloc] initWithLeftPredicate:@"200" rightPredicate:@"100"];
+    [ssv.leftStack addSubview:artistNameLabel withTopMargin:@"10" sideMargin:@"0"];
+    [ssv.rightStack addSubview:dateLabel withTopMargin:@"10" sideMargin:@"0"];
+
+    [worksByArtistView addSubview:ssv withTopMargin:@"10" sideMargin:@"0"];
     [worksByArtistView addSubview:numberOfWorksAddedLabel withTopMargin:@"10" sideMargin:@"0"];
 
     AREmbeddedModelsViewController *worksVC = [[AREmbeddedModelsViewController alloc] init];
