@@ -4,7 +4,7 @@
 
 @import ARCollectionViewMasonryLayout;
 
-CGFloat marginForTraitCollection(UITraitCollection *traitCollection)
+static CGFloat marginForTraitCollection(UITraitCollection *traitCollection)
 {
     return (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact ? 20 : 40);
 }
