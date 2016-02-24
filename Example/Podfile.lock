@@ -1,0 +1,42 @@
+PODS:
+  - Emission (0.1.0)
+  - FBSnapshotTestCase (2.0.7):
+    - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
+  - FBSnapshotTestCase/Core (2.0.7)
+  - FBSnapshotTestCase/SwiftSupport (2.0.7):
+    - FBSnapshotTestCase/Core
+  - Nimble (3.0.0)
+  - Nimble-Snapshots (3.0.0):
+    - FBSnapshotTestCase (~> 2.0.7)
+    - Nimble
+    - Quick
+  - Quick (0.8.0)
+
+DEPENDENCIES:
+  - Emission (from `../`)
+  - FBSnapshotTestCase (from `https://github.com/neonichu/ios-snapshot-test-case.git`)
+  - Nimble (= 3.0.0)
+  - Nimble-Snapshots
+  - Quick (~> 0.8.0)
+
+EXTERNAL SOURCES:
+  Emission:
+    :path: ../
+  FBSnapshotTestCase:
+    :git: https://github.com/neonichu/ios-snapshot-test-case.git
+
+CHECKOUT OPTIONS:
+  FBSnapshotTestCase:
+    :commit: 9e88da88a7a3df2f80838449a5f1e71830179218
+    :git: https://github.com/neonichu/ios-snapshot-test-case.git
+
+SPEC CHECKSUMS:
+  Emission: cb6ec71ef3f7d881663e8d79be9eecbb14e0f7a1
+  FBSnapshotTestCase: a89bbc6ea786ef38c2d4e313b3374177c8597b8f
+  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
+  Nimble-Snapshots: ab41dd737dcd33a0b0cb005a30465fef70b7207a
+  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
+
+PODFILE CHECKSUM: 3e9b07e4bbfbbe3d8fd11e54b9699d1c3d6ff088
+
+COCOAPODS: 1.0.0.beta.4

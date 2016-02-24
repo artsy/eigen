@@ -1,0 +1,15 @@
+source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+
+target 'Emission_Example' do
+  pod 'Emission', :path => '../'
+end
+
+target 'Emission_Tests' do
+  pod 'Emission', :path => '../'
+
+  pod 'Quick', '~> 0.8.0'
+  pod 'Nimble', '3.0.0'
+  pod 'FBSnapshotTestCase', :git => 'https://github.com/neonichu/ios-snapshot-test-case.git'
+  pod 'Nimble-Snapshots'
+end
