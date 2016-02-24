@@ -303,7 +303,7 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"routes artworks", ^{
-            id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artwork/artworkID"] fair:nil];
+            id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/artwork/artworkID"] fair:nil];
             expect(subject).to.beKindOf(ARArtworkSetViewController.class);
         });
 
@@ -314,11 +314,17 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"routes genes", ^{
-            id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
+            id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
             expect(subject).to.beAKindOf(ARGeneViewController.class);
         });
-    });
 
+        /// As the class is in swift-world, lets not complicate this by bridging when it's not important
+        it(@"routes live auctions", ^{
+            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net"]];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"LiveAuctionViewController");
+        });
+    });
 
     describe(@"routeProfileWithID", ^{
         __block id mockProfileVC;
