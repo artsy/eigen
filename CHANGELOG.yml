@@ -17,7 +17,8 @@ upcoming:
     - Auction listings sort works - ash
     - Auction listings use appropriate layout (list vs grid view) - ash
     - Tapping on an auction lot takes you to that artwork's view - ash
-    - Auction information views use real data - orta 
+    - Auction information views use real data - orta
+    - Send the eigen trial UUID to internal web-pages via the header - orta
 
 releases:
   - version: 2.3.6

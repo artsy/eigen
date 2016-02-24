@@ -1,6 +1,7 @@
 #import "ARRouter.h"
 #import "AROptions.h"
 #import "ARNetworkConstants.h"
+#import "ARUserManager+Stubs.h"
 
 SpecBegin(ARRouter);
 
@@ -144,6 +145,33 @@ describe(@"User-Agent", ^{
         request = [ARRouter newShowsRequestForArtist:@"orta"];
         expect(request.allHTTPHeaderFields[@"User-Agent"]).to.equal(userAgent);
     });
+});
+
+describe(@"sending eigen uuids to martsy/force", ^{
+    it(@"trial users send the eigen uuid", ^{
+        [ARUserManager logoutAndSetUseStaging:NO];
+        [ARRouter setup];
+
+        NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://m.artsy.net"]];
+        expect([request valueForHTTPHeaderField:AREigenTrialUserIDHeader]).to.beTruthy();
+    });
+
+    it(@"logged in users don't send the uuid", ^{
+        [ARUserManager stubAndLoginWithUsername];
+        [ARRouter setup];
+
+        NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://m.artsy.net"]];
+        expect([request valueForHTTPHeaderField:AREigenTrialUserIDHeader]).to.beFalsy();
+    });
+
+    it(@"other websites dont get the uuid", ^{
+        [ARUserManager logoutAndSetUseStaging:YES];
+        [ARRouter setup];
+
+        NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://orta.io"]];
+        expect([request valueForHTTPHeaderField:AREigenTrialUserIDHeader]).to.beFalsy();
+    });
+
 });
 
 describe(@"baseWebURL", ^{

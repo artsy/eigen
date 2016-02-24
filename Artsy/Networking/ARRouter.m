@@ -108,7 +108,9 @@ static NSString *hostFromString(NSString *string)
     // but make sure that this is not a slip-up due to background fetch downloading
 
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-    if (![[ARUserManager sharedManager] hasExistingAccount] && state != UIApplicationStateBackground) {
+    ARUserManager *user = [ARUserManager sharedManager];
+
+    if (![user hasExistingAccount] && state != UIApplicationStateBackground) {
         [UICKeyChainStore removeItemForKey:AROAuthTokenDefault];
         [UICKeyChainStore removeItemForKey:ARXAppTokenKeychainKey];
     }
@@ -122,6 +124,10 @@ static NSString *hostFromString(NSString *string)
         ARActionLog(@"Found trial XApp token in keychain");
         NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
         [ARRouter setXappToken:xapp];
+    }
+
+    if ([User isTrialUser]) {
+        [self setHTTPHeader:AREigenTrialUserIDHeader value:user.trialUserUUID];
     }
 }
 
@@ -183,6 +189,7 @@ static NSString *hostFromString(NSString *string)
     if (![ARRouter isInternalURL:url]) {
         [request setValue:nil forHTTPHeaderField:ARAuthHeader];
         [request setValue:nil forHTTPHeaderField:ARXappHeader];
+        [request setValue:nil forHTTPHeaderField:AREigenTrialUserIDHeader];
     }
 
     return request;
