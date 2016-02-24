@@ -61,7 +61,7 @@
     // TODO: Localise / put strings elsewhere
     titleLabel.text = @"Works by artists you follow";
     titleLabel.textColor = [UIColor blackColor];
-    titleLabel.font = [UIFont serifFontWithSize:18];
+    titleLabel.font = [UIFont serifFontWithSize:20];
 
     [self.view.stackView addSubview:titleLabel withTopMargin:@"20" sideMargin:@"45"];
 
@@ -110,6 +110,8 @@
     // TODO: Make this 3 column for iPad
     if (notificationItem.artworks.count > 1) {
         worksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout2Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
+    } else if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        worksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout3Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     } else {
         worksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout1Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     }
@@ -124,6 +126,19 @@
     [items each:^(ARWorksForYouNotificationItem *item) {
         UIView *viewItem = [self viewBasedOnNotificationItem:item];
         [self.view.stackView addSubview:viewItem withTopMargin:@"0" sideMargin:@"20"];
+        
+        if (item != items.lastObject) {
+            UIView *lineView = [[UIView alloc] init];
+            lineView.backgroundColor = [UIColor lightGrayColor];
+            [lineView constrainHeight:@"0.5"];
+            
+            if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+                [self.view.stackView addSubview:lineView withTopMargin:@"10" sideMargin:@"40"];
+            } else {
+                [self.view.stackView addSubview:lineView withTopMargin:@"10" sideMargin:@"0"];
+            }
+        }
+
     }];
 }
 
