@@ -255,7 +255,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Aerodramus:
-    :commit: d2a338d071e00fe9f16fdd89c59540cf295bc491
+    :commit: f3ad5f2c4d4f060722510bab83e07026c202ac7a
     :git: https://github.com/artsy/Aerodramus.git
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
