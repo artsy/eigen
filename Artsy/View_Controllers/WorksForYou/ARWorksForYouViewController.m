@@ -75,8 +75,7 @@
     artistNameLabel.textColor = [UIColor blackColor];
 
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.timeStyle = NSDateFormatterNoStyle;
-    df.dateStyle = NSDateFormatterShortStyle;
+    [df setDateFormat:@"MMM dd"];
 
     // this is currently nil - TODO: fix
     ARSansSerifLabel *dateLabel = [[ARSansSerifLabel alloc] initWithFrame:CGRectZero];

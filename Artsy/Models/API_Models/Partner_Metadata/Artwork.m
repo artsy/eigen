@@ -199,6 +199,16 @@
     return _defaultImage.url;
 }
 
+// doing the simplest thing to make it work
+- (NSDate *)publishedAt
+{
+    // Date format: 2016-02-24T09:48:25.000Z
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+
+    return [df dateFromString:(NSString *)_publishedAt];
+}
+
 - (AFHTTPRequestOperation *)getRelatedArtworks:(void (^)(NSArray *artworks))success
 {
     return [ArtsyAPI getRelatedArtworksForArtwork:self success:success
