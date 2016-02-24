@@ -61,7 +61,9 @@
     // TODO: Localise / put strings elsewhere
     titleLabel.text = @"Works by artists you follow";
     titleLabel.textColor = [UIColor blackColor];
-    [self.view.stackView addSubview:titleLabel withTopMargin:@"50" sideMargin:@"20"];
+    titleLabel.font = [UIFont serifFontWithSize:18];
+
+    [self.view.stackView addSubview:titleLabel withTopMargin:@"20" sideMargin:@"45"];
 
     // this should probably be fancier
     [self getNextItemSet];
@@ -74,6 +76,7 @@
     ARSansSerifLabelWithChevron *artistNameLabel = [[ARSansSerifLabelWithChevron alloc] initWithFrame:CGRectZero];
     artistNameLabel.text = notificationItem.artist.name;
     artistNameLabel.textColor = [UIColor blackColor];
+    artistNameLabel.font = [UIFont sansSerifFontWithSize:14];
 
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"MMM dd"];
@@ -83,21 +86,23 @@
     dateLabel.text = [df stringFromDate:notificationItem.date];
     dateLabel.textColor = [UIColor lightGrayColor];
     dateLabel.textAlignment = NSTextAlignmentRight;
-    dateLabel.font = [UIFont sansSerifFontWithSize:dateLabel.font.pointSize - 3];
+    dateLabel.font = [UIFont sansSerifFontWithSize:10];
 
     ARSerifLabel *numberOfWorksAddedLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     numberOfWorksAddedLabel.text = notificationItem.formattedNumberOfWorks;
     numberOfWorksAddedLabel.textColor = [UIColor lightGrayColor];
+    numberOfWorksAddedLabel.font = [UIFont serifFontWithSize:14];
+
 
     ORSplitStackView *ssv = [[ORSplitStackView alloc] initWithLeftPredicate:@"200" rightPredicate:@"100"];
     [ssv.leftStack addSubview:artistNameLabel withTopMargin:@"10" sideMargin:@"0"];
     [ssv.rightStack addSubview:dateLabel withTopMargin:@"10" sideMargin:@"0"];
 
-    [worksByArtistView addSubview:ssv withTopMargin:@"10" sideMargin:@"0"];
-    [worksByArtistView addSubview:numberOfWorksAddedLabel withTopMargin:@"10" sideMargin:@"0"];
+    [worksByArtistView addSubview:ssv withTopMargin:@"10" sideMargin:@"30"];
+    [worksByArtistView addSubview:numberOfWorksAddedLabel withTopMargin:@"10" sideMargin:@"30"];
 
     AREmbeddedModelsViewController *worksVC = [[AREmbeddedModelsViewController alloc] init];
-    [worksByArtistView addViewController:worksVC toParent:self withTopMargin:@"20" sideMargin:@"0"];
+    [worksByArtistView addViewController:worksVC toParent:self withTopMargin:@"10" sideMargin:@"0"];
 
     worksVC.delegate = self;
     [worksVC setConstrainHeightAutomatically:YES];
@@ -118,7 +123,7 @@
 {
     [items each:^(ARWorksForYouNotificationItem *item) {
         UIView *viewItem = [self viewBasedOnNotificationItem:item];
-        [self.view.stackView addSubview:viewItem withTopMargin:@"30" sideMargin:@"20"];
+        [self.view.stackView addSubview:viewItem withTopMargin:@"0" sideMargin:@"20"];
     }];
 }
 
