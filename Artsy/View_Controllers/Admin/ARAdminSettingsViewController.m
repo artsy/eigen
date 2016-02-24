@@ -3,6 +3,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "ARAdminSettingsViewController.h"
+#import "ARQuicksilverViewController.h"
 
 #import "ARDefaults.h"
 #import "ARGroupedTableViewCell.h"
@@ -49,6 +50,8 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     [miscSectionData addCellData:[self generateFeedback]];
     [miscSectionData addCellData:[self generateRestart]];
     [miscSectionData addCellData:[self generateStagingSwitch]];
+    [miscSectionData addCellData:[self generateQuicksilver]];
+
 #if !TARGET_IPHONE_SIMULATOR
     [miscSectionData addCellData:[self generateNotificationTokenPasteboardCopy]];
 #endif
@@ -137,6 +140,20 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
         [self showAlertViewWithTitle:@"Confirm Logout" message:@"Switching servers requires logout. App will exit. Please re-open to log back in." actionTitle:@"Continue" actionHandler:^{
             [ARUserManager logoutAndSetUseStaging:!useStaging];
         }];
+    }];
+    return crashCellData;
+}
+
+- (ARCellData *)generateQuicksilver
+{
+    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = @"Quicksilver";
+    }];
+
+    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        ARQuicksilverViewController *quicksilver = [[ARQuicksilverViewController alloc] init];
+        [self.navigationController pushViewController:quicksilver animated:YES];
     }];
     return crashCellData;
 }

@@ -15,6 +15,7 @@
 
 @interface ARQuicksilverSearchBar : UISearchBar
 
-@property (nonatomic, weak) IBOutlet id<ARQuicksilverSearchBarDelegate> upDownDelegate;
+/// Can't be weak, using associated objects
+@property (nonatomic, strong) id<ARQuicksilverSearchBarDelegate> upDownDelegate;
 
 @end
