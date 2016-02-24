@@ -148,8 +148,14 @@ describe(@"User-Agent", ^{
 });
 
 describe(@"sending eigen uuids to martsy/force", ^{
+    __block id userMock;
+    after(^{
+        [userMock stopMocking];
+    });
+
     it(@"trial users send the eigen uuid", ^{
-        [ARUserManager logoutAndSetUseStaging:NO];
+        id userMock = [OCMockObject niceMockForClass:[User class]];
+        [[[userMock stub] andReturnValue:@(YES)] isTrialUser];
         [ARRouter setup];
 
         NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://m.artsy.net"]];
@@ -157,7 +163,8 @@ describe(@"sending eigen uuids to martsy/force", ^{
     });
 
     it(@"logged in users don't send the uuid", ^{
-        [ARUserManager stubAndLoginWithUsername];
+        id userMock = [OCMockObject niceMockForClass:[User class]];
+        [[[userMock stub] andReturnValue:@(NO)] isTrialUser];
         [ARRouter setup];
 
         NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://m.artsy.net"]];
@@ -165,13 +172,14 @@ describe(@"sending eigen uuids to martsy/force", ^{
     });
 
     it(@"other websites dont get the uuid", ^{
-        [ARUserManager logoutAndSetUseStaging:YES];
+        id userMock = [OCMockObject niceMockForClass:[User class]];
+        [[[userMock stub] andReturnValue:@(YES)] isTrialUser];
+
         [ARRouter setup];
 
         NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://orta.io"]];
         expect([request valueForHTTPHeaderField:AREigenTrialUserIDHeader]).to.beFalsy();
     });
-
 });
 
 describe(@"baseWebURL", ^{
