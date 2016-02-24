@@ -8,6 +8,7 @@ upcoming:
     - Additional work on the auction title view - ash
     - Quicksilver is now accessible to non-Eigen devs - orta 
     - Removes rotation support on refine auction listings view for iPhone - ash
+    - Developers can choose to have a custom url for their staging environment - orta
   notes:
     - Support breaking out of the router sandboxing when there's a link with ?eigen_escape_sandbox' - orta
     - Users may now refine sale artworks on native auction view by their low estimates - ash

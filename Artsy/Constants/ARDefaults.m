@@ -6,6 +6,10 @@ const static NSInteger AROnboardingPromptDefault = 25;
 NSString *const ARUserIdentifierDefault = @"ARUserIdentifier";
 NSString *const ARUseStagingDefault = @"ARUseStagingDefault";
 
+NSString *const ARStagingAPIURLDefault = @"ARStagingAPIURLDefault";
+NSString *const ARStagingPhoneWebURLDefault = @"ARStagingPhoneWebURLDefault";
+NSString *const ARStagingPadWebURLDefault = @"ARStagingPadWebURLDefault";
+
 NSString *const AROAuthTokenDefault = @"AROAuthToken";
 NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
 
@@ -33,12 +37,16 @@ NSString *const ARShowAuctionResultsButtonDefault = @"auction-results";
 #endif
 
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-        ARUseStagingDefault : @(useStagingDefault),
         AROnboardingPromptThresholdDefault : @(AROnboardingPromptDefault),
         AROnboardingSkipPersonalizeDefault : @(NO),
         AROnboardingSkipCollectorLevelDefault : @(NO),
         AROnboardingSkipPriceRangeDefault : @(NO),
-        AROnboardingPromptThresholdDefault : @(NO)
+        AROnboardingPromptThresholdDefault : @(NO),
+
+        ARUseStagingDefault : @(useStagingDefault),
+        ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
+        ARStagingPhoneWebURLDefault : @"http://m-staging.artsy.net",
+        ARStagingPadWebURLDefault : @"https://staging.artsy.net"
     }];
 }
 

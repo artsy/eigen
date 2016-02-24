@@ -10,7 +10,11 @@
 + (void)clearUserData:(ARUserManager *)manager useStaging:(id)useStaging;
 @end
 
-SpecBegin(ARUserManager);
+// This makes a lot of global changes to the  NSUserDefaults shared
+// user defaults, and so is ran at the end.
+// FIXME: Migrate to using DI for defaults.
+
+SpecBegin(ZARUserManager);
 
 beforeEach(^{
     [ARUserManager clearUserData];
@@ -161,7 +165,7 @@ describe(@"clearUserData", ^{
         });
 
         it(@"explicitly sets staging default to yes", ^{
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beNil();
+            expect([[NSUserDefaults standardUserDefaults] objectForKey:ARUseStagingDefault]).to.beTruthy();
             expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.equal(@"test value");
             [ARUserManager clearUserData:[ARUserManager sharedManager] useStaging:@(YES)];
             expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beTruthy();
@@ -169,7 +173,7 @@ describe(@"clearUserData", ^{
         });
         
         it(@"explicitly sets staging default to no", ^{
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beNil();
+            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beTruthy();
             expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.equal(@"test value");
             [ARUserManager clearUserData:[ARUserManager sharedManager] useStaging:@(NO)];
             expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beFalsy();
