@@ -14,6 +14,7 @@
 #import "User.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
+#import "ARStandardDateFormatter.h"
 
 #import "ARMacros.h"
 #import "MTLModel+JSON.h"
@@ -157,6 +158,11 @@
 + (NSValueTransformer *)signatureJSONTransformer
 {
     return [ARValueTransformer whitespaceTrimmingTransformer];
+}
+
++ (NSValueTransformer *)publishedAtJSONTransformer
+{
+    return [ARStandardDateFormatter sharedFormatter].stringTransformer;
 }
 
 + (NSValueTransformer *)availabilityJSONTransformer
