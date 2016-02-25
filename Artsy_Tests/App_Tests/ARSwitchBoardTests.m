@@ -162,7 +162,6 @@ describe(@"ARSwitchboard", ^{
                 [switchboard loadURL:externalURL];
                 [switchboardMock verify];
             });
-
         });
     });
 
@@ -179,6 +178,30 @@ describe(@"ARSwitchboard", ^{
             expect([switchboard loadPath:@"thingy"]).to.equal(newVC);
         });
     });
+
+    describe(@"adding a new domain", ^{
+        it(@"supports adding via the register method", ^{
+            UIViewController *newVC = [[UIViewController alloc] init];
+            [switchboard registerPathCallbackForDomain:@"orta.artsy.net" callback:^id _Nullable(NSURL * _Nonnull url) {
+                return newVC;
+            }];
+
+            expect([switchboard loadURL:[NSURL URLWithString:@"https://orta.artsy.net/me/thing"]]).to.equal(newVC);
+        });
+
+        it(@"sends the URL in to the callback for the URL routing", ^{
+            UIViewController *newVC = [[UIViewController alloc] init];
+            __block NSString *path = nil;
+            [switchboard registerPathCallbackForDomain:@"orta.artsy.net" callback:^id _Nullable(NSURL * _Nonnull url) {
+                path = url.path;
+                return newVC;
+            }];
+
+            [switchboard loadURL:[NSURL URLWithString:@"https://orta.artsy.net/me/thing"]];
+            expect(path).to.equal(@"/me/thing");
+        });
+    });
+
 
     describe(@"routeInternalURL", ^{
         it(@"routes profiles", ^{

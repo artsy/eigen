@@ -19,6 +19,7 @@ upcoming:
     - Auction listings use appropriate layout (list vs grid view) - ash
     - Tapping on an auction lot takes you to that artwork's view - ash
     - Auction information views use real data - orta
+    - Add support for routing around a domain instead of just a path - orta
     - Send the eigen trial UUID to internal web-pages via the header - orta
 
 releases:

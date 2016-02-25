@@ -37,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Allows other objects to hook into the switchboard
 - (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
 
+/// Allows other objects to hook into the switchboard at the URL level
+- (void)registerPathCallbackForDomain:(NSString *)domain callback:(id _Nullable (^)(NSURL *url))callback;
+
 /// Load a path relative to the baseURL through the router
 - (UIViewController *)loadPath:(NSString *)path;
 
