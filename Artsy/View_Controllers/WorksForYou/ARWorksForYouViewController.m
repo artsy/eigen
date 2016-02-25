@@ -7,12 +7,15 @@
 #import "ARArtworkSetViewController.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARFonts.h"
+#import "ARReusableLoadingView.h"
 
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <ORStackView/ORSplitStackView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+
+static int ARLoadingIndicatorView = 1;
 
 
 @interface ARWorksForYouViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate>
@@ -107,7 +110,6 @@
     worksVC.delegate = self;
     [worksVC setConstrainHeightAutomatically:YES];
 
-    // TODO: Make this 3 column for iPad
     if (notificationItem.artworks.count > 1) {
         worksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout2Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     } else if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
@@ -155,9 +157,12 @@
         return;
     };
 
+    [self addLoadingIndicator];
+
     __weak typeof(self) wself = self;
     [self.worksForYouNetworkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *notificationItems) {
         __strong typeof (wself) sself = wself;
+        [sself removeLoadingIndicator];
         [sself addNotificationItems:notificationItems];
     } failure:nil];
 }
@@ -177,6 +182,22 @@
     }
 }
 
+- (void)addLoadingIndicator
+{
+    if (![self.view.stackView viewWithTag:ARLoadingIndicatorView]) {
+        ARReusableLoadingView *loadingView = [[ARReusableLoadingView alloc] init];
+        loadingView.tag = ARLoadingIndicatorView;
+        [self.view.stackView addSubview:loadingView withTopMargin:@"40" sideMargin:@"0"];
+        [loadingView startIndeterminateAnimated:YES];
+    }
+}
+
+- (void)removeLoadingIndicator
+{
+    if ([self.view.stackView viewWithTag:ARLoadingIndicatorView]) {
+        [self.view.stackView removeSubview:[self.view.stackView viewWithTag:ARLoadingIndicatorView]];
+    }
+}
 
 #pragma mark - AREmbeddedViewController delegate methods
 
