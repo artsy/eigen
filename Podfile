@@ -61,11 +61,15 @@ target 'Artsy' do
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
-  pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout', :branch => "modern"
   pod 'ORStackView', :git => 'https://github.com/1aurabrown/ORStackView.git'
   pod 'UIView+BooleanAnimations'
   pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit'
   pod 'Aerodramus', :git => 'https://github.com/artsy/Aerodramus.git', :branch => 'tests'
+
+  # Custom CollectionView Layouts
+  pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout', :branch => "modern"
+  # Used in Live Auctions
+  pod 'PBDCarouselCollectionViewLayout'
 
   # Deprecated:
   # UIAlertView is deprecated for iOS8 APIs

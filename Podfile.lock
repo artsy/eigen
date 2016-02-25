@@ -124,6 +124,7 @@ PODS:
   - ORKeyboardReactingApplication (0.5.3)
   - ORStackView (2.0.0):
     - FLKAutoLayout (~> 0.1)
+  - PBDCarouselCollectionViewLayout (1.1.0)
   - Quick (0.9.0)
   - ReactiveCocoa (2.3):
     - ReactiveCocoa/UI (= 2.3)
@@ -199,6 +200,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (from `https://github.com/1aurabrown/ORStackView.git`)
+  - PBDCarouselCollectionViewLayout
   - Quick
   - ReactiveCocoa
   - SDWebImage (>= 3.7.2)
@@ -355,6 +357,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: 752d81ca2e2a0bd6c01a2ece30fd24923434be1e
+  PBDCarouselCollectionViewLayout: 7e57b1f9aacb847a63a867131a0872b0c5e8320a
   Quick: 332eb1da73125a2106dd637424c803f2ae97e4a9
   ReactiveCocoa: 81ee2fb7df2dfc6bd52b5d70473662195e20ca7d
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
