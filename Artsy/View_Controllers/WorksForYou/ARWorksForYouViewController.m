@@ -50,13 +50,11 @@ static int ARLoadingIndicatorView = 1;
 
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.directionalLockEnabled = YES;
-    self.view.alwaysBounceHorizontal = NO;
-    self.view.showsHorizontalScrollIndicator = NO;
     self.view.delegate = self;
 
     _worksForYouNetworkModel = [[ARWorksForYouNetworkModel alloc] init];
 
-    [self.view.stackView alignLeading:@"20" trailing:@"-20" toView:self.view];
+    [self.view.stackView alignLeading:@"20" trailing:@"20" toView:self.view];
     [self.view.stackView alignTopEdgeWithView:self.view predicate:@"20"];
 
 
