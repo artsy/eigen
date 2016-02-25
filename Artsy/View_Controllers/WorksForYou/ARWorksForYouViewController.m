@@ -110,7 +110,7 @@
     // TODO: Make this 3 column for iPad
     if (notificationItem.artworks.count > 1) {
         worksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout2Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
-    } else if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+    } else if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
         worksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout3Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
     } else {
         worksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout1Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
@@ -118,7 +118,21 @@
 
     [worksVC appendItems:notificationItem.artworks];
 
+
     return worksByArtistView;
+}
+
+- (void)addSeparatorLine
+{
+    UIView *lineView = [[UIView alloc] init];
+    lineView.backgroundColor = [UIColor lightGrayColor];
+    [lineView constrainHeight:@"0.5"];
+
+    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+        [self.view.stackView addSubview:lineView withTopMargin:@"10" sideMargin:@"40"];
+    } else {
+        [self.view.stackView addSubview:lineView withTopMargin:@"10" sideMargin:@"0"];
+    }
 }
 
 - (void)addNotificationItems:(NSArray *)items
@@ -127,16 +141,9 @@
         UIView *viewItem = [self viewBasedOnNotificationItem:item];
         [self.view.stackView addSubview:viewItem withTopMargin:@"0" sideMargin:@"20"];
         
-        if (item != items.lastObject) {
-            UIView *lineView = [[UIView alloc] init];
-            lineView.backgroundColor = [UIColor lightGrayColor];
-            [lineView constrainHeight:@"0.5"];
-            
-            if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-                [self.view.stackView addSubview:lineView withTopMargin:@"10" sideMargin:@"40"];
-            } else {
-                [self.view.stackView addSubview:lineView withTopMargin:@"10" sideMargin:@"0"];
-            }
+        // TODO: allDownloaded not set to YES yet at this stage, need to figure out where to do this
+        if (!(item == items.lastObject && self.worksForYouNetworkModel.allDownloaded)) {
+            [self addSeparatorLine];
         }
 
     }];
