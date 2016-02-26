@@ -29,14 +29,20 @@
 
 - (void)getWorksForYou:(void (^_Nonnull)(NSArray<ARWorksForYouNotificationItem *> *_Nonnull))success failure:(void (^_Nullable)(NSError *_Nullable error))failure
 {
-    [self getArtworks:^(NSArray *artworks) {
+    NSAssert([NSThread isMainThread], @"This should only be called by the main thread");
+
+    if (self.currentRequest) {
+        return;
+    }
+
+    [self performWorksForYouRequest:^(NSArray *artworks) {
         NSMutableDictionary *artistDict = [[NSMutableDictionary alloc] initWithCapacity:artworks.count];
 
         // arrange artworks into dictionary grouped by artist ID
         [artworks each:^(Artwork *artwork) {
             if (artistDict[artwork.artist.artistID]) {
                 [[artistDict valueForKey:artwork.artist.artistID] addObject:artwork];
-            } else {
+            } else if (artwork.artist.artistID) {
                 NSMutableArray *artworks = [NSMutableArray arrayWithObject:artwork];
                 [artistDict setObject:artworks forKey:artwork.artist.artistID];
             }
@@ -59,14 +65,8 @@
     }];
 }
 
-- (void)getArtworks:(void (^_Nonnull)(NSArray<Artwork *> *_Nonnull))success failure:(void (^_Nullable)(NSError *_Nullable))failure
+- (void)performWorksForYouRequest:(void (^_Nonnull)(NSArray<Artwork *> *_Nonnull))success failure:(void (^_Nullable)(NSError *_Nullable))failure
 {
-    NSAssert([NSThread isMainThread], @"This should only be called by the main thread");
-
-    if (self.currentRequest) {
-        return;
-    }
-
     __weak typeof(self) wself = self;
 
     // AFNetworking should release the request operation as soon as it is done (be it success or failure),
