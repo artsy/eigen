@@ -203,10 +203,10 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
         return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
-    Route *route = self.echo.routes[@"ARLiveFairsURLSubdomain"];
+    Route *route = self.echo.routes[@"ARLiveFairsURLDomain"];
     if (route) {
         [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
-            return [[UIViewController alloc] init];
+            return [[LiveAuctionViewController alloc] init];
         }];
     }
 

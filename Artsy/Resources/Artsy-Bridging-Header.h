@@ -38,7 +38,7 @@
 
 #import "UIViewController+SimpleChildren.h"
 #import "UIViewController+ARUserActivity.h"
-
+#import "ARMenuAwareViewController.h"
 
 // For building out Auction Information VC
 
