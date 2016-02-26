@@ -60,9 +60,7 @@
         NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
         success([notificationItems sortedArrayUsingDescriptors:@[descriptor]]);
 
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
+    } failure:failure];
 }
 
 - (void)performWorksForYouRequest:(void (^_Nonnull)(NSArray<Artwork *> *_Nonnull))success failure:(void (^_Nullable)(NSError *_Nullable))failure
@@ -82,9 +80,7 @@
 
        success(artworks);
 
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
+    } failure:failure];
 }
 
 
