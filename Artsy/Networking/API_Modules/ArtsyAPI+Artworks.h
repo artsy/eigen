@@ -10,7 +10,7 @@
 
 + (AFHTTPRequestOperation *)getArtistArtworks:(Artist *)artist andPage:(NSInteger)page withParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
 
-+ (void)getArtworkFromUserFavorites:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
++ (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
 
 + (AFHTTPRequestOperation *)getRecommendedArtworksForUser:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
 

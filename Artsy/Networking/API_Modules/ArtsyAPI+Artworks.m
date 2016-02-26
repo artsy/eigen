@@ -33,10 +33,10 @@
     return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
 }
 
-+ (void)getArtworkFromUserFavorites:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
++ (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworksFromUsersFavoritesRequestWithID:userID page:page];
-    [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
+    return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getRecommendedArtworksForUser:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure

@@ -68,6 +68,7 @@
     }
 
     __weak typeof(self) wself = self;
+
     // AFNetworking should release the request operation as soon as it is done (be it success or failure),
     // then `self.currentRequest` will be set to `nil` automatically by the objc runtime (because it is `weak`)
     self.currentRequest = [ArtsyAPI getRecommendedArtworksForUser:[User currentUser].userID page:self.currentPage success:^(NSArray<Artwork *> *artworks) {
