@@ -94,7 +94,14 @@ class LiveAuctionViewController: UIViewController {
         premiumLabel.alpha = 0.3
         metadataStack.addSubview(premiumLabel, withTopMargin: "2", sideMargin: "0")
 
+        let progress = SimpleProgressView()
+        progress.progress = 0.6
+        progress.backgroundColor = .artsyLightGrey()
 
+        view.addSubview(progress)
+        progress.constrainHeight("4")
+        progress.alignLeading("0", trailing: "0", toView: view)
+        progress.constrainTopSpaceToView(premiumLabel, predicate: "12")
     }
 
     // Support for ARMenuAwareViewController
@@ -110,14 +117,11 @@ class LiveAuctionSaleLotsDelegate : NSObject, UICollectionViewDelegate {
     //
     // [ ] [ ] [ ]
     // left one needs right aligned image, center needs centered, and right needs left aligned image
-    // In Folio or Eidoloin, I used a pod for this I think.
-
+    // In Folio or Eidolon, I used a pod for this I think.
 
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         cell.backgroundColor = .debugColourGreen()
     }
-
-
 }
 
 class LiveAuctionSaleLotsDataSource : NSObject, UICollectionViewDataSource {
@@ -127,5 +131,30 @@ class LiveAuctionSaleLotsDataSource : NSObject, UICollectionViewDataSource {
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         return collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath)
+    }
+}
+
+class SimpleProgressView : UIView {
+    var highlightColor = UIColor.artsyPurple() {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+
+    var progress: CGFloat = 0 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+
+    override func drawRect(rect: CGRect) {
+        let bg = UIBezierPath(rect: bounds)
+        backgroundColor!.set()
+        bg.fill()
+
+        var progressRect = CGRect(x: 0, y: 0, width: Int(bounds.width * progress), height: Int(bounds.height))
+        let fg = UIBezierPath(rect: progressRect)
+        highlightColor.set()
+        fg.fill()
     }
 }
