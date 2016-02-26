@@ -4,6 +4,8 @@ import Artsy_UILabels
 import Artsy_UIFonts
 import FLKAutoLayout
 import PBDCarouselCollectionViewLayout
+import ORStackView
+import Then
 
 class LiveAuctionViewController: UIViewController {
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
@@ -62,6 +64,37 @@ class LiveAuctionViewController: UIViewController {
         
         // TODO: Make dynamic, the rest of the layout should define how tall this is.
         artworkSelectionView.constrainHeight("300")
+
+
+        let metadataStack = ORStackView()
+        metadataStack.bottomMarginHeight = 0
+        view.addSubview(metadataStack)
+        metadataStack.constrainTopSpaceToView(artworkSelectionView, predicate: "20")
+        metadataStack.constrainWidthToView(view, predicate: "-40")
+        metadataStack.alignCenterXWithView(view, predicate: "0")
+
+        let artistNameLabel = UILabel().then {
+            $0.text = "Damien Hirst"
+            $0.font = UIFont.serifBoldFontWithSize(16)
+        }
+        metadataStack.addSubview(artistNameLabel, withTopMargin: "0", sideMargin: "0")
+
+        let artworkNameLabel = ARArtworkTitleLabel()
+        artworkNameLabel.setTitle("That work", date: "2006")
+        metadataStack.addSubview(artworkNameLabel, withTopMargin: "0", sideMargin: "0")
+
+        let estimateLabel = ARSerifLabel()
+        estimateLabel.font = UIFont.serifFontWithSize(14)
+        estimateLabel.text = "Estimate: $100,000–120,000 USD"
+        metadataStack.addSubview(estimateLabel, withTopMargin: "2", sideMargin: "0")
+
+        let premiumLabel = ARSerifLabel()
+        premiumLabel.font = UIFont.serifFontWithSize(14)
+        premiumLabel.text = "Buyer’s Premium 25%"
+        premiumLabel.alpha = 0.3
+        metadataStack.addSubview(premiumLabel, withTopMargin: "2", sideMargin: "0")
+
+
     }
 
     // Support for ARMenuAwareViewController
@@ -83,6 +116,8 @@ class LiveAuctionSaleLotsDelegate : NSObject, UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         cell.backgroundColor = .debugColourGreen()
     }
+
+
 }
 
 class LiveAuctionSaleLotsDataSource : NSObject, UICollectionViewDataSource {

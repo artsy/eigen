@@ -52,3 +52,5 @@
 
 #import "ARSwitchBoard.h"
 #import "ARTrialController.h"
+
+#import "ARCustomEigenLabels.h"
