@@ -3,6 +3,7 @@ upcoming:
   details: Auctions Overview + For You Native Views
 
   dev:
+    - Made the favorites and works for you network models more thread-safe - sarah
     - Most of the layout for the works for you view controller is in - maxim
     - Added a switch between native and martsy works for you view - maxim
     - Made the searchbar larger in fair views on iPhone - maxim
