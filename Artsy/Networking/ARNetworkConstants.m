@@ -1,13 +1,8 @@
 #import <Foundation/Foundation.h>
 
-
 NSString *const ARBaseDesktopWebURL = @"https://www.artsy.net";
 NSString *const ARBaseMobileWebURL = @"https://m.artsy.net";
 NSString *const ARBaseApiURL = @"https://api.artsy.net";
-
-NSString *const ARStagingBaseWebURL = @"https://staging.artsy.net";
-NSString *const ARStagingBaseMobileWebURL = @"http://m-staging.artsy.net";
-NSString *const ARStagingBaseApiURL = @"https://stagingapi.artsy.net";
 
 NSString *const ARPersonalizePath = @"personalize";
 
@@ -15,6 +10,8 @@ NSString *const ARTwitterCallbackPath = @"artsy://twitter-callback";
 
 NSString *const ARAuthHeader = @"X-Access-Token";
 NSString *const ARXappHeader = @"X-Xapp-Token";
+NSString *const AREigenTrialUserIDHeader = @"X-Eigen-Trial-ID";
+
 NSString *const ARTotalHeader = @"X-Total-Count";
 
 NSString *const AROAuthURL = @"/oauth2/access_token";
@@ -111,3 +108,4 @@ NSString *const ARShowsFeaturingArtistsURLFormat = @"/api/v1/fair/%@/shows";
 NSString *const ARSystemTimeURL = @"/api/v1/system/time";
 
 NSString *const ARCreatePendingOrderURL = @"/api/v1/me/order/pending/items";
+NSString *const ARPageURLFormat = @"/api/v1/page/%@";

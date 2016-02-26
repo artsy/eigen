@@ -44,3 +44,15 @@ end
 build_log = File.read( File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_test_raw.log") )
 snapshots_url = build_log.match(%r{https://eigen-ci.s3.amazonaws.com/\d+/index.html})
 fail("There were [snapshot errors](#{snapshots_url})") if snapshots_url
+
+# Look for unstubbed networking requests, as these can be a source of test flakiness
+unstubbed_regex = /   Inside Test: -\[(\w+) (\w+)/m
+if build_log.match(unstubbed_regex)
+  output = "#### Found unstubbbed networking requests\n"
+  build_log.scan(unstubbed_regex).each do |class_and_test|
+    class_name = class_and_test[0]
+    url = "https://github.com/search?q=#{class_name.gsub("Spec", "")}+repo%3Aartsy%2Feigen&ref=searchresults&type=Code&utf8=✓"
+    output += "\n* [#{class_name}](#{url}) in `#{class_and_test[1]}`"
+  end
+  warn(output)
+end

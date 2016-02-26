@@ -13,6 +13,7 @@
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
+
 @interface ARSignUpActiveUserViewController ()
 @property (nonatomic, strong) AROnboardingNavBarView *navView;
 @property (nonatomic, strong) NSString *message;
@@ -58,6 +59,10 @@
 
         case ARTrialContextAuctionBid:
             message = @"Sign up for a free account\nto bid on works.";
+            break;
+
+        case ARTrialContextAuctionRegistration:
+            message = @"Sign up to bid in leading auctions from around the world.";
             break;
 
         case ARTrialContextArtworkOrder:

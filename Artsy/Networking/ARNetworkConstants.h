@@ -3,7 +3,6 @@ extern NSString *const ARBaseMobileWebURL;
 extern NSString *const ARBaseApiURL;
 extern NSString *const ARStagingBaseWebURL;
 extern NSString *const ARStagingBaseMobileWebURL;
-extern NSString *const ARStagingBaseApiURL;
 
 extern NSString *const ARPersonalizePath;
 
@@ -11,6 +10,8 @@ extern NSString *const ARTwitterCallbackPath;
 
 extern NSString *const ARAuthHeader;
 extern NSString *const ARXappHeader;
+extern NSString *const AREigenTrialUserIDHeader;
+
 extern NSString *const ARTotalHeader;
 
 extern NSString *const AROAuthURL;
@@ -101,3 +102,4 @@ extern NSString *const ARSystemTimeURL;
 extern NSString *const ARSuggestedHomepageArtworks;
 
 extern NSString *const ARCreatePendingOrderURL;
+extern NSString *const ARPageURLFormat;

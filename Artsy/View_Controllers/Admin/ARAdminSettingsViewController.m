@@ -3,6 +3,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "ARAdminSettingsViewController.h"
+#import "ARQuicksilverViewController.h"
 
 #import "ARDefaults.h"
 #import "ARGroupedTableViewCell.h"
@@ -49,6 +50,8 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     [miscSectionData addCellData:[self generateFeedback]];
     [miscSectionData addCellData:[self generateRestart]];
     [miscSectionData addCellData:[self generateStagingSwitch]];
+    [miscSectionData addCellData:[self generateQuicksilver]];
+
 #if !TARGET_IPHONE_SIMULATOR
     [miscSectionData addCellData:[self generateNotificationTokenPasteboardCopy]];
 #endif
@@ -60,6 +63,9 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 
     ARSectionData *vcrSection = [self createVCRSection];
     [tableViewData addSectionData:vcrSection];
+
+    ARSectionData *developerSection = [self createDeveloperSection];
+    [tableViewData addSectionData:developerSection];
 
     self.tableViewData = tableViewData;
     self.tableView.contentInset = UIEdgeInsetsMake(88, 0, 0, 0);
@@ -141,6 +147,20 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     return crashCellData;
 }
 
+- (ARCellData *)generateQuicksilver
+{
+    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = @"Quicksilver";
+    }];
+
+    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        ARQuicksilverViewController *quicksilver = [[ARQuicksilverViewController alloc] init];
+        [self.navigationController pushViewController:quicksilver animated:YES];
+    }];
+    return crashCellData;
+}
+
 #if !TARGET_IPHONE_SIMULATOR
 - (ARCellData *)generateNotificationTokenPasteboardCopy;
 {
@@ -183,6 +203,20 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     }
     return labsSectionData;
 }
+
+- (ARSectionData *)createDeveloperSection
+{
+    ARSectionData *labsSectionData = [[ARSectionData alloc] init];
+    labsSectionData.headerTitle = @"Developer";
+
+    ARCellData *stagingAPI = [self cellDataWithName:@"API" defaultKey:ARStagingAPIURLDefault];
+    ARCellData *stagingPhoneWeb = [self cellDataWithName:@"Phone Web" defaultKey:ARStagingPhoneWebURLDefault];
+    ARCellData *stagingPadWeb = [self cellDataWithName:@"Pad Web" defaultKey:ARStagingPadWebURLDefault];
+
+    [labsSectionData addCellDataFromArray:@[ stagingAPI, stagingPhoneWeb, stagingPadWeb ]];
+    return labsSectionData;
+}
+
 
 - (ARSectionData *)createVCRSection
 {
@@ -261,6 +295,40 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 - (BOOL)shouldAutorotate
 {
     return NO;
+}
+
+- (ARCellData *)cellDataWithName:(NSString *)name defaultKey:(NSString *)key
+{
+    ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *value = [defaults stringForKey:key];
+
+    [cell setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = [NSString stringWithFormat:@"%@: %@", name, value];
+    }];
+
+    [cell setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:name message:@"" preferredStyle:UIAlertControllerStyleAlert];
+
+        [controller addAction:[UIAlertAction actionWithTitle:@"Save + Restart" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            UITextField *theTextField = [controller textFields].firstObject;
+            [defaults setObject:theTextField.text forKey:key];
+            [defaults synchronize];
+            exit(0);
+        }]];
+
+        [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        }]];
+
+        [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            textField.text = value;
+        }];
+
+        [self presentViewController:controller animated:YES completion:nil];
+    }];
+    return cell;
 }
 
 @end

@@ -4,6 +4,8 @@
 
 #import "UIViewController+FullScreenLoading.h"
 #import "ArtsyAPI+Sales.h"
+#import "ArtsyAPI+Pages.h"
+
 
 #import "ARScrollNavigationChief.h"
 #import "ARWhitespaceGobbler.h"
@@ -12,10 +14,14 @@
 #import "ARSeparatorViews.h"
 #import "ArtsyAPI+CurrentUserFunctions.h"
 #import "ARSaleArtworkItemWidthDependentModule.h"
+#import "ARArtworkSetViewController.h"
+#import "Fair.h" // Required by the switchboard's loadArtworkWithID(inFair:) function, even if we just pass nil in as a fair.
+
+#import "ARSwitchboard+Eigen.h"
 
 // Perhaps in the future we could use https://github.com/orta/ar_dispatch/ for now though eigen does more than this lib
 #import "ARDispatchManager.h"
-
+#import "UIImageView+AsyncImageLoading.h"
 
 // Models.
 #import "Sale.h"
@@ -32,7 +38,7 @@
 
 #import "UIViewController+SimpleChildren.h"
 #import "UIViewController+ARUserActivity.h"
-
+#import "ARMenuAwareViewController.h"
 
 // For building out Auction Information VC
 
@@ -42,9 +48,7 @@
 #import "ARSerifNavigationViewController.h"
 
 #import "ARTextView.h"
-
-#import "ARThemedFactory.h"
 #import "ARFonts.h"
 
-// Libraries
-#import <Aerodramus/Aerodramus.h>
+#import "ARSwitchBoard.h"
+#import "ARTrialController.h"

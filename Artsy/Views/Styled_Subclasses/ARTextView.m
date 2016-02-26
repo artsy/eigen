@@ -153,7 +153,13 @@
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
 {
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL];
+    UIViewController *viewController = nil;
+    if ([URL.scheme isEqualToString:@"applewebdata"]) {
+        viewController = [ARSwitchBoard.sharedInstance loadPath:URL.path];
+    } else {
+        viewController = [ARSwitchBoard.sharedInstance loadURL:URL];
+    }
+
     if (viewController) {
         [self.viewControllerDelegate textView:self shouldOpenViewController:viewController];
     }

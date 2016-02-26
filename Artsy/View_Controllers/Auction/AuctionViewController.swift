@@ -120,7 +120,8 @@ extension AuctionViewController {
 
         let compactSize = traitCollection.horizontalSizeClass == .Compact
         let topSpacing = compactSize ? 20 : 30
-        let titleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self, fullWidth: compactSize)
+        let sideSpacing = compactSize ? 40 : 80
+        let titleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self, fullWidth: compactSize, showAdditionalInformation: true)
         titleView.tag = ViewTags.Title.rawValue
         headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
 
@@ -187,13 +188,26 @@ extension AuctionViewController {
 private typealias TitleCallbacks = AuctionViewController
 extension TitleCallbacks: AuctionTitleViewDelegate {
     func userDidPressInfo(titleView: AuctionTitleView) {
-        // TODO: Don’t use AuctionInformationViewController with static content.
-        let controller = ARSerifNavigationViewController(rootViewController: AuctionInformationViewController())
+        let auctionInforVC = AuctionInformationViewController(saleViewModel: saleViewModel)
+        auctionInforVC.titleViewDelegate = self
+
+        let controller = ARSerifNavigationViewController(rootViewController: auctionInforVC)
         presentViewController(controller, animated: true, completion: nil)
     }
 
     func userDidPressRegister(titleView: AuctionTitleView) {
-        // TODO: We've got to make sure the user is logged in before booting them out to martsy
+        let showRegister = {
+            ARTrialController.presentTrialWithContext(.AuctionRegistration) { created in
+                let registrationPath = "/auction-registration/\(self.saleID)"
+                let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+        }
+        if let _ = presentedViewController {
+            dismissViewControllerAnimated(true, completion: showRegister)
+        } else {
+            showRegister()
+        }
     }
 }
 
@@ -214,7 +228,11 @@ extension RefineSettings: AuctionRefineViewControllerDelegate {
 private typealias EmbeddedModelCallbacks = AuctionViewController
 extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
-        // TODO
+        let item = saleArtworksViewController.items[Int(index)] as? SaleArtworkViewModel
+        guard let artworkID = item?.artworkID else { return }
+
+        let viewController = ARSwitchBoard.sharedInstance().loadArtworkWithID(artworkID, inFair: nil)
+        navigationController?.pushViewController(viewController, animated: allowAnimations)
     }
 
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {

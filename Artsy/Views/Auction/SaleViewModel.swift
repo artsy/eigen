@@ -23,6 +23,10 @@ extension SaleViewModel {
         return NSURL(string: avatarURL)
     }
 
+    var startDate: NSDate {
+        return sale.startDate
+    }
+
     var closingDate: NSDate {
         return sale.endDate
     }
@@ -33,6 +37,10 @@ extension SaleViewModel {
 
     var displayName: String {
         return sale.name
+    }
+
+    var saleDescription: String {
+        return sale.saleDescription
     }
 
     /// Provides a range of the smallest-to-largest low estimates.
