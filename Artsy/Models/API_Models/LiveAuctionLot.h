@@ -1,0 +1,44 @@
+#import <Mantle/Mantle.h>
+
+#import "ARAppConstants.h"
+#import "Sale.h"
+#import "Bidder.h"
+#import "BidderPosition.h"
+#import "Bid.h"
+#import "ARAppConstants.h"
+
+@class Artwork;
+
+typedef NS_ENUM(NSInteger, ARReserveStatus) {
+    ARReserveStatusNoReserve,
+    ARReserveStatusReserveNotMet,
+    ARReserveStatusReserveMet
+};
+
+
+@interface LiveAuctionLot : MTLModel <MTLJSONSerializing>
+
+- (BidderPosition *)userMaxBidderPosition;
+- (BOOL)hasEstimate;
+- (NSString *)estimateString;
+- (NSString *)numberOfBidsString;
+- (NSString *)highestOrStartingBidString;
+
+@property (nonatomic, copy, readonly) NSString *saleArtworkID;
+@property (nonatomic, strong) Sale *auction;
+@property (nonatomic, strong) Bidder *bidder;
+@property (nonatomic, strong) Bid *saleHighestBid;
+@property (nonatomic, strong) NSNumber *artworkNumPositions;
+@property (nonatomic, strong) BidderPosition *userBidderPosition;
+@property (nonatomic, strong) NSArray *positions;
+@property (nonatomic, strong) NSNumber *openingBidCents;
+@property (nonatomic, strong) NSNumber *minimumNextBidCents;
+@property (nonatomic, strong) NSNumber *lowEstimateCents;
+@property (nonatomic, strong) NSNumber *highEstimateCents;
+@property (nonatomic, strong) NSNumber *bidCount;
+@property (nonatomic, copy, readonly) NSNumber *lotNumber;
+@property (nonatomic, assign, readonly) ARAuctionState auctionState;
+@property (nonatomic, assign) ARReserveStatus reserveStatus;
+@property (nonatomic, strong, readonly) Artwork *artwork;
+
+@end
