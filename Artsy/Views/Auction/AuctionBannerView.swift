@@ -47,9 +47,14 @@ extension AuctionBannerView {
         }
         let darkeningView = DarkeningView()
         let logoImageView = UIImageView()
+
+
         let countdownView = ARCountdownView(color: .whiteColor()).then {
-            $0.targetDate = self.viewModel.closingDate
-            $0.heading = "Closing In"
+            let model = self.viewModel
+            let isNotOpenYes = model.saleAvailability == .NotYetOpen
+
+            $0.targetDate = isNotOpenYes ? model.startDate : model.closingDate
+            $0.heading = isNotOpenYes ? "Opening In" : "Closing In"
             
             if let _ = self.superview {
                 $0.startTimer()

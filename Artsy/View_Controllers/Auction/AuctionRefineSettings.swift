@@ -3,6 +3,10 @@ struct AuctionRefineSettings {
 
     let ordering: AuctionOrderingSwitchValue
     let range: Range
+
+    var hasEstimates: Bool {
+        return range.min != 0 && range.max != 0
+    }
 }
 
 extension AuctionRefineSettings {

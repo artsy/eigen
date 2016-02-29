@@ -102,7 +102,7 @@ private extension UISetup {
         stackView.addSubview(ARSeparatorView(), withTopMargin: "0", sideMargin: "0")
 
         // Price section
-        do {
+        if initialSettings.hasEstimates {
             stackView.addSubview(subtitleLabel("Price"), withTopMargin: "20", sideMargin: "40")
 
             let priceExplainLabel = ARSerifLabel().then {
