@@ -40,10 +40,24 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 
+NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
+
+
+@interface ARSwitchBoardDomain : NSObject
+@property (nonatomic, copy) id (^block)(NSURL *url);
+@property (nonatomic, copy) NSString *domain;
+@end
+
+
+@implementation ARSwitchBoardDomain
+@end
+
+
 @interface ARSwitchBoard ()
 
 @property (nonatomic, strong) JLRoutes *routes;
 @property (nonatomic, strong) Aerodramus *echo;
+@property (nonatomic, strong) NSArray<ARSwitchBoardDomain *> *domains;
 
 @end
 
@@ -82,6 +96,7 @@
 
     _routes = [[JLRoutes alloc] init];
     _echo = [[ArtsyEcho alloc] init];
+    _domains = @[];
 
     return self;
 }
@@ -188,6 +203,12 @@
         return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
+    Route *route = self.echo.routes[@"ARLiveFairsURLDomain"];
+    if (route) {
+        [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
+            return [[LiveAuctionViewController alloc] init];
+        }];
+    }
 
     // This route will match any single path component and thus should be added last.
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
@@ -225,6 +246,14 @@
     // - "JLRoute /:profile_id (0)",
     // which globs all root level paths
     [self.routes addRoute:path priority:1 handler:callback];
+}
+
+- (void)registerPathCallbackForDomain:(NSString *)domain callback:(id _Nullable (^)(NSURL *_Nonnull))callback
+{
+    ARSwitchBoardDomain *domainRoute = [[ARSwitchBoardDomain alloc] init];
+    domainRoute.domain = domain;
+    domainRoute.block = callback;
+    self.domains = [self.domains arrayByAddingObject:domainRoute];
 }
 
 - (BOOL)canRouteURL:(NSURL *)url
@@ -267,16 +296,31 @@
         return [self routeInternalURL:fixedURL fair:fair];
 
     } else if ([ARRouter isWebURL:url]) {
-        /// Is is a webpage we could open in webkit?
-        if (ARIsRunningInDemoMode) {
+        /// Is is a webpage we could open in webkit?, or need to break out to safari (see PR #1195)
+        if (ARIsRunningInDemoMode || [url.query containsString:AREscapeSandboxQueryString]) {
             [[UIApplication sharedApplication] openURL:url];
+            return nil;
         } else {
-            return [[ARExternalWebBrowserViewController alloc] initWithURL:url];
+            return [self viewControllerForUnroutedDomain:url];
         }
     }
+
     /// It's probably an app link, offer to jump out
     [self openURLInExternalService:url];
     return nil;
+}
+
+- (UIViewController *)viewControllerForUnroutedDomain:(NSURL *)url
+{
+    /// Allow objects to register for full domains when needed.
+    for (ARSwitchBoardDomain *domain in self.domains) {
+        if ([url.host isEqualToString:domain.domain]) {
+            return domain.block(url);
+        }
+    }
+
+    /// So, no Artsy path routes, and no app-wide domain routes.
+    return [[ARExternalWebBrowserViewController alloc] initWithURL:url];
 }
 
 - (void)openURLInExternalService:(NSURL *)url

@@ -28,12 +28,26 @@
 static AFHTTPSessionManager *staticHTTPClient = nil;
 static NSSet *artsyHosts = nil;
 
+static NSString *hostFromString(NSString *string)
+{
+    return [[NSURL URLWithString:string] host];
+}
+
 
 @implementation ARRouter
 
 + (void)setup
 {
-    artsyHosts = [NSSet setWithObjects:@"art.sy", @"artsyapi.com", @"artsy.net", @"m.artsy.net", @"staging.artsy.net", @"m-staging.artsy.net", nil];
+    NSString *productionHost = hostFromString(ARBaseDesktopWebURL);
+    NSString *productionMobile = hostFromString(ARBaseMobileWebURL);
+    NSString *productionAPI = hostFromString(ARBaseMobileWebURL);
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *stagingHost = hostFromString([defaults stringForKey:ARStagingPadWebURLDefault]);
+    NSString *stagingMobile = hostFromString([defaults stringForKey:ARStagingPhoneWebURLDefault]);
+    NSString *stagingAPI = hostFromString([defaults stringForKey:ARStagingAPIURLDefault]);
+
+    artsyHosts = [NSSet setWithArray:@[ @"artsy.net", productionAPI, productionHost, productionMobile, stagingAPI, stagingHost, stagingMobile ]];
 
     [ARRouter setupWithBaseApiURL:[ARRouter baseApiURL]];
 
@@ -48,7 +62,8 @@ static NSSet *artsyHosts = nil;
 + (NSURL *)baseApiURL
 {
     if ([AROptions boolForOption:ARUseStagingDefault]) {
-        return [NSURL URLWithString:ARStagingBaseApiURL];
+        NSString *stagingBaseAPI = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingAPIURLDefault];
+        return [NSURL URLWithString:stagingBaseAPI];
     } else {
         return [NSURL URLWithString:ARBaseApiURL];
     }
@@ -61,12 +76,16 @@ static NSSet *artsyHosts = nil;
 
 + (NSURL *)baseDesktopWebURL
 {
-    return [NSURL URLWithString:[AROptions boolForOption:ARUseStagingDefault] ? ARStagingBaseWebURL : ARBaseDesktopWebURL];
+    NSString *stagingBaseWebURL = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingPadWebURLDefault];
+    NSString *url = [AROptions boolForOption:ARUseStagingDefault] ? stagingBaseWebURL : ARBaseDesktopWebURL;
+    return [NSURL URLWithString:url];
 }
 
 + (NSURL *)baseMobileWebURL
 {
-    return [NSURL URLWithString:[AROptions boolForOption:ARUseStagingDefault] ? ARStagingBaseMobileWebURL : ARBaseMobileWebURL];
+    NSString *stagingBaseWebURL = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingPhoneWebURLDefault];
+    NSString *url = [AROptions boolForOption:ARUseStagingDefault] ? stagingBaseWebURL : ARBaseMobileWebURL;
+    return [NSURL URLWithString:url];
 }
 
 + (void)setupWithBaseApiURL:(NSURL *)baseApiURL
@@ -89,7 +108,9 @@ static NSSet *artsyHosts = nil;
     // but make sure that this is not a slip-up due to background fetch downloading
 
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-    if (![[ARUserManager sharedManager] hasExistingAccount] && state != UIApplicationStateBackground) {
+    ARUserManager *user = [ARUserManager sharedManager];
+
+    if (![user hasExistingAccount] && state != UIApplicationStateBackground) {
         [UICKeyChainStore removeItemForKey:AROAuthTokenDefault];
         [UICKeyChainStore removeItemForKey:ARXAppTokenKeychainKey];
     }
@@ -103,6 +124,10 @@ static NSSet *artsyHosts = nil;
         ARActionLog(@"Found trial XApp token in keychain");
         NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
         [ARRouter setXappToken:xapp];
+    }
+
+    if ([User isTrialUser]) {
+        [self setHTTPHeader:AREigenTrialUserIDHeader value:user.trialUserUUID];
     }
 }
 
@@ -164,6 +189,7 @@ static NSSet *artsyHosts = nil;
     if (![ARRouter isInternalURL:url]) {
         [request setValue:nil forHTTPHeaderField:ARAuthHeader];
         [request setValue:nil forHTTPHeaderField:ARXappHeader];
+        [request setValue:nil forHTTPHeaderField:AREigenTrialUserIDHeader];
     }
 
     return request;

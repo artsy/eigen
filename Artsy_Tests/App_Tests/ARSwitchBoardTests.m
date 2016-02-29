@@ -118,7 +118,16 @@ describe(@"ARSwitchboard", ^{
                 [switchboard loadURL:internalURL];
                 [switchboardMock verify];
             });
+        });
 
+        it(@"handles breaking out of the eigen routing sandbox when needed", ^{
+            id sharedAppMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+            [[sharedAppMock expect] openURL:OCMOCK_ANY];
+
+            NSURL *internalURL = [[NSURL alloc] initWithString:@"http://mysitethatmustbeopenedinsafari.com?eigen_escape_sandbox=true"];
+            [switchboard loadURL:internalURL];
+            
+            [sharedAppMock verify];
         });
 
         describe(@"with applewebdata urls", ^{
@@ -153,7 +162,6 @@ describe(@"ARSwitchboard", ^{
                 [switchboard loadURL:externalURL];
                 [switchboardMock verify];
             });
-
         });
     });
 
@@ -170,6 +178,30 @@ describe(@"ARSwitchboard", ^{
             expect([switchboard loadPath:@"thingy"]).to.equal(newVC);
         });
     });
+
+    describe(@"adding a new domain", ^{
+        it(@"supports adding via the register method", ^{
+            UIViewController *newVC = [[UIViewController alloc] init];
+            [switchboard registerPathCallbackForDomain:@"orta.artsy.net" callback:^id _Nullable(NSURL * _Nonnull url) {
+                return newVC;
+            }];
+
+            expect([switchboard loadURL:[NSURL URLWithString:@"https://orta.artsy.net/me/thing"]]).to.equal(newVC);
+        });
+
+        it(@"sends the URL in to the callback for the URL routing", ^{
+            UIViewController *newVC = [[UIViewController alloc] init];
+            __block NSString *path = nil;
+            [switchboard registerPathCallbackForDomain:@"orta.artsy.net" callback:^id _Nullable(NSURL * _Nonnull url) {
+                path = url.path;
+                return newVC;
+            }];
+
+            [switchboard loadURL:[NSURL URLWithString:@"https://orta.artsy.net/me/thing"]];
+            expect(path).to.equal(@"/me/thing");
+        });
+    });
+
 
     describe(@"routeInternalURL", ^{
         it(@"routes profiles", ^{
@@ -271,7 +303,7 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"routes artworks", ^{
-            id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artwork/artworkID"] fair:nil];
+            id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/artwork/artworkID"] fair:nil];
             expect(subject).to.beKindOf(ARArtworkSetViewController.class);
         });
 
@@ -282,11 +314,17 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"routes genes", ^{
-            id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
+            id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
             expect(subject).to.beAKindOf(ARGeneViewController.class);
         });
-    });
 
+        /// As the class is in swift-world, lets not complicate this by bridging when it's not important
+        it(@"routes live auctions", ^{
+            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net"]];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"LiveAuctionViewController");
+        });
+    });
 
     describe(@"routeProfileWithID", ^{
         __block id mockProfileVC;

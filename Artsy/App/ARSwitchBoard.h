@@ -37,6 +37,9 @@
 /// Allows other objects to hook into the switchboard
 - (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
 
+/// Allows other objects to hook into the switchboard at the URL level
+- (void)registerPathCallbackForDomain:(NSString *)domain callback:(id _Nullable (^)(NSURL *url))callback;
+
 /// Load a path relative to the baseURL through the router
 - (UIViewController *)loadPath:(NSString *)path;
 
@@ -44,10 +47,10 @@
 - (UIViewController *)loadPath:(NSString *)path fair:(Fair *_Nullable)fair;
 
 /// Send an URL through the router
-- (UIViewController *)loadURL:(NSURL *)url;
+- (UIViewController *_Nullable)loadURL:(NSURL *)url;
 
 /// Send an URL through the router with an optional fair object
-- (UIViewController *)loadURL:(NSURL *)url fair:(Fair *_Nullable)fair;
+- (UIViewController *_Nullable)loadURL:(NSURL *)url fair:(Fair *_Nullable)fair;
 
 /// Can the Switchboard handle a URL?
 - (BOOL)canRouteURL:(NSURL *)url;

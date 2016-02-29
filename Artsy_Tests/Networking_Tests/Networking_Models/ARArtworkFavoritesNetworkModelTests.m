@@ -6,8 +6,8 @@
 
 @interface ARFavoritesNetworkModel (Tests)
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
-@property (readwrite, nonatomic, assign) BOOL downloadLock;
-- (void)performNetworkRequestAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure;
+@property (atomic, weak) AFHTTPRequestOperation *currentRequest;
+- (AFHTTPRequestOperation *)requestOperationAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure;
 @end
 
 SpecBegin(ARArtworkFavoritesNetworkModel);
@@ -35,16 +35,15 @@ describe(@"init", ^{
 describe(@"getFavorites", ^{
     it(@"does not make request if another request is in progress", ^{
         id mock = [OCMockObject partialMockForObject:networkModel];
-        networkModel.downloadLock = YES;
-        [[[mock reject] ignoringNonObjectArgs] performNetworkRequestAtPage:0 withSuccess:OCMOCK_ANY failure:OCMOCK_ANY];
+        networkModel.currentRequest = (id)[OHHTTPStubs stubRequestsPassingTest:nil withStubResponse:nil];
+        [[[mock reject] ignoringNonObjectArgs] requestOperationAtPage:0 withSuccess:OCMOCK_ANY failure:OCMOCK_ANY];
         [mock getFavorites:nil failure:nil];
         [mock verify];
     });
 
     it(@"makes request if no request is in progress", ^{
         id mock = [OCMockObject partialMockForObject:networkModel];
-        networkModel.downloadLock = NO;
-        [[[mock expect]  ignoringNonObjectArgs] performNetworkRequestAtPage:0 withSuccess:OCMOCK_ANY failure:OCMOCK_ANY];
+        [[[mock expect]  ignoringNonObjectArgs] requestOperationAtPage:0 withSuccess:OCMOCK_ANY failure:OCMOCK_ANY];
         [networkModel getFavorites:nil failure:nil];
         [networkModel getFavorites:nil failure:nil];
         [mock verify];

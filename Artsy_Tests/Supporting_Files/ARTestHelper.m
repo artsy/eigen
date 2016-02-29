@@ -24,6 +24,8 @@
              NSStringFromCGSize(nativeResolution));
 
     ARPerformWorkAsynchronously = NO;
+
+    [ARDefaults setup];
     [ARRouter setup];
 
     // Disable this so that no actual changes are made to the index as side-effects of favoriting entities.

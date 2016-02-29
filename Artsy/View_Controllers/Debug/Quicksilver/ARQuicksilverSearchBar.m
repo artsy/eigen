@@ -1,7 +1,20 @@
 #import "ARQuicksilverSearchBar.h"
+#import <objc/runtime.h>
 
 
 @implementation ARQuicksilverSearchBar
+
+@dynamic upDownDelegate;
+
+- (void)setUpDownDelegate:(id<ARQuicksilverSearchBarDelegate>)upDownDelegate
+{
+    objc_setAssociatedObject(self, @selector(upDownDelegate), upDownDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (id<ARQuicksilverSearchBarDelegate>)upDownDelegate
+{
+    return objc_getAssociatedObject(self, @selector(upDownDelegate));
+}
 
 - (NSArray *)keyCommands
 {

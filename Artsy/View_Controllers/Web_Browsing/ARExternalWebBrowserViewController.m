@@ -158,7 +158,10 @@
         NSURL *URL = navigationAction.request.URL;
         ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
         if ([switchboard canRouteURL:URL]) {
-            [switchboard presentViewController:[switchboard loadURL:URL]];
+            UIViewController *controller = [switchboard loadURL:URL];
+            if (controller) {
+                [switchboard presentViewController:controller];
+            }
             return WKNavigationActionPolicyCancel;
         }
     }

@@ -1,7 +1,10 @@
 require 'yaml'
 require 'spaceship'
 
+APP_ID = "net.artsy.artsy"
+
 lane :ship_beta do
+  update_fastlane
   setup_for_app_store
   verify_pod_keys
 
@@ -58,6 +61,28 @@ lane :ship_beta do
           'What\'s new' => beta_readme
         },
         default_payloads: []
+end
+
+lane :deploy_latest_to_external do
+  readme_yaml = File.read("../CHANGELOG.yml")
+  readme_data = YAML.load(readme_yaml)
+
+  latest_version = readme_data["upcoming"]["version"]
+
+  id = CredentialsManager::AppfileConfig.try_fetch_value(:apple_id)
+  password = CredentialsManager::AccountManager.new(user: id).password
+  Spaceship::Tunes.login(id, password)
+  app = Spaceship::Tunes::Application.find APP_ID
+
+  raise "You have no internal builds for #{latest_version}" if app.build_trains.keys.count == 0
+  train = app.build_trains[latest_version]
+
+  train.client.submit_testflight_build_for_review!(
+    app_id: APP_ID,
+    train: train.version_string,
+    build_number: latest_version,
+    platform: "iphone"
+  )
 end
 
 ## We want to have a simpler version of Fastlane's match
