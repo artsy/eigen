@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
-#import "AREmbeddedModelsViewController.h"
+#import "ARWorksForYouNotificationView.h"
 
 
-@interface ARWorksForYouViewController : UIViewController
+@interface ARWorksForYouViewController : UIViewController <ARWorkForYouNotificationViewDelegate>
 
 @end

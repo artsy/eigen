@@ -8,6 +8,8 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARFonts.h"
 #import "ARReusableLoadingView.h"
+#import "ARWorksForYouNotificationView.h"
+#import "ARArtistViewController.h"
 
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>
@@ -70,57 +72,6 @@ static int ARLoadingIndicatorView = 1;
     [self getNextItemSet];
 }
 
-- (UIView *)viewBasedOnNotificationItem:(ARWorksForYouNotificationItem *)notificationItem
-{
-    ORStackView *worksByArtistView = [[ORStackView alloc] init];
-
-    ARSansSerifLabelWithChevron *artistNameLabel = [[ARSansSerifLabelWithChevron alloc] initWithFrame:CGRectZero];
-    artistNameLabel.text = notificationItem.artist.name;
-    artistNameLabel.textColor = [UIColor blackColor];
-    artistNameLabel.font = [UIFont sansSerifFontWithSize:14];
-
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    [df setDateFormat:@"MMM dd"];
-
-    // this is currently nil - TODO: fix
-    ARSansSerifLabel *dateLabel = [[ARSansSerifLabel alloc] initWithFrame:CGRectZero];
-    dateLabel.text = [df stringFromDate:notificationItem.date];
-    dateLabel.textColor = [UIColor lightGrayColor];
-    dateLabel.textAlignment = NSTextAlignmentRight;
-    dateLabel.font = [UIFont sansSerifFontWithSize:10];
-
-    ARSerifLabel *numberOfWorksAddedLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
-    numberOfWorksAddedLabel.text = notificationItem.formattedNumberOfWorks;
-    numberOfWorksAddedLabel.textColor = [UIColor lightGrayColor];
-    numberOfWorksAddedLabel.font = [UIFont serifFontWithSize:14];
-
-
-    ORSplitStackView *ssv = [[ORSplitStackView alloc] initWithLeftPredicate:@"200" rightPredicate:@"100"];
-    [ssv.leftStack addSubview:artistNameLabel withTopMargin:@"10" sideMargin:@"0"];
-    [ssv.rightStack addSubview:dateLabel withTopMargin:@"10" sideMargin:@"0"];
-
-    [worksByArtistView addSubview:ssv withTopMargin:@"10" sideMargin:@"30"];
-    [worksByArtistView addSubview:numberOfWorksAddedLabel withTopMargin:@"10" sideMargin:@"30"];
-
-    AREmbeddedModelsViewController *worksVC = [[AREmbeddedModelsViewController alloc] init];
-    [worksByArtistView addViewController:worksVC toParent:self withTopMargin:@"10" sideMargin:@"0"];
-
-    worksVC.delegate = self;
-    [worksVC setConstrainHeightAutomatically:YES];
-
-    if (notificationItem.artworks.count > 1) {
-        worksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout2Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
-    } else if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
-        worksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout3Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
-    } else {
-        worksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout1Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
-    }
-
-    [worksVC appendItems:notificationItem.artworks];
-
-
-    return worksByArtistView;
-}
 
 - (void)addSeparatorLine
 {
@@ -138,8 +89,16 @@ static int ARLoadingIndicatorView = 1;
 - (void)addNotificationItems:(NSArray *)items
 {
     [items each:^(ARWorksForYouNotificationItem *item) {
-        UIView *viewItem = [self viewBasedOnNotificationItem:item];
-        [self.view.stackView addSubview:viewItem withTopMargin:@"0" sideMargin:@"20"];
+        
+        // since this view controller will be handling all navigation, it should be the embedded VC delegate
+        AREmbeddedModelsViewController *worksVC = [[AREmbeddedModelsViewController alloc] init];
+        worksVC.delegate = self;
+        
+        // the embedded artworks view controller will then be added to the notification view stack
+        ARWorksForYouNotificationView *worksByArtistView = [[ARWorksForYouNotificationView alloc] initWithNotificationItem:item artworksViewController:worksVC];
+        worksByArtistView.delegate = self;
+        
+        [self.view.stackView addSubview:worksByArtistView withTopMargin:@"0" sideMargin:@"20"];
         
         // TODO: allDownloaded not set to YES yet at this stage, need to figure out where to do this
         if (!(item == items.lastObject && self.worksForYouNetworkModel.allDownloaded)) {
@@ -172,6 +131,11 @@ static int ARLoadingIndicatorView = 1;
     // will go in network model
 }
 
+- (void)artistTapped:(UIGestureRecognizer *)recognizer
+{
+    //    recognizer
+}
+
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -195,6 +159,17 @@ static int ARLoadingIndicatorView = 1;
     if ([self.view.stackView viewWithTag:ARLoadingIndicatorView]) {
         [self.view.stackView removeSubview:[self.view.stackView viewWithTag:ARLoadingIndicatorView]];
     }
+}
+
+- (void)didSelectArtist:(Artist *)artist
+{
+    [self didSelectArtist:artist animated:YES];
+}
+
+- (void)didSelectArtist:(Artist *)artist animated:(BOOL)animated
+{
+    ARArtistViewController *artistVC = [ARSwitchBoard.sharedInstance loadArtistWithID:artist.artistID];
+    [self.navigationController pushViewController:artistVC animated:animated];
 }
 
 #pragma mark - AREmbeddedViewController delegate methods

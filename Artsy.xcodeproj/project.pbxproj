@@ -565,6 +565,7 @@
 		8337688A1C80DEC700611262 /* ARWorksForYouNetworkModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 833768891C80DEC700611262 /* ARWorksForYouNetworkModelTests.m */; };
 		833D53C71C75DFA900D63ADB /* ARWorksForYouNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */; };
 		833D53CB1C760B5400D63ADB /* ARWorksForYouNotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */; };
+		83665E091C84A7B300FA5D77 /* ARWorksForYouNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83665E081C84A7B300FA5D77 /* ARWorksForYouNotificationView.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
@@ -1637,6 +1638,8 @@
 		833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNetworkModel.m; sourceTree = "<group>"; };
 		833D53C91C760B5400D63ADB /* ARWorksForYouNotificationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWorksForYouNotificationItem.h; sourceTree = "<group>"; };
 		833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNotificationItem.m; sourceTree = "<group>"; };
+		83665E071C84A7B300FA5D77 /* ARWorksForYouNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWorksForYouNotificationView.h; sourceTree = "<group>"; };
+		83665E081C84A7B300FA5D77 /* ARWorksForYouNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNotificationView.m; sourceTree = "<group>"; };
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		8B326C42C9FD28482DC62431 /* Pods_Artsy_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4254,6 +4257,8 @@
 				833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */,
 				6615518B1C75DD47007EE049 /* ARWorksForYouViewController.h */,
 				6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */,
+				83665E071C84A7B300FA5D77 /* ARWorksForYouNotificationView.h */,
+				83665E081C84A7B300FA5D77 /* ARWorksForYouNotificationView.m */,
 			);
 			path = WorksForYou;
 			sourceTree = "<group>";
@@ -5187,6 +5192,7 @@
 				342F9CDD0CDC753B394F3CFC /* Fair.m in Sources */,
 				342F9D3F000632CC30AC5260 /* ARNavigationButtonsViewController.m in Sources */,
 				60C1C3181C5FA34400EC98EE /* ARSerifNavigationViewController.m in Sources */,
+				83665E091C84A7B300FA5D77 /* ARWorksForYouNotificationView.m in Sources */,
 				342F9D9296B47F66184FA760 /* NSDate+DateRange.m in Sources */,
 				3C33298D18AD3324006D28C0 /* ARFairSearchViewController.m in Sources */,
 				3C9F215F18B25D0D00D8898B /* ARSearchViewController.m in Sources */,
