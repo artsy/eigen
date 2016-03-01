@@ -47,6 +47,7 @@ class ScrollingStickyHeaderView: UIView {
 
         titleLabel.then {
             $0.textAlignment = .Center
+            $0.font = UIFont.sansSerifFontWithSize(14)
             self.addSubview($0)
             $0.alignTopEdgeWithView(self, predicate: "4")
             $0.alignCenterXWithView(self, predicate: "0")
