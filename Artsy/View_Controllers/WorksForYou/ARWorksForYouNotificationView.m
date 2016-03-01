@@ -1,17 +1,15 @@
 #import "ARWorksForYouNotificationView.h"
 #import "Artist.h"
 #import "Artwork.h"
-#import "UIColor+DebugColours.h"
-
-#import <ORStackView/ORStackView.h>
-#import <ORStackView/ORSplitStackView.h>
-
 #import "ARLabelSubclasses.h"
 #import "ARFonts.h"
+
+#import <ORStackView/ORSplitStackView.h>
 
 
 @interface ARWorksForYouNotificationView ()
 @property (nonatomic, strong) ARWorksForYouNotificationItem *notificationItem;
+@property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
 @end
 
 
@@ -23,7 +21,13 @@
     if (!self) return nil;
 
     _notificationItem = notificationItem;
+    _artworksVC = artworksVC;
 
+    return self;
+}
+
+- (void)setupSubviews
+{
     ARSansSerifLabelWithChevron *artistNameLabel = [[ARSansSerifLabelWithChevron alloc] initWithFrame:CGRectZero];
     artistNameLabel.text = self.notificationItem.artist.name.uppercaseString;
     artistNameLabel.textColor = [UIColor blackColor];
@@ -38,13 +42,13 @@
 
     ARSansSerifLabel *dateLabel = [[ARSansSerifLabel alloc] initWithFrame:CGRectZero];
     dateLabel.text = [df stringFromDate:self.notificationItem.date];
-    dateLabel.textColor = [UIColor lightGrayColor];
+    dateLabel.textColor = [UIColor artsyHeavyGrey];
     dateLabel.textAlignment = NSTextAlignmentRight;
     dateLabel.font = [UIFont sansSerifFontWithSize:10];
 
     ARSerifLabel *numberOfWorksAddedLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     numberOfWorksAddedLabel.text = self.notificationItem.formattedNumberOfWorks;
-    numberOfWorksAddedLabel.textColor = [UIColor lightGrayColor];
+    numberOfWorksAddedLabel.textColor = [UIColor artsyHeavyGrey];
     numberOfWorksAddedLabel.font = [UIFont serifFontWithSize:14];
 
     ORSplitStackView *ssv = [[ORSplitStackView alloc] initWithLeftPredicate:@"200" rightPredicate:@"100"];
@@ -54,22 +58,20 @@
     [self addSubview:ssv withTopMargin:@"10" sideMargin:@"30"];
     [self addSubview:numberOfWorksAddedLabel withTopMargin:@"10" sideMargin:@"30"];
 
-    if (artworksVC) {
-        [artworksVC setConstrainHeightAutomatically:YES];
+    if (self.artworksVC) {
+        [self.artworksVC setConstrainHeightAutomatically:YES];
 
         if (self.notificationItem.artworks.count > 1) {
-            artworksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout2Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
+            self.artworksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout2Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
         } else if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
-            artworksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout3Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
+            self.artworksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout3Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
         } else {
-            artworksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout1Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
+            self.artworksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout1Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
         }
 
-        [artworksVC appendItems:self.notificationItem.artworks];
-        [self addViewController:artworksVC toParent:(id)artworksVC.delegate withTopMargin:@"10" sideMargin:@"0"];
+        [self.artworksVC appendItems:self.notificationItem.artworks];
+        [self addViewController:self.artworksVC toParent:(id)self.artworksVC.delegate withTopMargin:@"10" sideMargin:@"0"];
     }
-
-    return self;
 }
 
 - (void)artistNameTapped:(UIGestureRecognizer *)recognizer

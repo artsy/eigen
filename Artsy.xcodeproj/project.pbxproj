@@ -566,6 +566,7 @@
 		833D53C71C75DFA900D63ADB /* ARWorksForYouNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */; };
 		833D53CB1C760B5400D63ADB /* ARWorksForYouNotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */; };
 		83665E091C84A7B300FA5D77 /* ARWorksForYouNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83665E081C84A7B300FA5D77 /* ARWorksForYouNotificationView.m */; };
+		837CEC811C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC801C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
@@ -1640,6 +1641,7 @@
 		833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNotificationItem.m; sourceTree = "<group>"; };
 		83665E071C84A7B300FA5D77 /* ARWorksForYouNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWorksForYouNotificationView.h; sourceTree = "<group>"; };
 		83665E081C84A7B300FA5D77 /* ARWorksForYouNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNotificationView.m; sourceTree = "<group>"; };
+		837CEC801C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouViewControllerTests.m; sourceTree = "<group>"; };
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		8B326C42C9FD28482DC62431 /* Pods_Artsy_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2418,6 +2420,7 @@
 				3CCCC890189966E3008015DD /* Login and Onboarding */,
 				3CCCC88F189966CB008015DD /* Artwork */,
 				3CCCC88E189966C0008015DD /* Fair */,
+				837CEC7F1C84D75800A7E0E1 /* Works For You */,
 			);
 			name = "View Controller Tests";
 			path = View_Controller_Tests;
@@ -4263,6 +4266,14 @@
 			path = WorksForYou;
 			sourceTree = "<group>";
 		};
+		837CEC7F1C84D75800A7E0E1 /* Works For You */ = {
+			isa = PBXGroup;
+			children = (
+				837CEC801C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m */,
+			);
+			name = "Works For You";
+			sourceTree = "<group>";
+		};
 		B31BBE0F181EF9F7001C623C /* View Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -5387,6 +5398,7 @@
 				3CD3679F189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m in Sources */,
 				3CA55D8918BFF8F800B44CD3 /* MapFeatureTests.m in Sources */,
 				3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */,
+				837CEC811C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m in Sources */,
 				D3F69A4A1AC1F7CB007C65C9 /* ARDefaultsTests.m in Sources */,
 				51B4BA4B1C6A91260014A394 /* AuctionRefineViewControllerTests.swift in Sources */,
 				3CA1E8231884663E003C622D /* Bid+Extensions.m in Sources */,

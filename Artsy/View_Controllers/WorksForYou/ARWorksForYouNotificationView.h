@@ -17,4 +17,6 @@
 
 - (instancetype)initWithNotificationItem:(ARWorksForYouNotificationItem *)notificationItem artworksViewController:(AREmbeddedModelsViewController *)artworksVC;
 
+- (void)setupSubviews;
+
 @end

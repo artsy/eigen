@@ -1,13 +1,17 @@
 #import <Foundation/Foundation.h>
 
-@class ARWorksForYouNotificationItem, ARWorksForYouNetworkModel;
+@class ARWorksForYouNotificationItem;
 
+@protocol ARWorksForYouNetworkModelable <NSObject>
 
-@interface ARWorksForYouNetworkModel : NSObject
-
-@property (readonly, nonatomic, assign) BOOL allDownloaded;
+- (BOOL)allDownloaded;
 
 /// Returns an array of ARWorksForYouNotificationItems sorted by most recent publishing date
 - (void)getWorksForYou:(void (^_Nonnull)(NSArray<ARWorksForYouNotificationItem *> *_Nonnull))success failure:(void (^_Nullable)(NSError *_Nullable error))failure;
+
+@end
+
+
+@interface ARWorksForYouNetworkModel : NSObject <ARWorksForYouNetworkModelable>
 
 @end

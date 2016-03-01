@@ -18,13 +18,14 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 static int ARLoadingIndicatorView = 1;
+#import "ORStackView+ArtsyViews.h"
 
 
 @interface ARWorksForYouViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) ORStackScrollView *view;
 
-@property (nonatomic, strong, readonly) ARWorksForYouNetworkModel *worksForYouNetworkModel;
+@property (nonatomic, strong, readwrite) id<ARWorksForYouNetworkModelable> worksForYouNetworkModel;
 
 @end
 
@@ -36,6 +37,9 @@ static int ARLoadingIndicatorView = 1;
 - (void)loadView
 {
     self.view = [[ORStackScrollView alloc] init];
+    self.view.stackView.bottomMarginHeight = 20;
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -49,15 +53,7 @@ static int ARLoadingIndicatorView = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.view.directionalLockEnabled = YES;
-    self.view.delegate = self;
-
-    _worksForYouNetworkModel = [[ARWorksForYouNetworkModel alloc] init];
-
-    [self.view.stackView alignLeading:@"20" trailing:@"20" toView:self.view];
-    [self.view.stackView alignTopEdgeWithView:self.view predicate:@"20"];
+    _worksForYouNetworkModel = _worksForYouNetworkModel ?: [[ARWorksForYouNetworkModel alloc] init];
 
 
     ARSerifLabel *titleLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
@@ -97,6 +93,8 @@ static int ARLoadingIndicatorView = 1;
         // the embedded artworks view controller will then be added to the notification view stack
         ARWorksForYouNotificationView *worksByArtistView = [[ARWorksForYouNotificationView alloc] initWithNotificationItem:item artworksViewController:worksVC];
         worksByArtistView.delegate = self;
+        
+        [worksByArtistView setupSubviews];
         
         [self.view.stackView addSubview:worksByArtistView withTopMargin:@"0" sideMargin:@"20"];
         
