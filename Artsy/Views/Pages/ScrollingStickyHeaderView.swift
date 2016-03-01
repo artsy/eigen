@@ -21,6 +21,7 @@ class ScrollingStickyHeaderView: UIView {
 
     init() {
         button = ARWhiteFlatButton().then {
+            $0.titleLabel?.font = UIFont.sansSerifFontWithSize(12)
             $0.setBorderColor(.artsyLightGrey(), forState: .Normal)
             $0.setBorderColor(UIColor.artsyLightGrey().colorWithAlphaComponent(0.5), forState: .Disabled)
             $0.layer.borderWidth = 1;
@@ -39,8 +40,8 @@ class ScrollingStickyHeaderView: UIView {
         button.then {
             self.addSubview($0)
             self.trailingConstraints = $0.alignTrailingEdgeWithView(self, predicate: "-20")
-            $0.alignBottomEdgeWithView(self, predicate: "-15")
-            $0.constrainHeight("24")
+            $0.alignBottomEdgeWithView(self, predicate: "-13")
+            $0.constrainHeight("30")
             $0.ar_extendHitTestSizeByWidth(0, andHeight: 10)
             $0.constrainWidth("60")
         }
