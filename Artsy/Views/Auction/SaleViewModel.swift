@@ -44,7 +44,7 @@ extension SaleViewModel {
     }
 
     var isUpcomingAndHasNoLots: Bool {
-        return saleAvailability == .NotYetOpen && saleArtworks.count == 0
+        return saleAvailability == .NotYetOpen && numberOfLots == 0
     }
 
     var numberOfLots: Int {

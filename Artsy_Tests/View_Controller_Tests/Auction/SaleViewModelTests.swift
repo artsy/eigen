@@ -81,14 +81,14 @@ class SaleViewModelTests: QuickSpec {
             let sale = testSaleWithDates(NSDate.distantFuture(), end: NSDate.distantFuture())
             let subject = SaleViewModel(sale: sale, saleArtworks: [])
 
-            expect(subject.saleAvailability) == SaleAvailabilityState.Closed
+            expect(subject.saleAvailability) == SaleAvailabilityState.NotYetOpen
         }
 
         it("deals with auctions that have finished ") {
             let sale = testSaleWithDates(NSDate.distantPast(), end: NSDate.distantPast())
             let subject = SaleViewModel(sale: sale, saleArtworks: [])
 
-            expect(subject.saleAvailability) == SaleAvailabilityState.NotYetOpen
+            expect(subject.saleAvailability) == SaleAvailabilityState.Closed
         }
 
         it("deals with auctions that are active ") {
