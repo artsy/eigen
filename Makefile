@@ -29,10 +29,6 @@ next: update_bundle_version set_git_properties change_version_to_date
 
 ### General setup
 
-bundler:
-	gem install bundler
-	bundle install
-
 oss:
 	bundle exec pod keys set "ArtsyAPIClientSecret" "3a33d2085cbd1176153f99781bbce7c6" Artsy
 	bundle exec pod keys set "ArtsyAPIClientKey" "e750db60ac506978fc70"
