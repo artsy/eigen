@@ -15,30 +15,34 @@ typedef NS_ENUM(NSInteger, ARReserveStatus) {
     ARReserveStatusReserveMet
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 
 @interface SaleArtwork : MTLModel <MTLJSONSerializing>
 
-- (BidderPosition *)userMaxBidderPosition;
+- (BidderPosition *_Nullable)userMaxBidderPosition;
 - (BOOL)hasEstimate;
 - (NSString *)estimateString;
 - (NSString *)numberOfBidsString;
 - (NSString *)highestOrStartingBidString;
 
 @property (nonatomic, copy, readonly) NSString *saleArtworkID;
-@property (nonatomic, strong) Sale *auction;
-@property (nonatomic, strong) Bidder *bidder;
-@property (nonatomic, strong) Bid *saleHighestBid;
+@property (nonatomic, strong) Sale *_Nullable auction;
+@property (nonatomic, strong) Bidder *_Nullable bidder;
+@property (nonatomic, strong) Bid *_Nullable saleHighestBid;
 @property (nonatomic, strong) NSNumber *artworkNumPositions;
-@property (nonatomic, strong) BidderPosition *userBidderPosition;
+@property (nonatomic, strong) BidderPosition *_Nullable userBidderPosition;
 @property (nonatomic, strong) NSArray *positions;
-@property (nonatomic, strong) NSNumber *openingBidCents;
+@property (nonatomic, strong) NSNumber *_Nullable openingBidCents;
 @property (nonatomic, strong) NSNumber *minimumNextBidCents;
-@property (nonatomic, strong) NSNumber *lowEstimateCents;
-@property (nonatomic, strong) NSNumber *highEstimateCents;
-@property (nonatomic, strong) NSNumber *bidCount;
-@property (nonatomic, copy, readonly) NSNumber *lotNumber;
+@property (nonatomic, strong) NSNumber *_Nullable lowEstimateCents;
+@property (nonatomic, strong) NSNumber *_Nullable highEstimateCents;
+@property (nonatomic, strong) NSNumber *_Nullable bidCount;
+@property (nonatomic, copy, readonly) NSNumber *_Nullable lotNumber;
 @property (nonatomic, assign, readonly) ARAuctionState auctionState;
 @property (nonatomic, assign) ARReserveStatus reserveStatus;
 @property (nonatomic, strong, readonly) Artwork *artwork;
 
 @end
+
+NS_ASSUME_NONNULL_END

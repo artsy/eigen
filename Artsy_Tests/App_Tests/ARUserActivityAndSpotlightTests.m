@@ -10,6 +10,7 @@
 #import <SDWebImage/SDWebImageManager.h>
 #import <SDWebImage/SDWebImageDownloader.h>
 
+
 @interface ARSpotlight (Private)
 + (NSMutableSet *)indexedEntities;
 + (void)indexFavoritesPass:(NSMutableArray *)networkModels
@@ -30,7 +31,7 @@ StubThumbnailAtURL(id imageDownloaderMock, NSURL *URL)
                                            completed:[OCMArg checkWithBlock:^BOOL(SDWebImageCompletionWithFinishedBlock completionBlock) {
         completionBlock([UIImage imageNamed:@"AttentionIcon"], nil, 0, YES, nil);
         return YES;
-    }]];
+                                           }]];
 }
 
 
@@ -494,6 +495,89 @@ describe(@"With a Gene", ^{
         });
     });
 });
+
+describe(@"With a Sale", ^{
+    beforeEach(^{
+        model = [Sale modelWithJSON:@{
+            @"id": @"some-auction",
+            @"name": @"That Auction",
+            @"description" : @"Info about the auction",
+            @"start_at": @"1976-01-30T15:00:00+00:00",
+            @"end_at": @"1976-02-02T15:00:00+00:00",
+            @"image_url": @"https://localhost/image/:version.jpg",
+            @"image_versions": @[@"small", @"square", @"large"],
+            @"profile": @{
+                @"id" : @"sale-profile",
+                @"icon" : @{
+                    @"image_urls" : @{ @"square" : @"http://localhost/thumbnail.jpg" }
+                }
+            }
+        }];
+        webpageURL = [NSURL URLWithString:@"https://www.artsy.net/auction/some-auction"];
+        StubThumbnailAtURL(imageDownloaderMock, [model spotlightThumbnailURL]);
+    });
+
+    describe(@"concerning Spotlight attributes set generation", ^{
+        beforeEach(^{
+            attributeSet = [ARSpotlight searchAttributesForEntity:model
+                                                includeIdentifier:YES
+                                                       completion:^(CSSearchableItemAttributeSet *_) {}];
+        });
+
+        it(@"includes the URL as the identifier", ^{
+            expect(attributeSet.relatedUniqueIdentifier).to.equal(webpageURL.absoluteString);
+        });
+
+        it(@"includes the show’s name", ^{
+            expect(attributeSet.title).to.equal(@"That Auction");
+        });
+
+        xit(@"includes a thumbnail", ^{
+            expect(attributeSet.thumbnailData).to.equal(UIImagePNGRepresentation([UIImage imageNamed:@"AttentionIcon"]));
+        });
+
+        it(@"includes the date range of when the show is running", ^{
+            expect(attributeSet.startDate).to.equal([model startDate]);
+            expect(attributeSet.endDate).to.equal([model endDate]);
+        });
+
+        it(@"includes a description with the show’s location", ^{
+            expect(attributeSet.contentDescription).to.equal(@"That Auction\nInfo about the auction\n");
+        });
+    });
+
+    describe(@"concerning NSUserActivity generation", ^{
+        beforeEach(^{
+            activity = [ARUserActivity activityForEntity:model];
+        });
+
+        it(@"includes the URL", ^{
+            expect(activity.webpageURL).to.equal(webpageURL);
+        });
+
+        it(@"includes the show’s name", ^{
+            expect(activity.title).to.equal(@"That Auction");
+        });
+        
+        it(@"includes additional metadata", ^{
+            expect(activity.userInfo).to.equal(@{@"id": @"some-auction" });
+        });
+        
+        it(@"is eligible for everything", ^{
+            expect(activity.isEligibleForPublicIndexing).to.beTruthy();
+            expect(activity.isEligibleForSearch).to.beTruthy();
+            expect(activity.isEligibleForHandoff).to.beTruthy();
+        });
+        
+        it(@"includes the Spotlight attributes set, minus the identifier", ^{
+            attributeSet = [ARSpotlight searchAttributesForEntity:model
+                                                includeIdentifier:NO
+                                                       completion:^(CSSearchableItemAttributeSet *_) {}];
+            expect(activity.contentAttributeSet.description).to.equal(attributeSet.description);
+        });
+    });
+});
+
 
 describe(@"Indexing favourites", ^{
     __block id spotlightClassMock = nil;

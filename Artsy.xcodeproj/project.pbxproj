@@ -1308,6 +1308,7 @@
 		604166AF16C1D46F00CFBD2F /* ArtsyAPI+CurrentUserFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+CurrentUserFunctions.h"; sourceTree = "<group>"; };
 		604166B016C1D47000CFBD2F /* ArtsyAPI+CurrentUserFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+CurrentUserFunctions.m"; sourceTree = "<group>"; };
 		604166B316C1D55000CFBD2F /* ArtsyAPI+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Private.h"; sourceTree = "<group>"; };
+		6042979F1C84D08E0040F4C2 /* Eigen.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Eigen.playground; sourceTree = "<group>"; };
 		60431FB618042A1E000118D7 /* ARAppNotificationsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppNotificationsDelegate.h; sourceTree = "<group>"; };
 		60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegate.m; sourceTree = "<group>"; };
 		60431FB918042E63000118D7 /* ARAppBackgroundFetchDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppBackgroundFetchDelegate.h; sourceTree = "<group>"; };
@@ -2735,6 +2736,7 @@
 				60327DCA1987AD140075B399 /* Tooling */,
 				608B2F5A1657CED10046956C /* View Controllers */,
 				608B2F821657D4780046956C /* Views */,
+				6042979F1C84D08E0040F4C2 /* Eigen.playground */,
 			);
 			path = Artsy;
 			sourceTree = "<group>";

@@ -22,6 +22,7 @@ struct AuctionInformation {
 class AuctionInformationViewController : UIViewController {
     var titleViewDelegate: AuctionTitleViewDelegate?
     var saleViewModel: SaleViewModel
+
     let FAQEntries: [AuctionInformation.FAQEntry]
 
     var scrollView: ORStackScrollView
@@ -118,6 +119,20 @@ class AuctionInformationViewController : UIViewController {
         }
     }
 }
+
+private typealias UIActivitySetup = AuctionInformationViewController
+extension UIActivitySetup {
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        saleViewModel.registerSaleAsActiveActivity(self)
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        userActivity?.invalidate()
+    }
+}
+
 
 private typealias MailCompositionCallbacks = AuctionInformationViewController
 extension MailCompositionCallbacks: MFMailComposeViewControllerDelegate {
