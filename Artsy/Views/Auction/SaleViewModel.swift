@@ -31,7 +31,7 @@ extension SaleViewModel {
 
     var saleAvailability : SaleAvailabilityState {
         if sale.isCurrentlyActive() { return .Active }
-        if sale.startDate.laterDate(NSDate()) != sale.startDate { return .NotYetOpen }
+        if sale.startDate.laterDate(NSDate()) == sale.startDate { return .NotYetOpen }
         return .Closed
     }
 
@@ -41,6 +41,10 @@ extension SaleViewModel {
 
     var closingDate: NSDate {
         return sale.endDate
+    }
+
+    var isUpcomingAndHasNoLots: Bool {
+        return saleAvailability == .NotYetOpen && saleArtworks.count == 0
     }
 
     var numberOfLots: Int {

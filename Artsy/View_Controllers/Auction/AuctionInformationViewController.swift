@@ -22,6 +22,7 @@ struct AuctionInformation {
 class AuctionInformationViewController : UIViewController {
     var titleViewDelegate: AuctionTitleViewDelegate?
     var saleViewModel: SaleViewModel
+
     let FAQEntries: [AuctionInformation.FAQEntry]
 
     var scrollView: ORStackScrollView

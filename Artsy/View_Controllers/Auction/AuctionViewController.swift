@@ -41,23 +41,6 @@ class AuctionViewController: UIViewController {
         return nil
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        headerStack = ORTagBasedAutoStackView()
-        saleArtworksViewController = ARModelInfiniteScrollViewController()
-
-        ar_addAlignedModernChildViewController(saleArtworksViewController)
-
-        // Disable the vertical offset for status bar.
-        automaticallyAdjustsScrollViewInsets = false
-        saleArtworksViewController.automaticallyAdjustsScrollViewInsets = false
-
-        saleArtworksViewController.headerStackView = headerStack
-        saleArtworksViewController.showTrailingLoadingIndicator = false
-        saleArtworksViewController.delegate = self
-    }
-
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -67,7 +50,14 @@ class AuctionViewController: UIViewController {
         self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
         
         self.networkModel.fetch().next { [weak self] saleViewModel in
-            self?.setupForSale(saleViewModel)
+
+            if saleViewModel.isUpcomingAndHasNoLots {
+                self?.setupForUpcomingSale(saleViewModel)
+            } else {
+                self?.setupForSale(saleViewModel)
+            }
+
+
             saleViewModel.registerSaleAsActiveActivity(self)
         }.error { error in
             // TODO: Error-handling somehow
@@ -114,8 +104,32 @@ class AuctionViewController: UIViewController {
 
 extension AuctionViewController {
 
+    func setupForUpcomingSale(saleViewModel: SaleViewModel) {
+
+        let auctionInfoVC = AuctionInformationViewController(saleViewModel: saleViewModel)
+
+        auctionInfoVC.titleViewDelegate = self
+        ar_addAlignedModernChildViewController(auctionInfoVC)
+
+        let bannerView = AuctionBannerView(viewModel: saleViewModel)
+        bannerView.tag = ViewTags.Banner.rawValue
+        auctionInfoVC.scrollView.stackView.insertSubview(bannerView, atIndex: 0, withTopMargin:"0", sideMargin: "0")
+    }
+
     func setupForSale(saleViewModel: SaleViewModel) {
-        // artworksViewController.spotlightEntity = saleViewModel.sale
+
+        headerStack = ORTagBasedAutoStackView()
+        saleArtworksViewController = ARModelInfiniteScrollViewController()
+
+        ar_addAlignedModernChildViewController(saleArtworksViewController)
+
+        // Disable the vertical offset for status bar.
+        automaticallyAdjustsScrollViewInsets = false
+        saleArtworksViewController.automaticallyAdjustsScrollViewInsets = false
+
+        saleArtworksViewController.headerStackView = headerStack
+        saleArtworksViewController.showTrailingLoadingIndicator = false
+        saleArtworksViewController.delegate = self
 
         self.saleViewModel = saleViewModel
 
