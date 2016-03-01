@@ -133,7 +133,6 @@ extension UIActivitySetup {
 }
 
 
-
 private typealias MailCompositionCallbacks = AuctionInformationViewController
 extension MailCompositionCallbacks: MFMailComposeViewControllerDelegate {
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
