@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)numberOfBidsString;
 - (NSString *)highestOrStartingBidString;
 
+// This exposes it to LiveAuctionLot
++ (NSValueTransformer *)reserveStatusJSONTransformer;
+
 @property (nonatomic, copy, readonly) NSString *saleArtworkID;
 @property (nonatomic, strong) Sale *_Nullable auction;
 @property (nonatomic, strong) Bidder *_Nullable bidder;

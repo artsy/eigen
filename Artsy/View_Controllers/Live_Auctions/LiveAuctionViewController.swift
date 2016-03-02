@@ -10,9 +10,14 @@ import Then
 class LiveAuctionViewController: UIViewController {
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
     let auctionDelegate = LiveAuctionSaleLotsDelegate()
+    let salesPerson = LiveAuctionsSalesPerson()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        salesPerson.setup()
+        auctionDataSource.salesPerson = salesPerson
+        auctionDelegate.salesPerson = salesPerson
 
         view.backgroundColor = .whiteColor()
 
@@ -21,8 +26,8 @@ class LiveAuctionViewController: UIViewController {
 
         // TODO: make a smaller ARCircularActionButton?
         // Also this entire thing should become a view
-        let buttons:[UIView] = ["Chat", "Lots", "Info", "Close"].map { name in
-            let button = ARCircularActionButton(imageName: "\(name)_Icon")
+        let buttons:[UIView] = ["chat", "lots", "info", "close"].map { name in
+            let button = ARCircularActionButton(imageName: "\(name)_icon")
             return button
         }
 
@@ -112,6 +117,7 @@ class LiveAuctionViewController: UIViewController {
 }
 
 class LiveAuctionSaleLotsDelegate : NSObject, UICollectionViewDelegate {
+    var salesPerson: LiveAuctionsSalesPerson!
 
     // Notes to self around imaging positions:
     //
@@ -121,12 +127,22 @@ class LiveAuctionSaleLotsDelegate : NSObject, UICollectionViewDelegate {
 
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         cell.backgroundColor = .debugColourGreen()
+        let imageView = UIImageView()
+        imageView.contentMode = .ScaleAspectFit
+
+        guard let lot = salesPerson.lotForIndexPath(indexPath) else { return }
+
+        imageView.ar_setImageWithURL(lot.urlForThumbnail())
+        cell.contentView.addSubview(imageView)
+        imageView.frame = cell.contentView.bounds
     }
 }
 
 class LiveAuctionSaleLotsDataSource : NSObject, UICollectionViewDataSource {
+    var salesPerson: LiveAuctionsSalesPerson!
+
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return salesPerson.lotCount
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -152,9 +168,37 @@ class SimpleProgressView : UIView {
         backgroundColor!.set()
         bg.fill()
 
-        var progressRect = CGRect(x: 0, y: 0, width: Int(bounds.width * progress), height: Int(bounds.height))
+        let progressRect = CGRect(x: 0, y: 0, width: Int(bounds.width * progress), height: Int(bounds.height))
         let fg = UIBezierPath(rect: progressRect)
         highlightColor.set()
         fg.fill()
+    }
+}
+
+/// Something to pretend to either be a network model or whatever
+/// for now it can just parse the embedded json, and move it to obj-c when we're doing rela networking
+
+class LiveAuctionsSalesPerson : NSObject {
+    private var lots : [LiveAuctionLot] = []
+    private var sale : Sale!
+
+    var lotCount: Int {
+        return lots.count
+    }
+
+    func lotForIndexPath(index: NSIndexPath) -> LiveAuctionLot? {
+        return lots[index.row]
+    }
+
+    func setup() {
+        let jsonPath = NSBundle.mainBundle().pathForResource("live_actions", ofType: "json")
+        let jsonData = NSData(contentsOfFile: jsonPath!)!
+        let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
+
+        guard let lots = json["lots"] as? [String: [String: AnyObject]] else { return }
+        guard let sale = json["sale"] as? [String: AnyObject] else { return }
+
+        self.sale = Sale(JSON: sale)
+        self.lots = lots.values.map { LiveAuctionLot(JSON: $0) }
     }
 }

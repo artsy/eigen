@@ -2,43 +2,31 @@
 
 #import "ARAppConstants.h"
 #import "Sale.h"
-#import "Bidder.h"
-#import "BidderPosition.h"
-#import "Bid.h"
-#import "ARAppConstants.h"
+#import "SaleArtwork.h"
 
 @class Artwork;
-
-typedef NS_ENUM(NSInteger, ARReserveStatus) {
-    ARReserveStatusNoReserve,
-    ARReserveStatusReserveNotMet,
-    ARReserveStatusReserveMet
-};
 
 
 @interface LiveAuctionLot : MTLModel <MTLJSONSerializing>
 
-- (BidderPosition *)userMaxBidderPosition;
-- (BOOL)hasEstimate;
-- (NSString *)estimateString;
-- (NSString *)numberOfBidsString;
-- (NSString *)highestOrStartingBidString;
+- (NSURL *)urlForThumbnail;
 
-@property (nonatomic, copy, readonly) NSString *saleArtworkID;
-@property (nonatomic, strong) Sale *auction;
-@property (nonatomic, strong) Bidder *bidder;
-@property (nonatomic, strong) Bid *saleHighestBid;
-@property (nonatomic, strong) NSNumber *artworkNumPositions;
-@property (nonatomic, strong) BidderPosition *userBidderPosition;
-@property (nonatomic, strong) NSArray *positions;
-@property (nonatomic, strong) NSNumber *openingBidCents;
-@property (nonatomic, strong) NSNumber *minimumNextBidCents;
-@property (nonatomic, strong) NSNumber *lowEstimateCents;
-@property (nonatomic, strong) NSNumber *highEstimateCents;
-@property (nonatomic, strong) NSNumber *bidCount;
-@property (nonatomic, copy, readonly) NSNumber *lotNumber;
-@property (nonatomic, assign, readonly) ARAuctionState auctionState;
-@property (nonatomic, assign) ARReserveStatus reserveStatus;
-@property (nonatomic, strong, readonly) Artwork *artwork;
+@property (nonatomic, copy, readonly) NSString *artworkTitle;
+@property (nonatomic, copy, readonly) NSString *artistName;
+
+@property (nonatomic, copy, readonly) NSDictionary *imageDictionary;
+
+@property (nonatomic, copy, readonly) NSString *liveAuctionID;
+@property (nonatomic, copy, readonly) NSNumber *position;
+
+@property (nonatomic, assign, readonly) ARReserveStatus reserveStatus;
+
+@property (nonatomic, copy, readonly) NSString *currency;
+@property (nonatomic, copy, readonly) NSString *currencySymbol;
+
+@property (nonatomic, assign, readonly) NSInteger lowEstimateCents;
+@property (nonatomic, assign, readonly) NSInteger highEstimateCents;
+@property (nonatomic, assign, readonly) NSInteger askingPriceCents;
+@property (nonatomic, assign, readonly) NSInteger onlineAskingPriceCents;
 
 @end

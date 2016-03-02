@@ -30,6 +30,7 @@
 #import "Artwork.h"
 #import "Artist.h"
 #import "Profile.h"
+#import "LiveAuctionLot.h"
 
 #import "Artwork.h"
 #import "AREmbeddedModelsViewController.h"
@@ -55,4 +56,5 @@
 #import "ARSwitchBoard.h"
 #import "ARTrialController.h"
 
+#import "MTLModel+JSON.h"
 #import "ARCustomEigenLabels.h"
