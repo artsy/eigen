@@ -1,5 +1,5 @@
 #import "ARWorksForYouNetworkModel.h"
-#import "ArtsyAPI+Artworks.h"
+#import "ArtsyAPI+Notifications.h"
 #import "User.h"
 #import "ARWorksForYouNotificationItem.h"
 #import "Artwork.h"
@@ -83,5 +83,17 @@
     } failure:failure];
 }
 
+- (void)markNotificationsRead
+{
+    [self markNotificationsReadWithSuccess:^(id __) {
+    } failure:^(id __){
+    }];
+}
+
+- (void)markNotificationsReadWithSuccess:(void (^)(id response))success
+                                 failure:(void (^)(NSError *error))failure
+{
+    [ArtsyAPI markUserNotificationsReadWithSuccess:success failure:failure];
+}
 
 @end
