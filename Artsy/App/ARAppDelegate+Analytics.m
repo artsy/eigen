@@ -22,6 +22,7 @@
 #import "PartnerShow.h"
 #import "Profile.h"
 #import "ARFairMapAnnotation.h"
+#import "ARAnalyticsVisualizer.h"
 
 // View Controllers
 #import "ARFairGuideViewController.h"
@@ -119,6 +120,10 @@
         return !heartedShouldFireBlock(controller, parameters);
     };
 
+    ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
+    [ARAnalytics setupProvider: visualizer];
+    
+    
     [ARAnalytics setupWithAnalytics:
     @{
         ARHockeyAppBetaID: @"306e66bde3cb91a2043f2606cf335700",

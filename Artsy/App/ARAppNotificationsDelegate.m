@@ -140,7 +140,7 @@
             return window;
         }
     }
-    return NULL;
+    return nil;
 }
 
 @end

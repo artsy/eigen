@@ -183,6 +183,7 @@
 		3CFB079118EB585B00792024 /* ARTile+ASCII.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFB079018EB585B00792024 /* ARTile+ASCII.m */; };
 		3CFBE32D18C3A3F400C781D0 /* ARNetworkErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFBE32C18C3A3F400C781D0 /* ARNetworkErrorView.m */; };
 		3CFBE33618C5848900C781D0 /* ARFileUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */; };
+		4191F43F1C8745D90054F823 /* ARAnalyticsVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */; };
 		491A4DE2168E4343003B2246 /* Gene.m in Sources */ = {isa = PBXBuildFile; fileRef = 491A4DE1168E4343003B2246 /* Gene.m */; };
 		4938742917BD512700724795 /* ARSignUpSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938742717BD512700724795 /* ARSignUpSplashViewController.m */; };
 		4938743617BDB2CD00724795 /* ARCrossfadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938743517BDB2CD00724795 /* ARCrossfadingImageView.m */; };
@@ -974,6 +975,8 @@
 		3CFBE32C18C3A3F400C781D0 /* ARNetworkErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNetworkErrorView.m; sourceTree = "<group>"; };
 		3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFileUtilsTests.m; sourceTree = "<group>"; };
 		3E3863837F2518AB37D2D9CF /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
+		4191F43D1C8745D90054F823 /* ARAnalyticsVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsVisualizer.h; sourceTree = "<group>"; };
+		4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsVisualizer.m; sourceTree = "<group>"; };
 		4917819D176A6B22001E751E /* ARArtworkSetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARArtworkSetViewController.h; sourceTree = "<group>"; };
 		4917819E176A6B22001E751E /* ARArtworkSetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARArtworkSetViewController.m; sourceTree = "<group>"; };
 		491A4DE0168E4343003B2246 /* Gene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gene.h; sourceTree = "<group>"; };
@@ -3898,6 +3901,8 @@
 			isa = PBXGroup;
 			children = (
 				60F63AB61C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift */,
+				4191F43D1C8745D90054F823 /* ARAnalyticsVisualizer.h */,
+				4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */,
 				5EFE2BE21910FC81003B5EEA /* ARAppDelegate+Analytics.h */,
 				5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */,
 				6088B75217D1DBAC00E4BB67 /* ARAnalyticsConstants.h */,
@@ -4949,6 +4954,7 @@
 				60A309AD1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m in Sources */,
 				3CEE0B6518A16F7D00FEA6E6 /* ArtsyAPI+Artists.m in Sources */,
 				607D756B17C3816600CA1D41 /* ArtsyAPI+ListCollection.m in Sources */,
+				4191F43F1C8745D90054F823 /* ARAnalyticsVisualizer.m in Sources */,
 				3C7880BC18B9081C00595E30 /* ARNotificationView.m in Sources */,
 				B3DDE9C118313C7C0012819F /* ARArtworkAuctionPriceView.m in Sources */,
 				54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */,
