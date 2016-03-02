@@ -20,6 +20,7 @@
 @property (nonatomic, strong) ARAspectRatioImageView *artworkImageView;
 @property (nonatomic, strong) ARSansSerifLabel *lotNumberLabel;
 @property (nonatomic, strong) ARSerifLabel *artistNameLabel;
+// TODO: Should this be a ARArtworkTitleLabel? ( should it show a date? )
 @property (nonatomic, strong) ARSerifLabel *artworkNameLabel;
 @property (nonatomic, strong) ARSerifLabel *currentOrStartingBidLabel;
 

@@ -6,7 +6,7 @@
 #import "ARSystemTime.h"
 #import "ARLogger.h"
 
-// For its number formatter
+// For a number formatter
 @import Artsy_UILabels;
 
 static NSNumberFormatter *dollarFormatter;
