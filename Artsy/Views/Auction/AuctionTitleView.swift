@@ -127,6 +127,11 @@ private extension AuctionTitleView {
     func bottomView() -> UIView {
         let container = UIView()
 
+        // Closed auctions shouldn't show a Register Button
+        if viewModel.saleAvailability == .Closed {
+            return container
+        }
+
         // We're assuming a missing registration status means that the user isn't registered. We'll let our delegate handle the interaction for that.
         let needsToRegister = (registrationStatus ?? ArtsyAPISaleRegistrationStatusNotRegistered) != ArtsyAPISaleRegistrationStatusRegistered
 

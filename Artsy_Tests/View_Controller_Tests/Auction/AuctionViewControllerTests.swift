@@ -238,6 +238,25 @@ class AuctionViewControllerTests: QuickSpec {
 
             dateMock.stopMocking()
         }
+
+        it("looking correct when an auction is closed") {
+            let exact_now_past = ISO8601DateFormatter().dateFromString("2015-11-24T10:00:00+00:00")!
+            let start = exact_now_past.dateByAddingTimeInterval(3600.9)
+            let end = exact_now_past.dateByAddingTimeInterval(3700.9)
+
+            sale = try! Sale(dictionary: [
+                "saleID": "the-tada-sale", "name": "The 🎉 Sale",
+                "saleDescription": "This is a description",
+                "startDate": start, "endDate": end], error: Void())
+            saleViewModel = SaleViewModel(sale: sale, saleArtworks: [])
+
+            let subject = AuctionViewController(saleID: sale.saleID)
+            subject.allowAnimations = false
+            subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+
+            expect(subject).to( haveValidSnapshot() )
+        }
+
     }
 }
 

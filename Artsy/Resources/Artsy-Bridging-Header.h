@@ -50,6 +50,7 @@
 
 #import "ARTextView.h"
 #import "ARFonts.h"
+#import "ARCustomEigenLabels.h"
 
 #import "ARSwitchBoard.h"
 #import "ARTrialController.h"
