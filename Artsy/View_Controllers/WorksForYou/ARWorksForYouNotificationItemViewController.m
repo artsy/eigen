@@ -1,32 +1,44 @@
-#import "ARWorksForYouNotificationView.h"
+#import "ARWorksForYouNotificationItemViewController.h"
 #import "Artist.h"
 #import "Artwork.h"
 #import "ARLabelSubclasses.h"
 #import "ARFonts.h"
+#import "ARSwitchboard+Eigen.h"
+#import "ARArtworkSetViewController.h"
+#import "ARArtistViewController.h"
 
 #import <ORStackView/ORSplitStackView.h>
 
 
-@interface ARWorksForYouNotificationView ()
+@interface ARWorksForYouNotificationItemViewController () <AREmbeddedModelsViewControllerDelegate>
 @property (nonatomic, strong) ARWorksForYouNotificationItem *notificationItem;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
+@property (nonatomic, strong) ORStackView *view;
 @end
 
 
-@implementation ARWorksForYouNotificationView
+@implementation ARWorksForYouNotificationItemViewController
 
-- (instancetype)initWithNotificationItem:(ARWorksForYouNotificationItem *)notificationItem artworksViewController:(AREmbeddedModelsViewController *)artworksVC
+@dynamic view;
+
+- (instancetype)initWithNotificationItem:(ARWorksForYouNotificationItem *)notificationItem
 {
     self = [super init];
     if (!self) return nil;
 
     _notificationItem = notificationItem;
-    _artworksVC = artworksVC;
+    _artworksVC = [[AREmbeddedModelsViewController alloc] init];
+    _artworksVC.delegate = self;
 
     return self;
 }
 
-- (void)setupSubviews
+- (void)loadView
+{
+    self.view = [[ORStackView alloc] init];
+}
+
+- (void)viewDidLoad
 {
     ARSansSerifLabelWithChevron *artistNameLabel = [[ARSansSerifLabelWithChevron alloc] initWithFrame:CGRectZero];
     artistNameLabel.text = self.notificationItem.artist.name.uppercaseString;
@@ -55,8 +67,8 @@
     [ssv.leftStack addSubview:artistNameLabel withTopMargin:@"10" sideMargin:@"0"];
     [ssv.rightStack addSubview:dateLabel withTopMargin:@"10" sideMargin:@"0"];
 
-    [self addSubview:ssv withTopMargin:@"10" sideMargin:@"30"];
-    [self addSubview:numberOfWorksAddedLabel withTopMargin:@"10" sideMargin:@"30"];
+    [self.view addSubview:ssv withTopMargin:@"10" sideMargin:@"30"];
+    [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"10" sideMargin:@"30"];
 
     if (self.artworksVC) {
         [self.artworksVC setConstrainHeightAutomatically:YES];
@@ -70,13 +82,35 @@
         }
 
         [self.artworksVC appendItems:self.notificationItem.artworks];
-        [self addViewController:self.artworksVC toParent:(id)self.artworksVC.delegate withTopMargin:@"10" sideMargin:@"0"];
+        [self.view addViewController:self.artworksVC toParent:self withTopMargin:@"10" sideMargin:@"0"];
     }
+
+    [super viewDidLoad];
 }
 
 - (void)artistNameTapped:(UIGestureRecognizer *)recognizer
 {
-    [self.delegate didSelectArtist:self.notificationItem.artist];
+    [self didSelectArtist:self.notificationItem.artist animated:YES];
 }
+
+#pragma mark - AREmbeddedViewController delegate methods
+
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
+{
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
+{
+    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:controller.items inFair:nil atIndex:index];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)didSelectArtist:(Artist *)artist animated:(BOOL)animated
+{
+    ARArtistViewController *artistVC = [ARSwitchBoard.sharedInstance loadArtistWithID:artist.artistID];
+    [self.navigationController pushViewController:artistVC animated:animated];
+}
+
 
 @end

@@ -50,6 +50,16 @@ describe(@"visually", ^{
     });
 });
 
+it(@"marks notifications as read", ^{
+    subject = [[ARWorksForYouViewController alloc] init];
+    subject.worksForYouNetworkModel = [[ARStubbedWorksForYouNetworkModel alloc] init];
+    id networkModelStub = [OCMockObject partialMockForObject:subject.worksForYouNetworkModel];
+    
+    [[networkModelStub expect] markNotificationsRead];
+    [subject beginAppearanceTransition:YES animated:NO];
+    [subject endAppearanceTransition];
+    [networkModelStub verify];
+});
 
 SpecEnd
 
@@ -83,5 +93,9 @@ SpecEnd
     success(self.notificationItems);
 }
 
+- (void)markNotificationsRead
+{
+    // don't actually make the request; do nothing
+}
 
 @end

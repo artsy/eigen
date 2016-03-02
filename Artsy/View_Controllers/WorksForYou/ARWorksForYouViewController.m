@@ -4,11 +4,10 @@
 #import "ARWorksForYouNetworkModel.h"
 #import "ARDispatchManager.h"
 #import "ARWorksForYouNotificationItem.h"
-#import "ARArtworkSetViewController.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARFonts.h"
 #import "ARReusableLoadingView.h"
-#import "ARWorksForYouNotificationView.h"
+#import "ARWorksForYouNotificationItemViewController.h"
 #import "ARArtistViewController.h"
 
 #import <ORStackView/ORStackView.h>
@@ -21,7 +20,7 @@ static int ARLoadingIndicatorView = 1;
 #import "ORStackView+ArtsyViews.h"
 
 
-@interface ARWorksForYouViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate>
+@interface ARWorksForYouViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) ORStackScrollView *view;
 
@@ -46,15 +45,13 @@ static int ARLoadingIndicatorView = 1;
 {
     [super viewDidAppear:animated];
 
-    // mark as viewed upon loading
     [self markNotificationsAsRead];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _worksForYouNetworkModel = _worksForYouNetworkModel ?: [[ARWorksForYouNetworkModel alloc] init];
-
+    self.worksForYouNetworkModel = self.worksForYouNetworkModel ?: [[ARWorksForYouNetworkModel alloc] init];
 
     ARSerifLabel *titleLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     // TODO: Localise / put strings elsewhere
@@ -86,19 +83,9 @@ static int ARLoadingIndicatorView = 1;
 {
     [items each:^(ARWorksForYouNotificationItem *item) {
         
-        // since this view controller will be handling all navigation, it should be the embedded VC delegate
-        AREmbeddedModelsViewController *worksVC = [[AREmbeddedModelsViewController alloc] init];
-        worksVC.delegate = self;
+        ARWorksForYouNotificationItemViewController *worksByArtistViewController = [[ARWorksForYouNotificationItemViewController alloc] initWithNotificationItem:item];
+        [self.view.stackView addViewController:worksByArtistViewController toParent:self withTopMargin:@"0" sideMargin:@"20"];
         
-        // the embedded artworks view controller will then be added to the notification view stack
-        ARWorksForYouNotificationView *worksByArtistView = [[ARWorksForYouNotificationView alloc] initWithNotificationItem:item artworksViewController:worksVC];
-        worksByArtistView.delegate = self;
-        
-        [worksByArtistView setupSubviews];
-        
-        [self.view.stackView addSubview:worksByArtistView withTopMargin:@"0" sideMargin:@"20"];
-        
-        // TODO: allDownloaded not set to YES yet at this stage, need to figure out where to do this
         if (!(item == items.lastObject && self.worksForYouNetworkModel.allDownloaded)) {
             [self addSeparatorLine];
         }
@@ -125,15 +112,8 @@ static int ARLoadingIndicatorView = 1;
 
 - (void)markNotificationsAsRead
 {
-    // PUT /api/v1/me/notifications
-    // will go in network model
+    [self.worksForYouNetworkModel markNotificationsRead];
 }
-
-- (void)artistTapped:(UIGestureRecognizer *)recognizer
-{
-    //    recognizer
-}
-
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -157,30 +137,6 @@ static int ARLoadingIndicatorView = 1;
     if ([self.view.stackView viewWithTag:ARLoadingIndicatorView]) {
         [self.view.stackView removeSubview:[self.view.stackView viewWithTag:ARLoadingIndicatorView]];
     }
-}
-
-- (void)didSelectArtist:(Artist *)artist
-{
-    [self didSelectArtist:artist animated:YES];
-}
-
-- (void)didSelectArtist:(Artist *)artist animated:(BOOL)animated
-{
-    ARArtistViewController *artistVC = [ARSwitchBoard.sharedInstance loadArtistWithID:artist.artistID];
-    [self.navigationController pushViewController:artistVC animated:animated];
-}
-
-#pragma mark - AREmbeddedViewController delegate methods
-
-- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController
-{
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
-{
-    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:controller.items inFair:nil atIndex:index];
-    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 @end

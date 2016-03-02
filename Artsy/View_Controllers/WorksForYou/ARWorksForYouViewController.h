@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
-#import "ARWorksForYouNotificationView.h"
+#import "ARWorksForYouNotificationItemViewController.h"
 
 
-@interface ARWorksForYouViewController : UIViewController <ARWorkForYouNotificationViewDelegate>
+@interface ARWorksForYouViewController : UIViewController
 
 @end
