@@ -127,7 +127,7 @@ private extension AuctionTitleView {
     func bottomView() -> UIView {
         let container = UIView()
 
-        // Close auctions shouldn't show a Register Button
+        // Closed auctions shouldn't show a Register Button
         if viewModel.saleAvailability == .Closed {
             return container
         }

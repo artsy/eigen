@@ -43,7 +43,9 @@
     self.artworkImageView.clipsToBounds = YES;
     [self.contentView addSubview:self.artworkImageView];
 
-    UIColor *darkGrey = [UIColor colorWithHex:0x666666];
+    // HACK: This *should* be 0x666666 but once it gets to the iPhone it's 0x535353
+    // so offset that, by making adding that difference to the original.
+    UIColor *darkGrey = [UIColor colorWithHex:0x797979];
 
     self.lotNumberLabel = [[ARSansSerifLabel alloc] init];
     self.lotNumberLabel.font = [UIFont sansSerifFontWithSize:10];
@@ -107,8 +109,11 @@
     self.artistNameLabel.text = saleArtworkViewModel.artistName;
     self.artworkNameLabel.text = saleArtworkViewModel.artworkName;
     self.currentOrStartingBidLabel.text = [self currentOrStartingBidLabelTextForSaleArtwork:saleArtworkViewModel];
-    self.lotNumberLabel.text = saleArtworkViewModel.lotNumber;
     self.numberOfBidsLabel.text = saleArtworkViewModel.numberOfBids;
+
+    if (saleArtworkViewModel.lotNumber.length) {
+        self.lotNumberLabel.text = [@"LOT " stringByAppendingString:saleArtworkViewModel.lotNumber];
+    }
 }
 
 // This is an override point for subclasses

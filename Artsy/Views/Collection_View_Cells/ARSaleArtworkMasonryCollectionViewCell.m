@@ -40,7 +40,7 @@
     [self.contentView addSubview:self.artworkImageView];
 
     // HACK: This *should* be 0x666666 but once it gets to the iPhone it's 0x535353
-    // so offset that, by making it
+    // so offset that, by making adding that difference to the original.
     UIColor *darkGrey = [UIColor colorWithHex:0x797979];
 
     self.lotNumberLabel = [[ARSansSerifLabel alloc] init];
