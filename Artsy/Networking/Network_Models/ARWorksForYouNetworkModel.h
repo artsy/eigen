@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class ARWorksForYouNotificationItem;
+@class ARWorksForYouNotificationItem, ARWorksForYouNetworkModel;
 
 
 @interface ARWorksForYouNetworkModel : NSObject

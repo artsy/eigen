@@ -47,24 +47,42 @@ extension AuctionBannerView {
         }
         let darkeningView = DarkeningView()
         let logoImageView = UIImageView()
-        let countdownView = ARCountdownView(color: .whiteColor()).then {
-            $0.targetDate = self.viewModel.closingDate
-            $0.heading = "Closing In"
-            
-            if let _ = self.superview {
-                $0.startTimer()
-            }
-        }
-        self.countdownView = countdownView
 
         // Add all as subviews to self.
-        [backgroundImageView, darkeningView, logoImageView, countdownView].forEach(apply(addSubview))
+        [backgroundImageView, darkeningView, logoImageView].forEach(apply(addSubview))
 
         // Background + darkening view always cover self totally.
         backgroundImageView.alignToView(self)
         darkeningView.alignToView(self)
 
+
+        if viewModel.saleAvailability == .Closed {
+            let closedLabel = ARSansSerifHeaderLabel()
+            closedLabel.text = "Auction Closed"
+            closedLabel.textColor = .whiteColor()
+            closedLabel.backgroundColor = .clearColor()
+            darkeningView.addSubview(closedLabel)
+            closedLabel.constrainWidthToView(self, predicate: "0@0")
+            closedLabel.alignCenterWithView(darkeningView)
+
+        } else {
+            let countdownView = ARCountdownView(color: .whiteColor()).then {
+                let model = self.viewModel
+                let isNotOpenYes = model.saleAvailability == .NotYetOpen
+
+                $0.targetDate = isNotOpenYes ? model.startDate : model.closingDate
+                $0.heading = isNotOpenYes ? "Opening In" : "Closing In"
+
+                if let _ = self.superview {
+                    $0.startTimer()
+                }
+            }
+            self.countdownView = countdownView
+            self.addSubview(countdownView)
+        }
+
         logoImageView.constrainHeight("70")
+        constrainHeight("200")
 
         // Device-specific layout for logo & countdown views.
         if traitCollection.horizontalSizeClass == .Regular {
@@ -72,22 +90,21 @@ extension AuctionBannerView {
             logoImageView.alignLeadingEdgeWithView(self, predicate: "40")
             logoImageView.alignBottomEdgeWithView(self, predicate: "-40")
 
-            // Must constraint self to 200pt tall on iPad, since our view hierarchy doesn't provide any height constraint and in its abses, defaults to the background image's height.
-            constrainHeight("200")
 
             // Bottom righthand corner with 40pt margin.
-            countdownView.alignTrailingEdgeWithView(self, predicate: "-40")
-            countdownView.alignBottomEdgeWithView(self, predicate: "-40")
+            countdownView?.alignTrailingEdgeWithView(self, predicate: "-40")
+            countdownView?.alignBottomEdgeWithView(self, predicate: "-40")
         } else {
+
             logoImageView.alignTopEdgeWithView(self, predicate: "30")
-            countdownView.constrainTopSpaceToView(logoImageView, predicate: "7")
-            countdownView.alignBottomEdgeWithView(self, predicate: "-30")
+            countdownView?.constrainTopSpaceToView(logoImageView, predicate: "7")
+            countdownView?.alignBottomEdgeWithView(self, predicate: "-30")
 
             // The background will stretch us to be larger (based on its image height), so we want to prevent that.
             backgroundImageView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
 
             logoImageView.alignCenterXWithView(self, predicate: "0")
-            countdownView.alignCenterXWithView(self, predicate: "0")
+            countdownView?.alignCenterXWithView(self, predicate: "0")
         }
 
         // Start any necessary image downloads.

@@ -10,12 +10,20 @@ class AuctionRefineViewControllerSpec: QuickSpec {
     override func spec() {
         let defaultSettings = AuctionRefineSettings(ordering: .LotNumber, range: (min: 500_00, max: 100_000_00))
         let differentSettings = AuctionRefineSettings(ordering: .ArtistAlphabetical, range: (min: 500_00, max: 50_000_00))
+        let settingsWithNoEstimates = AuctionRefineSettings(ordering: .ArtistAlphabetical, range: (min: 0, max: 0))
 
         it("looks good by default") {
             let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings)
 
             expect(subject).to( haveValidSnapshot() )
         }
+
+        it("looks good by when there are no estimates") {
+            let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: settingsWithNoEstimates)
+
+            expect(subject).to( haveValidSnapshot() )
+        }
+
 
         it("enables apply/reset buttons when options are changed") {
             let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings)
@@ -43,6 +51,7 @@ class AuctionRefineViewControllerSpec: QuickSpec {
 
             expect(subject).to( haveValidSnapshot() )
         }
+        
     }
 }
 

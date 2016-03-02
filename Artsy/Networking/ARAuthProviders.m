@@ -44,7 +44,7 @@
     NSParameterAssert(success);
 
     FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-    [login logInWithReadPermissions:@[ @"email" ] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+    [login logInWithReadPermissions:@[ @"email" ] fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
         if (error) {
             ARErrorLog(@"Failed to log in to Facebook: %@", error.localizedDescription);
             failure(error);

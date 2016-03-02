@@ -1,9 +1,10 @@
 #import "ARFavoritesNetworkModel.h"
+#import <AFNetworking/AFNetworking.h>
 
 
 @interface ARFavoritesNetworkModel ()
 @property (readwrite, nonatomic, assign) BOOL allDownloaded;
-@property (readwrite, nonatomic, assign) BOOL downloadLock;
+@property (atomic, weak) AFHTTPRequestOperation *currentRequest;
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
 @end
 
@@ -22,19 +23,17 @@
 
 - (void)getFavorites:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
-    if (self.downloadLock) {
+    if (self.currentRequest) {
         return;
     }
 
-    _downloadLock = YES;
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
-    [self performNetworkRequestAtPage:self.currentPage withSuccess:^(NSArray *items) {
+    self.currentRequest = [self requestOperationAtPage:self.currentPage withSuccess:^(NSArray *items) {
         __strong typeof (wself) sself = wself;
         if (!sself) { return; }
 
         sself.currentPage++;
-        sself.downloadLock = NO;
 
         if (items.count == 0) {
             sself.allDownloaded = YES;
@@ -48,15 +47,14 @@
 
         sself.allDownloaded = YES;
 
-        sself.downloadLock = NO;
-
         if(success) success(@[]);
     }];
 }
 
-- (void)performNetworkRequestAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure
+- (AFHTTPRequestOperation *)requestOperationAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure
 {
     [NSException raise:NSInvalidArgumentException format:@"NSObject %@[%@]: selector not recognized - use a subclass: ", NSStringFromClass([self class]), NSStringFromSelector(_cmd)];
+    return nil;
 }
 
 @end

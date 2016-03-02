@@ -41,23 +41,6 @@ class AuctionViewController: UIViewController {
         return nil
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        headerStack = ORTagBasedAutoStackView()
-        saleArtworksViewController = ARModelInfiniteScrollViewController()
-
-        ar_addAlignedModernChildViewController(saleArtworksViewController)
-
-        // Disable the vertical offset for status bar.
-        automaticallyAdjustsScrollViewInsets = false
-        saleArtworksViewController.automaticallyAdjustsScrollViewInsets = false
-
-        saleArtworksViewController.headerStackView = headerStack
-        saleArtworksViewController.showTrailingLoadingIndicator = false
-        saleArtworksViewController.delegate = self
-    }
-
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -67,10 +50,23 @@ class AuctionViewController: UIViewController {
         self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
         
         self.networkModel.fetch().next { [weak self] saleViewModel in
-            self?.setupForSale(saleViewModel)
+
+            if saleViewModel.isUpcomingAndHasNoLots {
+                self?.setupForUpcomingSale(saleViewModel)
+            } else {
+                self?.setupForSale(saleViewModel)
+            }
+
+
+            saleViewModel.registerSaleAsActiveActivity(self)
         }.error { error in
             // TODO: Error-handling somehow
         }
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        userActivity?.invalidate()
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -108,9 +104,32 @@ class AuctionViewController: UIViewController {
 
 extension AuctionViewController {
 
+    func setupForUpcomingSale(saleViewModel: SaleViewModel) {
+
+        let auctionInfoVC = AuctionInformationViewController(saleViewModel: saleViewModel)
+
+        auctionInfoVC.titleViewDelegate = self
+        ar_addAlignedModernChildViewController(auctionInfoVC)
+
+        let bannerView = AuctionBannerView(viewModel: saleViewModel)
+        bannerView.tag = ViewTags.Banner.rawValue
+        auctionInfoVC.scrollView.stackView.insertSubview(bannerView, atIndex: 0, withTopMargin:"0", sideMargin: "0")
+    }
+
     func setupForSale(saleViewModel: SaleViewModel) {
-        // TODO: Sale is currently private on the SaleViewModel, also Sale will need to be extended to conform to ARSpotlightMetadataProvider
-        // artworksViewController.spotlightEntity = saleViewModel.sale
+
+        headerStack = ORTagBasedAutoStackView()
+        saleArtworksViewController = ARModelInfiniteScrollViewController()
+
+        ar_addAlignedModernChildViewController(saleArtworksViewController)
+
+        // Disable the vertical offset for status bar.
+        automaticallyAdjustsScrollViewInsets = false
+        saleArtworksViewController.automaticallyAdjustsScrollViewInsets = false
+
+        saleArtworksViewController.headerStackView = headerStack
+        saleArtworksViewController.showTrailingLoadingIndicator = false
+        saleArtworksViewController.delegate = self
 
         self.saleViewModel = saleViewModel
 
@@ -137,7 +156,7 @@ extension AuctionViewController {
 
         displayCurrentItems()
 
-        self.ar_removeIndeterminateLoadingIndicatorAnimated(allowAnimations)
+        ar_removeIndeterminateLoadingIndicatorAnimated(allowAnimations)
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {
@@ -228,10 +247,8 @@ extension RefineSettings: AuctionRefineViewControllerDelegate {
 private typealias EmbeddedModelCallbacks = AuctionViewController
 extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
-        let item = saleArtworksViewController.items[Int(index)] as? SaleArtworkViewModel
-        guard let artworkID = item?.artworkID else { return }
-
-        let viewController = ARSwitchBoard.sharedInstance().loadArtworkWithID(artworkID, inFair: nil)
+        let artworks = saleArtworksViewController.items.map { Artwork(artworkID: $0.artworkID) }
+        let viewController = ARArtworkSetViewController(artworkSet: artworks, atIndex: Int(index))
         navigationController?.pushViewController(viewController, animated: allowAnimations)
     }
 

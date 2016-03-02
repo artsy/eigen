@@ -1,10 +1,11 @@
 #import <Mantle/Mantle.h>
+#import "ARSpotlight.h"
 
 @class BuyersPremium, Profile;
 @class AFHTTPRequestOperation;
 
 
-@interface Sale : MTLModel <MTLJSONSerializing>
+@interface Sale : MTLModel <MTLJSONSerializing, ARSpotlightMetadataProvider>
 
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, copy, readonly) NSString *saleID;

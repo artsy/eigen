@@ -1,6 +1,12 @@
 import Foundation
 import Artsy_UILabels
 
+enum SaleAvailabilityState {
+    case NotYetOpen
+    case Active
+    case Closed
+}
+
 class SaleViewModel {
     private let sale: Sale
     private let saleArtworks: [SaleArtwork]
@@ -23,12 +29,22 @@ extension SaleViewModel {
         return NSURL(string: avatarURL)
     }
 
+    var saleAvailability : SaleAvailabilityState {
+        if sale.isCurrentlyActive() { return .Active }
+        if sale.startDate.laterDate(NSDate()) == sale.startDate { return .NotYetOpen }
+        return .Closed
+    }
+
     var startDate: NSDate {
         return sale.startDate
     }
 
     var closingDate: NSDate {
         return sale.endDate
+    }
+
+    var isUpcomingAndHasNoLots: Bool {
+        return saleAvailability == .NotYetOpen && numberOfLots == 0
     }
 
     var numberOfLots: Int {
@@ -76,9 +92,19 @@ extension SaleViewModel {
     }
 }
 
+/// Allows us to support spotlight indexing
+
+extension SaleViewModel {
+    func registerSaleAsActiveActivity(viewController: UIViewController?) {
+        viewController?.userActivity = ARUserActivity(forEntity: sale)
+        viewController?.userActivity?.becomeCurrent()
+    }
+}
+
+
 extension SaleArtwork: AuctionOrderable {
     var bids: Int {
-        return bidCount as Int
+        return bidCount as? Int ?? 0
     }
 
     var artistName: String {
@@ -92,6 +118,7 @@ extension SaleArtwork: AuctionOrderable {
 }
 
 /// Private helpers for SaleViewModel
+
 private extension SaleViewModel {
 
     var smallestLowEstimate: Int {
@@ -103,13 +130,8 @@ private extension SaleViewModel {
     }
 
     var lowEstimates: [Int] {
-        // lowEstimateCents is an NSNumber! and I want to make sure we don't unwrap one that's nil.
         return saleArtworks.flatMap { saleArtwork in
-            if saleArtwork.lowEstimateCents == nil {
-                return nil
-            }
-
-            return Int(saleArtwork.lowEstimateCents)
+            return Int(saleArtwork.lowEstimateCents ?? 0)
         }
     }
 }
@@ -119,7 +141,8 @@ private extension SaleArtwork {
         return { saleArtwork in
             // Includes iff the sale artwork's low estimate is within the range, inclusive.
             let (min, max) = (refineSettings.range.min, refineSettings.range.max)
-            return (min...max) ~= (saleArtwork.lowEstimateCents as Int)
+
+            return (min...max) ~= (saleArtwork.lowEstimateCents as? Int ?? 0)
         }
     }
 }

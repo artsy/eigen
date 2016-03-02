@@ -40,7 +40,9 @@
     self.artworkImageView.clipsToBounds = YES;
     [self.contentView addSubview:self.artworkImageView];
 
-    UIColor *darkGrey = [UIColor colorWithHex:0x666666];
+    // HACK: This *should* be 0x666666 but once it gets to the iPhone it's 0x535353
+    // so offset that, by making adding that difference to the original.
+    UIColor *darkGrey = [UIColor colorWithHex:0x797979];
 
     self.lotNumberLabel = [[ARSansSerifLabel alloc] init];
     self.lotNumberLabel.font = [UIFont sansSerifFontWithSize:10];
@@ -80,7 +82,7 @@
 
     // Stack the labels on top of eachother.
     [labels betweenObjects:^(id lhs, id rhs) {
-        [lhs alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeTop ofView:rhs predicate:@"0"];
+        [lhs alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeTop ofView:rhs predicate:@"-2"];
     }];
 
     [labels each:^(id object) {
@@ -108,13 +110,15 @@
     self.artistNameLabel.text = saleArtworkViewModel.artistName;
     self.artworkNameLabel.text = saleArtworkViewModel.artworkName;
     self.currentOrStartingBidLabel.text = [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:YES];
-    self.lotNumberLabel.text = saleArtworkViewModel.lotNumber;
+    if (saleArtworkViewModel.lotNumber.length) {
+        self.lotNumberLabel.text = [@"LOT " stringByAppendingString:saleArtworkViewModel.lotNumber];
+    }
 }
 
 + (CGFloat)paddingForMetadata
 {
-    // 3 labels @14pt + 1 label @10pt + 10pt padding under image  = 62
-    return 62;
+    // 3 labels @14pt + 1 label @10pt + 2 * 3 label padding + 10pt padding under image  = 66
+    return 66;
 }
 
 @end

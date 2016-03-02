@@ -6,6 +6,7 @@
 #import "ArtsyAPI+Sales.h"
 #import "ArtsyAPI+Pages.h"
 
+#import "ARUserActivity.h"
 
 #import "ARScrollNavigationChief.h"
 #import "ARWhitespaceGobbler.h"
@@ -49,6 +50,7 @@
 
 #import "ARTextView.h"
 #import "ARFonts.h"
+#import "ARCustomEigenLabels.h"
 
 #import "ARSwitchBoard.h"
 #import "ARTrialController.h"

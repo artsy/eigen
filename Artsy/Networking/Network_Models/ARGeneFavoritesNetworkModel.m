@@ -8,12 +8,12 @@
 
 @implementation ARGeneFavoritesNetworkModel
 
-- (void)performNetworkRequestAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure
+- (AFHTTPRequestOperation *)requestOperationAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure
 {
     if (self.useSampleFavorites) {
-       __weak typeof (self) wself = self;
+        __weak typeof(self) wself = self;
 
-        [ArtsyAPI getOrderedSetWithKey:@"favorites:suggested-genes" success:^(OrderedSet *set) {
+        return [ArtsyAPI getOrderedSetWithKey:@"favorites:suggested-genes" success:^(OrderedSet *set) {
             __strong typeof (wself) sself = wself;
             if (!sself) { return; }
 
@@ -21,7 +21,7 @@
 
         } failure:failure];
     } else {
-        [ArtsyAPI getGenesFromPersonalCollectionAtPage:page success:success failure:failure];
+        return [ArtsyAPI getGenesFromPersonalCollectionAtPage:page success:success failure:failure];
     }
 }
 
