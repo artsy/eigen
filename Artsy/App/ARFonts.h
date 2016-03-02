@@ -4,6 +4,6 @@
 #import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #endif
 
-#if __has_include(<Artsy_OSSUIFonts/UIFont+OSSArtsyFonts.h>)
-#import <Artsy_OSSUIFonts/UIFont+OSSArtsyFonts.h>
+#if __has_include(<Artsy_UIFonts/UIFont+OSSArtsyFonts.h>)
+#import <Artsy_UIFonts/UIFont+OSSArtsyFonts.h>
 #endif
