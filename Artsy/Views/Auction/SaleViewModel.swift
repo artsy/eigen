@@ -29,7 +29,7 @@ extension SaleViewModel {
         return NSURL(string: avatarURL)
     }
 
-    var saleAvailability : SaleAvailabilityState {
+    var saleAvailability: SaleAvailabilityState {
         if sale.isCurrentlyActive() { return .Active }
         if sale.startDate.laterDate(NSDate()) == sale.startDate { return .NotYetOpen }
         return .Closed
