@@ -3,9 +3,9 @@ import Artsy_UIButtons
 import Artsy_UILabels
 import Artsy_UIFonts
 import FLKAutoLayout
-import PBDCarouselCollectionViewLayout
 import ORStackView
 import Then
+import Interstellar
 
 class LiveAuctionViewController: UIViewController {
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
@@ -49,39 +49,62 @@ class LiveAuctionViewController: UIViewController {
         navToolbar.alignTrailingEdgeWithView(view, predicate: "-10")
         navToolbar.constrainHeight("40")
 
-        let layout = PBDCarouselCollectionViewLayout()
-        layout.itemSize = CGSizeMake(260, 240);
-        layout.interItemSpace = 20;
-        layout.headerSize = CGSizeMake(0, 0);
+        let pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
+        pageController.dataSource = auctionDataSource
+        ar_addModernChildViewController(pageController)
 
-        let artworkSelectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
-        view.addSubview(artworkSelectionView)
-        artworkSelectionView.constrainTopSpaceToView(navToolbar, predicate: "20")
-        artworkSelectionView.constrainWidthToView(view, predicate: "0")
+        let startVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(0)
+        pageController.setViewControllers([startVC], direction: .Forward, animated: false, completion: nil)
 
-        artworkSelectionView.dataSource = auctionDataSource
-        artworkSelectionView.delegate = auctionDelegate
-        artworkSelectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier:"cell")
+        let pager = pageController.view
+        pager.constrainTopSpaceToView(navToolbar, predicate: "0")
+        pager.alignLeadingEdgeWithView(view, predicate: "0")
+        pager.alignTrailingEdgeWithView(view, predicate: "0")
+        pager.alignBottomEdgeWithView(view, predicate: "0")
 
-        artworkSelectionView.showsHorizontalScrollIndicator = false
-        artworkSelectionView.decelerationRate = UIScrollViewDecelerationRateFast;
-        artworkSelectionView.backgroundColor = .debugColourRed()
-        
-        // TODO: Make dynamic, the rest of the layout should define how tall this is.
-        artworkSelectionView.constrainHeight("300")
 
+        let progress = SimpleProgressView()
+        progress.progress = 0.6
+        progress.backgroundColor = .artsyLightGrey()
+
+        view.addSubview(progress)
+        progress.constrainHeight("4")
+        progress.alignLeading("0", trailing: "0", toView: view)
+        progress.alignBottomEdgeWithView(view, predicate: "-120")
+
+    }
+
+    // Support for ARMenuAwareViewController
+
+    let hidesBackButton = true
+    let hidesSearchButton = true
+    let hidesStatusBarBackground = true
+}
+
+class LiveAuctionPreviewViewController : UIViewController {
+    var index = 0
+    let viewModel = Signal<LiveAuctionLotViewModel>()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let imageView = UIImageView()
+        imageView.contentMode = .ScaleAspectFit
+
+        view.addSubview(imageView)
+        imageView.constrainHeight("300")
+        imageView.alignTop("0", leading: "0", toView: view)
+        imageView.alignTrailingEdgeWithView(view, predicate: "0")
 
         let metadataStack = ORStackView()
         metadataStack.bottomMarginHeight = 0
         view.addSubview(metadataStack)
-        metadataStack.constrainTopSpaceToView(artworkSelectionView, predicate: "20")
+        metadataStack.constrainTopSpaceToView(imageView, predicate: "20")
         metadataStack.constrainWidthToView(view, predicate: "-40")
         metadataStack.alignCenterXWithView(view, predicate: "0")
 
-        let artistNameLabel = UILabel().then {
-            $0.text = "Damien Hirst"
-            $0.font = UIFont.serifBoldFontWithSize(16)
-        }
+        let artistNameLabel = UILabel()
+        artistNameLabel.font = UIFont.serifBoldFontWithSize(16)
         metadataStack.addSubview(artistNameLabel, withTopMargin: "0", sideMargin: "0")
 
         let artworkNameLabel = ARArtworkTitleLabel()
@@ -99,54 +122,41 @@ class LiveAuctionViewController: UIViewController {
         premiumLabel.alpha = 0.3
         metadataStack.addSubview(premiumLabel, withTopMargin: "2", sideMargin: "0")
 
-        let progress = SimpleProgressView()
-        progress.progress = 0.6
-        progress.backgroundColor = .artsyLightGrey()
-
-        view.addSubview(progress)
-        progress.constrainHeight("4")
-        progress.alignLeading("0", trailing: "0", toView: view)
-        progress.constrainTopSpaceToView(premiumLabel, predicate: "12")
-    }
-
-    // Support for ARMenuAwareViewController
-
-    let hidesBackButton = true
-    let hidesSearchButton = true
-    let hidesStatusBarBackground = true
-}
-
-class LiveAuctionSaleLotsDelegate : NSObject, UICollectionViewDelegate {
-    var salesPerson: LiveAuctionsSalesPerson!
-
-    // Notes to self around imaging positions:
-    //
-    // [ ] [ ] [ ]
-    // left one needs right aligned image, center needs centered, and right needs left aligned image
-    // In Folio or Eidolon, I used a pod for this I think.
-
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        cell.backgroundColor = .debugColourGreen()
-        let imageView = UIImageView()
-        imageView.contentMode = .ScaleAspectFit
-
-        guard let lot = salesPerson.lotForIndexPath(indexPath) else { return }
-
-        imageView.ar_setImageWithURL(lot.urlForThumbnail())
-        cell.contentView.addSubview(imageView)
-        imageView.frame = cell.contentView.bounds
+        viewModel.next { vm in
+            artistNameLabel.text = vm.lotName
+            estimateLabel.text = ""
+        }
     }
 }
 
-class LiveAuctionSaleLotsDataSource : NSObject, UICollectionViewDataSource {
+class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPerson!
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return salesPerson.lotCount
+    func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionPreviewViewController {
+        let auctionVC =  LiveAuctionPreviewViewController()
+        let viewModel = salesPerson.lotViewModelForIndex(index)
+        auctionVC.viewModel.update(viewModel)
+        auctionVC.index = index
+        return auctionVC
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath)
+
+    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+        if salesPerson.lotCount == 1 { return nil }
+
+        guard let viewController = viewController as? LiveAuctionPreviewViewController else { return nil }
+        var newIndex = viewController.index - 1
+        if (newIndex < 0) { newIndex = salesPerson.lotCount - 1 }
+        return liveAuctionPreviewViewControllerForIndex(newIndex)
+    }
+
+
+    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+        if salesPerson.lotCount == 1 { return nil }
+
+        guard let viewController = viewController as? LiveAuctionPreviewViewController else { return nil }
+        let newIndex = (viewController.index + 1) % salesPerson.lotCount;
+        return liveAuctionPreviewViewControllerForIndex(newIndex)
     }
 }
 
@@ -175,8 +185,26 @@ class SimpleProgressView : UIView {
     }
 }
 
+
+class LiveAuctionLotViewModel : NSObject {
+    private let lot: LiveAuctionLot
+
+    init(lot: LiveAuctionLot) {
+        self.lot = lot
+    }
+
+    var urlForThumbnail: NSURL {
+        return lot.urlForThumbnail()
+    }
+
+    var lotName: String {
+        return lot.artworkTitle
+    }
+}
+
 /// Something to pretend to either be a network model or whatever
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing rela networking
+
 
 class LiveAuctionsSalesPerson : NSObject {
     private var lots : [LiveAuctionLot] = []
@@ -186,8 +214,8 @@ class LiveAuctionsSalesPerson : NSObject {
         return lots.count
     }
 
-    func lotForIndexPath(index: NSIndexPath) -> LiveAuctionLot? {
-        return lots[index.row]
+    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel {
+        return LiveAuctionLotViewModel(lot: lots[index])
     }
 
     func setup() {

@@ -68,8 +68,6 @@ target 'Artsy' do
 
   # Custom CollectionView Layouts
   pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout', :branch => "modern"
-  # Used in Live Auctions
-  pod 'PBDCarouselCollectionViewLayout'
 
   # Deprecated:
   # UIAlertView is deprecated for iOS8 APIs
