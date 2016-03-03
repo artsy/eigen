@@ -30,6 +30,8 @@ open Artsy.xcworkspace
 
 This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Build > Run`.
 
+**Note**: `bundle exec pod install` may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
+
 ### Work at Artsy?
 
 Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander). Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be true too.
