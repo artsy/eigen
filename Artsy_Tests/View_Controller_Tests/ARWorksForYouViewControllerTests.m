@@ -22,27 +22,27 @@ ARWorksForYouNotificationItem *stubbedNotificationItemWithNumberAndArtworks(int 
 SpecBegin(ARWorksForYouViewController);
 
 __block ARWorksForYouViewController *subject;
+__block ARStubbedWorksForYouNetworkModel *stubbedNetworkModel;
+
+beforeEach(^{
+    subject = [[ARWorksForYouViewController alloc] init];
+    stubbedNetworkModel = [[ARStubbedWorksForYouNetworkModel alloc] init];
+});
 
 describe(@"visually", ^{
     
     it(@"looks right with one notification", ^{
-        subject = [[ARWorksForYouViewController alloc] init];
-        ARStubbedWorksForYouNetworkModel *networkModel = [[ARStubbedWorksForYouNetworkModel alloc] init];
-        networkModel.notificationItems = @[ stubbedNotificationItemWithNumberAndArtworks(0, 2) ];
-        networkModel.allDownloaded = NO;
-        subject.worksForYouNetworkModel = networkModel;
-        
+        stubbedNetworkModel.notificationItems = @[ stubbedNotificationItemWithNumberAndArtworks(0, 2) ];
+        subject.worksForYouNetworkModel = stubbedNetworkModel;
+
         /// This line has to be included for ORStackScrollView to record snapshots properly
         [subject ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         expect(subject).to.haveValidSnapshot();
     });
     
     it(@"looks right with several notifications", ^{
-        subject = [[ARWorksForYouViewController alloc] init];
-        ARStubbedWorksForYouNetworkModel *networkModel = [[ARStubbedWorksForYouNetworkModel alloc] init];
-        networkModel.notificationItems = @[ stubbedNotificationItemWithNumberAndArtworks(0, 2), stubbedNotificationItemWithNumberAndArtworks(1, 1) ];
-        networkModel.allDownloaded = NO;
-        subject.worksForYouNetworkModel = networkModel;
+        stubbedNetworkModel.notificationItems = @[ stubbedNotificationItemWithNumberAndArtworks(0, 2), stubbedNotificationItemWithNumberAndArtworks(1, 1) ];
+        subject.worksForYouNetworkModel = stubbedNetworkModel;
         
         /// This line has to be included for ORStackScrollView to record snapshots properly
         [subject ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
@@ -51,8 +51,7 @@ describe(@"visually", ^{
 });
 
 it(@"marks notifications as read", ^{
-    subject = [[ARWorksForYouViewController alloc] init];
-    subject.worksForYouNetworkModel = [[ARStubbedWorksForYouNetworkModel alloc] init];
+    subject.worksForYouNetworkModel = stubbedNetworkModel;
     id networkModelStub = [OCMockObject partialMockForObject:subject.worksForYouNetworkModel];
     
     [[networkModelStub expect] markNotificationsRead];
@@ -78,6 +77,7 @@ SpecEnd
             @"artworkID" : @"stubbed",
             @"title" : NSStringWithFormat(@"Artwork %d", i)
         } error:nil];
+        artwork.artist = artist;
         [artworks addObject:artwork];
     }
 
