@@ -15,8 +15,7 @@ DATE_VERSION = $(shell date "+%Y.%m.%d")
 CHANGELOG = CHANGELOG.md
 
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
-BRANCH = $(shell echo $(shell whoami)-$(shell git rev-parse --abbrev-ref HEAD))
-
+BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
 
 .PHONY: all build ci test oss pr artsy
 
