@@ -9,7 +9,7 @@
 // For a number formatter
 @import Artsy_UILabels;
 
-static NSNumberFormatter *dollarFormatter;
+static NSNumberFormatter *currencyFormatter;
 
 
 @implementation SaleArtwork
@@ -17,31 +17,21 @@ static NSNumberFormatter *dollarFormatter;
 + (void)initialize
 {
     if (self == [SaleArtwork class]) {
-        dollarFormatter = [[NSNumberFormatter alloc] init];
-        dollarFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
-
-        // This is always dollars, so let's make sure that's how it shows up
-        // regardless of locale.
-
-        dollarFormatter.currencyGroupingSeparator = @",";
-        dollarFormatter.currencySymbol = @"$";
-        dollarFormatter.maximumFractionDigits = 0;
+        currencyFormatter = [[NSNumberFormatter alloc] init];
+        currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        currencyFormatter.currencyGroupingSeparator = @",";
+        // This comes in from the server, so we can't apply it heere
+        currencyFormatter.currencySymbol = @"";
+        currencyFormatter.maximumFractionDigits = 0;
     }
 }
+
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
         ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
-        ar_keypath(SaleArtwork.new, openingBidCents) : @"opening_bid_cents",
-        ar_keypath(SaleArtwork.new, minimumNextBidCents) : @"minimum_next_bid_cents",
-        ar_keypath(SaleArtwork.new, saleHighestBid) : @"highest_bid",
-        ar_keypath(SaleArtwork.new, artworkNumPositions) : @"bidder_positions_count",
-        ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
-        ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
-        ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
-        ar_keypath(SaleArtwork.new, lotNumber) : @"lot_number",
-        ar_keypath(SaleArtwork.new, bidCount) : @"bidder_positions_count"
+        ar_keypath(SaleArtwork.new, currencySymbol) : @"symbol"
     };
 }
 
@@ -117,19 +107,20 @@ static NSNumberFormatter *dollarFormatter;
     return [self.positions valueForKeyPath:@"@max.self"];
 }
 
-- (NSString *)dollarsFromCents:(NSNumber *)cents
++ (NSString *)dollarsFromCents:(NSNumber *)cents currencySymbol:(NSString *)symbol
 {
-    NSNumber *dollars = @(roundf(cents.floatValue / 100));
-
-    if ([dollars integerValue] == 0) {
-        return @"$0";
+    NSNumber *amount = @(roundf(cents.floatValue / 100));
+    if ([amount integerValue] == 0) {
+        return [symbol stringByAppendingString:@"0"];
     }
 
-    NSString *centString = [dollarFormatter stringFromNumber:dollars];
+    currencyFormatter.currencySymbol = symbol;
+    NSString *centString = [currencyFormatter stringFromNumber:amount];
+
     if (centString.length < 3) {
         // just covering this very degenerate case
         // that hopefully this never happens
-        return @"$1";
+        return [symbol stringByAppendingString:@"1"];
     }
     return centString;
 }
@@ -139,20 +130,25 @@ static NSNumberFormatter *dollarFormatter;
     return self.lowEstimateCents || self.highEstimateCents;
 }
 
++ (NSString *)estimateStringForLowEstimate:(NSNumber *_Nullable)lowEstimateCents highEstimateCents:(NSNumber *_Nullable)highEstimateCents currencySymbol:(NSString *)symbol currency:(NSString *)currency
+{
+    NSString *estimateValue;
+    if (lowEstimateCents && highEstimateCents) {
+        estimateValue = [NSString stringWithFormat:@"%@ – %@", [self dollarsFromCents:lowEstimateCents currencySymbol:symbol], [self dollarsFromCents:highEstimateCents currencySymbol:symbol]];
+    } else if (lowEstimateCents) {
+        estimateValue = [self dollarsFromCents:lowEstimateCents currencySymbol:symbol];
+    } else if (highEstimateCents) {
+        estimateValue = [self dollarsFromCents:highEstimateCents currencySymbol:symbol];
+    } else {
+        ARErrorLog(@"Asked for estimate from a sale artwork with no estimate data %@", self);
+        estimateValue = @"$0";
+    }
+    return [NSString stringWithFormat:@"Estimate: %@ %@", estimateValue, currency];
+}
+
 - (NSString *)estimateString
 {
-    NSString *ret;
-    if (self.lowEstimateCents && self.highEstimateCents) {
-        ret = [NSString stringWithFormat:@"%@ – %@", [self dollarsFromCents:self.lowEstimateCents], [self dollarsFromCents:self.highEstimateCents]];
-    } else if (self.lowEstimateCents) {
-        ret = [self dollarsFromCents:self.lowEstimateCents];
-    } else if (self.highEstimateCents) {
-        ret = [self dollarsFromCents:self.highEstimateCents];
-    } else {
-        ARErrorLog(@"Asked for estimate from an artwork with no estimate data %@", self);
-        ret = @"$0";
-    }
-    return [NSString stringWithFormat:@"Estimate: %@", ret];
+    return [self.class estimateStringForLowEstimate:self.lowEstimateCents highEstimateCents:self.highEstimateCents currencySymbol:self.currencySymbol currency:self.currency];
 }
 
 - (NSString *)numberOfBidsString

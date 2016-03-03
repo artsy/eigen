@@ -13,7 +13,9 @@
 @property (nonatomic, copy) NSString *auctionDateText;
 @property (nonatomic, copy) NSString *organization;
 @property (nonatomic, copy) NSDictionary *imageURLs;
+
 @property (nonatomic, copy) NSURL *externalURL;
 @property (nonatomic, strong) NSDate *auctionDate;
+
 - (NSURL *)imageURL;
 @end

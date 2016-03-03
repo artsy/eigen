@@ -522,6 +522,7 @@
 		60B1B4C91B565218007A7217 /* ARCollectorStatusViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B1B4C81B565218007A7217 /* ARCollectorStatusViewControllerSpec.m */; };
 		60B617CD1815991E00EBDC51 /* ARAuctionArtworkResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B617CC1815991E00EBDC51 /* ARAuctionArtworkResultsViewController.m */; };
 		60B617D31815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B617D21815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m */; };
+		60B6E5981C88BEF3003B1D46 /* LiveSale.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6E5971C88BEF3003B1D46 /* LiveSale.m */; };
 		60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F0F11662AADF007C9587 /* ARAppConstants.m */; };
 		60B6F13916638785007C9587 /* ArtsyAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F13816638785007C9587 /* ArtsyAPI.m */; };
 		60B6F13E16638815007C9587 /* Artwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F13D16638815007C9587 /* Artwork.m */; };
@@ -1555,6 +1556,8 @@
 		60B617CC1815991E00EBDC51 /* ARAuctionArtworkResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionArtworkResultsViewController.m; sourceTree = "<group>"; };
 		60B617D11815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionArtworkTableViewCell.h; sourceTree = "<group>"; };
 		60B617D21815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionArtworkTableViewCell.m; sourceTree = "<group>"; };
+		60B6E5961C88BEF3003B1D46 /* LiveSale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LiveSale.h; path = Live/LiveSale.h; sourceTree = "<group>"; };
+		60B6E5971C88BEF3003B1D46 /* LiveSale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiveSale.m; path = Live/LiveSale.m; sourceTree = "<group>"; };
 		60B6F0F01662AADF007C9587 /* ARAppConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppConstants.h; sourceTree = "<group>"; };
 		60B6F0F11662AADF007C9587 /* ARAppConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppConstants.m; sourceTree = "<group>"; };
 		60B6F13716638785007C9587 /* ArtsyAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyAPI.h; sourceTree = "<group>"; };
@@ -3154,6 +3157,7 @@
 		6019A9041C7E648700E292FA /* Live Auctions */ = {
 			isa = PBXGroup;
 			children = (
+				601E31AD1C80E32B00D09F73 /* Models */,
 				601E31A91C80A53400D09F73 /* Resources */,
 				6019A90A1C7F976700E292FA /* Networking */,
 				6019A9091C7F975F00E292FA /* Views */,
@@ -3201,13 +3205,16 @@
 			path = ../Auctions;
 			sourceTree = "<group>";
 		};
-		601E31AD1C80E32B00D09F73 /* Live Auctions */ = {
+		601E31AD1C80E32B00D09F73 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				601E31AE1C80E35600D09F73 /* LiveAuctionLot.h */,
 				601E31AF1C80E35600D09F73 /* LiveAuctionLot.m */,
+				60B6E5961C88BEF3003B1D46 /* LiveSale.h */,
+				60B6E5971C88BEF3003B1D46 /* LiveSale.m */,
 			);
-			name = "Live Auctions";
+			name = Models;
+			path = ../Models/API_Models;
 			sourceTree = "<group>";
 		};
 		602C09B71B5E5CBE003681D3 /* AFNetworking */ = {
@@ -4046,7 +4053,6 @@
 		60B6F14E16639607007C9587 /* API Models */ = {
 			isa = PBXGroup;
 			children = (
-				601E31AD1C80E32B00D09F73 /* Live Auctions */,
 				3CA37E781910070600B06E81 /* Favorites */,
 				3CE0DA2C18A12326000E537A /* Media */,
 				3CCCC89818996DC5008015DD /* Posts */,
@@ -5001,6 +5007,7 @@
 				6029E9F51993D726002D42C3 /* ARAppSearchViewController.m in Sources */,
 				49473F3917C192AE004BF082 /* ARTextFieldWithPlaceholder.m in Sources */,
 				D39E874F1AB0F97A006B5BE9 /* ARBrowseNetworkModel.m in Sources */,
+				60B6E5981C88BEF3003B1D46 /* LiveSale.m in Sources */,
 				60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */,
 				3CCCC8A51899B6F9008015DD /* FairOrganizer.m in Sources */,
 				60D90A0817C2182F0073D5B9 /* ARExternalWebBrowserViewController.m in Sources */,
