@@ -82,7 +82,7 @@ class LiveAuctionViewController: UIViewController {
         view.addSubview(progress)
         progress.constrainHeight("4")
         progress.alignLeading("0", trailing: "0", toView: view)
-        progress.alignBottomEdgeWithView(view, predicate: "-120")
+        progress.alignBottomEdgeWithView(view, predicate: "-165")
     }
 
     // Support for ARMenuAwareViewController
@@ -90,45 +90,6 @@ class LiveAuctionViewController: UIViewController {
     let hidesBackButton = true
     let hidesSearchButton = true
     let hidesStatusBarBackground = true
-}
-
-class LiveAuctionImagePreviewView : UIView {
-    let salesPerson: LiveAuctionsSalesPerson
-    let label: UILabel
-
-    init(signal: Signal<CGFloat>, salesPerson: LiveAuctionsSalesPerson) {
-        self.salesPerson = salesPerson
-
-        label = UILabel()
-        super.init(frame: CGRect.zero)
-
-        addSubview(label)
-        label.alignToView(self)
-
-        /// Ask the salesPerson for the VMs for current, next, prev
-
-        signal.next { progress in
-            self.label.text = "\(progress)"
-        }
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-/// Handles passing out information about the scroll progress to others
-
-class ScrollViewProgressObserver : NSObject, UIScrollViewDelegate {
-    let progress = Signal<CGFloat>()
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        let point = scrollView.contentOffset
-
-        // Creates a value from -1 to 0 to 1
-        let index = (point.x - scrollView.frame.width) / scrollView.frame.width * -1;
-        progress.update(index)
-    }
 }
 
 class LiveAuctionPreviewViewController : UIViewController {
@@ -141,36 +102,44 @@ class LiveAuctionPreviewViewController : UIViewController {
         let metadataStack = ORStackView()
         metadataStack.bottomMarginHeight = 0
         view.addSubview(metadataStack)
-        metadataStack.alignBottomEdgeWithView(view, predicate: "-20")
+        metadataStack.alignBottomEdgeWithView(view, predicate: "-72")
         metadataStack.constrainWidthToView(view, predicate: "-40")
         metadataStack.alignCenterXWithView(view, predicate: "0")
 
         let artistNameLabel = UILabel()
         artistNameLabel.font = UIFont.serifSemiBoldFontWithSize(16)
-        metadataStack.addSubview(artistNameLabel, withTopMargin: "0", sideMargin: "0")
+        metadataStack.addSubview(artistNameLabel, withTopMargin: "0", sideMargin: "20")
 
         let artworkNameLabel = ARArtworkTitleLabel()
         artworkNameLabel.setTitle("That work", date: "2006")
-        metadataStack.addSubview(artworkNameLabel, withTopMargin: "0", sideMargin: "0")
+        metadataStack.addSubview(artworkNameLabel, withTopMargin: "0", sideMargin: "20")
 
         let estimateLabel = ARSerifLabel()
         estimateLabel.font = UIFont.serifFontWithSize(14)
         estimateLabel.text = "Estimate: $100,000–120,000 USD"
-        metadataStack.addSubview(estimateLabel, withTopMargin: "2", sideMargin: "0")
+        metadataStack.addSubview(estimateLabel, withTopMargin: "2", sideMargin: "20")
 
         let premiumLabel = ARSerifLabel()
         premiumLabel.font = UIFont.serifFontWithSize(14)
         premiumLabel.text = "Buyer’s Premium 25%"
         premiumLabel.alpha = 0.3
-        metadataStack.addSubview(premiumLabel, withTopMargin: "2", sideMargin: "0")
+        metadataStack.addSubview(premiumLabel, withTopMargin: "2", sideMargin: "20")
+
+        let  infoToolbar = LiveAuctionToolbarView()
+        metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
+        infoToolbar.constrainHeight("14")
 
         let bidButton = ARBlackFlatButton()
         bidButton.setTitle("BID", forState: .Normal)
-        metadataStack.addSubview(bidButton, withTopMargin: "20", sideMargin: "20")
+        metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
+
+
 
         viewModel.next { vm in
-            artistNameLabel.text = vm.lotName
+            artistNameLabel.text = vm.lotArtist
+            artworkNameLabel.setTitle(vm.lotName, date: "1985")
             estimateLabel.text = vm.estimateString
+            infoToolbar.lotVM = vm
         }
     }
 }
@@ -204,6 +173,137 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
         return liveAuctionPreviewViewControllerForIndex(newIndex)
     }
 }
+
+class LiveAuctionImagePreviewView : UIView {
+    let salesPerson: LiveAuctionsSalesPerson
+    let label: UILabel
+
+    init(signal: Signal<CGFloat>, salesPerson: LiveAuctionsSalesPerson) {
+        self.salesPerson = salesPerson
+
+        label = UILabel()
+        super.init(frame: CGRect.zero)
+
+        addSubview(label)
+        label.alignToView(self)
+
+        /// Ask the salesPerson for the VMs for current, next, prev
+
+        signal.next { progress in
+            self.label.text = "\(progress)"
+        }
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+class LiveAuctionToolbarView : UIView {
+    // eh, not sold on this yet
+    var lotVM: LiveAuctionLotViewModel!
+
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Remove all subviews and call setupViews() again to start from scratch.
+        subviews.forEach { $0.removeFromSuperview() }
+        setupViews()
+    }
+
+
+    func lotCountString() -> NSAttributedString {
+        return NSAttributedString(string: "\(lotVM.index)/\(lotVM.lotCount)")
+    }
+
+    func attributify(string: String) -> NSAttributedString {
+        return NSAttributedString(string: string)
+    }
+
+    func setupViews() {
+        let viewStructure: [[String: NSAttributedString]]
+        let clockClosure: (UILabel) -> ()
+
+        if lotVM.isCurrentLot {
+            viewStructure = [
+                ["lot": lotCountString()],
+                ["time": attributify("00:12")],
+                ["bidders": attributify("11")],
+                ["watchers": attributify("09")]
+            ]
+            clockClosure = { label in
+                // do timer
+                label.text = "00:12"
+            }
+        } else {
+            viewStructure = [
+                ["lot": lotCountString()],
+                ["time": attributify("00: 12")],
+                ["watchers": attributify("09")]
+            ]
+            clockClosure = { label in
+                label.text = "1 lot away"
+            }
+        }
+
+        let views:[UIView] = viewStructure.map { dict in
+            let key = dict.keys.first!
+            let thumbnail = UIImage(named: "lot_\(key)_info")
+
+            let view = UIView()
+            let thumbnailView = UIImageView(image: thumbnail)
+            view.addSubview(thumbnailView)
+
+            let label = ARSansSerifLabel()
+            label.font = UIFont.sansSerifFontWithSize(12)
+            view.addSubview(label)
+            if key == "time" {
+                clockClosure(label)
+            } else {
+                label.attributedText = dict.values.first!
+            }
+
+            view.constrainHeight("14")
+            thumbnailView.alignTop("0", leading: "0", toView: view)
+            label.alignBottom("0", trailing: "0", toView: view)
+            thumbnailView.constrainTrailingSpaceToView(label, predicate:"-6")
+            return view
+        }
+
+        views.forEach { button in
+            self.addSubview(button)
+            button.alignTopEdgeWithView(self, predicate: "0")
+        }
+
+        let first = views.first!
+        let last = views.last!
+
+        first.alignLeadingEdgeWithView(self, predicate: "0")
+        last.alignTrailingEdgeWithView(self, predicate: "0")
+        // TODO do http://stackoverflow.com/questions/18042034/equally-distribute-spacing-using-auto-layout-visual-format-string
+        let middle = views[1]
+        middle.alignCenterXWithView(self, predicate: "0")
+    }
+}
+
+
+
+/// Handles passing out information about the scroll progress to others
+
+class ScrollViewProgressObserver : NSObject, UIScrollViewDelegate {
+    let progress = Signal<CGFloat>()
+
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let point = scrollView.contentOffset
+
+        // Creates a value from -1 to 0 to 1
+        let index = (point.x - scrollView.frame.width) / scrollView.frame.width * -1;
+        progress.update(index)
+    }
+}
+
+
 
 class SimpleProgressView : UIView {
     var highlightColor = UIColor.artsyPurple() {
@@ -255,7 +355,13 @@ class LiveAuctionViewModel : NSObject {
     var nextBidForLot : Int {
         return 25_000
     }
+
+    var lotCount: Int {
+        return 300
+    }
 }
+
+// Represents a singlelot view
 
 class LiveAuctionLotViewModel : NSObject {
     private let auctionVM: LiveAuctionViewModel
@@ -280,8 +386,16 @@ class LiveAuctionLotViewModel : NSObject {
         return lot.artworkTitle
     }
 
-    var lotIndex : Int {
+    var lotArtist: String {
+        return lot.artistName
+    }
+
+    var lotIndex: Int {
         return index
+    }
+
+    var lotCount: Int {
+        return auctionVM.lotCount
     }
 
     var bidButtonTtile: String {
@@ -298,7 +412,7 @@ class LiveAuctionLotViewModel : NSObject {
 }
 
 /// Something to pretend to either be a network model or whatever
-/// for now it can just parse the embedded json, and move it to obj-c when we're doing rela networking
+/// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
 class LiveAuctionsSalesPerson : NSObject {
     private var currentIndex = 0
@@ -330,7 +444,7 @@ class LiveAuctionsSalesPerson : NSObject {
     }
 
     func setup() {
-        let jsonPath = NSBundle.mainBundle().pathForResource("live_actions", ofType: "json")
+        let jsonPath = NSBundle.mainBundle().pathForResource("live_auctions", ofType: "json")
         let jsonData = NSData(contentsOfFile: jsonPath!)!
         let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
 

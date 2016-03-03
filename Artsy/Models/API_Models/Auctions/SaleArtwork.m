@@ -31,7 +31,17 @@ static NSNumberFormatter *currencyFormatter;
 {
     return @{
         ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
-        ar_keypath(SaleArtwork.new, currencySymbol) : @"symbol"
+        ar_keypath(SaleArtwork.new, currencySymbol) : @"symbol",
+        ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
+        ar_keypath(SaleArtwork.new, openingBidCents) : @"opening_bid_cents",
+        ar_keypath(SaleArtwork.new, minimumNextBidCents) : @"minimum_next_bid_cents",
+        ar_keypath(SaleArtwork.new, saleHighestBid) : @"highest_bid",
+        ar_keypath(SaleArtwork.new, artworkNumPositions) : @"bidder_positions_count",
+        ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
+        ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
+        ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
+        ar_keypath(SaleArtwork.new, lotNumber) : @"lot_number",
+        ar_keypath(SaleArtwork.new, bidCount) : @"bidder_positions_count"
     };
 }
 

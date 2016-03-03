@@ -336,7 +336,7 @@
 		6019A9081C7E76EF00E292FA /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */; };
 		6019A90D1C7F9EF600E292FA /* LiveAuctionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6019A90C1C7F9EF600E292FA /* LiveAuctionViewControllerTests.swift */; };
 		601C317816582BA30013E061 /* ARRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 601C317716582BA30013E061 /* ARRouter.m */; };
-		601E31AB1C80A55F00D09F73 /* live_actions.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_actions.json */; };
+		601E31AB1C80A55F00D09F73 /* live_auctions.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_auctions.json */; };
 		601E31B01C80E35600D09F73 /* LiveAuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = 601E31AF1C80E35600D09F73 /* LiveAuctionLot.m */; };
 		601E53371B84C41F00679E10 /* ARArtworkViewControllerBuyButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 601E53351B84C35D00679E10 /* ARArtworkViewControllerBuyButtonTests.m */; };
 		601F029817F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 601F029717F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m */; };
@@ -1241,7 +1241,7 @@
 		601C317716582BA30013E061 /* ARRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRouter.m; sourceTree = "<group>"; };
 		601C3183165838590013E061 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		601C3185165838630013E061 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		601E31AA1C80A55F00D09F73 /* live_actions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = live_actions.json; sourceTree = "<group>"; };
+		601E31AA1C80A55F00D09F73 /* live_auctions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = live_auctions.json; sourceTree = "<group>"; };
 		601E31AE1C80E35600D09F73 /* LiveAuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveAuctionLot.h; sourceTree = "<group>"; };
 		601E31AF1C80E35600D09F73 /* LiveAuctionLot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveAuctionLot.m; sourceTree = "<group>"; };
 		601E53351B84C35D00679E10 /* ARArtworkViewControllerBuyButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkViewControllerBuyButtonTests.m; sourceTree = "<group>"; };
@@ -3191,7 +3191,7 @@
 		601E31A91C80A53400D09F73 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				601E31AA1C80A55F00D09F73 /* live_actions.json */,
+				601E31AA1C80A55F00D09F73 /* live_auctions.json */,
 				6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */,
 			);
 			name = Resources;
@@ -4684,7 +4684,7 @@
 				608B707917D4A1C80088A56C /* FollowCheckmark.png in Resources */,
 				E6FFEAB119C7925600A0D7DE /* onboard_2@2x~ipad.jpg in Resources */,
 				60647C7A1A95095800A45247 /* ARFairPopupViewController.xib in Resources */,
-				601E31AB1C80A55F00D09F73 /* live_actions.json in Resources */,
+				601E31AB1C80A55F00D09F73 /* live_auctions.json in Resources */,
 				E6FFEABA19C7925600A0D7DE /* splash_3@2x~iphone.jpg in Resources */,
 				5E17B1981C5965CC00CE6E98 /* Thumb.png in Resources */,
 				3C4AE98119094DAA009C0E8B /* MapAnnotation_Highlighted@2x.png in Resources */,
