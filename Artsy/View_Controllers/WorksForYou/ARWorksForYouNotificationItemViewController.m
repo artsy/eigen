@@ -44,10 +44,7 @@
     artistNameLabel.text = self.notificationItem.artist.name.uppercaseString;
     artistNameLabel.textColor = [UIColor blackColor];
     artistNameLabel.font = [UIFont sansSerifFontWithSize:14];
-
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(artistNameTapped:)];
-    artistNameLabel.userInteractionEnabled = YES;
-    [artistNameLabel addGestureRecognizer:recognizer];
+    [self addArtistTapRecognizerToView:artistNameLabel];
 
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"MMM dd"];
@@ -56,12 +53,13 @@
     dateLabel.text = [df stringFromDate:self.notificationItem.date];
     dateLabel.textColor = [UIColor artsyHeavyGrey];
     dateLabel.textAlignment = NSTextAlignmentRight;
-    dateLabel.font = [UIFont sansSerifFontWithSize:10];
+    dateLabel.font = [UIFont sansSerifFontWithSize:12];
 
     ARSerifLabel *numberOfWorksAddedLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     numberOfWorksAddedLabel.text = self.notificationItem.formattedNumberOfWorks;
     numberOfWorksAddedLabel.textColor = [UIColor artsyHeavyGrey];
     numberOfWorksAddedLabel.font = [UIFont serifFontWithSize:14];
+    [self addArtistTapRecognizerToView:numberOfWorksAddedLabel];
 
     ORSplitStackView *ssv = [[ORSplitStackView alloc] initWithLeftPredicate:@"200" rightPredicate:@"100"];
     [ssv.leftStack addSubview:artistNameLabel withTopMargin:@"10" sideMargin:@"0"];
@@ -86,6 +84,13 @@
     }
 
     [super viewDidLoad];
+}
+
+- (void)addArtistTapRecognizerToView:(UIView *)view
+{
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(artistNameTapped:)];
+    view.userInteractionEnabled = YES;
+    [view addGestureRecognizer:recognizer];
 }
 
 - (void)artistNameTapped:(UIGestureRecognizer *)recognizer
