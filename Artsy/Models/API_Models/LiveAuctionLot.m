@@ -21,6 +21,12 @@
     return [NSURL URLWithString:self.imageDictionary[@"large"][@"url"]];
 }
 
+- (NSURL *)urlForProfile
+{
+    return [NSURL URLWithString:self.imageDictionary[@"thumb"][@"url"]];
+}
+
+
 + (NSValueTransformer *)reserveStatusJSONTransformer
 {
     return [SaleArtwork reserveStatusJSONTransformer];

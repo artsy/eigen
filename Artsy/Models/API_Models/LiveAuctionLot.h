@@ -10,6 +10,7 @@
 @interface LiveAuctionLot : MTLModel <MTLJSONSerializing>
 
 - (NSURL *)urlForThumbnail;
+- (NSURL *)urlForProfile;
 
 @property (nonatomic, copy, readonly) NSString *artworkTitle;
 @property (nonatomic, copy, readonly) NSString *artistName;

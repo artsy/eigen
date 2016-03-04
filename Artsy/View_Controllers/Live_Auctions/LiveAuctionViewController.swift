@@ -94,7 +94,8 @@ class LiveAuctionViewController: UIViewController {
 
 class LiveAuctionPreviewViewController : UIViewController {
     var index = 0
-    let viewModel = Signal<LiveAuctionLotViewModel>()
+    let lotViewModel = Signal<LiveAuctionLotViewModel>()
+    let auctionViewModel = Signal<LiveAuctionViewModel>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,19 +126,40 @@ class LiveAuctionPreviewViewController : UIViewController {
         premiumLabel.alpha = 0.3
         metadataStack.addSubview(premiumLabel, withTopMargin: "2", sideMargin: "20")
 
-        let  infoToolbar = LiveAuctionToolbarView()
+        let infoToolbar = LiveAuctionToolbarView()
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
         infoToolbar.constrainHeight("14")
 
         let bidButton = ARBlackFlatButton()
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 
-        viewModel.next { vm in
+        let currentLotView = LiveAuctionCurrentLotView()
+        metadataStack.addSubview(currentLotView, withTopMargin: "14", sideMargin: "20")
+
+        // might be a way to "bind" these?
+        auctionViewModel.next { auctionViewModel in
+            if let currentLot = auctionViewModel.currentLotViewModel {
+                currentLotView.viewModel.update(currentLot)
+            }
+        }
+
+        lotViewModel.next { vm in
             artistNameLabel.text = vm.lotArtist
             artworkNameLabel.setTitle(vm.lotName, date: "1985")
             estimateLabel.text = vm.estimateString
             infoToolbar.lotVM = vm
             bidButton.setTitle(vm.bidButtonTitle, forState: .Normal)
+
+            switch vm.lotState {
+            case .ClosedLot:
+                metadataStack.removeSubview(currentLotView)
+
+            case .LiveLot:
+                metadataStack.removeSubview(currentLotView)
+
+            case .UpcomingLot(_):
+                print("OK")
+            }
         }
     }
 }
@@ -148,7 +170,8 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionPreviewViewController? {
         let auctionVC =  LiveAuctionPreviewViewController()
         guard let viewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
-        auctionVC.viewModel.update(viewModel)
+        auctionVC.lotViewModel.update(viewModel)
+        auctionVC.auctionViewModel.update(salesPerson.auctionViewModel)
         auctionVC.index = index
         return auctionVC
     }
@@ -188,9 +211,9 @@ class LiveAuctionImagePreviewView : UIView {
         centerImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
         rightImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
 
-        leftImageView.backgroundColor = UIColor.debugColourRandom()
-        centerImageView.backgroundColor = UIColor.debugColourRandom()
-        rightImageView.backgroundColor = UIColor.debugColourRandom()
+        leftImageView.backgroundColor = UIColor.debugColourPurple()
+        centerImageView.backgroundColor = UIColor.debugColourPurple()
+        rightImageView.backgroundColor = UIColor.debugColourPurple()
 
         super.init(frame: CGRect.zero)
 
@@ -242,6 +265,70 @@ class LiveAuctionImagePreviewView : UIView {
     }
 }
 
+
+class LiveAuctionCurrentLotView: UIView {
+
+    let viewModel = Signal<LiveAuctionLotViewModel>()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        backgroundColor = .artsyPurple()
+
+        let liveLotLabel = ARSansSerifLabel()
+        liveLotLabel.font = .sansSerifFontWithSize(12)
+        liveLotLabel.text = "Live Lot"
+
+        let artistNameLabel = UILabel()
+        artistNameLabel.font = .serifSemiBoldFontWithSize(16)
+
+        let biddingPriceLabel = ARSansSerifLabel()
+        biddingPriceLabel.font = .sansSerifFontWithSize(16)
+
+        let hammerView = UIImageView(image: UIImage(named:"lot_bidder_hammer_white"))
+        let thumbnailView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+
+
+        [liveLotLabel, artistNameLabel, biddingPriceLabel, thumbnailView, hammerView].forEach { addSubview($0) }
+        [liveLotLabel, artistNameLabel, biddingPriceLabel].forEach {
+            $0.backgroundColor = backgroundColor
+            $0.textColor = .whiteColor()
+        }
+
+        constrainHeight("54")
+
+        // Left Side
+
+        thumbnailView.alignLeadingEdgeWithView(self, predicate: "10")
+        thumbnailView.constrainWidth("38", height: "38")
+        thumbnailView.alignCenterYWithView(self, predicate: "0")
+
+        liveLotLabel.constrainLeadingSpaceToView(thumbnailView, predicate: "10")
+        liveLotLabel.alignTopEdgeWithView(self, predicate: "10")
+
+        artistNameLabel.constrainLeadingSpaceToView(thumbnailView, predicate: "10")
+        artistNameLabel.alignBottomEdgeWithView(self, predicate: "-10")
+
+        // Right side
+
+        hammerView.alignTrailingEdgeWithView(self, predicate: "-10")
+        hammerView.constrainWidth("32", height: "32")
+        hammerView.alignCenterYWithView(self, predicate: "0")
+
+        biddingPriceLabel.alignAttribute(.Trailing, toAttribute: .Leading, ofView: hammerView, predicate: "-12")
+        biddingPriceLabel.alignCenterYWithView(self, predicate: "0")
+
+        viewModel.next { vm in
+            artistNameLabel.text = vm.lotArtist
+            biddingPriceLabel.text = vm.currentLotValue
+            thumbnailView.ar_setImageWithURL(vm.urlForThumbnail)
+        }
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
 class LiveAuctionToolbarView : UIView {
     // eh, not sold on this yet
@@ -351,7 +438,6 @@ class LiveAuctionToolbarView : UIView {
             let middleRight = views[2]
             middleLeft.alignAttribute(.Leading, toAttribute: .Trailing, ofView: first, predicate: "12")
             middleRight.alignAttribute(.Trailing, toAttribute: .Leading, ofView: last, predicate: "-12")
-
         }
     }
 }
@@ -371,8 +457,6 @@ class ScrollViewProgressObserver : NSObject, UIScrollViewDelegate {
         progress.update(index)
     }
 }
-
-
 
 class SimpleProgressView : UIView {
     var highlightColor = UIColor.artsyPurple() {
@@ -404,9 +488,11 @@ class SimpleProgressView : UIView {
 
 class LiveAuctionViewModel : NSObject {
     private let sale: LiveSale
+    private let salesPerson: LiveAuctionsSalesPerson
 
-    init(sale: LiveSale) {
+    init(sale: LiveSale, salesPerson: LiveAuctionsSalesPerson) {
         self.sale = sale
+        self.salesPerson = salesPerson
     }
 
     func dateForLotAtIndex(index: Int) -> NSDate {
@@ -429,6 +515,12 @@ class LiveAuctionViewModel : NSObject {
         return sale.lotIDs.count
     }
 
+    var currentLotViewModel: LiveAuctionLotViewModel? {
+        guard let currentIndex = sale.lotIDs.indexOf(sale.currentLotId) else { return nil }
+        return salesPerson.lotViewModelForIndex(currentIndex)
+    }
+
+
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int {
@@ -439,7 +531,7 @@ class LiveAuctionViewModel : NSObject {
     }
 }
 
-// Represents a singlelot view
+// Represents a single lot view
 
 class LiveAuctionLotViewModel : NSObject {
 
@@ -449,24 +541,28 @@ class LiveAuctionLotViewModel : NSObject {
         case UpcomingLot(distanceFromLive: Int)
     }
 
-    private let auctionVM: LiveAuctionViewModel
+    private let auction: LiveAuctionViewModel
     private let lot: LiveAuctionLot
     private let index: Int
 
-    init(lot: LiveAuctionLot, auctionVM: LiveAuctionViewModel, index: Int) {
+    init(lot: LiveAuctionLot, auction: LiveAuctionViewModel, index: Int) {
         self.lot = lot
-        self.auctionVM = auctionVM
+        self.auction = auction
         self.index = index
     }
 
     var lotState : LotState {
-        let distance = auctionVM.distanceFromCurrentLot(lot)
+        let distance = auction.distanceFromCurrentLot(lot)
         if distance == 0 { return .LiveLot }
         if distance < 0 { return .ClosedLot }
         return .UpcomingLot(distanceFromLive: distance)
     }
 
     var urlForThumbnail: NSURL {
+        return lot.urlForThumbnail()
+    }
+
+    var urlForProfile: NSURL {
         return lot.urlForThumbnail()
     }
 
@@ -483,7 +579,12 @@ class LiveAuctionLotViewModel : NSObject {
     }
 
     var lotCount: Int {
-        return auctionVM.lotCount
+        return auction.lotCount
+    }
+
+    // maybe depecated by currentLotviewModel?
+    var currentLotValue: String {
+        return "$10,000"
     }
 
     var bidButtonTitle: String {
@@ -523,10 +624,14 @@ class LiveAuctionsSalesPerson : NSObject {
         return lotViewModelForIndex(currentIndex + 1)
     }
 
+    var auctionViewModel: LiveAuctionViewModel {
+        return LiveAuctionViewModel(sale: sale, salesPerson: self)
+    }
+
+
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel? {
         if (0..<lotCount ~= index) {
-            let auctionVM =  LiveAuctionViewModel(sale: sale)
-            return LiveAuctionLotViewModel(lot: lots[index], auctionVM:auctionVM , index: index)
+            return LiveAuctionLotViewModel(lot: lots[index], auction:auctionViewModel , index: index)
         }
         return nil
     }
