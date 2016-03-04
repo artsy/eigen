@@ -30,19 +30,25 @@ describe(@"artwork for sale", ^{
     describe(@"estimate string", ^{
         
         it(@"returns a string showing both low and high ", ^{
-            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate_cents" : @20000, @"low_estimate_cents" : @10000}];
-            expect(_saleArtwork.estimateString).to.equal(@"Estimate: $100 – $200");
+            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate_cents" : @20000, @"low_estimate_cents" : @10000, @"currency" : @"USD", @"symbol" : @"$"}];
+            expect(_saleArtwork.estimateString).to.equal(@"Estimate: $100 – $200 USD");
         });
         
         it(@"returns a string showing low if available ", ^{
-            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"low_estimate_cents" : @10000}];
-            expect(_saleArtwork.estimateString).to.equal(@"Estimate: $100");
+            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"low_estimate_cents" : @10000, @"currency" : @"USD", @"symbol" : @"$"}];
+            expect(_saleArtwork.estimateString).to.equal(@"Estimate: $100 USD");
         });
         
         it(@"returns a string showing high if available", ^{
-            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate_cents" : @100000}];
-            expect(_saleArtwork.estimateString).to.equal(@"Estimate: $1,000");
+            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate_cents" : @100000, @"currency" : @"USD", @"symbol" : @"$"}];
+            expect(_saleArtwork.estimateString).to.equal(@"Estimate: $1,000 USD");
         });
+
+        it(@"handles GBP string showing high if available", ^{
+            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate_cents" : @100000, @"currency" : @"GBP", @"symbol" : @"£"}];
+            expect(_saleArtwork.estimateString).to.equal(@"Estimate: £1,000 GBP");
+        });
+
     });
 
     describe(@"with a bidder", ^{

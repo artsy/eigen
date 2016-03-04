@@ -30,7 +30,9 @@
 #import "Artwork.h"
 #import "Artist.h"
 #import "Profile.h"
+
 #import "LiveAuctionLot.h"
+#import "LiveSale.h"
 
 #import "Artwork.h"
 #import "AREmbeddedModelsViewController.h"

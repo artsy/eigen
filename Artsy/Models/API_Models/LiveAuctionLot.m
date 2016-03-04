@@ -9,10 +9,10 @@
 {
     return @{
         ar_keypath(LiveAuctionLot.new, liveAuctionID) : @"id",
-
         ar_keypath(LiveAuctionLot.new, artworkTitle) : @"artwork.title",
-        ar_keypath(LiveAuctionLot.new, artistName) : @"artist.name",
-        ar_keypath(LiveAuctionLot.new, imageDictionary) : @"artwork.image"
+        ar_keypath(LiveAuctionLot.new, artistName) : @"artwork.artist.name",
+        ar_keypath(LiveAuctionLot.new, imageDictionary) : @"artwork.image",
+        ar_keypath(LiveAuctionLot.new, currencySymbol) : @"symbol"
     };
 }
 
@@ -25,6 +25,5 @@
 {
     return [SaleArtwork reserveStatusJSONTransformer];
 }
-
 
 @end
