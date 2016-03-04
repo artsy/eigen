@@ -56,7 +56,7 @@
     dateLabel.text = [df stringFromDate:self.notificationItem.date];
     dateLabel.textColor = [UIColor artsyHeavyGrey];
     dateLabel.textAlignment = NSTextAlignmentRight;
-    dateLabel.font = [UIFont sansSerifFontWithSize:10];
+    dateLabel.font = [UIFont sansSerifFontWithSize:12];
 
     ARSerifLabel *numberOfWorksAddedLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     numberOfWorksAddedLabel.text = self.notificationItem.formattedNumberOfWorks;

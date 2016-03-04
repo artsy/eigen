@@ -10,6 +10,7 @@
 #import "ARWorksForYouNotificationItemViewController.h"
 #import "ARArtistViewController.h"
 #import "ARScrollNavigationChief.h"
+#import "UIDevice-Hardware.h"
 
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>
@@ -85,12 +86,11 @@ static int ARLoadingIndicatorView = 1;
     [items each:^(ARWorksForYouNotificationItem *item) {
         
         ARWorksForYouNotificationItemViewController *worksByArtistViewController = [[ARWorksForYouNotificationItemViewController alloc] initWithNotificationItem:item];
-        [self.view.stackView addViewController:worksByArtistViewController toParent:self withTopMargin:@"0" sideMargin:@"20"];
+        [self.view.stackView addViewController:worksByArtistViewController toParent:self withTopMargin:(item == items.firstObject) ? @"25" : @"0" sideMargin:@"20"];
         
         if (!(item == items.lastObject && self.worksForYouNetworkModel.allDownloaded)) {
             [self addSeparatorLine];
         }
-
     }];
 }
 
@@ -142,6 +142,11 @@ static int ARLoadingIndicatorView = 1;
     if ([self.view.stackView viewWithTag:ARLoadingIndicatorView]) {
         [self.view.stackView removeSubview:[self.view.stackView viewWithTag:ARLoadingIndicatorView]];
     }
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [UIDevice isPad];
 }
 
 @end
