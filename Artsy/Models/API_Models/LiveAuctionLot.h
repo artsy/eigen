@@ -17,7 +17,7 @@
 @property (nonatomic, copy, readonly) NSDictionary *imageDictionary;
 
 @property (nonatomic, copy, readonly) NSString *liveAuctionLotID;
-@property (nonatomic, copy, readonly) NSNumber *position;
+@property (nonatomic, assign, readonly) NSInteger position;
 
 @property (nonatomic, assign, readonly) ARReserveStatus reserveStatus;
 

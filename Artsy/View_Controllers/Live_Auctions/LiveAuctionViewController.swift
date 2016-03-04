@@ -130,16 +130,14 @@ class LiveAuctionPreviewViewController : UIViewController {
         infoToolbar.constrainHeight("14")
 
         let bidButton = ARBlackFlatButton()
-        bidButton.setTitle("BID", forState: .Normal)
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
-
-
 
         viewModel.next { vm in
             artistNameLabel.text = vm.lotArtist
             artworkNameLabel.setTitle(vm.lotName, date: "1985")
             estimateLabel.text = vm.estimateString
             infoToolbar.lotVM = vm
+            bidButton.setTitle(vm.bidButtonTitle, forState: .Normal)
         }
     }
 }
@@ -225,7 +223,20 @@ class LiveAuctionToolbarView : UIView {
         let viewStructure: [[String: NSAttributedString]]
         let clockClosure: (UILabel) -> ()
 
-        if lotVM.isCurrentLot {
+        switch lotVM.lotState {
+        case .ClosedLot:
+            viewStructure = [
+                ["lot": lotCountString()],
+                ["time": attributify("Closed")],
+                ["bidders": attributify("11")],
+                ["watchers": attributify("09")]
+            ]
+            clockClosure = { label in
+                // do timer
+                label.text = "00:12"
+            }
+
+        case .LiveLot:
             viewStructure = [
                 ["lot": lotCountString()],
                 ["time": attributify("00:12")],
@@ -236,14 +247,16 @@ class LiveAuctionToolbarView : UIView {
                 // do timer
                 label.text = "00:12"
             }
-        } else {
+
+        case let .UpcomingLot(distance):
             viewStructure = [
                 ["lot": lotCountString()],
-                ["time": attributify("00: 12")],
+                ["time": attributify("")],
                 ["watchers": attributify("09")]
             ]
+
             clockClosure = { label in
-                label.text = "1 lot away"
+                label.text = "\(distance) lots away"
             }
         }
 
@@ -281,9 +294,20 @@ class LiveAuctionToolbarView : UIView {
 
         first.alignLeadingEdgeWithView(self, predicate: "0")
         last.alignTrailingEdgeWithView(self, predicate: "0")
-        // TODO do http://stackoverflow.com/questions/18042034/equally-distribute-spacing-using-auto-layout-visual-format-string
-        let middle = views[1]
-        middle.alignCenterXWithView(self, predicate: "0")
+
+        // TODO do right via http://stackoverflow.com/questions/18042034/equally-distribute-spacing-using-auto-layout-visual-format-string
+
+        if views.count == 3 {
+            let middle = views[1]
+            middle.alignCenterXWithView(self, predicate: "0")
+        }
+        if views.count == 4 {
+            let middleLeft = views[1]
+            let middleRight = views[2]
+            middleLeft.alignAttribute(.Leading, toAttribute: .Trailing, ofView: first, predicate: "12")
+            middleRight.alignAttribute(.Trailing, toAttribute: .Leading, ofView: last, predicate: "-12")
+
+        }
     }
 }
 
@@ -360,11 +384,13 @@ class LiveAuctionViewModel : NSObject {
         return sale.lotIDs.count
     }
 
+    /// A distance relative to the current lot, -x being that it precedded the current
+    /// 0 being it is current and a positive number meaning it upcoming.
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int {
         let currentIndex = sale.lotIDs.indexOf(sale.currentLotId)
         let lotIndex = sale.lotIDs.indexOf(lot.liveAuctionLotID)
         guard let current = currentIndex, lot = lotIndex else { return NSNotFound }
-        return current - lot
+        return (current - lot) * -1
     }
 }
 
@@ -390,14 +416,10 @@ class LiveAuctionLotViewModel : NSObject {
 
     var lotState : LotState {
         let distance = auctionVM.distanceFromCurrentLot(lot)
-        // use switch?
+        print(distance)
         if distance == 0 { return .LiveLot }
         if distance < 0 { return .ClosedLot }
         return .UpcomingLot(distanceFromLive: distance)
-    }
-
-    var isCurrentLot: Bool {
-        return false
     }
 
     var urlForThumbnail: NSURL {
@@ -413,18 +435,18 @@ class LiveAuctionLotViewModel : NSObject {
     }
 
     var lotIndex: Int {
-        return index
+        return index + 1
     }
 
     var lotCount: Int {
         return auctionVM.lotCount
     }
 
-    var bidButtonTtile: String {
-        if isCurrentLot {
-            return "BID $20,000"
-        } else {
-            return "LEAVE MAX BID"
+    var bidButtonTitle: String {
+        switch lotState {
+        case .ClosedLot:   return "BIDDING CLOSED"
+        case .LiveLot:  return "BID 20,000"
+        case .UpcomingLot(_):  return "LEAVE MAX BID"
         }
     }
 
@@ -474,6 +496,7 @@ class LiveAuctionsSalesPerson : NSObject {
         guard let sale = json["sale"] as? [String: AnyObject] else { return }
 
         self.sale = LiveSale(JSON: sale)
-        self.lots = lots.values.map { LiveAuctionLot(JSON: $0) }
+        let unordered_lots: [LiveAuctionLot] = lots.values.map { LiveAuctionLot(JSON: $0) }
+        self.lots = unordered_lots.sort { return $0.position < $1.position }
     }
 }
