@@ -65,7 +65,7 @@ class LiveAuctionViewController: UIViewController {
         let startVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(0)
         pageController.setViewControllers([startVC!], direction: .Forward, animated: false, completion: nil)
 
-        if let scrollView = pageController.view.subviews[0] as? UIScrollView {
+        if let scrollView = pageController.view.subviews.filter({ $0.isKindOfClass(UIScrollView.self) }).first as? UIScrollView {
             scrollView.delegate = scrollManager
         }
 
@@ -357,13 +357,27 @@ class LiveAuctionViewModel : NSObject {
     }
 
     var lotCount: Int {
-        return 300
+        return sale.lotIDs.count
+    }
+
+    func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int {
+        let currentIndex = sale.lotIDs.indexOf(sale.currentLotId)
+        let lotIndex = sale.lotIDs.indexOf(lot.liveAuctionLotID)
+        guard let current = currentIndex, lot = lotIndex else { return NSNotFound }
+        return current - lot
     }
 }
 
 // Represents a singlelot view
 
 class LiveAuctionLotViewModel : NSObject {
+
+    enum LotState {
+        case ClosedLot
+        case LiveLot
+        case UpcomingLot(distanceFromLive: Int)
+    }
+
     private let auctionVM: LiveAuctionViewModel
     private let lot: LiveAuctionLot
     private let index: Int
@@ -372,6 +386,14 @@ class LiveAuctionLotViewModel : NSObject {
         self.lot = lot
         self.auctionVM = auctionVM
         self.index = index
+    }
+
+    var lotState : LotState {
+        let distance = auctionVM.distanceFromCurrentLot(lot)
+        // use switch?
+        if distance == 0 { return .LiveLot }
+        if distance < 0 { return .ClosedLot }
+        return .UpcomingLot(distanceFromLive: distance)
     }
 
     var isCurrentLot: Bool {
