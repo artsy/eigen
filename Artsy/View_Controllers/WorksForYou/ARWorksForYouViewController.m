@@ -9,6 +9,7 @@
 #import "ARReusableLoadingView.h"
 #import "ARWorksForYouNotificationItemViewController.h"
 #import "ARArtistViewController.h"
+#import "ARScrollNavigationChief.h"
 
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>
@@ -115,8 +116,12 @@ static int ARLoadingIndicatorView = 1;
     [self.worksForYouNetworkModel markNotificationsRead];
 }
 
+#pragma mark - scrolling behavior
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    /// hides the search button
+    [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
     if ((scrollView.contentSize.height - scrollView.contentOffset.y) < scrollView.bounds.size.height) {
         [self getNextItemSet];
     }
