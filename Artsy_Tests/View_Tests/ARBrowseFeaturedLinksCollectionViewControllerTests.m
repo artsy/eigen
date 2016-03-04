@@ -67,10 +67,10 @@ describe(@"appearance", ^{
             [parentVC ar_presentWithFrame:[UIScreen mainScreen].bounds];
             [parentVC.view layoutIfNeeded];
             vc.featuredLinks = @[
-                                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-                                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-                                 [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
-                                 ];
+                [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
+                [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
+                [[FeaturedLink alloc] initWithDictionary:@{@"title" : @"Title"} error:nil],
+            ];
             return vc;
         };
 
