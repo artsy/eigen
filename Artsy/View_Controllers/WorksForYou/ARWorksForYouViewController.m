@@ -10,6 +10,7 @@
 #import "ARWorksForYouNotificationItemViewController.h"
 #import "ARArtistViewController.h"
 #import "ARScrollNavigationChief.h"
+#import "UIDevice-Hardware.h"
 
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>
@@ -82,16 +83,21 @@ static int ARLoadingIndicatorView = 1;
 
 - (void)addNotificationItems:(NSArray *)items
 {
-    [items each:^(ARWorksForYouNotificationItem *item) {
-        
-        ARWorksForYouNotificationItemViewController *worksByArtistViewController = [[ARWorksForYouNotificationItemViewController alloc] initWithNotificationItem:item];
-        [self.view.stackView addViewController:worksByArtistViewController toParent:self withTopMargin:@"0" sideMargin:@"20"];
-        
-        if (!(item == items.lastObject && self.worksForYouNetworkModel.allDownloaded)) {
-            [self addSeparatorLine];
-        }
+    // network model will have incremented to page 2 after downloading first
+    BOOL isFirstPage = (self.worksForYouNetworkModel.currentPage == 2);
 
+    [items each:^(ARWorksForYouNotificationItem *item) {
+        ARWorksForYouNotificationItemViewController *worksByArtistViewController = [[ARWorksForYouNotificationItemViewController alloc] initWithNotificationItem:item];
+        
+        NSString *topMargin = (isFirstPage && item == items.firstObject) ? @"25" : @"0";
+        [self.view.stackView addViewController:worksByArtistViewController toParent:self withTopMargin:topMargin sideMargin:@"20"];
+        [self addSeparatorLine];
     }];
+
+    // remove the last separator line if there are no items left
+    if (!items.count) {
+        [self.view.stackView removeSubview:self.view.stackView.lastView];
+    }
 }
 
 - (void)getNextItemSet
@@ -142,6 +148,11 @@ static int ARLoadingIndicatorView = 1;
     if ([self.view.stackView viewWithTag:ARLoadingIndicatorView]) {
         [self.view.stackView removeSubview:[self.view.stackView viewWithTag:ARLoadingIndicatorView]];
     }
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [UIDevice isPad];
 }
 
 @end

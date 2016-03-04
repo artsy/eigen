@@ -16,6 +16,7 @@ ARWorksForYouNotificationItem *stubbedNotificationItemWithNumberAndArtworks(int 
 @interface ARStubbedWorksForYouNetworkModel : NSObject <ARWorksForYouNetworkModelable>
 @property (nonatomic, assign) BOOL allDownloaded;
 @property (nonatomic, copy, readwrite) NSArray<ARWorksForYouNotificationItem *> *notificationItems;
+@property (readwrite, nonatomic, assign) NSInteger currentPage;
 @end
 
 
@@ -87,9 +88,22 @@ SpecEnd
 
 @implementation ARStubbedWorksForYouNetworkModel
 
+- (instancetype)init
+{
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
+    _currentPage = 1;
+
+    return self;
+}
+
 - (void)getWorksForYou:(void (^_Nonnull)(NSArray<ARWorksForYouNotificationItem *> *_Nonnull))success failure:(void (^_Nullable)(NSError *_Nullable error))failure
 {
     self.allDownloaded = YES;
+    self.currentPage++;
     success(self.notificationItems);
 }
 

@@ -12,6 +12,8 @@
 /// Marks all current user's notifications read
 - (void)markNotificationsRead;
 
+@property (nonatomic, readonly) NSInteger currentPage;
+
 @end
 
 
