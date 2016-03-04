@@ -172,24 +172,69 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     }
 }
 
+/// This is a proof of concept, needs more work ( needs far left / far right views for example
+/// and to deal with transforms/ opacity
+
 class LiveAuctionImagePreviewView : UIView {
     let salesPerson: LiveAuctionsSalesPerson
-    let label: UILabel
+    let progress: Signal<CGFloat>
+    var leftImageView, rightImageView, centerImageView: UIImageView
 
     init(signal: Signal<CGFloat>, salesPerson: LiveAuctionsSalesPerson) {
         self.salesPerson = salesPerson
+        self.progress = signal
 
-        label = UILabel()
+        leftImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
+        centerImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
+        rightImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
+
+        leftImageView.backgroundColor = UIColor.debugColourRandom()
+        centerImageView.backgroundColor = UIColor.debugColourRandom()
+        rightImageView.backgroundColor = UIColor.debugColourRandom()
+
         super.init(frame: CGRect.zero)
 
-        addSubview(label)
-        label.alignToView(self)
-
-        /// Ask the salesPerson for the VMs for current, next, prev
+        [leftImageView, centerImageView, rightImageView].forEach { self.addSubview($0) }
 
         signal.next { progress in
-            self.label.text = "\(progress)"
+            let width = Int(self.bounds.width)
+            let half = Int(width / 2)
+
+            self.leftImageView.center = self.positionOnRange(-half...half, value: progress)
+            self.centerImageView.center = self.positionOnRange(0...width, value: progress)
+            self.rightImageView.center = self.positionOnRange(half...width + half, value:  progress)
         }
+    }
+
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        progress.update(1)
+    }
+
+    func valueOnRange(range: Range<Int>, value: CGFloat) -> CGFloat {
+        let min = CGFloat(range.minElement()!)
+        let max = CGFloat(range.maxElement()!)
+
+        let midpoint = (min + max) / 2
+        let offset: CGFloat
+        if value == 0 {
+            offset = 0
+        } else if value > 0 {
+            offset = (max - midpoint) * value
+        } else {
+            offset = (midpoint - min) * value
+        }
+        return midpoint + offset
+    }
+
+    func transformOnRange(range: Range<Int>, value: CGFloat) -> CGAffineTransform {
+        let zoomLevel = valueOnRange(range, value: value)
+        return CGAffineTransformScale(CGAffineTransformIdentity, zoomLevel/100, zoomLevel/100);
+    }
+
+    func positionOnRange(range: Range<Int>, value: CGFloat) -> CGPoint {
+        let x = valueOnRange(range, value: value)
+        return CGPoint(x: x, y: bounds.height / 2)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -416,7 +461,6 @@ class LiveAuctionLotViewModel : NSObject {
 
     var lotState : LotState {
         let distance = auctionVM.distanceFromCurrentLot(lot)
-        print(distance)
         if distance == 0 { return .LiveLot }
         if distance < 0 { return .ClosedLot }
         return .UpcomingLot(distanceFromLive: distance)
