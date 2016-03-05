@@ -1,5 +1,12 @@
 PODS:
+  - ARCollectionViewMasonryLayout (2.2.0)
   - Emission (0.1.0):
+    - Emission/ARArtworksMasonryGridComponent (= 0.1.0)
+  - Emission/ARArtworksMasonryGridComponent (0.1.0):
+    - ARCollectionViewMasonryLayout (>= 2.2.0)
+    - Emission/Core
+    - SDWebImage (>= 3.7.2)
+  - Emission/Core (0.1.0):
     - React/Core (= 0.21.0-rc)
   - FBSnapshotTestCase (2.0.7):
     - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
@@ -12,7 +19,12 @@ PODS:
     - Nimble
     - Quick
   - Quick (0.8.0)
+  - React (0.21.0-rc):
+    - React/Core (= 0.21.0-rc)
   - React/Core (0.21.0-rc)
+  - SDWebImage (3.7.5):
+    - SDWebImage/Core (= 3.7.5)
+  - SDWebImage/Core (3.7.5)
 
 DEPENDENCIES:
   - Emission (from `../`)
@@ -20,6 +32,7 @@ DEPENDENCIES:
   - Nimble (= 3.0.0)
   - Nimble-Snapshots
   - Quick (~> 0.8.0)
+  - React (= 0.21.0-rc)
 
 EXTERNAL SOURCES:
   Emission:
@@ -33,13 +46,15 @@ CHECKOUT OPTIONS:
     :git: https://github.com/neonichu/ios-snapshot-test-case.git
 
 SPEC CHECKSUMS:
-  Emission: ebc730b373e55a81ecd1fbdffaea5169c844ec4f
+  ARCollectionViewMasonryLayout: 9e87541c1d59cd9e6f538c19bbed3f52ceeef421
+  Emission: a3a3ae715c35cea75b9acd507e3d5058e3701e2e
   FBSnapshotTestCase: a89bbc6ea786ef38c2d4e313b3374177c8597b8f
   Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
   Nimble-Snapshots: ab41dd737dcd33a0b0cb005a30465fef70b7207a
   Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
-  React: 63d6fe461bd43c5051cee3b89cee08a37c19907a
+  React: 00c5501968657da4d2965f23252a28ac40d70b15
+  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
 
-PODFILE CHECKSUM: a97954d9b51c3a0e42b887e8adf0dddc81c399f8
+PODFILE CHECKSUM: c08ef9cb165b6c8c80959f8b0e1dd44120aad61d
 
 COCOAPODS: 1.0.0.beta.4

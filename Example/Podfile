@@ -5,6 +5,7 @@ use_frameworks!
 
 target 'Emission_Example' do
   pod 'Emission', :path => '../'
+  pod 'React', '0.21.0-rc' #, :subspecs => %w( RCTWebSocket RCTNetwork )
 end
 
 target 'Emission_Tests' do
