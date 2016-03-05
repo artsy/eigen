@@ -5,11 +5,12 @@ use_frameworks!
 
 target 'Emission_Example' do
   pod 'Emission', :path => '../'
-  pod 'React', '0.21.0-rc' #, :subspecs => %w( RCTWebSocket RCTNetwork )
+  pod 'React', :path => './node_modules/react-native', :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork )
 end
 
 target 'Emission_Tests' do
   pod 'Emission', :path => '../'
+  pod 'React', :path => './node_modules/react-native', :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork )
 
   pod 'Quick', '~> 0.8.0'
   pod 'Nimble', '3.0.0'

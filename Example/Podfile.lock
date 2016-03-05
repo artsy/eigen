@@ -7,7 +7,7 @@ PODS:
     - Emission/Core
     - SDWebImage (>= 3.7.2)
   - Emission/Core (0.1.0):
-    - React/Core (= 0.21.0-rc)
+    - React/Core (>= 0.21.0)
   - FBSnapshotTestCase (2.0.7):
     - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
   - FBSnapshotTestCase/Core (2.0.7)
@@ -19,9 +19,13 @@ PODS:
     - Nimble
     - Quick
   - Quick (0.8.0)
-  - React (0.21.0-rc):
-    - React/Core (= 0.21.0-rc)
-  - React/Core (0.21.0-rc)
+  - React/Core (0.21.0)
+  - React/RCTNetwork (0.21.0):
+    - React/Core
+  - React/RCTText (0.21.0):
+    - React/Core
+  - React/RCTWebSocket (0.21.0):
+    - React/Core
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
@@ -32,13 +36,18 @@ DEPENDENCIES:
   - Nimble (= 3.0.0)
   - Nimble-Snapshots
   - Quick (~> 0.8.0)
-  - React (= 0.21.0-rc)
+  - React/Core (from `./node_modules/react-native`)
+  - React/RCTNetwork (from `./node_modules/react-native`)
+  - React/RCTText (from `./node_modules/react-native`)
+  - React/RCTWebSocket (from `./node_modules/react-native`)
 
 EXTERNAL SOURCES:
   Emission:
     :path: ../
   FBSnapshotTestCase:
     :git: https://github.com/neonichu/ios-snapshot-test-case.git
+  React:
+    :path: ./node_modules/react-native
 
 CHECKOUT OPTIONS:
   FBSnapshotTestCase:
@@ -47,14 +56,14 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   ARCollectionViewMasonryLayout: 9e87541c1d59cd9e6f538c19bbed3f52ceeef421
-  Emission: a3a3ae715c35cea75b9acd507e3d5058e3701e2e
+  Emission: aa605837dafb03a46bd5a3bda543f53079a07cf2
   FBSnapshotTestCase: a89bbc6ea786ef38c2d4e313b3374177c8597b8f
   Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
   Nimble-Snapshots: ab41dd737dcd33a0b0cb005a30465fef70b7207a
   Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
-  React: 00c5501968657da4d2965f23252a28ac40d70b15
+  React: eb52e0f867cb73639c553f766d7e6e895003afeb
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
 
-PODFILE CHECKSUM: c08ef9cb165b6c8c80959f8b0e1dd44120aad61d
+PODFILE CHECKSUM: 569c853c5a9bbee03f6075f0e84f74af9d927511
 
 COCOAPODS: 1.0.0.beta.4
