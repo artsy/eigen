@@ -7,13 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		511287C51C8B2C9700936CBC /* rembrandt-harmensz-van-rijn-1_page-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 511287AB1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-1.json */; };
+		511287C61C8B2C9A00936CBC /* rembrandt-harmensz-van-rijn-1_page-2.json in Resources */ = {isa = PBXBuildFile; fileRef = 511287AC1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-2.json */; };
+		511287F11C8B2CEF00936CBC /* com.hackemist.SDWebImageCache.test-fixtures in Resources */ = {isa = PBXBuildFile; fileRef = 511287F01C8B2CEF00936CBC /* com.hackemist.SDWebImageCache.test-fixtures */; };
 		58D84DE55F6A169A0E0021F2 /* Pods_Emission_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40768F1EE5F58B77D2C7E598 /* Pods_Emission_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
-		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		607FACEC1AFB9204008FA782 /* ARArtworksMasonryGridComponentSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* ARArtworksMasonryGridComponentSpec.swift */; };
 		E6DB19CAE3D9E078B612683A /* Pods_Emission_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE50579AAAEFF0316B49796 /* Pods_Emission_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +35,9 @@
 		1881F159D11F11C55CA425F3 /* Pods-Emission_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Emission_Tests/Pods-Emission_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		3CA8129D4B3357E4EDA54CF0 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		40768F1EE5F58B77D2C7E598 /* Pods_Emission_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emission_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		511287AB1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "rembrandt-harmensz-van-rijn-1_page-1.json"; sourceTree = "<group>"; };
+		511287AC1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "rembrandt-harmensz-van-rijn-1_page-2.json"; sourceTree = "<group>"; };
+		511287F01C8B2CEF00936CBC /* com.hackemist.SDWebImageCache.test-fixtures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "com.hackemist.SDWebImageCache.test-fixtures"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* Emission_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emission_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,7 +47,7 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* Emission_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Emission_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		607FACEB1AFB9204008FA782 /* ARArtworksMasonryGridComponentSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARArtworksMasonryGridComponentSpec.swift; sourceTree = "<group>"; };
 		6ED7A9C5401727A6386FC142 /* Pods-Emission_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission_Tests/Pods-Emission_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		8AE50579AAAEFF0316B49796 /* Pods_Emission_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emission_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51308BF7BAFFB172A98C1E0 /* Pods-Emission_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission_Example/Pods-Emission_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -69,6 +75,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		511287931C8B2C7600936CBC /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				511287F01C8B2CEF00936CBC /* com.hackemist.SDWebImageCache.test-fixtures */,
+				511287AB1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-1.json */,
+				511287AC1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-2.json */,
+			);
+			path = Fixtures;
+			sourceTree = "<group>";
+		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
@@ -115,7 +131,8 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				607FACEB1AFB9204008FA782 /* Tests.swift */,
+				511287931C8B2C7600936CBC /* Fixtures */,
+				607FACEB1AFB9204008FA782 /* ARArtworksMasonryGridComponentSpec.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -256,6 +273,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				511287C61C8B2C9A00936CBC /* rembrandt-harmensz-van-rijn-1_page-2.json in Resources */,
+				511287C51C8B2C9700936CBC /* rembrandt-harmensz-van-rijn-1_page-1.json in Resources */,
+				511287F11C8B2CEF00936CBC /* com.hackemist.SDWebImageCache.test-fixtures in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,7 +388,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				607FACEC1AFB9204008FA782 /* ARArtworksMasonryGridComponentSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,4 +15,11 @@ Pod::Spec.new do |s|
     ss.source_files = 'Pod/Classes/ARComponentViewController.swift'
     ss.dependency 'React/Core', '>= 0.21.0'
   end
+
+  s.subspec 'ARArtworksMasonryGridComponent' do |ss|
+    ss.source_files = 'Pod/Classes/ARArtworksMasonryGridComponent.swift'
+    ss.dependency 'Emission/Core'
+    ss.dependency 'ARCollectionViewMasonryLayout', '>= 2.2.0'
+    ss.dependency 'SDWebImage', '>= 3.7.2'
+  end
 end

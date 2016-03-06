@@ -1,0 +1,168 @@
+{
+  "data": {
+    "artist": {
+      "artworks": [
+        {
+          "title": "Self-portrait",
+          "sale_message": null,
+          "image": {
+            "aspect_ratio": 0.78,
+            "resized": {
+              "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F88gjaABNaDJiH4eqCB-DKg%2Flarge.jpg&width=240&height=306&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+            }
+          },
+          "artist": {
+            "name": "Rembrandt Harmensz. van Rijn"
+          },
+          "partner": {
+            "name": "Art History 101"
+          }
+        },
+        {
+          "title": "Old Man with a Gold Chain",
+          "sale_message": null,
+          "image": {
+            "aspect_ratio": 0.9,
+            "resized": {
+              "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FoOghHqRbQefRwGPJuqjr0A%2Flarge.jpg&width=240&height=267&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+            }
+          },
+          "artist": {
+            "name": "Rembrandt Harmensz. van Rijn"
+          },
+          "partner": {
+            "name": "Art Institute of Chicago"
+          }
+        },
+        {
+          "title": "Self Portrait, 1659",
+          "sale_message": null,
+          "image": {
+            "aspect_ratio": 0.78,
+            "resized": {
+              "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2Fgwa65j8uA3P58LxldJYJAg%2Flarge.jpg&width=240&height=306&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+            }
+          },
+          "artist": {
+            "name": "Rembrandt Harmensz. van Rijn"
+          },
+          "partner": {
+            "name": "National Gallery of Art, Washington, D.C."
+          }
+        },
+        {
+          "title": "Self Portrait at the Age of 63",
+          "sale_message": null,
+          "image": {
+            "aspect_ratio": 0.81,
+            "resized": {
+              "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FxWjmo05MqprCtMYaUYquUw%2Flarge.jpg&width=240&height=295&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+            }
+          },
+          "artist": {
+            "name": "Rembrandt Harmensz. van Rijn"
+          },
+          "partner": {
+            "name": "The National Gallery, London"
+          }
+        },
+        {
+          "title": "The Anatomy Lesson of Dr. Nicolaes Tulp",
+          "sale_message": null,
+          "image": {
+            "aspect_ratio": 1.33,
+            "resized": {
+              "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FkvFioLTBXu0SWZ52sge1FQ%2Flarge.jpg&width=239&height=180&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+            }
+          },
+          "artist": {
+            "name": "Rembrandt Harmensz. van Rijn"
+          },
+          "partner": {
+            "name": "Art History 101"
+          }
+        },
+        {
+          "title": "Three Crosses (First State)",
+          "sale_message": null,
+          "image": {
+            "aspect_ratio": 1.16,
+            "resized": {
+              "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FyeDP7Jxgb5hYEDqlBkiBNg%2Flarge.jpg&width=240&height=206&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+            }
+          },
+          "artist": {
+            "name": "Rembrandt Harmensz. van Rijn"
+          },
+          "partner": {
+            "name": "Rijksmuseum"
+          }
+        },
+        {
+          "title": "The Company of Frans Banning Cocq and Willem van Ruytenburch (The Night Watch)",
+          "sale_message": null,
+          "image": {
+            "aspect_ratio": 1.23,
+            "resized": {
+              "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FIG8ZLvVmZgQiTn2zK0Bp8w%2Flarge.jpg&width=239&height=195&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+            }
+          },
+          "artist": {
+            "name": "Rembrandt Harmensz. van Rijn"
+          },
+          "partner": {
+            "name": "Rijksmuseum"
+          }
+        },
+        {
+          "title": "Self-Portrait as the Apostle Paul",
+          "sale_message": null,
+          "image": {
+            "aspect_ratio": 0.84,
+            "resized": {
+              "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FzHYh6S9dTIsEXEQt_gYZIA%2Flarge.jpg&width=240&height=285&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+            }
+          },
+          "artist": {
+            "name": "Rembrandt Harmensz. van Rijn"
+          },
+          "partner": {
+            "name": "Rijksmuseum"
+          }
+        },
+        {
+          "title": "The Wardens of the Amsterdam Drapers’ Guild, Known as ‘The Syndics’",
+          "sale_message": null,
+          "image": {
+            "aspect_ratio": 1.52,
+            "resized": {
+              "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FkZMo5_gjk1TbWVgZQuwyLQ%2Flarge.jpg&width=240&height=158&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+            }
+          },
+          "artist": {
+            "name": "Rembrandt Harmensz. van Rijn"
+          },
+          "partner": {
+            "name": "Rijksmuseum"
+          }
+        },
+        {
+          "title": "The Mill",
+          "sale_message": null,
+          "image": {
+            "aspect_ratio": 1.2,
+            "resized": {
+              "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F1Nv6CZWY4leMHzI3qu0cog%2Fsquare.jpg&width=239&height=199&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+            }
+          },
+          "artist": {
+            "name": "Rembrandt Harmensz. van Rijn"
+          },
+          "partner": {
+            "name": "National Gallery of Art, Washington, D.C."
+          }
+        }
+      ]
+    }
+  }
+}
