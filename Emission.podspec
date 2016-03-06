@@ -8,7 +8,11 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/artsy/emission.git", :tag => s.version.to_s }
   s.platform     = :ios, '8.0'
   s.requires_arc = true
-  s.source_files = 'Pod/Classes/**/*'
 
-  s.dependency 'React/Core', '0.21.0-rc'
+  s.default_subspec = 'ARArtworksMasonryGridComponent'
+
+  s.subspec 'Core' do |ss|
+    ss.source_files = 'Pod/Classes/ARComponentViewController.swift'
+    ss.dependency 'React/Core', '>= 0.21.0'
+  end
 end
