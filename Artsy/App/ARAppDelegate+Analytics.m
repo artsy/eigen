@@ -9,6 +9,8 @@
 #import <Adjust/Adjust.h>
 #import <AFNetworking/AFNetworking.h>
 
+#import "AROptions.h"
+
 #import "Artist.h"
 #import "Artwork.h"
 #import "ARDefaults.h"
@@ -120,9 +122,11 @@
         return !heartedShouldFireBlock(controller, parameters);
     };
 
-    ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
-    [ARAnalytics setupProvider: visualizer];
-    
+    if ([AROptions boolForOption:AROptionsShowAnalyticsOnScreen]) {
+        ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
+        [ARAnalytics setupProvider: visualizer];
+    }
+
     
     [ARAnalytics setupWithAnalytics:
     @{

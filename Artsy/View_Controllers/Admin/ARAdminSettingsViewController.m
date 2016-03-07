@@ -51,6 +51,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     [miscSectionData addCellData:[self generateRestart]];
     [miscSectionData addCellData:[self generateStagingSwitch]];
     [miscSectionData addCellData:[self generateQuicksilver]];
+    [miscSectionData addCellData:[self generateOnScreenAnalytics]];
 
 #if !TARGET_IPHONE_SIMULATOR
     [miscSectionData addCellData:[self generateNotificationTokenPasteboardCopy]];
@@ -160,6 +161,26 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     }];
     return crashCellData;
 }
+
+- (ARCellData *)generateOnScreenAnalytics
+{
+    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        if ([AROptions boolForOption:AROptionsShowAnalyticsOnScreen]) {
+            cell.textLabel.text = @"Stop Analytics as Popovers";
+        } else {
+            cell.textLabel.text = @"Start Analytics as Popovers";
+        }
+    }];
+
+    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        BOOL current = [AROptions boolForOption:AROptionsShowAnalyticsOnScreen];
+        [AROptions setBool:!current forOption:AROptionsShowAnalyticsOnScreen];
+        exit(YES);
+    }];
+    return crashCellData;
+}
+
 
 #if !TARGET_IPHONE_SIMULATOR
 - (ARCellData *)generateNotificationTokenPasteboardCopy;
