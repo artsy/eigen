@@ -13,6 +13,7 @@ upcoming:
     - Developers can choose to have a custom url for their staging environment - orta
     - Initial work on the Live Auctions view controller - orta
     - AuctionVC supports before state - orta
+    - Added an option for Admins to visualize analytics - ani/alloy/orta
   notes:
     - Support breaking out of the router sandboxing when there's a link with ?eigen_escape_sandbox' - orta
     - Users may now refine sale artworks on native auction view by their low estimates - ash
