@@ -10,30 +10,38 @@
 
 - (void)event:(NSString *)event withProperties:(NSDictionary *)properties
 {
-    NSLog(@"Event: %@", event);
-    [ARNotificationView showNoticeInView:[self findVisibleWindow] title:event response:^{
-        NSLog(@"Tapped");
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:event message:[properties description] preferredStyle:UIAlertControllerStyleAlert];
+    NSString *title = [self alertTitleForEvent:event withProperties:properties];
+
+    [ARNotificationView showNoticeInView:[self findVisibleWindow] title:title time:1.5 response:^{
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:[properties description] preferredStyle:UIAlertControllerStyleActionSheet];
         
-//        UIAlertAction *copyIDToPasteboard = [ UIAlertAction actionWithTitle:@"Copy ID to Pasteboard" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            NSLog(@"Copy ID to Pasteboard");
-//            [UIPasteboard generalPasteboard] setValue:<#(nonnull id)#> forPasteboardType:<#(nonnull NSString *)#>
-//        }];
-//        [alert addAction:copyIDToPasteboard];
-        
-        UIAlertAction *copyDescriptionToPasteboard = [UIAlertAction actionWithTitle:@"Copy Description to Pasteboard" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSLog(@"Copy Description to Pasteboard");
+        [alert addAction:[UIAlertAction actionWithTitle:@"Copy Description" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+
             [[UIPasteboard generalPasteboard] setValue:[properties description]forPasteboardType:(NSString *)kUTTypePlainText];
-        }];
-        [alert addAction:copyDescriptionToPasteboard];
-        
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSLog(@"OK");
-        }];
-        [alert addAction:ok];
-        
-        [[ARTopMenuViewController sharedController] presentViewController:alert animated:YES completion:nil];
+        }]];
+
+        [alert addAction:[UIAlertAction actionWithTitle:@"Copy Stack Trace for Devs" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSString *stack = [NSString stringWithFormat:@"%@", [NSThread callStackSymbols]];
+            [[UIPasteboard generalPasteboard] setValue:stack forPasteboardType:(NSString *)kUTTypePlainText];
+        }]];
+
+        [alert addAction:[UIAlertAction actionWithTitle:@"Great, continue." style:UIAlertActionStyleCancel handler:nil]];
+
+        // Sometimes the TopVC is being presented, e.g. for onboarding/ showing trial login, or the alerts
+        UIViewController *topVC = [ARTopMenuViewController sharedController];
+        topVC = topVC.presentedViewController ?: topVC;
+        [topVC presentViewController:alert animated:YES completion:nil];
     }];
+}
+
+- (NSString *)alertTitleForEvent:(NSString *)event withProperties:(NSDictionary *)properties
+{
+    if ([event isEqualToString:@"Screen view"]) {
+        return [NSString stringWithFormat:@"Screen View: %@", properties[@"slug"]];
+    } else {
+        return event;
+    }
 }
 
 - (UIWindow *)findVisibleWindow
