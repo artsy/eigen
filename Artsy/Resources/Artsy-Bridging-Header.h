@@ -33,6 +33,8 @@
 
 #import "LiveAuctionLot.h"
 #import "LiveSale.h"
+#import "LiveEvent.h"
+
 
 #import "Artwork.h"
 #import "AREmbeddedModelsViewController.h"

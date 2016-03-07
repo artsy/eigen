@@ -92,7 +92,17 @@ class LiveAuctionViewController: UIViewController {
     let hidesStatusBarBackground = true
 }
 
-class LiveAuctionPreviewViewController : UIViewController {
+class LiveAuctionBidHistoryViewController: UITableViewController {
+    let lotViewModel = Signal<LiveAuctionLotViewModel>()
+    let auctionViewModel = Signal<LiveAuctionViewModel>()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+    }
+}
+
+class LiveAuctionPreviewViewController: UIViewController {
     var index = 0
     let lotViewModel = Signal<LiveAuctionLotViewModel>()
     let auctionViewModel = Signal<LiveAuctionViewModel>()
@@ -152,9 +162,10 @@ class LiveAuctionPreviewViewController : UIViewController {
 
             switch vm.lotState {
             case .ClosedLot:
-                metadataStack.removeSubview(currentLotView)
+                bidButton.setEnabled(false, animated: false)
 
             case .LiveLot:
+                // We don't need this when it's the current lot
                 metadataStack.removeSubview(currentLotView)
 
             case .UpcomingLot(_):
@@ -600,13 +611,26 @@ class LiveAuctionLotViewModel : NSObject {
     }
 }
 
+
+class LiveAuctionEventViewModel : NSObject {
+    let event: LiveEvent
+
+    init(event:LiveEvent) {
+        self.event = event
+    }
+}
+
 /// Something to pretend to either be a network model or whatever
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
 class LiveAuctionsSalesPerson : NSObject {
     private var currentIndex = 0
-    private var lots : [LiveAuctionLot] = []
-    private var sale : LiveSale!
+
+    private var lots: [LiveAuctionLot] = []
+    private var sale: LiveSale!
+
+    // May make sense to have this as a dict ( which is what it is in JSON )
+    private var events: [LiveEvent]!
 
     var lotCount: Int {
         return lots.count
@@ -628,7 +652,6 @@ class LiveAuctionsSalesPerson : NSObject {
         return LiveAuctionViewModel(sale: sale, salesPerson: self)
     }
 
-
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel? {
         if (0..<lotCount ~= index) {
             return LiveAuctionLotViewModel(lot: lots[index], auction:auctionViewModel , index: index)
@@ -643,9 +666,13 @@ class LiveAuctionsSalesPerson : NSObject {
 
         guard let lots = json["lots"] as? [String: [String: AnyObject]] else { return }
         guard let sale = json["sale"] as? [String: AnyObject] else { return }
+        guard let events = json["lotEvents"] as? [String: [String: AnyObject]]  else { return }
+
 
         self.sale = LiveSale(JSON: sale)
         let unordered_lots: [LiveAuctionLot] = lots.values.map { LiveAuctionLot(JSON: $0) }
         self.lots = unordered_lots.sort { return $0.position < $1.position }
+
+        self.events = events.values.flatMap { LiveEvent(JSON: $0) }
     }
 }
