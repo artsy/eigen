@@ -17,6 +17,7 @@
         ar_keypath(LiveSale.new, endDate) : @"end_at",
         ar_keypath(LiveSale.new, buyersPremium) : @"buyers_premium",
         ar_keypath(LiveSale.new, saleDescription) : @"description",
+        ar_keypath(LiveSale.new, lotIDs) : @"lots",
     };
 }
 
