@@ -1,4 +1,5 @@
 
+
 #import "ARAnalyticsVisualizer.h"
 #import "ARNotificationView.h"
 #import "ARTopMenuViewController.h"
@@ -16,8 +17,6 @@
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:[properties description] preferredStyle:UIAlertControllerStyleActionSheet];
         
         [alert addAction:[UIAlertAction actionWithTitle:@"Copy Description" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-
             [[UIPasteboard generalPasteboard] setValue:[properties description]forPasteboardType:(NSString *)kUTTypePlainText];
         }]];
 
@@ -38,9 +37,14 @@
 - (NSString *)alertTitleForEvent:(NSString *)event withProperties:(NSDictionary *)properties
 {
     if ([event isEqualToString:@"Screen view"]) {
-        return [NSString stringWithFormat:@"Screen View: %@", properties[@"slug"]];
+        return [NSString stringWithFormat:@"Screen View: %@", properties[@"slug"] ?: properties[@"screen"]];
     } else {
-        return event;
+        if (properties.allKeys.count == 1) {
+            return [NSString stringWithFormat:@"%@: %@ - %@", event, properties.allKeys.firstObject, properties.allValues.firstObject];
+
+        } else {
+            return event;
+        }
     }
 }
 
