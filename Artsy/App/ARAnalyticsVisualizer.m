@@ -38,9 +38,14 @@
 - (NSString *)alertTitleForEvent:(NSString *)event withProperties:(NSDictionary *)properties
 {
     if ([event isEqualToString:@"Screen view"]) {
-        return [NSString stringWithFormat:@"Screen View: %@", properties[@"slug"]];
+        return [NSString stringWithFormat:@"Screen View: %@", properties[@"slug"] ?: properties[@"screen"]];
     } else {
-        return event;
+        if (properties.allKeys.count == 1) {
+            return [NSString stringWithFormat:@"%@: %@ - %@", event, properties.allKeys.firstObject, properties.allValues.firstObject];
+
+        } else {
+            return event;
+        }
     }
 }
 
