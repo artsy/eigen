@@ -15,8 +15,7 @@ DATE_VERSION = $(shell date "+%Y.%m.%d")
 CHANGELOG = CHANGELOG.md
 
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
-BRANCH = $(shell echo $(shell whoami)-$(shell git rev-parse --abbrev-ref HEAD))
-
+BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
 
 .PHONY: all build ci test oss pr artsy
 
@@ -72,7 +71,7 @@ deploy_if_beta_branch:
 	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi
 
 deploy:
-	git push upstream "$(LOCAL_BRANCH):beta"
+	git push origin "$(LOCAL_BRANCH):beta"
 
 
 
@@ -109,10 +108,10 @@ synxify:
 	bundle exec synx --spaces-to-underscores -e "/Documentation" Artsy.xcodeproj
 
 pr:
-	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push upstream "$(LOCAL_BRANCH):$(BRANCH)"; open "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not PRing"; else git push origin "$(LOCAL_BRANCH):$(BRANCH)"; open "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"; fi
 
 push:
-	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH); fi
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH); fi
 
 fpush:
-	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push upstream $(LOCAL_BRANCH):$(BRANCH) --force; fi
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH) --force; fi

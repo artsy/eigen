@@ -312,7 +312,7 @@ context(@"price view", ^{
         });
         
         it(@"reserve not met and has no bids", ^{
-            view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"reserve_status" : @"reserve_not_met" }];
+            view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"reserve_status" : @"reserve_not_met", @"currency" :@"$" }];
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1-12-30 00:00:00", @"end_at" : @"1-12-30 00:00:00" }];
             view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
             [view updateUI];

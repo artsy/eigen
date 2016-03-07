@@ -33,7 +33,8 @@ it(@"shows auction data", ^{
         @"opening_bid_cents": @100000,
         @"highest_bid_amount_cents": @110000,
         @"minimum_next_bid_cents": @120000,
-        @"low_estimate_cents": @90000
+        @"low_estimate_cents": @90000,
+        @"currency" : @"USD", @"symbol" : @"$"
     }];
 
     ARArtworkDetailView *view = [[ARArtworkDetailView alloc] initWithArtwork:nil andFair:nil];

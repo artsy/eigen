@@ -174,6 +174,7 @@
 + (NSURLRequest *)suggestedHomepageArtworksRequest;
 + (NSURLRequest *)worksForYouRequest;
 + (NSURLRequest *)worksForYouCountRequest;
++ (NSURLRequest *)markNotificationsAsReadRequest;
 
 #pragma mark - Misc Site
 

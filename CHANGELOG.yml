@@ -3,17 +3,22 @@ upcoming:
   details: Auctions Overview + For You Native Views
 
   dev:
+    - Made a class for notification item views and added tests for WorksForYouVC - sarah
     - Made the favorites and works for you network models more thread-safe - sarah
     - Most of the layout for the works for you view controller is in - maxim
     - Added a switch between native and martsy works for you view - maxim
     - Made the searchbar larger in fair views on iPhone - maxim
     - Additional work on the auction title view - ash
-    - Quicksilver is now accessible to non-Eigen devs - orta 
+    - Quicksilver is now accessible to non-Eigen devs - orta
     - Removes rotation support on refine auction listings view for iPhone - ash
     - Developers can choose to have a custom url for their staging environment - orta
     - Initial work on the Live Auctions view controller - orta
     - AuctionVC supports before state - orta
     - Added an option for Admins to visualize analytics - ani/alloy/orta
+    - Initial working structure for Live Auctions with stubbed data - orta
+    - Shows a lot of the main views on Live Auctions - orta
+    - AMAZING - Added support for dynamic code-injection - orta
+
   notes:
     - Support breaking out of the router sandboxing when there's a link with ?eigen_escape_sandbox' - orta
     - Users may now refine sale artworks on native auction view by their low estimates - ash
@@ -25,6 +30,7 @@ upcoming:
     - Auction information views use real data - orta
     - Add support for routing around a domain instead of just a path - orta
     - Send the eigen trial UUID to internal web-pages via the header - orta
+    - Price estimates for saleartworks / live auction lots are now using server data for currency - orta
 
 releases:
   - version: 2.3.6

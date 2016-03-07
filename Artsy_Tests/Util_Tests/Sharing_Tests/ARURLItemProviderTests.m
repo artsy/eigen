@@ -63,7 +63,8 @@ describe(@"url and image thumbnail", ^{
                 expect(thumbnailImage.class).to.equal([UIImage class]);
                 expect(provider.thumbnailImage).to.equal(thumbnailImage);
             });
-            
+
+            // TODO: This test is occasionally suspiciously slow, it should be removed, or amended
             it(@"returns nil for AirDrop sharing", ^{
                 UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[] applicationActivities:@[]];
                 UIImage *thumbnailImage = [provider activityViewController:activityVC thumbnailImageForActivityType:UIActivityTypeAirDrop suggestedSize:CGSizeMake(100, 100)];

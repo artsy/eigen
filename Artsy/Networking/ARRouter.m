@@ -823,6 +823,11 @@ static NSString *hostFromString(NSString *string)
     }];
 }
 
++ (NSURLRequest *)markNotificationsAsReadRequest
+{
+    return [self requestWithMethod:@"PUT" path:ARNotificationsURL parameters:@{ @"status" : @"read" }];
+}
+
 #pragma mark -
 #pragma mark Misc Site
 

@@ -81,7 +81,7 @@ lane :deploy_latest_to_external do
     app_id: APP_ID,
     train: train.version_string,
     build_number: latest_version,
-    platform: "iphone"
+    platform: "ios"
   )
 end
 

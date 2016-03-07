@@ -12,8 +12,6 @@
 
 + (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
 
-+ (AFHTTPRequestOperation *)getRecommendedArtworksForUser:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
-
 + (AFHTTPRequestOperation *)getFairsForArtwork:(Artwork *)artwork success:(void (^)(NSArray *fairs))success failure:(void (^)(NSError *error))failure;
 + (AFHTTPRequestOperation *)getShowsForArtworkID:(NSString *)artworkID inFairID:(NSString *)fairID success:(void (^)(NSArray *shows))success failure:(void (^)(NSError *error))failure;
 
@@ -21,9 +19,6 @@
 
 + (AFHTTPRequestOperation *)getAuctionComparablesForArtwork:(Artwork *)artwork success:(void (^)(NSArray *comparables))success failure:(void (^)(NSError *error))failure;
 + (void)getAuctionArtworkWithSale:(NSString *)saleID artwork:(NSString *)artworkID success:(void (^)(id auctionArtwork))success failure:(void (^)(NSError *error))failure;
-
-+ (AFHTTPRequestOperation *)getWorksForYouCount:(void (^)(NSUInteger notificationCount))success
-                                        failure:(void (^)(NSError *error))failure;
 
 + (AFHTTPRequestOperation *)createPendingOrderWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure;
 

@@ -1,6 +1,6 @@
 #import "ARAppNotificationsDelegate.h"
 
-#import "ArtsyAPI+Artworks.h"
+#import "ArtsyAPI+Notifications.h"
 #import "ArtsyAPI+DeviceTokens.h"
 
 #import "ARAppConstants.h"
