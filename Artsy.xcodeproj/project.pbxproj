@@ -564,6 +564,7 @@
 		60F63AB71C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F63AB61C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift */; };
 		60F8FFC1197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F8FFC0197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m */; };
 		60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FAEF42179843080031C88B /* ARFavoritesViewController.m */; };
+		60FC2CBB1C8DF29900ACD78F /* LiveEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FC2CBA1C8DF29900ACD78F /* LiveEvent.m */; };
 		6615518D1C75DD47007EE049 /* ARWorksForYouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */; };
 		8337688A1C80DEC700611262 /* ARWorksForYouNetworkModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 833768891C80DEC700611262 /* ARWorksForYouNetworkModelTests.m */; };
 		833D53C71C75DFA900D63ADB /* ARWorksForYouNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */; };
@@ -1634,6 +1635,8 @@
 		60F8FFC0197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkSetViewControllerSpec.m; sourceTree = "<group>"; };
 		60FAEF41179843080031C88B /* ARFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFavoritesViewController.h; sourceTree = "<group>"; };
 		60FAEF42179843080031C88B /* ARFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFavoritesViewController.m; sourceTree = "<group>"; };
+		60FC2CB91C8DF29900ACD78F /* LiveEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LiveEvent.h; path = Live/LiveEvent.h; sourceTree = "<group>"; };
+		60FC2CBA1C8DF29900ACD78F /* LiveEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiveEvent.m; path = Live/LiveEvent.m; sourceTree = "<group>"; };
 		60FFE3D6188E91C50012B485 /* certs.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = certs.md; sourceTree = "<group>"; };
 		60FFE3D7188E91C50012B485 /* deploy_to_app_store.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = deploy_to_app_store.md; sourceTree = "<group>"; };
 		60FFE3D8188E91C50012B485 /* deploy_to_beta.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = deploy_to_beta.md; sourceTree = "<group>"; };
@@ -3221,6 +3224,8 @@
 				601E31AF1C80E35600D09F73 /* LiveAuctionLot.m */,
 				60B6E5961C88BEF3003B1D46 /* LiveSale.h */,
 				60B6E5971C88BEF3003B1D46 /* LiveSale.m */,
+				60FC2CB91C8DF29900ACD78F /* LiveEvent.h */,
+				60FC2CBA1C8DF29900ACD78F /* LiveEvent.m */,
 			);
 			name = Models;
 			path = ../Models/API_Models;
@@ -5183,6 +5188,7 @@
 				60327DCD1987AD240075B399 /* ARDispatchManager.m in Sources */,
 				60B7604617C9FBEA00073A14 /* ARArtworkActionsView.m in Sources */,
 				4938743617BDB2CD00724795 /* ARCrossfadingImageView.m in Sources */,
+				60FC2CBB1C8DF29900ACD78F /* LiveEvent.m in Sources */,
 				E6B958EF188DB24200D75C86 /* ARViewTagConstants.m in Sources */,
 				60D90A0B17C218930073D5B9 /* ARInternalMobileWebViewController.m in Sources */,
 				609A82F017A10C5C00AFDF13 /* ARNavigationTransitionController.m in Sources */,
