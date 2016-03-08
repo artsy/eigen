@@ -14,6 +14,7 @@ upcoming:
     - Developers can choose to have a custom url for their staging environment - orta
     - Initial work on the Live Auctions view controller - orta
     - AuctionVC supports before state - orta
+    - Added an option for Admins to visualize analytics - ani/alloy/orta
     - Initial working structure for Live Auctions with stubbed data - orta
     - Shows a lot of the main views on Live Auctions - orta
 

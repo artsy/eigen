@@ -9,6 +9,8 @@
 #import <Adjust/Adjust.h>
 #import <AFNetworking/AFNetworking.h>
 
+#import "AROptions.h"
+
 #import "Artist.h"
 #import "Artwork.h"
 #import "ARDefaults.h"
@@ -22,6 +24,7 @@
 #import "PartnerShow.h"
 #import "Profile.h"
 #import "ARFairMapAnnotation.h"
+#import "ARAnalyticsVisualizer.h"
 
 // View Controllers
 #import "ARFairGuideViewController.h"
@@ -119,6 +122,12 @@
         return !heartedShouldFireBlock(controller, parameters);
     };
 
+    if ([AROptions boolForOption:AROptionsShowAnalyticsOnScreen]) {
+        ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
+        [ARAnalytics setupProvider: visualizer];
+    }
+
+    
     [ARAnalytics setupWithAnalytics:
     @{
         ARHockeyAppBetaID: @"306e66bde3cb91a2043f2606cf335700",
