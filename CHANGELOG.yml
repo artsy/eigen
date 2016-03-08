@@ -16,7 +16,6 @@ upcoming:
     - AuctionVC supports before state - orta
     - Initial working structure for Live Auctions with stubbed data - orta
     - Shows a lot of the main views on Live Auctions - orta
-    - AMAZING - Added support for dynamic code-injection - orta
 
   notes:
     - Support breaking out of the router sandboxing when there's a link with ?eigen_escape_sandbox' - orta
