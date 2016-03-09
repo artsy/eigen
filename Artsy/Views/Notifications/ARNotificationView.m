@@ -1,12 +1,10 @@
-//  An Artsy styled version of AJNotificationView
-//  https://github.com/ajerez/AJNotificationView
-
 #import "ARNotificationView.h"
 
 #import "ARFonts.h"
 #import "ARSeparatorViews.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 
 @interface ARNotificationView ()
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -66,12 +64,18 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
 
 + (ARNotificationView *)showNoticeInView:(UIView *)view title:(NSString *)title response:(void (^)(void))response
 {
+    // This is the average duration that I timed iOS (8) shows notifications for.
+
+    [self showNoticeInView:view title:title time:6.5 response:response];
+}
+
++ (ARNotificationView *)showNoticeInView:(UIView *)view title:(NSString *)title time:(CGFloat)time response:(void (^)(void))response
+
+{
     ARNotificationView *noticeView = [[self alloc] initWithFrame:CGRectMake(0, -panelHeight, view.bounds.size.width, 0) andResponseBlock:response];
     noticeView.titleLabel.text = title;
     noticeView.parentView = view;
-
-    // This is the average duration that I timed iOS (8) shows notifications for.
-    noticeView.hideInterval = 6.5;
+    noticeView.hideInterval = time;
 
     if (notificationQueue == nil) {
         notificationQueue = [[NSMutableArray alloc] init];

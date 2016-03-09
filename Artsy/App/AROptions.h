@@ -8,6 +8,7 @@ extern NSString *const AROptionsSettingsMenu;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
 extern NSString *const AROptionsUseNativeAuctions;
 extern NSString *const AROptionsUseNativeWorksForYou;
+extern NSString *const AROptionsShowAnalyticsOnScreen;
 
 
 @interface AROptions : NSObject

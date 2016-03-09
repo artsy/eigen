@@ -148,7 +148,7 @@ static ARAppDelegate *_sharedInstance = nil;
         // of the user to see the activity. This is probably just an edge-case, most people will probably launch the app
         // after installing it.
         if (self.initialLaunchOptions[UIApplicationLaunchOptionsUserActivityDictionaryKey] == nil) {
-            //            [self showTrialOnboarding];
+            [self showTrialOnboarding];
         }
     }
 

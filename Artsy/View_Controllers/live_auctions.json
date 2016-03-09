@@ -19,7 +19,7 @@
       "quaerat-facere-qui-sunt",
       "perspiciatis-autem-consectetur-molestias"
     ],
-    "currentLotId": "consequatur-excepturi-nemo-aspernatur"
+    "currentLotId": "adipisci-aut-sapiente-omnis"
   },
   "lots": {
     "consequatur-excepturi-nemo-aspernatur": {
@@ -50,9 +50,20 @@
           "name": "Hank Gusikowski"
         }
       },
-      "events": [
-
-      ]
+        "events": [
+           "93c41350-bebc-4f20-81aa-f7d6cd66b799",
+           "7d05a25a-6c70-4d2c-896c-827bb5c56650",
+           "57e9cf1a-d771-403a-941b-2ea2337f1a8e",
+           "803d6df0-d23b-4994-9e0c-2ee5d53edf39",
+           "0e55ab42-0581-4c56-8e40-07ebabaa2df5",
+           "844d44cf-e65c-493a-838e-038ad4905eae",
+           "a8aebe65-0002-44c9-b605-bf4fcc43ab9d",
+           "8621a29e-a483-4ca0-922f-3bae82efa1b5",
+           "38de7582-ae7c-43bb-862e-7d726a06ef75",
+           "f89b33d8-b4ac-4cd1-a44f-fd8a0b7d669b",
+           "9c7dfbd9-2dbe-4f35-9203-5e353fa257fa",
+           "37162cdf-ab6d-42c1-820f-1d5b292ddb20"
+           ]
     },
     "adipisci-aut-sapiente-omnis": {
       "id": "adipisci-aut-sapiente-omnis",
@@ -407,10 +418,75 @@
       ]
     }
   },
-  "lotEvents": {
-  },
+    "lotEvents": {
+        "93c41350-bebc-4f20-81aa-f7d6cd66b799": {
+            "id": "93c41350-bebc-4f20-81aa-f7d6cd66b799",
+            "type": "open"
+        },
+        "7d05a25a-6c70-4d2c-896c-827bb5c56650": {
+            "id": "7d05a25a-6c70-4d2c-896c-827bb5c56650",
+            "type": "bid",
+            "amountCents": 430000,
+            "source": "floor",
+            "isConfirmed": true
+        },
+        "57e9cf1a-d771-403a-941b-2ea2337f1a8e": {
+            "id": "57e9cf1a-d771-403a-941b-2ea2337f1a8e",
+            "type": "bid",
+            "amountCents": 435000,
+            "source": "floor",
+            "isConfirmed": true
+        },
+        "803d6df0-d23b-4994-9e0c-2ee5d53edf39": {
+            "id": "803d6df0-d23b-4994-9e0c-2ee5d53edf39",
+            "type": "fair_warning"
+        },
+        "0e55ab42-0581-4c56-8e40-07ebabaa2df5": {
+            "id": "0e55ab42-0581-4c56-8e40-07ebabaa2df5",
+            "type": "final_call"
+        },
+        "844d44cf-e65c-493a-838e-038ad4905eae": {
+            "id": "844d44cf-e65c-493a-838e-038ad4905eae",
+            "type": "final_call"
+        },
+        "a8aebe65-0002-44c9-b605-bf4fcc43ab9d": {
+            "id": "a8aebe65-0002-44c9-b605-bf4fcc43ab9d",
+            "type": "fair_warning"
+        },
+        "8621a29e-a483-4ca0-922f-3bae82efa1b5": {
+            "id": "8621a29e-a483-4ca0-922f-3bae82efa1b5",
+            "type": "bid",
+            "amountCents": 440000,
+            "source": "floor",
+            "isConfirmed": true
+        },
+        "38de7582-ae7c-43bb-862e-7d726a06ef75": {
+            "id": "38de7582-ae7c-43bb-862e-7d726a06ef75",
+            "type": "bid",
+            "amountCents": 445000,
+            "source": "floor",
+            "isConfirmed": true
+        },
+        "f89b33d8-b4ac-4cd1-a44f-fd8a0b7d669b": {
+            "id": "f89b33d8-b4ac-4cd1-a44f-fd8a0b7d669b",
+            "type": "bid",
+            "amountCents": 450000,
+            "source": "floor",
+            "isConfirmed": true
+        },
+        "9c7dfbd9-2dbe-4f35-9203-5e353fa257fa": {
+            "id": "9c7dfbd9-2dbe-4f35-9203-5e353fa257fa",
+            "type": "bid",
+            "amountCents": 455000,
+            "source": "floor",
+            "isConfirmed": true
+        },
+        "37162cdf-ab6d-42c1-820f-1d5b292ddb20": {
+            "id": "37162cdf-ab6d-42c1-820f-1d5b292ddb20",
+            "type": "closed"
+        }
+    },
   "currentLotId": "consequatur-excepturi-nemo-aspernatur",
-  "selectedLotId": "consequatur-excepturi-nemo-aspernatur",
   "bidderId": "0",
   "isToggledLotDrawer": false,
   "isUpcomingArtworkList": true,
