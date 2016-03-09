@@ -118,7 +118,7 @@
 - (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
     if (self.artworksVC.items.count > 1) {
-        return [UIDevice isPad] && (size.width > size.height) && self.artworksVC.items.count >= 3 ? ARArtworkMasonryLayout3Column : ARArtworkMasonryLayout2Column;
+        return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular && self.artworksVC.items.count >= 3 ? ARArtworkMasonryLayout3Column : ARArtworkMasonryLayout2Column;
 
     } else {
         return ARArtworkMasonryLayout1Column;

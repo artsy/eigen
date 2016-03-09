@@ -17,6 +17,7 @@ ARWorksForYouNotificationItem *stubbedNotificationItemWithNumberAndArtworks(int 
 @property (nonatomic, assign) BOOL allDownloaded;
 @property (nonatomic, copy, readwrite) NSArray<ARWorksForYouNotificationItem *> *notificationItems;
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
+@property (readwrite, nonatomic, assign) NSInteger artworksCount;
 @end
 
 
@@ -61,6 +62,14 @@ it(@"marks notifications as read", ^{
     [networkModelStub verify];
 });
 
+itHasSnapshotsForDevicesWithName(@"looks right when user has no notifications", ^{
+    subject.worksForYouNetworkModel = stubbedNetworkModel;
+    stubbedNetworkModel.notificationItems = @[];
+    
+    [subject ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+    return subject;
+});
+
 SpecEnd
 
 
@@ -96,6 +105,7 @@ SpecEnd
     }
 
     _currentPage = 1;
+    _artworksCount = 0;
 
     return self;
 }
@@ -104,6 +114,7 @@ SpecEnd
 {
     self.allDownloaded = YES;
     self.currentPage++;
+    self.artworksCount = self.notificationItems.count;
     success(self.notificationItems);
 }
 
