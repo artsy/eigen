@@ -9,13 +9,13 @@ import Interstellar
 
 class LiveAuctionViewController: UIViewController {
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
-    let salesPerson = LiveAuctionsSalesPerson()
+    var salesPerson: LiveAuctionsSalesPersonType = LiveAuctionsSalesPerson()
     let scrollManager = ScrollViewProgressObserver()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        salesPerson.setup()
+        salesPerson.setupWithStub()
         auctionDataSource.salesPerson = salesPerson
 
         view.backgroundColor = .whiteColor()
@@ -92,6 +92,38 @@ class LiveAuctionViewController: UIViewController {
     let hidesStatusBarBackground = true
 }
 
+class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
+    var salesPerson: LiveAuctionsSalesPersonType!
+
+    func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
+        let auctionVC =  LiveAuctionLotViewController()
+        guard let viewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
+        auctionVC.lotViewModel.update(viewModel)
+        auctionVC.auctionViewModel.update(salesPerson.auctionViewModel)
+        auctionVC.index = index
+        return auctionVC
+    }
+
+    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+        if salesPerson.auctionViewModel.lotCount == 1 { return nil }
+
+        guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
+        var newIndex = viewController.index - 1
+        if (newIndex < 0) { newIndex = salesPerson.auctionViewModel.lotCount - 1 }
+        return liveAuctionPreviewViewControllerForIndex(newIndex)
+    }
+
+
+    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+        if salesPerson.auctionViewModel.lotCount == 1 { return nil }
+
+        guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
+        let newIndex = (viewController.index + 1) % salesPerson.auctionViewModel.lotCount;
+        return liveAuctionPreviewViewControllerForIndex(newIndex)
+    }
+}
+
+
 class LiveAuctionBidHistoryViewController: UITableViewController {
     let lotViewModel = Signal<LiveAuctionLotViewModel>()
     let auctionViewModel = Signal<LiveAuctionViewModel>()
@@ -102,7 +134,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     }
 }
 
-class LiveAuctionPreviewViewController: UIViewController {
+class LiveAuctionLotViewController: UIViewController {
     var index = 0
     let lotViewModel = Signal<LiveAuctionLotViewModel>()
     let auctionViewModel = Signal<LiveAuctionViewModel>()
@@ -151,6 +183,10 @@ class LiveAuctionPreviewViewController: UIViewController {
             if let currentLot = auctionViewModel.currentLotViewModel {
                 currentLotView.viewModel.update(currentLot)
             }
+
+            if auctionViewModel.saleAvailability == .Closed {
+                metadataStack.removeSubview(currentLotView)
+            }
         }
 
         lotViewModel.next { vm in
@@ -164,6 +200,7 @@ class LiveAuctionPreviewViewController: UIViewController {
             case .ClosedLot:
                 bidButton.setEnabled(false, animated: false)
 
+
             case .LiveLot:
                 // We don't need this when it's the current lot
                 metadataStack.removeSubview(currentLotView)
@@ -175,46 +212,16 @@ class LiveAuctionPreviewViewController: UIViewController {
     }
 }
 
-class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
-    var salesPerson: LiveAuctionsSalesPerson!
-
-    func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionPreviewViewController? {
-        let auctionVC =  LiveAuctionPreviewViewController()
-        guard let viewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
-        auctionVC.lotViewModel.update(viewModel)
-        auctionVC.auctionViewModel.update(salesPerson.auctionViewModel)
-        auctionVC.index = index
-        return auctionVC
-    }
-
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        if salesPerson.lotCount == 1 { return nil }
-
-        guard let viewController = viewController as? LiveAuctionPreviewViewController else { return nil }
-        var newIndex = viewController.index - 1
-        if (newIndex < 0) { newIndex = salesPerson.lotCount - 1 }
-        return liveAuctionPreviewViewControllerForIndex(newIndex)
-    }
-
-
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        if salesPerson.lotCount == 1 { return nil }
-
-        guard let viewController = viewController as? LiveAuctionPreviewViewController else { return nil }
-        let newIndex = (viewController.index + 1) % salesPerson.lotCount;
-        return liveAuctionPreviewViewControllerForIndex(newIndex)
-    }
-}
 
 /// This is a proof of concept, needs more work ( needs far left / far right views for example
 /// and to deal with transforms/ opacity
 
 class LiveAuctionImagePreviewView : UIView {
-    let salesPerson: LiveAuctionsSalesPerson
+    let salesPerson: LiveAuctionsSalesPersonType
     let progress: Signal<CGFloat>
     var leftImageView, rightImageView, centerImageView: UIImageView
 
-    init(signal: Signal<CGFloat>, salesPerson: LiveAuctionsSalesPerson) {
+    init(signal: Signal<CGFloat>, salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
         self.progress = signal
 
@@ -355,7 +362,7 @@ class LiveAuctionToolbarView : UIView {
 
 
     func lotCountString() -> NSAttributedString {
-        return NSAttributedString(string: "\(lotVM.index)/\(lotVM.lotCount)")
+        return NSAttributedString(string: "\(lotVM.lotIndex)/\(lotVM.lotCount)")
     }
 
     func attributify(string: String) -> NSAttributedString {
@@ -453,8 +460,6 @@ class LiveAuctionToolbarView : UIView {
     }
 }
 
-
-
 /// Handles passing out information about the scroll progress to others
 
 class ScrollViewProgressObserver : NSObject, UIScrollViewDelegate {
@@ -491,188 +496,5 @@ class SimpleProgressView : UIView {
         let fg = UIBezierPath(rect: progressRect)
         highlightColor.set()
         fg.fill()
-    }
-}
-
-
-/// Represents the whole auction, all the live biz, timings, watchers
-
-class LiveAuctionViewModel : NSObject {
-    private let sale: LiveSale
-    private let salesPerson: LiveAuctionsSalesPerson
-
-    init(sale: LiveSale, salesPerson: LiveAuctionsSalesPerson) {
-        self.sale = sale
-        self.salesPerson = salesPerson
-    }
-
-    func dateForLotAtIndex(index: Int) -> NSDate {
-        return NSDate().dateByAddingTimeInterval( Double(index * 60 * 2) )
-    }
-
-    var startDate: NSDate {
-        return NSDate()
-    }
-
-    var numberOfWatchers: Int {
-        return 87
-    }
-
-    var nextBidForLot : Int {
-        return 25_000
-    }
-
-    var lotCount: Int {
-        return sale.lotIDs.count
-    }
-
-    var currentLotViewModel: LiveAuctionLotViewModel? {
-        guard let currentIndex = sale.lotIDs.indexOf(sale.currentLotId) else { return nil }
-        return salesPerson.lotViewModelForIndex(currentIndex)
-    }
-
-
-    /// A distance relative to the current lot, -x being that it precedded the current
-    /// 0 being it is current and a positive number meaning it upcoming.
-    func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int {
-        let currentIndex = sale.lotIDs.indexOf(sale.currentLotId)
-        let lotIndex = sale.lotIDs.indexOf(lot.liveAuctionLotID)
-        guard let current = currentIndex, lot = lotIndex else { return NSNotFound }
-        return (current - lot) * -1
-    }
-}
-
-// Represents a single lot view
-
-class LiveAuctionLotViewModel : NSObject {
-
-    enum LotState {
-        case ClosedLot
-        case LiveLot
-        case UpcomingLot(distanceFromLive: Int)
-    }
-
-    private let auction: LiveAuctionViewModel
-    private let lot: LiveAuctionLot
-    private let index: Int
-
-    init(lot: LiveAuctionLot, auction: LiveAuctionViewModel, index: Int) {
-        self.lot = lot
-        self.auction = auction
-        self.index = index
-    }
-
-    var lotState : LotState {
-        let distance = auction.distanceFromCurrentLot(lot)
-        if distance == 0 { return .LiveLot }
-        if distance < 0 { return .ClosedLot }
-        return .UpcomingLot(distanceFromLive: distance)
-    }
-
-    var urlForThumbnail: NSURL {
-        return lot.urlForThumbnail()
-    }
-
-    var urlForProfile: NSURL {
-        return lot.urlForThumbnail()
-    }
-
-    var lotName: String {
-        return lot.artworkTitle
-    }
-
-    var lotArtist: String {
-        return lot.artistName
-    }
-
-    var lotIndex: Int {
-        return index + 1
-    }
-
-    var lotCount: Int {
-        return auction.lotCount
-    }
-
-    // maybe depecated by currentLotviewModel?
-    var currentLotValue: String {
-        return "$10,000"
-    }
-
-    var bidButtonTitle: String {
-        switch lotState {
-        case .ClosedLot:   return "BIDDING CLOSED"
-        case .LiveLot:  return "BID 20,000"
-        case .UpcomingLot(_):  return "LEAVE MAX BID"
-        }
-    }
-
-    var estimateString: String {
-        return SaleArtwork.estimateStringForLowEstimate(lot.lowEstimateCents, highEstimateCents: lot.highEstimateCents, currencySymbol: lot.currencySymbol, currency: lot.currency)
-    }
-}
-
-
-class LiveAuctionEventViewModel : NSObject {
-    let event: LiveEvent
-
-    init(event:LiveEvent) {
-        self.event = event
-    }
-}
-
-/// Something to pretend to either be a network model or whatever
-/// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
-
-class LiveAuctionsSalesPerson : NSObject {
-    private var currentIndex = 0
-
-    private var lots: [LiveAuctionLot] = []
-    private var sale: LiveSale!
-
-    // May make sense to have this as a dict ( which is what it is in JSON )
-    private var events: [LiveEvent]!
-
-    var lotCount: Int {
-        return lots.count
-    }
-
-    var currentAuctionLotViewModel: LiveAuctionLotViewModel? {
-        return lotViewModelForIndex(currentIndex)
-    }
-
-    var previousAuctionLotViewModel: LiveAuctionLotViewModel? {
-        return lotViewModelForIndex(currentIndex - 1)
-    }
-
-    var nextAuctionLotViewModel: LiveAuctionLotViewModel? {
-        return lotViewModelForIndex(currentIndex + 1)
-    }
-
-    var auctionViewModel: LiveAuctionViewModel {
-        return LiveAuctionViewModel(sale: sale, salesPerson: self)
-    }
-
-    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel? {
-        if (0..<lotCount ~= index) {
-            return LiveAuctionLotViewModel(lot: lots[index], auction:auctionViewModel , index: index)
-        }
-        return nil
-    }
-
-    func setup() {
-        let jsonPath = NSBundle.mainBundle().pathForResource("live_auctions", ofType: "json")
-        let jsonData = NSData(contentsOfFile: jsonPath!)!
-        let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
-
-        guard let lots = json["lots"] as? [String: [String: AnyObject]] else { return }
-        guard let sale = json["sale"] as? [String: AnyObject] else { return }
-        guard let events = json["lotEvents"] as? [String: [String: AnyObject]]  else { return }
-
-
-        self.sale = LiveSale(JSON: sale)
-        let unordered_lots: [LiveAuctionLot] = lots.values.map { LiveAuctionLot(JSON: $0) }
-        self.lots = unordered_lots.sort { return $0.position < $1.position }
-
-        self.events = events.values.flatMap { LiveEvent(JSON: $0) }
     }
 }

@@ -19,4 +19,6 @@
 
 @property (nonatomic, strong, readonly) BuyersPremium *buyersPremium;
 
+- (BOOL)isCurrentlyActive;
+
 @end

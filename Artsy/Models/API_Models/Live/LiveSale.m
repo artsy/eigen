@@ -31,4 +31,11 @@
     return [ARStandardDateFormatter sharedFormatter].stringTransformer;
 }
 
+- (BOOL)isCurrentlyActive
+{
+    NSDate *now = [ARSystemTime date];
+    return (([now compare:self.startDate] != NSOrderedAscending) &&
+            ([now compare:self.endDate] != NSOrderedDescending));
+}
+
 @end
