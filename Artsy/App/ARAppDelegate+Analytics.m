@@ -25,6 +25,7 @@
 #import "Profile.h"
 #import "ARFairMapAnnotation.h"
 #import "ARAnalyticsVisualizer.h"
+#import "ARAnalyticsPapertrail.h"
 
 // View Controllers
 #import "ARFairGuideViewController.h"
@@ -102,10 +103,19 @@
     if (ARAppStatus.isRunningTests == NO) {
         // Skipping ARAnalytics because Adjust has its own expectations
         // around event names being < 6 chars
-
         ADJConfig *adjustConfig = [ADJConfig configWithAppToken:keys.adjustProductionAppToken environment:environment];
         [Adjust appDidLaunch:adjustConfig];
     }
+
+    if ([AROptions boolForOption:AROptionsShowAnalyticsOnScreen]) {
+        ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
+        [ARAnalytics setupProvider:visualizer];
+    }
+
+    NSString *documentsDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+    NSURL *papertrailURL = [NSURL fileURLWithPath:[documentsDir stringByAppendingPathComponent:@"papertrail.json"]];
+    ARAnalyticsPapertrail *papertrail = [[ARAnalyticsPapertrail alloc] initWithDestinationURL:papertrailURL];
+    [ARAnalytics setupProvider:papertrail];
 
 #if DEBUG
     BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
@@ -122,12 +132,6 @@
         return !heartedShouldFireBlock(controller, parameters);
     };
 
-    if ([AROptions boolForOption:AROptionsShowAnalyticsOnScreen]) {
-        ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
-        [ARAnalytics setupProvider: visualizer];
-    }
-
-    
     [ARAnalytics setupWithAnalytics:
     @{
         ARHockeyAppBetaID: @"306e66bde3cb91a2043f2606cf335700",
