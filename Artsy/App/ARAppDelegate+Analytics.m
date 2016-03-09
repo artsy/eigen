@@ -112,10 +112,13 @@
         [ARAnalytics setupProvider:visualizer];
     }
 
-    NSString *documentsDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-    NSURL *papertrailURL = [NSURL fileURLWithPath:[documentsDir stringByAppendingPathComponent:@"papertrail.json"]];
-    ARAnalyticsPapertrail *papertrail = [[ARAnalyticsPapertrail alloc] initWithDestinationURL:papertrailURL];
-    [ARAnalytics setupProvider:papertrail];
+    if (![[ARUserManager sharedManager] hasExistingAccount]) {
+        // This data is only meant for future sign-ups, so trial users only.
+        NSString *documentsDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+        NSURL *papertrailURL = [NSURL fileURLWithPath:[documentsDir stringByAppendingPathComponent:@"papertrail.json"]];
+        ARAnalyticsPapertrail *papertrail = [[ARAnalyticsPapertrail alloc] initWithDestinationURL:papertrailURL];
+        [ARAnalytics setupProvider:papertrail];
+    }
 
 #if DEBUG
     BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
