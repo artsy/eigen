@@ -30,6 +30,7 @@ upcoming:
     - Add support for routing around a domain instead of just a path - orta
     - Send the eigen trial UUID to internal web-pages via the header - orta
     - Price estimates for saleartworks / live auction lots are now using server data for currency - orta
+    - Re-enable on-boarding on app launch. - alloy
 
 releases:
   - version: 2.3.6
