@@ -66,7 +66,7 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
 {
     // This is the average duration that I timed iOS (8) shows notifications for.
 
-    [self showNoticeInView:view title:title time:6.5 response:response];
+    return [self showNoticeInView:view title:title time:6.5 response:response];
 }
 
 + (ARNotificationView *)showNoticeInView:(UIView *)view title:(NSString *)title time:(CGFloat)time response:(void (^)(void))response

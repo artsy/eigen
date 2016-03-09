@@ -1,12 +1,6 @@
 import Foundation
 import Artsy_UILabels
 
-enum SaleAvailabilityState {
-    case NotYetOpen
-    case Active
-    case Closed
-}
-
 class SaleViewModel {
     private let sale: Sale
     private let saleArtworks: [SaleArtwork]
