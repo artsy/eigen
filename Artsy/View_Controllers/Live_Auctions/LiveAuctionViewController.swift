@@ -12,6 +12,8 @@ class LiveAuctionViewController: UIViewController {
     var salesPerson: LiveAuctionsSalesPersonType = LiveAuctionsSalesPerson()
     let scrollManager = ScrollViewProgressObserver()
 
+    var pageController: UIPageViewController!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,7 +60,7 @@ class LiveAuctionViewController: UIViewController {
         previewView.alignLeadingEdgeWithView(view, predicate: "0")
         previewView.alignTrailingEdgeWithView(view, predicate: "0")
 
-        let pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
+        pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
         pageController.dataSource = auctionDataSource
         ar_addModernChildViewController(pageController)
 
@@ -83,6 +85,16 @@ class LiveAuctionViewController: UIViewController {
         progress.constrainHeight("4")
         progress.alignLeading("0", trailing: "0", toView: view)
         progress.alignBottomEdgeWithView(view, predicate: "-165")
+    }
+
+    func jumpToLiveLot(sender: AnyObject) {
+        let index = salesPerson.currentIndex
+        let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index)
+        guard let viewController = pageController.viewControllers?.first as? LiveAuctionLotViewController else { return }
+
+        let direction: UIPageViewControllerNavigationDirection = viewController.index > index ? .Forward : .Reverse
+
+        pageController.setViewControllers([currentLotVC!], direction: direction, animated: true, completion: nil)
     }
 
     // Support for ARMenuAwareViewController
@@ -215,13 +227,17 @@ class LiveAuctionLotViewController: UIViewController {
         let bidButton = ARBlackFlatButton()
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 
-        let currentLotView = LiveAuctionCurrentLotView()
-        metadataStack.addSubview(currentLotView, withTopMargin: "14", sideMargin: "20")
-
         let bidHistoryViewController =  LiveAuctionBidHistoryViewController(style: .Plain)
         metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
         bidHistoryViewController.view.constrainHeight("135")
 
+        let currentLotView = LiveAuctionCurrentLotView()
+        currentLotView.addTarget(nil, action: "jumpToLiveLot:", forControlEvents: .TouchUpInside)
+        view.addSubview(currentLotView)
+        currentLotView.alignBottom("-5", trailing: "-5", toView: view)
+        currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
+
+        
         // might be a way to "bind" these?
         auctionViewModel.next { auctionViewModel in
             if let currentLot = auctionViewModel.currentLotViewModel {
@@ -229,7 +245,7 @@ class LiveAuctionLotViewController: UIViewController {
             }
 
             if auctionViewModel.saleAvailability == .Closed {
-                metadataStack.removeSubview(currentLotView)
+                currentLotView.removeFromSuperview()
             }
         }
 
@@ -247,7 +263,7 @@ class LiveAuctionLotViewController: UIViewController {
 
             case .LiveLot:
                 // We don't need this when it's the current lot
-                metadataStack.removeSubview(currentLotView)
+                currentLotView.removeFromSuperview()
                 bidHistoryViewController.lotViewModel = vm
 
             case .UpcomingLot(_):
@@ -329,8 +345,7 @@ class LiveAuctionImagePreviewView : UIView {
     }
 }
 
-
-class LiveAuctionCurrentLotView: UIView {
+class LiveAuctionCurrentLotView: UIButton {
 
     let viewModel = Signal<LiveAuctionLotViewModel>()
 

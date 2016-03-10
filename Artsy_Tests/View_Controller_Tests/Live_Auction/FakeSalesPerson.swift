@@ -3,7 +3,8 @@ import Artsy
 
 
 class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
-
+    var currentIndex = 0
+    
     var lots: [LiveAuctionLot] = []
     var sale: LiveSale!
     var events: [String: LiveEvent]!

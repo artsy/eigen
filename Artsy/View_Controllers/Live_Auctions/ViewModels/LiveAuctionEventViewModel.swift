@@ -18,7 +18,6 @@ class LiveAuctionEventViewModel : NSObject {
         }
     }
 
-
     var eventSubtitle: NSAttributedString {
         switch event.eventType() {
         case .Bid:

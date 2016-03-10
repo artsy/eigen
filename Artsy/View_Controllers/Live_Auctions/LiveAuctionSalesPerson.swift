@@ -4,6 +4,7 @@ import Foundation
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
 protocol LiveAuctionsSalesPersonType {
+    var currentIndex: Int { get }
     var auctionViewModel: LiveAuctionViewModel { get }
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel?
 
@@ -12,7 +13,7 @@ protocol LiveAuctionsSalesPersonType {
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    private var currentIndex = 0
+    var currentIndex = 0
 
     private var lots: [LiveAuctionLot] = []
     private var sale: LiveSale!
