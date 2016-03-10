@@ -10,7 +10,7 @@
 #import "ARWorksForYouNotificationItemViewController.h"
 #import "ARArtistViewController.h"
 #import "ARScrollNavigationChief.h"
-#import "UIDevice-Hardware.h"
+#import "Artsy-Swift.h"
 
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>
@@ -196,7 +196,7 @@ static int ARLoadingIndicatorView = 1;
 
 - (BOOL)shouldAutorotate
 {
-    return [UIDevice isPad];
+    return self.traitDependentAutorotateSupport;
 }
 
 @end
