@@ -14,10 +14,13 @@ class LiveAuctionLotViewModel : NSObject {
     private let lot: LiveAuctionLot
     private let index: Int
 
-    init(lot: LiveAuctionLot, auction: LiveAuctionViewModel, index: Int) {
+    let events: [LiveAuctionEventViewModel] // Var?
+
+    init(lot: LiveAuctionLot, auction: LiveAuctionViewModel, events: [LiveAuctionEventViewModel], index: Int) {
         self.lot = lot
         self.auction = auction
         self.index = index
+        self.events = events
     }
 
     var lotState : LotState {

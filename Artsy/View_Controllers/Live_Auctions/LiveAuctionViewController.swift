@@ -123,14 +123,54 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     }
 }
 
+class LiveAuctionHistoryCell: UITableViewCell {
+
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: .Value1, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .whiteColor()
+        drawBottomDottedBorder()
+
+        textLabel?.font = .sansSerifFontWithSize(14)
+        detailTextLabel?.font = .sansSerifFontWithSize(14)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func updateWithEventViewModel(event: LiveAuctionEventViewModel) {
+        self.textLabel?.attributedText = event.eventTitle
+        self.detailTextLabel?.attributedText = event.eventSubtitle
+    }
+}
 
 class LiveAuctionBidHistoryViewController: UITableViewController {
-    let lotViewModel = Signal<LiveAuctionLotViewModel>()
-    let auctionViewModel = Signal<LiveAuctionViewModel>()
+
+    var lotViewModel: LiveAuctionLotViewModel? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.registerClass(LiveAuctionHistoryCell.self, forCellReuseIdentifier: "live")
+    }
 
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return lotViewModel?.events.count ?? 0
+    }
+
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        return tableView.dequeueReusableCellWithIdentifier("live")!
+    }
+
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        guard let lotViewModel = lotViewModel else { return }
+        guard let cell = cell as? LiveAuctionHistoryCell else { return }
+
+        let event = lotViewModel.events[indexPath.row]
+        cell.updateWithEventViewModel(event)
     }
 }
 
@@ -145,7 +185,7 @@ class LiveAuctionLotViewController: UIViewController {
         let metadataStack = ORStackView()
         metadataStack.bottomMarginHeight = 0
         view.addSubview(metadataStack)
-        metadataStack.alignBottomEdgeWithView(view, predicate: "-72")
+        metadataStack.alignBottomEdgeWithView(view, predicate: "0")
         metadataStack.constrainWidthToView(view, predicate: "-40")
         metadataStack.alignCenterXWithView(view, predicate: "0")
 
@@ -178,6 +218,10 @@ class LiveAuctionLotViewController: UIViewController {
         let currentLotView = LiveAuctionCurrentLotView()
         metadataStack.addSubview(currentLotView, withTopMargin: "14", sideMargin: "20")
 
+        let bidHistoryViewController =  LiveAuctionBidHistoryViewController(style: .Plain)
+        metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
+        bidHistoryViewController.view.constrainHeight("135")
+
         // might be a way to "bind" these?
         auctionViewModel.next { auctionViewModel in
             if let currentLot = auctionViewModel.currentLotViewModel {
@@ -199,14 +243,16 @@ class LiveAuctionLotViewController: UIViewController {
             switch vm.lotState {
             case .ClosedLot:
                 bidButton.setEnabled(false, animated: false)
-
+                bidHistoryViewController.lotViewModel = vm
 
             case .LiveLot:
                 // We don't need this when it's the current lot
                 metadataStack.removeSubview(currentLotView)
+                bidHistoryViewController.lotViewModel = vm
 
             case .UpcomingLot(_):
-                print("OK")
+                self.ar_modernRemoveChildViewController(bidHistoryViewController)
+                metadataStack.removeSubview(bidHistoryViewController.view)
             }
         }
     }
@@ -247,9 +293,9 @@ class LiveAuctionImagePreviewView : UIView {
         }
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        progress.update(1)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        progress.update(0)
     }
 
     func valueOnRange(range: Range<Int>, value: CGFloat) -> CGFloat {

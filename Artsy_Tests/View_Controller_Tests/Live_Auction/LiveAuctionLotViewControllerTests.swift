@@ -4,7 +4,6 @@ import Nimble_Snapshots
 import Interstellar
 import UIKit
 
-
 @testable
 import Artsy
 
@@ -21,7 +20,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             it("looks good for closed lots") {
                 let subject = LiveAuctionLotViewController()
                 subject.loadViewProgrammatically()
-                subject.lotViewModel.update( salesPerson.lotViewModelForIndex(0)! )
+                subject.lotViewModel.update( salesPerson.lotViewModelForIndex(1)! )
                 expect(subject).to( haveValidSnapshot() )
             }
 
@@ -52,5 +51,3 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
         }
     }
 }
-
-

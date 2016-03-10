@@ -16,7 +16,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
     private var lots: [LiveAuctionLot] = []
     private var sale: LiveSale!
-    private var events: [LiveEvent]!
+    private var events: [String: LiveEvent]!
 
     var auctionViewModel: LiveAuctionViewModel {
         return LiveAuctionViewModel(sale: sale, salesPerson: self)
@@ -24,9 +24,18 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel? {
         if (0..<lots.count ~= index) {
-            return LiveAuctionLotViewModel(lot: lots[index], auction:auctionViewModel , index: index)
+
+            return LiveAuctionLotViewModel(
+                lot: lots[index],
+                auction:auctionViewModel,
+                events:eventsViewModelsForLot(lots[index]),
+                index: index)
         }
         return nil
+    }
+
+    func eventsViewModelsForLot(lot: LiveAuctionLot) -> [LiveAuctionEventViewModel] {
+        return lot.events.flatMap { self.events[$0] }.map { LiveAuctionEventViewModel(event: $0) }
     }
 
     func setupWithStub() {
@@ -37,6 +46,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
         setupWithInitialJSON(json)
     }
 
+    // note this needs to leave the main thread
     func setupWithInitialJSON(json: AnyObject) {
 
         guard let lots = json["lots"] as? [String: [String: AnyObject]] else { return }
@@ -47,6 +57,11 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
         let unordered_lots: [LiveAuctionLot] = lots.values.map { LiveAuctionLot(JSON: $0) }
         self.lots = unordered_lots.sort { return $0.position < $1.position }
 
-        self.events = events.values.flatMap { LiveEvent(JSON: $0) }
+        let eventModels: [LiveEvent] = events.values.flatMap { LiveEvent(JSON: $0) }
+        var eventDictionary: [String: LiveEvent] = [:]
+        for event in eventModels {
+            eventDictionary[event.eventID] = event
+        }
+        self.events = eventDictionary
     }
 }
