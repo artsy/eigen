@@ -12,6 +12,11 @@
 /// Marks all current user's notifications read
 - (void)markNotificationsRead;
 
+/// If all notifications have been downloaded, returns total number of artworks received from gravity
+@property (nonatomic, readonly) NSInteger artworksCount;
+
+@property (nonatomic, readonly) NSInteger currentPage;
+
 @end
 
 

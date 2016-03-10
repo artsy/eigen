@@ -10,6 +10,7 @@
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
+
 @interface ARArtworkMasonryModule (Private)
 - (void)updateLayoutForSize:(CGSize)size;
 @end
@@ -81,9 +82,8 @@
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
-    [self updateForSize:size];
-
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self updateForSize:size];
         [self.view layoutIfNeeded];
     } completion:nil];
 }

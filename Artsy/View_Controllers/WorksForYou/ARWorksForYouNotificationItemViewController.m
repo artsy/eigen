@@ -6,11 +6,13 @@
 #import "ARSwitchboard+Eigen.h"
 #import "ARArtworkSetViewController.h"
 #import "ARArtistViewController.h"
+#import "UIDevice-Hardware.h"
+#import "ARArtworkMasonryModule.h"
 
 #import <ORStackView/ORSplitStackView.h>
 
 
-@interface ARWorksForYouNotificationItemViewController () <AREmbeddedModelsViewControllerDelegate>
+@interface ARWorksForYouNotificationItemViewController () <AREmbeddedModelsViewControllerDelegate, ARArtworkMasonryLayoutProvider>
 @property (nonatomic, strong) ARWorksForYouNotificationItem *notificationItem;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
 @property (nonatomic, strong) ORStackView *view;
@@ -44,10 +46,7 @@
     artistNameLabel.text = self.notificationItem.artist.name.uppercaseString;
     artistNameLabel.textColor = [UIColor blackColor];
     artistNameLabel.font = [UIFont sansSerifFontWithSize:14];
-
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(artistNameTapped:)];
-    artistNameLabel.userInteractionEnabled = YES;
-    [artistNameLabel addGestureRecognizer:recognizer];
+    [self addArtistTapRecognizerToView:artistNameLabel];
 
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"MMM dd"];
@@ -56,12 +55,13 @@
     dateLabel.text = [df stringFromDate:self.notificationItem.date];
     dateLabel.textColor = [UIColor artsyHeavyGrey];
     dateLabel.textAlignment = NSTextAlignmentRight;
-    dateLabel.font = [UIFont sansSerifFontWithSize:10];
+    dateLabel.font = [UIFont sansSerifFontWithSize:12];
 
     ARSerifLabel *numberOfWorksAddedLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     numberOfWorksAddedLabel.text = self.notificationItem.formattedNumberOfWorks;
     numberOfWorksAddedLabel.textColor = [UIColor artsyHeavyGrey];
     numberOfWorksAddedLabel.font = [UIFont serifFontWithSize:14];
+    [self addArtistTapRecognizerToView:numberOfWorksAddedLabel];
 
     ORSplitStackView *ssv = [[ORSplitStackView alloc] initWithLeftPredicate:@"200" rightPredicate:@"100"];
     [ssv.leftStack addSubview:artistNameLabel withTopMargin:@"10" sideMargin:@"0"];
@@ -71,21 +71,23 @@
     [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"10" sideMargin:@"30"];
 
     if (self.artworksVC) {
-        [self.artworksVC setConstrainHeightAutomatically:YES];
+        self.artworksVC.constrainHeightAutomatically = YES;
 
-        if (self.notificationItem.artworks.count > 1) {
-            self.artworksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout2Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
-        } else if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
-            self.artworksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout3Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
-        } else {
-            self.artworksVC.activeModule = [ARArtworkMasonryModule masonryModuleWithLayout:ARArtworkMasonryLayout1Column andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
-        }
-
+        ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:[self masonryLayoutForSize:self.view.frame.size] andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
+        module.layoutProvider = self;
+        self.artworksVC.activeModule = module;
         [self.artworksVC appendItems:self.notificationItem.artworks];
         [self.view addViewController:self.artworksVC toParent:self withTopMargin:@"10" sideMargin:@"0"];
     }
 
     [super viewDidLoad];
+}
+
+- (void)addArtistTapRecognizerToView:(UIView *)view
+{
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(artistNameTapped:)];
+    view.userInteractionEnabled = YES;
+    [view addGestureRecognizer:recognizer];
 }
 
 - (void)artistNameTapped:(UIGestureRecognizer *)recognizer
@@ -112,5 +114,15 @@
     [self.navigationController pushViewController:artistVC animated:animated];
 }
 
+#pragma mark - ARArtworkMasonryLayoutProvider
+- (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
+{
+    if (self.artworksVC.items.count > 1) {
+        return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular && self.artworksVC.items.count >= 3 ? ARArtworkMasonryLayout3Column : ARArtworkMasonryLayout2Column;
+
+    } else {
+        return ARArtworkMasonryLayout1Column;
+    }
+}
 
 @end
