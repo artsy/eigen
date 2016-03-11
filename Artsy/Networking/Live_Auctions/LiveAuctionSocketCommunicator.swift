@@ -3,9 +3,11 @@ import SocketIOClientSwift
 
 @objc class LiveAuctionSocketCommunicator: NSObject {
     private let socket: SocketIOClient
+    private let saleID: String
 
     @objc init(host: String, accessToken: String, saleID: String) {
-        socket = SocketIOClient(socketURL: NSURL(string: host)!, options: [.Log(true)])
+        socket = SocketIOClient(socketURL: NSURL(string: host)!, options: [.Reconnects(true), .Log(false)])
+        self.saleID = saleID
 
         super.init()
 
@@ -20,27 +22,32 @@ import SocketIOClientSwift
 private typealias SocketSetup = LiveAuctionSocketCommunicator
 private extension SocketSetup {
 
-    /// Connects to, then authenticates against, the socket. Listens for sale events.
+    /// Connects to, then authenticates against, the socket. Listens for sale events once authenticated.
     func setupSocketWithAccessToken(accessToken: String, saleID: String) {
-        socket.authenticateWithAccessToken(accessToken, saleID: saleID)
-        self.listenForSaleEvents()
+        self.authenticateWithAccessToken(accessToken, saleID: saleID)
         socket.connect()
     }
 
-    func listenForSaleEvents() {
-
-    }
-}
-
-private typealias Socket = SocketIOClient
-extension SocketIOClient {
     func authenticateWithAccessToken(accessToken: String, saleID: String) {
+        socket.on("connect") { [weak socket, weak self] data, ack in
+            print("Connected: \(data)")
 
-        on("connect") { data, ack in
-            self.emit("authentication", ["accessToken": accessToken, "saleId": saleID])
-            self.on("authenticated") { data, ack in
+            socket?.emit("authentication", ["accessToken": accessToken, "saleId": saleID])
+            socket?.on("authenticated") { data, ack in
                 // TODO: Handle auth failure.
+                print("Authenticated: \(data)")
+                self?.listenForSaleEvents()
             }
+        }
+    }
+
+    func listenForSaleEvents() {
+        print("Joining sale")
+        socket.emit(.JoinSale, saleID)
+
+        print("Listening for socket events.")
+        socket.on(.UpdateAuctionState) { data, ack in
+            print("Updated auction state: \(data)")
         }
     }
 }
