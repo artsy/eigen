@@ -18,6 +18,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
+
 @interface ARArtworkActionsView () <ARCountdownViewDelegate>
 
 @property (nonatomic, strong) ARCountdownView *countdownView;
@@ -125,9 +126,11 @@
             [self addSubview:self.bidderStatusLabel withTopMargin:@"0" sideMargin:@"0"];
         }
 
-        self.auctionPriceView = [[ARArtworkAuctionPriceView alloc] init];
-        [self.auctionPriceView updateWithSaleArtwork:self.saleArtwork];
-        [self addSubview:self.auctionPriceView withTopMargin:@"12" sideMargin:@"0"];
+        if (state & (ARAuctionStateStarted | ARAuctionStateShowingPreview)) {
+            self.auctionPriceView = [[ARArtworkAuctionPriceView alloc] init];
+            [self.auctionPriceView updateWithSaleArtwork:self.saleArtwork];
+            [self addSubview:self.auctionPriceView withTopMargin:@"12" sideMargin:@"0"];
+        }
 
         ARBidButton *bidButton = [[ARBidButton alloc] init];
         bidButton.auctionState = self.saleArtwork.auctionState;
