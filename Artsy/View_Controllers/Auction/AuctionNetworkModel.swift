@@ -36,9 +36,14 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
         let fetchSaleArtworks = signal.flatMap(saleArtworksNetworkModel.fetchSaleArtworks)
 
         let createViewModel = fetchSale.merge(fetchSaleArtworks)
-            .map { tuple in
+            .map { tuple -> SaleViewModel in
                 // Tuple has the Sale and [SaleArtwork] from previous network requests.
-                return SaleViewModel(sale: tuple.0, saleArtworks: tuple.1)
+
+                let sale = tuple.0
+                let saleArtworks = tuple.1
+
+                saleArtworks.forEach { $0.auction = sale }
+                return SaleViewModel(sale: sale, saleArtworks: saleArtworks)
             }
             .next { saleViewModel in
                 // Store the SaleViewModel

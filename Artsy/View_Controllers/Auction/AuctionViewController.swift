@@ -117,6 +117,7 @@ extension AuctionViewController {
     }
 
     func setupForSale(saleViewModel: SaleViewModel) {
+        view.backgroundColor = .blackColor()
 
         headerStack = ORTagBasedAutoStackView()
         saleArtworksViewController = ARModelInfiniteScrollViewController()
