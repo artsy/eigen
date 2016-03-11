@@ -136,8 +136,8 @@ PODS:
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
+  - Socket.IO-Client-Swift (5.5.0)
   - Specta (1.0.5)
-  - Starscream (1.1.2)
   - Then (1.0.0)
   - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
@@ -203,8 +203,8 @@ DEPENDENCIES:
   - Quick
   - ReactiveCocoa
   - SDWebImage (>= 3.7.2)
+  - Socket.IO-Client-Swift
   - Specta
-  - Starscream
   - Then
   - UIAlertView+Blocks
   - UICKeyChainStore
@@ -361,8 +361,8 @@ SPEC CHECKSUMS:
   ReactiveCocoa: 81ee2fb7df2dfc6bd52b5d70473662195e20ca7d
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+  Socket.IO-Client-Swift: f39dbd4e9b295907bb7fd4b9588b89c00426783d
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
-  Starscream: 58a12fd35a3cb6aaa105716c2d42765f7c1c732f
   Then: 291c4c489fb76349a987c0f1769a30b3551d091e
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377

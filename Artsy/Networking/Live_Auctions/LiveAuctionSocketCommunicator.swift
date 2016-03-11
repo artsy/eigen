@@ -1,41 +1,37 @@
 import Foundation
-import Starscream
+import SocketIOClientSwift
 
 @objc class LiveAuctionSocketCommunicator: NSObject {
-    private let socket: WebSocket
+    private let socket: SocketIOClient
 
-    override init() {
-//        socket = WebSocket(url: NSURL(string: "wss://echo.websocket.org")!)
-        socket = WebSocket(url: NSURL(string: "http://localhost:5000/socket.io/?EIO=3&transport=polling&t=1457567561454-2&sid=22aofAdt6BRk4biqAAAF")!)
+    @objc init(host: String, accessToken: String, saleID: String) {
+        socket = SocketIOClient(socketURL: NSURL(string: host)!, options: [.Log(true)])
 
         super.init()
 
-        print("Initializing")
-        socket.delegate = self
-        socket.connect()
+        setupSocketWithAccessToken(accessToken, saleID: saleID)
     }
 
     deinit {
-        print("disconnecting")
         socket.disconnect()
     }
 }
 
-private typealias SocketDelegate = LiveAuctionSocketCommunicator
-extension SocketDelegate: WebSocketDelegate {
-    func websocketDidConnect(socket: WebSocket) {
-        print("did connect")
-    }
+private typealias SocketSetup = LiveAuctionSocketCommunicator
+private extension SocketSetup {
+    func setupSocketWithAccessToken(accessToken: String, saleID: String) {
 
-    func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
-        print("did disconnect")
-    }
+        defer {
+            socket.connect()
+        }
 
-    func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        print("did receive message")
-    }
+        socket.on("connect") {data, ack in
+            print("socket connected, authing...")
+            self.socket.emit("authentication", ["accessToken": accessToken, "saleId": saleID])
 
-    func websocketDidReceiveData(socket: WebSocket, data: NSData) {
-        print("did receive data")
+            self.socket.on("authenticated") { data, ack in
+                print("socket authenticated.")
+            }
+        }
     }
 }
