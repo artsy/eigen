@@ -1,12 +1,25 @@
 import Foundation
 import SocketIOClientSwift
 
-@objc class LiveAuctionSocketCommunicator: NSObject {
-    private let socket: SocketIOClient
+protocol SocketType: class {
+func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID
+    func emit(event: SocketEvent, _ items: AnyObject...)
+
+    func connect()
+    func disconnect()
+}
+
+class LiveAuctionSocketCommunicator: NSObject {
+    typealias SocketCreator = String -> SocketType
+    private let socket: SocketType
     private let saleID: String
 
-    @objc init(host: String, accessToken: String, saleID: String) {
-        socket = SocketIOClient(socketURL: NSURL(string: host)!, options: [.Reconnects(true), .Log(false)])
+    convenience init(host: String, accessToken: String, saleID: String) {
+        self.init(host: host, accessToken: accessToken, saleID: saleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
+    }
+
+    init(host: String, accessToken: String, saleID: String, socketCreator: SocketCreator) {
+        socket = socketCreator(host)
         self.saleID = saleID
 
         super.init()
@@ -16,6 +29,12 @@ import SocketIOClientSwift
 
     deinit {
         socket.disconnect()
+    }
+
+    class func defaultSocketCreator() -> String -> SocketType {
+        return { host in
+            return SocketIOClient(socketURL: NSURL(string: host)!, options: [.Reconnects(true), .Log(false)])
+        }
     }
 }
 
@@ -29,11 +48,11 @@ private extension SocketSetup {
     }
 
     func authenticateWithAccessToken(accessToken: String, saleID: String) {
-        socket.on("connect") { [weak socket, weak self] data, ack in
+        socket.on(.Connect) { [weak socket, weak self] data in
             print("Connected: \(data)")
 
-            socket?.emit("authentication", ["accessToken": accessToken, "saleId": saleID])
-            socket?.on("authenticated") { data, ack in
+            socket?.emit(.Authentication, ["accessToken": accessToken, "saleId": saleID])
+            socket?.on(.Authenticated) { data in
                 // TODO: Handle auth failure.
                 print("Authenticated: \(data)")
                 self?.listenForSaleEvents()
@@ -46,7 +65,7 @@ private extension SocketSetup {
         socket.emit(.JoinSale, saleID)
 
         print("Listening for socket events.")
-        socket.on(.UpdateAuctionState) { data, ack in
+        socket.on(.UpdateAuctionState) { data in
             print("Updated auction state: \(data)")
         }
     }

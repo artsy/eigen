@@ -1,6 +1,10 @@
 // Basically a Swift-based copy of https://github.com/artsy/prediction/blob/master/lib/socket_events.js
 
 enum SocketEvent: String {
+    case Connect = "connect"
+    case Authentication = "authentication"
+    case Authenticated = "authenticated"
+
     case ConfirmOnlineBid = "CONFIRM_ONLINE_BID"
     case FairWarning = "FAIR_WARNING"
     case FinalCall = "FINAL_CALL"
