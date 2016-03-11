@@ -13,9 +13,7 @@
 @property (readonly, nonatomic) NSInteger width;
 @property (readonly, nonatomic) NSInteger height;
 
-// Apparently Mantle no longer considers that you might want
-// to see something in the JSON but not persist it
-// so now we end up with this redundant BS
+// We want to see this in the JSON but not persist it
 @property (readonly, nonatomic, copy) NSString *type;
 
 

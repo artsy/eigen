@@ -75,4 +75,11 @@
     [controller.view removeFromSuperview];
 }
 
+- (void)ar_modernRemoveChildViewController:(UIViewController *)controller
+{
+    [controller willMoveToParentViewController:nil];
+    [controller removeFromParentViewController];
+}
+
+
 @end

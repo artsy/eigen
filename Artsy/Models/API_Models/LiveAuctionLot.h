@@ -20,6 +20,8 @@
 @property (nonatomic, copy, readonly) NSString *liveAuctionLotID;
 @property (nonatomic, assign, readonly) NSInteger position;
 
+@property (nonatomic, copy, readonly) NSArray<NSString *> *events;
+
 @property (nonatomic, assign, readonly) ARReserveStatus reserveStatus;
 
 @property (nonatomic, copy, readonly) NSString *currency;

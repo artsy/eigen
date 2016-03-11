@@ -11,8 +11,8 @@
 @interface ARWorksForYouNetworkModel ()
 @property (readwrite, nonatomic, assign) BOOL allDownloaded;
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
+@property (readwrite, nonatomic, assign) NSInteger artworksCount;
 @property (atomic, weak) AFHTTPRequestOperation *currentRequest;
-
 @end
 
 
@@ -24,6 +24,7 @@
     if (!self) return nil;
 
     _currentPage = 1;
+    _artworksCount = 0;
     return self;
 }
 
@@ -74,6 +75,7 @@
         if (!sself) return;
 
         sself.currentPage++;
+        sself.artworksCount += artworks.count;
         if (artworks.count == 0) {
             sself.allDownloaded = YES;
         }

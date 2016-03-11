@@ -16,6 +16,8 @@ ARWorksForYouNotificationItem *stubbedNotificationItemWithNumberAndArtworks(int 
 @interface ARStubbedWorksForYouNetworkModel : NSObject <ARWorksForYouNetworkModelable>
 @property (nonatomic, assign) BOOL allDownloaded;
 @property (nonatomic, copy, readwrite) NSArray<ARWorksForYouNotificationItem *> *notificationItems;
+@property (readwrite, nonatomic, assign) NSInteger currentPage;
+@property (readwrite, nonatomic, assign) NSInteger artworksCount;
 @end
 
 
@@ -60,6 +62,14 @@ it(@"marks notifications as read", ^{
     [networkModelStub verify];
 });
 
+itHasSnapshotsForDevicesWithName(@"looks right when user has no notifications", ^{
+    subject.worksForYouNetworkModel = stubbedNetworkModel;
+    stubbedNetworkModel.notificationItems = @[];
+    
+    [subject ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+    return subject;
+});
+
 SpecEnd
 
 
@@ -87,9 +97,24 @@ SpecEnd
 
 @implementation ARStubbedWorksForYouNetworkModel
 
+- (instancetype)init
+{
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
+    _currentPage = 1;
+    _artworksCount = 0;
+
+    return self;
+}
+
 - (void)getWorksForYou:(void (^_Nonnull)(NSArray<ARWorksForYouNotificationItem *> *_Nonnull))success failure:(void (^_Nullable)(NSError *_Nullable error))failure
 {
     self.allDownloaded = YES;
+    self.currentPage++;
+    self.artworksCount = self.notificationItems.count;
     success(self.notificationItems);
 }
 

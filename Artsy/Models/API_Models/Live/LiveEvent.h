@@ -15,6 +15,16 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 @property (nonatomic, copy, readonly) NSString *type;
 @property (nonatomic, copy, readonly) NSString *eventID;
 - (LiveEventType)eventType;
+
+// This is not optimal, I will have to find a way to do this better in the future.
+// Than the pattern in ContentLink.m
+
+// We do this to expose these to its children
+
+@property (nonatomic, assign, readonly) NSInteger amountCents;
+@property (nonatomic, copy, readonly) NSString *source;
+@property (nonatomic, assign, readonly) BOOL isConfirmed;
+
 @end
 
 
@@ -24,9 +34,6 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 
 
 @interface LiveEventBid : LiveEvent
-@property (nonatomic, assign, readonly) NSInteger amountCents;
-@property (nonatomic, copy, readonly) NSString *source;
-@property (nonatomic, assign, readonly) BOOL isConfirmed;
 @end
 
 
