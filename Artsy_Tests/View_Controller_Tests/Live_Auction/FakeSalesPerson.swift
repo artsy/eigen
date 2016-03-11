@@ -3,7 +3,7 @@ import Artsy
 
 
 class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
-    var currentIndex = 0
+    var currentlyShowingIndex = 0
     
     var lots: [LiveAuctionLot] = []
     var sale: LiveSale!
@@ -24,6 +24,13 @@ class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         }
         return nil
     }
+
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModel? {
+        let newIndex = currentlyShowingIndex + offset
+        let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
+        return lotViewModelForIndex(loopingIndex)
+    }
+
 
     func eventsViewModelsForLot(lot: LiveAuctionLot) -> [LiveAuctionEventViewModel] {
         return lot.events.flatMap { self.events[$0] }.map { LiveAuctionEventViewModel(event: $0) }

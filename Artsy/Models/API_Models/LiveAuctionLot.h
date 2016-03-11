@@ -11,6 +11,7 @@
 
 - (NSURL *)urlForThumbnail;
 - (NSURL *)urlForProfile;
+- (CGSize)imageProfileSize;
 
 @property (nonatomic, copy, readonly) NSString *artworkTitle;
 @property (nonatomic, copy, readonly) NSString *artistName;

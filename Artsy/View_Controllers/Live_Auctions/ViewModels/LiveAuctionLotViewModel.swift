@@ -40,6 +40,10 @@ class LiveAuctionLotViewModel : NSObject {
         return lot.urlForThumbnail()
     }
 
+    var imageProfileSize: CGSize {
+        return lot.imageProfileSize()
+    }
+
     var lotName: String {
         return lot.artworkTitle
     }
