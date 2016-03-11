@@ -19,18 +19,27 @@ import SocketIOClientSwift
 
 private typealias SocketSetup = LiveAuctionSocketCommunicator
 private extension SocketSetup {
+
+    /// Connects to, then authenticates against, the socket. Listens for sale events.
     func setupSocketWithAccessToken(accessToken: String, saleID: String) {
+        socket.authenticateWithAccessToken(accessToken, saleID: saleID)
+        self.listenForSaleEvents()
+        socket.connect()
+    }
 
-        defer {
-            socket.connect()
-        }
+    func listenForSaleEvents() {
 
-        socket.on("connect") {data, ack in
-            print("socket connected, authing...")
-            self.socket.emit("authentication", ["accessToken": accessToken, "saleId": saleID])
+    }
+}
 
-            self.socket.on("authenticated") { data, ack in
-                print("socket authenticated.")
+private typealias Socket = SocketIOClient
+extension SocketIOClient {
+    func authenticateWithAccessToken(accessToken: String, saleID: String) {
+
+        on("connect") { data, ack in
+            self.emit("authentication", ["accessToken": accessToken, "saleId": saleID])
+            self.on("authenticated") { data, ack in
+                // TODO: Handle auth failure.
             }
         }
     }
