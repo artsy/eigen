@@ -88,12 +88,19 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func jumpToLiveLot(sender: AnyObject) {
-        let index = salesPerson.currentIndex
-        let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index)
-        guard let viewController = pageController.viewControllers?.first as? LiveAuctionLotViewController else { return }
+        let index = salesPerson.auctionViewModel.currentLotViewModel?.lotIndex ?? 1
+        // We expose the lot indexes as being 1 based, but behind the scenes it's 0 based
+        let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index - 1)
 
-        let direction: UIPageViewControllerNavigationDirection = viewController.index > index ? .Forward : .Reverse
 
+        // This logic won't do, lot at index 10 is not classed as being -1 from current index
+        // perhaps it needs to see within a wrapping range of 0 to 10, which direction is it less steps
+        // to get to my index
+
+//        guard let viewController = pageController.viewControllers?.first as? LiveAuctionLotViewController else { return }
+//        let direction: UIPageViewControllerNavigationDirection = viewController.index > index ? .Forward : .Reverse
+
+        let direction = UIPageViewControllerNavigationDirection.Forward
         pageController.setViewControllers([currentLotVC!], direction: direction, animated: true, completion: nil)
     }
 
@@ -229,7 +236,7 @@ class LiveAuctionLotViewController: UIViewController {
 
         let bidHistoryViewController =  LiveAuctionBidHistoryViewController(style: .Plain)
         metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
-        bidHistoryViewController.view.constrainHeight("135")
+        bidHistoryViewController.view.constrainHeight("70")
 
         let currentLotView = LiveAuctionCurrentLotView()
         currentLotView.addTarget(nil, action: "jumpToLiveLot:", forControlEvents: .TouchUpInside)
@@ -237,7 +244,6 @@ class LiveAuctionLotViewController: UIViewController {
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
 
-        
         // might be a way to "bind" these?
         auctionViewModel.next { auctionViewModel in
             if let currentLot = auctionViewModel.currentLotViewModel {
@@ -267,8 +273,8 @@ class LiveAuctionLotViewController: UIViewController {
                 bidHistoryViewController.lotViewModel = vm
 
             case .UpcomingLot(_):
-                self.ar_modernRemoveChildViewController(bidHistoryViewController)
-                metadataStack.removeSubview(bidHistoryViewController.view)
+                // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
+                bidHistoryViewController.view.hidden = true
             }
         }
     }
@@ -281,31 +287,36 @@ class LiveAuctionLotViewController: UIViewController {
 class LiveAuctionImagePreviewView : UIView {
     let salesPerson: LiveAuctionsSalesPersonType
     let progress: Signal<CGFloat>
-    var leftImageView, rightImageView, centerImageView: UIImageView
+    var leftLeftImageView, leftImageView, rightRightImageView, rightImageView, centerImageView: UIImageView
 
     init(signal: Signal<CGFloat>, salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
         self.progress = signal
 
         leftImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
+        leftLeftImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
         centerImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
         rightImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
+        rightRightImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
 
-        leftImageView.backgroundColor = UIColor.debugColourPurple()
-        centerImageView.backgroundColor = UIColor.debugColourPurple()
-        rightImageView.backgroundColor = UIColor.debugColourPurple()
+        let imageViews = [leftLeftImageView, leftImageView, centerImageView, rightImageView, rightRightImageView]
 
         super.init(frame: CGRect.zero)
 
-        [leftImageView, centerImageView, rightImageView].forEach { self.addSubview($0) }
+        for image in imageViews {
+            addSubview(image)
+            image.backgroundColor = UIColor.debugColourPurple()
+        }
 
         signal.next { progress in
             let width = Int(self.bounds.width)
             let half = Int(width / 2)
 
+            self.leftLeftImageView.center = self.positionOnRange(-width...0, value: progress)
             self.leftImageView.center = self.positionOnRange(-half...half, value: progress)
             self.centerImageView.center = self.positionOnRange(0...width, value: progress)
-            self.rightImageView.center = self.positionOnRange(half...width + half, value:  progress)
+            self.rightImageView.center = self.positionOnRange(half...width + half, value: progress)
+            self.rightRightImageView.center = self.positionOnRange(width...width * 2, value: progress)
         }
     }
 
