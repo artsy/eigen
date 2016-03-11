@@ -38,6 +38,7 @@
 {
     return @{
         ar_keypath(LiveEvent.new, eventID) : @"id",
+        ar_keypath(LiveEventBid.new, source) : @"source",
     };
 }
 
@@ -48,11 +49,14 @@
 
 @implementation LiveEventLotOpen
 - (LiveEventType)eventType { return LiveEventTypeLotOpen; }
+
 @end
 
 
 @implementation LiveEventBid
 - (LiveEventType)eventType { return LiveEventTypeBid; }
+
+
 @end
 
 

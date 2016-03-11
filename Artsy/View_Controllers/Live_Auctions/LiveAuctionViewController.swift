@@ -12,6 +12,8 @@ class LiveAuctionViewController: UIViewController {
     var salesPerson: LiveAuctionsSalesPersonType = LiveAuctionsSalesPerson()
     let scrollManager = ScrollViewProgressObserver()
 
+    var pageController: UIPageViewController!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,7 +60,7 @@ class LiveAuctionViewController: UIViewController {
         previewView.alignLeadingEdgeWithView(view, predicate: "0")
         previewView.alignTrailingEdgeWithView(view, predicate: "0")
 
-        let pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
+        pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
         pageController.dataSource = auctionDataSource
         ar_addModernChildViewController(pageController)
 
@@ -83,6 +85,16 @@ class LiveAuctionViewController: UIViewController {
         progress.constrainHeight("4")
         progress.alignLeading("0", trailing: "0", toView: view)
         progress.alignBottomEdgeWithView(view, predicate: "-165")
+    }
+
+    func jumpToLiveLot(sender: AnyObject) {
+        let index = salesPerson.currentIndex
+        let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index)
+        guard let viewController = pageController.viewControllers?.first as? LiveAuctionLotViewController else { return }
+
+        let direction: UIPageViewControllerNavigationDirection = viewController.index > index ? .Forward : .Reverse
+
+        pageController.setViewControllers([currentLotVC!], direction: direction, animated: true, completion: nil)
     }
 
     // Support for ARMenuAwareViewController
@@ -123,14 +135,54 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     }
 }
 
+class LiveAuctionHistoryCell: UITableViewCell {
+
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: .Value1, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .whiteColor()
+        drawBottomDottedBorder()
+
+        textLabel?.font = .sansSerifFontWithSize(14)
+        detailTextLabel?.font = .sansSerifFontWithSize(14)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func updateWithEventViewModel(event: LiveAuctionEventViewModel) {
+        self.textLabel?.attributedText = event.eventTitle
+        self.detailTextLabel?.attributedText = event.eventSubtitle
+    }
+}
 
 class LiveAuctionBidHistoryViewController: UITableViewController {
-    let lotViewModel = Signal<LiveAuctionLotViewModel>()
-    let auctionViewModel = Signal<LiveAuctionViewModel>()
+
+    var lotViewModel: LiveAuctionLotViewModel? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.registerClass(LiveAuctionHistoryCell.self, forCellReuseIdentifier: "live")
+    }
 
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return lotViewModel?.events.count ?? 0
+    }
+
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        return tableView.dequeueReusableCellWithIdentifier("live")!
+    }
+
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        guard let lotViewModel = lotViewModel else { return }
+        guard let cell = cell as? LiveAuctionHistoryCell else { return }
+
+        let event = lotViewModel.events[indexPath.row]
+        cell.updateWithEventViewModel(event)
     }
 }
 
@@ -145,7 +197,7 @@ class LiveAuctionLotViewController: UIViewController {
         let metadataStack = ORStackView()
         metadataStack.bottomMarginHeight = 0
         view.addSubview(metadataStack)
-        metadataStack.alignBottomEdgeWithView(view, predicate: "-72")
+        metadataStack.alignBottomEdgeWithView(view, predicate: "0")
         metadataStack.constrainWidthToView(view, predicate: "-40")
         metadataStack.alignCenterXWithView(view, predicate: "0")
 
@@ -175,9 +227,17 @@ class LiveAuctionLotViewController: UIViewController {
         let bidButton = ARBlackFlatButton()
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 
-        let currentLotView = LiveAuctionCurrentLotView()
-        metadataStack.addSubview(currentLotView, withTopMargin: "14", sideMargin: "20")
+        let bidHistoryViewController =  LiveAuctionBidHistoryViewController(style: .Plain)
+        metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
+        bidHistoryViewController.view.constrainHeight("135")
 
+        let currentLotView = LiveAuctionCurrentLotView()
+        currentLotView.addTarget(nil, action: "jumpToLiveLot:", forControlEvents: .TouchUpInside)
+        view.addSubview(currentLotView)
+        currentLotView.alignBottom("-5", trailing: "-5", toView: view)
+        currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
+
+        
         // might be a way to "bind" these?
         auctionViewModel.next { auctionViewModel in
             if let currentLot = auctionViewModel.currentLotViewModel {
@@ -185,7 +245,7 @@ class LiveAuctionLotViewController: UIViewController {
             }
 
             if auctionViewModel.saleAvailability == .Closed {
-                metadataStack.removeSubview(currentLotView)
+                currentLotView.removeFromSuperview()
             }
         }
 
@@ -199,14 +259,16 @@ class LiveAuctionLotViewController: UIViewController {
             switch vm.lotState {
             case .ClosedLot:
                 bidButton.setEnabled(false, animated: false)
-
+                bidHistoryViewController.lotViewModel = vm
 
             case .LiveLot:
                 // We don't need this when it's the current lot
-                metadataStack.removeSubview(currentLotView)
+                currentLotView.removeFromSuperview()
+                bidHistoryViewController.lotViewModel = vm
 
             case .UpcomingLot(_):
-                print("OK")
+                self.ar_modernRemoveChildViewController(bidHistoryViewController)
+                metadataStack.removeSubview(bidHistoryViewController.view)
             }
         }
     }
@@ -247,9 +309,9 @@ class LiveAuctionImagePreviewView : UIView {
         }
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        progress.update(1)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        progress.update(0)
     }
 
     func valueOnRange(range: Range<Int>, value: CGFloat) -> CGFloat {
@@ -283,8 +345,7 @@ class LiveAuctionImagePreviewView : UIView {
     }
 }
 
-
-class LiveAuctionCurrentLotView: UIView {
+class LiveAuctionCurrentLotView: UIButton {
 
     let viewModel = Signal<LiveAuctionLotViewModel>()
 

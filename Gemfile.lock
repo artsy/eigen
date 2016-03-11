@@ -59,7 +59,7 @@ GEM
       commander (>= 4.3.5)
       highline (>= 1.7.1)
       security
-    danger (0.5.1)
+    danger (0.6.0)
       claide
       colored (~> 1.2)
       faraday
@@ -212,8 +212,8 @@ GEM
     netrc (0.7.8)
     nokogiri (1.6.7.rc4)
       mini_portile2 (~> 2.0.0.rc2)
-    octokit (4.2.0)
-      sawyer (~> 0.6.0, >= 0.5.3)
+    octokit (4.3.0)
+      sawyer (~> 0.7.0, >= 0.5.3)
     os (0.9.6)
     osx_keychain (1.0.1)
       RubyInline (~> 3)
@@ -240,8 +240,8 @@ GEM
     retriable (2.1.0)
     rouge (1.10.1)
     rubyzip (1.1.7)
-    sawyer (0.6.0)
-      addressable (~> 2.3.5)
+    sawyer (0.7.0)
+      addressable (>= 2.3.5, < 2.5)
       faraday (~> 0.8, < 0.10)
     scan (0.5.1)
       fastlane_core (>= 0.36.1, < 1.0.0)

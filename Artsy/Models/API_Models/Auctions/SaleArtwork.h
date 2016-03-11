@@ -26,10 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)numberOfBidsString;
 - (NSString *)highestOrStartingBidString;
 
-// This exposes it to LiveAuctionLot
-+ (NSValueTransformer *)reserveStatusJSONTransformer;
-+ (NSString *)estimateStringForLowEstimate:(NSNumber *_Nullable)lowEstimateCents highEstimateCents:(NSNumber *_Nullable)highEstimateCents currencySymbol:(NSString *)symbol currency:(NSString *)currency;
-
 @property (nonatomic, copy, readonly) NSString *saleArtworkID;
 @property (nonatomic, strong) Sale *_Nullable auction;
 @property (nonatomic, strong) Bidder *_Nullable bidder;
@@ -53,6 +49,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) ARAuctionState auctionState;
 @property (nonatomic, assign) ARReserveStatus reserveStatus;
 @property (nonatomic, strong, readonly) Artwork *artwork;
+
+// This is shared behavior between SaleArtwork and LiveLot
+
++ (NSValueTransformer *)reserveStatusJSONTransformer;
++ (NSString *)estimateStringForLowEstimate:(NSNumber *_Nullable)lowEstimateCents highEstimateCents:(NSNumber *_Nullable)highEstimateCents currencySymbol:(NSString *)symbol currency:(NSString *)currency;
++ (NSString *)dollarsFromCents:(NSNumber *)cents currencySymbol:(NSString *)symbol;
 
 
 @end

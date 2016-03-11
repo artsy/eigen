@@ -10,6 +10,13 @@
 // It is put in gitignore as the current state of what you see now,
 // any changes you make will be erased when you switch branches.
 
+// If you're seeing changes to this file, run this two commands
+/*
+   git checkout Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
+   git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
+
+ */
+
 
 @implementation ARTopMenuViewController (DeveloperExtras)
 
@@ -24,18 +31,20 @@
 }
 
 // Use this to create a new ViewController and push it on to the stack
-//
-// @example
-//
-//  id viewController = [[LiveAuctionViewController alloc] init];
-//  [self pushViewController:viewController animated:YES];
-//
-// @example
-//
-//  NSString *path = @"/artwork/helidon-xhixha-energia-delle-forme";
-//  id viewController = [[ARSwitchBoard sharedInstance] loadPath:path];
-//  [self pushViewController:viewController animated:YES];
-//
+/*
+
+ @example
+
+  id viewController = [[LiveAuctionViewController alloc] init];
+  [self pushViewController:viewController animated:YES];
+
+ @example
+
+  NSString *path = @"/artwork/helidon-xhixha-energia-delle-forme";
+  id viewController = [[ARSwitchBoard sharedInstance] loadPath:path];
+  [self pushViewController:viewController animated:YES];
+
+ */
 
 - (void)runDeveloperExtras
 {

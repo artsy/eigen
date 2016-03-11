@@ -30,4 +30,8 @@
 
 /// Remove a child View Controller and removes from superview
 - (void)ar_removeChildViewController:(UIViewController *)controller;
+
+/// Remove a child View Controller, but not the view
+- (void)ar_modernRemoveChildViewController:(UIViewController *)controller;
+
 @end
