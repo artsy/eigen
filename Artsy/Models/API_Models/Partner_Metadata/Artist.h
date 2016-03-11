@@ -7,9 +7,11 @@
 
 @class AFHTTPRequestOperation;
 
+
 @interface Artist : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageURLs, ARSpotlightMetadataProvider>
 
 @property (readonly, nonatomic, copy) NSString *artistID;
+@property (readonly, nonatomic, copy) NSString *sortableID;
 @property (readonly, nonatomic, copy) NSString *name;
 @property (readonly, nonatomic, copy) NSString *years;
 @property (readonly, nonatomic, copy) NSString *birthday;
@@ -17,6 +19,7 @@
 @property (readonly, nonatomic, copy) NSString *blurb;
 @property (readonly, nonatomic, copy) NSNumber *publishedArtworksCount;
 @property (readonly, nonatomic, copy) NSNumber *forSaleArtworksCount;
+
 
 - (instancetype)initWithArtistID:(NSString *)artistID;
 

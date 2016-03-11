@@ -2,7 +2,7 @@ import Foundation
 
 protocol AuctionOrderable {
     var bids: Int { get }
-    var artistName: String { get }
+    var artistSortableID: String { get }
     var currentBid: Int { get }
 }
 
@@ -71,5 +71,5 @@ func highestCurrentBidSort(lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bo
 }
 
 func alphabeticalSort(lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
-    return lhs.artistName.caseInsensitiveCompare(rhs.artistName) == .OrderedAscending
+    return lhs.artistSortableID.caseInsensitiveCompare(rhs.artistSortableID) == .OrderedAscending
 }
