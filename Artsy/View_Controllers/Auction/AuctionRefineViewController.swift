@@ -10,6 +10,7 @@ protocol AuctionRefineViewControllerDelegate: class {
 
 class AuctionRefineViewController: UIViewController {
     weak var delegate: AuctionRefineViewControllerDelegate?
+    var saleViewModel: SaleViewModel!
     var minLabel: UILabel?
     var maxLabel: UILabel?
     var slider: MARKRangeSlider?
