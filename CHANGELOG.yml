@@ -27,6 +27,9 @@ upcoming:
 
   notes:
     - Wrapped up all but the refine button occasionally tapping through QA items for the Native Auction Views - orta
+    - The app is woken up when a notification is received. - alloy
+
+  notes:
 
 releases:
   - version: 2.4.0

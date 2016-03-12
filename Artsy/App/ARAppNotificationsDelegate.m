@@ -73,6 +73,14 @@
     [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
 }
 
+- (void)application:(UIApplication *)application
+    didReceiveRemoteNotification:(NSDictionary *)userInfo
+          fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
+{
+    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
+    handler(UIBackgroundFetchResultNoData);
+}
+
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo inApplicationState:(UIApplicationState)applicationState;
 {
     NSString *uiApplicationState = [UIApplicationStateEnum toString:applicationState];
