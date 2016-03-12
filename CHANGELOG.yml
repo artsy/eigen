@@ -1,57 +1,65 @@
 upcoming:
-  version: 2.4.0
-  details: Auctions Overview + For You Native Views
+  version: 2.4.1
+  details: Analytics improvements
 
   dev:
-    - Made a class for notification item views and added tests for WorksForYouVC - sarah
-    - Made the favorites and works for you network models more thread-safe - sarah
-    - Most of the layout for the works for you view controller is in - maxim
-    - Added a switch between native and martsy works for you view - maxim
-    - Made the searchbar larger in fair views on iPhone - maxim
-    - Additional work on the auction title view - ash
-    - Quicksilver is now accessible to non-Eigen devs - orta
-    - Removes rotation support on refine auction listings view for iPhone - ash
-    - Developers can choose to have a custom url for their staging environment - orta
-    - Initial work on the Live Auctions view controller - orta
-    - AuctionVC supports before state - orta
-    - Added an option for Admins to visualize analytics - ani/alloy/orta
-    - Initial working structure for Live Auctions with stubbed data - orta
-    - Shows a lot of the main views on Live Auctions - orta
-    - Keep a papertrail of screen views that have slugs, which we can use to improve on-boarding in an upcoming version when we require sign-up. - alloy
+    - The app is woken up when a notification is received. - alloy
 
   notes:
-    - Support breaking out of the router sandboxing when there's a link with ?eigen_escape_sandbox' - orta
-    - Users may now refine sale artworks on native auction view by their low estimates - ash
-    - Show auction information, such as a description, FAQ, and contact - alloy
-    - Auction listings list layout works - ash
-    - Auction listings sort works - ash
-    - Auction listings use appropriate layout (list vs grid view) - ash
-    - Tapping on an auction lot takes you to that artwork's view - ash
-    - Auction information views use real data - orta
-    - Add support for routing around a domain instead of just a path - orta
-    - Send the eigen trial UUID to internal web-pages via the header - orta
-    - Price estimates for saleartworks / live auction lots are now using server data for currency - orta
-    - Re-enable on-boarding on app launch. - alloy
 
 releases:
+  - version: 2.4.0
+    details: Auctions Overview + For You Native Views
+
+    dev:
+      - Made a class for notification item views and added tests for WorksForYouVC - sarah
+      - Made the favorites and works for you network models more thread-safe - sarah
+      - Most of the layout for the works for you view controller is in - maxim
+      - Added a switch between native and martsy works for you view - maxim
+      - Made the searchbar larger in fair views on iPhone - maxim
+      - Additional work on the auction title view - ash
+      - Quicksilver is now accessible to non-Eigen devs - orta
+      - Removes rotation support on refine auction listings view for iPhone - ash
+      - Developers can choose to have a custom url for their staging environment - orta
+      - Initial work on the Live Auctions view controller - orta
+      - AuctionVC supports before state - orta
+      - Added an option for Admins to visualize analytics - ani/alloy/orta
+      - Initial working structure for Live Auctions with stubbed data - orta
+      - Shows a lot of the main views on Live Auctions - orta
+      - Keep a papertrail of screen views that have slugs, which we can use to improve on-boarding in an upcoming version when we require sign-up. - alloy
+
+    notes:
+      - Support breaking out of the router sandboxing when there's a link with ?eigen_escape_sandbox' - orta
+      - Users may now refine sale artworks on native auction view by their low estimates - ash
+      - Show auction information, such as a description, FAQ, and contact - alloy
+      - Auction listings list layout works - ash
+      - Auction listings sort works - ash
+      - Auction listings use appropriate layout (list vs grid view) - ash
+      - Tapping on an auction lot takes you to that artwork's view - ash
+      - Auction information views use real data - orta
+      - Add support for routing around a domain instead of just a path - orta
+      - Send the eigen trial UUID to internal web-pages via the header - orta
+      - Price estimates for saleartworks / live auction lots are now using server data for currency - orta
+      - Re-enable on-boarding on app launch. - alloy
+
   - version: 2.3.6
     details: Analytics + Fair Fixes
     date: Feb 12, 2016
 
     dev:
-    - Updated Danger to use new org - orta
-    - Adds unit tests for auction view controller - ash
-    - Dev Extras are only ever called once - ash
-    - New navigation button abstraction for Swift - ash
+      - Updated Danger to use new org - orta
+      - Adds unit tests for auction view controller - ash
+      - Dev Extras are only ever called once - ash
+      - New navigation button abstraction for Swift - ash
     notes:
-    - Users may now refine sale artworks on native auction view by their low estimates - ash
-    - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
-    - Fix for crasher when linking to "/" on a hero unit - orta
-    - Added slug analytics to a few view controllers - orta
-    - Fix for search button in Fairs - orta
-    - Hero units are the same height as mobile web artsy - orta
-    - More analytics work around sign up / log in - orta
-    - Users with an Artsymail email can access the admin menu - orta
+      - Users may now refine sale artworks on native auction view by their low estimates - ash
+      - Fix Analytics for the `ARTopViewController` and the `ARTabContentView` - orta
+      - Fix for crasher when linking to "/" on a hero unit - orta
+      - Added slug analytics to a few view controllers - orta
+      - Fix for search button in Fairs - orta
+      - Hero units are the same height as mobile web artsy - orta
+      - More analytics work around sign up / log in - orta
+      - Users with an Artsymail email can access the admin menu - orta
 
   - version: 2.3.5
     details: Ideally a small release for iOS8 + Push fixes.
