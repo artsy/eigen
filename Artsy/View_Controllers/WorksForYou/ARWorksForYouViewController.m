@@ -86,25 +86,21 @@ static int ARLoadingIndicatorView = 1;
     // network model will have incremented to page 2 after downloading first
     BOOL isFirstPage = (self.worksForYouNetworkModel.currentPage == 2);
 
-    [items each:^(ARWorksForYouNotificationItem *item) {
+    [items eachWithIndex:^(ARWorksForYouNotificationItem *item, NSUInteger index) {
         ARWorksForYouNotificationItemViewController *worksByArtistViewController = [[ARWorksForYouNotificationItemViewController alloc] initWithNotificationItem:item];
         
         NSString *topMargin = (isFirstPage && item == items.firstObject) ? @"25" : @"0";
-        [self.view.stackView addViewController:worksByArtistViewController toParent:self withTopMargin:topMargin sideMargin:@"20"];
-        [self addSeparatorLine];
-    }];
 
-    // remove the last separator line if there are no items left
-    if (!items.count) {
-        [self.view.stackView removeSubview:self.view.stackView.lastView];
-    }
+        if (!isFirstPage || index) [self addSeparatorLine];
+        [self.view.stackView addViewController:worksByArtistViewController toParent:self withTopMargin:topMargin sideMargin:@"20"];
+    }];
 }
 
 - (void)updateView
 {
     if (!self.worksForYouNetworkModel.allDownloaded) {
         [self getNextItemSet];
-    } else if (!self.worksForYouNetworkModel.artworksCount) {
+    } else if (!self.worksForYouNetworkModel.didReceiveNotifications) {
         [self showEmptyState];
     }
 }
@@ -120,7 +116,7 @@ static int ARLoadingIndicatorView = 1;
         
         if (notificationItems.count) {
             [sself addNotificationItems:notificationItems];
-        } else if (sself.worksForYouNetworkModel.allDownloaded && !sself.worksForYouNetworkModel.artworksCount) {
+        } else if (!sself.worksForYouNetworkModel.didReceiveNotifications) {
             [sself showEmptyState];
         }
     } failure:nil];
@@ -128,6 +124,11 @@ static int ARLoadingIndicatorView = 1;
 
 - (void)showEmptyState
 {
+    // remove top title
+    if ([self.view.stackView.firstView isKindOfClass:UILabel.class]) {
+        [self.view.stackView removeSubview:self.view.stackView.firstView];
+    }
+
     ORStackView *emptyStateView = [[ORStackView alloc] init];
     [emptyStateView addSubview:self.emptyStateSeparator withTopMargin:@"0" sideMargin:@"40"];
 

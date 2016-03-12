@@ -11,8 +11,9 @@
 @interface ARWorksForYouNetworkModel ()
 @property (readwrite, nonatomic, assign) BOOL allDownloaded;
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
-@property (readwrite, nonatomic, assign) NSInteger artworksCount;
 @property (atomic, weak) AFHTTPRequestOperation *currentRequest;
+@property (readwrite, nonatomic, strong) NSMutableArray *downloadInformation;
+@property (readwrite, nonatomic, strong) NSMutableArray *downloadedArtworkIDs;
 @end
 
 
@@ -24,7 +25,9 @@
     if (!self) return nil;
 
     _currentPage = 1;
-    _artworksCount = 0;
+    _downloadInformation = [[NSMutableArray alloc] init];
+    _downloadedArtworkIDs = [[NSMutableArray alloc] init];
+
     return self;
 }
 
@@ -41,11 +44,27 @@
 
         // arrange artworks into dictionary grouped by artist ID
         [artworks each:^(Artwork *artwork) {
-            if (artistDict[artwork.artist.artistID]) {
-                [[artistDict valueForKey:artwork.artist.artistID] addObject:artwork];
-            } else if (artwork.artist.artistID) {
-                NSMutableArray *artworks = [NSMutableArray arrayWithObject:artwork];
-                [artistDict setObject:artworks forKey:artwork.artist.artistID];
+
+            // if a duplicate artwork is detected, don't add it to the collection of presentable artworks
+            BOOL duplicate = [self.downloadedArtworkIDs includes:artwork.artworkID];
+            if (!duplicate) {
+                [self.downloadedArtworkIDs addObject:artwork.artworkID];
+                [self.downloadInformation addObject:@{@"page" : @(self.currentPage - 1), @"id" : artwork.artworkID}];
+
+                if (artistDict[artwork.artist.artistID]) {
+                    [[artistDict valueForKey:artwork.artist.artistID] addObject:artwork];
+                } else if (artwork.artist.artistID) {
+                    NSMutableArray *artworks = [NSMutableArray arrayWithObject:artwork];
+                    [artistDict setObject:artworks forKey:artwork.artist.artistID];
+                }
+            } else {
+#ifndef NS_BLOCK_ASSERTIONS
+                NSDictionary *dict = [self.downloadInformation find:^BOOL(NSDictionary *infoDict) {
+                    return [infoDict[@"id"] isEqualToString:artwork.artworkID];
+                }];
+                NSString *errorDescription = [NSString stringWithFormat: @"duplicate artwork with id: %@ on pages %@ & %@", artwork.artworkID, dict[@"page"], @(self.currentPage - 1)];
+#endif
+                NSAssert(duplicate, errorDescription);
             }
         }];
 
@@ -75,7 +94,6 @@
         if (!sself) return;
 
         sself.currentPage++;
-        sself.artworksCount += artworks.count;
         if (artworks.count == 0) {
             sself.allDownloaded = YES;
         }
@@ -83,6 +101,11 @@
        success(artworks);
 
     } failure:failure];
+}
+
+- (BOOL)didReceiveNotifications
+{
+    return self.allDownloaded && self.downloadedArtworkIDs.count;
 }
 
 - (void)markNotificationsRead

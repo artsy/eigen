@@ -17,7 +17,7 @@ ARWorksForYouNotificationItem *stubbedNotificationItemWithNumberAndArtworks(int 
 @property (nonatomic, assign) BOOL allDownloaded;
 @property (nonatomic, copy, readwrite) NSArray<ARWorksForYouNotificationItem *> *notificationItems;
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
-@property (readwrite, nonatomic, assign) NSInteger artworksCount;
+@property (readwrite, nonatomic, strong) NSArray *downloadedArtworkIDs;
 @end
 
 
@@ -105,7 +105,7 @@ SpecEnd
     }
 
     _currentPage = 1;
-    _artworksCount = 0;
+    _downloadedArtworkIDs = [[NSMutableArray alloc] init];
 
     return self;
 }
@@ -114,8 +114,18 @@ SpecEnd
 {
     self.allDownloaded = YES;
     self.currentPage++;
-    self.artworksCount = self.notificationItems.count;
+    self.downloadedArtworkIDs = [[self.notificationItems map:^id(ARWorksForYouNotificationItem *item) {
+        return [item.artworks map:^id(Artwork *artwork) {
+            return artwork.artworkID;
+        }];
+    }] flatten];
+
     success(self.notificationItems);
+}
+
+- (BOOL)didReceiveNotifications
+{
+    return self.allDownloaded && self.downloadedArtworkIDs.count;
 }
 
 - (void)markNotificationsRead
