@@ -11,6 +11,7 @@
 #import "ARArtistViewController.h"
 #import "ARScrollNavigationChief.h"
 #import "Artsy-Swift.h"
+#import "ARTopMenuViewController.h"
 
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>
@@ -164,6 +165,7 @@ static int ARLoadingIndicatorView = 1;
 
 - (void)markNotificationsAsRead
 {
+    [[ARTopMenuViewController sharedController] setNotificationCount:0 forControllerAtIndex:ARTopTabControllerIndexNotifications];
     [self.worksForYouNetworkModel markNotificationsRead];
 }
 
