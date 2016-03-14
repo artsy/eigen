@@ -109,6 +109,7 @@ target 'Artsy' do
   # Swift pods 🎉
   pod 'Then'
   pod 'Interstellar/Core'
+  pod 'Socket.IO-Client-Swift'
 
 end
 
