@@ -10,7 +10,7 @@ func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID
 }
 
 @objc protocol LiveAuctionSocketCommunicatorDelegate: class {
-    func didUpdateAuctionState()
+    func didUpdateAuctionState(state: AnyObject)
 }
 
 class LiveAuctionSocketCommunicator: NSObject {
@@ -39,7 +39,7 @@ class LiveAuctionSocketCommunicator: NSObject {
 
     class func defaultSocketCreator() -> String -> SocketType {
         return { host in
-            return SocketIOClient(socketURL: NSURL(string: host)!, options: [.Reconnects(true), .Log(true)])
+            return SocketIOClient(socketURL: NSURL(string: host)!, options: [.Reconnects(true), .Log(false)])
         }
     }
 }
@@ -73,7 +73,9 @@ private extension SocketSetup {
         print("Listening for socket events.")
         socket.on(.UpdateAuctionState) { [weak self] data in
             print("Updated auction state: \(data)")
-            self?.delegate?.didUpdateAuctionState()
+            if let state = data.first {
+                self?.delegate?.didUpdateAuctionState(state)
+            }
         }
     }
 }

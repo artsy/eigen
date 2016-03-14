@@ -1,4 +1,5 @@
 import Foundation
+import Interstellar
 
 /*
 Independent of sockets:
@@ -15,7 +16,9 @@ Based on socket events:
 
 class LiveAuctionStateManager: NSObject {
     let saleID: String
+    let updatedState = Signal<AnyObject>()
 
+    private var state: AnyObject?
     private let socketCommunicator: LiveAuctionSocketCommunicator
 
     init(saleID: String, accessToken: String) {
@@ -31,7 +34,8 @@ class LiveAuctionStateManager: NSObject {
 
 private typealias SocketDelegate = LiveAuctionStateManager
 extension SocketDelegate: LiveAuctionSocketCommunicatorDelegate {
-    func didUpdateAuctionState() {
-        
+    func didUpdateAuctionState(state: AnyObject) {
+        self.state = state
+        updatedState.update(state)
     }
 }
