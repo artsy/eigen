@@ -88,6 +88,8 @@ static CGFloat ARMetadataFontSize;
 {
     self.primaryLabel.text = artwork.artist.name;
     [self.secondaryLabel setTitle:artwork.title date:artwork.date];
+    self.secondaryLabel.adjustsFontSizeToFitWidth = NO;
+    self.secondaryLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
     if (showPrice) {
         self.priceLabel.text = artwork.price;

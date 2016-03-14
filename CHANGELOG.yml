@@ -3,6 +3,9 @@ upcoming:
   details: Auctions Overview + For You Native Views
 
   dev:
+    - Works For You network model discards duplicate artworks - sarah
+    - Fix for embedded models view controller wonkiness upon rotation - sarah + orta
+    - Embedded models view controller truncates long titles with ellipsis - sarah
     - Made a class for notification item views and added tests for WorksForYouVC - sarah
     - Made the favorites and works for you network models more thread-safe - sarah
     - Most of the layout for the works for you view controller is in - maxim

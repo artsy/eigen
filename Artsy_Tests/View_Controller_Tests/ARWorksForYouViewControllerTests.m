@@ -52,15 +52,28 @@ describe(@"visually", ^{
     });
 });
 
-it(@"marks notifications as read", ^{
-    subject.worksForYouNetworkModel = stubbedNetworkModel;
-    id networkModelStub = [OCMockObject partialMockForObject:subject.worksForYouNetworkModel];
+describe(@"marking notifications as read", ^{
+    it(@"sends a network request", ^{
+        subject.worksForYouNetworkModel = stubbedNetworkModel;
+        id networkModelStub = [OCMockObject partialMockForObject:subject.worksForYouNetworkModel];
+        
+        [[networkModelStub expect] markNotificationsRead];
+        [subject beginAppearanceTransition:YES animated:NO];
+        [subject endAppearanceTransition];
+        [networkModelStub verify];
+    });
     
-    [[networkModelStub expect] markNotificationsRead];
-    [subject beginAppearanceTransition:YES animated:NO];
-    [subject endAppearanceTransition];
-    [networkModelStub verify];
+    it(@"tells the top menu vc to update its bell", ^{
+        subject.worksForYouNetworkModel = stubbedNetworkModel;
+        id topMenuStub = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
+        
+        [[topMenuStub expect] setNotificationCount:0 forControllerAtIndex:ARTopTabControllerIndexNotifications];
+        [subject beginAppearanceTransition:YES animated:NO];
+        [subject endAppearanceTransition];
+        [topMenuStub verify];
+    });
 });
+
 
 itHasSnapshotsForDevicesWithName(@"looks right when user has no notifications", ^{
     subject.worksForYouNetworkModel = stubbedNetworkModel;

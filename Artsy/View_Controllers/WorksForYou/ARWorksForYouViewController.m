@@ -26,7 +26,7 @@ static int ARLoadingIndicatorView = 1;
 @interface ARWorksForYouViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) ORStackScrollView *view;
-
+@property (nonatomic, strong) ORStackView *emptyStateView;
 @property (nonatomic, strong, readwrite) id<ARWorksForYouNetworkModelable> worksForYouNetworkModel;
 
 @end
@@ -72,7 +72,7 @@ static int ARLoadingIndicatorView = 1;
 - (void)addSeparatorLine
 {
     UIView *lineView = [[UIView alloc] init];
-    lineView.backgroundColor = [UIColor lightGrayColor];
+    lineView.backgroundColor = [UIColor artsyLightGrey];
     [lineView constrainHeight:@"0.5"];
 
     if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
@@ -101,7 +101,7 @@ static int ARLoadingIndicatorView = 1;
 {
     if (!self.worksForYouNetworkModel.allDownloaded) {
         [self getNextItemSet];
-    } else if (!self.worksForYouNetworkModel.didReceiveNotifications) {
+    } else if (self.shouldShowEmptyState) {
         [self showEmptyState];
     }
 }
@@ -119,8 +119,14 @@ static int ARLoadingIndicatorView = 1;
             [sself addNotificationItems:notificationItems];
         } else if (!sself.worksForYouNetworkModel.didReceiveNotifications) {
             [sself showEmptyState];
+            
         }
     } failure:nil];
+}
+
+- (BOOL)shouldShowEmptyState
+{
+    return !self.emptyStateView && (self.view.stackView.subviews.count == 1) && !self.worksForYouNetworkModel.didReceiveNotifications;
 }
 
 - (void)showEmptyState
@@ -149,10 +155,10 @@ static int ARLoadingIndicatorView = 1;
 
     [emptyStateView addSubview:self.emptyStateSeparator withTopMargin:@"20" sideMargin:@"40"];
 
-
-    [self.view addSubview:emptyStateView];
-    [emptyStateView constrainWidthToView:self.view predicate:@""];
-    [emptyStateView alignCenterWithView:self.view];
+    self.emptyStateView = emptyStateView;
+    [self.view addSubview:self.emptyStateView];
+    [self.emptyStateView constrainWidthToView:self.view predicate:@""];
+    [self.emptyStateView alignCenterWithView:self.view];
 }
 
 - (UIView *)emptyStateSeparator
@@ -176,7 +182,10 @@ static int ARLoadingIndicatorView = 1;
     /// hides the search button
     [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
     if ((scrollView.contentSize.height - scrollView.contentOffset.y) < scrollView.bounds.size.height) {
-        [self updateView];
+        // only get more items if we're not in empty state
+        if (!self.emptyStateView) {
+            [self updateView];
+        }
     }
 }
 

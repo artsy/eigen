@@ -12,8 +12,12 @@
 @property (readwrite, nonatomic, assign) BOOL allDownloaded;
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
 @property (atomic, weak) AFHTTPRequestOperation *currentRequest;
-@property (readwrite, nonatomic, strong) NSMutableArray *downloadInformation;
 @property (readwrite, nonatomic, strong) NSMutableArray *downloadedArtworkIDs;
+
+#ifndef NS_BLOCK_ASSERTIONS
+@property (readwrite, nonatomic, strong) NSMutableDictionary *downloadInformation;
+#endif
+
 @end
 
 
@@ -25,8 +29,11 @@
     if (!self) return nil;
 
     _currentPage = 1;
-    _downloadInformation = [[NSMutableArray alloc] init];
     _downloadedArtworkIDs = [[NSMutableArray alloc] init];
+
+#ifndef NSBLOCK_ASSERTIONS
+    _downloadInformation = [[NSMutableDictionary alloc] init];
+#endif
 
     return self;
 }
@@ -49,8 +56,7 @@
             BOOL duplicate = [self.downloadedArtworkIDs includes:artwork.artworkID];
             if (!duplicate) {
                 [self.downloadedArtworkIDs addObject:artwork.artworkID];
-                [self.downloadInformation addObject:@{@"page" : @(self.currentPage - 1), @"id" : artwork.artworkID}];
-
+                
                 if (artistDict[artwork.artist.artistID]) {
                     [[artistDict valueForKey:artwork.artist.artistID] addObject:artwork];
                 } else if (artwork.artist.artistID) {
@@ -59,12 +65,12 @@
                 }
             } else {
 #ifndef NS_BLOCK_ASSERTIONS
-                NSDictionary *dict = [self.downloadInformation find:^BOOL(NSDictionary *infoDict) {
-                    return [infoDict[@"id"] isEqualToString:artwork.artworkID];
-                }];
-                NSString *errorDescription = [NSString stringWithFormat: @"duplicate artwork with id: %@ on pages %@ & %@", artwork.artworkID, dict[@"page"], @(self.currentPage - 1)];
+                NSNumber *lastPage = @(self.currentPage - 1);
+                NSNumber *otherPage = self.downloadInformation[artwork.artworkID];
+                
+                NSAssert(otherPage == nil, @"duplicate artwork with id: %@ on pages %@ & %@", artwork.artworkID, otherPage, lastPage);
+                self.downloadInformation[artwork.artworkID] = lastPage;
 #endif
-                NSAssert(duplicate, errorDescription);
             }
         }];
 
