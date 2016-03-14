@@ -9,10 +9,16 @@ func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID
     func disconnect()
 }
 
+@objc protocol LiveAuctionSocketCommunicatorDelegate: class {
+    func didUpdateAuctionState()
+}
+
 class LiveAuctionSocketCommunicator: NSObject {
     typealias SocketCreator = String -> SocketType
     private let socket: SocketType
     private let saleID: String
+
+    weak var delegate: LiveAuctionSocketCommunicatorDelegate?
 
     convenience init(host: String, accessToken: String, saleID: String) {
         self.init(host: host, accessToken: accessToken, saleID: saleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
@@ -33,7 +39,7 @@ class LiveAuctionSocketCommunicator: NSObject {
 
     class func defaultSocketCreator() -> String -> SocketType {
         return { host in
-            return SocketIOClient(socketURL: NSURL(string: host)!, options: [.Reconnects(true), .Log(false)])
+            return SocketIOClient(socketURL: NSURL(string: host)!, options: [.Reconnects(true), .Log(true)])
         }
     }
 }
@@ -65,8 +71,9 @@ private extension SocketSetup {
         socket.emit(.JoinSale, saleID)
 
         print("Listening for socket events.")
-        socket.on(.UpdateAuctionState) { data in
+        socket.on(.UpdateAuctionState) { [weak self] data in
             print("Updated auction state: \(data)")
+            self?.delegate?.didUpdateAuctionState()
         }
     }
 }

@@ -5,14 +5,34 @@ import Artsy_UIFonts
 import FLKAutoLayout
 import ORStackView
 import Interstellar
+import UICKeyChainStore
 
 
 class LiveAuctionViewController: UIViewController {
+    let saleID: String
+
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
-    var salesPerson: LiveAuctionsSalesPersonType = LiveAuctionsSalesPerson()
     let scrollManager = ScrollViewProgressObserver()
 
+    lazy var salesPerson: LiveAuctionsSalesPersonType = {
+        // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
+        let accessToken = UICKeyChainStore.stringForKey(AROAuthTokenDefault)
+        return LiveAuctionsSalesPerson(saleID: self.saleID, accessToken: accessToken)
+    }()
+
     var pageController: UIPageViewController!
+
+    init(saleID: String) {
+        self.saleID = saleID
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    // Required by Swift compiler, for now.
+    required init?(coder aDecoder: NSCoder) {
+        self.saleID = ""
+        super.init(coder: aDecoder)
+        return nil
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

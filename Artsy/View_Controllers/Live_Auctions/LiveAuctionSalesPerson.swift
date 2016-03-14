@@ -15,9 +15,12 @@ protocol LiveAuctionsSalesPersonType {
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     var currentIndex = 0
 
-    private var lots: [LiveAuctionLot] = []
-    private var sale: LiveSale!
-    private var events: [String: LiveEvent]!
+    let saleID: String
+
+    private var lots = [LiveAuctionLot]()
+    private var sale: LiveSale! // TODO: Remove IUO
+    private var events = [String: LiveEvent]()
+    private let stateManager: LiveAuctionStateManager
 
     var auctionViewModel: LiveAuctionViewModel {
         return LiveAuctionViewModel(sale: sale, salesPerson: self)
@@ -28,11 +31,18 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
             return LiveAuctionLotViewModel(
                 lot: lots[index],
-                auction:auctionViewModel,
-                events:eventsViewModelsForLot(lots[index]),
+                auction: auctionViewModel,
+                events: eventsViewModelsForLot(lots[index]),
                 index: index)
         }
         return nil
+    }
+
+    init(saleID: String, accessToken: String) {
+        self.saleID = saleID
+        stateManager = LiveAuctionStateManager(saleID: saleID, accessToken: accessToken)
+
+        super.init()
     }
 
     func eventsViewModelsForLot(lot: LiveAuctionLot) -> [LiveAuctionEventViewModel] {
