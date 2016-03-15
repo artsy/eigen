@@ -28,7 +28,9 @@ it(@"creates an NSUserActivity", ^{
     }
     
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/search/filtered/gene/painting" withResponse:artworksJSON];
-    
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/filter/artworks" withResponse:@{}];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/genes" withResponse:@{}];
+
     vc = [[ARGeneViewController alloc] initWithGeneID:@"painting"];
     vc.view.frame = [[UIScreen mainScreen] bounds];
     [vc viewDidAppear:NO];

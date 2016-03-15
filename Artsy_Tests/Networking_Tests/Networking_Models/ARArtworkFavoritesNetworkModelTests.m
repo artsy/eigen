@@ -34,6 +34,8 @@ describe(@"init", ^{
 
 describe(@"getFavorites", ^{
     it(@"does not make request if another request is in progress", ^{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@{}];
+
         id mock = [OCMockObject partialMockForObject:networkModel];
         networkModel.currentRequest = (id)[OHHTTPStubs stubRequestsPassingTest:nil withStubResponse:nil];
         [[[mock reject] ignoringNonObjectArgs] requestOperationAtPage:0 withSuccess:OCMOCK_ANY failure:OCMOCK_ANY];
@@ -42,6 +44,8 @@ describe(@"getFavorites", ^{
     });
 
     it(@"makes request if no request is in progress", ^{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@{}];
+
         id mock = [OCMockObject partialMockForObject:networkModel];
         [[[mock expect]  ignoringNonObjectArgs] requestOperationAtPage:0 withSuccess:OCMOCK_ANY failure:OCMOCK_ANY];
         [networkModel getFavorites:nil failure:nil];
