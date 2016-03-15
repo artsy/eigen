@@ -50,6 +50,7 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
             .updatedState
             .next { [weak self] state in
                 self?.setupWithInitialJSON(state)
+                print(self?.lots)
                 self?.updatedState.update(self!)
             }
     }
@@ -73,19 +74,22 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
     // note this needs to leave the main thread
     func setupWithInitialJSON(json: AnyObject) {
 
-        guard let lots = json["lots"] as? [String: [String: AnyObject]] else { return }
-        guard let sale = json["sale"] as? [String: AnyObject] else { return }
-        guard let events = json["lotEvents"] as? [String: [String: AnyObject]]  else { return }
+        guard let lotsJSON = json["lots"] as? [String: [String: AnyObject]] else { return }
+        guard let saleJSON = json["sale"] as? [String: AnyObject] else { return }
+        guard let eventsJSON = json["lotEvents"] as? [String: [String: AnyObject]]  else { return }
 
-        self.sale = LiveSale(JSON: sale)
-        let unordered_lots: [LiveAuctionLot] = lots.values.map { LiveAuctionLot(JSON: $0) }
+        let sale = LiveSale(JSON: saleJSON)
+        self.sale = sale
+        let unordered_lots: [LiveAuctionLot] = lotsJSON.values.map { LiveAuctionLot(JSON: $0) }
         self.lots = unordered_lots.sort { return $0.position < $1.position }
 
-        let eventModels: [LiveEvent] = events.values.flatMap { LiveEvent(JSON: $0) }
+        let eventModels: [LiveEvent] = eventsJSON.values.flatMap { LiveEvent(JSON: $0) }
         var eventDictionary: [String: LiveEvent] = [:]
         for event in eventModels {
             eventDictionary[event.eventID] = event
         }
         self.events = eventDictionary
+
+        auctionViewModel = LiveAuctionViewModel(sale: sale, salesPerson: self)
     }
 }
