@@ -15,19 +15,27 @@ Based on socket events:
 */
 
 class LiveAuctionStateManager: NSObject {
+    typealias SocketCommunicatorCreator = (host: String, saleID: String, accessToken: String) -> LiveAuctionSocketCommunicatorType
+
     let saleID: String
     let updatedState = Signal<AnyObject>()
 
     private var state: AnyObject?
-    private let socketCommunicator: LiveAuctionSocketCommunicator
+    private let socketCommunicator: LiveAuctionSocketCommunicatorType
 
-    init(saleID: String, accessToken: String, host: String) {
+    init(host: String, saleID: String, accessToken: String, socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator()) {
         self.saleID = saleID
-        self.socketCommunicator = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID)
+        self.socketCommunicator = socketCommunicatorCreator(host: host, saleID: saleID, accessToken: accessToken)
 
         super.init()
 
         socketCommunicator.delegate = self
+    }
+
+    class func defaultSocketCommunicatorCreator() -> (String, String, String) -> LiveAuctionSocketCommunicatorType {
+        return { host, accessToken, saleID in
+            return LiveAuctionSocketCommunicator(host: host, saleID: saleID, accessToken: accessToken)
+        }
     }
 }
 

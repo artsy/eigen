@@ -284,6 +284,7 @@
 		5E50987D18F82FCF001AC704 /* AROfflineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E50987C18F82FCF001AC704 /* AROfflineView.m */; };
 		5E5B841F1C52DEC40005CBC7 /* AuctionOrdering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */; };
 		5E6621DD19768F750064FC52 /* MapIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6621DC19768F750064FC52 /* MapIcon@2x.png */; };
+		5E6A16931C98A914004DB29B /* LiveAuctionStateManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */; };
 		5E6BA6E91C56B5D700B942C1 /* CircularCancelButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E71C56B5D700B942C1 /* CircularCancelButton@2x.png */; };
 		5E6BA6EA1C56B5D700B942C1 /* CircularCancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E81C56B5D700B942C1 /* CircularCancelButton.png */; };
 		5E71AFC7195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */; };
@@ -1179,6 +1180,7 @@
 		5E50987C18F82FCF001AC704 /* AROfflineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROfflineView.m; sourceTree = "<group>"; };
 		5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionOrdering.swift; path = Auction/AuctionOrdering.swift; sourceTree = "<group>"; };
 		5E6621DC19768F750064FC52 /* MapIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapIcon@2x.png"; sourceTree = "<group>"; };
+		5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStateManagerSpec.swift; path = Live_Auctions/LiveAuctionStateManagerSpec.swift; sourceTree = "<group>"; };
 		5E6BA6E71C56B5D700B942C1 /* CircularCancelButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CircularCancelButton@2x.png"; sourceTree = "<group>"; };
 		5E6BA6E81C56B5D700B942C1 /* CircularCancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CircularCancelButton.png; sourceTree = "<group>"; };
 		5E71AF231912826B008B1426 /* ARPersonalizeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARPersonalizeViewController.h; sourceTree = "<group>"; };
@@ -3228,6 +3230,7 @@
 				6019A9091C7F975F00E292FA /* Views */,
 				6019A9051C7E64B700E292FA /* LiveAuctionViewController.swift */,
 				60ED312C1C8F776B0071DD89 /* LiveAuctionSalesPerson.swift */,
+				5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */,
 				5E0DD14A1C9764420037F9E4 /* LiveAuctionStateManager.swift */,
 			);
 			name = "Live Auctions";
@@ -5487,6 +5490,7 @@
 				3C205B59189000A5004280E0 /* ARAppNotificationsDelegateTests.m in Sources */,
 				D322204B1B4F0352008C2FBF /* ARCollapsableTextViewTests.m in Sources */,
 				E655E4B8194B4BEF00F2B7DA /* ARArtworkFavoritesNetworkModelTests.m in Sources */,
+				5E6A16931C98A914004DB29B /* LiveAuctionStateManagerSpec.swift in Sources */,
 				510261711BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m in Sources */,
 				E67DF2131A40A73C00C8495E /* ARSearchViewControllerSpec.m in Sources */,
 				51B4BA461C6A2B710014A394 /* AuctionSaleArtworksNetworkModelTests.swift in Sources */,

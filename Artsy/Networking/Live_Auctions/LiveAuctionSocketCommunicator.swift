@@ -13,14 +13,18 @@ func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID
     func didUpdateAuctionState(state: AnyObject)
 }
 
-class LiveAuctionSocketCommunicator: NSObject {
+protocol LiveAuctionSocketCommunicatorType {
+    weak var delegate: LiveAuctionSocketCommunicatorDelegate? { get set }
+}
+
+class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
     typealias SocketCreator = String -> SocketType
     private let socket: SocketType
     private let saleID: String
 
     weak var delegate: LiveAuctionSocketCommunicatorDelegate?
 
-    convenience init(host: String, accessToken: String, saleID: String) {
+    convenience init(host: String, saleID: String, accessToken: String) {
         self.init(host: host, accessToken: accessToken, saleID: saleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
     }
 

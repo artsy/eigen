@@ -60,6 +60,24 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
 
                 expect(socket.onEvents).to( contain(SocketEvent.UpdateAuctionState) )
             }
+
+            it("sends its delegate its updated auction state") {
+                class Delegate: NSObject, LiveAuctionSocketCommunicatorDelegate {
+                    var called = false
+                    @objc func didUpdateAuctionState(state: AnyObject) {
+                        called = true
+                    }
+                }
+                let delegate = Delegate()
+                let subject = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
+                subject.delegate = delegate
+
+                // "emit" the socket event from the server
+                let callback = socket.callbacks[.UpdateAuctionState]
+                callback?(["state!"])
+
+                expect(delegate.called) == true
+            }
         }
     }
 }
@@ -76,12 +94,14 @@ class Test_Socket: SocketType {
     var onEvents: [SocketEvent] = []
     var emittedEvents: [SocketEvent] = []
     var connected = false
+    var callbacks = Dictionary<SocketEvent, [AnyObject] -> Void>()
 
     init() { }
 
     func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID  {
         onEvents += [event]
         callback(callbackParams)
+        callbacks[event] = callback
         return NSUUID()
     }
 
