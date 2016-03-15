@@ -19,13 +19,16 @@ __block Artwork *artwork;
 describe(@"iPhone peek", ^{
     
     beforeEach(^{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@{}];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@{}];
+
         artwork = [Artwork modelWithJSON:@{
-                    @"id" : @"artwork-id",
-                    @"title" : @"Artwork Title",
-                    @"artist" : @{
-                            @"name" : @"Jory Stiefel"
-                    }
-                  }];
+            @"id" : @"artwork-id",
+            @"title" : @"Artwork Title",
+            @"artist" : @{
+                @"name" : @"Jory Stiefel"
+            }
+        }];
     });
 
     it(@"preview view controller displays artwork",^{
@@ -48,7 +51,7 @@ describe(@"iPhone peek", ^{
     });
     
     it(@"shows favorite and follow buttons for logged in user", ^{
-    
+
         [ARUserManager stubAndLoginWithUsername];
         XCTAssert([User currentUser] != nil, @"Current user is nil even after stubbing.");
         

@@ -229,7 +229,7 @@ context(@"with a map", ^{
 });
 
 it(@"creates an NSUserActivity", ^{
-    
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/set/set-id/items" withResponse:@{}];
     Fair *fair = [Fair modelWithJSON:@{
         @"id" : @"a-fair-affair",
         @"name" : @"The Fair Affair",
