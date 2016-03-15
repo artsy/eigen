@@ -68,14 +68,7 @@
 #endif
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
-    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
-}
-
-- (void)application:(UIApplication *)application
-    didReceiveRemoteNotification:(NSDictionary *)userInfo
-          fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
     [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
     handler(UIBackgroundFetchResultNoData);
@@ -88,40 +81,40 @@
 
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];
-    [ARAnalytics event:ARAnalyticsNotificationReceived withProperties:notificationInfo];
 
-    NSString *message = userInfo[@"aps"][@"alert"];
-    NSString *url = userInfo[@"url"];
+    if (applicationState == UIApplicationStateBackground) {
+        // A notification was received while the app is in the background.
+        [ARAnalytics event:ARAnalyticsNotificationReceived withProperties:notificationInfo];
 
-    if (!message) {
-        message = url;
-    }
-
-    UIViewController *viewController = nil;
-
-    if (url) {
-        viewController = [ARSwitchBoard.sharedInstance loadPath:url];
-
-        /// Always set the badge count if we can
-        NSInteger tabIndex = [[ARTopMenuViewController sharedController] indexOfRootViewController:viewController];
-        if (tabIndex != NSNotFound) {
-            NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];
-            [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:tabIndex];
-        }
-    }
-
-    if (applicationState == UIApplicationStateActive && message) {
-        // app is in the foreground
-        [ARNotificationView showNoticeInView:[self findVisibleWindow]
-                                       title:message
-                                    response:^{
-            if (url) {
-                [self tappedNotification:notificationInfo viewController:viewController];
-            }
-                                    }];
     } else {
-        // app was brought from the background after a user clicked on the notification
-        [self tappedNotification:notificationInfo viewController:viewController];
+        NSString *url = userInfo[@"url"];
+        NSString *message = userInfo[@"aps"][@"alert"] ?: url;
+        UIViewController *viewController = nil;
+        if (url) {
+            viewController = [ARSwitchBoard.sharedInstance loadPath:url];
+            // Set the badge count on the tab that the view controller belongs to.
+            NSInteger tabIndex = [[ARTopMenuViewController sharedController] indexOfRootViewController:viewController];
+            if (tabIndex != NSNotFound) {
+                NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];
+                [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:tabIndex];
+            }
+        }
+
+        if (applicationState == UIApplicationStateActive) {
+            // A notification was received while the app was already active, so we show our own notification view.
+            [ARAnalytics event:ARAnalyticsNotificationReceived withProperties:notificationInfo];
+            [ARNotificationView showNoticeInView:[self findVisibleWindow]
+                                           title:message
+                                        response:^{
+                                            if (viewController) {
+                                                [self tappedNotification:notificationInfo viewController:viewController];
+                                            }
+                                        }];
+
+        } else if (applicationState == UIApplicationStateInactive) {
+            // The user tapped a notification while the app was in background.
+            [self tappedNotification:notificationInfo viewController:viewController];
+        }
     }
 }
 
