@@ -2,6 +2,7 @@
 
 #import "ARAppConstants.h"
 #import "ARRouter.h"
+#import "AROptions.h"
 #import "Artsy-Swift.h"
 #import <JLRoutes/JLRoutes.h>
 #import "ARSwitchboard+Eigen.h"
@@ -205,9 +206,11 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
 
     Route *route = self.echo.routes[@"ARLiveFairsURLDomain"];
     if (route) {
-        [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
-            return [[LiveAuctionViewController alloc] init];
-        }];
+        if ([AROptions boolForOption:AROptionsUseNativeAuctions]) {
+            [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
+                return [[LiveAuctionViewController alloc] init];
+            }];
+        }
     }
 
     // This route will match any single path component and thus should be added last.

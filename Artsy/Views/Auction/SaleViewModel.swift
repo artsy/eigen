@@ -101,8 +101,8 @@ extension SaleArtwork: AuctionOrderable {
         return bidCount as? Int ?? 0
     }
 
-    var artistName: String {
-        return artwork.artist.name
+    var artistSortableID: String {
+        return artwork.artist.sortableID
     }
 
     var currentBid: Int {

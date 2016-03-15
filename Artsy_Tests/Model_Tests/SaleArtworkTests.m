@@ -68,7 +68,7 @@ describe(@"artwork for sale", ^{
         });
 
         it(@"does not change state", ^{
-            expect([_saleArtwork auctionState]).to.equal(ARAuctionStateDefault);
+            expect([_saleArtwork auctionState]).to.equal(ARAuctionStateShowingPreview);
         });
     });
 
@@ -88,7 +88,7 @@ describe(@"artwork for sale", ^{
         });
 
         it(@"sets auction ended state", ^{
-            expect([_saleArtwork auctionState]).to.equal(ARAuctionStateStarted | ARAuctionStateEnded);
+            expect([_saleArtwork auctionState]).to.equal(ARAuctionStateEnded);
         });
     });
 

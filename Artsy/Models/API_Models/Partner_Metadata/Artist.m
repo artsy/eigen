@@ -29,7 +29,8 @@
         @"blurb" : @"blurb",
         @"publishedArtworksCount" : @"published_artworks_count",
         @"forSaleArtworksCount" : @"forsale_artworks_count",
-        @"imageURLs" : @"image_urls"
+        @"imageURLs" : @"image_urls",
+        @"sortableID" : @"sortable_id"
     };
 }
 
@@ -77,7 +78,7 @@
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI setFavoriteStatus:state forArtist:self success:^(id response) {
         __strong typeof (wself) sself = wself;
         sself.followed = state;
@@ -101,7 +102,7 @@
         return;
     }
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI checkFavoriteStatusForArtist:self success:^(BOOL result) {
         __strong typeof (wself) sself = wself;
         sself.followed = result;

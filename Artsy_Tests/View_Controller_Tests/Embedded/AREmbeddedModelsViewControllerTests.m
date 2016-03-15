@@ -1,6 +1,7 @@
 #import "AREmbeddedModelsViewController.h"
 #import "ARArtworkMasonryModule.h"
 #import "AREmbeddedModelsPreviewDelegate.h"
+#import "ARArtworkMasonryModule.h"
 
 
 @interface AREmbeddedModelsViewController (Testing)
@@ -48,7 +49,27 @@ AREmbeddedModelsViewControllerWithLayout(ARArtworkMasonryLayout layout)
     return viewController;
 }
 
+static AREmbeddedModelsViewController *
+AREmbeddedModelsViewControllerWithMetadataAndLayout(ARArtworkMasonryLayout layout)
+{
+    ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:layout andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
+    AREmbeddedModelsViewController *viewController = [AREmbeddedModelsViewController new];
+    viewController.activeModule = module;
+    return viewController;
+}
+
 SpecBegin(AREmbeddedModelsViewController);
+
+it(@"truncates long titles", ^{
+    AREmbeddedModelsViewController *subject = AREmbeddedModelsViewControllerWithMetadataAndLayout(ARArtworkMasonryLayout2Column);
+    
+    Artwork *artwork = ArtworkWithImageAspectRatio(1);
+    artwork.title = @"Very long title // lots of ~*words*~ probably should truncate";
+    [subject appendItems:@[artwork, ArtworkWithImageAspectRatio(1)]];
+    
+    expect(subject).to.haveValidSnapshot();
+
+});
 
 it(@"registers artworks for peek pop", ^{
     AREmbeddedModelsViewController *vc = AREmbeddedModelsViewControllerWithLayout(ARArtworkMasonryLayout2Column);
