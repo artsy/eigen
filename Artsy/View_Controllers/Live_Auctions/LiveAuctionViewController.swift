@@ -21,6 +21,7 @@ class LiveAuctionViewController: UIViewController {
     }()
 
     var pageController: UIPageViewController!
+    var hasBeenSetup = false
 
     init(saleID: String) {
         self.saleID = saleID
@@ -38,8 +39,7 @@ class LiveAuctionViewController: UIViewController {
         super.viewDidLoad()
 
         salesPerson.updatedState.next { [weak self] _ in
-            // TODO: Take 1
-            self?.jumpToInitialLot()
+            self?.setupWithInitialData()
         }
 
         view.backgroundColor = .whiteColor()
@@ -105,7 +105,11 @@ class LiveAuctionViewController: UIViewController {
         progress.alignBottomEdgeWithView(view, predicate: "-165")
     }
 
-    func jumpToInitialLot() {
+    func setupWithInitialData() {
+        // Make sure we only initialize with initial data once.
+        guard hasBeenSetup == false else { return }
+        defer { hasBeenSetup = true }
+
         auctionDataSource.salesPerson = salesPerson
 
         pageController.dataSource = auctionDataSource
