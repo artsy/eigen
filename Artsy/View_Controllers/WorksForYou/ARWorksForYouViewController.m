@@ -11,6 +11,7 @@
 #import "ARArtistViewController.h"
 #import "ARScrollNavigationChief.h"
 #import "Artsy-Swift.h"
+#import "ARTopMenuViewController.h"
 
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>
@@ -25,7 +26,7 @@ static int ARLoadingIndicatorView = 1;
 @interface ARWorksForYouViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) ORStackScrollView *view;
-
+@property (nonatomic, strong) ORStackView *emptyStateView;
 @property (nonatomic, strong, readwrite) id<ARWorksForYouNetworkModelable> worksForYouNetworkModel;
 
 @end
@@ -71,7 +72,7 @@ static int ARLoadingIndicatorView = 1;
 - (void)addSeparatorLine
 {
     UIView *lineView = [[UIView alloc] init];
-    lineView.backgroundColor = [UIColor lightGrayColor];
+    lineView.backgroundColor = [UIColor artsyLightGrey];
     [lineView constrainHeight:@"0.5"];
 
     if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
@@ -86,25 +87,21 @@ static int ARLoadingIndicatorView = 1;
     // network model will have incremented to page 2 after downloading first
     BOOL isFirstPage = (self.worksForYouNetworkModel.currentPage == 2);
 
-    [items each:^(ARWorksForYouNotificationItem *item) {
+    [items eachWithIndex:^(ARWorksForYouNotificationItem *item, NSUInteger index) {
         ARWorksForYouNotificationItemViewController *worksByArtistViewController = [[ARWorksForYouNotificationItemViewController alloc] initWithNotificationItem:item];
         
         NSString *topMargin = (isFirstPage && item == items.firstObject) ? @"25" : @"0";
-        [self.view.stackView addViewController:worksByArtistViewController toParent:self withTopMargin:topMargin sideMargin:@"20"];
-        [self addSeparatorLine];
-    }];
 
-    // remove the last separator line if there are no items left
-    if (!items.count) {
-        [self.view.stackView removeSubview:self.view.stackView.lastView];
-    }
+        if (!isFirstPage || index) [self addSeparatorLine];
+        [self.view.stackView addViewController:worksByArtistViewController toParent:self withTopMargin:topMargin sideMargin:@"20"];
+    }];
 }
 
 - (void)updateView
 {
     if (!self.worksForYouNetworkModel.allDownloaded) {
         [self getNextItemSet];
-    } else if (!self.worksForYouNetworkModel.artworksCount) {
+    } else if (self.shouldShowEmptyState) {
         [self showEmptyState];
     }
 }
@@ -120,14 +117,25 @@ static int ARLoadingIndicatorView = 1;
         
         if (notificationItems.count) {
             [sself addNotificationItems:notificationItems];
-        } else if (sself.worksForYouNetworkModel.allDownloaded && !sself.worksForYouNetworkModel.artworksCount) {
+        } else if (!sself.worksForYouNetworkModel.didReceiveNotifications) {
             [sself showEmptyState];
+            
         }
     } failure:nil];
 }
 
+- (BOOL)shouldShowEmptyState
+{
+    return !self.emptyStateView && (self.view.stackView.subviews.count == 1) && !self.worksForYouNetworkModel.didReceiveNotifications;
+}
+
 - (void)showEmptyState
 {
+    // remove top title
+    if ([self.view.stackView.firstView isKindOfClass:UILabel.class]) {
+        [self.view.stackView removeSubview:self.view.stackView.firstView];
+    }
+
     ORStackView *emptyStateView = [[ORStackView alloc] init];
     [emptyStateView addSubview:self.emptyStateSeparator withTopMargin:@"0" sideMargin:@"40"];
 
@@ -147,10 +155,10 @@ static int ARLoadingIndicatorView = 1;
 
     [emptyStateView addSubview:self.emptyStateSeparator withTopMargin:@"20" sideMargin:@"40"];
 
-
-    [self.view addSubview:emptyStateView];
-    [emptyStateView constrainWidthToView:self.view predicate:@""];
-    [emptyStateView alignCenterWithView:self.view];
+    self.emptyStateView = emptyStateView;
+    [self.view addSubview:self.emptyStateView];
+    [self.emptyStateView constrainWidthToView:self.view predicate:@""];
+    [self.emptyStateView alignCenterWithView:self.view];
 }
 
 - (UIView *)emptyStateSeparator
@@ -163,6 +171,7 @@ static int ARLoadingIndicatorView = 1;
 
 - (void)markNotificationsAsRead
 {
+    [[ARTopMenuViewController sharedController] setNotificationCount:0 forControllerAtIndex:ARTopTabControllerIndexNotifications];
     [self.worksForYouNetworkModel markNotificationsRead];
 }
 
@@ -173,7 +182,10 @@ static int ARLoadingIndicatorView = 1;
     /// hides the search button
     [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
     if ((scrollView.contentSize.height - scrollView.contentOffset.y) < scrollView.bounds.size.height) {
-        [self updateView];
+        // only get more items if we're not in empty state
+        if (!self.emptyStateView) {
+            [self updateView];
+        }
     }
 }
 
