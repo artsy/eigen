@@ -9,6 +9,7 @@ NSString *const ARUseStagingDefault = @"ARUseStagingDefault";
 NSString *const ARStagingAPIURLDefault = @"ARStagingAPIURLDefault";
 NSString *const ARStagingPhoneWebURLDefault = @"ARStagingPhoneWebURLDefault";
 NSString *const ARStagingPadWebURLDefault = @"ARStagingPadWebURLDefault";
+NSString *const ARStagingLiveAuctionSocketURLDefault = @"ARStagingLiveAuctionSocketURLDefault";
 
 NSString *const AROAuthTokenDefault = @"AROAuthToken";
 NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
@@ -46,7 +47,8 @@ NSString *const ARShowAuctionResultsButtonDefault = @"auction-results";
         ARUseStagingDefault : @(useStagingDefault),
         ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
         ARStagingPhoneWebURLDefault : @"http://m-staging.artsy.net",
-        ARStagingPadWebURLDefault : @"https://staging.artsy.net"
+        ARStagingPadWebURLDefault : @"https://staging.artsy.net",
+        ARStagingLiveAuctionSocketURLDefault : @"https://prediction-staging.artsy.net:5000"
     }];
 }
 

@@ -21,10 +21,9 @@ class LiveAuctionStateManager: NSObject {
     private var state: AnyObject?
     private let socketCommunicator: LiveAuctionSocketCommunicator
 
-    init(saleID: String, accessToken: String) {
+    init(saleID: String, accessToken: String, host: String) {
         self.saleID = saleID
-        // TODO: Parameterize host through lab options.
-        self.socketCommunicator = LiveAuctionSocketCommunicator(host: "http://localhost:5000", accessToken: accessToken, saleID: saleID)
+        self.socketCommunicator = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID)
 
         super.init()
 
