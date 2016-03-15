@@ -28,9 +28,9 @@
     NSInteger artworkCount = self.artworks.count;
 
     if (artworkCount == 1) {
-        return @"1 Work Added";
+        return @"1 work added";
     } else if (artworkCount) {
-        return [NSString stringWithFormat:@"%lu Works Added", (unsigned long)artworkCount];
+        return [NSString stringWithFormat:@"%lu works added", (unsigned long)artworkCount];
     }
 
     return @"";
