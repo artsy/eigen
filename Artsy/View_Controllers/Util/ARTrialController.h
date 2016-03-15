@@ -18,6 +18,9 @@ typedef NS_ENUM(NSInteger, ARTrialContext) {
 
 @interface ARTrialController : NSObject
 
+/// If a trial user, show the signup then run the completion block, if logged in, run completion
++ (void)presentTrialIfNecessaryWithContext:(enum ARTrialContext)context onLoggedInUser:(void (^)(BOOL didCreateNewUser))completion;
+
 /// Shows the sign up, with optional completion block to be triggered after signup or login.
 + (void)presentTrialWithContext:(enum ARTrialContext)context success:(void (^)(BOOL newUser))success;
 

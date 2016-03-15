@@ -94,7 +94,7 @@ private extension UISetup {
             $0.separatorInset = UIEdgeInsetsZero
             $0.dataSource = self
             $0.delegate = self
-            let tableViewHeight = 44 * AuctionOrderingSwitchValue.allSwitchValues().count - 1 // -1 to cut off the bottom-most separator that we'll manually add below.
+            let tableViewHeight = 44 * AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).count - 1 // -1 to cut off the bottom-most separator that we'll manually add below.
             $0.constrainHeight("\(tableViewHeight)")
         }
         stackView.addSubview(tableView, withTopMargin: "0", sideMargin: "40")
@@ -224,13 +224,13 @@ extension SliderView {
 private typealias TableView = AuctionRefineViewController
 extension TableView: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return AuctionOrderingSwitchValue.allSwitchValues().count
+        return AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier, forIndexPath: indexPath)
 
-        cell.textLabel?.text = AuctionOrderingSwitchValue.allSwitchValues()[indexPath.row].rawValue
+        cell.textLabel?.text = AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel)[indexPath.row].rawValue
 
         return cell
     }
@@ -239,20 +239,20 @@ extension TableView: UITableViewDataSource, UITableViewDelegate {
         cell.layoutMargins = UIEdgeInsetsZero
         cell.preservesSuperviewLayoutMargins = false
         cell.textLabel?.font = UIFont.serifFontWithSize(16)
-        cell.checked = currentSettings.ordering == AuctionOrderingSwitchValue.allSwitchValues()[indexPath.row]
+        cell.checked = currentSettings.ordering == AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel)[indexPath.row]
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
         // Un-check formerly selected cell.
-        if let oldCheckedCellIndex = AuctionOrderingSwitchValue.allSwitchValues().indexOf(currentSettings.ordering) {
+        if let oldCheckedCellIndex = AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).indexOf(currentSettings.ordering) {
             let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: oldCheckedCellIndex, inSection: 0))
             cell?.checked = false
         }
 
         // Change setting.
-        currentSettings = currentSettings.settingsWithOrdering(AuctionOrderingSwitchValue.fromInt(indexPath.row))
+        currentSettings = currentSettings.settingsWithOrdering(AuctionOrderingSwitchValue.fromIntWithViewModel(indexPath.row, saleViewModel: saleViewModel))
 
         // Check newly selected cell.
         let cell = tableView.cellForRowAtIndexPath(indexPath)

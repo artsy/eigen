@@ -25,10 +25,11 @@ typedef NS_OPTIONS(NSUInteger, ARAuctionState) {
     ARAuctionStateDefault = 0,
     ARAuctionStateStarted = 1 << 0,
     ARAuctionStateEnded = 1 << 1,
-    ARAuctionStateUserIsRegistered = 1 << 2,
-    ARAuctionStateArtworkHasBids = 1 << 3,
-    ARAuctionStateUserIsBidder = 1 << 4,
-    ARAuctionStateUserIsHighBidder = 1 << 5
+    ARAuctionStateShowingPreview = 1 << 2,
+    ARAuctionStateUserIsRegistered = 1 << 3,
+    ARAuctionStateArtworkHasBids = 1 << 4,
+    ARAuctionStateUserIsBidder = 1 << 5,
+    ARAuctionStateUserIsHighBidder = 1 << 6
 };
 
 extern BOOL ARPerformWorkAsynchronously;

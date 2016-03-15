@@ -269,8 +269,10 @@ context(@"price view", ^{
     });
 
     context(@"at auction", ^{
+
         it(@"no bids", ^{
             view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000) }];
+            view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
             view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
@@ -282,6 +284,8 @@ context(@"price view", ^{
             Bid *highBid = [Bid modelWithJSON:@{ @"id" : @"abc", @"amount_cents" : @(10000000) }];
             expect(highBid.cents).to.equal(10000000);
             view.saleArtwork = [SaleArtwork saleArtworkWithHighBid:highBid AndReserveStatus:ARReserveStatusNoReserve];;
+            view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
+
             expect(view.saleArtwork.saleHighestBid.cents).to.equal(10000000);
             view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
             [view updateUI];
@@ -293,6 +297,8 @@ context(@"price view", ^{
         it(@"reserve met and has bids", ^{
             Bid *highBid = [Bid modelWithJSON:@{ @"id" : @"abc", @"amount_cents" : @(10000000) }];
             view.saleArtwork = [SaleArtwork saleArtworkWithHighBid:highBid AndReserveStatus:ARReserveStatusReserveMet];
+            view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
+
             view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
@@ -303,7 +309,7 @@ context(@"price view", ^{
         it(@"current auction reserve not met and has bids", ^{
             Bid *highBid = [Bid modelWithJSON:@{ @"id" : @"abc", @"amount_cents" : @(10000000) }];
             view.saleArtwork = [SaleArtwork saleArtworkWithHighBid:highBid AndReserveStatus:ARReserveStatusReserveNotMet];
-            view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1-12-30 00:00:00", @"end_at" : @"4001-01-01 00:00:00" }];
+            view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
             view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
@@ -313,7 +319,7 @@ context(@"price view", ^{
         
         it(@"reserve not met and has no bids", ^{
             view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"reserve_status" : @"reserve_not_met", @"currency" :@"$" }];
-            view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1-12-30 00:00:00", @"end_at" : @"1-12-30 00:00:00" }];
+            view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
             view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];

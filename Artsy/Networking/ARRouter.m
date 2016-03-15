@@ -476,6 +476,7 @@ static NSString *hostFromString(NSString *string)
         @"page" : @(page),
         @"sort" : @"published_at",
         @"type" : @"ArtworkPublished",
+        @"for_sale" : @YES,
         @"user_id" : userID ?: @"",
     };
 

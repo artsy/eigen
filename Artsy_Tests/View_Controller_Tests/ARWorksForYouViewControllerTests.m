@@ -16,6 +16,8 @@ ARWorksForYouNotificationItem *stubbedNotificationItemWithNumberAndArtworks(int 
 @interface ARStubbedWorksForYouNetworkModel : NSObject <ARWorksForYouNetworkModelable>
 @property (nonatomic, assign) BOOL allDownloaded;
 @property (nonatomic, copy, readwrite) NSArray<ARWorksForYouNotificationItem *> *notificationItems;
+@property (readwrite, nonatomic, assign) NSInteger currentPage;
+@property (readwrite, nonatomic, strong) NSArray *downloadedArtworkIDs;
 @end
 
 
@@ -50,14 +52,35 @@ describe(@"visually", ^{
     });
 });
 
-it(@"marks notifications as read", ^{
-    subject.worksForYouNetworkModel = stubbedNetworkModel;
-    id networkModelStub = [OCMockObject partialMockForObject:subject.worksForYouNetworkModel];
+describe(@"marking notifications as read", ^{
+    it(@"sends a network request", ^{
+        subject.worksForYouNetworkModel = stubbedNetworkModel;
+        id networkModelStub = [OCMockObject partialMockForObject:subject.worksForYouNetworkModel];
+        
+        [[networkModelStub expect] markNotificationsRead];
+        [subject beginAppearanceTransition:YES animated:NO];
+        [subject endAppearanceTransition];
+        [networkModelStub verify];
+    });
     
-    [[networkModelStub expect] markNotificationsRead];
-    [subject beginAppearanceTransition:YES animated:NO];
-    [subject endAppearanceTransition];
-    [networkModelStub verify];
+    it(@"tells the top menu vc to update its bell", ^{
+        subject.worksForYouNetworkModel = stubbedNetworkModel;
+        id topMenuStub = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
+        
+        [[topMenuStub expect] setNotificationCount:0 forControllerAtIndex:ARTopTabControllerIndexNotifications];
+        [subject beginAppearanceTransition:YES animated:NO];
+        [subject endAppearanceTransition];
+        [topMenuStub verify];
+    });
+});
+
+
+itHasSnapshotsForDevicesWithName(@"looks right when user has no notifications", ^{
+    subject.worksForYouNetworkModel = stubbedNetworkModel;
+    stubbedNetworkModel.notificationItems = @[];
+    
+    [subject ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+    return subject;
 });
 
 SpecEnd
@@ -87,10 +110,35 @@ SpecEnd
 
 @implementation ARStubbedWorksForYouNetworkModel
 
+- (instancetype)init
+{
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
+    _currentPage = 1;
+    _downloadedArtworkIDs = [[NSMutableArray alloc] init];
+
+    return self;
+}
+
 - (void)getWorksForYou:(void (^_Nonnull)(NSArray<ARWorksForYouNotificationItem *> *_Nonnull))success failure:(void (^_Nullable)(NSError *_Nullable error))failure
 {
     self.allDownloaded = YES;
+    self.currentPage++;
+    self.downloadedArtworkIDs = [[self.notificationItems map:^id(ARWorksForYouNotificationItem *item) {
+        return [item.artworks map:^id(Artwork *artwork) {
+            return artwork.artworkID;
+        }];
+    }] flatten];
+
     success(self.notificationItems);
+}
+
+- (BOOL)didReceiveNotifications
+{
+    return self.allDownloaded && self.downloadedArtworkIDs.count;
 }
 
 - (void)markNotificationsRead

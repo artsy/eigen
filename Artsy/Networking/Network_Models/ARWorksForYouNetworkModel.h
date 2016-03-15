@@ -12,6 +12,11 @@
 /// Marks all current user's notifications read
 - (void)markNotificationsRead;
 
+/// Returns NO if no notifications were received; useful for empty state
+- (BOOL)didReceiveNotifications;
+
+@property (nonatomic, readonly) NSInteger currentPage;
+
 @end
 
 

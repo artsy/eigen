@@ -12,6 +12,11 @@
 @property (readwrite, nonatomic, assign) BOOL allDownloaded;
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
 @property (atomic, weak) AFHTTPRequestOperation *currentRequest;
+@property (readwrite, nonatomic, strong) NSMutableArray *downloadedArtworkIDs;
+
+#ifndef NS_BLOCK_ASSERTIONS
+@property (readwrite, nonatomic, strong) NSMutableDictionary *downloadInformation;
+#endif
 
 @end
 
@@ -24,6 +29,12 @@
     if (!self) return nil;
 
     _currentPage = 1;
+    _downloadedArtworkIDs = [[NSMutableArray alloc] init];
+
+#ifndef NSBLOCK_ASSERTIONS
+    _downloadInformation = [[NSMutableDictionary alloc] init];
+#endif
+
     return self;
 }
 
@@ -40,11 +51,26 @@
 
         // arrange artworks into dictionary grouped by artist ID
         [artworks each:^(Artwork *artwork) {
-            if (artistDict[artwork.artist.artistID]) {
-                [[artistDict valueForKey:artwork.artist.artistID] addObject:artwork];
-            } else if (artwork.artist.artistID) {
-                NSMutableArray *artworks = [NSMutableArray arrayWithObject:artwork];
-                [artistDict setObject:artworks forKey:artwork.artist.artistID];
+
+            // if a duplicate artwork is detected, don't add it to the collection of presentable artworks
+            BOOL duplicate = [self.downloadedArtworkIDs includes:artwork.artworkID];
+            if (!duplicate) {
+                [self.downloadedArtworkIDs addObject:artwork.artworkID];
+                
+                if (artistDict[artwork.artist.artistID]) {
+                    [[artistDict valueForKey:artwork.artist.artistID] addObject:artwork];
+                } else if (artwork.artist.artistID) {
+                    NSMutableArray *artworks = [NSMutableArray arrayWithObject:artwork];
+                    [artistDict setObject:artworks forKey:artwork.artist.artistID];
+                }
+            } else {
+#ifndef NS_BLOCK_ASSERTIONS
+                NSNumber *lastPage = @(self.currentPage - 1);
+                NSNumber *otherPage = self.downloadInformation[artwork.artworkID];
+                
+                NSAssert(otherPage == nil, @"duplicate artwork with id: %@ on pages %@ & %@", artwork.artworkID, otherPage, lastPage);
+                self.downloadInformation[artwork.artworkID] = lastPage;
+#endif
             }
         }];
 
@@ -81,6 +107,11 @@
        success(artworks);
 
     } failure:failure];
+}
+
+- (BOOL)didReceiveNotifications
+{
+    return self.allDownloaded && self.downloadedArtworkIDs.count;
 }
 
 - (void)markNotificationsRead

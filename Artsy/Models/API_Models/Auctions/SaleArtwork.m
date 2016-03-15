@@ -50,11 +50,19 @@ static NSNumberFormatter *currencyFormatter;
     ARAuctionState state = ARAuctionStateDefault;
     NSDate *now = [ARSystemTime date];
 
-    if ([self.auction.startDate compare:now] == NSOrderedAscending) {
+    BOOL hasStarted = [self.auction.startDate compare:now] == NSOrderedAscending;
+    BOOL hasFinished = [self.auction.endDate compare:now] == NSOrderedAscending;
+    BOOL notYetStarted = [self.auction.startDate compare:now] == NSOrderedDescending;
+
+    if (notYetStarted) {
+        state |= ARAuctionStateShowingPreview;
+    }
+
+    if (hasStarted && !hasFinished) {
         state |= ARAuctionStateStarted;
     }
 
-    if ([self.auction.endDate compare:now] == NSOrderedAscending) {
+    if (hasFinished) {
         state |= ARAuctionStateEnded;
     }
 
