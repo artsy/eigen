@@ -277,6 +277,7 @@ context(@"price view", ^{
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
+            expect(view.auctionPriceView).to.haveValidSnapshot();
         });
 
         it(@"has bids", ^{
