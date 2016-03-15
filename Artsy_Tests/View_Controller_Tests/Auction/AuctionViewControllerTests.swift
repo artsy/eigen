@@ -274,12 +274,12 @@ class Test_AuctionNetworkModel: AuctionNetworkModelType {
     }
 }
 
-
 func test_saleArtworkWithLotNumber(lotNumber: Int, artistName: String, bidCount: Int, highestBidCents: Int) -> SaleArtwork {
 
     let artistJSON: NSDictionary = [
         "id": "artist_id",
-        "name": artistName
+        "name": artistName,
+        "sortable_id": artistName
     ]
     let imagesJSON: NSArray = [
         [

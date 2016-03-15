@@ -2,7 +2,7 @@ import Foundation
 
 protocol AuctionOrderable {
     var bids: Int { get }
-    var artistName: String { get }
+    var artistSortableID: String { get }
     var currentBid: Int { get }
 }
 
@@ -44,13 +44,17 @@ extension AuctionOrderingSwitchValue {
         }
     }
 
-    static func fromInt(value: Int) -> AuctionOrderingSwitchValue {
-        guard value < allSwitchValues().count else { return .LotNumber } // Lot number is a safe default
-        return allSwitchValues()[value]
+    static func fromIntWithViewModel(value: Int, saleViewModel: SaleViewModel) -> AuctionOrderingSwitchValue {
+        guard value < allSwitchValuesWithViewModel(saleViewModel).count else { return .LotNumber } // Lot number is a safe default
+        return allSwitchValuesWithViewModel(saleViewModel)[value]
     }
 
-    static func allSwitchValues() -> [AuctionOrderingSwitchValue] {
-        return [LotNumber, ArtistAlphabetical, LeastBids, MostBids, HighestCurrentBid, LowestCurrentBid]
+    static func allSwitchValuesWithViewModel(saleViewModel: SaleViewModel) -> [AuctionOrderingSwitchValue] {
+        if saleViewModel.saleAvailability == .Closed {
+            return [LotNumber, ArtistAlphabetical]
+        } else {
+            return [LotNumber, ArtistAlphabetical, LeastBids, MostBids, HighestCurrentBid, LowestCurrentBid]
+        }
     }
 }
 
@@ -71,5 +75,5 @@ func highestCurrentBidSort(lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bo
 }
 
 func alphabeticalSort(lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
-    return lhs.artistName.caseInsensitiveCompare(rhs.artistName) == .OrderedAscending
+    return lhs.artistSortableID.caseInsensitiveCompare(rhs.artistSortableID) == .OrderedAscending
 }

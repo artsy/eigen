@@ -59,12 +59,14 @@ class AuctionInformationViewController : UIViewController {
         
         let stackView = scrollView.stackView
 
-        let partnerNameThumbnail = UIImageView()
-        stackView.addSubview(partnerNameThumbnail, withTopMargin: "20")
-        partnerNameThumbnail.ar_setImageWithURL(saleViewModel.profileImageURL)
-        partnerNameThumbnail.alignLeadingEdgeWithView(view, predicate: "20")
-        partnerNameThumbnail.constrainWidth("50")
-        partnerNameThumbnail.constrainHeight("50")
+        if let thumbnail = saleViewModel.profileImageURL {
+            let partnerNameThumbnail = UIImageView()
+            stackView.addSubview(partnerNameThumbnail, withTopMargin: "20")
+            partnerNameThumbnail.ar_setImageWithURL(thumbnail)
+            partnerNameThumbnail.alignLeadingEdgeWithView(view, predicate: "20")
+            partnerNameThumbnail.constrainWidth("50")
+            partnerNameThumbnail.constrainHeight("50")
+        }
 
         let auctionTitleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: nil, delegate: titleViewDelegate, fullWidth: true, showAdditionalInformation: false)
         stackView.addSubview(auctionTitleView, withTopMargin: "20", sideMargin: "40")

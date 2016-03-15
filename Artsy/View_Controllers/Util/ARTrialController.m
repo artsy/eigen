@@ -46,6 +46,15 @@ static ARTrialController *instance;
     }
 }
 
++ (void)presentTrialIfNecessaryWithContext:(enum ARTrialContext)context onLoggedInUser:(void (^)(BOOL newUser))completion
+{
+    if ([User isTrialUser]) {
+        [instance presentTrialWithContext:context success:completion];
+    } else {
+        completion(NO);
+    }
+}
+
 + (void)presentTrialWithContext:(enum ARTrialContext)context success:(void (^)(BOOL newUser))success
 {
     [instance presentTrialWithContext:context success:success];
