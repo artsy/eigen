@@ -1,10 +1,11 @@
+import Interstellar
 @testable
 import Artsy
 
 
 class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
-    var currentlyShowingIndex = 0
-    
+    var currentIndexSignal =  Signal<Int>()
+
     var lots: [LiveAuctionLot] = []
     var sale: LiveSale!
     var events: [String: LiveEvent]!
@@ -26,11 +27,11 @@ class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
     }
 
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModel? {
+        guard let currentlyShowingIndex = currentIndexSignal.peek() else { return nil }
         let newIndex = currentlyShowingIndex + offset
         let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
         return lotViewModelForIndex(loopingIndex)
     }
-
 
     func eventsViewModelsForLot(lot: LiveAuctionLot) -> [LiveAuctionEventViewModel] {
         return lot.events.flatMap { self.events[$0] }.map { LiveAuctionEventViewModel(event: $0) }

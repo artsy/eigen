@@ -53,7 +53,7 @@ class LiveAuctionViewController: UIViewController {
         // This sits _behind_ the PageViewController, which is transparent and shows it through
         // meaning interaction is handled by a ScrollViewProgressObserver
 
-        let previewView = LiveAuctionImagePreviewView(signal: scrollManager.progress, salesPerson: salesPerson)
+        let previewView = LiveAuctionImagePreviewView(progressSignal: scrollManager.progress, nextSignal: salesPerson.currentIndexSignal, salesPerson: salesPerson)
         view.addSubview(previewView)
         previewView.constrainHeight("300")
         previewView.constrainTopSpaceToView(navToolbar, predicate: "10")
@@ -293,9 +293,9 @@ class LiveAuctionImagePreviewView : UIView {
     
     var leftLeftImageView, leftImageView, rightRightImageView, rightImageView, centerImageView: UIImageView
 
-    init(signal: Signal<CGFloat>, salesPerson: LiveAuctionsSalesPersonType) {
+    init(progressSignal: Signal<CGFloat>, nextSignal: Signal<Int>, salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
-        self.progress = signal
+        self.progress = progressSignal
 
         leftImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
         leftLeftImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
@@ -303,7 +303,7 @@ class LiveAuctionImagePreviewView : UIView {
         rightImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
         rightRightImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
 
-        let imageViews = [leftLeftImageView, leftImageView, centerImageView, rightImageView, rightRightImageView]
+        let imageViews = [leftLeftImageView, leftImageView, rightImageView, rightRightImageView, centerImageView]
 
         super.init(frame: CGRect.zero)
 
@@ -311,41 +311,35 @@ class LiveAuctionImagePreviewView : UIView {
             addSubview(image)
         }
 
-        signal.next { progress in
-            if progress == 0.0 {
-                self.updateImages()
-            }
-
+        progressSignal.next { progress in
             let width = Int(self.bounds.width)
             let half = Int(width / 2)
 
-            let leftImageX = Int((self.leftImageView.bounds.width - 20 )/2)
-
             self.leftLeftImageView.center = self.positionOnRange(-width...0, value: progress)
-            self.leftImageView.center = self.positionOnRange((-half - leftImageX)...half, value: progress)
+            self.leftImageView.center = self.positionOnRange((-half - 0)...half, value: progress)
             self.centerImageView.center = self.positionOnRange(0...width, value: progress)
             self.rightImageView.center = self.positionOnRange(half...width + half, value: progress)
             self.rightRightImageView.center = self.positionOnRange(width...width * 2, value: progress)
         }
-    }
 
-    func updateImages() {
-        let imageViews = [leftLeftImageView, leftImageView, centerImageView, rightImageView, rightRightImageView]
-        let indexes = [-2, -1, 0, 1, 2]
+        nextSignal.next { _ in
+            let imageViews = [self.leftLeftImageView, self.leftImageView, self.centerImageView, self.rightImageView, self.rightRightImageView]
+            let indexes = [-2, -1, 0, 1, 2]
 
-        for index in indexes {
-            if let vm = salesPerson.lotViewModelRelativeToShowingIndex(index) {
-                let imageViewIndex = indexes.indexOf { $0 == index }!
+            for index in indexes {
+                if let vm = salesPerson.lotViewModelRelativeToShowingIndex(index) {
+                    let imageViewIndex = indexes.indexOf { $0 == index }!
 
-                let imageView = imageViews[imageViewIndex]
-                imageView.ar_setImageWithURL(vm.urlForThumbnail)
-                let size = vm.imageProfileSize
-                let aspectRatio =  size.width / size.height
+                    let imageView = imageViews[imageViewIndex]
+                    imageView.ar_setImageWithURL(vm.urlForThumbnail)
+                    let size = vm.imageProfileSize
+                    let aspectRatio =  size.width / size.height
 
-                imageView.frame = AVMakeRectWithAspectRatioInsideRect(
-                    CGSizeMake(aspectRatio, 1),
-                    CGRect(x: 0, y: 0, width: 200, height: 200)
-                )
+                    imageView.frame = AVMakeRectWithAspectRatioInsideRect(
+                        CGSizeMake(aspectRatio, 1),
+                        CGRect(x: 0, y: 0, width: 180, height: 300)
+                    )
+                }
             }
         }
     }
@@ -402,7 +396,6 @@ class LiveAuctionCurrentLotView: UIButton {
 
         let hammerView = UIImageView(image: UIImage(named:"lot_bidder_hammer_white"))
         let thumbnailView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-
 
         [liveLotLabel, artistNameLabel, biddingPriceLabel, thumbnailView, hammerView].forEach { addSubview($0) }
         [liveLotLabel, artistNameLabel, biddingPriceLabel].forEach {
