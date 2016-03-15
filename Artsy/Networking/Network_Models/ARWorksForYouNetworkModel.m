@@ -31,7 +31,7 @@
     _currentPage = 1;
     _downloadedArtworkIDs = [[NSMutableArray alloc] init];
 
-#ifndef NSBLOCK_ASSERTIONS
+#ifndef NS_BLOCK_ASSERTIONS
     _downloadInformation = [[NSMutableDictionary alloc] init];
 #endif
 
