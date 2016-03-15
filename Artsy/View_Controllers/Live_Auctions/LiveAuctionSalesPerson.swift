@@ -11,9 +11,6 @@ protocol LiveAuctionsSalesPersonType {
     var updatedState: Signal<LiveAuctionsSalesPersonType> { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel?
-
-    // Remove me
-    func setupWithStub()
 }
 
 class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
