@@ -104,24 +104,6 @@ static int ARLoadingIndicatorView = 1;
     }
 }
 
-- (void)getNextItemSet
-{
-    [self addLoadingIndicator];
-
-    __weak typeof(self) wself = self;
-    [self.worksForYouNetworkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *notificationItems) {
-        __strong typeof (wself) sself = wself;
-        [sself removeLoadingIndicator];
-        
-        if (notificationItems.count) {
-            [sself addNotificationItems:notificationItems];
-        } else if (sself.shouldShowEmptyState) {
-            [sself showEmptyState];
-            
-        }
-    } failure:nil];
-}
-
 - (BOOL)shouldShowEmptyState
 {
     return !self.emptyStateView && (self.view.stackView.subviews.count == 1) && !self.worksForYouNetworkModel.didReceiveNotifications;
@@ -177,10 +159,10 @@ static int ARLoadingIndicatorView = 1;
     [self.worksForYouNetworkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *notificationItems) {
         __strong typeof (wself) sself = wself;
         [sself removeLoadingIndicator];
-
         if (notificationItems.count) {
+
             [sself addNotificationItems:notificationItems];
-        } else if (!sself.worksForYouNetworkModel.didReceiveNotifications) {
+        } else if (sself.shouldShowEmptyState) {
             [sself showEmptyState];
         }
     } failure:nil];
