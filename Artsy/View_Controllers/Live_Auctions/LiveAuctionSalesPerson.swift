@@ -4,10 +4,10 @@ import Interstellar
 /// Something to pretend to either be a network model or whatever
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
-
 protocol LiveAuctionsSalesPersonType {
     var currentIndexSignal: Signal<Int> { get }
     var auctionViewModel: LiveAuctionViewModel? { get }
+    var pageControllerDelegate: LiveAuctionPageControllerDelegate! { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel?
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModel?
@@ -15,11 +15,12 @@ protocol LiveAuctionsSalesPersonType {
     var updatedState: Signal<LiveAuctionsSalesPersonType> { get }
 }
 
-class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType, UIPageViewControllerDelegate {
+class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     let saleID: String
 
     var auctionViewModel: LiveAuctionViewModel?
     let updatedState = Signal<LiveAuctionsSalesPersonType>()
+    var pageControllerDelegate: LiveAuctionPageControllerDelegate!
 
     private var lots = [LiveAuctionLot]()
     private var sale: LiveSale?
@@ -53,6 +54,9 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType, UIPageVie
 
         super.init()
 
+        pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
+
+        // Remove once staging is reliable
         setupWithStub()
         updatedState.update(self)
 
@@ -101,11 +105,20 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType, UIPageVie
         self.events = eventDictionary
 
         auctionViewModel = LiveAuctionViewModel(sale: sale, salesPerson: self)
+        currentIndexSignal.update(0)
+    }
+}
+
+class LiveAuctionPageControllerDelegate: NSObject, UIPageViewControllerDelegate {
+    let salesPerson: LiveAuctionsSalesPersonType
+
+    init(salesPerson: LiveAuctionsSalesPersonType) {
+        self.salesPerson = salesPerson
     }
 
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
 
         guard let viewController = pageViewController.viewControllers?.first as? LiveAuctionLotViewController else { return }
-        currentIndexSignal.update(viewController.index)
+        salesPerson.currentIndexSignal.update(viewController.index)
     }
 }

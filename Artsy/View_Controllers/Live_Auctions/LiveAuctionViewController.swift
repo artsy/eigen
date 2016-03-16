@@ -84,10 +84,7 @@ class LiveAuctionViewController: UIViewController {
         if let scrollView = pageController.view.subviews.filter({ $0.isKindOfClass(UIScrollView.self) }).first as? UIScrollView {
             scrollView.delegate = scrollManager
         }
-
-        if let salesPersonAsPageDelegate = salesPerson as? UIPageViewControllerDelegate {
-            pageController.delegate = salesPersonAsPageDelegate
-        }
+        pageController.delegate = salesPerson.pageControllerDelegate
 
         let pageControllerView = pageController.view
         pageControllerView.constrainTopSpaceToView(navToolbar, predicate: "0")
@@ -104,11 +101,9 @@ class LiveAuctionViewController: UIViewController {
         progress.alignLeading("0", trailing: "0", toView: view)
         progress.alignBottomEdgeWithView(view, predicate: "-165")
 
-
         salesPerson.updatedState.next { [weak self] _ in
             self?.setupWithInitialData()
         }
-
     }
 
     func setupWithInitialData() {
@@ -343,6 +338,7 @@ class LiveAuctionImagePreviewView : UIView {
 
         for image in imageViews {
             addSubview(image)
+            image.backgroundColor = .artsyLightGrey()
         }
 
         progressSignal.next { progress in

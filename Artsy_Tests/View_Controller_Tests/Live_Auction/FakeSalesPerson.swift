@@ -16,6 +16,8 @@ class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         return LiveAuctionViewModel(sale: sale, salesPerson: self)
     }
 
+    var pageControllerDelegate: LiveAuctionPageControllerDelegate!
+
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel? {
         if (0..<lots.count ~= index) {
 
@@ -46,6 +48,7 @@ class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
     override init () {
         super.init()
         setupWithStub()
+        pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
     }
 
     func setupWithStub() {
