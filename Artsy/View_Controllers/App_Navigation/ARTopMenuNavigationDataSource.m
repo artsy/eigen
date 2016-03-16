@@ -12,7 +12,7 @@
 #import "SiteHeroUnit.h"
 #import "ARNavigationController.h"
 #import "ARAppBackgroundFetchDelegate.h"
-#import "ARWorksForYouViewController.h"
+#import "ARWorksForYouReloadingHostViewController.h"
 #import "AROptions.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
@@ -76,8 +76,8 @@ WebViewNavigationControllerWithPath(NSString *path)
 
     _magazineNavigationController = WebViewNavigationControllerWithPath(@"/articles");
 
-    ARWorksForYouViewController *worksForYouViewController = [[ARWorksForYouViewController alloc] init];
-    _worksForYouNavigationController = [[ARNavigationController alloc] initWithRootViewController:worksForYouViewController];
+    ARWorksForYouReloadingHostViewController *worksForYouHostViewController = [[ARWorksForYouReloadingHostViewController alloc] init];
+    _worksForYouNavigationController = [[ARNavigationController alloc] initWithRootViewController:worksForYouHostViewController];
 
     return self;
 }
