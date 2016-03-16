@@ -39,9 +39,7 @@ WebViewNavigationControllerWithPath(NSString *path)
 @property (readonly, nonatomic, strong) ARNavigationController *showsNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *magazineNavigationController;
-
-// webview controller, keeping this here for the tests, will be removed once we switch to native proper
-@property (readonly, nonatomic, strong) ARNavigationController *oldWorksForYouNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *worksForYouNavigationController;
 
 @end
 
@@ -78,7 +76,6 @@ WebViewNavigationControllerWithPath(NSString *path)
 
     _magazineNavigationController = WebViewNavigationControllerWithPath(@"/articles");
 
-    _oldWorksForYouNavigationController = WebViewNavigationControllerWithPath(@"/works-for-you");
 
     return self;
 }
@@ -118,7 +115,7 @@ WebViewNavigationControllerWithPath(NSString *path)
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
 }
 
-- (ARNavigationController *)worksForYouViewController
+- (ARNavigationController *)worksForYouNavigationController
 {
     ARWorksForYouViewController *worksForYouViewController = [[ARWorksForYouViewController alloc] init];
     return [[ARNavigationController alloc] initWithRootViewController:worksForYouViewController];
@@ -139,11 +136,7 @@ WebViewNavigationControllerWithPath(NSString *path)
         case ARTopTabControllerIndexFavorites:
             return self.favoritesNavigationController;
         case ARTopTabControllerIndexNotifications:
-            if ([AROptions boolForOption:AROptionsUseNativeWorksForYou]) {
-                return self.worksForYouViewController;
-            } else {
-                return self.oldWorksForYouNavigationController;
-            }
+            return self.worksForYouNavigationController;
     }
 
     return nil;
