@@ -7,6 +7,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "UIApplicationStateEnum.h"
+#import "ARWorksForYouReloadingHostViewController.h"
 
 
 static NSDictionary *
@@ -20,6 +21,11 @@ DictionaryWithAppState(NSDictionary *input, UIApplicationState appState) {
 SpecBegin(ARAppNotificationsDelegate);
 
 describe(@"receiveRemoteNotification", ^{
+    NSDictionary *notification = @{
+        @"aps": @{ @"alert": @"New Works For You", @"badge": @(42), @"content-available": @(1) },
+        @"url": @"http://artsy.net/works-for-you",
+    };
+
     __block UIApplication *app = nil;
     __block ARAppNotificationsDelegate *delegate = nil;
     __block UIApplicationState appState = -1;
@@ -39,19 +45,8 @@ describe(@"receiveRemoteNotification", ^{
         [mockTopMenuVC stopMocking];
     });
 
-    describe(@"while running in the background", ^{
-        beforeEach(^{
-            appState = UIApplicationStateBackground;
-        });
-
+    sharedExamplesFor(@"when receiving a notification", ^(id _) {
         it(@"triggers an analytics event for receiving a notification", ^{
-            [[[mockTopMenuVC stub] andReturn:nil] sharedController];
-
-            NSDictionary *notification = @{
-                @"aps": @{ @"alert": @"New Works For You", @"badge": @(42), @"content-available": @(1) },
-                @"url": @"http://artsy.net/works-for-you",
-            };
-
             [[mockAnalytics expect] event:ARAnalyticsNotificationReceived withProperties:DictionaryWithAppState(notification, appState)];
             [[mockAnalytics reject] event:ARAnalyticsNotificationTapped withProperties:OCMOCK_ANY];
 
@@ -59,26 +54,35 @@ describe(@"receiveRemoteNotification", ^{
 
             [mockAnalytics verify];
         });
+
+        it(@"(p)reloads the works-for-you controller", ^{
+            id hostViewControllerMock = [OCMockObject mockForClass:ARWorksForYouReloadingHostViewController.class];
+
+            id switchBoardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+            [[[switchBoardMock stub] andReturn:hostViewControllerMock] loadPath:notification[@"url"]];
+
+            [[hostViewControllerMock expect] reloadData];
+            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
+
+            [hostViewControllerMock verify];
+
+            [hostViewControllerMock stopMocking];
+            [switchBoardMock stopMocking];
+        });
+    });
+
+    describe(@"while running in the background", ^{
+        beforeEach(^{
+            appState = UIApplicationStateBackground;
+            [[[mockTopMenuVC stub] andReturn:nil] sharedController];
+        });
+
+        itBehavesLike(@"when receiving a notification", nil);
     });
 
     describe(@"brought back from the background", ^{
         beforeEach(^{
             appState = UIApplicationStateInactive;
-        });
-
-        it(@"navigates to the url provided", ^{
-            [[[mockTopMenuVC stub] andReturn:nil] sharedController];
-
-            id JSON = @{ @"url" : @"http://artsy.net/feature" };
-            NSData *data = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
-            NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            id mock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
-
-            [[mock expect] loadPath:@"http://artsy.net/feature"];
-            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
-
-            [mock verify];
-            [mock stopMocking];
         });
 
         it(@"updates the badge count", ^{
@@ -88,78 +92,55 @@ describe(@"receiveRemoteNotification", ^{
             [[[controllerMock stub] andReturnValue:@(ARTopTabControllerIndexNotifications)] indexOfRootViewController:OCMOCK_ANY];
             [[controllerMock expect] setNotificationCount:42 forControllerAtIndex:ARTopTabControllerIndexNotifications];
 
-            NSDictionary *notification = @{
-                @"url": @"http://artsy.net/works-for-you",
-                @"aps": @{ @"badge": @(42) }
-            };
-
             [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
             [controllerMock verify];
             [controllerMock stopMocking];
         });
 
-        it(@"triggers an analytics event when a notification has been tapped", ^{
-            [[[mockTopMenuVC stub] andReturn:nil] sharedController];
+        describe(@"with stubbed top menu VC", ^{
+            beforeEach(^{
+                [[[mockTopMenuVC stub] andReturn:nil] sharedController];
+            });
 
-            NSDictionary *notification = @{
-                @"aps": @{ @"alert": @"New Works For You", @"badge": @(42), @"content-available": @(1) },
-                @"url": @"http://artsy.net/works-for-you",
-            };
+            it(@"navigates to the url provided", ^{
+                id mock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+                [[mock expect] loadPath:@"http://artsy.net/works-for-you"];
+                [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-            [[mockAnalytics reject] event:ARAnalyticsNotificationReceived withProperties:OCMOCK_ANY];
-            [[mockAnalytics expect] event:ARAnalyticsNotificationTapped withProperties:DictionaryWithAppState(notification, appState)];
+                [mock verify];
+                [mock stopMocking];
+            });
 
-            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
+            it(@"triggers an analytics event when a notification has been tapped", ^{
+                [[mockAnalytics reject] event:ARAnalyticsNotificationReceived withProperties:OCMOCK_ANY];
+                [[mockAnalytics expect] event:ARAnalyticsNotificationTapped withProperties:DictionaryWithAppState(notification, appState)];
 
-            [mockAnalytics verify];
-        });
+                [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-        it(@"does not display the message in aps/alert", ^{
-            [[[mockTopMenuVC stub] andReturn:nil] sharedController];
+                [mockAnalytics verify];
+            });
 
-            id JSON = @{ @"aps" : @{ @"alert" : @"hello world" } };
-            NSData *data = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
-            NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            id mock = [OCMockObject mockForClass:[ARNotificationView class]];
+            it(@"does not display the message in aps/alert", ^{
+                id mock = [OCMockObject mockForClass:[ARNotificationView class]];
+                [[mock reject] showNoticeInView:OCMOCK_ANY title:OCMOCK_ANY response:OCMOCK_ANY];
+                [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-            [[mock reject] showNoticeInView:OCMOCK_ANY title:OCMOCK_ANY response:OCMOCK_ANY];
-            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
-
-            [mock verify];
-            [mock stopMocking];
+                [mock verify];
+                [mock stopMocking];
+            });
         });
     });
 
     describe(@"running in the foreground", ^{
         beforeEach(^{
             appState = UIApplicationStateActive;
-        });
-
-        it(@"triggers an analytics event for receiving a notification", ^{
             [[[mockTopMenuVC stub] andReturn:nil] sharedController];
-
-            NSDictionary *notification = @{
-                @"aps": @{ @"alert": @"New Works For You", @"badge": @(42), @"content-available": @(1) },
-                @"url": @"http://artsy.net/works-for-you",
-            };
-
-            [[mockAnalytics expect] event:ARAnalyticsNotificationReceived withProperties:DictionaryWithAppState(notification, appState)];
-            [[mockAnalytics reject] event:ARAnalyticsNotificationTapped withProperties:OCMOCK_ANY];
-
-            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
-
-            [mockAnalytics verify];
         });
+
+        itBehavesLike(@"when receiving a notification", nil);
 
         it(@"displays a notification", ^{
-            [[[mockTopMenuVC stub] andReturn:nil] sharedController];
-
-           NSDictionary *notification = @{
-                @"aps": @{ @"alert": @"New Works For You", @"badge": @(42), @"content-available": @(1) },
-                @"url": @"http://artsy.net/works-for-you",
-            };
-
             id mock = [OCMockObject mockForClass:[ARNotificationView class]];
             [[mock expect] showNoticeInView:OCMOCK_ANY title:@"New Works For You" response:OCMOCK_ANY];
 
@@ -170,13 +151,6 @@ describe(@"receiveRemoteNotification", ^{
         });
 
         it(@"triggers an analytics event when a notification has been tapped", ^{
-            [[[mockTopMenuVC stub] andReturn:nil] sharedController];
-
-            NSDictionary *notification = @{
-                @"aps": @{ @"alert": @"New Works For You", @"badge": @(42), @"content-available": @(1) },
-                @"url": @"http://artsy.net/works-for-you",
-            };
-
             id mockNotificationView = [OCMockObject mockForClass:[ARNotificationView class]];
             [[mockNotificationView stub] showNoticeInView:OCMOCK_ANY
                                                     title:OCMOCK_ANY
@@ -195,21 +169,13 @@ describe(@"receiveRemoteNotification", ^{
         });
 
         it(@"defaults message to url", ^{
-            [[[mockTopMenuVC stub] andReturn:nil] sharedController];
-
-            id JSON = @{ @"url" : @"http://artsy.net/feature" };
-            NSData *data = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
-            NSDictionary *notification = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             id mock = [OCMockObject mockForClass:[ARNotificationView class]];
-
             [[mock expect] showNoticeInView:OCMOCK_ANY title:@"http://artsy.net/feature" response:OCMOCK_ANY];
-            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
+            [delegate applicationDidReceiveRemoteNotification:@{ @"url" : @"http://artsy.net/feature" } inApplicationState:appState];
 
             [mock verify];
             [mock stopMocking];
         });
-
-        pending(@"displays message in aps/alert and navigates to url provided");
     });
 });
 

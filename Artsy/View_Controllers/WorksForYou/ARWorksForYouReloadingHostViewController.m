@@ -1,4 +1,6 @@
 #import "ARWorksForYouReloadingHostViewController.h"
+#import "ARLogger.h"
+
 @import FLKAutoLayout;
 
 
@@ -43,6 +45,7 @@
 
 - (void)reloadData;
 {
+    ARActionLog(@"Reloading works-for-you view controller");
     self.worksForYouViewController = [ARWorksForYouViewController new];
     self.lastLoadedAt = [NSDate date];
 }
