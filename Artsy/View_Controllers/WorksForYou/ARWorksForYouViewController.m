@@ -62,9 +62,8 @@ static int ARLoadingIndicatorView = 1;
     titleLabel.textColor = [UIColor blackColor];
     titleLabel.font = [UIFont serifFontWithSize:20];
 
-    [self.view.stackView addSubview:titleLabel withTopMargin:@"25" sideMargin:@"45"];
+    [self.view.stackView addSubview:titleLabel withTopMargin:@"30" sideMargin:(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? @"90" : @"45"];
 
-    // this should probably be fancier
     [self updateView];
 }
 
@@ -117,7 +116,7 @@ static int ARLoadingIndicatorView = 1;
         
         if (notificationItems.count) {
             [sself addNotificationItems:notificationItems];
-        } else if (!sself.worksForYouNetworkModel.didReceiveNotifications) {
+        } else if (sself.shouldShowEmptyState) {
             [sself showEmptyState];
             
         }
@@ -183,7 +182,7 @@ static int ARLoadingIndicatorView = 1;
     [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
     if ((scrollView.contentSize.height - scrollView.contentOffset.y) < scrollView.bounds.size.height) {
         // only get more items if we're not in empty state
-        if (!self.emptyStateView) {
+        if (!self.emptyStateView && !self.worksForYouNetworkModel.allDownloaded) {
             [self updateView];
         }
     }

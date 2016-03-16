@@ -88,6 +88,8 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
         });
 
         it(@"pops to root", ^{
+            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@{}];
+
             [sut pushViewController:[[ARFairViewController alloc] init] animated:NO];
             expect(sut.rootNavigationController.viewControllers.count).to.equal(2);
 

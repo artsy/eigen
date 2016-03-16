@@ -24,6 +24,7 @@ afterEach(^{
 
 it(@"ignores artworks without a partner", ^{
     waitUntil(^(DoneCallback done) {
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@{}];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks"
                                  withParams:@{ @"fair_id" : @"fair-id",
                                                @"user_id" : [ARUserManager sharedManager].currentUser.userID,
@@ -104,7 +105,7 @@ describe(@"when downloading exhibitor data", ^{
         }] downloadShows];
 
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/profiles" withParams:@{@"fair_id": @"fair-id-2"} withResponse:@[
-@{
+        @{
             @"id" : @"follow-id",
             @"profile" : @{
                 @"id" : @"profile-id",

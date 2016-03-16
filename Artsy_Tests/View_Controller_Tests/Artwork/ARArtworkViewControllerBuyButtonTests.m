@@ -35,6 +35,8 @@ describe(@"buy button", ^{
 
 
     it(@"posts order if artwork has no edition sets", ^{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/order/pending/items" withResponse:@{}];
+
         Artwork *artwork = [Artwork modelWithJSON:@{
             @"id" : @"artwork-id",
             @"title" : @"Artwork Title",
