@@ -960,6 +960,13 @@ static NSString *hostFromString(NSString *string)
                                                                  @"page" : @(page) }];
 }
 
++ (NSURLRequest *)liveSaleStateRequest:(NSString *)saleID host:(NSString *)host
+{
+    // Note that we're relying on the host to specify the domain for the request.
+    NSString *url = [NSString stringWithFormat:ARLiveSaleStateFormat, host, saleID];
+    return [self requestWithMethod:@"GET" URLString:url parameters:nil];
+}
+
 + (NSURLRequest *)biddersRequest
 {
     return [self biddersRequestForSale:nil];

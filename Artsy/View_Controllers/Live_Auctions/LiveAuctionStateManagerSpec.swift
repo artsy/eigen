@@ -1,5 +1,6 @@
 import Quick
 import Nimble
+import Interstellar
 @testable
 import Artsy
 
@@ -8,7 +9,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         var subject: LiveAuctionStateManager!
 
         beforeEach {
-            subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator())
+            subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateFetcherCreator: test_stateFetcherCreator())
         }
 
         it("sets its saleID upon initialization") {
@@ -37,6 +38,27 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 func test_socketCommunicatorCreator() -> LiveAuctionStateManager.SocketCommunicatorCreator {
     return { host, saleID, accessToken in
         return Test_SocketCommunicator(host: host, saleID: saleID, accessToken: accessToken)
+    }
+}
+
+func test_stateFetcherCreator() -> LiveAuctionStateManager.StateFetcherCreator {
+    return { host, saleID in
+        return Test_StateFetcher(host: host, saleID: saleID)
+    }
+}
+
+class Test_StateFetcher: LiveAuctionStateFetcherType {
+
+    let host: String
+    let saleID: String
+
+    init(host: String, saleID: String) {
+        self.host = host
+        self.saleID = saleID
+    }
+
+    func fetchSale() -> Signal<AnyObject> {
+        return Signal<AnyObject>()
     }
 }
 

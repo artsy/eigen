@@ -10,6 +10,7 @@ func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID
 }
 
 @objc protocol LiveAuctionSocketCommunicatorDelegate: class {
+    // TODO: this needs to be broken up into smaller pieces. See: https://github.com/artsy/causality/issues/36
     func didUpdateAuctionState(state: AnyObject)
 }
 
