@@ -8,8 +8,11 @@
 #import "ARArtistViewController.h"
 #import "UIDevice-Hardware.h"
 #import "ARArtworkMasonryModule.h"
+#import "ARArtworkWithMetadataThumbnailCell.h"
+#import "ARArtworkThumbnailMetadataView.h"
 
 #import <ORStackView/ORSplitStackView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
 @interface ARWorksForYouNotificationItemViewController () <AREmbeddedModelsViewControllerDelegate, ARArtworkMasonryLayoutProvider>
@@ -29,8 +32,6 @@
     if (!self) return nil;
 
     _notificationItem = notificationItem;
-    _artworksVC = [[AREmbeddedModelsViewController alloc] init];
-    _artworksVC.delegate = self;
 
     return self;
 }
@@ -73,7 +74,22 @@
     [self.view addSubview:ssv withTopMargin:@"10" sideMargin:labelSideMargin];
     [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"7" sideMargin:labelSideMargin];
 
-    if (self.artworksVC) {
+    if (self.notificationItem.artworks.count == 1) {
+        ARArtworkWithMetadataThumbnailCell *singleCell = [[ARArtworkWithMetadataThumbnailCell alloc] init];
+        singleCell.imageSize = ARFeedItemImageSizeLarge;
+        [singleCell setupWithRepresentedObject:self.notificationItem.artworks.firstObject];
+        NSString *maxHeight = [NSString stringWithFormat:@"%f", [UIScreen mainScreen].bounds.size.height - 200];
+
+        [singleCell constrainHeight:maxHeight];
+
+        [singleCell addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleArtworkTapped:)]];
+
+        [self.view addSubview:singleCell withTopMargin:@"7" sideMargin:@"75"];
+
+    } else {
+        self.artworksVC = self.artworksVC ?: [[AREmbeddedModelsViewController alloc] init];
+        self.artworksVC.delegate = self;
+
         self.artworksVC.constrainHeightAutomatically = YES;
 
         ARArtworkMasonryModule *module = [ARArtworkMasonryModule masonryModuleWithLayout:[self masonryLayoutForSize:self.view.frame.size] andStyle:AREmbeddedArtworkPresentationStyleArtworkMetadata];
@@ -81,10 +97,9 @@
         self.artworksVC.activeModule = module;
         [self.artworksVC appendItems:self.notificationItem.artworks];
         [self.view addViewController:self.artworksVC toParent:self withTopMargin:@"0" sideMargin:@"0"];
+        // this tells the embedded artworks view controller that it should update for the correct size because self.view.frame.size at this point is (0, 0)
+        [self.artworksVC didMoveToParentViewController:self.parentViewController];
     }
-
-    // this tells the embedded artworks view controller that it should update for the correct size because self.view.frame.size at this point is (0, 0)
-    [self.artworksVC didMoveToParentViewController:self.parentViewController];
 }
 
 - (void)addArtistTapRecognizerToView:(UIView *)view
@@ -97,6 +112,11 @@
 - (void)artistNameTapped:(UIGestureRecognizer *)recognizer
 {
     [self didSelectArtist:self.notificationItem.artist animated:YES];
+}
+
+- (void)singleArtworkTapped:(UIGestureRecognizer *)recognizer
+{
+    [self didSelectArtwork:self.notificationItem.artworks.firstObject animated:YES];
 }
 
 #pragma mark - AREmbeddedViewController delegate methods
@@ -116,6 +136,12 @@
 {
     ARArtistViewController *artistVC = [ARSwitchBoard.sharedInstance loadArtistWithID:artist.artistID];
     [self.navigationController pushViewController:artistVC animated:animated];
+}
+
+- (void)didSelectArtwork:(Artwork *)artwork animated:(BOOL)animated
+{
+    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtwork:artwork inFair:nil];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - ARArtworkMasonryLayoutProvider
