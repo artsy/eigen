@@ -1,7 +1,7 @@
 import Interstellar
 @testable
 import Artsy
-
+import Interstellar
 
 class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
     var currentIndexSignal =  Signal<Int>()
@@ -10,7 +10,9 @@ class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
     var sale: LiveSale!
     var events: [String: LiveEvent]!
 
-    var auctionViewModel: LiveAuctionViewModel {
+    let updatedState = Signal<LiveAuctionsSalesPersonType>()
+
+    var auctionViewModel: LiveAuctionViewModel? {
         return LiveAuctionViewModel(sale: sale, salesPerson: self)
     }
 
@@ -19,7 +21,7 @@ class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
             return LiveAuctionLotViewModel(
                 lot: lots[index],
-                auction:auctionViewModel,
+                auction:auctionViewModel!,
                 events:eventsViewModelsForLot(lots[index]),
                 index: index)
         }
@@ -31,6 +33,10 @@ class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         let newIndex = currentlyShowingIndex + offset
         let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
         return lotViewModelForIndex(loopingIndex)
+    }
+
+    var lotCount: Int {
+        return auctionViewModel?.lotCount ?? 0
     }
 
     func eventsViewModelsForLot(lot: LiveAuctionLot) -> [LiveAuctionEventViewModel] {

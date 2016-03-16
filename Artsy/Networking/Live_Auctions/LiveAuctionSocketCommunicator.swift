@@ -9,12 +9,22 @@ func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID
     func disconnect()
 }
 
-class LiveAuctionSocketCommunicator: NSObject {
+@objc protocol LiveAuctionSocketCommunicatorDelegate: class {
+    func didUpdateAuctionState(state: AnyObject)
+}
+
+protocol LiveAuctionSocketCommunicatorType {
+    weak var delegate: LiveAuctionSocketCommunicatorDelegate? { get set }
+}
+
+class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
     typealias SocketCreator = String -> SocketType
     private let socket: SocketType
     private let saleID: String
 
-    convenience init(host: String, accessToken: String, saleID: String) {
+    weak var delegate: LiveAuctionSocketCommunicatorDelegate?
+
+    convenience init(host: String, saleID: String, accessToken: String) {
         self.init(host: host, accessToken: accessToken, saleID: saleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
     }
 
@@ -65,8 +75,12 @@ private extension SocketSetup {
         socket.emit(.JoinSale, saleID)
 
         print("Listening for socket events.")
-        socket.on(.UpdateAuctionState) { data in
+        socket.on(.UpdateAuctionState) { [weak self] data in
             print("Updated auction state: \(data)")
+            // TODO: We need initial state when we join, this doesn't work until something on the server hapens :(
+            if let state = data.first {
+                self?.delegate?.didUpdateAuctionState(state)
+            }
         }
     }
 }

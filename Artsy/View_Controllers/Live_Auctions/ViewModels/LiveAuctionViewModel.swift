@@ -20,14 +20,6 @@ class LiveAuctionViewModel : NSObject {
         return NSDate()
     }
 
-    var numberOfWatchers: Int {
-        return 87
-    }
-
-    var nextBidForLot : Int {
-        return 25_000
-    }
-
     var lotCount: Int {
         return sale.lotIDs.count
     }
