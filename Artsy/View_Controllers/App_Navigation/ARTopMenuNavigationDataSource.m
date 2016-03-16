@@ -76,6 +76,8 @@ WebViewNavigationControllerWithPath(NSString *path)
 
     _magazineNavigationController = WebViewNavigationControllerWithPath(@"/articles");
 
+    ARWorksForYouViewController *worksForYouViewController = [[ARWorksForYouViewController alloc] init];
+    _worksForYouNavigationController = [[ARNavigationController alloc] initWithRootViewController:worksForYouViewController];
 
     return self;
 }
@@ -114,13 +116,6 @@ WebViewNavigationControllerWithPath(NSString *path)
     ARFavoritesViewController *favoritesViewController = [[ARFavoritesViewController alloc] init];
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
 }
-
-- (ARNavigationController *)worksForYouNavigationController
-{
-    ARWorksForYouViewController *worksForYouViewController = [[ARWorksForYouViewController alloc] init];
-    return [[ARNavigationController alloc] initWithRootViewController:worksForYouViewController];
-}
-
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 {
