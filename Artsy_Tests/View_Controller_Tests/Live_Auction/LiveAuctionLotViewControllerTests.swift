@@ -44,7 +44,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 let subject = LiveAuctionLotViewController()
                 subject.loadViewProgrammatically()
                 subject.lotViewModel.update( salesPerson.lotViewModelForIndex(2)! )
-                subject.auctionViewModel.update( salesPerson.auctionViewModel )
+                subject.auctionViewModel.update( salesPerson.auctionViewModel! )
                 expect(subject).to( haveValidSnapshot() )
             }
             

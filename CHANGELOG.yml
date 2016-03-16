@@ -23,6 +23,7 @@ upcoming:
     - Initial working structure for Live Auctions with stubbed data - orta
     - Shows a lot of the main views on Live Auctions - orta
     - Keep a papertrail of screen views that have slugs, which we can use to improve on-boarding in an upcoming version when we require sign-up. - alloy
+    - App uses actual socket connections to power live auctions views. - ash
 
   notes:
     - Wrapped up all but the refine button occasionally tapping through QA items for the Native Auction Views - orta

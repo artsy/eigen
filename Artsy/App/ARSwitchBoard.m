@@ -208,7 +208,9 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
     if (route) {
         if ([AROptions boolForOption:AROptionsUseNativeAuctions]) {
             [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
-                return [[LiveAuctionViewController alloc] init];
+                NSString *path = url.path;
+                NSString *saleID = [[path split:@"/"] lastObject];
+                return [[LiveAuctionViewController alloc] initWithSaleID:saleID];
             }];
         }
     }

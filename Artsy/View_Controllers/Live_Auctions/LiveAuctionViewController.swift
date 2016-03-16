@@ -5,20 +5,42 @@ import Artsy_UIFonts
 import FLKAutoLayout
 import ORStackView
 import Interstellar
+import UICKeyChainStore
 
 
 class LiveAuctionViewController: UIViewController {
+    let saleID: String
+
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
-    var salesPerson: LiveAuctionsSalesPersonType = LiveAuctionsSalesPerson()
     let scrollManager = ScrollViewProgressObserver()
 
+    lazy var salesPerson: LiveAuctionsSalesPersonType = {
+        // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
+        let accessToken = UICKeyChainStore.stringForKey(AROAuthTokenDefault) ?? ""
+        return LiveAuctionsSalesPerson(saleID: self.saleID, accessToken: accessToken)
+    }()
+
     var pageController: UIPageViewController!
+    var hasBeenSetup = false
+
+    init(saleID: String) {
+        self.saleID = saleID
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    // Required by Swift compiler, for now.
+    required init?(coder aDecoder: NSCoder) {
+        self.saleID = ""
+        super.init(coder: aDecoder)
+        return nil
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        salesPerson.setupWithStub()
-        auctionDataSource.salesPerson = salesPerson
+
+        salesPerson.updatedState.next { [weak self] _ in
+            self?.setupWithInitialData()
+        }
 
         view.backgroundColor = .whiteColor()
 
@@ -52,7 +74,7 @@ class LiveAuctionViewController: UIViewController {
 
         // This sits _behind_ the PageViewController, which is transparent and shows it through
         // meaning interaction is dealt with elsewhere
-        let previewView = LiveAuctionImagePreviewView(signal: scrollManager.progress, salesPerson: salesPerson)
+        let previewView = LiveAuctionImagePreviewView(signal: scrollManager.progress)
         view.addSubview(previewView)
         previewView.backgroundColor = .debugColourRed()
         previewView.constrainHeight("200")
@@ -61,11 +83,7 @@ class LiveAuctionViewController: UIViewController {
         previewView.alignTrailingEdgeWithView(view, predicate: "0")
 
         pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
-        pageController.dataSource = auctionDataSource
         ar_addModernChildViewController(pageController)
-
-        let startVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(0)
-        pageController.setViewControllers([startVC!], direction: .Forward, animated: false, completion: nil)
 
         if let scrollView = pageController.view.subviews.filter({ $0.isKindOfClass(UIScrollView.self) }).first as? UIScrollView {
             scrollView.delegate = scrollManager
@@ -87,7 +105,20 @@ class LiveAuctionViewController: UIViewController {
         progress.alignBottomEdgeWithView(view, predicate: "-165")
     }
 
-    func jumpToLiveLot(sender: AnyObject) {
+    func setupWithInitialData() {
+        // Make sure we only initialize with initial data once.
+        guard hasBeenSetup == false else { return }
+        defer { hasBeenSetup = true }
+
+        auctionDataSource.salesPerson = salesPerson
+
+        pageController.dataSource = auctionDataSource
+
+        guard let startVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(0) else { return }
+        pageController.setViewControllers([startVC], direction: .Forward, animated: false, completion: nil)
+    }
+
+    func jumpToLiveLot() {
         let index = salesPerson.currentIndex
         let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index)
         guard let viewController = pageController.viewControllers?.first as? LiveAuctionLotViewController else { return }
@@ -111,26 +142,29 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
         let auctionVC =  LiveAuctionLotViewController()
         guard let viewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
         auctionVC.lotViewModel.update(viewModel)
-        auctionVC.auctionViewModel.update(salesPerson.auctionViewModel)
+        // TODO: Figoure how to update the auctionVC's auctionViewModel signal in a better way.
+        if let auctionViewModel = salesPerson.auctionViewModel {
+            auctionVC.auctionViewModel.update(auctionViewModel)
+        }
         auctionVC.index = index
         return auctionVC
     }
 
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        if salesPerson.auctionViewModel.lotCount == 1 { return nil }
+        if salesPerson.lotCount == 1 { return nil }
 
         guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
         var newIndex = viewController.index - 1
-        if (newIndex < 0) { newIndex = salesPerson.auctionViewModel.lotCount - 1 }
+        if (newIndex < 0) { newIndex = salesPerson.lotCount - 1 }
         return liveAuctionPreviewViewControllerForIndex(newIndex)
     }
 
 
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        if salesPerson.auctionViewModel.lotCount == 1 { return nil }
+        if salesPerson.lotCount == 1 { return nil }
 
         guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
-        let newIndex = (viewController.index + 1) % salesPerson.auctionViewModel.lotCount;
+        let newIndex = (viewController.index + 1) % salesPerson.lotCount;
         return liveAuctionPreviewViewControllerForIndex(newIndex)
     }
 }
@@ -232,7 +266,7 @@ class LiveAuctionLotViewController: UIViewController {
         bidHistoryViewController.view.constrainHeight("135")
 
         let currentLotView = LiveAuctionCurrentLotView()
-        currentLotView.addTarget(nil, action: "jumpToLiveLot:", forControlEvents: .TouchUpInside)
+        currentLotView.addTarget(nil, action: "jumpToLiveLot", forControlEvents: .TouchUpInside)
         view.addSubview(currentLotView)
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
@@ -279,12 +313,10 @@ class LiveAuctionLotViewController: UIViewController {
 /// and to deal with transforms/ opacity
 
 class LiveAuctionImagePreviewView : UIView {
-    let salesPerson: LiveAuctionsSalesPersonType
     let progress: Signal<CGFloat>
     var leftImageView, rightImageView, centerImageView: UIImageView
 
-    init(signal: Signal<CGFloat>, salesPerson: LiveAuctionsSalesPersonType) {
-        self.salesPerson = salesPerson
+    init(signal: Signal<CGFloat>) {
         self.progress = signal
 
         leftImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
