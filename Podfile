@@ -79,9 +79,9 @@ target 'Artsy' do
   pod 'ObjectiveSugar'
 
   # Artsy Spec repo stuff
-  pod 'Artsy-UIButtons', :git => "https://github.com/artsy/Artsy-UIButtons.git"
+  pod 'Artsy-UIButtons'
   pod 'Artsy+UIColors'
-  pod 'Artsy+UILabels', :git => "https://github.com/artsy/Artsy-UILabels.git"
+  pod 'Artsy+UILabels'
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git", :branch => "old_fonts_new_lib"
