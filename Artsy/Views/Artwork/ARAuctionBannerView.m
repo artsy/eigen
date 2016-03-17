@@ -40,11 +40,11 @@
     _auctionState = auctionState;
 
     if (auctionState & ARAuctionStateUserIsHighBidder) {
-        self.backgroundColor = [UIColor artsyPurple];
+        self.backgroundColor = [UIColor artsyPurpleRegular];
         self.label.text = @"You are currently the high\nbidder for this lot.";
         self.label.textColor = [UIColor whiteColor];
     } else if (auctionState & ARAuctionStateUserIsBidder) {
-        self.backgroundColor = [UIColor artsyAttention];
+        self.backgroundColor = [UIColor artsyYellowRegular];
         self.label.textColor = [UIColor blackColor];
         self.label.text = @"You’ve been outbid.\nPlease place another bid.";
     }

@@ -3,7 +3,7 @@
 #import "ARFonts.h"
 #import "ARSpinner.h"
 
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 

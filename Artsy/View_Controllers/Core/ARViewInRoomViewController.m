@@ -5,8 +5,6 @@
 #import "ARFonts.h"
 #import "UIDevice-Hardware.h"
 
-#import <EDColor/EDColor.h>
-
 #define DEBUG_VIEW_IN_ROOM 0
 
 static const CGFloat InitialWidthOfBenchInches = 96;
@@ -125,7 +123,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 
     [super loadView];
 
-    self.view.backgroundColor = [UIColor colorWithHex:0xfcfbfa];
+    self.view.backgroundColor = [UIColor artsyGrayLight];
 
     [self.view addSubview:galleryBackground];
 

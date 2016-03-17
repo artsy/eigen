@@ -6,7 +6,7 @@
 #import "UIImageView+AsyncImageLoading.h"
 #import "UIDevice-Hardware.h"
 
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <ORStackView/ORStackView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -215,7 +215,7 @@ static CGFloat ARHeroUnitDescriptionFont;
     label.layer.shadowOpacity = 0.8;
     label.layer.shadowRadius = 2.0;
     label.layer.shadowOffset = CGSizeZero;
-    label.layer.shadowColor = [UIColor artsyHeavyGrey].CGColor;
+    label.layer.shadowColor = [UIColor artsyGraySemibold].CGColor;
     label.layer.shouldRasterize = YES;
 }
 

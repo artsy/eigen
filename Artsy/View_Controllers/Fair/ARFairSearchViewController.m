@@ -10,7 +10,6 @@
 
 #import "MTLModel+JSON.h"
 
-#import <EDColor/EDColor.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -38,17 +37,17 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor whiteColor];
-    self.textField.textColor = [UIColor artsyHeavyGrey];
-    self.textField.tintColor = [UIColor artsyHeavyGrey];
+    self.textField.textColor = [UIColor artsyGraySemibold];
+    self.textField.tintColor = [UIColor artsyGraySemibold];
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    [self.closeButton setTitleColor:[UIColor artsyHeavyGrey] forState:UIControlStateNormal];
+    [self.closeButton setTitleColor:[UIColor artsyGraySemibold] forState:UIControlStateNormal];
 
-    self.searchDataSource.textColor = [UIColor artsyHeavyGrey];
+    self.searchDataSource.textColor = [UIColor artsyGraySemibold];
     self.searchDataSource.placeholderImage = [UIImage imageNamed:@"SearchThumb_HeavyGrey"];
 
     // fair search is a solid grey background
     UIView *searchBox = [[UIView alloc] init];
-    searchBox.backgroundColor = [UIColor colorWithHex:0xf2f2f2];
+    searchBox.backgroundColor = [UIColor artsyGrayLight];
 
     [searchBox constrainHeight:@"44"];
 

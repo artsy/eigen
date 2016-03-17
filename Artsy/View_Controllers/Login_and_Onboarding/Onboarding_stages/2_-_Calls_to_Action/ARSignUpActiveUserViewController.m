@@ -8,7 +8,7 @@
 
 #import "UIDevice-Hardware.h"
 
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>

@@ -11,7 +11,7 @@
 
 #import "UIDevice-Hardware.h"
 
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
@@ -331,7 +331,7 @@
 - (UIPageControl *)pageControlForPaging
 {
     UIPageControl *control = [[UIPageControl alloc] init];
-    control.pageIndicatorTintColor = [UIColor artsyMediumGrey];
+    control.pageIndicatorTintColor = [UIColor artsyGrayMedium];
     control.numberOfPages = self.pages.count;
     return control;
 }

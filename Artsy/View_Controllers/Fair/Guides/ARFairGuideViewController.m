@@ -211,7 +211,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 - (void)addTopBorder
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-    view.backgroundColor = [UIColor artsyMediumGrey];
+    view.backgroundColor = [UIColor artsyGrayMedium];
     [view constrainHeight:@"2"];
     [self.view.stackView addSubview:view withTopMargin:@"0" sideMargin:@"0"];
 }

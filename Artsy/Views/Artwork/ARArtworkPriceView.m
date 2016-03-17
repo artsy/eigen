@@ -47,7 +47,7 @@
     ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
 
     if (artwork.sold.boolValue) {
-        row.messageLabel.textColor = [UIColor artsyRed];
+        row.messageLabel.textColor = [UIColor artsyRedRegular];
         row.messageLabel.font = [UIFont sansSerifFontWithSize:row.messageLabel.font.pointSize];
         row.messageLabel.text = @"SOLD";
     } else {

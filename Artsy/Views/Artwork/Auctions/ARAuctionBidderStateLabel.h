@@ -1,4 +1,4 @@
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 
 @class SaleArtwork;
 
