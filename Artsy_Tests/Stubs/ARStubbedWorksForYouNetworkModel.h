@@ -1,6 +1,7 @@
 #import "ARWorksForYouNetworkModel.h"
 #import "ARWorksForYouNotificationItem.h"
 
+
 @interface ARStubbedWorksForYouNetworkModel : NSObject <ARWorksForYouNetworkModelable>
 
 @property (nonatomic, assign) BOOL allDownloaded;
@@ -11,4 +12,3 @@
 - (void)stubNotificationItemWithNumberOfArtworks:(NSUInteger)artworkCount;
 
 @end
-

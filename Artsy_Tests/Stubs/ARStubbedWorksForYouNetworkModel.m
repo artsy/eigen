@@ -4,6 +4,7 @@
 #import "Artwork.h"
 #import "Artwork+Extensions.h"
 
+
 @implementation ARStubbedWorksForYouNetworkModel
 
 - (instancetype)init
@@ -69,4 +70,3 @@
 }
 
 @end
-

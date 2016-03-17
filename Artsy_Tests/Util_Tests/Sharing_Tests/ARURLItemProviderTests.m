@@ -64,7 +64,8 @@ describe(@"url and image thumbnail", ^{
                 expect(provider.thumbnailImage).to.equal(thumbnailImage);
             });
 
-            it(@"returns nil for AirDrop sharing", ^{
+            // TODO: This test is occasionally suspiciously slow, it should be removed, or amended
+            pending(@"returns nil for AirDrop sharing", ^{
                 UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[] applicationActivities:@[]];
                 UIImage *thumbnailImage = [provider activityViewController:activityVC thumbnailImageForActivityType:UIActivityTypeAirDrop suggestedSize:CGSizeMake(100, 100)];
                 expect(thumbnailImage).to.beNil();

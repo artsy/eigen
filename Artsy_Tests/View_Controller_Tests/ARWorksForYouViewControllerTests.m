@@ -68,4 +68,3 @@ itHasSnapshotsForDevicesWithName(@"looks right when user has no notifications", 
 });
 
 SpecEnd;
-

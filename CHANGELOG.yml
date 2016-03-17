@@ -10,6 +10,7 @@ upcoming:
     - App uses actual socket connections to power live auctions views. - ash
     - Wrapped up all but the refine button occasionally tapping through QA items for the Native Auction Views - orta
     - Include tab label in analytics data. - alloy
+    - Show images for Live Auctions - orta
 
   notes:
     - Enable new native Works For You view. - sarah + alloy

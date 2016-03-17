@@ -6,6 +6,7 @@
 @property (nonatomic, strong, readwrite) id<ARWorksForYouNetworkModelable> worksForYouNetworkModel;
 @end
 
+
 @interface ARWorksForYouReloadingHostViewController (Private)
 @property (nonatomic, strong, readwrite) NSDate *lastLoadedAt;
 @end

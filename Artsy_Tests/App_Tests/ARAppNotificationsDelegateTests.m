@@ -11,7 +11,8 @@
 
 
 static NSDictionary *
-DictionaryWithAppState(NSDictionary *input, UIApplicationState appState) {
+DictionaryWithAppState(NSDictionary *input, UIApplicationState appState)
+{
     NSMutableDictionary *dictionary = [input mutableCopy];
     dictionary[@"UIApplicationState"] = [UIApplicationStateEnum toString:appState];
     return [dictionary copy];
