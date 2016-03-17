@@ -129,6 +129,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     self.view.backgroundColor = [UIColor colorWithHex:0xfcfbfa];
 
     [self.view addSubview:galleryBackground];
+    [self setupDudeView];
 
 #if DEBUG_VIEW_IN_ROOM
     [self setupDebugTools];
@@ -141,13 +142,8 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     self.artworkImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.artworkImageView.backgroundColor = [UIColor clearColor];
 
-    if (self.chairImageView) {
-        [self.view insertSubview:self.artworkImageView belowSubview:self.chairImageView];
-    } else {
-        [self.view addSubview:self.artworkImageView];
-    }
-
-    [self setupDudeView];
+    UIView *inFrontOfArtworkView = self.chairImageView ?: self.artworkImageView;
+    [self.view insertSubview:self.artworkImageView belowSubview:inFrontOfArtworkView];
 
     UITapGestureRecognizer *exitTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.navigationController action:@selector(popViewControllerAnimated:)];
     self.artworkImageView.userInteractionEnabled = YES;
@@ -269,7 +265,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
         CGRect chairFrame = CGRectMake(CGRectGetWidth(self.view.bounds) / 2 - chairWidth / 2, CGRectGetHeight(self.view.bounds) - chairOffset, chairWidth, chairHeight);
         chairView.frame = chairFrame;
 
-        [self.view addSubview:chairView];
+        [self.view insertSubview:chairView belowSubview:self.dudeImageView];
 
         UIInterpolatingMotionEffect *chairMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
                                                                                                    type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
