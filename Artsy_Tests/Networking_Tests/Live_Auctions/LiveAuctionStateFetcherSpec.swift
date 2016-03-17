@@ -30,13 +30,10 @@ class LiveAuctionStateFetcherSpec: QuickSpec {
         it("fetches the sale state") {
             var receivedState: AnyObject?
 
-            waitUntil { done in
-                subject
-                    .fetchSale()
-                    .next { state in
-                        receivedState = state
-                        done()
-                }
+            subject
+                .fetchSale()
+                .next { state in
+                    receivedState = state
             }
 
             let dictionary = receivedState as? NSDictionary
