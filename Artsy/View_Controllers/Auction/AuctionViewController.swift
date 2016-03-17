@@ -42,6 +42,10 @@ class AuctionViewController: UIViewController {
         return nil
     }
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
+    }
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
