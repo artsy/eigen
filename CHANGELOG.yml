@@ -3,30 +3,23 @@ upcoming:
   details: Analytics improvements
 
   dev:
-    - The app is woken up when a notification is received. - alloy
+    - Fixed padding in WorksForYouVC - sarah
     - Works For You network model discards duplicate artworks - sarah
     - Fix for embedded models view controller wonkiness upon rotation - sarah + orta
     - Embedded models view controller truncates long titles with ellipsis - sarah
-    - Made a class for notification item views and added tests for WorksForYouVC - sarah
-    - Made the favorites and works for you network models more thread-safe - sarah
-    - Most of the layout for the works for you view controller is in - maxim
-    - Added a switch between native and martsy works for you view - maxim
-    - Made the searchbar larger in fair views on iPhone - maxim
-    - Additional work on the auction title view - ash
-    - Quicksilver is now accessible to non-Eigen devs - orta
-    - Removes rotation support on refine auction listings view for iPhone - ash
-    - Developers can choose to have a custom url for their staging environment - orta
-    - Initial work on the Live Auctions view controller - orta
-    - AuctionVC supports before state - orta
-    - Added an option for Admins to visualize analytics - ani/alloy/orta
-    - Initial working structure for Live Auctions with stubbed data - orta
-    - Shows a lot of the main views on Live Auctions - orta
-    - Keep a papertrail of screen views that have slugs, which we can use to improve on-boarding in an upcoming version when we require sign-up. - alloy
     - App uses actual socket connections to power live auctions views. - ash
     - App launches live auction views with initial state. - ash
+    - Wrapped up all but the refine button occasionally tapping through QA items for the Native Auction Views - orta
+    - Include tab label in analytics data. - alloy
+    - Show images for Live Auctions - orta
 
   notes:
-    - Wrapped up all but the refine button occasionally tapping through QA items for the Native Auction Views - orta
+    - Enable new native Works For You view. - sarah + alloy
+    - Fixes problem with registration status not updating. - ash
+    - The app is woken up when a notification is received and the Works For You view is preloaded. - alloy
+    - Add accessibility labels for the Home and Bell tab. - alloy
+
+  notes:
 
 releases:
   - version: 2.4.0

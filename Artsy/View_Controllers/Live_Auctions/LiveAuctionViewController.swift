@@ -5,8 +5,8 @@ import Artsy_UIFonts
 import FLKAutoLayout
 import ORStackView
 import Interstellar
+import AVFoundation
 import UICKeyChainStore
-
 
 class LiveAuctionViewController: UIViewController {
     let saleID: String
@@ -38,10 +38,6 @@ class LiveAuctionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        salesPerson.updatedState.next { [weak self] _ in
-            self?.setupWithInitialData()
-        }
-
         view.backgroundColor = .whiteColor()
 
         let navToolbar = UIView()
@@ -49,7 +45,7 @@ class LiveAuctionViewController: UIViewController {
 
         // TODO: make a smaller ARCircularActionButton?
         // Also this entire thing should become a view
-        let buttons:[UIView] = ["chat", "lots", "info", "close"].map { name in
+        let buttons:[UIView] = ["lots", "info", "close"].map { name in
             let button = ARCircularActionButton(imageName: "\(name)_icon")
             return button
         }
@@ -73,11 +69,11 @@ class LiveAuctionViewController: UIViewController {
         navToolbar.constrainHeight("40")
 
         // This sits _behind_ the PageViewController, which is transparent and shows it through
-        // meaning interaction is dealt with elsewhere
-        let previewView = LiveAuctionImagePreviewView(signal: scrollManager.progress)
+        // meaning interaction is handled by a ScrollViewProgressObserver
+
+        let previewView = LiveAuctionImagePreviewView(progressSignal: scrollManager.progress, nextSignal: salesPerson.currentIndexSignal, salesPerson: salesPerson)
         view.addSubview(previewView)
-        previewView.backgroundColor = .debugColourRed()
-        previewView.constrainHeight("200")
+        previewView.constrainHeight("300")
         previewView.constrainTopSpaceToView(navToolbar, predicate: "10")
         previewView.alignLeadingEdgeWithView(view, predicate: "0")
         previewView.alignTrailingEdgeWithView(view, predicate: "0")
@@ -88,6 +84,7 @@ class LiveAuctionViewController: UIViewController {
         if let scrollView = pageController.view.subviews.filter({ $0.isKindOfClass(UIScrollView.self) }).first as? UIScrollView {
             scrollView.delegate = scrollManager
         }
+        pageController.delegate = salesPerson.pageControllerDelegate
 
         let pageControllerView = pageController.view
         pageControllerView.constrainTopSpaceToView(navToolbar, predicate: "0")
@@ -103,6 +100,10 @@ class LiveAuctionViewController: UIViewController {
         progress.constrainHeight("4")
         progress.alignLeading("0", trailing: "0", toView: view)
         progress.alignBottomEdgeWithView(view, predicate: "-165")
+
+        salesPerson.updatedState.next { [weak self] _ in
+            self?.setupWithInitialData()
+        }
     }
 
     func setupWithInitialData() {
@@ -119,12 +120,17 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func jumpToLiveLot() {
-        let index = salesPerson.currentIndex
+        let index = salesPerson.currentIndexSignal.peek()!
         let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index)
-        guard let viewController = pageController.viewControllers?.first as? LiveAuctionLotViewController else { return }
 
-        let direction: UIPageViewControllerNavigationDirection = viewController.index > index ? .Forward : .Reverse
+        // This logic won't do, lot at index 10 is not classed as being -1 from current index
+        // perhaps it needs to see within a wrapping range of 0 to 10, which direction is it less steps
+        // to get to my index
 
+//        guard let viewController = pageController.viewControllers?.first as? LiveAuctionLotViewController else { return }
+//        let direction: UIPageViewControllerNavigationDirection = viewController.index > index ? .Forward : .Reverse
+
+        let direction = UIPageViewControllerNavigationDirection.Forward
         pageController.setViewControllers([currentLotVC!], direction: direction, animated: true, completion: nil)
     }
 
@@ -158,7 +164,6 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
         if (newIndex < 0) { newIndex = salesPerson.lotCount - 1 }
         return liveAuctionPreviewViewControllerForIndex(newIndex)
     }
-
 
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         if salesPerson.lotCount == 1 { return nil }
@@ -263,7 +268,7 @@ class LiveAuctionLotViewController: UIViewController {
 
         let bidHistoryViewController =  LiveAuctionBidHistoryViewController(style: .Plain)
         metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
-        bidHistoryViewController.view.constrainHeight("135")
+        bidHistoryViewController.view.constrainHeight("70")
 
         let currentLotView = LiveAuctionCurrentLotView()
         currentLotView.addTarget(nil, action: "jumpToLiveLot", forControlEvents: .TouchUpInside)
@@ -271,7 +276,6 @@ class LiveAuctionLotViewController: UIViewController {
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
 
-        
         // might be a way to "bind" these?
         auctionViewModel.next { auctionViewModel in
             if let currentLot = auctionViewModel.currentLotViewModel {
@@ -301,8 +305,8 @@ class LiveAuctionLotViewController: UIViewController {
                 bidHistoryViewController.lotViewModel = vm
 
             case .UpcomingLot(_):
-                self.ar_modernRemoveChildViewController(bidHistoryViewController)
-                metadataStack.removeSubview(bidHistoryViewController.view)
+                // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
+                bidHistoryViewController.view.hidden = true
             }
         }
     }
@@ -314,30 +318,59 @@ class LiveAuctionLotViewController: UIViewController {
 
 class LiveAuctionImagePreviewView : UIView {
     let progress: Signal<CGFloat>
-    var leftImageView, rightImageView, centerImageView: UIImageView
+    let salesPerson: LiveAuctionsSalesPersonType
+    
+    var leftLeftImageView, leftImageView, rightRightImageView, rightImageView, centerImageView: UIImageView
 
-    init(signal: Signal<CGFloat>) {
-        self.progress = signal
+    init(progressSignal: Signal<CGFloat>, nextSignal: Signal<Int>, salesPerson: LiveAuctionsSalesPersonType) {
+        self.salesPerson = salesPerson
+        self.progress = progressSignal
 
         leftImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
+        leftLeftImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
         centerImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
         rightImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
+        rightRightImageView = UIImageView(frame: CGRectMake(0, 0, 140, 140))
 
-        leftImageView.backgroundColor = UIColor.debugColourPurple()
-        centerImageView.backgroundColor = UIColor.debugColourPurple()
-        rightImageView.backgroundColor = UIColor.debugColourPurple()
+        let imageViews = [leftLeftImageView, leftImageView, rightImageView, rightRightImageView, centerImageView]
 
         super.init(frame: CGRect.zero)
 
-        [leftImageView, centerImageView, rightImageView].forEach { self.addSubview($0) }
+        for image in imageViews {
+            addSubview(image)
+            image.backgroundColor = .artsyLightGrey()
+        }
 
-        signal.next { progress in
+        progressSignal.next { progress in
             let width = Int(self.bounds.width)
             let half = Int(width / 2)
 
-            self.leftImageView.center = self.positionOnRange(-half...half, value: progress)
+            self.leftLeftImageView.center = self.positionOnRange(-width...0, value: progress)
+            self.leftImageView.center = self.positionOnRange((-half - 0)...half, value: progress)
             self.centerImageView.center = self.positionOnRange(0...width, value: progress)
-            self.rightImageView.center = self.positionOnRange(half...width + half, value:  progress)
+            self.rightImageView.center = self.positionOnRange(half...width + half, value: progress)
+            self.rightRightImageView.center = self.positionOnRange(width...width * 2, value: progress)
+        }
+
+        nextSignal.next { _ in
+            let imageViews = [self.leftLeftImageView, self.leftImageView, self.centerImageView, self.rightImageView, self.rightRightImageView]
+            let indexes = [-2, -1, 0, 1, 2]
+
+            for index in indexes {
+                if let vm = salesPerson.lotViewModelRelativeToShowingIndex(index) {
+                    let imageViewIndex = indexes.indexOf { $0 == index }!
+
+                    let imageView = imageViews[imageViewIndex]
+                    imageView.ar_setImageWithURL(vm.urlForThumbnail)
+                    let size = vm.imageProfileSize
+                    let aspectRatio =  size.width / size.height
+
+                    imageView.frame = AVMakeRectWithAspectRatioInsideRect(
+                        CGSizeMake(aspectRatio, 1),
+                        CGRect(x: 0, y: 0, width: 180, height: 300)
+                    )
+                }
+            }
         }
     }
 
@@ -360,11 +393,6 @@ class LiveAuctionImagePreviewView : UIView {
             offset = (midpoint - min) * value
         }
         return midpoint + offset
-    }
-
-    func transformOnRange(range: Range<Int>, value: CGFloat) -> CGAffineTransform {
-        let zoomLevel = valueOnRange(range, value: value)
-        return CGAffineTransformScale(CGAffineTransformIdentity, zoomLevel/100, zoomLevel/100);
     }
 
     func positionOnRange(range: Range<Int>, value: CGFloat) -> CGPoint {
@@ -398,7 +426,6 @@ class LiveAuctionCurrentLotView: UIButton {
 
         let hammerView = UIImageView(image: UIImage(named:"lot_bidder_hammer_white"))
         let thumbnailView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-
 
         [liveLotLabel, artistNameLabel, biddingPriceLabel, thumbnailView, hammerView].forEach { addSubview($0) }
         [liveLotLabel, artistNameLabel, biddingPriceLabel].forEach {
@@ -452,7 +479,6 @@ class LiveAuctionToolbarView : UIView {
         subviews.forEach { $0.removeFromSuperview() }
         setupViews()
     }
-
 
     func lotCountString() -> NSAttributedString {
         return NSAttributedString(string: "\(lotVM.lotIndex)/\(lotVM.lotCount)")
@@ -544,6 +570,7 @@ class LiveAuctionToolbarView : UIView {
             let middle = views[1]
             middle.alignCenterXWithView(self, predicate: "0")
         }
+
         if views.count == 4 {
             let middleLeft = views[1]
             let middleRight = views[2]

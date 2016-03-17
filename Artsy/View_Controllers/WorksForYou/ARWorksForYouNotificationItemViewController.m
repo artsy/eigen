@@ -42,6 +42,8 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+
     ARSansSerifLabelWithChevron *artistNameLabel = [[ARSansSerifLabelWithChevron alloc] initWithFrame:CGRectZero];
     artistNameLabel.text = self.notificationItem.artist.name.uppercaseString;
     artistNameLabel.textColor = [UIColor blackColor];
@@ -60,15 +62,16 @@
     ARSerifLabel *numberOfWorksAddedLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     numberOfWorksAddedLabel.text = self.notificationItem.formattedNumberOfWorks;
     numberOfWorksAddedLabel.textColor = [UIColor artsyHeavyGrey];
-    numberOfWorksAddedLabel.font = [UIFont serifFontWithSize:14];
+    numberOfWorksAddedLabel.font = [UIFont serifFontWithSize:16];
     [self addArtistTapRecognizerToView:numberOfWorksAddedLabel];
 
     ORSplitStackView *ssv = [[ORSplitStackView alloc] initWithLeftPredicate:@"200" rightPredicate:@"100"];
     [ssv.leftStack addSubview:artistNameLabel withTopMargin:@"10" sideMargin:@"0"];
     [ssv.rightStack addSubview:dateLabel withTopMargin:@"10" sideMargin:@"0"];
 
-    [self.view addSubview:ssv withTopMargin:@"10" sideMargin:@"30"];
-    [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"10" sideMargin:@"30"];
+    NSString *labelSideMargin = (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? @"75" : @"30";
+    [self.view addSubview:ssv withTopMargin:@"10" sideMargin:labelSideMargin];
+    [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"7" sideMargin:labelSideMargin];
 
     if (self.artworksVC) {
         self.artworksVC.constrainHeightAutomatically = YES;
@@ -77,10 +80,11 @@
         module.layoutProvider = self;
         self.artworksVC.activeModule = module;
         [self.artworksVC appendItems:self.notificationItem.artworks];
-        [self.view addViewController:self.artworksVC toParent:self withTopMargin:@"10" sideMargin:@"0"];
+        [self.view addViewController:self.artworksVC toParent:self withTopMargin:@"0" sideMargin:@"0"];
     }
 
-    [super viewDidLoad];
+    // this tells the embedded artworks view controller that it should update for the correct size because self.view.frame.size at this point is (0, 0)
+    [self.artworksVC didMoveToParentViewController:self.parentViewController];
 }
 
 - (void)addArtistTapRecognizerToView:(UIView *)view

@@ -38,6 +38,8 @@ describe(@"concerning loading a view controller", ^{
     __block id mock = nil;
 
     beforeEach(^{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@{}];
+
         mock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
         [[mock expect] pushViewController:[OCMArg checkWithBlock:^(ARArtworkSetViewController *viewController) {
             (void)viewController.view; // ensure the artwork view controller gets created

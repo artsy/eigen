@@ -1,10 +1,11 @@
+import Interstellar
 @testable
 import Artsy
 import Interstellar
 
 class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
-    var currentIndex = 0
-    
+    var currentIndexSignal =  Signal<Int>()
+
     var lots: [LiveAuctionLot] = []
     var sale: LiveSale!
     var events: [String: LiveEvent]!
@@ -14,6 +15,8 @@ class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
     var auctionViewModel: LiveAuctionViewModel? {
         return LiveAuctionViewModel(sale: sale, salesPerson: self)
     }
+
+    var pageControllerDelegate: LiveAuctionPageControllerDelegate!
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel? {
         if (0..<lots.count ~= index) {
@@ -27,6 +30,13 @@ class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         return nil
     }
 
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModel? {
+        guard let currentlyShowingIndex = currentIndexSignal.peek() else { return nil }
+        let newIndex = currentlyShowingIndex + offset
+        let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
+        return lotViewModelForIndex(loopingIndex)
+    }
+
     var lotCount: Int {
         return auctionViewModel?.lotCount ?? 0
     }
@@ -38,6 +48,7 @@ class Fake_AuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
     override init () {
         super.init()
         setupWithStub()
+        pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
     }
 
     func setupWithStub() {
