@@ -63,10 +63,14 @@ static int ARLoadingIndicatorView = 1;
     titleLabel.font = [UIFont serifFontWithSize:20];
 
     [self.view.stackView addSubview:titleLabel withTopMargin:@"30" sideMargin:(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? @"90" : @"45"];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 
     [self updateView];
 }
-
 
 - (void)addSeparatorLine
 {
