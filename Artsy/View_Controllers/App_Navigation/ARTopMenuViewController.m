@@ -73,6 +73,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
     notificationsButton.tag = ARNavButtonNotificationsTag;
 
+    homeButton.accessibilityLabel = @"Home";
     [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateNormal];
     [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateSelected];
     CGFloat buttonImageSize = 20;
@@ -84,6 +85,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
     [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
 
+    notificationsButton.accessibilityLabel = @"Notifications";
     [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateNormal];
     [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateSelected];
     [notificationsButton.imageView constrainWidth:@"12" height:@"14"];
