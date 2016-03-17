@@ -170,14 +170,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 
         CGRect backgroundFrame = self.view.bounds;
         backgroundFrame.origin.y += LandscapeOrientationBackgroundNegativeBottomMargin;
-
-        UIDevicePlatform deviceType = [UIDevice currentDevice].platformType;
-        if (deviceType == UIDevice6iPhone) {
-            backgroundFrame.origin.y -= 11;
-        }
-        if (deviceType == UIDevice6PlusiPhone) {
-            backgroundFrame.origin.y -= 19;
-        }
+        backgroundFrame.origin.y -= self.view.bounds.size.height - 360;
         self.backgroundImageView.frame = backgroundFrame;
 
     } else {
@@ -205,6 +198,8 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
         } else {
             [self.dudeImageView removeMotionEffect:self.chairMotion];
         }
+
+
     }
 
 #if DEBUG_VIEW_IN_ROOM
@@ -240,7 +235,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 - (void)setupParallaxVIR
 {
     CGFloat wallsWidth = 90;
-    CGFloat wallsYOffset = -2;
+    CGFloat wallsYOffset = CGRectGetHeight(self.view.bounds) - 380;
     CGFloat wallsStretch = 8;
 
     CGFloat chairHeight = 50;
