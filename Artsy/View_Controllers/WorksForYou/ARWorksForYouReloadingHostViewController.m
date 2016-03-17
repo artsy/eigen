@@ -1,4 +1,6 @@
 #import "ARWorksForYouReloadingHostViewController.h"
+
+#import "UIViewController+SimpleChildren.h"
 #import "ARLogger.h"
 
 @import FLKAutoLayout;
@@ -18,6 +20,8 @@
 - (instancetype)init;
 {
     if ((self = [super init])) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+
         _lastLoadedAt = [NSDate date];
         _worksForYouViewController = [ARWorksForYouViewController new];
     }
@@ -27,7 +31,7 @@
 - (void)viewDidLoad;
 {
     [super viewDidLoad];
-    [self addWorksForYouViewController];
+    [self ar_addAlignedModernChildViewController:self.worksForYouViewController];
 }
 
 - (void)viewWillAppear:(BOOL)animated;
@@ -54,21 +58,11 @@
 {
     if (_worksForYouViewController != viewController) {
         if (_worksForYouViewController) {
-            [_worksForYouViewController willMoveToParentViewController:nil];
-            [_worksForYouViewController.view removeFromSuperview];
-            [_worksForYouViewController removeFromParentViewController];
+            [self ar_removeChildViewController:_worksForYouViewController];
         }
         _worksForYouViewController = viewController;
-        [self addWorksForYouViewController];
+        [self ar_addAlignedModernChildViewController:_worksForYouViewController];
     }
-}
-
-- (void)addWorksForYouViewController;
-{
-    [self addChildViewController:self.worksForYouViewController];
-    [self.view addSubview:self.worksForYouViewController.view];
-    [self.worksForYouViewController.view alignToView:self.view];
-    [self.worksForYouViewController didMoveToParentViewController:self];
 }
 
 @end
