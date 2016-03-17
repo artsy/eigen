@@ -23,7 +23,7 @@
       thumbnailImageForActivityType:(NSString *)activityType
                       suggestedSize:(CGSize)size
 {
-    if ([self.activityType isEqualToString:UIActivityTypeAirDrop]) {
+    if ([activityType isEqualToString:UIActivityTypeAirDrop]) {
         return [UIImage imageNamed:@"AppIcon_120"];
     }
 
