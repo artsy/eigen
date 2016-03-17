@@ -9,6 +9,7 @@ class AuctionViewController: UIViewController {
 
     var headerStack: ORStackView!
     var stickyHeader: ScrollingStickyHeaderView!
+    var titleView: AuctionTitleView?
 
     var allowAnimations = true
 
@@ -62,6 +63,8 @@ class AuctionViewController: UIViewController {
         }.error { error in
             // TODO: Error-handling somehow
         }
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "registrationUpdated:", name: ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -143,6 +146,7 @@ extension AuctionViewController {
         let titleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self, fullWidth: compactSize, showAdditionalInformation: true)
         titleView.tag = ViewTags.Title.rawValue
         headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
+        self.titleView = titleView
 
         stickyHeader = ScrollingStickyHeaderView().then {
             $0.toggleAttatched(false, animated:false)
@@ -202,6 +206,15 @@ extension AuctionViewController {
 
         saleArtworksViewController.items = items
         stickyHeader.subtitleLabel.text = saleViewModel.subtitleForRefineSettings(refineSettings, defaultRefineSettings: defaultRefineSettings())
+    }
+}
+
+private typealias NotificationCenterObservers = AuctionViewController
+extension NotificationCenterObservers {
+    func registrationUpdated(notification: NSNotification) {
+        networkModel.fetchRegistrationStatus().next { [weak self] registrationStatus in
+            self?.titleView?.registrationStatus = registrationStatus
+        }
     }
 }
 

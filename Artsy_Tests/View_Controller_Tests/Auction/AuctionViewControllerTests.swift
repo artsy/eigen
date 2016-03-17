@@ -48,6 +48,24 @@ class AuctionViewControllerTests: QuickSpec {
                 }
             }
 
+            it("looks good when registration status changes") {
+                let subject = AuctionViewController(saleID: sale.saleID)
+                subject.allowAnimations = false
+                let networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+                subject.networkModel = networkModel
+                subject.stubHorizontalSizeClass(horizontalSizeClass)
+
+                ARTestContext.useDevice(device) {
+                    // Must load view within context of device, since the iPad-specific layout will cause a throw exception on iPhone.
+                    subject.loadViewProgrammatically()
+
+                    networkModel.registrationStatus = ArtsyAPISaleRegistrationStatusRegistered
+                    NSNotificationCenter.defaultCenter().postNotificationName(ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
+
+                    expect(subject).to( haveValidSnapshot() )
+                }
+            }
+
             it("looks good when registereed") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
@@ -271,6 +289,10 @@ class Test_AuctionNetworkModel: AuctionNetworkModelType {
 
     func fetch() -> Signal<SaleViewModel> {
         return Signal(saleViewModel)
+    }
+
+    func fetchRegistrationStatus() -> Signal<ArtsyAPISaleRegistrationStatus> {
+        return Signal(registrationStatus ?? ArtsyAPISaleRegistrationStatusNotLoggedIn)
     }
 }
 
