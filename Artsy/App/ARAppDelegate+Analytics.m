@@ -803,9 +803,10 @@
                             ARAnalyticsProperties:^NSDictionary*(ARTabContentView *view, NSArray *parameters) {
                                 NSInteger index = [parameters.firstObject integerValue];
                                 UIButton *button = view.buttons[index];
-                                NSString *title = button.titleLabel.text.lowercaseString;
+                                NSString *title = button.accessibilityLabel ?: button.titleLabel.text;
+                                NSParameterAssert(title);
                                 return @{
-                                    @"tab name" : title ?: @""
+                                    @"tab name" : (title ?: @"").lowercaseString
                                 };
                             },
                             ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
@@ -1243,13 +1244,13 @@
                                 return @{ @"tab": @"Artworks" };
                             }
                         },@{
-                            ARAnalyticsPageName: @"Bell",
+                            ARAnalyticsPageName: @"Notifications",
                             ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
                             ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
                                 return [parameters.firstObject integerValue] == ARTopTabControllerIndexNotifications;
                             },
                         },@{
-                            ARAnalyticsPageName: @"Bell Tapped",
+                            ARAnalyticsPageName: @"Notifications Tab Tapped",
                             ARAnalyticsSelectorName: ARAnalyticsSelector(buttonTapped:),
                             ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
                                 return [parameters.firstObject tag] == ARNavButtonNotificationsTag;

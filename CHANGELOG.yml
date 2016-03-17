@@ -4,17 +4,18 @@ upcoming:
 
   dev:
     - Fixed padding in WorksForYouVC - sarah
-    - The app is woken up when a notification is received. - alloy
     - Works For You network model discards duplicate artworks - sarah
     - Fix for embedded models view controller wonkiness upon rotation - sarah + orta
     - Embedded models view controller truncates long titles with ellipsis - sarah
     - App uses actual socket connections to power live auctions views. - ash
+    - Wrapped up all but the refine button occasionally tapping through QA items for the Native Auction Views - orta
+    - Include tab label in analytics data. - alloy
 
   notes:
     - Enable new native Works For You view. - sarah + alloy
-    - Wrapped up all but the refine button occasionally tapping through QA items for the Native Auction Views - orta
-    - The app is woken up when a notification is received. - alloy
     - Fixes problem with registration status not updating. - ash
+    - The app is woken up when a notification is received and the Works For You view is preloaded. - alloy
+    - Add accessibility labels for the Home and Bell tab. - alloy
 
   notes:
 
