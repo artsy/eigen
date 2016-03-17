@@ -1,6 +1,6 @@
 import Foundation
 
-enum SaleAvailabilityState {
+@objc enum SaleAvailabilityState: NSInteger {
     case NotYetOpen
     case Active
     case Closed

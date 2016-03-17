@@ -10,6 +10,7 @@
 #import <AFNetworking/AFNetworking.h>
 
 #import "AROptions.h"
+#import "Artsy-Swift.h"
 
 #import "Artist.h"
 #import "Artwork.h"
@@ -1155,7 +1156,40 @@
                             ARAnalyticsEventName: ARAnalyticsBackTapped
                         }
                     ]
-                }
+                },
+                @{
+                    ARAnalyticsClass: AuctionViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsAuctionBidButtonTapped,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(userDidPressRegister:),
+                            ARAnalyticsProperties: ^NSDictionary *(AuctionViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"auction_slug" : controller.saleID ?: @"",
+                                    @"auction_state" : controller.saleViewModel.saleAvailability == SaleAvailabilityStateActive ? @"open" : @"preview",
+                                    @"context_type": controller.navigationController.topViewController == controller ? @"sale" : @"information"
+                                };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: AuctionInformationViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsAuctionContactTapped,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(showContact:),
+                            ARAnalyticsProperties: ^NSDictionary *(AuctionInformationViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"auction_slug" : controller.saleViewModel.saleID ?: @"",
+                                    @"auction_state" : controller.saleViewModel.saleAvailability == SaleAvailabilityStateActive ? @"open" : @"preview",
+                                    @"context_type": controller.navigationController.topViewController == controller ? @"sale" : @"information"
+                                };
+                            }
+                        }
+                    ]
+                },
+
             ],
             ARAnalyticsTrackedScreens: @[
                 @{
