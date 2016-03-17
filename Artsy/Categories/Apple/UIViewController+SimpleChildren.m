@@ -28,7 +28,7 @@
 
     [controller.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
     [controller.view alignLeading:@"0" trailing:@"0" toView:self.view];
-    [controller.view alignBottomEdgeWithView:self.view predicate:@"0"];
+    [controller.view constrainBottomSpaceToView:self.flk_bottomLayoutGuide predicate:@"0"];
 }
 
 - (void)ar_addModernChildViewController:(UIViewController *)controller
@@ -71,8 +71,8 @@
 - (void)ar_removeChildViewController:(UIViewController *)controller
 {
     [controller willMoveToParentViewController:nil];
-    [controller removeFromParentViewController];
     [controller.view removeFromSuperview];
+    [controller removeFromParentViewController];
 }
 
 - (void)ar_modernRemoveChildViewController:(UIViewController *)controller
