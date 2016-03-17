@@ -3,6 +3,8 @@ import Interstellar
 
 protocol AuctionNetworkModelType {
     func fetch() -> Signal<SaleViewModel>
+    func fetchRegistrationStatus() -> Signal<ArtsyAPISaleRegistrationStatus>
+    
     var registrationStatus: ArtsyAPISaleRegistrationStatus? { get }
 }
 
@@ -28,10 +30,14 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
         return self.registrationStatusNetworkModel.registrationStatus
     }
 
+    func fetchRegistrationStatus() -> Signal<ArtsyAPISaleRegistrationStatus> {
+        let signal = Signal(saleID)
+        return signal.flatMap(registrationStatusNetworkModel.fetchRegistrationStatus)
+    }
+
     func fetch() -> Signal<SaleViewModel> {
         let signal = Signal(saleID)
 
-        let fetchRegistrationStatus = signal.flatMap(registrationStatusNetworkModel.fetchRegistrationStatus)
         let fetchSale = signal.flatMap(saleNetworkModel.fetchSale)
         let fetchSaleArtworks = signal.flatMap(saleArtworksNetworkModel.fetchSaleArtworks)
 
@@ -50,7 +56,7 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 self.saleViewModel = saleViewModel
         }
 
-        return fetchRegistrationStatus.flatMap { (_, callback) in // Note we discard the status, we don't care.
+        return fetchRegistrationStatus().flatMap { (_, callback) in // Note we discard the status, we don't care.
             createViewModel.subscribe(callback)
         }
     }
