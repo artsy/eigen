@@ -28,12 +28,12 @@
             [stackView addPageTitleWithString:NSLocalizedString(@"Can’t Connect", @"Offline mode view title")],
             [stackView addSerifPageSubtitle:NSLocalizedString(@"Check your network and try again", @"Offline mode view subtitle")],
         ] each:^(UILabel *label) {
-            label.textColor = [UIColor artsyGrayBold];
+            label.textColor = [UIColor artsyGraySemibold];
         }];
 
         UIImage *buttonIcon = [UIImage imageNamed:@"RefreshIcon"];
         _refreshButton = [ARMenuButton new];
-        [_refreshButton setBorderColor:[UIColor artsyGrayLight] forState:UIControlStateNormal animated:NO];
+        [_refreshButton setBorderColor:[UIColor artsyGrayRegular] forState:UIControlStateNormal animated:NO];
         [_refreshButton setBackgroundColor:[UIColor whiteColor] forState:UIControlStateNormal animated:NO];
         [_refreshButton setImage:buttonIcon forState:UIControlStateNormal];
         [_refreshButton addTarget:self action:@selector(forceRefreshFeedItems:) forControlEvents:UIControlEventTouchUpInside];

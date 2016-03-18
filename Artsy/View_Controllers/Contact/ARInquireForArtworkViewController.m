@@ -348,7 +348,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [cancelButton ar_extendHitTestSizeByWidth:10 andHeight:10];
     cancelButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor artsyGrayBold] forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[UIColor artsyGraySemibold] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _cancelButton = cancelButton;
     [topMenuView addSubview:cancelButton];
@@ -405,7 +405,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     nameInput.textColor = [UIColor blackColor];
     nameInput.tintColor = [self inputTintColor];
     nameInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your Full Name" attributes:@{
-        NSForegroundColorAttributeName : [UIColor artsyGrayBold]
+        NSForegroundColorAttributeName : [UIColor artsyGraySemibold]
     }];
     nameInput.font = [UIFont serifFontWithSize:15];
     nameInput.clearButtonMode = UITextFieldViewModeNever;
@@ -436,7 +436,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     emailInput.textColor = [UIColor blackColor];
     emailInput.tintColor = [self inputTintColor];
     emailInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your Email" attributes:@{
-        NSForegroundColorAttributeName : [UIColor artsyGrayBold]
+        NSForegroundColorAttributeName : [UIColor artsyGraySemibold]
     }];
     emailInput.font = [UIFont serifFontWithSize:15];
     emailInput.clearButtonMode = UITextFieldViewModeNever;
@@ -510,7 +510,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
         UILabel *artworkLabel = [[UILabel alloc] init];
         artworkLabel.attributedText = artworkString.copy;
-        artworkLabel.textColor = [UIColor artsyGrayBold];
+        artworkLabel.textColor = [UIColor artsyGraySemibold];
         artworkLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [artworkInfoView addSubview:artworkLabel];
 
@@ -522,7 +522,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
         UILabel *artworkArtist = [[UILabel alloc] init];
         artworkArtist.font = [UIFont serifFontWithSize:13];
         artworkArtist.text = self.artwork.artist.name;
-        artworkArtist.textColor = [UIColor artsyGrayBold];
+        artworkArtist.textColor = [UIColor artsyGraySemibold];
         artworkArtist.lineBreakMode = NSLineBreakByTruncatingTail;
         [artworkInfoView addSubview:artworkArtist];
         [artworkArtist alignLeading:@"0" trailing:@"0" toView:artworkInfoView];
@@ -531,7 +531,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
         UILabel *artworkTitle = [[UILabel alloc] init];
         artworkTitle.font = [UIFont serifItalicFontWithSize:13];
         artworkTitle.text = self.artwork.title;
-        artworkTitle.textColor = [UIColor artsyGrayBold];
+        artworkTitle.textColor = [UIColor artsyGraySemibold];
         artworkTitle.lineBreakMode = NSLineBreakByTruncatingTail;
         [artworkInfoView addSubview:artworkTitle];
 
@@ -547,7 +547,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     if (currentUser) {
         UILabel *userSignature = [[UILabel alloc] init];
         userSignature.font = self.textView.font;
-        userSignature.textColor = [UIColor artsyGrayBold];
+        userSignature.textColor = [UIColor artsyGraySemibold];
         userSignature.text = currentUser.name ?: currentUser.email;
 
         // We dont have access to whether the user is an admin in a User
@@ -610,7 +610,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     UILabel *specialistNameLabel = [[UILabel alloc] init];
     specialistNameLabel.font = [UIFont serifFontWithSize:12];
     specialistNameLabel.text = self.artwork.displayTitle;
-    specialistNameLabel.textColor = [UIColor artsyGrayBold];
+    specialistNameLabel.textColor = [UIColor artsyGraySemibold];
     specialistNameLabel.numberOfLines = 0;
     specialistNameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [specialistInfoView addSubview:specialistNameLabel];

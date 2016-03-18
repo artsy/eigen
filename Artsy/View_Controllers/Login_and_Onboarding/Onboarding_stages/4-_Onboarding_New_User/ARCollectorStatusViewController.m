@@ -93,7 +93,7 @@
     CALayer *separator = [CALayer layer];
     CGFloat height = [self tableView:tableView heightForHeaderInSection:section];
     separator.frame = CGRectMake(15, height - .5, CGRectGetWidth(self.view.bounds) - 30, .5);
-    separator.backgroundColor = [UIColor artsyGrayBold].CGColor;
+    separator.backgroundColor = [UIColor artsyGraySemibold].CGColor;
     [wrapper.layer addSublayer:separator];
     return wrapper;
 }

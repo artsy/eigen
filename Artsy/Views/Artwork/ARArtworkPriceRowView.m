@@ -27,7 +27,7 @@
 
         _bidStatusLabel = [[ARSerifLabel alloc] init];
         self.bidStatusLabel.font = [UIFont serifFontWithSize:16];
-        self.bidStatusLabel.textColor = [UIColor artsyGrayBold];
+        self.bidStatusLabel.textColor = [UIColor artsyGraySemibold];
         self.bidStatusLabel.hidden = YES;
         [self addSubview:self.bidStatusLabel];
 

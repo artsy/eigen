@@ -80,7 +80,7 @@ static CGFloat ARWarningViewMargin = 8;
 {
     [super setup];
     self.font = [self.font fontWithSize:13];
-    self.textColor = [UIColor artsyGrayBold];
+    self.textColor = [UIColor artsyGraySemibold];
     self.textAlignment = NSTextAlignmentCenter;
     self.backgroundColor = [UIColor artsyYellowRegular];
     UIImage *iconImage = [UIImage imageNamed:@"AttentionIcon"];

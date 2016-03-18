@@ -41,7 +41,7 @@
     self.label.font = [UIFont serifFontWithSize:16];
     self.label.text = @"Find Exhibitors & Artists";
     self.label.numberOfLines = 0;
-    self.label.textColor = [UIColor artsyGrayBold];
+    self.label.textColor = [UIColor artsyGraySemibold];
     self.label.backgroundColor = [UIColor clearColor];
     [self addSubview:self.label];
     [self.label alignLeadingEdgeWithView:self.imageView predicate:@"21"];

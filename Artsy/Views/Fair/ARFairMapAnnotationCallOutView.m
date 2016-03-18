@@ -67,7 +67,7 @@
     [arrowImage setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
     UIView *separator = [[UIView alloc] init];
-    separator.backgroundColor = [UIColor artsyGrayLight];
+    separator.backgroundColor = [UIColor artsyGrayRegular];
     [container addSubview:separator];
     _verticalSeparator = separator;
     [separator alignAttribute:NSLayoutAttributeRight toAttribute:NSLayoutAttributeLeft ofView:arrowImage predicate:@"-13"];

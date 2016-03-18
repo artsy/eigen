@@ -114,7 +114,7 @@
 
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateDisabled];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
-    [button setTitleColor:[UIColor artsyGrayBold] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor artsyGraySemibold] forState:UIControlStateNormal];
 
     return button;
 }

@@ -115,7 +115,7 @@ static NSString *ARImageSizeMasonry = @"tall";
 
 + (UIImage *)defaultPlaceholder
 {
-    return [UIImage imageFromColor:[UIColor artsyGrayLight]];
+    return [UIImage imageFromColor:[UIColor artsyGrayRegular]];
 }
 
 + (UIImage *)bestAvailableCachedImageForBaseURL:(NSURL *)url

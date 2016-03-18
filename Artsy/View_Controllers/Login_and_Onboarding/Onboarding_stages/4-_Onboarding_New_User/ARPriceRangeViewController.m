@@ -68,7 +68,7 @@
     [self.view addSubview:tableView];
     CALayer *sep = [CALayer layer];
     sep.frame = CGRectMake(15, 0, CGRectGetWidth(self.view.bounds) - 30, .5);
-    sep.backgroundColor = [UIColor artsyGrayBold].CGColor;
+    sep.backgroundColor = [UIColor artsyGraySemibold].CGColor;
     [tableView.layer addSublayer:sep];
 
     UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, CGRectGetWidth(self.view.bounds) - 40, 30)];

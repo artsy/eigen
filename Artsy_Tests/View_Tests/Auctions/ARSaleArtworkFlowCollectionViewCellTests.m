@@ -28,7 +28,7 @@ it(@"looks good with compact cells", ^{
     subject.bounds = (CGRect){CGPointZero, size};
     [subject setupWithRepresentedObject:saleArtworkMock];
     // Just to see it in the snapshot without setting the image from the URL.
-    [[subject valueForKey:@"artworkImageView"] setImage:[UIImage imageFromColor:[UIColor artsyGrayLight]]];
+    [[subject valueForKey:@"artworkImageView"] setImage:[UIImage imageFromColor:[UIColor artsyGrayRegular]]];
 
     expect(subject).to.haveValidSnapshot();
 });
@@ -43,7 +43,7 @@ it(@"looks good with regular cells", ^{
     subject.bounds = (CGRect){CGPointZero, size};
     [subject setupWithRepresentedObject:saleArtworkMock];
     // Just to see it in the snapshot without setting the image from the URL.
-    [[subject valueForKey:@"artworkImageView"] setImage:[UIImage imageFromColor:[UIColor artsyGrayLight]]];
+    [[subject valueForKey:@"artworkImageView"] setImage:[UIImage imageFromColor:[UIColor artsyGrayRegular]]];
 
     expect(subject).to.haveValidSnapshot();
 

@@ -215,7 +215,7 @@ static CGFloat ARHeroUnitDescriptionFont;
     label.layer.shadowOpacity = 0.8;
     label.layer.shadowRadius = 2.0;
     label.layer.shadowOffset = CGSizeZero;
-    label.layer.shadowColor = [UIColor artsyGrayBold].CGColor;
+    label.layer.shadowColor = [UIColor artsyGraySemibold].CGColor;
     label.layer.shouldRasterize = YES;
 }
 

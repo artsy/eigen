@@ -90,7 +90,7 @@ private extension UISetup {
         let tableView = UITableView().then {
             $0.registerClass(AuctionRefineTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
             $0.scrollEnabled = false
-            $0.separatorColor = .artsyGrayLight()
+            $0.separatorColor = .artsyGrayRegular()
             $0.separatorInset = UIEdgeInsetsZero
             $0.dataSource = self
             $0.delegate = self
@@ -174,8 +174,8 @@ private extension UISetup {
         let resetButton = ARWhiteFlatButton().then {
             $0.enabled = false
             $0.setTitle("Reset", forState: .Normal)
-            $0.setBorderColor(.artsyGrayLight(), forState: .Normal)
-            $0.setBorderColor(UIColor.artsyGrayLight().colorWithAlphaComponent(0.5), forState: .Disabled)
+            $0.setBorderColor(.artsyGrayRegular(), forState: .Normal)
+            $0.setBorderColor(UIColor.artsyGrayRegular().colorWithAlphaComponent(0.5), forState: .Disabled)
             $0.layer.borderWidth = 1
             $0.addTarget(self, action: "userDidPressReset", forControlEvents: .TouchUpInside)
         }

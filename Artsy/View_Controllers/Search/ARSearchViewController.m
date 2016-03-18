@@ -105,7 +105,7 @@
     [infoLabel constrainHeight:@"60"];
     [infoLabel constrainWidthToView:self.contentView predicate:@"0"];
     [infoLabel alignCenterWithView:self.contentView];
-    infoLabel.textColor = [UIColor artsyGrayBold];
+    infoLabel.textColor = [UIColor artsyGraySemibold];
     infoLabel.backgroundColor = [UIColor clearColor];
     infoLabel.hidden = YES;
     _infoLabel = infoLabel;

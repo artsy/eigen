@@ -201,7 +201,7 @@
     BOOL published = result.isPublished.boolValue;
     if (!published) {
         cell.textLabel.text = [result.displayText stringByAppendingString:@" (unpublished)"];
-        cell.textLabel.textColor = [UIColor artsyGrayLight];
+        cell.textLabel.textColor = [UIColor artsyGrayRegular];
     } else {
         cell.textLabel.text = result.displayText;
         cell.textLabel.textColor = [UIColor whiteColor];

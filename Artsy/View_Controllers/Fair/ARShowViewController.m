@@ -360,7 +360,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 - (ARSerifLabel *)metadataLabel:(NSString *)text
 {
     ARSerifLabel *label = [[ARSerifLabel alloc] init];
-    label.textColor = [UIColor artsyGrayBold];
+    label.textColor = [UIColor artsyGraySemibold];
     label.font = [UIFont serifFontWithSize:16];
     label.text = text;
     return label;

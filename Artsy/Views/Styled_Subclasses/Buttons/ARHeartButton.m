@@ -30,7 +30,7 @@
     _backView = backView;
 
     CALayer *whiteLayer = _backView.layer;
-    whiteLayer.borderColor = [UIColor artsyGrayLight].CGColor;
+    whiteLayer.borderColor = [UIColor artsyGrayRegular].CGColor;
     whiteLayer.borderWidth = 1;
     whiteLayer.cornerRadius = dimension * .5f;
     whiteLayer.backgroundColor = [UIColor whiteColor].CGColor;

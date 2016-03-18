@@ -24,7 +24,7 @@
 
     [self setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisVertical];
     self.userInteractionEnabled = YES;
-    self.backgroundColor = [UIColor artsyGrayLight];
+    self.backgroundColor = [UIColor artsyGrayRegular];
 
     // This in practice can occasionally crop by a pixel or so, which is acceptable
     self.contentMode = UIViewContentModeScaleAspectFit;
@@ -104,7 +104,7 @@
         // Multiply by 1000 to preserve precision because the image's dimensions get rounded to whole numbers.
         CGFloat aspectRatio = artwork.aspectRatio ?: 1;
         CGSize size = CGSizeMake(aspectRatio * 1000, 1000);
-        image = [UIImage imageFromColor:[UIColor artsyGrayLight] withSize:size];
+        image = [UIImage imageFromColor:[UIColor artsyGrayRegular] withSize:size];
     }
     return image;
 }

@@ -94,7 +94,7 @@ class LiveAuctionViewController: UIViewController {
 
         let progress = SimpleProgressView()
         progress.progress = 0.6
-        progress.backgroundColor = .artsyGrayLight()
+        progress.backgroundColor = .artsyGrayRegular()
 
         view.addSubview(progress)
         progress.constrainHeight("4")
@@ -338,7 +338,7 @@ class LiveAuctionImagePreviewView : UIView {
 
         for image in imageViews {
             addSubview(image)
-            image.backgroundColor = .artsyGrayLight()
+            image.backgroundColor = .artsyGrayRegular()
         }
 
         progressSignal.next { progress in

@@ -48,7 +48,7 @@ static CGFloat ARMetadataFontSize;
 
     [@[ self.primaryLabel, self.secondaryLabel, self.priceLabel ] each:^(UILabel *label) {
         label.font = [label.font fontWithSize:ARMetadataFontSize];
-        label.textColor = [UIColor artsyGrayBold];
+        label.textColor = [UIColor artsyGraySemibold];
         [self addSubview:label];
     }];
 

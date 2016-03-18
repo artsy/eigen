@@ -77,7 +77,7 @@ static const CGFloat ARTextLineSpacing = 5;
 - (void)addImagePreviewWithURL:(NSURL *)url
 {
     UIImageView *imagePreviewView = [[UIImageView alloc] initWithFrame:CGRectMake(ARImageMargin, ARImageMargin, 60, 60)];
-    imagePreviewView.backgroundColor = [UIColor artsyGrayLight];
+    imagePreviewView.backgroundColor = [UIColor artsyGrayRegular];
     [imagePreviewView ar_setImageWithURL:url];
     [self.contentView addSubview:imagePreviewView];
 }
@@ -88,7 +88,7 @@ static const CGFloat ARTextLineSpacing = 5;
     CGFloat yPosition = CGRectGetHeight(self.bounds) - height;
     CGRect frame = CGRectMake(ARImageMargin, yPosition, CGRectGetWidth(self.bounds) - (ARImageMargin * 2), height);
     UIView *separator = [[UIView alloc] initWithFrame:frame];
-    separator.backgroundColor = [UIColor artsyGrayLight];
+    separator.backgroundColor = [UIColor artsyGrayRegular];
     self.separator = separator;
 
     [self.contentView addSubview:separator];

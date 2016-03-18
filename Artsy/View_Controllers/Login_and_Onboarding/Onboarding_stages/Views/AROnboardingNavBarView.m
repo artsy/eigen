@@ -40,7 +40,7 @@
         [self.forward setEnabled:NO animated:NO];
         self.forward.titleLabel.font = [UIFont sansSerifFontWithSize:14];
         self.forward.titleLabel.textAlignment = NSTextAlignmentCenter;
-        [self.forward setTitleColor:[UIColor artsyGrayBold] forState:UIControlStateDisabled];
+        [self.forward setTitleColor:[UIColor artsyGraySemibold] forState:UIControlStateDisabled];
         [self.forward setTitleColor:[UIColor artsyPurpleRegular] forState:UIControlStateHighlighted];
 
         self.forward.contentEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 20);

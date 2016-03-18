@@ -71,7 +71,7 @@ static int ARLoadingIndicatorView = 1;
 - (void)addSeparatorLine
 {
     UIView *lineView = [[UIView alloc] init];
-    lineView.backgroundColor = [UIColor artsyGrayLight];
+    lineView.backgroundColor = [UIColor artsyGrayRegular];
     [lineView constrainHeight:@"0.5"];
 
     if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
@@ -130,7 +130,7 @@ static int ARLoadingIndicatorView = 1;
     secondaryEmptyStateLabel.font = [UIFont serifFontWithSize:16];
     secondaryEmptyStateLabel.textAlignment = NSTextAlignmentCenter;
     secondaryEmptyStateLabel.text = @"Follow artists to get updates about new works that become available";
-    secondaryEmptyStateLabel.textColor = [UIColor artsyGrayBold];
+    secondaryEmptyStateLabel.textColor = [UIColor artsyGraySemibold];
     secondaryEmptyStateLabel.numberOfLines = 2;
     [emptyStateView addSubview:secondaryEmptyStateLabel withTopMargin:@"10" sideMargin:@"30"];
 
