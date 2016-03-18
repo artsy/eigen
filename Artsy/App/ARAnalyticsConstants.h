@@ -170,3 +170,9 @@ extern NSString *const ARAdjustTappedBidButton;
 // Linking between analytics / app code
 
 extern NSInteger const ARNavButtonNotificationsTag;
+
+/// Auctions
+
+extern NSString *const ARAnalyticsAuctionBidButtonTapped;
+extern NSString *const ARAnalyticsAuctionRefineTapped;
+extern NSString *const ARAnalyticsAuctionContactTapped;

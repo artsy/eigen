@@ -50,13 +50,14 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 {
     if (!self.imageView) {
         UIImageView *imageView = [[UIImageView alloc] init];
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.contentMode = self.imageViewContentMode ?: UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
 
         [self.contentView addSubview:imageView];
 
         [imageView alignTopEdgeWithView:self.contentView predicate:@"0"];
         [imageView alignCenterXWithView:self.contentView predicate:@"0"];
+
         [imageView constrainWidthToView:self.contentView predicate:@"0"];
 
         self.imageView = imageView;

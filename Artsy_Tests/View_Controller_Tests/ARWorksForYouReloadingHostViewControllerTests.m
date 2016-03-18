@@ -24,6 +24,7 @@ beforeEach(^{
 
     hostViewController = [ARWorksForYouReloadingHostViewController new];
     hostViewController.worksForYouViewController.worksForYouNetworkModel = networkModel;
+    
     [hostViewController ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
 });
 

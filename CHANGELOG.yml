@@ -3,23 +3,29 @@ upcoming:
   details: Analytics improvements
 
   dev:
+    - Added a max height for single images in WorksForYouVC - sarah
     - Fixed padding in WorksForYouVC - sarah
     - Works For You network model discards duplicate artworks - sarah
     - Fix for embedded models view controller wonkiness upon rotation - sarah + orta
     - Embedded models view controller truncates long titles with ellipsis - sarah
     - App uses actual socket connections to power live auctions views. - ash
+    - App launches live auction views with initial state. - ash
     - Wrapped up all but the refine button occasionally tapping through QA items for the Native Auction Views - orta
     - Include tab label in analytics data. - alloy
     - Show images for Live Auctions - orta
     - Updates pods for labels, buttons, colours. - ash
+    - Added springs to the Artwork to VIR transitions - orta
+    - Make ‘sign-up/connect with email/facebook/twitter’ -> ‘created account’ analytics consistent. - alloy
+    - Analytics Session closes now isn't triggered by Apple's alerts like the shared keychain - orta
 
   notes:
-    - Enable new native Works For You view. - sarah + alloy
+    - Enable new native Works For You view. - sarah + maxim + alloy
     - Fixes problem with registration status not updating. - ash
     - The app is woken up when a notification is received and the Works For You view is preloaded. - alloy
     - Add accessibility labels for the Home and Bell tab. - alloy
-
-  notes:
+    - Auctions are now native views by default - orta
+    - Added dude in portrait view in room - dblock
+    - Search will auto-select the old query, meaning when you go back and type again it will start a new search  - orta
 
 releases:
   - version: 2.4.0

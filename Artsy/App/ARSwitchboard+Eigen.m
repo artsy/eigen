@@ -21,6 +21,11 @@
 #import "AROptions.h"
 
 
+@interface ARSwitchBoard (Private)
+@property (nonatomic, strong) Aerodramus *echo;
+@end
+
+
 @implementation ARSwitchBoard (Eigen)
 
 #pragma mark -
@@ -43,12 +48,13 @@
 
 - (UIViewController *)loadAuctionWithID:(NSString *)saleID
 {
-    if ([AROptions boolForOption:AROptionsUseNativeAuctions]) {
+    if (self.echo.features[@"DisableNativeAuctions"]) {
+        NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
+        NSURL *URL = [self resolveRelativeUrl:path];
+        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
+    } else {
         return [[AuctionViewController alloc] initWithSaleID:saleID];
     }
-    NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
-    NSURL *URL = [self resolveRelativeUrl:path];
-    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
 }
 
 - (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;

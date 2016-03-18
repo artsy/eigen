@@ -1,7 +1,7 @@
 import Foundation
 import Artsy_UILabels
 
-class SaleViewModel {
+class SaleViewModel: NSObject {
     private let sale: Sale
     private let saleArtworks: [SaleArtwork]
 
@@ -27,6 +27,19 @@ extension SaleViewModel {
         if sale.isCurrentlyActive() { return .Active }
         if sale.startDate.laterDate(NSDate()) == sale.startDate { return .NotYetOpen }
         return .Closed
+    }
+
+    // This is used by analytics
+    var saleAvailabilityString: String {
+        switch saleAvailability {
+        case .Active: return "active"
+        case .Closed: return "closed"
+        case .NotYetOpen: return "preview"
+        }
+    }
+
+    var saleID: NSString {
+        return sale.saleID
     }
 
     var startDate: NSDate {
