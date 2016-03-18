@@ -16,7 +16,7 @@ upcoming:
     - Make ‘sign-up/connect with email/facebook/twitter’ -> ‘created account’ analytics consistent. - alloy
 
   notes:
-    - Enable new native Works For You view. - sarah + alloy
+    - Enable new native Works For You view. - sarah + maxim + alloy
     - Fixes problem with registration status not updating. - ash
     - The app is woken up when a notification is received and the Works For You view is preloaded. - alloy
     - Add accessibility labels for the Home and Bell tab. - alloy
