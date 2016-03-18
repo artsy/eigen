@@ -14,6 +14,7 @@ upcoming:
     - Show images for Live Auctions - orta
     - Added springs to the Artwork to VIR transitions - orta
     - Make ‘sign-up/connect with email/facebook/twitter’ -> ‘created account’ analytics consistent. - alloy
+    - Analytics Session closes now isn't triggered by Apple's alerts like the shared keychain - orta
 
   notes:
     - Enable new native Works For You view. - sarah + maxim + alloy
