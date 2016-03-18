@@ -200,7 +200,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [self registerNewSessionOpened];
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
+- (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [ARAnalytics finishTimingEvent:ARAnalyticsTimePerSession];
 }
