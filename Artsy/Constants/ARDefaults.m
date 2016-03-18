@@ -48,7 +48,7 @@ NSString *const ARShowAuctionResultsButtonDefault = @"auction-results";
         ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
         ARStagingPhoneWebURLDefault : @"http://m-staging.artsy.net",
         ARStagingPadWebURLDefault : @"https://staging.artsy.net",
-        ARStagingLiveAuctionSocketURLDefault : @"https://prediction-staging.artsy.net:5000"
+        ARStagingLiveAuctionSocketURLDefault : @"https://prediction-staging.artsy.net"
     }];
 }
 
