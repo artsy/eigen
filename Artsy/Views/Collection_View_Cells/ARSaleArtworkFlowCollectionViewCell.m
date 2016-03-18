@@ -62,7 +62,7 @@
     self.artworkNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artworkNameLabel];
 
-    // TODO: Move this to a standard Artsy colour.
+    // TODO: Replace with Artsy standard colour.
     UIColor *lightGrey = [UIColor colorWithHex:0x999999];
 
     self.currentOrStartingBidLabel = [[ARSerifLabel alloc] init];

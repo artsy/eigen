@@ -10,7 +10,6 @@
 
 #import "MTLModel+JSON.h"
 
-#import <EDColor/EDColor.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -48,7 +47,7 @@
 
     // fair search is a solid grey background
     UIView *searchBox = [[UIView alloc] init];
-    searchBox.backgroundColor = [UIColor colorWithHex:0xf2f2f2];
+    searchBox.backgroundColor = [UIColor artsyGrayLight];
 
     [searchBox constrainHeight:@"44"];
 

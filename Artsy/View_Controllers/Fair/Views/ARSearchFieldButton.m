@@ -25,7 +25,7 @@
         return nil;
     }
 
-    self.backgroundColor = [UIColor colorWithHex:0xf2f2f2];
+    self.backgroundColor = [UIColor artsyGrayLight];
 
 
     self.imageView = [[UIImageView alloc] init];

@@ -28,10 +28,10 @@
 
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
-#import <EDColor/EDColor.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+@import Artsy_UIColors;
 
 
 @interface ARFairMapViewController () <NAMapViewDelegate, ARFairSearchViewControllerDelegate, ARSearchFieldButtonDelegate>
@@ -94,7 +94,7 @@
     mapView.showsVerticalScrollIndicator = NO;
     mapView.showsHorizontalScrollIndicator = NO;
     mapView.backgroundImageURL = [self.mapDataSource.image urlForThumbnailImage];
-    mapView.backgroundColor = [UIColor colorWithHex:0xf6f6f6];
+    mapView.backgroundColor = [UIColor artsyGrayLight];
     [self.view addSubview:mapView];
     _mapView = mapView;
 
