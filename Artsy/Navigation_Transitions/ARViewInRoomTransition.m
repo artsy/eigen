@@ -64,11 +64,8 @@
     virController.view.alpha = 0;
     virController.view.frame = [transitionContext containerView].bounds;
 
-    //    https://github.com/artsy/eigen/issues/1418
-    //    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"position"];
-    //    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"bounds"];
+    [UIView animateWithDuration:[self transitionDuration:transitionContext]  delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.8 options:0 animations:^{
 
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         artworkImageView.frame = [ARViewInRoomViewController rectForImageViewWithArtwork:artwork withContainerFrame:endFrame];
 
     } completion:^(BOOL finished) {
@@ -154,11 +151,7 @@
     virController.view.alpha = 1;
     virController.view.frame = [transitionContext containerView].bounds;
 
-    //    https://github.com/artsy/eigen/issues/1418
-    //    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"position"];
-    //    [artworkImageView setEasingFunction:QuadraticEaseOut forKeyPath:@"bounds"];
-
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:[self transitionDuration:transitionContext]  delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.8 options:0 animations:^{
 
         artworkImageView.frame = originalPositionFrame;
         virController.view.alpha = 0;
