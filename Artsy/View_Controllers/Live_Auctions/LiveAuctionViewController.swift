@@ -94,7 +94,7 @@ class LiveAuctionViewController: UIViewController {
 
         let progress = SimpleProgressView()
         progress.progress = 0.6
-        progress.backgroundColor = .artsyLightGrey()
+        progress.backgroundColor = .artsyGrayLight()
 
         view.addSubview(progress)
         progress.constrainHeight("4")
@@ -338,7 +338,7 @@ class LiveAuctionImagePreviewView : UIView {
 
         for image in imageViews {
             addSubview(image)
-            image.backgroundColor = .artsyLightGrey()
+            image.backgroundColor = .artsyGrayLight()
         }
 
         progressSignal.next { progress in
@@ -412,7 +412,7 @@ class LiveAuctionCurrentLotView: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .artsyPurple()
+        backgroundColor = .artsyPurpleRegular()
 
         let liveLotLabel = ARSansSerifLabel()
         liveLotLabel.font = .sansSerifFontWithSize(12)
@@ -595,7 +595,7 @@ class ScrollViewProgressObserver : NSObject, UIScrollViewDelegate {
 }
 
 class SimpleProgressView : UIView {
-    var highlightColor = UIColor.artsyPurple() {
+    var highlightColor = UIColor.artsyPurpleRegular() {
         didSet {
             setNeedsDisplay()
         }

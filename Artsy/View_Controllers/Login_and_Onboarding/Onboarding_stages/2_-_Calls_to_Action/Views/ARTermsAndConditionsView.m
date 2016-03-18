@@ -23,14 +23,14 @@
 
 - (void)setup
 {
-    self.tintColor = [UIColor artsyMediumGrey];
+    self.tintColor = [UIColor artsyGrayMedium];
     self.editable = NO;
     self.scrollEnabled = NO;
     NSString *string = @"By creating your Artsy account you agree\nto our Terms of Use and Privacy Policy.";
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string
                                                                                          attributes:@{
                                                                                              NSFontAttributeName : [UIFont serifFontWithSize:14],
-                                                                                             NSForegroundColorAttributeName : [UIColor artsyMediumGrey]
+                                                                                             NSForegroundColorAttributeName : [UIColor artsyGrayMedium]
                                                                                          }];
 
     NSRange termsRange = [attributedString.string rangeOfString:@"Terms of Use"];

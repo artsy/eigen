@@ -173,7 +173,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     self.followedArtistsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, screenSize.width - 40, 100)];
     self.followedArtistsLabel.numberOfLines = 0;
     self.followedArtistsLabel.font = [UIFont serifFontWithSize:16];
-    self.followedArtistsLabel.textColor = [UIColor artsyHeavyGrey];
+    self.followedArtistsLabel.textColor = [UIColor artsyGrayBold];
     [self.searchView addSubview:self.followedArtistsLabel];
     self.followedArtistsLabel.alpha = 0;
 

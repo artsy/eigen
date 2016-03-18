@@ -24,7 +24,7 @@
     self = [super initWithFrame:frame];
     if (!self) return nil;
 
-    [self setBorderColor:[UIColor artsyMediumGrey] forState:UIControlStateNormal];
+    [self setBorderColor:[UIColor artsyGrayMedium] forState:UIControlStateNormal];
     [self constrainHeight:@"85"];
 
     ARFairMapPreview *mapPreview = [[ARFairMapPreview alloc] initWithFairMap:map andFrame:frame];

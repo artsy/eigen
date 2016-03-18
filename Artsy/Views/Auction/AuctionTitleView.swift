@@ -171,7 +171,7 @@ private extension AuctionTitleView {
         let registrationLabel = ARSerifLabel().then {
             $0.text = "Registration required to bid"
             $0.font = UIFont.serifFontWithSize(16)
-            $0.textColor = .artsyHeavyGrey()
+            $0.textColor = .artsyGrayBold()
         }
         container.addSubview(registrationLabel)
 

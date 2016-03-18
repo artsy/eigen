@@ -18,7 +18,7 @@ NSInteger ARSwitchViewForSaleButtonIndex = 1;
 {
     UIButton *forSaleButton = self.buttons[ARSwitchViewForSaleButtonIndex];
     forSaleButton.enabled = NO;
-    [forSaleButton setTitleColor:[UIColor artsyHeavyGrey] forState:UIControlStateDisabled];
+    [forSaleButton setTitleColor:[UIColor artsyGrayBold] forState:UIControlStateDisabled];
 }
 
 + (NSArray *)artistButtonTitlesArray

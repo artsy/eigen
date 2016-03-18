@@ -9,7 +9,7 @@
 #import "UIView+HitTestExpansion.h"
 #import "UIDevice-Hardware.h"
 
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -105,7 +105,7 @@
     [infoLabel constrainHeight:@"60"];
     [infoLabel constrainWidthToView:self.contentView predicate:@"0"];
     [infoLabel alignCenterWithView:self.contentView];
-    infoLabel.textColor = [UIColor artsyHeavyGrey];
+    infoLabel.textColor = [UIColor artsyGrayBold];
     infoLabel.backgroundColor = [UIColor clearColor];
     infoLabel.hidden = YES;
     _infoLabel = infoLabel;

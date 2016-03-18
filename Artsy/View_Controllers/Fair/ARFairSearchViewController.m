@@ -38,12 +38,12 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor whiteColor];
-    self.textField.textColor = [UIColor artsyHeavyGrey];
-    self.textField.tintColor = [UIColor artsyHeavyGrey];
+    self.textField.textColor = [UIColor artsyGrayBold];
+    self.textField.tintColor = [UIColor artsyGrayBold];
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    [self.closeButton setTitleColor:[UIColor artsyHeavyGrey] forState:UIControlStateNormal];
+    [self.closeButton setTitleColor:[UIColor artsyGrayBold] forState:UIControlStateNormal];
 
-    self.searchDataSource.textColor = [UIColor artsyHeavyGrey];
+    self.searchDataSource.textColor = [UIColor artsyGrayBold];
     self.searchDataSource.placeholderImage = [UIImage imageNamed:@"SearchThumb_HeavyGrey"];
 
     // fair search is a solid grey background

@@ -58,6 +58,7 @@ target 'Artsy' do
   pod 'ReactiveCocoa'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
+  pod 'EDColor'
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
@@ -84,9 +85,9 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
-    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git", :branch => "old_fonts_new_lib"
+    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
   else
-    pod 'Artsy+OSSUIFonts'
+    pod 'Artsy+UIFonts'
   end
 
   # Facebook

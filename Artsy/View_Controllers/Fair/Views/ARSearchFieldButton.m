@@ -2,7 +2,7 @@
 
 #import "ARFonts.h"
 
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 #import <EDColor/EDColor.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -41,7 +41,7 @@
     self.label.font = [UIFont serifFontWithSize:16];
     self.label.text = @"Find Exhibitors & Artists";
     self.label.numberOfLines = 0;
-    self.label.textColor = [UIColor artsyHeavyGrey];
+    self.label.textColor = [UIColor artsyGrayBold];
     self.label.backgroundColor = [UIColor clearColor];
     [self addSubview:self.label];
     [self.label alignLeadingEdgeWithView:self.imageView predicate:@"21"];

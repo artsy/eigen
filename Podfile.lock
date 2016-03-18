@@ -54,8 +54,9 @@ PODS:
   - Artsy+UIFonts (1.1.0)
   - Artsy+UILabels (2.0.0):
     - Artsy+UIColors (~> 3.0)
-  - Artsy-UIButtons (1.4.0):
-    - Artsy+UIColors
+  - Artsy-UIButtons (2.0.0):
+    - Artsy+UIColors (~> 3.0)
+    - Artsy+UIFonts
     - UIView+BooleanAnimations
   - Bolts (1.5.1):
     - Bolts/AppLinks (= 1.5.1)
@@ -73,6 +74,7 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
+  - EDColor (1.0.0)
   - Expecta (1.0.0)
   - Expecta+Snapshots (2.0.0):
     - Expecta (~> 1.0)
@@ -163,12 +165,13 @@ DEPENDENCIES:
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`)
   - Artsy+UIColors
-  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`, branch `old_fonts_new_lib`)
+  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Artsy+UILabels
   - Artsy-UIButtons
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - DRKonamiCode
+  - EDColor
   - Expecta
   - Expecta+Snapshots
   - FBSDKCoreKit (= 4.9.0-beta2)
@@ -228,7 +231,6 @@ EXTERNAL SOURCES:
   ARTiledImageView:
     :git: https://github.com/dblock/ARTiledImageView
   Artsy+UIFonts:
-    :branch: old_fonts_new_lib
     :git: https://github.com/artsy/Artsy-UIFonts.git
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
@@ -269,7 +271,7 @@ CHECKOUT OPTIONS:
     :commit: 775bc29beb5953e381b2af64edbdfc310b90e074
     :git: https://github.com/dblock/ARTiledImageView
   Artsy+UIFonts:
-    :commit: 39f47deebf947aa4c07727fdf2b69e2feff17428
+    :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
@@ -309,11 +311,12 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 4bcad6457b985ebbf84b3c96a5cd58c48d937778
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy+UILabels: 751373e4462838bd42fe9605ffcfa7456c729b94
-  Artsy-UIButtons: 6f67de2a5285f18acb5d0e2919d1b17188acbc27
+  Artsy-UIButtons: 1d35f73a505ab7b5649d7c77a66c8d8ec0e45804
   Bolts: a12663244b1d3351c738882e71902fc74db54f64
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
+  EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Expecta: 32604574add2c46a36f8d2f716b6c5736eb75024
   Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
   FBSDKCoreKit: d49cbf69741e3c5732166ec9ff4cbd9b288dd53e

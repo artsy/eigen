@@ -22,8 +22,8 @@ class ScrollingStickyHeaderView: UIView {
     init() {
         button = ARWhiteFlatButton().then {
             $0.titleLabel?.font = UIFont.sansSerifFontWithSize(12)
-            $0.setBorderColor(.artsyLightGrey(), forState: .Normal)
-            $0.setBorderColor(UIColor.artsyLightGrey().colorWithAlphaComponent(0.5), forState: .Disabled)
+            $0.setBorderColor(.artsyGrayLight(), forState: .Normal)
+            $0.setBorderColor(UIColor.artsyGrayLight().colorWithAlphaComponent(0.5), forState: .Disabled)
             $0.layer.borderWidth = 1;
         }
 

@@ -33,7 +33,7 @@
     _imageContentMode = UIViewContentModeScaleAspectFit;
 
     UIPageControl *pageControl = [UIPageControl appearanceWhenContainedIn:[ARImagePageViewController class], nil];
-    pageControl.pageIndicatorTintColor = [UIColor artsyMediumGrey];
+    pageControl.pageIndicatorTintColor = [UIColor artsyGrayMedium];
     pageControl.currentPageIndicatorTintColor = [UIColor blackColor];
 
     return self;

@@ -2,7 +2,7 @@
 
 #import "ARFonts.h"
 
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -27,7 +27,7 @@
 
         _bidStatusLabel = [[ARSerifLabel alloc] init];
         self.bidStatusLabel.font = [UIFont serifFontWithSize:16];
-        self.bidStatusLabel.textColor = [UIColor artsyHeavyGrey];
+        self.bidStatusLabel.textColor = [UIColor artsyGrayBold];
         self.bidStatusLabel.hidden = YES;
         [self addSubview:self.bidStatusLabel];
 

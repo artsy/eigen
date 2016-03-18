@@ -30,7 +30,7 @@
     _backView = backView;
 
     CALayer *whiteLayer = _backView.layer;
-    whiteLayer.borderColor = [UIColor artsyLightGrey].CGColor;
+    whiteLayer.borderColor = [UIColor artsyGrayLight].CGColor;
     whiteLayer.borderWidth = 1;
     whiteLayer.cornerRadius = dimension * .5f;
     whiteLayer.backgroundColor = [UIColor whiteColor].CGColor;
@@ -41,7 +41,7 @@
     _frontView = frontView;
 
     CALayer *purpleLayer = _frontView.layer;
-    purpleLayer.backgroundColor = [UIColor artsyPurple].CGColor;
+    purpleLayer.backgroundColor = [UIColor artsyPurpleRegular].CGColor;
     purpleLayer.borderColor = [UIColor whiteColor].CGColor;
     purpleLayer.cornerRadius = dimension * .5f;
 

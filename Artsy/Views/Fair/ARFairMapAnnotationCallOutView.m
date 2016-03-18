@@ -67,7 +67,7 @@
     [arrowImage setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
     UIView *separator = [[UIView alloc] init];
-    separator.backgroundColor = [UIColor artsyLightGrey];
+    separator.backgroundColor = [UIColor artsyGrayLight];
     [container addSubview:separator];
     _verticalSeparator = separator;
     [separator alignAttribute:NSLayoutAttributeRight toAttribute:NSLayoutAttributeLeft ofView:arrowImage predicate:@"-13"];
@@ -94,7 +94,7 @@
     [partnerName alignTrailingEdgeWithView:labelView predicate:@"0"];
 
     UILabel *partnerLocation = [ARThemedFactory labelForLinkItemTitles];
-    partnerLocation.textColor = [UIColor artsyMediumGrey];
+    partnerLocation.textColor = [UIColor artsyGrayMedium];
     partnerLocation.backgroundColor = [UIColor clearColor];
     partnerLocation.numberOfLines = 1;
     partnerLocation.font = [partnerLocation.font fontWithSize:11];

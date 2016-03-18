@@ -76,7 +76,7 @@
 
     self.topSelectionIndicator.backgroundColor = [UIColor blackColor];
     self.bottomSelectionIndicator.backgroundColor = [UIColor blackColor];
-    self.backgroundColor = [UIColor artsyMediumGrey];
+    self.backgroundColor = [UIColor artsyGrayMedium];
 
     [self.selectionIndicator addSubview:self.topSelectionIndicator];
     [self.selectionIndicator addSubview:self.bottomSelectionIndicator];
@@ -114,7 +114,7 @@
 
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateDisabled];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
-    [button setTitleColor:[UIColor artsyHeavyGrey] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor artsyGrayBold] forState:UIControlStateNormal];
 
     return button;
 }

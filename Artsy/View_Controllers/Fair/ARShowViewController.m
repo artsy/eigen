@@ -32,7 +32,7 @@
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 #import <ORStackView/ORTagBasedAutoStackView.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -360,7 +360,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 - (ARSerifLabel *)metadataLabel:(NSString *)text
 {
     ARSerifLabel *label = [[ARSerifLabel alloc] init];
-    label.textColor = [UIColor artsyHeavyGrey];
+    label.textColor = [UIColor artsyGrayBold];
     label.font = [UIFont serifFontWithSize:16];
     label.text = text;
     return label;
