@@ -12,14 +12,15 @@ upcoming:
     - Wrapped up all but the refine button occasionally tapping through QA items for the Native Auction Views - orta
     - Include tab label in analytics data. - alloy
     - Show images for Live Auctions - orta
-    - Added dude in portrait view in room - dblock
     - Added springs to the Artwork to VIR transitions - orta
+    - Make ‘sign-up/connect with email/facebook/twitter’ -> ‘created account’ analytics consistent. - alloy
 
   notes:
     - Enable new native Works For You view. - sarah + alloy
     - Fixes problem with registration status not updating. - ash
     - The app is woken up when a notification is received and the Works For You view is preloaded. - alloy
     - Add accessibility labels for the Home and Bell tab. - alloy
+    - Added dude in portrait view in room - dblock
 
   notes:
 
