@@ -17,6 +17,7 @@ upcoming:
     - Fixes problem with registration status not updating. - ash
     - The app is woken up when a notification is received and the Works For You view is preloaded. - alloy
     - Add accessibility labels for the Home and Bell tab. - alloy
+    - Auctions are now native views by default - orta
 
   notes:
 
