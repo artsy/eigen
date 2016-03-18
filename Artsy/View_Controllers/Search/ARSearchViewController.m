@@ -140,6 +140,10 @@
     [super viewDidAppear:animated];
 
     [self.textField becomeFirstResponder];
+
+    if (self.textField.text.length > 0) {
+        [self.textField selectAll:nil];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

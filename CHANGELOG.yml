@@ -23,8 +23,7 @@ upcoming:
     - Add accessibility labels for the Home and Bell tab. - alloy
     - Auctions are now native views by default - orta
     - Added dude in portrait view in room - dblock
-
-  notes:
+    - Search will auto-select the old query, meaning when you go back and type again it will start a new search  - orta
 
 releases:
   - version: 2.4.0
