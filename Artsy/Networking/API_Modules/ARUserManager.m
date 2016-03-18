@@ -376,15 +376,13 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
                    failure:(void (^)(NSError *error, id JSON))failure
   saveSharedWebCredentials:(BOOL)saveSharedWebCredentials;
 {
+    [ARAnalytics event:ARAnalyticsSignUpEmail];
+
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        
-        ARActionLog(@"Got Xapp. Creating a new user account.");
-        
         NSURLRequest *request = [ARRouter newCreateUserRequestWithName:name email:email password:password];
         AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              NSError *error;
-             [ARAnalytics event:ARAnalyticsSignUpEmail];
 
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
@@ -442,13 +440,12 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
              [self storeUserData];
 
              if (success) { success(user); }
-             
-             [ARAnalytics event:ARAnalyticsSignUpEmail];
-             
+
+             [ARAnalytics event:ARAnalyticsAccountCreated];
+
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
              [ARAnalytics event:ARAnalyticsSignUpError];
-             
          }];
         [op start];
     }];
@@ -477,8 +474,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
              
              if(success) success(user);
 
-             [ARAnalytics event:ARAnalyticsSignUpEmail];
-             
+             [ARAnalytics event:ARAnalyticsAccountCreated];
+
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
              [ARAnalytics event:ARAnalyticsSignUpError];

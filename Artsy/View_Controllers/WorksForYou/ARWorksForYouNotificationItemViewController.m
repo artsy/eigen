@@ -99,6 +99,13 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self didMoveToParentViewController:self.parentViewController];
+}
+
 - (void)didMoveToParentViewController:(UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];

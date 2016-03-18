@@ -47,7 +47,6 @@ static int ARLoadingIndicatorView = 1;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
     [self markNotificationsAsRead];
 }
 
@@ -57,20 +56,16 @@ static int ARLoadingIndicatorView = 1;
     self.worksForYouNetworkModel = self.worksForYouNetworkModel ?: [[ARWorksForYouNetworkModel alloc] init];
 
     ARSerifLabel *titleLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
-    // TODO: Localise / put strings elsewhere
     titleLabel.text = @"Works by Artists you follow";
     titleLabel.textColor = [UIColor blackColor];
     titleLabel.font = [UIFont serifFontWithSize:20];
 
     [self.view.stackView addSubview:titleLabel withTopMargin:@"30" sideMargin:(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? @"90" : @"45"];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
 
     [self updateView];
 }
+
+#pragma mark - Views
 
 - (void)addSeparatorLine
 {
@@ -92,7 +87,7 @@ static int ARLoadingIndicatorView = 1;
 
     [items eachWithIndex:^(ARWorksForYouNotificationItem *item, NSUInteger index) {
         ARWorksForYouNotificationItemViewController *worksByArtistViewController = [[ARWorksForYouNotificationItemViewController alloc] initWithNotificationItem:item];
-        
+
         NSString *topMargin = (isFirstPage && item == items.firstObject) ? @"25" : @"0";
 
         if (!isFirstPage || index) [self addSeparatorLine];
@@ -107,24 +102,6 @@ static int ARLoadingIndicatorView = 1;
     } else if (self.shouldShowEmptyState) {
         [self showEmptyState];
     }
-}
-
-- (void)getNextItemSet
-{
-    [self addLoadingIndicator];
-
-    __weak typeof(self) wself = self;
-    [self.worksForYouNetworkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *notificationItems) {
-        __strong typeof (wself) sself = wself;
-        [sself removeLoadingIndicator];
-        
-        if (notificationItems.count) {
-            [sself addNotificationItems:notificationItems];
-        } else if (sself.shouldShowEmptyState) {
-            [sself showEmptyState];
-            
-        }
-    } failure:nil];
 }
 
 - (BOOL)shouldShowEmptyState
@@ -172,13 +149,32 @@ static int ARLoadingIndicatorView = 1;
     return line;
 }
 
+#pragma mark - Network Model
+
+- (void)getNextItemSet
+{
+    [self addLoadingIndicator];
+
+    __weak typeof(self) wself = self;
+    [self.worksForYouNetworkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *notificationItems) {
+        __strong typeof (wself) sself = wself;
+        [sself removeLoadingIndicator];
+        if (notificationItems.count) {
+
+            [sself addNotificationItems:notificationItems];
+        } else if (sself.shouldShowEmptyState) {
+            [sself showEmptyState];
+        }
+    } failure:nil];
+}
+
 - (void)markNotificationsAsRead
 {
     [[ARTopMenuViewController sharedController] setNotificationCount:0 forControllerAtIndex:ARTopTabControllerIndexNotifications];
     [self.worksForYouNetworkModel markNotificationsRead];
 }
 
-#pragma mark - scrolling behavior
+#pragma mark - Scrolling Behavior
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

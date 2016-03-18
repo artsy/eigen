@@ -26,6 +26,9 @@
 - (id)routeInternalURL:(NSURL *)url fair:(Fair *)fair;
 - (void)openURLInExternalService:(NSURL *)url;
 - (void)updateRoutes;
+
+@property (nonatomic, strong) Aerodramus *echo;
+
 @end
 
 
@@ -328,6 +331,27 @@ describe(@"ARSwitchboard", ^{
             id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net"]];
             NSString *classString = NSStringFromClass([subject class]);
             expect(classString).to.contain(@"LiveAuctionViewController");
+        });
+
+        it(@"routes auctions", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+
+            id subject = [switchboard loadPath:@"/auction/myauctionthing"];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"AuctionViewController");
+        });
+
+        it(@"can not route to native auctions when echo has a feature called 'DisableNativeAuctions'", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+            echo.features = @{ @"DisableNativeAuctions" : [[Feature alloc] initWithName:@"" state:@1] };
+            switchboard.echo = echo;
+
+            id subject = [switchboard loadPath:@"/auction/myauctionthing"];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).toNot.contain(@"AuctionViewController");
         });
     });
 

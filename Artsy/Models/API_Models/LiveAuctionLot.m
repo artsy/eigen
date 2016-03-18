@@ -26,6 +26,11 @@
     return [NSURL URLWithString:self.imageDictionary[@"thumb"][@"url"]];
 }
 
+- (CGSize)imageProfileSize
+{
+    NSDictionary *profile = self.imageDictionary[@"large"];
+    return CGSizeMake([profile[@"width"] floatValue], [profile[@"height"] floatValue]);
+}
 
 + (NSValueTransformer *)reserveStatusJSONTransformer
 {
