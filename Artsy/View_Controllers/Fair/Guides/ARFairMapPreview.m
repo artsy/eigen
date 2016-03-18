@@ -6,8 +6,8 @@
 #import "ARFairMapZoomManager.h"
 #import "Map.h"
 
-#import <EDColor/EDColor.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+@import Artsy_UIColors;
 
 @interface ARFairMapPreview ()
 @property (nonatomic, weak, readonly) Map *map;
@@ -31,7 +31,7 @@
     self.showsVerticalScrollIndicator = NO;
     self.showsHorizontalScrollIndicator = NO;
     self.backgroundImageURL = [ds.image urlForThumbnailImage];
-    self.backgroundColor = [UIColor colorWithHex:0xf6f6f6];
+    self.backgroundColor = [UIColor artsyGrayLight];
     self.userInteractionEnabled = NO;
 
     _showMapper = [[ARFairShowMapper alloc] initWithMapView:self map:map imageSize:[ds imageSizeForImageView:nil]];

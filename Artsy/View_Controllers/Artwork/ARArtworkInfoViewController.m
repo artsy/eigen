@@ -6,8 +6,7 @@
 #import "ARScrollNavigationChief.h"
 
 #import "UIDevice-Hardware.h"
-
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 #import <ORStackView/ORStackScrollView.h>
 
 @interface ARArtworkInfoViewController () <ARTextViewDelegate>

@@ -29,7 +29,7 @@
 
     CALayer *sep = [CALayer layer];
     sep.frame = CGRectMake(15, self.contentView.bounds.size.height - .5, width - 30, .5);
-    sep.backgroundColor = [UIColor artsyHeavyGrey].CGColor;
+    sep.backgroundColor = [UIColor artsyGraySemibold].CGColor;
     [self.layer addSublayer:sep];
     _centerFixed = NO;
 
@@ -59,7 +59,7 @@
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
     [super setHighlighted:highlighted animated:YES];
-    self.backgroundColor = [UIColor artsyLightGrey];
+    self.backgroundColor = [UIColor artsyGrayRegular];
     [UIView animateWithDuration:.5 animations:^{
         self.backgroundColor = [UIColor clearColor];
     }];

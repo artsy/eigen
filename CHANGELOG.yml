@@ -12,6 +12,8 @@ upcoming:
     - Wrapped up all but the refine button occasionally tapping through QA items for the Native Auction Views - orta
     - Include tab label in analytics data. - alloy
     - Show images for Live Auctions - orta
+    - Updates pods for labels, buttons, colours. - ash
+    - Added dude in portrait view in room - dblock
     - Added springs to the Artwork to VIR transitions - orta
     - Make ‘sign-up/connect with email/facebook/twitter’ -> ‘created account’ analytics consistent. - alloy
     - Analytics Session closes now isn't triggered by Apple's alerts like the shared keychain - orta

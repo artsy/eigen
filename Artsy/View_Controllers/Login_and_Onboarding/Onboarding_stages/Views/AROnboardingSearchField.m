@@ -20,9 +20,9 @@
     self.backgroundColor = [UIColor clearColor];
     self.font = [UIFont serifFontWithSize:20];
 
-    self.textColor = [UIColor artsyLightGrey];
+    self.textColor = [UIColor artsyGrayRegular];
     CALayer *baseline = [CALayer layer];
-    baseline.backgroundColor = [UIColor artsyHeavyGrey].CGColor;
+    baseline.backgroundColor = [UIColor artsyGraySemibold].CGColor;
     baseline.frame = CGRectMake(0, CGRectGetHeight(self.frame) - 1, CGRectGetWidth(self.bounds), 1);
 
     self.clipsToBounds = NO;
@@ -35,7 +35,7 @@
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyHeavyGrey]}];
+    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGraySemibold]}];
 }
 
 - (void)addSubview:(UIView *)view

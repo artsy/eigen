@@ -128,7 +128,7 @@
     // Add unit labels under the number labels
     NSArray<NSString *> *units = @[ @"DAYS", @"HRS", @"MIN", @"SEC" ];
 
-    UIColor *unitColor = self.color ?: [UIColor artsyHeavyGrey];
+    UIColor *unitColor = self.color ?: [UIColor artsyGraySemibold];
     NSMutableArray *unitLabels = [NSMutableArray array];
     [units enumerateObjectsUsingBlock:^(id unit, NSUInteger idx, BOOL *stop) {
         UILabel *unitLabel = [ARCountdownView unitLabelWithSize:unitFontSize color:unitColor];

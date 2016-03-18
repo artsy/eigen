@@ -34,9 +34,9 @@
 
 - (void)startLogging
 {
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyLightGrey] backgroundColor:nil forFlag:DDLogFlagDebug];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyAttention] backgroundColor:nil forFlag:DDLogFlagInfo];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyRed] backgroundColor:nil forFlag:DDLogFlagError];
+    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyGrayRegular] backgroundColor:nil forFlag:DDLogFlagDebug];
+    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyYellowRegular] backgroundColor:nil forFlag:DDLogFlagInfo];
+    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyRedRegular] backgroundColor:nil forFlag:DDLogFlagError];
     [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor colorWithHex:0x66cc4c] backgroundColor:nil forFlag:DDLogFlagInfo context:ARLogContextRequestOperation];
     [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor colorWithHex:0xe56633] backgroundColor:nil forFlag:DDLogFlagError context:ARLogContextRequestOperation];
 

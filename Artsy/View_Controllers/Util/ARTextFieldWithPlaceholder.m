@@ -34,7 +34,7 @@
     self.textColor = [UIColor whiteColor];
 
     self.baseline = [CALayer layer];
-    self.baseline.backgroundColor = [UIColor artsyLightGrey].CGColor;
+    self.baseline.backgroundColor = [UIColor artsyGrayRegular].CGColor;
     [self.layer addSublayer:self.baseline];
 
     self.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -42,7 +42,7 @@
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyHeavyGrey]}];
+    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGraySemibold]}];
 }
 
 - (void)addSubview:(UIView *)view
