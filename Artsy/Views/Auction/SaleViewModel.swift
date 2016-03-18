@@ -29,6 +29,15 @@ extension SaleViewModel {
         return .Closed
     }
 
+    // This is used by analytics
+    var saleAvailabilityString: String {
+        switch saleAvailability {
+        case .Active: return "active"
+        case .Closed: return "closed"
+        case .NotYetOpen: return "preview"
+        }
+    }
+
     var saleID: NSString {
         return sale.saleID
     }

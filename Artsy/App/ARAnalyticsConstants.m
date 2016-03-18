@@ -125,4 +125,5 @@ NSString *const ARAdjustTappedBidButton = @"w5e24e";
 NSInteger const ARNavButtonNotificationsTag = (NSInteger)&ARNavButtonNotificationsTag;
 
 NSString *const ARAnalyticsAuctionBidButtonTapped = @"Tapped Register To Bid";
+NSString *const ARAnalyticsAuctionRefineTapped = @"Tapped Auction Refine";
 NSString *const ARAnalyticsAuctionContactTapped = @"Tapped Auction Contact";

@@ -411,7 +411,8 @@
                                 return @{
                                     @"artwork_slug": controller.artwork.artworkID ?: @"",
                                     @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                    @"auction_id": saleArtwork.auction.saleID ?: @""
+                                    @"auction_id": saleArtwork.auction.saleID ?: @"",
+                                    @"context_type" : @"artwork_page"
                                 };
                             },
                         },
@@ -1166,8 +1167,18 @@
                             ARAnalyticsProperties: ^NSDictionary *(AuctionViewController *controller, NSArray *parameters) {
                                 return @{
                                     @"auction_slug" : controller.saleID ?: @"",
-                                    @"auction_state" : controller.saleViewModel.saleAvailability == SaleAvailabilityStateActive ? @"open" : @"preview",
+                                    @"auction_state" : controller.saleViewModel.saleAvailabilityString,
                                     @"context_type": controller.navigationController.topViewController == controller ? @"sale" : @"information"
+                                };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsAuctionRefineTapped,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(showRefineTapped),
+                            ARAnalyticsProperties: ^NSDictionary *(AuctionViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"auction_slug" : controller.saleID ?: @"",
+                                    @"auction_state" : controller.saleViewModel.saleAvailabilityString,
                                 };
                             }
                         }
@@ -1182,14 +1193,29 @@
                             ARAnalyticsProperties: ^NSDictionary *(AuctionInformationViewController *controller, NSArray *parameters) {
                                 return @{
                                     @"auction_slug" : controller.saleViewModel.saleID ?: @"",
-                                    @"auction_state" : controller.saleViewModel.saleAvailability == SaleAvailabilityStateActive ? @"open" : @"preview",
+                                    @"auction_state" : controller.saleViewModel.saleAvailabilityString,
                                     @"context_type": controller.navigationController.topViewController == controller ? @"sale" : @"information"
                                 };
                             }
                         }
                     ]
                 },
-
+                @{
+                    ARAnalyticsClass: AuctionRefineViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsAuctionContactTapped,
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(userDidPressApply),
+                            ARAnalyticsProperties: ^NSDictionary *(AuctionRefineViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"auction_slug" : controller.saleViewModel.saleID ?: @"",
+                                    @"context_type": @"sale",
+                                    @"slug": [NSString stringWithFormat:@"/auction/%@/refine", controller.saleViewModel.saleID]
+                                    };
+                            }
+                        }
+                    ]
+                },
             ],
             ARAnalyticsTrackedScreens: @[
                 @{
@@ -1515,7 +1541,48 @@
                         }
                     ]
                 },
+                @{
+                    ARAnalyticsClass: AuctionViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Sale",
+                            ARAnalyticsProperties: ^NSDictionary *(AuctionViewController *controller, NSArray *_) {
+                                return @{ @"auction_slug": controller.saleID ?: @"",
+                                          @"slug": [NSString stringWithFormat:@"/auction/%@", controller.saleID] };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: AuctionInformationViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Sale Information",
+                            ARAnalyticsShouldFire: ^BOOL(AuctionInformationViewController *controller, BOOL newValue) {
+                                // It is presented inside an upcoming AuctionVC with no works
+                                // shouldn't consider that a "page view"
+                                return controller.parentViewController == nil;
+                            },
 
+                            ARAnalyticsProperties: ^NSDictionary *(AuctionInformationViewController *controller, NSArray *_) {
+                                return @{ @"auction_slug": controller.saleViewModel.saleID ?: @"",
+                                        @"slug": [NSString stringWithFormat:@"/auction/%@/info", controller.saleViewModel.saleID]};
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: AuctionRefineViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Sale Information",
+                            ARAnalyticsProperties: ^NSDictionary *(AuctionInformationViewController *controller, NSArray *_) {
+                                return @{ @"context": @"auction",
+                                        @"slug": [NSString stringWithFormat:@"/auction/%@/refine", controller.saleViewModel.saleID]};
+                            }
+                        }
+                    ]
+                },
             ]
         }
     ];
