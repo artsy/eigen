@@ -3,6 +3,7 @@ upcoming:
   details: Analytics improvements
 
   dev:
+    - Added a max height for single images in WorksForYouVC - sarah
     - Fixed padding in WorksForYouVC - sarah
     - Works For You network model discards duplicate artworks - sarah
     - Fix for embedded models view controller wonkiness upon rotation - sarah + orta

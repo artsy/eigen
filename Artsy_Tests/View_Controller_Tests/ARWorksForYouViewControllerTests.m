@@ -31,9 +31,12 @@ describe(@"visually", ^{
         [stubbedNetworkModel stubNotificationItemWithNumberOfArtworks:2];
         [stubbedNetworkModel stubNotificationItemWithNumberOfArtworks:1];
         subject.worksForYouNetworkModel = stubbedNetworkModel;
-
-        /// This line has to be included for ORStackScrollView to record snapshots properly
-        [subject ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        
+        // View controller containment doesn't work properly here unless we set the frame before beginAppearanceTransition
+        subject.view.frame = [[UIScreen mainScreen] bounds];
+        [subject beginAppearanceTransition:YES animated:NO];
+        [subject endAppearanceTransition];
+        
         expect(subject).to.haveValidSnapshot();
     });
 });
