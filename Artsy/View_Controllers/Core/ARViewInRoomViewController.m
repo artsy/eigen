@@ -41,6 +41,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 @property (nonatomic, weak) UIImageView *leftWallImageView;
 @property (nonatomic, weak) UIImageView *rightWallImageView;
 @property (nonatomic, weak) UIImageView *dudeImageView;
+@property (nonatomic, weak) UIInterpolatingMotionEffect *dudeMotion;
 
 
 // Debug information
@@ -128,6 +129,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     self.view.backgroundColor = [UIColor colorWithHex:0xfcfbfa];
 
     [self.view addSubview:galleryBackground];
+    [self setupDudeView];
 
 #if DEBUG_VIEW_IN_ROOM
     [self setupDebugTools];
@@ -140,11 +142,8 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     self.artworkImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.artworkImageView.backgroundColor = [UIColor clearColor];
 
-    if (self.chairImageView) {
-        [self.view insertSubview:self.artworkImageView belowSubview:self.chairImageView];
-    } else {
-        [self.view addSubview:self.artworkImageView];
-    }
+    UIView *inFrontOfArtworkView = self.chairImageView ?: self.artworkImageView;
+    [self.view insertSubview:self.artworkImageView belowSubview:inFrontOfArtworkView];
 
     UITapGestureRecognizer *exitTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.navigationController action:@selector(popViewControllerAnimated:)];
     self.artworkImageView.userInteractionEnabled = YES;
@@ -160,21 +159,15 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     BOOL isLandscape = UIInterfaceOrientationIsLandscape(orientation);
-
+    
     if (isLandscape) {
         self.backgroundImageView.image = [UIImage imageNamed:@"ViewInRoom_BaseNoBench"];
         [self setupParallaxVIR];
 
         CGRect backgroundFrame = self.view.bounds;
         backgroundFrame.origin.y += LandscapeOrientationBackgroundNegativeBottomMargin;
+        backgroundFrame.origin.y -= self.view.bounds.size.height - 360;
 
-        UIDevicePlatform deviceType = [UIDevice currentDevice].platformType;
-        if (deviceType == UIDevice6iPhone) {
-            backgroundFrame.origin.y -= 11;
-        }
-        if (deviceType == UIDevice6PlusiPhone) {
-            backgroundFrame.origin.y -= 19;
-        }
         self.backgroundImageView.frame = backgroundFrame;
 
     } else {
@@ -186,32 +179,66 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     if (self.artworkImageView) {
         self.artworkImageView.frame = [self.class rectForImageViewWithArtwork:self.artwork withContainerFrame:self.view.bounds];
     }
+   
+    if (self.dudeImageView) {
+        CGFloat dudeCenterXOffset = isLandscape ? -130 : -180;
+        CGFloat dudeYOffset = isLandscape ? -10 : -40;
+        
+        // Current aspect ratio = 3.(1/3)
+        CGFloat dudeHeight = isLandscape ? 128 : 187;
+        CGFloat dudeWidth = isLandscape ? 39 : 54;
+
+        self.dudeImageView.frame = CGRectMake(CGRectGetWidth(self.view.bounds) / 2 + dudeCenterXOffset, CGRectGetHeight(self.view.bounds) - dudeHeight + dudeYOffset, dudeWidth, dudeHeight);
+
+        if (isLandscape) {
+            [self.dudeImageView addMotionEffect:self.dudeMotion];
+        } else {
+            [self.dudeImageView removeMotionEffect:self.dudeMotion];
+        }
+    }
 
 #if DEBUG_VIEW_IN_ROOM
     [self updateDebugViews];
 #endif
 }
 
++ (BOOL)isLandscape
+{
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    return UIInterfaceOrientationIsLandscape(orientation);
+}
+
+- (void)setupDudeView
+{
+    if (!self.dudeImageView) {
+        UIImageView *dudeImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ViewInRoom_Man_3"]];
+        self.dudeImageView = dudeImageView;
+        dudeImageView.contentScaleFactor = UIViewContentModeScaleAspectFit;
+        [self.view addSubview:dudeImageView];
+    }
+
+    if (!self.dudeMotion) {
+        CGFloat dudeMotionDelta = 5;
+        UIInterpolatingMotionEffect *dudeMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
+                                                                                               type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+        self.dudeMotion = dudeMotion;
+        dudeMotion.minimumRelativeValue = @(dudeMotionDelta);
+        dudeMotion.maximumRelativeValue = @(-dudeMotionDelta);
+    }
+}
 
 - (void)setupParallaxVIR
 {
     CGFloat wallsWidth = 90;
-    CGFloat wallsYOffset = -2;
+    CGFloat wallsYOffset = CGRectGetHeight(self.view.bounds) - 380;
     CGFloat wallsStretch = 8;
 
     CGFloat chairHeight = 50;
     CGFloat chairWidth = 160;
     CGFloat chairOffset = 70;
 
-    CGFloat dudeCenterXOffset = -130;
-    CGFloat dudeYOffset = -10;
-
-    // Current aspect ratio = 3.(1/3)
-    CGFloat dudeHeight = 160;
-    CGFloat dudeWidth = 48;
-
     CGFloat chairMotionDelta = 24;
-    CGFloat dudeMotionDelta = 5;
+
     CGFloat wallMotionDelta = 200;
     CGFloat artworkMotionDelta = 50;
 
@@ -238,7 +265,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
         CGRect chairFrame = CGRectMake(CGRectGetWidth(self.view.bounds) / 2 - chairWidth / 2, CGRectGetHeight(self.view.bounds) - chairOffset, chairWidth, chairHeight);
         chairView.frame = chairFrame;
 
-        [self.view addSubview:chairView];
+        [self.view insertSubview:chairView belowSubview:self.dudeImageView];
 
         UIInterpolatingMotionEffect *chairMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
                                                                                                    type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
@@ -270,32 +297,17 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 
         [self.view addSubview:rightWallView];
 
-        UIInterpolatingMotionEffect *chairMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
+        UIInterpolatingMotionEffect *rightWallMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
                                                                                                    type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-        chairMotion.minimumRelativeValue = @(-7);
-        chairMotion.maximumRelativeValue = @(7);
-        [rightWallView addMotionEffect:chairMotion];
-
+        rightWallMotion.minimumRelativeValue = @(-7);
+        rightWallMotion.maximumRelativeValue = @(7);
+        [rightWallView addMotionEffect:rightWallMotion];
 
         UIInterpolatingMotionEffect *wallMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"bounds"
                                                                                                   type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
         wallMotion.minimumRelativeValue = [NSValue valueWithCGRect:CGRectMake(0, 0, 0, 0)];
         wallMotion.maximumRelativeValue = [NSValue valueWithCGRect:CGRectMake(0, 0, wallMotionDelta, 0)];
         [rightWallView addMotionEffect:wallMotion];
-    }
-
-    if (!self.dudeImageView) {
-        UIImageView *dudeView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ViewInRoom_Man_3"]];
-        self.dudeImageView = dudeView;
-        dudeView.contentScaleFactor = UIViewContentModeScaleAspectFit;
-        dudeView.frame = CGRectMake(CGRectGetWidth(self.view.bounds) / 2 + dudeCenterXOffset, CGRectGetHeight(self.view.bounds) - dudeHeight + dudeYOffset, dudeWidth, dudeHeight);
-        [self.view addSubview:dudeView];
-
-        UIInterpolatingMotionEffect *chairMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
-                                                                                                   type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-        chairMotion.minimumRelativeValue = @(dudeMotionDelta);
-        chairMotion.maximumRelativeValue = @(-dudeMotionDelta);
-        [self.dudeImageView addMotionEffect:chairMotion];
     }
 }
 
@@ -319,17 +331,11 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
         [decorationView removeFromSuperview];
         decorationView = nil;
     }
-
-    if (self.dudeImageView) {
-        [self.dudeImageView removeFromSuperview];
-        self.dudeImageView = nil;
-    }
 }
 
 + (CGRect)rectForImageViewWithArtwork:(Artwork *)artwork withContainerFrame:(CGRect)containerFrame
 {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape(orientation);
+    BOOL isLandscape = [self isLandscape];
     CGFloat benchWidth = isLandscape ? InitialWidthOfBenchPXLandscape : InitialWidthOfBenchPX;
 
     // Initial Scale in this case is when the image is at 100% zoom

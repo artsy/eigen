@@ -39,4 +39,17 @@
     [self getRequest:request parseIntoAnArrayOfClass:[SaleArtwork class] success:success failure:failure];
 }
 
++ (void)getLiveSaleStateWithSaleID:(NSString *)saleID
+                              host:(NSString *)host
+                           success:(void (^)(id state))success
+                           failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter liveSaleStateRequest:saleID host:host];
+    [self performRequest:request success:^(id state) {
+        success(state);
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        failure(error);
+    }];
+}
+
 @end

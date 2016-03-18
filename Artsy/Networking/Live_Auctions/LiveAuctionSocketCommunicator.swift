@@ -10,6 +10,7 @@ func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID
 }
 
 @objc protocol LiveAuctionSocketCommunicatorDelegate: class {
+    // TODO: this needs to be broken up into smaller pieces. See: https://github.com/artsy/causality/issues/36
     func didUpdateAuctionState(state: AnyObject)
 }
 
@@ -77,7 +78,6 @@ private extension SocketSetup {
         print("Listening for socket events.")
         socket.on(.UpdateAuctionState) { [weak self] data in
             print("Updated auction state: \(data)")
-            // TODO: We need initial state when we join, this doesn't work until something on the server hapens :(
             if let state = data.first {
                 self?.delegate?.didUpdateAuctionState(state)
             }
