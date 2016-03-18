@@ -19,7 +19,7 @@ CGFloat DetailTextVerticalOffset = 6;
 
     self.useSerifFont = YES;
     UIView *backgroundView = [[UIView alloc] init];
-    backgroundView.backgroundColor = [UIColor artsyLightGrey];
+    backgroundView.backgroundColor = [UIColor artsyGrayRegular];
     self.selectedBackgroundView = backgroundView;
     self.textLabel.backgroundColor = [UIColor clearColor];
 

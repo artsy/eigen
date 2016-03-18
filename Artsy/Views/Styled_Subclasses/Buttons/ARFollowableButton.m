@@ -21,7 +21,7 @@
     [super setup];
 
     [self setBackgroundColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self setBorderColor:[UIColor artsyMediumGrey] forState:UIControlStateNormal];
+    [self setBorderColor:[UIColor artsyGrayMedium] forState:UIControlStateNormal];
     self.toFollowTitle = @"Follow";
     self.toUnfollowTitle = @"Following";
 
@@ -44,8 +44,8 @@
 - (void)setFollowingStatus:(BOOL)following
 {
     NSString *title = (following) ? self.toUnfollowTitle : self.toFollowTitle;
-    UIColor *titleColor = (following) ? [UIColor artsyPurple] : [UIColor blackColor];
-    UIColor *tapBackgroundColor = (following) ? [UIColor artsyPurple] : [UIColor blackColor];
+    UIColor *titleColor = (following) ? [UIColor artsyPurpleRegular] : [UIColor blackColor];
+    UIColor *tapBackgroundColor = (following) ? [UIColor artsyPurpleRegular] : [UIColor blackColor];
 
     [self setTitle:title forState:UIControlStateNormal];
     [self setTitleColor:titleColor forState:UIControlStateNormal];

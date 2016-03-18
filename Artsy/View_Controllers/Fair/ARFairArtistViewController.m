@@ -26,7 +26,7 @@
 
 #import "UIDevice-Hardware.h"
 
-#import <Artsy_UILabels/ARLabelSubclasses.h>
+@import Artsy_UILabels;
 #import <ORStackView/ORTagBasedAutoStackView.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -170,7 +170,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     if (self.artist.nationality.length && self.artist.birthday.length) {
         UILabel *titleLabel = [[ARSerifLabel alloc] init];
         titleLabel.tag = ARFairArtistSubtitle;
-        titleLabel.textColor = [UIColor artsyHeavyGrey];
+        titleLabel.textColor = [UIColor artsyGraySemibold];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.text = [NSString stringWithFormat:@"%@ Born %@", self.artist.nationality, self.artist.birthday];
         [self.view.stackView addSubview:titleLabel withTopMargin:@"10" sideMargin:@"40"];

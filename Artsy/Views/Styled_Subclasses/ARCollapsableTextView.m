@@ -58,7 +58,7 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
             [self.collapsedOverlapView constrainHeight:@"8"];
 
             UIView *border = [[UIView alloc] init];
-            border.backgroundColor = [UIColor artsyMediumGrey];
+            border.backgroundColor = [UIColor artsyGrayMedium];
             [self.collapsedOverlapView addSubview:border];
             [border constrainWidthToView:self predicate:@"0"];
             [border alignTopEdgeWithView:_collapsedOverlapView predicate:@"0"];

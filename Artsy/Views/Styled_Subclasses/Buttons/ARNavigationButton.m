@@ -34,7 +34,7 @@
 
     _borderWidth = borderWidth;
     _topBorder = [[UIView alloc] init];
-    self.topBorder.backgroundColor = [UIColor artsyLightGrey];
+    self.topBorder.backgroundColor = [UIColor artsyGrayRegular];
     [self addSubview:self.topBorder];
 
     _primaryTitleLabel = [[UILabel alloc] init];
@@ -57,7 +57,7 @@
 
     _bottomBorder = [[UIView alloc] init];
     [self.bottomBorder constrainHeight:NSStringWithFormat(@"%f", borderWidth)];
-    self.bottomBorder.backgroundColor = [UIColor artsyLightGrey];
+    self.bottomBorder.backgroundColor = [UIColor artsyGrayRegular];
     [self addSubview:self.bottomBorder];
 
     [self setNeedsUpdateConstraints];

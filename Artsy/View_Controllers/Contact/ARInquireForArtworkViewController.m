@@ -348,7 +348,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [cancelButton ar_extendHitTestSizeByWidth:10 andHeight:10];
     cancelButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor artsyHeavyGrey] forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[UIColor artsyGraySemibold] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _cancelButton = cancelButton;
     [topMenuView addSubview:cancelButton];
@@ -373,9 +373,9 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [sendButton ar_extendHitTestSizeByWidth:10 andHeight:10];
     sendButton.titleLabel.textAlignment = NSTextAlignmentRight;
     [sendButton setTitle:@"Send" forState:UIControlStateNormal];
-    [sendButton setTitleColor:[UIColor artsyPurple] forState:UIControlStateNormal];
-    [sendButton setTitleColor:[UIColor artsyPurpleWithAlpha:0.3f] forState:UIControlStateHighlighted];
-    [sendButton setTitleColor:[UIColor artsyPurpleWithAlpha:0.3f] forState:UIControlStateDisabled];
+    [sendButton setTitleColor:[UIColor artsyPurpleRegular] forState:UIControlStateNormal];
+    [sendButton setTitleColor:[[UIColor artsyPurpleRegular] colorWithAlphaComponent:0.3f] forState:UIControlStateHighlighted];
+    [sendButton setTitleColor:[[UIColor artsyPurpleRegular] colorWithAlphaComponent:0.3f] forState:UIControlStateDisabled];
     [sendButton addTarget:self action:@selector(sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _sendButton = sendButton;
     [topMenuView addSubview:sendButton];
@@ -405,7 +405,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     nameInput.textColor = [UIColor blackColor];
     nameInput.tintColor = [self inputTintColor];
     nameInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your Full Name" attributes:@{
-        NSForegroundColorAttributeName : [UIColor artsyHeavyGrey]
+        NSForegroundColorAttributeName : [UIColor artsyGraySemibold]
     }];
     nameInput.font = [UIFont serifFontWithSize:15];
     nameInput.clearButtonMode = UITextFieldViewModeNever;
@@ -436,7 +436,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     emailInput.textColor = [UIColor blackColor];
     emailInput.tintColor = [self inputTintColor];
     emailInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your Email" attributes:@{
-        NSForegroundColorAttributeName : [UIColor artsyHeavyGrey]
+        NSForegroundColorAttributeName : [UIColor artsyGraySemibold]
     }];
     emailInput.font = [UIFont serifFontWithSize:15];
     emailInput.clearButtonMode = UITextFieldViewModeNever;
@@ -510,7 +510,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
         UILabel *artworkLabel = [[UILabel alloc] init];
         artworkLabel.attributedText = artworkString.copy;
-        artworkLabel.textColor = [UIColor artsyHeavyGrey];
+        artworkLabel.textColor = [UIColor artsyGraySemibold];
         artworkLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [artworkInfoView addSubview:artworkLabel];
 
@@ -522,7 +522,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
         UILabel *artworkArtist = [[UILabel alloc] init];
         artworkArtist.font = [UIFont serifFontWithSize:13];
         artworkArtist.text = self.artwork.artist.name;
-        artworkArtist.textColor = [UIColor artsyHeavyGrey];
+        artworkArtist.textColor = [UIColor artsyGraySemibold];
         artworkArtist.lineBreakMode = NSLineBreakByTruncatingTail;
         [artworkInfoView addSubview:artworkArtist];
         [artworkArtist alignLeading:@"0" trailing:@"0" toView:artworkInfoView];
@@ -531,7 +531,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
         UILabel *artworkTitle = [[UILabel alloc] init];
         artworkTitle.font = [UIFont serifItalicFontWithSize:13];
         artworkTitle.text = self.artwork.title;
-        artworkTitle.textColor = [UIColor artsyHeavyGrey];
+        artworkTitle.textColor = [UIColor artsyGraySemibold];
         artworkTitle.lineBreakMode = NSLineBreakByTruncatingTail;
         [artworkInfoView addSubview:artworkTitle];
 
@@ -547,7 +547,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     if (currentUser) {
         UILabel *userSignature = [[UILabel alloc] init];
         userSignature.font = self.textView.font;
-        userSignature.textColor = [UIColor artsyHeavyGrey];
+        userSignature.textColor = [UIColor artsyGraySemibold];
         userSignature.text = currentUser.name ?: currentUser.email;
 
         // We dont have access to whether the user is an admin in a User
@@ -555,7 +555,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
         // for admins, we can rely on that as an indicator.
 
         if ([currentUser.email containsString:@"@artsymail"] || [currentUser.email containsString:@"@artsy.net"]) {
-            userSignature.textColor = [UIColor artsyRed];
+            userSignature.textColor = [UIColor artsyRedRegular];
             userSignature.text = @"Note: This will fail, admins cannot inquire.";
         }
 
@@ -610,7 +610,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     UILabel *specialistNameLabel = [[UILabel alloc] init];
     specialistNameLabel.font = [UIFont serifFontWithSize:12];
     specialistNameLabel.text = self.artwork.displayTitle;
-    specialistNameLabel.textColor = [UIColor artsyHeavyGrey];
+    specialistNameLabel.textColor = [UIColor artsyGraySemibold];
     specialistNameLabel.numberOfLines = 0;
     specialistNameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [specialistInfoView addSubview:specialistNameLabel];
@@ -807,7 +807,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (UIColor *)inputTintColor
 {
-    return ARPerformWorkAsynchronously ? [UIColor artsyPurple] : [UIColor whiteColor];
+    return ARPerformWorkAsynchronously ? [UIColor artsyPurpleRegular] : [UIColor whiteColor];
 }
 
 - (void)inquiryCompleted:(NSString *)message

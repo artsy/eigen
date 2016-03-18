@@ -13,7 +13,7 @@
                  completed:(SDWebImageCompletionBlock)completionBlock
 {
     if (!placeholder) {
-        placeholder = [UIImage imageFromColor:[UIColor artsyLightGrey]];
+        placeholder = [UIImage imageFromColor:[UIColor artsyGrayRegular]];
     }
 
     // This will save a lot of async calls sometime, this exists in Energy.

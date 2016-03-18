@@ -1,7 +1,7 @@
 #import "ARWorksForYouNotificationItemViewController.h"
 #import "Artist.h"
 #import "Artwork.h"
-#import "ARLabelSubclasses.h"
+@import Artsy_UILabels;
 #import "ARFonts.h"
 #import "ARSwitchboard+Eigen.h"
 #import "ARArtworkSetViewController.h"
@@ -57,13 +57,13 @@
 
     ARSansSerifLabel *dateLabel = [[ARSansSerifLabel alloc] initWithFrame:CGRectZero];
     dateLabel.text = [df stringFromDate:self.notificationItem.date];
-    dateLabel.textColor = [UIColor artsyHeavyGrey];
+    dateLabel.textColor = [UIColor artsyGraySemibold];
     dateLabel.textAlignment = NSTextAlignmentRight;
     dateLabel.font = [UIFont sansSerifFontWithSize:12];
 
     ARSerifLabel *numberOfWorksAddedLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     numberOfWorksAddedLabel.text = self.notificationItem.formattedNumberOfWorks;
-    numberOfWorksAddedLabel.textColor = [UIColor artsyHeavyGrey];
+    numberOfWorksAddedLabel.textColor = [UIColor artsyGraySemibold];
     numberOfWorksAddedLabel.font = [UIFont serifFontWithSize:16];
     [self addArtistTapRecognizerToView:numberOfWorksAddedLabel];
 
