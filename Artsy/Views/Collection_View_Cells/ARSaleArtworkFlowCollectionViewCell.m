@@ -43,9 +43,7 @@
     self.artworkImageView.clipsToBounds = YES;
     [self.contentView addSubview:self.artworkImageView];
 
-    // HACK: This *should* be 0x666666 but once it gets to the iPhone it's 0x535353
-    // so offset that, by making adding that difference to the original.
-    UIColor *darkGrey = [UIColor colorWithHex:0x797979];
+    UIColor *darkGrey = [UIColor artsyGraySemibold];
 
     self.lotNumberLabel = [[ARSansSerifLabel alloc] init];
     self.lotNumberLabel.font = [UIFont sansSerifFontWithSize:10];
@@ -64,6 +62,7 @@
     self.artworkNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artworkNameLabel];
 
+    // TODO: Move this to a standard Artsy colour.
     UIColor *lightGrey = [UIColor colorWithHex:0x999999];
 
     self.currentOrStartingBidLabel = [[ARSerifLabel alloc] init];
