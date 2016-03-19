@@ -80,6 +80,7 @@ extension SaleViewModel {
     }
 
     func subtitleForRefineSettings(refineSettings: AuctionRefineSettings, defaultRefineSettings: AuctionRefineSettings) -> String {
+        let numberOfLots = refinedSaleArtworks(refineSettings).count
         var subtitle = "\(numberOfLots) Lots"
 
         switch refineSettings.ordering {
