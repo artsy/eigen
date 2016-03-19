@@ -45,9 +45,9 @@
                            failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter liveSaleStateRequest:saleID host:host];
-    [self performRequest:request success:^(id state) {
-        success(state);
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+    [self performRequest:request
+                 success:success
+                 failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         failure(error);
     }];
 }
