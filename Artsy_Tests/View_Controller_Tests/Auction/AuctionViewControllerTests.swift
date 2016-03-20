@@ -160,6 +160,17 @@ class AuctionViewControllerTests: QuickSpec {
                     subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered)
                 }
 
+
+                it("looks good with a changed number of refined lots") {
+                    // Need to use the device when stubbing to use proper screen size.
+                    ARTestContext.useDevice(device) {
+                        subject.stubHorizontalSizeClass(horizontalSizeClass)
+                        subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
+                        subject.refineSettings = subject.defaultRefineSettings().settingsWithRange((min: 2_000_00, max: 3_000_00)) // Outside the sale artworks' estimates.
+                        expect(subject).to( haveValidSnapshot() )
+                    }
+                }
+
                 it("sorts by lot number") {
                     // Need to use the device when stubbing to use proper screen size.
                     ARTestContext.useDevice(device) {
