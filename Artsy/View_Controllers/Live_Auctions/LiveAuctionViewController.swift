@@ -218,12 +218,20 @@ class LiveAuctionLotViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let lotPreviewView = UIImageView()
+        lotPreviewView.contentMode = .ScaleAspectFit
+        view.addSubview(lotPreviewView)
+        lotPreviewView.alignTopEdgeWithView(view, predicate: "20")
+        lotPreviewView.constrainWidthToView(view, predicate: "-80")
+        lotPreviewView.alignCenterXWithView(view, predicate: "0")
+
         let metadataStack = ORStackView()
         metadataStack.bottomMarginHeight = 0
         view.addSubview(metadataStack)
         metadataStack.alignBottomEdgeWithView(view, predicate: "0")
         metadataStack.constrainWidthToView(view, predicate: "-40")
         metadataStack.alignCenterXWithView(view, predicate: "0")
+        lotPreviewView.constrainBottomSpaceToView(metadataStack, predicate: "-20")
 
         let artistNameLabel = UILabel()
         artistNameLabel.font = UIFont.serifSemiBoldFontWithSize(16)
@@ -278,6 +286,7 @@ class LiveAuctionLotViewController: UIViewController {
             estimateLabel.text = vm.estimateString
             infoToolbar.lotVM = vm
             bidButton.setTitle(vm.bidButtonTitle, forState: .Normal)
+            lotPreviewView.ar_setImageWithURL(vm.urlForThumbnail)
 
             switch vm.lotState {
             case .ClosedLot:
