@@ -15,7 +15,7 @@
 
 
 @interface ARSerifNavigationViewController () <UINavigationControllerDelegate>
-@property (nonatomic, strong) UIBarButtonItem *exitButton;
+@property (nonatomic, strong) ARSerifToolbarButtonItem *exitButton;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 @property (nonatomic, assign) BOOL oldStatusBarHiddenStatus;
 @property (nonatomic, strong) UIApplication *sharedApplication;
@@ -48,14 +48,12 @@
 
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
-    UIButton *exit = [[ARCircularActionButton alloc] initWithImageName:nil];
-    UIImage *image = [[UIImage imageNamed:@"serif_modal_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    exit.frame = CGRectMake(0, 0, 40, 40);
-    exit.layer.cornerRadius = 40 * .5f;
 
-    [exit setImage:image forState:UIControlStateNormal];
-    [exit addTarget:self action:@selector(closeModal) forControlEvents:UIControlEventTouchUpInside];
-    self.exitButton = [[UIBarButtonItem alloc] initWithCustomView:exit];
+    UIImage *image = [[UIImage imageNamed:@"serif_modal_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    ARSerifToolbarButtonItem *exit = [[ARSerifToolbarButtonItem alloc] initWithImage:image];
+
+    [exit.button addTarget:self action:@selector(closeModal) forControlEvents:UIControlEventTouchUpInside];
+    self.exitButton = exit;
 
     UIButton *back = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 40)];
     image = [[UIImage imageNamed:@"BackArrow_Highlighted"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -99,7 +97,10 @@
 {
     UINavigationItem *nav = viewController.navigationItem;
     nav.hidesBackButton = YES;
-    nav.rightBarButtonItem = self.exitButton;
+
+    if (nav.rightBarButtonItems == nil) {
+        nav.rightBarButtonItem = self.exitButton;
+    }
 
     ARSerifNavigationBar *navBar = (id)self.navigationBar;
 
@@ -112,15 +113,21 @@
         UILabel *label = [ARSerifLabel new];
         label.font = [UIFont serifFontWithSize:20];
         label.text = nav.title;
+        label.numberOfLines = 1;
         // Only make it as wide as necessary, otherwise it might cover the right bar button item.
         [label sizeToFit];
 
         // At the time of writing, 4 is the additional x offset that a UILabel in a left bar button needs
         // to align to the content of e.g. AuctionInformationViewController.
+        NSInteger rightButtonsCount = nav.rightBarButtonItems.count;
         static CGFloat xOffset = 4;
+
         CGRect labelFrame = label.bounds;
-        label.frame = CGRectOffset(labelFrame, xOffset, 0);
-        UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {CGRectGetWidth(labelFrame) + xOffset, CGRectGetHeight(labelFrame)}}];
+        CGFloat idealWidth = CGRectGetWidth(labelFrame) + xOffset;
+        CGFloat max = CGRectGetWidth(navigationController.view.bounds) - (rightButtonsCount * 48) - ((rightButtonsCount - 1) * 10);
+
+        label.frame = CGRectMake(xOffset, 0, MIN(idealWidth, max), 20);
+        UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {MIN(idealWidth, max), CGRectGetHeight(labelFrame)}}];
         [titleMarginWrapper addSubview:label];
 
         nav.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:titleMarginWrapper];
@@ -194,16 +201,16 @@
 - (void)verticallyCenterView:(id)viewOrArray
 {
     if ([viewOrArray isKindOfClass:[UIView class]]) {
-        [self center:viewOrArray];
+        [self centerVertically:viewOrArray];
 
     } else {
         for (UIBarButtonItem *button in viewOrArray) {
-            [self center:button.customView];
+            [self centerVertically:button.customView];
         }
     }
 }
 
-- (void)center:(UIView *)viewToCenter
+- (void)centerVertically:(UIView *)viewToCenter
 {
     CGFloat barMidpoint = roundf(self.frame.size.height / 2);
     CGFloat viewMidpoint = roundf(viewToCenter.frame.size.height / 2);
@@ -218,6 +225,33 @@
     UIColor *color = hide ? [UIColor whiteColor] : [UIColor artsyGrayMedium];
     [self setBackgroundImage:[UIImage imageFromColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
     self.shadowImage = [UIImage imageFromColor:color];
+}
+
+@end
+
+
+@implementation ARSerifToolbarButtonItem : UIBarButtonItem
+
+- (instancetype)initWithImage:(UIImage *)image
+{
+    CGFloat dimension = 40;
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, dimension, dimension)];
+    button.layer.cornerRadius = dimension * .5;
+
+    CALayer *buttonLayer = button.layer;
+    buttonLayer.borderColor = [UIColor artsyGrayRegular].CGColor;
+    buttonLayer.borderWidth = 1;
+    buttonLayer.cornerRadius = dimension * .5;
+
+    [button setImage:image forState:UIControlStateNormal];
+
+    self = [super initWithCustomView:button];
+    if (!self) {
+        return nil;
+    }
+
+    _button = button;
+    return self;
 }
 
 @end

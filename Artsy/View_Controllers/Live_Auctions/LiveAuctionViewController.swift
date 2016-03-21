@@ -34,48 +34,55 @@ class LiveAuctionViewController: UIViewController {
         return nil
     }
 
+    func dismissModal() {
+        guard let presentor = navigationController?.presentingViewController else { return }
+        presentor.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    func moreInfo() {
+        AuctionSaleNetworkModel().fetchSale(saleID) { result in
+            guard let saleInfo = result.value else { return }
+
+            let saleVM = SaleViewModel(sale: saleInfo, saleArtworks: [])
+            let saleInfoVC = AuctionInformationViewController(saleViewModel: saleVM)
+            self.navigationController?.pushViewController(saleInfoVC, animated: true)
+        }
+    }
+
+    func showLots() {
+
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .whiteColor()
 
-        let navToolbar = UIView()
-        view.addSubview(navToolbar)
+        let close = ARSerifToolbarButtonItem(image: UIImage(named: "close_icon")!)
+        close.accessibilityLabel = "Exit Live Bidding"
+        close.button.addTarget(self, action: "dismissModal", forControlEvents: .TouchUpInside)
 
-        // TODO: make a smaller ARCircularActionButton?
-        // Also this entire thing should become a view
-        let buttons:[UIView] = ["lots", "info", "close"].map { name in
-            let button = ARCircularActionButton(imageName: "\(name)_icon")
-            return button
-        }
+        let info = ARSerifToolbarButtonItem(image: UIImage(named: "info_icon")!)
+        info.accessibilityLabel = "More Information"
+        info.button.addTarget(self, action: "moreInfo", forControlEvents: .TouchUpInside)
 
-        buttons.forEach { button in
-            navToolbar.addSubview(button)
-            button.constrainHeight("40")
-            button.constrainWidth("40")
-            button.layer.cornerRadius = 20;
-        }
+        let lots = ARSerifToolbarButtonItem(image: UIImage(named: "lots_icon")!)
+        lots.accessibilityLabel = "Show all Lots"
+        lots.button.addTarget(self, action: "showLots", forControlEvents: .TouchUpInside)
 
-        UIView.spaceOutViewsHorizontally(buttons, predicate: "8")
-        buttons.last?.alignTopEdgeWithView(navToolbar, predicate: "0")
-        buttons.last?.alignTrailingEdgeWithView(navToolbar, predicate:"0")
-        buttons.first?.alignLeadingEdgeWithView(navToolbar, predicate: "0")
-        UIView.alignTopAndBottomEdgesOfViews(buttons)
-
-        // 30 because there's no statusbar
-        navToolbar.alignTopEdgeWithView(view, predicate: "30")
-        navToolbar.alignTrailingEdgeWithView(view, predicate: "-10")
-        navToolbar.constrainHeight("40")
+        navigationItem.rightBarButtonItems = [info, lots, close]
 
         pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
         ar_addModernChildViewController(pageController)
         pageController.delegate = salesPerson.pageControllerDelegate
 
         let pageControllerView = pageController.view
-        pageControllerView.constrainTopSpaceToView(navToolbar, predicate: "0")
+        pageControllerView.alignTopEdgeWithView(view, predicate: "0")
         pageControllerView.alignLeadingEdgeWithView(view, predicate: "0")
         pageControllerView.alignTrailingEdgeWithView(view, predicate: "0")
         pageControllerView.alignBottomEdgeWithView(view, predicate: "0")
+
+        setupKeyboardShortcuts(pageController)
 
         let progress = SimpleProgressView()
         progress.progress = 0.6
@@ -88,6 +95,19 @@ class LiveAuctionViewController: UIViewController {
 
         salesPerson.updatedState.next { [weak self] _ in
             self?.setupWithInitialData()
+        }
+    }
+
+    func setupKeyboardShortcuts(pageController: UIPageViewController) {
+        if ARAppStatus.isOSNineOrGreater() {
+            if #available(iOS 9.0, *) {
+
+                let previous = UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: "previousLot", discoverabilityTitle: "Previous Lot")
+                addKeyCommand(previous)
+
+                let next = UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: "nextLot", discoverabilityTitle: "Next Lot")
+                addKeyCommand(next)
+            }
         }
     }
 
@@ -119,6 +139,18 @@ class LiveAuctionViewController: UIViewController {
         pageController.setViewControllers([currentLotVC!], direction: direction, animated: true, completion: nil)
     }
 
+    func nextLot() {
+        guard let current = pageController.childViewControllers.first else { return }
+        guard let nextLotVC = auctionDataSource.pageViewController(pageController, viewControllerAfterViewController: current) else { return }
+        pageController.setViewControllers([nextLotVC], direction: .Forward, animated: true, completion: nil)    }
+
+    func previousLot() {
+        guard let current = pageController.childViewControllers.first else { return }
+        guard let previousLotVC = auctionDataSource.pageViewController(pageController, viewControllerBeforeViewController: current) else { return }
+        pageController.setViewControllers([previousLotVC], direction: .Reverse, animated: true, completion: nil)
+    }
+
+
     // Support for ARMenuAwareViewController
 
     let hidesBackButton = true
@@ -133,7 +165,7 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
         let auctionVC =  LiveAuctionLotViewController()
         guard let viewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
         auctionVC.lotViewModel.update(viewModel)
-        // TODO: Figoure how to update the auctionVC's auctionViewModel signal in a better way.
+        // TODO: Figure how to update the auctionVC's auctionViewModel signal in a better way.
         if let auctionViewModel = salesPerson.auctionViewModel {
             auctionVC.auctionViewModel.update(auctionViewModel)
         }
