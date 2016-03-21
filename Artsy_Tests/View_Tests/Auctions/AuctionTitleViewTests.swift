@@ -3,6 +3,7 @@ import Nimble
 import Nimble_Snapshots
 import UIKit
 import Forgeries
+import FLKAutoLayout
 @testable
 import Artsy
 
@@ -40,6 +41,7 @@ class AuctionTitleViewSpec: QuickSpec {
             it("looks good with a registered registration status") {
                 let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true)
                 subject.bounds.size.width = 400
+                subject.constrainWidth("400")
 
                 expect(subject).to( haveValidSnapshot() )
             }
