@@ -5767,6 +5767,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = "-Wobjc-missing-super-calls";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -6088,6 +6089,7 @@
 				SPRINGBOARD_DISPLAY_NAME = Artsy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = "-Wobjc-missing-super-calls";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Demo;
@@ -6206,6 +6208,7 @@
 				SPRINGBOARD_DISPLAY_NAME = Artsy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = "-Wobjc-missing-super-calls";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Store;
