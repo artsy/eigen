@@ -34,6 +34,73 @@ class LiveAuctionViewController: UIViewController {
         return nil
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupToolbar()
+        setupKeyboardShortcuts()
+
+        view.backgroundColor = .whiteColor()
+
+        pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
+        ar_addModernChildViewController(pageController)
+        pageController.delegate = salesPerson.pageControllerDelegate
+
+        let pageControllerView = pageController.view
+        pageControllerView.alignTopEdgeWithView(view, predicate: "0")
+        pageControllerView.alignLeadingEdgeWithView(view, predicate: "0")
+        pageControllerView.alignTrailingEdgeWithView(view, predicate: "0")
+        pageControllerView.alignBottomEdgeWithView(view, predicate: "0")
+
+
+
+        let progress = SimpleProgressView()
+        progress.progress = 0.6
+        progress.backgroundColor = .artsyGrayRegular()
+
+        view.addSubview(progress)
+        progress.constrainHeight("4")
+        progress.alignLeading("0", trailing: "0", toView: view)
+        progress.alignBottomEdgeWithView(view, predicate: "-165")
+
+        salesPerson.updatedState.next { [weak self] _ in
+            self?.setupWithInitialData()
+        }
+    }
+
+    func setupToolbar() {
+        func image(name: String) -> UIImage {
+            let bundle = NSBundle(forClass: self.dynamicType)
+            return UIImage(named: name, inBundle:bundle, compatibleWithTraitCollection: nil)!
+        }
+
+        let close = ARSerifToolbarButtonItem(image: image("close_icon"))
+        close.accessibilityLabel = "Exit Live Bidding"
+        close.button.addTarget(self, action: "dismissModal", forControlEvents: .TouchUpInside)
+
+        let info = ARSerifToolbarButtonItem(image: image("info_icon"))
+        info.accessibilityLabel = "More Information"
+        info.button.addTarget(self, action: "moreInfo", forControlEvents: .TouchUpInside)
+
+        let lots = ARSerifToolbarButtonItem(image: image("lots_icon"))
+        lots.accessibilityLabel = "Show all Lots"
+        lots.button.addTarget(self, action: "showLots", forControlEvents: .TouchUpInside)
+
+        navigationItem.rightBarButtonItems = [close, lots, info]
+    }
+
+    func setupKeyboardShortcuts() {
+        if ARAppStatus.isOSNineOrGreater() {
+            if #available(iOS 9.0, *) {
+
+                let previous = UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: "previousLot", discoverabilityTitle: "Previous Lot")
+                addKeyCommand(previous)
+
+                let next = UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: "nextLot", discoverabilityTitle: "Next Lot")
+                addKeyCommand(next)
+            }
+        }
+    }
+
     func dismissModal() {
         guard let presentor = navigationController?.presentingViewController else { return }
         presentor.dismissViewControllerAnimated(true, completion: nil)
@@ -50,65 +117,7 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func showLots() {
-
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view.backgroundColor = .whiteColor()
-
-        let close = ARSerifToolbarButtonItem(image: UIImage(named: "close_icon")!)
-        close.accessibilityLabel = "Exit Live Bidding"
-        close.button.addTarget(self, action: "dismissModal", forControlEvents: .TouchUpInside)
-
-        let info = ARSerifToolbarButtonItem(image: UIImage(named: "info_icon")!)
-        info.accessibilityLabel = "More Information"
-        info.button.addTarget(self, action: "moreInfo", forControlEvents: .TouchUpInside)
-
-        let lots = ARSerifToolbarButtonItem(image: UIImage(named: "lots_icon")!)
-        lots.accessibilityLabel = "Show all Lots"
-        lots.button.addTarget(self, action: "showLots", forControlEvents: .TouchUpInside)
-
-        navigationItem.rightBarButtonItems = [info, lots, close]
-
-        pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
-        ar_addModernChildViewController(pageController)
-        pageController.delegate = salesPerson.pageControllerDelegate
-
-        let pageControllerView = pageController.view
-        pageControllerView.alignTopEdgeWithView(view, predicate: "0")
-        pageControllerView.alignLeadingEdgeWithView(view, predicate: "0")
-        pageControllerView.alignTrailingEdgeWithView(view, predicate: "0")
-        pageControllerView.alignBottomEdgeWithView(view, predicate: "0")
-
-        setupKeyboardShortcuts(pageController)
-
-        let progress = SimpleProgressView()
-        progress.progress = 0.6
-        progress.backgroundColor = .artsyGrayRegular()
-
-        view.addSubview(progress)
-        progress.constrainHeight("4")
-        progress.alignLeading("0", trailing: "0", toView: view)
-        progress.alignBottomEdgeWithView(view, predicate: "-165")
-
-        salesPerson.updatedState.next { [weak self] _ in
-            self?.setupWithInitialData()
-        }
-    }
-
-    func setupKeyboardShortcuts(pageController: UIPageViewController) {
-        if ARAppStatus.isOSNineOrGreater() {
-            if #available(iOS 9.0, *) {
-
-                let previous = UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: "previousLot", discoverabilityTitle: "Previous Lot")
-                addKeyCommand(previous)
-
-                let next = UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: "nextLot", discoverabilityTitle: "Next Lot")
-                addKeyCommand(next)
-            }
-        }
+        
     }
 
     func setupWithInitialData() {

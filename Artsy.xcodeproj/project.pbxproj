@@ -473,6 +473,7 @@
 		609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */; };
 		609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 609B3C081761F80C00953CB2 /* ARSiteHeroUnitView.m */; };
 		609E394E1C9FEC840035C6FC /* LiveAuctionLotImagesPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609E394D1C9FEC840035C6FC /* LiveAuctionLotImagesPreviewView.swift */; };
+		609E394F1CA01FBC0035C6FC /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */; };
 		609F97CC1AC0F26A0079FE21 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 609F97CB1AC0F26A0079FE21 /* Images.xcassets */; };
 		609F97D01AC0F26A0079FE21 /* Artsy WatchKit App.app in Resources */ = {isa = PBXBuildFile; fileRef = 609F97CF1AC0F26A0079FE21 /* Artsy WatchKit App.app */; };
 		609F97D81AC0F26A0079FE21 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 609F97D61AC0F26A0079FE21 /* Interface.storyboard */; };
@@ -4934,6 +4935,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				609E394F1CA01FBC0035C6FC /* LiveAuctionsAssets.xcassets in Resources */,
 				E6F84D001A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */,
 				3C22227418C6487C00B7CE3A /* User_v0.data in Resources */,
 				3C22227618C64B4A00B7CE3A /* User_v1.data in Resources */,
