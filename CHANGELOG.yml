@@ -18,6 +18,7 @@ upcoming:
     - Make ‘sign-up/connect with email/facebook/twitter’ -> ‘created account’ analytics consistent. - alloy
     - Analytics Session closes now isn't triggered by Apple's alerts like the shared keychain - orta
     - Fixes the number of lots not being reflected with new refine settings. - ash
+    - Don’t allow rotation of Works For You on iPhone. - alloy
 
   notes:
     - Enable new native Works For You view. - sarah + maxim + alloy
