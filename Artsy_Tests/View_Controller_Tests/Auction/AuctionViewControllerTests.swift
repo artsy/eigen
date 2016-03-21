@@ -286,6 +286,28 @@ class AuctionViewControllerTests: QuickSpec {
             expect(subject).to( haveValidSnapshot() )
         }
 
+        it("wraps auction name correctly") {
+            let now = NSDate()
+            let start = now.dateByAddingTimeInterval(-3600.9)
+            let end = now.dateByAddingTimeInterval(3600.9) // 0.9 is to cover the possibility a clock tick happens between this line and the next.
+            dateMock = ARTestContext.freezeTime(now)
+
+            sale = try! Sale(dictionary: [
+                "saleID": "the-testing-sale",
+                "name": "Ash Furrow Auctions: Nerds Collect Art",
+                "saleDescription": "This is a description",
+                "startDate": start, "endDate": end], error: Void())
+            saleViewModel = SaleViewModel(sale: sale, saleArtworks: [])
+
+            let subject = AuctionViewController(saleID: sale.saleID)
+            subject.stubHorizontalSizeClass(.Compact)
+            subject.allowAnimations = false
+            subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+
+            expect(subject).to( haveValidSnapshot() )
+            
+            dateMock.stopMocking()
+        }
     }
 }
 
