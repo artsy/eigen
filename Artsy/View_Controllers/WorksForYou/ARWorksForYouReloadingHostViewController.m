@@ -2,6 +2,7 @@
 
 #import "UIViewController+SimpleChildren.h"
 #import "ARLogger.h"
+#import "Artsy-Swift.h"
 
 @import FLKAutoLayout;
 
@@ -63,6 +64,11 @@
         _worksForYouViewController = viewController;
         [self ar_addAlignedModernChildViewController:_worksForYouViewController];
     }
+}
+
+- (BOOL)shouldAutorotate
+{
+  return self.traitDependentAutorotateSupport;
 }
 
 @end
