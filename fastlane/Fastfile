@@ -4,7 +4,6 @@ require 'spaceship'
 APP_ID = "net.artsy.artsy"
 
 lane :ship_beta do
-  update_fastlane
   setup_for_app_store
   verify_pod_keys
 
