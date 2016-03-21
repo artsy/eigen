@@ -89,7 +89,7 @@ static int ARLoadingIndicatorView = 1;
     [items eachWithIndex:^(ARWorksForYouNotificationItem *item, NSUInteger index) {
         ARWorksForYouNotificationItemViewController *worksByArtistViewController = [[ARWorksForYouNotificationItemViewController alloc] initWithNotificationItem:item];
 
-        NSString *topMargin = (isFirstPage && item == items.firstObject) ? @"25" : @"0";
+        NSString *topMargin = (isFirstPage && item == items.firstObject) ? @"30" : @"0";
 
         if (!isFirstPage || index) [self addSeparatorLine];
         [self.view.stackView addViewController:worksByArtistViewController toParent:self withTopMargin:topMargin sideMargin:@"20"];
