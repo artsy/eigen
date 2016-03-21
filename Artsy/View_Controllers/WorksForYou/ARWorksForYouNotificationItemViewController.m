@@ -187,6 +187,8 @@
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         if (self.singleArtworkView) {
             [self updateSingleArtistViewSizeForParent:self.parentViewController];
@@ -195,13 +197,13 @@
 }
 
 #pragma mark - ARArtworkMasonryLayoutProvider
+
 - (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
-    if (self.artworksVC.items.count > 1) {
-        return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular && self.artworksVC.items.count >= 3 ? ARArtworkMasonryLayout3Column : ARArtworkMasonryLayout2Column;
-
+    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular && self.artworksVC.items.count >= 3) {
+        return ARArtworkMasonryLayout3Column;
     } else {
-        return ARArtworkMasonryLayout1Column;
+        return ARArtworkMasonryLayout2Column;
     }
 }
 

@@ -20,6 +20,7 @@ upcoming:
     - Fixes the number of lots not being reflected with new refine settings. - ash
     - Fixes lot title overflowing on auction view. - ash
     - Don’t allow rotation of Works For You on iPhone. - alloy
+    - Fix layout of Works For You after rotation on iPad. - alloy
 
   notes:
     - Enable new native Works For You view. - sarah + maxim + alloy
