@@ -76,6 +76,10 @@
 
     NSArray *labels = @[ self.lotNumberLabel, self.artistNameLabel, self.artworkNameLabel, self.currentOrStartingBidLabel ];
 
+    [labels each:^(id object) {
+        [object setNumberOfLines:1];
+    }];
+
     // Stick the first label under the image view, plus ten points.
     [[labels firstObject] alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.artworkImageView predicate:@"10"];
 
