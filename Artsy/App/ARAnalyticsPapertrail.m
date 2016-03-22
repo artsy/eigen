@@ -40,7 +40,10 @@
                                          options:0
                                            error:&error];
             NSAssert(error == nil, @"Unable to save analytics papertrail: %@", error);
-            NSInteger written = [self.stream write:(const uint8_t *)"\n" maxLength:1];
+#ifndef NS_BLOCK_ASSERTIONS
+            NSInteger written =
+#endif
+            [self.stream write:(const uint8_t *)"\n" maxLength:1];
             NSAssert(written == 1, @"Unable to append newline.");
         }
     });
