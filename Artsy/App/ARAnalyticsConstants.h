@@ -174,5 +174,6 @@ extern NSInteger const ARNavButtonNotificationsTag;
 /// Auctions
 
 extern NSString *const ARAnalyticsAuctionBidButtonTapped;
-extern NSString *const ARAnalyticsAuctionRefineTapped;
+extern NSString *const ARAnalyticsArtworksRefineTapped;
 extern NSString *const ARAnalyticsAuctionContactTapped;
+extern NSString *const ARAnalyticsTappedApplyRefine;
