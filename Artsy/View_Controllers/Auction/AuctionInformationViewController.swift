@@ -2,6 +2,7 @@ import UIKit
 import MessageUI
 import ORStackView
 import Interstellar
+import ARAnalytics
 
 typealias MarkdownString = String
 
@@ -45,6 +46,16 @@ class AuctionInformationViewController : UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError()
+    }
+  
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if (navigationController?.topViewController == self) {
+          ARAnalytics.pageView("Sale Information", withProperties: [
+              "auction_slug": saleViewModel.saleID,
+              "slug": NSString(format: "/auction/%@/info", saleViewModel.saleID)
+          ])
+        }
     }
 
     override func viewDidLoad() {
@@ -113,6 +124,12 @@ class AuctionInformationViewController : UIViewController {
     }
 
     func showContact(animated: Bool) {
+        ARAnalytics.event(ARAnalyticsAuctionContactTapped, withProperties: [
+            "auction_slug": saleViewModel.saleID,
+            "auction_state": saleViewModel.saleAvailabilityString,
+            "context_type": navigationController?.topViewController == self ? "sale" : "sale information"
+        ])
+
         if (MFMailComposeViewController.canSendMail()) {
             let controller = MFMailComposeViewController()
             controller.mailComposeDelegate = self
