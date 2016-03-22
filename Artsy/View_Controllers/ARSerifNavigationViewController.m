@@ -10,7 +10,7 @@
 
 @interface ARSerifNavigationBar : UINavigationBar
 /// Show/hides the underline from a navigation bar
-- (void)hideNavigationBarShadow:(BOOL)hide;
+- (void)hideNavigationBarShadow;
 @end
 
 
@@ -80,6 +80,8 @@
 
     self.view.layer.cornerRadius = 0;
     self.view.superview.layer.cornerRadius = 0;
+
+    [(id)self.navigationBar hideNavigationBarShadow];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -101,11 +103,8 @@
     nav.hidesBackButton = YES;
     nav.rightBarButtonItem = self.exitButton;
 
-    ARSerifNavigationBar *navBar = (id)self.navigationBar;
-
     if (navigationController.viewControllers.count > 1) {
         nav.leftBarButtonItem = self.backButton;
-        [navBar hideNavigationBarShadow:false];
 
     } else {
         // On the root view, we want a left aligned title.
@@ -127,8 +126,6 @@
 
         // Just a dummy view to ensure that the navigation bar doesn’t create a new title view.
         nav.titleView = [UIView new];
-
-        [navBar hideNavigationBarShadow:true];
     }
 }
 
@@ -213,9 +210,9 @@
     viewToCenter.frame = newFrame;
 }
 
-- (void)hideNavigationBarShadow:(BOOL)hide
+- (void)hideNavigationBarShadow
 {
-    UIColor *color = hide ? [UIColor whiteColor] : [UIColor artsyGrayMedium];
+    UIColor *color = [UIColor whiteColor];
     [self setBackgroundImage:[UIImage imageFromColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
     self.shadowImage = [UIImage imageFromColor:color];
 }

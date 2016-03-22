@@ -6,6 +6,7 @@ upcoming:
     - Added a max height for single images in WorksForYouVC - sarah
     - Fixed padding in WorksForYouVC - sarah
     - Works For You network model discards duplicate artworks - sarah
+    - Removes nav bar shaddow on serif nav controller. - ash
     - Fix for embedded models view controller wonkiness upon rotation - sarah + orta
     - Embedded models view controller truncates long titles with ellipsis - sarah
     - App uses actual socket connections to power live auctions views. - ash
