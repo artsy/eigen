@@ -67,13 +67,24 @@
     numberOfWorksAddedLabel.font = [UIFont serifFontWithSize:16];
     [self addArtistTapRecognizerToView:numberOfWorksAddedLabel];
 
-    ORSplitStackView *ssv = [[ORSplitStackView alloc] initWithLeftPredicate:@"200" rightPredicate:@"100"];
-    [ssv.leftStack addSubview:artistNameLabel withTopMargin:@"10" sideMargin:@"0"];
-    [ssv.rightStack addSubview:dateLabel withTopMargin:@"10" sideMargin:@"0"];
+    UIView *wrapper = [[UIView alloc] init];
+    NSString *labelSideMargin = (self.regularHorizontalSizeClass) ? @"75" : @"30";
+    [self.view addSubview:wrapper withTopMargin:self.regularHorizontalSizeClass ? @"35" : @"20" sideMargin:labelSideMargin];
+    
+    [wrapper addSubview:artistNameLabel];
+    [wrapper addSubview:dateLabel];
+    
+    [artistNameLabel alignLeadingEdgeWithView:wrapper predicate:@"0"];
+    [artistNameLabel constrainTrailingSpaceToView:dateLabel predicate:@"-20"];
+    [artistNameLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [artistNameLabel alignCenterYWithView:wrapper predicate:@"0"];
+    
+    [dateLabel alignTrailingEdgeWithView:wrapper predicate:@"0"];
+    [dateLabel alignCenterYWithView:wrapper predicate:@"0"];
+    [dateLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [dateLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 
-    NSString *labelSideMargin = (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? @"75" : @"30";
-    [self.view addSubview:ssv withTopMargin:@"10" sideMargin:labelSideMargin];
-    [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"7" sideMargin:labelSideMargin];
+    [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"15" sideMargin:labelSideMargin];
 
     if (self.notificationItem.artworks.count == 1) {
         self.singleArtworkView = self.singleArtworkView ?: [[ARArtworkWithMetadataThumbnailCell alloc] init];
@@ -83,7 +94,7 @@
 
         [self.singleArtworkView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleArtworkTapped:)]];
 
-        [self.view addSubview:self.singleArtworkView withTopMargin:@"10" sideMargin:(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? @"75" : @"30"];
+        [self.view addSubview:self.singleArtworkView withTopMargin:@"10" sideMargin:(self.regularHorizontalSizeClass) ? @"75" : @"30"];
 
     } else {
         self.artworksVC = self.artworksVC ?: [[AREmbeddedModelsViewController alloc] init];
@@ -122,7 +133,7 @@
 {
     Artwork *artwork = self.notificationItem.artworks.firstObject;
 
-    BOOL isPad = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+    BOOL isPad = self.regularHorizontalSizeClass;
 
     CGFloat maxHeight = parent.view.frame.size.height;
     CGFloat sideMargins = isPad ? 150 : 60;
@@ -196,11 +207,16 @@
     } completion:nil];
 }
 
+- (BOOL)regularHorizontalSizeClass
+{
+    return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+}
+
 #pragma mark - ARArtworkMasonryLayoutProvider
 
 - (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
-    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular && self.artworksVC.items.count >= 3) {
+    if (self.regularHorizontalSizeClass && self.artworksVC.items.count >= 3) {
         return ARArtworkMasonryLayout3Column;
     } else {
         return ARArtworkMasonryLayout2Column;
