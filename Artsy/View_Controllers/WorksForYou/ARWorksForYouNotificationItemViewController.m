@@ -69,7 +69,7 @@
 
     UIView *wrapper = [[UIView alloc] init];
     NSString *labelSideMargin = (self.regularHorizontalSizeClass) ? @"75" : @"30";
-    [self.view addSubview:wrapper withTopMargin:self.regularHorizontalSizeClass ? @"35" : @"20" sideMargin:labelSideMargin];
+    [self.view addSubview:wrapper withTopMargin:self.regularHorizontalSizeClass ? @"25" : @"15" sideMargin:labelSideMargin];
     
     [wrapper addSubview:artistNameLabel];
     [wrapper addSubview:dateLabel];
@@ -84,7 +84,8 @@
     [dateLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [dateLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 
-    [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"15" sideMargin:labelSideMargin];
+    [wrapper constrainHeightToView:artistNameLabel predicate:@"0"];
+    [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"7" sideMargin:labelSideMargin];
 
     if (self.notificationItem.artworks.count == 1) {
         self.singleArtworkView = self.singleArtworkView ?: [[ARArtworkWithMetadataThumbnailCell alloc] init];
@@ -120,7 +121,7 @@
 - (void)didMoveToParentViewController:(UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
-
+    
     if (self.artworksVC) {
         // this tells the embedded artworks view controller that it should update for the correct size because self.view.frame.size at this point is (0, 0)
         [self.artworksVC didMoveToParentViewController:parent];
