@@ -4,6 +4,7 @@
 #import "ARTheme.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
+#import "Artsy-Swift.h"
 
 #import <MMMarkdown/MMMarkdown.h>
 
@@ -71,7 +72,7 @@
     // This *MUST* be performed on the next runloop iteration, otherwise the HTML parsing of NSAttributedString will
     // crash. For more information see https://github.com/artsy/eigen/issues/348.
     ar_dispatch_on_queue(dispatch_get_main_queue(), ^{
-        NSAttributedString *string = [self.class artsyBodyTextAttributedStringFromHTML:HTMLstring withFont:self.font];
+        NSAttributedString *string = [self.class artsyBodyTextAttributedStringFromHTML:HTMLstring withFont:self.font useSemiBold:self.useSemiBold];
 
         // SCREW IT MEGAHACK to get paragraph spacing right.
         NSMutableAttributedString *mutableCopy = string.mutableCopy;
@@ -98,7 +99,7 @@
     });
 }
 
-+ (NSAttributedString *)artsyBodyTextAttributedStringFromHTML:(NSString *)HTML withFont:(UIFont *)font
++ (NSAttributedString *)artsyBodyTextAttributedStringFromHTML:(NSString *)HTML withFont:(UIFont *)font useSemiBold:(BOOL)useSemiBold
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineHeightMultiple = 1.2;
@@ -111,7 +112,7 @@
         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)
     };
 
-    return [self _attributedStringWithTextParams:textParams andHTML:HTML];
+    return [self _attributedStringWithTextParams:textParams andHTML:HTML useSemiBold:useSemiBold];
 }
 
 
@@ -135,7 +136,7 @@
     return cssString;
 }
 
-+ (NSAttributedString *)_attributedStringWithTextParams:(NSDictionary *)textParams andHTML:(NSString *)HTML
++ (NSAttributedString *)_attributedStringWithTextParams:(NSDictionary *)textParams andHTML:(NSString *)HTML useSemiBold:(BOOL)useSemiBold
 {
     NSDictionary *importParams = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
 
@@ -146,6 +147,10 @@
     if (error) {
         ARErrorLog(@"Error creating NSAttributedString from HTML %@", error.localizedDescription);
         return nil;
+    }
+
+    if (useSemiBold) {
+        attributedString = [attributedString makeBoldOccurencesSansSerifSemiBold];
     }
 
     return attributedString;

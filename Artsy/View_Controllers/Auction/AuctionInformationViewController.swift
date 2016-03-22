@@ -72,6 +72,7 @@ class AuctionInformationViewController : UIViewController {
         stackView.addSubview(auctionTitleView, withTopMargin: "20", sideMargin: "40")
         
         let auctionDescriptionView = ARTextView()
+        auctionDescriptionView.useSemiBold = true
         auctionDescriptionView.setMarkdownString(saleViewModel.saleDescription)
         stackView.addSubview(auctionDescriptionView, withTopMargin: "10", sideMargin: "40")
         
@@ -227,6 +228,7 @@ extension AuctionInformationViewController {
                 
                 let contentView = ARTextView()
                 contentView.scrollEnabled = true
+                contentView.useSemiBold = true
 
                 entry.downloadContent()
                 entry.markdownSignal.next { string in
