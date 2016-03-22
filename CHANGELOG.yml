@@ -23,6 +23,7 @@ upcoming:
     - Fix layout of Works For You after rotation on iPad. - alloy
     - Fix font formatting (bold vs semibold). - ash
     - Changes serif nav bar shadow colour. - ash
+    - Fixes cell bottom margin issues. - ash
 
   notes:
     - Enable new native Works For You view. - sarah + maxim + alloy
