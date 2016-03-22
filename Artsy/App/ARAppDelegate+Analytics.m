@@ -650,23 +650,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARInternalMobileWebViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOpenedArtsyGravityURL,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(webView:shouldStartLoadWithRequest:navigationType:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARInternalMobileWebViewController *controller, NSArray *parameters) {
-                                NSURLRequest *request = parameters[1];
-                                return [request.URL.absoluteString containsString:@"stop_microgravity_redirect"];
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
-                                NSURLRequest *request = parameters[1];
-                                return @{ @"url" : request.URL.absoluteString ?: @"" };
-                            },
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARPersonalizeViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -1153,7 +1136,7 @@
                     ARAnalyticsClass: ARNavigationController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsSelectorName: @"back:",
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(back:),
                             ARAnalyticsEventName: ARAnalyticsBackTapped
                         }
                     ]
@@ -1168,12 +1151,12 @@
                                 return @{
                                     @"auction_slug" : controller.saleID ?: @"",
                                     @"auction_state" : controller.saleViewModel.saleAvailabilityString,
-                                    @"context_type": controller.navigationController.topViewController == controller ? @"sale" : @"information"
+                                    @"context_type": controller.navigationController.topViewController == controller ? @"sale" : @"sale information"
                                 };
                             }
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsAuctionRefineTapped,
+                            ARAnalyticsEventName: ARAnalyticsArtworksRefineTapped,
                             ARAnalyticsSelectorName: ARAnalyticsSelector(showRefineTapped),
                             ARAnalyticsProperties: ^NSDictionary *(AuctionViewController *controller, NSArray *parameters) {
                                 return @{
@@ -1194,7 +1177,7 @@
                                 return @{
                                     @"auction_slug" : controller.saleViewModel.saleID ?: @"",
                                     @"auction_state" : controller.saleViewModel.saleAvailabilityString,
-                                    @"context_type": controller.navigationController.topViewController == controller ? @"sale" : @"information"
+                                    @"context_type": controller.navigationController.topViewController == controller ? @"sale" : @"sale information"
                                 };
                             }
                         }
@@ -1204,14 +1187,14 @@
                     ARAnalyticsClass: AuctionRefineViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsAuctionContactTapped,
+                            ARAnalyticsEventName: ARAnalyticsTappedApplyRefine,
                             ARAnalyticsSelectorName: ARAnalyticsSelector(userDidPressApply),
                             ARAnalyticsProperties: ^NSDictionary *(AuctionRefineViewController *controller, NSArray *parameters) {
                                 return @{
                                     @"auction_slug" : controller.saleViewModel.saleID ?: @"",
                                     @"context_type": @"sale",
                                     @"slug": [NSString stringWithFormat:@"/auction/%@/refine", controller.saleViewModel.saleID]
-                                    };
+                                };
                             }
                         }
                     ]
