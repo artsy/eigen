@@ -98,6 +98,14 @@ static CGFloat ARHeroUnitDescriptionFont;
     [textViewsContainer addSubview:descriptionLabel withTopMargin:NSStringWithFormat(@"%f", ARHeroUnitTitleDescriptionMargin)
                         sideMargin:nil];
 
+    // FIXME: This basically reverts part of https://github.com/artsy/Artsy-UILabels/pull/19.
+    //
+    //        I wanted to make it so that it assigns the preferred width once a width is available,
+    //        as I did here https://github.com/artsy/Artsy-UILabels/pull/20, but for some reason this
+    //        is causing Eigen’s test suite to hang.
+    //
+    descriptionLabel.preferredMaxLayoutWidth = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 728 : 280;
+
     if ([UIDevice isPad]) {
         ARHeroUnitButton *button = [self createButtonWithColor:unit.buttonColor inverseColor:unit.inverseButtonColor andText:unit.linkText];
         [textViewsContainer addSubview:button withTopMargin:NSStringWithFormat(@"%f", ARHeroUnitDescriptionButtonMargin)];
