@@ -20,6 +20,9 @@
 /// Don't underline links
 @property (nonatomic, assign) BOOL plainLinks;
 
+/// Replace use of bold font with sansSerifSemiBold of the same size.
+@property (nonatomic, assign) BOOL useSemiBold;
+
 @property (nonatomic, assign) id<ARTextViewDelegate> viewControllerDelegate;
 
 @end

@@ -21,6 +21,8 @@ upcoming:
     - Fixes lot title overflowing on auction view. - ash
     - Don’t allow rotation of Works For You on iPhone. - alloy
     - Fix layout of Works For You after rotation on iPad. - alloy
+    - Fix font formatting (bold vs semibold). - ash
+    - Changes serif nav bar shadow colour. - ash
     - Fixes cell bottom margin issues. - ash
 
   notes:
