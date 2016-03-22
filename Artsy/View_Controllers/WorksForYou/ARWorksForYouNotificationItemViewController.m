@@ -68,20 +68,22 @@
     [self addArtistTapRecognizerToView:numberOfWorksAddedLabel];
 
     UIView *wrapper = [[UIView alloc] init];
-    
-    [wrapper addSubview:artistNameLabel];
-    [artistNameLabel alignLeadingEdgeWithView:wrapper predicate:@"0"];
-    [artistNameLabel constrainWidth:self.regularHorizontalSizeClass ? @"550" : @"200"];
-    [artistNameLabel alignCenterYWithView:wrapper predicate:@"0"];
-    
-    [wrapper addSubview:dateLabel];
-    [dateLabel alignTrailingEdgeWithView:wrapper predicate:@"0"];
-    [dateLabel alignCenterYWithView:wrapper predicate:@"0"];
-    [dateLabel constrainWidth:@"100"];
-    [dateLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-
     NSString *labelSideMargin = (self.regularHorizontalSizeClass) ? @"75" : @"30";
     [self.view addSubview:wrapper withTopMargin:self.regularHorizontalSizeClass ? @"35" : @"20" sideMargin:labelSideMargin];
+    
+    [wrapper addSubview:artistNameLabel];
+    [wrapper addSubview:dateLabel];
+    
+    [artistNameLabel alignLeadingEdgeWithView:wrapper predicate:@"0"];
+    [artistNameLabel constrainTrailingSpaceToView:dateLabel predicate:@"-20"];
+    [artistNameLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [artistNameLabel alignCenterYWithView:wrapper predicate:@"0"];
+    
+    [dateLabel alignTrailingEdgeWithView:wrapper predicate:@"0"];
+    [dateLabel alignCenterYWithView:wrapper predicate:@"0"];
+    [dateLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [dateLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+
     [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"15" sideMargin:labelSideMargin];
 
     if (self.notificationItem.artworks.count == 1) {
