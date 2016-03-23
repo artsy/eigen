@@ -162,7 +162,7 @@ describe(@"with one hero unit", ^{
             @"id": @"art-basel1",
             @"name": @"Art Basel1",
             @"heading": @"Exclusive Preview",
-            @"mobile_description": @"Discover some artworks.",
+            @"mobile_description": @"Discover artworks in this amazingly exclusive preview of the best fair in Basel.",
             @"mobile_title": @"Art Basel",
             @"display_on_mobile": @true,
             @"position": @1,

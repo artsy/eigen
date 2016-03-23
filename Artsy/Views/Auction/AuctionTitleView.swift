@@ -99,6 +99,7 @@ private extension AuctionTitleView {
 
         if fullWidth {
             titleLabel.alignLeadingEdgeWithView(container, predicate: "0")
+            titleLabel.alignTop("0", bottom: "0", toView: container)
         } else {
             titleLabel.alignCenterXWithView(container, predicate: "0")
         }
@@ -116,6 +117,7 @@ private extension AuctionTitleView {
             infoButton.alignTop("0", bottom: "0", toView: container)
 
             // Ensure button doesn't overlap with title
+            titleLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
             infoButton.constrainLeadingSpaceToView(titleLabel, predicate: ">= \(regularSize ? 20 : 30)@400")
         } else {
             container.alignTop("0", bottom: "0", toView: titleLabel)

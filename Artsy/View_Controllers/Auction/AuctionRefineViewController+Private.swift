@@ -4,6 +4,7 @@ import Artsy_UIFonts
 import ORStackView
 import Then
 import MARKRangeSlider
+import ARAnalytics
 
 private let CellIdentifier = "Cell"
 
@@ -50,6 +51,11 @@ extension UserInteraction {
     }
 
     func userDidPressApply() {
+        ARAnalytics.event(ARAnalyticsTappedApplyRefine, withProperties: [
+            "auction_slug": saleViewModel.saleID,
+            "context_type": "sale",
+            "slug": NSString(format:"/auction/%@/refine", saleViewModel.saleID)
+        ])
         delegate?.userDidApply(currentSettings, controller: self)
     }
 

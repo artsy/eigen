@@ -222,7 +222,7 @@
 
 - (void)hideNavigationBarShadow:(BOOL)hide
 {
-    UIColor *color = hide ? [UIColor whiteColor] : [UIColor artsyGrayMedium];
+    UIColor *color = hide ? [UIColor whiteColor] : [UIColor artsyGrayRegular];
     [self setBackgroundImage:[UIImage imageFromColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
     self.shadowImage = [UIImage imageFromColor:color];
 }
