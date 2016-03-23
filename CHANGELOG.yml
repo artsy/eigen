@@ -26,6 +26,7 @@ upcoming:
     - Fixes cell bottom margin issues. - ash
     - Fix hero unit description not fully showing when spanning multiple lines. - alloy
     - Fix auction related analytics. - orta + alloy
+    - Updates for Xcode 7.3. - ash
 
   notes:
     - Enable new native Works For You view. - sarah + maxim + alloy
