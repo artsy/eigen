@@ -13,7 +13,8 @@ __block ARSerifNavigationViewController *subject;
 
 describe(@"", ^{
 
-    it(@"shows as a form in the center", ^{
+    // TODO: Orta - bring this back
+    pending(@"shows as a form in the center", ^{
 
         // In order to use FBSnapshots + presentViewController:animated:
         // the view controller has to exist within a key window + view controller
