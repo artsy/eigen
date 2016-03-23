@@ -75,7 +75,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (1.0.0)
-  - Expecta (1.0.0)
+  - Expecta (1.0.5)
   - Expecta+Snapshots (2.0.0):
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0.3)
@@ -112,7 +112,7 @@ PODS:
   - NAMapKit (3.2.0):
     - ARTiledImageView
     - SDWebImage
-  - Nimble (3.1.0)
+  - Nimble (3.2.0)
   - Nimble-Snapshots (3.0.0):
     - FBSnapshotTestCase (~> 2.0.7)
     - Nimble
@@ -124,7 +124,7 @@ PODS:
   - ORKeyboardReactingApplication (0.5.3)
   - ORStackView (2.0.0):
     - FLKAutoLayout (~> 0.1)
-  - Quick (0.9.0)
+  - Quick (0.9.1)
   - ReactiveCocoa (2.3):
     - ReactiveCocoa/UI (= 2.3)
   - ReactiveCocoa/Core (2.3):
@@ -176,7 +176,7 @@ DEPENDENCIES:
   - Expecta+Snapshots
   - FBSDKCoreKit (= 4.9.0-beta2)
   - FBSDKLoginKit (= 4.9.0-beta2)
-  - FBSnapshotTestCase
+  - FBSnapshotTestCase (from `https://github.com/untitledstartup/ios-snapshot-test-case.git`)
   - FLKAutoLayout (from `https://github.com/alloy/FLKAutoLayout.git`, branch `add-support-for-layout-guides-take-2`)
   - Forgeries/Mocks (from `https://github.com/ashfurrow/Forgeries.git`, branch `application`)
   - FXBlurView
@@ -234,6 +234,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  FBSnapshotTestCase:
+    :git: https://github.com/untitledstartup/ios-snapshot-test-case.git
   FLKAutoLayout:
     :branch: add-support-for-layout-guides-take-2
     :git: https://github.com/alloy/FLKAutoLayout.git
@@ -276,6 +278,9 @@ CHECKOUT OPTIONS:
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  FBSnapshotTestCase:
+    :commit: 19df17227fbb99da3de7e10c00306a9eab1b18c6
+    :git: https://github.com/untitledstartup/ios-snapshot-test-case.git
   FLKAutoLayout:
     :commit: dd2cd4fe901ff5dcfc47c2c29c7746779fc12b64
     :git: https://github.com/alloy/FLKAutoLayout.git
@@ -317,7 +322,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Expecta: 32604574add2c46a36f8d2f716b6c5736eb75024
+  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
   FBSDKCoreKit: d49cbf69741e3c5732166ec9ff4cbd9b288dd53e
   FBSDKLoginKit: d32e83c0d2d39ef74a942543cacae2dc4de7d088
@@ -339,7 +344,7 @@ SPEC CHECKSUMS:
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: bdcb666fa84122eed344661b132e1d93dbafac71
-  Nimble: 79d40f4d69d47314229bbabacaa02b8838c779b9
+  Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
   Nimble-Snapshots: ab41dd737dcd33a0b0cb005a30465fef70b7207a
   NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
@@ -347,7 +352,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: 752d81ca2e2a0bd6c01a2ece30fd24923434be1e
-  Quick: 332eb1da73125a2106dd637424c803f2ae97e4a9
+  Quick: a5221fc21788b6aeda934805e68b061839bc3165
   ReactiveCocoa: 81ee2fb7df2dfc6bd52b5d70473662195e20ca7d
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84

@@ -8,6 +8,9 @@
     #import <OHHTTPStubs/OHHTTPStubs.h>
     #import <OCMock/OCMock.h>
 
+    // Not sure why, but Xcode isn't picking up on this from Expecta.
+    #define failure(...) EXP_failure((__VA_ARGS__))
+
     // Pods that come in from the other target
     #import <AFNetworking/AFNetworking.h>
     #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
