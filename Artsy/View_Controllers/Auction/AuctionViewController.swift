@@ -68,7 +68,7 @@ class AuctionViewController: UIViewController {
             // TODO: Error-handling somehow
         }
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "registrationUpdated:", name: ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AuctionViewController.registrationUpdated(_:)), name: ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -156,7 +156,7 @@ extension AuctionViewController {
             $0.toggleAttatched(false, animated:false)
             $0.button.setTitle("Refine", forState: .Normal)
             $0.titleLabel.text = saleViewModel.displayName
-            $0.button.addTarget(self, action: "showRefineTapped", forControlEvents: .TouchUpInside)
+            $0.button.addTarget(self, action: #selector(AuctionViewController.showRefineTapped), forControlEvents: .TouchUpInside)
         }
 
         saleArtworksViewController.stickyHeaderView = stickyHeader

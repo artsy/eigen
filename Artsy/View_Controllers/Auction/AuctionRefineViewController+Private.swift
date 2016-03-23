@@ -75,7 +75,7 @@ private extension UISetup {
 
     func cancelButton() -> UIButton {
         let cancelButton = UIButton.circularButton(.Cancel)
-        cancelButton.addTarget(self, action: "userDidCancel", forControlEvents: .TouchUpInside)
+        cancelButton.addTarget(self, action: #selector(AuctionRefineViewController.userDidCancel), forControlEvents: .TouchUpInside)
         return cancelButton
     }
 
@@ -128,7 +128,7 @@ private extension UISetup {
                 $0.trackImage = UIImage(named: "Track")
                 $0.rightThumbImage = UIImage(named: "Thumb")
                 $0.leftThumbImage = $0.rightThumbImage
-                $0.addTarget(self, action: "sliderValueDidChange:", forControlEvents: .ValueChanged)
+                $0.addTarget(self, action: #selector(AuctionRefineViewController.sliderValueDidChange(_:)), forControlEvents: .ValueChanged)
 
                 let maxRange = self.defaultSettings.range
                 let initialRange = initialSettings.range
@@ -174,7 +174,7 @@ private extension UISetup {
         let applyButton = ARBlackFlatButton().then {
             $0.enabled = false
             $0.setTitle("Apply", forState: .Normal)
-            $0.addTarget(self, action: "userDidPressApply", forControlEvents: .TouchUpInside)
+            $0.addTarget(self, action: #selector(AuctionRefineViewController.userDidPressApply), forControlEvents: .TouchUpInside)
         }
 
         let resetButton = ARWhiteFlatButton().then {
@@ -183,7 +183,7 @@ private extension UISetup {
             $0.setBorderColor(.artsyGrayRegular(), forState: .Normal)
             $0.setBorderColor(UIColor.artsyGrayRegular().colorWithAlphaComponent(0.5), forState: .Disabled)
             $0.layer.borderWidth = 1
-            $0.addTarget(self, action: "userDidPressReset", forControlEvents: .TouchUpInside)
+            $0.addTarget(self, action: #selector(AuctionRefineViewController.userDidPressReset), forControlEvents: .TouchUpInside)
         }
 
         let buttonContainer = UIView()
@@ -222,8 +222,10 @@ extension SliderView {
     }
 
     // Sets priority of the constraint, using AnyObject! because of FLKAutoLayout
-    func setConstraintPriority(priority: SliderPriorities)(constraint: AnyObject!) {
-        (constraint as? NSLayoutConstraint)?.priority = priority.rawValue
+    func setConstraintPriority(priority: SliderPriorities) -> (AnyObject! -> Void) {
+        return { constraint in
+            (constraint as? NSLayoutConstraint)?.priority = priority.rawValue
+        }
     }
 }
 

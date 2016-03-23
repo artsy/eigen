@@ -192,10 +192,9 @@ extension AuctionInformationViewController {
             self.stackView.alignLeading("0", trailing: "0", toView: self.view)
             self.stackView.constrainBottomSpaceToView(self.flk_bottomLayoutGuide(), predicate: "-40")
             
-            for (var i = 0; i < self.entries.count; i++) {
-                let entry = self.entries[i]
+            for (index, entry) in self.entries.enumerate() {
                 let entryView = EntryView(entry: entry, textDelegate: self) { [unowned self] in self.expandView($0) }
-                entryView.tag = i
+                entryView.tag = index
                 self.stackView.addSubview(entryView, withTopMargin: "0", sideMargin: "0")
             }
             
@@ -260,7 +259,7 @@ extension AuctionInformationViewController {
                 
                 super.init(frame: CGRectZero)
                 
-                titleButton.addTarget(self, action: "didTap", forControlEvents: .TouchUpInside)
+                titleButton.addTarget(self, action: #selector(EntryView.didTap), forControlEvents: .TouchUpInside)
                 
                 addSubview(topBorder)
                 addSubview(titleButton)
