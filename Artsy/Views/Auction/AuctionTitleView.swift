@@ -106,7 +106,7 @@ private extension AuctionTitleView {
 
         if showAdditionalInformation {
             let infoButton = UIButton.circularButton(.Info)
-            infoButton.addTarget(self, action: "userDidPressInfo", forControlEvents: .TouchUpInside)
+            infoButton.addTarget(self, action: #selector(AuctionTitleView.userDidPressInfo), forControlEvents: .TouchUpInside)
             container.addSubview(infoButton)
 
             // Vertically align both label and button
@@ -166,7 +166,7 @@ private extension AuctionTitleView {
 
         let registerButton = ARBlackFlatButton().then {
             $0.setTitle("Register to Bid", forState: .Normal)
-            $0.addTarget(self, action: "userDidPressRegister", forControlEvents: .TouchUpInside)
+            $0.addTarget(self, action: #selector(AuctionTitleView.userDidPressRegister), forControlEvents: .TouchUpInside)
         }
         container.addSubview(registerButton)
 
