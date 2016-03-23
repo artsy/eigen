@@ -189,7 +189,7 @@
 {
     __weak typeof(self) wself = self;
     [self getArtworksInShow:show atPage:page success:^(NSArray *artworks) {
-        if (!artworks.count > 0) { return; }
+        if (artworks.count < 1) { return; }
         __strong typeof (wself) sself = wself;
         [view.artworksVC appendItems:artworks];
         [sself addArtworksInShow:show atPage:page+1 toView:view];
