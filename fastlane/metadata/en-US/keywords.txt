@@ -1,1 +1,1 @@
-gallery,fairs,show,guide,collect,collector,museum,auction,fine,buy,online,artwork,artist,armory,bid
+gallery,fairs,exhibition,collector,museum,auction,buy,artwork,artist,armory,bid,interior,banksy,fair

@@ -1,1 +1,1 @@
-artsy,arte,artista,museo,galería,exposición, comprar arte, subastas, guía, feria de arte, pintura
+gallery,fairs,exhibition,collector,museum,auction,buy,artwork,artist,armory,bid,interior,banksy,fair

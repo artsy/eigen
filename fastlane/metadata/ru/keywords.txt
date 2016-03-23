@@ -1,1 +1,1 @@
-artsy, искусство, художник, музей, галерея, выставка, искусства, результаты аукциона, гид, ярмарка
+gallery,fairs,exhibition,collector,museum,auction,buy,artwork,artist,armory,bid,interior,banksy,fair
