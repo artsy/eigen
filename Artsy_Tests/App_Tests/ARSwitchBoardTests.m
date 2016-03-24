@@ -323,8 +323,6 @@ describe(@"ARSwitchboard", ^{
 
         /// As the class is in swift-world, lets not complicate this by bridging when it's not important
         it(@"routes live auctions", ^{
-            // This is now behind a feature flag
-            [AROptions setBool:YES forOption:AROptionsUseNativeAuctions];
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
 
