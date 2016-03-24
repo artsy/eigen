@@ -43,7 +43,12 @@
 
 + (BOOL)isRunningTests
 {
-    return [[NSProcessInfo processInfo] environment][@"XCInjectBundle"] != nil;
+    static BOOL isRunningTests = NO;
+    static dispatch_once_t onceToken = 0;
+    dispatch_once(&onceToken, ^{
+        isRunningTests = NSClassFromString(@"XCTestCase") != NULL;
+    });
+    return isRunningTests;
 }
 
 + (BOOL)isOSNineOrGreater

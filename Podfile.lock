@@ -193,7 +193,7 @@ DEPENDENCIES:
   - MMMarkdown
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`)
-  - Nimble
+  - Nimble (from `https://github.com/Quick/Nimble.git`)
   - Nimble-Snapshots (~> 3.0.0)
   - NPKeyboardLayoutGuide
   - ObjectiveSugar
@@ -201,7 +201,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (from `https://github.com/1aurabrown/ORStackView.git`)
-  - Quick
+  - Quick (from `https://github.com/Quick/Quick.git`)
   - ReactiveCocoa
   - SDWebImage (>= 3.7.2)
   - Socket.IO-Client-Swift
@@ -250,8 +250,12 @@ EXTERNAL SOURCES:
     :path: Pods/CocoaPodsKeys
   NAMapKit:
     :git: https://github.com/neilang/NAMapKit
+  Nimble:
+    :git: https://github.com/Quick/Nimble.git
   ORStackView:
     :git: https://github.com/1aurabrown/ORStackView.git
+  Quick:
+    :git: https://github.com/Quick/Quick.git
 
 CHECKOUT OPTIONS:
   Aerodramus:
@@ -296,9 +300,15 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
+  Nimble:
+    :commit: 758cc9b80e0978d7b86b7729f90cd52ee270cb02
+    :git: https://github.com/Quick/Nimble.git
   ORStackView:
     :commit: 80bfeb0a4176e307a8b94b1662104e64cc8bb50c
     :git: https://github.com/1aurabrown/ORStackView.git
+  Quick:
+    :commit: 3a1d88fb81476001c62f086dbd94bb0f5354f1a3
+    :git: https://github.com/Quick/Quick.git
 
 SPEC CHECKSUMS:
   Adjust: 297176446c127f1232b9591b2b37cdc4796850b8
