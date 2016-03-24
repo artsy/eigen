@@ -10,6 +10,19 @@ import ISO8601DateFormatter
 @testable
 import Artsy
 
+var dateMock: AnyObject?
+var systemDateMock: AnyObject?
+
+func freezeTime(now: NSDate) {
+    dateMock = ARTestContext.freezeTime(now)
+    systemDateMock = ARTestContext.freezeSystemTime(now)
+}
+
+func unfreezeTime() {
+    dateMock?.stopMocking()
+    systemDateMock?.stopMocking()
+}
+
 class AuctionViewControllerTests: QuickSpec {
     override func spec() {
         var sale: Sale!
@@ -266,6 +279,27 @@ class AuctionViewControllerTests: QuickSpec {
             expect(subject).to( haveValidSnapshot() )
 
             dateMock.stopMocking()
+        }
+
+        it("handles showing information for upcoming auctions with long names with no sale artworks") {
+            let exact_now = ISO8601DateFormatter().dateFromString("2025-11-24T10:00:00+00:00")!
+            let start = exact_now.dateByAddingTimeInterval(3600.9)
+            let end = exact_now.dateByAddingTimeInterval(3700.9)
+            freezeTime(exact_now)
+
+            sale = try! Sale(dictionary: [
+                "saleID": "the-tada-sale", "name": "The Sale With The Really Really Looooong Name",
+                "saleDescription": "This is a description",
+                "startDate": start, "endDate": end], error: Void())
+            saleViewModel = SaleViewModel(sale: sale, saleArtworks: [])
+
+            let subject = AuctionViewController(saleID: sale.saleID)
+            subject.allowAnimations = false
+            subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+
+            expect(subject).to( haveValidSnapshot() )
+            
+            unfreezeTime()
         }
 
         it("looking correct when an auction is closed") {
