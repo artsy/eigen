@@ -305,7 +305,7 @@ class LiveAuctionLotViewController: UIViewController {
         bidHistoryViewController.view.constrainHeight("70")
 
         let currentLotView = LiveAuctionCurrentLotView()
-        currentLotView.addTarget(nil, action: "jumpToLiveLot", forControlEvents: .TouchUpInside)
+        currentLotView.addTarget(nil, action: #selector(LiveAuctionViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
         view.addSubview(currentLotView)
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")

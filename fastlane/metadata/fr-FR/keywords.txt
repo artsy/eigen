@@ -1,1 +1,1 @@
-artsy, art, artiste, musée, galerie, salon, acheter l'art, aux enchères, foires d'art, armory show
+gallery,fairs,exhibition,collector,museum,auction,buy,artwork,artist,armory,bid,interior,banksy,fair

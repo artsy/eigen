@@ -1,7 +1,1 @@
-Welcome to Artsy for iOS version 2.3.2. Codenamed "Fresh," this update ensures your home screen is always up-to-date with the latest content, every time you launch the app. Why? Because Automatic always beats Manual, especially after consuming so much turkey a few nights ago (and pie... you know who you are).
-
-We've made some additional performance enhancements, visual improvements (to the auction results view), and have fixed a few meddlesome bugs to boot. All in all, a great update, and just in time for Miami Art Week 2015.
-
-Speaking of which, Artsy is mounting its biggest presence in Miami to date - an expansive program of online and onsite activations spanning a multi-artist exhibition, art fair coverage, an auction, and events. If you can't join us in person, join us in spirit! Be sure to check the app for ongoing coverage of the latest and greatest from the fairs.
-
-As always, if you have any ideas or issues, we'd love to hear from you! Drop us a note at mobile@artsy.net. Until we meet again!
+We improved the feel of the auction views and the ‘Works by Artists you follow’ view which we now also preload as soon as a push notification is received.

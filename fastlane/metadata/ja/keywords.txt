@@ -1,1 +1,1 @@
-artsy, 芸術、芸術家、美術館、画廊、展覧会、作品購入、オークションの結果、美術ガイド、アートフェア、絵画、彫刻
+gallery,fairs,exhibition,collector,museum,auction,buy,artwork,artist,armory,bid,interior,banksy,fair
