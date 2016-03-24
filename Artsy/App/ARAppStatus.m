@@ -45,7 +45,7 @@
     static BOOL isRunningTests = NO;
     static dispatch_once_t onceToken = 0;
     dispatch_once(&onceToken, ^{
-        isRunningTests = NSClassFromString(@"XCTestCase") != nil;
+        isRunningTests = NSClassFromString(@"XCTestCase") != NULL;
     });
     return isRunningTests;
 }

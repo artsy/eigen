@@ -83,28 +83,6 @@ typedef NS_ENUM(NSUInteger, UIDeviceFamily) {
 
 
 @interface UIDevice (Hardware)
-- (NSString *)platform;
-- (NSString *)hwmodel;
-- (NSUInteger)platformType;
-- (NSString *)platformString;
-
-- (NSUInteger)cpuFrequency;
-- (NSUInteger)busFrequency;
-- (NSUInteger)cpuCount;
-- (NSUInteger)totalMemory;
-- (NSUInteger)userMemory;
-
-- (NSNumber *)totalDiskSpace;
-- (NSNumber *)freeDiskSpace;
-
-- (NSString *)macaddress;
-
-- (BOOL)hasRetinaDisplay;
-- (UIDeviceFamily)deviceFamily;
-
-/// Orta
 + (BOOL)isPad;
 + (BOOL)isPhone;
-+ (BOOL)isRunningUnitTests;
-- (NSString *)deviceFamilyString;
 @end
