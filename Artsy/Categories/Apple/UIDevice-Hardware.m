@@ -378,9 +378,7 @@ static BOOL ARRunningUnitTests = NO;
 {
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-        NSString *XCInjectBundle = [[[NSProcessInfo processInfo] environment] objectForKey:@"XCInjectBundle"];
-
-        ARRunningUnitTests = [XCInjectBundle hasSuffix:@".xctest"];
+        ARRunningUnitTests = NSClassFromString(@"XCTestCase") != nil;
     });
 
     return ARRunningUnitTests;
