@@ -1,6 +1,7 @@
 #import "ARAppStatus.h"
 #import "User.h"
 #import "ARAppConstants.h"
+#import <UIKit/UIKit.h>
 
 
 @implementation ARAppStatus
@@ -50,4 +51,8 @@
     return isRunningTests;
 }
 
++ (BOOL)isOSNineOrGreater
+{
+    return (&UIApplicationOpenURLOptionsAnnotationKey != NULL);
+}
 @end
