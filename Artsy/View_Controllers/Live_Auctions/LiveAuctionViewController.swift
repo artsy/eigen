@@ -70,20 +70,20 @@ class LiveAuctionViewController: UIViewController {
     func setupToolbar() {
         func image(name: String) -> UIImage {
             let bundle = NSBundle(forClass: self.dynamicType)
-            return UIImage(named: name, inBundle:bundle, compatibleWithTraitCollection: nil)!
+            return UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)!
         }
 
-        let close = ARSerifToolbarButtonItem(image: image("close_icon"))
+        let close = ARSerifToolbarButtonItem(image: image("Close_Icon"))
         close.accessibilityLabel = "Exit Live Bidding"
-        close.button.addTarget(self, action: "dismissModal", forControlEvents: .TouchUpInside)
+        close.button.addTarget(self, action: #selector(LiveAuctionViewController.dismissModal), forControlEvents: .TouchUpInside)
 
         let info = ARSerifToolbarButtonItem(image: image("info_icon"))
         info.accessibilityLabel = "More Information"
-        info.button.addTarget(self, action: "moreInfo", forControlEvents: .TouchUpInside)
+        info.button.addTarget(self, action: #selector(LiveAuctionViewController.moreInfo), forControlEvents: .TouchUpInside)
 
         let lots = ARSerifToolbarButtonItem(image: image("lots_icon"))
         lots.accessibilityLabel = "Show all Lots"
-        lots.button.addTarget(self, action: "showLots", forControlEvents: .TouchUpInside)
+        lots.button.addTarget(self, action: #selector(LiveAuctionViewController.showLots), forControlEvents: .TouchUpInside)
 
         navigationItem.rightBarButtonItems = [close, lots, info]
     }
@@ -92,10 +92,10 @@ class LiveAuctionViewController: UIViewController {
         if ARAppStatus.isOSNineOrGreater() {
             if #available(iOS 9.0, *) {
 
-                let previous = UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: "previousLot", discoverabilityTitle: "Previous Lot")
+                let previous = UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: #selector(LiveAuctionViewController.previousLot), discoverabilityTitle: "Previous Lot")
                 addKeyCommand(previous)
 
-                let next = UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: "nextLot", discoverabilityTitle: "Next Lot")
+                let next = UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: #selector(LiveAuctionViewController.nextLot), discoverabilityTitle: "Next Lot")
                 addKeyCommand(next)
             }
         }
