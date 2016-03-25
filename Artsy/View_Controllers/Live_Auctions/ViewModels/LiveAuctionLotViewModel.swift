@@ -2,6 +2,14 @@ import Foundation
 
 // Represents a single lot view
 
+/*
+
+TODO: this needs to be changed to vend _signals_ instead of raw values, for the following properties:
+- Reserve status
+- Events (need a way to start/end updates for table view)
+- Next bid amount
+*/
+
 class LiveAuctionLotViewModel : NSObject {
 
     enum LotState {
