@@ -73,4 +73,11 @@ static OCMockObject *ARPartialScreenMock;
     return mock;
 }
 
++ (OCMockObject *)freezeSystemTime:(NSDate *)now
+{
+    id mock = [OCMockObject mockForClass:[ARSystemTime class]];
+    [[[mock stub] andReturn:now] date];
+    return mock;
+}
+
 @end
