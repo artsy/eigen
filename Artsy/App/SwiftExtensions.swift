@@ -13,3 +13,13 @@ func applyUnowned<Type: AnyObject, Parameters, ReturnValue>(instance: Type, _ fu
         return function(instance)(parameters)
     }
 }
+
+// "Adds" two dictionaries of corresponding types. Duplicated keys result in rhs taking priority.
+func +<K, V>(lhs: Dictionary<K, V>, rhs: Dictionary<K, V>) -> Dictionary<K, V> {
+    // This is possible using reduce, but the imperative method is a lot more readable.
+    var copy = lhs
+    for (key, value) in rhs {
+        copy[key] = value
+    }
+    return copy
+}

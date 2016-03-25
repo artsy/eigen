@@ -37,14 +37,10 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel? {
-        guard let auctionViewModel = auctionViewModel else { return nil }
         guard 0..<lots.count ~= index else { return nil }
 
         return LiveAuctionLotViewModel(
-            lot: lots[index],
-            auction: auctionViewModel,
-            events: eventsViewModelsForLot(lots[index]),
-            index: index)
+            lot: lots[index])
     }
 
     init(saleID: String, accessToken: String, defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) {

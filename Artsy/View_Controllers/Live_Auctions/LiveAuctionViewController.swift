@@ -326,23 +326,27 @@ class LiveAuctionLotViewController: UIViewController {
             artworkNameLabel.setTitle(vm.lotName, date: "1985")
             estimateLabel.text = vm.estimateString
             infoToolbar.lotVM = vm
-            bidButton.setTitle(vm.bidButtonTitle, forState: .Normal)
+            // TODO: Finish this
+//            infoToolbar.auctionViewModel = 
+            // TODO: Uncomment
+//            bidButton.setTitle(vm.bidButtonTitle, forState: .Normal)
             lotPreviewView.ar_setImageWithURL(vm.urlForThumbnail)
 
-            switch vm.lotState {
-            case .ClosedLot:
-                bidButton.setEnabled(false, animated: false)
-                bidHistoryViewController.lotViewModel = vm
-
-            case .LiveLot:
-                // We don't need this when it's the current lot
-                currentLotView.removeFromSuperview()
-                bidHistoryViewController.lotViewModel = vm
-
-            case .UpcomingLot(_):
-                // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
-                bidHistoryViewController.view.hidden = true
-            }
+            // TODO: Finish
+//            switch vm.lotState {
+//            case .ClosedLot:
+//                bidButton.setEnabled(false, animated: false)
+//                bidHistoryViewController.lotViewModel = vm
+//
+//            case .LiveLot:
+//                // We don't need this when it's the current lot
+//                currentLotView.removeFromSuperview()
+//                bidHistoryViewController.lotViewModel = vm
+//
+//            case .UpcomingLot(_):
+//                // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
+//                bidHistoryViewController.view.hidden = true
+//            }
         }
     }
 }
@@ -413,6 +417,7 @@ class LiveAuctionCurrentLotView: UIButton {
 class LiveAuctionToolbarView : UIView {
     // eh, not sold on this yet
     var lotVM: LiveAuctionLotViewModel!
+    var auctionViewModel: LiveAuctionViewModel!
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -423,7 +428,7 @@ class LiveAuctionToolbarView : UIView {
     }
 
     func lotCountString() -> NSAttributedString {
-        return NSAttributedString(string: "\(lotVM.lotIndex)/\(lotVM.lotCount)")
+        return NSAttributedString(string: "\(lotVM.lotIndex)/\(auctionViewModel.lotCount)")
     }
 
     func attributify(string: String) -> NSAttributedString {
@@ -434,7 +439,7 @@ class LiveAuctionToolbarView : UIView {
         let viewStructure: [[String: NSAttributedString]]
         let clockClosure: (UILabel) -> ()
 
-        switch lotVM.lotState {
+        switch lotVM.lotStateWithViewModel(auctionViewModel) {
         case .ClosedLot:
             viewStructure = [
                 ["lot": lotCountString()],

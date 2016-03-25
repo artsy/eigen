@@ -4,7 +4,7 @@ import Foundation
 
 /*
 
-TODO: this needs to be changed to vend _signals_ instead of raw values, for the following properties:
+TODO: this needs to vend _signals_ instead of raw values, for the following attributes:
 - Reserve status
 - Events (need a way to start/end updates for table view)
 - Next bid amount
@@ -18,21 +18,15 @@ class LiveAuctionLotViewModel : NSObject {
         case UpcomingLot(distanceFromLive: Int)
     }
 
-    private let auction: LiveAuctionViewModel
     private let lot: LiveAuctionLot
-    private let index: Int
+    var events = [LiveAuctionEventViewModel]()
 
-    let events: [LiveAuctionEventViewModel] // Var?
-
-    init(lot: LiveAuctionLot, auction: LiveAuctionViewModel, events: [LiveAuctionEventViewModel], index: Int) {
+    init(lot: LiveAuctionLot) {
         self.lot = lot
-        self.auction = auction
-        self.index = index
-        self.events = events
     }
 
-    var lotState : LotState {
-        guard let distance = auction.distanceFromCurrentLot(lot) else {
+    func lotStateWithViewModel(viewModel: LiveAuctionViewModel) -> LotState {
+        guard let distance = viewModel.distanceFromCurrentLot(lot) else {
             return .ClosedLot
         }
         if distance == 0 { return .LiveLot }
@@ -61,11 +55,7 @@ class LiveAuctionLotViewModel : NSObject {
     }
 
     var lotIndex: Int {
-        return index + 1
-    }
-
-    var lotCount: Int {
-        return auction.lotCount
+        return lot.position
     }
 
     // maybe depecated by currentLotviewModel?
@@ -73,8 +63,8 @@ class LiveAuctionLotViewModel : NSObject {
         return "$10,000"
     }
 
-    var bidButtonTitle: String {
-        switch lotState {
+    func bidButtonTitleWithViewModel(viewModel: LiveAuctionViewModel) ->  String {
+        switch lotStateWithViewModel(viewModel) {
         case .ClosedLot:   return "BIDDING CLOSED"
         case .LiveLot:  return "BID 20,000"
         case .UpcomingLot(_):  return "LEAVE MAX BID"
