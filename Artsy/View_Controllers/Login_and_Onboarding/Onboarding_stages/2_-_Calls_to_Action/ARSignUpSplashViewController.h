@@ -3,6 +3,6 @@
 
 @interface ARSignUpSplashViewController : UIViewController
 @property (nonatomic, weak) id<AROnboardingStepsDelegate, ARLoginSignupDelegate> delegate;
+@property (nonatomic, weak) AROnboardingViewController *onboardingViewController;
 @property (nonatomic, strong) UIImage *backgroundImage;
-@property (nonatomic, assign, readonly) NSInteger pageCount;
 @end
