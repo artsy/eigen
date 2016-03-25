@@ -23,26 +23,40 @@ State update includes:
 */
 
 class LiveAuctionStateReconciler: NSObject {
+    typealias LotID = String
+    typealias LotPair = (lot: LiveAuctionLot, viewModel: LiveAuctionLotViewModel)
+
     // TODO: Remove once we have our state broken into constituent pieces.
     let updatedState = Signal<AnyObject>()
 
-    let currentLot = Signal<LiveAuctionLot>()
+    let currentLot = Signal<LiveAuctionLotViewModel>()
     var lots = [LiveAuctionLot]()
 
-    // Updates the signal for us.
-    private var state: AnyObject? {
-        didSet {
-            guard let state = state else { return }
-            updatedState.update(state)
-        }
-    }
+    private var _state = [LotID: LotPair]()
 }
 
 
 private typealias PublicFunctions = LiveAuctionStateReconciler
 extension PublicFunctions {
     func updateState(state: AnyObject) {
-        self.state = state
+        guard let lotsJSON = state["lots"] as? [String: [String: AnyObject]] else { return }
+        guard let currentLotID = state["currentLotId"] as? String else { return }
+        guard let eventsJSON = state["lotEvents"] as? [String: [String: AnyObject]]  else { return }
+
+        // TODO: state["lots"] is a dictionary, but state["sale"]["lots"] is an array of _ordered_ lot IDs, so sorting the lotsJSON would be a good idea.
+
+        lotsJSON.forEach { (lotID, lotJSON) in
+            // TODO: create-or-update with a linear scan through self._state and sorted lotsJSON arrays.
+        }
+
+        eventsJSON.forEach { (eventID, eventJSON) in
+            // TODO: somehow inject any new events into lot pairs
+            // TODO: take advantage of the fact that events don't change, and are never removed
+        }
+
+        if let currentLot = _state[currentLotID] {
+            self.currentLot.update(currentLot.viewModel)
+        }
     }
 }
 
