@@ -81,7 +81,7 @@
     self.logoView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:self.logoView];
     [self.logoView alignCenterXWithView:self.view predicate:@"0"];
-    [self.logoView alignCenterYWithView:self.view predicate:[UIDevice isPad] ? @"-194" : @"-173"];
+    [self.logoView alignCenterYWithView:self.view predicate:[UIDevice isPad] ? @"-224" : @"-153"];
 
     self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.view addSubview:self.spinnerView];
@@ -138,15 +138,16 @@
     [self addChildViewController:self.textViewController];
     [self.view addSubview:self.textViewController.view];
 
-    [self.textViewController.view constrainTopSpaceToView:self.logoView predicate: [UIDevice isPad] ? @"70" : @"160"];
+    [self.textViewController.view constrainTopSpaceToView:self.logoView predicate: [UIDevice isPad] ? @"140" : @"160"];
     [self.textViewController.view alignCenterXWithView:self.view predicate:@"0"];
 
     self.getStartedButton = [[ARWhiteFlatButton alloc] init];
     [self.view addSubview:self.getStartedButton];
     [self.getStartedButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
     [self.getStartedButton addTarget:self action:@selector(startOnboarding:) forControlEvents:UIControlEventTouchUpInside];
-    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate: [UIDevice isPad] ? @"130" : @"29"];
+    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate: [UIDevice isPad] ? @"260" : @"100"];
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
+    [self.getStartedButton constrainWidth:[UIDevice isPad] ? @"340" : @"300"];
 
     self.logInButton = [[ARClearFlatButton alloc] init];
     [self.view addSubview:self.logInButton];
@@ -154,6 +155,8 @@
     [self.logInButton addTarget:self action:@selector(logIn:) forControlEvents:UIControlEventTouchUpInside];
     [self.logInButton constrainTopSpaceToView:self.getStartedButton predicate:@"12"];
     [self.logInButton alignCenterXWithView:self.view predicate:@"0"];
+    [self.logInButton constrainWidth:[UIDevice isPad] ? @"340" : @"300"];
+
     
     ARTermsAndConditionsView *label = [[ARTermsAndConditionsView alloc] init];
     [label constrainWidth:@"280"];
@@ -248,7 +251,7 @@
     copyLabel.text = self.text;
 
     [self.view addSubview:copyLabel];
-    [copyLabel constrainWidth:@"280" height:@"120"];
+    [copyLabel constrainWidth:[UIDevice isPad] ? @"500" : @"280" height: [UIDevice isPad] ? @"160" : @"120"];
     [copyLabel alignCenterXWithView:self.view predicate:@"0"];
     [copyLabel alignCenterYWithView:self.view predicate:[UIDevice isPad] ? @"40" : @"-60"];
 }
@@ -258,18 +261,12 @@
     ARSerifLineHeightLabel *copyLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
     copyLabel.backgroundColor = [UIColor clearColor];
     copyLabel.opaque = NO;
-    copyLabel.font = [UIFont serifFontWithSize:24];
+    copyLabel.font = [UIFont serifFontWithSize: [UIDevice isPad] ? 38 : 26];
     copyLabel.textColor = [UIColor whiteColor];
     copyLabel.textAlignment = NSTextAlignmentCenter;
     copyLabel.numberOfLines = 0;
     copyLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    copyLabel.clipsToBounds = NO;
-    copyLabel.layer.shadowOpacity = 0.8;
-    copyLabel.layer.shadowRadius = 2.0;
-    copyLabel.layer.shadowOffset = CGSizeZero;
-    copyLabel.layer.shadowColor = [UIColor colorWithWhite:0 alpha:0.6].CGColor;
-    copyLabel.layer.shouldRasterize = YES;
     return copyLabel;
 }
 
