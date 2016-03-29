@@ -24,13 +24,12 @@ State update includes:
 
 class LiveAuctionStateReconciler: NSObject {
     typealias LotID = String
-    typealias LotPair = (lot: LiveAuctionLot, viewModel: LiveAuctionLotViewModel)
 
     let currentLot = Signal<LiveAuctionLotViewModel>()
     var lots = [LiveAuctionLot]()
     // TODO: need to notify of updated lots externally somehow 🤔
 
-    private var _state = [LotID: LotPair]()
+    private var _state = [LotID: LiveAuctionLotViewModel]()
 }
 
 
@@ -68,35 +67,34 @@ private extension PrivateFunctions {
         }
 
         // Convert the sortedLotsJSON into the existing, in-memory LotPairs
-        let sortedLotPairs = sortedLotsJSON.flatMap { (dict: [String: AnyObject]) -> LotPair? in
+        let sortedLotViewModels = sortedLotsJSON.flatMap { (dict: [String: AnyObject]) -> LiveAuctionLotViewModel? in
             guard let id = dict["id"] as? LotID else { return nil }
             return _state[id]
         }
 
         // If we have same lot counts, we can do a linear scan to update; otherwise, we replace.
-        if sortedLotsJSON.count == sortedLotPairs.count {
+        if sortedLotsJSON.count == sortedLotViewModels.count {
             // Loop through our json and in-memory models pairwise, updating the reserve status and asking price.
 
-            for (json, lotPair) in zip(sortedLotsJSON, sortedLotPairs) {
+            for (json, lotViewModel) in zip(sortedLotsJSON, sortedLotViewModels) {
                 guard let reserveStatusString = json["reserveStatus"] as? String else { continue }
                 guard let askingPrice = json["onlineAskingPriceCents"] as? Int else { continue }
 
-                lotPair.viewModel.updateReserveStatus(reserveStatusString)
-                lotPair.viewModel.updateOnlineAskingPrice(askingPrice)
+                lotViewModel.updateReserveStatus(reserveStatusString)
+                lotViewModel.updateOnlineAskingPrice(askingPrice)
             }
 
         } else {
             // Create new lots, and corresponding view models
-            let newLots = sortedLotsJSON.map { LiveAuctionLot(JSON: $0) }
-            let newViewModels = newLots.map { LiveAuctionLotViewModel(lot: $0) }
+            let newViewModels = sortedLotsJSON
+                .map { LiveAuctionLot(JSON: $0) }
+                .map { LiveAuctionLotViewModel(lot: $0) }
 
             // TODO: Once UI is hooked up, verify if we need the newly-created models to have empty events, which would trigger the per-event notifications in updateLotsWithEvents().
 
             // Update state by zipping lots/view models, and then reducing them into a dictionary to satisfy _state type.
-            self._state = zip(newLots, newViewModels).reduce([:], combine: { (dict, lotPair) -> [LotID: LotPair] in
-                let lot = lotPair.0
-                let lotViewModel = lotPair.1
-                return dict + [lot.liveAuctionLotID: (lot: lot, viewModel: lotViewModel)]
+            self._state = newViewModels.reduce([:], combine: { (dict, lotViewModel) -> [LotID: LiveAuctionLotViewModel] in
+                return dict + [lotViewModel.liveAuctionLotID: lotViewModel]
             })
         }
     }
@@ -109,8 +107,8 @@ private extension PrivateFunctions {
     }
 
     func updateCurrentLotWithID(currentLotID: LotID) {
-        if let currentLot = _state[currentLotID] {
-            self.currentLot.update(currentLot.viewModel)
+        if let currentLotViewModel = _state[currentLotID] {
+            self.currentLot.update(currentLotViewModel)
         }
     }
 

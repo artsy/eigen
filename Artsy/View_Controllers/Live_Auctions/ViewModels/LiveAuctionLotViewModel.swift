@@ -58,6 +58,10 @@ class LiveAuctionLotViewModel : NSObject {
         return model.position
     }
 
+    var liveAuctionLotID: String {
+        return model.liveAuctionLotID
+    }
+
     // maybe depecated by currentLotviewModel?
     var currentLotValue: String {
         return "$10,000"
