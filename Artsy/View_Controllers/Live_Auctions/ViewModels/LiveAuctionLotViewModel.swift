@@ -1,14 +1,7 @@
 import Foundation
+import Interstellar
 
 // Represents a single lot view
-
-/*
-
-TODO: this needs to vend _signals_ instead of raw values, for the following attributes:
-- Reserve status
-- Events (need a way to start/end updates for table view)
-- Next bid amount
-*/
 
 class LiveAuctionLotViewModel : NSObject {
 
@@ -19,7 +12,14 @@ class LiveAuctionLotViewModel : NSObject {
     }
 
     private let model: LiveAuctionLot
-    var events = [LiveAuctionEventViewModel]()
+    private var events = [LiveAuctionEventViewModel]()
+
+    let reserveStatusSignal = Signal<ARReserveStatus>()
+    let askingPriceSignal = Signal<Int>()
+
+    let startEventUpdatesSignal = Signal<NSDate>()
+    let endEventUpdatesSignal = Signal<NSDate>()
+    let newEventSignal = Signal<LiveAuctionEventViewModel>()
 
     init(lot: LiveAuctionLot) {
         self.model = lot
@@ -79,13 +79,40 @@ class LiveAuctionLotViewModel : NSObject {
         return SaleArtwork.estimateStringForLowEstimate(model.lowEstimateCents, highEstimateCents: model.highEstimateCents, currencySymbol: model.currencySymbol, currency: model.currency)
     }
 
+    var eventIDs: [String] {
+        return model.eventIDs
+    }
+
+    var numberOfEvents: Int {
+        return events.count
+    }
+
+    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
+        return events[index]
+    }
+
     func updateReserveStatus(reserveStatusString: String) {
         model.updateReserveStatusWithString(reserveStatusString)
-        // TODO: Update any signal?
+        reserveStatusSignal.update(model.reserveStatus)
     }
 
     func updateOnlineAskingPrice(askingPrice: Int) {
         model.updateOnlineAskingPrice(askingPrice)
+        askingPriceSignal.update(askingPrice)
+    }
+
+    func addEvents(events: [LiveEvent]) {
+        startEventUpdatesSignal.update(NSDate())
+        defer { endEventUpdatesSignal.update(NSDate()) }
+
+        do {
+            model.addEvents(events.map { $0.eventID })
+            let newEvents = events.map { LiveAuctionEventViewModel(event: $0) }
+            newEvents.forEach { event in
+                newEventSignal.update(event)
+            }
+            self.events += newEvents
+        }
     }
 }
 

@@ -30,6 +30,7 @@ class LiveAuctionStateReconciler: NSObject {
     // TODO: need to notify of updated lots externally somehow 🤔
 
     private var _state = [LotID: LiveAuctionLotViewModel]()
+
 }
 
 
@@ -40,12 +41,23 @@ extension PublicFunctions {
         // TODO: don't fail silently on bad input
         guard let lotsJSON = state["lots"] as? ObjectJSON else { return }
         guard let saleJSON = state["sale"] as? [String: AnyObject] else { return }
-        guard let orderedLots = saleJSON["lots"] as? [String] else { return }
+        guard let orderedLotIDs = saleJSON["lots"] as? [String] else { return }
         guard let currentLotID = state["currentLotId"] as? String else { return }
         guard let eventsJSON = state["lotEvents"] as? ObjectJSON  else { return }
 
-        createOrUpdateLots(orderedLots, lotsJSON: lotsJSON)
-        updateLotsWithEvents(eventsJSON)
+        // Convert Dictionary into array of individual lot dictionaries, according to lot ID.
+        // This array will be sorted by correct lot IDs (as dictated by orderedLotIDs).
+        let sortedLotsJSON = orderedLotIDs.flatMap { lotID in
+            return lotsJSON[lotID]
+        }
+
+        // Convert the sortedLotsJSON into the existing, in-memory LotPairs
+        let sortedLotIDs = sortedLotsJSON.flatMap { json in
+            return json["id"] as? LotID
+        }
+
+        createOrUpdateLots(sortedLotsJSON, sortedLotIDs: sortedLotIDs)
+        updateLotsWithEvents(eventsJSON, sortedLotsJSON: sortedLotsJSON, sortedLotIDs: sortedLotIDs)
         updateCurrentLotWithID(currentLotID)
     }
 
@@ -58,19 +70,9 @@ private extension PrivateFunctions {
     typealias NewEventIDs = Set<String>
 
     /// Returns event IDs that need to be inserted into the lots.
-    func createOrUpdateLots(orderedLotIDs: [LotID], lotsJSON: ObjectJSON) {
+    func createOrUpdateLots(sortedLotsJSON: [[String: AnyObject]], sortedLotIDs: [LotID]) {
 
-        // Convert Dictionary into array of individual lot dictionaries, according to lot ID.
-        // This array will be sorted by correct lot IDs (as dictated by orderedLotIDs).
-        let sortedLotsJSON = orderedLotIDs.flatMap { lotID in
-            return lotsJSON[lotID]
-        }
-
-        // Convert the sortedLotsJSON into the existing, in-memory LotPairs
-        let sortedLotViewModels = sortedLotsJSON.flatMap { (dict: [String: AnyObject]) -> LiveAuctionLotViewModel? in
-            guard let id = dict["id"] as? LotID else { return nil }
-            return _state[id]
-        }
+        let sortedLotViewModels = sortedLotViewModelsFromLotIDs(sortedLotIDs)
 
         // If we have same lot counts, we can do a linear scan to update; otherwise, we replace.
         if sortedLotsJSON.count == sortedLotViewModels.count {
@@ -90,7 +92,7 @@ private extension PrivateFunctions {
                 .map { LiveAuctionLot(JSON: $0) }
                 .map { LiveAuctionLotViewModel(lot: $0) }
 
-            // TODO: Once UI is hooked up, verify if we need the newly-created models to have empty events, which would trigger the per-event notifications in updateLotsWithEvents().
+            // Note: we're not adding event IDs here to the model we'll do that in updateLotsWithEvents()
 
             // Update state by zipping lots/view models, and then reducing them into a dictionary to satisfy _state type.
             self._state = newViewModels.reduce([:], combine: { (dict, lotViewModel) -> [LotID: LiveAuctionLotViewModel] in
@@ -99,11 +101,25 @@ private extension PrivateFunctions {
         }
     }
 
-    func updateLotsWithEvents(eventsJSON: ObjectJSON) {
-        eventsJSON.forEach { (eventID, eventJSON) in
-            // TODO: somehow inject any new events into lot pairs
-            // TODO: take advantage of the fact that events don't change, and are never removed
+    func updateLotsWithEvents(eventsJSON: ObjectJSON, sortedLotsJSON: [[String: AnyObject]], sortedLotIDs: [LotID]) {
+
+        let sortedLotViewModels = sortedLotViewModelsFromLotIDs(sortedLotIDs)
+
+        zip(sortedLotsJSON, sortedLotViewModels).forEach { (lotJSON, viewModel) in
+            let jsonEventIDs = lotJSON["events"] as? [String] ?? []
+            let newEventIDs = jsonEventIDs.subarrayFromFirstDifference(viewModel.eventIDs)
+
+            let newEvents = newEventIDs
+                .flatMap { eventID in
+                    return eventsJSON[eventID]
+                }
+                .flatMap { eventJSON in
+                    return LiveEvent(JSON: eventJSON)
+                }
+
+            viewModel.addEvents(newEvents)
         }
+
     }
 
     func updateCurrentLotWithID(currentLotID: LotID) {
@@ -112,4 +128,9 @@ private extension PrivateFunctions {
         }
     }
 
+    func sortedLotViewModelsFromLotIDs(lotIDs: [LotID]) -> [LiveAuctionLotViewModel] {
+        return lotIDs.flatMap { lotID in
+            return _state[lotID]
+        }
+    }
 }

@@ -235,7 +235,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lotViewModel?.events.count ?? 0
+        return lotViewModel?.numberOfEvents ?? 0
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -246,7 +246,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
         guard let lotViewModel = lotViewModel else { return }
         guard let cell = cell as? LiveAuctionHistoryCell else { return }
 
-        let event = lotViewModel.events[indexPath.row]
+        let event = lotViewModel.eventAtIndex(indexPath.row)
         cell.updateWithEventViewModel(event)
     }
 }
