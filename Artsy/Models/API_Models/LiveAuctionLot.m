@@ -3,6 +3,14 @@
 #import "Artwork.h"
 
 
+@interface LiveAuctionLot ()
+
+@property (nonatomic, assign, readwrite) ARReserveStatus reserveStatus;
+@property (nonatomic, assign, readwrite) NSInteger onlineAskingPriceCents;
+
+@end
+
+
 @implementation LiveAuctionLot
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -35,6 +43,17 @@
 + (NSValueTransformer *)reserveStatusJSONTransformer
 {
     return [SaleArtwork reserveStatusJSONTransformer];
+}
+
+- (void)updateReserveStatus:(NSString *)reserveStatusString
+{
+    NSValueTransformer *transformer = [[self class] reserveStatusJSONTransformer];
+    self.reserveStatus = [[transformer transformedValue:reserveStatusString] integerValue];
+}
+
+- (void)updateOnlineAskingPriceWithString:(NSInteger)onlineAskingPrice
+{
+    self.onlineAskingPriceCents = onlineAskingPrice;
 }
 
 @end

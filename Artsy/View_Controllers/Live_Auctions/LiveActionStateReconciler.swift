@@ -45,8 +45,8 @@ extension PublicFunctions {
         guard let currentLotID = state["currentLotId"] as? String else { return }
         guard let eventsJSON = state["lotEvents"] as? ObjectJSON  else { return }
 
-        let newEventIDs = createOrUpdateLots(orderedLots, lotsJSON: lotsJSON)
-        updateLotsWithEvents(newEventIDs, eventsJSON: eventsJSON)
+        createOrUpdateLots(orderedLots, lotsJSON: lotsJSON)
+        updateLotsWithEvents(eventsJSON)
         updateCurrentLotWithID(currentLotID)
     }
 
@@ -59,8 +59,7 @@ private extension PrivateFunctions {
     typealias NewEventIDs = Set<String>
 
     /// Returns event IDs that need to be inserted into the lots.
-    func createOrUpdateLots(orderedLotIDs: [LotID], lotsJSON: ObjectJSON) -> NewEventIDs {
-        let newEventIDs: NewEventIDs
+    func createOrUpdateLots(orderedLotIDs: [LotID], lotsJSON: ObjectJSON) {
 
         // Convert Dictionary into array of individual lot dictionaries, according to lot ID.
         // This array will be sorted by correct lot IDs (as dictated by orderedLotIDs).
@@ -68,15 +67,30 @@ private extension PrivateFunctions {
             return lotsJSON[lotID]
         }
 
-        // If we have same lot counts, we can do a linear scan to update; otherwise, we replace.
-        if sortedLotsJSON.count == self._state.count {
-            // TODO: create-or-update with a linear scan through self._state and sorted lotsJSON arrays.
+        // Convert the sortedLotsJSON into the existing, in-memory LotPairs
+        let sortedLotPairs = sortedLotsJSON.flatMap { (dict: [String: AnyObject]) -> LotPair? in
+            guard let id = dict["id"] as? LotID else { return nil }
+            return _state[id]
+        }
 
-            newEventIDs = NewEventIDs()
+        // If we have same lot counts, we can do a linear scan to update; otherwise, we replace.
+        if sortedLotsJSON.count == sortedLotPairs.count {
+            // Loop through our json and in-memory models pairwise, updating the reserve status and asking price.
+
+            for (json, lotPair) in zip(sortedLotsJSON, sortedLotPairs) {
+                guard let reserveStatusString = json["reserveStatus"] as? String else { continue }
+                guard let askingPrice = json["onlineAskingPriceCents"] as? Int else { continue }
+
+                lotPair.viewModel.updateReserveStatus(reserveStatusString)
+                lotPair.viewModel.updateOnlineAskingPrice(askingPrice)
+            }
+
         } else {
             // Create new lots, and corresponding view models
             let newLots = sortedLotsJSON.map { LiveAuctionLot(JSON: $0) }
             let newViewModels = newLots.map { LiveAuctionLotViewModel(lot: $0) }
+
+            // TODO: Once UI is hooked up, verify if we need the newly-created models to have empty events, which would trigger the per-event notifications in updateLotsWithEvents().
 
             // Update state by zipping lots/view models, and then reducing them into a dictionary to satisfy _state type.
             self._state = zip(newLots, newViewModels).reduce([:], combine: { (dict, lotPair) -> [LotID: LotPair] in
@@ -84,15 +98,10 @@ private extension PrivateFunctions {
                 let lotViewModel = lotPair.1
                 return dict + [lot.liveAuctionLotID: (lot: lot, viewModel: lotViewModel)]
             })
-
-            // Since we have all new lots, we also have all-new event IDs
-            newEventIDs = Set(newLots.flatMap { $0.events })
         }
-
-        return newEventIDs
     }
 
-    func updateLotsWithEvents(newEventIDs: NewEventIDs, eventsJSON: ObjectJSON) {
+    func updateLotsWithEvents(eventsJSON: ObjectJSON) {
         eventsJSON.forEach { (eventID, eventJSON) in
             // TODO: somehow inject any new events into lot pairs
             // TODO: take advantage of the fact that events don't change, and are never removed

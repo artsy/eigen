@@ -30,7 +30,10 @@
 
 @property (nonatomic, assign, readonly) NSInteger lowEstimateCents;
 @property (nonatomic, assign, readonly) NSInteger highEstimateCents;
-@property (nonatomic, assign, readonly) NSInteger askingPriceCents;
+@property (nonatomic, assign, readonly) NSInteger askingPriceCents; // TODO: Remove this? Do we need it at all on the client side, since we only want aline?
 @property (nonatomic, assign, readonly) NSInteger onlineAskingPriceCents;
+
+- (void)updateReserveStatusWithString:(NSString *)reserveStatusString;
+- (void)updateOnlineAskingPrice:(NSInteger)onlineAskingPrice;
 
 @end

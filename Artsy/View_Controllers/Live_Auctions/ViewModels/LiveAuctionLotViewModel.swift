@@ -18,15 +18,15 @@ class LiveAuctionLotViewModel : NSObject {
         case UpcomingLot(distanceFromLive: Int)
     }
 
-    private let lot: LiveAuctionLot
+    private let model: LiveAuctionLot
     var events = [LiveAuctionEventViewModel]()
 
     init(lot: LiveAuctionLot) {
-        self.lot = lot
+        self.model = lot
     }
 
     func lotStateWithViewModel(viewModel: LiveAuctionViewModel) -> LotState {
-        guard let distance = viewModel.distanceFromCurrentLot(lot) else {
+        guard let distance = viewModel.distanceFromCurrentLot(model) else {
             return .ClosedLot
         }
         if distance == 0 { return .LiveLot }
@@ -35,27 +35,27 @@ class LiveAuctionLotViewModel : NSObject {
     }
 
     var urlForThumbnail: NSURL {
-        return lot.urlForThumbnail()
+        return model.urlForThumbnail()
     }
 
     var urlForProfile: NSURL {
-        return lot.urlForThumbnail()
+        return model.urlForThumbnail()
     }
 
     var imageProfileSize: CGSize {
-        return lot.imageProfileSize()
+        return model.imageProfileSize()
     }
 
     var lotName: String {
-        return lot.artworkTitle
+        return model.artworkTitle
     }
 
     var lotArtist: String {
-        return lot.artistName
+        return model.artistName
     }
 
     var lotIndex: Int {
-        return lot.position
+        return model.position
     }
 
     // maybe depecated by currentLotviewModel?
@@ -72,7 +72,16 @@ class LiveAuctionLotViewModel : NSObject {
     }
 
     var estimateString: String {
-        return SaleArtwork.estimateStringForLowEstimate(lot.lowEstimateCents, highEstimateCents: lot.highEstimateCents, currencySymbol: lot.currencySymbol, currency: lot.currency)
+        return SaleArtwork.estimateStringForLowEstimate(model.lowEstimateCents, highEstimateCents: model.highEstimateCents, currencySymbol: model.currencySymbol, currency: model.currency)
+    }
+
+    func updateReserveStatus(reserveStatusString: String) {
+        model.updateReserveStatusWithString(reserveStatusString)
+        // TODO: Update any signal?
+    }
+
+    func updateOnlineAskingPrice(askingPrice: Int) {
+        model.updateOnlineAskingPrice(askingPrice)
     }
 }
 
