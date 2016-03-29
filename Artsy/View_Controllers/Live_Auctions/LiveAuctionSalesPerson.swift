@@ -66,7 +66,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     }
 
     func eventsViewModelsForLot(lot: LiveAuctionLot) -> [LiveAuctionEventViewModel] {
-        return lot.events.flatMap { self.events[$0] }.map { LiveAuctionEventViewModel(event: $0) }
+        return lot.eventIDs.flatMap { self.events[$0] }.map { LiveAuctionEventViewModel(event: $0) }
     }
 
     var lotCount: Int {
