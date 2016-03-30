@@ -105,14 +105,12 @@ class LiveAuctionLotViewModel : NSObject {
         startEventUpdatesSignal.update(NSDate())
         defer { endEventUpdatesSignal.update(NSDate()) }
 
-        do {
-            model.addEvents(events.map { $0.eventID })
-            let newEvents = events.map { LiveAuctionEventViewModel(event: $0) }
-            newEvents.forEach { event in
-                newEventSignal.update(event)
-            }
-            self.events += newEvents
+        model.addEvents(events.map { $0.eventID })
+        let newEvents = events.map { LiveAuctionEventViewModel(event: $0) }
+        newEvents.forEach { event in
+            newEventSignal.update(event)
         }
+        self.events += newEvents
     }
 }
 
