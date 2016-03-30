@@ -27,10 +27,7 @@ class LiveAuctionViewController: UIViewController {
         self.title = saleID;
     }
 
-    // Required by Swift compiler, for now.
     required init?(coder aDecoder: NSCoder) {
-        self.saleID = ""
-        super.init(coder: aDecoder)
         return nil
     }
 
