@@ -20,7 +20,6 @@ class LiveAuctionStateManager: NSObject {
     typealias StateReconcilerCreator = () -> LiveAuctionStateReconciler
 
     let saleID: String
-    // TODO: expose signals of the stateReconciler through computed properties.
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateFetcher: LiveAuctionStateFetcherType
