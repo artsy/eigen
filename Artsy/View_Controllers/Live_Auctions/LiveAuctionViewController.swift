@@ -312,13 +312,14 @@ class LiveAuctionLotViewController: UIViewController {
 
         // might be a way to "bind" these?
         auctionViewModel.next { auctionViewModel in
-            if let currentLot = auctionViewModel.currentLotViewModel {
-                currentLotView.viewModel.update(currentLot)
-            }
-
-            if auctionViewModel.saleAvailability == .Closed {
-                currentLotView.removeFromSuperview()
-            }
+            // TODO: React to these
+//            if let currentLot = auctionViewModel.currentLotViewModel {
+//                currentLotView.viewModel.update(currentLot)
+//            }
+//
+//            if auctionViewModel.saleAvailability == .Closed {
+//                currentLotView.removeFromSuperview()
+//            }
         }
 
         lotViewModel.next { vm in

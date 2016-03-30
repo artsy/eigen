@@ -48,6 +48,21 @@ class LiveAuctionStateManager: NSObject {
     }
 }
 
+private typealias ComputedProperties = LiveAuctionStateManager
+extension ComputedProperties {
+    var newLotsSignal: Signal<[LiveAuctionLotViewModel]> {
+        return stateReconciler.newLotsSignal
+    }
+
+    var currentLotSignal: Signal<LiveAuctionLotViewModel> {
+        return stateReconciler.currentLotSignal
+    }
+
+    var saleSignal: Signal<LiveAuctionViewModel> {
+        return stateReconciler.saleSignal
+    }
+}
+
 
 private typealias SocketDelegate = LiveAuctionStateManager
 extension SocketDelegate: LiveAuctionSocketCommunicatorDelegate {

@@ -11,7 +11,6 @@
 @property (nonatomic, copy, readonly) NSString *liveSaleID;
 @property (nonatomic, copy, readonly) NSString *saleDescription;
 
-@property (nonatomic, copy, readonly) NSString *currentLotId;
 @property (nonatomic, copy, readonly) NSArray<NSString *> *lotIDs;
 
 @property (nonatomic, strong, readonly) NSDate *startDate;

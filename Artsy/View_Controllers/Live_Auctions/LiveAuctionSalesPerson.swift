@@ -22,9 +22,8 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     let updatedState = Signal<LiveAuctionsSalesPersonType>()
     var pageControllerDelegate: LiveAuctionPageControllerDelegate!
 
-    private var lots = [LiveAuctionLot]()
-    private var sale: LiveSale?
-    private var events = [String: LiveEvent]()
+    private var lots = [LiveAuctionLotViewModel]()
+    private var sale: LiveAuctionViewModel?
     private let stateManager: LiveAuctionStateManager
 
     var currentIndexSignal = Signal<Int>()
@@ -39,8 +38,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel? {
         guard 0..<lots.count ~= index else { return nil }
 
-        return LiveAuctionLotViewModel(
-            lot: lots[index])
+        return lots[index]
     }
 
     init(saleID: String, accessToken: String, defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) {
@@ -52,56 +50,24 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
         pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
 
-        // Remove once staging is reliable
-        setupWithStub()
+
         updatedState.update(self)
 
         stateManager
-            .updatedState
-            .next { [weak self] state in
-                self?.setupWithInitialJSON(state)
-                print(self?.lots)
-                self?.updatedState.update(self!)
+            .newLotsSignal
+            .next { [weak self] lots in
+                self?.lots = lots
             }
-    }
 
-    func eventsViewModelsForLot(lot: LiveAuctionLot) -> [LiveAuctionEventViewModel] {
-        return lot.eventIDs.flatMap { self.events[$0] }.map { LiveAuctionEventViewModel(event: $0) }
+        stateManager
+            .saleSignal
+            .next { [weak self] sale in
+                self?.sale = sale
+            }
     }
 
     var lotCount: Int {
         return auctionViewModel?.lotCount ?? 0
-    }
-
-    func setupWithStub() {
-        let jsonPath = NSBundle.mainBundle().pathForResource("live_auctions", ofType: "json")
-        let jsonData = NSData(contentsOfFile: jsonPath!)!
-        let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
-
-        setupWithInitialJSON(json)
-    }
-
-    // note this needs to leave the main thread
-    func setupWithInitialJSON(json: AnyObject) {
-
-        guard let lotsJSON = json["lots"] as? [String: [String: AnyObject]] else { return }
-        guard let saleJSON = json["sale"] as? [String: AnyObject] else { return }
-        guard let eventsJSON = json["lotEvents"] as? [String: [String: AnyObject]]  else { return }
-
-        let sale = LiveSale(JSON: saleJSON)
-        self.sale = sale
-        let unordered_lots: [LiveAuctionLot] = lotsJSON.values.map { LiveAuctionLot(JSON: $0) }
-        self.lots = unordered_lots.sort { return $0.position < $1.position }
-
-        let eventModels: [LiveEvent] = eventsJSON.values.flatMap { LiveEvent(JSON: $0) }
-        var eventDictionary: [String: LiveEvent] = [:]
-        for event in eventModels {
-            eventDictionary[event.eventID] = event
-        }
-        self.events = eventDictionary
-
-        auctionViewModel = LiveAuctionViewModel(sale: sale, salesPerson: self)
-        currentIndexSignal.update(0)
     }
 }
 

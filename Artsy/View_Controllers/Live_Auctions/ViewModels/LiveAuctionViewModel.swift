@@ -5,11 +5,9 @@ import Foundation
 class LiveAuctionViewModel : NSObject {
 
     private let sale: LiveSale
-    private let salesPerson: LiveAuctionsSalesPersonType
 
-    init(sale: LiveSale, salesPerson: LiveAuctionsSalesPersonType) {
+    init(sale: LiveSale) {
         self.sale = sale
-        self.salesPerson = salesPerson
     }
 
     func dateForLotAtIndex(index: Int) -> NSDate {
@@ -28,15 +26,17 @@ class LiveAuctionViewModel : NSObject {
         return sale.saleAvailability
     }
 
-    var currentLotViewModel: LiveAuctionLotViewModel? {
-        guard let currentIndex = sale.lotIDs.indexOf(sale.currentLotId) else { return nil }
-        return salesPerson.lotViewModelForIndex(currentIndex)
+    func currentLotViewModel() -> LiveAuctionLotViewModel? {
+//        TODO: Fix
+        return nil
+//        guard let currentIndex = sale.lotIDs.indexOf(sale.currentLotId) else { return nil }
+//        return salesPerson.lotViewModelForIndex(currentIndex)
     }
 
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
-        let currentIndex = sale.lotIDs.indexOf(sale.currentLotId)
+        let currentIndex =  0 // TODO: Put this back sale.lotIDs.indexOf(sale.currentLotId)
         let lotIndex = sale.lotIDs.indexOf(lot.liveAuctionLotID)
         guard let current = currentIndex, lot = lotIndex else { return nil }
         return (current - lot) * -1

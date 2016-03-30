@@ -26,10 +26,12 @@ class LiveAuctionStateReconciler: NSObject {
     typealias LotID = String
 
     // Updated when initial lots are ready, and if at any point we need to replace the lots completely (very rare, only if a lot is added/removed from sale).
-    let lotsAreReadySignal = Signal<[LiveAuctionLotViewModel]>()
-    let currentLot = Signal<LiveAuctionLotViewModel>()
+    let newLotsSignal = Signal<[LiveAuctionLotViewModel]>()
+    let currentLotSignal = Signal<LiveAuctionLotViewModel>()
+    let saleSignal = Signal<LiveAuctionViewModel>()
 
     private var _state = [LotID: LiveAuctionLotViewModel]()
+    private var _sale: LiveSale?
 }
 
 
@@ -58,6 +60,7 @@ extension PublicFunctions {
         updateLotsWithEvents(eventsJSON, sortedLotsJSON: sortedLotsJSON, sortedLotIDs: sortedLotIDs)
         updateCurrentLots(replacedLots)
         updateCurrentLotWithID(currentLotID)
+        updateSaleIfNecessary(saleJSON)
     }
 
 }
@@ -129,12 +132,30 @@ private extension PrivateFunctions {
         guard replaced else { return }
 
         let lots = Array(_state.values)
-        lotsAreReadySignal.update(lots)
+        newLotsSignal.update(lots)
     }
 
     func updateCurrentLotWithID(currentLotID: LotID) {
         if let currentLotViewModel = _state[currentLotID] {
-            self.currentLot.update(currentLotViewModel)
+            self.currentLotSignal.update(currentLotViewModel)
+        }
+    }
+
+    func updateSaleIfNecessary(saleJSON: [String: AnyObject]) {
+        let newSale = LiveSale(JSON: saleJSON)
+
+        let updateSale = {
+            self._sale = newSale
+            let saleViewModel = LiveAuctionViewModel(sale: newSale)
+            self.saleSignal.update(saleViewModel)
+        }
+
+        if let oldSale = _sale {
+            if oldSale.needsUpdateFromSale(newSale) {
+                updateSale()
+            }
+        } else {
+            updateSale()
         }
     }
 
@@ -142,5 +163,14 @@ private extension PrivateFunctions {
         return lotIDs.flatMap { lotID in
             return _state[lotID]
         }
+    }
+}
+
+
+private extension LiveSale {
+    func needsUpdateFromSale(otherSale: LiveSale) -> Bool {
+        guard self.startDate == otherSale.startDate else { return true }
+        guard self.endDate == otherSale.endDate else { return true }
+        return false
     }
 }
