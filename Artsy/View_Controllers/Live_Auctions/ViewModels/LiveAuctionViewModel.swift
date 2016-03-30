@@ -36,7 +36,7 @@ class LiveAuctionViewModel : NSObject {
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
-        let currentIndex =  0 // TODO: Put this back sale.lotIDs.indexOf(sale.currentLotId)
+        let currentIndex =  Optional(0) // TODO: Put this back sale.lotIDs.indexOf(sale.currentLotId)
         let lotIndex = sale.lotIDs.indexOf(lot.liveAuctionLotID)
         guard let current = currentIndex, lot = lotIndex else { return nil }
         return (current - lot) * -1
