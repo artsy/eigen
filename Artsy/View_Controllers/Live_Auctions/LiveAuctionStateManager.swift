@@ -90,4 +90,27 @@ extension DefaultCreators {
             return LiveAuctionStateReconciler()
         }
     }
+
+    class func stubbedStateFetcherCreator() -> StateFetcherCreator {
+        return { _, _ in
+            return Stub_StateFetcher()
+        }
+    }
+}
+
+class Stub_StateFetcher: LiveAuctionStateFetcherType {
+    func fetchSale() -> Signal<AnyObject> {
+        let signal = Signal<AnyObject>()
+
+        let jsonPath = NSBundle.mainBundle().pathForResource("live_auctions", ofType: "json")
+        let jsonData = NSData(contentsOfFile: jsonPath!)!
+        let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
+
+        dispatch_async(dispatch_get_main_queue()) { 
+            signal.update(json)
+        }
+
+
+        return signal
+    }
 }

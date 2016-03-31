@@ -49,7 +49,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     init(saleID: String, accessToken: String, defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) {
         self.saleID = saleID
         let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "http://localhost:5000"
-        stateManager = LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken)
+        stateManager = LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken, stateFetcherCreator: LiveAuctionStateManager.stubbedStateFetcherCreator()) // TODO: remove stub when staging is stable.
 
         super.init()
 
