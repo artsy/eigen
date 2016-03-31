@@ -67,32 +67,12 @@
 {
     [super loadView];
 
-    self.imageView = [[ARCrossfadingImageView alloc] init];
-    self.imageView.shouldLoopImages = YES;
-    [self.view addSubview:self.imageView];
-    [self.imageView alignToView:self.view];
-    self.imageView.userInteractionEnabled = YES;
+
 }
 
 - (void)viewDidLoad
 {
-    NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", [UIDevice isPad] ? @"large" : @"small");
-    self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
-    self.logoView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:self.logoView];
-    [self.logoView alignCenterXWithView:self.view predicate:@"0"];
-    [self.logoView alignCenterYWithView:self.view predicate:[UIDevice isPad] ? @"-224" : @"-153"];
 
-    self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [self.view addSubview:self.spinnerView];
-    [self.spinnerView alignToView:self.view];
-    [self.spinnerView startAnimating];
-
-    NSArray *images = [self.pages map:^id(NSDictionary *object) {
-        return [object objectForKey:@"image"];
-    }];
-
-    self.imageView.images = images;
 
     [super viewDidLoad];
 }
@@ -115,7 +95,6 @@
                 [UIView animateWithDuration:ARAnimationDuration animations:^{
                     [self.spinnerView removeFromSuperview];
                     self.spinnerView = nil;
-                    [self showControls];
                 }];
             } else {
                 [self loggedInWithSharedCredentials];
@@ -127,9 +106,52 @@
     [super viewDidAppear:animated];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    
+    for (UIView *subview in self.view.subviews) {
+        [subview removeFromSuperview];
+    }
+    [self showBackgroundViews];
+    [self showControls];
+}
+
+
 - (void)loggedInWithSharedCredentials
 {
     // This is a dummy method for ARAppDelegate+Analytics to hook into.
+}
+
+- (void)showBackgroundViews
+{
+
+    BOOL isNotCompact = (self.traitCollection.horizontalSizeClass != UIUserInterfaceSizeClassCompact);
+
+    self.imageView = [[ARCrossfadingImageView alloc] init];
+    self.imageView.shouldLoopImages = YES;
+    [self.view addSubview:self.imageView];
+    [self.imageView alignToView:self.view];
+    self.imageView.userInteractionEnabled = YES;
+    
+    
+    NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", isNotCompact ? @"medium" : @"small");
+    self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
+    self.logoView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:self.logoView];
+    [self.logoView alignCenterXWithView:self.view predicate:@"0"];
+    [self.logoView alignCenterYWithView:self.view predicate:isNotCompact ? @"-224" : @"-153"];
+    
+    self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.view addSubview:self.spinnerView];
+    [self.spinnerView alignToView:self.view];
+    [self.spinnerView startAnimating];
+    
+    NSArray *images = [self.pages map:^id(NSDictionary *object) {
+        return [object objectForKey:@"image"];
+    }];
+    
+    self.imageView.images = images;
+    
 }
 
 - (void)showControls;
@@ -138,16 +160,18 @@
     [self addChildViewController:self.textViewController];
     [self.view addSubview:self.textViewController.view];
 
-    [self.textViewController.view constrainTopSpaceToView:self.logoView predicate: [UIDevice isPad] ? @"140" : @"160"];
+    BOOL isNotCompact = (self.traitCollection.horizontalSizeClass != UIUserInterfaceSizeClassCompact);
+    
+    [self.textViewController.view constrainTopSpaceToView:self.logoView predicate: isNotCompact ? @"140" : @"160"];
     [self.textViewController.view alignCenterXWithView:self.view predicate:@"0"];
 
     self.getStartedButton = [[ARWhiteFlatButton alloc] init];
     [self.view addSubview:self.getStartedButton];
     [self.getStartedButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
     [self.getStartedButton addTarget:self action:@selector(startOnboarding:) forControlEvents:UIControlEventTouchUpInside];
-    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate: [UIDevice isPad] ? @"260" : @"100"];
+    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate:isNotCompact ? @"260" : @"100"];
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
-    [self.getStartedButton constrainWidth:[UIDevice isPad] ? @"340" : @"300"];
+    [self.getStartedButton constrainWidth:isNotCompact ? @"340" : @"300"];
 
     self.logInButton = [[ARClearFlatButton alloc] init];
     [self.view addSubview:self.logInButton];
@@ -155,7 +179,7 @@
     [self.logInButton addTarget:self action:@selector(logIn:) forControlEvents:UIControlEventTouchUpInside];
     [self.logInButton constrainTopSpaceToView:self.getStartedButton predicate:@"12"];
     [self.logInButton alignCenterXWithView:self.view predicate:@"0"];
-    [self.logInButton constrainWidth:[UIDevice isPad] ? @"340" : @"300"];
+    [self.logInButton constrainWidth:isNotCompact ? @"340" : @"300"];
 
     
     ARTermsAndConditionsView *label = [[ARTermsAndConditionsView alloc] init];
@@ -244,16 +268,23 @@
     return self;
 }
 
-- (void)viewDidLoad
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    
+    [self setupViews];
+}
+
+- (void)setupViews
 {
-    [super viewDidLoad];
     UILabel *copyLabel = [self labelForCopy];
     copyLabel.text = self.text;
-
+    
+    BOOL isNotCompact = (self.traitCollection.horizontalSizeClass != UIUserInterfaceSizeClassCompact);
+    
     [self.view addSubview:copyLabel];
-    [copyLabel constrainWidth:[UIDevice isPad] ? @"500" : @"280" height: [UIDevice isPad] ? @"160" : @"120"];
+    [copyLabel constrainWidth:isNotCompact ? @"500" : @"280" height: [UIDevice isPad] ? @"160" : @"120"];
     [copyLabel alignCenterXWithView:self.view predicate:@"0"];
-    [copyLabel alignCenterYWithView:self.view predicate:[UIDevice isPad] ? @"40" : @"-60"];
+    [copyLabel alignCenterYWithView:self.view predicate:isNotCompact ? @"40" : @"-60"];
 }
 
 - (UILabel *)labelForCopy
