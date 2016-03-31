@@ -28,7 +28,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
         it("invokes the state reconciler when new snapshot data avaialble") {
             let state = ["hi there!"]
-            (subject as LiveAuctionSocketCommunicatorDelegate).didUpdateAuctionState(state)
+            subject.didUpdateAuctionState(state)
 
             expect(mostRecentStateReconciler?.mostRecentState as? [String]) == state
         }
@@ -90,9 +90,15 @@ var mostRecentStateReconciler: Test_StateRecociler?
 
 class Test_StateRecociler: LiveAuctionStateReconcilerType {
     var mostRecentState: AnyObject?
+
+    init() {
+        mostRecentStateReconciler = self
+    }
+
     func updateState(state: AnyObject) {
         mostRecentState = state
     }
+    
     var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> { return Signal() }
     var currentLotSignal: Signal<LiveAuctionLotViewModelType> { return Signal() }
     var saleSignal: Signal<LiveAuctionViewModelType> { return Signal() }

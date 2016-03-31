@@ -66,7 +66,7 @@ extension ComputedProperties {
 private typealias SocketDelegate = LiveAuctionStateManager
 extension SocketDelegate: LiveAuctionSocketCommunicatorDelegate {
     func didUpdateAuctionState(state: AnyObject) {
-        self.stateReconciler.updateState(state)
+        stateReconciler.updateState(state)
     }
 }
 
@@ -106,10 +106,7 @@ class Stub_StateFetcher: LiveAuctionStateFetcherType {
         let jsonData = NSData(contentsOfFile: jsonPath!)!
         let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
 
-        dispatch_async(dispatch_get_main_queue()) { 
-            signal.update(json)
-        }
-
+        signal.update(json)
 
         return signal
     }

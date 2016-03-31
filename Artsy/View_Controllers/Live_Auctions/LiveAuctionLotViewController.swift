@@ -84,8 +84,8 @@ class LiveAuctionLotViewController: UIViewController {
             currentLotView?.viewModel.update(currentLot)
         }
 
-        auctionViewModel.saleAvailabilitySignal.next { [weak currentLotView, weak self] saleAvailability in
-            if self?.auctionViewModel.saleAvailability == .Closed {
+        auctionViewModel.saleAvailabilitySignal.next { [weak currentLotView] saleAvailability in
+            if saleAvailability == .Closed {
                 currentLotView?.removeFromSuperview()
             }
         }
