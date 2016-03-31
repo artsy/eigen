@@ -26,7 +26,7 @@ class LiveAuctionLotViewModel : NSObject {
     }
 
     var lotStateSignal: Signal<LotState> {
-        return Signal<LotState>() // TODO: This needs to be updated
+        return Signal<LotState>() // TODO: This needs to be updated. Who is counting down? Someone should.
     }
 
     var bidButtonTitleSignal: Signal<String> {

@@ -98,8 +98,9 @@ class LiveAuctionLotViewController: UIViewController {
         estimateLabel.text = lotViewModel.estimateString
         infoToolbar.lotVM = lotViewModel
         infoToolbar.auctionViewModel = auctionViewModel
-        // TODO: Uncomment
-        //            bidButton.setTitle(vm.bidButtonTitle, forState: .Normal)
+        lotViewModel.bidButtonTitleSignal.next { [weak bidButton] title in
+            bidButton?.setTitle(title, forState: .Normal)
+        }
         lotPreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
 
         lotViewModel.lotStateSignal.next { lotState in
@@ -208,12 +209,11 @@ class LiveAuctionToolbarView : UIView {
 
     func setupViews() {
         lotVM.lotStateSignal.next { [weak self] lotState in
-            // TODO: Take 1 or something
-            self?.thing(lotState)
+            self?.setupUsingState(lotState)
         }
     }
 
-    func thing(lotState: LiveAuctionLotViewModel.LotState) {
+    func setupUsingState(lotState: LiveAuctionLotViewModel.LotState) {
         let viewStructure: [[String: NSAttributedString]]
         let clockClosure: (UILabel) -> ()
         switch lotState {
