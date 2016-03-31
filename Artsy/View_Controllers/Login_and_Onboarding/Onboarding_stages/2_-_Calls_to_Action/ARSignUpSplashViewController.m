@@ -150,7 +150,10 @@
     [self.view addSubview:self.getStartedButton];
     [self.getStartedButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
     [self.getStartedButton addTarget:self action:@selector(startOnboarding:) forControlEvents:UIControlEventTouchUpInside];
-    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate:self.isNotCompact ? @"260" : @"100"];
+
+
+    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate:self.isNotCompact ? @"<=260" : @"<=100"];
+    
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
     [self.getStartedButton constrainWidth:self.isNotCompact ? @"340" : @"300"];
 
@@ -168,7 +171,7 @@
     [self.view addSubview:label];
     [label alignCenterXWithView:self.view predicate:@"0"];
     [label constrainTopSpaceToView:self.logInButton predicate:@"10"];
-
+    [label alignBottomEdgeWithView:self.view predicate:self.isNotCompact ? @"-60" : @"-20"];
 }
 
 #pragma Property overrides
