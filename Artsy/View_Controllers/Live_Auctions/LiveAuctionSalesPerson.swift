@@ -27,7 +27,6 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     var pageControllerDelegate: LiveAuctionPageControllerDelegate!
 
     private var lots = [LiveAuctionLotViewModel]()
-    private var sale: LiveAuctionViewModel?
     private let stateManager: LiveAuctionStateManager
 
     // Lot currentloy being looked at by the user.
@@ -67,7 +66,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
         stateManager
             .saleSignal
             .next { [weak self] sale in
-                self?.sale = sale
+                self?.auctionViewModel = sale
             }
     }
 
@@ -87,7 +86,6 @@ extension ComputedProperties {
         return stateManager.newLotsSignal
     }
 
-    // TODO: React to this somehow in the VC
     var saleSignal: Signal<LiveAuctionViewModel> {
         return stateManager.saleSignal
     }

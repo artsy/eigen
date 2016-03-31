@@ -32,6 +32,11 @@ extension Array where Element: Equatable {
             i += 1
         } while i < self.count && i < other.count && self[i] != other[i]
 
-        return Array(self[i..<count])
+        // TODO: Document this.
+        if i > count {
+            return Array()
+        } else {
+            return Array(self[i..<count])
+        }
     }
 }

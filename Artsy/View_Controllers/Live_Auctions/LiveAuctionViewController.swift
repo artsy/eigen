@@ -59,7 +59,7 @@ class LiveAuctionViewController: UIViewController {
         progress.alignLeading("0", trailing: "0", toView: view)
         progress.alignBottomEdgeWithView(view, predicate: "-165")
 
-        salesPerson.newLotsSignal.next { [weak self] _ in
+        salesPerson.saleSignal.next { [weak self] _ in
             self?.setupWithInitialData()
         }
     }
@@ -131,8 +131,8 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func jumpToLiveLot() {
-        let index = salesPerson.currentIndexSignal.peek()!
-        let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index)
+        let focusedIndex = salesPerson.currentFocusedLot.peek()!
+        let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(focusedIndex)
 
         // This logic won't do, lot at index 10 is not classed as being -1 from current index
         // perhaps it needs to see within a wrapping range of 0 to 10, which direction is it less steps
@@ -170,6 +170,7 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
         guard let auctionViewModel = salesPerson.auctionViewModel else { return nil }
         guard let lotViewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
+
 
         let auctionVC =  LiveAuctionLotViewController(index: index, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: salesPerson.currentLotSignal)
         
