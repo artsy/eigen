@@ -10,8 +10,7 @@
 #import "ARDispatchManager.h"
 #import "ARTermsAndConditionsView.h"
 
-
-#import "UIDevice-Hardware.h"
+#import "Artsy-Swift.h"
 
 @import Artsy_UILabels;
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
@@ -63,19 +62,6 @@
     return self;
 }
 
-- (void)loadView
-{
-    [super loadView];
-
-
-}
-
-- (void)viewDidLoad
-{
-
-
-    [super viewDidLoad];
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -124,9 +110,6 @@
 
 - (void)showBackgroundViews
 {
-
-    BOOL isNotCompact = (self.traitCollection.horizontalSizeClass != UIUserInterfaceSizeClassCompact);
-
     self.imageView = [[ARCrossfadingImageView alloc] init];
     self.imageView.shouldLoopImages = YES;
     [self.view addSubview:self.imageView];
@@ -134,12 +117,12 @@
     self.imageView.userInteractionEnabled = YES;
     
     
-    NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", isNotCompact ? @"medium" : @"small");
+    NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", self.isNotCompact ? @"medium" : @"small");
     self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
     self.logoView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:self.logoView];
     [self.logoView alignCenterXWithView:self.view predicate:@"0"];
-    [self.logoView alignCenterYWithView:self.view predicate:isNotCompact ? @"-224" : @"-153"];
+    [self.logoView alignCenterYWithView:self.view predicate:self.isNotCompact ? @"-224" : @"-153"];
     
     self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.view addSubview:self.spinnerView];
@@ -159,19 +142,17 @@
     self.textViewController = [self viewControllerForIndex:0];
     [self addChildViewController:self.textViewController];
     [self.view addSubview:self.textViewController.view];
-
-    BOOL isNotCompact = (self.traitCollection.horizontalSizeClass != UIUserInterfaceSizeClassCompact);
     
-    [self.textViewController.view constrainTopSpaceToView:self.logoView predicate: isNotCompact ? @"140" : @"160"];
+    [self.textViewController.view constrainTopSpaceToView:self.logoView predicate:self.isNotCompact ? @"140" : @"160"];
     [self.textViewController.view alignCenterXWithView:self.view predicate:@"0"];
 
     self.getStartedButton = [[ARWhiteFlatButton alloc] init];
     [self.view addSubview:self.getStartedButton];
     [self.getStartedButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
     [self.getStartedButton addTarget:self action:@selector(startOnboarding:) forControlEvents:UIControlEventTouchUpInside];
-    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate:isNotCompact ? @"260" : @"100"];
+    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate:self.isNotCompact ? @"260" : @"100"];
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
-    [self.getStartedButton constrainWidth:isNotCompact ? @"340" : @"300"];
+    [self.getStartedButton constrainWidth:self.isNotCompact ? @"340" : @"300"];
 
     self.logInButton = [[ARClearFlatButton alloc] init];
     [self.view addSubview:self.logInButton];
@@ -179,7 +160,7 @@
     [self.logInButton addTarget:self action:@selector(logIn:) forControlEvents:UIControlEventTouchUpInside];
     [self.logInButton constrainTopSpaceToView:self.getStartedButton predicate:@"12"];
     [self.logInButton alignCenterXWithView:self.view predicate:@"0"];
-    [self.logInButton constrainWidth:isNotCompact ? @"340" : @"300"];
+    [self.logInButton constrainWidth:self.isNotCompact ? @"340" : @"300"];
 
     
     ARTermsAndConditionsView *label = [[ARTermsAndConditionsView alloc] init];
@@ -279,12 +260,11 @@
     UILabel *copyLabel = [self labelForCopy];
     copyLabel.text = self.text;
     
-    BOOL isNotCompact = (self.traitCollection.horizontalSizeClass != UIUserInterfaceSizeClassCompact);
     
     [self.view addSubview:copyLabel];
-    [copyLabel constrainWidth:isNotCompact ? @"500" : @"280" height: [UIDevice isPad] ? @"160" : @"120"];
+    [copyLabel constrainWidth:self.isNotCompact ? @"500" : @"280" height:self.isNotCompact ? @"160" : @"120"];
     [copyLabel alignCenterXWithView:self.view predicate:@"0"];
-    [copyLabel alignCenterYWithView:self.view predicate:isNotCompact ? @"40" : @"-60"];
+    [copyLabel alignCenterYWithView:self.view predicate:self.isNotCompact ? @"40" : @"-60"];
 }
 
 - (UILabel *)labelForCopy
@@ -292,7 +272,7 @@
     ARSerifLineHeightLabel *copyLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
     copyLabel.backgroundColor = [UIColor clearColor];
     copyLabel.opaque = NO;
-    copyLabel.font = [UIFont serifFontWithSize: [UIDevice isPad] ? 38 : 26];
+    copyLabel.font = [UIFont serifFontWithSize: self.isNotCompact ? 38 : 26];
     copyLabel.textColor = [UIColor whiteColor];
     copyLabel.textAlignment = NSTextAlignmentCenter;
     copyLabel.numberOfLines = 0;
