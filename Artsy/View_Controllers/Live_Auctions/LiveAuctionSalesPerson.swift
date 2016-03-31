@@ -4,68 +4,69 @@ import Interstellar
 /// Something to pretend to either be a network model or whatever
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
-// TODO: This is getting pretty heavy, split up or scale down.
 protocol LiveAuctionsSalesPersonType {
     var currentFocusedLot: Signal<Int> { get }
-    var newLotsSignal: Signal<[LiveAuctionLotViewModel]> { get }
-    var saleSignal: Signal<LiveAuctionViewModel> { get }
-    var currentLotSignal: Signal<LiveAuctionLotViewModel> { get }
-    var auctionViewModel: LiveAuctionViewModel? { get }
+    var updatedStateSignal: Signal<LiveAuctionViewModelType> { get }
+    var currentLotSignal: Signal<LiveAuctionLotViewModelType> { get }
+
+    var auctionViewModel: LiveAuctionViewModelType? { get }
     var pageControllerDelegate: LiveAuctionPageControllerDelegate! { get }
-
-    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel?
-    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModel?
-
     var lotCount: Int { get }
+
+    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType?
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType?
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
+    typealias StateManagerCreator = (host: String, saleID: String, accessToken: String) -> LiveAuctionStateManager
+
     let saleID: String
 
-    var auctionViewModel: LiveAuctionViewModel?
-    let updatedState = Signal<LiveAuctionsSalesPersonType>()
+    var auctionViewModel: LiveAuctionViewModelType?
     var pageControllerDelegate: LiveAuctionPageControllerDelegate!
 
-    private var lots = [LiveAuctionLotViewModel]()
+    private var lots = [LiveAuctionLotViewModelType]()
     private let stateManager: LiveAuctionStateManager
 
     // Lot currentloy being looked at by the user.
     var currentFocusedLot = Signal<Int>()
 
-    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModel? {
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType? {
         guard let currentlyShowingIndex = currentFocusedLot.peek() else { return nil }
         let newIndex = currentlyShowingIndex + offset
         let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
         return lotViewModelForIndex(loopingIndex)
     }
 
-    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModel? {
+    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType? {
         guard 0..<lots.count ~= index else { return nil }
 
         return lots[index]
     }
 
-    init(saleID: String, accessToken: String, defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) {
+    init(saleID: String,
+         accessToken: String,
+         defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
+         stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.stubbedStateManagerCreator()) {
+
         self.saleID = saleID
         let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "http://localhost:5000"
-        stateManager = LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken, stateFetcherCreator: LiveAuctionStateManager.stubbedStateFetcherCreator()) // TODO: remove stub when staging is stable.
+        stateManager = stateManagerCreator(host: host, saleID: saleID, accessToken: accessToken)
 
         super.init()
 
         pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
 
 
-        updatedState.update(self)
-
         stateManager
             .newLotsSignal
-            .next { [weak self] lots in
+            .next { [weak self] lots -> Void in
                 self?.lots = lots
             }
 
         stateManager
             .saleSignal
-            .next { [weak self] sale in
+            .next { [weak self] sale -> Void in
                 self?.auctionViewModel = sale
             }
     }
@@ -77,19 +78,37 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
 private typealias ComputedProperties = LiveAuctionsSalesPerson
 extension ComputedProperties {
-    var currentLotSignal: Signal<LiveAuctionLotViewModel> {
+    var currentLotSignal: Signal<LiveAuctionLotViewModelType> {
         return stateManager.currentLotSignal
     }
 
-    // TODO: React to this somehow
-    var newLotsSignal: Signal<[LiveAuctionLotViewModel]> {
-        return stateManager.newLotsSignal
-    }
-
-    var saleSignal: Signal<LiveAuctionViewModel> {
-        return stateManager.saleSignal
+    var updatedStateSignal: Signal<LiveAuctionViewModelType> {
+        return stateManager
+            .saleSignal
+            .merge(stateManager.newLotsSignal) // Reacts to a change in the lots as well.
+            .map { auctionViewModel, _ -> LiveAuctionViewModelType in
+                return auctionViewModel
+            }
     }
 }
+
+
+private typealias ClassMethods = LiveAuctionsSalesPerson
+extension ClassMethods {
+
+    class func defaultStateManagerCreator() -> StateManagerCreator {
+        return { host, saleID, accessToken in
+            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken)        }
+    }
+
+    class func stubbedStateManagerCreator() -> StateManagerCreator {
+        return { host, saleID, accessToken in
+            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken, stateFetcherCreator: LiveAuctionStateManager.stubbedStateFetcherCreator())
+        }
+    }
+
+}
+
 
 class LiveAuctionPageControllerDelegate: NSObject, UIPageViewControllerDelegate {
     let salesPerson: LiveAuctionsSalesPersonType

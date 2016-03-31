@@ -3,16 +3,20 @@ import Interstellar
 
 /// Represents the whole auction, all the live biz, timings, watchers
 
-class LiveAuctionViewModel : NSObject {
+protocol LiveAuctionViewModelType {
+    var startDate: NSDate { get }
+    var lotCount: Int { get }
+    var saleAvailability: SaleAvailabilityState { get }
+    var saleAvailabilitySignal: Signal<SaleAvailabilityState> { get }
+    func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int?
+}
+
+class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
     private let sale: LiveSale
 
     init(sale: LiveSale) {
         self.sale = sale
-    }
-
-    func dateForLotAtIndex(index: Int) -> NSDate {
-        return NSDate().dateByAddingTimeInterval( Double(index * 60 * 2) )
     }
 
     var startDate: NSDate {
@@ -29,13 +33,6 @@ class LiveAuctionViewModel : NSObject {
 
     var saleAvailabilitySignal: Signal<SaleAvailabilityState> {
         return Signal<SaleAvailabilityState>() // TOOD: Make this actually do things.
-    }
-
-    func currentLotViewModel() -> LiveAuctionLotViewModel? {
-//        TODO: Fix
-        return nil
-//        guard let currentIndex = sale.lotIDs.indexOf(sale.currentLotId) else { return nil }
-//        return salesPerson.lotViewModelForIndex(currentIndex)
     }
 
     /// A distance relative to the current lot, -x being that it precedded the current

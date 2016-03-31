@@ -8,11 +8,11 @@ import ORStackView
 
 class LiveAuctionLotViewController: UIViewController {
     let index: Int
-    let lotViewModel: LiveAuctionLotViewModel
-    let auctionViewModel: LiveAuctionViewModel
-    let currentLotSignal: Signal<LiveAuctionLotViewModel>
+    let lotViewModel: LiveAuctionLotViewModelType
+    let auctionViewModel: LiveAuctionViewModelType
+    let currentLotSignal: Signal<LiveAuctionLotViewModelType>
 
-    init(index: Int, auctionViewModel: LiveAuctionViewModel, lotViewModel: LiveAuctionLotViewModel, currentLotSignal: Signal<LiveAuctionLotViewModel>) {
+    init(index: Int, auctionViewModel: LiveAuctionViewModelType, lotViewModel: LiveAuctionLotViewModelType, currentLotSignal: Signal<LiveAuctionLotViewModelType>) {
         self.index = index
         self.auctionViewModel = auctionViewModel
         self.lotViewModel = lotViewModel
@@ -79,8 +79,6 @@ class LiveAuctionLotViewController: UIViewController {
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
 
-        auctionViewModel.currentLotViewModel()
-
         // TODO impossible to unsubscribe from Interstellar signals, will adding all those callbacks ever hurt us performance-wise?
         currentLotSignal.next { [weak currentLotView] currentLot in
             currentLotView?.viewModel.update(currentLot)
@@ -125,7 +123,7 @@ class LiveAuctionLotViewController: UIViewController {
 
 class LiveAuctionCurrentLotView: UIButton {
 
-    let viewModel = Signal<LiveAuctionLotViewModel>()
+    let viewModel = Signal<LiveAuctionLotViewModelType>()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -188,8 +186,8 @@ class LiveAuctionCurrentLotView: UIButton {
 
 class LiveAuctionToolbarView : UIView {
     // eh, not sold on this yet
-    var lotVM: LiveAuctionLotViewModel!
-    var auctionViewModel: LiveAuctionViewModel!
+    var lotVM: LiveAuctionLotViewModelType!
+    var auctionViewModel: LiveAuctionViewModelType!
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -213,7 +211,7 @@ class LiveAuctionToolbarView : UIView {
         }
     }
 
-    func setupUsingState(lotState: LiveAuctionLotViewModel.LotState) {
+    func setupUsingState(lotState: LotState) {
         let viewStructure: [[String: NSAttributedString]]
         let clockClosure: (UILabel) -> ()
         switch lotState {

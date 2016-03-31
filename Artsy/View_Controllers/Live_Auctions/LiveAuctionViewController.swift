@@ -59,7 +59,7 @@ class LiveAuctionViewController: UIViewController {
         progress.alignLeading("0", trailing: "0", toView: view)
         progress.alignBottomEdgeWithView(view, predicate: "-165")
 
-        salesPerson.saleSignal.next { [weak self] _ in
+        salesPerson.updatedStateSignal.next { [weak self] _ in
             self?.setupWithInitialData()
         }
     }

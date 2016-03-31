@@ -22,13 +22,20 @@ State update includes:
 
 */
 
+protocol LiveAuctionStateReconcilerType {
+    func updateState(state: AnyObject)
+    var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> { get }
+    var currentLotSignal: Signal<LiveAuctionLotViewModelType> { get }
+    var saleSignal: Signal<LiveAuctionViewModelType> { get }
+}
+
 class LiveAuctionStateReconciler: NSObject {
     typealias LotID = String
 
     // Updated when initial lots are ready, and if at any point we need to replace the lots completely (very rare, only if a lot is added/removed from sale).
-    let newLotsSignal = Signal<[LiveAuctionLotViewModel]>()
-    let currentLotSignal = Signal<LiveAuctionLotViewModel>()
-    let saleSignal = Signal<LiveAuctionViewModel>()
+    private let _newLotsSignal = Signal<[LiveAuctionLotViewModel]>()
+    private let _currentLotSignal = Signal<LiveAuctionLotViewModel>()
+    private let _saleSignal = Signal<LiveAuctionViewModel>()
 
     private var _state = [LotID: LiveAuctionLotViewModel]()
     private var _sale: LiveSale?
@@ -36,7 +43,7 @@ class LiveAuctionStateReconciler: NSObject {
 
 
 private typealias PublicFunctions = LiveAuctionStateReconciler
-extension PublicFunctions {
+extension PublicFunctions: LiveAuctionStateReconcilerType {
 
     func updateState(state: AnyObject) {
         // TODO: don't fail silently on bad input
@@ -61,6 +68,18 @@ extension PublicFunctions {
         updateCurrentLots(replacedLots)
         updateCurrentLotWithID(currentLotID)
         updateSaleIfNecessary(saleJSON)
+    }
+
+    var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> {
+        return _newLotsSignal.map { $0 as [LiveAuctionLotViewModelType] }
+    }
+
+    var currentLotSignal: Signal<LiveAuctionLotViewModelType> {
+        return _currentLotSignal.map { $0 as LiveAuctionLotViewModelType }
+    }
+    
+    var saleSignal: Signal<LiveAuctionViewModelType> {
+        return _saleSignal.map { $0 as LiveAuctionViewModelType }
     }
 
 }
@@ -132,12 +151,12 @@ private extension PrivateFunctions {
         guard replaced else { return }
 
         let lots = Array(_state.values)
-        newLotsSignal.update(lots)
+        _newLotsSignal.update(lots)
     }
 
     func updateCurrentLotWithID(currentLotID: LotID) {
         if let currentLotViewModel = _state[currentLotID] {
-            self.currentLotSignal.update(currentLotViewModel)
+            self._currentLotSignal.update(currentLotViewModel)
         }
     }
 
@@ -147,7 +166,7 @@ private extension PrivateFunctions {
         let updateSale = {
             self._sale = newSale
             let saleViewModel = LiveAuctionViewModel(sale: newSale)
-            self.saleSignal.update(saleViewModel)
+            self._saleSignal.update(saleViewModel)
         }
 
         if let oldSale = _sale {

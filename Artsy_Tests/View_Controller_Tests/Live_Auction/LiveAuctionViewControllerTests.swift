@@ -12,10 +12,9 @@ class LiveAuctionViewControllerTests: QuickSpec {
         it("looks good by default") {
 
             let subject = LiveAuctionViewController(saleID: "sale-id")
-            let fake = Fake_AuctionsSalesPerson()
+            let fake = stub_auctionSalesPerson()
             subject.salesPerson = fake
             subject.loadViewProgrammatically()
-            fake.updatedState.update(fake)
 
             expect(subject).to( haveValidSnapshot() )
         }

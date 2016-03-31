@@ -23,7 +23,7 @@ class LiveAuctionHistoryCell: UITableViewCell {
 
 class LiveAuctionBidHistoryViewController: UITableViewController {
 
-    var lotViewModel: LiveAuctionLotViewModel? {
+    var lotViewModel: LiveAuctionLotViewModelType? {
         didSet {
             tableView.reloadData()
         }

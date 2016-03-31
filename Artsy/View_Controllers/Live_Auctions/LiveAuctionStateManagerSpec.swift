@@ -9,7 +9,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         var subject: LiveAuctionStateManager!
 
         beforeEach {
-            subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateFetcherCreator: test_stateFetcherCreator())
+            subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateFetcherCreator: test_stateFetcherCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
         it("sets its saleID upon initialization") {
@@ -26,11 +26,11 @@ class LiveAuctionStateManagerSpec: QuickSpec {
             expect(mostRecentSocketCommunicator?.delegate) === subject
         }
 
-        it("updates its own state according to the socket communicator delegate callback") {
+        it("invokes the state reconciler when new snapshot data avaialble") {
             let state = ["hi there!"]
             (subject as LiveAuctionSocketCommunicatorDelegate).didUpdateAuctionState(state)
 
-            expect(subject.updatedState.peek() as? [String]) == state
+            expect(mostRecentStateReconciler?.mostRecentState as? [String]) == state
         }
     }
 }
@@ -44,6 +44,12 @@ func test_socketCommunicatorCreator() -> LiveAuctionStateManager.SocketCommunica
 func test_stateFetcherCreator() -> LiveAuctionStateManager.StateFetcherCreator {
     return { host, saleID in
         return Test_StateFetcher(host: host, saleID: saleID)
+    }
+}
+
+func test_stateReconcilerCreator() -> LiveAuctionStateManager.StateReconcilerCreator {
+    return {
+        return Test_StateRecociler()
     }
 }
 
@@ -78,4 +84,16 @@ class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
 
         mostRecentSocketCommunicator = self
     }
+}
+
+var mostRecentStateReconciler: Test_StateRecociler?
+
+class Test_StateRecociler: LiveAuctionStateReconcilerType {
+    var mostRecentState: AnyObject?
+    func updateState(state: AnyObject) {
+        mostRecentState = state
+    }
+    var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> { return Signal() }
+    var currentLotSignal: Signal<LiveAuctionLotViewModelType> { return Signal() }
+    var saleSignal: Signal<LiveAuctionViewModelType> { return Signal() }
 }

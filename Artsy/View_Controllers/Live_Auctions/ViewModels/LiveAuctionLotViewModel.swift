@@ -3,13 +3,27 @@ import Interstellar
 
 // Represents a single lot view
 
-class LiveAuctionLotViewModel : NSObject {
+enum LotState {
+    case ClosedLot
+    case LiveLot
+    case UpcomingLot(distanceFromLive: Int)
+}
 
-    enum LotState {
-        case ClosedLot
-        case LiveLot
-        case UpcomingLot(distanceFromLive: Int)
-    }
+protocol LiveAuctionLotViewModelType {
+    var bidButtonTitleSignal: Signal<String> { get }
+    var lotArtist: String { get }
+    var estimateString: String { get }
+    var lotName: String { get }
+    var lotStateSignal: Signal<LotState> { get }
+    var urlForThumbnail: NSURL { get }
+    var numberOfEvents: Int { get }
+    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel
+    var lotIndex: Int { get }
+    var currentLotValue: String { get }
+    var imageProfileSize: CGSize { get }
+}
+
+class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     private let model: LiveAuctionLot
     private var events = [LiveAuctionEventViewModel]()
@@ -17,6 +31,7 @@ class LiveAuctionLotViewModel : NSObject {
     let reserveStatusSignal = Signal<ARReserveStatus>()
     let askingPriceSignal = Signal<Int>()
 
+    // This'll need to be moved into the protocol eventyally
     let startEventUpdatesSignal = Signal<NSDate>()
     let endEventUpdatesSignal = Signal<NSDate>()
     let newEventSignal = Signal<LiveAuctionEventViewModel>()

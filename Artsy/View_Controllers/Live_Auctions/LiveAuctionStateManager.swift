@@ -17,13 +17,13 @@ Based on socket events:
 class LiveAuctionStateManager: NSObject {
     typealias SocketCommunicatorCreator = (host: String, saleID: String, accessToken: String) -> LiveAuctionSocketCommunicatorType
     typealias StateFetcherCreator = (host: String, saleID: String) -> LiveAuctionStateFetcherType
-    typealias StateReconcilerCreator = () -> LiveAuctionStateReconciler
+    typealias StateReconcilerCreator = () -> LiveAuctionStateReconcilerType
 
     let saleID: String
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateFetcher: LiveAuctionStateFetcherType
-    private let stateReconciler: LiveAuctionStateReconciler
+    private let stateReconciler: LiveAuctionStateReconcilerType
 
     init(host: String,
         saleID: String,
@@ -49,15 +49,15 @@ class LiveAuctionStateManager: NSObject {
 
 private typealias ComputedProperties = LiveAuctionStateManager
 extension ComputedProperties {
-    var newLotsSignal: Signal<[LiveAuctionLotViewModel]> {
+    var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> {
         return stateReconciler.newLotsSignal
     }
 
-    var currentLotSignal: Signal<LiveAuctionLotViewModel> {
+    var currentLotSignal: Signal<LiveAuctionLotViewModelType> {
         return stateReconciler.currentLotSignal
     }
 
-    var saleSignal: Signal<LiveAuctionViewModel> {
+    var saleSignal: Signal<LiveAuctionViewModelType> {
         return stateReconciler.saleSignal
     }
 }
