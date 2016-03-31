@@ -301,7 +301,7 @@ CHECKOUT OPTIONS:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
   Nimble:
-    :commit: 758cc9b80e0978d7b86b7729f90cd52ee270cb02
+    :commit: d3ed3a367927c98bca7bf7e7e0ff36124c634f73
     :git: https://github.com/Quick/Nimble.git
   ORStackView:
     :commit: 80bfeb0a4176e307a8b94b1662104e64cc8bb50c
