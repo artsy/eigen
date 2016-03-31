@@ -3,7 +3,7 @@ import Interstellar
 
 /// Represents the whole auction, all the live biz, timings, watchers
 
-protocol LiveAuctionViewModelType {
+protocol LiveAuctionViewModelType: class {
     var startDate: NSDate { get }
     var lotCount: Int { get }
     var saleAvailability: SaleAvailabilityState { get }

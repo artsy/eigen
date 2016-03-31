@@ -9,7 +9,7 @@ enum LotState {
     case UpcomingLot(distanceFromLive: Int)
 }
 
-protocol LiveAuctionLotViewModelType {
+protocol LiveAuctionLotViewModelType: class {
     var bidButtonTitleSignal: Signal<String> { get }
     var lotArtist: String { get }
     var estimateString: String { get }

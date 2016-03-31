@@ -33,7 +33,8 @@ class LiveAuctionStateReconciler: NSObject {
     typealias LotID = String
 
     // Updated when initial lots are ready, and if at any point we need to replace the lots completely (very rare, only if a lot is added/removed from sale).
-    private let _newLotsSignal = Signal<[LiveAuctionLotViewModel]>()
+    let newLotsSignal = Signal<[LiveAuctionLotViewModelType]>()
+
     private let _currentLotSignal = Signal<LiveAuctionLotViewModel>()
     private let _saleSignal = Signal<LiveAuctionViewModel>()
 
@@ -68,10 +69,6 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
         updateCurrentLots(replacedLots)
         updateCurrentLotWithID(currentLotID)
         updateSaleIfNecessary(saleJSON)
-    }
-
-    var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> {
-        return _newLotsSignal.map { $0 as [LiveAuctionLotViewModelType] }
     }
 
     var currentLotSignal: Signal<LiveAuctionLotViewModelType> {
@@ -150,8 +147,8 @@ private extension PrivateFunctions {
     func updateCurrentLots(replaced: Bool) {
         guard replaced else { return }
 
-        let lots = Array(_state.values)
-        _newLotsSignal.update(lots)
+        let lots = Array(_state.values).map { $0 as LiveAuctionLotViewModelType }
+        newLotsSignal.update(lots)
     }
 
     func updateCurrentLotWithID(currentLotID: LotID) {
