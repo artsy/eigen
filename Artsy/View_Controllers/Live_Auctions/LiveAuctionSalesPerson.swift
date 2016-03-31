@@ -6,7 +6,7 @@ import Interstellar
 
 // TODO: This is getting pretty heavy, split up or scale down.
 protocol LiveAuctionsSalesPersonType {
-    var currentIndexSignal: Signal<Int> { get }
+    var currentFocusedLot: Signal<Int> { get }
     var newLotsSignal: Signal<[LiveAuctionLotViewModel]> { get }
     var saleSignal: Signal<LiveAuctionViewModel> { get }
     var currentLotSignal: Signal<LiveAuctionLotViewModel> { get }
@@ -30,11 +30,11 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     private var sale: LiveAuctionViewModel?
     private let stateManager: LiveAuctionStateManager
 
-    // TODO: What does "current index" mean? It should be what the sale is on, not what the user is looking at.
-    var currentIndexSignal = Signal<Int>()
+    // Lot currentloy being looked at by the user.
+    var currentFocusedLot = Signal<Int>()
 
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModel? {
-        guard let currentlyShowingIndex = currentIndexSignal.peek() else { return nil }
+        guard let currentlyShowingIndex = currentFocusedLot.peek() else { return nil }
         let newIndex = currentlyShowingIndex + offset
         let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
         return lotViewModelForIndex(loopingIndex)
@@ -103,6 +103,6 @@ class LiveAuctionPageControllerDelegate: NSObject, UIPageViewControllerDelegate 
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
 
         guard let viewController = pageViewController.viewControllers?.first as? LiveAuctionLotViewController else { return }
-        salesPerson.currentIndexSignal.update(viewController.index)
+        salesPerson.currentFocusedLot.update(viewController.index)
     }
 }

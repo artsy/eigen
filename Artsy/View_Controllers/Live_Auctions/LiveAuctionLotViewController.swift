@@ -81,46 +81,44 @@ class LiveAuctionLotViewController: UIViewController {
 
         auctionViewModel.currentLotViewModel()
 
+        // TODO impossible to unsubscribe from Interstellar signals, will adding all those callbacks ever hurt us performance-wise?
         currentLotSignal.next { [weak currentLotView] currentLot in
             currentLotView?.viewModel.update(currentLot)
         }
 
-        // might be a way to "bind" these?
-//        auctionViewModel.next { auctionViewModel in
-            // TODO: React to these
-//
-//            if auctionViewModel.saleAvailability == .Closed {
-//                currentLotView.removeFromSuperview()
-//            }
-//        }
+        auctionViewModel.saleAvailabilitySignal.next { [weak currentLotView, weak self] saleAvailability in
+            if self?.auctionViewModel.saleAvailability == .Closed {
+                currentLotView?.removeFromSuperview()
+            }
+        }
 
-//        lotViewModel.next { vm in
-//            artistNameLabel.text = vm.lotArtist
-//            artworkNameLabel.setTitle(vm.lotName, date: "1985")
-//            estimateLabel.text = vm.estimateString
-//            infoToolbar.lotVM = vm
-//            // TODO: Finish this
-////            infoToolbar.auctionViewModel = 
-//            // TODO: Uncomment
-////            bidButton.setTitle(vm.bidButtonTitle, forState: .Normal)
-//            lotPreviewView.ar_setImageWithURL(vm.urlForThumbnail)
-//
-//            // TODO: Finish
-////            switch vm.lotState {
-////            case .ClosedLot:
-////                bidButton.setEnabled(false, animated: false)
-////                bidHistoryViewController.lotViewModel = vm
-////
-////            case .LiveLot:
-////                // We don't need this when it's the current lot
-////                currentLotView.removeFromSuperview()
-////                bidHistoryViewController.lotViewModel = vm
-////
-////            case .UpcomingLot(_):
-////                // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
-////                bidHistoryViewController.view.hidden = true
-////            }
-//        }
+
+        artistNameLabel.text = lotViewModel.lotArtist
+        artworkNameLabel.setTitle(lotViewModel.lotName, date: "1985")
+        estimateLabel.text = lotViewModel.estimateString
+        infoToolbar.lotVM = lotViewModel
+        infoToolbar.auctionViewModel = auctionViewModel
+        // TODO: Uncomment
+        //            bidButton.setTitle(vm.bidButtonTitle, forState: .Normal)
+        lotPreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
+
+        lotViewModel.lotStateSignal.next { lotState in
+            switch lotState {
+            case .ClosedLot:
+                bidButton.setEnabled(false, animated: false)
+                bidHistoryViewController.lotViewModel = self.lotViewModel
+
+            case .LiveLot:
+                // We don't need this when it's the current lot
+                currentLotView.removeFromSuperview()
+                bidHistoryViewController.lotViewModel = self.lotViewModel
+
+            case .UpcomingLot(_):
+                // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
+                bidHistoryViewController.view.hidden = true
+            }
+        }
+
     }
 }
 
@@ -209,10 +207,16 @@ class LiveAuctionToolbarView : UIView {
     }
 
     func setupViews() {
+        lotVM.lotStateSignal.next { [weak self] lotState in
+            // TODO: Take 1 or something
+            self?.thing(lotState)
+        }
+    }
+
+    func thing(lotState: LiveAuctionLotViewModel.LotState) {
         let viewStructure: [[String: NSAttributedString]]
         let clockClosure: (UILabel) -> ()
-
-        switch lotVM.lotStateWithViewModel(auctionViewModel) {
+        switch lotState {
         case .ClosedLot:
             viewStructure = [
                 ["lot": lotCountString()],

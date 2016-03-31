@@ -25,14 +25,28 @@ class LiveAuctionLotViewModel : NSObject {
         self.model = lot
     }
 
-    func lotStateWithViewModel(viewModel: LiveAuctionViewModel) -> LotState {
-        guard let distance = viewModel.distanceFromCurrentLot(model) else {
-            return .ClosedLot
-        }
-        if distance == 0 { return .LiveLot }
-        if distance < 0 { return .ClosedLot }
-        return .UpcomingLot(distanceFromLive: distance)
+    var lotStateSignal: Signal<LotState> {
+        return Signal<LotState>() // TODO: This needs to be updated
     }
+
+    var bidButtonTitleSignal: Signal<String> {
+        return lotStateSignal.map { lotState in
+            switch lotState {
+            case .ClosedLot: return "BIDDING CLOSED"
+            case .LiveLot: return "BID 20,000"
+            case .UpcomingLot(_): return "LEAVE MAX BID"
+            }
+        }
+    }
+
+//    func lotStateWithViewModel(viewModel: LiveAuctionViewModel) -> LotState {
+//        guard let distance = viewModel.distanceFromCurrentLot(model) else {
+//            return .ClosedLot
+//        }
+//        if distance == 0 { return .LiveLot }
+//        if distance < 0 { return .ClosedLot }
+//        return .UpcomingLot(distanceFromLive: distance)
+//    }
 
     var urlForThumbnail: NSURL {
         return model.urlForThumbnail()
@@ -65,14 +79,6 @@ class LiveAuctionLotViewModel : NSObject {
     // maybe depecated by currentLotviewModel?
     var currentLotValue: String {
         return "$10,000"
-    }
-
-    func bidButtonTitleWithViewModel(viewModel: LiveAuctionViewModel) ->  String {
-        switch lotStateWithViewModel(viewModel) {
-        case .ClosedLot:   return "BIDDING CLOSED"
-        case .LiveLot:  return "BID 20,000"
-        case .UpcomingLot(_):  return "LEAVE MAX BID"
-        }
     }
 
     var estimateString: String {

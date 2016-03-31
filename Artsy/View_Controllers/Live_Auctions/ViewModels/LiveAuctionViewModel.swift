@@ -1,4 +1,5 @@
 import Foundation
+import Interstellar
 
 /// Represents the whole auction, all the live biz, timings, watchers
 
@@ -24,6 +25,10 @@ class LiveAuctionViewModel : NSObject {
 
     var saleAvailability: SaleAvailabilityState {
         return sale.saleAvailability
+    }
+
+    var saleAvailabilitySignal: Signal<SaleAvailabilityState> {
+        return Signal<SaleAvailabilityState>() // TOOD: Make this actually do things.
     }
 
     func currentLotViewModel() -> LiveAuctionLotViewModel? {
