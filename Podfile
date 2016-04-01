@@ -87,7 +87,7 @@ target 'Artsy' do
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
   else
-    pod 'Artsy+UIFonts'
+    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git"
   end
 
   # Facebook
