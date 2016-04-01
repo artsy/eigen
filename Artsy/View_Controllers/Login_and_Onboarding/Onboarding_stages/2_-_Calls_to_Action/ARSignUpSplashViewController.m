@@ -117,12 +117,12 @@
     self.imageView.userInteractionEnabled = YES;
     
     
-    NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", self.isNotCompact ? @"medium" : @"small");
+    NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", self.useLargeLayout ? @"medium" : @"small");
     self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
     self.logoView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:self.logoView];
     [self.logoView alignCenterXWithView:self.view predicate:@"0"];
-    [self.logoView alignCenterYWithView:self.view predicate:self.isNotCompact ? @"-224" : @"-153"];
+    [self.logoView alignCenterYWithView:self.view predicate:self.useLargeLayout ? @"-224" : @"-153"];
     
     self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.view addSubview:self.spinnerView];
@@ -143,7 +143,7 @@
     [self addChildViewController:self.textViewController];
     [self.view addSubview:self.textViewController.view];
     
-    [self.textViewController.view constrainTopSpaceToView:self.logoView predicate:self.isNotCompact ? @"140" : @"160"];
+    [self.textViewController.view constrainTopSpaceToView:self.logoView predicate:self.useLargeLayout ? @"140" : @"160"];
     [self.textViewController.view alignCenterXWithView:self.view predicate:@"0"];
 
     self.getStartedButton = [[ARWhiteFlatButton alloc] init];
@@ -152,10 +152,10 @@
     [self.getStartedButton addTarget:self action:@selector(startOnboarding:) forControlEvents:UIControlEventTouchUpInside];
 
 
-    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate:self.isNotCompact ? @"<=260" : @"<=100"];
+    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate:self.useLargeLayout ? @"<=260" : @"<=100"];
     
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
-    [self.getStartedButton constrainWidth:self.isNotCompact ? @"340" : @"300"];
+    [self.getStartedButton constrainWidth:self.useLargeLayout ? @"340" : @"300"];
 
     self.logInButton = [[ARClearFlatButton alloc] init];
     [self.view addSubview:self.logInButton];
@@ -163,7 +163,7 @@
     [self.logInButton addTarget:self action:@selector(logIn:) forControlEvents:UIControlEventTouchUpInside];
     [self.logInButton constrainTopSpaceToView:self.getStartedButton predicate:@"12"];
     [self.logInButton alignCenterXWithView:self.view predicate:@"0"];
-    [self.logInButton constrainWidth:self.isNotCompact ? @"340" : @"300"];
+    [self.logInButton constrainWidth:self.useLargeLayout ? @"340" : @"300"];
 
     
     ARTermsAndConditionsView *label = [[ARTermsAndConditionsView alloc] init];
@@ -171,7 +171,7 @@
     [self.view addSubview:label];
     [label alignCenterXWithView:self.view predicate:@"0"];
     [label constrainTopSpaceToView:self.logInButton predicate:@"10"];
-    [label alignBottomEdgeWithView:self.view predicate:self.isNotCompact ? @"-60" : @"-20"];
+    [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-60" : @"-20"];
 }
 
 #pragma Property overrides
@@ -265,9 +265,9 @@
     
     
     [self.view addSubview:copyLabel];
-    [copyLabel constrainWidth:self.isNotCompact ? @"500" : @"280" height:self.isNotCompact ? @"160" : @"120"];
+    [copyLabel constrainWidth:self.useLargeLayout ? @"500" : @"280" height:self.useLargeLayout ? @"160" : @"120"];
     [copyLabel alignCenterXWithView:self.view predicate:@"0"];
-    [copyLabel alignCenterYWithView:self.view predicate:self.isNotCompact ? @"40" : @"-60"];
+    [copyLabel alignCenterYWithView:self.view predicate:self.useLargeLayout ? @"40" : @"-60"];
 }
 
 - (UILabel *)labelForCopy
@@ -275,7 +275,7 @@
     ARSerifLineHeightLabel *copyLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
     copyLabel.backgroundColor = [UIColor clearColor];
     copyLabel.opaque = NO;
-    copyLabel.font = [UIFont serifFontWithSize: self.isNotCompact ? 38 : 26];
+    copyLabel.font = [UIFont serifFontWithSize: self.useLargeLayout ? 38 : 26];
     copyLabel.textColor = [UIColor whiteColor];
     copyLabel.textAlignment = NSTextAlignmentCenter;
     copyLabel.numberOfLines = 0;

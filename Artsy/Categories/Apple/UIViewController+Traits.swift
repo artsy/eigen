@@ -15,7 +15,7 @@ extension UIViewController {
         return self.traitCollectionIsPhone ? .Portrait : .All
     }
     
-    var isNotCompact: Bool
+    var useLargeLayout: Bool
     {
         return self.traitCollection.horizontalSizeClass != .Compact
     }
