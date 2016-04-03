@@ -93,6 +93,12 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
     }
+
+    let askingPriceSignal = Signal<Int>()
+    let reserveStatusSignal = Signal<ARReserveStatus>()
+    let startEventUpdatesSignal = Signal<NSDate>()
+    let endEventUpdatesSignal = Signal<NSDate>()
+    let newEventSignal = Signal<LiveAuctionEventViewModel>()
 }
 
 let liveEventJSON = [

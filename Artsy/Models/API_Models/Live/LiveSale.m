@@ -13,8 +13,8 @@
 {
     return @{
         ar_keypath(LiveSale.new, liveSaleID) : @"id",
-        ar_keypath(LiveSale.new, startDate) : @"start_at",
-        ar_keypath(LiveSale.new, endDate) : @"end_at",
+        ar_keypath(LiveSale.new, startDate) : @"startAt",
+        ar_keypath(LiveSale.new, endDate) : @"endAt",
         ar_keypath(LiveSale.new, buyersPremium) : @"buyers_premium",
         ar_keypath(LiveSale.new, saleDescription) : @"description",
         ar_keypath(LiveSale.new, lotIDs) : @"lots",

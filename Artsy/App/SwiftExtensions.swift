@@ -25,18 +25,31 @@ func +<K, V>(lhs: Dictionary<K, V>, rhs: Dictionary<K, V>) -> Dictionary<K, V> {
 }
 
 extension Array where Element: Equatable {
-    // Loops through the receiver and returns the subarray of the receiver, starting from the first occurence of a difference in the two arrays.
-    func subarrayFromFirstDifference(other: [Element]) -> [Element] {
-        var i = 0
-        repeat {
-            i += 1
-        } while i < self.count && i < other.count && self[i] != other[i]
 
-        // TODO: Document this.
-        if i > count {
-            return Array()
-        } else {
-            return Array(self[i..<count])
+    /// Returns the subarray formed from the first differing index to the end of
+    /// the receiver. If the receiver and parameter share no common element,
+    /// the receiver is returned.
+    func subarrayFromFirstDifference(other: [Element]) -> [Element] {
+        guard let firstDifferentIndex = indexOfFirstDifferentElement(other) else {
+            return self
         }
+
+        return Array(self[firstDifferentIndex..<count])
+    }
+
+    /// Loops through the receiver and parameter and returns the first index where
+    /// the two have differing elements. Returns nil iff either of the arrays is
+    /// entirely looped over with no differing elements found.
+    func indexOfFirstDifferentElement(other: [Element]) -> Index? {
+        var index = 0
+
+        while index < self.count && index < other.count {
+            if self[index] == other[index] {
+                return index
+            }
+            index += 1
+        }
+
+        return nil
     }
 }

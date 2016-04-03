@@ -33,8 +33,8 @@
 @property (nonatomic, assign, readonly) NSInteger highEstimateCents;
 @property (nonatomic, assign, readonly) NSInteger onlineAskingPriceCents;
 
-- (void)updateReserveStatusWithString:(NSString *)reserveStatusString;
-- (void)updateOnlineAskingPrice:(NSInteger)onlineAskingPrice;
+- (BOOL)updateReserveStatusWithString:(NSString *)reserveStatusString;
+- (BOOL)updateOnlineAskingPrice:(NSInteger)onlineAskingPrice;
 - (void)addEvents:(NSArray<NSString *> *)events;
 
 @end

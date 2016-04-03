@@ -21,6 +21,12 @@ protocol LiveAuctionLotViewModelType: class {
     var lotIndex: Int { get }
     var currentLotValue: String { get }
     var imageProfileSize: CGSize { get }
+
+    var reserveStatusSignal: Signal<ARReserveStatus> { get }
+    var askingPriceSignal: Signal<Int> { get }
+    var startEventUpdatesSignal: Signal<NSDate> { get }
+    var endEventUpdatesSignal: Signal<NSDate> { get }
+    var newEventSignal: Signal<LiveAuctionEventViewModel> { get }
 }
 
 class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
@@ -31,13 +37,15 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     let reserveStatusSignal = Signal<ARReserveStatus>()
     let askingPriceSignal = Signal<Int>()
 
-    // This'll need to be moved into the protocol eventyally
     let startEventUpdatesSignal = Signal<NSDate>()
     let endEventUpdatesSignal = Signal<NSDate>()
     let newEventSignal = Signal<LiveAuctionEventViewModel>()
 
     init(lot: LiveAuctionLot) {
         self.model = lot
+
+        reserveStatusSignal.update(lot.reserveStatus)
+        askingPriceSignal.update(lot.onlineAskingPriceCents)
     }
 
     var lotStateSignal: Signal<LotState> {
@@ -113,13 +121,19 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     func updateReserveStatus(reserveStatusString: String) {
-        model.updateReserveStatusWithString(reserveStatusString)
-        reserveStatusSignal.update(model.reserveStatus)
+        let updated = model.updateReserveStatusWithString(reserveStatusString)
+        
+        if updated {
+            reserveStatusSignal.update(model.reserveStatus)
+        }
     }
 
     func updateOnlineAskingPrice(askingPrice: Int) {
-        model.updateOnlineAskingPrice(askingPrice)
-        askingPriceSignal.update(askingPrice)
+        let updated = model.updateOnlineAskingPrice(askingPrice)
+
+        if updated {
+            askingPriceSignal.update(askingPrice)
+        }
     }
 
     func addEvents(events: [LiveEvent]) {

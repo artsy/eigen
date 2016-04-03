@@ -36,6 +36,7 @@ class LiveAuctionStateReconciler: NSObject {
     let newLotsSignal = Signal<[LiveAuctionLotViewModelType]>()
 
     private let _currentLotSignal = Signal<LiveAuctionLotViewModel>()
+    private var _currentLotID: String?
     private let _saleSignal = Signal<LiveAuctionViewModel>()
 
     private var _state = [LotID: LiveAuctionLotViewModel]()
@@ -67,7 +68,7 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
         let replacedLots = createOrUpdateLots(sortedLotsJSON, sortedLotIDs: sortedLotIDs)
         updateLotsWithEvents(eventsJSON, sortedLotsJSON: sortedLotsJSON, sortedLotIDs: sortedLotIDs)
         updateCurrentLots(replacedLots)
-        updateCurrentLotWithID(currentLotID)
+        updateCurrentLotWithIDIfNecessary(currentLotID)
         updateSaleIfNecessary(saleJSON)
     }
 
@@ -123,7 +124,7 @@ private extension PrivateFunctions {
         return replaced
     }
 
-    func updateLotsWithEvents(eventsJSON: ObjectJSON, sortedLotsJSON: [[String: AnyObject]], sortedLotIDs: [LotID]) {
+    func updateLotsWithEvents(lotEvents: ObjectJSON, sortedLotsJSON: [[String: AnyObject]], sortedLotIDs: [LotID]) {
 
         let sortedLotViewModels = sortedLotViewModelsFromLotIDs(sortedLotIDs)
 
@@ -133,7 +134,7 @@ private extension PrivateFunctions {
 
             let newEvents = newEventIDs
                 .flatMap { eventID in
-                    return eventsJSON[eventID]
+                    return lotEvents[eventID]
                 }
                 .flatMap { eventJSON in
                     return LiveEvent(JSON: eventJSON)
@@ -151,9 +152,12 @@ private extension PrivateFunctions {
         newLotsSignal.update(lots)
     }
 
-    func updateCurrentLotWithID(currentLotID: LotID) {
-        if let currentLotViewModel = _state[currentLotID] {
+    func updateCurrentLotWithIDIfNecessary(newCurrentLotID: LotID) {
+        guard newCurrentLotID != _currentLotID ?? "" else { return }
+
+        if let currentLotViewModel = _state[newCurrentLotID] {
             self._currentLotSignal.update(currentLotViewModel)
+            _currentLotID = newCurrentLotID
         }
     }
 

@@ -57,15 +57,29 @@
     return [SaleArtwork reserveStatusJSONTransformer];
 }
 
-- (void)updateReserveStatusWithString:(NSString *)reserveStatusString
+- (BOOL)updateReserveStatusWithString:(NSString *)reserveStatusString
 {
     NSValueTransformer *transformer = [[self class] reserveStatusJSONTransformer];
-    self.reserveStatus = [[transformer transformedValue:reserveStatusString] integerValue];
+    ARReserveStatus currentStatus = self.reserveStatus;
+    ARReserveStatus newStatus = [[transformer transformedValue:reserveStatusString] integerValue];
+
+    if (currentStatus != newStatus) {
+        self.reserveStatus = newStatus;
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
-- (void)updateOnlineAskingPrice:(NSInteger)onlineAskingPrice
+- (BOOL)updateOnlineAskingPrice:(NSInteger)newOnlineAskingPrice
 {
-    self.onlineAskingPriceCents = onlineAskingPrice;
+    NSInteger currentAskingPrice = self.onlineAskingPriceCents;
+    if (currentAskingPrice != newOnlineAskingPrice) {
+    self.onlineAskingPriceCents = newOnlineAskingPrice;
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 - (void)addEvents:(NSArray<NSString *> *)events

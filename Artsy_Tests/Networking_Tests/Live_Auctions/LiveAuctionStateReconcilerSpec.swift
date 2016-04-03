@@ -1,6 +1,7 @@
 import Quick
 import Nimble
 import Interstellar
+import Then
 @testable
 import Artsy
 
@@ -8,71 +9,351 @@ import Artsy
 class LiveAuctionStateReconcilerSpec: QuickSpec {
     override func spec() {
 
-        pending("doesn't do anything if there are no lots") {
+        var state: NSMutableDictionary!
+        var subject: LiveAuctionStateReconciler!
+        var newLotsCalled: Bool!
 
+        beforeEach {
+            state = test_liveAuctionJSON(.Active)
+
+            newLotsCalled = false
+            subject = LiveAuctionStateReconciler()
+            subject.newLotsSignal.next { _ in newLotsCalled = true}
         }
 
-        pending("doesn't do anything if there is no sale") {
+        it("doesn't do anything if there are no lots") {
+            state["lots"] = nil
 
+            subject.updateState(state)
+
+            expect(newLotsCalled) == false
         }
 
-        pending("doesn't do anything if there are no sale's lots") {
+        it("doesn't do anything if there is no sale") {
+            state["sale"] = nil
 
+            subject.updateState(state)
+
+            expect(newLotsCalled) == false
         }
 
-        pending("doesn't do anything if there is no current lot") {
+        it("doesn't do anything if there are no sale's lots") {
+            var sale = state["sale"] as! [String : AnyObject]
+            sale["lots"] = nil
+            state["sale"] = sale
 
+            subject.updateState(state)
+
+            expect(newLotsCalled) == false
         }
 
-        pending("doesn't do anything if there are no lot events (empty is 👌)") {
+        it("doesn't do anything if there is no current lot id") {
+            state["currentLotId"] = nil
 
+            subject.updateState(state)
+
+            expect(newLotsCalled) == false
         }
 
-        describe("first update") {
-
-            pending("sends fresh lots on first update") {
-
+        it("doesn't do anything if there are no lot events (list is empty)") {
+            // Events are already empty
+            var newEventsCalled = false
+            subject.newLotsSignal.next { newLots in
+                newLots.forEach { $0.newEventSignal.next { _ in newEventsCalled = true } }
             }
 
+            subject.updateState(state)
 
-            describe("second update") {
+            expect(newEventsCalled) == false
+        }
 
-                pending("does not send lots") {
+        it("sends fresh lots on first update") {
+            var lots: [LiveAuctionLotViewModelType]?
+            subject.newLotsSignal.next { lots = $0 }
 
+            subject.updateState(state)
+
+            expect(lots?.count) == 3
+        }
+
+        it("sends current lot") {
+            var currentLot: LiveAuctionLotViewModelType?
+            subject.currentLotSignal.next { currentLot = $0 }
+
+            subject.updateState(state)
+
+            expect(currentLot).toNot( beNil() )
+        }
+
+        describe("during second update") {
+
+            beforeEach {
+                subject.updateState(state)
+            }
+
+            it("does not send lots") {
+                var newLotsInvocation = 0
+                subject.newLotsSignal.next { _ in newLotsInvocation += 1 }
+
+                subject.updateState(state)
+
+                expect(newLotsInvocation) == 1
+            }
+
+            it("does not send sale") {
+                var saleInvocation = 0
+                subject.saleSignal.next { _ in saleInvocation += 1 }
+
+                subject.updateState(state)
+
+                expect(saleInvocation) == 1
+            }
+
+            it("does not send current lot if it has not changed") {
+                var currentLotInvocations = 0
+                subject.currentLotSignal.next { _ in currentLotInvocations += 1 }
+
+                subject.updateState(state)
+
+                expect(currentLotInvocations) == 1
+            }
+
+            it("sends new current lot when the lot changes") {
+                var currentLotInvocations = 0
+                subject.currentLotSignal.next { _ in currentLotInvocations += 1 }
+                let sale = state["sale"] as! [String: AnyObject]
+                state["currentLotId"] = (sale["lots"] as! [String]).last
+
+                subject.updateState(state)
+
+                expect(currentLotInvocations) == 2
+            }
+
+            fit("updates lot view model with new events") {
+                var eventInvocations = 0
+                subject.newLotsSignal.next { newLots in
+                    newLots.forEach { lot in
+                        lot.newEventSignal.next { _ in eventInvocations += 1 }
+                    }
                 }
+                var lots = state["lots"] as! [String: [String : AnyObject]]
+                var lot = Array(lots.values)[0]
+                let event = test_liveAuctionLotEventJSON()
+                lot["events"] = [event.id]
+                lots[lot["id"]! as! String] = lot
+                state["lots"] = lots
+                state["lotEvents"] = event.json
 
-                pending("does not send sale") {
+                subject.updateState(state)
 
+                expect(eventInvocations) == 1
+            }
+
+            it("doesn't update lot view model with events that aren't new") {
+                var eventInvocations = 0
+                subject.newLotsSignal.next { newLots in
+                    newLots.forEach { lot in
+                        lot.newEventSignal.next { _ in eventInvocations += 1 }
+                    }
                 }
+                var lots = state["lots"] as! [String: [String : AnyObject]]
+                var lot = Array(lots.values)[0]
+                let event = test_liveAuctionLotEventJSON()
+                lot["events"] = [event.id]
+                lots[lot["id"]! as! String] = lot
+                state["lots"] = lots
+                state["lotEvents"] = event.json
 
-                pending("sends new current lot") {
+                subject.updateState(state)
 
+                expect(eventInvocations) == 1
+            }
+
+            it("updates lot view model with online asking price") {
+                var onlineAskingPriceInvocations = 0
+                subject.newLotsSignal.next { newLots in
+                    newLots.forEach { lot in
+                        lot.askingPriceSignal.next { _ in onlineAskingPriceInvocations += 1 }
+                    }
                 }
+                var lots = state["lots"] as! [String: [String : AnyObject]]
+                var lot = Array(lots.values)[0]
+                lot["onlineAskingPriceCents"] = 123456
+                lots[lot["id"]! as! String] = lot
+                state["lots"] = lots
 
-                pending("updates lot view model with new events") {
+                subject.updateState(state)
+                subject.updateState(state)
 
+                expect(onlineAskingPriceInvocations) == 4 // 3 lots + 1 updated asking price
+            }
+
+            it("updates lot view model with reserve status") {
+                var reserveStatusUpdates = 0
+                subject.newLotsSignal.next { newLots in
+                    newLots.forEach { lot in
+                        lot.reserveStatusSignal.next { _ in reserveStatusUpdates += 1 }
+                    }
                 }
+                var lots = state["lots"] as! [String: [String : AnyObject]]
+                var lot = Array(lots.values)[0]
+                lot["reserveStatus"] = "reserve_not_met"
+                lots[lot["id"]! as! String] = lot
+                state["lots"] = lots
 
-                pending("updates lot view model with online asking price") {
+                subject.updateState(state)
 
-                }
+                expect(reserveStatusUpdates) == 4 // 3 lots + 1 updated reserve status
+            }
 
-                pending("updates lot view model with reserve status") {
+            it("sends new sale when start time changes") {
+                var saleSignalInvocations = 0
+                subject.saleSignal.next { _ in saleSignalInvocations += 1 }
+                var sale = state["sale"] as! [String: AnyObject]
+                sale["startAt"] = dateFormatter.stringFromDate(NSDate())
+                state["sale"] = sale
 
-                }
+                subject.updateState(state)
 
-                pending("sends new sale when start time changes") {
+                expect(saleSignalInvocations) == 2
+            }
 
-                }
+            it("sends new sale when end time changes") {
+                var saleSignalInvocations = 0
+                subject.saleSignal.next { _ in saleSignalInvocations += 1 }
+                var sale = state["sale"] as! [String: AnyObject]
+                sale["endAt"] = dateFormatter.stringFromDate(NSDate())
+                state["sale"] = sale
 
-                pending("sends new sale when end time changes") {
+                subject.updateState(state)
 
-                }
+                expect(saleSignalInvocations) == 2
+            }
+            
+            it("sends lots when number of lots change") {
+                var currentLots: [LiveAuctionLotViewModelType]?
+                subject.newLotsSignal.next { currentLots = $0 }
 
-                pending("sends lots when number of lots change") {
+                subject.updateState(test_liveAuctionJSON(.Active, numberOfLots: 4))
 
-                }
+                expect(currentLots?.count) == 4
             }
         }
     }
+}
+
+private let dateFormatter = NSDateFormatter().then {
+    $0.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+}
+
+func test_liveAuctionJSON(saleAvailability: SaleAvailabilityState, numberOfLots: Int = 3) -> NSMutableDictionary {
+    let startDate: NSDate
+    let endDate: NSDate
+
+    let hourAgo = NSDate().dateByAddingTimeInterval(-3600)
+    let twoHoursAgo = hourAgo.dateByAddingTimeInterval(-3600)
+    let hourFromNow = NSDate().dateByAddingTimeInterval(3600)
+    let twoHoursFromNow = hourFromNow.dateByAddingTimeInterval(3600)
+
+    switch saleAvailability {
+    case .Active:
+        startDate = hourAgo
+        endDate = hourFromNow
+    case .Closed:
+        startDate = twoHoursAgo
+        endDate = hourAgo
+    case .NotYetOpen:
+        startDate = hourFromNow
+        endDate = twoHoursFromNow
+    }
+
+    let lots = Array(0..<numberOfLots).map { _ in test_liveAuctionLotJSON() }
+    let lotIDs = Array(lots.map { (lot) -> String in
+        return Array(lot.keys)[0]
+    })
+
+    let sale: NSDictionary =  [
+        "id": "consectetur-quas-in-cupiditate-sint-omnis",
+        "name": "Test Live Auction",
+        "description": "Test Live Auction description.",
+        "startAt": dateFormatter.stringFromDate(startDate),
+        "endAt": dateFormatter.stringFromDate(endDate),
+        "lots": lotIDs,
+        "currentLotId": lotIDs[1] // Middle lot is current
+        ]
+
+    return ([
+        "sale": sale,
+        "lotEvents": [
+            : // Empty lot events
+        ],
+        "lots": lots.reduce([:], combine: +),
+        "currentLotId": lotIDs[1],
+    ] as NSMutableDictionary)
+}
+
+func test_liveAuctionLotJSON() -> [String: [String: AnyObject]] {
+    let id = "test_artwork_id\(random())"
+    return [
+        id: [
+            "id": id,
+            "position": 12,
+            "currency": "USD",
+            "symbol": "$",
+            "reserveStatus": "reserve_met",
+            "lowEstimateCents": 260000,
+            "highEstimateCents": 390000,
+            "askingPriceCents": 130000,
+            "onlineAskingPriceCents": 130000,
+            "artwork": [
+                "title": "Perspiciatis autem consectetur molestias",
+                "image": [
+                    "large": [
+                        "width": 600,
+                        "height": 447,
+                        "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FXkAtGqcI3DTjapCjtOhI2Q%2Flarge.jpg&width=600&height=447&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+                    ],
+                    "thumb": [
+                        "width": 50,
+                        "height": 50,
+                        "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FXkAtGqcI3DTjapCjtOhI2Q%2Flarge.jpg&width=600&height=447&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+                    ]
+                ],
+                "artwork": [
+                    "title": "Perspiciatis autem consectetur molestias",
+                    "image": [
+                        "large": [
+                            "width": 600,
+                            "height": 447,
+                            "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FXkAtGqcI3DTjapCjtOhI2Q%2Flarge.jpg&width=600&height=447&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+                        ],
+                        "thumb": [
+                            "width": 50,
+                            "height": 50,
+                            "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FXkAtGqcI3DTjapCjtOhI2Q%2Flarge.jpg&width=600&height=447&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
+                        ]
+                    ]
+                ],
+                "artist": [
+                    "name": "Orville Simonis"
+                ]
+            ],
+            "events": [
+                
+            ]
+        ]
+    ]
+}
+
+func test_liveAuctionLotEventJSON() -> (id: String, json: AnyObject) {
+    let id = "test_event_id\(random())"
+    return (id: id, json: [
+        id: [
+            "id": id,
+            "type": "bid",
+            "amountCents": 450000,
+            "source": "floor",
+            "isConfirmed": true
+        ]
+    ])
 }
