@@ -54,16 +54,17 @@ PODS:
   - Artsy+UIFonts (1.1.0)
   - Artsy+UILabels (2.0.0):
     - Artsy+UIColors (~> 3.0)
+    - Artsy+UIFonts
   - Artsy-UIButtons (2.0.1):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
     - UIView+BooleanAnimations
-  - Bolts (1.5.1):
-    - Bolts/AppLinks (= 1.5.1)
-    - Bolts/Tasks (= 1.5.1)
-  - Bolts/AppLinks (1.5.1):
+  - Bolts (1.7.0):
+    - Bolts/AppLinks (= 1.7.0)
+    - Bolts/Tasks (= 1.7.0)
+  - Bolts/AppLinks (1.7.0):
     - Bolts/Tasks
-  - Bolts/Tasks (1.5.1)
+  - Bolts/Tasks (1.7.0)
   - CocoaLumberjack (2.0.1):
     - CocoaLumberjack/Default (= 2.0.1)
     - CocoaLumberjack/Extensions (= 2.0.1)
@@ -79,10 +80,10 @@ PODS:
   - Expecta+Snapshots (2.0.0):
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0.3)
-  - FBSDKCoreKit (4.9.0-beta2):
+  - FBSDKCoreKit (4.10.1):
     - Bolts (~> 1.5)
-  - FBSDKLoginKit (4.9.0-beta2):
-    - FBSDKCoreKit (~> 4.9.0-beta)
+  - FBSDKLoginKit (4.10.1):
+    - FBSDKCoreKit
   - FBSnapshotTestCase (2.0.7):
     - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
   - FBSnapshotTestCase/Core (2.0.7)
@@ -155,18 +156,15 @@ DEPENDENCIES:
   - Analytics
   - ARAnalytics/Adjust (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARAnalytics/DSL (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
-  - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`, commit
-    `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
-  - ARAnalytics/Segmentio (from `https://github.com/orta/ARAnalytics.git`, commit
-    `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
+  - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
+  - ARAnalytics/Segmentio (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARASCIISwizzle
-  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`,
-    branch `modern`)
+  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`, branch `modern`)
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`)
   - Artsy+UIColors
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
-  - Artsy+UILabels
+  - Artsy+UILabels (from `https://github.com/artsy/Artsy-UILabels.git`, branch `orta-fonts`)
   - Artsy-UIButtons
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
@@ -174,8 +172,8 @@ DEPENDENCIES:
   - EDColor
   - Expecta
   - Expecta+Snapshots
-  - FBSDKCoreKit (= 4.9.0-beta2)
-  - FBSDKLoginKit (= 4.9.0-beta2)
+  - FBSDKCoreKit (~> 4.9)
+  - FBSDKLoginKit (~> 4.9)
   - FBSnapshotTestCase (from `https://github.com/untitledstartup/ios-snapshot-test-case.git`)
   - FLKAutoLayout (from `https://github.com/alloy/FLKAutoLayout.git`, branch `add-support-for-layout-guides-take-2`)
   - Forgeries/Mocks (from `https://github.com/ashfurrow/Forgeries.git`, branch `application`)
@@ -232,6 +230,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/dblock/ARTiledImageView
   Artsy+UIFonts:
     :git: https://github.com/artsy/Artsy-UIFonts.git
+  Artsy+UILabels:
+    :branch: orta-fonts
+    :git: https://github.com/artsy/Artsy-UILabels.git
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   FBSnapshotTestCase:
@@ -279,6 +280,9 @@ CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
+  Artsy+UILabels:
+    :commit: 02f0721c5aa638989482c855e4e9d8fdc64bbafe
+    :git: https://github.com/artsy/Artsy-UILabels.git
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
@@ -318,24 +322,24 @@ SPEC CHECKSUMS:
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
-  ARAnalytics: ab25a3d8c6c950f69f25100de470614b6a7d6d9b
+  ARAnalytics: 96e23ba7f54298f4914de9e1ac999db7a15f3fdd
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   Artsy+UIColors: 4bcad6457b985ebbf84b3c96a5cd58c48d937778
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Artsy+UILabels: 751373e4462838bd42fe9605ffcfa7456c729b94
+  Artsy+UILabels: 0d7db2aeb58e32adff3eeb0d98a55ea118fdd29a
   Artsy-UIButtons: 26e6d1e0d2174773e9cf7693985d27faddd61743
-  Bolts: a12663244b1d3351c738882e71902fc74db54f64
+  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
-  FBSDKCoreKit: d49cbf69741e3c5732166ec9ff4cbd9b288dd53e
-  FBSDKLoginKit: d32e83c0d2d39ef74a942543cacae2dc4de7d088
+  FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
+  FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
   FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
   FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
   Forgeries: f5c991dda5977f42d11fa9313fd1e17bc3edbb27
@@ -347,7 +351,7 @@ SPEC CHECKSUMS:
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
-  Keys: 7d2ff6ff42f6903358267ce56e9392f83c31acfe
+  Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
@@ -375,4 +379,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 4d805f8f2f7fd106b1df6e3f99a629cd12472040
+
+COCOAPODS: 1.0.0.beta.6

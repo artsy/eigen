@@ -82,7 +82,7 @@ target 'Artsy' do
   # Artsy Spec repo stuff
   pod 'Artsy-UIButtons'
   pod 'Artsy+UIColors'
-  pod 'Artsy+UILabels'
+  pod 'Artsy+UILabels', :git => "https://github.com/artsy/Artsy-UILabels.git", :branch => "orta-fonts"
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
@@ -91,8 +91,8 @@ target 'Artsy' do
   end
 
   # Facebook
-  pod 'FBSDKCoreKit', '4.9.0-beta2'
-  pod 'FBSDKLoginKit', '4.9.0-beta2'
+  pod 'FBSDKCoreKit', '~> 4.9'
+  pod 'FBSDKLoginKit', '~> 4.9'
 
   # Analytics
   pod 'Analytics'
