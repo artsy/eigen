@@ -12,6 +12,11 @@ class LiveAuctionLotViewController: UIViewController {
     let auctionViewModel: LiveAuctionViewModelType
     let currentLotSignal: Signal<LiveAuctionLotViewModelType>
 
+    // Using lazy to hold a strong reference onto the returned signal
+    lazy var computedLotStateSignal: Signal<LotState> = {
+        return self.lotViewModel.computedLotStateSignal(self.auctionViewModel)
+    }()
+
     init(index: Int, auctionViewModel: LiveAuctionViewModelType, lotViewModel: LiveAuctionLotViewModelType, currentLotSignal: Signal<LiveAuctionLotViewModelType>) {
         self.index = index
         self.auctionViewModel = auctionViewModel
@@ -96,12 +101,13 @@ class LiveAuctionLotViewController: UIViewController {
         estimateLabel.text = lotViewModel.estimateString
         infoToolbar.lotVM = lotViewModel
         infoToolbar.auctionViewModel = auctionViewModel
-        lotViewModel.bidButtonTitleSignal.next { [weak bidButton] title in
+        computedLotStateSignal.next { [weak bidButton, weak self] lotState in
+            let title = self?.lotViewModel.bidButtonTitleWithState(lotState)
             bidButton?.setTitle(title, forState: .Normal)
         }
         lotPreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
 
-        lotViewModel.lotStateSignal.next { lotState in
+        computedLotStateSignal.next { lotState in
             switch lotState {
             case .ClosedLot:
                 bidButton.setEnabled(false, animated: false)
@@ -189,6 +195,10 @@ class LiveAuctionToolbarView : UIView {
     var lotVM: LiveAuctionLotViewModelType!
     var auctionViewModel: LiveAuctionViewModelType!
 
+    lazy var computedLotStateSignal: Signal<LotState> = {
+        return self.lotVM.computedLotStateSignal(self.auctionViewModel)
+    }()
+
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -206,7 +216,7 @@ class LiveAuctionToolbarView : UIView {
     }
 
     func setupViews() {
-        lotVM.lotStateSignal.next { [weak self] lotState in
+        computedLotStateSignal.next { [weak self] lotState in
             self?.setupUsingState(lotState)
         }
     }
