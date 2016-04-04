@@ -15,6 +15,8 @@ protocol LiveAuctionsSalesPersonType {
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType?
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType?
+
+
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
@@ -30,19 +32,6 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
     // Lot currentloy being looked at by the user.
     var currentFocusedLot = Signal<Int>()
-
-    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType? {
-        guard let currentlyShowingIndex = currentFocusedLot.peek() else { return nil }
-        let newIndex = currentlyShowingIndex + offset
-        let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
-        return lotViewModelForIndex(loopingIndex)
-    }
-
-    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType? {
-        guard 0..<lots.count ~= index else { return nil }
-
-        return lots[index]
-    }
 
     init(saleID: String,
          accessToken: String,
@@ -70,10 +59,6 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
                 self?.auctionViewModel = sale
             }
     }
-
-    var lotCount: Int {
-        return auctionViewModel?.lotCount ?? 0
-    }
 }
 
 private typealias ComputedProperties = LiveAuctionsSalesPerson
@@ -90,15 +75,37 @@ extension ComputedProperties {
                 return auctionViewModel
             }
     }
+
+    var lotCount: Int {
+        return auctionViewModel?.lotCount ?? 0
+    }
 }
 
+
+private typealias PublicFunctions = LiveAuctionsSalesPerson
+extension LiveAuctionsSalesPerson {
+
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType? {
+        guard let currentlyShowingIndex = currentFocusedLot.peek() else { return nil }
+        let newIndex = currentlyShowingIndex + offset
+        let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
+        return lotViewModelForIndex(loopingIndex)
+    }
+
+    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType? {
+        guard 0..<lots.count ~= index else { return nil }
+
+        return lots[index]
+    }
+}
 
 private typealias ClassMethods = LiveAuctionsSalesPerson
 extension ClassMethods {
 
     class func defaultStateManagerCreator() -> StateManagerCreator {
         return { host, saleID, accessToken in
-            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken)        }
+            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken)
+        }
     }
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
