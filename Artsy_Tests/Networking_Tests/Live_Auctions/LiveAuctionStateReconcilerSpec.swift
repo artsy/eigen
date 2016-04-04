@@ -85,6 +85,20 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
             expect(currentLot).toNot( beNil() )
         }
 
+        it("orders lots correctly") {
+            var lots: [LiveAuctionLotViewModelType]?
+            subject.newLotsSignal.next { lots = $0 }
+
+            subject.updateState(state)
+
+            let reconciledLotIDs = lots?.map { lot in
+                return lot.liveAuctionLotID
+            }
+
+            let lotIDs = (state["sale"] as! [String : AnyObject])["lots"] as! [String]
+            expect(lotIDs) == reconciledLotIDs
+        }
+
         describe("on subsequent state update") {
 
             it("does not send lots") {

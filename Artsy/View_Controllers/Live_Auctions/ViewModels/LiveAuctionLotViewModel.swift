@@ -22,6 +22,7 @@ protocol LiveAuctionLotViewModelType: class {
     var lotIndex: Int { get }
     var currentLotValue: String { get }
     var imageProfileSize: CGSize { get }
+    var liveAuctionLotID: String { get }
 
     var reserveStatusSignal: Signal<ARReserveStatus> { get }
     var askingPriceSignal: Signal<Int> { get }
@@ -119,7 +120,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     var numberOfEvents: Int {
         return events.count
     }
-
+    
     func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
         return events[index]
     }
@@ -138,10 +139,6 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         if updated {
             askingPriceSignal.update(askingPrice)
         }
-    }
-
-    func updateLotState(lotState: LotState) {
-
     }
 
     func addEvents(events: [LiveEvent]) {
