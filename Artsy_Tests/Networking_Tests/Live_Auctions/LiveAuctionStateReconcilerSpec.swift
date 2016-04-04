@@ -205,30 +205,6 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
                 expect(reserveStatusUpdates) == 4 // 3 lots + 1 updated reserve status
             }
-
-            it("sends new sale when start time changes") {
-                var saleSignalInvocations = 0
-                subject.saleSignal.next { _ in saleSignalInvocations += 1 }
-                var sale = state["sale"] as! [String: AnyObject]
-                sale["startAt"] = dateFormatter.stringFromDate(NSDate())
-                state["sale"] = sale
-
-                subject.updateState(state)
-
-                expect(saleSignalInvocations) == 2
-            }
-
-            it("sends new sale when end time changes") {
-                var saleSignalInvocations = 0
-                subject.saleSignal.next { _ in saleSignalInvocations += 1 }
-                var sale = state["sale"] as! [String: AnyObject]
-                sale["endAt"] = dateFormatter.stringFromDate(NSDate())
-                state["sale"] = sale
-
-                subject.updateState(state)
-
-                expect(saleSignalInvocations) == 2
-            }
             
             it("sends lots when number of lots change") {
                 var currentLots: [LiveAuctionLotViewModelType]?
@@ -237,6 +213,28 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 subject.updateState(test_liveAuctionJSON(.Active, numberOfLots: 4))
 
                 expect(currentLots?.count) == 4
+            }
+
+            fit("sends updated sale availability if changed") {
+                var saleAvailabilityInvocations = 0
+                subject.saleSignal.next { sale in
+                    sale.saleAvailabilitySignal.next { _ in saleAvailabilityInvocations += 1 }
+                }
+
+                subject.updateState(test_liveAuctionJSON(.Closed))
+
+                expect(saleAvailabilityInvocations) == 2
+            }
+
+            it("doesn't send updated sale availability if not changed") {
+                var saleAvailabilityInvocations = 0
+                subject.saleSignal.next { sale in
+                    sale.saleAvailabilitySignal.next { _ in saleAvailabilityInvocations += 1 }
+                }
+
+                subject.updateState(state)
+
+                expect(saleAvailabilityInvocations) == 1
             }
         }
     }

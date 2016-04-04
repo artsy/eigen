@@ -40,7 +40,7 @@ class LiveAuctionStateReconciler: NSObject {
     private let _saleSignal = Signal<LiveAuctionViewModel>()
 
     private var _state = [LotID: LiveAuctionLotViewModel]()
-    private var _sale: LiveSale?
+    private var _sale: LiveAuctionViewModel?
 }
 
 
@@ -164,19 +164,15 @@ private extension PrivateFunctions {
     func updateSaleIfNecessary(saleJSON: [String: AnyObject]) {
         let newSale = LiveSale(JSON: saleJSON)
 
-        let updateSale = {
-            self._sale = newSale
+        // The first time we get a sale, we need to create a view model.
+        guard let oldSale = _sale else {
             let saleViewModel = LiveAuctionViewModel(sale: newSale)
+            self._sale = saleViewModel
             self._saleSignal.update(saleViewModel)
+            return
         }
 
-        if let oldSale = _sale {
-            if oldSale.needsUpdateFromSale(newSale) {
-                updateSale()
-            }
-        } else {
-            updateSale()
-        }
+        oldSale.updateWithNewSale(newSale)
     }
 
     func sortedLotViewModelsFromLotIDs(lotIDs: [LotID]) -> [LiveAuctionLotViewModel] {
@@ -188,7 +184,7 @@ private extension PrivateFunctions {
 
 
 private extension LiveSale {
-    func needsUpdateFromSale(otherSale: LiveSale) -> Bool {
+    func needsUpdateToInstanceFromSale(otherSale: LiveSale) -> Bool {
         guard self.startDate == otherSale.startDate else { return true }
         guard self.endDate == otherSale.endDate else { return true }
         return false
