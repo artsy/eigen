@@ -1,63 +1,102 @@
 import Foundation
+import Interstellar
 
 // Represents a single lot view
 
-class LiveAuctionLotViewModel : NSObject {
+enum LotState {
+    case ClosedLot
+    case LiveLot
+    case UpcomingLot(distanceFromLive: Int)
+}
 
-    enum LotState {
-        case ClosedLot
-        case LiveLot
-        case UpcomingLot(distanceFromLive: Int)
+protocol LiveAuctionLotViewModelType: class {
+    var bidButtonTitleSignal: Signal<String> { get }
+    var lotArtist: String { get }
+    var estimateString: String { get }
+    var lotName: String { get }
+    var lotStateSignal: Signal<LotState> { get }
+    var urlForThumbnail: NSURL { get }
+    var numberOfEvents: Int { get }
+    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel
+    var lotIndex: Int { get }
+    var currentLotValue: String { get }
+    var imageProfileSize: CGSize { get }
+
+    var reserveStatusSignal: Signal<ARReserveStatus> { get }
+    var askingPriceSignal: Signal<Int> { get }
+    var startEventUpdatesSignal: Signal<NSDate> { get }
+    var endEventUpdatesSignal: Signal<NSDate> { get }
+    var newEventSignal: Signal<LiveAuctionEventViewModel> { get }
+}
+
+class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
+
+    private let model: LiveAuctionLot
+    private var events = [LiveAuctionEventViewModel]()
+
+    let reserveStatusSignal = Signal<ARReserveStatus>()
+    let askingPriceSignal = Signal<Int>()
+
+    let startEventUpdatesSignal = Signal<NSDate>()
+    let endEventUpdatesSignal = Signal<NSDate>()
+    let newEventSignal = Signal<LiveAuctionEventViewModel>()
+
+    init(lot: LiveAuctionLot) {
+        self.model = lot
+
+        reserveStatusSignal.update(lot.reserveStatus)
+        askingPriceSignal.update(lot.onlineAskingPriceCents)
     }
 
-    private let auction: LiveAuctionViewModel
-    private let lot: LiveAuctionLot
-    private let index: Int
-
-    let events: [LiveAuctionEventViewModel] // Var?
-
-    init(lot: LiveAuctionLot, auction: LiveAuctionViewModel, events: [LiveAuctionEventViewModel], index: Int) {
-        self.lot = lot
-        self.auction = auction
-        self.index = index
-        self.events = events
+    var lotStateSignal: Signal<LotState> {
+        return Signal(LotState.LiveLot) // TODO: This needs to be updated. Probably from the state reconciler.
     }
 
-    var lotState : LotState {
-        guard let distance = auction.distanceFromCurrentLot(lot) else {
-            return .ClosedLot
+    var bidButtonTitleSignal: Signal<String> {
+        return lotStateSignal.map { lotState in
+            switch lotState {
+            case .ClosedLot: return "BIDDING CLOSED"
+            case .LiveLot: return "BID 20,000"
+            case .UpcomingLot(_): return "LEAVE MAX BID"
+            }
         }
-        if distance == 0 { return .LiveLot }
-        if distance < 0 { return .ClosedLot }
-        return .UpcomingLot(distanceFromLive: distance)
     }
+
+//    func lotStateWithViewModel(viewModel: LiveAuctionViewModel) -> LotState {
+//        guard let distance = viewModel.distanceFromCurrentLot(model) else {
+//            return .ClosedLot
+//        }
+//        if distance == 0 { return .LiveLot }
+//        if distance < 0 { return .ClosedLot }
+//        return .UpcomingLot(distanceFromLive: distance)
+//    }
 
     var urlForThumbnail: NSURL {
-        return lot.urlForThumbnail()
+        return model.urlForThumbnail()
     }
 
     var urlForProfile: NSURL {
-        return lot.urlForThumbnail()
+        return model.urlForThumbnail()
     }
 
     var imageProfileSize: CGSize {
-        return lot.imageProfileSize()
+        return model.imageProfileSize()
     }
 
     var lotName: String {
-        return lot.artworkTitle
+        return model.artworkTitle
     }
 
     var lotArtist: String {
-        return lot.artistName
+        return model.artistName
     }
 
     var lotIndex: Int {
-        return index + 1
+        return model.position
     }
 
-    var lotCount: Int {
-        return auction.lotCount
+    var liveAuctionLotID: String {
+        return model.liveAuctionLotID
     }
 
     // maybe depecated by currentLotviewModel?
@@ -65,16 +104,48 @@ class LiveAuctionLotViewModel : NSObject {
         return "$10,000"
     }
 
-    var bidButtonTitle: String {
-        switch lotState {
-        case .ClosedLot:   return "BIDDING CLOSED"
-        case .LiveLot:  return "BID 20,000"
-        case .UpcomingLot(_):  return "LEAVE MAX BID"
+    var estimateString: String {
+        return SaleArtwork.estimateStringForLowEstimate(model.lowEstimateCents, highEstimateCents: model.highEstimateCents, currencySymbol: model.currencySymbol, currency: model.currency)
+    }
+
+    var eventIDs: [String] {
+        return model.eventIDs
+    }
+
+    var numberOfEvents: Int {
+        return events.count
+    }
+
+    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
+        return events[index]
+    }
+
+    func updateReserveStatus(reserveStatusString: String) {
+        let updated = model.updateReserveStatusWithString(reserveStatusString)
+        
+        if updated {
+            reserveStatusSignal.update(model.reserveStatus)
         }
     }
 
-    var estimateString: String {
-        return SaleArtwork.estimateStringForLowEstimate(lot.lowEstimateCents, highEstimateCents: lot.highEstimateCents, currencySymbol: lot.currencySymbol, currency: lot.currency)
+    func updateOnlineAskingPrice(askingPrice: Int) {
+        let updated = model.updateOnlineAskingPrice(askingPrice)
+
+        if updated {
+            askingPriceSignal.update(askingPrice)
+        }
+    }
+
+    func addEvents(events: [LiveEvent]) {
+        startEventUpdatesSignal.update(NSDate())
+        defer { endEventUpdatesSignal.update(NSDate()) }
+
+        model.addEvents(events.map { $0.eventID })
+        let newEvents = events.map { LiveAuctionEventViewModel(event: $0) }
+        newEvents.forEach { event in
+            newEventSignal.update(event)
+        }
+        self.events += newEvents
     }
 }
 

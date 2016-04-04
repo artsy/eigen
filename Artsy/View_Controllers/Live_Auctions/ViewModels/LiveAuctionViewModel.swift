@@ -1,19 +1,22 @@
 import Foundation
+import Interstellar
 
 /// Represents the whole auction, all the live biz, timings, watchers
 
-class LiveAuctionViewModel : NSObject {
+protocol LiveAuctionViewModelType: class {
+    var startDate: NSDate { get }
+    var lotCount: Int { get }
+    var saleAvailability: SaleAvailabilityState { get }
+    var saleAvailabilitySignal: Signal<SaleAvailabilityState> { get }
+    func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int?
+}
+
+class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
     private let sale: LiveSale
-    private let salesPerson: LiveAuctionsSalesPersonType
 
-    init(sale: LiveSale, salesPerson: LiveAuctionsSalesPersonType) {
+    init(sale: LiveSale) {
         self.sale = sale
-        self.salesPerson = salesPerson
-    }
-
-    func dateForLotAtIndex(index: Int) -> NSDate {
-        return NSDate().dateByAddingTimeInterval( Double(index * 60 * 2) )
     }
 
     var startDate: NSDate {
@@ -28,15 +31,14 @@ class LiveAuctionViewModel : NSObject {
         return sale.saleAvailability
     }
 
-    var currentLotViewModel: LiveAuctionLotViewModel? {
-        guard let currentIndex = sale.lotIDs.indexOf(sale.currentLotId) else { return nil }
-        return salesPerson.lotViewModelForIndex(currentIndex)
+    var saleAvailabilitySignal: Signal<SaleAvailabilityState> {
+        return Signal<SaleAvailabilityState>() // TOOD: Make this actually do things.
     }
 
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
-        let currentIndex = sale.lotIDs.indexOf(sale.currentLotId)
+        let currentIndex =  Optional(0) // TODO: Put this back sale.lotIDs.indexOf(sale.currentLotId)
         let lotIndex = sale.lotIDs.indexOf(lot.liveAuctionLotID)
         guard let current = currentIndex, lot = lotIndex else { return nil }
         return (current - lot) * -1

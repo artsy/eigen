@@ -3,7 +3,27 @@
 #import "Artwork.h"
 
 
+@interface LiveAuctionLot ()
+
+@property (nonatomic, assign, readwrite) ARReserveStatus reserveStatus;
+@property (nonatomic, assign, readwrite) NSInteger onlineAskingPriceCents;
+@property (nonatomic, copy, readwrite) NSArray<NSString *> *eventIDs;
+
+@end
+
+
 @implementation LiveAuctionLot
+
+- (instancetype)init
+{
+    self = [super init];
+
+    if (self) {
+        self.eventIDs = @[];
+    }
+
+    return self;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
@@ -35,6 +55,38 @@
 + (NSValueTransformer *)reserveStatusJSONTransformer
 {
     return [SaleArtwork reserveStatusJSONTransformer];
+}
+
+- (BOOL)updateReserveStatusWithString:(NSString *)reserveStatusString
+{
+    NSValueTransformer *transformer = [[self class] reserveStatusJSONTransformer];
+    ARReserveStatus currentStatus = self.reserveStatus;
+    ARReserveStatus newStatus = [[transformer transformedValue:reserveStatusString] integerValue];
+
+    if (currentStatus != newStatus) {
+        self.reserveStatus = newStatus;
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)updateOnlineAskingPrice:(NSInteger)newOnlineAskingPrice
+{
+    NSInteger currentAskingPrice = self.onlineAskingPriceCents;
+    if (currentAskingPrice != newOnlineAskingPrice) {
+    self.onlineAskingPriceCents = newOnlineAskingPrice;
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (void)addEvents:(NSArray<NSString *> *)events
+{
+    NSMutableArray *copy = self.eventIDs.mutableCopy;
+    [copy addObjectsFromArray:events];
+    self.eventIDs = copy;
 }
 
 @end
