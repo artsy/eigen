@@ -129,7 +129,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 expect(currentLotInvocations) == 2
             }
 
-            fit("updates lot view model with new events") {
+            it("updates lot view model with new events") {
                 var eventInvocations = 0
                 subject.newLotsSignal.next { newLots in
                     newLots.forEach { lot in
