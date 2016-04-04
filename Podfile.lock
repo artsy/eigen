@@ -52,7 +52,7 @@ PODS:
     - SDWebImage/Core
   - Artsy+UIColors (3.0.0)
   - Artsy+UIFonts (1.1.0)
-  - Artsy+UILabels (2.0.0):
+  - Artsy+UILabels (2.0.1):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
   - Artsy-UIButtons (2.0.1):
@@ -77,17 +77,18 @@ PODS:
   - DRKonamiCode (1.1.0)
   - EDColor (1.0.0)
   - Expecta (1.0.5)
-  - Expecta+Snapshots (2.0.0):
+  - Expecta+Snapshots (3.0.0):
     - Expecta (~> 1.0)
-    - FBSnapshotTestCase/Core (~> 2.0.3)
+    - FBSnapshotTestCase/Core (~> 2.0)
+    - Specta (~> 1.0)
   - FBSDKCoreKit (4.10.1):
     - Bolts (~> 1.5)
   - FBSDKLoginKit (4.10.1):
     - FBSDKCoreKit
-  - FBSnapshotTestCase (2.0.7):
-    - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
-  - FBSnapshotTestCase/Core (2.0.7)
-  - FBSnapshotTestCase/SwiftSupport (2.0.7):
+  - FBSnapshotTestCase (2.1.0):
+    - FBSnapshotTestCase/SwiftSupport (= 2.1.0)
+  - FBSnapshotTestCase/Core (2.1.0)
+  - FBSnapshotTestCase/SwiftSupport (2.1.0):
     - FBSnapshotTestCase/Core
   - FLKAutoLayout (0.2.1)
   - Forgeries/Core (0.6.1)
@@ -114,8 +115,8 @@ PODS:
     - ARTiledImageView
     - SDWebImage
   - Nimble (3.2.0)
-  - Nimble-Snapshots (3.0.0):
-    - FBSnapshotTestCase (~> 2.0.7)
+  - Nimble-Snapshots (3.0.1):
+    - FBSnapshotTestCase (~> 2.0)
     - Nimble
     - Quick
   - NPKeyboardLayoutGuide (1.0.0)
@@ -164,7 +165,7 @@ DEPENDENCIES:
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`)
   - Artsy+UIColors
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
-  - Artsy+UILabels (from `https://github.com/artsy/Artsy-UILabels.git`, branch `orta-fonts`)
+  - Artsy+UILabels
   - Artsy-UIButtons
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
@@ -174,7 +175,7 @@ DEPENDENCIES:
   - Expecta+Snapshots
   - FBSDKCoreKit (~> 4.9)
   - FBSDKLoginKit (~> 4.9)
-  - FBSnapshotTestCase (from `https://github.com/untitledstartup/ios-snapshot-test-case.git`)
+  - FBSnapshotTestCase (from `https://github.com/orta/ios-snapshot-test-case.git`)
   - FLKAutoLayout (from `https://github.com/alloy/FLKAutoLayout.git`, branch `add-support-for-layout-guides-take-2`)
   - Forgeries/Mocks (from `https://github.com/ashfurrow/Forgeries.git`, branch `application`)
   - FXBlurView
@@ -192,7 +193,7 @@ DEPENDENCIES:
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`)
   - Nimble (from `https://github.com/Quick/Nimble.git`)
-  - Nimble-Snapshots (~> 3.0.0)
+  - Nimble-Snapshots (from `https://github.com/ashfurrow/Nimble-Snapshots.git`)
   - NPKeyboardLayoutGuide
   - ObjectiveSugar
   - OCMock
@@ -230,13 +231,10 @@ EXTERNAL SOURCES:
     :git: https://github.com/dblock/ARTiledImageView
   Artsy+UIFonts:
     :git: https://github.com/artsy/Artsy-UIFonts.git
-  Artsy+UILabels:
-    :branch: orta-fonts
-    :git: https://github.com/artsy/Artsy-UILabels.git
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   FBSnapshotTestCase:
-    :git: https://github.com/untitledstartup/ios-snapshot-test-case.git
+    :git: https://github.com/orta/ios-snapshot-test-case.git
   FLKAutoLayout:
     :branch: add-support-for-layout-guides-take-2
     :git: https://github.com/alloy/FLKAutoLayout.git
@@ -253,6 +251,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/neilang/NAMapKit
   Nimble:
     :git: https://github.com/Quick/Nimble.git
+  Nimble-Snapshots:
+    :git: https://github.com/ashfurrow/Nimble-Snapshots.git
   ORStackView:
     :git: https://github.com/1aurabrown/ORStackView.git
   Quick:
@@ -280,15 +280,12 @@ CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
-  Artsy+UILabels:
-    :commit: 02f0721c5aa638989482c855e4e9d8fdc64bbafe
-    :git: https://github.com/artsy/Artsy-UILabels.git
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   FBSnapshotTestCase:
-    :commit: 19df17227fbb99da3de7e10c00306a9eab1b18c6
-    :git: https://github.com/untitledstartup/ios-snapshot-test-case.git
+    :commit: 6b3e8978084388f9aae392fd1e0e21b1ddb88ae3
+    :git: https://github.com/orta/ios-snapshot-test-case.git
   FLKAutoLayout:
     :commit: dd2cd4fe901ff5dcfc47c2c29c7746779fc12b64
     :git: https://github.com/alloy/FLKAutoLayout.git
@@ -307,6 +304,9 @@ CHECKOUT OPTIONS:
   Nimble:
     :commit: d3ed3a367927c98bca7bf7e7e0ff36124c634f73
     :git: https://github.com/Quick/Nimble.git
+  Nimble-Snapshots:
+    :commit: fc4f185c69efd21cffe0ff1167ac8e8fa29a966f
+    :git: https://github.com/ashfurrow/Nimble-Snapshots.git
   ORStackView:
     :commit: 80bfeb0a4176e307a8b94b1662104e64cc8bb50c
     :git: https://github.com/1aurabrown/ORStackView.git
@@ -329,7 +329,7 @@ SPEC CHECKSUMS:
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   Artsy+UIColors: 4bcad6457b985ebbf84b3c96a5cd58c48d937778
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Artsy+UILabels: 0d7db2aeb58e32adff3eeb0d98a55ea118fdd29a
+  Artsy+UILabels: b4e82b2a9a914279109656dda21c70b833e7cff1
   Artsy-UIButtons: 26e6d1e0d2174773e9cf7693985d27faddd61743
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
@@ -337,10 +337,10 @@ SPEC CHECKSUMS:
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
+  Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
   FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
-  FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
+  FBSnapshotTestCase: 68c3221ddd3bf5bbe783c1015f8acc12c3768a4d
   FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
   Forgeries: f5c991dda5977f42d11fa9313fd1e17bc3edbb27
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
@@ -359,7 +359,7 @@ SPEC CHECKSUMS:
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: bdcb666fa84122eed344661b132e1d93dbafac71
   Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
-  Nimble-Snapshots: ab41dd737dcd33a0b0cb005a30465fef70b7207a
+  Nimble-Snapshots: 0d64486715a613293ac5c9af6140b97eb9b0ae76
   NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
@@ -379,6 +379,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 4d805f8f2f7fd106b1df6e3f99a629cd12472040
+PODFILE CHECKSUM: a49730fde4a13058c1037b24b9790e6f82d29660
 
 COCOAPODS: 1.0.0.beta.6

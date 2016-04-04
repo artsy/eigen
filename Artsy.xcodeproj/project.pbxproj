@@ -4477,13 +4477,13 @@
 		B3ECE82B1819D1E6009F5C5B /* Artsy Tests */ = {
 			isa = PBXGroup;
 			children = (
+				B3ECE82C1819D1E6009F5C5B /* Supporting Files */,
 				60E738721C64AC7C00AC381B /* Analytics Tests */,
 				3C205B5718900091004280E0 /* App Tests */,
 				0CE0FE251B8E29CC00A921FD /* Stubs */,
 				3C3FEA8B188433CB00E1A16F /* Extensions */,
 				B31BBE10181EFA08001C623C /* Model Tests */,
 				3CAED1791880268E00840608 /* Networking Tests */,
-				B3ECE82C1819D1E6009F5C5B /* Supporting Files */,
 				3CACF2AA18F591D40054091E /* Theming Tests */,
 				3C5C7E3D18970E73003823BB /* Util Tests */,
 				3CB97D8D18870979008C44FE /* View Controller Tests */,
@@ -5746,10 +5746,6 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.entitlements;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -6067,10 +6063,6 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -6110,8 +6102,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -6187,10 +6177,6 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -6262,8 +6248,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
