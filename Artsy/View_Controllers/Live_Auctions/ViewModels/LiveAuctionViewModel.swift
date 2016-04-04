@@ -7,6 +7,7 @@ protocol LiveAuctionViewModelType: class {
     var startDate: NSDate { get }
     var lotCount: Int { get }
     var saleAvailabilitySignal: Signal<SaleAvailabilityState> { get }
+    var currentLotIDSignal: Signal<String> { get }
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int?
 }
 
@@ -14,11 +15,17 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
     private var sale: LiveSale
     private var lastUpdatedSaleAvailability: SaleAvailabilityState
+    private var lastUpdatedCurrentLotID: String?
 
-    init(sale: LiveSale) {
+    init(sale: LiveSale, currentLotID: String?) {
         self.sale = sale
         self.lastUpdatedSaleAvailability = sale.saleAvailability
         saleAvailabilitySignal.update(lastUpdatedSaleAvailability)
+        lastUpdatedCurrentLotID = currentLotID
+
+        if let lastUpdatedCurrentLotID = lastUpdatedCurrentLotID {
+            currentLotIDSignal.update(lastUpdatedCurrentLotID)
+        }
     }
 
     var startDate: NSDate {
@@ -30,20 +37,26 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
     }
 
     let saleAvailabilitySignal = Signal<SaleAvailabilityState>()
+    let currentLotIDSignal = Signal<String>()
 
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
-        let currentIndex =  Optional(0) // TODO: Put this back sale.lotIDs.indexOf(sale.currentLotId)
+        let currentIndex =  sale.lotIDs.indexOf(lastUpdatedCurrentLotID ?? "")
         let lotIndex = sale.lotIDs.indexOf(lot.liveAuctionLotID)
         guard let current = currentIndex, lot = lotIndex else { return nil }
         return (current - lot) * -1
     }
 
-    func updateWithNewSale(newSale: LiveSale) {
+    func updateWithNewSale(newSale: LiveSale, currentLotID: String?) {
         if lastUpdatedSaleAvailability != newSale.saleAvailability {
             lastUpdatedSaleAvailability = newSale.saleAvailability
             saleAvailabilitySignal.update(newSale.saleAvailability)
+        }
+
+        if let currentLotID = currentLotID where currentLotID != lastUpdatedCurrentLotID {
+            lastUpdatedCurrentLotID = currentLotID
+            currentLotIDSignal.update(currentLotID)
         }
 
         self.sale = newSale

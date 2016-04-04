@@ -163,16 +163,17 @@ private extension PrivateFunctions {
 
     func updateSaleIfNecessary(saleJSON: [String: AnyObject]) {
         let newSale = LiveSale(JSON: saleJSON)
+        let currentLotID = saleJSON["currentLotId"] as? String
 
         // The first time we get a sale, we need to create a view model.
         guard let oldSale = _sale else {
-            let saleViewModel = LiveAuctionViewModel(sale: newSale)
+            let saleViewModel = LiveAuctionViewModel(sale: newSale, currentLotID: currentLotID)
             self._sale = saleViewModel
             self._saleSignal.update(saleViewModel)
             return
         }
 
-        oldSale.updateWithNewSale(newSale)
+        oldSale.updateWithNewSale(newSale, currentLotID: currentLotID)
     }
 
     func sortedLotViewModelsFromLotIDs(lotIDs: [LotID]) -> [LiveAuctionLotViewModel] {
