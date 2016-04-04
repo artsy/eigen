@@ -16,7 +16,8 @@ protocol LiveAuctionsSalesPersonType {
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType?
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType?
 
-
+    func bidOnLot(lot: LiveAuctionLotViewModelType)
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel)
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
@@ -96,6 +97,14 @@ extension LiveAuctionsSalesPerson {
         guard 0..<lots.count ~= index else { return nil }
 
         return lots[index]
+    }
+
+    func bidOnLot(lot: LiveAuctionLotViewModelType) {
+        stateManager.bidOnLot("") // TODO: Extract lot ID once https://github.com/artsy/eigen/pull/1386 is merged.
+    }
+
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) {
+        stateManager.bidOnLot("") // TODO: Extract lot ID once https://github.com/artsy/eigen/pull/1386 is merged.
     }
 }
 
