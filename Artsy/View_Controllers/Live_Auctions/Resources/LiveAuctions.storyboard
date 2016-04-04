@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="AGaramondPro-Bold.otf">
+            <string>AGaramondPro-Bold</string>
+        </mutableArray>
+        <mutableArray key="AGaramondPro-Regular.otf">
+            <string>AGaramondPro-Regular</string>
+            <string>AGaramondPro-Regular</string>
+            <string>AGaramondPro-Regular</string>
+            <string>AGaramondPro-Regular</string>
+        </mutableArray>
+        <mutableArray key="ITCAvantGardeDemi_Track03.ttf">
+            <string>AvantGardeGothicITCW01Dm</string>
+            <string>AvantGardeGothicITCW01Dm</string>
+            <string>AvantGardeGothicITCW01Dm</string>
+            <string>AvantGardeGothicITCW01Dm</string>
+        </mutableArray>
+    </customFonts>
+    <scenes>
+        <!--Place Bid-->
+        <scene sceneID="9BR-JN-ZY8">
+            <objects>
+                <viewController storyboardIdentifier="bid" title="Place Bid" id="NN6-rM-2Hv" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9cP-IO-sJk"/>
+                        <viewControllerLayoutGuide type="bottom" id="mFB-U0-8jM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8aB-h6-AlC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOT 10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXQ-J5-tSz">
+                                <rect key="frame" x="98" y="24" width="482" height="21"/>
+                                <fontDescription key="fontDescription" name="AvantGardeGothicITCW01Dm" family="Avant Garde Gothic ITCW01Dm" pointSize="16"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gta-nC-NHk">
+                                <rect key="frame" x="96" y="51" width="484" height="17"/>
+                                <string key="text">Sol LeWitt
+</string>
+                                <fontDescription key="fontDescription" name="AGaramondPro-Bold" family="Adobe Garamond Pro" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seven Equal Arcs from the Minute away from something" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wWt-jw-RRI">
+                                <rect key="frame" x="96" y="72" width="484" height="17"/>
+                                <fontDescription key="fontDescription" name="AGaramondPro-Regular" family="Adobe Garamond Pro" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jeX-9D-5DT">
+                                <rect key="frame" x="24" y="23" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="HY0-gK-slg"/>
+                                    <constraint firstAttribute="width" constant="64" id="f43-To-nyf"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ej-yR-0VP">
+                                <rect key="frame" x="0.0" y="111" width="600" height="1"/>
+                                <color key="backgroundColor" red="0.75686274509999996" green="0.75686274509999996" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="gaG-bf-PQt"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t49-gv-9zW">
+                                <rect key="frame" x="0.0" y="161" width="600" height="1"/>
+                                <color key="backgroundColor" red="0.75686274509999996" green="0.75686274509999996" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="Taq-aU-GzH"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter $9,500 or more " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WAP-6q-r8g">
+                                <rect key="frame" x="0.0" y="126" width="600" height="20"/>
+                                <fontDescription key="fontDescription" name="AGaramondPro-Regular" family="Adobe Garamond Pro" pointSize="20"/>
+                                <color key="textColor" red="0.52941176469999995" green="0.52941176469999995" blue="0.52941176469999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fai-Jv-BlD">
+                                <rect key="frame" x="158" y="530" width="284" height="52"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="by bidding you accept the" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9IM-dI-udq">
+                                        <rect key="frame" x="5" y="5" width="153" height="21"/>
+                                        <fontDescription key="fontDescription" name="AGaramondPro-Regular" family="Adobe Garamond Pro" pointSize="13"/>
+                                        <color key="textColor" white="0.53000000000000003" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8b4-Qn-6x1">
+                                        <rect key="frame" x="28" y="16" width="114" height="32"/>
+                                        <fontDescription key="fontDescription" name="AvantGardeGothicITCW01Dm" family="Avant Garde Gothic ITCW01Dm" pointSize="12"/>
+                                        <state key="normal" title="PRIVACY POLICY">
+                                            <color key="titleColor" white="0.52999997139999999" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="privacyPolicyTapped:" destination="NN6-rM-2Hv" eventType="touchUpInside" id="Lvb-mK-1CU"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ywi-jK-hfq">
+                                        <rect key="frame" x="139" y="0.0" width="145" height="32"/>
+                                        <fontDescription key="fontDescription" name="AvantGardeGothicITCW01Dm" family="Avant Garde Gothic ITCW01Dm" pointSize="12"/>
+                                        <state key="normal" title="CONDITIONS OF SALE">
+                                            <color key="titleColor" white="0.52999997139999999" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="conditionsOfSaleTapped:" destination="NN6-rM-2Hv" eventType="touchUpInside" id="Uod-6t-H3e"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="and" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pir-bH-UrI">
+                                        <rect key="frame" x="5" y="21" width="23" height="21"/>
+                                        <fontDescription key="fontDescription" name="AGaramondPro-Regular" family="Adobe Garamond Pro" pointSize="13"/>
+                                        <color key="textColor" white="0.53000000000000003" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="284" id="45r-tx-Pdg"/>
+                                    <constraint firstAttribute="height" constant="52" id="UUu-MO-fTE"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dR9-ED-Jtd" customClass="ActionButton" customModule="Artsy" customModuleProvider="target">
+                                <rect key="frame" x="173" y="472" width="255" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="255" id="3vM-78-bcU"/>
+                                    <constraint firstAttribute="height" constant="50" id="5c7-gY-dzw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvantGardeGothicITCW01Dm" family="Avant Garde Gothic ITCW01Dm" pointSize="18"/>
+                                <state key="normal" title="BID">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.53000000000000003" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="bidTapped:" destination="NN6-rM-2Hv" eventType="touchUpInside" id="NPL-U9-jWB"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dR9-ED-Jtd" firstAttribute="centerX" secondItem="8aB-h6-AlC" secondAttribute="centerX" id="342-8g-Q3P"/>
+                            <constraint firstItem="jeX-9D-5DT" firstAttribute="top" secondItem="9cP-IO-sJk" secondAttribute="bottom" constant="23" id="5xQ-aZ-nLQ"/>
+                            <constraint firstItem="wWt-jw-RRI" firstAttribute="leading" secondItem="jeX-9D-5DT" secondAttribute="trailing" constant="8" id="9Ca-Hx-znt"/>
+                            <constraint firstItem="WAP-6q-r8g" firstAttribute="top" secondItem="9Ej-yR-0VP" secondAttribute="bottom" constant="14" id="9hd-FJ-5eG"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="WAP-6q-r8g" secondAttribute="trailing" constant="-20" id="G9L-Pd-sJ5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wWt-jw-RRI" secondAttribute="trailing" id="HBO-Yk-GlL"/>
+                            <constraint firstItem="uXQ-J5-tSz" firstAttribute="leading" secondItem="jeX-9D-5DT" secondAttribute="trailing" constant="10" id="JH2-1W-3c0"/>
+                            <constraint firstItem="WAP-6q-r8g" firstAttribute="leading" secondItem="8aB-h6-AlC" secondAttribute="leadingMargin" constant="-20" id="LUG-Dk-hSo"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="uXQ-J5-tSz" secondAttribute="trailing" id="M09-GX-KWU"/>
+                            <constraint firstItem="jeX-9D-5DT" firstAttribute="leading" secondItem="8aB-h6-AlC" secondAttribute="leadingMargin" constant="4" id="UHa-Qz-f3s"/>
+                            <constraint firstItem="gta-nC-NHk" firstAttribute="leading" secondItem="jeX-9D-5DT" secondAttribute="trailing" constant="8" id="bEL-fP-eI0"/>
+                            <constraint firstItem="fai-Jv-BlD" firstAttribute="top" secondItem="dR9-ED-Jtd" secondAttribute="bottom" constant="8" id="dbd-Sh-Mip"/>
+                            <constraint firstItem="9Ej-yR-0VP" firstAttribute="top" secondItem="jeX-9D-5DT" secondAttribute="bottom" constant="24" id="hKd-vj-8r3"/>
+                            <constraint firstItem="uXQ-J5-tSz" firstAttribute="top" secondItem="9cP-IO-sJk" secondAttribute="bottom" constant="24" id="hXP-n0-dxa"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="gta-nC-NHk" secondAttribute="trailing" id="igS-Hc-0ik"/>
+                            <constraint firstAttribute="trailing" secondItem="9Ej-yR-0VP" secondAttribute="trailing" id="psx-ye-xkB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="t49-gv-9zW" secondAttribute="trailing" constant="-20" id="qxD-h6-A3e"/>
+                            <constraint firstItem="t49-gv-9zW" firstAttribute="top" secondItem="WAP-6q-r8g" secondAttribute="bottom" constant="15" id="qxN-4r-8CR"/>
+                            <constraint firstItem="wWt-jw-RRI" firstAttribute="top" secondItem="gta-nC-NHk" secondAttribute="bottom" constant="4" id="ukn-6j-X9O"/>
+                            <constraint firstItem="t49-gv-9zW" firstAttribute="leading" secondItem="8aB-h6-AlC" secondAttribute="leadingMargin" constant="-20" id="y23-Vk-Dcr"/>
+                            <constraint firstItem="gta-nC-NHk" firstAttribute="top" secondItem="uXQ-J5-tSz" secondAttribute="bottom" constant="6" id="ybk-YY-j4f"/>
+                            <constraint firstItem="9Ej-yR-0VP" firstAttribute="leading" secondItem="8aB-h6-AlC" secondAttribute="leading" id="zjy-VY-7Lv"/>
+                            <constraint firstItem="fai-Jv-BlD" firstAttribute="centerX" secondItem="8aB-h6-AlC" secondAttribute="centerX" id="zwg-Bn-fqp"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="bidButton" destination="dR9-ED-Jtd" id="LbJ-yl-B9z"/>
+                        <outlet property="currentBidLabel" destination="WAP-6q-r8g" id="0C1-ns-cje"/>
+                        <outlet property="lotArtistLabel" destination="gta-nC-NHk" id="Vl5-qv-HBz"/>
+                        <outlet property="lotNameLabel" destination="wWt-jw-RRI" id="3Ej-g7-c36"/>
+                        <outlet property="lotNumberLabel" destination="uXQ-J5-tSz" id="bUh-cV-f1Q"/>
+                        <outlet property="lotPreviewImage" destination="jeX-9D-5DT" id="Z1E-BS-Srq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zzC-vl-u6f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1136" y="47"/>
+        </scene>
+    </scenes>
+</document>
