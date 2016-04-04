@@ -13,7 +13,7 @@ import Artsy
 var dateMock: AnyObject?
 var systemDateMock: AnyObject?
 
-func freezeTime(now: NSDate) {
+func freezeTime(now: NSDate = NSDate()) {
     dateMock = ARTestContext.freezeTime(now)
     systemDateMock = ARTestContext.freezeSystemTime(now)
 }
