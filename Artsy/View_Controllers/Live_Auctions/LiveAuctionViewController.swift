@@ -73,7 +73,7 @@ class LiveAuctionViewController: UIViewController {
             return UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)!
         }
 
-        let close = ARSerifToolbarButtonItem(image: image("close_icon"))
+        let close = ARSerifToolbarButtonItem(image: image("Close_Icon"))
         close.accessibilityLabel = "Exit Live Bidding"
         close.button.addTarget(self, action: #selector(LiveAuctionViewController.dismissModal), forControlEvents: .TouchUpInside)
 
