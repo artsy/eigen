@@ -142,7 +142,7 @@ class Stub_StateFetcher: LiveAuctionStateFetcherType {
     func fetchSale() -> Signal<AnyObject> {
         let signal = Signal<AnyObject>()
 
-        let json = loadJSON("live_auctions")
+        let json = loadJSON("live_auctions_state")
         signal.update(json)
 
         return signal

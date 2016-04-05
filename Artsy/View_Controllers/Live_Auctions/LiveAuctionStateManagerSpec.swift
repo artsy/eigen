@@ -9,6 +9,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         var subject: LiveAuctionStateManager!
 
         beforeEach {
+            // TODO: Once gravity is creating corresponding sales in causality, we need to change this host to causality.
             subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateFetcherCreator: test_stateFetcherCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
