@@ -6,6 +6,7 @@ upcoming:
     - Updates for Xcode 7.3. - ash
     - New state reconciliation for live auctions. -ash
     - Scaffolding for sending live auction events. - ash
+    - Started the Live Auction Bidding Interface - orta
 
   notes:
     - Fixes long auction names falling off right edge. - ash
