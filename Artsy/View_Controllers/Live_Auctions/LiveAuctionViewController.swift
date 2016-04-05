@@ -15,7 +15,7 @@ class LiveAuctionViewController: UIViewController {
     lazy var salesPerson: LiveAuctionsSalesPersonType = {
         // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
         let accessToken = UICKeyChainStore.stringForKey(AROAuthTokenDefault) ?? ""
-        return LiveAuctionsSalesPerson(saleID: self.saleID, accessToken: accessToken) // TODO: stub
+        return LiveAuctionsSalesPerson(saleID: self.saleID, accessToken: accessToken, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
     }()
 
     var pageController: UIPageViewController!
