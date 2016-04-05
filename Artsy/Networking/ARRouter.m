@@ -982,31 +982,32 @@ static NSString *hostFromString(NSString *string)
 {
     // Note that we're relying on the host to specify the domain for the request.
     NSString *url = [self baseMetaphysicsApiURLString];
-    NSString *query = [NSString stringWithFormat:@"{\
-    sale(id: \"%@\") {\
-        sale_artworks {\
-            id\
-            position\
-            currency\
-            symbol\
-            reserve_status\
-            low_estimate_cents\
-            high_estimate_cents\
-            amount_cents\
-            artwork {\
-                title\
-                artist {\
-                    name\
-                }\
-                image {\
-                    width\
-                    height\
-                    url(version: \"large\")\
-                }\
-            }\
-        }\
-    }\
-}", saleID];
+    // Ending spaces are to avoid stripping newlines characters later on.
+    NSString *query = [[NSString stringWithFormat:@"{\
+    sale(id: \"%@\") { \
+        sale_artworks { \
+            id \
+            position \
+            currency \
+            symbol \
+            reserve_status \
+            low_estimate_cents \
+            high_estimate_cents \
+            amount_cents \
+            artwork { \
+                title \
+                artist { \
+                    name \
+                } \
+                image { \
+                    width \
+                    height \
+                    url(version: \"large\") \
+                } \
+            } \
+        } \
+    } \
+}", saleID] stringByReplacingOccurrencesOfString:@"    " withString:@""];
 
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{@"query": query}];
 
