@@ -14,7 +14,7 @@ class LiveAuctionStateFetcherSpec: QuickSpec {
         var subject: LiveAuctionStateFetcher!
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseAtPath("\(host)/state/\(saleID)", withResponse: saleJSON)
+            OHHTTPStubs.stubJSONResponseAtPath("http://sillyhost/state/sale_id", withResponse: saleJSON)
 
             subject = LiveAuctionStateFetcher(host: host, saleID: saleID)
         }
@@ -37,7 +37,7 @@ class LiveAuctionStateFetcherSpec: QuickSpec {
             }
 
             let dictionary = receivedState as? NSDictionary
-            expect((dictionary ?? [:])["id"] as? String) == saleID
+            expect(dictionary) == saleJSON
         }
     }
 }

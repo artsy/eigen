@@ -39,6 +39,7 @@ NSString *const ARBidderPositionsForSaleAndArtworkURL = @"/api/v1/me/bidder_posi
 NSString *const ARSaleArtworkForSaleAndArtworkURLFormat = @"/api/v1/sale/%@/sale_artwork/%@";
 NSString *const ARSaleURLFormat = @"/api/v1/sale/%@";
 NSString *const ARLiveSaleStateFormat = @"%@/state/%@";
+NSString *const ARLiveSaleStaticDataFormat = @"%@";
 NSString *const ARSaleArtworksURLFormat = @"/api/v1/sale/%@/sale_artworks";
 NSString *const ARArtworkFairsURLFormat = @"/api/v1/related/fairs";
 

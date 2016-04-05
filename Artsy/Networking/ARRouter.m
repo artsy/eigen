@@ -964,8 +964,43 @@ static NSString *hostFromString(NSString *string)
 + (NSURLRequest *)liveSaleStateRequest:(NSString *)saleID host:(NSString *)host
 {
     // Note that we're relying on the host to specify the domain for the request.
-    NSString *url = [NSString stringWithFormat:ARLiveSaleStateFormat, host, saleID];
+    NSString *url = [NSString stringWithFormat:ARLiveSaleStateFormat, host];
     return [self requestWithMethod:@"GET" URLString:url parameters:nil];
+}
+
++ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID host:(NSString *)host
+{
+    // Note that we're relying on the host to specify the domain for the request.
+    NSString *url = [NSString stringWithFormat:ARLiveSaleStaticDataFormat, host];
+    NSString *query = [NSString stringWithFormat:@"{\
+    sale(id: \"%@\") {\
+        sale_artworks {\
+            id\
+            position\
+            currency\
+            symbol\
+            reserve_status\
+            low_estimate_cents\
+            high_estimate_cents\
+            amount_cents\
+            artwork {\
+                title\
+                artist {\
+                    name\
+                }\
+                image {\
+                    width\
+                    height\
+                    url(version: \"large\")\
+                }\
+            }\
+        }\
+    }\
+}", saleID];
+
+    NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{@"query": query}];
+
+    return request;
 }
 
 + (NSURLRequest *)biddersRequest

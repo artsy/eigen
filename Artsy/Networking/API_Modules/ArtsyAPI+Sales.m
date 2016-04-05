@@ -52,4 +52,17 @@
     }];
 }
 
++ (void)getLiveSaleStaticDataWithSaleID:(NSString *)saleID
+                                   host:(NSString *)host
+                                success:(void (^)(id state))success
+                                failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter liveSaleStaticDataRequest:saleID host:host];
+    [self performRequest:request
+                 success:success
+                 failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        failure(error);
+    }];
+}
+
 @end
