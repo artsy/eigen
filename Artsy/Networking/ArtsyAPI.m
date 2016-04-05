@@ -16,6 +16,14 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 
+NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
+{
+    return ^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        failure(error);
+    };
+}
+
+
 @implementation ArtsyAPI
 
 + (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure

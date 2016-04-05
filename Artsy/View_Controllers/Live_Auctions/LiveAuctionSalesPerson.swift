@@ -37,7 +37,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     init(saleID: String,
          accessToken: String,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
-         stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.stubbedStateManagerCreator()) {
+         stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
         self.saleID = saleID
         let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "http://localhost:5000"
