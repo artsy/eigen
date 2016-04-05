@@ -1,6 +1,5 @@
 import UIKit
 
-
 enum LiveAuctionBiddingProgressState {
     case Idle(biddingAmount: String)
     case InProgress
@@ -10,10 +9,14 @@ enum LiveAuctionBiddingProgressState {
 
 class LiveAuctionBidViewController: UIViewController {
 
+    @IBOutlet weak var bidButton: UIButton!
+    @IBOutlet weak var lowerBiddingSeparatorView: UIView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        view.layoutIfNeeded()
+        let bottomSeparatorOvelapsBidButton = bidButton.center.y < lowerBiddingSeparatorView.center.y
+        lowerBiddingSeparatorView.hidden = bottomSeparatorOvelapsBidButton
     }
-
 }

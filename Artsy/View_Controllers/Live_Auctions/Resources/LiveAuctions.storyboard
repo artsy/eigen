@@ -27,7 +27,7 @@
         <!--Place Bid-->
         <scene sceneID="9BR-JN-ZY8">
             <objects>
-                <viewController storyboardIdentifier="bid" title="Place Bid" id="NN6-rM-2Hv" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="bid" title="Place Bid" id="NN6-rM-2Hv" customClass="LiveAuctionBidViewController" customModule="Artsy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9cP-IO-sJk"/>
                         <viewControllerLayoutGuide type="bottom" id="mFB-U0-8jM"/>
@@ -42,16 +42,16 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gta-nC-NHk">
-                                <rect key="frame" x="96" y="51" width="484" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gta-nC-NHk">
+                                <rect key="frame" x="96" y="46" width="484" height="17"/>
                                 <string key="text">Sol LeWitt
 </string>
                                 <fontDescription key="fontDescription" name="AGaramondPro-Bold" family="Adobe Garamond Pro" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Seven Equal Arcs from the Minute away from something" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wWt-jw-RRI">
-                                <rect key="frame" x="96" y="72" width="484" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seven Equal Arcs from the Minute away from something" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wWt-jw-RRI">
+                                <rect key="frame" x="96" y="67" width="484" height="17"/>
                                 <fontDescription key="fontDescription" name="AGaramondPro-Regular" family="Adobe Garamond Pro" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -90,8 +90,8 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="$47,000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFJ-qr-dB0">
-                                <rect key="frame" x="429" y="137" width="151" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$47,000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFJ-qr-dB0">
+                                <rect key="frame" x="515" y="137" width="65" height="20"/>
                                 <fontDescription key="fontDescription" name="AGaramondPro-Regular" family="Adobe Garamond Pro" pointSize="20"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -102,8 +102,8 @@
                                 <color key="textColor" red="0.52941176469999995" green="0.52941176469999995" blue="0.52941176469999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SET YOUR MAX BID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wXm-1b-noc">
-                                <rect key="frame" x="24" y="205" width="287" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SET YOUR MAX BID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wXm-1b-noc">
+                                <rect key="frame" x="24" y="205" width="114" height="16"/>
                                 <fontDescription key="fontDescription" name="AvantGardeGothicITCW01Dm" family="Avant Garde Gothic ITCW01Dm" pointSize="12"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -114,8 +114,8 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="$10,1145,000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="fvK-8E-FAD">
-                                <rect key="frame" x="218" y="314" width="165" height="46"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$10,1145,000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="fvK-8E-FAD">
+                                <rect key="frame" x="220" y="314" width="160" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="FJM-h2-B1n"/>
                                     <constraint firstAttribute="width" constant="160" id="LUD-4s-dHS"/>
@@ -124,7 +124,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sn3-46-vNT">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sn3-46-vNT">
                                 <rect key="frame" x="388" y="307" width="60" height="60"/>
                                 <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -133,7 +133,7 @@
                                 </constraints>
                                 <state key="normal" title="+"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UHw-IW-ZpI">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UHw-IW-ZpI">
                                 <rect key="frame" x="152" y="307" width="60" height="60"/>
                                 <color key="backgroundColor" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -142,7 +142,7 @@
                                 </constraints>
                                 <state key="normal" title="-"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dR9-ED-Jtd">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dR9-ED-Jtd">
                                 <rect key="frame" x="152" y="530" width="296" height="50"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -156,9 +156,6 @@
                                 <state key="disabled">
                                     <color key="titleColor" white="0.53000000000000003" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="bidTapped:" destination="NN6-rM-2Hv" eventType="touchUpInside" id="NPL-U9-jWB"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -217,12 +214,8 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <outlet property="bidButton" destination="dR9-ED-Jtd" id="LbJ-yl-B9z"/>
-                        <outlet property="currentBidLabel" destination="WAP-6q-r8g" id="0C1-ns-cje"/>
-                        <outlet property="lotArtistLabel" destination="gta-nC-NHk" id="Vl5-qv-HBz"/>
-                        <outlet property="lotNameLabel" destination="wWt-jw-RRI" id="3Ej-g7-c36"/>
-                        <outlet property="lotNumberLabel" destination="uXQ-J5-tSz" id="bUh-cV-f1Q"/>
-                        <outlet property="lotPreviewImage" destination="jeX-9D-5DT" id="Z1E-BS-Srq"/>
+                        <outlet property="bidButton" destination="dR9-ED-Jtd" id="Xft-YV-9Y2"/>
+                        <outlet property="lowerBiddingSeparatorView" destination="mBw-bY-otY" id="cVQ-8g-lT9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zzC-vl-u6f" userLabel="First Responder" sceneMemberID="firstResponder"/>

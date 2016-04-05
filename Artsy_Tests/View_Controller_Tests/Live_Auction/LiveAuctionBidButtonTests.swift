@@ -1,4 +1,3 @@
-
 import Quick
 import Nimble
 import Nimble_Snapshots
