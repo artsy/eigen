@@ -16,14 +16,12 @@ Based on socket events:
 
 class LiveAuctionStateManager: NSObject {
     typealias SocketCommunicatorCreator = (host: String, saleID: String, accessToken: String) -> LiveAuctionSocketCommunicatorType
-    typealias StateFetcherCreator = (host: String, saleID: String) -> LiveAuctionStateFetcherType
     typealias StaticDataFetcherCreator = (saleID: String) -> LiveAuctionStaticDataFetcherType
     typealias StateReconcilerCreator = () -> LiveAuctionStateReconcilerType
 
     let saleID: String
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
-    private let stateFetcher: LiveAuctionStateFetcherType
     private let staticDataFetcher: LiveAuctionStaticDataFetcherType
     private let stateReconciler: LiveAuctionStateReconcilerType
 
@@ -31,13 +29,11 @@ class LiveAuctionStateManager: NSObject {
         saleID: String,
         accessToken: String,
         socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
-        stateFetcherCreator: StateFetcherCreator = LiveAuctionStateManager.defaultStateFetcherCreator(),
         staticDataFetcherCreator: StaticDataFetcherCreator = LiveAuctionStateManager.defaultStaticDataFetcherCreator(),
         stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
 
         self.saleID = saleID
         self.socketCommunicator = socketCommunicatorCreator(host: host, saleID: saleID, accessToken: accessToken)
-        self.stateFetcher = stateFetcherCreator(host: host, saleID: saleID)
         self.staticDataFetcher = staticDataFetcherCreator(saleID: saleID)
         self.stateReconciler = stateReconcilerCreator()
 
@@ -45,10 +41,6 @@ class LiveAuctionStateManager: NSObject {
 
         staticDataFetcher.fetchStaticData().next { [weak self] staticData in
             print("Static Data: \(staticData)")
-        }
-
-        stateFetcher.fetchSale().next { [weak self] state in
-            self?.stateReconciler.updateState(state)
         }
 
         socketCommunicator.delegate = self
@@ -99,12 +91,6 @@ extension DefaultCreators {
         }
     }
 
-    class func defaultStateFetcherCreator() -> StateFetcherCreator {
-        return { host, saleID in
-            return LiveAuctionStateFetcher(host: host, saleID: saleID)
-        }
-    }
-
     class func defaultStaticDataFetcherCreator() -> StaticDataFetcherCreator {
         return { saleID in
             return LiveAuctionStaticDataFetcher(saleID: saleID)
@@ -123,11 +109,6 @@ extension DefaultCreators {
         }
     }
 
-    class func stubbedStateFetcherCreator() -> StateFetcherCreator {
-        return { _, _ in
-            return Stub_StateFetcher()
-        }
-    }
 }
 
 func loadJSON(filename: String) -> AnyObject {
@@ -136,17 +117,6 @@ func loadJSON(filename: String) -> AnyObject {
     let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
 
     return json
-}
-
-class Stub_StateFetcher: LiveAuctionStateFetcherType {
-    func fetchSale() -> Signal<AnyObject> {
-        let signal = Signal<AnyObject>()
-
-        let json = loadJSON("live_auctions_state")
-        signal.update(json)
-
-        return signal
-    }
 }
 
 class Stub_StaticDataFetcher: LiveAuctionStaticDataFetcherType {

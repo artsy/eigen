@@ -40,6 +40,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
         self.saleID = saleID
+        // TODO: Once gravity is creating corresponding sales in causality, we need to change this host to causality.
         let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "http://localhost:5000"
         stateManager = stateManagerCreator(host: host, saleID: saleID, accessToken: accessToken)
 
@@ -119,7 +120,7 @@ extension ClassMethods {
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
         return { host, saleID, accessToken in
-            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken, stateFetcherCreator: LiveAuctionStateManager.stubbedStateFetcherCreator(), staticDataFetcherCreator: LiveAuctionStateManager.stubbedStaticDataFetcherCreator())
+            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken, staticDataFetcherCreator: LiveAuctionStateManager.stubbedStaticDataFetcherCreator())
         }
     }
 

@@ -9,8 +9,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         var subject: LiveAuctionStateManager!
 
         beforeEach {
-            // TODO: Once gravity is creating corresponding sales in causality, we need to change this host to causality.
-            subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateFetcherCreator: test_stateFetcherCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+            subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
         it("sets its saleID upon initialization") {
@@ -42,30 +41,9 @@ func test_socketCommunicatorCreator() -> LiveAuctionStateManager.SocketCommunica
     }
 }
 
-func test_stateFetcherCreator() -> LiveAuctionStateManager.StateFetcherCreator {
-    return { host, saleID in
-        return Test_StateFetcher(host: host, saleID: saleID)
-    }
-}
-
 func test_stateReconcilerCreator() -> LiveAuctionStateManager.StateReconcilerCreator {
     return {
         return Test_StateRecociler()
-    }
-}
-
-class Test_StateFetcher: LiveAuctionStateFetcherType {
-
-    let host: String
-    let saleID: String
-
-    init(host: String, saleID: String) {
-        self.host = host
-        self.saleID = saleID
-    }
-
-    func fetchSale() -> Signal<AnyObject> {
-        return Signal<AnyObject>()
     }
 }
 
