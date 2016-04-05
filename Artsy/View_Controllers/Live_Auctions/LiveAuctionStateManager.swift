@@ -111,6 +111,12 @@ extension DefaultCreators {
         }
     }
 
+    class func stubbedStaticDataFetcherCreator() -> StaticDataFetcherCreator {
+        return { saleID in
+            return Stub_StaticDataFetcher()
+        }
+    }
+
     class func defaultStateReconcilerCreator() -> StateReconcilerCreator {
         return {
             return LiveAuctionStateReconciler()
@@ -124,14 +130,30 @@ extension DefaultCreators {
     }
 }
 
+private func loadJSON(filename: String) -> AnyObject {
+    let jsonPath = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
+    let jsonData = NSData(contentsOfFile: jsonPath!)!
+    let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
+
+    return json
+}
+
 class Stub_StateFetcher: LiveAuctionStateFetcherType {
     func fetchSale() -> Signal<AnyObject> {
         let signal = Signal<AnyObject>()
 
-        let jsonPath = NSBundle.mainBundle().pathForResource("live_auctions", ofType: "json")
-        let jsonData = NSData(contentsOfFile: jsonPath!)!
-        let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
+        let json = loadJSON("live_auctions")
+        signal.update(json)
 
+        return signal
+    }
+}
+
+class Stub_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
+    func fetchStaticData() -> Signal<AnyObject> {
+        let signal = Signal<AnyObject>()
+
+        let json = loadJSON("live_static_data")
         signal.update(json)
 
         return signal

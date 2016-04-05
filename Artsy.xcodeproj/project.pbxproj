@@ -258,6 +258,7 @@
 		5435192E18A8E9420060F31E /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */; };
 		546A858217763349006D489B /* ARHeroUnitsNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 546A858117763349006D489B /* ARHeroUnitsNetworkModel.m */; };
 		54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */; };
+		5E01B02D1CB3FC3600F233EE /* live_static_data.json in Resources */ = {isa = PBXBuildFile; fileRef = 5E01B02C1CB3FC3600F233EE /* live_static_data.json */; };
 		5E05C7B61C93636A0072F89E /* SocketEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E05C7B51C93636A0072F89E /* SocketEvents.swift */; };
 		5E05C7B81C936F420072F89E /* SocketIOClientExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E05C7B71C936F420072F89E /* SocketIOClientExtensions.swift */; };
 		5E0846D71C6E474800855667 /* ARSaleArtworkItemFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0846D61C6E474800855667 /* ARSaleArtworkItemFlowModule.m */; };
@@ -1162,6 +1163,7 @@
 		54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMenuAwareViewController.h; sourceTree = "<group>"; };
 		54B7477318A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTopMenuViewController+DeveloperExtras.h"; sourceTree = "<group>"; };
 		54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTopMenuViewController+DeveloperExtras.m"; sourceTree = "<group>"; };
+		5E01B02C1CB3FC3600F233EE /* live_static_data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = live_static_data.json; sourceTree = "<group>"; };
 		5E05C7B51C93636A0072F89E /* SocketEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketEvents.swift; path = Live_Auctions/SocketEvents.swift; sourceTree = "<group>"; };
 		5E05C7B71C936F420072F89E /* SocketIOClientExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketIOClientExtensions.swift; path = Live_Auctions/SocketIOClientExtensions.swift; sourceTree = "<group>"; };
 		5E0846D51C6E474800855667 /* ARSaleArtworkItemFlowModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARSaleArtworkItemFlowModule.h; path = Sale_Artworks/ARSaleArtworkItemFlowModule.h; sourceTree = "<group>"; };
@@ -3306,6 +3308,7 @@
 			isa = PBXGroup;
 			children = (
 				601E31AA1C80A55F00D09F73 /* live_auctions.json */,
+				5E01B02C1CB3FC3600F233EE /* live_static_data.json */,
 				6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */,
 			);
 			name = Resources;
@@ -4889,6 +4892,7 @@
 				608B706E17D4A1C80088A56C /* Artwork_Icon_VIR@2x.png in Resources */,
 				E6FFEAB619C7925600A0D7DE /* splash_1@2x~iphone.jpg in Resources */,
 				5E20BB6A1C62C81600C6D781 /* CircularInfoButton@2x.png in Resources */,
+				5E01B02D1CB3FC3600F233EE /* live_static_data.json in Resources */,
 				605002E917D9F5DC00C090B8 /* SmallMoreVerticalArrow.png in Resources */,
 				605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */,
 				E6CD164A18ABE291001254B5 /* Image_Shadow_Overlay@2x.png in Resources */,

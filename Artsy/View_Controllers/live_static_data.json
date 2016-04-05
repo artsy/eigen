@@ -1,0 +1,218 @@
+{
+  "data": {
+    "sale": {
+      "sale_artworks": [
+        {
+          "id": "ed-ruscha-cockroaches-from-insects-portfolio",
+          "position": 1,
+          "currency": "USD",
+          "symbol": "$",
+          "reserve_status": null,
+          "low_estimate_cents": 200000,
+          "high_estimate_cents": 300000,
+          "amount_cents": null,
+          "artwork": {
+            "title": "Cockroaches (from Insects Portfolio)",
+            "artist": {
+              "name": "Ed Ruscha"
+            },
+            "image": {
+              "width": 3000,
+              "height": 2235,
+              "url": "https://d32dm0rphc51dk.cloudfront.net/0-AL7CEZ5IDjCWdNxwjmBg/large.jpg"
+            }
+          }
+        },
+        {
+          "id": "ed-ruscha-pearl-dust-combination-from-insects-portfolio",
+          "position": 2,
+          "currency": "USD",
+          "symbol": "$",
+          "reserve_status": null,
+          "low_estimate_cents": 200000,
+          "high_estimate_cents": 300000,
+          "amount_cents": null,
+          "artwork": {
+            "title": "Pearl Dust Combination (from Insects Portfolio)",
+            "artist": {
+              "name": "Ed Ruscha"
+            },
+            "image": {
+              "width": 3000,
+              "height": 2213,
+              "url": "https://d32dm0rphc51dk.cloudfront.net/XkAtGqcI3DTjapCjtOhI2Q/large.jpg"
+            }
+          }
+        },
+        {
+          "id": "peter-alexander-wedge-with-puff",
+          "position": 3,
+          "currency": "USD",
+          "symbol": "$",
+          "reserve_status": null,
+          "low_estimate_cents": 700000,
+          "high_estimate_cents": 900000,
+          "amount_cents": null,
+          "artwork": {
+            "title": "Wedge with Puff",
+            "artist": {
+              "name": "Peter Alexander"
+            },
+            "image": {
+              "width": 3000,
+              "height": 2246,
+              "url": "https://d32dm0rphc51dk.cloudfront.net/hSlwncI_Ipf9tLQUOdtLuQ/large.jpg"
+            }
+          }
+        },
+        {
+          "id": "charles-and-ray-eames-lounge-chair-and-ottoman-2",
+          "position": 4,
+          "currency": "USD",
+          "symbol": "$",
+          "reserve_status": null,
+          "low_estimate_cents": 300000,
+          "high_estimate_cents": 500000,
+          "amount_cents": null,
+          "artwork": {
+            "title": "Lounge chair & ottoman (2)",
+            "artist": {
+              "name": "Charles and Ray Eames"
+            },
+            "image": {
+              "width": 3000,
+              "height": 1559,
+              "url": "https://d32dm0rphc51dk.cloudfront.net/dK5hOTAblB5vf6gdPmb3Xw/large.jpg"
+            }
+          }
+        },
+        {
+          "id": "david-hockney-my-pool-and-terrace",
+          "position": 5,
+          "currency": "USD",
+          "symbol": "$",
+          "reserve_status": null,
+          "low_estimate_cents": 250000,
+          "high_estimate_cents": 350000,
+          "amount_cents": null,
+          "artwork": {
+            "title": "My Pool and Terrace",
+            "artist": {
+              "name": "David Hockney"
+            },
+            "image": {
+              "width": 3000,
+              "height": 2098,
+              "url": "https://d32dm0rphc51dk.cloudfront.net/4UiGBzJJSnnGpdVJjhrnuw/large.jpg"
+            }
+          }
+        },
+        {
+          "id": "john-baldessari-two-boats",
+          "position": 6,
+          "currency": "USD",
+          "symbol": "$",
+          "reserve_status": null,
+          "low_estimate_cents": 400000,
+          "high_estimate_cents": 600000,
+          "amount_cents": null,
+          "artwork": {
+            "title": "Two Boats",
+            "artist": {
+              "name": "John Baldessari"
+            },
+            "image": {
+              "width": 3000,
+              "height": 2250,
+              "url": "https://d32dm0rphc51dk.cloudfront.net/rkoXPIm_B1aNFtJI4C5Nfg/large.jpg"
+            }
+          }
+        },
+        {
+          "id": "lucian-freud-after-chardin-small-plate-1",
+          "position": 7,
+          "currency": "USD",
+          "symbol": "$",
+          "reserve_status": null,
+          "low_estimate_cents": 800000,
+          "high_estimate_cents": 1200000,
+          "amount_cents": null,
+          "artwork": {
+            "title": "After Chardin (Small Plate)",
+            "artist": {
+              "name": "Lucian Freud"
+            },
+            "image": {
+              "width": 3000,
+              "height": 2246,
+              "url": "https://d32dm0rphc51dk.cloudfront.net/-9TvcvqWzvDLwaAlHbiGAw/large.jpg"
+            }
+          }
+        },
+        {
+          "id": "frank-stella-purple-series-1",
+          "position": 8,
+          "currency": "USD",
+          "symbol": "$",
+          "reserve_status": null,
+          "low_estimate_cents": 1800000,
+          "high_estimate_cents": 2500000,
+          "amount_cents": null,
+          "artwork": {
+            "title": "Purple Series",
+            "artist": {
+              "name": "Frank Stella"
+            },
+            "image": {
+              "width": 3000,
+              "height": 2182,
+              "url": "https://d32dm0rphc51dk.cloudfront.net/LQ1w5xJ9Mbvwg2HiZhflQQ/large.jpg"
+            }
+          }
+        },
+        {
+          "id": "richard-serra-moca-print",
+          "position": 9,
+          "currency": "USD",
+          "symbol": "$",
+          "reserve_status": null,
+          "low_estimate_cents": 250000,
+          "high_estimate_cents": 350000,
+          "amount_cents": null,
+          "artwork": {
+            "title": "MOCA Print ",
+            "artist": {
+              "name": "Richard Serra"
+            },
+            "image": {
+              "width": 2193,
+              "height": 3000,
+              "url": "https://d32dm0rphc51dk.cloudfront.net/Mhv73kuNvl4TJZkxFinv-w/large.jpg"
+            }
+          }
+        },
+        {
+          "id": "alighiero-e-boetti-inaspettatamente-unexpectedly",
+          "position": 10,
+          "currency": "USD",
+          "symbol": "$",
+          "reserve_status": null,
+          "low_estimate_cents": 2000000,
+          "high_estimate_cents": 2500000,
+          "amount_cents": null,
+          "artwork": {
+            "title": "Inaspettatamente (Unexpectedly)",
+            "artist": {
+              "name": "Alighiero e Boetti"
+            },
+            "image": {
+              "width": 2776,
+              "height": 3000,
+              "url": "https://d32dm0rphc51dk.cloudfront.net/bMaX1OkCfsN202Ti7jYppw/large.jpg"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
