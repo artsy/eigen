@@ -4,10 +4,12 @@ upcoming:
 
   dev:
     - Updates for Xcode 7.3. - ash
-    - New state reconciliation for live auctions.
+    - New state reconciliation for live auctions. -ash
+    - Scaffolding for sending live auction events. - ash
 
   notes:
     - Fixes long auction names falling off right edge. - ash
+    - Fixes live auction lots being in the wrong order. - ash
 
 
 releases:

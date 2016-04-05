@@ -85,16 +85,27 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
             expect(currentLot).toNot( beNil() )
         }
 
-        describe("during second update") {
+        it("orders lots correctly") {
+            var lots: [LiveAuctionLotViewModelType]?
+            subject.newLotsSignal.next { lots = $0 }
 
-            beforeEach {
-                subject.updateState(state)
+            subject.updateState(state)
+
+            let reconciledLotIDs = lots?.map { lot in
+                return lot.liveAuctionLotID
             }
+
+            let lotIDs = (state["sale"] as! [String : AnyObject])["lots"] as! [String]
+            expect(lotIDs) == reconciledLotIDs
+        }
+
+        describe("on subsequent state update") {
 
             it("does not send lots") {
                 var newLotsInvocation = 0
                 subject.newLotsSignal.next { _ in newLotsInvocation += 1 }
 
+                subject.updateState(state)
                 subject.updateState(state)
 
                 expect(newLotsInvocation) == 1
@@ -105,6 +116,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 subject.saleSignal.next { _ in saleInvocation += 1 }
 
                 subject.updateState(state)
+                subject.updateState(state)
 
                 expect(saleInvocation) == 1
             }
@@ -114,6 +126,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 subject.currentLotSignal.next { _ in currentLotInvocations += 1 }
 
                 subject.updateState(state)
+                subject.updateState(state)
 
                 expect(currentLotInvocations) == 1
             }
@@ -121,30 +134,34 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
             it("sends new current lot when the lot changes") {
                 var currentLotInvocations = 0
                 subject.currentLotSignal.next { _ in currentLotInvocations += 1 }
-                let sale = state["sale"] as! [String: AnyObject]
-                state["currentLotId"] = (sale["lots"] as! [String]).last
+                let newState = NSMutableDictionary(dictionary: state)
+                let sale = newState["sale"] as! [String: AnyObject]
+                newState["currentLotId"] = (sale["lots"] as! [String]).last
 
                 subject.updateState(state)
+                subject.updateState(newState)
 
                 expect(currentLotInvocations) == 2
             }
 
-            fit("updates lot view model with new events") {
+            it("updates lot view model with new events") {
                 var eventInvocations = 0
                 subject.newLotsSignal.next { newLots in
                     newLots.forEach { lot in
                         lot.newEventSignal.next { _ in eventInvocations += 1 }
                     }
                 }
-                var lots = state["lots"] as! [String: [String : AnyObject]]
+                let newState = NSMutableDictionary(dictionary: state)
+                var lots = newState["lots"] as! [String: [String : AnyObject]]
                 var lot = Array(lots.values)[0]
                 let event = test_liveAuctionLotEventJSON()
                 lot["events"] = [event.id]
                 lots[lot["id"]! as! String] = lot
-                state["lots"] = lots
-                state["lotEvents"] = event.json
+                newState["lots"] = lots
+                newState["lotEvents"] = event.json
 
                 subject.updateState(state)
+                subject.updateState(newState)
 
                 expect(eventInvocations) == 1
             }
@@ -156,15 +173,17 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                         lot.newEventSignal.next { _ in eventInvocations += 1 }
                     }
                 }
+                let newState = NSMutableDictionary(dictionary: state)
                 var lots = state["lots"] as! [String: [String : AnyObject]]
                 var lot = Array(lots.values)[0]
                 let event = test_liveAuctionLotEventJSON()
                 lot["events"] = [event.id]
                 lots[lot["id"]! as! String] = lot
-                state["lots"] = lots
-                state["lotEvents"] = event.json
+                newState["lots"] = lots
+                newState["lotEvents"] = event.json
 
                 subject.updateState(state)
+                subject.updateState(newState)
 
                 expect(eventInvocations) == 1
             }
@@ -176,14 +195,15 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                         lot.askingPriceSignal.next { _ in onlineAskingPriceInvocations += 1 }
                     }
                 }
-                var lots = state["lots"] as! [String: [String : AnyObject]]
+                let newState = NSMutableDictionary(dictionary: state)
+                var lots = newState["lots"] as! [String: [String : AnyObject]]
                 var lot = Array(lots.values)[0]
                 lot["onlineAskingPriceCents"] = 123456
                 lots[lot["id"]! as! String] = lot
-                state["lots"] = lots
+                newState["lots"] = lots
 
                 subject.updateState(state)
-                subject.updateState(state)
+                subject.updateState(newState)
 
                 expect(onlineAskingPriceInvocations) == 4 // 3 lots + 1 updated asking price
             }
@@ -195,48 +215,51 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                         lot.reserveStatusSignal.next { _ in reserveStatusUpdates += 1 }
                     }
                 }
-                var lots = state["lots"] as! [String: [String : AnyObject]]
+                let newState = NSMutableDictionary(dictionary: state)
+                var lots = newState["lots"] as! [String: [String : AnyObject]]
                 var lot = Array(lots.values)[0]
                 lot["reserveStatus"] = "reserve_not_met"
                 lots[lot["id"]! as! String] = lot
-                state["lots"] = lots
+                newState["lots"] = lots
 
                 subject.updateState(state)
+                subject.updateState(newState)
 
                 expect(reserveStatusUpdates) == 4 // 3 lots + 1 updated reserve status
-            }
-
-            it("sends new sale when start time changes") {
-                var saleSignalInvocations = 0
-                subject.saleSignal.next { _ in saleSignalInvocations += 1 }
-                var sale = state["sale"] as! [String: AnyObject]
-                sale["startAt"] = dateFormatter.stringFromDate(NSDate())
-                state["sale"] = sale
-
-                subject.updateState(state)
-
-                expect(saleSignalInvocations) == 2
-            }
-
-            it("sends new sale when end time changes") {
-                var saleSignalInvocations = 0
-                subject.saleSignal.next { _ in saleSignalInvocations += 1 }
-                var sale = state["sale"] as! [String: AnyObject]
-                sale["endAt"] = dateFormatter.stringFromDate(NSDate())
-                state["sale"] = sale
-
-                subject.updateState(state)
-
-                expect(saleSignalInvocations) == 2
             }
             
             it("sends lots when number of lots change") {
                 var currentLots: [LiveAuctionLotViewModelType]?
                 subject.newLotsSignal.next { currentLots = $0 }
 
+                subject.updateState(state)
                 subject.updateState(test_liveAuctionJSON(.Active, numberOfLots: 4))
 
                 expect(currentLots?.count) == 4
+            }
+
+            it("sends updated sale availability if changed") {
+                var saleAvailabilityInvocations = 0
+                subject.saleSignal.next { sale in
+                    sale.saleAvailabilitySignal.next { _ in saleAvailabilityInvocations += 1 }
+                }
+
+                subject.updateState(state)
+                subject.updateState(test_liveAuctionJSON(.Closed))
+
+                expect(saleAvailabilityInvocations) == 2
+            }
+
+            it("doesn't send updated sale availability if not changed") {
+                var saleAvailabilityInvocations = 0
+                subject.saleSignal.next { sale in
+                    sale.saleAvailabilitySignal.next { _ in saleAvailabilityInvocations += 1 }
+                }
+
+                subject.updateState(state)
+                subject.updateState(test_liveAuctionJSON(.Active, numberOfLots: 4))
+
+                expect(saleAvailabilityInvocations) == 1
             }
         }
     }

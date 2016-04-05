@@ -40,7 +40,7 @@ class LiveAuctionStateReconciler: NSObject {
     private let _saleSignal = Signal<LiveAuctionViewModel>()
 
     private var _state = [LotID: LiveAuctionLotViewModel]()
-    private var _sale: LiveSale?
+    private var _sale: LiveAuctionViewModel?
 }
 
 
@@ -60,14 +60,9 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
             return lotsJSON[lotID]
         }
 
-        // Convert the sortedLotsJSON into their lot IDs.
-        let sortedLotIDs = sortedLotsJSON.flatMap { json in
-            return json["id"] as? LotID
-        }
-
-        let replacedLots = createOrUpdateLots(sortedLotsJSON, sortedLotIDs: sortedLotIDs)
-        updateLotsWithEvents(eventsJSON, sortedLotsJSON: sortedLotsJSON, sortedLotIDs: sortedLotIDs)
-        updateCurrentLots(replacedLots)
+        let replacedLots = createOrUpdateLots(sortedLotsJSON, sortedLotIDs: orderedLotIDs)
+        updateLotsWithEvents(eventsJSON, sortedLotsJSON: sortedLotsJSON, sortedLotIDs: orderedLotIDs)
+        updateCurrentLots(replacedLots, sortedLotsIDs: orderedLotIDs)
         updateCurrentLotWithIDIfNecessary(currentLotID)
         updateSaleIfNecessary(saleJSON)
     }
@@ -145,11 +140,14 @@ private extension PrivateFunctions {
 
     }
 
-    func updateCurrentLots(replaced: Bool) {
+    func updateCurrentLots(replaced: Bool, sortedLotsIDs: [String]) {
         guard replaced else { return }
 
-        let lots = Array(_state.values).map { $0 as LiveAuctionLotViewModelType }
-        newLotsSignal.update(lots)
+        let sortedLots = sortedLotsIDs.flatMap { lotID in
+            return _state[lotID] as? LiveAuctionLotViewModelType
+        }
+
+        newLotsSignal.update(sortedLots)
     }
 
     func updateCurrentLotWithIDIfNecessary(newCurrentLotID: LotID) {
@@ -163,20 +161,17 @@ private extension PrivateFunctions {
 
     func updateSaleIfNecessary(saleJSON: [String: AnyObject]) {
         let newSale = LiveSale(JSON: saleJSON)
+        let currentLotID = saleJSON["currentLotId"] as? String
 
-        let updateSale = {
-            self._sale = newSale
-            let saleViewModel = LiveAuctionViewModel(sale: newSale)
+        // The first time we get a sale, we need to create a view model.
+        guard let oldSale = _sale else {
+            let saleViewModel = LiveAuctionViewModel(sale: newSale, currentLotID: currentLotID)
+            self._sale = saleViewModel
             self._saleSignal.update(saleViewModel)
+            return
         }
 
-        if let oldSale = _sale {
-            if oldSale.needsUpdateFromSale(newSale) {
-                updateSale()
-            }
-        } else {
-            updateSale()
-        }
+        oldSale.updateWithNewSale(newSale, currentLotID: currentLotID)
     }
 
     func sortedLotViewModelsFromLotIDs(lotIDs: [LotID]) -> [LiveAuctionLotViewModel] {
@@ -188,7 +183,7 @@ private extension PrivateFunctions {
 
 
 private extension LiveSale {
-    func needsUpdateFromSale(otherSale: LiveSale) -> Bool {
+    func needsUpdateToInstanceFromSale(otherSale: LiveSale) -> Bool {
         guard self.startDate == otherSale.startDate else { return true }
         guard self.endDate == otherSale.endDate else { return true }
         return false

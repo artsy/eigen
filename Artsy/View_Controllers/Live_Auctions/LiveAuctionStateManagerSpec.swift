@@ -84,6 +84,9 @@ class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
 
         mostRecentSocketCommunicator = self
     }
+    
+    func bidOnLot(lotID: String) { }
+    func leaveMaxBidOnLot(lotID: String) { }
 }
 
 var mostRecentStateReconciler: Test_StateRecociler?

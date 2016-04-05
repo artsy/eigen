@@ -10,17 +10,19 @@ enum LotState {
 }
 
 protocol LiveAuctionLotViewModelType: class {
-    var bidButtonTitleSignal: Signal<String> { get }
+    func bidButtonTitleWithState(state: LotState) -> String
+    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel
+    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Signal<LotState>
+
     var lotArtist: String { get }
     var estimateString: String { get }
     var lotName: String { get }
-    var lotStateSignal: Signal<LotState> { get }
     var urlForThumbnail: NSURL { get }
     var numberOfEvents: Int { get }
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel
     var lotIndex: Int { get }
     var currentLotValue: String { get }
     var imageProfileSize: CGSize { get }
+    var liveAuctionLotID: String { get }
 
     var reserveStatusSignal: Signal<ARReserveStatus> { get }
     var askingPriceSignal: Signal<Int> { get }
@@ -48,28 +50,31 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         askingPriceSignal.update(lot.onlineAskingPriceCents)
     }
 
-    var lotStateSignal: Signal<LotState> {
-        return Signal(LotState.LiveLot) // TODO: This needs to be updated. Probably from the state reconciler.
-    }
-
-    var bidButtonTitleSignal: Signal<String> {
-        return lotStateSignal.map { lotState in
-            switch lotState {
-            case .ClosedLot: return "BIDDING CLOSED"
-            case .LiveLot: return "BID 20,000"
-            case .UpcomingLot(_): return "LEAVE MAX BID"
-            }
+    func bidButtonTitleWithState(lotState: LotState) -> String {
+        switch lotState {
+        case .ClosedLot: return "BIDDING CLOSED"
+        case .LiveLot: return "BID 20,000"
+        case .UpcomingLot(_): return "LEAVE MAX BID"
         }
     }
 
-//    func lotStateWithViewModel(viewModel: LiveAuctionViewModel) -> LotState {
-//        guard let distance = viewModel.distanceFromCurrentLot(model) else {
-//            return .ClosedLot
-//        }
-//        if distance == 0 { return .LiveLot }
-//        if distance < 0 { return .ClosedLot }
-//        return .UpcomingLot(distanceFromLive: distance)
-//    }
+    func lotStateWithViewModel(viewModel: LiveAuctionViewModelType) -> LotState {
+        guard let distance = viewModel.distanceFromCurrentLot(model) else {
+            return .ClosedLot
+        }
+        if distance == 0 { return .LiveLot }
+        if distance < 0 { return .ClosedLot }
+        return .UpcomingLot(distanceFromLive: distance)
+    }
+
+    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Signal<LotState> {
+        return auctionViewModel
+            .currentLotIDSignal
+            .map { [weak self, weak auctionViewModel] currentLotID -> LotState in
+                guard let sSelf = self, sAuctionViewModel = auctionViewModel else { return .ClosedLot }
+                return sSelf.lotStateWithViewModel(sAuctionViewModel)
+            }
+    }
 
     var urlForThumbnail: NSURL {
         return model.urlForThumbnail()
@@ -115,7 +120,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     var numberOfEvents: Int {
         return events.count
     }
-
+    
     func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
         return events[index]
     }
