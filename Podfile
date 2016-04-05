@@ -127,7 +127,7 @@ target 'Artsy Tests' do
   # Swift pods 🎉
   pod 'Quick', git: 'https://github.com/Quick/Quick.git'
   pod 'Nimble', git: 'https://github.com/Quick/Nimble.git'
-  pod 'Nimble-Snapshots', '~> 3.0.0'
+  pod 'Nimble-Snapshots', git: 'https://github.com/ashfurrow/Nimble-Snapshots.git', branch: 'no_view_snapshot_really'
 end
 
 

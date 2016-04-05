@@ -76,9 +76,10 @@ PODS:
   - DRKonamiCode (1.1.0)
   - EDColor (1.0.0)
   - Expecta (1.0.5)
-  - Expecta+Snapshots (2.0.0):
+  - Expecta+Snapshots (3.0.0):
     - Expecta (~> 1.0)
-    - FBSnapshotTestCase/Core (~> 2.0.3)
+    - FBSnapshotTestCase/Core (~> 2.0)
+    - Specta (~> 1.0)
   - FBSDKCoreKit (4.9.0-beta2):
     - Bolts (~> 1.5)
   - FBSDKLoginKit (4.9.0-beta2):
@@ -113,8 +114,8 @@ PODS:
     - ARTiledImageView
     - SDWebImage
   - Nimble (3.2.0)
-  - Nimble-Snapshots (3.0.0):
-    - FBSnapshotTestCase (~> 2.0.7)
+  - Nimble-Snapshots (4.0.0):
+    - FBSnapshotTestCase (~> 2.0)
     - Nimble
     - Quick
   - NPKeyboardLayoutGuide (1.0.0)
@@ -194,7 +195,8 @@ DEPENDENCIES:
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`)
   - Nimble (from `https://github.com/Quick/Nimble.git`)
-  - Nimble-Snapshots (~> 3.0.0)
+  - Nimble-Snapshots (from `https://github.com/ashfurrow/Nimble-Snapshots.git`, branch
+    `no_view_snapshot_really`)
   - NPKeyboardLayoutGuide
   - ObjectiveSugar
   - OCMock
@@ -252,6 +254,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/neilang/NAMapKit
   Nimble:
     :git: https://github.com/Quick/Nimble.git
+  Nimble-Snapshots:
+    :branch: no_view_snapshot_really
+    :git: https://github.com/ashfurrow/Nimble-Snapshots.git
   ORStackView:
     :git: https://github.com/1aurabrown/ORStackView.git
   Quick:
@@ -303,6 +308,9 @@ CHECKOUT OPTIONS:
   Nimble:
     :commit: d3ed3a367927c98bca7bf7e7e0ff36124c634f73
     :git: https://github.com/Quick/Nimble.git
+  Nimble-Snapshots:
+    :commit: cd60ea99af03064ba65be272290313bd3a8973ee
+    :git: https://github.com/ashfurrow/Nimble-Snapshots.git
   ORStackView:
     :commit: 80bfeb0a4176e307a8b94b1662104e64cc8bb50c
     :git: https://github.com/1aurabrown/ORStackView.git
@@ -333,7 +341,7 @@ SPEC CHECKSUMS:
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
+  Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   FBSDKCoreKit: d49cbf69741e3c5732166ec9ff4cbd9b288dd53e
   FBSDKLoginKit: d32e83c0d2d39ef74a942543cacae2dc4de7d088
   FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
@@ -355,7 +363,7 @@ SPEC CHECKSUMS:
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: bdcb666fa84122eed344661b132e1d93dbafac71
   Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
-  Nimble-Snapshots: ab41dd737dcd33a0b0cb005a30465fef70b7207a
+  Nimble-Snapshots: 1cb1c223a97383d4744f742422eab84df9425742
   NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2

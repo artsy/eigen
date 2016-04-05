@@ -51,6 +51,11 @@
     font = [UIFont sansSerifFontWithSize:12];
     font = [UIFont smallCapsSerifFontWithSize:12];
 
+    // Needed for "usesDrawRect" based Nimble-Snapshots testing
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = [[UIViewController alloc] init];
+    [self.window makeKeyAndVisible];
+
     return YES;
 }
 
