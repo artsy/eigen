@@ -30,7 +30,6 @@
                            failure:(void (^)(NSError *error))failure;
 
 + (void)getLiveSaleStaticDataWithSaleID:(NSString *)saleID
-                                   host:(NSString *)host
                                 success:(void (^)(id state))success
                                 failure:(void (^)(NSError *error))failure;
 

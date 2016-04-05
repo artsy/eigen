@@ -16,7 +16,6 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
         let signal = Signal<AnyObject>()
 
         ArtsyAPI.getLiveSaleStaticDataWithSaleID(saleID,
-            host: "http://metaphysics-staging.artsy.net",
             success: { state in
                 signal.update(state)
             }, failure: { error in

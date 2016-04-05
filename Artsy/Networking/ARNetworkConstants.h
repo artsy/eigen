@@ -1,6 +1,7 @@
 extern NSString *const ARBaseDesktopWebURL;
 extern NSString *const ARBaseMobileWebURL;
 extern NSString *const ARBaseApiURL;
+extern NSString *const ARBaseMetaphysicsApiURL;
 extern NSString *const ARStagingBaseWebURL;
 extern NSString *const ARStagingBaseMobileWebURL;
 
@@ -37,7 +38,6 @@ extern NSString *const ARBidderPositionsForSaleAndArtworkURL;
 extern NSString *const ARSaleArtworkForSaleAndArtworkURLFormat;
 extern NSString *const ARSaleURLFormat;
 extern NSString *const ARLiveSaleStateFormat;
-extern NSString *const ARLiveSaleStaticDataFormat;
 extern NSString *const ARSaleArtworksURLFormat;
 extern NSString *const ARArtworkFairsURLFormat;
 
