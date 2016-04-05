@@ -47,6 +47,18 @@ class LiveAuctionStateManager: NSObject {
     }
 }
 
+private typealias PublicFunctions = LiveAuctionStateManager
+extension LiveAuctionStateManager {
+
+    func bidOnLot(lotID: String) {
+        socketCommunicator.bidOnLot(lotID)
+    }
+
+    func leaveMaxBidOnLot(lotID: String) {
+        socketCommunicator.leaveMaxBidOnLot(lotID)
+    }
+}
+
 private typealias ComputedProperties = LiveAuctionStateManager
 extension ComputedProperties {
     var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> {
