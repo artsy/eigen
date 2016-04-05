@@ -39,8 +39,9 @@ class LiveAuctionStateManager: NSObject {
 
         super.init()
 
-        staticDataFetcher.fetchStaticData().next { [weak self] staticData in
-            print("Static Data: \(staticData)")
+        staticDataFetcher.fetchStaticData().next { [weak self] saleArtworks in
+            self?.stateReconciler.updateStaticData(saleArtworks)
+            self?.socketCommunicator.connect()
         }
 
         socketCommunicator.delegate = self
@@ -78,7 +79,7 @@ extension ComputedProperties {
 private typealias SocketDelegate = LiveAuctionStateManager
 extension SocketDelegate: LiveAuctionSocketCommunicatorDelegate {
     func didUpdateAuctionState(state: AnyObject) {
-        stateReconciler.updateState(state)
+        stateReconciler.updateSocketState(state)
     }
 }
 

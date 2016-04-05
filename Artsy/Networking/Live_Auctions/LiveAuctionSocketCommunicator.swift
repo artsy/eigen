@@ -16,6 +16,8 @@ func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID
 protocol LiveAuctionSocketCommunicatorType {
     weak var delegate: LiveAuctionSocketCommunicatorDelegate? { get set }
 
+    func connect()
+    
     func bidOnLot(lotID: String)
     func leaveMaxBidOnLot(lotID: String)
 }
@@ -24,6 +26,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     typealias SocketCreator = String -> SocketType
     private let socket: SocketType
     private let saleID: String
+    private let accessToken: String
 
     weak var delegate: LiveAuctionSocketCommunicatorDelegate?
 
@@ -34,15 +37,37 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     init(host: String, accessToken: String, saleID: String, socketCreator: SocketCreator) {
         socket = socketCreator(host)
         self.saleID = saleID
+        self.accessToken = accessToken
 
         super.init()
-
-        setupSocketWithAccessToken(accessToken, saleID: saleID)
     }
+    
 
     deinit {
         socket.disconnect()
     }
+}
+
+private typealias PublicFunctions = LiveAuctionSocketCommunicator
+extension PublicFunctions {
+
+    func connect() {
+        setupSocketWithAccessToken(accessToken, saleID: saleID)
+    }
+
+    func bidOnLot(lotID: String) {
+        // TODO: implement
+    }
+
+    func leaveMaxBidOnLot(lotID: String) {
+        // TODO: implement
+    }
+
+}
+
+
+private typealias ClassFunctions = LiveAuctionSocketCommunicator
+extension ClassFunctions {
 
     class func defaultSocketCreator() -> String -> SocketType {
         return { host in
@@ -50,6 +75,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
         }
     }
 }
+
 
 private typealias SocketSetup = LiveAuctionSocketCommunicator
 private extension SocketSetup {
@@ -87,14 +113,3 @@ private extension SocketSetup {
     }
 }
 
-
-private typealias PublicFunctions = LiveAuctionSocketCommunicator
-extension PublicFunctions {
-    func bidOnLot(lotID: String) {
-        // TODO: implement
-    }
-
-    func leaveMaxBidOnLot(lotID: String) {
-        // TODO: implement
-    }
-}

@@ -32,6 +32,14 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
             expect(mostRecentStateReconciler?.mostRecentState as? [String]) == state
         }
+
+        it("invokes the state reconciler when new sale artworks are available") {
+            let saleArtworks = [test_saleArtworkWithLotNumber(1, artistName: "Artist Names are Passé", bidCount: 10, highestBidCents: 1000_00)]
+
+            mostRecentStaticDataFetcher?.signal.update(saleArtworks)
+
+            expect(mostRecentStateReconciler?.mostRecentStaticData) == saleArtworks
+        }
     }
 }
 
@@ -44,6 +52,12 @@ func test_socketCommunicatorCreator() -> LiveAuctionStateManager.SocketCommunica
 func test_stateReconcilerCreator() -> LiveAuctionStateManager.StateReconcilerCreator {
     return {
         return Test_StateRecociler()
+    }
+}
+
+func test_staticDataFetcherCreator() -> LiveAuctionStateManager.StaticDataFetcherCreator {
+    return { _ in
+        return Test_StaticDataFetcher()
     }
 }
 
@@ -66,22 +80,41 @@ class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     
     func bidOnLot(lotID: String) { }
     func leaveMaxBidOnLot(lotID: String) { }
+    func connect() { }
 }
 
 var mostRecentStateReconciler: Test_StateRecociler?
+var mostRecentStaticDataFetcher: Test_StaticDataFetcher?
 
 class Test_StateRecociler: LiveAuctionStateReconcilerType {
     var mostRecentState: AnyObject?
+    var mostRecentStaticData: [SaleArtwork]?
 
     init() {
         mostRecentStateReconciler = self
     }
 
-    func updateState(state: AnyObject) {
+    func updateSocketState(state: AnyObject) {
         mostRecentState = state
+    }
+
+    func updateStaticData(saleArtworks: [SaleArtwork]) {
+        mostRecentStaticData = saleArtworks
     }
     
     var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> { return Signal() }
     var currentLotSignal: Signal<LiveAuctionLotViewModelType> { return Signal() }
     var saleSignal: Signal<LiveAuctionViewModelType> { return Signal() }
+}
+
+class Test_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
+    let signal = Signal<[SaleArtwork]>()
+
+    init() {
+        mostRecentStaticDataFetcher = self
+    }
+
+    func fetchStaticData() -> Signal<[SaleArtwork]> {
+        return signal
+    }
 }
