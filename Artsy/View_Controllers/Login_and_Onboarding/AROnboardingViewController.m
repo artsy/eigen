@@ -175,6 +175,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     ARSignUpSplashViewController *splash = [[ARSignUpSplashViewController alloc] init];
     splash.delegate = self;
+    splash.onboardingViewController = self;
     self.viewControllers = @[ splash ];
     self.state = AROnboardingStageStart;
 }
@@ -205,6 +206,8 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     [self setBackgroundImage:sender.backgroundImage animated:YES];
     sender.backgroundImage = nil;
 
+    // TODO: Implement next screen of onboarding here
+    
     ARSignupViewController *signup = [[ARSignupViewController alloc] init];
     signup.delegate = self;
     [self pushViewController:signup animated:YES];

@@ -14,6 +14,12 @@ extension UIViewController {
     var traitDependentSupportedInterfaceOrientations: UIInterfaceOrientationMask {
         return self.traitCollectionIsPhone ? .Portrait : .All
     }
+    
+    var useLargeLayout: Bool
+    {
+        return self.traitCollection.horizontalSizeClass != .Compact
+    }
+
 }
 
 private extension UIViewController {

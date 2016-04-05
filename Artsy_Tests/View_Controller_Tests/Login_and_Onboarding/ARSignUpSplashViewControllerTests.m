@@ -17,16 +17,6 @@ dispatch_block_t sharedBefore = ^{
 
 describe(@"signup splash", ^{
 
-    it(@"has three pages", ^{
-        sharedBefore();
-        [controller beginAppearanceTransition:YES animated:NO];
-        [controller endAppearanceTransition];
-        expect(controller.view).notTo.beNil();
-        expect(controller.pageCount).to.equal(3);
-        expect(controller.pageControl.numberOfPages).to.equal(3);
-        expect([controller.imageView.images count]).to.equal(3);
-    });
-
     itHasSnapshotsForDevicesWithName(@"looks correct", ^{
         sharedBefore();
         [controller ar_presentWithFrame:[UIScreen mainScreen].bounds];
