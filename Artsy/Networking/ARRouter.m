@@ -69,6 +69,16 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
++ (NSString *)baseMetaphysicsApiURLString
+{
+    if ([AROptions boolForOption:ARUseStagingDefault]) {
+        NSString *stagingBaseAPI = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingMetaphysicsURLDefault];
+        return stagingBaseAPI;
+    } else {
+        return ARBaseMetaphysicsApiURL;
+    }
+}
+
 + (NSURL *)baseWebURL
 {
     return [UIDevice isPad] ? [self baseDesktopWebURL] : [self baseMobileWebURL];
@@ -966,6 +976,43 @@ static NSString *hostFromString(NSString *string)
     // Note that we're relying on the host to specify the domain for the request.
     NSString *url = [NSString stringWithFormat:ARLiveSaleStateFormat, host, saleID];
     return [self requestWithMethod:@"GET" URLString:url parameters:nil];
+}
+
++ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID
+{
+    // Note that we're relying on the host to specify the domain for the request.
+    NSString *url = [self baseMetaphysicsApiURLString];
+    // Ending spaces are to avoid stripping newlines characters later on.
+    NSString *query = [NSString stringWithFormat:@"\
+{\
+  sale(id: \"%@\") { \
+    sale_artworks { \
+      id \
+      position \
+      currency \
+      symbol \
+      reserve_status \
+      low_estimate_cents \
+      high_estimate_cents \
+      amount_cents \
+      artwork { \
+        title \
+        artist { \
+          name \
+        } \
+        image { \
+          width \
+          height \
+          url(version: \"large\") \
+        } \
+      } \
+    } \
+  } \
+}", saleID];
+
+    NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
+
+    return request;
 }
 
 + (NSURLRequest *)biddersRequest
