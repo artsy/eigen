@@ -65,20 +65,14 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func setupToolbar() {
-        func image(name: String) -> UIImage {
-            let bundle = NSBundle(forClass: self.dynamicType)
-            return UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)!
-        }
-
-        let close = ARSerifToolbarButtonItem(image: image("Close_Icon"))
+        let close = ARSerifToolbarButtonItem(image: UIImage(asset: .Close_icon) )
         close.accessibilityLabel = "Exit Live Bidding"
         close.button.addTarget(self, action: #selector(LiveAuctionViewController.dismissModal), forControlEvents: .TouchUpInside)
 
-        let info = ARSerifToolbarButtonItem(image: image("info_icon"))
+        let info = ARSerifToolbarButtonItem(image: UIImage(asset: .Info_icon) )
         info.accessibilityLabel = "More Information"
         info.button.addTarget(self, action: #selector(LiveAuctionViewController.moreInfo), forControlEvents: .TouchUpInside)
-
-        let lots = ARSerifToolbarButtonItem(image: image("lots_icon"))
+        let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))
         lots.accessibilityLabel = "Show all Lots"
         lots.button.addTarget(self, action: #selector(LiveAuctionViewController.showLots), forControlEvents: .TouchUpInside)
 

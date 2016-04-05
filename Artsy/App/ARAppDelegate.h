@@ -8,7 +8,7 @@
 // The test app delegate class is ARTestHelper and is responsible for seting up the test env.
 //
 // When testing the various decoupled app delegate classes, simply use the shared app delegate
-// (`[JSDecoupledAppDelegate sharedAppDelegate`) to perform your tests on.
+// (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
 
 @interface ARAppDelegate : UIResponder <JSApplicationStateDelegate>
