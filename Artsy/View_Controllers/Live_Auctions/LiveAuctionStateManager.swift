@@ -49,7 +49,7 @@ class LiveAuctionStateManager: NSObject {
 }
 
 private typealias PublicFunctions = LiveAuctionStateManager
-extension LiveAuctionStateManager {
+extension PublicFunctions {
 
     func bidOnLot(lotID: String) {
         socketCommunicator.bidOnLot(lotID)

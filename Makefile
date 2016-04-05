@@ -45,6 +45,7 @@ artsy:
 	git submodule init
 	git submodule update
 	config/spacecommander/setup-repo.sh
+	brew install swiftgen
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
 
 certs:
@@ -73,8 +74,6 @@ deploy_if_beta_branch:
 deploy:
 	git push origin "$(LOCAL_BRANCH):beta"
 
-
-
 ### Utility functions
 
 update_bundle_version:
@@ -101,6 +100,9 @@ set_git_properties:
 update_echo:
 	curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell bundle exec pod keys get ArtsyEchoProductionToken)" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
 
+storyboards:
+	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift
+	swiftgen images Artsy --output Artsy/Tooling/Generated/StoryboardImages.swift
 
 ### Useful commands
 
