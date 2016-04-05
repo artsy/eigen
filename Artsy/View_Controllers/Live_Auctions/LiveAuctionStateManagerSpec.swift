@@ -9,7 +9,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         var subject: LiveAuctionStateManager!
 
         beforeEach {
-            subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+            subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), staticDataFetcherCreator: test_staticDataFetcherCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
         it("sets its saleID upon initialization") {

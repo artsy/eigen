@@ -35,9 +35,10 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
 extension LiveAuctionStaticDataFetcherType {
     func parseSaleArtworks(json: AnyObject) -> [SaleArtwork]? {
+
         guard let data = json["data"] as? [String: [String: AnyObject]] else { return nil }
         guard let sale = data["sale"] else { return nil }
-        guard let saleArtworksJSON = sale["sale_artworks"] as? [[String: AnyObject]] else { return [] }
+        guard let saleArtworksJSON = sale["sale_artworks"] as? [[String: AnyObject]] else { return nil }
         let saleArtworks = saleArtworksJSON.flatMap { SaleArtwork(JSON: $0) }
 
         return saleArtworks
