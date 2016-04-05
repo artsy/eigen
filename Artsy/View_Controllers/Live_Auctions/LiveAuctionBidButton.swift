@@ -7,7 +7,7 @@ class LiveAuctionBidButton : ARFlatButton {
 
     override func setup() {
         super.setup()
-        progressSignal.map(setupWithState)
+        progressSignal.next(setupWithState)
     }
 
     private func setupWithState(state: LiveAuctionBiddingProgressState) {

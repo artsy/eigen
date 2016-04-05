@@ -16,7 +16,7 @@ class LiveAuctionBidViewController: UIViewController {
         super.viewDidLoad()
 
         view.layoutIfNeeded()
-        let bottomSeparatorOvelapsBidButton = bidButton.center.y < lowerBiddingSeparatorView.center.y
-        lowerBiddingSeparatorView.hidden = bottomSeparatorOvelapsBidButton
+        let bottomSeparatorOverlapsBidButton = bidButton.center.y < lowerBiddingSeparatorView.center.y
+        lowerBiddingSeparatorView.hidden = bottomSeparatorOverlapsBidButton
     }
 }

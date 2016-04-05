@@ -12,9 +12,8 @@ class LiveAuctionBidButtonTests: QuickSpec {
     override func spec() {
 
         let examples:[LiveAuctionBiddingProgressState] = [.Idle(biddingAmount: "$45,000"), .InProgress , .NetworkFail, .Success(isMaxBidder: true), .Success(isMaxBidder: false)]
-        var i = 0
-        for state in examples {
-            i += 1
+
+        for (i, state) in examples.enumerate() {
 
             it("has valid snapshot \(i)") {
                 let subject = LiveAuctionBidButton()
