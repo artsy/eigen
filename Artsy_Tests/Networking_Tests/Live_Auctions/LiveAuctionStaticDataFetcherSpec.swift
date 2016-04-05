@@ -23,16 +23,15 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
         }
 
         it("fetches the static data") {
-            var receivedState: AnyObject?
+            var receivedSaleArtworks: [SaleArtwork]?
 
             subject
                 .fetchStaticData()
-                .next { state in
-                    receivedState = state
+                .next { saleArtworks in
+                    receivedSaleArtworks = saleArtworks
             }
 
-            let dictionary = receivedState as? NSDictionary
-            expect(dictionary) == stateJSON as? NSDictionary
+            expect(receivedSaleArtworks?.count) == 10
         }
     }
 }

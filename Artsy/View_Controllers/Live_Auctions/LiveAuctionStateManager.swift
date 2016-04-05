@@ -150,11 +150,11 @@ class Stub_StateFetcher: LiveAuctionStateFetcherType {
 }
 
 class Stub_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
-    func fetchStaticData() -> Signal<AnyObject> {
-        let signal = Signal<AnyObject>()
+    func fetchStaticData() -> Signal<[SaleArtwork]> {
+        let signal = Signal<[SaleArtwork]>()
 
         let json = loadJSON("live_static_data")
-        signal.update(json)
+        signal.update(parseSaleArtworks(json)!)
 
         return signal
     }
