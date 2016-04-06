@@ -7,13 +7,47 @@ enum LiveAuctionBidButtonState {
     case InActive(lotState: LotState)
 }
 
+protocol LiveAuctionBidButtonDelegate {
+    func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton)
+    func bidButtonRequestedBid(button: LiveAuctionBidButton)
+    func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton)
+}
+
 class LiveAuctionBidButton : ARFlatButton {
     let progressSignal = Signal<LiveAuctionBidButtonState>()
+    var delegate: LiveAuctionBidButtonDelegate?
 
     override func setup() {
         super.setup()
         setContentCompressionResistancePriority(1000, forAxis: .Vertical)
+        addTarget(self, action: #selector(tappedBidButton), forControlEvents: .TouchUpInside)
         progressSignal.next(setupWithState)
+    }
+
+    func tappedBidButton() {
+        guard let state = progressSignal.peek() else { return }
+        switch state {
+        case .Active(let bidState):
+            switch bidState {
+
+            case .TrialUser:
+                delegate?.bidButtonRequestedRegisterToBid(self)
+            case .Biddable:
+                delegate?.bidButtonRequestedBid(self)
+
+            default: break
+            }
+
+        case .InActive(let lotState):
+            switch lotState {
+            case .UpcomingLot:
+                delegate?.bidButtonRequestedRegisterToBid(self)
+
+            default: break
+            }
+        }
+
+        enabled = false
     }
 
     private func setupWithState(buttonState: LiveAuctionBidButtonState) {
@@ -32,13 +66,15 @@ class LiveAuctionBidButton : ARFlatButton {
             switch state {
             case .TrialUser:
                 setupUI("Register To Bid")
+                enabled = true
             case .LotSold:
-                setupUI("Sold", background: .whiteColor(), border: .artsyPurpleRegular(), textColor: .artsyPurpleRegular())
+                setupUI("Sold", background: .whiteColor(), border: purple, textColor: purple)
             case .LotWaitingToOpen:
                 setupUI("Waiting for Auctioneer…", background: white, border: grey, textColor: grey)
 
             case .Biddable(let price):
                 setupUI("Bid \(price)")
+                enabled = true
             case .BiddingInProgress:
                 setupUI("Bidding...", background: purple)
             case .BidSuccess(let outbid):

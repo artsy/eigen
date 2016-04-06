@@ -96,10 +96,6 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
     }
 
-    func bidButtonTitleWithState(state: LotState) -> String {
-        return "Bid Button Title"
-    }
-
     var lotStateSignal = Signal(LotState.UpcomingLot(distanceFromLive: 1))
     func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Signal<LotState> {
         return lotStateSignal

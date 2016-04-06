@@ -22,7 +22,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
             .InActive(lotState: .ClosedLot),
             .InActive(lotState: .UpcomingLot(distanceFromLive: 1)),
         ]
-
+ 
         for (i, state) in examples.enumerate() {
 
             it("has valid snapshot \(i)") {

@@ -72,6 +72,7 @@ class LiveAuctionLotViewController: UIViewController {
         infoToolbar.constrainHeight("14")
 
         let bidButton = LiveAuctionBidButton()
+        bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 
         let bidHistoryViewController =  LiveAuctionBidHistoryViewController(style: .Plain)
@@ -105,7 +106,7 @@ class LiveAuctionLotViewController: UIViewController {
             // TODO: Hrm, should this go in the LotVM?
             let buttonState: LiveAuctionBidButtonState
             switch lotState {
-            case .LiveLot: buttonState = .Active(biddingState: .Idle(biddingAmount: "$45,000"))
+            case .LiveLot: buttonState = .Active(biddingState: .Biddable(biddingAmount: "$45,000"))
             default: buttonState = .InActive(lotState: lotState)
             }
             bidButton?.progressSignal.update(buttonState)
@@ -128,6 +129,20 @@ class LiveAuctionLotViewController: UIViewController {
                 bidHistoryViewController.view.hidden = true
             }
         }
+    }
+}
+
+extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
+
+    func bidButtonRequestedBid(button: LiveAuctionBidButton) {
+
+    }
+
+    func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton) {
+
+    }
+
+    func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton) {
 
     }
 }

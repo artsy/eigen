@@ -10,7 +10,6 @@ enum LotState {
 }
 
 protocol LiveAuctionLotViewModelType: class {
-    func bidButtonTitleWithState(state: LotState) -> String
     func eventAtIndex(index: Int) -> LiveAuctionEventViewModel
     func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Signal<LotState>
 
@@ -53,15 +52,6 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         reserveStatusSignal.update(lot.reserveStatus)
         askingPriceSignal.update(lot.onlineAskingPriceCents)
     }
-
-    func bidButtonTitleWithState(lotState: LotState) -> String {
-        switch lotState {
-        case .ClosedLot: return "BIDDING CLOSED"
-        case .LiveLot: return "BID \(currentLotValue)"
-        case .UpcomingLot(_): return "LEAVE MAX BID"
-        }
-    }
-
     func lotStateWithViewModel(viewModel: LiveAuctionViewModelType) -> LotState {
         guard let distance = viewModel.distanceFromCurrentLot(model) else {
             return .ClosedLot
