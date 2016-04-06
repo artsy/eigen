@@ -21,7 +21,8 @@ protocol LiveAuctionLotViewModelType: class {
     var urlForProfile: NSURL { get }
     var numberOfEvents: Int { get }
     var lotIndex: Int { get }
-    var currentLotValue: String { get }
+    var currentLotValue: Int { get }
+    var currentLotValueString: String { get }
     var numberOfBids: Int { get }
     var imageProfileSize: CGSize { get }
     var liveAuctionLotID: String { get }
@@ -111,9 +112,14 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.liveAuctionLotID
     }
 
-    var currentLotValue: String {
-        let bidAmountCents = LiveAuctionBidViewModel.nextBidCents(model.onlineAskingPriceCents)
-        return bidAmountCents.roundCentsToNearestThousandAndFormat()
+    var currentLotValue: Int {
+        // TODO: is onlineAskingPriceCents correct? not sure from JSON
+        //       maybe we need to look through the events for the last bid?
+        return LiveAuctionBidViewModel.nextBidCents(model.onlineAskingPriceCents)
+    }
+
+    var currentLotValueString: String {
+        return currentLotValue.roundCentsToNearestThousandAndFormat()
     }
 
     var estimateString: String {

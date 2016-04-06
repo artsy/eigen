@@ -132,6 +132,9 @@
                                     <constraint firstAttribute="height" constant="60" id="seL-IH-1HB"/>
                                 </constraints>
                                 <state key="normal" title="+"/>
+                                <connections>
+                                    <action selector="incrementBid:" destination="NN6-rM-2Hv" eventType="touchUpInside" id="aGz-dc-d6l"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UHw-IW-ZpI">
                                 <rect key="frame" x="152" y="307" width="60" height="60"/>
@@ -141,12 +144,15 @@
                                     <constraint firstAttribute="height" constant="60" id="nOd-Tk-dUo"/>
                                 </constraints>
                                 <state key="normal" title="-"/>
+                                <connections>
+                                    <action selector="decrementBid:" destination="NN6-rM-2Hv" eventType="touchUpInside" id="8IB-bE-4Gu"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dR9-ED-Jtd" customClass="LiveAuctionBidButton" customModule="Artsy" customModuleProvider="target">
-                                <rect key="frame" x="152" y="530" width="296" height="50"/>
+                                <rect key="frame" x="152" y="540" width="296" height="40"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="5c7-gY-dzw"/>
+                                    <constraint firstAttribute="height" constant="40" id="5c7-gY-dzw"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvantGardeGothicITCW01Dm" family="Avant Garde Gothic ITCW01Dm" pointSize="18"/>
                                 <state key="normal" title="BID, $45,000">

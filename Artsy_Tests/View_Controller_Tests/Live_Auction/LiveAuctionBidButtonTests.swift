@@ -11,11 +11,14 @@ class LiveAuctionBidButtonTests: QuickSpec {
     override func spec() {
 
         let examples:[LiveAuctionBidButtonState] = [
-            .Active(biddingState: .Idle(biddingAmount: "$45,000")),
-            .Active(biddingState: .InProgress ),
-            .Active(biddingState: .NetworkFail),
-            .Active(biddingState: .Success(isMaxBidder: true)),
-            .Active(biddingState:.Success(isMaxBidder: false)),
+            .Active(biddingState: .TrialUser),
+            .Active(biddingState: .Biddable(biddingAmount: "$45,000")),
+            .Active(biddingState: .BiddingInProgress ),
+            .Active(biddingState: .BidNetworkFail),
+            .Active(biddingState: .BidSuccess(isMaxBidder: true)),
+            .Active(biddingState: .BidSuccess(isMaxBidder: false)),
+            .Active(biddingState: .LotWaitingToOpen),
+            .Active(biddingState: .LotSold),
             .InActive(lotState: .ClosedLot),
             .InActive(lotState: .UpcomingLot(distanceFromLive: 1)),
         ]

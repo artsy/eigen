@@ -2,16 +2,20 @@ import UIKit
 import Interstellar
 
 enum LiveAuctionBiddingProgressState {
-    case Idle(biddingAmount: String)
-    case InProgress
-    case Success(isMaxBidder: Bool)
-    case NetworkFail
+    case TrialUser
+    case Biddable(biddingAmount: String)
+    case BiddingInProgress
+    case BidSuccess(isMaxBidder: Bool)
+    case BidNetworkFail
+    case LotWaitingToOpen
+    case LotSold
 }
 
 class LiveAuctionBidViewModel: NSObject {
     let lotViewModel: LiveAuctionLotViewModelType
     let lotBidDetailsUpdateSignal = Signal<Int>()
 
+    // This mutates as someone increments/decrements
     var currentBid: Int
 
     init(lotVM: LiveAuctionLotViewModelType) {
@@ -21,8 +25,12 @@ class LiveAuctionBidViewModel: NSObject {
         currentBid = LiveAuctionBidViewModel.nextBidCents(startingPrice)
     }
 
-    var currentLotValue: String {
+    var currentLotValue: Int {
         return lotViewModel.currentLotValue
+    }
+
+    var currentLotValueString: String {
+        return lotViewModel.currentLotValueString
     }
 
     var nextBidIncrementDollars: String {
@@ -54,6 +62,10 @@ class LiveAuctionBidViewModel: NSObject {
     class func nextBidCents(bid: Int) -> Int {
         return bid + minimumNextBidCentsIncrement(bid)
     }
+
+    class func previousBidCents(bid: Int) -> Int {
+        return bid - minimumNextBidCentsIncrement(bid)
+    }
 }
 
 class LiveAuctionBidViewController: UIViewController {
@@ -67,6 +79,8 @@ class LiveAuctionBidViewController: UIViewController {
         super.viewDidLoad()
 
         updateLotInformation()
+        updateCurrentBidInformation(NSDate())
+        updateBiddingControls(bidViewModel.currentBid)
 
         bidViewModel.lotViewModel.endEventUpdatesSignal.next(updateCurrentBidInformation)
 
@@ -96,7 +110,11 @@ class LiveAuctionBidViewController: UIViewController {
 
     func updateCurrentBidInformation(_: NSDate) {
         numberOfCurrentBidsLabel.text = bidViewModel.currentBidsAndReserve
-        priceOfCurrentBidsLabel.text = bidViewModel.currentLotValue
+        priceOfCurrentBidsLabel.text = bidViewModel.currentLotValueString
+
+        // New bids can come in while we are on this screen
+        bidViewModel.currentBid = min(bidViewModel.currentBid, bidViewModel.currentLotValue)
+        updateBiddingControls(bidViewModel.currentBid)
     }
 
     @IBOutlet weak var decreaseBidButton: UIButton!
@@ -104,20 +122,28 @@ class LiveAuctionBidViewController: UIViewController {
     @IBOutlet weak var currentBidLabel: UILabel!
     @IBOutlet weak var currentIncrementLabel: UILabel!
 
-    func updateBiddingControls() {
+    func updateBiddingControls(bid: Int) {
         let lotVM = bidViewModel.lotViewModel
 
         currentIncrementLabel.text = "Increments of \(bidViewModel.nextBidIncrementDollars)"
 
-        /// TODO: Determine if bidding before updating the button?
-
-        let currentBidDollars = lotVM.currentLotValue
+        let currentBidDollars = lotVM.currentLotValueString
         currentBidLabel.text = currentBidDollars
 
-//        let buttonProgress = LiveAuctionBiddingProgressState.Idle(biddingAmount: currentBidDollars)
-//        bidButton.progressSignal.update(buttonProgress)
-
-        
-
+        /// TODO: Determine if bidding before updating the button?
+        let bidProgress = LiveAuctionBiddingProgressState.Biddable(biddingAmount: currentBidDollars)
+        let bidState = LiveAuctionBidButtonState.Active(biddingState: bidProgress)
+        bidButton.progressSignal.update(bidState)
     }
+
+    @IBAction func incrementBid(sender: AnyObject) {
+        bidViewModel.currentBid = LiveAuctionBidViewModel.nextBidCents(bidViewModel.currentBid)
+        updateBiddingControls(bidViewModel.currentBid)
+    }
+
+    @IBAction func decrementBid(sender: AnyObject) {
+        bidViewModel.currentBid = LiveAuctionBidViewModel.previousBidCents(bidViewModel.currentBid)
+        updateBiddingControls(bidViewModel.currentBid)
+    }
+
 }

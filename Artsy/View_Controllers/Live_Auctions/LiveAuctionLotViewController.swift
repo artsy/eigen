@@ -185,7 +185,7 @@ class LiveAuctionCurrentLotView: UIButton {
 
         viewModel.next { vm in
             artistNameLabel.text = vm.lotArtist
-            biddingPriceLabel.text = vm.currentLotValue
+            biddingPriceLabel.text = vm.currentLotValueString
             thumbnailView.ar_setImageWithURL(vm.urlForThumbnail)
         }
     }

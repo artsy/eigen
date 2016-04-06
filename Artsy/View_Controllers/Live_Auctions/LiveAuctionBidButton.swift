@@ -12,29 +12,44 @@ class LiveAuctionBidButton : ARFlatButton {
 
     override func setup() {
         super.setup()
+        setContentCompressionResistancePriority(1000, forAxis: .Vertical)
         progressSignal.next(setupWithState)
     }
 
     private func setupWithState(buttonState: LiveAuctionBidButtonState) {
+
+        let white = UIColor.whiteColor()
+        let purple = UIColor.artsyPurpleRegular()
+        let green = UIColor.artsyGreenRegular()
+        let red = UIColor.artsyRedRegular()
+        let grey = UIColor.artsyGrayLight()
+
 
         switch buttonState {
         // When the lot is live
         case .Active(let state):
 
             switch state {
-            case .Idle(let price):
+            case .TrialUser:
+                setupUI("Register To Bid")
+            case .LotSold:
+                setupUI("Sold", background: .whiteColor(), border: .artsyPurpleRegular(), textColor: .artsyPurpleRegular())
+            case .LotWaitingToOpen:
+                setupUI("Waiting for Auctioneer…", background: white, border: grey, textColor: grey)
+
+            case .Biddable(let price):
                 setupUI("Bid \(price)")
-            case .InProgress:
-                setupUI("Bidding...", background: .artsyPurpleRegular())
-            case .Success(let outbid):
+            case .BiddingInProgress:
+                setupUI("Bidding...", background: purple)
+            case .BidSuccess(let outbid):
                 if outbid {
-                    setupUI("Outbid", background: .artsyRedRegular())
+                    setupUI("Outbid", background: red)
                 } else {
-                    setupUI("You're the highest bidder", background: .whiteColor(), border: .artsyGreenRegular(), textColor: .artsyGreenRegular() )
+                    setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
                 }
 
-            case .NetworkFail:
-                setupUI("Network Failed", background: .whiteColor(), border: .artsyGreenRegular(), textColor: .artsyGreenRegular() )
+            case .BidNetworkFail:
+                setupUI("Network Failed", background: .whiteColor(), border: red, textColor: red)
             }
 
 
@@ -48,7 +63,6 @@ class LiveAuctionBidButton : ARFlatButton {
                     setupUI("Leave Max Bid")
             }
         }
-
     }
 
     private func setupUI(title: String, background: UIColor = .blackColor(), border: UIColor? = nil, textColor: UIColor = UIColor.whiteColor() ) {
@@ -58,5 +72,9 @@ class LiveAuctionBidButton : ARFlatButton {
         let borderColor = border ?? background
         setBorderColor(borderColor, forState: .Normal, animated: false)
         setBackgroundColor(background, forState: .Normal)
+    }
+
+    override func intrinsicContentSize() -> CGSize {
+        return CGSize(width: 48, height: 40);
     }
 }

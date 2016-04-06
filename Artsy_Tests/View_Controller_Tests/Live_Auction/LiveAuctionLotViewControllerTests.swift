@@ -88,7 +88,8 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var numberOfEvents = 1
     var lotIndex = 1
     var numberOfBids = 1
-    var currentLotValue = "$Value"
+    var currentLotValue = 1234
+    var currentLotValueString = "$Value"
     var imageProfileSize = CGSize(width: 200, height: 200)
     var liveAuctionLotID = "lotID"
     func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
