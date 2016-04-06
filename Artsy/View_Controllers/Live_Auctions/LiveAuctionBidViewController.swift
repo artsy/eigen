@@ -121,7 +121,7 @@ class LiveAuctionBidViewController: UIViewController {
         priceOfCurrentBidsLabel.text = bidViewModel.currentLotValueString
 
         // New bids can come in while we are on this screen
-        bidViewModel.currentBid = min(bidViewModel.currentBid, bidViewModel.currentLotValue)
+        bidViewModel.currentBid = max(bidViewModel.currentBid, bidViewModel.currentLotValue)
         updateBiddingControls(bidViewModel.currentBid)
     }
 
