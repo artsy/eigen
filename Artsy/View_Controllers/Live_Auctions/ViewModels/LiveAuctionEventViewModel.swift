@@ -3,6 +3,10 @@ import Foundation
 class LiveAuctionEventViewModel : NSObject {
     let event: LiveEvent
 
+    var isBid: Bool {
+        return event.eventType() == .Bid
+    }
+
     var eventTitle: NSAttributedString {
         switch event.eventType() {
         case .Bid:
@@ -52,7 +56,6 @@ class LiveAuctionEventViewModel : NSObject {
     func orange() -> UIColor {
         return UIColor(red:0.937255, green:0.454902, blue:0.290196, alpha:1.0)
     }
-
 
     func red() -> UIColor {
         return UIColor(red:0.945098, green:0.294118, blue:0.27451, alpha:1.0)

@@ -114,7 +114,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$10,1145,000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="fvK-8E-FAD">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$45,000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="fvK-8E-FAD">
                                 <rect key="frame" x="220" y="314" width="160" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="FJM-h2-B1n"/>
@@ -142,7 +142,7 @@
                                 </constraints>
                                 <state key="normal" title="-"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dR9-ED-Jtd">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dR9-ED-Jtd" customClass="LiveAuctionBidButton" customModule="Artsy" customModuleProvider="target">
                                 <rect key="frame" x="152" y="530" width="296" height="50"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -215,7 +215,17 @@
                     <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="bidButton" destination="dR9-ED-Jtd" id="Xft-YV-9Y2"/>
+                        <outlet property="currentBidLabel" destination="fvK-8E-FAD" id="YXA-sL-KIh"/>
+                        <outlet property="currentIncrementLabel" destination="ImS-fD-ydp" id="vdv-Is-EEx"/>
+                        <outlet property="decreaseBidButton" destination="UHw-IW-ZpI" id="bHv-A5-uHC"/>
+                        <outlet property="increaseBidButton" destination="Sn3-46-vNT" id="w1z-Ge-zX2"/>
+                        <outlet property="lotArtistLabel" destination="gta-nC-NHk" id="hoY-bn-Ice"/>
+                        <outlet property="lotNameLabel" destination="wWt-jw-RRI" id="MaB-Oa-suE"/>
+                        <outlet property="lotNumberLabel" destination="uXQ-J5-tSz" id="3Gs-3I-B5Z"/>
+                        <outlet property="lotPreviewImageView" destination="jeX-9D-5DT" id="0tJ-Lp-fdJ"/>
                         <outlet property="lowerBiddingSeparatorView" destination="mBw-bY-otY" id="cVQ-8g-lT9"/>
+                        <outlet property="numberOfCurrentBidsLabel" destination="WAP-6q-r8g" id="3sE-kt-iRS"/>
+                        <outlet property="priceOfCurrentBidsLabel" destination="eFJ-qr-dB0" id="JN6-5i-Ed6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zzC-vl-u6f" userLabel="First Responder" sceneMemberID="firstResponder"/>

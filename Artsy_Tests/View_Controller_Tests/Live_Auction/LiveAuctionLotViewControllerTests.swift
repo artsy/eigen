@@ -83,8 +83,11 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var estimateString = "$Estimate"
     var lotName = "Lot Name"
     var urlForThumbnail = NSURL(string: "http://example.com/")!
+    var urlForProfile = NSURL(string: "http://example.com/")!
+    var reserveStatusString = "is testing reserve"
     var numberOfEvents = 1
     var lotIndex = 1
+    var numberOfBids = 1
     var currentLotValue = "$Value"
     var imageProfileSize = CGSize(width: 200, height: 200)
     var liveAuctionLotID = "lotID"

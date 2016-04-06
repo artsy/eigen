@@ -2,7 +2,6 @@ import Quick
 import Nimble
 import Nimble_Snapshots
 import Interstellar
-import UIKit
 
 @testable
 import Artsy
@@ -11,7 +10,15 @@ class LiveAuctionBidButtonTests: QuickSpec {
 
     override func spec() {
 
-        let examples:[LiveAuctionBiddingProgressState] = [.Idle(biddingAmount: "$45,000"), .InProgress , .NetworkFail, .Success(isMaxBidder: true), .Success(isMaxBidder: false)]
+        let examples:[LiveAuctionBidButtonState] = [
+            .Active(biddingState: .Idle(biddingAmount: "$45,000")),
+            .Active(biddingState: .InProgress ),
+            .Active(biddingState: .NetworkFail),
+            .Active(biddingState: .Success(isMaxBidder: true)),
+            .Active(biddingState:.Success(isMaxBidder: false)),
+            .InActive(lotState: .ClosedLot),
+            .InActive(lotState: .UpcomingLot(distanceFromLive: 1)),
+        ]
 
         for (i, state) in examples.enumerate() {
 
@@ -22,6 +29,5 @@ class LiveAuctionBidButtonTests: QuickSpec {
                 expect(subject) == snapshot()
             }
         }
-
     }
 }

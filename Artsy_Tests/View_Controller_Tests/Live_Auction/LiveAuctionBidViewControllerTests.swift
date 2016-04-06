@@ -17,6 +17,10 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
                 ARTestContext.useDevice(device) {
                     subject = StoryboardScene.LiveAuctions.instantiateBid()
 
+                    let fakeSalesPerson = stub_auctionSalesPerson()
+                    let lotVM = fakeSalesPerson.lotViewModelForIndex(0)!
+                    subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM)
+
                     expect(subject) == snapshot("bidding_on_\(device.rawValue)")
                 }
             }

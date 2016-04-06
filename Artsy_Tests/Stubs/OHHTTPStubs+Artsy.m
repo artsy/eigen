@@ -26,7 +26,7 @@
 {
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         if (request.URL == nil) {
-            [NSException raise:NSInvalidArgumentException format:@"Recieved a nil URL to stub: %@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd)];
+//            [NSException raise:NSInvalidArgumentException format:@"Recieved a nil URL to stub: %@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd)];
         }
 
         NSURLComponents *requestComponents = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:NO];

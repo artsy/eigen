@@ -18,11 +18,14 @@ protocol LiveAuctionLotViewModelType: class {
     var estimateString: String { get }
     var lotName: String { get }
     var urlForThumbnail: NSURL { get }
+    var urlForProfile: NSURL { get }
     var numberOfEvents: Int { get }
     var lotIndex: Int { get }
     var currentLotValue: String { get }
+    var numberOfBids: Int { get }
     var imageProfileSize: CGSize { get }
     var liveAuctionLotID: String { get }
+    var reserveStatusString: String { get }
 
     var reserveStatusSignal: Signal<ARReserveStatus> { get }
     var askingPriceSignal: Signal<Int> { get }
@@ -53,7 +56,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     func bidButtonTitleWithState(lotState: LotState) -> String {
         switch lotState {
         case .ClosedLot: return "BIDDING CLOSED"
-        case .LiveLot: return "BID 20,000"
+        case .LiveLot: return "BID \(currentLotValue)"
         case .UpcomingLot(_): return "LEAVE MAX BID"
         }
     }
@@ -76,12 +79,16 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
             }
     }
 
+    var numberOfBids: Int {
+        return events.filter { $0.isBid }.count
+    }
+
     var urlForThumbnail: NSURL {
         return model.urlForThumbnail()
     }
 
     var urlForProfile: NSURL {
-        return model.urlForThumbnail()
+        return model.urlForProfile()
     }
 
     var imageProfileSize: CGSize {
@@ -104,9 +111,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.liveAuctionLotID
     }
 
-    // maybe depecated by currentLotviewModel?
     var currentLotValue: String {
-        return "$10,000"
+        let bidAmountCents = LiveAuctionBidViewModel.nextBidCents(model.onlineAskingPriceCents)
+        return bidAmountCents.roundCentsToNearestThousandAndFormat()
     }
 
     var estimateString: String {
@@ -123,6 +130,21 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     
     func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
         return events[index]
+    }
+
+    var reserveStatusString: String {
+        guard let status = reserveStatusSignal.peek() else {
+            return "unknown reserve"
+        }
+
+        switch status {
+        case .NoReserve:
+            return "no reserve"
+        case .ReserveMet:
+            return "reserve met"
+        case .ReserveNotMet:
+            return "reserver not yet met"
+        }
     }
 
     func updateReserveStatus(reserveStatusString: String) {
