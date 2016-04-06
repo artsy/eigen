@@ -7,7 +7,7 @@ enum LiveAuctionBidButtonState {
     case InActive(lotState: LotState)
 }
 
-protocol LiveAuctionBidButtonDelegate {
+@objc protocol LiveAuctionBidButtonDelegate {
     func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton)
     func bidButtonRequestedBid(button: LiveAuctionBidButton)
     func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton)
@@ -15,7 +15,7 @@ protocol LiveAuctionBidButtonDelegate {
 
 class LiveAuctionBidButton : ARFlatButton {
     let progressSignal = Signal<LiveAuctionBidButtonState>()
-    var delegate: LiveAuctionBidButtonDelegate?
+    @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
 
     override func setup() {
         super.setup()
@@ -41,7 +41,7 @@ class LiveAuctionBidButton : ARFlatButton {
         case .InActive(let lotState):
             switch lotState {
             case .UpcomingLot:
-                delegate?.bidButtonRequestedRegisterToBid(self)
+                delegate?.bidButtonRequestedSubmittingMaxBid(self)
 
             default: break
             }
@@ -56,7 +56,7 @@ class LiveAuctionBidButton : ARFlatButton {
         let purple = UIColor.artsyPurpleRegular()
         let green = UIColor.artsyGreenRegular()
         let red = UIColor.artsyRedRegular()
-        let grey = UIColor.artsyGrayLight()
+        let grey = UIColor.artsyGrayRegular()
 
 
         switch buttonState {

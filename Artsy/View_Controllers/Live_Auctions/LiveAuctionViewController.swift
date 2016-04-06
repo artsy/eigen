@@ -163,9 +163,7 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
         guard let auctionViewModel = salesPerson.auctionViewModel else { return nil }
         guard let lotViewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
 
-
         let auctionVC =  LiveAuctionLotViewController(index: index, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: salesPerson.currentLotSignal)
-        
         return auctionVC
     }
 

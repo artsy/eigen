@@ -8,6 +8,7 @@ import ORStackView
 
 class LiveAuctionLotViewController: UIViewController {
     let index: Int
+
     let lotViewModel: LiveAuctionLotViewModelType
     let auctionViewModel: LiveAuctionViewModelType
     let currentLotSignal: Signal<LiveAuctionLotViewModelType>
@@ -135,15 +136,21 @@ class LiveAuctionLotViewController: UIViewController {
 extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
 
     func bidButtonRequestedBid(button: LiveAuctionBidButton) {
-
+        // TODO
     }
 
     func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton) {
-
+        
     }
 
     func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton) {
-
+        let bidVC = StoryboardScene.LiveAuctions.instantiateBid()
+        bidVC.bidViewModel = LiveAuctionBidViewModel(lotVM: lotViewModel)
+        
+        let nav = ARSerifNavigationViewController(rootViewController: bidVC)
+        guard let pageVC = parentViewController else { return }
+        guard let auctionVC = pageVC.parentViewController else { return }
+        auctionVC.presentViewController(nav, animated: true) { button.enabled = true }
     }
 }
 
@@ -166,7 +173,7 @@ class LiveAuctionCurrentLotView: UIButton {
         let biddingPriceLabel = ARSansSerifLabel()
         biddingPriceLabel.font = .sansSerifFontWithSize(16)
 
-        let hammerView = UIImageView(image: UIImage(named:"lot_bidder_hammer_white"))
+        let hammerView = UIImageView(image: UIImage(asset: .Lot_bidder_hammer_white))
         let thumbnailView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
 
         [liveLotLabel, artistNameLabel, biddingPriceLabel, thumbnailView, hammerView].forEach { addSubview($0) }

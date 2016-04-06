@@ -33,15 +33,23 @@ class LiveAuctionBidViewModel: NSObject {
         return lotViewModel.currentLotValueString
     }
 
+    var currentBidDollars: String {
+        return currentBid.convertToDollarString()
+    }
+
     var nextBidIncrementDollars: String {
-        let bidIncrementCents = LiveAuctionBidViewModel.minimumNextBidCentsIncrement(lotViewModel.askingPriceSignal.peek() ?? 0 )
-        return bidIncrementCents.roundCentsToNearestThousandAndFormat()
+        let bidIncrementCents = LiveAuctionBidViewModel.minimumNextBidCentsIncrement(currentBid)
+        return bidIncrementCents.convertToDollarString()
     }
 
     var currentBidsAndReserve: String {
         let bids = lotViewModel.numberOfBids
         let bidString = bids == 1 ? "\(bids) bid" : "\(bids) bids"
         return "(\(bidString) \(lotViewModel.reserveStatusString))"
+    }
+
+    var canMakeLowerBids: Bool {
+        return currentBid - LiveAuctionBidViewModel.minimumNextBidCentsIncrement(currentBid)  >= currentLotValue
     }
 
     // See: https://github.com/artsy/gravity/blob/master/app/models/bidding/increment_strategy/default.rb
@@ -123,15 +131,13 @@ class LiveAuctionBidViewController: UIViewController {
     @IBOutlet weak var currentIncrementLabel: UILabel!
 
     func updateBiddingControls(bid: Int) {
-        let lotVM = bidViewModel.lotViewModel
+        decreaseBidButton.enabled = bidViewModel.canMakeLowerBids
 
         currentIncrementLabel.text = "Increments of \(bidViewModel.nextBidIncrementDollars)"
-
-        let currentBidDollars = lotVM.currentLotValueString
-        currentBidLabel.text = currentBidDollars
+        currentBidLabel.text = bidViewModel.currentBidDollars
 
         /// TODO: Determine if bidding before updating the button?
-        let bidProgress = LiveAuctionBiddingProgressState.Biddable(biddingAmount: currentBidDollars)
+        let bidProgress = LiveAuctionBiddingProgressState.Biddable(biddingAmount: bidViewModel.currentBidDollars)
         let bidState = LiveAuctionBidButtonState.Active(biddingState: bidProgress)
         bidButton.progressSignal.update(bidState)
     }

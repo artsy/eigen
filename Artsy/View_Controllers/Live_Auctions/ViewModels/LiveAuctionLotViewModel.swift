@@ -109,7 +109,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var currentLotValueString: String {
-        return currentLotValue.roundCentsToNearestThousandAndFormat()
+        return currentLotValue.convertToDollarString()
     }
 
     var estimateString: String {
@@ -139,7 +139,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         case .ReserveMet:
             return "reserve met"
         case .ReserveNotMet:
-            return "reserver not yet met"
+            return "reserve not yet met"
         }
     }
 
