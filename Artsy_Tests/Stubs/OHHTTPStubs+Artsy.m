@@ -25,6 +25,10 @@
 + (void)stubJSONResponseAtPath:(NSString *)path withParams:(NSDictionary *)params withResponse:(id)response andStatusCode:(NSInteger)code
 {
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        if (request.URL == nil) {
+            [NSException raise:NSInvalidArgumentException format:@"Recieved a nil URL to stub: %@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd)];
+        }
+
         NSURLComponents *requestComponents = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:NO];
         NSString *urlString = path;
 

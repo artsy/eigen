@@ -35,10 +35,7 @@ class AuctionViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    // Required by Swift compiler, sadly.
     required init?(coder aDecoder: NSCoder) {
-        self.saleID = ""
-        super.init(coder: aDecoder)
         return nil
     }
 

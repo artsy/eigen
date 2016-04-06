@@ -33,19 +33,19 @@ class AuctionInformationViewControllerSpec: QuickSpec {
         ["iPhone": ARDeviceType.Phone6.rawValue, "iPad": ARDeviceType.Pad.rawValue].forEach { (deviceName, deviceType) in
             it("has a root view that shows information about the auction and looks good on \(deviceName)") {
                 ARTestContext.useDevice(ARDeviceType(rawValue: deviceType)!) {
-                    expect(navigationController).to( haveValidSnapshot() )
+                    expect(navigationController).to( haveValidSnapshot(usesDrawRect: true) )
                 }
             }
         }
         
         it("has a FAQ view that answers questions about the auction") {
             let FAQController = informationController.showFAQ(false)
-            expect(navigationController).to( haveValidSnapshot(named: "FAQ Initial Entry") )
+            expect(navigationController).to( haveValidSnapshot(named: "FAQ Initial Entry", usesDrawRect: true) )
 
             for (index, view) in FAQController.entryViews.enumerate() {
                 view.didTap()
                 let entry = FAQController.entries[index]
-                expect(navigationController).to( haveValidSnapshot(named: "FAQ Entry: \(entry.name)"))
+                expect(navigationController).to( haveValidSnapshot(named: "FAQ Entry: \(entry.name)", usesDrawRect: true))
             }
         }
     }

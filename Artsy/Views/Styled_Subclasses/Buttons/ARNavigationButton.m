@@ -90,6 +90,8 @@
     self.title = title;
     self.subtitle = subtitle;
 
+    [self updateConstraintsIfNeeded];
+
     return self;
 }
 
@@ -192,6 +194,7 @@
     }
 
     [self setNeedsUpdateConstraints];
+    [self updateConstraintsIfNeeded];
 
     return self;
 }

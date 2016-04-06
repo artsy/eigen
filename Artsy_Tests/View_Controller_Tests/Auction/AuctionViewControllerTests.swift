@@ -13,7 +13,7 @@ import Artsy
 var dateMock: AnyObject?
 var systemDateMock: AnyObject?
 
-func freezeTime(now: NSDate) {
+func freezeTime(now: NSDate = NSDate()) {
     dateMock = ARTestContext.freezeTime(now)
     systemDateMock = ARTestContext.freezeSystemTime(now)
 }
@@ -57,7 +57,7 @@ class AuctionViewControllerTests: QuickSpec {
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
-                    expect(subject).to( haveValidSnapshot() )
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
             }
 
@@ -75,7 +75,7 @@ class AuctionViewControllerTests: QuickSpec {
                     networkModel.registrationStatus = ArtsyAPISaleRegistrationStatusRegistered
                     NSNotificationCenter.defaultCenter().postNotificationName(ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
 
-                    expect(subject).to( haveValidSnapshot() )
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
             }
 
@@ -86,7 +86,7 @@ class AuctionViewControllerTests: QuickSpec {
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
-                    expect(subject).to( haveValidSnapshot() )
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
             }
 
@@ -97,7 +97,7 @@ class AuctionViewControllerTests: QuickSpec {
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
-                    expect(subject).to( haveValidSnapshot() )
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
             }
 
@@ -108,7 +108,7 @@ class AuctionViewControllerTests: QuickSpec {
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
-                    expect(subject).to( haveValidSnapshot() )
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
             }
 
@@ -122,7 +122,7 @@ class AuctionViewControllerTests: QuickSpec {
                     subject.stubHorizontalSizeClass(horizontalSizeClass)
                     subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                     subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.ArtistAlphabetical)
-                    expect(subject).to( haveValidSnapshot() )
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
 
             }
@@ -137,7 +137,7 @@ class AuctionViewControllerTests: QuickSpec {
                     subject.stubHorizontalSizeClass(horizontalSizeClass)
                     subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                     subject.refineSettings = subject.defaultRefineSettings().settingsWithRange((min: 1000, max: 1000_000))
-                    expect(subject).to( haveValidSnapshot() )
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
 
             }
@@ -152,7 +152,7 @@ class AuctionViewControllerTests: QuickSpec {
                     subject.stubHorizontalSizeClass(horizontalSizeClass)
                     subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                     subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.ArtistAlphabetical).settingsWithRange((min: 1000, max: 1000_000))
-                    expect(subject).to( haveValidSnapshot() )
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
             }
 
@@ -180,7 +180,7 @@ class AuctionViewControllerTests: QuickSpec {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().settingsWithRange((min: 2_000_00, max: 3_000_00)) // Outside the sale artworks' estimates.
-                        expect(subject).to( haveValidSnapshot() )
+                        expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                     }
                 }
 
@@ -190,7 +190,7 @@ class AuctionViewControllerTests: QuickSpec {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.LotNumber)
-                        expect(subject).to( haveValidSnapshot() )
+                        expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                     }
                 }
 
@@ -200,7 +200,7 @@ class AuctionViewControllerTests: QuickSpec {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.ArtistAlphabetical)
-                        expect(subject).to( haveValidSnapshot() )
+                        expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                     }
                 }
 
@@ -210,7 +210,7 @@ class AuctionViewControllerTests: QuickSpec {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.MostBids)
-                        expect(subject).to( haveValidSnapshot() )
+                        expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                     }
                 }
 
@@ -220,7 +220,7 @@ class AuctionViewControllerTests: QuickSpec {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.LeastBids)
-                        expect(subject).to( haveValidSnapshot() )
+                        expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                     }
                 }
                 
@@ -230,7 +230,7 @@ class AuctionViewControllerTests: QuickSpec {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.HighestCurrentBid)
-                        expect(subject).to( haveValidSnapshot() )
+                        expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                     }
                 }
                 
@@ -240,7 +240,7 @@ class AuctionViewControllerTests: QuickSpec {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().settingsWithOrdering(.LowestCurrentBid)
-                        expect(subject).to( haveValidSnapshot() )
+                        expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                     }
                 }
             }
@@ -276,7 +276,7 @@ class AuctionViewControllerTests: QuickSpec {
             subject.allowAnimations = false
             subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
 
-            expect(subject).to( haveValidSnapshot() )
+            expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
 
             dateMock.stopMocking()
         }
@@ -297,7 +297,7 @@ class AuctionViewControllerTests: QuickSpec {
             subject.allowAnimations = false
             subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
 
-            expect(subject).to( haveValidSnapshot() )
+            expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
             
             unfreezeTime()
         }
@@ -317,7 +317,7 @@ class AuctionViewControllerTests: QuickSpec {
             subject.allowAnimations = false
             subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
 
-            expect(subject).to( haveValidSnapshot() )
+            expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
         }
 
         it("wraps auction name correctly") {
@@ -338,7 +338,7 @@ class AuctionViewControllerTests: QuickSpec {
             subject.allowAnimations = false
             subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
 
-            expect(subject).to( haveValidSnapshot() )
+            expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
             
             dateMock.stopMocking()
         }

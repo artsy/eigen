@@ -115,7 +115,7 @@ PODS:
     - ARTiledImageView
     - SDWebImage
   - Nimble (3.2.0)
-  - Nimble-Snapshots (3.0.1):
+  - Nimble-Snapshots (4.0.0):
     - FBSnapshotTestCase (~> 2.0)
     - Nimble
     - Quick
@@ -193,7 +193,7 @@ DEPENDENCIES:
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`)
   - Nimble (from `https://github.com/Quick/Nimble.git`)
-  - Nimble-Snapshots (from `https://github.com/ashfurrow/Nimble-Snapshots.git`)
+  - Nimble-Snapshots
   - NPKeyboardLayoutGuide
   - ObjectiveSugar
   - OCMock
@@ -251,8 +251,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/neilang/NAMapKit
   Nimble:
     :git: https://github.com/Quick/Nimble.git
-  Nimble-Snapshots:
-    :git: https://github.com/ashfurrow/Nimble-Snapshots.git
   ORStackView:
     :git: https://github.com/1aurabrown/ORStackView.git
   Quick:
@@ -304,9 +302,6 @@ CHECKOUT OPTIONS:
   Nimble:
     :commit: d3ed3a367927c98bca7bf7e7e0ff36124c634f73
     :git: https://github.com/Quick/Nimble.git
-  Nimble-Snapshots:
-    :commit: fc4f185c69efd21cffe0ff1167ac8e8fa29a966f
-    :git: https://github.com/ashfurrow/Nimble-Snapshots.git
   ORStackView:
     :commit: 80bfeb0a4176e307a8b94b1662104e64cc8bb50c
     :git: https://github.com/1aurabrown/ORStackView.git
@@ -359,7 +354,7 @@ SPEC CHECKSUMS:
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: bdcb666fa84122eed344661b132e1d93dbafac71
   Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
-  Nimble-Snapshots: 0d64486715a613293ac5c9af6140b97eb9b0ae76
+  Nimble-Snapshots: 1cb1c223a97383d4744f742422eab84df9425742
   NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
@@ -379,6 +374,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: a49730fde4a13058c1037b24b9790e6f82d29660
+PODFILE CHECKSUM: ebcd9ce0e1c59d83da530c94f10f18c5f3f2890e
 
 COCOAPODS: 1.0.0.beta.6

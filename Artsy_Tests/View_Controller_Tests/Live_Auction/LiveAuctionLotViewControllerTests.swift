@@ -11,43 +11,108 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
     override func spec() {
         describe("snapshots") {
 
-            var salesPerson: Fake_AuctionsSalesPerson!
+            var subject: LiveAuctionLotViewController!
+            var auctionViewModel: Test_LiveAuctionViewModel!
+            var lotViewModel: Test_LiveAuctionLotViewModel!
+
             beforeEach {
-                salesPerson = Fake_AuctionsSalesPerson()
+                freezeTime()
+
+                auctionViewModel = Test_LiveAuctionViewModel()
+                lotViewModel = Test_LiveAuctionLotViewModel()
+                subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Signal())
+
+            }
+
+            afterEach {
+                unfreezeTime()
             }
 
             // The indices are known to be the closed/live/upcoming states respectively
             it("looks good for closed lots") {
-                let subject = LiveAuctionLotViewController()
+                lotViewModel.lotStateSignal.update(.ClosedLot)
+
                 subject.loadViewProgrammatically()
-                subject.lotViewModel.update( salesPerson.lotViewModelForIndex(1)! )
+
                 expect(subject).to( haveValidSnapshot() )
             }
 
             it("looks good for live lots") {
-                let subject = LiveAuctionLotViewController()
+                lotViewModel.lotStateSignal.update(.LiveLot)
+
                 subject.loadViewProgrammatically()
-                subject.lotViewModel.update( salesPerson.lotViewModelForIndex(1)! )
+
                 expect(subject).to( haveValidSnapshot() )
             }
 
             it("looks good for upcoming lots") {
-                let subject = LiveAuctionLotViewController()
+                lotViewModel.lotStateSignal.update(.UpcomingLot(distanceFromLive: 1))
+
                 subject.loadViewProgrammatically()
-                subject.lotViewModel.update( salesPerson.lotViewModelForIndex(2)! )
+
                 expect(subject).to( haveValidSnapshot() )
             }
 
             it("doesnt show a live auction call to action when auction is closed") {
-                salesPerson.sale = try! LiveSale(dictionary: [ "startDate" : NSDate.distantPast(), "endDate" : NSDate.distantPast(), "currentLotId": "", "lotIDs": ["1"]], error: Void())
+                lotViewModel.lotStateSignal.update(.ClosedLot)
+                auctionViewModel.saleAvailabilitySignal.update(.Closed)
 
-                let subject = LiveAuctionLotViewController()
                 subject.loadViewProgrammatically()
-                subject.lotViewModel.update( salesPerson.lotViewModelForIndex(2)! )
-                subject.auctionViewModel.update( salesPerson.auctionViewModel! )
+
                 expect(subject).to( haveValidSnapshot() )
             }
-            
+
         }
     }
 }
+
+class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
+    var startDate = NSDate().dateByAddingTimeInterval(-3600)
+    var lotCount = 3
+    var saleAvailabilitySignal = Signal(SaleAvailabilityState.Active)
+    var currentLotIDSignal = Signal<String>()
+
+    var distance: Int?
+    func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
+        return distance
+    }
+}
+
+class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
+    var lotArtist = "Artist Name"
+    var estimateString = "$Estimate"
+    var lotName = "Lot Name"
+    var urlForThumbnail = NSURL(string: "http://example.com/")!
+    var numberOfEvents = 1
+    var lotIndex = 1
+    var currentLotValue = "$Value"
+    var imageProfileSize = CGSize(width: 200, height: 200)
+    var liveAuctionLotID = "lotID"
+    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
+        return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
+    }
+
+    func bidButtonTitleWithState(state: LotState) -> String {
+        return "Bid Button Title"
+    }
+
+    var lotStateSignal = Signal(LotState.UpcomingLot(distanceFromLive: 1))
+    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Signal<LotState> {
+        return lotStateSignal
+    }
+
+    let askingPriceSignal = Signal<Int>()
+    let reserveStatusSignal = Signal<ARReserveStatus>()
+    let startEventUpdatesSignal = Signal<NSDate>()
+    let endEventUpdatesSignal = Signal<NSDate>()
+    let newEventSignal = Signal<LiveAuctionEventViewModel>()
+}
+
+let liveEventJSON = [
+    "id": "f89b33d8-b4ac-4cd1-a44f-fd8a0b7d669b",
+    "type": "bid",
+    "amountCents": 450000,
+    "source": "floor",
+    "isConfirmed": true
+]
+

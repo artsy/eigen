@@ -21,7 +21,8 @@
 @property (nonatomic, copy, readonly) NSString *liveAuctionLotID;
 @property (nonatomic, assign, readonly) NSInteger position;
 
-@property (nonatomic, copy, readonly) NSArray<NSString *> *events;
+// Note: Not parsed from JSON, stored locally.
+@property (nonatomic, copy, readonly) NSArray<NSString *> *eventIDs;
 
 @property (nonatomic, assign, readonly) ARReserveStatus reserveStatus;
 
@@ -30,7 +31,10 @@
 
 @property (nonatomic, assign, readonly) NSInteger lowEstimateCents;
 @property (nonatomic, assign, readonly) NSInteger highEstimateCents;
-@property (nonatomic, assign, readonly) NSInteger askingPriceCents;
 @property (nonatomic, assign, readonly) NSInteger onlineAskingPriceCents;
+
+- (BOOL)updateReserveStatusWithString:(NSString *)reserveStatusString;
+- (BOOL)updateOnlineAskingPrice:(NSInteger)onlineAskingPrice;
+- (void)addEvents:(NSArray<NSString *> *)events;
 
 @end
