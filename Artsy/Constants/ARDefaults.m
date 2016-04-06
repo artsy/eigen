@@ -50,7 +50,7 @@ NSString *const ARShowAuctionResultsButtonDefault = @"auction-results";
         ARStagingPhoneWebURLDefault : @"http://m-staging.artsy.net",
         ARStagingPadWebURLDefault : @"https://staging.artsy.net",
         ARStagingMetaphysicsURLDefault : @"http://metaphysics-staging.artsy.net",
-        ARStagingLiveAuctionSocketURLDefault : @"https://prediction-staging.artsy.net"
+        ARStagingLiveAuctionSocketURLDefault : @"https://prediction-staging.artsy.net" // TODO: This needs to change to causality.
     }];
 }
 

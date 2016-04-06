@@ -23,7 +23,9 @@ State update includes:
 */
 
 protocol LiveAuctionStateReconcilerType {
-    func updateState(state: AnyObject)
+    func updateStaticData(saleArtworks: [SaleArtwork])
+    func updateSocketState(state: AnyObject)
+
     var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> { get }
     var currentLotSignal: Signal<LiveAuctionLotViewModelType> { get }
     var saleSignal: Signal<LiveAuctionViewModelType> { get }
@@ -41,11 +43,22 @@ class LiveAuctionStateReconciler: NSObject {
 
     private var _state = [LotID: LiveAuctionLotViewModel]()
     private var _sale: LiveAuctionViewModel?
+    private var _saleArtworks = [SaleArtwork]()
 }
 
 
 private typealias PublicFunctions = LiveAuctionStateReconciler
 extension PublicFunctions: LiveAuctionStateReconcilerType {
+
+    func updateStaticData(saleArtworks: [SaleArtwork]) {
+        // We don't expect this function to be called more than once, or be called before updateSocketState().
+        _saleArtworks = saleArtworks
+    }
+
+    func updateSocketState(state: AnyObject) {
+        // TODO: Implement, basically updateState again but w/o parsing static data.
+        // TODO: Also, LiveAuctionLot is gonna get gutted and LiveAuctionLotViewModel will have a SaleArtwork. I think that'll work.
+    }
 
     func updateState(state: AnyObject) {
         // TODO: don't fail silently on bad input

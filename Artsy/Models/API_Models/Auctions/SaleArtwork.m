@@ -102,7 +102,7 @@ static NSNumberFormatter *currencyFormatter;
     };
 
     return [MTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
-        if(!str) { str = @"not for sale"; }
+        if(!str) { str = @"no_reserve"; } // A sensible default.
         return types[str];
     } reverseBlock:^id(NSNumber *type) {
         if (!type) { type = @0; }

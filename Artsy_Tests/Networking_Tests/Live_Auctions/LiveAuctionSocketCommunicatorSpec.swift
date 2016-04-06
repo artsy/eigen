@@ -24,8 +24,10 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
             expect(socket.host) == host
         }
 
-        it("connects the socket on initialization") {
+        it("connects the socket when calling connect()") {
             let subject = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
+
+            subject.connect()
 
             expect(socket.connected) == true
 
@@ -40,23 +42,12 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
             expect(socket.connected) == false
         }
 
-        it("authenticates the socket connection") {
-            _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
-
-            expect(socket.emittedEvents).to( contain(SocketEvent.Authentication) )
-        }
-
-        describe("authenticated") {
-
-            it("joins the auction") {
-                _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
-
-                expect(socket.emittedEvents).to( contain(SocketEvent.JoinSale) )
-
-            }
+        describe("connected") {
 
             it("listens for updated auction state") {
-                _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
+                let subject = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
+
+                subject.connect()
 
                 expect(socket.onEvents).to( contain(SocketEvent.UpdateAuctionState) )
             }
@@ -71,6 +62,7 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
                 let delegate = Delegate()
                 let subject = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
                 subject.delegate = delegate
+                subject.connect()
 
                 // "emit" the socket event from the server
                 let callback = socket.callbacks[.UpdateAuctionState]

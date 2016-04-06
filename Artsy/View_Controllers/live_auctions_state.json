@@ -1,0 +1,36 @@
+{
+    "lot-1": {
+        "derivedLotState": {
+            "askingPriceCents": 10500,
+            "isOpen": true,
+            "reserveStatus": "NoReserve",
+            "sellingPriceCents": 10000,
+            "winningBidEventId": "751338fe-3ef2-40b9-a6b0-f19604338540"
+        },
+        "eventHistory": [
+            {
+                "createdAt": "2016-04-05T13:47:33.671Z",
+                "event": {
+                    "BiddingOpened": {}
+                },
+                "eventId": "35f43d99-a9f4-4a22-94b7-65ad0c0f085e",
+                "lotId": "lot-1"
+            },
+            {
+                "createdAt": "2016-04-05T13:47:43.065Z",
+                "event": {
+                    "SecondPriceBidPlaced": {
+                        "amountCents": 10000,
+                        "bidder": {
+                            "ArtsyBidder": {
+                                "bidderId": "aj"
+                            }
+                        }
+                    }
+                },
+                "eventId": "751338fe-3ef2-40b9-a6b0-f19604338540",
+                "lotId": "lot-1"
+            }
+        ]
+    }
+}

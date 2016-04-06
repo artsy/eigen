@@ -8,12 +8,12 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
     override func spec() {
 
         let saleID = "sale_id"
-        let stateJSON: NSDictionary = ["id": saleID]
+        let stateJSON = loadJSON("live_static_data")
 
         var subject: LiveAuctionStaticDataFetcher!
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseAtPath("https://metaphysics-production.artsy.net/", withResponse: stateJSON)
+            OHHTTPStubs.stubJSONResponseAtPath("/", withResponse: stateJSON)
 
             subject = LiveAuctionStaticDataFetcher(saleID: saleID)
         }
@@ -23,16 +23,15 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
         }
 
         it("fetches the static data") {
-            var receivedState: AnyObject?
+            var receivedSaleArtworks: [SaleArtwork]?
 
             subject
                 .fetchStaticData()
-                .next { state in
-                    receivedState = state
+                .next { saleArtworks in
+                    receivedSaleArtworks = saleArtworks
             }
 
-            let dictionary = receivedState as? NSDictionary
-            expect(dictionary) == stateJSON
+            expect(receivedSaleArtworks?.count) == 10
         }
     }
 }
