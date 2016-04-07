@@ -48,8 +48,6 @@ class LiveAuctionViewController: UIViewController {
         pageControllerView.alignTrailingEdgeWithView(view, predicate: "0")
         pageControllerView.alignBottomEdgeWithView(view, predicate: "0")
 
-
-
         let progress = SimpleProgressView()
         progress.progress = 0.6
         progress.backgroundColor = .artsyGrayRegular()
@@ -165,9 +163,7 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
         guard let auctionViewModel = salesPerson.auctionViewModel else { return nil }
         guard let lotViewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
 
-
         let auctionVC =  LiveAuctionLotViewController(index: index, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: salesPerson.currentLotSignal)
-        
         return auctionVC
     }
 

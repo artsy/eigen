@@ -50,7 +50,7 @@ PODS:
   - ARGenericTableViewController (1.0.2)
   - ARTiledImageView (1.2.0):
     - SDWebImage/Core
-  - Artsy+UIColors (3.0.0)
+  - Artsy+UIColors (3.0.1)
   - Artsy+UIFonts (1.1.0)
   - Artsy+UILabels (2.0.1):
     - Artsy+UIColors (~> 3.0)
@@ -322,7 +322,7 @@ SPEC CHECKSUMS:
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
-  Artsy+UIColors: 4bcad6457b985ebbf84b3c96a5cd58c48d937778
+  Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy+UILabels: b4e82b2a9a914279109656dda21c70b833e7cff1
   Artsy-UIButtons: 26e6d1e0d2174773e9cf7693985d27faddd61743

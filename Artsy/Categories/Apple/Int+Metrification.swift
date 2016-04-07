@@ -15,6 +15,11 @@ extension Int {
         return NSNumberFormatter.currencyStringForDollarCents(roundCentsToNearestThousand())
     }
 
+    func convertToDollarString() -> String {
+        return NSNumberFormatter.currencyStringForDollarCents(self)
+    }
+
+
     // Rounds a number (cents) down to the nearest thousand dollars.
     // So 1545_00 becomes 1000_00.
     // Numbers less than a thousand dollars are returned as-is.

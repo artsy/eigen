@@ -83,17 +83,17 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var estimateString = "$Estimate"
     var lotName = "Lot Name"
     var urlForThumbnail = NSURL(string: "http://example.com/")!
+    var urlForProfile = NSURL(string: "http://example.com/")!
+    var reserveStatusString = "is testing reserve"
     var numberOfEvents = 1
     var lotIndex = 1
-    var currentLotValue = "$Value"
+    var numberOfBids = 1
+    var currentLotValue = 1234
+    var currentLotValueString = "$Value"
     var imageProfileSize = CGSize(width: 200, height: 200)
     var liveAuctionLotID = "lotID"
     func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
-    }
-
-    func bidButtonTitleWithState(state: LotState) -> String {
-        return "Bid Button Title"
     }
 
     var lotStateSignal = Signal(LotState.UpcomingLot(distanceFromLive: 1))

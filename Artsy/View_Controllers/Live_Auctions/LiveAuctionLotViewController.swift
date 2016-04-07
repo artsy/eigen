@@ -8,6 +8,7 @@ import ORStackView
 
 class LiveAuctionLotViewController: UIViewController {
     let index: Int
+
     let lotViewModel: LiveAuctionLotViewModelType
     let auctionViewModel: LiveAuctionViewModelType
     let currentLotSignal: Signal<LiveAuctionLotViewModelType>
@@ -71,7 +72,8 @@ class LiveAuctionLotViewController: UIViewController {
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
         infoToolbar.constrainHeight("14")
 
-        let bidButton = ARBlackFlatButton()
+        let bidButton = LiveAuctionBidButton()
+        bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 
         let bidHistoryViewController =  LiveAuctionBidHistoryViewController(style: .Plain)
@@ -95,15 +97,20 @@ class LiveAuctionLotViewController: UIViewController {
             }
         }
 
-
         artistNameLabel.text = lotViewModel.lotArtist
         artworkNameLabel.setTitle(lotViewModel.lotName, date: "1985")
         estimateLabel.text = lotViewModel.estimateString
         infoToolbar.lotVM = lotViewModel
         infoToolbar.auctionViewModel = auctionViewModel
-        computedLotStateSignal.next { [weak bidButton, weak self] lotState in
-            let title = self?.lotViewModel.bidButtonTitleWithState(lotState)
-            bidButton?.setTitle(title, forState: .Normal)
+
+        computedLotStateSignal.next { [weak bidButton] lotState in
+            // TODO: Hrm, should this go in the LotVM?
+            let buttonState: LiveAuctionBidButtonState
+            switch lotState {
+            case .LiveLot: buttonState = .Active(biddingState: .Biddable(biddingAmount: "$45,000"))
+            default: buttonState = .InActive(lotState: lotState)
+            }
+            bidButton?.progressSignal.update(buttonState)
         }
         lotPreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
 
@@ -123,7 +130,27 @@ class LiveAuctionLotViewController: UIViewController {
                 bidHistoryViewController.view.hidden = true
             }
         }
+    }
+}
 
+extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
+
+    func bidButtonRequestedBid(button: LiveAuctionBidButton) {
+        // TODO
+    }
+
+    func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton) {
+        
+    }
+
+    func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton) {
+        let bidVC = StoryboardScene.LiveAuctions.instantiateBid()
+        bidVC.bidViewModel = LiveAuctionBidViewModel(lotVM: lotViewModel)
+        
+        let nav = ARSerifNavigationViewController(rootViewController: bidVC)
+        guard let pageVC = parentViewController else { return }
+        guard let auctionVC = pageVC.parentViewController else { return }
+        auctionVC.presentViewController(nav, animated: true) { button.enabled = true }
     }
 }
 
@@ -146,7 +173,7 @@ class LiveAuctionCurrentLotView: UIButton {
         let biddingPriceLabel = ARSansSerifLabel()
         biddingPriceLabel.font = .sansSerifFontWithSize(16)
 
-        let hammerView = UIImageView(image: UIImage(named:"lot_bidder_hammer_white"))
+        let hammerView = UIImageView(image: UIImage(asset: .Lot_bidder_hammer_white))
         let thumbnailView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
 
         [liveLotLabel, artistNameLabel, biddingPriceLabel, thumbnailView, hammerView].forEach { addSubview($0) }
@@ -180,7 +207,7 @@ class LiveAuctionCurrentLotView: UIButton {
 
         viewModel.next { vm in
             artistNameLabel.text = vm.lotArtist
-            biddingPriceLabel.text = vm.currentLotValue
+            biddingPriceLabel.text = vm.currentLotValueString
             thumbnailView.ar_setImageWithURL(vm.urlForThumbnail)
         }
     }

@@ -13,8 +13,7 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
         var subject: LiveAuctionStaticDataFetcher!
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseAtPath("https://metaphysics-production.artsy.net/", withResponse: stateJSON)
-
+            OHHTTPStubs.stubJSONResponseForHost("metaphysics-production.artsy.net", withResponse:  stateJSON)
             subject = LiveAuctionStaticDataFetcher(saleID: saleID)
         }
         

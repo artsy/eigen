@@ -52,7 +52,9 @@
 {
     OHHTTPStubsDescriptor *stub = [[OHHTTPStubs sharedInstance] firstStubPassingTestForRequest:request];
     if (!stub) {
-        id spectaExample = [[NSThread mainThread] threadDictionary][@"SPTCurrentSpec"];
+        NSArray *specs = @[@"SPTCurrentSpec", @"NimbleEnvironment"];
+        NSDictionary *mainThreadDictionary = [[NSThread mainThread] threadDictionary];
+        id spectaExample = mainThreadDictionary[@"SPTCurrentSpec"] ?: mainThreadDictionary[@"NimbleEnvironment"];
         id expectaMatcher = [[NSThread mainThread] threadDictionary][@"EXP_currentMatcher"];
 
         if (spectaExample || expectaMatcher) {
