@@ -9,6 +9,8 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         var subject: LiveAuctionStateManager!
 
         beforeEach {
+            OHHTTPStubs.stubJSONResponseForHost("metaphysics-production.artsy.net", withResponse: [:])
+            // Not sure why ^ is needed, might be worth looking 
             subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateFetcherCreator: test_stateFetcherCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 

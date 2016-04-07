@@ -7,6 +7,16 @@
 
 @implementation OHHTTPStubs (Artsy)
 
++ (void)stubJSONResponseForHost:(NSString *)host withResponse:(id)response
+{
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        return [request.URL.host isEqualToString: host];
+    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:response options:0 error:nil];
+        return [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:@{ @"Content-Type": @"application/json" }];
+    }];
+}
+
 + (void)stubJSONResponseAtPath:(NSString *)path withResponse:(id)response
 {
     [OHHTTPStubs stubJSONResponseAtPath:path withResponse:response andStatusCode:200];

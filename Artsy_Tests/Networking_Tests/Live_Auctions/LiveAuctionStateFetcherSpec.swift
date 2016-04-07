@@ -14,8 +14,7 @@ class LiveAuctionStateFetcherSpec: QuickSpec {
         var subject: LiveAuctionStateFetcher!
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseAtPath("", withResponse: saleJSON)
-
+            OHHTTPStubs.stubJSONResponseForHost("sillyhost", withResponse: saleJSON)
             subject = LiveAuctionStateFetcher(host: host, saleID: saleID)
         }
         
