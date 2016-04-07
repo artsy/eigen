@@ -57,7 +57,46 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
 
                 expect(subject.bidViewModel.currentBid) == 15000
             }
+        }
 
+        it("hides the progressview when state is made to be biddable again") {
+            subject = StoryboardScene.LiveAuctions.instantiateBid()
+            let lotVM = Test_LiveAuctionLotViewModel()
+            subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM)
+            subject.loadViewProgrammatically()
+
+            subject.biddingProgressSignal.update(.BiddingInProgress)
+
+            expect(subject.bidProgressOverlayView.superview) != nil
+
+            let start = LiveAuctionBiddingProgressState.Biddable(biddingAmount: "money")
+            subject.biddingProgressSignal.update(start)
+            expect(subject.bidProgressOverlayView.superview).to( beNil() )
+        }
+
+        describe("networking") {
+
+            let examples:[String: LiveAuctionBiddingProgressState] = [
+                "in progress": .BiddingInProgress,
+                "is max bidder": .BidSuccess(isMaxBidder: true),
+                "not max bidder": .BidSuccess(isMaxBidder: true),
+                "network issues": .BidNetworkFail,
+                "waiting": .LotWaitingToOpen,
+                "sold": .LotSold,
+            ]
+
+            for (_, tuple) in examples.enumerate() {
+
+                it("has valid snapshot \(tuple.0)") {
+                    subject = StoryboardScene.LiveAuctions.instantiateBid()
+                    let lotVM = Test_LiveAuctionLotViewModel()
+                    subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM)
+                    subject.loadViewProgrammatically()
+
+                    subject.biddingProgressSignal.update(tuple.1)
+                    expect(subject) == snapshot()
+                }
+            }
         }
     }
 }

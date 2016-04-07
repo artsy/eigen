@@ -1,16 +1,14 @@
 #import "ARSpinner.h"
-
+#import "UIView+Spinner.h"
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+
 
 @interface ARSpinner ()
 @property (nonatomic, strong) UIView *spinnerView;
-@property (nonatomic, strong) CABasicAnimation *rotationAnimation;
 @end
 
 
 @implementation ARSpinner
-
-CGFloat RotationDuration = 0.9;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -79,20 +77,12 @@ CGFloat RotationDuration = 0.9;
 
 - (void)animate:(NSInteger)times
 {
-    CATransform3D rotationTransform = CATransform3DMakeRotation(-1.01f * M_PI, 0, 0, 1.0);
-    _rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
-
-    _rotationAnimation.toValue = [NSValue valueWithCATransform3D:rotationTransform];
-    _rotationAnimation.duration = RotationDuration;
-    _rotationAnimation.cumulative = YES;
-    _rotationAnimation.repeatCount = times;
-    [self.layer addAnimation:_rotationAnimation forKey:@"transform"];
+    [self ar_startSpinning:times];
 }
 
 - (void)stopAnimating
 {
-    [self.layer removeAllAnimations];
-    [self animate:1];
+    [self ar_stopSpinningInstantly:NO];
 }
 
 - (UIColor *)spinnerColor
