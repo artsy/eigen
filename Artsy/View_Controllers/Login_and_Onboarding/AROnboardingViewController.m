@@ -44,6 +44,15 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStageNotes
 };
 
+//typedef NS_ENUM(NSInteger, AROnboardingStage) {
+//    AROnboardingStageSlideshow,
+//    AROnboardingStageStart,
+//    AROnboardingStagePersonalizeArtists,
+//    AROnboardingStagePersonalizeCategories,
+//    AROnboardingStagePersonalizeBudget,
+//    AROnboardingStageFollowNotification
+//};
+
 
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
@@ -91,7 +100,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     self.screenSwipeGesture.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:self.screenSwipeGesture];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [ArtsyAPI getPersonalizeGenesWithSuccess:^(NSArray *genes) {
@@ -149,8 +158,8 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 //      make sure it never shows. This way it is shown for a very short period, but that’s better than nothing.
 - (void)viewDidAppear:(BOOL)animated;
 {
-   [[UIApplication sharedApplication] setStatusBarHidden:YES];
-   [super viewDidAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [super viewDidAppear:animated];
 }
 
 #pragma mark -
@@ -207,11 +216,13 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     sender.backgroundImage = nil;
 
     // TODO: Implement next screen of onboarding here
-    
-    ARSignupViewController *signup = [[ARSignupViewController alloc] init];
-    signup.delegate = self;
-    [self pushViewController:signup animated:YES];
-    self.state = AROnboardingStageChooseMethod;
+
+    [self presentOnboarding];
+
+    //    ARSignupViewController *signup = [[ARSignupViewController alloc] init];
+    //    signup.delegate = self;
+    //    [self pushViewController:signup animated:YES];
+    //    self.state = AROnboardingStageChooseMethod;
 }
 
 #pragma mark -
@@ -227,14 +238,10 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 - (void)presentOnboarding
 {
-    if ([UIDevice isPad]) {
-        [self presentWebOnboarding];
-    } else {
-        [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
-            self.backgroundView.alpha = 0;
-        }];
-        [self presentCollectorLevel];
-    }
+    [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
+        self.backgroundView.alpha = 0;
+    }];
+    [self presentPersonalize];
 }
 
 - (void)didSignUpAndLogin
@@ -246,65 +253,33 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     }
 }
 
-
 #pragma mark -
-#pragma mark Web onboarding
-
-- (void)presentWebOnboarding
-{
-    NSURL *url = [ARSwitchBoard.sharedInstance resolveRelativeUrl:ARPersonalizePath];
-    ARPersonalizeWebViewController *viewController = [[ARPersonalizeWebViewController alloc] initWithURL:url];
-    viewController.personalizeDelegate = self;
-    [self pushViewController:viewController animated:YES];
-}
-
-#pragma mark -
-#pragma mark Collector level
-
-- (void)presentCollectorLevel
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipCollectorLevelDefault]) {
-        [self presentPersonalize];
-        return;
-    }
-    ARCollectorStatusViewController *status = [[ARCollectorStatusViewController alloc] init];
-    status.delegate = self;
-    [self pushViewController:status animated:YES];
-    self.state = AROnboardingStageCollectorStatus;
-}
+#pragma mark Personalize level
 
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
 }
 
-- (void)collectorLevelDone:(ARCollectorLevel)level
-{
-    User *user = [User currentUser];
-    user.collectorLevel = level;
-
-    NSString *collectorLevel = [ARCollectorStatusViewController stringFromCollectorLevel:level];
-    [ARAnalytics setUserProperty:ARAnalyticsCollectorLevelProperty toValue:collectorLevel];
-
-    [user setRemoteUpdateCollectorLevel:level success:nil failure:^(NSError *error) {
-        ARErrorLog(@"Error updating collector level");
-    }];
-
-    [[ARUserManager sharedManager] storeUserData];
-    [self presentPersonalize];
-}
-
 - (void)presentPersonalize
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPersonalizeDefault]) {
-        [self personalizeDone];
-        return;
-    }
+    //    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPersonalizeDefault]) {
+    //        [self personalizeDone];
+    //        return;
+    //    }
 
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    self.state = AROnboardingStagePersonalize;
+    self.state = AROnboardingStagePersonalize; // AROnboardingStagePersonalizeArtists
+}
+
+- (void)presentPersonalizeCategories
+{
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+    self.state = AROnboardingStagePersonalize; // AROnboardingStagePersonalizeCategories
 }
 
 - (void)personalizeDone
@@ -348,7 +323,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     self.backgroundWidthConstraint.constant = 0;
     self.backgroundHeightConstraint.constant = 0;
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         __strong typeof (wself) sself = wself;
         [sself.backgroundView layoutIfNeeded];
@@ -394,7 +369,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 - (void)signUpWithFacebook
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
         __strong typeof (wself) sself = wself;
@@ -420,7 +395,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ARAuthProviders getReverseAuthTokenForTwitter:^(NSString *token, NSString *secret) {
         __strong typeof (wself) sself = wself;
 
@@ -571,7 +546,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
     self.backgroundWidthConstraint.constant = offset * 2;
     self.backgroundHeightConstraint.constant = offset * 2;
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         __strong typeof (wself) sself = wself;
         [sself.backgroundView layoutIfNeeded];

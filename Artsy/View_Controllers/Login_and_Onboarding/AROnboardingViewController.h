@@ -8,7 +8,7 @@
 - (void)personalizeDone;
 - (void)splashDone:(ARSignUpSplashViewController *)sender;
 - (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender;
-- (void)collectorLevelDone:(ARCollectorLevel)level;
+//- (void)collectorLevelDone:(ARCollectorLevel)level;
 - (void)slideshowDone;
 - (void)setPriceRangeDone:(NSInteger)range;
 @end
