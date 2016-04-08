@@ -1,8 +1,8 @@
 #import "AROnboardingNavigationItemsView.h"
 #import "ARButtonSubclasses.h"
 #import "UIColor+ArtsyColors.h"
-#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 
+#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
