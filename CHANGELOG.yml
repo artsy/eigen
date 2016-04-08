@@ -6,9 +6,17 @@ upcoming:
     - Updates for Xcode 7.3. - ash
     - Onboarding splash screen - maxim
     - New state reconciliation for live auctions.
+    - CocoaPods now is v1.0b. - orta
+
+    - New state reconciliation for live auctions. -ash
+    - Scaffolding for sending live auction events. - ash
+    - Started the Live Auction Bidding Interface - orta
+    - Handles bidding in an auction with stubbed API interfaces. - orta
+    - Basic metaphysics access for live sale static data. - ash
 
   notes:
     - Fixes long auction names falling off right edge. - ash
+    - Fixes live auction lots being in the wrong order. - ash
 
 
 releases:

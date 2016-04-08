@@ -3,10 +3,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '8.0'
 use_frameworks!
-
-# install! 'cocoapods', :deterministic_uuids => false
-
-# Yep.
 inhibit_all_warnings!
 
 # Note: These should be reflected _accurately_ in the environment of
@@ -91,8 +87,8 @@ target 'Artsy' do
   end
 
   # Facebook
-  pod 'FBSDKCoreKit', '4.9.0-beta2'
-  pod 'FBSDKLoginKit', '4.9.0-beta2'
+  pod 'FBSDKCoreKit', '~> 4.9'
+  pod 'FBSDKLoginKit', '~> 4.9'
 
   # Analytics
   pod 'Analytics'
@@ -112,22 +108,25 @@ target 'Artsy' do
   pod 'Interstellar/Core'
   pod 'Socket.IO-Client-Swift'
 
-end
+  target 'Artsy Tests' do
+      inherit! :search_paths
 
-target 'Artsy Tests' do
-  pod 'FBSnapshotTestCase', git: 'https://github.com/untitledstartup/ios-snapshot-test-case.git'
-  pod 'Expecta+Snapshots'
-  pod 'OHHTTPStubs'
-  pod 'XCTest+OHHTTPStubSuiteCleanUp'
-  pod 'Specta'
-  pod 'Expecta'
-  pod 'OCMock'
-  pod 'Forgeries/Mocks', :git => "https://github.com/ashfurrow/Forgeries.git", :branch => "application"
+      # Temporary, should be removed post CP 1.0
+      # https://github.com/facebook/ios-snapshot-test-case/pull/141
+      pod 'FBSnapshotTestCase', git: 'https://github.com/orta/ios-snapshot-test-case.git'
+      pod 'Expecta+Snapshots'
+      pod 'OHHTTPStubs'
+      pod 'XCTest+OHHTTPStubSuiteCleanUp'
+      pod 'Specta'
+      pod 'Expecta'
+      pod 'OCMock'
+      pod 'Forgeries/Mocks', :git => "https://github.com/ashfurrow/Forgeries.git", :branch => "application"
 
-  # Swift pods 🎉
-  pod 'Quick', git: 'https://github.com/Quick/Quick.git'
-  pod 'Nimble', git: 'https://github.com/Quick/Nimble.git'
-  pod 'Nimble-Snapshots', '~> 3.0.0'
+      # Swift pods 🎉
+      pod 'Quick', git: 'https://github.com/Quick/Quick.git'
+      pod 'Nimble', git: 'https://github.com/Quick/Nimble.git'
+      pod 'Nimble-Snapshots'
+  end
 end
 
 
@@ -147,14 +146,6 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
     end
-  end
-
-
-  app_plist = "Artsy/App_Resources/Artsy-Info.plist"
-  plist_buddy = "/usr/libexec/PlistBuddy"
-  version = `#{plist_buddy} -c "Print CFBundleShortVersionString" #{app_plist}`.strip
-  installer.pods_project.targets.each do |target|
-    `#{plist_buddy} -c "Set CFBundleShortVersionString #{version}" "Pods/Target Support Files/#{target}/Info.plist" > /dev/null 2>&1`
   end
 
   # TODO:

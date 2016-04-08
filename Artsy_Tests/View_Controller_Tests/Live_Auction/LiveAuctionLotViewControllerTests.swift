@@ -55,7 +55,6 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
             it("doesnt show a live auction call to action when auction is closed") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
-                auctionViewModel.saleAvailability = .Closed
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
 
                 subject.loadViewProgrammatically()
@@ -70,8 +69,8 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var startDate = NSDate().dateByAddingTimeInterval(-3600)
     var lotCount = 3
-    var saleAvailability = SaleAvailabilityState.Active
     var saleAvailabilitySignal = Signal(SaleAvailabilityState.Active)
+    var currentLotIDSignal = Signal<String>()
 
     var distance: Int?
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
@@ -80,18 +79,26 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
 }
 
 class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
-    var bidButtonTitleSignal = Signal("Bid Button Title")
     var lotArtist = "Artist Name"
     var estimateString = "$Estimate"
     var lotName = "Lot Name"
-    var lotStateSignal = Signal(LotState.UpcomingLot(distanceFromLive: 1))
     var urlForThumbnail = NSURL(string: "http://example.com/")!
+    var urlForProfile = NSURL(string: "http://example.com/")!
+    var reserveStatusString = "is testing reserve"
     var numberOfEvents = 1
     var lotIndex = 1
-    var currentLotValue = "$Value"
+    var numberOfBids = 1
+    var currentLotValue = 1234
+    var currentLotValueString = "$Value"
     var imageProfileSize = CGSize(width: 200, height: 200)
+    var liveAuctionLotID = "lotID"
     func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
+    }
+
+    var lotStateSignal = Signal(LotState.UpcomingLot(distanceFromLive: 1))
+    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Signal<LotState> {
+        return lotStateSignal
     }
 
     let askingPriceSignal = Signal<Int>()

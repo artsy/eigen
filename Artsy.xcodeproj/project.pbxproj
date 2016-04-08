@@ -150,7 +150,6 @@
 		3CB97D8F1887099E008C44FE /* ARLoginViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB97D8E1887099E008C44FE /* ARLoginViewControllerTests.m */; };
 		3CB9A20D18F303B20056C72B /* ARArtworkActionsViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB9A20C18F303B20056C72B /* ARArtworkActionsViewTests.m */; };
 		3CBB03A8192BA94C00689F89 /* ARFairArtistViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBB03A7192BA94C00689F89 /* ARFairArtistViewControllerTests.m */; };
-		3CBE50F62BE63993AAF78B40 /* Pods_Artsy_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B326C42C9FD28482DC62431 /* Pods_Artsy_Tests.framework */; };
 		3CCCC88D1899657C008015DD /* ARFairPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCCC88C1899657C008015DD /* ARFairPostsViewController.m */; };
 		3CCCC8941899676E008015DD /* ARFairPostsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCCC8931899676E008015DD /* ARFairPostsViewControllerTests.m */; };
 		3CCCC89B18996DD4008015DD /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCCC89A18996DD4008015DD /* Post.m */; };
@@ -185,6 +184,7 @@
 		3CFBE32D18C3A3F400C781D0 /* ARNetworkErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFBE32C18C3A3F400C781D0 /* ARNetworkErrorView.m */; };
 		3CFBE33618C5848900C781D0 /* ARFileUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */; };
 		4191F43F1C8745D90054F823 /* ARAnalyticsVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */; };
+		4881E97329170F61D18D906E /* Pods_Artsy_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 107F7EF61BFD390B7D57B4B3 /* Pods_Artsy_Tests.framework */; };
 		491A4DE2168E4343003B2246 /* Gene.m in Sources */ = {isa = PBXBuildFile; fileRef = 491A4DE1168E4343003B2246 /* Gene.m */; };
 		4938742917BD512700724795 /* ARSignUpSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938742717BD512700724795 /* ARSignUpSplashViewController.m */; };
 		4938743617BDB2CD00724795 /* ARCrossfadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938743517BDB2CD00724795 /* ARCrossfadingImageView.m */; };
@@ -301,6 +301,8 @@
 		5E79FCB71C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB61C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m */; };
 		5E79FCBA1C768108003D5D65 /* ARNvagiationButton+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB91C768108003D5D65 /* ARNvagiationButton+Swift.swift */; };
 		5E79FCBC1C76856C003D5D65 /* NavigationButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCBB1C76856C003D5D65 /* NavigationButtonTests.swift */; };
+		5E88414E1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E88414D1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift */; };
+		5E8841501CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E88414F1CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift */; };
 		5E8A03B51C52B60900EAF18B /* AuctionRefineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */; };
 		5E9A782019068EDF00734E1B /* ARProfileViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */; };
 		5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */; };
@@ -368,6 +370,9 @@
 		6029E9F51993D726002D42C3 /* ARAppSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6029E9F41993D726002D42C3 /* ARAppSearchViewController.m */; };
 		602BC089168E0C0E00069FDB /* ARReusableLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 602BC088168E0C0D00069FDB /* ARReusableLoadingView.m */; };
 		602C09BA1B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 602C09B91B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m */; };
+		602F03471CB2912D008A999D /* LiveAuctions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602F03461CB2912D008A999D /* LiveAuctions.storyboard */; };
+		602F034B1CB291EC008A999D /* StoryboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602F03491CB291EC008A999D /* StoryboardConstants.swift */; };
+		602F034C1CB291EC008A999D /* StoryboardImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602F034A1CB291EC008A999D /* StoryboardImages.swift */; };
 		60327DC91987AAD00075B399 /* ARTabContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DC81987AAD00075B399 /* ARTabContentView.m */; };
 		60327DCD1987AD240075B399 /* ARDispatchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DCC1987AD240075B399 /* ARDispatchManager.m */; };
 		60327DD01987B7940075B399 /* ARDeveloperOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DCF1987B7940075B399 /* ARDeveloperOptions.m */; };
@@ -541,6 +546,8 @@
 		60A49F601676559300B9B95D /* ARNetworkConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A49F5F1676559300B9B95D /* ARNetworkConstants.m */; };
 		60A612B8189673F4008FC19D /* ARGeneArtworksNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A612B7189673F4008FC19D /* ARGeneArtworksNetworkModel.m */; };
 		60AEC84716E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AEC84616E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m */; };
+		60AF60C91CB2D8BD0041B430 /* LiveAuctionBidViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF60C81CB2D8BD0041B430 /* LiveAuctionBidViewController.swift */; };
+		60AF60CB1CB395600041B430 /* LiveAuctionBidButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF60CA1CB395600041B430 /* LiveAuctionBidButtonTests.swift */; };
 		60B1B4C91B565218007A7217 /* ARCollectorStatusViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B1B4C81B565218007A7217 /* ARCollectorStatusViewControllerSpec.m */; };
 		60B617CD1815991E00EBDC51 /* ARAuctionArtworkResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B617CC1815991E00EBDC51 /* ARAuctionArtworkResultsViewController.m */; };
 		60B617D31815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B617D21815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m */; };
@@ -588,6 +595,8 @@
 		60F1C51517C0EFD7000938F7 /* ARBrowseFeaturedLinksCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C51417C0EFD7000938F7 /* ARBrowseFeaturedLinksCollectionViewCell.m */; };
 		60F1C51817C0F3DE000938F7 /* ArtsyAPI+Browse.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C51717C0F3DE000938F7 /* ArtsyAPI+Browse.m */; };
 		60F1C51B17C11303000938F7 /* ARGeneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C51A17C11303000938F7 /* ARGeneViewController.m */; };
+		60F242F21CB3AA7300387AA1 /* LiveAuctionBidButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F242F11CB3AA7300387AA1 /* LiveAuctionBidButton.swift */; };
+		60F242FC1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F242FB1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift */; };
 		60F63AB51C58D9B100DCFF2A /* ARSwitchboard+EchoSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F63AB31C58D98E00DCFF2A /* ARSwitchboard+EchoSpec.m */; };
 		60F63AB71C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F63AB61C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift */; };
 		60F8FFC1197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F8FFC0197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m */; };
@@ -596,6 +605,7 @@
 		60FC2CBD1C8F677700ACD78F /* live_auctions.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_auctions.json */; };
 		60FC2CBF1C8F704D00ACD78F /* SaleStatusType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FC2CBE1C8F704D00ACD78F /* SaleStatusType.swift */; };
 		6615518D1C75DD47007EE049 /* ARWorksForYouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */; };
+		7091E01A0E49F283EF9BF395 /* Pods_Artsy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BEA0E7F562681F61B29D4C4 /* Pods_Artsy.framework */; };
 		8337688A1C80DEC700611262 /* ARWorksForYouNetworkModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 833768891C80DEC700611262 /* ARWorksForYouNetworkModelTests.m */; };
 		833D53C71C75DFA900D63ADB /* ARWorksForYouNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */; };
 		833D53CB1C760B5400D63ADB /* ARWorksForYouNotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */; };
@@ -740,8 +750,8 @@
 		0631FA6E1705E77F000A5ED3 /* mail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mail.html; sourceTree = "<group>"; };
 		064330E3170F526200FF6C41 /* ARArtistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtistViewController.h; sourceTree = "<group>"; };
 		064330E4170F526200FF6C41 /* ARArtistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ARArtistViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		069CA471836084D186F146A2 /* Pods_Artsy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		06E44EB8170235D8001B2EBF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		0BEA0E7F562681F61B29D4C4 /* Pods_Artsy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C2C934B1B7E4B310036CC16 /* ARArtworkInfoViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkInfoViewControllerTests.m; sourceTree = "<group>"; };
 		0C5100A31B83CB990050F479 /* ARCreateAccountViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCreateAccountViewControllerTests.m; sourceTree = "<group>"; };
 		0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserActivity.h; sourceTree = "<group>"; };
@@ -752,6 +762,8 @@
 		0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatcher+UINavigationController.h"; sourceTree = "<group>"; };
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
 		1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_medium@2x.png"; sourceTree = "<group>"; };
+		107F7EF61BFD390B7D57B4B3 /* Pods_Artsy_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AC876215B49E6BF4D24AE23 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		29773A6F17B9749800FC89B3 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		342F9005B8C4E89F9DA89E36 /* NSString+StringCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringCase.h"; sourceTree = "<group>"; };
 		342F9018E314BCC99A929A6C /* UILabel+Typography.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Typography.h"; sourceTree = "<group>"; };
@@ -1007,7 +1019,6 @@
 		3CFBE32B18C3A3F400C781D0 /* ARNetworkErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNetworkErrorView.h; sourceTree = "<group>"; };
 		3CFBE32C18C3A3F400C781D0 /* ARNetworkErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNetworkErrorView.m; sourceTree = "<group>"; };
 		3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFileUtilsTests.m; sourceTree = "<group>"; };
-		3E3863837F2518AB37D2D9CF /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		4191F43D1C8745D90054F823 /* ARAnalyticsVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsVisualizer.h; sourceTree = "<group>"; };
 		4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsVisualizer.m; sourceTree = "<group>"; };
 		4917819D176A6B22001E751E /* ARArtworkSetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARArtworkSetViewController.h; sourceTree = "<group>"; };
@@ -1094,6 +1105,7 @@
 		49F0C67A17B9706000721244 /* AROnboardingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingViewController.m; sourceTree = "<group>"; };
 		49F0C67D17B972F200721244 /* ARSlideshowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSlideshowView.h; sourceTree = "<group>"; };
 		49F0C67E17B972F200721244 /* ARSlideshowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSlideshowView.m; sourceTree = "<group>"; };
+		4ADF6164FE5A0CF663832A03 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		5102616D1BBE8324002AB8BB /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionWebViewController.h; sourceTree = "<group>"; };
 		5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewController.m; sourceTree = "<group>"; };
 		510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewControllerTests.m; sourceTree = "<group>"; };
@@ -1212,6 +1224,8 @@
 		5E79FCB81C764780003D5D65 /* ARSaleArtworkItemWidthDependentModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSaleArtworkItemWidthDependentModule.h; sourceTree = "<group>"; };
 		5E79FCB91C768108003D5D65 /* ARNvagiationButton+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARNvagiationButton+Swift.swift"; sourceTree = "<group>"; };
 		5E79FCBB1C76856C003D5D65 /* NavigationButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationButtonTests.swift; sourceTree = "<group>"; };
+		5E88414D1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStaticDataFetcher.swift; path = Live_Auctions/LiveAuctionStaticDataFetcher.swift; sourceTree = "<group>"; };
+		5E88414F1CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStaticDataFetcherSpec.swift; path = Live_Auctions/LiveAuctionStaticDataFetcherSpec.swift; sourceTree = "<group>"; };
 		5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineViewController.swift; path = Auction/AuctionRefineViewController.swift; sourceTree = "<group>"; };
 		5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARProfileViewControllerTests.m; sourceTree = "<group>"; };
 		5E9A78211906BA3D00734E1B /* OCMArg+ClassChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCMArg+ClassChecker.h"; sourceTree = "<group>"; };
@@ -1276,6 +1290,7 @@
 		600B8B3E1C4FCEE000776F84 /* notifications.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = notifications.md; sourceTree = "<group>"; };
 		600B8B3F1C4FCEE000776F84 /* thanks.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = thanks.md; sourceTree = "<group>"; };
 		600B8B441C4FCEEC00776F84 /* CHANGELOG.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.yml; sourceTree = SOURCE_ROOT; };
+		600D55388EBA7E8A41AC0843 /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		600EE29C16B3003F002E9F9A /* ARNavigationButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationButton.m; sourceTree = "<group>"; };
 		600EE29D16B3003F002E9F9A /* ARNavigationButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNavigationButton.h; sourceTree = "<group>"; };
 		6012313218B153C500B7667F /* ARFairArtistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairArtistViewController.h; sourceTree = "<group>"; };
@@ -1325,6 +1340,9 @@
 		602DCDAF16C6B752009EB10D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		602DCDB116C6B75D009EB10D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		602DCDB316C6B7A5009EB10D /* libicucore.A.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.A.dylib; path = usr/lib/libicucore.A.dylib; sourceTree = SDKROOT; };
+		602F03461CB2912D008A999D /* LiveAuctions.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LiveAuctions.storyboard; path = Live_Auctions/Resources/LiveAuctions.storyboard; sourceTree = "<group>"; };
+		602F03491CB291EC008A999D /* StoryboardConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoryboardConstants.swift; path = Generated/StoryboardConstants.swift; sourceTree = "<group>"; };
+		602F034A1CB291EC008A999D /* StoryboardImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoryboardImages.swift; path = Generated/StoryboardImages.swift; sourceTree = "<group>"; };
 		60327DC71987AAD00075B399 /* ARTabContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTabContentView.h; sourceTree = "<group>"; };
 		60327DC81987AAD00075B399 /* ARTabContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTabContentView.m; sourceTree = "<group>"; };
 		60327DCB1987AD240075B399 /* ARDispatchManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDispatchManager.h; sourceTree = "<group>"; };
@@ -1606,6 +1624,8 @@
 		60A7B1B017B26DCD003DC094 /* ARFeedHostItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARFeedHostItem.h; sourceTree = "<group>"; };
 		60AEC84516E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkThumbnailMetadataView.h; sourceTree = "<group>"; };
 		60AEC84616E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkThumbnailMetadataView.m; sourceTree = "<group>"; };
+		60AF60C81CB2D8BD0041B430 /* LiveAuctionBidViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidViewController.swift; path = Live_Auctions/LiveAuctionBidViewController.swift; sourceTree = "<group>"; };
+		60AF60CA1CB395600041B430 /* LiveAuctionBidButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidButtonTests.swift; path = Live_Auction/LiveAuctionBidButtonTests.swift; sourceTree = "<group>"; };
 		60B1B4C81B565218007A7217 /* ARCollectorStatusViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCollectorStatusViewControllerSpec.m; sourceTree = "<group>"; };
 		60B617CB1815991E00EBDC51 /* ARAuctionArtworkResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionArtworkResultsViewController.h; sourceTree = "<group>"; };
 		60B617CC1815991E00EBDC51 /* ARAuctionArtworkResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionArtworkResultsViewController.m; sourceTree = "<group>"; };
@@ -1687,6 +1707,8 @@
 		60F1C51717C0F3DE000938F7 /* ArtsyAPI+Browse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Browse.m"; sourceTree = "<group>"; };
 		60F1C51917C11303000938F7 /* ARGeneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeneViewController.h; sourceTree = "<group>"; };
 		60F1C51A17C11303000938F7 /* ARGeneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGeneViewController.m; sourceTree = "<group>"; };
+		60F242F11CB3AA7300387AA1 /* LiveAuctionBidButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidButton.swift; path = Live_Auctions/LiveAuctionBidButton.swift; sourceTree = "<group>"; };
+		60F242FB1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidViewControllerTests.swift; path = Live_Auction/LiveAuctionBidViewControllerTests.swift; sourceTree = "<group>"; };
 		60F63AB31C58D98E00DCFF2A /* ARSwitchboard+EchoSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchboard+EchoSpec.m"; sourceTree = "<group>"; };
 		60F63AB61C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARHockeyFeedbackDelegate.swift; sourceTree = "<group>"; };
 		60F8FFC0197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkSetViewControllerSpec.m; sourceTree = "<group>"; };
@@ -1702,9 +1724,9 @@
 		60FFE3DA188E91C50012B485 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		60FFE3DC188E91F20012B485 /* getting_confident.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = getting_confident.md; sourceTree = "<group>"; };
 		60FFE3DD188E921A0012B485 /* eigen_tips.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = eigen_tips.md; sourceTree = "<group>"; };
+		64CEDF29A84E7D83134CEE4E /* Pods-Artsy Tests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.store.xcconfig"; sourceTree = "<group>"; };
 		6615518B1C75DD47007EE049 /* ARWorksForYouViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARWorksForYouViewController.h; path = Artsy/View_Controllers/WorksForYou/ARWorksForYouViewController.h; sourceTree = SOURCE_ROOT; };
 		6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARWorksForYouViewController.m; path = Artsy/View_Controllers/WorksForYou/ARWorksForYouViewController.m; sourceTree = SOURCE_ROOT; };
-		744E9123C8D65C3413D20A6A /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
 		833768891C80DEC700611262 /* ARWorksForYouNetworkModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNetworkModelTests.m; sourceTree = "<group>"; };
 		833D53C51C75DFA900D63ADB /* ARWorksForYouNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWorksForYouNetworkModel.h; sourceTree = "<group>"; };
 		833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNetworkModel.m; sourceTree = "<group>"; };
@@ -1717,10 +1739,7 @@
 		837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Notifications.m"; sourceTree = "<group>"; };
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
-		8B326C42C9FD28482DC62431 /* Pods_Artsy_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9434A9843098609F9F092F0D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9C7E4F63ED66CFE798391479 /* Pods-Artsy Tests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.store.xcconfig"; sourceTree = "<group>"; };
-		A45BBC8CF05FCA3256C706DE /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButtonTests.m; sourceTree = "<group>"; };
 		B316E2F218170DF40086CCDB /* SaleArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaleArtwork.h; sourceTree = "<group>"; };
 		B316E2F318170DF40086CCDB /* SaleArtwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleArtwork.m; sourceTree = "<group>"; };
@@ -1742,6 +1761,7 @@
 		B3ECE83B1819D1FD009F5C5B /* SaleArtworkTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleArtworkTests.m; sourceTree = "<group>"; };
 		B3EFC6371815B41C00F23540 /* BidderPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BidderPosition.h; sourceTree = "<group>"; };
 		B3EFC6381815B41C00F23540 /* BidderPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidderPosition.m; sourceTree = "<group>"; };
+		C090E60DA1F8FEC7053193C8 /* Pods-Artsy.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.demo.xcconfig"; sourceTree = "<group>"; };
 		CB11525917C815210093D864 /* AROnboardingFollowableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingFollowableTableViewCell.h; sourceTree = "<group>"; };
 		CB11525A17C815210093D864 /* AROnboardingFollowableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingFollowableTableViewCell.m; sourceTree = "<group>"; };
 		CB206F6F17C3FA8F00A4FDC4 /* ARPriceRangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPriceRangeViewController.h; sourceTree = "<group>"; };
@@ -1774,6 +1794,7 @@
 		CB9E244017CBC36F00773A9A /* ARAuthProviders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuthProviders.m; sourceTree = "<group>"; };
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
 		CBB469CF181F1F1200B5692B /* Bid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bid.m; sourceTree = "<group>"; };
+		CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
 		D322204A1B4F0352008C2FBF /* ARCollapsableTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCollapsableTextViewTests.m; sourceTree = "<group>"; };
 		D35D9D5B1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCustomEigenLabelTests.m; sourceTree = "<group>"; };
 		D37CBC4A1AF2C62E00A69019 /* ARFairNetworkModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairNetworkModelTests.m; sourceTree = "<group>"; };
@@ -1794,7 +1815,6 @@
 		D3F3FA1D1AAE1BFC00E88359 /* ARBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseViewController.h; sourceTree = "<group>"; };
 		D3F3FA1E1AAE1BFC00E88359 /* ARBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseViewController.m; sourceTree = "<group>"; };
 		D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultsTests.m; sourceTree = "<group>"; };
-		DA3BF0BF348E57E1B6B4E3A4 /* Pods-Artsy.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.demo.xcconfig"; sourceTree = "<group>"; };
 		E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_small@2x.png"; sourceTree = "<group>"; };
 		E611846F18D78068000FE4C9 /* ARMessageItemProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMessageItemProviderTests.m; sourceTree = "<group>"; };
 		E611847118D7B4C4000FE4C9 /* ARSharingControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSharingControllerTests.m; sourceTree = "<group>"; };
@@ -1891,7 +1911,6 @@
 		E6FFEAAB19C7925600A0D7DE /* splash_4@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_4@2x~ipad.jpg"; sourceTree = "<group>"; };
 		E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_4@2x~iphone.jpg"; sourceTree = "<group>"; };
 		E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_5@2x~ipad.jpg"; sourceTree = "<group>"; };
-		F607671050C9BFA2843D917C /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1910,7 +1929,7 @@
 				512AB35B1BD7C7A100F92B9A /* CoreSpotlight.framework in Frameworks */,
 				60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */,
 				60935A441A69CFE700129CE1 /* MobileCoreServices.framework in Frameworks */,
-				2CF5409BF8E46C99AA2FE962 /* Pods_Artsy.framework in Frameworks */,
+				7091E01A0E49F283EF9BF395 /* Pods_Artsy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1927,26 +1946,13 @@
 			files = (
 				60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */,
 				B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */,
-				3CBE50F62BE63993AAF78B40 /* Pods_Artsy_Tests.framework in Frameworks */,
+				4881E97329170F61D18D906E /* Pods_Artsy_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		03638BBED0EF45A19AF9F91D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A45BBC8CF05FCA3256C706DE /* Pods-Artsy.debug.xcconfig */,
-				3E3863837F2518AB37D2D9CF /* Pods-Artsy.store.xcconfig */,
-				DA3BF0BF348E57E1B6B4E3A4 /* Pods-Artsy.demo.xcconfig */,
-				F607671050C9BFA2843D917C /* Pods-Artsy Tests.debug.xcconfig */,
-				9C7E4F63ED66CFE798391479 /* Pods-Artsy Tests.store.xcconfig */,
-				744E9123C8D65C3413D20A6A /* Pods-Artsy Tests.demo.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		062C201A16DD76A30095A7EC /* Image */ = {
 			isa = PBXGroup;
 			children = (
@@ -1984,6 +1990,19 @@
 				60E738701C64AB8B00AC381B /* ARStubbedAnalyticsProvider.m */,
 			);
 			path = Stubs;
+			sourceTree = "<group>";
+		};
+		33C6886033769A61A3E99B18 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1AC876215B49E6BF4D24AE23 /* Pods-Artsy.debug.xcconfig */,
+				4ADF6164FE5A0CF663832A03 /* Pods-Artsy.store.xcconfig */,
+				C090E60DA1F8FEC7053193C8 /* Pods-Artsy.demo.xcconfig */,
+				600D55388EBA7E8A41AC0843 /* Pods-Artsy Tests.debug.xcconfig */,
+				64CEDF29A84E7D83134CEE4E /* Pods-Artsy Tests.store.xcconfig */,
+				CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		342F90A2E677A86747A25FD8 /* Artsy */ = {
@@ -2743,7 +2762,7 @@
 				609F97D31AC0F26A0079FE21 /* Artsy WatchKit App */,
 				49BA7E021655ABE600C06572 /* Frameworks */,
 				49BA7E001655ABE600C06572 /* Products */,
-				03638BBED0EF45A19AF9F91D /* Pods */,
+				33C6886033769A61A3E99B18 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2793,8 +2812,8 @@
 				49BA7E031655ABE600C06572 /* UIKit.framework */,
 				B3ECE8271819D1E6009F5C5B /* XCTest.framework */,
 				9434A9843098609F9F092F0D /* Pods.framework */,
-				069CA471836084D186F146A2 /* Pods_Artsy.framework */,
-				8B326C42C9FD28482DC62431 /* Pods_Artsy_Tests.framework */,
+				0BEA0E7F562681F61B29D4C4 /* Pods_Artsy.framework */,
+				107F7EF61BFD390B7D57B4B3 /* Pods_Artsy_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2899,6 +2918,7 @@
 				5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */,
 				5E174F5B1CADB35800657743 /* LiveAuctionStateReconcilerSpec.swift */,
 				5EF3C93C1C99DB9F002FF956 /* LiveAuctionStateFetcherSpec.swift */,
+				5E88414F1CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift */,
 			);
 			name = "Live Auctions";
 			sourceTree = "<group>";
@@ -3256,6 +3276,7 @@
 				5E0DD14A1C9764420037F9E4 /* LiveAuctionStateManager.swift */,
 				5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */,
 				5E6A16941C99B657004DB29B /* LiveAuctionStateFetcher.swift */,
+				5E88414D1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift */,
 			);
 			name = "Live Auctions";
 			sourceTree = "<group>";
@@ -3264,6 +3285,8 @@
 			isa = PBXGroup;
 			children = (
 				609E394D1C9FEC840035C6FC /* LiveAuctionLotImagesPreviewView.swift */,
+				60AF60C81CB2D8BD0041B430 /* LiveAuctionBidViewController.swift */,
+				60F242F11CB3AA7300387AA1 /* LiveAuctionBidButton.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -3282,6 +3305,8 @@
 				60ED311E1C8F73450071DD89 /* LiveAuctionLotViewControllerTests.swift */,
 				60ED31201C8F74670071DD89 /* FakeSalesPerson.swift */,
 				608CFC6C1C90C4B500B9056C /* LiveAuctionBidHistoryViewControllerTests.swift */,
+				60AF60CA1CB395600041B430 /* LiveAuctionBidButtonTests.swift */,
+				60F242FB1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift */,
 			);
 			name = "Live Auction";
 			sourceTree = "<group>";
@@ -3291,6 +3316,7 @@
 			children = (
 				601E31AA1C80A55F00D09F73 /* live_auctions.json */,
 				6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */,
+				602F03461CB2912D008A999D /* LiveAuctions.storyboard */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3327,6 +3353,15 @@
 			name = AFNetworking;
 			sourceTree = "<group>";
 		};
+		602F03481CB291E0008A999D /* Tooling */ = {
+			isa = PBXGroup;
+			children = (
+				602F03491CB291EC008A999D /* StoryboardConstants.swift */,
+				602F034A1CB291EC008A999D /* StoryboardImages.swift */,
+			);
+			name = Tooling;
+			sourceTree = "<group>";
+		};
 		603218C3195C92C2004E7A24 /* App Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -3345,6 +3380,7 @@
 		60327DCA1987AD140075B399 /* Tooling */ = {
 			isa = PBXGroup;
 			children = (
+				602F03481CB291E0008A999D /* Tooling */,
 				60026AEF1BDE3ED60040257C /* Webview Caching */,
 				60327DCB1987AD240075B399 /* ARDispatchManager.h */,
 				60327DCC1987AD240075B399 /* ARDispatchManager.m */,
@@ -4480,13 +4516,13 @@
 		B3ECE82B1819D1E6009F5C5B /* Artsy Tests */ = {
 			isa = PBXGroup;
 			children = (
+				B3ECE82C1819D1E6009F5C5B /* Supporting Files */,
 				60E738721C64AC7C00AC381B /* Analytics Tests */,
 				3C205B5718900091004280E0 /* App Tests */,
 				0CE0FE251B8E29CC00A921FD /* Stubs */,
 				3C3FEA8B188433CB00E1A16F /* Extensions */,
 				B31BBE10181EFA08001C623C /* Model Tests */,
 				3CAED1791880268E00840608 /* Networking Tests */,
-				B3ECE82C1819D1E6009F5C5B /* Supporting Files */,
 				3CACF2AA18F591D40054091E /* Theming Tests */,
 				3C5C7E3D18970E73003823BB /* Util Tests */,
 				3CB97D8D18870979008C44FE /* View Controller Tests */,
@@ -4644,13 +4680,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49BA7E231655ABE600C06572 /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
-				406A4BAEF8063B0EA2AB20AD /* Check Pods Manifest.lock */,
+				79E285BA175ED99872293B60 /* 📦 Check Pods Manifest.lock */,
 				49BA7DFB1655ABE600C06572 /* Sources */,
 				49BA7DFC1655ABE600C06572 /* Frameworks */,
 				49BA7DFD1655ABE600C06572 /* Resources */,
 				5150685F1BCC176300018352 /* Generate Compilation DB */,
-				3D54B3876CCE10188CF4DCF8 /* Embed Pods Frameworks */,
-				9F607EACDDAF82781666D655 /* Copy Pods Resources */,
+				D094149C23FE012B198AF725 /* 📦 Embed Pods Frameworks */,
+				4F59D9726E617D9849261C9C /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -4699,12 +4735,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B3ECE8361819D1E7009F5C5B /* Build configuration list for PBXNativeTarget "Artsy Tests" */;
 			buildPhases = (
-				8B29BB7E09D11ABD8D93FD3B /* Check Pods Manifest.lock */,
+				86ACFF7D39544693A0185A07 /* 📦 Check Pods Manifest.lock */,
 				B3ECE8221819D1E6009F5C5B /* Sources */,
 				B3ECE8231819D1E6009F5C5B /* Frameworks */,
 				B3ECE8241819D1E6009F5C5B /* Resources */,
-				3FA59A2478E589FD35B41F92 /* Embed Pods Frameworks */,
-				7400228159E45B164233E4F1 /* Copy Pods Resources */,
+				1D55706988CFBE638F84BEE7 /* 📦 Embed Pods Frameworks */,
+				63B07CC4F2ED22DBB2DD6BB9 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -4830,6 +4866,7 @@
 				5E17B1951C59645E00CE6E98 /* Track@2x.png in Resources */,
 				60215FD817CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib in Resources */,
 				5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */,
+				602F03471CB2912D008A999D /* LiveAuctions.storyboard in Resources */,
 				5E6BA6EA1C56B5D700B942C1 /* CircularCancelButton.png in Resources */,
 				49BA7E0E1655ABE600C06572 /* InfoPlist.strings in Resources */,
 				3C4AE99419094F96009C0E8B /* ViewInRoom_Bench@2x.png in Resources */,
@@ -4956,29 +4993,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3D54B3876CCE10188CF4DCF8 /* Embed Pods Frameworks */ = {
+		1D55706988CFBE638F84BEE7 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3FA59A2478E589FD35B41F92 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4986,19 +5008,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		406A4BAEF8063B0EA2AB20AD /* Check Pods Manifest.lock */ = {
+		4F59D9726E617D9849261C9C /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5150685F1BCC176300018352 /* Generate Compilation DB */ = {
@@ -5016,14 +5038,14 @@
 			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi";
 			showEnvVarsInLog = 0;
 		};
-		7400228159E45B164233E4F1 /* Copy Pods Resources */ = {
+		63B07CC4F2ED22DBB2DD6BB9 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5031,14 +5053,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8B29BB7E09D11ABD8D93FD3B /* Check Pods Manifest.lock */ = {
+		79E285BA175ED99872293B60 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5046,19 +5068,34 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		9F607EACDDAF82781666D655 /* Copy Pods Resources */ = {
+		86ACFF7D39544693A0185A07 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D094149C23FE012B198AF725 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -5071,6 +5108,7 @@
 				CBE939F817FA336C00AD7DDD /* ARArtworkBlurbView.m in Sources */,
 				5E47F35D1C444E3300EC0751 /* UIViewController+ORStackView.swift in Sources */,
 				6088B75917D20A0A00E4BB67 /* ARSlideshowView.m in Sources */,
+				5E88414E1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift in Sources */,
 				49405AB317BEBAFF004F86D8 /* AROnboardingNavBarView.m in Sources */,
 				49F45188176A71B50041A4B4 /* ARArtworkSetViewController.m in Sources */,
 				49473F3317C18772004BF082 /* ARSlideshowViewController.m in Sources */,
@@ -5117,6 +5155,7 @@
 				608B709917D4F6520088A56C /* ARSearchTableViewCell.m in Sources */,
 				49A7723A165ADB9400BC6FD3 /* ARSavedArtworkSetFeedItem.m in Sources */,
 				0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */,
+				602F034C1CB291EC008A999D /* StoryboardImages.swift in Sources */,
 				5E0846DA1C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m in Sources */,
 				60A309AD1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m in Sources */,
 				3CEE0B6518A16F7D00FEA6E6 /* ArtsyAPI+Artists.m in Sources */,
@@ -5246,6 +5285,7 @@
 				60215FD717CDF9FA000F3A62 /* ARSignUpActiveUserViewController.m in Sources */,
 				600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */,
 				5EFF52BE197916C800E2A563 /* ARPendingOperationViewController.m in Sources */,
+				60F242F21CB3AA7300387AA1 /* LiveAuctionBidButton.swift in Sources */,
 				6021F97F17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m in Sources */,
 				3CFB079118EB585B00792024 /* ARTile+ASCII.m in Sources */,
 				3CFB078B18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m in Sources */,
@@ -5434,6 +5474,7 @@
 				342F91E3124D3E5EA18AB301 /* ARSplitStackView.m in Sources */,
 				342F9D9D248E4024524174E8 /* ARFairMapViewController.m in Sources */,
 				342F92E8397ACCA0D2EFF1CB /* MapPoint.m in Sources */,
+				602F034B1CB291EC008A999D /* StoryboardConstants.swift in Sources */,
 				60C26DEA1BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m in Sources */,
 				60FC2CBF1C8F704D00ACD78F /* SaleStatusType.swift in Sources */,
 				342F90FACF8AABA704AF5FC1 /* PartnerShowFairLocation.m in Sources */,
@@ -5446,6 +5487,7 @@
 				342F917E6CFBD49D6F43873D /* ARCollapsableTextView.m in Sources */,
 				342F97971D28FDC703392765 /* MTLModel+JSON.m in Sources */,
 				342F949383329F78F589BE53 /* MTLModel+Dictionary.m in Sources */,
+				60AF60C91CB2D8BD0041B430 /* LiveAuctionBidViewController.swift in Sources */,
 				5E088DAE1C58072B00C448D7 /* AuctionRefineViewController+Private.swift in Sources */,
 				342F996B2CF23951168534AD /* Follow.m in Sources */,
 				342F9308EE5B3487AE62276D /* ARShowViewController.m in Sources */,
@@ -5496,6 +5538,7 @@
 				60E738741C64ACA000AC381B /* ARAppAnalyticsSpec.m in Sources */,
 				60F8FFC1197E773E00DC3869 /* ARArtworkSetViewControllerSpec.m in Sources */,
 				5EBDC95119794D840082C514 /* ARSearchFieldButtonTests.m in Sources */,
+				60AF60CB1CB395600041B430 /* LiveAuctionBidButtonTests.swift in Sources */,
 				5E0AEB7A19B9EF57009F34DE /* ARShowNetworkModelTests.m in Sources */,
 				D3ACE5391AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m in Sources */,
 				51B4BA491C6A2B7F0014A394 /* AuctionReglstrationStatusNetworkModelTests.swift in Sources */,
@@ -5525,6 +5568,7 @@
 				6022F5AE1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m in Sources */,
 				3C205B59189000A5004280E0 /* ARAppNotificationsDelegateTests.m in Sources */,
 				D322204B1B4F0352008C2FBF /* ARCollapsableTextViewTests.m in Sources */,
+				60F242FC1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift in Sources */,
 				E655E4B8194B4BEF00F2B7DA /* ARArtworkFavoritesNetworkModelTests.m in Sources */,
 				5E6A16931C98A914004DB29B /* LiveAuctionStateManagerSpec.swift in Sources */,
 				510261711BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m in Sources */,
@@ -5626,6 +5670,7 @@
 				342F9FBB86D02FABC8AA9339 /* ARNavigationButtonsViewControllerTests.m in Sources */,
 				E6AD6D4218E610DA005C8A3A /* ArtsyAPI+ArtworksTests.m in Sources */,
 				3CF144B818E9E00400B1A764 /* ARSignUpSplashViewControllerTests.m in Sources */,
+				5E8841501CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift in Sources */,
 				3C33299218AD9399006D28C0 /* ARFairSearchViewControllerTests.m in Sources */,
 				3CCCC8941899676E008015DD /* ARFairPostsViewControllerTests.m in Sources */,
 				3C1266F118BE6CC700B5AE72 /* ARFairGuideViewControllerTests.m in Sources */,
@@ -5735,7 +5780,7 @@
 		};
 		49BA7E241655ABE600C06572 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A45BBC8CF05FCA3256C706DE /* Pods-Artsy.debug.xcconfig */;
+			baseConfigurationReference = 1AC876215B49E6BF4D24AE23 /* Pods-Artsy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
@@ -5750,10 +5795,6 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.entitlements;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -6056,7 +6097,7 @@
 		};
 		60AF3D0318D33C80008F3CC0 /* Demo */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DA3BF0BF348E57E1B6B4E3A4 /* Pods-Artsy.demo.xcconfig */;
+			baseConfigurationReference = C090E60DA1F8FEC7053193C8 /* Pods-Artsy.demo.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
@@ -6071,10 +6112,6 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -6110,12 +6147,10 @@
 		};
 		60AF3D0418D33C80008F3CC0 /* Demo */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 744E9123C8D65C3413D20A6A /* Pods-Artsy Tests.demo.xcconfig */;
+			baseConfigurationReference = CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -6176,7 +6211,7 @@
 		};
 		B34D39FF17DFD99600308CAB /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3E3863837F2518AB37D2D9CF /* Pods-Artsy.store.xcconfig */;
+			baseConfigurationReference = 4ADF6164FE5A0CF663832A03 /* Pods-Artsy.store.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
@@ -6191,10 +6226,6 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -6229,7 +6260,7 @@
 		};
 		B3ECE8371819D1E7009F5C5B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F607671050C9BFA2843D917C /* Pods-Artsy Tests.debug.xcconfig */;
+			baseConfigurationReference = 600D55388EBA7E8A41AC0843 /* Pods-Artsy Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -6262,12 +6293,10 @@
 		};
 		B3ECE83A1819D1E7009F5C5B /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9C7E4F63ED66CFE798391479 /* Pods-Artsy Tests.store.xcconfig */;
+			baseConfigurationReference = 64CEDF29A84E7D83134CEE4E /* Pods-Artsy Tests.store.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;

@@ -4,6 +4,9 @@
 
 @interface OHHTTPStubs (Artsy)
 
+/// Stubs a host and returns a dictionary as it's json representation with a 200 status code
++ (void)stubJSONResponseForHost:(NSString *)host withResponse:(id)response;
+
 /// Stubs a path and returns a dictionary as it's json representation with a 200 status code
 + (void)stubJSONResponseAtPath:(NSString *)path withResponse:(id)response;
 

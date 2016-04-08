@@ -85,6 +85,20 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
             expect(currentLot).toNot( beNil() )
         }
 
+        it("orders lots correctly") {
+            var lots: [LiveAuctionLotViewModelType]?
+            subject.newLotsSignal.next { lots = $0 }
+
+            subject.updateState(state)
+
+            let reconciledLotIDs = lots?.map { lot in
+                return lot.liveAuctionLotID
+            }
+
+            let lotIDs = (state["sale"] as! [String : AnyObject])["lots"] as! [String]
+            expect(lotIDs) == reconciledLotIDs
+        }
+
         describe("on subsequent state update") {
 
             it("does not send lots") {
@@ -213,34 +227,6 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
                 expect(reserveStatusUpdates) == 4 // 3 lots + 1 updated reserve status
             }
-
-            it("sends new sale when start time changes") {
-                var saleSignalInvocations = 0
-                subject.saleSignal.next { _ in saleSignalInvocations += 1 }
-                let newState = NSMutableDictionary(dictionary: state)
-                var sale = newState["sale"] as! [String: AnyObject]
-                sale["startAt"] = dateFormatter.stringFromDate(NSDate())
-                newState["sale"] = sale
-
-                subject.updateState(state)
-                subject.updateState(newState)
-
-                expect(saleSignalInvocations) == 2
-            }
-
-            it("sends new sale when end time changes") {
-                var saleSignalInvocations = 0
-                subject.saleSignal.next { _ in saleSignalInvocations += 1 }
-                let newState = NSMutableDictionary(dictionary: state)
-                var sale = state["sale"] as! [String: AnyObject]
-                sale["endAt"] = dateFormatter.stringFromDate(NSDate())
-                newState["sale"] = sale
-
-                subject.updateState(state)
-                subject.updateState(newState)
-
-                expect(saleSignalInvocations) == 2
-            }
             
             it("sends lots when number of lots change") {
                 var currentLots: [LiveAuctionLotViewModelType]?
@@ -250,6 +236,30 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 subject.updateState(test_liveAuctionJSON(.Active, numberOfLots: 4))
 
                 expect(currentLots?.count) == 4
+            }
+
+            it("sends updated sale availability if changed") {
+                var saleAvailabilityInvocations = 0
+                subject.saleSignal.next { sale in
+                    sale.saleAvailabilitySignal.next { _ in saleAvailabilityInvocations += 1 }
+                }
+
+                subject.updateState(state)
+                subject.updateState(test_liveAuctionJSON(.Closed))
+
+                expect(saleAvailabilityInvocations) == 2
+            }
+
+            it("doesn't send updated sale availability if not changed") {
+                var saleAvailabilityInvocations = 0
+                subject.saleSignal.next { sale in
+                    sale.saleAvailabilitySignal.next { _ in saleAvailabilityInvocations += 1 }
+                }
+
+                subject.updateState(state)
+                subject.updateState(test_liveAuctionJSON(.Active, numberOfLots: 4))
+
+                expect(saleAvailabilityInvocations) == 1
             }
         }
     }

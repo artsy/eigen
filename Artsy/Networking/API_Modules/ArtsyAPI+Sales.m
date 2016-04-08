@@ -47,9 +47,17 @@
     NSURLRequest *request = [ARRouter liveSaleStateRequest:saleID host:host];
     [self performRequest:request
                  success:success
-                 failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        failure(error);
-    }];
+                 failure:passOnNetworkError(failure)];
+}
+
++ (void)getLiveSaleStaticDataWithSaleID:(NSString *)saleID
+                                success:(void (^)(id state))success
+                                failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter liveSaleStaticDataRequest:saleID];
+    [self performRequest:request
+                 success:success
+                 failure:passOnNetworkError(failure)];
 }
 
 @end

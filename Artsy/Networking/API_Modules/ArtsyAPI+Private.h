@@ -2,6 +2,9 @@
 
 @class AFHTTPRequestOperation;
 
+typedef void (^NetworkFailureBlock)(NSURLRequest *, NSHTTPURLResponse *, NSError *);
+NetworkFailureBlock passOnNetworkError(void (^)(NSError *error));
+
 
 @interface ArtsyAPI (Private)
 

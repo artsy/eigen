@@ -15,7 +15,7 @@ beforeEach(^{
     [[[saleArtworkMock stub] andReturn:@"$1,000"] currentOrStartingBidWithNumberOfBids:NO];
     [[[saleArtworkMock stub] andReturn:@"$1,000 (4 Bids)"] currentOrStartingBidWithNumberOfBids:YES];
     [[[saleArtworkMock stub] andReturn:@"4"] lotNumber];
-    [[[saleArtworkMock stub] andReturn:@"4"] numberOfBids];
+    [(SaleArtworkViewModel *)[[saleArtworkMock stub] andReturn:@"4"] numberOfBids];
 });
 
 it(@"looks good with compact cells", ^{

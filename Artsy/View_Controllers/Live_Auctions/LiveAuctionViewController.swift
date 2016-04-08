@@ -15,7 +15,7 @@ class LiveAuctionViewController: UIViewController {
     lazy var salesPerson: LiveAuctionsSalesPersonType = {
         // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
         let accessToken = UICKeyChainStore.stringForKey(AROAuthTokenDefault) ?? ""
-        return LiveAuctionsSalesPerson(saleID: self.saleID, accessToken: accessToken)
+        return LiveAuctionsSalesPerson(saleID: self.saleID, accessToken: accessToken, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
     }()
 
     var pageController: UIPageViewController!
@@ -48,8 +48,6 @@ class LiveAuctionViewController: UIViewController {
         pageControllerView.alignTrailingEdgeWithView(view, predicate: "0")
         pageControllerView.alignBottomEdgeWithView(view, predicate: "0")
 
-
-
         let progress = SimpleProgressView()
         progress.progress = 0.6
         progress.backgroundColor = .artsyGrayRegular()
@@ -65,20 +63,14 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func setupToolbar() {
-        func image(name: String) -> UIImage {
-            let bundle = NSBundle(forClass: self.dynamicType)
-            return UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)!
-        }
-
-        let close = ARSerifToolbarButtonItem(image: image("Close_Icon"))
+        let close = ARSerifToolbarButtonItem(image: UIImage(asset: .Close_icon) )
         close.accessibilityLabel = "Exit Live Bidding"
         close.button.addTarget(self, action: #selector(LiveAuctionViewController.dismissModal), forControlEvents: .TouchUpInside)
 
-        let info = ARSerifToolbarButtonItem(image: image("info_icon"))
+        let info = ARSerifToolbarButtonItem(image: UIImage(asset: .Info_icon) )
         info.accessibilityLabel = "More Information"
         info.button.addTarget(self, action: #selector(LiveAuctionViewController.moreInfo), forControlEvents: .TouchUpInside)
-
-        let lots = ARSerifToolbarButtonItem(image: image("lots_icon"))
+        let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))
         lots.accessibilityLabel = "Show all Lots"
         lots.button.addTarget(self, action: #selector(LiveAuctionViewController.showLots), forControlEvents: .TouchUpInside)
 
@@ -171,9 +163,7 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
         guard let auctionViewModel = salesPerson.auctionViewModel else { return nil }
         guard let lotViewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
 
-
         let auctionVC =  LiveAuctionLotViewController(index: index, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: salesPerson.currentLotSignal)
-        
         return auctionVC
     }
 

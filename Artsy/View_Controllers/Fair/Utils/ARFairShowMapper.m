@@ -6,6 +6,7 @@
 #import "PartnerShowFairLocation.h"
 
 #import "ARMacros.h"
+#import "ARDispatchManager.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -258,7 +259,8 @@
 - (void)rebuildPartnerToShowsMap
 {
     __weak typeof(self) wself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+
+    ar_dispatch_async(^{
         __strong typeof (wself) sself = wself;
 
         NSMapTable *result = [NSMapTable strongToStrongObjectsMapTable];
@@ -274,7 +276,7 @@
             }
         }
 
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        ar_dispatch_main_queue(^{
             if (!self) { return; }
             self->_partnerToShowsMap = result;
         });

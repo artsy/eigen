@@ -1,10 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods', "~> 0.39"
+# This resolves to either b7 or rc1
+gem 'cocoapods', git: "https://github.com/cocoapods/cocoapods", branch: "mr-fix-resource-bundles"
 gem 'cocoapods-keys'
 
 # 1.6.7 contains the OS X build fix.
 gem 'nokogiri', '1.6.7.rc4'
+
 
 group :development do
   gem 'lowdown'
