@@ -8,6 +8,7 @@
 #import "AROnboardingSearchField.h"
 #import "AROnboardingFollowableTableViewCell.h"
 #import "AROnboardingNavigationItemsView.h"
+#import "AROnboardingHeaderView.h"
 #import "Gene.h"
 #import "ARLogger.h"
 
@@ -37,7 +38,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 //Search table view is controlled by this VC because it interacts more with the search bar
 @property (nonatomic) UITableView *artistTableView, *geneTableView, *searchTableView;
 @property (nonatomic) UIView *searchView;
-@property (nonatomic) UILabel *titleLabel;
+@property (nonatomic) AROnboardingHeaderView *headerView;
 @property (nonatomic) AROnboardingSearchField *searchBar;
 @property (nonatomic) UILabel *followedArtistsLabel;
 @property (nonatomic) UIButton *cancelButton;
@@ -220,6 +221,16 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.onboardingNavigationItems constrainHeight:@"50"];
     [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
     [self.onboardingNavigationItems alignLeadingEdgeWithView:self.view predicate:@"0"];
+
+    self.headerView = [[AROnboardingHeaderView alloc] init];
+    [self.view addSubview:self.headerView];
+
+    [self.headerView alignTopEdgeWithView:self.view predicate:@"0"];
+    [self.headerView constrainHeight:@"180"];
+    [self.headerView constrainWidthToView:self.view predicate:@"0"];
+    [self.headerView alignLeadingEdgeWithView:self.view predicate:@"0"];
+
+    [self.headerView setup];
 }
 
 - (void)continueTapped:(id)sender
@@ -353,7 +364,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
             self.cancelButton.alpha = 1;
             [self.scrollView bringSubviewToFront:self.cancelButton];
             self.scrollView.scrollEnabled = NO;
-            self.titleLabel.alpha = 0;
+//            self.titleLabel.alpha = 0;
         } completion:nil];
     }];
 }
@@ -370,7 +381,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 
         self.cancelButton.alpha = 0;
         self.searchView.alpha = 0;
-        self.titleLabel.alpha = 1;
+      //        self.titleLabel.alpha = 1;
 
     } completion:nil];
 }
