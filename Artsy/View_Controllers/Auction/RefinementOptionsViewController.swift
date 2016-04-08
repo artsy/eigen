@@ -1,27 +1,30 @@
 import UIKit
 import MARKRangeSlider
 
-protocol AuctionRefineViewControllerDelegate: class {
-    func userDidCancel(controller: AuctionRefineViewController)
-    func userDidApply(settings: AuctionRefineSettings, controller: AuctionRefineViewController)
+protocol RefinementOptionsViewControllerDelegate: class {
+    associatedtype R: RefinableType
+
+    func userDidCancel(controller: RefinementOptionsViewController<R>)
+    func userDidApply(settings: R, controller: RefinementOptionsViewController<R>)
 }
 
 // TODO: Move into a navigation
 
-class AuctionRefineViewController: UIViewController {
-    weak var delegate: AuctionRefineViewControllerDelegate?
-    var saleViewModel: SaleViewModel!
+class RefinementOptionsViewController<R: RefinableType>: UIViewController {
     var minLabel: UILabel?
     var maxLabel: UILabel?
     var slider: MARKRangeSlider?
     var applyButton: UIButton?
     var resetButton: UIButton?
     var sortTableView: UITableView?
+    var tableViewHandler: RefinementOptionsViewControllerTableViewHandler?
+    var userDidCancelClosure: (RefinementOptionsViewController -> Void)?
+    var userDidApplyClosure: (R -> Void)?
 
     // defaultSettings also implies min/max price ranges
-    var defaultSettings: AuctionRefineSettings
-    var initialSettings: AuctionRefineSettings
-    var currentSettings: AuctionRefineSettings {
+    var defaultSettings: R
+    var initialSettings: R
+    var currentSettings: R {
         didSet {
             updateButtonEnabledStates()
             updatePriceLabels()
@@ -30,13 +33,42 @@ class AuctionRefineViewController: UIViewController {
 
     var changeStatusBar = false
 
-    init(defaultSettings: AuctionRefineSettings, initialSettings: AuctionRefineSettings) {
+    init(defaultSettings: R, initialSettings: R, userDidCancelClosure: (RefinementOptionsViewController -> Void)?, userDidApplyClosure: (R -> Void)?) {
         self.defaultSettings = defaultSettings
         self.initialSettings = initialSettings
         self.currentSettings = initialSettings
+        self.userDidCancelClosure = userDidCancelClosure
+        self.userDidApplyClosure = userDidApplyClosure
 
         super.init(nibName: nil, bundle: nil)
     }
+
+    func sliderValueDidChange(slider: MARKRangeSlider) {
+        let range = (min: Int(slider.leftValue), max: Int(slider.rightValue))
+        currentSettings = currentSettings.refineSettingsWithPriceRange(range)
+    }
+
+    func userDidPressApply() {
+        userDidApplyClosure?(currentSettings)
+    }
+
+    func userDidCancel() {
+        userDidCancelClosure?(self)
+    }
+
+    func userDidPressReset() {
+        // Reset all UI back to its default settings, including a hard reload on the table view.
+        currentSettings = defaultSettings
+        sortTableView?.reloadData()
+
+        if let range = self.defaultSettings.priceRange {
+            slider?.setLeftValue(CGFloat(range.min), rightValue: CGFloat(range.max))
+        }
+        updatePriceLabels()
+        updateButtonEnabledStates()
+    }
+
+    // Required by Swift compiler, sadly.
 
     required init?(coder aDecoder: NSCoder) {
         return nil
@@ -46,7 +78,7 @@ class AuctionRefineViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .whiteColor()
-        
+
         setupViews()
     }
 

@@ -60,6 +60,7 @@
 
 #import "ARSwitchBoard.h"
 #import "ARTrialController.h"
+#import "ARTopMenuViewController.h"
 
 #import "MTLModel+JSON.h"
 #import "ARCustomEigenLabels.h"

@@ -6,12 +6,8 @@ import UIKit
 import Artsy
 import MARKRangeSlider
 
-class AuctionRefineViewControllerSpec: QuickSpec {
+class RefinementOptionsViewControllerSpec: QuickSpec {
     override func spec() {
-        let defaultSettings = AuctionRefineSettings(ordering: .LotNumber, range: (min: 500_00, max: 100_000_00))
-        let differentSettings = AuctionRefineSettings(ordering: .ArtistAlphabetical, range: (min: 500_00, max: 50_000_00))
-        let settingsWithNoEstimates = AuctionRefineSettings(ordering: .ArtistAlphabetical, range: (min: 0, max: 0))
-
         let openSale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture() ], error: Void())
 
         let openSaleViewModel = SaleViewModel(sale: openSale, saleArtworks: [])
@@ -20,52 +16,43 @@ class AuctionRefineViewControllerSpec: QuickSpec {
         let closedSale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": NSDate.distantFuture(), "endDate": NSDate.distantFuture() ], error: Void())
         let closeSaleViewModel = SaleViewModel(sale: closedSale, saleArtworks: [])
 
+        let defaultSettings = AuctionRefineSettings(ordering: .LotNumber, priceRange: (min: 500_00, max: 100_000_00), saleViewModel: openSaleViewModel)
+        let closedSaleSettings = AuctionRefineSettings(ordering: .LotNumber, priceRange: (min: 500_00, max: 100_000_00), saleViewModel: closeSaleViewModel)
+        let differentSettings = AuctionRefineSettings(ordering: .ArtistAlphabetical, priceRange: (min: 500_00, max: 50_000_00), saleViewModel: openSaleViewModel)
+        let settingsWithNoEstimates = AuctionRefineSettings(ordering: .ArtistAlphabetical, priceRange: (min: 0, max: 0), saleViewModel: openSaleViewModel)
+
         it("looks good by default") {
-            let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings)
-            subject.saleViewModel = openSaleViewModel
+            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings, userDidCancelClosure: nil, userDidApplyClosure: nil)
 
             expect(subject).to( haveValidSnapshot() )
         }
 
         it("looks good by when there are no estimates") {
-            let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: settingsWithNoEstimates)
-            subject.saleViewModel = openSaleViewModel
+            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: settingsWithNoEstimates, userDidCancelClosure: nil, userDidApplyClosure: nil)
             expect(subject).to( haveValidSnapshot() )
         }
-
-        it("doesnt show the bid sorting options for closed sales") {
-            let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings)
-            subject.saleViewModel = closeSaleViewModel
-
-            expect(subject).to( haveValidSnapshot() )
-        }
-
 
         it("enables apply/reset buttons when options are changed") {
-            let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings)
-            subject.saleViewModel = openSaleViewModel
+            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings, userDidCancelClosure: nil, userDidApplyClosure: nil)
 
             subject.loadViewProgrammatically()
 
             // Simulate a change to the settings
             let slider = subject.findSlider()
-            slider?.setLeftValue(CGFloat(differentSettings.range.min), rightValue: CGFloat(differentSettings.range.max))
+            slider?.setLeftValue(CGFloat(differentSettings.priceRange!.min), rightValue: CGFloat(differentSettings.priceRange!.max))
             slider?.sendActionsForControlEvents(.ValueChanged)
 
             expect(subject).to( haveValidSnapshot() )
         }
 
         it("looks good when configured with options and changed options") {
-            let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: differentSettings)
-            subject.saleViewModel = openSaleViewModel
-
+            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: differentSettings, userDidCancelClosure: nil, userDidApplyClosure: nil)
 
             expect(subject).to( haveValidSnapshot() )
         }
 
         it("looks good when reset") {
-            let subject = AuctionRefineViewController(defaultSettings: defaultSettings, initialSettings: differentSettings)
-            subject.saleViewModel = openSaleViewModel
+            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: differentSettings, userDidCancelClosure: nil, userDidApplyClosure: nil)
 
             subject.loadViewProgrammatically()
 
@@ -73,7 +60,7 @@ class AuctionRefineViewControllerSpec: QuickSpec {
 
             expect(subject).to( haveValidSnapshot() )
         }
-        
+
     }
 }
 
