@@ -7,6 +7,7 @@
 #import "AROnboardingArtistTableController.h"
 #import "AROnboardingSearchField.h"
 #import "AROnboardingFollowableTableViewCell.h"
+#import "AROnboardingNavigationItemsView.h"
 #import "Gene.h"
 #import "ARLogger.h"
 
@@ -16,6 +17,8 @@
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 
 static NSString *SearchCellId = @"OnboardingSearchCell";
 
@@ -39,6 +42,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 @property (nonatomic) UILabel *followedArtistsLabel;
 @property (nonatomic) UIButton *cancelButton;
 @property (nonatomic, assign) NSInteger followedThisSession;
+@property (nonatomic) AROnboardingNavigationItemsView *onboardingNavigationItems;
 
 @property (nonatomic) ARWhiteFlatButton *continueButton;
 
@@ -76,128 +80,146 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     return self;
 }
 
-- (CGFloat)bottomOf:(UIView *)view
-{
-    return CGRectGetMaxY(view.frame);
-}
+//- (CGFloat)bottomOf:(UIView *)view
+//{
+//    return CGRectGetMaxY(view.frame);
+//}
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.scrollView = [[UIScrollView alloc] init];
-    self.scrollView.frame = self.view.frame;
-    self.scrollView.delaysContentTouches = NO;
-    self.scrollView.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:self.scrollView];
-
-    CGSize screenSize = self.scrollView.bounds.size;
-    UILabel *headline = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, screenSize.width - 40, 40)];
-    headline.font = [UIFont serifFontWithSize:24];
-    headline.text = @"What interests you?";
-    headline.textColor = [UIColor whiteColor];
-    self.titleLabel = headline;
-    [self.scrollView addSubview:headline];
-
-    UILabel *followArtists = [[UILabel alloc] initWithFrame:CGRectMake(20, 80, screenSize.width - 40, 20)];
-    followArtists.font = [UIFont sansSerifFontWithSize:14];
-    followArtists.textColor = [UIColor whiteColor];
-    followArtists.text = [@"Enter your favorite artists" uppercaseString];
-    [self.scrollView addSubview:followArtists];
-
-    CGFloat cancelButtonWidth = 70;
-    CGFloat searchLeftMargin = 20;
-    self.searchBar = [[AROnboardingSearchField alloc] initWithFrame:CGRectMake(searchLeftMargin, 105, screenSize.width - cancelButtonWidth - searchLeftMargin, 40)];
-    self.searchBar.placeholder = @"Search artists…";
-    self.searchBar.delegate = self;
-    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeWords;
-    self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.searchBar.keyboardAppearance = UIKeyboardAppearanceDark;
-    [self.searchBar addTarget:self action:@selector(searchBarDown:) forControlEvents:UIControlEventTouchDown];
-
-    self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.cancelButton.frame = CGRectMake(screenSize.width - cancelButtonWidth, self.searchBar.frame.origin.y, cancelButtonWidth, self.searchBar.bounds.size.height - 1);
-    self.cancelButton.titleLabel.font = [UIFont sansSerifFontWithSize:11];
-    self.cancelButton.backgroundColor = [UIColor blackColor];
-    [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.cancelButton setTitle:@"CANCEL" forState:UIControlStateNormal];
-
-    [self.scrollView addSubview:self.cancelButton];
-    [self.cancelButton addTarget:self action:@selector(cancelSearch:) forControlEvents:UIControlEventTouchUpInside];
-    self.cancelButton.alpha = 0;
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startedEditing:)
-                                                 name:UITextFieldTextDidBeginEditingNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTextChanged:)
-                                                 name:UITextFieldTextDidChangeNotification
-                                               object:nil];
-
-    [self.scrollView addSubview:self.searchBar];
-
-    self.artistTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, [self bottomOf:self.searchBar], screenSize.width, 10)];
-    self.artistTableView.dataSource = self.artistController;
-    self.artistTableView.delegate = self.artistController;
-    [self.artistController prepareTableView:self.artistTableView];
-    self.artistTableView.backgroundColor = [UIColor blackColor];
-    self.artistTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.artistTableView.scrollEnabled = NO;
-
-    __weak typeof (self) wself = self;
-    [self.artistController setPostRemoveBlock:^{
-        __strong typeof (wself) sself = wself;
-        [sself updateArtistTableViewAnimated:YES];
-    }];
-
-    [self.scrollView addSubview:self.artistTableView];
-
-    self.geneTableView = [[UITableView alloc] initWithFrame:CGRectMake(0,
-                                                                       [self bottomOf:self.artistTableView], screenSize.width,
-                                                                       54 * self.genesToFollow.count + 50)];
-    self.geneTableView.dataSource = self.geneController;
-    self.geneTableView.delegate = self.geneController;
-    [self.geneController prepareTableView:self.geneTableView];
-    self.geneTableView.backgroundColor = [UIColor clearColor];
-    self.geneTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.geneTableView.scrollEnabled = NO;
-
-    [self.scrollView addSubview:self.geneTableView];
-
-    self.searchView = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                               [self bottomOf:self.searchBar],
-                                                               screenSize.width, 1000)];
-    self.searchView.backgroundColor = [UIColor blackColor];
-    [self.scrollView addSubview:self.searchView];
-    self.searchView.alpha = 0;
-
-    self.followedArtistsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, screenSize.width - 40, 100)];
-    self.followedArtistsLabel.numberOfLines = 0;
-    self.followedArtistsLabel.font = [UIFont serifFontWithSize:16];
-    self.followedArtistsLabel.textColor = [UIColor artsyGraySemibold];
-    [self.searchView addSubview:self.followedArtistsLabel];
-    self.followedArtistsLabel.alpha = 0;
-
-    self.searchTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, 1000)];
-    [self.searchView addSubview:self.searchTableView];
-    self.searchTableView.dataSource = self;
-    self.searchTableView.delegate = self;
-    self.searchTableView.backgroundColor = [UIColor blackColor];
-    self.searchTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.searchTableView registerClass:[AROnboardingFollowableTableViewCell class] forCellReuseIdentifier:SearchCellId];
-
-    self.searchResults = @[];
-
-    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetMaxY(self.geneTableView.frame) + 44);
-    self.continueButton = [[ARWhiteFlatButton alloc] initWithFrame:CGRectMake(0, screenSize.height - 44, screenSize.width, 44)];
-    [self.continueButton addTarget:self action:@selector(continueTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.continueButton setTitle:@"Continue" forState:UIControlStateNormal];
-    [self.view addSubview:self.continueButton];
+    //    self.scrollView = [[UIScrollView alloc] init];
+    //    self.scrollView.frame = self.view.frame;
+    //    self.scrollView.delaysContentTouches = NO;
+    //    self.scrollView.backgroundColor = [UIColor blackColor];
+    //    [self.view addSubview:self.scrollView];
+    //
+    //    CGSize screenSize = self.scrollView.bounds.size;
+    //    UILabel *headline = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, screenSize.width - 40, 40)];
+    //    headline.font = [UIFont serifFontWithSize:24];
+    //    headline.text = @"What interests you?";
+    //    headline.textColor = [UIColor whiteColor];
+    //    self.titleLabel = headline;
+    //    [self.scrollView addSubview:headline];
+    //
+    //    UILabel *followArtists = [[UILabel alloc] initWithFrame:CGRectMake(20, 80, screenSize.width - 40, 20)];
+    //    followArtists.font = [UIFont sansSerifFontWithSize:14];
+    //    followArtists.textColor = [UIColor whiteColor];
+    //    followArtists.text = [@"Enter your favorite artists" uppercaseString];
+    //    [self.scrollView addSubview:followArtists];
+    //
+    //    CGFloat cancelButtonWidth = 70;
+    //    CGFloat searchLeftMargin = 20;
+    //    self.searchBar = [[AROnboardingSearchField alloc] initWithFrame:CGRectMake(searchLeftMargin, 105, screenSize.width - cancelButtonWidth - searchLeftMargin, 40)];
+    //    self.searchBar.placeholder = @"Search artists…";
+    //    self.searchBar.delegate = self;
+    //    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    //    self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+    //    self.searchBar.keyboardAppearance = UIKeyboardAppearanceDark;
+    //    [self.searchBar addTarget:self action:@selector(searchBarDown:) forControlEvents:UIControlEventTouchDown];
+    //
+    //    self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    //    self.cancelButton.frame = CGRectMake(screenSize.width - cancelButtonWidth, self.searchBar.frame.origin.y, cancelButtonWidth, self.searchBar.bounds.size.height - 1);
+    //    self.cancelButton.titleLabel.font = [UIFont sansSerifFontWithSize:11];
+    //    self.cancelButton.backgroundColor = [UIColor blackColor];
+    //    [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    //    [self.cancelButton setTitle:@"CANCEL" forState:UIControlStateNormal];
+    //
+    //    [self.scrollView addSubview:self.cancelButton];
+    //    [self.cancelButton addTarget:self action:@selector(cancelSearch:) forControlEvents:UIControlEventTouchUpInside];
+    //    self.cancelButton.alpha = 0;
+    //
+    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startedEditing:)
+    //                                                 name:UITextFieldTextDidBeginEditingNotification
+    //                                               object:nil];
+    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTextChanged:)
+    //                                                 name:UITextFieldTextDidChangeNotification
+    //                                               object:nil];
+    //
+    //    [self.scrollView addSubview:self.searchBar];
+    //
+    //    self.artistTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, [self bottomOf:self.searchBar], screenSize.width, 10)];
+    //    self.artistTableView.dataSource = self.artistController;
+    //    self.artistTableView.delegate = self.artistController;
+    //    [self.artistController prepareTableView:self.artistTableView];
+    //    self.artistTableView.backgroundColor = [UIColor blackColor];
+    //    self.artistTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //    self.artistTableView.scrollEnabled = NO;
+    //
+    //    __weak typeof (self) wself = self;
+    //    [self.artistController setPostRemoveBlock:^{
+    //        __strong typeof (wself) sself = wself;
+    //        [sself updateArtistTableViewAnimated:YES];
+    //    }];
+    //
+    //    [self.scrollView addSubview:self.artistTableView];
+    //
+    //    self.geneTableView = [[UITableView alloc] initWithFrame:CGRectMake(0,
+    //                                                                       [self bottomOf:self.artistTableView], screenSize.width,
+    //                                                                       54 * self.genesToFollow.count + 50)];
+    //    self.geneTableView.dataSource = self.geneController;
+    //    self.geneTableView.delegate = self.geneController;
+    //    [self.geneController prepareTableView:self.geneTableView];
+    //    self.geneTableView.backgroundColor = [UIColor clearColor];
+    //    self.geneTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //    self.geneTableView.scrollEnabled = NO;
+    //
+    //    [self.scrollView addSubview:self.geneTableView];
+    //
+    //    self.searchView = [[UIView alloc] initWithFrame:CGRectMake(0,
+    //                                                               [self bottomOf:self.searchBar],
+    //                                                               screenSize.width, 1000)];
+    //    self.searchView.backgroundColor = [UIColor blackColor];
+    //    [self.scrollView addSubview:self.searchView];
+    //    self.searchView.alpha = 0;
+    //
+    //    self.followedArtistsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, screenSize.width - 40, 100)];
+    //    self.followedArtistsLabel.numberOfLines = 0;
+    //    self.followedArtistsLabel.font = [UIFont serifFontWithSize:16];
+    //    self.followedArtistsLabel.textColor = [UIColor artsyGraySemibold];
+    //    [self.searchView addSubview:self.followedArtistsLabel];
+    //    self.followedArtistsLabel.alpha = 0;
+    //
+    //    self.searchTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, 1000)];
+    //    [self.searchView addSubview:self.searchTableView];
+    //    self.searchTableView.dataSource = self;
+    //    self.searchTableView.delegate = self;
+    //    self.searchTableView.backgroundColor = [UIColor blackColor];
+    //    self.searchTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //    [self.searchTableView registerClass:[AROnboardingFollowableTableViewCell class] forCellReuseIdentifier:SearchCellId];
+    //
+    //    self.searchResults = @[];
+    //
+    //    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetMaxY(self.geneTableView.frame) + 44);
+    //    self.continueButton = [[ARWhiteFlatButton alloc] initWithFrame:CGRectMake(0, screenSize.height - 44, screenSize.width, 44)];
+    //    [self.continueButton addTarget:self action:@selector(continueTapped:) forControlEvents:UIControlEventTouchUpInside];
+    //    [self.continueButton setTitle:@"Continue" forState:UIControlStateNormal];
+    //    [self.view addSubview:self.continueButton];
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidBeginEditingNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [self showViews];
+}
+
+- (void)showViews
+{
+    self.view.backgroundColor = [UIColor whiteColor];
+
+    self.onboardingNavigationItems = [[AROnboardingNavigationItemsView alloc] init];
+    [self.view addSubview:self.onboardingNavigationItems];
+
+    [self.onboardingNavigationItems constrainWidthToView:self.view predicate:@"0"];
+    [self.onboardingNavigationItems constrainHeight:@"50"];
+    [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
+    [self.onboardingNavigationItems alignLeadingEdgeWithView:self.view predicate:@"0"];
 }
 
 - (void)continueTapped:(id)sender
