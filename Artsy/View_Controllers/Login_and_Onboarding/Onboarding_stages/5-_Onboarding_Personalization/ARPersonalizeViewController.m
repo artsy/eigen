@@ -81,12 +81,6 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     return self;
 }
 
-//- (CGFloat)bottomOf:(UIView *)view
-//{
-//    return CGRectGetMaxY(view.frame);
-//}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -230,7 +224,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.headerView constrainWidthToView:self.view predicate:@"0"];
     [self.headerView alignLeadingEdgeWithView:self.view predicate:@"0"];
 
-    [self.headerView setup];
+    [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." andProgress:@"*.3"];
 }
 
 - (void)continueTapped:(id)sender

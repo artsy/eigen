@@ -28,7 +28,7 @@
     return self;
 }
 
-- (void)setup
+- (void)setupHeaderViewWithTitle:(NSString *)title andProgress:(NSString *)progress
 {
     self.progressBackgroundBar.backgroundColor = [UIColor artsyGrayMedium];
     [self addSubview:self.progressBackgroundBar];
@@ -42,13 +42,13 @@
     [self addSubview:self.progressBar];
 
     [self.progressBar constrainHeight:@"5"];
-    [self.progressBar constrainWidthToView:self predicate:@"*.5"]; // percentage of completeness
+    [self.progressBar constrainWidthToView:self predicate:progress]; // percentage of completeness
     [self.progressBar alignTopEdgeWithView:self predicate:@"0"];
     [self.progressBar alignLeadingEdgeWithView:self predicate:@"0"];
 
     self.titleLabel.textColor = [UIColor blackColor];
     self.titleLabel.font = [UIFont serifFontWithSize:30.0];
-    self.titleLabel.text = @"Follow artists that most interest you.";
+    self.titleLabel.text = title;
     self.titleLabel.numberOfLines = 0;
     [self addSubview:self.titleLabel];
 
