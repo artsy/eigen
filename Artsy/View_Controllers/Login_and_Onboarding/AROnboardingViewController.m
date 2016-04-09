@@ -31,27 +31,20 @@
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
-typedef NS_ENUM(NSInteger, AROnboardingStage) {
-    AROnboardingStageSlideshow,
-    AROnboardingStageStart,
-    AROnboardingStageChooseMethod,
-    AROnboardingStageEmailPassword,
-    AROnboardingStageCollectorStatus,
-    AROnboardingStageLocation,
-    AROnboardingStagePersonalize,
-    AROnboardingStageFollowNotification,
-    AROnboardingStagePriceRange,
-    AROnboardingStageNotes
-};
-
 //typedef NS_ENUM(NSInteger, AROnboardingStage) {
 //    AROnboardingStageSlideshow,
 //    AROnboardingStageStart,
-//    AROnboardingStagePersonalizeArtists,
-//    AROnboardingStagePersonalizeCategories,
-//    AROnboardingStagePersonalizeBudget,
-//    AROnboardingStageFollowNotification
+//    AROnboardingStageChooseMethod,
+//    AROnboardingStageEmailPassword,
+//    AROnboardingStageCollectorStatus,
+//    AROnboardingStageLocation,
+//    AROnboardingStagePersonalize,
+//    AROnboardingStageFollowNotification,
+//    AROnboardingStagePriceRange,
+//    AROnboardingStageNotes
 //};
+
+
 
 
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
@@ -215,14 +208,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     [self setBackgroundImage:sender.backgroundImage animated:YES];
     sender.backgroundImage = nil;
 
-    // TODO: Implement next screen of onboarding here
-
     [self presentOnboarding];
-
-    //    ARSignupViewController *signup = [[ARSignupViewController alloc] init];
-    //    signup.delegate = self;
-    //    [self pushViewController:signup animated:YES];
-    //    self.state = AROnboardingStageChooseMethod;
 }
 
 #pragma mark -
@@ -230,10 +216,10 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 - (void)signUpWithEmail
 {
-    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
-    createVC.delegate = self;
-    [self pushViewController:createVC animated:YES];
-    self.state = AROnboardingStageEmailPassword;
+//    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
+//    createVC.delegate = self;
+//    [self pushViewController:createVC animated:YES];
+//    self.state = AROnboardingStageEmailPassword;
 }
 
 - (void)presentOnboarding
@@ -268,41 +254,69 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     //        return;
     //    }
 
-    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize];
+    self.state = AROnboardingStagePersonalizeArtists;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    self.state = AROnboardingStagePersonalize; // AROnboardingStagePersonalizeArtists
 }
 
 - (void)presentPersonalizeCategories
 {
-    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize];
+    self.state = AROnboardingStagePersonalizeCategories;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    self.state = AROnboardingStagePersonalize; // AROnboardingStagePersonalizeCategories
 }
 
-- (void)personalizeDone
+- (void)presentPersonalizeBudget
 {
-    if ([User currentUser].collectorLevel == ARCollectorLevelNo) {
-        // They're done
-        [self dismissOnboardingWithVoidAnimation:YES];
+    self.state = AROnboardingStagePersonalizeCategories;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+}
+
+- (void)personalizeArtistsDone
+{
+//    if ([User currentUser].collectorLevel == ARCollectorLevelNo) {
+//        // They're done
+//        [self dismissOnboardingWithVoidAnimation:YES];
+//    } else {
+//        [self presentPriceRange];
+//    }
+    
+    BOOL chooseEnoughArtists = NO; // will be determined properly in next ticket
+    
+    if (chooseEnoughArtists) {
+        [self presentPersonalizeBudget];
     } else {
-        [self presentPriceRange];
+        [self presentPersonalizeCategories];
     }
 }
 
-- (void)presentPriceRange
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPriceRangeDefault]) {
-        [self dismissOnboardingWithVoidAnimation:YES];
-        return;
-    }
-    ARPriceRangeViewController *priceRange = [[ARPriceRangeViewController alloc] init];
-    priceRange.delegate = self;
-    [self pushViewController:priceRange animated:YES];
-    self.state = AROnboardingStagePriceRange;
+- (void)personalizeCategoriesDone {
+    [self presentPersonalizeBudget];
 }
+
+- (void)personalizeBudgetDone
+{
+    //    ARSignupViewController *signup = [[ARSignupViewController alloc] init];
+    //    signup.delegate = self;
+    //    [self pushViewController:signup animated:YES];
+    //    self.state = AROnboardingStageChooseMethod;
+}
+
+//- (void)presentPriceRange
+//{
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPriceRangeDefault]) {
+//        [self dismissOnboardingWithVoidAnimation:YES];
+//        return;
+//    }
+//    ARPriceRangeViewController *priceRange = [[ARPriceRangeViewController alloc] init];
+//    priceRange.delegate = self;
+//    [self pushViewController:priceRange animated:YES];
+//    self.state = AROnboardingStagePriceRange;
+//}
 
 - (void)setPriceRangeDone:(NSInteger)range
 {

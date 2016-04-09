@@ -5,7 +5,9 @@
 @class ARSignUpSplashViewController;
 
 @protocol AROnboardingStepsDelegate <NSObject>
-- (void)personalizeDone;
+- (void)personalizeArtistsDone;
+- (void)personalizeCategoriesDone;
+- (void)personalizeBudgetDone;
 - (void)splashDone:(ARSignUpSplashViewController *)sender;
 - (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender;
 //- (void)collectorLevelDone:(ARCollectorLevel)level;
@@ -21,6 +23,17 @@
 typedef NS_ENUM(NSInteger, ARInitialOnboardingState) {
     ARInitialOnboardingStateSlideShow,
     ARInitialOnboardingStateInApp
+};
+
+typedef NS_ENUM(NSInteger, AROnboardingStage) {
+    AROnboardingStageSlideshow,
+    AROnboardingStageStart,
+    AROnboardingStageChooseMethod,
+    AROnboardingStagePersonalizeArtists,
+    AROnboardingStagePersonalizeCategories,
+    AROnboardingStagePersonalizeBudget,
+    AROnboardingStageEmailPassword,
+    AROnboardingStageFollowNotification
 };
 
 /// A state-machine based VC that implements the app onboarding process

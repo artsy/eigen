@@ -26,6 +26,8 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 
 @interface ARPersonalizeViewController () <UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
+@property (nonatomic, assign, readwrite) AROnboardingStage state;
+
 @property (nonatomic) NSArray *genesToFollow;
 @property (nonatomic) NSArray *searchResults;
 
@@ -53,10 +55,11 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 
 @implementation ARPersonalizeViewController
 
-- (instancetype)initWithGenes:(NSArray *)genes
+- (instancetype)initWithGenes:(NSArray *)genes forStage:(AROnboardingStage)stage
 {
     self = [super init];
     if (self) {
+        _state = stage;
         _searchResults = [NSMutableArray array];
         if (!genes || genes.count == 0) {
             NSArray *fallbackGenes = @[ @"Photography", @"Bauhaus", @"Dada", @"Glitch Aesthetic", @"Early Computer Art", @"Op Art", @"Minimalism" ];
@@ -215,6 +218,8 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.onboardingNavigationItems constrainHeight:@"50"];
     [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
     [self.onboardingNavigationItems alignLeadingEdgeWithView:self.view predicate:@"0"];
+    
+    [self.onboardingNavigationItems.next addTarget:self action:@selector(nextTapped:) forControlEvents:UIControlEventTouchUpInside];
 
     self.headerView = [[AROnboardingHeaderView alloc] init];
     [self.view addSubview:self.headerView];
@@ -224,13 +229,41 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.headerView constrainWidthToView:self.view predicate:@"0"];
     [self.headerView alignLeadingEdgeWithView:self.view predicate:@"0"];
 
-    [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." andProgress:@"*.3"];
+    switch (self.state) {
+        case AROnboardingStagePersonalizeArtists:
+            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." andProgress:@"*.3"];
+            break;
+        case AROnboardingStagePersonalizeCategories:
+            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." andProgress:@"*.5"];
+            [self.onboardingNavigationItems disableNextStep];
+            break;
+        case AROnboardingStagePersonalizeBudget:
+            [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" andProgress:@"*.7"];
+            break;
+        default:
+            break;
+    }
 }
 
-- (void)continueTapped:(id)sender
+- (void)nextTapped:(id)sender
 {
-    [self.delegate personalizeDone];
-}
+    switch (self.state) {
+        case AROnboardingStagePersonalizeArtists:
+            [self.delegate personalizeArtistsDone];
+            break;
+        case AROnboardingStagePersonalizeCategories:
+            if (NO) { // chooseAtLeastOneCategory bool/method
+                [self.delegate personalizeCategoriesDone];
+            } else {
+                [self.onboardingNavigationItems showWarning:@"Follow one or more categories"];
+            }
+            break;
+        case AROnboardingStagePersonalizeBudget:
+            [self.delegate personalizeBudgetDone];
+            break;
+        default:
+            break;
+    }}
 
 - (void)searchToggleFollowStatusForArtist:(Artist *)artist atIndexPath:indexPath
 {

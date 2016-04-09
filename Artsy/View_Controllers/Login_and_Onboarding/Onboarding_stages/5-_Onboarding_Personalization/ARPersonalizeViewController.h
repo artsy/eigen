@@ -6,7 +6,7 @@
 
 @interface ARPersonalizeViewController : UIViewController
 
-- (instancetype)initWithGenes:(NSArray *)genes;
+- (instancetype)initWithGenes:(NSArray *)genes forStage:(AROnboardingStage)stage;
 @property (nonatomic, weak) id<AROnboardingStepsDelegate> delegate;
 
 @property (nonatomic, assign, readonly) NSInteger followedThisSession;

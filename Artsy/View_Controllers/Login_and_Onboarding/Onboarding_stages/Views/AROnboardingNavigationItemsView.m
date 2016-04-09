@@ -1,5 +1,4 @@
 #import "AROnboardingNavigationItemsView.h"
-#import "ARButtonSubclasses.h"
 #import "UIColor+ArtsyColors.h"
 
 #import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
@@ -8,8 +7,6 @@
 
 @interface AROnboardingNavigationItemsView ()
 
-@property (nonatomic) ARWhiteFlatButton *back;
-@property (nonatomic) ARWhiteFlatButton *next;
 @property (nonatomic) UILabel *warningLabel;
 
 @end
@@ -21,8 +18,7 @@
 {
     self = [super init];
     if (self) {
-        //self.backgroundColor = [UIColor whiteColor];
-
+        
         _back = [[ARWhiteFlatButton alloc] init];
         [_back setTitle:@"Back" forState:UIControlStateNormal];
         [_back setBorderColor:[UIColor artsyGrayRegular] forState:UIControlStateNormal];
@@ -45,9 +41,10 @@
         [_next constrainHeightToView:self predicate:@"0"];
 
         _warningLabel = [[UILabel alloc] init];
-        _warningLabel.backgroundColor = [UIColor artsyYellowMedium];
+        _warningLabel.backgroundColor = [UIColor artsyYellowRegular];
         _warningLabel.textColor = [UIColor blackColor];
-        _warningLabel.font = [UIFont serifFontWithSize:14.0];
+        _warningLabel.font = [UIFont serifFontWithSize:15.0];
+        _warningLabel.textAlignment = NSTextAlignmentCenter;
         _warningLabel.hidden = YES;
 
         [self addSubview:_warningLabel];
