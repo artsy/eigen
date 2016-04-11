@@ -190,7 +190,17 @@ static NSString *hostFromString(NSString *string)
     }
 
     //if there's no host, we'll assume it's relative
-    return (!host || (host && [artsyHosts containsObject:host]));
+    BOOL isRelative = (host == nil);
+    return isRelative || [self isArtsyHost:host];
+}
+
++ (BOOL)isArtsyHost:(NSString *)host
+{
+    if (host) {
+        return ([artsyHosts containsObject:host] || [host hasSuffix:@".artsy.net"]);
+    } else {
+        return NO;
+    }
 }
 
 + (NSURLRequest *)requestForURL:(NSURL *)url
@@ -1008,7 +1018,8 @@ static NSString *hostFromString(NSString *string)
       } \
     } \
   } \
-}", saleID];
+}",
+                                                 saleID];
 
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
 

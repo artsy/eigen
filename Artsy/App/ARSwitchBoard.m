@@ -204,7 +204,7 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
         return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
-    Route *route = self.echo.routes[@"ARLiveFairsURLDomain"];
+    Route *route = self.echo.routes[@"ARLiveAuctionsURLDomain"];
     if (route) {
         [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
             NSString *path = url.path;
@@ -292,8 +292,12 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
 {
     NSParameterAssert(url);
 
-    /// Is it an Artsy URL, or a purely relative path?
-    if ([ARRouter isInternalURL:url] || url.scheme == nil) {
+    if ([self isRegisteredDomainURL:url]) {
+        ARSwitchBoardDomain *domain = [self domainForURL:url];
+        return domain.block(url);
+    } else if ([ARRouter isInternalURL:url] || url.scheme == nil) {
+        /// Is it an Artsy URL, or a purely relative path?
+
         /// Normalize URL ( e.g. m.artsy.net -> staging-m.artsy.net
         NSURL *fixedURL = [self fixHostForURL:url];
         return [self routeInternalURL:fixedURL fair:fair];
@@ -313,15 +317,26 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
     return nil;
 }
 
-- (UIViewController *)viewControllerForUnroutedDomain:(NSURL *)url
+- (BOOL)isRegisteredDomainURL:(NSURL *)url
 {
-    /// Allow objects to register for full domains when needed.
+    return [self domainForURL:url] != nil;
+}
+
+- (ARSwitchBoardDomain *)domainForURL:(NSURL *)url
+{
+    ARSwitchBoardDomain *retrievedDomain;
+
     for (ARSwitchBoardDomain *domain in self.domains) {
         if ([url.host isEqualToString:domain.domain]) {
-            return domain.block(url);
+            retrievedDomain = domain;
         }
     }
 
+    return retrievedDomain;
+}
+
+- (UIViewController *)viewControllerForUnroutedDomain:(NSURL *)url
+{
     /// So, no Artsy path routes, and no app-wide domain routes.
     return [[ARExternalWebBrowserViewController alloc] initWithURL:url];
 }
