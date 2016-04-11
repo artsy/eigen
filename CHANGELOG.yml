@@ -16,6 +16,7 @@ upcoming:
   notes:
     - Fixes long auction names falling off right edge. - ash
     - Fixes live auction lots being in the wrong order. - ash
+    - Adds support for loading Artsy subdomains internally. - ash
 
 
 releases:
