@@ -30,8 +30,9 @@ extension RefinementOptionsViewController {
     }
 
     func updatePriceLabels() {
-        minLabel?.text = currentSettings.priceRange?.min.metricSuffixify()
-        maxLabel?.text = currentSettings.priceRange?.max.metricSuffixify()
+        guard let priceRange = currentSettings.priceRange else { return }
+        minLabel?.text = priceRange.min.metricSuffixify()
+        maxLabel?.text = priceRange.max.metricSuffixify()
     }
 
     func updateButtonEnabledStates() {
@@ -67,12 +68,12 @@ private extension RefinementOptionsViewController {
         stackView.addSubview(ARSeparatorView(), withTopMargin: "10", sideMargin: "0")
 
         tableViewHandler = RefinementOptionsViewControllerTableViewHandler.init(numberOfSections: currentSettings.numberOfSections,
-                                                                     numberOfRowsInSection: { (section: Int) -> Int in return self.currentSettings.numberOfRowsInSection(section)},
-                                                                     titleForRowAtIndexPath: { (indexPath: NSIndexPath) -> String in return self.currentSettings.titleForRowAtIndexPath(indexPath)},
-                                                                     shouldCheckRowAtIndexPath: { (indexPath: NSIndexPath) -> Bool in return self.currentSettings.shouldCheckRowAtIndexPath(indexPath)},
-                                                                     selectedRowsInSection: { (section: Int) -> [NSIndexPath] in return self.currentSettings.selectedRowsInSection(section)},
-                                                                     allowsMultipleSelectionClosure: { (section: Int) -> Bool in return self.currentSettings.allowMultipleSelectionInSection(section)},
-                                                                     changeSettingsClosure: { (indexPath) in self.currentSettings = self.currentSettings.refineSettingsWithSelectedIndexPath(indexPath)})
+            numberOfRowsInSection: { [unowned self] section in self.currentSettings.numberOfRowsInSection(section) },
+            titleForRowAtIndexPath: { [unowned self] indexPath in self.currentSettings.titleForRowAtIndexPath(indexPath) },
+            shouldCheckRowAtIndexPath: { [unowned self] indexPath in self.currentSettings.shouldCheckRowAtIndexPath(indexPath) },
+            selectedRowsInSection: { [unowned self] section in self.currentSettings.selectedRowsInSection(section) },
+            allowsMultipleSelectionClosure: { [unowned self] section in self.currentSettings.allowMultipleSelectionInSection(section) },
+            changeSettingsClosure: { [unowned self] indexPath in self.currentSettings = self.currentSettings.refineSettingsWithSelectedIndexPath(indexPath) })
 
         let tableView = UITableView().then {
             $0.registerClass(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
@@ -87,12 +88,10 @@ private extension RefinementOptionsViewController {
         }
         stackView.addSubview(tableView, withTopMargin: "0", sideMargin: "40")
 
-        tableView.reloadData()
-
         stackView.addSubview(ARSeparatorView(), withTopMargin: "0", sideMargin: "0")
 
         // Price section
-        if let initialRange = initialSettings.priceRange, maxRange = defaultSettings.priceRange where rangeHasEstimates(initialSettings.priceRange) {
+        if let initialRange = initialSettings.priceRange, maxRange = defaultSettings.priceRange where initialSettings.hasEstimates {
             stackView.addSubview(subtitleLabel("Price"), withTopMargin: "20", sideMargin: "40")
 
             let priceExplainLabel = ARSerifLabel().then {
@@ -188,10 +187,6 @@ private extension RefinementOptionsViewController {
 
         return stackView
     }
-
-    func rangeHasEstimates(range: PriceRange?) -> Bool {
-        return range?.min != 0 && range?.max != 0
-    }
 }
 
 enum SliderPriorities: UILayoutPriority {
@@ -259,16 +254,21 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        let oldCheckedCellIndices = selectedRowsInSection(indexPath.section)
 
-        // currently only supports single-selection
-        if let oldCheckedCellIndex = selectedRowsInSection(indexPath.section).first where allowsMultipleSelectionInSection(indexPath.section) == false {
+        if allowsMultipleSelectionInSection(indexPath.section) {
+            fatalError("currently only supports single-selection")
+        } else {
             // Un-check formerly selected cell.
-            let formerlySelected = tableView.cellForRowAtIndexPath(oldCheckedCellIndex)
-            formerlySelected?.checked = false
-
+            if let oldCheckedCellIndex = oldCheckedCellIndices.first {
+                let formerlySelected = tableView.cellForRowAtIndexPath(oldCheckedCellIndex)
+                formerlySelected?.checked = false
+            }
+            
             // Change setting.
             changeSettingsClosure(indexPath)
-
+            
             // Check newly selected cell.
             let selectedCell = tableView.cellForRowAtIndexPath(indexPath)
             selectedCell?.checked = true

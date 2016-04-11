@@ -1,5 +1,6 @@
 import UIKit
 import MARKRangeSlider
+import ARAnalytics
 
 protocol RefinementOptionsViewControllerDelegate: class {
     associatedtype R: RefinableType
@@ -16,11 +17,16 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
     var slider: MARKRangeSlider?
     var applyButton: UIButton?
     var resetButton: UIButton?
-    var sortTableView: UITableView?
-    var tableViewHandler: RefinementOptionsViewControllerTableViewHandler?
     var userDidCancelClosure: (RefinementOptionsViewController -> Void)?
     var userDidApplyClosure: (R -> Void)?
-
+    
+    // this is semantically "private" to guarantee it doesn't outlive this instance of RefinementOptionsViewController
+    var tableViewHandler: RefinementOptionsViewControllerTableViewHandler?
+    var sortTableView: UITableView?
+    
+    var viewDidAppearAnalyticsOption: RefinementAnalyticsOption?
+    var applyButtonPressedAnalyticsOption: RefinementAnalyticsOption?
+    
     // defaultSettings also implies min/max price ranges
     var defaultSettings: R
     var initialSettings: R
@@ -49,6 +55,7 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
     }
 
     func userDidPressApply() {
+        applyButtonPressedAnalyticsOption?.sendAsEvent()
         userDidApplyClosure?(currentSettings)
     }
 
@@ -92,6 +99,12 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
             UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: animated ? .Slide : .None)
         }
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        viewDidAppearAnalyticsOption?.sendAsPageView()
+    }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -109,3 +122,24 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
         return traitDependentAutorotateSupport
     }
 }
+
+class RefinementAnalyticsOption: NSObject {
+    let name: String
+    let properties: [NSObject: AnyObject]
+    
+    init(name: String, properties: [NSObject: AnyObject]) {
+        self.name = name
+        self.properties = properties
+        
+        super.init()
+    }
+
+    func sendAsEvent() {
+        ARAnalytics.event(name, withProperties: properties)
+    }
+    
+    func sendAsPageView() {
+        ARAnalytics.pageView(name, withProperties: properties)
+    }
+}
+

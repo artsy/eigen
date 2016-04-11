@@ -19,4 +19,13 @@ protocol RefinableType: Equatable {
     // new settings
     func refineSettingsWithSelectedIndexPath(indexPath: NSIndexPath) -> Self
     func refineSettingsWithPriceRange(range: PriceRange) -> Self
+    
+    var hasEstimates: Bool { get }
+}
+
+extension RefinableType {
+    var hasEstimates: Bool {
+        guard let priceRange = priceRange else { return false }
+        return priceRange != (0, 0)
+    }
 }

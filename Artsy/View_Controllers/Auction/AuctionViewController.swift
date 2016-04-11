@@ -174,16 +174,25 @@ extension AuctionViewController {
     }
 
     func showRefineTapped() {
-        let refineViewController = RefinementOptionsViewController(defaultSettings: defaultRefineSettings(), initialSettings: refineSettings, userDidCancelClosure: { (refineVC) in
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }) { (settings: AuctionRefineSettings) in
-            self.refineSettings = settings
-
-            self.displayCurrentItems()
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
+        let refineViewController = RefinementOptionsViewController(defaultSettings: defaultRefineSettings(),
+            initialSettings: refineSettings,
+            userDidCancelClosure: { (refineVC) in
+                self.dismissViewControllerAnimated(true, completion: nil)},
+            userDidApplyClosure: { (settings: AuctionRefineSettings) in
+                self.refineSettings = settings
+                
+                self.displayCurrentItems()
+                self.dismissViewControllerAnimated(true, completion: nil)
+        })
 
         refineViewController.modalPresentationStyle = .FormSheet
+        refineViewController.applyButtonPressedAnalyticsOption = RefinementAnalyticsOption(name: ARAnalyticsTappedApplyRefine, properties: [
+            "auction_slug": saleViewModel.saleID,
+            "context_type": "sale",
+            "slug": NSString(format:"/auction/%@/refine", saleViewModel.saleID)
+        ])
+        
+        refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: [ "context": "auction", "slug": "/auction/\(saleViewModel.saleID)/refine"])
         refineViewController.changeStatusBar = self.traitCollection.horizontalSizeClass == .Compact
         presentViewController(refineViewController, animated: true, completion: nil)
     }
