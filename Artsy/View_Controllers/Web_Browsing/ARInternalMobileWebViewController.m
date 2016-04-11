@@ -163,7 +163,6 @@ static void *ARProgressContext = &ARProgressContext;
         return WKNavigationActionPolicyCancel;
     }
 
-
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
             ARWindow *window = ARAppDelegate.sharedInstance.window;

@@ -115,7 +115,7 @@ PODS:
     - ARTiledImageView
     - SDWebImage
   - Nimble (3.2.0)
-  - Nimble-Snapshots (4.0.0):
+  - Nimble-Snapshots (4.0.1):
     - FBSnapshotTestCase (~> 2.0)
     - Nimble
     - Quick
@@ -354,7 +354,7 @@ SPEC CHECKSUMS:
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: bdcb666fa84122eed344661b132e1d93dbafac71
   Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
-  Nimble-Snapshots: 1cb1c223a97383d4744f742422eab84df9425742
+  Nimble-Snapshots: 2d15a585b816f7d14947ed6e172218f9d0980ea8
   NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2

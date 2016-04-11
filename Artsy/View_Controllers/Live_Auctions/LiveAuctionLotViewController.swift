@@ -49,24 +49,8 @@ class LiveAuctionLotViewController: UIViewController {
         metadataStack.alignCenterXWithView(view, predicate: "0")
         lotPreviewView.constrainBottomSpaceToView(metadataStack, predicate: "-20")
 
-        let artistNameLabel = UILabel()
-        artistNameLabel.font = UIFont.serifSemiBoldFontWithSize(16)
-        metadataStack.addSubview(artistNameLabel, withTopMargin: "0", sideMargin: "20")
-
-        let artworkNameLabel = ARArtworkTitleLabel()
-        artworkNameLabel.setTitle("That work", date: "2006")
-        metadataStack.addSubview(artworkNameLabel, withTopMargin: "0", sideMargin: "20")
-
-        let estimateLabel = ARSerifLabel()
-        estimateLabel.font = UIFont.serifFontWithSize(14)
-        estimateLabel.text = "Estimate: $100,000–120,000 USD"
-        metadataStack.addSubview(estimateLabel, withTopMargin: "2", sideMargin: "20")
-
-        let premiumLabel = ARSerifLabel()
-        premiumLabel.font = UIFont.serifFontWithSize(14)
-        premiumLabel.text = "Buyer’s Premium 25%"
-        premiumLabel.alpha = 0.3
-        metadataStack.addSubview(premiumLabel, withTopMargin: "2", sideMargin: "20")
+        let lotMetadataStack = AuctionLotMetadataStackScrollView()
+        metadataStack.addSubview(lotMetadataStack, withTopMargin: "0", sideMargin: "0")
 
         let infoToolbar = LiveAuctionToolbarView()
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
@@ -87,8 +71,9 @@ class LiveAuctionLotViewController: UIViewController {
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
 
         // TODO impossible to unsubscribe from Interstellar signals, will adding all those callbacks ever hurt us performance-wise?
-        currentLotSignal.next { [weak currentLotView] currentLot in
+        currentLotSignal.next { [weak currentLotView, weak lotMetadataStack] currentLot in
             currentLotView?.viewModel.update(currentLot)
+            lotMetadataStack?.viewModel.update(currentLot)
         }
 
         auctionViewModel.saleAvailabilitySignal.next { [weak currentLotView] saleAvailability in
@@ -97,9 +82,6 @@ class LiveAuctionLotViewController: UIViewController {
             }
         }
 
-        artistNameLabel.text = lotViewModel.lotArtist
-        artworkNameLabel.setTitle(lotViewModel.lotName, date: "1985")
-        estimateLabel.text = lotViewModel.estimateString
         infoToolbar.lotVM = lotViewModel
         infoToolbar.auctionViewModel = auctionViewModel
 

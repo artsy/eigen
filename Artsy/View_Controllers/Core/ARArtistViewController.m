@@ -354,7 +354,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
         failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
         [sender setHearted:!hearted animated:ARPerformWorkAsynchronously];
-        }];
+    }];
 }
 
 #pragma mark - Switch Navigation
