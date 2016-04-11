@@ -50,28 +50,13 @@
                        success:(void (^)(id JSON))success
                        failure:(void (^)(NSError *error))failure
 {
-    __weak AFHTTPRequestOperation *feedOperation = nil;
-    feedOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
-        success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 
-            BOOL isFirstPageOfMainFeed = (!cursor);
-            if (success) {
-                success(JSON);
-            }
-            if(isFirstPageOfMainFeed) {
-                ar_dispatch_async(^{
-                    NSString *path = [ARFileUtils userDocumentsPathWithFile:request.URL.absoluteString];
-                    [feedOperation.responseData writeToFile:path options:NSDataWritingAtomic error:nil];
-                });
-            }
+    [self performRequest:request success:success failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [ArtsyAPI handleXappTokenError:error];
+        if (failure) {
+            failure(error);
         }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            [ArtsyAPI handleXappTokenError:error];
-            if (failure) {
-                failure(error);
-            }
-        }];
-    [feedOperation start];
+    }];
 }
 
 + (void)getFeaturedWorks:(void (^)(NSArray *works))success failure:(void (^)(NSError *error))failure

@@ -48,11 +48,12 @@ class TextStack: ORStackView {
         line.constrainHeight("2")
     }
 
-    func addBodyText(string: String, topMargin: String = "20") -> UILabel {
+    func addBodyText(string: String, topMargin: String = "20", sideMargin: String = "0") -> UILabel {
         let serif = ARSerifLabel()
         serif.font = .serifFontWithSize(16)
+        serif.numberOfLines = 0
         serif.text = string
-        addSubview(serif, withTopMargin: topMargin, sideMargin: "0")
+        addSubview(serif, withTopMargin: topMargin, sideMargin: sideMargin)
         return serif
     }
 

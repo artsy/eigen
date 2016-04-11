@@ -41,16 +41,34 @@ class LiveAuctionLotViewController: UIViewController {
         lotPreviewView.constrainWidthToView(view, predicate: "-80")
         lotPreviewView.alignCenterXWithView(view, predicate: "0")
 
+        let lotMetadataStack = AuctionLotMetadataStackScrollView()
+        view.addSubview(lotMetadataStack)
+        lotMetadataStack.constrainWidthToView(view, predicate: "0")
+        lotMetadataStack.alignCenterXWithView(view, predicate: "0")
+
+        let topMetadataStackConstraints = lotMetadataStack.alignTopEdgeWithView(self.view, predicate: "20") as? [NSLayoutConstraint]
+        let topMetadataStackConstraint = topMetadataStackConstraints!.first!
+        topMetadataStackConstraint.active = false
+
+        lotMetadataStack.showAdditionalInformation = { button in
+            topMetadataStackConstraint.active = true
+            lotMetadataStack.showFullMetadata(true)
+        }
+
+        lotMetadataStack.hideAdditionalInformation = { button in
+            topMetadataStackConstraint.active = false
+            lotMetadataStack.hideFullMetadata(true)
+        }
+
         let metadataStack = ORStackView()
         metadataStack.bottomMarginHeight = 0
         view.addSubview(metadataStack)
         metadataStack.alignBottomEdgeWithView(view, predicate: "0")
         metadataStack.constrainWidthToView(view, predicate: "-40")
         metadataStack.alignCenterXWithView(view, predicate: "0")
-        lotPreviewView.constrainBottomSpaceToView(metadataStack, predicate: "-20")
 
-        let lotMetadataStack = AuctionLotMetadataStackScrollView()
-        metadataStack.addSubview(lotMetadataStack, withTopMargin: "0", sideMargin: "0")
+        lotPreviewView.constrainBottomSpaceToView(lotMetadataStack, predicate: "-20")
+        lotMetadataStack.constrainBottomSpaceToView(metadataStack, predicate: "-20")
 
         let infoToolbar = LiveAuctionToolbarView()
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
@@ -60,7 +78,7 @@ class LiveAuctionLotViewController: UIViewController {
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 
-        let bidHistoryViewController =  LiveAuctionBidHistoryViewController(style: .Plain)
+        let bidHistoryViewController = LiveAuctionBidHistoryViewController(style: .Plain)
         metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
         bidHistoryViewController.view.constrainHeight("70")
 
