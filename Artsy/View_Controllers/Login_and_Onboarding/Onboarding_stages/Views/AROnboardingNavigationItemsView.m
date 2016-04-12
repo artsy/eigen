@@ -7,7 +7,7 @@
 
 @interface AROnboardingNavigationItemsView ()
 
-@property (nonatomic) UILabel *warningLabel;
+@property (nonatomic, strong) UILabel *warningLabel;
 
 @end
 
@@ -18,7 +18,6 @@
 {
     self = [super init];
     if (self) {
-        
         _back = [[ARWhiteFlatButton alloc] init];
         [_back setTitle:@"Back" forState:UIControlStateNormal];
         [_back setBorderColor:[UIColor artsyGrayRegular] forState:UIControlStateNormal];
