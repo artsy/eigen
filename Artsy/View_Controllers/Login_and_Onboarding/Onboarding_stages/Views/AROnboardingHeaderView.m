@@ -28,7 +28,7 @@
     return self;
 }
 
-- (void)setupHeaderViewWithTitle:(NSString *)title andProgress:(NSString *)progress
+- (void)setupHeaderViewWithTitle:(NSString *)title andProgress:(CGFloat)progress
 {
     self.progressBackgroundBar.backgroundColor = [UIColor artsyGrayMedium];
     [self addSubview:self.progressBackgroundBar];
@@ -41,8 +41,10 @@
     self.progressBar.backgroundColor = [UIColor blackColor];
     [self addSubview:self.progressBar];
 
+    NSString *progressWidth = [NSString stringWithFormat:@"*.%1.0f", progress];
+
     [self.progressBar constrainHeight:@"5"];
-    [self.progressBar constrainWidthToView:self predicate:progress]; // percentage of completeness
+    [self.progressBar constrainWidthToView:self predicate:progressWidth];
     [self.progressBar alignTopEdgeWithView:self predicate:@"0"];
     [self.progressBar alignLeadingEdgeWithView:self predicate:@"0"];
 

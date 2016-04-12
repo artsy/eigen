@@ -232,14 +232,15 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 
     switch (self.state) {
         case AROnboardingStagePersonalizeArtists:
-            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." andProgress:@"*.3"];
+            // progress percentages are made up for now, will be calculated by steps and remaining steps later
+            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." andProgress:33.3f];
             break;
         case AROnboardingStagePersonalizeCategories:
-            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." andProgress:@"*.5"];
+            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." andProgress:50.0f];
             [self.onboardingNavigationItems disableNextStep];
             break;
         case AROnboardingStagePersonalizeBudget:
-            [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" andProgress:@"*.7"];
+            [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" andProgress:70.0f];
             break;
         default:
             break;
