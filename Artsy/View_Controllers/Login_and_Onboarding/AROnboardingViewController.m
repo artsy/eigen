@@ -31,18 +31,18 @@
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
-typedef NS_ENUM(NSInteger, AROnboardingStage) {
-    AROnboardingStageSlideshow,
-    AROnboardingStageStart,
-    AROnboardingStageChooseMethod,
-    AROnboardingStageEmailPassword,
-    AROnboardingStageCollectorStatus,
-    AROnboardingStageLocation,
-    AROnboardingStagePersonalize,
-    AROnboardingStageFollowNotification,
-    AROnboardingStagePriceRange,
-    AROnboardingStageNotes
-};
+//typedef NS_ENUM(NSInteger, AROnboardingStage) {
+//    AROnboardingStageSlideshow,
+//    AROnboardingStageStart,
+//    AROnboardingStageChooseMethod,
+//    AROnboardingStageEmailPassword,
+//    AROnboardingStageCollectorStatus,
+//    AROnboardingStageLocation,
+//    AROnboardingStagePersonalize,
+//    AROnboardingStageFollowNotification,
+//    AROnboardingStagePriceRange,
+//    AROnboardingStageNotes
+//};
 
 
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
@@ -83,7 +83,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     self.view.tintColor = [UIColor artsyPurpleRegular];
 
 
@@ -91,7 +91,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     self.screenSwipeGesture.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:self.screenSwipeGesture];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         [ArtsyAPI getPersonalizeGenesWithSuccess:^(NSArray *genes) {
@@ -149,8 +149,8 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 //      make sure it never shows. This way it is shown for a very short period, but that’s better than nothing.
 - (void)viewDidAppear:(BOOL)animated;
 {
-   [[UIApplication sharedApplication] setStatusBarHidden:YES];
-   [super viewDidAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [super viewDidAppear:animated];
 }
 
 #pragma mark -
@@ -206,12 +206,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     [self setBackgroundImage:sender.backgroundImage animated:YES];
     sender.backgroundImage = nil;
 
-    // TODO: Implement next screen of onboarding here
-    
-    ARSignupViewController *signup = [[ARSignupViewController alloc] init];
-    signup.delegate = self;
-    [self pushViewController:signup animated:YES];
-    self.state = AROnboardingStageChooseMethod;
+    [self presentOnboarding];
 }
 
 #pragma mark -
@@ -219,22 +214,18 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 - (void)signUpWithEmail
 {
-    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
-    createVC.delegate = self;
-    [self pushViewController:createVC animated:YES];
-    self.state = AROnboardingStageEmailPassword;
+    //    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
+    //    createVC.delegate = self;
+    //    [self pushViewController:createVC animated:YES];
+    //    self.state = AROnboardingStageEmailPassword;
 }
 
 - (void)presentOnboarding
 {
-    if ([UIDevice isPad]) {
-        [self presentWebOnboarding];
-    } else {
-        [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
-            self.backgroundView.alpha = 0;
-        }];
-        [self presentCollectorLevel];
-    }
+    [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
+        self.backgroundView.alpha = 0;
+    }];
+    [self presentPersonalizationQuestionnaires];
 }
 
 - (void)didSignUpAndLogin
@@ -246,88 +237,90 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     }
 }
 
-
 #pragma mark -
-#pragma mark Web onboarding
-
-- (void)presentWebOnboarding
-{
-    NSURL *url = [ARSwitchBoard.sharedInstance resolveRelativeUrl:ARPersonalizePath];
-    ARPersonalizeWebViewController *viewController = [[ARPersonalizeWebViewController alloc] initWithURL:url];
-    viewController.personalizeDelegate = self;
-    [self pushViewController:viewController animated:YES];
-}
-
-#pragma mark -
-#pragma mark Collector level
-
-- (void)presentCollectorLevel
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipCollectorLevelDefault]) {
-        [self presentPersonalize];
-        return;
-    }
-    ARCollectorStatusViewController *status = [[ARCollectorStatusViewController alloc] init];
-    status.delegate = self;
-    [self pushViewController:status animated:YES];
-    self.state = AROnboardingStageCollectorStatus;
-}
+#pragma mark Personalize level
 
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
 }
 
-- (void)collectorLevelDone:(ARCollectorLevel)level
+- (void)presentPersonalizationQuestionnaires
 {
-    User *user = [User currentUser];
-    user.collectorLevel = level;
+    //    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPersonalizeDefault]) {
+    //        [self personalizeDone];
+    //        return;
+    //    }
 
-    NSString *collectorLevel = [ARCollectorStatusViewController stringFromCollectorLevel:level];
-    [ARAnalytics setUserProperty:ARAnalyticsCollectorLevelProperty toValue:collectorLevel];
-
-    [user setRemoteUpdateCollectorLevel:level success:nil failure:^(NSError *error) {
-        ARErrorLog(@"Error updating collector level");
-    }];
-
-    [[ARUserManager sharedManager] storeUserData];
-    [self presentPersonalize];
-}
-
-- (void)presentPersonalize
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPersonalizeDefault]) {
-        [self personalizeDone];
-        return;
-    }
-
-    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize];
+    self.state = AROnboardingStagePersonalizeArtists;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    self.state = AROnboardingStagePersonalize;
 }
 
-- (void)personalizeDone
+- (void)presentPersonalizeCategories
 {
-    if ([User currentUser].collectorLevel == ARCollectorLevelNo) {
-        // They're done
-        [self dismissOnboardingWithVoidAnimation:YES];
+    self.state = AROnboardingStagePersonalizeCategories;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+}
+
+- (void)presentPersonalizeBudget
+{
+    self.state = AROnboardingStagePersonalizeCategories;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+}
+
+- (void)personalizeArtistsDone
+{
+    //    if ([User currentUser].collectorLevel == ARCollectorLevelNo) {
+    //        // They're done
+    //        [self dismissOnboardingWithVoidAnimation:YES];
+    //    } else {
+    //        [self presentPriceRange];
+    //    }
+
+    BOOL chooseEnoughArtists = NO; // will be determined properly in next ticket
+
+    if (chooseEnoughArtists) {
+        [self presentPersonalizeBudget];
     } else {
-        [self presentPriceRange];
+        [self presentPersonalizeCategories];
     }
 }
 
-- (void)presentPriceRange
+- (void)personalizeCategoriesDone
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPriceRangeDefault]) {
-        [self dismissOnboardingWithVoidAnimation:YES];
-        return;
-    }
-    ARPriceRangeViewController *priceRange = [[ARPriceRangeViewController alloc] init];
-    priceRange.delegate = self;
-    [self pushViewController:priceRange animated:YES];
-    self.state = AROnboardingStagePriceRange;
+    [self presentPersonalizeBudget];
 }
+
+- (void)personalizeBudgetDone
+{
+    //    ARSignupViewController *signup = [[ARSignupViewController alloc] init];
+    //    signup.delegate = self;
+    //    [self pushViewController:signup animated:YES];
+    //    self.state = AROnboardingStageChooseMethod;
+}
+
+- (void)backTapped
+{
+    [self popViewControllerAnimated:YES];
+}
+
+//- (void)presentPriceRange
+//{
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPriceRangeDefault]) {
+//        [self dismissOnboardingWithVoidAnimation:YES];
+//        return;
+//    }
+//    ARPriceRangeViewController *priceRange = [[ARPriceRangeViewController alloc] init];
+//    priceRange.delegate = self;
+//    [self pushViewController:priceRange animated:YES];
+//    self.state = AROnboardingStagePriceRange;
+//}
 
 - (void)setPriceRangeDone:(NSInteger)range
 {
@@ -348,7 +341,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     self.backgroundWidthConstraint.constant = 0;
     self.backgroundHeightConstraint.constant = 0;
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         __strong typeof (wself) sself = wself;
         [sself.backgroundView layoutIfNeeded];
@@ -394,7 +387,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 - (void)signUpWithFacebook
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
         __strong typeof (wself) sself = wself;
@@ -420,7 +413,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ARAuthProviders getReverseAuthTokenForTwitter:^(NSString *token, NSString *secret) {
         __strong typeof (wself) sself = wself;
 
@@ -571,13 +564,13 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
     self.backgroundWidthConstraint.constant = offset * 2;
     self.backgroundHeightConstraint.constant = offset * 2;
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         __strong typeof (wself) sself = wself;
         [sself.backgroundView layoutIfNeeded];
         sself.backgroundView.image = blurImage;
         sself.backgroundView.alpha = 0.3;
-        sself.backgroundView.backgroundColor = [UIColor blackColor];
+        sself.backgroundView.backgroundColor = [UIColor whiteColor];
     }];
 }
 

@@ -7,6 +7,7 @@
 
 @import Artsy_UILabels;
 
+
 @interface ARCollectorStatusViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic) ARSerifLineHeightLabel *label;
 @property (nonatomic) UITableView *tableView;
@@ -105,8 +106,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ARCollectorLevel level = (ARCollectorLevel)(3 - indexPath.row);
-    [self.delegate collectorLevelDone:level];
+    //ARCollectorLevel level = (ARCollectorLevel)(3 - indexPath.row);
+    //[self.delegate collectorLevelDone:level];
 }
 
 + (NSString *)stringFromCollectorLevel:(enum ARCollectorLevel)level
