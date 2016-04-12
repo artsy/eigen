@@ -218,8 +218,9 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.onboardingNavigationItems constrainHeight:@"50"];
     [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
     [self.onboardingNavigationItems alignLeadingEdgeWithView:self.view predicate:@"0"];
-    
+
     [self.onboardingNavigationItems.next addTarget:self action:@selector(nextTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.onboardingNavigationItems.back addTarget:self action:@selector(backTapped:) forControlEvents:UIControlEventTouchUpInside];
 
     self.headerView = [[AROnboardingHeaderView alloc] init];
     [self.view addSubview:self.headerView];
@@ -263,7 +264,13 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
             break;
         default:
             break;
-    }}
+    }
+}
+
+- (void)backTapped:(id)sender
+{
+    [self.delegate backTapped];
+}
 
 - (void)searchToggleFollowStatusForArtist:(Artist *)artist atIndexPath:indexPath
 {

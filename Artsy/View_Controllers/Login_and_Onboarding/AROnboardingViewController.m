@@ -45,8 +45,6 @@
 //};
 
 
-
-
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 @property (nonatomic, assign) BOOL showBackgroundImage;
@@ -85,7 +83,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     self.view.tintColor = [UIColor artsyPurpleRegular];
 
 
@@ -216,10 +214,10 @@
 
 - (void)signUpWithEmail
 {
-//    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
-//    createVC.delegate = self;
-//    [self pushViewController:createVC animated:YES];
-//    self.state = AROnboardingStageEmailPassword;
+    //    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
+    //    createVC.delegate = self;
+    //    [self pushViewController:createVC animated:YES];
+    //    self.state = AROnboardingStageEmailPassword;
 }
 
 - (void)presentOnboarding
@@ -278,15 +276,15 @@
 
 - (void)personalizeArtistsDone
 {
-//    if ([User currentUser].collectorLevel == ARCollectorLevelNo) {
-//        // They're done
-//        [self dismissOnboardingWithVoidAnimation:YES];
-//    } else {
-//        [self presentPriceRange];
-//    }
-    
+    //    if ([User currentUser].collectorLevel == ARCollectorLevelNo) {
+    //        // They're done
+    //        [self dismissOnboardingWithVoidAnimation:YES];
+    //    } else {
+    //        [self presentPriceRange];
+    //    }
+
     BOOL chooseEnoughArtists = NO; // will be determined properly in next ticket
-    
+
     if (chooseEnoughArtists) {
         [self presentPersonalizeBudget];
     } else {
@@ -294,7 +292,8 @@
     }
 }
 
-- (void)personalizeCategoriesDone {
+- (void)personalizeCategoriesDone
+{
     [self presentPersonalizeBudget];
 }
 
@@ -304,6 +303,11 @@
     //    signup.delegate = self;
     //    [self pushViewController:signup animated:YES];
     //    self.state = AROnboardingStageChooseMethod;
+}
+
+- (void)backTapped
+{
+    [self popViewControllerAnimated:YES];
 }
 
 //- (void)presentPriceRange
@@ -566,7 +570,7 @@
         [sself.backgroundView layoutIfNeeded];
         sself.backgroundView.image = blurImage;
         sself.backgroundView.alpha = 0.3;
-        sself.backgroundView.backgroundColor = [UIColor blackColor];
+        sself.backgroundView.backgroundColor = [UIColor whiteColor];
     }];
 }
 
