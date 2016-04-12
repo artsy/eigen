@@ -3,6 +3,7 @@ upcoming:
   details: Analytics improvements
 
   dev:
+    - Onboarding sequencing for personalisation questionnaire - maxim
     - Updates for Xcode 7.3. - ash
     - Onboarding splash screen - maxim
     - New state reconciliation for live auctions.
@@ -17,6 +18,7 @@ upcoming:
   notes:
     - Fixes long auction names falling off right edge. - ash
     - Fixes live auction lots being in the wrong order. - ash
+    - Adds support for loading Artsy subdomains internally. - ash
 
 
 releases:
