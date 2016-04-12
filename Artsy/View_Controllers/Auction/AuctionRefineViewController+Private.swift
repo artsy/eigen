@@ -148,8 +148,9 @@ private extension UISetup {
             labelContainer.addSubview(minLabel)
 
             minLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
-            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
-            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0").forEach(setConstraintPriority(.StayWithinFrame))
+            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb)")
+
+            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0@\(SliderPriorities.StayWithinFrame)")
 
             let maxLabel = ARItalicsSerifLabel().then {
                 $0.font = UIFont.serifFontWithSize(15)
@@ -158,11 +159,11 @@ private extension UISetup {
             labelContainer.addSubview(maxLabel)
 
             maxLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
-            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
-            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0").forEach(setConstraintPriority(.StayWithinFrame))
+            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb)")
+            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0@\(SliderPriorities.StayWithinFrame)")
 
             // Make sure they don't touch! Shouldn't be necessary since they'll be 10% appart, but this is "just in case" make sure the labels never overlap.
-            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10").forEach(setConstraintPriority(.DoNotOverlap))
+            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10@\(SliderPriorities.DoNotOverlap)")
 
             self.minLabel = minLabel
             self.maxLabel = maxLabel
@@ -215,17 +216,10 @@ extension SliderView {
         currentSettings = currentSettings.settingsWithRange(range)
     }
 
-    enum SliderPriorities: UILayoutPriority {
-        case StayWithinFrame = 475
-        case DoNotOverlap = 450
-        case StayCenteredOverThumb = 425
-    }
-
-    // Sets priority of the constraint, using AnyObject! because of FLKAutoLayout
-    func setConstraintPriority(priority: SliderPriorities) -> (AnyObject! -> Void) {
-        return { constraint in
-            (constraint as? NSLayoutConstraint)?.priority = priority.rawValue
-        }
+    enum SliderPriorities: String {
+        case StayWithinFrame = "475"
+        case DoNotOverlap = "450"
+        case StayCenteredOverThumb = "425"
     }
 }
 

@@ -92,7 +92,7 @@ const CGFloat TitlesMargin = 5;
     [self.labelContainer alignTopEdgeWithView:self.actualTitleLabel predicate:@"0"];
     [self.actualTitleLabel alignLeadingEdgeWithView:self.labelContainer predicate:@"0"];
     [self.actualTitleLabel alignTrailingEdgeWithView:self.labelContainer predicate:@"0"];
-    _titlesMarginConstraint = [[self.subtitleLabel constrainTopSpaceToView:self.actualTitleLabel predicate:@"0"] lastObject];
+    _titlesMarginConstraint = [self.subtitleLabel constrainTopSpaceToView:self.actualTitleLabel predicate:@"0"];
     [self.subtitleLabel alignBottomEdgeWithView:self.labelContainer predicate:@"0"];
 
     [UIView alignLeadingAndTrailingEdgesOfViews:@[ self.actualTitleLabel, self.subtitleLabel, self.labelContainer ]];

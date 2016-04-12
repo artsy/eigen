@@ -322,7 +322,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 {
     CGFloat height = [self.artworkVC.activeModule intrinsicSize].height;
     if (!self.artworksVCConstraint) {
-        self.artworksVCConstraint = [[self.artworkVC.view constrainHeight:@(height).stringValue] lastObject];
+        self.artworksVCConstraint = [self.artworkVC.view constrainHeight:@(height).stringValue];
     } else {
         self.artworksVCConstraint.constant = height;
     }

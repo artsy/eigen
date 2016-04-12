@@ -11,6 +11,7 @@ upcoming:
     - Started the Live Auction Bidding Interface - orta
     - Handles bidding in an auction with stubbed API interfaces. - orta
     - Basic metaphysics access for live sale static data. - ash
+    - Lot metadata can toggle between a short artwork blurb and full metadata - orta
 
   notes:
     - Fixes long auction names falling off right edge. - ash

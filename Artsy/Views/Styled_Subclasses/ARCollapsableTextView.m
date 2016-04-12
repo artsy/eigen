@@ -26,7 +26,7 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
     if (self) {
         _collapsedHeight = ARCollapsableTextViewHeight;
 
-        _heightCollapsingConstraint = [[self constrainHeight:@(_collapsedHeight).stringValue] lastObject];
+        _heightCollapsingConstraint = [self constrainHeight:@(_collapsedHeight).stringValue];
         self.heightCollapsingConstraint.active = NO;
     }
     return self;
@@ -38,7 +38,7 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
 
     CGFloat fullHeight = ceilf([self sizeThatFits:self.frame.size].height);
 
-    _fullHeightConstraint = [[self constrainHeight:@(fullHeight).stringValue] lastObject];
+    _fullHeightConstraint = [self constrainHeight:@(fullHeight).stringValue];
 
     if (attributedText && !self.tapGesture) {
         // Only show the more indicator if the height of the text exceeds the height of the constraint.

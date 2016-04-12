@@ -49,7 +49,7 @@
 {
     CGFloat height = self.view.collectionViewLayout.collectionViewContentSize.height;
     if (!self.heightConstraint) {
-        self.heightConstraint = [[self.view constrainHeight:@(height).stringValue] lastObject];
+        self.heightConstraint = [self.view constrainHeight:@(height).stringValue];
     } else {
         self.heightConstraint.constant = height;
     }

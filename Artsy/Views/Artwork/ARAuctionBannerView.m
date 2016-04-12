@@ -21,7 +21,7 @@
         label.font = [UIFont serifFontWithSize:14];
         label.textAlignment = NSTextAlignmentCenter;
         [self addSubview:label];
-        self.heightConstraint = [[self constrainHeight:@"0@750"] lastObject];
+        self.heightConstraint = [self constrainHeight:@"0@750"];
         [label setContentCompressionResistancePriority:300 forAxis:UILayoutConstraintAxisVertical];
         [label constrainWidthToView:self predicate:@"-40"];
         [label constrainHeightToView:self predicate:@"-40@500"];

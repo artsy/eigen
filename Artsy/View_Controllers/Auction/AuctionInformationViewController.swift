@@ -255,7 +255,7 @@ extension AuctionInformationViewController {
 
                 contentView.viewControllerDelegate = textDelegate
                 
-                self.contentHeightConstraint = contentView.constrainHeight("0").first as! NSLayoutConstraint
+                self.contentHeightConstraint = contentView.constrainHeight("0")
                 
                 super.init(frame: CGRectZero)
                 

@@ -12,14 +12,12 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
     let aboveFoldStack = TextStack()
     private let toggle = AuctionLotMetadataStackScrollView.toggleSizeButton()
 
-    var showAdditionalInformation: (UIButton) -> ()
-    var hideAdditionalInformation: (UIButton) -> ()
+    var showAdditionalInformation: (() -> ())?
+    var hideAdditionalInformation: (() -> ())?
 
     var aboveFoldHeightConstraint: NSLayoutConstraint!
 
     init() {
-        self.showAdditionalInformation = { _ in }
-        self.hideAdditionalInformation = { _ in }
         super.init(stackViewClass: TextStack.self)
 
         /// Splits the essential lot metadata and the "lot info" button
@@ -58,8 +56,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         stackView.addSubview(aboveFoldStackWrapper, withTopMargin: "0", sideMargin: "0")
 
         // set a constraint to force it to be in small mode first
-        aboveFoldHeightConstraint = constrainHeightToView(aboveFoldStackWrapper, predicate: "0").first as! NSLayoutConstraint
-
+        aboveFoldHeightConstraint = constrainHeightToView(aboveFoldStackWrapper, predicate: "0")
         /// Anything addded to `stack` here will be hidden by default
         guard let stack = stackView as? TextStack else { return }
 
@@ -67,7 +64,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
         let loremTwo = stack.addBodyText("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", sideMargin: "40")
 
-        scrollEnabled = false
+        hideFullMetadata(false)
         invalidateIntrinsicContentSize()
 
         backgroundColor = UIColor(white: 1, alpha: 0.85)
@@ -78,9 +75,9 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
     @objc private func toggleTapped(button: UIButton) {
         if (aboveFoldHeightConstraint.active) {
-            showAdditionalInformation(button)
+            showAdditionalInformation?()
         } else {
-            hideAdditionalInformation(button)
+            hideAdditionalInformation?()
         }
     }
 
@@ -133,9 +130,6 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
     }
 
     override init(frame: CGRect) {
-        self.showAdditionalInformation = { _ in }
-        self.hideAdditionalInformation = { _ in }
-
         super.init(frame: frame)
     }
 

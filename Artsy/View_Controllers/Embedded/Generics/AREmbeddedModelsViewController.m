@@ -215,7 +215,7 @@
     _constrainHeightAutomatically = constrainHeightAutomatically;
 
     if (constrainHeightAutomatically) {
-        self.heightConstraint = [[self.view constrainHeight:@"260"] lastObject];
+        self.heightConstraint = [self.view constrainHeight:@"260"];
         self.collectionView.scrollEnabled = NO;
     } else {
         [self.view removeConstraint:self.heightConstraint];
