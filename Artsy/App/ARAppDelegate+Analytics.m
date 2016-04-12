@@ -1504,18 +1504,6 @@
                         }
                     ]
                 },
-                @{
-                    ARAnalyticsClass: AuctionRefineViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Sale Information",
-                            ARAnalyticsProperties: ^NSDictionary *(AuctionInformationViewController *controller, NSArray *_) {
-                                return @{ @"context": @"auction",
-                                        @"slug": [NSString stringWithFormat:@"/auction/%@/refine", controller.saleViewModel.saleID]};
-                            }
-                        }
-                    ]
-                },
             ]
         }
     ];

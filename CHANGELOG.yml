@@ -3,6 +3,7 @@ upcoming:
   details: Analytics improvements
 
   dev:
+    - Generalized the RefineViewController - sarah
     - Updates for Xcode 7.3. - ash
     - CocoaPods now is v1.0b. - orta
 

@@ -13,7 +13,7 @@ class AuctionViewController: UIViewController {
 
     var allowAnimations = true
 
-    /// Variable for storing lazily-computed default refine settings. 
+    /// Variable for storing lazily-computed default refine settings.
     /// Should not be accessed directly, call defaultRefineSettings() instead.
     private var _defaultRefineSettings: AuctionRefineSettings?
 
@@ -50,7 +50,7 @@ class AuctionViewController: UIViewController {
         appeared = true
 
         self.ar_presentIndeterminateLoadingIndicatorAnimated(animated)
-        
+
         self.networkModel.fetch().next { [weak self] saleViewModel in
 
             if saleViewModel.isUpcomingAndHasNoLots {
@@ -61,8 +61,8 @@ class AuctionViewController: UIViewController {
 
 
             saleViewModel.registerSaleAsActiveActivity(self)
-        }.error { error in
-            // TODO: Error-handling somehow
+            }.error { error in
+                // TODO: Error-handling somehow
         }
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AuctionViewController.registrationUpdated(_:)), name: ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
@@ -100,7 +100,7 @@ class AuctionViewController: UIViewController {
 
     enum ViewTags: Int {
         case Banner = 0, Title
-        
+
         case WhitespaceGobbler
     }
 
@@ -166,23 +166,41 @@ extension AuctionViewController {
 
     func defaultRefineSettings() -> AuctionRefineSettings {
         guard let defaultSettings = _defaultRefineSettings else {
-            let defaultSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber, range: self.saleViewModel.lowEstimateRange)
+            let defaultSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber, priceRange:self.saleViewModel.lowEstimateRange, saleViewModel:saleViewModel)
             _defaultRefineSettings = defaultSettings
             return defaultSettings
         }
         return defaultSettings
     }
 
-    func showRefineTapped() {
-        let refineViewController = AuctionRefineViewController(defaultSettings: defaultRefineSettings(), initialSettings: refineSettings).then {
-            $0.delegate = self
-            $0.modalPresentationStyle = .FormSheet
-            $0.changeStatusBar = self.traitCollection.horizontalSizeClass == .Compact
-            $0.saleViewModel = self.saleViewModel
-        }
-        presentViewController(refineViewController, animated: true, completion: nil)
-    }
+    func showRefineTappedAnimated(animated: Bool) {
+        let refineViewController = RefinementOptionsViewController(defaultSettings: defaultRefineSettings(),
+            initialSettings: refineSettings,
+            userDidCancelClosure: { (refineVC) in
+                self.dismissViewControllerAnimated(animated, completion: nil)},
+            userDidApplyClosure: { (settings: AuctionRefineSettings) in
+                self.refineSettings = settings
+                
+                self.displayCurrentItems()
+                self.dismissViewControllerAnimated(animated, completion: nil)
+        })
 
+        refineViewController.modalPresentationStyle = .FormSheet
+        refineViewController.applyButtonPressedAnalyticsOption = RefinementAnalyticsOption(name: ARAnalyticsTappedApplyRefine, properties: [
+            "auction_slug": saleViewModel.saleID,
+            "context_type": "sale",
+            "slug": NSString(format:"/auction/%@/refine", saleViewModel.saleID)
+        ])
+        
+        refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: [ "context": "auction", "slug": "/auction/\(saleViewModel.saleID)/refine"])
+        refineViewController.changeStatusBar = self.traitCollection.horizontalSizeClass == .Compact
+        presentViewController(refineViewController, animated: animated, completion: nil)
+    }
+    
+    func showRefineTapped() {
+        self.showRefineTappedAnimated(true)
+    }
+    
     var sideSpacing: CGFloat {
         let compactSize = traitCollection.horizontalSizeClass == .Compact
         return compactSize ? 40 : 80
@@ -245,20 +263,6 @@ extension TitleCallbacks: AuctionTitleViewDelegate {
     }
 }
 
-private typealias RefineSettings = AuctionViewController
-extension RefineSettings: AuctionRefineViewControllerDelegate {
-    func userDidCancel(controller: AuctionRefineViewController) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    func userDidApply(settings: AuctionRefineSettings, controller: AuctionRefineViewController) {
-        refineSettings = settings
-
-        displayCurrentItems()
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-}
-
 private typealias EmbeddedModelCallbacks = AuctionViewController
 extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
@@ -270,7 +274,7 @@ extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
         navigationController?.pushViewController(viewController, animated: true)
     }
-
+    
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, stickyHeaderDidChangeStickyness isAttatchedToLeadingEdge: Bool) {
         stickyHeader.stickyHeaderHeight.constant = isAttatchedToLeadingEdge ? 120 : 60
         stickyHeader.toggleAttatched(isAttatchedToLeadingEdge, animated: true)
