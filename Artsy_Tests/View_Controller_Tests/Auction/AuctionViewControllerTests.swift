@@ -320,6 +320,45 @@ class AuctionViewControllerTests: QuickSpec {
             expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
         }
 
+        it("uses the correct settings when auction is closed") {
+            let exact_now_past = ISO8601DateFormatter().dateFromString("2015-11-24T10:00:00+00:00")!
+            let start = exact_now_past.dateByAddingTimeInterval(3600.9)
+            let end = exact_now_past.dateByAddingTimeInterval(3700.9)
+
+            sale = try! Sale(dictionary: [
+                "saleID": "the-tada-sale", "name": "The 🎉 Sale",
+                "saleDescription": "This is a description",
+                "startDate": start, "endDate": end], error: Void())
+            saleViewModel = SaleViewModel(sale: sale, saleArtworks: [])
+
+            let subject = AuctionViewController(saleID: sale.saleID)
+            subject.allowAnimations = false
+            subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+            subject.saleViewModel = saleViewModel
+            
+            expect(subject.defaultRefineSettings().numberOfRowsInSection(0)).to(equal(2))
+        }
+
+        it("uses the correct settings when auction is open") {
+            let exact_now = ISO8601DateFormatter().dateFromString("2025-11-24T10:00:00+00:00")!
+            let start = exact_now.dateByAddingTimeInterval(3600.9)
+            let end = exact_now.dateByAddingTimeInterval(3700.9)
+            freezeTime(exact_now)
+            
+            sale = try! Sale(dictionary: [
+                "saleID": "the-tada-sale", "name": "The 🎉 Sale",
+                "saleDescription": "This is a description",
+                "startDate": start, "endDate": end], error: Void())
+            saleViewModel = SaleViewModel(sale: sale, saleArtworks: [])
+            
+            let subject = AuctionViewController(saleID: sale.saleID)
+            subject.allowAnimations = false
+            subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+            subject.saleViewModel = saleViewModel
+            
+            expect(subject.defaultRefineSettings().numberOfRowsInSection(0)).to(equal(6))
+        }
+        
         it("wraps auction name correctly") {
             let now = NSDate()
             let start = now.dateByAddingTimeInterval(-3600.9)

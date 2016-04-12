@@ -173,16 +173,16 @@ extension AuctionViewController {
         return defaultSettings
     }
 
-    func showRefineTapped() {
+    func showRefineTappedAnimated(animated: Bool) {
         let refineViewController = RefinementOptionsViewController(defaultSettings: defaultRefineSettings(),
             initialSettings: refineSettings,
             userDidCancelClosure: { (refineVC) in
-                self.dismissViewControllerAnimated(true, completion: nil)},
+                self.dismissViewControllerAnimated(animated, completion: nil)},
             userDidApplyClosure: { (settings: AuctionRefineSettings) in
                 self.refineSettings = settings
                 
                 self.displayCurrentItems()
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismissViewControllerAnimated(animated, completion: nil)
         })
 
         refineViewController.modalPresentationStyle = .FormSheet
@@ -194,9 +194,13 @@ extension AuctionViewController {
         
         refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: [ "context": "auction", "slug": "/auction/\(saleViewModel.saleID)/refine"])
         refineViewController.changeStatusBar = self.traitCollection.horizontalSizeClass == .Compact
-        presentViewController(refineViewController, animated: true, completion: nil)
+        presentViewController(refineViewController, animated: animated, completion: nil)
     }
-
+    
+    func showRefineTapped() {
+        self.showRefineTappedAnimated(true)
+    }
+    
     var sideSpacing: CGFloat {
         let compactSize = traitCollection.horizontalSizeClass == .Compact
         return compactSize ? 40 : 80

@@ -12,12 +12,7 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
 
         let openSaleViewModel = SaleViewModel(sale: openSale, saleArtworks: [])
 
-
-        let closedSale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": NSDate.distantFuture(), "endDate": NSDate.distantFuture() ], error: Void())
-        let closeSaleViewModel = SaleViewModel(sale: closedSale, saleArtworks: [])
-
         let defaultSettings = AuctionRefineSettings(ordering: .LotNumber, priceRange: (min: 500_00, max: 100_000_00), saleViewModel: openSaleViewModel)
-        let closedSaleSettings = AuctionRefineSettings(ordering: .LotNumber, priceRange: (min: 500_00, max: 100_000_00), saleViewModel: closeSaleViewModel)
         let differentSettings = AuctionRefineSettings(ordering: .ArtistAlphabetical, priceRange: (min: 500_00, max: 50_000_00), saleViewModel: openSaleViewModel)
         let settingsWithNoEstimates = AuctionRefineSettings(ordering: .ArtistAlphabetical, priceRange: (min: 0, max: 0), saleViewModel: openSaleViewModel)
 
