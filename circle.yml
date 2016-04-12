@@ -34,9 +34,9 @@ dependencies:
   override:
     - bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
     - bundle exec pod install
-  # cache_directories:
-  #   - vendor/bundle
-  #   - Pods
+  post:
+    - rm -rf vendor/bundle
+    - rm -rf Pods
 
 test:
   pre:
