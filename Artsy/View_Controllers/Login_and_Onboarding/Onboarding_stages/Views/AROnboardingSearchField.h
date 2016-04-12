@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
 
-@interface AROnboardingSearchField : UITextField
+@interface AROnboardingSearchField : UIView
 
 @end
