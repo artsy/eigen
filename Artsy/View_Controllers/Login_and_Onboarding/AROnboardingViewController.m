@@ -225,7 +225,7 @@
     [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
         self.backgroundView.alpha = 0;
     }];
-    [self presentPersonalize];
+    [self presentPersonalizationQuestionnaires];
 }
 
 - (void)didSignUpAndLogin
@@ -245,7 +245,7 @@
     return YES;
 }
 
-- (void)presentPersonalize
+- (void)presentPersonalizationQuestionnaires
 {
     //    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPersonalizeDefault]) {
     //        [self personalizeDone];

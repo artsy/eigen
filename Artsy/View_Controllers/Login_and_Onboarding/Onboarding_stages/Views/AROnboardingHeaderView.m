@@ -7,9 +7,9 @@
 
 @interface AROnboardingHeaderView ()
 
-@property (nonatomic) UIView *progressBar;
-@property (nonatomic) UIView *progressBackgroundBar;
-@property (nonatomic) UILabel *titleLabel;
+@property (nonatomic, strong) UIView *progressBar;
+@property (nonatomic, strong) UIView *progressBackgroundBar;
+@property (nonatomic, strong) UILabel *titleLabel;
 
 @end
 
