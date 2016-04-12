@@ -66,3 +66,5 @@
 
 #import "ARAppStatus.h"
 #import "ARAnalyticsConstants.h"
+
+#import "UIView+Spinner.h"

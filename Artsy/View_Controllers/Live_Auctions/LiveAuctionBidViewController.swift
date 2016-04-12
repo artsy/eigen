@@ -79,6 +79,7 @@ class LiveAuctionBidViewModel: NSObject {
 class LiveAuctionBidViewController: UIViewController {
 
     var bidViewModel: LiveAuctionBidViewModel!
+    var biddingProgressSignal = Signal<LiveAuctionBiddingProgressState>()
 
     @IBOutlet weak var lowerBiddingSeparatorView: UIView!
     @IBOutlet weak var bidButton: LiveAuctionBidButton!
@@ -91,9 +92,7 @@ class LiveAuctionBidViewController: UIViewController {
         updateBiddingControls(bidViewModel.currentBid)
 
         bidViewModel.lotViewModel.endEventUpdatesSignal.next(updateCurrentBidInformation)
-
-        // TODO: Handle lot bidding ending
-        // bidViewModel.lotViewModel.endEventUpdatesSignal
+        biddingProgressSignal.next(biddingProgressUpdated)
 
         view.layoutIfNeeded()
         let bottomSeparatorOverlapsBidButton = bidButton.center.y < lowerBiddingSeparatorView.center.y
@@ -105,7 +104,7 @@ class LiveAuctionBidViewController: UIViewController {
     @IBOutlet weak var lotNameLabel: UILabel!
     @IBOutlet weak var lotPreviewImageView: UIImageView!
 
-    func updateLotInformation() {
+    private func updateLotInformation() {
         let lotVM = bidViewModel.lotViewModel
         lotNumberLabel.text = "LOT \(lotVM.lotIndex)"
         lotArtistLabel.text = lotVM.lotArtist
@@ -116,7 +115,7 @@ class LiveAuctionBidViewController: UIViewController {
     @IBOutlet weak var numberOfCurrentBidsLabel: UILabel!
     @IBOutlet weak var priceOfCurrentBidsLabel: UILabel!
 
-    func updateCurrentBidInformation(_: NSDate) {
+    private func updateCurrentBidInformation(_: NSDate) {
         numberOfCurrentBidsLabel.text = bidViewModel.currentBidsAndReserve
         priceOfCurrentBidsLabel.text = bidViewModel.currentLotValueString
 
@@ -130,7 +129,7 @@ class LiveAuctionBidViewController: UIViewController {
     @IBOutlet weak var currentBidLabel: UILabel!
     @IBOutlet weak var currentIncrementLabel: UILabel!
 
-    func updateBiddingControls(bid: Int) {
+    private func updateBiddingControls(bid: Int) {
         decreaseBidButton.enabled = bidViewModel.canMakeLowerBids
 
         currentIncrementLabel.text = "Increments of \(bidViewModel.nextBidIncrementDollars)"
@@ -152,4 +151,40 @@ class LiveAuctionBidViewController: UIViewController {
         updateBiddingControls(bidViewModel.currentBid)
     }
 
+    // Incase you're new to storyboards, these views are on an associated
+    // view ( its on the top bar for the scene. ) which can be hidden
+
+    @IBOutlet var bidProgressOverlayView: LiveBidProgressOverlayView!
+
+    private func biddingProgressUpdated(state: LiveAuctionBiddingProgressState) {
+        let buttonState = LiveAuctionBidButtonState.Active(biddingState: state)
+        bidButton.progressSignal.update(buttonState)
+
+        bidProgressOverlayView.biddingProgressSignal.update(state)
+        handleProgressViewVisibility(state)
+    }
+
+    private func handleProgressViewVisibility(state: LiveAuctionBiddingProgressState) {
+        let showingBidProgressView = bidProgressOverlayView.superview != nil
+        let shouldShowBidProgressView: Bool
+
+        switch state {
+        case .Biddable, .TrialUser: shouldShowBidProgressView = false
+        default: shouldShowBidProgressView = true
+        }
+
+        let addBidProgressView = !showingBidProgressView && shouldShowBidProgressView
+        let removeBidProgressView = showingBidProgressView && !shouldShowBidProgressView
+
+        if addBidProgressView {
+            view.addSubview(bidProgressOverlayView)
+            bidProgressOverlayView.alignTop("0", leading: "0", toView: view)
+            bidProgressOverlayView.alignTrailingEdgeWithView(view, predicate: "0")
+            bidProgressOverlayView.constrainBottomSpaceToView(bidButton, predicate: "-20")
+        }
+
+        if removeBidProgressView {
+            bidProgressOverlayView.removeFromSuperview()
+        }
+    }
 }

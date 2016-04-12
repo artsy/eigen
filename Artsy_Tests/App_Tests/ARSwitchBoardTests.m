@@ -331,6 +331,14 @@ describe(@"ARSwitchboard", ^{
             expect(classString).to.contain(@"LiveAuctionViewController");
         });
 
+        it(@"routes un-registered subdomains internally", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+
+            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://whatever.artsy.net"]];
+            expect(subject).to.beKindOf(ARInternalMobileWebViewController.class);
+        });
+
         it(@"routes auctions", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
