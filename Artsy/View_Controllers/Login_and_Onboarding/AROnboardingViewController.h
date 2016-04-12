@@ -8,6 +8,7 @@
 - (void)personalizeArtistsDone;
 - (void)personalizeCategoriesDone;
 - (void)personalizeBudgetDone;
+- (void)backTapped;
 - (void)splashDone:(ARSignUpSplashViewController *)sender;
 - (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender;
 //- (void)collectorLevelDone:(ARCollectorLevel)level;
