@@ -1,15 +1,23 @@
 import UIKit
 import Interstellar
 
-class LiveAuctionLotListViewController: UIViewController {
+let LotCellIdentifier = "LotCellIdentifier"
+
+class LiveAuctionLotListViewController: UICollectionViewController {
     let lots: [LiveAuctionLotViewModelType]
     let currentLotSignal: Signal<LiveAuctionLotViewModelType>
+    let stickyCollectionViewLayout: LiveAuctionLotListStickyCellCollectionViewLayout
 
     init(lots: [LiveAuctionLotViewModelType], currentLotSignal: Signal<LiveAuctionLotViewModelType>) {
         self.lots = lots
         self.currentLotSignal = currentLotSignal
+        self.stickyCollectionViewLayout = LiveAuctionLotListStickyCellCollectionViewLayout()
 
-        super.init(nibName: nil, bundle: nil)
+        super.init(collectionViewLayout: self.stickyCollectionViewLayout)
+
+        currentLotSignal.next { [weak self] lot in
+            self?.stickyCollectionViewLayout.setActiveIndex(lot.lotIndex - 1) // Remember, lot indices are one-indexed
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -17,7 +25,26 @@ class LiveAuctionLotListViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        view.backgroundColor = .whiteColor()
+        collectionView?.backgroundColor = .whiteColor()
+
+        collectionView?.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: LotCellIdentifier)
     }
-    
 }
+
+
+private typealias CollectionView = LiveAuctionLotListViewController
+extension CollectionView {
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return lots.count
+    }
+
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(LotCellIdentifier, forIndexPath: indexPath)
+
+        cell.backgroundColor = .grayColor()
+
+        return cell
+    }
+}
+
+
