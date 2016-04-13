@@ -48,11 +48,24 @@ it(@"displays contact gallery for a for sale artwork", ^{
     view.artwork = [Artwork modelWithJSON:@{
        @"id" : @"artwork-id",
        @"title" : @"Artwork Title",
-       @"availability" : @"for sale"
+       @"availability" : @"for sale",
+       @"inquireable" : @YES,
     }];
     [view updateUI];
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
     expect(view).to.haveValidSnapshotNamed(@"forSale");
+});
+
+it(@"does not display contact gallery for an uninquireable for sale artwork", ^{
+    view.artwork = [Artwork modelWithJSON:@{
+        @"id" : @"artwork-id",
+        @"title" : @"Artwork Title",
+        @"availability" : @"for sale",
+        @"inquireable" : @"false",
+    }];
+    [view updateUI];
+    [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    expect(view).to.haveValidSnapshotNamed(@"uninquireableForSale");
 });
 
 it(@"displays buy now for an acquireable work with pricing", ^{
@@ -85,6 +98,7 @@ it(@"displays contact seller when the partner is not a gallery", ^{
        @"id" : @"artwork-id",
        @"title" : @"Artwork Title",
        @"availability" : @"for sale",
+       @"inquireable" : @YES,
        @"partner" : @{
                @"id" : @"partner_id",
                @"type" : @"Museum",

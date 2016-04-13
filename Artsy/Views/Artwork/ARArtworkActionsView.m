@@ -364,7 +364,7 @@ return [navigationButtons copy];
 
 - (BOOL)showContactButton
 {
-    return self.artwork.forSale.boolValue && !self.artwork.acquireable.boolValue && ![self showAuctionControls];
+    return self.artwork.forSale.boolValue && self.artwork.inquireable.boolValue && !self.artwork.acquireable.boolValue && ![self showAuctionControls];
 }
 
 - (BOOL)showBuyButton
