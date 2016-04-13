@@ -113,17 +113,6 @@
     [inquireVC presentFormWithInquiryURLRepresentation:[self inquiryURLRepresentation]];
 }
 
-- (void)tappedContactRepresentative
-{
-    if (ARIsRunningInDemoMode) {
-        [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
-        return;
-    }
-
-    ARInquireForArtworkViewController *inquireVC = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:self.artwork fair:self.fair];
-    [inquireVC presentFormWithInquiryURLRepresentation:[self inquiryURLRepresentation]];
-}
-
 - (void)tappedAuctionInfo
 {
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/how-auctions-work"]];

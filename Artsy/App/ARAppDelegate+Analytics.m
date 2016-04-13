@@ -335,17 +335,6 @@
                     ARAnalyticsClass: ARArtworkViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSpecialistInquiry,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactRepresentative)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
-                                return @{
-                                    @"artwork_slug": controller.artwork.artworkID ?: @"",
-                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                    @"partner_slug": controller.artwork.partner.partnerID ?: @"",
-                                };
-                            }
-                        },
-                        @{
                             ARAnalyticsEventName: ARAnalyticsStartedGalleryInquiry,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactGallery)),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
