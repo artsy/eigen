@@ -28,6 +28,10 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
         collectionView?.registerClass(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
     }
+
+    func lotAtIndexPath(indexPath: NSIndexPath) -> LiveAuctionLotViewModelType {
+        return lots[indexPath.item]
+    }
 }
 
 
@@ -40,7 +44,8 @@ extension CollectionView {
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(LotListCollectionViewCell.CellIdentifier, forIndexPath: indexPath)
 
-        // TODO: Customize
+        let viewModel = lotAtIndexPath(indexPath)
+        (cell as? LotListCollectionViewCell)?.configureForViewModel(viewModel)
 
         return cell
     }
