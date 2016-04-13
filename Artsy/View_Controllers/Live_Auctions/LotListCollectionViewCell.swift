@@ -4,6 +4,7 @@ import Artsy_UIColors
 
 class LotListCollectionViewCell: UICollectionViewCell {
     static let CellIdentifier = "LotCellIdentifier"
+    static let Height: CGFloat = 80
 
     override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
         super.applyLayoutAttributes(layoutAttributes)

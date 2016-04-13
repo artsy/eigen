@@ -9,7 +9,7 @@ class LiveAuctionLotListStickyCellCollectionViewLayout: UICollectionViewFlowLayo
         self.scrollDirection = .Vertical
         self.minimumInteritemSpacing = 0
         self.minimumLineSpacing = 1
-        self.itemSize = CGSizeMake(200, 80)
+        // itemSize must be set in prepareLayout
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -53,6 +53,15 @@ extension PrivateFunctions {
 
 private typealias Overrides = LiveAuctionLotListStickyCellCollectionViewLayout
 extension Overrides {
+
+    override func prepareLayout() {
+        super.prepareLayout()
+
+        let width = collectionViewContentSize().width
+        let height = LotListCollectionViewCell.Height
+
+        itemSize = CGSize(width: width, height: height)
+    }
 
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let superAttributesArray = super.layoutAttributesForElementsInRect(rect) else { return nil }
