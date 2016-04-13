@@ -281,6 +281,7 @@
 		5E31524F1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E31524E1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift */; };
 		5E3816F61CBECEA500477B17 /* LiveAuctionLotListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3816F51CBECEA500477B17 /* LiveAuctionLotListViewController.swift */; };
 		5E3816F81CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3816F71CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift */; };
+		5E3816FA1CBEDDF900477B17 /* LotListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3816F91CBEDDF900477B17 /* LotListCollectionViewCell.swift */; };
 		5E47F34E1C3ECAA600EC0751 /* AuctionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */; };
 		5E47F3541C44358600EC0751 /* AuctionBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3531C44358600EC0751 /* AuctionBannerView.swift */; };
 		5E47F3561C4435C100EC0751 /* AuctionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3551C4435C100EC0751 /* AuctionTitleView.swift */; };
@@ -1207,6 +1208,7 @@
 		5E31524E1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionSocketCommunicator.swift; path = Live_Auctions/LiveAuctionSocketCommunicator.swift; sourceTree = "<group>"; };
 		5E3816F51CBECEA500477B17 /* LiveAuctionLotListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotListViewController.swift; path = Live_Auctions/LiveAuctionLotListViewController.swift; sourceTree = "<group>"; };
 		5E3816F71CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotListStickyCellCollectionViewLayout.swift; path = Live_Auctions/LiveAuctionLotListStickyCellCollectionViewLayout.swift; sourceTree = "<group>"; };
+		5E3816F91CBEDDF900477B17 /* LotListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LotListCollectionViewCell.swift; path = Live_Auctions/LotListCollectionViewCell.swift; sourceTree = "<group>"; };
 		5E47F34C1C3ECAA500EC0751 /* Artsy-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Artsy-Bridging-Header.h"; path = "../Resources/Artsy-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionViewController.swift; path = Auction/AuctionViewController.swift; sourceTree = "<group>"; };
 		5E47F3531C44358600EC0751 /* AuctionBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionBannerView.swift; path = Auction/AuctionBannerView.swift; sourceTree = "<group>"; };
@@ -3294,6 +3296,7 @@
 				6019A9051C7E64B700E292FA /* LiveAuctionViewController.swift */,
 				5E3816F51CBECEA500477B17 /* LiveAuctionLotListViewController.swift */,
 				5E3816F71CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift */,
+				5E3816F91CBEDDF900477B17 /* LotListCollectionViewCell.swift */,
 				60AF60C81CB2D8BD0041B430 /* LiveAuctionBidViewController.swift */,
 				5EA012881CAC3B0C009D9AFE /* LiveAuctionLotViewController.swift */,
 				5EA0128A1CAC3B55009D9AFE /* LiveAuctionBidHistoryViewController.swift */,
@@ -5284,6 +5287,7 @@
 				CB206F7117C3FA8F00A4FDC4 /* ARPriceRangeViewController.m in Sources */,
 				60229B4E1683BE280072DC12 /* ARSpinner.m in Sources */,
 				60647C701A92512600A45247 /* ARFairMapPreviewButton.m in Sources */,
+				5E3816FA1CBEDDF900477B17 /* LotListCollectionViewCell.swift in Sources */,
 				491A4DE2168E4343003B2246 /* Gene.m in Sources */,
 				602BC089168E0C0E00069FDB /* ARReusableLoadingView.m in Sources */,
 				6099F8FE178DE9400004EF04 /* ARTheme.m in Sources */,

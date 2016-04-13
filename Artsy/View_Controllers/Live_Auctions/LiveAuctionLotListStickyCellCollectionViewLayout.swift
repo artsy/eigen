@@ -32,13 +32,21 @@ extension PublicFunctions {
 private typealias PrivateFunctions = LiveAuctionLotListStickyCellCollectionViewLayout
 extension PrivateFunctions {
 
-    func setActiveAttributes(attributes: UICollectionViewLayoutAttributes) {
+    func setActiveAttributes(attributes: LotListLayoutAttributes) {
+        guard let collectionView = collectionView else { return }
 
-        let contentOffset = collectionView?.contentOffset.y ?? 0
-        if attributes.frame.origin.y < contentOffset {
+        let contentOffset = collectionView.contentOffset.y
+
+        if CGRectGetMinY(attributes.frame) < contentOffset {
+            // Attributes want to be above the visible rect, so let's stick it to the top.
             attributes.frame.origin.y = contentOffset
+        } else if CGRectGetMaxY(attributes.frame) > CGRectGetHeight(collectionView.frame) + contentOffset {
+            // Attributes want to be below the visible rect, so let's stick it to the bottom (height + contentOffset - height of attributes)
+            attributes.frame.origin.y = CGRectGetHeight(collectionView.frame) + contentOffset - CGRectGetHeight(attributes.frame)
         }
+        
         attributes.zIndex = 1
+        attributes.selected = true
     }
 }
 
@@ -47,26 +55,24 @@ private typealias Overrides = LiveAuctionLotListStickyCellCollectionViewLayout
 extension Overrides {
 
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        guard var attributesArray = super.layoutAttributesForElementsInRect(rect) else { return nil }
-        attributesArray = attributesArray.flatMap { ($0.copy() as? UICollectionViewLayoutAttributes) }
+        guard let superAttributesArray = super.layoutAttributesForElementsInRect(rect) else { return nil }
+        var attributesArray = superAttributesArray.flatMap { ($0.copy() as? LotListLayoutAttributes) }
 
-        // TODO: Necessary? Can't remember.
-//        if (attributesArray.map { $0.indexPath.item }).contains(currentIndex) == false {
-//            let indexPath = NSIndexPath(forItem: currentIndex, inSection: 0)
-//            attributesArray += [UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)]
-//        }
-
-        attributesArray.forEach { attributes in
-            if attributes.indexPath.item == currentIndex {
-                setActiveAttributes(attributes)
-            }
+        // Guarantee any selected cell is presented, regardless of the rect.
+        if (attributesArray.map { $0.indexPath.item }).contains(currentIndex) == false {
+            let indexPath = NSIndexPath(forItem: currentIndex, inSection: 0)
+            attributesArray += [layoutAttributesForItemAtIndexPath(indexPath) as! LotListLayoutAttributes]
         }
+
+        attributesArray
+            .filter { $0.indexPath.item == currentIndex }
+            .forEach(setActiveAttributes)
 
         return attributesArray
     }
 
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        guard let attributes = super.layoutAttributesForItemAtIndexPath(indexPath)?.copy() as? UICollectionViewLayoutAttributes else { return nil }
+        guard let attributes = super.layoutAttributesForItemAtIndexPath(indexPath)?.copy() as? LotListLayoutAttributes else { return nil }
 
         if attributes.indexPath.item == currentIndex {
             setActiveAttributes(attributes)
@@ -77,5 +83,9 @@ extension Overrides {
 
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
         return true
+    }
+
+    override class func layoutAttributesClass() -> AnyClass {
+        return LotListLayoutAttributes.self
     }
 }

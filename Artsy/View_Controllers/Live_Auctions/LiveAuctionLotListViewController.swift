@@ -1,7 +1,6 @@
 import UIKit
 import Interstellar
 
-let LotCellIdentifier = "LotCellIdentifier"
 
 class LiveAuctionLotListViewController: UICollectionViewController {
     let lots: [LiveAuctionLotViewModelType]
@@ -27,7 +26,7 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     override func viewDidLoad() {
         collectionView?.backgroundColor = .whiteColor()
 
-        collectionView?.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: LotCellIdentifier)
+        collectionView?.registerClass(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
     }
 }
 
@@ -39,9 +38,9 @@ extension CollectionView {
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(LotCellIdentifier, forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(LotListCollectionViewCell.CellIdentifier, forIndexPath: indexPath)
 
-        cell.backgroundColor = .grayColor()
+        // TODO: Customize
 
         return cell
     }
