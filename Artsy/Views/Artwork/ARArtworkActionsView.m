@@ -209,17 +209,6 @@
         self.contactGalleryButton = contact;
     }
 
-    if ([self showInquireButton]) {
-        ARInquireButton *specialist = [[ARInquireButton alloc] init];
-        [specialist setTitle:@"Ask a Specialist" forState:UIControlStateNormal];
-        [specialist addTarget:self action:@selector(tappedContactRepresentative:) forControlEvents:UIControlEventTouchUpInside];
-
-        [buttonsWhoseMarginCanChange addObject:specialist];
-
-        [self addSubview:specialist withTopMargin:@"8" sideMargin:nil];
-        self.inquireWithArtsyButton = specialist;
-    }
-
     if ([self showAuctionControls]) {
         ARInquireButton *auctionsInfo = [[ARInquireButton alloc] init];
         [auctionsInfo setTitle:@"How bidding works" forState:UIControlStateNormal];
@@ -375,11 +364,6 @@ return [navigationButtons copy];
 // We differentiate from martsy here
 // see https://github.com/artsy/eigen/issues/857
 // awaiting consolidation in the doc.
-
-- (BOOL)showInquireButton
-{
-    return self.artwork.inquireable.boolValue && self.artwork.availability == ARArtworkAvailabilityForSale;
-}
 
 - (BOOL)showAuctionControls
 {
