@@ -1,4 +1,7 @@
 /* eslint-env node, mocha */
+
+// https://medium.com/@jcfrancisco/unit-testing-react-native-components-a-firsthand-guide-cea561df242b#.ym5r45t78
+
 import common from './support/common';
 const { createRenderer, React, expect, MockComponents } = common;
 
