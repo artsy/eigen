@@ -38,10 +38,13 @@ class LiveAuctionLotViewController: UIViewController {
         let lotImagePreviewView = UIImageView()
         lotImagePreviewView.contentMode = .ScaleAspectFit
         view.addSubview(lotImagePreviewView)
-        lotImagePreviewView.backgroundColor = UIColor.debugColourRed()
         lotImagePreviewView.alignTopEdgeWithView(view, predicate: "20")
         lotImagePreviewView.constrainWidthToView(view, predicate: "-80")
         lotImagePreviewView.alignCenterXWithView(view, predicate: "0")
+
+        let aspect = lotViewModel.imageProfileSize.width / lotViewModel.imageProfileSize.height
+        lotImagePreviewView.constrainAspectRatio(String(format: "%.2f", aspect))
+
         lotImagePreviewView.setContentCompressionResistancePriority(400, forAxis: .Vertical)
 
         /// The whole stack
@@ -78,7 +81,6 @@ class LiveAuctionLotViewController: UIViewController {
         metadataStack.constrainWidthToView(view, predicate: "-40")
         metadataStack.alignCenterXWithView(view, predicate: "0")
 
-        lotImagePreviewView.constrainBottomSpaceToView(lotMetadataStack, predicate: "-20@1000")
         lotMetadataStack.constrainBottomSpaceToView(metadataStack, predicate: "0")
 
         let infoToolbar = LiveAuctionToolbarView()

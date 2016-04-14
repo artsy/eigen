@@ -16,6 +16,7 @@ class AuctionLotMetadataStackScrollViewTests: QuickSpec {
             subject.backgroundColor = .whiteColor()
             subject.constrainWidth("280")
             subject.viewModel.update(testVM)
+            subject.layoutIfNeeded()
 
             expect(subject) == snapshot()
 

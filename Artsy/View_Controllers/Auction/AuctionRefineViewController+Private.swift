@@ -148,9 +148,10 @@ private extension UISetup {
             labelContainer.addSubview(minLabel)
 
             minLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
-            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb)")
+            let labelPriority = SliderPriorities.StayCenteredOverThumb.rawValue
+            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0@\(labelPriority)")
 
-            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0@\(SliderPriorities.StayWithinFrame)")
+            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
 
             let maxLabel = ARItalicsSerifLabel().then {
                 $0.font = UIFont.serifFontWithSize(15)
@@ -159,11 +160,11 @@ private extension UISetup {
             labelContainer.addSubview(maxLabel)
 
             maxLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
-            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb)")
-            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0@\(SliderPriorities.StayWithinFrame)")
+            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb.rawValue)")
+            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
 
             // Make sure they don't touch! Shouldn't be necessary since they'll be 10% appart, but this is "just in case" make sure the labels never overlap.
-            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10@\(SliderPriorities.DoNotOverlap)")
+            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10@\(SliderPriorities.DoNotOverlap.rawValue)")
 
             self.minLabel = minLabel
             self.maxLabel = maxLabel

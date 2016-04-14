@@ -20,6 +20,9 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
     init() {
         super.init(stackViewClass: TextStack.self)
 
+        /// Anything addded to `stack` here will be hidden by default
+        guard let stack = stackView as? TextStack else { return }
+
         /// Splits the essential lot metadata and the "lot info" button
         let aboveFoldStackWrapper = UIView()
 
@@ -57,15 +60,10 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
         // set a constraint to force it to be in small mode first
         aboveFoldHeightConstraint = constrainHeightToView(aboveFoldStackWrapper, predicate: "0")
-        /// Anything addded to `stack` here will be hidden by default
-        guard let stack = stackView as? TextStack else { return }
 
         let loremProofOfConcept = stack.addBodyText("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", sideMargin: "40")
 
         let loremTwo = stack.addBodyText("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", sideMargin: "40")
-
-        hideFullMetadata(false)
-        invalidateIntrinsicContentSize()
 
         backgroundColor = UIColor(white: 1, alpha: 0.85)
         for label in [name, title, estimate, premium, loremProofOfConcept, loremTwo] {
