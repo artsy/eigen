@@ -6,11 +6,13 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     let lots: [LiveAuctionLotViewModelType]
     let currentLotSignal: Signal<LiveAuctionLotViewModelType>
     let stickyCollectionViewLayout: LiveAuctionLotListStickyCellCollectionViewLayout
+    let auctionViewModel: LiveAuctionViewModelType
 
-    init(lots: [LiveAuctionLotViewModelType], currentLotSignal: Signal<LiveAuctionLotViewModelType>) {
+    init(lots: [LiveAuctionLotViewModelType], currentLotSignal: Signal<LiveAuctionLotViewModelType>, auctionViewModel: LiveAuctionViewModelType) {
         self.lots = lots
         self.currentLotSignal = currentLotSignal
         self.stickyCollectionViewLayout = LiveAuctionLotListStickyCellCollectionViewLayout()
+        self.auctionViewModel = auctionViewModel
 
         super.init(collectionViewLayout: self.stickyCollectionViewLayout)
 
@@ -45,7 +47,7 @@ extension CollectionView {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(LotListCollectionViewCell.CellIdentifier, forIndexPath: indexPath)
 
         let viewModel = lotAtIndexPath(indexPath)
-        (cell as? LotListCollectionViewCell)?.configureForViewModel(viewModel)
+        (cell as? LotListCollectionViewCell)?.configureForViewModel(viewModel, auctionViewModel: auctionViewModel)
 
         return cell
     }

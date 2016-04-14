@@ -106,7 +106,9 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func showLots() {
-        let lotViewController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal)
+        guard let auctionViewModel = salesPerson.auctionViewModel else { return }
+
+        let lotViewController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: auctionViewModel)
         let navigationController = ARSerifNavigationViewController(rootViewController: lotViewController)
         presentViewController(navigationController, animated: true, completion: nil)
     }

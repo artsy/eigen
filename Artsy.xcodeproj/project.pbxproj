@@ -278,6 +278,7 @@
 		5E20BB6A1C62C81600C6D781 /* CircularInfoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */; };
 		5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB691C62C81600C6D781 /* CircularInfoButton.png */; };
 		5E284609194A2E58007274AB /* ARFairGuideContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */; };
+		5E288EA91CC0219A00A974AA /* LotListCollectionViewCell+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E288EA81CC0219A00A974AA /* LotListCollectionViewCell+Private.swift */; };
 		5E31524F1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E31524E1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift */; };
 		5E3816F61CBECEA500477B17 /* LiveAuctionLotListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3816F51CBECEA500477B17 /* LiveAuctionLotListViewController.swift */; };
 		5E3816F81CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3816F71CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift */; };
@@ -1206,6 +1207,7 @@
 		5E20BB721C6557F400C6D781 /* Artsy-Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artsy-Tests-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E284607194A2E58007274AB /* ARFairGuideContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairGuideContainerViewController.h; sourceTree = "<group>"; };
 		5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewController.m; sourceTree = "<group>"; };
+		5E288EA81CC0219A00A974AA /* LotListCollectionViewCell+Private.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LotListCollectionViewCell+Private.swift"; path = "Live_Auctions/LotListCollectionViewCell+Private.swift"; sourceTree = "<group>"; };
 		5E31524E1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionSocketCommunicator.swift; path = Live_Auctions/LiveAuctionSocketCommunicator.swift; sourceTree = "<group>"; };
 		5E3816F51CBECEA500477B17 /* LiveAuctionLotListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotListViewController.swift; path = Live_Auctions/LiveAuctionLotListViewController.swift; sourceTree = "<group>"; };
 		5E3816F71CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotListStickyCellCollectionViewLayout.swift; path = Live_Auctions/LiveAuctionLotListStickyCellCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -2963,6 +2965,7 @@
 				5E3816F51CBECEA500477B17 /* LiveAuctionLotListViewController.swift */,
 				5E3816F71CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift */,
 				5E3816F91CBEDDF900477B17 /* LotListCollectionViewCell.swift */,
+				5E288EA81CC0219A00A974AA /* LotListCollectionViewCell+Private.swift */,
 				5E3816FB1CBEEF4800477B17 /* LotListLayoutAttributes.swift */,
 			);
 			name = "Lot List";
@@ -5274,6 +5277,7 @@
 				494332FD16692010005AB483 /* VideoContentLink.m in Sources */,
 				E676B2EB18D0CC330057B4E1 /* ARURLItemProvider.m in Sources */,
 				5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */,
+				5E288EA91CC0219A00A974AA /* LotListCollectionViewCell+Private.swift in Sources */,
 				60A49F601676559300B9B95D /* ARNetworkConstants.m in Sources */,
 				E61446B0195A1CDC00BFB7C3 /* ARFavoritesNetworkModel.m in Sources */,
 				60431FB818042A1E000118D7 /* ARAppNotificationsDelegate.m in Sources */,
