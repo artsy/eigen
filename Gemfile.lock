@@ -1,7 +1,12 @@
 GIT
+  remote: https://github.com/CocoaPods/cocoapods-stats.git
+  revision: fda6a8950aa49e10033002c9792da9f7fcd0e511
+  specs:
+    cocoapods-stats (1.0.0.beta.3)
+
+GIT
   remote: https://github.com/cocoapods/cocoapods
-  revision: 2d73d749ba8cc9d2079e7f6b09b3397c3817bdf1
-  branch: mr-fix-resource-bundles
+  revision: a33c0d28234489db342572358da47a6ed4106f77
   specs:
     cocoapods (1.0.0.beta.6)
       activesupport (>= 4.0.2)
@@ -20,6 +25,15 @@ GIT
       molinillo (~> 0.4.4)
       nap (~> 1.0)
       xcodeproj (>= 1.0.0.beta.3, < 2.0)
+
+GIT
+  remote: https://github.com/cocoapods/core
+  revision: fff02c11422963e4bce9c2796c00bd9b471d79b7
+  specs:
+    cocoapods-core (1.0.0.beta.6)
+      activesupport (>= 4.0.2)
+      fuzzy_match (~> 2.0.4)
+      nap (~> 1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -42,10 +56,6 @@ GEM
       fastlane_core (>= 0.29.1, < 1.0.0)
       spaceship (>= 0.22.0, < 1.0.0)
     claide (1.0.0.beta.3)
-    cocoapods-core (1.0.0.beta.6)
-      activesupport (>= 4.0.2)
-      fuzzy_match (~> 2.0.4)
-      nap (~> 1.0)
     cocoapods-deintegrate (1.0.0.beta.1)
     cocoapods-downloader (1.0.0.beta.2)
     cocoapods-keys (1.6.0)
@@ -54,7 +64,6 @@ GEM
     cocoapods-plugins (1.0.0.beta.1)
       nap
     cocoapods-search (1.0.0.beta.1)
-    cocoapods-stats (1.0.0.beta.3)
     cocoapods-trunk (1.0.0.beta.2)
       nap (>= 0.8, < 2.0)
       netrc (= 0.7.8)
@@ -310,7 +319,9 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods!
+  cocoapods-core!
   cocoapods-keys
+  cocoapods-stats!
   danger
   deliver
   fastlane
