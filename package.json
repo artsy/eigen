@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "flow": "flow",
-    "test": "env NODE_ENV=test mocha --recursive ./test"
+    "lint": "eslint ./lib ./test",
+    "test": "env NODE_ENV=test mocha --recursive ./test",
+    "ci": "npm run-script lint && npm run-script flow && npm test"
   },
   "repository": {
     "type": "git",
@@ -28,10 +30,14 @@
     "react-native": "^0.24.0-rc5"
   },
   "devDependencies": {
+    "babel-eslint": "^6.0.0",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "chai-enzyme": "^0.4.2",
     "enzyme": "^2.2.0",
+    "eslint": "^2.5.3",
+    "eslint-plugin-flow-vars": "^0.2.1",
+    "eslint-plugin-react": "^4.2.1",
     "flow-bin": "0.22.0",
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^0.14.8",
