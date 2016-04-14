@@ -41,6 +41,7 @@ fastlane/report.xml
 fastlane/Preview.html
 
 Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
+Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift
 Artsy/Eigen.playground/
 
 iOSInjectionProject/

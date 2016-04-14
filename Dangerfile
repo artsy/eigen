@@ -18,6 +18,7 @@ fail("fit left in tests") if `grep -rI "fit(" Artsy_Tests/`.length > 1
 
 # Devs shouldn't ship changes to this file
 fail("Developer Specific file shouldn't be changed") if modified_files.include?("Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m")
+fail("Developer Specific file shouldn't be changed") if modified_files.include?("Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift")
 fail("Developer Specific file shouldn't be changed") if modified_files.include?("Artsy.xcodeproj/xcshareddata/xcschemes/Artsy.xcscheme")
 
 # Did you make analytics changes? Well you should also include a change to our analytics spec
