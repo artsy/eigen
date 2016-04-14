@@ -15,7 +15,6 @@
 - (void)setupCountdownView;
 
 - (void)tappedContactGallery:(id)sender;
-- (void)tappedContactRepresentative:(id)sender;
 - (void)tappedAuctionInfo:(id)sender;
 - (void)tappedConditionsOfSale:(id)sender;
 - (void)tappedBidButton:(id)sender;
@@ -48,11 +47,24 @@ it(@"displays contact gallery for a for sale artwork", ^{
     view.artwork = [Artwork modelWithJSON:@{
        @"id" : @"artwork-id",
        @"title" : @"Artwork Title",
-       @"availability" : @"for sale"
+       @"availability" : @"for sale",
+       @"inquireable" : @YES,
     }];
     [view updateUI];
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
     expect(view).to.haveValidSnapshotNamed(@"forSale");
+});
+
+it(@"does not display contact gallery for an uninquireable for sale artwork", ^{
+    view.artwork = [Artwork modelWithJSON:@{
+        @"id" : @"artwork-id",
+        @"title" : @"Artwork Title",
+        @"availability" : @"for sale",
+        @"inquireable" : @NO,
+    }];
+    [view updateUI];
+    [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    expect(view).to.haveValidSnapshotNamed(@"uninquireableForSale");
 });
 
 it(@"displays buy now for an acquireable work with pricing", ^{
@@ -67,7 +79,7 @@ it(@"displays buy now for an acquireable work with pricing", ^{
     expect(view).to.haveValidSnapshotNamed(@"buy");
 });
 
-it(@"hides ask a specialist if inquirable but artwork is not for sale ", ^{
+it(@"hides contact button if inquirable but artwork is not for sale ", ^{
     view.artwork = [Artwork modelWithJSON:@{
         @"id" : @"artwork-id",
         @"title" : @"Artwork Title",
@@ -85,6 +97,7 @@ it(@"displays contact seller when the partner is not a gallery", ^{
        @"id" : @"artwork-id",
        @"title" : @"Artwork Title",
        @"availability" : @"for sale",
+       @"inquireable" : @YES,
        @"partner" : @{
                @"id" : @"partner_id",
                @"type" : @"Museum",
@@ -344,16 +357,6 @@ describe(@"mocked artwork promises", ^{
 
         [[mockDelegate expect] tappedContactGallery];
         [view tappedContactGallery:nil];
-
-        [mockDelegate verify];
-    });
-
-    it(@"forwards contact specialist to delegate", ^{
-        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
-        view.delegate = mockDelegate;
-
-        [[mockDelegate expect] tappedContactRepresentative];
-        [view tappedContactRepresentative:nil];
 
         [mockDelegate verify];
     });

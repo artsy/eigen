@@ -335,17 +335,6 @@
                     ARAnalyticsClass: ARArtworkViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSpecialistInquiry,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactRepresentative)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
-                                return @{
-                                    @"artwork_slug": controller.artwork.artworkID ?: @"",
-                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                    @"partner_slug": controller.artwork.partner.partnerID ?: @"",
-                                };
-                            }
-                        },
-                        @{
                             ARAnalyticsEventName: ARAnalyticsStartedGalleryInquiry,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactGallery)),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
@@ -1500,18 +1489,6 @@
                             ARAnalyticsProperties: ^NSDictionary *(AuctionViewController *controller, NSArray *_) {
                                 return @{ @"auction_slug": controller.saleID ?: @"",
                                           @"slug": [NSString stringWithFormat:@"/auction/%@", controller.saleID] };
-                            }
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: AuctionRefineViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Sale Information",
-                            ARAnalyticsProperties: ^NSDictionary *(AuctionInformationViewController *controller, NSArray *_) {
-                                return @{ @"context": @"auction",
-                                        @"slug": [NSString stringWithFormat:@"/auction/%@/refine", controller.saleViewModel.saleID]};
                             }
                         }
                     ]

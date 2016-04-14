@@ -243,7 +243,7 @@
 		51B4BA481C6A2B7B0014A394 /* AuctionSaleNetworkModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517201C51C6A239E007148B7 /* AuctionSaleNetworkModelTests.swift */; };
 		51B4BA491C6A2B7F0014A394 /* AuctionReglstrationStatusNetworkModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517201C31C6A239E007148B7 /* AuctionReglstrationStatusNetworkModelTests.swift */; };
 		51B4BA4A1C6A2BC50014A394 /* AuctionNetworkModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517201C11C6A239E007148B7 /* AuctionNetworkModelTests.swift */; };
-		51B4BA4B1C6A91260014A394 /* AuctionRefineViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517201C21C6A239E007148B7 /* AuctionRefineViewControllerTests.swift */; };
+		51B4BA4B1C6A91260014A394 /* RefinementOptionsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517201C21C6A239E007148B7 /* RefinementOptionsViewControllerTests.swift */; };
 		51D141B01AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141AF1AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m */; };
 		51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141B61AF0F14B000091CF /* ARTestHelper.m */; };
 		51D141B91AF25DB4000091CF /* ARAutoLayoutDebugging.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141B81AF25DB4000091CF /* ARAutoLayoutDebugging.m */; };
@@ -261,7 +261,7 @@
 		5E05C7B81C936F420072F89E /* SocketIOClientExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E05C7B71C936F420072F89E /* SocketIOClientExtensions.swift */; };
 		5E0846D71C6E474800855667 /* ARSaleArtworkItemFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0846D61C6E474800855667 /* ARSaleArtworkItemFlowModule.m */; };
 		5E0846DA1C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0846D91C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m */; };
-		5E088DAE1C58072B00C448D7 /* AuctionRefineViewController+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E088DAD1C58072B00C448D7 /* AuctionRefineViewController+Private.swift */; };
+		5E088DAE1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E088DAD1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift */; };
 		5E088DB11C58145600C448D7 /* UIViewController+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E088DAF1C58141D00C448D7 /* UIViewController+Tests.swift */; };
 		5E0AEB7819B9EA43009F34DE /* ARShowNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AEB7719B9EA43009F34DE /* ARShowNetworkModel.m */; };
 		5E0AEB7A19B9EF57009F34DE /* ARShowNetworkModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AEB7919B9EF57009F34DE /* ARShowNetworkModelTests.m */; };
@@ -301,7 +301,7 @@
 		5E79FCBC1C76856C003D5D65 /* NavigationButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCBB1C76856C003D5D65 /* NavigationButtonTests.swift */; };
 		5E88414E1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E88414D1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift */; };
 		5E8841501CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E88414F1CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift */; };
-		5E8A03B51C52B60900EAF18B /* AuctionRefineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */; };
+		5E8A03B51C52B60900EAF18B /* RefinementOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A03B41C52B60900EAF18B /* RefinementOptionsViewController.swift */; };
 		5E9A782019068EDF00734E1B /* ARProfileViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */; };
 		5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */; };
 		5EA012891CAC3B0C009D9AFE /* LiveAuctionLotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA012881CAC3B0C009D9AFE /* LiveAuctionLotViewController.swift */; };
@@ -617,6 +617,8 @@
 		837CEC811C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC801C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m */; };
 		837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
+		83FF73B41CB87A74002B53FA /* RefinableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B31CB87A74002B53FA /* RefinableType.swift */; };
+		83FF73B91CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
 		B316E2F7181713110086CCDB /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F6181713110086CCDB /* Bidder.m */; };
@@ -1148,7 +1150,7 @@
 		516CDA6B1BB56611001C02B2 /* UIViewController+ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ARUserActivity.m"; sourceTree = "<group>"; };
 		5170C50B1BBAC1090043E601 /* ARMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMacros.h; sourceTree = "<group>"; };
 		517201C11C6A239E007148B7 /* AuctionNetworkModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionNetworkModelTests.swift; sourceTree = "<group>"; };
-		517201C21C6A239E007148B7 /* AuctionRefineViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionRefineViewControllerTests.swift; sourceTree = "<group>"; };
+		517201C21C6A239E007148B7 /* RefinementOptionsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinementOptionsViewControllerTests.swift; path = ../Auction/RefinementOptionsViewControllerTests.swift; sourceTree = "<group>"; };
 		517201C31C6A239E007148B7 /* AuctionReglstrationStatusNetworkModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionReglstrationStatusNetworkModelTests.swift; sourceTree = "<group>"; };
 		517201C41C6A239E007148B7 /* AuctionSaleArtworksNetworkModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionSaleArtworksNetworkModelTests.swift; sourceTree = "<group>"; };
 		517201C51C6A239E007148B7 /* AuctionSaleNetworkModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionSaleNetworkModelTests.swift; sourceTree = "<group>"; };
@@ -1183,7 +1185,7 @@
 		5E0846D61C6E474800855667 /* ARSaleArtworkItemFlowModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSaleArtworkItemFlowModule.m; path = Sale_Artworks/ARSaleArtworkItemFlowModule.m; sourceTree = "<group>"; };
 		5E0846D81C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSaleArtworkFlowCollectionViewCell.h; sourceTree = "<group>"; };
 		5E0846D91C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSaleArtworkFlowCollectionViewCell.m; sourceTree = "<group>"; };
-		5E088DAD1C58072B00C448D7 /* AuctionRefineViewController+Private.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "AuctionRefineViewController+Private.swift"; path = "Auction/AuctionRefineViewController+Private.swift"; sourceTree = "<group>"; };
+		5E088DAD1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "RefinementOptionsViewController+Private.swift"; path = "Auction/RefinementOptionsViewController+Private.swift"; sourceTree = "<group>"; };
 		5E088DAF1C58141D00C448D7 /* UIViewController+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Tests.swift"; sourceTree = "<group>"; };
 		5E0AEB7619B9EA43009F34DE /* ARShowNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARShowNetworkModel.h; sourceTree = "<group>"; };
 		5E0AEB7719B9EA43009F34DE /* ARShowNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShowNetworkModel.m; sourceTree = "<group>"; };
@@ -1233,7 +1235,7 @@
 		5E79FCBB1C76856C003D5D65 /* NavigationButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationButtonTests.swift; sourceTree = "<group>"; };
 		5E88414D1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStaticDataFetcher.swift; path = Live_Auctions/LiveAuctionStaticDataFetcher.swift; sourceTree = "<group>"; };
 		5E88414F1CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStaticDataFetcherSpec.swift; path = Live_Auctions/LiveAuctionStaticDataFetcherSpec.swift; sourceTree = "<group>"; };
-		5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineViewController.swift; path = Auction/AuctionRefineViewController.swift; sourceTree = "<group>"; };
+		5E8A03B41C52B60900EAF18B /* RefinementOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinementOptionsViewController.swift; path = Auction/RefinementOptionsViewController.swift; sourceTree = "<group>"; };
 		5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARProfileViewControllerTests.m; sourceTree = "<group>"; };
 		5E9A78211906BA3D00734E1B /* OCMArg+ClassChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCMArg+ClassChecker.h"; sourceTree = "<group>"; };
 		5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OCMArg+ClassChecker.m"; sourceTree = "<group>"; };
@@ -1753,6 +1755,8 @@
 		837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Notifications.m"; sourceTree = "<group>"; };
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
+		83FF73B31CB87A74002B53FA /* RefinableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinableType.swift; path = ../Views/RefinableType.swift; sourceTree = "<group>"; };
+		83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARTopMenuViewController+SwiftDeveloperExtras.swift"; sourceTree = "<group>"; };
 		9434A9843098609F9F092F0D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButtonTests.m; sourceTree = "<group>"; };
 		B316E2F218170DF40086CCDB /* SaleArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaleArtwork.h; sourceTree = "<group>"; };
@@ -2661,6 +2665,7 @@
 		3CE75A0918B6366F00885355 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				517201C21C6A239E007148B7 /* RefinementOptionsViewControllerTests.swift */,
 				3CE75A0A18B6367F00885355 /* ARValueTransformerTests.m */,
 				3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */,
 				5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */,
@@ -2910,7 +2915,6 @@
 				51F696081C6E55E0002B2E35 /* SaleViewModelTests.swift */,
 				5EACFACA1C752771004112FF /* SaleArtworkViewModelTests.swift */,
 				517201C11C6A239E007148B7 /* AuctionNetworkModelTests.swift */,
-				517201C21C6A239E007148B7 /* AuctionRefineViewControllerTests.swift */,
 				517201C31C6A239E007148B7 /* AuctionReglstrationStatusNetworkModelTests.swift */,
 				517201C41C6A239E007148B7 /* AuctionSaleArtworksNetworkModelTests.swift */,
 				517201C51C6A239E007148B7 /* AuctionSaleNetworkModelTests.swift */,
@@ -2959,10 +2963,8 @@
 				5EA7BC2A1C60024D009C52C9 /* Networking */,
 				60C1C3111C5F9C6500EC98EE /* Auction Presentation */,
 				5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */,
-				5E8A03B41C52B60900EAF18B /* AuctionRefineViewController.swift */,
-				5E088DAD1C58072B00C448D7 /* AuctionRefineViewController+Private.swift */,
-				5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */,
 				5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */,
+				5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */,
 				51DCC6C71C60E26800455309 /* AuctionInformationViewController.swift */,
 			);
 			name = Auction;
@@ -3440,6 +3442,7 @@
 				60CAA3741782D87B00CA3DA8 /* ARContentViewControllers.h */,
 				6034EB2A1760A9BD0070478D /* ARTopMenuViewController.h */,
 				6034EB2B1760A9BD0070478D /* ARTopMenuViewController.m */,
+				83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */,
 				54B7477318A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.h */,
 				54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */,
 			);
@@ -3643,6 +3646,7 @@
 		608B2F5A1657CED10046956C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				83FF73BA1CB87D64002B53FA /* RefinementOptions */,
 				3C2E034A18DA7F640001B7E5 /* Image */,
 				60D8E63718D256A30040BEFD /* Demo */,
 				342F91DD9B57A51A8352877C /* Util */,
@@ -4511,6 +4515,16 @@
 			name = "Works For You";
 			sourceTree = "<group>";
 		};
+		83FF73BA1CB87D64002B53FA /* RefinementOptions */ = {
+			isa = PBXGroup;
+			children = (
+				5E8A03B41C52B60900EAF18B /* RefinementOptionsViewController.swift */,
+				5E088DAD1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift */,
+				83FF73B31CB87A74002B53FA /* RefinableType.swift */,
+			);
+			name = RefinementOptions;
+			sourceTree = "<group>";
+		};
 		B31BBE0F181EF9F7001C623C /* View Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -5195,6 +5209,7 @@
 				49A77221165ADB6E00BC6FD3 /* ARFeedTimeline.m in Sources */,
 				49A77235165ADB9400BC6FD3 /* ARFeedItem.m in Sources */,
 				60ED312B1C8F76CB0071DD89 /* LiveAuctionViewModel.swift in Sources */,
+				83FF73B91CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift in Sources */,
 				3CCCC88D1899657C008015DD /* ARFairPostsViewController.m in Sources */,
 				49A77236165ADB9400BC6FD3 /* ARFollowFairFeedItem.m in Sources */,
 				49A77237165ADB9400BC6FD3 /* ARPartnerShowFeedItem.m in Sources */,
@@ -5345,7 +5360,7 @@
 				604166AD16C1D20900CFBD2F /* ArtsyAPI+Artworks.m in Sources */,
 				E66EE4AF196460620081ED0C /* ARFavoriteItemModule.m in Sources */,
 				605B11B517CFE7CC00334196 /* ARTermsAndConditionsView.m in Sources */,
-				5E8A03B51C52B60900EAF18B /* AuctionRefineViewController.swift in Sources */,
+				5E8A03B51C52B60900EAF18B /* RefinementOptionsViewController.swift in Sources */,
 				604166B116C1D47100CFBD2F /* ArtsyAPI+CurrentUserFunctions.m in Sources */,
 				603B3AEB1774A25700BA5BD3 /* ARNavigationController.m in Sources */,
 				49EF164716C568EA00460BD7 /* Profile.m in Sources */,
@@ -5453,6 +5468,7 @@
 				609F984C1AC0F5090079FE21 /* WatchShow+ArtsyModels.m in Sources */,
 				6036B5651760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m in Sources */,
 				60ED31271C8F76AB0071DD89 /* LiveAuctionEventViewModel.swift in Sources */,
+				83FF73B41CB87A74002B53FA /* RefinableType.swift in Sources */,
 				CB73B48B17D2581400891305 /* SiteFeature.m in Sources */,
 				6099F90A17904F9B0004EF04 /* ARModelCollectionViewModule.m in Sources */,
 				602C09BA1B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m in Sources */,
@@ -5539,7 +5555,7 @@
 				342F97971D28FDC703392765 /* MTLModel+JSON.m in Sources */,
 				342F949383329F78F589BE53 /* MTLModel+Dictionary.m in Sources */,
 				60AF60C91CB2D8BD0041B430 /* LiveAuctionBidViewController.swift in Sources */,
-				5E088DAE1C58072B00C448D7 /* AuctionRefineViewController+Private.swift in Sources */,
+				5E088DAE1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift in Sources */,
 				342F996B2CF23951168534AD /* Follow.m in Sources */,
 				342F9308EE5B3487AE62276D /* ARShowViewController.m in Sources */,
 				609F984B1AC0F4EB0079FE21 /* WatchShow.m in Sources */,
@@ -5680,7 +5696,7 @@
 				3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */,
 				837CEC811C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m in Sources */,
 				D3F69A4A1AC1F7CB007C65C9 /* ARDefaultsTests.m in Sources */,
-				51B4BA4B1C6A91260014A394 /* AuctionRefineViewControllerTests.swift in Sources */,
+				51B4BA4B1C6A91260014A394 /* RefinementOptionsViewControllerTests.swift in Sources */,
 				3CA1E8231884663E003C622D /* Bid+Extensions.m in Sources */,
 				51B4BA481C6A2B7B0014A394 /* AuctionSaleNetworkModelTests.swift in Sources */,
 				E6718310194A3D1E001A5566 /* ARHeroUnitTests.m in Sources */,

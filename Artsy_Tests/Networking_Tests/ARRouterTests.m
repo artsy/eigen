@@ -63,12 +63,17 @@ describe(@"isInternalURL", ^{
         expect([ARRouter isInternalURL:url]).to.beTruthy();
     });
 
-    it(@"returns true for any artsy url", ^{
+    it(@"returns true for every artsy url", ^{
         NSSet *artsyHosts = [ARRouter artsyHosts];
         for (NSString *host in artsyHosts){
             NSURL *url = [[NSURL alloc] initWithString:NSStringWithFormat(@"%@/some/path", host)];
             expect([ARRouter isInternalURL:url]).to.beTruthy();
         }
+    });
+
+    it(@"returns true for artsy subdomains", ^{
+        NSURL *url = [[NSURL alloc] initWithString:@"http://anything.artsy.net"];
+        expect([ARRouter isInternalURL:url]).to.beTruthy();
     });
     
     it(@"returns false for external urls", ^{

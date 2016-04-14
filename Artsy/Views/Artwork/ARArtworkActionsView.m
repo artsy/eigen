@@ -23,7 +23,6 @@
 
 @property (nonatomic, strong) ARCountdownView *countdownView;
 @property (nonatomic, strong) ARBlackFlatButton *contactGalleryButton;
-@property (nonatomic, strong) ARInquireButton *inquireWithArtsyButton;
 @property (nonatomic, strong) ARArtworkPriceView *priceView;
 @property (nonatomic, strong) ARArtworkAuctionPriceView *auctionPriceView;
 @property (nonatomic, strong) ARAuctionBidderStateLabel *bidderStatusLabel;
@@ -209,17 +208,6 @@
         self.contactGalleryButton = contact;
     }
 
-    if ([self showInquireButton]) {
-        ARInquireButton *specialist = [[ARInquireButton alloc] init];
-        [specialist setTitle:@"Ask a Specialist" forState:UIControlStateNormal];
-        [specialist addTarget:self action:@selector(tappedContactRepresentative:) forControlEvents:UIControlEventTouchUpInside];
-
-        [buttonsWhoseMarginCanChange addObject:specialist];
-
-        [self addSubview:specialist withTopMargin:@"8" sideMargin:nil];
-        self.inquireWithArtsyButton = specialist;
-    }
-
     if ([self showAuctionControls]) {
         ARInquireButton *auctionsInfo = [[ARInquireButton alloc] init];
         [auctionsInfo setTitle:@"How bidding works" forState:UIControlStateNormal];
@@ -259,11 +247,6 @@
 - (void)tappedContactGallery:(id)sender
 {
     [self.delegate tappedContactGallery];
-}
-
-- (void)tappedContactRepresentative:(id)sender
-{
-    [self.delegate tappedContactRepresentative];
 }
 
 - (void)tappedAuctionInfo:(id)sender
@@ -339,47 +322,40 @@ return [navigationButtons copy];
 - (void)setEnabled:(BOOL)enabled
 {
     [self.contactGalleryButton setEnabled:enabled animated:YES];
-    [self.inquireWithArtsyButton setEnabled:enabled animated:YES];
 }
-
-// Wonder where all this logic comes from?
-// See: https://docs.google.com/document/d/1kQSHhCiFWxfVkSeql3GQA7UbBbhpNe-UyQ-c6q95Uq0
 
 #pragma mark - Info Logic
 
+// Show if inquireable but not sold and not for sale
 - (BOOL)showNotForSaleLabel
 {
     return self.artwork.inquireable.boolValue && !self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
 }
 
+// Show if artwork has a price (but not multiple editions) and inquireable or sold
 - (BOOL)showPriceLabel
 {
     return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
 }
 
+// Show if artwork is for sale but its price is hidden
 - (BOOL)showContactForPrice
 {
     return self.artwork.availability == ARArtworkAvailabilityForSale && self.artwork.isPriceHidden.boolValue;
 }
 
+// Show if artwork is for sale and inquireable, but not acquireable and not in an auction
 - (BOOL)showContactButton
 {
-    return self.artwork.forSale.boolValue && !self.artwork.acquireable.boolValue && ![self showAuctionControls];
+    return self.artwork.forSale.boolValue && self.artwork.inquireable.boolValue && !self.artwork.acquireable.boolValue && ![self showAuctionControls];
 }
 
+// Show if acquireable
 - (BOOL)showBuyButton
 {
     return self.artwork.acquireable.boolValue;
 }
 
-// We differentiate from martsy here
-// see https://github.com/artsy/eigen/issues/857
-// awaiting consolidation in the doc.
-
-- (BOOL)showInquireButton
-{
-    return self.artwork.inquireable.boolValue && self.artwork.availability == ARArtworkAvailabilityForSale;
-}
 
 - (BOOL)showAuctionControls
 {
