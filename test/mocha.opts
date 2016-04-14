@@ -1,0 +1,2 @@
+--compilers js:./test/support/compiler
+--require ./test/support/common
