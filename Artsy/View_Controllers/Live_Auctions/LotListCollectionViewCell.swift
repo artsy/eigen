@@ -15,20 +15,15 @@ class LotListCollectionViewCell: UICollectionViewCell {
     let artistsNamesLabel = LotListCollectionViewCell._artistNamesLabel()
     let currentAskingPriceLabel = LotListCollectionViewCell._currentAskingPriceLabel()
 
-    private var needsSetup = true
-
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//
-//    }
+    private var userInterfaceNeedsSetup = true
 }
 
 private typealias PublicFunctions = LotListCollectionViewCell
 extension PublicFunctions {
     func configureForViewModel(viewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType) {
 
-        if needsSetup {
-            needsSetup = false
+        if userInterfaceNeedsSetup {
+            userInterfaceNeedsSetup = false
             setup()
         }
 
@@ -47,7 +42,7 @@ extension PublicFunctions {
 
         imageView.ar_setImageWithURL(viewModel.urlForThumbnail)
         lotNumberLabel.text = "Lot \(viewModel.lotIndex)"
-        artistsNamesLabel.text = viewModel.lotArtist
+        artistsNamesLabel.text = "Maryjane Lemke Maryjane Lemke Maryjane Lemke Maryjane Lemke "//viewModel.lotArtist
     }
 }
 

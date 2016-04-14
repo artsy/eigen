@@ -17,7 +17,7 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         super.init(collectionViewLayout: self.stickyCollectionViewLayout)
 
         currentLotSignal.next { [weak self] lot in
-            self?.stickyCollectionViewLayout.setActiveIndex(lot.lotIndex) // Remember, lot indices are one-indexed
+            self?.stickyCollectionViewLayout.setActiveIndex(lot.lotIndex)
         }
     }
     
