@@ -3,7 +3,7 @@
 // https://medium.com/@jcfrancisco/unit-testing-react-native-components-a-firsthand-guide-cea561df242b#.ym5r45t78
 
 import common from './support/common';
-const { createRenderer, React, expect, MockComponents } = common;
+const { createShallowRenderer, React, expect, MockComponents } = common;
 
 class TestFixture extends React.Component {
   render() {
@@ -14,7 +14,7 @@ class TestFixture extends React.Component {
 function setup() {
   const props = {};
 
-  const renderer = createRenderer();
+  const renderer = createShallowRenderer();
   renderer.render(<TestFixture {...props} />);
   const output = renderer.getRenderOutput();
 
