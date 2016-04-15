@@ -8,8 +8,8 @@ class LiveAuctionLotListStickyCellCollectionViewLayout: UICollectionViewFlowLayo
 
         self.scrollDirection = .Vertical
         self.minimumInteritemSpacing = 0
-        self.minimumLineSpacing = 1
-        self.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
+        self.minimumLineSpacing = 0
+        self.sectionInset = UIEdgeInsets(top: 1, left: 0, bottom: 40, right: 0)
         // itemSize must be set in prepareLayout
     }
     

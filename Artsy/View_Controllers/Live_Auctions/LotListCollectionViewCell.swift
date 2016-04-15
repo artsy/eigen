@@ -14,20 +14,25 @@ class LotListCollectionViewCell: UICollectionViewCell {
     let lotNumberLabel = LotListCollectionViewCell._lotNumberLabel()
     let artistsNamesLabel = LotListCollectionViewCell._artistNamesLabel()
     let currentAskingPriceLabel = LotListCollectionViewCell._currentAskingPriceLabel()
+    let topSeparator = ARSeparatorView()
+    let bottomSeparator = ARSeparatorView()
+    var isNotTopCell = true
 
     private var userInterfaceNeedsSetup = true
 }
 
 private typealias PublicFunctions = LotListCollectionViewCell
 extension PublicFunctions {
-    func configureForViewModel(viewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType) {
+    func configureForViewModel(viewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType, indexPath: NSIndexPath) {
 
         if userInterfaceNeedsSetup {
             userInterfaceNeedsSetup = false
             setup()
         }
 
-        // TODO: These subscriptions require disposal.
+        isNotTopCell = (indexPath.item > 0)
+
+        // TODO: These subscriptions require disposal in prepareForReuse().
         viewModel
             .computedLotStateSignal(auctionViewModel)
             .next { [weak self] state in
@@ -42,21 +47,6 @@ extension PublicFunctions {
 
         imageView.ar_setImageWithURL(viewModel.urlForThumbnail)
         lotNumberLabel.text = "Lot \(viewModel.lotIndex)"
-        artistsNamesLabel.text = "Maryjane Lemke Maryjane Lemke Maryjane Lemke Maryjane Lemke "//viewModel.lotArtist
-    }
-}
-
-private typealias Overrides = LotListCollectionViewCell
-extension Overrides {
-
-    override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
-        super.applyLayoutAttributes(layoutAttributes)
-        guard let layoutAttributes = layoutAttributes as? LotListLayoutAttributes else { return }
-
-        if layoutAttributes.selected {
-            backgroundColor = .artsyPurpleRegular()
-        } else {
-            backgroundColor = .whiteColor()
-        }
+        artistsNamesLabel.text = viewModel.lotArtist
     }
 }

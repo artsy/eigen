@@ -11,6 +11,16 @@ extension PrivateFunctions {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.alignToView(self)
 
+        // Separators
+        [topSeparator, bottomSeparator].forEach { separator in
+            contentView.addSubview(separator)
+            separator.alignLeading("0", trailing: "0", toView: self)
+        }
+        topSeparator.alignTopEdgeWithView(contentView, predicate: "0")
+        // By placing the bottomSeparator 1pt below our bottom edge (outside our bounds), it is hidden from
+        // view if the cell beneath us is the current lot.
+        bottomSeparator.alignBottomEdgeWithView(contentView, predicate: "1")
+
         // Add and arrange imageView.
         contentView.addSubview(imageView)
         imageView.constrainWidth("60", height: "60")
@@ -42,41 +52,56 @@ extension PrivateFunctions {
 
     func setLotState(lotState: LotState) {
         let contentViewAlpha: CGFloat
-        let color: UIColor
-        let includeCurrentPrice: Bool
+        let currentLot: Bool
 
         switch lotState {
         case .ClosedLot:
             contentViewAlpha = 0.5
-            color = .blackColor()
-            includeCurrentPrice = false
+            currentLot = false
         case .LiveLot:
             contentViewAlpha = 1
-            color = .whiteColor()
-            includeCurrentPrice = true
+            currentLot = true
         case .UpcomingLot:
             contentViewAlpha = 1
-            color = .blackColor()
-            includeCurrentPrice = false
+            currentLot = false
         }
 
-        if includeCurrentPrice {
+        let labelColor: UIColor
+
+        if currentLot {
+            selectedBackgroundView = nil
             labelContainerView.addSubview(currentAskingPriceLabel)
+
+            [topSeparator, bottomSeparator].forEach { $0.hidden = true }
+
+            labelColor = .whiteColor()
 
             // Artists' names are restricted to one line.
             artistsNamesLabel.numberOfLines = 1
             artistsNamesLabel.lineBreakMode = .ByTruncatingTail
 
+            backgroundColor = .artsyPurpleRegular()
         } else {
+            selectedBackgroundView = UIView().then {
+                $0.backgroundColor = .artsyGrayLight()
+            }
             currentAskingPriceLabel.removeFromSuperview()
+
+            topSeparator.hidden = isNotTopCell
+            bottomSeparator.hidden = false
+
+            labelColor = .blackColor()
 
             // Artists' names are allowed to expand.
             artistsNamesLabel.numberOfLines = 0
             artistsNamesLabel.lineBreakMode = .ByWordWrapping
+
+            backgroundColor = .clearColor()
         }
 
-        contentView.alpha = contentViewAlpha
-        [lotNumberLabel, artistsNamesLabel, currentAskingPriceLabel].forEach { $0.textColor = color }
+        [imageView, labelContainerView].forEach { $0.alpha = contentViewAlpha }
+        [lotNumberLabel, artistsNamesLabel, currentAskingPriceLabel].forEach { $0.textColor = labelColor }
+
 
         contentView.setNeedsLayout()
     }
