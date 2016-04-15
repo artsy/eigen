@@ -66,12 +66,12 @@ describe(@"marking notifications as read", ^{
 });
 
 describe(@"handling network failures", ^{
-    it(@"sets networkingDidFail to YES", ^{
+    it(@"sets networkingDidFail to YES if on first page", ^{
         subject.worksForYouNetworkModel = stubbedNetworkModel;
         
-        id stub = [OCMockObject partialMockForObject:subject.worksForYouNetworkModel];
+        id networkModelMock = [OCMockObject partialMockForObject:subject.worksForYouNetworkModel];
         
-        [[[stub stub] andDo:^(NSInvocation *invocation) {
+        [[[networkModelMock stub] andDo:^(NSInvocation *invocation) {
             void(^failureBlock)(NSError *);
             [invocation getArgument:&failureBlock atIndex:3];
             failureBlock([NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:nil]);
@@ -79,6 +79,24 @@ describe(@"handling network failures", ^{
         
         [subject beginAppearanceTransition:YES animated:NO];
         expect(subject.networkingDidFail).to.beTruthy();
+    });
+    
+    it(@"does not set networkingDidFail if not on first page", ^{
+        subject.worksForYouNetworkModel = stubbedNetworkModel;
+        
+        id networkModelMock = [OCMockObject partialMockForObject:subject.worksForYouNetworkModel];
+        
+        [[[networkModelMock stub] andDo:^(NSInvocation *invocation) {
+            void(^failureBlock)(NSError *);
+            [invocation getArgument:&failureBlock atIndex:3];
+            failureBlock([NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:nil]);
+        }] getWorksForYou:OCMOCK_ANY failure:OCMOCK_ANY];
+        
+        NSInteger page = 2;
+        [[[networkModelMock stub] andReturnValue:@(page)] currentPage];
+        
+        [subject beginAppearanceTransition:YES animated:NO];
+        expect(subject.networkingDidFail).to.beFalsy();
     });
 });
 

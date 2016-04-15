@@ -70,4 +70,30 @@ describe(@"after 1 hour", ^{
     });
 });
 
+describe(@"handling network errors", ^{
+    it(@"reloads if networking failed", ^{
+        id viewControllerMock = [OCMockObject partialMockForObject:hostViewController.worksForYouViewController];
+        [[[viewControllerMock stub] andReturnValue:@YES] networkingDidFail];
+        
+        id hostViewControllerMock = [OCMockObject partialMockForObject:hostViewController];
+        [[hostViewControllerMock expect] reloadData];
+        
+        [hostViewController viewWillAppear:NO];
+        
+        [hostViewControllerMock verify];
+        [hostViewControllerMock stopMocking];
+    });
+    
+    it(@"does not reload if networking succeeded", ^{
+        
+        id hostViewControllerMock = [OCMockObject partialMockForObject:hostViewController];
+        [[hostViewControllerMock reject] reloadData];
+        
+        [hostViewController viewWillAppear:NO];
+        
+        [hostViewControllerMock verify];
+        [hostViewControllerMock stopMocking];
+    });
+});
+
 SpecEnd;
