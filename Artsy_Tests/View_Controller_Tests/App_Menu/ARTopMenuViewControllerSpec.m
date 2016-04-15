@@ -1,4 +1,5 @@
 #import "ARTopMenuViewController.h"
+#import "ARTopMenuViewController+Testing.h"
 #import "ARTestTopMenuNavigationDataSource.h"
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
@@ -37,11 +38,7 @@ __block ARTopMenuViewController *sut;
 __block ARTopMenuNavigationDataSource *dataSource;
 
 dispatch_block_t sharedBefore = ^{
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/xapp_token" withResponse:@{}];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/site_hero_units" withResponse:@[@{ @"heading": @"something" }]];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@{}];
-
-    sut = [[ARTopMenuViewController alloc] init];
+    sut = [[ARTopMenuViewController alloc] initWithStubbedNetworking];
     sut.navigationDataSource = dataSource;
     dataSource.browseViewController.networkModel = [[ARStubbedBrowseNetworkModel alloc] init];
     [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];

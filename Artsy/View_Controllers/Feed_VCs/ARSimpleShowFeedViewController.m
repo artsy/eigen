@@ -193,7 +193,7 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
             // So that it won't stop the first one
             [sself.networkStatus.offlineView refreshFailed];
             [sself.networkStatus showOfflineViewIfNeeded];
-            
+
             [sself performSelector:@selector(refreshFeedItems) withObject:nil afterDelay:1];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
 
