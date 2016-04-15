@@ -2,11 +2,17 @@ import UIKit
 import Interstellar
 
 
+protocol LiveAuctionLotListViewControllerDelegate: class {
+    func didSelectLotAtIndex(index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController)
+}
+
 class LiveAuctionLotListViewController: UICollectionViewController {
     let lots: [LiveAuctionLotViewModelType]
     let currentLotSignal: Signal<LiveAuctionLotViewModelType>
     let stickyCollectionViewLayout: LiveAuctionLotListStickyCellCollectionViewLayout
     let auctionViewModel: LiveAuctionViewModelType
+
+    weak var delegate: LiveAuctionLotListViewControllerDelegate?
 
     init(lots: [LiveAuctionLotViewModelType], currentLotSignal: Signal<LiveAuctionLotViewModelType>, auctionViewModel: LiveAuctionViewModelType) {
         self.lots = lots
@@ -51,6 +57,11 @@ extension CollectionView {
         (cell as? LotListCollectionViewCell)?.configureForViewModel(viewModel, auctionViewModel: auctionViewModel, indexPath: indexPath)
 
         return cell
+    }
+
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+        delegate?.didSelectLotAtIndex(indexPath.item, forLotListViewController: self)
     }
 }
 
