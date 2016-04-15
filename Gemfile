@@ -1,9 +1,6 @@
 source 'https://rubygems.org'
 
-# This resolves to either b7 or rc1
-gem 'cocoapods', git: "https://github.com/cocoapods/cocoapods"
-gem 'cocoapods-core', git: 'https://github.com/cocoapods/core'
-gem 'cocoapods-stats', git: 'https://github.com/CocoaPods/cocoapods-stats.git'
+gem 'cocoapods', '1.0.0.beta.7'
 gem 'cocoapods-keys'
 
 # 1.6.7 contains the OS X build fix.
