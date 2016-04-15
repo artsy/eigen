@@ -7,8 +7,9 @@ class ModernGeneViewController: UIViewController {
     var viewModel: GeneViewModel!
     
     var headerStack: ORStackView!
+    var geneDescriptionView: ARTextView!
     
-    private var artworksViewController: ARModelInfiniteScrollViewController!
+    private var artworksViewController: AREmbeddedModelsViewController!
     private var activeModule: ARArtworkMasonryModule?
     
     lazy var networkModel: ARGeneArtworksNetworkModel = {
@@ -24,22 +25,76 @@ class ModernGeneViewController: UIViewController {
         return nil
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         self.ar_presentIndeterminateLoadingIndicatorAnimated(ARPerformWorkAsynchronously.boolValue)
-        
-        headerStack = ORStackView()
-        
-        self.view.addSubview(headerStack)
-        headerStack.alignTop("20", leading: "30", toView: view)
         
 //         suggestions for error handling anyone?
         self.networkModel.viewModel({ [weak self] viewModel in
             self?.viewModel = viewModel
-            self?.headerStack.addPageTitleWithString(viewModel.displayName)
-
+            self?.setupSubviews()
         })
+    }
+    
+    func setupSubviews() {
+        guard viewModel == viewModel else { return; }
+                
+        headerStack = ORStackView()
+        headerStack.bottomMarginHeight = 20
         
+        headerStack.addPageTitleWithString(viewModel.displayName)
+        headerStack.addWhiteSpaceWithHeight("20")
+        
+        if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Regular {
+            geneDescriptionView = ARTextView()
+        } else {
+            geneDescriptionView = ARCollapsableTextView().then {
+                $0.swiftExpansionBlock = {(textView: ARCollapsableTextView!) in self.viewWillLayoutSubviews()}
+            }
+        }
+        geneDescriptionView.viewControllerDelegate = self
+        headerStack.addSubview(geneDescriptionView, withTopMargin: "20", sideMargin: "40")
+        
+        if viewModel.geneHasDescription {
+            geneDescriptionView.setMarkdownString(self.viewModel.geneDescription)
+        }
+        
+        
+        artworksViewController = AREmbeddedModelsViewController()
+        
+        ar_addAlignedModernChildViewController(artworksViewController)
+        artworksViewController.headerView = headerStack
+        artworksViewController.showTrailingLoadingIndicator = false
+        artworksViewController.delegate = self
+        
+        headerStack.setNeedsLayout()
+        headerStack.layoutIfNeeded()
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+
+    }
+    
+    
+    
+}
+
+private typealias TextViewCallbacks = ModernGeneViewController
+extension TextViewCallbacks: ARTextViewDelegate {
+    func textView(textView: ARTextView!, shouldOpenViewController viewController: UIViewController!) {
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
+
+private typealias EmbeddedModelCallbacks = ModernGeneViewController
+extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
+    func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, didTapItemAtIndex index: UInt) {
+    }
+    
+    func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+}
+
+

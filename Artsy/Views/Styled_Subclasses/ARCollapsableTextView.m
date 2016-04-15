@@ -109,6 +109,8 @@ static const CGFloat ARCollapsableTextViewHeight = 80;
 
     if (self.expansionBlock) {
         self.expansionBlock(self);
+    } else if (self.swiftExpansionBlock) {
+        self.swiftExpansionBlock(self);
     }
 }
 
