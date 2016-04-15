@@ -568,6 +568,7 @@
 		60C1C3181C5FA34400EC98EE /* ARSerifNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C3171C5FA34400EC98EE /* ARSerifNavigationViewController.m */; };
 		60C26DEA1BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */; };
 		60C26DED1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C26DEC1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m */; };
+		60C2CBED1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C2CBEC1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m */; };
 		60C5ADB91C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C5ADB81C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift */; };
 		60CE3CAB1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE3CAA1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m */; };
 		60CEA77E19B61F8000CC3A91 /* ARArtistNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CEA77D19B61F8000CC3A91 /* ARArtistNetworkModel.m */; };
@@ -1671,6 +1672,8 @@
 		60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelsPreviewDelegate.m; sourceTree = "<group>"; };
 		60C26DEB1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmbeddedModelPreviewViewController.h; sourceTree = "<group>"; };
 		60C26DEC1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelPreviewViewController.m; sourceTree = "<group>"; };
+		60C2CBEB1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTopMenuViewController+Testing.h"; sourceTree = "<group>"; };
+		60C2CBEC1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTopMenuViewController+Testing.m"; sourceTree = "<group>"; };
 		60C5ADB81C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARModelInfiniteScrollViewController.swift; sourceTree = "<group>"; };
 		60CAA3741782D87B00CA3DA8 /* ARContentViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARContentViewControllers.h; sourceTree = "<group>"; };
 		60CE3CA91B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyOHHTTPAPI.h; sourceTree = "<group>"; };
@@ -2339,6 +2342,8 @@
 				0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */,
 				0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */,
 				5E088DAF1C58141D00C448D7 /* UIViewController+Tests.swift */,
+				60C2CBEB1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.h */,
+				60C2CBEC1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -5614,6 +5619,7 @@
 				E649708918D7762F009DB0C4 /* ARImageItemProviderTests.m in Sources */,
 				E61E772619A5477300C55E14 /* ARExpectaExtensions.m in Sources */,
 				3CB9A20D18F303B20056C72B /* ARArtworkActionsViewTests.m in Sources */,
+				60C2CBED1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m in Sources */,
 				3C4877B3192A745400F40062 /* ARFairMapAnnotationCallOutViewTests.m in Sources */,
 				3C3FEA8E1884346D00E1A16F /* ARUserManager+Stubs.m in Sources */,
 				60327DE9198933610075B399 /* ARTabContentViewSpec.m in Sources */,
