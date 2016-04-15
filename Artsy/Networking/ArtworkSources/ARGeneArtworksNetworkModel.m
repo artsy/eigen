@@ -1,7 +1,5 @@
 #import "ARGeneArtworksNetworkModel.h"
 
-#import "Gene.h"
-
 
 @interface ARGeneArtworksNetworkModel ()
 @property (nonatomic, assign) NSInteger currentPage;
@@ -33,7 +31,7 @@
 
     self.downloadLock = YES;
 
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [self.gene getArtworksAtPage:self.currentPage success:^(NSArray *artworks) {
         __strong typeof (wself) sself = wself;
@@ -48,6 +46,21 @@
 
         if(success) { success(artworks); }
     }];
+}
+
+- (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
+{
+    [self.gene getFollowState:success failure:failure];
+}
+
+- (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
+{
+    [self.gene setFollowState:state success:success failure:failure];
+}
+
+- (void)updateGene:(void (^)(void))success
+{
+    [self.gene updateGene:success];
 }
 
 @end

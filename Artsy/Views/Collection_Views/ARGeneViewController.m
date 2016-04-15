@@ -29,7 +29,7 @@
 
 @interface ARGeneViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
 
-@property (nonatomic, strong) ARGeneArtworksNetworkModel *artworkCollection;
+@property (nonatomic, strong) ARGeneArtworksNetworkModel *networkModel;
 
 @property (nonatomic, strong) ORStackView *headerContainerView;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -52,9 +52,9 @@
 {
     self = [self init];
 
-    _gene = gene;
-    _artworkCollection = [[ARGeneArtworksNetworkModel alloc] initWithGene:gene];
+    _networkModel = [[ARGeneArtworksNetworkModel alloc] initWithGene:gene];
     _viewModel = [[GeneViewModel alloc] initWithGene:gene];
+
     return self;
 }
 
@@ -76,7 +76,7 @@
 
     [self loadGene];
 
-    self.titleLabel = [headerContainerView addPageTitleWithString:self.gene.name];
+    self.titleLabel = [headerContainerView addPageTitleWithString:self.viewModel.displayName];
     self.titleSeparator = [headerContainerView addWhiteSpaceWithHeight:@"20"];
 
     ARTextView *textView;
@@ -110,7 +110,7 @@
     [self.view setNeedsLayout];
     [self.view layoutIfNeeded];
 
-    self.ar_userActivityEntity = self.gene;
+    self.ar_userActivityEntity = self.viewModel.userActivityEntity;
 }
 
 - (void)viewWillDisappear:(BOOL)animated;
@@ -122,7 +122,7 @@
 - (void)loadGene
 {
     __weak typeof(self) wself = self;
-    [self.gene updateGene:^{
+    [self.networkModel updateGene:^{
         __strong typeof (wself) sself = wself;
         [sself ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
         [sself updateBody];
@@ -150,8 +150,7 @@
     [favoriteButton addTarget:self action:@selector(toggleFollowingGene:) forControlEvents:UIControlEventTouchUpInside];
     [actionsWrapper addSubview:favoriteButton];
 
-    // should be moved to network or view model
-    [self.gene getFollowState:^(ARHeartStatus status) {
+    [self.networkModel getFollowState:^(ARHeartStatus status) {
         [favoriteButton setStatus:status animated:ARPerformWorkAsynchronously];
     } failure:^(NSError *error) {
         [favoriteButton setStatus:ARHeartStatusNo];
@@ -186,7 +185,7 @@
 
 - (void)getNextGeneArtworks
 {
-    [self.artworkCollection getNextArtworkPage:^(NSArray *artworks) {
+    [self.networkModel getNextArtworkPage:^(NSArray *artworks) {
         if (artworks.count > 0) {
             [self.artworksViewController appendItems:artworks];
         } else {
@@ -209,7 +208,7 @@
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:ARPerformWorkAsynchronously];
 
-    [self.gene setFollowState:hearted success:nil failure:^(NSError *error) {
+    [self.networkModel setFollowState:hearted success:nil failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow category."];
         [sender setHearted:!hearted animated:ARPerformWorkAsynchronously];
     }];
@@ -222,7 +221,7 @@
     // For now we're doing the simplest model possible
 
     if (self.viewModel.geneHasDescription) {
-        [self.descriptionTextView setMarkdownString:self.gene.geneDescription];
+        [self.descriptionTextView setMarkdownString:self.viewModel.geneDescription];
     }
     self.artworksViewController.collectionView.scrollsToTop = YES;
     [self.headerContainerView setNeedsLayout];
@@ -234,9 +233,7 @@
 
 - (void)shareGene:(UIButton *)sender
 {
-    ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.gene
-                                                                            thumbnailImageURL:self.gene.smallImageURL];
-    [sharingController presentActivityViewControllerFromView:sender];
+    [self.viewModel.sharingController presentActivityViewControllerFromView:sender];
 }
 
 - (BOOL)shouldAutorotate
@@ -264,12 +261,7 @@
 
 - (NSDictionary *)dictionaryForAnalytics
 {
-    if (self.gene) {
-        return @{ @"gene" : self.gene.geneID,
-                  @"type" : @"gene" };
-    }
-
-    return nil;
+    return self.viewModel.analyticsDictionary;
 }
 
 #pragma mark - ARArtworkMasonryLayoutProvider
