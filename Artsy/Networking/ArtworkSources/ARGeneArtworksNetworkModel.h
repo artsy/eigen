@@ -1,18 +1,17 @@
 #import <Foundation/Foundation.h>
 #import "Gene.h"
 
-
-@class AREmbeddedModelsViewController, Gene;
+@class AREmbeddedModelsViewController, Gene, GeneViewModel;
 
 
 @interface ARGeneArtworksNetworkModel : NSObject
 
 - (id)initWithGene:(Gene *)gene;
-- (void)getNextArtworkPage:(void (^)(NSArray *artworks))success;
-- (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
-- (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure;
-- (void)updateGene:(void (^)(void))success;
+- (id)initWithGeneID:(NSString *)geneID;
 
+- (void)viewModel:(void (^)(GeneViewModel *viewModel))success;
+
+- (void)getNextArtworkPage:(void (^)(NSArray *artworks))success;
 
 @property (nonatomic, strong, readonly) Gene *gene;
 @property (nonatomic, assign, readonly) NSInteger currentPage;

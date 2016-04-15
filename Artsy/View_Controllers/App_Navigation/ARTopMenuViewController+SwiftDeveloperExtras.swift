@@ -1,6 +1,5 @@
 import UIKit
 
-
 // This file is for running developer specific swift code, either when
 // the app is loaded, or when you have injected fresh code in via
 // InjectionForXcode (which you can install via Alcatraz.)
@@ -23,5 +22,8 @@ extension ARTopMenuViewController {
 
     func runSwiftDeveloperExtras() {
         // run swift code here at startup
+        
+        let viewController = ARSwitchBoard.sharedInstance().loadPath("gene/political");
+        self.pushViewController(viewController)
     }
 }

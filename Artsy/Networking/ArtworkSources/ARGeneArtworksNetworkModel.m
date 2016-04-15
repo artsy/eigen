@@ -1,8 +1,11 @@
 #import "ARGeneArtworksNetworkModel.h"
+#import "ArtsyAPI+Genes.h"
+#import "Artsy-Swift.h"
 
 
 @interface ARGeneArtworksNetworkModel ()
 @property (nonatomic, assign) NSInteger currentPage;
+@property (nonatomic, strong, readwrite) Gene *gene;
 @property (readwrite, nonatomic, assign) BOOL allDownloaded;
 @property (readwrite, nonatomic, assign) BOOL downloadLock;
 @end
@@ -21,6 +24,21 @@
     _currentPage = 1;
 
     return self;
+}
+
+- (id)initWithGeneID:(NSString *)geneID
+{
+    return [self initWithGene:[[Gene alloc] initWithGeneID:geneID]];
+}
+
+- (void)viewModel:(void (^)(GeneViewModel *viewModel))success
+{
+    __weak typeof(self) wself = self;
+    [ArtsyAPI getGeneForGeneID:self.gene.geneID success:^(Gene *gene) {
+        __strong typeof (wself) sself = wself;
+        sself.gene = gene;
+        success([[GeneViewModel alloc] initWithGene:gene]);
+    } failure:nil];
 }
 
 - (void)getNextArtworkPage:(void (^)(NSArray *artworks))success
@@ -58,9 +76,5 @@
     [self.gene setFollowState:state success:success failure:failure];
 }
 
-- (void)updateGene:(void (^)(void))success
-{
-    [self.gene updateGene:success];
-}
 
 @end
