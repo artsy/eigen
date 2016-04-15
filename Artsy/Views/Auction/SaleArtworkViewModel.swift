@@ -19,7 +19,7 @@ extension PublicComputedProperties {
     }
 
     var artistName: String {
-        return saleArtwork.artwork.artist.name
+        return saleArtwork.artwork.artist?.name ?? ""
     }
 
     var artworkName: String {

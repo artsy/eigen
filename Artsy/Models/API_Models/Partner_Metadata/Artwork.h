@@ -26,6 +26,8 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
     ARDimensionMetricNoMetric
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 
 @interface Artwork : MTLModel <ARPostAttachment, MTLJSONSerializing, ARHasImageBaseURL, ARShareableObject, ARSpotlightMetadataProvider>
 
@@ -40,7 +42,7 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 @property (nonatomic, copy) NSString *dimensionsInches;
 
 // The artist that created the artwork. This may be `nil`.
-@property (nonatomic, strong) Artist *artist;
+@property (nonatomic, strong) Artist *_Nullable artist;
 @property (nonatomic, copy) NSString *imageFormatAddress;
 
 @property (nonatomic, strong) Partner *partner;
@@ -106,20 +108,20 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 - (void)updatePartnerShow;
 
 /// Adds a callback when the artwork has been update, does not trigger said update.
-- (KSPromise *)onArtworkUpdate:(void (^)(void))success
-                       failure:(void (^)(NSError *error))failure;
-- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success
-                           failure:(void (^)(NSError *error))failure;
-- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success
-                           failure:(void (^)(NSError *error))failure
+- (KSPromise *)onArtworkUpdate:(nullable void (^)(void))success
+                       failure:(nullable void (^)(NSError *error))failure;
+- (KSPromise *)onSaleArtworkUpdate:(nullable void (^)(SaleArtwork *saleArtwork))success
+                           failure:(nullable void (^)(NSError *error))failure;
+- (KSPromise *)onSaleArtworkUpdate:(nullable void (^)(SaleArtwork *saleArtwork))success
+                           failure:(nullable void (^)(NSError *error))failure
                        allowCached:(BOOL)allowCached;
-- (KSPromise *)onFairUpdate:(void (^)(Fair *fair))success
-                    failure:(void (^)(NSError *error))failure;
-- (KSPromise *)onPartnerShowUpdate:(void (^)(PartnerShow *show))success
-                           failure:(void (^)(NSError *error))failure;
+- (KSPromise *)onFairUpdate:(nullable void (^)(Fair *fair))success
+                    failure:(nullable void (^)(NSError *error))failure;
+- (KSPromise *)onPartnerShowUpdate:(nullable void (^)(PartnerShow *show))success
+                           failure:(nullable void (^)(NSError *error))failure;
 
-- (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure;
-- (void)getFavoriteStatus:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
+- (void)setFollowState:(BOOL)state success:(nullable void (^)(id))success failure:(nullable void (^)(NSError *))failure;
+- (void)getFavoriteStatus:(nullable void (^)(ARHeartStatus status))success failure:(nullable void (^)(NSError *error))failure;
 
 - (BOOL)canViewInRoom;
 - (BOOL)hasWidth;
@@ -140,3 +142,5 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 - (instancetype)initWithArtworkID:(NSString *)artworkID;
 
 @end
+
+NS_ASSUME_NONNULL_END
