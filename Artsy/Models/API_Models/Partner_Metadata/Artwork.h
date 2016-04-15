@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) enum ARArtworkAvailability availability;
 
 @property (nonatomic, copy) NSString *date;
-@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *_Nullable title;
 @property (nonatomic, copy) NSString *displayTitle;
 @property (nonatomic, copy) NSString *exhibitionHistory;
 @property (nonatomic, copy) NSString *additionalInfo;
