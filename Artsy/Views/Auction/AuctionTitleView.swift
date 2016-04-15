@@ -88,8 +88,7 @@ private extension AuctionTitleView {
     }
 
     func titleView() -> UIView {
-        // container needs a reasonable-ish size when we add the titleLabel, so its preferredMaxLayoutWidth gets set to something non-zero.
-        let container = UIView(frame: CGRect(origin: CGPoint.zero, size: UIScreen.mainScreen().bounds.size))
+        let container = UIView()
         let regularSize = traitCollection.horizontalSizeClass == .Regular
 
         let titleLabel = ARSerifLabel().then {

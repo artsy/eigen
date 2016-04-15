@@ -11,6 +11,7 @@ protocol LiveAuctionsSalesPersonType {
 
     var auctionViewModel: LiveAuctionViewModelType? { get }
     var pageControllerDelegate: LiveAuctionPageControllerDelegate! { get }
+    var lots: [LiveAuctionLotViewModelType] { get }
     var lotCount: Int { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType?
@@ -28,7 +29,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     var auctionViewModel: LiveAuctionViewModelType?
     var pageControllerDelegate: LiveAuctionPageControllerDelegate!
 
-    private var lots = [LiveAuctionLotViewModelType]()
+    private(set) var lots = [LiveAuctionLotViewModelType]()
     private let stateManager: LiveAuctionStateManager
 
     // Lot currentloy being looked at by the user.
