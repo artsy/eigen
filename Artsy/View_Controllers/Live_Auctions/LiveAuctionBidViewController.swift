@@ -62,7 +62,7 @@ class LiveAuctionBidViewModel: NSObject {
         case 10_000_00...19_999_99: return 100_000
         case 20_000_00...49_999_99: return 200_000
         case 50_000_00...99_999_99: return 500_000
-        case 100_000_00...100_000_000_000_00: return 10_000_00
+        case 100_000_00...Int.max: return 10_000_00
         default: return bid
         }
     }
