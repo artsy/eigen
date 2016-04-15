@@ -16,6 +16,7 @@ upcoming:
     - Handles bidding in an auction with stubbed API interfaces. - orta
     - Basic metaphysics access for live sale static data. - ash
     - Lot metadata can toggle between a short artwork blurb and full metadata - orta
+    - All cent values are handled by UInt64 in Live Auction context - orta
 
   notes:
     - Fixes long auction names falling off right edge. - ash

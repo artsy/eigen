@@ -78,7 +78,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var numberOfEvents = 1
     var lotIndex = 1
     var numberOfBids = 1
-    var currentLotValue = 1234
+    var currentLotValue = UInt64(1234)
     var currentLotValueString = "$Value"
     var imageProfileSize = CGSize(width: 200, height: 200)
     var liveAuctionLotID = "lotID"
@@ -91,7 +91,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
         return lotStateSignal
     }
 
-    let askingPriceSignal = Signal<Int>()
+    let askingPriceSignal = Signal<UInt64>()
     let reserveStatusSignal = Signal<ARReserveStatus>()
     let startEventUpdatesSignal = Signal<NSDate>()
     let endEventUpdatesSignal = Signal<NSDate>()
