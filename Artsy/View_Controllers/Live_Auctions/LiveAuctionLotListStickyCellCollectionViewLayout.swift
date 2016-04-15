@@ -33,7 +33,7 @@ extension PublicFunctions {
 private typealias PrivateFunctions = LiveAuctionLotListStickyCellCollectionViewLayout
 extension PrivateFunctions {
 
-    func setActiveAttributes(attributes: LotListLayoutAttributes) {
+    func setActiveAttributes(attributes: UICollectionViewLayoutAttributes) {
         guard let collectionView = collectionView else { return }
 
         let contentOffset = collectionView.contentOffset.y
@@ -47,7 +47,6 @@ extension PrivateFunctions {
         }
         
         attributes.zIndex = 1
-        attributes.selected = true
     }
 }
 
@@ -66,12 +65,12 @@ extension Overrides {
 
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let superAttributesArray = super.layoutAttributesForElementsInRect(rect) else { return nil }
-        var attributesArray = superAttributesArray.flatMap { ($0.copy() as? LotListLayoutAttributes) }
+        var attributesArray = superAttributesArray.flatMap { $0 }
 
         // Guarantee any selected cell is presented, regardless of the rect.
         if (attributesArray.map { $0.indexPath.item }).contains(currentIndex) == false {
             let indexPath = NSIndexPath(forItem: currentIndex, inSection: 0)
-            attributesArray += [layoutAttributesForItemAtIndexPath(indexPath) as! LotListLayoutAttributes]
+            attributesArray += [layoutAttributesForItemAtIndexPath(indexPath)!] // TODO: Don't like the crash operator here.
         }
 
         attributesArray
@@ -82,7 +81,7 @@ extension Overrides {
     }
 
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        guard let attributes = super.layoutAttributesForItemAtIndexPath(indexPath)?.copy() as? LotListLayoutAttributes else { return nil }
+        guard let attributes = super.layoutAttributesForItemAtIndexPath(indexPath)?.copy() as? UICollectionViewLayoutAttributes else { return nil }
 
         if attributes.indexPath.item == currentIndex {
             setActiveAttributes(attributes)
@@ -93,9 +92,5 @@ extension Overrides {
 
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
         return true
-    }
-
-    override class func layoutAttributesClass() -> AnyClass {
-        return LotListLayoutAttributes.self
     }
 }

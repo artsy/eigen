@@ -21,11 +21,11 @@ extension PrivateFunctions {
         // view if the cell beneath us is the current lot.
         bottomSeparator.alignBottomEdgeWithView(contentView, predicate: "1")
 
-        // Add and arrange imageView.
-        contentView.addSubview(imageView)
-        imageView.constrainWidth("60", height: "60")
-        imageView.alignTop("10", bottom: "-10", toView: contentView)
-        imageView.alignLeadingEdgeWithView(contentView, predicate: "20")
+        // Add and arrange lotImageView.
+        contentView.addSubview(lotImageView)
+        lotImageView.constrainWidth("60", height: "60")
+        lotImageView.alignTop("10", bottom: "-10", toView: contentView)
+        lotImageView.alignLeadingEdgeWithView(contentView, predicate: "20")
 
         // Now add, arrange, and configure the labelContainerView
         contentView.addSubview(labelContainerView)
@@ -44,10 +44,16 @@ extension PrivateFunctions {
         currentAskingPriceLabel.alignBottomEdgeWithView(labelContainerView, predicate: "0")
 
         // Positions the label container.
-        labelContainerView.constrainLeadingSpaceToView(imageView, predicate: "10")
+        labelContainerView.constrainLeadingSpaceToView(lotImageView, predicate: "10")
         labelContainerView.alignTrailingEdgeWithView(contentView, predicate: "<= -10")
         labelContainerView.constrainHeight("<= 60")
-        labelContainerView.alignCenterYWithView(imageView, predicate: "0")
+        labelContainerView.alignCenterYWithView(lotImageView, predicate: "0")
+
+        // Hammer image view.
+        contentView.addSubview(hammerImageView)
+        hammerImageView.alignCenterYWithView(contentView, predicate: "0")
+        hammerImageView.alignTrailingEdgeWithView(contentView, predicate: "-10")
+        hammerImageView.constrainLeadingSpaceToView(labelContainerView, predicate: ">= 10")
     }
 
     func setLotState(lotState: LotState) {
@@ -71,6 +77,7 @@ extension PrivateFunctions {
         if currentLot {
             selectedBackgroundView = nil
             labelContainerView.addSubview(currentAskingPriceLabel)
+            labelContainerView.addSubview(hammerImageView)
 
             [topSeparator, bottomSeparator].forEach { $0.hidden = true }
 
@@ -86,6 +93,8 @@ extension PrivateFunctions {
                 $0.backgroundColor = .artsyGrayLight()
             }
             currentAskingPriceLabel.removeFromSuperview()
+            hammerImageView.removeFromSuperview()
+            hammerImageView.hidden = true
 
             topSeparator.hidden = isNotTopCell
             bottomSeparator.hidden = false
@@ -99,7 +108,7 @@ extension PrivateFunctions {
             backgroundColor = .clearColor()
         }
 
-        [imageView, labelContainerView].forEach { $0.alpha = contentViewAlpha }
+        [lotImageView, labelContainerView].forEach { $0.alpha = contentViewAlpha }
         [lotNumberLabel, artistsNamesLabel, currentAskingPriceLabel].forEach { $0.textColor = labelColor }
 
 

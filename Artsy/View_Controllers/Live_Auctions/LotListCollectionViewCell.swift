@@ -8,7 +8,8 @@ class LotListCollectionViewCell: UICollectionViewCell {
     static let CellIdentifier = "LotCellIdentifier"
     static let Height: CGFloat = 80
 
-    let imageView = UIImageView()
+    let lotImageView = UIImageView()
+    let hammerImageView = UIImageView(image: UIImage(asset: .Lot_bidder_hammer_white))
     let labelContainerView = LotListCollectionViewCell._labelContainerView()
     let currentLotIndicatorImageView = UIImageView()
     let lotNumberLabel = LotListCollectionViewCell._lotNumberLabel()
@@ -45,7 +46,7 @@ extension PublicFunctions {
                 self?.currentAskingPriceLabel.text = "$30,000"
             }
 
-        imageView.ar_setImageWithURL(viewModel.urlForThumbnail)
+        lotImageView.ar_setImageWithURL(viewModel.urlForThumbnail)
         lotNumberLabel.text = "Lot \(viewModel.lotIndex)"
         artistsNamesLabel.text = viewModel.lotArtist
     }
