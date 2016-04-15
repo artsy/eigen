@@ -14,4 +14,6 @@ class ModernGeneViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         return nil
     }
+
+    
 }
