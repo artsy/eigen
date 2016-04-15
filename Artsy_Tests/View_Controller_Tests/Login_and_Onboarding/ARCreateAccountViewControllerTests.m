@@ -1,5 +1,6 @@
 #import "ARCreateAccountViewController.h"
 #import "ARTopMenuViewController.h"
+#import "ARTopMenuViewController+Testing.h"
 #import "ARCustomEigenLabels.h"
 #import "UIViewController+SimpleChildren.h"
 #import "ARTextFieldWithPlaceholder.h"
@@ -22,14 +23,10 @@ __block ARTopMenuViewController *topMenuViewController;
 describe(@"warning view", ^{
     
     before(^{
-        // These come from the TopVC
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@{}];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@{}];
-
         vc = [[ARCreateAccountViewController alloc] init];
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
 
-        topMenuViewController = [[ARTopMenuViewController alloc] init];
+        topMenuViewController = [[ARTopMenuViewController alloc] initWithStubbedNetworking];
         [topMenuViewController ar_addModernChildViewController:vc];
 
         id ocPartialTop = [OCMockObject partialMockForObject:topMenuViewController];
