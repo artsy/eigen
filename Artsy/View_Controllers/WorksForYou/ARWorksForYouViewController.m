@@ -30,6 +30,8 @@ static int ARLoadingIndicatorView = 1;
 @property (nonatomic, strong) ORStackView *emptyStateView;
 @property (nonatomic, strong, readwrite) id<ARWorksForYouNetworkModelable> worksForYouNetworkModel;
 
+@property (nonatomic, assign) BOOL networkingDidFail;
+
 @end
 
 
@@ -55,6 +57,7 @@ static int ARLoadingIndicatorView = 1;
 {
     [super viewDidLoad];
     self.worksForYouNetworkModel = self.worksForYouNetworkModel ?: [[ARWorksForYouNetworkModel alloc] init];
+    self.networkingDidFail = NO;
 
     ARSerifLabel *titleLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     titleLabel.text = @"Works by Artists you follow";
@@ -166,7 +169,11 @@ static int ARLoadingIndicatorView = 1;
         } else if (sself.shouldShowEmptyState) {
             [sself showEmptyState];
         }
-    } failure:nil];
+    } failure:^(NSError *error) {
+        if (self.worksForYouNetworkModel.currentPage == 1) {
+            self.networkingDidFail = YES;
+        }
+    }];
 }
 
 - (void)markNotificationsAsRead

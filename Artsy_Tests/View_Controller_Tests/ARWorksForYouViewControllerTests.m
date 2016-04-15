@@ -50,6 +50,7 @@ describe(@"marking notifications as read", ^{
         [subject beginAppearanceTransition:YES animated:NO];
         [subject endAppearanceTransition];
         [networkModelStub verify];
+        [networkModelStub stopMocking];
     });
 
     it(@"tells the top menu vc to update its bell", ^{
@@ -60,6 +61,24 @@ describe(@"marking notifications as read", ^{
         [subject beginAppearanceTransition:YES animated:NO];
         [subject endAppearanceTransition];
         [topMenuStub verify];
+        [topMenuStub stopMocking];
+    });
+});
+
+describe(@"handling network failures", ^{
+    it(@"sets networkingDidFail to YES", ^{
+        subject.worksForYouNetworkModel = stubbedNetworkModel;
+        
+        id stub = [OCMockObject partialMockForObject:subject.worksForYouNetworkModel];
+        
+        [[[stub stub] andDo:^(NSInvocation *invocation) {
+            void(^failureBlock)(NSError *);
+            [invocation getArgument:&failureBlock atIndex:3];
+            failureBlock([NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:nil]);
+        }] getWorksForYou:OCMOCK_ANY failure:OCMOCK_ANY];
+        
+        [subject beginAppearanceTransition:YES animated:NO];
+        expect(subject.networkingDidFail).to.beTruthy();
     });
 });
 
