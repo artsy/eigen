@@ -32,12 +32,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *currency;
 @property (nonatomic, copy, readonly) NSString *currencySymbol;
 
-@property (nonatomic, assign, readonly) NSInteger lowEstimateCents;
-@property (nonatomic, assign, readonly) NSInteger highEstimateCents;
-@property (nonatomic, assign, readonly) NSInteger onlineAskingPriceCents;
+@property (nonatomic, assign, readonly) UInt64 lowEstimateCents;
+@property (nonatomic, assign, readonly) UInt64 highEstimateCents;
+@property (nonatomic, assign, readonly) UInt64 onlineAskingPriceCents;
 
 - (BOOL)updateReserveStatusWithString:(NSString *)reserveStatusString;
-- (BOOL)updateOnlineAskingPrice:(NSInteger)onlineAskingPrice;
+- (BOOL)updateOnlineAskingPrice:(UInt64)onlineAskingPrice;
 - (void)addEvents:(NSArray<NSString *> *)events;
 
 @end

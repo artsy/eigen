@@ -6,7 +6,7 @@
 @interface LiveAuctionLot ()
 
 @property (nonatomic, assign, readwrite) ARReserveStatus reserveStatus;
-@property (nonatomic, assign, readwrite) NSInteger onlineAskingPriceCents;
+@property (nonatomic, assign, readwrite) UInt64 onlineAskingPriceCents;
 @property (nonatomic, copy, readwrite) NSArray<NSString *> *eventIDs;
 
 @end
@@ -72,11 +72,11 @@
     }
 }
 
-- (BOOL)updateOnlineAskingPrice:(NSInteger)newOnlineAskingPrice
+- (BOOL)updateOnlineAskingPrice:(UInt64)newOnlineAskingPrice
 {
     NSInteger currentAskingPrice = self.onlineAskingPriceCents;
     if (currentAskingPrice != newOnlineAskingPrice) {
-    self.onlineAskingPriceCents = newOnlineAskingPrice;
+        self.onlineAskingPriceCents = newOnlineAskingPrice;
         return YES;
     } else {
         return NO;
