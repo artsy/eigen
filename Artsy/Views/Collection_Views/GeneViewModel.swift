@@ -10,32 +10,29 @@ class GeneViewModel: NSObject {
 
 
 extension GeneViewModel {
-    func geneHasDescription() -> Bool {
+    var geneHasDescription: Bool {
         return gene.geneDescription.characters.count > 0
     }
     
-    func geneDescription() -> String {
+    var geneDescription: String {
         return gene.geneDescription
     }
 
-    func displayName() -> String {
+    var displayName: String {
         return gene.name
     }
     
-    func getFollowState(success: ARHeartStatus -> Void, failure: ((NSError!)) -> Void) {
-        gene.getFollowState(success, failure: failure)
-    }
-    
-    func sharingController() -> ARSharingController {
+    var sharingController: ARSharingController {
         return ARSharingController.init(object: gene, thumbnailImageURL: gene.smallImageURL())
     }
     
-    func analyticsDictionary() -> NSDictionary? {
+    var analyticsDictionary: NSDictionary? {
         guard gene == gene else { return nil }
         return [ "gene" : gene.geneID, "type" : "gene" ]
     }
     
-    func userActivityEntity() -> Gene {
+    // for spotlight; could use some feedback on how best to deal with this one
+    var userActivityEntity: Gene {
         return gene
     }
 }
