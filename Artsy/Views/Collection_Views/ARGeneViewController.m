@@ -18,7 +18,6 @@
 #import "ARNetworkErrorManager.h"
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
-#import "Artsy-Swift.h"
 
 #import "UILabel+Typography.h"
 #import "UIDevice-Hardware.h"
@@ -29,14 +28,13 @@
 
 @interface ARGeneViewController () <AREmbeddedModelsViewControllerDelegate, UIScrollViewDelegate, ARTextViewDelegate, ARArtworkMasonryLayoutProvider>
 
-@property (nonatomic, strong) ARGeneArtworksNetworkModel *networkModel;
+@property (nonatomic, strong) ARGeneArtworksNetworkModel *artworkCollection;
 
 @property (nonatomic, strong) ORStackView *headerContainerView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *titleSeparator;
 @property (nonatomic, strong) ARTextView *descriptionTextView;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksViewController;
-@property (nonatomic, strong) GeneViewModel *viewModel;
 @end
 
 
@@ -52,9 +50,8 @@
 {
     self = [self init];
 
-    _networkModel = [[ARGeneArtworksNetworkModel alloc] initWithGene:gene];
-    _viewModel = [[GeneViewModel alloc] initWithGene:gene];
-
+    _gene = gene;
+    _artworkCollection = [[ARGeneArtworksNetworkModel alloc] initWithGene:gene];
     return self;
 }
 
@@ -76,7 +73,7 @@
 
     [self loadGene];
 
-    self.titleLabel = [headerContainerView addPageTitleWithString:self.viewModel.displayName];
+    self.titleLabel = [headerContainerView addPageTitleWithString:self.gene.name];
     self.titleSeparator = [headerContainerView addWhiteSpaceWithHeight:@"20"];
 
     ARTextView *textView;
@@ -110,7 +107,7 @@
     [self.view setNeedsLayout];
     [self.view layoutIfNeeded];
 
-    self.ar_userActivityEntity = self.viewModel.userActivityEntity;
+    self.ar_userActivityEntity = self.gene;
 }
 
 - (void)viewWillDisappear:(BOOL)animated;
@@ -122,16 +119,16 @@
 - (void)loadGene
 {
     __weak typeof(self) wself = self;
-    [self.networkModel updateGene:^{
+    [self.gene updateGene:^{
         __strong typeof (wself) sself = wself;
         [sself ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
         [sself updateBody];
         [sself ar_setDataLoaded];
 
-        if (sself.viewModel.geneHasDescription) {
-            [sself.headerContainerView removeSubview:sself.titleSeparator];
-        } else {
+        if (sself.gene.geneDescription.length == 0) {
             [sself.headerContainerView removeSubview:sself.descriptionTextView];
+        } else {
+            [sself.headerContainerView removeSubview:sself.titleSeparator];
         }
 
         [sself.view setNeedsLayout];
@@ -150,7 +147,7 @@
     [favoriteButton addTarget:self action:@selector(toggleFollowingGene:) forControlEvents:UIControlEventTouchUpInside];
     [actionsWrapper addSubview:favoriteButton];
 
-    [self.networkModel getFollowState:^(ARHeartStatus status) {
+    [self.gene getFollowState:^(ARHeartStatus status) {
         [favoriteButton setStatus:status animated:ARPerformWorkAsynchronously];
     } failure:^(NSError *error) {
         [favoriteButton setStatus:ARHeartStatusNo];
@@ -185,7 +182,7 @@
 
 - (void)getNextGeneArtworks
 {
-    [self.networkModel getNextArtworkPage:^(NSArray *artworks) {
+    [self.artworkCollection getNextArtworkPage:^(NSArray *artworks) {
         if (artworks.count > 0) {
             [self.artworksViewController appendItems:artworks];
         } else {
@@ -208,7 +205,7 @@
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:ARPerformWorkAsynchronously];
 
-    [self.networkModel setFollowState:hearted success:nil failure:^(NSError *error) {
+    [self.gene setFollowState:hearted success:nil failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow category."];
         [sender setHearted:!hearted animated:ARPerformWorkAsynchronously];
     }];
@@ -216,12 +213,12 @@
 
 - (void)updateBody
 {
-    [self.titleLabel setText:self.viewModel.displayName.uppercaseString withLetterSpacing:0.5];
+    [self.titleLabel setText:self.gene.name.uppercaseString withLetterSpacing:0.5];
 
     // For now we're doing the simplest model possible
 
-    if (self.viewModel.geneHasDescription) {
-        [self.descriptionTextView setMarkdownString:self.viewModel.geneDescription];
+    if (self.gene.geneDescription.length) {
+        [self.descriptionTextView setMarkdownString:self.gene.geneDescription];
     }
     self.artworksViewController.collectionView.scrollsToTop = YES;
     [self.headerContainerView setNeedsLayout];
@@ -233,7 +230,9 @@
 
 - (void)shareGene:(UIButton *)sender
 {
-    [self.viewModel.sharingController presentActivityViewControllerFromView:sender];
+    ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.gene
+                                                                            thumbnailImageURL:self.gene.smallImageURL];
+    [sharingController presentActivityViewControllerFromView:sender];
 }
 
 - (BOOL)shouldAutorotate
@@ -261,7 +260,12 @@
 
 - (NSDictionary *)dictionaryForAnalytics
 {
-    return self.viewModel.analyticsDictionary;
+    if (self.gene) {
+        return @{ @"gene" : self.gene.geneID,
+                  @"type" : @"gene" };
+    }
+
+    return nil;
 }
 
 #pragma mark - ARArtworkMasonryLayoutProvider

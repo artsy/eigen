@@ -36,9 +36,10 @@
 #import "LiveSale.h"
 #import "LiveEvent.h"
 
-
 #import "Artwork.h"
 #import "Gene.h"
+
+#import "ARGeneArtworksNetworkModel.h"
 
 #import "AREmbeddedModelsViewController.h"
 #import "ARArtworkMasonryModule.h"
