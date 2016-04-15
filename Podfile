@@ -41,7 +41,7 @@ target 'Artsy' do
 
   pod 'ARGenericTableViewController', :git => 'https://github.com/orta/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', :git => 'https://github.com/CocoaLumberjack/CocoaLumberjack.git' # Unreleased > 2.0.1 version has a CP modulemap fix
-  pod 'FLKAutoLayout', :git => 'https://github.com/alloy/FLKAutoLayout.git', :branch => 'add-support-for-layout-guides-take-2'
+  pod 'FLKAutoLayout', :git => 'https://github.com/orta/FLKAutoLayout.git', :branch => 'v1'
   pod 'FXBlurView'
   pod 'iRate'
   pod 'ISO8601DateFormatter', :git => "https://github.com/orta/iso-8601-date-formatter"
@@ -58,7 +58,7 @@ target 'Artsy' do
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
-  pod 'ORStackView', :git => 'https://github.com/1aurabrown/ORStackView.git'
+  pod 'ORStackView', '2.0.3'
   pod 'UIView+BooleanAnimations'
   pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit'
   pod 'Aerodramus', :git => 'https://github.com/artsy/Aerodramus.git', :branch => 'tests'

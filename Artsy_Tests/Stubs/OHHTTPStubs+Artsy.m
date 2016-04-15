@@ -10,7 +10,13 @@
 + (void)stubJSONResponseForHost:(NSString *)host withResponse:(id)response
 {
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [request.URL.host isEqualToString: host];
+        if ([host containsString:@"*"]) {
+            NSString *theirHost = request.URL.host;
+            NSArray *components = [theirHost componentsSeparatedByString:@"*"];
+            return [theirHost hasPrefix:components.firstObject] && [theirHost hasSuffix:components.lastObject];
+        } else {
+            return [request.URL.host isEqualToString: host];
+        }
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
         NSData *data = [NSJSONSerialization dataWithJSONObject:response options:0 error:nil];
         return [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:@{ @"Content-Type": @"application/json" }];
@@ -36,6 +42,7 @@
 {
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         if (request.URL == nil) {
+            return nil;
 //            [NSException raise:NSInvalidArgumentException format:@"Recieved a nil URL to stub: %@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd)];
         }
 

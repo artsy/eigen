@@ -153,7 +153,8 @@ class LiveAuctionBidViewController: UIViewController {
 
     // Incase you're new to storyboards, these views are on an associated
     // view ( its on the top bar for the scene. ) which can be hidden
-
+    // https://blog.curtisherbert.com/secondary-views/ for info
+    
     @IBOutlet var bidProgressOverlayView: LiveBidProgressOverlayView!
 
     private func biddingProgressUpdated(state: LiveAuctionBiddingProgressState) {

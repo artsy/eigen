@@ -4,8 +4,8 @@
 extern NSString *const ARTestAccountLogin;
 extern NSString *const ARTestAccountPassword;
 
-extern const CGFloat ARAnimationQuickDuration;
-extern const CGFloat ARAnimationDuration;
+extern const NSTimeInterval ARAnimationQuickDuration;
+extern const NSTimeInterval ARAnimationDuration;
 
 extern NSString *const AROAuthTokenKey;
 extern NSString *const AROExpiryDateKey;

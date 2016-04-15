@@ -111,7 +111,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
 
     [self.view addSubview:_statusBarView];
 
-    _statusBarVerticalConstraint = [_statusBarView constrainHeight:@"20"][0];
+    _statusBarVerticalConstraint = [_statusBarView constrainHeight:@"20"];
     [_statusBarView constrainWidthToView:self.view predicate:@"0"];
     [_statusBarView alignTopEdgeWithView:self.view predicate:@"0"];
     [_statusBarView alignLeadingEdgeWithView:self.view predicate:@"0"];

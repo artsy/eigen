@@ -21,7 +21,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 auctionViewModel = Test_LiveAuctionViewModel()
                 lotViewModel = Test_LiveAuctionLotViewModel()
                 subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Signal())
-
+                subject.currentLotSignal.update(lotViewModel)
             }
 
             afterEach {
@@ -31,37 +31,25 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             // The indices are known to be the closed/live/upcoming states respectively
             it("looks good for closed lots") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
-
-                subject.loadViewProgrammatically()
-
-                expect(subject).to( haveValidSnapshot() )
+                expect(subject) == snapshot()
             }
 
             it("looks good for live lots") {
                 lotViewModel.lotStateSignal.update(.LiveLot)
-
-                subject.loadViewProgrammatically()
-
-                expect(subject).to( haveValidSnapshot() )
+                expect(subject) == snapshot()
             }
 
             it("looks good for upcoming lots") {
                 lotViewModel.lotStateSignal.update(.UpcomingLot(distanceFromLive: 1))
-
-                subject.loadViewProgrammatically()
-
-                expect(subject).to( haveValidSnapshot() )
+                expect(subject) == snapshot()
             }
 
             it("doesnt show a live auction call to action when auction is closed") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
 
-                subject.loadViewProgrammatically()
-
-                expect(subject).to( haveValidSnapshot() )
+                expect(subject) == snapshot()
             }
-
         }
     }
 }
@@ -82,6 +70,8 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var lotArtist = "Artist Name"
     var estimateString = "$Estimate"
     var lotName = "Lot Name"
+    var lotPremium = "Lot Premium"
+    var lotArtworkCreationDate: String? = "1985"
     var urlForThumbnail = NSURL(string: "http://example.com/")!
     var urlForProfile = NSURL(string: "http://example.com/")!
     var reserveStatusString = "is testing reserve"

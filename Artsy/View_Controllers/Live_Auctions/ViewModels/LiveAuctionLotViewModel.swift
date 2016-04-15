@@ -15,7 +15,9 @@ protocol LiveAuctionLotViewModelType: class {
 
     var lotArtist: String { get }
     var estimateString: String { get }
+    var lotPremium: String { get }
     var lotName: String { get }
+    var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: NSURL { get }
     var urlForProfile: NSURL { get }
     var numberOfEvents: Int { get }
@@ -90,8 +92,16 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.artworkTitle
     }
 
+    var lotArtworkCreationDate: String? {
+        return model.artworkDate
+    }
+
     var lotArtist: String {
         return model.artistName
+    }
+
+    var lotPremium: String {
+        return "Premium: WIP"
     }
 
     var lotIndex: Int {

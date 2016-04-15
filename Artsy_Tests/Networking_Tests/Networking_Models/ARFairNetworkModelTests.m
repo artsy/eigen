@@ -4,51 +4,53 @@
 
 SpecBegin(ARFairNetworkModel);
 
+__block BOOL gotFairInfo = false;
+
+beforeEach(^{
+    gotFairInfo = false;
+});
+
 describe(@"getFairInfo", ^{
     before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/fair-id-1" withResponse:@{
-            @"id" : @"fair-id-1",
-            @"name" : @"The Fair Name",
-            @"start_at" : @"1976-01-30T15:00:00+00:00",
-            @"end_at" : @"1976-02-02T15:00:00+00:00"
-        }];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/fair-id-1" withResponse:@{
+        @"id" : @"fair-id-1",
+        @"name" : @"The Fair Name",
+        @"start_at" : @"1976-01-30T15:00:00+00:00",
+        @"end_at" : @"1976-02-02T15:00:00+00:00"
+    }];
+
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
     });
 
     it(@"updates original fair instance", ^{
-        waitUntil(^(DoneCallback done) {
+        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-1", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
+        ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
 
-            Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-1", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
-            ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
+        [networkModel getFairInfo:fair success:^(Fair *returnedFair) {
+            gotFairInfo = true;
+            expect(returnedFair).to.equal(fair);
+            expect(fair.name).to.equal(@"The Fair Name");
 
-            [networkModel getFairInfo:fair success:^(Fair *returnedFair) {
-                expect(returnedFair).to.equal(fair);
-                expect(fair.name).to.equal(@"The Fair Name");
-                done();
+        } failure:nil];
 
-            } failure:nil];
-        });
+        expect(gotFairInfo).to.equal(true);
     });
 
     it(@"maintains its maps", ^{
+        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-1", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
+        fair.maps = @[[[Map alloc] init]];
 
-        waitUntil(^(DoneCallback done) {
-            Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-1", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
-            fair.maps = @[[[Map alloc] init]];
+        ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
 
-            ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
+        [networkModel getFairInfo:fair success:^(Fair *returnedFair) {
+            gotFairInfo = true;
 
-            [networkModel getFairInfo:fair success:^(Fair *returnedFair) {
+            expect(returnedFair).to.equal(fair);
+            expect(fair.name).to.equal(@"The Fair Name");
+            expect(fair.maps.count).to.equal(1);
+        } failure:nil];
 
-                expect(returnedFair).to.equal(fair);
-                expect(fair.name).to.equal(@"The Fair Name");
-                expect(fair.maps.count).to.equal(1);
-
-                done();
-
-            } failure:nil];
-        });
-
+        expect(gotFairInfo).to.equal(true);
     });
 });
 
@@ -63,17 +65,16 @@ describe(@"getFairInfoWith ID", ^{
     });
 
     it(@"fetches and returns fair", ^{
-         waitUntil(^(DoneCallback done) {
+         ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
 
-             ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
+        [networkModel getFairInfoWithID:@"fair-id-2" success:^(Fair *returnedFair) {
 
-            [networkModel getFairInfoWithID:@"fair-id-2" success:^(Fair *returnedFair) {
-                expect(returnedFair.name).to.equal(@"The Fair Name");
-                done();
+            expect(returnedFair.name).to.equal(@"The Fair Name");
+            gotFairInfo = true;
 
-            } failure:nil];
-         });
+        } failure:nil];
 
+        expect(gotFairInfo).to.equal(true);
     });
 });
 
@@ -90,25 +91,22 @@ describe(@"getShowFeedItems", ^{
         // Keep the feed out here so that it doesn't become nil when weakified during the request.
         __block ARFairShowFeed *feed = [[ARFairShowFeed alloc] initWithFair:fair];
 
-        waitUntil(^(DoneCallback done) {
-            ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
+        ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
 
-            [networkModel getShowFeedItems:feed success:^(NSOrderedSet *orderedSet) {
+        [networkModel getShowFeedItems:feed success:^(NSOrderedSet *orderedSet) {
 
-                expect(orderedSet.count).to.equal(1);
-                expect(orderedSet[0]).to.beKindOf([ARPartnerShowFeedItem class]);
+            expect(orderedSet.count).to.equal(1);
+            expect(orderedSet[0]).to.beKindOf([ARPartnerShowFeedItem class]);
 
-                ARPartnerShowFeedItem *item = orderedSet[0];
-                expect(item.show.name).to.equal(@"Show Title");
+            ARPartnerShowFeedItem *item = orderedSet[0];
+            expect(item.show.name).to.equal(@"Show Title");
+            gotFairInfo = true;
 
-                done();
+        } failure:^(NSError *error) {
 
-            } failure:^(NSError *error) {
+        }];
 
-
-            }];
-
-        });
+        expect(gotFairInfo).to.equal(true);
     });
 });
 
@@ -122,24 +120,21 @@ it(@"getPosts", ^{
     });
 
     it(@"returns feed timeline", ^{
+        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-4", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
+        ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
 
-        waitUntil(^(DoneCallback done) {
+        [networkModel getPostsForFair:fair success:^(ARFeedTimeline *feedTimeline) {
 
-            Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-4", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
-            ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
+            expect([feedTimeline numberOfItems]).to.equal(1);
 
-            [networkModel getPostsForFair:fair success:^(ARFeedTimeline *feedTimeline) {
+            ARPostFeedItem *item = (ARPostFeedItem *) [feedTimeline itemAtIndex:0];
+            expect(item).toNot.beNil();
+            expect([item feedItemID]).to.equal(@"post-id");
 
-                expect([feedTimeline numberOfItems]).to.equal(1);
+            gotFairInfo = true;
+        }];
 
-                ARPostFeedItem *item = (ARPostFeedItem *) [feedTimeline itemAtIndex:0];
-                expect(item).toNot.beNil();
-                expect([item feedItemID]).to.equal(@"post-id");
-
-                done();
-            }];
-
-        });
+        expect(gotFairInfo).to.equal(true);
     });
 });
 
@@ -154,32 +149,32 @@ describe(@"getOrderedSets", ^{
     });
 
     it(@"returns ordered sets by key", ^{
-        waitUntil(^(DoneCallback done) {
 
-            Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-5", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
-            ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
+        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-5", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
+        ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
 
-            [networkModel getOrderedSetsForFair:fair success:^(NSMutableDictionary *orderedSets) {
-                expect(orderedSets.count).to.equal(2);
+        [networkModel getOrderedSetsForFair:fair success:^(NSMutableDictionary *orderedSets) {
+            expect(orderedSets.count).to.equal(2);
 
-                NSArray *curatorOrderedSets = orderedSets[@"curator"];
-                expect(curatorOrderedSets).toNot.beNil();
-                expect(curatorOrderedSets.count).to.equal(2);
+            NSArray *curatorOrderedSets = orderedSets[@"curator"];
+            expect(curatorOrderedSets).toNot.beNil();
+            expect(curatorOrderedSets.count).to.equal(2);
 
-                OrderedSet *first = (OrderedSet *) curatorOrderedSets[0];
-                expect(first).toNot.beNil();
-                expect(first.orderedSetID).to.equal(@"52ded6edc9dc24bccc0000a4");
-                expect(first.name).to.equal(@"Highlights from Art World Influencers");
-                expect(first.orderedSetDescription).to.beNil();
+            OrderedSet *first = (OrderedSet *) curatorOrderedSets[0];
+            expect(first).toNot.beNil();
+            expect(first.orderedSetID).to.equal(@"52ded6edc9dc24bccc0000a4");
+            expect(first.name).to.equal(@"Highlights from Art World Influencers");
+            expect(first.orderedSetDescription).to.beNil();
 
-                // TODO: item type
+            // TODO: item type
+            gotFairInfo = true;
 
-                done();
 
-            } failure:^(NSError *error) {
+        } failure:^(NSError *error) {
 
-            }];
-        });
+        }];
+
+        expect(gotFairInfo).to.beTruthy();
     });
 });
 
@@ -193,6 +188,7 @@ describe(@"getMapInfo", ^{
         ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
 
         [networkModel getMapInfoForFair:fair success:^(NSArray *maps) {
+            gotFairInfo = true;
 
             expect(fair.maps).to.equal(maps);
             expect(maps.count).to.equal(1);
@@ -200,6 +196,8 @@ describe(@"getMapInfo", ^{
         } failure:^(NSError *error) {
             failure(@"Should not fail");
         }];
+
+        expect(gotFairInfo).to.beTruthy();
     });
 });
 
