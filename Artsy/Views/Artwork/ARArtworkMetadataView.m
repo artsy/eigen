@@ -88,20 +88,20 @@
     // Constraints that apply to iPhone and vertical iPad
     NSMutableArray *verticalConstraints = [NSMutableArray array];
 
-    [verticalConstraints addObject:[[right constrainTopSpaceToView:left predicate:@"28"] lastObject]];
-    [verticalConstraints addObject:[[left alignTrailingEdgeWithView:self predicate:@(-imageMargin).stringValue] lastObject]];
-    [verticalConstraints addObject:[[right alignLeadingEdgeWithView:self predicate:@(margin).stringValue] lastObject]];
+    [verticalConstraints addObject:[right constrainTopSpaceToView:left predicate:@"28"]];
+    [verticalConstraints addObject:[left alignTrailingEdgeWithView:self predicate:@(-imageMargin).stringValue]];
+    [verticalConstraints addObject:[right alignLeadingEdgeWithView:self predicate:@(margin).stringValue]];
 
-    [verticalConstraints addObject:[[previewActionsView alignTopEdgeWithView:right predicate:@"0"] lastObject]];
-    [verticalConstraints addObject:[[previewActionsView alignTrailingEdgeWithView:right predicate:@"0"] lastObject]];
-    [verticalConstraints addObject:[[artworkActionsView constrainTopSpaceToView:artworkDetailView predicate:@"8"] lastObject]];
+    [verticalConstraints addObject:[previewActionsView alignTopEdgeWithView:right predicate:@"0"]];
+    [verticalConstraints addObject:[previewActionsView alignTrailingEdgeWithView:right predicate:@"0"]];
+    [verticalConstraints addObject:[artworkActionsView constrainTopSpaceToView:artworkDetailView predicate:@"8"]];
 
     if ([UIDevice isPad]) {
-        [verticalConstraints addObject:[[previewActionsView constrainLeadingSpaceToView:artworkDetailView predicate:@">=0"] lastObject]];
-        [verticalConstraints addObject:[[artworkDetailView alignBottomEdgeWithView:previewActionsView predicate:@">=0"] lastObject]];
+        [verticalConstraints addObject:[previewActionsView constrainLeadingSpaceToView:artworkDetailView predicate:@">=0"]];
+        [verticalConstraints addObject:[artworkDetailView alignBottomEdgeWithView:previewActionsView predicate:@">=0"]];
     } else {
-        [verticalConstraints addObject:[[artworkDetailView constrainTopSpaceToView:previewActionsView predicate:@"0"] lastObject]];
-        [verticalConstraints addObject:[[artworkDetailView alignTrailingEdgeWithView:right predicate:@"0"] lastObject]];
+        [verticalConstraints addObject:[artworkDetailView constrainTopSpaceToView:previewActionsView predicate:@"0"]];
+        [verticalConstraints addObject:[artworkDetailView alignTrailingEdgeWithView:right predicate:@"0"]];
     }
 
     _verticalConstraints = [verticalConstraints copy];
@@ -113,19 +113,19 @@
         // Constraints for horizontal iPad layout
         NSMutableArray *horizontalConstraints = [NSMutableArray array];
 
-        [horizontalConstraints addObject:[[right alignTopEdgeWithView:self predicate:@(margin).stringValue] lastObject]];
-        [horizontalConstraints addObject:[[right constrainLeadingSpaceToView:left predicate:@"40"] lastObject]];
-        [horizontalConstraints addObject:[[right constrainWidthToView:self predicate:@"*.26"] lastObject]];
-        [horizontalConstraints addObject:[[self alignBottomEdgeWithView:left predicate:@"0"] lastObject]];
-        [horizontalConstraints addObject:[[self alignBottomEdgeWithView:left predicate:@">=0"] lastObject]];
-        [horizontalConstraints addObject:[[self alignBottomEdgeWithView:right predicate:@">=0"] lastObject]];
+        [horizontalConstraints addObject:[right alignTopEdgeWithView:self predicate:@(margin).stringValue]];
+        [horizontalConstraints addObject:[right constrainLeadingSpaceToView:left predicate:@"40"]];
+        [horizontalConstraints addObject:[right constrainWidthToView:self predicate:@"*.26"]];
+        [horizontalConstraints addObject:[self alignBottomEdgeWithView:left predicate:@"0"]];
+        [horizontalConstraints addObject:[self alignBottomEdgeWithView:left predicate:@">=0"]];
+        [horizontalConstraints addObject:[self alignBottomEdgeWithView:right predicate:@">=0"]];
 
-        [horizontalConstraints addObject:[[artworkDetailView alignTrailingEdgeWithView:right predicate:@"0"] lastObject]];
-        [horizontalConstraints addObject:[[previewActionsView constrainTopSpaceToView:artworkDetailView predicate:@"12"] lastObject]];
-        [horizontalConstraints addObject:[[previewActionsView alignLeadingEdgeWithView:right predicate:@">=0"] lastObject]];
-        [horizontalConstraints addObject:[[previewActionsView alignTrailingEdgeWithView:right predicate:@"<=0"] lastObject]];
-        [horizontalConstraints addObject:[[previewActionsView alignCenterXWithView:right predicate:@"0"] lastObject]];
-        [horizontalConstraints addObject:[[artworkActionsView constrainTopSpaceToView:previewActionsView predicate:@"22"] lastObject]];
+        [horizontalConstraints addObject:[artworkDetailView alignTrailingEdgeWithView:right predicate:@"0"]];
+        [horizontalConstraints addObject:[previewActionsView constrainTopSpaceToView:artworkDetailView predicate:@"12"]];
+        [horizontalConstraints addObject:[previewActionsView alignLeadingEdgeWithView:right predicate:@">=0"]];
+        [horizontalConstraints addObject:[previewActionsView alignTrailingEdgeWithView:right predicate:@"<=0"]];
+        [horizontalConstraints addObject:[previewActionsView alignCenterXWithView:right predicate:@"0"]];
+        [horizontalConstraints addObject:[artworkActionsView constrainTopSpaceToView:previewActionsView predicate:@"22"]];
 
         _horizontalConstraints = [horizontalConstraints copy];
         [NSLayoutConstraint deactivateConstraints:self.horizontalConstraints];

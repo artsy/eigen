@@ -126,12 +126,12 @@
     if ([UIDevice isPad]) {
         [self.emailTextField becomeFirstResponder];
         [self.containerView alignCenterYWithView:self.view predicate:@"0@750"];
-        self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
+        self.keyboardConstraint = [self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"];
     } else {
         [self.containerView alignBottomEdgeWithView:self.view predicate:@"<=-56"];
         //        [self.containerView alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.navView predicate:@">=0"];
         //        [self.containerView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-        self.keyboardConstraint = [[self.forgotPasswordButton alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
+        self.keyboardConstraint = [self.forgotPasswordButton alignBottomEdgeWithView:self.view predicate:@"<=0@1000"];
     }
 
     [super viewDidLoad];

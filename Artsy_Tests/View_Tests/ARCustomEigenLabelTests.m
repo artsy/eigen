@@ -25,18 +25,13 @@ describe(@"ARArtworkTitleLabel", ^{
     });
 
     it(@"formats date and nil title", ^{
-        [titleLabel setTitle:nil date:@"2014"];
+        [titleLabel setTitle:@"" date:@"2014"];
         expect(titleLabel.text).to.equal(@"2014");
     });
 
     it(@"formats date and emptystring title", ^{
         [titleLabel setTitle:@"" date:@"2014"];
         expect(titleLabel.text).to.equal(@"2014");
-    });
-
-    it(@"is empty string with nil title and date", ^{
-        [titleLabel setTitle:nil date:nil];
-        expect(titleLabel.text).to.equal(@"");
     });
 
     it(@"is emptystring with emptystring title", ^{

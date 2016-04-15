@@ -6,6 +6,7 @@
 
 @class Artwork;
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface LiveAuctionLot : MTLModel <MTLJSONSerializing>
 
@@ -14,6 +15,8 @@
 - (CGSize)imageProfileSize;
 
 @property (nonatomic, copy, readonly) NSString *artworkTitle;
+@property (nonatomic, copy, readonly) NSString * _Nullable artworkDate;
+
 @property (nonatomic, copy, readonly) NSString *artistName;
 
 @property (nonatomic, copy, readonly) NSDictionary *imageDictionary;
@@ -38,3 +41,5 @@
 - (void)addEvents:(NSArray<NSString *> *)events;
 
 @end
+
+NS_ASSUME_NONNULL_END

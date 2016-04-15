@@ -120,7 +120,7 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     [tabContainer constrainHeight:@(ARMenuButtonDimension).stringValue];
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
-    self.tabBottomConstraint = [[tabContainer alignBottomEdgeWithView:self.view predicate:@"0"] lastObject];
+    self.tabBottomConstraint = [tabContainer alignBottomEdgeWithView:self.view predicate:@"0"];
 
     for (ARNavigationTabButton *button in buttons) {
         [tabContainer addSubview:button];
@@ -140,10 +140,10 @@ static const CGFloat ARMenuButtonDimension = 46;
         if (index == 0) {
             [button alignLeadingEdgeWithView:tabContainer predicate:@"0"];
         } else {
-            [constraintsForButtons addObject:[[button constrainLeadingSpaceToView:buttons[index - 1] predicate:@"0"] lastObject] ];
+            [constraintsForButtons addObject:[button constrainLeadingSpaceToView:buttons[index - 1] predicate:@"0"]];
         }
         if (index == buttons.count - 1) {
-            [constraintsForButtons addObject:[[tabContainer alignTrailingEdgeWithView:button predicate:@"0"] lastObject]];
+            [constraintsForButtons addObject:[tabContainer alignTrailingEdgeWithView:button predicate:@"0"]];
         }
     }];
     self.constraintsForButtons = [constraintsForButtons copy];

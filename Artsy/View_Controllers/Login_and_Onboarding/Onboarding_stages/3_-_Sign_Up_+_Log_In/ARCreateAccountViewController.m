@@ -87,9 +87,11 @@
     self.containerView = [[UIView alloc] init];
     [self.view addSubview:self.containerView];
     [self.containerView alignCenterXWithView:self.view predicate:@"0"];
+
     NSString *centerYOffset = [UIDevice isPad] ? @"0" : @"-30";
     [self.containerView alignCenterYWithView:self.view predicate:NSStringWithFormat(@"%@@750", centerYOffset)];
-    self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
+
+    self.keyboardConstraint = [self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"];
     [self.containerView constrainWidth:@"280"];
 
     [@[ self.name, self.email, self.password ] each:^(ARTextFieldWithPlaceholder *textField) {
@@ -283,11 +285,11 @@
         [hostView addSubview:self.warningView];
 
         [self.warningView constrainHeight:@"50"];
-        [self.warningView constrainWidthToView:hostView predicate:nil];
+        [self.warningView constrainWidthToView:hostView predicate:@"0"];
         [self.warningView alignAttribute:NSLayoutAttributeBottom
                              toAttribute:NSLayoutAttributeTop
                                   ofView:topMenu.keyboardLayoutGuide
-                               predicate:nil];
+                               predicate:@"0"];
 
         UITapGestureRecognizer *removeTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeWarning)];
         [self.warningView addGestureRecognizer:removeTapGesture];

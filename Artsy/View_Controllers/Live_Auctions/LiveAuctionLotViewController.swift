@@ -34,39 +34,54 @@ class LiveAuctionLotViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let lotPreviewView = UIImageView()
-        lotPreviewView.contentMode = .ScaleAspectFit
-        view.addSubview(lotPreviewView)
-        lotPreviewView.alignTopEdgeWithView(view, predicate: "20")
-        lotPreviewView.constrainWidthToView(view, predicate: "-80")
-        lotPreviewView.alignCenterXWithView(view, predicate: "0")
+        /// Image Preview
+        let lotImagePreviewView = UIImageView()
+        lotImagePreviewView.contentMode = .ScaleAspectFit
+        view.addSubview(lotImagePreviewView)
+        lotImagePreviewView.alignTopEdgeWithView(view, predicate: "20")
+        lotImagePreviewView.constrainWidthToView(view, predicate: "-80")
+        lotImagePreviewView.alignCenterXWithView(view, predicate: "0")
 
+        let aspect = lotViewModel.imageProfileSize.width / lotViewModel.imageProfileSize.height
+        lotImagePreviewView.constrainAspectRatio(String(format: "%.2f", aspect))
+
+        lotImagePreviewView.setContentCompressionResistancePriority(400, forAxis: .Vertical)
+
+        /// The whole stack
         let metadataStack = ORStackView()
+
+        /// The metadata that can jump over the artwork image
+
+        let lotMetadataStack = AuctionLotMetadataStackScrollView()
+        view.addSubview(lotMetadataStack)
+        lotMetadataStack.constrainWidthToView(view, predicate: "0")
+        lotMetadataStack.alignCenterXWithView(view, predicate: "0")
+
+        /// This is a constraint that says "stick to the top of the lot view"
+        /// it's initially turned off, otherwise it uses it's own height constraint
+        /// that is only as big as it's `aboveFoldStackWrapper`
+
+        let topMetadataStackConstraint = lotMetadataStack.alignTopEdgeWithView(self.view, predicate: "20")
+        topMetadataStackConstraint.active = false
+
+        /// Toggles the top constraint, and tells the stack to re-layout
+        lotMetadataStack.showAdditionalInformation = { button in
+            topMetadataStackConstraint.active = true
+            lotMetadataStack.showFullMetadata(true)
+        }
+
+        lotMetadataStack.hideAdditionalInformation = { button in
+            topMetadataStackConstraint.active = false
+            lotMetadataStack.hideFullMetadata(true)
+        }
+
         metadataStack.bottomMarginHeight = 0
         view.addSubview(metadataStack)
         metadataStack.alignBottomEdgeWithView(view, predicate: "0")
         metadataStack.constrainWidthToView(view, predicate: "-40")
         metadataStack.alignCenterXWithView(view, predicate: "0")
-        lotPreviewView.constrainBottomSpaceToView(metadataStack, predicate: "-20")
 
-        let artistNameLabel = UILabel()
-        artistNameLabel.font = UIFont.serifSemiBoldFontWithSize(16)
-        metadataStack.addSubview(artistNameLabel, withTopMargin: "0", sideMargin: "20")
-
-        let artworkNameLabel = ARArtworkTitleLabel()
-        artworkNameLabel.setTitle("That work", date: "2006")
-        metadataStack.addSubview(artworkNameLabel, withTopMargin: "0", sideMargin: "20")
-
-        let estimateLabel = ARSerifLabel()
-        estimateLabel.font = UIFont.serifFontWithSize(14)
-        estimateLabel.text = "Estimate: $100,000–120,000 USD"
-        metadataStack.addSubview(estimateLabel, withTopMargin: "2", sideMargin: "20")
-
-        let premiumLabel = ARSerifLabel()
-        premiumLabel.font = UIFont.serifFontWithSize(14)
-        premiumLabel.text = "Buyer’s Premium 25%"
-        premiumLabel.alpha = 0.3
-        metadataStack.addSubview(premiumLabel, withTopMargin: "2", sideMargin: "20")
+        lotMetadataStack.constrainBottomSpaceToView(metadataStack, predicate: "0")
 
         let infoToolbar = LiveAuctionToolbarView()
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
@@ -76,7 +91,7 @@ class LiveAuctionLotViewController: UIViewController {
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 
-        let bidHistoryViewController =  LiveAuctionBidHistoryViewController(style: .Plain)
+        let bidHistoryViewController = LiveAuctionBidHistoryViewController(style: .Plain)
         metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
         bidHistoryViewController.view.constrainHeight("70")
 
@@ -87,8 +102,9 @@ class LiveAuctionLotViewController: UIViewController {
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
 
         // TODO impossible to unsubscribe from Interstellar signals, will adding all those callbacks ever hurt us performance-wise?
-        currentLotSignal.next { [weak currentLotView] currentLot in
+        currentLotSignal.next { [weak currentLotView, weak lotMetadataStack] currentLot in
             currentLotView?.viewModel.update(currentLot)
+            lotMetadataStack?.viewModel.update(currentLot)
         }
 
         auctionViewModel.saleAvailabilitySignal.next { [weak currentLotView] saleAvailability in
@@ -97,9 +113,6 @@ class LiveAuctionLotViewController: UIViewController {
             }
         }
 
-        artistNameLabel.text = lotViewModel.lotArtist
-        artworkNameLabel.setTitle(lotViewModel.lotName, date: "1985")
-        estimateLabel.text = lotViewModel.estimateString
         infoToolbar.lotVM = lotViewModel
         infoToolbar.auctionViewModel = auctionViewModel
 
@@ -112,7 +125,7 @@ class LiveAuctionLotViewController: UIViewController {
             }
             bidButton?.progressSignal.update(buttonState)
         }
-        lotPreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
+        lotImagePreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
 
         computedLotStateSignal.next { lotState in
             switch lotState {

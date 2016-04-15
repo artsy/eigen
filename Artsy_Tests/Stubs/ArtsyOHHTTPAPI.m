@@ -53,37 +53,41 @@
 {
     OHHTTPStubsDescriptor *stub = [[OHHTTPStubs sharedInstance] firstStubPassingTestForRequest:request];
     if (!stub) {
+        printf("\n\n\n[!] Unstubbed Request Found\n");
+
+        static NSArray *whiteList = nil;
+        if (whiteList == nil) whiteList = @[ [NSBundle mainBundle], [NSBundle bundleForClass:ArtsyOHHTTPAPI.class] ];
+
+        NSArray *stackTrace = ARFilteredStackTraceWithWhiteList(1, whiteList, ^BOOL(BOOL blockInvocation,
+                                                                                    BOOL objcMethod,
+                                                                                    BOOL classMethod,
+                                                                                    NSString *className,
+                                                                                    NSString *methodOrFunction) {
+            return !(
+                     ([className isEqualToString:@"ArtsyAPI"] && [methodOrFunction hasPrefix:@"getRequest:parseInto"])
+                     || [methodOrFunction hasPrefix:@"ar_dispatch"]
+                     || [methodOrFunction isEqualToString:@"main"]
+                     );
+        });
+        NSAssert(stackTrace.count > 0, @"Stack trace empty, might need more white-listing.");
+
+
         NSDictionary *mainThreadDictionary = [[NSThread mainThread] threadDictionary];
         id spectaExample = mainThreadDictionary[@"SPTCurrentSpec"] ?: mainThreadDictionary[@"NimbleEnvironment"];
         id expectaMatcher = [[NSThread mainThread] threadDictionary][@"EXP_currentMatcher"];
-
         if (spectaExample || expectaMatcher) {
-            static NSArray *whiteList = nil;
-            if (whiteList == nil) whiteList = @[ [NSBundle mainBundle], [NSBundle bundleForClass:ArtsyOHHTTPAPI.class] ];
-            NSArray *stackTrace = ARFilteredStackTraceWithWhiteList(1, whiteList, ^BOOL(BOOL blockInvocation,
-                                                                                        BOOL objcMethod,
-                                                                                        BOOL classMethod,
-                                                                                        NSString *className,
-                                                                                        NSString *methodOrFunction) {
-                return !(
-                    ([className isEqualToString:@"ArtsyAPI"] && [methodOrFunction hasPrefix:@"getRequest:parseInto"])
-                    || [methodOrFunction hasPrefix:@"ar_dispatch"]
-                    || [methodOrFunction isEqualToString:@"main"]
-                );
-            });
-            NSAssert(stackTrace.count > 0, @"Stack trace empty, might need more white listing.");
-
-            printf("\n\n\n[!] Unstubbed Request Found\n");
             printf("   Inside Test: %s\n", [spectaExample description].UTF8String);
             printf("       Matcher: %s\n", [expectaMatcher description].UTF8String);
-            printf("Un-stubbed URL: %s\n", request.URL.absoluteString.UTF8String);
-            printf("You should use: [OHHTTPStubs stubJSONResponseAtPath:@\"%s\" withResponse:@{}];\n", request.URL.path.UTF8String);
-            printf("   Stack trace: %s\n\n\n\n", [stackTrace componentsJoinedByString:@"\n                "].UTF8String);
         }
+
+        printf("Un-stubbed URL: %s\n", request.URL.absoluteString.UTF8String);
+        printf("You should use: [OHHTTPStubs stubJSONResponseAtPath:@\"%s\" withResponse:@{}];\n", request.URL.path.UTF8String);
+        printf("   Stack trace: %s\n\n\n\n", [stackTrace componentsJoinedByString:@"\n                "].UTF8String);
+
+        NSAssert(NO, @"Raising an exception which will fail the test, please handle this. Route: %@", request.URL.path);
 
         return [super requestOperation:request success:success failure:failureCallback];
     }
-
 
     OHHTTPStubsResponse *response = stub.responseBlock(request);
     [response.inputStream open];
