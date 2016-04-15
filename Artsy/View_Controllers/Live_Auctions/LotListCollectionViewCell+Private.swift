@@ -141,10 +141,8 @@ extension ClassFunctions {
     }
 
     class func _labelContainerView() -> UIView {
-        // Container needs a reasonable-ish size when we add the artistsNamesLabel so that its preferredMaxLayoutWidth gets set to something non-zero.
-        return UIView(frame: CGRect(origin: CGPoint.zero, size: UIScreen.mainScreen().bounds.size)).then {
+        return UIView().then {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            
         }
     }
 }
