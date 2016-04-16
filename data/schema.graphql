@@ -1,0 +1,900 @@
+type AggregationCount {
+  id: String
+  name: String
+  count: Int
+}
+
+type Article {
+  cached: Int
+  id: String
+  title: String
+  thumbnail_title: String
+  author: Author
+  thumbnail_image: Image
+  slug: String
+  href: String
+}
+
+type Artist {
+  cached: Int
+  _id: String
+  id: String
+  href: String
+  sortable_id: String
+  name: String
+  initials(length: Int = 3): String
+  gender: String
+  years: String
+  public: Boolean
+  nationality: String
+  birthday: String
+  deathday: String
+  alternate_names: [String]
+  blurb(format: Format): String
+  is_shareable: Boolean
+  counts: ArtistCounts
+  artworks(size: Int, sort: ArtworkSorts, published: Boolean = true): [Artwork]
+  image: Image
+  artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
+  contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
+  carousel: ArtistCarousel
+  statuses: ArtistStatuses
+  partner_shows(exclude_fair_booths: Boolean, active: Boolean, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
+  articles: [Article]
+}
+
+type ArtistCarousel {
+  images: [Image]
+}
+
+type ArtistCounts {
+  artworks: Int
+  follows: Int
+  auction_lots: Int
+}
+
+type ArtistItem {
+  cached: Int
+  _id: String
+  id: String
+  href: String
+  sortable_id: String
+  name: String
+  initials(length: Int = 3): String
+  gender: String
+  years: String
+  public: Boolean
+  nationality: String
+  birthday: String
+  deathday: String
+  alternate_names: [String]
+  blurb(format: Format): String
+  is_shareable: Boolean
+  counts: ArtistCounts
+  artworks(size: Int, sort: ArtworkSorts, published: Boolean = true): [Artwork]
+  image: Image
+  artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
+  contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
+  carousel: ArtistCarousel
+  statuses: ArtistStatuses
+  partner_shows(exclude_fair_booths: Boolean, active: Boolean, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
+  articles: [Article]
+}
+
+type ArtistSearchEntity {
+  cached: Int
+  _id: String
+  id: String
+  href: String
+  sortable_id: String
+  name: String
+  initials(length: Int = 3): String
+  gender: String
+  years: String
+  public: Boolean
+  nationality: String
+  birthday: String
+  deathday: String
+  alternate_names: [String]
+  blurb(format: Format): String
+  is_shareable: Boolean
+  counts: ArtistCounts
+  artworks(size: Int, sort: ArtworkSorts, published: Boolean = true): [Artwork]
+  image: Image
+  artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
+  contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
+  carousel: ArtistCarousel
+  statuses: ArtistStatuses
+  partner_shows(exclude_fair_booths: Boolean, active: Boolean, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
+  articles: [Article]
+}
+
+enum ArtistSorts {
+  sortable_id_asc
+  sortable_id_desc
+  trending_desc
+}
+
+type ArtistStatuses {
+  artworks: Boolean
+  shows: Boolean
+  artists: Boolean
+  contemporary: Boolean
+  articles: Boolean
+}
+
+type Artwork {
+  cached: Int
+  id: String
+  _id: String
+  to_s: String
+  href: String
+  title: String
+  category: String
+  medium: String
+  date: String
+  image_rights: String
+  series: String
+  manufacturer: String
+  website: String
+  partner: Partner
+  can_share_image: Boolean
+  is_shareable: Boolean
+  is_hangable: Boolean
+  is_contactable: Boolean
+  is_in_auction: Boolean
+  is_for_sale: Boolean
+  is_unique: Boolean
+  is_sold: Boolean
+  is_ecommerce: Boolean
+  is_comparable_with_auction_results: Boolean
+  sale_message: String
+  artist: Artist
+  contact_label: String
+  cultural_maker: String
+  artists: [Artist]
+  dimensions: dimensions
+  image: Image
+  images(size: Int): [Image]
+  related: Related
+  highlights: [Highlighted]
+  shows(size: Int = 1, active: Boolean = true): [PartnerShow]
+  sale: Sale
+  fair: Fair
+  edition_of: String
+  edition_sets: [EditionSet]
+  description(format: Format): String
+  provenance(format: Format): String
+  exhibition_history(format: Format): String
+  signature(format: Format): String
+  additional_information(format: Format): String
+  bibliography(format: Format): String
+  tabs: [ArtworkTab]
+}
+
+enum ArtworkAggregation {
+  PRICE_RANGE
+  DIMENSION_RANGE
+  COLOR
+  PERIOD
+  MEDIUM
+  GALLERY
+  INSTITUTION
+  TOTAL
+}
+
+type ArtworksAggregationResults {
+  slice: ArtworkAggregation
+  counts: [AggregationCount]
+}
+
+type ArtworkSearchEntity {
+  cached: Int
+  id: String
+  _id: String
+  to_s: String
+  href: String
+  title: String
+  category: String
+  medium: String
+  date: String
+  image_rights: String
+  series: String
+  manufacturer: String
+  website: String
+  partner: Partner
+  can_share_image: Boolean
+  is_shareable: Boolean
+  is_hangable: Boolean
+  is_contactable: Boolean
+  is_in_auction: Boolean
+  is_for_sale: Boolean
+  is_unique: Boolean
+  is_sold: Boolean
+  is_ecommerce: Boolean
+  is_comparable_with_auction_results: Boolean
+  sale_message: String
+  artist: Artist
+  contact_label: String
+  cultural_maker: String
+  artists: [Artist]
+  dimensions: dimensions
+  image: Image
+  images(size: Int): [Image]
+  related: Related
+  highlights: [Highlighted]
+  shows(size: Int = 1, active: Boolean = true): [PartnerShow]
+  sale: Sale
+  fair: Fair
+  edition_of: String
+  edition_sets: [EditionSet]
+  description(format: Format): String
+  provenance(format: Format): String
+  exhibition_history(format: Format): String
+  signature(format: Format): String
+  additional_information(format: Format): String
+  bibliography(format: Format): String
+  tabs: [ArtworkTab]
+}
+
+enum ArtworkSorts {
+  title_asc
+  title_desc
+  created_at_asc
+  created_at_desc
+  iconicity_desc
+  merchandisability_desc
+  published_at_asc
+  published_at_desc
+}
+
+union ArtworkTab = DescriptionArtworkTab | ExhibitionHistoryArtworkTab | BibliographyArtworkTab | ProvenanceArtworkTab
+
+interface ArtworkTabInterface {
+  id: String
+  name: String
+}
+
+type Author {
+  id: String
+  name: String
+  profile_handle: String
+  href: String
+}
+
+type BibliographyArtworkTab implements ArtworkTabInterface {
+  bibliography(format: Format): String
+  id: String
+  name: String
+}
+
+type Bidder {
+  id: String
+  created_at(format: String): String
+  pin: String
+  sale: Sale
+}
+
+type BidderPosition {
+  id: String
+  created_at(format: String): String
+  updated_at(format: String): String
+  processed_at(format: String): String
+  is_active: Boolean
+  is_retracted: Boolean
+  is_with_bid_max: Boolean
+  is_winning: Boolean
+  display_max_bid_amount_dollars: String
+  display_suggested_next_bid_dollars: String
+  max_bid_amount_cents: Int
+  suggested_next_bid_cents: Int
+  sale_artwork: SaleArtwork
+  highest_bid: HighestBid
+}
+
+enum CategoryType {
+  GALLERY
+  INSTITUTION
+}
+
+type coordinates {
+  lat: Float
+  lng: Float
+}
+
+type CroppedImageUrl {
+  width: Int
+  height: Int
+  url: String
+}
+
+type DaySchedule {
+  start_time: Int
+  end_time: Int
+  day_of_week: String
+}
+
+type DeepZoom {
+  Image: DeepZoomImage
+}
+
+type DeepZoomImage {
+  xmlns: String
+  Url: String
+  Format: String
+  TileSize: Int
+  Overlap: Int
+  Size: DeepZoomImageSize
+}
+
+type DeepZoomImageSize {
+  Width: Int
+  Height: Int
+}
+
+type DescriptionArtworkTab implements ArtworkTabInterface {
+  description(format: Format): String
+  additional_information(format: Format): String
+  signature(format: Format): String
+  series: String
+  id: String
+  name: String
+}
+
+type dimensions {
+  in: String
+  cm: String
+}
+
+type EditionSet {
+  id: String
+  dimensions: dimensions
+  edition_of: String
+  is_sold: Boolean
+  is_for_sale: Boolean
+  price: String
+}
+
+enum EventStatus {
+  current
+  running
+  closed
+  upcoming
+}
+
+type ExhibitionHistoryArtworkTab implements ArtworkTabInterface {
+  exhibition_history(format: Format): String
+  id: String
+  name: String
+}
+
+type Fair {
+  cached: Int
+  _id: String
+  id: String
+  banner_size: String
+  profile: Profile
+  has_full_feature: Boolean
+  href: String
+  image: Image
+  location: Location
+  start_at(format: String): String
+  end_at(format: String): String
+  name: String
+  published: Boolean
+  is_published: Boolean
+  organizer: organizer
+}
+
+enum FairSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  START_AT_ASC
+  START_AT_DESC
+  NAME_ASC
+  NAME_DESC
+}
+
+type FeaturedLinkItem {
+  id: String
+  title: String
+  initials(length: Int = 3): String
+  subtitle: String
+  href: String
+  image: Image
+}
+
+type FilterArtworks {
+  hits: [Artwork]
+  total: Int
+  aggregations: [ArtworksAggregationResults]
+}
+
+type FilterPartners {
+  hits: [Partner]
+  total: Int
+  aggregations: [PartnersAggregationResults]
+}
+
+enum Format {
+  HTML
+  PLAIN
+  markdown
+}
+
+type Gene {
+  cached: Int
+  id: String
+  href: String
+  name: String
+  image: Image
+  artists: [Artist]
+  trending_artists(sample: Int): [Artist]
+}
+
+type GeneItem {
+  cached: Int
+  id: String
+  href: String
+  name: String
+  image: Image
+  artists: [Artist]
+  trending_artists(sample: Int): [Artist]
+}
+
+type highest_bid {
+  id: String
+  created_at(format: String): String
+  amount_cents: String
+}
+
+type HighestBid {
+  id: String
+  created_at(format: String): String
+  number: Int
+  is_cancelled: Boolean
+  amount_cents: Int
+  display_amount_dollars: String
+}
+
+union Highlighted = HighlightedShow | HighlightedArticle
+
+type HighlightedArticle {
+  cached: Int
+  id: String
+  title: String
+  thumbnail_title: String
+  author: Author
+  thumbnail_image: Image
+  slug: String
+  href: String
+}
+
+type HighlightedShow {
+  cached: Int
+  _id: String
+  id: String
+  href: String
+  kind: String
+  name: String
+  description: String
+  displayable: Boolean
+  press_release(format: Format): String
+  start_at(format: String): String
+  end_at(format: String): String
+  artists: [Artist]
+  partner: Partner
+  fair: Fair
+  location: Location
+  status: String
+  events: [PartnerShowEventType]
+  artworks(size: Int, published: Boolean = true, page: Int): [Artwork]
+  cover_image: Image
+  images(size: Int, default: Boolean, page: Int): [Image]
+}
+
+type Image {
+  id: String
+  href: String
+  title: String
+  width: Int
+  height: Int
+  orientation: String
+  aspect_ratio: Float
+  versions: [String]
+  caption: String
+  is_default: Boolean
+  position: Int
+  url(version: [String]): String
+  cropped(width: Int!, height: Int!, version: [String]): CroppedImageUrl
+  resized(width: Int, height: Int, version: [String]): ResizedImageUrl
+  deep_zoom: DeepZoom
+}
+
+union Item = ArtistItem | FeaturedLinkItem | GeneItem
+
+type Location {
+  cached: Int
+  id: String
+  city: String
+  country: String
+  coordinates: coordinates
+  display: String
+  address: String
+  address_2: String
+  postal_code: String
+  state: String
+  phone: String
+  day_schedules: [DaySchedule]
+}
+
+type Me {
+  id: String
+  created_at(format: String): String
+  email: String
+  bidders: [Bidder]
+  bidder_positions(current: Boolean, artwork_id: String): [BidderPosition]
+  sale_registrations(size: Int, is_auction: Boolean = true, published: Boolean = true, live: Boolean = true, sort: SaleSorts): [SaleRegistration]
+}
+
+input Near {
+  lat: Float!
+  lng: Float!
+  max_distance: Float
+}
+
+type OrderedSet {
+  cached: Int
+  id: String
+  key: String
+  name: String
+  description: String
+  item_type: String
+  items: [Item]
+}
+
+type organizer {
+  profile_id: String
+}
+
+type Partner {
+  cached: Int
+  _id: String
+  id: String
+  name: String
+  type: String
+  href: String
+  is_linkable: Boolean
+  is_pre_qualify: Boolean
+  is_limited_fair_partner: Boolean
+  initials(length: Int = 3): String
+  default_profile_id: String
+  profile: Profile
+  shows(size: Int): [PartnerShow]
+  locations(size: Int): [Location]
+  contact_message: String
+}
+
+type PartnerCategory {
+  cached: Int
+  id: String
+  name: String
+  category_type: CategoryType
+  partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification]): [Partner]
+}
+
+enum PartnerClassification {
+  AUCTION
+  DEMO
+  GALLERY
+  PRIVATE_COLLECTOR
+  PRIVATE_DEALER
+  INSTITUTION
+  INSTITUTIONAL_SELLER
+  BRAND
+}
+
+enum PartnersAggregation {
+  LOCATION
+  CATEGORY
+  TOTAL
+}
+
+type PartnersAggregationResults {
+  slice: PartnersAggregation
+  counts: [AggregationCount]
+}
+
+type PartnerShow {
+  cached: Int
+  _id: String
+  id: String
+  href: String
+  kind: String
+  name: String
+  description: String
+  displayable: Boolean
+  press_release(format: Format): String
+  start_at(format: String): String
+  end_at(format: String): String
+  artists: [Artist]
+  partner: Partner
+  fair: Fair
+  location: Location
+  status: String
+  events: [PartnerShowEventType]
+  artworks(size: Int, published: Boolean = true, page: Int): [Artwork]
+  cover_image: Image
+  images(size: Int, default: Boolean, page: Int): [Image]
+}
+
+type PartnerShowEventType {
+  title: String
+  description: String
+  event_type: String
+  start_at(format: String): String
+  end_at(format: String): String
+}
+
+type PartnerShowSearchEntity {
+  cached: Int
+  _id: String
+  id: String
+  href: String
+  kind: String
+  name: String
+  description: String
+  displayable: Boolean
+  press_release(format: Format): String
+  start_at(format: String): String
+  end_at(format: String): String
+  artists: [Artist]
+  partner: Partner
+  fair: Fair
+  location: Location
+  status: String
+  events: [PartnerShowEventType]
+  artworks(size: Int, published: Boolean = true, page: Int): [Artwork]
+  cover_image: Image
+  images(size: Int, default: Boolean, page: Int): [Image]
+}
+
+enum PartnerShowSorts {
+  created_at_asc
+  created_at_desc
+  end_at_asc
+  end_at_desc
+  start_at_asc
+  start_at_desc
+  name_asc
+  name_desc
+  publish_at_asc
+  publish_at_desc
+}
+
+enum PartnersSortType {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  SORTABLE_ID_ASC
+  SORTABLE_ID_DESC
+  PUBLISHED_AT_DESC
+  RANDOM_SCORE_DESC
+}
+
+type Ping {
+  ping: String
+}
+
+type Profile {
+  cached: Int
+  id: String
+  name: String
+  image: Image
+  initials(length: Int = 3): String
+  icon: Image
+  href: String
+  is_published: Boolean
+  bio: String
+  counts: ProfileCounts
+}
+
+type ProfileCounts {
+  follows: Int
+}
+
+type ProfileSearchEntity {
+  cached: Int
+  id: String
+  name: String
+  image: Image
+  initials(length: Int = 3): String
+  icon: Image
+  href: String
+  is_published: Boolean
+  bio: String
+  counts: ProfileCounts
+}
+
+type ProvenanceArtworkTab implements ArtworkTabInterface {
+  provenance(format: Format): String
+  id: String
+  name: String
+}
+
+union Related = RelatedFair | RelatedSale
+
+type RelatedFair {
+  cached: Int
+  _id: String
+  id: String
+  banner_size: String
+  profile: Profile
+  has_full_feature: Boolean
+  href: String
+  image: Image
+  location: Location
+  start_at(format: String): String
+  end_at(format: String): String
+  name: String
+  published: Boolean
+  is_published: Boolean
+  organizer: organizer
+}
+
+type RelatedSale {
+  cached: Int
+  id: String
+  name: String
+  href: String
+  description: String
+  sale_type: String
+  is_auction: Boolean
+  is_auction_promo: Boolean
+  is_preview: Boolean
+  is_open: Boolean
+  is_closed: Boolean
+  is_with_buyers_premium: Boolean
+  auction_state: String
+  start_at(format: String): String
+  end_at(format: String): String
+  currency: String
+  sale_artworks: [SaleArtwork]
+  cover_image: Image
+  sale_artwork(id: String!): SaleArtwork
+  profile: Profile
+}
+
+type ResizedImageUrl {
+  factor: Float
+  width: Int
+  height: Int
+  url: String
+}
+
+type RootQueryType {
+  ping: Ping
+  article(id: String!): Article
+  articles(show_id: String, published: Boolean = true): [Article]
+  artwork(id: String!): Artwork
+  artist(id: String!): Artist
+  artists(size: Int, sort: ArtistSorts): [Artist]
+  fair(id: String!): Fair
+  fairs(size: Int, page: Int, sort: FairSorts, status: EventStatus, fair_organizer_id: String, near: Near, has_full_feature: Boolean): [Fair]
+  gene(id: String!): Gene
+  profile(id: String!): Profile
+  ordered_sets(key: String!, public: Boolean = true): [OrderedSet]
+  partner(id: String!): Partner
+  partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification]): [Partner]
+  filter_partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], aggregations: [PartnersAggregation]!): FilterPartners
+  filter_artworks(aggregations: [ArtworkAggregation], artist_id: Int, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, price_range: String, page: Int, size: Int, sort: String): FilterArtworks
+  partner_category(id: String!): PartnerCategory
+  partner_categories(size: Int, category_type: CategoryType, internal: Boolean = false): [PartnerCategory]
+  partner_show(id: String!): PartnerShow
+  partner_shows(size: Int, sort: PartnerShowSorts, status: EventStatus, fair_id: String, partner_id: String, near: Near, displayable: Boolean = true, featured: Boolean): [PartnerShow]
+  sale(id: String!): Sale
+  sales(size: Int, is_auction: Boolean = true, published: Boolean = true, live: Boolean = true, sort: SaleSorts): [Sale]
+  sale_artwork(id: String!): SaleArtwork
+  search(term: String!): Search
+  trending_artists(method: String = "fetch", name: TrendingMetrics!, size: Int = 40, double_time_period: Boolean = false): TrendingArtists
+  me: Me
+}
+
+type Sale {
+  cached: Int
+  id: String
+  name: String
+  href: String
+  description: String
+  sale_type: String
+  is_auction: Boolean
+  is_auction_promo: Boolean
+  is_preview: Boolean
+  is_open: Boolean
+  is_closed: Boolean
+  is_with_buyers_premium: Boolean
+  auction_state: String
+  start_at(format: String): String
+  end_at(format: String): String
+  currency: String
+  sale_artworks: [SaleArtwork]
+  cover_image: Image
+  sale_artwork(id: String!): SaleArtwork
+  profile: Profile
+}
+
+type SaleArtwork {
+  cached: Int
+  _id: String
+  id: String
+  sale_id: String
+  position: Int
+  lot_number: String
+  bidder_positions_count: Int
+  reserve_status: Int
+  amount_cents: Int
+  low_estimate_cents: Int
+  high_estimate_cents: Int
+  opening_bid_cents: Int
+  minimum_next_bid_cents: Int
+  currency: String
+  symbol: String
+  highest_bid: highest_bid
+  artwork: Artwork
+  estimate: String
+  current_bid: String
+}
+
+type SaleRegistration {
+  is_registered: Boolean
+  bidder: Bidder
+  sale: Sale
+}
+
+enum SaleSorts {
+  _ID_ASC
+  _ID_DESC
+  NAME_ASC
+  NAME_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  END_AT_ASC
+  END_AT_DESC
+  START_AT_ASC
+  START_AT_DESC
+  ELIGIBLE_SALE_ARTWORKS_COUNT_ASC
+  ELIGIBLE_SALE_ARTWORKS_COUNT_DESC
+}
+
+type Search {
+  cached: Int
+  total: Int
+  results: [SearchResult]
+}
+
+union SearchEntity = ArtistSearchEntity | ArtworkSearchEntity | ProfileSearchEntity | PartnerShowSearchEntity
+
+type SearchResult {
+  id: String
+  title: String
+  href: String
+  snippet: String
+  image: Image
+  type: String
+  entity: SearchEntity
+}
+
+type TrendingArtists {
+  artists: [Artist]
+}
+
+enum TrendingMetrics {
+  ARTIST_FOLLOW
+  ARTIST_INQUIRY
+  ARTIST_SEARCH
+  ARTIST_SAVE
+  ARTIST_FAIR
+  ARTIST_AUCTION_LOT
+}

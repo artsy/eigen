@@ -1,0 +1,3 @@
+[submodule "metaphysics"]
+	path = metaphysics
+	url = https://github.com/alloy/metaphysics.git
