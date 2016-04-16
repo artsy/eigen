@@ -26,12 +26,15 @@ type Artist {
   gender: String
   years: String
   public: Boolean
+  hometown: String
+  location: String
   nationality: String
   birthday: String
   deathday: String
   alternate_names: [String]
   blurb(format: Format): String
   is_shareable: Boolean
+  bio: String
   counts: ArtistCounts
   artworks(size: Int, sort: ArtworkSorts, published: Boolean = true): [Artwork]
   image: Image
@@ -39,7 +42,8 @@ type Artist {
   contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
   carousel: ArtistCarousel
   statuses: ArtistStatuses
-  partner_shows(exclude_fair_booths: Boolean, active: Boolean, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  exhibition_highlights(size: Int = 5): [PartnerShow]
+  partner_shows(at_a_fair: Boolean, active: Boolean, status: String, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
   sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
   articles: [Article]
 }
@@ -52,6 +56,7 @@ type ArtistCounts {
   artworks: Int
   follows: Int
   auction_lots: Int
+  for_sale_artworks: Int
 }
 
 type ArtistItem {
@@ -65,12 +70,15 @@ type ArtistItem {
   gender: String
   years: String
   public: Boolean
+  hometown: String
+  location: String
   nationality: String
   birthday: String
   deathday: String
   alternate_names: [String]
   blurb(format: Format): String
   is_shareable: Boolean
+  bio: String
   counts: ArtistCounts
   artworks(size: Int, sort: ArtworkSorts, published: Boolean = true): [Artwork]
   image: Image
@@ -78,7 +86,8 @@ type ArtistItem {
   contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
   carousel: ArtistCarousel
   statuses: ArtistStatuses
-  partner_shows(exclude_fair_booths: Boolean, active: Boolean, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  exhibition_highlights(size: Int = 5): [PartnerShow]
+  partner_shows(at_a_fair: Boolean, active: Boolean, status: String, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
   sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
   articles: [Article]
 }
@@ -94,12 +103,15 @@ type ArtistSearchEntity {
   gender: String
   years: String
   public: Boolean
+  hometown: String
+  location: String
   nationality: String
   birthday: String
   deathday: String
   alternate_names: [String]
   blurb(format: Format): String
   is_shareable: Boolean
+  bio: String
   counts: ArtistCounts
   artworks(size: Int, sort: ArtworkSorts, published: Boolean = true): [Artwork]
   image: Image
@@ -107,7 +119,8 @@ type ArtistSearchEntity {
   contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
   carousel: ArtistCarousel
   statuses: ArtistStatuses
-  partner_shows(exclude_fair_booths: Boolean, active: Boolean, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  exhibition_highlights(size: Int = 5): [PartnerShow]
+  partner_shows(at_a_fair: Boolean, active: Boolean, status: String, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
   sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
   articles: [Article]
 }
@@ -124,6 +137,7 @@ type ArtistStatuses {
   artists: Boolean
   contemporary: Boolean
   articles: Boolean
+  biography: Boolean
 }
 
 type Artwork {
@@ -137,9 +151,8 @@ type Artwork {
   medium: String
   date: String
   image_rights: String
-  series: String
-  manufacturer: String
   website: String
+  collecting_institution: String
   partner: Partner
   can_share_image: Boolean
   is_shareable: Boolean
@@ -150,7 +163,9 @@ type Artwork {
   is_unique: Boolean
   is_sold: Boolean
   is_ecommerce: Boolean
+  is_acquireable: Boolean
   is_comparable_with_auction_results: Boolean
+  is_downloadable: Boolean
   sale_message: String
   artist: Artist
   contact_label: String
@@ -167,12 +182,17 @@ type Artwork {
   edition_of: String
   edition_sets: [EditionSet]
   description(format: Format): String
-  provenance(format: Format): String
   exhibition_history(format: Format): String
+  provenance(format: Format): String
   signature(format: Format): String
   additional_information(format: Format): String
-  bibliography(format: Format): String
-  tabs: [ArtworkTab]
+  literature(format: Format): String
+  publisher(format: Format): String
+  manufacturer(format: Format): String
+  series(format: Format): String
+  meta: ArtworkMeta
+  layer(id: String!): ArtworkLayer
+  layers: [ArtworkLayer]
 }
 
 enum ArtworkAggregation {
@@ -184,6 +204,21 @@ enum ArtworkAggregation {
   GALLERY
   INSTITUTION
   TOTAL
+}
+
+type ArtworkLayer {
+  id: String
+  type: String
+  name: String
+  description: String
+  more_info_url: String
+  artworks: [Artwork]
+}
+
+type ArtworkMeta {
+  title: String
+  description(limit: Int = 155): String
+  image: String
 }
 
 type ArtworksAggregationResults {
@@ -202,9 +237,8 @@ type ArtworkSearchEntity {
   medium: String
   date: String
   image_rights: String
-  series: String
-  manufacturer: String
   website: String
+  collecting_institution: String
   partner: Partner
   can_share_image: Boolean
   is_shareable: Boolean
@@ -215,7 +249,9 @@ type ArtworkSearchEntity {
   is_unique: Boolean
   is_sold: Boolean
   is_ecommerce: Boolean
+  is_acquireable: Boolean
   is_comparable_with_auction_results: Boolean
+  is_downloadable: Boolean
   sale_message: String
   artist: Artist
   contact_label: String
@@ -232,12 +268,17 @@ type ArtworkSearchEntity {
   edition_of: String
   edition_sets: [EditionSet]
   description(format: Format): String
-  provenance(format: Format): String
   exhibition_history(format: Format): String
+  provenance(format: Format): String
   signature(format: Format): String
   additional_information(format: Format): String
-  bibliography(format: Format): String
-  tabs: [ArtworkTab]
+  literature(format: Format): String
+  publisher(format: Format): String
+  manufacturer(format: Format): String
+  series(format: Format): String
+  meta: ArtworkMeta
+  layer(id: String!): ArtworkLayer
+  layers: [ArtworkLayer]
 }
 
 enum ArtworkSorts {
@@ -251,24 +292,11 @@ enum ArtworkSorts {
   published_at_desc
 }
 
-union ArtworkTab = DescriptionArtworkTab | ExhibitionHistoryArtworkTab | BibliographyArtworkTab | ProvenanceArtworkTab
-
-interface ArtworkTabInterface {
-  id: String
-  name: String
-}
-
 type Author {
   id: String
   name: String
   profile_handle: String
   href: String
-}
-
-type BibliographyArtworkTab implements ArtworkTabInterface {
-  bibliography(format: Format): String
-  id: String
-  name: String
 }
 
 type Bidder {
@@ -335,15 +363,6 @@ type DeepZoomImageSize {
   Height: Int
 }
 
-type DescriptionArtworkTab implements ArtworkTabInterface {
-  description(format: Format): String
-  additional_information(format: Format): String
-  signature(format: Format): String
-  series: String
-  id: String
-  name: String
-}
-
 type dimensions {
   in: String
   cm: String
@@ -353,6 +372,7 @@ type EditionSet {
   id: String
   dimensions: dimensions
   edition_of: String
+  is_acquireable: Boolean
   is_sold: Boolean
   is_for_sale: Boolean
   price: String
@@ -363,12 +383,6 @@ enum EventStatus {
   running
   closed
   upcoming
-}
-
-type ExhibitionHistoryArtworkTab implements ArtworkTabInterface {
-  exhibition_history(format: Format): String
-  id: String
-  name: String
 }
 
 type Fair {
@@ -445,12 +459,6 @@ type GeneItem {
   trending_artists(sample: Int): [Artist]
 }
 
-type highest_bid {
-  id: String
-  created_at(format: String): String
-  amount_cents: String
-}
-
 type HighestBid {
   id: String
   created_at(format: String): String
@@ -496,6 +504,13 @@ type HighlightedShow {
   images(size: Int, default: Boolean, page: Int): [Image]
 }
 
+type HomePageModules {
+  key: String
+  display: String
+  title: String
+  results: [Artwork]
+}
+
 type Image {
   id: String
   href: String
@@ -512,6 +527,8 @@ type Image {
   cropped(width: Int!, height: Int!, version: [String]): CroppedImageUrl
   resized(width: Int, height: Int, version: [String]): ResizedImageUrl
   deep_zoom: DeepZoom
+  is_zoomable: Boolean
+  placeholder: String
 }
 
 union Item = ArtistItem | FeaturedLinkItem | GeneItem
@@ -565,6 +582,7 @@ type Partner {
   _id: String
   id: String
   name: String
+  collecting_institution: String
   type: String
   href: String
   is_linkable: Boolean
@@ -573,7 +591,7 @@ type Partner {
   initials(length: Int = 3): String
   default_profile_id: String
   profile: Profile
-  shows(size: Int): [PartnerShow]
+  shows(size: Int, sort: PartnerShowSorts, status: EventStatus, fair_id: String, near: Near, displayable: Boolean = true, featured: Boolean, at_a_fair: Boolean): [PartnerShow]
   locations(size: Int): [Location]
   contact_message: String
 }
@@ -718,12 +736,6 @@ type ProfileSearchEntity {
   counts: ProfileCounts
 }
 
-type ProvenanceArtworkTab implements ArtworkTabInterface {
-  provenance(format: Format): String
-  id: String
-  name: String
-}
-
 union Related = RelatedFair | RelatedSale
 
 type RelatedFair {
@@ -784,6 +796,7 @@ type RootQueryType {
   fair(id: String!): Fair
   fairs(size: Int, page: Int, sort: FairSorts, status: EventStatus, fair_organizer_id: String, near: Near, has_full_feature: Boolean): [Fair]
   gene(id: String!): Gene
+  home_page_modules(include_keys: [String] = false): [HomePageModules]
   profile(id: String!): Profile
   ordered_sets(key: String!, public: Boolean = true): [OrderedSet]
   partner(id: String!): Partner
@@ -793,7 +806,7 @@ type RootQueryType {
   partner_category(id: String!): PartnerCategory
   partner_categories(size: Int, category_type: CategoryType, internal: Boolean = false): [PartnerCategory]
   partner_show(id: String!): PartnerShow
-  partner_shows(size: Int, sort: PartnerShowSorts, status: EventStatus, fair_id: String, partner_id: String, near: Near, displayable: Boolean = true, featured: Boolean): [PartnerShow]
+  partner_shows(size: Int, sort: PartnerShowSorts, status: EventStatus, fair_id: String, partner_id: String, near: Near, displayable: Boolean = true, featured: Boolean, at_a_fair: Boolean): [PartnerShow]
   sale(id: String!): Sale
   sales(size: Int, is_auction: Boolean = true, published: Boolean = true, live: Boolean = true, sort: SaleSorts): [Sale]
   sale_artwork(id: String!): SaleArtwork
@@ -832,19 +845,70 @@ type SaleArtwork {
   sale_id: String
   position: Int
   lot_number: String
-  bidder_positions_count: Int
-  reserve_status: Int
-  amount_cents: Int
+  currency: String
+  symbol: String
+  reserve_status: String
+  is_with_reserve: Boolean
+  is_bid_on: Boolean
+  reserve_message: String
+  reserve: SaleArtworkReserve
+  low_estimate: SaleArtworkLowEstimate
+  high_estimate: SaleArtworkHighEstimate
+  opening_bid: SaleArtworkOpeningBid
+  minimum_next_bid: SaleArtworkMinimumNextBid
+  current_bid: SaleArtworkCurrentBid
+  highest_bid: SaleArtworkHighestBid
+  artwork: Artwork
+  estimate: String
+  counts: SaleArtworkCounts
   low_estimate_cents: Int
   high_estimate_cents: Int
   opening_bid_cents: Int
   minimum_next_bid_cents: Int
-  currency: String
-  symbol: String
-  highest_bid: highest_bid
-  artwork: Artwork
-  estimate: String
-  current_bid: String
+  bidder_positions_count: Int
+}
+
+type SaleArtworkCounts {
+  bidder_positions: Int
+}
+
+type SaleArtworkCurrentBid {
+  cents: Int
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+}
+
+type SaleArtworkHighestBid {
+  id: String
+  created_at(format: String): String
+  is_cancelled: Boolean
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+  cents: Int
+  amount_cents: Int
+}
+
+type SaleArtworkHighEstimate {
+  cents: Int
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+}
+
+type SaleArtworkLowEstimate {
+  cents: Int
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+}
+
+type SaleArtworkMinimumNextBid {
+  cents: Int
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+}
+
+type SaleArtworkOpeningBid {
+  cents: Int
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+}
+
+type SaleArtworkReserve {
+  cents: Int
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
 }
 
 type SaleRegistration {
