@@ -1,0 +1,8 @@
+{
+  "env": {
+    "development": {
+      "plugins": ["babel-relay-plugin-loader"],
+      "presets": ["react-native"]
+    }
+  }
+}

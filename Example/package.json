@@ -1,23 +1,23 @@
 {
   "name": "Emission-Example",
   "version": "0.0.1",
-  "description": "React Native Experimentation",
-  "main": "EmbedInExistingNavigationStack/EmbedInExistingNavigationStack/ARReact/index.ios.js",
+  "description": "Emission Example App",
+  "main": "Emission/index.ios.js",
   "dependencies": {
-    "react-native": "^0.21.0-rc"
+    "emission": "file:../"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alloy/ReactNativeExperiments.git"
+    "start": "cd node_modules/react-native && npm start"
   },
   "author": "Eloy Durán",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/alloy/ReactNativeExperiments/issues"
+  "metadata": {
+    "graphql": {
+      "schema": "./node_modules/emission/data/schema.json"
+    }
   },
-  "homepage": "https://github.com/alloy/ReactNativeExperiments#readme"
+  "devDependencies": {
+    "babel-relay-plugin": "^0.8.0",
+    "babel-relay-plugin-loader": "^0.7.3"
+  }
 }
