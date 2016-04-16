@@ -23,6 +23,7 @@ upcoming:
     - Fixes live auction lots being in the wrong order. - ash
     - Adds support for loading Artsy subdomains internally. - ash
     - Live auction lot list. - ash
+    - Fixes crash due to missing nullability specifiers on Artwork. - ash
 
 
 releases:
