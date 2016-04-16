@@ -19,12 +19,12 @@ PODS:
     - Nimble
     - Quick
   - Quick (0.8.0)
-  - React/Core (0.21.0)
-  - React/RCTNetwork (0.21.0):
+  - React/Core (0.24.0-rc5)
+  - React/RCTNetwork (0.24.0-rc5):
     - React/Core
-  - React/RCTText (0.21.0):
+  - React/RCTText (0.24.0-rc5):
     - React/Core
-  - React/RCTWebSocket (0.21.0):
+  - React/RCTWebSocket (0.24.0-rc5):
     - React/Core
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
@@ -61,7 +61,7 @@ SPEC CHECKSUMS:
   Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
   Nimble-Snapshots: ab41dd737dcd33a0b0cb005a30465fef70b7207a
   Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
-  React: eb52e0f867cb73639c553f766d7e6e895003afeb
+  React: 9df7c9ebbc8256031adcc82ed9fede2730f98874
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
 
 PODFILE CHECKSUM: 569c853c5a9bbee03f6075f0e84f74af9d927511
