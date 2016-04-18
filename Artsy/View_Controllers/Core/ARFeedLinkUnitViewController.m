@@ -1,4 +1,9 @@
+// MARK: Formatter Exempt
+
 #import "ARFeedLinkUnitViewController.h"
+
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
 
 #import "ArtsyAPI+OrderedSets.h"
 #import "ARNavigationButton.h"
@@ -77,11 +82,11 @@
             ARNavigationButtonHandlerKey: ^(UIButton *sender) {
                 __strong typeof (wself) sself = wself;
                 UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:featuredLink.href];
-                [sself.navigationController pushViewController:viewController animated:YES];
+                [sself.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+            }
+        }];
     }
-}];
-}
-return phoneNavigation;
+    return phoneNavigation;
 }
 
 - (FeaturedLink *)defaultFeedLink

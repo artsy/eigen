@@ -1,7 +1,10 @@
 #import "ARBrowseViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARBrowseFeaturedLinksCollectionViewCell.h"
+#import "ARAppConstants.h"
 #import "ARSwitchBoard+Eigen.h"
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -165,7 +168,7 @@
     FeaturedLink *link = [self.menuLinks objectAtIndex:indexPath.row];
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:link.href];
     if (viewController) {
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }
 }
 

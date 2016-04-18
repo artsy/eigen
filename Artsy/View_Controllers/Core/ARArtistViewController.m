@@ -35,6 +35,9 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
+
 static const NSInteger ARMinimumArtworksFor2Column = 5;
 
 typedef NS_ENUM(NSInteger, ARArtistViewIndex) {
@@ -626,6 +629,7 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
     ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:self.artworkVC.items inFair:nil atIndex:index];
+
     [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 

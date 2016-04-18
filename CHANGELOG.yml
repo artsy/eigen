@@ -1,6 +1,6 @@
 upcoming:
   version: 2.4.2
-  details: Analytics improvements
+  details: Onboarding / New Gene VC / Live
 
   dev:
     - Artwork view hides Contact button for uninquireable works - sarah 

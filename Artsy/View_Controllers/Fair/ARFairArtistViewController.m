@@ -134,7 +134,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     ARNavigationButton *button = [[ARNavigationButton alloc] initWithTitle:title];
     button.tag = ARFairArtistOnArtsy;
     button.onTap = ^(UIButton *tappedButton) {
-        UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadArtistWithID:self.artist.artistID inFair:nil];
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:self.artist.artistID inFair:nil];
         [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     };
     [self.view.stackView addSubview:button withTopMargin:@"20" sideMargin:@"40"];
@@ -159,7 +159,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     ARNavigationButton *button = [[ARSerifNavigationButton alloc] initWithTitle:show.partner.name andSubtitle:show.locationInFair withBorder:0];
     button.tag = tag;
     button.onTap = ^(UIButton *tappedButton) {
-        UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:show fair:self.fair];
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadShow:show fair:self.fair];
         [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     };
     [self.view.stackView addSubview:button withTopMargin:@"0" sideMargin:@"40"];
@@ -209,7 +209,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     __weak typeof(self) wself = self;
     [self.fair getFairMaps:^(NSArray *maps) {
         __strong typeof (wself) sself = wself;
-        ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:sself.fair title:sself.header selectedPartnerShows:sself.partnerShows];
+        ARFairMapViewController *viewController = [ARSwitchBoard.sharedInstance loadMapInFair:sself.fair title:sself.header selectedPartnerShows:sself.partnerShows];
         [sself.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }];
 }

@@ -197,14 +197,14 @@ static CGFloat ARPartnerShowCellSideMargin;
 
 - (void)openShow:(UITapGestureRecognizer *)gesture
 {
-    ARShowViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:self.show];
+    ARShowViewController *viewController = [ARSwitchBoard.sharedInstance loadShow:self.show];
     [self.delegate modernPartnerShowTableViewCell:self shouldShowViewController:(id)viewController];
 }
 
 - (void)openPartner:(UITapGestureRecognizer *)gesture
 {
     if ([AROptions boolForOption:AROptionsTappingPartnerSendsToPartner]) {
-        UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPartnerWithID:self.show.partner.partnerID];
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPartnerWithID:self.show.partner.partnerID];
         [self.delegate modernPartnerShowTableViewCell:self shouldShowViewController:(id)viewController];
 
     } else {

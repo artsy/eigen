@@ -153,7 +153,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     // be assured that any VCs guide can be trusted.
     (void)self.keyboardLayoutGuide;
 
-    [self registerWithSwitchBoard:[ARSwitchBoard sharedInstance]];
+    [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
 }
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
@@ -352,6 +352,11 @@ static const CGFloat ARMenuButtonDimension = 46;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
+    if ([viewController isKindOfClass:UINavigationController.class]) {
+        [self presentViewController:viewController animated:animated completion:nil];
+        return;
+    }
+
     NSInteger index = [self indexOfRootViewController:viewController];
     if (index != NSNotFound) {
         [self presentRootViewControllerAtIndex:index animated:(animated && index != self.selectedTabIndex)];

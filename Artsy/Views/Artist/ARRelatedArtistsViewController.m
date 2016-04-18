@@ -121,7 +121,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     Artist *artist = self.relatedArtists[indexPath.row];
-    UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadArtistWithID:artist.artistID inFair:self.fair];
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:artist.artistID inFair:self.fair];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
