@@ -194,7 +194,6 @@
     }
 
     [self setNeedsUpdateConstraints];
-    [self updateConstraintsIfNeeded];
 
     return self;
 }
