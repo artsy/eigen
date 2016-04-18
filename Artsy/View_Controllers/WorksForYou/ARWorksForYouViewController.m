@@ -1,6 +1,5 @@
 #import "ARWorksForYouViewController.h"
 #import "Artist.h"
-#import "ARWorksForYouNetworkModel.h"
 #import "ARDispatchManager.h"
 #import "ARWorksForYouNotificationItem.h"
 #import "ARSwitchBoard+Eigen.h"
@@ -25,12 +24,9 @@ static int ARLoadingIndicatorView = 1;
 
 
 @interface ARWorksForYouViewController () <UIScrollViewDelegate>
-
+@property (nonatomic, strong, readwrite) id<ARWorksForYouNetworkModelable> worksForYouNetworkModel;
 @property (nonatomic, strong) ORStackScrollView *view;
 @property (nonatomic, strong) ORStackView *emptyStateView;
-@property (nonatomic, strong, readwrite) id<ARWorksForYouNetworkModelable> worksForYouNetworkModel;
-
-@property (nonatomic, assign) BOOL networkingDidFail;
 
 @end
 
@@ -57,7 +53,6 @@ static int ARLoadingIndicatorView = 1;
 {
     [super viewDidLoad];
     self.worksForYouNetworkModel = self.worksForYouNetworkModel ?: [[ARWorksForYouNetworkModel alloc] init];
-    self.networkingDidFail = NO;
 
     ARSerifLabel *titleLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
     titleLabel.text = @"Works by Artists you follow";
@@ -169,11 +164,7 @@ static int ARLoadingIndicatorView = 1;
         } else if (sself.shouldShowEmptyState) {
             [sself showEmptyState];
         }
-    } failure:^(NSError *error) {
-        if (self.worksForYouNetworkModel.currentPage == 1) {
-            self.networkingDidFail = YES;
-        }
-    }];
+    } failure:nil];
 }
 
 - (void)markNotificationsAsRead

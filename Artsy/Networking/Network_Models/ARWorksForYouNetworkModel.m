@@ -10,6 +10,7 @@
 
 @interface ARWorksForYouNetworkModel ()
 @property (readwrite, nonatomic, assign) BOOL allDownloaded;
+@property (readwrite, nonatomic, assign) BOOL networkingDidFail;
 @property (readwrite, nonatomic, assign) NSInteger currentPage;
 @property (atomic, weak) AFHTTPRequestOperation *currentRequest;
 @property (readwrite, nonatomic, strong) NSMutableArray *downloadedArtworkIDs;
@@ -86,7 +87,10 @@
         NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
         success([notificationItems sortedArrayUsingDescriptors:@[descriptor]]);
 
-    } failure:failure];
+    } failure:^(NSError *error) {
+        self.networkingDidFail = (self.currentPage == 1);
+        if (failure) failure(error);
+    }];
 }
 
 - (void)performWorksForYouRequest:(void (^_Nonnull)(NSArray<Artwork *> *_Nonnull))success failure:(void (^_Nullable)(NSError *_Nullable))failure

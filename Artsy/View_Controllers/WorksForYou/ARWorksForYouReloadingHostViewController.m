@@ -37,7 +37,7 @@
 
 - (void)viewWillAppear:(BOOL)animated;
 {
-    if (self.isContentStale || self.worksForYouViewController.networkingDidFail) {
+    if (self.isContentStale || self.worksForYouViewController.worksForYouNetworkModel.networkingDidFail) {
         [self reloadData];
     }
     [super viewWillAppear:animated];

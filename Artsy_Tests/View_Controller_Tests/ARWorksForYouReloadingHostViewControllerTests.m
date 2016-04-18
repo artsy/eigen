@@ -72,9 +72,9 @@ describe(@"after 1 hour", ^{
 
 describe(@"handling network errors", ^{
     it(@"reloads if networking failed", ^{
-        id viewControllerMock = [OCMockObject partialMockForObject:hostViewController.worksForYouViewController];
-        [[[viewControllerMock stub] andReturnValue:@YES] networkingDidFail];
-        
+        ARStubbedWorksForYouNetworkModel *networkModel = hostViewController.worksForYouViewController.worksForYouNetworkModel;
+        networkModel.networkingDidFail = YES;
+
         id hostViewControllerMock = [OCMockObject partialMockForObject:hostViewController];
         [[hostViewControllerMock expect] reloadData];
         
@@ -85,7 +85,6 @@ describe(@"handling network errors", ^{
     });
     
     it(@"does not reload if networking succeeded", ^{
-        
         id hostViewControllerMock = [OCMockObject partialMockForObject:hostViewController];
         [[hostViewControllerMock reject] reloadData];
         
