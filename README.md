@@ -19,6 +19,11 @@
 
 ### Development
 
+There’s an issue where it's not possible to do iterative development with a
+symlinked npm package in React Native: https://github.com/facebook/react-native/issues/637
+
+To work around that, we sync changed files from the project root to the Example.
+
 1. In one terminal session, run `$ cd Example && npm start`. This will start the
    ‘packager’ for the Example app, which serves the processed JS source to the
    Example app.
