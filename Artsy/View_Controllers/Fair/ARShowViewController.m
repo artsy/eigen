@@ -464,7 +464,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 - (void)addImagePagingViewToStack
 {
     _imagePageViewController = [[ARImagePageViewController alloc] init];
-    self.imagePageViewController.imageContentMode = UIViewContentModeScaleAspectFit;
+    self.imagePageViewController.imageContentMode = UIViewContentModeScaleAspectFill;
     self.imagePageViewController.view.tag = ARFairShowViewHeader;
     [self.view.stackView addSubview:self.imagePageViewController.view withTopMargin:@"0" sideMargin:@"0"];
 
