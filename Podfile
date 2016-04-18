@@ -70,7 +70,7 @@ target 'Artsy' do
   # UIAlertView is deprecated for iOS8 APIs
   pod 'UIAlertView+Blocks'
 
-  # Language Enhancments
+  # Language Enhancements
   pod 'KSDeferred'
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
