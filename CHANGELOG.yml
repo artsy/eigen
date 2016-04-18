@@ -8,8 +8,8 @@ upcoming:
     - Added a check in danger for ARTopMenuViewController+SwiftDeveloperExtras - sarah
     - Generalized the RefineViewController - sarah
     - Updates for Xcode 7.3. - ash
-    - CocoaPods now is v1.0b. - orta
-
+    - CocoaPods now is v1.0b.8 - orta
+    - All UIViewController routing goes through ARTopMenuVC instead of self.navigationController - orta
     - New state reconciliation for live auctions. -ash
     - Scaffolding for sending live auction events. - ash
     - Started the Live Auction Bidding Interface - orta
@@ -24,7 +24,6 @@ upcoming:
     - Adds support for loading Artsy subdomains internally. - ash
     - Live auction lot list. - ash
     - Fixes crash due to missing nullability specifiers on Artwork. - ash
-
 
 releases:
 
