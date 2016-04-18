@@ -20,11 +20,17 @@ class LiveAuctionToolbarView : UIView {
     }
 
     func lotCountString() -> NSAttributedString {
-        return NSAttributedString(string: "\(lotViewModel.lotIndex)/\(auctionViewModel.lotCount)")
+        let lotString = NSMutableAttributedString(string: String(lotViewModel.lotIndex), attributes:
+            [NSForegroundColorAttributeName: UIColor.artsyPurpleRegular()]
+        )
+        let countString = NSMutableAttributedString(string: "/\(auctionViewModel.lotCount)", attributes: [:])
+
+        lotString.appendAttributedString(countString)
+        return lotString
     }
 
-    func attributify(string: String) -> NSAttributedString {
-        return NSAttributedString(string: string)
+    func attributify(string: String, color: UIColor = .blackColor()) -> NSAttributedString {
+        return NSAttributedString(string: string.uppercaseString, attributes: [NSForegroundColorAttributeName: color])
     }
 
     func setupViews() {
@@ -35,26 +41,20 @@ class LiveAuctionToolbarView : UIView {
 
     func setupUsingState(lotState: LotState) {
         let viewStructure: [[String: NSAttributedString]]
-        let clockClosure: (UILabel) -> ()
+        var clockClosure: ((UILabel) -> ())?
         switch lotState {
         case .ClosedLot:
             viewStructure = [
                 ["lot": lotCountString()],
-                ["time": attributify("Closed")],
-                ["bidders": attributify("11")],
-                ["watchers": attributify("09")]
+                ["time": attributify("Closed", color: .auctionRed())],
             ]
-            clockClosure = { label in
-                // do timer
-                label.text = "00:12"
-            }
 
         case .LiveLot:
             viewStructure = [
                 ["lot": lotCountString()],
                 ["time": attributify("00:12")],
-                ["bidders": attributify("11")],
-                ["watchers": attributify("09")]
+                ["watchers": attributify("09")],
+                ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]
             clockClosure = { label in
                 // do timer
@@ -62,15 +62,15 @@ class LiveAuctionToolbarView : UIView {
             }
 
         case let .UpcomingLot(distance):
+            let lots = distance == 1 ? "lot" : "lots"
+            let lotString = "\(distance) \(lots) away"
+
             viewStructure = [
                 ["lot": lotCountString()],
-                ["time": attributify("")],
-                ["watchers": attributify("09")]
+                ["time": attributify(lotString, color: .artsyPurpleRegular())],
+                ["watchers": attributify("09")],
+                ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]
-
-            clockClosure = { label in
-                label.text = "\(distance) lots away"
-            }
         }
 
         let views:[UIView] = viewStructure.map { dict in
@@ -85,8 +85,8 @@ class LiveAuctionToolbarView : UIView {
             label.font = UIFont.sansSerifFontWithSize(12)
             view.addSubview(label)
 
-            if key == "time" {
-                clockClosure(label)
+            if key == "time" && clockClosure != nil {
+                clockClosure?(label)
             } else {
                 label.attributedText = dict.values.first!
             }
