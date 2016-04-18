@@ -121,7 +121,7 @@ extension SaleArtwork: AuctionOrderable {
     }
 
     var artistSortableID: String {
-        return artwork.artist.sortableID
+        return artwork.artist?.sortableID ?? ""
     }
 
     var currentBid: Int {

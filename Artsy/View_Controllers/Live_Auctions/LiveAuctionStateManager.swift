@@ -122,6 +122,12 @@ extension DefaultCreators {
             return Stub_StateFetcher()
         }
     }
+
+    class func stubbedStaticDataFetcherCreator() -> StaticDataFetcherCreator {
+        return { _ in
+            return Stub_StaticDataFetcher()
+        }
+    }
 }
 
 class Stub_StateFetcher: LiveAuctionStateFetcherType {
@@ -134,6 +140,14 @@ class Stub_StateFetcher: LiveAuctionStateFetcherType {
 
         signal.update(json)
 
+        return signal
+    }
+}
+
+class Stub_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
+
+    func fetchStaticData() -> Signal<AnyObject> {
+        let signal = Signal<AnyObject>()
         return signal
     }
 }
