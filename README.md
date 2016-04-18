@@ -5,6 +5,14 @@
 [React Native]: http://facebook.github.io/react-native/
 [Eigen]: https://github.com/artsy/eigen
 
+### Installation
+
+1. Install Node.js and type checking tool: `$ brew install node flow`
+2. Install file watcher used by React Native:
+   * `$ brew install pcre`
+	 * `$ brew link pcre`
+   * `$ brew install watchman --HEAD`
+
 ### Reading
 
 * Testing:
