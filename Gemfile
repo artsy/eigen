@@ -18,10 +18,3 @@ group :test do
   gem 'second_curtain'
   gem 'danger'
 end
-
-group :distribution do
-  gem 'deliver' # hockey
-  gem 'pilot' # itunes connect
-  gem 'gym' # building IPAs
-  gem 'fastlane' # infrastructre
-end
