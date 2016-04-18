@@ -202,7 +202,7 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
         __strong typeof (wself) sself = wself;
         ARPartnerShowFeedItem *showFeedItem = parsed.firstObject;
         if (feed && showFeedItem) { // check feed to retain it
-            UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:showFeedItem.show fair:fair];
+            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadShow:showFeedItem.show fair:fair];
             [sself.delegate fairFavoritesNetworkModel:self shouldPresentViewController:viewController];
         }
     } failure:nil];
@@ -210,19 +210,19 @@ const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
 
 - (void)handleShowButtonPress:(PartnerShow *)show fair:(Fair *)fair
 {
-    UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:show fair:fair];
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadShow:show fair:fair];
     [self.delegate fairFavoritesNetworkModel:self shouldPresentViewController:viewController];
 }
 
 - (void)handleArtworkButtonPress:(Artwork *)artwork fair:(Fair *)fair
 {
-    ARArtworkSetViewController *viewController = [[ARSwitchBoard sharedInstance] loadArtwork:artwork inFair:fair];
+    ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtwork:artwork inFair:fair];
     [self.delegate fairFavoritesNetworkModel:self shouldPresentViewController:viewController];
 }
 
 - (void)handleArtistButtonPress:(Artist *)artist fair:(Fair *)fair
 {
-    id viewController = [[ARSwitchBoard sharedInstance] loadArtistWithID:artist.artistID inFair:fair];
+    id viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:artist.artistID inFair:fair];
     [self.delegate fairFavoritesNetworkModel:viewController shouldPresentViewController:viewController];
 }
 

@@ -51,7 +51,7 @@ PODS:
   - ARTiledImageView (1.2.0):
     - SDWebImage/Core
   - Artsy+UIColors (3.0.1)
-  - Artsy+UIFonts (2.0.0)
+  - Artsy+UIFonts (1.1.0)
   - Artsy+UILabels (2.0.2):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
@@ -164,7 +164,7 @@ DEPENDENCIES:
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`)
   - Artsy+UIColors
-  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-OSSUIFonts.git`)
+  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Artsy+UILabels
   - Artsy-UIButtons
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
@@ -230,7 +230,7 @@ EXTERNAL SOURCES:
   ARTiledImageView:
     :git: https://github.com/dblock/ARTiledImageView
   Artsy+UIFonts:
-    :git: https://github.com/artsy/Artsy-OSSUIFonts.git
+    :git: https://github.com/artsy/Artsy-UIFonts.git
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   FBSnapshotTestCase:
@@ -277,8 +277,8 @@ CHECKOUT OPTIONS:
     :commit: 775bc29beb5953e381b2af64edbdfc310b90e074
     :git: https://github.com/dblock/ARTiledImageView
   Artsy+UIFonts:
-    :commit: e8bd95cae1b68dc9afdd748bbef0da7c2ac269cf
-    :git: https://github.com/artsy/Artsy-OSSUIFonts.git
+    :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
+    :git: https://github.com/artsy/Artsy-UIFonts.git
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
@@ -318,13 +318,13 @@ SPEC CHECKSUMS:
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
-  ARAnalytics: ab25a3d8c6c950f69f25100de470614b6a7d6d9b
+  ARAnalytics: 96e23ba7f54298f4914de9e1ac999db7a15f3fdd
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
-  Artsy+UIFonts: b1c53a1f9998bfce96ef1b544191f846e7ed1b0e
+  Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy+UILabels: 9b8e8b683488e22633625db9627cd79ab64b610f
   Artsy-UIButtons: 26e6d1e0d2174773e9cf7693985d27faddd61743
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4

@@ -92,7 +92,7 @@
 {
     [ArtsyAPI getShowsForArtworkID:self.artwork.artworkID inFairID:self.fair.fairID success:^(NSArray *shows) {
         if (shows.count > 0) {
-            ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.artwork.partner.name selectedPartnerShows:shows];
+            ARFairMapViewController *viewController = [ARSwitchBoard.sharedInstance loadMapInFair:self.fair title:self.artwork.partner.name selectedPartnerShows:shows];
             [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
         }
     } failure:^(NSError *error){
@@ -192,7 +192,7 @@
         NSString *orderID = [JSON valueForKey:@"id"];
         NSString *resumeToken = [JSON valueForKey:@"token"];
         ARErrorLog(@"Created order %@", orderID);
-        UIViewController *controller = [[ARSwitchBoard sharedInstance] loadOrderUIForID:orderID resumeToken:resumeToken];
+        UIViewController *controller = [ARSwitchBoard.sharedInstance loadOrderUIForID:orderID resumeToken:resumeToken];
         [self.navigationController pushViewController:controller animated:YES];
 
     }

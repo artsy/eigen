@@ -163,12 +163,16 @@
 - (void)tapped:(id)sender
 {
     id representedObject = self.annotation.representedObject;
+    UIViewController *controller = nil;
     if ([representedObject isKindOfClass:PartnerShow.class]) {
         PartnerShow *partnerShow = (PartnerShow *)representedObject;
-        ARShowViewController *viewController = [[ARSwitchBoard sharedInstance] loadShow:partnerShow fair:self.fair];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+        controller = [ARSwitchBoard.sharedInstance loadShow:partnerShow fair:self.fair];
     } else if (self.annotation.href) {
-        [[ARSwitchBoard sharedInstance] loadPath:self.annotation.href];
+        controller = [ARSwitchBoard.sharedInstance loadPath:self.annotation.href];
+    }
+
+    if (controller) {
+        [[ARTopMenuViewController sharedController] pushViewController:controller];
     }
 }
 
