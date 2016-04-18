@@ -1,6 +1,5 @@
 #import "ARWorksForYouViewController.h"
 #import "Artist.h"
-#import "ARWorksForYouNetworkModel.h"
 #import "ARDispatchManager.h"
 #import "ARWorksForYouNotificationItem.h"
 #import "ARSwitchBoard+Eigen.h"
@@ -25,10 +24,9 @@ static int ARLoadingIndicatorView = 1;
 
 
 @interface ARWorksForYouViewController () <UIScrollViewDelegate>
-
+@property (nonatomic, strong, readwrite) id<ARWorksForYouNetworkModelable> worksForYouNetworkModel;
 @property (nonatomic, strong) ORStackScrollView *view;
 @property (nonatomic, strong) ORStackView *emptyStateView;
-@property (nonatomic, strong, readwrite) id<ARWorksForYouNetworkModelable> worksForYouNetworkModel;
 
 @end
 
