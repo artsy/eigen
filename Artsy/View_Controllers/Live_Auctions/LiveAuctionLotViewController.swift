@@ -42,7 +42,7 @@ class LiveAuctionLotViewController: UIViewController {
         lotImagePreviewView.setContentCompressionResistancePriority(400, forAxis: .Vertical)
 
         view.addSubview(lotImagePreviewView)
-        lotImagePreviewView.alignTopEdgeWithView(view, predicate: "0")
+        lotImagePreviewView.alignTopEdgeWithView(view, predicate: "20")
         lotImagePreviewView.constrainWidthToView(view, predicate: "-80")
         lotImagePreviewView.alignCenterXWithView(view, predicate: "0")
 
@@ -101,7 +101,7 @@ class LiveAuctionLotViewController: UIViewController {
         bidHistoryViewController.view.constrainHeight("70")
 
         let currentLotView = LiveAuctionCurrentLotView()
-        currentLotView.addTarget(nil, action: #selector(LiveAuctionViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
+        currentLotView.addTarget(nil, action: #selector(LiveAuctionLotsViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
         view.addSubview(currentLotView)
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")

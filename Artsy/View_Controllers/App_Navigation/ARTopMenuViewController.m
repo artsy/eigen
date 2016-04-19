@@ -352,7 +352,9 @@ static const CGFloat ARMenuButtonDimension = 46;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
-    if ([viewController isKindOfClass:UINavigationController.class]) {
+
+    NSArray *modalClasses = @[ UINavigationController.class, UISplitViewController.class ];
+    if ([modalClasses includes:viewController.class]) {
         [self presentViewController:viewController animated:animated completion:nil];
         return;
     }

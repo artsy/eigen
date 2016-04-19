@@ -7,11 +7,11 @@ import UIKit
 @testable
 import Artsy
 
-class LiveAuctionViewControllerTests: QuickSpec {
+class LiveAuctionLotsViewControllerTests: QuickSpec {
     override func spec() {
         it("looks good by default") {
 
-            let subject = LiveAuctionViewController(saleID: "sale-id")
+            let subject = LiveAuctionLotsViewController(saleID: "sale-id")
             let fake = stub_auctionSalesPerson()
             subject.salesPerson = fake
 
