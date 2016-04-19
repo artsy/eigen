@@ -42,7 +42,7 @@ class LiveAuctionLotViewController: UIViewController {
         lotImagePreviewView.setContentCompressionResistancePriority(400, forAxis: .Vertical)
 
         view.addSubview(lotImagePreviewView)
-        lotImagePreviewView.alignTopEdgeWithView(view, predicate: "20")
+        lotImagePreviewView.alignTopEdgeWithView(view, predicate: "0")
         lotImagePreviewView.constrainWidthToView(view, predicate: "-80")
         lotImagePreviewView.alignCenterXWithView(view, predicate: "0")
 
@@ -64,7 +64,7 @@ class LiveAuctionLotViewController: UIViewController {
         /// it's initially turned off, otherwise it uses it's own height constraint
         /// that is only as big as it's `aboveFoldStackWrapper`
 
-        let topMetadataStackConstraint = lotMetadataStack.alignTopEdgeWithView(self.view, predicate: "20")
+        let topMetadataStackConstraint = lotMetadataStack.alignTopEdgeWithView(self.view, predicate: "0")
         topMetadataStackConstraint.active = false
 
         /// Toggles the top constraint, and tells the stack to re-layout
