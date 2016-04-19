@@ -75,7 +75,7 @@ static NSString *CellId = @"OnboardingArtistFollow";
     AROnboardingFollowableTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
     Artist *artist = (Artist *)self.artists[indexPath.row];
     cell.textLabel.text = artist.name;
-    cell.followState = artist.isFollowed;
+    //    cell.followState = artist.isFollowed;
 
     return cell;
 }

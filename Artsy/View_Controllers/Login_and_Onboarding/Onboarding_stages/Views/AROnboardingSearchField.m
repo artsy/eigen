@@ -10,7 +10,6 @@
 @interface AROnboardingSearchField ()
 @property (nonatomic, assign) BOOL swizzledClear;
 @property (nonatomic, strong) UIImageView *searchIcon;
-@property (nonatomic, strong) UITextField *searchField;
 
 @end
 
@@ -23,7 +22,7 @@
     if (self) {
         self.backgroundColor = [UIColor artsyGrayLight];
 
-        self.searchField = [[UITextField alloc] init];
+        _searchField = [[UITextField alloc] init];
         self.searchField.font = [UIFont serifFontWithSize:18];
         self.searchField.textColor = [UIColor blackColor];
         self.searchField.backgroundColor = [UIColor clearColor];
