@@ -19,6 +19,7 @@ upcoming:
     - Basic metaphysics access for live sale static data. - ash
     - Lot metadata can toggle between a short artwork blurb and full metadata - orta
     - All cent values are handled by UInt64 in Live Auction context - orta
+    - Present the Live AuctionVC in a modal - orta
     - Updates to Interstellar v2. - ash
 
   notes:
