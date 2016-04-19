@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.default_subspec = 'ARArtworksMasonryGridComponent'
 
   s.subspec 'Core' do |ss|
-    ss.source_files = 'Pod/Classes/ARComponentViewController.swift'
+    ss.source_files = 'Pod/Classes/AREmissionFontsLoader.m', 'Pod/Classes/ARComponentViewController.swift'
     ss.dependency 'React/Core', '>= 0.24.0-rc5'
     ss.dependency 'Artsy+UIFonts', '>= 1.1.0'
   end
