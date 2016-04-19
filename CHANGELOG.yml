@@ -3,6 +3,7 @@ upcoming:
   details: Onboarding / New Gene VC / Live
 
   dev:
+    - Removed artwork auction results - sarah
     - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
     - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah
     - Artwork view hides Contact button for uninquireable works - sarah 

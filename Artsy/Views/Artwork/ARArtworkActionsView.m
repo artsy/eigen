@@ -274,11 +274,6 @@
     [self.delegate tappedBuyButton];
 }
 
-- (void)tappedAuctionResults:(id)sender
-{
-    [self.delegate tappedAuctionResults];
-}
-
 - (void)tappedMoreInfo:(id)sender
 {
     [self.delegate tappedMoreInfo];
@@ -288,34 +283,21 @@
 {
     NSMutableArray *navigationButtons = [[NSMutableArray alloc] init];
 
-    if ([self showAuctionResultsButton]) {
-        NSDictionary *results = @{
+    if ([self showMoreInfoButton]) {
+        NSDictionary *moreInfo = @{
             ARNavigationButtonClassKey : ARNavigationButton.class,
             ARNavigationButtonPropertiesKey : @{
-                ar_keypath(ARNavigationButton.new, title) : @"Auction Results"
+                ar_keypath(ARNavigationButton.new, title) : @"More Info"
             },
             ARNavigationButtonHandlerKey : ^(UIButton *sender){
                     // This will pass the message up the responder chain
-                    [self.delegate tappedAuctionResults];
+                    [self.delegate tappedMoreInfo];
     }
 };
-[navigationButtons addObject:results];
-}
-if ([self showMoreInfoButton]) {
-    NSDictionary *moreInfo = @{
-        ARNavigationButtonClassKey : ARNavigationButton.class,
-        ARNavigationButtonPropertiesKey : @{
-            ar_keypath(ARNavigationButton.new, title) : @"More Info"
-        },
-        ARNavigationButtonHandlerKey : ^(UIButton *sender){
-                // This will pass the message up the responder chain
-                [self.delegate tappedMoreInfo];
-}
-}
-;
 
 [navigationButtons addObject:moreInfo];
 }
+
 return [navigationButtons copy];
 }
 
@@ -365,11 +347,6 @@ return [navigationButtons copy];
 - (BOOL)showConditionsOfSale
 {
     return (self.saleArtwork != nil) && !self.artwork.sold.boolValue;
-}
-
-- (BOOL)showAuctionResultsButton
-{
-    return self.artwork.shouldShowAuctionResults;
 }
 
 - (BOOL)showMoreInfoButton

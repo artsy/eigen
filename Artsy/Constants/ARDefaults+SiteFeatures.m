@@ -12,7 +12,6 @@
         AROnboardingSkipPersonalizeDefault,
         AROnboardingSkipCollectorLevelDefault,
         AROnboardingSkipPriceRangeDefault,
-        ARShowAuctionResultsButtonDefault
     ];
 
     for (SiteFeature *feature in features) {
