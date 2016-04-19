@@ -2,9 +2,11 @@ PODS:
   - ARCollectionViewMasonryLayout (2.2.0)
   - Artsy+UIFonts (1.1.0)
   - Emission (0.1.0):
-    - Emission/ARArtworksMasonryGridComponent (= 0.1.0)
-    - Emission/ARTabViewComponent (= 0.1.0)
-    - Emission/Core (= 0.1.0)
+    - Emission/All (= 0.1.0)
+  - Emission/All (0.1.0):
+    - Emission/ARArtworksMasonryGridComponent
+    - Emission/ARTabViewComponent
+    - Emission/Core
   - Emission/ARArtworksMasonryGridComponent (0.1.0):
     - ARCollectionViewMasonryLayout (>= 2.2.0)
     - Emission/Core
@@ -81,7 +83,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   ARCollectionViewMasonryLayout: 9e87541c1d59cd9e6f538c19bbed3f52ceeef421
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Emission: 2be92586263dd80dfa4028bbed24a011b9b4d035
+  Emission: 0f877917bc9f6773ca7dcde9db9d58d6195189e6
   FBSnapshotTestCase: a89bbc6ea786ef38c2d4e313b3374177c8597b8f
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
