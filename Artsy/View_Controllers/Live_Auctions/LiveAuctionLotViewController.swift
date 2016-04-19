@@ -37,25 +37,28 @@ class LiveAuctionLotViewController: UIViewController {
         /// Image Preview
         let lotImagePreviewView = UIImageView()
         lotImagePreviewView.contentMode = .ScaleAspectFit
+
+        lotImagePreviewView.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
+        lotImagePreviewView.setContentCompressionResistancePriority(400, forAxis: .Vertical)
+
         view.addSubview(lotImagePreviewView)
         lotImagePreviewView.alignTopEdgeWithView(view, predicate: "20")
         lotImagePreviewView.constrainWidthToView(view, predicate: "-80")
         lotImagePreviewView.alignCenterXWithView(view, predicate: "0")
 
-        let aspect = lotViewModel.imageProfileSize.width / lotViewModel.imageProfileSize.height
-        lotImagePreviewView.constrainAspectRatio(String(format: "%.2f", aspect))
-
-        lotImagePreviewView.setContentCompressionResistancePriority(400, forAxis: .Vertical)
-
         /// The whole stack
         let metadataStack = ORStackView()
 
         /// The metadata that can jump over the artwork image
-
         let lotMetadataStack = AuctionLotMetadataStackScrollView()
         view.addSubview(lotMetadataStack)
         lotMetadataStack.constrainWidthToView(view, predicate: "0")
         lotMetadataStack.alignCenterXWithView(view, predicate: "0")
+
+        /// We attach the bottom of the image preview to the bottom of the lot metadata,
+        /// then later, when we have enough information about it's height the constant is set
+        let imageBottomConstraint = lotMetadataStack.alignBottomEdgeWithView(lotImagePreviewView, predicate: "0")
+
 
         /// This is a constraint that says "stick to the top of the lot view"
         /// it's initially turned off, otherwise it uses it's own height constraint
@@ -84,6 +87,8 @@ class LiveAuctionLotViewController: UIViewController {
         lotMetadataStack.constrainBottomSpaceToView(metadataStack, predicate: "0")
 
         let infoToolbar = LiveAuctionToolbarView()
+        infoToolbar.lotViewModel = lotViewModel
+        infoToolbar.auctionViewModel = auctionViewModel
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
         infoToolbar.constrainHeight("14")
 
@@ -105,6 +110,11 @@ class LiveAuctionLotViewController: UIViewController {
         currentLotSignal.next { [weak currentLotView, weak lotMetadataStack] currentLot in
             currentLotView?.viewModel.update(currentLot)
             lotMetadataStack?.viewModel.update(currentLot)
+
+            // We need to align the bottom of the lot image to the lot metadata
+            lotMetadataStack?.layoutIfNeeded()
+            let height = lotMetadataStack?.frame.height ?? 0
+            imageBottomConstraint.constant = height + 20
         }
 
         auctionViewModel.saleAvailabilitySignal.next { [weak currentLotView] saleAvailability in
@@ -112,9 +122,6 @@ class LiveAuctionLotViewController: UIViewController {
                 currentLotView?.removeFromSuperview()
             }
         }
-
-        infoToolbar.lotViewModel = lotViewModel
-        infoToolbar.auctionViewModel = auctionViewModel
 
         computedLotStateSignal.next { [weak bidButton] lotState in
             // TODO: Hrm, should this go in the LotVM?
