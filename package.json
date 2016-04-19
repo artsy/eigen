@@ -8,8 +8,8 @@
     "lint": "eslint ./lib ./test",
     "test": "env NODE_ENV=test NODE_PATH=./lib mocha --recursive ./test",
     "ci": "npm run-script lint && npm run-script flow && npm test",
-    "sync-schema": "rm -rf ./data && cp -R metaphysics/data .",
-    "sync-module": "sane '/usr/bin/rsync -a --exclude .git --exclude Example --exclude node_modules --exclude metaphysics --exclude Pod ./ Example/node_modules/emission/' . --glob='{package.json,index.js,data/schema.json,lib/**/*.js}'"
+    "sync-schema": "rm -rf ./data && cp -R externals/metaphysics/data .",
+    "sync-module": "sane '/usr/bin/rsync -a --exclude .git --exclude Example --exclude node_modules --exclude externals --exclude Pod ./ Example/node_modules/emission/' . --glob='{package.json,index.js,data/schema.json,lib/**/*.js}'"
   },
   "repository": {
     "type": "git",
