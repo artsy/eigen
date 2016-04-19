@@ -1,7 +1,7 @@
-#import "ARTabViewManager.h"
+#import "ARSwitchViewManager.h"
 #import "ARSwitchView.h"
 
-@implementation ARTabViewManager
+@implementation ARSwitchViewManager
 
 RCT_EXPORT_MODULE();
 

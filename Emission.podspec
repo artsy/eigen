@@ -9,6 +9,14 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '8.0'
   s.requires_arc = true
 
+  s.default_subspec = 'All'
+
+  s.subspec 'All' do |ss|
+    ss.dependency 'Emission/Core'
+    ss.dependency 'Emission/ARTabViewComponent'
+    ss.dependency 'Emission/ARArtworksMasonryGridComponent'
+  end
+
   s.subspec 'Core' do |ss|
     ss.source_files = 'Pod/Classes/AREmissionFontsLoader.m', 'Pod/Classes/ARComponentViewController.swift'
     ss.dependency 'React/Core', '>= 0.24.0-rc5'
@@ -16,7 +24,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'ARTabViewComponent' do |ss|
-    ss.source_files = 'Pod/Classes/ARTabViewComponent.*', 'Pod/Classes/ARSwitchView.*'
+    ss.source_files = 'Pod/Classes/ARSwitchViewManager.*', 'Pod/Classes/ARSwitchView.*'
     ss.dependency 'Emission/Core'
     # These are just to support ARSwitchView as copied from Eigen,
     # this needs to be sorted before trying to use Emission in Eigen.

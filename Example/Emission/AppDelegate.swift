@@ -5,7 +5,6 @@ import React
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
   // TODO How to best share this throughout the app?
   var reactBridge: RCTBridge?
 
