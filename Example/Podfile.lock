@@ -1,5 +1,6 @@
 PODS:
   - ARCollectionViewMasonryLayout (2.2.0)
+  - Artsy+UIFonts (1.1.0)
   - Emission (0.1.0):
     - Emission/ARArtworksMasonryGridComponent (= 0.1.0)
   - Emission/ARArtworksMasonryGridComponent (0.1.0):
@@ -7,7 +8,8 @@ PODS:
     - Emission/Core
     - SDWebImage (>= 3.7.2)
   - Emission/Core (0.1.0):
-    - React/Core (>= 0.21.0)
+    - Artsy+UIFonts (>= 1.1.0)
+    - React/Core (>= 0.24.0-rc5)
   - FBSnapshotTestCase (2.0.7):
     - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
   - FBSnapshotTestCase/Core (2.0.7)
@@ -31,6 +33,7 @@ PODS:
   - SDWebImage/Core (3.7.5)
 
 DEPENDENCIES:
+  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
   - FBSnapshotTestCase (from `https://github.com/neonichu/ios-snapshot-test-case.git`)
   - Nimble (= 3.0.0)
@@ -42,6 +45,8 @@ DEPENDENCIES:
   - React/RCTWebSocket (from `./node_modules/react-native`)
 
 EXTERNAL SOURCES:
+  Artsy+UIFonts:
+    :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
     :path: ../
   FBSnapshotTestCase:
@@ -50,13 +55,17 @@ EXTERNAL SOURCES:
     :path: ./node_modules/react-native
 
 CHECKOUT OPTIONS:
+  Artsy+UIFonts:
+    :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
+    :git: https://github.com/artsy/Artsy-UIFonts.git
   FBSnapshotTestCase:
     :commit: 9e88da88a7a3df2f80838449a5f1e71830179218
     :git: https://github.com/neonichu/ios-snapshot-test-case.git
 
 SPEC CHECKSUMS:
   ARCollectionViewMasonryLayout: 9e87541c1d59cd9e6f538c19bbed3f52ceeef421
-  Emission: aa605837dafb03a46bd5a3bda543f53079a07cf2
+  Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
+  Emission: 4de6b4d3b88640da716346b4fd866321db0aa2cf
   FBSnapshotTestCase: a89bbc6ea786ef38c2d4e313b3374177c8597b8f
   Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
   Nimble-Snapshots: ab41dd737dcd33a0b0cb005a30465fef70b7207a
@@ -64,6 +73,6 @@ SPEC CHECKSUMS:
   React: 9df7c9ebbc8256031adcc82ed9fede2730f98874
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
 
-PODFILE CHECKSUM: 569c853c5a9bbee03f6075f0e84f74af9d927511
+PODFILE CHECKSUM: 7a4f45e40c8eb672463d3e6367cb594278edf017
 
-COCOAPODS: 1.0.0.beta.4
+COCOAPODS: 1.0.0.beta.8

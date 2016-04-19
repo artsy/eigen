@@ -6,14 +6,19 @@ use_frameworks!
 target 'Emission_Example' do
   pod 'Emission', :path => '../'
   pod 'React', :path => './node_modules/react-native', :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork )
-end
 
-target 'Emission_Tests' do
-  pod 'Emission', :path => '../'
-  pod 'React', :path => './node_modules/react-native', :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork )
+  if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
+    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
+  else
+    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git"
+  end
 
-  pod 'Quick', '~> 0.8.0'
-  pod 'Nimble', '3.0.0'
-  pod 'FBSnapshotTestCase', :git => 'https://github.com/neonichu/ios-snapshot-test-case.git'
-  pod 'Nimble-Snapshots'
+  target 'Emission_Tests' do
+    inherit! :search_paths
+
+    pod 'Quick', '~> 0.8.0'
+    pod 'Nimble', '3.0.0'
+    pod 'FBSnapshotTestCase', :git => 'https://github.com/neonichu/ios-snapshot-test-case.git'
+    pod 'Nimble-Snapshots'
+  end
 end
