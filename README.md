@@ -10,7 +10,7 @@
 1. Install Node.js and type checking tool: `$ brew install node flow`
 2. Install file watcher used by React Native:
    * `$ brew install pcre`
-	 * `$ brew link pcre`
+   * `$ brew link pcre`
    * `$ brew install watchman --HEAD`
 
 ### Reading
