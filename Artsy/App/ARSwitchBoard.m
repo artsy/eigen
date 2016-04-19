@@ -24,7 +24,6 @@
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairGuideContainerViewController.h"
 #import "ARArtistViewController.h"
-#import "ARAuctionArtworkResultsViewController.h"
 #import "ARAuctionWebViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARFairMapViewController.h"

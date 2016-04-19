@@ -11,7 +11,6 @@
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairGuideContainerViewController.h"
 #import "ARArtistViewController.h"
-#import "ARAuctionArtworkResultsViewController.h"
 #import "ARAuctionWebViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARFairMapViewController.h"
@@ -69,11 +68,6 @@
     NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
     NSURL *URL = [self resolveRelativeUrl:path];
     return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
-}
-
-- (ARAuctionArtworkResultsViewController *)loadAuctionResultsForArtwork:(Artwork *)artwork
-{
-    return [[ARAuctionArtworkResultsViewController alloc] initWithArtwork:artwork];
 }
 
 - (ARArtworkInfoViewController *)loadMoreInfoForArtwork:(Artwork *)artwork

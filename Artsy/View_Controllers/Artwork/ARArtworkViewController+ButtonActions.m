@@ -9,7 +9,6 @@
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"
 #import "ARArtworkInfoViewController.h"
-#import "ARAuctionArtworkResultsViewController.h"
 #import "ARViewInRoomViewController.h"
 #import "ARSharingController.h"
 #import "ARArtworkPreviewImageView.h"
@@ -201,12 +200,6 @@
         ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
         [sself tappedContactGallery];
         }];
-}
-
-- (void)tappedAuctionResults
-{
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadAuctionResultsForArtwork:self.artwork];
-    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)tappedMoreInfo
