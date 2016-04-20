@@ -10,7 +10,7 @@
 
 @interface ARSwitchView : UIView
 
-- (instancetype)initWithButtonTitles:(NSArray *)buttonTitlesArray;
+- (instancetype)initWithButtonTitles:(NSArray *)titles NS_DESIGNATED_INITIALIZER;
 - (void)setTitle:(NSString *)title forButtonAtIndex:(NSInteger)index;
 
 @property (nonatomic, weak, readwrite) id<ARSwitchViewDelegate> delegate;
