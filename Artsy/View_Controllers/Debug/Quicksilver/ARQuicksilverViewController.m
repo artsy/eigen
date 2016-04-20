@@ -11,6 +11,7 @@
 #import "Profile.h"
 #import "SiteFeature.h"
 #import "ARSwitchBoard+Eigen.h"
+#import "ARTopMenuViewController.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -110,14 +111,6 @@
 
 - (void)searchBarReturnPressed:(ARQuicksilverSearchBar *)searchBar;
 {
-    if ([searchBar.text hasPrefix:@"/"]) {
-        [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
-        [self addObjectToRecents:searchBar.text];
-        id controller = [ARSwitchBoard.sharedInstance loadPath:searchBar.text];
-        [self.navigationController pushViewController:controller animated:YES];
-        return;
-    }
-
     NSIndexPath *path = [NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
     [cell setBackgroundColor:[UIColor grayColor]];
@@ -235,7 +228,12 @@
     UIViewController *controller = nil;
 
     if ([result isKindOfClass:NSString.class]) {
-        controller = [ARSwitchBoard.sharedInstance loadPath:(id)result];
+        NSString *text = (NSString *)result;
+        if ([text hasPrefix:@"/"]) {
+            controller = [ARSwitchBoard.sharedInstance loadPath:text];
+        } else {
+            controller = [ARSwitchBoard.sharedInstance loadURL:[NSURL URLWithString:text]];
+        }
 
     } else if (result.model == [Artwork class]) {
         controller = [[ARArtworkSetViewController alloc] initWithArtworkID:result.modelID];
@@ -254,7 +252,7 @@
         controller = [ARSwitchBoard.sharedInstance loadPath:path];
     }
 
-    [self.navigationController pushViewController:controller animated:YES];
+    [ARTopMenuViewController.sharedController pushViewController:controller animated:YES];
 }
 
 - (NSArray *)contentArray
