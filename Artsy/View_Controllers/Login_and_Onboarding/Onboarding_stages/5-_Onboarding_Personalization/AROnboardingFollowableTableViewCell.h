@@ -9,5 +9,4 @@
 @property (nonatomic, strong, readonly) UIImageView *thumbnail;
 @property (nonatomic, strong, readonly) ARSansSerifLabel *title;
 @property (nonatomic, strong, readonly) UIImageView *follow;
-
 @end

@@ -107,6 +107,9 @@
 {
     AROnboardingFollowableTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.follow.image = [UIImage imageNamed:@"followButtonChecked"];
+
+    Artist *artist = self.searchResults[indexPath.row];
+    [self.networkDelegate artistClicked:artist];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

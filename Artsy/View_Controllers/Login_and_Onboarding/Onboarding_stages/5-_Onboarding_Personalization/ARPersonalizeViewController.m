@@ -22,24 +22,16 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
-@interface ARPersonalizeViewController () <UITextFieldDelegate>
+@interface ARPersonalizeViewController () <UITextFieldDelegate, PersonalizeNetworkDelegate>
 
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 
 @property (nonatomic) NSArray *genesToFollow;
-//@property (nonatomic) NSArray *searchResults;
-
 @property (nonatomic, strong) AROnboardingPersonalizeTableViewController *searchResultsTable;
-
 
 @property (nonatomic) UIView *searchView;
 @property (nonatomic) AROnboardingHeaderView *headerView;
-@property (nonatomic) UILabel *followedArtistsLabel;
-@property (nonatomic) UIButton *cancelButton;
-@property (nonatomic, assign) NSInteger followedThisSession;
 @property (nonatomic) AROnboardingNavigationItemsView *onboardingNavigationItems;
-
-@property (nonatomic) ARWhiteFlatButton *continueButton;
 
 @property (nonatomic) AFHTTPRequestOperation *searchRequestOperation;
 @end
@@ -137,6 +129,7 @@
     }
 
     self.searchResultsTable = [[AROnboardingPersonalizeTableViewController alloc] init];
+    self.searchResultsTable.networkDelegate = self;
     [self.view addSubview:self.searchResultsTable.view];
 
     [self.searchResultsTable.view alignLeading:@"0" trailing:@"0" toView:self.view];
@@ -170,21 +163,34 @@
     [self.delegate backTapped];
 }
 
-- (NSArray *)getRelatedArtistsForArtist:(Artist *)artist
+- (void)artistClicked:(Artist *)artist
 {
-    __block NSArray *results;
+    if (self.searchRequestOperation) {
+        [self.searchRequestOperation cancel];
+    }
 
-    [ArtsyAPI getRelatedArtistsForArtist:artist success:^(NSArray *artists) {
-        results = artists;
+    self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist success:^(NSArray *artists) {
+        switch (self.searchResultsTable.contentDisplayMode) {
+            case ARTableViewContentDisplayModeSearchResults:
+                [self.searchResultsTable updateTableContentsFor:artists
+                                                replaceContents:ARSearchResultsReplaceAll
+                                                       animated:YES];
+                self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
+                break;
+            case ARTableViewContentDisplayModeRelatedResults:
+                [self.searchResultsTable updateTableContentsFor:artists
+                                                replaceContents:ARSearchResultsReplaceSingle
+                                                       animated:YES];
+                break;
+            default:
+                break;
+        }
     } failure:^(NSError *error) {
         if (error.code != NSURLErrorCancelled) {
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             ARErrorLog(@"Personalize search related network error %@", error.localizedDescription);
         }
-        results = @[];
     }];
-
-    return results;
 }
 
 #pragma mark -
@@ -194,6 +200,7 @@
 - (void)searchTextChanged:(NSNotification *)notification
 {
     BOOL searchBarIsEmpty = [self.headerView.searchField.searchField.text isEqualToString:@""];
+    self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeSearchResults;
 
     if (self.searchRequestOperation) {
         [self.searchRequestOperation cancel];
