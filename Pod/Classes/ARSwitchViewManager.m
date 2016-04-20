@@ -5,9 +5,11 @@
 
 RCT_EXPORT_MODULE();
 
+RCT_EXPORT_VIEW_PROPERTY(titles, NSArray);
+
 - (UIView *)view
 {
-  return [[ARSwitchView alloc] initWithButtonTitles:@[@"Foo", @"Bar", @"Baz"]];
+  return [ARSwitchView new];
 }
 
 @end
