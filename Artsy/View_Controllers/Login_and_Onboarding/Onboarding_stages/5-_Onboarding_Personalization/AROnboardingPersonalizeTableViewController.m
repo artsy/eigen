@@ -9,7 +9,7 @@
 
 
 @interface AROnboardingPersonalizeTableViewController ()
-
+@property (nonatomic) NSMutableArray *searchResults;
 @end
 
 
@@ -32,6 +32,35 @@
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+}
+
+
+- (void)updateTableContentsFor:(NSArray *)searchResults
+               replaceContents:(ARSearchResultsReplaceContents)replaceStyle
+                      animated:(BOOL)animated
+{
+    UITableViewRowAnimation animationStyle;
+
+    switch (replaceStyle) {
+        case ARSearchResultsReplaceSingle:
+            [self.searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
+            animationStyle = UITableViewRowAnimationFade;
+            break;
+
+        case ARSearchResultsReplaceAll:
+            self.searchResults = searchResults.mutableCopy;
+            if (animated) {
+                animationStyle = UITableViewRowAnimationTop;
+            } else {
+                animationStyle = UITableViewRowAnimationNone;
+            }
+            break;
+
+        default:
+            animationStyle = UITableViewRowAnimationNone;
+            break;
+    }
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:animationStyle];
 }
 
 
@@ -63,18 +92,21 @@
     return headerView;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AROnboardingFollowableTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OnboardingSearchCell"];
 
     Artist *artist = self.searchResults[indexPath.row];
     cell.title.text = artist.name;
-
-    //    cell.title.text = @"Glorious Artist";
     cell.follow.image = [UIImage imageNamed:@"followButton"];
     cell.thumbnail.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:artist.squareImageURL]];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AROnboardingFollowableTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.follow.image = [UIImage imageNamed:@"followButtonChecked"];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

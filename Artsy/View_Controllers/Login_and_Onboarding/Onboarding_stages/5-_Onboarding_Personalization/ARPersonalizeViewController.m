@@ -2,6 +2,7 @@
 
 #import "Artist.h"
 #import "ArtsyAPI+Search.h"
+#import "ArtsyAPI+RelatedModels.h"
 #import "ARFonts.h"
 #import "AROnboardingGeneTableController.h"
 #import "AROnboardingArtistTableController.h"
@@ -169,66 +170,22 @@
     [self.delegate backTapped];
 }
 
-//- (void)searchToggleFollowStatusForArtist:(Artist *)artist atIndexPath:indexPath
-//{
-//    self.searchResultsTable.searchResults = @[];
-//    self.headerView.searchField.searchField.text = @"";
-//
-//    AROnboardingFollowableTableViewCell *cell = (AROnboardingFollowableTableViewCell *)[self.searchTableView cellForRowAtIndexPath:indexPath];
-//    //    cell.followState = !cell.followState;
-//
-//    // We need to do this vs. checking if followed because
-//    // the artist instance that was followed is a different object
-//    // to this one
-//
-//    if ([self.artistController hasArtist:artist]) {
-//        self.followedThisSession--;
-//        artist.followed = NO;
-//        [self.artistController removeArtist:artist];
-//
-//        [artist unfollowWithSuccess:nil failure:^(NSError *error) {
-//            [self.artistController addArtist:artist];
-//            [self updateFollowString];
-//        }];
-//    } else {
-//        self.followedThisSession++;
-//        [self.artistController addArtist:artist];
-//
-//        [artist followWithSuccess:nil failure:^(NSError *error) {
-//            [self.artistController removeArtist:artist];
-//            [self updateFollowString];
-//        }];
-//    }
-//
-//    [self updateFollowString];
-//
-//    if (self.followedThisSession <= 0) {
-//        [self.cancelButton setTitle:@"CANCEL" forState:UIControlStateNormal];
-//
-//    } else if (self.followedThisSession == 1) { //if it went from zero to positive, it's 1
-//        [self.cancelButton setTitle:@"DONE" forState:UIControlStateNormal];
-//    }
-//
-//    NSArray *otherCells = [[self.searchTableView visibleCells] reject:^BOOL(UITableViewCell *aCell) {
-//        return cell == aCell;
-//    }];
-//
-//    [UIView animateWithDuration:.2 animations:^{
-//        for (UIView *view in otherCells) {
-//            view.alpha = 0;
-//        }
-//    }];
-//
-//    [UIView animateWithDuration:.2 delay:.2 options:0 animations:^{
-//        self.searchTableView.alpha = 0;
-//        self.followedArtistsLabel.alpha = 1;
-//
-//    } completion:^(BOOL finished) {
-//        self.searchResultsTable.searchResults = @[];
-//        [self.searchTableView reloadData];
-//    }];
-//}
+- (NSArray *)getRelatedArtistsForArtist:(Artist *)artist
+{
+    __block NSArray *results;
 
+    [ArtsyAPI getRelatedArtistsForArtist:artist success:^(NSArray *artists) {
+        results = artists;
+    } failure:^(NSError *error) {
+        if (error.code != NSURLErrorCancelled) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            ARErrorLog(@"Personalize search related network error %@", error.localizedDescription);
+        }
+        results = @[];
+    }];
+
+    return results;
+}
 
 #pragma mark -
 #pragma mark Search bar
@@ -243,13 +200,10 @@
     }
 
     if (searchBarIsEmpty) {
-        self.searchResultsTable.searchResults = @[];
-        [self.searchResultsTable.tableView reloadData];
+        [self.searchResultsTable updateTableContentsFor:@[] replaceContents:ARSearchResultsReplaceAll animated:NO];
     }
     self.searchRequestOperation = [ArtsyAPI artistSearchWithQuery:self.headerView.searchField.searchField.text success:^(NSArray *results) {
-                self.searchResultsTable.searchResults = results;
-                [self.searchResultsTable.tableView reloadData];
-
+        [self.searchResultsTable updateTableContentsFor:results replaceContents:ARSearchResultsReplaceAll animated:NO];
     } failure:^(NSError *error) {
             if (error.code != NSURLErrorCancelled) {
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];

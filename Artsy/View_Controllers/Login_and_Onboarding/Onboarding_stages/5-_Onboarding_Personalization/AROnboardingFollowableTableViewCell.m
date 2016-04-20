@@ -44,6 +44,8 @@
         [self.follow alignCenterYWithView:self predicate:@"0"];
 
         self.follow.contentMode = UIViewContentModeCenter;
+
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
     return self;
