@@ -7,22 +7,18 @@ import ORStackView
 import Interstellar
 import UICKeyChainStore
 
-class LiveAuctionLotsViewController: UIViewController {
+class LiveAuctionLotSetViewController: UIViewController {
     let saleID: String
+    let salesPerson: LiveAuctionsSalesPersonType
 
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
-
-    lazy var salesPerson: LiveAuctionsSalesPersonType = {
-        // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
-        let accessToken = UICKeyChainStore.stringForKey(AROAuthTokenDefault) ?? ""
-        return LiveAuctionsSalesPerson(saleID: self.saleID, accessToken: accessToken, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
-    }()
 
     var pageController: UIPageViewController!
     var hasBeenSetup = false
 
-    init(saleID: String) {
+    init(saleID: String, salesPerson: LiveAuctionsSalesPersonType) {
         self.saleID = saleID
+        self.salesPerson = salesPerson
         super.init(nibName: nil, bundle: nil)
         self.title = saleID;
     }
@@ -45,11 +41,12 @@ class LiveAuctionLotsViewController: UIViewController {
         let pageControllerView = pageController.view
         pageControllerView.alignToView(view)
 
-
+        // This is a bit of a shame, we need to also make 
+        // sure the scrollview resizes on orientation changes
+        
         if let scrollView = pageController.view.subviews.filter({ $0.isKindOfClass(UIScrollView.self) }).first as? UIScrollView {
             scrollView.alignToView(pageControllerView)
         }
-
 
         let progress = SimpleProgressView()
         progress.progress = 0.6
@@ -68,33 +65,37 @@ class LiveAuctionLotsViewController: UIViewController {
     func setupToolbar() {
         let close = ARSerifToolbarButtonItem(image: UIImage(asset: .Close_icon) )
         close.accessibilityLabel = "Exit Live Bidding"
-        close.button.addTarget(self, action: #selector(LiveAuctionLotsViewController.dismissModal), forControlEvents: .TouchUpInside)
+        close.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.dismissModal), forControlEvents: .TouchUpInside)
 
         let info = ARSerifToolbarButtonItem(image: UIImage(asset: .Info_icon) )
         info.accessibilityLabel = "More Information"
-        info.button.addTarget(self, action: #selector(LiveAuctionLotsViewController.moreInfo), forControlEvents: .TouchUpInside)
+        info.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.moreInfo), forControlEvents: .TouchUpInside)
+
         let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))
         lots.accessibilityLabel = "Show all Lots"
-        lots.button.addTarget(self, action: #selector(LiveAuctionLotsViewController.showLots), forControlEvents: .TouchUpInside)
+        lots.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.showLots), forControlEvents: .TouchUpInside)
 
-        navigationItem.rightBarButtonItems = [close, lots, info]
+        let phone = traitCollection.userInterfaceIdiom == .Phone
+        let items:[UIBarButtonItem] = phone ? [close, lots, info] : [close, info]
+
+        navigationItem.rightBarButtonItems = items
     }
 
     func setupKeyboardShortcuts() {
         if ARAppStatus.isOSNineOrGreater() {
             if #available(iOS 9.0, *) {
 
-                let previous = UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: #selector(LiveAuctionLotsViewController.previousLot), discoverabilityTitle: "Previous Lot")
+                let previous = UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: #selector(LiveAuctionLotSetViewController.previousLot), discoverabilityTitle: "Previous Lot")
                 addKeyCommand(previous)
 
-                let next = UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: #selector(LiveAuctionLotsViewController.nextLot), discoverabilityTitle: "Next Lot")
+                let next = UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: #selector(LiveAuctionLotSetViewController.nextLot), discoverabilityTitle: "Next Lot")
                 addKeyCommand(next)
             }
         }
     }
 
     func dismissModal() {
-        guard let presentor = navigationController?.presentingViewController else { return }
+        guard let presentor = splitViewController?.presentingViewController else { return }
         presentor.dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -109,12 +110,8 @@ class LiveAuctionLotsViewController: UIViewController {
     }
 
     func showLots() {
-        guard let auctionViewModel = salesPerson.auctionViewModel else { return }
-
-        let lotViewController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: auctionViewModel)
-        lotViewController.delegate = self
-        let navigationController = ARSerifNavigationViewController(rootViewController: lotViewController)
-        presentViewController(navigationController, animated: true, completion: nil)
+        guard let auctionVC = splitViewController as? LiveAuctionViewController else { return }
+        auctionVC.showViewController(auctionVC.lotListController, sender: self)
     }
 
     func setupWithInitialData() {
@@ -159,16 +156,9 @@ class LiveAuctionLotsViewController: UIViewController {
         guard let previousLotVC = auctionDataSource.pageViewController(pageController, viewControllerBeforeViewController: current) else { return }
         pageController.setViewControllers([previousLotVC], direction: .Reverse, animated: true, completion: nil)
     }
-
-
-    // Support for ARMenuAwareViewController
-
-    let hidesBackButton = true
-    let hidesSearchButton = true
-    let hidesStatusBarBackground = true
 }
 
-private typealias LotListDelegate = LiveAuctionLotsViewController
+private typealias LotListDelegate = LiveAuctionLotSetViewController
 extension LotListDelegate: LiveAuctionLotListViewControllerDelegate {
     func didSelectLotAtIndex(index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController) {
         jumpToLotAtIndex(index, animated: false)

@@ -31,7 +31,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             // The indices are known to be the closed/live/upcoming states respectively
             it("looks good for closed lots") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
-                expect(subject) == snapshot()
+                expect(subject).to( haveValidSnapshot(named: nil, usesDrawRect: true))
             }
 
             it("looks good for live lots") {

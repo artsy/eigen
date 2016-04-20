@@ -37,14 +37,14 @@ class LiveAuctionLotViewController: UIViewController {
         /// Image Preview
         let lotImagePreviewView = UIImageView()
         lotImagePreviewView.contentMode = .ScaleAspectFit
-
-        lotImagePreviewView.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
-        lotImagePreviewView.setContentCompressionResistancePriority(400, forAxis: .Vertical)
+        lotImagePreviewView.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
 
         view.addSubview(lotImagePreviewView)
-        lotImagePreviewView.alignTopEdgeWithView(view, predicate: "20")
+        lotImagePreviewView.alignTopEdgeWithView(view, predicate: "0")
         lotImagePreviewView.constrainWidthToView(view, predicate: "-80")
         lotImagePreviewView.alignCenterXWithView(view, predicate: "0")
+
+        lotImagePreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
 
         /// The whole stack
         let metadataStack = ORStackView()
@@ -101,7 +101,7 @@ class LiveAuctionLotViewController: UIViewController {
         bidHistoryViewController.view.constrainHeight("70")
 
         let currentLotView = LiveAuctionCurrentLotView()
-        currentLotView.addTarget(nil, action: #selector(LiveAuctionLotsViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
+        currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
         view.addSubview(currentLotView)
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
@@ -132,7 +132,6 @@ class LiveAuctionLotViewController: UIViewController {
             }
             bidButton?.progressSignal.update(buttonState)
         }
-        lotImagePreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
 
         computedLotStateSignal.next { lotState in
             switch lotState {
@@ -150,6 +149,8 @@ class LiveAuctionLotViewController: UIViewController {
                 bidHistoryViewController.view.hidden = true
             }
         }
+
+        currentLotSignal.update(lotViewModel)
     }
 }
 

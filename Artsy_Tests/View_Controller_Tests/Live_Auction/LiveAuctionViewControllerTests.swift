@@ -7,13 +7,11 @@ import UIKit
 @testable
 import Artsy
 
-class LiveAuctionLotsViewControllerTests: QuickSpec {
+class LiveAuctionLotSetViewControllerTests: QuickSpec {
     override func spec() {
         it("looks good by default") {
-
-            let subject = LiveAuctionLotsViewController(saleID: "sale-id")
-            let fake = stub_auctionSalesPerson()
-            subject.salesPerson = fake
+            let fakeSalesPerson = stub_auctionSalesPerson()
+            let subject = LiveAuctionLotSetViewController(saleID: "sale-id", salesPerson: fakeSalesPerson)
 
             expect(subject).to( haveValidSnapshot() )
         }

@@ -6,7 +6,7 @@ import AVFoundation
 /// and to deal with transforms/ opacity
 
 /// Note: currently un-used, 
-/// it used to go in ViewDidLoad for LiveAuctionLotsViewController
+/// it used to go in ViewDidLoad for LiveAuctionLotSetViewController
 
 /**
     // This sits _behind_ the PageViewController, which is transparent and shows it through
