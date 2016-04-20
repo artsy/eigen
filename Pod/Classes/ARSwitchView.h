@@ -16,6 +16,9 @@
 @property (nonatomic, weak, readwrite) id<ARSwitchViewDelegate> delegate;
 @property (nonatomic, strong, readonly) NSArray *buttons;
 
+// Assigning to this replaces all existing buttons with new ones.
+@property (nonatomic, strong, readwrite) NSArray<NSString *> *titles;
+
 /// Use highlighting instead of disabling the button
 @property (nonatomic, assign, readwrite) BOOL preferHighlighting;
 
