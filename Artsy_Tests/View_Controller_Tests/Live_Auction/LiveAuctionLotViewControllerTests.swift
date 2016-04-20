@@ -3,6 +3,8 @@ import Nimble
 import Nimble_Snapshots
 import Interstellar
 import UIKit
+import SDWebImage
+
 
 @testable
 import Artsy
@@ -20,6 +22,8 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
                 auctionViewModel = Test_LiveAuctionViewModel()
                 lotViewModel = Test_LiveAuctionLotViewModel()
+                cacheColoredImageForURL(lotViewModel.urlForProfile)
+
                 subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Signal())
                 subject.currentLotSignal.update(lotViewModel)
             }
@@ -31,7 +35,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             // The indices are known to be the closed/live/upcoming states respectively
             it("looks good for closed lots") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
-                expect(subject).to( haveValidSnapshot(named: nil, usesDrawRect: true))
+                expect(subject) == snapshot()
             }
 
             it("looks good for live lots") {
@@ -52,6 +56,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
         }
     }
+
 }
 
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
