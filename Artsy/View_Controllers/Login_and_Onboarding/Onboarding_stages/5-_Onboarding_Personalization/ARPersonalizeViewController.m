@@ -21,25 +21,16 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
-static NSString *SearchCellId = @"OnboardingSearchCell";
-
-
-@interface ARPersonalizeViewController () <UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface ARPersonalizeViewController () <UITextFieldDelegate>
 
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 
 @property (nonatomic) NSArray *genesToFollow;
-@property (nonatomic) NSArray *searchResults;
+//@property (nonatomic) NSArray *searchResults;
 
-@property (nonatomic) AROnboardingGeneTableController *geneController;
-@property (nonatomic) AROnboardingArtistTableController *artistController;
 @property (nonatomic, strong) AROnboardingPersonalizeTableViewController *searchResultsTable;
 
 
-@property (nonatomic) UIScrollView *scrollView;
-
-//Search table view is controlled by this VC because it interacts more with the search bar
-@property (nonatomic) UITableView *artistTableView, *geneTableView, *searchTableView;
 @property (nonatomic) UIView *searchView;
 @property (nonatomic) AROnboardingHeaderView *headerView;
 @property (nonatomic) UILabel *followedArtistsLabel;
@@ -60,7 +51,7 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     self = [super init];
     if (self) {
         _state = stage;
-        _searchResults = [NSMutableArray array];
+        //        _searchResults = [NSMutableArray array];
         if (!genes || genes.count == 0) {
             NSArray *fallbackGenes = @[ @"Photography", @"Bauhaus", @"Dada", @"Glitch Aesthetic", @"Early Computer Art", @"Op Art", @"Minimalism" ];
             ARActionLog(@"Using fallback genes in 'Personalize'");
@@ -87,7 +78,17 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTextChanged:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
 }
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+}
+
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
@@ -168,192 +169,93 @@ static NSString *SearchCellId = @"OnboardingSearchCell";
     [self.delegate backTapped];
 }
 
-- (void)searchToggleFollowStatusForArtist:(Artist *)artist atIndexPath:indexPath
-{
-    self.searchResults = @[];
-    self.headerView.searchField.searchField.text = @"";
-
-    AROnboardingFollowableTableViewCell *cell = (AROnboardingFollowableTableViewCell *)[self.searchTableView cellForRowAtIndexPath:indexPath];
-    //    cell.followState = !cell.followState;
-
-    // We need to do this vs. checking if followed because
-    // the artist instance that was followed is a different object
-    // to this one
-
-    if ([self.artistController hasArtist:artist]) {
-        self.followedThisSession--;
-        artist.followed = NO;
-        [self.artistController removeArtist:artist];
-
-        [artist unfollowWithSuccess:nil failure:^(NSError *error) {
-            [self.artistController addArtist:artist];
-            [self updateFollowString];
-        }];
-    } else {
-        self.followedThisSession++;
-        [self.artistController addArtist:artist];
-
-        [artist followWithSuccess:nil failure:^(NSError *error) {
-            [self.artistController removeArtist:artist];
-            [self updateFollowString];
-        }];
-    }
-
-    [self updateFollowString];
-
-    if (self.followedThisSession <= 0) {
-        [self.cancelButton setTitle:@"CANCEL" forState:UIControlStateNormal];
-
-    } else if (self.followedThisSession == 1) { //if it went from zero to positive, it's 1
-        [self.cancelButton setTitle:@"DONE" forState:UIControlStateNormal];
-    }
-
-    NSArray *otherCells = [[self.searchTableView visibleCells] reject:^BOOL(UITableViewCell *aCell) {
-        return cell == aCell;
-    }];
-
-    [UIView animateWithDuration:.2 animations:^{
-        for (UIView *view in otherCells) {
-            view.alpha = 0;
-        }
-    }];
-
-    [UIView animateWithDuration:.2 delay:.2 options:0 animations:^{
-        self.searchTableView.alpha = 0;
-        self.followedArtistsLabel.alpha = 1;
-
-    } completion:^(BOOL finished) {
-        self.searchResults = @[];
-        [self.searchTableView reloadData];
-    }];
-}
-
-- (void)updateFollowString
-{
-    NSArray *names = [[self.artistController.artists array] map:^id(Artist *artist) {
-        return artist.name;
-    }];
-
-    if (names.count == 0) {
-        self.followedArtistsLabel.attributedText = [[NSAttributedString alloc] initWithString:@""];
-        return;
-    }
-
-    NSString *text = [@"Following " stringByAppendingString:[names componentsJoinedByString:@", "]];
-    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:text];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:3];
-
-    [attr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [text length])];
-    self.followedArtistsLabel.attributedText = attr;
-    CGSize suggested = [self.followedArtistsLabel sizeThatFits:self.searchView.bounds.size];
-    CGRect frame = self.followedArtistsLabel.frame;
-    frame.size.height = suggested.height;
-    self.followedArtistsLabel.frame = frame;
-}
+//- (void)searchToggleFollowStatusForArtist:(Artist *)artist atIndexPath:indexPath
+//{
+//    self.searchResultsTable.searchResults = @[];
+//    self.headerView.searchField.searchField.text = @"";
+//
+//    AROnboardingFollowableTableViewCell *cell = (AROnboardingFollowableTableViewCell *)[self.searchTableView cellForRowAtIndexPath:indexPath];
+//    //    cell.followState = !cell.followState;
+//
+//    // We need to do this vs. checking if followed because
+//    // the artist instance that was followed is a different object
+//    // to this one
+//
+//    if ([self.artistController hasArtist:artist]) {
+//        self.followedThisSession--;
+//        artist.followed = NO;
+//        [self.artistController removeArtist:artist];
+//
+//        [artist unfollowWithSuccess:nil failure:^(NSError *error) {
+//            [self.artistController addArtist:artist];
+//            [self updateFollowString];
+//        }];
+//    } else {
+//        self.followedThisSession++;
+//        [self.artistController addArtist:artist];
+//
+//        [artist followWithSuccess:nil failure:^(NSError *error) {
+//            [self.artistController removeArtist:artist];
+//            [self updateFollowString];
+//        }];
+//    }
+//
+//    [self updateFollowString];
+//
+//    if (self.followedThisSession <= 0) {
+//        [self.cancelButton setTitle:@"CANCEL" forState:UIControlStateNormal];
+//
+//    } else if (self.followedThisSession == 1) { //if it went from zero to positive, it's 1
+//        [self.cancelButton setTitle:@"DONE" forState:UIControlStateNormal];
+//    }
+//
+//    NSArray *otherCells = [[self.searchTableView visibleCells] reject:^BOOL(UITableViewCell *aCell) {
+//        return cell == aCell;
+//    }];
+//
+//    [UIView animateWithDuration:.2 animations:^{
+//        for (UIView *view in otherCells) {
+//            view.alpha = 0;
+//        }
+//    }];
+//
+//    [UIView animateWithDuration:.2 delay:.2 options:0 animations:^{
+//        self.searchTableView.alpha = 0;
+//        self.followedArtistsLabel.alpha = 1;
+//
+//    } completion:^(BOOL finished) {
+//        self.searchResultsTable.searchResults = @[];
+//        [self.searchTableView reloadData];
+//    }];
+//}
 
 
 #pragma mark -
 #pragma mark Search bar
 
 
-- (BOOL)textFieldShouldClear:(UITextField *)textField
-{
-    //    [self.headerView.searchField.searchField resignFirstResponder];
-    //    self.headerView.searchField.searchField.text = @"";
-    //    [self updateArtistTableViewAnimated:NO];
-    //    self.scrollView.scrollEnabled = YES;
-
-    [UIView animateWithDuration:.35 delay:0 usingSpringWithDamping:.8 initialSpringVelocity:2.5 options:0 animations:^{
-        self.scrollView.contentOffset = CGPointZero;
-        
-        self.cancelButton.alpha = 0;
-        self.searchView.alpha = 0;
-      //        self.titleLabel.alpha = 1;
-
-    } completion:nil];
-
-    return YES;
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    //    [self.cancelButton setTitle:@"CANCEL" forState:UIControlStateNormal];
-    //    self.followedThisSession = 0;
-    //    self.followedArtistsLabel.alpha = 0;
-    //    self.searchTableView.alpha = 0;
-    //
-    //    [UIView animateWithDuration:.3 animations:^{
-    //        self.searchView.alpha = 1;
-    //    }];
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (void)searchTextChanged:(NSNotification *)notification
 {
     BOOL searchBarIsEmpty = [self.headerView.searchField.searchField.text isEqualToString:@""];
-    if (self.searchTableView.alpha == 0) {
-        [UIView animateWithDuration:.1 animations:^{
-            self.searchTableView.alpha = 1;
-        }];
-
-    } else if (searchBarIsEmpty) {
-        self.searchTableView.alpha = 0;
-    }
 
     if (self.searchRequestOperation) {
         [self.searchRequestOperation cancel];
     }
 
     if (searchBarIsEmpty) {
-        self.searchResults = @[];
-        [self.searchTableView reloadData];
-        return YES;
+        self.searchResultsTable.searchResults = @[];
+        [self.searchResultsTable.tableView reloadData];
     }
-
     self.searchRequestOperation = [ArtsyAPI artistSearchWithQuery:self.headerView.searchField.searchField.text success:^(NSArray *results) {
-        self.searchResults = results;
-        [self.searchTableView reloadData];
+                self.searchResultsTable.searchResults = results;
+                [self.searchResultsTable.tableView reloadData];
 
     } failure:^(NSError *error) {
-        if (error.code != NSURLErrorCancelled) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            ARErrorLog(@"Personalize search network error %@", error.localizedDescription);
-        }
+            if (error.code != NSURLErrorCancelled) {
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                ARErrorLog(@"Personalize search network error %@", error.localizedDescription);
+            }
     }];
-
-    return YES;
-}
-
-#pragma mark -
-#pragma mark Table view delegate
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.searchResults.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 54;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AROnboardingFollowableTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SearchCellId];
-    Artist *artist = self.searchResults[indexPath.row];
-    cell.textLabel.text = artist.name;
-    //    cell.followState = [self.artistController hasArtist:artist];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    //    [self searchToggleFollowStatusForArtist:self.searchResults[indexPath.row] atIndexPath:indexPath];
 }
 
 @end

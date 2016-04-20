@@ -3,4 +3,6 @@
 
 @interface AROnboardingPersonalizeTableViewController : UITableViewController
 
+@property (nonatomic) NSArray *searchResults;
+
 @end

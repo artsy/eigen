@@ -26,10 +26,10 @@
         [self addSubview:self.title];
         [self addSubview:self.follow];
 
-        [self.thumbnail alignLeadingEdgeWithView:self predicate:@"5"];
-        [self.thumbnail alignTopEdgeWithView:self predicate:@"5"];
-        [self.thumbnail alignBottomEdgeWithView:self predicate:@"-5"];
-        [self.thumbnail constrainWidthToView:self predicate:@"*.2"];
+        [self.thumbnail alignLeadingEdgeWithView:self predicate:@"10"];
+        [self.thumbnail alignTopEdgeWithView:self predicate:@"10"];
+        [self.thumbnail alignBottomEdgeWithView:self predicate:@"-10"];
+        [self.thumbnail constrainWidthToView:self predicate:@"*.15"];
 
         self.thumbnail.contentMode = UIViewContentModeScaleAspectFit;
 
@@ -51,9 +51,9 @@
 
 - (void)prepareForReuse
 {
-    _thumbnail = nil;
-    _title = nil;
-    _follow = nil;
+    _thumbnail.image = nil;
+    _title.text = nil;
+    _follow.image = nil;
 }
 
 - (void)updateConstraints

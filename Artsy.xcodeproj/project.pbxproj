@@ -3181,8 +3181,6 @@
 		60059B3917CEA46700BE132D /* 5- Onboarding Personalization */ = {
 			isa = PBXGroup;
 			children = (
-				1CC9EB981CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.h */,
-				1CC9EB991CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.m */,
 				CB206F7817C5AEB400A4FDC4 /* AROnboardingArtistTableController.h */,
 				CB206F7917C5AEB400A4FDC4 /* AROnboardingArtistTableController.m */,
 				CB206F7517C5A5AD00A4FDC4 /* AROnboardingGeneTableController.h */,
@@ -3191,6 +3189,8 @@
 				CB206F7317C569E800A4FDC4 /* ARPersonalizeViewController.m */,
 				1CC9EB951CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.h */,
 				1CC9EB961CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m */,
+				1CC9EB981CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.h */,
+				1CC9EB991CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.m */,
 			);
 			name = "5- Onboarding Personalization";
 			path = "5-_Onboarding_Personalization";
