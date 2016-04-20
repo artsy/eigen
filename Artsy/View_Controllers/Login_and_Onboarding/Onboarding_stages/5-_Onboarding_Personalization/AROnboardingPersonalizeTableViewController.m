@@ -34,17 +34,6 @@
     self.tableView.dataSource = self;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-//- (void)setSearchResults:(NSArray *)searchResults
-//{
-//    _searchResults = searchResults;
-//    [self.tableView reloadData];
-//}
 
 #pragma mark - Table view data source
 
@@ -58,6 +47,22 @@
     return self.searchResults.count;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] init];
+    ARSerifLabel *headerTitle = [[ARSerifLabel alloc] init];
+    headerTitle.text = @"TOP ARTISTS ON ARTSY";
+    headerTitle.font = [UIFont serifFontWithSize:14.0f];
+
+    [headerView addSubview:headerTitle];
+    [headerTitle alignLeadingEdgeWithView:headerView predicate:@"15"];
+    [headerTitle alignTrailingEdgeWithView:headerView predicate:@"-15"];
+    [headerTitle constrainHeightToView:headerView predicate:@"0"];
+    [headerTitle alignCenterYWithView:headerView predicate:@"0"];
+
+    return headerView;
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -67,15 +72,19 @@
     cell.title.text = artist.name;
 
     //    cell.title.text = @"Glorious Artist";
-    cell.follow.image = [UIImage imageNamed:@"FollowCheckmark"];
+    cell.follow.image = [UIImage imageNamed:@"followButton"];
     cell.thumbnail.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:artist.squareImageURL]];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 74;
+    return 80;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 40;
+}
 
 @end

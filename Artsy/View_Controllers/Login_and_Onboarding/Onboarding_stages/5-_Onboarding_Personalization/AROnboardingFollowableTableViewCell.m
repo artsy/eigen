@@ -26,24 +26,24 @@
         [self addSubview:self.title];
         [self addSubview:self.follow];
 
-        [self.thumbnail alignLeadingEdgeWithView:self predicate:@"10"];
-        [self.thumbnail alignTopEdgeWithView:self predicate:@"10"];
-        [self.thumbnail alignBottomEdgeWithView:self predicate:@"-10"];
-        [self.thumbnail constrainWidthToView:self predicate:@"*.15"];
+        [self.thumbnail alignLeadingEdgeWithView:self predicate:@"15"];
+        [self.thumbnail constrainWidth:@"50" height:@"50"];
+        [self.thumbnail alignCenterYWithView:self predicate:@"0"];
 
         self.thumbnail.contentMode = UIViewContentModeScaleAspectFit;
 
-        [self.title constrainLeadingSpaceToView:self.thumbnail predicate:@"5"];
-        [self.title constrainWidthToView:self predicate:@"*.6"];
-        [self.title constrainHeightToView:self predicate:@"0"];
+        [self.title constrainLeadingSpaceToView:self.thumbnail predicate:@"15"];
+        [self.title alignCenterYWithView:self predicate:@"0"];
+        [self.title constrainHeight:@"50"];
+        [self.title constrainTrailingSpaceToView:self.follow predicate:@"15"];
 
-        [self.follow alignTrailingEdgeWithView:self predicate:@"5"];
-        [self.follow alignTopEdgeWithView:self predicate:@"5"];
-        [self.follow alignBottomEdgeWithView:self predicate:@"-5"];
-        [self.follow constrainWidthToView:self predicate:@"*.2"];
+        self.title.font = [UIFont sansSerifFontWithSize:14.0f];
 
+        [self.follow constrainWidth:@"50" height:@"50"];
+        [self.follow alignTrailingEdgeWithView:self predicate:@"-15"];
+        [self.follow alignCenterYWithView:self predicate:@"0"];
 
-        self.follow.contentMode = UIViewContentModeScaleAspectFit;
+        self.follow.contentMode = UIViewContentModeCenter;
     }
 
     return self;
