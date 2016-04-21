@@ -3,6 +3,9 @@ Example/Pods
 Example/Podfile
 Example/Podfile.lock
 
+# VS Code
+.vscode
+
 # Xcode
 
 ## Build generated
