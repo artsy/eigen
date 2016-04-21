@@ -52,8 +52,10 @@
     font = [UIFont sansSerifFontWithSize:12];
     font = [UIFont smallCapsSerifFontWithSize:12];
 
-    // Ensure that the image cache is empty
-    [[[SDWebImageManager sharedManager] imageCache] clearDisk];
+    // Ensure that the image cache is just set up for testing
+    NSBundle *testBundle = [NSBundle bundleForClass:self.class];
+    SDImageCache *imageCache = [[SDImageCache alloc] initWithNamespace:@"Testing" diskCacheDirectory:[testBundle resourcePath]];
+    [[SDWebImageManager sharedManager] setValue:imageCache forKey:@"_imageCache"];
 
     // Needed for "usesDrawRect" based Nimble-Snapshots testing
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
