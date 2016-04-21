@@ -209,8 +209,7 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
         [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
             NSString *path = url.path;
             NSString *saleID = [[path split:@"/"] lastObject];
-            LiveAuctionViewController *controller = [[LiveAuctionViewController alloc] initWithSaleID:saleID];
-            return [[ARSerifNavigationViewController alloc] initWithRootViewController:controller];
+            return [[LiveAuctionViewController alloc] initWithSaleID:saleID];
         }];
     }
 

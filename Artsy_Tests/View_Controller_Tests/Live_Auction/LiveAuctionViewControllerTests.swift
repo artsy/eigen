@@ -1,19 +1,38 @@
 import Quick
 import Nimble
 import Nimble_Snapshots
-import Interstellar
 import UIKit
 
 @testable
 import Artsy
 
-class LiveAuctionLotSetViewControllerTests: QuickSpec {
-    override func spec() {
-        it("looks good by default") {
-            let fakeSalesPerson = stub_auctionSalesPerson()
-            let subject = LiveAuctionLotSetViewController(saleID: "sale-id", salesPerson: fakeSalesPerson)
+class LiveAuctionViewControllerTests: QuickSpec {
 
-            expect(subject).to( haveValidSnapshot() )
+    override func spec() {
+        var subject: LiveAuctionViewController!
+
+        beforeEach {
+            let fake = stub_auctionSalesPerson()
+            subject = LiveAuctionViewController(saleID: "sale-id")
+            subject.salesPerson = fake
+
+            for lot in fake.lots {
+                cacheColoredImageForURL(lot.urlForThumbnail)
+            }
+        }
+
+        it("looks good by default") {
+            subject.useSingleLayout = false
+            expect(subject) == snapshot()
+        }
+
+        it("handles splitting in an iPad") {
+            subject.useSingleLayout = false
+            subject.beginAppearanceTransition(true, animated: false)
+            subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
+            subject.endAppearanceTransition()
+
+            expect(subject) == snapshot()
         }
     }
 }

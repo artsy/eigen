@@ -29,7 +29,6 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupToolbar()
         setupKeyboardShortcuts()
 
         view.backgroundColor = .whiteColor()
@@ -60,6 +59,11 @@ class LiveAuctionLotSetViewController: UIViewController {
         salesPerson.updatedStateSignal.next { [weak self] _ in
             self?.setupWithInitialData()
         }
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        setupToolbar()
     }
 
     func setupToolbar() {
@@ -110,8 +114,15 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func showLots() {
-        guard let auctionVC = splitViewController as? LiveAuctionViewController else { return }
-        auctionVC.showViewController(auctionVC.lotListController, sender: self)
+        let lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel!)
+        lotListController.delegate = self
+        lotListController.selectedIndex = currentIndex()
+        presentViewController(lotListController, animated: true, completion: nil)
+    }
+
+    func currentIndex() -> Int {
+        guard let current = pageController.childViewControllers.first as? LiveAuctionLotViewController else { return -1 }
+        return current.index
     }
 
     func setupWithInitialData() {
