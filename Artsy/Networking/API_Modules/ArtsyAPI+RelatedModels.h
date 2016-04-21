@@ -2,7 +2,10 @@
 
 @class Artist, Artwork, Fair;
 
+
 @interface ArtsyAPI (RelatedModels)
+
++ (AFHTTPRequestOperation *)getRelatedArtistForArtist:(Artist *)artist success:(void (^)(NSArray *relatedArtist))success failure:(void (^)(NSError *error))failure;
 
 + (AFHTTPRequestOperation *)getRelatedArtistsForArtist:(Artist *)artist success:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure;
 

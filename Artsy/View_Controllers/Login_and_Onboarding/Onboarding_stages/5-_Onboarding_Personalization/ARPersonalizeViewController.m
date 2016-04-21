@@ -169,28 +169,39 @@
         [self.searchRequestOperation cancel];
     }
 
-    self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist success:^(NSArray *artists) {
-        switch (self.searchResultsTable.contentDisplayMode) {
-            case ARTableViewContentDisplayModeSearchResults:
+    switch (self.searchResultsTable.contentDisplayMode) {
+        case ARTableViewContentDisplayModeSearchResults: {
+            self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist success:^(NSArray *artists) {
                 [self.searchResultsTable updateTableContentsFor:artists
                                                 replaceContents:ARSearchResultsReplaceAll
                                                        animated:YES];
                 self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
-                break;
-            case ARTableViewContentDisplayModeRelatedResults:
-                [self.searchResultsTable updateTableContentsFor:artists
+            } failure:^(NSError *error) {
+                if (error.code != NSURLErrorCancelled) {
+                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    ARErrorLog(@"Personalize search related network error %@", error.localizedDescription);
+                }
+            }];
+
+            break;
+        }
+        case ARTableViewContentDisplayModeRelatedResults: {
+            self.searchRequestOperation = [ArtsyAPI getRelatedArtistForArtist:artist success:^(NSArray *relatedArtist) {
+                [self.searchResultsTable updateTableContentsFor:relatedArtist
                                                 replaceContents:ARSearchResultsReplaceSingle
                                                        animated:YES];
-                break;
-            default:
-                break;
+            } failure:^(NSError *error) {
+                if (error.code != NSURLErrorCancelled) {
+                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    ARErrorLog(@"Personalize search related network error %@", error.localizedDescription);
+                }
+            }];
+
+            break;
         }
-    } failure:^(NSError *error) {
-        if (error.code != NSURLErrorCancelled) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            ARErrorLog(@"Personalize search related network error %@", error.localizedDescription);
-        }
-    }];
+        default:
+            break;
+    }
 }
 
 #pragma mark -
@@ -217,6 +228,12 @@
                 ARErrorLog(@"Personalize search network error %@", error.localizedDescription);
             }
     }];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 @end

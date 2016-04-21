@@ -15,6 +15,14 @@
     return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] fromDictionaryWithKey:@"best_matches" success:success failure:failure];
 }
 
++ (AFHTTPRequestOperation *)getRelatedArtistForArtist:(Artist *)artist
+                                              success:(void (^)(NSArray *relatedArtist))success
+                                              failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter newArtistRelatedToArtistRequest:artist];
+    return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] fromDictionaryWithKey:@"best_matches" success:success failure:failure];
+}
+
 + (AFHTTPRequestOperation *)getRelatedArtworksForArtwork:(Artwork *)artwork
                                                  success:(void (^)(NSArray *artworks))success
                                                  failure:(void (^)(NSError *error))failure
