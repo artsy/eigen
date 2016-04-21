@@ -36,7 +36,7 @@ static CGFloat ARAnimationQuickDuration = 0.15;
 
 - (instancetype)initWithButtonTitles:(NSArray<NSString *> *)titles
 {
-  self = [super init];
+  self = [super initWithFrame:CGRectMake(0, 0, 0, self.intrinsicContentSize.height)];
   if (!self) {
     return nil;
   }

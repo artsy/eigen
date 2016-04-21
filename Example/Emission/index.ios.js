@@ -33,7 +33,7 @@ if (__DEV__ && global.originalXMLHttpRequest != undefined) {
 // App
 //
 
-let artistRoute = new Emission.Routes.Artist({ artistID: 'kevin-beasley' });
+let artistRoute = new Emission.Routes.Artist({ artistID: 'banksy' });
 
 class Artist extends React.Component {
   render() {
