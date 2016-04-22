@@ -1,37 +1,21 @@
 PODS:
-  - ARCollectionViewMasonryLayout (2.2.0)
   - Artsy+UIFonts (1.1.0)
   - Emission (0.1.0):
     - Emission/All (= 0.1.0)
   - Emission/All (0.1.0):
-    - Emission/ARArtworksMasonryGridComponent
-    - Emission/ARTabViewComponent
     - Emission/Core
-  - Emission/ARArtworksMasonryGridComponent (0.1.0):
-    - ARCollectionViewMasonryLayout (>= 2.2.0)
-    - Emission/Core
-    - SDWebImage (>= 3.7.2)
-  - Emission/ARTabViewComponent (0.1.0):
-    - Emission/Core
-    - FLKAutoLayout
-    - ObjectiveSugar
-    - UIView+BooleanAnimations
+    - Emission/ImageViewComponent
+    - Emission/SwitchViewComponent
   - Emission/Core (0.1.0):
     - Artsy+UIFonts (>= 1.1.0)
     - React/Core (>= 0.24.0-rc5)
-  - FBSnapshotTestCase (2.0.7):
-    - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
-  - FBSnapshotTestCase/Core (2.0.7)
-  - FBSnapshotTestCase/SwiftSupport (2.0.7):
-    - FBSnapshotTestCase/Core
+  - Emission/ImageViewComponent (0.1.0):
+    - SDWebImage (>= 3.7.2)
+  - Emission/SwitchViewComponent (0.1.0):
+    - Emission/Core
+    - FLKAutoLayout
+    - UIView+BooleanAnimations
   - FLKAutoLayout (1.0.0)
-  - Nimble (3.0.0)
-  - Nimble-Snapshots (3.0.1):
-    - FBSnapshotTestCase (~> 2.0)
-    - Nimble
-    - Quick
-  - ObjectiveSugar (1.1.0)
-  - Quick (0.8.0)
   - React/Core (0.24.0-rc5)
   - React/RCTNetwork (0.24.0-rc5):
     - React/Core
@@ -47,11 +31,7 @@ PODS:
 DEPENDENCIES:
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
-  - FBSnapshotTestCase (from `https://github.com/neonichu/ios-snapshot-test-case.git`)
   - FLKAutoLayout (from `https://github.com/floriankugler/FLKAutoLayout.git`)
-  - Nimble (= 3.0.0)
-  - Nimble-Snapshots (< 4)
-  - Quick (~> 0.8.0)
   - React/Core (from `./node_modules/react-native`)
   - React/RCTNetwork (from `./node_modules/react-native`)
   - React/RCTText (from `./node_modules/react-native`)
@@ -62,8 +42,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
     :path: ../
-  FBSnapshotTestCase:
-    :git: https://github.com/neonichu/ios-snapshot-test-case.git
   FLKAutoLayout:
     :git: https://github.com/floriankugler/FLKAutoLayout.git
   React:
@@ -73,27 +51,18 @@ CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
-  FBSnapshotTestCase:
-    :commit: 9e88da88a7a3df2f80838449a5f1e71830179218
-    :git: https://github.com/neonichu/ios-snapshot-test-case.git
   FLKAutoLayout:
     :commit: 8cb911654b3538c0ce514701db041d32964ea17c
     :git: https://github.com/floriankugler/FLKAutoLayout.git
 
 SPEC CHECKSUMS:
-  ARCollectionViewMasonryLayout: 9e87541c1d59cd9e6f538c19bbed3f52ceeef421
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Emission: 0f877917bc9f6773ca7dcde9db9d58d6195189e6
-  FBSnapshotTestCase: a89bbc6ea786ef38c2d4e313b3374177c8597b8f
+  Emission: 3ebc8fca33478a77448519add28cbdbbcf3fc74a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
-  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
-  Nimble-Snapshots: 0d64486715a613293ac5c9af6140b97eb9b0ae76
-  ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
-  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
   React: 9df7c9ebbc8256031adcc82ed9fede2730f98874
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: f09c022f65e990d1e2f486d74080c1bbb420478c
+PODFILE CHECKSUM: 9fee1e0098a54af4cbdca3f0a44a39c914bba5b0
 
 COCOAPODS: 1.0.0.beta.8
