@@ -1,3 +1,7 @@
+# VS Code
+.vscode
+tsconfig.json
+
 # Xcode
 
 ## Build generated
@@ -31,5 +35,6 @@ playground.xcworkspace
 
 # Custom
 
+.DS_Store
 Example/node_modules/emission
 Example/Pods/Artsy+UIFonts
