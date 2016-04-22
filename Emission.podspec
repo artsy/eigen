@@ -13,30 +13,21 @@ Pod::Spec.new do |s|
 
   s.subspec 'All' do |ss|
     ss.dependency 'Emission/Core'
-    ss.dependency 'Emission/ARTabViewComponent'
-    ss.dependency 'Emission/ARArtworksMasonryGridComponent'
+    ss.dependency 'Emission/SwitchViewComponent'
   end
 
   s.subspec 'Core' do |ss|
-    ss.source_files = 'Pod/Classes/AREmissionFontsLoader.m', 'Pod/Classes/ARComponentViewController.swift'
+    ss.source_files = 'Pod/Classes/Core'
     ss.dependency 'React/Core', '>= 0.24.0-rc5'
     ss.dependency 'Artsy+UIFonts', '>= 1.1.0'
   end
 
-  s.subspec 'ARTabViewComponent' do |ss|
-    ss.source_files = 'Pod/Classes/ARSwitchViewManager.*', 'Pod/Classes/ARSwitchView.*'
+  s.subspec 'SwitchViewComponent' do |ss|
+    ss.source_files = 'Pod/Classes/SwitchViewComponent'
     ss.dependency 'Emission/Core'
     # These are just to support ARSwitchView as copied from Eigen,
     # this needs to be sorted before trying to use Emission in Eigen.
     ss.dependency 'UIView+BooleanAnimations'
     ss.dependency 'FLKAutoLayout'
-    ss.dependency 'ObjectiveSugar'
-  end
-
-  s.subspec 'ARArtworksMasonryGridComponent' do |ss|
-    ss.source_files = 'Pod/Classes/ARArtworksMasonryGridComponent.swift'
-    ss.dependency 'Emission/Core'
-    ss.dependency 'ARCollectionViewMasonryLayout', '>= 2.2.0'
-    ss.dependency 'SDWebImage', '>= 3.7.2'
   end
 end

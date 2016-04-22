@@ -9,7 +9,6 @@
 
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <ObjectiveSugar/ObjectiveSugar.h>
 
 static BOOL ARPerformWorkAsynchronously = YES;
 static CGFloat ARAnimationQuickDuration = 0.15;
@@ -102,8 +101,8 @@ static CGFloat ARAnimationQuickDuration = 0.15;
   [self.buttons.lastObject alignTrailingEdgeWithView:self.buttonContainer predicate:@"0"];
 
   [UIView spaceOutViewsHorizontally:self.buttons predicate:@"0"];
-  [UIView alignTopAndBottomEdgesOfViews:[self.buttons arrayByAddingObject:self.buttonContainer]];
-  [UIView equalWidthForViews:[self.buttons arrayByAddingObject:self.selectionIndicator]];
+  [UIView alignTopAndBottomEdgesOfViews:[(NSArray<UIView *> *)self.buttons arrayByAddingObject:self.buttonContainer]];
+  [UIView equalWidthForViews:[(NSArray<UIView *> *)self.buttons arrayByAddingObject:self.selectionIndicator]];
 
   // Try to maintain the selection. With React Native this allows us to change a
   // title at runtime without resetting the selection.
@@ -195,9 +194,9 @@ static CGFloat ARAnimationQuickDuration = 0.15;
   [UIView animateIf:ARPerformWorkAsynchronously && animated duration:ARAnimationQuickDuration options:UIViewAnimationOptionCurveEaseOut:^{
     UIButton *button = self.buttons[index];
 
-    [self.buttons each:^(UIButton *button) {
+    for (UIButton *button in self.buttons) {
       [self highlightButton:button highlighted:NO];
-    }];
+    };
 
     [self highlightButton:button highlighted:YES];
 
@@ -247,12 +246,12 @@ static CGFloat ARAnimationQuickDuration = 0.15;
 {
   _preferHighlighting = preferHighlighting;
 
-  [self.buttons each:^(UIButton *button) {
+  for (UIButton *button in self.buttons) {
     if (!button.isEnabled || button.isHighlighted) {
       button.enabled = preferHighlighting;
       button.selected = !preferHighlighting;
     }
-  }];
+  };
 }
 
 @end

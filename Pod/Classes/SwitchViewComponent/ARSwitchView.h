@@ -10,11 +10,14 @@
 
 @interface ARSwitchView : UIView
 
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
 - (instancetype)initWithButtonTitles:(NSArray *)titles NS_DESIGNATED_INITIALIZER;
 - (void)setTitle:(NSString *)title forButtonAtIndex:(NSInteger)index;
 
 @property (nonatomic, weak, readwrite) id<ARSwitchViewDelegate> delegate;
-@property (nonatomic, strong, readonly) NSArray *buttons;
+@property (nonatomic, strong, readonly) NSArray<UIButton *> *buttons;
 
 // Assigning to this replaces all existing buttons with new ones.
 @property (nonatomic, strong, readwrite) NSArray<NSString *> *titles;
