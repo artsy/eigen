@@ -1,10 +1,6 @@
-# Until Swift issues are resolved
-Example/Pods
-Example/Podfile
-Example/Podfile.lock
-
 # VS Code
 .vscode
+tsconfig.json
 
 # Xcode
 
