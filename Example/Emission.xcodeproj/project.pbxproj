@@ -7,90 +7,128 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		511287C51C8B2C9700936CBC /* rembrandt-harmensz-van-rijn-1_page-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 511287AB1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-1.json */; };
-		511287C61C8B2C9A00936CBC /* rembrandt-harmensz-van-rijn-1_page-2.json in Resources */ = {isa = PBXBuildFile; fileRef = 511287AC1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-2.json */; };
-		511287F11C8B2CEF00936CBC /* com.hackemist.SDWebImageCache.test-fixtures in Resources */ = {isa = PBXBuildFile; fileRef = 511287F01C8B2CEF00936CBC /* com.hackemist.SDWebImageCache.test-fixtures */; };
-		58D84DE55F6A169A0E0021F2 /* Pods_Emission_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40768F1EE5F58B77D2C7E598 /* Pods_Emission_Tests.framework */; };
-		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
-		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
-		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
-		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
-		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
-		607FACEC1AFB9204008FA782 /* ARArtworksMasonryGridComponentSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* ARArtworksMasonryGridComponentSpec.swift */; };
-		E6DB19CAE3D9E078B612683A /* Pods_Emission_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE50579AAAEFF0316B49796 /* Pods_Emission_Example.framework */; };
+		510DCB121CCA69EC0075E8CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB111CCA69EC0075E8CB /* main.m */; };
+		510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB141CCA69EC0075E8CB /* AppDelegate.m */; };
+		510DCB1D1CCA69EC0075E8CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 510DCB1C1CCA69EC0075E8CB /* Assets.xcassets */; };
+		510DCB2B1CCA69EC0075E8CB /* EmissionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB2A1CCA69EC0075E8CB /* EmissionTests.m */; };
+		510DCB361CCA69EC0075E8CB /* EmissionUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB351CCA69EC0075E8CB /* EmissionUITests.m */; };
+		510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 510E94FB1CCA828900BDF098 /* LaunchScreen.xib */; };
+		E0BD606D6E4B438306820FBE /* Pods_Emission.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C0AF7813D6472B111554ED8 /* Pods_Emission.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		607FACE61AFB9204008FA782 /* PBXContainerItemProxy */ = {
+		510DCB271CCA69EC0075E8CB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
+			remoteGlobalIDString = 510DCB0D1CCA69EC0075E8CB;
+			remoteInfo = Emission;
+		};
+		510DCB321CCA69EC0075E8CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 510DCB0D1CCA69EC0075E8CB;
 			remoteInfo = Emission;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0F60AEC13CAFC20BA35BECCD /* Pods-Emission_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Emission_Example/Pods-Emission_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		1881F159D11F11C55CA425F3 /* Pods-Emission_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Emission_Tests/Pods-Emission_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		3CA8129D4B3357E4EDA54CF0 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		40768F1EE5F58B77D2C7E598 /* Pods_Emission_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emission_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		511287AB1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "rembrandt-harmensz-van-rijn-1_page-1.json"; sourceTree = "<group>"; };
-		511287AC1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "rembrandt-harmensz-van-rijn-1_page-2.json"; sourceTree = "<group>"; };
-		511287F01C8B2CEF00936CBC /* com.hackemist.SDWebImageCache.test-fixtures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "com.hackemist.SDWebImageCache.test-fixtures"; sourceTree = "<group>"; };
-		607FACD01AFB9204008FA782 /* Emission_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emission_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		607FACD71AFB9204008FA782 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		607FACE51AFB9204008FA782 /* Emission_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Emission_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		607FACEB1AFB9204008FA782 /* ARArtworksMasonryGridComponentSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARArtworksMasonryGridComponentSpec.swift; sourceTree = "<group>"; };
-		6ED7A9C5401727A6386FC142 /* Pods-Emission_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission_Tests/Pods-Emission_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		510DCB0E1CCA69EC0075E8CB /* Emission.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emission.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		510DCB111CCA69EC0075E8CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		510DCB131CCA69EC0075E8CB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		510DCB141CCA69EC0075E8CB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		510DCB1C1CCA69EC0075E8CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		510DCB211CCA69EC0075E8CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		510DCB261CCA69EC0075E8CB /* EmissionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmissionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		510DCB2A1CCA69EC0075E8CB /* EmissionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmissionTests.m; sourceTree = "<group>"; };
+		510DCB2C1CCA69EC0075E8CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		510DCB311CCA69EC0075E8CB /* EmissionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmissionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		510DCB351CCA69EC0075E8CB /* EmissionUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmissionUITests.m; sourceTree = "<group>"; };
+		510DCB371CCA69ED0075E8CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		510E94FC1CCA828900BDF098 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		7C0AF7813D6472B111554ED8 /* Pods_Emission.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emission.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F3A1FEFE0AEAB158547A0BB /* Pods-Emission.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.release.xcconfig"; sourceTree = "<group>"; };
+		822BF881E9F1716840710C01 /* Pods-Emission.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.debug.xcconfig"; sourceTree = "<group>"; };
 		8AE50579AAAEFF0316B49796 /* Pods_Emission_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emission_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B51308BF7BAFFB172A98C1E0 /* Pods-Emission_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission_Example/Pods-Emission_Example.release.xcconfig"; sourceTree = "<group>"; };
 		BD6A42932C7B5D57AE022D1A /* Emission.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Emission.podspec; path = ../Emission.podspec; sourceTree = "<group>"; };
 		DB1BB078CB1708CE8106DA15 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		607FACCD1AFB9204008FA782 /* Frameworks */ = {
+		510DCB0B1CCA69EC0075E8CB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6DB19CAE3D9E078B612683A /* Pods_Emission_Example.framework in Frameworks */,
+				E0BD606D6E4B438306820FBE /* Pods_Emission.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		607FACE21AFB9204008FA782 /* Frameworks */ = {
+		510DCB231CCA69EC0075E8CB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58D84DE55F6A169A0E0021F2 /* Pods_Emission_Tests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		510DCB2E1CCA69EC0075E8CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		511287931C8B2C7600936CBC /* Fixtures */ = {
+		510DCB0F1CCA69EC0075E8CB /* Emission */ = {
 			isa = PBXGroup;
 			children = (
-				511287F01C8B2CEF00936CBC /* com.hackemist.SDWebImageCache.test-fixtures */,
-				511287AB1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-1.json */,
-				511287AC1C8B2C7600936CBC /* rembrandt-harmensz-van-rijn-1_page-2.json */,
+				510E94FB1CCA828900BDF098 /* LaunchScreen.xib */,
+				510DCB131CCA69EC0075E8CB /* AppDelegate.h */,
+				510DCB141CCA69EC0075E8CB /* AppDelegate.m */,
+				510DCB1C1CCA69EC0075E8CB /* Assets.xcassets */,
+				510DCB211CCA69EC0075E8CB /* Info.plist */,
+				510DCB101CCA69EC0075E8CB /* Supporting Files */,
 			);
-			path = Fixtures;
+			path = Emission;
+			sourceTree = "<group>";
+		};
+		510DCB101CCA69EC0075E8CB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				510DCB111CCA69EC0075E8CB /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		510DCB291CCA69EC0075E8CB /* EmissionTests */ = {
+			isa = PBXGroup;
+			children = (
+				510DCB2A1CCA69EC0075E8CB /* EmissionTests.m */,
+				510DCB2C1CCA69EC0075E8CB /* Info.plist */,
+			);
+			path = EmissionTests;
+			sourceTree = "<group>";
+		};
+		510DCB341CCA69EC0075E8CB /* EmissionUITests */ = {
+			isa = PBXGroup;
+			children = (
+				510DCB351CCA69EC0075E8CB /* EmissionUITests.m */,
+				510DCB371CCA69ED0075E8CB /* Info.plist */,
+			);
+			path = EmissionUITests;
 			sourceTree = "<group>";
 		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
-				607FACD21AFB9204008FA782 /* Example for Emission */,
-				607FACE81AFB9204008FA782 /* Tests */,
+				510DCB0F1CCA69EC0075E8CB /* Emission */,
+				510DCB291CCA69EC0075E8CB /* EmissionTests */,
+				510DCB341CCA69EC0075E8CB /* EmissionUITests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				F5F5FCA9C200E166B638A6E5 /* Pods */,
 				A8456AA0E39F581C091B5C1D /* Frameworks */,
@@ -100,50 +138,11 @@
 		607FACD11AFB9204008FA782 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				607FACD01AFB9204008FA782 /* Emission_Example.app */,
-				607FACE51AFB9204008FA782 /* Emission_Tests.xctest */,
+				510DCB0E1CCA69EC0075E8CB /* Emission.app */,
+				510DCB261CCA69EC0075E8CB /* EmissionTests.xctest */,
+				510DCB311CCA69EC0075E8CB /* EmissionUITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		607FACD21AFB9204008FA782 /* Example for Emission */ = {
-			isa = PBXGroup;
-			children = (
-				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
-				607FACD71AFB9204008FA782 /* ViewController.swift */,
-				607FACD91AFB9204008FA782 /* Main.storyboard */,
-				607FACDC1AFB9204008FA782 /* Images.xcassets */,
-				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
-				607FACD31AFB9204008FA782 /* Supporting Files */,
-			);
-			name = "Example for Emission";
-			path = Emission;
-			sourceTree = "<group>";
-		};
-		607FACD31AFB9204008FA782 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				607FACD41AFB9204008FA782 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		607FACE81AFB9204008FA782 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				511287931C8B2C7600936CBC /* Fixtures */,
-				607FACEB1AFB9204008FA782 /* ARArtworksMasonryGridComponentSpec.swift */,
-				607FACE91AFB9204008FA782 /* Supporting Files */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		607FACE91AFB9204008FA782 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				607FACEA1AFB9204008FA782 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
@@ -161,6 +160,7 @@
 			children = (
 				8AE50579AAAEFF0316B49796 /* Pods_Emission_Example.framework */,
 				40768F1EE5F58B77D2C7E598 /* Pods_Emission_Tests.framework */,
+				7C0AF7813D6472B111554ED8 /* Pods_Emission.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -168,10 +168,8 @@
 		F5F5FCA9C200E166B638A6E5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0F60AEC13CAFC20BA35BECCD /* Pods-Emission_Example.debug.xcconfig */,
-				B51308BF7BAFFB172A98C1E0 /* Pods-Emission_Example.release.xcconfig */,
-				1881F159D11F11C55CA425F3 /* Pods-Emission_Tests.debug.xcconfig */,
-				6ED7A9C5401727A6386FC142 /* Pods-Emission_Tests.release.xcconfig */,
+				822BF881E9F1716840710C01 /* Pods-Emission.debug.xcconfig */,
+				7F3A1FEFE0AEAB158547A0BB /* Pods-Emission.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -179,46 +177,61 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		607FACCF1AFB9204008FA782 /* Emission_Example */ = {
+		510DCB0D1CCA69EC0075E8CB /* Emission */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Emission_Example" */;
+			buildConfigurationList = 510DCB3E1CCA69ED0075E8CB /* Build configuration list for PBXNativeTarget "Emission" */;
 			buildPhases = (
-				12E97E3BBB7BBA68910E74A1 /* 📦 Check Pods Manifest.lock */,
-				607FACCC1AFB9204008FA782 /* Sources */,
-				607FACCD1AFB9204008FA782 /* Frameworks */,
-				607FACCE1AFB9204008FA782 /* Resources */,
-				42884ECF9020DC04B3A8E1EC /* 📦 Embed Pods Frameworks */,
-				FADA7999A9FF6BA45F234525 /* 📦 Copy Pods Resources */,
+				921B840AC340AE7E64EC1E6E /* 📦 Check Pods Manifest.lock */,
+				510DCB0A1CCA69EC0075E8CB /* Sources */,
+				510DCB0B1CCA69EC0075E8CB /* Frameworks */,
+				510DCB0C1CCA69EC0075E8CB /* Resources */,
+				18F7340895C5AA6B988B03B6 /* 📦 Embed Pods Frameworks */,
+				DF68872A73AD1E49C33FE5F0 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Emission_Example;
+			name = Emission;
 			productName = Emission;
-			productReference = 607FACD01AFB9204008FA782 /* Emission_Example.app */;
+			productReference = 510DCB0E1CCA69EC0075E8CB /* Emission.app */;
 			productType = "com.apple.product-type.application";
 		};
-		607FACE41AFB9204008FA782 /* Emission_Tests */ = {
+		510DCB251CCA69EC0075E8CB /* EmissionTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Emission_Tests" */;
+			buildConfigurationList = 510DCB3F1CCA69ED0075E8CB /* Build configuration list for PBXNativeTarget "EmissionTests" */;
 			buildPhases = (
-				D805816ECC6FA26CE91E90F8 /* 📦 Check Pods Manifest.lock */,
-				607FACE11AFB9204008FA782 /* Sources */,
-				607FACE21AFB9204008FA782 /* Frameworks */,
-				607FACE31AFB9204008FA782 /* Resources */,
-				1E13916704B9A4027C818ACB /* 📦 Embed Pods Frameworks */,
-				FB5306A6B22E3EFD477A2A01 /* 📦 Copy Pods Resources */,
+				510DCB221CCA69EC0075E8CB /* Sources */,
+				510DCB231CCA69EC0075E8CB /* Frameworks */,
+				510DCB241CCA69EC0075E8CB /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				607FACE71AFB9204008FA782 /* PBXTargetDependency */,
+				510DCB281CCA69EC0075E8CB /* PBXTargetDependency */,
 			);
-			name = Emission_Tests;
-			productName = Tests;
-			productReference = 607FACE51AFB9204008FA782 /* Emission_Tests.xctest */;
+			name = EmissionTests;
+			productName = EmissionTests;
+			productReference = 510DCB261CCA69EC0075E8CB /* EmissionTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		510DCB301CCA69EC0075E8CB /* EmissionUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 510DCB401CCA69ED0075E8CB /* Build configuration list for PBXNativeTarget "EmissionUITests" */;
+			buildPhases = (
+				510DCB2D1CCA69EC0075E8CB /* Sources */,
+				510DCB2E1CCA69EC0075E8CB /* Frameworks */,
+				510DCB2F1CCA69EC0075E8CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				510DCB331CCA69EC0075E8CB /* PBXTargetDependency */,
+			);
+			name = EmissionUITests;
+			productName = EmissionUITests;
+			productReference = 510DCB311CCA69EC0075E8CB /* EmissionUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -230,12 +243,16 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
-					607FACCF1AFB9204008FA782 = {
-						CreatedOnToolsVersion = 6.3.1;
+					510DCB0D1CCA69EC0075E8CB = {
+						CreatedOnToolsVersion = 7.2.1;
 					};
-					607FACE41AFB9204008FA782 = {
-						CreatedOnToolsVersion = 6.3.1;
-						TestTargetID = 607FACCF1AFB9204008FA782;
+					510DCB251CCA69EC0075E8CB = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = 510DCB0D1CCA69EC0075E8CB;
+					};
+					510DCB301CCA69EC0075E8CB = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = 510DCB0D1CCA69EC0075E8CB;
 					};
 				};
 			};
@@ -252,37 +269,56 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				607FACCF1AFB9204008FA782 /* Emission_Example */,
-				607FACE41AFB9204008FA782 /* Emission_Tests */,
+				510DCB0D1CCA69EC0075E8CB /* Emission */,
+				510DCB251CCA69EC0075E8CB /* EmissionTests */,
+				510DCB301CCA69EC0075E8CB /* EmissionUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		607FACCE1AFB9204008FA782 /* Resources */ = {
+		510DCB0C1CCA69EC0075E8CB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
-				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
-				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */,
+				510DCB1D1CCA69EC0075E8CB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		607FACE31AFB9204008FA782 /* Resources */ = {
+		510DCB241CCA69EC0075E8CB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				511287C61C8B2C9A00936CBC /* rembrandt-harmensz-van-rijn-1_page-2.json in Resources */,
-				511287C51C8B2C9700936CBC /* rembrandt-harmensz-van-rijn-1_page-1.json in Resources */,
-				511287F11C8B2CEF00936CBC /* com.hackemist.SDWebImageCache.test-fixtures in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		510DCB2F1CCA69EC0075E8CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		12E97E3BBB7BBA68910E74A1 /* 📦 Check Pods Manifest.lock */ = {
+		18F7340895C5AA6B988B03B6 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Emission/Pods-Emission-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		921B840AC340AE7E64EC1E6E /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -297,52 +333,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		1E13916704B9A4027C818ACB /* 📦 Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Emission_Tests/Pods-Emission_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		42884ECF9020DC04B3A8E1EC /* 📦 Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Emission_Example/Pods-Emission_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D805816ECC6FA26CE91E90F8 /* 📦 Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		FADA7999A9FF6BA45F234525 /* 📦 Copy Pods Resources */ = {
+		DF68872A73AD1E49C33FE5F0 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -354,67 +345,57 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Emission_Example/Pods-Emission_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FB5306A6B22E3EFD477A2A01 /* 📦 Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Emission_Tests/Pods-Emission_Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Emission/Pods-Emission-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		607FACCC1AFB9204008FA782 /* Sources */ = {
+		510DCB0A1CCA69EC0075E8CB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
-				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */,
+				510DCB121CCA69EC0075E8CB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		607FACE11AFB9204008FA782 /* Sources */ = {
+		510DCB221CCA69EC0075E8CB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACEC1AFB9204008FA782 /* ARArtworksMasonryGridComponentSpec.swift in Sources */,
+				510DCB2B1CCA69EC0075E8CB /* EmissionTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		510DCB2D1CCA69EC0075E8CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				510DCB361CCA69EC0075E8CB /* EmissionUITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		607FACE71AFB9204008FA782 /* PBXTargetDependency */ = {
+		510DCB281CCA69EC0075E8CB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 607FACCF1AFB9204008FA782 /* Emission_Example */;
-			targetProxy = 607FACE61AFB9204008FA782 /* PBXContainerItemProxy */;
+			target = 510DCB0D1CCA69EC0075E8CB /* Emission */;
+			targetProxy = 510DCB271CCA69EC0075E8CB /* PBXContainerItemProxy */;
+		};
+		510DCB331CCA69EC0075E8CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 510DCB0D1CCA69EC0075E8CB /* Emission */;
+			targetProxy = 510DCB321CCA69EC0075E8CB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		607FACD91AFB9204008FA782 /* Main.storyboard */ = {
+		510E94FB1CCA828900BDF098 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				607FACDA1AFB9204008FA782 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		607FACDE1AFB9204008FA782 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				607FACDF1AFB9204008FA782 /* Base */,
+				510E94FC1CCA828900BDF098 /* Base */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
@@ -422,6 +403,89 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		510DCB381CCA69ED0075E8CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 822BF881E9F1716840710C01 /* Pods-Emission.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = Emission/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		510DCB391CCA69ED0075E8CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F3A1FEFE0AEAB158547A0BB /* Pods-Emission.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Emission/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		510DCB3A1CCA69ED0075E8CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = EmissionTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.EmissionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Emission.app/Emission";
+			};
+			name = Debug;
+		};
+		510DCB3B1CCA69ED0075E8CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = EmissionTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.EmissionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Emission.app/Emission";
+			};
+			name = Release;
+		};
+		510DCB3C1CCA69ED0075E8CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = EmissionUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.EmissionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Emission;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		510DCB3D1CCA69ED0075E8CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = EmissionUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.EmissionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Emission;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
 		607FACED1AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -504,96 +568,41 @@
 			};
 			name = Release;
 		};
-		607FACF01AFB9204008FA782 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F60AEC13CAFC20BA35BECCD /* Pods-Emission_Example.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = Emission/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		607FACF11AFB9204008FA782 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B51308BF7BAFFB172A98C1E0 /* Pods-Emission_Example.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = Emission/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		607FACF31AFB9204008FA782 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1881F159D11F11C55CA425F3 /* Pods-Emission_Tests.debug.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Emission_Example.app/Emission_Example";
-			};
-			name = Debug;
-		};
-		607FACF41AFB9204008FA782 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6ED7A9C5401727A6386FC142 /* Pods-Emission_Tests.release.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Emission_Example.app/Emission_Example";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		510DCB3E1CCA69ED0075E8CB /* Build configuration list for PBXNativeTarget "Emission" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				510DCB381CCA69ED0075E8CB /* Debug */,
+				510DCB391CCA69ED0075E8CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		510DCB3F1CCA69ED0075E8CB /* Build configuration list for PBXNativeTarget "EmissionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				510DCB3A1CCA69ED0075E8CB /* Debug */,
+				510DCB3B1CCA69ED0075E8CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		510DCB401CCA69ED0075E8CB /* Build configuration list for PBXNativeTarget "EmissionUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				510DCB3C1CCA69ED0075E8CB /* Debug */,
+				510DCB3D1CCA69ED0075E8CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "Emission" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACED1AFB9204008FA782 /* Debug */,
 				607FACEE1AFB9204008FA782 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Emission_Example" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				607FACF01AFB9204008FA782 /* Debug */,
-				607FACF11AFB9204008FA782 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Emission_Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				607FACF31AFB9204008FA782 /* Debug */,
-				607FACF41AFB9204008FA782 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

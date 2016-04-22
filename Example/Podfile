@@ -3,7 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 use_frameworks!
 
-target 'Emission_Example' do
+target 'Emission' do
   pod 'Emission', :path => '../'
   pod 'React', :path => './node_modules/react-native', :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork )
 
@@ -17,12 +17,7 @@ target 'Emission_Example' do
   # before trying to use Emission in Eigen.
   pod 'FLKAutoLayout', :git => 'https://github.com/floriankugler/FLKAutoLayout.git'
 
-  target 'Emission_Tests' do
-    inherit! :search_paths
-
-    pod 'Quick', '~> 0.8.0'
-    pod 'Nimble', '3.0.0'
-    pod 'FBSnapshotTestCase', :git => 'https://github.com/neonichu/ios-snapshot-test-case.git'
-    pod 'Nimble-Snapshots', '< 4'
-  end
+  # target 'EmissionTests' do
+  #   inherit! :search_paths
+  # end
 end
