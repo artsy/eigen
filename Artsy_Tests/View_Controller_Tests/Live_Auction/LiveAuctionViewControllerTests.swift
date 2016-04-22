@@ -23,7 +23,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("looks good by default") {
             subject.useSingleLayout = false
-            expect(subject) == snapshot()
+            expect(subject).toEventually(haveValidSnapshot())
         }
 
         it("handles splitting in an iPad") {
@@ -32,7 +32,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
             subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
             subject.endAppearanceTransition()
 
-            expect(subject) == snapshot()
+            expect(subject).toEventually(haveValidSnapshot())
         }
     }
 }
