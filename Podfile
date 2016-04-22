@@ -123,8 +123,8 @@ target 'Artsy' do
       pod 'Forgeries/Mocks', :git => "https://github.com/ashfurrow/Forgeries.git", :branch => "application"
 
       # Swift pods 🎉
-      pod 'Quick', git: 'https://github.com/Quick/Quick.git'
-      pod 'Nimble', git: 'https://github.com/Quick/Nimble.git'
+      pod 'Quick'
+      pod 'Nimble'
       pod 'Nimble-Snapshots'
   end
 end
