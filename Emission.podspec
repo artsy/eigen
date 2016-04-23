@@ -13,6 +13,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'All' do |ss|
     ss.dependency 'Emission/Core'
+    ss.dependency 'Emission/OpaqueImageViewComponent'
     ss.dependency 'Emission/SwitchViewComponent'
   end
 
@@ -29,5 +30,10 @@ Pod::Spec.new do |s|
     # this needs to be sorted before trying to use Emission in Eigen.
     ss.dependency 'UIView+BooleanAnimations'
     ss.dependency 'FLKAutoLayout'
+  end
+
+  s.subspec 'OpaqueImageViewComponent' do |ss|
+    ss.source_files = 'Pod/Classes/OpaqueImageViewComponent'
+    ss.dependency 'SDWebImage', '>= 3.7.2'
   end
 end
