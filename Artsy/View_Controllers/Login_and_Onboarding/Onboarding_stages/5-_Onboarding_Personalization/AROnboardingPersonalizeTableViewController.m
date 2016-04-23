@@ -65,7 +65,13 @@
             animationStyle = UITableViewRowAnimationNone;
             break;
     }
+    animationStyle = UITableViewRowAnimationNone;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:animationStyle];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.tableView.alpha = 0;
+    } completion:^(BOOL finished) {
+        self.tableView.alpha = 1;
+    }];
 }
 
 
@@ -85,7 +91,23 @@
 {
     UIView *headerView = [[UIView alloc] init];
     ARSerifLabel *headerTitle = [[ARSerifLabel alloc] init];
+
     headerTitle.text = @"TOP ARTISTS ON ARTSY";
+
+    switch (self.contentDisplayMode) {
+        case ARTableViewContentDisplayModeSearchResults:
+            headerTitle.text = @"";
+            break;
+        case ARTableViewContentDisplayModeRelatedResults:
+            headerTitle.text = @"YOU MAY ALSO LIKE";
+            break;
+        case ARTableViewContentDisplayModeNone:
+            headerTitle.text = @"TOP ARTISTS ON ARTSY";
+            break;
+        default:
+            break;
+    }
+
     headerTitle.font = [UIFont serifFontWithSize:14.0f];
 
     [headerView addSubview:headerTitle];
@@ -95,6 +117,23 @@
     [headerTitle alignCenterYWithView:headerView predicate:@"0"];
 
     return headerView;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGRect originalFrame = cell.frame;
+
+    cell.frame = CGRectMake(cell.frame.origin.x, self.tableView.frame.size.height, cell.frame.size.width, cell.frame.size.height);
+    cell.alpha = 0;
+    CGFloat duration = (0.6 * originalFrame.origin.y) / self.tableView.frame.size.height + 0.3;
+    //0.1+30*(1.0/(self.tableView.frame.size.height-originalFrame.origin.y));
+    CGFloat delay = 0.18 * (indexPath.row);
+
+    [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveEaseIn animations:^{
+        cell.frame = originalFrame;
+        cell.alpha = 1.0;
+    } completion:^(BOOL finished){
+    }];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
