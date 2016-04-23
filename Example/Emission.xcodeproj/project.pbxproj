@@ -426,7 +426,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_PEDANTIC = YES;
 				INFOPLIST_FILE = Emission/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
@@ -443,7 +442,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_PEDANTIC = YES;
 				INFOPLIST_FILE = Emission/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;

@@ -5,7 +5,9 @@ use_frameworks!
 
 target 'Emission' do
   pod 'Emission', :path => '../'
-  pod 'React', :path => './node_modules/react-native', :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork )
+  pod 'React', :path => './node_modules/react-native',
+               :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork ),
+               :inhibit_warnings => true
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"

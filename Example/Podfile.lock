@@ -4,12 +4,12 @@ PODS:
     - Emission/All (= 0.1.0)
   - Emission/All (0.1.0):
     - Emission/Core
-    - Emission/ImageViewComponent
+    - Emission/OpaqueImageViewComponent
     - Emission/SwitchViewComponent
   - Emission/Core (0.1.0):
     - Artsy+UIFonts (>= 1.1.0)
     - React/Core (>= 0.24.0-rc5)
-  - Emission/ImageViewComponent (0.1.0):
+  - Emission/OpaqueImageViewComponent (0.1.0):
     - SDWebImage (>= 3.7.2)
   - Emission/SwitchViewComponent (0.1.0):
     - Emission/Core
@@ -57,12 +57,12 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Emission: 3ebc8fca33478a77448519add28cbdbbcf3fc74a
+  Emission: 38dfa1a1c48d39d8b3b122153970ab776b97e336
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   React: 9df7c9ebbc8256031adcc82ed9fede2730f98874
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: 9fee1e0098a54af4cbdca3f0a44a39c914bba5b0
+PODFILE CHECKSUM: ac3a63894d50df68d194be40ba8f86f01866cc5c
 
 COCOAPODS: 1.0.0.beta.8
