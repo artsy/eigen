@@ -7,4 +7,5 @@
     },
     "files.trimTrailingWhitespace": true,
 	"editor.renderWhitespace": true,
+    "clang.compilationDatabase": "${workspaceRoot}/Example/compile_commands.json",
 }

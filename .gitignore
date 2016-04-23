@@ -34,3 +34,4 @@ playground.xcworkspace
 .DS_Store
 Example/node_modules/emission
 Example/Pods/Artsy+UIFonts
+Example/compile_commands.json

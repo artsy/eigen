@@ -187,6 +187,7 @@
 				510DCB0C1CCA69EC0075E8CB /* Resources */,
 				18F7340895C5AA6B988B03B6 /* 📦 Embed Pods Frameworks */,
 				DF68872A73AD1E49C33FE5F0 /* 📦 Copy Pods Resources */,
+				510E94FE1CCB87F100BDF098 /* Create Clang compilation DB */,
 			);
 			buildRules = (
 			);
@@ -318,6 +319,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Emission/Pods-Emission-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		510E94FE1CCB87F100BDF098 /* Create Clang compilation DB */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Create Clang compilation DB";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\nclang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compile_commands.json\"\nfi";
+			showEnvVarsInLog = 0;
+		};
 		921B840AC340AE7E64EC1E6E /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -408,6 +424,7 @@
 			baseConfigurationReference = 822BF881E9F1716840710C01 /* Pods-Emission.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = Emission/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
@@ -423,6 +440,7 @@
 			baseConfigurationReference = 7F3A1FEFE0AEAB158547A0BB /* Pods-Emission.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				INFOPLIST_FILE = Emission/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
