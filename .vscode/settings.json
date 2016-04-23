@@ -2,6 +2,9 @@
 {
     "files.associations": {
         "*.podspec": "ruby",
-        "Podfile": "ruby"
-    }
+        "Podfile": "ruby",
+        "*.h": "objective-c",
+    },
+    "files.trimTrailingWhitespace": true,
+	"editor.renderWhitespace": true,
 }
