@@ -9,7 +9,8 @@
 
 
 @interface AROnboardingPersonalizeTableViewController ()
-@property (nonatomic) NSMutableArray *searchResults;
+@property (nonatomic, strong) NSMutableArray *searchResults;
+@property (nonatomic, assign) BOOL shouldAnimate;
 @end
 
 
@@ -40,7 +41,6 @@
                       animated:(BOOL)animated
 {
     UITableViewRowAnimation animationStyle;
-
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
             if (searchResults[0]) {
@@ -49,29 +49,34 @@
                 [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
             }
             animationStyle = UITableViewRowAnimationFade;
-
             break;
 
         case ARSearchResultsReplaceAll:
             self.searchResults = searchResults.mutableCopy;
-            if (animated) {
-                animationStyle = UITableViewRowAnimationTop;
-            } else {
-                animationStyle = UITableViewRowAnimationNone;
-            }
+            animationStyle = UITableViewRowAnimationNone;
             break;
 
         default:
             animationStyle = UITableViewRowAnimationNone;
             break;
     }
-    animationStyle = UITableViewRowAnimationNone;
+
+    self.shouldAnimate = animated;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:animationStyle];
-    [UIView animateWithDuration:0.3 animations:^{
-        self.tableView.alpha = 0;
-    } completion:^(BOOL finished) {
-        self.tableView.alpha = 1;
-    }];
+    [self flashAndFadeTableView];
+}
+
+- (void)flashAndFadeTableView
+{
+    if (self.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults && self.shouldAnimate) {
+        [UIView animateWithDuration:0.35 animations:^{
+            self.tableView.alpha = 0;
+        } completion:^(BOOL finished) {
+            self.tableView.alpha = 1;
+        }];
+
+        self.shouldAnimate = NO;
+    }
 }
 
 
@@ -121,19 +126,20 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGRect originalFrame = cell.frame;
+    if (self.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults && self.shouldAnimate) {
+        CGRect originalFrame = cell.frame;
 
-    cell.frame = CGRectMake(cell.frame.origin.x, self.tableView.frame.size.height, cell.frame.size.width, cell.frame.size.height);
-    cell.alpha = 0;
-    CGFloat duration = (0.6 * originalFrame.origin.y) / self.tableView.frame.size.height + 0.3;
-    //0.1+30*(1.0/(self.tableView.frame.size.height-originalFrame.origin.y));
-    CGFloat delay = 0.18 * (indexPath.row);
+        cell.frame = CGRectMake(cell.frame.origin.x, self.tableView.frame.size.height, cell.frame.size.width, cell.frame.size.height);
+        cell.alpha = 0;
+        CGFloat duration = (0.6 * originalFrame.origin.y) / self.tableView.frame.size.height + 0.3;
+        CGFloat delay = 0.18 * (indexPath.row);
 
-    [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveEaseIn animations:^{
-        cell.frame = originalFrame;
-        cell.alpha = 1.0;
-    } completion:^(BOOL finished){
-    }];
+        [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveEaseIn animations:^{
+            cell.frame = originalFrame;
+            cell.alpha = 1.0;
+        } completion:^(BOOL finished){
+        }];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

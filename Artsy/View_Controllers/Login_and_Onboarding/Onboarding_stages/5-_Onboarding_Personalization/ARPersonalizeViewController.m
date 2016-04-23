@@ -171,11 +171,11 @@
 
     switch (self.searchResultsTable.contentDisplayMode) {
         case ARTableViewContentDisplayModeSearchResults: {
+            self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
             self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist success:^(NSArray *artists) {
                 [self.searchResultsTable updateTableContentsFor:artists
                                                 replaceContents:ARSearchResultsReplaceAll
                                                        animated:YES];
-                self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
             } failure:^(NSError *error) {
                 if (error.code != NSURLErrorCancelled) {
                     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -189,7 +189,7 @@
             self.searchRequestOperation = [ArtsyAPI getRelatedArtistForArtist:artist success:^(NSArray *relatedArtist) {
                 [self.searchResultsTable updateTableContentsFor:relatedArtist
                                                 replaceContents:ARSearchResultsReplaceSingle
-                                                       animated:YES];
+                                                       animated:NO];
             } failure:^(NSError *error) {
                 if (error.code != NSURLErrorCancelled) {
                     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -219,6 +219,7 @@
 
     if (searchBarIsEmpty) {
         [self.searchResultsTable updateTableContentsFor:@[] replaceContents:ARSearchResultsReplaceAll animated:NO];
+        return;
     }
     self.searchRequestOperation = [ArtsyAPI artistSearchWithQuery:self.headerView.searchField.searchField.text success:^(NSArray *results) {
         [self.searchResultsTable updateTableContentsFor:results replaceContents:ARSearchResultsReplaceAll animated:NO];
