@@ -11,6 +11,7 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, void (^ca
   dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
     CGFloat width = destinationSize.width * scaleFactor;
     CGFloat height = destinationSize.height * scaleFactor;
+    NSCAssert(width != 0 && height != 0, @"Resizing an image to %fx%f makes no sense.", width, height);
 
     CGColorSpaceRef colourSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = CGBitmapContextCreate(NULL,
@@ -74,36 +75,41 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, void (^ca
     return;
   }
 
-  // TODO Setting decompress to NO, because Eigen sets it to YES.
-  //      We need to send a PR to SDWebImage to disable decoding
-  //      with an option to the download method.
+  // Once an image has been cached, it will be returned immediately, which means it might try to resize the image on a
+  // view with zero size. Give the (React) layout code a chance to assign a frame first.
   //
-  SDWebImageManager *manager = [SDWebImageManager sharedManager];
-  manager.imageCache.shouldDecompressImages = NO;
-  manager.imageDownloader.shouldDecompressImages = NO;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    // TODO Setting decompress to NO, because Eigen sets it to YES.
+    //      We need to send a PR to SDWebImage to disable decoding
+    //      with an option to the download method.
+    //
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    manager.imageCache.shouldDecompressImages = NO;
+    manager.imageDownloader.shouldDecompressImages = NO;
 
-  __weak typeof(self) weakSelf = self;
-  self.downloadOperation = [manager downloadImageWithURL:self.imageURL
-                                                  options:0
-                                                progress:nil
-                                                completed:^(UIImage *image,
-                                                            NSError *_,
-                                                            SDImageCacheType __,
-                                                            BOOL ____,
-                                                            NSURL *imageURL) {
-    __strong typeof(weakSelf) strongSelf = weakSelf;
-    // Only really assign if the URL we downloaded still matches `self.imageURL`.
-    if (strongSelf && [imageURL isEqual:strongSelf.imageURL]) {
-      // The view might not yet be associated with a window, in which case
-      // the view will always return 1 for contentScaleFactor.
-      CGFloat scaleFactor = [[UIScreen mainScreen] scale];
-      LoadImage(image, strongSelf.bounds.size, scaleFactor, ^(UIImage *loadedImage) {
-        if ([imageURL isEqual:weakSelf.imageURL]) {
-          weakSelf.image = loadedImage;
-        }
-      });
-    }
-  }];
+    __weak typeof(self) weakSelf = self;
+    self.downloadOperation = [manager downloadImageWithURL:self.imageURL
+                                                    options:0
+                                                  progress:nil
+                                                  completed:^(UIImage *image,
+                                                              NSError *_,
+                                                              SDImageCacheType __,
+                                                              BOOL ____,
+                                                              NSURL *imageURL) {
+      __strong typeof(weakSelf) strongSelf = weakSelf;
+      // Only really assign if the URL we downloaded still matches `self.imageURL`.
+      if (strongSelf && [imageURL isEqual:strongSelf.imageURL]) {
+        // The view might not yet be associated with a window, in which case
+        // -[UIView contentScaleFactor] would always return 1, so use screen instead.
+        CGFloat scaleFactor = [[UIScreen mainScreen] scale];
+        LoadImage(image, strongSelf.bounds.size, scaleFactor, ^(UIImage *loadedImage) {
+          if ([imageURL isEqual:weakSelf.imageURL]) {
+            weakSelf.image = loadedImage;
+          }
+        });
+      }
+    }];
+  });
 }
 
 @end
