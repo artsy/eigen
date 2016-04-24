@@ -135,6 +135,8 @@
     [self.searchResultsTable.view alignLeading:@"0" trailing:@"0" toView:self.view];
     [self.searchResultsTable.view constrainTopSpaceToView:self.headerView predicate:@"5"];
     [self.searchResultsTable.view constrainBottomSpaceToView:self.onboardingNavigationItems predicate:@"0"];
+
+    [self populateTrendingArtists];
 }
 
 - (void)nextTapped:(id)sender
@@ -204,6 +206,20 @@
     }
 }
 
+- (void)populateTrendingArtists
+{
+    if (self.searchRequestOperation) {
+        [self.searchRequestOperation cancel];
+    }
+
+    self.searchRequestOperation = [ArtsyAPI getTrendingArtistsWithSuccess:^(NSArray *artists) {
+         [self.searchResultsTable updateTableContentsFor:artists
+                                         replaceContents:ARSearchResultsReplaceAll
+                                                animated:NO];
+    } failure:^(NSError *error){
+        //bla
+    }];
+}
 #pragma mark -
 #pragma mark Search bar
 

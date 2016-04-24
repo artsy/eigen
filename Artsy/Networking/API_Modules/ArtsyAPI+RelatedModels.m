@@ -23,6 +23,13 @@
     return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] fromDictionaryWithKey:@"best_matches" success:success failure:failure];
 }
 
++ (AFHTTPRequestOperation *)getTrendingArtistsWithSuccess:(void (^)(NSArray *artists))success
+                                                  failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter newArtistsTrendingRequest];
+    return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] withKey:nil success:success failure:failure];
+}
+
 + (AFHTTPRequestOperation *)getRelatedArtworksForArtwork:(Artwork *)artwork
                                                  success:(void (^)(NSArray *artworks))success
                                                  failure:(void (^)(NSError *error))failure

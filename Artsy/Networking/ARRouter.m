@@ -658,6 +658,11 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
++ (NSURLRequest *)newArtistsTrendingRequest
+{
+    return [self requestWithMethod:@"GET" path:ARTrendingArtistsURL parameters:nil];
+}
+
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID
 {
     NSDictionary *params = @{ @"artist" : @[ artistID ] };
