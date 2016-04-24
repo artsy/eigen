@@ -20,7 +20,15 @@ RCTMeasure(void *context, float width, float height)
   return result;
 }
 
-- (void)fillCSSNode:(css_node_t *)node
+- (instancetype)init;
+{
+  if ((self = [super init])) {
+    _aspectRatio = 1;
+  }
+  return self;
+}
+
+- (void)fillCSSNode:(css_node_t *)node;
 {
   [super fillCSSNode:node];
   node->measure = RCTMeasure;
