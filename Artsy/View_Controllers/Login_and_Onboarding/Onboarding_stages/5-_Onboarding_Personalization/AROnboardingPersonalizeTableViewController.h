@@ -11,6 +11,7 @@ typedef NS_ENUM(NSInteger, ARSearchResultsReplaceContents) {
 typedef NS_ENUM(NSInteger, ARTableViewContentDisplayMode) {
     ARTableViewContentDisplayModeSearchResults,
     ARTableViewContentDisplayModeRelatedResults,
+    ARTableViewContentDisplayModePlaceholder,
     ARTableViewContentDisplayModeNone
 };
 

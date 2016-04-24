@@ -96,8 +96,7 @@
 {
     UIView *headerView = [[UIView alloc] init];
     ARSerifLabel *headerTitle = [[ARSerifLabel alloc] init];
-
-    headerTitle.text = @"TOP ARTISTS ON ARTSY";
+    UIView *lineView = [[UIView alloc] init];
 
     switch (self.contentDisplayMode) {
         case ARTableViewContentDisplayModeSearchResults:
@@ -106,20 +105,27 @@
         case ARTableViewContentDisplayModeRelatedResults:
             headerTitle.text = @"YOU MAY ALSO LIKE";
             break;
-        case ARTableViewContentDisplayModeNone:
+        case ARTableViewContentDisplayModePlaceholder:
             headerTitle.text = @"TOP ARTISTS ON ARTSY";
             break;
         default:
             break;
     }
 
-    headerTitle.font = [UIFont serifFontWithSize:14.0f];
+    headerTitle.font = [UIFont serifFontWithSize:15.0f];
 
     [headerView addSubview:headerTitle];
     [headerTitle alignLeadingEdgeWithView:headerView predicate:@"15"];
     [headerTitle alignTrailingEdgeWithView:headerView predicate:@"-15"];
     [headerTitle constrainHeightToView:headerView predicate:@"0"];
     [headerTitle alignCenterYWithView:headerView predicate:@"0"];
+
+    lineView.backgroundColor = self.tableView.separatorColor;
+    [headerView addSubview:lineView];
+
+    [lineView constrainHeight:@"0.5"];
+    [lineView constrainWidthToView:headerView predicate:@"*.96"];
+    [lineView alignBottom:@"0" trailing:@"0" toView:headerView];
 
     return headerView;
 }

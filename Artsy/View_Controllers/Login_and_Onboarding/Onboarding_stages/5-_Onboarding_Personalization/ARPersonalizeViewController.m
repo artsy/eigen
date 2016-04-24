@@ -212,6 +212,8 @@
         [self.searchRequestOperation cancel];
     }
 
+    self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModePlaceholder;
+
     self.searchRequestOperation = [ArtsyAPI getTrendingArtistsWithSuccess:^(NSArray *artists) {
          [self.searchResultsTable updateTableContentsFor:artists
                                          replaceContents:ARSearchResultsReplaceAll
