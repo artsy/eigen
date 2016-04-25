@@ -22,6 +22,7 @@ upcoming:
     - All cent values are handled by UInt64 in Live Auction context - orta
     - Present the Live AuctionVC in a modal - orta
     - Updates to Interstellar v2. - ash
+    - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
 
   notes:
     - Fixes long auction names falling off right edge. - ash

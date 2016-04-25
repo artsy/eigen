@@ -13,6 +13,10 @@ class LiveAuctionLotViewController: UIViewController {
     let auctionViewModel: LiveAuctionViewModelType
     let currentLotSignal: Observable<LiveAuctionLotViewModelType>
 
+    private var currentLotObserver: ObserverToken?
+    private var saleAvailabilityObserver: ObserverToken?
+    private var lotStateObserver: ObserverToken?
+
     // Using lazy to hold a strong reference onto the returned signal
     lazy var computedLotStateSignal: Observable<LotState> = {
         return self.lotViewModel.computedLotStateSignal(self.auctionViewModel)
@@ -29,6 +33,18 @@ class LiveAuctionLotViewController: UIViewController {
     
     required init?(coder aDecoder: NSCoder) {
         return nil
+    }
+
+    deinit {
+        if let currentLotObserver = currentLotObserver {
+            currentLotSignal.unsubscribe(currentLotObserver)
+        }
+        if let saleAvailabilityObserver = saleAvailabilityObserver {
+            auctionViewModel.saleAvailabilitySignal.unsubscribe(saleAvailabilityObserver)
+        }
+        if let lotStateObserver = lotStateObserver {
+            computedLotStateSignal.unsubscribe(lotStateObserver)
+        }
     }
 
     override func viewDidLoad() {
@@ -101,13 +117,12 @@ class LiveAuctionLotViewController: UIViewController {
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
 
-        // TODO impossible to unsubscribe from Interstellar signals, will adding all those callbacks ever hurt us performance-wise?
-        currentLotSignal.subscribe { [weak currentLotView, weak lotMetadataStack] currentLot in
+        currentLotObserver = currentLotSignal.subscribe { [weak currentLotView, weak lotMetadataStack] currentLot in
             currentLotView?.viewModel.update(currentLot)
             lotMetadataStack?.viewModel.update(currentLot)
         }
 
-        auctionViewModel.saleAvailabilitySignal.subscribe { [weak currentLotView] saleAvailability in
+        saleAvailabilityObserver = auctionViewModel.saleAvailabilitySignal.subscribe { [weak currentLotView] saleAvailability in
             if saleAvailability == .Closed {
                 currentLotView?.removeFromSuperview()
             }
@@ -116,7 +131,9 @@ class LiveAuctionLotViewController: UIViewController {
         infoToolbar.lotViewModel = lotViewModel
         infoToolbar.auctionViewModel = auctionViewModel
 
-        computedLotStateSignal.subscribe { [weak bidButton] lotState in
+        lotImagePreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
+
+        lotStateObserver = computedLotStateSignal.subscribe { [weak bidButton] lotState in
             // TODO: Hrm, should this go in the LotVM?
             let buttonState: LiveAuctionBidButtonState
             switch lotState {
@@ -124,13 +141,10 @@ class LiveAuctionLotViewController: UIViewController {
             default: buttonState = .InActive(lotState: lotState)
             }
             bidButton?.progressSignal.update(buttonState)
-        }
-        lotImagePreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
 
-        computedLotStateSignal.subscribe { lotState in
             switch lotState {
             case .ClosedLot:
-                bidButton.setEnabled(false, animated: false)
+                bidButton?.setEnabled(false, animated: false)
                 bidHistoryViewController.lotViewModel = self.lotViewModel
 
             case .LiveLot:

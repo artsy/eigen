@@ -14,6 +14,8 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
     weak var delegate: LiveAuctionLotListViewControllerDelegate?
 
+    private var currentLotSignalObserver: ObserverToken!
+
     init(lots: [LiveAuctionLotViewModelType], currentLotSignal: Observable<LiveAuctionLotViewModelType>, auctionViewModel: LiveAuctionViewModelType) {
         self.lots = lots
         self.currentLotSignal = currentLotSignal
@@ -22,13 +24,17 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
         super.init(collectionViewLayout: self.stickyCollectionViewLayout)
 
-        currentLotSignal.subscribe { [weak self] lot in
+        currentLotSignalObserver = currentLotSignal.subscribe { [weak self] lot in
             self?.stickyCollectionViewLayout.setActiveIndex(lot.lotIndex)
         }
     }
     
     required init?(coder aDecoder: NSCoder) {
         return nil
+    }
+
+    deinit {
+        currentLotSignal.unsubscribe(currentLotSignalObserver)
     }
 
     override func viewDidLoad() {

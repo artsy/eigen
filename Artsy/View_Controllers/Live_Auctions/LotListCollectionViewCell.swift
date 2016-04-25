@@ -20,6 +20,27 @@ class LotListCollectionViewCell: UICollectionViewCell {
     var isNotTopCell = true
 
     private var userInterfaceNeedsSetup = true
+    private var computedLotStateSubscription: (ObserverToken, Observable<LotState>)?
+    private var askingPriceSubscription: (ObserverToken, Observable<UInt64>)?
+}
+
+private typealias Overrides = LotListCollectionViewCell
+extension Overrides {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        defer {
+            computedLotStateSubscription = nil
+            askingPriceSubscription = nil
+        }
+
+        if let computedLotStateSubscription = computedLotStateSubscription {
+            computedLotStateSubscription.1.unsubscribe(computedLotStateSubscription.0)
+        }
+
+        if let askingPriceSubscription = askingPriceSubscription {
+            askingPriceSubscription.1.unsubscribe(askingPriceSubscription.0)
+        }
+    }
 }
 
 private typealias PublicFunctions = LotListCollectionViewCell
@@ -33,18 +54,19 @@ extension PublicFunctions {
 
         isNotTopCell = (indexPath.item > 0)
 
-        // TODO: These subscriptions require disposal in prepareForReuse().
-        viewModel
+        // TODO: Pending https://github.com/JensRavens/Interstellar/issues/40 this might look less messy.
+        let computedLotStateSignal = viewModel
             .computedLotStateSignal(auctionViewModel)
-            .subscribe { [weak self] state in
-                self?.setLotState(state)
-            }
 
-        viewModel
+        self.computedLotStateSubscription = (computedLotStateSignal.subscribe { [weak self] state in
+                self?.setLotState(state)
+            }, computedLotStateSignal)
+
+        askingPriceSubscription = (viewModel
             .askingPriceSignal
             .subscribe { [weak self] askingPrice in
                 self?.currentAskingPriceLabel.text = "$30,000"
-            }
+            }, viewModel.askingPriceSignal)
 
         lotImageView.ar_setImageWithURL(viewModel.urlForThumbnail)
         lotNumberLabel.text = "Lot \(viewModel.lotIndex)"

@@ -10,6 +10,13 @@ class LiveAuctionToolbarView : UIView {
     lazy var computedLotStateSignal: Observable<LotState> = {
         return self.lotViewModel.computedLotStateSignal(self.auctionViewModel)
     }()
+    var lotStateObserver: ObserverToken?
+
+    deinit {
+        if let lotStateObserver = lotStateObserver {
+            computedLotStateSignal.unsubscribe(lotStateObserver)
+        }
+    }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -34,7 +41,7 @@ class LiveAuctionToolbarView : UIView {
     }
 
     func setupViews() {
-        computedLotStateSignal.subscribe { [weak self] lotState in
+        lotStateObserver = computedLotStateSignal.subscribe { [weak self] lotState in
             self?.setupUsingState(lotState)
         }
     }
