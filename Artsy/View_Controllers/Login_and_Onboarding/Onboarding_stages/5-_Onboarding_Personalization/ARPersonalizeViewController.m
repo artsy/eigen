@@ -97,12 +97,16 @@
         case AROnboardingStagePersonalizeArtists:
             // progress percentages are made up for now, will be calculated by steps and remaining steps later
             [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." andProgress:0.33f];
+            self.searchResultsTable.headerPlaceholderText = @"TOP ARTISTS ON ARTSY";
             self.headerView.searchField.searchField.delegate = self;
+            [self.headerView.searchField.searchField setPlaceholder:@"Search artist"];
             [self populateTrendingArtists];
             break;
         case AROnboardingStagePersonalizeCategories:
             [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." andProgress:0.5f];
             self.headerView.searchField.searchField.delegate = self;
+            self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
+            [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
             [self.onboardingNavigationItems disableNextStep];
             [self populateTrendingArtists];
             break;
@@ -222,6 +226,8 @@
 
 - (void)categoryFollowed:(Gene *)category
 {
+    // suggest more categories
+    // which API to use, that is the question
 }
 
 - (void)reportError:(NSError *)error

@@ -108,7 +108,7 @@
             headerTitle.text = @"YOU MAY ALSO LIKE";
             break;
         case ARTableViewContentDisplayModePlaceholder:
-            headerTitle.text = @"TOP ARTISTS ON ARTSY";
+            headerTitle.text = self.headerPlaceholderText;
             break;
         default:
             break;
@@ -148,6 +148,15 @@
         } completion:^(BOOL finished){
         }];
     }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [UIView animateWithDuration:0.35 animations:^{
+        view.alpha = 0;
+    } completion:^(BOOL finished) {
+        view.alpha = 1;
+    }];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
