@@ -56,7 +56,7 @@
     [self addSubview:self.titleLabel];
 
     [self.titleLabel constrainWidthToView:self predicate:@"-40"];
-    [self.titleLabel alignLeadingEdgeWithView:self predicate:@"20"];
+    [self.titleLabel alignLeadingEdgeWithView:self predicate:@"15"];
     [self.titleLabel constrainTopSpaceToView:self.progressBar predicate:@"30"];
     [self.titleLabel constrainHeight:@"80"];
 
@@ -64,8 +64,8 @@
 
     [self.searchField constrainHeight:@"40"];
     [self.searchField constrainTopSpaceToView:self.titleLabel predicate:@"20"];
-    [self.searchField alignLeadingEdgeWithView:self predicate:@"20"];
-    [self.searchField alignTrailingEdgeWithView:self predicate:@"-20"];
+    [self.searchField alignLeadingEdgeWithView:self predicate:@"15"];
+    [self.searchField alignTrailingEdgeWithView:self predicate:@"-15"];
     self.searchField.tintColor = [UIColor blackColor];
 }
 

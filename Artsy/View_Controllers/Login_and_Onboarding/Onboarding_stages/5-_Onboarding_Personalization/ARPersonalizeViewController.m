@@ -11,6 +11,8 @@
 
 #import "MTLModel+JSON.h"
 
+#import "Artsy-Swift.h"
+
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -82,14 +84,15 @@
 
     [self.headerView alignTopEdgeWithView:self.view predicate:@"0"];
     [self.headerView constrainHeight:@"180"];
-    [self.headerView constrainWidthToView:self.view predicate:@"0"];
-    [self.headerView alignLeadingEdgeWithView:self.view predicate:@"0"];
+    [self.headerView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
+    [self.headerView alignCenterXWithView:self.view predicate:@"0"];
 
     self.searchResultsTable = [[AROnboardingPersonalizeTableViewController alloc] init];
     self.searchResultsTable.networkDelegate = self;
     [self.view addSubview:self.searchResultsTable.view];
 
-    [self.searchResultsTable.view alignLeading:@"0" trailing:@"0" toView:self.view];
+    [self.searchResultsTable.view constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
+    [self.searchResultsTable.view alignCenterXWithView:self.view predicate:@"0"];
     [self.searchResultsTable.view constrainTopSpaceToView:self.headerView predicate:@"5"];
     [self.searchResultsTable.view constrainBottomSpaceToView:self.onboardingNavigationItems predicate:@"0"];
 
