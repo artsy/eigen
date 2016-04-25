@@ -102,7 +102,7 @@ static CGFloat ARMetadataFontSize;
 - (void)resetLabels
 {
     self.primaryLabel.text = nil;
-    [self.secondaryLabel setTitle:nil date:nil];
+    [self.secondaryLabel setTitle:@"" date:nil];
     self.priceLabel.text = nil;
 }
 

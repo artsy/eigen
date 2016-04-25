@@ -12,6 +12,8 @@ extension UIImage {
     case Live_auction_bid_warning_yellow = "live_auction_bid_warning_yellow"
     case LiveAuctionMaxBidIcon = "LiveAuctionMaxBidIcon"
     case LiveAuctionOutbidWarningIcon = "LiveAuctionOutbidWarningIcon"
+    case LiveAuctionsDisclosureTriangleDown = "LiveAuctionsDisclosureTriangleDown"
+    case LiveAuctionsDisclosureTriangleUp = "LiveAuctionsDisclosureTriangleUp"
     case LiveAuctionSpinner = "LiveAuctionSpinner"
     case Lot_bidder_hammer_white = "lot_bidder_hammer_white"
     case Lot_bidders_info = "lot_bidders_info"

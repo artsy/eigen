@@ -55,7 +55,6 @@
 #import "ARCollectorStatusViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARBrowseCategoriesViewController.h"
-#import "ARAuctionArtworkResultsViewController.h"
 #import "ARArtistBiographyViewController.h"
 #import "ARFairMapViewController.h"
 #import "ARBrowseViewController.h"
@@ -334,17 +333,6 @@
                 @{
                     ARAnalyticsClass: ARArtworkViewController.class,
                     ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsStartedSpecialistInquiry,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactRepresentative)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters) {
-                                return @{
-                                    @"artwork_slug": controller.artwork.artworkID ?: @"",
-                                    @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                    @"partner_slug": controller.artwork.partner.partnerID ?: @"",
-                                };
-                            }
-                        },
                         @{
                             ARAnalyticsEventName: ARAnalyticsStartedGalleryInquiry,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedContactGallery)),
@@ -1470,18 +1458,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARAuctionArtworkResultsViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Auction results",
-                            ARAnalyticsProperties: ^NSDictionary *(ARAuctionArtworkResultsViewController *controller, NSArray *_) {
-                                return @{ @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                          @"artwork_slug": controller.artwork.artworkID ?: @""};
-                            }
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARInternalMobileWebViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -1500,18 +1476,6 @@
                             ARAnalyticsProperties: ^NSDictionary *(AuctionViewController *controller, NSArray *_) {
                                 return @{ @"auction_slug": controller.saleID ?: @"",
                                           @"slug": [NSString stringWithFormat:@"/auction/%@", controller.saleID] };
-                            }
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: AuctionRefineViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Sale Information",
-                            ARAnalyticsProperties: ^NSDictionary *(AuctionInformationViewController *controller, NSArray *_) {
-                                return @{ @"context": @"auction",
-                                        @"slug": [NSString stringWithFormat:@"/auction/%@/refine", controller.saleViewModel.saleID]};
                             }
                         }
                     ]

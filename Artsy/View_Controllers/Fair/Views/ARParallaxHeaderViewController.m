@@ -93,8 +93,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)constrainViews
 {
-    NSArray *constraintsArray = [self.bannerImageView alignTopEdgeWithView:self.view predicate:@"0"];
-    self.bannerTopLayoutConstraint = constraintsArray.firstObject;
+    self.bannerTopLayoutConstraint = [self.bannerImageView alignTopEdgeWithView:self.view predicate:@"0"];
     NSString *bottomPredicate = [NSString stringWithFormat:@"<=-%@", @(ARParallaxHeaderViewBottomWhitespaceHeight)];
     [self.bannerImageView alignTop:@"0" leading:@"0" bottom:bottomPredicate trailing:@"0" toView:self.view];
 

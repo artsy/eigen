@@ -8,6 +8,5 @@
 #import "ARFavoritesViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARGeneViewController.h"
-#import "ARAuctionArtworkResultsViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARQuicksilverViewController.h"

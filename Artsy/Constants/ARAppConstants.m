@@ -5,8 +5,8 @@
 NSString *const ARTestAccountLogin = @"energy_test_bot@gmail.com";
 NSString *const ARTestAccountPassword = @"zaqwsxcde";
 
-const CGFloat ARAnimationQuickDuration = 0.15;
-const CGFloat ARAnimationDuration = 0.3;
+const NSTimeInterval ARAnimationQuickDuration = 0.15;
+const NSTimeInterval ARAnimationDuration = 0.3;
 
 NSString *const AROExpiryDateKey = @"expires_in";
 NSString *const ARXAppToken = @"xapp_token";

@@ -15,12 +15,14 @@ protocol LiveAuctionLotViewModelType: class {
 
     var lotArtist: String { get }
     var estimateString: String { get }
+    var lotPremium: String { get }
     var lotName: String { get }
+    var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: NSURL { get }
     var urlForProfile: NSURL { get }
     var numberOfEvents: Int { get }
     var lotIndex: Int { get }
-    var currentLotValue: Int { get }
+    var currentLotValue: UInt64 { get }
     var currentLotValueString: String { get }
     var numberOfBids: Int { get }
     var imageProfileSize: CGSize { get }
@@ -28,7 +30,7 @@ protocol LiveAuctionLotViewModelType: class {
     var reserveStatusString: String { get }
 
     var reserveStatusSignal: Signal<ARReserveStatus> { get }
-    var askingPriceSignal: Signal<Int> { get }
+    var askingPriceSignal: Signal<UInt64> { get }
     var startEventUpdatesSignal: Signal<NSDate> { get }
     var endEventUpdatesSignal: Signal<NSDate> { get }
     var newEventSignal: Signal<LiveAuctionEventViewModel> { get }
@@ -40,7 +42,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     private var events = [LiveAuctionEventViewModel]()
 
     let reserveStatusSignal = Signal<ARReserveStatus>()
-    let askingPriceSignal = Signal<Int>()
+    let askingPriceSignal = Signal<UInt64>()
 
     let startEventUpdatesSignal = Signal<NSDate>()
     let endEventUpdatesSignal = Signal<NSDate>()
@@ -90,8 +92,16 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.artworkTitle
     }
 
+    var lotArtworkCreationDate: String? {
+        return model.artworkDate
+    }
+
     var lotArtist: String {
         return model.artistName
+    }
+
+    var lotPremium: String {
+        return "Premium: WIP"
     }
 
     var lotIndex: Int {
@@ -102,7 +112,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.liveAuctionLotID
     }
 
-    var currentLotValue: Int {
+    var currentLotValue: UInt64 {
         // TODO: is onlineAskingPriceCents correct? not sure from JSON
         //       maybe we need to look through the events for the last bid?
         return LiveAuctionBidViewModel.nextBidCents(model.onlineAskingPriceCents)
@@ -113,7 +123,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var estimateString: String {
-        return SaleArtwork.estimateStringForLowEstimate(model.lowEstimateCents, highEstimateCents: model.highEstimateCents, currencySymbol: model.currencySymbol, currency: model.currency)
+        let low = NSNumber(unsignedLongLong: model.lowEstimateCents)
+        let high = NSNumber(unsignedLongLong: model.highEstimateCents)
+        return SaleArtwork.estimateStringForLowEstimate(low, highEstimateCents:high, currencySymbol: model.currencySymbol, currency: model.currency)
     }
 
     var eventIDs: [String] {
@@ -151,7 +163,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
     }
 
-    func updateOnlineAskingPrice(askingPrice: Int) {
+    func updateOnlineAskingPrice(askingPrice: UInt64) {
         let updated = model.updateOnlineAskingPrice(askingPrice)
 
         if updated {

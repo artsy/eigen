@@ -138,8 +138,6 @@
 {
     [super constrainViewsWithLayoutAttributes:layoutAttributes];
 
-    self.largeConstraintsToUpdate = @[];
-
     // We need a container for the vertical stack of artist/artwork name.
     UIView *artworkLabelsContainer = [UIView new];
     [self.contentView addSubview:artworkLabelsContainer];
@@ -155,12 +153,13 @@
     [self.artistNameLabel constrainBottomSpaceToView:self.artworkNameLabel predicate:@"0"];
 
     // We constrain the leading space to the image view, then the trailing space to the lot number label, and store them for later configuration (the predicates here don't matter).
-    self.largeConstraintsToUpdate = [self.largeConstraintsToUpdate arrayByAddingObjectsFromArray:[artworkLabelsContainer constrainLeadingSpaceToView:self.artworkImageView predicate:@"0"]];
-    self.largeConstraintsToUpdate = [self.largeConstraintsToUpdate arrayByAddingObjectsFromArray:[self.lotNumberLabel constrainLeadingSpaceToView:artworkLabelsContainer predicate:@"0"]];
+    NSLayoutConstraint *imageConstraint = [artworkLabelsContainer constrainLeadingSpaceToView:self.artworkImageView predicate:@"0"];
+    NSLayoutConstraint *lotNumberConstrinat = [self.lotNumberLabel constrainLeadingSpaceToView:artworkLabelsContainer predicate:@"0"];
+    self.largeConstraintsToUpdate = @[imageConstraint, lotNumberConstrinat];
 
     // Number of bids label is Regular cell specific, so: add it, constraint it to the trailing edge, and store the constrain for later configuration (the predicate doesn't matter).
     [self.contentView addSubview:self.numberOfBidsLabel];
-    self.smallConstraintsToUpdate = [self.numberOfBidsLabel alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeTrailing ofView:self.contentView predicate:@"-40"];
+    self.smallConstraintsToUpdate = @[[self.numberOfBidsLabel alignAttribute:NSLayoutAttributeTrailing toAttribute:NSLayoutAttributeTrailing ofView:self.contentView predicate:@"-40"]];
 
     // Center the current bid label's text, give it a low content hugging priority so it'll expand to fill the horizontal space, then constrain leading/trailing space appropriately.
     self.currentOrStartingBidLabel.textAlignment = NSTextAlignmentCenter;

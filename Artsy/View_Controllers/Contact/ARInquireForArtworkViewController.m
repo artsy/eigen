@@ -269,12 +269,12 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [self.view addSubview:topContainer];
     [topContainer alignLeading:@"0" trailing:@"0" toView:self.view];
     topContainer.backgroundColor = [UIColor clearColor];
-    _inquiryHeightConstraint = [[topContainer constrainHeightToView:self.view predicate:@"0"] lastObject];
+    _inquiryHeightConstraint = [topContainer constrainHeightToView:self.view predicate:@"0"];
 
     // We will toggle the priority of the second constraint to determine whether or not it should take
     // precedence over the first in order to show/hide the form.
     [topContainer constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0@500"];
-    _hideInquiryConstraint = [[topContainer constrainTopSpaceToView:self.flk_bottomLayoutGuide predicate:@"0@999"] lastObject];
+    _hideInquiryConstraint = [topContainer constrainTopSpaceToView:self.flk_bottomLayoutGuide predicate:@"0@999"];
 
     _topContainer = topContainer;
     UIView *inquiryFormView = [[UIView alloc] init];
@@ -287,7 +287,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     viewBehindKeyboard.backgroundColor = [UIColor blackColor];
     [self.view addSubview:viewBehindKeyboard];
     [viewBehindKeyboard alignLeading:@"0" trailing:@"0" toView:self.view];
-    _keyboardPositionConstraint = [[viewBehindKeyboard constrainTopSpaceToView:self.flk_bottomLayoutGuide predicate:@"0"] lastObject];
+    _keyboardPositionConstraint = [viewBehindKeyboard constrainTopSpaceToView:self.flk_bottomLayoutGuide predicate:@"0"];
 
     if ([UIDevice isPad]) {
         [inquiryFormView constrainWidth:@"600"];
@@ -312,7 +312,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     self.inquiryHeightConstraint.constant = -height - self.topLayoutGuide.length;
 
     if (!self.keyboardHeightConstraint) {
-        _keyboardHeightConstraint = [[self.viewBehindKeyboard constrainHeight:@(height).stringValue] lastObject];
+        _keyboardHeightConstraint = [self.viewBehindKeyboard constrainHeight:@(height).stringValue];
     } else {
         self.keyboardHeightConstraint.constant = height;
     }

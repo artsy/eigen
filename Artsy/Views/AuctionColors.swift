@@ -6,4 +6,8 @@ extension UIColor {
     static func auctionGreen() -> UIColor {
         return UIColor(hex: 0x16d047)
     }
+
+    static func auctionRed() -> UIColor {
+        return UIColor(hex: 0xf5645c)
+    }
 }

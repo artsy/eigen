@@ -221,14 +221,6 @@
                                           }];
 }
 
-- (AFHTTPRequestOperation *)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success
-{
-    return [ArtsyAPI getAuctionComparablesForArtwork:self success:success
-                                             failure:^(NSError *error) {
-            success(@[]);
-                                             }];
-}
-
 - (AFHTTPRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success
 {
     return [ArtsyAPI getRelatedPostsForArtwork:self success:success
@@ -310,7 +302,7 @@
     return [self.provenance length] || [self.exhibitionHistory length] || [self.signature length] || [self.additionalInfo length] || [self.literature length];
 }
 
-- (KSPromise *)onArtworkUpdate:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (KSPromise *)onArtworkUpdate:(nullable void (^)(void))success failure:(nullable void (^)(NSError *error))failure
 {
     __weak typeof(self) wself = self;
 
@@ -381,14 +373,14 @@
     }];
 }
 
-- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success
-                           failure:(void (^)(NSError *error))failure
+- (KSPromise *)onSaleArtworkUpdate:(nullable void (^)(SaleArtwork *saleArtwork))success
+                           failure:(nullable void (^)(NSError *error))failure
 {
     return [self onSaleArtworkUpdate:success failure:failure allowCached:YES];
 }
 
-- (KSPromise *)onSaleArtworkUpdate:(void (^)(SaleArtwork *saleArtwork))success
-                           failure:(void (^)(NSError *error))failure
+- (KSPromise *)onSaleArtworkUpdate:(nullable void (^)(SaleArtwork *saleArtwork))success
+                           failure:(nullable void (^)(NSError *error))failure
                        allowCached:(BOOL)allowCached;
 {
     KSDeferred *deferred = [self deferredSaleArtworkUpdate];
@@ -438,7 +430,7 @@
     }];
 }
 
-- (KSPromise *)onFairUpdate:(void (^)(Fair *))success failure:(void (^)(NSError *))failure
+- (KSPromise *)onFairUpdate:(nullable void (^)(Fair *))success failure:(nullable void (^)(NSError *))failure
 {
     KSDeferred *deferred = [self deferredFairUpdate];
     return [deferred.promise then:^(id value) {
@@ -463,7 +455,7 @@
     return _partnerShowDeferred;
 }
 
-- (KSPromise *)onPartnerShowUpdate:(void (^)(PartnerShow *show))success failure:(void (^)(NSError *error))failure;
+- (KSPromise *)onPartnerShowUpdate:(nullable void (^)(PartnerShow *show))success failure:(nullable void (^)(NSError *error))failure;
 {
     KSDeferred *deferred = self.deferredPartnerShowUpdate;
     return [deferred.promise then:^(PartnerShow *show) {
@@ -490,7 +482,7 @@
     }];
 }
 
-- (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
+- (void)setFollowState:(BOOL)state success:(nullable void (^)(id))success failure:(nullable void (^)(NSError *))failure
 {
     __weak typeof(self) wself = self;
     [ArtsyAPI setFavoriteStatus:state forArtwork:self success:^(id response) {
@@ -517,7 +509,7 @@
 }
 
 
-- (void)getFavoriteStatus:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
+- (void)getFavoriteStatus:(nullable void (^)(ARHeartStatus status))success failure:(nullable void (^)(NSError *error))failure
 {
     if ([User isTrialUser]) {
         _heartStatus = ARHeartStatusNo;
@@ -586,11 +578,6 @@
     return _heartStatus;
 }
 
-- (BOOL)shouldShowAuctionResults
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:ARShowAuctionResultsButtonDefault] && self.partner && self.partner.type == ARPartnerTypeGallery && [self.category rangeOfString:@"Architecture"].location == NSNotFound && self.auctionResultCount.intValue > 0;
-}
-
 - (CGFloat)dimensionInInches:(CGFloat)dimension
 {
     switch (self.metric) {
@@ -614,11 +601,6 @@
 - (CGFloat)diameterInches
 {
     return [self dimensionInInches:[self.diameter floatValue]];
-}
-
-- (NSString *)auctionResultsPath
-{
-    return [NSString stringWithFormat:@"/artwork/%@/auction_results", self.artworkID];
 }
 
 - (void)setNilValueForKey:(NSString *)key

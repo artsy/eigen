@@ -321,24 +321,6 @@ describe(@"ARSwitchboard", ^{
             expect(subject).to.beAKindOf(ARGeneViewController.class);
         });
 
-        /// As the class is in swift-world, lets not complicate this by bridging when it's not important
-        it(@"routes live auctions", ^{
-            switchboard = [[ARSwitchBoard alloc] init];
-            [switchboard updateRoutes];
-
-            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net"]];
-            NSString *classString = NSStringFromClass([subject class]);
-            expect(classString).to.contain(@"LiveAuctionViewController");
-        });
-
-        it(@"routes un-registered subdomains internally", ^{
-            switchboard = [[ARSwitchBoard alloc] init];
-            [switchboard updateRoutes];
-
-            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://whatever.artsy.net"]];
-            expect(subject).to.beKindOf(ARInternalMobileWebViewController.class);
-        });
-
         it(@"routes auctions", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
@@ -346,6 +328,15 @@ describe(@"ARSwitchboard", ^{
             id subject = [switchboard loadPath:@"/auction/myauctionthing"];
             NSString *classString = NSStringFromClass([subject class]);
             expect(classString).to.contain(@"AuctionViewController");
+        });
+
+        it(@"routes live auctions", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+
+            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"ARSerifNavigationViewController");
         });
 
         it(@"can not route to native auctions when echo has a feature called 'DisableNativeAuctions'", ^{

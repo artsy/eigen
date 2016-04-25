@@ -49,7 +49,7 @@
 {
     CGFloat height = self.view.collectionViewLayout.collectionViewContentSize.height;
     if (!self.heightConstraint) {
-        self.heightConstraint = [[self.view constrainHeight:@(height).stringValue] lastObject];
+        self.heightConstraint = [self.view constrainHeight:@(height).stringValue];
     } else {
         self.heightConstraint.constant = height;
     }
@@ -121,7 +121,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     Artist *artist = self.relatedArtists[indexPath.row];
-    UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadArtistWithID:artist.artistID inFair:self.fair];
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:artist.artistID inFair:self.fair];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

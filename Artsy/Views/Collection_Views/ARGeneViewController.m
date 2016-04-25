@@ -19,6 +19,9 @@
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
+
 #import "UILabel+Typography.h"
 #import "UIDevice-Hardware.h"
 
@@ -289,7 +292,7 @@
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
     ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:self.artworksViewController.items inFair:nil atIndex:index];
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)embeddedModelsViewControllerDidScrollPastEdge:(AREmbeddedModelsViewController *)controller

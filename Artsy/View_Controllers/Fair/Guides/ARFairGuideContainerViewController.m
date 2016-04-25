@@ -221,13 +221,12 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
         [self alignViewToSelf:self.fairGuideViewController.view top:mapBottomString leading:@"0" bottom:@"0" trailing:@"0"];
         [self alignViewToSelf:self.fairGuideBackgroundView top:mapBottomString leading:@"0" bottom:@"0" trailing:@"0"];
 
-        NSArray *constraints = [self.fairGuideViewController.view alignTopEdgeWithView:self.view predicate:mapTopString];
-        [self.subviewsConstraintsArray addObjectsFromArray:constraints];
-        self.fairGuideTopLayoutConstraint = constraints.firstObject;
+        self.fairGuideTopLayoutConstraint = [self.fairGuideViewController.view alignTopEdgeWithView:self.view predicate:mapTopString];
+        [self.subviewsConstraintsArray addObject:self.fairGuideTopLayoutConstraint];
 
-        constraints = [self.fairGuideBackgroundView alignTopEdgeWithView:self.view predicate:mapTopString];
-        [self.subviewsConstraintsArray addObjectsFromArray:constraints];
-        self.fairBackgroundViewTopLayoutConstraint = constraints.firstObject;
+
+        self.fairBackgroundViewTopLayoutConstraint = [self.fairGuideBackgroundView alignTopEdgeWithView:self.view predicate:mapTopString];
+        [self.subviewsConstraintsArray addObject:self.fairBackgroundViewTopLayoutConstraint];
 
     } else {
         NSString *hiddenTop = @(CGRectGetHeight(self.view.bounds)).stringValue;
