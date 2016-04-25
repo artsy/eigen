@@ -65,8 +65,8 @@ class Test_StateFetcher: LiveAuctionStateFetcherType {
         self.saleID = saleID
     }
 
-    func fetchSale() -> Signal<AnyObject> {
-        return Signal<AnyObject>()
+    func fetchSale() -> Observable<AnyObject> {
+        return Observable<AnyObject>()
     }
 }
 
@@ -104,7 +104,7 @@ class Test_StateRecociler: LiveAuctionStateReconcilerType {
         mostRecentState = state
     }
     
-    var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> { return Signal() }
-    var currentLotSignal: Signal<LiveAuctionLotViewModelType> { return Signal() }
-    var saleSignal: Signal<LiveAuctionViewModelType> { return Signal() }
+    var newLotsSignal: Observable<[LiveAuctionLotViewModelType]> { return Observable() }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { return Observable() }
+    var saleSignal: Observable<LiveAuctionViewModelType> { return Observable() }
 }

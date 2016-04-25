@@ -36,13 +36,13 @@ extension PublicFunctions {
         // TODO: These subscriptions require disposal in prepareForReuse().
         viewModel
             .computedLotStateSignal(auctionViewModel)
-            .next { [weak self] state in
+            .subscribe { [weak self] state in
                 self?.setLotState(state)
             }
 
         viewModel
             .askingPriceSignal
-            .next { [weak self] askingPrice in
+            .subscribe { [weak self] askingPrice in
                 self?.currentAskingPriceLabel.text = "$30,000"
             }
 

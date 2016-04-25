@@ -57,7 +57,7 @@ class LiveAuctionViewController: UIViewController {
         progress.alignLeading("0", trailing: "0", toView: view)
         progress.alignBottomEdgeWithView(view, predicate: "-165")
 
-        salesPerson.updatedStateSignal.next { [weak self] _ in
+        salesPerson.updatedStateSignal.subscribe { [weak self] _ in
             self?.setupWithInitialData()
         }
     }
@@ -96,7 +96,7 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func moreInfo() {
-        AuctionSaleNetworkModel().fetchSale(saleID) { result in
+        AuctionSaleNetworkModel().fetchSale(saleID).subscribe { result in
             guard let saleInfo = result.value else { return }
 
             let saleVM = SaleViewModel(sale: saleInfo, saleArtworks: [])

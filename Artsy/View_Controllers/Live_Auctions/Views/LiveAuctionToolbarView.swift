@@ -7,7 +7,7 @@ class LiveAuctionToolbarView : UIView {
     var lotViewModel: LiveAuctionLotViewModelType!
     var auctionViewModel: LiveAuctionViewModelType!
 
-    lazy var computedLotStateSignal: Signal<LotState> = {
+    lazy var computedLotStateSignal: Observable<LotState> = {
         return self.lotViewModel.computedLotStateSignal(self.auctionViewModel)
     }()
 
@@ -34,7 +34,7 @@ class LiveAuctionToolbarView : UIView {
     }
 
     func setupViews() {
-        computedLotStateSignal.next { [weak self] lotState in
+        computedLotStateSignal.subscribe { [weak self] lotState in
             self?.setupUsingState(lotState)
         }
     }

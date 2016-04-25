@@ -14,14 +14,14 @@ enum LiveAuctionBidButtonState {
 }
 
 class LiveAuctionBidButton : ARFlatButton {
-    let progressSignal = Signal<LiveAuctionBidButtonState>()
+    let progressSignal = Observable<LiveAuctionBidButtonState>()
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
 
     override func setup() {
         super.setup()
         setContentCompressionResistancePriority(1000, forAxis: .Vertical)
         addTarget(self, action: #selector(tappedBidButton), forControlEvents: .TouchUpInside)
-        progressSignal.next(setupWithState)
+        progressSignal.subscribe(setupWithState)
     }
 
     func tappedBidButton() {

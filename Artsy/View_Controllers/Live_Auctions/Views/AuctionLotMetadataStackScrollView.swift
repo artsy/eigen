@@ -7,7 +7,7 @@ import Artsy_UIFonts
 import FLKAutoLayout
 
 class AuctionLotMetadataStackScrollView: ORStackScrollView {
-    let viewModel = Signal<LiveAuctionLotViewModelType>()
+    let viewModel = Observable<LiveAuctionLotViewModelType>()
 
     let aboveFoldStack = TextStack()
     private let toggle = AuctionLotMetadataStackScrollView.toggleSizeButton()
@@ -33,7 +33,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         let premium = aboveFoldStack.addBodyText("", topMargin: "4")
         premium.textColor = UIColor.artsyGraySemibold()
 
-        viewModel.next { lot in
+        viewModel.subscribe { lot in
             name.text = lot.lotArtist
             title.setTitle(lot.lotName, date: lot.lotArtworkCreationDate)
             estimate.text = lot.estimateString
