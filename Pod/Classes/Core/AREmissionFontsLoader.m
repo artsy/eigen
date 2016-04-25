@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@import Artsy_UIFonts;
+#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 
 @interface AREmissionFontsLoader : NSObject
 @end
