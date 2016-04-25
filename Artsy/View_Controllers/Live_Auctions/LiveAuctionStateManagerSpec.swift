@@ -65,8 +65,8 @@ class Test_StateFetcher: LiveAuctionStateFetcherType {
         self.saleID = saleID
     }
 
-    func fetchSale() -> Observable<AnyObject> {
-        return Observable<AnyObject>()
+    func fetchSale() -> Observable<Result<AnyObject>> {
+        return Observable<Result<AnyObject>>()
     }
 }
 

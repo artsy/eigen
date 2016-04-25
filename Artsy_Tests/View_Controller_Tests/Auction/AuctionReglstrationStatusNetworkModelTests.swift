@@ -23,12 +23,12 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
 
             var registrationStatus: ArtsyAPISaleRegistrationStatus?
             waitUntil { done in
-                subject.fetchRegistrationStatus("whatever", callback: { result in
+                subject.fetchRegistrationStatus("whatever").subscribe { result in
                     if case .Success(let r) = result {
                         registrationStatus = r
                     }
                     done()
-                })
+                }
             }
 
             expect(registrationStatus) == ArtsyAPISaleRegistrationStatusRegistered
@@ -42,12 +42,12 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
 
             var registrationStatus: ArtsyAPISaleRegistrationStatus?
             waitUntil { done in
-                subject.fetchRegistrationStatus("whatever", callback: { result in
+                subject.fetchRegistrationStatus("whatever").subscribe { result in
                     if case .Success(let r) = result {
                         registrationStatus = r
                     }
                     done()
-                })
+                }
             }
 
             expect(registrationStatus) == ArtsyAPISaleRegistrationStatusNotRegistered
@@ -58,12 +58,12 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
 
             var registrationStatus: ArtsyAPISaleRegistrationStatus?
             waitUntil { done in
-                subject.fetchRegistrationStatus("whatever", callback: { result in
+                subject.fetchRegistrationStatus("whatever").subscribe { result in
                     if case .Success(let r) = result {
                         registrationStatus = r
                     }
                     done()
-                })
+                }
             }
 
             expect(registrationStatus) == ArtsyAPISaleRegistrationStatusNotLoggedIn
@@ -78,9 +78,9 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
             let subject = AuctionRegistrationStatusNetworkModel()
 
             waitUntil { done in
-                subject.fetchRegistrationStatus("whatever", callback: { result in
+                subject.fetchRegistrationStatus("whatever").subscribe { result in
                     done()
-                })
+                }
             }
 
             expect(subject.registrationStatus) == ArtsyAPISaleRegistrationStatusRegistered
