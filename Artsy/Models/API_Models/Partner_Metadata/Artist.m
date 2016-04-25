@@ -66,6 +66,11 @@
     return _isFollowed;
 }
 
+- (NSString *)id
+{
+    return _artistID;
+}
+
 - (void)followWithSuccess:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     [self setFollowState:YES success:success failure:failure];

@@ -154,6 +154,11 @@
     return _followed;
 }
 
+- (NSString *)id
+{
+    return _profileID;
+}
+
 - (void)followWithSuccess:(void (^)(id response))success failure:(void (^)(NSError *error))failure
 {
     [ArtsyAPI followProfile:self success:success failure:failure];

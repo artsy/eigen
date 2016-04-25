@@ -3,6 +3,8 @@
 #import "Artsy+UILabels.h"
 #import "UIColor+ArtsyColors.h"
 #import "Artist.h"
+#import "Gene.h"
+#import "ARFollowable.h"
 
 #import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -152,10 +154,20 @@
 {
     AROnboardingFollowableTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OnboardingSearchCell"];
 
-    Artist *artist = self.searchResults[indexPath.row];
-    cell.title.text = artist.name;
+    NSObject *result = self.searchResults[indexPath.row];
+
+    if ([result isKindOfClass:[Artist class]]) {
+        Artist *artist = (Artist *)result;
+        cell.title.text = artist.name;
+        cell.thumbnail.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:artist.squareImageURL]];
+    } else if ([result isKindOfClass:[Gene class]]) {
+        Gene *gene = (Gene *)result;
+        cell.title.text = gene.name;
+        cell.thumbnail.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:gene.smallImageURL]];
+    }
+
     cell.follow.image = [UIImage imageNamed:@"followButton"];
-    cell.thumbnail.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:artist.squareImageURL]];
+
     return cell;
 }
 
@@ -164,8 +176,8 @@
     AROnboardingFollowableTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.follow.image = [UIImage imageNamed:@"followButtonChecked"];
 
-    Artist *artist = self.searchResults[indexPath.row];
-    [self.networkDelegate artistClicked:artist];
+    NSObject<ARFollowable> *item = self.searchResults[indexPath.row];
+    [self.networkDelegate followableItemClicked:item];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

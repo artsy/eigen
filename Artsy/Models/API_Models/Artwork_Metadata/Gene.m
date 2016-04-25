@@ -59,7 +59,7 @@
 
 - (void)updateGene:(void (^)(void))success
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI getGeneForGeneID:self.geneID success:^(id gene) {
         __strong typeof (wself) sself = wself;
         [sself mergeValuesForKeysFromModel:gene];
@@ -79,6 +79,11 @@
     return _isFollowed;
 }
 
+- (NSString *)id
+{
+    return _geneID;
+}
+
 - (void)followWithSuccess:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     [self setFollowState:YES success:success failure:failure];
@@ -91,7 +96,7 @@
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI setFavoriteStatus:state forGene:self success:^(id response) {
         __strong typeof (wself) sself = wself;
         sself.followed = state;
@@ -115,7 +120,7 @@
         return;
     }
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI checkFavoriteStatusForGene:self success:^(BOOL result) {
         __strong typeof (wself) sself = wself;
         sself.followed = result;

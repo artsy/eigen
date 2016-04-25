@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
-@class Artist;
+@protocol ARFollowable;
+
 
 typedef NS_ENUM(NSInteger, ARSearchResultsReplaceContents) {
     ARSearchResultsReplaceSingle,
@@ -17,7 +18,7 @@ typedef NS_ENUM(NSInteger, ARTableViewContentDisplayMode) {
 
 @protocol PersonalizeNetworkDelegate <NSObject>
 @required
-- (void)artistClicked:(Artist *)artist;
+- (void)followableItemClicked:(NSObject<ARFollowable> *)item;
 @end
 
 

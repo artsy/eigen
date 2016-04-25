@@ -25,6 +25,7 @@
 #import "ARAnalyticsConstants.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
+#import "ARFollowable.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -308,6 +309,11 @@
 - (void)backTapped
 {
     [self popViewControllerAnimated:YES];
+}
+
+- (void)followableItemFollowed:(NSObject<ARFollowable> *)item
+{
+    // store IDs
 }
 
 //- (void)presentPriceRange

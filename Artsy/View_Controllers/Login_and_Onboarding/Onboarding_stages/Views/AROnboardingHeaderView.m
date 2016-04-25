@@ -42,7 +42,7 @@
     self.progressBar.backgroundColor = [UIColor blackColor];
     [self addSubview:self.progressBar];
 
-    NSString *progressWidth = [NSString stringWithFormat:@"*.%1.0f", progress];
+    NSString *progressWidth = [NSString stringWithFormat:@"*.%1.0f", progress * 100];
 
     [self.progressBar constrainHeight:@"5"];
     [self.progressBar constrainWidthToView:self predicate:progressWidth];
