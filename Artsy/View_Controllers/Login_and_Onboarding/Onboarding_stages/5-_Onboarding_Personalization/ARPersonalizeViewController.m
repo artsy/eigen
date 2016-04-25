@@ -29,7 +29,7 @@
 @property (nonatomic) AROnboardingNavigationItemsView *onboardingNavigationItems;
 @property (nonatomic, strong) AROnboardingPersonalizeTableViewController *searchResultsTable;
 
-@property (nonatomic) AFHTTPRequestOperation *searchRequestOperation;
+@property (nonatomic, weak) AFHTTPRequestOperation *searchRequestOperation;
 @end
 
 
@@ -129,9 +129,7 @@
     BOOL searchBarIsEmpty = [self.headerView.searchField.searchField.text isEqualToString:@""];
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeSearchResults;
 
-    if (self.searchRequestOperation) {
-        [self.searchRequestOperation cancel];
-    }
+    [self.searchRequestOperation cancel];
 
     if (searchBarIsEmpty) {
         [self.searchResultsTable updateTableContentsFor:@[] replaceContents:ARSearchResultsReplaceAll animated:NO];
@@ -170,9 +168,8 @@
 
 - (void)populateTrendingArtists
 {
-    if (self.searchRequestOperation) {
-        [self.searchRequestOperation cancel];
-    }
+    [self.searchRequestOperation cancel];
+
 
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModePlaceholder;
 
@@ -187,9 +184,7 @@
 
 - (void)populateTrendingCategories
 {
-    if (self.searchRequestOperation) {
-        [self.searchRequestOperation cancel];
-    }
+    [self.searchRequestOperation cancel];
 
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModePlaceholder;
 
@@ -274,9 +269,8 @@
 {
     [self.delegate followableItemFollowed:item];
 
-    if (self.searchRequestOperation) {
-        [self.searchRequestOperation cancel];
-    }
+    [self.searchRequestOperation cancel];
+
 
     switch (self.state) {
         case AROnboardingStagePersonalizeArtists: {
