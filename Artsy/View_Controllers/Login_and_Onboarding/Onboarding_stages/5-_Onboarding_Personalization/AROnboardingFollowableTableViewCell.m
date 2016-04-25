@@ -58,8 +58,4 @@
     _follow.image = nil;
 }
 
-- (void)updateConstraints
-{
-    [super updateConstraints];
-}
 @end

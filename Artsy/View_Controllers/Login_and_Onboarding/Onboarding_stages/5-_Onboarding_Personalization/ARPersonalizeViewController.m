@@ -96,14 +96,14 @@
     switch (self.state) {
         case AROnboardingStagePersonalizeArtists:
             // progress percentages are made up for now, will be calculated by steps and remaining steps later
-            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." andProgress:0.33f];
+            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." andProgress:0.33];
             self.searchResultsTable.headerPlaceholderText = @"TOP ARTISTS ON ARTSY";
             self.headerView.searchField.searchField.delegate = self;
             [self.headerView.searchField.searchField setPlaceholder:@"Search artist"];
             [self populateTrendingArtists];
             break;
         case AROnboardingStagePersonalizeCategories:
-            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." andProgress:0.5f];
+            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." andProgress:0.5];
             self.headerView.searchField.searchField.delegate = self;
             self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
             [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
@@ -111,7 +111,7 @@
             [self populateTrendingArtists];
             break;
         case AROnboardingStagePersonalizeBudget:
-            [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" andProgress:0.7f];
+            [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" andProgress:0.7];
             break;
         default:
             break;
@@ -267,7 +267,7 @@
     [self.delegate backTapped];
 }
 
-- (void)followableItemClicked:(NSObject<ARFollowable> *)item
+- (void)followableItemClicked:(id<ARFollowable>)item
 {
     [self.delegate followableItemFollowed:item];
 

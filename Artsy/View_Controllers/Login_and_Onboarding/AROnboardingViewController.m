@@ -313,7 +313,7 @@
     [self popViewControllerAnimated:YES];
 }
 
-- (void)followableItemFollowed:(NSObject<ARFollowable> *)item
+- (void)followableItemFollowed:(id<ARFollowable>)item
 {
     [self.followedItemsDuringOnboarding addObject:item];
 }

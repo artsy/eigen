@@ -5,6 +5,7 @@
 #import "Artist.h"
 #import "Gene.h"
 #import "ARFollowable.h"
+#import "UIImageView+AsyncImageLoading.h"
 
 #import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -132,13 +133,22 @@
     return headerView;
 }
 
+// Overridden in order to add custom animation to tableviewcells being displayed, rather than using UITableViewRowAnimation
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // We only show custom animation in the case of the related suggestions after clicking a row
+    // This animation has suggestions content coming in from the bottom
     if (self.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults && self.shouldAnimate) {
+        // State to animate to
         CGRect originalFrame = cell.frame;
 
+        // Start the cell at the bottom of the tableview
         cell.frame = CGRectMake(cell.frame.origin.x, self.tableView.frame.size.height, cell.frame.size.width, cell.frame.size.height);
         cell.alpha = 0;
+
+        // The lower down the cell is in the list, the longer the animation takes (cell has further to travel)
+        // Equally, to stagger, we want the bottom cells to start their animation later than the top cells
+        // Other than that, magic constants are just the result of tweaks over time
         CGFloat duration = (0.6 * originalFrame.origin.y) / self.tableView.frame.size.height + 0.3;
         CGFloat delay = 0.18 * (indexPath.row);
 
@@ -168,11 +178,11 @@
     if ([result isKindOfClass:[Artist class]]) {
         Artist *artist = (Artist *)result;
         cell.title.text = artist.name;
-        cell.thumbnail.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:artist.squareImageURL]];
+        [cell.thumbnail ar_setImageWithURL:artist.squareImageURL];
     } else if ([result isKindOfClass:[Gene class]]) {
         Gene *gene = (Gene *)result;
         cell.title.text = gene.name;
-        cell.thumbnail.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:gene.smallImageURL]];
+        [cell.thumbnail ar_setImageWithURL:gene.smallImageURL];
     }
 
     cell.follow.image = [UIImage imageNamed:@"followButton"];
@@ -185,8 +195,7 @@
     AROnboardingFollowableTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.follow.image = [UIImage imageNamed:@"followButtonChecked"];
 
-    NSObject<ARFollowable> *item = self.searchResults[indexPath.row];
-    [self.networkDelegate followableItemClicked:item];
+    [self.networkDelegate followableItemClicked:self.searchResults[indexPath.row]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

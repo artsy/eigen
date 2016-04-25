@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, ARTableViewContentDisplayMode) {
 
 @protocol PersonalizeNetworkDelegate <NSObject>
 @required
-- (void)followableItemClicked:(NSObject<ARFollowable> *)item;
+- (void)followableItemClicked:(id<ARFollowable>)item;
 @end
 
 

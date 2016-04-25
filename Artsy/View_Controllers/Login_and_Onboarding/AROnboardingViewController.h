@@ -10,7 +10,7 @@
 - (void)personalizeCategoriesDone;
 - (void)personalizeBudgetDone;
 - (void)backTapped;
-- (void)followableItemFollowed:(NSObject<ARFollowable> *)item;
+- (void)followableItemFollowed:(id<ARFollowable>)item;
 - (void)splashDone:(ARSignUpSplashViewController *)sender;
 - (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender;
 //- (void)collectorLevelDone:(ARCollectorLevel)level;
