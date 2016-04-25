@@ -55,6 +55,7 @@
 @property (nonatomic, readonly, strong) UIImage *backgroundImage;
 @property (nonatomic, strong, readwrite) NSLayoutConstraint *backgroundWidthConstraint;
 @property (nonatomic, strong, readwrite) NSLayoutConstraint *backgroundHeightConstraint;
+@property (nonatomic, strong, readwrite) NSMutableSet *followedItemsDuringOnboarding;
 @end
 
 
@@ -69,6 +70,7 @@
 
     self.navigationBarHidden = YES;
     self.delegate = self;
+    _followedItemsDuringOnboarding = [[NSMutableSet alloc] init];
     _initialState = state;
     switch (state) {
         case ARInitialOnboardingStateSlideShow:
@@ -313,7 +315,7 @@
 
 - (void)followableItemFollowed:(NSObject<ARFollowable> *)item
 {
-    // store IDs
+    [self.followedItemsDuringOnboarding addObject:item];
 }
 
 //- (void)presentPriceRange
