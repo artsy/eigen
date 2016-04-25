@@ -6,24 +6,15 @@ import React from 'react-native';
 const { TestModule } = React.NativeModules;
 
 class OpaqueImageViewTest extends React.Component {
-  constructor() {
-    super();
-    this.createSnapshot = this.createSnapshot.bind(this);
-  }
-
-  createSnapshot() {
+  assert() {
     if (!TestModule.verifySnapshot) {
       throw new Error('TestModule.verifySnapshot not defined.');
     }
-    TestModule.verifySnapshot(this.done);
-  }
-
-  done(success) {
-    TestModule.markTestPassed(success);
+    TestModule.verifySnapshot(TestModule.markTestPassed);
   }
 
   render() {
-    return <Emission.Components.OpaqueImageView {...this.props} onLoad={this.createSnapshot} />
+    return <Emission.Components.OpaqueImageView {...this.props} onLoad={this.assert} />
   }
 }
 
