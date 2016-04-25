@@ -1,39 +1,52 @@
-//
-//  EmissionTests.m
-//  EmissionTests
-//
-//  Created by Eloy Durán on 22/04/16.
-//  Copyright © 2016 CocoaPods. All rights reserved.
-//
+#import "TestHelper.h"
 
 #import <XCTest/XCTest.h>
 
-@interface EmissionTests : XCTestCase
+#import <React/RCTRootView.h>
+#import <React/RCTTestRunner.h>
 
+@interface EmissionTests : XCTestCase
+@property (nonatomic, strong, readwrite) RCTTestRunner *reactTestRunner;
 @end
 
 @implementation EmissionTests
 
-- (void)setUp {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+- (void)setUp;
+{
+  [super setUp];
+
+  NSURL *URL = TestHelper.sharedHelper.fixturesURL;
+  URL = [URL URLByAppendingPathComponent:@"ReferenceImages"];
+
+  self.reactTestRunner = [[RCTTestRunner alloc] initWithApp:@"EmissionTests/TestApps"
+                                         referenceDirectory:URL.path
+                                             moduleProvider:nil];
 }
 
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
+- (void)tearDown;
+{
+  self.reactTestRunner = nil;
+  [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-}
+- (void)testOpaqueImageViewWithAspectRatioAndAutoSizing;
+{
+//  self.reactTestRunner.recordMode = YES;
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+  NSDictionary *artwork = TestHelper.sharedHelper.artworks[0];
+
+  NSDictionary *props = @{
+    @"imageURL": [artwork valueForKeyPath:@"image.resized.url"],
+    @"aspectRatio": [artwork valueForKeyPath:@"image.aspect_ratio"],
+    @"style": @{ @"backgroundColor": @"red" },
+  };
+
+  [self.reactTestRunner runTest:_cmd
+                         module:@"OpaqueImageView"
+                   initialProps:props
+             configurationBlock:^(RCTRootView *rootView) {
+    rootView.frame = [[UIScreen mainScreen] bounds];
+  }];
 }
 
 @end
