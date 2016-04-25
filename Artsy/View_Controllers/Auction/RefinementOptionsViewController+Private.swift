@@ -8,7 +8,7 @@ import ARAnalytics
 
 private let CellIdentifier = "Cell"
 
-extension AuctionRefineViewController {
+extension RefinementOptionsViewController {
     func setupViews() {
         let cancelButton = self.cancelButton()
         view.addSubview(cancelButton)
@@ -30,8 +30,9 @@ extension AuctionRefineViewController {
     }
 
     func updatePriceLabels() {
-        minLabel?.text = currentSettings.range.min.metricSuffixify()
-        maxLabel?.text = currentSettings.range.max.metricSuffixify()
+        guard let priceRange = currentSettings.priceRange else { return }
+        minLabel?.text = priceRange.min.metricSuffixify()
+        maxLabel?.text = priceRange.max.metricSuffixify()
     }
 
     func updateButtonEnabledStates() {
@@ -43,39 +44,12 @@ extension AuctionRefineViewController {
     }
 }
 
-private typealias UserInteraction = AuctionRefineViewController
-extension UserInteraction {
-
-    func userDidCancel() {
-        delegate?.userDidCancel(self)
-    }
-
-    func userDidPressApply() {
-        ARAnalytics.event(ARAnalyticsTappedApplyRefine, withProperties: [
-            "auction_slug": saleViewModel.saleID,
-            "context_type": "sale",
-            "slug": NSString(format:"/auction/%@/refine", saleViewModel.saleID)
-        ])
-        delegate?.userDidApply(currentSettings, controller: self)
-    }
-
-    func userDidPressReset() {
-        // Reset all UI back to its default settings, including a hard reload on the table view.
-        currentSettings = defaultSettings
-        sortTableView?.reloadData()
-
-        slider?.setLeftValue(CGFloat(defaultSettings.range.min), rightValue: CGFloat(defaultSettings.range.max))
-        updatePriceLabels()
-        updateButtonEnabledStates()
-    }
-}
-
-private typealias UISetup = AuctionRefineViewController
-private extension UISetup {
+/// UISetup
+private extension RefinementOptionsViewController {
 
     func cancelButton() -> UIButton {
         let cancelButton = UIButton.circularButton(.Cancel)
-        cancelButton.addTarget(self, action: #selector(AuctionRefineViewController.userDidCancel), forControlEvents: .TouchUpInside)
+        cancelButton.addTarget(self, action: #selector(RefinementOptionsViewController.userDidCancel), forControlEvents: .TouchUpInside)
         return cancelButton
     }
 
@@ -93,14 +67,23 @@ private extension UISetup {
 
         stackView.addSubview(ARSeparatorView(), withTopMargin: "10", sideMargin: "0")
 
+        tableViewHandler = RefinementOptionsViewControllerTableViewHandler.init(numberOfSections: currentSettings.numberOfSections,
+            numberOfRowsInSection: { [unowned self] section in self.currentSettings.numberOfRowsInSection(section) },
+            titleForRowAtIndexPath: { [unowned self] indexPath in self.currentSettings.titleForRowAtIndexPath(indexPath) },
+            shouldCheckRowAtIndexPath: { [unowned self] indexPath in self.currentSettings.shouldCheckRowAtIndexPath(indexPath) },
+            selectedRowsInSection: { [unowned self] section in self.currentSettings.selectedRowsInSection(section) },
+            allowsMultipleSelectionClosure: { [unowned self] section in self.currentSettings.allowMultipleSelectionInSection(section) },
+            changeSettingsClosure: { [unowned self] indexPath in self.currentSettings = self.currentSettings.refineSettingsWithSelectedIndexPath(indexPath) })
+
         let tableView = UITableView().then {
-            $0.registerClass(AuctionRefineTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+            $0.registerClass(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
             $0.scrollEnabled = false
             $0.separatorColor = .artsyGrayRegular()
             $0.separatorInset = UIEdgeInsetsZero
-            $0.dataSource = self
-            $0.delegate = self
-            let tableViewHeight = 44 * AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).count - 1 // -1 to cut off the bottom-most separator that we'll manually add below.
+            $0.dataSource = tableViewHandler
+            $0.delegate = tableViewHandler
+
+            let tableViewHeight = 44 * currentSettings.numberOfRowsInSection(0) - 1 // -1 to cut off the bottom-most separator that we'll manually add below.
             $0.constrainHeight("\(tableViewHeight)")
         }
         stackView.addSubview(tableView, withTopMargin: "0", sideMargin: "40")
@@ -108,7 +91,7 @@ private extension UISetup {
         stackView.addSubview(ARSeparatorView(), withTopMargin: "0", sideMargin: "0")
 
         // Price section
-        if initialSettings.hasEstimates {
+        if let initialRange = initialSettings.priceRange, maxRange = defaultSettings.priceRange where initialSettings.hasEstimates {
             stackView.addSubview(subtitleLabel("Price"), withTopMargin: "20", sideMargin: "40")
 
             let priceExplainLabel = ARSerifLabel().then {
@@ -128,10 +111,8 @@ private extension UISetup {
                 $0.trackImage = UIImage(named: "Track")
                 $0.rightThumbImage = UIImage(named: "Thumb")
                 $0.leftThumbImage = $0.rightThumbImage
-                $0.addTarget(self, action: #selector(AuctionRefineViewController.sliderValueDidChange(_:)), forControlEvents: .ValueChanged)
+                $0.addTarget(self, action: #selector(RefinementOptionsViewController.sliderValueDidChange(_:)), forControlEvents: .ValueChanged)
 
-                let maxRange = self.defaultSettings.range
-                let initialRange = initialSettings.range
                 $0.setMinValue(CGFloat(maxRange.min), maxValue: CGFloat(maxRange.max))
                 $0.setLeftValue(CGFloat(initialRange.min), rightValue: CGFloat(initialRange.max))
 
@@ -148,8 +129,10 @@ private extension UISetup {
             labelContainer.addSubview(minLabel)
 
             minLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
-            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
-            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0").forEach(setConstraintPriority(.StayWithinFrame))
+            let labelPriority = SliderPriorities.StayCenteredOverThumb.rawValue
+            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0@\(labelPriority)")
+
+            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
 
             let maxLabel = ARItalicsSerifLabel().then {
                 $0.font = UIFont.serifFontWithSize(15)
@@ -158,23 +141,23 @@ private extension UISetup {
             labelContainer.addSubview(maxLabel)
 
             maxLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
-            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
-            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0").forEach(setConstraintPriority(.StayWithinFrame))
+            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb.rawValue)")
+            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
 
             // Make sure they don't touch! Shouldn't be necessary since they'll be 10% appart, but this is "just in case" make sure the labels never overlap.
-            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10").forEach(setConstraintPriority(.DoNotOverlap))
+            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10@\(SliderPriorities.DoNotOverlap.rawValue)")
 
             self.minLabel = minLabel
             self.maxLabel = maxLabel
             self.slider = slider
-            
+
             updatePriceLabels()
         }
 
         let applyButton = ARBlackFlatButton().then {
             $0.enabled = false
             $0.setTitle("Apply", forState: .Normal)
-            $0.addTarget(self, action: #selector(AuctionRefineViewController.userDidPressApply), forControlEvents: .TouchUpInside)
+            $0.addTarget(self, action: #selector(RefinementOptionsViewController.userDidPressApply), forControlEvents: .TouchUpInside)
         }
 
         let resetButton = ARWhiteFlatButton().then {
@@ -183,7 +166,7 @@ private extension UISetup {
             $0.setBorderColor(.artsyGrayRegular(), forState: .Normal)
             $0.setBorderColor(UIColor.artsyGrayRegular().colorWithAlphaComponent(0.5), forState: .Disabled)
             $0.layer.borderWidth = 1
-            $0.addTarget(self, action: #selector(AuctionRefineViewController.userDidPressReset), forControlEvents: .TouchUpInside)
+            $0.addTarget(self, action: #selector(RefinementOptionsViewController.userDidPressReset), forControlEvents: .TouchUpInside)
         }
 
         let buttonContainer = UIView()
@@ -208,37 +191,47 @@ private extension UISetup {
     }
 }
 
-private typealias SliderView = AuctionRefineViewController
-extension SliderView {
-    func sliderValueDidChange(slider: MARKRangeSlider) {
-        let range = (min: Int(slider.leftValue), max: Int(slider.rightValue))
-        currentSettings = currentSettings.settingsWithRange(range)
-    }
-
-    enum SliderPriorities: UILayoutPriority {
-        case StayWithinFrame = 475
-        case DoNotOverlap = 450
-        case StayCenteredOverThumb = 425
-    }
-
-    // Sets priority of the constraint, using AnyObject! because of FLKAutoLayout
-    func setConstraintPriority(priority: SliderPriorities) -> (AnyObject! -> Void) {
-        return { constraint in
-            (constraint as? NSLayoutConstraint)?.priority = priority.rawValue
-        }
-    }
+enum SliderPriorities: String {
+    case StayWithinFrame = "475"
+    case DoNotOverlap = "450"
+    case StayCenteredOverThumb = "425"
 }
 
-private typealias TableView = AuctionRefineViewController
-extension TableView: UITableViewDataSource, UITableViewDelegate {
+class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate  {
+    let numberOfSections: Int
+    let numberOfRowsInSection: Int -> Int
+    let titleForRowAtIndexPath: NSIndexPath -> String
+    let shouldCheckRowAtIndexPath: NSIndexPath -> Bool
+    let selectedRowsInSection: Int -> [NSIndexPath]
+    let allowsMultipleSelectionInSection: Int -> Bool
+    let changeSettingsClosure: NSIndexPath -> Void
+
+    // closures from currentSettings
+    init(numberOfSections: Int, numberOfRowsInSection: Int -> Int, titleForRowAtIndexPath: NSIndexPath -> String, shouldCheckRowAtIndexPath: NSIndexPath -> Bool, selectedRowsInSection: Int -> [NSIndexPath], allowsMultipleSelectionClosure: Int -> Bool, changeSettingsClosure: NSIndexPath -> Void) {
+        self.numberOfSections = numberOfSections
+        self.numberOfRowsInSection = numberOfRowsInSection
+        self.titleForRowAtIndexPath = titleForRowAtIndexPath
+        self.shouldCheckRowAtIndexPath = shouldCheckRowAtIndexPath
+        self.selectedRowsInSection = selectedRowsInSection
+        self.allowsMultipleSelectionInSection = allowsMultipleSelectionClosure
+        self.changeSettingsClosure = changeSettingsClosure
+
+        super.init()
+    }
+
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return numberOfSections
+    }
+
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).count
+        return numberOfRowsInSection(section)
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier, forIndexPath: indexPath)
 
-        cell.textLabel?.text = AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel)[indexPath.row].rawValue
+        cell.textLabel?.text = titleForRowAtIndexPath(indexPath)
 
         return cell
     }
@@ -247,28 +240,34 @@ extension TableView: UITableViewDataSource, UITableViewDelegate {
         cell.layoutMargins = UIEdgeInsetsZero
         cell.preservesSuperviewLayoutMargins = false
         cell.textLabel?.font = UIFont.serifFontWithSize(16)
-        cell.checked = currentSettings.ordering == AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel)[indexPath.row]
+        cell.checked = shouldCheckRowAtIndexPath(indexPath)
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        let oldCheckedCellIndices = selectedRowsInSection(indexPath.section)
 
-        // Un-check formerly selected cell.
-        if let oldCheckedCellIndex = AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).indexOf(currentSettings.ordering) {
-            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: oldCheckedCellIndex, inSection: 0))
-            cell?.checked = false
+        if allowsMultipleSelectionInSection(indexPath.section) {
+            fatalError("currently only supports single-selection")
+        } else {
+            // Un-check formerly selected cell.
+            if let oldCheckedCellIndex = oldCheckedCellIndices.first {
+                let formerlySelected = tableView.cellForRowAtIndexPath(oldCheckedCellIndex)
+                formerlySelected?.checked = false
+            }
+            
+            // Change setting.
+            changeSettingsClosure(indexPath)
+            
+            // Check newly selected cell.
+            let selectedCell = tableView.cellForRowAtIndexPath(indexPath)
+            selectedCell?.checked = true
         }
-
-        // Change setting.
-        currentSettings = currentSettings.settingsWithOrdering(AuctionOrderingSwitchValue.fromIntWithViewModel(indexPath.row, saleViewModel: saleViewModel))
-
-        // Check newly selected cell.
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
-        cell?.checked = true
     }
 }
 
-class AuctionRefineTableViewCell: UITableViewCell {
+class RefinementOptionsTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         textLabel?.frame.origin.x = 0

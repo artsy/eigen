@@ -10,13 +10,11 @@
 
 @protocol ARArtworkActionsViewButtonDelegate <NSObject>
 - (void)tappedContactGallery;
-- (void)tappedContactRepresentative;
 - (void)tappedAuctionInfo;
 - (void)tappedConditionsOfSale;
 - (void)tappedBidButton;
 - (void)tappedBuyersPremium;
 - (void)tappedBuyButton;
-- (void)tappedAuctionResults;
 - (void)tappedMoreInfo;
 @end
 

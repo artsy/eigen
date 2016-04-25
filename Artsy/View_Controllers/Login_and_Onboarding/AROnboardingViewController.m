@@ -500,8 +500,8 @@
     self.backgroundView = [[UIImageView alloc] initWithFrame:CGRectZero];
     self.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view insertSubview:self.backgroundView atIndex:0];
-    self.backgroundWidthConstraint = [[self.backgroundView constrainWidthToView:self.view predicate:@"0"] lastObject];
-    self.backgroundHeightConstraint = [[self.backgroundView constrainHeightToView:self.view predicate:@"0"] lastObject];
+    self.backgroundWidthConstraint = [self.backgroundView constrainWidthToView:self.view predicate:@"0"];
+    self.backgroundHeightConstraint = [self.backgroundView constrainHeightToView:self.view predicate:@"0"];
     [self.backgroundView alignCenterWithView:self.view];
     [self.backgroundView layoutIfNeeded];
 }

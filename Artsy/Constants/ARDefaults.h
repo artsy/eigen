@@ -24,8 +24,6 @@ extern NSString *const AROnboardingPromptThresholdDefault;
 #pragma mark -
 #pragma mark Things we wanna trigger server-side
 
-extern NSString *const ARShowAuctionResultsButtonDefault;
-
 
 @interface ARDefaults : NSObject
 + (void)setup;

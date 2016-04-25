@@ -190,7 +190,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     __weak typeof(self) wself = self;
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
         __strong typeof (wself) sself = wself;
-        ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:sself.fair title:sself.show.title selectedPartnerShows:@[sself.show]];
+        ARFairMapViewController *viewController = [ARSwitchBoard.sharedInstance loadMapInFair:sself.fair title:sself.show.title selectedPartnerShows:@[sself.show]];
         [sself.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }];
 }
@@ -220,7 +220,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
             [followButton alignTop:@"0" bottom:@"0" toView:containerView];
             [UIView alignAttribute:NSLayoutAttributeRight ofViews:@[ partnerLabel ] toAttribute:NSLayoutAttributeLeft ofViews:@[ followButton ] predicate:@"0"];
             CGFloat followButtonWidth = [[self class] followButtonWidthForSize:self.view.frame.size];
-            self.followButtonWidthConstraint = [[followButton constrainWidth:@(followButtonWidth).stringValue] firstObject];
+            self.followButtonWidthConstraint = [followButton constrainWidth:@(followButtonWidth).stringValue];
         } else {
             [partnerLabel alignLeading:@"0" trailing:@"0" toView:containerView];
         }
@@ -469,7 +469,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     [self.view.stackView addSubview:self.imagePageViewController.view withTopMargin:@"0" sideMargin:@"0"];
 
     CGFloat headerImageHeight = [self headerImageHeightForSize:self.view.frame.size];
-    self.headerImageHeightConstraint = [[self.imagePageViewController.view constrainHeight:@(headerImageHeight).stringValue] firstObject];
+    self.headerImageHeightConstraint = [self.imagePageViewController.view constrainHeight:@(headerImageHeight).stringValue];
 }
 
 - (void)getShowHeaderImages

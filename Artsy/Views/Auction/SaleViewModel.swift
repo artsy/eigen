@@ -67,7 +67,7 @@ extension SaleViewModel {
     }
 
     /// Provides a range of the smallest-to-largest low estimates.
-    var lowEstimateRange: AuctionRefineSettings.Range {
+    var lowEstimateRange: PriceRange {
         return (min: self.smallestLowEstimate, max: self.largestLowEstimate)
     }
 
@@ -76,7 +76,7 @@ extension SaleViewModel {
             .filter(SaleArtwork.includedInRefineSettings(refineSettings))
             .map { saleArtwork in
                 return SaleArtworkViewModel(saleArtwork: saleArtwork)
-            }
+        }
     }
 
     func subtitleForRefineSettings(refineSettings: AuctionRefineSettings, defaultRefineSettings: AuctionRefineSettings) -> String {
@@ -89,15 +89,20 @@ extension SaleViewModel {
             subtitle += "・\(refineSettings.ordering.rawValue)"
         }
 
-        if refineSettings.range.min != defaultRefineSettings.range.min ||
-           refineSettings.range.max != defaultRefineSettings.range.max {
-            let min = refineSettings.range.min.roundCentsToNearestThousandAndFormat()
-            let max = refineSettings.range.max.roundCentsToNearestThousandAndFormat()
-            subtitle += "・\(min)–\(max)"
+        if refineSettings.priceRange?.min != defaultRefineSettings.priceRange?.min ||
+            refineSettings.priceRange?.max != defaultRefineSettings.priceRange?.max {
+            subtitle += formattedStringForPriceRange(refineSettings.priceRange!)
         }
 
         return subtitle
     }
+
+    func formattedStringForPriceRange(range: PriceRange) -> String {
+        let min = range.min.roundCentsToNearestThousandAndFormat()
+        let max = range.max.roundCentsToNearestThousandAndFormat()
+        return "・\(min)–\(max)"
+    }
+
 }
 
 /// Allows us to support spotlight indexing
@@ -116,7 +121,7 @@ extension SaleArtwork: AuctionOrderable {
     }
 
     var artistSortableID: String {
-        return artwork.artist.sortableID
+        return artwork.artist?.sortableID ?? ""
     }
 
     var currentBid: Int {
@@ -148,9 +153,9 @@ private extension SaleArtwork {
     class func includedInRefineSettings(refineSettings: AuctionRefineSettings) -> SaleArtwork -> Bool {
         return { saleArtwork in
             // Includes iff the sale artwork's low estimate is within the range, inclusive.
-            let (min, max) = (refineSettings.range.min, refineSettings.range.max)
+            let (min, max) = (refineSettings.priceRange?.min, refineSettings.priceRange?.max)
 
-            return (min...max) ~= (saleArtwork.lowEstimateCents as? Int ?? 0)
+            return (min!...max!) ~= (saleArtwork.lowEstimateCents as? Int ?? 0)
         }
     }
 }

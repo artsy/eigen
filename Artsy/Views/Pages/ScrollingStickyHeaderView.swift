@@ -16,8 +16,8 @@ class ScrollingStickyHeaderView: UIView {
 
     var stickyHeaderHeight: NSLayoutConstraint!
 
-    var trailingConstraints: NSArray?
-    var leadingConstraints: NSArray?
+    var trailingConstraints: NSLayoutConstraint?
+    var leadingConstraints: NSLayoutConstraint?
 
     init() {
         button = ARWhiteFlatButton().then {
@@ -34,7 +34,7 @@ class ScrollingStickyHeaderView: UIView {
 
         super.init(frame: CGRectZero)
 
-        stickyHeaderHeight = self.constrainHeight("60").first as! NSLayoutConstraint
+        stickyHeaderHeight = constrainHeight("60")
         backgroundColor = .whiteColor()
 
         button.then {
@@ -79,12 +79,8 @@ class ScrollingStickyHeaderView: UIView {
         super.traitCollectionDidChange(previousTraitCollection)
 
         let margin: CGFloat = traitCollection.horizontalSizeClass == .Compact ? 20 : 40
-        trailingConstraints?.forEach { constraint in
-            (constraint as? NSLayoutConstraint)?.constant = -margin
-        }
-        leadingConstraints?.forEach { constraint in
-            (constraint as? NSLayoutConstraint)?.constant = margin
-        }
+        trailingConstraints?.constant = -margin
+        leadingConstraints?.constant = margin
     }
 
     func toggleAttatched(atTop:Bool, animated: Bool) {

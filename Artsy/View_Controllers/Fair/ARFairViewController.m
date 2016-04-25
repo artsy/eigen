@@ -1,3 +1,5 @@
+// MARK: Formatter Exempt
+
 #import "ARFairViewController.h"
 
 #import "Artist.h"
@@ -27,6 +29,8 @@
 #import "OrderedSet.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARScrollNavigationChief.h"
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -270,11 +274,10 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
         },
         ARNavigationButtonHandlerKey : ^(ARButtonWithImage *button){
             __strong typeof(wself) sself = wself;
-    ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair];
-    [sself.navigationController pushViewController:viewController animated:YES];
-}
-}
-;
+            ARFairMapViewController *viewController = [ARSwitchBoard.sharedInstance loadMapInFair:self.fair];
+            [sself.navigationController pushViewController:viewController animated:YES];
+       }
+    };
 }
 
 - (NSDictionary *)buttonDescriptionForFeaturedLink:(FeaturedLink *)featuredLink buttonClass:(Class)buttonClass
@@ -290,13 +293,12 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
         },
         ARNavigationButtonHandlerKey : ^(UIButton *button){
             __strong typeof(wself) sself = wself;
-    if ([button isKindOfClass:[ARButtonWithImage class]]) {
-        ARButtonWithImage *buttonWithImage = (ARButtonWithImage *)button;
-        [sself buttonPressed:buttonWithImage];
-    }
-}
-}
-;
+            if ([button isKindOfClass:[ARButtonWithImage class]]) {
+                ARButtonWithImage *buttonWithImage = (ARButtonWithImage *)button;
+                [sself buttonPressed:buttonWithImage];
+            }
+        }
+    };
 }
 
 - (void)buttonPressed:(ARButtonWithImage *)buttonWithImage
@@ -351,34 +353,32 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 
 - (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query
 {
-    ARSwitchBoard *switchBoard = [ARSwitchBoard sharedInstance];
+    ARSwitchBoard *switchBoard = ARSwitchBoard.sharedInstance;
+    UIViewController *controller = nil;
+
     if (result.model == [Artwork class]) {
-        UIViewController *controller = [switchBoard loadArtworkWithID:result.modelID inFair:self.fair];
-        [self.navigationController pushViewController:controller animated:YES];
+        controller = [switchBoard loadArtworkWithID:result.modelID inFair:self.fair];
 
     } else if (result.model == [Artist class]) {
         Artist *artist = [[Artist alloc] initWithArtistID:result.modelID];
-        UIViewController *controller = [switchBoard loadArtistWithID:artist.artistID inFair:self.fair];
-        [self.navigationController pushViewController:controller animated:YES];
+        controller = [switchBoard loadArtistWithID:artist.artistID inFair:self.fair];
 
     } else if (result.model == [Gene class]) {
-        UIViewController *controller = [switchBoard loadGeneWithID:result.modelID];
-        [self.navigationController pushViewController:controller animated:YES];
+        controller = [switchBoard loadGeneWithID:result.modelID];
 
     } else if (result.model == [Profile class]) {
-        UIViewController *controller = [ARSwitchBoard.sharedInstance routeProfileWithID:result.modelID];
-        [self.navigationController pushViewController:controller animated:YES];
+        controller = [switchBoard routeProfileWithID:result.modelID];
 
     } else if (result.model == [SiteFeature class]) {
         NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
-        UIViewController *controller = [[ARSwitchBoard sharedInstance] loadPath:path];
-        [self.navigationController pushViewController:controller animated:YES];
+        controller = [switchBoard loadPath:path];
 
     } else if (result.model == [PartnerShow class]) {
         PartnerShow *partnerShow = [[PartnerShow alloc] initWithShowID:result.modelID];
-        UIViewController *controller = [switchBoard loadShowWithID:partnerShow.showID fair:self.fair];
-        [self.navigationController pushViewController:controller animated:YES];
+        controller = [switchBoard loadShowWithID:partnerShow.showID fair:self.fair];
     }
+
+    [self.ar_TopMenuViewController pushViewController:controller animated:ARPerformWorkAsynchronously];
 }
 
 - (void)cancelledSearch:(ARFairSearchViewController *)controller

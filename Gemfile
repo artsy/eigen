@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
-# This resolves to either b7 or rc1
-gem 'cocoapods', git: "https://github.com/cocoapods/cocoapods", branch: "mr-fix-resource-bundles"
+gem 'cocoapods', '1.0.0.beta.8'
 gem 'cocoapods-keys'
 
 # 1.6.7 contains the OS X build fix.
@@ -18,11 +17,4 @@ group :test do
   gem 'xcpretty'
   gem 'second_curtain'
   gem 'danger'
-end
-
-group :distribution do
-  gem 'deliver' # hockey
-  gem 'pilot' # itunes connect
-  gem 'gym' # building IPAs
-  gem 'fastlane' # infrastructre
 end

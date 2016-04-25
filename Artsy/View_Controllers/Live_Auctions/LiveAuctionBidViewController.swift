@@ -16,16 +16,16 @@ class LiveAuctionBidViewModel: NSObject {
     let lotBidDetailsUpdateSignal = Signal<Int>()
 
     // This mutates as someone increments/decrements
-    var currentBid: Int
+    var currentBid: UInt64
 
     init(lotVM: LiveAuctionLotViewModelType) {
         self.lotViewModel = lotVM
 
-        let startingPrice = lotViewModel.askingPriceSignal.peek() ?? 0
+        let startingPrice = lotViewModel.askingPriceSignal.peek() ?? UInt64(0)
         currentBid = LiveAuctionBidViewModel.nextBidCents(startingPrice)
     }
 
-    var currentLotValue: Int {
+    var currentLotValue: UInt64 {
         return lotViewModel.currentLotValue
     }
 
@@ -53,7 +53,7 @@ class LiveAuctionBidViewModel: NSObject {
     }
 
     // See: https://github.com/artsy/gravity/blob/master/app/models/bidding/increment_strategy/default.rb
-    class func minimumNextBidCentsIncrement(bid: Int) -> Int {
+    class func minimumNextBidCentsIncrement(bid: UInt64) -> UInt64 {
         switch bid {
         case 0...999_99: return 50_00
         case 100_000...199_999: return 100_00
@@ -62,16 +62,16 @@ class LiveAuctionBidViewModel: NSObject {
         case 10_000_00...19_999_99: return 100_000
         case 20_000_00...49_999_99: return 200_000
         case 50_000_00...99_999_99: return 500_000
-        case 100_000_00...100_000_000_000_00: return 10_000_00
+        case 100_000_00...1_000_000_000_00: return 10_000_00
         default: return bid
         }
     }
 
-    class func nextBidCents(bid: Int) -> Int {
+    class func nextBidCents(bid: UInt64) -> UInt64 {
         return bid + minimumNextBidCentsIncrement(bid)
     }
 
-    class func previousBidCents(bid: Int) -> Int {
+    class func previousBidCents(bid: UInt64) -> UInt64 {
         return bid - minimumNextBidCentsIncrement(bid)
     }
 }
@@ -129,7 +129,7 @@ class LiveAuctionBidViewController: UIViewController {
     @IBOutlet weak var currentBidLabel: UILabel!
     @IBOutlet weak var currentIncrementLabel: UILabel!
 
-    private func updateBiddingControls(bid: Int) {
+    private func updateBiddingControls(bid: UInt64) {
         decreaseBidButton.enabled = bidViewModel.canMakeLowerBids
 
         currentIncrementLabel.text = "Increments of \(bidViewModel.nextBidIncrementDollars)"
@@ -153,7 +153,8 @@ class LiveAuctionBidViewController: UIViewController {
 
     // Incase you're new to storyboards, these views are on an associated
     // view ( its on the top bar for the scene. ) which can be hidden
-
+    // https://blog.curtisherbert.com/secondary-views/ for info
+    
     @IBOutlet var bidProgressOverlayView: LiveBidProgressOverlayView!
 
     private func biddingProgressUpdated(state: LiveAuctionBiddingProgressState) {

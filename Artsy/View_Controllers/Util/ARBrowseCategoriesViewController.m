@@ -10,6 +10,8 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARScrollNavigationChief.h"
 #import "ARLogger.h"
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -97,7 +99,7 @@
 {
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:featuredLink.href];
     if (viewController) {
-        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+        [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }
 }
 

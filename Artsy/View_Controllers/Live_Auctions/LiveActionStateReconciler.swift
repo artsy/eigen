@@ -95,10 +95,10 @@ private extension PrivateFunctions {
 
             for (json, lotViewModel) in zip(sortedLotsJSON, sortedLotViewModels) {
                 guard let reserveStatusString = json["reserveStatus"] as? String else { continue }
-                guard let askingPrice = json["onlineAskingPriceCents"] as? Int else { continue }
+                guard let askingPrice = json["onlineAskingPriceCents"] as? NSNumber else { continue }
 
                 lotViewModel.updateReserveStatus(reserveStatusString)
-                lotViewModel.updateOnlineAskingPrice(askingPrice)
+                lotViewModel.updateOnlineAskingPrice(askingPrice.unsignedLongLongValue)
             }
 
         } else {

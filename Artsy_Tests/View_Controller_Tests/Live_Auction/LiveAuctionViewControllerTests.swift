@@ -9,12 +9,11 @@ import Artsy
 
 class LiveAuctionViewControllerTests: QuickSpec {
     override func spec() {
-        pending("looks good by default") {
+        it("looks good by default") {
 
             let subject = LiveAuctionViewController(saleID: "sale-id")
             let fake = stub_auctionSalesPerson()
             subject.salesPerson = fake
-            subject.loadViewProgrammatically()
 
             expect(subject).to( haveValidSnapshot() )
         }

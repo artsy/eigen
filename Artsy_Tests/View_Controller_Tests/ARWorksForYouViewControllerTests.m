@@ -50,6 +50,7 @@ describe(@"marking notifications as read", ^{
         [subject beginAppearanceTransition:YES animated:NO];
         [subject endAppearanceTransition];
         [networkModelStub verify];
+        [networkModelStub stopMocking];
     });
 
     it(@"tells the top menu vc to update its bell", ^{
@@ -60,6 +61,7 @@ describe(@"marking notifications as read", ^{
         [subject beginAppearanceTransition:YES animated:NO];
         [subject endAppearanceTransition];
         [topMenuStub verify];
+        [topMenuStub stopMocking];
     });
 });
 

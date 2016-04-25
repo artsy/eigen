@@ -62,7 +62,7 @@
 {
     id object = viewControllerToCommit.object;
     id viewController = nil;
-    ARSwitchBoard *switchBoard = [ARSwitchBoard sharedInstance];
+    ARSwitchBoard *switchBoard = ARSwitchBoard.sharedInstance;
 
     if ([object isKindOfClass:Artwork.class]) {
         NSArray *items = self.modelVC.items;

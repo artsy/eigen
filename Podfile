@@ -41,7 +41,7 @@ target 'Artsy' do
 
   pod 'ARGenericTableViewController', :git => 'https://github.com/orta/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', :git => 'https://github.com/CocoaLumberjack/CocoaLumberjack.git' # Unreleased > 2.0.1 version has a CP modulemap fix
-  pod 'FLKAutoLayout', :git => 'https://github.com/alloy/FLKAutoLayout.git', :branch => 'add-support-for-layout-guides-take-2'
+  pod 'FLKAutoLayout', :git => 'https://github.com/orta/FLKAutoLayout.git', :branch => 'v1'
   pod 'FXBlurView'
   pod 'iRate'
   pod 'ISO8601DateFormatter', :git => "https://github.com/orta/iso-8601-date-formatter"
@@ -58,7 +58,7 @@ target 'Artsy' do
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
-  pod 'ORStackView', :git => 'https://github.com/1aurabrown/ORStackView.git'
+  pod 'ORStackView', '2.0.3'
   pod 'UIView+BooleanAnimations'
   pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit'
   pod 'Aerodramus', :git => 'https://github.com/artsy/Aerodramus.git', :branch => 'tests'
@@ -70,7 +70,7 @@ target 'Artsy' do
   # UIAlertView is deprecated for iOS8 APIs
   pod 'UIAlertView+Blocks'
 
-  # Language Enhancments
+  # Language Enhancements
   pod 'KSDeferred'
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
@@ -105,7 +105,7 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then'
-  pod 'Interstellar/Core'
+  pod 'Interstellar/Core', git: 'https://github.com/ashfurrow/Interstellar.git', branch: 'podfile-update'
   pod 'Socket.IO-Client-Swift'
 
   target 'Artsy Tests' do
@@ -123,8 +123,8 @@ target 'Artsy' do
       pod 'Forgeries/Mocks', :git => "https://github.com/ashfurrow/Forgeries.git", :branch => "application"
 
       # Swift pods 🎉
-      pod 'Quick', git: 'https://github.com/Quick/Quick.git'
-      pod 'Nimble', git: 'https://github.com/Quick/Nimble.git'
+      pod 'Quick'
+      pod 'Nimble'
       pod 'Nimble-Snapshots'
   end
 end

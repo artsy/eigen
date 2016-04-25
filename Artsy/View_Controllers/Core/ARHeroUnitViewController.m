@@ -261,8 +261,6 @@ const static CGFloat ARCarouselDelay = 10;
 {
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:self.heroUnit.link];
     if (viewController) {
-        // Normally we use self.navigationController here, but
-        // in this case we need to have checks for the class to ensure we don't crash - see #1061
         [ARTopMenuViewController.sharedController pushViewController:viewController animated:YES];
     }
 }

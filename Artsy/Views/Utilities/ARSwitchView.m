@@ -45,7 +45,7 @@
         [buttonContainer addSubview:button];
 
         // These constraints will be activated and deactivated to move the indicator.
-        NSLayoutConstraint *indicatorConstraint = [[self.selectionIndicator alignLeadingEdgeWithView:button predicate:@"0"] lastObject];
+        NSLayoutConstraint *indicatorConstraint = [self.selectionIndicator alignLeadingEdgeWithView:button predicate:@"0"];
         [selectionIndicatorConstraints addObject:indicatorConstraint];
 
         return button;

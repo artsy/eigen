@@ -3,6 +3,8 @@
 #import "ARAppConstants.h"
 #import "Fair.h"
 #import "ARSwitchBoard+Eigen.h"
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
 
 #import "UIImageView+AsyncImageLoading.h"
 
@@ -102,7 +104,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     [self dismissPopover];
 
     UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:self.slug];
-    [self.presentingViewController.navigationController pushViewController:controller animated:YES];
+    [self.presentingViewController.ar_TopMenuViewController pushViewController:controller animated:ARPerformWorkAsynchronously];
 }
 
 - (void)presentOnViewController:(UIViewController *)parent animated:(BOOL)animated

@@ -48,9 +48,6 @@
 - (UIViewController *)loadAuctionWithID:(NSString *)auctionID;
 
 - (ARAuctionWebViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
-/// Load the auction results for an artwork on to the stack
-- (ARAuctionArtworkResultsViewController *)loadAuctionResultsForArtwork:(Artwork *)artwork;
-
 
 /// Load a Partner Page in Martsy
 - (UIViewController *)loadPartnerWithID:(NSString *)partnerID;

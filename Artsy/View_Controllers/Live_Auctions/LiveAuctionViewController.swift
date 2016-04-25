@@ -106,7 +106,12 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func showLots() {
-        
+        guard let auctionViewModel = salesPerson.auctionViewModel else { return }
+
+        let lotViewController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: auctionViewModel)
+        lotViewController.delegate = self
+        let navigationController = ARSerifNavigationViewController(rootViewController: lotViewController)
+        presentViewController(navigationController, animated: true, completion: nil)
     }
 
     func setupWithInitialData() {
@@ -122,9 +127,8 @@ class LiveAuctionViewController: UIViewController {
         pageController.setViewControllers([startVC], direction: .Forward, animated: false, completion: nil)
     }
 
-    func jumpToLiveLot() {
-        let focusedIndex = salesPerson.currentFocusedLot.peek()!
-        let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(focusedIndex)
+    func jumpToLotAtIndex(index: Int, animated: Bool) {
+        let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index)
 
         // This logic won't do, lot at index 10 is not classed as being -1 from current index
         // perhaps it needs to see within a wrapping range of 0 to 10, which direction is it less steps
@@ -134,7 +138,12 @@ class LiveAuctionViewController: UIViewController {
 //        let direction: UIPageViewControllerNavigationDirection = viewController.index > index ? .Forward : .Reverse
 
         let direction = UIPageViewControllerNavigationDirection.Forward
-        pageController.setViewControllers([currentLotVC!], direction: direction, animated: true, completion: nil)
+        pageController.setViewControllers([currentLotVC!], direction: direction, animated: animated, completion: nil)
+    }
+
+    func jumpToLiveLot() {
+        let focusedIndex = salesPerson.currentLotSignal.peek()?.lotIndex ?? 0
+        jumpToLotAtIndex(focusedIndex, animated: true)
     }
 
     func nextLot() {
@@ -154,6 +163,14 @@ class LiveAuctionViewController: UIViewController {
     let hidesBackButton = true
     let hidesSearchButton = true
     let hidesStatusBarBackground = true
+}
+
+private typealias LotListDelegate = LiveAuctionViewController
+extension LotListDelegate: LiveAuctionLotListViewControllerDelegate {
+    func didSelectLotAtIndex(index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController) {
+        jumpToLotAtIndex(index, animated: false)
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 }
 
 class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
