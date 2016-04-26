@@ -96,7 +96,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (ARHeartStatus)heartStatus;
 
 - (AFHTTPRequestOperation *)getRelatedArtworks:(void (^)(NSArray *artworks))success;
-- (AFHTTPRequestOperation *)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success;
 - (AFHTTPRequestOperation *)getRelatedFairArtworks:(Fair *)fair success:(void (^)(NSArray *artworks))success;
 - (AFHTTPRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
 - (AFHTTPRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
@@ -131,9 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)hasDimensions;
 - (BOOL)hasWidthAndHeight;
 - (BOOL)hasMoreInfo;
-- (BOOL)shouldShowAuctionResults;
 - (BOOL)hasMultipleEditions;
-- (NSString *)auctionResultsPath;
 
 - (CGFloat)widthInches;
 - (CGFloat)heightInches;

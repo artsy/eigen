@@ -15,7 +15,6 @@
 - (void)tappedBidButton;
 - (void)tappedBuyersPremium;
 - (void)tappedBuyButton;
-- (void)tappedAuctionResults;
 - (void)tappedMoreInfo;
 @end
 

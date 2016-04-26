@@ -221,14 +221,6 @@
                                           }];
 }
 
-- (AFHTTPRequestOperation *)getRelatedAuctionResults:(void (^)(NSArray *auctionResults))success
-{
-    return [ArtsyAPI getAuctionComparablesForArtwork:self success:success
-                                             failure:^(NSError *error) {
-            success(@[]);
-                                             }];
-}
-
 - (AFHTTPRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success
 {
     return [ArtsyAPI getRelatedPostsForArtwork:self success:success
@@ -586,11 +578,6 @@
     return _heartStatus;
 }
 
-- (BOOL)shouldShowAuctionResults
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:ARShowAuctionResultsButtonDefault] && self.partner && self.partner.type == ARPartnerTypeGallery && [self.category rangeOfString:@"Architecture"].location == NSNotFound && self.auctionResultCount.intValue > 0;
-}
-
 - (CGFloat)dimensionInInches:(CGFloat)dimension
 {
     switch (self.metric) {
@@ -614,11 +601,6 @@
 - (CGFloat)diameterInches
 {
     return [self dimensionInInches:[self.diameter floatValue]];
-}
-
-- (NSString *)auctionResultsPath
-{
-    return [NSString stringWithFormat:@"/artwork/%@/auction_results", self.artworkID];
 }
 
 - (void)setNilValueForKey:(NSString *)key

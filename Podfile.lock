@@ -114,7 +114,7 @@ PODS:
   - NAMapKit (3.2.0):
     - ARTiledImageView
     - SDWebImage
-  - Nimble (3.2.0)
+  - Nimble (4.0.1)
   - Nimble-Snapshots (4.0.1):
     - FBSnapshotTestCase (~> 2.0)
     - Nimble
@@ -126,7 +126,7 @@ PODS:
   - ORKeyboardReactingApplication (0.5.3)
   - ORStackView (2.0.3):
     - FLKAutoLayout
-  - Quick (0.9.1)
+  - Quick (0.9.2)
   - ReactiveCocoa (2.3):
     - ReactiveCocoa/UI (= 2.3)
   - ReactiveCocoa/Core (2.3):
@@ -192,7 +192,7 @@ DEPENDENCIES:
   - MMMarkdown
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`)
-  - Nimble (from `https://github.com/Quick/Nimble.git`)
+  - Nimble
   - Nimble-Snapshots
   - NPKeyboardLayoutGuide
   - ObjectiveSugar
@@ -200,7 +200,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
-  - Quick (from `https://github.com/Quick/Quick.git`)
+  - Quick
   - ReactiveCocoa
   - SDWebImage (>= 3.7.2)
   - Socket.IO-Client-Swift
@@ -252,10 +252,6 @@ EXTERNAL SOURCES:
     :path: Pods/CocoaPodsKeys
   NAMapKit:
     :git: https://github.com/neilang/NAMapKit
-  Nimble:
-    :git: https://github.com/Quick/Nimble.git
-  Quick:
-    :git: https://github.com/Quick/Quick.git
 
 CHECKOUT OPTIONS:
   Aerodramus:
@@ -303,12 +299,6 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
-  Nimble:
-    :commit: d3ed3a367927c98bca7bf7e7e0ff36124c634f73
-    :git: https://github.com/Quick/Nimble.git
-  Quick:
-    :commit: 3a1d88fb81476001c62f086dbd94bb0f5354f1a3
-    :git: https://github.com/Quick/Quick.git
 
 SPEC CHECKSUMS:
   Adjust: 297176446c127f1232b9591b2b37cdc4796850b8
@@ -318,7 +308,7 @@ SPEC CHECKSUMS:
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
-  ARAnalytics: 96e23ba7f54298f4914de9e1ac999db7a15f3fdd
+  ARAnalytics: ab25a3d8c6c950f69f25100de470614b6a7d6d9b
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
@@ -354,7 +344,7 @@ SPEC CHECKSUMS:
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: bdcb666fa84122eed344661b132e1d93dbafac71
-  Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
+  Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
   Nimble-Snapshots: 2d15a585b816f7d14947ed6e172218f9d0980ea8
   NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
@@ -362,7 +352,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  Quick: a5221fc21788b6aeda934805e68b061839bc3165
+  Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
   ReactiveCocoa: 81ee2fb7df2dfc6bd52b5d70473662195e20ca7d
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
@@ -375,6 +365,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: b0da427bf0fe56abbbd24a9fa2190fb65d33afbc
+PODFILE CHECKSUM: 93bbc683bb5d214d63e1f49fdab0eb6a00eb033b
 
 COCOAPODS: 1.0.0.beta.8

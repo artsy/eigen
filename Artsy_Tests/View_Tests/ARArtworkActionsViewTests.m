@@ -20,7 +20,6 @@
 - (void)tappedBidButton:(id)sender;
 - (void)tappedBuyersPremium:(id)sender;
 - (void)tappedBuyButton:(id)sender;
-- (void)tappedAuctionResults:(id)sender;
 - (void)tappedMoreInfo:(id)sender;
 @end
 
@@ -407,16 +406,6 @@ describe(@"mocked artwork promises", ^{
 
         [[mockDelegate expect] tappedBuyButton];
         [view tappedBuyButton:nil];
-
-        [mockDelegate verify];
-    });
-
-    it(@"forwards auction results to delegate", ^{
-        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
-        view.delegate = mockDelegate;
-
-        [[mockDelegate expect] tappedAuctionResults];
-        [view tappedAuctionResults:nil];
 
         [mockDelegate verify];
     });
