@@ -3,18 +3,20 @@
 
 import Emission from 'emission';
 import React from 'react-native';
+const { View } = React;
 const { TestModule } = React.NativeModules;
 
 class OpaqueImageViewTest extends React.Component {
   assert() {
-    if (!TestModule.verifySnapshot) {
-      throw new Error('TestModule.verifySnapshot not defined.');
-    }
     TestModule.verifySnapshot(TestModule.markTestPassed);
   }
 
   render() {
-    return <Emission.Components.OpaqueImageView {...this.props} onLoad={this.assert} />
+    return (
+      <View style={this.props.containerStyle}>
+        <Emission.Components.OpaqueImageView {...this.props.imageView} onLoad={this.assert} />
+      </View>
+    );
   }
 }
 
