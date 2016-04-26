@@ -21,12 +21,12 @@ class LiveAuctionViewControllerTests: QuickSpec {
             }
         }
 
-        it("looks good by default") {
+        pending("looks good by default") {
             subject.useSingleLayout = false
             expect(subject).toEventually(haveValidSnapshot())
         }
 
-        it("handles splitting in an iPad") {
+        pending("handles splitting in an iPad") {
             subject.useSingleLayout = false
             subject.beginAppearanceTransition(true, animated: false)
             subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
