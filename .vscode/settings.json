@@ -2,6 +2,14 @@
 {
     "files.associations": {
         "*.podspec": "ruby",
-        "Podfile": "ruby"
-    }
+        "Podfile": "ruby",
+        "*.h": "objective-c",
+    },
+    "files.trimTrailingWhitespace": true,
+
+	"editor.renderWhitespace": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+
+    "clang.compilationDatabase": "${workspaceRoot}/Example/compile_commands.json",
 }

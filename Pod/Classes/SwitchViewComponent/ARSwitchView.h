@@ -17,7 +17,7 @@
 - (void)setTitle:(NSString *)title forButtonAtIndex:(NSInteger)index;
 
 @property (nonatomic, weak, readwrite) id<ARSwitchViewDelegate> delegate;
-@property (nonatomic, strong, readonly) NSArray<UIButton *> *buttons;
+@property (nonatomic, copy, readonly) NSArray<UIButton *> *buttons;
 
 // Assigning to this replaces all existing buttons with new ones.
 @property (nonatomic, strong, readwrite) NSArray<NSString *> *titles;

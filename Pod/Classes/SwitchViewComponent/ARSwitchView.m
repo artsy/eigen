@@ -5,9 +5,9 @@
 #import "ARSwitchView.h"
 
 //#import "ARAppConstants.h"
-@import Artsy_UIFonts;
+#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 static BOOL ARPerformWorkAsynchronously = YES;

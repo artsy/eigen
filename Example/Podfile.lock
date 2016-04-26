@@ -4,12 +4,12 @@ PODS:
     - Emission/All (= 0.1.0)
   - Emission/All (0.1.0):
     - Emission/Core
-    - Emission/ImageViewComponent
+    - Emission/OpaqueImageViewComponent
     - Emission/SwitchViewComponent
   - Emission/Core (0.1.0):
     - Artsy+UIFonts (>= 1.1.0)
     - React/Core (>= 0.24.0-rc5)
-  - Emission/ImageViewComponent (0.1.0):
+  - Emission/OpaqueImageViewComponent (0.1.0):
     - SDWebImage (>= 3.7.2)
   - Emission/SwitchViewComponent (0.1.0):
     - Emission/Core
@@ -19,6 +19,7 @@ PODS:
   - React/Core (0.24.0-rc5)
   - React/RCTNetwork (0.24.0-rc5):
     - React/Core
+  - React/RCTTest (0.24.0-rc5)
   - React/RCTText (0.24.0-rc5):
     - React/Core
   - React/RCTWebSocket (0.24.0-rc5):
@@ -26,6 +27,7 @@ PODS:
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
+  - Specta (1.0.5)
   - UIView+BooleanAnimations (1.0.2)
 
 DEPENDENCIES:
@@ -34,8 +36,10 @@ DEPENDENCIES:
   - FLKAutoLayout (from `https://github.com/floriankugler/FLKAutoLayout.git`)
   - React/Core (from `./node_modules/react-native`)
   - React/RCTNetwork (from `./node_modules/react-native`)
+  - React/RCTTest (from `./node_modules/react-native`)
   - React/RCTText (from `./node_modules/react-native`)
   - React/RCTWebSocket (from `./node_modules/react-native`)
+  - Specta
 
 EXTERNAL SOURCES:
   Artsy+UIFonts:
@@ -57,12 +61,13 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Emission: 3ebc8fca33478a77448519add28cbdbbcf3fc74a
+  Emission: 38dfa1a1c48d39d8b3b122153970ab776b97e336
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   React: 9df7c9ebbc8256031adcc82ed9fede2730f98874
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: 9fee1e0098a54af4cbdca3f0a44a39c914bba5b0
+PODFILE CHECKSUM: 15b6ebe4f2b5cc4378f1c084fdfb119b1a82ce9f
 
 COCOAPODS: 1.0.0.beta.8

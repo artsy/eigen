@@ -1,11 +1,11 @@
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-use_frameworks!
-
 target 'Emission' do
   pod 'Emission', :path => '../'
-  pod 'React', :path => './node_modules/react-native', :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork )
+  pod 'React', :path => './node_modules/react-native',
+               :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork ),
+               :inhibit_warnings => true
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
@@ -17,7 +17,14 @@ target 'Emission' do
   # before trying to use Emission in Eigen.
   pod 'FLKAutoLayout', :git => 'https://github.com/floriankugler/FLKAutoLayout.git'
 
-  # target 'EmissionTests' do
-  #   inherit! :search_paths
-  # end
+  target 'EmissionTests' do
+    inherit! :search_paths
+
+    pod 'React', :path => './node_modules/react-native',
+                :subspecs => %w( RCTTest ),
+                :inhibit_warnings => true
+
+    pod 'Specta'
+    # pod 'Expecta'
+  end
 end
