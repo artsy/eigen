@@ -43,7 +43,7 @@ class LiveAuctionStateManager: NSObject {
 
         super.init()
 
-        staticDataFetcher.fetchStaticData().next { [weak self] staticData in
+        staticDataFetcher.fetchStaticData().next {staticData in
             print("Static Data: \(staticData)")
         }
 

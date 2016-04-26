@@ -3,6 +3,8 @@ import Nimble
 import Nimble_Snapshots
 import Interstellar
 import UIKit
+import SDWebImage
+
 
 @testable
 import Artsy
@@ -20,6 +22,8 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
                 auctionViewModel = Test_LiveAuctionViewModel()
                 lotViewModel = Test_LiveAuctionLotViewModel()
+                cacheColoredImageForURL(lotViewModel.urlForProfile)
+
                 subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Signal())
                 subject.currentLotSignal.update(lotViewModel)
             }
@@ -52,6 +56,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
         }
     }
+
 }
 
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
