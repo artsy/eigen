@@ -73,7 +73,7 @@ describe(@"OpaqueImageViewComponent", ^{
     // FIXME: I’m not even sure right now what this one should look like.
     //
     // Should show red of the container below it.
-    xit(@"maintains the aspect ration when given an explicit height", ^{
+    xit(@"maintains the aspect ratio when given an explicit height", ^{
       // props[@"containerStyle"][@"flex"] = @1;
       // props[@"containerStyle"][@"width"] = @200x;
       props[@"imageView"][@"style"] = @{ @"height": @100 };
