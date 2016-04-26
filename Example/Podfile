@@ -20,10 +20,11 @@ target 'Emission' do
   target 'EmissionTests' do
     inherit! :search_paths
 
-  pod 'React', :path => './node_modules/react-native',
-               :subspecs => %w( RCTTest ),
-               :inhibit_warnings => true
-    # pod 'Specta'
+    pod 'React', :path => './node_modules/react-native',
+                :subspecs => %w( RCTTest ),
+                :inhibit_warnings => true
+
+    pod 'Specta'
     # pod 'Expecta'
   end
 end
