@@ -12,6 +12,7 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
         var subject: LiveAuctionBidViewController!
 
         beforeEach {
+
             OHHTTPStubs.stubJSONResponseForHost("metaphysics-*.artsy.net", withResponse: [:])
         }
 
@@ -23,6 +24,8 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
 
                     let fakeSalesPerson = stub_auctionSalesPerson()
                     let lotVM = fakeSalesPerson.lotViewModelForIndex(0)!
+
+                    cacheColoredImageForURL(lotVM.urlForProfile)
                     subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM)
 
                     expect(subject) == snapshot("bidding_on_\(device.rawValue)")
@@ -91,6 +94,8 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
                     subject = StoryboardScene.LiveAuctions.instantiateBid()
                     let lotVM = Test_LiveAuctionLotViewModel()
                     subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM)
+                    cacheColoredImageForURL(lotVM.urlForProfile)
+
                     subject.loadViewProgrammatically()
 
                     subject.biddingProgressSignal.update(tuple.1)
