@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-               BuildableName = "Emission_Example.app"
-               BlueprintName = "Emission_Example"
-               ReferencedContainer = "container:Emission.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "Emission_Tests.xctest"
-               BlueprintName = "Emission_Tests"
+               BlueprintIdentifier = "510DCB0D1CCA69EC0075E8CB"
+               BuildableName = "Emission.app"
+               BlueprintName = "Emission"
                ReferencedContainer = "container:Emission.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,9 +32,19 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "Emission_Tests.xctest"
-               BlueprintName = "Emission_Tests"
+               BlueprintIdentifier = "510DCB251CCA69EC0075E8CB"
+               BuildableName = "EmissionTests.xctest"
+               BlueprintName = "EmissionTests"
+               ReferencedContainer = "container:Emission.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "510DCB301CCA69EC0075E8CB"
+               BuildableName = "EmissionUITests.xctest"
+               BlueprintName = "EmissionUITests"
                ReferencedContainer = "container:Emission.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -56,9 +52,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "Emission_Example.app"
-            BlueprintName = "Emission_Example"
+            BlueprintIdentifier = "510DCB0D1CCA69EC0075E8CB"
+            BuildableName = "Emission.app"
+            BlueprintName = "Emission"
             ReferencedContainer = "container:Emission.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -79,13 +75,25 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "Emission_Example.app"
-            BlueprintName = "Emission_Example"
+            BlueprintIdentifier = "510DCB0D1CCA69EC0075E8CB"
+            BuildableName = "Emission.app"
+            BlueprintName = "Emission"
             ReferencedContainer = "container:Emission.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "CG_CONTEXT_SHOW_BACKTRACE"
+            value = "1"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
+         <AdditionalOption
+            key = "MallocStackLogging"
+            value = ""
+            isEnabled = "YES">
+         </AdditionalOption>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
@@ -98,9 +106,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "Emission_Example.app"
-            BlueprintName = "Emission_Example"
+            BlueprintIdentifier = "510DCB0D1CCA69EC0075E8CB"
+            BuildableName = "Emission.app"
+            BlueprintName = "Emission"
             ReferencedContainer = "container:Emission.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

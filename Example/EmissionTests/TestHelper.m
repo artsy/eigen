@@ -47,13 +47,6 @@
            NSStringFromCGSize(nativeResolution));
 }
 
-static NSDictionary *
-LoadJSONFixture(NSBundle *bundle, NSString *filename)
-{
-  NSData *data = [NSData dataWithContentsOfURL:[bundle URLForResource:filename withExtension:@"json"]];
-  return [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-}
-
 - (void)loadArtworksFixtures;
 {
   self.artworksPages = @[
