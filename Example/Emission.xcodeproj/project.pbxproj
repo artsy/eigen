@@ -11,7 +11,7 @@
 		510DCB121CCA69EC0075E8CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB111CCA69EC0075E8CB /* main.m */; };
 		510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB141CCA69EC0075E8CB /* AppDelegate.m */; };
 		510DCB1D1CCA69EC0075E8CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 510DCB1C1CCA69EC0075E8CB /* Assets.xcassets */; };
-		510DCB2B1CCA69EC0075E8CB /* EmissionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB2A1CCA69EC0075E8CB /* EmissionTests.m */; };
+		510DCB2B1CCA69EC0075E8CB /* OpaqueImageViewComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB2A1CCA69EC0075E8CB /* OpaqueImageViewComponentTests.m */; };
 		510DCB361CCA69EC0075E8CB /* EmissionUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB351CCA69EC0075E8CB /* EmissionUITests.m */; };
 		510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 510E94FB1CCA828900BDF098 /* LaunchScreen.xib */; };
 		510E95141CCEB84F00BDF098 /* TestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 510E95131CCEB84F00BDF098 /* TestHelper.m */; };
@@ -46,7 +46,7 @@
 		510DCB1C1CCA69EC0075E8CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		510DCB211CCA69EC0075E8CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		510DCB261CCA69EC0075E8CB /* EmissionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmissionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		510DCB2A1CCA69EC0075E8CB /* EmissionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmissionTests.m; sourceTree = "<group>"; };
+		510DCB2A1CCA69EC0075E8CB /* OpaqueImageViewComponentTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpaqueImageViewComponentTests.m; sourceTree = "<group>"; };
 		510DCB2C1CCA69EC0075E8CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		510DCB311CCA69EC0075E8CB /* EmissionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmissionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		510DCB351CCA69EC0075E8CB /* EmissionUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmissionUITests.m; sourceTree = "<group>"; };
@@ -115,7 +115,7 @@
 		510DCB291CCA69EC0075E8CB /* EmissionTests */ = {
 			isa = PBXGroup;
 			children = (
-				510DCB2A1CCA69EC0075E8CB /* EmissionTests.m */,
+				510DCB2A1CCA69EC0075E8CB /* OpaqueImageViewComponentTests.m */,
 				510DCB2C1CCA69EC0075E8CB /* Info.plist */,
 				510E95151CCEC22C00BDF098 /* TestHelper.h */,
 				510E95131CCEB84F00BDF098 /* TestHelper.m */,
@@ -441,7 +441,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				510DCB2B1CCA69EC0075E8CB /* EmissionTests.m in Sources */,
+				510DCB2B1CCA69EC0075E8CB /* OpaqueImageViewComponentTests.m in Sources */,
 				510E95141CCEB84F00BDF098 /* TestHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

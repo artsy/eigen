@@ -3,6 +3,9 @@
 #import <SDWebImage/SDImageCache.h>
 #import <SDWebImage/SDWebImageManager.h>
 
+#import <React/RCTRootView.h>
+
+
 @interface TestHelper ()
 @property (nonatomic, strong, readwrite) UIWindow *window;
 @property (nonatomic, strong, readwrite) NSArray<NSDictionary *> *artworksPages;
@@ -10,6 +13,8 @@
 @end
 
 @implementation TestHelper
+
+@synthesize reactTestRunner = _reactTestRunner;
 
 + (instancetype)sharedHelper;
 {
@@ -29,19 +34,13 @@
   return YES;
 }
 
-- (NSURL *)fixturesURL;
-{
-  NSURL *testsDir = [[NSURL fileURLWithPath:@(__FILE__)] URLByDeletingLastPathComponent];
-  return [testsDir URLByAppendingPathComponent:@"Fixtures"];
-}
-
 - (void)assertCorrectEnvironment;
 {
   NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
   NSAssert(version.majorVersion == 9,
            @"The tests should be run on iOS 9.x, not %ld.%ld", version.majorVersion, version.minorVersion);
-  
+
   CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
   NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(750, 1334)),
            @"The tests should be run on an iPhone 6, not a device with native resolution %@",
@@ -67,7 +66,7 @@ LoadJSONFixture(NSBundle *bundle, NSString *filename)
     [artworks addObjectsFromArray:[artworksPage valueForKeyPath:@"data.artist.artworks"]];
   }
   self.artworks = [artworks copy];
-  
+
   // Ensure the tests do not hit the network for images.
   SDImageCache *cache = [[SDImageCache alloc] initWithNamespace:@"test-fixtures" diskCacheDirectory:self.fixturesURL.path];
   [SDWebImageManager.sharedManager setValue:cache forKey:@"_imageCache"];
@@ -84,6 +83,60 @@ LoadJSONFixture(NSBundle *bundle, NSString *filename)
   return [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:URL]
                                          options:0
                                            error:nil];
+}
+
+- (NSURL *)fixturesURL;
+{
+  NSURL *testsDir = [[NSURL fileURLWithPath:@(__FILE__)] URLByDeletingLastPathComponent];
+  return [testsDir URLByAppendingPathComponent:@"Fixtures"];
+}
+
+- (RCTTestRunner *)reactTestRunner;
+{
+  if (_reactTestRunner == nil) {
+    NSURL *URL = TestHelper.sharedHelper.fixturesURL;
+    URL = [URL URLByAppendingPathComponent:@"ReferenceImages"];
+    _reactTestRunner = [[RCTTestRunner alloc] initWithApp:@"EmissionTests/TestApps"
+                                       referenceDirectory:URL.path
+                                           moduleProvider:nil];
+  }
+  return _reactTestRunner;
+}
+
+// Taken from Expecta+FBSnapshotTestCase
+static SEL
+currentTestName(void)
+{
+  id compiledExample = [[NSThread currentThread] threadDictionary][@"SPTCurrentSpec"];
+  NSString *name;
+  if ([compiledExample respondsToSelector:@selector(name)]) {
+    // Specta 0.3 syntax
+    name = [compiledExample performSelector:@selector(name)];
+//  } else if ([compiledExample respondsToSelector:@selector(fileName)]) {
+//    // Specta 0.2 syntax
+//    name = [compiledExample performSelector:@selector(fileName)];
+  }
+  name = [[[[name componentsSeparatedByString:@" test_"] lastObject] stringByReplacingOccurrencesOfString:@"__" withString:@"_"] stringByReplacingOccurrencesOfString:@"]" withString:@""];
+  return NSSelectorFromString(name);
+}
+
+- (void)runReactTestInRecordMode:(BOOL)recordMode
+                          module:(NSString *)moduleName
+                           props:(NSDictionary * _Nullable)props;
+{
+  BOOL before = self.reactTestRunner.recordMode;
+  @try {
+    self.reactTestRunner.recordMode = recordMode;
+    [self.reactTestRunner runTest:currentTestName()
+                           module:moduleName
+                     initialProps:props
+               configurationBlock:^(RCTRootView *rootView) {
+      rootView.frame = [[UIScreen mainScreen] bounds];
+    }];
+  }
+  @finally {
+    self.reactTestRunner.recordMode = before;
+  }
 }
 
 @end
