@@ -31,6 +31,8 @@ upcoming:
     - Adds support for loading Artsy subdomains internally. - ash
     - Live auction lot list. - ash
     - Fixes crash due to missing nullability specifiers on Artwork. - ash
+    - Show Preview images are edge to edge fill, instead of scale fit - orta
+
 
 releases:
 
