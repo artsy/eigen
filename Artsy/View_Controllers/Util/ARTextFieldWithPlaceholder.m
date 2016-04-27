@@ -31,7 +31,7 @@
 {
     self.backgroundColor = [UIColor clearColor];
     self.font = [UIFont serifFontWithSize:20];
-    self.textColor = [UIColor whiteColor];
+    self.textColor = [UIColor artsyGrayBold];
 
     self.baseline = [CALayer layer];
     self.baseline.backgroundColor = [UIColor artsyGrayRegular].CGColor;
@@ -79,9 +79,9 @@
     button.tag = CLEAR_BUTTON_TAG;
 }
 
-- (CGSize)intrinsicContentSize
-{
-    return CGSizeMake(UIViewNoIntrinsicMetric, 48);
-}
+//- (CGSize)intrinsicContentSize
+//{
+//    return CGSizeMake(UIViewNoIntrinsicMetric, 48);
+//}
 
 @end
