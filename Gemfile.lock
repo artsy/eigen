@@ -15,24 +15,24 @@ GEM
       json (~> 1.4)
       nokogiri (>= 1.4.4)
     claide (1.0.0.beta.3)
-    cocoapods (1.0.0.beta.7)
+    cocoapods (1.0.0.beta.8)
       activesupport (>= 4.0.2)
       claide (>= 1.0.0.beta.3, < 2.0)
-      cocoapods-core (= 1.0.0.beta.7)
+      cocoapods-core (= 1.0.0.beta.8)
       cocoapods-deintegrate (>= 1.0.0.beta.1, < 2.0)
       cocoapods-downloader (= 1.0.0.beta.3)
       cocoapods-plugins (>= 1.0.0.beta.1, < 2.0)
       cocoapods-search (= 1.0.0.beta.2)
       cocoapods-stats (= 1.0.0.beta.4)
-      cocoapods-trunk (= 1.0.0.beta.3)
-      cocoapods-try (>= 1.0.0.beta.3, < 2.0)
+      cocoapods-trunk (= 1.0.0.beta.4)
+      cocoapods-try (= 1.0.0.beta.4)
       colored (~> 1.2)
       escape (~> 0.0.4)
       fourflusher (~> 0.3.0)
       molinillo (~> 0.4.4)
       nap (~> 1.0)
       xcodeproj (= 1.0.0.beta.4)
-    cocoapods-core (1.0.0.beta.7)
+    cocoapods-core (1.0.0.beta.8)
       activesupport (>= 4.0.2)
       fuzzy_match (~> 2.0.4)
       nap (~> 1.0)
@@ -45,10 +45,10 @@ GEM
       nap
     cocoapods-search (1.0.0.beta.2)
     cocoapods-stats (1.0.0.beta.4)
-    cocoapods-trunk (1.0.0.beta.3)
+    cocoapods-trunk (1.0.0.beta.4)
       nap (>= 0.8, < 2.0)
       netrc (= 0.7.8)
-    cocoapods-try (1.0.0.beta.3)
+    cocoapods-try (1.0.0.beta.4)
     colored (1.2)
     danger (0.6.5)
       claide
@@ -106,7 +106,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods (= 1.0.0.beta.7)
+  cocoapods (= 1.0.0.beta.8)
   cocoapods-keys
   danger
   lowdown

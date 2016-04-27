@@ -20,6 +20,8 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARScrollNavigationChief.h"
 #import "ARDispatchManager.h"
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -339,18 +341,21 @@
 
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index
 {
+    UIViewController *newViewController = nil;
+
     if (self.displayMode == ARFavoritesDisplayModeArtworks) {
-        ARArtworkSetViewController *viewController = [ARSwitchBoard.sharedInstance loadArtworkSet:self.embeddedItemsVC.items inFair:nil atIndex:index];
-        [self.navigationController pushViewController:viewController animated:YES];
+        newViewController = [ARSwitchBoard.sharedInstance loadArtworkSet:self.embeddedItemsVC.items inFair:nil atIndex:index];
+
     } else if (self.displayMode == ARFavoritesDisplayModeArtists) {
         Artist *artist = self.embeddedItemsVC.items[index];
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:artist.artistID];
-        [self.navigationController pushViewController:viewController animated:YES];
+        newViewController = [ARSwitchBoard.sharedInstance loadArtistWithID:artist.artistID];
+
     } else if (self.displayMode == ARFavoritesDisplayModeGenes) {
         Gene *gene = self.embeddedItemsVC.items[index];
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadGene:gene];
-        [self.navigationController pushViewController:viewController animated:YES];
+        newViewController = [ARSwitchBoard.sharedInstance loadGene:gene];
     }
+
+    [self.ar_TopMenuViewController pushViewController:newViewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)embeddedModelsViewControllerDidScrollPastEdge:(AREmbeddedModelsViewController *)embeddedModelsViewController

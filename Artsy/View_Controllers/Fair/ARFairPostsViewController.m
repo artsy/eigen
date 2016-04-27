@@ -1,11 +1,15 @@
 #import "ARFairPostsViewController.h"
 
+#import "ARAppConstants.h"
 #import "Fair.h"
 #import "ARFeedTimeline.h"
 #import "ARPostFeedItem.h"
 #import "ARPostFeedItemLinkView.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARSwitchBoard+Eigen.h"
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
+
 
 @implementation ARFairPostsViewController
 
@@ -50,7 +54,7 @@
         [self.selectionDelegate didSelectPost:sender.targetPath];
     } else {
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:sender.targetPath];
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }
 }
 

@@ -6,8 +6,8 @@ import Interstellar
 protocol LiveAuctionViewModelType: class {
     var startDate: NSDate { get }
     var lotCount: Int { get }
-    var saleAvailabilitySignal: Signal<SaleAvailabilityState> { get }
-    var currentLotIDSignal: Signal<String> { get }
+    var saleAvailabilitySignal: Observable<SaleAvailabilityState> { get }
+    var currentLotIDSignal: Observable<String> { get }
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int?
 }
 
@@ -36,8 +36,8 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
         return sale.lotIDs.count
     }
 
-    let saleAvailabilitySignal = Signal<SaleAvailabilityState>()
-    let currentLotIDSignal = Signal<String>()
+    let saleAvailabilitySignal = Observable<SaleAvailabilityState>()
+    let currentLotIDSignal = Observable<String>()
 
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.

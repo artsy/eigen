@@ -46,7 +46,9 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
         guard let lotViewModel = lotViewModel else { return }
         guard let cell = cell as? LiveAuctionHistoryCell else { return }
 
-        let event = lotViewModel.eventAtIndex(indexPath.row)
+        // Events are ordered FIFO, need to inverse for presentation
+        let total = self.tableView(tableView, numberOfRowsInSection: 0) - 1
+        let event = lotViewModel.eventAtIndex(total - indexPath.row)
         cell.updateWithEventViewModel(event)
     }
 }

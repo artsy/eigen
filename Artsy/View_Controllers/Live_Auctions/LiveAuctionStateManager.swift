@@ -43,7 +43,7 @@ class LiveAuctionStateManager: NSObject {
 
         super.init()
 
-        staticDataFetcher.fetchStaticData().next { [weak self] staticData in
+        staticDataFetcher.fetchStaticData().next {staticData in
             print("Static Data: \(staticData)")
         }
 
@@ -69,15 +69,15 @@ extension PublicFunctions {
 
 private typealias ComputedProperties = LiveAuctionStateManager
 extension ComputedProperties {
-    var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> {
+    var newLotsSignal: Observable<[LiveAuctionLotViewModelType]> {
         return stateReconciler.newLotsSignal
     }
 
-    var currentLotSignal: Signal<LiveAuctionLotViewModelType> {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
         return stateReconciler.currentLotSignal
     }
 
-    var saleSignal: Signal<LiveAuctionViewModelType> {
+    var saleSignal: Observable<LiveAuctionViewModelType> {
         return stateReconciler.saleSignal
     }
 }
@@ -131,14 +131,14 @@ extension DefaultCreators {
 }
 
 class Stub_StateFetcher: LiveAuctionStateFetcherType {
-    func fetchSale() -> Signal<AnyObject> {
-        let signal = Signal<AnyObject>()
+    func fetchSale() -> Observable<Result<AnyObject>> {
+        let signal = Observable<Result<AnyObject>>()
 
         let jsonPath = NSBundle.mainBundle().pathForResource("live_auctions", ofType: "json")
         let jsonData = NSData(contentsOfFile: jsonPath!)!
         let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
 
-        signal.update(json)
+        signal.update(.Success(json))
 
         return signal
     }
@@ -146,8 +146,8 @@ class Stub_StateFetcher: LiveAuctionStateFetcherType {
 
 class Stub_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
-    func fetchStaticData() -> Signal<AnyObject> {
-        let signal = Signal<AnyObject>()
+    func fetchStaticData() -> Observable<Result<AnyObject>> {
+        let signal = Observable<Result<AnyObject>>()
         return signal
     }
 }

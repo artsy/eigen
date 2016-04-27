@@ -1,3 +1,4 @@
+#import "ARAppConstants.h"
 #import "ARLogger.h"
 #import "ARInternalMobileWebViewController.h"
 #import "UIViewController+FullScreenLoading.h"
@@ -5,6 +6,8 @@
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegate.h"
 #import "ARSwitchBoard+Eigen.h"
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
 
 static void *ARProgressContext = &ARProgressContext;
 
@@ -175,8 +178,8 @@ static void *ARProgressContext = &ARProgressContext;
 
         } else {
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
-            if (viewController && ![self.navigationController.viewControllers containsObject:viewController]) {
-                [self.navigationController pushViewController:viewController animated:YES];
+            if (viewController) {
+                [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
             }
 
             ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));

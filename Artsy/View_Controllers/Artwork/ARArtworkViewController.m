@@ -1,6 +1,8 @@
 #import "ARArtworkViewController.h"
 
 #import "Artwork.h"
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARArtworkRelatedArtworksView.h"
 #import "ARArtworkBlurbView.h"
@@ -225,14 +227,14 @@
 
 - (void)artworkBlurView:(ARArtworkBlurbView *)blurbView shouldPresentViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+    [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 #pragma mark - ARArtworkDetailViewDelegate
 
 - (void)artworkDetailView:(ARArtworkDetailView *)detailView shouldPresentViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+    [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)didUpdateArtworkDetailView:(id)detailView
@@ -252,14 +254,14 @@
 
 - (void)postViewController:(ARPostsViewController *)postViewController shouldShowViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+    [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 #pragma mark - ARArtworkRelatedArtworksViewParentViewController
 
 - (void)relatedArtworksView:(ARArtworkRelatedArtworksView *)view shouldShowViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+    [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)relatedArtworksView:(ARArtworkRelatedArtworksView *)view didAddSection:(UIView *)section;

@@ -190,7 +190,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     __weak typeof(self) wself = self;
     [self.showNetworkModel getFairMaps:^(NSArray *maps) {
         __strong typeof (wself) sself = wself;
-        ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:sself.fair title:sself.show.title selectedPartnerShows:@[sself.show]];
+        ARFairMapViewController *viewController = [ARSwitchBoard.sharedInstance loadMapInFair:sself.fair title:sself.show.title selectedPartnerShows:@[sself.show]];
         [sself.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
     }];
 }

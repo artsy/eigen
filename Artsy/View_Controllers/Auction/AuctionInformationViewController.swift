@@ -11,7 +11,7 @@ struct AuctionInformation {
         let name: String
         let slug: String
 
-        let markdownSignal = Signal<MarkdownString>()
+        let markdownSignal = Observable<MarkdownString>()
         func downloadContent() {
             ArtsyAPI.getPageContentForSlug(slug) {
                 self.markdownSignal.update($0)
@@ -247,7 +247,7 @@ extension AuctionInformationViewController {
                 contentView.useSemiBold = true
 
                 entry.downloadContent()
-                entry.markdownSignal.next { string in
+                entry.markdownSignal.subscribe { string in
                     /// The API comes with headers we should remove
                     let content = string.stringByRemovingLinesMatching { $0.hasPrefix("# ") }
                     contentView.setMarkdownString(content)

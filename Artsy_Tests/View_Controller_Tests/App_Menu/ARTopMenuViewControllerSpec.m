@@ -26,7 +26,7 @@
 @end
 
 
-@interface ARTopMenuViewController (Testing) <ARTabViewDelegate>
+@interface ARTopMenuViewController (ExposedForTesting) <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 - (JSBadgeView *)badgeForButtonAtIndex:(NSInteger)index createIfNecessary:(BOOL)createIfNecessary;
 @property (readwrite, nonatomic, assign) enum ARTopTabControllerIndex selectedTabIndex;

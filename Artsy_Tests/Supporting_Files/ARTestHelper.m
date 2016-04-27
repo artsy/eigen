@@ -6,6 +6,7 @@
 #import "ARUserManager.h"
 
 #import <iRate/iRate.h>
+#import <SDWebImage/SDWebImageManager.h>
 #import "ARFonts.h"
 
 
@@ -50,6 +51,10 @@
     font = [UIFont serifItalicFontWithSize:12];
     font = [UIFont sansSerifFontWithSize:12];
     font = [UIFont smallCapsSerifFontWithSize:12];
+
+    // Ensure that the image cache is just set up for testing
+    SDImageCache *imageCache = [[SDImageCache alloc] initWithNamespace:@"Testing" diskCacheDirectory:NSTemporaryDirectory()];
+    [[SDWebImageManager sharedManager] setValue:imageCache forKey:@"_imageCache"];
 
     // Needed for "usesDrawRect" based Nimble-Snapshots testing
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

@@ -330,6 +330,15 @@ describe(@"ARSwitchboard", ^{
             expect(classString).to.contain(@"AuctionViewController");
         });
 
+        it(@"routes live auctions", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+
+            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"LiveAuctionViewController");
+        });
+
         it(@"can not route to native auctions when echo has a feature called 'DisableNativeAuctions'", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];

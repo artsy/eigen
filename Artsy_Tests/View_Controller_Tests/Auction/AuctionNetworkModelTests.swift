@@ -129,9 +129,9 @@ class Test_AuctionSaleNetworkModel: AuctionSaleNetworkModelType {
         self.result = result
     }
 
-    func fetchSale(saleID: String, callback: Result<Sale> -> Void) {
+    func fetchSale(saleID: String) -> Observable<Result<Sale>> {
         called = true
-        callback(result)
+        return Observable(result)
     }
 }
 
@@ -143,9 +143,9 @@ class Test_AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType 
         self.result = result
     }
 
-    func fetchSaleArtworks(saleID: String, callback: Result<[SaleArtwork]> -> Void) {
+    func fetchSaleArtworks(saleID: String) -> Observable<Result<[SaleArtwork]>> {
         called = true
-        callback(result)
+        return Observable(result)
     }
 }
 
@@ -158,8 +158,8 @@ class Test_AuctionRegistrationStatusNetworkModel: AuctionRegistrationStatusNetwo
         self.result = result
     }
     
-    func fetchRegistrationStatus(saleID: String, callback: Result<ArtsyAPISaleRegistrationStatus> -> Void) {
+    func fetchRegistrationStatus(saleID: String) -> Observable<Result<ArtsyAPISaleRegistrationStatus>> {
         called = true
-        callback(result)
+        return Observable(result)
     }
 }

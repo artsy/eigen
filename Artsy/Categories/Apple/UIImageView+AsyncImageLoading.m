@@ -1,6 +1,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <objc/runtime.h>
 
+#import "ARAppConstants.h"
 #import "ARFonts.h"
 #import "ARLogger.h"
 
@@ -16,11 +17,16 @@
         placeholder = [UIImage imageFromColor:[UIColor artsyGrayRegular]];
     }
 
-    // This will save a lot of async calls sometime, this exists in Energy.
-    //    if (ARPerformWorkSynchronously) {
-    //        self.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-    //        return;
-    //    }
+    // In testing provide the ability to do a synchronous fast image cache call
+    if (!ARPerformWorkAsynchronously) {
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        if ([manager cachedImageExistsForURL:url]) {
+            NSString *key = [manager cacheKeyForURL:url];
+            self.image = [manager.imageCache imageFromDiskCacheForKey:key];
+            if (completionBlock) { completionBlock(self.image, nil, SDImageCacheTypeDisk, url); }
+            return;
+        }
+    }
 
     if ([ARLogger shouldLogNetworkRequests]) {
         // SDWebImage might not call the callback in case an image view is deallocated in the

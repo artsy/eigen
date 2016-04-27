@@ -24,7 +24,6 @@ NSString *const AROnboardingSkipPersonalizeDefault = @"eigen-onboard-skip-person
 NSString *const AROnboardingSkipCollectorLevelDefault = @"eigen-onboard-skip-collector-level";
 NSString *const AROnboardingSkipPriceRangeDefault = @"eigen-onboard-skip-price-range";
 NSString *const AROnboardingPromptThresholdDefault = @"eigen-onboard-prompt-threshold";
-NSString *const ARShowAuctionResultsButtonDefault = @"auction-results";
 
 
 @implementation ARDefaults

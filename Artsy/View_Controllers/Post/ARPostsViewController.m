@@ -39,7 +39,7 @@
 
 - (void)tappedPostFeedItemLinkView:(ARPostFeedItemLinkView *)sender
 {
-    UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:[sender targetPath]];
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:[sender targetPath]];
     if (viewController) {
         [self.delegate postViewController:self shouldShowViewController:viewController];
     }

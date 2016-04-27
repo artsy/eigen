@@ -156,7 +156,7 @@
 {
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         NSURL *URL = navigationAction.request.URL;
-        ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
+        ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
         if ([switchboard canRouteURL:URL]) {
             UIViewController *controller = [switchboard loadURL:URL];
             if (controller) {

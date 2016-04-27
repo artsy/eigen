@@ -14,6 +14,8 @@
 #import "UIView+HitTestExpansion.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARMenuAwareViewController.h"
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
 
 #import <FXBlurView/FXBlurView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -114,7 +116,7 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
         controller = [ARSwitchBoard.sharedInstance loadPath:path];
     }
 
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.ar_TopMenuViewController pushViewController:controller animated:YES];
 }
 
 - (void)closeSearch:(id)sender

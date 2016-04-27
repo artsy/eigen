@@ -9,7 +9,6 @@
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"
 #import "ARArtworkInfoViewController.h"
-#import "ARAuctionArtworkResultsViewController.h"
 #import "ARViewInRoomViewController.h"
 #import "ARSharingController.h"
 #import "ARArtworkPreviewImageView.h"
@@ -92,7 +91,7 @@
 {
     [ArtsyAPI getShowsForArtworkID:self.artwork.artworkID inFairID:self.fair.fairID success:^(NSArray *shows) {
         if (shows.count > 0) {
-            ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.artwork.partner.name selectedPartnerShows:shows];
+            ARFairMapViewController *viewController = [ARSwitchBoard.sharedInstance loadMapInFair:self.fair title:self.artwork.partner.name selectedPartnerShows:shows];
             [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
         }
     } failure:^(NSError *error){
@@ -192,7 +191,7 @@
         NSString *orderID = [JSON valueForKey:@"id"];
         NSString *resumeToken = [JSON valueForKey:@"token"];
         ARErrorLog(@"Created order %@", orderID);
-        UIViewController *controller = [[ARSwitchBoard sharedInstance] loadOrderUIForID:orderID resumeToken:resumeToken];
+        UIViewController *controller = [ARSwitchBoard.sharedInstance loadOrderUIForID:orderID resumeToken:resumeToken];
         [self.navigationController pushViewController:controller animated:YES];
 
     }
@@ -201,12 +200,6 @@
         ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
         [sself tappedContactGallery];
         }];
-}
-
-- (void)tappedAuctionResults
-{
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadAuctionResultsForArtwork:self.artwork];
-    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)tappedMoreInfo

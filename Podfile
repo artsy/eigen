@@ -70,7 +70,7 @@ target 'Artsy' do
   # UIAlertView is deprecated for iOS8 APIs
   pod 'UIAlertView+Blocks'
 
-  # Language Enhancments
+  # Language Enhancements
   pod 'KSDeferred'
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
@@ -105,7 +105,7 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then'
-  pod 'Interstellar/Core'
+  pod 'Interstellar/Core', git: 'https://github.com/ashfurrow/Interstellar.git', branch: 'observable-merge'
   pod 'Socket.IO-Client-Swift'
 
   target 'Artsy Tests' do
@@ -123,8 +123,8 @@ target 'Artsy' do
       pod 'Forgeries/Mocks', :git => "https://github.com/ashfurrow/Forgeries.git", :branch => "application"
 
       # Swift pods 🎉
-      pod 'Quick', git: 'https://github.com/Quick/Quick.git'
-      pod 'Nimble', git: 'https://github.com/Quick/Nimble.git'
+      pod 'Quick'
+      pod 'Nimble'
       pod 'Nimble-Snapshots'
   end
 end

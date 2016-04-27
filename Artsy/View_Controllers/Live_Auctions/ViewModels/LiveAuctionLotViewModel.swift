@@ -11,7 +11,7 @@ enum LotState {
 
 protocol LiveAuctionLotViewModelType: class {
     func eventAtIndex(index: Int) -> LiveAuctionEventViewModel
-    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Signal<LotState>
+    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState>
 
     var lotArtist: String { get }
     var estimateString: String { get }
@@ -29,11 +29,11 @@ protocol LiveAuctionLotViewModelType: class {
     var liveAuctionLotID: String { get }
     var reserveStatusString: String { get }
 
-    var reserveStatusSignal: Signal<ARReserveStatus> { get }
-    var askingPriceSignal: Signal<UInt64> { get }
-    var startEventUpdatesSignal: Signal<NSDate> { get }
-    var endEventUpdatesSignal: Signal<NSDate> { get }
-    var newEventSignal: Signal<LiveAuctionEventViewModel> { get }
+    var reserveStatusSignal: Observable<ARReserveStatus> { get }
+    var askingPriceSignal: Observable<UInt64> { get }
+    var startEventUpdatesSignal: Observable<NSDate> { get }
+    var endEventUpdatesSignal: Observable<NSDate> { get }
+    var newEventSignal: Observable<LiveAuctionEventViewModel> { get }
 }
 
 class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
@@ -41,12 +41,12 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     private let model: LiveAuctionLot
     private var events = [LiveAuctionEventViewModel]()
 
-    let reserveStatusSignal = Signal<ARReserveStatus>()
-    let askingPriceSignal = Signal<UInt64>()
+    let reserveStatusSignal = Observable<ARReserveStatus>()
+    let askingPriceSignal = Observable<UInt64>()
 
-    let startEventUpdatesSignal = Signal<NSDate>()
-    let endEventUpdatesSignal = Signal<NSDate>()
-    let newEventSignal = Signal<LiveAuctionEventViewModel>()
+    let startEventUpdatesSignal = Observable<NSDate>()
+    let endEventUpdatesSignal = Observable<NSDate>()
+    let newEventSignal = Observable<LiveAuctionEventViewModel>()
 
     init(lot: LiveAuctionLot) {
         self.model = lot
@@ -63,7 +63,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return .UpcomingLot(distanceFromLive: distance)
     }
 
-    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Signal<LotState> {
+    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
         return auctionViewModel
             .currentLotIDSignal
             .map { [weak self, weak auctionViewModel] currentLotID -> LotState in
