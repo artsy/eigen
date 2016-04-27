@@ -2,7 +2,7 @@ import Foundation
 import Interstellar
 
 protocol AuctionSaleArtworksNetworkModelType {
-    func fetchSaleArtworks(saleID: String, callback: Result<[SaleArtwork]> -> Void)
+    func fetchSaleArtworks(saleID: String) -> Observable<Result<[SaleArtwork]>>
 }
 
 /// Network model responsible for fetching the SaleArtworks from the API.
@@ -10,7 +10,9 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
 
     var saleArtworks: [SaleArtwork]?
 
-    func fetchSaleArtworks(saleID: String, callback: Result<[SaleArtwork]> -> Void) {
+    func fetchSaleArtworks(saleID: String) -> Observable<Result<[SaleArtwork]>> {
+
+        let observable = Observable<Result<[SaleArtwork]>>()
 
         /// Fetches all the sale artworks associated with the sale.
         /// This serves as a trampoline for the actual recursive call.
@@ -18,11 +20,13 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
             switch result {
             case .Success(let saleArtworks):
                 self.saleArtworks = saleArtworks
-                callback(.Success(saleArtworks))
+                observable.update(.Success(saleArtworks))
             case .Error(let error):
-                callback(.Error(error))
+                observable.update(.Error(error))
             }
         }
+
+        return observable
     }
 }
 
@@ -47,7 +51,9 @@ private func fetchPage(page: Int, forSaleID saleID: String, alreadyFetched: [Sal
                 fetchPage(nextPage, forSaleID: saleID, alreadyFetched: totalFetchedSoFar, callback: callback)
             }
         },
-        failure: invokeCallbackWithFailure(callback)
+        failure: { error in
+            callback(.Error(error as ErrorType))
+        }
     )
 }
 

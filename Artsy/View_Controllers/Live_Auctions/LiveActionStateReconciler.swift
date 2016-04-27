@@ -24,20 +24,20 @@ State update includes:
 
 protocol LiveAuctionStateReconcilerType {
     func updateState(state: AnyObject)
-    var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> { get }
-    var currentLotSignal: Signal<LiveAuctionLotViewModelType> { get }
-    var saleSignal: Signal<LiveAuctionViewModelType> { get }
+    var newLotsSignal: Observable<[LiveAuctionLotViewModelType]> { get }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
+    var saleSignal: Observable<LiveAuctionViewModelType> { get }
 }
 
 class LiveAuctionStateReconciler: NSObject {
     typealias LotID = String
 
     // Updated when initial lots are ready, and if at any point we need to replace the lots completely (very rare, only if a lot is added/removed from sale).
-    let newLotsSignal = Signal<[LiveAuctionLotViewModelType]>()
+    let newLotsSignal = Observable<[LiveAuctionLotViewModelType]>()
 
-    private let _currentLotSignal = Signal<LiveAuctionLotViewModel>()
+    private let _currentLotSignal = Observable<LiveAuctionLotViewModel>()
     private var _currentLotID: String?
-    private let _saleSignal = Signal<LiveAuctionViewModel>()
+    private let _saleSignal = Observable<LiveAuctionViewModel>()
 
     private var _state = [LotID: LiveAuctionLotViewModel]()
     private var _sale: LiveAuctionViewModel?
@@ -67,11 +67,11 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
         updateSaleIfNecessary(saleJSON)
     }
 
-    var currentLotSignal: Signal<LiveAuctionLotViewModelType> {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
         return _currentLotSignal.map { $0 as LiveAuctionLotViewModelType }
     }
     
-    var saleSignal: Signal<LiveAuctionViewModelType> {
+    var saleSignal: Observable<LiveAuctionViewModelType> {
         return _saleSignal.map { $0 as LiveAuctionViewModelType }
     }
 

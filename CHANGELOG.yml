@@ -23,6 +23,7 @@ upcoming:
     - Present the Live AuctionVC in a modal - orta
     - Support splitting between lot list and lots on iPad - orta
     - Updates to Interstellar v2. - ash
+    - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
 
   notes:
     - Fixes long auction names falling off right edge. - ash

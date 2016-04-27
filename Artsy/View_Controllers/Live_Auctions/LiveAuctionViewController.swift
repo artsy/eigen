@@ -39,6 +39,7 @@ class LiveAuctionViewController: UISplitViewController {
         lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel!)
         lotListController.delegate = self
 
+
         viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListController, lotsSetNavigationController]
         super.viewWillAppear(animated)
     }

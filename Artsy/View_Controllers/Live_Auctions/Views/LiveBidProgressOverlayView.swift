@@ -3,7 +3,7 @@ import Interstellar
 
 class LiveBidProgressOverlayView: UIView {
 
-    var biddingProgressSignal = Signal<LiveAuctionBiddingProgressState>()
+    var biddingProgressSignal = Observable<LiveAuctionBiddingProgressState>()
 
     @IBOutlet weak var bidProgressImageView: UIImageView!
     @IBOutlet weak var bidProgressTitleLabel: UILabel!
@@ -11,7 +11,7 @@ class LiveBidProgressOverlayView: UIView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        biddingProgressSignal.next(biddingProgressUpdated)
+        biddingProgressSignal.subscribe(biddingProgressUpdated)
     }
 
     private func biddingProgressUpdated(state: LiveAuctionBiddingProgressState) {
