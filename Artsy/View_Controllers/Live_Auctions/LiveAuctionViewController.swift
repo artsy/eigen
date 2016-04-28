@@ -81,7 +81,7 @@ extension PrivateFunctions {
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson)
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
 
-        lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
+        lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
 
         viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListController, lotsSetNavigationController]

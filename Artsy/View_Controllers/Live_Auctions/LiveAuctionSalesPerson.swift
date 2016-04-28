@@ -5,17 +5,15 @@ import Interstellar
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
 protocol LiveAuctionsSalesPersonType {
-    var currentFocusedLot: Observable<Int> { get }
-    var updatedStateSignal: Observable<[LiveAuctionLotViewModelType]> { get }
+    var dataReadyForInitialDisplay: Observable<Void> { get }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
 
     var auctionViewModel: LiveAuctionViewModelType { get }
-    var pageControllerDelegate: LiveAuctionPageControllerDelegate! { get }
-    var lots: [LiveAuctionLotViewModelType] { get }
+    var pageControllerDelegate: LiveAuctionPageControllerDelegate? { get }
     var lotCount: Int { get }
     var liveSaleID: String { get }
 
-    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType?
+    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType?
 
     func bidOnLot(lot: LiveAuctionLotViewModelType)
@@ -27,14 +25,15 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
     let sale: LiveSale
 
+    let dataReadyForInitialDisplay = Observable<Void>(options: [.Once])
     let auctionViewModel: LiveAuctionViewModelType
-    var pageControllerDelegate: LiveAuctionPageControllerDelegate!
+    var pageControllerDelegate: LiveAuctionPageControllerDelegate?
 
     private(set) var lots = [LiveAuctionLotViewModelType]()
     private let stateManager: LiveAuctionStateManager
 
-    // Lot currentloy being looked at by the user.
-    var currentFocusedLot = Observable<Int>()
+    // Lot currently being looked at by the user.
+    var currentFocusedLotID = Observable<Int>()
 
     init(sale: LiveSale,
          accessToken: String,
@@ -49,7 +48,6 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
         super.init()
 
         pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
-
 
         stateManager
             .newLotsSignal
@@ -82,16 +80,15 @@ extension ComputedProperties {
 private typealias PublicFunctions = LiveAuctionsSalesPerson
 extension LiveAuctionsSalesPerson {
 
+    // Returns nil if there is no current lot.
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType? {
-        guard let currentlyShowingIndex = currentFocusedLot.peek() else { return nil }
+        guard let currentlyShowingIndex = currentFocusedLotID.peek() else { return nil }
         let newIndex = currentlyShowingIndex + offset
         let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
         return lotViewModelForIndex(loopingIndex)
     }
 
-    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType? {
-        guard 0..<lots.count ~= index else { return nil }
-
+    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType {
         return lots[index]
     }
 
@@ -124,15 +121,15 @@ extension ClassMethods {
 
 
 class LiveAuctionPageControllerDelegate: NSObject, UIPageViewControllerDelegate {
-    let salesPerson: LiveAuctionsSalesPersonType
+    let salesPerson: LiveAuctionsSalesPerson
 
-    init(salesPerson: LiveAuctionsSalesPersonType) {
+    init(salesPerson: LiveAuctionsSalesPerson) {
         self.salesPerson = salesPerson
     }
 
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
 
         guard let viewController = pageViewController.viewControllers?.first as? LiveAuctionLotViewController else { return }
-        salesPerson.currentFocusedLot.update(viewController.index)
+        salesPerson.currentFocusedLotID.update(viewController.index)
     }
 }

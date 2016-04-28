@@ -55,7 +55,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         progress.alignLeading("0", trailing: "0", toView: view)
         progress.alignBottomEdgeWithView(view, predicate: "-165")
 
-        salesPerson.updatedStateSignal.subscribe { [weak self] _ in
+        salesPerson.dataReadyForInitialDisplay.subscribe { [weak self] _ in
             self?.setupWithInitialData()
         }
     }
@@ -113,7 +113,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func showLots() {
-        let lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
+        let lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
         lotListController.selectedIndex = currentIndex()
         presentViewController(lotListController, animated: true, completion: nil)
@@ -180,7 +180,8 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPersonType!
 
     func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
-        guard let lotViewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
+        guard 0..<salesPerson.lotCount ~= index else { return nil }
+        let lotViewModel = salesPerson.lotViewModelForIndex(index)
 
         let auctionVC =  LiveAuctionLotViewController(index: index, auctionViewModel: salesPerson.auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: salesPerson.currentLotSignal)
         return auctionVC
