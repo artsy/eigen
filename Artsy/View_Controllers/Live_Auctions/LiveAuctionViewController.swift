@@ -77,7 +77,7 @@ extension PrivateFunctions {
     func setupWithSale(sale: LiveSale) {
         let salesPerson = self.salesPerson(sale)
 
-        lotSetController = LiveAuctionLotSetViewController(sale: sale, salesPerson: salesPerson)
+        lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson)
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
 
         lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel!)
@@ -89,7 +89,7 @@ extension PrivateFunctions {
     func salesPerson(sale: LiveSale) -> LiveAuctionsSalesPersonType {
         // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
         let accessToken = UICKeyChainStore.stringForKey(AROAuthTokenDefault) ?? ""
-        return LiveAuctionsSalesPerson(saleID: sale.liveSaleID, accessToken: accessToken, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
+        return LiveAuctionsSalesPerson(sale: sale, accessToken: accessToken, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
      }
 }
 

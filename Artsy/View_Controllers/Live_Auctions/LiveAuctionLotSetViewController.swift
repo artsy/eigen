@@ -8,7 +8,6 @@ import Interstellar
 import UICKeyChainStore
 
 class LiveAuctionLotSetViewController: UIViewController {
-    let sale: LiveSale
     let salesPerson: LiveAuctionsSalesPersonType
 
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
@@ -16,11 +15,11 @@ class LiveAuctionLotSetViewController: UIViewController {
     var pageController: UIPageViewController!
     var hasBeenSetup = false
 
-    init(sale: LiveSale, salesPerson: LiveAuctionsSalesPersonType) {
-        self.sale = sale
+    init(salesPerson: LiveAuctionsSalesPersonType) {
+
         self.salesPerson = salesPerson
         super.init(nibName: nil, bundle: nil)
-        self.title = sale.liveSaleID;
+        self.title = salesPerson.liveSaleID;
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -104,7 +103,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func moreInfo() {
-        AuctionSaleNetworkModel().fetchSale(sale.liveSaleID).subscribe { result in
+        AuctionSaleNetworkModel().fetchSale(salesPerson.liveSaleID).subscribe { result in
             guard let saleInfo = result.value else { return }
 
             let saleVM = SaleViewModel(sale: saleInfo, saleArtworks: [])

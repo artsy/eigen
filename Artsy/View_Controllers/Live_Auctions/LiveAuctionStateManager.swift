@@ -15,23 +15,23 @@ Based on socket events:
 */
 
 class LiveAuctionStateManager: NSObject {
-    typealias SocketCommunicatorCreator = (host: String, saleID: String, accessToken: String) -> LiveAuctionSocketCommunicatorType
+    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, accessToken: String) -> LiveAuctionSocketCommunicatorType
     typealias StaticDataFetcherCreator = (saleID: String) -> LiveAuctionStaticDataFetcherType
     typealias StateReconcilerCreator = () -> LiveAuctionStateReconcilerType
 
-    let saleID: String
+    let causalitySaleID: String
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
 
     init(host: String,
-        saleID: String,
+        causalitySaleID: String,
         accessToken: String,
         socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
         stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
 
-        self.saleID = saleID
-        self.socketCommunicator = socketCommunicatorCreator(host: host, saleID: saleID, accessToken: accessToken)
+        self.causalitySaleID = causalitySaleID
+        self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
         self.stateReconciler = stateReconcilerCreator()
 
         super.init()
@@ -79,8 +79,8 @@ extension SocketDelegate: LiveAuctionSocketCommunicatorDelegate {
 private typealias DefaultCreators = LiveAuctionStateManager
 extension DefaultCreators {
     class func defaultSocketCommunicatorCreator() -> SocketCommunicatorCreator {
-        return { host, accessToken, saleID in
-            return LiveAuctionSocketCommunicator(host: host, saleID: saleID, accessToken: accessToken)
+        return { host, accessToken, causalitySaleID in
+            return LiveAuctionSocketCommunicator(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
         }
     }
 

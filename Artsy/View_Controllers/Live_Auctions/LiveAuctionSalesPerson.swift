@@ -13,6 +13,7 @@ protocol LiveAuctionsSalesPersonType {
     var pageControllerDelegate: LiveAuctionPageControllerDelegate! { get }
     var lots: [LiveAuctionLotViewModelType] { get }
     var lotCount: Int { get }
+    var liveSaleID: String { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType?
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType?
@@ -22,9 +23,9 @@ protocol LiveAuctionsSalesPersonType {
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, saleID: String, accessToken: String) -> LiveAuctionStateManager
+    typealias StateManagerCreator = (host: String, causalitySaleID: String, accessToken: String) -> LiveAuctionStateManager
 
-    let saleID: String
+    let sale: LiveSale
 
     var auctionViewModel: LiveAuctionViewModelType?
     var pageControllerDelegate: LiveAuctionPageControllerDelegate!
@@ -35,14 +36,14 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     // Lot currentloy being looked at by the user.
     var currentFocusedLot = Observable<Int>()
 
-    init(saleID: String,
+    init(sale: LiveSale,
          accessToken: String,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
-        self.saleID = saleID
+        self.sale = sale
         let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "http://localhost:5000"
-        stateManager = stateManagerCreator(host: host, saleID: saleID, accessToken: accessToken)
+        stateManager = stateManagerCreator(host: host, causalitySaleID: sale.causalitySaleID, accessToken: accessToken)
 
         super.init()
 
@@ -81,6 +82,10 @@ extension ComputedProperties {
     var lotCount: Int {
         return auctionViewModel?.lotCount ?? 0
     }
+
+    var liveSaleID: String {
+        return sale.liveSaleID
+    }
 }
 
 
@@ -113,15 +118,15 @@ private typealias ClassMethods = LiveAuctionsSalesPerson
 extension ClassMethods {
 
     class func defaultStateManagerCreator() -> StateManagerCreator {
-        return { host, saleID, accessToken in
-            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken)
+        return { host, causalitySaleID, accessToken in
+            LiveAuctionStateManager(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
         }
     }
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
-        return { host, saleID, accessToken in
+        return { host, causalitySaleID, accessToken in
             // TODO: stub the socket communicator.
-            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken)
+            LiveAuctionStateManager(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
         }
     }
 

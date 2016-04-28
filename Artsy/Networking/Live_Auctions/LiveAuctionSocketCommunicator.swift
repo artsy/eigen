@@ -23,21 +23,21 @@ protocol LiveAuctionSocketCommunicatorType {
 class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
     typealias SocketCreator = String -> SocketType
     private let socket: SocketType
-    private let saleID: String
+    private let causalitySaleID: String
 
     weak var delegate: LiveAuctionSocketCommunicatorDelegate?
 
-    convenience init(host: String, saleID: String, accessToken: String) {
-        self.init(host: host, accessToken: accessToken, saleID: saleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
+    convenience init(host: String, causalitySaleID: String, accessToken: String) {
+        self.init(host: host, accessToken: accessToken, causalitySaleID: causalitySaleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
     }
 
-    init(host: String, accessToken: String, saleID: String, socketCreator: SocketCreator) {
+    init(host: String, accessToken: String, causalitySaleID: String, socketCreator: SocketCreator) {
         socket = socketCreator(host)
-        self.saleID = saleID
+        self.causalitySaleID = causalitySaleID
 
         super.init()
 
-        setupSocketWithAccessToken(accessToken, saleID: saleID)
+        setupSocketWithAccessToken(accessToken, causalitySaleID: causalitySaleID)
     }
 
     deinit {
@@ -55,16 +55,16 @@ private typealias SocketSetup = LiveAuctionSocketCommunicator
 private extension SocketSetup {
 
     /// Connects to, then authenticates against, the socket. Listens for sale events once authenticated.
-    func setupSocketWithAccessToken(accessToken: String, saleID: String) {
-        self.authenticateWithAccessToken(accessToken, saleID: saleID)
+    func setupSocketWithAccessToken(accessToken: String, causalitySaleID: String) {
+        self.authenticateWithAccessToken(accessToken, causalitySaleID: causalitySaleID)
         socket.connect()
     }
 
-    func authenticateWithAccessToken(accessToken: String, saleID: String) {
+    func authenticateWithAccessToken(accessToken: String, causalitySaleID: String) {
         socket.on(.Connect) { [weak socket, weak self] data in
             print("Connected: \(data)")
 
-            socket?.emit(.Authentication, ["accessToken": accessToken, "saleId": saleID])
+            socket?.emit(.Authentication, ["accessToken": accessToken, "saleId": causalitySaleID])
             socket?.on(.Authenticated) { data in
                 // TODO: Handle auth failure.
                 print("Authenticated: \(data)")
@@ -75,7 +75,7 @@ private extension SocketSetup {
 
     func listenForSaleEvents() {
         print("Joining sale")
-        socket.emit(.JoinSale, saleID)
+        socket.emit(.JoinSale, causalitySaleID)
 
         print("Listening for socket events.")
         socket.on(.UpdateAuctionState) { [weak self] data in
