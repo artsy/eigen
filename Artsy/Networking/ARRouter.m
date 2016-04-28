@@ -1018,9 +1018,8 @@ static NSString *hostFromString(NSString *string)
           name\
         }\
         image {\
-          width\
-          height\
-          url(version: \"large\")\
+          large: url(version: \"large\")\
+          thumb: url(version: \"thumb\")\
         }\
       }\
     }\

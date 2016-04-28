@@ -39,13 +39,12 @@
 
 - (NSURL *)urlForThumbnail
 {
-    // TODO: This is messed up from metaphysics.
-    return [NSURL URLWithString:self.imageDictionary[@"large"][@"url"]];
+    return [NSURL URLWithString:self.imageDictionary[@"large"]];
 }
 
 - (NSURL *)urlForProfile
 {
-    return [NSURL URLWithString:self.imageDictionary[@"thumb"][@"url"]];
+    return [NSURL URLWithString:self.imageDictionary[@"thumb"]];
 }
 
 - (CGSize)imageProfileSize
