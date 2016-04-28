@@ -43,7 +43,6 @@
     [self commonSetup];
 }
 
-
 - (void)commonSetup
 {
     [self.nameField setPlaceholder:@"Full Name"];

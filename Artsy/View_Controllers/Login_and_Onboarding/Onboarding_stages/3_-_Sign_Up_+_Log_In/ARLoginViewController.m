@@ -2,6 +2,7 @@
 
 #import "ARLoginFieldsView.h"
 #import "ARLoginButtonsView.h"
+#import "Artsy+UILabels.h"
 
 #import "ARFonts.h"
 #import "ARUserManager.h"
@@ -32,6 +33,7 @@
 
 @property (nonatomic, strong) ARLoginFieldsView *textFieldsView;
 @property (nonatomic, strong) ARLoginButtonsView *buttonsView;
+@property (nonatomic, strong) ARSerifLineHeightLabel *titleLabel;
 
 @property (nonatomic, strong) AROnboardingNavBarView *navView;
 @property (nonatomic, strong) UIButton *testBotButton;
@@ -69,19 +71,31 @@
 {
     self.view.backgroundColor = [UIColor whiteColor];
 
+    self.titleLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:1.4];
+    self.titleLabel.text = @"Log in to your Artsy account";
+    self.titleLabel.font = [UIFont serifFontWithSize:24.0];
+
+    [self.view addSubview:self.titleLabel];
+
+    [self.titleLabel constrainWidthToView:self.view predicate:@"*.9"];
+    [self.titleLabel alignCenterXWithView:self.view predicate:@"0"];
+    [self.titleLabel alignTopEdgeWithView:self.view predicate:@"20"];
+    [self.titleLabel constrainHeight:@"80"];
+
     self.textFieldsView = [[ARLoginFieldsView alloc] init];
     [self.view addSubview:self.textFieldsView];
+
     [self.textFieldsView constrainWidthToView:self.view predicate:@"*.9"];
     [self.textFieldsView alignCenterXWithView:self.view predicate:@"0"];
-    [self.textFieldsView alignTopEdgeWithView:self.view predicate:@"20"];
-    [self.textFieldsView constrainHeight:@"200"];
+    [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:@"20"];
+    [self.textFieldsView constrainHeight:@">=108"];
     [self.textFieldsView setupForLogin];
 
     self.buttonsView = [[ARLoginButtonsView alloc] init];
     [self.view addSubview:self.buttonsView];
     [self.buttonsView constrainWidthToView:self.view predicate:@"*.9"];
     [self.buttonsView alignCenterXWithView:self.view predicate:@"0"];
-    [self.buttonsView constrainTopSpaceToView:self.textFieldsView predicate:@"10"];
+    [self.buttonsView constrainTopSpaceToView:self.textFieldsView predicate:@"40"];
     [self.buttonsView constrainHeight:@"200"];
     [self.buttonsView setupForLogin];
 }
