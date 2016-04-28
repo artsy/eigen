@@ -104,8 +104,7 @@ extension ClassMethods {
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
         return { host, sale, saleArtworks, accessToken in
-            // TODO: stub the socket communicator.
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, accessToken: accessToken)
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, accessToken: accessToken, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
         }
     }
 

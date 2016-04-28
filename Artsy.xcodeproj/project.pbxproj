@@ -306,6 +306,7 @@
 		5E8841501CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E88414F1CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift */; };
 		5E8A03B51C52B60900EAF18B /* RefinementOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A03B41C52B60900EAF18B /* RefinementOptionsViewController.swift */; };
 		5E956E571CD24700005C2332 /* StarscreamExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E956E561CD24700005C2332 /* StarscreamExtensions.swift */; };
+		5E956E591CD2AD6E005C2332 /* live_auctions_socket.json in Resources */ = {isa = PBXBuildFile; fileRef = 5E956E581CD2AD6E005C2332 /* live_auctions_socket.json */; };
 		5E9A782019068EDF00734E1B /* ARProfileViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */; };
 		5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */; };
 		5EA012891CAC3B0C009D9AFE /* LiveAuctionLotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA012881CAC3B0C009D9AFE /* LiveAuctionLotViewController.swift */; };
@@ -359,7 +360,7 @@
 		6019A9081C7E76EF00E292FA /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */; };
 		6019A90D1C7F9EF600E292FA /* LiveAuctionLotSetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6019A90C1C7F9EF600E292FA /* LiveAuctionLotSetViewController.swift */; };
 		601C317816582BA30013E061 /* ARRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 601C317716582BA30013E061 /* ARRouter.m */; };
-		601E31AB1C80A55F00D09F73 /* live_auctions.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_auctions.json */; };
+		601E31AB1C80A55F00D09F73 /* live_auctions_static.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_auctions_static.json */; };
 		601E31B01C80E35600D09F73 /* LiveAuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = 601E31AF1C80E35600D09F73 /* LiveAuctionLot.m */; };
 		601E53371B84C41F00679E10 /* ARArtworkViewControllerBuyButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 601E53351B84C35D00679E10 /* ARArtworkViewControllerBuyButtonTests.m */; };
 		601F029817F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 601F029717F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m */; };
@@ -613,7 +614,7 @@
 		60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FAEF42179843080031C88B /* ARFavoritesViewController.m */; };
 		60FBAA511CC688F7005ED890 /* LiveAuctionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FBAA501CC688F7005ED890 /* LiveAuctionViewController.swift */; };
 		60FC2CBB1C8DF29900ACD78F /* LiveEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FC2CBA1C8DF29900ACD78F /* LiveEvent.m */; };
-		60FC2CBD1C8F677700ACD78F /* live_auctions.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_auctions.json */; };
+		60FC2CBD1C8F677700ACD78F /* live_auctions_static.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_auctions_static.json */; };
 		60FC2CBF1C8F704D00ACD78F /* SaleStatusType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FC2CBE1C8F704D00ACD78F /* SaleStatusType.swift */; };
 		6615518D1C75DD47007EE049 /* ARWorksForYouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6615518C1C75DD47007EE049 /* ARWorksForYouViewController.m */; };
 		7091E01A0E49F283EF9BF395 /* Pods_Artsy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BEA0E7F562681F61B29D4C4 /* Pods_Artsy.framework */; };
@@ -1247,6 +1248,7 @@
 		5E88414F1CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStaticDataFetcherSpec.swift; path = Live_Auctions/LiveAuctionStaticDataFetcherSpec.swift; sourceTree = "<group>"; };
 		5E8A03B41C52B60900EAF18B /* RefinementOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinementOptionsViewController.swift; path = Auction/RefinementOptionsViewController.swift; sourceTree = "<group>"; };
 		5E956E561CD24700005C2332 /* StarscreamExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StarscreamExtensions.swift; path = Live_Auctions/StarscreamExtensions.swift; sourceTree = "<group>"; };
+		5E956E581CD2AD6E005C2332 /* live_auctions_socket.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = live_auctions_socket.json; sourceTree = "<group>"; };
 		5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARProfileViewControllerTests.m; sourceTree = "<group>"; };
 		5E9A78211906BA3D00734E1B /* OCMArg+ClassChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCMArg+ClassChecker.h"; sourceTree = "<group>"; };
 		5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OCMArg+ClassChecker.m"; sourceTree = "<group>"; };
@@ -1329,7 +1331,7 @@
 		601C317716582BA30013E061 /* ARRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRouter.m; sourceTree = "<group>"; };
 		601C3183165838590013E061 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		601C3185165838630013E061 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		601E31AA1C80A55F00D09F73 /* live_auctions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = live_auctions.json; sourceTree = "<group>"; };
+		601E31AA1C80A55F00D09F73 /* live_auctions_static.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = live_auctions_static.json; sourceTree = "<group>"; };
 		601E31AE1C80E35600D09F73 /* LiveAuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveAuctionLot.h; sourceTree = "<group>"; };
 		601E31AF1C80E35600D09F73 /* LiveAuctionLot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveAuctionLot.m; sourceTree = "<group>"; };
 		601E53351B84C35D00679E10 /* ARArtworkViewControllerBuyButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkViewControllerBuyButtonTests.m; sourceTree = "<group>"; };
@@ -3379,7 +3381,8 @@
 		601E31A91C80A53400D09F73 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				601E31AA1C80A55F00D09F73 /* live_auctions.json */,
+				601E31AA1C80A55F00D09F73 /* live_auctions_static.json */,
+				5E956E581CD2AD6E005C2332 /* live_auctions_socket.json */,
 				6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */,
 				602F03461CB2912D008A999D /* LiveAuctions.storyboard */,
 			);
@@ -4930,7 +4933,7 @@
 				608B707917D4A1C80088A56C /* FollowCheckmark.png in Resources */,
 				E6FFEAB119C7925600A0D7DE /* onboard_2@2x~ipad.jpg in Resources */,
 				60647C7A1A95095800A45247 /* ARFairPopupViewController.xib in Resources */,
-				601E31AB1C80A55F00D09F73 /* live_auctions.json in Resources */,
+				601E31AB1C80A55F00D09F73 /* live_auctions_static.json in Resources */,
 				E6FFEABA19C7925600A0D7DE /* splash_3@2x~iphone.jpg in Resources */,
 				5E17B1981C5965CC00CE6E98 /* Thumb.png in Resources */,
 				3C4AE98119094DAA009C0E8B /* MapAnnotation_Highlighted@2x.png in Resources */,
@@ -5012,6 +5015,7 @@
 				E6FFEAB819C7925600A0D7DE /* splash_2@2x~iphone.jpg in Resources */,
 				608B708317D4A1C80088A56C /* MoreArrow@2x.png in Resources */,
 				60A0EA031C511C31002754A8 /* Echo.json in Resources */,
+				5E956E591CD2AD6E005C2332 /* live_auctions_socket.json in Resources */,
 				3C4AE9A619098916009C0E8B /* MapAnnotationCallout_Anchor@2x.png in Resources */,
 				E691020019C9E17B0048149C /* SearchIcon_White@2x.png in Resources */,
 				E6FFEAAF19C7925600A0D7DE /* onboard_1@2x~ipad.jpg in Resources */,
@@ -5060,7 +5064,7 @@
 				E6F84D001A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */,
 				3C22227418C6487C00B7CE3A /* User_v0.data in Resources */,
 				3C22227618C64B4A00B7CE3A /* User_v1.data in Resources */,
-				60FC2CBD1C8F677700ACD78F /* live_auctions.json in Resources */,
+				60FC2CBD1C8F677700ACD78F /* live_auctions_static.json in Resources */,
 				5EB33E77197EBFEB00706EB1 /* wide.jpg in Resources */,
 				E676A62518EF5F6E00B9AF2C /* Artwork_v0.data in Resources */,
 				B3ECE8301819D1E6009F5C5B /* InfoPlist.strings in Resources */,

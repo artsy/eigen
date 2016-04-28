@@ -1,4 +1,5 @@
 import UIKit
+import Interstellar
 import UICKeyChainStore
 
 class LiveAuctionViewController: UISplitViewController {
@@ -9,7 +10,8 @@ class LiveAuctionViewController: UISplitViewController {
     }()
 
     lazy var staticDataFetcher: LiveAuctionStaticDataFetcherType = {
-        return LiveAuctionStaticDataFetcher(saleSlugOrID: self.saleSlugOrID)
+        return Stubbed_StaticDataFetcher() // TODO: Remove stubbing.
+//        return LiveAuctionStaticDataFetcher(saleSlugOrID: self.saleSlugOrID)
     }()
 
     var lotSetController: LiveAuctionLotSetViewController!
@@ -106,3 +108,24 @@ extension LiveAuctionViewController: LiveAuctionLotListViewControllerDelegate {
         lotSetController.jumpToLotAtIndex(index, animated: false)
     }
 }
+
+class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
+    func fetchStaticData() -> Observable<Result<LiveSale>> {
+        let json = loadJSON("live_auctions_static")
+        let sale = self.parseSale(json)
+
+        if let sale = sale {
+            return Observable(Result.Success(sale))
+        } else {
+            return Observable(Result.Error(LiveAuctionStaticDataFetcher.Error.JSONParsing))
+        }
+    }
+}
+
+func loadJSON(filename: String) -> AnyObject {
+    let jsonPath = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
+    let jsonData = NSData(contentsOfFile: jsonPath!)!
+    let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
+
+    return json
+    }

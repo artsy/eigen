@@ -77,10 +77,16 @@ extension DefaultCreators {
         }
     }
 
+    class func stubbedSocketCommunicatorCreator() -> SocketCommunicatorCreator {
+        return { host, causalitySaleID, accessToken in
+            // TODO: Return stubbed JSON socket communicator.
+//            return LiveAuctionSocketCommunicator(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
+        }
+    }
+
     class func defaultStateReconcilerCreator() -> StateReconcilerCreator {
         return { saleArtworks in
             return LiveAuctionStateReconciler(saleArtworks: saleArtworks)
         }
     }
-
 }
