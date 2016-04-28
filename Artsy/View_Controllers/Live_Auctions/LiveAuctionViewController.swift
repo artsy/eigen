@@ -23,7 +23,9 @@ class LiveAuctionViewController: UISplitViewController {
         self.saleSlugOrID = saleSlugOrID
 
         super.init(nibName: nil, bundle: nil)
-        self.title = saleSlugOrID;
+
+        self.title = saleSlugOrID
+        viewControllers = [UIViewController()] // UIKit complains if we don't have at least one view controller; we replace this later in setupWithSale()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -47,8 +49,6 @@ class LiveAuctionViewController: UISplitViewController {
         preferredDisplayMode = .AllVisible;
         preferredPrimaryColumnWidthFraction = 0.4;
         delegate = self;
-
-        // TODO: need a view controller before I return from this function.
 
         super.viewWillAppear(animated)
     }
