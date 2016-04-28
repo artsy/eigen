@@ -207,8 +207,8 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
     if (route) {
         [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
             NSString *path = url.path;
-            NSString *saleID = [[path split:@"/"] lastObject];
-            return [[LiveAuctionViewController alloc] initWithSaleID:saleID];
+            NSString *slug = [[path split:@"/"] lastObject];
+            return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
         }];
     }
 

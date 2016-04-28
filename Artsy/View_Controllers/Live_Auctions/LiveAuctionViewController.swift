@@ -2,16 +2,14 @@ import UIKit
 import UICKeyChainStore
 
 class LiveAuctionViewController: UISplitViewController {
-    let saleID: String
-
-    lazy var salesPerson: LiveAuctionsSalesPersonType = {
-        // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
-        let accessToken = UICKeyChainStore.stringForKey(AROAuthTokenDefault) ?? ""
-        return LiveAuctionsSalesPerson(saleID: self.saleID, accessToken: accessToken, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
-     }()
+    let saleSlugOrID: String
 
     lazy var useSingleLayout: Bool = {
         return self.traitCollection.userInterfaceIdiom == .Phone
+    }()
+
+    lazy var staticDataFetcher: LiveAuctionStaticDataFetcherType = {
+        return LiveAuctionStaticDataFetcher(saleSlugOrID: self.saleSlugOrID)
     }()
 
     var lotSetController: LiveAuctionLotSetViewController!
@@ -19,28 +17,37 @@ class LiveAuctionViewController: UISplitViewController {
 
     var lotListController: LiveAuctionLotListViewController!
 
-    init(saleID: String) {
-        self.saleID = saleID
+    var sale: LiveSale?
+
+    init(saleSlugOrID: String) {
+        self.saleSlugOrID = saleSlugOrID
 
         super.init(nibName: nil, bundle: nil)
-        self.title = saleID;
+        self.title = saleSlugOrID;
     }
 
     override func viewWillAppear(animated: Bool) {
         if delegate != nil { return }
 
+        view.ar_startSpinningIndefinitely()
+
+        staticDataFetcher.fetchStaticData().subscribe { [weak self] result in
+            defer { self?.view.ar_stopSpinningInstantly(true) }
+
+            switch result {
+            case .Success(let sale):
+                self?.sale = sale
+                self?.setupWithSale(sale)
+            case .Error:
+                // TODO: handle error case
+                break
+            }
+        }
+
         preferredDisplayMode = .AllVisible;
         preferredPrimaryColumnWidthFraction = 0.4;
         delegate = self;
 
-        lotSetController = LiveAuctionLotSetViewController(saleID: saleID, salesPerson:salesPerson)
-        lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
-
-        lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel!)
-        lotListController.delegate = self
-
-
-        viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListController, lotsSetNavigationController]
         super.viewWillAppear(animated)
     }
 
@@ -62,6 +69,28 @@ class LiveAuctionViewController: UISplitViewController {
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return traitDependentSupportedInterfaceOrientations
     }
+}
+
+private typealias PrivateFunctions = LiveAuctionViewController
+extension PrivateFunctions {
+
+    func setupWithSale(sale: LiveSale) {
+        let salesPerson = self.salesPerson(sale)
+
+        lotSetController = LiveAuctionLotSetViewController(sale: sale, salesPerson: salesPerson)
+        lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
+
+        lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel!)
+        lotListController.delegate = self
+
+        viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListController, lotsSetNavigationController]
+    }
+
+    func salesPerson(sale: LiveSale) -> LiveAuctionsSalesPersonType {
+        // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
+        let accessToken = UICKeyChainStore.stringForKey(AROAuthTokenDefault) ?? ""
+        return LiveAuctionsSalesPerson(saleID: sale.liveSaleID, accessToken: accessToken, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
+     }
 }
 
 extension LiveAuctionViewController: UISplitViewControllerDelegate {

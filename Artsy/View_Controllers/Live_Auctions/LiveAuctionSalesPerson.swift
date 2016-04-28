@@ -120,7 +120,8 @@ extension ClassMethods {
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
         return { host, saleID, accessToken in
-            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken, stateFetcherCreator: LiveAuctionStateManager.stubbedStateFetcherCreator(), staticDataFetcherCreator: LiveAuctionStateManager.stubbedStaticDataFetcherCreator())
+            // TODO: stub the socket communicator.
+            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken)
         }
     }
 
