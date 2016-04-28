@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *currency;
 @property (nonatomic, copy, readonly) NSString *currencySymbol;
 
+// TODO: These aren't coming from metaphysics properly.
 @property (nonatomic, assign, readonly) UInt64 lowEstimateCents;
 @property (nonatomic, assign, readonly) UInt64 highEstimateCents;
 @property (nonatomic, assign, readonly) UInt64 onlineAskingPriceCents;
