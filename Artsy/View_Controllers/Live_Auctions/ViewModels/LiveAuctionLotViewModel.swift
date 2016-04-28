@@ -67,8 +67,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
         return auctionViewModel
-            .currentLotIDSignal
-            .map { [weak self, weak auctionViewModel] currentLotID -> LotState in
+            .currentLotSignal
+            .map { [weak self, weak auctionViewModel] currentLot -> LotState in
                 guard let sSelf = self, sAuctionViewModel = auctionViewModel else { return .ClosedLot }
                 return sSelf.lotStateWithViewModel(sAuctionViewModel)
             }

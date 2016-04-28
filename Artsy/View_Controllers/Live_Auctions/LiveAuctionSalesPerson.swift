@@ -40,11 +40,11 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
         self.sale = sale
-        self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotID: nil)
         self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0) }
 
         let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "ws://localhost:8080"
         self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, accessToken: accessToken)
+        self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal)
 
         super.init()
 

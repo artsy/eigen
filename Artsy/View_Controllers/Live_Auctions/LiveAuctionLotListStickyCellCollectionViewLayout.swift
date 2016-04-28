@@ -1,7 +1,7 @@
 import UIKit
 
 class LiveAuctionLotListStickyCellCollectionViewLayout: UICollectionViewFlowLayout {
-    private var currentIndex = 0
+    private var currentIndex: Int?
 
     override init() {
         super.init()
@@ -65,13 +65,17 @@ extension Overrides {
 
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let superAttributesArray = super.layoutAttributesForElementsInRect(rect) else { return nil }
+        guard superAttributesArray.count > 0 else { return [] }
+        
         var attributesArray = superAttributesArray.flatMap { $0 }
 
         // Guarantee any selected cell is presented, regardless of the rect.
-        if (attributesArray.map { $0.indexPath.item }).contains(currentIndex) == false && attributesArray.count > 0 {
-            let indexPath = NSIndexPath(forItem: currentIndex, inSection: 0)
-            if let stickyAttributes = layoutAttributesForItemAtIndexPath(indexPath) {
-                attributesArray += [stickyAttributes]
+        if let currentIndex = currentIndex {
+            if (attributesArray.map { $0.indexPath.item }).contains(currentIndex) == false {
+                let indexPath = NSIndexPath(forItem: currentIndex, inSection: 0)
+                if let stickyAttributes = layoutAttributesForItemAtIndexPath(indexPath) {
+                    attributesArray += [stickyAttributes]
+                }
             }
         }
 
