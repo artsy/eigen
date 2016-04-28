@@ -11,7 +11,8 @@
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git pull && cp data/schema.* ../../data",
     "sync-colors": "cd externals/elan && git pull && cp components/lib/variables/colors.json ../../data",
-    "sync-module": "sane '/usr/bin/rsync -a --exclude .git --exclude Example --exclude node_modules --exclude externals --exclude Pod ./ Example/node_modules/emission/' . --glob='{package.json,index.js,data/*.json,lib/**/*.js}'"
+    "sync-module": "sane '/usr/bin/rsync -a --exclude .git --exclude Example --exclude node_modules --exclude externals --exclude Pod ./ Example/node_modules/emission/' . --glob='{package.json,index.js,data/*.json,lib/**/*.js}'",
+    "start": "npm run sync-module"
   },
   "repository": {
     "type": "git",
