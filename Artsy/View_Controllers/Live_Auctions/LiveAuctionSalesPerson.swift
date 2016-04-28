@@ -25,7 +25,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
     let sale: LiveSale
 
-    let dataReadyForInitialDisplay = Observable<Void>(options: [.Once])
+    let dataReadyForInitialDisplay = Observable<Void>()
     let auctionViewModel: LiveAuctionViewModelType
     var pageControllerDelegate: LiveAuctionPageControllerDelegate?
 
@@ -53,6 +53,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
             .newLotsSignal
             .subscribe { [weak self] lots -> Void in
                 self?.lots = lots
+                self?.dataReadyForInitialDisplay.update()
             }
     }
 }

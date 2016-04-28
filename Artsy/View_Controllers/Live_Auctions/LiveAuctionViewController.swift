@@ -36,7 +36,6 @@ class LiveAuctionViewController: UISplitViewController {
 
             switch result {
             case .Success(let sale):
-                print(sale)
                 self?.sale = sale
                 self?.setupWithSale(sale)
             case .Error:
