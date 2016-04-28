@@ -25,16 +25,11 @@ State update includes:
 protocol LiveAuctionStateReconcilerType {
     func updateState(state: AnyObject)
 
-    var initialStateReceived: Observable<Void> { get }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
 }
 
 class LiveAuctionStateReconciler: NSObject {
     typealias LotID = String
-
-    // Updated when initial lots are ready, and if at any point we need to replace the lots completely (very rare, only if a lot is added/removed from sale).
-    let initialStateReceived = Observable<Void>()
-    private var _initialStateReceived = false
 
     let saleArtworks: [LiveAuctionLotViewModel]
 
@@ -69,7 +64,6 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
         }
 
         updateCurrentLotWithIDIfNecessary(currentLotID)
-        updateInitialStateReceivedIfNecessary()
     }
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
@@ -108,12 +102,6 @@ private extension PrivateFunctions {
             self._currentLotSignal.update(newCurrentViewModel)
             _currentLotID = newCurrentLotID
         }
-    }
-
-    func updateInitialStateReceivedIfNecessary() {
-        guard _initialStateReceived == false else { return }
-        _initialStateReceived = true
-        initialStateReceived.update()
     }
 }
 
