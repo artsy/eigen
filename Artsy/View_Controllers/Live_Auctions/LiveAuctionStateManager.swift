@@ -17,22 +17,23 @@ Based on socket events:
 class LiveAuctionStateManager: NSObject {
     typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, accessToken: String) -> LiveAuctionSocketCommunicatorType
     typealias StaticDataFetcherCreator = (saleID: String) -> LiveAuctionStaticDataFetcherType
-    typealias StateReconcilerCreator = () -> LiveAuctionStateReconcilerType
+    typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
-    let causalitySaleID: String
+    let sale: LiveSale
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
 
     init(host: String,
-        causalitySaleID: String,
-        accessToken: String,
-        socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
-        stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
+         sale: LiveSale,
+         saleArtworks: [LiveAuctionLotViewModel],
+         accessToken: String,
+         socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
+         stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
 
-        self.causalitySaleID = causalitySaleID
-        self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
-        self.stateReconciler = stateReconcilerCreator()
+        self.sale = sale
+        self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, accessToken: accessToken)
+        self.stateReconciler = stateReconcilerCreator(saleArtworks: saleArtworks)
 
         super.init()
 
@@ -54,10 +55,6 @@ extension PublicFunctions {
 
 private typealias ComputedProperties = LiveAuctionStateManager
 extension ComputedProperties {
-    var newLotsSignal: Observable<[LiveAuctionLotViewModelType]> {
-        return stateReconciler.newLotsSignal
-    }
-
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
         return stateReconciler.currentLotSignal
     }
@@ -81,8 +78,8 @@ extension DefaultCreators {
     }
 
     class func defaultStateReconcilerCreator() -> StateReconcilerCreator {
-        return {
-            return LiveAuctionStateReconciler()
+        return { saleArtworks in
+            return LiveAuctionStateReconciler(saleArtworks: saleArtworks)
         }
     }
 

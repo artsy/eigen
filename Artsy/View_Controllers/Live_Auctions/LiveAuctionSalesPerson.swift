@@ -5,7 +5,6 @@ import Interstellar
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
 protocol LiveAuctionsSalesPersonType {
-    var dataReadyForInitialDisplay: Observable<Void> { get }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
 
     var auctionViewModel: LiveAuctionViewModelType { get }
@@ -21,15 +20,15 @@ protocol LiveAuctionsSalesPersonType {
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, causalitySaleID: String, accessToken: String) -> LiveAuctionStateManager
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], accessToken: String) -> LiveAuctionStateManager
 
     let sale: LiveSale
+    let lots: [LiveAuctionLotViewModel]
 
     let dataReadyForInitialDisplay = Observable<Void>()
     let auctionViewModel: LiveAuctionViewModelType
     var pageControllerDelegate: LiveAuctionPageControllerDelegate?
 
-    private(set) var lots = [LiveAuctionLotViewModelType]()
     private let stateManager: LiveAuctionStateManager
 
     // Lot currently being looked at by the user.
@@ -42,19 +41,14 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
         self.sale = sale
         self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotID: nil)
+        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0) }
         let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "ws://localhost:8080"
-        stateManager = stateManagerCreator(host: host, causalitySaleID: sale.causalitySaleID, accessToken: accessToken)
+        stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, accessToken: accessToken)
 
         super.init()
 
         pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
 
-        stateManager
-            .newLotsSignal
-            .subscribe { [weak self] lots -> Void in
-                self?.lots = lots
-                self?.dataReadyForInitialDisplay.update()
-            }
     }
 }
 
@@ -62,10 +56,6 @@ private typealias ComputedProperties = LiveAuctionsSalesPerson
 extension ComputedProperties {
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
         return stateManager.currentLotSignal
-    }
-
-    var updatedStateSignal: Observable<[LiveAuctionLotViewModelType]> {
-        return stateManager.newLotsSignal
     }
 
     var lotCount: Int {
@@ -106,15 +96,15 @@ private typealias ClassMethods = LiveAuctionsSalesPerson
 extension ClassMethods {
 
     class func defaultStateManagerCreator() -> StateManagerCreator {
-        return { host, causalitySaleID, accessToken in
-            LiveAuctionStateManager(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
+        return { host, sale, saleArtworks, accessToken in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, accessToken: accessToken)
         }
     }
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
-        return { host, causalitySaleID, accessToken in
+        return { host, sale, saleArtworks, accessToken in
             // TODO: stub the socket communicator.
-            LiveAuctionStateManager(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, accessToken: accessToken)
         }
     }
 

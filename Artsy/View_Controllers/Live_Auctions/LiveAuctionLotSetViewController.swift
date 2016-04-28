@@ -55,9 +55,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         progress.alignLeading("0", trailing: "0", toView: view)
         progress.alignBottomEdgeWithView(view, predicate: "-165")
 
-        salesPerson.dataReadyForInitialDisplay.subscribe { [weak self] _ in
-            self?.setupWithInitialData()
-        }
+        setupWithInitialData()
     }
 
     override func viewWillAppear(animated: Bool) {

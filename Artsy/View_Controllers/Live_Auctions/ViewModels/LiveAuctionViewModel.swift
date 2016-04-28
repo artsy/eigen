@@ -52,18 +52,4 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
         return (current - lot) * -1
     }
-
-    func updateWithNewSale(newSale: LiveSale, currentLotID: String?) {
-        if lastUpdatedSaleAvailability != newSale.saleAvailability {
-            lastUpdatedSaleAvailability = newSale.saleAvailability
-            saleAvailabilitySignal.update(newSale.saleAvailability)
-        }
-
-        if let currentLotID = currentLotID where currentLotID != lastUpdatedCurrentLotID {
-            lastUpdatedCurrentLotID = currentLotID
-            currentLotIDSignal.update(currentLotID)
-        }
-
-        self.sale = newSale
-    }
 }

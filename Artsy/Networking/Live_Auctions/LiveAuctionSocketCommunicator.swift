@@ -95,9 +95,7 @@ private extension SocketSetup {
 
         switch socketEventType {
         case "InitialFullSaleState":
-            if let fullLotStateById = json["fullLotStateById"] {
-                delegate?.didUpdateAuctionState(fullLotStateById)
-            }
+            delegate?.didUpdateAuctionState(json)
         default:
             print("Received unknown socket event type.")
         }
