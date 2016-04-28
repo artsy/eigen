@@ -3,6 +3,9 @@ import Starscream
 
 protocol SocketType: class {
     var onText: ((String) -> Void)? { get set }
+    var onConnect: ((Void) -> Void)? { get set }
+    var onDisconnect: ((NSError?) -> Void)? { get set }
+
     func writeString(str: String)
 
     func connect()
@@ -46,7 +49,10 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
 
     class func defaultSocketCreator() -> SocketCreator {
         return { host, saleID, token in
-            return WebSocket(url: NSURL(string: host)!)
+            // TODO: incorporate token once JWT is complete.
+            // TODO: Talkt o Alan about claim_userId and claim_bidderId.
+            let url = NSURL(string: "\(host)/socket?claim_role=bidder&claim_saleId=\(saleID)&claim_userId=4C-U2DgqWh&claim_bidderId=4C-U2DgqWh")
+            return WebSocket(url: url!)
         }
     }
 }
@@ -57,11 +63,13 @@ private extension SocketSetup {
     /// Connects to, then authenticates against, the socket. Listens for sale events once authenticated.
     func setupSocket() {
         socket.onText = self.receivedText
+        socket.onConnect = { print("socket connected") }
+        socket.onDisconnect = { error in print ("socket disconnected: \(error)") }
         socket.connect()
     }
 
     func receivedText(text: String) {
-
+        print("Received socket text: \(text)")
     }
 }
 

@@ -48,6 +48,8 @@ class LiveAuctionViewController: UISplitViewController {
         preferredPrimaryColumnWidthFraction = 0.4;
         delegate = self;
 
+        // TODO: need a view controller before I return from this function.
+
         super.viewWillAppear(animated)
     }
 

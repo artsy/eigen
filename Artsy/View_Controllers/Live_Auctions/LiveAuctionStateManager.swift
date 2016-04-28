@@ -75,7 +75,7 @@ extension SocketDelegate: LiveAuctionSocketCommunicatorDelegate {
 private typealias DefaultCreators = LiveAuctionStateManager
 extension DefaultCreators {
     class func defaultSocketCommunicatorCreator() -> SocketCommunicatorCreator {
-        return { host, accessToken, causalitySaleID in
+        return { host, causalitySaleID, accessToken in
             return LiveAuctionSocketCommunicator(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
         }
     }
