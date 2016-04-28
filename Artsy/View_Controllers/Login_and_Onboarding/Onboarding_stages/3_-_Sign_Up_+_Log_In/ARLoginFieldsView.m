@@ -12,6 +12,8 @@
 @property (nonatomic, strong) ARTextFieldWithPlaceholder *emailField;
 @property (nonatomic, strong) ARSecureTextFieldWithPlaceholder *passwordField;
 
+@property (nonatomic, strong) NSLayoutConstraint *nameFieldHeightConstraint;
+
 @end
 
 
@@ -32,7 +34,8 @@
 - (void)setupForLogin
 {
     [self commonSetup];
-    //    self.nameField.hidden = YES;
+    [self.nameField removeConstraint:self.nameFieldHeightConstraint];
+    [self.nameField constrainHeight:@"0"];
 }
 
 - (void)setupForSignUp
@@ -51,13 +54,13 @@
     [self addSubview:self.emailField];
     [self addSubview:self.passwordField];
 
-    NSArray *textFields = @[ self.nameField, self.emailField, self.passwordField ];
+    self.nameFieldHeightConstraint = [self.nameField constrainHeight:@"54"];
+    [self.emailField constrainHeight:@"54"];
+    [self.passwordField constrainHeight:@"54"];
 
+    [self.nameField constrainWidthToView:self predicate:@"0"];
     [self.emailField constrainWidthToView:self predicate:@"0"];
-    [self.emailField constrainHeight:@"40"];
-
-    [UIView equalWidthForViews:textFields];
-    [UIView equalHeightForViews:textFields];
+    [self.passwordField constrainWidthToView:self predicate:@"0"];
 
     [self.nameField alignCenterXWithView:self predicate:@"0"];
     [self.emailField alignCenterXWithView:self predicate:@"0"];

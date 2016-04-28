@@ -64,7 +64,7 @@
     if (button) {
         button.center = CGPointMake(button.center.x, button.center.y - 3);
     }
-    self.baseline.frame = CGRectMake(0, self.frame.size.height - 1, self.frame.size.width, 1);
+    self.baseline.frame = CGRectMake(0, self.frame.size.height - 10, self.frame.size.width, 1);
 }
 
 - (void)swizzleClearButton:(UIButton *)button
@@ -79,9 +79,5 @@
     button.tag = CLEAR_BUTTON_TAG;
 }
 
-//- (CGSize)intrinsicContentSize
-//{
-//    return CGSizeMake(UIViewNoIntrinsicMetric, 48);
-//}
 
 @end

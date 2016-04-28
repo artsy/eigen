@@ -65,7 +65,7 @@
     self.separatorLine.backgroundColor = [UIColor artsyGrayRegular];
     [self addSubview:self.separatorLine];
 
-    [self.separatorLine constrainHeight:@"0.5"];
+    [self.separatorLine constrainHeight:@"1"];
     [self.separatorLine constrainWidthToView:self predicate:@"0"];
     [self.separatorLine alignCenterXWithView:self predicate:@"0"];
     [self.separatorLine constrainTopSpaceToView:self.emailActionButton predicate:@"50"];
