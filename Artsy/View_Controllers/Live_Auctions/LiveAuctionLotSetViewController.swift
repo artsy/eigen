@@ -113,7 +113,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func showLots() {
-        let lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel!)
+        let lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
         lotListController.selectedIndex = currentIndex()
         presentViewController(lotListController, animated: true, completion: nil)
@@ -180,10 +180,9 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPersonType!
 
     func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
-        guard let auctionViewModel = salesPerson.auctionViewModel else { return nil }
         guard let lotViewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
 
-        let auctionVC =  LiveAuctionLotViewController(index: index, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: salesPerson.currentLotSignal)
+        let auctionVC =  LiveAuctionLotViewController(index: index, auctionViewModel: salesPerson.auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: salesPerson.currentLotSignal)
         return auctionVC
     }
 

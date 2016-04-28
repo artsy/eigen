@@ -29,13 +29,14 @@ class LiveAuctionViewController: UISplitViewController {
     override func viewWillAppear(animated: Bool) {
         if delegate != nil { return }
 
-        view.ar_startSpinningIndefinitely()
+        self.ar_presentIndeterminateLoadingIndicatorAnimated(true)
 
         staticDataFetcher.fetchStaticData().subscribe { [weak self] result in
-            defer { self?.view.ar_stopSpinningInstantly(true) }
+            defer { self?.ar_removeIndeterminateLoadingIndicatorAnimated(true) }
 
             switch result {
             case .Success(let sale):
+                print(sale)
                 self?.sale = sale
                 self?.setupWithSale(sale)
             case .Error:
@@ -80,7 +81,7 @@ extension PrivateFunctions {
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson)
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
 
-        lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel!)
+        lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
 
         viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListController, lotsSetNavigationController]

@@ -61,10 +61,6 @@ extension ComputedProperties {
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
         return stateReconciler.currentLotSignal
     }
-
-    var saleSignal: Observable<LiveAuctionViewModelType> {
-        return stateReconciler.saleSignal
-    }
 }
 
 

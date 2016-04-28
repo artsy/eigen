@@ -6,10 +6,10 @@ import Interstellar
 
 protocol LiveAuctionsSalesPersonType {
     var currentFocusedLot: Observable<Int> { get }
-    var updatedStateSignal: Observable<LiveAuctionViewModelType> { get }
+    var updatedStateSignal: Observable<[LiveAuctionLotViewModelType]> { get }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
 
-    var auctionViewModel: LiveAuctionViewModelType? { get }
+    var auctionViewModel: LiveAuctionViewModelType { get }
     var pageControllerDelegate: LiveAuctionPageControllerDelegate! { get }
     var lots: [LiveAuctionLotViewModelType] { get }
     var lotCount: Int { get }
@@ -27,7 +27,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
     let sale: LiveSale
 
-    var auctionViewModel: LiveAuctionViewModelType?
+    let auctionViewModel: LiveAuctionViewModelType
     var pageControllerDelegate: LiveAuctionPageControllerDelegate!
 
     private(set) var lots = [LiveAuctionLotViewModelType]()
@@ -42,6 +42,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
         self.sale = sale
+        self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotID: nil)
         let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "http://localhost:5000"
         stateManager = stateManagerCreator(host: host, causalitySaleID: sale.causalitySaleID, accessToken: accessToken)
 
@@ -55,12 +56,6 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
             .subscribe { [weak self] lots -> Void in
                 self?.lots = lots
             }
-
-        stateManager
-            .saleSignal
-            .subscribe { [weak self] sale -> Void in
-                self?.auctionViewModel = sale
-            }
     }
 }
 
@@ -70,17 +65,12 @@ extension ComputedProperties {
         return stateManager.currentLotSignal
     }
 
-    var updatedStateSignal: Observable<LiveAuctionViewModelType> {
-        return stateManager
-            .saleSignal
-            .merge(stateManager.newLotsSignal) // Reacts to a change in the lots as well.
-            .map { auctionViewModel, _ -> LiveAuctionViewModelType in
-                return auctionViewModel
-            }
+    var updatedStateSignal: Observable<[LiveAuctionLotViewModelType]> {
+        return stateManager.newLotsSignal
     }
 
     var lotCount: Int {
-        return auctionViewModel?.lotCount ?? 0
+        return auctionViewModel.lotCount
     }
 
     var liveSaleID: String {

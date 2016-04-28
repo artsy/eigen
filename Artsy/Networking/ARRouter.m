@@ -1000,6 +1000,7 @@ static NSString *hostFromString(NSString *string)
     id\
     start_at\
     end_at\
+    name\
     is_with_buyers_premium\
     description\
     sale_artworks {\
