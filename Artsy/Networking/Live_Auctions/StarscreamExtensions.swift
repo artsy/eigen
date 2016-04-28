@@ -8,4 +8,8 @@ extension WebSocket: SocketType {
     func disconnect() {
         disconnect(forceTimeout: nil)
     }
+
+    func writePing() {
+        writePing("2".dataUsingEncoding(NSUTF8StringEncoding))
+    }
 }

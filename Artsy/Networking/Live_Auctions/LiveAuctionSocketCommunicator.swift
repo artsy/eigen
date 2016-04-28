@@ -7,6 +7,7 @@ protocol SocketType: class {
     var onDisconnect: ((NSError?) -> Void)? { get set }
 
     func writeString(str: String)
+    func writePing()
 
     func connect()
     func disconnect()
@@ -27,6 +28,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     typealias SocketCreator = (host: String, saleID: String, token: String) -> SocketType
     private let socket: SocketType
     private let causalitySaleID: String
+    private let timer: NSTimer!
 
     weak var delegate: LiveAuctionSocketCommunicatorDelegate?
 
@@ -45,12 +47,17 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
 
     deinit {
         socket.disconnect()
+        timer.invalidate()
+    }
+
+    func pingSocket() {
+        socket.writePing()
     }
 
     class func defaultSocketCreator() -> SocketCreator {
         return { host, saleID, token in
             // TODO: incorporate token once JWT is complete.
-            // TODO: Talkt o Alan about claim_userId and claim_bidderId.
+            // TODO: Talk to Alan about claim_userId and claim_bidderId.
             let url = NSURL(string: "\(host)/socket?claim_role=bidder&claim_saleId=\(saleID)&claim_userId=4C-U2DgqWh&claim_bidderId=4C-U2DgqWh")
             return WebSocket(url: url!)
         }
@@ -62,14 +69,35 @@ private extension SocketSetup {
 
     /// Connects to, then authenticates against, the socket. Listens for sale events once authenticated.
     func setupSocket() {
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(50, target: self, selector: #selector(LiveAuctionSocketCommunicator.pingSocket), userInfo: nil, repeats: true)
         socket.onText = self.receivedText
-        socket.onConnect = { print("socket connected") }
-        socket.onDisconnect = { error in print ("socket disconnected: \(error)") }
+        socket.onConnect = { print("Socket connected") }
+        socket.onDisconnect = self.socketDisconnected
+        socket.connect()
+    }
+
+    func socketDisconnected(error: NSError) {
+        print ("Socket disconnected: \(error)")
+        // TODO: Handle error condition?
         socket.connect()
     }
 
     func receivedText(text: String) {
-        print("Received socket text: \(text)")
+        guard let data = text.dataUsingEncoding(NSUTF8StringEncoding),
+              let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []) else {
+            // TODO: Handle error
+            return
+        }
+
+        let socketEventType = json["type"] as? String
+        print("Received socket event type: \(socketEventType)")
+
+        switch socketEventType {
+        case "InitialFullSaleState":
+            delegate?.didUpdateAuctionState(json["fullLotStateById"])
+        default:
+            print("Received unknown socket event type.")
+        }
     }
 }
 

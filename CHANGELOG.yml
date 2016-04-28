@@ -24,6 +24,7 @@ upcoming:
     - Support splitting between lot list and lots on iPad - orta
     - Updates to Interstellar v2. - ash
     - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
+    - New socket communication work for updated Causality. - ash
 
   notes:
     - Fixes long auction names falling off right edge. - ash
@@ -32,6 +33,7 @@ upcoming:
     - Live auction lot list. - ash
     - Fixes crash due to missing nullability specifiers on Artwork. - ash
     - Show Preview images are edge to edge fill, instead of scale fit - orta
+    - Delays initializing live auctions view controllers until an initial metaphysics fetch is completed. - ash
 
 
 releases:
