@@ -55,6 +55,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         reserveStatusSignal.update(lot.reserveStatus)
         askingPriceSignal.update(lot.onlineAskingPriceCents)
     }
+    
     func lotStateWithViewModel(viewModel: LiveAuctionViewModelType) -> LotState {
         guard let distance = viewModel.distanceFromCurrentLot(model) else {
             return .ClosedLot

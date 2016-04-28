@@ -91,7 +91,7 @@ extension PrivateFunctions {
     func salesPerson(sale: LiveSale) -> LiveAuctionsSalesPersonType {
         // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
         let accessToken = UICKeyChainStore.stringForKey(AROAuthTokenDefault) ?? ""
-        return LiveAuctionsSalesPerson(sale: sale, accessToken: accessToken, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
+        return LiveAuctionsSalesPerson(sale: sale, accessToken: accessToken)
      }
 }
 

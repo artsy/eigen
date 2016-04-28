@@ -34,7 +34,7 @@
 
 + (NSValueTransformer *)saleArtworksJSONTransformer
 {
-    return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[SaleArtwork class]];
+    return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[LiveAuctionLot class]];
 }
 
 - (BOOL)isCurrentlyActive

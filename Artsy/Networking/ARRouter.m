@@ -1009,14 +1009,8 @@ static NSString *hostFromString(NSString *string)
       currency\
       symbol\
       reserve_status\
-      low_estimate {\
-        cents\
-        amount\
-      }\
-      high_estimate {\
-        cents\
-        amount\
-      }\
+      low_estimate_cents\
+      high_estimate_cents\
       currency\
       artwork {\
         title\

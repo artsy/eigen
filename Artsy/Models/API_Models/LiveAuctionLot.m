@@ -39,6 +39,7 @@
 
 - (NSURL *)urlForThumbnail
 {
+    // TODO: This is messed up from metaphysics.
     return [NSURL URLWithString:self.imageDictionary[@"large"][@"url"]];
 }
 
