@@ -23,6 +23,7 @@
         _progressBar = [[UIView alloc] init];
         _progressBackgroundBar = [[UIView alloc] init];
         _titleLabel = [[UILabel alloc] init];
+        _searchField = [[AROnboardingSearchField alloc] init];
     }
 
     return self;
@@ -41,7 +42,7 @@
     self.progressBar.backgroundColor = [UIColor blackColor];
     [self addSubview:self.progressBar];
 
-    NSString *progressWidth = [NSString stringWithFormat:@"*.%1.0f", progress];
+    NSString *progressWidth = [NSString stringWithFormat:@"*.%1.0f", progress * 100];
 
     [self.progressBar constrainHeight:@"5"];
     [self.progressBar constrainWidthToView:self predicate:progressWidth];
@@ -55,9 +56,17 @@
     [self addSubview:self.titleLabel];
 
     [self.titleLabel constrainWidthToView:self predicate:@"-40"];
-    [self.titleLabel alignLeadingEdgeWithView:self predicate:@"20"];
+    [self.titleLabel alignLeadingEdgeWithView:self predicate:@"15"];
     [self.titleLabel constrainTopSpaceToView:self.progressBar predicate:@"30"];
     [self.titleLabel constrainHeight:@"80"];
+
+    [self addSubview:self.searchField];
+
+    [self.searchField constrainHeight:@"40"];
+    [self.searchField constrainTopSpaceToView:self.titleLabel predicate:@"20"];
+    [self.searchField alignLeadingEdgeWithView:self predicate:@"15"];
+    [self.searchField alignTrailingEdgeWithView:self predicate:@"-15"];
+    self.searchField.tintColor = [UIColor blackColor];
 }
 
 

@@ -3,12 +3,14 @@
 #import "User.h"
 
 @class ARSignUpSplashViewController;
+@protocol ARFollowable;
 
 @protocol AROnboardingStepsDelegate <NSObject>
 - (void)personalizeArtistsDone;
 - (void)personalizeCategoriesDone;
 - (void)personalizeBudgetDone;
 - (void)backTapped;
+- (void)followableItemFollowed:(id<ARFollowable>)item;
 - (void)splashDone:(ARSignUpSplashViewController *)sender;
 - (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender;
 //- (void)collectorLevelDone:(ARCollectorLevel)level;

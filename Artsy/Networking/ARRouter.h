@@ -95,7 +95,9 @@
 + (NSURLRequest *)newFollowArtistRequest:(Artist *)artist;
 + (NSURLRequest *)newUnfollowArtistRequest:(Artist *)artist;
 
++ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist;
 + (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist;
++ (NSURLRequest *)newArtistsTrendingRequest;
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID;
 + (NSURLRequest *)newShowsRequestForArtistID:(NSString *)artistID inFairID:(NSString *)fairID;
 

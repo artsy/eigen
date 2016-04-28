@@ -25,6 +25,7 @@
 #import "ARAnalyticsConstants.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
+#import "ARFollowable.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -54,6 +55,7 @@
 @property (nonatomic, readonly, strong) UIImage *backgroundImage;
 @property (nonatomic, strong, readwrite) NSLayoutConstraint *backgroundWidthConstraint;
 @property (nonatomic, strong, readwrite) NSLayoutConstraint *backgroundHeightConstraint;
+@property (nonatomic, strong, readwrite) NSMutableSet *followedItemsDuringOnboarding;
 @end
 
 
@@ -68,6 +70,7 @@
 
     self.navigationBarHidden = YES;
     self.delegate = self;
+    _followedItemsDuringOnboarding = [[NSMutableSet alloc] init];
     _initialState = state;
     switch (state) {
         case ARInitialOnboardingStateSlideShow:
@@ -308,6 +311,11 @@
 - (void)backTapped
 {
     [self popViewControllerAnimated:YES];
+}
+
+- (void)followableItemFollowed:(id<ARFollowable>)item
+{
+    [self.followedItemsDuringOnboarding addObject:item];
 }
 
 //- (void)presentPriceRange

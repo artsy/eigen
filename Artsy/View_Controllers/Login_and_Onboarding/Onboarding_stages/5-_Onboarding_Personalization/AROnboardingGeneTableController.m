@@ -51,7 +51,7 @@ static NSString *CellId = @"OnboardingGeneFollow";
     AROnboardingFollowableTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
     Gene *gene = self.genes[indexPath.row];
     cell.textLabel.text = gene.name;
-    cell.followState = gene.isFollowed;
+    //    cell.followState = gene.isFollowed;
     return cell;
 }
 
@@ -75,8 +75,8 @@ static NSString *CellId = @"OnboardingGeneFollow";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AROnboardingFollowableTableViewCell *cell = ((AROnboardingFollowableTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]);
-    [cell toggleFollowState];
+    //    AROnboardingFollowableTableViewCell *cell = ((AROnboardingFollowableTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]);
+    //    [cell toggleFollowState];
 
     Gene *gene = [self.genes objectAtIndex:indexPath.row];
     BOOL newState = !gene.isFollowed;
@@ -88,7 +88,7 @@ static NSString *CellId = @"OnboardingGeneFollow";
         ARActionLog(@"%@ gene %@", newState ? @"Followed" : @"Unfollowed" , geneID);
 
     } failure:^(NSError *error) {
-        [cell toggleFollowState];
+//        [cell toggleFollowState];
         ARErrorLog(@"Error %@ gene %@. Error: %@", newState ? @"following" : @"unfollowing", geneID, error.localizedDescription);
     }];
 }
