@@ -69,7 +69,7 @@ extension ComputedProperties {
     }
 
     var lotCount: Int {
-        return auctionViewModel.lotCount
+        return lots.count
     }
 
     var liveSaleID: String {

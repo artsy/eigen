@@ -48,6 +48,7 @@ private typealias PublicFunctions = LiveAuctionStateReconciler
 extension PublicFunctions: LiveAuctionStateReconcilerType {
 
     func updateState(state: AnyObject) {
+        print(state)
         // TODO: don't fail silently on bad input
         guard let lotsJSON = state["lots"] as? ObjectJSON else { return }
         guard let saleJSON = state["sale"] as? [String: AnyObject] else { return }

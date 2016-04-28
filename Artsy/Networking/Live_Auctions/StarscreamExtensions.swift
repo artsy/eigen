@@ -10,6 +10,6 @@ extension WebSocket: SocketType {
     }
 
     func writePing() {
-        writePing("2".dataUsingEncoding(NSUTF8StringEncoding))
+        writePing("2".dataUsingEncoding(NSUTF8StringEncoding)!)
     }
 }

@@ -12,6 +12,8 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     let stickyCollectionViewLayout: LiveAuctionLotListStickyCellCollectionViewLayout
     let auctionViewModel: LiveAuctionViewModelType
 
+    var observerToken: ObserverToken?
+
     var selectedIndex: Int = 0 {
         didSet {
             let path = NSIndexPath(forRow: selectedIndex, inSection: 0)
@@ -42,6 +44,9 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
     deinit {
         currentLotSignal.unsubscribe(currentLotSignalObserver)
+        if let observerToken = observerToken {
+            salesPerson.dataReadyForInitialDisplay.unsubscribe(observerToken)
+        }
     }
 
     override func viewDidLoad() {
@@ -49,6 +54,16 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         title = "Lots"
 
         collectionView?.registerClass(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if observerToken != nil {
+            observerToken = salesPerson.dataReadyForInitialDisplay.subscribe { [weak self] _ in
+                self?.collectionView?.reloadData()
+            }
+        }
     }
 
     func lotAtIndexPath(indexPath: NSIndexPath) -> LiveAuctionLotViewModelType {

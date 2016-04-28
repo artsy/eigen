@@ -68,9 +68,11 @@ extension Overrides {
         var attributesArray = superAttributesArray.flatMap { $0 }
 
         // Guarantee any selected cell is presented, regardless of the rect.
-        if (attributesArray.map { $0.indexPath.item }).contains(currentIndex) == false {
+        if (attributesArray.map { $0.indexPath.item }).contains(currentIndex) == false && attributesArray.count > 0 {
             let indexPath = NSIndexPath(forItem: currentIndex, inSection: 0)
-            attributesArray += [layoutAttributesForItemAtIndexPath(indexPath)!] // TODO: Don't like the crash operator here.
+            if let stickyAttributes = layoutAttributesForItemAtIndexPath(indexPath) {
+                attributesArray += [stickyAttributes]
+            }
         }
 
         attributesArray

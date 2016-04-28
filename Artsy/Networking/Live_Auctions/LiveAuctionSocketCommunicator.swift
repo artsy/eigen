@@ -28,7 +28,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     typealias SocketCreator = (host: String, saleID: String, token: String) -> SocketType
     private let socket: SocketType
     private let causalitySaleID: String
-    private let timer: NSTimer!
+    private var timer: NSTimer? // Heart beat to keep socket connection alive.
 
     weak var delegate: LiveAuctionSocketCommunicatorDelegate?
 
@@ -47,7 +47,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
 
     deinit {
         socket.disconnect()
-        timer.invalidate()
+        timer?.invalidate()
     }
 
     func pingSocket() {
@@ -69,14 +69,14 @@ private extension SocketSetup {
 
     /// Connects to, then authenticates against, the socket. Listens for sale events once authenticated.
     func setupSocket() {
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(50, target: self, selector: #selector(LiveAuctionSocketCommunicator.pingSocket), userInfo: nil, repeats: true)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(LiveAuctionSocketCommunicator.pingSocket), userInfo: nil, repeats: true)
         socket.onText = self.receivedText
         socket.onConnect = { print("Socket connected") }
         socket.onDisconnect = self.socketDisconnected
         socket.connect()
     }
 
-    func socketDisconnected(error: NSError) {
+    func socketDisconnected(error: NSError?) {
         print ("Socket disconnected: \(error)")
         // TODO: Handle error condition?
         socket.connect()
@@ -84,17 +84,20 @@ private extension SocketSetup {
 
     func receivedText(text: String) {
         guard let data = text.dataUsingEncoding(NSUTF8StringEncoding),
-              let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []) else {
+              let _json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
+              let json = _json as? [String: AnyObject] else {
             // TODO: Handle error
             return
         }
 
-        let socketEventType = json["type"] as? String
+        let socketEventType = (json["type"] as? String) ?? "(No Event Specified)"
         print("Received socket event type: \(socketEventType)")
 
         switch socketEventType {
         case "InitialFullSaleState":
-            delegate?.didUpdateAuctionState(json["fullLotStateById"])
+            if let fullLotStateById = json["fullLotStateById"] {
+                delegate?.didUpdateAuctionState(fullLotStateById)
+            }
         default:
             print("Received unknown socket event type.")
         }
