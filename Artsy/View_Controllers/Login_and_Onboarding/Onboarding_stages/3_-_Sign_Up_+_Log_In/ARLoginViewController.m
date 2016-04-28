@@ -95,8 +95,8 @@
     [self.view addSubview:self.buttonsView];
     [self.buttonsView constrainWidthToView:self.view predicate:@"*.9"];
     [self.buttonsView alignCenterXWithView:self.view predicate:@"0"];
-    [self.buttonsView constrainTopSpaceToView:self.textFieldsView predicate:@"40"];
-    [self.buttonsView constrainHeight:@"200"];
+    [self.buttonsView constrainTopSpaceToView:self.textFieldsView predicate:@"0"];
+    [self.buttonsView constrainHeight:@"300"];
     [self.buttonsView setupForLogin];
 }
 
