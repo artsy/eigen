@@ -18,6 +18,7 @@
 		0CD4E9B51BC43198005F0913 /* AREmbeddedModelPreviewViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD4E9B31BC43160005F0913 /* AREmbeddedModelPreviewViewControllerTests.m */; };
 		0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */; };
 		1C029B021CCF7FE700808503 /* ARLoginFieldsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */; };
+		1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B041CD130A400808503 /* ARLoginButtonsView.m */; };
 		1C02A20A1CADA80D008B4F6C /* full_logo_white_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */; };
 		1C717EC51CB439F7002CCF2D /* AROnboardingNavigationItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C717EC41CB439F7002CCF2D /* AROnboardingNavigationItemsView.m */; };
 		1CC9EB971CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9EB961CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m */; };
@@ -787,6 +788,8 @@
 		1AC876215B49E6BF4D24AE23 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		1C029B001CCF7FE700808503 /* ARLoginFieldsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLoginFieldsView.h; sourceTree = "<group>"; };
 		1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLoginFieldsView.m; sourceTree = "<group>"; };
+		1C029B031CD130A400808503 /* ARLoginButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLoginButtonsView.h; sourceTree = "<group>"; };
+		1C029B041CD130A400808503 /* ARLoginButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLoginButtonsView.m; sourceTree = "<group>"; };
 		1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_medium@2x.png"; sourceTree = "<group>"; };
 		1C717EC31CB439F7002CCF2D /* AROnboardingNavigationItemsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingNavigationItemsView.h; sourceTree = "<group>"; };
 		1C717EC41CB439F7002CCF2D /* AROnboardingNavigationItemsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingNavigationItemsView.m; sourceTree = "<group>"; };
@@ -3184,6 +3187,8 @@
 				608B2F711657D2DF0046956C /* ARLoginViewController.m */,
 				1C029B001CCF7FE700808503 /* ARLoginFieldsView.h */,
 				1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */,
+				1C029B031CD130A400808503 /* ARLoginButtonsView.h */,
+				1C029B041CD130A400808503 /* ARLoginButtonsView.m */,
 			);
 			name = "3 - Sign Up + Log In";
 			path = "3_-_Sign_Up_+_Log_In";
@@ -5284,6 +5289,7 @@
 				5174A03B1A859E2C006CD337 /* ARFairMapView.m in Sources */,
 				51DCC6C81C60E26800455309 /* AuctionInformationViewController.swift in Sources */,
 				60B6F13916638785007C9587 /* ArtsyAPI.m in Sources */,
+				1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */,
 				60B6F13E16638815007C9587 /* Artwork.m in Sources */,
 				49473F3617C1907F004BF082 /* ARCreateAccountViewController.m in Sources */,
 				6029E9F51993D726002D42C3 /* ARAppSearchViewController.m in Sources */,

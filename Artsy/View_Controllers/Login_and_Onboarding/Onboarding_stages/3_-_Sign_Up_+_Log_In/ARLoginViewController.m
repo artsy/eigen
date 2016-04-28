@@ -1,6 +1,7 @@
 #import "ARLoginViewController.h"
 
 #import "ARLoginFieldsView.h"
+#import "ARLoginButtonsView.h"
 
 #import "ARFonts.h"
 #import "ARUserManager.h"
@@ -30,6 +31,7 @@
 @interface ARLoginViewController () <UITextFieldDelegate>
 
 @property (nonatomic, strong) ARLoginFieldsView *textFieldsView;
+@property (nonatomic, strong) ARLoginButtonsView *buttonsView;
 
 @property (nonatomic, strong) AROnboardingNavBarView *navView;
 @property (nonatomic, strong) UIButton *testBotButton;
@@ -65,6 +67,8 @@
 
 - (void)showViews
 {
+    self.view.backgroundColor = [UIColor whiteColor];
+
     self.textFieldsView = [[ARLoginFieldsView alloc] init];
     [self.view addSubview:self.textFieldsView];
     [self.textFieldsView constrainWidthToView:self.view predicate:@"*.9"];
@@ -72,6 +76,14 @@
     [self.textFieldsView alignTopEdgeWithView:self.view predicate:@"20"];
     [self.textFieldsView constrainHeight:@"200"];
     [self.textFieldsView setupForLogin];
+
+    self.buttonsView = [[ARLoginButtonsView alloc] init];
+    [self.view addSubview:self.buttonsView];
+    [self.buttonsView constrainWidthToView:self.view predicate:@"*.9"];
+    [self.buttonsView alignCenterXWithView:self.view predicate:@"0"];
+    [self.buttonsView constrainTopSpaceToView:self.textFieldsView predicate:@"10"];
+    [self.buttonsView constrainHeight:@"200"];
+    [self.buttonsView setupForLogin];
 }
 
 //- (void)viewDidLoad

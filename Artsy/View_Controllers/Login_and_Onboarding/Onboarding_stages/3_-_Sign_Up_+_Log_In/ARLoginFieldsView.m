@@ -21,7 +21,6 @@
 {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
         _nameField = [[ARTextFieldWithPlaceholder alloc] initWithFrame:CGRectZero];
         _emailField = [[ARTextFieldWithPlaceholder alloc] initWithFrame:CGRectZero];
         _passwordField = [[ARSecureTextFieldWithPlaceholder alloc] initWithFrame:CGRectZero];
