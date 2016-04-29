@@ -1,4 +1,5 @@
 import Foundation
+import Interstellar
 import Starscream
 
 protocol SocketType: class {
@@ -13,12 +14,8 @@ protocol SocketType: class {
     func disconnect()
 }
 
-@objc protocol LiveAuctionSocketCommunicatorDelegate: class {
-    func didUpdateAuctionState(state: AnyObject)
-}
-
 protocol LiveAuctionSocketCommunicatorType {
-    weak var delegate: LiveAuctionSocketCommunicatorDelegate? { get set }
+    var updatedAuctionState: Observable<AnyObject> { get }
 
     func bidOnLot(lotID: String)
     func leaveMaxBidOnLot(lotID: String)
@@ -30,7 +27,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     private let causalitySaleID: String
     private var timer: NSTimer? // Heart beat to keep socket connection alive.
 
-    weak var delegate: LiveAuctionSocketCommunicatorDelegate?
+    let updatedAuctionState = Observable<AnyObject>()
 
     convenience init(host: String, causalitySaleID: String, accessToken: String) {
         self.init(host: host, accessToken: accessToken, causalitySaleID: causalitySaleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
@@ -95,7 +92,7 @@ private extension SocketSetup {
 
         switch socketEventType {
         case "InitialFullSaleState":
-            delegate?.didUpdateAuctionState(json)
+            updatedAuctionState.update(json)
         default:
             print("Received unknown socket event type.")
         }

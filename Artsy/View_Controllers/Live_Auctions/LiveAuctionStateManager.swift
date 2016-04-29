@@ -37,7 +37,9 @@ class LiveAuctionStateManager: NSObject {
 
         super.init()
 
-        socketCommunicator.delegate = self
+        socketCommunicator.updatedAuctionState.subscribe { [weak self] state in
+            self?.stateReconciler.updateState(state)
+        }
     }
 }
 
@@ -61,13 +63,6 @@ extension ComputedProperties {
 }
 
 
-private typealias SocketDelegate = LiveAuctionStateManager
-extension SocketDelegate: LiveAuctionSocketCommunicatorDelegate {
-    func didUpdateAuctionState(state: AnyObject) {
-        stateReconciler.updateState(state)
-    }
-}
-
 
 private typealias DefaultCreators = LiveAuctionStateManager
 extension DefaultCreators {
@@ -79,8 +74,7 @@ extension DefaultCreators {
 
     class func stubbedSocketCommunicatorCreator() -> SocketCommunicatorCreator {
         return { host, causalitySaleID, accessToken in
-            // TODO: Return stubbed JSON socket communicator.
-//            return LiveAuctionSocketCommunicator(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
+            return Stubbed_SocketCommunicator(state: loadJSON("live_auctions_socket"))
         }
     }
 
@@ -89,4 +83,21 @@ extension DefaultCreators {
             return LiveAuctionStateReconciler(saleArtworks: saleArtworks)
         }
     }
+}
+
+private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
+    let updatedAuctionState: Observable<AnyObject>
+
+    init (state: AnyObject) {
+        updatedAuctionState = Observable(state)
+    }
+
+    func bidOnLot(lotID: String) {
+
+    }
+
+    func leaveMaxBidOnLot(lotID: String) {
+
+    }
+
 }
