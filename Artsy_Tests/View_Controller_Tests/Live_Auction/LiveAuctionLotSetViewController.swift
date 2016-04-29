@@ -11,7 +11,7 @@ class LiveAuctionLotSetViewControllerSpec: QuickSpec {
     override func spec() {
         it("looks good by default") {
             let fakeSalesPerson = stub_auctionSalesPerson()
-            let subject = LiveAuctionLotSetViewController(saleID: "sale-id", salesPerson: fakeSalesPerson)
+            let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson)
 
             expect(subject) == snapshot()
         }

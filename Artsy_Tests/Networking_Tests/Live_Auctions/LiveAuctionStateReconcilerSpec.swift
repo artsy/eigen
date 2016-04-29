@@ -11,69 +11,10 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
         var state: NSMutableDictionary!
         var subject: LiveAuctionStateReconciler!
-        var newLotsCalled: Bool!
 
         beforeEach {
             state = test_liveAuctionJSON(.Active)
-
-            newLotsCalled = false
-            subject = LiveAuctionStateReconciler()
-            subject.newLotsSignal.subscribe { _ in newLotsCalled = true}
-        }
-
-        it("doesn't do anything if there are no lots") {
-            state["lots"] = nil
-
-            subject.updateState(state)
-
-            expect(newLotsCalled) == false
-        }
-
-        it("doesn't do anything if there is no sale") {
-            state["sale"] = nil
-
-            subject.updateState(state)
-
-            expect(newLotsCalled) == false
-        }
-
-        it("doesn't do anything if there are no sale's lots") {
-            var sale = state["sale"] as! [String : AnyObject]
-            sale["lots"] = nil
-            state["sale"] = sale
-
-            subject.updateState(state)
-
-            expect(newLotsCalled) == false
-        }
-
-        it("doesn't do anything if there is no current lot id") {
-            state["currentLotId"] = nil
-
-            subject.updateState(state)
-
-            expect(newLotsCalled) == false
-        }
-
-        it("doesn't do anything if there are no lot events (list is empty)") {
-            // Events are already empty
-            var newEventsCalled = false
-            subject.newLotsSignal.subscribe { newLots in
-                newLots.forEach { $0.newEventSignal.subscribe { _ in newEventsCalled = true } }
-            }
-
-            subject.updateState(state)
-
-            expect(newEventsCalled) == false
-        }
-
-        it("sends fresh lots on first update") {
-            var lots: [LiveAuctionLotViewModelType]?
-            subject.newLotsSignal.subscribe { lots = $0 }
-
-            subject.updateState(state)
-
-            expect(lots?.count) == 3
+            subject = LiveAuctionStateReconciler(saleArtworks: [])
         }
 
         it("sends current lot") {
@@ -85,41 +26,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
             expect(currentLot).toNot( beNil() )
         }
 
-        it("orders lots correctly") {
-            var lots: [LiveAuctionLotViewModelType]?
-            subject.newLotsSignal.subscribe { lots = $0 }
-
-            subject.updateState(state)
-
-            let reconciledLotIDs = lots?.map { lot in
-                return lot.liveAuctionLotID
-            }
-
-            let lotIDs = (state["sale"] as! [String : AnyObject])["lots"] as! [String]
-            expect(lotIDs) == reconciledLotIDs
-        }
-
         describe("on subsequent state update") {
-
-            it("does not send lots") {
-                var newLotsInvocation = 0
-                subject.newLotsSignal.subscribe { _ in newLotsInvocation += 1 }
-
-                subject.updateState(state)
-                subject.updateState(state)
-
-                expect(newLotsInvocation) == 1
-            }
-
-            it("does not send sale") {
-                var saleInvocation = 0
-                subject.saleSignal.subscribe { _ in saleInvocation += 1 }
-
-                subject.updateState(state)
-                subject.updateState(state)
-
-                expect(saleInvocation) == 1
-            }
 
             it("does not send current lot if it has not changed") {
                 var currentLotInvocations = 0
@@ -144,122 +51,20 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 expect(currentLotInvocations) == 2
             }
 
-            it("updates lot view model with new events") {
-                var eventInvocations = 0
-                subject.newLotsSignal.subscribe { newLots in
-                    newLots.forEach { lot in
-                        lot.newEventSignal.subscribe { _ in eventInvocations += 1 }
-                    }
-                }
-                let newState = NSMutableDictionary(dictionary: state)
-                var lots = newState["lots"] as! [String: [String : AnyObject]]
-                var lot = Array(lots.values)[0]
-                let event = test_liveAuctionLotEventJSON()
-                lot["events"] = [event.id]
-                lots[lot["id"]! as! String] = lot
-                newState["lots"] = lots
-                newState["lotEvents"] = event.json
+            pending("updates lot view model with new events") {
 
-                subject.updateState(state)
-                subject.updateState(newState)
-
-                expect(eventInvocations) == 1
             }
 
-            it("doesn't update lot view model with events that aren't new") {
-                var eventInvocations = 0
-                subject.newLotsSignal.subscribe { newLots in
-                    newLots.forEach { lot in
-                        lot.newEventSignal.subscribe { _ in eventInvocations += 1 }
-                    }
-                }
-                let newState = NSMutableDictionary(dictionary: state)
-                var lots = state["lots"] as! [String: [String : AnyObject]]
-                var lot = Array(lots.values)[0]
-                let event = test_liveAuctionLotEventJSON()
-                lot["events"] = [event.id]
-                lots[lot["id"]! as! String] = lot
-                newState["lots"] = lots
-                newState["lotEvents"] = event.json
+            pending("doesn't update lot view model with events that aren't new") {
 
-                subject.updateState(state)
-                subject.updateState(newState)
-
-                expect(eventInvocations) == 1
             }
 
-            it("updates lot view model with online asking price") {
-                var onlineAskingPriceInvocations = 0
-                subject.newLotsSignal.subscribe { newLots in
-                    newLots.forEach { lot in
-                        lot.askingPriceSignal.subscribe { _ in onlineAskingPriceInvocations += 1 }
-                    }
-                }
-                let newState = NSMutableDictionary(dictionary: state)
-                var lots = newState["lots"] as! [String: [String : AnyObject]]
-                var lot = Array(lots.values)[0]
-                lot["onlineAskingPriceCents"] = 123456
-                lots[lot["id"]! as! String] = lot
-                newState["lots"] = lots
+            pending("updates lot view model with online asking price") {
 
-                subject.updateState(state)
-                subject.updateState(newState)
-
-                expect(onlineAskingPriceInvocations) == 4 // 3 lots + 1 updated asking price
             }
 
-            it("updates lot view model with reserve status") {
-                var reserveStatusUpdates = 0
-                subject.newLotsSignal.subscribe { newLots in
-                    newLots.forEach { lot in
-                        lot.reserveStatusSignal.subscribe { _ in reserveStatusUpdates += 1 }
-                    }
-                }
-                let newState = NSMutableDictionary(dictionary: state)
-                var lots = newState["lots"] as! [String: [String : AnyObject]]
-                var lot = Array(lots.values)[0]
-                lot["reserveStatus"] = "reserve_not_met"
-                lots[lot["id"]! as! String] = lot
-                newState["lots"] = lots
+            pending("updates lot view model with reserve status") {
 
-                subject.updateState(state)
-                subject.updateState(newState)
-
-                expect(reserveStatusUpdates) == 4 // 3 lots + 1 updated reserve status
-            }
-            
-            it("sends lots when number of lots change") {
-                var currentLots: [LiveAuctionLotViewModelType]?
-                subject.newLotsSignal.subscribe { currentLots = $0 }
-
-                subject.updateState(state)
-                subject.updateState(test_liveAuctionJSON(.Active, numberOfLots: 4))
-
-                expect(currentLots?.count) == 4
-            }
-
-            it("sends updated sale availability if changed") {
-                var saleAvailabilityInvocations = 0
-                subject.saleSignal.subscribe { sale in
-                    sale.saleAvailabilitySignal.subscribe { _ in saleAvailabilityInvocations += 1 }
-                }
-
-                subject.updateState(state)
-                subject.updateState(test_liveAuctionJSON(.Closed))
-
-                expect(saleAvailabilityInvocations) == 2
-            }
-
-            it("doesn't send updated sale availability if not changed") {
-                var saleAvailabilityInvocations = 0
-                subject.saleSignal.subscribe { sale in
-                    sale.saleAvailabilitySignal.subscribe { _ in saleAvailabilityInvocations += 1 }
-                }
-
-                subject.updateState(state)
-                subject.updateState(test_liveAuctionJSON(.Active, numberOfLots: 4))
-
-                expect(saleAvailabilityInvocations) == 1
             }
         }
     }

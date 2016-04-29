@@ -13,10 +13,11 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         beforeEach {
             let fake = stub_auctionSalesPerson()
-            subject = LiveAuctionViewController(saleID: "sale-id")
-            subject.salesPerson = fake
+            subject = LiveAuctionViewController(saleSlugOrID: "sale-id")
+            subject.salesPersonCreator = { _ in return fake }
 
-            for lot in fake.lots {
+            for i in 0..<fake.lotCount {
+                let lot = fake.lotViewModelForIndex(i)
                 cacheColoredImageForURL(lot.urlForThumbnail)
             }
         }

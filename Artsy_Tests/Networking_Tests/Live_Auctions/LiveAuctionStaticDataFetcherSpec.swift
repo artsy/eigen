@@ -14,11 +14,11 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
 
         beforeEach {
             OHHTTPStubs.stubJSONResponseForHost("metaphysics-*.artsy.net", withResponse: stateJSON)
-            subject = LiveAuctionStaticDataFetcher(saleID: saleID)
+            subject = LiveAuctionStaticDataFetcher(saleSlugOrID: saleID)
         }
         
         it("configures its sale ID correctly") {
-            expect(subject.saleID) == saleID
+            expect(subject.saleSlugOrID) == saleID
         }
 
         it("fetches the static data") {

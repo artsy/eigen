@@ -1,6 +1,5 @@
 import Quick
 import Nimble
-import SocketIOClientSwift
 
 @testable
 import Artsy
@@ -15,17 +14,16 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
 
         beforeEach {
             socket = Test_Socket()
-            socket.host = host
         }
 
         it("configures the socket with the correct host") {
-            _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
+            _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, causalitySaleID: saleID, socketCreator: test_SocketCreator())
 
             expect(socket.host) == host
         }
 
         it("connects the socket on initialization") {
-            let subject = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
+            let subject = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, causalitySaleID: saleID, socketCreator: test_SocketCreator())
 
             expect(socket.connected) == true
 
@@ -34,79 +32,52 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
 
         it("disconnects the socket when deallocated") {
             do {
-                _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
+                _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, causalitySaleID: saleID, socketCreator: test_SocketCreator())
             }
 
             expect(socket.connected) == false
         }
 
-        it("authenticates the socket connection") {
-            _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
+        it("listens for updated auction state") {
+            _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, causalitySaleID: saleID, socketCreator: test_SocketCreator())
 
-            expect(socket.emittedEvents).to( contain(SocketEvent.Authentication) )
+            expect(socket.onText).toNot( beNil() )
         }
 
-        describe("authenticated") {
+        it("sends its updatedAuctionState observable its updated auction state") {
+            let subject = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, causalitySaleID: saleID, socketCreator: test_SocketCreator())
+            var receivedState: String?
+            subject.updatedAuctionState.subscribe { state in receivedState = state as? String }
 
-            it("joins the auction") {
-                _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
+            // "emit" the socket event from the server
+            socket.onText?("state!")
 
-                expect(socket.emittedEvents).to( contain(SocketEvent.JoinSale) )
-
-            }
-
-            it("listens for updated auction state") {
-                _ = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
-
-                expect(socket.onEvents).to( contain(SocketEvent.UpdateAuctionState) )
-            }
-
-            it("sends its delegate its updated auction state") {
-                class Delegate: NSObject, LiveAuctionSocketCommunicatorDelegate {
-                    var called = false
-                    @objc func didUpdateAuctionState(state: AnyObject) {
-                        called = true
-                    }
-                }
-                let delegate = Delegate()
-                let subject = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, saleID: saleID, socketCreator: test_SocketCreator())
-                subject.delegate = delegate
-
-                // "emit" the socket event from the server
-                let callback = socket.callbacks[.UpdateAuctionState]
-                callback?(["state!"])
-
-                expect(delegate.called) == true
-            }
+            expect(receivedState) == "state!"
         }
     }
 }
 
-func test_SocketCreator() -> String -> SocketType {
-    return { host in
+func test_SocketCreator() -> LiveAuctionSocketCommunicator.SocketCreator {
+    return { host, causalitySaleID, token in
+        socket.host = host
         return socket
     }
 }
 
 class Test_Socket: SocketType {
-    var host: String = ""
-    var callbackParams: [AnyObject] = []
-    var onEvents: [SocketEvent] = []
-    var emittedEvents: [SocketEvent] = []
+    var onText: ((String) -> Void)?
+    var onConnect: ((Void) -> Void)?
+    var onDisconnect: ((NSError?) -> Void)?
+
+    var writes = [String]()
     var connected = false
-    var callbacks = Dictionary<SocketEvent, [AnyObject] -> Void>()
+    var host = ""
 
     init() { }
 
-    func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID  {
-        onEvents += [event]
-        callback(callbackParams)
-        callbacks[event] = callback
-        return NSUUID()
-    }
 
-    func emit(event: SocketEvent, _ items: AnyObject...)  { emittedEvents += [event] }
-
+    func writeString(str: String) { writes += [str] }
+    func writePing() { }
     func connect() { connected = true }
     func disconnect() { connected = false }
 }

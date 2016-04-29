@@ -11,12 +11,12 @@ class LiveAuctionViewController: UISplitViewController {
 
     lazy var staticDataFetcher: LiveAuctionStaticDataFetcherType = {
         return Stubbed_StaticDataFetcher() // TODO: Remove stubbing.
-//        return LiveAuctionStaticDataFetcher(saleSlugOrID: self.saleSlugOrID)
     }()
+
+    lazy var salesPersonCreator: LiveSale -> LiveAuctionsSalesPersonType = self.salesPerson
 
     var lotSetController: LiveAuctionLotSetViewController!
     var lotsSetNavigationController: ARSerifNavigationViewController!
-
     var lotListController: LiveAuctionLotListViewController!
 
     var sale: LiveSale?

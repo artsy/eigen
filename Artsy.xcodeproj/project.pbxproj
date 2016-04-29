@@ -335,7 +335,6 @@
 		5ED9EC021C458E9500C979A6 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */; };
 		5EDB120B197E691100E241F0 /* ARParallaxHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB120A197E691100E241F0 /* ARParallaxHeaderViewController.m */; };
 		5EE5DE14190167A400040B84 /* ARProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE5DE13190167A400040B84 /* ARProfileViewController.m */; };
-		5EF3C93D1C99DB9F002FF956 /* LiveAuctionStateFetcherSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF3C93C1C99DB9F002FF956 /* LiveAuctionStateFetcherSpec.swift */; };
 		5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */; };
 		5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */; };
 		5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */; };
@@ -1284,7 +1283,6 @@
 		5EE5DE12190167A400040B84 /* ARProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARProfileViewController.h; sourceTree = "<group>"; };
 		5EE5DE13190167A400040B84 /* ARProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARProfileViewController.m; sourceTree = "<group>"; };
 		5EE5DE1519019EFD00040B84 /* ARFairAwareObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARFairAwareObject.h; sourceTree = "<group>"; };
-		5EF3C93C1C99DB9F002FF956 /* LiveAuctionStateFetcherSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStateFetcherSpec.swift; path = Live_Auctions/LiveAuctionStateFetcherSpec.swift; sourceTree = "<group>"; };
 		5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineSettings.swift; path = Auction/AuctionRefineSettings.swift; sourceTree = "<group>"; };
 		5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AuctionRefineCheck.png; sourceTree = "<group>"; };
 		5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AuctionRefineCheck@2x.png"; sourceTree = "<group>"; };
@@ -2961,7 +2959,6 @@
 				5E1A3A9F1C93760A0047329E /* LiveAuctionSocketCommunicatorSpec.swift */,
 				5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */,
 				5E174F5B1CADB35800657743 /* LiveAuctionStateReconcilerSpec.swift */,
-				5EF3C93C1C99DB9F002FF956 /* LiveAuctionStateFetcherSpec.swift */,
 				5E88414F1CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift */,
 			);
 			name = "Live Auctions";
@@ -5735,7 +5732,6 @@
 				D35D9D5C1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m in Sources */,
 				5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */,
 				60ED311F1C8F73450071DD89 /* LiveAuctionLotViewControllerTests.swift in Sources */,
-				5EF3C93D1C99DB9F002FF956 /* LiveAuctionStateFetcherSpec.swift in Sources */,
 				60647C7C1A951F2A00A45247 /* ARFairPopupViewControllerTests.m in Sources */,
 				5E3817011CC1572100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift in Sources */,
 				60107F161CC7DC1D002F772E /* ARTestImageCachingFunctions.swift in Sources */,

@@ -7,86 +7,67 @@ import Artsy
 class LiveAuctionStateManagerSpec: QuickSpec {
     override func spec() {
         var subject: LiveAuctionStateManager!
+        var sale: LiveSale!
 
         beforeEach {
             OHHTTPStubs.stubJSONResponseForHost("metaphysics-*.artsy.net", withResponse: [:])
-            // Not sure why ^ is needed, might be worth looking 
-            subject = LiveAuctionStateManager(host: "http://localhost", saleID: "sale-id", accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateFetcherCreator: test_stateFetcherCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+            // Not sure why ^ is needed, might be worth looking
+
+            sale = testLiveSale()
+
+            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], accessToken: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
         it("sets its saleID upon initialization") {
-            expect(subject.saleID) == "sale-id"
+            expect(subject.sale) === sale
         }
 
         it("creates an appropriate socket communicator") {
             expect(mostRecentSocketCommunicator?.host) == "http://localhost"
             expect(mostRecentSocketCommunicator?.accessToken) == "abcdefg"
-            expect(mostRecentSocketCommunicator?.saleID) == "sale-id"
-        }
-
-        it("sets itself as the socket communicator delegate") {
-            expect(mostRecentSocketCommunicator?.delegate) === subject
+            expect(mostRecentSocketCommunicator?.causalitySaleID) == "sale-id"
         }
 
         it("invokes the state reconciler when new snapshot data avaialble") {
             let state = ["hi there!"]
-            subject.didUpdateAuctionState(state)
+            mostRecentSocketCommunicator?.updatedAuctionState.update(state)
 
             expect(mostRecentStateReconciler?.mostRecentState as? [String]) == state
         }
     }
 }
 
+
 func test_socketCommunicatorCreator() -> LiveAuctionStateManager.SocketCommunicatorCreator {
     return { host, saleID, accessToken in
-        return Test_SocketCommunicator(host: host, saleID: saleID, accessToken: accessToken)
-    }
-}
-
-func test_stateFetcherCreator() -> LiveAuctionStateManager.StateFetcherCreator {
-    return { host, saleID in
-        return Test_StateFetcher(host: host, saleID: saleID)
+        return Test_SocketCommunicator(host: host, causalitySaleID: saleID, accessToken: accessToken)
     }
 }
 
 func test_stateReconcilerCreator() -> LiveAuctionStateManager.StateReconcilerCreator {
-    return {
+    return { saleArtworks in
         return Test_StateRecociler()
-    }
-}
-
-class Test_StateFetcher: LiveAuctionStateFetcherType {
-
-    let host: String
-    let saleID: String
-
-    init(host: String, saleID: String) {
-        self.host = host
-        self.saleID = saleID
-    }
-
-    func fetchSale() -> Observable<Result<AnyObject>> {
-        return Observable<Result<AnyObject>>()
     }
 }
 
 var mostRecentSocketCommunicator: Test_SocketCommunicator?
 
 class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
-    weak var delegate: LiveAuctionSocketCommunicatorDelegate?
 
     let host: String
-    let saleID: String
+    let causalitySaleID: String
     let accessToken: String
 
-    init(host: String, saleID: String, accessToken: String) {
+    init(host: String, causalitySaleID: String, accessToken: String) {
         self.host = host
-        self.saleID = saleID
+        self.causalitySaleID = causalitySaleID
         self.accessToken = accessToken
 
         mostRecentSocketCommunicator = self
     }
-    
+
+    var updatedAuctionState = Observable<AnyObject>()
+
     func bidOnLot(lotID: String) { }
     func leaveMaxBidOnLot(lotID: String) { }
 }

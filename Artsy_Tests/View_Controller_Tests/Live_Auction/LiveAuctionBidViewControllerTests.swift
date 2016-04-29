@@ -23,7 +23,7 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
                     subject = StoryboardScene.LiveAuctions.instantiateBid()
 
                     let fakeSalesPerson = stub_auctionSalesPerson()
-                    let lotVM = fakeSalesPerson.lotViewModelForIndex(0)!
+                    let lotVM = fakeSalesPerson.lotViewModelForIndex(0)
 
                     cacheColoredImageForURL(lotVM.urlForProfile)
                     subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM)
