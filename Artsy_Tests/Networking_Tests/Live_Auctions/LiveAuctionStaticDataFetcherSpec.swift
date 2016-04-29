@@ -7,8 +7,8 @@ import Artsy
 class LiveAuctionStaticDataFetcherSpec: QuickSpec {
     override func spec() {
 
-        let saleID = "sale_id"
-        let stateJSON: NSDictionary = ["id": saleID]
+        let saleID = "the-id"
+        let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"]]]
 
         var subject: LiveAuctionStaticDataFetcher!
 
@@ -22,16 +22,9 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
         }
 
         it("fetches the static data") {
-            var receivedState: AnyObject?
+            let receivedState = subject.fetchStaticData()
 
-            subject
-                .fetchStaticData()
-                .next { state in
-                    receivedState = state
-            }
-
-            let dictionary = receivedState as? NSDictionary
-            expect(dictionary) == stateJSON
+            expect(receivedState.peekValue()?.liveSaleID) == saleID
         }
     }
 }

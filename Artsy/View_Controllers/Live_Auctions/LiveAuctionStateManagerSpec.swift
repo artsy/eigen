@@ -25,7 +25,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         it("creates an appropriate socket communicator") {
             expect(mostRecentSocketCommunicator?.host) == "http://localhost"
             expect(mostRecentSocketCommunicator?.accessToken) == "abcdefg"
-            expect(mostRecentSocketCommunicator?.causalitySaleID) == "sale-id"
+            expect(mostRecentSocketCommunicator?.causalitySaleID) == "some-random-string-of-nc72bjzj7"
         }
 
         it("invokes the state reconciler when new snapshot data avaialble") {

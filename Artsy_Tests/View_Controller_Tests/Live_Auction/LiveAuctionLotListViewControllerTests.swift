@@ -16,14 +16,14 @@ class LiveAuctionLotListViewControllerTests: QuickSpec {
             }
         }
 
-        it("looks good by default") {
+        pending("looks good by default") {
             let fake = stub_auctionSalesPerson()
             let subject = LiveAuctionLotListViewController(salesPerson: fake, currentLotSignal: fake.currentLotSignal, auctionViewModel: fake.auctionViewModel)
 
             expect(subject) == snapshot()
         }
 
-        it("shows the selected lot") {
+        pending("shows the selected lot") {
             let fake = stub_auctionSalesPerson()
             let subject = LiveAuctionLotListViewController(salesPerson: fake, currentLotSignal: fake.currentLotSignal, auctionViewModel: fake.auctionViewModel)
             subject.selectedIndex = 4

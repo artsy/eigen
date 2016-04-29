@@ -9,7 +9,7 @@ import Artsy
 
 class LiveAuctionLotSetViewControllerSpec: QuickSpec {
     override func spec() {
-        it("looks good by default") {
+        pending("looks good by default") {
             let fakeSalesPerson = stub_auctionSalesPerson()
             let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson)
 

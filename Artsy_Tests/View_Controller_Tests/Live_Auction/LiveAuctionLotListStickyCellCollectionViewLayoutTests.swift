@@ -32,7 +32,7 @@ class LiveAuctionLotListStickyCellCollectionViewLayoutTests: QuickSpec {
             expect(container) == snapshot()
         }
 
-        it("looks good when stuck to the top") {
+        pending("looks good when stuck to the top") {
             collectionView.setContentOffset(CGPoint(x: 0, y: 100), animated: false) // simulates a scroll
             expect(container) == snapshot()
         }

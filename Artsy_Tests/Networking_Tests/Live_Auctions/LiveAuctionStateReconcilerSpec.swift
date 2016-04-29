@@ -13,22 +13,36 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
         var subject: LiveAuctionStateReconciler!
 
         beforeEach {
-            state = test_liveAuctionJSON(.Active)
+            state = ["fullLotStateById": [:]]
             subject = LiveAuctionStateReconciler(saleArtworks: [])
         }
 
-        it("sends current lot") {
+        it("doesn't send current lot if unspecified") {
             var currentLot: LiveAuctionLotViewModelType?
             subject.currentLotSignal.subscribe { currentLot = $0 }
 
             subject.updateState(state)
 
-            expect(currentLot).toNot( beNil() )
+            expect(currentLot).to( beNil() )
         }
 
-        describe("on subsequent state update") {
+        describe("with a current lot") {
 
-            it("does not send current lot if it has not changed") {
+            beforeEach {
+                state["currentLotId"] = "54c7ecc27261692b5e420600"
+            }
+
+            pending("sends current lot") {
+                state["currentLotId"] = "54c7ecc27261692b5e420600"
+                var currentLot: LiveAuctionLotViewModelType?
+                subject.currentLotSignal.subscribe { currentLot = $0 }
+
+                subject.updateState(state)
+
+                expect(currentLot).toNot( beNil() )
+            }
+
+            pending("does not send current lot if it has not changed") {
                 var currentLotInvocations = 0
                 subject.currentLotSignal.subscribe { _ in currentLotInvocations += 1 }
 
@@ -38,12 +52,11 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 expect(currentLotInvocations) == 1
             }
 
-            it("sends new current lot when the lot changes") {
+            pending("sends new current lot when the lot changes") {
                 var currentLotInvocations = 0
                 subject.currentLotSignal.subscribe { _ in currentLotInvocations += 1 }
                 let newState = NSMutableDictionary(dictionary: state)
-                let sale = newState["sale"] as! [String: AnyObject]
-                newState["currentLotId"] = (sale["lots"] as! [String]).last
+                newState["currentLotId"] = "zomg-a-new-id"
 
                 subject.updateState(state)
                 subject.updateState(newState)
@@ -68,120 +81,4 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
             }
         }
     }
-}
-
-private let dateFormatter = NSDateFormatter().then {
-    $0.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-}
-
-func test_liveAuctionJSON(saleAvailability: SaleAvailabilityState, numberOfLots: Int = 3) -> NSMutableDictionary {
-    let startDate: NSDate
-    let endDate: NSDate
-
-    let hourAgo = NSDate().dateByAddingTimeInterval(-3600)
-    let twoHoursAgo = hourAgo.dateByAddingTimeInterval(-3600)
-    let hourFromNow = NSDate().dateByAddingTimeInterval(3600)
-    let twoHoursFromNow = hourFromNow.dateByAddingTimeInterval(3600)
-
-    switch saleAvailability {
-    case .Active:
-        startDate = hourAgo
-        endDate = hourFromNow
-    case .Closed:
-        startDate = twoHoursAgo
-        endDate = hourAgo
-    case .NotYetOpen:
-        startDate = hourFromNow
-        endDate = twoHoursFromNow
-    }
-
-    let lots = Array(0..<numberOfLots).map { _ in test_liveAuctionLotJSON() }
-    let lotIDs = Array(lots.map { (lot) -> String in
-        return Array(lot.keys)[0]
-    })
-
-    let sale: NSDictionary =  [
-        "id": "consectetur-quas-in-cupiditate-sint-omnis",
-        "name": "Test Live Auction",
-        "description": "Test Live Auction description.",
-        "startAt": dateFormatter.stringFromDate(startDate),
-        "endAt": dateFormatter.stringFromDate(endDate),
-        "lots": lotIDs,
-        "currentLotId": lotIDs[1] // Middle lot is current
-        ]
-
-    return ([
-        "sale": sale,
-        "lotEvents": [
-            : // Empty lot events
-        ],
-        "lots": lots.reduce([:], combine: +),
-        "currentLotId": lotIDs[1],
-    ] as NSMutableDictionary)
-}
-
-func test_liveAuctionLotJSON() -> [String: [String: AnyObject]] {
-    let id = "test_artwork_id\(random())"
-    return [
-        id: [
-            "id": id,
-            "position": 12,
-            "currency": "USD",
-            "symbol": "$",
-            "reserveStatus": "reserve_met",
-            "lowEstimateCents": 260000,
-            "highEstimateCents": 390000,
-            "askingPriceCents": 130000,
-            "onlineAskingPriceCents": 130000,
-            "artwork": [
-                "title": "Perspiciatis autem consectetur molestias",
-                "image": [
-                    "large": [
-                        "width": 600,
-                        "height": 447,
-                        "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FXkAtGqcI3DTjapCjtOhI2Q%2Flarge.jpg&width=600&height=447&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
-                    ],
-                    "thumb": [
-                        "width": 50,
-                        "height": 50,
-                        "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FXkAtGqcI3DTjapCjtOhI2Q%2Flarge.jpg&width=600&height=447&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
-                    ]
-                ],
-                "artwork": [
-                    "title": "Perspiciatis autem consectetur molestias",
-                    "image": [
-                        "large": [
-                            "width": 600,
-                            "height": 447,
-                            "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FXkAtGqcI3DTjapCjtOhI2Q%2Flarge.jpg&width=600&height=447&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
-                        ],
-                        "thumb": [
-                            "width": 50,
-                            "height": 50,
-                            "url": "https://i.embed.ly/1/display/resize?grow=false&url=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FXkAtGqcI3DTjapCjtOhI2Q%2Flarge.jpg&width=600&height=447&key=a1f82558d8134f6cbebceb9e67d04980&quality=95"
-                        ]
-                    ]
-                ],
-                "artist": [
-                    "name": "Orville Simonis"
-                ]
-            ],
-            "events": [
-                
-            ]
-        ]
-    ]
-}
-
-func test_liveAuctionLotEventJSON() -> (id: String, json: AnyObject) {
-    let id = "test_event_id\(random())"
-    return (id: id, json: [
-        id: [
-            "id": id,
-            "type": "bid",
-            "amountCents": 450000,
-            "source": "floor",
-            "isConfirmed": true
-        ]
-    ])
 }

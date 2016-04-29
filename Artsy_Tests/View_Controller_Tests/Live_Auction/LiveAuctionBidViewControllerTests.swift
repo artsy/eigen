@@ -16,7 +16,7 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
             OHHTTPStubs.stubJSONResponseForHost("metaphysics-*.artsy.net", withResponse: [:])
         }
 
-        it("looks right on phones") {
+        pending("looks right on phones") {
             let devices:[ARDeviceType] = [.Phone4, .Phone6]
             for device in devices {
                 ARTestContext.useDevice(device) {

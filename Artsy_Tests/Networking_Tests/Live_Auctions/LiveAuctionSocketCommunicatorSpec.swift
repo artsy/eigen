@@ -46,13 +46,12 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
 
         it("sends its updatedAuctionState observable its updated auction state") {
             let subject = LiveAuctionSocketCommunicator(host: host, accessToken: accessToken, causalitySaleID: saleID, socketCreator: test_SocketCreator())
-            var receivedState: String?
-            subject.updatedAuctionState.subscribe { state in receivedState = state as? String }
 
             // "emit" the socket event from the server
-            socket.onText?("state!")
+            let state = "{\"type\":\"InitialFullSaleState\",\"currentLotId\":\"54c7ecc27261692b5e420600\",\"fullLotStateById\":{}}"
+            socket.onText?(state)
 
-            expect(receivedState) == "state!"
+            expect(subject.updatedAuctionState.peek() ).toNot( beNil() )
         }
     }
 }
