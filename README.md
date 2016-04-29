@@ -13,7 +13,11 @@
    * `$ brew link pcre`
    * `$ brew install watchman --HEAD`
 
-### Reading
+### Resources
+
+* Relay:
+  - https://facebook.github.io/relay/docs/getting-started.html
+  - https://github.com/facebook/relay/tree/master/examples
 
 * Testing:
   - https://mochajs.org

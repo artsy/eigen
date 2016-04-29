@@ -10,7 +10,8 @@ import Emission from 'emission';
 //
 
 Relay.injectNetworkLayer(
-  new Relay.DefaultNetworkLayer('https://metaphysics-staging.artsy.net')
+  // new Relay.DefaultNetworkLayer('https://metaphysics-staging.artsy.net')
+  new Relay.DefaultNetworkLayer('https://metaphysics-production.artsy.net')
     // headers: {
     //   Authorization: 'Basic SECRET'
     // })
