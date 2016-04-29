@@ -25,7 +25,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     typealias SocketCreator = (host: String, saleID: String, token: String) -> SocketType
     private let socket: SocketType
     private let causalitySaleID: String
-    private var timer: NSTimer? // Heart beat to keep socket connection alive.
+    private var timer: NSTimer? // Heartbeat to keep socket connection alive.
 
     let updatedAuctionState = Observable<AnyObject>()
 
@@ -34,6 +34,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     }
 
     init(host: String, accessToken: String, causalitySaleID: String, socketCreator: SocketCreator) {
+
         socket = socketCreator(host: host, saleID: causalitySaleID, token: accessToken)
         self.causalitySaleID = causalitySaleID
 
@@ -45,10 +46,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     deinit {
         socket.disconnect()
         timer?.invalidate()
-    }
-
-    func pingSocket() {
-        socket.writePing()
+        timer = nil
     }
 
     class func defaultSocketCreator() -> SocketCreator {
@@ -64,10 +62,16 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
 private typealias SocketSetup = LiveAuctionSocketCommunicator
 private extension SocketSetup {
 
+    class TimerCaller {
+        let callback: () -> Void
+        init (callback: () -> Void) { self.callback = callback }
+        @objc func invoke() { callback() }
+    }
+
     /// Connects to, then authenticates against, the socket. Listens for sale events once authenticated.
     func setupSocket() {
-        unowned let uSelf = self // Only allowed because we invalidate the timer in deinit
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: uSelf, selector: #selector(LiveAuctionSocketCommunicator.pingSocket), userInfo: nil, repeats: true)
+        let caller = TimerCaller(callback: applyUnowned(self, LiveAuctionSocketCommunicator.pingSocket)) // Only allowed because we invalidate the timer in deinit
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: caller, selector: #selector(TimerCaller.invoke), userInfo: nil, repeats: true)
         socket.onText = applyUnowned(self, LiveAuctionSocketCommunicator.receivedText)
         socket.onConnect = { print("Socket connected") }
         socket.onDisconnect = applyUnowned(self, LiveAuctionSocketCommunicator.socketDisconnected)
@@ -78,6 +82,10 @@ private extension SocketSetup {
         print ("Socket disconnected: \(error)")
         // TODO: Handle error condition?
         socket.connect()
+    }
+
+    func pingSocket() {
+        socket.writePing()
     }
 
     func receivedText(text: String) {
