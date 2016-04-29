@@ -26,6 +26,7 @@ type Artist {
   gender: String
   years: String
   public: Boolean
+  consignable: Boolean
   hometown: String
   location: String
   nationality: String
@@ -36,7 +37,7 @@ type Artist {
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
-  artworks(size: Int, sort: ArtworkSorts, published: Boolean = true): [Artwork]
+  artworks(size: Int, sort: ArtworkSorts, published: Boolean = true, filter: [ArtistArtworksFilters], exclude: [String]): [Artwork]
   image: Image
   artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
   contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
@@ -46,6 +47,11 @@ type Artist {
   partner_shows(at_a_fair: Boolean, active: Boolean, status: String, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
   sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
   articles: [Article]
+}
+
+enum ArtistArtworksFilters {
+  IS_FOR_SALE
+  IS_NOT_FOR_SALE
 }
 
 type ArtistCarousel {
@@ -70,6 +76,7 @@ type ArtistItem {
   gender: String
   years: String
   public: Boolean
+  consignable: Boolean
   hometown: String
   location: String
   nationality: String
@@ -80,7 +87,7 @@ type ArtistItem {
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
-  artworks(size: Int, sort: ArtworkSorts, published: Boolean = true): [Artwork]
+  artworks(size: Int, sort: ArtworkSorts, published: Boolean = true, filter: [ArtistArtworksFilters], exclude: [String]): [Artwork]
   image: Image
   artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
   contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
@@ -103,6 +110,7 @@ type ArtistSearchEntity {
   gender: String
   years: String
   public: Boolean
+  consignable: Boolean
   hometown: String
   location: String
   nationality: String
@@ -113,7 +121,7 @@ type ArtistSearchEntity {
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
-  artworks(size: Int, sort: ArtworkSorts, published: Boolean = true): [Artwork]
+  artworks(size: Int, sort: ArtworkSorts, published: Boolean = true, filter: [ArtistArtworksFilters], exclude: [String]): [Artwork]
   image: Image
   artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
   contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
@@ -153,12 +161,13 @@ type Artwork {
   image_rights: String
   website: String
   collecting_institution: String
-  partner: Partner
+  partner(shallow: Boolean): Partner
   can_share_image: Boolean
   is_shareable: Boolean
   is_hangable: Boolean
   is_contactable: Boolean
   is_in_auction: Boolean
+  is_in_show: Boolean
   is_for_sale: Boolean
   is_unique: Boolean
   is_sold: Boolean
@@ -167,14 +176,14 @@ type Artwork {
   is_comparable_with_auction_results: Boolean
   is_downloadable: Boolean
   sale_message: String
-  artist: Artist
+  artist(shallow: Boolean): Artist
   contact_label: String
   cultural_maker: String
-  artists: [Artist]
+  artists(shallow: Boolean): [Artist]
   dimensions: dimensions
   image: Image
   images(size: Int): [Image]
-  related: Related
+  context: ArtworkContext
   highlights: [Highlighted]
   shows(size: Int = 1, active: Boolean = true): [PartnerShow]
   sale: Sale
@@ -204,6 +213,75 @@ enum ArtworkAggregation {
   GALLERY
   INSTITUTION
   TOTAL
+}
+
+union ArtworkContext = ArtworkContextFair | ArtworkContextSale | ArtworkContextPartnerShow
+
+type ArtworkContextFair {
+  cached: Int
+  _id: String
+  id: String
+  banner_size: String
+  profile: Profile
+  has_full_feature: Boolean
+  href: String
+  image: Image
+  location: Location
+  start_at(format: String): String
+  end_at(format: String): String
+  name: String
+  published: Boolean
+  is_published: Boolean
+  organizer: organizer
+}
+
+type ArtworkContextPartnerShow {
+  cached: Int
+  _id: String
+  id: String
+  href: String
+  kind: String
+  name: String
+  description: String
+  displayable: Boolean
+  press_release(format: Format): String
+  start_at(format: String): String
+  end_at(format: String): String
+  artists: [Artist]
+  partner: Partner
+  fair: Fair
+  location: Location
+  status: String
+  events: [PartnerShowEventType]
+  artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, exclude: [String]): [Artwork]
+  meta_image: Image
+  cover_image: Image
+  images(size: Int, default: Boolean, page: Int): [Image]
+}
+
+type ArtworkContextSale {
+  cached: Int
+  id: String
+  _id: String
+  name: String
+  href: String
+  description: String
+  sale_type: String
+  is_auction: Boolean
+  is_auction_promo: Boolean
+  is_preview: Boolean
+  is_open: Boolean
+  is_closed: Boolean
+  is_with_buyers_premium: Boolean
+  auction_state: String
+  start_at(format: String): String
+  end_at(format: String): String
+  currency: String
+  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [Artwork]
+  cover_image: Image
+  sale_artwork(id: String!): SaleArtwork
+  profile: Profile
 }
 
 type ArtworkLayer {
@@ -239,12 +317,13 @@ type ArtworkSearchEntity {
   image_rights: String
   website: String
   collecting_institution: String
-  partner: Partner
+  partner(shallow: Boolean): Partner
   can_share_image: Boolean
   is_shareable: Boolean
   is_hangable: Boolean
   is_contactable: Boolean
   is_in_auction: Boolean
+  is_in_show: Boolean
   is_for_sale: Boolean
   is_unique: Boolean
   is_sold: Boolean
@@ -253,14 +332,14 @@ type ArtworkSearchEntity {
   is_comparable_with_auction_results: Boolean
   is_downloadable: Boolean
   sale_message: String
-  artist: Artist
+  artist(shallow: Boolean): Artist
   contact_label: String
   cultural_maker: String
-  artists: [Artist]
+  artists(shallow: Boolean): [Artist]
   dimensions: dimensions
   image: Image
   images(size: Int): [Image]
-  related: Related
+  context: ArtworkContext
   highlights: [Highlighted]
   shows(size: Int = 1, active: Boolean = true): [PartnerShow]
   sale: Sale
@@ -499,7 +578,8 @@ type HighlightedShow {
   location: Location
   status: String
   events: [PartnerShowEventType]
-  artworks(size: Int, published: Boolean = true, page: Int): [Artwork]
+  artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, exclude: [String]): [Artwork]
+  meta_image: Image
   cover_image: Image
   images(size: Int, default: Boolean, page: Int): [Image]
 }
@@ -550,6 +630,7 @@ type Location {
 
 type Me {
   id: String
+  type: String
   created_at(format: String): String
   email: String
   bidders: [Bidder]
@@ -601,7 +682,7 @@ type PartnerCategory {
   id: String
   name: String
   category_type: CategoryType
-  partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification]): [Partner]
+  partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String): [Partner]
 }
 
 enum PartnerClassification {
@@ -644,7 +725,8 @@ type PartnerShow {
   location: Location
   status: String
   events: [PartnerShowEventType]
-  artworks(size: Int, published: Boolean = true, page: Int): [Artwork]
+  artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, exclude: [String]): [Artwork]
+  meta_image: Image
   cover_image: Image
   images(size: Int, default: Boolean, page: Int): [Image]
 }
@@ -675,7 +757,8 @@ type PartnerShowSearchEntity {
   location: Location
   status: String
   events: [PartnerShowEventType]
-  artworks(size: Int, published: Boolean = true, page: Int): [Artwork]
+  artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, exclude: [String]): [Artwork]
+  meta_image: Image
   cover_image: Image
   images(size: Int, default: Boolean, page: Int): [Image]
 }
@@ -698,6 +781,8 @@ enum PartnersSortType {
   CREATED_AT_DESC
   SORTABLE_ID_ASC
   SORTABLE_ID_DESC
+  RELATIVE_SIZE_ASC
+  RELATIVE_SIZE_DESC
   PUBLISHED_AT_DESC
   RANDOM_SCORE_DESC
 }
@@ -736,54 +821,16 @@ type ProfileSearchEntity {
   counts: ProfileCounts
 }
 
-union Related = RelatedFair | RelatedSale
-
-type RelatedFair {
-  cached: Int
-  _id: String
-  id: String
-  banner_size: String
-  profile: Profile
-  has_full_feature: Boolean
-  href: String
-  image: Image
-  location: Location
-  start_at(format: String): String
-  end_at(format: String): String
-  name: String
-  published: Boolean
-  is_published: Boolean
-  organizer: organizer
-}
-
-type RelatedSale {
-  cached: Int
-  id: String
-  name: String
-  href: String
-  description: String
-  sale_type: String
-  is_auction: Boolean
-  is_auction_promo: Boolean
-  is_preview: Boolean
-  is_open: Boolean
-  is_closed: Boolean
-  is_with_buyers_premium: Boolean
-  auction_state: String
-  start_at(format: String): String
-  end_at(format: String): String
-  currency: String
-  sale_artworks: [SaleArtwork]
-  cover_image: Image
-  sale_artwork(id: String!): SaleArtwork
-  profile: Profile
-}
-
 type ResizedImageUrl {
   factor: Float
   width: Int
   height: Int
   url: String
+}
+
+enum Role {
+  BIDDER
+  OPERATOR
 }
 
 type RootQueryType {
@@ -800,8 +847,8 @@ type RootQueryType {
   profile(id: String!): Profile
   ordered_sets(key: String!, public: Boolean = true): [OrderedSet]
   partner(id: String!): Partner
-  partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification]): [Partner]
-  filter_partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], aggregations: [PartnersAggregation]!): FilterPartners
+  partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String): [Partner]
+  filter_partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String, aggregations: [PartnersAggregation]!): FilterPartners
   filter_artworks(aggregations: [ArtworkAggregation], artist_id: Int, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, price_range: String, page: Int, size: Int, sort: String): FilterArtworks
   partner_category(id: String!): PartnerCategory
   partner_categories(size: Int, category_type: CategoryType, internal: Boolean = false): [PartnerCategory]
@@ -813,11 +860,13 @@ type RootQueryType {
   search(term: String!): Search
   trending_artists(method: String = "fetch", name: TrendingMetrics!, size: Int = 40, double_time_period: Boolean = false): TrendingArtists
   me: Me
+  causality_jwt(sale_id: String!, role: Role): String
 }
 
 type Sale {
   cached: Int
   id: String
+  _id: String
   name: String
   href: String
   description: String
@@ -832,7 +881,8 @@ type Sale {
   start_at(format: String): String
   end_at(format: String): String
   currency: String
-  sale_artworks: [SaleArtwork]
+  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [Artwork]
   cover_image: Image
   sale_artwork(id: String!): SaleArtwork
   profile: Profile
