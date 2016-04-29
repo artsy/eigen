@@ -109,7 +109,7 @@ extension LiveAuctionViewController: LiveAuctionLotListViewControllerDelegate {
     }
 }
 
-private class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
+class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
     func fetchStaticData() -> Observable<Result<LiveSale>> {
         let json = loadJSON("live_auctions_static")
         let sale = self.parseSale(json)

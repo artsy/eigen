@@ -106,11 +106,11 @@ func testSaleWithDates(start: NSDate, end: NSDate) -> Sale {
 }
 
 func testLiveSaleWithStart(start: NSDate, end: NSDate) -> LiveSale {
-    return try! LiveSale(dictionary: ["name": "The 🎉 Sale", "causalitySaleID": "some-random-string-of-nc72bjzj7", "startDate": start, "endDate": end], error: Void())
+    return try! LiveSale(dictionary: ["name": "The 🎉 Sale", "causalitySaleID": "some-random-string-of-nc72bjzj7", "startDate": start, "endDate": end, "saleArtworks": []], error: Void())
 }
 
 func testLiveSale() -> LiveSale {
-    return try! LiveSale(dictionary: ["name": "The 🎉 Sale", "causalitySaleID": "some-random-string-of-nc72bjzj7"], error: Void())
+    return try! LiveSale(dictionary: ["name": "The 🎉 Sale", "causalitySaleID": "some-random-string-of-nc72bjzj7", "saleArtworks": []], error: Void())
 }
 
 func testSaleArtworkEstimateAt(lowEstimate: Int?) -> SaleArtwork {

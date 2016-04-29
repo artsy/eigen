@@ -3,7 +3,7 @@ import Interstellar
 import Artsy
 
 func stub_auctionSalesPerson() -> LiveAuctionsSalesPersonType {
-    let start = NSDate(timeInterval: -3600, sinceDate: NSDate())
-    let end = NSDate(timeInterval: 3600, sinceDate: NSDate())
-    return LiveAuctionsSalesPerson(sale: testLiveSaleWithStart(start, end: end), accessToken: "abcdefg", stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
+    let stateFetcher = Stubbed_StaticDataFetcher()
+    let sale = stateFetcher.fetchStaticData().peekValue()!
+    return LiveAuctionsSalesPerson(sale: sale, accessToken: "abcdefg", stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
 }
