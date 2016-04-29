@@ -15,12 +15,18 @@ Pod::Spec.new do |s|
     ss.dependency 'Emission/Core'
     ss.dependency 'Emission/OpaqueImageViewComponent'
     ss.dependency 'Emission/SwitchViewComponent'
+    ss.dependency 'Emission/TemporaryAPI'
   end
 
   s.subspec 'Core' do |ss|
     ss.source_files = 'Pod/Classes/Core'
     ss.dependency 'React/Core', '>= 0.24.0-rc5'
     ss.dependency 'Artsy+UIFonts', '>= 1.1.0'
+  end
+
+  s.subspec 'TemporaryAPI' do |ss|
+    ss.source_files = 'Pod/Classes/TemporaryAPI'
+    ss.dependency 'Emission/Core'
   end
 
   s.subspec 'SwitchViewComponent' do |ss|
