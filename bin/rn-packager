@@ -1,0 +1,3 @@
+#!/bin/sh
+# This file really only exists so that the output of concurrently will be nicer (the prefix).
+cd Example && npm start -- $packager_options

@@ -1,0 +1,3 @@
+#!/bin/sh
+# This file really only exists so that the output of concurrently will be nicer (the prefix).
+npm run start-sync-module
