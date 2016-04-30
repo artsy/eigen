@@ -35,7 +35,7 @@
    repository, which are the fonts that the example app needs. Run `$ cd Example && pod install`.
 
 2. Run `$ npm start`, which will:
-   - Clean the axample app’s Xcode build dir.
+   - Clean the example app’s Xcode build dir.
    - Clean the emission package from the example app’s `node_modules` dir.
    - Clear the example app’s React Native packager cache.
    - Start syncing the emission package to the example app’s `node_modules` dir.
