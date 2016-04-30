@@ -7,7 +7,10 @@
     "emission": "file:../"
   },
   "scripts": {
-    "start": "cd node_modules/react-native && npm start"
+    "start": "cd node_modules/react-native && npm start --",
+    "clean": "watchman watch-del . && npm run clean-xcode && npm run clean-module",
+    "clean-xcode": "xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
+    "clean-module": "rm -rf ./node_modules/emission"
   },
   "author": "Eloy Durán",
   "license": "MIT",

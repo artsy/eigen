@@ -31,15 +31,14 @@
 
 ### Development
 
-There’s an issue where it's not possible to do iterative development with a
-symlinked npm package in React Native: https://github.com/facebook/react-native/issues/637
+1. If this is the first time you clone this repo, you will have to install a dependency that we cannot include in this
+   repository, which are the fonts that the example app needs. Run `$ cd Example && pod install`.
 
-To work around that, we sync changed files from the project root to the Example.
+2. Run `$ npm start`, which will:
+   - Clean the axample app’s Xcode build dir.
+   - Clean the emission package from the example app’s `node_modules` dir.
+   - Clear the example app’s React Native packager cache.
+   - Start syncing the emission package to the example app’s `node_modules` dir.
+   - Start the example app’s React Native packager.
 
-1. In one terminal session, run `$ cd Example && npm start`. This will start the
-   ‘packager’ for the Example app, which serves the processed JS source to the
-   Example app.
-2. In another terminal session, run `$ npm start`. This will
-   make changes that you make to the component available to the Example app, in
-   a way that will trigger the Example app’s ‘packager’ to reload those files.
 3. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.

@@ -11,8 +11,12 @@
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git pull && cp data/schema.* ../../data",
     "sync-colors": "cd externals/elan && git pull && cp components/lib/variables/colors.json ../../data",
-    "sync-module": "sane '/usr/bin/rsync -a --exclude .git --exclude Example --exclude node_modules --exclude externals --exclude Pod ./ Example/node_modules/emission/' . --glob='{package.json,index.js,data/*.json,lib/**/*.js}'",
-    "start": "npm run sync-module"
+    "sync-module": "/usr/bin/rsync -a --exclude .git --exclude Example --exclude node_modules --exclude externals --exclude Pod ./ Example/node_modules/emission/",
+    "start-sync-module": "sane 'npm run sync-module' . --glob='{package.json,index.js,data/*.json,lib/**/*.js}'",
+    "start-example-packager": "cd Example && npm start",
+    "clean": "cd Example && npm run clean",
+    "start-dirty": "npm run sync-module && env PATH=\"./bin:$PATH\" concurrently --kill-others --prefix=command --prefix-length=11 'sync-module' 'rn-packager'",
+    "start": "npm run clean && env packager_options=--reset-cache npm run start-dirty"
   },
   "repository": {
     "type": "git",
