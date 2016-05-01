@@ -8,10 +8,6 @@
 
 @interface ARLoginFieldsView ()
 
-@property (nonatomic, strong) ARTextFieldWithPlaceholder *nameField;
-@property (nonatomic, strong) ARTextFieldWithPlaceholder *emailField;
-@property (nonatomic, strong) ARSecureTextFieldWithPlaceholder *passwordField;
-
 @property (nonatomic, strong) NSLayoutConstraint *nameFieldHeightConstraint;
 
 @end
