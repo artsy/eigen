@@ -35,8 +35,9 @@
 @property (nonatomic, strong) ARLoginButtonsView *buttonsView;
 @property (nonatomic, strong) ARSerifLineHeightLabel *titleLabel;
 
-@property (nonatomic, strong) AROnboardingNavBarView *navView;
+@property (nonatomic, strong) UIButton *back;
 @property (nonatomic, strong) UIButton *testBotButton;
+@property (nonatomic, strong) ARUppercaseButton *loginButton;
 @property (nonatomic, strong) NSString *email;
 
 @property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
@@ -63,23 +64,32 @@
 {
     self.view.backgroundColor = [UIColor whiteColor];
 
+    self.back = [[UIButton alloc] init];
+    [self.back setImage:[UIImage imageNamed:@"BackArrowBlack"] forState:UIControlStateNormal];
+    [self.back setImage:[UIImage imageNamed:@"BackArrow_Highlighted"] forState:UIControlStateHighlighted];
+    [self.back addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.back];
+
+    [self.back constrainWidth:@"20" height:@"20"];
+    [self.back alignTop:@"10" leading:@"10" toView:self.view];
+
     self.titleLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:1.4];
-    self.titleLabel.text = @"Log in to your Artsy account";
+    self.titleLabel.text = @"Login to your Artsy account";
     self.titleLabel.font = [UIFont serifFontWithSize:24.0];
 
     [self.view addSubview:self.titleLabel];
 
     [self.titleLabel constrainWidthToView:self.view predicate:@"*.9"];
     [self.titleLabel alignCenterXWithView:self.view predicate:@"0"];
-    [self.titleLabel alignTopEdgeWithView:self.view predicate:@"20"];
-    [self.titleLabel constrainHeight:@"80"];
+    [self.titleLabel constrainTopSpaceToView:self.back predicate:@"20"];
+    [self.titleLabel constrainHeight:@"60"];
 
     self.textFieldsView = [[ARLoginFieldsView alloc] init];
     [self.view addSubview:self.textFieldsView];
 
     [self.textFieldsView constrainWidthToView:self.view predicate:@"*.9"];
     [self.textFieldsView alignCenterXWithView:self.view predicate:@"0"];
-    [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:@"20"];
+    [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:@"60"];
     [self.textFieldsView constrainHeight:@">=108"];
     [self.textFieldsView setupForLogin];
 
@@ -108,6 +118,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -144,7 +155,7 @@
 #if (AR_SHOW_ALL_DEBUG)
     [self showAutoLoginButtons];
     [self setupDefaultUsernameAndPassword];
-    [self textFieldDidChange:nil];
+    [self textChanged:nil];
 #endif
 
     [super viewDidAppear:animated];
@@ -172,20 +183,6 @@
 
     [self.navigationController popViewControllerAnimated:YES];
 }
-
-//- (AROnboardingNavBarView *)createNav
-//{
-//    AROnboardingNavBarView *navView = [[AROnboardingNavBarView alloc] init];
-//    [navView.title setText:@"Welcome Back"];
-//
-//    [navView.back setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
-//    [navView.back setImage:[UIImage imageNamed:@"BackArrow_Highlighted"] forState:UIControlStateHighlighted];
-//    [navView.back addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-//
-//    [navView.forward setTitle:@"LOG IN" forState:UIControlStateNormal];
-//    [navView.forward addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
-//    return navView;
-//}
 
 #pragma mark -
 #pragma mark Spinner Methods
@@ -231,7 +228,7 @@
     return YES;
 }
 
-- (void)textFieldDidChange:(UITextView *)textView;
+- (void)textChanged:(NSNotification *)n
 {
     [self.buttonsView.emailActionButton setEnabled:[self validates] animated:YES];
 }

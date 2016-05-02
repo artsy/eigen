@@ -20,6 +20,7 @@
 		1C029B021CCF7FE700808503 /* ARLoginFieldsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */; };
 		1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B041CD130A400808503 /* ARLoginButtonsView.m */; };
 		1C02A20A1CADA80D008B4F6C /* full_logo_white_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */; };
+		1C5AAEB11CD7D42E00515B73 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */; };
 		1C717EC51CB439F7002CCF2D /* AROnboardingNavigationItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C717EC41CB439F7002CCF2D /* AROnboardingNavigationItemsView.m */; };
 		1CC9EB971CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9EB961CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m */; };
 		1CC9EB9A1CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9EB991CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.m */; };
@@ -789,6 +790,7 @@
 		1C029B031CD130A400808503 /* ARLoginButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLoginButtonsView.h; sourceTree = "<group>"; };
 		1C029B041CD130A400808503 /* ARLoginButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLoginButtonsView.m; sourceTree = "<group>"; };
 		1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_medium@2x.png"; sourceTree = "<group>"; };
+		1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrowBlack@2x.png"; sourceTree = "<group>"; };
 		1C717EC31CB439F7002CCF2D /* AROnboardingNavigationItemsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingNavigationItemsView.h; sourceTree = "<group>"; };
 		1C717EC41CB439F7002CCF2D /* AROnboardingNavigationItemsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingNavigationItemsView.m; sourceTree = "<group>"; };
 		1CC9EB951CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingPersonalizeTableViewController.h; sourceTree = "<group>"; };
@@ -3827,6 +3829,7 @@
 				608B703C17D4A1C70088A56C /* Artwork_Icon_VIR@2x.png */,
 				608B704017D4A1C70088A56C /* BackArrow@2x.png */,
 				608B703E17D4A1C70088A56C /* BackArrow_Highlighted@2x.png */,
+				1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */,
 				608B706217D4A1C80088A56C /* CloseButtonLarge@2x.png */,
 				E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */,
 				608B704917D4A1C70088A56C /* FooterBackground@2x.png */,
@@ -4985,6 +4988,7 @@
 				3C4AE98519094DAA009C0E8B /* MapAnnotation_Restroom@2x.png in Resources */,
 				3C4AE97F19094DAA009C0E8B /* MapAnnotation_Food@2x.png in Resources */,
 				E620C74819C746530064A0FF /* Images.xcassets in Resources */,
+				1C5AAEB11CD7D42E00515B73 /* BackArrowBlack@2x.png in Resources */,
 				3CAC639F190AA87A00B17325 /* MapAnnotationCallout_Partner@2x.png in Resources */,
 				5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */,
 				6019A9081C7E76EF00E292FA /* LiveAuctionsAssets.xcassets in Resources */,
