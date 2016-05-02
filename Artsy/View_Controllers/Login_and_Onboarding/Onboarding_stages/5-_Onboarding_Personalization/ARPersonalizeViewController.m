@@ -25,11 +25,12 @@
 
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 
-@property (nonatomic) UIView *searchView;
-@property (nonatomic) AROnboardingHeaderView *headerView;
-@property (nonatomic) AROnboardingNavigationItemsView *onboardingNavigationItems;
-@property (nonatomic, strong) AROnboardingPersonalizeTableViewController *searchResultsTable;
-@property (nonatomic, strong) ARPriceRangeViewController *budgetTable;
+@property (nonatomic, strong, readwrite) UIView *searchView;
+@property (nonatomic, strong, readwrite) AROnboardingHeaderView *headerView;
+@property (nonatomic, strong, readwrite) AROnboardingNavigationItemsView *onboardingNavigationItems;
+@property (nonatomic, strong, readwrite) AROnboardingPersonalizeTableViewController *searchResultsTable;
+@property (nonatomic, strong, readwrite) ARPriceRangeViewController *budgetTable;
+@property (nonatomic, assign, readwrite) BOOL followedAtLeastOneCategory;
 
 @property (nonatomic, weak) AFHTTPRequestOperation *searchRequestOperation;
 @end
@@ -74,7 +75,6 @@
     [self.view addSubview:self.onboardingNavigationItems];
 
     [self.onboardingNavigationItems constrainWidthToView:self.view predicate:@"0"];
-    [self.onboardingNavigationItems constrainHeight:@"50"];
     [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
     [self.onboardingNavigationItems alignLeadingEdgeWithView:self.view predicate:@"0"];
 
@@ -106,7 +106,7 @@
             self.headerView.searchField.searchField.delegate = self;
             self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
             [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
-            //            [self.onboardingNavigationItems disableNextStep];
+            [self.onboardingNavigationItems disableNextStep];
             [self populateTrendingArtists];
             break;
         case AROnboardingStagePersonalizeBudget:
@@ -244,6 +244,10 @@
 
 - (void)categoryFollowed:(Gene *)category
 {
+    self.followedAtLeastOneCategory = YES;
+    [self.onboardingNavigationItems enableNextStep];
+    [self.onboardingNavigationItems hideWarning];
+
     // suggest more categories
     // which API to use, that is the question
 }
@@ -266,14 +270,17 @@
             [self.delegate personalizeArtistsDone];
             break;
         case AROnboardingStagePersonalizeCategories:
-            if (YES) { // chooseAtLeastOneCategory bool/method
+            if (self.followedAtLeastOneCategory) {
                 [self.delegate personalizeCategoriesDone];
             } else {
                 [self.onboardingNavigationItems showWarning:@"Follow one or more categories"];
             }
             break;
         case AROnboardingStagePersonalizeBudget:
-            [self.delegate personalizeBudgetDone];
+            if (self.budgetTable.rangeValue) {
+                [self.delegate setPriceRangeDone:[self.budgetTable.rangeValue integerValue]];
+                [self.delegate personalizeBudgetDone];
+            }
             break;
         default:
             break;

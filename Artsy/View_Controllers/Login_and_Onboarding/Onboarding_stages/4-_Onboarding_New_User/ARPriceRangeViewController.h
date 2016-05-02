@@ -2,7 +2,6 @@
 @class AROnboardingViewController;
 
 
-@interface ARPriceRangeViewController : UIViewController
-@property (nonatomic, weak) AROnboardingViewController *delegate;
-
+@interface ARPriceRangeViewController : UITableViewController
+@property (nonatomic, strong, readonly) NSNumber *rangeValue;
 @end

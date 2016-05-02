@@ -32,19 +32,6 @@
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
-//typedef NS_ENUM(NSInteger, AROnboardingStage) {
-//    AROnboardingStageSlideshow,
-//    AROnboardingStageStart,
-//    AROnboardingStageChooseMethod,
-//    AROnboardingStageEmailPassword,
-//    AROnboardingStageCollectorStatus,
-//    AROnboardingStageLocation,
-//    AROnboardingStagePersonalize,
-//    AROnboardingStageFollowNotification,
-//    AROnboardingStagePriceRange,
-//    AROnboardingStageNotes
-//};
-
 
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
@@ -56,6 +43,7 @@
 @property (nonatomic, strong, readwrite) NSLayoutConstraint *backgroundWidthConstraint;
 @property (nonatomic, strong, readwrite) NSLayoutConstraint *backgroundHeightConstraint;
 @property (nonatomic, strong, readwrite) NSMutableSet *followedItemsDuringOnboarding;
+@property (nonatomic, assign, readwrite) NSInteger budgetRange;
 @end
 
 
@@ -299,17 +287,29 @@
 
 - (void)setPriceRangeDone:(NSInteger)range
 {
-    NSString *stringRange = [NSString stringWithFormat:@"%@", @(range)];
+    self.budgetRange = range;
+}
+
+- (void)applyPersonalizationToUser
+{
+    NSString *stringRange = [NSString stringWithFormat:@"%@", @(self.budgetRange)];
     [ARAnalytics setUserProperty:ARAnalyticsPriceRangeProperty toValue:stringRange];
 
     User *user = [User currentUser];
     user.priceRange = stringRange;
 
-    [user setRemoteUpdatePriceRange:range success:nil failure:^(NSError *error) {
+    [user setRemoteUpdatePriceRange:self.budgetRange success:nil failure:^(NSError *error) {
         ARErrorLog(@"Error updating price range");
     }];
 
-    [self dismissOnboardingWithVoidAnimation:YES];
+    // fow now, considering we don't have a batch follow API yet
+    for (id<ARFollowable> followableItem in self.followedItemsDuringOnboarding) {
+        [followableItem followWithSuccess:^(id response) {
+          // confetti
+        } failure:^(NSError *error){
+            // tears
+        }];
+    }
 }
 
 - (void)resetBackgroundImageView:(BOOL)animated completion:(void (^)(void))completion
@@ -338,6 +338,7 @@
     // send them off into the app
 
     if (createdAccount) {
+        [self applyPersonalizationToUser];
         [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount didCancel:cancelledSignIn];
     } else {
         [self resetBackgroundImageView:YES completion:^{
