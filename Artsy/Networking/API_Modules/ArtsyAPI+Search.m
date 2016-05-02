@@ -2,11 +2,13 @@
 #import "ArtsyAPI+Search.h"
 
 #import "Artist.h"
+#import "Gene.h"
 #import "ARRouter.h"
 #import "SearchResult.h"
 
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
+
 
 @implementation ArtsyAPI (Search)
 
@@ -69,6 +71,38 @@
             }
         }
 
+        success(returnArray);
+
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+
+    [searchOperation start];
+    return searchOperation;
+}
+
++ (AFHTTPRequestOperation *)geneSearchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert(success);
+
+    NSURLRequest *request = [ARRouter newGeneSearchRequestWithQuery:query];
+    AFHTTPRequestOperation *searchOperation = nil;
+    searchOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSArray *jsonDictionaries = JSON;
+        NSMutableArray *returnArray = [NSMutableArray array];
+        
+        for (NSDictionary *dictionary in jsonDictionaries) {
+            NSError *error = nil;
+            Gene *result = [Gene modelWithJSON:dictionary error:&error];
+            if (error) {
+                ARErrorLog(@"Error creating search result. Error: %@", error.localizedDescription);
+            } else {
+                [returnArray addObject:result];
+            }
+        }
+        
         success(returnArray);
 
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {

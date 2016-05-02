@@ -778,6 +778,11 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARNewArtistSearchURL parameters:@{ @"term" : query }];
 }
 
++ (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query
+{
+    return [self requestWithMethod:@"GET" path:ARNewGeneSearchURL parameters:@{ @"term" : query }];
+}
+
 + (NSURLRequest *)directImageRequestForModel:(Class)model andSlug:(NSString *)slug
 {
     // Note: should these be moved to network constants?

@@ -78,6 +78,7 @@ NSString *const ARShowsURL = @"/api/v1/shows";
 
 NSString *const ARNewSearchURL = @"/api/v1/match";
 NSString *const ARNewArtistSearchURL = @"/api/v1/match/artists";
+NSString *const ARNewGeneSearchURL = @"/api/v1/match/genes";
 
 NSString *const ARSiteHeroUnitsURL = @"/api/v1/site_hero_units";
 

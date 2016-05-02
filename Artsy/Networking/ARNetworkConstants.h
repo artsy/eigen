@@ -73,6 +73,7 @@ extern NSString *const ARProfileInformationURLFormat;
 
 extern NSString *const ARNewSearchURL;
 extern NSString *const ARNewArtistSearchURL;
+extern NSString *const ARNewGeneSearchURL;
 
 extern NSString *const ARShowFeedURL;
 extern NSString *const ARShowArtworksURLFormat;

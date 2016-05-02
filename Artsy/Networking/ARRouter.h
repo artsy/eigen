@@ -131,6 +131,7 @@
 + (NSURLRequest *)newSearchRequestWithQuery:(NSString *)query;
 + (NSURLRequest *)newSearchRequestWithFairID:(NSString *)fairID andQuery:(NSString *)query;
 + (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query;
++ (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query;
 
 + (NSURLRequest *)directImageRequestForModel:(Class)model andSlug:(NSString *)slug;
 

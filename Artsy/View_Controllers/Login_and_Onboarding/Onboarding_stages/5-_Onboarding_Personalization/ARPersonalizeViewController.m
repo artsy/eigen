@@ -145,7 +145,7 @@
             }];
         } break;
         case AROnboardingStagePersonalizeCategories: {
-            self.searchRequestOperation = [ArtsyAPI artistSearchWithQuery:self.headerView.searchField.searchField.text success:^(NSArray *results) {
+            self.searchRequestOperation = [ArtsyAPI geneSearchWithQuery:self.headerView.searchField.searchField.text success:^(NSArray *results) {
                 [self.searchResultsTable updateTableContentsFor:results replaceContents:ARSearchResultsReplaceAll animated:NO];
             } failure:^(NSError *error) {
                 [self reportError:error];
