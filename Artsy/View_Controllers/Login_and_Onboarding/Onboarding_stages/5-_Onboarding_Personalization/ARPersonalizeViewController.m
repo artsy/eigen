@@ -6,6 +6,7 @@
 #import "AROnboardingPersonalizeTableViewController.h"
 #import "AROnboardingNavigationItemsView.h"
 #import "AROnboardingHeaderView.h"
+#import "ARPriceRangeViewController.h"
 #import "Gene.h"
 #import "ARLogger.h"
 
@@ -28,6 +29,7 @@
 @property (nonatomic) AROnboardingHeaderView *headerView;
 @property (nonatomic) AROnboardingNavigationItemsView *onboardingNavigationItems;
 @property (nonatomic, strong) AROnboardingPersonalizeTableViewController *searchResultsTable;
+@property (nonatomic, strong) ARPriceRangeViewController *budgetTable;
 
 @property (nonatomic, weak) AFHTTPRequestOperation *searchRequestOperation;
 @end
@@ -87,17 +89,10 @@
     [self.headerView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.headerView alignCenterXWithView:self.view predicate:@"0"];
 
-    self.searchResultsTable = [[AROnboardingPersonalizeTableViewController alloc] init];
-    self.searchResultsTable.networkDelegate = self;
-    [self.view addSubview:self.searchResultsTable.view];
-
-    [self.searchResultsTable.view constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
-    [self.searchResultsTable.view alignCenterXWithView:self.view predicate:@"0"];
-    [self.searchResultsTable.view constrainTopSpaceToView:self.headerView predicate:@"5"];
-    [self.searchResultsTable.view constrainBottomSpaceToView:self.onboardingNavigationItems predicate:@"0"];
 
     switch (self.state) {
         case AROnboardingStagePersonalizeArtists:
+            [self addSearchTable];
             // progress percentages are made up for now, will be calculated by steps and remaining steps later
             [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." andProgress:0.33];
             self.searchResultsTable.headerPlaceholderText = @"TOP ARTISTS ON ARTSY";
@@ -106,19 +101,44 @@
             [self populateTrendingArtists];
             break;
         case AROnboardingStagePersonalizeCategories:
+            [self addSearchTable];
             [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." andProgress:0.5];
             self.headerView.searchField.searchField.delegate = self;
             self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
             [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
-            [self.onboardingNavigationItems disableNextStep];
+            //            [self.onboardingNavigationItems disableNextStep];
             [self populateTrendingArtists];
             break;
         case AROnboardingStagePersonalizeBudget:
+            [self addBudgetTable];
             [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" andProgress:0.7];
             break;
         default:
             break;
     }
+}
+
+- (void)addSearchTable
+{
+    self.searchResultsTable = [[AROnboardingPersonalizeTableViewController alloc] init];
+    self.searchResultsTable.networkDelegate = self;
+    [self.view addSubview:self.searchResultsTable.view];
+
+    [self.searchResultsTable.view constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
+    [self.searchResultsTable.view alignCenterXWithView:self.view predicate:@"0"];
+    [self.searchResultsTable.view constrainTopSpaceToView:self.headerView predicate:@"5"];
+    [self.searchResultsTable.view constrainBottomSpaceToView:self.onboardingNavigationItems predicate:@"0"];
+}
+
+- (void)addBudgetTable
+{
+    self.budgetTable = [[ARPriceRangeViewController alloc] init];
+    [self.view addSubview:self.budgetTable.view];
+
+    [self.budgetTable.view constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
+    [self.budgetTable.view alignCenterXWithView:self.view predicate:@"0"];
+    [self.budgetTable.view constrainTopSpaceToView:self.headerView predicate:@"5"];
+    [self.budgetTable.view constrainBottomSpaceToView:self.onboardingNavigationItems predicate:@"0"];
 }
 
 #pragma mark -
@@ -246,7 +266,7 @@
             [self.delegate personalizeArtistsDone];
             break;
         case AROnboardingStagePersonalizeCategories:
-            if (NO) { // chooseAtLeastOneCategory bool/method
+            if (YES) { // chooseAtLeastOneCategory bool/method
                 [self.delegate personalizeCategoriesDone];
             } else {
                 [self.onboardingNavigationItems showWarning:@"Follow one or more categories"];

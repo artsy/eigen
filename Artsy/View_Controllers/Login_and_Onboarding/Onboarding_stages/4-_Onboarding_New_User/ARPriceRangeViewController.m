@@ -70,12 +70,6 @@
     sep.frame = CGRectMake(15, 0, CGRectGetWidth(self.view.bounds) - 30, .5);
     sep.backgroundColor = [UIColor artsyGrayRegular].CGColor;
     [tableView.layer addSublayer:sep];
-
-    UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, CGRectGetWidth(self.view.bounds) - 40, 30)];
-    header.textColor = [UIColor blackColor];
-    header.font = [UIFont serifFontWithSize:24];
-    header.text = @"Do you have a budget in mind?";
-    [self.view addSubview:header];
 }
 
 #pragma mark -

@@ -13,7 +13,6 @@
 
 #import "NSKeyedUnarchiver+ErrorLogging.h"
 #import "ARAnalyticsConstants.h"
-#import "ARCollectorStatusViewController.h"
 #import "ARKeychainable.h"
 #import "ARSystemTime.h"
 #import "ARLogger.h"
@@ -60,11 +59,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 + (void)identifyAnalyticsUser
 {
     User *user = [User currentUser];
-
-    if (user) {
-        NSString *collectorLevel = [ARCollectorStatusViewController stringFromCollectorLevel:user.collectorLevel];
-        [ARAnalytics setUserProperty:@"collector_level" toValue:collectorLevel];
-    }
 
     [ARAnalytics setUserProperty:@"is_trial_user" toValue:@(user == nil)];
 

@@ -260,15 +260,10 @@
 
 - (void)presentPersonalizeBudget
 {
-    //    self.state = AROnboardingStagePersonalizeCategories;
-    //    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
-    //    personalize.delegate = self;
-    //    [self pushViewController:personalize animated:YES];
-
-    ARPriceRangeViewController *priceRange = [[ARPriceRangeViewController alloc] init];
-    priceRange.delegate = self;
-    [self pushViewController:priceRange animated:YES];
     self.state = AROnboardingStagePersonalizeBudget;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
 }
 
 - (void)personalizeArtistsDone

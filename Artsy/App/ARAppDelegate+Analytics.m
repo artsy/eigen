@@ -50,9 +50,7 @@
 #import "ARArtistViewController.h"
 #import "ARFairViewController.h"
 #import "ARFairSearchViewController.h"
-#import "ARCollectorStatusViewController.h"
 #import "ARSharingController.h"
-#import "ARCollectorStatusViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARArtistBiographyViewController.h"
@@ -968,17 +966,6 @@
                                 };
                             },
                         },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingCompletedCollectorLevel,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(collectorLevelDone:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
-                                ARCollectorLevel level = [parameters.firstObject integerValue];
-                                NSString *collectorLevel = [ARCollectorStatusViewController stringFromCollectorLevel:level];
-                                return @{
-                                    @"collector_level" : collectorLevel
-                                };
-                            },
-                        },
                     ]
                 },
                 @{
@@ -1141,9 +1128,7 @@
                         ARAnalyticsPageName: @"Onboarding",
                         ARAnalyticsSelectorName: ARAnalyticsSelector(collectorLevelDone:),
                         ARAnalyticsProperties: ^NSDictionary *(AROnboardingViewController *controller, NSArray *parameters) {
-                            ARCollectorLevel level = [parameters.firstObject intValue];
-                            return @{ @"onboarding_step": @"collector_level",
-                                      @"collector_level": [ARCollectorStatusViewController stringFromCollectorLevel:level] };
+                            return @{ @"onboarding_step": @"collector_level" };
                         }
                     }, @{
                         ARAnalyticsPageName: @"Onboarding",
