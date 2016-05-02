@@ -21,6 +21,8 @@
 
 #import "UIDevice-Hardware.h"
 
+#import "Artsy-Swift.h"
+
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
@@ -87,7 +89,8 @@
 
     self.titleLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:1.4];
     self.titleLabel.text = @"Sign up to see our recommendations for you";
-    self.titleLabel.font = [UIFont serifFontWithSize:24.0];
+    self.titleLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 32.0 : 24.0];
+    self.titleLabel.textAlignment = self.useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
 
     [self.view addSubview:self.titleLabel];
 
@@ -99,15 +102,15 @@
     self.textFieldsView = [[ARLoginFieldsView alloc] init];
     [self.view addSubview:self.textFieldsView];
 
-    [self.textFieldsView constrainWidthToView:self.view predicate:@"*.9"];
+    [self.textFieldsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.textFieldsView alignCenterXWithView:self.view predicate:@"0"];
-    [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:@"80"];
+    [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"80"];
     [self.textFieldsView constrainHeight:@">=162"];
     [self.textFieldsView setupForSignUp];
 
     self.buttonsView = [[ARLoginButtonsView alloc] init];
     [self.view addSubview:self.buttonsView];
-    [self.buttonsView constrainWidthToView:self.view predicate:@"*.9"];
+    [self.buttonsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.buttonsView alignCenterXWithView:self.view predicate:@"0"];
     [self.buttonsView constrainTopSpaceToView:self.textFieldsView predicate:@"0"];
     [self.buttonsView constrainHeight:@"300"];
