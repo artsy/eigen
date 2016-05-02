@@ -31,7 +31,7 @@ protocol LiveAuctionStateReconcilerType {
 class LiveAuctionStateReconciler: NSObject {
     typealias LotID = String
 
-    let saleArtworks: [LiveAuctionLotViewModel]
+    private let saleArtworks: [LiveAuctionLotViewModel]
 
     init(saleArtworks: [LiveAuctionLotViewModel]) {
         self.saleArtworks = saleArtworks
@@ -40,8 +40,6 @@ class LiveAuctionStateReconciler: NSObject {
 
     private let _currentLotSignal = Observable<LiveAuctionLotViewModel>()
     private var _currentLotID: String?
-
-    private var _state = [LiveAuctionLotViewModel]()
 }
 
 
@@ -51,7 +49,7 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
     func updateState(state: AnyObject) {
         // TODO: how to handle changes to start/end times? Necessary at all?
 
-        guard let fullLotStateById = state["fullLotStateById"] as? ObjectJSON else { return }
+        guard let fullLotStateById = state["fullLotStateById"] as? [String: [String: AnyObject]] else { return }
         let currentLotID = state["currentLotId"] as? String
 
         for lot in saleArtworks {
@@ -74,12 +72,17 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
 
 private typealias PrivateFunctions = LiveAuctionStateReconciler
 private extension PrivateFunctions {
-    typealias ObjectJSON = [String: [String: AnyObject]]
     typealias NewEventIDs = Set<String>
 
     func updateLotDerivedState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
         guard let reserveStatusString = derivedState["reserveStatus"] as? String else { return }
-        guard let askingPrice = derivedState["onlineAskingPriceCents"] as? UInt64 else { return }
+
+        // OK, this looks weird. Let's unpack.
+        // derivedState["askingPriceCents"] is an AnyObject?, and casting it conditionally to a UInt64 always fails.
+        // Instead, we'll use the UInt64(_ text: String) initialzer, which means we need to unwrap the AnyObject? and
+        // then stick it in a string so it's not "Optional(23000)", then initialize the UInt64
+        guard let extractedAskingPrice = derivedState["askingPriceCents"] else { return }
+        guard let askingPrice = UInt64("\(extractedAskingPrice)") else { return }
 
         lot.updateReserveStatus(reserveStatusString)
         lot.updateOnlineAskingPrice(askingPrice)
@@ -96,12 +99,10 @@ private extension PrivateFunctions {
         guard let newCurrentLotID = newCurrentLotID else { return }
         guard newCurrentLotID != _currentLotID ?? "" else { return }
 
-        let newCurrentViewModel = _state.filter { $0.lotId == newCurrentLotID }.first
+        guard let newCurrentViewModel = saleArtworks.filter({ $0.lotId == newCurrentLotID }).first else { return }
 
-        if let newCurrentViewModel = newCurrentViewModel {
-            self._currentLotSignal.update(newCurrentViewModel)
-            _currentLotID = newCurrentLotID
-        }
+        self._currentLotSignal.update(newCurrentViewModel)
+        _currentLotID = newCurrentLotID
     }
 }
 

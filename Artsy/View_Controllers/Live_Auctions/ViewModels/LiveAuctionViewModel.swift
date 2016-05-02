@@ -15,13 +15,14 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
     private var sale: LiveSale
     private var lastUpdatedSaleAvailability: SaleAvailabilityState
-    private var lastUpdatedCurrentLot: LiveAuctionLotViewModelType?
+
+    let saleAvailabilitySignal = Observable<SaleAvailabilityState>()
+    let currentLotSignal: Observable<LiveAuctionLotViewModelType>
 
     init(sale: LiveSale, currentLotSignal: Observable<LiveAuctionLotViewModelType>) {
         self.sale = sale
         self.lastUpdatedSaleAvailability = sale.saleAvailability
         saleAvailabilitySignal.update(lastUpdatedSaleAvailability)
-
         self.currentLotSignal = currentLotSignal
     }
 
@@ -33,13 +34,10 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
         return sale.saleArtworks.count
     }
 
-    let saleAvailabilitySignal = Observable<SaleAvailabilityState>()
-    let currentLotSignal: Observable<LiveAuctionLotViewModelType>
-
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
-        guard let lastUpdatedCurrentLot = lastUpdatedCurrentLot else { return nil }
+        guard let lastUpdatedCurrentLot = currentLotSignal.peek() else { return nil }
 
         let lotIDs = sale.saleArtworks.map { $0.liveAuctionLotID }
 

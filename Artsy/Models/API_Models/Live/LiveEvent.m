@@ -10,10 +10,10 @@
 {
     NSString *type = [dictionaryValue valueForKeyPath:@"type"];
     Class klass;
-    if ([type isEqualToString:@"open"]) {
+    if ([type isEqualToString:@"BiddingOpened"]) {
         klass = LiveEventLotOpen.class;
 
-    } else if ([type isEqualToString:@"bid"]) {
+    } else if ([type isEqualToString:@"FirstPriceBidPlaced"]) {
         klass = LiveEventBid.class;
 
     } else if ([type isEqualToString:@"fair_warning"]) {
@@ -22,7 +22,7 @@
     } else if ([type isEqualToString:@"final_call"]) {
         klass = LiveEventFinalCall.class;
 
-    } else if ([type isEqualToString:@"closed"]) {
+    } else if ([type isEqualToString:@"BiddingClosed"]) {
         klass = LiveEventClosed.class;
 
     } else {
@@ -37,8 +37,8 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        ar_keypath(LiveEvent.new, eventID) : @"id",
-        ar_keypath(LiveEventBid.new, source) : @"source",
+        ar_keypath(LiveEvent.new, eventID) : @"eventId",
+        ar_keypath(LiveEventBid.new, source) : @"bidder.type",
     };
 }
 

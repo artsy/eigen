@@ -3,14 +3,14 @@
     "sale": {
       "_id": "54c7e8fa7261692b5acd0600",
       "id": "los-angeles-modern-auctions-march-2015",
-      "start_at": "2016-04-28T10:00:00+00:00",
-      "end_at": "2016-04-28T23:59:00+00:00",
+      "start_at": "2016-05-02T10:00:00+00:00",
+      "end_at": "2016-05-02T23:59:00+00:00",
       "name": "Los Angeles Modern Auctions - March 2015",
       "is_with_buyers_premium": true,
       "description": "",
       "sale_artworks": [
         {
-          "id": "ed-ruscha-cockroaches-from-insects-portfolio",
+          "_id": "54c7ecc27261692b5e420600",
           "position": 1,
           "currency": "USD",
           "symbol": "$",
@@ -20,7 +20,7 @@
           "artwork": {
             "title": "Cockroaches (from Insects Portfolio)",
             "artist": {
-              "name": "Ed Ruscha"
+              "name": ""
             },
             "image": {
               "large": "https://d32dm0rphc51dk.cloudfront.net/0-AL7CEZ5IDjCWdNxwjmBg/large.jpg",
@@ -29,7 +29,7 @@
           }
         },
         {
-          "id": "ed-ruscha-pearl-dust-combination-from-insects-portfolio",
+          "_id": "54c7ed2a7261692bfa910200",
           "position": 2,
           "currency": "USD",
           "symbol": "$",
@@ -39,7 +39,7 @@
           "artwork": {
             "title": "Pearl Dust Combination (from Insects Portfolio)",
             "artist": {
-              "name": "Ed Ruscha"
+              "name": ""
             },
             "image": {
               "large": "https://d32dm0rphc51dk.cloudfront.net/XkAtGqcI3DTjapCjtOhI2Q/large.jpg",
@@ -48,7 +48,7 @@
           }
         },
         {
-          "id": "peter-alexander-wedge-with-puff",
+          "_id": "54c7eff17261692b51460200",
           "position": 3,
           "currency": "USD",
           "symbol": "$",
@@ -67,7 +67,7 @@
           }
         },
         {
-          "id": "charles-and-ray-eames-lounge-chair-and-ottoman-2",
+          "_id": "54c7f0667261692b60c10600",
           "position": 4,
           "currency": "USD",
           "symbol": "$",
@@ -86,7 +86,7 @@
           }
         },
         {
-          "id": "david-hockney-my-pool-and-terrace",
+          "_id": "54c7f0f0726169330f821900",
           "position": 5,
           "currency": "USD",
           "symbol": "$",
@@ -105,7 +105,7 @@
           }
         },
         {
-          "id": "john-baldessari-two-boats",
+          "_id": "54c7f12e7261692b60e20200",
           "position": 6,
           "currency": "USD",
           "symbol": "$",
@@ -124,7 +124,7 @@
           }
         },
         {
-          "id": "lucian-freud-after-chardin-small-plate-1",
+          "_id": "54c7f1f17261692be4f60100",
           "position": 7,
           "currency": "USD",
           "symbol": "$",
@@ -143,7 +143,7 @@
           }
         },
         {
-          "id": "frank-stella-purple-series-1",
+          "_id": "54c7f6bb7261692bc1e11000",
           "position": 8,
           "currency": "USD",
           "symbol": "$",
@@ -162,7 +162,7 @@
           }
         },
         {
-          "id": "richard-serra-moca-print",
+          "_id": "54c7f7a57261692bcc220100",
           "position": 9,
           "currency": "USD",
           "symbol": "$",
@@ -181,7 +181,7 @@
           }
         },
         {
-          "id": "alighiero-e-boetti-inaspettatamente-unexpectedly",
+          "_id": "54c7f7ea7261692b66510700",
           "position": 10,
           "currency": "USD",
           "symbol": "$",
@@ -200,7 +200,7 @@
           }
         },
         {
-          "id": "michelangelo-pistoletto-frattali",
+          "_id": "54c7f82d7261692c59d21900",
           "position": 11,
           "currency": "USD",
           "symbol": "$",
@@ -219,7 +219,7 @@
           }
         },
         {
-          "id": "george-condo-untitled-surreal-graffiti-painting",
+          "_id": "54c7f8907261692b43170300",
           "position": 12,
           "currency": "USD",
           "symbol": "$",
@@ -238,7 +238,7 @@
           }
         },
         {
-          "id": "takashi-murakami-dob-in-pure-white-robe-2",
+          "_id": "54c7f8cf7261692bdd510100",
           "position": 13,
           "currency": "USD",
           "symbol": "$",
@@ -257,7 +257,7 @@
           }
         },
         {
-          "id": "pablo-picasso-tete-de-bouffon-carnaval",
+          "_id": "54c7f91a7261692c69871b00",
           "position": 14,
           "currency": "USD",
           "symbol": "$",
@@ -276,7 +276,7 @@
           }
         },
         {
-          "id": "marc-chagall-la-caverne-des-nymphes-from-daphnis-et-chloe",
+          "_id": "54c7f9517261690cfdfa1800",
           "position": 15,
           "currency": "USD",
           "symbol": "$",
@@ -295,7 +295,7 @@
           }
         },
         {
-          "id": "henri-matisse-mimosa",
+          "_id": "54c7f9887261692b71b00600",
           "position": 16,
           "currency": "USD",
           "symbol": "$",
@@ -314,7 +314,7 @@
           }
         },
         {
-          "id": "robert-mapplethorpe-untitled-1",
+          "_id": "54c7fa6d7261692b572d0700",
           "position": 17,
           "currency": "USD",
           "symbol": "$",
@@ -333,7 +333,7 @@
           }
         },
         {
-          "id": "robert-longo-untitled-2",
+          "_id": "54c7fabc7261693304eb1900",
           "position": 18,
           "currency": "USD",
           "symbol": "$",
@@ -352,7 +352,7 @@
           }
         },
         {
-          "id": "vik-muniz-vanitas-1",
+          "_id": "54c7fb087261692bbd3c1100",
           "position": 19,
           "currency": "USD",
           "symbol": "$",
@@ -371,7 +371,7 @@
           }
         },
         {
-          "id": "alexander-calder-untitled-lacma-poster",
+          "_id": "54c7fb317261692b43300300",
           "position": 20,
           "currency": "USD",
           "symbol": "$",
@@ -390,7 +390,7 @@
           }
         },
         {
-          "id": "andy-warhol-sidewalk-1",
+          "_id": "54c7fb767261692b5cb20600",
           "position": 21,
           "currency": "USD",
           "symbol": "$",
@@ -409,7 +409,7 @@
           }
         },
         {
-          "id": "roy-lichtenstein-foot-and-hand-2",
+          "_id": "54c7fb9c7261692b55d30200",
           "position": 22,
           "currency": "USD",
           "symbol": "$",
@@ -428,7 +428,7 @@
           }
         },
         {
-          "id": "tom-wesselmann-tiny-dropped-bra-number-10",
+          "_id": "54c7fbca7261694b0c661600",
           "position": 23,
           "currency": "USD",
           "symbol": "$",
@@ -447,7 +447,7 @@
           }
         },
         {
-          "id": "jeff-koons-balloon-dog-red-6",
+          "_id": "54c7fbeb7261692b604a0300",
           "position": 24,
           "currency": "USD",
           "symbol": "$",

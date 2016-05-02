@@ -8,6 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+
 @interface LiveAuctionLot : MTLModel <MTLJSONSerializing>
 
 - (NSURL *)urlForThumbnail;
@@ -15,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)imageProfileSize;
 
 @property (nonatomic, copy, readonly) NSString *artworkTitle;
-@property (nonatomic, copy, readonly) NSString * _Nullable artworkDate;
+@property (nonatomic, copy, readonly) NSString *_Nullable artworkDate;
 
 @property (nonatomic, copy, readonly) NSString *artistName;
 
@@ -34,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) UInt64 lowEstimateCents;
 @property (nonatomic, assign, readonly) UInt64 highEstimateCents;
-@property (nonatomic, assign, readonly) UInt64 onlineAskingPriceCents;
+@property (nonatomic, assign, readonly) UInt64 askingPriceCents;
 
 - (BOOL)updateReserveStatusWithString:(NSString *)reserveStatusString;
 - (BOOL)updateOnlineAskingPrice:(UInt64)onlineAskingPrice;

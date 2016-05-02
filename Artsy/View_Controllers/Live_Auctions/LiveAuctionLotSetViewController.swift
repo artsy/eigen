@@ -101,6 +101,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func moreInfo() {
+        // TODO: The AuctionSaleNetworkModel probably has the Sale already fetched and cached, we should have a fetchSaleOrMostRecentSale() or something similar.
         AuctionSaleNetworkModel().fetchSale(salesPerson.liveSaleID).subscribe { result in
             guard let saleInfo = result.value else { return }
 
@@ -181,7 +182,12 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
         guard 0..<salesPerson.lotCount ~= index else { return nil }
         let lotViewModel = salesPerson.lotViewModelForIndex(index)
 
-        let auctionVC =  LiveAuctionLotViewController(index: index, auctionViewModel: salesPerson.auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: salesPerson.currentLotSignal)
+        let auctionVC =  LiveAuctionLotViewController(
+            index: index,
+            auctionViewModel: salesPerson.auctionViewModel,
+            lotViewModel: lotViewModel,
+            currentLotSignal: salesPerson.currentLotSignal
+        )
         return auctionVC
     }
 

@@ -53,9 +53,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         self.model = lot
 
         reserveStatusSignal.update(lot.reserveStatus)
-        askingPriceSignal.update(lot.onlineAskingPriceCents)
+        askingPriceSignal.update(lot.askingPriceCents)
     }
-    
+
     func lotStateWithViewModel(viewModel: LiveAuctionViewModelType) -> LotState {
         guard let distance = viewModel.distanceFromCurrentLot(model) else {
             return .ClosedLot
@@ -119,9 +119,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var currentLotValue: UInt64 {
-        // TODO: is onlineAskingPriceCents correct? not sure from JSON
+        // TODO: is askingPriceCents correct? not sure from JSON
         //       maybe we need to look through the events for the last bid?
-        return LiveAuctionBidViewModel.nextBidCents(model.onlineAskingPriceCents)
+        return LiveAuctionBidViewModel.nextBidCents(model.askingPriceCents)
     }
 
     var currentLotValueString: String {
