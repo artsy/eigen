@@ -39,7 +39,6 @@
 {
     return @{
         ar_keypath(LiveEvent.new, eventID) : @"eventId",
-        ar_keypath(LiveEventBid.new, bidder) : @"bidder",
     };
 }
 
@@ -55,7 +54,7 @@
     if (self.bidder == nil) {
         return @"Bid";
     } else {
-        return self.bidder.type;
+        return self.bidder.bidderDisplayType;
     }
 }
 

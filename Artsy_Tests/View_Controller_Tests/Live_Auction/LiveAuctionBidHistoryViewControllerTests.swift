@@ -41,7 +41,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                     "type" : "FirstPriceBidPlaced",
                     "id" : "ok",
                     "amountCents" : 555_000,
-                    "source" : ["type": "ArtsyBidder","bidderId": "LmnBN-aEci"]
+                    "bidder" : ["type": "OfflineBidder","bidderId": "LmnBN-aEci"]
                 ])
 
                 subject = self.setupCellWithEvent(event)

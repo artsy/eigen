@@ -12,10 +12,12 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     let stickyCollectionViewLayout: LiveAuctionLotListStickyCellCollectionViewLayout
     let auctionViewModel: LiveAuctionViewModelType
 
-    var selectedIndex: Int = 0 {
+    var selectedIndex: Int? = 0 {
         didSet {
-            let path = NSIndexPath(forRow: selectedIndex, inSection: 0)
-            collectionView?.selectItemAtIndexPath(path, animated: false, scrollPosition: .None)
+            if let selectedIndex = selectedIndex {
+                let path = NSIndexPath(forRow: selectedIndex, inSection: 0)
+                collectionView?.selectItemAtIndexPath(path, animated: false, scrollPosition: .None)
+            }
         }
     }
 
@@ -77,8 +79,9 @@ extension CollectionView {
     }
 
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let oldSelectedIndex = NSIndexPath(forRow: selectedIndex, inSection: 0)
-        collectionView.deselectItemAtIndexPath(oldSelectedIndex, animated: true)
+        if let oldSelectedIndex = selectedIndex {
+            collectionView.deselectItemAtIndexPath(NSIndexPath(forRow: oldSelectedIndex, inSection: 0), animated: true)
+        }
 
         selectedIndex = indexPath.row
         delegate?.didSelectLotAtIndex(indexPath.item, forLotListViewController: self)
