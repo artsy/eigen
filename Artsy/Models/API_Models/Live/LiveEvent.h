@@ -2,6 +2,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class LiveBidder;
+
 typedef NS_ENUM(NSInteger, LiveEventType) {
     LiveEventTypeLotOpen,
     LiveEventTypeBid,
@@ -24,7 +26,8 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 // We do this to expose these to its children
 
 @property (nonatomic, assign, readonly) NSInteger amountCents;
-@property (nonatomic, copy, readonly) NSString *_Nullable source;
+@property (nonatomic, strong, readonly) LiveBidder *_Nullable bidder;
+@property (nonatomic, strong, readonly) NSString *sourceOrDefaultString;
 
 @end
 

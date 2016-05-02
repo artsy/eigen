@@ -2,6 +2,7 @@
 #import "ARAppConstants.h"
 #import "ARLogger.h"
 #import "ARMacros.h"
+#import "LiveBidder.h"
 
 
 @implementation LiveEvent
@@ -27,7 +28,7 @@
 
     } else {
         ARErrorLog(@"Error! Unknown event type '%@'", type);
-        NSAssert(NO, @"Got an unknown event type");
+        NSAssert(NO, @"Got an unknown event type '%@'", type);
         return nil;
     }
 
@@ -38,11 +39,25 @@
 {
     return @{
         ar_keypath(LiveEvent.new, eventID) : @"eventId",
-        ar_keypath(LiveEventBid.new, source) : @"bidder.type",
+        ar_keypath(LiveEventBid.new, bidder) : @"bidder",
     };
 }
 
++ (NSValueTransformer *)bidderJSONTransformer
+{
+    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[LiveBidder class]];
+}
+
 - (LiveEventType)eventType { return LiveEventTypeUnknown; }
+
+- (NSString *)sourceOrDefaultString
+{
+    if (self.bidder == nil) {
+        return @"Bid";
+    } else {
+        return self.bidder.type;
+    }
+}
 
 @end
 

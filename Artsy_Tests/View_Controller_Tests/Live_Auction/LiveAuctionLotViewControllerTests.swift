@@ -106,10 +106,11 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
 }
 
 let liveEventJSON = [
-    "id": "f89b33d8-b4ac-4cd1-a44f-fd8a0b7d669b",
-    "type": "bid",
+    "lotId": "54c7ed2a7261692bfa910200",
+    "eventId": "d74ee40f-9127-416c-8de7-21c0587df0d0",
     "amountCents": 450000,
-    "source": "floor",
-    "isConfirmed": true
+    "createdAt": "2016-04-28T20:41:05.240Z",
+    "type": "FirstPriceBidPlaced",
+    "bidder": ["type":"OfflineBidder", "bidderId": "LmnBN-aFci" ]
 ]
 
