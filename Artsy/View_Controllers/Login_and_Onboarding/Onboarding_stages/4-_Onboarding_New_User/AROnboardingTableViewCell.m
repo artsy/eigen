@@ -2,6 +2,7 @@
 
 #import "ARFonts.h"
 
+
 @interface AROnboardingTableViewCell ()
 @property (nonatomic) BOOL centerFixed;
 @end
@@ -17,8 +18,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (!self) return nil;
 
-    self.textLabel.font = [UIFont serifFontWithSize:24];
-    self.textLabel.textColor = [UIColor whiteColor];
+    self.textLabel.font = [UIFont sansSerifFontWithSize:14];
+    self.textLabel.textColor = [UIColor blackColor];
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     self.contentView.backgroundColor = [UIColor clearColor];
     self.backgroundColor = [UIColor clearColor];
@@ -29,7 +30,7 @@
 
     CALayer *sep = [CALayer layer];
     sep.frame = CGRectMake(15, self.contentView.bounds.size.height - .5, width - 30, .5);
-    sep.backgroundColor = [UIColor artsyGraySemibold].CGColor;
+    sep.backgroundColor = [UIColor artsyGrayRegular].CGColor;
     [self.layer addSublayer:sep];
     _centerFixed = NO;
 

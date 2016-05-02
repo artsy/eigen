@@ -14,7 +14,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
 
     CGSize screenSize = self.view.bounds.size;
     NSInteger tableOrigin;
@@ -68,13 +68,13 @@
     [self.view addSubview:tableView];
     CALayer *sep = [CALayer layer];
     sep.frame = CGRectMake(15, 0, CGRectGetWidth(self.view.bounds) - 30, .5);
-    sep.backgroundColor = [UIColor artsyGraySemibold].CGColor;
+    sep.backgroundColor = [UIColor artsyGrayRegular].CGColor;
     [tableView.layer addSublayer:sep];
 
     UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake(20, 30, CGRectGetWidth(self.view.bounds) - 40, 30)];
-    header.textColor = [UIColor whiteColor];
+    header.textColor = [UIColor blackColor];
     header.font = [UIFont serifFontWithSize:24];
-    header.text = @"What’s your price range?";
+    header.text = @"Do you have a budget in mind?";
     [self.view addSubview:header];
 }
 
@@ -85,6 +85,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"StatusCell"];
     cell.textLabel.text = self.ranges[indexPath.row][@"display"];
+    cell.accessoryType = UITableViewCellAccessoryNone;
     return cell;
 }
 

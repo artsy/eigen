@@ -141,7 +141,6 @@
     }
 
     if (self.state == AROnboardingStageChooseMethod) {
-        [self getCurrentAppStateBlurredImage];
         [self presentSignInForAlreadyActiveUsers];
     }
 
@@ -198,29 +197,23 @@
 
 - (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender
 {
-    [self setBackgroundImage:sender.backgroundImage animated:YES];
-    sender.backgroundImage = nil;
-
     [self logInWithEmail:nil];
 }
 
 - (void)splashDone:(ARSignUpSplashViewController *)sender
 {
-    [self setBackgroundImage:sender.backgroundImage animated:YES];
-    sender.backgroundImage = nil;
-
     [self presentOnboarding];
 }
 
 #pragma mark -
 #pragma mark Signup
 
-- (void)signUpWithEmail
+- (void)signUp
 {
-    //    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
-    //    createVC.delegate = self;
-    //    [self pushViewController:createVC animated:YES];
-    //    self.state = AROnboardingStageEmailPassword;
+    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
+    createVC.delegate = self;
+    [self pushViewController:createVC animated:YES];
+    self.state = AROnboardingStageSignUp;
 }
 
 - (void)presentOnboarding
@@ -233,11 +226,7 @@
 
 - (void)didSignUpAndLogin
 {
-    if (self.trialContext == ARTrialContextAuctionBid) {
-        [self dismissOnboardingWithVoidAnimation:YES];
-    } else {
-        [self presentOnboarding];
-    }
+    [self dismissOnboardingWithVoidAnimation:YES];
 }
 
 #pragma mark -
@@ -271,22 +260,20 @@
 
 - (void)presentPersonalizeBudget
 {
-    self.state = AROnboardingStagePersonalizeCategories;
-    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
-    personalize.delegate = self;
-    [self pushViewController:personalize animated:YES];
+    //    self.state = AROnboardingStagePersonalizeCategories;
+    //    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
+    //    personalize.delegate = self;
+    //    [self pushViewController:personalize animated:YES];
+
+    ARPriceRangeViewController *priceRange = [[ARPriceRangeViewController alloc] init];
+    priceRange.delegate = self;
+    [self pushViewController:priceRange animated:YES];
+    self.state = AROnboardingStagePersonalizeBudget;
 }
 
 - (void)personalizeArtistsDone
 {
-    //    if ([User currentUser].collectorLevel == ARCollectorLevelNo) {
-    //        // They're done
-    //        [self dismissOnboardingWithVoidAnimation:YES];
-    //    } else {
-    //        [self presentPriceRange];
-    //    }
-
-    BOOL chooseEnoughArtists = NO; // will be determined properly in next ticket
+    BOOL chooseEnoughArtists = self.followedItemsDuringOnboarding.count > 3;
 
     if (chooseEnoughArtists) {
         [self presentPersonalizeBudget];
@@ -302,10 +289,7 @@
 
 - (void)personalizeBudgetDone
 {
-    //    ARSignupViewController *signup = [[ARSignupViewController alloc] init];
-    //    signup.delegate = self;
-    //    [self pushViewController:signup animated:YES];
-    //    self.state = AROnboardingStageChooseMethod;
+    [self signUp];
 }
 
 - (void)backTapped
@@ -317,18 +301,6 @@
 {
     [self.followedItemsDuringOnboarding addObject:item];
 }
-
-//- (void)presentPriceRange
-//{
-//    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPriceRangeDefault]) {
-//        [self dismissOnboardingWithVoidAnimation:YES];
-//        return;
-//    }
-//    ARPriceRangeViewController *priceRange = [[ARPriceRangeViewController alloc] init];
-//    priceRange.delegate = self;
-//    [self pushViewController:priceRange animated:YES];
-//    self.state = AROnboardingStagePriceRange;
-//}
 
 - (void)setPriceRangeDone:(NSInteger)range
 {
@@ -445,7 +417,7 @@
     loginViewController.delegate = self;
 
     [self pushViewController:loginViewController animated:YES];
-    self.state = AROnboardingStageEmailPassword;
+    self.state = AROnboardingStageLogin;
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated
@@ -492,50 +464,6 @@
 - (BOOL)shouldAutorotate
 {
     return [UIDevice isPad];
-}
-
-#pragma mark -
-#pragma mark Background Image
-
-- (void)getCurrentAppStateBlurredImage
-{
-    ARAppDelegate *appDelegate = [ARAppDelegate sharedInstance];
-    UIView *view = appDelegate.viewController.view;
-
-    UIGraphicsBeginImageContext(view.bounds.size);
-    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
-
-    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-
-    [self setBackgroundImage:viewImage animated:YES];
-}
-
-- (void)setBackgroundImage:(UIImage *)backgroundImage animated:(BOOL)animated
-{
-    _backgroundImage = backgroundImage;
-    UIImage *blurImage = [backgroundImage blurredImageWithRadius:12 iterations:2 tintColor:[UIColor colorWithWhite:0 alpha:.5]];
-
-    CGFloat offset = 30;
-    if (self.backgroundView.motionEffects.count == 0) {
-        ARParallaxEffect *parallax = [[ARParallaxEffect alloc] initWithOffset:offset];
-        [self.backgroundView addMotionEffect:parallax];
-    }
-
-    if (animated) {
-        self.backgroundView.alpha = 1;
-    }
-
-    self.backgroundWidthConstraint.constant = offset * 2;
-    self.backgroundHeightConstraint.constant = offset * 2;
-    __weak typeof(self) wself = self;
-    [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
-        __strong typeof (wself) sself = wself;
-        [sself.backgroundView layoutIfNeeded];
-        sself.backgroundView.image = blurImage;
-        sself.backgroundView.alpha = 0.3;
-        sself.backgroundView.backgroundColor = [UIColor whiteColor];
-    }];
 }
 
 - (void)edgeSwiped:(UIScreenEdgePanGestureRecognizer *)gesture

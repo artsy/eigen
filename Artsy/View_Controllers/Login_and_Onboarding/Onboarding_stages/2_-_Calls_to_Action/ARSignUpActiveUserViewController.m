@@ -169,7 +169,7 @@
 
 - (IBAction)signUpWithEmail:(id)sender
 {
-    [self.delegate signUpWithEmail];
+    [self.delegate signUp];
 }
 
 - (void)goToLogin:(id)sender

@@ -34,7 +34,8 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStagePersonalizeArtists,
     AROnboardingStagePersonalizeCategories,
     AROnboardingStagePersonalizeBudget,
-    AROnboardingStageEmailPassword,
+    AROnboardingStageSignUp,
+    AROnboardingStageLogin,
     AROnboardingStageFollowNotification
 };
 
@@ -48,7 +49,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 @property (nonatomic, assign, readonly) ARInitialOnboardingState initialState;
 
 - (void)signUpWithFacebook;
-- (void)signUpWithEmail;
+- (void)signUp;
 - (void)logInWithEmail:(NSString *)email;
 - (void)showTermsAndConditions;
 - (void)showPrivacyPolicy;
