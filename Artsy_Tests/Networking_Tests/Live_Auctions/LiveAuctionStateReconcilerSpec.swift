@@ -18,7 +18,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             newLotsCalled = false
             subject = LiveAuctionStateReconciler()
-            subject.newLotsSignal.next { _ in newLotsCalled = true}
+            subject.newLotsSignal.subscribe { _ in newLotsCalled = true}
         }
 
         it("doesn't do anything if there are no lots") {
@@ -58,8 +58,8 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
         it("doesn't do anything if there are no lot events (list is empty)") {
             // Events are already empty
             var newEventsCalled = false
-            subject.newLotsSignal.next { newLots in
-                newLots.forEach { $0.newEventSignal.next { _ in newEventsCalled = true } }
+            subject.newLotsSignal.subscribe { newLots in
+                newLots.forEach { $0.newEventSignal.subscribe { _ in newEventsCalled = true } }
             }
 
             subject.updateState(state)
@@ -69,7 +69,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
         it("sends fresh lots on first update") {
             var lots: [LiveAuctionLotViewModelType]?
-            subject.newLotsSignal.next { lots = $0 }
+            subject.newLotsSignal.subscribe { lots = $0 }
 
             subject.updateState(state)
 
@@ -78,7 +78,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
         it("sends current lot") {
             var currentLot: LiveAuctionLotViewModelType?
-            subject.currentLotSignal.next { currentLot = $0 }
+            subject.currentLotSignal.subscribe { currentLot = $0 }
 
             subject.updateState(state)
 
@@ -87,7 +87,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
         it("orders lots correctly") {
             var lots: [LiveAuctionLotViewModelType]?
-            subject.newLotsSignal.next { lots = $0 }
+            subject.newLotsSignal.subscribe { lots = $0 }
 
             subject.updateState(state)
 
@@ -103,7 +103,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             it("does not send lots") {
                 var newLotsInvocation = 0
-                subject.newLotsSignal.next { _ in newLotsInvocation += 1 }
+                subject.newLotsSignal.subscribe { _ in newLotsInvocation += 1 }
 
                 subject.updateState(state)
                 subject.updateState(state)
@@ -113,7 +113,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             it("does not send sale") {
                 var saleInvocation = 0
-                subject.saleSignal.next { _ in saleInvocation += 1 }
+                subject.saleSignal.subscribe { _ in saleInvocation += 1 }
 
                 subject.updateState(state)
                 subject.updateState(state)
@@ -123,7 +123,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             it("does not send current lot if it has not changed") {
                 var currentLotInvocations = 0
-                subject.currentLotSignal.next { _ in currentLotInvocations += 1 }
+                subject.currentLotSignal.subscribe { _ in currentLotInvocations += 1 }
 
                 subject.updateState(state)
                 subject.updateState(state)
@@ -133,7 +133,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             it("sends new current lot when the lot changes") {
                 var currentLotInvocations = 0
-                subject.currentLotSignal.next { _ in currentLotInvocations += 1 }
+                subject.currentLotSignal.subscribe { _ in currentLotInvocations += 1 }
                 let newState = NSMutableDictionary(dictionary: state)
                 let sale = newState["sale"] as! [String: AnyObject]
                 newState["currentLotId"] = (sale["lots"] as! [String]).last
@@ -146,9 +146,9 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             it("updates lot view model with new events") {
                 var eventInvocations = 0
-                subject.newLotsSignal.next { newLots in
+                subject.newLotsSignal.subscribe { newLots in
                     newLots.forEach { lot in
-                        lot.newEventSignal.next { _ in eventInvocations += 1 }
+                        lot.newEventSignal.subscribe { _ in eventInvocations += 1 }
                     }
                 }
                 let newState = NSMutableDictionary(dictionary: state)
@@ -168,9 +168,9 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             it("doesn't update lot view model with events that aren't new") {
                 var eventInvocations = 0
-                subject.newLotsSignal.next { newLots in
+                subject.newLotsSignal.subscribe { newLots in
                     newLots.forEach { lot in
-                        lot.newEventSignal.next { _ in eventInvocations += 1 }
+                        lot.newEventSignal.subscribe { _ in eventInvocations += 1 }
                     }
                 }
                 let newState = NSMutableDictionary(dictionary: state)
@@ -190,9 +190,9 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             it("updates lot view model with online asking price") {
                 var onlineAskingPriceInvocations = 0
-                subject.newLotsSignal.next { newLots in
+                subject.newLotsSignal.subscribe { newLots in
                     newLots.forEach { lot in
-                        lot.askingPriceSignal.next { _ in onlineAskingPriceInvocations += 1 }
+                        lot.askingPriceSignal.subscribe { _ in onlineAskingPriceInvocations += 1 }
                     }
                 }
                 let newState = NSMutableDictionary(dictionary: state)
@@ -210,9 +210,9 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             it("updates lot view model with reserve status") {
                 var reserveStatusUpdates = 0
-                subject.newLotsSignal.next { newLots in
+                subject.newLotsSignal.subscribe { newLots in
                     newLots.forEach { lot in
-                        lot.reserveStatusSignal.next { _ in reserveStatusUpdates += 1 }
+                        lot.reserveStatusSignal.subscribe { _ in reserveStatusUpdates += 1 }
                     }
                 }
                 let newState = NSMutableDictionary(dictionary: state)
@@ -230,7 +230,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
             
             it("sends lots when number of lots change") {
                 var currentLots: [LiveAuctionLotViewModelType]?
-                subject.newLotsSignal.next { currentLots = $0 }
+                subject.newLotsSignal.subscribe { currentLots = $0 }
 
                 subject.updateState(state)
                 subject.updateState(test_liveAuctionJSON(.Active, numberOfLots: 4))
@@ -240,8 +240,8 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             it("sends updated sale availability if changed") {
                 var saleAvailabilityInvocations = 0
-                subject.saleSignal.next { sale in
-                    sale.saleAvailabilitySignal.next { _ in saleAvailabilityInvocations += 1 }
+                subject.saleSignal.subscribe { sale in
+                    sale.saleAvailabilitySignal.subscribe { _ in saleAvailabilityInvocations += 1 }
                 }
 
                 subject.updateState(state)
@@ -252,8 +252,8 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
             it("doesn't send updated sale availability if not changed") {
                 var saleAvailabilityInvocations = 0
-                subject.saleSignal.next { sale in
-                    sale.saleAvailabilitySignal.next { _ in saleAvailabilityInvocations += 1 }
+                subject.saleSignal.subscribe { sale in
+                    sale.saleAvailabilitySignal.subscribe { _ in saleAvailabilityInvocations += 1 }
                 }
 
                 subject.updateState(state)

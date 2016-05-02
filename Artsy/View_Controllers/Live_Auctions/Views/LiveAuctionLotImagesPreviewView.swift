@@ -6,7 +6,7 @@ import AVFoundation
 /// and to deal with transforms/ opacity
 
 /// Note: currently un-used, 
-/// it used to go in ViewDidLoad for LiveAuctionViewController
+/// it used to go in ViewDidLoad for LiveAuctionLotSetViewController
 
 /**
     // This sits _behind_ the PageViewController, which is transparent and shows it through
@@ -21,12 +21,12 @@ import AVFoundation
 **/
 
 class LiveAuctionLotImagesPreviewView : UIView {
-    let progress: Signal<CGFloat>
+    let progress: Observable<CGFloat>
     let salesPerson: LiveAuctionsSalesPersonType
 
     var leftLeftImageView, leftImageView, rightRightImageView, rightImageView, centerImageView: UIImageView
 
-    init(progressSignal: Signal<CGFloat>, nextSignal: Signal<Int>, salesPerson: LiveAuctionsSalesPersonType) {
+    init(progressSignal: Observable<CGFloat>, nextSignal: Observable<Int>, salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
         self.progress = progressSignal
 
@@ -45,7 +45,7 @@ class LiveAuctionLotImagesPreviewView : UIView {
             image.backgroundColor = .artsyGrayRegular()
         }
 
-        progressSignal.next { progress in
+        progressSignal.subscribe { progress in
             let width = Int(self.bounds.width)
             let half = Int(width / 2)
 
@@ -56,7 +56,7 @@ class LiveAuctionLotImagesPreviewView : UIView {
             self.rightRightImageView.center = self.positionOnRange(width...width * 2, value: progress)
         }
 
-        nextSignal.next { _ in
+        nextSignal.subscribe { _ in
             let imageViews = [self.leftLeftImageView, self.leftImageView, self.centerImageView, self.rightImageView, self.rightRightImageView]
             let indexes = [-2, -1, 0, 1, 2]
 
@@ -125,7 +125,7 @@ class LiveAuctionLotImagesPreviewView : UIView {
 
 
 class ScrollViewProgressObserver : NSObject, UIScrollViewDelegate {
-    let progress = Signal<CGFloat>()
+    let progress = Observable<CGFloat>()
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let point = scrollView.contentOffset

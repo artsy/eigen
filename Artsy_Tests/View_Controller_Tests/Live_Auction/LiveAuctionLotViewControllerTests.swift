@@ -3,6 +3,8 @@ import Nimble
 import Nimble_Snapshots
 import Interstellar
 import UIKit
+import SDWebImage
+
 
 @testable
 import Artsy
@@ -20,7 +22,10 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
                 auctionViewModel = Test_LiveAuctionViewModel()
                 lotViewModel = Test_LiveAuctionLotViewModel()
-                subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Signal())
+                cacheColoredImageForURL(lotViewModel.urlForProfile)
+
+                subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Observable<LiveAuctionLotViewModelType>())
+
                 subject.currentLotSignal.update(lotViewModel)
             }
 
@@ -52,13 +57,14 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
         }
     }
+
 }
 
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var startDate = NSDate().dateByAddingTimeInterval(-3600)
     var lotCount = 3
-    var saleAvailabilitySignal = Signal(SaleAvailabilityState.Active)
-    var currentLotIDSignal = Signal<String>()
+    var saleAvailabilitySignal = Observable(SaleAvailabilityState.Active)
+    var currentLotIDSignal = Observable<String>()
 
     var distance: Int?
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
@@ -86,16 +92,16 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
     }
 
-    var lotStateSignal = Signal(LotState.UpcomingLot(distanceFromLive: 1))
-    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Signal<LotState> {
+    var lotStateSignal = Observable(LotState.UpcomingLot(distanceFromLive: 1))
+    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
         return lotStateSignal
     }
 
-    let askingPriceSignal = Signal<UInt64>()
-    let reserveStatusSignal = Signal<ARReserveStatus>()
-    let startEventUpdatesSignal = Signal<NSDate>()
-    let endEventUpdatesSignal = Signal<NSDate>()
-    let newEventSignal = Signal<LiveAuctionEventViewModel>()
+    let askingPriceSignal = Observable<UInt64>()
+    let reserveStatusSignal = Observable<ARReserveStatus>()
+    let startEventUpdatesSignal = Observable<NSDate>()
+    let endEventUpdatesSignal = Observable<NSDate>()
+    let newEventSignal = Observable<LiveAuctionEventViewModel>()
 }
 
 let liveEventJSON = [
