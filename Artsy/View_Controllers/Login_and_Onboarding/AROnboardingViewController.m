@@ -417,28 +417,6 @@
     }];
 }
 
-- (void)signUpWithTwitter
-{
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-
-    __weak typeof(self) wself = self;
-    [ARAuthProviders getReverseAuthTokenForTwitter:^(NSString *token, NSString *secret) {
-        __strong typeof (wself) sself = wself;
-
-        AROnboardingMoreInfoViewController *more = [[AROnboardingMoreInfoViewController alloc]
-                                                    initForTwitterWithToken:token andSecret:secret];
-        more.delegate = self;
-        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        [sself pushViewController:more animated:YES];
-
-    } failure:^(NSError *error) {
-        __strong typeof (wself) sself = wself;
-
-        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        [sself twitterError];
-    }];
-}
-
 - (void)fbError
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Facebook credentials"
@@ -459,29 +437,6 @@
     [alert show];
 }
 
-//    [store requestAccessToAccountsWithType:fbType options:@{ACFacebookAppIdKey:@"414450748567864", ACFacebookPermissionsKey:@[@"email"]} completion:^(BOOL granted, NSError *error) {
-//        if (granted) {
-//            NSArray *accounts = [store accountsWithAccountType:fbType];
-//            ACAccount *acc = accounts.first;
-//            NSString *token = [[acc credential] oauthToken];
-//
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self createFacebookUserWithToken:token email:nil];
-//            });
-//
-//        } else {
-//            // TODO: definitely copy, hopefully UI?
-//
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self ar_removeIndeterminateLoadingIndicatorAnimated:];
-//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Facebook credentials"
-//                                                                message:@"Couldn’t get Facebook credentials. Please link a Facebook account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
-//                                                               delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//                [alert show];
-//            });
-//            ARErrorLog(@"Failed to get Facebook credentials in onboarding. Error: %@", error.localizedDescription);
-//        }
-//    }];
 
 - (void)logInWithEmail:(NSString *)email
 {

@@ -26,17 +26,18 @@
     return self;
 }
 
-
 - (void)setupForLogin
 {
     [self commonSetup];
     [self.nameField removeConstraint:self.nameFieldHeightConstraint];
     [self.nameField constrainHeight:@"0"];
+    self.passwordField.returnKeyType = UIReturnKeyDone;
 }
 
 - (void)setupForSignUp
 {
     [self commonSetup];
+    self.passwordField.returnKeyType = UIReturnKeyJoin;
 }
 
 - (void)commonSetup
@@ -45,9 +46,11 @@
     [self.emailField setPlaceholder:@"Email"];
     [self.passwordField setPlaceholder:@"Password"];
 
-    [self addSubview:self.nameField];
-    [self addSubview:self.emailField];
-    [self addSubview:self.passwordField];
+    for (ARTextFieldWithPlaceholder *textfield in @[ self.nameField, self.emailField, self.passwordField ]) {
+        [self addSubview:textfield];
+        textfield.autocorrectionType = UITextAutocorrectionTypeNo;
+        textfield.clearButtonMode = UITextFieldViewModeWhileEditing;
+    }
 
     self.nameFieldHeightConstraint = [self.nameField constrainHeight:@"54"];
     [self.emailField constrainHeight:@"54"];
@@ -64,6 +67,15 @@
     [self.nameField alignTopEdgeWithView:self predicate:@"5"];
     [self.emailField constrainTopSpaceToView:self.nameField predicate:@"5"];
     [self.passwordField constrainTopSpaceToView:self.emailField predicate:@"5"];
+
+    self.nameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    self.nameField.returnKeyType = UIReturnKeyNext;
+
+    self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
+    self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.emailField.returnKeyType = UIReturnKeyNext;
+
+    self.passwordField.secureTextEntry = YES;
 }
 
 @end

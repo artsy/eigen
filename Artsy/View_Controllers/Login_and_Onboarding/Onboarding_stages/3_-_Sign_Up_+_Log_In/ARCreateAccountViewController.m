@@ -144,12 +144,6 @@
     }];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [self.name becomeFirstResponder];
-    [super viewDidAppear:animated];
-}
-
 - (void)hideKeyboard
 {
     [self.view endEditing:YES];
@@ -158,11 +152,6 @@
 - (BOOL)canSubmit
 {
     return self.textFieldsView.emailField.text.length && self.textFieldsView.nameField.text.length && [self.textFieldsView.emailField.text containsString:@"@"] && self.textFieldsView.passwordField.text.length >= 6;
-}
-
-- (void)back:(id)sender
-{
-    [self.delegate popViewControllerAnimated:YES];
 }
 
 - (void)setFormEnabled:(BOOL)enabled
@@ -226,7 +215,7 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t create your account" message:@"Please check your email address & password" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
             [alert show];
 
-            [sself.email becomeFirstResponder];
+            [sself.textFieldsView.emailField becomeFirstResponder];
         }
     }];
 }
@@ -261,11 +250,11 @@
     NSString *message;
     NSInteger tag;
     if ([source isEqualToString:@"email"]) {
-        message = [NSString stringWithFormat:@"An account already exists for the email address \"%@\".", self.email.text];
+        message = [NSString stringWithFormat:@"An account already exists for the email address \"%@\".", self.textFieldsView.emailField.text];
         tag = EMAIL_TAG;
     } else {
         message = [NSString stringWithFormat:@"An account already exists for the email address \"%@\". Please log in via %@.",
-                                             self.email.text,
+                                             self.self.textFieldsView.emailField.text,
                                              [source capitalizedString]];
         tag = SOCIAL_TAG;
     }
@@ -340,6 +329,11 @@
                                                   object:nil];
 }
 
+- (void)fb:(id)sender
+{
+    [self.delegate signUpWithFacebook];
+}
+
 #pragma mark -
 #pragma mark UITextField
 
@@ -352,19 +346,19 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == self.textFieldsView.nameField) {
-        [self.email becomeFirstResponder];
+        [self.textFieldsView.emailField becomeFirstResponder];
         return YES;
     } else if (textField == self.textFieldsView.emailField) {
-        [self.password becomeFirstResponder];
+        [self.textFieldsView.passwordField becomeFirstResponder];
         return YES;
     } else if ([self canSubmit]) {
         [self submit:nil];
         return YES;
     }
 
-    if (![self.email.text containsString:@"@"]) {
+    if (![self.textFieldsView.emailField.text containsString:@"@"]) {
         [self showWarning:@"Email address appears to be invalid" animated:YES];
-    } else if (self.password.text.length < 6) {
+    } else if (self.textFieldsView.passwordField.text.length < 6) {
         [self showWarning:@"Password must be at least 6 characters" animated:YES];
     }
     return NO;
