@@ -37,15 +37,7 @@
 
 @property (nonatomic, strong) AROnboardingNavBarView *navView;
 @property (nonatomic, strong) UIButton *testBotButton;
-@property (nonatomic, strong) ARUppercaseButton *loginButton;
 @property (nonatomic, strong) NSString *email;
-
-@property (nonatomic, strong) ORStackView *containerView;
-@property (nonatomic, strong) ARTextFieldWithPlaceholder *emailTextField;
-@property (nonatomic, strong) ARSecureTextFieldWithPlaceholder *passwordTextField;
-@property (nonatomic, strong) UIButton *forgotPasswordButton;
-@property (nonatomic, strong) ARWhiteFlatButton *facebookLoginButton;
-@property (nonatomic, strong) ARWhiteFlatButton *twitterLoginButton;
 
 @property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
 @end
