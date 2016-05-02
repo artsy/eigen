@@ -29,9 +29,15 @@
 
 ### Resources
 
+* React Native:
+  - http://makeitopen.com
+  - https://github.com/fbsamples/f8app/
+  - http://facebook.github.io/react-native/docs/getting-started.html
+
 * Relay:
   - https://facebook.github.io/relay/docs/getting-started.html
   - https://github.com/facebook/relay/tree/master/examples
+  - https://github.com/fbsamples/f8app/
 
 * Testing:
   - https://mochajs.org
