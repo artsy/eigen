@@ -37,6 +37,12 @@ protocol LiveAuctionLotViewModelType: class {
     var newEventSignal: Observable<LiveAuctionEventViewModel> { get }
 }
 
+extension LiveAuctionLotViewModelType {
+    var lotIndexDisplayString: String {
+        return "Lot \(lotIndex + 1)"
+    }
+}
+
 class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     private let model: LiveAuctionLot
@@ -111,7 +117,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var lotIndex: Int {
-        return model.position
+        return model.position - 1
     }
 
     var liveAuctionLotID: String {

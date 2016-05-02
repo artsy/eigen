@@ -69,7 +69,7 @@ extension PublicFunctions {
             }, viewModel.askingPriceSignal)
 
         lotImageView.ar_setImageWithURL(viewModel.urlForThumbnail)
-        lotNumberLabel.text = "Lot \(viewModel.lotIndex)"
+        lotNumberLabel.text = viewModel.lotIndexDisplayString
         artistsNamesLabel.text = viewModel.lotArtist
     }
 }
