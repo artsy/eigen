@@ -5,9 +5,9 @@ import Interstellar
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
 protocol LiveAuctionsSalesPersonType {
-    var currentFocusedLot: Signal<Int> { get }
-    var updatedStateSignal: Signal<LiveAuctionViewModelType> { get }
-    var currentLotSignal: Signal<LiveAuctionLotViewModelType> { get }
+    var currentFocusedLot: Observable<Int> { get }
+    var updatedStateSignal: Observable<LiveAuctionViewModelType> { get }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
 
     var auctionViewModel: LiveAuctionViewModelType? { get }
     var pageControllerDelegate: LiveAuctionPageControllerDelegate! { get }
@@ -33,7 +33,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     private let stateManager: LiveAuctionStateManager
 
     // Lot currentloy being looked at by the user.
-    var currentFocusedLot = Signal<Int>()
+    var currentFocusedLot = Observable<Int>()
 
     init(saleID: String,
          accessToken: String,
@@ -51,13 +51,13 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
         stateManager
             .newLotsSignal
-            .next { [weak self] lots -> Void in
+            .subscribe { [weak self] lots -> Void in
                 self?.lots = lots
             }
 
         stateManager
             .saleSignal
-            .next { [weak self] sale -> Void in
+            .subscribe { [weak self] sale -> Void in
                 self?.auctionViewModel = sale
             }
     }
@@ -65,11 +65,11 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
 private typealias ComputedProperties = LiveAuctionsSalesPerson
 extension ComputedProperties {
-    var currentLotSignal: Signal<LiveAuctionLotViewModelType> {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
         return stateManager.currentLotSignal
     }
 
-    var updatedStateSignal: Signal<LiveAuctionViewModelType> {
+    var updatedStateSignal: Observable<LiveAuctionViewModelType> {
         return stateManager
             .saleSignal
             .merge(stateManager.newLotsSignal) // Reacts to a change in the lots as well.

@@ -7,9 +7,16 @@ class LiveAuctionToolbarView : UIView {
     var lotViewModel: LiveAuctionLotViewModelType!
     var auctionViewModel: LiveAuctionViewModelType!
 
-    lazy var computedLotStateSignal: Signal<LotState> = {
+    lazy var computedLotStateSignal: Observable<LotState> = {
         return self.lotViewModel.computedLotStateSignal(self.auctionViewModel)
     }()
+    var lotStateObserver: ObserverToken?
+
+    deinit {
+        if let lotStateObserver = lotStateObserver {
+            computedLotStateSignal.unsubscribe(lotStateObserver)
+        }
+    }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -34,7 +41,7 @@ class LiveAuctionToolbarView : UIView {
     }
 
     func setupViews() {
-        computedLotStateSignal.next { [weak self] lotState in
+        lotStateObserver = computedLotStateSignal.subscribe { [weak self] lotState in
             self?.setupUsingState(lotState)
         }
     }
@@ -92,15 +99,17 @@ class LiveAuctionToolbarView : UIView {
             }
 
             view.constrainHeight("14")
-            thumbnailView.alignTop("0", leading: "0", toView: view)
-            label.alignBottom("0", trailing: "0", toView: view)
+            thumbnailView.alignLeadingEdgeWithView(view, predicate: "0")
+            thumbnailView.alignCenterYWithView(view, predicate: "0")
+            label.alignTrailingEdgeWithView(view, predicate: "0")
+            label.alignCenterYWithView(view, predicate: "0")
             thumbnailView.constrainTrailingSpaceToView(label, predicate:"-6")
             return view
         }
 
         views.forEach { button in
             self.addSubview(button)
-            button.alignTopEdgeWithView(self, predicate: "0")
+            button.alignCenterYWithView(self, predicate: "0")
         }
 
         let first = views.first!

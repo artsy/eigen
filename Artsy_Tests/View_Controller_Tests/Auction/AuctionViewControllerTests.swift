@@ -393,12 +393,12 @@ class Test_AuctionNetworkModel: AuctionNetworkModelType {
         self.registrationStatus = registrationStatus
     }
 
-    func fetch() -> Signal<SaleViewModel> {
-        return Signal(saleViewModel)
+    func fetch() -> Observable<Result<SaleViewModel>> {
+        return Observable(.Success(saleViewModel))
     }
 
-    func fetchRegistrationStatus() -> Signal<ArtsyAPISaleRegistrationStatus> {
-        return Signal(registrationStatus ?? ArtsyAPISaleRegistrationStatusNotLoggedIn)
+    func fetchRegistrationStatus() -> Observable<Result<ArtsyAPISaleRegistrationStatus>> {
+        return Observable(.Success(registrationStatus ?? ArtsyAPISaleRegistrationStatusNotLoggedIn))
     }
 }
 

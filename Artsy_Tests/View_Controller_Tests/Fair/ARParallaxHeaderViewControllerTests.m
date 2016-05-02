@@ -11,16 +11,14 @@
 - (NSString *)iconURL;
 @end
 
+void cacheFixturedFile(NSString *file, NSString *type, NSString *address);
+
 SpecBegin(ARParallaxHeaderViewController);
 
 __block ARParallaxHeaderViewController *viewController;
 __block Fair *fair;
 
-beforeEach(^{
-    
-    [[SDImageCache sharedImageCache] clearDisk];
-    [[SDImageCache sharedImageCache] clearMemory];
-    
+beforeEach(^{    
     fair = [Fair modelWithJSON:@{
         @"id" : @"fair-id",
         @"image_urls" : @{
@@ -35,20 +33,9 @@ beforeEach(^{
         }
     }];
 
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    NSString *wideImagePath = [bundle pathForResource:@"wide" ofType:@"jpg"];
-    UIImage *wideImage = [UIImage imageWithContentsOfFile:wideImagePath];
-    NSString *squareImagePath = [bundle pathForResource:@"square" ofType:@"png"];
-    UIImage *squareImage = [UIImage imageWithContentsOfFile:squareImagePath];
-
-    [[SDImageCache sharedImageCache] storeImage:wideImage forKey:@"http://static1.artsy.net/fairs/52617c6c8b3b81f094000013/9/wide.jpg" toDisk:NO];
-    [[SDImageCache sharedImageCache] storeImage:squareImage forKey:@"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square.png" toDisk:NO];
-    [[SDImageCache sharedImageCache] storeImage:squareImage forKey:@"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square2.png" toDisk:NO];
-});
-
-afterEach(^{
-    [OHHTTPStubs removeAllStubs];
-    [[SDImageCache sharedImageCache] clearMemory];
+    cacheFixturedFile(@"wide", @"jpg", @"http://static1.artsy.net/fairs/52617c6c8b3b81f094000013/9/wide.jpg");
+    cacheFixturedFile(@"square", @"png", @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square.png");
+    cacheFixturedFile(@"square", @"png", @"http://static1.artsy.net/profile_icons/530cc50c9c18dbab9a00005b/square2.png");
 });
 
 describe(@"without an icon", ^{
@@ -134,3 +121,11 @@ describe(@"with new banner urls", ^{
 
 
 SpecEnd;
+
+void cacheFixturedFile(NSString *file, NSString *type, NSString *address)
+{
+    NSBundle *bundle = [NSBundle bundleForClass:ARParallaxHeaderViewControllerSpec.class];
+    NSString *path = [bundle pathForResource:file ofType:type];
+    UIImage *image = [UIImage imageWithContentsOfFile:path];
+    [[SDWebImageManager sharedManager] saveImageToCache:image forURL:[NSURL URLWithString:address]];
+}

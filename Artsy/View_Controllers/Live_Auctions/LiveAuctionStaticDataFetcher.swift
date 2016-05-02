@@ -2,7 +2,7 @@ import Foundation
 import Interstellar
 
 protocol LiveAuctionStaticDataFetcherType {
-    func fetchStaticData() -> Signal<AnyObject>
+    func fetchStaticData() -> Observable<Result<AnyObject>>
 }
 
 class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
@@ -12,14 +12,14 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
         self.saleID = saleID
     }
 
-    func fetchStaticData() -> Signal<AnyObject> {
-        let signal = Signal<AnyObject>()
+    func fetchStaticData() -> Observable<Result<AnyObject>> {
+        let signal = Observable<Result<AnyObject>>()
 
         ArtsyAPI.getLiveSaleStaticDataWithSaleID(saleID,
             success: { state in
-                signal.update(state)
+                signal.update(.Success(state))
             }, failure: { error in
-                signal.update(error as ErrorType)
+                signal.update(.Error(error as ErrorType))
             })
 
         return signal

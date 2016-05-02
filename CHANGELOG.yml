@@ -12,7 +12,7 @@ upcoming:
     - Removed artwork auction results - sarah
     - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
     - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah
-    - Artwork view hides Contact button for uninquireable works - sarah 
+    - Artwork view hides Contact button for uninquireable works - sarah
     - Removed the Ask a Specialist button from artwork view - sarah
     - Added a check in danger for ARTopMenuViewController+SwiftDeveloperExtras - sarah
     - Generalized the RefineViewController - sarah
@@ -27,7 +27,9 @@ upcoming:
     - Lot metadata can toggle between a short artwork blurb and full metadata - orta
     - All cent values are handled by UInt64 in Live Auction context - orta
     - Present the Live AuctionVC in a modal - orta
+    - Support splitting between lot list and lots on iPad - orta
     - Updates to Interstellar v2. - ash
+    - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
 
   notes:
     - Fixes long auction names falling off right edge. - ash
@@ -35,6 +37,8 @@ upcoming:
     - Adds support for loading Artsy subdomains internally. - ash
     - Live auction lot list. - ash
     - Fixes crash due to missing nullability specifiers on Artwork. - ash
+    - Show Preview images are edge to edge fill, instead of scale fit - orta
+
 
 releases:
 

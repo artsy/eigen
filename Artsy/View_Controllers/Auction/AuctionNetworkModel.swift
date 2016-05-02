@@ -2,8 +2,8 @@ import Foundation
 import Interstellar
 
 protocol AuctionNetworkModelType {
-    func fetch() -> Signal<SaleViewModel>
-    func fetchRegistrationStatus() -> Signal<ArtsyAPISaleRegistrationStatus>
+    func fetch() -> Observable<Result<SaleViewModel>>
+    func fetchRegistrationStatus() -> Observable<Result<ArtsyAPISaleRegistrationStatus>>
     
     var registrationStatus: ArtsyAPISaleRegistrationStatus? { get }
 }
@@ -30,34 +30,46 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
         return self.registrationStatusNetworkModel.registrationStatus
     }
 
-    func fetchRegistrationStatus() -> Signal<ArtsyAPISaleRegistrationStatus> {
-        let signal = Signal(saleID)
+    func fetchRegistrationStatus() -> Observable<Result<ArtsyAPISaleRegistrationStatus>> {
+        let signal = Observable(saleID)
         return signal.flatMap(registrationStatusNetworkModel.fetchRegistrationStatus)
     }
 
-    func fetch() -> Signal<SaleViewModel> {
-        let signal = Signal(saleID)
+    func fetch() -> Observable<Result<SaleViewModel>> {
+        let signal = Observable(saleID)
 
         let fetchSale = signal.flatMap(saleNetworkModel.fetchSale)
         let fetchSaleArtworks = signal.flatMap(saleArtworksNetworkModel.fetchSaleArtworks)
 
         let createViewModel = fetchSale.merge(fetchSaleArtworks)
-            .map { tuple -> SaleViewModel in
+            .map { tuple -> Result<SaleViewModel> in
+
                 // Tuple has the Sale and [SaleArtwork] from previous network requests.
+                // We need to extract them from their respective Result containers. If either failed, we pass along that failure.
+                switch tuple {
+                case (.Success(let sale), .Success(let saleArtworks)):
+                    saleArtworks.forEach { $0.auction = sale }
+                    return .Success(SaleViewModel(sale: sale, saleArtworks: saleArtworks))
 
-                let sale = tuple.0
-                let saleArtworks = tuple.1
+                case (.Error(let error), .Error):
+                    return .Error(error) // Need to pick one error, might as well go with the first.
 
-                saleArtworks.forEach { $0.auction = sale }
-                return SaleViewModel(sale: sale, saleArtworks: saleArtworks)
+                case (.Error(let error), .Success):
+                    return .Error(error)
+
+                case (.Success, .Error(let error)):
+                    return .Error(error)
+                }
+
             }
             .next { saleViewModel in
                 // Store the SaleViewModel
                 self.saleViewModel = saleViewModel
-        }
+            }
 
-        return fetchRegistrationStatus().flatMap { (_, callback) in // Note we discard the status, we don't care.
-            createViewModel.subscribe(callback)
+        return fetchRegistrationStatus().flatMap { _ in
+            // Note we discard the status, we don't care we just need it to be fetched first.
+            return createViewModel
         }
     }
 }

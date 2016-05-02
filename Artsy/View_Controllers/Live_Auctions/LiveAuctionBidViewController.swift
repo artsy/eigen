@@ -13,7 +13,7 @@ enum LiveAuctionBiddingProgressState {
 
 class LiveAuctionBidViewModel: NSObject {
     let lotViewModel: LiveAuctionLotViewModelType
-    let lotBidDetailsUpdateSignal = Signal<Int>()
+    let lotBidDetailsUpdateSignal = Observable<Int>()
 
     // This mutates as someone increments/decrements
     var currentBid: UInt64
@@ -79,7 +79,7 @@ class LiveAuctionBidViewModel: NSObject {
 class LiveAuctionBidViewController: UIViewController {
 
     var bidViewModel: LiveAuctionBidViewModel!
-    var biddingProgressSignal = Signal<LiveAuctionBiddingProgressState>()
+    var biddingProgressSignal = Observable<LiveAuctionBiddingProgressState>()
 
     @IBOutlet weak var lowerBiddingSeparatorView: UIView!
     @IBOutlet weak var bidButton: LiveAuctionBidButton!
@@ -91,8 +91,8 @@ class LiveAuctionBidViewController: UIViewController {
         updateCurrentBidInformation(NSDate())
         updateBiddingControls(bidViewModel.currentBid)
 
-        bidViewModel.lotViewModel.endEventUpdatesSignal.next(updateCurrentBidInformation)
-        biddingProgressSignal.next(biddingProgressUpdated)
+        bidViewModel.lotViewModel.endEventUpdatesSignal.subscribe(updateCurrentBidInformation)
+        biddingProgressSignal.subscribe(biddingProgressUpdated)
 
         view.layoutIfNeeded()
         let bottomSeparatorOverlapsBidButton = bidButton.center.y < lowerBiddingSeparatorView.center.y
