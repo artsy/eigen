@@ -11,10 +11,12 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
 
         var state: NSMutableDictionary!
         var subject: LiveAuctionStateReconciler!
+        let sale = stub_auctionSale()
+        let lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0) }
 
         beforeEach {
             state = ["fullLotStateById": [:]]
-            subject = LiveAuctionStateReconciler(saleArtworks: [])
+            subject = LiveAuctionStateReconciler(saleArtworks: lots)
         }
 
         it("doesn't send current lot if unspecified") {
@@ -29,20 +31,16 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
         describe("with a current lot") {
 
             beforeEach {
-                state["currentLotId"] = "54c7ecc27261692b5e420600"
+                state["currentLotId"] = lots[0].lotId
             }
 
-            pending("sends current lot") {
-                state["currentLotId"] = "54c7ecc27261692b5e420600"
-                var currentLot: LiveAuctionLotViewModelType?
-                subject.currentLotSignal.subscribe { currentLot = $0 }
-
+            it("sends current lot") {
                 subject.updateState(state)
 
-                expect(currentLot).toNot( beNil() )
+                expect(subject.currentLotSignal.peek()).toNot( beNil() )
             }
 
-            pending("does not send current lot if it has not changed") {
+            it("does not send current lot if it has not changed") {
                 var currentLotInvocations = 0
                 subject.currentLotSignal.subscribe { _ in currentLotInvocations += 1 }
 
@@ -52,11 +50,11 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 expect(currentLotInvocations) == 1
             }
 
-            pending("sends new current lot when the lot changes") {
+            it("sends new current lot when the lot changes") {
                 var currentLotInvocations = 0
                 subject.currentLotSignal.subscribe { _ in currentLotInvocations += 1 }
                 let newState = NSMutableDictionary(dictionary: state)
-                newState["currentLotId"] = "zomg-a-new-id"
+                newState["currentLotId"] = lots[1].lotId
 
                 subject.updateState(state)
                 subject.updateState(newState)
@@ -65,19 +63,15 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
             }
 
             pending("updates lot view model with new events") {
-
             }
 
             pending("doesn't update lot view model with events that aren't new") {
-
             }
 
-            pending("updates lot view model with online asking price") {
-
+            pending("updates lot view model with asking price") {
             }
 
             pending("updates lot view model with reserve status") {
-
             }
         }
     }
