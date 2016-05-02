@@ -33,6 +33,7 @@
   - http://makeitopen.com
   - https://github.com/fbsamples/f8app/
   - http://facebook.github.io/react-native/docs/getting-started.html
+  - http://beginning-mobile-app-development-with-react-native.com/book-preview.html
 
 * Relay:
   - https://facebook.github.io/relay/docs/getting-started.html
@@ -48,3 +49,6 @@
   - http://flowtype.org/docs/type-annotations.html
   - http://flowtype.org/docs/react.html
   - http://flowtype.org/docs/quick-reference.html (and the rest of the language reference)
+
+* Flexbox:
+  - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
