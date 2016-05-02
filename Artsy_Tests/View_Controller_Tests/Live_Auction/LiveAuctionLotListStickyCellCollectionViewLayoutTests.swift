@@ -18,6 +18,7 @@ class LiveAuctionLotListStickyCellCollectionViewLayoutTests: QuickSpec {
 
         beforeEach {
             subject = LiveAuctionLotListStickyCellCollectionViewLayout()
+            subject.setActiveIndex(0)
             collectionView = UICollectionView(frame: frame, collectionViewLayout: subject)
             collectionView.registerClass(Test_CollectionViewCell.self, forCellWithReuseIdentifier: Test_CollectionViewDataSource.CellIdentifier)
             dataSource = Test_CollectionViewDataSource()
@@ -32,7 +33,7 @@ class LiveAuctionLotListStickyCellCollectionViewLayoutTests: QuickSpec {
             expect(container) == snapshot()
         }
 
-        pending("looks good when stuck to the top") {
+        it("looks good when stuck to the top") {
             collectionView.setContentOffset(CGPoint(x: 0, y: 100), animated: false) // simulates a scroll
             expect(container) == snapshot()
         }
