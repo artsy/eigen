@@ -331,6 +331,7 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"routes live auctions", ^{
+            [AROptions setBool:YES forOption:AROptionsEnableNativeLiveAuctions];
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
 
