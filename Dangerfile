@@ -41,17 +41,18 @@ rescue e
   fail("CHANGELOG isn't legit YAML")
 end
 
-build_file = File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_test_raw.log")
+build_file = File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_build_raw.log")
+test_file = File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_test_raw.log")
 
 # So if there's snapshot fails, we should also fail danger, but we can make the thing clickable in a comment instead of hidden in the log
 # Note: this may break in a future build of Danger, I am debating sandboxing the runner from ENV vars.
-build_log = File.read build_file
-snapshots_url = build_log.match(%r{https://eigen-ci.s3.amazonaws.com/\d+/index.html})
+test_log = File.read test_file
+snapshots_url = test_log.match(%r{https://eigen-ci.s3.amazonaws.com/\d+/index.html})
 fail("There were [snapshot errors](#{snapshots_url})") if snapshots_url
 
 # Look for unstubbed networking requests, as these can be a source of test flakiness
 unstubbed_regex = /   Inside Test: -\[(\w+) (\w+)/m
-if build_log.match(unstubbed_regex)
+if test_log.match(unstubbed_regex)
   output = "#### Found unstubbbed networking requests\n"
   build_log.scan(unstubbed_regex).each do |class_and_test|
     class_name = class_and_test[0]
@@ -69,7 +70,7 @@ most_expensive_swift_table = `cat #{build_file} | egrep '\.[0-9]ms' | sort -t ".
 time_values = most_expensive_swift_table.lines.map { |line| line.split.first.to_i }
 
 require_relative "config/enumerable_stats"
-outliers = time_values.valuesOutsideStandardDeviation(3)
+outliers = time_values.outliers(3)
 
 if outliers.any?
   warn("Detected some Swift building time outliers")
@@ -85,5 +86,4 @@ if outliers.any?
 
   markdown(warnings.join)
 end
-
 

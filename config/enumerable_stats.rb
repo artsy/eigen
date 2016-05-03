@@ -21,7 +21,7 @@ module Enumerable
     return Math.sqrt(self.sample_variance)
   end
 
-  def valuesOutsideStandardDeviation(deviation)
+  def outliers(deviation)
     m = self.mean
     sd = self.standard_deviation
     self.select { |n| (m-n).abs > (deviation * sd) }
