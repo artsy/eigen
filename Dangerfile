@@ -61,16 +61,29 @@ if build_log.match(unstubbed_regex)
   warn(output)
 end
 
+# look at the top 1000 symbols
+most_expensive_swift_table = `cat #{build_file} | egrep '\.[0-9]ms' | sort -t "." -k 1 -n | tail -1000 | sort -t "." -k 1 -n -r`
 
-### Keeping our build times reasonable by constant vigilence on swift compile time
-callout_time_ms = 100
-most_expensive_swift_table = `cat #{build_file} | egrep '\.[0-9]ms' | sort -t "." -k 1 -n | tail -10 | sort -t "." -k 1 -n -r`
+# each line looks like "29.2ms  /Users/distiller/eigen/Artsy/View_Controllers/Live_Auctions/LiveAuctionLotViewController.swift:50:19    @objc override func viewDidLoad()"
+# Looks for outliers based on http://stackoverflow.com/questions/5892408/inferential-statistics-in-ruby/5892661#5892661
+time_values = most_expensive_swift_table.lines.map { |line| line.split.first.to_i }
 
-# looks like "29.2ms  /Users/distiller/eigen/Artsy/View_Controllers/Live_Auctions/LiveAuctionLotViewController.swift:50:19    @objc override func viewDidLoad()"
-most_expensive_symbol_time_ms = most_expensive_swift_table.split("ms").first.to_i
+require_relative "config/enumerable_stats"
+outliers = time_values.valuesOutsideStandardDeviation(3)
 
-if most_expensive_symbol_time_ms > callout_time_ms
-  markdown("### Detected a slow Swift build")
-  markdown("```\n#{most_expensive_symbol_time_ms}\n```")
+if outliers.any?
+  warn("Detected some Swift building time outliers")
+
+  current_branch = env.request_source.pr_json["head"]["ref"]
+  warnings = most_expensive_swift_table.lines[0...outliers.count].map do |line|
+    time, location, function_name = line.split "\t"
+    github_loc = location.gsub("/Users/distiller/eigen", "/artsy/eigen/tree/#{current_branch}")
+    github_loc_code = github_loc.split(":")[0...-1].join("#L")
+    name = File.basename(location).split(":").first
+    "#{time} - [#{name}](#{github_loc_code}) - #{function_name}"
+  end
+
+  markdown(warnings.join)
 end
+
 
