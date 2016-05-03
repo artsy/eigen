@@ -21,7 +21,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
-@interface ARPersonalizeViewController () <UITextFieldDelegate, PersonalizeNetworkDelegate>
+@interface ARPersonalizeViewController () <UITextFieldDelegate, ARPersonalizeNetworkDelegate, ARPersonalizeContainer>
 
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 
@@ -135,6 +135,7 @@
 - (void)addBudgetTable
 {
     self.budgetTable = [[ARPriceRangeViewController alloc] init];
+    self.budgetTable.delegate = self;
     [self.view addSubview:self.budgetTable.view];
 
     [self.budgetTable.view constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
@@ -247,8 +248,7 @@
 - (void)categoryFollowed:(Gene *)category
 {
     self.followedAtLeastOneCategory = YES;
-    [self.onboardingNavigationItems enableNextStep];
-    [self.onboardingNavigationItems hideWarning];
+    [self allowUserToContinue];
 
     // suggest more categories
     // which API to use, that is the question
@@ -256,6 +256,13 @@
 
 - (void)budgetSelected
 {
+    [self allowUserToContinue];
+}
+
+- (void)allowUserToContinue
+{
+    [self.onboardingNavigationItems enableNextStep];
+    [self.onboardingNavigationItems hideWarning];
 }
 
 - (void)reportError:(NSError *)error

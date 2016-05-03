@@ -79,6 +79,8 @@
 
     AROnboardingFollowableTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.follow.image = [UIImage imageNamed:@"followButtonChecked"];
+
+    [self.delegate budgetSelected];
 }
 
 
