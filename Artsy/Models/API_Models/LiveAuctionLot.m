@@ -6,7 +6,7 @@
 @interface LiveAuctionLot ()
 
 @property (nonatomic, assign, readwrite) ARReserveStatus reserveStatus;
-@property (nonatomic, assign, readwrite) UInt64 onlineAskingPriceCents;
+@property (nonatomic, assign, readwrite) UInt64 askingPriceCents;
 @property (nonatomic, copy, readwrite) NSArray<NSString *> *eventIDs;
 
 @end
@@ -28,7 +28,7 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        ar_keypath(LiveAuctionLot.new, liveAuctionLotID) : @"id",
+        ar_keypath(LiveAuctionLot.new, liveAuctionLotID) : @"_id",
         ar_keypath(LiveAuctionLot.new, artworkTitle) : @"artwork.title",
         ar_keypath(LiveAuctionLot.new, artworkDate) : @"artwork.date",
         ar_keypath(LiveAuctionLot.new, artistName) : @"artwork.artist.name",
@@ -39,12 +39,12 @@
 
 - (NSURL *)urlForThumbnail
 {
-    return [NSURL URLWithString:self.imageDictionary[@"large"][@"url"]];
+    return [NSURL URLWithString:self.imageDictionary[@"large"]];
 }
 
 - (NSURL *)urlForProfile
 {
-    return [NSURL URLWithString:self.imageDictionary[@"thumb"][@"url"]];
+    return [NSURL URLWithString:self.imageDictionary[@"thumb"]];
 }
 
 - (CGSize)imageProfileSize
@@ -74,9 +74,9 @@
 
 - (BOOL)updateOnlineAskingPrice:(UInt64)newOnlineAskingPrice
 {
-    NSInteger currentAskingPrice = self.onlineAskingPriceCents;
+    NSInteger currentAskingPrice = self.askingPriceCents;
     if (currentAskingPrice != newOnlineAskingPrice) {
-        self.onlineAskingPriceCents = newOnlineAskingPrice;
+        self.askingPriceCents = newOnlineAskingPrice;
         return YES;
     } else {
         return NO;

@@ -17,6 +17,7 @@ protocol LiveAuctionLotViewModelType: class {
     var estimateString: String { get }
     var lotPremium: String { get }
     var lotName: String { get }
+    var lotID: String { get }
     var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: NSURL { get }
     var urlForProfile: NSURL { get }
@@ -36,6 +37,12 @@ protocol LiveAuctionLotViewModelType: class {
     var newEventSignal: Observable<LiveAuctionEventViewModel> { get }
 }
 
+extension LiveAuctionLotViewModelType {
+    var lotIndexDisplayString: String {
+        return "Lot \(lotIndex + 1)"
+    }
+}
+
 class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     private let model: LiveAuctionLot
@@ -52,8 +59,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         self.model = lot
 
         reserveStatusSignal.update(lot.reserveStatus)
-        askingPriceSignal.update(lot.onlineAskingPriceCents)
+        askingPriceSignal.update(lot.askingPriceCents)
     }
+
     func lotStateWithViewModel(viewModel: LiveAuctionViewModelType) -> LotState {
         guard let distance = viewModel.distanceFromCurrentLot(model) else {
             return .ClosedLot
@@ -65,8 +73,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
         return auctionViewModel
-            .currentLotIDSignal
-            .map { [weak self, weak auctionViewModel] currentLotID -> LotState in
+            .currentLotSignal
+            .map { [weak self, weak auctionViewModel] currentLot -> LotState in
                 guard let sSelf = self, sAuctionViewModel = auctionViewModel else { return .ClosedLot }
                 return sSelf.lotStateWithViewModel(sAuctionViewModel)
             }
@@ -92,6 +100,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.artworkTitle
     }
 
+    var lotID: String {
+        return model.liveAuctionLotID
+    }
+
     var lotArtworkCreationDate: String? {
         return model.artworkDate
     }
@@ -105,7 +117,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var lotIndex: Int {
-        return model.position
+        return model.position - 1
     }
 
     var liveAuctionLotID: String {
@@ -113,9 +125,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var currentLotValue: UInt64 {
-        // TODO: is onlineAskingPriceCents correct? not sure from JSON
+        // TODO: is askingPriceCents correct? not sure from JSON
         //       maybe we need to look through the events for the last bid?
-        return LiveAuctionBidViewModel.nextBidCents(model.onlineAskingPriceCents)
+        return LiveAuctionBidViewModel.nextBidCents(model.askingPriceCents)
     }
 
     var currentLotValueString: String {

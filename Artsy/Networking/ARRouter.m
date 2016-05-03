@@ -995,29 +995,35 @@ static NSString *hostFromString(NSString *string)
     // Ending spaces are to avoid stripping newlines characters later on.
     NSString *query = [NSString stringWithFormat:@"\
 {\
-  sale(id: \"%@\") { \
-    sale_artworks { \
-      id \
-      position \
-      currency \
-      symbol \
-      reserve_status \
-      low_estimate_cents \
-      high_estimate_cents \
-      amount_cents \
-      artwork { \
-        title \
-        artist { \
-          name \
-        } \
-        image { \
-          width \
-          height \
-          url(version: \"large\") \
-        } \
-      } \
-    } \
-  } \
+  sale(id: \"%@\") {\
+    _id\
+    id\
+    start_at\
+    end_at\
+    name\
+    is_with_buyers_premium\
+    description\
+    sale_artworks {\
+      id\
+      position\
+      currency\
+      symbol\
+      reserve_status\
+      low_estimate_cents\
+      high_estimate_cents\
+      currency\
+      artwork {\
+        title\
+        artist {\
+          name\
+        }\
+        image {\
+          large: url(version: \"large\")\
+          thumb: url(version: \"thumb\")\
+        }\
+      }\
+    }\
+  }\
 }",
                                                  saleID];
 

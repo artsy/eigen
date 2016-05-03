@@ -2,6 +2,7 @@
 #import "ARAppConstants.h"
 #import "ARLogger.h"
 #import "ARMacros.h"
+#import "LiveBidder.h"
 
 
 @implementation LiveEvent
@@ -10,10 +11,10 @@
 {
     NSString *type = [dictionaryValue valueForKeyPath:@"type"];
     Class klass;
-    if ([type isEqualToString:@"open"]) {
+    if ([type isEqualToString:@"BiddingOpened"]) {
         klass = LiveEventLotOpen.class;
 
-    } else if ([type isEqualToString:@"bid"]) {
+    } else if ([type isEqualToString:@"FirstPriceBidPlaced"]) {
         klass = LiveEventBid.class;
 
     } else if ([type isEqualToString:@"fair_warning"]) {
@@ -22,12 +23,12 @@
     } else if ([type isEqualToString:@"final_call"]) {
         klass = LiveEventFinalCall.class;
 
-    } else if ([type isEqualToString:@"closed"]) {
+    } else if ([type isEqualToString:@"BiddingClosed"]) {
         klass = LiveEventClosed.class;
 
     } else {
         ARErrorLog(@"Error! Unknown event type '%@'", type);
-        NSAssert(NO, @"Got an unknown event type");
+        NSAssert(NO, @"Got an unknown event type '%@'", type);
         return nil;
     }
 
@@ -37,12 +38,25 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        ar_keypath(LiveEvent.new, eventID) : @"id",
-        ar_keypath(LiveEventBid.new, source) : @"source",
+        ar_keypath(LiveEvent.new, eventID) : @"eventId",
     };
 }
 
++ (NSValueTransformer *)bidderJSONTransformer
+{
+    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[LiveBidder class]];
+}
+
 - (LiveEventType)eventType { return LiveEventTypeUnknown; }
+
+- (NSString *)sourceOrDefaultString
+{
+    if (self.bidder == nil) {
+        return @"Bid";
+    } else {
+        return self.bidder.bidderDisplayType;
+    }
+}
 
 @end
 

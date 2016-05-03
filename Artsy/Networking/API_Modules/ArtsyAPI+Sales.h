@@ -24,11 +24,6 @@
                         success:(void (^)(NSArray<SaleArtwork *> *sale))success
                         failure:(void (^)(NSError *error))failure;
 
-+ (void)getLiveSaleStateWithSaleID:(NSString *)saleID
-                              host:(NSString *)host
-                           success:(void (^)(id state))success
-                           failure:(void (^)(NSError *error))failure;
-
 + (void)getLiveSaleStaticDataWithSaleID:(NSString *)saleID
                                 success:(void (^)(id state))success
                                 failure:(void (^)(NSError *error))failure;

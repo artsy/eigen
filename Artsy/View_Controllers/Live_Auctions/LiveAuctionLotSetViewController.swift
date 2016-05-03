@@ -8,7 +8,6 @@ import Interstellar
 import UICKeyChainStore
 
 class LiveAuctionLotSetViewController: UIViewController {
-    let saleID: String
     let salesPerson: LiveAuctionsSalesPersonType
 
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
@@ -16,11 +15,11 @@ class LiveAuctionLotSetViewController: UIViewController {
     var pageController: UIPageViewController!
     var hasBeenSetup = false
 
-    init(saleID: String, salesPerson: LiveAuctionsSalesPersonType) {
-        self.saleID = saleID
+    init(salesPerson: LiveAuctionsSalesPersonType) {
+
         self.salesPerson = salesPerson
         super.init(nibName: nil, bundle: nil)
-        self.title = saleID;
+        self.title = salesPerson.liveSaleID;
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -56,9 +55,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         progress.alignLeading("0", trailing: "0", toView: view)
         progress.alignBottomEdgeWithView(view, predicate: "-165")
 
-        salesPerson.updatedStateSignal.subscribe { [weak self] _ in
-            self?.setupWithInitialData()
-        }
+        setupWithInitialData()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -104,7 +101,8 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func moreInfo() {
-        AuctionSaleNetworkModel().fetchSale(saleID).subscribe { result in
+        // TODO: The AuctionSaleNetworkModel probably has the Sale already fetched and cached, we should have a fetchSaleOrMostRecentSale() or something similar.
+        AuctionSaleNetworkModel().fetchSale(salesPerson.liveSaleID).subscribe { result in
             guard let saleInfo = result.value else { return }
 
             let saleVM = SaleViewModel(sale: saleInfo, saleArtworks: [])
@@ -114,7 +112,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func showLots() {
-        let lotListController = LiveAuctionLotListViewController(lots: salesPerson.lots, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel!)
+        let lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
         lotListController.selectedIndex = currentIndex()
         presentViewController(lotListController, animated: true, completion: nil)
@@ -181,10 +179,15 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPersonType!
 
     func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
-        guard let auctionViewModel = salesPerson.auctionViewModel else { return nil }
-        guard let lotViewModel = salesPerson.lotViewModelForIndex(index) else { return nil }
+        guard 0..<salesPerson.lotCount ~= index else { return nil }
+        let lotViewModel = salesPerson.lotViewModelForIndex(index)
 
-        let auctionVC =  LiveAuctionLotViewController(index: index, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: salesPerson.currentLotSignal)
+        let auctionVC =  LiveAuctionLotViewController(
+            index: index,
+            auctionViewModel: salesPerson.auctionViewModel,
+            lotViewModel: lotViewModel,
+            currentLotSignal: salesPerson.currentLotSignal
+        )
         return auctionVC
     }
 

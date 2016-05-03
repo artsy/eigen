@@ -1,52 +1,60 @@
 import Foundation
-import SocketIOClientSwift
+import Interstellar
+import Starscream
 
 protocol SocketType: class {
-func on(event: SocketEvent, callback: [AnyObject] -> Void) -> NSUUID
-    func emit(event: SocketEvent, _ items: AnyObject...)
+    var onText: ((String) -> Void)? { get set }
+    var onConnect: ((Void) -> Void)? { get set }
+    var onDisconnect: ((NSError?) -> Void)? { get set }
+
+    func writeString(str: String)
+    func writePing()
 
     func connect()
     func disconnect()
 }
 
-@objc protocol LiveAuctionSocketCommunicatorDelegate: class {
-    func didUpdateAuctionState(state: AnyObject)
-}
-
 protocol LiveAuctionSocketCommunicatorType {
-    weak var delegate: LiveAuctionSocketCommunicatorDelegate? { get set }
+    var updatedAuctionState: Observable<AnyObject> { get }
 
     func bidOnLot(lotID: String)
     func leaveMaxBidOnLot(lotID: String)
 }
 
 class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
-    typealias SocketCreator = String -> SocketType
+    typealias SocketCreator = (host: String, saleID: String, token: String) -> SocketType
     private let socket: SocketType
-    private let saleID: String
+    private let causalitySaleID: String
+    private var timer: NSTimer? // Heartbeat to keep socket connection alive.
 
-    weak var delegate: LiveAuctionSocketCommunicatorDelegate?
+    let updatedAuctionState = Observable<AnyObject>()
 
-    convenience init(host: String, saleID: String, accessToken: String) {
-        self.init(host: host, accessToken: accessToken, saleID: saleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
+    convenience init(host: String, causalitySaleID: String, accessToken: String) {
+        self.init(host: host, accessToken: accessToken, causalitySaleID: causalitySaleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
     }
 
-    init(host: String, accessToken: String, saleID: String, socketCreator: SocketCreator) {
-        socket = socketCreator(host)
-        self.saleID = saleID
+    init(host: String, accessToken: String, causalitySaleID: String, socketCreator: SocketCreator) {
+
+        socket = socketCreator(host: host, saleID: causalitySaleID, token: accessToken)
+        self.causalitySaleID = causalitySaleID
 
         super.init()
 
-        setupSocketWithAccessToken(accessToken, saleID: saleID)
+        setupSocket()
     }
 
     deinit {
         socket.disconnect()
+        timer?.invalidate()
+        timer = nil
     }
 
-    class func defaultSocketCreator() -> String -> SocketType {
-        return { host in
-            return SocketIOClient(socketURL: NSURL(string: host)!, options: [.Reconnects(true), .Log(false)])
+    class func defaultSocketCreator() -> SocketCreator {
+        return { host, saleID, token in
+            // TODO: incorporate token once JWT is complete.
+            // TODO: Talk to Alan about claim_userId and claim_bidderId.
+            let url = NSURL(string: "\(host)/socket?claim_role=bidder&claim_saleId=\(saleID)&claim_userId=4C-U2DgqWh&claim_bidderId=4C-U2DgqWh")
+            return WebSocket(url: url!)
         }
     }
 }
@@ -54,35 +62,49 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
 private typealias SocketSetup = LiveAuctionSocketCommunicator
 private extension SocketSetup {
 
+    // Small class for breaking the reference cycle between the communicator and the timer.
+    class TimerCaller {
+        let callback: () -> Void
+        init (callback: () -> Void) { self.callback = callback }
+        @objc func invoke() { callback() }
+    }
+
     /// Connects to, then authenticates against, the socket. Listens for sale events once authenticated.
-    func setupSocketWithAccessToken(accessToken: String, saleID: String) {
-        self.authenticateWithAccessToken(accessToken, saleID: saleID)
+    func setupSocket() {
+        let caller = TimerCaller(callback: applyUnowned(self, LiveAuctionSocketCommunicator.pingSocket)) // Only allowed because we invalidate the timer in deinit
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: caller, selector: #selector(TimerCaller.invoke), userInfo: nil, repeats: true)
+        socket.onText = applyUnowned(self, LiveAuctionSocketCommunicator.receivedText)
+        socket.onConnect = { print("Socket connected") }
+        socket.onDisconnect = applyUnowned(self, LiveAuctionSocketCommunicator.socketDisconnected)
         socket.connect()
     }
 
-    func authenticateWithAccessToken(accessToken: String, saleID: String) {
-        socket.on(.Connect) { [weak socket, weak self] data in
-            print("Connected: \(data)")
-
-            socket?.emit(.Authentication, ["accessToken": accessToken, "saleId": saleID])
-            socket?.on(.Authenticated) { data in
-                // TODO: Handle auth failure.
-                print("Authenticated: \(data)")
-                self?.listenForSaleEvents()
-            }
-        }
+    func socketDisconnected(error: NSError?) {
+        print ("Socket disconnected: \(error)")
+        // TODO: Handle error condition?
+        socket.connect()
     }
 
-    func listenForSaleEvents() {
-        print("Joining sale")
-        socket.emit(.JoinSale, saleID)
+    func pingSocket() {
+        socket.writePing()
+    }
 
-        print("Listening for socket events.")
-        socket.on(.UpdateAuctionState) { [weak self] data in
-            print("Updated auction state: \(data)")
-            if let state = data.first {
-                self?.delegate?.didUpdateAuctionState(state)
-            }
+    func receivedText(text: String) {
+        guard let data = text.dataUsingEncoding(NSUTF8StringEncoding),
+              let _json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
+              let json = _json as? [String: AnyObject] else {
+            // TODO: Handle error
+            return
+        }
+
+        let socketEventType = (json["type"] as? String) ?? "(No Event Specified)"
+        print("Received socket event type: \(socketEventType)")
+
+        switch socketEventType {
+        case "InitialFullSaleState":
+            updatedAuctionState.update(json)
+        default:
+            print("Received unknown socket event type.")
         }
     }
 }

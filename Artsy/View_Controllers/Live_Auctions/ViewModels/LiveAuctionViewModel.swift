@@ -7,7 +7,7 @@ protocol LiveAuctionViewModelType: class {
     var startDate: NSDate { get }
     var lotCount: Int { get }
     var saleAvailabilitySignal: Observable<SaleAvailabilityState> { get }
-    var currentLotIDSignal: Observable<String> { get }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int?
 }
 
@@ -15,17 +15,15 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
     private var sale: LiveSale
     private var lastUpdatedSaleAvailability: SaleAvailabilityState
-    private var lastUpdatedCurrentLotID: String?
 
-    init(sale: LiveSale, currentLotID: String?) {
+    let saleAvailabilitySignal = Observable<SaleAvailabilityState>()
+    let currentLotSignal: Observable<LiveAuctionLotViewModelType>
+
+    init(sale: LiveSale, currentLotSignal: Observable<LiveAuctionLotViewModelType>) {
         self.sale = sale
         self.lastUpdatedSaleAvailability = sale.saleAvailability
         saleAvailabilitySignal.update(lastUpdatedSaleAvailability)
-        lastUpdatedCurrentLotID = currentLotID
-
-        if let lastUpdatedCurrentLotID = lastUpdatedCurrentLotID {
-            currentLotIDSignal.update(lastUpdatedCurrentLotID)
-        }
+        self.currentLotSignal = currentLotSignal
     }
 
     var startDate: NSDate {
@@ -33,32 +31,20 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
     }
 
     var lotCount: Int {
-        return sale.lotIDs.count
+        return sale.saleArtworks.count
     }
-
-    let saleAvailabilitySignal = Observable<SaleAvailabilityState>()
-    let currentLotIDSignal = Observable<String>()
 
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
-        let currentIndex =  sale.lotIDs.indexOf(lastUpdatedCurrentLotID ?? "")
-        let lotIndex = sale.lotIDs.indexOf(lot.liveAuctionLotID)
+        guard let lastUpdatedCurrentLot = currentLotSignal.peek() else { return nil }
+
+        let lotIDs = sale.saleArtworks.map { $0.liveAuctionLotID }
+
+        let currentIndex = lotIDs.indexOf(lastUpdatedCurrentLot.lotID)
+        let lotIndex = lotIDs.indexOf(lot.liveAuctionLotID)
         guard let current = currentIndex, lot = lotIndex else { return nil }
+
         return (current - lot) * -1
-    }
-
-    func updateWithNewSale(newSale: LiveSale, currentLotID: String?) {
-        if lastUpdatedSaleAvailability != newSale.saleAvailability {
-            lastUpdatedSaleAvailability = newSale.saleAvailability
-            saleAvailabilitySignal.update(newSale.saleAvailability)
-        }
-
-        if let currentLotID = currentLotID where currentLotID != lastUpdatedCurrentLotID {
-            lastUpdatedCurrentLotID = currentLotID
-            currentLotIDSignal.update(currentLotID)
-        }
-
-        self.sale = newSale
     }
 }

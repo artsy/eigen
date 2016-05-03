@@ -2,6 +2,12 @@ import Interstellar
 @testable
 import Artsy
 
+func stub_auctionSale() -> LiveSale {
+    let stateFetcher = Stubbed_StaticDataFetcher()
+    return stateFetcher.fetchStaticData().peekValue()!
+}
+
 func stub_auctionSalesPerson() -> LiveAuctionsSalesPersonType {
-    return LiveAuctionsSalesPerson(saleID: "saleID", accessToken: "abcdefg", stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
+    let sale = stub_auctionSale()
+    return LiveAuctionsSalesPerson(sale: sale, accessToken: "abcdefg", stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
 }

@@ -23,14 +23,14 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             var subject: LiveAuctionHistoryCell!
 
             it("looks right for open") {
-                let event = LiveEvent(JSON: ["type" : "open", "id" : "OK"])
+                let event = LiveEvent(JSON: ["type" : "BiddingOpened", "id" : "OK"])
 
                 subject = self.setupCellWithEvent(event)
                 expect(subject).to( haveValidSnapshot() )
             }
 
             it("looks right for closed") {
-                let event = LiveEvent(JSON: ["type" : "closed", "id" : "OK"])
+                let event = LiveEvent(JSON: ["type" : "BiddingClosed", "id" : "OK"])
 
                 subject = self.setupCellWithEvent(event)
                 expect(subject).to( haveValidSnapshot() )
@@ -38,8 +38,10 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
 
             it("looks right for bid") {
                 let event = LiveEvent(JSON: [
-                    "type" : "bid", "id" : "ok",
-                    "source" : "floor", "amountCents" : 555_000
+                    "type" : "FirstPriceBidPlaced",
+                    "id" : "ok",
+                    "amountCents" : 555_000,
+                    "bidder" : ["type": "OfflineBidder","bidderId": "LmnBN-aEci"]
                 ])
 
                 subject = self.setupCellWithEvent(event)

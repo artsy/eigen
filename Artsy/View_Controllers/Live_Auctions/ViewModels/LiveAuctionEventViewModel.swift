@@ -10,8 +10,9 @@ class LiveAuctionEventViewModel : NSObject {
     var eventTitle: NSAttributedString {
         switch event.eventType() {
         case .Bid:
+
             guard let event = event as? LiveEventBid else { return attributify("BID", .blackColor())  }
-            return attributify(event.source.uppercaseString, .blackColor())
+            return attributify(event.sourceOrDefaultString.uppercaseString, .blackColor())
 
         case .Closed: return  attributify("CLOSED", .blackColor())
         case .Warning: return attributify("WARNING", yellow())

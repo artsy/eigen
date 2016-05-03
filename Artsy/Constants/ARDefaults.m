@@ -49,7 +49,7 @@ NSString *const AROnboardingPromptThresholdDefault = @"eigen-onboard-prompt-thre
         ARStagingPhoneWebURLDefault : @"http://m-staging.artsy.net",
         ARStagingPadWebURLDefault : @"https://staging.artsy.net",
         ARStagingMetaphysicsURLDefault : @"http://metaphysics-staging.artsy.net",
-        ARStagingLiveAuctionSocketURLDefault : @"https://prediction-staging.artsy.net"
+        ARStagingLiveAuctionSocketURLDefault : @"ws://localhost:8080"
     }];
 }
 

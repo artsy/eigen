@@ -2,7 +2,7 @@
 
 #import "LiveSale.h"
 #import "ARMacros.h"
-#import "BuyersPremium.h"
+#import "LiveAuctionLot.h"
 #import "ARStandardDateFormatter.h"
 #import "ARSystemTime.h"
 
@@ -13,11 +13,12 @@
 {
     return @{
         ar_keypath(LiveSale.new, liveSaleID) : @"id",
+        ar_keypath(LiveSale.new, causalitySaleID) : @"_id",
         ar_keypath(LiveSale.new, startDate) : @"startAt",
         ar_keypath(LiveSale.new, endDate) : @"endAt",
-        ar_keypath(LiveSale.new, buyersPremium) : @"buyers_premium",
+        ar_keypath(LiveSale.new, hasBuyersPremium) : @"is_with_buyers_premium",
         ar_keypath(LiveSale.new, saleDescription) : @"description",
-        ar_keypath(LiveSale.new, lotIDs) : @"lots",
+        ar_keypath(LiveSale.new, saleArtworks) : @"sale_artworks",
     };
 }
 
@@ -29,6 +30,11 @@
 + (NSValueTransformer *)endDateJSONTransformer
 {
     return [ARStandardDateFormatter sharedFormatter].stringTransformer;
+}
+
++ (NSValueTransformer *)saleArtworksJSONTransformer
+{
+    return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[LiveAuctionLot class]];
 }
 
 - (BOOL)isCurrentlyActive

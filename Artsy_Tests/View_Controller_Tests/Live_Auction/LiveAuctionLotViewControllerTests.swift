@@ -64,7 +64,7 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var startDate = NSDate().dateByAddingTimeInterval(-3600)
     var lotCount = 3
     var saleAvailabilitySignal = Observable(SaleAvailabilityState.Active)
-    var currentLotIDSignal = Observable<String>()
+    var currentLotSignal = Observable<LiveAuctionLotViewModelType>()
 
     var distance: Int?
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
@@ -76,6 +76,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var lotArtist = "Artist Name"
     var estimateString = "$Estimate"
     var lotName = "Lot Name"
+    var lotID = "lot-id"
     var lotPremium = "Lot Premium"
     var lotArtworkCreationDate: String? = "1985"
     var urlForThumbnail = NSURL(string: "http://example.com/")!
@@ -105,10 +106,11 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
 }
 
 let liveEventJSON = [
-    "id": "f89b33d8-b4ac-4cd1-a44f-fd8a0b7d669b",
-    "type": "bid",
+    "lotId": "54c7ed2a7261692bfa910200",
+    "eventId": "d74ee40f-9127-416c-8de7-21c0587df0d0",
     "amountCents": 450000,
-    "source": "floor",
-    "isConfirmed": true
+    "createdAt": "2016-04-28T20:41:05.240Z",
+    "type": "FirstPriceBidPlaced",
+    "bidder": ["type":"OfflineBidder", "bidderId": "LmnBN-aFci" ]
 ]
 

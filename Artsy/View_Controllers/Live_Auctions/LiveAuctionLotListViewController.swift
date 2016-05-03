@@ -7,15 +7,17 @@ protocol LiveAuctionLotListViewControllerDelegate: class {
 }
 
 class LiveAuctionLotListViewController: UICollectionViewController {
-    let lots: [LiveAuctionLotViewModelType]
+    let salesPerson: LiveAuctionsSalesPersonType
     let currentLotSignal: Observable<LiveAuctionLotViewModelType>
     let stickyCollectionViewLayout: LiveAuctionLotListStickyCellCollectionViewLayout
     let auctionViewModel: LiveAuctionViewModelType
 
-    var selectedIndex: Int = 0 {
+    var selectedIndex: Int? = 0 {
         didSet {
-            let path = NSIndexPath(forRow: selectedIndex, inSection: 0)
-            collectionView?.selectItemAtIndexPath(path, animated: false, scrollPosition: .None)
+            if let selectedIndex = selectedIndex {
+                let path = NSIndexPath(forRow: selectedIndex, inSection: 0)
+                collectionView?.selectItemAtIndexPath(path, animated: false, scrollPosition: .None)
+            }
         }
     }
 
@@ -23,8 +25,8 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
     private var currentLotSignalObserver: ObserverToken!
 
-    init(lots: [LiveAuctionLotViewModelType], currentLotSignal: Observable<LiveAuctionLotViewModelType>, auctionViewModel: LiveAuctionViewModelType) {
-        self.lots = lots
+    init(salesPerson: LiveAuctionsSalesPersonType, currentLotSignal: Observable<LiveAuctionLotViewModelType>, auctionViewModel: LiveAuctionViewModelType) {
+        self.salesPerson = salesPerson
         self.currentLotSignal = currentLotSignal
         self.stickyCollectionViewLayout = LiveAuctionLotListStickyCellCollectionViewLayout()
         self.auctionViewModel = auctionViewModel
@@ -52,14 +54,14 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     }
 
     func lotAtIndexPath(indexPath: NSIndexPath) -> LiveAuctionLotViewModelType {
-        return lots[indexPath.item]
+        return salesPerson.lotViewModelForIndex(indexPath.item)
     }
 }
 
 private typealias CollectionView = LiveAuctionLotListViewController
 extension CollectionView {
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return lots.count
+        return salesPerson.lotCount
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -73,8 +75,9 @@ extension CollectionView {
     }
 
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let oldSelectedIndex = NSIndexPath(forRow: selectedIndex, inSection: 0)
-        collectionView.deselectItemAtIndexPath(oldSelectedIndex, animated: true)
+        if let oldSelectedIndex = selectedIndex {
+            collectionView.deselectItemAtIndexPath(NSIndexPath(forRow: oldSelectedIndex, inSection: 0), animated: true)
+        }
 
         selectedIndex = indexPath.row
         delegate?.didSelectLotAtIndex(indexPath.item, forLotListViewController: self)
