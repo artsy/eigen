@@ -8,4 +8,6 @@
 
 - (void)setupHeaderViewWithTitle:(NSString *)title andProgress:(CGFloat)progress;
 
+- (void)hideSearchBar;
+
 @end

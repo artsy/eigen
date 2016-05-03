@@ -11,6 +11,8 @@
 @property (nonatomic, strong) UIView *progressBackgroundBar;
 @property (nonatomic, strong) UILabel *titleLabel;
 
+@property (nonatomic, strong) NSLayoutConstraint *searchHeightConstraint;
+
 @end
 
 
@@ -62,12 +64,16 @@
 
     [self addSubview:self.searchField];
 
-    [self.searchField constrainHeight:@"40"];
+    self.searchHeightConstraint = [self.searchField constrainHeight:@"40"];
     [self.searchField constrainTopSpaceToView:self.titleLabel predicate:@"20"];
     [self.searchField alignLeadingEdgeWithView:self predicate:@"15"];
     [self.searchField alignTrailingEdgeWithView:self predicate:@"-15"];
     self.searchField.tintColor = [UIColor blackColor];
 }
 
+- (void)hideSearchBar
+{
+    self.searchHeightConstraint.constant = 0;
+}
 
 @end

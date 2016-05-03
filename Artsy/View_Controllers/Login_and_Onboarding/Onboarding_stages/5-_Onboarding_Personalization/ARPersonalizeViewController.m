@@ -111,7 +111,9 @@
             break;
         case AROnboardingStagePersonalizeBudget:
             [self addBudgetTable];
+            [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" andProgress:0.7];
+            [self.headerView hideSearchBar];
             break;
         default:
             break;
@@ -252,6 +254,10 @@
     // which API to use, that is the question
 }
 
+- (void)budgetSelected
+{
+}
+
 - (void)reportError:(NSError *)error
 {
     if (error.code != NSURLErrorCancelled) {
@@ -280,6 +286,8 @@
             if (self.budgetTable.rangeValue) {
                 [self.delegate setPriceRangeDone:[self.budgetTable.rangeValue integerValue]];
                 [self.delegate personalizeBudgetDone];
+            } else {
+                [self.onboardingNavigationItems showWarning:@"Select a budget"];
             }
             break;
         default:
