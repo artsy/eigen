@@ -54,7 +54,7 @@ fail("There were [snapshot errors](#{snapshots_url})") if snapshots_url
 unstubbed_regex = /   Inside Test: -\[(\w+) (\w+)/m
 if test_log.match(unstubbed_regex)
   output = "#### Found unstubbbed networking requests\n"
-  build_log.scan(unstubbed_regex).each do |class_and_test|
+  test_log.scan(unstubbed_regex).each do |class_and_test|
     class_name = class_and_test[0]
     url = "https://github.com/search?q=#{class_name.gsub("Spec", "")}+repo%3Aartsy%2Feigen&ref=searchresults&type=Code&utf8=✓"
     output += "\n* [#{class_name}](#{url}) in `#{class_and_test[1]}`"
@@ -76,14 +76,15 @@ if outliers.any?
   warn("Detected some Swift building time outliers")
 
   current_branch = env.request_source.pr_json["head"]["ref"]
+  headings = "Time | Class | Function |\n| --- | ----- | ----- |"
   warnings = most_expensive_swift_table.lines[0...outliers.count].map do |line|
     time, location, function_name = line.split "\t"
     github_loc = location.gsub("/Users/distiller/eigen", "/artsy/eigen/tree/#{current_branch}")
     github_loc_code = github_loc.split(":")[0...-1].join("#L")
     name = File.basename(location).split(":").first
-    "#{time} - [#{name}](#{github_loc_code}) - #{function_name}"
+    "#{time} | [#{name}](#{github_loc_code}) | #{function_name}"
   end
 
-  markdown(warnings.join)
+  markdown(([headings] + warnings).join)
 end
 
