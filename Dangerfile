@@ -67,7 +67,7 @@ most_expensive_swift_table = `cat #{build_file} | egrep '\.[0-9]ms' | sort -t ".
 
 # each line looks like "29.2ms  /Users/distiller/eigen/Artsy/View_Controllers/Live_Auctions/LiveAuctionLotViewController.swift:50:19    @objc override func viewDidLoad()"
 # Looks for outliers based on http://stackoverflow.com/questions/5892408/inferential-statistics-in-ruby/5892661#5892661
-time_values = most_expensive_swift_table.lines.map { |line| line.split.first.to_i }
+time_values = most_expensive_swift_table.lines.map { |line| line.split.first.to_i }.reject { |value| value == 0 }
 
 require_relative "config/enumerable_stats"
 outliers = time_values.outliers(3)
