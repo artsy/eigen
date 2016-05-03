@@ -645,10 +645,22 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"fair_id" : fair.fairID }];
 }
 
++ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist
+{
+    NSDictionary *params = @{ @"artist" : @[ artist.artistID ],
+                              @"size" : @1 };
+    return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
+}
+
 + (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist
 {
     NSDictionary *params = @{ @"artist" : @[ artist.artistID ] };
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
+}
+
++ (NSURLRequest *)newArtistsTrendingRequest
+{
+    return [self requestWithMethod:@"GET" path:ARTrendingArtistsURL parameters:nil];
 }
 
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID

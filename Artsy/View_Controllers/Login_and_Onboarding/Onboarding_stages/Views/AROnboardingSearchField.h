@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 
 
-@interface AROnboardingSearchField : UITextField
+@interface AROnboardingSearchField : UIView
+
+@property (nonatomic, strong, readonly) UITextField *searchField;
 
 @end

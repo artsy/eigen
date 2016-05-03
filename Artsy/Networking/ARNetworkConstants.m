@@ -49,6 +49,7 @@ NSString *const ARArtistArtworksURLFormat = @"/api/v1/artist/%@/artworks";
 NSString *const ARArtistInformationURLFormat = @"/api/v1/artist/%@";
 
 NSString *const ARRelatedArtistsURL = @"/api/v1/related/artists";
+NSString *const ARTrendingArtistsURL = @"/api/v1/artists/trending";
 NSString *const ARSampleArtistsURL = @"/api/v1/artists/sample";
 
 NSString *const ARFollowArtistURL = @"/api/v1/me/follow/artist";
