@@ -31,7 +31,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
         describe("with a current lot") {
 
             beforeEach {
-                state["currentLotId"] = lots[0].lotId
+                state["currentLotId"] = lots[0].lotID
             }
 
             it("sends current lot") {
@@ -54,7 +54,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 var currentLotInvocations = 0
                 subject.currentLotSignal.subscribe { _ in currentLotInvocations += 1 }
                 let newState = NSMutableDictionary(dictionary: state)
-                newState["currentLotId"] = lots[1].lotId
+                newState["currentLotId"] = lots[1].lotID
 
                 subject.updateState(state)
                 subject.updateState(newState)

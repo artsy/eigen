@@ -53,10 +53,6 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         collectionView?.registerClass(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-
     func lotAtIndexPath(indexPath: NSIndexPath) -> LiveAuctionLotViewModelType {
         return salesPerson.lotViewModelForIndex(indexPath.item)
     }

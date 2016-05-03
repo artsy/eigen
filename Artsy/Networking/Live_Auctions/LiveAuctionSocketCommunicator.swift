@@ -62,6 +62,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
 private typealias SocketSetup = LiveAuctionSocketCommunicator
 private extension SocketSetup {
 
+    // Small class for breaking the reference cycle between the communicator and the timer.
     class TimerCaller {
         let callback: () -> Void
         init (callback: () -> Void) { self.callback = callback }

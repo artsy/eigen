@@ -99,7 +99,7 @@ private extension PrivateFunctions {
         guard let newCurrentLotID = newCurrentLotID else { return }
         guard newCurrentLotID != _currentLotID ?? "" else { return }
 
-        guard let newCurrentViewModel = saleArtworks.filter({ $0.lotId == newCurrentLotID }).first else { return }
+        guard let newCurrentViewModel = saleArtworks.filter({ $0.lotID == newCurrentLotID }).first else { return }
 
         self._currentLotSignal.update(newCurrentViewModel)
         _currentLotID = newCurrentLotID

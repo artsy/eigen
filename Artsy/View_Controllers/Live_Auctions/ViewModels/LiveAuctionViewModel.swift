@@ -41,7 +41,7 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
         let lotIDs = sale.saleArtworks.map { $0.liveAuctionLotID }
 
-        let currentIndex = lotIDs.indexOf(lastUpdatedCurrentLot.lotId)
+        let currentIndex = lotIDs.indexOf(lastUpdatedCurrentLot.lotID)
         let lotIndex = lotIDs.indexOf(lot.liveAuctionLotID)
         guard let current = currentIndex, lot = lotIndex else { return nil }
 

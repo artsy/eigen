@@ -76,7 +76,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var lotArtist = "Artist Name"
     var estimateString = "$Estimate"
     var lotName = "Lot Name"
-    var lotId = "lot-id"
+    var lotID = "lot-id"
     var lotPremium = "Lot Premium"
     var lotArtworkCreationDate: String? = "1985"
     var urlForThumbnail = NSURL(string: "http://example.com/")!
