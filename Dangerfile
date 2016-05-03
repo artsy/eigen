@@ -34,7 +34,6 @@ end
 
 
 # CHANGELOG should lint
-require "YAML"
 begin
   readme_yaml = File.read "CHANGELOG.yml"
   readme_data = YAML.load readme_yaml
@@ -65,7 +64,7 @@ end
 
 ### Keeping our build times reasonable by constant vigilence on swift compile time
 callout_time_ms = 100
-most_expensive_swift_table = `cat #{build_file} | egrep '\.[0-9]ms' | sort -t "." -k 1 -n -r | tail -10`
+most_expensive_swift_table = `cat #{build_file} | egrep '\.[0-9]ms' | sort -t "." -k 1 -n | tail -10 | sort -t "." -k 1 -n -r`
 
 # looks like "29.2ms  /Users/distiller/eigen/Artsy/View_Controllers/Live_Auctions/LiveAuctionLotViewController.swift:50:19    @objc override func viewDidLoad()"
 most_expensive_symbol_time_ms = most_expensive_swift_table.split("ms").first.to_i
