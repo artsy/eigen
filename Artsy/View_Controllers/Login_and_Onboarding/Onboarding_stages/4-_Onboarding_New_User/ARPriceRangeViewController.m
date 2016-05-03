@@ -2,7 +2,7 @@
 
 #import "ARFonts.h"
 #import "AROnboardingViewController.h"
-#import "AROnboardingTableViewCell.h"
+#import "AROnboardingFollowableTableViewCell.h"
 
 
 @interface ARPriceRangeViewController ()
@@ -34,7 +34,7 @@
     ];
 
 
-    [self.tableView registerClass:[AROnboardingTableViewCell class] forCellReuseIdentifier:@"StatusCell"];
+    [self.tableView registerClass:[AROnboardingFollowableTableViewCell class] forCellReuseIdentifier:@"OnboardingSearchCell"];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -46,8 +46,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"StatusCell"];
-    cell.textLabel.text = self.ranges[indexPath.row][@"display"];
+    AROnboardingFollowableTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OnboardingSearchCell"];
+    [cell prepareForBudgetUse];
+    cell.title.text = self.ranges[indexPath.row][@"display"];
     cell.accessoryType = UITableViewCellAccessoryNone;
     return cell;
 }
@@ -67,10 +68,17 @@
     return 44 + (5 * 2);
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _rangeValue = self.ranges[indexPath.row][@"range"];
+
+    // deselect the others
+    for (AROnboardingFollowableTableViewCell *otherCell in self.tableView.visibleCells) {
+        otherCell.follow.image = nil;
+    }
+
+    AROnboardingFollowableTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.follow.image = [UIImage imageNamed:@"followButtonChecked"];
 }
 
 

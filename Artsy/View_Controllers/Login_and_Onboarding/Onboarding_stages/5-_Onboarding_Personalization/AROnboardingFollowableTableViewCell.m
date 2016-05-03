@@ -7,6 +7,7 @@
 
 @interface AROnboardingFollowableTableViewCell ()
 
+@property (nonatomic, strong, readwrite) NSLayoutConstraint *imageWidthConstraint;
 
 @end
 
@@ -27,7 +28,8 @@
         [self addSubview:self.follow];
 
         [self.thumbnail alignLeadingEdgeWithView:self predicate:@"15"];
-        [self.thumbnail constrainWidth:@"50" height:@"50"];
+        self.imageWidthConstraint = [self.thumbnail constrainWidth:@"50"];
+        [self.thumbnail constrainHeight:@"50"];
         [self.thumbnail alignCenterYWithView:self predicate:@"0"];
 
         self.thumbnail.contentMode = UIViewContentModeScaleAspectFit;
@@ -56,6 +58,11 @@
     _thumbnail.image = nil;
     _title.text = nil;
     _follow.image = nil;
+}
+
+- (void)prepareForBudgetUse
+{
+    self.imageWidthConstraint.constant = 0;
 }
 
 @end
