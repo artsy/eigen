@@ -42,9 +42,11 @@ rescue e
   fail("CHANGELOG isn't legit YAML")
 end
 
+build_file = File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_test_raw.log")
+
 # So if there's snapshot fails, we should also fail danger, but we can make the thing clickable in a comment instead of hidden in the log
 # Note: this may break in a future build of Danger, I am debating sandboxing the runner from ENV vars.
-build_log = File.read( File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_test_raw.log") )
+build_log = File.read build_file
 snapshots_url = build_log.match(%r{https://eigen-ci.s3.amazonaws.com/\d+/index.html})
 fail("There were [snapshot errors](#{snapshots_url})") if snapshots_url
 
@@ -59,3 +61,17 @@ if build_log.match(unstubbed_regex)
   end
   warn(output)
 end
+
+
+### Keeping our build times reasonable by constant vigilence on swift compile time
+callout_time_ms = 100
+most_expensive_swift_table = `cat #{build_file} | egrep '\.[0-9]ms' | sort -t "." -k 1 -n -r | tail -10`
+
+# looks like "29.2ms  /Users/distiller/eigen/Artsy/View_Controllers/Live_Auctions/LiveAuctionLotViewController.swift:50:19    @objc override func viewDidLoad()"
+most_expensive_symbol_time_ms = most_expensive_swift_table.split("ms").first.to_i
+
+if most_expensive_symbol_time_ms > callout_time_ms
+  markdown("### Detected a slow Swift build")
+  markdown("```\n#{most_expensive_symbol_time_ms}\n```")
+end
+
