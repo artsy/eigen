@@ -203,13 +203,15 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
         return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
-    Route *route = self.echo.routes[@"ARLiveAuctionsURLDomain"];
-    if (route) {
-        [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
-            NSString *path = url.path;
-            NSString *slug = [[path split:@"/"] lastObject];
-            return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
-        }];
+    if ([AROptions boolForOption:AROptionsEnableNativeLiveAuctions]) {
+        Route *route = self.echo.routes[@"ARLiveAuctionsURLDomain"];
+        if (route) {
+            [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
+                NSString *path = url.path;
+                NSString *slug = [[path split:@"/"] lastObject];
+                return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
+            }];
+        }
     }
 
     // This route will match any single path component and thus should be added last.
