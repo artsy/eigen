@@ -10,7 +10,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    addressable (2.3.8)
+    addressable (2.4.0)
     aws-sdk-v1 (1.66.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
@@ -50,7 +50,7 @@ GEM
       netrc (= 0.7.8)
     cocoapods-try (1.0.0.rc.1)
     colored (1.2)
-    danger (0.6.5)
+    danger (0.7.3)
       claide
       colored (~> 1.2)
       faraday
@@ -91,7 +91,7 @@ GEM
     second_curtain (0.6.0)
       aws-sdk-v1 (~> 1.52)
       mustache (~> 0.99)
-    terminal-table (1.4.5)
+    terminal-table (1.5.2)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)

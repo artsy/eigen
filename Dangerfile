@@ -34,7 +34,6 @@ end
 
 
 # CHANGELOG should lint
-require "YAML"
 begin
   readme_yaml = File.read "CHANGELOG.yml"
   readme_data = YAML.load readme_yaml
@@ -42,20 +41,50 @@ rescue e
   fail("CHANGELOG isn't legit YAML")
 end
 
+build_file = File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_build_raw.log")
+test_file = File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_test_raw.log")
+
 # So if there's snapshot fails, we should also fail danger, but we can make the thing clickable in a comment instead of hidden in the log
 # Note: this may break in a future build of Danger, I am debating sandboxing the runner from ENV vars.
-build_log = File.read( File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_test_raw.log") )
-snapshots_url = build_log.match(%r{https://eigen-ci.s3.amazonaws.com/\d+/index.html})
+test_log = File.read test_file
+snapshots_url = test_log.match(%r{https://eigen-ci.s3.amazonaws.com/\d+/index.html})
 fail("There were [snapshot errors](#{snapshots_url})") if snapshots_url
 
 # Look for unstubbed networking requests, as these can be a source of test flakiness
 unstubbed_regex = /   Inside Test: -\[(\w+) (\w+)/m
-if build_log.match(unstubbed_regex)
+if test_log.match(unstubbed_regex)
   output = "#### Found unstubbbed networking requests\n"
-  build_log.scan(unstubbed_regex).each do |class_and_test|
+  test_log.scan(unstubbed_regex).each do |class_and_test|
     class_name = class_and_test[0]
     url = "https://github.com/search?q=#{class_name.gsub("Spec", "")}+repo%3Aartsy%2Feigen&ref=searchresults&type=Code&utf8=✓"
     output += "\n* [#{class_name}](#{url}) in `#{class_and_test[1]}`"
   end
   warn(output)
 end
+
+# look at the top 1000 symbols
+most_expensive_swift_table = `cat #{build_file} | egrep '\.[0-9]ms' | sort -t "." -k 1 -n | tail -1000 | sort -t "." -k 1 -n -r`
+
+# each line looks like "29.2ms  /Users/distiller/eigen/Artsy/View_Controllers/Live_Auctions/LiveAuctionLotViewController.swift:50:19    @objc override func viewDidLoad()"
+# Looks for outliers based on http://stackoverflow.com/questions/5892408/inferential-statistics-in-ruby/5892661#5892661
+time_values = most_expensive_swift_table.lines.map { |line| line.split.first.to_i }.reject { |value| value == 0 }
+
+require_relative "config/enumerable_stats"
+outliers = time_values.outliers(3)
+
+if outliers.any?
+  warn("Detected some Swift building time outliers")
+
+  current_branch = env.request_source.pr_json["head"]["ref"]
+  headings = "Time | Class | Function |\n| --- | ----- | ----- |"
+  warnings = most_expensive_swift_table.lines[0...outliers.count].map do |line|
+    time, location, function_name = line.split "\t"
+    github_loc = location.gsub("/Users/distiller/eigen", "/artsy/eigen/tree/#{current_branch}")
+    github_loc_code = github_loc.split(":")[0...-1].join("#L")
+    name = File.basename(location).split(":").first
+    "#{time} | [#{name}](#{github_loc_code}) | #{function_name}"
+  end
+
+  markdown(([headings] + warnings).join)
+end
+
