@@ -30,8 +30,14 @@
 ### Using Relay
 Some helpful Relay documentation is listed below, but the general workflow is:
   1. Build a fragment for each child component that specifies only the attributes used by the component itself (no extraneous information).
-  2. Ensure the parent component calls getFragment for each child component that uses Relay.
+  2. Ensure the parent component calls `getFragment` for each child component that uses Relay.
   3. Make sure to supply every child component's `props` upon instantiation in the parent.
+
+If you change something Relay-related and you run into this error: 
+  
+  *Unhandled JS Exception: RelayQL: Unexpected invocation at runtime. Either the Babel transform was not set up, or it failed to identify this call site. Make sure it is being used verbatim as `Relay.QL`*,
+
+try quitting and restarting your node instance.
 
 ### Resources
 
