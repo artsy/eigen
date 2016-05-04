@@ -26,6 +26,7 @@ upcoming:
     - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
     - New socket communication work for updated Causality. - ash
     - Put native live auctions behind AROptions. - ash
+    - Danger is aware of how long classes take to compile. - orta
 
   notes:
     - Fixes long auction names falling off right edge. - ash
