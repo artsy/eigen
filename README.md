@@ -27,6 +27,12 @@
 
 3. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
 
+### Using Relay
+  Some helpful Relay documentation is listed below, but the general workflow is:
+    1. Build a fragment for each child component that specifies only the attributes used by the component itself (no extraneous information).
+    2. Ensure the parent component calls getFragment for each child component that uses Relay.
+    3. Make sure to supply every child component's `props` upon instantiation in the parent.
+
 ### Resources
 
 * React Native:
