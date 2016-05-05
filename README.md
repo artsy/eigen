@@ -18,16 +18,16 @@
 1. If this is the first time you clone this repo, you will have to install a dependency that we cannot include in this
    repository, which are the fonts that the example app needs. Run `$ cd Example && pod install`.
 
-   Run `npm install`, which will install the required node packages.
+2. Run `npm install`, which will install the required node packages.
 
-2. Run `$ npm start`, which will:
+3. Run `$ npm start`, which will:
    - Clean the example app’s Xcode build dir.
    - Clean the emission package from the example app’s `node_modules` dir.
    - Clear the example app’s React Native packager cache.
    - Start syncing the emission package to the example app’s `node_modules` dir.
    - Start the example app’s React Native packager.
 
-3. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
+4. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
 
 ### Using Relay
 Some helpful Relay documentation is listed below, but the general workflow is:
