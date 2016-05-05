@@ -24,7 +24,7 @@ State update includes:
 
 protocol LiveAuctionStateReconcilerType {
     func updateState(state: AnyObject)
-    func processNewEvents(events: AnyObject)
+    func processLotEventBroadcast(broadcast: AnyObject)
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
 }
@@ -54,6 +54,7 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
         let currentLotID = state["currentLotId"] as? String
 
         for lot in saleArtworks {
+            // TODO: How should we handle failed parsing? Not silently, that's for sure!
             guard let json = fullLotStateById[lot.liveAuctionLotID] else { continue }
             guard let derivedLotState = json["derivedLotState"] as? [String: AnyObject] else { continue }
             guard let eventHistory = json["eventHistory"] as? [[String: AnyObject]] else { continue }
@@ -65,10 +66,19 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
         updateCurrentLotWithIDIfNecessary(currentLotID)
     }
 
-    func processNewEvents(events: AnyObject) {
-        print(events)
+    func processLotEventBroadcast(broadcast: AnyObject) {
 
-        // TODO
+        guard let json = broadcast as? [String: AnyObject],
+              let events = json["events"] as? [String: [String: AnyObject]],
+              let lotID = events.values.first?["lotId"] as? String,
+              let lot = saleArtworks.filter({ $0.lotID == lotID }).first,
+              let derivedLotState = json["derivedLotState"] as? [String: AnyObject],
+              let fullEventOrder = json["fullEventOrder"] as? [String] else { return }
+
+        updateLotDerivedState(lot, derivedState: derivedLotState)
+        updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
+
+
     }
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
@@ -79,7 +89,6 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
 
 private typealias PrivateFunctions = LiveAuctionStateReconciler
 private extension PrivateFunctions {
-    typealias NewEventIDs = Set<String>
 
     func updateLotDerivedState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
         guard let reserveStatusString = derivedState["reserveStatus"] as? String else { return }
@@ -96,7 +105,9 @@ private extension PrivateFunctions {
     }
 
 
-    func updateLotWithEvents(lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]]) {
+    func updateLotWithEvents(lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]], fullEventOrder: [String]? = nil) {
+        // TODO: fullEventOrder, if specified, yields the _exact_ history and order of events. We need to remove any local events not present in fullEventOrder in case they were undo'd by the operator.
+
         let existingEventIds = Set(lot.eventIDs)
         let newEvents = lotEvents.filter { existingEventIds.contains($0["eventId"] as? String ?? "") == false }
         lot.addEvents( newEvents.map { LiveEvent(JSON: $0) } )

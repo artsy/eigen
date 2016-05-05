@@ -40,8 +40,8 @@ class LiveAuctionStateManager: NSObject {
             self?.stateReconciler.updateState(state)
         }
 
-        socketCommunicator.newEvents.subscribe { [weak self] event in
-            self?.stateReconciler.processNewEvents(event)
+        socketCommunicator.lotUpdateBroadcasts.subscribe { [weak self] event in
+            self?.stateReconciler.processLotEventBroadcast(event)
         }
     }
 }
@@ -90,7 +90,7 @@ extension DefaultCreators {
 
 private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let updatedAuctionState: Observable<AnyObject>
-    let newEvents = Observable<AnyObject>()
+    let lotUpdateBroadcasts = Observable<AnyObject>()
 
     init (state: AnyObject) {
         updatedAuctionState = Observable(state)

@@ -16,7 +16,7 @@ protocol SocketType: class {
 
 protocol LiveAuctionSocketCommunicatorType {
     var updatedAuctionState: Observable<AnyObject> { get }
-    var newEvents: Observable<AnyObject> { get }
+    var lotUpdateBroadcasts: Observable<AnyObject> { get }
 
     func bidOnLot(lotID: String)
     func leaveMaxBidOnLot(lotID: String)
@@ -29,7 +29,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     private var timer: NSTimer? // Heartbeat to keep socket connection alive.
 
     let updatedAuctionState = Observable<AnyObject>()
-    let newEvents = Observable<AnyObject>()
+    let lotUpdateBroadcasts = Observable<AnyObject>()
 
     let jwt: String
 
@@ -107,16 +107,25 @@ private extension SocketSetup {
         let socketEventType = (json["type"] as? String) ?? "(No Event Specified)"
         print("Received socket event type: \(socketEventType).")
 
+        /* 
+         TODO: Remaining socket events:
+         - OperationFailedEvent
+         - PostEventResponse
+         - SaleLotChangeBroadcast
+         - SaleNotFound
+         - LotUpdateBroadcast
+        */
         switch socketEventType {
         case "InitialFullSaleState":
             updatedAuctionState.update(json)
-        case "FirstPriceBidPlaced":
-            // TODO: other events.
-            newEvents.update(json)
+
+        case "LotUpdateBroadcast":
+            lotUpdateBroadcasts.update(json)
+
         case "ConnectionUnauthorized": break;
             // TODO: handle auth error.
         default:
-            print("Received unknown socket event type.")
+            print("Received unknown socket event type. Payload: \(json)")
         }
     }
 }
