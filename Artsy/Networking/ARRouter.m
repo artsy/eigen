@@ -1005,7 +1005,7 @@ static NSString *hostFromString(NSString *string)
     is_with_buyers_premium\
     description\
     sale_artworks {\
-      id\
+      _id\
       position\
       currency\
       symbol\

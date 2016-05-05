@@ -57,12 +57,13 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
             // TODO: How should we handle failed parsing? Not silently, that's for sure!
             guard let json = fullLotStateById[lot.liveAuctionLotID] else { continue }
             guard let derivedLotState = json["derivedLotState"] as? [String: AnyObject] else { continue }
-            guard let eventHistory = json["eventHistory"] as? [[String: AnyObject]] else { continue }
+            guard let eventHistory = json["eventHistory"] as? [[String: AnyObject]] else { continue } // TODO move to events
 
             updateLotDerivedState(lot, derivedState: derivedLotState)
             updateLotWithEvents(lot, lotEvents: eventHistory)
         }
 
+        // TODO: This is always nil for some reason, but regardless, the UI looks terrible if it is nil. It will be nil sometimes in production, so we should operate without it!
         updateCurrentLotWithIDIfNecessary(currentLotID)
     }
 
@@ -77,8 +78,6 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
 
         updateLotDerivedState(lot, derivedState: derivedLotState)
         updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
-
-
     }
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
