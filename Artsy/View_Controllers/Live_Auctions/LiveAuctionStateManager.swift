@@ -15,8 +15,7 @@ Based on socket events:
 */
 
 class LiveAuctionStateManager: NSObject {
-    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, accessToken: String) -> LiveAuctionSocketCommunicatorType
-    typealias StaticDataFetcherCreator = (saleID: String) -> LiveAuctionStaticDataFetcherType
+    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, jwt: String) -> LiveAuctionSocketCommunicatorType
     typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
     let sale: LiveSale
@@ -27,18 +26,22 @@ class LiveAuctionStateManager: NSObject {
     init(host: String,
          sale: LiveSale,
          saleArtworks: [LiveAuctionLotViewModel],
-         accessToken: String,
+         jwt: JWT,
          socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
          stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
 
         self.sale = sale
-        self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, accessToken: accessToken)
+        self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, jwt: jwt)
         self.stateReconciler = stateReconcilerCreator(saleArtworks: saleArtworks)
 
         super.init()
 
         socketCommunicator.updatedAuctionState.subscribe { [weak self] state in
             self?.stateReconciler.updateState(state)
+        }
+
+        socketCommunicator.newEvents.subscribe { [weak self] event in
+            self?.stateReconciler.processNewEvents(event)
         }
     }
 }
@@ -67,13 +70,13 @@ extension ComputedProperties {
 private typealias DefaultCreators = LiveAuctionStateManager
 extension DefaultCreators {
     class func defaultSocketCommunicatorCreator() -> SocketCommunicatorCreator {
-        return { host, causalitySaleID, accessToken in
-            return LiveAuctionSocketCommunicator(host: host, causalitySaleID: causalitySaleID, accessToken: accessToken)
+        return { host, causalitySaleID, jwt in
+            return LiveAuctionSocketCommunicator(host: host, causalitySaleID: causalitySaleID, jwt: jwt)
         }
     }
 
     class func stubbedSocketCommunicatorCreator() -> SocketCommunicatorCreator {
-        return { host, causalitySaleID, accessToken in
+        return { host, causalitySaleID, jwt in
             return Stubbed_SocketCommunicator(state: loadJSON("live_auctions_socket"))
         }
     }
@@ -87,6 +90,7 @@ extension DefaultCreators {
 
 private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let updatedAuctionState: Observable<AnyObject>
+    let newEvents = Observable<AnyObject>()
 
     init (state: AnyObject) {
         updatedAuctionState = Observable(state)

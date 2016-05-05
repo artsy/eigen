@@ -8,7 +8,8 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
     override func spec() {
 
         let saleID = "the-id"
-        let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"]]]
+        let jwt = "random-byyyyyytes"
+        let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"], "causality_jwt": jwt]]
 
         var subject: LiveAuctionStaticDataFetcher!
 
@@ -24,7 +25,13 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
         it("fetches the static data") {
             let receivedState = subject.fetchStaticData()
 
-            expect(receivedState.peekValue()?.liveSaleID) == saleID
+            expect(receivedState.peekValue()?.sale.liveSaleID) == saleID
+        }
+
+        it("fetches a kwt") {
+            let receivedState = subject.fetchStaticData()
+
+            expect(receivedState.peekValue()?.jwt) == jwt
         }
     }
 }

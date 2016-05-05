@@ -20,7 +20,7 @@ protocol LiveAuctionsSalesPersonType {
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], accessToken: String) -> LiveAuctionStateManager
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: String) -> LiveAuctionStateManager
 
     let sale: LiveSale
     let lots: [LiveAuctionLotViewModel]
@@ -35,7 +35,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     var currentFocusedLotID = Observable<Int>()
 
     init(sale: LiveSale,
-         accessToken: String,
+         jwt: JWT,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
@@ -43,7 +43,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
         self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0) }
 
         let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "ws://localhost:8080"
-        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, accessToken: accessToken)
+        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt)
         self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal)
 
         super.init()
@@ -97,14 +97,14 @@ private typealias ClassMethods = LiveAuctionsSalesPerson
 extension ClassMethods {
 
     class func defaultStateManagerCreator() -> StateManagerCreator {
-        return { host, sale, saleArtworks, accessToken in
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, accessToken: accessToken)
+        return { host, sale, saleArtworks, jwt in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt)
         }
     }
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
-        return { host, sale, saleArtworks, accessToken in
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, accessToken: accessToken, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
+        return { host, sale, saleArtworks, jwt in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
         }
     }
 

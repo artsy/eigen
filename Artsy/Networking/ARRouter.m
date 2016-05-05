@@ -995,7 +995,8 @@ static NSString *hostFromString(NSString *string)
     // Ending spaces are to avoid stripping newlines characters later on.
     NSString *query = [NSString stringWithFormat:@"\
 {\
-  sale(id: \"%@\") {\
+  causality_jwt(role: BIDDER, sale_id: \"%1$@\")\
+  sale(id: \"%1$@\") {\
     _id\
     id\
     start_at\
