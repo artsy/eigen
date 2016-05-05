@@ -18,6 +18,8 @@
 1. If this is the first time you clone this repo, you will have to install a dependency that we cannot include in this
    repository, which are the fonts that the example app needs. Run `$ cd Example && pod install`.
 
+   Run `npm install`, which will install the required node packages.
+
 2. Run `$ npm start`, which will:
    - Clean the example app’s Xcode build dir.
    - Clean the emission package from the example app’s `node_modules` dir.
