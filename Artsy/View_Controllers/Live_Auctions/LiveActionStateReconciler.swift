@@ -27,7 +27,7 @@ protocol LiveAuctionStateReconcilerType {
     func processLotEventBroadcast(broadcast: AnyObject)
     func processCurrentLotUpdate(update: AnyObject)
 
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
 }
 
 class LiveAuctionStateReconciler: NSObject {
@@ -40,7 +40,7 @@ class LiveAuctionStateReconciler: NSObject {
         super.init()
     }
 
-    private let _currentLotSignal = Observable<LiveAuctionLotViewModel>()
+    private let _currentLotSignal = Observable<LiveAuctionLotViewModel?>(nil)
     private var _currentLotID: String?
 }
 
@@ -85,8 +85,8 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
         // TODO: implement
     }
 
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
-        return _currentLotSignal.map { $0 as LiveAuctionLotViewModelType }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
+        return _currentLotSignal.map { $0.flatMap { $0 } }
     }
 }
 

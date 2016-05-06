@@ -64,7 +64,7 @@ extension PublicFunctions {
 
 private typealias ComputedProperties = LiveAuctionStateManager
 extension ComputedProperties {
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
         return stateReconciler.currentLotSignal
     }
 }
@@ -95,6 +95,7 @@ extension DefaultCreators {
 private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let updatedAuctionState: Observable<AnyObject>
     let lotUpdateBroadcasts = Observable<AnyObject>()
+    let currentLotUpdate = Observable<AnyObject>()
 
     init (state: AnyObject) {
         updatedAuctionState = Observable(state)

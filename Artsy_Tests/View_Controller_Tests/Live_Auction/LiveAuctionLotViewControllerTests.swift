@@ -24,7 +24,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 lotViewModel = Test_LiveAuctionLotViewModel()
                 cacheColoredImageForURL(lotViewModel.urlForProfile)
 
-                subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Observable<LiveAuctionLotViewModelType>())
+                subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Observable<LiveAuctionLotViewModelType?>())
 
                 subject.currentLotSignal.update(lotViewModel)
             }
@@ -64,7 +64,7 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var startDate = NSDate().dateByAddingTimeInterval(-3600)
     var lotCount = 3
     var saleAvailabilitySignal = Observable(SaleAvailabilityState.Active)
-    var currentLotSignal = Observable<LiveAuctionLotViewModelType>()
+    var currentLotSignal = Observable<LiveAuctionLotViewModelType?>()
 
     var distance: Int?
     func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {

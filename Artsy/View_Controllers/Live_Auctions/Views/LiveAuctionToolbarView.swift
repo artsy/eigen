@@ -49,7 +49,15 @@ class LiveAuctionToolbarView : UIView {
     func setupUsingState(lotState: LotState) {
         let viewStructure: [[String: NSAttributedString]]
         var clockClosure: ((UILabel) -> ())?
+
         switch lotState {
+        case .SaleNotYetOpen:
+            viewStructure = [
+                ["lot": lotCountString()],
+                ["watchers": attributify("09")],
+                ["bidders": attributify(String(lotViewModel.numberOfBids))]
+            ]
+
         case .ClosedLot:
             viewStructure = [
                 ["lot": lotCountString()],

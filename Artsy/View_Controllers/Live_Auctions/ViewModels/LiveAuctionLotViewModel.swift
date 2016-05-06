@@ -4,9 +4,10 @@ import Interstellar
 // Represents a single lot view
 
 enum LotState {
-    case ClosedLot
-    case LiveLot
+    case SaleNotYetOpen
     case UpcomingLot(distanceFromLive: Int)
+    case LiveLot
+    case ClosedLot
 }
 
 protocol LiveAuctionLotViewModelType: class {
@@ -64,7 +65,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     func lotStateWithViewModel(viewModel: LiveAuctionViewModelType) -> LotState {
         guard let distance = viewModel.distanceFromCurrentLot(model) else {
-            return .ClosedLot
+            return .SaleNotYetOpen
         }
         if distance == 0 { return .LiveLot }
         if distance < 0 { return .ClosedLot }

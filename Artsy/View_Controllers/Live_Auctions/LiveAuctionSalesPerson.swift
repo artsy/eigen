@@ -5,7 +5,7 @@ import Interstellar
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
 protocol LiveAuctionsSalesPersonType {
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
 
     var auctionViewModel: LiveAuctionViewModelType { get }
     var pageControllerDelegate: LiveAuctionPageControllerDelegate? { get }
@@ -55,7 +55,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
 private typealias ComputedProperties = LiveAuctionsSalesPerson
 extension ComputedProperties {
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
         return stateManager.currentLotSignal
     }
 
