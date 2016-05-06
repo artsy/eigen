@@ -15,7 +15,7 @@ Based on socket events:
 */
 
 class LiveAuctionStateManager: NSObject {
-    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, jwt: String) -> LiveAuctionSocketCommunicatorType
+    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, jwt: JWT) -> LiveAuctionSocketCommunicatorType
     typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
     let sale: LiveSale

@@ -31,13 +31,13 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     let updatedAuctionState = Observable<AnyObject>()
     let lotUpdateBroadcasts = Observable<AnyObject>()
 
-    let jwt: String
+    let jwt: JWT
 
-    convenience init(host: String, causalitySaleID: String, jwt: String) {
-        self.init(host: host, jwt: jwt, causalitySaleID: causalitySaleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
+    convenience init(host: String, causalitySaleID: String, jwt: JWT) {
+        self.init(host: host, causalitySaleID: causalitySaleID, jwt: jwt, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
     }
 
-    init(host: String, jwt: String, causalitySaleID: String, socketCreator: SocketCreator) {
+    init(host: String, causalitySaleID: String, jwt: JWT, socketCreator: SocketCreator) {
 
         socket = socketCreator(host: host, saleID: causalitySaleID)
         self.causalitySaleID = causalitySaleID
