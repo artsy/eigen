@@ -25,6 +25,7 @@ State update includes:
 protocol LiveAuctionStateReconcilerType {
     func updateState(state: AnyObject)
     func processLotEventBroadcast(broadcast: AnyObject)
+    func processCurrentLotUpdate(update: AnyObject)
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
 }
@@ -78,6 +79,10 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
 
         updateLotDerivedState(lot, derivedState: derivedLotState)
         updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
+    }
+
+    func processCurrentLotUpdate(update: AnyObject) {
+        // TODO: implement
     }
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType> {

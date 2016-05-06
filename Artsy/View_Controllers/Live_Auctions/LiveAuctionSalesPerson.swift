@@ -85,11 +85,11 @@ extension LiveAuctionsSalesPerson {
     }
 
     func bidOnLot(lot: LiveAuctionLotViewModelType) {
-        stateManager.bidOnLot("") // TODO: Extract lot ID once https://github.com/artsy/eigen/pull/1386 is merged.
+        stateManager.bidOnLot(lot.lotID)
     }
 
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) {
-        stateManager.bidOnLot("") // TODO: Extract lot ID once https://github.com/artsy/eigen/pull/1386 is merged.
+        // TODO: Implement
     }
 }
 

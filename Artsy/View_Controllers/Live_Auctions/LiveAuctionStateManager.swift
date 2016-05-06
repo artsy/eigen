@@ -40,8 +40,12 @@ class LiveAuctionStateManager: NSObject {
             self?.stateReconciler.updateState(state)
         }
 
-        socketCommunicator.lotUpdateBroadcasts.subscribe { [weak self] event in
-            self?.stateReconciler.processLotEventBroadcast(event)
+        socketCommunicator.lotUpdateBroadcasts.subscribe { [weak self] broadcast in
+            self?.stateReconciler.processLotEventBroadcast(broadcast)
+        }
+
+        socketCommunicator.currentLotUpdate.subscribe { [weak self] update in
+            self?.stateReconciler.processCurrentLotUpdate(update)
         }
     }
 }
