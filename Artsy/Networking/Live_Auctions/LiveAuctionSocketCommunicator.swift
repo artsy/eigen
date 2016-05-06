@@ -16,27 +16,32 @@ protocol SocketType: class {
 
 protocol LiveAuctionSocketCommunicatorType {
     var updatedAuctionState: Observable<AnyObject> { get }
+    var newEvents: Observable<AnyObject> { get }
 
     func bidOnLot(lotID: String)
     func leaveMaxBidOnLot(lotID: String)
 }
 
 class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
-    typealias SocketCreator = (host: String, saleID: String, token: String) -> SocketType
+    typealias SocketCreator = (host: String, saleID: String) -> SocketType
     private let socket: SocketType
     private let causalitySaleID: String
     private var timer: NSTimer? // Heartbeat to keep socket connection alive.
 
     let updatedAuctionState = Observable<AnyObject>()
+    let newEvents = Observable<AnyObject>()
 
-    convenience init(host: String, causalitySaleID: String, accessToken: String) {
-        self.init(host: host, accessToken: accessToken, causalitySaleID: causalitySaleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
+    let jwt: String
+
+    convenience init(host: String, causalitySaleID: String, jwt: String) {
+        self.init(host: host, jwt: jwt, causalitySaleID: causalitySaleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
     }
 
-    init(host: String, accessToken: String, causalitySaleID: String, socketCreator: SocketCreator) {
+    init(host: String, jwt: String, causalitySaleID: String, socketCreator: SocketCreator) {
 
-        socket = socketCreator(host: host, saleID: causalitySaleID, token: accessToken)
+        socket = socketCreator(host: host, saleID: causalitySaleID)
         self.causalitySaleID = causalitySaleID
+        self.jwt = jwt
 
         super.init()
 
@@ -50,10 +55,8 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     }
 
     class func defaultSocketCreator() -> SocketCreator {
-        return { host, saleID, token in
-            // TODO: incorporate token once JWT is complete.
-            // TODO: Talk to Alan about claim_userId and claim_bidderId.
-            let url = NSURL(string: "\(host)/socket?claim_role=bidder&claim_saleId=\(saleID)&claim_userId=4C-U2DgqWh&claim_bidderId=4C-U2DgqWh")
+        return { host, saleID in
+            let url = NSURL(string: "\(host)/socket?saleId=\(saleID)")
             return WebSocket(url: url!)
         }
     }
@@ -74,9 +77,13 @@ private extension SocketSetup {
         let caller = TimerCaller(callback: applyUnowned(self, LiveAuctionSocketCommunicator.pingSocket)) // Only allowed because we invalidate the timer in deinit
         self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: caller, selector: #selector(TimerCaller.invoke), userInfo: nil, repeats: true)
         socket.onText = applyUnowned(self, LiveAuctionSocketCommunicator.receivedText)
-        socket.onConnect = { print("Socket connected") }
+        socket.onConnect = applyUnowned(self, LiveAuctionSocketCommunicator.socketConnected)
         socket.onDisconnect = applyUnowned(self, LiveAuctionSocketCommunicator.socketDisconnected)
         socket.connect()
+    }
+
+    func socketConnected() {
+        socket.writeString("{\"type\":\"Authorize\",\"jwt\":\"\(jwt)\"}")
     }
 
     func socketDisconnected(error: NSError?) {
@@ -98,11 +105,16 @@ private extension SocketSetup {
         }
 
         let socketEventType = (json["type"] as? String) ?? "(No Event Specified)"
-        print("Received socket event type: \(socketEventType)")
+        print("Received socket event type: \(socketEventType).")
 
         switch socketEventType {
         case "InitialFullSaleState":
             updatedAuctionState.update(json)
+        case "FirstPriceBidPlaced":
+            // TODO: other events.
+            newEvents.update(json)
+        case "ConnectionUnauthorized": break;
+            // TODO: handle auth error.
         default:
             print("Received unknown socket event type.")
         }

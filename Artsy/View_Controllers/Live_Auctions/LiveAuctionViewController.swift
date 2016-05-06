@@ -13,7 +13,7 @@ class LiveAuctionViewController: UISplitViewController {
         return Stubbed_StaticDataFetcher() // TODO: Remove stubbing.
     }()
 
-    lazy var salesPersonCreator: LiveSale -> LiveAuctionsSalesPersonType = self.salesPerson
+    lazy var salesPersonCreator: (LiveSale, JWT) -> LiveAuctionsSalesPersonType = self.salesPerson
 
     var lotSetController: LiveAuctionLotSetViewController!
     var lotsSetNavigationController: ARSerifNavigationViewController!
@@ -39,9 +39,9 @@ class LiveAuctionViewController: UISplitViewController {
             defer { self?.ar_removeIndeterminateLoadingIndicatorAnimated(true) }
 
             switch result {
-            case .Success(let sale):
+            case .Success(let (sale, jwt)):
                 self?.sale = sale
-                self?.setupWithSale(sale)
+                self?.setupWithSale(sale, jwt: jwt)
             case .Error:
                 // TODO: handle error case
                 break
@@ -78,8 +78,8 @@ class LiveAuctionViewController: UISplitViewController {
 private typealias PrivateFunctions = LiveAuctionViewController
 extension PrivateFunctions {
 
-    func setupWithSale(sale: LiveSale) {
-        let salesPerson = self.salesPerson(sale)
+    func setupWithSale(sale: LiveSale, jwt: JWT) {
+        let salesPerson = self.salesPerson(sale, jwt: jwt)
 
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson)
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
@@ -90,10 +90,9 @@ extension PrivateFunctions {
         viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListController, lotsSetNavigationController]
     }
 
-    func salesPerson(sale: LiveSale) -> LiveAuctionsSalesPersonType {
+    func salesPerson(sale: LiveSale, jwt: JWT) -> LiveAuctionsSalesPersonType {
         // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
-        let accessToken = UICKeyChainStore.stringForKey(AROAuthTokenDefault) ?? ""
-        return LiveAuctionsSalesPerson(sale: sale, accessToken: accessToken)
+        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt)
      }
 }
 
@@ -110,15 +109,16 @@ extension LiveAuctionViewController: LiveAuctionLotListViewControllerDelegate {
 }
 
 class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
-    func fetchStaticData() -> Observable<Result<LiveSale>> {
-        let json = loadJSON("live_auctions_static")
-        let sale = self.parseSale(json)
+    func fetchStaticData() -> Observable<StaticSaleResult> {
+        let signal = Observable<StaticSaleResult>()
 
-        if let sale = sale {
-            return Observable(Result.Success(sale))
-        } else {
-            return Observable(Result.Error(LiveAuctionStaticDataFetcher.Error.JSONParsing))
-        }
+        let json = loadJSON("live_auctions_static")
+        let sale = self.parseSale(json)!
+
+        let s = (sale: sale, jwt: "")
+        signal.update(Result.Success(s))
+
+        return signal
     }
 }
 
