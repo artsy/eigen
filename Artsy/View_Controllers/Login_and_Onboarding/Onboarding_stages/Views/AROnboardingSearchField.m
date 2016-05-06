@@ -34,7 +34,7 @@
         [self addSubview:self.searchField];
 
         self.searchIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SearchButton"]];
-        self.searchIcon.contentMode = UIViewContentModeScaleAspectFit;
+        self.searchIcon.contentMode = UIViewContentModeCenter;
         [self addSubview:self.searchIcon];
 
         [self.searchIcon alignTopEdgeWithView:self predicate:@"5"];
