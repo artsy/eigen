@@ -151,7 +151,9 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func jumpToLiveLot() {
-        let focusedIndex = salesPerson.currentLotSignal.peek()?.lotIndex ?? 0
+        guard let currentLot = salesPerson.currentLotSignal.peek() else { return }
+        guard let focusedIndex = currentLot?.lotIndex else { return }
+
         jumpToLotAtIndex(focusedIndex, animated: true)
     }
 

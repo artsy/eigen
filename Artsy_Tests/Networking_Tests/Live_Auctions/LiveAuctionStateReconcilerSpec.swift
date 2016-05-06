@@ -47,7 +47,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 subject.updateState(state)
                 subject.updateState(state)
 
-                expect(currentLotInvocations) == 1
+                expect(currentLotInvocations) == 2 // Initial + upload + 0 (identical update)
             }
 
             it("sends new current lot when the lot changes") {
@@ -59,7 +59,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
                 subject.updateState(state)
                 subject.updateState(newState)
 
-                expect(currentLotInvocations) == 2
+                expect(currentLotInvocations) == 3 // Initial + update1 + update2
             }
 
             pending("updates lot view model with new events") {

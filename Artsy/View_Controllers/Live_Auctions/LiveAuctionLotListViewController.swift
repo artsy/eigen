@@ -8,7 +8,7 @@ protocol LiveAuctionLotListViewControllerDelegate: class {
 
 class LiveAuctionLotListViewController: UICollectionViewController {
     let salesPerson: LiveAuctionsSalesPersonType
-    let currentLotSignal: Observable<LiveAuctionLotViewModelType>
+    let currentLotSignal: Observable<LiveAuctionLotViewModelType?>
     let stickyCollectionViewLayout: LiveAuctionLotListStickyCellCollectionViewLayout
     let auctionViewModel: LiveAuctionViewModelType
 
@@ -25,7 +25,7 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
     private var currentLotSignalObserver: ObserverToken!
 
-    init(salesPerson: LiveAuctionsSalesPersonType, currentLotSignal: Observable<LiveAuctionLotViewModelType>, auctionViewModel: LiveAuctionViewModelType) {
+    init(salesPerson: LiveAuctionsSalesPersonType, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, auctionViewModel: LiveAuctionViewModelType) {
         self.salesPerson = salesPerson
         self.currentLotSignal = currentLotSignal
         self.stickyCollectionViewLayout = LiveAuctionLotListStickyCellCollectionViewLayout()
@@ -34,7 +34,9 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         super.init(collectionViewLayout: self.stickyCollectionViewLayout)
 
         currentLotSignalObserver = currentLotSignal.subscribe { [weak self] lot in
-            self?.stickyCollectionViewLayout.setActiveIndex(lot.lotIndex)
+            if let lot = lot {
+                self?.stickyCollectionViewLayout.setActiveIndex(lot.lotIndex)
+            }
         }
     }
     
