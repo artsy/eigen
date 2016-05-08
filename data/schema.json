@@ -2420,8 +2420,8 @@
               "deprecationReason": null
             },
             {
-              "name": "is_contactable",
-              "description": "Are we able to display a contact form on artwork pages?",
+              "name": "is_inquireable",
+              "description": "Do we want to encourage inquiries on this work?",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -2430,6 +2430,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "is_contactable",
+              "description": "Are we able to display a contact form on artwork pages?",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Prefer to use is_inquireable"
             },
             {
               "name": "is_in_auction",
@@ -2698,6 +2710,33 @@
                 "ofType": {
                   "kind": "UNION",
                   "name": "Highlighted",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "articles",
+              "description": null,
+              "args": [
+                {
+                  "name": "size",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Article",
                   "ofType": null
                 }
               },
@@ -3393,6 +3432,18 @@
               "deprecationReason": null
             },
             {
+              "name": "_id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "id",
               "description": null,
               "args": [],
@@ -3866,6 +3917,18 @@
               "deprecationReason": null
             },
             {
+              "name": "exhibition_period",
+              "description": "A formatted description of the start to end dates",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "artists",
               "description": null,
               "args": [],
@@ -3930,6 +3993,29 @@
               "deprecationReason": null
             },
             {
+              "name": "status_update",
+              "description": "A formatted update on upcoming status changes",
+              "args": [
+                {
+                  "name": "max_days",
+                  "description": "Before this many days no update will be generated",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "events",
               "description": null,
               "args": [],
@@ -3941,6 +4027,18 @@
                   "name": "PartnerShowEventType",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "counts",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "PartnerShowCounts",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -4791,10 +4889,21 @@
             {
               "name": "artworks",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "format",
+                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "FormattedNumber",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -4803,10 +4912,21 @@
             {
               "name": "follows",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "format",
+                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "FormattedNumber",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -4815,10 +4935,21 @@
             {
               "name": "auction_lots",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "format",
+                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "FormattedNumber",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -4827,10 +4958,21 @@
             {
               "name": "for_sale_artworks",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "format",
+                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "FormattedNumber",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -4839,6 +4981,16 @@
           ],
           "inputFields": null,
           "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "SCALAR",
+          "name": "FormattedNumber",
+          "description": "The `FormattedNumber` type represents a number that can optionally be returnedas a formatted String. It does not try to coerce the type.",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
           "enumValues": null,
           "possibleTypes": null
         },
@@ -7090,6 +7242,40 @@
         },
         {
           "kind": "OBJECT",
+          "name": "PartnerShowCounts",
+          "description": null,
+          "fields": [
+            {
+              "name": "artworks",
+              "description": null,
+              "args": [
+                {
+                  "name": "artist_id",
+                  "description": "The slug or ID of an artist in the show.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "dimensions",
           "description": null,
           "fields": [
@@ -7915,6 +8101,18 @@
               "deprecationReason": null
             },
             {
+              "name": "exhibition_period",
+              "description": "A formatted description of the start to end dates",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "artists",
               "description": null,
               "args": [],
@@ -7979,6 +8177,29 @@
               "deprecationReason": null
             },
             {
+              "name": "status_update",
+              "description": "A formatted update on upcoming status changes",
+              "args": [
+                {
+                  "name": "max_days",
+                  "description": "Before this many days no update will be generated",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "events",
               "description": null,
               "args": [],
@@ -7990,6 +8211,18 @@
                   "name": "PartnerShowEventType",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "counts",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "PartnerShowCounts",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -8334,6 +8567,18 @@
               "deprecationReason": null
             },
             {
+              "name": "exhibition_period",
+              "description": "A formatted description of the start to end dates",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "artists",
               "description": null,
               "args": [],
@@ -8398,6 +8643,29 @@
               "deprecationReason": null
             },
             {
+              "name": "status_update",
+              "description": "A formatted update on upcoming status changes",
+              "args": [
+                {
+                  "name": "max_days",
+                  "description": "Before this many days no update will be generated",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "events",
               "description": null,
               "args": [],
@@ -8409,6 +8677,18 @@
                   "name": "PartnerShowEventType",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "counts",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "PartnerShowCounts",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -8863,7 +9143,7 @@
               "deprecationReason": null
             },
             {
-              "name": "description",
+              "name": "href",
               "description": null,
               "args": [],
               "type": {
@@ -8875,7 +9155,7 @@
               "deprecationReason": null
             },
             {
-              "name": "more_info_url",
+              "name": "description",
               "description": null,
               "args": [],
               "type": {
@@ -11880,8 +12160,8 @@
               "deprecationReason": null
             },
             {
-              "name": "is_contactable",
-              "description": "Are we able to display a contact form on artwork pages?",
+              "name": "is_inquireable",
+              "description": "Do we want to encourage inquiries on this work?",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -11890,6 +12170,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "is_contactable",
+              "description": "Are we able to display a contact form on artwork pages?",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Prefer to use is_inquireable"
             },
             {
               "name": "is_in_auction",
@@ -12158,6 +12450,33 @@
                 "ofType": {
                   "kind": "UNION",
                   "name": "Highlighted",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "articles",
+              "description": null,
+              "args": [
+                {
+                  "name": "size",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Article",
                   "ofType": null
                 }
               },
@@ -12539,6 +12858,18 @@
               "deprecationReason": null
             },
             {
+              "name": "_id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "id",
               "description": null,
               "args": [],
@@ -12834,6 +13165,18 @@
               "deprecationReason": null
             },
             {
+              "name": "exhibition_period",
+              "description": "A formatted description of the start to end dates",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "artists",
               "description": null,
               "args": [],
@@ -12898,6 +13241,29 @@
               "deprecationReason": null
             },
             {
+              "name": "status_update",
+              "description": "A formatted update on upcoming status changes",
+              "args": [
+                {
+                  "name": "max_days",
+                  "description": "Before this many days no update will be generated",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "events",
               "description": null,
               "args": [],
@@ -12909,6 +13275,18 @@
                   "name": "PartnerShowEventType",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "counts",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "PartnerShowCounts",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -13216,6 +13594,47 @@
               "deprecationReason": null
             },
             {
+              "name": "bidder_status",
+              "description": "The current user's status relating to bids on artworks",
+              "args": [
+                {
+                  "name": "sale_id",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "artwork_id",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "BidderStatus",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "bidder_positions",
               "description": "A list of the current user's bidder positions",
               "args": [
@@ -13397,6 +13816,53 @@
         },
         {
           "kind": "OBJECT",
+          "name": "BidderStatus",
+          "description": null,
+          "fields": [
+            {
+              "name": "is_highest_bidder",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "active_bid",
+              "description": "Your bid if it is currently winning",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "BidderPosition",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "most_recent_bid",
+              "description": "Your most recent bid—which is not necessarily winning (may be higher or lower)",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "BidderPosition",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "BidderPosition",
           "description": null,
           "fields": [
@@ -13530,48 +13996,24 @@
               "deprecationReason": null
             },
             {
-              "name": "display_max_bid_amount_dollars",
+              "name": "max_bid",
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "OBJECT",
+                "name": "BidderPositionMaxBid",
                 "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "display_suggested_next_bid_dollars",
+              "name": "suggested_next_bid",
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "max_bid_amount_cents",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "suggested_next_bid_cents",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
+                "kind": "OBJECT",
+                "name": "BidderPositionSuggestedNextBid",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -13596,6 +14038,226 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "HighestBid",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "display_max_bid_amount_dollars",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Favor `max_bid`"
+            },
+            {
+              "name": "display_suggested_next_bid_dollars",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Favor `suggested_next_bid`"
+            },
+            {
+              "name": "max_bid_amount_cents",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Favor `max_bid`"
+            },
+            {
+              "name": "suggested_next_bid_cents",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Favor `suggested_next_bid`"
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "BidderPositionMaxBid",
+          "description": null,
+          "fields": [
+            {
+              "name": "cents",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "amount",
+              "description": null,
+              "args": [
+                {
+                  "name": "symbol",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "thousand",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\",\""
+                },
+                {
+                  "name": "decimal",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\".\""
+                },
+                {
+                  "name": "format",
+                  "description": "Allows control of symbol position (%v = value, %s = symbol)",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\"%s%v\""
+                },
+                {
+                  "name": "precision",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": "0"
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "BidderPositionSuggestedNextBid",
+          "description": null,
+          "fields": [
+            {
+              "name": "cents",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "amount",
+              "description": null,
+              "args": [
+                {
+                  "name": "symbol",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "thousand",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\",\""
+                },
+                {
+                  "name": "decimal",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\".\""
+                },
+                {
+                  "name": "format",
+                  "description": "Allows control of symbol position (%v = value, %s = symbol)",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\"%s%v\""
+                },
+                {
+                  "name": "precision",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": "0"
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -13672,7 +14334,70 @@
               "deprecationReason": null
             },
             {
-              "name": "amount_cents",
+              "name": "amount",
+              "description": null,
+              "args": [
+                {
+                  "name": "symbol",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "thousand",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\",\""
+                },
+                {
+                  "name": "decimal",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\".\""
+                },
+                {
+                  "name": "format",
+                  "description": "Allows control of symbol position (%v = value, %s = symbol)",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\"%s%v\""
+                },
+                {
+                  "name": "precision",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": "0"
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cents",
               "description": null,
               "args": [],
               "type": {
@@ -13684,6 +14409,18 @@
               "deprecationReason": null
             },
             {
+              "name": "amount_cents",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Favor `cents`"
+            },
+            {
               "name": "display_amount_dollars",
               "description": null,
               "args": [],
@@ -13692,8 +14429,8 @@
                 "name": "String",
                 "ofType": null
               },
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "Favor `amount`"
             }
           ],
           "inputFields": null,
