@@ -107,10 +107,9 @@ class LiveAuctionLotViewController: UIViewController {
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 
-        let bidHistoryViewController = LiveAuctionBidHistoryViewController(style: .Plain)
+        let bidHistoryViewController = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
         metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
         bidHistoryViewController.view.constrainHeight("70")
-        bidHistoryViewController.lotViewModel = self.lotViewModel
 
         let currentLotView = LiveAuctionCurrentLotView()
         currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
@@ -165,7 +164,7 @@ class LiveAuctionLotViewController: UIViewController {
             case .LiveLot:
                 currentLotView.hidden = true
 
-            case .UpcomingLot(_):
+            case .UpcomingLot:
                 // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
                 bidHistoryViewController.view.hidden = true
             }

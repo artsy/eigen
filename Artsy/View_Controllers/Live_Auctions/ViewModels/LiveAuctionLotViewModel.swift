@@ -10,7 +10,7 @@ enum LotState {
 }
 
 protocol LiveAuctionLotViewModelType: class {
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel
+    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel
 
     var lotArtist: String { get }
     var estimateString: String { get }
@@ -144,8 +144,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return events.count
     }
     
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
-        return events[index]
+    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
+        // Events are ordered FIFO, need to inverse for presentation
+        return events[numberOfEvents - index - 1]
     }
 
     var reserveStatusString: String {
