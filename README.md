@@ -33,8 +33,8 @@ Some helpful Relay documentation is listed below, but the general workflow is:
   2. Ensure the parent component calls `getFragment` for each child component that uses Relay.
   3. Make sure to supply every child component's `props` upon instantiation in the parent.
 
-If you change something Relay-related and you run into this error: 
-  
+If you change something Relay-related and you run into this error:
+
   *Unhandled JS Exception: RelayQL: Unexpected invocation at runtime. Either the Babel transform was not set up, or it failed to identify this call site. Make sure it is being used verbatim as `Relay.QL`*,
 
 try quitting and restarting your node instance.
@@ -64,3 +64,4 @@ try quitting and restarting your node instance.
 
 * Flexbox:
   - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+  - http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
