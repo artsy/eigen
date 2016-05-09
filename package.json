@@ -42,7 +42,8 @@
     "fbjs": "^0.7.2",
     "react": "^0.14.8",
     "react-native": "^0.24.0-rc5",
-    "react-relay": "^0.8.0"
+    "react-relay": "^0.8.0",
+    "remove-markdown": "^0.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",

@@ -59,10 +59,10 @@ type ArtistCarousel {
 }
 
 type ArtistCounts {
-  artworks: Int
-  follows: Int
-  auction_lots: Int
-  for_sale_artworks: Int
+  artworks(format: String): FormattedNumber
+  follows(format: String): FormattedNumber
+  auction_lots(format: String): FormattedNumber
+  for_sale_artworks(format: String): FormattedNumber
 }
 
 type ArtistItem {
@@ -165,6 +165,7 @@ type Artwork {
   can_share_image: Boolean
   is_shareable: Boolean
   is_hangable: Boolean
+  is_inquireable: Boolean
   is_contactable: Boolean
   is_in_auction: Boolean
   is_in_show: Boolean
@@ -185,6 +186,7 @@ type Artwork {
   images(size: Int): [Image]
   context: ArtworkContext
   highlights: [Highlighted]
+  articles(size: Int): [Article]
   shows(size: Int = 1, active: Boolean = true): [PartnerShow]
   sale: Sale
   fair: Fair
@@ -247,12 +249,15 @@ type ArtworkContextPartnerShow {
   press_release(format: Format): String
   start_at(format: String): String
   end_at(format: String): String
+  exhibition_period: String
   artists: [Artist]
   partner: Partner
   fair: Fair
   location: Location
   status: String
+  status_update(max_days: Int): String
   events: [PartnerShowEventType]
+  counts: PartnerShowCounts
   artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, exclude: [String]): [Artwork]
   meta_image: Image
   cover_image: Image
@@ -288,8 +293,8 @@ type ArtworkLayer {
   id: String
   type: String
   name: String
+  href: String
   description: String
-  more_info_url: String
   artworks: [Artwork]
 }
 
@@ -321,6 +326,7 @@ type ArtworkSearchEntity {
   can_share_image: Boolean
   is_shareable: Boolean
   is_hangable: Boolean
+  is_inquireable: Boolean
   is_contactable: Boolean
   is_in_auction: Boolean
   is_in_show: Boolean
@@ -341,6 +347,7 @@ type ArtworkSearchEntity {
   images(size: Int): [Image]
   context: ArtworkContext
   highlights: [Highlighted]
+  articles(size: Int): [Article]
   shows(size: Int = 1, active: Boolean = true): [PartnerShow]
   sale: Sale
   fair: Fair
@@ -394,12 +401,30 @@ type BidderPosition {
   is_retracted: Boolean
   is_with_bid_max: Boolean
   is_winning: Boolean
+  max_bid: BidderPositionMaxBid
+  suggested_next_bid: BidderPositionSuggestedNextBid
+  sale_artwork: SaleArtwork
+  highest_bid: HighestBid
   display_max_bid_amount_dollars: String
   display_suggested_next_bid_dollars: String
   max_bid_amount_cents: Int
   suggested_next_bid_cents: Int
-  sale_artwork: SaleArtwork
-  highest_bid: HighestBid
+}
+
+type BidderPositionMaxBid {
+  cents: Int
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+}
+
+type BidderPositionSuggestedNextBid {
+  cents: Int
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+}
+
+type BidderStatus {
+  is_highest_bidder: Boolean
+  active_bid: BidderPosition
+  most_recent_bid: BidderPosition
 }
 
 enum CategoryType {
@@ -518,6 +543,8 @@ enum Format {
   markdown
 }
 
+scalar FormattedNumber
+
 type Gene {
   cached: Int
   id: String
@@ -543,6 +570,8 @@ type HighestBid {
   created_at(format: String): String
   number: Int
   is_cancelled: Boolean
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+  cents: Int
   amount_cents: Int
   display_amount_dollars: String
 }
@@ -572,12 +601,15 @@ type HighlightedShow {
   press_release(format: Format): String
   start_at(format: String): String
   end_at(format: String): String
+  exhibition_period: String
   artists: [Artist]
   partner: Partner
   fair: Fair
   location: Location
   status: String
+  status_update(max_days: Int): String
   events: [PartnerShowEventType]
+  counts: PartnerShowCounts
   artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, exclude: [String]): [Artwork]
   meta_image: Image
   cover_image: Image
@@ -634,6 +666,7 @@ type Me {
   created_at(format: String): String
   email: String
   bidders: [Bidder]
+  bidder_status(sale_id: String!, artwork_id: String!): BidderStatus
   bidder_positions(current: Boolean, artwork_id: String): [BidderPosition]
   sale_registrations(size: Int, is_auction: Boolean = true, published: Boolean = true, live: Boolean = true, sort: SaleSorts): [SaleRegistration]
 }
@@ -719,16 +752,23 @@ type PartnerShow {
   press_release(format: Format): String
   start_at(format: String): String
   end_at(format: String): String
+  exhibition_period: String
   artists: [Artist]
   partner: Partner
   fair: Fair
   location: Location
   status: String
+  status_update(max_days: Int): String
   events: [PartnerShowEventType]
+  counts: PartnerShowCounts
   artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, exclude: [String]): [Artwork]
   meta_image: Image
   cover_image: Image
   images(size: Int, default: Boolean, page: Int): [Image]
+}
+
+type PartnerShowCounts {
+  artworks(artist_id: String): Int
 }
 
 type PartnerShowEventType {
@@ -751,12 +791,15 @@ type PartnerShowSearchEntity {
   press_release(format: Format): String
   start_at(format: String): String
   end_at(format: String): String
+  exhibition_period: String
   artists: [Artist]
   partner: Partner
   fair: Fair
   location: Location
   status: String
+  status_update(max_days: Int): String
   events: [PartnerShowEventType]
+  counts: PartnerShowCounts
   artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, exclude: [String]): [Artwork]
   meta_image: Image
   cover_image: Image
@@ -793,6 +836,7 @@ type Ping {
 
 type Profile {
   cached: Int
+  _id: String
   id: String
   name: String
   image: Image
@@ -810,6 +854,7 @@ type ProfileCounts {
 
 type ProfileSearchEntity {
   cached: Int
+  _id: String
   id: String
   name: String
   image: Image
