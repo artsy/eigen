@@ -124,7 +124,7 @@
 
         CGRect labelFrame = label.bounds;
         CGFloat idealWidth = CGRectGetWidth(labelFrame) + xOffset;
-        CGFloat max = CGRectGetWidth(navigationController.view.bounds) - (rightButtonsCount * 48) - ((rightButtonsCount - 1) * 10);
+        CGFloat max = CGRectGetWidth(navigationController.view.bounds) - (rightButtonsCount * 48) - ((rightButtonsCount - 1) * 10) - 20;
 
         label.frame = CGRectMake(xOffset, 0, MIN(idealWidth, max), 20);
         UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {MIN(idealWidth, max), CGRectGetHeight(labelFrame)}}];
