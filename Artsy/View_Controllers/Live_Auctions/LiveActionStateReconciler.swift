@@ -24,9 +24,10 @@ State update includes:
 
 protocol LiveAuctionStateReconcilerType {
     func updateState(state: AnyObject)
-    func processNewEvents(events: AnyObject)
+    func processLotEventBroadcast(broadcast: AnyObject)
+    func processCurrentLotUpdate(update: AnyObject)
 
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
 }
 
 class LiveAuctionStateReconciler: NSObject {
@@ -39,7 +40,7 @@ class LiveAuctionStateReconciler: NSObject {
         super.init()
     }
 
-    private let _currentLotSignal = Observable<LiveAuctionLotViewModel>()
+    private let _currentLotSignal = Observable<LiveAuctionLotViewModel?>(nil)
     private var _currentLotID: String?
 }
 
@@ -54,49 +55,69 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
         let currentLotID = state["currentLotId"] as? String
 
         for lot in saleArtworks {
+            // TODO: How should we handle failed parsing? Not silently, that's for sure!
             guard let json = fullLotStateById[lot.liveAuctionLotID] else { continue }
             guard let derivedLotState = json["derivedLotState"] as? [String: AnyObject] else { continue }
-            guard let eventHistory = json["eventHistory"] as? [[String: AnyObject]] else { continue }
+            guard let eventHistory = json["eventHistory"] as? [[String: AnyObject]] else { continue } // TODO move to events
 
             updateLotDerivedState(lot, derivedState: derivedLotState)
             updateLotWithEvents(lot, lotEvents: eventHistory)
         }
 
+        // TODO: This is always nil for some reason, but regardless, the UI looks terrible if it is nil. It will be nil sometimes in production, so we should operate without it!
         updateCurrentLotWithIDIfNecessary(currentLotID)
     }
 
-    func processNewEvents(events: AnyObject) {
-        print(events)
+    func processLotEventBroadcast(broadcast: AnyObject) {
 
-        // TODO
+        guard let json = broadcast as? [String: AnyObject],
+              let events = json["events"] as? [String: [String: AnyObject]],
+              let lotID = events.values.first?["lotId"] as? String,
+              let lot = saleArtworks.filter({ $0.lotID == lotID }).first,
+              let derivedLotState = json["derivedLotState"] as? [String: AnyObject],
+              let fullEventOrder = json["fullEventOrder"] as? [String] else { return }
+
+        updateLotDerivedState(lot, derivedState: derivedLotState)
+        updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
     }
 
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
-        return _currentLotSignal.map { $0 as LiveAuctionLotViewModelType }
+    func processCurrentLotUpdate(update: AnyObject) {
+        // TODO: implement
+        print(update)
+    }
+
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
+        return _currentLotSignal.map { $0.flatMap { $0 } }
     }
 }
 
 
 private typealias PrivateFunctions = LiveAuctionStateReconciler
 private extension PrivateFunctions {
-    typealias NewEventIDs = Set<String>
 
     func updateLotDerivedState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
-        guard let reserveStatusString = derivedState["reserveStatus"] as? String else { return }
+        if let reserveStatusString = derivedState["reserveStatus"] as? String {
+            lot.updateReserveStatus(reserveStatusString)
+        }
 
         // OK, this looks weird. Let's unpack.
         // derivedState["askingPriceCents"] is an AnyObject?, and casting it conditionally to a UInt64 always fails.
         // Instead, we'll use the UInt64(_ text: String) initialzer, which means we need to unwrap the AnyObject? and
         // then stick it in a string so it's not "Optional(23000)", then initialize the UInt64
-        guard let extractedAskingPrice = derivedState["askingPriceCents"] else { return }
-        guard let askingPrice = UInt64("\(extractedAskingPrice)") else { return }
+        if let extractedAskingPrice = derivedState["askingPriceCents"],
+           let askingPrice = UInt64("\(extractedAskingPrice)") {
+            lot.updateOnlineAskingPrice(askingPrice)
+        }
 
-        lot.updateReserveStatus(reserveStatusString)
-        lot.updateOnlineAskingPrice(askingPrice)
+        if let biddingStatus = derivedState["biddingStatus"] as? String {
+            lot.updateBiddingStatus(biddingStatus)
+        }
     }
 
 
-    func updateLotWithEvents(lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]]) {
+    func updateLotWithEvents(lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]], fullEventOrder: [String]? = nil) {
+        // TODO: fullEventOrder, if specified, yields the _exact_ history and order of events. We need to remove any local events not present in fullEventOrder in case they were undo'd by the operator.
+
         let existingEventIds = Set(lot.eventIDs)
         let newEvents = lotEvents.filter { existingEventIds.contains($0["eventId"] as? String ?? "") == false }
         lot.addEvents( newEvents.map { LiveEvent(JSON: $0) } )

@@ -92,11 +92,11 @@ class LiveAuctionBidButton : ARFlatButton {
         // When the lot is not live
         case .InActive(let state):
             switch state {
-                case .ClosedLot:
-                    setupUI("Bidding Closed")
-                case .LiveLot: break // Should never happen, as it'd be handled above
-                case .UpcomingLot(_):
-                    setupUI("Leave Max Bid")
+            case .ClosedLot:
+                setupUI("Bidding Closed")
+            case .LiveLot: break // Should never happen, as it'd be handled above
+            case .UpcomingLot(_):
+                setupUI("Leave Max Bid")
             }
         }
     }

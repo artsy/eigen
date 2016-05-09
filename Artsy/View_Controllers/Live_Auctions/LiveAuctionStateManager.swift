@@ -15,7 +15,7 @@ Based on socket events:
 */
 
 class LiveAuctionStateManager: NSObject {
-    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, jwt: String) -> LiveAuctionSocketCommunicatorType
+    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, jwt: JWT) -> LiveAuctionSocketCommunicatorType
     typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
     let sale: LiveSale
@@ -40,8 +40,12 @@ class LiveAuctionStateManager: NSObject {
             self?.stateReconciler.updateState(state)
         }
 
-        socketCommunicator.newEvents.subscribe { [weak self] event in
-            self?.stateReconciler.processNewEvents(event)
+        socketCommunicator.lotUpdateBroadcasts.subscribe { [weak self] broadcast in
+            self?.stateReconciler.processLotEventBroadcast(broadcast)
+        }
+
+        socketCommunicator.currentLotUpdate.subscribe { [weak self] update in
+            self?.stateReconciler.processCurrentLotUpdate(update)
         }
     }
 }
@@ -60,7 +64,7 @@ extension PublicFunctions {
 
 private typealias ComputedProperties = LiveAuctionStateManager
 extension ComputedProperties {
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
         return stateReconciler.currentLotSignal
     }
 }
@@ -90,7 +94,8 @@ extension DefaultCreators {
 
 private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let updatedAuctionState: Observable<AnyObject>
-    let newEvents = Observable<AnyObject>()
+    let lotUpdateBroadcasts = Observable<AnyObject>()
+    let currentLotUpdate = Observable<AnyObject>()
 
     init (state: AnyObject) {
         updatedAuctionState = Observable(state)

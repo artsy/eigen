@@ -24,7 +24,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 lotViewModel = Test_LiveAuctionLotViewModel()
                 cacheColoredImageForURL(lotViewModel.urlForProfile)
 
-                subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Observable<LiveAuctionLotViewModelType>())
+                subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Observable<LiveAuctionLotViewModelType?>())
 
                 subject.currentLotSignal.update(lotViewModel)
             }
@@ -45,7 +45,8 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
 
             it("looks good for upcoming lots") {
-                lotViewModel.lotStateSignal.update(.UpcomingLot(distanceFromLive: 1))
+                auctionViewModel.distance = 1
+                lotViewModel.lotStateSignal.update(.UpcomingLot)
                 expect(subject) == snapshot()
             }
 
@@ -64,10 +65,10 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var startDate = NSDate().dateByAddingTimeInterval(-3600)
     var lotCount = 3
     var saleAvailabilitySignal = Observable(SaleAvailabilityState.Active)
-    var currentLotSignal = Observable<LiveAuctionLotViewModelType>()
+    var currentLotSignal = Observable<LiveAuctionLotViewModelType?>()
 
     var distance: Int?
-    func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
+    func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int? {
         return distance
     }
 }
@@ -93,7 +94,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
     }
 
-    var lotStateSignal = Observable(LotState.UpcomingLot(distanceFromLive: 1))
+    var lotStateSignal = Observable(LotState.UpcomingLot)
     func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
         return lotStateSignal
     }

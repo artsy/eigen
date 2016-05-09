@@ -10,7 +10,7 @@ class LiveAuctionViewController: UISplitViewController {
     }()
 
     lazy var staticDataFetcher: LiveAuctionStaticDataFetcherType = {
-        return Stubbed_StaticDataFetcher() // TODO: Remove stubbing.
+        return LiveAuctionStaticDataFetcher(saleSlugOrID: self.saleSlugOrID)
     }()
 
     lazy var salesPersonCreator: (LiveSale, JWT) -> LiveAuctionsSalesPersonType = self.salesPerson

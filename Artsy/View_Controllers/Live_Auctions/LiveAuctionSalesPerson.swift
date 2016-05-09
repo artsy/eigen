@@ -5,7 +5,7 @@ import Interstellar
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
 protocol LiveAuctionsSalesPersonType {
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
 
     var auctionViewModel: LiveAuctionViewModelType { get }
     var pageControllerDelegate: LiveAuctionPageControllerDelegate? { get }
@@ -20,7 +20,7 @@ protocol LiveAuctionsSalesPersonType {
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: String) -> LiveAuctionStateManager
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT) -> LiveAuctionStateManager
 
     let sale: LiveSale
     let lots: [LiveAuctionLotViewModel]
@@ -55,7 +55,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
 private typealias ComputedProperties = LiveAuctionsSalesPerson
 extension ComputedProperties {
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
         return stateManager.currentLotSignal
     }
 
@@ -85,11 +85,11 @@ extension LiveAuctionsSalesPerson {
     }
 
     func bidOnLot(lot: LiveAuctionLotViewModelType) {
-        stateManager.bidOnLot("") // TODO: Extract lot ID once https://github.com/artsy/eigen/pull/1386 is merged.
+        stateManager.bidOnLot(lot.lotID)
     }
 
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) {
-        stateManager.bidOnLot("") // TODO: Extract lot ID once https://github.com/artsy/eigen/pull/1386 is merged.
+        // TODO: Implement
     }
 }
 

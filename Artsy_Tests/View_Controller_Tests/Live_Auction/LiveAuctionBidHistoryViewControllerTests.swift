@@ -49,14 +49,14 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             }
 
             it("looks right for final call") {
-                let event = LiveEvent(JSON: ["type" : "final_call", "id" : "ok",])
+                let event = LiveEvent(JSON: ["type" : "FinalCall", "id" : "ok",])
 
                 subject = self.setupCellWithEvent(event)
                 expect(subject).to( haveValidSnapshot() )
             }
 
             it("looks right for fair warning") {
-                let event = LiveEvent(JSON: ["type" : "fair_warning", "id" : "ok",])
+                let event = LiveEvent(JSON: ["type" : "FairWarning", "id" : "ok",])
 
                 subject = self.setupCellWithEvent(event)
                 expect(subject).to( haveValidSnapshot() )

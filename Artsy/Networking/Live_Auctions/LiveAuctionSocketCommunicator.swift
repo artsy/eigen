@@ -16,7 +16,8 @@ protocol SocketType: class {
 
 protocol LiveAuctionSocketCommunicatorType {
     var updatedAuctionState: Observable<AnyObject> { get }
-    var newEvents: Observable<AnyObject> { get }
+    var lotUpdateBroadcasts: Observable<AnyObject> { get }
+    var currentLotUpdate: Observable<AnyObject> { get }
 
     func bidOnLot(lotID: String)
     func leaveMaxBidOnLot(lotID: String)
@@ -29,15 +30,16 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     private var timer: NSTimer? // Heartbeat to keep socket connection alive.
 
     let updatedAuctionState = Observable<AnyObject>()
-    let newEvents = Observable<AnyObject>()
+    let lotUpdateBroadcasts = Observable<AnyObject>()
+    let currentLotUpdate = Observable<AnyObject>()
 
-    let jwt: String
+    let jwt: JWT
 
-    convenience init(host: String, causalitySaleID: String, jwt: String) {
-        self.init(host: host, jwt: jwt, causalitySaleID: causalitySaleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
+    convenience init(host: String, causalitySaleID: String, jwt: JWT) {
+        self.init(host: host, causalitySaleID: causalitySaleID, jwt: jwt, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
     }
 
-    init(host: String, jwt: String, causalitySaleID: String, socketCreator: SocketCreator) {
+    init(host: String, causalitySaleID: String, jwt: JWT, socketCreator: SocketCreator) {
 
         socket = socketCreator(host: host, saleID: causalitySaleID)
         self.causalitySaleID = causalitySaleID
@@ -107,16 +109,33 @@ private extension SocketSetup {
         let socketEventType = (json["type"] as? String) ?? "(No Event Specified)"
         print("Received socket event type: \(socketEventType).")
 
+
         switch socketEventType {
+
         case "InitialFullSaleState":
             updatedAuctionState.update(json)
-        case "FirstPriceBidPlaced":
-            // TODO: other events.
-            newEvents.update(json)
+
+        case "LotUpdateBroadcast":
+            lotUpdateBroadcasts.update(json)
+
+        case "OperationFailedEvent": break;
+            // TODO: Handle op failure
+
+        case "PostEventResponse": break;
+            // TODO: Handle event response (?)
+
+        case "SaleLotChangeBroadcast":
+            currentLotUpdate.update(json)
+
+        case "SaleNotFound": break;
+            // TODO: Handle this (?)
+
         case "ConnectionUnauthorized": break;
             // TODO: handle auth error.
+
         default:
-            print("Received unknown socket event type.")
+            print("Received unknown socket event type. Payload: \(json)")
+
         }
     }
 }
