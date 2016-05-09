@@ -54,6 +54,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTextChanged:)
                                                  name:UITextFieldTextDidChangeNotification
                                                object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchStarted:)
+                                                 name:UITextFieldTextDidBeginEditingNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchEnded:)
+                                                 name:UITextFieldTextDidEndEditingNotification
+                                               object:nil];
 }
 
 - (void)dealloc
@@ -140,8 +147,14 @@
 
     [self.budgetTable.view constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.budgetTable.view alignCenterXWithView:self.view predicate:@"0"];
-    [self.budgetTable.view constrainTopSpaceToView:self.headerView predicate:@"5"];
-    [self.budgetTable.view constrainBottomSpaceToView:self.onboardingNavigationItems predicate:@"0"];
+
+    if (self.useLargeLayout) {
+        [self.budgetTable.view alignCenterYWithView:self.view predicate:@"0"];
+        [self.budgetTable.view constrainHeight:@"490"];
+    } else {
+        [self.budgetTable.view constrainTopSpaceToView:self.headerView predicate:@"5"];
+        [self.budgetTable.view constrainBottomSpaceToView:self.onboardingNavigationItems predicate:@"0"];
+    }
 }
 
 #pragma mark -
@@ -185,6 +198,15 @@
     return YES;
 }
 
+- (void)searchStarted:(NSNotification *)notification
+{
+    [self.headerView.searchField searchStarted];
+}
+
+- (void)searchEnded:(NSNotification *)notification
+{
+    [self.headerView.searchField searchEnded];
+}
 
 #pragma mark -
 #pragma mark Network

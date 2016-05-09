@@ -19,6 +19,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
+
 @interface ARSignUpSplashTextViewController : UIViewController
 @property (nonatomic, readwrite) NSInteger index;
 @property (nonatomic, strong, readwrite) NSString *text;
@@ -26,7 +27,7 @@
 @end
 
 
-@interface ARSignUpSplashViewController () 
+@interface ARSignUpSplashViewController ()
 
 @property (nonatomic) NSArray *pages;
 @property (nonatomic) ARCrossfadingImageView *imageView;
@@ -92,9 +93,10 @@
     [super viewDidAppear:animated];
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
     [super traitCollectionDidChange:previousTraitCollection];
-    
+
     for (UIView *subview in self.view.subviews) {
         [subview removeFromSuperview];
     }
@@ -115,26 +117,25 @@
     [self.view addSubview:self.imageView];
     [self.imageView alignToView:self.view];
     self.imageView.userInteractionEnabled = YES;
-    
-    
+
+
     NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", self.useLargeLayout ? @"medium" : @"small");
     self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
     self.logoView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:self.logoView];
     [self.logoView alignCenterXWithView:self.view predicate:@"0"];
     [self.logoView alignCenterYWithView:self.view predicate:self.useLargeLayout ? @"-224" : @"-153"];
-    
+
     self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.view addSubview:self.spinnerView];
     [self.spinnerView alignToView:self.view];
     [self.spinnerView startAnimating];
-    
+
     NSArray *images = [self.pages map:^id(NSDictionary *object) {
         return [object objectForKey:@"image"];
     }];
-    
+
     self.imageView.images = images;
-    
 }
 
 - (void)showControls;
@@ -142,7 +143,7 @@
     self.textViewController = [self viewControllerForIndex:0];
     [self addChildViewController:self.textViewController];
     [self.view addSubview:self.textViewController.view];
-    
+
     [self.textViewController.view constrainTopSpaceToView:self.logoView predicate:self.useLargeLayout ? @"140" : @"160"];
     [self.textViewController.view alignCenterXWithView:self.view predicate:@"0"];
 
@@ -153,7 +154,7 @@
 
 
     [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate:self.useLargeLayout ? @"<=260" : @"<=100"];
-    
+
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
     [self.getStartedButton constrainWidth:self.useLargeLayout ? @"340" : @"300"];
 
@@ -165,7 +166,10 @@
     [self.logInButton alignCenterXWithView:self.view predicate:@"0"];
     [self.logInButton constrainWidth:self.useLargeLayout ? @"340" : @"300"];
 
-    
+    [self.logInButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [self.logInButton setBackgroundColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    [self.logInButton setBorderColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+
     ARTermsAndConditionsView *label = [[ARTermsAndConditionsView alloc] init];
     [label constrainWidth:@"280"];
     [self.view addSubview:label];
@@ -252,9 +256,10 @@
     return self;
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
     [super traitCollectionDidChange:previousTraitCollection];
-    
+
     [self setupViews];
 }
 
@@ -262,8 +267,8 @@
 {
     UILabel *copyLabel = [self labelForCopy];
     copyLabel.text = self.text;
-    
-    
+
+
     [self.view addSubview:copyLabel];
     [copyLabel constrainWidth:self.useLargeLayout ? @"500" : @"280" height:self.useLargeLayout ? @"160" : @"120"];
     [copyLabel alignCenterXWithView:self.view predicate:@"0"];
@@ -275,7 +280,7 @@
     ARSerifLineHeightLabel *copyLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
     copyLabel.backgroundColor = [UIColor clearColor];
     copyLabel.opaque = NO;
-    copyLabel.font = [UIFont serifFontWithSize: self.useLargeLayout ? 38 : 26];
+    copyLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 38 : 26];
     copyLabel.textColor = [UIColor whiteColor];
     copyLabel.textAlignment = NSTextAlignmentCenter;
     copyLabel.numberOfLines = 0;

@@ -14,6 +14,7 @@
 @interface AROnboardingPersonalizeTableViewController ()
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, assign) BOOL shouldAnimate;
+@property (nonatomic, strong) NSIndexPath *selectedRowToReplace;
 @end
 
 
@@ -36,6 +37,7 @@
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 
@@ -43,7 +45,6 @@
                replaceContents:(ARSearchResultsReplaceContents)replaceStyle
                       animated:(BOOL)animated
 {
-    UITableViewRowAnimation animationStyle;
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
             if (searchResults[0]) {
@@ -51,22 +52,17 @@
             } else {
                 [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
             }
-            animationStyle = UITableViewRowAnimationFade;
-            break;
+            self.selectedRowToReplace = self.tableView.indexPathForSelectedRow;
 
+            break;
         case ARSearchResultsReplaceAll:
             self.searchResults = searchResults.mutableCopy;
-            animationStyle = UITableViewRowAnimationNone;
             break;
-
         default:
-            animationStyle = UITableViewRowAnimationNone;
             break;
     }
-
     self.shouldAnimate = animated;
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:animationStyle];
-    [self flashAndFadeTableView];
+    [self.tableView reloadData];
 }
 
 - (void)flashAndFadeTableView
@@ -81,7 +77,6 @@
         self.shouldAnimate = NO;
     }
 }
-
 
 #pragma mark - Table view data source
 
@@ -157,16 +152,32 @@
             cell.alpha = 1.0;
         } completion:^(BOOL finished){
         }];
+    } else if (indexPath == self.selectedRowToReplace) {
+        cell.alpha = 0;
+        [UIView animateWithDuration:0.45 delay:0.05 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            cell.alpha = 0.7;
+        } completion:^(BOOL finished) {
+            cell.alpha = 1.0;
+        }];
     }
 }
 
+// overridden to add custom animation for the "you might like" header
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
-    [UIView animateWithDuration:0.35 animations:^{
+    if (self.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults && self.shouldAnimate) {
+        CGRect originalFrame = view.frame;
+
+        view.frame = CGRectMake(originalFrame.origin.x, originalFrame.origin.y + (2 * originalFrame.size.height),
+                                originalFrame.size.width, originalFrame.size.height);
         view.alpha = 0;
-    } completion:^(BOOL finished) {
-        view.alpha = 1;
-    }];
+
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            view.frame = originalFrame;
+            view.alpha = 1.0;
+        } completion:^(BOOL finished){
+        }];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -200,7 +211,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 72;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

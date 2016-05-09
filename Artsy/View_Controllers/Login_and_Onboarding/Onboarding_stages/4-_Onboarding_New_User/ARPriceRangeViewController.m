@@ -4,6 +4,8 @@
 #import "AROnboardingViewController.h"
 #import "AROnboardingFollowableTableViewCell.h"
 
+#import "Artsy-Swift.h"
+
 
 @interface ARPriceRangeViewController ()
 @property (nonatomic) NSArray *ranges;
@@ -39,6 +41,7 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.scrollEnabled = NO;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 #pragma mark -
@@ -65,7 +68,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 44 + (5 * 2);
+    return self.useLargeLayout ? 70 : 50;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -82,6 +85,5 @@
 
     [self.delegate budgetSelected];
 }
-
 
 @end
