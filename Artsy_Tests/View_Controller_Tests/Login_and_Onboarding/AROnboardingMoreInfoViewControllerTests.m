@@ -20,7 +20,7 @@ describe(@"facebook", ^{
         vc = [[AROnboardingMoreInfoViewController alloc] initForFacebookWithToken:@"FacebookToken" email:@"email@email.com" name:@"John Smith"];
     });
 
-    itHasSnapshotsForDevices(^{ return vc; });
+//    itHasSnapshotsForDevices(^{ return vc; });
 
     it(@"prefills name and email", ^{
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
@@ -40,7 +40,7 @@ describe(@"twitter", ^{
         vc = [[AROnboardingMoreInfoViewController alloc] initForTwitterWithToken:@"TwitterToken" andSecret:@"TwitterSecret"];
     });
 
-    itHasSnapshotsForDevices(^{ return vc; });
+//    itHasSnapshotsForDevices(^{ return vc; });
 
     it(@"prefills name and email", ^{
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];

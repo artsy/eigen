@@ -42,7 +42,7 @@
 #import "ARSignUpSplashViewController.h"
 #import "ARLoginViewController.h"
 #import "ARSignUpActiveUserViewController.h"
-#import "ARSignupViewController.h"
+#import "ARCreateAccountViewController.h"
 #import "ARGeneViewController.h"
 #import "ARPersonalizeViewController.h"
 #import "ARViewInRoomViewController.h"
@@ -982,33 +982,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARSignupViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(fb:),
-                            ARAnalyticsProperties: ^NSDictionary*(ARSignupViewController *controller, NSArray *parameters){
-                                return @{ @"type" : @"facebook" };
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(twitter:),
-                            ARAnalyticsProperties: ^NSDictionary*(ARSignupViewController *controller, NSArray *parameters){
-                                return @{ @"type" : @"twitter" };
-                            }
-
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(email:),
-                            ARAnalyticsProperties: ^NSDictionary*(ARSignupViewController *controller, NSArray *parameters){
-                                return @{ @"type" : @"email" };
-                            }
-                        },
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARTrialController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -1189,7 +1162,7 @@
                     }]
                 },
                 @{
-                    ARAnalyticsClass: ARSignupViewController.class,
+                    ARAnalyticsClass: ARCreateAccountViewController.class,
                     ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Signup" } ]
                 },
                 @{

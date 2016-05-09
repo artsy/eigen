@@ -17,7 +17,10 @@
 		0CD4E9B11BC42675005F0913 /* Heart_Shortcut.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CD4E9B01BC42675005F0913 /* Heart_Shortcut.png */; };
 		0CD4E9B51BC43198005F0913 /* AREmbeddedModelPreviewViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD4E9B31BC43160005F0913 /* AREmbeddedModelPreviewViewControllerTests.m */; };
 		0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */; };
+		1C029B021CCF7FE700808503 /* ARLoginFieldsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */; };
+		1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B041CD130A400808503 /* ARLoginButtonsView.m */; };
 		1C02A20A1CADA80D008B4F6C /* full_logo_white_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */; };
+		1C5AAEB11CD7D42E00515B73 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */; };
 		1C717EC51CB439F7002CCF2D /* AROnboardingNavigationItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C717EC41CB439F7002CCF2D /* AROnboardingNavigationItemsView.m */; };
 		1CC9EB971CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9EB961CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m */; };
 		1CC9EB9A1CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9EB991CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.m */; };
@@ -198,7 +201,6 @@
 		4938742917BD512700724795 /* ARSignUpSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938742717BD512700724795 /* ARSignUpSplashViewController.m */; };
 		4938743617BDB2CD00724795 /* ARCrossfadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938743517BDB2CD00724795 /* ARCrossfadingImageView.m */; };
 		49405AB317BEBAFF004F86D8 /* AROnboardingNavBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49405AB217BEBAFF004F86D8 /* AROnboardingNavBarView.m */; };
-		49405AB617BEC87A004F86D8 /* ARSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49405AB517BEC87A004F86D8 /* ARSignupViewController.m */; };
 		494332FD16692010005AB483 /* VideoContentLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 494332FC16692010005AB483 /* VideoContentLink.m */; };
 		49473F3317C18772004BF082 /* ARSlideshowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49473F3217C18772004BF082 /* ARSlideshowViewController.m */; };
 		49473F3617C1907F004BF082 /* ARCreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49473F3517C1907F004BF082 /* ARCreateAccountViewController.m */; };
@@ -377,7 +379,6 @@
 		601E53371B84C41F00679E10 /* ARArtworkViewControllerBuyButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 601E53351B84C35D00679E10 /* ARArtworkViewControllerBuyButtonTests.m */; };
 		601F029817F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 601F029717F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m */; };
 		60215FD717CDF9FA000F3A62 /* ARSignUpActiveUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60215FD517CDF9FA000F3A62 /* ARSignUpActiveUserViewController.m */; };
-		60215FD817CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60215FD617CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib */; };
 		6021D1B81CB7C6F800C475C1 /* TextStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021D1B71CB7C6F800C475C1 /* TextStack.swift */; };
 		6021D1BA1CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021D1B91CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift */; };
 		6021F97F17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021F97E17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m */; };
@@ -786,7 +787,12 @@
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
 		107F7EF61BFD390B7D57B4B3 /* Pods_Artsy_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AC876215B49E6BF4D24AE23 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
+		1C029B001CCF7FE700808503 /* ARLoginFieldsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLoginFieldsView.h; sourceTree = "<group>"; };
+		1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLoginFieldsView.m; sourceTree = "<group>"; };
+		1C029B031CD130A400808503 /* ARLoginButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLoginButtonsView.h; sourceTree = "<group>"; };
+		1C029B041CD130A400808503 /* ARLoginButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLoginButtonsView.m; sourceTree = "<group>"; };
 		1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_medium@2x.png"; sourceTree = "<group>"; };
+		1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrowBlack@2x.png"; sourceTree = "<group>"; };
 		1C717EC31CB439F7002CCF2D /* AROnboardingNavigationItemsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingNavigationItemsView.h; sourceTree = "<group>"; };
 		1C717EC41CB439F7002CCF2D /* AROnboardingNavigationItemsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingNavigationItemsView.m; sourceTree = "<group>"; };
 		1CC9EB951CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingPersonalizeTableViewController.h; sourceTree = "<group>"; };
@@ -1068,8 +1074,6 @@
 		4938743517BDB2CD00724795 /* ARCrossfadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCrossfadingImageView.m; sourceTree = "<group>"; };
 		49405AB117BEBAFF004F86D8 /* AROnboardingNavBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingNavBarView.h; sourceTree = "<group>"; };
 		49405AB217BEBAFF004F86D8 /* AROnboardingNavBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingNavBarView.m; sourceTree = "<group>"; };
-		49405AB417BEC87A004F86D8 /* ARSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSignupViewController.h; sourceTree = "<group>"; };
-		49405AB517BEC87A004F86D8 /* ARSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSignupViewController.m; sourceTree = "<group>"; };
 		494332FB16692010005AB483 /* VideoContentLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoContentLink.h; sourceTree = "<group>"; };
 		494332FC16692010005AB483 /* VideoContentLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoContentLink.m; sourceTree = "<group>"; };
 		494332FF166920B3005AB483 /* PhotoContentLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoContentLink.h; sourceTree = "<group>"; };
@@ -1362,7 +1366,6 @@
 		601F029717F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARArtworkViewController+ButtonActions.m"; sourceTree = "<group>"; };
 		60215FD417CDF9FA000F3A62 /* ARSignUpActiveUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSignUpActiveUserViewController.h; sourceTree = "<group>"; };
 		60215FD517CDF9FA000F3A62 /* ARSignUpActiveUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSignUpActiveUserViewController.m; sourceTree = "<group>"; };
-		60215FD617CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARSignUpActiveUserViewController.xib; sourceTree = "<group>"; };
 		6021D1B71CB7C6F800C475C1 /* TextStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextStack.swift; path = Core/TextStack.swift; sourceTree = "<group>"; };
 		6021D1B91CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionLotMetadataStackScrollView.swift; path = Live_Auctions/Views/AuctionLotMetadataStackScrollView.swift; sourceTree = "<group>"; };
 		6021F97D17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkWithMetadataThumbnailCell.h; sourceTree = "<group>"; };
@@ -3165,9 +3168,6 @@
 				60059B1E17CE6DB300BE132D /* Views */,
 				60215FD417CDF9FA000F3A62 /* ARSignUpActiveUserViewController.h */,
 				60215FD517CDF9FA000F3A62 /* ARSignUpActiveUserViewController.m */,
-				60215FD617CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib */,
-				49405AB417BEC87A004F86D8 /* ARSignupViewController.h */,
-				49405AB517BEC87A004F86D8 /* ARSignupViewController.m */,
 				4938742617BD512700724795 /* ARSignUpSplashViewController.h */,
 				4938742717BD512700724795 /* ARSignUpSplashViewController.m */,
 			);
@@ -3184,6 +3184,10 @@
 				49473F3517C1907F004BF082 /* ARCreateAccountViewController.m */,
 				60DE2DDE1677B26A00621540 /* ARLoginViewController.h */,
 				608B2F711657D2DF0046956C /* ARLoginViewController.m */,
+				1C029B001CCF7FE700808503 /* ARLoginFieldsView.h */,
+				1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */,
+				1C029B031CD130A400808503 /* ARLoginButtonsView.h */,
+				1C029B041CD130A400808503 /* ARLoginButtonsView.m */,
 			);
 			name = "3 - Sign Up + Log In";
 			path = "3_-_Sign_Up_+_Log_In";
@@ -3831,6 +3835,7 @@
 				608B703C17D4A1C70088A56C /* Artwork_Icon_VIR@2x.png */,
 				608B704017D4A1C70088A56C /* BackArrow@2x.png */,
 				608B703E17D4A1C70088A56C /* BackArrow_Highlighted@2x.png */,
+				1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */,
 				608B706217D4A1C80088A56C /* CloseButtonLarge@2x.png */,
 				E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */,
 				608B704917D4A1C70088A56C /* FooterBackground@2x.png */,
@@ -4967,7 +4972,6 @@
 				6012313618B2E44A00B7667F /* MapButtonAction@2x.png in Resources */,
 				608B706317D4A1C80088A56C /* ActionButton@2x.png in Resources */,
 				5E17B1951C59645E00CE6E98 /* Track@2x.png in Resources */,
-				60215FD817CDF9FA000F3A62 /* ARSignUpActiveUserViewController.xib in Resources */,
 				5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */,
 				602F03471CB2912D008A999D /* LiveAuctions.storyboard in Resources */,
 				5E6BA6EA1C56B5D700B942C1 /* CircularCancelButton.png in Resources */,
@@ -4990,6 +4994,7 @@
 				3C4AE98519094DAA009C0E8B /* MapAnnotation_Restroom@2x.png in Resources */,
 				3C4AE97F19094DAA009C0E8B /* MapAnnotation_Food@2x.png in Resources */,
 				E620C74819C746530064A0FF /* Images.xcassets in Resources */,
+				1C5AAEB11CD7D42E00515B73 /* BackArrowBlack@2x.png in Resources */,
 				3CAC639F190AA87A00B17325 /* MapAnnotationCallout_Partner@2x.png in Resources */,
 				5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */,
 				6019A9081C7E76EF00E292FA /* LiveAuctionsAssets.xcassets in Resources */,
@@ -5284,6 +5289,7 @@
 				5174A03B1A859E2C006CD337 /* ARFairMapView.m in Sources */,
 				51DCC6C81C60E26800455309 /* AuctionInformationViewController.swift in Sources */,
 				60B6F13916638785007C9587 /* ArtsyAPI.m in Sources */,
+				1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */,
 				60B6F13E16638815007C9587 /* Artwork.m in Sources */,
 				49473F3617C1907F004BF082 /* ARCreateAccountViewController.m in Sources */,
 				6029E9F51993D726002D42C3 /* ARAppSearchViewController.m in Sources */,
@@ -5415,7 +5421,6 @@
 				604166B116C1D47100CFBD2F /* ArtsyAPI+CurrentUserFunctions.m in Sources */,
 				603B3AEB1774A25700BA5BD3 /* ARNavigationController.m in Sources */,
 				49EF164716C568EA00460BD7 /* Profile.m in Sources */,
-				49405AB617BEC87A004F86D8 /* ARSignupViewController.m in Sources */,
 				60EFA6F516CAA8180094AD7C /* ArtsyAPI+Feed.m in Sources */,
 				3C35CC80189FF20D00E3D8DE /* ArtsyAPI+OrderedSets.m in Sources */,
 				609F984A1AC0F4E60079FE21 /* WatchArtwork.m in Sources */,
@@ -5575,6 +5580,7 @@
 				342F9667FC693B47498549FE /* UIApplicationStateEnum.m in Sources */,
 				342F9D1673764FE7442062AC /* ARNetworkErrorManager.m in Sources */,
 				D37E4CFB1A92AC5A00023E2C /* ARAnnotatedMapView.m in Sources */,
+				1C029B021CCF7FE700808503 /* ARLoginFieldsView.m in Sources */,
 				609F985C1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m in Sources */,
 				60A0EA011C510975002754A8 /* ArtsyEcho.swift in Sources */,
 				E6E07D6D195DF5D800403D2B /* ARSwitchView+Favorites.m in Sources */,

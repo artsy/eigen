@@ -167,11 +167,6 @@
     [self.delegate signUpWithFacebook];
 }
 
-- (IBAction)connectWithTwitter:(id)sender
-{
-    [self.delegate signUpWithTwitter];
-}
-
 - (IBAction)signUpWithEmail:(id)sender
 {
     [self.delegate signUpWithEmail];

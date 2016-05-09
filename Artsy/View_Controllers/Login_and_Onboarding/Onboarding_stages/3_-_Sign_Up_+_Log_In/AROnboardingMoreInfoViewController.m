@@ -73,6 +73,7 @@
     self.navBar.title.text = @"Almost Done…";
     [self.navBar.back addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     [self.navBar.forward setTitle:@"JOIN" forState:UIControlStateNormal];
+    [self.navBar.forward setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.view addSubview:self.navBar];
 
     UITapGestureRecognizer *keyboardCancelTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
@@ -101,7 +102,6 @@
     self.nameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.nameField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.nameField.returnKeyType = UIReturnKeyNext;
-    self.nameField.keyboardAppearance = UIKeyboardAppearanceDark;
 
     if (self.name) {
         self.nameField.text = self.name;
@@ -113,7 +113,6 @@
     self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.emailField.returnKeyType = UIReturnKeyNext;
-    self.emailField.keyboardAppearance = UIKeyboardAppearanceDark;
 
     if (self.email) {
         self.emailField.text = self.email;

@@ -14,7 +14,14 @@
 #import "ARNetworkErrorManager.h"
 #import "ARTopMenuViewController.h"
 
+#import "ARLoginFieldsView.h"
+#import "ARLoginButtonsView.h"
+#import "Artsy+UILabels.h"
+#import "ARFonts.h"
+
 #import "UIDevice-Hardware.h"
+
+#import "Artsy-Swift.h"
 
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
@@ -29,7 +36,11 @@
 
 
 @interface ARCreateAccountViewController () <UITextFieldDelegate, UIAlertViewDelegate>
-@property (nonatomic) AROnboardingNavBarView *navbar;
+
+@property (nonatomic, strong) ARLoginFieldsView *textFieldsView;
+@property (nonatomic, strong) ARLoginButtonsView *buttonsView;
+@property (nonatomic, strong) ARSerifLineHeightLabel *titleLabel;
+
 @property (nonatomic) ARSpinner *loadingSpinner;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
@@ -42,15 +53,6 @@
 
 - (void)viewDidLoad
 {
-    self.navbar = [[AROnboardingNavBarView alloc] init];
-
-    [self.view addSubview:self.navbar];
-    [self.navbar.title setText:@"Create Account"];
-    [self.navbar.back addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-
-    [self.navbar.forward setTitle:@"JOIN" forState:UIControlStateNormal];
-    [self.navbar.forward addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
-
     UITapGestureRecognizer *keyboardCancelTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     [self.view addGestureRecognizer:keyboardCancelTap];
 
@@ -63,49 +65,6 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 
-    self.name = [[ARTextFieldWithPlaceholder alloc] init];
-    self.name.placeholder = @"Full Name";
-    self.name.autocapitalizationType = UITextAutocapitalizationTypeWords;
-    self.name.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.name.returnKeyType = UIReturnKeyNext;
-    self.name.keyboardAppearance = UIKeyboardAppearanceDark;
-
-    self.email = [[ARTextFieldWithPlaceholder alloc] init];
-    self.email.placeholder = @"Email";
-    self.email.keyboardType = UIKeyboardTypeEmailAddress;
-    self.email.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.email.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.email.returnKeyType = UIReturnKeyNext;
-    self.email.keyboardAppearance = UIKeyboardAppearanceDark;
-
-    self.password = [[ARSecureTextFieldWithPlaceholder alloc] init];
-    self.password.placeholder = @"Password";
-    self.password.secureTextEntry = YES;
-    self.password.returnKeyType = UIReturnKeyJoin;
-    self.password.keyboardAppearance = UIKeyboardAppearanceDark;
-
-    self.containerView = [[UIView alloc] init];
-    [self.view addSubview:self.containerView];
-    [self.containerView alignCenterXWithView:self.view predicate:@"0"];
-
-    NSString *centerYOffset = [UIDevice isPad] ? @"0" : @"-30";
-    [self.containerView alignCenterYWithView:self.view predicate:NSStringWithFormat(@"%@@750", centerYOffset)];
-
-    self.keyboardConstraint = [self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"];
-    [self.containerView constrainWidth:@"280"];
-
-    [@[ self.name, self.email, self.password ] each:^(ARTextFieldWithPlaceholder *textField) {
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        textField.delegate = self;
-        [self.containerView addSubview:textField];
-        [textField constrainWidth:@"280" height:@"30"];
-        [textField alignLeading:@"0" trailing:@"0" toView:self.containerView];
-        [textField ar_extendHitTestSizeByWidth:0 andHeight:10];
-    }];
-    [self.name alignTopEdgeWithView:self.containerView predicate:@"0"];
-    [self.email constrainTopSpaceToView:self.name predicate:@"20"];
-    [self.password constrainTopSpaceToView:self.email predicate:@"20"];
-    [self.password alignBottomEdgeWithView:self.containerView predicate:@"0"];
 
     ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     spinner.alpha = 0;
@@ -117,6 +76,54 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 
     [super viewDidLoad];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [self showViews];
+}
+
+- (void)showViews
+{
+    self.view.backgroundColor = [UIColor whiteColor];
+
+    self.titleLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:1.4];
+    self.titleLabel.text = @"Sign up to see our recommendations for you";
+    self.titleLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 32.0 : 24.0];
+    self.titleLabel.textAlignment = self.useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
+
+    [self.view addSubview:self.titleLabel];
+
+    [self.titleLabel constrainWidthToView:self.view predicate:@"*.9"];
+    [self.titleLabel alignCenterXWithView:self.view predicate:@"0"];
+    [self.titleLabel alignTopEdgeWithView:self.view predicate:@"20"];
+    [self.titleLabel constrainHeight:@"80"];
+
+    self.textFieldsView = [[ARLoginFieldsView alloc] init];
+    [self.view addSubview:self.textFieldsView];
+
+    [self.textFieldsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
+    [self.textFieldsView alignCenterXWithView:self.view predicate:@"0"];
+    [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"80"];
+    [self.textFieldsView constrainHeight:@">=162"];
+    [self.textFieldsView setupForSignUp];
+
+    self.buttonsView = [[ARLoginButtonsView alloc] init];
+    [self.view addSubview:self.buttonsView];
+    [self.buttonsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
+    [self.buttonsView alignCenterXWithView:self.view predicate:@"0"];
+    [self.buttonsView constrainTopSpaceToView:self.textFieldsView predicate:@"0"];
+    [self.buttonsView constrainHeight:@"300"];
+    [self.buttonsView setupForSignUp];
+
+    self.textFieldsView.nameField.delegate = self;
+    self.textFieldsView.emailField.delegate = self;
+    self.textFieldsView.passwordField.delegate = self;
+
+    [self.buttonsView.emailActionButton addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
+    [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.buttonsView.emailActionButton setEnabled:[self canSubmit] animated:YES];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -140,12 +147,6 @@
     }];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [self.name becomeFirstResponder];
-    [super viewDidAppear:animated];
-}
-
 - (void)hideKeyboard
 {
     [self.view endEditing:YES];
@@ -153,23 +154,15 @@
 
 - (BOOL)canSubmit
 {
-    return self.email.text.length && self.name.text.length && [self.email.text containsString:@"@"] && self.password.text.length >= 6;
-}
-
-- (void)back:(id)sender
-{
-    [self.delegate popViewControllerAnimated:YES];
+    return self.textFieldsView.emailField.text.length && self.textFieldsView.nameField.text.length && [self.textFieldsView.emailField.text containsString:@"@"] && self.textFieldsView.passwordField.text.length >= 6;
 }
 
 - (void)setFormEnabled:(BOOL)enabled
 {
-    [@[ self.name, self.email, self.password ] each:^(ARTextFieldWithPlaceholder *textField) {
+    [@[ self.textFieldsView.nameField, self.textFieldsView.emailField, self.textFieldsView.passwordField ] each:^(ARTextFieldWithPlaceholder *textField) {
         textField.enabled = enabled;
         textField.alpha = enabled ? 1 : 0.3;
     }];
-
-    [self.navbar.forward setEnabled:enabled animated:YES];
-    ;
 
     if (enabled) {
         [self.loadingSpinner fadeOutAnimated:YES];
@@ -201,11 +194,11 @@
 {
     [self setFormEnabled:NO];
 
-    NSString *username = self.email.text;
-    NSString *password = self.password.text;
+    NSString *username = self.textFieldsView.emailField.text;
+    NSString *password = self.textFieldsView.passwordField.text;
 
     __weak typeof(self) wself = self;
-    [[ARUserManager sharedManager] createUserWithName:self.name.text email:username password:password success:^(User *user) {
+    [[ARUserManager sharedManager] createUserWithName:self.textFieldsView.nameField.text email:username password:password success:^(User *user) {
         __strong typeof (wself) sself = wself;
         [sself loginWithUserCredentialsWithSuccess:^{
             [sself.delegate didSignUpAndLogin];
@@ -225,15 +218,15 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t create your account" message:@"Please check your email address & password" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
             [alert show];
 
-            [sself.email becomeFirstResponder];
+            [sself.textFieldsView.emailField becomeFirstResponder];
         }
     }];
 }
 
 - (void)loginWithUserCredentialsWithSuccess:(void (^)())success
 {
-    NSString *username = self.email.text;
-    NSString *password = self.password.text;
+    NSString *username = self.textFieldsView.emailField.text;
+    NSString *password = self.textFieldsView.passwordField.text;
 
     __weak typeof(self) wself = self;
     [[ARUserManager sharedManager] loginWithUsername:username
@@ -260,11 +253,11 @@
     NSString *message;
     NSInteger tag;
     if ([source isEqualToString:@"email"]) {
-        message = [NSString stringWithFormat:@"An account already exists for the email address \"%@\".", self.email.text];
+        message = [NSString stringWithFormat:@"An account already exists for the email address \"%@\".", self.textFieldsView.emailField.text];
         tag = EMAIL_TAG;
     } else {
         message = [NSString stringWithFormat:@"An account already exists for the email address \"%@\". Please log in via %@.",
-                                             self.email.text,
+                                             self.self.textFieldsView.emailField.text,
                                              [source capitalizedString]];
         tag = SOCIAL_TAG;
     }
@@ -339,31 +332,36 @@
                                                   object:nil];
 }
 
+- (void)fb:(id)sender
+{
+    [self.delegate signUpWithFacebook];
+}
+
 #pragma mark -
 #pragma mark UITextField
 
 - (void)textChanged:(NSNotification *)n
 {
-    [self.navbar.forward setEnabled:[self canSubmit] animated:YES];
+    [self.buttonsView.emailActionButton setEnabled:[self canSubmit] animated:YES];
 }
 
 #pragma mark - delegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == self.name) {
-        [self.email becomeFirstResponder];
+    if (textField == self.textFieldsView.nameField) {
+        [self.textFieldsView.emailField becomeFirstResponder];
         return YES;
-    } else if (textField == self.email) {
-        [self.password becomeFirstResponder];
+    } else if (textField == self.textFieldsView.emailField) {
+        [self.textFieldsView.passwordField becomeFirstResponder];
         return YES;
     } else if ([self canSubmit]) {
         [self submit:nil];
         return YES;
     }
 
-    if (![self.email.text containsString:@"@"]) {
+    if (![self.textFieldsView.emailField.text containsString:@"@"]) {
         [self showWarning:@"Email address appears to be invalid" animated:YES];
-    } else if (self.password.text.length < 6) {
+    } else if (self.textFieldsView.passwordField.text.length < 6) {
         [self showWarning:@"Password must be at least 6 characters" animated:YES];
     }
     return NO;
@@ -375,7 +373,7 @@
 {
     NSString *email = nil;
     if (alertView.tag == EMAIL_TAG) {
-        email = self.email.text;
+        email = self.textFieldsView.emailField.text;
     }
     [self.delegate logInWithEmail:email];
 }

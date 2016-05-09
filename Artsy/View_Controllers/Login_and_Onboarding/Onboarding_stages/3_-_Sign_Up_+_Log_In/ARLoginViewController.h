@@ -13,4 +13,5 @@ typedef NS_ENUM(NSInteger, ARLoginViewControllerLoginType) {
 
 @property (nonatomic, weak) id<AROnboardingStepsDelegate, ARLoginSignupDelegate> delegate;
 @property (nonatomic, assign) BOOL hideDefaultValues;
+
 @end

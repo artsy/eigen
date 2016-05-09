@@ -13,7 +13,6 @@
 - (void)followableItemFollowed:(id<ARFollowable>)item;
 - (void)splashDone:(ARSignUpSplashViewController *)sender;
 - (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender;
-//- (void)collectorLevelDone:(ARCollectorLevel)level;
 - (void)slideshowDone;
 - (void)setPriceRangeDone:(NSInteger)range;
 @end
@@ -49,7 +48,6 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 @property (nonatomic, assign, readonly) ARInitialOnboardingState initialState;
 
 - (void)signUpWithFacebook;
-- (void)signUpWithTwitter;
 - (void)signUpWithEmail;
 - (void)logInWithEmail:(NSString *)email;
 - (void)showTermsAndConditions;
