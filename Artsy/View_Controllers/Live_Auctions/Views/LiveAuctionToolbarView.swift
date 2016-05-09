@@ -7,14 +7,11 @@ class LiveAuctionToolbarView : UIView {
     var lotViewModel: LiveAuctionLotViewModelType!
     var auctionViewModel: LiveAuctionViewModelType!
 
-    lazy var computedLotStateSignal: Observable<LotState> = {
-        return self.lotViewModel.computedLotStateSignal(self.auctionViewModel)
-    }()
     var lotStateObserver: ObserverToken?
 
     deinit {
         if let lotStateObserver = lotStateObserver {
-            computedLotStateSignal.unsubscribe(lotStateObserver)
+            lotViewModel.lotStateSignal.unsubscribe(lotStateObserver)
         }
     }
 
@@ -41,7 +38,7 @@ class LiveAuctionToolbarView : UIView {
     }
 
     func setupViews() {
-        lotStateObserver = computedLotStateSignal.subscribe { [weak self] lotState in
+        lotStateObserver = lotViewModel.lotStateSignal.subscribe { [weak self] lotState in
             self?.setupUsingState(lotState)
         }
     }
@@ -51,12 +48,6 @@ class LiveAuctionToolbarView : UIView {
         var clockClosure: ((UILabel) -> ())?
 
         switch lotState {
-        case .SaleNotYetOpen:
-            viewStructure = [
-                ["lot": lotCountString()],
-                ["watchers": attributify("09")],
-                ["bidders": attributify(String(lotViewModel.numberOfBids))]
-            ]
 
         case .ClosedLot:
             viewStructure = [
@@ -76,9 +67,14 @@ class LiveAuctionToolbarView : UIView {
                 label.text = "00:12"
             }
 
-        case let .UpcomingLot(distance):
-            let lots = distance == 1 ? "lot" : "lots"
-            let lotString = "\(distance) \(lots) away"
+        case .UpcomingLot:
+            let lotString: String
+            if let distance = auctionViewModel.distanceFromCurrentLot(lotViewModel) {
+                let lots = distance == 1 ? "lot" : "lots"
+                lotString = "\(distance) \(lots) away"
+            } else {
+                lotString = "Upcoming"
+            }
 
             viewStructure = [
                 ["lot": lotCountString()],

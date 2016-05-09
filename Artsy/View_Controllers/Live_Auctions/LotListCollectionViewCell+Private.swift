@@ -67,7 +67,6 @@ extension PrivateFunctions {
         case .LiveLot:
             contentViewAlpha = 1
             currentLot = true
-        case .SaleNotYetOpen: fallthrough
         case .UpcomingLot:
             contentViewAlpha = 1
             currentLot = false

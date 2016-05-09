@@ -8,7 +8,7 @@ protocol LiveAuctionViewModelType: class {
     var lotCount: Int { get }
     var saleAvailabilitySignal: Observable<SaleAvailabilityState> { get }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
-    func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int?
+    func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int?
 }
 
 class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
@@ -36,7 +36,7 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.
-    func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
+    func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int? {
         guard let _lastUpdatedCurrentLot = currentLotSignal.peek() else { return nil }
         guard let lastUpdatedCurrentLot = _lastUpdatedCurrentLot else { return nil }
 

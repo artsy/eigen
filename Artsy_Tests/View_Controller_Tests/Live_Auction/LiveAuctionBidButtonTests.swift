@@ -20,7 +20,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
             "waiting": .Active(biddingState: .LotWaitingToOpen),
             "sold": .Active(biddingState: .LotSold),
             "closed": .InActive(lotState: .ClosedLot),
-            "upcoming": .InActive(lotState: .UpcomingLot(distanceFromLive: 1)),
+            "upcoming": .InActive(lotState: .UpcomingLot),
         ]
  
         for (_, tuple) in examples.enumerate() {

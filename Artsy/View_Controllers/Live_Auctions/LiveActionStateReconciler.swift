@@ -83,6 +83,7 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
 
     func processCurrentLotUpdate(update: AnyObject) {
         // TODO: implement
+        print(update)
     }
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
@@ -95,17 +96,22 @@ private typealias PrivateFunctions = LiveAuctionStateReconciler
 private extension PrivateFunctions {
 
     func updateLotDerivedState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
-        guard let reserveStatusString = derivedState["reserveStatus"] as? String else { return }
+        if let reserveStatusString = derivedState["reserveStatus"] as? String {
+            lot.updateReserveStatus(reserveStatusString)
+        }
 
         // OK, this looks weird. Let's unpack.
         // derivedState["askingPriceCents"] is an AnyObject?, and casting it conditionally to a UInt64 always fails.
         // Instead, we'll use the UInt64(_ text: String) initialzer, which means we need to unwrap the AnyObject? and
         // then stick it in a string so it's not "Optional(23000)", then initialize the UInt64
-        guard let extractedAskingPrice = derivedState["askingPriceCents"] else { return }
-        guard let askingPrice = UInt64("\(extractedAskingPrice)") else { return }
+        if let extractedAskingPrice = derivedState["askingPriceCents"],
+           let askingPrice = UInt64("\(extractedAskingPrice)") {
+            lot.updateOnlineAskingPrice(askingPrice)
+        }
 
-        lot.updateReserveStatus(reserveStatusString)
-        lot.updateOnlineAskingPrice(askingPrice)
+        if let biddingStatus = derivedState["biddingStatus"] as? String {
+            lot.updateBiddingStatus(biddingStatus)
+        }
     }
 
 

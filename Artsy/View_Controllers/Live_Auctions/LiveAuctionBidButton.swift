@@ -95,7 +95,6 @@ class LiveAuctionBidButton : ARFlatButton {
             case .ClosedLot:
                 setupUI("Bidding Closed")
             case .LiveLot: break // Should never happen, as it'd be handled above
-            case .SaleNotYetOpen: fallthrough
             case .UpcomingLot(_):
                 setupUI("Leave Max Bid")
             }

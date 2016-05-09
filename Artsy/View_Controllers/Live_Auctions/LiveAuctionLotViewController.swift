@@ -17,11 +17,6 @@ class LiveAuctionLotViewController: UIViewController {
     private var saleAvailabilityObserver: ObserverToken?
     private var lotStateObserver: ObserverToken?
 
-    // Using lazy to hold a strong reference onto the returned signal
-    lazy var computedLotStateSignal: Observable<LotState> = {
-        return self.lotViewModel.computedLotStateSignal(self.auctionViewModel)
-    }()
-
     init(index: Int, auctionViewModel: LiveAuctionViewModelType, lotViewModel: LiveAuctionLotViewModelType, currentLotSignal: Observable<LiveAuctionLotViewModelType?>) {
         self.index = index
         self.auctionViewModel = auctionViewModel
@@ -43,7 +38,7 @@ class LiveAuctionLotViewController: UIViewController {
             auctionViewModel.saleAvailabilitySignal.unsubscribe(saleAvailabilityObserver)
         }
         if let lotStateObserver = lotStateObserver {
-            computedLotStateSignal.unsubscribe(lotStateObserver)
+            lotViewModel.lotStateSignal.unsubscribe(lotStateObserver)
         }
     }
 
@@ -147,7 +142,7 @@ class LiveAuctionLotViewController: UIViewController {
 
         lotImagePreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
 
-        lotStateObserver = computedLotStateSignal.subscribe { [weak bidButton] lotState in
+        lotStateObserver = lotViewModel.lotStateSignal.subscribe { [weak bidButton] lotState in
 
             // TODO: Hrm, should this go in the LotVM?
             let buttonState: LiveAuctionBidButtonState
@@ -163,8 +158,6 @@ class LiveAuctionLotViewController: UIViewController {
             bidButton?.setEnabled(true, animated: false)
 
             switch lotState {
-            case .SaleNotYetOpen:
-                currentLotView.hidden = true
 
             case .ClosedLot:
                 bidButton?.setEnabled(false, animated: false)
