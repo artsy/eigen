@@ -49,14 +49,14 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
         })
 
         newEventsEndedSubscription = (lotViewModel.endEventUpdatesSignal, lotViewModel.endEventUpdatesSignal.subscribe { [weak self] _ in
-            // Wee comment in startEventUpdatesSignal subscription.
+            // We comment in startEventUpdatesSignal subscription.
             guard let _ = self?.view.window else { return }
 
             self?.tableView.endUpdates()
         })
 
         newEventsSubscription = (lotViewModel.newEventSignal, lotViewModel.newEventSignal.subscribe { [weak self] event in
-            // Wee comment in startEventUpdatesSignal subscription.
+            // We comment in startEventUpdatesSignal subscription.
             guard let _ = self?.view.window else { return }
 
             let indexPath = NSIndexPath(forRow: self?.nextInsertIndex ?? 0, inSection: 0)
@@ -87,7 +87,6 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerClass(LiveAuctionHistoryCell.self, forCellReuseIdentifier: "live")
-        tableView.reloadData()
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
