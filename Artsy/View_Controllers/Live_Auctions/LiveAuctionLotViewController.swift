@@ -103,7 +103,7 @@ class LiveAuctionLotViewController: UIViewController {
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
         infoToolbar.constrainHeight("14")
 
-        let bidButton = LiveAuctionBidButton()
+        let bidButton = LiveAuctionBidButton(progressSignal: lotViewModel.bidButtonState)
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 
@@ -141,25 +141,16 @@ class LiveAuctionLotViewController: UIViewController {
 
         lotImagePreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
 
-        lotStateObserver = lotViewModel.lotStateSignal.subscribe { [weak bidButton] lotState in
+        lotStateObserver = lotViewModel.lotStateSignal.subscribe { lotState in
 
-            // TODO: Hrm, should this go in the LotVM?
-            let buttonState: LiveAuctionBidButtonState
-            switch lotState {
-            case .LiveLot:
-                buttonState = .Active(biddingState: .Biddable(biddingAmount: "$45,000"))
-            default:
-                buttonState = .InActive(lotState: lotState)
-            }
-            bidButton?.progressSignal.update(buttonState)
-
+            // Reset to defaults
             currentLotView.hidden = false
-            bidButton?.setEnabled(true, animated: false)
+            bidHistoryViewController.view.hidden = false
 
             switch lotState {
 
             case .ClosedLot:
-                bidButton?.setEnabled(false, animated: false)
+                bidHistoryViewController.view.hidden = true
 
             case .LiveLot:
                 currentLotView.hidden = true

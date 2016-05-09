@@ -12,7 +12,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
 
         let examples:[String: LiveAuctionBidButtonState] = [
             "trial": .Active(biddingState: .TrialUser),
-            "biddable": .Active(biddingState: .Biddable(biddingAmount: "$45,000")),
+            "biddable": .Active(biddingState: .Biddable(askingPrice: 45_000_00)),
             "in progress": .Active(biddingState: .BiddingInProgress ),
             "failed": .Active(biddingState: .BidNetworkFail),
             "max bidder": .Active(biddingState: .BidSuccess(isMaxBidder: true)),
@@ -26,9 +26,8 @@ class LiveAuctionBidButtonTests: QuickSpec {
         for (_, tuple) in examples.enumerate() {
 
             it("has valid snapshot \(tuple.0)") {
-                let subject = LiveAuctionBidButton()
+                let subject = LiveAuctionBidButton(progressSignal: Observable(tuple.1))
                 subject.frame = CGRect(x:0, y:0, width:260, height: 60)
-                subject.progressSignal.update(tuple.1)
                 expect(subject) == snapshot()
             }
         }

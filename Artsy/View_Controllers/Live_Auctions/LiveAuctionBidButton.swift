@@ -14,14 +14,34 @@ enum LiveAuctionBidButtonState {
 }
 
 class LiveAuctionBidButton : ARFlatButton {
-    let progressSignal = Observable<LiveAuctionBidButtonState>()
+    let progressSignal: Observable<LiveAuctionBidButtonState>
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
+
+    private var progressSubscription: ObserverToken?
+
+    init(progressSignal: Observable<LiveAuctionBidButtonState>) {
+        self.progressSignal = progressSignal
+
+        super.init(frame: CGRect.zero)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.progressSignal = Observable()
+        super.init(coder: aDecoder)
+    }
+
+    deinit {
+        if let progressSubscription = progressSubscription {
+            progressSignal.unsubscribe(progressSubscription)
+        }
+    }
+
 
     override func setup() {
         super.setup()
         setContentCompressionResistancePriority(1000, forAxis: .Vertical)
         addTarget(self, action: #selector(tappedBidButton), forControlEvents: .TouchUpInside)
-        progressSignal.subscribe(setupWithState)
+        progressSubscription = progressSignal.subscribe(setupWithState)
     }
 
     func tappedBidButton() {
@@ -73,7 +93,8 @@ class LiveAuctionBidButton : ARFlatButton {
                 setupUI("Waiting for Auctioneer…", background: white, border: grey, textColor: grey)
 
             case .Biddable(let price):
-                setupUI("Bid \(price)")
+                let formattedPrice = NSNumberFormatter.currencyStringForDollarCents(NSNumber(unsignedLongLong: price))
+                setupUI("Bid \(formattedPrice)")
                 enabled = true
             case .BiddingInProgress:
                 setupUI("Bidding...", background: purple)
@@ -94,8 +115,10 @@ class LiveAuctionBidButton : ARFlatButton {
             switch state {
             case .ClosedLot:
                 setupUI("Bidding Closed")
+                enabled = false
             case .LiveLot: break // Should never happen, as it'd be handled above
             case .UpcomingLot:
+                enabled = true
                 setupUI("Leave Max Bid")
             }
         }
