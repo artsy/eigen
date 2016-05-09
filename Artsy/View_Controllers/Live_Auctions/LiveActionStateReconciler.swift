@@ -70,12 +70,13 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
 
     func processLotEventBroadcast(broadcast: AnyObject) {
 
-        guard let json = broadcast as? [String: AnyObject],
-              let events = json["events"] as? [String: [String: AnyObject]],
-              let lotID = events.values.first?["lotId"] as? String,
-              let lot = saleArtworks.filter({ $0.lotID == lotID }).first,
-              let derivedLotState = json["derivedLotState"] as? [String: AnyObject],
-              let fullEventOrder = json["fullEventOrder"] as? [String] else { return }
+        guard let
+            json = broadcast as? [String: AnyObject],
+            events = json["events"] as? [String: [String: AnyObject]],
+            lotID = events.values.first?["lotId"] as? String,
+            lot = saleArtworks.filter({ $0.lotID == lotID }).first,
+            derivedLotState = json["derivedLotState"] as? [String: AnyObject],
+            fullEventOrder = json["fullEventOrder"] as? [String] else { return }
 
         updateLotDerivedState(lot, derivedState: derivedLotState)
         updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
@@ -87,7 +88,7 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
     }
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
-        return _currentLotSignal.map { $0.flatMap { $0 } }
+        return _currentLotSignal.map { $0 as LiveAuctionLotViewModelType? }
     }
 }
 

@@ -36,6 +36,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             // The indices are known to be the closed/live/upcoming states respectively
             it("looks good for closed lots") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
+                lotViewModel.bidButtonState.update(.InActive(lotState: .ClosedLot))
                 expect(subject) == snapshot()
             }
 
@@ -46,14 +47,14 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
             it("looks good for upcoming lots") {
                 auctionViewModel.distance = 1
-                lotViewModel.lotStateSignal.update(.UpcomingLot)
+                lotViewModel.bidButtonState.update(.InActive(lotState: .UpcomingLot))
                 expect(subject) == snapshot()
             }
 
             it("doesnt show a live auction call to action when auction is closed") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
+                lotViewModel.bidButtonState.update(.InActive(lotState: .ClosedLot))
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
-
                 expect(subject) == snapshot()
             }
         }
@@ -90,7 +91,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var currentLotValueString = "$Value"
     var imageProfileSize = CGSize(width: 200, height: 200)
     var liveAuctionLotID = "lotID"
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
+    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
     }
 
@@ -99,11 +100,12 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
         return lotStateSignal
     }
 
-    let askingPriceSignal = Observable<UInt64>()
+    let askingPriceSignal = Observable<UInt64>(5_000_00)
     let reserveStatusSignal = Observable<ARReserveStatus>()
     let startEventUpdatesSignal = Observable<NSDate>()
     let endEventUpdatesSignal = Observable<NSDate>()
     let newEventSignal = Observable<LiveAuctionEventViewModel>()
+    let bidButtonState = Observable(LiveAuctionBidButtonState.Active(biddingState: .Biddable(askingPrice: 5_000_00)))
 }
 
 let liveEventJSON = [

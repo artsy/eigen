@@ -24,8 +24,9 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
         ArtsyAPI.getLiveSaleStaticDataWithSaleID(saleSlugOrID,
             success: { json in
-                guard let sale = self.parseSale(json),
-                      let jwt = self.parseJWT(json) else {
+                guard let
+                    sale = self.parseSale(json),
+                    jwt = self.parseJWT(json) else {
                     return signal.update(.Error(Error.JSONParsing))
                 }
 

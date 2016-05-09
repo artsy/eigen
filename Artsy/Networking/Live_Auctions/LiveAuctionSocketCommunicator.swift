@@ -99,9 +99,10 @@ private extension SocketSetup {
     }
 
     func receivedText(text: String) {
-        guard let data = text.dataUsingEncoding(NSUTF8StringEncoding),
-              let _json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
-              let json = _json as? [String: AnyObject] else {
+        guard let
+            data = text.dataUsingEncoding(NSUTF8StringEncoding),
+            _json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
+            json = _json as? [String: AnyObject] else {
             // TODO: Handle error
             return
         }

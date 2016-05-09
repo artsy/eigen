@@ -10,7 +10,7 @@ enum LotState {
 }
 
 protocol LiveAuctionLotViewModelType: class {
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel
+    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel
 
     var lotArtist: String { get }
     var estimateString: String { get }
@@ -35,6 +35,7 @@ protocol LiveAuctionLotViewModelType: class {
     var startEventUpdatesSignal: Observable<NSDate> { get }
     var endEventUpdatesSignal: Observable<NSDate> { get }
     var newEventSignal: Observable<LiveAuctionEventViewModel> { get }
+    var bidButtonState: Observable<LiveAuctionBidButtonState> { get }
 }
 
 extension LiveAuctionLotViewModelType {
@@ -74,6 +75,18 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
                 return .ClosedLot
             }
         }
+    }
+
+    // TODO: This is sufficient for now, but will need to handle state _while_ bidding once that's in.
+    var bidButtonState: Observable<LiveAuctionBidButtonState> {
+        return lotStateSignal
+            .merge(askingPriceSignal)
+            .map { (lotState, askingPrice) -> LiveAuctionBidButtonState in
+                switch lotState {
+                case .LiveLot: return .Active(biddingState: .Biddable(askingPrice: askingPrice))
+                default: return .InActive(lotState: lotState)
+                }
+            }
     }
 
     var numberOfBids: Int {
@@ -144,8 +157,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return events.count
     }
     
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
-        return events[index]
+    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
+        // Events are ordered FIFO, need to inverse for presentation
+        return events[numberOfEvents - index - 1]
     }
 
     var reserveStatusString: String {

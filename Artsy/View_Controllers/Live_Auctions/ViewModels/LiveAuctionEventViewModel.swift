@@ -27,9 +27,11 @@ class LiveAuctionEventViewModel : NSObject {
         switch event.eventType() {
         case .Bid:
             guard let event = event as? LiveEventBid else { return attributify("BID", .blackColor())  }
-            return attributify("\(event.amountCents / 10)", .blackColor())
+            
+            let formattedPrice = NSNumberFormatter.currencyStringForDollarCents(NSNumber(unsignedLongLong: event.amountCents))
+            return attributify(formattedPrice, .blackColor())
 
-        case .Closed: return  NSAttributedString()
+        case .Closed: return NSAttributedString()
         case .Warning: return attributifyImage("live_auction_bid_warning_yellow")
         case .FinalCall: return attributifyImage("live_auction_bid_warning_orange")
         case .LotOpen: return attributifyImage("live_auction_bid_hammer")
