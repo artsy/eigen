@@ -4,10 +4,12 @@ import Interstellar
 
 class LiveAuctionCurrentLotView: UIButton {
 
-    let viewModel = Observable<LiveAuctionLotViewModelType>()
+    let viewModel: Observable<LiveAuctionLotViewModelType?>
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: Observable<LiveAuctionLotViewModelType?>) {
+        self.viewModel = viewModel
+
+        super.init(frame: CGRect.zero)
 
         backgroundColor = .artsyPurpleRegular()
 
@@ -54,6 +56,8 @@ class LiveAuctionCurrentLotView: UIButton {
         biddingPriceLabel.alignCenterYWithView(self, predicate: "0")
 
         viewModel.subscribe { vm in
+            guard let vm = vm else { return }
+            
             artistNameLabel.text = vm.lotArtist
             biddingPriceLabel.text = vm.currentLotValueString
             thumbnailView.ar_setImageWithURL(vm.urlForThumbnail)

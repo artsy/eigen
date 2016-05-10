@@ -14,11 +14,11 @@ enum LiveAuctionBidButtonState {
 }
 
 class LiveAuctionBidButton : ARFlatButton {
-    var viewModel: LiveAuctionBidButtonViewModelType!
+    var viewModel: LiveAuctionBiddingViewModelType!
     
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
 
-    init(viewModel: LiveAuctionBidButtonViewModelType) {
+    init(viewModel: LiveAuctionBiddingViewModelType) {
         self.viewModel = viewModel
 
         super.init(frame: CGRect.zero)

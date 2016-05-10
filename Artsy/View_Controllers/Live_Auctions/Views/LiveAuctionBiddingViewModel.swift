@@ -1,15 +1,13 @@
 import Foundation
 import Interstellar
 
-protocol LiveAuctionBidButtonViewModelType {
+protocol LiveAuctionBiddingViewModelType {
     var progressSignal: Observable<LiveAuctionBidButtonState> { get }
 }
 
 // TODO: Add tests.
-class LiveAuctionBidButtonViewModel: LiveAuctionBidButtonViewModelType {
+class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal: Observable<LiveAuctionBidButtonState>
-
-    private let lotID: String
 
     private let _lotStateSubscription: (ObserverToken, Observable<LotState>)
     private let _askingPriceSubscription: (ObserverToken, Observable<UInt64>)
@@ -22,8 +20,6 @@ class LiveAuctionBidButtonViewModel: LiveAuctionBidButtonViewModelType {
 
 
     init(lotViewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType) {
-        self.lotID = lotViewModel.lotID
-
         // Okay, so what's all this then?? Well, we need to merge several signals together, but due to Interstellar's garbage collection model of unsubscribing, we can't unsubscribe from a merged signal.
         // So instead, we create private "copies" of the signals, bound to the originals but with subscriptions we can get rid of when we're deallocated (so merging these is fine).
         self._lotStateSubscription = (lotViewModel.lotStateSignal.subscribe(_lotState.update), lotViewModel.lotStateSignal)
@@ -37,7 +33,7 @@ class LiveAuctionBidButtonViewModel: LiveAuctionBidButtonViewModelType {
                 // Merging more than two Observables in Interstellar gets really messy, we're mapping from that mess into a nice tuple with named elements.
                 return (lotState: tuple.0.0, askingPrice: tuple.0.1, currentLot: tuple.1)
             }
-            .map(LiveAuctionBidButtonViewModel.stateToBidButtonState(lotViewModel.lotID))
+            .map(LiveAuctionBiddingViewModel.stateToBidButtonState(lotViewModel.lotID))
     }
 
     deinit {
@@ -46,7 +42,7 @@ class LiveAuctionBidButtonViewModel: LiveAuctionBidButtonViewModelType {
         _currentLotSubscription.1.unsubscribe(_currentLotSubscription.0)
     }
 
-    // This is extracted into its own method because it's messy.
+    // This is extracted into its own method because it's messy. It's curried to have access to the lotID.
     class func stateToBidButtonState(lotID: String) -> (state: (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?)) -> LiveAuctionBidButtonState {
         return { state in
             switch state.lotState {
@@ -66,7 +62,7 @@ class LiveAuctionBidButtonViewModel: LiveAuctionBidButtonViewModelType {
 }
 
 
-class LiveAuctionLeaveMaxBidButtonViewModel: LiveAuctionBidButtonViewModelType {
+class LiveAuctionLeaveMaxBidButtonViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal = Observable<LiveAuctionBidButtonState>()
 }
 

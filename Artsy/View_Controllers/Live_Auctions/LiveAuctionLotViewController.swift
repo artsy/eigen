@@ -13,6 +13,8 @@ class LiveAuctionLotViewController: UIViewController {
     let auctionViewModel: LiveAuctionViewModelType
     let currentLotSignal: Observable<LiveAuctionLotViewModelType?>
 
+    private let biddingViewModel: LiveAuctionBiddingViewModelType
+
     private var currentLotObserver: ObserverToken?
     private var saleAvailabilityObserver: ObserverToken?
     private var lotStateObserver: ObserverToken?
@@ -22,6 +24,7 @@ class LiveAuctionLotViewController: UIViewController {
         self.auctionViewModel = auctionViewModel
         self.lotViewModel = lotViewModel
         self.currentLotSignal = currentLotSignal
+        self.biddingViewModel = LiveAuctionBiddingViewModel(lotViewModel: lotViewModel, auctionViewModel: auctionViewModel)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -103,7 +106,7 @@ class LiveAuctionLotViewController: UIViewController {
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
         infoToolbar.constrainHeight("14")
 
-        let bidButton = LiveAuctionBidButton(viewModel: LiveAuctionBidButtonViewModel(lotViewModel: lotViewModel, auctionViewModel: auctionViewModel))
+        let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel)
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 
@@ -111,20 +114,33 @@ class LiveAuctionLotViewController: UIViewController {
         metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
         bidHistoryViewController.view.constrainHeight("70")
 
-        let currentLotView = LiveAuctionCurrentLotView()
+        let currentLotView = LiveAuctionCurrentLotView(viewModel: auctionViewModel.currentLotSignal)
         currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
         view.addSubview(currentLotView)
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
         currentLotView.hidden = true
 
-        let lotId = lotViewModel.lotID
-        currentLotObserver = currentLotSignal.subscribe { [weak currentLotView, weak lotMetadataStack] currentLot in
-            guard let currentLot = currentLot else { return }
 
-            let isCurrentLot = (currentLot.lotID == lotId)
-            currentLotView?.hidden = isCurrentLot ? true : false
-            currentLotView?.viewModel.update(currentLot)
+        biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak lotMetadataStack, weak bidHistoryViewController] bidState in
+
+            let hideCurrentLotCTA: Bool
+            let hideBidHistory: Bool
+
+            switch bidState {
+            case .Active:
+                hideBidHistory = false
+                hideCurrentLotCTA = true
+            case .InActive(let lotState):
+                print(lotState)
+                hideBidHistory = true
+                hideCurrentLotCTA = false
+            }
+
+            currentLotView?.hidden = hideCurrentLotCTA
+
+            // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
+            bidHistoryViewController?.view.hidden = hideBidHistory
 
             // We need to align the bottom of the lot image to the lot metadata
             lotMetadataStack?.layoutIfNeeded()
@@ -132,36 +148,10 @@ class LiveAuctionLotViewController: UIViewController {
             imageBottomConstraint.constant = height + 20
         }
 
-        saleAvailabilityObserver = auctionViewModel.saleAvailabilitySignal.subscribe { [weak currentLotView] saleAvailability in
-            if saleAvailability == .Closed {
-                currentLotView?.removeFromSuperview()
-            }
-        }
-
         infoToolbar.lotViewModel = lotViewModel
         infoToolbar.auctionViewModel = auctionViewModel
 
         lotImagePreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
-
-        lotStateObserver = lotViewModel.lotStateSignal.subscribe { lotState in
-
-            // Reset to defaults
-            currentLotView.hidden = false
-            bidHistoryViewController.view.hidden = false
-
-            switch lotState {
-
-            case .ClosedLot:
-                bidHistoryViewController.view.hidden = true
-
-            case .LiveLot:
-                currentLotView.hidden = true
-
-            case .UpcomingLot:
-                // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
-                bidHistoryViewController.view.hidden = true
-            }
-        }
 
         lotMetadataStack.viewModel.update(lotViewModel)
     }
