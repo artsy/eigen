@@ -20,6 +20,7 @@
 
 #import "ARSwitchboard+Eigen.h"
 #import "ARDefaults.h"
+#import "ARRouter.h" // Required for +baseCausalitySocketURLString in the LiveAuctionSalesPerson.
 
 // Perhaps in the future we could use https://github.com/orta/ar_dispatch/ for now though eigen does more than this lib
 #import "ARDispatchManager.h"

@@ -42,7 +42,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
         self.sale = sale
         self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0) }
 
-        let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "ws://localhost:8080"
+        let host = ARRouter.baseCausalitySocketURLString()
         self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt)
         self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal)
 
