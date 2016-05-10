@@ -103,7 +103,7 @@ class LiveAuctionLotViewController: UIViewController {
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
         infoToolbar.constrainHeight("14")
 
-        let bidButton = LiveAuctionBidButton(progressSignal: lotViewModel.bidButtonState)
+        let bidButton = LiveAuctionBidButton(viewModel: LiveAuctionBidButtonViewModel(lotViewModel: lotViewModel, auctionViewModel: auctionViewModel))
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
 

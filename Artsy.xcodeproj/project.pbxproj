@@ -273,6 +273,7 @@
 		5E1A3AA01C93760A0047329E /* LiveAuctionSocketCommunicatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1A3A9F1C93760A0047329E /* LiveAuctionSocketCommunicatorSpec.swift */; };
 		5E1DDF191CE22C0700DFEE2A /* SimpleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DDF181CE22C0700DFEE2A /* SimpleProgressView.swift */; };
 		5E1DDF1B1CE2340900DFEE2A /* LiveAuctionCurrentLotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DDF1A1CE2340900DFEE2A /* LiveAuctionCurrentLotView.swift */; };
+		5E1DDF1D1CE24FBF00DFEE2A /* LiveAuctionBidButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DDF1C1CE24FBF00DFEE2A /* LiveAuctionBidButtonViewModel.swift */; };
 		5E20BB651C62BF8300C6D781 /* AuctionColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20BB641C62BF8300C6D781 /* AuctionColors.swift */; };
 		5E20BB671C62C00D00C6D781 /* AuctionCircularButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20BB661C62C00D00C6D781 /* AuctionCircularButtons.swift */; };
 		5E20BB6A1C62C81600C6D781 /* CircularInfoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */; };
@@ -1209,6 +1210,7 @@
 		5E1A3A9F1C93760A0047329E /* LiveAuctionSocketCommunicatorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionSocketCommunicatorSpec.swift; path = Live_Auctions/LiveAuctionSocketCommunicatorSpec.swift; sourceTree = "<group>"; };
 		5E1DDF181CE22C0700DFEE2A /* SimpleProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleProgressView.swift; path = Live_Auctions/Views/SimpleProgressView.swift; sourceTree = "<group>"; };
 		5E1DDF1A1CE2340900DFEE2A /* LiveAuctionCurrentLotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionCurrentLotView.swift; path = Live_Auctions/Views/LiveAuctionCurrentLotView.swift; sourceTree = "<group>"; };
+		5E1DDF1C1CE24FBF00DFEE2A /* LiveAuctionBidButtonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidButtonViewModel.swift; path = Live_Auctions/Views/LiveAuctionBidButtonViewModel.swift; sourceTree = "<group>"; };
 		5E20BB641C62BF8300C6D781 /* AuctionColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionColors.swift; sourceTree = "<group>"; };
 		5E20BB661C62C00D00C6D781 /* AuctionCircularButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionCircularButtons.swift; sourceTree = "<group>"; };
 		5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CircularInfoButton@2x.png"; sourceTree = "<group>"; };
@@ -3351,6 +3353,7 @@
 			children = (
 				609E394D1C9FEC840035C6FC /* LiveAuctionLotImagesPreviewView.swift */,
 				60F242F11CB3AA7300387AA1 /* LiveAuctionBidButton.swift */,
+				5E1DDF1C1CE24FBF00DFEE2A /* LiveAuctionBidButtonViewModel.swift */,
 				608AFFF01CB681AD00534754 /* LiveBidProgressOverlayView.swift */,
 				6021D1B91CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift */,
 				60C2CBEE1CC11433009B30CA /* LiveAuctionToolbarView.swift */,
@@ -5462,6 +5465,7 @@
 				5102616F1BBE8324002AB8BB /* ARAuctionWebViewController.m in Sources */,
 				49A76D0817592C96001D4B81 /* SearchResult.m in Sources */,
 				513483551AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m in Sources */,
+				5E1DDF1D1CE24FBF00DFEE2A /* LiveAuctionBidButtonViewModel.swift in Sources */,
 				608920C3178C682A00989A10 /* ARItemThumbnailViewCell.m in Sources */,
 				5EA250661C4EE95B001E4950 /* NSArray+Additions.m in Sources */,
 				5E1DDF1B1CE2340900DFEE2A /* LiveAuctionCurrentLotView.swift in Sources */,

@@ -14,38 +14,29 @@ enum LiveAuctionBidButtonState {
 }
 
 class LiveAuctionBidButton : ARFlatButton {
-    let progressSignal: Observable<LiveAuctionBidButtonState>
+    var viewModel: LiveAuctionBidButtonViewModelType!
+    
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
 
-    private var progressSubscription: ObserverToken?
-
-    init(progressSignal: Observable<LiveAuctionBidButtonState>) {
-        self.progressSignal = progressSignal
+    init(viewModel: LiveAuctionBidButtonViewModelType) {
+        self.viewModel = viewModel
 
         super.init(frame: CGRect.zero)
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.progressSignal = Observable()
         super.init(coder: aDecoder)
     }
-
-    deinit {
-        if let progressSubscription = progressSubscription {
-            progressSignal.unsubscribe(progressSubscription)
-        }
-    }
-
 
     override func setup() {
         super.setup()
         setContentCompressionResistancePriority(1000, forAxis: .Vertical)
         addTarget(self, action: #selector(tappedBidButton), forControlEvents: .TouchUpInside)
-        progressSubscription = progressSignal.subscribe(setupWithState)
+        viewModel.progressSignal.subscribe(setupWithState)
     }
 
     func tappedBidButton() {
-        guard let state = progressSignal.peek() else { return }
+        guard let state = viewModel.progressSignal.peek() else { return }
         switch state {
         case .Active(let bidState):
             switch bidState {
