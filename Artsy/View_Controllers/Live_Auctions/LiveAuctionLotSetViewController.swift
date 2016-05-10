@@ -112,7 +112,8 @@ class LiveAuctionLotSetViewController: UIViewController {
         let lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
         lotListController.selectedIndex = currentIndex()
-        presentViewController(lotListController, animated: true, completion: nil)
+        let navController = ARSerifNavigationViewController(rootViewController: lotListController)
+        presentViewController(navController, animated: true, completion: nil)
     }
 
     func currentIndex() -> Int {

@@ -6,10 +6,8 @@ import Then
 private typealias PrivateFunctions = LotListCollectionViewCell
 extension PrivateFunctions {
 
-    func setup() {
-        // Necessary setup
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.alignToView(self)
+    func resetViewHierarchy() {
+        contentView.subviews.forEach { $0.removeFromSuperview() }
 
         // Separators
         [topSeparator, bottomSeparator].forEach { separator in
@@ -57,6 +55,8 @@ extension PrivateFunctions {
     }
 
     func setLotState(lotState: LotState) {
+        resetViewHierarchy()
+
         let contentViewAlpha: CGFloat
         let currentLot: Bool
 
@@ -76,8 +76,6 @@ extension PrivateFunctions {
 
         if currentLot {
             selectedBackgroundView = nil
-            labelContainerView.addSubview(currentAskingPriceLabel)
-            labelContainerView.addSubview(hammerImageView)
 
             [topSeparator, bottomSeparator].forEach { $0.hidden = true }
 
@@ -94,7 +92,6 @@ extension PrivateFunctions {
             }
             currentAskingPriceLabel.removeFromSuperview()
             hammerImageView.removeFromSuperview()
-            hammerImageView.hidden = true
 
             topSeparator.hidden = isNotTopCell
             bottomSeparator.hidden = false

@@ -12,6 +12,8 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     let stickyCollectionViewLayout: LiveAuctionLotListStickyCellCollectionViewLayout
     let auctionViewModel: LiveAuctionViewModelType
 
+    var currentLotStateSubscription: (ObserverToken, Observable<LotState>)?
+
     var selectedIndex: Int? = 0 {
         didSet {
             if let selectedIndex = selectedIndex {
@@ -34,9 +36,26 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         super.init(collectionViewLayout: self.stickyCollectionViewLayout)
 
         currentLotSignalObserver = currentLotSignal.subscribe { [weak self] lot in
+            guard let sSelf = self else { return }
+
+            sSelf.unsubscribeCurrentLotState()
+
             if let lot = lot {
-                self?.stickyCollectionViewLayout.setActiveIndex(lot.lotIndex)
+                sSelf.currentLotStateSubscription = (lot.lotStateSignal.subscribe { lotState in
+                    let activeIndex: Int?
+                    if lotState == .LiveLot {
+                        activeIndex = lot.lotIndex
+                    } else {
+                        activeIndex = nil
+                    }
+
+                    self?.stickyCollectionViewLayout.setActiveIndex(activeIndex)
+                }, lot.lotStateSignal)
+            } else {
+                sSelf.stickyCollectionViewLayout.setActiveIndex(nil)
             }
+
+            sSelf.collectionView?.reloadData()
         }
     }
     
@@ -46,6 +65,7 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
     deinit {
         currentLotSignal.unsubscribe(currentLotSignalObserver)
+        unsubscribeCurrentLotState()
     }
 
     override func viewDidLoad() {
@@ -53,6 +73,13 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         title = "Lots"
 
         collectionView?.registerClass(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
+    }
+
+    func unsubscribeCurrentLotState() {
+        if let currentLotStateSubscription = currentLotStateSubscription {
+            currentLotStateSubscription.1.unsubscribe(currentLotStateSubscription.0)
+        }
+        currentLotStateSubscription = nil
     }
 
     func lotAtIndexPath(indexPath: NSIndexPath) -> LiveAuctionLotViewModelType {
@@ -72,7 +99,7 @@ extension CollectionView {
         let viewModel = lotAtIndexPath(indexPath)
         (cell as? LotListCollectionViewCell)?.configureForViewModel(viewModel, auctionViewModel: auctionViewModel, indexPath: indexPath)
 
-        cell.selected = indexPath.row == selectedIndex
+        cell.selected = (indexPath.row == selectedIndex)
         return cell
     }
 
