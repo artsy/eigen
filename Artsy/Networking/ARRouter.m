@@ -79,6 +79,16 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
++ (NSString *)baseCausalitySocketURLString
+{
+    if ([AROptions boolForOption:ARUseStagingDefault]) {
+        NSString *stagingSocketURLString = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingLiveAuctionSocketURLDefault];
+        return stagingSocketURLString;
+    } else {
+        return ARCausalitySocketURL;
+    }
+}
+
 + (NSURL *)baseWebURL
 {
     return [UIDevice isPad] ? [self baseDesktopWebURL] : [self baseMobileWebURL];

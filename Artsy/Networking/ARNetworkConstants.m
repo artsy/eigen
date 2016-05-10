@@ -4,6 +4,7 @@ NSString *const ARBaseDesktopWebURL = @"https://www.artsy.net";
 NSString *const ARBaseMobileWebURL = @"https://m.artsy.net";
 NSString *const ARBaseApiURL = @"https://api.artsy.net";
 NSString *const ARBaseMetaphysicsApiURL = @"https://metaphysics-production.artsy.net/";
+NSString *const ARCausalitySocketURL = @"wss://causality.artsy.net/";
 
 NSString *const ARPersonalizePath = @"personalize";
 
