@@ -7,6 +7,8 @@ upcoming:
     - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
     - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah
     - Artwork view hides Contact button for uninquireable works - sarah
+    - QuickSilver now supports direct URLs. - ash
+    - Adds support for unknown Artsy URLs using internal web browsers. - ash
     - Removed the Ask a Specialist button from artwork view - sarah
     - Added a check in danger for ARTopMenuViewController+SwiftDeveloperExtras - sarah
     - Generalized the RefineViewController - sarah
