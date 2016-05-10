@@ -35,7 +35,6 @@ protocol LiveAuctionLotViewModelType: class {
     var startEventUpdatesSignal: Observable<NSDate> { get }
     var endEventUpdatesSignal: Observable<NSDate> { get }
     var newEventSignal: Observable<LiveAuctionEventViewModel> { get }
-    var bidButtonState: Observable<LiveAuctionBidButtonState> { get }
 }
 
 extension LiveAuctionLotViewModelType {
@@ -75,18 +74,6 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
                 return .ClosedLot
             }
         }
-    }
-
-    // TODO: This is sufficient for now, but will need to handle state _while_ bidding once that's in.
-    var bidButtonState: Observable<LiveAuctionBidButtonState> {
-        return lotStateSignal
-            .merge(askingPriceSignal)
-            .map { (lotState, askingPrice) -> LiveAuctionBidButtonState in
-                switch lotState {
-                case .LiveLot: return .Active(biddingState: .Biddable(askingPrice: askingPrice))
-                default: return .InActive(lotState: lotState)
-                }
-            }
     }
 
     var numberOfBids: Int {

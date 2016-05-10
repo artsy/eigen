@@ -49,8 +49,11 @@ extension PublicFunctions {
 
         if userInterfaceNeedsSetup {
             userInterfaceNeedsSetup = false
-            setup()
+            contentView.translatesAutoresizingMaskIntoConstraints = false
+            contentView.alignToView(self)
         }
+        
+        resetViewHierarchy()
 
         isNotTopCell = (indexPath.item > 0)
 

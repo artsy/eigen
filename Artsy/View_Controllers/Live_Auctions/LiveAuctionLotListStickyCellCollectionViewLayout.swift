@@ -23,9 +23,10 @@ class LiveAuctionLotListStickyCellCollectionViewLayout: UICollectionViewFlowLayo
 private typealias PublicFunctions = LiveAuctionLotListStickyCellCollectionViewLayout
 extension PublicFunctions {
 
-    func setActiveIndex(index: Int) {
+    func setActiveIndex(index: Int?) {
         currentIndex = index
         invalidateLayout()
+        collectionView?.reloadData()
     }
 }
 
