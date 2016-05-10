@@ -367,10 +367,13 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
 
 - (UIViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
 {
-    // Use the internal JLRouter for the actual routing
-    id routedViewController = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
-    if (routedViewController) {
-        return routedViewController;
+    BOOL isTrustedHostForPredictableRouting = ([[ARRouter artsyHosts] containsObject:url.host] || url.host == nil);
+    if (isTrustedHostForPredictableRouting) {
+        // Use the internal JLRouter for the actual routing
+        id routedViewController = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
+        if (routedViewController) {
+            return routedViewController;
+        }
     }
 
     // We couldn't find one? Well, then we should present it as a martsy view
