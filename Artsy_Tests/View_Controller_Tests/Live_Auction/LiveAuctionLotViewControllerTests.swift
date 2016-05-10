@@ -36,7 +36,6 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             // The indices are known to be the closed/live/upcoming states respectively
             it("looks good for closed lots") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
-                lotViewModel.bidButtonState.update(.InActive(lotState: .ClosedLot))
                 expect(subject) == snapshot()
             }
 
@@ -47,13 +46,12 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
             it("looks good for upcoming lots") {
                 auctionViewModel.distance = 1
-                lotViewModel.bidButtonState.update(.InActive(lotState: .UpcomingLot))
+                lotViewModel.lotStateSignal.update(.UpcomingLot)
                 expect(subject) == snapshot()
             }
 
             it("doesnt show a live auction call to action when auction is closed") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
-                lotViewModel.bidButtonState.update(.InActive(lotState: .ClosedLot))
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
                 expect(subject) == snapshot()
             }
@@ -72,7 +70,7 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var startDate = NSDate().dateByAddingTimeInterval(-3600)
     var lotCount = 3
     var saleAvailabilitySignal = Observable(SaleAvailabilityState.Active)
-    var currentLotSignal = Observable<LiveAuctionLotViewModelType?>()
+    var currentLotSignal = Observable<LiveAuctionLotViewModelType?>(Test_LiveAuctionLotViewModel(lotID: "active-lot"))
 
     var distance: Int?
     func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int? {
@@ -111,7 +109,12 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     let startEventUpdatesSignal = Observable<NSDate>()
     let endEventUpdatesSignal = Observable<NSDate>()
     let newEventSignal = Observable<LiveAuctionEventViewModel>()
-    let bidButtonState = Observable(LiveAuctionBidButtonState.Active(biddingState: .Biddable(askingPrice: 5_000_00)))
+
+    init(lotID: String) {
+        self.lotID = lotID
+    }
+
+    init() {}
 }
 
 let liveEventJSON = [

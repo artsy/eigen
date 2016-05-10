@@ -5,7 +5,6 @@ protocol LiveAuctionBiddingViewModelType {
     var progressSignal: Observable<LiveAuctionBidButtonState> { get }
 }
 
-// TODO: Add tests.
 class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal: Observable<LiveAuctionBidButtonState>
 
@@ -55,6 +54,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                 }
             case .LiveLot:
                 // TODO: This is sufficient for now, but will need to handle state _while_ bidding once that's in. That can go in another observable.
+                // TODO: We also need to determine if we are the highest bidder or have been outbid or whathaveyou.
                 return .Active(biddingState: .Biddable(askingPrice: state.askingPrice))
             }
         }

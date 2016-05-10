@@ -26,10 +26,18 @@ class LiveAuctionBidButtonTests: QuickSpec {
         for (_, tuple) in examples.enumerate() {
 
             it("has valid snapshot \(tuple.0)") {
-                let subject = LiveAuctionBidButton(progressSignal: Observable(tuple.1))
+                let subject = LiveAuctionBidButton(viewModel: Test_BiddingViewModel(state: tuple.1))
                 subject.frame = CGRect(x:0, y:0, width:260, height: 60)
                 expect(subject) == snapshot()
             }
         }
+    }
+}
+
+class Test_BiddingViewModel: LiveAuctionBiddingViewModelType {
+    let progressSignal = Observable<LiveAuctionBidButtonState>()
+
+    init(state: LiveAuctionBidButtonState) {
+        progressSignal.update(state)
     }
 }

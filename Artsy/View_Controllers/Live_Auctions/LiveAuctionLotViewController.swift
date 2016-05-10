@@ -148,6 +148,12 @@ class LiveAuctionLotViewController: UIViewController {
             imageBottomConstraint.constant = height + 20
         }
 
+        saleAvailabilityObserver = auctionViewModel.saleAvailabilitySignal.subscribe { [weak currentLotView] saleAvailability in
+            if saleAvailability == .Closed {
+                currentLotView?.removeFromSuperview()
+            }
+        }
+
         infoToolbar.lotViewModel = lotViewModel
         infoToolbar.auctionViewModel = auctionViewModel
 

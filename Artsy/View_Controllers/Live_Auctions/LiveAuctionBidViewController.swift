@@ -79,7 +79,7 @@ class LiveAuctionBidViewModel: NSObject {
 class LiveAuctionBidViewController: UIViewController {
 
     var bidViewModel: LiveAuctionBidViewModel!
-    let bidButtonViewModel = LiveAuctionLeaveMaxBidButtonViewModel()
+    var bidButtonViewModel: LiveAuctionBiddingViewModelType!
     var biddingProgressSignal = Observable<LiveAuctionBiddingProgressState>()
 
     @IBOutlet weak var lowerBiddingSeparatorView: UIView!
@@ -88,7 +88,7 @@ class LiveAuctionBidViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        bidButton.viewModel = bidButtonViewModel
+        bidButtonViewModel = bidButton.viewModel
 
         updateLotInformation()
         updateCurrentBidInformation(NSDate())

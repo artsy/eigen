@@ -14,7 +14,7 @@ enum LiveAuctionBidButtonState {
 }
 
 class LiveAuctionBidButton : ARFlatButton {
-    var viewModel: LiveAuctionBiddingViewModelType!
+    var viewModel: LiveAuctionBiddingViewModelType
     
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
 
@@ -25,6 +25,8 @@ class LiveAuctionBidButton : ARFlatButton {
     }
     
     required init?(coder aDecoder: NSCoder) {
+        // This is an acceptable default, it can be replaced before added to a view and setup() getting called.
+        viewModel = LiveAuctionLeaveMaxBidButtonViewModel()
         super.init(coder: aDecoder)
     }
 
