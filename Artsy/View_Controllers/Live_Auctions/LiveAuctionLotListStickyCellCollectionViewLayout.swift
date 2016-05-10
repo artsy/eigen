@@ -26,6 +26,7 @@ extension PublicFunctions {
     func setActiveIndex(index: Int?) {
         currentIndex = index
         invalidateLayout()
+        collectionView?.reloadData()
     }
 }
 
