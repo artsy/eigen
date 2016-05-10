@@ -125,7 +125,9 @@ private extension PrivateFunctions {
     }
 
     func updateCurrentLotWithIDIfNecessary(newCurrentLotID: LotID?) {
-        guard let newCurrentLotID = newCurrentLotID else { return }
+        guard let newCurrentLotID = newCurrentLotID else {
+            return _currentLotSignal.update(nil)
+        }
         guard newCurrentLotID != _currentLotID ?? "" else { return }
 
         guard let newCurrentViewModel = saleArtworks.filter({ $0.lotID == newCurrentLotID }).first else { return }
