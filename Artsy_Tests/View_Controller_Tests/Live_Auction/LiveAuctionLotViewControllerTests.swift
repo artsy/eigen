@@ -57,6 +57,12 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
                 expect(subject) == snapshot()
             }
+
+            it("looks good when its lot becomes the current lot") {
+                lotViewModel.lotStateSignal.update(.LiveLot)
+                auctionViewModel.currentLotSignal.update(lotViewModel)
+                expect(subject) == snapshot()
+            }
         }
     }
 

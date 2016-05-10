@@ -118,10 +118,12 @@ class LiveAuctionLotViewController: UIViewController {
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
         currentLotView.hidden = true
 
+        let lotId = lotViewModel.lotID
         currentLotObserver = currentLotSignal.subscribe { [weak currentLotView, weak lotMetadataStack] currentLot in
             guard let currentLot = currentLot else { return }
-            
-            currentLotView?.hidden = false
+
+            let isCurrentLot = (currentLot.lotID == lotId)
+            currentLotView?.hidden = isCurrentLot ? true : false
             currentLotView?.viewModel.update(currentLot)
 
             // We need to align the bottom of the lot image to the lot metadata
@@ -183,93 +185,5 @@ extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
         guard let pageVC = parentViewController else { return }
         guard let auctionVC = pageVC.parentViewController else { return }
         auctionVC.presentViewController(nav, animated: true) { button.enabled = true }
-    }
-}
-
-class LiveAuctionCurrentLotView: UIButton {
-
-    let viewModel = Observable<LiveAuctionLotViewModelType>()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        backgroundColor = .artsyPurpleRegular()
-
-        let liveLotLabel = ARSansSerifLabel()
-        liveLotLabel.font = .sansSerifFontWithSize(12)
-        liveLotLabel.text = "Live Lot"
-
-        let artistNameLabel = UILabel()
-        artistNameLabel.font = .serifSemiBoldFontWithSize(16)
-
-        let biddingPriceLabel = ARSansSerifLabel()
-        biddingPriceLabel.font = .sansSerifFontWithSize(16)
-
-        let hammerView = UIImageView(image: UIImage(asset: .Lot_bidder_hammer_white))
-        let thumbnailView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-
-        [liveLotLabel, artistNameLabel, biddingPriceLabel, thumbnailView, hammerView].forEach { addSubview($0) }
-        [liveLotLabel, artistNameLabel, biddingPriceLabel].forEach {
-            $0.backgroundColor = backgroundColor
-            $0.textColor = .whiteColor()
-        }
-
-        constrainHeight("54")
-
-        // Left Side
-
-        thumbnailView.alignLeadingEdgeWithView(self, predicate: "10")
-        thumbnailView.constrainWidth("38", height: "38")
-        thumbnailView.alignCenterYWithView(self, predicate: "0")
-
-        liveLotLabel.constrainLeadingSpaceToView(thumbnailView, predicate: "10")
-        liveLotLabel.alignTopEdgeWithView(self, predicate: "10")
-
-        artistNameLabel.constrainLeadingSpaceToView(thumbnailView, predicate: "10")
-        artistNameLabel.alignBottomEdgeWithView(self, predicate: "-10")
-
-        // Right side
-
-        hammerView.alignTrailingEdgeWithView(self, predicate: "-10")
-        hammerView.constrainWidth("32", height: "32")
-        hammerView.alignCenterYWithView(self, predicate: "0")
-
-        biddingPriceLabel.alignAttribute(.Trailing, toAttribute: .Leading, ofView: hammerView, predicate: "-12")
-        biddingPriceLabel.alignCenterYWithView(self, predicate: "0")
-
-        viewModel.subscribe { vm in
-            artistNameLabel.text = vm.lotArtist
-            biddingPriceLabel.text = vm.currentLotValueString
-            thumbnailView.ar_setImageWithURL(vm.urlForThumbnail)
-        }
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-class SimpleProgressView : UIView {
-    var highlightColor = UIColor.artsyPurpleRegular() {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-
-    var progress: CGFloat = 0 {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-
-    override func drawRect(rect: CGRect) {
-        let bg = UIBezierPath(rect: bounds)
-        backgroundColor!.set()
-        bg.fill()
-
-        let progressRect = CGRect(x: 0, y: 0, width: Int(bounds.width * progress), height: Int(bounds.height))
-        let fg = UIBezierPath(rect: progressRect)
-        highlightColor.set()
-        fg.fill()
     }
 }

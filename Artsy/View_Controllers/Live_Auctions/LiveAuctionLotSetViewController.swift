@@ -11,6 +11,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     let salesPerson: LiveAuctionsSalesPersonType
 
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
+    let progressBar = SimpleProgressView()
 
     var pageController: UIPageViewController!
     var hasBeenSetup = false
@@ -46,14 +47,10 @@ class LiveAuctionLotSetViewController: UIViewController {
             scrollView.alignToView(pageControllerView)
         }
 
-        let progress = SimpleProgressView()
-        progress.progress = 0.6
-        progress.backgroundColor = .artsyGrayRegular()
-
-        view.addSubview(progress)
-        progress.constrainHeight("4")
-        progress.alignLeading("0", trailing: "0", toView: view)
-        progress.alignBottomEdgeWithView(view, predicate: "-165")
+        view.addSubview(progressBar)
+        progressBar.constrainHeight("4")
+        progressBar.alignLeading("0", trailing: "0", toView: view)
+        progressBar.alignBottomEdgeWithView(view, predicate: "-165")
 
         setupWithInitialData()
     }
@@ -134,6 +131,20 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         guard let startVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(0) else { return }
         pageController.setViewControllers([startVC], direction: .Forward, animated: false, completion: nil)
+
+
+        salesPerson
+            .currentLotSignal
+            .merge(salesPerson.auctionViewModel.saleAvailabilitySignal)
+            .subscribe { [weak self] (currentLot, saleAvailability) in
+                guard let currentLot = currentLot else {
+                    // We don't have a current lot, so set the progress to one if the sale is closed and zero otherwise.
+                    self?.progressBar.progress = saleAvailability == .Closed ? 1 : 0
+                    return
+                }
+                let total = self?.salesPerson.auctionViewModel.lotCount ?? 1 // We're dividing by the total, it should not be zero 😬
+                self?.progressBar.progress = CGFloat(currentLot.lotIndex) / CGFloat(total)
+        }
     }
 
     func jumpToLotAtIndex(index: Int, animated: Bool) {

@@ -83,8 +83,8 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
     }
 
     func processCurrentLotUpdate(update: AnyObject) {
-        // TODO: implement
-        print(update)
+        let currentLotID = update["lotId"] as? String
+        updateCurrentLotWithIDIfNecessary(currentLotID)
     }
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
