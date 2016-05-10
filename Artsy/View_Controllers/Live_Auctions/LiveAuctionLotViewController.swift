@@ -131,8 +131,7 @@ class LiveAuctionLotViewController: UIViewController {
             case .Active:
                 hideBidHistory = false
                 hideCurrentLotCTA = true
-            case .InActive(let lotState):
-                print(lotState)
+            case .InActive:
                 hideBidHistory = true
                 hideCurrentLotCTA = false
             }

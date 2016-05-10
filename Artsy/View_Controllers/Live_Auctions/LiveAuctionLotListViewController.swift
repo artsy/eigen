@@ -46,16 +46,9 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
             // A lot can be the _current_ lot without being _opened_ yet. We check the current lot state to make sure that the activeIndex of the layout corresponds to the lotState that the cells are using to render themselves.
             sSelf.currentLotStateSubscription = (lot.lotStateSignal.subscribe { lotState in
-                    let activeIndex: Int?
-                    if lotState == .LiveLot {
-                        activeIndex = lot.lotIndex
-                    } else {
-                        activeIndex = nil
-                    }
-
-                    self?.stickyCollectionViewLayout.setActiveIndex(activeIndex)
-
-                }, lot.lotStateSignal)
+                let activeIndex: Int? = (lotState == .LiveLot ? lot.lotIndex : nil)
+                self?.stickyCollectionViewLayout.setActiveIndex(activeIndex)
+            }, lot.lotStateSignal)
             
         }
     }
