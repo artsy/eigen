@@ -63,6 +63,8 @@
     }
     self.shouldAnimate = animated;
     [self.tableView reloadData];
+    [self.tableView layoutIfNeeded];
+    self.shouldAnimate = NO;
 }
 
 - (void)flashAndFadeTableView
@@ -144,13 +146,14 @@
         // The lower down the cell is in the list, the longer the animation takes (cell has further to travel)
         // Equally, to stagger, we want the bottom cells to start their animation later than the top cells
         // Other than that, magic constants are just the result of tweaks over time
-        CGFloat duration = (0.6 * originalFrame.origin.y) / self.tableView.frame.size.height + 0.3;
-        CGFloat delay = 0.18 * (indexPath.row);
+        CGFloat duration = ((0.8 * originalFrame.origin.y) / self.tableView.frame.size.height + 0.3) + 0.15;
+        CGFloat delay = 0.1 * (indexPath.row) + 0.2;
 
-        [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveEaseInOut animations:^{
             cell.frame = originalFrame;
+            cell.alpha = 0.8;
+        } completion:^(BOOL finished) {
             cell.alpha = 1.0;
-        } completion:^(BOOL finished){
         }];
     } else if (indexPath == self.selectedRowToReplace) {
         cell.alpha = 0;
@@ -159,6 +162,7 @@
         } completion:^(BOOL finished) {
             cell.alpha = 1.0;
         }];
+        self.selectedRowToReplace = nil;
     }
 }
 
@@ -172,7 +176,7 @@
                                 originalFrame.size.width, originalFrame.size.height);
         view.alpha = 0;
 
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [UIView animateWithDuration:0.3 delay:0.1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             view.frame = originalFrame;
             view.alpha = 1.0;
         } completion:^(BOOL finished){
