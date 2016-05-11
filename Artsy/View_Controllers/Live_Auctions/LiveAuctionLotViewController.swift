@@ -163,7 +163,7 @@ class LiveAuctionLotViewController: UIViewController {
 extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
 
     func bidButtonRequestedBid(button: LiveAuctionBidButton) {
-        salesPerson.bidOnLot(lotViewModel, biddingViewModel: biddingViewModel)
+        salesPerson.bidOnLot(lotViewModel, amountCents: lotViewModel.currentLotValue, biddingViewModel: biddingViewModel)
     }
 
     func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton) {
