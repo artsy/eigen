@@ -151,6 +151,12 @@ describe(@"ARSwitchboard", ^{
             });
         });
 
+        it(@"loads internal webviews for trusted but unpredictable hosts", ^{
+            NSURL *internalButUnpredictableURL = [[NSURL alloc] initWithString:@"https://live-staging.artsy.net/54c7e8fa7261692b5acd0600"];
+            id viewController = [switchboard loadURL:internalButUnpredictableURL];
+            expect(viewController).to.beKindOf(ARInternalMobileWebViewController.class);
+        });
+
         it(@"loads web view for external urls", ^{
             it(@"loads browser", ^{
                 NSURL *externalURL = [[NSURL alloc] initWithString:@"http://google.com"];
