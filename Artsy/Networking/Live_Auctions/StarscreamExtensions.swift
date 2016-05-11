@@ -5,6 +5,10 @@ extension WebSocket: SocketType {
         writeString(str, completion: nil)
     }
 
+    func writeData(data: NSData) {
+        self.writeData(data, completion: nil)
+    }
+
     func disconnect() {
         disconnect(forceTimeout: nil)
     }
