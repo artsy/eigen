@@ -15,7 +15,7 @@ protocol LiveAuctionsSalesPersonType {
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType?
 
-    func bidOnLot(lot: LiveAuctionLotViewModelType)
+    func bidOnLot(lot: LiveAuctionLotViewModelType, biddingViewModel: LiveAuctionBiddingViewModelType)
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel)
 }
 
@@ -84,8 +84,8 @@ extension LiveAuctionsSalesPerson {
         return lots[index]
     }
 
-    func bidOnLot(lot: LiveAuctionLotViewModelType) {
-        stateManager.bidOnLot(lot.lotID)
+    func bidOnLot(lot: LiveAuctionLotViewModelType, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        stateManager.bidOnLot(lot.lotID, biddingViewModel: biddingViewModel)
     }
 
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) {

@@ -22,6 +22,7 @@ class LiveAuctionStateManager: NSObject {
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
+    private var biddingStates = [String: LiveAuctionBiddingViewModelType]()
 
     init(host: String,
          sale: LiveSale,
@@ -47,14 +48,20 @@ class LiveAuctionStateManager: NSObject {
         socketCommunicator.currentLotUpdate.subscribe { [weak self] update in
             self?.stateReconciler.processCurrentLotUpdate(update)
         }
+
+        socketCommunicator.postEventResponses.subscribe { [weak self] response in
+            // TODO: Extract bidID from response, update biddingStates[bidID], and remove biddingStates[bidID]
+        }
     }
 }
 
 private typealias PublicFunctions = LiveAuctionStateManager
 extension PublicFunctions {
 
-    func bidOnLot(lotID: String) {
-        socketCommunicator.bidOnLot(lotID)
+    func bidOnLot(lotID: String, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        let bidID = NSUUID().UUIDString
+        biddingStates[bidID] = biddingViewModel
+        socketCommunicator.bidOnLot(lotID, withBidID: bidID)
     }
 
     func leaveMaxBidOnLot(lotID: String) {
@@ -96,13 +103,14 @@ private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let updatedAuctionState: Observable<AnyObject>
     let lotUpdateBroadcasts = Observable<AnyObject>()
     let currentLotUpdate = Observable<AnyObject>()
+    let postEventResponses = Observable<AnyObject>()
 
     init (state: AnyObject) {
         updatedAuctionState = Observable(state)
     }
 
-    func bidOnLot(lotID: String) {
-
+    func bidOnLot(lotID: String, withBidID bidID: String) {
+        
     }
 
     func leaveMaxBidOnLot(lotID: String) {
