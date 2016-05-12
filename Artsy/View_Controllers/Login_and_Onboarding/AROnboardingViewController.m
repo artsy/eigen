@@ -44,6 +44,10 @@
 @property (nonatomic, strong, readwrite) NSLayoutConstraint *backgroundHeightConstraint;
 @property (nonatomic, strong, readwrite) NSMutableSet *followedItemsDuringOnboarding;
 @property (nonatomic, assign, readwrite) NSInteger budgetRange;
+@property (nonatomic, strong, readwrite) UIView *progressBar;
+@property (nonatomic, strong, readwrite) UIView *progressBackgroundBar;
+@property (nonatomic, strong, readwrite) NSLayoutConstraint *progressWidthConstraint;
+
 @end
 
 
@@ -77,6 +81,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.tintColor = [UIColor artsyPurpleRegular];
 
+    [self setupProgressView];
 
     self.screenSwipeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgeSwiped:)];
     self.screenSwipeGesture.edges = UIRectEdgeLeft;
@@ -143,6 +148,42 @@
     [super viewDidAppear:animated];
 }
 
+- (void)setupProgressView
+{
+    self.progressBar = [[UIView alloc] init];
+    self.progressBackgroundBar = [[UIView alloc] init];
+
+    self.progressBackgroundBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Hash"]];
+    [self.view addSubview:self.progressBackgroundBar];
+
+    [self.progressBackgroundBar constrainHeight:@"5"];
+    [self.progressBackgroundBar constrainWidthToView:self.view predicate:@"0"];
+    [self.progressBackgroundBar alignTopEdgeWithView:self.view predicate:@"0"];
+    [self.progressBackgroundBar alignLeadingEdgeWithView:self.view predicate:@"0"];
+
+    self.progressBar.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:self.progressBar];
+
+    self.progressBar.alpha = 0;
+    self.progressBackgroundBar.alpha = 0;
+}
+
+- (void)updateProgress:(CGFloat)progress
+{
+    CGFloat progressWidth = self.view.frame.size.width * progress;
+
+    [UIView animateWithDuration:0.3 delay:0.1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.progressBar.frame = CGRectMake(0, 0, progressWidth, 5);
+        if (self.progressBar.alpha == 0) {
+            self.progressBar.alpha = 0.7;
+            self.progressBackgroundBar.alpha = 0.7;
+        }
+    } completion:^(BOOL finished) {
+        self.progressBar.alpha = 1.0;
+        self.progressBackgroundBar.alpha = 1.0;
+    }];
+}
+
 #pragma mark -
 #pragma mark Slideshow
 
@@ -202,6 +243,7 @@
     createVC.delegate = self;
     [self pushViewController:createVC animated:YES];
     self.state = AROnboardingStageSignUp;
+    [self updateProgress:0.95];
 }
 
 - (void)presentOnboarding
@@ -227,15 +269,11 @@
 
 - (void)presentPersonalizationQuestionnaires
 {
-    //    if ([[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingSkipPersonalizeDefault]) {
-    //        [self personalizeDone];
-    //        return;
-    //    }
-
     self.state = AROnboardingStagePersonalizeArtists;
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.25];
 }
 
 - (void)presentPersonalizeCategories
@@ -244,6 +282,7 @@
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.5];
 }
 
 - (void)presentPersonalizeBudget
@@ -252,6 +291,7 @@
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.75];
 }
 
 - (void)personalizeArtistsDone
@@ -278,6 +318,13 @@
 - (void)backTapped
 {
     [self popViewControllerAnimated:YES];
+
+    // slight hack, but easiest way
+    if ([self.topViewController isKindOfClass:[ARSignUpSplashViewController class]]) {
+        self.progressBar.alpha = 0;
+        self.progressBackgroundBar.alpha = 0;
+        self.progressBar.frame = CGRectMake(0, 0, 0, 5);
+    }
 }
 
 - (void)followableItemFollowed:(id<ARFollowable>)item

@@ -21,14 +21,27 @@
     if (self) {
         _back = [[ARWhiteFlatButton alloc] init];
         [_back setTitle:@"Back" forState:UIControlStateNormal];
-        [_back setBorderColor:[UIColor artsyGrayRegular] forState:UIControlStateNormal];
 
         _next = [[ARWhiteFlatButton alloc] init];
         [_next setTitle:@"Next" forState:UIControlStateNormal];
-        [_next setBorderColor:[UIColor artsyGrayRegular] forState:UIControlStateNormal];
+
+        UIView *topBorder = [[UIView alloc] init];
+        UIView *separatorBorder = [[UIView alloc] init];
+        topBorder.backgroundColor = [UIColor artsyGrayRegular];
+        separatorBorder.backgroundColor = [UIColor artsyGrayRegular];
 
         [self addSubview:_back];
         [self addSubview:_next];
+        [self addSubview:topBorder];
+        [self addSubview:separatorBorder];
+
+        [topBorder constrainHeight:@"1"];
+        [topBorder constrainWidthToView:self predicate:@"0"];
+        [topBorder alignTop:@"0" leading:@"0" toView:self];
+
+        [separatorBorder constrainWidth:@"1"];
+        [separatorBorder constrainHeightToView:self predicate:@"0"];
+        [separatorBorder alignCenterWithView:self];
 
         [_back alignBottomEdgeWithView:self predicate:@"0"];
         [_back alignLeadingEdgeWithView:self predicate:@"0"];

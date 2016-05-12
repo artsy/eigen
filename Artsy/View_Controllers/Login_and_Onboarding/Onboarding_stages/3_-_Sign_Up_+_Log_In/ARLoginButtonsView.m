@@ -113,9 +113,9 @@
     [self.forgotPasswordButton alignTrailingEdgeWithView:self predicate:@"0"];
     [self.forgotPasswordButton constrainHeight:@"30"];
 
-    [self.forgotPasswordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    [self.forgotPasswordButton setBackgroundColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-    [self.forgotPasswordButton setBorderColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    [self.forgotPasswordButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    [self.forgotPasswordButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
+    [self.forgotPasswordButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
 }
 
 @end
