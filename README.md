@@ -27,6 +27,11 @@
 
 3. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
 
+4. We vendor some data from other repositories that you will sometimes need to update. You can either update all of them
+   with `$ npm run sync-externals` or individually:
+   - The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ npm run sync-schema`
+   - The colors defined in Artsy’s style-guide: `$ npm run sync-colors`
+
 ### Using Relay
 
 Some helpful Relay documentation is listed below, but the general workflow is:
