@@ -51,7 +51,7 @@
   return self;
 }
 
-// TODO For now, as I have no clue what that needs yet
+// TODO: For now, as I have no clue what that needs yet
 - (BOOL)canCoalesce
 {
   return NO;
@@ -119,24 +119,6 @@
 @end
 
 
-@implementation UIView (RCTEnclosingScrollView)
-
-- (instancetype)_enclosingRCTScrollView
-{
-  UIView *superview = self.superview;
-  if (superview) {
-    if ([superview isKindOfClass:RCTScrollView.class]) {
-      return superview;
-    } else {
-      return superview._enclosingRCTScrollView;
-    }
-  }
-  return nil;
-}
-
-@end
-
-
 @implementation RCTScrollView (RCTEnclosingScrollView)
 
 // Override method, because we want to send the generated event through the notification center.
@@ -161,12 +143,31 @@
                                                        coalescingKey:coalescingKey];
   [[self valueForKey:@"_eventDispatcher"] sendEvent:scrollEvent];
 
-  // TODO this doesn’t coalesce, which is something that’s done by the event dispatcher
+  // TODO: This doesn’t coalesce, which is something that’s done by the event dispatcher
   [[NSNotificationCenter defaultCenter] postNotificationName:@"RCTScrollEvent" object:self userInfo:@{ @"event": scrollEvent }];
 }
 
 - (void)_enclosingRCTScrollViewEvent:(NSNotification *)notification;
 {
+  // TODO: Currently this receives notifications from any scrollView, it might be more
+  //       efficient if this could be limited to just the enclosing one, if any, however
+  //       I was not able to find a great place in RN where the ancestor view hierarchy
+  //       is guaranteed to exist.
+  //
+  RCTScrollView *scrollView = notification.object;
+  // Only handle events of scrollviews that actually enclose this scrollview.
+  if (scrollView == self || ![self isDescendantOfView:scrollView]) {
+    return;
+  }
+
+  // TODO: This is even more of a hack than all the rest of the change!!!
+  //       The enclosing scroll view *must* have a throttle amount set or
+  //       it won’t send more scroll move events.
+  //
+  if (scrollView.scrollEventThrottle == 0) {
+    scrollView.scrollEventThrottle = self.scrollEventThrottle;
+  }
+  
   RCTScrollEvent *scrollEvent = notification.userInfo[@"event"];
   
   uint16_t coalescingKey = [[self valueForKey:@"_coalescingKey"] unsignedIntegerValue];
@@ -187,20 +188,11 @@
 - (void)didMoveToSuperview
 {
   [super didMoveToSuperview];
-  
   if (self.superview) {
-    RCTScrollView *scrollView = self._enclosingRCTScrollView;
-    if (scrollView) {
-      // TODO: This is even more of a hack than all the rest of the change!!!
-      //       The enclosing scroll view *must* have a throttle amount or it won’t send scroll move events.
-      if (scrollView.scrollEventThrottle == 0) {
-        scrollView.scrollEventThrottle = self.scrollEventThrottle;
-      }
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(_enclosingRCTScrollViewEvent:)
-                                                   name:@"RCTScrollEvent"
-                                                 object:scrollView];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(_enclosingRCTScrollViewEvent:)
+                                                 name:@"RCTScrollEvent"
+                                               object:nil];
   } else {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:@"RCTScrollEvent"
