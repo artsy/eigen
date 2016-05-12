@@ -3,6 +3,8 @@ upcoming:
   details: Onboarding / New Gene VC / Live
 
   dev:
+    - Onboarding login and sign up view controllers - maxim
+    - Onboarding artist search and related suggestions - maxim
     - Onboarding sequencing for personalisation questionnaire - maxim
     - Updates for Xcode 7.3. - ash
     - Onboarding splash screen - maxim

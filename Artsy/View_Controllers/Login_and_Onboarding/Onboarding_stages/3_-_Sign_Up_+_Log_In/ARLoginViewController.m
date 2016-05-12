@@ -153,18 +153,6 @@
     [super viewWillAppear:animated];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-#if (AR_SHOW_ALL_DEBUG)
-    [self showAutoLoginButtons];
-    [self setupDefaultUsernameAndPassword];
-    [self textChanged:nil];
-#endif
-
-    [super viewDidAppear:animated];
-}
-
-
 - (void)setupDefaultUsernameAndPassword
 {
     if (([ARDeveloperOptions options][@"username"] && [ARDeveloperOptions options][@"password"]) && self.hideDefaultValues == NO) {
@@ -487,36 +475,6 @@
              cancelButtonTitle:@"OK"
              otherButtonTitles:nil
                       tapBlock:nil];
-}
-
-#pragma mark -
-#pragma mark Auto Login Fun
-
-- (void)autoLogIn:(id)sender
-{
-// this won't leak passwords into the build unless you've
-// somehow got a simulator only build, which is only
-// really possible if you grab a dev's laptop
-
-// ... in which case you've got the source, so who'd bother running strings?
-
-#if (AR_SHOW_ALL_DEBUG)
-    NSString *username, *password;
-
-    username = @"energytestbot@artsymail.com";
-    password = @"wy-rhu-hoki-tha-whil";
-
-    self.textFieldsView.emailField.text = username;
-    self.textFieldsView.passwordField.text = password;
-
-    [self login:nil];
-#endif
-}
-
-- (void)showAutoLoginButtons
-{
-    self.testBotButton.hidden = NO;
-    self.testBotButton.enabled = YES;
 }
 
 #pragma mark -
