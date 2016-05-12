@@ -37,6 +37,7 @@
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
@@ -98,6 +99,7 @@
     ARSerifLabel *headerTitle = [[ARSerifLabel alloc] init];
     UIView *lineView = [[UIView alloc] init];
 
+    headerView.backgroundColor = [UIColor whiteColor];
     switch (self.contentDisplayMode) {
         case ARTableViewContentDisplayModeSearchResults:
             headerTitle.text = @"";
@@ -115,17 +117,17 @@
     headerTitle.font = [UIFont serifFontWithSize:15.0f];
 
     [headerView addSubview:headerTitle];
-    [headerTitle alignLeadingEdgeWithView:headerView predicate:@"15"];
-    [headerTitle alignTrailingEdgeWithView:headerView predicate:@"-15"];
+    [headerTitle alignLeadingEdgeWithView:headerView predicate:@"10"];
+    [headerTitle alignTrailingEdgeWithView:headerView predicate:@"-10"];
     [headerTitle constrainHeightToView:headerView predicate:@"0"];
     [headerTitle alignCenterYWithView:headerView predicate:@"0"];
 
-    lineView.backgroundColor = self.tableView.separatorColor;
+    lineView.backgroundColor = [UIColor artsyGrayRegular];
     [headerView addSubview:lineView];
 
     [lineView constrainHeight:@"0.5"];
-    [lineView constrainWidthToView:headerView predicate:@"*.96"];
-    [lineView alignBottom:@"0" trailing:@"0" toView:headerView];
+    [lineView alignLeading:@"10" trailing:@"-10" toView:headerView];
+    [lineView alignBottomEdgeWithView:headerView predicate:@"0"];
 
     return headerView;
 }

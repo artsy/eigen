@@ -101,7 +101,7 @@
         case AROnboardingStagePersonalizeArtists:
             [self addSearchTable];
             // progress percentages are made up for now, will be calculated by steps and remaining steps later
-            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you."];
+            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." withLargeLayout:self.useLargeLayout];
             self.searchResultsTable.headerPlaceholderText = @"TOP ARTISTS ON ARTSY";
             self.headerView.searchField.searchField.delegate = self;
             [self.headerView.searchField.searchField setPlaceholder:@"Search artist"];
@@ -109,7 +109,7 @@
             break;
         case AROnboardingStagePersonalizeCategories:
             [self addSearchTable];
-            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you."];
+            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." withLargeLayout:self.useLargeLayout];
             self.headerView.searchField.searchField.delegate = self;
             self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
             [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
@@ -119,7 +119,7 @@
         case AROnboardingStagePersonalizeBudget:
             [self addBudgetTable];
             [self.onboardingNavigationItems disableNextStep];
-            [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?"];
+            [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" withLargeLayout:self.useLargeLayout];
             [self.headerView hideSearchBar];
             break;
         default:

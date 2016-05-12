@@ -35,11 +35,11 @@
         [self addSubview:topBorder];
         [self addSubview:separatorBorder];
 
-        [topBorder constrainHeight:@"1"];
+        [topBorder constrainHeight:@"0.5"];
         [topBorder constrainWidthToView:self predicate:@"0"];
         [topBorder alignTop:@"0" leading:@"0" toView:self];
 
-        [separatorBorder constrainWidth:@"1"];
+        [separatorBorder constrainWidth:@"0.5"];
         [separatorBorder constrainHeightToView:self predicate:@"0"];
         [separatorBorder alignCenterWithView:self];
 

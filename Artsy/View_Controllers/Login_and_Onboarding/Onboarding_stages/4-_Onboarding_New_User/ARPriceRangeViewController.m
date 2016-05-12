@@ -42,6 +42,7 @@
     self.tableView.delegate = self;
     self.tableView.scrollEnabled = NO;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 #pragma mark -
