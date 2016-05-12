@@ -46,7 +46,6 @@
 @property (nonatomic, assign, readwrite) NSInteger budgetRange;
 @property (nonatomic, strong, readwrite) UIView *progressBar;
 @property (nonatomic, strong, readwrite) UIView *progressBackgroundBar;
-@property (nonatomic, strong, readwrite) NSLayoutConstraint *progressWidthConstraint;
 
 @end
 
