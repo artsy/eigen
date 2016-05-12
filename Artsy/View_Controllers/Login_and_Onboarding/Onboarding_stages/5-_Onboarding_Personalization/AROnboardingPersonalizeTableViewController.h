@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, ARTableViewContentDisplayMode) {
     ARTableViewContentDisplayModeNone
 };
 
-@protocol PersonalizeNetworkDelegate <NSObject>
+@protocol ARPersonalizeNetworkDelegate <NSObject>
 @required
 - (void)followableItemClicked:(id<ARFollowable>)item;
 @end
@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, ARTableViewContentDisplayMode) {
 
 @interface AROnboardingPersonalizeTableViewController : UITableViewController
 
-@property (nonatomic, weak) id<PersonalizeNetworkDelegate> networkDelegate;
+@property (nonatomic, weak) id<ARPersonalizeNetworkDelegate> networkDelegate;
 @property (nonatomic, strong, readwrite) NSString *headerPlaceholderText;
 @property (nonatomic, readwrite) ARTableViewContentDisplayMode contentDisplayMode;
 

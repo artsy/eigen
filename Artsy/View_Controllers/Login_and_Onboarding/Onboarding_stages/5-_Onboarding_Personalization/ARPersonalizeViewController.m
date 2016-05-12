@@ -6,6 +6,7 @@
 #import "AROnboardingPersonalizeTableViewController.h"
 #import "AROnboardingNavigationItemsView.h"
 #import "AROnboardingHeaderView.h"
+#import "ARPriceRangeViewController.h"
 #import "Gene.h"
 #import "ARLogger.h"
 
@@ -20,14 +21,16 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
-@interface ARPersonalizeViewController () <UITextFieldDelegate, PersonalizeNetworkDelegate>
+@interface ARPersonalizeViewController () <UITextFieldDelegate, ARPersonalizeNetworkDelegate, ARPersonalizeContainer>
 
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 
-@property (nonatomic) UIView *searchView;
-@property (nonatomic) AROnboardingHeaderView *headerView;
-@property (nonatomic) AROnboardingNavigationItemsView *onboardingNavigationItems;
-@property (nonatomic, strong) AROnboardingPersonalizeTableViewController *searchResultsTable;
+@property (nonatomic, strong, readwrite) UIView *searchView;
+@property (nonatomic, strong, readwrite) AROnboardingHeaderView *headerView;
+@property (nonatomic, strong, readwrite) AROnboardingNavigationItemsView *onboardingNavigationItems;
+@property (nonatomic, strong, readwrite) AROnboardingPersonalizeTableViewController *searchResultsTable;
+@property (nonatomic, strong, readwrite) ARPriceRangeViewController *budgetTable;
+@property (nonatomic, assign, readwrite) BOOL followedAtLeastOneCategory;
 
 @property (nonatomic, weak) AFHTTPRequestOperation *searchRequestOperation;
 @end
@@ -51,6 +54,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTextChanged:)
                                                  name:UITextFieldTextDidChangeNotification
                                                object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchStarted:)
+                                                 name:UITextFieldTextDidBeginEditingNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchEnded:)
+                                                 name:UITextFieldTextDidEndEditingNotification
+                                               object:nil];
 }
 
 - (void)dealloc
@@ -72,7 +82,6 @@
     [self.view addSubview:self.onboardingNavigationItems];
 
     [self.onboardingNavigationItems constrainWidthToView:self.view predicate:@"0"];
-    [self.onboardingNavigationItems constrainHeight:@"50"];
     [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
     [self.onboardingNavigationItems alignLeadingEdgeWithView:self.view predicate:@"0"];
 
@@ -87,6 +96,39 @@
     [self.headerView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.headerView alignCenterXWithView:self.view predicate:@"0"];
 
+
+    switch (self.state) {
+        case AROnboardingStagePersonalizeArtists:
+            [self addSearchTable];
+            // progress percentages are made up for now, will be calculated by steps and remaining steps later
+            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." withLargeLayout:self.useLargeLayout];
+            self.searchResultsTable.headerPlaceholderText = @"TOP ARTISTS ON ARTSY";
+            self.headerView.searchField.searchField.delegate = self;
+            [self.headerView.searchField.searchField setPlaceholder:@"Search artist"];
+            [self populateTrendingArtists];
+            break;
+        case AROnboardingStagePersonalizeCategories:
+            [self addSearchTable];
+            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." withLargeLayout:self.useLargeLayout];
+            self.headerView.searchField.searchField.delegate = self;
+            self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
+            [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
+            [self.onboardingNavigationItems disableNextStep];
+            [self populateTrendingArtists];
+            break;
+        case AROnboardingStagePersonalizeBudget:
+            [self addBudgetTable];
+            [self.onboardingNavigationItems disableNextStep];
+            [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" withLargeLayout:self.useLargeLayout];
+            [self.headerView hideSearchBar];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)addSearchTable
+{
     self.searchResultsTable = [[AROnboardingPersonalizeTableViewController alloc] init];
     self.searchResultsTable.networkDelegate = self;
     [self.view addSubview:self.searchResultsTable.view];
@@ -95,29 +137,23 @@
     [self.searchResultsTable.view alignCenterXWithView:self.view predicate:@"0"];
     [self.searchResultsTable.view constrainTopSpaceToView:self.headerView predicate:@"5"];
     [self.searchResultsTable.view constrainBottomSpaceToView:self.onboardingNavigationItems predicate:@"0"];
+}
 
-    switch (self.state) {
-        case AROnboardingStagePersonalizeArtists:
-            // progress percentages are made up for now, will be calculated by steps and remaining steps later
-            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." andProgress:0.33];
-            self.searchResultsTable.headerPlaceholderText = @"TOP ARTISTS ON ARTSY";
-            self.headerView.searchField.searchField.delegate = self;
-            [self.headerView.searchField.searchField setPlaceholder:@"Search artist"];
-            [self populateTrendingArtists];
-            break;
-        case AROnboardingStagePersonalizeCategories:
-            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." andProgress:0.5];
-            self.headerView.searchField.searchField.delegate = self;
-            self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
-            [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
-            [self.onboardingNavigationItems disableNextStep];
-            [self populateTrendingArtists];
-            break;
-        case AROnboardingStagePersonalizeBudget:
-            [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" andProgress:0.7];
-            break;
-        default:
-            break;
+- (void)addBudgetTable
+{
+    self.budgetTable = [[ARPriceRangeViewController alloc] init];
+    self.budgetTable.delegate = self;
+    [self.view addSubview:self.budgetTable.view];
+
+    [self.budgetTable.view constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
+    [self.budgetTable.view alignCenterXWithView:self.view predicate:@"0"];
+
+    if (self.useLargeLayout) {
+        [self.budgetTable.view alignCenterYWithView:self.view predicate:@"0"];
+        [self.budgetTable.view constrainHeight:@"490"];
+    } else {
+        [self.budgetTable.view constrainTopSpaceToView:self.headerView predicate:@"5"];
+        [self.budgetTable.view constrainBottomSpaceToView:self.onboardingNavigationItems predicate:@"0"];
     }
 }
 
@@ -145,7 +181,7 @@
             }];
         } break;
         case AROnboardingStagePersonalizeCategories: {
-            self.searchRequestOperation = [ArtsyAPI artistSearchWithQuery:self.headerView.searchField.searchField.text success:^(NSArray *results) {
+            self.searchRequestOperation = [ArtsyAPI geneSearchWithQuery:self.headerView.searchField.searchField.text success:^(NSArray *results) {
                 [self.searchResultsTable updateTableContentsFor:results replaceContents:ARSearchResultsReplaceAll animated:NO];
             } failure:^(NSError *error) {
                 [self reportError:error];
@@ -162,6 +198,15 @@
     return YES;
 }
 
+- (void)searchStarted:(NSNotification *)notification
+{
+    [self.headerView.searchField searchStarted];
+}
+
+- (void)searchEnded:(NSNotification *)notification
+{
+    [self.headerView.searchField searchEnded];
+}
 
 #pragma mark -
 #pragma mark Network
@@ -224,8 +269,22 @@
 
 - (void)categoryFollowed:(Gene *)category
 {
+    self.followedAtLeastOneCategory = YES;
+    [self allowUserToContinue];
+
     // suggest more categories
     // which API to use, that is the question
+}
+
+- (void)budgetSelected
+{
+    [self allowUserToContinue];
+}
+
+- (void)allowUserToContinue
+{
+    [self.onboardingNavigationItems enableNextStep];
+    [self.onboardingNavigationItems hideWarning];
 }
 
 - (void)reportError:(NSError *)error
@@ -246,14 +305,19 @@
             [self.delegate personalizeArtistsDone];
             break;
         case AROnboardingStagePersonalizeCategories:
-            if (NO) { // chooseAtLeastOneCategory bool/method
+            if (self.followedAtLeastOneCategory) {
                 [self.delegate personalizeCategoriesDone];
             } else {
                 [self.onboardingNavigationItems showWarning:@"Follow one or more categories"];
             }
             break;
         case AROnboardingStagePersonalizeBudget:
-            [self.delegate personalizeBudgetDone];
+            if (self.budgetTable.rangeValue) {
+                [self.delegate setPriceRangeDone:[self.budgetTable.rangeValue integerValue]];
+                [self.delegate personalizeBudgetDone];
+            } else {
+                [self.onboardingNavigationItems showWarning:@"Select a budget"];
+            }
             break;
         default:
             break;

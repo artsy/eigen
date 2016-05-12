@@ -7,9 +7,10 @@
 
 @interface AROnboardingHeaderView ()
 
-@property (nonatomic, strong) UIView *progressBar;
-@property (nonatomic, strong) UIView *progressBackgroundBar;
+
 @property (nonatomic, strong) UILabel *titleLabel;
+
+@property (nonatomic, strong) NSLayoutConstraint *searchHeightConstraint;
 
 @end
 
@@ -20,8 +21,6 @@
 {
     self = [super init];
     if (self) {
-        _progressBar = [[UIView alloc] init];
-        _progressBackgroundBar = [[UIView alloc] init];
         _titleLabel = [[UILabel alloc] init];
         _searchField = [[AROnboardingSearchField alloc] init];
     }
@@ -29,45 +28,37 @@
     return self;
 }
 
-- (void)setupHeaderViewWithTitle:(NSString *)title andProgress:(CGFloat)progress
+- (void)setupHeaderViewWithTitle:(NSString *)title withLargeLayout:(BOOL)useLargeLayout
 {
-    self.progressBackgroundBar.backgroundColor = [UIColor artsyGrayMedium];
-    [self addSubview:self.progressBackgroundBar];
-
-    [self.progressBackgroundBar constrainHeight:@"5"];
-    [self.progressBackgroundBar constrainWidthToView:self predicate:@"0"];
-    [self.progressBackgroundBar alignTopEdgeWithView:self predicate:@"0"];
-    [self.progressBackgroundBar alignLeadingEdgeWithView:self predicate:@"0"];
-
-    self.progressBar.backgroundColor = [UIColor blackColor];
-    [self addSubview:self.progressBar];
-
-    NSString *progressWidth = [NSString stringWithFormat:@"*.%1.0f", progress * 100];
-
-    [self.progressBar constrainHeight:@"5"];
-    [self.progressBar constrainWidthToView:self predicate:progressWidth];
-    [self.progressBar alignTopEdgeWithView:self predicate:@"0"];
-    [self.progressBar alignLeadingEdgeWithView:self predicate:@"0"];
-
     self.titleLabel.textColor = [UIColor blackColor];
-    self.titleLabel.font = [UIFont serifFontWithSize:30.0];
+    self.titleLabel.font = [UIFont serifFontWithSize:useLargeLayout ? 32.0 : 24.0];
+    self.titleLabel.textAlignment = useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
     self.titleLabel.text = title;
     self.titleLabel.numberOfLines = 0;
     [self addSubview:self.titleLabel];
 
-    [self.titleLabel constrainWidthToView:self predicate:@"-40"];
-    [self.titleLabel alignLeadingEdgeWithView:self predicate:@"15"];
-    [self.titleLabel constrainTopSpaceToView:self.progressBar predicate:@"30"];
+    if (useLargeLayout) {
+        [self.titleLabel constrainWidth:@"800"];
+        [self.titleLabel alignCenterXWithView:self predicate:@"0"];
+    } else {
+        [self.titleLabel constrainWidthToView:self predicate:@"*.8"];
+        [self.titleLabel alignLeadingEdgeWithView:self predicate:@"10"];
+    }
+    [self.titleLabel alignTopEdgeWithView:self predicate:@"35"];
     [self.titleLabel constrainHeight:@"80"];
 
     [self addSubview:self.searchField];
 
-    [self.searchField constrainHeight:@"40"];
+    self.searchHeightConstraint = [self.searchField constrainHeight:@"40"];
     [self.searchField constrainTopSpaceToView:self.titleLabel predicate:@"20"];
-    [self.searchField alignLeadingEdgeWithView:self predicate:@"15"];
-    [self.searchField alignTrailingEdgeWithView:self predicate:@"-15"];
+    [self.searchField alignLeadingEdgeWithView:self predicate:@"10"];
+    [self.searchField alignTrailingEdgeWithView:self predicate:@"-10"];
     self.searchField.tintColor = [UIColor blackColor];
 }
 
+- (void)hideSearchBar
+{
+    self.searchHeightConstraint.constant = 0;
+}
 
 @end

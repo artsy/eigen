@@ -29,6 +29,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
 
 @protocol ARMenuAwareViewController;
 
+
 @interface ARNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) BOOL isAnimatingTransition;
@@ -130,7 +131,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
 
     _searchButton = [[ARMenuButton alloc] init];
     [_searchButton ar_extendHitTestSizeByWidth:10 andHeight:10];
-    [_searchButton setImage:[UIImage imageNamed:@"SearchButton"] forState:UIControlStateNormal];
+    [_searchButton setImage:[UIImage imageNamed:@"SearchButtonWhite"] forState:UIControlStateNormal];
     [_searchButton addTarget:self action:@selector(search:) forControlEvents:UIControlEventTouchUpInside];
     _searchButton.adjustsImageWhenDisabled = NO;
 

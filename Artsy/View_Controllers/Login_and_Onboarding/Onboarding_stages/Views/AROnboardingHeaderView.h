@@ -6,6 +6,8 @@
 
 @property (nonatomic, strong, readonly) AROnboardingSearchField *searchField;
 
-- (void)setupHeaderViewWithTitle:(NSString *)title andProgress:(CGFloat)progress;
+- (void)setupHeaderViewWithTitle:(NSString *)title withLargeLayout:(BOOL)useLargeLayout;
+
+- (void)hideSearchBar;
 
 @end

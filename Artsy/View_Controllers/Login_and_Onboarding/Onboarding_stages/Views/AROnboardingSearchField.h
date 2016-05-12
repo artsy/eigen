@@ -5,4 +5,7 @@
 
 @property (nonatomic, strong, readonly) UITextField *searchField;
 
+- (void)searchStarted;
+- (void)searchEnded;
+
 @end

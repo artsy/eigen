@@ -14,6 +14,7 @@
 @interface AROnboardingPersonalizeTableViewController ()
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, assign) BOOL shouldAnimate;
+@property (nonatomic, strong) NSIndexPath *selectedRowToReplace;
 @end
 
 
@@ -36,6 +37,8 @@
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 
@@ -43,7 +46,6 @@
                replaceContents:(ARSearchResultsReplaceContents)replaceStyle
                       animated:(BOOL)animated
 {
-    UITableViewRowAnimation animationStyle;
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
             if (searchResults[0]) {
@@ -51,22 +53,19 @@
             } else {
                 [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
             }
-            animationStyle = UITableViewRowAnimationFade;
-            break;
+            self.selectedRowToReplace = self.tableView.indexPathForSelectedRow;
 
+            break;
         case ARSearchResultsReplaceAll:
             self.searchResults = searchResults.mutableCopy;
-            animationStyle = UITableViewRowAnimationNone;
             break;
-
         default:
-            animationStyle = UITableViewRowAnimationNone;
             break;
     }
-
     self.shouldAnimate = animated;
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:animationStyle];
-    [self flashAndFadeTableView];
+    [self.tableView reloadData];
+    [self.tableView layoutIfNeeded];
+    self.shouldAnimate = NO;
 }
 
 - (void)flashAndFadeTableView
@@ -81,7 +80,6 @@
         self.shouldAnimate = NO;
     }
 }
-
 
 #pragma mark - Table view data source
 
@@ -98,9 +96,15 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[UIView alloc] init];
+
+    if (self.searchResults.count == 0) {
+        return headerView;
+    }
+
     ARSerifLabel *headerTitle = [[ARSerifLabel alloc] init];
     UIView *lineView = [[UIView alloc] init];
 
+    headerView.backgroundColor = [UIColor whiteColor];
     switch (self.contentDisplayMode) {
         case ARTableViewContentDisplayModeSearchResults:
             headerTitle.text = @"";
@@ -118,17 +122,17 @@
     headerTitle.font = [UIFont serifFontWithSize:15.0f];
 
     [headerView addSubview:headerTitle];
-    [headerTitle alignLeadingEdgeWithView:headerView predicate:@"15"];
-    [headerTitle alignTrailingEdgeWithView:headerView predicate:@"-15"];
+    [headerTitle alignLeadingEdgeWithView:headerView predicate:@"10"];
+    [headerTitle alignTrailingEdgeWithView:headerView predicate:@"-10"];
     [headerTitle constrainHeightToView:headerView predicate:@"0"];
     [headerTitle alignCenterYWithView:headerView predicate:@"0"];
 
-    lineView.backgroundColor = self.tableView.separatorColor;
+    lineView.backgroundColor = [UIColor artsyGrayRegular];
     [headerView addSubview:lineView];
 
     [lineView constrainHeight:@"0.5"];
-    [lineView constrainWidthToView:headerView predicate:@"*.96"];
-    [lineView alignBottom:@"0" trailing:@"0" toView:headerView];
+    [lineView alignLeading:@"10" trailing:@"-10" toView:headerView];
+    [lineView alignBottomEdgeWithView:headerView predicate:@"0"];
 
     return headerView;
 }
@@ -149,24 +153,42 @@
         // The lower down the cell is in the list, the longer the animation takes (cell has further to travel)
         // Equally, to stagger, we want the bottom cells to start their animation later than the top cells
         // Other than that, magic constants are just the result of tweaks over time
-        CGFloat duration = (0.6 * originalFrame.origin.y) / self.tableView.frame.size.height + 0.3;
-        CGFloat delay = 0.18 * (indexPath.row);
+        CGFloat duration = ((0.8 * originalFrame.origin.y) / self.tableView.frame.size.height + 0.3) + 0.15;
+        CGFloat delay = 0.1 * (indexPath.row) + 0.2;
 
-        [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveEaseInOut animations:^{
             cell.frame = originalFrame;
+            cell.alpha = 0.8;
+        } completion:^(BOOL finished) {
             cell.alpha = 1.0;
-        } completion:^(BOOL finished){
         }];
+    } else if (indexPath == self.selectedRowToReplace) {
+        cell.alpha = 0;
+        [UIView animateWithDuration:0.45 delay:0.05 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            cell.alpha = 0.7;
+        } completion:^(BOOL finished) {
+            cell.alpha = 1.0;
+        }];
+        self.selectedRowToReplace = nil;
     }
 }
 
+// overridden to add custom animation for the "you might like" header
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
-    [UIView animateWithDuration:0.35 animations:^{
+    if (self.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults && self.shouldAnimate) {
+        CGRect originalFrame = view.frame;
+
+        view.frame = CGRectMake(originalFrame.origin.x, originalFrame.origin.y + (2 * originalFrame.size.height),
+                                originalFrame.size.width, originalFrame.size.height);
         view.alpha = 0;
-    } completion:^(BOOL finished) {
-        view.alpha = 1;
-    }];
+
+        [UIView animateWithDuration:0.3 delay:0.1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            view.frame = originalFrame;
+            view.alpha = 1.0;
+        } completion:^(BOOL finished){
+        }];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -200,7 +222,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 72;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

@@ -26,6 +26,7 @@
         self.searchField.font = [UIFont serifFontWithSize:18];
         self.searchField.textColor = [UIColor blackColor];
         self.searchField.backgroundColor = [UIColor clearColor];
+        self.searchField.autocorrectionType = UITextAutocorrectionTypeNo;
 
         self.layer.borderColor = [UIColor artsyGrayMedium].CGColor;
         self.layer.borderWidth = 0.5f;
@@ -34,7 +35,7 @@
         [self addSubview:self.searchField];
 
         self.searchIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SearchButton"]];
-        self.searchIcon.contentMode = UIViewContentModeScaleAspectFit;
+        self.searchIcon.contentMode = UIViewContentModeCenter;
         [self addSubview:self.searchIcon];
 
         [self.searchIcon alignTopEdgeWithView:self predicate:@"5"];
@@ -59,6 +60,20 @@
                 NSFontAttributeName : [UIFont serifFontWithSize:18],
                 NSForegroundColorAttributeName : [UIColor artsyGrayMedium]
             }];
+}
+
+- (void)searchStarted
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        self.backgroundColor = [UIColor whiteColor];
+    }];
+}
+
+- (void)searchEnded
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        self.backgroundColor = [UIColor artsyGrayLight];
+    }];
 }
 
 @end
