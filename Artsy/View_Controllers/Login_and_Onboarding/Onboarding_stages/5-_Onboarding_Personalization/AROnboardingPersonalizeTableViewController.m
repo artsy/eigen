@@ -96,6 +96,11 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[UIView alloc] init];
+
+    if (self.searchResults.count == 0) {
+        return headerView;
+    }
+
     ARSerifLabel *headerTitle = [[ARSerifLabel alloc] init];
     UIView *lineView = [[UIView alloc] init];
 
