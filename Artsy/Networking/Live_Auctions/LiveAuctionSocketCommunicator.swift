@@ -133,6 +133,7 @@ private extension SocketSetup {
         case "SaleNotFound": break;
             // TODO: Handle this (?)
 
+        case "PostEventFailedUnauthorized": fallthrough
         case "ConnectionUnauthorized": break;
             // TODO: handle auth error.
 
@@ -147,7 +148,7 @@ private extension SocketSetup {
 private typealias PublicFunctions = LiveAuctionSocketCommunicator
 extension PublicFunctions {
     func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) {
-        let event: NSDictionary = ["type": "FirstPriceBidPlaced", "lotId": lotID, "amountCents": NSNumber(unsignedLongLong: amountCents), "bidder": ["type": "ArtsyBidder", "bidderId": bidderID]]
+        let event: NSDictionary = ["type": "FirstPriceBidPlaced", "lotId": lotID, "amountCents": NSNumber(unsignedLongLong: amountCents), "bidder": ["type": "ArtsyBidder", "bidderId": "968527"]]
         let bid: NSObject = ["type": "PostEvent", "key": bidUUID, "event": event]
         if let payload = try? bid.stringify() {
             socket.writeString(payload)

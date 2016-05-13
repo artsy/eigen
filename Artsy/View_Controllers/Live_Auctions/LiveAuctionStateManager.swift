@@ -19,6 +19,7 @@ class LiveAuctionStateManager: NSObject {
     typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
     let sale: LiveSale
+    let bidderID: String
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
@@ -28,10 +29,12 @@ class LiveAuctionStateManager: NSObject {
          sale: LiveSale,
          saleArtworks: [LiveAuctionLotViewModel],
          jwt: JWT,
+         bidderID: String,
          socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
          stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
 
         self.sale = sale
+        self.bidderID = bidderID
         self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, jwt: jwt)
         self.stateReconciler = stateReconcilerCreator(saleArtworks: saleArtworks)
 
@@ -62,7 +65,7 @@ extension PublicFunctions {
     func bidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel
-        socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: "57222dfa7622dd659600230b", bidUUID: bidID) // TODO: bidderID is hard-coded
+        socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
     }
 
     func leaveMaxBidOnLot(lotID: String) {

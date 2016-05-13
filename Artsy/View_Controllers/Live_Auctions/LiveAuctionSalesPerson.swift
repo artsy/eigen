@@ -20,7 +20,7 @@ protocol LiveAuctionsSalesPersonType {
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT) -> LiveAuctionStateManager
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderID: String) -> LiveAuctionStateManager
 
     let sale: LiveSale
     let lots: [LiveAuctionLotViewModel]
@@ -36,6 +36,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
     init(sale: LiveSale,
          jwt: JWT,
+         bidderID: String,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
@@ -43,7 +44,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
         self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0) }
 
         let host = ARRouter.baseCausalitySocketURLString()
-        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt)
+        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderID: bidderID)
         self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal)
 
         super.init()
@@ -97,14 +98,14 @@ private typealias ClassMethods = LiveAuctionsSalesPerson
 extension ClassMethods {
 
     class func defaultStateManagerCreator() -> StateManagerCreator {
-        return { host, sale, saleArtworks, jwt in
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt)
+        return { host, sale, saleArtworks, jwt, bidderID in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderID: bidderID)
         }
     }
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
-        return { host, sale, saleArtworks, jwt in
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
+        return { host, sale, saleArtworks, jwt, bidderID in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderID: bidderID, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
         }
     }
 
