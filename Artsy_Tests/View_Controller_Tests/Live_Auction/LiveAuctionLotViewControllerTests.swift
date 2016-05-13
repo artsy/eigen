@@ -80,6 +80,7 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
 
 class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var lotArtist = "Artist Name"
+    var lotArtistBlurb: String? = "Artist Blurb"
     var estimateString = "$Estimate"
     var lotName = "Lot Name"
     var lotID = "lot-id"

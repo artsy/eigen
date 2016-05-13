@@ -4,6 +4,7 @@
 
 #import "ARAdminSettingsViewController.h"
 #import "ARQuicksilverViewController.h"
+#import "ARInternalMobileWebViewController.h"
 
 #import "ARDefaults.h"
 #import "ARGroupedTableViewCell.h"
@@ -44,14 +45,16 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     NSString *gitCommitRevision = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitRev"];
 
     miscSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@)", name, version, build, gitCommitRevision];
-
-    [miscSectionData addCellData:[self generateLogOut]];
-    [miscSectionData addCellData:[self generateOnboarding]];
-    [miscSectionData addCellData:[self generateFeedback]];
-    [miscSectionData addCellData:[self generateRestart]];
-    [miscSectionData addCellData:[self generateStagingSwitch]];
-    [miscSectionData addCellData:[self generateQuicksilver]];
-    [miscSectionData addCellData:[self generateOnScreenAnalytics]];
+    [miscSectionData addCellDataFromArray:@[
+        [self generateLogOut],
+        [self generateOnboarding],
+        [self generateFeedback],
+        [self generateRestart],
+        [self generateStagingSwitch],
+        [self generateQuicksilver],
+        [self generateShowAllLiveAuctions],
+        [self generateOnScreenAnalytics]
+    ]];
 
 #if !TARGET_IPHONE_SIMULATOR
     [miscSectionData addCellData:[self generateNotificationTokenPasteboardCopy]];
@@ -158,6 +161,21 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
         ARQuicksilverViewController *quicksilver = [[ARQuicksilverViewController alloc] init];
         [self.navigationController pushViewController:quicksilver animated:YES];
+    }];
+    return crashCellData;
+}
+
+- (ARCellData *)generateShowAllLiveAuctions
+{
+    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = @"Show all live auctions";
+    }];
+
+    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        NSURL *url = [NSURL URLWithString:@"https://live-staging.artsy.net"];
+        ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+        [self.navigationController pushViewController:webVC animated:YES];
     }];
     return crashCellData;
 }

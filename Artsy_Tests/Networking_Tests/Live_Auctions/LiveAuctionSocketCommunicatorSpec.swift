@@ -80,6 +80,7 @@ class Test_Socket: SocketType {
     var onDisconnect: ((NSError?) -> Void)?
 
     var writes = [String]()
+    var datas = [NSData]()
     var connected = false
     var host = ""
 
@@ -87,6 +88,8 @@ class Test_Socket: SocketType {
 
 
     func writeString(str: String) { writes += [str] }
+    func writeData(data: NSData) { datas += [data] }
+
     func writePing() { }
     func connect() { connected = true }
     func disconnect() { connected = false }

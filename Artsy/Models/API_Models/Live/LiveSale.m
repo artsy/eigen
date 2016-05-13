@@ -16,7 +16,6 @@
         ar_keypath(LiveSale.new, causalitySaleID) : @"_id",
         ar_keypath(LiveSale.new, startDate) : @"startAt",
         ar_keypath(LiveSale.new, endDate) : @"endAt",
-        ar_keypath(LiveSale.new, hasBuyersPremium) : @"is_with_buyers_premium",
         ar_keypath(LiveSale.new, saleDescription) : @"description",
         ar_keypath(LiveSale.new, saleArtworks) : @"sale_artworks",
     };

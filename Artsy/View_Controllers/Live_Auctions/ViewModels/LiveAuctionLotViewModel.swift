@@ -110,7 +110,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var lotArtistBlurb: String? {
-        return model.artistName
+        return model.artistBlurb
     }
 
     var lotPremium: String {
