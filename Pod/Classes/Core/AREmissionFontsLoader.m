@@ -16,10 +16,10 @@
 + (void)load;
 {
   __unused UIFont *font = [UIFont serifBoldItalicFontWithSize:12];
-//  font = [UIFont serifBoldFontWithSize:12];
-//  font = [UIFont serifSemiBoldFontWithSize:12];
+  font = [UIFont serifBoldFontWithSize:12];
+  font = [UIFont serifSemiBoldFontWithSize:12];
   font = [UIFont serifFontWithSize:12];
-//  font = [UIFont serifItalicFontWithSize:12];
+  font = [UIFont serifItalicFontWithSize:12];
   font = [UIFont sansSerifFontWithSize:12];
 //  font = [UIFont smallCapsSerifFontWithSize:12];
 }
