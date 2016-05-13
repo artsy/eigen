@@ -8,7 +8,6 @@ protocol SocketType: class {
     var onDisconnect: ((NSError?) -> Void)? { get set }
 
     func writeString(str: String)
-    func writeData(data: NSData)
     func writePing()
 
     func connect()
@@ -149,9 +148,9 @@ private typealias PublicFunctions = LiveAuctionSocketCommunicator
 extension PublicFunctions {
     func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) {
         let event: NSDictionary = ["type": "FirstPriceBidPlaced", "lotId": lotID, "amountCents": NSNumber(unsignedLongLong: amountCents), "bidder": ["type": "ArtsyBidder", "bidderId": bidderID]]
-        let bid = ["type": "PostEvent", "key": bidUUID, "event": event]
-        if let payload = try? NSJSONSerialization.dataWithJSONObject(bid, options: []) {
-            socket.writeData(payload)
+        let bid: NSObject = ["type": "PostEvent", "key": bidUUID, "event": event]
+        if let payload = try? bid.stringify() {
+            socket.writeString(payload)
         } else {
             // TODO: Handle error
         }
