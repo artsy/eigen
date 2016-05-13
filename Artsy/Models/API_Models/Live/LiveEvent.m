@@ -21,7 +21,7 @@
     if ([type isEqualToString:@"BiddingOpened"]) {
         klass = LiveEventLotOpen.class;
 
-    } else if ([type isEqualToString:@"FirstPriceBidPlaced"] || [type isEqualToString:@"SecondPriceBidPlaced"]) {
+    } else if ([type isEqualToString:@"FirstPriceBidPlaced"] || [type isEqualToString:@"SecondPriceBidPlaced"] || [type isEqualToString:@"CompositeOnlineBidConfirmed"]) {
         klass = LiveEventBid.class;
 
     } else if ([type isEqualToString:@"FairWarning"]) {

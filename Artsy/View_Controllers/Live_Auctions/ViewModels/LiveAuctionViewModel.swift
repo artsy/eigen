@@ -34,6 +34,7 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
         return sale.saleArtworks.count
     }
 
+
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.
     func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int? {

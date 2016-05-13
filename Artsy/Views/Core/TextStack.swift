@@ -18,34 +18,36 @@ class TextStack: ORStackView {
         return title
     }
 
-    func addSmallHeading(string: String) -> UILabel {
+    func addSmallHeading(string: String, sideMargin: String = "0") -> UILabel {
         let heading = ARSansSerifLabel()
         heading.font = .sansSerifFontWithSize(12)
         heading.text = string
-        addSubview(heading, withTopMargin: "10", sideMargin: "0")
+        addSubview(heading, withTopMargin: "10", sideMargin: sideMargin)
         return heading
     }
 
-    func addBigHeading(string: String) -> UILabel {
+    func addBigHeading(string: String, sideMargin: String = "0") -> UILabel {
         let heading = ARSerifLabel()
         heading.font = .serifFontWithSize(26)
         heading.text = string
-        addSubview(heading, withTopMargin: "20", sideMargin: "0")
+        addSubview(heading, withTopMargin: "20", sideMargin:sideMargin)
         return heading
     }
 
-    func addSmallLineBreak() {
+    func addSmallLineBreak(sideMargin: String = "0") -> UIView {
         let line = UIView()
         line.backgroundColor = .artsyGrayRegular()
-        addSubview(line, withTopMargin: "20", sideMargin: "0")
+        addSubview(line, withTopMargin: "20", sideMargin: sideMargin)
         line.constrainHeight("1")
+        return line
     }
 
-    func addThickLineBreak() {
+    func addThickLineBreak(sideMargin: String = "0") -> UIView {
         let line = UIView()
         line.backgroundColor = .blackColor()
-        addSubview(line, withTopMargin: "20", sideMargin: "0")
+        addSubview(line, withTopMargin: "20", sideMargin: sideMargin)
         line.constrainHeight("2")
+        return line
     }
 
     func addBodyText(string: String, topMargin: String = "20", sideMargin: String = "0") -> UILabel {

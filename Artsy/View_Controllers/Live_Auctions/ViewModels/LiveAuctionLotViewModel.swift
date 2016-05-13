@@ -13,6 +13,7 @@ protocol LiveAuctionLotViewModelType: class {
     func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel
 
     var lotArtist: String { get }
+    var lotArtistBlurb: String? { get }
     var estimateString: String { get }
     var lotPremium: String { get }
     var lotName: String { get }
@@ -108,6 +109,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.artistName
     }
 
+    var lotArtistBlurb: String? {
+        return model.artistName
+    }
+
     var lotPremium: String {
         return "Premium: WIP"
     }
@@ -131,9 +136,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var estimateString: String {
-        let low = NSNumber(unsignedLongLong: model.lowEstimateCents)
-        let high = NSNumber(unsignedLongLong: model.highEstimateCents)
-        return SaleArtwork.estimateStringForLowEstimate(low, highEstimateCents:high, currencySymbol: model.currencySymbol, currency: model.currency)
+        return model.estimate
     }
 
     var eventIDs: [String] {
