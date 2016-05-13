@@ -51,12 +51,6 @@
   return self;
 }
 
-// TODO: For now, as I have no clue what that needs yet
-- (BOOL)canCoalesce
-{
-  return NO;
-}
-
 - (NSDictionary *)body
 {
   CGPoint originOffset = [__scrollView convertPoint:CGPointZero toView:_enclosingScrollView];
