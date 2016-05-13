@@ -59,8 +59,11 @@ randomBOOL(void)
   ARComponentViewController *componentViewController = [[ARComponentViewController alloc] initWithBridge:self.reactBridge
                                                                                               moduleName:@"Artist"];
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  self.window.backgroundColor = [UIColor whiteColor];
   self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:componentViewController];
   [self.window makeKeyAndVisible];
+  
+  [(UINavigationController *)self.window.rootViewController setNavigationBarHidden:YES];
   
   return YES;
 }
