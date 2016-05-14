@@ -54,7 +54,10 @@ class LiveAuctionStateManager: NSObject {
 
         socketCommunicator.postEventResponses.subscribe { [weak self] response in
             print("ws response: \(response)")
-            // TODO: Extract bidID from response, update biddingStates[bidID], and remove biddingStates[bidID]
+            
+            let bidUUID = "key" // TODO: Change
+            let biddingViewModel = self?.biddingStates.removeValueForKey(bidUUID)
+            biddingViewModel?.bidPendingSignal.update(false)
         }
     }
 }
@@ -63,6 +66,7 @@ private typealias PublicFunctions = LiveAuctionStateManager
 extension PublicFunctions {
 
     func bidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        biddingViewModel.bidPendingSignal.update(true)
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)

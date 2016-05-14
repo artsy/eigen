@@ -3,10 +3,12 @@ import Interstellar
 
 protocol LiveAuctionBiddingViewModelType {
     var progressSignal: Observable<LiveAuctionBidButtonState> { get }
+    var bidPendingSignal: Observable<Bool> { get }
 }
 
 class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal: Observable<LiveAuctionBidButtonState>
+    let bidPendingSignal = Observable<Bool>()
 
     private let _lotStateSubscription: (ObserverToken, Observable<LotState>)
     private let _askingPriceSubscription: (ObserverToken, Observable<UInt64>)
@@ -64,5 +66,6 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
 
 class LiveAuctionLeaveMaxBidButtonViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal = Observable<LiveAuctionBidButtonState>()
+    let bidPendingSignal = Observable<Bool>()
 }
 

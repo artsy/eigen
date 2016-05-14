@@ -8,7 +8,6 @@ protocol SocketType: class {
     var onDisconnect: ((NSError?) -> Void)? { get set }
 
     func writeString(str: String)
-    func writeData(data: NSData)
     func writePing()
 
     func connect()
@@ -62,7 +61,9 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     class func defaultSocketCreator() -> SocketCreator {
         return { host, saleID in
             let url = NSURL(string: "\(host)/socket?saleId=\(saleID)")
-            return WebSocket(url: url!)
+            let websocket = WebSocket(url: url!)
+            websocket.origin = nil
+            return websocket
         }
     }
 }
@@ -150,11 +151,13 @@ private typealias PublicFunctions = LiveAuctionSocketCommunicator
 extension PublicFunctions {
     func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) {
         writeJSON([
+            "key": bidUUID,
+            "type": "PostEvent",
             "event": [
                 "type": "FirstPriceBidPlaced",
-                "lotID": lotID,
-                "amountCents" : NSNumber(unsignedLongLong: amountCents),
-                "bidder" : [ "type": "ArtsyBidder", "bidderID" : bidderID]
+                "lotId": lotID,
+                "amountCents": NSNumber(unsignedLongLong: amountCents),
+                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID]
             ]
         ])
     }
@@ -170,10 +173,9 @@ extension PublicFunctions {
 //        ])
     }
 
-    func writeJSON(json: [String: AnyObject]) {
+    func writeJSON(json: NSObject) {
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: [])
-            socket.writeData(jsonData)
+            socket.writeString(try json.stringify())
         } catch {
             print("Error creating JSON string of socket event")
             return print(error)
