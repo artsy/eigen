@@ -57,7 +57,12 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, void (^ca
 {
   // This will cancel an in-flight download operation, if one exists.
   self.imageURL = nil;
-  [super setImage:image];
+
+  [UIView transitionWithView:self
+                    duration:0.25
+                     options:UIViewAnimationOptionTransitionCrossDissolve
+                  animations:^{ [super setImage:image]; }
+                  completion:nil];
 }
 
 - (void)setImageURL:(NSURL *)imageURL;
@@ -88,26 +93,31 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, void (^ca
     manager.imageDownloader.shouldDecompressImages = NO;
 
     __weak typeof(self) weakSelf = self;
-    self.downloadOperation = [manager downloadImageWithURL:self.imageURL
-                                                    options:0
-                                                  progress:nil
-                                                  completed:^(UIImage *image,
-                                                              NSError *_,
-                                                              SDImageCacheType __,
-                                                              BOOL ____,
-                                                              NSURL *imageURL) {
-      __strong typeof(weakSelf) strongSelf = weakSelf;
-      // Only really assign if the URL we downloaded still matches `self.imageURL`.
-      if (strongSelf && [imageURL isEqual:strongSelf.imageURL]) {
-        // The view might not yet be associated with a window, in which case
-        // -[UIView contentScaleFactor] would always return 1, so use screen instead.
-        CGFloat scaleFactor = [[UIScreen mainScreen] scale];
-        LoadImage(image, strongSelf.bounds.size, scaleFactor, ^(UIImage *loadedImage) {
-          if ([imageURL isEqual:weakSelf.imageURL]) {
-            weakSelf.image = loadedImage;
-          }
-        });
+    [manager cachedImageExistsForURL:self.imageURL completion:^(BOOL isInCache) {
+      if (!isInCache) {
+        self.backgroundColor = self.placeholderBackgroundColor;
       }
+      self.downloadOperation = [manager downloadImageWithURL:self.imageURL
+                                                     options:0
+                                                    progress:nil
+                                                   completed:^(UIImage *image,
+                                                               NSError *_,
+                                                               SDImageCacheType __,
+                                                               BOOL ____,
+                                                               NSURL *imageURL) {
+       __strong typeof(weakSelf) strongSelf = weakSelf;
+       // Only really assign if the URL we downloaded still matches `self.imageURL`.
+       if (strongSelf && [imageURL isEqual:strongSelf.imageURL]) {
+         // The view might not yet be associated with a window, in which case
+         // -[UIView contentScaleFactor] would always return 1, so use screen instead.
+         CGFloat scaleFactor = [[UIScreen mainScreen] scale];
+         LoadImage(image, strongSelf.bounds.size, scaleFactor, ^(UIImage *loadedImage) {
+           if ([imageURL isEqual:weakSelf.imageURL]) {
+             weakSelf.image = loadedImage;
+           }
+         });
+       }
+     }];
     }];
   });
 }
