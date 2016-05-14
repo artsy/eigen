@@ -1,6 +1,7 @@
 import UIKit
 import Interstellar
 import UICKeyChainStore
+import SwiftyJSON
 
 class LiveAuctionViewController: UISplitViewController {
     let saleSlugOrID: String
@@ -13,7 +14,7 @@ class LiveAuctionViewController: UISplitViewController {
         return LiveAuctionStaticDataFetcher(saleSlugOrID: self.saleSlugOrID)
     }()
 
-    lazy var salesPersonCreator: (LiveSale, JWT) -> LiveAuctionsSalesPersonType = self.salesPerson
+    lazy var salesPersonCreator: (LiveSale, JWT, String) -> LiveAuctionsSalesPersonType = self.salesPerson
 
     var lotSetController: LiveAuctionLotSetViewController!
     var lotsSetNavigationController: ARSerifNavigationViewController!
@@ -39,9 +40,9 @@ class LiveAuctionViewController: UISplitViewController {
             defer { self?.ar_removeIndeterminateLoadingIndicatorAnimated(true) }
 
             switch result {
-            case .Success(let (sale, jwt)):
+            case .Success(let (sale, jwt, bidderID)):
                 self?.sale = sale
-                self?.setupWithSale(sale, jwt: jwt)
+                self?.setupWithSale(sale, jwt: jwt, bidderID: bidderID)
             case .Error:
                 // TODO: handle error case
                 break
@@ -78,8 +79,8 @@ class LiveAuctionViewController: UISplitViewController {
 private typealias PrivateFunctions = LiveAuctionViewController
 extension PrivateFunctions {
 
-    func setupWithSale(sale: LiveSale, jwt: JWT) {
-        let salesPerson = self.salesPerson(sale, jwt: jwt)
+    func setupWithSale(sale: LiveSale, jwt: JWT, bidderID: String) {
+        let salesPerson = self.salesPerson(sale, jwt: jwt, bidderID: bidderID)
 
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson)
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
@@ -90,9 +91,9 @@ extension PrivateFunctions {
         viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListController, lotsSetNavigationController]
     }
 
-    func salesPerson(sale: LiveSale, jwt: JWT) -> LiveAuctionsSalesPersonType {
+    func salesPerson(sale: LiveSale, jwt: JWT, bidderID: String) -> LiveAuctionsSalesPersonType {
         // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
-        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt)
+        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, bidderID: bidderID)
      }
 }
 
@@ -113,9 +114,10 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
         let signal = Observable<StaticSaleResult>()
 
         let json = loadJSON("live_auctions_static")
-        let sale = self.parseSale(json)!
+        let sale = self.parseSale(JSON(json))!
+        let bidderID = "awesome-bidder-id-aw-yeah"
 
-        let s = (sale: sale, jwt: "")
+        let s = (sale: sale, jwt: "", bidderID: bidderID)
         signal.update(Result.Success(s))
 
         return signal

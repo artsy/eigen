@@ -10,8 +10,7 @@ class LiveAuctionLotViewController: UIViewController {
     let index: Int
 
     let lotViewModel: LiveAuctionLotViewModelType
-    let auctionViewModel: LiveAuctionViewModelType
-    let currentLotSignal: Observable<LiveAuctionLotViewModelType?>
+    let salesPerson: LiveAuctionsSalesPersonType
 
     private let biddingViewModel: LiveAuctionBiddingViewModelType
 
@@ -19,12 +18,11 @@ class LiveAuctionLotViewController: UIViewController {
     private var saleAvailabilityObserver: ObserverToken?
     private var lotStateObserver: ObserverToken?
 
-    init(index: Int, auctionViewModel: LiveAuctionViewModelType, lotViewModel: LiveAuctionLotViewModelType, currentLotSignal: Observable<LiveAuctionLotViewModelType?>) {
+    init(index: Int, lotViewModel: LiveAuctionLotViewModelType, salesPerson: LiveAuctionsSalesPersonType) {
         self.index = index
-        self.auctionViewModel = auctionViewModel
         self.lotViewModel = lotViewModel
-        self.currentLotSignal = currentLotSignal
-        self.biddingViewModel = LiveAuctionBiddingViewModel(lotViewModel: lotViewModel, auctionViewModel: auctionViewModel)
+        self.salesPerson = salesPerson
+        self.biddingViewModel = LiveAuctionBiddingViewModel(lotViewModel: lotViewModel, auctionViewModel: salesPerson.auctionViewModel)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -35,10 +33,10 @@ class LiveAuctionLotViewController: UIViewController {
 
     deinit {
         if let currentLotObserver = currentLotObserver {
-            currentLotSignal.unsubscribe(currentLotObserver)
+            salesPerson.currentLotSignal.unsubscribe(currentLotObserver)
         }
         if let saleAvailabilityObserver = saleAvailabilityObserver {
-            auctionViewModel.saleAvailabilitySignal.unsubscribe(saleAvailabilityObserver)
+            salesPerson.auctionViewModel.saleAvailabilitySignal.unsubscribe(saleAvailabilityObserver)
         }
         if let lotStateObserver = lotStateObserver {
             lotViewModel.lotStateSignal.unsubscribe(lotStateObserver)
@@ -102,7 +100,7 @@ class LiveAuctionLotViewController: UIViewController {
 
         let infoToolbar = LiveAuctionToolbarView()
         infoToolbar.lotViewModel = lotViewModel
-        infoToolbar.auctionViewModel = auctionViewModel
+        infoToolbar.auctionViewModel = salesPerson.auctionViewModel
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
         infoToolbar.constrainHeight("14")
 
@@ -114,7 +112,7 @@ class LiveAuctionLotViewController: UIViewController {
         metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
         bidHistoryViewController.view.constrainHeight("70")
 
-        let currentLotView = LiveAuctionCurrentLotView(viewModel: auctionViewModel.currentLotSignal)
+        let currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal)
         currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
         view.addSubview(currentLotView)
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
@@ -147,14 +145,14 @@ class LiveAuctionLotViewController: UIViewController {
             imageBottomConstraint.constant = height + 20
         }
 
-        saleAvailabilityObserver = auctionViewModel.saleAvailabilitySignal.subscribe { [weak currentLotView] saleAvailability in
+        saleAvailabilityObserver = salesPerson.auctionViewModel.saleAvailabilitySignal.subscribe { [weak currentLotView] saleAvailability in
             if saleAvailability == .Closed {
                 currentLotView?.removeFromSuperview()
             }
         }
 
         infoToolbar.lotViewModel = lotViewModel
-        infoToolbar.auctionViewModel = auctionViewModel
+        infoToolbar.auctionViewModel = salesPerson.auctionViewModel
 
         lotImagePreviewView.ar_setImageWithURL(lotViewModel.urlForThumbnail)
 
@@ -165,7 +163,7 @@ class LiveAuctionLotViewController: UIViewController {
 extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
 
     func bidButtonRequestedBid(button: LiveAuctionBidButton) {
-        // TODO
+        salesPerson.bidOnLot(lotViewModel, amountCents: lotViewModel.currentLotValue, biddingViewModel: biddingViewModel)
     }
 
     func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton) {

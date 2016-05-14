@@ -57,7 +57,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         let separator = stack.addThickLineBreak("40")
         let artistBlurbTitle = stack.addBigHeading("About the Artist", sideMargin: "40")
         let artistBlurb = stack.addBodyText("", sideMargin: "40")
-        let artistMetadata:[UIView] = [separator, artistBlurbTitle, artistBlurb]
+        let artistMetadata: [UIView] = [separator, artistBlurbTitle, artistBlurb]
 
         viewModel.subscribe { lot in
             name.text = lot.lotArtist
@@ -68,7 +68,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
             if let blurb = lot.lotArtistBlurb {
                 artistBlurb.text = blurb
             } else {
-                artistMetadata.forEach { $0.removeFromSuperview() }
+                artistMetadata.forEach { stack.removeSubview($0) }
             }
         }
 

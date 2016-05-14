@@ -279,6 +279,7 @@
 		5E20BB671C62C00D00C6D781 /* AuctionCircularButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20BB661C62C00D00C6D781 /* AuctionCircularButtons.swift */; };
 		5E20BB6A1C62C81600C6D781 /* CircularInfoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */; };
 		5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB691C62C81600C6D781 /* CircularInfoButton.png */; };
+		5E26AF801CE66A7E00C67B7C /* Stringify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E26AF7F1CE66A7E00C67B7C /* Stringify.swift */; };
 		5E284609194A2E58007274AB /* ARFairGuideContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */; };
 		5E288EA91CC0219A00A974AA /* LotListCollectionViewCell+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E288EA81CC0219A00A974AA /* LotListCollectionViewCell+Private.swift */; };
 		5E31524F1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E31524E1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift */; };
@@ -1218,6 +1219,7 @@
 		5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CircularInfoButton@2x.png"; sourceTree = "<group>"; };
 		5E20BB691C62C81600C6D781 /* CircularInfoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CircularInfoButton.png; sourceTree = "<group>"; };
 		5E20BB721C6557F400C6D781 /* Artsy-Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artsy-Tests-Bridging-Header.h"; sourceTree = "<group>"; };
+		5E26AF7F1CE66A7E00C67B7C /* Stringify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stringify.swift; path = Artsy/Stringify.swift; sourceTree = SOURCE_ROOT; };
 		5E284607194A2E58007274AB /* ARFairGuideContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairGuideContainerViewController.h; sourceTree = "<group>"; };
 		5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewController.m; sourceTree = "<group>"; };
 		5E288EA81CC0219A00A974AA /* LotListCollectionViewCell+Private.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LotListCollectionViewCell+Private.swift"; path = "Live_Auctions/LotListCollectionViewCell+Private.swift"; sourceTree = "<group>"; };
@@ -2056,6 +2058,7 @@
 			isa = PBXGroup;
 			children = (
 				5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */,
+				5E26AF7F1CE66A7E00C67B7C /* Stringify.swift */,
 				342F9F32AB53EF2503473315 /* ORStackView+ArtsyViews.m */,
 				342F96AD6F2466A26A3152F8 /* ORStackView+ArtsyViews.h */,
 			);
@@ -5355,6 +5358,7 @@
 				60ED31251C8F76800071DD89 /* LiveAuctionLotViewModel.swift in Sources */,
 				3CB37D97192246B500089A1D /* ArtsyAPI+ErrorHandlers.m in Sources */,
 				516CDA631BB32B6A001C02B2 /* ARSpotlight.m in Sources */,
+				5E26AF801CE66A7E00C67B7C /* Stringify.swift in Sources */,
 				6099F8F9178DBF160004EF04 /* ARModernPartnerShowTableViewCell.m in Sources */,
 				E676B2EE18D11A9B0057B4E1 /* ARImageItemProvider.m in Sources */,
 				3CFBE32D18C3A3F400C781D0 /* ARNetworkErrorView.m in Sources */,

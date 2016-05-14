@@ -1,8 +1,11 @@
 import Foundation
 import Interstellar
+import SwiftyJSON
+
 
 typealias JWT = String
-typealias StaticSaleResult = Result<(sale: LiveSale, jwt: JWT)>
+typealias StaticSaleResult = Result<(sale: LiveSale, jwt: JWT, bidderID: String)>
+
 
 protocol LiveAuctionStaticDataFetcherType {
     func fetchStaticData() -> Observable<StaticSaleResult>
@@ -23,14 +26,16 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
         let signal = Observable<StaticSaleResult>()
 
         ArtsyAPI.getLiveSaleStaticDataWithSaleID(saleSlugOrID,
-            success: { json in
+            success: { data in
+                let json = JSON(data)
                 guard let
                     sale = self.parseSale(json),
-                    jwt = self.parseJWT(json) else {
+                    jwt = self.parseJWT(json),
+                    bidderID = self.parseBidderID(json) else {
                     return signal.update(.Error(Error.JSONParsing))
                 }
 
-                signal.update(.Success((sale: sale, jwt: jwt)))
+                signal.update(.Success((sale: sale, jwt: jwt, bidderID: bidderID)))
             }, failure: { error in
                 signal.update(.Error(error as ErrorType))
             })
@@ -42,18 +47,19 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
 extension LiveAuctionStaticDataFetcherType {
 
-    func parseSale(json: AnyObject) -> LiveSale? {
-        guard let data = json["data"] as? [String: AnyObject] else { return nil }
-        guard let saleJSON = data["sale"] as? [String: AnyObject] else { return nil }
+    func parseSale(json: JSON) -> LiveSale? {
+        guard let saleJSON = json["data"]["sale"].dictionaryObject else { return nil }
         let sale = LiveSale(JSON: saleJSON)
 
         return sale
     }
 
-    func parseJWT(json: AnyObject) -> JWT? {
-        guard let data = json["data"] as? [String: AnyObject] else { return nil }
-        guard let jwt = data["causality_jwt"] as? JWT else { return nil }
-
-        return jwt
+    func parseJWT(json: JSON) -> JWT? {
+        return json["data"]["causality_jwt"].string
     }
+
+    func parseBidderID(json: JSON) -> String? {
+        return json["data"]["me"]["paddle_number"].string
+    }
+
 }

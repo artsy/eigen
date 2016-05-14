@@ -107,6 +107,7 @@ target 'Artsy' do
   pod 'Then'
   pod 'Interstellar/Core', git: 'https://github.com/ashfurrow/Interstellar.git', branch: 'observable-merge'
   pod 'Starscream'
+  pod 'SwiftyJSON'
 
   target 'Artsy Tests' do
       inherit! :search_paths

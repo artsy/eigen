@@ -1006,6 +1006,9 @@ static NSString *hostFromString(NSString *string)
     NSString *query = [NSString stringWithFormat:@"\
 {\
   causality_jwt(role: BIDDER, sale_id: \"%1$@\")\
+  me {\
+    paddle_number\
+  }\
   sale(id: \"%1$@\") {\
     _id\
     id\
