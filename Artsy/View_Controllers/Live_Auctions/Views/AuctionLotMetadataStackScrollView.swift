@@ -33,13 +33,6 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         let premium = aboveFoldStack.addBodyText("", topMargin: "4")
         premium.textColor = UIColor.artsyGraySemibold()
 
-        viewModel.subscribe { lot in
-            name.text = lot.lotArtist
-            title.setTitle(lot.lotName, date: lot.lotArtworkCreationDate)
-            estimate.text = lot.estimateString
-            premium.text = lot.lotPremium
-        }
-
         // Want to make the wrapper hold the stack on the left
         aboveFoldStackWrapper.addSubview(aboveFoldStack)
         aboveFoldStack.alignTop("0", leading: "20", toView: aboveFoldStackWrapper)
@@ -61,13 +54,29 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         // set a constraint to force it to be in small mode first
         aboveFoldHeightConstraint = constrainHeightToView(aboveFoldStackWrapper, predicate: "0")
 
-        let loremProofOfConcept = stack.addBodyText("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", sideMargin: "40")
+        let separator = stack.addThickLineBreak("40")
+        let artistBlurbTitle = stack.addBigHeading("About the Artist", sideMargin: "40")
+        let artistBlurb = stack.addBodyText("", sideMargin: "40")
+        let artistMetadata:[UIView] = [separator, artistBlurbTitle, artistBlurb]
 
-        let loremTwo = stack.addBodyText("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", sideMargin: "40")
+        viewModel.subscribe { lot in
+            name.text = lot.lotArtist
+            title.setTitle(lot.lotName, date: lot.lotArtworkCreationDate)
+            estimate.text = lot.estimateString
+            premium.text = lot.lotPremium
+
+            if let blurb = lot.lotArtistBlurb {
+                artistBlurb.text = blurb
+            } else {
+                artistMetadata.forEach { $0.removeFromSuperview() }
+            }
+        }
 
         scrollEnabled = false
         backgroundColor = UIColor(white: 1, alpha: 0.85)
-        for label in [name, title, estimate, premium, loremProofOfConcept, loremTwo] {
+
+        let views = stack.subviews + aboveFoldStack.subviews
+        for label in views.filter({ $0.isKindOfClass(UILabel.self) }) {
             label.backgroundColor = .clearColor()
         }
     }
@@ -85,9 +94,13 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
         toggle.setTitle("HIDE INFO", forState: .Normal)
         toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleDown), forState: .Normal)
+
+        toggle.titleEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        toggle.imageTopConstraint?.constant = 15
+
         aboveFoldHeightConstraint.active = false
 
-        UIView.animateIf(animated, duration: ARAnimationQuickDuration) {
+        UIView.animateSpringIf(animated, duration: ARAnimationDuration, delay: 0, damping: 0.9, velocity: 3.5) {
             self.layoutIfNeeded()
         }
     }
@@ -97,15 +110,24 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
         toggle.setTitle("LOT INFO", forState: .Normal)
         toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), forState: .Normal)
+
+        toggle.titleEdgeInsets = UIEdgeInsetsZero
+        toggle.imageTopConstraint?.constant = 4
+
         aboveFoldHeightConstraint.active = true
 
-        UIView.animateIf(animated, duration: ARAnimationQuickDuration) {
+        UIView.animateSpringIf(animated, duration: ARAnimationDuration, delay: 0, damping: 0.9, velocity: 3.5) {
             self.layoutIfNeeded()
         }
     }
 
-    private class func toggleSizeButton() -> UIButton {
-        let toggle = UIButton(type: .Custom)
+    /// A small class just to simplify changing the height constraint for the image view
+    private class AuctionPushButton: UIButton {
+        var imageTopConstraint: NSLayoutConstraint?
+    }
+
+    private class func toggleSizeButton() -> AuctionPushButton {
+        let toggle = AuctionPushButton(type: .Custom)
 
         // Adjusts where the text will be placed
         toggle.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 30, right: 17)
@@ -116,7 +138,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         // Constrain the image to the left edge
         toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), forState: .Normal)
         toggle.imageView?.alignTrailingEdgeWithView(toggle, predicate: "0")
-        toggle.imageView?.alignTopEdgeWithView(toggle, predicate: "4")
+        toggle.imageTopConstraint =  toggle.imageView?.alignTopEdgeWithView(toggle, predicate: "4")
         toggle.setContentHuggingPriority(1000, forAxis: .Horizontal)
 
         // Extend its hit range, as it's like ~20px otherwise

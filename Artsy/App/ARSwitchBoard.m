@@ -211,6 +211,13 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
                 NSString *slug = [[path split:@"/"] lastObject];
                 return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
             }];
+
+            /// Temp
+            [self registerPathCallbackForDomain:@"live-staging.artsy.net" callback:^id _Nullable(NSURL *_Nonnull url) {
+                NSString *path = url.path;
+                NSString *slug = [[path split:@"/"] lastObject];
+                return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
+            }];
         }
     }
 

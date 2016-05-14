@@ -8,6 +8,7 @@ protocol SocketType: class {
     var onDisconnect: ((NSError?) -> Void)? { get set }
 
     func writeString(str: String)
+    func writeData(data: NSData)
     func writePing()
 
     func connect()
@@ -19,8 +20,8 @@ protocol LiveAuctionSocketCommunicatorType {
     var lotUpdateBroadcasts: Observable<AnyObject> { get }
     var currentLotUpdate: Observable<AnyObject> { get }
 
-    func bidOnLot(lotID: String)
-    func leaveMaxBidOnLot(lotID: String)
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String)
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String)
 }
 
 class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
@@ -144,11 +145,35 @@ private extension SocketSetup {
 
 private typealias PublicFunctions = LiveAuctionSocketCommunicator
 extension PublicFunctions {
-    func bidOnLot(lotID: String) {
-        // TODO: implement
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
+        writeJSON([
+            "event": [
+                "type": "FirstPriceBidPlaced",
+                "lotID": lotID,
+                "amountCents" : NSNumber(unsignedLongLong: amountCents),
+                "bidder" : [ "type": "ArtsyBidder", "bidderID" : bidderID]
+            ]
+        ])
     }
 
-    func leaveMaxBidOnLot(lotID: String) {
-        // TODO: implement
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
+//        writeJSON([
+//            "event": [
+//                "type": "FirstPriceBidPlaced",
+//                "lotID": lotID,
+//                "amountCents" : NSNumber(unsignedLongLong: amountCents),
+//                "bidder" : [ "type": "ArtsyBidder", "bidderID" : bidderID]
+//            ]
+//        ])
+    }
+
+    func writeJSON(json: [String: AnyObject]) {
+        do {
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: [])
+            socket.writeData(jsonData)
+        } catch {
+            print("Error creating JSON string of socket event")
+            return print(error)
+        }
     }
 }

@@ -17,8 +17,6 @@
 @property (nonatomic, strong, readonly) NSDate *startDate;
 @property (nonatomic, strong, readonly) NSDate *endDate;
 
-@property (nonatomic, assign, readonly) BOOL hasBuyersPremium;
-
 - (BOOL)isCurrentlyActive;
 
 @end

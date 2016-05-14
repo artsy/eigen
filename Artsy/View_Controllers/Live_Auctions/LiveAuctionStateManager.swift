@@ -53,12 +53,12 @@ class LiveAuctionStateManager: NSObject {
 private typealias PublicFunctions = LiveAuctionStateManager
 extension PublicFunctions {
 
-    func bidOnLot(lotID: String) {
-        socketCommunicator.bidOnLot(lotID)
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
+        socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID)
     }
 
-    func leaveMaxBidOnLot(lotID: String) {
-        socketCommunicator.leaveMaxBidOnLot(lotID)
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
+        socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderID: bidderID)
     }
 }
 
@@ -68,7 +68,6 @@ extension ComputedProperties {
         return stateReconciler.currentLotSignal
     }
 }
-
 
 
 private typealias DefaultCreators = LiveAuctionStateManager
@@ -101,11 +100,11 @@ private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
         updatedAuctionState = Observable(state)
     }
 
-    func bidOnLot(lotID: String) {
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
 
     }
 
-    func leaveMaxBidOnLot(lotID: String) {
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
 
     }
 
