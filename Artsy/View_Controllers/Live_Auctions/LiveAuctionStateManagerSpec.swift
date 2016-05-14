@@ -15,7 +15,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
             sale = testLiveSale()
 
-            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: "abcdefg", bidderID: "bidder-id", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
         it("sets its saleID upon initialization") {
@@ -84,8 +84,9 @@ class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let updatedAuctionState = Observable<AnyObject>()
     let lotUpdateBroadcasts = Observable<AnyObject>()
     let currentLotUpdate = Observable<AnyObject>()
+    let postEventResponses = Observable<AnyObject>()
 
-    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String) { }
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) { }
     func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) { }
 }
 

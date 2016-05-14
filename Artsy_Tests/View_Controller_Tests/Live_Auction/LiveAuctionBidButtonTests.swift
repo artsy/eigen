@@ -36,6 +36,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
 
 class Test_BiddingViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal = Observable<LiveAuctionBidButtonState>()
+    let bidPendingSignal = Observable<Bool>()
 
     init(state: LiveAuctionBidButtonState) {
         progressSignal.update(state)

@@ -24,9 +24,11 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 lotViewModel = Test_LiveAuctionLotViewModel()
                 cacheColoredImageForURL(lotViewModel.urlForProfile)
 
-                subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Observable<LiveAuctionLotViewModelType?>())
+                let salesPerson = stub_auctionSalesPerson()
 
-                subject.currentLotSignal.update(lotViewModel)
+                subject = LiveAuctionLotViewController(index: 1, lotViewModel: lotViewModel, salesPerson: salesPerson)
+
+                salesPerson.currentLotSignal.update(lotViewModel)
             }
 
             afterEach {
