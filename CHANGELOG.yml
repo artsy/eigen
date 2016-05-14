@@ -34,6 +34,7 @@ upcoming:
     - Adds more socket event-handling. - ash
     - Staging causality socket points to staging now instead of localhost. - ash
     - Adds sale-wide event handling (changes to current lot). - ash
+    - Successfuly sends JSON to websocket for bidding, though bids fail. - ash
 
   notes:
     - Fixes long auction names falling off right edge. - ash
