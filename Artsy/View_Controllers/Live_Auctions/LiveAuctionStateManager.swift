@@ -68,8 +68,8 @@ extension PublicFunctions {
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
     }
 
-    func leaveMaxBidOnLot(lotID: String) {
-        socketCommunicator.leaveMaxBidOnLot(lotID)
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
+        socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderID: bidderID)
     }
 }
 
@@ -79,7 +79,6 @@ extension ComputedProperties {
         return stateReconciler.currentLotSignal
     }
 }
-
 
 
 private typealias DefaultCreators = LiveAuctionStateManager
@@ -114,10 +113,10 @@ private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     }
 
     func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) {
-        
+
     }
 
-    func leaveMaxBidOnLot(lotID: String) {
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
 
     }
 

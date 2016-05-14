@@ -86,7 +86,8 @@ extension LiveAuctionsSalesPerson {
     }
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
-        stateManager.bidOnLot(lot.lotID, amountCents: amountCents, biddingViewModel: biddingViewModel)
+        guard let askingPrice = lot.askingPriceSignal.peek() else { return }
+        stateManager.bidOnLot(lot.lotID, amountCents: askingPrice, biddingViewModel: biddingViewModel)
     }
 
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) {

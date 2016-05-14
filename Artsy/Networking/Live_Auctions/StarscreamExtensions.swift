@@ -12,4 +12,8 @@ extension WebSocket: SocketType {
     func writePing() {
         writePing("2".dataUsingEncoding(NSUTF8StringEncoding)!)
     }
+
+    func writeData(data: NSData) {
+        writeData(data, completion: nil)
+    }
 }

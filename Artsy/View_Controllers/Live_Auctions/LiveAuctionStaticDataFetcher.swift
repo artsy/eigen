@@ -42,7 +42,7 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
         return signal
     }
-    
+
 }
 
 extension LiveAuctionStaticDataFetcherType {
