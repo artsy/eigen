@@ -34,14 +34,11 @@
 #import "ARShowViewController.h"
 #import "ARProfileViewController.h"
 #import "ARAppSearchViewController.h"
-#import "AROnboardingGeneTableController.h"
 #import "ARInquireForArtworkViewController.h"
 #import "ARArtworkViewController.h"
-#import "AROnboardingArtistTableController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARSignUpSplashViewController.h"
 #import "ARLoginViewController.h"
-#import "ARSignUpActiveUserViewController.h"
 #import "ARCreateAccountViewController.h"
 #import "ARGeneViewController.h"
 #import "ARPersonalizeViewController.h"
@@ -456,63 +453,7 @@
                         },
                     ]
                 },
-                @{
-                    ARAnalyticsClass: AROnboardingArtistTableController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistUnfollow,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(unfollowArtist:)),
-                            ARAnalyticsProperties:^NSDictionary*(AROnboardingArtistTableController *controller, NSArray *parameters) {
-                                Artist *artist = parameters[0];
-                                return @{
-                                    @"source_screen": @"Onboarding",
-                                    @"artist_slug" : artist.artistID ?: @"",
-                                };
-                            }
-                        },
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARSignUpActiveUserViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSignInWebCredentials,
-                            ARAnalyticsSelectorName: @"loggedInWithSharedCredentials",
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true"};
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedLogIn,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(goToLogin:),
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true"};
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
-                            ARAnalyticsSelectorName: @"signUpWithEmail:",
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true", @"type": @"email"};
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
-                            ARAnalyticsSelectorName: @"connectWithFacebook:",
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true", @"type": @"facebook"};
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
-                            ARAnalyticsSelectorName: @"connectWithTwitter:",
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true", @"type": @"email"};
-                            }
-                        },
-                    ]
-                },
-                @{
+                    @{
                     ARAnalyticsClass: ARLoginViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -642,12 +583,12 @@
                             ARAnalyticsEventName: ARAnalyticsOnboardingCompletedPersonalize,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(continueTapped:)),
                             ARAnalyticsShouldFire: ^BOOL (ARPersonalizeViewController *controller, NSArray *parameters) {
-                                return controller.followedThisSession || controller.geneController.numberOfFollowedGenes;
+                                return controller.followedThisSession;
                             },
                             ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *_){
                                 return @{
                                     @"artist_count": @(controller.followedThisSession),
-                                    @"gene_count": @(controller.geneController.numberOfFollowedGenes)
+                                    @"gene_count": @(controller.followedThisSession)
                                 };
                             },
                         },
@@ -655,38 +596,8 @@
                             ARAnalyticsEventName: ARAnalyticsOnboardingSkippedPersonalize,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(continueTapped:)),
                             ARAnalyticsShouldFire: ^BOOL (ARPersonalizeViewController *controller, NSArray *parameters) {
-                                return !(controller.followedThisSession || controller.geneController.numberOfFollowedGenes);
+                                return !(controller.followedThisSession);
                             }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistUnfollow,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(searchToggleFollowStatusForArtist:atIndexPath:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARPersonalizeViewController *controller, NSArray *parameters) {
-                                Artist *artist = parameters.firstObject;
-                                return [controller.artistController hasArtist:artist];
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *parameters){
-                                Artist *artist = parameters.firstObject;
-                                return @{
-                                    @"source_screen": @"Onboarding",
-                                    @"artist_slug" : artist.artistID,
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistFollow,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(searchToggleFollowStatusForArtist:atIndexPath:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARPersonalizeViewController *controller, NSArray *parameters) {
-                                Artist *artist = parameters.firstObject;
-                                return !([controller.artistController hasArtist:artist]);
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *parameters){
-                                Artist *artist = parameters.firstObject;
-                                return @{
-                                    @"source_screen": @"Onboarding",
-                                    @"artist_slug" : artist.artistID,
-                                };
-                            },
                         },
                     ]
                 },
@@ -955,15 +866,6 @@
                                 NSInteger range = [parameters.firstObject integerValue];
                                 NSString *stringRange = [NSString stringWithFormat:@"%@", @(range)];
                                 return @{ @"price_range" : stringRange };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingCompleted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(dismissOnboardingWithVoidAnimation:)),
-                            ARAnalyticsProperties: ^NSDictionary*(AROnboardingViewController *controller, NSArray *_){
-                                return @{
-                                    @"configuration" : [controller onboardingConfigurationString]
-                                };
                             },
                         },
                     ]
