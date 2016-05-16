@@ -7,6 +7,14 @@ class LiveAuctionEventViewModel : NSObject {
         return event.eventType() == .Bid
     }
 
+    var isLotOpening: Bool {
+        return event.eventType() == .LotOpen
+    }
+
+    var dateEventCreated: NSDate {
+        return ARStandardDateFormatter.sharedFormatter().dateFromString(event.createdAtString)
+    }
+
     var eventTitle: NSAttributedString {
         switch event.eventType() {
         case .Bid:

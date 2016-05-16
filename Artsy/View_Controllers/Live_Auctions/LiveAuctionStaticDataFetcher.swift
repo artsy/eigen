@@ -14,6 +14,7 @@ protocol LiveAuctionStaticDataFetcherType {
 class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
     enum Error: ErrorType {
         case JSONParsing
+        case NoJWTCredentials
     }
 
     let saleSlugOrID: String
@@ -28,11 +29,14 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
         ArtsyAPI.getLiveSaleStaticDataWithSaleID(saleSlugOrID,
             success: { data in
                 let json = JSON(data)
+                guard let sale = self.parseSale(json) else {
+                    return signal.update(.Error(Error.JSONParsing))
+                }
+
                 guard let
-                    sale = self.parseSale(json),
                     jwt = self.parseJWT(json),
                     bidderID = self.parseBidderID(json) else {
-                    return signal.update(.Error(Error.JSONParsing))
+                    return signal.update(.Error(Error.NoJWTCredentials))
                 }
 
                 signal.update(.Success((sale: sale, jwt: jwt, bidderID: bidderID)))

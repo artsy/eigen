@@ -17,7 +17,7 @@ protocol LiveAuctionLotViewModelType: class {
     var estimateString: String { get }
     var lotPremium: String { get }
     var lotName: String { get }
-    var lotID: String { get }
+    var lotID: String {  get }
     var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: NSURL { get }
     var urlForProfile: NSURL { get }
@@ -29,6 +29,7 @@ protocol LiveAuctionLotViewModelType: class {
     var imageProfileSize: CGSize { get }
     var liveAuctionLotID: String { get }
     var reserveStatusString: String { get }
+    var dateLotOpened: NSDate? { get }
 
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
@@ -129,6 +130,17 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         // TODO: is askingPriceCents correct? not sure from JSON
         //       maybe we need to look through the events for the last bid?
         return LiveAuctionBidViewModel.nextBidCents(model.askingPriceCents)
+    }
+
+    // Want to avoid array searching + string->date processing every in timer loops
+    // so pre-cache createdAt when found.
+    private var _dateLotOpened: NSDate?
+
+    var dateLotOpened: NSDate? {
+        if (_dateLotOpened != nil) { return _dateLotOpened }
+        guard let opening = events.filter({ $0.isLotOpening }).first else { return nil }
+        _dateLotOpened = opening.dateEventCreated
+        return _dateLotOpened
     }
 
     var currentLotValueString: String {

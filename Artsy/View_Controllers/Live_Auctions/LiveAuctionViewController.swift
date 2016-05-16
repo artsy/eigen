@@ -43,9 +43,11 @@ class LiveAuctionViewController: UISplitViewController {
             case .Success(let (sale, jwt, bidderID)):
                 self?.sale = sale
                 self?.setupWithSale(sale, jwt: jwt, bidderID: bidderID)
-            case .Error:
+            case .Error(let error):
                 // TODO: handle error case
-                break
+                print("Error pulling down sale data for \(self?.saleSlugOrID)")
+                print("Error: \(error)")
+
             }
         }
 

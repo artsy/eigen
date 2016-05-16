@@ -120,6 +120,8 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var currentLotValueString = "$Value"
     var imageProfileSize = CGSize(width: 200, height: 200)
     var liveAuctionLotID = "lotID"
+    var dateLotOpened: NSDate?
+
     func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
     }
