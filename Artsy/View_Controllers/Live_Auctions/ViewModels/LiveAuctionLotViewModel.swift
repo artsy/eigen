@@ -4,16 +4,16 @@ import Interstellar
 // Represents a single lot view
 
 enum LotState {
-    case ClosedLot
+    case UpcomingLot
     case LiveLot
-    case UpcomingLot(distanceFromLive: Int)
+    case ClosedLot
 }
 
 protocol LiveAuctionLotViewModelType: class {
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel
-    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState>
+    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel
 
     var lotArtist: String { get }
+    var lotArtistBlurb: String? { get }
     var estimateString: String { get }
     var lotPremium: String { get }
     var lotName: String { get }
@@ -31,6 +31,7 @@ protocol LiveAuctionLotViewModelType: class {
     var reserveStatusString: String { get }
 
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
+    var lotStateSignal: Observable<LotState> { get }
     var askingPriceSignal: Observable<UInt64> { get }
     var startEventUpdatesSignal: Observable<NSDate> { get }
     var endEventUpdatesSignal: Observable<NSDate> { get }
@@ -47,8 +48,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     private let model: LiveAuctionLot
     private var events = [LiveAuctionEventViewModel]()
+    private let biddingStatusSignal = Observable<ARLiveBiddingStatus>()
 
     let reserveStatusSignal = Observable<ARReserveStatus>()
+    let lotStateSignal: Observable<LotState>
     let askingPriceSignal = Observable<UInt64>()
 
     let startEventUpdatesSignal = Observable<NSDate>()
@@ -60,24 +63,18 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
         reserveStatusSignal.update(lot.reserveStatus)
         askingPriceSignal.update(lot.askingPriceCents)
-    }
 
-    func lotStateWithViewModel(viewModel: LiveAuctionViewModelType) -> LotState {
-        guard let distance = viewModel.distanceFromCurrentLot(model) else {
-            return .ClosedLot
-        }
-        if distance == 0 { return .LiveLot }
-        if distance < 0 { return .ClosedLot }
-        return .UpcomingLot(distanceFromLive: distance)
-    }
-
-    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
-        return auctionViewModel
-            .currentLotSignal
-            .map { [weak self, weak auctionViewModel] currentLot -> LotState in
-                guard let sSelf = self, sAuctionViewModel = auctionViewModel else { return .ClosedLot }
-                return sSelf.lotStateWithViewModel(sAuctionViewModel)
+        lotStateSignal = biddingStatusSignal.map { biddingStatus -> LotState in
+            switch biddingStatus {
+            case .Upcoming: fallthrough // Case that sale is not yet open
+            case .Open:                 // Case that lot is open to leave max bids
+                return .UpcomingLot
+            case .OnBlock:              // Currently on the block
+                return .LiveLot
+            case .Complete:             // Closed
+                return .ClosedLot
             }
+        }
     }
 
     var numberOfBids: Int {
@@ -112,6 +109,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.artistName
     }
 
+    var lotArtistBlurb: String? {
+        return model.artistBlurb
+    }
+
     var lotPremium: String {
         return "Premium: WIP"
     }
@@ -135,9 +136,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var estimateString: String {
-        let low = NSNumber(unsignedLongLong: model.lowEstimateCents)
-        let high = NSNumber(unsignedLongLong: model.highEstimateCents)
-        return SaleArtwork.estimateStringForLowEstimate(low, highEstimateCents:high, currencySymbol: model.currencySymbol, currency: model.currency)
+        return model.estimate
     }
 
     var eventIDs: [String] {
@@ -148,8 +147,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return events.count
     }
     
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
-        return events[index]
+    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
+        // Events are ordered FIFO, need to inverse for presentation
+        return events[numberOfEvents - index - 1]
     }
 
     var reserveStatusString: String {
@@ -180,6 +180,14 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
         if updated {
             askingPriceSignal.update(askingPrice)
+        }
+    }
+
+    func updateBiddingStatus(biddingStatus: String) {
+        let updated = model.updateBiddingStatusWithString(biddingStatus)
+
+        if updated {
+            biddingStatusSignal.update(model.biddingStatus)
         }
     }
 

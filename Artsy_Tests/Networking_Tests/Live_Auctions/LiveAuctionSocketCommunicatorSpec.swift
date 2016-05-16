@@ -17,13 +17,13 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
         }
 
         it("configures the socket with the correct host") {
-            _ = LiveAuctionSocketCommunicator(host: host, jwt: jwt, causalitySaleID: saleID, socketCreator: test_SocketCreator())
+            _ = LiveAuctionSocketCommunicator(host: host, causalitySaleID: saleID, jwt: jwt, socketCreator: test_SocketCreator())
 
             expect(socket.host) == host
         }
 
         it("connects the socket on initialization") {
-            let subject = LiveAuctionSocketCommunicator(host: host, jwt: jwt, causalitySaleID: saleID, socketCreator: test_SocketCreator())
+            let subject = LiveAuctionSocketCommunicator(host: host, causalitySaleID: saleID, jwt: jwt, socketCreator: test_SocketCreator())
 
             expect(socket.connected) == true
 
@@ -32,14 +32,14 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
 
         it("disconnects the socket when deallocated") {
             do {
-                _ = LiveAuctionSocketCommunicator(host: host, jwt: jwt, causalitySaleID: saleID, socketCreator: test_SocketCreator())
+                _ = LiveAuctionSocketCommunicator(host: host, causalitySaleID: saleID, jwt: jwt, socketCreator: test_SocketCreator())
             }
 
             expect(socket.connected) == false
         }
 
         it("sends authentication once connected") {
-            let subject = LiveAuctionSocketCommunicator(host: host, jwt: jwt, causalitySaleID: saleID, socketCreator: test_SocketCreator())
+            let subject = LiveAuctionSocketCommunicator(host: host, causalitySaleID: saleID, jwt: jwt, socketCreator: test_SocketCreator())
 
             socket.onConnect?()
 
@@ -50,13 +50,13 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
         }
 
         it("listens for updated auction state") {
-            _ = LiveAuctionSocketCommunicator(host: host, jwt: jwt, causalitySaleID: saleID, socketCreator: test_SocketCreator())
+            _ = LiveAuctionSocketCommunicator(host: host, causalitySaleID: saleID, jwt: jwt, socketCreator: test_SocketCreator())
 
             expect(socket.onText).toNot( beNil() )
         }
 
         it("sends its updatedAuctionState observable its updated auction state") {
-            let subject = LiveAuctionSocketCommunicator(host: host, jwt: jwt, causalitySaleID: saleID, socketCreator: test_SocketCreator())
+            let subject = LiveAuctionSocketCommunicator(host: host, causalitySaleID: saleID, jwt: jwt, socketCreator: test_SocketCreator())
 
             // "emit" the socket event from the server
             let state = "{\"type\":\"InitialFullSaleState\",\"currentLotId\":\"54c7ecc27261692b5e420600\",\"fullLotStateById\":{}}"
@@ -80,6 +80,7 @@ class Test_Socket: SocketType {
     var onDisconnect: ((NSError?) -> Void)?
 
     var writes = [String]()
+    var datas = [NSData]()
     var connected = false
     var host = ""
 
@@ -87,6 +88,8 @@ class Test_Socket: SocketType {
 
 
     func writeString(str: String) { writes += [str] }
+    func writeData(data: NSData) { datas += [data] }
+
     func writePing() { }
     func connect() { connected = true }
     func disconnect() { connected = false }

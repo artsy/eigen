@@ -30,6 +30,11 @@ upcoming:
     - Put native live auctions behind AROptions. - ash
     - Danger is aware of how long classes take to compile. - orta
     - Adds socket authentication from metaphysics JWT. - ash
+    - Adds implementation to handle some socket events. - ash
+    - Adds more socket event-handling. - ash
+    - Staging causality socket points to staging now instead of localhost. - ash
+    - Adds sale-wide event handling (changes to current lot). - ash
+    - Successfuly sends JSON to websocket for bidding, though bids fail. - ash
 
   notes:
     - Fixes long auction names falling off right edge. - ash

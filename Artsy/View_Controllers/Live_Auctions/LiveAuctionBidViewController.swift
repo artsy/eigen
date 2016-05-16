@@ -3,7 +3,7 @@ import Interstellar
 
 enum LiveAuctionBiddingProgressState {
     case TrialUser
-    case Biddable(biddingAmount: String)
+    case Biddable(askingPrice: UInt64)
     case BiddingInProgress
     case BidSuccess(isMaxBidder: Bool)
     case BidNetworkFail
@@ -79,6 +79,7 @@ class LiveAuctionBidViewModel: NSObject {
 class LiveAuctionBidViewController: UIViewController {
 
     var bidViewModel: LiveAuctionBidViewModel!
+    var bidButtonViewModel: LiveAuctionBiddingViewModelType!
     var biddingProgressSignal = Observable<LiveAuctionBiddingProgressState>()
 
     @IBOutlet weak var lowerBiddingSeparatorView: UIView!
@@ -86,6 +87,8 @@ class LiveAuctionBidViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        bidButtonViewModel = bidButton.viewModel
 
         updateLotInformation()
         updateCurrentBidInformation(NSDate())
@@ -136,9 +139,9 @@ class LiveAuctionBidViewController: UIViewController {
         currentBidLabel.text = bidViewModel.currentBidDollars
 
         /// TODO: Determine if bidding before updating the button?
-        let bidProgress = LiveAuctionBiddingProgressState.Biddable(biddingAmount: bidViewModel.currentBidDollars)
+        let bidProgress = LiveAuctionBiddingProgressState.Biddable(askingPrice: bid)
         let bidState = LiveAuctionBidButtonState.Active(biddingState: bidProgress)
-        bidButton.progressSignal.update(bidState)
+        bidButtonViewModel.progressSignal.update(bidState)
     }
 
     @IBAction func incrementBid(sender: AnyObject) {
@@ -159,7 +162,7 @@ class LiveAuctionBidViewController: UIViewController {
 
     private func biddingProgressUpdated(state: LiveAuctionBiddingProgressState) {
         let buttonState = LiveAuctionBidButtonState.Active(biddingState: state)
-        bidButton.progressSignal.update(buttonState)
+        bidButtonViewModel.progressSignal.update(buttonState)
 
         bidProgressOverlayView.biddingProgressSignal.update(state)
         handleProgressViewVisibility(state)

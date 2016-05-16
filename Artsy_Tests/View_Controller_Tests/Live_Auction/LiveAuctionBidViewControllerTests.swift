@@ -53,12 +53,13 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
             }
 
             it("ensures the bid is moved above the current max bid") {
-                expect(subject.bidViewModel.currentBid) == 5000
+                
+                expect(subject.bidViewModel.currentBid) == 5_500_00
 
-                lotVM.currentLotValue = 15000
+                lotVM.currentLotValue = 6_000_00
                 lotVM.endEventUpdatesSignal.update(NSDate())
 
-                expect(subject.bidViewModel.currentBid) == 15000
+                expect(subject.bidViewModel.currentBid) == 6_000_00
             }
         }
 
@@ -72,7 +73,7 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
 
             expect(subject.bidProgressOverlayView.superview) != nil
 
-            let start = LiveAuctionBiddingProgressState.Biddable(biddingAmount: "money")
+            let start = LiveAuctionBiddingProgressState.Biddable(askingPrice: 5_000_00)
             subject.biddingProgressSignal.update(start)
             expect(subject.bidProgressOverlayView.superview).to( beNil() )
         }

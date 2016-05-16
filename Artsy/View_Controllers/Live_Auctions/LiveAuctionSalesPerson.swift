@@ -5,7 +5,7 @@ import Interstellar
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
 protocol LiveAuctionsSalesPersonType {
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
 
     var auctionViewModel: LiveAuctionViewModelType { get }
     var pageControllerDelegate: LiveAuctionPageControllerDelegate? { get }
@@ -15,12 +15,12 @@ protocol LiveAuctionsSalesPersonType {
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType?
 
-    func bidOnLot(lot: LiveAuctionLotViewModelType)
+    func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel)
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: String) -> LiveAuctionStateManager
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderID: String) -> LiveAuctionStateManager
 
     let sale: LiveSale
     let lots: [LiveAuctionLotViewModel]
@@ -36,14 +36,15 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
     init(sale: LiveSale,
          jwt: JWT,
+         bidderID: String,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
         self.sale = sale
         self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0) }
 
-        let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "ws://localhost:8080"
-        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt)
+        let host = ARRouter.baseCausalitySocketURLString()
+        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderID: bidderID)
         self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal)
 
         super.init()
@@ -55,7 +56,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
 private typealias ComputedProperties = LiveAuctionsSalesPerson
 extension ComputedProperties {
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
         return stateManager.currentLotSignal
     }
 
@@ -84,12 +85,13 @@ extension LiveAuctionsSalesPerson {
         return lots[index]
     }
 
-    func bidOnLot(lot: LiveAuctionLotViewModelType) {
-        stateManager.bidOnLot("") // TODO: Extract lot ID once https://github.com/artsy/eigen/pull/1386 is merged.
+    func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        guard let askingPrice = lot.askingPriceSignal.peek() else { return }
+        stateManager.bidOnLot(lot.lotID, amountCents: askingPrice, biddingViewModel: biddingViewModel)
     }
 
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) {
-        stateManager.bidOnLot("") // TODO: Extract lot ID once https://github.com/artsy/eigen/pull/1386 is merged.
+        // TODO: Implement
     }
 }
 
@@ -97,14 +99,14 @@ private typealias ClassMethods = LiveAuctionsSalesPerson
 extension ClassMethods {
 
     class func defaultStateManagerCreator() -> StateManagerCreator {
-        return { host, sale, saleArtworks, jwt in
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt)
+        return { host, sale, saleArtworks, jwt, bidderID in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderID: bidderID)
         }
     }
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
-        return { host, sale, saleArtworks, jwt in
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
+        return { host, sale, saleArtworks, jwt, bidderID in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderID: bidderID, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
         }
     }
 

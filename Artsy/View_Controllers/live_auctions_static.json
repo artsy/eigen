@@ -17,6 +17,7 @@
           "reserve_status": "reserve_met",
           "low_estimate_cents": 200000,
           "high_estimate_cents": 300000,
+          "estimate": "Estimate String",
           "artwork": {
             "title": "Cockroaches (from Insects Portfolio)",
             "artist": {
@@ -32,6 +33,7 @@
           "_id": "54c7ed2a7261692bfa910200",
           "position": 2,
           "currency": "USD",
+          "estimate": "Estimate String",
           "symbol": "$",
           "reserve_status": "reserve_met",
           "low_estimate_cents": 200000,
@@ -52,6 +54,7 @@
           "position": 3,
           "currency": "USD",
           "symbol": "$",
+          "estimate": "Estimate String",
           "reserve_status": "reserve_met",
           "low_estimate_cents": 700000,
           "high_estimate_cents": 900000,

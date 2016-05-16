@@ -6,6 +6,7 @@
 @interface LiveAuctionLot ()
 
 @property (nonatomic, assign, readwrite) ARReserveStatus reserveStatus;
+@property (nonatomic, assign, readwrite) ARLiveBiddingStatus biddingStatus;
 @property (nonatomic, assign, readwrite) UInt64 askingPriceCents;
 @property (nonatomic, copy, readwrite) NSArray<NSString *> *eventIDs;
 
@@ -32,8 +33,9 @@
         ar_keypath(LiveAuctionLot.new, artworkTitle) : @"artwork.title",
         ar_keypath(LiveAuctionLot.new, artworkDate) : @"artwork.date",
         ar_keypath(LiveAuctionLot.new, artistName) : @"artwork.artist.name",
+        ar_keypath(LiveAuctionLot.new, artistBlurb) : @"artwork.artist.blurb",
         ar_keypath(LiveAuctionLot.new, imageDictionary) : @"artwork.image",
-        ar_keypath(LiveAuctionLot.new, currencySymbol) : @"symbol"
+        ar_keypath(LiveAuctionLot.new, currencySymbol) : @"symbol",
     };
 }
 
@@ -66,6 +68,30 @@
 
     if (currentStatus != newStatus) {
         self.reserveStatus = newStatus;
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)updateBiddingStatusWithString:(NSString *)biddingStatusString
+{
+    ARLiveBiddingStatus currentBiddingStatus = self.biddingStatus;
+    NSDictionary *types = @{
+        @"Upcoming" : @(ARLiveBiddingStatusUpcoming),
+        @"Open" : @(ARLiveBiddingStatusOpen),
+        @"OnBlock" : @(ARLiveBiddingStatusOnBlock),
+        @"Complete" : @(ARLiveBiddingStatusComplete)
+    };
+
+    NSNumber *type = types[biddingStatusString];
+    if (!type) {
+        return NO;
+    }
+
+    ARLiveBiddingStatus newBiddingStatus = type.integerValue;
+    if (currentBiddingStatus != newBiddingStatus) {
+        self.biddingStatus = newBiddingStatus;
         return YES;
     } else {
         return NO;

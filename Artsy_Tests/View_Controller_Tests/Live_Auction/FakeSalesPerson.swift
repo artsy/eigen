@@ -9,5 +9,5 @@ func stub_auctionSale() -> LiveSale {
 
 func stub_auctionSalesPerson() -> LiveAuctionsSalesPersonType {
     let sale = stub_auctionSale()
-    return LiveAuctionsSalesPerson(sale: sale, jwt: "abcdefg", stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
+    return LiveAuctionsSalesPerson(sale: sale, jwt: "abcdefg", bidderID: "bidder-id", stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
 }

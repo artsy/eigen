@@ -9,18 +9,25 @@
 
 + (instancetype)modelWithDictionary:(NSDictionary *)dictionaryValue error:(NSError *__autoreleasing *)error
 {
+    /*
+     We need to support the following event types:
+     - StartingPriceChanged
+     - ReservePriceChanged
+     - CompositeOnlineBidConfirmed
+     - BidCancelled
+    */
     NSString *type = [dictionaryValue valueForKeyPath:@"type"];
     Class klass;
     if ([type isEqualToString:@"BiddingOpened"]) {
         klass = LiveEventLotOpen.class;
 
-    } else if ([type isEqualToString:@"FirstPriceBidPlaced"]) {
+    } else if ([type isEqualToString:@"FirstPriceBidPlaced"] || [type isEqualToString:@"SecondPriceBidPlaced"] || [type isEqualToString:@"CompositeOnlineBidConfirmed"]) {
         klass = LiveEventBid.class;
 
-    } else if ([type isEqualToString:@"fair_warning"]) {
+    } else if ([type isEqualToString:@"FairWarning"]) {
         klass = LiveEventWarning.class;
 
-    } else if ([type isEqualToString:@"final_call"]) {
+    } else if ([type isEqualToString:@"FinalCall"]) {
         klass = LiveEventFinalCall.class;
 
     } else if ([type isEqualToString:@"BiddingClosed"]) {

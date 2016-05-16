@@ -16,10 +16,12 @@ protocol SocketType: class {
 
 protocol LiveAuctionSocketCommunicatorType {
     var updatedAuctionState: Observable<AnyObject> { get }
-    var newEvents: Observable<AnyObject> { get }
+    var lotUpdateBroadcasts: Observable<AnyObject> { get }
+    var currentLotUpdate: Observable<AnyObject> { get }
+    var postEventResponses: Observable<AnyObject> { get }
 
-    func bidOnLot(lotID: String)
-    func leaveMaxBidOnLot(lotID: String)
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String)
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String)
 }
 
 class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
@@ -29,15 +31,17 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     private var timer: NSTimer? // Heartbeat to keep socket connection alive.
 
     let updatedAuctionState = Observable<AnyObject>()
-    let newEvents = Observable<AnyObject>()
+    let lotUpdateBroadcasts = Observable<AnyObject>()
+    let currentLotUpdate = Observable<AnyObject>()
+    let postEventResponses = Observable<AnyObject>()
 
-    let jwt: String
+    let jwt: JWT
 
-    convenience init(host: String, causalitySaleID: String, jwt: String) {
-        self.init(host: host, jwt: jwt, causalitySaleID: causalitySaleID, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
+    convenience init(host: String, causalitySaleID: String, jwt: JWT) {
+        self.init(host: host, causalitySaleID: causalitySaleID, jwt: jwt, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
     }
 
-    init(host: String, jwt: String, causalitySaleID: String, socketCreator: SocketCreator) {
+    init(host: String, causalitySaleID: String, jwt: JWT, socketCreator: SocketCreator) {
 
         socket = socketCreator(host: host, saleID: causalitySaleID)
         self.causalitySaleID = causalitySaleID
@@ -57,7 +61,9 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     class func defaultSocketCreator() -> SocketCreator {
         return { host, saleID in
             let url = NSURL(string: "\(host)/socket?saleId=\(saleID)")
-            return WebSocket(url: url!)
+            let websocket = WebSocket(url: url!)
+            websocket.origin = nil
+            return websocket
         }
     }
 }
@@ -97,9 +103,10 @@ private extension SocketSetup {
     }
 
     func receivedText(text: String) {
-        guard let data = text.dataUsingEncoding(NSUTF8StringEncoding),
-              let _json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
-              let json = _json as? [String: AnyObject] else {
+        guard let
+            data = text.dataUsingEncoding(NSUTF8StringEncoding),
+            _json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
+            json = _json as? [String: AnyObject] else {
             // TODO: Handle error
             return
         }
@@ -107,16 +114,34 @@ private extension SocketSetup {
         let socketEventType = (json["type"] as? String) ?? "(No Event Specified)"
         print("Received socket event type: \(socketEventType).")
 
+
         switch socketEventType {
+
         case "InitialFullSaleState":
             updatedAuctionState.update(json)
-        case "FirstPriceBidPlaced":
-            // TODO: other events.
-            newEvents.update(json)
+
+        case "LotUpdateBroadcast":
+            lotUpdateBroadcasts.update(json)
+
+        case "OperationFailedEvent": break;
+            // TODO: Handle op failure
+
+        case "PostEventResponse":
+            postEventResponses.update(json)
+
+        case "SaleLotChangeBroadcast":
+            currentLotUpdate.update(json)
+
+        case "SaleNotFound": break;
+            // TODO: Handle this (?)
+
+        case "PostEventFailedUnauthorized": fallthrough
         case "ConnectionUnauthorized": break;
             // TODO: handle auth error.
+
         default:
-            print("Received unknown socket event type.")
+            print("Received unknown socket event type. Payload: \(json)")
+
         }
     }
 }
@@ -124,11 +149,36 @@ private extension SocketSetup {
 
 private typealias PublicFunctions = LiveAuctionSocketCommunicator
 extension PublicFunctions {
-    func bidOnLot(lotID: String) {
-        // TODO: implement
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) {
+        writeJSON([
+            "key": bidUUID,
+            "type": "PostEvent",
+            "event": [
+                "type": "FirstPriceBidPlaced",
+                "lotId": lotID,
+                "amountCents": NSNumber(unsignedLongLong: amountCents),
+                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID]
+            ]
+        ])
     }
 
-    func leaveMaxBidOnLot(lotID: String) {
-        // TODO: implement
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
+//        writeJSON([
+//            "event": [
+//                "type": "FirstPriceBidPlaced",
+//                "lotID": lotID,
+//                "amountCents" : NSNumber(unsignedLongLong: amountCents),
+//                "bidder" : [ "type": "ArtsyBidder", "bidderID" : bidderID]
+//            ]
+//        ])
+    }
+
+    func writeJSON(json: NSObject) {
+        do {
+            socket.writeString(try json.stringify())
+        } catch {
+            print("Error creating JSON string of socket event")
+            return print(error)
+        }
     }
 }

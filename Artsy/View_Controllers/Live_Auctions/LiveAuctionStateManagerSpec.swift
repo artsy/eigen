@@ -15,7 +15,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
             sale = testLiveSale()
 
-            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: "abcdefg", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: "abcdefg", bidderID: "bidder-id", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
         it("sets its saleID upon initialization") {
@@ -33,6 +33,21 @@ class LiveAuctionStateManagerSpec: QuickSpec {
             mostRecentSocketCommunicator?.updatedAuctionState.update(state)
 
             expect(mostRecentStateReconciler?.mostRecentState as? [String]) == state
+        }
+
+        it("invokes current lot updates") {
+            let currentLot = ["hi there!"]
+            mostRecentSocketCommunicator?.currentLotUpdate.update(currentLot)
+
+            expect(mostRecentStateReconciler?.mostRecentCurrentLotUpdate as? [String]) == currentLot
+        }
+
+        it("invokes lot event updates") {
+            let lotEvent = ["hi there!"]
+            mostRecentSocketCommunicator?.lotUpdateBroadcasts.update(lotEvent)
+
+            expect(mostRecentStateReconciler?.mostRecentEventBroadcast as? [String]) == lotEvent
+
         }
     }
 }
@@ -67,17 +82,21 @@ class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     }
 
     let updatedAuctionState = Observable<AnyObject>()
-    let newEvents = Observable<AnyObject>()
+    let lotUpdateBroadcasts = Observable<AnyObject>()
+    let currentLotUpdate = Observable<AnyObject>()
+    let postEventResponses = Observable<AnyObject>()
 
-    func bidOnLot(lotID: String) { }
-    func leaveMaxBidOnLot(lotID: String) { }
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) { }
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) { }
 }
 
 var mostRecentStateReconciler: Test_StateRecociler?
 
 class Test_StateRecociler: LiveAuctionStateReconcilerType {
     var mostRecentState: AnyObject?
-    var events = [AnyObject]()
+    var mostRecentEventBroadcast: AnyObject?
+    var mostRecentCurrentLotUpdate: AnyObject?
+    var mostRecentEvent: AnyObject?
 
     init() {
         mostRecentStateReconciler = self
@@ -87,11 +106,19 @@ class Test_StateRecociler: LiveAuctionStateReconcilerType {
         mostRecentState = state
     }
 
-    func processNewEvents(events: AnyObject) {
-        self.events += [events]
+    func processNewEvents(event: AnyObject) {
+        mostRecentEvent = event
+    }
+
+    func processLotEventBroadcast(broadcast: AnyObject) {
+        mostRecentEventBroadcast = broadcast
+    }
+
+    func processCurrentLotUpdate(update: AnyObject) {
+        mostRecentCurrentLotUpdate = update
     }
     
     var newLotsSignal: Observable<[LiveAuctionLotViewModelType]> { return Observable() }
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { return Observable() }
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { return Observable() }
     var saleSignal: Observable<LiveAuctionViewModelType> { return Observable() }
 }

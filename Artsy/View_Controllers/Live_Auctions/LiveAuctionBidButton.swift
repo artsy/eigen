@@ -14,18 +14,31 @@ enum LiveAuctionBidButtonState {
 }
 
 class LiveAuctionBidButton : ARFlatButton {
-    let progressSignal = Observable<LiveAuctionBidButtonState>()
+    var viewModel: LiveAuctionBiddingViewModelType
+    
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
+
+    init(viewModel: LiveAuctionBiddingViewModelType) {
+        self.viewModel = viewModel
+
+        super.init(frame: CGRect.zero)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        // This is an acceptable default, it can be replaced before added to a view and setup() getting called.
+        viewModel = LiveAuctionLeaveMaxBidButtonViewModel()
+        super.init(coder: aDecoder)
+    }
 
     override func setup() {
         super.setup()
         setContentCompressionResistancePriority(1000, forAxis: .Vertical)
         addTarget(self, action: #selector(tappedBidButton), forControlEvents: .TouchUpInside)
-        progressSignal.subscribe(setupWithState)
+        viewModel.progressSignal.subscribe(setupWithState)
     }
 
     func tappedBidButton() {
-        guard let state = progressSignal.peek() else { return }
+        guard let state = viewModel.progressSignal.peek() else { return }
         switch state {
         case .Active(let bidState):
             switch bidState {
@@ -73,7 +86,8 @@ class LiveAuctionBidButton : ARFlatButton {
                 setupUI("Waiting for Auctioneer…", background: white, border: grey, textColor: grey)
 
             case .Biddable(let price):
-                setupUI("Bid \(price)")
+                let formattedPrice = NSNumberFormatter.currencyStringForDollarCents(NSNumber(unsignedLongLong: price))
+                setupUI("Bid \(formattedPrice)")
                 enabled = true
             case .BiddingInProgress:
                 setupUI("Bidding...", background: purple)
@@ -92,11 +106,13 @@ class LiveAuctionBidButton : ARFlatButton {
         // When the lot is not live
         case .InActive(let state):
             switch state {
-                case .ClosedLot:
-                    setupUI("Bidding Closed")
-                case .LiveLot: break // Should never happen, as it'd be handled above
-                case .UpcomingLot(_):
-                    setupUI("Leave Max Bid")
+            case .ClosedLot:
+                setupUI("Bidding Closed")
+                enabled = false
+            case .LiveLot: break // Should never happen, as it'd be handled above
+            case .UpcomingLot:
+                enabled = true
+                setupUI("Leave Max Bid")
             }
         }
     }

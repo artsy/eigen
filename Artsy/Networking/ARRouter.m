@@ -79,6 +79,16 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
++ (NSString *)baseCausalitySocketURLString
+{
+    if ([AROptions boolForOption:ARUseStagingDefault]) {
+        NSString *stagingSocketURLString = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingLiveAuctionSocketURLDefault];
+        return stagingSocketURLString;
+    } else {
+        return ARCausalitySocketURL;
+    }
+}
+
 + (NSURL *)baseWebURL
 {
     return [UIDevice isPad] ? [self baseDesktopWebURL] : [self baseMobileWebURL];
@@ -996,6 +1006,9 @@ static NSString *hostFromString(NSString *string)
     NSString *query = [NSString stringWithFormat:@"\
 {\
   causality_jwt(role: BIDDER, sale_id: \"%1$@\")\
+  me {\
+    paddle_number\
+  }\
   sale(id: \"%1$@\") {\
     _id\
     id\
@@ -1005,7 +1018,7 @@ static NSString *hostFromString(NSString *string)
     is_with_buyers_premium\
     description\
     sale_artworks {\
-      id\
+      _id\
       position\
       currency\
       symbol\

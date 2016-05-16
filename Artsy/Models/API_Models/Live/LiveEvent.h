@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 
 // We do this to expose these to its children
 
-@property (nonatomic, assign, readonly) NSInteger amountCents;
+@property (nonatomic, assign, readonly) UInt64 amountCents;
 @property (nonatomic, strong, readonly) LiveBidder *_Nullable bidder;
 @property (nonatomic, strong, readonly) NSString *sourceOrDefaultString;
 

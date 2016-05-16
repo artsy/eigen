@@ -24,9 +24,11 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 lotViewModel = Test_LiveAuctionLotViewModel()
                 cacheColoredImageForURL(lotViewModel.urlForProfile)
 
-                subject = LiveAuctionLotViewController(index: 1, auctionViewModel: auctionViewModel, lotViewModel: lotViewModel, currentLotSignal: Observable<LiveAuctionLotViewModelType>())
+                let salesPerson = Test_SalesPerson(lots: [lotViewModel], auctionViewModel: auctionViewModel)
 
-                subject.currentLotSignal.update(lotViewModel)
+                subject = LiveAuctionLotViewController(index: 1, lotViewModel: lotViewModel, salesPerson: salesPerson)
+
+                salesPerson.currentLotSignal.update(lotViewModel)
             }
 
             afterEach {
@@ -45,14 +47,20 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
 
             it("looks good for upcoming lots") {
-                lotViewModel.lotStateSignal.update(.UpcomingLot(distanceFromLive: 1))
+                auctionViewModel.distance = 1
+                lotViewModel.lotStateSignal.update(.UpcomingLot)
                 expect(subject) == snapshot()
             }
 
             it("doesnt show a live auction call to action when auction is closed") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
+                expect(subject) == snapshot()
+            }
 
+            it("looks good when its lot becomes the current lot") {
+                lotViewModel.lotStateSignal.update(.LiveLot)
+                auctionViewModel.currentLotSignal.update(lotViewModel)
                 expect(subject) == snapshot()
             }
         }
@@ -60,20 +68,43 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
 }
 
+class Test_SalesPerson: LiveAuctionsSalesPersonType {
+    var currentLotSignal = Observable<LiveAuctionLotViewModelType?>()
+
+    var auctionViewModel: LiveAuctionViewModelType
+    var pageControllerDelegate: LiveAuctionPageControllerDelegate? { return nil }
+    var lotCount: Int { return auctionViewModel.lotCount }
+    var liveSaleID: String = "seriously-folks-its-the-best-sale-ever"
+
+    var lots: [LiveAuctionLotViewModelType]
+
+    init(lots: [LiveAuctionLotViewModelType], auctionViewModel: LiveAuctionViewModelType) {
+        self.lots = lots
+        self.auctionViewModel = auctionViewModel
+    }
+
+    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType { return lots[index] }
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType? { return nil }
+
+    func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) { }
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) { }
+}
+
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var startDate = NSDate().dateByAddingTimeInterval(-3600)
     var lotCount = 3
     var saleAvailabilitySignal = Observable(SaleAvailabilityState.Active)
-    var currentLotSignal = Observable<LiveAuctionLotViewModelType>()
+    var currentLotSignal = Observable<LiveAuctionLotViewModelType?>(Test_LiveAuctionLotViewModel(lotID: "active-lot"))
 
     var distance: Int?
-    func distanceFromCurrentLot(lot: LiveAuctionLot) -> Int? {
+    func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int? {
         return distance
     }
 }
 
 class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var lotArtist = "Artist Name"
+    var lotArtistBlurb: String? = "Artist Blurb"
     var estimateString = "$Estimate"
     var lotName = "Lot Name"
     var lotID = "lot-id"
@@ -89,20 +120,26 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var currentLotValueString = "$Value"
     var imageProfileSize = CGSize(width: 200, height: 200)
     var liveAuctionLotID = "lotID"
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
+    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
     }
 
-    var lotStateSignal = Observable(LotState.UpcomingLot(distanceFromLive: 1))
+    var lotStateSignal = Observable(LotState.UpcomingLot)
     func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
         return lotStateSignal
     }
 
-    let askingPriceSignal = Observable<UInt64>()
+    let askingPriceSignal = Observable<UInt64>(5_000_00)
     let reserveStatusSignal = Observable<ARReserveStatus>()
     let startEventUpdatesSignal = Observable<NSDate>()
     let endEventUpdatesSignal = Observable<NSDate>()
     let newEventSignal = Observable<LiveAuctionEventViewModel>()
+
+    init(lotID: String) {
+        self.lotID = lotID
+    }
+
+    init() {}
 }
 
 let liveEventJSON = [

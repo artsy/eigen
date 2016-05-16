@@ -20,7 +20,7 @@ class LotListCollectionViewCell: UICollectionViewCell {
     var isNotTopCell = true
 
     private var userInterfaceNeedsSetup = true
-    private var computedLotStateSubscription: (ObserverToken, Observable<LotState>)?
+    private var lotStateSubscription: (ObserverToken, Observable<LotState>)?
     private var askingPriceSubscription: (ObserverToken, Observable<UInt64>)?
 }
 
@@ -29,11 +29,11 @@ extension Overrides {
     override func prepareForReuse() {
         super.prepareForReuse()
         defer {
-            computedLotStateSubscription = nil
+            lotStateSubscription = nil
             askingPriceSubscription = nil
         }
 
-        if let computedLotStateSubscription = computedLotStateSubscription {
+        if let computedLotStateSubscription = lotStateSubscription {
             computedLotStateSubscription.1.unsubscribe(computedLotStateSubscription.0)
         }
 
@@ -49,18 +49,20 @@ extension PublicFunctions {
 
         if userInterfaceNeedsSetup {
             userInterfaceNeedsSetup = false
-            setup()
+            contentView.translatesAutoresizingMaskIntoConstraints = false
+            contentView.alignToView(self)
         }
+        
+        resetViewHierarchy()
 
         isNotTopCell = (indexPath.item > 0)
 
         // TODO: Pending https://github.com/JensRavens/Interstellar/issues/40 this might look less messy.
-        let computedLotStateSignal = viewModel
-            .computedLotStateSignal(auctionViewModel)
+        let lotStateSignal = viewModel.lotStateSignal
 
-        self.computedLotStateSubscription = (computedLotStateSignal.subscribe { [weak self] state in
+        self.lotStateSubscription = (lotStateSignal.subscribe { [weak self] state in
                 self?.setLotState(state)
-            }, computedLotStateSignal)
+            }, lotStateSignal)
 
         askingPriceSubscription = (viewModel
             .askingPriceSignal

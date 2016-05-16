@@ -1,6 +1,7 @@
 import Quick
 import Nimble
 import OHHTTPStubs
+import Interstellar
 @testable
 import Artsy
 
@@ -9,12 +10,13 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
 
         let saleID = "the-id"
         let jwt = "random-byyyyyytes"
-        let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"], "causality_jwt": jwt]]
+        let bidderID = "000000"
+        let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"], "causality_jwt": jwt, "me": ["paddle_number": bidderID]]]
 
         var subject: LiveAuctionStaticDataFetcher!
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseForHost("metaphysics-*.artsy.net", withResponse: stateJSON)
+            OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: stateJSON)
             subject = LiveAuctionStaticDataFetcher(saleSlugOrID: saleID)
         }
         
@@ -22,16 +24,24 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
             expect(subject.saleSlugOrID) == saleID
         }
 
-        it("fetches the static data") {
-            let receivedState = subject.fetchStaticData()
+        describe("after fetching") {
+            var receivedState: Observable<StaticSaleResult>!
 
-            expect(receivedState.peekValue()?.sale.liveSaleID) == saleID
-        }
+            beforeEach {
+                receivedState = subject.fetchStaticData()
+            }
+            
+            it("fetches the static data") {
+                expect(receivedState.peekValue()?.sale.liveSaleID) == saleID
+            }
 
-        it("fetches a kwt") {
-            let receivedState = subject.fetchStaticData()
-
-            expect(receivedState.peekValue()?.jwt) == jwt
+            it("fetches a jwt") {
+                expect(receivedState.peekValue()?.jwt) == jwt
+            }
+            
+            it("fetches a bidderId") {
+                expect(receivedState.peekValue()?.bidderID) == bidderID
+            }
         }
     }
 }
