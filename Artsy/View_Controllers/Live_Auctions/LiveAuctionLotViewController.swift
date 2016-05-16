@@ -100,17 +100,21 @@ class LiveAuctionLotViewController: UIViewController {
 
         let infoToolbar = LiveAuctionToolbarView()
         infoToolbar.lotViewModel = lotViewModel
+        infoToolbar.backgroundColor = UIColor.redColor()
         infoToolbar.auctionViewModel = salesPerson.auctionViewModel
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "20")
-        infoToolbar.constrainHeight("14")
+        infoToolbar.constrainHeight("38")
+
+        let pan = PanDirectionGestureRecognizer(direction: .Vertical, target: self, action: #selector(dragToolbar))
+        infoToolbar.addGestureRecognizer(pan)
 
         let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel)
         bidButton.delegate = self
-        metadataStack.addSubview(bidButton, withTopMargin: "14", sideMargin: "20")
+        metadataStack.addSubview(bidButton, withTopMargin: "0", sideMargin: "20")
 
         let bidHistoryViewController = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
         metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "20")
-        bidHistoryViewController.view.constrainHeight("70")
+        lotHistoryHeightConstraint = bidHistoryViewController.view.constrainHeight("70")
 
         let currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal)
         currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
@@ -118,7 +122,6 @@ class LiveAuctionLotViewController: UIViewController {
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
         currentLotView.hidden = true
-
 
         biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak lotMetadataStack, weak bidHistoryViewController] bidState in
 
@@ -158,7 +161,62 @@ class LiveAuctionLotViewController: UIViewController {
 
         lotMetadataStack.viewModel.update(lotViewModel)
     }
+
+    /// In order to support moving up and down, we need to 
+    private var initialYLocation = CGFloat()
+    private var lotHistoryHeightConstraint: NSLayoutConstraint?
+
+    func dragToolbar(gesture: UIPanGestureRecognizer) {
+        guard let constraint = lotHistoryHeightConstraint else { return }
+        let translation = gesture.translationInView(gesture.view)
+        switch gesture.state {
+        case .Began:
+            initialYLocation = translation.y
+
+        case .Changed:
+            constraint.constant -= translation.y - initialYLocation;
+            initialYLocation = translation.y
+            view.setNeedsLayout()
+        default: break
+        }
+    }
 }
+
+// For creating single direction pan gestures:
+// http://stackoverflow.com/questions/7100884/uipangesturerecognizer-only-vertical-or-horizontal
+
+import UIKit.UIGestureRecognizerSubclass
+
+enum PanDirection {
+    case Vertical
+    case Horizontal
+}
+
+class PanDirectionGestureRecognizer: UIPanGestureRecognizer {
+
+    let direction : PanDirection
+
+    init(direction: PanDirection, target: AnyObject, action: Selector) {
+        self.direction = direction
+        super.init(target: target, action: action)
+    }
+
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
+        super.touchesMoved(touches, withEvent: event)
+        if state == .Began {
+            let velocity = velocityInView(self.view!)
+            switch direction {
+            case .Horizontal where fabs(velocity.y) > fabs(velocity.x):
+                state = .Cancelled
+            case .Vertical where fabs(velocity.x) > fabs(velocity.y):
+                state = .Cancelled
+            default:
+                break
+            }
+        }
+    }
+}
+
 
 extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
 
