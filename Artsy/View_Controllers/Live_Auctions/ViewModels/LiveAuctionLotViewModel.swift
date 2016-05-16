@@ -17,7 +17,7 @@ protocol LiveAuctionLotViewModelType: class {
     var estimateString: String { get }
     var lotPremium: String { get }
     var lotName: String { get }
-    var lotID: String {  get }
+    var lotID: String { get }
     var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: NSURL { get }
     var urlForProfile: NSURL { get }
