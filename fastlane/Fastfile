@@ -54,7 +54,6 @@ lane :ship_beta do
 
   # Let us know everything has finished
   slack message: "There is a new Eigen beta available. Grab it from Testflight on your iOS device.",
-        channel: "collector-gmv-ios",
         payload: {
           'Version' => latest_version,
           'What\'s new' => beta_readme

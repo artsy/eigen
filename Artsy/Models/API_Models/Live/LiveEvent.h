@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 @property (nonatomic, copy, readonly) NSString *type;
 @property (nonatomic, copy, readonly) NSString *eventID;
 
-/// We get a lot of JSON to parse, and this proprty is rarely used
+/// We get a lot of JSON to parse, and this property is rarely used
 /// so I'm saving on converting this string into an NSDate till it's needed
 @property (nonatomic, copy, readonly) NSString *createdAtString;
 
