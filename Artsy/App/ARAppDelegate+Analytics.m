@@ -449,6 +449,8 @@
                                 return @{
                                     @"errors" : ([error localizedDescription] ?: [error description]) ?: @"",
                                     @"response" : responseString ?: @"",
+                                    @"artwork_id" : controller.artwork.artworkID ?: @"",
+                                    @"inquirable" : controller.artwork.inquireable ?: @1
                                 };
                             }
                         },
