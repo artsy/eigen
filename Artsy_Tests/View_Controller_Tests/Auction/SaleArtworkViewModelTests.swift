@@ -34,6 +34,7 @@ class SaleArtworkViewModelTests: QuickSpec {
                     "lot_number": 13,
                     "bidder_positions_count": 4,
                     "highest_bid": ["id": "bid-id", "amount_cents": 1_000_00],
+                    "symbol": "$"
                 ]
             )
             

@@ -86,8 +86,7 @@ class LiveAuctionBidButton : ARFlatButton {
                 setupUI("Waiting for Auctioneer…", background: white, border: grey, textColor: grey)
 
             case .Biddable(let price, let currencySymbol):
-                SaleArtwork.dollarsFromCents(NSNumber(unsignedLongLong: price), currencySymbol: currencySymbol)
-                let formattedPrice = NSNumberFormatter.currencyStringForDollarCents(NSNumber(unsignedLongLong: price))
+                let formattedPrice = price.convertToDollarString(currencySymbol)
                 setupUI("Bid \(formattedPrice)")
                 enabled = true
             case .BiddingInProgress:
