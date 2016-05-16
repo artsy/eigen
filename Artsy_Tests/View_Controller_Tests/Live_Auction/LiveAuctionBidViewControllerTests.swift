@@ -73,7 +73,7 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
 
             expect(subject.bidProgressOverlayView.superview) != nil
 
-            let start = LiveAuctionBiddingProgressState.Biddable(askingPrice: 5_000_00)
+            let start = LiveAuctionBiddingProgressState.Biddable(askingPrice: 5_000_00, currencySymbol: "$")
             subject.biddingProgressSignal.update(start)
             expect(subject.bidProgressOverlayView.superview).to( beNil() )
         }

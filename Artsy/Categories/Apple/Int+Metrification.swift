@@ -26,19 +26,19 @@ extension UInt64 : Centable {
 extension Centable {
 
     /// Turns a thousand dollars' worth of cents (like 1_000_00) into "$1k", etc.
-    func metricSuffixify() -> String {
+    func metricSuffixify(currencySymbol: String) -> String {
         let number = self.number
         guard number.intValue > 1000_00 else { return NSNumberFormatter.currencyStringForDollarCents(number) }
         return NSNumberFormatter.currencyStringForDollarCents(removeKSignificantDigits().number) + "k"
     }
 
-    func roundCentsToNearestThousandAndFormat() -> String {
+    func roundCentsToNearestThousandAndFormat(currencySymbol: String) -> String {
         let number = self.number
         guard number.intValue > 1000_00 else { return NSNumberFormatter.currencyStringForDollarCents(number) }
         return NSNumberFormatter.currencyStringForDollarCents(roundCentsToNearestThousand().number)
     }
 
-    func convertToDollarString() -> String {
+    func convertToDollarString(currencySymbol: String) -> String {
         return NSNumberFormatter.currencyStringForDollarCents(self.number)
     }
 
@@ -48,7 +48,7 @@ extension Centable {
     func roundCentsToNearestThousand() -> UInt64 {
         let number = self.number
         guard number.intValue > 1000_00 else { return number.unsignedLongLongValue }
-        // currencyStringForDollarCents will round something like 1500_00 up to $2000, but we want to round _down_.
+        // dollarsFromCents will round something like 1500_00 up to $2000, but we want to round _down_.
         // So we divide by 1000_00 to turn us into dollars momentarily, then back into cents to remove their significant digits.
         let dollarsK = UInt64(floor(Float(self.number) / Float(1000_00)))
         let cents = dollarsK * 1000_00

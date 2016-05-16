@@ -25,6 +25,7 @@ protocol LiveAuctionLotViewModelType: class {
     var lotIndex: Int { get }
     var currentLotValue: UInt64 { get }
     var currentLotValueString: String { get }
+    var currencySymbol: String { get }
     var numberOfBids: Int { get }
     var imageProfileSize: CGSize { get }
     var liveAuctionLotID: String { get }
@@ -132,7 +133,11 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var currentLotValueString: String {
-        return currentLotValue.convertToDollarString()
+        return currentLotValue.convertToDollarString(model.currencySymbol)
+    }
+
+    var currencySymbol: String {
+        return model.currencySymbol
     }
 
     var estimateString: String {
@@ -196,7 +201,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         defer { endEventUpdatesSignal.update(NSDate()) }
 
         model.addEvents(events.map { $0.eventID })
-        let newEvents = events.map { LiveAuctionEventViewModel(event: $0) }
+        let newEvents = events.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
         newEvents.forEach { event in
             newEventSignal.update(event)
         }

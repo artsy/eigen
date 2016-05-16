@@ -2,6 +2,7 @@ import Foundation
 
 class LiveAuctionEventViewModel : NSObject {
     let event: LiveEvent
+    let currencySymbol: String
 
     var isBid: Bool {
         return event.eventType() == .Bid
@@ -77,7 +78,8 @@ class LiveAuctionEventViewModel : NSObject {
     }
 
 
-    init(event:LiveEvent) {
+    init(event:LiveEvent, currencySymbol: String) {
         self.event = event
+        self.currencySymbol = currencySymbol
     }
 }

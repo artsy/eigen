@@ -12,7 +12,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
 
         let examples:[String: LiveAuctionBidButtonState] = [
             "trial": .Active(biddingState: .TrialUser),
-            "biddable": .Active(biddingState: .Biddable(askingPrice: 45_000_00)),
+            "biddable": .Active(biddingState: .Biddable(askingPrice: 45_000_00, currencySymbol: "$")),
             "in progress": .Active(biddingState: .BiddingInProgress ),
             "failed": .Active(biddingState: .BidNetworkFail),
             "max bidder": .Active(biddingState: .BidSuccess(isMaxBidder: true)),
