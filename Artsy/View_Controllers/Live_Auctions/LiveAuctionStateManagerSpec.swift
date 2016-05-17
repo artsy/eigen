@@ -10,7 +10,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         var sale: LiveSale!
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseForHost("metaphysics-*.artsy.net", withResponse: [:])
+            OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
             // Not sure why ^ is needed, might be worth looking
 
             sale = testLiveSale()
