@@ -18,6 +18,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     let lotCollectionViewLayout: LiveAuctionFancyLotCollectionViewLayout // TODO: On iPad, this needs to be different. Not fancy.
 
     var hasBeenSetup = false
+    var firstAppearance = true
 
     init(salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
@@ -79,6 +80,9 @@ class LiveAuctionLotSetViewController: UIViewController {
         // TODO: hand changing trait collections.
         setupToolbar()
         lotCollectionViewLayout.updateScreenWidth(CGRectGetWidth(view.frame))
+
+        guard firstAppearance else { return }
+        firstAppearance = true
 
         // The collection view "rests" at a non-zero index. We need to set it, but doing so immediately is too soon, so we dispatch to the next runloop invocation.
         ar_dispatch_main_queue {
@@ -222,7 +226,7 @@ private typealias HostScrollViewDelegate = LiveAuctionLotSetViewController
 extension HostScrollViewDelegate: UIScrollViewDelegate {
 
     // The idea is to match the page view controller's scrollview's content offset to that of our collection view.
-    // The colleciton view data source mimics the page view controller's three-at-a-time display strategy.
+    // The collection view data source mimics the page view controller's three-at-a-time display strategy.
     // Our job here is to keep the two in sync, using their contentOffset. 
     // The SalesPerson needs to update the currentFocuedLotIndex to match a change in the page view controller's internal layout.
 

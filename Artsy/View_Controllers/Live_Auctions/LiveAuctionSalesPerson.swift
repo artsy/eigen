@@ -84,7 +84,7 @@ extension LiveAuctionsSalesPerson {
         // Apply the offset
         let newIndex = currentlyShowingIndex + offset
 
-        // Guarnatee the offset is within the bounds of our array.
+        // Guarantee the offset is within the bounds of our array.
         let loopingIndex: Int
         if newIndex >= lotCount {
             loopingIndex = newIndex - lotCount

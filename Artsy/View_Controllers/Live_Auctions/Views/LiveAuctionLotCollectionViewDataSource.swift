@@ -18,8 +18,8 @@ private typealias CollectionViewDataSource = LiveAuctionLotCollectionViewDataSou
 extension CollectionViewDataSource: UICollectionViewDataSource {
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // We always have three, for: previous, current, and next. We rely on the UIPageViewCotrollerDelegate callbacks 
-        // in the SalesPerson to update our colleciton view's content offset and the corresponding currentFocusedLotIndex.
+        // We always have three, for: previous, current, and next. We rely on the UIPageViewControllerDelegate callbacks 
+        // in the SalesPerson to update our collection view's content offset and the corresponding currentFocusedLotIndex.
         return 3
     }
 
