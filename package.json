@@ -17,7 +17,7 @@
     "clean": "cd Example && npm run clean",
     "start-dirty": "npm run sync-module && env PATH=\"./bin:$PATH\" concurrently --kill-others --prefix=command --prefix-length=11 'sync-module' 'rn-packager'",
     "start": "npm run clean && env packager_options=--reset-cache npm run start-dirty",
-    "bundle": "/usr/bin/curl 'http://localhost:8081/Emission/index.ios.bundle?platform=ios&dev=false' -o Pod/Assets/Emission.jsbundle"
+    "bundle": "/usr/bin/curl 'http://localhost:8081/Emission/index.ios.bundle?platform=ios&dev=false&minify=true' -o Pod/Assets/Emission.jsbundle"
   },
   "repository": {
     "type": "git",
