@@ -76,7 +76,7 @@ class LiveAuctionBidViewModel: NSObject {
     }
 }
 
-class LiveAuctionBidViewController: UIViewController {
+class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
     var bidViewModel: LiveAuctionBidViewModel!
     var bidButtonViewModel: LiveAuctionBiddingViewModelType!
