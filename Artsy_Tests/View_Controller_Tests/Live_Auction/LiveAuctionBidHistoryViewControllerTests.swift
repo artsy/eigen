@@ -10,7 +10,7 @@ import Artsy
 class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
 
     func setupCellWithEvent(event: LiveEvent) -> LiveAuctionHistoryCell {
-        let viewModel = LiveAuctionEventViewModel(event: event)
+        let viewModel = LiveAuctionEventViewModel(event: event, currencySymbol: "$")
         let subject = LiveAuctionHistoryCell(style: .Value1, reuseIdentifier: "")
         subject.frame = CGRect(x: 0, y: 0, width: 320, height: 50)
 

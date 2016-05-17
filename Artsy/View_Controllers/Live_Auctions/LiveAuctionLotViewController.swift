@@ -22,7 +22,7 @@ class LiveAuctionLotViewController: UIViewController {
         self.index = index
         self.lotViewModel = lotViewModel
         self.salesPerson = salesPerson
-        self.biddingViewModel = LiveAuctionBiddingViewModel(lotViewModel: lotViewModel, auctionViewModel: salesPerson.auctionViewModel)
+        self.biddingViewModel = LiveAuctionBiddingViewModel(currencySymbol: lotViewModel.currencySymbol, lotViewModel: lotViewModel, auctionViewModel: salesPerson.auctionViewModel)
 
         super.init(nibName: nil, bundle: nil)
     }
