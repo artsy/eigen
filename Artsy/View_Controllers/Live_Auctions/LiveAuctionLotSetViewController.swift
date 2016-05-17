@@ -12,14 +12,22 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
     let progressBar = SimpleProgressView()
+    let pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
+    let lotImageCollectionView: UICollectionView
+    let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource
 
-    var pageController: UIPageViewController!
     var hasBeenSetup = false
 
     init(salesPerson: LiveAuctionsSalesPersonType) {
-
         self.salesPerson = salesPerson
+        lotImageCollectionViewDataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
+        let layout = LiveAuctionFancyLotCollectionViewLayout() // On iPad, this needs to be different.
+        lotImageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        lotImageCollectionView.registerClass(LiveAuctionLotCollectionViewDataSource.CellClass, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
+        lotImageCollectionView.dataSource = lotImageCollectionViewDataSource
+
         super.init(nibName: nil, bundle: nil)
+
         self.title = salesPerson.liveSaleID;
     }
 
@@ -31,27 +39,33 @@ class LiveAuctionLotSetViewController: UIViewController {
         super.viewDidLoad()
         setupKeyboardShortcuts()
 
+        // Our view setup.
         view.backgroundColor = .whiteColor()
 
-        pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
+        // Lot collection view setup.
+        view.addSubview(lotImageCollectionView)
+        lotImageCollectionView.alignTop("0", leading: "0", bottom: "-288", trailing: "0", toView: view) // TODO: Figure this out huh?
+
+        // Page view controller setup.
         ar_addModernChildViewController(pageController)
         pageController.delegate = salesPerson.pageControllerDelegate
 
         let pageControllerView = pageController.view
         pageControllerView.alignToView(view)
 
-        // This is a bit of a shame, we need to also make 
-        // sure the scrollview resizes on orientation changes
-        
-        if let scrollView = pageController.view.subviews.filter({ $0.isKindOfClass(UIScrollView.self) }).first as? UIScrollView {
+        // This is a bit of a shame, we need to also make.
+        // sure the scrollview resizes on orientation changes.
+        if let scrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first {
             scrollView.alignToView(pageControllerView)
         }
 
+        // Progress bar setup.
         view.addSubview(progressBar)
         progressBar.constrainHeight("4")
         progressBar.alignLeading("0", trailing: "0", toView: view)
         progressBar.alignBottomEdgeWithView(view, predicate: "-165")
 
+        // Final setup for our (now constructed) view hierarchy.
         setupWithInitialData()
     }
 
