@@ -12,8 +12,7 @@ class LiveAuctionBidViewControllerSpecs: QuickSpec {
         var subject: LiveAuctionBidViewController!
 
         beforeEach {
-
-            OHHTTPStubs.stubJSONResponseForHost("metaphysics-*.artsy.net", withResponse: [:])
+            OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
         }
 
         it("looks right on phones") {
