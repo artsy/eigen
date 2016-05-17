@@ -17,9 +17,6 @@ class LiveAuctionToolbarView : UIView {
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
-        // Remove all subviews and call setupViews() again to start from scratch.
-        subviews.forEach { $0.removeFromSuperview() }
         setupViews()
     }
 
@@ -39,9 +36,15 @@ class LiveAuctionToolbarView : UIView {
 
     func setupViews() {
         lotStateObserver = lotViewModel.lotStateSignal.subscribe { [weak self] lotState in
+            self?.timeSinceLotOpenedTimer?.invalidate()
+            self?.subviews.forEach { $0.removeFromSuperview() }
             self?.setupUsingState(lotState)
         }
     }
+
+    // during a live lot we need to keep a reference to the timer
+    var timeSinceLotOpenedTimer: NSTimer?
+    var timeSinceLotOpenedLabel: UILabel?
 
     func setupUsingState(lotState: LotState) {
         let viewStructure: [[String: NSAttributedString]]
@@ -58,13 +61,17 @@ class LiveAuctionToolbarView : UIView {
         case .LiveLot:
             viewStructure = [
                 ["lot": lotCountString()],
-                ["time": attributify("00:12")],
+                ["time": attributify("--:--")],
                 ["watchers": attributify("09")],
                 ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]
-            clockClosure = { label in
-                // do timer
-                label.text = "00:12"
+
+
+            clockClosure = { [unowned self] label in
+                self.formatter.dateFormat = "mm:ss"
+                self.timeSinceLotOpenedLabel = label
+                self.timeSinceLotOpenedTimer =  NSTimer.scheduledTimerWithTimeInterval(0.9, target: self, selector: #selector(self.updateTimerLabel), userInfo: nil, repeats: true)
+                self.updateTimerLabel(self.timeSinceLotOpenedTimer!)
             }
 
         case .UpcomingLot:
@@ -98,9 +105,9 @@ class LiveAuctionToolbarView : UIView {
 
             if key == "time" && clockClosure != nil {
                 clockClosure?(label)
-            } else {
-                label.attributedText = dict.values.first!
             }
+
+            label.attributedText = dict.values.first!
 
             view.constrainHeight("14")
             thumbnailView.alignLeadingEdgeWithView(view, predicate: "0")
@@ -151,5 +158,14 @@ class LiveAuctionToolbarView : UIView {
             spacerView3.alignAttribute(.Leading, toAttribute: .Trailing, ofView: middleRight, predicate: "0")
             spacerView3.alignAttribute(.Trailing, toAttribute: .Leading, ofView: last, predicate: "0")
         }
+    }
+
+    private lazy var formatter = NSDateFormatter()
+
+    func updateTimerLabel(timer: NSTimer) {
+        guard let startDate = lotViewModel.dateLotOpened else { return }
+        let now = NSDate().timeIntervalSinceReferenceDate
+        let date = NSDate(timeIntervalSinceReferenceDate: now - startDate.timeIntervalSinceReferenceDate)
+        timeSinceLotOpenedLabel?.text = formatter.stringFromDate(date)
     }
 }

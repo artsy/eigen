@@ -59,7 +59,7 @@ distribute:  change_version_to_date set_git_properties setup_fastlane
 	fastlane ship_beta
 
 setup_fastlane:
-	gem install fastlane pilot gym deliver
+	gem install cocoapods fastlane pilot gym deliver
 
 ### General Xcode tooling
 
