@@ -32,6 +32,7 @@
                                                    moduleName:self.moduleName
                                             initialProperties:nil];
   [self.view addSubview:rootView];
+  rootView.reactViewController = self;
   
   rootView.translatesAutoresizingMaskIntoConstraints = NO;
   [self.view addConstraints:@[

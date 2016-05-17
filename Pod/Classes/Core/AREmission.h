@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class ARTemporaryAPIModule, RCTBridge;
+@class ARSwitchBoardModule, ARTemporaryAPIModule, RCTBridge;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -8,6 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) RCTBridge *bridge;
 @property (nonatomic, strong, readonly) ARTemporaryAPIModule *APIModule;
+@property (nonatomic, strong, readonly) ARSwitchBoardModule *switchBoardModule;
 
 + (instancetype)sharedInstance;
 + (void)setSharedInstance:(AREmission *)instance;

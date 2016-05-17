@@ -1,4 +1,5 @@
 #import "AREmission.h"
+#import "ARSwitchBoardModule.h"
 #import "ARTemporaryAPIModule.h"
 
 #import <React/RCTBridge.h>
@@ -31,12 +32,12 @@ static AREmission *_sharedInstance = nil;
 - (instancetype)initWithPackagerURL:(NSURL *)packagerURL;
 {
   if ((self = [super init])) {
+    _switchBoardModule = [ARSwitchBoardModule new];
     _APIModule = [ARTemporaryAPIModule new];
     
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
-                                    moduleProvider:^{ return @[_APIModule]; }
+                                    moduleProvider:^{ return @[_switchBoardModule, _APIModule]; }
                                      launchOptions:nil];
-    NSLog(@"BRIDGE URL: %@", _bridge.bundleURL);
   }
   return self;
 }
