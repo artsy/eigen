@@ -3,6 +3,7 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARComponentViewController.h>
 #import <Emission/ARTemporaryAPIModule.h>
+#import <Emission/ARSwitchBoardModule.h>
 
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
@@ -59,7 +60,38 @@ randomBOOL(void)
       }
     });
   };
-  
+
+  emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
+                                                                 NSString * _Nonnull route) {
+    UILabel *label = [UILabel new];
+    label.text = route;
+    [label sizeToFit];
+    UIViewController *viewController = [UIViewController new];
+    viewController.view.backgroundColor = [UIColor redColor];
+    [viewController.view addSubview:label];
+    label.center = viewController.view.center;
+    
+    [fromViewController.navigationController pushViewController:viewController animated:YES];
+  };
+
+  emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
+                                                            NSString * _Nonnull route) {
+    UILabel *label = [UILabel new];
+    label.text = route;
+    [label sizeToFit];
+    UIViewController *viewController = [UIViewController new];
+    viewController.view.backgroundColor = [UIColor redColor];
+    [viewController.view addSubview:label];
+    label.center = viewController.view.center;
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                                    target:self
+                                                                                                    action:@selector(dismissModalViewController)];
+
+    [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
+  };
+
   ARComponentViewController *componentViewController = [[ARComponentViewController alloc] initWithModuleName:@"Artist"];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -67,9 +99,13 @@ randomBOOL(void)
   self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:componentViewController];
   [self.window makeKeyAndVisible];
   
-  [(UINavigationController *)self.window.rootViewController setNavigationBarHidden:YES];
-  
   return YES;
+}
+
+- (void)dismissModalViewController;
+{
+  UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+  [navigationController.visibleViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
