@@ -15,16 +15,20 @@ class LiveAuctionLotSetViewController: UIViewController {
     let pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
     let lotImageCollectionView: UICollectionView
     let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource
+    let lotCollectionViewLayout: LiveAuctionFancyLotCollectionViewLayout // TODO: On iPad, this needs to be different. Not fancy.
 
     var hasBeenSetup = false
 
     init(salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
+
         lotImageCollectionViewDataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
-        let layout = LiveAuctionFancyLotCollectionViewLayout() // On iPad, this needs to be different.
-        lotImageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        lotCollectionViewLayout = LiveAuctionFancyLotCollectionViewLayout()
+
+        lotImageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: lotCollectionViewLayout)
         lotImageCollectionView.registerClass(LiveAuctionLotCollectionViewDataSource.CellClass, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
         lotImageCollectionView.dataSource = lotImageCollectionViewDataSource
+        lotImageCollectionView.backgroundColor = .whiteColor()
 
         super.init(nibName: nil, bundle: nil)
 
@@ -57,6 +61,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         // sure the scrollview resizes on orientation changes.
         if let scrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first {
             scrollView.alignToView(pageControllerView)
+            scrollView.delegate = self
         }
 
         // Progress bar setup.
@@ -71,7 +76,15 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        // TODO: hand changing trait collections.
         setupToolbar()
+        lotCollectionViewLayout.updateScreenWidth(CGRectGetWidth(view.frame))
+
+        // The collection view "rests" at a non-zero index. We need to set it, but doing so immediately is too soon, so we dispatch to the next runloop invocation.
+        ar_dispatch_main_queue {
+            let restingIndexPath = NSIndexPath(forItem: LiveAuctionLotCollectionViewDataSource.RestingIndex, inSection: 0)
+            self.lotImageCollectionView.scrollToItemAtIndexPath(restingIndexPath, atScrollPosition: .CenteredHorizontally, animated: false)
+        }
     }
 
     func setupToolbar() {
@@ -197,11 +210,43 @@ class LiveAuctionLotSetViewController: UIViewController {
 
 private typealias LotListDelegate = LiveAuctionLotSetViewController
 extension LotListDelegate: LiveAuctionLotListViewControllerDelegate {
+
     func didSelectLotAtIndex(index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController) {
         jumpToLotAtIndex(index, animated: false)
         dismissViewControllerAnimated(true, completion: nil)
     }
+
 }
+
+private typealias HostScrollViewDelegate = LiveAuctionLotSetViewController
+extension HostScrollViewDelegate: UIScrollViewDelegate {
+
+    // The idea is to match the page view controller's scrollview's content offset to that of our collection view.
+    // The colleciton view data source mimics the page view controller's three-at-a-time display strategy.
+    // Our job here is to keep the two in sync, using their contentOffset. 
+    // The SalesPerson needs to update the currentFocuedLotIndex to match a change in the page view controller's internal layout.
+
+    // When the user scrolls.
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
+        lotImageCollectionView.reloadData()
+    }
+
+    // When we scroll programmatically with/out animation.
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
+        lotImageCollectionView.reloadData()
+    }
+
+    // When the user has released their finger and the scroll view is sliding to a gentle stop.
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
+        lotImageCollectionView.reloadData()
+    }
+
+}
+
+
 
 class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPersonType!

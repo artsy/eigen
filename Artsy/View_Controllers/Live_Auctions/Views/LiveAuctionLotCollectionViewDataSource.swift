@@ -2,6 +2,7 @@ import UIKit
 
 class LiveAuctionLotCollectionViewDataSource: NSObject {
 
+    static let RestingIndex = 1
     static let CellIdentifier = "Cell"
     static let CellClass = LiveAuctionLotImageCollectionViewCell.self
 
@@ -10,23 +11,26 @@ class LiveAuctionLotCollectionViewDataSource: NSObject {
     init(salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
     }
-    
+
 }
 
 private typealias CollectionViewDataSource = LiveAuctionLotCollectionViewDataSource
 extension CollectionViewDataSource: UICollectionViewDataSource {
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return salesPerson.lotCount
+        // We always have three, for: previous, current, and next. We rely on the UIPageViewCotrollerDelegate callbacks 
+        // in the SalesPerson to update our colleciton view's content offset and the corresponding currentFocusedLotIndex.
+        return 3
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(LiveAuctionLotCollectionViewDataSource.CellIdentifier, forIndexPath: indexPath)
+        let _cell = collectionView.dequeueReusableCellWithReuseIdentifier(LiveAuctionLotCollectionViewDataSource.CellIdentifier, forIndexPath: indexPath)
+        guard let cell = _cell as? LiveAuctionLotImageCollectionViewCell else { return _cell }
 
-        if let cell = cell as? LiveAuctionLotImageCollectionViewCell {
-            let lot = salesPerson.lotViewModelForIndex(indexPath.item)
-            cell.configureForLot(lot)
-        }
+        let adjustedDelta = indexPath.item - 1
+        let lot = salesPerson.lotViewModelRelativeToShowingIndex(adjustedDelta)
+
+        cell.configureForLot(lot)
 
         return cell
     }
