@@ -1,4 +1,5 @@
 import UIKit
+import Artsy_UIButtons
 import Interstellar
 import UICKeyChainStore
 import SwiftyJSON
@@ -22,6 +23,8 @@ class LiveAuctionViewController: UISplitViewController {
 
     var sale: LiveSale?
 
+    var offlineView: AROfflineView?
+
     init(saleSlugOrID: String) {
         self.saleSlugOrID = saleSlugOrID
 
@@ -34,28 +37,68 @@ class LiveAuctionViewController: UISplitViewController {
     override func viewWillAppear(animated: Bool) {
         if delegate != nil { return }
 
-        self.ar_presentIndeterminateLoadingIndicatorAnimated(true)
+        preferredDisplayMode = .AllVisible;
+        preferredPrimaryColumnWidthFraction = 0.4;
+        delegate = self;
 
+        ar_presentIndeterminateLoadingIndicatorAnimated(true)
+        connectToNetwork()
+
+        super.viewWillAppear(animated)
+    }
+
+    func connectToNetwork() {
         staticDataFetcher.fetchStaticData().subscribe { [weak self] result in
             defer { self?.ar_removeIndeterminateLoadingIndicatorAnimated(true) }
 
             switch result {
             case .Success(let (sale, jwt, bidderID)):
+                self?.offlineView?.removeFromSuperview()
                 self?.sale = sale
                 self?.setupWithSale(sale, jwt: jwt, bidderID: bidderID)
+
             case .Error(let error):
-                // TODO: handle error case
                 print("Error pulling down sale data for \(self?.saleSlugOrID)")
                 print("Error: \(error)")
-
+                self?.showOfflineView()
             }
         }
+    }
 
-        preferredDisplayMode = .AllVisible;
-        preferredPrimaryColumnWidthFraction = 0.4;
-        delegate = self;
+    func showOfflineView() {
+        // Stop the spinner to indicate that it's
+        // tried and failed to do it
 
-        super.viewWillAppear(animated)
+        if (offlineView != nil) {
+            offlineView?.refreshFailed()
+            return
+        }
+
+        offlineView = AROfflineView()
+        guard let offlineView = offlineView else { return }
+
+        offlineView.delegate = self
+        view.addSubview(offlineView)
+        offlineView.alignToView(view)
+
+        // As we're not showing a ARSerifNav
+        // we don't have a back button yet, so add one
+
+        let dimension = 40
+        let closeButton = ARMenuButton()
+        closeButton.setBorderColor(.artsyGrayRegular(), forState: .Normal, animated: false)
+        closeButton.setBackgroundColor(.whiteColor(), forState: .Normal, animated: false)
+        closeButton.setImage(UIImage(named:"serif_modal_close"), forState: .Normal)
+        closeButton.addTarget(self, action: #selector(dismissLiveAuctionsModal), forControlEvents: .TouchUpInside)
+
+        offlineView.addSubview(closeButton)
+        closeButton.alignTrailingEdgeWithView(offlineView, predicate: "-20")
+        closeButton.alignTopEdgeWithView(offlineView, predicate: "20")
+        closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
+    }
+
+    func dismissLiveAuctionsModal() {
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -75,6 +118,13 @@ class LiveAuctionViewController: UISplitViewController {
 
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return traitDependentSupportedInterfaceOrientations
+    }
+}
+
+extension LiveAuctionViewController: AROfflineViewDelegate {
+    // Give networking a second shot when offline
+    func offlineViewDidRequestRefresh(offlineView: AROfflineView!) {
+        connectToNetwork()
     }
 }
 

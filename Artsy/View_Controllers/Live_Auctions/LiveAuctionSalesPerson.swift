@@ -53,7 +53,6 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
         super.init()
 
         pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
-
     }
 }
 

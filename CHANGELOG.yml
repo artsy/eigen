@@ -35,8 +35,10 @@ upcoming:
     - Staging causality socket points to staging now instead of localhost. - ash
     - Adds sale-wide event handling (changes to current lot). - ash
     - Successfuly sends JSON to websocket for bidding, though bids fail. - ash
+    - Fixes to the design for the max bid view controller - orta
     - Add support for showing the time since the lot was opened. - orta
     - Changes to collectionview-based layout for live auction artwork image previews. - ash
+    - Offline support for Live. - orta
 
   notes:
     - Fixes long auction names falling off right edge. - ash

@@ -7,13 +7,12 @@ import UIKit
 @testable
 import Artsy
 
-class LiveAuctionBidViewControllerSpecs: QuickSpec {
+class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
     override func spec() {
-        var subject: LiveAuctionBidViewController!
+        var subject: LiveAuctionPlaceMaxBidViewController!
 
         beforeEach {
-
-            OHHTTPStubs.stubJSONResponseForHost("metaphysics-*.artsy.net", withResponse: [:])
+            OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
         }
 
         it("looks right on phones") {
