@@ -45,6 +45,7 @@ extension Overrides {
 
 private typealias PublicFunctions = LotListCollectionViewCell
 extension PublicFunctions {
+    // TODO: auctionViewModel is not used in this function.
     func configureForViewModel(viewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType, indexPath: NSIndexPath) {
 
         if userInterfaceNeedsSetup {
