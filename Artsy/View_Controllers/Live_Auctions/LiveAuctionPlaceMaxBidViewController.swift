@@ -3,7 +3,7 @@ import Interstellar
 
 enum LiveAuctionBiddingProgressState {
     case TrialUser
-    case Biddable(askingPrice: UInt64)
+    case Biddable(askingPrice: UInt64, currencySymbol: String)
     case BiddingInProgress
     case BidSuccess(isMaxBidder: Bool)
     case BidNetworkFail
@@ -34,12 +34,12 @@ class LiveAuctionBidViewModel: NSObject {
     }
 
     var currentBidDollars: String {
-        return currentBid.convertToDollarString()
+        return currentBid.convertToDollarString(lotViewModel.currencySymbol)
     }
 
     var nextBidIncrementDollars: String {
         let bidIncrementCents = LiveAuctionBidViewModel.minimumNextBidCentsIncrement(currentBid)
-        return bidIncrementCents.convertToDollarString()
+        return bidIncrementCents.convertToDollarString(lotViewModel.currencySymbol)
     }
 
     var currentBidsAndReserve: String {
@@ -139,7 +139,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         currentBidLabel.text = bidViewModel.currentBidDollars
 
         /// TODO: Determine if bidding before updating the button?
-        let bidProgress = LiveAuctionBiddingProgressState.Biddable(askingPrice: bid)
+        let bidProgress = LiveAuctionBiddingProgressState.Biddable(askingPrice: bid, currencySymbol: bidViewModel.lotViewModel.currencySymbol)
         let bidState = LiveAuctionBidButtonState.Active(biddingState: bidProgress)
         bidButtonViewModel.progressSignal.update(bidState)
     }

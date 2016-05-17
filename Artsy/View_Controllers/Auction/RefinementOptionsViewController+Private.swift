@@ -31,8 +31,8 @@ extension RefinementOptionsViewController {
 
     func updatePriceLabels() {
         guard let priceRange = currentSettings.priceRange else { return }
-        minLabel?.text = priceRange.min.metricSuffixify()
-        maxLabel?.text = priceRange.max.metricSuffixify()
+        minLabel?.text = priceRange.min.metricSuffixify(currencySymbol)
+        maxLabel?.text = priceRange.max.metricSuffixify(currencySymbol)
     }
 
     func updateButtonEnabledStates() {

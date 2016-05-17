@@ -116,6 +116,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var numberOfEvents = 1
     var lotIndex = 1
     var numberOfBids = 1
+    var currencySymbol = "$"
     var currentLotValue = UInt64(1234)
     var currentLotValueString = "$Value"
     var imageProfileSize = CGSize(width: 200, height: 200)
@@ -123,7 +124,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var dateLotOpened: NSDate?
 
     func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
-        return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON))
+        return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON), currencySymbol: "$")
     }
 
     var lotStateSignal = Observable(LotState.UpcomingLot)

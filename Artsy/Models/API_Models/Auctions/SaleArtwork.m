@@ -184,7 +184,7 @@ static NSNumberFormatter *currencyFormatter;
         number = self.saleHighestBid.cents;
     }
 
-    return [NSNumberFormatter currencyStringForDollarCents:number];
+    return [SaleArtwork dollarsFromCents:number currencySymbol:self.currencySymbol];
 }
 
 - (BOOL)isEqual:(id)object

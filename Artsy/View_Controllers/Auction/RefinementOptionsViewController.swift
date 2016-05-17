@@ -26,7 +26,8 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
     
     var viewDidAppearAnalyticsOption: RefinementAnalyticsOption?
     var applyButtonPressedAnalyticsOption: RefinementAnalyticsOption?
-    
+
+    let currencySymbol: String
     // defaultSettings also implies min/max price ranges
     var defaultSettings: R
     var initialSettings: R
@@ -39,10 +40,11 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
 
     var changeStatusBar = false
 
-    init(defaultSettings: R, initialSettings: R, userDidCancelClosure: (RefinementOptionsViewController -> Void)?, userDidApplyClosure: (R -> Void)?) {
+    init(defaultSettings: R, initialSettings: R, currencySymbol: String, userDidCancelClosure: (RefinementOptionsViewController -> Void)?, userDidApplyClosure: (R -> Void)?) {
         self.defaultSettings = defaultSettings
         self.initialSettings = initialSettings
         self.currentSettings = initialSettings
+        self.currencySymbol = currencySymbol
         self.userDidCancelClosure = userDidCancelClosure
         self.userDidApplyClosure = userDidApplyClosure
 
