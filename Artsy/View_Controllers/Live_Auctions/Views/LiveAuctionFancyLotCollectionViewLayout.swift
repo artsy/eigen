@@ -63,6 +63,22 @@ private enum ScrollDirection {
     case Next, Previous
 }
 
+private enum CellPosition: Int {
+    case PreviousUnderflow = -1
+    case Previous = 0
+    case Current = 1
+    case Next = 2
+    case NextOverflow = 3
+
+    var isUnderOverflow: Bool {
+        return [.NextOverflow, .PreviousUnderflow].contains(self)
+    }
+}
+
+
+private typealias LayoutMetrics = (restingWidth: CGFloat, restingHeight: CGFloat, targetWidth: CGFloat, targetHeight: CGFloat)
+private typealias CenterXPositions = (restingCenterX: CGFloat, targetCenterX: CGFloat)
+
 private let visiblePrevNextSliceSize = CGFloat(20)
 
 private typealias PrivateFunctions = LiveAuctionFancyLotCollectionViewLayout
@@ -92,14 +108,20 @@ private extension PrivateFunctions {
     var userScrollDirection: ScrollDirection { return ratioDragged > 0 ? .Next : .Previous }
 
     /// Main entry for this extension. Applies layout attributes depending on the indexPath's item that is passed in.
+    /// If the user has scrolled more than half way in either direction, the cell is placed in an overflow or underflow
+    /// position (to be the next next or previous previous cells, since they're not in the collection view yet).
     func modifyLayoutAttributes(inout layoutAttributes: UICollectionViewLayoutAttributes) {
         switch layoutAttributes.indexPath.item {
+        case 0 where ratioDragged > 0.5:
+            applyFancyLayoutToAttributes(&layoutAttributes, position: .NextOverflow)
         case 0:
-            modifyPreviousAttributes(&layoutAttributes)
+            applyFancyLayoutToAttributes(&layoutAttributes, position: .Previous)
         case 1:
-            modifyCurrentAttributes(&layoutAttributes)
+            applyFancyLayoutToAttributes(&layoutAttributes, position: .Current)
+        case 2 where ratioDragged < -0.5:
+            applyFancyLayoutToAttributes(&layoutAttributes, position: .PreviousUnderflow)
         default: // case 2:
-            modifyNextAttributes(&layoutAttributes)
+            applyFancyLayoutToAttributes(&layoutAttributes, position: .Next)
         }
     }
 
@@ -108,129 +130,124 @@ private extension PrivateFunctions {
         return a + abs(ratio) * (b - a)
     }
 
-    func modifyPreviousAttributes(inout layoutAttributes: UICollectionViewLayoutAttributes, underflow: Bool = false) {
-        if ratioDragged > 0.5 {
-            print("overflowing")
-            return modifyNextAttributes(&layoutAttributes, overflow: true)
-        }
+    /// Calculates and applies fancy layout to a set of attributes, given a specified position.
+    func applyFancyLayoutToAttributes(inout layoutAttributes: UICollectionViewLayoutAttributes, position: CellPosition) {
+        let index: RelativeIndex = position.rawValue
 
-        let index = underflow ? -1 : 0
-        (layoutAttributes as? LiveAuctionFancyLotCollectionViewLayoutAttributes)?.url = delegate.thumbnailURLForIndex(index)
-        let aspectRatio = delegate.aspectRatioForIndex(index)
-
-        let restingWidth: CGFloat
-        let restingHeight: CGFloat
-        let targetHeight: CGFloat
-        let targetWidth: CGFloat
-
-        if aspectRatio > 1 {
-            restingWidth = 200
-            restingHeight = restingWidth / aspectRatio
-            targetWidth = underflow ? 200 : 300
-            targetHeight = targetWidth / aspectRatio
-        } else {
-            restingHeight = 200
-            restingWidth = restingHeight * aspectRatio
-            targetHeight = underflow ? 200 : 300
-            targetWidth = targetHeight * aspectRatio
-        }
-
-        let targetRightEdge = visiblePrevNextSliceSize - CGFloat(underflow ? collectionViewWidth : 0) + collectionViewWidth
-        let computedLeftEdge = targetRightEdge - restingWidth
-        let restingCenterX = (targetRightEdge + computedLeftEdge) / 2
-
-
-        let targetCenterX: CGFloat
-        if underflow || userScrollDirection == .Next {
-            targetCenterX = restingCenterX
-        } else {
-            targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero)
-        }
-
-        layoutAttributes.center.x = interpolateFrom(restingCenterX, to: targetCenterX, ratio: ratioDragged)
-        layoutAttributes.size.height = interpolateFrom(restingHeight, to: targetHeight, ratio: ratioDragged)
-        layoutAttributes.size.width = interpolateFrom(restingWidth, to: targetWidth, ratio: ratioDragged)
-    }
-
-    func modifyCurrentAttributes(inout layoutAttributes: UICollectionViewLayoutAttributes) {
-        let restingCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth
-        let aspectRatio = delegate.aspectRatioForIndex(1)
-
-        let restingWidth: CGFloat
-        let restingHeight: CGFloat
-        let targetHeight: CGFloat
-        let targetWidth: CGFloat
-
-        if aspectRatio > 1 {
-            restingWidth = 300
-            restingHeight = restingWidth / aspectRatio
-            targetWidth = 200
-            targetHeight = targetWidth / aspectRatio
-        } else {
-            restingHeight = 300
-            restingWidth = restingHeight * aspectRatio
-            targetHeight = 200
-            targetWidth = targetHeight * aspectRatio
-        }
-
-        let targetCenterX: CGFloat
-        if userScrollDirection == .Next {
-            let targetRightEdge = visiblePrevNextSliceSize
-            let computedLeftEdge = targetRightEdge - targetWidth
-            targetCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth * 2
-        } else {
-            let targetLeftEdge = collectionViewWidth - visiblePrevNextSliceSize
-            let computedRightEdge = targetLeftEdge + targetWidth
-            targetCenterX = (targetLeftEdge + computedRightEdge) / 2
-        }
-
-        layoutAttributes.center.x = interpolateFrom(restingCenterX, to: targetCenterX, ratio: ratioDragged)
-        layoutAttributes.size.height = interpolateFrom(restingHeight, to: targetHeight, ratio: ratioDragged)
-        layoutAttributes.size.width = interpolateFrom(restingWidth, to: targetWidth, ratio: ratioDragged)
-    }
-
-    func modifyNextAttributes(inout layoutAttributes: UICollectionViewLayoutAttributes, overflow: Bool = false) {
-        if ratioDragged < -0.5 {
-            print("underflowing")
-            return modifyPreviousAttributes(&layoutAttributes, underflow: true)
-        }
-
-        let index = overflow ? 3 : 2
+        // Grab/set information from the delegate.
         let aspectRatio = delegate.aspectRatioForIndex(index)
         (layoutAttributes as? LiveAuctionFancyLotCollectionViewLayoutAttributes)?.url = delegate.thumbnailURLForIndex(index)
 
+        // Calculate metrics, and subsequent centers. Note that the centers depend on the metrics.
+        let metrics = layoutMetricsForPosition(position, aspectRatio: aspectRatio)
+        let centers = centersForPosition(position, metrics: metrics)
+
+        // Apply the centers and metrics to the layout attributes.
+        layoutAttributes.center.x = interpolateFrom(centers.restingCenterX, to: centers.targetCenterX, ratio: ratioDragged)
+        layoutAttributes.size.height = interpolateFrom(metrics.restingHeight, to: metrics.targetHeight, ratio: ratioDragged)
+        layoutAttributes.size.width = interpolateFrom(metrics.restingWidth, to: metrics.targetWidth, ratio: ratioDragged)
+    }
+
+    /// This calculates the width and height of an attribute "at rest" and "at its target."
+    /// It relies solely on the position and desired aspect ratio of the cell, and not on any
+    /// calculated state from the collection view. 
+    /// Note: This function would be a good candidate to cache values if scrolling performance is an issue.
+    func layoutMetricsForPosition(position: CellPosition, aspectRatio: CGFloat) -> LayoutMetrics {
         let restingWidth: CGFloat
         let restingHeight: CGFloat
         let targetHeight: CGFloat
         let targetWidth: CGFloat
 
+        // Resting/target widths for the current position are always the same.
+        // Depending on the aspect ratio, we use a given width or height, and calculate the other, for both resting and target metrics.
+        // Overflow and underflow have the same target and at-rest metrics.
+
         if aspectRatio > 1 {
-            restingWidth = 200
+            if position == .Current {
+                restingWidth = 300
+                targetWidth = 200
+            } else if position.isUnderOverflow {
+                restingWidth = 200
+                targetWidth = 200
+            } else {
+                restingWidth = 200
+                targetWidth = 300
+            }
+
             restingHeight = restingWidth / aspectRatio
-            targetWidth = overflow ? 200 : 300
             targetHeight = targetWidth / aspectRatio
         } else {
-            restingHeight = 200
+            if position == .Current {
+                restingHeight = 300
+                targetHeight = 200
+            } else if position.isUnderOverflow {
+                restingHeight = 200
+                targetHeight = position.isUnderOverflow ? 200 : 300
+            } else {
+                restingHeight = 200
+                targetHeight = 300
+            }
+
             restingWidth = restingHeight * aspectRatio
-            targetHeight = overflow ? 200 : 300
             targetWidth = targetHeight * aspectRatio
         }
 
-        let targetLeftEdge = CGFloat(index) * collectionViewWidth - visiblePrevNextSliceSize
-        let computedRightEdge = targetLeftEdge + restingWidth
-        let restingCenterX = (targetLeftEdge + computedRightEdge) / 2
+        return (restingWidth: restingWidth, restingHeight: restingHeight, targetWidth: targetWidth, targetHeight: targetHeight)
+    }
 
+    /// Given computed target and at-rest metrics, and a desired position, this function calculates target and at-rest centerX values.
+    func centersForPosition(position: CellPosition, metrics: LayoutMetrics) -> CenterXPositions {
+        let restingCenterX: CGFloat
         let targetCenterX: CGFloat
-        if overflow {
-            targetCenterX = restingCenterX
-        } else if userScrollDirection == .Next {
-            targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth * 2
-        } else {
-            targetCenterX = restingCenterX
+
+        // Note that metrics in here need to be offset by the width of the collection view, since index 1 is the "current" lot.
+        switch position {
+        // Current is easy, the at-rest center is the middle of the collection view and the target depends on scroll direction
+        case .Current:
+            restingCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth
+            if userScrollDirection == .Next {
+                let targetRightEdge = visiblePrevNextSliceSize
+                let computedLeftEdge = targetRightEdge - metrics.targetWidth
+                targetCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth * 2
+            } else {
+                let targetLeftEdge = collectionViewWidth - visiblePrevNextSliceSize
+                let computedRightEdge = targetLeftEdge + metrics.targetWidth
+                targetCenterX = (targetLeftEdge + computedRightEdge) / 2
+            }
+        // Next is trickier, our resting centerX is to the right of the screen with a bit visible.
+        // Our target centerX depends on our scroll direction, and on if we are overflowing, in which case our rest and target
+        // centerX values are the same.
+        case .Next: fallthrough
+        case .NextOverflow:
+            // isUnderOverflow used here to account for pushing the center off another collection view's width.
+            let targetLeftEdge = (position.isUnderOverflow ? 3 : 2) * collectionViewWidth - visiblePrevNextSliceSize
+            let computedRightEdge = targetLeftEdge + metrics.restingWidth
+
+            restingCenterX = (targetLeftEdge + computedRightEdge) / 2
+
+            if position.isUnderOverflow || userScrollDirection == .Previous {
+                targetCenterX = restingCenterX
+            } else {
+                targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth * 2
+            }
+        // Previous is like next, but in reverse. The resting centerX is just off the left side of the screen, and the target
+        // centerX depends on the scroll direction and on if we are underflowing.
+        case .Previous: fallthrough
+        case .PreviousUnderflow:
+            // isUnderOverflow used here to account for pushing the center off another collection view's width.
+            let targetRightEdge = visiblePrevNextSliceSize - CGFloat(position.isUnderOverflow ? collectionViewWidth : 0) + collectionViewWidth
+            let computedLeftEdge = targetRightEdge - metrics.restingWidth
+
+            restingCenterX = (targetRightEdge + computedLeftEdge) / 2
+
+            if position.isUnderOverflow || userScrollDirection == .Next {
+                targetCenterX = restingCenterX
+            } else {
+                targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero)
+            }
         }
 
-        layoutAttributes.center.x = interpolateFrom(restingCenterX, to: targetCenterX, ratio: ratioDragged)
-        layoutAttributes.size.height = interpolateFrom(restingHeight, to: targetHeight, ratio: ratioDragged)
-        layoutAttributes.size.width = interpolateFrom(restingWidth, to: targetWidth, ratio: ratioDragged)
+        return (restingCenterX: restingCenterX, targetCenterX: targetCenterX)
     }
+
 }
