@@ -22,9 +22,8 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
                 auctionViewModel = Test_LiveAuctionViewModel()
                 lotViewModel = Test_LiveAuctionLotViewModel()
-                cacheColoredImageForURL(lotViewModel.urlForProfile)
 
-                let salesPerson = Test_SalesPerson(lots: [lotViewModel], auctionViewModel: auctionViewModel)
+                let salesPerson = stub_auctionSalesPerson()
 
                 subject = LiveAuctionLotViewController(index: 1, lotViewModel: lotViewModel, salesPerson: salesPerson)
 
@@ -70,6 +69,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
 class Test_SalesPerson: LiveAuctionsSalesPersonType {
     var currentLotSignal = Observable<LiveAuctionLotViewModelType?>()
+    var currentFocusedLotIndex = Observable(0)
 
     var auctionViewModel: LiveAuctionViewModelType
     var pageControllerDelegate: LiveAuctionPageControllerDelegate? { return nil }
@@ -84,7 +84,7 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
     }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType { return lots[index] }
-    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType? { return nil }
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType { return lots[0] }
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) { }
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) { }
