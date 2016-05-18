@@ -2,6 +2,7 @@ import UIKit
 
 protocol LiveAuctionFancyLotCollectionViewDelegateLayout: class {
     func aspectRatioForIndex(index: Int) -> CGFloat
+    func thumbnailURLForIndex(index: Int) -> NSURL
 }
 
 class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
@@ -41,6 +42,10 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
         return super.layoutAttributesForItemAtIndexPath(indexPath)?.then { layoutAttributes in
             modifyLayoutAttributes(layoutAttributes)
         }
+    }
+
+    class override func layoutAttributesClass() -> AnyClass {
+        return LiveAuctionFancyLotCollectionViewLayoutAttributes.self
     }
 }
 
@@ -83,6 +88,7 @@ extension PrivateFunctions {
         }
 
         let index = underflow ? -1 : 0
+        (layoutAttributes as? LiveAuctionFancyLotCollectionViewLayoutAttributes)?.url = delegate.thumbnailURLForIndex(index)
         let aspectRatio = delegate.aspectRatioForIndex(index)
 
         let restingWidth: CGFloat
@@ -164,6 +170,7 @@ extension PrivateFunctions {
 
         let index = overflow ? 3 : 2
         let aspectRatio = delegate.aspectRatioForIndex(index)
+        (layoutAttributes as? LiveAuctionFancyLotCollectionViewLayoutAttributes)?.url = delegate.thumbnailURLForIndex(index)
 
         let restingWidth: CGFloat
         let restingHeight: CGFloat

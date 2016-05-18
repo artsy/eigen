@@ -32,7 +32,7 @@ extension CollectionViewDataSource: UICollectionViewDataSource {
 
         let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(indexPath.item))
 
-        cell.configureForLot(lot)
+        cell.configureForLot(lot, atIndex: indexPath.item)
 
         return cell
     }
@@ -45,6 +45,11 @@ extension FancyLayoutDelegate: LiveAuctionFancyLotCollectionViewDelegateLayout {
     func aspectRatioForIndex(index: Int) -> CGFloat {
         let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(index))
         return lot.imageAspectRatio
+    }
+
+    func thumbnailURLForIndex(index: Int) -> NSURL {
+        let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(index))
+        return lot.urlForThumbnail
     }
 
 }
