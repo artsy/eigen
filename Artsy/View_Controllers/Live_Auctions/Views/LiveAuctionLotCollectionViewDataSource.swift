@@ -42,12 +42,12 @@ extension CollectionViewDataSource: UICollectionViewDataSource {
 private typealias FancyLayoutDelegate = LiveAuctionLotCollectionViewDataSource
 extension FancyLayoutDelegate: LiveAuctionFancyLotCollectionViewDelegateLayout {
 
-    func aspectRatioForIndex(index: Int) -> CGFloat {
+    func aspectRatioForIndex(index: RelativeIndex) -> CGFloat {
         let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(index))
         return lot.imageAspectRatio
     }
 
-    func thumbnailURLForIndex(index: Int) -> NSURL {
+    func thumbnailURLForIndex(index: RelativeIndex) -> NSURL {
         let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(index))
         return lot.urlForThumbnail
     }

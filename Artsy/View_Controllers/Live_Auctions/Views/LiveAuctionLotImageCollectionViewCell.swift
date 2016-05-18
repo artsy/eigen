@@ -13,11 +13,13 @@ class LiveAuctionLotImageCollectionViewCell: UICollectionViewCell {
     override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
         super.applyLayoutAttributes(layoutAttributes)
 
+        // Continue only if we successfully cast the attributes, and if we extract a non-nil URL.
         guard let
             castLayoutAttributes = layoutAttributes as? LiveAuctionFancyLotCollectionViewLayoutAttributes,
             url = castLayoutAttributes.url
             else { return }
 
+        // To avoid superfluously re-setting the URL on the image view, check that we actually need to update it. 
         if lastUpdatedIndex != layoutAttributes.indexPath.item {
             lastUpdatedIndex = layoutAttributes.indexPath.item
 

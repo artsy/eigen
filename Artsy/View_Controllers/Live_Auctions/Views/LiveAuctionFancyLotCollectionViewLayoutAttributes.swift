@@ -1,5 +1,6 @@
 import UIKit
 
+/// Basic layout attributes that include an NSURL.
 class LiveAuctionFancyLotCollectionViewLayoutAttributes: UICollectionViewLayoutAttributes {
     var url: NSURL?
 
