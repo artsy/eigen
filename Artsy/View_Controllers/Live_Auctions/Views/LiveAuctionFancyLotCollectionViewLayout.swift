@@ -83,7 +83,7 @@ extension PrivateFunctions {
         }
 
         let index = underflow ? -1 : 0
-        let aspectRatio = delegate.aspectRatioForIndex(0)
+        let aspectRatio = delegate.aspectRatioForIndex(index)
 
         let restingWidth: CGFloat
         let restingHeight: CGFloat
@@ -93,7 +93,7 @@ extension PrivateFunctions {
         if aspectRatio > 1 {
             restingWidth = 200
             restingHeight = restingWidth / aspectRatio
-            targetWidth = 300
+            targetWidth = underflow ? 200 : 300
             targetHeight = targetWidth / aspectRatio
         } else {
             restingHeight = 200
@@ -102,13 +102,13 @@ extension PrivateFunctions {
             targetWidth = targetHeight * aspectRatio
         }
 
-        let targetRightEdge = visiblePrevNextSliceSize
+        let targetRightEdge = visiblePrevNextSliceSize - CGFloat(underflow ? collectionViewWidth : 0) + collectionViewWidth
         let computedLeftEdge = targetRightEdge - restingWidth
-        let restingCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth + (collectionViewWidth * CGFloat(index))
+        let restingCenterX = (targetRightEdge + computedLeftEdge) / 2
 
 
         let targetCenterX: CGFloat
-        if draggingToNext {
+        if underflow || draggingToNext {
             targetCenterX = restingCenterX
         } else {
             targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero)
@@ -186,7 +186,6 @@ extension PrivateFunctions {
         let computedRightEdge = targetLeftEdge + restingWidth
         let restingCenterX = (targetLeftEdge + computedRightEdge) / 2
 
-        // TODO: Replicate in the other method and then solve index path flicker issue. 
         let targetCenterX: CGFloat
         if overflow {
             targetCenterX = restingCenterX
