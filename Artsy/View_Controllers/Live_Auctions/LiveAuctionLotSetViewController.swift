@@ -84,10 +84,6 @@ class LiveAuctionLotSetViewController: UIViewController {
         guard firstAppearance else { return }
         firstAppearance = true
 
-        ar_dispatch_after(1) { 
-            let restingIndexPath = NSIndexPath(forItem: LiveAuctionLotCollectionViewDataSource.RestingIndex, inSection: 0)
-            self.lotImageCollectionView.scrollToItemAtIndexPath(restingIndexPath, atScrollPosition: .CenteredHorizontally, animated: false)
-        }
         // The collection view "rests" at a non-zero index. We need to set it, but doing so immediately is too soon, so we dispatch to the next runloop invocation.
         ar_dispatch_main_queue {
             let initialRect = CGRect(
