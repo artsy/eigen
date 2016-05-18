@@ -25,6 +25,7 @@
                         failure:(void (^)(NSError *error))failure;
 
 + (void)getLiveSaleStaticDataWithSaleID:(NSString *)saleID
+                                   role:(NSString *)role
                                 success:(void (^)(id state))success
                                 failure:(void (^)(NSError *error))failure;
 

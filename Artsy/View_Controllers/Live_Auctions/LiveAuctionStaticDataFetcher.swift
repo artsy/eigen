@@ -4,7 +4,7 @@ import SwiftyJSON
 
 
 typealias JWT = String
-typealias StaticSaleResult = Result<(sale: LiveSale, jwt: JWT, bidderID: String)>
+typealias StaticSaleResult = Result<(sale: LiveSale, jwt: JWT, bidderID: String?)>
 
 
 protocol LiveAuctionStaticDataFetcherType {
@@ -25,8 +25,9 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
     func fetchStaticData() -> Observable<StaticSaleResult> {
         let signal = Observable<StaticSaleResult>()
-
-        ArtsyAPI.getLiveSaleStaticDataWithSaleID(saleSlugOrID,
+        let loggedIn = User.currentUser() != nil
+        let role = loggedIn ? "bidder" : "observer"
+        ArtsyAPI.getLiveSaleStaticDataWithSaleID(saleSlugOrID, role:role,
             success: { data in
                 let json = JSON(data)
                 guard let sale = self.parseSale(json) else {
@@ -34,12 +35,13 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
                 }
 
                 guard let
-                    jwt = self.parseJWT(json),
-                    bidderID = self.parseBidderID(json) else {
+                    jwt = self.parseJWT(json) else {
                     return signal.update(.Error(Error.NoJWTCredentials))
                 }
 
+                let bidderID = self.parseBidderID(json)
                 signal.update(.Success((sale: sale, jwt: jwt, bidderID: bidderID)))
+
             }, failure: { error in
                 signal.update(.Error(error as ErrorType))
             })

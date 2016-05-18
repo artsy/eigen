@@ -19,7 +19,7 @@ class LiveAuctionStateManager: NSObject {
     typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
     let sale: LiveSale
-    let bidderID: String
+    var bidderID: String?
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
@@ -29,7 +29,7 @@ class LiveAuctionStateManager: NSObject {
          sale: LiveSale,
          saleArtworks: [LiveAuctionLotViewModel],
          jwt: JWT,
-         bidderID: String,
+         bidderID: String?,
          socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
          stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
 
@@ -66,13 +66,20 @@ private typealias PublicFunctions = LiveAuctionStateManager
 extension PublicFunctions {
 
     func bidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        guard let bidderID = bidderID else {
+            return print("Tried to bid without a bidder ID on account")
+        }
+        
         biddingViewModel.bidPendingSignal.update(true)
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
     }
 
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64) {
+        guard let bidderID = bidderID else {
+            return print("Tried to leave a max bid without a bidder ID on account")
+        }
         socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderID: bidderID)
     }
 }

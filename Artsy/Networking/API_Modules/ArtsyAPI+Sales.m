@@ -40,10 +40,11 @@
 }
 
 + (void)getLiveSaleStaticDataWithSaleID:(NSString *)saleID
+                                   role:(NSString *)role
                                 success:(void (^)(id state))success
                                 failure:(void (^)(NSError *error))failure
 {
-    NSURLRequest *request = [ARRouter liveSaleStaticDataRequest:saleID];
+    NSURLRequest *request = [ARRouter liveSaleStaticDataRequest:saleID role:role];
     [self performRequest:request
                  success:success
                  failure:passOnNetworkError(failure)];

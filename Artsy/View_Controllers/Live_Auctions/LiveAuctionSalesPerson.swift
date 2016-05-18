@@ -20,7 +20,7 @@ protocol LiveAuctionsSalesPersonType {
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderID: String) -> LiveAuctionStateManager
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderID: String?) -> LiveAuctionStateManager
 
     let sale: LiveSale
     let lots: [LiveAuctionLotViewModel]
@@ -36,7 +36,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
     init(sale: LiveSale,
          jwt: JWT,
-         bidderID: String,
+         bidderID: String?,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
@@ -67,7 +67,6 @@ extension ComputedProperties {
         return sale.liveSaleID
     }
 }
-
 
 private typealias PublicFunctions = LiveAuctionsSalesPerson
 extension LiveAuctionsSalesPerson {

@@ -131,7 +131,7 @@ extension LiveAuctionViewController: AROfflineViewDelegate {
 private typealias PrivateFunctions = LiveAuctionViewController
 extension PrivateFunctions {
 
-    func setupWithSale(sale: LiveSale, jwt: JWT, bidderID: String) {
+    func setupWithSale(sale: LiveSale, jwt: JWT, bidderID: String?) {
         let salesPerson = self.salesPerson(sale, jwt: jwt, bidderID: bidderID)
 
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson)
@@ -143,8 +143,7 @@ extension PrivateFunctions {
         viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListController, lotsSetNavigationController]
     }
 
-    func salesPerson(sale: LiveSale, jwt: JWT, bidderID: String) -> LiveAuctionsSalesPersonType {
-        // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
+    func salesPerson(sale: LiveSale, jwt: JWT, bidderID: String?) -> LiveAuctionsSalesPersonType {
         return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, bidderID: bidderID)
      }
 }
@@ -167,7 +166,7 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
         let json = loadJSON("live_auctions_static")
         let sale = self.parseSale(JSON(json))!
-        let bidderID = "awesome-bidder-id-aw-yeah"
+        let bidderID: String? = "awesome-bidder-id-aw-yeah"
 
         let s = (sale: sale, jwt: "", bidderID: bidderID)
         signal.update(Result.Success(s))

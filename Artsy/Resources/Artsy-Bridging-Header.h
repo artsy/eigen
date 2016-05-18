@@ -33,6 +33,7 @@
 #import "Artwork.h"
 #import "Artist.h"
 #import "Profile.h"
+#import "User.h"
 
 #import "LiveAuctionLot.h"
 #import "LiveSale.h"
