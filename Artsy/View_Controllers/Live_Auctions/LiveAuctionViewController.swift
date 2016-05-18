@@ -31,10 +31,17 @@ class LiveAuctionViewController: UISplitViewController {
         super.init(nibName: nil, bundle: nil)
 
         self.title = saleSlugOrID
-        viewControllers = [UIViewController()] // UIKit complains if we don't have at least one view controller; we replace this later in setupWithSale()
+
+        // UIKit complains if we don't have at least one view controller; we replace this later in setupWithSale()
+        viewControllers = [UIViewController()]
+
+        // Find out when we've updated registration status
+        NSNotificationCenter.defaultCenter()
+            .addObserver(self, selector: #selector(userHasChangedRegistrationStatus), name: ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         if delegate != nil { return }
 
         preferredDisplayMode = .AllVisible;
@@ -43,8 +50,6 @@ class LiveAuctionViewController: UISplitViewController {
 
         ar_presentIndeterminateLoadingIndicatorAnimated(true)
         connectToNetwork()
-
-        super.viewWillAppear(animated)
     }
 
     func connectToNetwork() {
@@ -95,6 +100,13 @@ class LiveAuctionViewController: UISplitViewController {
         closeButton.alignTrailingEdgeWithView(offlineView, predicate: "-20")
         closeButton.alignTopEdgeWithView(offlineView, predicate: "20")
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
+    }
+
+    func userHasChangedRegistrationStatus() {
+        // we have to ask for a new metaphysics JWT ( as they contain metadata about bidder status )
+        // so we need to pull down the current view heirarchy, and recreate it
+        // Which luckily, connectToNetwork() does for us via setupWithSale()
+        connectToNetwork()
     }
 
     func dismissLiveAuctionsModal() {

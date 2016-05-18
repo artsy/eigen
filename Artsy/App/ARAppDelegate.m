@@ -259,7 +259,12 @@ static ARAppDelegate *_sharedInstance = nil;
     AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:state];
     onboardVC.trialContext = context;
     onboardVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
-    [self.viewController presentViewController:onboardVC animated:NO completion:nil];
+    UIViewController *controller = self.viewController;
+    // Loop till we find the topmost VC
+    while (controller.presentedViewController) {
+        controller = controller.presentedViewController;
+    }
+    [controller presentViewController:onboardVC animated:NO completion:nil];
 }
 
 - (void)setupAdminTools

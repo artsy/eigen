@@ -104,6 +104,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
             let saleVM = SaleViewModel(sale: saleInfo, saleArtworks: [])
             let saleInfoVC = AuctionInformationViewController(saleViewModel: saleVM)
+            saleInfoVC.titleViewDelegate = self
             self.navigationController?.pushViewController(saleInfoVC, animated: true)
         }
     }
@@ -188,6 +189,21 @@ extension LotListDelegate: LiveAuctionLotListViewControllerDelegate {
         dismissViewControllerAnimated(true, completion: nil)
     }
 }
+
+extension LiveAuctionLotSetViewController: AuctionTitleViewDelegate {
+    func userDidPressInfo(titleView: AuctionTitleView) {
+        // NO-OP, button for this cannot be seen in this context
+    }
+
+    func userDidPressRegister(titleView: AuctionTitleView) {
+        ARTrialController.presentTrialIfNecessaryWithContext(.AuctionRegistration) { created in
+            let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
+            let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
+            self.presentViewController(viewController, animated: true) {}
+        }
+    }
+}
+
 
 class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPersonType!
