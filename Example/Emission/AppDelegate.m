@@ -1,7 +1,7 @@
 #import "AppDelegate.h"
 
 #import <Emission/AREmission.h>
-#import <Emission/ARComponentViewController.h>
+#import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
 
@@ -92,11 +92,11 @@ randomBOOL(void)
     [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
   };
 
-  ARComponentViewController *componentViewController = [[ARComponentViewController alloc] initWithModuleName:@"Artist"];
+  ARArtistComponentViewController *artistViewController = [[ARArtistComponentViewController alloc] initWithArtistID:@"banksy"];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
-  self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:componentViewController];
+  self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:artistViewController];
   [self.window makeKeyAndVisible];
   
   return YES;
