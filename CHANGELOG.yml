@@ -39,6 +39,7 @@ upcoming:
     - Add support for showing the time since the lot was opened. - orta
     - Changes to collectionview-based layout for live auction artwork image previews. - ash
     - Offline support for Live. - orta
+    - Support for trial users, and non-registered users on live auctions - orta
 
   notes:
     - Fixes long auction names falling off right edge. - ash

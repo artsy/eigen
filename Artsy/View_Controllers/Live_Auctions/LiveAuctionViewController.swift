@@ -31,10 +31,17 @@ class LiveAuctionViewController: UISplitViewController {
         super.init(nibName: nil, bundle: nil)
 
         self.title = saleSlugOrID
-        viewControllers = [UIViewController()] // UIKit complains if we don't have at least one view controller; we replace this later in setupWithSale()
+
+        // UIKit complains if we don't have at least one view controller; we replace this later in setupWithSale()
+        viewControllers = [UIViewController()]
+
+        // Find out when we've updated registration status
+        NSNotificationCenter.defaultCenter()
+            .addObserver(self, selector: #selector(userHasChangedRegistrationStatus), name: ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         if delegate != nil { return }
 
         preferredDisplayMode = .AllVisible;
@@ -43,8 +50,6 @@ class LiveAuctionViewController: UISplitViewController {
 
         ar_presentIndeterminateLoadingIndicatorAnimated(true)
         connectToNetwork()
-
-        super.viewWillAppear(animated)
     }
 
     func connectToNetwork() {
@@ -97,6 +102,13 @@ class LiveAuctionViewController: UISplitViewController {
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
     }
 
+    func userHasChangedRegistrationStatus() {
+        // we have to ask for a new metaphysics JWT ( as they contain metadata about bidder status )
+        // so we need to pull down the current view heirarchy, and recreate it
+        // Which luckily, connectToNetwork() does for us via setupWithSale()
+        connectToNetwork()
+    }
+
     func dismissLiveAuctionsModal() {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -131,7 +143,7 @@ extension LiveAuctionViewController: AROfflineViewDelegate {
 private typealias PrivateFunctions = LiveAuctionViewController
 extension PrivateFunctions {
 
-    func setupWithSale(sale: LiveSale, jwt: JWT, bidderID: String) {
+    func setupWithSale(sale: LiveSale, jwt: JWT, bidderID: String?) {
         let salesPerson = self.salesPerson(sale, jwt: jwt, bidderID: bidderID)
 
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson)
@@ -143,8 +155,7 @@ extension PrivateFunctions {
         viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListController, lotsSetNavigationController]
     }
 
-    func salesPerson(sale: LiveSale, jwt: JWT, bidderID: String) -> LiveAuctionsSalesPersonType {
-        // TODO: Very brittle! Assumes user is logged in. Prediction doesn't have guest support yet.
+    func salesPerson(sale: LiveSale, jwt: JWT, bidderID: String?) -> LiveAuctionsSalesPersonType {
         return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, bidderID: bidderID)
      }
 }
@@ -167,7 +178,7 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
         let json = loadJSON("live_auctions_static")
         let sale = self.parseSale(JSON(json))!
-        let bidderID = "awesome-bidder-id-aw-yeah"
+        let bidderID: String? = "awesome-bidder-id-aw-yeah"
 
         let s = (sale: sale, jwt: "", bidderID: bidderID)
         signal.update(Result.Success(s))

@@ -998,18 +998,18 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" URLString:url parameters:nil];
 }
 
-+ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID
++ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
 {
     // Note that we're relying on the host to specify the domain for the request.
     NSString *url = [self baseMetaphysicsApiURLString];
     // Ending spaces are to avoid stripping newlines characters later on.
     NSString *query = [NSString stringWithFormat:@"\
 {\
-  causality_jwt(role: BIDDER, sale_id: \"%1$@\")\
+  causality_jwt(role: %1$@, sale_id: \"%2$@\")\
   me {\
     paddle_number\
   }\
-  sale(id: \"%1$@\") {\
+  sale(id: \"%2$@\") {\
     _id\
     id\
     start_at\
@@ -1039,7 +1039,7 @@ static NSString *hostFromString(NSString *string)
     }\
   }\
 }",
-                                                 saleID];
+                                                [role uppercaseString], saleID];
 
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
 

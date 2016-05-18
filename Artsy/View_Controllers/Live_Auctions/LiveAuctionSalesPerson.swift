@@ -14,6 +14,7 @@ protocol LiveAuctionsSalesPersonType {
     var pageControllerDelegate: LiveAuctionPageControllerDelegate? { get }
     var lotCount: Int { get }
     var liveSaleID: String { get }
+    var bidderStatus: ArtsyAPISaleRegistrationStatus { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType
@@ -23,7 +24,7 @@ protocol LiveAuctionsSalesPersonType {
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderID: String) -> LiveAuctionStateManager
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderID: String?) -> LiveAuctionStateManager
 
     let sale: LiveSale
     let lots: [LiveAuctionLotViewModel]
@@ -37,9 +38,17 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     // Lot currently being looked at by the user. Defaults to zero, the first lot in a sale.
     var currentFocusedLotIndex = Observable(0)
 
+    var bidderStatus: ArtsyAPISaleRegistrationStatus {
+        let loggedIn = User.currentUser() != nil
+        let hasBidder = stateManager.bidderID != nil
+
+        if !loggedIn {  return ArtsyAPISaleRegistrationStatusNotLoggedIn }
+        return hasBidder ? ArtsyAPISaleRegistrationStatusRegistered : ArtsyAPISaleRegistrationStatusNotRegistered
+    }
+
     init(sale: LiveSale,
          jwt: JWT,
-         bidderID: String,
+         bidderID: String?,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
@@ -70,7 +79,6 @@ extension ComputedProperties {
         return sale.liveSaleID
     }
 }
-
 
 private typealias PublicFunctions = LiveAuctionsSalesPerson
 extension LiveAuctionsSalesPerson {

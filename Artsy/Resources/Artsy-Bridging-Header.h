@@ -18,6 +18,7 @@
 #import "ARArtworkSetViewController.h"
 #import "Fair.h" // Required by the switchboard's loadArtworkWithID(inFair:) function, even if we just pass nil in as a fair.
 
+#import "ARSwitchBoard.h"
 #import "ARSwitchboard+Eigen.h"
 #import "ARDefaults.h"
 #import "ARRouter.h" // Required for +baseCausalitySocketURLString in the LiveAuctionSalesPerson.
@@ -33,6 +34,7 @@
 #import "Artwork.h"
 #import "Artist.h"
 #import "Profile.h"
+#import "User.h"
 
 #import "LiveAuctionLot.h"
 #import "LiveSale.h"
@@ -60,7 +62,6 @@
 #import "ARFonts.h"
 #import "ARCustomEigenLabels.h"
 
-#import "ARSwitchBoard.h"
 #import "ARTrialController.h"
 #import "ARTopMenuViewController.h"
 
