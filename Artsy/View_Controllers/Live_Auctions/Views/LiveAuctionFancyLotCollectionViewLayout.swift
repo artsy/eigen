@@ -50,13 +50,34 @@ private let visiblePrevNextSliceSize = CGFloat(20)
 private typealias PrivateFunctions = LiveAuctionFancyLotCollectionViewLayout
 extension PrivateFunctions {
 
-    func modifyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
-        let collectionViewWidth = CGRectGetWidth(collectionView?.frame ?? CGRect.zero)
-        let ratioDragged = ((collectionView?.contentOffset.x ?? 0) - collectionViewWidth) / collectionViewWidth
-        let draggingToNext = ratioDragged > 0
+    var collectionViewWidth: CGFloat {
+        return CGRectGetWidth(collectionView?.frame ?? CGRect.zero)
+    }
 
-        let index = layoutAttributes.indexPath.item
-        let aspectRatio = delegate.aspectRatioForIndex(index)
+    var ratioDragged: CGFloat {
+        return ((collectionView?.contentOffset.x ?? 0) - collectionViewWidth) / collectionViewWidth
+    }
+
+    var draggingToNext: Bool { return ratioDragged > 0 }
+
+    func modifyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
+        switch layoutAttributes.indexPath.item {
+        case 0:
+            modifyPreviousAttributes(layoutAttributes)
+        case 1:
+            modifyCurrentAttributes(layoutAttributes)
+        default: // case 2:
+            modifyNextAttributes(layoutAttributes)
+        }
+    }
+
+    func interpolateFrom(a: CGFloat, to b: CGFloat, value: CGFloat, absolute: Bool = true) -> CGFloat {
+        let ratio = absolute ? abs(value) : value
+        return a + ratio * (b - a)
+    }
+
+    func modifyPreviousAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
+        let aspectRatio = delegate.aspectRatioForIndex(0)
 
         let restingWidth: CGFloat
         let restingHeight: CGFloat
@@ -64,65 +85,104 @@ extension PrivateFunctions {
         let targetWidth: CGFloat
 
         if aspectRatio > 1 {
-            restingWidth = CGFloat(index == 1 ? 300 : 200)
+            restingWidth = 200
             restingHeight = restingWidth / aspectRatio
-            targetWidth = CGFloat(index == 1 ? 200 : 300)
+            targetWidth = 300
             targetHeight = targetWidth / aspectRatio
         } else {
-            restingHeight = CGFloat(index == 1 ? 300 : 200)
+            restingHeight = 200
             restingWidth = restingHeight * aspectRatio
-            targetHeight = CGFloat(index == 1 ? 200 : 300)
+            targetHeight = 300
             targetWidth = targetHeight * aspectRatio
         }
 
-        let restingCenterX: CGFloat
+        let targetRightEdge = visiblePrevNextSliceSize
+        let computedLeftEdge = targetRightEdge - restingWidth
+        let restingCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth
+
+
         let targetCenterX: CGFloat
-        switch index {
-        case 0:
-            let targetRightEdge = visiblePrevNextSliceSize
-            let computedLeftEdge = targetRightEdge - restingWidth
-            restingCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth
-
-            if draggingToNext {
-                targetCenterX = restingCenterX
-            } else {
-                targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero)
-            }
-        case 1:
-            restingCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth
-
-            if draggingToNext {
-                let targetRightEdge = visiblePrevNextSliceSize
-                let computedLeftEdge = targetRightEdge - targetWidth
-                targetCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth * 2
-            } else {
-                let targetLeftEdge = collectionViewWidth - visiblePrevNextSliceSize
-                let computedRightEdge = targetLeftEdge + targetWidth
-                targetCenterX = (targetLeftEdge + computedRightEdge) / 2
-            }
-        default: // case 2:
-            let targetLeftEdge = 2 * collectionViewWidth - visiblePrevNextSliceSize
-            let computedRightEdge = targetLeftEdge + restingWidth
-            restingCenterX = (targetLeftEdge + computedRightEdge) / 2
-
-            if draggingToNext {
-                targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth * 2
-            } else {
-                targetCenterX = restingCenterX
-            }
-            print("draggingToNext:", draggingToNext, "target center X:", targetCenterX)
+        if draggingToNext {
+            targetCenterX = restingCenterX
+        } else {
+            targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero)
         }
 
         layoutAttributes.center.x = interpolateFrom(restingCenterX, to: targetCenterX, value: ratioDragged)
         layoutAttributes.size.height = interpolateFrom(restingHeight, to: targetHeight, value: ratioDragged)
         layoutAttributes.size.width = interpolateFrom(restingWidth, to: targetWidth, value: ratioDragged)
-
-//        print("ratio:", ratioDragged)
-//        print("size:", layoutAttributes.size)
     }
 
-    func interpolateFrom(a: CGFloat, to b: CGFloat, value: CGFloat, absolute: Bool = true) -> CGFloat {
-        let ratio = absolute ? abs(value) : value
-        return a + ratio * (b - a)
+    func modifyCurrentAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
+        let restingCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth
+        let aspectRatio = delegate.aspectRatioForIndex(1)
+
+        let restingWidth: CGFloat
+        let restingHeight: CGFloat
+        let targetHeight: CGFloat
+        let targetWidth: CGFloat
+
+        if aspectRatio > 1 {
+            restingWidth = 300
+            restingHeight = restingWidth / aspectRatio
+            targetWidth = 200
+            targetHeight = targetWidth / aspectRatio
+        } else {
+            restingHeight = 300
+            restingWidth = restingHeight * aspectRatio
+            targetHeight = 200
+            targetWidth = targetHeight * aspectRatio
+        }
+
+        let targetCenterX: CGFloat
+        if draggingToNext {
+            let targetRightEdge = visiblePrevNextSliceSize
+            let computedLeftEdge = targetRightEdge - targetWidth
+            targetCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth * 2
+        } else {
+            let targetLeftEdge = collectionViewWidth - visiblePrevNextSliceSize
+            let computedRightEdge = targetLeftEdge + targetWidth
+            targetCenterX = (targetLeftEdge + computedRightEdge) / 2
+        }
+
+        layoutAttributes.center.x = interpolateFrom(restingCenterX, to: targetCenterX, value: ratioDragged)
+        layoutAttributes.size.height = interpolateFrom(restingHeight, to: targetHeight, value: ratioDragged)
+        layoutAttributes.size.width = interpolateFrom(restingWidth, to: targetWidth, value: ratioDragged)
+    }
+
+    func modifyNextAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
+        let aspectRatio = delegate.aspectRatioForIndex(0)
+
+        let restingWidth: CGFloat
+        let restingHeight: CGFloat
+        let targetHeight: CGFloat
+        let targetWidth: CGFloat
+
+        if aspectRatio > 1 {
+            restingWidth = 200
+            restingHeight = restingWidth / aspectRatio
+            targetWidth = 300
+            targetHeight = targetWidth / aspectRatio
+        } else {
+            restingHeight = 200
+            restingWidth = restingHeight * aspectRatio
+            targetHeight = 300
+            targetWidth = targetHeight * aspectRatio
+        }
+
+        let targetLeftEdge = 2 * collectionViewWidth - visiblePrevNextSliceSize
+        let computedRightEdge = targetLeftEdge + restingWidth
+        let restingCenterX = (targetLeftEdge + computedRightEdge) / 2
+
+        let targetCenterX: CGFloat
+        if draggingToNext {
+            targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth * 2
+        } else {
+            targetCenterX = restingCenterX
+        }
+
+        layoutAttributes.center.x = interpolateFrom(restingCenterX, to: targetCenterX, value: ratioDragged)
+        layoutAttributes.size.height = interpolateFrom(restingHeight, to: targetHeight, value: ratioDragged)
+        layoutAttributes.size.width = interpolateFrom(restingWidth, to: targetWidth, value: ratioDragged)
     }
 }
