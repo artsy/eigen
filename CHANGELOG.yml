@@ -40,6 +40,7 @@ upcoming:
     - Changes to collectionview-based layout for live auction artwork image previews. - ash
     - Offline support for Live. - orta
     - Support for trial users, and non-registered users on live auctions - orta
+    - Lot list displays proper price. - ash
 
   notes:
     - Fixes long auction names falling off right edge. - ash

@@ -48,6 +48,8 @@ extension PublicFunctions {
     // TODO: auctionViewModel is not used in this function.
     func configureForViewModel(viewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType, indexPath: NSIndexPath) {
 
+        let currencySymbol = viewModel.currencySymbol
+
         if userInterfaceNeedsSetup {
             userInterfaceNeedsSetup = false
             contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -68,7 +70,8 @@ extension PublicFunctions {
         askingPriceSubscription = (viewModel
             .askingPriceSignal
             .subscribe { [weak self] askingPrice in
-                self?.currentAskingPriceLabel.text = "$30,000"
+                self?.currentAskingPriceLabel.text = askingPrice.convertToDollarString(currencySymbol)
+                return
             }, viewModel.askingPriceSignal)
 
         lotImageView.ar_setImageWithURL(viewModel.urlForThumbnail)
