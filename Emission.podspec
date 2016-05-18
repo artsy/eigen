@@ -20,6 +20,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Core' do |ss|
     ss.source_files = 'Pod/Classes/Core'
+    ss.resource = 'Pod/Assets/Emission.jsbundle'
     ss.dependency 'React/Core', '>= 0.24.0-rc5'
     ss.dependency 'Artsy+UIFonts', '>= 1.1.0'
   end
