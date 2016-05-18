@@ -8,7 +8,7 @@
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
 
-#ifdef TARGET_OS_SIMULATOR
+#if TARGET_OS_SIMULATOR
 #define ENABLE_DEV_MODE
 #endif
 
