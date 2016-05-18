@@ -136,6 +136,7 @@ class LiveAuctionLotSetViewController: UIViewController {
             let saleVM = SaleViewModel(sale: saleInfo, saleArtworks: [])
             let saleInfoVC = AuctionInformationViewController(saleViewModel: saleVM)
             saleInfoVC.titleViewDelegate = self
+            saleInfoVC.registrationStatus = self.salesPerson.bidderStatus
             self.navigationController?.pushViewController(saleInfoVC, animated: true)
         }
     }

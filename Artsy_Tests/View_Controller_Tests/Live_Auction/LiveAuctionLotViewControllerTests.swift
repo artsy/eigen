@@ -75,6 +75,7 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
     var pageControllerDelegate: LiveAuctionPageControllerDelegate? { return nil }
     var lotCount: Int { return auctionViewModel.lotCount }
     var liveSaleID: String = "seriously-folks-its-the-best-sale-ever"
+    var bidderStatus: ArtsyAPISaleRegistrationStatus = ArtsyAPISaleRegistrationStatusNotRegistered
 
     var lots: [LiveAuctionLotViewModelType]
 
