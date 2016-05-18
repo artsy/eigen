@@ -81,8 +81,13 @@ extension PrivateFunctions {
         case 0:
             let targetRightEdge = visiblePrevNextSliceSize
             let computedLeftEdge = targetRightEdge - restingWidth
-            restingCenterX = (targetRightEdge + computedLeftEdge) / 2
-            targetCenterX = 0
+            restingCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth
+
+            if draggingToNext {
+                targetCenterX = restingCenterX
+            } else {
+                targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero)
+            }
         case 1:
             restingCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth
 
@@ -96,16 +101,22 @@ extension PrivateFunctions {
                 targetCenterX = (targetLeftEdge + computedRightEdge) / 2
             }
         default: // case 2:
-            let targetLeftEdge = collectionViewWidth - visiblePrevNextSliceSize
+            let targetLeftEdge = 2 * collectionViewWidth - visiblePrevNextSliceSize
             let computedRightEdge = targetLeftEdge + restingWidth
             restingCenterX = (targetLeftEdge + computedRightEdge) / 2
-            targetCenterX = 0
+
+            if draggingToNext {
+                targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth * 2
+            } else {
+                targetCenterX = restingCenterX
+            }
+            print("draggingToNext:", draggingToNext, "target center X:", targetCenterX)
         }
 
         layoutAttributes.center.x = interpolateFrom(restingCenterX, to: targetCenterX, value: ratioDragged)
         layoutAttributes.size.height = interpolateFrom(restingHeight, to: targetHeight, value: ratioDragged)
         layoutAttributes.size.width = interpolateFrom(restingWidth, to: targetWidth, value: ratioDragged)
-        print("draggingToNext:", draggingToNext, "target center X:", targetCenterX)
+
 //        print("ratio:", ratioDragged)
 //        print("size:", layoutAttributes.size)
     }
