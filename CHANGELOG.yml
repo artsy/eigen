@@ -37,7 +37,7 @@ upcoming:
     - Successfuly sends JSON to websocket for bidding, though bids fail. - ash
     - Fixes to the design for the max bid view controller - orta
     - Add support for showing the time since the lot was opened. - orta
-    - Changes to collectionview-based layout for live auction artwork image previews. - ash
+    - Changes to collectionview-based layout for live auction artwork image previews with fancy layout. - ash
     - Offline support for Live. - orta
     - Support for trial users, and non-registered users on live auctions - orta
 

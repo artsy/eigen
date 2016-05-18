@@ -27,7 +27,7 @@ protocol LiveAuctionLotViewModelType: class {
     var currentLotValueString: String { get }
     var currencySymbol: String { get }
     var numberOfBids: Int { get }
-    var imageProfileSize: CGSize { get }
+    var imageAspectRatio: CGFloat { get }
     var liveAuctionLotID: String { get }
     var reserveStatusString: String { get }
     var dateLotOpened: NSDate? { get }
@@ -91,8 +91,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.urlForProfile()
     }
 
-    var imageProfileSize: CGSize {
-        return model.imageProfileSize()
+    var imageAspectRatio: CGFloat {
+        return model.imageAspectRatio()
     }
 
     var lotName: String {

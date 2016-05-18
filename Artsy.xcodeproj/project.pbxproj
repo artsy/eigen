@@ -342,6 +342,8 @@
 		5EDB120B197E691100E241F0 /* ARParallaxHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB120A197E691100E241F0 /* ARParallaxHeaderViewController.m */; };
 		5EE5DE14190167A400040B84 /* ARProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE5DE13190167A400040B84 /* ARProfileViewController.m */; };
 		5EF8407A1CEB7DAA006248D7 /* LiveAuctionLotImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF840791CEB7DAA006248D7 /* LiveAuctionLotImageCollectionViewCell.swift */; };
+		5EF8407E1CECDFFD006248D7 /* LiveAuctionFancyLotCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8407D1CECDFFD006248D7 /* LiveAuctionFancyLotCollectionViewLayoutAttributes.swift */; };
+		5EF840801CED0C5F006248D7 /* LiveAuctionFancyLotCollectionViewLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8407F1CED0C5F006248D7 /* LiveAuctionFancyLotCollectionViewLayoutTests.swift */; };
 		5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */; };
 		5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */; };
 		5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */; };
@@ -1299,6 +1301,8 @@
 		5EE5DE13190167A400040B84 /* ARProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARProfileViewController.m; sourceTree = "<group>"; };
 		5EE5DE1519019EFD00040B84 /* ARFairAwareObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARFairAwareObject.h; sourceTree = "<group>"; };
 		5EF840791CEB7DAA006248D7 /* LiveAuctionLotImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotImageCollectionViewCell.swift; path = Live_Auctions/Views/LiveAuctionLotImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		5EF8407D1CECDFFD006248D7 /* LiveAuctionFancyLotCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionFancyLotCollectionViewLayoutAttributes.swift; path = Live_Auctions/Views/LiveAuctionFancyLotCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
+		5EF8407F1CED0C5F006248D7 /* LiveAuctionFancyLotCollectionViewLayoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionFancyLotCollectionViewLayoutTests.swift; path = Live_Auction/LiveAuctionFancyLotCollectionViewLayoutTests.swift; sourceTree = "<group>"; };
 		5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineSettings.swift; path = Auction/AuctionRefineSettings.swift; sourceTree = "<group>"; };
 		5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AuctionRefineCheck.png; sourceTree = "<group>"; };
 		5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AuctionRefineCheck@2x.png"; sourceTree = "<group>"; };
@@ -3364,6 +3368,7 @@
 				5E1DDF181CE22C0700DFEE2A /* SimpleProgressView.swift */,
 				5E1DDF1A1CE2340900DFEE2A /* LiveAuctionCurrentLotView.swift */,
 				5EFEF1C51CEB6CC000E3AAB2 /* LiveAuctionFancyLotCollectionViewLayout.swift */,
+				5EF8407D1CECDFFD006248D7 /* LiveAuctionFancyLotCollectionViewLayoutAttributes.swift */,
 				5EFEF1C71CEB7C5800E3AAB2 /* LiveAuctionLotCollectionViewDataSource.swift */,
 				5EF840791CEB7DAA006248D7 /* LiveAuctionLotImageCollectionViewCell.swift */,
 			);
@@ -4319,6 +4324,7 @@
 			children = (
 				60B8D1231CBB7C1D006C3E42 /* TextStackTests.swift */,
 				6030253D1CBBB7B500B93583 /* AuctionLotMetadataStackScrollViewTests.swift */,
+				5EF8407F1CED0C5F006248D7 /* LiveAuctionFancyLotCollectionViewLayoutTests.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -5286,6 +5292,7 @@
 				60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */,
 				60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */,
 				60C2CBEF1CC11433009B30CA /* LiveAuctionToolbarView.swift in Sources */,
+				5EF8407E1CECDFFD006248D7 /* LiveAuctionFancyLotCollectionViewLayoutAttributes.swift in Sources */,
 				49EC62181778AF100020D648 /* PartnerShow.m in Sources */,
 				5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */,
 				E61446AF195A1CDC00BFB7C3 /* ARFairFavoritesNetworkModel.m in Sources */,
@@ -5681,6 +5688,7 @@
 				3CB9A20D18F303B20056C72B /* ARArtworkActionsViewTests.m in Sources */,
 				60C2CBED1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m in Sources */,
 				3C4877B3192A745400F40062 /* ARFairMapAnnotationCallOutViewTests.m in Sources */,
+				5EF840801CED0C5F006248D7 /* LiveAuctionFancyLotCollectionViewLayoutTests.swift in Sources */,
 				3C3FEA8E1884346D00E1A16F /* ARUserManager+Stubs.m in Sources */,
 				60327DE9198933610075B399 /* ARTabContentViewSpec.m in Sources */,
 				B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */,

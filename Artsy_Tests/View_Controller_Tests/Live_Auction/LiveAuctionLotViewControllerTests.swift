@@ -120,7 +120,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var currencySymbol = "$"
     var currentLotValue = UInt64(1234)
     var currentLotValueString = "$Value"
-    var imageProfileSize = CGSize(width: 200, height: 200)
+    var imageAspectRatio: CGFloat = 1
     var liveAuctionLotID = "lotID"
     var dateLotOpened: NSDate?
 

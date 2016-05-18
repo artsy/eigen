@@ -1032,6 +1032,7 @@ static NSString *hostFromString(NSString *string)
           name\
         }\
         image {\
+          aspect_ratio\
           large: url(version: \"large\")\
           thumb: url(version: \"thumb\")\
         }\

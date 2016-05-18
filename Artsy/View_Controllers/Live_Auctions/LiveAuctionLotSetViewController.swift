@@ -24,7 +24,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         self.salesPerson = salesPerson
 
         lotImageCollectionViewDataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
-        lotCollectionViewLayout = LiveAuctionFancyLotCollectionViewLayout()
+        lotCollectionViewLayout = LiveAuctionFancyLotCollectionViewLayout(delegate: lotImageCollectionViewDataSource)
 
         lotImageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: lotCollectionViewLayout)
         lotImageCollectionView.registerClass(LiveAuctionLotCollectionViewDataSource.CellClass, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
@@ -71,6 +71,10 @@ class LiveAuctionLotSetViewController: UIViewController {
         progressBar.alignLeading("0", trailing: "0", toView: view)
         progressBar.alignBottomEdgeWithView(view, predicate: "-165")
 
+        salesPerson.currentFocusedLotIndex.subscribe { [weak self] _ in
+            self?.lotImageCollectionView.reloadData()
+        }
+
         // Final setup for our (now constructed) view hierarchy.
         setupWithInitialData()
     }
@@ -86,8 +90,14 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // The collection view "rests" at a non-zero index. We need to set it, but doing so immediately is too soon, so we dispatch to the next runloop invocation.
         ar_dispatch_main_queue {
-            let restingIndexPath = NSIndexPath(forItem: LiveAuctionLotCollectionViewDataSource.RestingIndex, inSection: 0)
-            self.lotImageCollectionView.scrollToItemAtIndexPath(restingIndexPath, atScrollPosition: .CenteredHorizontally, animated: false)
+            let initialRect = CGRect(
+                x: CGRectGetWidth(self.view.frame),
+                y: 0,
+                width: CGRectGetWidth(self.lotImageCollectionView.frame),
+                height: CGRectGetHeight(self.lotImageCollectionView.frame)
+            )
+            self.lotImageCollectionView.scrollRectToVisible(initialRect, animated: false)
+            self.lotImageCollectionView.reloadData()
         }
     }
 
@@ -249,19 +259,16 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
     // When the user scrolls.
     func scrollViewDidScroll(scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
-        lotImageCollectionView.reloadData()
     }
 
     // When we scroll programmatically with/out animation.
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
-        lotImageCollectionView.reloadData()
     }
 
     // When the user has released their finger and the scroll view is sliding to a gentle stop.
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
-        lotImageCollectionView.reloadData()
     }
 
 }
