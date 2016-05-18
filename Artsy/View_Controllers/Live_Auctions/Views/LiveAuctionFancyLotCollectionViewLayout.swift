@@ -76,7 +76,13 @@ extension PrivateFunctions {
         return a + ratio * (b - a)
     }
 
-    func modifyPreviousAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
+    func modifyPreviousAttributes(layoutAttributes: UICollectionViewLayoutAttributes, underflow: Bool = false) {
+        if ratioDragged > 0.5 {
+            print("overflowing")
+            return modifyNextAttributes(layoutAttributes, overflow: true)
+        }
+
+        let index = underflow ? -1 : 0
         let aspectRatio = delegate.aspectRatioForIndex(0)
 
         let restingWidth: CGFloat
@@ -92,13 +98,13 @@ extension PrivateFunctions {
         } else {
             restingHeight = 200
             restingWidth = restingHeight * aspectRatio
-            targetHeight = 300
+            targetHeight = underflow ? 200 : 300
             targetWidth = targetHeight * aspectRatio
         }
 
         let targetRightEdge = visiblePrevNextSliceSize
         let computedLeftEdge = targetRightEdge - restingWidth
-        let restingCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth
+        let restingCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth + (collectionViewWidth * CGFloat(index))
 
 
         let targetCenterX: CGFloat
@@ -150,8 +156,14 @@ extension PrivateFunctions {
         layoutAttributes.size.width = interpolateFrom(restingWidth, to: targetWidth, value: ratioDragged)
     }
 
-    func modifyNextAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
-        let aspectRatio = delegate.aspectRatioForIndex(0)
+    func modifyNextAttributes(layoutAttributes: UICollectionViewLayoutAttributes, overflow: Bool = false) {
+        if ratioDragged < -0.5 {
+            print("underflowing")
+            return modifyPreviousAttributes(layoutAttributes, underflow: true)
+        }
+
+        let index = overflow ? 3 : 2
+        let aspectRatio = delegate.aspectRatioForIndex(index)
 
         let restingWidth: CGFloat
         let restingHeight: CGFloat
@@ -161,21 +173,24 @@ extension PrivateFunctions {
         if aspectRatio > 1 {
             restingWidth = 200
             restingHeight = restingWidth / aspectRatio
-            targetWidth = 300
+            targetWidth = overflow ? 200 : 300
             targetHeight = targetWidth / aspectRatio
         } else {
             restingHeight = 200
             restingWidth = restingHeight * aspectRatio
-            targetHeight = 300
+            targetHeight = overflow ? 200 : 300
             targetWidth = targetHeight * aspectRatio
         }
 
-        let targetLeftEdge = 2 * collectionViewWidth - visiblePrevNextSliceSize
+        let targetLeftEdge = CGFloat(index) * collectionViewWidth - visiblePrevNextSliceSize
         let computedRightEdge = targetLeftEdge + restingWidth
         let restingCenterX = (targetLeftEdge + computedRightEdge) / 2
 
+        // TODO: Replicate in the other method and then solve index path flicker issue. 
         let targetCenterX: CGFloat
-        if draggingToNext {
+        if overflow {
+            targetCenterX = restingCenterX
+        } else if draggingToNext {
             targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth * 2
         } else {
             targetCenterX = restingCenterX
