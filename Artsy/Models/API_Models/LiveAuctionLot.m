@@ -49,10 +49,9 @@
     return [NSURL URLWithString:self.imageDictionary[@"thumb"]];
 }
 
-- (CGSize)imageProfileSize
+- (CGFloat)imageAspectRatio
 {
-    NSDictionary *profile = self.imageDictionary[@"large"];
-    return CGSizeMake([profile[@"width"] floatValue], [profile[@"height"] floatValue]);
+    return [self.imageDictionary[@"aspect_ratio"] floatValue];
 }
 
 + (NSValueTransformer *)reserveStatusJSONTransformer

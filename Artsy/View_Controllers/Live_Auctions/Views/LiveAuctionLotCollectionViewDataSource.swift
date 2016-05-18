@@ -12,13 +12,16 @@ class LiveAuctionLotCollectionViewDataSource: NSObject {
         self.salesPerson = salesPerson
     }
 
+    private func offsetForIndex(index: Int) -> Int {
+        return index - 1
+    }
 }
 
 private typealias CollectionViewDataSource = LiveAuctionLotCollectionViewDataSource
 extension CollectionViewDataSource: UICollectionViewDataSource {
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // We always have three, for: previous, current, and next. We rely on the UIPageViewControllerDelegate callbacks 
+        // We always have three, for: previous, current, and next. We rely on the UIPageViewControllerDelegate callbacks
         // in the SalesPerson to update our collection view's content offset and the corresponding currentFocusedLotIndex.
         return 3
     }
@@ -27,12 +30,21 @@ extension CollectionViewDataSource: UICollectionViewDataSource {
         let _cell = collectionView.dequeueReusableCellWithReuseIdentifier(LiveAuctionLotCollectionViewDataSource.CellIdentifier, forIndexPath: indexPath)
         guard let cell = _cell as? LiveAuctionLotImageCollectionViewCell else { return _cell }
 
-        let adjustedDelta = indexPath.item - 1
-        let lot = salesPerson.lotViewModelRelativeToShowingIndex(adjustedDelta)
+        let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(indexPath.item))
 
         cell.configureForLot(lot)
 
         return cell
+    }
+
+}
+
+private typealias FancyLayoutDelegate = LiveAuctionLotCollectionViewDataSource
+extension FancyLayoutDelegate: LiveAuctionFancyLotCollectionViewDelegateLayout {
+
+    func aspectRatioForIndex(index: Int) -> CGFloat {
+        let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(index))
+        return lot.imageAspectRatio
     }
 
 }

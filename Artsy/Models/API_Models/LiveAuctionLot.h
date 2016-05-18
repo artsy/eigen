@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSURL *)urlForThumbnail;
 - (NSURL *)urlForProfile;
-- (CGSize)imageProfileSize;
+- (CGFloat)imageAspectRatio;
 
 @property (nonatomic, copy, readonly) NSString *artworkTitle;
 @property (nonatomic, copy, readonly) NSString *_Nullable artworkDate;

@@ -24,7 +24,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         self.salesPerson = salesPerson
 
         lotImageCollectionViewDataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
-        lotCollectionViewLayout = LiveAuctionFancyLotCollectionViewLayout()
+        lotCollectionViewLayout = LiveAuctionFancyLotCollectionViewLayout(delegate: lotImageCollectionViewDataSource)
 
         lotImageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: lotCollectionViewLayout)
         lotImageCollectionView.registerClass(LiveAuctionLotCollectionViewDataSource.CellClass, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
