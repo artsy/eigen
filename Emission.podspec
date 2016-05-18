@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
     ss.dependency 'Emission/OpaqueImageViewComponent'
     ss.dependency 'Emission/SwitchViewComponent'
     ss.dependency 'Emission/TemporaryAPI'
+    ss.dependency 'Emission/ViewControllers'
   end
 
   s.subspec 'Core' do |ss|
@@ -42,5 +43,10 @@ Pod::Spec.new do |s|
   s.subspec 'OpaqueImageViewComponent' do |ss|
     ss.source_files = 'Pod/Classes/OpaqueImageViewComponent'
     ss.dependency 'SDWebImage', '>= 3.7.2'
+  end
+
+  s.subspec 'ViewControllers' do |ss|
+    ss.source_files = 'Pod/Classes/ViewControllers'
+    ss.dependency 'Emission/Core'
   end
 end

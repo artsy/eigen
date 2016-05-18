@@ -10,9 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
 
-// This will use the shared AREmission instance.
-- (instancetype)initWithModuleName:(NSString *)moduleName;
-- (instancetype)initWithEmission:(AREmission *)emission moduleName:(NSString *)moduleName NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithEmission:(nullable AREmission *)emission
+                      moduleName:(NSString *)moduleName
+               initialProperties:(nullable NSDictionary *)initialProperties NS_DESIGNATED_INITIALIZER;
 
 @end
 

@@ -1,14 +1,14 @@
 #import "AppDelegate.h"
 
 #import <Emission/AREmission.h>
-#import <Emission/ARComponentViewController.h>
+#import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
 
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
 
-#ifdef TARGET_OS_SIMULATOR
+#if TARGET_OS_SIMULATOR
 #define ENABLE_DEV_MODE
 #endif
 
@@ -63,43 +63,48 @@ randomBOOL(void)
 
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
-    UILabel *label = [UILabel new];
-    label.text = route;
-    [label sizeToFit];
-    UIViewController *viewController = [UIViewController new];
-    viewController.view.backgroundColor = [UIColor redColor];
-    [viewController.view addSubview:label];
-    label.center = viewController.view.center;
-    
-    [fromViewController.navigationController pushViewController:viewController animated:YES];
+    [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route]
+                                                       animated:YES];
   };
 
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
                                                             NSString * _Nonnull route) {
-    UILabel *label = [UILabel new];
-    label.text = route;
-    [label sizeToFit];
-    UIViewController *viewController = [UIViewController new];
-    viewController.view.backgroundColor = [UIColor redColor];
-    [viewController.view addSubview:label];
-    label.center = viewController.view.center;
-
+    UIViewController *viewController = [self viewControllerForRoute:route];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                     target:self
                                                                                                     action:@selector(dismissModalViewController)];
-
     [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
   };
 
-  ARComponentViewController *componentViewController = [[ARComponentViewController alloc] initWithModuleName:@"Artist"];
+  ARArtistComponentViewController *artistViewController = [[ARArtistComponentViewController alloc] initWithArtistID:@"banksy"];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
-  self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:componentViewController];
+  self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:artistViewController];
   [self.window makeKeyAndVisible];
   
   return YES;
+}
+
+- (UIViewController *)viewControllerForRoute:(NSString *)route;
+{
+  UIViewController *viewController = nil;
+  
+  if ([route hasPrefix:@"/artist/"]) {
+    NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
+  } else {
+    UILabel *label = [UILabel new];
+    label.text = route;
+    [label sizeToFit];
+    viewController = [UIViewController new];
+    viewController.view.backgroundColor = [UIColor redColor];
+    [viewController.view addSubview:label];
+    label.center = viewController.view.center;
+  }
+  
+  return viewController;
 }
 
 - (void)dismissModalViewController;

@@ -7,6 +7,7 @@ PODS:
     - Emission/OpaqueImageViewComponent
     - Emission/SwitchViewComponent
     - Emission/TemporaryAPI
+    - Emission/ViewControllers
   - Emission/Core (0.1.0):
     - Artsy+UIFonts (>= 1.1.0)
     - React/Core (>= 0.24.0-rc5)
@@ -17,6 +18,8 @@ PODS:
     - FLKAutoLayout
     - UIView+BooleanAnimations
   - Emission/TemporaryAPI (0.1.0):
+    - Emission/Core
+  - Emission/ViewControllers (0.1.0):
     - Emission/Core
   - FLKAutoLayout (1.0.0)
   - React/Core (0.24.0-rc5)
@@ -64,7 +67,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Emission: b29466a7bdeed2251eb88b74835762ce404c8185
+  Emission: a5b7651c52496dcf66ad5694430965374f71f9bf
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   React: 9df7c9ebbc8256031adcc82ed9fede2730f98874
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
