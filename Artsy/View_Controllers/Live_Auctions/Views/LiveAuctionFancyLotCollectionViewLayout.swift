@@ -53,6 +53,7 @@ extension PrivateFunctions {
     func modifyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
         let collectionViewWidth = CGRectGetWidth(collectionView?.frame ?? CGRect.zero)
         let ratioDragged = ((collectionView?.contentOffset.x ?? 0) - collectionViewWidth) / collectionViewWidth
+        let draggingToNext = ratioDragged > 0
 
         let index = layoutAttributes.indexPath.item
         let aspectRatio = delegate.aspectRatioForIndex(index)
@@ -75,29 +76,41 @@ extension PrivateFunctions {
         }
 
         let restingCenterX: CGFloat
+        let targetCenterX: CGFloat
         switch index {
         case 0:
             let targetRightEdge = visiblePrevNextSliceSize
             let computedLeftEdge = targetRightEdge - restingWidth
             restingCenterX = (targetRightEdge + computedLeftEdge) / 2
-            layoutAttributes.alpha = 0 // TODO: Remove
+            targetCenterX = 0
         case 1:
             restingCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth
+
+            if draggingToNext {
+                let targetRightEdge = visiblePrevNextSliceSize
+                let computedLeftEdge = targetRightEdge - targetWidth
+                targetCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth * 2
+            } else {
+                let targetLeftEdge = collectionViewWidth - visiblePrevNextSliceSize
+                let computedRightEdge = targetLeftEdge + targetWidth
+                targetCenterX = (targetLeftEdge + computedRightEdge) / 2
+            }
         default: // case 2:
             let targetLeftEdge = collectionViewWidth - visiblePrevNextSliceSize
             let computedRightEdge = targetLeftEdge + restingWidth
             restingCenterX = (targetLeftEdge + computedRightEdge) / 2
-            layoutAttributes.alpha = 0 // TODO: Remove
+            targetCenterX = 0
         }
 
-        layoutAttributes.center.x = restingCenterX
-        layoutAttributes.size.height = interpolateFrom(restingHeight, to: targetHeight, value: ratioDragged, absolute: true)
-        layoutAttributes.size.width = interpolateFrom(restingWidth, to: targetWidth, value: ratioDragged, absolute: true)
-        print("ratio:", ratioDragged)
+        layoutAttributes.center.x = interpolateFrom(restingCenterX, to: targetCenterX, value: ratioDragged)
+        layoutAttributes.size.height = interpolateFrom(restingHeight, to: targetHeight, value: ratioDragged)
+        layoutAttributes.size.width = interpolateFrom(restingWidth, to: targetWidth, value: ratioDragged)
+        print("draggingToNext:", draggingToNext, "target center X:", targetCenterX)
+//        print("ratio:", ratioDragged)
 //        print("size:", layoutAttributes.size)
     }
 
-    func interpolateFrom(a: CGFloat, to b: CGFloat, value: CGFloat, absolute: Bool = false) -> CGFloat {
+    func interpolateFrom(a: CGFloat, to b: CGFloat, value: CGFloat, absolute: Bool = true) -> CGFloat {
         let ratio = absolute ? abs(value) : value
         return a + ratio * (b - a)
     }
