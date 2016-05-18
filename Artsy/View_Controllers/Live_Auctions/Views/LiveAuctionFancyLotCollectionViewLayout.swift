@@ -120,8 +120,9 @@ private extension PrivateFunctions {
             applyFancyLayoutToAttributes(&layoutAttributes, position: .Current)
         case 2 where ratioDragged < -0.5:
             applyFancyLayoutToAttributes(&layoutAttributes, position: .PreviousUnderflow)
-        default: // case 2:
+        case 2:
             applyFancyLayoutToAttributes(&layoutAttributes, position: .Next)
+        default: break;
         }
     }
 
