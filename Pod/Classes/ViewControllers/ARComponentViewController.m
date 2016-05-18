@@ -6,20 +6,19 @@
 @interface ARComponentViewController ()
 @property (nonatomic, strong, readonly) AREmission *emission;
 @property (nonatomic, strong, readonly) NSString *moduleName;
+@property (nonatomic, strong, readonly) NSDictionary *initialProperties;
 @end
 
 @implementation ARComponentViewController
 
-- (instancetype)initWithModuleName:(nonnull NSString *)moduleName;
-{
-  return [self initWithEmission:[AREmission sharedInstance] moduleName:moduleName];
-}
-
-- (instancetype)initWithEmission:(AREmission *)emission moduleName:(NSString *)moduleName;
+- (instancetype)initWithEmission:(AREmission *)emission
+                      moduleName:(NSString *)moduleName
+               initialProperties:(NSDictionary *)initialProperties;
 {
   if ((self = [super initWithNibName:nil bundle:nil])) {
-    _emission = emission;
+    _emission = emission ?: [AREmission sharedInstance];
     _moduleName = moduleName;
+    _initialProperties = initialProperties;
   }
   return self;
 }
@@ -30,7 +29,7 @@
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:self.emission.bridge
                                                    moduleName:self.moduleName
-                                            initialProperties:nil];
+                                            initialProperties:self.initialProperties];
   [self.view addSubview:rootView];
   rootView.reactViewController = self;
   
