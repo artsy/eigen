@@ -63,32 +63,17 @@ randomBOOL(void)
 
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
-    UILabel *label = [UILabel new];
-    label.text = route;
-    [label sizeToFit];
-    UIViewController *viewController = [UIViewController new];
-    viewController.view.backgroundColor = [UIColor redColor];
-    [viewController.view addSubview:label];
-    label.center = viewController.view.center;
-    
-    [fromViewController.navigationController pushViewController:viewController animated:YES];
+    [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route]
+                                                       animated:YES];
   };
 
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
                                                             NSString * _Nonnull route) {
-    UILabel *label = [UILabel new];
-    label.text = route;
-    [label sizeToFit];
-    UIViewController *viewController = [UIViewController new];
-    viewController.view.backgroundColor = [UIColor redColor];
-    [viewController.view addSubview:label];
-    label.center = viewController.view.center;
-
+    UIViewController *viewController = [self viewControllerForRoute:route];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                     target:self
                                                                                                     action:@selector(dismissModalViewController)];
-
     [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
   };
 
@@ -100,6 +85,26 @@ randomBOOL(void)
   [self.window makeKeyAndVisible];
   
   return YES;
+}
+
+- (UIViewController *)viewControllerForRoute:(NSString *)route;
+{
+  UIViewController *viewController = nil;
+  
+  if ([route hasPrefix:@"/artist/"]) {
+    NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
+  } else {
+    UILabel *label = [UILabel new];
+    label.text = route;
+    [label sizeToFit];
+    viewController = [UIViewController new];
+    viewController.view.backgroundColor = [UIColor redColor];
+    [viewController.view addSubview:label];
+    label.center = viewController.view.center;
+  }
+  
+  return viewController;
 }
 
 - (void)dismissModalViewController;
