@@ -71,6 +71,10 @@ class LiveAuctionLotSetViewController: UIViewController {
         progressBar.alignLeading("0", trailing: "0", toView: view)
         progressBar.alignBottomEdgeWithView(view, predicate: "-165")
 
+        salesPerson.currentFocusedLotIndex.subscribe { [weak self] _ in
+            self?.lotImageCollectionView.reloadData()
+        }
+
         // Final setup for our (now constructed) view hierarchy.
         setupWithInitialData()
     }
@@ -93,6 +97,7 @@ class LiveAuctionLotSetViewController: UIViewController {
                 height: CGRectGetHeight(self.lotImageCollectionView.frame)
             )
             self.lotImageCollectionView.scrollRectToVisible(initialRect, animated: false)
+            self.lotImageCollectionView.reloadData()
         }
     }
 
@@ -238,19 +243,16 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
     // When the user scrolls.
     func scrollViewDidScroll(scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
-        lotImageCollectionView.reloadData()
     }
 
     // When we scroll programmatically with/out animation.
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
-        lotImageCollectionView.reloadData()
     }
 
     // When the user has released their finger and the scroll view is sliding to a gentle stop.
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
-        lotImageCollectionView.reloadData()
     }
 
 }
