@@ -24,9 +24,15 @@ class LiveAuctionLotSetViewController: UIViewController {
         self.salesPerson = salesPerson
 
         if traitCollection .horizontalSizeClass != .Regular {
+            let size: LiveAuctionFancyLotCollectionViewLayout.Size
+            if CGRectGetWidth(UIScreen.mainScreen().applicationFrame) > 320 {
+                size = .Normal
+            } else {
+                size = .Compact
+            }
             let dataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
             lotImageCollectionViewDataSource = dataSource
-            let layout = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource)
+            let layout = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: size)
             lotCollectionViewLayout = layout
 
             let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout).then {

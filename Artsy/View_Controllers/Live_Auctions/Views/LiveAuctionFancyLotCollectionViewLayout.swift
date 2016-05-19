@@ -14,14 +14,38 @@ protocol LiveAuctionFancyLotCollectionViewDelegateLayout: class {
 /// UIPageViewController, the datasource cannot know. See the PrivateFunctions discussions for more info.
 class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
 
+    enum Size {
+        case Normal, Compact
+    }
+
     unowned let delegate: LiveAuctionFancyLotCollectionViewDelegateLayout
 
-    init(delegate: LiveAuctionFancyLotCollectionViewDelegateLayout) {
+    private let visiblePrevNextSliceSize: CGFloat
+    private let maxCurrentWidth: CGFloat
+    private let maxCurrentHeight: CGFloat
+    private let maxOffscreenWidth: CGFloat
+    private let maxOffscrenHeight: CGFloat
+
+    init(delegate: LiveAuctionFancyLotCollectionViewDelegateLayout, size: Size) {
         self.delegate = delegate
+        switch size {
+        case .Normal:
+            self.visiblePrevNextSliceSize = 20
+            maxCurrentWidth = 300
+            maxCurrentHeight = 300
+            maxOffscreenWidth = 200
+            maxOffscrenHeight = 200
+        case .Compact:
+            self.visiblePrevNextSliceSize = 0
+            maxCurrentWidth = 280
+            maxCurrentHeight = 150
+            maxOffscreenWidth = maxCurrentWidth
+            maxOffscrenHeight = maxCurrentHeight
+        }
         
         super.init()
 
-        itemSize = CGSize(width: 300, height: 300)
+        itemSize = CGSize(width: maxCurrentWidth, height: maxCurrentHeight)
         scrollDirection = .Horizontal
         minimumLineSpacing = 0
     }
@@ -32,7 +56,7 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
     }
 
     func updateScreenWidth(width: CGFloat) {
-        itemSize = CGSize(width: width, height: 300)
+        itemSize = CGSize(width: width, height: maxCurrentHeight)
         invalidateLayout()
     }
 
@@ -78,8 +102,6 @@ private enum CellPosition: Int {
 
 private typealias LayoutMetrics = (restingWidth: CGFloat, restingHeight: CGFloat, targetWidth: CGFloat, targetHeight: CGFloat)
 private typealias CenterXPositions = (restingCenterX: CGFloat, targetCenterX: CGFloat)
-
-private let visiblePrevNextSliceSize = CGFloat(20)
 
 private typealias PrivateFunctions = LiveAuctionFancyLotCollectionViewLayout
 private extension PrivateFunctions {
@@ -145,6 +167,7 @@ private extension PrivateFunctions {
 
         // Apply the centers and metrics to the layout attributes.
         layoutAttributes.center.x = interpolateFrom(centers.restingCenterX, to: centers.targetCenterX, ratio: ratioDragged)
+        layoutAttributes.center.y = CGRectGetMidY(collectionView?.frame ?? CGRectZero)
         layoutAttributes.size.height = interpolateFrom(metrics.restingHeight, to: metrics.targetHeight, ratio: ratioDragged)
         layoutAttributes.size.width = interpolateFrom(metrics.restingWidth, to: metrics.targetWidth, ratio: ratioDragged)
     }
@@ -162,31 +185,32 @@ private extension PrivateFunctions {
         // Resting/target widths for the current position are always the same.
         // Depending on the aspect ratio, we use a given width or height, and calculate the other, for both resting and target metrics.
         // Overflow and underflow have the same target and at-rest metrics.
+        // (Note: "Normal" layout values are given in comments for readability.)
 
-        if aspectRatio > 1 {
+        if aspectRatio > (maxCurrentWidth / maxCurrentHeight) {
             if position == .Current {
-                restingWidth = 300
-                targetWidth = 200
+                restingWidth = maxCurrentWidth  //300
+                targetWidth = maxOffscreenWidth //200
             } else if position.isUnderOverflow {
-                restingWidth = 200
-                targetWidth = 200
+                restingWidth = maxOffscreenWidth//200
+                targetWidth = maxOffscreenWidth //200
             } else {
-                restingWidth = 200
-                targetWidth = 300
+                restingWidth = maxOffscreenWidth//200
+                targetWidth = maxCurrentWidth   //300
             }
 
             restingHeight = restingWidth / aspectRatio
             targetHeight = targetWidth / aspectRatio
         } else {
             if position == .Current {
-                restingHeight = 300
-                targetHeight = 200
+                restingHeight = maxCurrentHeight//300
+                targetHeight = maxOffscrenHeight//200
             } else if position.isUnderOverflow {
-                restingHeight = 200
-                targetHeight = position.isUnderOverflow ? 200 : 300
+                restingHeight = maxOffscrenHeight//200
+                targetHeight = maxOffscrenHeight//200
             } else {
-                restingHeight = 200
-                targetHeight = 300
+                restingHeight = maxOffscrenHeight//200
+                targetHeight = maxCurrentHeight  //300
             }
 
             restingWidth = restingHeight * aspectRatio
