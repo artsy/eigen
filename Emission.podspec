@@ -34,10 +34,7 @@ Pod::Spec.new do |s|
   s.subspec 'SwitchViewComponent' do |ss|
     ss.source_files = 'Pod/Classes/SwitchViewComponent'
     ss.dependency 'Emission/Core'
-    # These are just to support ARSwitchView as copied from Eigen,
-    # this needs to be sorted before trying to use Emission in Eigen.
-    ss.dependency 'UIView+BooleanAnimations'
-    ss.dependency 'FLKAutoLayout'
+    ss.dependency 'Extraction/ARSwitchView'
   end
 
   s.subspec 'OpaqueImageViewComponent' do |ss|
