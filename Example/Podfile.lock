@@ -5,6 +5,7 @@ PODS:
   - Emission/All (0.1.0):
     - Emission/Core
     - Emission/OpaqueImageViewComponent
+    - Emission/SpinnerComponent
     - Emission/SwitchViewComponent
     - Emission/TemporaryAPI
     - Emission/ViewControllers
@@ -13,14 +14,28 @@ PODS:
     - React/Core (>= 0.24.0-rc5)
   - Emission/OpaqueImageViewComponent (0.1.0):
     - SDWebImage (>= 3.7.2)
+  - Emission/SpinnerComponent (0.1.0):
+    - Emission/Core
+    - Extraction/ARSpinner
   - Emission/SwitchViewComponent (0.1.0):
     - Emission/Core
-    - FLKAutoLayout
-    - UIView+BooleanAnimations
+    - Extraction/ARSwitchView
   - Emission/TemporaryAPI (0.1.0):
     - Emission/Core
   - Emission/ViewControllers (0.1.0):
     - Emission/Core
+  - Extraction (0.1.0):
+    - Extraction/ARSpinner (= 0.1.0)
+    - Extraction/ARSwitchView (= 0.1.0)
+    - Extraction/UIView+ARSpinner (= 0.1.0)
+  - Extraction/ARSpinner (0.1.0):
+    - Extraction/UIView+ARSpinner
+    - UIView+BooleanAnimations
+  - Extraction/ARSwitchView (0.1.0):
+    - Artsy+UIFonts (>= 1.1.0)
+    - FLKAutoLayout
+    - UIView+BooleanAnimations
+  - Extraction/UIView+ARSpinner (0.1.0)
   - FLKAutoLayout (1.0.0)
   - React/Core (0.24.0-rc5)
   - React/RCTNetwork (0.24.0-rc5):
@@ -39,6 +54,7 @@ PODS:
 DEPENDENCIES:
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
+  - Extraction (from `https://github.com/artsy/extraction.git`)
   - FLKAutoLayout (from `https://github.com/floriankugler/FLKAutoLayout.git`)
   - React/Core (from `./node_modules/react-native`)
   - React/RCTNetwork (from `./node_modules/react-native`)
@@ -52,6 +68,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
     :path: ../
+  Extraction:
+    :git: https://github.com/artsy/extraction.git
   FLKAutoLayout:
     :git: https://github.com/floriankugler/FLKAutoLayout.git
   React:
@@ -61,19 +79,23 @@ CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
+  Extraction:
+    :commit: 4d66682a885261b73efcf5c95341ce1fddd62fcb
+    :git: https://github.com/artsy/extraction.git
   FLKAutoLayout:
     :commit: 8cb911654b3538c0ce514701db041d32964ea17c
     :git: https://github.com/floriankugler/FLKAutoLayout.git
 
 SPEC CHECKSUMS:
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Emission: a5b7651c52496dcf66ad5694430965374f71f9bf
+  Emission: dc1ab41d3afe03177a68aefd6eb0df8270d94477
+  Extraction: c90ae510306495f2d75a30425b67a9b2b87c447e
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   React: 9df7c9ebbc8256031adcc82ed9fede2730f98874
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: 0cae3263c6bf26ebae521218b5cbe6ad15061cd1
+PODFILE CHECKSUM: 51442001064ece8f15ce449947fadb93febca07c
 
 COCOAPODS: 1.0.0
