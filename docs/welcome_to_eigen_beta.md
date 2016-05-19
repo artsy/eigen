@@ -2,7 +2,7 @@
 
 #### Artsy Beta Sign-up
 
-To get started, click here: [artsy-eigen-beta-boarding.herokuapp.com](http://artsy-eigen-beta-boarding.herokuapp.com)
+To get started, click here: [artsy-eigen-beta-boarding.herokuapp.com](http://artsy-eigen-beta-boarding.herokuapp.com) ( ideally open it in another window, so you can read this too.)
 
 This will re-direct you to this Artsy login, where you should log in with your `[me]@artsymail.com` account.
 
@@ -22,7 +22,7 @@ With that done, you should see this:
   <img src="screenshots/success.png" />
 </p>
 
-Which should _eventually_ send an email invite, this will not be instant, and could be a few days away when we make our next beta.
+Which should _eventually_ send an email invite, this will not be instant, and could be a few days away when we make our next beta. Which is when you'll get the email.
 
 <p align="center">
   <img src="screenshots/testflight-email.png" />
