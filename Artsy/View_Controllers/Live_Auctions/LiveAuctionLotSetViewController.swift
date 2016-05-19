@@ -220,8 +220,11 @@ class LiveAuctionLotSetViewController: UIViewController {
 //        guard let viewController = pageController.viewControllers?.first as? LiveAuctionLotViewController else { return }
 //        let direction: UIPageViewControllerNavigationDirection = viewController.index > index ? .Forward : .Reverse
 
-        let direction = UIPageViewControllerNavigationDirection.Forward
-        pageController.setViewControllers([currentLotVC!], direction: direction, animated: animated, completion: nil)
+        salesPerson.currentFocusedLotIndex.update(index)
+        lotImageCollectionView?.reloadData()
+        // TODO: Animations are disabled for now because it's unclear how to reload the collection view. Unlike the UIPVC,
+        //       the collection view shows previous and next images, and can't be scrolled to the current lot image without flickering.
+        pageController.setViewControllers([currentLotVC!], direction: .Forward, animated: false, completion: nil)
     }
 
     func jumpToLiveLot() {
