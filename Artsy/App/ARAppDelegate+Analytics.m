@@ -737,6 +737,15 @@
                                           @"error"        : @"account already exists"
                                           };
                             }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(showWarningCouldNotCreateAccount:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"email",
+                                          @"error"        : @"possible email or password issue"
+                                          };
+                            }
                         }
                     ]
                 },

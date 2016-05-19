@@ -204,12 +204,12 @@
 
 #pragma mark Actions
 
-- (IBAction)startOnboarding:(id)sender
+- (void)startOnboarding:(id)sender
 {
     [self.delegate splashDone:self];
 }
 
-- (IBAction)logIn:(id)sender
+- (void)logIn:(id)sender
 {
     [self.delegate splashDoneWithLogin:self];
 }

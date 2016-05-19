@@ -219,14 +219,19 @@
                 [sself accountExists:source];
 
         } else {
-            [sself setFormEnabled:YES];
-
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t create your account" message:@"Please check your email address & password" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-            [alert show];
-
-            [sself.textFieldsView.emailField becomeFirstResponder];
+            [sself showWarningCouldNotCreateAccount];
         }
     }];
+}
+
+- (void)showWarningCouldNotCreateAccount
+{
+    [self setFormEnabled:YES];
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t create your account" message:@"Please check your email address & password" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+    [alert show];
+
+    [self.textFieldsView.emailField becomeFirstResponder];
 }
 
 - (void)loginWithUserCredentialsWithSuccess:(void (^)())success
