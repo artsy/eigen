@@ -47,4 +47,6 @@ The Artsy beta will replace your current version of the Artsy app. If you have t
 The main difference you'll see is that now the Artsy app is rocking a beautiful yellow circle. Our release notes are shown on inside Testflight, they tend to be very technical as we make more user facing release notes towards the end of the release cycle for an app. Don't worry if you don't understand them all.
 
 
+## OK, what now?
 
+Well, if you've got it all installed, then you can check out the [Using The Eigen Beta](using_the_beta.md) page.
