@@ -17,6 +17,9 @@ target 'Emission' do
   # before trying to use Emission in Eigen.
   pod 'FLKAutoLayout', :git => 'https://github.com/floriankugler/FLKAutoLayout.git'
 
+  # TODO: Push a release to our spec repo.
+  pod 'Extraction', :git => 'https://github.com/artsy/extraction.git'
+
   target 'EmissionTests' do
     inherit! :search_paths
 
