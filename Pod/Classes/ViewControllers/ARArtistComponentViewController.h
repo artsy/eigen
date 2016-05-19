@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithArtistID:(NSString *)artistID
                         emission:(nullable AREmission *)emission NS_DESIGNATED_INITIALIZER;
 
-- (instancetype)initWithEmission:(AREmission *)emission
+- (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName
                initialProperties:(nullable NSDictionary *)initialProperties NS_UNAVAILABLE;
 
