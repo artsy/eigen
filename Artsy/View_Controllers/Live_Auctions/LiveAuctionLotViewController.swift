@@ -14,6 +14,9 @@ class LiveAuctionLotViewController: UIViewController {
 
     private let biddingViewModel: LiveAuctionBiddingViewModelType
 
+    private var imageBottomConstraint: NSLayoutConstraint?
+    private var lotMetadataStack: AuctionLotMetadataStackScrollView?
+
     private var currentLotObserver: ObserverToken?
     private var saleAvailabilityObserver: ObserverToken?
     private var lotStateObserver: ObserverToken?
@@ -46,18 +49,39 @@ class LiveAuctionLotViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        /// Image Preview, only on iPad
+        let lotImagePreviewView: UIImageView?
+        if UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Regular {
+            lotImagePreviewView = UIImageView().then {
+                $0.contentMode = .ScaleAspectFit
+                $0.setContentHuggingPriority(UILayoutPriorityFittingSizeLevel, forAxis: .Vertical)
+            }
+        } else {
+            lotImagePreviewView = nil
+        }
+
+        lotImagePreviewView?.then {
+            view.addSubview($0)
+            $0.alignTopEdgeWithView(view, predicate: "0")
+            $0.constrainWidthToView(view, predicate: "-80")
+            $0.alignCenterXWithView(view, predicate: "0")
+        }
+
         /// The whole stack
         let metadataStack = ORStackView()
 
         /// The metadata that can jump over the artwork image
         let lotMetadataStack = AuctionLotMetadataStackScrollView()
+        self.lotMetadataStack = lotMetadataStack
         view.addSubview(lotMetadataStack)
         lotMetadataStack.constrainWidthToView(view, predicate: "0")
         lotMetadataStack.alignCenterXWithView(view, predicate: "0")
 
         /// We attach the bottom of the image preview to the bottom of the lot metadata,
         /// then later, when we have enough information about it's height the constant is set
-//        let imageBottomConstraint = lotMetadataStack.alignBottomEdgeWithView(view, predicate: "200") // TODO: I dunno lol
+        lotImagePreviewView?.then {
+            imageBottomConstraint = lotMetadataStack.alignBottomEdgeWithView($0, predicate: "0") // TODO: I dunno lol
+        }
 
 
         /// This is a constraint that says "stick to the top of the lot view"
@@ -134,9 +158,6 @@ class LiveAuctionLotViewController: UIViewController {
 
             // We need to align the bottom of the lot image to the lot metadata
             lotMetadataStack?.layoutIfNeeded()
-            // TODO: needed?
-//            let height = lotMetadataStack?.frame.height ?? 0
-//            imageBottomConstraint.constant = height + 20
         }
 
         // TODO: is this required? A closed sale would imply all lots are closed, and the currentLotView would be hidden in the above subscription ^
@@ -149,7 +170,16 @@ class LiveAuctionLotViewController: UIViewController {
         infoToolbar.lotViewModel = lotViewModel
         infoToolbar.auctionViewModel = salesPerson.auctionViewModel
 
+        lotImagePreviewView?.ar_setImageWithURL(lotViewModel.urlForThumbnail)
         lotMetadataStack.viewModel.update(lotViewModel)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        let height = lotMetadataStack?.frame.height ?? 0
+        imageBottomConstraint?.constant = height + 20
+        view.setNeedsUpdateConstraints()
     }
 }
 
