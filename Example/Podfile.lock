@@ -5,6 +5,7 @@ PODS:
   - Emission/All (0.1.0):
     - Emission/Core
     - Emission/OpaqueImageViewComponent
+    - Emission/SpinnerComponent
     - Emission/SwitchViewComponent
     - Emission/TemporaryAPI
     - Emission/ViewControllers
@@ -13,6 +14,9 @@ PODS:
     - React/Core (>= 0.24.0-rc5)
   - Emission/OpaqueImageViewComponent (0.1.0):
     - SDWebImage (>= 3.7.2)
+  - Emission/SpinnerComponent (0.1.0):
+    - Emission/Core
+    - Extraction/ARSpinner
   - Emission/SwitchViewComponent (0.1.0):
     - Emission/Core
     - Extraction/ARSwitchView
@@ -84,7 +88,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Emission: 2be8f16a8e270697196c32e90b9994197c3ce8ee
+  Emission: dc1ab41d3afe03177a68aefd6eb0df8270d94477
   Extraction: c90ae510306495f2d75a30425b67a9b2b87c447e
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   React: 9df7c9ebbc8256031adcc82ed9fede2730f98874
