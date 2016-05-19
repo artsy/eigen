@@ -1,6 +1,6 @@
 #import "ARSwitchViewManager.h"
-#import "ARSwitchView.h"
 
+#import <Extraction/ARSwitchView.h>
 #import <React/RCTComponent.h>
 
 
