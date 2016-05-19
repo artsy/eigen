@@ -602,6 +602,22 @@
                                 NSString *stringRange = [NSString stringWithFormat:@"%@", @(range)];
                                 return @{ @"budget" : stringRange };
                             }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupSuccess,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fbSuccessWithToken:email:name:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"facebook" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fbError:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"facebook",
+                                          @"error"        : @"Could not get facebook credentials"
+                                          };
+                            }
                         }
                     ]
                 },
@@ -611,24 +627,82 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingLoginStarted,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(login:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
                                 return @{ @"context_type" : @"email" };
                             }
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingLoginStarted,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(twitter:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
                                 return @{ @"context_type" : @"twitter" };
                             }
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingLoginStarted,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(fb:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
                                 return @{ @"context_type" : @"facebook" };
                             }
-                        }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginSuccess,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                ARLoginViewControllerLoginType type = [_.firstObject integerValue];
+                                if  (type == ARLoginViewControllerLoginTypeEmail) {
+                                    return @{ @"context_type" : @"email" };
+                                } else if (type == ARLoginViewControllerLoginTypeTwitter) {
+                                    return @{ @"context_type" : @"twitter" };
+                                } else if (type == ARLoginViewControllerLoginTypeFacebook) {
+                                    return @{ @"context_type" : @"facebook" };
+                                }
+                                return @{};
+                            },
+                            ARAnalyticsShouldFire: ^BOOL(id *controller, NSArray *_) {
+                                ARLoginViewControllerLoginType type = [_.firstObject integerValue];
+                                return (type == ARLoginViewControllerLoginTypeEmail ||
+                                        type == ARLoginViewControllerLoginTypeTwitter ||
+                                        type == ARLoginViewControllerLoginTypeFacebook
+                                        );
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(twitterError:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"twitter",
+                                          @"error"        : @"could not get twitter credentials"
+                                          };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fbError:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"facebook",
+                                          @"error"        : @"could not get facebook credentials"
+                                          };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fbNoUser:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"facebook",
+                                          @"error"        : @"no artsy account associated with facebook profile"
+                                          };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(authenticationFailure:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"email",
+                                          @"error"        : @"invalid email and or password"
+                                          };
+                            }
+                        },
                     ]
                 },
                 @{
@@ -637,15 +711,31 @@
                         @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingSignupStarted,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(submit:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
                                 return @{ @"context_type" : @"email" };
                             }
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingSignupStarted,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(fb:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
                                 return @{ @"context_type" : @"facebook" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupSuccess,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loginWithUserCredentialsWithSuccess:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"email" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(accountExists:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"email",
+                                          @"error"        : @"account already exists"
+                                          };
                             }
                         }
                     ]
@@ -701,7 +791,7 @@
                             ARAnalyticsEventName: ARAnalyticsGeneFollow,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(categoryFollowed:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *_){
-                                Gene *gene = _.firstObject;
+//                                Gene *gene = _.firstObject;
                                 NSString *sourceScreen = @"";
                                 if (controller.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModePlaceholder) {
                                     sourceScreen = @"onboarding top artists";
@@ -711,7 +801,7 @@
                                     sourceScreen = @"onboarding recommended";
                                 }
                                 return @{
-                                         @"gene_id" : gene.geneID,
+                                         @"gene_id" : @"this needs replacing once categories are fixed", //gene.geneID,
                                          @"source_screen" : sourceScreen
                                         };
                             },

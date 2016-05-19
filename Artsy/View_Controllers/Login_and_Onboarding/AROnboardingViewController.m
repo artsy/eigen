@@ -369,11 +369,7 @@
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
         __strong typeof (wself) sself = wself;
-
-        AROnboardingMoreInfoViewController *more = [[AROnboardingMoreInfoViewController alloc] initForFacebookWithToken:token email:email name:name];
-        more.delegate = self;
-        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        [sself pushViewController:more animated:YES];
+        [sself fbSuccessWithToken:token email:email name:name];
 
     } failure:^(NSError *error) {
         __strong typeof (wself) sself = wself;
@@ -385,6 +381,14 @@
             [sself fbError];
         }
     }];
+}
+
+- (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
+{
+    AROnboardingMoreInfoViewController *more = [[AROnboardingMoreInfoViewController alloc] initForFacebookWithToken:token email:email name:name];
+    more.delegate = self;
+    [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+    [self pushViewController:more animated:YES];
 }
 
 - (void)fbError

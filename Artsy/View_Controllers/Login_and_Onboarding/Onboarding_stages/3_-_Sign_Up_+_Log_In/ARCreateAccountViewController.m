@@ -51,10 +51,10 @@
 
 @implementation ARCreateAccountViewController
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    UITapGestureRecognizer *keyboardCancelTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
-    [self.view addGestureRecognizer:keyboardCancelTap];
+    [super viewWillAppear:animated];
+
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -64,7 +64,16 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textChanged:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
+}
 
+- (void)viewDidLoad
+{
+    UITapGestureRecognizer *keyboardCancelTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
+    [self.view addGestureRecognizer:keyboardCancelTap];
 
     ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     spinner.alpha = 0;
@@ -72,9 +81,6 @@
     spinner.spinnerColor = [UIColor whiteColor];
     self.loadingSpinner = spinner;
     [self.view addSubview:spinner];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
-
     [super viewDidLoad];
 }
 
@@ -323,12 +329,15 @@
     if (self.warningView) [self removeWarning:animated];
 
     [super viewWillDisappear:animated];
-}
 
-- (void)dealloc
-{
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UITextFieldTextDidChangeNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
                                                   object:nil];
 }
 
