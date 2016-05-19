@@ -27,7 +27,12 @@ class ARHockeyFeedbackDelegate: NSObject {
             analyticsLog = BITHockeyAttachment(filename: "analytics_log.txt", hockeyAttachmentData: data, contentType: "text")
         }
 
-        let initialMessage = "Hey there\nI have some feedback:\n\n"
+        let initialMessage: String
+        if User.currentUser() != nil {
+            initialMessage = "From: \(User.currentUser().name)\n\n"
+        } else {
+            initialMessage = "From: Trial user\n\n"
+        }
 
         // Create an array of optionals, then flatmap them to be only real values
         let items = ([initialMessage, image, analyticsLog] as [AnyObject?]).flatMap{ $0 }
