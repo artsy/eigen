@@ -76,6 +76,30 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (1.0.0)
+  - Emission (0.1.0):
+    - Emission/All (= 0.1.0)
+  - Emission/All (0.1.0):
+    - Emission/Core
+    - Emission/OpaqueImageViewComponent
+    - Emission/SpinnerComponent
+    - Emission/SwitchViewComponent
+    - Emission/TemporaryAPI
+    - Emission/ViewControllers
+  - Emission/Core (0.1.0):
+    - Artsy+UIFonts (>= 1.1.0)
+    - React/Core (>= 0.24.0-rc5)
+  - Emission/OpaqueImageViewComponent (0.1.0):
+    - SDWebImage (>= 3.7.2)
+  - Emission/SpinnerComponent (0.1.0):
+    - Emission/Core
+    - Extraction/ARSpinner
+  - Emission/SwitchViewComponent (0.1.0):
+    - Emission/Core
+    - Extraction/ARSwitchView
+  - Emission/TemporaryAPI (0.1.0):
+    - Emission/Core
+  - Emission/ViewControllers (0.1.0):
+    - Emission/Core
   - Expecta (1.0.5)
   - Expecta+Snapshots (3.0.0):
     - Expecta (~> 1.0)
@@ -140,6 +164,13 @@ PODS:
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - Quick (0.9.2)
+  - React/Core (0.24.0-rc5)
+  - React/RCTNetwork (0.24.0-rc5):
+    - React/Core
+  - React/RCTText (0.24.0-rc5):
+    - React/Core
+  - React/RCTWebSocket (0.24.0-rc5):
+    - React/Core
   - ReactiveCocoa (2.3):
     - ReactiveCocoa/UI (= 2.3)
   - ReactiveCocoa/Core (2.3):
@@ -185,6 +216,7 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DRKonamiCode
   - EDColor
+  - Emission (from `https://github.com/artsy/emission.git`)
   - Expecta
   - Expecta+Snapshots
   - Extraction (from `https://github.com/artsy/extraction.git`)
@@ -216,6 +248,10 @@ DEPENDENCIES:
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
   - Quick
+  - React/Core (= 0.24.0-rc5)
+  - React/RCTNetwork (= 0.24.0-rc5)
+  - React/RCTText (= 0.24.0-rc5)
+  - React/RCTWebSocket (= 0.24.0-rc5)
   - ReactiveCocoa
   - SDWebImage (>= 3.7.2)
   - Specta
@@ -249,6 +285,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  Emission:
+    :git: https://github.com/artsy/emission.git
   Extraction:
     :git: https://github.com/artsy/extraction.git
   FBSnapshotTestCase:
@@ -296,6 +334,9 @@ CHECKOUT OPTIONS:
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  Emission:
+    :commit: ab263f77202b7592ceed692b3aee42a5cdffa01b
+    :git: https://github.com/artsy/emission.git
   Extraction:
     :commit: 7312df7c9c005c196705cc9da7c5d53cde404854
     :git: https://github.com/artsy/extraction.git
@@ -343,6 +384,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
+  Emission: dc1ab41d3afe03177a68aefd6eb0df8270d94477
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 30a669899836cbe9c31bbc0e86918cd7a2dab463
@@ -375,6 +417,7 @@ SPEC CHECKSUMS:
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
+  React: 9df7c9ebbc8256031adcc82ed9fede2730f98874
   ReactiveCocoa: 81ee2fb7df2dfc6bd52b5d70473662195e20ca7d
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
@@ -388,6 +431,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 0ad31c657e4ade9df73eedad2602ebd2abebebea
+PODFILE CHECKSUM: 5e4c5a97ae04caa3f0b5abe483145d8ec8cc47b9
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.0.0.rc.1
