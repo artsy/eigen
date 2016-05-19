@@ -82,11 +82,11 @@
         if (self.expectsSingleLine) {
             [style setParagraphSpacing:-1 * self.font.pointSize];
         } else {
-            [style setParagraphSpacing:0];
+            [style setParagraphSpacing:20];
+//            [style setParagraphSpacingBefore:20];
         }
 
         [style setLineSpacing:5];
-
         [mutableCopy addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, mutableCopy.length)];
 
         if (self.plainLinks) {

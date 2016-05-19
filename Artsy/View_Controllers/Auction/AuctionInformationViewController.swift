@@ -91,7 +91,7 @@ class AuctionInformationViewController : UIViewController {
         let auctionBeginsHeaderLabel = UILabel()
         auctionBeginsHeaderLabel.font = UIFont.sansSerifFontWithSize(12)
         auctionBeginsHeaderLabel.text = "AUCTION BEGINS"
-        stackView.addSubview(auctionBeginsHeaderLabel, withTopMargin: "20", sideMargin: "40")
+        stackView.addSubview(auctionBeginsHeaderLabel, withTopMargin: "0", sideMargin: "40")
         
         let auctionBeginsLabel = UILabel()
         auctionBeginsLabel.font = UIFont.serifFontWithSize(16)

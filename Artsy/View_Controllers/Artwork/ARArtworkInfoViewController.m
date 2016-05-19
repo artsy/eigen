@@ -9,6 +9,7 @@
 @import Artsy_UILabels;
 #import <ORStackView/ORStackScrollView.h>
 
+
 @interface ARArtworkInfoViewController () <ARTextViewDelegate>
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) ORStackScrollView *view;
@@ -57,7 +58,7 @@
 - (void)viewDidLoad
 {
     [self.view.stackView addPageTitleWithString:@"More Info"];
-    [self.view.stackView addWhiteSpaceWithHeight:@"20"];
+    [self.view.stackView addWhiteSpaceWithHeight:@"40"];
     [self addSectionWithTitle:@"Provenance" andText:self.artwork.provenance];
     [self addSectionWithTitle:@"Signature" andText:self.artwork.signature];
     [self addSectionWithTitle:@"Additional Information" andText:self.artwork.additionalInfo];
@@ -75,7 +76,12 @@
     ARLabel *label = [[ARSansSerifLabel alloc] init];
     label.font = [label.font fontWithSize:14];
     label.text = title;
-    [self.view.stackView addSubview:label withTopMargin:@"0" sideMargin:@"40"];
+
+    // This is a tad un-intuitive, effectively, in adding paragraph spacing
+    // in the markdown, we get an extra ~20 px padding at the bottom that looks
+    // like too much in this view, but looks pretty normal everywhere else in the app
+    // so this title has a negative top margin in order to make it feel tighter.
+    [self.view.stackView addSubview:label withTopMargin:@"-20" sideMargin:@"40"];
 
     ARTextView *textView = [[ARTextView alloc] init];
     textView.viewControllerDelegate = self;
