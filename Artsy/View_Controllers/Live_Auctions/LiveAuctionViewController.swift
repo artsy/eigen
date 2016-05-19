@@ -8,7 +8,7 @@ class LiveAuctionViewController: UISplitViewController {
     let saleSlugOrID: String
 
     lazy var useSingleLayout: Bool = {
-        return self.traitCollection.userInterfaceIdiom == .Phone
+        return self.traitCollection.horizontalSizeClass == .Compact
     }()
 
     lazy var staticDataFetcher: LiveAuctionStaticDataFetcherType = {
@@ -146,7 +146,7 @@ extension PrivateFunctions {
     func setupWithSale(sale: LiveSale, jwt: JWT, bidderID: String?) {
         let salesPerson = self.salesPerson(sale, jwt: jwt, bidderID: bidderID)
 
-        lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson)
+        lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, traitCollection: view.traitCollection)
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
 
         lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)

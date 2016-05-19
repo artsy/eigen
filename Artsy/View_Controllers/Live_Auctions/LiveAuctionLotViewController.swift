@@ -51,7 +51,7 @@ class LiveAuctionLotViewController: UIViewController {
 
         /// Image Preview, only on iPad
         let lotImagePreviewView: UIImageView?
-        if UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Regular {
+        if traitCollection.horizontalSizeClass == .Regular {
             lotImagePreviewView = UIImageView().then {
                 $0.contentMode = .ScaleAspectFit
                 $0.setContentHuggingPriority(UILayoutPriorityFittingSizeLevel, forAxis: .Vertical)

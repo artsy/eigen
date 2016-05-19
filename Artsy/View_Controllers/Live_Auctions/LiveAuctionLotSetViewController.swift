@@ -20,10 +20,10 @@ class LiveAuctionLotSetViewController: UIViewController {
     var hasBeenSetup = false
     var firstAppearance = true
 
-    init(salesPerson: LiveAuctionsSalesPersonType) {
+    init(salesPerson: LiveAuctionsSalesPersonType, traitCollection: UITraitCollection) {
         self.salesPerson = salesPerson
 
-        if UIScreen.mainScreen().traitCollection.horizontalSizeClass != .Regular {
+        if traitCollection .horizontalSizeClass != .Regular {
             let dataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
             lotImageCollectionViewDataSource = dataSource
             let layout = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource)
