@@ -3,6 +3,7 @@ upcoming:
   details: Onboarding / New Gene VC / Live
 
   dev:
+    - Moved ARSwitchView and ARSpinner into new Extraction pod. - alloy
     - Removed artwork auction results - sarah
     - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
     - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah

@@ -71,7 +71,7 @@
 #import "ARAppStatus.h"
 #import "ARAnalyticsConstants.h"
 
-#import "UIView+Spinner.h"
+#import <Extraction/UIView+ARSpinner.h>
 #import "ARStandardDateFormatter.h"
 
 #import "AROfflineView.h"
