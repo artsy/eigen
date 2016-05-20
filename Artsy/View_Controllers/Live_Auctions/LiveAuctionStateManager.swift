@@ -25,6 +25,14 @@ class LiveAuctionStateManager: NSObject {
     private let stateReconciler: LiveAuctionStateReconcilerType
     private var biddingStates = [String: LiveAuctionBiddingViewModelType]()
 
+    var bidderStatus: ArtsyAPISaleRegistrationStatus {
+        let loggedIn = User.currentUser() != nil
+        let hasBidder = bidderID != nil
+
+        if !loggedIn {  return .NotLoggedIn }
+        return hasBidder ? .Registered : .NotRegistered
+    }
+
     init(host: String,
          sale: LiveSale,
          saleArtworks: [LiveAuctionLotViewModel],

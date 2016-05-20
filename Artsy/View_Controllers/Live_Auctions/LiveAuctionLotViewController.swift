@@ -83,7 +83,6 @@ class LiveAuctionLotViewController: UIViewController {
             imageBottomConstraint = lotMetadataStack.alignBottomEdgeWithView($0, predicate: "0") // TODO: I dunno lol
         }
 
-
         /// This is a constraint that says "stick to the top of the lot view"
         /// it's initially turned off, otherwise it uses it's own height constraint
         /// that is only as big as it's `aboveFoldStackWrapper`
@@ -190,7 +189,12 @@ extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
     }
 
     func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton) {
-        
+        ARTrialController.presentTrialIfNecessaryWithContext(.AuctionRegistration) { created in
+            let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
+            let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
+            self.navigationController?.presentViewController(viewController, animated: true) {}
+        }
+
     }
 
     func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton) {
