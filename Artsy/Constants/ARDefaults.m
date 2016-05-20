@@ -25,6 +25,10 @@ NSString *const AROnboardingSkipCollectorLevelDefault = @"eigen-onboard-skip-col
 NSString *const AROnboardingSkipPriceRangeDefault = @"eigen-onboard-skip-price-range";
 NSString *const AROnboardingPromptThresholdDefault = @"eigen-onboard-prompt-threshold";
 
+NSString *const ARPushNotificationsAppleDialogueSeen = @"eigen-push-seen-dialogue";
+NSString *const ARPushNotificationsAppleDialogueRejected = @"eigen-push-reject-dialogue";
+NSString *const ARPushNotificationsSettingsPromptSeen = @"eigen-push-seen-settings-dialogue";
+NSString *const ARPushNotificationFollowArtist = @"eigen-push-followed-artist";
 
 @implementation ARDefaults
 

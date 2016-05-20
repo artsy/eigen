@@ -11,6 +11,8 @@
 #import "ARTopMenuViewController.h"
 #import "ARWorksForYouReloadingHostViewController.h"
 #import "ARLogger.h"
+#import "ARDefaults.h"
+#import "AROptions.h"
 
 #import <ARAnalytics/ARAnalytics.h>
 
@@ -27,7 +29,16 @@
 
 - (void)registerForDeviceNotifications
 {
-    [self displayPushNotificationLocalRequestPrompt];
+    if (![AROptions boolForOption:ARPushNotificationsSettingsPromptSeen] &&
+        [AROptions boolForOption:ARPushNotificationsAppleDialogueRejected]) {
+        // if you've rejected Apple's push notification and you've not seen our prompt to send you to settings
+        // lets show you a prompt to go to stettings
+        [self displayPushNotificationSettingsPrompt];
+        
+    } else if (![AROptions boolForOption:ARPushNotificationsAppleDialogueSeen]) {
+        // As long as you've not seen Apple's dialogue already, we will show you our pre-prompt.
+        [self displayPushNotificationLocalRequestPrompt];
+    }
 }
 
 - (void)displayPushNotificationLocalRequestPrompt
@@ -59,6 +70,9 @@
                                                            }];
     [alert addAction:settingsAction];
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+    
+    [AROptions setBool:YES forOption:ARPushNotificationsSettingsPromptSeen];
+
 }
 
 - (void)registerUserInterest
@@ -93,6 +107,9 @@
     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     [[UIApplication sharedApplication] registerForRemoteNotifications];
+    
+    [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueSeen];
+
 }
 
 #pragma mark -
@@ -100,6 +117,7 @@
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
+    [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueRejected];
 #if (TARGET_IPHONE_SIMULATOR == 0)
     ARErrorLog(@"Error registering for remote notifications: %@", error.localizedDescription);
 #endif
