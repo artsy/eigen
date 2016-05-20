@@ -336,7 +336,6 @@
 		5EC8C6801CA5C5FC00571B21 /* LiveActionStateReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */; };
 		5EC929891C5FEAD10015133E /* UIViewController+Traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */; };
 		5ECFA8E81907E26E000B92EA /* ARSwitchView+Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFA8E71907E26E000B92EA /* ARSwitchView+Artist.m */; };
-		5ECFA8EA1907E9AB000B92EA /* ARSwitchViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFA8E91907E9AB000B92EA /* ARSwitchViewTests.m */; };
 		5ECFA8EF1907FC6C000B92EA /* ARSwitchView+FairGuide.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFA8EE1907FC6C000B92EA /* ARSwitchView+FairGuide.m */; };
 		5ED9EC021C458E9500C979A6 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */; };
 		5EDB120B197E691100E241F0 /* ARParallaxHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB120A197E691100E241F0 /* ARParallaxHeaderViewController.m */; };
@@ -379,7 +378,6 @@
 		6021D1B81CB7C6F800C475C1 /* TextStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021D1B71CB7C6F800C475C1 /* TextStack.swift */; };
 		6021D1BA1CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021D1B91CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift */; };
 		6021F97F17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021F97E17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m */; };
-		60229B4E1683BE280072DC12 /* ARSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 60229B4D1683BE280072DC12 /* ARSpinner.m */; };
 		6022F5AE1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6022F5AD1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m */; };
 		60289229176BE98C00512977 /* ARViewInRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60289228176BE98C00512977 /* ARViewInRoomViewController.m */; };
 		6029E9F51993D726002D42C3 /* ARAppSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6029E9F41993D726002D42C3 /* ARAppSearchViewController.m */; };
@@ -458,7 +456,6 @@
 		608920C3178C682A00989A10 /* ARItemThumbnailViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 608920C2178C682A00989A10 /* ARItemThumbnailViewCell.m */; };
 		608AABDC1B3884C600855A1C /* ARKeychainable.m in Sources */ = {isa = PBXBuildFile; fileRef = 608AABDB1B3884C600855A1C /* ARKeychainable.m */; };
 		608AFFF11CB681AD00534754 /* LiveBidProgressOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608AFFF01CB681AD00534754 /* LiveBidProgressOverlayView.swift */; };
-		608AFFF61CB68A2800534754 /* UIView+Spinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 608AFFF51CB68A2800534754 /* UIView+Spinner.m */; };
 		608B2F5E1657D0500046956C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F5D1657D0500046956C /* main.m */; };
 		608B2F621657D1500046956C /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F611657D1500046956C /* ARDefaults.m */; };
 		608B2F6F1657D1D10046956C /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F6E1657D1D10046956C /* User.m */; };
@@ -598,7 +595,6 @@
 		60D90A0B17C218930073D5B9 /* ARInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */; };
 		60DCDAD71C6533DF00BB61D7 /* ARSerifNavigationViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DCDAD51C6533A900BB61D7 /* ARSerifNavigationViewControllerSpec.m */; };
 		60DE2DE11677B30700621540 /* ARLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F711657D2DF0046956C /* ARLoginViewController.m */; };
-		60E6447617BE424E004486B3 /* ARSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E6447517BE424E004486B3 /* ARSwitchView.m */; };
 		60E719FE1B4C6032008948FA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60E719FD1B4C6032008948FA /* Launch Screen.xib */; };
 		60E71A011B4C60AC008948FA /* Artsy_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 60E71A001B4C60AC008948FA /* Artsy_Logo.png */; };
 		60E738711C64AB8B00AC381B /* ARStubbedAnalyticsProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E738701C64AB8B00AC381B /* ARStubbedAnalyticsProvider.m */; };
@@ -1291,7 +1287,6 @@
 		5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Traits.swift"; sourceTree = "<group>"; };
 		5ECFA8E61907E26E000B92EA /* ARSwitchView+Artist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchView+Artist.h"; sourceTree = "<group>"; };
 		5ECFA8E71907E26E000B92EA /* ARSwitchView+Artist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchView+Artist.m"; sourceTree = "<group>"; };
-		5ECFA8E91907E9AB000B92EA /* ARSwitchViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchViewTests.m; sourceTree = "<group>"; };
 		5ECFA8ED1907FC6C000B92EA /* ARSwitchView+FairGuide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchView+FairGuide.h"; sourceTree = "<group>"; };
 		5ECFA8EE1907FC6C000B92EA /* ARSwitchView+FairGuide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchView+FairGuide.m"; sourceTree = "<group>"; };
 		5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftExtensions.swift; path = ../../App/SwiftExtensions.swift; sourceTree = "<group>"; };
@@ -1366,8 +1361,6 @@
 		6021D1B91CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionLotMetadataStackScrollView.swift; path = Live_Auctions/Views/AuctionLotMetadataStackScrollView.swift; sourceTree = "<group>"; };
 		6021F97D17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArtworkWithMetadataThumbnailCell.h; sourceTree = "<group>"; };
 		6021F97E17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkWithMetadataThumbnailCell.m; sourceTree = "<group>"; };
-		60229B4C1683BE280072DC12 /* ARSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpinner.h; sourceTree = "<group>"; };
-		60229B4D1683BE280072DC12 /* ARSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpinner.m; sourceTree = "<group>"; };
 		6022F5AD1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWebViewCacheHostSpec.m; sourceTree = "<group>"; };
 		6025B42E1655FACA00845975 /* SenTestingKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		6025B4481655FBA900845975 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -1514,8 +1507,6 @@
 		608AABDA1B3884C600855A1C /* ARKeychainable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARKeychainable.h; sourceTree = "<group>"; };
 		608AABDB1B3884C600855A1C /* ARKeychainable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARKeychainable.m; sourceTree = "<group>"; };
 		608AFFF01CB681AD00534754 /* LiveBidProgressOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveBidProgressOverlayView.swift; path = Live_Auctions/Views/LiveBidProgressOverlayView.swift; sourceTree = "<group>"; };
-		608AFFF41CB68A2800534754 /* UIView+Spinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Spinner.h"; sourceTree = "<group>"; };
-		608AFFF51CB68A2800534754 /* UIView+Spinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Spinner.m"; sourceTree = "<group>"; };
 		608B2F5D1657D0500046956C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		608B2F601657D1500046956C /* ARDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDefaults.h; sourceTree = "<group>"; };
 		608B2F611657D1500046956C /* ARDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaults.m; sourceTree = "<group>"; };
@@ -1730,8 +1721,6 @@
 		60DCDAD51C6533A900BB61D7 /* ARSerifNavigationViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSerifNavigationViewControllerSpec.m; path = Components/ARSerifNavigationViewControllerSpec.m; sourceTree = "<group>"; };
 		60DE2DDE1677B26A00621540 /* ARLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLoginViewController.h; sourceTree = "<group>"; };
 		60E6446F17BE219E004486B3 /* HACKS.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = HACKS.md; path = ../HACKS.md; sourceTree = "<group>"; };
-		60E6447417BE424E004486B3 /* ARSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSwitchView.h; sourceTree = "<group>"; };
-		60E6447517BE424E004486B3 /* ARSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchView.m; sourceTree = "<group>"; };
 		60E719FD1B4C6032008948FA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		60E71A001B4C60AC008948FA /* Artsy_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Artsy_Logo.png; sourceTree = "<group>"; };
 		60E7386F1C64AB8B00AC381B /* ARStubbedAnalyticsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStubbedAnalyticsProvider.h; sourceTree = "<group>"; };
@@ -2247,8 +2236,6 @@
 				5EA250651C4EE95B001E4950 /* NSArray+Additions.m */,
 				5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */,
 				5E4962431CA1C7E800E77DD5 /* NSAttributedString+Additions.swift */,
-				608AFFF41CB68A2800534754 /* UIView+Spinner.h */,
-				608AFFF51CB68A2800534754 /* UIView+Spinner.m */,
 				6002C25E1CC5125200E249B2 /* UIViewController+TopMenuViewController.h */,
 				6002C25F1CC5125200E249B2 /* UIViewController+TopMenuViewController.m */,
 			);
@@ -3276,10 +3263,6 @@
 				602BC088168E0C0D00069FDB /* ARReusableLoadingView.m */,
 				E676A62918F3421600B9AF2C /* ARSeparatorViews.h */,
 				E676A62A18F3421600B9AF2C /* ARSeparatorViews.m */,
-				60229B4C1683BE280072DC12 /* ARSpinner.h */,
-				60229B4D1683BE280072DC12 /* ARSpinner.m */,
-				60E6447417BE424E004486B3 /* ARSwitchView.h */,
-				60E6447517BE424E004486B3 /* ARSwitchView.m */,
 				60327DC71987AAD00075B399 /* ARTabContentView.h */,
 				60327DC81987AAD00075B399 /* ARTabContentView.m */,
 				E67655241900660500F9A704 /* ARWhitespaceGobbler.h */,
@@ -4598,7 +4581,6 @@
 				3C11CD27189B07810060B26B /* ARAspectRatioImageViewTests.m */,
 				3C4877B2192A745400F40062 /* ARFairMapAnnotationCallOutViewTests.m */,
 				3CD3679E189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m */,
-				5ECFA8E91907E9AB000B92EA /* ARSwitchViewTests.m */,
 				5EA250621C4EDBE7001E4950 /* ARCountdownViewTests.m */,
 				342F9316E861BD2C6EBFA31A /* ORStackViewArtsyCategoriesTests.m */,
 				D35D9D5B1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m */,
@@ -5260,7 +5242,6 @@
 				6012313418B153C500B7667F /* ARFairArtistViewController.m in Sources */,
 				601C317816582BA30013E061 /* ARRouter.m in Sources */,
 				6615518D1C75DD47007EE049 /* ARWorksForYouViewController.m in Sources */,
-				608AFFF61CB68A2800534754 /* UIView+Spinner.m in Sources */,
 				60A224FC17CE040B00233CA1 /* AROnboardingTransition.m in Sources */,
 				833D53CB1C760B5400D63ADB /* ARWorksForYouNotificationItem.m in Sources */,
 				6088B75417D1DBAC00E4BB67 /* ARAnalyticsConstants.m in Sources */,
@@ -5366,7 +5347,6 @@
 				CB2C960417D3B4B500B36B44 /* ARFeedLinkUnitViewController.m in Sources */,
 				609A82F417A1117E00AFDF13 /* ARInquireForArtworkViewController.m in Sources */,
 				CB206F7117C3FA8F00A4FDC4 /* ARPriceRangeViewController.m in Sources */,
-				60229B4E1683BE280072DC12 /* ARSpinner.m in Sources */,
 				60647C701A92512600A45247 /* ARFairMapPreviewButton.m in Sources */,
 				5E3816FA1CBEDDF900477B17 /* LotListCollectionViewCell.swift in Sources */,
 				491A4DE2168E4343003B2246 /* Gene.m in Sources */,
@@ -5390,7 +5370,6 @@
 				5E4F17481CD80FD800AEB6BD /* LiveBidder.m in Sources */,
 				E619969C19B9099400DB273C /* UIScrollView+HitTest.m in Sources */,
 				B3DDE9C418313CFF0012819F /* ARArtworkPriceRowView.m in Sources */,
-				60E6447617BE424E004486B3 /* ARSwitchView.m in Sources */,
 				3CF144A418E3727F00B1A764 /* UIViewController+ScreenSize.m in Sources */,
 				603B55A117D64A1B00566935 /* ARArtworkPriceView.m in Sources */,
 				5ED9EC021C458E9500C979A6 /* SwiftExtensions.swift in Sources */,
@@ -5809,7 +5788,6 @@
 				6030253E1CBBB7B500B93583 /* AuctionLotMetadataStackScrollViewTests.swift in Sources */,
 				3C35CC7D189FF14800E3D8DE /* OrderedSetTests.m in Sources */,
 				D39E87521AB0FBDF006B5BE9 /* ARStubbedBrowseNetworkModel.m in Sources */,
-				5ECFA8EA1907E9AB000B92EA /* ARSwitchViewTests.m in Sources */,
 				5EC883241B1CBA8E000374C9 /* ARArtworkPreviewActionsViewTests.m in Sources */,
 				3CD0BB8918EB0CDF00A59910 /* ARFavoritesViewControllerTests.m in Sources */,
 				342F9FBB86D02FABC8AA9339 /* ARNavigationButtonsViewControllerTests.m in Sources */,
