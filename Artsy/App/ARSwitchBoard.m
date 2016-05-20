@@ -203,22 +203,27 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
         return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
-    if ([AROptions boolForOption:AROptionsEnableNativeLiveAuctions]) {
-        Route *route = self.echo.routes[@"ARLiveAuctionsURLDomain"];
-        if (route) {
-            [self registerPathCallbackForDomain:route.path callback:^id _Nullable(NSURL *_Nonnull url) {
+    Route *route = self.echo.routes[@"ARLiveAuctionsURLDomain"];
+    if (route) {
+        id _Nullable (^presentNativeAuctionsViewControllerBlock)(NSURL *_Nonnull);
+        if ([AROptions boolForOption:AROptionsEnableNativeLiveAuctions]) {
+            presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
+            {
                 NSString *path = url.path;
                 NSString *slug = [[path split:@"/"] lastObject];
                 return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
-            }];
-
-            /// Temp
-            [self registerPathCallbackForDomain:@"live-staging.artsy.net" callback:^id _Nullable(NSURL *_Nonnull url) {
-                NSString *path = url.path;
-                NSString *slug = [[path split:@"/"] lastObject];
-                return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
-            }];
+            };
+        } else {
+            presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
+            {
+                ARInternalMobileWebViewController *auctionWebViewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+                return [[ARSerifNavigationViewController alloc] initWithRootViewController:auctionWebViewController];
+            };
         }
+
+        [self registerPathCallbackForDomain:route.path callback:presentNativeAuctionsViewControllerBlock];
+        /// Temp
+        [self registerPathCallbackForDomain:@"live-staging.artsy.net" callback:presentNativeAuctionsViewControllerBlock];
     }
 
     // This route will match any single path component and thus should be added last.

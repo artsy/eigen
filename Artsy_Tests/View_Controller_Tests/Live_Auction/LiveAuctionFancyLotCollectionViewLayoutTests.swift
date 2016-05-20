@@ -7,7 +7,6 @@ import FLKAutoLayout
 @testable
 import Artsy
 
-
 class LiveAuctionFancyLotCollectionViewLayoutTests: QuickSpec {
     override func spec() {
         beforeSuite {
@@ -26,49 +25,70 @@ class LiveAuctionFancyLotCollectionViewLayoutTests: QuickSpec {
         var salesPerson: LiveAuctionsSalesPersonType!
         let rect = CGRect(x: 400, y: 0, width: 400, height: 400)
 
-        beforeEach {
+        it("looks good compact") {
             salesPerson = stub_auctionSalesPerson()
             dataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
-            subject = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource)
+            subject = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: .Compact)
             collectionView = UICollectionView(frame: frame, collectionViewLayout: subject)
             collectionView.registerClass(LiveAuctionLotImageCollectionViewCell.self, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
             collectionView.dataSource = dataSource
             collectionView.backgroundColor = .whiteColor()
-
             container = UIView(frame: frame).then {
                 $0.addSubview(collectionView)
                 collectionView.alignToView($0)
             }
 
             collectionView.scrollRectToVisible(rect, animated: false)
-        }
 
-        it("looks good by default") {
             expect(container) == snapshot()
         }
 
-        it("looks good when scrolled back a bit") {
-            collectionView.setContentOffset(CGPoint(x: rect.origin.x-100, y: 0), animated: false) // simulates a scroll
-            collectionView.reloadData()
-            expect(container) == snapshot()
-        }
+        describe("normal size") {
+            beforeEach {
+                salesPerson = stub_auctionSalesPerson()
+                dataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
+                subject = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: .Normal)
+                collectionView = UICollectionView(frame: frame, collectionViewLayout: subject)
+                collectionView.registerClass(LiveAuctionLotImageCollectionViewCell.self, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
+                collectionView.dataSource = dataSource
+                collectionView.backgroundColor = .whiteColor()
 
-        it("looks good when scrolled back a lot") {
-            collectionView.setContentOffset(CGPoint(x: rect.origin.x-201, y: 0), animated: false) // simulates a scroll
-            collectionView.reloadData()
-            expect(container) == snapshot()
-        }
+                container = UIView(frame: frame).then {
+                    $0.addSubview(collectionView)
+                    collectionView.alignToView($0)
+                }
 
-        it("looks good when scrolled forward a bit") {
-            collectionView.setContentOffset(CGPoint(x: rect.origin.x+100, y: 0), animated: false) // simulates a scroll
-            collectionView.reloadData()
-            expect(container) == snapshot()
-        }
+                collectionView.scrollRectToVisible(rect, animated: false)
+            }
 
-        it("looks good when scrolled forward a lot") {
-            collectionView.setContentOffset(CGPoint(x: rect.origin.x+201, y: 0), animated: false) // simulates a scroll
-            collectionView.reloadData()
-            expect(container) == snapshot()
+            it("looks good by default") {
+                expect(container) == snapshot()
+            }
+
+            it("looks good when scrolled back a bit") {
+                collectionView.setContentOffset(CGPoint(x: rect.origin.x-100, y: 0), animated: false) // simulates a scroll
+                collectionView.reloadData()
+                expect(container) == snapshot()
+            }
+
+            it("looks good when scrolled back a lot") {
+                collectionView.setContentOffset(CGPoint(x: rect.origin.x-201, y: 0), animated: false) // simulates a scroll
+                collectionView.reloadData()
+                expect(container) == snapshot()
+            }
+
+            it("looks good when scrolled forward a bit") {
+                collectionView.setContentOffset(CGPoint(x: rect.origin.x+100, y: 0), animated: false) // simulates a scroll
+                collectionView.reloadData()
+                expect(container) == snapshot()
+            }
+
+            it("looks good when scrolled forward a lot") {
+                collectionView.setContentOffset(CGPoint(x: rect.origin.x+201, y: 0), animated: false) // simulates a scroll
+                collectionView.reloadData()
+                expect(container) == snapshot()
+            }
         }
+        
     }
 }

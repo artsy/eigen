@@ -27,6 +27,7 @@ upcoming:
       - Handles bidding in an auction with stubbed API interfaces. - orta
       - Basic metaphysics access for live sale static data. - ash
       - Lot metadata can toggle between a short artwork blurb and full metadata - orta
+      - Fixed lot view layout for iPad. - ash
       
     infra:
       - Updates to Interstellar v2. - ash
