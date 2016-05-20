@@ -42,6 +42,7 @@ upcoming:
     - Support for trial users, and non-registered users on live auctions - orta
     - Lot list displays proper price. - ash
     - Mobile live auctions web views are presented in a modal view controller instead of pushed. - ash
+    - Fixed lot view layout for iPad. - ash
 
   notes:
     - Fixes long auction names falling off right edge. - ash

@@ -9,11 +9,38 @@ import Artsy
 
 class LiveAuctionLotSetViewControllerSpec: QuickSpec {
     override func spec() {
-        it("looks good by default") {
-            let fakeSalesPerson = stub_auctionSalesPerson()
-            let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson)
 
-            expect(subject) == snapshot()
+        sharedExamples("live auctions lot set") { (context: SharedExampleContext) in
+            var horizontalSizeClass: UIUserInterfaceSizeClass!
+            var device: ARDeviceType!
+
+            beforeEach {
+                horizontalSizeClass = UIUserInterfaceSizeClass(rawValue: context()["horizontalSizeClass"] as! Int)
+                device = ARDeviceType(rawValue: context()["device"] as! Int)
+            }
+
+            it("looks good by default") {
+                let fakeSalesPerson = stub_auctionSalesPerson()
+                let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson, traitCollection: UITraitCollection.init(horizontalSizeClass: horizontalSizeClass))
+
+                subject.stubTraitCollection(UITraitCollection(horizontalSizeClass: horizontalSizeClass))
+
+                ARTestContext.useDevice(device) {
+                    expect(subject).to( haveValidSnapshot() )
+                }
+            }
+        }
+
+        describe("regular horizontal size class ") {
+            itBehavesLike("live auctions lot set") {
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.Regular.rawValue, "device": ARDeviceType.Pad.rawValue] as NSDictionary
+            }
+        }
+
+        describe("compact horizontal size class") {
+            itBehavesLike("live auctions lot set") {
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.Compact.rawValue, "device": ARDeviceType.Phone6.rawValue] as NSDictionary
+            }
         }
     }
 }

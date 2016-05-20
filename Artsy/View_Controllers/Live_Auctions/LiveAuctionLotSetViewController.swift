@@ -13,23 +13,39 @@ class LiveAuctionLotSetViewController: UIViewController {
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
     let progressBar = SimpleProgressView()
     let pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
-    let lotImageCollectionView: UICollectionView
-    let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource
-    let lotCollectionViewLayout: LiveAuctionFancyLotCollectionViewLayout // TODO: On iPad, this needs to be different. Not fancy.
+    let lotImageCollectionView: UICollectionView?
+    let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource?
+    let lotCollectionViewLayout: LiveAuctionFancyLotCollectionViewLayout?
 
     var hasBeenSetup = false
     var firstAppearance = true
 
-    init(salesPerson: LiveAuctionsSalesPersonType) {
+    init(salesPerson: LiveAuctionsSalesPersonType, traitCollection: UITraitCollection) {
         self.salesPerson = salesPerson
 
-        lotImageCollectionViewDataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
-        lotCollectionViewLayout = LiveAuctionFancyLotCollectionViewLayout(delegate: lotImageCollectionViewDataSource)
+        if traitCollection .horizontalSizeClass != .Regular {
+            let size: LiveAuctionFancyLotCollectionViewLayout.Size
+            if CGRectGetWidth(UIScreen.mainScreen().applicationFrame) > 320 {
+                size = .Normal
+            } else {
+                size = .Compact
+            }
+            let dataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
+            lotImageCollectionViewDataSource = dataSource
+            let layout = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: size)
+            lotCollectionViewLayout = layout
 
-        lotImageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: lotCollectionViewLayout)
-        lotImageCollectionView.registerClass(LiveAuctionLotCollectionViewDataSource.CellClass, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
-        lotImageCollectionView.dataSource = lotImageCollectionViewDataSource
-        lotImageCollectionView.backgroundColor = .whiteColor()
+            let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout).then {
+                $0.registerClass(LiveAuctionLotCollectionViewDataSource.CellClass, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
+                $0.dataSource = dataSource
+                $0.backgroundColor = .whiteColor()
+            }
+            lotImageCollectionView = collectionView
+        } else {
+            lotImageCollectionViewDataSource = nil
+            lotCollectionViewLayout = nil
+            lotImageCollectionView = nil
+        }
 
         super.init(nibName: nil, bundle: nil)
 
@@ -48,8 +64,10 @@ class LiveAuctionLotSetViewController: UIViewController {
         view.backgroundColor = .whiteColor()
 
         // Lot collection view setup.
-        view.addSubview(lotImageCollectionView)
-        lotImageCollectionView.alignTop("0", leading: "0", bottom: "-288", trailing: "0", toView: view) // TODO: Figure this out huh?
+        lotImageCollectionView?.then {
+            view.addSubview($0)
+            $0.alignTop("0", leading: "0", bottom: "-288", trailing: "0", toView: view) // TODO: Figure this out huh?
+        }
 
         // Page view controller setup.
         ar_addModernChildViewController(pageController)
@@ -72,7 +90,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         progressBar.alignBottomEdgeWithView(view, predicate: "-165")
 
         salesPerson.currentFocusedLotIndex.subscribe { [weak self] _ in
-            self?.lotImageCollectionView.reloadData()
+            self?.lotImageCollectionView?.reloadData()
         }
 
         // Final setup for our (now constructed) view hierarchy.
@@ -83,21 +101,22 @@ class LiveAuctionLotSetViewController: UIViewController {
         super.viewWillAppear(animated)
         // TODO: hand changing trait collections.
         setupToolbar()
-        lotCollectionViewLayout.updateScreenWidth(CGRectGetWidth(view.frame))
+        lotCollectionViewLayout?.updateScreenWidth(CGRectGetWidth(view.frame))
 
         guard firstAppearance else { return }
         firstAppearance = true
 
         // The collection view "rests" at a non-zero index. We need to set it, but doing so immediately is too soon, so we dispatch to the next runloop invocation.
         ar_dispatch_main_queue {
+            guard let lotImageCollectionView = self.lotImageCollectionView else { return }
             let initialRect = CGRect(
                 x: CGRectGetWidth(self.view.frame),
                 y: 0,
-                width: CGRectGetWidth(self.lotImageCollectionView.frame),
-                height: CGRectGetHeight(self.lotImageCollectionView.frame)
+                width: CGRectGetWidth(lotImageCollectionView.frame),
+                height: CGRectGetHeight(lotImageCollectionView.frame)
             )
-            self.lotImageCollectionView.scrollRectToVisible(initialRect, animated: false)
-            self.lotImageCollectionView.reloadData()
+            lotImageCollectionView.scrollRectToVisible(initialRect, animated: false)
+            lotImageCollectionView.reloadData()
         }
     }
 
@@ -201,8 +220,11 @@ class LiveAuctionLotSetViewController: UIViewController {
 //        guard let viewController = pageController.viewControllers?.first as? LiveAuctionLotViewController else { return }
 //        let direction: UIPageViewControllerNavigationDirection = viewController.index > index ? .Forward : .Reverse
 
-        let direction = UIPageViewControllerNavigationDirection.Forward
-        pageController.setViewControllers([currentLotVC!], direction: direction, animated: animated, completion: nil)
+        salesPerson.currentFocusedLotIndex.update(index)
+        lotImageCollectionView?.reloadData()
+        // TODO: Animations are disabled for now because it's unclear how to reload the collection view. Unlike the UIPVC,
+        //       the collection view shows previous and next images, and can't be scrolled to the current lot image without flickering.
+        pageController.setViewControllers([currentLotVC!], direction: .Forward, animated: false, completion: nil)
     }
 
     func jumpToLiveLot() {
@@ -258,17 +280,17 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
 
     // When the user scrolls.
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
+        lotImageCollectionView?.setContentOffset(scrollView.contentOffset, animated: false)
     }
 
     // When we scroll programmatically with/out animation.
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
+        lotImageCollectionView?.setContentOffset(scrollView.contentOffset, animated: false)
     }
 
     // When the user has released their finger and the scroll view is sliding to a gentle stop.
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
+        lotImageCollectionView?.setContentOffset(scrollView.contentOffset, animated: false)
     }
 
 }
