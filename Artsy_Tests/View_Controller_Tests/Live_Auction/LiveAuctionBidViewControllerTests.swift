@@ -82,7 +82,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
             let examples:[String: LiveAuctionBiddingProgressState] = [
                 "in progress": .BiddingInProgress,
                 "is max bidder": .BidSuccess(isMaxBidder: true),
-                "not max bidder": .BidSuccess(isMaxBidder: true),
+                "not max bidder": .BidSuccess(isMaxBidder: false),
                 "network issues": .BidNetworkFail,
                 "waiting": .LotWaitingToOpen,
                 "sold": .LotSold,

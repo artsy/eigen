@@ -91,11 +91,11 @@ class LiveAuctionBidButton : ARFlatButton {
                 enabled = true
             case .BiddingInProgress:
                 setupUI("Bidding...", background: purple)
-            case .BidSuccess(let outbid):
-                if outbid {
-                    setupUI("Outbid", background: red)
-                } else {
+            case .BidSuccess(let isMaxBidder):
+                if isMaxBidder {
                     setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
+                } else {
+                    setupUI("Outbid", background: red)
                 }
 
             case .BidNetworkFail:

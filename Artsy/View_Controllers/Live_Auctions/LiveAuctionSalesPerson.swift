@@ -49,7 +49,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
         self.sale = sale
-        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0) }
+        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderID: bidderID) }
 
         let host = ARRouter.baseCausalitySocketURLString()
         self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderID: bidderID)
