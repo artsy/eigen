@@ -27,6 +27,7 @@
 #import "ARFairMapAnnotation.h"
 #import "ARAnalyticsVisualizer.h"
 #import "ARAnalyticsPapertrail.h"
+#import "ARAppNotificationsDelegate.h"
 
 // View Controllers
 #import "ARFairGuideViewController.h"
@@ -747,6 +748,51 @@
                                           };
                             }
                         }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARAppNotificationsDelegate.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsPushNotificationLocal,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(registerUserInterest:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id class, NSArray *_){
+                                return @{
+                                         @"outcome"      : @"yes",
+                                         @"context_type" : @"onboarding"
+                                         };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsPushNotificationLocal,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(registerUserDisinterest:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{
+                                         @"outcome"      : @"cancel",
+                                         @"context_type" : @"onboarding"
+                                         };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsPushNotificationApple,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(application:didRegisterForRemoteNotificationsWithDeviceToken:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id class, NSArray *_){
+                                return @{
+                                         @"outcome"      : @"yes",
+                                         @"context_type" : @"onboarding"
+                                         };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsPushNotificationApple,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(application:didFailToRegisterForRemoteNotificationsWithError:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{
+                                         @"outcome"      : @"cancel",
+                                         @"context_type" : @"onboarding"
+                                         };
+                            }
+                        },
                     ]
                 },
                 @{
