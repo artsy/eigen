@@ -22,7 +22,71 @@
     [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[self alloc] init];
 }
 
+#pragma mark -
+#pragma mark Local Push Notification Alerts
+
 - (void)registerForDeviceNotifications
+{
+    [self displayPushNotificationLocalRequestPrompt];
+}
+
+- (void)displayPushNotificationLocalRequestPrompt
+{
+    UIAlertController *alert = [self pushNotificationPromptAlertController];
+
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [self registerUserInterest];
+                                                          }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Don't Allow" style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action) {
+                                                              [self registerUserDisinterest];
+                                                         }];
+    [alert addAction:cancelAction];
+    [alert addAction:confirmAction];
+
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+}
+
+
+- (void)displayPushNotificationSettingsPrompt
+{
+    UIAlertController *alert = [self pushNotificationPromptAlertController];
+
+    UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:@"Go to Settings" style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction *action) {
+                                                              [self presentSettings];
+                                                           }];
+    [alert addAction:settingsAction];
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)registerUserInterest
+{
+    [self registerForDeviceNotificationsWithApple];
+}
+
+- (void)registerUserDisinterest
+{
+    // this is for analytics to hook into
+}
+
+- (void)presentSettings
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+}
+
+- (UIAlertController *)pushNotificationPromptAlertController
+{
+    return [UIAlertController alertControllerWithTitle:@"Artsy Would Like to Send You Notifications"
+                                               message:@"Turn on notifications so you can get important updates about artists you follow"
+                                        preferredStyle:UIAlertControllerStyleAlert];
+}
+
+#pragma mark -
+#pragma mark Push Notification Register
+
+- (void)registerForDeviceNotificationsWithApple
 {
     ARActionLog(@"Registering with Apple for remote notifications.");
     UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
@@ -30,6 +94,9 @@
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
+
+#pragma mark -
+#pragma mark Push Notification Delegate
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
