@@ -47,9 +47,9 @@
     return self;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTextChanged:)
                                                  name:UITextFieldTextDidChangeNotification
@@ -63,9 +63,12 @@
                                                object:nil];
 }
 
-- (void)dealloc
+- (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidBeginEditingNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidEndEditingNotification object:nil];
 }
 
 

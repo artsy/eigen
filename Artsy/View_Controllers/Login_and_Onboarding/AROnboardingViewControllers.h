@@ -3,5 +3,4 @@
 #import "ARSlideshowViewController.h"
 #import "ARCreateAccountViewController.h"
 #import "ARPriceRangeViewController.h"
-#import "ARSignUpActiveUserViewController.h"
 #import "AROnboardingWebViewController.h"

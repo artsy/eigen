@@ -34,17 +34,16 @@
 #import "ARShowViewController.h"
 #import "ARProfileViewController.h"
 #import "ARAppSearchViewController.h"
-#import "AROnboardingGeneTableController.h"
 #import "ARInquireForArtworkViewController.h"
 #import "ARArtworkViewController.h"
-#import "AROnboardingArtistTableController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARSignUpSplashViewController.h"
 #import "ARLoginViewController.h"
-#import "ARSignUpActiveUserViewController.h"
 #import "ARCreateAccountViewController.h"
 #import "ARGeneViewController.h"
 #import "ARPersonalizeViewController.h"
+#import "AROnboardingPersonalizeTableViewController.h"
+#import "ARPriceRangeViewController.h"
 #import "ARViewInRoomViewController.h"
 #import "AROnboardingMoreInfoViewController.h"
 #import "ARArtistViewController.h"
@@ -456,63 +455,7 @@
                         },
                     ]
                 },
-                @{
-                    ARAnalyticsClass: AROnboardingArtistTableController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistUnfollow,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(unfollowArtist:)),
-                            ARAnalyticsProperties:^NSDictionary*(AROnboardingArtistTableController *controller, NSArray *parameters) {
-                                Artist *artist = parameters[0];
-                                return @{
-                                    @"source_screen": @"Onboarding",
-                                    @"artist_slug" : artist.artistID ?: @"",
-                                };
-                            }
-                        },
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARSignUpActiveUserViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSignInWebCredentials,
-                            ARAnalyticsSelectorName: @"loggedInWithSharedCredentials",
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true"};
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedLogIn,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(goToLogin:),
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true"};
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
-                            ARAnalyticsSelectorName: @"signUpWithEmail:",
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true", @"type": @"email"};
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
-                            ARAnalyticsSelectorName: @"connectWithFacebook:",
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true", @"type": @"facebook"};
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
-                            ARAnalyticsSelectorName: @"connectWithTwitter:",
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpActiveUserViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true", @"type": @"email"};
-                            }
-                        },
-                    ]
-                },
-                @{
+                    @{
                     ARAnalyticsClass: ARLoginViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -636,88 +579,245 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARPersonalizeViewController.class,
+                    ARAnalyticsClass: ARSignUpSplashViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingCompletedPersonalize,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(continueTapped:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARPersonalizeViewController *controller, NSArray *parameters) {
-                                return controller.followedThisSession || controller.geneController.numberOfFollowedGenes;
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *_){
-                                return @{
-                                    @"artist_count": @(controller.followedThisSession),
-                                    @"gene_count": @(controller.geneController.numberOfFollowedGenes)
-                                };
-                            },
+                            ARAnalyticsEventName: ARAnalyticsOnboardingGetStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(startOnboarding:)),
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingSkippedPersonalize,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(continueTapped:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARPersonalizeViewController *controller, NSArray *parameters) {
-                                return !(controller.followedThisSession || controller.geneController.numberOfFollowedGenes);
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistUnfollow,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(searchToggleFollowStatusForArtist:atIndexPath:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARPersonalizeViewController *controller, NSArray *parameters) {
-                                Artist *artist = parameters.firstObject;
-                                return [controller.artistController hasArtist:artist];
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *parameters){
-                                Artist *artist = parameters.firstObject;
-                                return @{
-                                    @"source_screen": @"Onboarding",
-                                    @"artist_slug" : artist.artistID,
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistFollow,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(searchToggleFollowStatusForArtist:atIndexPath:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARPersonalizeViewController *controller, NSArray *parameters) {
-                                Artist *artist = parameters.firstObject;
-                                return !([controller.artistController hasArtist:artist]);
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *parameters){
-                                Artist *artist = parameters.firstObject;
-                                return @{
-                                    @"source_screen": @"Onboarding",
-                                    @"artist_slug" : artist.artistID,
-                                };
-                            },
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLogin,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(logIn:)),
                         },
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARSignUpSplashViewController.class,
+                    ARAnalyticsClass: AROnboardingViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsTappedLogIn,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(logIn:)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedSignUp,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(signUp:)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSignInWebCredentials,
-                            ARAnalyticsSelectorName: @"loggedInWithSharedCredentials",
-                            ARAnalyticsProperties: ^NSDictionary *(ARSignUpSplashViewController *controller, NSArray *_) {
-                                return @{@"active_user": @"true"};
+                            ARAnalyticsEventName: ARAnalyticsOnboardingBudgetSelected,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(setPriceRangeDone:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
+                                NSInteger range = [parameters.firstObject integerValue];
+                                NSString *stringRange = [NSString stringWithFormat:@"%@", @(range)];
+                                return @{ @"budget" : stringRange };
                             }
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsTryWithoutAccount,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(startTrial)),
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupSuccess,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fbSuccessWithToken:email:name:)),
                             ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
-                            NSInteger threshold = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingPromptThresholdDefault];
-                                return @{
-                                    @"tap_threshold" : @(threshold)
-                                };
-                            },
+                                return @{ @"context_type" : @"facebook" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fbError:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"facebook",
+                                          @"error"        : @"Could not get facebook credentials"
+                                          };
+                            }
                         }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARLoginViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(login:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"email" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(twitter:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"twitter" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fb:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"facebook" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginSuccess,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loggedInWithType:user:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                ARLoginViewControllerLoginType type = [_.firstObject integerValue];
+                                if  (type == ARLoginViewControllerLoginTypeEmail) {
+                                    return @{ @"context_type" : @"email" };
+                                } else if (type == ARLoginViewControllerLoginTypeTwitter) {
+                                    return @{ @"context_type" : @"twitter" };
+                                } else if (type == ARLoginViewControllerLoginTypeFacebook) {
+                                    return @{ @"context_type" : @"facebook" };
+                                }
+                                return @{};
+                            },
+                            ARAnalyticsShouldFire: ^BOOL(id *controller, NSArray *_) {
+                                ARLoginViewControllerLoginType type = [_.firstObject integerValue];
+                                return (type == ARLoginViewControllerLoginTypeEmail ||
+                                        type == ARLoginViewControllerLoginTypeTwitter ||
+                                        type == ARLoginViewControllerLoginTypeFacebook
+                                        );
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(twitterError:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"twitter",
+                                          @"error"        : @"could not get twitter credentials"
+                                          };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fbError:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"facebook",
+                                          @"error"        : @"could not get facebook credentials"
+                                          };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fbNoUser:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"facebook",
+                                          @"error"        : @"no artsy account associated with facebook profile"
+                                          };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingLoginFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(authenticationFailure:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"email",
+                                          @"error"        : @"invalid email and or password"
+                                          };
+                            }
+                        },
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARCreateAccountViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(submit:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"email" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupStarted,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(fb:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"facebook" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupSuccess,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loginWithUserCredentialsWithSuccess:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"email" };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(accountExists:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"email",
+                                          @"error"        : @"account already exists"
+                                          };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingSignupFailed,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(showWarningCouldNotCreateAccount:)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                return @{ @"context_type" : @"email",
+                                          @"error"        : @"possible email or password issue"
+                                          };
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARPersonalizeViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingTappedSearch,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(searchStarted:)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *_){
+                                if (controller.state == AROnboardingStagePersonalizeArtists) {
+                                    return @{
+                                             @"context_type": @"artists"
+                                             };
+                                } else if (controller.state == AROnboardingStagePersonalizeCategories) {
+                                    return @{
+                                             @"context_type": @"categories"
+                                             };
+                                } else {
+                                    return @{};
+                                }
+                            },
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                return (controller.state == AROnboardingStagePersonalizeArtists ||
+                                        controller.state == AROnboardingStagePersonalizeCategories);
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsArtistFollow,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(artistFollowed:)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *_){
+                                Artist *artist = _.firstObject;
+                                NSString *sourceScreen = @"";
+                                if (controller.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModePlaceholder) {
+                                    sourceScreen = @"onboarding top artists";
+                                } else if (controller.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
+                                    sourceScreen = @"onboarding search";
+                                } else if (controller.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults) {
+                                    sourceScreen = @"onboarding recommended";
+                                }
+                                return @{
+                                         @"artist_slug" : artist.artistID,
+                                         @"artist_id" : artist.artistID,
+                                         @"source_screen" : sourceScreen
+                                        };
+                            },
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                return (controller.state == AROnboardingStagePersonalizeArtists);
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsGeneFollow,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(categoryFollowed:)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *_){
+//                                Gene *gene = _.firstObject;
+                                NSString *sourceScreen = @"";
+                                if (controller.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModePlaceholder) {
+                                    sourceScreen = @"onboarding top artists";
+                                } else if (controller.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
+                                    sourceScreen = @"onboarding search";
+                                } else if (controller.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults) {
+                                    sourceScreen = @"onboarding recommended";
+                                }
+                                return @{
+                                         @"gene_id" : @"this needs replacing once categories are fixed", //gene.geneID,
+                                         @"source_screen" : sourceScreen
+                                        };
+                            },
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                return (controller.state == AROnboardingStagePersonalizeCategories);
+                            }
+                        },
                     ]
                 },
                 @{
@@ -918,57 +1018,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: AROnboardingViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSlideshowStarted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(startSlideshow)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingStarted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(splashDone:)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingStarted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(splashDoneWithLogin:)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingStartedCollectorLevel,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(collectorLevel)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingStartedPersonalize,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(personalize)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingCompletedPersonalize,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(personalizeDone)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingStartedPriceRange,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(priceRange)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingCompletedPriceRange,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(setPriceRangeDone:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *parameters){
-                                NSInteger range = [parameters.firstObject integerValue];
-                                NSString *stringRange = [NSString stringWithFormat:@"%@", @(range)];
-                                return @{ @"price_range" : stringRange };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsOnboardingCompleted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(dismissOnboardingWithVoidAnimation:)),
-                            ARAnalyticsProperties: ^NSDictionary*(AROnboardingViewController *controller, NSArray *_){
-                                return @{
-                                    @"configuration" : [controller onboardingConfigurationString]
-                                };
-                            },
-                        },
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARTrialController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -1118,41 +1167,49 @@
             ],
             ARAnalyticsTrackedScreens: @[
                 @{
-                    ARAnalyticsClass: AROnboardingViewController.class,
-                    ARAnalyticsDetails: @[ @{
-                        ARAnalyticsPageName: @"Splash",
-                        ARAnalyticsShouldFire: ^BOOL(AROnboardingViewController *controller, NSArray *parameters) {
-                            return controller.initialState == ARInitialOnboardingStateSlideShow;
-                        }
-                    }, @{
-                        ARAnalyticsPageName: @"Onboarding",
-                        ARAnalyticsSelectorName: ARAnalyticsSelector(collectorLevelDone:),
-                        ARAnalyticsProperties: ^NSDictionary *(AROnboardingViewController *controller, NSArray *parameters) {
-                            return @{ @"onboarding_step": @"collector_level" };
-                        }
-                    }, @{
-                        ARAnalyticsPageName: @"Onboarding",
-                        ARAnalyticsSelectorName: ARAnalyticsSelector(setPriceRangeDone:),
-                        ARAnalyticsProperties: ^NSDictionary *(AROnboardingViewController *controller, NSArray *parameters) {
-                            NSString *range = [NSString stringWithFormat:@"%@", parameters.firstObject];
-                            return @{ @"onboarding_step": @"price_range",
-                                      @"price_range": range };
-                        }
-                    }, @{
-                        ARAnalyticsPageName: @"Onboarding",
-                        ARAnalyticsSelectorName: ARAnalyticsSelector(personalizeDone),
-                        ARAnalyticsProperties: ^NSDictionary *(AROnboardingViewController *controller, NSArray *parameters) {
-                            return @{ @"onboarding_step": @"personalize" };
-                        }
-                    }]
-                },
-                @{
-                    ARAnalyticsClass: ARCreateAccountViewController.class,
-                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Signup" } ]
+                    ARAnalyticsClass: ARSignUpSplashViewController.class,
+                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Onboarding start" } ]
                 },
                 @{
                     ARAnalyticsClass: ARLoginViewController.class,
-                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Login" } ]
+                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Onboarding login" } ]
+                },
+                @{
+                    ARAnalyticsClass: ARCreateAccountViewController.class,
+                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Onboarding signup" } ]
+                },
+                @{
+                    ARAnalyticsClass: ARPersonalizeViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Onboarding follow artists",
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                return (controller.state == AROnboardingStagePersonalizeArtists);
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARPersonalizeViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Onboarding follow categories",
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                return (controller.state == AROnboardingStagePersonalizeCategories);
+                            }
+                        }
+                    ]
+                },
+                @{
+                    ARAnalyticsClass: ARPersonalizeViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsPageName: @"Onboarding select budget",
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                return (controller.state == AROnboardingStagePersonalizeBudget);
+                            }
+                        }
+                    ]
                 },
                 @{
                     ARAnalyticsClass: ARNavigationController.class,

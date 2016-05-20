@@ -3,6 +3,7 @@ upcoming:
   details: Onboarding / New Gene VC / Live
 
   dev:
+    - Analytics added for onboarding - maxim
     - Onboarding budget and navigation flow - maxim
     - Onboarding login and sign up view controllers - maxim
     - Onboarding artist search and related suggestions - maxim

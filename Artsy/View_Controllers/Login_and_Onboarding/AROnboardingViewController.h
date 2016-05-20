@@ -30,7 +30,6 @@ typedef NS_ENUM(NSInteger, ARInitialOnboardingState) {
 typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStageSlideshow,
     AROnboardingStageStart,
-    AROnboardingStageChooseMethod,
     AROnboardingStagePersonalizeArtists,
     AROnboardingStagePersonalizeCategories,
     AROnboardingStagePersonalizeBudget,
@@ -58,8 +57,6 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 // not when the user initially chooses to use the app as a trial user.
 - (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount didCancel:(BOOL)cancelledSignIn;
 - (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount;
-
-- (NSString *)onboardingConfigurationString;
 
 @property (nonatomic, assign) enum ARTrialContext trialContext;
 
