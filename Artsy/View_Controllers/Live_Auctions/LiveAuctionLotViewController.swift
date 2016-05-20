@@ -199,7 +199,7 @@ extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
 
     func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton) {
         let bidVC = StoryboardScene.LiveAuctions.instantiateBid()
-        bidVC.bidViewModel = LiveAuctionBidViewModel(lotVM: lotViewModel)
+        bidVC.bidViewModel = LiveAuctionBidViewModel(lotVM: lotViewModel, salesPerson: salesPerson)
         
         let nav = ARSerifNavigationViewController(rootViewController: bidVC)
         guard let pageVC = parentViewController else { return }

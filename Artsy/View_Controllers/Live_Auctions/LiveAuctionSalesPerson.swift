@@ -20,7 +20,7 @@ protocol LiveAuctionsSalesPersonType {
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel)
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
@@ -110,8 +110,8 @@ extension LiveAuctionsSalesPerson {
         stateManager.bidOnLot(lot.lotID, amountCents: askingPrice, biddingViewModel: biddingViewModel)
     }
 
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) {
-        // TODO: Implement
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        stateManager.leaveMaxBidOnLot(lot.lotID, amountCents: amountCents, biddingViewModel: biddingViewModel)
     }
 }
 

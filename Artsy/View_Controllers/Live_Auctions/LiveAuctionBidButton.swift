@@ -8,9 +8,9 @@ enum LiveAuctionBidButtonState {
 }
 
 @objc protocol LiveAuctionBidButtonDelegate {
-    func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton)
-    func bidButtonRequestedBid(button: LiveAuctionBidButton)
-    func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton)
+    optional func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton)
+    optional func bidButtonRequestedBid(button: LiveAuctionBidButton)
+    optional func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton)
 }
 
 class LiveAuctionBidButton : ARFlatButton {
@@ -44,9 +44,9 @@ class LiveAuctionBidButton : ARFlatButton {
             switch bidState {
 
             case .TrialUser:
-                delegate?.bidButtonRequestedRegisterToBid(self)
+                delegate?.bidButtonRequestedRegisterToBid?(self)
             case .Biddable:
-                delegate?.bidButtonRequestedBid(self)
+                delegate?.bidButtonRequestedBid?(self)
 
             default: break
             }
@@ -54,7 +54,7 @@ class LiveAuctionBidButton : ARFlatButton {
         case .InActive(let lotState):
             switch lotState {
             case .UpcomingLot:
-                delegate?.bidButtonRequestedSubmittingMaxBid(self)
+                delegate?.bidButtonRequestedSubmittingMaxBid?(self)
 
             default: break
             }

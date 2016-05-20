@@ -84,7 +84,7 @@ extension PublicFunctions {
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
     }
 
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64) {
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
         guard let bidderID = bidderID else {
             return print("Tried to leave a max bid without a bidder ID on account")
         }
