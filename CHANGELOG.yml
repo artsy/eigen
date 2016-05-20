@@ -3,46 +3,52 @@ upcoming:
   details: Onboarding / New Gene VC / Live
 
   dev:
-    - Removed artwork auction results - sarah
-    - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
-    - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah
-    - Artwork view hides Contact button for uninquireable works - sarah
-    - QuickSilver now supports direct URLs. - ash
-    - Adds support for unknown Artsy URLs using internal web browsers. - ash
-    - Removed the Ask a Specialist button from artwork view - sarah
-    - Added a check in danger for ARTopMenuViewController+SwiftDeveloperExtras - sarah
-    - Generalized the RefineViewController - sarah
-    - Updates for Xcode 7.3. - ash
-    - CocoaPods now is v1.0b.8 - orta
-    - All UIViewController routing goes through ARTopMenuVC instead of self.navigationController - orta
-    - New state reconciliation for live auctions. -ash
-    - Scaffolding for sending live auction events. - ash
-    - Started the Live Auction Bidding Interface - orta
-    - Handles bidding in an auction with stubbed API interfaces. - orta
-    - Basic metaphysics access for live sale static data. - ash
-    - Lot metadata can toggle between a short artwork blurb and full metadata - orta
-    - All cent values are handled by UInt64 in Live Auction context - orta
-    - Present the Live AuctionVC in a modal - orta
-    - Support splitting between lot list and lots on iPad - orta
-    - Updates to Interstellar v2. - ash
-    - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
-    - New socket communication work for updated Causality. - ash
-    - Put native live auctions behind AROptions. - ash
-    - Danger is aware of how long classes take to compile. - orta
-    - Adds socket authentication from metaphysics JWT. - ash
-    - Adds implementation to handle some socket events. - ash
-    - Adds more socket event-handling. - ash
-    - Staging causality socket points to staging now instead of localhost. - ash
-    - Adds sale-wide event handling (changes to current lot). - ash
-    - Successfuly sends JSON to websocket for bidding, though bids fail. - ash
-    - Fixes to the design for the max bid view controller - orta
-    - Add support for showing the time since the lot was opened. - orta
-    - Changes to collectionview-based layout for live auction artwork image previews with fancy layout. - ash
-    - Offline support for Live. - orta
-    - Support for trial users, and non-registered users on live auctions - orta
-    - Lot list displays proper price. - ash
+    live_actions:
+      - Present the Live AuctionVC in a modal - orta
+      - Support splitting between lot list and lots on iPad - orta
+      - New socket communication work for updated Causality. - ash
+      - Put native live auctions behind AROptions. - ash
+      - Danger is aware of how long classes take to compile. - orta
+      - Adds socket authentication from metaphysics JWT. - ash
+      - Adds implementation to handle some socket events. - ash
+      - Adds more socket event-handling. - ash
+      - Staging causality socket points to staging now instead of localhost. - ash
+      - Adds sale-wide event handling (changes to current lot). - ash
+      - Successfuly sends JSON to websocket for bidding, though bids fail. - ash
+      - Fixes to the design for the max bid view controller - orta
+      - Add support for showing the time since the lot was opened. - orta
+      - Changes to collectionview-based layout for live auction artwork image previews with fancy layout. - ash
+      - Offline support for Live. - orta
+      - Support for trial users, and non-registered users on live auctions - orta
+      - Lot list displays proper price. - ash
+      - New state reconciliation for live auctions. -ash
+      - Scaffolding for sending live auction events. - ash
+      - Started the Live Auction Bidding Interface - orta
+      - Handles bidding in an auction with stubbed API interfaces. - orta
+      - Basic metaphysics access for live sale static data. - ash
+      - Lot metadata can toggle between a short artwork blurb and full metadata - orta
+      
+    infra:
+      - Updates to Interstellar v2. - ash
+      - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
+      - Updates for Xcode 7.3. - ash
+      - CocoaPods now is v1.0b.8 - orta
+      - QuickSilver now supports direct URLs. - ash
+    
+    gmv:      
+      - Removed artwork auction results - sarah
+      - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
+      - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah
+      - Artwork view hides Contact button for uninquireable works - sarah
+      - Adds support for unknown Artsy URLs using internal web browsers. - ash
+      - Removed the Ask a Specialist button from artwork view - sarah
+      - Added a check in danger for ARTopMenuViewController+SwiftDeveloperExtras - sarah
+      - Generalized the RefineViewController - sarah
+      - All UIViewController routing goes through ARTopMenuVC instead of self.navigationController - orta
+      - All cent values are handled by UInt64 in Live Auction context - orta
+      - Changed the paragraph padding on all ARTextView instances - orta
 
-  notes:
+  user_facing:
     - Fixes long auction names falling off right edge. - ash
     - Fixes live auction lots being in the wrong order. - ash
     - Adds support for loading Artsy subdomains internally. - ash
