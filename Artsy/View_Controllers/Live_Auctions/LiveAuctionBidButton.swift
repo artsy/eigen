@@ -73,9 +73,9 @@ class LiveAuctionBidButton : ARFlatButton {
 
 
         switch buttonState {
+
         // When the lot is live
         case .Active(let state):
-
             switch state {
             case .TrialUser:
                 setupUI("Register To Bid")

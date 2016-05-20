@@ -20,7 +20,7 @@ class AuctionNetworkModelSpec: QuickSpec {
         beforeEach {
             saleNetworkModel = Test_AuctionSaleNetworkModel(result: .Success(sale))
             saleArtworksNetworkModel = Test_AuctionSaleArtworksNetworkModel(result: Result.Success(saleArtworks))
-            registrationStatusNetworkModel = Test_AuctionRegistrationStatusNetworkModel(result: .Success(ArtsyAPISaleRegistrationStatusNotLoggedIn))
+            registrationStatusNetworkModel = Test_AuctionRegistrationStatusNetworkModel(result: .Success(.NotLoggedIn))
 
             subject = AuctionNetworkModel(saleID: saleID)
             subject.saleNetworkModel = saleNetworkModel
@@ -34,18 +34,18 @@ class AuctionNetworkModelSpec: QuickSpec {
 
         describe("registrationStatus") {
             it("works when not logged in") {
-                registrationStatusNetworkModel.registrationStatus = ArtsyAPISaleRegistrationStatusNotLoggedIn
-                expect(subject.registrationStatus) == ArtsyAPISaleRegistrationStatusNotLoggedIn
+                registrationStatusNetworkModel.registrationStatus = .NotLoggedIn
+                expect(subject.registrationStatus) == .NotLoggedIn
             }
 
             it("works when registered") {
-                registrationStatusNetworkModel.registrationStatus = ArtsyAPISaleRegistrationStatusRegistered
-                expect(subject.registrationStatus) == ArtsyAPISaleRegistrationStatusRegistered
+                registrationStatusNetworkModel.registrationStatus = .Registered
+                expect(subject.registrationStatus) == .Registered
             }
 
             it("works when not registered") {
-                registrationStatusNetworkModel.registrationStatus = ArtsyAPISaleRegistrationStatusNotRegistered
-                expect(subject.registrationStatus) == ArtsyAPISaleRegistrationStatusNotRegistered
+                registrationStatusNetworkModel.registrationStatus = .NotRegistered
+                expect(subject.registrationStatus) == .NotRegistered
             }
         }
 

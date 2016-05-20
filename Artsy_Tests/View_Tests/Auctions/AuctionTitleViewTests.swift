@@ -25,21 +25,21 @@ class AuctionTitleViewSpec: QuickSpec {
             }
 
             it("looks good with a logged out registration status") {
-                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusNotLoggedIn, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true)
+                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: .NotLoggedIn, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true)
                 subject.bounds.size.width = 400
 
                 expect(subject).to( haveValidSnapshot() )
             }
 
             it("looks good with a not registered registration status") {
-                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusNotRegistered, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true)
+                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: .NotRegistered, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true)
                 subject.bounds.size.width = 400
 
                 expect(subject).to( haveValidSnapshot() )
             }
 
             it("looks good with a registered registration status") {
-                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true)
+                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: .Registered, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true)
                 subject.bounds.size.width = 400
                 subject.constrainWidth("400")
 
@@ -47,7 +47,7 @@ class AuctionTitleViewSpec: QuickSpec {
             }
             
             it("looks good without a info button") {
-                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: false)
+                let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: .Registered, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: false)
                 subject.bounds.size.width = 400
                 
                 expect(subject).to( haveValidSnapshot() )
