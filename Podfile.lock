@@ -331,7 +331,7 @@ CHECKOUT OPTIONS:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   Emission:
-    :commit: c962092728cf9b5bc990e3d920676e54f5d1343a
+    :commit: f46f5b1c698eba4d47fdec6c9647f8e3c88c25c3
     :git: https://github.com/artsy/emission.git
   Extraction:
     :commit: 7312df7c9c005c196705cc9da7c5d53cde404854
