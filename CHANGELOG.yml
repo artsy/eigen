@@ -48,6 +48,7 @@ upcoming:
       - All UIViewController routing goes through ARTopMenuVC instead of self.navigationController - orta
       - All cent values are handled by UInt64 in Live Auction context - orta
       - Changed the paragraph padding on all ARTextView instances - orta
+      - Moved ARSwitchView and ARSpinner into new Extraction pod. - alloy
 
   user_facing:
     - Fixes long auction names falling off right edge. - ash
