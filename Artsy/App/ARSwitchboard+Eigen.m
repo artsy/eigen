@@ -3,18 +3,21 @@
 // View Controllers
 #import "ARArtworkSetViewController.h"
 #import "ARShowViewController.h"
-#import "ARFairArtistViewController.h"
 #import "ARGeneViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairGuideContainerViewController.h"
-#import "ARArtistViewController.h"
 #import "ARAuctionWebViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
+
+#import <Emission/ARArtistComponentViewController.h>
+#import "ARArtistViewController.h"
+// TODO This does not use the new React based VC yet.
+#import "ARFairArtistViewController.h"
 
 #import "Artsy-Swift.h"
 #import "AROptions.h"
@@ -126,9 +129,10 @@
 {
     if (fair) {
         return [[ARFairArtistViewController alloc] initWithArtistID:artistID fair:fair];
+    } else if ([AROptions boolForOption:AROptionsEnableReactArtist]) {
+        return (UIViewController<ARFairAwareObject> *)[[ARArtistComponentViewController alloc] initWithArtistID:artistID];
     } else {
         return [[ARArtistViewController alloc] initWithArtistID:artistID];
-        ;
     }
 }
 
