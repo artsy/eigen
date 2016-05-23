@@ -72,7 +72,7 @@ static ARTrialController *instance;
         self.successCallback = success;
 
         ARAppDelegate *appDelegate = [ARAppDelegate sharedInstance];
-        [appDelegate showTrialOnboardingWithState:ARInitialOnboardingStateInApp andContext:context];
+        [appDelegate showOnboardingWithState:ARInitialOnboardingStateInApp];
     }
 }
 

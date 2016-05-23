@@ -11,6 +11,7 @@
 // Only available on iOS 9.
 static BOOL IsSpotlightActionTypeAvailable = NO;
 
+
 @implementation ARAppActivityContinuationDelegate
 
 + (void)load
@@ -21,9 +22,7 @@ static BOOL IsSpotlightActionTypeAvailable = NO;
 
 - (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType;
 {
-    return [userActivityType isEqualToString:NSUserActivityTypeBrowsingWeb]
-            || (IsSpotlightActionTypeAvailable && [userActivityType isEqualToString:CSSearchableItemActionType])
-                || [userActivityType hasPrefix:@"net.artsy.artsy."];
+    return [userActivityType isEqualToString:NSUserActivityTypeBrowsingWeb] || (IsSpotlightActionTypeAvailable && [userActivityType isEqualToString:CSSearchableItemActionType]) || [userActivityType hasPrefix:@"net.artsy.artsy."];
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler;
@@ -45,16 +44,9 @@ static BOOL IsSpotlightActionTypeAvailable = NO;
     if ([[ARUserManager sharedManager] hasExistingAccount]) {
         showViewController();
     } else {
-
         // This is (hopefully) an edge-case where the user did not launch the app yet since installing it, in which case
-        // we skip on-boarding and sign in as trial user.
-        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-            showViewController();
-
-        } failure:^(NSError *error) {
-            // Don’t leave the user with an app in a broken state, so start on-boarding after all.
-            [(ARAppDelegate *)[[JSDecoupledAppDelegate sharedAppDelegate] appStateDelegate] showTrialOnboarding];
-        }];
+        // we show on-boarding.
+        [(ARAppDelegate *)[[JSDecoupledAppDelegate sharedAppDelegate] appStateDelegate] showOnboarding];
     }
 
     return YES;

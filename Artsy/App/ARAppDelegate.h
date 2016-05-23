@@ -21,8 +21,8 @@
 @property (strong, nonatomic, readonly) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readonly) NSString *landingURLRepresentation;
 
-- (void)showTrialOnboarding;
-- (void)showTrialOnboardingWithState:(enum ARInitialOnboardingState)state andContext:(enum ARTrialContext)context;
+- (void)showOnboarding;
+- (void)showOnboardingWithState:(enum ARInitialOnboardingState)state;
 
 // A sign-in is considered cancelled when the user taps the close button on a ARSignUpActiveUserViewController,
 // not when the user initially chooses to use the app as a trial user.
