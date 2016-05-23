@@ -279,6 +279,8 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:DHCSHakeNotificationName object:nil];
+    // TODO Make React Native’s DevMenu module play nice with others that also override -[UIWindow motionEnded:withEvent:]
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:@"RCTShowDevMenuNotification" object:nil];
 
     if ([AROptions boolForOption:AROptionsUseVCR]) {
         NSURL *url = [NSURL fileURLWithPath:[ARFileUtils cachesPathWithFolder:@"vcr" filename:@"eigen.json"]];
