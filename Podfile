@@ -107,7 +107,7 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then'
-  pod 'Interstellar/Core', git: 'https://github.com/ashfurrow/Interstellar.git', branch: 'observable-merge'
+  pod 'Interstellar/Core', git: 'https://github.com/ashfurrow/Interstellar.git', branch: 'fancy-unsubscription'
   pod 'Starscream'
   pod 'SwiftyJSON'
 

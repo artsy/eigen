@@ -17,9 +17,7 @@ class LiveAuctionLotViewController: UIViewController {
     private var imageBottomConstraint: NSLayoutConstraint?
     private var lotMetadataStack: AuctionLotMetadataStackScrollView?
 
-    private var currentLotObserver: ObserverToken?
-    private var saleAvailabilityObserver: ObserverToken?
-    private var lotStateObserver: ObserverToken?
+    private var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
 
     init(index: Int, lotViewModel: LiveAuctionLotViewModelType, salesPerson: LiveAuctionsSalesPersonType) {
         self.index = index
@@ -35,15 +33,7 @@ class LiveAuctionLotViewController: UIViewController {
     }
 
     deinit {
-        if let currentLotObserver = currentLotObserver {
-            salesPerson.currentLotSignal.unsubscribe(currentLotObserver)
-        }
-        if let saleAvailabilityObserver = saleAvailabilityObserver {
-            salesPerson.auctionViewModel.saleAvailabilitySignal.unsubscribe(saleAvailabilityObserver)
-        }
-        if let lotStateObserver = lotStateObserver {
-            lotViewModel.lotStateSignal.unsubscribe(lotStateObserver)
-        }
+        saleAvailabilityObserver?.unsubscribe()
     }
 
     override func viewDidLoad() {
@@ -80,7 +70,7 @@ class LiveAuctionLotViewController: UIViewController {
         /// We attach the bottom of the image preview to the bottom of the lot metadata,
         /// then later, when we have enough information about it's height the constant is set
         lotImagePreviewView?.then {
-            imageBottomConstraint = lotMetadataStack.alignBottomEdgeWithView($0, predicate: "0") // TODO: I dunno lol
+            imageBottomConstraint = lotMetadataStack.alignBottomEdgeWithView($0, predicate: "0")
         }
 
         /// This is a constraint that says "stick to the top of the lot view"
@@ -177,21 +167,31 @@ class LiveAuctionLotViewController: UIViewController {
         lotMetadataStack.viewModel.update(lotViewModel)
     }
 
-    /// In order to support moving up and down, we need to 
-    private var initialYLocation = CGFloat()
+    enum BidHistoryState {
+        case Closed, Open
+    }
+
+    // TODO: In order to support moving up and down, we need to assign a value when the recognizer begins
     private var lotHistoryHeightConstraint: NSLayoutConstraint?
+    private var bidHistoryState: BidHistoryState = .Closed {
+        didSet {
+            // TODO: update observable
+        }
+    }
 
     func dragToolbar(gesture: UIPanGestureRecognizer) {
-        guard let constraint = lotHistoryHeightConstraint else { return }
-        let translation = gesture.translationInView(gesture.view)
-        switch gesture.state {
-        case .Began:
-            initialYLocation = translation.y
+        guard let lotHistoryHeightConstraint = lotHistoryHeightConstraint else { return }
+        let translation = gesture.translationInView(view)
 
-        case .Changed:
-            constraint.constant -= translation.y - initialYLocation;
-            initialYLocation = translation.y
+        switch gesture.state {
+
+        case .Changed where translation.y <= 0:
+            print(translation.y)
+            lotHistoryHeightConstraint.constant = 70 - translation.y;
             view.setNeedsLayout()
+
+        case .Ended: break // TODO: "snap" based on most recent velocity.y
+
         default: break
         }
     }
