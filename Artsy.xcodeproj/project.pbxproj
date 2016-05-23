@@ -250,6 +250,7 @@
 		51DA12251B596035001B6F2A /* RefreshIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DA12241B596035001B6F2A /* RefreshIcon@2x.png */; };
 		51DCC6C81C60E26800455309 /* AuctionInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DCC6C71C60E26800455309 /* AuctionInformationViewController.swift */; };
 		51E576091BFFA16C00A146C1 /* Artsy.Store.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 51E576081BFFA16C00A146C1 /* Artsy.Store.entitlements */; };
+		51F2C5F41CEE8A7700B881BE /* ARAppDelegate+Emission.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F2C5F31CEE8A7700B881BE /* ARAppDelegate+Emission.m */; };
 		51F6960B1C6E55E7002B2E35 /* AuctionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F696071C6E55E0002B2E35 /* AuctionViewControllerTests.swift */; };
 		51F6960C1C6E55EA002B2E35 /* SaleViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F696081C6E55E0002B2E35 /* SaleViewModelTests.swift */; };
 		540262C618A0FAFB00844AE1 /* ARButtonWithImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 540262C518A0FAFB00844AE1 /* ARButtonWithImage.m */; };
@@ -1181,6 +1182,8 @@
 		51DCC6C41C5F924500455309 /* ARFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFonts.h; sourceTree = "<group>"; };
 		51DCC6C71C60E26800455309 /* AuctionInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionInformationViewController.swift; path = Auction/AuctionInformationViewController.swift; sourceTree = "<group>"; };
 		51E576081BFFA16C00A146C1 /* Artsy.Store.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Artsy.Store.entitlements; sourceTree = "<group>"; };
+		51F2C5F21CEE8A7700B881BE /* ARAppDelegate+Emission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Emission.h"; sourceTree = "<group>"; };
+		51F2C5F31CEE8A7700B881BE /* ARAppDelegate+Emission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Emission.m"; sourceTree = "<group>"; };
 		51F696071C6E55E0002B2E35 /* AuctionViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionViewControllerTests.swift; sourceTree = "<group>"; };
 		51F696081C6E55E0002B2E35 /* SaleViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaleViewModelTests.swift; sourceTree = "<group>"; };
 		540262C418A0FAFB00844AE1 /* ARButtonWithImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARButtonWithImage.h; sourceTree = "<group>"; };
@@ -4202,6 +4205,8 @@
 				60903CC3175CE21A002AB800 /* AROptions.m */,
 				607BF5A91C2413810034B519 /* ARAppStatus.h */,
 				607BF5AA1C2413810034B519 /* ARAppStatus.m */,
+				51F2C5F21CEE8A7700B881BE /* ARAppDelegate+Emission.h */,
+				51F2C5F31CEE8A7700B881BE /* ARAppDelegate+Emission.m */,
 			);
 			name = Setup;
 			sourceTree = "<group>";
@@ -5216,6 +5221,7 @@
 				5E47F35D1C444E3300EC0751 /* UIViewController+ORStackView.swift in Sources */,
 				6088B75917D20A0A00E4BB67 /* ARSlideshowView.m in Sources */,
 				5E88414E1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift in Sources */,
+				51F2C5F41CEE8A7700B881BE /* ARAppDelegate+Emission.m in Sources */,
 				49405AB317BEBAFF004F86D8 /* AROnboardingNavBarView.m in Sources */,
 				49F45188176A71B50041A4B4 /* ARArtworkSetViewController.m in Sources */,
 				49473F3317C18772004BF082 /* ARSlideshowViewController.m in Sources */,

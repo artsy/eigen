@@ -8,12 +8,14 @@ extern NSString *const AROptionsSettingsMenu;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
 extern NSString *const AROptionsShowAnalyticsOnScreen;
 extern NSString *const AROptionsEnableNativeLiveAuctions;
+extern NSString *const AROptionsEnableReactArtist;
 
 
 @interface AROptions : NSObject
 
 /// Returns all the current options
 + (NSArray *)labsOptions;
++ (NSArray *)labsOptionsThatRequireRestart;
 
 /// Get and set individual options
 + (BOOL)boolForOption:(NSString *)option;
