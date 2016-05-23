@@ -227,11 +227,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 
         ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
         [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-            if (requiresRestart) {
-                cell.textLabel.text = [title stringByAppendingString:@" (restarts)"];
-            } else {
-                cell.textLabel.text = title;
-            }
+            cell.textLabel.text = requiresRestart ? [title stringByAppendingString:@" (restarts)"] : title;
             cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[AROptions boolForOption:title]];
         }];
 
