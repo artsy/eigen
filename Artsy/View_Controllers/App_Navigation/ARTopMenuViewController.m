@@ -346,7 +346,7 @@ static const CGFloat ARMenuButtonDimension = 46;
 
 - (void)pushViewController:(UIViewController *)viewController
 {
-    [self pushViewController:viewController animated:YES];
+    [self pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated

@@ -30,13 +30,15 @@ upcoming:
       - Fixed lot view layout for iPad. - ash
       
     infra:
+      - CocoaPods now is v1. - alloy
+      - Pods dependencies are now stored in a submodule https://github.com/artsy/eigen-artefacts. - alloy
       - Updates to Interstellar v2. - ash
       - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
       - Updates for Xcode 7.3. - ash
-      - CocoaPods now is v1.0b.8 - orta
       - QuickSilver now supports direct URLs. - ash
     
-    gmv:      
+    gmv:
+      - Integrate the new artist view (Emission). - alloy
       - Removed artwork auction results - sarah
       - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
       - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah

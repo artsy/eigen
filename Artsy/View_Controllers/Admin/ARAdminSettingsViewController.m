@@ -223,16 +223,24 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     NSArray *options = [AROptions labsOptions];
     for (NSInteger index = 0; index < options.count; index++) {
         NSString *title = options[index];
+        BOOL requiresRestart = [[AROptions labsOptionsThatRequireRestart] indexOfObject:title] != NSNotFound;
 
         ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
         [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-            cell.textLabel.text = title;
+            cell.textLabel.text = requiresRestart ? [title stringByAppendingString:@" (restarts)"] : title;
             cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[AROptions boolForOption:title]];
         }];
 
         [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
             BOOL currentSelection = [AROptions boolForOption:title];
             [AROptions setBool:!currentSelection forOption:title];
+
+            if (requiresRestart) {
+                // Show checkmark.
+                ar_dispatch_after(1, ^{
+                    exit(0);
+                });
+            }
 
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             [(ARAnimatedTickView *)cell.accessoryView setSelected:!currentSelection animated:YES];
