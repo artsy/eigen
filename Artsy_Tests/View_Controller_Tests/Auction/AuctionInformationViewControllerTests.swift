@@ -48,5 +48,18 @@ class AuctionInformationViewControllerSpec: QuickSpec {
                 expect(navigationController).to( haveValidSnapshot(named: "FAQ Entry: \(entry.name)", usesDrawRect: true))
             }
         }
+
+        it("shows a button for buyer's premium when needed") {
+            let sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": start, "endDate": end, "buyersPremium" : [] ], error: Void())
+            let saleViewModel = SaleViewModel(sale: sale, saleArtworks: [])
+            informationController = AuctionInformationViewController(saleViewModel: saleViewModel)
+            navigationController = ARSerifNavigationViewController(rootViewController: informationController)
+            for entry in informationController.FAQEntries {
+                OHHTTPStubs.stubJSONResponseAtPath("/api/v1/page/\(entry.slug)", withResponse:["published":true, "content": markdown])
+            }
+
+            expect(navigationController).to( haveValidSnapshot(usesDrawRect: true) )
+
+        }
     }
 }

@@ -70,6 +70,10 @@ extension SaleViewModel {
         return sale.saleDescription
     }
 
+    var hasBuyersPremium: Bool {
+        return sale.hasBuyersPremium()
+    }
+
     /// Provides a range of the smallest-to-largest low estimates.
     var lowEstimateRange: PriceRange {
         return (min: self.smallestLowEstimate, max: self.largestLowEstimate)

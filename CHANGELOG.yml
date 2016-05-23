@@ -49,6 +49,7 @@ upcoming:
       - All cent values are handled by UInt64 in Live Auction context - orta
       - Changed the paragraph padding on all ARTextView instances - orta
       - Moved ARSwitchView and ARSpinner into new Extraction pod. - alloy
+      - Buyer's Premiunm is shown on AuctionInformationViewControllers - orta
 
   user_facing:
     - Fixes long auction names falling off right edge. - ash

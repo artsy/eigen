@@ -113,7 +113,17 @@ class AuctionInformationViewController : UIViewController {
             handler: { [unowned self] _ in self.showContact(true)  }
         )
 
-        let buttonsViewController = ARNavigationButtonsViewController.viewController(withButtons: [faqButtonDescription, contactButtonDescription])
+        let buyersPremiumButtonDescription = NavigationButton(
+            buttonClass: ARNavigationButton.self,
+            properties: ["title": "BUYER'S PREMIUM INFO"],
+            handler: { [unowned self] _ in self.showBuyersPremium(true)  }
+        )
+
+        let buttons = saleViewModel.hasBuyersPremium ?
+            [buyersPremiumButtonDescription, faqButtonDescription, contactButtonDescription] :
+            [faqButtonDescription, contactButtonDescription]
+
+        let buttonsViewController = ARNavigationButtonsViewController.viewController(withButtons: buttons )
 
         stackView.addViewController(buttonsViewController, toParent: self, withTopMargin: "20", sideMargin: "40")
     }
@@ -138,6 +148,19 @@ class AuctionInformationViewController : UIViewController {
             controller.setSubject("Questions about “\(saleViewModel.displayName)”")
             self.presentViewController(controller, animated: animated, completion: nil)
         }
+    }
+
+    func showBuyersPremium(animated: Bool) {
+        let saleID = saleViewModel.saleID
+        ARAnalytics.event(ARAnalyticsAuctionContactTapped, withProperties: [
+            "auction_slug": saleID,
+            "auction_state": saleViewModel.saleAvailabilityString,
+            "context_type": navigationController?.topViewController == self ? "sale" : "sale information"
+            ])
+
+        let controller = ARSwitchBoard.sharedInstance().loadPath("/auction/\(saleID)/buyers-premium")
+        controller.title = "Buyer's Premium"
+        navigationController?.pushViewController(controller, animated: animated)
     }
 }
 
