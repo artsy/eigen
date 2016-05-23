@@ -152,12 +152,12 @@
 
 - (ARArtistViewController *)loadArtistWithID:(NSString *)artistID
 {
-    return [[ARArtistViewController alloc] initWithArtistID:artistID];
+    return (ARArtistViewController *)[self loadArtistWithID:artistID inFair:nil];
 }
 
 - (ARFairArtistViewController *)loadArtistInFairWithID:(NSString *)artistID fair:(Fair *)fair
 {
-    return [[ARFairArtistViewController alloc] initWithArtistID:artistID fair:fair];
+    return (ARFairArtistViewController *)[self loadArtistWithID:artistID inFair:fair];
 }
 
 
