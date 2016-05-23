@@ -88,7 +88,7 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType { return lots[0] }
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) { }
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) { }
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) { }
 }
 
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
