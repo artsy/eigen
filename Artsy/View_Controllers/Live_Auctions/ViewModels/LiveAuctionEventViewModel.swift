@@ -2,6 +2,7 @@ import Foundation
 
 class LiveAuctionEventViewModel : NSObject {
     let event: LiveEvent
+    let currencySymbol: String
 
     var isBid: Bool {
         return event.eventType() == .Bid
@@ -13,6 +14,11 @@ class LiveAuctionEventViewModel : NSObject {
 
     var dateEventCreated: NSDate {
         return ARStandardDateFormatter.sharedFormatter().dateFromString(event.createdAtString)
+    }
+
+    func isTopBidderID(bidderID: String) -> Bool {
+        guard let bidder = event.bidder else { return false }
+        return bidder.bidderID == bidderID
     }
 
     var eventTitle: NSAttributedString {
@@ -35,8 +41,8 @@ class LiveAuctionEventViewModel : NSObject {
         switch event.eventType() {
         case .Bid:
             guard let event = event as? LiveEventBid else { return attributify("BID", .blackColor())  }
-            
-            let formattedPrice = NSNumberFormatter.currencyStringForDollarCents(NSNumber(unsignedLongLong: event.amountCents))
+
+            let formattedPrice = event.amountCents.convertToDollarString(currencySymbol)
             return attributify(formattedPrice, .blackColor())
 
         case .Closed: return NSAttributedString()
@@ -85,7 +91,8 @@ class LiveAuctionEventViewModel : NSObject {
     }
 
 
-    init(event:LiveEvent) {
+    init(event:LiveEvent, currencySymbol: String) {
         self.event = event
+        self.currencySymbol = currencySymbol
     }
 }

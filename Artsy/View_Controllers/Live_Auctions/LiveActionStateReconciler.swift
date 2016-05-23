@@ -121,7 +121,9 @@ private extension PrivateFunctions {
 
         let existingEventIds = Set(lot.eventIDs)
         let newEvents = lotEvents.filter { existingEventIds.contains($0["eventId"] as? String ?? "") == false }
-        lot.addEvents( newEvents.map { LiveEvent(JSON: $0) } )
+
+        // TODO: is this a good idea? This will remove events we don't know yet
+        lot.addEvents( newEvents.flatMap { LiveEvent(JSON: $0) } )
     }
 
     func updateCurrentLotWithIDIfNecessary(newCurrentLotID: LotID?) {

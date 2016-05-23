@@ -25,11 +25,14 @@ protocol LiveAuctionLotViewModelType: class {
     var lotIndex: Int { get }
     var currentLotValue: UInt64 { get }
     var currentLotValueString: String { get }
+    var currencySymbol: String { get }
     var numberOfBids: Int { get }
-    var imageProfileSize: CGSize { get }
+    var imageAspectRatio: CGFloat { get }
     var liveAuctionLotID: String { get }
     var reserveStatusString: String { get }
     var dateLotOpened: NSDate? { get }
+
+    var userIsHighestBidder: Bool { get }
 
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
@@ -48,6 +51,8 @@ extension LiveAuctionLotViewModelType {
 class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     private let model: LiveAuctionLot
+    private let bidderID: String?
+
     private var events = [LiveAuctionEventViewModel]()
     private let biddingStatusSignal = Observable<ARLiveBiddingStatus>()
 
@@ -59,8 +64,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     let endEventUpdatesSignal = Observable<NSDate>()
     let newEventSignal = Observable<LiveAuctionEventViewModel>()
 
-    init(lot: LiveAuctionLot) {
+    init(lot: LiveAuctionLot, bidderID: String?) {
         self.model = lot
+        self.bidderID = bidderID
 
         reserveStatusSignal.update(lot.reserveStatus)
         askingPriceSignal.update(lot.askingPriceCents)
@@ -90,8 +96,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.urlForProfile()
     }
 
-    var imageProfileSize: CGSize {
-        return model.imageProfileSize()
+    var imageAspectRatio: CGFloat {
+        return model.imageAspectRatio()
     }
 
     var lotName: String {
@@ -132,6 +138,12 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return LiveAuctionBidViewModel.nextBidCents(model.askingPriceCents)
     }
 
+    var userIsHighestBidder: Bool {
+        guard let bidderID = bidderID else { return false }
+        guard let top = events.filter({ $0.isBid }).last else { return false }
+        return top.isTopBidderID(bidderID)
+    }
+
     // Want to avoid array searching + string->date processing every in timer loops
     // so pre-cache createdAt when found.
     private var _dateLotOpened: NSDate?
@@ -144,7 +156,11 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var currentLotValueString: String {
-        return currentLotValue.convertToDollarString()
+        return currentLotValue.convertToDollarString(model.currencySymbol)
+    }
+
+    var currencySymbol: String {
+        return model.currencySymbol
     }
 
     var estimateString: String {
@@ -208,7 +224,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         defer { endEventUpdatesSignal.update(NSDate()) }
 
         model.addEvents(events.map { $0.eventID })
-        let newEvents = events.map { LiveAuctionEventViewModel(event: $0) }
+        let newEvents = events.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
         newEvents.forEach { event in
             newEventSignal.update(event)
         }

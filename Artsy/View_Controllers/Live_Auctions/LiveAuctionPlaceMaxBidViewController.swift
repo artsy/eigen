@@ -3,7 +3,7 @@ import Interstellar
 
 enum LiveAuctionBiddingProgressState {
     case TrialUser
-    case Biddable(askingPrice: UInt64)
+    case Biddable(askingPrice: UInt64, currencySymbol: String)
     case BiddingInProgress
     case BidSuccess(isMaxBidder: Bool)
     case BidNetworkFail
@@ -13,13 +13,15 @@ enum LiveAuctionBiddingProgressState {
 
 class LiveAuctionBidViewModel: NSObject {
     let lotViewModel: LiveAuctionLotViewModelType
+    let salesPerson: LiveAuctionsSalesPersonType
     let lotBidDetailsUpdateSignal = Observable<Int>()
 
     // This mutates as someone increments/decrements
     var currentBid: UInt64
 
-    init(lotVM: LiveAuctionLotViewModelType) {
+    init(lotVM: LiveAuctionLotViewModelType, salesPerson: LiveAuctionsSalesPersonType) {
         self.lotViewModel = lotVM
+        self.salesPerson = salesPerson
 
         let startingPrice = lotViewModel.askingPriceSignal.peek() ?? UInt64(0)
         currentBid = LiveAuctionBidViewModel.nextBidCents(startingPrice)
@@ -34,12 +36,12 @@ class LiveAuctionBidViewModel: NSObject {
     }
 
     var currentBidDollars: String {
-        return currentBid.convertToDollarString()
+        return currentBid.convertToDollarString(lotViewModel.currencySymbol)
     }
 
     var nextBidIncrementDollars: String {
         let bidIncrementCents = LiveAuctionBidViewModel.minimumNextBidCentsIncrement(currentBid)
-        return bidIncrementCents.convertToDollarString()
+        return bidIncrementCents.convertToDollarString(lotViewModel.currencySymbol)
     }
 
     var currentBidsAndReserve: String {
@@ -76,11 +78,12 @@ class LiveAuctionBidViewModel: NSObject {
     }
 }
 
-class LiveAuctionBidViewController: UIViewController {
+class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
     var bidViewModel: LiveAuctionBidViewModel!
     var bidButtonViewModel: LiveAuctionBiddingViewModelType!
     var biddingProgressSignal = Observable<LiveAuctionBiddingProgressState>()
+
 
     @IBOutlet weak var lowerBiddingSeparatorView: UIView!
     @IBOutlet weak var bidButton: LiveAuctionBidButton!
@@ -89,6 +92,7 @@ class LiveAuctionBidViewController: UIViewController {
         super.viewDidLoad()
 
         bidButtonViewModel = bidButton.viewModel
+        bidButton.delegate  = self
 
         updateLotInformation()
         updateCurrentBidInformation(NSDate())
@@ -139,7 +143,7 @@ class LiveAuctionBidViewController: UIViewController {
         currentBidLabel.text = bidViewModel.currentBidDollars
 
         /// TODO: Determine if bidding before updating the button?
-        let bidProgress = LiveAuctionBiddingProgressState.Biddable(askingPrice: bid)
+        let bidProgress = LiveAuctionBiddingProgressState.Biddable(askingPrice: bid, currencySymbol: bidViewModel.lotViewModel.currencySymbol)
         let bidState = LiveAuctionBidButtonState.Active(biddingState: bidProgress)
         bidButtonViewModel.progressSignal.update(bidState)
     }
@@ -190,5 +194,12 @@ class LiveAuctionBidViewController: UIViewController {
         if removeBidProgressView {
             bidProgressOverlayView.removeFromSuperview()
         }
+    }
+}
+
+extension LiveAuctionPlaceMaxBidViewController: LiveAuctionBidButtonDelegate {
+
+    func bidButtonRequestedBid(button: LiveAuctionBidButton) {
+        bidViewModel.salesPerson.leaveMaxBidOnLot(bidViewModel.lotViewModel, amountCents: bidViewModel.currentBid, biddingViewModel:  bidButtonViewModel)
     }
 }

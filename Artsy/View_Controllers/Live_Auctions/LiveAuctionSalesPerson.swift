@@ -7,20 +7,24 @@ import Interstellar
 protocol LiveAuctionsSalesPersonType {
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
 
+    /// Current lot "in focus" based on the page view controller.
+    var currentFocusedLotIndex: Observable<Int> { get }
+
     var auctionViewModel: LiveAuctionViewModelType { get }
     var pageControllerDelegate: LiveAuctionPageControllerDelegate? { get }
     var lotCount: Int { get }
     var liveSaleID: String { get }
+    var bidderStatus: ArtsyAPISaleRegistrationStatus { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
-    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType?
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel)
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderID: String) -> LiveAuctionStateManager
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderID: String?) -> LiveAuctionStateManager
 
     let sale: LiveSale
     let lots: [LiveAuctionLotViewModel]
@@ -29,28 +33,31 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     let auctionViewModel: LiveAuctionViewModelType
     var pageControllerDelegate: LiveAuctionPageControllerDelegate?
 
+    var bidderStatus: ArtsyAPISaleRegistrationStatus {
+        return stateManager.bidderStatus
+    }
+
     private let stateManager: LiveAuctionStateManager
 
-    // Lot currently being looked at by the user.
-    var currentFocusedLotID = Observable<Int>()
+    // Lot currently being looked at by the user. Defaults to zero, the first lot in a sale.
+    var currentFocusedLotIndex = Observable(0)
 
     init(sale: LiveSale,
          jwt: JWT,
-         bidderID: String,
+         bidderID: String?,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
         self.sale = sale
-        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0) }
+        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderID: bidderID) }
 
         let host = ARRouter.baseCausalitySocketURLString()
         self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderID: bidderID)
-        self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal)
+        self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal, bidderStatus: stateManager.bidderStatus)
 
         super.init()
 
         pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
-
     }
 }
 
@@ -69,15 +76,28 @@ extension ComputedProperties {
     }
 }
 
-
 private typealias PublicFunctions = LiveAuctionsSalesPerson
 extension LiveAuctionsSalesPerson {
 
     // Returns nil if there is no current lot.
-    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType? {
-        guard let currentlyShowingIndex = currentFocusedLotID.peek() else { return nil }
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType {
+        precondition(abs(offset) < lotCount)
+
+        let currentlyShowingIndex = currentFocusedLotIndex.peek() ?? 0 // The coalesce is only to satisfy the compiler, should never happen since the currentFocusedLotIndex is created with an initial value.
+
+        // Apply the offset
         let newIndex = currentlyShowingIndex + offset
-        let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
+
+        // Guarantee the offset is within the bounds of our array.
+        let loopingIndex: Int
+        if newIndex >= lotCount {
+            loopingIndex = newIndex - lotCount
+        } else if newIndex < 0 {
+            loopingIndex = newIndex + lotCount
+        } else {
+            loopingIndex = newIndex
+        }
+
         return lotViewModelForIndex(loopingIndex)
     }
 
@@ -90,8 +110,8 @@ extension LiveAuctionsSalesPerson {
         stateManager.bidOnLot(lot.lotID, amountCents: askingPrice, biddingViewModel: biddingViewModel)
     }
 
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) {
-        // TODO: Implement
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        stateManager.leaveMaxBidOnLot(lot.lotID, amountCents: amountCents, biddingViewModel: biddingViewModel)
     }
 }
 
@@ -121,8 +141,12 @@ class LiveAuctionPageControllerDelegate: NSObject, UIPageViewControllerDelegate 
     }
 
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-
+        // The completed parameter specifies if the user has completed the swipe from one page to the next. We want to
+        // ignore when they don't, since it is effectively a cancelled transition.
         guard let viewController = pageViewController.viewControllers?.first as? LiveAuctionLotViewController else { return }
-        salesPerson.currentFocusedLotID.update(viewController.index)
+        if completed {
+            print("Updating current focused index to:", viewController.index)
+            salesPerson.currentFocusedLotIndex.update(viewController.index)
+        }
     }
 }

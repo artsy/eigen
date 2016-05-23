@@ -81,6 +81,19 @@ PODS:
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0)
     - Specta (~> 1.0)
+  - Extraction (0.1.0):
+    - Extraction/ARSpinner (= 0.1.0)
+    - Extraction/ARSwitchView (= 0.1.0)
+    - Extraction/UIView+ARSpinner (= 0.1.0)
+  - Extraction/ARSpinner (0.1.0):
+    - Extraction/UIView+ARSpinner
+    - UIView+BooleanAnimations
+  - Extraction/ARSwitchView (0.1.0):
+    - Artsy+UIColors
+    - Artsy+UIFonts (>= 1.1.0)
+    - FLKAutoLayout
+    - UIView+BooleanAnimations
+  - Extraction/UIView+ARSpinner (0.1.0)
   - FBSDKCoreKit (4.10.1):
     - Bolts (~> 1.5)
   - FBSDKLoginKit (4.10.1):
@@ -174,6 +187,7 @@ DEPENDENCIES:
   - EDColor
   - Expecta
   - Expecta+Snapshots
+  - Extraction (from `https://github.com/artsy/extraction.git`)
   - FBSDKCoreKit (~> 4.9)
   - FBSDKLoginKit (~> 4.9)
   - FBSnapshotTestCase (from `https://github.com/orta/ios-snapshot-test-case.git`)
@@ -235,6 +249,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  Extraction:
+    :git: https://github.com/artsy/extraction.git
   FBSnapshotTestCase:
     :git: https://github.com/orta/ios-snapshot-test-case.git
   FLKAutoLayout:
@@ -280,6 +296,9 @@ CHECKOUT OPTIONS:
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  Extraction:
+    :commit: 7312df7c9c005c196705cc9da7c5d53cde404854
+    :git: https://github.com/artsy/extraction.git
   FBSnapshotTestCase:
     :commit: 6b3e8978084388f9aae392fd1e0e21b1ddb88ae3
     :git: https://github.com/orta/ios-snapshot-test-case.git
@@ -326,6 +345,7 @@ SPEC CHECKSUMS:
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
+  Extraction: 30a669899836cbe9c31bbc0e86918cd7a2dab463
   FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
   FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
   FBSnapshotTestCase: 68c3221ddd3bf5bbe783c1015f8acc12c3768a4d
@@ -368,6 +388,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 24ad2ead499a8b276e52eea45bd63b3a735ecca7
+PODFILE CHECKSUM: 0ad31c657e4ade9df73eedad2602ebd2abebebea
 
 COCOAPODS: 1.0.0.rc.1

@@ -1,7 +1,26 @@
 import Foundation
 
-// This module has the NSNumberFormatter methods we need
-import Artsy_UILabels
+private struct Formatter {
+    private static var _formatter: NSNumberFormatter?
+    private static var formatter: NSNumberFormatter {
+        guard let formatter = _formatter else {
+            let newFormatter = NSNumberFormatter()
+            newFormatter.locale = NSLocale.currentLocale()
+            newFormatter.currencyCode = "USD"
+            newFormatter.numberStyle = .CurrencyStyle
+            newFormatter.maximumFractionDigits = 0
+            newFormatter.alwaysShowsDecimalSeparator = false
+            return newFormatter
+        }
+
+        return formatter
+    }
+
+    static func formatCents(number: NSNumber, currencySymbol: String) -> String! {
+        self.formatter.currencySymbol = currencySymbol
+        return self.formatter.stringFromNumber(NSDecimalNumber(mantissa: number.unsignedLongLongValue, exponent: -2, isNegative: false))
+    }
+}
 
 protocol Centable {
     var number: NSNumber { get }
@@ -26,20 +45,20 @@ extension UInt64 : Centable {
 extension Centable {
 
     /// Turns a thousand dollars' worth of cents (like 1_000_00) into "$1k", etc.
-    func metricSuffixify() -> String {
+    func metricSuffixify(currencySymbol: String) -> String {
         let number = self.number
-        guard number.intValue > 1000_00 else { return NSNumberFormatter.currencyStringForDollarCents(number) }
-        return NSNumberFormatter.currencyStringForDollarCents(removeKSignificantDigits().number) + "k"
+        guard number.intValue > 1000_00 else { return Formatter.formatCents(number, currencySymbol: currencySymbol) }
+        return SaleArtwork.dollarsFromCents(removeKSignificantDigits().number, currencySymbol: currencySymbol) + "k"
     }
 
-    func roundCentsToNearestThousandAndFormat() -> String {
+    func roundCentsToNearestThousandAndFormat(currencySymbol: String) -> String {
         let number = self.number
-        guard number.intValue > 1000_00 else { return NSNumberFormatter.currencyStringForDollarCents(number) }
-        return NSNumberFormatter.currencyStringForDollarCents(roundCentsToNearestThousand().number)
+        guard number.intValue > 1000_00 else { return Formatter.formatCents(number, currencySymbol: currencySymbol) }
+        return Formatter.formatCents(roundCentsToNearestThousand().number, currencySymbol: currencySymbol)
     }
 
-    func convertToDollarString() -> String {
-        return NSNumberFormatter.currencyStringForDollarCents(self.number)
+    func convertToDollarString(currencySymbol: String) -> String {
+        return Formatter.formatCents(number, currencySymbol: currencySymbol)
     }
 
     // Rounds a number (cents) down to the nearest thousand dollars.
@@ -48,8 +67,8 @@ extension Centable {
     func roundCentsToNearestThousand() -> UInt64 {
         let number = self.number
         guard number.intValue > 1000_00 else { return number.unsignedLongLongValue }
-        // currencyStringForDollarCents will round something like 1500_00 up to $2000, but we want to round _down_.
-        // So we divide by 1000_00 to turn us into dollars momentarily, then back into cents to remove their significant digits.
+        // dollarsFromCents will round something like 1500_00 up to $2000, but we want to round _down_.
+        // So we divide by 1000_00 to turn us into dollars k momentarily, then back into cents to remove their significant digits.
         let dollarsK = UInt64(floor(Float(self.number) / Float(1000_00)))
         let cents = dollarsK * 1000_00
         return cents

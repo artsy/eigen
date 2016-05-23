@@ -19,17 +19,25 @@ class LiveAuctionStateManager: NSObject {
     typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
     let sale: LiveSale
-    let bidderID: String
+    let bidderID: String?
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
     private var biddingStates = [String: LiveAuctionBiddingViewModelType]()
 
+    var bidderStatus: ArtsyAPISaleRegistrationStatus {
+        let loggedIn = User.currentUser() != nil
+        let hasBidder = bidderID != nil
+
+        if !loggedIn { return .NotLoggedIn }
+        return hasBidder ? .Registered : .NotRegistered
+    }
+
     init(host: String,
          sale: LiveSale,
          saleArtworks: [LiveAuctionLotViewModel],
          jwt: JWT,
-         bidderID: String,
+         bidderID: String?,
          socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
          stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
 
@@ -66,13 +74,20 @@ private typealias PublicFunctions = LiveAuctionStateManager
 extension PublicFunctions {
 
     func bidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        guard let bidderID = bidderID else {
+            return print("Tried to bid without a bidder ID on account")
+        }
+        
         biddingViewModel.bidPendingSignal.update(true)
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
     }
 
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        guard let bidderID = bidderID else {
+            return print("Tried to leave a max bid without a bidder ID on account")
+        }
         socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderID: bidderID)
     }
 }

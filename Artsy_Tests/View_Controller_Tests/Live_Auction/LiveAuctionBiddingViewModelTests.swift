@@ -20,7 +20,7 @@ class LiveAuctionBiddingViewModelTests: QuickSpec {
         it("unsubscribes from lot state when deallocated") {
             var progressSignalInvocations = 0
             do {
-                let subject = LiveAuctionBiddingViewModel(lotViewModel: lotViewModel, auctionViewModel: auctionViewModel)
+                let subject = LiveAuctionBiddingViewModel(currencySymbol: "$", lotViewModel: lotViewModel, auctionViewModel: auctionViewModel)
                 subject.progressSignal.subscribe { _ in
                     progressSignalInvocations += 1
                 }
@@ -34,7 +34,7 @@ class LiveAuctionBiddingViewModelTests: QuickSpec {
         it("unsubscribes from asking price when deallocated") {
             var progressSignalInvocations = 0
             do {
-                let subject = LiveAuctionBiddingViewModel(lotViewModel: lotViewModel, auctionViewModel: auctionViewModel)
+                let subject = LiveAuctionBiddingViewModel(currencySymbol: "$", lotViewModel: lotViewModel, auctionViewModel: auctionViewModel)
                 subject.progressSignal.subscribe { _ in
                     progressSignalInvocations += 1
                 }
@@ -49,7 +49,7 @@ class LiveAuctionBiddingViewModelTests: QuickSpec {
         it("unsubscribes from current lot when deallocated") {
             var progressSignalInvocations = 0
             do {
-                let subject = LiveAuctionBiddingViewModel(lotViewModel: lotViewModel, auctionViewModel: auctionViewModel)
+                let subject = LiveAuctionBiddingViewModel(currencySymbol: "$", lotViewModel: lotViewModel, auctionViewModel: auctionViewModel)
                 subject.progressSignal.subscribe { _ in
                     progressSignalInvocations += 1
                 }

@@ -150,7 +150,11 @@
                       object:self
                     userInfo:@{ ARAuctionIDKey:self.auctionID }];
 
-    [self.navigationController popViewControllerAnimated:ARPerformWorkAsynchronously];
+    if (self.presentingViewController) {
+        [self.presentingViewController dismissViewControllerAnimated:ARPerformWorkAsynchronously completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:ARPerformWorkAsynchronously];
+    }
 }
 
 - (void)registrationUpdated:(NSNotification *)notification;

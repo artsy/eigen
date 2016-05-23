@@ -11,7 +11,6 @@
 {
     /*
      We need to support the following event types:
-     - StartingPriceChanged
      - ReservePriceChanged
      - CompositeOnlineBidConfirmed
      - BidCancelled
@@ -34,8 +33,7 @@
         klass = LiveEventClosed.class;
 
     } else {
-        ARErrorLog(@"Error! Unknown event type '%@'", type);
-        NSAssert(NO, @"Got an unknown event type '%@'", type);
+        ARErrorLog(@"Error! Ignoring unknown event type '%@'\nEvent: %@", type, dictionaryValue);
         return nil;
     }
 
@@ -71,14 +69,11 @@
 
 @implementation LiveEventLotOpen
 - (LiveEventType)eventType { return LiveEventTypeLotOpen; }
-
 @end
 
 
 @implementation LiveEventBid
 - (LiveEventType)eventType { return LiveEventTypeBid; }
-
-
 @end
 
 

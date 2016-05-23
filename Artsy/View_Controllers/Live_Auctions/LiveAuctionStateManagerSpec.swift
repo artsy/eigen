@@ -10,7 +10,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         var sale: LiveSale!
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseForHost("metaphysics-*.artsy.net", withResponse: [:])
+            OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
             // Not sure why ^ is needed, might be worth looking
 
             sale = testLiveSale()
@@ -47,7 +47,30 @@ class LiveAuctionStateManagerSpec: QuickSpec {
             mostRecentSocketCommunicator?.lotUpdateBroadcasts.update(lotEvent)
 
             expect(mostRecentStateReconciler?.mostRecentEventBroadcast as? [String]) == lotEvent
+        }
 
+        describe("bidderStatus") {
+
+            it("handles being logged out") {
+                ARUserManager.clearUserData()
+                expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.NotLoggedIn
+            }
+
+            it("handles being logged in and registered") {
+                ARUserManager.asLoggedInUser {
+
+                    let bidderID: String? = nil
+                    subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: "abcdefg", bidderID: bidderID, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+
+                    expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.NotRegistered
+                }
+            }
+
+            it("handles being logged in and register") {
+                ARUserManager.asLoggedInUser {
+                    expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.Registered
+                }
+            }
         }
     }
 }

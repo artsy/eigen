@@ -176,6 +176,7 @@ extension AuctionViewController {
     func showRefineTappedAnimated(animated: Bool) {
         let refineViewController = RefinementOptionsViewController(defaultSettings: defaultRefineSettings(),
             initialSettings: refineSettings,
+            currencySymbol: saleViewModel.currencySymbol,
             userDidCancelClosure: { (refineVC) in
                 self.dismissViewControllerAnimated(animated, completion: nil)},
             userDidApplyClosure: { (settings: AuctionRefineSettings) in

@@ -6,8 +6,8 @@ NSInteger ARSwitchViewArtistButtonIndex = 0;
 NSInteger ARSwitchViewForSaleButtonIndex = 1;
 
 
-@interface ARSwitchView ()
-@property (nonatomic, strong, readwrite) NSArray *buttons;
+@interface ARSwitchView (Private)
+@property (nonatomic, copy, readonly) NSArray<UIButton *> *buttons;
 @property (nonatomic, strong, readonly) UIView *selectionIndicator;
 @end
 
