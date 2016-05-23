@@ -1,6 +1,6 @@
 ### Using the Eigen Beta
 
-_First up:_ The Eigen beta starts off on Artsy's staging environment. This means that hero units, shows and artworks can occasionally have meta-data differences. They definitely can be out of date too, staging's data gets updated once a week from the main artsy database.
+_First up:_ The Eigen beta starts off on Artsy's production environment. It's recommended that you migrate to staging via the admin menu mentioned below though. This means that hero units, shows and artworks can occasionally have meta-data differences. They definitely can be out of date too, staging's data gets updated once a week from the main artsy database. However, being on staging means you can't break anything ;)
 
 _Second up:_ We have a "Rage Shake" gesture, for both Admins on the main app, and for all beta users. This brings up a menu that has a lot of options. 
 
