@@ -66,4 +66,14 @@
   ]];
 }
 
+- (BOOL)shouldAutorotate;
+{
+    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+{
+    return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+}
+
 @end

@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import "RotationNavigationController.h"
 
 #import <Emission/AREmission.h>
 #import <Emission/ARArtistComponentViewController.h>
@@ -70,7 +71,7 @@ randomBOOL(void)
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
                                                             NSString * _Nonnull route) {
     UIViewController *viewController = [self viewControllerForRoute:route];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    UINavigationController *navigationController = [[RotationNavigationController alloc] initWithRootViewController:viewController];
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                     target:self
                                                                                                     action:@selector(dismissModalViewController)];
@@ -81,7 +82,7 @@ randomBOOL(void)
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
-  self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:artistViewController];
+  self.window.rootViewController = [[RotationNavigationController alloc] initWithRootViewController:artistViewController];
   [self.window makeKeyAndVisible];
   
   return YES;
