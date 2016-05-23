@@ -6,9 +6,13 @@
 #import "ARTrialController.h"
 #import "ARDispatchManager.h"
 #import "ARNetworkErrorManager.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARTopMenuViewController.h"
+#import "ARAppConstants.h"
 
 #import <Emission/AREmission.h>
 #import <Emission/ARTemporaryAPIModule.h>
+#import <Emission/ARSwitchBoardModule.h>
 
 #import <React/RCTUtils.h>
 
@@ -68,6 +72,20 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
             //       only be invoked once.
             ArtistSetFollowStatus(artistID, following, block);
         }
+    };
+    
+    emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
+                                                                   NSString * _Nonnull route) {
+        UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController];
+    };
+    
+    emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
+                                                              NSString * _Nonnull route) {
+        UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
+        [[ARTopMenuViewController sharedController] presentViewController:viewController
+                                                                 animated:ARPerformWorkAsynchronously
+                                                               completion:nil];
     };
 }
 
