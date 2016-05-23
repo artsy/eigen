@@ -88,6 +88,8 @@ PODS:
   - Emission/Core (0.1.0):
     - Artsy+UIFonts (>= 1.1.0)
     - React/Core (>= 0.24.0-rc5)
+    - React/RCTNetwork (>= 0.24.0-rc5)
+    - React/RCTText (>= 0.24.0-rc5)
   - Emission/OpaqueImageViewComponent (0.1.0):
     - SDWebImage (>= 3.7.2)
   - Emission/SpinnerComponent (0.1.0):
@@ -169,8 +171,6 @@ PODS:
     - React/Core
   - React/RCTText (0.24.0-rc5):
     - React/Core
-  - React/RCTWebSocket (0.24.0-rc5):
-    - React/Core
   - ReactiveCocoa (2.3):
     - ReactiveCocoa/UI (= 2.3)
   - ReactiveCocoa/Core (2.3):
@@ -248,10 +248,6 @@ DEPENDENCIES:
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
   - Quick
-  - React/Core (= 0.24.0-rc5)
-  - React/RCTNetwork (= 0.24.0-rc5)
-  - React/RCTText (= 0.24.0-rc5)
-  - React/RCTWebSocket (= 0.24.0-rc5)
   - ReactiveCocoa
   - SDWebImage (>= 3.7.2)
   - Specta
@@ -335,7 +331,7 @@ CHECKOUT OPTIONS:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   Emission:
-    :commit: b9b429201a94c0bd606b23bf6204abe5146565c5
+    :commit: c962092728cf9b5bc990e3d920676e54f5d1343a
     :git: https://github.com/artsy/emission.git
   Extraction:
     :commit: 7312df7c9c005c196705cc9da7c5d53cde404854
@@ -384,7 +380,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: dc1ab41d3afe03177a68aefd6eb0df8270d94477
+  Emission: 868e5ceafe8e8d8cd10cdb436d16e4424f636ec0
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 30a669899836cbe9c31bbc0e86918cd7a2dab463
@@ -431,6 +427,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 5e4c5a97ae04caa3f0b5abe483145d8ec8cc47b9
+PODFILE CHECKSUM: 9aae3efcd7e35e75130d86dc248e30f8b8869a66
 
 COCOAPODS: 1.0.0

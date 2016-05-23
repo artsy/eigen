@@ -83,8 +83,6 @@ target 'Artsy' do
   # TODO Actually release to our spec repo.
   pod 'Extraction', :git => 'https://github.com/artsy/extraction.git'
   pod 'Emission', :git => 'https://github.com/artsy/emission.git'
-  # TODO These subspecs should be depended on by the Emission subspecs.
-  pod 'React', '= 0.24.0-rc5', :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork ), :inhibit_warnings => true
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
