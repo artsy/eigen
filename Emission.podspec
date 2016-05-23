@@ -23,8 +23,12 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |ss|
     ss.source_files = 'Pod/Classes/Core'
     ss.resource = 'Pod/Assets/Emission.jsbundle'
-    ss.dependency 'React/Core', '>= 0.24.0-rc5'
     ss.dependency 'Artsy+UIFonts', '>= 1.1.0'
+
+    react_version = '>= 0.24.0-rc5'
+    ss.dependency 'React/Core', react_version
+    ss.dependency 'React/RCTText', react_version
+    ss.dependency 'React/RCTNetwork', react_version
   end
 
   s.subspec 'TemporaryAPI' do |ss|

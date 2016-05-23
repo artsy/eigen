@@ -4,7 +4,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'Emission' do
   pod 'Emission', :path => '../'
   pod 'React', :path => './node_modules/react-native',
-               :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork ),
+               :subspecs => %w( RCTWebSocket ),
                :inhibit_warnings => true
 
   if true #ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
