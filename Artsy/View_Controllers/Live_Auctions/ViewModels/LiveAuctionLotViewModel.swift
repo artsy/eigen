@@ -32,6 +32,8 @@ protocol LiveAuctionLotViewModelType: class {
     var reserveStatusString: String { get }
     var dateLotOpened: NSDate? { get }
 
+    var userIsHighestBidder: Bool { get }
+
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
     var askingPriceSignal: Observable<UInt64> { get }
@@ -49,6 +51,8 @@ extension LiveAuctionLotViewModelType {
 class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     private let model: LiveAuctionLot
+    private let bidderID: String?
+
     private var events = [LiveAuctionEventViewModel]()
     private let biddingStatusSignal = Observable<ARLiveBiddingStatus>()
 
@@ -60,8 +64,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     let endEventUpdatesSignal = Observable<NSDate>()
     let newEventSignal = Observable<LiveAuctionEventViewModel>()
 
-    init(lot: LiveAuctionLot) {
+    init(lot: LiveAuctionLot, bidderID: String?) {
         self.model = lot
+        self.bidderID = bidderID
 
         reserveStatusSignal.update(lot.reserveStatus)
         askingPriceSignal.update(lot.askingPriceCents)
@@ -131,6 +136,12 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         // TODO: is askingPriceCents correct? not sure from JSON
         //       maybe we need to look through the events for the last bid?
         return LiveAuctionBidViewModel.nextBidCents(model.askingPriceCents)
+    }
+
+    var userIsHighestBidder: Bool {
+        guard let bidderID = bidderID else { return false }
+        guard let top = events.filter({ $0.isBid }).last else { return false }
+        return top.isTopBidderID(bidderID)
     }
 
     // Want to avoid array searching + string->date processing every in timer loops

@@ -34,7 +34,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                 // Merging more than two Observables in Interstellar gets really messy, we're mapping from that mess into a nice tuple with named elements.
                 return (lotState: tuple.0.0, askingPrice: tuple.0.1, currentLot: tuple.1)
             }
-            .map(LiveAuctionBiddingViewModel.stateToBidButtonState(currencySymbol, lotID: lotViewModel.lotID))
+            .map(LiveAuctionBiddingViewModel.stateToBidButtonState(currencySymbol, lotID: lotViewModel.lotID, bidderStatus: auctionViewModel.bidderStatus))
     }
 
     deinit {
@@ -44,7 +44,9 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     }
 
     // This is extracted into its own method because it's messy. It's curried to have access to the lotID.
-    class func stateToBidButtonState(currencySymbol: String, lotID: String) -> (state: (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?)) -> LiveAuctionBidButtonState {
+    class func stateToBidButtonState(currencySymbol: String, lotID: String, bidderStatus: ArtsyAPISaleRegistrationStatus)
+                -> (state: (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?))
+                -> LiveAuctionBidButtonState {
         return { state in
             switch state.lotState {
             case .ClosedLot: return .InActive(lotState: state.lotState)
@@ -54,10 +56,27 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                 } else {
                     return .InActive(lotState: state.lotState)
                 }
+
             case .LiveLot:
                 // TODO: This is sufficient for now, but will need to handle state _while_ bidding once that's in. That can go in another observable.
-                // TODO: We also need to determine if we are the highest bidder or have been outbid or whathaveyou.
-                return .Active(biddingState: .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol))
+
+                let biddingState: LiveAuctionBiddingProgressState
+
+                switch  bidderStatus {
+                case .NotLoggedIn, .NotRegistered:
+                    biddingState = .TrialUser
+
+                case .Registered:
+                    let isHighestBiddder = state.currentLot?.userIsHighestBidder ?? false
+
+                    if isHighestBiddder {
+                        biddingState = .BidSuccess(isMaxBidder: true)
+                    } else {
+                        biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
+                    }
+                }
+
+                return .Active(biddingState: biddingState)
             }
         }
     }

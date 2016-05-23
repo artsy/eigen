@@ -31,7 +31,7 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
                 }
             }
 
-            expect(registrationStatus) == ArtsyAPISaleRegistrationStatusRegistered
+            expect(registrationStatus) == .Registered
         }
 
         it("returns not registered when bidders endpoint returns zero bidders") {
@@ -50,7 +50,7 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
                 }
             }
 
-            expect(registrationStatus) == ArtsyAPISaleRegistrationStatusNotRegistered
+            expect(registrationStatus) == .NotRegistered
         }
 
         it("returns not logged in when user is not logged in") {
@@ -66,7 +66,7 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
                 }
             }
 
-            expect(registrationStatus) == ArtsyAPISaleRegistrationStatusNotLoggedIn
+            expect(registrationStatus) == .NotLoggedIn
         }
 
 
@@ -83,7 +83,7 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
                 }
             }
 
-            expect(subject.registrationStatus) == ArtsyAPISaleRegistrationStatusRegistered
+            expect(subject.registrationStatus) == .Registered
         }
     }
 }

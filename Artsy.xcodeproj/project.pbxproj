@@ -396,6 +396,7 @@
 		60327DEA198933610075B399 /* ARTestTopMenuNavigationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DE5198933610075B399 /* ARTestTopMenuNavigationDataSource.m */; };
 		60327DEB198933610075B399 /* ARTopMenuNavigationDataSourceSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DE6198933610075B399 /* ARTopMenuNavigationDataSourceSpec.m */; };
 		60327DEC198933610075B399 /* ARTopMenuViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DE7198933610075B399 /* ARTopMenuViewControllerSpec.m */; };
+		603338361CF3572A0085AB5A /* ARUserManager+TestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603338351CF3572A0085AB5A /* ARUserManager+TestExtensions.swift */; };
 		6034EB1D175F68350070478D /* SiteHeroUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 6034EB1C175F68350070478D /* SiteHeroUnit.m */; };
 		6034EB2F1760A9BE0070478D /* ARTopMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6034EB2B1760A9BD0070478D /* ARTopMenuViewController.m */; };
 		6036B5621760DC9100F1DD01 /* ARHeroUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B5611760DC9100F1DD01 /* ARHeroUnitViewController.m */; };
@@ -1396,6 +1397,7 @@
 		60327DE5198933610075B399 /* ARTestTopMenuNavigationDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTestTopMenuNavigationDataSource.m; sourceTree = "<group>"; };
 		60327DE6198933610075B399 /* ARTopMenuNavigationDataSourceSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuNavigationDataSourceSpec.m; sourceTree = "<group>"; };
 		60327DE7198933610075B399 /* ARTopMenuViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuViewControllerSpec.m; sourceTree = "<group>"; };
+		603338351CF3572A0085AB5A /* ARUserManager+TestExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARUserManager+TestExtensions.swift"; sourceTree = "<group>"; };
 		6034EB1B175F68350070478D /* SiteHeroUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteHeroUnit.h; sourceTree = "<group>"; };
 		6034EB1C175F68350070478D /* SiteHeroUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteHeroUnit.m; sourceTree = "<group>"; };
 		6034EB2A1760A9BD0070478D /* ARTopMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTopMenuViewController.h; sourceTree = "<group>"; };
@@ -2369,6 +2371,7 @@
 				60C2CBEB1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.h */,
 				60C2CBEC1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m */,
 				60107F151CC7DC1D002F772E /* ARTestImageCachingFunctions.swift */,
+				603338351CF3572A0085AB5A /* ARUserManager+TestExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -5718,6 +5721,7 @@
 				3CA37E7C1910217500B06E81 /* ARHeartButtonTests.m in Sources */,
 				3CEE0B6A18A18CDA00FEA6E6 /* ProfileTests.m in Sources */,
 				60A309AA1AC99B47000783C1 /* ARInternalShareValidatorTests.m in Sources */,
+				603338361CF3572A0085AB5A /* ARUserManager+TestExtensions.swift in Sources */,
 				51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */,
 				601E53371B84C41F00679E10 /* ARArtworkViewControllerBuyButtonTests.m in Sources */,
 				E65BB51F1A3FB552004C4DB4 /* ARAppSearchViewControllerSpec.m in Sources */,

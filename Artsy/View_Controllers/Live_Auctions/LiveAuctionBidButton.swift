@@ -8,9 +8,9 @@ enum LiveAuctionBidButtonState {
 }
 
 @objc protocol LiveAuctionBidButtonDelegate {
-    func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton)
-    func bidButtonRequestedBid(button: LiveAuctionBidButton)
-    func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton)
+    optional func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton)
+    optional func bidButtonRequestedBid(button: LiveAuctionBidButton)
+    optional func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton)
 }
 
 class LiveAuctionBidButton : ARFlatButton {
@@ -44,9 +44,9 @@ class LiveAuctionBidButton : ARFlatButton {
             switch bidState {
 
             case .TrialUser:
-                delegate?.bidButtonRequestedRegisterToBid(self)
+                delegate?.bidButtonRequestedRegisterToBid?(self)
             case .Biddable:
-                delegate?.bidButtonRequestedBid(self)
+                delegate?.bidButtonRequestedBid?(self)
 
             default: break
             }
@@ -54,7 +54,7 @@ class LiveAuctionBidButton : ARFlatButton {
         case .InActive(let lotState):
             switch lotState {
             case .UpcomingLot:
-                delegate?.bidButtonRequestedSubmittingMaxBid(self)
+                delegate?.bidButtonRequestedSubmittingMaxBid?(self)
 
             default: break
             }
@@ -73,9 +73,9 @@ class LiveAuctionBidButton : ARFlatButton {
 
 
         switch buttonState {
+
         // When the lot is live
         case .Active(let state):
-
             switch state {
             case .TrialUser:
                 setupUI("Register To Bid")
@@ -91,11 +91,11 @@ class LiveAuctionBidButton : ARFlatButton {
                 enabled = true
             case .BiddingInProgress:
                 setupUI("Bidding...", background: purple)
-            case .BidSuccess(let outbid):
-                if outbid {
-                    setupUI("Outbid", background: red)
-                } else {
+            case .BidSuccess(let isMaxBidder):
+                if isMaxBidder {
                     setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
+                } else {
+                    setupUI("Outbid", background: red)
                 }
 
             case .BidNetworkFail:

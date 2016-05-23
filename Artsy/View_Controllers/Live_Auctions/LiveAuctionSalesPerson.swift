@@ -20,7 +20,7 @@ protocol LiveAuctionsSalesPersonType {
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel)
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
@@ -33,18 +33,14 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
     let auctionViewModel: LiveAuctionViewModelType
     var pageControllerDelegate: LiveAuctionPageControllerDelegate?
 
+    var bidderStatus: ArtsyAPISaleRegistrationStatus {
+        return stateManager.bidderStatus
+    }
+
     private let stateManager: LiveAuctionStateManager
 
     // Lot currently being looked at by the user. Defaults to zero, the first lot in a sale.
     var currentFocusedLotIndex = Observable(0)
-
-    var bidderStatus: ArtsyAPISaleRegistrationStatus {
-        let loggedIn = User.currentUser() != nil
-        let hasBidder = stateManager.bidderID != nil
-
-        if !loggedIn {  return ArtsyAPISaleRegistrationStatusNotLoggedIn }
-        return hasBidder ? ArtsyAPISaleRegistrationStatusRegistered : ArtsyAPISaleRegistrationStatusNotRegistered
-    }
 
     init(sale: LiveSale,
          jwt: JWT,
@@ -53,11 +49,11 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
         self.sale = sale
-        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0) }
+        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderID: bidderID) }
 
         let host = ARRouter.baseCausalitySocketURLString()
         self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderID: bidderID)
-        self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal)
+        self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal, bidderStatus: stateManager.bidderStatus)
 
         super.init()
 
@@ -114,8 +110,8 @@ extension LiveAuctionsSalesPerson {
         stateManager.bidOnLot(lot.lotID, amountCents: askingPrice, biddingViewModel: biddingViewModel)
     }
 
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) {
-        // TODO: Implement
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        stateManager.leaveMaxBidOnLot(lot.lotID, amountCents: amountCents, biddingViewModel: biddingViewModel)
     }
 }
 

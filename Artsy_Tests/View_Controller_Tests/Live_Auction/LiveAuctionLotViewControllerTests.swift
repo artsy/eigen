@@ -75,7 +75,7 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
     var pageControllerDelegate: LiveAuctionPageControllerDelegate? { return nil }
     var lotCount: Int { return auctionViewModel.lotCount }
     var liveSaleID: String = "seriously-folks-its-the-best-sale-ever"
-    var bidderStatus: ArtsyAPISaleRegistrationStatus = ArtsyAPISaleRegistrationStatusNotRegistered
+    var bidderStatus: ArtsyAPISaleRegistrationStatus = .NotRegistered
 
     var lots: [LiveAuctionLotViewModelType]
 
@@ -88,7 +88,7 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType { return lots[0] }
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) { }
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) { }
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) { }
 }
 
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
@@ -96,6 +96,7 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var lotCount = 3
     var saleAvailabilitySignal = Observable(SaleAvailabilityState.Active)
     var currentLotSignal = Observable<LiveAuctionLotViewModelType?>(Test_LiveAuctionLotViewModel(lotID: "active-lot"))
+    var bidderStatus: ArtsyAPISaleRegistrationStatus = .Registered
 
     var distance: Int?
     func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int? {
@@ -123,6 +124,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var imageAspectRatio: CGFloat = 1
     var liveAuctionLotID = "lotID"
     var dateLotOpened: NSDate?
+    var userIsHighestBidder: Bool = false
 
     func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON), currencySymbol: "$")

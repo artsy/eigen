@@ -2,11 +2,11 @@
 
 @class User;
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, ArtsyAPISaleRegistrationStatus) {
     ArtsyAPISaleRegistrationStatusNotLoggedIn,
     ArtsyAPISaleRegistrationStatusNotRegistered,
     ArtsyAPISaleRegistrationStatusRegistered,
-} ArtsyAPISaleRegistrationStatus;
+};
 
 
 @interface ArtsyAPI (CurrentUserFunctions)

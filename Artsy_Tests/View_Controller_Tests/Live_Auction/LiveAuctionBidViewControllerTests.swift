@@ -25,7 +25,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
                     let lotVM = fakeSalesPerson.lotViewModelForIndex(0)
 
                     cacheColoredImageForURL(lotVM.urlForProfile)
-                    subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM)
+                    subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson: fakeSalesPerson)
 
                     expect(subject) == snapshot("bidding_on_\(device.rawValue)")
                 }
@@ -38,7 +38,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
             beforeEach {
                 subject = StoryboardScene.LiveAuctions.instantiateBid()
                 lotVM = Test_LiveAuctionLotViewModel()
-                subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM)
+                subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson: stub_auctionSalesPerson())
                 subject.loadViewProgrammatically()
             }
 
@@ -65,7 +65,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
         it("hides the progressview when state is made to be biddable again") {
             subject = StoryboardScene.LiveAuctions.instantiateBid()
             let lotVM = Test_LiveAuctionLotViewModel()
-            subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM)
+            subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson:  stub_auctionSalesPerson())
             subject.loadViewProgrammatically()
 
             subject.biddingProgressSignal.update(.BiddingInProgress)
@@ -82,7 +82,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
             let examples:[String: LiveAuctionBiddingProgressState] = [
                 "in progress": .BiddingInProgress,
                 "is max bidder": .BidSuccess(isMaxBidder: true),
-                "not max bidder": .BidSuccess(isMaxBidder: true),
+                "not max bidder": .BidSuccess(isMaxBidder: false),
                 "network issues": .BidNetworkFail,
                 "waiting": .LotWaitingToOpen,
                 "sold": .LotSold,
@@ -93,7 +93,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
                 it("has valid snapshot \(tuple.0)") {
                     subject = StoryboardScene.LiveAuctions.instantiateBid()
                     let lotVM = Test_LiveAuctionLotViewModel()
-                    subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM)
+                    subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson: stub_auctionSalesPerson())
                     cacheColoredImageForURL(lotVM.urlForProfile)
 
                     subject.loadViewProgrammatically()

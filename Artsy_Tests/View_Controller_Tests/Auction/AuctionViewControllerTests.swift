@@ -72,7 +72,7 @@ class AuctionViewControllerTests: QuickSpec {
                     // Must load view within context of device, since the iPad-specific layout will cause a throw exception on iPhone.
                     subject.loadViewProgrammatically()
 
-                    networkModel.registrationStatus = ArtsyAPISaleRegistrationStatusRegistered
+                    networkModel.registrationStatus = .Registered
                     NSNotificationCenter.defaultCenter().postNotificationName(ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
 
                     expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
@@ -82,7 +82,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when registereed") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .Registered)
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
@@ -93,7 +93,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when not logged in") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusNotLoggedIn)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .NotLoggedIn)
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
@@ -104,7 +104,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when not registered") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusNotRegistered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .NotRegistered)
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
@@ -115,7 +115,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when sorting by Artist A-Z") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .Registered)
 
                 // Need to use the device when stubbing to use proper screen size.
                 ARTestContext.useDevice(device) {
@@ -130,7 +130,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when filtering based on price") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .Registered)
 
                 // Need to use the device when stubbing to use proper screen size.
                 ARTestContext.useDevice(device) {
@@ -145,7 +145,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when sorting by Artist A-Z and filtering based on price") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .Registered)
 
                 // Need to use the device when stubbing to use proper screen size.
                 ARTestContext.useDevice(device) {
@@ -170,7 +170,7 @@ class AuctionViewControllerTests: QuickSpec {
 
                     subject = AuctionViewController(saleID: sale.saleID)
                     subject.allowAnimations = false
-                    subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatusRegistered)
+                    subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .Registered)
                 }
 
 
@@ -402,7 +402,7 @@ class Test_AuctionNetworkModel: AuctionNetworkModelType {
     }
 
     func fetchRegistrationStatus() -> Observable<Result<ArtsyAPISaleRegistrationStatus>> {
-        return Observable(.Success(registrationStatus ?? ArtsyAPISaleRegistrationStatusNotLoggedIn))
+        return Observable(.Success(registrationStatus ?? .NotLoggedIn))
     }
 }
 

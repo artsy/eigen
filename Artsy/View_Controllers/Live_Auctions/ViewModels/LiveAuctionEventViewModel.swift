@@ -16,6 +16,11 @@ class LiveAuctionEventViewModel : NSObject {
         return ARStandardDateFormatter.sharedFormatter().dateFromString(event.createdAtString)
     }
 
+    func isTopBidderID(bidderID: String) -> Bool {
+        guard let bidder = event.bidder else { return false }
+        return bidder.bidderID == bidderID
+    }
+
     var eventTitle: NSAttributedString {
         switch event.eventType() {
         case .Bid:

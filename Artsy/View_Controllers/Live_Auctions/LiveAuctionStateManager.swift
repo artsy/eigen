@@ -19,11 +19,19 @@ class LiveAuctionStateManager: NSObject {
     typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
     let sale: LiveSale
-    var bidderID: String?
+    let bidderID: String?
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
     private var biddingStates = [String: LiveAuctionBiddingViewModelType]()
+
+    var bidderStatus: ArtsyAPISaleRegistrationStatus {
+        let loggedIn = User.currentUser() != nil
+        let hasBidder = bidderID != nil
+
+        if !loggedIn { return .NotLoggedIn }
+        return hasBidder ? .Registered : .NotRegistered
+    }
 
     init(host: String,
          sale: LiveSale,
@@ -76,7 +84,7 @@ extension PublicFunctions {
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
     }
 
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64) {
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
         guard let bidderID = bidderID else {
             return print("Tried to leave a max bid without a bidder ID on account")
         }
