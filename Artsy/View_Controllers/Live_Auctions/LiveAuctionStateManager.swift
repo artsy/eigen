@@ -19,7 +19,7 @@ class LiveAuctionStateManager: NSObject {
     typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
     let sale: LiveSale
-    var bidderID: String?
+    let bidderID: String?
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
@@ -29,7 +29,7 @@ class LiveAuctionStateManager: NSObject {
         let loggedIn = User.currentUser() != nil
         let hasBidder = bidderID != nil
 
-        if !loggedIn {  return .NotLoggedIn }
+        if !loggedIn { return .NotLoggedIn }
         return hasBidder ? .Registered : .NotRegistered
     }
 

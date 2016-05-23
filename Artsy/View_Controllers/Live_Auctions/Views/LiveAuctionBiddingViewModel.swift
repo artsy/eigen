@@ -67,13 +67,13 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                     biddingState = .TrialUser
 
                 case .Registered:
+                    let isHighestBiddder = state.currentLot?.userIsHighestBidder ?? false
 
-                        if state.currentLot?.userIsHighestBidder ?? false {
-                            biddingState = .BidSuccess(isMaxBidder: true)
-                        } else {
-                            biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
-                        }
-
+                    if isHighestBiddder {
+                        biddingState = .BidSuccess(isMaxBidder: true)
+                    } else {
+                        biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
+                    }
                 }
 
                 return .Active(biddingState: biddingState)
