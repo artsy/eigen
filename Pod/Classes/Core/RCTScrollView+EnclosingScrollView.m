@@ -16,13 +16,14 @@
 
 #import <React/RCTScrollView.h>
 #import <React/RCTComponent.h>
+#import <React/UIView+React.h>
 
 @interface RCTScrollEvent : NSObject <RCTEvent>
-- (instancetype)initWithType:(RCTScrollEventType)type
-                    reactTag:(NSNumber *)reactTag
-                  scrollView:(UIScrollView *)scrollView
-                    userData:(NSDictionary *)userData
-               coalescingKey:(uint16_t)coalescingKey NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithEventName:(NSString *)eventName
+                         reactTag:(NSNumber *)reactTag
+                       scrollView:(UIScrollView *)scrollView
+                         userData:(NSDictionary *)userData
+                    coalescingKey:(uint16_t)coalescingKey NS_DESIGNATED_INITIALIZER;
 @end
 
 
@@ -36,14 +37,18 @@
   UIScrollView *_enclosingScrollView;
 }
 
-- (instancetype)initWithType:(RCTScrollEventType)type
-                    reactTag:(NSNumber *)reactTag
-                  scrollView:(UIScrollView *)scrollView
-         enclosingScrollView:(UIScrollView *)enclosingScrollView
-                    userData:(NSDictionary *)userData
-               coalescingKey:(uint16_t)coalescingKey
+- (instancetype)initWithEventName:(NSString *)eventName
+                         reactTag:(NSNumber *)reactTag
+                       scrollView:(UIScrollView *)scrollView
+              enclosingScrollView:(UIScrollView *)enclosingScrollView
+                         userData:(NSDictionary *)userData
+                    coalescingKey:(uint16_t)coalescingKey
 {
-  if ((self = [super initWithType:type reactTag:reactTag scrollView:scrollView userData:userData coalescingKey:coalescingKey])) {
+    if ((self = [super initWithEventName:eventName
+                                reactTag:reactTag
+                              scrollView:scrollView
+                                userData:userData
+                           coalescingKey:coalescingKey])) {
     __userData = userData;
     __scrollView = scrollView;
     _enclosingScrollView = enclosingScrollView;
@@ -102,12 +107,12 @@
                                                      reactTag:(NSNumber *)reactTag
                                                 coalescingKey:(uint16_t)coalescingKey
 {
-  return [[RCTDescendantScrollEvent alloc] initWithType:[[self valueForKey:@"_type"] unsignedIntegerValue]
-                                               reactTag:reactTag
-                                             scrollView:descendantScrollView
-                                    enclosingScrollView:[self valueForKey:@"_scrollView"]
-                                               userData:[self valueForKey:@"_userData"]
-                                          coalescingKey:coalescingKey];
+  return [[RCTDescendantScrollEvent alloc] initWithEventName:self.eventName
+                                                    reactTag:reactTag
+                                                  scrollView:descendantScrollView
+                                         enclosingScrollView:[self valueForKey:@"_scrollView"]
+                                                    userData:[self valueForKey:@"_userData"]
+                                               coalescingKey:coalescingKey];
 }
 
 @end
@@ -117,24 +122,35 @@
 
 // Override method, because we want to send the generated event through the notification center.
 // Everything but the last line of the method are exactly as the original, except with a bunch of KVC shenanigans.
-- (void)sendScrollEventWithType:(RCTScrollEventType)type
-                       reactTag:(NSNumber *)reactTag
+- (void)sendScrollEventWithName:(NSString *)eventName
                      scrollView:(UIScrollView *)scrollView
                        userData:(NSDictionary *)userData
 {
+//    if (![_lastEmittedEventName isEqualToString:eventName]) {
+//        _coalescingKey++;
+//        _lastEmittedEventName = [eventName copy];
+//    }
+//    RCTScrollEvent *scrollEvent = [[RCTScrollEvent alloc] initWithEventName:eventName
+//                                                                   reactTag:self.reactTag
+//                                                                 scrollView:scrollView
+//                                                                   userData:userData
+//                                                              coalescingKey:_coalescingKey];
+//    [_eventDispatcher sendEvent:scrollEvent];
+    
+    
   uint16_t coalescingKey = [[self valueForKey:@"_coalescingKey"] unsignedIntegerValue];
   
-  if ([[self valueForKey:@"_lastEmittedEventType"] integerValue] != type) {
+  if (![eventName isEqualToString:[self valueForKey:@"_lastEmittedEventName"]]) {
     coalescingKey++;
     [self setValue:@(coalescingKey) forKey:@"_coalescingKey"];
-    [self setValue:@(type) forKey:@"_lastEmittedEventType"];
+    [self setValue:eventName forKey:@"_lastEmittedEventName"];
   }
 
-  RCTScrollEvent *scrollEvent = [[RCTScrollEvent alloc] initWithType:type
-                                                            reactTag:reactTag
-                                                          scrollView:scrollView
-                                                            userData:userData
-                                                       coalescingKey:coalescingKey];
+  RCTScrollEvent *scrollEvent = [[RCTScrollEvent alloc] initWithEventName:eventName
+                                                                 reactTag:self.reactTag
+                                                               scrollView:scrollView
+                                                                 userData:userData
+                                                            coalescingKey:coalescingKey];
   [[self valueForKey:@"_eventDispatcher"] sendEvent:scrollEvent];
 
   // TODO: This doesn’t coalesce, which is something that’s done by the event dispatcher
@@ -165,16 +181,15 @@
   RCTScrollEvent *scrollEvent = notification.userInfo[@"event"];
   
   uint16_t coalescingKey = [[self valueForKey:@"_coalescingKey"] unsignedIntegerValue];
-  
-  RCTScrollEventType type = [[scrollEvent valueForKey:@"_type"] integerValue];
-  if ([[self valueForKey:@"_lastEmittedEventType"] integerValue] != type) {
+    
+  if (![scrollEvent.eventName isEqualToString:[self valueForKey:@"_lastEmittedEventName"]]) {
     coalescingKey++;
     [self setValue:@(coalescingKey) forKey:@"_coalescingKey"];
-    [self setValue:@(type) forKey:@"_lastEmittedEventType"];
+    [self setValue:scrollEvent.eventName forKey:@"_lastEmittedEventName"];
   }
 
   scrollEvent = [scrollEvent scrollEventRelativeToDescendant:self.scrollView
-                                                    reactTag:[(id<RCTComponent>)self reactTag]
+                                                    reactTag:self.reactTag
                                                coalescingKey:coalescingKey];
   [[self valueForKey:@"_eventDispatcher"] sendEvent:scrollEvent];
 }
