@@ -309,6 +309,7 @@
 		5E79FCB71C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB61C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m */; };
 		5E79FCBA1C768108003D5D65 /* ARNvagiationButton+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB91C768108003D5D65 /* ARNvagiationButton+Swift.swift */; };
 		5E79FCBC1C76856C003D5D65 /* NavigationButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCBB1C76856C003D5D65 /* NavigationButtonTests.swift */; };
+		5E8585F71CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8585F61CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift */; };
 		5E88414E1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E88414D1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift */; };
 		5E8841501CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E88414F1CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift */; };
 		5E8A03B51C52B60900EAF18B /* RefinementOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A03B41C52B60900EAF18B /* RefinementOptionsViewController.swift */; };
@@ -1262,6 +1263,7 @@
 		5E79FCB81C764780003D5D65 /* ARSaleArtworkItemWidthDependentModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSaleArtworkItemWidthDependentModule.h; sourceTree = "<group>"; };
 		5E79FCB91C768108003D5D65 /* ARNvagiationButton+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARNvagiationButton+Swift.swift"; sourceTree = "<group>"; };
 		5E79FCBB1C76856C003D5D65 /* NavigationButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationButtonTests.swift; sourceTree = "<group>"; };
+		5E8585F61CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanDirectionGestureRecognizer.swift; sourceTree = "<group>"; };
 		5E88414D1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStaticDataFetcher.swift; path = Live_Auctions/LiveAuctionStaticDataFetcher.swift; sourceTree = "<group>"; };
 		5E88414F1CB3462100A33BCE /* LiveAuctionStaticDataFetcherSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStaticDataFetcherSpec.swift; path = Live_Auctions/LiveAuctionStaticDataFetcherSpec.swift; sourceTree = "<group>"; };
 		5E8A03B41C52B60900EAF18B /* RefinementOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinementOptionsViewController.swift; path = Auction/RefinementOptionsViewController.swift; sourceTree = "<group>"; };
@@ -3803,6 +3805,7 @@
 				342F9C2C3D87889B79459CED /* Apple */,
 				342F90A2E677A86747A25FD8 /* Artsy */,
 				5E8E8D211CF3921D007416D6 /* InterstellarExtensions.swift */,
+				5E8585F61CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5428,6 +5431,7 @@
 				49405AB617BEC87A004F86D8 /* ARSignupViewController.m in Sources */,
 				60EFA6F516CAA8180094AD7C /* ArtsyAPI+Feed.m in Sources */,
 				3C35CC80189FF20D00E3D8DE /* ArtsyAPI+OrderedSets.m in Sources */,
+				5E8585F71CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift in Sources */,
 				609F984A1AC0F4E60079FE21 /* WatchArtwork.m in Sources */,
 				CB260E8117C2C90900BF2012 /* ARCollectorStatusViewController.m in Sources */,
 				516CDA691BB55B54001C02B2 /* UIViewController+WithLoadedData.m in Sources */,

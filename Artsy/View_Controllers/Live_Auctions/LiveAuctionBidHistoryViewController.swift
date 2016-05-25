@@ -87,6 +87,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerClass(LiveAuctionHistoryCell.self, forCellReuseIdentifier: "live")
+        tableView.backgroundColor = .clearColor()
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

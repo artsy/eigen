@@ -71,10 +71,7 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
     }
 
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return super.layoutAttributesForItemAtIndexPath(indexPath)?.then { layoutAttributes in
-            guard var copy = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else { return }
-            modifyLayoutAttributes(&copy)
-        }
+        return super.layoutAttributesForItemAtIndexPath(indexPath).flatMap { modifiedLayoutAttributesCopy($0) }
     }
 
     class override func layoutAttributesClass() -> AnyClass {
@@ -133,20 +130,23 @@ private extension PrivateFunctions {
     /// Main entry for this extension. Applies layout attributes depending on the indexPath's item that is passed in.
     /// If the user has scrolled more than half way in either direction, the cell is placed in an overflow or underflow
     /// position (to be the next next or previous previous cells, since they're not in the collection view yet).
-    func modifyLayoutAttributes(inout layoutAttributes: UICollectionViewLayoutAttributes) {
+    func modifiedLayoutAttributesCopy(layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        guard var copy = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else { return layoutAttributes }
         switch layoutAttributes.indexPath.item {
         case 0 where ratioDragged > 0.5:
-            applyFancyLayoutToAttributes(&layoutAttributes, position: .NextOverflow)
+            applyFancyLayoutToAttributes(&copy, position: .NextOverflow)
         case 0:
-            applyFancyLayoutToAttributes(&layoutAttributes, position: .Previous)
+            applyFancyLayoutToAttributes(&copy, position: .Previous)
         case 1:
-            applyFancyLayoutToAttributes(&layoutAttributes, position: .Current)
+            applyFancyLayoutToAttributes(&copy, position: .Current)
         case 2 where ratioDragged < -0.5:
-            applyFancyLayoutToAttributes(&layoutAttributes, position: .PreviousUnderflow)
+            applyFancyLayoutToAttributes(&copy, position: .PreviousUnderflow)
         case 2:
-            applyFancyLayoutToAttributes(&layoutAttributes, position: .Next)
+            applyFancyLayoutToAttributes(&copy, position: .Next)
         default: break;
         }
+
+        return copy
     }
 
     /// Interpolates linearly from two float values based on the _absolute value_ of the ratio parameter.
