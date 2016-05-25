@@ -32,6 +32,7 @@ next: update_bundle_version set_git_properties change_version_to_date
 ### General setup
 
 oss:
+	git submodule update --init
 	bundle exec pod keys set "ArtsyAPIClientSecret" "3a33d2085cbd1176153f99781bbce7c6" Artsy
 	bundle exec pod keys set "ArtsyAPIClientKey" "e750db60ac506978fc70"
 	bundle exec pod keys set "ArtsyFacebookAppID" "-"
@@ -45,8 +46,7 @@ oss:
 	bundle exec pod keys set "ArtsyEchoProductionToken" "-"
 
 artsy:
-	git submodule init
-	git submodule update
+	git submodule update --init
 	config/spacecommander/setup-repo.sh
 	brew install swiftgen
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m

@@ -13,6 +13,7 @@
 
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
+#import "ARAppDelegate+Emission.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ARAppConstants.h"
 #import "ARFonts.h"
@@ -133,6 +134,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
     [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
+
+    if ([AROptions boolForOption:AROptionsEnableReactArtist]) {
+        [self setupEmission];
+    }
 
     // This has to be checked *before* creating the first Xapp token.
     BOOL showOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
@@ -274,6 +279,8 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:DHCSHakeNotificationName object:nil];
+    // TODO Make React Native’s DevMenu module play nice with others that also override -[UIWindow motionEnded:withEvent:]
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:@"RCTShowDevMenuNotification" object:nil];
 
     if ([AROptions boolForOption:AROptionsUseVCR]) {
         NSURL *url = [NSURL fileURLWithPath:[ARFileUtils cachesPathWithFolder:@"vcr" filename:@"eigen.json"]];
