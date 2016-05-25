@@ -15,13 +15,20 @@ Pod::Spec.new do |s|
     ss.dependency 'Emission/Core'
     ss.dependency 'Emission/OpaqueImageViewComponent'
     ss.dependency 'Emission/SwitchViewComponent'
+    ss.dependency 'Emission/SpinnerComponent'
     ss.dependency 'Emission/TemporaryAPI'
+    ss.dependency 'Emission/ViewControllers'
   end
 
   s.subspec 'Core' do |ss|
     ss.source_files = 'Pod/Classes/Core'
-    ss.dependency 'React/Core', '>= 0.24.0-rc5'
+    ss.resource = 'Pod/Assets/Emission.jsbundle'
     ss.dependency 'Artsy+UIFonts', '>= 1.1.0'
+
+    react_version = '>= 0.24.0-rc5'
+    ss.dependency 'React/Core', react_version
+    ss.dependency 'React/RCTText', react_version
+    ss.dependency 'React/RCTNetwork', react_version
   end
 
   s.subspec 'TemporaryAPI' do |ss|
@@ -32,14 +39,22 @@ Pod::Spec.new do |s|
   s.subspec 'SwitchViewComponent' do |ss|
     ss.source_files = 'Pod/Classes/SwitchViewComponent'
     ss.dependency 'Emission/Core'
-    # These are just to support ARSwitchView as copied from Eigen,
-    # this needs to be sorted before trying to use Emission in Eigen.
-    ss.dependency 'UIView+BooleanAnimations'
-    ss.dependency 'FLKAutoLayout'
+    ss.dependency 'Extraction/ARSwitchView'
+  end
+
+  s.subspec 'SpinnerComponent' do |ss|
+    ss.source_files = 'Pod/Classes/SpinnerComponent'
+    ss.dependency 'Emission/Core'
+    ss.dependency 'Extraction/ARSpinner'
   end
 
   s.subspec 'OpaqueImageViewComponent' do |ss|
     ss.source_files = 'Pod/Classes/OpaqueImageViewComponent'
     ss.dependency 'SDWebImage', '>= 3.7.2'
+  end
+
+  s.subspec 'ViewControllers' do |ss|
+    ss.source_files = 'Pod/Classes/ViewControllers'
+    ss.dependency 'Emission/Core'
   end
 end

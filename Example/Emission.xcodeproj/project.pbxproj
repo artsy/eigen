@@ -15,6 +15,7 @@
 		510DCB361CCA69EC0075E8CB /* EmissionUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB351CCA69EC0075E8CB /* EmissionUITests.m */; };
 		510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 510E94FB1CCA828900BDF098 /* LaunchScreen.xib */; };
 		510E95141CCEB84F00BDF098 /* TestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 510E95131CCEB84F00BDF098 /* TestHelper.m */; };
+		51F3E9A41CF3B8A4004A2013 /* RotationNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F3E9A31CF3B8A4004A2013 /* RotationNavigationController.m */; };
 		A99EF3F9379BB0B67C290F17 /* libPods-EmissionTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7845722F426267DCFE6FD462 /* libPods-EmissionTests.a */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,8 @@
 		510E94FC1CCA828900BDF098 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		510E95131CCEB84F00BDF098 /* TestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestHelper.m; sourceTree = "<group>"; };
 		510E95151CCEC22C00BDF098 /* TestHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestHelper.h; sourceTree = "<group>"; };
+		51F3E9A21CF3B8A4004A2013 /* RotationNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotationNavigationController.h; sourceTree = "<group>"; };
+		51F3E9A31CF3B8A4004A2013 /* RotationNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotationNavigationController.m; sourceTree = "<group>"; };
 		77CEB1618D840E2C430A8D7A /* libPods-Emission.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Emission.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7845722F426267DCFE6FD462 /* libPods-EmissionTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EmissionTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F3A1FEFE0AEAB158547A0BB /* Pods-Emission.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.release.xcconfig"; sourceTree = "<group>"; };
@@ -100,6 +103,8 @@
 				510DCB1C1CCA69EC0075E8CB /* Assets.xcassets */,
 				510DCB211CCA69EC0075E8CB /* Info.plist */,
 				510DCB101CCA69EC0075E8CB /* Supporting Files */,
+				51F3E9A21CF3B8A4004A2013 /* RotationNavigationController.h */,
+				51F3E9A31CF3B8A4004A2013 /* RotationNavigationController.m */,
 			);
 			path = Emission;
 			sourceTree = "<group>";
@@ -262,6 +267,7 @@
 				TargetAttributes = {
 					510DCB0D1CCA69EC0075E8CB = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 23KMWZ572J;
 					};
 					510DCB251CCA69EC0075E8CB = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -432,6 +438,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51F3E9A41CF3B8A4004A2013 /* RotationNavigationController.m in Sources */,
 				510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */,
 				510DCB121CCA69EC0075E8CB /* main.m in Sources */,
 			);
@@ -487,6 +494,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_WARN_PEDANTIC = YES;
 				INFOPLIST_FILE = Emission/Info.plist;
@@ -494,6 +503,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -504,12 +514,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_WARN_PEDANTIC = YES;
 				INFOPLIST_FILE = Emission/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

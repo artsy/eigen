@@ -9,14 +9,15 @@
     "test": "env NODE_ENV=test NODE_PATH=./lib mocha --recursive ./test",
     "ci": "npm run-script lint && npm run-script flow && npm test",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
-    "sync-schema": "cd externals/metaphysics && git pull && cp data/schema.* ../../data",
-    "sync-colors": "cd externals/elan && git pull && cp components/lib/variables/colors.json ../../data",
+    "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && npm install && npm run dump-schema -- ../../data",
+    "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-module": "/usr/bin/rsync -a --exclude .git --exclude Example --exclude node_modules --exclude externals --exclude Pod ./ Example/node_modules/emission/",
     "start-sync-module": "sane 'npm run sync-module' . --glob='{package.json,index.js,data/*.json,lib/**/*.js}'",
     "start-example-packager": "cd Example && npm start",
     "clean": "cd Example && npm run clean",
     "start-dirty": "npm run sync-module && env PATH=\"./bin:$PATH\" concurrently --kill-others --prefix=command --prefix-length=11 'sync-module' 'rn-packager'",
-    "start": "npm run clean && env packager_options=--reset-cache npm run start-dirty"
+    "start": "npm run clean && env packager_options=--reset-cache npm run start-dirty",
+    "bundle": "/usr/bin/curl 'http://localhost:8081/Emission/index.ios.bundle?platform=ios&dev=false&minify=true' -o Pod/Assets/Emission.jsbundle"
   },
   "repository": {
     "type": "git",
@@ -39,10 +40,12 @@
     "lib"
   ],
   "dependencies": {
-    "fbjs": "^0.7.2",
-    "react": "^0.14.8",
-    "react-native": "^0.24.0-rc5",
-    "react-relay": "^0.8.0"
+    "fbjs": "0.7.2",
+    "lodash": "3.10.1",
+    "react": "0.14.8",
+    "react-native": "0.24.0-rc5",
+    "react-relay": "0.8.0",
+    "remove-markdown": "0.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",

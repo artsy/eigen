@@ -1,6 +1,10 @@
 #import <Foundation/Foundation.h>
 
+#if __has_include(<Artsy+UIFonts/UIFont+ArtsyFonts.h>)
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
+#else
+@import Artsy_UIFonts;
+#endif
 
 @interface AREmissionFontsLoader : NSObject
 @end
@@ -16,10 +20,10 @@
 + (void)load;
 {
   __unused UIFont *font = [UIFont serifBoldItalicFontWithSize:12];
-//  font = [UIFont serifBoldFontWithSize:12];
-//  font = [UIFont serifSemiBoldFontWithSize:12];
+  font = [UIFont serifBoldFontWithSize:12];
+  font = [UIFont serifSemiBoldFontWithSize:12];
   font = [UIFont serifFontWithSize:12];
-//  font = [UIFont serifItalicFontWithSize:12];
+  font = [UIFont serifItalicFontWithSize:12];
   font = [UIFont sansSerifFontWithSize:12];
 //  font = [UIFont smallCapsSerifFontWithSize:12];
 }

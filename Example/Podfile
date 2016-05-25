@@ -4,10 +4,10 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'Emission' do
   pod 'Emission', :path => '../'
   pod 'React', :path => './node_modules/react-native',
-               :subspecs => %w( Core RCTText RCTWebSocket RCTNetwork ),
+               :subspecs => %w( RCTWebSocket ),
                :inhibit_warnings => true
 
-  if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
+  if true #ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
   else
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git"
@@ -16,6 +16,9 @@ target 'Emission' do
   # This is just to support ARSwitchView from Eigen. This needs to be sorted out
   # before trying to use Emission in Eigen.
   pod 'FLKAutoLayout', :git => 'https://github.com/floriankugler/FLKAutoLayout.git'
+
+  # TODO: Push a release to our spec repo.
+  pod 'Extraction', :git => 'https://github.com/artsy/extraction.git'
 
   target 'EmissionTests' do
     inherit! :search_paths
