@@ -3,6 +3,7 @@
 #import "ARLogger.h"
 #import "ARMacros.h"
 #import "LiveBidder.h"
+#import "ARDeveloperOptions.h"
 
 
 @implementation LiveEvent
@@ -35,6 +36,10 @@
     } else {
         ARErrorLog(@"Error! Ignoring unknown event type '%@'\nEvent: %@", type, dictionaryValue);
         return nil;
+    }
+
+    if ([ARDeveloperOptions options][@"log_live_events"]) {
+        NSLog(@"Live Event: %@", dictionaryValue);
     }
 
     return [[klass alloc] initWithDictionary:dictionaryValue error:error];
