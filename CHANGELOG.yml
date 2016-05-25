@@ -28,6 +28,7 @@ upcoming:
       - Basic metaphysics access for live sale static data. - ash
       - Lot metadata can toggle between a short artwork blurb and full metadata - orta
       - Fixed lot view layout for iPad. - ash
+      - Bid history scrolling, first pass. - ash/orta
       
     infra:
       - CocoaPods now is v1. - alloy

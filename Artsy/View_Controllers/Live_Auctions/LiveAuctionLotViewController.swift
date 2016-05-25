@@ -17,6 +17,7 @@ class LiveAuctionLotViewController: UIViewController {
     let lotViewModel: LiveAuctionLotViewModelType
     let salesPerson: LiveAuctionsSalesPersonType
     let bidHistoryState = Observable<BidHistoryState>(.Closed)
+    let bidHistoryDelta = Observable<(delta: CGFloat, animating: Bool)>((delta: 0, animating: false))
 
     private let biddingViewModel: LiveAuctionBiddingViewModelType
 
@@ -177,7 +178,9 @@ class LiveAuctionLotViewController: UIViewController {
 
     private var lotHistoryHeightConstraint: NSLayoutConstraint?
     private var alignMetadataToTopConstraint: NSLayoutConstraint?
-    private var initialMetadataPosition: CGFloat = 0
+    private var _animating = false
+    private var initialGestureMetadataPosition: CGFloat = 0
+    private var atRestMetadataPosition: CGFloat?
     // Having an internal, non-Observable bidHistoryState helps us in our gesture recognizer by simplifying the code.
     private var _bidHistoryState: BidHistoryState = .Closed {
         willSet(newValue) {
@@ -194,26 +197,26 @@ class LiveAuctionLotViewController: UIViewController {
         switch gesture.state {
 
         case .Began:
-            initialMetadataPosition = lotMetadataStack?.convertPoint(CGPoint.zero, toView: view).y ?? 0
-            alignMetadataToTopConstraint?.constant = initialMetadataPosition
+            initialGestureMetadataPosition = lotMetadataStack?.frame.origin.y ?? 0
+            alignMetadataToTopConstraint?.constant = initialGestureMetadataPosition
 
             alignMetadataToTopConstraint?.active = true
             lotHistoryHeightConstraint?.active = false
 
             // We'll be "open" for now, which is really shorthand for "opening", which will be set appropriately when the recognizer ends.
             _bidHistoryState = .Open
-
+//
         case .Changed:
-            // TODO: Update parent somehow so it can move the progress bar.
             // TODO: Allow user to tap outside an open bid history to close it.
             // TODO: Attach gesture recognize to a broader view.
             // TODO: Update collection view to squeeze the lot images.
             // TODO: What happens when the current lot is closed, and a new one is opened?
-            alignMetadataToTopConstraint?.constant = initialMetadataPosition + translation.y
+            alignMetadataToTopConstraint?.constant = initialGestureMetadataPosition + translation.y
 
         case .Ended:
             // Depending on the direction of the velocity, close or open the lot history.
             let targetState: BidHistoryState = velocity.y >= 0 ? .Closed : .Open
+            _animating = true
 
             // TODO: be clever about animation velocity
             UIView.animateWithDuration(0.3, animations: {
@@ -224,6 +227,7 @@ class LiveAuctionLotViewController: UIViewController {
             }, completion: { _ in
                 // Update our parent once the animation is complete, so it can change disable enabledness, etc.
                 self._bidHistoryState = targetState
+                self._animating = false
             })
 
         default: break
@@ -236,6 +240,13 @@ class LiveAuctionLotViewController: UIViewController {
         let height = lotMetadataStack?.frame.height ?? 0
         imageBottomConstraint?.constant = height + 20
         view.setNeedsUpdateConstraints()
+
+        if let atRestMetadataPosition = atRestMetadataPosition {
+            let currentY = lotMetadataStack?.frame.origin.y ?? 0
+            bidHistoryDelta.update((delta: currentY - atRestMetadataPosition, animating: _animating))
+        } else {
+            atRestMetadataPosition = lotMetadataStack?.frame.origin.y
+        }
     }
 }
 

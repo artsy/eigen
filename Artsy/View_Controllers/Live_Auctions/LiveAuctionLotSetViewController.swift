@@ -20,6 +20,8 @@ class LiveAuctionLotSetViewController: UIViewController {
     private var hasBeenSetup = false
     private var firstAppearance = true
     private var pageViewScrollView: UIScrollView?
+    private let progressBarBottomConstraintAtRestConstant: CGFloat = -165
+    private var progressBarBottomConstraint: NSLayoutConstraint?
 
     init(salesPerson: LiveAuctionsSalesPersonType, traitCollection: UITraitCollection) {
         self.salesPerson = salesPerson
@@ -82,14 +84,13 @@ class LiveAuctionLotSetViewController: UIViewController {
         if let scrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first {
             scrollView.alignToView(pageControllerView)
             scrollView.delegate = self
-            pageViewScrollView = scrollView
         }
 
         // Progress bar setup.
         view.addSubview(progressBar)
         progressBar.constrainHeight("4")
         progressBar.alignLeading("0", trailing: "0", toView: view)
-        progressBar.alignBottomEdgeWithView(view, predicate: "-165")
+        progressBarBottomConstraint = progressBar.alignBottomEdgeWithView(view, predicate: "\(progressBarBottomConstraintAtRestConstant)")
 
         salesPerson.currentFocusedLotIndex.subscribe { [weak self] _ in
             self?.lotImageCollectionView?.reloadData()
@@ -186,13 +187,14 @@ class LiveAuctionLotSetViewController: UIViewController {
         defer { hasBeenSetup = true }
 
         auctionDataSource.salesPerson = salesPerson
+        auctionDataSource.lotSetViewController = self
 
         pageController.dataSource = auctionDataSource
 
         guard let startVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(0) else { return }
         pageController.setViewControllers([startVC], direction: .Forward, animated: false, completion: nil)
-        auctionDataSource.scrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first
 
+        pageViewScrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first
 
         salesPerson
             .currentLotSignal
@@ -306,20 +308,29 @@ extension PageViewDelegate: UIPageViewControllerDelegate {
         }
     }
 
-//    private func registerForScrollingState(viewController: LiveAuctionLotViewController) {
-//        viewController.bidHistoryState.subscribe { [weak self] state in
-//            let scrollEnabled = (state == .Closed)
-//            self?.pageController.view.subviews.flatMap({ $0 as? UIScrollView }).forEach { scrollView in
-//                print("setting to", scrollEnabled, "on", scrollView)
-//                scrollView.scrollEnabled = scrollEnabled
-//            }
-//        }
-//    }
+    private func registerForScrollingState(viewController: LiveAuctionLotViewController) {
+
+        viewController.bidHistoryState.subscribe { [weak self] state in
+            let scrollEnabled = (state == .Closed)
+            self?.pageViewScrollView?.scrollEnabled = scrollEnabled
+        }
+
+        viewController.bidHistoryDelta.subscribe { [weak self] update in
+
+            print("updating", update)
+
+            self?.progressBarBottomConstraint?.constant = (self?.progressBarBottomConstraintAtRestConstant ?? 0) + update.delta
+
+            if update.animating {
+                self?.view.layoutIfNeeded()
+            }
+        }
+    }
 }
 
 class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPersonType!
-    weak var scrollView: UIScrollView?
+    weak var lotSetViewController: LiveAuctionLotSetViewController?
 
     func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
         guard 0..<salesPerson.lotCount ~= index else { return nil }
@@ -331,11 +342,7 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
             salesPerson: salesPerson
         )
 
-        auctionVC.bidHistoryState.subscribe { [weak self] state in
-            print("setting state to", state)
-            let scrollEnabled = (state == .Closed)
-            self?.scrollView?.scrollEnabled = scrollEnabled
-        }
+        lotSetViewController?.registerForScrollingState(auctionVC)
 
         return auctionVC
     }
