@@ -40,11 +40,10 @@
     "lib"
   ],
   "dependencies": {
-    "fbjs": "0.7.2",
     "lodash": "3.10.1",
-    "react": "0.14.8",
-    "react-native": "0.24.0-rc5",
-    "react-relay": "0.8.0",
+    "react": "15.0.2",
+    "react-native": "0.26.2",
+    "react-relay": "0.8.1",
     "remove-markdown": "0.1.0"
   },
   "devDependencies": {
@@ -61,13 +60,13 @@
     "eslint-plugin-react": "^4.2.1",
     "flow-bin": "0.22.0",
     "mocha": "^2.4.5",
-    "react-addons-test-utils": "^0.14.8",
-    "react-dom": "^0.14.8",
+    "react-addons-test-utils": "15.0.2",
+    "react-dom": "15.0.2",
     "sinon": "^1.17.3"
   },
   "peerDependencies": {
-    "babel-relay-plugin": "^0.8.0",
-    "babel-relay-plugin-loader": "^0.7.3"
+    "babel-relay-plugin": "^0.8.1",
+    "babel-relay-plugin-loader": "^0.8.1"
   },
   "metadata": {
     "graphql": {

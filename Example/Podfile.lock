@@ -12,9 +12,9 @@ PODS:
     - Emission/ViewControllers
   - Emission/Core (0.1.0):
     - Artsy+UIFonts (>= 1.1.0)
-    - React/Core (>= 0.24.0-rc5)
-    - React/RCTNetwork (>= 0.24.0-rc5)
-    - React/RCTText (>= 0.24.0-rc5)
+    - React/Core (~> 0.26.2)
+    - React/RCTNetwork (~> 0.26.2)
+    - React/RCTText (~> 0.26.2)
   - Emission/OpaqueImageViewComponent (0.1.0):
     - SDWebImage (>= 3.7.2)
   - Emission/SpinnerComponent (0.1.0):
@@ -41,13 +41,14 @@ PODS:
     - UIView+BooleanAnimations
   - Extraction/UIView+ARSpinner (0.1.0)
   - FLKAutoLayout (1.0.0)
-  - React/Core (0.24.0-rc5)
-  - React/RCTNetwork (0.24.0-rc5):
+  - React/Core (0.26.2)
+  - React/RCTNetwork (0.26.2):
     - React/Core
-  - React/RCTTest (0.24.0-rc5)
-  - React/RCTText (0.24.0-rc5):
+  - React/RCTTest (0.26.2):
     - React/Core
-  - React/RCTWebSocket (0.24.0-rc5):
+  - React/RCTText (0.26.2):
+    - React/Core
+  - React/RCTWebSocket (0.26.2):
     - React/Core
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
@@ -90,10 +91,10 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Emission: 868e5ceafe8e8d8cd10cdb436d16e4424f636ec0
+  Emission: 397a3e7cc8937058e9704ebadef85ab615254a68
   Extraction: 30a669899836cbe9c31bbc0e86918cd7a2dab463
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
-  React: 9df7c9ebbc8256031adcc82ed9fede2730f98874
+  React: a764d67f6cf360723120951301cba3ee5ee05ce2
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97

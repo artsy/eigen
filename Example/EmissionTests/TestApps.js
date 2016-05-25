@@ -2,9 +2,10 @@
 'use strict';
 
 import Emission from 'emission';
-import React from 'react-native';
-const { View } = React;
-const { TestModule } = React.NativeModules;
+import React from 'react';
+import ReactNative from 'react-native';
+const { View } = ReactNative;
+const { TestModule } = ReactNative.NativeModules;
 
 class OpaqueImageViewTest extends React.Component {
   assert() {
@@ -20,4 +21,4 @@ class OpaqueImageViewTest extends React.Component {
   }
 }
 
-React.AppRegistry.registerComponent('OpaqueImageView', () => OpaqueImageViewTest);
+ReactNative.AppRegistry.registerComponent('OpaqueImageView', () => OpaqueImageViewTest);

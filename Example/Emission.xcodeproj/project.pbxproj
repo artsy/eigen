@@ -501,6 +501,10 @@
 				INFOPLIST_FILE = Emission/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lstdc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -520,6 +524,10 @@
 				INFOPLIST_FILE = Emission/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lstdc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
