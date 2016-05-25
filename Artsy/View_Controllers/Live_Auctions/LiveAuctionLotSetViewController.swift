@@ -186,12 +186,12 @@ class LiveAuctionLotSetViewController: UIViewController {
         defer { hasBeenSetup = true }
 
         auctionDataSource.salesPerson = salesPerson
-        auctionDataSource.lotSetViewController = self
 
         pageController.dataSource = auctionDataSource
 
         guard let startVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(0) else { return }
         pageController.setViewControllers([startVC], direction: .Forward, animated: false, completion: nil)
+        auctionDataSource.scrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first
 
 
         salesPerson
@@ -306,20 +306,20 @@ extension PageViewDelegate: UIPageViewControllerDelegate {
         }
     }
 
-    private func registerForScrollingState(viewController: LiveAuctionLotViewController) {
-        viewController.bidHistoryState.subscribe { [weak self] state in
-            let scrollEnabled = (state == .Closed)
-            self?.pageController.view.subviews.flatMap({ $0 as? UIScrollView }).forEach { scrollView in
-                print("setting to", scrollEnabled, "on", scrollView)
-                scrollView.scrollEnabled = scrollEnabled
-            }
-        }
-    }
+//    private func registerForScrollingState(viewController: LiveAuctionLotViewController) {
+//        viewController.bidHistoryState.subscribe { [weak self] state in
+//            let scrollEnabled = (state == .Closed)
+//            self?.pageController.view.subviews.flatMap({ $0 as? UIScrollView }).forEach { scrollView in
+//                print("setting to", scrollEnabled, "on", scrollView)
+//                scrollView.scrollEnabled = scrollEnabled
+//            }
+//        }
+//    }
 }
 
 class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPersonType!
-    weak var lotSetViewController: LiveAuctionLotSetViewController?
+    weak var scrollView: UIScrollView?
 
     func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
         guard 0..<salesPerson.lotCount ~= index else { return nil }
@@ -331,7 +331,11 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
             salesPerson: salesPerson
         )
 
-        lotSetViewController?.registerForScrollingState(auctionVC)
+        auctionVC.bidHistoryState.subscribe { [weak self] state in
+            print("setting state to", state)
+            let scrollEnabled = (state == .Closed)
+            self?.scrollView?.scrollEnabled = scrollEnabled
+        }
 
         return auctionVC
     }

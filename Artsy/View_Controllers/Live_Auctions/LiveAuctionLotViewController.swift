@@ -177,15 +177,17 @@ class LiveAuctionLotViewController: UIViewController {
     private var lotHistoryHeightConstraint: NSLayoutConstraint?
     // Having an internal, non-Observable bidHistoryState helps us in our gesture recognizer by simplifying the code.
     private var _bidHistoryState: BidHistoryState = .Closed {
-        didSet {
-            print("state:", _bidHistoryState)
-            self.bidHistoryState.update(_bidHistoryState)
+        willSet(newValue) {
+            if newValue != _bidHistoryState {
+                self.bidHistoryState.update(_bidHistoryState)
+            }
         }
     }
 
     func dragToolbar(gesture: UIPanGestureRecognizer) {
         guard let lotHistoryHeightConstraint = lotHistoryHeightConstraint else { return }
         let translation = gesture.translationInView(view)
+        let velocity = gesture.velocityInView(gesture.view)
 
         switch gesture.state {
 
@@ -195,6 +197,8 @@ class LiveAuctionLotViewController: UIViewController {
             view.setNeedsLayout()
             _bidHistoryState = .Open
 
+        case .Ended where velocity.y < 0: break
+        case .Ended where velocity.y < 0: break
         case .Ended: // TODO: "snap" based on most recent velocity.y
         if translation.y > -50 {
             _bidHistoryState = .Closed
@@ -225,6 +229,7 @@ enum PanDirection {
     case Horizontal
 }
 
+// TODO: document this, probably move it into its own file.
 class PanDirectionGestureRecognizer: UIPanGestureRecognizer {
 
     let direction : PanDirection

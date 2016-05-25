@@ -72,8 +72,8 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
 
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         return super.layoutAttributesForItemAtIndexPath(indexPath)?.then { layoutAttributes in
-//            let copy = layoutAttributes.copy() as? // TODO: Copy 
-            modifyLayoutAttributes(&layoutAttributes)
+            guard var copy = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else { return }
+            modifyLayoutAttributes(&copy)
         }
     }
 
