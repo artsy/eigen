@@ -20,7 +20,7 @@
     }
   },
   "devDependencies": {
-    "babel-relay-plugin": "^0.8.0",
-    "babel-relay-plugin-loader": "^0.7.3"
+    "babel-relay-plugin": "^0.8.1",
+    "babel-relay-plugin-loader": "^0.8.1"
   }
 }
