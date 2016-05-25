@@ -7,10 +7,16 @@ import FLKAutoLayout
 import ORStackView
 
 class LiveAuctionLotViewController: UIViewController {
+
+    enum BidHistoryState {
+        case Closed, Open
+    }
+
     let index: Int
 
     let lotViewModel: LiveAuctionLotViewModelType
     let salesPerson: LiveAuctionsSalesPersonType
+    let bidHistoryState = Observable<BidHistoryState>(.Closed)
 
     private let biddingViewModel: LiveAuctionBiddingViewModelType
 
@@ -167,15 +173,13 @@ class LiveAuctionLotViewController: UIViewController {
         lotMetadataStack.viewModel.update(lotViewModel)
     }
 
-    enum BidHistoryState {
-        case Closed, Open
-    }
-
     // TODO: In order to support moving up and down, we need to assign a value when the recognizer begins
     private var lotHistoryHeightConstraint: NSLayoutConstraint?
-    private var bidHistoryState: BidHistoryState = .Closed {
+    // Having an internal, non-Observable bidHistoryState helps us in our gesture recognizer by simplifying the code.
+    private var _bidHistoryState: BidHistoryState = .Closed {
         didSet {
-            // TODO: update observable
+            print("state:", _bidHistoryState)
+            self.bidHistoryState.update(_bidHistoryState)
         }
     }
 
@@ -189,8 +193,14 @@ class LiveAuctionLotViewController: UIViewController {
             print(translation.y)
             lotHistoryHeightConstraint.constant = 70 - translation.y;
             view.setNeedsLayout()
+            _bidHistoryState = .Open
 
-        case .Ended: break // TODO: "snap" based on most recent velocity.y
+        case .Ended: // TODO: "snap" based on most recent velocity.y
+        if translation.y > -50 {
+            _bidHistoryState = .Closed
+        } else {
+            _bidHistoryState = .Open
+        }
 
         default: break
         }

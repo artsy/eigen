@@ -156,7 +156,7 @@ extension PrivateFunctions {
     }
 
     func salesPerson(sale: LiveSale, jwt: JWT, bidderID: String?) -> LiveAuctionsSalesPersonType {
-        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, bidderID: bidderID)
+        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, bidderID: bidderID, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
      }
 }
 

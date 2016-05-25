@@ -17,8 +17,9 @@ class LiveAuctionLotSetViewController: UIViewController {
     let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource?
     let lotCollectionViewLayout: LiveAuctionFancyLotCollectionViewLayout?
 
-    var hasBeenSetup = false
-    var firstAppearance = true
+    private var hasBeenSetup = false
+    private var firstAppearance = true
+    private var pageViewScrollView: UIScrollView?
 
     init(salesPerson: LiveAuctionsSalesPersonType, traitCollection: UITraitCollection) {
         self.salesPerson = salesPerson
@@ -71,7 +72,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // Page view controller setup.
         ar_addModernChildViewController(pageController)
-        pageController.delegate = salesPerson.pageControllerDelegate
+        pageController.delegate = self
 
         let pageControllerView = pageController.view
         pageControllerView.alignToView(view)
@@ -81,6 +82,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         if let scrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first {
             scrollView.alignToView(pageControllerView)
             scrollView.delegate = self
+            pageViewScrollView = scrollView
         }
 
         // Progress bar setup.
@@ -173,14 +175,9 @@ class LiveAuctionLotSetViewController: UIViewController {
     func showLots() {
         let lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
-        lotListController.selectedIndex = currentIndex()
+        lotListController.selectedIndex = salesPerson.currentLotSignal.peek()??.lotIndex
         let navController = ARSerifNavigationViewController(rootViewController: lotListController)
         presentViewController(navController, animated: true, completion: nil)
-    }
-
-    func currentIndex() -> Int {
-        guard let current = pageController.childViewControllers.first as? LiveAuctionLotViewController else { return -1 }
-        return current.index
     }
 
     func setupWithInitialData() {
@@ -189,6 +186,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         defer { hasBeenSetup = true }
 
         auctionDataSource.salesPerson = salesPerson
+        auctionDataSource.lotSetViewController = self
 
         pageController.dataSource = auctionDataSource
 
@@ -295,8 +293,33 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
 
 }
 
+private typealias PageViewDelegate = LiveAuctionLotSetViewController
+extension PageViewDelegate: UIPageViewControllerDelegate {
+    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard let viewController = pageViewController.viewControllers?.first as? LiveAuctionLotViewController else { return }
+
+        // The completed parameter specifies if the user has completed the swipe from one page to the next. We want to
+        // ignore when they don't, since it is effectively a cancelled transition.
+        if completed {
+            print("Updating current focused index to:", viewController.index)
+            salesPerson.currentFocusedLotIndex.update(viewController.index)
+        }
+    }
+
+    private func registerForScrollingState(viewController: LiveAuctionLotViewController) {
+        viewController.bidHistoryState.subscribe { [weak self] state in
+            let scrollEnabled = (state == .Closed)
+            self?.pageController.view.subviews.flatMap({ $0 as? UIScrollView }).forEach { scrollView in
+                print("setting to", scrollEnabled, "on", scrollView)
+                scrollView.scrollEnabled = scrollEnabled
+            }
+        }
+    }
+}
+
 class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPersonType!
+    weak var lotSetViewController: LiveAuctionLotSetViewController?
 
     func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
         guard 0..<salesPerson.lotCount ~= index else { return nil }
@@ -307,6 +330,9 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
             lotViewModel: lotViewModel,
             salesPerson: salesPerson
         )
+
+        lotSetViewController?.registerForScrollingState(auctionVC)
+
         return auctionVC
     }
 
