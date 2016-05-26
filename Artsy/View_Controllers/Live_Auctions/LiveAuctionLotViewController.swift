@@ -176,11 +176,37 @@ class LiveAuctionLotViewController: UIViewController {
         lotMetadataStack.viewModel.update(lotViewModel)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // Sets up height constraint based on the lot metadata stack's height.
+        // TODO: lotMetadataStack needs a constant height.
+        let height = lotMetadataStack?.frame.height ?? 0
+        imageBottomConstraint?.constant = height + 20
+        view.setNeedsUpdateConstraints()
+
+        // Okay, so if the atRestMetadataPosition is set, then we want to update our bidHistoryDelta
+        // Observable so that our parent, which depends on our layout, can lay itself out.
+        // If atRestMetadataPosition is _not_ set, then we set it based on the lotMetadatStack's position in our view.
+        if let atRestMetadataPosition = atRestMetadataPosition {
+            let currentY = lotMetadataStack?.frame.origin.y ?? 0
+            bidHistoryDelta.update((delta: currentY - atRestMetadataPosition, animating: _animating))
+        } else {
+            atRestMetadataPosition = lotMetadataStack?.frame.origin.y
+        }
+    }
+
     private var lotHistoryHeightConstraint: NSLayoutConstraint?
     private var alignMetadataToTopConstraint: NSLayoutConstraint?
     private var _animating = false
     private var initialGestureMetadataPosition: CGFloat = 0
     private var atRestMetadataPosition: CGFloat?
+    private var openedMetadataPosition: CGFloat? {
+        switch atRestMetadataPosition {
+        case let atRestMetadataPosition?: return atRestMetadataPosition / 2
+        case nil: return nil
+        }
+    }
     // Having an internal, non-Observable bidHistoryState helps us in our gesture recognizer by simplifying the code.
     private var _bidHistoryState: BidHistoryState = .Closed {
         willSet(newValue) {
@@ -211,7 +237,10 @@ class LiveAuctionLotViewController: UIViewController {
             // TODO: Attach gesture recognize to a broader view.
             // TODO: Update collection view to squeeze the lot images.
             // TODO: What happens when the current lot is closed, and a new one is opened?
-            alignMetadataToTopConstraint?.constant = initialGestureMetadataPosition + translation.y
+
+            var candidateConstant = initialGestureMetadataPosition + translation.y
+            candidateConstant.capAtMax(initialGestureMetadataPosition, min: openedMetadataPosition ?? 0)
+            alignMetadataToTopConstraint?.constant = candidateConstant
 
         case .Ended:
             // Depending on the direction of the velocity, close or open the lot history.
@@ -220,7 +249,7 @@ class LiveAuctionLotViewController: UIViewController {
 
             // TODO: be clever about animation velocity
             UIView.animateWithDuration(0.3, animations: {
-                self.alignMetadataToTopConstraint?.constant = 0 // Reset this to stick to the top, we'll set its active status below.
+                self.alignMetadataToTopConstraint?.constant = self.openedMetadataPosition ?? 0 // Reset this to stick to the top, we'll set its active status below.
                 self.alignMetadataToTopConstraint?.active = (targetState == .Open)
                 self.lotHistoryHeightConstraint?.active = (targetState == .Closed)
                 self.view.layoutIfNeeded()
@@ -231,21 +260,6 @@ class LiveAuctionLotViewController: UIViewController {
             })
 
         default: break
-        }
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        let height = lotMetadataStack?.frame.height ?? 0
-        imageBottomConstraint?.constant = height + 20
-        view.setNeedsUpdateConstraints()
-
-        if let atRestMetadataPosition = atRestMetadataPosition {
-            let currentY = lotMetadataStack?.frame.origin.y ?? 0
-            bidHistoryDelta.update((delta: currentY - atRestMetadataPosition, animating: _animating))
-        } else {
-            atRestMetadataPosition = lotMetadataStack?.frame.origin.y
         }
     }
 }
