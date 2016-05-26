@@ -399,6 +399,7 @@ enum ArtworkSorts {
   merchandisability_desc
   published_at_asc
   published_at_desc
+  partner_updated_at_desc
 }
 
 type Author {
