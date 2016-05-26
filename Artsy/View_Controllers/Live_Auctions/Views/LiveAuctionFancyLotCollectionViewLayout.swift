@@ -290,11 +290,12 @@ private extension PrivateFunctions {
     /// Applies the instance's repulsionConstant to the metrics, returning new metrics.
     /// Only affects the current item.
     func applyRepulsionToMetrics(metrics: LayoutMetrics, atPosition position: CellPosition, aspectRatio: CGFloat) -> LayoutMetrics {
+        let isWide = aspectRatio > (maxCurrentWidth / maxCurrentHeight)
         switch position {
-        case .Current where aspectRatio > (maxCurrentWidth / maxCurrentHeight):
+        case .Current where isWide:
             // Modify height
             return (restingWidth: metrics.restingWidth, restingHeight: metrics.restingHeight - (repulsionConstant / aspectRatio), targetWidth: metrics.targetWidth, targetHeight: metrics.targetHeight - (repulsionConstant / aspectRatio))
-        case .Current: // aspectRatio <= (maxCurrentWidth / maxCurrentHeight)
+        case .Current: // isWide == false
             // Modify width
             return (restingWidth: metrics.restingWidth - (repulsionConstant * aspectRatio), restingHeight: metrics.restingHeight, targetWidth: metrics.targetWidth - (repulsionConstant * aspectRatio), targetHeight: metrics.targetHeight)
         default: return metrics

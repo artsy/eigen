@@ -116,7 +116,7 @@ class LiveAuctionLotViewController: UIViewController {
         metadataStack.addSubview(infoToolbar, withTopMargin: "28", sideMargin: "60")
         infoToolbar.constrainHeight("38")
 
-        let pan = PanDirectionGestureRecognizer(direction: .Vertical, target: self, action: #selector(dragToolbar))
+        let pan = PanDirectionGestureRecognizer(direction: .Vertical, target: self, action: #selector(userDidDragToolbar))
         view.addGestureRecognizer(pan)
 
         // Bid button setup.
