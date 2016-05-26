@@ -2,32 +2,46 @@
 
 #import <Extraction/ARSwitchView.h>
 #import <React/RCTComponent.h>
+#import <FLKAutoLayout/FLKAutoLayout.h>
 
 
-@interface ARSwitchViewComponent : ARSwitchView <ARSwitchViewDelegate>
+@interface ARSwitchViewComponent : UIView <ARSwitchViewDelegate>
+@property (nonatomic, strong, readwrite) ARSwitchView *switchView;
 @property (nonatomic, strong, readwrite) RCTDirectEventBlock onSelectionChange;
 @end
 
 @implementation ARSwitchViewComponent
 
-- (instancetype)initWithButtonTitles:(NSArray *)titles;
+- (instancetype)init;
 {
-  if ((self = [super initWithButtonTitles:titles])) {
-    self.delegate = self;
-  }
-  return self;
+    if ((self = [super init])) {
+        
+        // We are wrapping ARSwitchView within a UIView.
+        // This is done to intercept React Native re-setting the background color on ARSwitchView directly.
+        _switchView = [ARSwitchView new];
+        [self addSubview:_switchView];
+        [_switchView alignToView:self];
+        
+        _switchView.delegate = self;
+        
+    }
+    return self;
+}
+
+- (void)setTitles:(NSArray *)titles;
+{
+    self.switchView.titles = titles;
 }
 
 - (void)switchView:(ARSwitchView *)_ didPressButtonAtIndex:(NSInteger)selectedIndex animated:(BOOL)animated;
 {
-  // Only animated changes are triggered by the user.
-  if (animated) {
-    self.onSelectionChange(@{ @"selectedIndex": @(selectedIndex) });
-  }
+    // Only animated changes are triggered by the user.
+    if (animated) {
+        self.onSelectionChange(@{ @"selectedIndex": @(selectedIndex) });
+    }
 }
 
 @end
-
 
 @implementation ARSwitchViewManager
 
@@ -37,7 +51,7 @@ RCT_EXPORT_VIEW_PROPERTY(onSelectionChange, RCTDirectEventBlock);
 
 - (UIView *)view
 {
-  return [ARSwitchViewComponent new];
+    return [ARSwitchViewComponent new];
 }
 
 @end
