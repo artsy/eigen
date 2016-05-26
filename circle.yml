@@ -33,7 +33,7 @@ machine:
 dependencies:
   override:
     - bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
-    - bundle exec pod install
+    - bundle exec pod check || bundle exec pod install
 
 test:
   pre:
