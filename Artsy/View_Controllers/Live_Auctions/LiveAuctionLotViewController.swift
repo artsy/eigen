@@ -112,13 +112,12 @@ class LiveAuctionLotViewController: UIViewController {
         // Info toolbar setup
         let infoToolbar = LiveAuctionToolbarView()
         infoToolbar.lotViewModel = lotViewModel
-        infoToolbar.backgroundColor = UIColor.redColor()
         infoToolbar.auctionViewModel = salesPerson.auctionViewModel
         metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "60")
         infoToolbar.constrainHeight("38")
 
         let pan = PanDirectionGestureRecognizer(direction: .Vertical, target: self, action: #selector(dragToolbar))
-        infoToolbar.addGestureRecognizer(pan)
+        view.addGestureRecognizer(pan)
 
         // Bid button setup.
         let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel)
@@ -229,8 +228,9 @@ class LiveAuctionLotViewController: UIViewController {
             _bidHistoryState = .Open
 //
         case .Changed:
+            // TODO: iPad support.
+            // TODO: Disable lot info button when bit history is open.
             // TODO: Allow user to tap outside an open bid history to close it.
-            // TODO: Attach gesture recognize to a broader view.
             // TODO: What happens when the current lot is closed, and a new one is opened?
 
             var candidateConstant = initialGestureMetadataPosition + translation.y
