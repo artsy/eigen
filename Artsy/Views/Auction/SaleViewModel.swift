@@ -106,7 +106,6 @@ extension SaleViewModel {
     }
 
     func formattedStringForPriceRange(range: PriceRange) -> String {
-        let currencySymbol = saleArtworks.first?.currencySymbol ?? "" // .first returns an Optional, defaulting to ""
         let min = range.min.roundCentsToNearestThousandAndFormat(currencySymbol)
         let max = range.max.roundCentsToNearestThousandAndFormat(currencySymbol)
         return "・\(min)–\(max)"

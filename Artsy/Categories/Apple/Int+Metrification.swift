@@ -1,24 +1,31 @@
 import Foundation
 
 private struct Formatter {
-    private static var _formatter: NSNumberFormatter?
-    private static var formatter: NSNumberFormatter {
-        guard let formatter = _formatter else {
-            let newFormatter = NSNumberFormatter()
-            newFormatter.locale = NSLocale.currentLocale()
-            newFormatter.currencyCode = "USD"
-            newFormatter.numberStyle = .CurrencyStyle
-            newFormatter.maximumFractionDigits = 0
-            newFormatter.alwaysShowsDecimalSeparator = false
-            return newFormatter
-        }
+    private static var formatters = [String: NSNumberFormatter]()
 
-        return formatter
+    private static func createFormatter(currencySymbol: String) -> NSNumberFormatter {
+        let newFormatter = NSNumberFormatter()
+        newFormatter.locale = NSLocale.currentLocale()
+        // TODO: We should ideally be DIing this too.
+        // newFormatter.currencyCode = "USD"
+        newFormatter.currencySymbol = currencySymbol
+        newFormatter.numberStyle = .CurrencyStyle
+        newFormatter.maximumFractionDigits = 0
+        newFormatter.alwaysShowsDecimalSeparator = false
+        return newFormatter
     }
 
     static func formatCents(number: NSNumber, currencySymbol: String) -> String! {
-        self.formatter.currencySymbol = currencySymbol
-        return self.formatter.stringFromNumber(NSDecimalNumber(mantissa: number.unsignedLongLongValue, exponent: -2, isNegative: false))
+        let formatter: NSNumberFormatter
+        switch formatters[currencySymbol] {
+        case .None:
+            formatter = createFormatter(currencySymbol)
+            formatters[currencySymbol] = formatter
+        case .Some(let existingFormatter):
+            formatter = existingFormatter
+        }
+
+        return formatter.stringFromNumber(NSDecimalNumber(mantissa: number.unsignedLongLongValue, exponent: -2, isNegative: false))
     }
 }
 
