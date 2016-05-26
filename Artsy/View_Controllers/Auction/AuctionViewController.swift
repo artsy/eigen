@@ -59,7 +59,6 @@ class AuctionViewController: UIViewController {
                 self?.setupForSale(saleViewModel)
             }
 
-
             saleViewModel.registerSaleAsActiveActivity(self)
             }.error { error in
                 // TODO: Error-handling somehow
