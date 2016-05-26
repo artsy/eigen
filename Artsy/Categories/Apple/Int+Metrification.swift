@@ -6,7 +6,8 @@ private struct Formatter {
     private static func createFormatter(currencySymbol: String) -> NSNumberFormatter {
         let newFormatter = NSNumberFormatter()
         newFormatter.locale = NSLocale.currentLocale()
-        newFormatter.currencyCode = "USD"
+        // TODO: We should ideally be DIing this too.
+        // newFormatter.currencyCode = "USD"
         newFormatter.currencySymbol = currencySymbol
         newFormatter.numberStyle = .CurrencyStyle
         newFormatter.maximumFractionDigits = 0
@@ -16,11 +17,12 @@ private struct Formatter {
 
     static func formatCents(number: NSNumber, currencySymbol: String) -> String! {
         let formatter: NSNumberFormatter
-        if formatters[currencySymbol] == nil {
+        switch formatters[currencySymbol] {
+        case .None:
             formatter = createFormatter(currencySymbol)
             formatters[currencySymbol] = formatter
-        } else {
-            formatter = formatters[currencySymbol]!
+        case .Some(let existingFormatter):
+            formatter = existingFormatter
         }
 
         return formatter.stringFromNumber(NSDecimalNumber(mantissa: number.unsignedLongLongValue, exponent: -2, isNegative: false))

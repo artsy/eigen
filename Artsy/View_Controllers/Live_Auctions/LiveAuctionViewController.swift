@@ -152,8 +152,9 @@ extension PrivateFunctions {
         lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
         lotListController.title =  sale.name
-        let lotListNav = ARSerifNavigationViewController(rootViewController: lotListController)
 
+        let lotListNav = ARSerifNavigationViewController(rootViewController: lotListController)
+        lotListNav.navigationBar.topItem?.setRightBarButtonItem(nil, animated: false)
         viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListNav, lotsSetNavigationController]
     }
 

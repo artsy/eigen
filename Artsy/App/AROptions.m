@@ -25,6 +25,7 @@ NSString *const AROptionsEnableReactArtist = @"Enable React Artist view";
 + (NSArray *)labsOptionsThatRequireRestart
 {
     return @[
+         AROptionsEnableNativeLiveAuctions,
          AROptionsEnableReactArtist,
     ];
 }
