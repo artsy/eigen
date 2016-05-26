@@ -290,22 +290,24 @@ private extension PrivateFunctions {
     func applyRepulsionToMetrics(metrics: LayoutMetrics, atPosition position: CellPosition) -> LayoutMetrics {
         switch position {
         case .Current:
-            return (restingWidth: metrics.restingWidth, restingHeight: metrics.restingHeight - repulsionConstant, targetWidth: metrics.targetWidth, targetHeight: metrics.targetHeight - repulsionConstant)
+            return (restingWidth: metrics.restingWidth, restingHeight: metrics.restingHeight - repulsionConstant/2, targetWidth: metrics.targetWidth, targetHeight: metrics.targetHeight - repulsionConstant/2)
         default: return metrics
         }
     }
 
-
     func applyRepulsionToCenters(centers: CenterXPositions, atPosition position: CellPosition) -> CenterXPositions {
+        // TODO: There's a problem with next/previous cells dis/appearing without animation if they're in/visible at the beginning or end of animation.
+        // This hack keeps them "close enough" to visible most of the time to work, but a better solution undoubtedly exists.
+        let diff = min(repulsionConstant/8, visiblePrevNextSliceSize)
         switch position {
         case .Current:
             return centers
         case .Next: fallthrough
         case .NextOverflow:
-            return (restingCenterX: centers.restingCenterX + repulsionConstant, targetCenterX: centers.targetCenterX + repulsionConstant)
+            return (restingCenterX: centers.restingCenterX + diff, targetCenterX: centers.targetCenterX + diff)
         case .Previous: fallthrough
         case .PreviousUnderflow:
-            return (restingCenterX: centers.restingCenterX - repulsionConstant, targetCenterX: centers.targetCenterX - repulsionConstant)
+            return (restingCenterX: centers.restingCenterX - diff, targetCenterX: centers.targetCenterX - diff)
         }
     }
 
