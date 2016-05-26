@@ -195,8 +195,8 @@ class LiveAuctionLotViewController: UIViewController {
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
 
+        // This closes the bid history, typically on rotation. We animate alongside the rotation animation for a smooooth user experience.
         coordinator.animateAlongsideTransition({ context in
-
             self.alignMetadataToTopConstraint?.constant = self.openedMetadataPosition ?? 0 // Reset this to stick to the top, we'll set its active status below.
             self.alignMetadataToTopConstraint?.active = false
             self.lotHistoryHeightConstraint?.active = true
@@ -231,15 +231,15 @@ class LiveAuctionLotViewController: UIViewController {
     }
     private var _initialBidHistoryState: BidHistoryState = .Closed
 
-    func dragToolbar(gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translationInView(view)
-        let velocity = gesture.velocityInView(gesture.view)
+    func userDidDragToolbar(gestureRecognizer: UIPanGestureRecognizer) {
+        let translation = gestureRecognizer.translationInView(view)
+        let velocity = gestureRecognizer.velocityInView(gestureRecognizer.view)
 
         // Coalesce these optionals to zero, to satisfy compiler. They shouldn't be nil while handling a gesture, but just in case 😉
         let atRestMetadataPosition = self.atRestMetadataPosition ?? 0
         let openedMetadataPosition = self.openedMetadataPosition ?? 0
 
-        switch gesture.state {
+        switch gestureRecognizer.state {
 
         case .Began:
             _initialBidHistoryState = _bidHistoryState
