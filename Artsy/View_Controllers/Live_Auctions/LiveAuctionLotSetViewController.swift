@@ -123,6 +123,13 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Disable scrolling on iPad.
+        pageViewScrollView?.scrollEnabled = (lotImageCollectionView != nil)
+    }
+
     func setupToolbar() {
         let close = ARSerifToolbarButtonItem(image: UIImage(asset: .Close_icon) )
         close.accessibilityLabel = "Exit Live Bidding"
@@ -310,9 +317,12 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
 
     func registerForScrollingState(viewController: LiveAuctionLotViewController) {
 
-        viewController.bidHistoryState.subscribe { [weak self] state in
-            let scrollEnabled = (state == .Closed)
-            self?.pageViewScrollView?.scrollEnabled = scrollEnabled
+        // We only care about enabling scrolling if we're on a phone, which would mean we have a collection view.
+        if let _ = lotImageCollectionView {
+            viewController.bidHistoryState.subscribe { [weak self] state in
+                let scrollEnabled = (state == .Closed)
+                self?.pageViewScrollView?.scrollEnabled = scrollEnabled
+            }
         }
 
         viewController.bidHistoryDelta.subscribe { [weak self] update in
