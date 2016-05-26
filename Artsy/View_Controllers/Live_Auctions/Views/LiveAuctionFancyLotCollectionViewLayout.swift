@@ -55,6 +55,13 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
         return nil
     }
 
+    /// A variable that defines how much smaller to make the current cell, and how far away from the centre to push next/previous cells.
+    var repulsionConstant: CGFloat = 0 {
+        didSet {
+            invalidateLayout()
+        }
+    }
+
     func updateScreenWidth(width: CGFloat) {
         itemSize = CGSize(width: width, height: maxCurrentHeight)
         invalidateLayout()
@@ -163,12 +170,16 @@ private extension PrivateFunctions {
         (layoutAttributes as? LiveAuctionFancyLotCollectionViewLayoutAttributes)?.url = delegate.thumbnailURLForIndex(index)
 
         // Calculate metrics, and subsequent centers. Note that the centers depend on the metrics.
-        let metrics = layoutMetricsForPosition(position, aspectRatio: aspectRatio)
-        let centers = centersForPosition(position, metrics: metrics)
+        let preRepulsedMetrics = layoutMetricsForPosition(position, aspectRatio: aspectRatio)
+        let preRepulsedCenters = centersForPosition(position, metrics: preRepulsedMetrics)
+
+        // Apply repulsionConstant to metrics and centers.
+        let metrics = applyRepulsionToMetrics(preRepulsedMetrics, atPosition: position)
+        let centers = applyRepulsionToCenters(preRepulsedCenters, atPosition: position)
 
         // Apply the centers and metrics to the layout attributes.
         layoutAttributes.center.x = interpolateFrom(centers.restingCenterX, to: centers.targetCenterX, ratio: ratioDragged)
-        layoutAttributes.center.y = CGRectGetMidY(collectionView?.frame ?? CGRectZero)
+        layoutAttributes.center.y = CGRectGetMidY(collectionView?.frame ?? CGRectZero) - (repulsionConstant / 2)
         layoutAttributes.size.height = interpolateFrom(metrics.restingHeight, to: metrics.targetHeight, ratio: ratioDragged)
         layoutAttributes.size.width = interpolateFrom(metrics.restingWidth, to: metrics.targetWidth, ratio: ratioDragged)
     }
@@ -274,6 +285,28 @@ private extension PrivateFunctions {
         }
 
         return (restingCenterX: restingCenterX, targetCenterX: targetCenterX)
+    }
+
+    func applyRepulsionToMetrics(metrics: LayoutMetrics, atPosition position: CellPosition) -> LayoutMetrics {
+        switch position {
+        case .Current:
+            return (restingWidth: metrics.restingWidth, restingHeight: metrics.restingHeight - repulsionConstant, targetWidth: metrics.targetWidth, targetHeight: metrics.targetHeight - repulsionConstant)
+        default: return metrics
+        }
+    }
+
+
+    func applyRepulsionToCenters(centers: CenterXPositions, atPosition position: CellPosition) -> CenterXPositions {
+        switch position {
+        case .Current:
+            return centers
+        case .Next: fallthrough
+        case .NextOverflow:
+            return (restingCenterX: centers.restingCenterX + repulsionConstant, targetCenterX: centers.targetCenterX + repulsionConstant)
+        case .Previous: fallthrough
+        case .PreviousUnderflow:
+            return (restingCenterX: centers.restingCenterX - repulsionConstant, targetCenterX: centers.targetCenterX - repulsionConstant)
+        }
     }
 
 }

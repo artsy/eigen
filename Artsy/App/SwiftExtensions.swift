@@ -25,8 +25,12 @@ func +<K, V>(lhs: Dictionary<K, V>, rhs: Dictionary<K, V>) -> Dictionary<K, V> {
 }
 
 extension CGFloat {
-    mutating func capAtMax(max: CGFloat, min: CGFloat) {
-        self = Swift.max(self, min)
-        self = Swift.min(self, max)
+    mutating func capAtMax(max: CGFloat?, min: CGFloat?) {
+        if let min = min {
+            self = Swift.max(self, min)
+        }
+        if let max = max {
+            self = Swift.min(self, max)
+        }
     }
 }

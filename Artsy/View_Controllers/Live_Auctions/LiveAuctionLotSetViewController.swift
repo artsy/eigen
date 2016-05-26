@@ -187,7 +187,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         defer { hasBeenSetup = true }
 
         auctionDataSource.salesPerson = salesPerson
-        auctionDataSource.lotSetViewController = self
+        auctionDataSource.scrollingDelegate = self
 
         pageController.dataSource = auctionDataSource
 
@@ -296,7 +296,7 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
 }
 
 private typealias PageViewDelegate = LiveAuctionLotSetViewController
-extension PageViewDelegate: UIPageViewControllerDelegate {
+extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDataSourceScrollableDelgate {
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let viewController = pageViewController.viewControllers?.first as? LiveAuctionLotViewController else { return }
 
@@ -308,7 +308,7 @@ extension PageViewDelegate: UIPageViewControllerDelegate {
         }
     }
 
-    private func registerForScrollingState(viewController: LiveAuctionLotViewController) {
+    func registerForScrollingState(viewController: LiveAuctionLotViewController) {
 
         viewController.bidHistoryState.subscribe { [weak self] state in
             let scrollEnabled = (state == .Closed)
@@ -317,50 +317,22 @@ extension PageViewDelegate: UIPageViewControllerDelegate {
 
         viewController.bidHistoryDelta.subscribe { [weak self] update in
 
+            // TODO: Remove before PR'ing
             print("updating", update)
 
             self?.progressBarBottomConstraint?.constant = (self?.progressBarBottomConstraintAtRestConstant ?? 0) + update.delta
 
             if update.animating {
+                self?.lotImageCollectionView?.performBatchUpdates( {
+                    self?.lotCollectionViewLayout?.repulsionConstant = abs(update.delta)
+                    }, completion: nil)
+            } else {
+                self?.lotCollectionViewLayout?.repulsionConstant = abs(update.delta)
+            }
+
+            if update.animating {
                 self?.view.layoutIfNeeded()
             }
         }
-    }
-}
-
-class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
-    var salesPerson: LiveAuctionsSalesPersonType!
-    weak var lotSetViewController: LiveAuctionLotSetViewController?
-
-    func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
-        guard 0..<salesPerson.lotCount ~= index else { return nil }
-        let lotViewModel = salesPerson.lotViewModelForIndex(index)
-
-        let auctionVC =  LiveAuctionLotViewController(
-            index: index,
-            lotViewModel: lotViewModel,
-            salesPerson: salesPerson
-        )
-
-        lotSetViewController?.registerForScrollingState(auctionVC)
-
-        return auctionVC
-    }
-
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        if salesPerson.lotCount == 1 { return nil }
-
-        guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
-        var newIndex = viewController.index - 1
-        if (newIndex < 0) { newIndex = salesPerson.lotCount - 1 }
-        return liveAuctionPreviewViewControllerForIndex(newIndex)
-    }
-
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        if salesPerson.lotCount == 1 { return nil }
-
-        guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
-        let newIndex = (viewController.index + 1) % salesPerson.lotCount;
-        return liveAuctionPreviewViewControllerForIndex(newIndex)
     }
 }
