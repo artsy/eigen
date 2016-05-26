@@ -205,15 +205,20 @@ class LiveAuctionLotViewController: UIViewController {
 
         }, completion: { _ in
             self._bidHistoryState = .Closed
+            self.atRestMetadataPosition = nil
+            self.view.setNeedsLayout()
         })
     }
 
     private var lotHistoryHeightConstraint: NSLayoutConstraint?
     private var alignMetadataToTopConstraint: NSLayoutConstraint?
     private var initialGestureMetadataPosition: CGFloat = 0
-    private var atRestMetadataPosition: CGFloat!
-    private var openedMetadataPosition: CGFloat! {
-        return atRestMetadataPosition / 2
+    private var atRestMetadataPosition: CGFloat?
+    private var openedMetadataPosition: CGFloat? {
+        switch atRestMetadataPosition {
+        case .Some(let atRestMetadataPosition): return atRestMetadataPosition / 2
+        case nil: return nil
+        }
     }
     // Having an internal, non-Observable bidHistoryState helps us in our gesture recognizer by simplifying the code.
     private var _bidHistoryState: BidHistoryState = .Closed {
@@ -228,6 +233,10 @@ class LiveAuctionLotViewController: UIViewController {
     func dragToolbar(gesture: UIPanGestureRecognizer) {
         let translation = gesture.translationInView(view)
         let velocity = gesture.velocityInView(gesture.view)
+
+        // Coalesce these optionals to zero, to satisfy compiler. They shouldn't be nil while handling a gesture, but just in case 😉
+        let atRestMetadataPosition = self.atRestMetadataPosition ?? 0
+        let openedMetadataPosition = self.openedMetadataPosition ?? 0
 
         switch gesture.state {
 
@@ -244,7 +253,6 @@ class LiveAuctionLotViewController: UIViewController {
             _bidHistoryState = .Open
 //
         case .Changed:
-            // TODO: iPad support.
             // TODO: Disable lot info button when bit history is open.
             // TODO: Allow user to tap outside an open bid history to close it.
             // TODO: What happens when the current lot is closed, and a new one is opened?
@@ -273,7 +281,7 @@ class LiveAuctionLotViewController: UIViewController {
                 self.alignMetadataToTopConstraint?.active = (targetState == .Open)
                 self.lotHistoryHeightConstraint?.active = (targetState == .Closed)
 
-                let delta = (targetState == .Open ? -self.openedMetadataPosition : 0)
+                let delta = (targetState == .Open ? -openedMetadataPosition : 0)
                 self.bidHistoryDelta.update((delta: delta, animating: true))
 
                 self.view.layoutIfNeeded()

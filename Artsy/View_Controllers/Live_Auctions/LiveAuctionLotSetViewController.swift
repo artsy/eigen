@@ -317,6 +317,9 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
 
         viewController.bidHistoryDelta.subscribe { [weak self] update in
 
+            // TODO: Remove before PR'ing
+            print("updating", update)
+
             self?.progressBarBottomConstraint?.constant = (self?.progressBarBottomConstraintAtRestConstant ?? 0) + update.delta
 
             if update.animating {
