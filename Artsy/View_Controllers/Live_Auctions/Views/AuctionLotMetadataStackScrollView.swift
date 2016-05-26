@@ -32,13 +32,13 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
         // Want to make the wrapper hold the stack on the left
         aboveFoldStackWrapper.addSubview(aboveFoldStack)
-        aboveFoldStack.alignTop("0", leading: "20", toView: aboveFoldStackWrapper)
+        aboveFoldStack.alignTop("0", leading: "30", toView: aboveFoldStackWrapper)
         aboveFoldStack.alignBottomEdgeWithView(aboveFoldStackWrapper, predicate: "0")
 
         // Then the button on the right
         aboveFoldStackWrapper.addSubview(toggle)
         toggle.alignTopEdgeWithView(aboveFoldStackWrapper, predicate: "0")
-        toggle.alignTrailingEdgeWithView(aboveFoldStackWrapper, predicate: "-20")
+        toggle.alignTrailingEdgeWithView(aboveFoldStackWrapper, predicate: "-30")
 
         toggle.addTarget(self, action: #selector(toggleTapped), forControlEvents: .TouchUpInside)
 
