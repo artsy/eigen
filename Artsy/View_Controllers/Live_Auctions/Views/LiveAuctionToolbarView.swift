@@ -7,12 +7,10 @@ class LiveAuctionToolbarView : UIView {
     var lotViewModel: LiveAuctionLotViewModelType!
     var auctionViewModel: LiveAuctionViewModelType!
 
-    var lotStateObserver: ObserverToken?
+    var lotStateObserver: ObserverToken<LotState>?
 
     deinit {
-        if let lotStateObserver = lotStateObserver {
-            lotViewModel.lotStateSignal.unsubscribe(lotStateObserver)
-        }
+        lotStateObserver?.unsubscribe()
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {

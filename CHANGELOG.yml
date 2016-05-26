@@ -29,6 +29,8 @@ upcoming:
       - Lot metadata can toggle between a short artwork blurb and full metadata - orta
       - Fixed lot view layout for iPad. - ash
       - Removes buyer's premium. - ash
+      - Bid history scrolling. - ash/orta
+      - Disables horizontal scrolling on iPad. - ash
       
     infra:
       - CocoaPods now is v1. - alloy

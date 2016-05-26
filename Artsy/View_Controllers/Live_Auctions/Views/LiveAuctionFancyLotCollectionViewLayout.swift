@@ -55,6 +55,13 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
         return nil
     }
 
+    /// A variable that defines how much smaller to make the current cell, and how far away from the centre to push next/previous cells.
+    var repulsionConstant: CGFloat = 0 {
+        didSet {
+            invalidateLayout()
+        }
+    }
+
     func updateScreenWidth(width: CGFloat) {
         itemSize = CGSize(width: width, height: maxCurrentHeight)
         invalidateLayout()
@@ -71,9 +78,7 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
     }
 
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return super.layoutAttributesForItemAtIndexPath(indexPath)?.then { layoutAttributes in
-            modifyLayoutAttributes(&layoutAttributes)
-        }
+        return super.layoutAttributesForItemAtIndexPath(indexPath).flatMap { modifiedLayoutAttributesCopy($0) }
     }
 
     class override func layoutAttributesClass() -> AnyClass {
@@ -132,20 +137,23 @@ private extension PrivateFunctions {
     /// Main entry for this extension. Applies layout attributes depending on the indexPath's item that is passed in.
     /// If the user has scrolled more than half way in either direction, the cell is placed in an overflow or underflow
     /// position (to be the next next or previous previous cells, since they're not in the collection view yet).
-    func modifyLayoutAttributes(inout layoutAttributes: UICollectionViewLayoutAttributes) {
+    func modifiedLayoutAttributesCopy(layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        guard var copy = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else { return layoutAttributes }
         switch layoutAttributes.indexPath.item {
         case 0 where ratioDragged > 0.5:
-            applyFancyLayoutToAttributes(&layoutAttributes, position: .NextOverflow)
+            applyFancyLayoutToAttributes(&copy, position: .NextOverflow)
         case 0:
-            applyFancyLayoutToAttributes(&layoutAttributes, position: .Previous)
+            applyFancyLayoutToAttributes(&copy, position: .Previous)
         case 1:
-            applyFancyLayoutToAttributes(&layoutAttributes, position: .Current)
+            applyFancyLayoutToAttributes(&copy, position: .Current)
         case 2 where ratioDragged < -0.5:
-            applyFancyLayoutToAttributes(&layoutAttributes, position: .PreviousUnderflow)
+            applyFancyLayoutToAttributes(&copy, position: .PreviousUnderflow)
         case 2:
-            applyFancyLayoutToAttributes(&layoutAttributes, position: .Next)
+            applyFancyLayoutToAttributes(&copy, position: .Next)
         default: break;
         }
+
+        return copy
     }
 
     /// Interpolates linearly from two float values based on the _absolute value_ of the ratio parameter.
@@ -162,12 +170,16 @@ private extension PrivateFunctions {
         (layoutAttributes as? LiveAuctionFancyLotCollectionViewLayoutAttributes)?.url = delegate.thumbnailURLForIndex(index)
 
         // Calculate metrics, and subsequent centers. Note that the centers depend on the metrics.
-        let metrics = layoutMetricsForPosition(position, aspectRatio: aspectRatio)
-        let centers = centersForPosition(position, metrics: metrics)
+        let preRepulsedMetrics = layoutMetricsForPosition(position, aspectRatio: aspectRatio)
+        let preRepulsedCenters = centersForPosition(position, metrics: preRepulsedMetrics)
+
+        // Apply repulsionConstant to metrics and centers.
+        let metrics = applyRepulsionToMetrics(preRepulsedMetrics, atPosition: position, aspectRatio: aspectRatio)
+        let centers = applyRepulsionToCenters(preRepulsedCenters, atPosition: position)
 
         // Apply the centers and metrics to the layout attributes.
         layoutAttributes.center.x = interpolateFrom(centers.restingCenterX, to: centers.targetCenterX, ratio: ratioDragged)
-        layoutAttributes.center.y = CGRectGetMidY(collectionView?.frame ?? CGRectZero)
+        layoutAttributes.center.y = CGRectGetMidY(collectionView?.frame ?? CGRectZero) - (repulsionConstant / 2)
         layoutAttributes.size.height = interpolateFrom(metrics.restingHeight, to: metrics.targetHeight, ratio: ratioDragged)
         layoutAttributes.size.width = interpolateFrom(metrics.restingWidth, to: metrics.targetWidth, ratio: ratioDragged)
     }
@@ -273,6 +285,39 @@ private extension PrivateFunctions {
         }
 
         return (restingCenterX: restingCenterX, targetCenterX: targetCenterX)
+    }
+
+    /// Applies the instance's repulsionConstant to the metrics, returning new metrics.
+    /// Only affects the current item.
+    func applyRepulsionToMetrics(metrics: LayoutMetrics, atPosition position: CellPosition, aspectRatio: CGFloat) -> LayoutMetrics {
+        let isWide = aspectRatio > (maxCurrentWidth / maxCurrentHeight)
+        switch position {
+        case .Current where isWide:
+            // Modify height
+            return (restingWidth: metrics.restingWidth, restingHeight: metrics.restingHeight - (repulsionConstant / aspectRatio), targetWidth: metrics.targetWidth, targetHeight: metrics.targetHeight - (repulsionConstant / aspectRatio))
+        case .Current: // isWide == false
+            // Modify width
+            return (restingWidth: metrics.restingWidth - (repulsionConstant * aspectRatio), restingHeight: metrics.restingHeight, targetWidth: metrics.targetWidth - (repulsionConstant * aspectRatio), targetHeight: metrics.targetHeight)
+        default: return metrics
+        }
+    }
+
+    /// Applies the instance's repulsionConstant to the center X positions, returning new positions.
+    /// Only affects next/previous items.
+    func applyRepulsionToCenters(centers: CenterXPositions, atPosition position: CellPosition) -> CenterXPositions {
+        // TODO: There's a problem with next/previous cells dis/appearing without animation if they're in/visible at the beginning or end of animation.
+        // This hack keeps them "close enough" to visible most of the time to work, but a better solution would be to implement initialLayoutAttributesForAppearingItemAtIndexPath and finalLayoutAttributesForDisappearingItemAtIndexPath
+        let diff = min(repulsionConstant/8, visiblePrevNextSliceSize)
+        switch position {
+        case .Current:
+            return centers
+        case .Next: fallthrough
+        case .NextOverflow:
+            return (restingCenterX: centers.restingCenterX + diff, targetCenterX: centers.targetCenterX + diff)
+        case .Previous: fallthrough
+        case .PreviousUnderflow:
+            return (restingCenterX: centers.restingCenterX - diff, targetCenterX: centers.targetCenterX - diff)
+        }
     }
 
 }

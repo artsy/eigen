@@ -10,9 +10,9 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal: Observable<LiveAuctionBidButtonState>
     let bidPendingSignal = Observable<Bool>()
 
-    private let _lotStateSubscription: (ObserverToken, Observable<LotState>)
-    private let _askingPriceSubscription: (ObserverToken, Observable<UInt64>)
-    private let _currentLotSubscription: (ObserverToken, Observable<LiveAuctionLotViewModelType?>)
+    private let _lotStateSubscription: ObserverToken<LotState>
+    private let _askingPriceSubscription: ObserverToken<UInt64>
+    private let _currentLotSubscription: ObserverToken<LiveAuctionLotViewModelType?>
 
     // Copies of observables that will be deallocated when we are.
     private let _lotState = Observable<LotState>()
@@ -23,9 +23,9 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     init(currencySymbol: String, lotViewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType) {
         // Okay, so what's all this then?? Well, we need to merge several signals together, but due to Interstellar's garbage collection model of unsubscribing, we can't unsubscribe from a merged signal.
         // So instead, we create private "copies" of the signals, bound to the originals but with subscriptions we can get rid of when we're deallocated (so merging these is fine).
-        self._lotStateSubscription = (lotViewModel.lotStateSignal.subscribe(_lotState.update), lotViewModel.lotStateSignal)
-        self._askingPriceSubscription = (lotViewModel.askingPriceSignal.subscribe(_askingPrice.update), lotViewModel.askingPriceSignal)
-        self._currentLotSubscription = (auctionViewModel.currentLotSignal.subscribe(_currentLot.update), auctionViewModel.currentLotSignal)
+        self._lotStateSubscription = lotViewModel.lotStateSignal.subscribe(_lotState.update)
+        self._askingPriceSubscription = lotViewModel.askingPriceSignal.subscribe(_askingPrice.update)
+        self._currentLotSubscription = auctionViewModel.currentLotSignal.subscribe(_currentLot.update)
 
         progressSignal = _lotState
             .merge(_askingPrice)
@@ -38,9 +38,9 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     }
 
     deinit {
-        _lotStateSubscription.1.unsubscribe(_lotStateSubscription.0)
-        _askingPriceSubscription.1.unsubscribe(_askingPriceSubscription.0)
-        _currentLotSubscription.1.unsubscribe(_currentLotSubscription.0)
+        _lotStateSubscription.unsubscribe()
+        _askingPriceSubscription.unsubscribe()
+        _currentLotSubscription.unsubscribe()
     }
 
     // This is extracted into its own method because it's messy. It's curried to have access to the lotID.

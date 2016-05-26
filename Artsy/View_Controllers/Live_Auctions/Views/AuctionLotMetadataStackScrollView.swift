@@ -87,6 +87,16 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         }
     }
 
+    func setShowInfoButtonEnabled(enabled: Bool, animated: Bool = true) {
+        if animated {
+            UIView.transitionWithView(toggle, duration: ARAnimationQuickDuration, options: [.TransitionCrossDissolve], animations: {
+                self.toggle.enabled = enabled
+            }, completion: nil)
+        } else {
+            toggle.enabled = enabled
+        }
+    }
+
     func showFullMetadata(animated: Bool) {
         scrollEnabled = true
 
@@ -132,6 +142,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         toggle.titleLabel?.font = .sansSerifFontWithSize(12)
         toggle.setTitle("LOT INFO", forState: .Normal)
         toggle.setTitleColor(.blackColor(), forState: .Normal)
+        toggle.setTitleColor(.artsyGrayMedium(), forState: .Disabled)
 
         // Constrain the image to the left edge
         toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), forState: .Normal)
