@@ -151,8 +151,10 @@ extension PrivateFunctions {
 
         lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
+        lotListController.title =  sale.name
+        let lotListNav = ARSerifNavigationViewController(rootViewController: lotListController)
 
-        viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListController, lotsSetNavigationController]
+        viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListNav, lotsSetNavigationController]
     }
 
     func salesPerson(sale: LiveSale, jwt: JWT, bidderID: String?) -> LiveAuctionsSalesPersonType {

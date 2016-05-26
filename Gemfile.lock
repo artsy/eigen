@@ -53,6 +53,8 @@ GEM
       molinillo (~> 0.4.5)
       nap (~> 1.0)
       xcodeproj (>= 1.0.0, < 2.0)
+    cocoapods-check (1.0.0)
+      cocoapods (~> 1.0)
     cocoapods-core (1.0.0)
       activesupport (>= 4.0.2)
       fuzzy_match (~> 2.0.4)
@@ -133,6 +135,7 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods (>= 1.0.0)
+  cocoapods-check
   cocoapods-keys
   danger
   lowdown
