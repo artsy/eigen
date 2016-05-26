@@ -7,8 +7,6 @@ import Artsy_UIFonts
 import FLKAutoLayout
 
 class AuctionLotMetadataStackScrollView: ORStackScrollView {
-    let viewModel = Observable<LiveAuctionLotViewModelType>()
-
     let aboveFoldStack = TextStack()
     private let toggle = AuctionLotMetadataStackScrollView.toggleSizeButton()
 
@@ -17,7 +15,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
     var aboveFoldHeightConstraint: NSLayoutConstraint!
 
-    init() {
+    required init(viewModel: LiveAuctionLotViewModelType) {
         super.init(stackViewClass: TextStack.self)
 
         /// Anything addded to `stack` here will be hidden by default
@@ -30,8 +28,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         let name = aboveFoldStack.addArtistName("")
         let title = aboveFoldStack.addArtworkName("", date: nil)
         let estimate = aboveFoldStack.addBodyText("", topMargin: "4")
-        let premium = aboveFoldStack.addBodyText("", topMargin: "4")
-        premium.textColor = UIColor.artsyGraySemibold()
+        let currentBid = aboveFoldStack.addBodyText("", topMargin: "4")
 
         // Want to make the wrapper hold the stack on the left
         aboveFoldStackWrapper.addSubview(aboveFoldStack)
@@ -58,18 +55,19 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         let artistBlurbTitle = stack.addBigHeading("About the Artist", sideMargin: "40")
         let artistBlurb = stack.addBodyText("", sideMargin: "40")
         let artistMetadata: [UIView] = [separator, artistBlurbTitle, artistBlurb]
+        let currencySymbol = viewModel.currencySymbol
 
-        viewModel.subscribe { lot in
-            name.text = lot.lotArtist
-            title.setTitle(lot.lotName, date: lot.lotArtworkCreationDate)
-            estimate.text = lot.estimateString
-            premium.text = lot.lotPremium
+        name.text = viewModel.lotArtist
+        title.setTitle(viewModel.lotName, date: viewModel.lotArtworkCreationDate)
+        estimate.text = viewModel.estimateString
+        viewModel.askingPriceSignal.subscribe { askingPrice in // TODO: Unsubscribe from this.
+            currentBid.text = "Current Bid: \(askingPrice.convertToDollarString(currencySymbol))"
+        }
 
-            if let blurb = lot.lotArtistBlurb {
-                artistBlurb.text = blurb
-            } else {
-                artistMetadata.forEach { stack.removeSubview($0) }
-            }
+        if let blurb = viewModel.lotArtistBlurb {
+            artistBlurb.text = blurb
+        } else {
+            artistMetadata.forEach { stack.removeSubview($0) }
         }
 
         scrollEnabled = false
