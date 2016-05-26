@@ -16,7 +16,9 @@
 #import "ARMenuAwareViewController.h"
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
+#import "AROptions.h"
 
+#import <Emission/ARArtistComponentViewController.h>
 #import <FXBlurView/FXBlurView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -106,7 +108,11 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     if (result.model == [Artwork class]) {
         controller = [[ARArtworkSetViewController alloc] initWithArtworkID:result.modelID];
     } else if (result.model == [Artist class]) {
-        controller = [[ARArtistViewController alloc] initWithArtistID:result.modelID];
+        if ([AROptions boolForOption:AROptionsEnableReactArtist]) {
+            controller = (UIViewController *)[[ARArtistComponentViewController alloc] initWithArtistID:result.modelID];
+        } else {
+            controller = [[ARArtistViewController alloc] initWithArtistID:result.modelID];
+        }
     } else if (result.model == [Gene class]) {
         controller = [[ARGeneViewController alloc] initWithGeneID:result.modelID];
     } else if (result.model == [Profile class]) {
