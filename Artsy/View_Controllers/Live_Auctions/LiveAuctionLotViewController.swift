@@ -79,7 +79,7 @@ class LiveAuctionLotViewController: UIViewController {
         /// We attach the bottom of the image preview to the bottom of the lot metadata,
         /// then later, when we have enough information about it's height the constant is set
         lotImagePreviewView?.then {
-            imageBottomConstraint = lotMetadataStack.alignBottomEdgeWithView($0, predicate: "0")
+            imageBottomConstraint = lotMetadataStack.constrainTopSpaceToView($0, predicate: "0")
         }
 
         /// This is a constraint that says "stick to the top of the lot view"
@@ -191,9 +191,25 @@ class LiveAuctionLotViewController: UIViewController {
         }
     }
 
+    // This is strictly iPad support, trait collections on iPhone won't chage as we don't support rotation.
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+
+        coordinator.animateAlongsideTransition({ context in
+
+            self.alignMetadataToTopConstraint?.constant = self.openedMetadataPosition ?? 0 // Reset this to stick to the top, we'll set its active status below.
+            self.alignMetadataToTopConstraint?.active = false
+            self.lotHistoryHeightConstraint?.active = true
+
+            self.bidHistoryDelta.update((delta: 0, animating: true))
+
+        }, completion: { _ in
+            self._bidHistoryState = .Closed
+        })
+    }
+
     private var lotHistoryHeightConstraint: NSLayoutConstraint?
     private var alignMetadataToTopConstraint: NSLayoutConstraint?
-    private var _animating = false
     private var initialGestureMetadataPosition: CGFloat = 0
     private var atRestMetadataPosition: CGFloat!
     private var openedMetadataPosition: CGFloat! {
@@ -250,7 +266,6 @@ class LiveAuctionLotViewController: UIViewController {
         case .Ended:
             // Depending on the direction of the velocity, close or open the lot history.
             let targetState: BidHistoryState = velocity.y >= 0 ? .Closed : .Open
-            _animating = true
 
             // TODO: be clever about animation velocity
             UIView.animateWithDuration(0.3, animations: {
@@ -265,7 +280,6 @@ class LiveAuctionLotViewController: UIViewController {
             }, completion: { _ in
                 // Update our parent once the animation is complete, so it can change disable enabledness, etc.
                 self._bidHistoryState = targetState
-                self._animating = false
             })
 
         default: break
