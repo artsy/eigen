@@ -149,13 +149,22 @@ extension PrivateFunctions {
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, traitCollection: view.traitCollection)
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
 
-        lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
-        lotListController.delegate = self
-        lotListController.title =  sale.name
+        if useSingleLayout {
+            viewControllers = [lotsSetNavigationController]
 
-        let lotListNav = ARSerifNavigationViewController(rootViewController: lotListController)
-        lotListNav.navigationBar.topItem?.setRightBarButtonItem(nil, animated: false)
-        viewControllers = useSingleLayout ? [lotsSetNavigationController] : [lotListNav, lotsSetNavigationController]
+        } else {
+            lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
+            lotListController.delegate = self
+
+            // Make the heading on the lot list, instead of the lot set
+            lotSetController.title = ""
+            lotListController.title = sale.name
+            
+            let lotListNav = ARSerifNavigationViewController(rootViewController: lotListController)
+            lotListNav.navigationBar.topItem?.rightBarButtonItems = []
+
+            viewControllers = [lotListNav, lotsSetNavigationController]
+        }
     }
 
     func salesPerson(sale: LiveSale, jwt: JWT, bidderID: String?) -> LiveAuctionsSalesPersonType {

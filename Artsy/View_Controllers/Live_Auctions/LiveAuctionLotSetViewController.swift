@@ -174,6 +174,8 @@ class LiveAuctionLotSetViewController: UIViewController {
         let lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
         lotListController.selectedIndex = currentIndex()
+        lotListController.title = "Lots"
+
         let navController = ARSerifNavigationViewController(rootViewController: lotListController)
         presentViewController(navController, animated: true, completion: nil)
     }
