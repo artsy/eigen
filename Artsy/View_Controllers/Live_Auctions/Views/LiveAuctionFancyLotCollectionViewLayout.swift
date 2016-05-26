@@ -174,7 +174,7 @@ private extension PrivateFunctions {
         let preRepulsedCenters = centersForPosition(position, metrics: preRepulsedMetrics)
 
         // Apply repulsionConstant to metrics and centers.
-        let metrics = applyRepulsionToMetrics(preRepulsedMetrics, atPosition: position)
+        let metrics = applyRepulsionToMetrics(preRepulsedMetrics, atPosition: position, aspectRatio: aspectRatio)
         let centers = applyRepulsionToCenters(preRepulsedCenters, atPosition: position)
 
         // Apply the centers and metrics to the layout attributes.
@@ -287,17 +287,25 @@ private extension PrivateFunctions {
         return (restingCenterX: restingCenterX, targetCenterX: targetCenterX)
     }
 
-    func applyRepulsionToMetrics(metrics: LayoutMetrics, atPosition position: CellPosition) -> LayoutMetrics {
+    /// Applies the instance's repulsionConstant to the metrics, returning new metrics.
+    /// Only affects the current item.
+    func applyRepulsionToMetrics(metrics: LayoutMetrics, atPosition position: CellPosition, aspectRatio: CGFloat) -> LayoutMetrics {
         switch position {
-        case .Current:
-            return (restingWidth: metrics.restingWidth, restingHeight: metrics.restingHeight - repulsionConstant/2, targetWidth: metrics.targetWidth, targetHeight: metrics.targetHeight - repulsionConstant/2)
+        case .Current where aspectRatio > (maxCurrentWidth / maxCurrentHeight):
+            // Modify height
+            return (restingWidth: metrics.restingWidth, restingHeight: metrics.restingHeight - (repulsionConstant / aspectRatio), targetWidth: metrics.targetWidth, targetHeight: metrics.targetHeight - (repulsionConstant / aspectRatio))
+        case .Current: // aspectRatio <= (maxCurrentWidth / maxCurrentHeight)
+            // Modify width
+            return (restingWidth: metrics.restingWidth - (repulsionConstant * aspectRatio), restingHeight: metrics.restingHeight, targetWidth: metrics.targetWidth - (repulsionConstant * aspectRatio), targetHeight: metrics.targetHeight)
         default: return metrics
         }
     }
 
+    /// Applies the instance's repulsionConstant to the center X positions, returning new positions.
+    /// Only affects next/previous items.
     func applyRepulsionToCenters(centers: CenterXPositions, atPosition position: CellPosition) -> CenterXPositions {
         // TODO: There's a problem with next/previous cells dis/appearing without animation if they're in/visible at the beginning or end of animation.
-        // This hack keeps them "close enough" to visible most of the time to work, but a better solution undoubtedly exists.
+        // This hack keeps them "close enough" to visible most of the time to work, but a better solution would be to implement initialLayoutAttributesForAppearingItemAtIndexPath and finalLayoutAttributesForDisappearingItemAtIndexPath
         let diff = min(repulsionConstant/8, visiblePrevNextSliceSize)
         switch position {
         case .Current:

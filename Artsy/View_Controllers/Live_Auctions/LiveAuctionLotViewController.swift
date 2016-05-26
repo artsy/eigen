@@ -90,12 +90,12 @@ class LiveAuctionLotViewController: UIViewController {
         topMetadataStackConstraint.active = false
 
         /// Toggles the top constraint, and tells the stack to re-layout
-        lotMetadataStack.showAdditionalInformation = { button in
+        lotMetadataStack.showAdditionalInformation = {
             topMetadataStackConstraint.active = true
             lotMetadataStack.showFullMetadata(true)
         }
 
-        lotMetadataStack.hideAdditionalInformation = { button in
+        lotMetadataStack.hideAdditionalInformation = {
             topMetadataStackConstraint.active = false
             lotMetadataStack.hideFullMetadata(true)
         }
@@ -179,7 +179,7 @@ class LiveAuctionLotViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         // Sets up height constraint based on the lot metadata stack's height.
-        // TODO: lotMetadataStack needs a constant height.
+        // TODO: lotMetadataStack needs a constant height, not a variable one with multiline support.
         let height = lotMetadataStack?.frame.height ?? 0
         imageBottomConstraint?.constant = height + 20
         view.setNeedsUpdateConstraints()
@@ -205,8 +205,9 @@ class LiveAuctionLotViewController: UIViewController {
 
         }, completion: { _ in
             self._bidHistoryState = .Closed
+            self.lotMetadataStack?.setShowInfoButtonEnabled(true)
             self.atRestMetadataPosition = nil
-            self.view.setNeedsLayout()
+            self.view.setNeedsLayout() // Triggers a re-set of atRestMetadataPosition
         })
     }
 
@@ -243,6 +244,10 @@ class LiveAuctionLotViewController: UIViewController {
         case .Began:
             _initialBidHistoryState = _bidHistoryState
 
+            // TODO: If we are showing the metadata stack when we begin the gesture, initialGestureMetadataPosition is invalid.
+            lotMetadataStack?.hideAdditionalInformation?()
+            self.lotMetadataStack?.setShowInfoButtonEnabled(false)
+
             initialGestureMetadataPosition = lotMetadataStack?.frame.origin.y ?? 0
             alignMetadataToTopConstraint?.constant = initialGestureMetadataPosition
 
@@ -251,10 +256,8 @@ class LiveAuctionLotViewController: UIViewController {
 
             // We'll be "open" for now, which is really shorthand for "opening", which will be set appropriately when the recognizer ends.
             _bidHistoryState = .Open
-//
+
         case .Changed:
-            // TODO: Disable lot info button when bit history is open.
-            // TODO: Allow user to tap outside an open bid history to close it.
             // TODO: What happens when the current lot is closed, and a new one is opened?
 
             var candidateConstant = initialGestureMetadataPosition + translation.y
@@ -276,7 +279,7 @@ class LiveAuctionLotViewController: UIViewController {
             let targetState: BidHistoryState = velocity.y >= 0 ? .Closed : .Open
 
             // TODO: be clever about animation velocity
-            UIView.animateWithDuration(0.3, animations: {
+            UIView.animateWithDuration(ARAnimationDuration, animations: {
                 self.alignMetadataToTopConstraint?.constant = self.openedMetadataPosition ?? 0 // Reset this to stick to the top, we'll set its active status below.
                 self.alignMetadataToTopConstraint?.active = (targetState == .Open)
                 self.lotHistoryHeightConstraint?.active = (targetState == .Closed)
@@ -288,6 +291,7 @@ class LiveAuctionLotViewController: UIViewController {
             }, completion: { _ in
                 // Update our parent once the animation is complete, so it can change disable enabledness, etc.
                 self._bidHistoryState = targetState
+                self.lotMetadataStack?.setShowInfoButtonEnabled(targetState == .Closed)
             })
 
         default: break
