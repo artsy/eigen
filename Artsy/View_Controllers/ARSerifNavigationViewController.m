@@ -196,6 +196,8 @@
         [self verticallyCenterView:self.topItem.leftBarButtonItems];
         [self verticallyCenterView:self.topItem.rightBarButtonItems];
     }
+
+    [self nudgeViews:self.topItem.rightBarButtonItems horizontally:10];
 }
 
 - (void)verticallyCenterView:(id)viewOrArray
@@ -218,6 +220,13 @@
     CGRect newFrame = viewToCenter.frame;
     newFrame.origin.y = roundf(barMidpoint - viewMidpoint);
     viewToCenter.frame = newFrame;
+}
+
+- (void)nudgeViews:(NSArray *)buttons horizontally:(CGFloat)offset
+{
+    for (UIBarButtonItem *button in buttons) {
+        button.customView.frame = CGRectOffset(button.customView.frame, offset, 0);
+    }
 }
 
 - (void)hideNavigationBarShadow:(BOOL)hide
