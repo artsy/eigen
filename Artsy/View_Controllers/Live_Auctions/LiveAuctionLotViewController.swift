@@ -113,7 +113,7 @@ class LiveAuctionLotViewController: UIViewController {
         let infoToolbar = LiveAuctionToolbarView()
         infoToolbar.lotViewModel = lotViewModel
         infoToolbar.auctionViewModel = salesPerson.auctionViewModel
-        metadataStack.addSubview(infoToolbar, withTopMargin: "40", sideMargin: "60")
+        metadataStack.addSubview(infoToolbar, withTopMargin: "28", sideMargin: "60")
         infoToolbar.constrainHeight("38")
 
         let pan = PanDirectionGestureRecognizer(direction: .Vertical, target: self, action: #selector(dragToolbar))
