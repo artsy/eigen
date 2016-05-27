@@ -50,6 +50,8 @@ class LiveAuctionViewController: UISplitViewController {
 
         ar_presentIndeterminateLoadingIndicatorAnimated(true)
         connectToNetwork()
+
+        UIApplication.sharedApplication().idleTimerDisabled = true
     }
 
     func connectToNetwork() {
@@ -118,6 +120,8 @@ class LiveAuctionViewController: UISplitViewController {
 
         guard let internalPopover = self.valueForKey("_hiddenPopoverController") as? UIPopoverController else { return }
         internalPopover.dismissPopoverAnimated(false)
+
+        UIApplication.sharedApplication().idleTimerDisabled = false
     }
 
     required init?(coder aDecoder: NSCoder) {
