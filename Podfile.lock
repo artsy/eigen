@@ -346,7 +346,7 @@ CHECKOUT OPTIONS:
     :commit: 49d17e014367b64d8a91dbe10f28f5d59c7aefb3
     :git: https://github.com/ashfurrow/Forgeries.git
   Interstellar:
-    :commit: e26a300c56887858bea01fc9cd5a0a13e8cefacb
+    :commit: 849426ff861f0ed3d15181b4211c4280f8088c66
     :git: https://github.com/ashfurrow/Interstellar.git
   ISO8601DateFormatter:
     :commit: 1a48b819c85903ded669e74e476aceffebf311fc

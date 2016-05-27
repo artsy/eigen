@@ -68,7 +68,7 @@ class LiveAuctionLotViewController: UIViewController {
         let metadataStack = ORStackView()
 
         /// The metadata that can jump over the artwork image
-        let lotMetadataStack = AuctionLotMetadataStackScrollView()
+        let lotMetadataStack = AuctionLotMetadataStackScrollView(viewModel: lotViewModel)
         self.lotMetadataStack = lotMetadataStack
         view.addSubview(lotMetadataStack)
         lotMetadataStack.constrainWidthToView(view, predicate: "0")
@@ -172,7 +172,6 @@ class LiveAuctionLotViewController: UIViewController {
         infoToolbar.auctionViewModel = salesPerson.auctionViewModel
 
         lotImagePreviewView?.ar_setImageWithURL(lotViewModel.urlForThumbnail)
-        lotMetadataStack.viewModel.update(lotViewModel)
     }
 
     override func viewDidLayoutSubviews() {
@@ -296,6 +295,16 @@ class LiveAuctionLotViewController: UIViewController {
 
         default: break
         }
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        UIApplication.sharedApplication().idleTimerDisabled = true
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.sharedApplication().idleTimerDisabled = false
     }
 }
 

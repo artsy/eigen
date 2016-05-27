@@ -64,7 +64,6 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         collectionView?.backgroundColor = .whiteColor()
-        title = "Lots"
 
         collectionView?.registerClass(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
     }
