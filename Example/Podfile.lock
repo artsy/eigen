@@ -82,7 +82,7 @@ CHECKOUT OPTIONS:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Extraction:
-    :commit: 7312df7c9c005c196705cc9da7c5d53cde404854
+    :commit: 069fdaeacf31dc599f05e7825980b0e6dff43c47
     :git: https://github.com/artsy/extraction.git
   FLKAutoLayout:
     :commit: 8cb911654b3538c0ce514701db041d32964ea17c
