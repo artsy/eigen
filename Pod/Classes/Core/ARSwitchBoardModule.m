@@ -21,23 +21,22 @@ RCT_EXPORT_METHOD(presentModalViewController:(nonnull NSNumber *)reactTag route:
   [self invokeCallback:self.presentModalViewController reactTag:reactTag route:route];
 }
 
+- (dispatch_queue_t)methodQueue;
+{
+  return dispatch_get_main_queue();
+}
+
 - (void)invokeCallback:(ARSwitchBoardPresentViewController)callback
               reactTag:(nonnull NSNumber *)reactTag
                  route:(nonnull NSString *)route;
 {
-  dispatch_async(self.bridge.uiManager.methodQueue, ^{
-    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
-      UIView *rootView = viewRegistry[reactTag];
-      while (rootView.superview && ![rootView isKindOfClass:RCTRootView.class]) {
-        rootView = rootView.superview;
-      }
-      UIViewController *viewController = rootView.reactViewController;
-      NSParameterAssert(viewController);
-      dispatch_async(dispatch_get_main_queue(), ^{
-        callback(viewController, route);
-      });
-    }];
-  });
+  UIView *rootView = [self.bridge.uiManager viewForReactTag:reactTag];
+  while (rootView.superview && ![rootView isKindOfClass:RCTRootView.class]) {
+    rootView = rootView.superview;
+  }
+  UIViewController *viewController = rootView.reactViewController;
+  NSParameterAssert(viewController);
+  callback(viewController, route);
 }
 
 @end
