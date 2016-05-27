@@ -219,9 +219,10 @@ NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
             };
         }
 
+        NSString *stagingDomain = self.echo.routes[@"ARLiveAuctionsStagingURLDomain"].path;
+
         [self registerPathCallbackForDomain:route.path callback:presentNativeAuctionsViewControllerBlock];
-        /// Temp
-        [self registerPathCallbackForDomain:@"live-staging.artsy.net" callback:presentNativeAuctionsViewControllerBlock];
+        [self registerPathCallbackForDomain:stagingDomain callback:presentNativeAuctionsViewControllerBlock];
     }
 
     // This route will match any single path component and thus should be added last.
