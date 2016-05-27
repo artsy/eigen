@@ -32,18 +32,18 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
         // Want to make the wrapper hold the stack on the left
         aboveFoldStackWrapper.addSubview(aboveFoldStack)
-        aboveFoldStack.alignTop("0", leading: "30", toView: aboveFoldStackWrapper)
+        aboveFoldStack.alignTop("0", leading: "0", toView: aboveFoldStackWrapper)
         aboveFoldStack.alignBottomEdgeWithView(aboveFoldStackWrapper, predicate: "0")
 
         // Then the button on the right
         aboveFoldStackWrapper.addSubview(toggle)
         toggle.alignTopEdgeWithView(aboveFoldStackWrapper, predicate: "0")
-        toggle.alignTrailingEdgeWithView(aboveFoldStackWrapper, predicate: "-30")
+        toggle.alignTrailingEdgeWithView(aboveFoldStackWrapper, predicate: "0")
 
         toggle.addTarget(self, action: #selector(toggleTapped), forControlEvents: .TouchUpInside)
 
         // Then glue them together with 20px margin
-        aboveFoldStack.constrainTrailingSpaceToView(toggle, predicate: "-20")
+        aboveFoldStack.constrainTrailingSpaceToView(toggle, predicate: "0")
 
         // Add the above the fold stack, to the stack
         stackView.addSubview(aboveFoldStackWrapper, withTopMargin: "0", sideMargin: "0")
@@ -54,22 +54,22 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         // ----- Below the fold 👇 ----- //
 
         if let medium = viewModel.lotArtworkMedium {
-            stack.addBodyText(medium, topMargin: "20", sideMargin: "40")
+            stack.addBodyText(medium, topMargin: "20", sideMargin: "0")
         }
 
         if let dimensions = viewModel.lotArtworkDimensions {
-            stack.addBodyText(dimensions, sideMargin: "40")
+            stack.addBodyText(dimensions, sideMargin: "0")
         }
 
         if let description = viewModel.lotArtworkDescription {
             stack.addSmallLineBreak("40")
-            stack.addSmallHeading("Description", sideMargin: "40")
-            stack.addBodyMarkdown(description, sideMargin: "40")
+            stack.addSmallHeading("Description", sideMargin: "0")
+            stack.addBodyMarkdown(description, sideMargin: "00")
         }
 
         let separator = stack.addThickLineBreak("40")
-        let artistBlurbTitle = stack.addBigHeading("About the Artist", sideMargin: "40")
-        let artistBlurb = stack.addBodyText("", sideMargin: "40")
+        let artistBlurbTitle = stack.addBigHeading("About the Artist", sideMargin: "00")
+        let artistBlurb = stack.addBodyText("", sideMargin: "00")
         let artistMetadata: [UIView] = [separator, artistBlurbTitle, artistBlurb]
         let currencySymbol = viewModel.currencySymbol
 
@@ -90,7 +90,6 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         }
 
         scrollEnabled = false
-        backgroundColor = UIColor(white: 1, alpha: 0.85)
 
         let views = stack.subviews + aboveFoldStack.subviews
         for label in views.filter({ $0.isKindOfClass(UILabel.self) }) {
@@ -128,7 +127,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         aboveFoldHeightConstraint.active = false
 
         UIView.animateSpringIf(animated, duration: ARAnimationDuration, delay: 0, damping: 0.9, velocity: 3.5) {
-            self.layoutIfNeeded()
+            self.superview?.layoutIfNeeded()
         }
     }
 
@@ -144,7 +143,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         aboveFoldHeightConstraint.active = true
 
         UIView.animateSpringIf(animated, duration: ARAnimationDuration, delay: 0, damping: 0.9, velocity: 3.5) {
-            self.layoutIfNeeded()
+            self.superview?.layoutIfNeeded()
         }
     }
 
