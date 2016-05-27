@@ -17,8 +17,11 @@ class LiveAuctionLotSetViewController: UIViewController {
     let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource?
     let lotCollectionViewLayout: LiveAuctionFancyLotCollectionViewLayout?
 
-    var hasBeenSetup = false
-    var firstAppearance = true
+    private var hasBeenSetup = false
+    private var firstAppearance = true
+    private var pageViewScrollView: UIScrollView?
+    private let progressBarBottomConstraintAtRestConstant: CGFloat = -165
+    private var progressBarBottomConstraint: NSLayoutConstraint?
 
     init(salesPerson: LiveAuctionsSalesPersonType, traitCollection: UITraitCollection) {
         self.salesPerson = salesPerson
@@ -71,7 +74,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // Page view controller setup.
         ar_addModernChildViewController(pageController)
-        pageController.delegate = salesPerson.pageControllerDelegate
+        pageController.delegate = self
 
         let pageControllerView = pageController.view
         pageControllerView.alignToView(view)
@@ -87,7 +90,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         view.addSubview(progressBar)
         progressBar.constrainHeight("4")
         progressBar.alignLeading("0", trailing: "0", toView: view)
-        progressBar.alignBottomEdgeWithView(view, predicate: "-165")
+        progressBarBottomConstraint = progressBar.alignBottomEdgeWithView(view, predicate: "\(progressBarBottomConstraintAtRestConstant)")
 
         salesPerson.currentFocusedLotIndex.subscribe { [weak self] _ in
             self?.lotImageCollectionView?.reloadData()
@@ -118,6 +121,13 @@ class LiveAuctionLotSetViewController: UIViewController {
             lotImageCollectionView.scrollRectToVisible(initialRect, animated: false)
             lotImageCollectionView.reloadData()
         }
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Disable scrolling on iPad.
+        pageViewScrollView?.scrollEnabled = (lotImageCollectionView != nil)
     }
 
     func setupToolbar() {
@@ -173,14 +183,9 @@ class LiveAuctionLotSetViewController: UIViewController {
     func showLots() {
         let lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
-        lotListController.selectedIndex = currentIndex()
+        lotListController.selectedIndex = salesPerson.currentLotSignal.peek()??.lotIndex
         let navController = ARSerifNavigationViewController(rootViewController: lotListController)
         presentViewController(navController, animated: true, completion: nil)
-    }
-
-    func currentIndex() -> Int {
-        guard let current = pageController.childViewControllers.first as? LiveAuctionLotViewController else { return -1 }
-        return current.index
     }
 
     func setupWithInitialData() {
@@ -189,12 +194,14 @@ class LiveAuctionLotSetViewController: UIViewController {
         defer { hasBeenSetup = true }
 
         auctionDataSource.salesPerson = salesPerson
+        auctionDataSource.scrollingDelegate = self
 
         pageController.dataSource = auctionDataSource
 
         guard let startVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(0) else { return }
         pageController.setViewControllers([startVC], direction: .Forward, animated: false, completion: nil)
 
+        pageViewScrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first
 
         salesPerson
             .currentLotSignal
@@ -295,35 +302,44 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
 
 }
 
-class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
-    var salesPerson: LiveAuctionsSalesPersonType!
+private typealias PageViewDelegate = LiveAuctionLotSetViewController
+extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDataSourceScrollableDelgate {
+    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard let viewController = pageViewController.viewControllers?.first as? LiveAuctionLotViewController else { return }
 
-    func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
-        guard 0..<salesPerson.lotCount ~= index else { return nil }
-        let lotViewModel = salesPerson.lotViewModelForIndex(index)
-
-        let auctionVC =  LiveAuctionLotViewController(
-            index: index,
-            lotViewModel: lotViewModel,
-            salesPerson: salesPerson
-        )
-        return auctionVC
+        // The completed parameter specifies if the user has completed the swipe from one page to the next. We want to
+        // ignore when they don't, since it is effectively a cancelled transition.
+        if completed {
+            print("Updating current focused index to:", viewController.index)
+            salesPerson.currentFocusedLotIndex.update(viewController.index)
+        }
     }
 
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        if salesPerson.lotCount == 1 { return nil }
+    func registerForScrollingState(viewController: LiveAuctionLotViewController) {
 
-        guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
-        var newIndex = viewController.index - 1
-        if (newIndex < 0) { newIndex = salesPerson.lotCount - 1 }
-        return liveAuctionPreviewViewControllerForIndex(newIndex)
-    }
+        // We only care about enabling scrolling if we're on a phone, which would mean we have a collection view.
+        if let _ = lotImageCollectionView {
+            viewController.bidHistoryState.subscribe { [weak self] state in
+                let scrollEnabled = (state == .Closed)
+                self?.pageViewScrollView?.scrollEnabled = scrollEnabled
+            }
+        }
 
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        if salesPerson.lotCount == 1 { return nil }
+        viewController.bidHistoryDelta.subscribe { [weak self] update in
 
-        guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
-        let newIndex = (viewController.index + 1) % salesPerson.lotCount;
-        return liveAuctionPreviewViewControllerForIndex(newIndex)
+            self?.progressBarBottomConstraint?.constant = (self?.progressBarBottomConstraintAtRestConstant ?? 0) + update.delta
+
+            if update.animating {
+                self?.lotImageCollectionView?.performBatchUpdates( {
+                    self?.lotCollectionViewLayout?.repulsionConstant = abs(update.delta)
+                    }, completion: nil)
+            } else {
+                self?.lotCollectionViewLayout?.repulsionConstant = abs(update.delta)
+            }
+
+            if update.animating {
+                self?.view.layoutIfNeeded()
+            }
+        }
     }
 }

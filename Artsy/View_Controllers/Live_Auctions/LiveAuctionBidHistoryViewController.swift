@@ -28,9 +28,9 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     let lotViewModel: LiveAuctionLotViewModelType
     var nextInsertIndex = 0
 
-    var newEventsBeganSubscription: (Observable<NSDate>, ObserverToken)!
-    var newEventsEndedSubscription: (Observable<NSDate>, ObserverToken)!
-    var newEventsSubscription: (Observable<LiveAuctionEventViewModel>, ObserverToken)!
+    var newEventsBeganSubscription: ObserverToken<NSDate>!
+    var newEventsEndedSubscription: ObserverToken<NSDate>!
+    var newEventsSubscription: ObserverToken<LiveAuctionEventViewModel>!
 
     init(lotViewModel: LiveAuctionLotViewModelType) {
         self.lotViewModel = lotViewModel
@@ -40,29 +40,29 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
         tableView.allowsSelection = false
         tableView.showsVerticalScrollIndicator = false
 
-        newEventsBeganSubscription = (lotViewModel.startEventUpdatesSignal, lotViewModel.startEventUpdatesSignal.subscribe { [weak self] _ in
+        newEventsBeganSubscription = lotViewModel.startEventUpdatesSignal.subscribe { [weak self] _ in
             // We want to skip any initial first values that are cached by the observables, we can do this by making sure we have a window (since cached values are immediately sent, before the initializer is completed).
             guard let _ = self?.view.window else { return }
 
             self?.nextInsertIndex = 0
             self?.tableView.beginUpdates()
-        })
+        }
 
-        newEventsEndedSubscription = (lotViewModel.endEventUpdatesSignal, lotViewModel.endEventUpdatesSignal.subscribe { [weak self] _ in
+        newEventsEndedSubscription = lotViewModel.endEventUpdatesSignal.subscribe { [weak self] _ in
             // We comment in startEventUpdatesSignal subscription.
             guard let _ = self?.view.window else { return }
 
             self?.tableView.endUpdates()
-        })
+        }
 
-        newEventsSubscription = (lotViewModel.newEventSignal, lotViewModel.newEventSignal.subscribe { [weak self] event in
+        newEventsSubscription = lotViewModel.newEventSignal.subscribe { [weak self] event in
             // We comment in startEventUpdatesSignal subscription.
             guard let _ = self?.view.window else { return }
 
             let indexPath = NSIndexPath(forRow: self?.nextInsertIndex ?? 0, inSection: 0)
             self?.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             self?.nextInsertIndex += 1
-        })
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -70,9 +70,9 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     }
 
     deinit {
-        newEventsBeganSubscription.0.unsubscribe(newEventsBeganSubscription.1)
-        newEventsEndedSubscription.0.unsubscribe(newEventsEndedSubscription.1)
-        newEventsSubscription.0.unsubscribe(newEventsSubscription.1)
+        newEventsBeganSubscription.unsubscribe()
+        newEventsEndedSubscription.unsubscribe()
+        newEventsSubscription.unsubscribe()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -87,6 +87,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerClass(LiveAuctionHistoryCell.self, forCellReuseIdentifier: "live")
+        tableView.backgroundColor = .clearColor()
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

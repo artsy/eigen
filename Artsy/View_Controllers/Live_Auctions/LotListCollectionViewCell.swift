@@ -20,8 +20,13 @@ class LotListCollectionViewCell: UICollectionViewCell {
     var isNotTopCell = true
 
     private var userInterfaceNeedsSetup = true
-    private var lotStateSubscription: (ObserverToken, Observable<LotState>)?
-    private var askingPriceSubscription: (ObserverToken, Observable<UInt64>)?
+    private var lotStateSubscription: ObserverToken<LotState>?
+    private var askingPriceSubscription: ObserverToken<UInt64>?
+
+    deinit {
+        lotStateSubscription?.unsubscribe()
+        askingPriceSubscription?.unsubscribe()
+    }
 }
 
 private typealias Overrides = LotListCollectionViewCell
@@ -33,20 +38,14 @@ extension Overrides {
             askingPriceSubscription = nil
         }
 
-        if let computedLotStateSubscription = lotStateSubscription {
-            computedLotStateSubscription.1.unsubscribe(computedLotStateSubscription.0)
-        }
-
-        if let askingPriceSubscription = askingPriceSubscription {
-            askingPriceSubscription.1.unsubscribe(askingPriceSubscription.0)
-        }
+        lotStateSubscription?.unsubscribe()
+        askingPriceSubscription?.unsubscribe()
     }
 }
 
 private typealias PublicFunctions = LotListCollectionViewCell
 extension PublicFunctions {
-    // TODO: auctionViewModel is not used in this function.
-    func configureForViewModel(viewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType, indexPath: NSIndexPath) {
+    func configureForViewModel(viewModel: LiveAuctionLotViewModelType, indexPath: NSIndexPath) {
 
         let currencySymbol = viewModel.currencySymbol
 
@@ -63,16 +62,16 @@ extension PublicFunctions {
         // TODO: Pending https://github.com/JensRavens/Interstellar/issues/40 this might look less messy.
         let lotStateSignal = viewModel.lotStateSignal
 
-        self.lotStateSubscription = (lotStateSignal.subscribe { [weak self] state in
+        self.lotStateSubscription = lotStateSignal.subscribe { [weak self] state in
                 self?.setLotState(state)
-            }, lotStateSignal)
+            }
 
-        askingPriceSubscription = (viewModel
+        askingPriceSubscription = viewModel
             .askingPriceSignal
             .subscribe { [weak self] askingPrice in
                 self?.currentAskingPriceLabel.text = askingPrice.convertToDollarString(currencySymbol)
                 return
-            }, viewModel.askingPriceSignal)
+            }
 
         lotImageView.ar_setImageWithURL(viewModel.urlForThumbnail)
         lotNumberLabel.text = viewModel.lotIndexDisplayString

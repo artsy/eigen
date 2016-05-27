@@ -226,7 +226,7 @@ DEPENDENCIES:
   - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
   - Forgeries/Mocks (from `https://github.com/ashfurrow/Forgeries.git`, branch `application`)
   - FXBlurView
-  - Interstellar/Core (from `https://github.com/ashfurrow/Interstellar.git`, branch `observable-merge`)
+  - Interstellar/Core (from `https://github.com/ashfurrow/Interstellar.git`, branch `fancy-unsubscription`)
   - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
@@ -294,7 +294,7 @@ EXTERNAL SOURCES:
     :branch: application
     :git: https://github.com/ashfurrow/Forgeries.git
   Interstellar:
-    :branch: observable-merge
+    :branch: fancy-unsubscription
     :git: https://github.com/ashfurrow/Interstellar.git
   ISO8601DateFormatter:
     :git: https://github.com/orta/iso-8601-date-formatter
@@ -346,7 +346,7 @@ CHECKOUT OPTIONS:
     :commit: 49d17e014367b64d8a91dbe10f28f5d59c7aefb3
     :git: https://github.com/ashfurrow/Forgeries.git
   Interstellar:
-    :commit: 3785de4184bd2b61761684d0be07804809681bb3
+    :commit: e26a300c56887858bea01fc9cd5a0a13e8cefacb
     :git: https://github.com/ashfurrow/Interstellar.git
   ISO8601DateFormatter:
     :commit: 1a48b819c85903ded669e74e476aceffebf311fc
@@ -427,6 +427,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 9aae3efcd7e35e75130d86dc248e30f8b8869a66
+PODFILE CHECKSUM: b72e998d859bdf813934d542d520197281ae7f49
 
 COCOAPODS: 1.0.0

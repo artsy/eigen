@@ -72,7 +72,6 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
     var currentFocusedLotIndex = Observable(0)
 
     var auctionViewModel: LiveAuctionViewModelType
-    var pageControllerDelegate: LiveAuctionPageControllerDelegate? { return nil }
     var lotCount: Int { return auctionViewModel.lotCount }
     var liveSaleID: String = "seriously-folks-its-the-best-sale-ever"
     var bidderStatus: ArtsyAPISaleRegistrationStatus = .NotRegistered

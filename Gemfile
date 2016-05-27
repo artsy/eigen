@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'cocoapods', '>= 1.0.0'
 gem 'cocoapods-keys'
+gem 'cocoapods-check'
 
 gem 'nokogiri', '>= 1.6.7'
 

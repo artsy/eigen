@@ -11,7 +11,6 @@ protocol LiveAuctionsSalesPersonType {
     var currentFocusedLotIndex: Observable<Int> { get }
 
     var auctionViewModel: LiveAuctionViewModelType { get }
-    var pageControllerDelegate: LiveAuctionPageControllerDelegate? { get }
     var lotCount: Int { get }
     var liveSaleID: String { get }
     var bidderStatus: ArtsyAPISaleRegistrationStatus { get }
@@ -31,7 +30,6 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
 
     let dataReadyForInitialDisplay = Observable<Void>()
     let auctionViewModel: LiveAuctionViewModelType
-    var pageControllerDelegate: LiveAuctionPageControllerDelegate?
 
     var bidderStatus: ArtsyAPISaleRegistrationStatus {
         return stateManager.bidderStatus
@@ -54,10 +52,6 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
         let host = ARRouter.baseCausalitySocketURLString()
         self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderID: bidderID)
         self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal, bidderStatus: stateManager.bidderStatus)
-
-        super.init()
-
-        pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
     }
 }
 
@@ -130,23 +124,4 @@ extension ClassMethods {
         }
     }
 
-}
-
-
-class LiveAuctionPageControllerDelegate: NSObject, UIPageViewControllerDelegate {
-    let salesPerson: LiveAuctionsSalesPerson
-
-    init(salesPerson: LiveAuctionsSalesPerson) {
-        self.salesPerson = salesPerson
-    }
-
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        // The completed parameter specifies if the user has completed the swipe from one page to the next. We want to
-        // ignore when they don't, since it is effectively a cancelled transition.
-        guard let viewController = pageViewController.viewControllers?.first as? LiveAuctionLotViewController else { return }
-        if completed {
-            print("Updating current focused index to:", viewController.index)
-            salesPerson.currentFocusedLotIndex.update(viewController.index)
-        }
-    }
 }

@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: "7.3"
+    version: "7.3.1"
   environment:
     # Public - Yay
     UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
@@ -33,7 +33,7 @@ machine:
 dependencies:
   override:
     - bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
-    - bundle exec pod install
+    - bundle exec pod check || bundle exec pod install --verbose
 
 test:
   pre:

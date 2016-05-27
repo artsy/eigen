@@ -1,4 +1,4 @@
-/// Given a closure T -> Void, returns a function that takes a T and invokes the closure. 
+/// Given a closure T -> Void, returns a function that takes a T and invokes the closure.
 /// Useful for performing operations with curried functions. 
 /// Ex: [a, b, c,].forEach(apply(self.function)) will call self.function with a, b, then c as parameters.
 func apply<T>(closure: T -> Void) -> (T -> Void) {
@@ -22,4 +22,15 @@ func +<K, V>(lhs: Dictionary<K, V>, rhs: Dictionary<K, V>) -> Dictionary<K, V> {
         copy[key] = value
     }
     return copy
+}
+
+extension CGFloat {
+    mutating func capAtMax(max: CGFloat?, min: CGFloat?) {
+        if let min = min {
+            self = Swift.max(self, min)
+        }
+        if let max = max {
+            self = Swift.min(self, max)
+        }
+    }
 }
