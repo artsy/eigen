@@ -64,13 +64,15 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         if let description = viewModel.lotArtworkDescription {
             stack.addSmallLineBreak("40")
             stack.addSmallHeading("Description", sideMargin: "0")
-            stack.addBodyMarkdown(description, sideMargin: "00")
+            stack.addBodyMarkdown(description, sideMargin: "0")
         }
 
-        let separator = stack.addThickLineBreak("40")
-        let artistBlurbTitle = stack.addBigHeading("About the Artist", sideMargin: "00")
-        let artistBlurb = stack.addBodyText("", sideMargin: "00")
-        let artistMetadata: [UIView] = [separator, artistBlurbTitle, artistBlurb]
+        if let blurb = viewModel.lotArtistBlurb {
+            stack.addThickLineBreak("40")
+            stack.addBigHeading("About the Artist", sideMargin: "0")
+            stack.addBodyMarkdown(blurb, sideMargin: "0")
+        }
+
         let currencySymbol = viewModel.currencySymbol
 
         name.text = viewModel.lotArtist
@@ -78,15 +80,6 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         estimate.text = viewModel.estimateString
         viewModel.askingPriceSignal.subscribe { askingPrice in // TODO: Unsubscribe from this.
             currentBid.text = "Current Bid: \(askingPrice.convertToDollarString(currencySymbol))"
-        }
-
-        // TODO: Artwork description
-        // TODO: Artwork dimensions/medium
-
-        if let blurb = viewModel.lotArtistBlurb {
-            artistBlurb.text = blurb
-        } else {
-            artistMetadata.forEach { stack.removeSubview($0) }
         }
 
         scrollEnabled = false
