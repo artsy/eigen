@@ -12,9 +12,9 @@ PODS:
     - Emission/ViewControllers
   - Emission/Core (0.1.0):
     - Artsy+UIFonts (>= 1.1.0)
-    - React/Core (~> 0.27.0-rc1)
-    - React/RCTNetwork (~> 0.27.0-rc1)
-    - React/RCTText (~> 0.27.0-rc1)
+    - React/Core (= 0.25.1)
+    - React/RCTNetwork (= 0.25.1)
+    - React/RCTText (= 0.25.1)
   - Emission/OpaqueImageViewComponent (0.1.0):
     - SDWebImage (>= 3.7.2)
   - Emission/SpinnerComponent (0.1.0):
@@ -41,14 +41,14 @@ PODS:
     - UIView+BooleanAnimations
   - Extraction/UIView+ARSpinner (0.1.0)
   - FLKAutoLayout (1.0.0)
-  - React/Core (0.27.0-rc1)
-  - React/RCTNetwork (0.27.0-rc1):
+  - React/Core (0.25.1)
+  - React/RCTNetwork (0.25.1):
     - React/Core
-  - React/RCTTest (0.27.0-rc1):
+  - React/RCTTest (0.25.1):
     - React/Core
-  - React/RCTText (0.27.0-rc1):
+  - React/RCTText (0.25.1):
     - React/Core
-  - React/RCTWebSocket (0.27.0-rc1):
+  - React/RCTWebSocket (0.25.1):
     - React/Core
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
@@ -82,7 +82,7 @@ CHECKOUT OPTIONS:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Extraction:
-    :commit: 7312df7c9c005c196705cc9da7c5d53cde404854
+    :commit: 069fdaeacf31dc599f05e7825980b0e6dff43c47
     :git: https://github.com/artsy/extraction.git
   FLKAutoLayout:
     :commit: 8cb911654b3538c0ce514701db041d32964ea17c
@@ -91,10 +91,10 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Emission: 88f65e6d0307ae6d386afecdb7d68d8613ea415c
+  Emission: 126248958638362ff14dec59c61000bbb71313a5
   Extraction: 30a669899836cbe9c31bbc0e86918cd7a2dab463
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
-  React: 73e8b324df3f958212711f7cb74920e468bfbcdc
+  React: b35b2b2e07273da1f7266ab2975e0d1033bd913d
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
