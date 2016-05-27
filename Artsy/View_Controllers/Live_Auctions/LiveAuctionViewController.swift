@@ -118,7 +118,7 @@ class LiveAuctionViewController: UISplitViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
 
-        guard let internalPopover = self.valueForKey("_hiddenPopoverController") as? UIPopoverController else { return }
+        guard let internalPopover = self.valueForKey("_hidden" + "PopoverController") as? UIPopoverController else { return }
         internalPopover.dismissPopoverAnimated(false)
 
         UIApplication.sharedApplication().idleTimerDisabled = false
