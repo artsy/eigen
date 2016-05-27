@@ -296,16 +296,6 @@ class LiveAuctionLotViewController: UIViewController {
         default: break
         }
     }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        UIApplication.sharedApplication().idleTimerDisabled = true
-    }
-
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.sharedApplication().idleTimerDisabled = false
-    }
 }
 
 extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
