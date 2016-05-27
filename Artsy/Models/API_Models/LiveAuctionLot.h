@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *artistName;
 @property (nonatomic, copy, readonly) NSString *_Nullable artistBlurb;
 
+@property (nonatomic, readonly) Artwork *artwork;
+
 @property (nonatomic, copy, readonly) NSDictionary *imageDictionary;
 
 @property (nonatomic, copy, readonly) NSString *liveAuctionLotID;

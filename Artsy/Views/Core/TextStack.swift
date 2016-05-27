@@ -59,10 +59,10 @@ class TextStack: ORStackView {
         return serif
     }
 
-    func addBodyMarkdown(string: MarkdownString) -> ARTextView {
+    func addBodyMarkdown(string: MarkdownString, topMargin: String = "20", sideMargin: String = "0") -> ARTextView {
         let text = ARTextView()
         text.setMarkdownString(string)
-        addSubview(text, withTopMargin: "20", sideMargin: "0")
+        addSubview(text, withTopMargin: topMargin, sideMargin: sideMargin)
         return text
     }
 }

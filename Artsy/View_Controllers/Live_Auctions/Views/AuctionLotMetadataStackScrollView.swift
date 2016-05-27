@@ -51,6 +51,22 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         // set a constraint to force it to be in small mode first
         aboveFoldHeightConstraint = constrainHeightToView(aboveFoldStackWrapper, predicate: "0")
 
+        // ----- Below the fold 👇 ----- //
+
+        if let medium = viewModel.lotArtworkMedium {
+            stack.addBodyText(medium, topMargin: "20", sideMargin: "40")
+        }
+
+        if let dimensions = viewModel.lotArtworkDimensions {
+            stack.addBodyText(dimensions, sideMargin: "40")
+        }
+
+        if let description = viewModel.lotArtworkDescription {
+            stack.addSmallLineBreak("40")
+            stack.addSmallHeading("Description", sideMargin: "40")
+            stack.addBodyMarkdown(description, sideMargin: "40")
+        }
+
         let separator = stack.addThickLineBreak("40")
         let artistBlurbTitle = stack.addBigHeading("About the Artist", sideMargin: "40")
         let artistBlurb = stack.addBodyText("", sideMargin: "40")
@@ -63,6 +79,9 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         viewModel.askingPriceSignal.subscribe { askingPrice in // TODO: Unsubscribe from this.
             currentBid.text = "Current Bid: \(askingPrice.convertToDollarString(currencySymbol))"
         }
+
+        // TODO: Artwork description
+        // TODO: Artwork dimensions/medium
 
         if let blurb = viewModel.lotArtistBlurb {
             artistBlurb.text = blurb
