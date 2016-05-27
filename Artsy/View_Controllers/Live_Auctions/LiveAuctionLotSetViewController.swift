@@ -20,8 +20,9 @@ class LiveAuctionLotSetViewController: UIViewController {
     private var hasBeenSetup = false
     private var firstAppearance = true
     private var pageViewScrollView: UIScrollView?
-    private let progressBarBottomConstraintAtRestConstant: CGFloat = -165
+    private let progressBarBottomConstraintAtRestConstant: CGFloat = -1658
     private var progressBarBottomConstraint: NSLayoutConstraint?
+    private var saleNetworkModel = AuctionSaleNetworkModel()
 
     init(salesPerson: LiveAuctionsSalesPersonType, traitCollection: UITraitCollection) {
         self.salesPerson = salesPerson
@@ -138,6 +139,8 @@ class LiveAuctionLotSetViewController: UIViewController {
         let info = ARSerifToolbarButtonItem(image: UIImage(asset: .Info_icon) )
         info.accessibilityLabel = "More Information"
         info.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.moreInfo), forControlEvents: .TouchUpInside)
+        info.enabled = false
+        saleNetworkModel.fetchSale(salesPerson.liveSaleID).subscribe { _ in info.enabled = true }
 
         let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))
         lots.accessibilityLabel = "Show all Lots"
@@ -168,16 +171,12 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func moreInfo() {
-        // TODO: The AuctionSaleNetworkModel probably has the Sale already fetched and cached, we should have a fetchSaleOrMostRecentSale() or something similar.
-        AuctionSaleNetworkModel().fetchSale(salesPerson.liveSaleID).subscribe { result in
-            guard let saleInfo = result.value else { return }
-
-            let saleVM = SaleViewModel(sale: saleInfo, saleArtworks: [])
-            let saleInfoVC = AuctionInformationViewController(saleViewModel: saleVM)
-            saleInfoVC.titleViewDelegate = self
-            saleInfoVC.registrationStatus = self.salesPerson.bidderStatus
-            self.navigationController?.pushViewController(saleInfoVC, animated: true)
-        }
+        guard let sale = saleNetworkModel.sale else { return }
+        let saleVM = SaleViewModel(sale: sale, saleArtworks: [])
+        let saleInfoVC = AuctionInformationViewController(saleViewModel: saleVM)
+        saleInfoVC.titleViewDelegate = self
+        saleInfoVC.registrationStatus = self.salesPerson.bidderStatus
+        self.navigationController?.pushViewController(saleInfoVC, animated: true)
     }
 
     func showLots() {
