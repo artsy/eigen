@@ -63,9 +63,22 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         collectionView?.backgroundColor = .whiteColor()
-
         collectionView?.registerClass(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
+
+        let navController = (navigationController as? ARSerifNavigationViewController)
+
+        // On iPhone, show "lots" since we're taking up the full screen.
+        // Otherwise, on iPad, show the sale name (since users can see the lot list and the live interface).
+        if UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact {
+            title = "Lots"
+            navController?.hideCloseButton = false
+        } else {
+            title = salesPerson.liveSaleName
+            navController?.hideCloseButton = true
+        }
     }
 
     func unsubscribeCurrentLotState() {

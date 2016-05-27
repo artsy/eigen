@@ -74,6 +74,7 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
     var auctionViewModel: LiveAuctionViewModelType
     var lotCount: Int { return auctionViewModel.lotCount }
     var liveSaleID: String = "seriously-folks-its-the-best-sale-ever"
+    var liveSaleName: String = "The Best Sale"
     var bidderStatus: ArtsyAPISaleRegistrationStatus = .NotRegistered
 
     var lots: [LiveAuctionLotViewModelType]
