@@ -20,7 +20,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     private var hasBeenSetup = false
     private var firstAppearance = true
     private var pageViewScrollView: UIScrollView?
-    private let progressBarBottomConstraintAtRestConstant: CGFloat = -1658
+    private let progressBarBottomConstraintAtRestConstant: CGFloat = -165
     private var progressBarBottomConstraint: NSLayoutConstraint?
     private var saleNetworkModel = AuctionSaleNetworkModel()
 
