@@ -32,6 +32,7 @@ upcoming:
       - Bid history scrolling. - ash/orta
       - Disables horizontal scrolling on iPad. - ash
       - Don't let the device sleep during a live auction - orta
+      - Displays lot info. - ash
       
     infra:
       - CocoaPods now is v1. - alloy

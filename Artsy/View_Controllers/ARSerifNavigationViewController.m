@@ -6,6 +6,7 @@
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import "ARTopMenuViewController.h"
 @import Artsy_UILabels;
+@import ObjectiveSugar;
 
 
 @interface ARSerifNavigationBar : UINavigationBar
@@ -47,7 +48,7 @@
     }
 
     self.edgesForExtendedLayout = UIRectEdgeNone;
-
+    _hideCloseButton = NO;
 
     UIImage *image = [[UIImage imageNamed:@"serif_modal_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     ARSerifToolbarButtonItem *exit = [[ARSerifToolbarButtonItem alloc] initWithImage:image];
@@ -88,6 +89,18 @@
     [app setStatusBarHidden:self.oldStatusBarHiddenStatus withAnimation:UIStatusBarAnimationNone];
 }
 
+- (void)setHideCloseButton:(BOOL)hideCloseButton
+{
+    _hideCloseButton = hideCloseButton;
+    UINavigationItem *nav = self.topViewController.navigationItem;
+
+    if (hideCloseButton) {
+        nav.rightBarButtonItem = nil;
+    } else {
+        nav.rightBarButtonItem = self.exitButton;
+    }
+}
+
 - (void)closeModal
 {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -98,7 +111,7 @@
     UINavigationItem *nav = viewController.navigationItem;
     nav.hidesBackButton = YES;
 
-    if (nav.rightBarButtonItems == nil) {
+    if (nav.rightBarButtonItems == nil && self.hideCloseButton == NO) {
         nav.rightBarButtonItem = self.exitButton;
     }
 
@@ -137,6 +150,10 @@
 
         [navBar hideNavigationBarShadow:true];
     }
+
+    // Sets the background view shown behind us (but visible for 1pt).
+    // See similar work in ARSerifNavigationBar's -layoutSubviews.
+    self.view.superview.backgroundColor = [UIColor artsyGraySemibold];
 }
 
 - (BOOL)wantsFullScreenLayout
@@ -198,6 +215,15 @@
     }
 
     [self nudgeViews:self.topItem.rightBarButtonItems horizontally:10];
+
+    // This is a total hack.
+    // UIKit inserts a view behind us which, when we're presented in the left side of a split view controller,
+    // has a single column pixel visible to our right.
+    [self.superview.superview.subviews each:^(UIView *object) {
+        if ([NSStringFromClass([object class]) isEqualToString:@"UIView"]) {
+            object.backgroundColor = [UIColor artsyGraySemibold];
+        }
+    }];
 }
 
 - (void)verticallyCenterView:(id)viewOrArray

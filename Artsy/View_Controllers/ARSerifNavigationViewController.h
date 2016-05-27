@@ -3,6 +3,8 @@
 
 @interface ARSerifNavigationViewController : UINavigationController
 
+@property (nonatomic, assign) BOOL hideCloseButton;
+
 @end
 
 /// Creates a button for showing in the nav's top right
