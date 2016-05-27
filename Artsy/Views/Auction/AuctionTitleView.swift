@@ -135,7 +135,7 @@ private extension AuctionTitleView {
         let container = UIView()
 
         // Closed auctions shouldn't show a Register Button
-        if viewModel.saleAvailability == .Closed {
+        if viewModel.saleIsClosed {
             return container
         }
 

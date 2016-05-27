@@ -12,6 +12,14 @@ class SaleViewModel: NSObject {
 }
 
 extension SaleViewModel {
+
+    var saleIsClosed: Bool {
+        switch saleAvailability {
+        case .Closed: return true
+        default: return false
+        }
+    }
+
     var backgroundImageURL: NSURL? {
         guard let bannerURL = sale.bannerImageURLString() else { return nil }
         return NSURL(string: bannerURL)
@@ -24,9 +32,7 @@ extension SaleViewModel {
     }
 
     var saleAvailability: SaleAvailabilityState {
-        if sale.isCurrentlyActive() { return .Active }
-        if sale.startDate.laterDate(NSDate()) == sale.startDate { return .NotYetOpen }
-        return .Closed
+        return sale.saleAvailability
     }
 
     var currencySymbol: String {
@@ -42,6 +48,15 @@ extension SaleViewModel {
         }
     }
 
+    var isRunningALiveAuction: Bool {
+        return sale.liveAuctionStartDate != nil
+    }
+
+    var liveAuctionHasStarted: Bool {
+        guard let date = sale.liveAuctionStartDate else { return false }
+        return date.laterDate(NSDate()) == sale.startDate
+    }
+
     var saleID: NSString {
         return sale.saleID
     }
@@ -55,7 +70,10 @@ extension SaleViewModel {
     }
 
     var isUpcomingAndHasNoLots: Bool {
-        return saleAvailability == .NotYetOpen && numberOfLots == 0
+        switch saleAvailability {
+        case .NotYetOpen: return numberOfLots == 0
+        default: return false
+        }
     }
 
     var numberOfLots: Int {

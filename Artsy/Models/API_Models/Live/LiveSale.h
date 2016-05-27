@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong, readonly) NSDate *startDate;
 @property (nonatomic, strong, readonly) NSDate *endDate;
+@property (nonatomic, strong, readonly) NSDate *liveAuctionStartDate;
 
 - (BOOL)isCurrentlyActive;
 

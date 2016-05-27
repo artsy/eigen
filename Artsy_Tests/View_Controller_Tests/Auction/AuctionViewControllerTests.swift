@@ -358,7 +358,30 @@ class AuctionViewControllerTests: QuickSpec {
             
             expect(subject.defaultRefineSettings().numberOfRowsInSection(0)).to(equal(6))
         }
-        
+
+        fit("shows a message about an upcoming live auction") {
+            let exact_now = ISO8601DateFormatter().dateFromString("2025-11-24T10:00:00+00:00")!
+            let start = exact_now.dateByAddingTimeInterval(-3600.9)
+            let liveStart = exact_now.dateByAddingTimeInterval(1650.9)
+            let end = exact_now.dateByAddingTimeInterval(3700.9)
+
+            dateMock = ARTestContext.freezeTime(exact_now)
+
+            sale = try! Sale(dictionary: [
+                "saleID": "the-tada-sale", "name": "The 🎉 Sale",
+                "saleDescription": "This is a description",
+                "startDate": start, "endDate": end, "liveAuctionStartDate" :liveStart], error: Void())
+            saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [])
+
+            let subject = AuctionViewController(saleID: sale.saleID)
+            subject.allowAnimations = false
+            subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+
+            expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
+            
+            dateMock.stopMocking()
+        }
+
         it("wraps auction name correctly") {
             let now = NSDate()
             let start = now.dateByAddingTimeInterval(-3600.9)

@@ -209,9 +209,13 @@ class LiveAuctionLotSetViewController: UIViewController {
             .subscribe { [weak self] (currentLot, saleAvailability) in
                 guard let currentLot = currentLot else {
                     // We don't have a current lot, so set the progress to one if the sale is closed and zero otherwise.
-                    self?.progressBar.progress = saleAvailability == .Closed ? 1 : 0
+                    switch saleAvailability {
+                    case .Closed: self?.progressBar.progress = 1
+                    default: self?.progressBar.progress = 0
+                    }
                     return
                 }
+
                 let total = self?.salesPerson.auctionViewModel.lotCount ?? 1 // We're dividing by the total, it should not be zero 😬
                 self?.progressBar.progress = CGFloat(currentLot.lotIndex) / CGFloat(total)
         }
