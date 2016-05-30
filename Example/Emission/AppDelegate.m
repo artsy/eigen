@@ -5,6 +5,7 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
+#import <Emission/AREventsModule.h>
 
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
@@ -76,6 +77,10 @@ randomBOOL(void)
                                                                                                     target:self
                                                                                                     action:@selector(dismissModalViewController)];
     [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
+  };
+    
+  emission.eventsModule.eventOccurred = ^(UIViewController * _Nonnull fromViewController, NSDictionary * _Nonnull info) {
+    NSLog(@"[Event] %@ - %@", fromViewController.class, info);
   };
 
   ARArtistComponentViewController *artistViewController = [[ARArtistComponentViewController alloc] initWithArtistID:@"banksy"];
