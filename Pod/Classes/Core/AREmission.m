@@ -1,4 +1,5 @@
 #import "AREmission.h"
+#import "AREventsModule.h"
 #import "ARSwitchBoardModule.h"
 #import "ARTemporaryAPIModule.h"
 
@@ -32,11 +33,12 @@ static AREmission *_sharedInstance = nil;
 - (instancetype)initWithPackagerURL:(NSURL *)packagerURL;
 {
   if ((self = [super init])) {
+    _eventsModule = [AREventsModule new];
     _switchBoardModule = [ARSwitchBoardModule new];
     _APIModule = [ARTemporaryAPIModule new];
     
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
-                                    moduleProvider:^{ return @[_switchBoardModule, _APIModule]; }
+                                    moduleProvider:^{ return @[_eventsModule, _switchBoardModule, _APIModule]; }
                                      launchOptions:nil];
   }
   return self;
