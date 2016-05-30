@@ -1,3 +1,17 @@
+GIT
+  remote: https://github.com/danger/danger/
+  revision: dfa3fe611ef331955a2cf7a2ab9b8a99981fbcf0
+  branch: master
+  specs:
+    danger (0.7.4)
+      claide
+      colored (~> 1.2)
+      faraday
+      git
+      octokit (~> 4.2)
+      redcarpet (~> 3.3)
+      terminal-table (~> 1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -73,14 +87,6 @@ GEM
       netrc (= 0.7.8)
     cocoapods-try (1.0.0)
     colored (1.2)
-    danger (0.7.4)
-      claide
-      colored (~> 1.2)
-      faraday
-      git
-      octokit (~> 4.2)
-      redcarpet (~> 3.3)
-      terminal-table (~> 1)
     dotenv (2.1.1)
     escape (0.0.4)
     faraday (0.9.2)
@@ -137,11 +143,11 @@ DEPENDENCIES
   cocoapods (>= 1.0.0)
   cocoapods-check
   cocoapods-keys
-  danger
+  danger!
   lowdown
   nokogiri (>= 1.6.7)
   second_curtain
   xcpretty
 
 BUNDLED WITH
-   1.11.2
+   1.12.5
