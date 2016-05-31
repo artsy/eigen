@@ -15,8 +15,10 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
     var aboveFoldHeightConstraint: NSLayoutConstraint!
 
-    required init(viewModel: LiveAuctionLotViewModelType) {
+    required init(viewModel: LiveAuctionLotViewModelType, sideMargin: String) {
         super.init(stackViewClass: TextStack.self)
+
+        scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 2)
 
         /// Anything addded to `stack` here will be hidden by default
         guard let stack = stackView as? TextStack else { return }
@@ -46,7 +48,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         aboveFoldStack.constrainTrailingSpaceToView(toggle, predicate: "0")
 
         // Add the above the fold stack, to the stack
-        stackView.addSubview(aboveFoldStackWrapper, withTopMargin: "0", sideMargin: "0")
+        stackView.addSubview(aboveFoldStackWrapper, withTopMargin: "0", sideMargin: sideMargin)
 
         // set a constraint to force it to be in small mode first
         aboveFoldHeightConstraint = constrainHeightToView(aboveFoldStackWrapper, predicate: "0")
@@ -54,23 +56,25 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         // ----- Below the fold 👇 ----- //
 
         if let medium = viewModel.lotArtworkMedium {
-            stack.addBodyText(medium, topMargin: "20", sideMargin: "0")
+            stack.addBodyText(medium, topMargin: "20", sideMargin: sideMargin)
         }
 
         if let dimensions = viewModel.lotArtworkDimensions {
-            stack.addBodyText(dimensions, sideMargin: "0")
+            stack.addBodyText(dimensions, sideMargin: sideMargin)
         }
 
+        let separatorMargin = String(Int(sideMargin) ?? 0 + 40)
+
         if let description = viewModel.lotArtworkDescription {
-            stack.addSmallLineBreak("40")
-            stack.addSmallHeading("Description", sideMargin: "0")
-            stack.addBodyMarkdown(description, sideMargin: "0")
+            stack.addSmallLineBreak(separatorMargin)
+            stack.addSmallHeading("Description", sideMargin: sideMargin)
+            stack.addBodyMarkdown(description, sideMargin: sideMargin)
         }
 
         if let blurb = viewModel.lotArtistBlurb {
-            stack.addThickLineBreak("40")
-            stack.addBigHeading("About the Artist", sideMargin: "0")
-            stack.addBodyMarkdown(blurb, sideMargin: "0")
+            stack.addThickLineBreak(separatorMargin)
+            stack.addBigHeading("About the Artist", sideMargin: sideMargin)
+            stack.addBodyMarkdown(blurb, sideMargin: sideMargin)
         }
 
         let currencySymbol = viewModel.currencySymbol
