@@ -123,8 +123,10 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
         aboveFoldHeightConstraint.active = false
 
-        UIView.animateSpringIf(animated, duration: ARAnimationDuration, delay: 0, damping: 0.9, velocity: 3.5) {
+        UIView.animateSpringIf(animated, duration: ARAnimationDuration, delay: 0, damping: 0.9, velocity: 3.5, {
             self.superview?.layoutIfNeeded()
+        }) { _ in
+            self.flashScrollIndicators()
         }
     }
 
@@ -140,6 +142,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         aboveFoldHeightConstraint.active = true
 
         UIView.animateSpringIf(animated, duration: ARAnimationDuration, delay: 0, damping: 0.9, velocity: 3.5) {
+            self.contentOffset = CGPointZero
             self.superview?.layoutIfNeeded()
         }
     }
