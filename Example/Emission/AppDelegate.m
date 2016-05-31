@@ -10,6 +10,8 @@
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
 
+#define ARTIST @"banksy"
+
 #if TARGET_OS_SIMULATOR
 #define ENABLE_DEV_MODE
 #endif
@@ -83,7 +85,7 @@ randomBOOL(void)
     NSLog(@"[Event] %@ - %@", fromViewController.class, info);
   };
 
-  ARArtistComponentViewController *artistViewController = [[ARArtistComponentViewController alloc] initWithArtistID:@"banksy"];
+  ARArtistComponentViewController *artistViewController = [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
