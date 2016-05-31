@@ -33,6 +33,7 @@ upcoming:
       - Disables horizontal scrolling on iPad. - ash
       - Don't let the device sleep during a live auction - orta
       - Displays lot info. - ash
+      - Placing bids / setting max bids is functional. - ash
       
     infra:
       - CocoaPods now is v1. - alloy
