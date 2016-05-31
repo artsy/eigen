@@ -79,10 +79,10 @@ class LiveAuctionLotViewController: UIViewController {
         let metadataStack = ORStackView()
 
         /// The metadata that can jump over the artwork image
-        let lotMetadataStack = AuctionLotMetadataStackScrollView(viewModel: lotViewModel)
+        let lotMetadataStack = AuctionLotMetadataStackScrollView(viewModel: lotViewModel, sideMargin: sideMargin)
         self.lotMetadataStack = lotMetadataStack
         view.addSubview(lotMetadataStack)
-        lotMetadataStack.constrainWidthToView(view, predicate: "-\(sideMargin)")
+        lotMetadataStack.constrainWidthToView(view, predicate: "0")
         lotMetadataStack.alignCenterXWithView(view, predicate: "0")
         alignMetadataToTopConstraint = lotMetadataStack.alignTopEdgeWithView(view, predicate: "0")
         alignMetadataToTopConstraint?.active = false
@@ -100,16 +100,6 @@ class LiveAuctionLotViewController: UIViewController {
         let topMetadataStackConstraint = lotMetadataStack.alignTopEdgeWithView(view, predicate: "0")
         topMetadataStackConstraint.active = false
 
-        /// Toggles the top constraint, and tells the stack to re-layout
-        lotMetadataStack.showAdditionalInformation = {
-            topMetadataStackConstraint.active = true
-            lotMetadataStack.showFullMetadata(true)
-        }
-
-        lotMetadataStack.hideAdditionalInformation = {
-            topMetadataStackConstraint.active = false
-            lotMetadataStack.hideFullMetadata(true)
-        }
 
         // Metadata stack setup
         metadataStack.bottomMarginHeight = 0
@@ -124,8 +114,22 @@ class LiveAuctionLotViewController: UIViewController {
         let infoToolbar = LiveAuctionToolbarView()
         infoToolbar.lotViewModel = lotViewModel
         infoToolbar.auctionViewModel = salesPerson.auctionViewModel
+
         metadataStack.addSubview(infoToolbar, withTopMargin: "28", sideMargin: sideMargin)
         infoToolbar.constrainHeight("38")
+
+        /// Toggles the top constraint, and tells the stack to re-layout
+        lotMetadataStack.showAdditionalInformation = {
+            topMetadataStackConstraint.active = true
+            metadataStack.updateTopMargin("10", forView: infoToolbar)
+            lotMetadataStack.showFullMetadata(true)
+        }
+
+        lotMetadataStack.hideAdditionalInformation = {
+            topMetadataStackConstraint.active = false
+            metadataStack.updateTopMargin("28", forView: infoToolbar)
+            lotMetadataStack.hideFullMetadata(true)
+        }
 
         let pan = PanDirectionGestureRecognizer(direction: .Vertical, target: self, action: #selector(userDidDragToolbar))
         view.addGestureRecognizer(pan)
@@ -173,6 +177,7 @@ class LiveAuctionLotViewController: UIViewController {
 
             // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
             bidHistoryViewController?.view.hidden = hideBidHistory
+            pan.enabled = !hideBidHistory
 
             // We need to align the bottom of the lot image to the lot metadata
             lotMetadataStack?.layoutIfNeeded()

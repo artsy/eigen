@@ -71,7 +71,6 @@ class LiveAuctionBidButton : ARFlatButton {
         let red = UIColor.artsyRedRegular()
         let grey = UIColor.artsyGrayRegular()
 
-
         switch buttonState {
 
         // When the lot is live
@@ -112,7 +111,7 @@ class LiveAuctionBidButton : ARFlatButton {
             case .LiveLot: break // Should never happen, as it'd be handled above
             case .UpcomingLot:
                 enabled = true
-                setupUI("Leave Max Bid")
+                setupUI("Set Max Bid")
             }
         }
     }

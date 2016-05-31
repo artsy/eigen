@@ -101,11 +101,11 @@ class LiveAuctionToolbarView : UIView {
             label.font = UIFont.sansSerifFontWithSize(12)
             view.addSubview(label)
 
+            label.attributedText = dict.values.first!
+
             if key == "time" && clockClosure != nil {
                 clockClosure?(label)
             }
-
-            label.attributedText = dict.values.first!
 
             view.constrainHeight("14")
             thumbnailView.alignLeadingEdgeWithView(view, predicate: "0")
