@@ -177,6 +177,7 @@ class LiveAuctionLotViewController: UIViewController {
 
             // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
             bidHistoryViewController?.view.hidden = hideBidHistory
+            pan.enabled = !hideBidHistory
 
             // We need to align the bottom of the lot image to the lot metadata
             lotMetadataStack?.layoutIfNeeded()
