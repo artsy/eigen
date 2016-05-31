@@ -46,14 +46,25 @@ class LiveAuctionLotViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // We need to obscure the content behind our view, so the first thing we do is create
+        // this background view and give it a mostly-opaque background color. We'll
+        let backgroundView = UIView().then {
+            $0.backgroundColor = UIColor(white: 1, alpha: 0.85)
+        }
+        view.addSubview(backgroundView)
+
+        let sideMargin: String
+
         /// Image Preview, only on iPad
         let lotImagePreviewView: UIImageView?
         if traitCollection.horizontalSizeClass == .Regular {
+            sideMargin = "80"
             lotImagePreviewView = UIImageView().then {
                 $0.contentMode = .ScaleAspectFit
                 $0.setContentHuggingPriority(UILayoutPriorityFittingSizeLevel, forAxis: .Vertical)
             }
         } else {
+            sideMargin = "40"
             lotImagePreviewView = nil
         }
 
@@ -71,7 +82,7 @@ class LiveAuctionLotViewController: UIViewController {
         let lotMetadataStack = AuctionLotMetadataStackScrollView(viewModel: lotViewModel)
         self.lotMetadataStack = lotMetadataStack
         view.addSubview(lotMetadataStack)
-        lotMetadataStack.constrainWidthToView(view, predicate: "0")
+        lotMetadataStack.constrainWidthToView(view, predicate: "-\(sideMargin)")
         lotMetadataStack.alignCenterXWithView(view, predicate: "0")
         alignMetadataToTopConstraint = lotMetadataStack.alignTopEdgeWithView(view, predicate: "0")
         alignMetadataToTopConstraint?.active = false
@@ -113,7 +124,7 @@ class LiveAuctionLotViewController: UIViewController {
         let infoToolbar = LiveAuctionToolbarView()
         infoToolbar.lotViewModel = lotViewModel
         infoToolbar.auctionViewModel = salesPerson.auctionViewModel
-        metadataStack.addSubview(infoToolbar, withTopMargin: "28", sideMargin: "60")
+        metadataStack.addSubview(infoToolbar, withTopMargin: "28", sideMargin: sideMargin)
         infoToolbar.constrainHeight("38")
 
         let pan = PanDirectionGestureRecognizer(direction: .Vertical, target: self, action: #selector(userDidDragToolbar))
@@ -122,11 +133,11 @@ class LiveAuctionLotViewController: UIViewController {
         // Bid button setup.
         let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel)
         bidButton.delegate = self
-        metadataStack.addSubview(bidButton, withTopMargin: "0", sideMargin: "60")
+        metadataStack.addSubview(bidButton, withTopMargin: "0", sideMargin: sideMargin)
 
         // Bid history setup.
         let bidHistoryViewController = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
-        metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: "40")
+        metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: sideMargin)
         lotHistoryHeightConstraint = bidHistoryViewController.view.constrainHeight("70")
 
         // Setup for "current lot" purple view at the bottom of the view.
@@ -136,6 +147,12 @@ class LiveAuctionLotViewController: UIViewController {
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
         currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
         currentLotView.hidden = true
+
+        // Finally, align the background view.
+        backgroundView.alignLeading("0", trailing: "0", toView: view)
+        backgroundView.alignBottomEdgeWithView(view, predicate: "0")
+        backgroundView.alignTopEdgeWithView(lotMetadataStack, predicate: "0")
+
 
         // Subscribe to updates from our bidding view model, telling us what state the lot's bid status is in.
         biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak lotMetadataStack, weak bidHistoryViewController] bidState in
@@ -295,16 +312,6 @@ class LiveAuctionLotViewController: UIViewController {
 
         default: break
         }
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        UIApplication.sharedApplication().idleTimerDisabled = true
-    }
-
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.sharedApplication().idleTimerDisabled = false
     }
 }
 

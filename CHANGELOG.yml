@@ -31,6 +31,8 @@ upcoming:
       - Removes buyer's premium. - ash
       - Bid history scrolling. - ash/orta
       - Disables horizontal scrolling on iPad. - ash
+      - Don't let the device sleep during a live auction - orta
+      - Displays lot info. - ash
       
     infra:
       - CocoaPods now is v1. - alloy
@@ -41,7 +43,6 @@ upcoming:
       - QuickSilver now supports direct URLs. - ash
     
     gmv:
-      - Integrate the new artist view (Emission). - alloy
       - Removed artwork auction results - sarah
       - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
       - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah
@@ -55,6 +56,7 @@ upcoming:
       - Changed the paragraph padding on all ARTextView instances - orta
       - Moved ARSwitchView and ARSpinner into new Extraction pod. - alloy
       - Buyer's Premiunm is shown on AuctionInformationViewControllers - orta
+      - Update Emission since first QA. - alloy
 
   user_facing:
     - Fixes long auction names falling off right edge. - ash
@@ -66,6 +68,7 @@ upcoming:
     - Delays initializing live auctions view controllers until an initial metaphysics fetch is completed. - ash
     - Consolidates app-wide currency formatting use to rely on server-provided currency symbol. - ash
     - Auctions page now show the info about live auctions - orta
+    - Integrate the new artist view. - alloy
 
 
 releases:

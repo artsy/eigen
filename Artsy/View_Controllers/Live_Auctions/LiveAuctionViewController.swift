@@ -50,6 +50,8 @@ class LiveAuctionViewController: UISplitViewController {
 
         ar_presentIndeterminateLoadingIndicatorAnimated(true)
         connectToNetwork()
+
+        UIApplication.sharedApplication().idleTimerDisabled = true
     }
 
     func connectToNetwork() {
@@ -116,8 +118,10 @@ class LiveAuctionViewController: UISplitViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
 
-        guard let internalPopover = self.valueForKey("_hiddenPopoverController") as? UIPopoverController else { return }
+        guard let internalPopover = self.valueForKey("_hidden" + "PopoverController") as? UIPopoverController else { return }
         internalPopover.dismissPopoverAnimated(false)
+
+        UIApplication.sharedApplication().idleTimerDisabled = false
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -155,13 +159,8 @@ extension PrivateFunctions {
         } else {
             lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
             lotListController.delegate = self
-
-            // Make the heading on the lot list, instead of the lot set
-            lotSetController.title = ""
-            lotListController.title = sale.name
             
             let lotListNav = ARSerifNavigationViewController(rootViewController: lotListController)
-            lotListNav.navigationBar.topItem?.rightBarButtonItems = []
 
             viewControllers = [lotListNav, lotsSetNavigationController]
         }

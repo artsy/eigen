@@ -14,6 +14,10 @@ protocol LiveAuctionLotViewModelType: class {
 
     var lotArtist: String { get }
     var lotArtistBlurb: String? { get }
+    var lotArtworkDescription: String? { get }
+    var lotArtworkMedium: String? { get }
+    var lotArtworkDimensions: String? { get }
+
     var estimateString: String { get }
     var lotPremium: String { get }
     var lotName: String { get }
@@ -82,6 +86,18 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
                 return .ClosedLot
             }
         }
+    }
+
+    var lotArtworkDescription: String? {
+        return model.artwork.blurb
+    }
+
+    var lotArtworkMedium: String? {
+        return model.artwork.medium
+    }
+
+    var lotArtworkDimensions: String? {
+        return model.artwork.dimensionsCM
     }
 
     var numberOfBids: Int {

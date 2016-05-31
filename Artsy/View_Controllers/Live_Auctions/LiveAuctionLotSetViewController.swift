@@ -52,8 +52,17 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
 
         super.init(nibName: nil, bundle: nil)
+    }
 
-        self.title = salesPerson.liveSaleID;
+
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // On iPhone, show the sale name, since we're taking up the full screen.
+        // Otherwise, on iPad, show nothing (sale name is shown in the lot list).
+        if UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact {
+            title = salesPerson.liveSaleName
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {

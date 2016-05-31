@@ -13,6 +13,7 @@ protocol LiveAuctionsSalesPersonType {
     var auctionViewModel: LiveAuctionViewModelType { get }
     var lotCount: Int { get }
     var liveSaleID: String { get }
+    var liveSaleName: String { get }
     var bidderStatus: ArtsyAPISaleRegistrationStatus { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
@@ -67,6 +68,10 @@ extension ComputedProperties {
 
     var liveSaleID: String {
         return sale.liveSaleID
+    }
+
+    var liveSaleName: String {
+        return sale.name
     }
 }
 

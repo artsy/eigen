@@ -1028,8 +1028,15 @@ static NSString *hostFromString(NSString *string)
       currency\
       artwork {\
         title\
+        blurb: description\
+        medium\
+        dimensions {\
+          in\
+          cm\
+        }\
         artist {\
           name\
+          blurb\
         }\
         image {\
           aspect_ratio\
@@ -1040,7 +1047,7 @@ static NSString *hostFromString(NSString *string)
     }\
   }\
 }",
-                                                [role uppercaseString], saleID];
+                                                 [role uppercaseString], saleID];
 
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
 
