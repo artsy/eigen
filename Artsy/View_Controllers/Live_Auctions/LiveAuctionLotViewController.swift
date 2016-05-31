@@ -163,9 +163,8 @@ class LiveAuctionLotViewController: UIViewController {
 
         // TODO: is this required? A closed sale would imply all lots are closed, and the currentLotView would be hidden in the above subscription ^
         saleAvailabilityObserver = salesPerson.auctionViewModel.saleAvailabilitySignal.subscribe { [weak currentLotView] saleAvailability in
-            switch saleAvailability {
-            case .Closed: currentLotView?.removeFromSuperview()
-            default: break
+            if saleAvailability == .Closed {
+                currentLotView?.removeFromSuperview()
             }
         }
 

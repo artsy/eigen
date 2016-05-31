@@ -6,6 +6,17 @@ enum SaleAvailabilityState {
     case Closed
 }
 
+extension SaleAvailabilityState: Equatable {}
+
+func ==(l: SaleAvailabilityState, r: SaleAvailabilityState) -> Bool {
+    switch (l, r) {
+    case (.NotYetOpen, .NotYetOpen): return true
+    case (.Closed, .Closed): return true
+    case (.Active(let x), .Active(let y)) where x == y: return true
+    default: return false
+    }
+}
+
 protocol SaleStatusType {
     var startDate: NSDate! { get }
     var liveAuctionStartDate: NSDate! { get }

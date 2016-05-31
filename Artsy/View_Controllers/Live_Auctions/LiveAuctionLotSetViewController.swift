@@ -208,11 +208,7 @@ class LiveAuctionLotSetViewController: UIViewController {
             .merge(salesPerson.auctionViewModel.saleAvailabilitySignal)
             .subscribe { [weak self] (currentLot, saleAvailability) in
                 guard let currentLot = currentLot else {
-                    // We don't have a current lot, so set the progress to one if the sale is closed and zero otherwise.
-                    switch saleAvailability {
-                    case .Closed: self?.progressBar.progress = 1
-                    default: self?.progressBar.progress = 0
-                    }
+                    self?.progressBar.progress = saleAvailability == .Closed ? 1 : 0
                     return
                 }
 

@@ -28,4 +28,7 @@ typedef NS_ENUM(NSInteger, ARDeviceType) {
 /// Freeze time returned from [ARSystemTime date] class method. Returns the mock so time may be unfrozen.
 + (OCMockObject *)freezeSystemTime:(NSDate *)now;
 
+/// A closure where time is frozen
++ (void)freezeTime:(NSDate *)now closure:(void(^)(void))closure;
+
 @end

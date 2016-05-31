@@ -80,4 +80,23 @@ static OCMockObject *ARPartialScreenMock;
     return mock;
 }
 
+static OCMockObject *dateMock;
+static OCMockObject *dateSystemMock;
+
++ (void)freezeTime:(NSDate *)now closure:(void(^)(void))closure
+{
+    dateMock = [self freezeTime:now];
+    dateSystemMock = [self freezeSystemTime:now];
+
+    @try {
+        closure();
+    } @catch (NSException *exception) {
+        NSLog(@"---------------------");
+        NSLog(@"A crash occured during frzen time, %@", exception);
+    } @finally {
+        dateSystemMock = nil;
+        dateMock = nil;
+    }
+}
+
 @end

@@ -53,8 +53,9 @@ extension SaleViewModel {
     }
 
     var liveAuctionHasStarted: Bool {
-        guard let date = sale.liveAuctionStartDate else { return false }
-        return date.laterDate(NSDate()) == sale.startDate
+        guard let liveStartDate = sale.liveAuctionStartDate else { return false }
+        let now = ARSystemTime.date()
+        return liveStartDate.laterDate(now) == now
     }
 
     var saleID: NSString {
@@ -70,10 +71,7 @@ extension SaleViewModel {
     }
 
     var isUpcomingAndHasNoLots: Bool {
-        switch saleAvailability {
-        case .NotYetOpen: return numberOfLots == 0
-        default: return false
-        }
+        return saleAvailability == .NotYetOpen && numberOfLots == 0
     }
 
     var numberOfLots: Int {
