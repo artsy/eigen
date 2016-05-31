@@ -61,7 +61,7 @@ class LiveAuctionLotViewController: UIViewController {
             sideMargin = "80"
             lotImagePreviewView = UIImageView().then {
                 $0.contentMode = .ScaleAspectFit
-                $0.setContentHuggingPriority(UILayoutPriorityFittingSizeLevel, forAxis: .Vertical)
+                $0.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
             }
         } else {
             sideMargin = "40"
