@@ -21,7 +21,7 @@ protocol LiveAuctionSocketCommunicatorType {
     var postEventResponses: Observable<AnyObject> { get }
 
     func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String)
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String)
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String)
 }
 
 class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
@@ -162,15 +162,17 @@ extension PublicFunctions {
         ])
     }
 
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
-//        writeJSON([
-//            "event": [
-//                "type": "FirstPriceBidPlaced",
-//                "lotID": lotID,
-//                "amountCents" : NSNumber(unsignedLongLong: amountCents),
-//                "bidder" : [ "type": "ArtsyBidder", "bidderID" : bidderID]
-//            ]
-//        ])
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) {
+        writeJSON([
+            "key": bidUUID,
+            "type": "PostEvent",
+            "event": [
+                "type": "SecondPriceBidPlaced",
+                "lotId": lotID,
+                "amountCents": NSNumber(unsignedLongLong: amountCents),
+                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID]
+            ]
+        ])
     }
 
     func writeJSON(json: NSObject) {

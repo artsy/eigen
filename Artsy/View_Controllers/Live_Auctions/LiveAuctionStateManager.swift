@@ -1,5 +1,6 @@
 import Foundation
 import Interstellar
+import SwiftyJSON
 
 /*
 Independent of sockets:
@@ -62,8 +63,9 @@ class LiveAuctionStateManager: NSObject {
 
         socketCommunicator.postEventResponses.subscribe { [weak self] response in
             print("ws response: \(response)")
-            
-            let bidUUID = "key" // TODO: Change
+
+            let json = JSON(response)
+            let bidUUID = json["key"].stringValue
             let biddingViewModel = self?.biddingStates.removeValueForKey(bidUUID)
             biddingViewModel?.bidPendingSignal.update(false)
         }
@@ -88,7 +90,11 @@ extension PublicFunctions {
         guard let bidderID = bidderID else {
             return print("Tried to leave a max bid without a bidder ID on account")
         }
-        socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderID: bidderID)
+
+        biddingViewModel.bidPendingSignal.update(true)
+        let bidID = NSUUID().UUIDString
+        biddingStates[bidID] = biddingViewModel
+        socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
     }
 }
 
@@ -135,7 +141,7 @@ private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
 
     }
 
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String) {
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) {
 
     }
 
