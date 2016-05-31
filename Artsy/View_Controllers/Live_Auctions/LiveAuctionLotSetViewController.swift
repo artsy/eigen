@@ -182,10 +182,12 @@ class LiveAuctionLotSetViewController: UIViewController {
     func moreInfo() {
         guard let sale = saleNetworkModel.sale else { return }
         let saleVM = SaleViewModel(sale: sale, saleArtworks: [])
+
         let saleInfoVC = AuctionInformationViewController(saleViewModel: saleVM)
         saleInfoVC.titleViewDelegate = self
         saleInfoVC.registrationStatus = self.salesPerson.bidderStatus
-        self.navigationController?.pushViewController(saleInfoVC, animated: true)
+        let nav = ARSerifNavigationViewController(rootViewController: saleInfoVC)
+        self.navigationController?.presentViewController(nav, animated: true, completion: nil)
     }
 
     func showLots() {
