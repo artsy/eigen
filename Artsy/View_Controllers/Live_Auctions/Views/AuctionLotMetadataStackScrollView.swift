@@ -85,7 +85,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         scrollEnabled = false
 
         let views = stack.subviews + aboveFoldStack.subviews
-        for label in views.filter({ $0.isKindOfClass(UILabel.self) }) {
+        for label in views.filter({ $0.isKindOfClass(UILabel.self) || $0.isKindOfClass(UITextView.self) }) {
             label.backgroundColor = .clearColor()
         }
     }
