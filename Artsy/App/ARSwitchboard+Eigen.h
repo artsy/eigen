@@ -43,11 +43,12 @@
 
 #pragma mark - Auctions
 
-- (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
-
 - (UIViewController *)loadAuctionWithID:(NSString *)auctionID;
+- (UIViewController *)loadLiveAuction:(NSString *)auctionID;
 
 - (ARAuctionWebViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
+
+- (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
 
 /// Load a Partner Page in Martsy
 - (UIViewController *)loadPartnerWithID:(NSString *)partnerID;

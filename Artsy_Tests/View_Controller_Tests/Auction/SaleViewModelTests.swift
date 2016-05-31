@@ -81,23 +81,44 @@ class SaleViewModelTests: QuickSpec {
             let sale = testSaleWithDates(NSDate.distantFuture(), end: NSDate.distantFuture())
             let subject = SaleViewModel(sale: sale, saleArtworks: [])
 
-            expect(subject.saleAvailability) == SaleAvailabilityState.NotYetOpen
+            expect(subject.saleAvailability).to( equal(  SaleAvailabilityState.NotYetOpen ) )
         }
 
         it("deals with auctions that have finished ") {
             let sale = testSaleWithDates(NSDate.distantPast(), end: NSDate.distantPast())
             let subject = SaleViewModel(sale: sale, saleArtworks: [])
 
-            expect(subject.saleAvailability) == SaleAvailabilityState.Closed
+            expect(subject.saleAvailability).to( equal( SaleAvailabilityState.Closed ) )
         }
 
         it("deals with auctions that are active ") {
             let sale = testSaleWithDates(NSDate.distantPast(), end: NSDate.distantFuture())
             let subject = SaleViewModel(sale: sale, saleArtworks: [])
 
-            expect(subject.saleAvailability) == SaleAvailabilityState.Active
+            expect(subject.saleAvailability).to( equal( SaleAvailabilityState.Active(liveAuctionDate: nil) ) )
         }
 
+
+        it("deals with auctions that are active and live is upcoming") {
+            let soon = NSDate().dateByAddingTimeInterval(1650.9)
+
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture(), "liveAuctionStartDate": soon ], error: Void())
+
+            let subject = SaleViewModel(sale: sale, saleArtworks: [])
+
+            expect(subject.saleAvailability).to( equal( SaleAvailabilityState.Active(liveAuctionDate: soon) ) )
+        }
+
+        it("lets uesr know the live auction is happening") {
+            let before = NSDate().dateByAddingTimeInterval(-1650.9)
+
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture(), "liveAuctionStartDate": before ], error: Void())
+
+            let subject = SaleViewModel(sale: sale, saleArtworks: [])
+
+            expect(subject.isRunningALiveAuction) == true
+            expect(subject.liveAuctionHasStarted) == true
+        }
     }
 }
 

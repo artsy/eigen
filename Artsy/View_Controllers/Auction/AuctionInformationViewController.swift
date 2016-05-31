@@ -235,12 +235,12 @@ extension AuctionInformationViewController {
                 let previouslyExpandedEntryView = self.currentlyExpandedEntryView
                 self.currentlyExpandedEntryView = viewToExpand
                 
-                UIView.animateWithDuration(0.25, animations: {
+                UIView.animateIf(Bool(ARPerformWorkAsynchronously), duration: 0.25) {
                     // Do it in this order, otherwise we’d get unsatisfiable constraints.
                     self.currentlyExpandedEntryView!.expand()
                     previouslyExpandedEntryView!.collapse()
                     self.stackView.layoutIfNeeded()
-                })
+                }
             }
         }
 
