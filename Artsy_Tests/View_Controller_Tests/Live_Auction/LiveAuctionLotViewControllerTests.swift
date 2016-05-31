@@ -21,6 +21,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 freezeTime()
 
                 auctionViewModel = Test_LiveAuctionViewModel()
+                auctionViewModel.saleAvailabilitySignal.update( .Active(liveAuctionDate: nil) )
                 lotViewModel = Test_LiveAuctionLotViewModel()
 
                 let salesPerson = stub_auctionSalesPerson()
@@ -93,8 +94,9 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
 
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var startDate = NSDate().dateByAddingTimeInterval(-3600)
+    var liveAuctionStartDate = NSDate().dateByAddingTimeInterval(-3600)
     var lotCount = 3
-    var saleAvailabilitySignal = Observable(SaleAvailabilityState.Active)
+    var saleAvailabilitySignal:Observable<SaleAvailabilityState> = Observable()
     var currentLotSignal = Observable<LiveAuctionLotViewModelType?>(Test_LiveAuctionLotViewModel(lotID: "active-lot"))
     var bidderStatus: ArtsyAPISaleRegistrationStatus = .Registered
 

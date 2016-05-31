@@ -67,6 +67,7 @@ upcoming:
     - Show Preview images are edge to edge fill, instead of scale fit - orta
     - Delays initializing live auctions view controllers until an initial metaphysics fetch is completed. - ash
     - Consolidates app-wide currency formatting use to rely on server-provided currency symbol. - ash
+    - Auctions page now show the info about live auctions - orta
     - Integrate the new artist view. - alloy
 
 

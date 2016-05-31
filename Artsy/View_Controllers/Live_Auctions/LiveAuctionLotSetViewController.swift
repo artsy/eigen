@@ -141,7 +141,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func setupToolbar() {
-        let close = ARSerifToolbarButtonItem(image: UIImage(asset: .Close_icon) )
+        let close = ARSerifToolbarButtonItem(image: UIImage(asset: .Close_Icon) )
         close.accessibilityLabel = "Exit Live Bidding"
         close.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.dismissModal), forControlEvents: .TouchUpInside)
 
@@ -217,10 +217,10 @@ class LiveAuctionLotSetViewController: UIViewController {
             .merge(salesPerson.auctionViewModel.saleAvailabilitySignal)
             .subscribe { [weak self] (currentLot, saleAvailability) in
                 guard let currentLot = currentLot else {
-                    // We don't have a current lot, so set the progress to one if the sale is closed and zero otherwise.
                     self?.progressBar.progress = saleAvailability == .Closed ? 1 : 0
                     return
                 }
+
                 let total = self?.salesPerson.auctionViewModel.lotCount ?? 1 // We're dividing by the total, it should not be zero 😬
                 self?.progressBar.progress = CGFloat(currentLot.lotIndex) / CGFloat(total)
         }
