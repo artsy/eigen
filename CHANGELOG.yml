@@ -72,6 +72,7 @@ upcoming:
     - Consolidates app-wide currency formatting use to rely on server-provided currency symbol. - ash
     - Auctions page now show the info about live auctions - orta
     - Integrate the new artist view. - alloy
+    - Status bars on Auction info and live pages are black - orta
 
 
 releases:

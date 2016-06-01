@@ -5,6 +5,7 @@
 #import "UIImage+ImageFromColor.h"
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import "ARTopMenuViewController.h"
+#import "ARSerifStatusMaintainer.h"
 @import Artsy_UILabels;
 @import ObjectiveSugar;
 
@@ -18,8 +19,9 @@
 @interface ARSerifNavigationViewController () <UINavigationControllerDelegate>
 @property (nonatomic, strong) ARSerifToolbarButtonItem *exitButton;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
-@property (nonatomic, assign) BOOL oldStatusBarHiddenStatus;
+
 @property (nonatomic, strong) UIApplication *sharedApplication;
+@property (nonatomic, strong) ARSerifStatusMaintainer *statusMaintainer;
 
 @end
 
@@ -47,6 +49,7 @@
         return nil;
     }
 
+    self.statusMaintainer = [[ARSerifStatusMaintainer alloc] init];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     _hideCloseButton = NO;
 
@@ -72,10 +75,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    UIApplication *app = self.sharedApplication;
-    self.oldStatusBarHiddenStatus = app.statusBarHidden;
-    [app setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    [self.statusMaintainer viewWillAppear:animated app:self.sharedApplication];
 
     self.view.layer.cornerRadius = 0;
     self.view.superview.layer.cornerRadius = 0;
@@ -84,9 +84,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
-    UIApplication *app = self.sharedApplication;
-    [app setStatusBarHidden:self.oldStatusBarHiddenStatus withAnimation:UIStatusBarAnimationNone];
+    [self.statusMaintainer viewWillDisappear:animated app:self.sharedApplication];
 }
 
 - (void)setHideCloseButton:(BOOL)hideCloseButton
