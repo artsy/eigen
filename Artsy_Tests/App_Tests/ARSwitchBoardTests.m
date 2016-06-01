@@ -349,6 +349,18 @@ describe(@"ARSwitchboard", ^{
             expect(classString).to.contain(@"LiveAuctionViewController");
         });
 
+        it(@"falls back to web views when websocket becomes outdated", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            id echoMock = [OCMockObject partialMockForObject:switchboard.echo];
+            [[[echoMock stub] andReturn:@[[[Message alloc] initWithName:@"LiveAuctionsCurrentWebSocketVersion" content:@"1000000"]]] messages]; // A really big version we won't actually hit for... a while.
+            [switchboard updateRoutes];
+
+            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];
+
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).toNot.contain(@"LiveAuctionViewController");
+        });
+
         it(@"can not route to native auctions when echo has a feature called 'DisableNativeAuctions'", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];

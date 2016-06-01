@@ -35,6 +35,7 @@ upcoming:
       - Displays lot info. - ash
       - Placing bids / setting max bids is functional. - ash
       - Removes current lot CTA when there is no current lot. - ash
+      - Adds websocket versioning. - ash
       
     infra:
       - CocoaPods now is v1. - alloy
