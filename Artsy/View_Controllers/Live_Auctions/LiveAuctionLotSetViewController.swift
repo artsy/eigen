@@ -176,12 +176,6 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     func dismissModal() {
         guard let presentor = splitViewController?.presentingViewController else { return }
-
-//        beginAppearanceTransition(false, animated: true)
-//        endAppearanceTransition()
-//
-
-
         presentor.dismissViewControllerAnimated(true, completion: nil)
     }
 
