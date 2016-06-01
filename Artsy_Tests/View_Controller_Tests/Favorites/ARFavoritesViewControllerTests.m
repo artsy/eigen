@@ -28,7 +28,7 @@
 
 
 @interface ARSwitchView ()
-@property (nonatomic, strong, readwrite) NSArray *buttons;
+@property (nonatomic, strong, readwrite) NSArray<UIButton *> *buttons;
 @end
 
 SpecBegin(ARFavoritesViewController);

@@ -19,6 +19,7 @@ class LiveAuctionLotViewController: UIViewController {
     let bidHistoryState = Observable<BidHistoryState>(.Closed)
     let bidHistoryDelta = Observable<(delta: CGFloat, animating: Bool)>((delta: 0, animating: false))
 
+    private var bidHistoryViewController: LiveAuctionBidHistoryViewController?
     private let biddingViewModel: LiveAuctionBiddingViewModelType
 
     private var imageBottomConstraint: NSLayoutConstraint?
@@ -61,7 +62,7 @@ class LiveAuctionLotViewController: UIViewController {
             sideMargin = "80"
             lotImagePreviewView = UIImageView().then {
                 $0.contentMode = .ScaleAspectFit
-                $0.setContentHuggingPriority(UILayoutPriorityFittingSizeLevel, forAxis: .Vertical)
+                $0.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
             }
         } else {
             sideMargin = "40"
@@ -136,13 +137,15 @@ class LiveAuctionLotViewController: UIViewController {
 
         // Bid button setup.
         let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel)
+        bidButton.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "0", sideMargin: sideMargin)
 
         // Bid history setup.
-        let bidHistoryViewController = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
-        metadataStack.addViewController(bidHistoryViewController, toParent: self, withTopMargin: "10", sideMargin: sideMargin)
-        lotHistoryHeightConstraint = bidHistoryViewController.view.constrainHeight("70")
+        let historyViewController = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
+        bidHistoryViewController = historyViewController
+        metadataStack.addViewController(historyViewController, toParent: self, withTopMargin: "10", sideMargin: sideMargin)
+        lotHistoryHeightConstraint = historyViewController.view.constrainHeight("70")
 
         // Setup for "current lot" purple view at the bottom of the view.
         let currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal)
@@ -159,7 +162,7 @@ class LiveAuctionLotViewController: UIViewController {
 
 
         // Subscribe to updates from our bidding view model, telling us what state the lot's bid status is in.
-        biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak lotMetadataStack, weak bidHistoryViewController] bidState in
+        biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak lotMetadataStack, weak historyViewController] bidState in
 
             let hideCurrentLotCTA: Bool
             let hideBidHistory: Bool
@@ -176,7 +179,8 @@ class LiveAuctionLotViewController: UIViewController {
             currentLotView?.hidden = hideCurrentLotCTA
 
             // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
-            bidHistoryViewController?.view.hidden = hideBidHistory
+            historyViewController?.view.hidden = hideBidHistory
+            historyViewController?.tableView.scrollEnabled = hideBidHistory
             pan.enabled = !hideBidHistory
 
             // We need to align the bottom of the lot image to the lot metadata
@@ -298,6 +302,8 @@ class LiveAuctionLotViewController: UIViewController {
         case .Ended:
             // Depending on the direction of the velocity, close or open the lot history.
             let targetState: BidHistoryState = velocity.y >= 0 ? .Closed : .Open
+
+            self.bidHistoryViewController?.tableView.scrollEnabled = (targetState == .Open)
 
             // TODO: be clever about animation velocity
             UIView.animateWithDuration(ARAnimationDuration, animations: {
