@@ -25,6 +25,9 @@ class LiveAuctionViewController: UISplitViewController {
 
     var offlineView: AROfflineView?
 
+    private var statusMaintainer = ARSerifStatusMaintainer()
+    lazy var app = UIApplication.sharedApplication()
+
     init(saleSlugOrID: String) {
         self.saleSlugOrID = saleSlugOrID
 
@@ -47,6 +50,8 @@ class LiveAuctionViewController: UISplitViewController {
         preferredDisplayMode = .AllVisible;
         preferredPrimaryColumnWidthFraction = 0.4;
         delegate = self;
+
+        statusMaintainer.viewWillAppear(animated, app: app)
 
         ar_presentIndeterminateLoadingIndicatorAnimated(true)
         connectToNetwork()
@@ -116,12 +121,26 @@ class LiveAuctionViewController: UISplitViewController {
     }
 
     override func viewWillDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
+        super.viewWillDisappear(animated)
+
+        statusMaintainer.viewWillDisappear(animated, app: app)
+        app.idleTimerDisabled = false
+
+        // Hrm, yes, so this seems to be a weird side effect of UISplitVC
+        // in that it won't pass the view transition funcs down to it's children
+        viewControllers.forEach { vc in
+            vc.beginAppearanceTransition(false, animated: animated)
+        }
 
         guard let internalPopover = self.valueForKey("_hidden" + "PopoverController") as? UIPopoverController else { return }
         internalPopover.dismissPopoverAnimated(false)
+    }
 
-        UIApplication.sharedApplication().idleTimerDisabled = false
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewControllers.forEach { vc in
+            vc.endAppearanceTransition()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
