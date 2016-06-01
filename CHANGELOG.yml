@@ -34,6 +34,7 @@ upcoming:
       - Don't let the device sleep during a live auction - orta
       - Displays lot info. - ash
       - Placing bids / setting max bids is functional. - ash
+      - Removes current lot CTA when there is no current lot. - ash
       
     infra:
       - CocoaPods now is v1. - alloy
