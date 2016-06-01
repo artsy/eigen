@@ -137,6 +137,7 @@ class LiveAuctionLotViewController: UIViewController {
 
         // Bid button setup.
         let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel)
+        bidButton.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "0", sideMargin: sideMargin)
 
