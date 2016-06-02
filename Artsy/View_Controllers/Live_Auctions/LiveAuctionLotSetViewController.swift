@@ -137,6 +137,12 @@ class LiveAuctionLotSetViewController: UIViewController {
         pageViewScrollView?.scrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .Compact)
     }
 
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+
+        
+    }
+
     func setupToolbar() {
         let close = ARSerifToolbarButtonItem(image: UIImage(asset: .Close_Icon) )
         close.accessibilityLabel = "Exit Live Bidding"

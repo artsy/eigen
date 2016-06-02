@@ -4,12 +4,13 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
 
     unowned let delegate: LiveAuctionLotCollectionViewDelegateLayout
 
+    private let maxHeight: CGFloat = 360
+
     init(delegate: LiveAuctionLotCollectionViewDelegateLayout) {
         self.delegate = delegate
 
         super.init()
 
-        itemSize = CGSize(width: 300, height: 300)
         scrollDirection = .Horizontal
         minimumLineSpacing = 0
     }
@@ -25,8 +26,7 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
     }
 
     func updateScreenWidth(width: CGFloat) {
-        let maxCurrentHeight = CGFloat(400) // TODO: What to use here?
-        itemSize = CGSize(width: width, height: maxCurrentHeight)
+        itemSize = CGSize(width: width, height: maxHeight)
         invalidateLayout()
     }
 
@@ -41,14 +41,28 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
     }
 
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return super.layoutAttributesForItemAtIndexPath(indexPath)//.flatMap { modifiedLayoutAttributesCopy($0) }
+        return super.layoutAttributesForItemAtIndexPath(indexPath).flatMap { modifiedLayoutAttributesCopy($0) }
     }
 
 
     func modifiedLayoutAttributesCopy(layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         guard let copy = layoutAttributes.copy() as? LiveAuctionLotCollectionViewLayoutAttributes else { return layoutAttributes }
-        let index: RelativeIndex = copy.indexPath.item
         
+        let index: RelativeIndex = copy.indexPath.item
+        let aspectRatio = delegate.aspectRatioForIndex(index)
+        let isWide = (aspectRatio > itemSize.width / maxHeight)
+
+        // copy has size = itemSize by default, we just need to set the appropriate dimension, based on aspect ratio.
+        // This is a simplified version of the fancy layout math.
+        if isWide {
+            copy.size.height = itemSize.width / aspectRatio - repulsionConstant / aspectRatio
+        } else {
+            copy.size.width = itemSize.height * aspectRatio - repulsionConstant * aspectRatio
+        }
+
+        // Center the item vertically, minus repulsion
+        copy.center.y = CGRectGetMidY(collectionView?.frame ?? CGRectZero) - (repulsionConstant / 2)
+
         copy.url = delegate.thumbnailURLForIndex(index)
 
         return copy
