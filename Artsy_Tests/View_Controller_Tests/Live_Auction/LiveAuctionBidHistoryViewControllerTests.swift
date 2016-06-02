@@ -26,14 +26,14 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                 let event = LiveEvent(JSON: ["type" : "BiddingOpened", "id" : "OK"])
 
                 subject = self.setupCellWithEvent(event)
-                expect(subject).to( haveValidSnapshot() )
+                expect(subject) == snapshot()
             }
 
             it("looks right for closed") {
                 let event = LiveEvent(JSON: ["type" : "BiddingClosed", "id" : "OK"])
 
                 subject = self.setupCellWithEvent(event)
-                expect(subject).to( haveValidSnapshot() )
+                expect(subject) == snapshot()
             }
 
             it("looks right for bid") {
@@ -41,28 +41,39 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                     "type" : "FirstPriceBidPlaced",
                     "id" : "ok",
                     "amountCents" : 555_000,
-                    "bidder" : ["type": "OfflineBidder","bidderId": "LmnBN-aEci"]
+                    "bidder" : ["type": "ArtsyBidder","bidderId": "LmnBN-aEci"]
                 ])
 
                 subject = self.setupCellWithEvent(event)
-                expect(subject).to( haveValidSnapshot() )
+                expect(subject) == snapshot()
             }
+
+            it("looks right for floor bid") {
+                let event = LiveEvent(JSON: [
+                    "type" : "FirstPriceBidPlaced",
+                    "id" : "ok",
+                    "amountCents" : 555_000,
+                    "bidder" : ["type": "OfflineBidder",]
+                    ])
+
+                subject = self.setupCellWithEvent(event)
+                expect(subject) == snapshot()
+            }
+
 
             it("looks right for final call") {
                 let event = LiveEvent(JSON: ["type" : "FinalCall", "id" : "ok",])
 
                 subject = self.setupCellWithEvent(event)
-                expect(subject).to( haveValidSnapshot() )
+                expect(subject) == snapshot()
             }
 
             it("looks right for fair warning") {
                 let event = LiveEvent(JSON: ["type" : "FairWarning", "id" : "ok",])
 
                 subject = self.setupCellWithEvent(event)
-                expect(subject).to( haveValidSnapshot() )
+                expect(subject) == snapshot()
             }
-
-
         }
     }
 }
