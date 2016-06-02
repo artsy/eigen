@@ -33,6 +33,11 @@
     self.switchView.titles = titles;
 }
 
+- (void)setSelectedIndex:(NSInteger)selectedIndex;
+{
+    self.switchView.selectedIndex = selectedIndex;
+}
+
 - (void)switchView:(ARSwitchView *)_ didPressButtonAtIndex:(NSInteger)selectedIndex animated:(BOOL)animated;
 {
     // Only animated changes are triggered by the user.
@@ -47,6 +52,7 @@
 
 RCT_EXPORT_MODULE();
 RCT_EXPORT_VIEW_PROPERTY(titles, NSArray);
+RCT_EXPORT_VIEW_PROPERTY(selectedIndex, NSInteger);
 RCT_EXPORT_VIEW_PROPERTY(onSelectionChange, RCTDirectEventBlock);
 
 - (UIView *)view

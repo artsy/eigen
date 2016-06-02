@@ -69,20 +69,20 @@ EXTERNAL SOURCES:
   Artsy+UIFonts:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
-    :path: ../
+    :path: "../"
   Extraction:
     :git: https://github.com/artsy/extraction.git
   FLKAutoLayout:
     :git: https://github.com/floriankugler/FLKAutoLayout.git
   React:
-    :path: ./node_modules/react-native
+    :path: "./node_modules/react-native"
 
 CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Extraction:
-    :commit: 069fdaeacf31dc599f05e7825980b0e6dff43c47
+    :commit: 5ffd6956686cda24f76d46a0a4dad723286b5e98
     :git: https://github.com/artsy/extraction.git
   FLKAutoLayout:
     :commit: 8cb911654b3538c0ce514701db041d32964ea17c
