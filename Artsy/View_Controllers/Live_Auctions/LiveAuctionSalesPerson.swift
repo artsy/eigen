@@ -45,7 +45,7 @@ class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
          jwt: JWT,
          bidderID: String?,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
-         stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.stubbedStateManagerCreator()) {
+         stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
 
         self.sale = sale
         self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderID: bidderID) }
