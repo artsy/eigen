@@ -110,7 +110,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        // TODO: handle changing trait collections, need to re-set the collection view layout. 
+        // TODO: handle changing trait collections, need to re-set the collection view layout.
         setupToolbar()
 
         guard firstAppearance else { return }
