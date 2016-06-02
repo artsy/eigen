@@ -159,6 +159,6 @@ let liveEventJSON = [
     "amountCents": 450000,
     "createdAt": "2016-04-28T20:41:05.240Z",
     "type": "FirstPriceBidPlaced",
-    "bidder": ["type":"OfflineBidder", "bidderId": "LmnBN-aFci" ]
+    "bidder": ["type":"ArtsyBidder", "bidderId": "LmnBN-aFci" ]
 ]
 
