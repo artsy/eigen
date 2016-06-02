@@ -53,16 +53,15 @@ extension PublicFunctions {
             userInterfaceNeedsSetup = false
             contentView.translatesAutoresizingMaskIntoConstraints = false
             contentView.alignToView(self)
+            lotImageView.contentMode = .ScaleAspectFill
+            lotImageView.clipsToBounds = true
         }
         
         resetViewHierarchy()
 
         isNotTopCell = (indexPath.item > 0)
 
-        // TODO: Pending https://github.com/JensRavens/Interstellar/issues/40 this might look less messy.
-        let lotStateSignal = viewModel.lotStateSignal
-
-        self.lotStateSubscription = lotStateSignal.subscribe { [weak self] state in
+        self.lotStateSubscription = viewModel.lotStateSignal.subscribe { [weak self] state in
                 self?.setLotState(state)
             }
 

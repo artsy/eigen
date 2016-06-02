@@ -40,7 +40,7 @@ extension CollectionViewDataSource: UICollectionViewDataSource {
 }
 
 private typealias FancyLayoutDelegate = LiveAuctionLotCollectionViewDataSource
-extension FancyLayoutDelegate: LiveAuctionFancyLotCollectionViewDelegateLayout {
+extension FancyLayoutDelegate: LiveAuctionLotCollectionViewDelegateLayout {
 
     func aspectRatioForIndex(index: RelativeIndex) -> CGFloat {
         let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(index))
