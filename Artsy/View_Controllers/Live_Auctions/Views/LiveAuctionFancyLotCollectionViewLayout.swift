@@ -56,9 +56,11 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         }
     }
 
-    func updateScreenWidth(width: CGFloat) {
+    override func prepareLayout() {
+        super.prepareLayout()
+
+        let width = collectionView?.frame.size.width ?? 0
         itemSize = CGSize(width: width, height: maxCurrentHeight)
-        invalidateLayout()
     }
 
     /// We invalidate on every bounds change (every scroll).

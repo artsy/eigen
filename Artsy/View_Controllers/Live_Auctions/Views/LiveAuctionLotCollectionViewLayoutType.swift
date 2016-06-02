@@ -11,6 +11,4 @@ protocol LiveAuctionLotCollectionViewLayoutType: class {
     unowned var delegate: LiveAuctionLotCollectionViewDelegateLayout { get }
 
     var repulsionConstant: CGFloat { get set }
-    
-    func updateScreenWidth(width: CGFloat)
 }

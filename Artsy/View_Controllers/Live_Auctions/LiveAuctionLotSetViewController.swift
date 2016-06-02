@@ -78,7 +78,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // Lot collection view setup.
         view.addSubview(lotImageCollectionView)
-        lotImageCollectionView.alignTop("0", leading: "0", bottom: "-288", trailing: "0", toView: view) // TODO: Figure this out huh?
+        lotImageCollectionView.alignTop("0", leading: "0", bottom: "-288", trailing: "0", toView: view)
 
         // Page view controller setup.
         ar_addModernChildViewController(pageController)
@@ -110,9 +110,8 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        // TODO: hand changing trait collections.
+        // TODO: handle changing trait collections, need to re-set the collection view layout. 
         setupToolbar()
-        lotCollectionViewLayout.updateScreenWidth(CGRectGetWidth(view.frame))
 
         guard firstAppearance else { return }
         firstAppearance = true
@@ -135,12 +134,6 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // Disable page view scrolling on iPad.
         pageViewScrollView?.scrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .Compact)
-    }
-
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-
-        
     }
 
     func setupToolbar() {

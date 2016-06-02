@@ -25,11 +25,6 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         }
     }
 
-    func updateScreenWidth(width: CGFloat) {
-        itemSize = CGSize(width: width, height: maxHeight)
-        invalidateLayout()
-    }
-
     class override func layoutAttributesClass() -> AnyClass {
         return LiveAuctionLotCollectionViewLayoutAttributes.self
     }
@@ -44,9 +39,21 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         return super.layoutAttributesForItemAtIndexPath(indexPath).flatMap { modifiedLayoutAttributesCopy($0) }
     }
 
+    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+        return true
+    }
+
+    override func prepareLayout() {
+        super.prepareLayout()
+
+        let width = collectionView?.frame.size.width ?? 0
+        itemSize = CGSize(width: width, height: maxHeight)
+    }
 
     func modifiedLayoutAttributesCopy(layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         guard let copy = layoutAttributes.copy() as? LiveAuctionLotCollectionViewLayoutAttributes else { return layoutAttributes }
+
+        copy.size.width -= 80 // For side margins, done upfront so we can rely on copy.size for the remainder of the function.
         
         let index: RelativeIndex = copy.indexPath.item
         let aspectRatio = delegate.aspectRatioForIndex(index)
@@ -61,7 +68,9 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         }
 
         // Center the item vertically, minus repulsion
-        copy.center.y = CGRectGetMidY(collectionView?.frame ?? CGRectZero) - (repulsionConstant / 2)
+        copy.center.y = CGRectGetMidY(collectionView?.frame ?? CGRect.zero) - (repulsionConstant / 2)
+        // Center horizontally according to current contentSize (which is the bounds size in all scroll views)
+        copy.center.x = CGRectGetMidX(collectionView?.bounds ?? CGRect.zero)
 
         copy.url = delegate.thumbnailURLForIndex(index)
 
