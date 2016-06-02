@@ -60,7 +60,6 @@ class LiveAuctionToolbarView : UIView {
             viewStructure = [
                 ["lot": lotCountString()],
                 ["time": attributify("--:--")],
-                ["watchers": attributify("09")],
                 ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]
 
@@ -84,7 +83,6 @@ class LiveAuctionToolbarView : UIView {
             viewStructure = [
                 ["lot": lotCountString()],
                 ["time": attributify(lotString, color: .artsyPurpleRegular())],
-                ["watchers": attributify("09")],
                 ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]
         }
