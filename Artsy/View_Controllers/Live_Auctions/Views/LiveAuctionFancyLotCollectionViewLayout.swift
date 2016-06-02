@@ -76,7 +76,7 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
     }
 
     class override func layoutAttributesClass() -> AnyClass {
-        return LiveAuctionFancyLotCollectionViewLayoutAttributes.self
+        return LiveAuctionLotCollectionViewLayoutAttributes.self
     }
 }
 
@@ -161,7 +161,7 @@ private extension PrivateFunctions {
 
         // Grab/set information from the delegate.
         let aspectRatio = delegate.aspectRatioForIndex(index)
-        (layoutAttributes as? LiveAuctionFancyLotCollectionViewLayoutAttributes)?.url = delegate.thumbnailURLForIndex(index)
+        (layoutAttributes as? LiveAuctionLotCollectionViewLayoutAttributes)?.url = delegate.thumbnailURLForIndex(index)
 
         // Calculate metrics, and subsequent centers. Note that the centers depend on the metrics.
         let preRepulsedMetrics = layoutMetricsForPosition(position, aspectRatio: aspectRatio)

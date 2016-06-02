@@ -15,7 +15,7 @@ class LiveAuctionLotImageCollectionViewCell: UICollectionViewCell {
 
         // Continue only if we successfully cast the attributes, and if we extract a non-nil URL.
         guard let
-            castLayoutAttributes = layoutAttributes as? LiveAuctionFancyLotCollectionViewLayoutAttributes,
+            castLayoutAttributes = layoutAttributes as? LiveAuctionLotCollectionViewLayoutAttributes,
             url = castLayoutAttributes.url
             else { return }
 
