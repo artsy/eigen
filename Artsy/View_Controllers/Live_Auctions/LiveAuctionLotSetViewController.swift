@@ -15,7 +15,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     let pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
     let lotImageCollectionView: UICollectionView?
     let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource?
-    let lotCollectionViewLayout: LiveAuctionFancyLotCollectionViewLayout?
+    let lotCollectionViewLayout: LiveAuctionLotCollectionViewLayoutType?
 
     private var hasBeenSetup = false
     private var firstAppearance = true
@@ -137,7 +137,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         super.viewDidAppear(animated)
 
         // Disable scrolling on iPad.
-        pageViewScrollView?.scrollEnabled = (lotImageCollectionView != nil)
+        pageViewScrollView?.scrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .Compact)
     }
 
     func setupToolbar() {

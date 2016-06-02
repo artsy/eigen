@@ -57,24 +57,24 @@ class LiveAuctionLotViewController: UIViewController {
         let sideMargin: String
 
         /// Image Preview, only on iPad
-        let lotImagePreviewView: UIImageView?
+//        let lotImagePreviewView: UIImageView?
         if traitCollection.horizontalSizeClass == .Regular {
             sideMargin = "80"
-            lotImagePreviewView = UIImageView().then {
-                $0.contentMode = .ScaleAspectFit
-                $0.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
-            }
+//            lotImagePreviewView = UIImageView().then {
+//                $0.contentMode = .ScaleAspectFit
+//                $0.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
+//            }
         } else {
             sideMargin = "40"
-            lotImagePreviewView = nil
+//            lotImagePreviewView = nil
         }
 
-        lotImagePreviewView?.then {
-            view.addSubview($0)
-            $0.alignTopEdgeWithView(view, predicate: "0")
-            $0.constrainWidthToView(view, predicate: "-80")
-            $0.alignCenterXWithView(view, predicate: "0")
-        }
+//        lotImagePreviewView?.then {
+//            view.addSubview($0)
+//            $0.alignTopEdgeWithView(view, predicate: "0")
+//            $0.constrainWidthToView(view, predicate: "-80")
+//            $0.alignCenterXWithView(view, predicate: "0")
+//        }
 
         /// The whole stack
         let metadataStack = ORStackView()
@@ -90,9 +90,9 @@ class LiveAuctionLotViewController: UIViewController {
 
         /// We attach the bottom of the image preview to the bottom of the lot metadata,
         /// then later, when we have enough information about it's height the constant is set
-        lotImagePreviewView?.then {
-            imageBottomConstraint = lotMetadataStack.constrainTopSpaceToView($0, predicate: "0")
-        }
+//        lotImagePreviewView?.then {
+//            imageBottomConstraint = lotMetadataStack.constrainTopSpaceToView($0, predicate: "0")
+//        }
 
         /// This is a constraint that says "stick to the top of the lot view"
         /// it's initially turned off, otherwise it uses it's own height constraint
@@ -208,7 +208,7 @@ class LiveAuctionLotViewController: UIViewController {
         infoToolbar.lotViewModel = lotViewModel
         infoToolbar.auctionViewModel = salesPerson.auctionViewModel
 
-        lotImagePreviewView?.ar_setImageWithURL(lotViewModel.urlForThumbnail)
+//        lotImagePreviewView?.ar_setImageWithURL(lotViewModel.urlForThumbnail)
     }
 
     override func viewDidLayoutSubviews() {
@@ -216,9 +216,9 @@ class LiveAuctionLotViewController: UIViewController {
 
         // Sets up height constraint based on the lot metadata stack's height.
         // TODO: lotMetadataStack needs a constant height, not a variable one with multiline support.
-        let height = lotMetadataStack?.frame.height ?? 0
-        imageBottomConstraint?.constant = height + 20
-        view.setNeedsUpdateConstraints()
+//        let height = lotMetadataStack?.frame.height ?? 0
+//        imageBottomConstraint?.constant = height + 20
+//        view.setNeedsUpdateConstraints()
 
         // If atRestMetadataPosition is not set, then we set it based on the lotMetadatStack's position in our view.
         // This should occur during the view's initial layout pass, before any user interaction.

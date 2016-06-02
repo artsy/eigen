@@ -1,24 +1,18 @@
 import UIKit
 
-typealias RelativeIndex = Int
-
-protocol LiveAuctionFancyLotCollectionViewDelegateLayout: class {
-    func aspectRatioForIndex(index: RelativeIndex) -> CGFloat
-    func thumbnailURLForIndex(index: RelativeIndex) -> NSURL
-}
 
 /// Layout for display previous/next lot images on the sides while showing the main lot in the centre, larger.
 ///
 /// This layout is more aware of the _data_ being display by the cells than is typical. The reason is that the
 /// layout is aware of how far we have scrolled in either direction, and due to the private nature of 
 /// UIPageViewController, the datasource cannot know. See the PrivateFunctions discussions for more info.
-class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
+class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveAuctionLotCollectionViewLayoutType {
 
     enum Size {
         case Normal, Compact
     }
 
-    unowned let delegate: LiveAuctionFancyLotCollectionViewDelegateLayout
+    unowned let delegate: LiveAuctionLotCollectionViewDelegateLayout
 
     private let visiblePrevNextSliceSize: CGFloat
     private let maxCurrentWidth: CGFloat
@@ -26,7 +20,7 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout {
     private let maxOffscreenWidth: CGFloat
     private let maxOffscrenHeight: CGFloat
 
-    init(delegate: LiveAuctionFancyLotCollectionViewDelegateLayout, size: Size) {
+    init(delegate: LiveAuctionLotCollectionViewDelegateLayout, size: Size) {
         self.delegate = delegate
         switch size {
         case .Normal:
