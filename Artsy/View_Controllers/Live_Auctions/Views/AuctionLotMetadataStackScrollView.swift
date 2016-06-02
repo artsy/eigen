@@ -65,13 +65,13 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
         let separatorMargin = String(Int(sideMargin) ?? 0 + 40)
 
-        if let description = viewModel.lotArtworkDescription {
+        if let artworkdescription = viewModel.lotArtworkDescription where artworkdescription.isEmpty == false {
             stack.addSmallLineBreak(separatorMargin)
             stack.addSmallHeading("Description", sideMargin: sideMargin)
-            stack.addBodyMarkdown(description, sideMargin: sideMargin)
+            stack.addBodyMarkdown(artworkdescription, sideMargin: sideMargin)
         }
 
-        if let blurb = viewModel.lotArtistBlurb {
+        if let blurb = viewModel.lotArtistBlurb where blurb.isEmpty == false {
             stack.addThickLineBreak(separatorMargin)
             stack.addBigHeading("About the Artist", sideMargin: sideMargin)
             stack.addBodyMarkdown(blurb, sideMargin: sideMargin)
