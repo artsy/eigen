@@ -9,9 +9,11 @@
 
 - (instancetype)initWithArtistID:(NSString *)artistID emission:(AREmission *)emission;
 {
-  self = [super initWithEmission:emission
-                      moduleName:@"Artist"
-               initialProperties:@{ @"artistID": artistID }];
+  if ((self = [super initWithEmission:emission
+                           moduleName:@"Artist"
+                    initialProperties:@{ @"artistID": artistID }])) {
+    _artistID = artistID;
+  }
   return self;
 }
 
