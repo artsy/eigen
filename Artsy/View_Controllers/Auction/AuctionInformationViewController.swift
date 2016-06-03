@@ -147,6 +147,10 @@ class AuctionInformationViewController : UIViewController {
             controller.setToRecipients(["inquiries@artsy.net"])
             controller.setSubject("Questions about “\(saleViewModel.displayName)”")
             self.presentViewController(controller, animated: animated, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "No email set up on your device", message: "You can email inquiries@artsy.net to get answers to your questions", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "Back", style: .Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
 
