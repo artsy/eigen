@@ -19,8 +19,10 @@ State update includes:
   a. Update reserve status
   b. Insert new events
   c. Update next bid amount
-
+l
 */
+
+typealias LotEventJSON = [[String: AnyObject]]
 
 protocol LiveAuctionStateReconcilerType {
     func updateState(state: AnyObject)
@@ -28,7 +30,7 @@ protocol LiveAuctionStateReconcilerType {
     func processCurrentLotUpdate(update: AnyObject)
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
-    var debugAllEventsSignal: Observable<[LiveEvent]> { get }
+    var debugAllEventsSignal: Observable<LotEventJSON> { get }
 }
 
 class LiveAuctionStateReconciler: NSObject {
@@ -42,7 +44,7 @@ class LiveAuctionStateReconciler: NSObject {
     }
 
     private let _currentLotSignal = Observable<LiveAuctionLotViewModel?>(nil)
-    private let _debugAllEventsSignal = Observable<[LiveEvent]>(options: [])
+    private let _debugAllEventsSignal = Observable<LotEventJSON>(options: [])
 
     private var _currentLotID: String?
 }
@@ -81,6 +83,7 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
             derivedLotState = json["derivedLotState"] as? [String: AnyObject],
             fullEventOrder = json["fullEventOrder"] as? [String] else { return }
 
+
         updateLotDerivedState(lot, derivedState: derivedLotState)
         updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
     }
@@ -94,7 +97,7 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
         return _currentLotSignal.map { $0 as LiveAuctionLotViewModelType? }
     }
 
-    var debugAllEventsSignal: Observable<[LiveEvent]> {
+    var debugAllEventsSignal: Observable<LotEventJSON> {
         return _debugAllEventsSignal
     }
 }
@@ -133,11 +136,11 @@ private extension PrivateFunctions {
                 print("Event: \(event)\n\n")
             }
         }
+        _debugAllEventsSignal.update(newEvents)
 
         // TODO: is this a good idea? This will remove events we don't know yet
         let events = newEvents.flatMap { LiveEvent(JSON: $0) }
         lot.addEvents(events)
-        _debugAllEventsSignal.update(events)
     }
 
     func updateCurrentLotWithIDIfNecessary(newCurrentLotID: LotID?) {

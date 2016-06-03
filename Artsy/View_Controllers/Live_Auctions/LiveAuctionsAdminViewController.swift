@@ -6,7 +6,7 @@ class LiveAuctionsAdminViewController: UIViewController {
 
     let salesPerson: LiveAuctionsSalesPersonType
     var textView: UITextView?
-    var rawEvents = [LiveEvent]()
+    var rawEvents = LotEventJSON()
 
     init(salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
@@ -50,12 +50,10 @@ class LiveAuctionsAdminViewController: UIViewController {
         texts.append("\n ---- EVENTS\n")
 
         for event in rawEvents {
-            texts.append("\(event.debugDescription)")
+            texts.append("\(event.debugDescription)\n\n")
         }
 
         guard let textView = textView else { return }
         textView.text = texts.joinWithSeparator("\n")
     }
-
-    
 }

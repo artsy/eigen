@@ -97,7 +97,7 @@ extension PublicFunctions {
         socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
     }
 
-    var debugAllEventsSignal: Observable<[LiveEvent]> {
+    var debugAllEventsSignal: Observable<LotEventJSON> {
         return stateReconciler.debugAllEventsSignal
     }
 }

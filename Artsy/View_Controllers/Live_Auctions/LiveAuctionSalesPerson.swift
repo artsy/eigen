@@ -24,7 +24,7 @@ protocol LiveAuctionsSalesPersonType {
 
     /// Lets a client hook in to listen to all events
     /// shoud not be used outside of developer tools.
-    var debugAllEventsSignal: Observable<[LiveEvent]> { get }
+    var debugAllEventsSignal: Observable<LotEventJSON> { get }
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
@@ -78,7 +78,7 @@ extension ComputedProperties {
         return sale.name
     }
 
-    var debugAllEventsSignal: Observable<[LiveEvent]> {
+    var debugAllEventsSignal: Observable<LotEventJSON> {
         return stateManager.debugAllEventsSignal
     }
 }
