@@ -38,6 +38,7 @@ upcoming:
       - Adds websocket versioning. - ash
       - Adds collection view image layout to iPad. - ash
       - Highest bidder status on bid button works. - ash / orta
+      - Outbid notice persists. - ash / orta
       
     infra:
       - CocoaPods now is v1. - alloy

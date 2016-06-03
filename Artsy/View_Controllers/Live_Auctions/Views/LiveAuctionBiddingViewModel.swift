@@ -19,7 +19,9 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     private let _lotState = Observable<LotState>()
     private let _askingPrice = Observable<UInt64>()
     private let _currentLot = Observable<LiveAuctionLotViewModelType?>()
-    private let _newLotEventSignal = Observable<LiveAuctionEventViewModel>()
+    private let _newLotEventSignal = Observable<LiveAuctionEventViewModel>(LiveAuctionEventViewModel(event: LiveEvent(), currencySymbol: ""))
+    // _newLotEventSignal is different; every lot has a state asking price, and there's a default nil current lot. But not every lot has an event yet, 
+    // so we need to "prime" the _newLotEventSignal with a dummy lot event (the values from _newLotEventSignal are completely ignored anyway).
 
 
     init(currencySymbol: String, lotViewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType) {
@@ -74,7 +76,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                     let isHighestBiddder = state.currentLot?.userIsHighestBidder ?? false
 
                     if isHighestBiddder {
-                        biddingState = .BidSuccess(isMaxBidder: true)
+                        biddingState = .BidSuccess
                     } else {
                         biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
                     }
