@@ -96,6 +96,10 @@ extension PublicFunctions {
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
     }
+
+    var debugAllEventsSignal: Observable<LotEventJSON> {
+        return stateReconciler.debugAllEventsSignal
+    }
 }
 
 private typealias ComputedProperties = LiveAuctionStateManager

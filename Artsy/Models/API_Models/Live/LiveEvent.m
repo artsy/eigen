@@ -13,15 +13,13 @@
     /*
      We need to support the following event types:
      - ReservePriceChanged
-     - CompositeOnlineBidConfirmed
-     - BidCancelled
     */
     NSString *type = [dictionaryValue valueForKeyPath:@"type"];
     Class klass;
     if ([type isEqualToString:@"BiddingOpened"]) {
         klass = LiveEventLotOpen.class;
 
-    } else if ([type isEqualToString:@"FirstPriceBidPlaced"] || [type isEqualToString:@"SecondPriceBidPlaced"] || [type isEqualToString:@"CompositeOnlineBidConfirmed"]) {
+    } else if ([type isEqualToString:@"FirstPriceBidPlaced"] || [type isEqualToString:@"SecondPriceBidPlaced"]) {
         klass = LiveEventBid.class;
 
     } else if ([type isEqualToString:@"FairWarning"]) {
@@ -33,13 +31,15 @@
     } else if ([type isEqualToString:@"BiddingClosed"]) {
         klass = LiveEventClosed.class;
 
+    } else if ([type isEqualToString:@"CompositeOnlineBidConfirmed"]) {
+        klass = LiveEventBidComposite.class;
+
+    } else if ([type isEqualToString:@"LiveOperatorEventUndone"]) {
+        klass = LiveEventUndo.class;
+
     } else {
         ARErrorLog(@"Error! Ignoring unknown event type '%@'\nEvent: %@", type, dictionaryValue);
         return nil;
-    }
-
-    if ([ARDeveloperOptions options][@"log_live_events"]) {
-        NSLog(@"Live Event: %@", dictionaryValue);
     }
 
     return [[klass alloc] initWithDictionary:dictionaryValue error:error];
@@ -50,6 +50,7 @@
     return @{
         ar_keypath(LiveEvent.new, eventID) : @"eventId",
         ar_keypath(LiveEvent.new, createdAtString) : @"createdAt",
+        ar_keypath(LiveEvent.new, undoLiveEventID) : @"event.eventId",
     };
 }
 
@@ -60,13 +61,10 @@
 
 - (LiveEventType)eventType { return LiveEventTypeUnknown; }
 
-- (NSString *)sourceOrDefaultString
+
+- (NSString *)debugDescription
 {
-    if (self.bidder == nil) {
-        return @"Bid";
-    } else {
-        return self.bidder.bidderDisplayType;
-    }
+    return [NSString stringWithFormat:@"%@ - %@", NSStringFromClass(self.class), self.type];
 }
 
 @end
@@ -79,6 +77,20 @@
 
 @implementation LiveEventBid
 - (LiveEventType)eventType { return LiveEventTypeBid; }
+
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"%@ - %@ \n > %@, %@", NSStringFromClass(self.class), self.type, @(self.amountCents), self.displayString];
+}
+
+- (NSString *)displayString
+{
+    if (self.bidder == nil) {
+        return @"Bid";
+    }
+    return self.bidder.bidderDisplayType;
+}
+
 @end
 
 
@@ -94,4 +106,20 @@
 
 @implementation LiveEventClosed
 - (LiveEventType)eventType { return LiveEventTypeClosed; }
+@end
+
+
+@implementation LiveEventBidComposite
+- (LiveEventType)eventType { return LiveEventTypeBidComposite; }
+
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"%@ - %@ \n > %@, %@", NSStringFromClass(self.class), self.type, @(self.amountCents), self.bidder.bidderID];
+}
+
+@end
+
+
+@implementation LiveEventUndo
+- (LiveEventType)eventType { return LiveEventTypeUndo; }
 @end

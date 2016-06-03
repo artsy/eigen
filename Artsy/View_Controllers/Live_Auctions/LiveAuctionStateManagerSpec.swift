@@ -120,6 +120,7 @@ class Test_StateRecociler: LiveAuctionStateReconcilerType {
     var mostRecentEventBroadcast: AnyObject?
     var mostRecentCurrentLotUpdate: AnyObject?
     var mostRecentEvent: AnyObject?
+    var debugAllEventsSignal = Observable<LotEventJSON>()
 
     init() {
         mostRecentStateReconciler = self

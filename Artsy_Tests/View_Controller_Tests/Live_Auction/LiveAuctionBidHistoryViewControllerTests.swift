@@ -36,6 +36,13 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                 expect(subject) == snapshot()
             }
 
+            it("looks right for closed state") {
+                let event = LiveEvent(JSON: ["type" : "BiddingClosed", "id" : "OK", "cancelled" : true])
+
+                subject = self.setupCellWithEvent(event)
+                expect(subject) == snapshot()
+            }
+
             it("looks right for bid") {
                 let event = LiveEvent(JSON: [
                     "type" : "FirstPriceBidPlaced",
@@ -60,6 +67,19 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                 expect(subject) == snapshot()
             }
 
+
+            it("looks right for a cancelled floor bid") {
+                let event = LiveEvent(JSON: [
+                    "type" : "FirstPriceBidPlaced",
+                    "id" : "ok",
+                    "cancelled" : true,
+                    "amountCents" : 555_000,
+                    "bidder" : ["type": "OfflineBidder",]
+                    ])
+
+                subject = self.setupCellWithEvent(event)
+                expect(subject) == snapshot()
+            }
 
             it("looks right for final call") {
                 let event = LiveEvent(JSON: ["type" : "FinalCall", "id" : "ok",])

@@ -22,12 +22,15 @@ State update includes:
 
 */
 
+typealias LotEventJSON = [[String: AnyObject]]
+
 protocol LiveAuctionStateReconcilerType {
     func updateState(state: AnyObject)
     func processLotEventBroadcast(broadcast: AnyObject)
     func processCurrentLotUpdate(update: AnyObject)
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
+    var debugAllEventsSignal: Observable<LotEventJSON> { get }
 }
 
 class LiveAuctionStateReconciler: NSObject {
@@ -41,6 +44,8 @@ class LiveAuctionStateReconciler: NSObject {
     }
 
     private let _currentLotSignal = Observable<LiveAuctionLotViewModel?>(nil)
+    private let _debugAllEventsSignal = Observable<LotEventJSON>(options: [])
+
     private var _currentLotID: String?
 }
 
@@ -78,8 +83,8 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
             derivedLotState = json["derivedLotState"] as? [String: AnyObject],
             fullEventOrder = json["fullEventOrder"] as? [String] else { return }
 
-        updateLotDerivedState(lot, derivedState: derivedLotState)
         updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
+        updateLotDerivedState(lot, derivedState: derivedLotState)
     }
 
     func processCurrentLotUpdate(update: AnyObject) {
@@ -89,6 +94,10 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
         return _currentLotSignal.map { $0 as LiveAuctionLotViewModelType? }
+    }
+
+    var debugAllEventsSignal: Observable<LotEventJSON> {
+        return _debugAllEventsSignal
     }
 }
 
@@ -115,15 +124,22 @@ private extension PrivateFunctions {
         }
     }
 
-
     func updateLotWithEvents(lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]], fullEventOrder: [String]? = nil) {
         // TODO: fullEventOrder, if specified, yields the _exact_ history and order of events. We need to remove any local events not present in fullEventOrder in case they were undo'd by the operator.
 
         let existingEventIds = Set(lot.eventIDs)
         let newEvents = lotEvents.filter { existingEventIds.contains($0["eventId"] as? String ?? "") == false }
 
+        if (ARDeveloperOptions.keyExists("log_live_events")) {
+            for event in newEvents {
+                print("Event: \(event)\n\n")
+            }
+        }
+        _debugAllEventsSignal.update(newEvents)
+
         // TODO: is this a good idea? This will remove events we don't know yet
-        lot.addEvents( newEvents.flatMap { LiveEvent(JSON: $0) } )
+        let events = newEvents.flatMap { LiveEvent(JSON: $0) }
+        lot.addEvents(events)
     }
 
     func updateCurrentLotWithIDIfNecessary(newCurrentLotID: LotID?) {

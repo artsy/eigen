@@ -10,6 +10,8 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
     LiveEventTypeWarning,
     LiveEventTypeFinalCall,
     LiveEventTypeClosed,
+    LiveEventTypeBidComposite,
+    LiveEventTypeUndo,
     LiveEventTypeUnknown
 };
 
@@ -32,17 +34,23 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 
 @property (nonatomic, assign, readonly) UInt64 amountCents;
 @property (nonatomic, strong, readonly) LiveBidder *_Nullable bidder;
-@property (nonatomic, strong, readonly) NSString *sourceOrDefaultString;
+
+/// Used only by `LiveEventUndo`
+@property (nonatomic, copy, readonly) NSString *undoLiveEventID;
+
+// In theory only LiveEventBid, LiveEventLotOpen
+// LiveEventClosed, LiveEventBidComposite
+@property (nonatomic, assign) BOOL cancelled;
 
 @end
 
 
 @interface LiveEventLotOpen : LiveEvent
-
 @end
 
 
 @interface LiveEventBid : LiveEvent
+- (NSString *)displayString;
 @end
 
 
@@ -55,6 +63,14 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 
 
 @interface LiveEventClosed : LiveEvent
+@end
+
+
+@interface LiveEventBidComposite : LiveEvent
+@end
+
+
+@interface LiveEventUndo : LiveEvent
 @end
 
 NS_ASSUME_NONNULL_END

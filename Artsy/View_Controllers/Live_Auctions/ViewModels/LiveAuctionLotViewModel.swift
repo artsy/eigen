@@ -10,7 +10,9 @@ enum LotState {
 }
 
 protocol LiveAuctionLotViewModelType: class {
-    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel
+
+    var numberOfDerivedEvents: Int { get }
+    func derivedEventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel
 
     var lotArtist: String { get }
     var lotArtistBlurb: String? { get }
@@ -25,7 +27,6 @@ protocol LiveAuctionLotViewModelType: class {
     var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: NSURL { get }
     var urlForProfile: NSURL { get }
-    var numberOfEvents: Int { get }
     var lotIndex: Int { get }
     var currentLotValue: UInt64 { get }
     var currentLotValueString: String { get }
@@ -57,7 +58,13 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     private let model: LiveAuctionLot
     private let bidderID: String?
 
+    // This is the full event stream
     private var events = [LiveAuctionEventViewModel]()
+
+    // This is the event stream once undos, and composite bids have
+    // done their worn on the events
+    private var derivedEvents = [LiveAuctionEventViewModel]()
+
     private let biddingStatusSignal = Observable<ARLiveBiddingStatus>()
 
     let reserveStatusSignal = Observable<ARReserveStatus>()
@@ -187,13 +194,17 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.eventIDs
     }
 
-    var numberOfEvents: Int {
-        return events.count
+    func eventWithID(string: String) -> LiveAuctionEventViewModel? {
+        return events.filter { $0.event.eventID == string }.first
+    }
+
+    var numberOfDerivedEvents: Int {
+        return derivedEvents.count
     }
     
-    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
+    func derivedEventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
         // Events are ordered FIFO, need to inverse for presentation
-        return events[numberOfEvents - index - 1]
+        return derivedEvents[numberOfDerivedEvents - index - 1]
     }
 
     var reserveStatusString: String {
@@ -241,10 +252,24 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
         model.addEvents(events.map { $0.eventID })
         let newEvents = events.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
+
+        self.events += newEvents
+
+        updateExistingEvents(self.events)
+        derivedEvents = self.events.filter { $0.isUserFacing }
+
         newEvents.forEach { event in
             newEventSignal.update(event)
         }
-        self.events += newEvents
+    }
+
+    func updateExistingEvents(events:[LiveAuctionEventViewModel]) {
+        for undoEvent in events.filter({ $0.isUndo }) {
+            guard let
+                referenceEventID = undoEvent.undoLiveEventID,
+                eventToUndo = eventWithID(referenceEventID) else { continue }
+            eventToUndo.cancel()
+        }
     }
 }
 

@@ -8,7 +8,7 @@ import Artsy
 
 class LiveAuctionLotListViewControllerTests: QuickSpec {
     override func spec() {
-        beforeSuite {
+        beforeEach {
             let fake = stub_auctionSalesPerson()
             for i in 0..<fake.lotCount {
                 let lot = fake.lotViewModelForIndex(i)

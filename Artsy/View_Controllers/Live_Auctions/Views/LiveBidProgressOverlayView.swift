@@ -32,13 +32,9 @@ class LiveBidProgressOverlayView: UIView {
         case .BiddingInProgress:
             setupProgressUI("Placing Bid", textColor: purple, image: .LiveAuctionSpinner, spinImage: true)
 
-        case .BidSuccess(let isMaxBidder):
-            if isMaxBidder {
-                setupProgressUI("Bid Placed", textColor: green, image: .LiveAuctionMaxBidIcon)
-
-            } else {
-                setupProgressUI("Outbid", subtitle: "Set a higher max bid", textColor: red, image: .LiveAuctionOutbidWarningIcon)
-            }
+        case .BidSuccess:
+            // TODO: this needs to keep track of the previous bidding state
+            setupProgressUI("Bid Placed", textColor: green, image: .LiveAuctionMaxBidIcon)
 
         case .BidNetworkFail:
             setupProgressUI("Connection Issues", subtitle: "Please check your signal strength", textColor: red, image: .LiveAuctionOutbidWarningIcon)

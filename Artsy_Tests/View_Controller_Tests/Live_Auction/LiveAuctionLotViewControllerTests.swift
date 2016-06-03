@@ -71,6 +71,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 class Test_SalesPerson: LiveAuctionsSalesPersonType {
     var currentLotSignal = Observable<LiveAuctionLotViewModelType?>()
     var currentFocusedLotIndex = Observable(0)
+    var debugAllEventsSignal = Observable<LotEventJSON>()
 
     var auctionViewModel: LiveAuctionViewModelType
     var lotCount: Int { return auctionViewModel.lotCount }
@@ -120,7 +121,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var urlForThumbnail = NSURL(string: "http://example.com/")!
     var urlForProfile = NSURL(string: "http://example.com/")!
     var reserveStatusString = "is testing reserve"
-    var numberOfEvents = 1
+    var numberOfDerivedEvents = 1
     var lotIndex = 1
     var numberOfBids = 1
     var currencySymbol = "$"
@@ -131,7 +132,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var dateLotOpened: NSDate?
     var userIsHighestBidder: Bool = false
 
-    func eventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
+    func derivedEventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
         return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON), currencySymbol: "$")
     }
 

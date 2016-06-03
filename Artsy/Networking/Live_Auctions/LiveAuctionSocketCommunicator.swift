@@ -89,6 +89,7 @@ private extension SocketSetup {
     }
 
     func socketConnected() {
+        print ("Socket connected")
         socket.writeString("{\"type\":\"Authorize\",\"jwt\":\"\(jwt)\"}")
     }
 

@@ -39,30 +39,44 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
 
         tableView.allowsSelection = false
         tableView.showsVerticalScrollIndicator = false
+//
+//        newEventsBeganSubscription = lotViewModel.startEventUpdatesSignal.subscribe { [weak self] _ in
+//            // We want to skip any initial first values that are cached by the observables, we can do this by making sure we have a window (since cached values are immediately sent, before the initializer is completed).
+//            guard let _ = self?.view.window else { return }
+//
+//            self?.nextInsertIndex = 0
+//            self?.tableView.beginUpdates()
+//        }
+//
+//        newEventsEndedSubscription = lotViewModel.endEventUpdatesSignal.subscribe { [weak self] _ in
+//            // We comment in startEventUpdatesSignal subscription.
+//            guard let _ = self?.view.window else { return }
+//
+//            self?.tableView.endUpdates()
+//        }
+//
+//        newEventsSubscription = lotViewModel.newEventSignal.subscribe { [weak self] event in
+//            // We comment in startEventUpdatesSignal subscription.
+//            guard let _ = self?.view.window else { return }
+//
+//            let indexPath = NSIndexPath(forRow: self?.nextInsertIndex ?? 0, inSection: 0)
+//            self?.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+//            self?.nextInsertIndex += 1
+//        }
 
-        newEventsBeganSubscription = lotViewModel.startEventUpdatesSignal.subscribe { [weak self] _ in
-            // We want to skip any initial first values that are cached by the observables, we can do this by making sure we have a window (since cached values are immediately sent, before the initializer is completed).
-            guard let _ = self?.view.window else { return }
+        newEventsEndedSubscription = lotViewModel.endEventUpdatesSignal.subscribe { [weak self] _ in
+        }
 
-            self?.nextInsertIndex = 0
-            self?.tableView.beginUpdates()
+        newEventsSubscription = lotViewModel.newEventSignal.subscribe { [weak self] event in
         }
 
         newEventsEndedSubscription = lotViewModel.endEventUpdatesSignal.subscribe { [weak self] _ in
             // We comment in startEventUpdatesSignal subscription.
             guard let _ = self?.view.window else { return }
 
-            self?.tableView.endUpdates()
+            self?.tableView.reloadData()
         }
 
-        newEventsSubscription = lotViewModel.newEventSignal.subscribe { [weak self] event in
-            // We comment in startEventUpdatesSignal subscription.
-            guard let _ = self?.view.window else { return }
-
-            let indexPath = NSIndexPath(forRow: self?.nextInsertIndex ?? 0, inSection: 0)
-            self?.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-            self?.nextInsertIndex += 1
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -79,7 +93,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         // We may be _re_appearing, so scroll to top if we have any cells.
-        if lotViewModel.numberOfEvents > 0 {
+        if lotViewModel.numberOfDerivedEvents > 0 {
             tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: false)
         }
     }
@@ -91,7 +105,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lotViewModel.numberOfEvents
+        return lotViewModel.numberOfDerivedEvents
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -101,7 +115,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         guard let cell = cell as? LiveAuctionHistoryCell else { return }
 
-        let event = lotViewModel.eventAtPresentationIndex(indexPath.row)
+        let event = lotViewModel.derivedEventAtPresentationIndex(indexPath.row)
         cell.updateWithEventViewModel(event)
     }
 }

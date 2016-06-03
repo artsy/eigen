@@ -5,10 +5,24 @@ enum LiveAuctionBiddingProgressState {
     case TrialUser
     case Biddable(askingPrice: UInt64, currencySymbol: String)
     case BiddingInProgress
-    case BidSuccess(isMaxBidder: Bool)
+    case BidSuccess
     case BidNetworkFail
     case LotWaitingToOpen
     case LotSold
+}
+
+func ==(lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressState) -> Bool {
+    switch (lhs, rhs) {
+    case (.TrialUser, .TrialUser): return true
+    case (.Biddable(let lhsState), .Biddable(let rhsState)) where lhsState.askingPrice == rhsState.askingPrice && lhsState.currencySymbol == rhsState.currencySymbol: return true
+    case (.BiddingInProgress, .BiddingInProgress): return true
+    case (.BidSuccess, .BidSuccess): return true
+    case (.BidNetworkFail, .BidNetworkFail): return true
+    case (.LotWaitingToOpen, .LotWaitingToOpen): return true
+    case (.LotSold, .LotSold): return true
+
+    default: return false
+    }
 }
 
 class LiveAuctionBidViewModel: NSObject {

@@ -81,5 +81,8 @@
     return [self.data objectForKey:key];
 }
 
-
++ (BOOL)keyExists:(id<NSCopying>)key
+{
+    return [[self options] objectForKeyedSubscript:key] != nil;
+}
 @end
