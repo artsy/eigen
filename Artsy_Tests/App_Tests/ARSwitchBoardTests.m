@@ -226,7 +226,7 @@ describe(@"ARSwitchboard", ^{
 
         it(@"routes artists", ^{
             id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artist/artistname"] fair:nil];
-            expect(subject).to.beKindOf(ARArtistViewController.class);
+            expect(subject).to.beKindOf(ARArtistComponentViewController.class);
         });
 
         it(@"routes artists in a gallery context on iPad", ^{
@@ -236,7 +236,7 @@ describe(@"ARSwitchboard", ^{
                 [switchboard updateRoutes];
 
                 id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
-                expect(viewController).to.beKindOf(ARArtistViewController.class);
+                expect(viewController).to.beKindOf(ARArtistComponentViewController.class);
             }];
         });
 
@@ -372,6 +372,19 @@ describe(@"ARSwitchboard", ^{
             NSString *classString = NSStringFromClass([subject class]);
             expect(classString).toNot.contain(@"AuctionViewController");
         });
+
+        it(@"can not route to react artists when echo has a feature called 'DisableReactArtists'", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+            echo.features = @{ @"DisableReactArtists" : [[Feature alloc] initWithName:@"" state:@1] };
+            switchboard.echo = echo;
+
+            id subject = [switchboard loadPath:@"/artist/myauctionthing"];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"ARArtistViewController");
+        });
+
     });
 
     describe(@"routeProfileWithID", ^{

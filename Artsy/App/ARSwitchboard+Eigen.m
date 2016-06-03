@@ -140,12 +140,16 @@
 
 - (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair
 {
+    BOOL blacklistUsingReactArtists = self.echo.features[@"DisableReactArtists"] != nil;
+
     if (fair) {
         return [[ARFairArtistViewController alloc] initWithArtistID:artistID fair:fair];
-    } else if ([AROptions boolForOption:AROptionsEnableReactArtist]) {
-        return (UIViewController<ARFairAwareObject> *)[[ARArtistComponentViewController alloc] initWithArtistID:artistID];
-    } else {
+
+    } else if (blacklistUsingReactArtists) {
         return [[ARArtistViewController alloc] initWithArtistID:artistID];
+
+    } else {
+        return (UIViewController<ARFairAwareObject> *)[[ARArtistComponentViewController alloc] initWithArtistID:artistID];
     }
 }
 

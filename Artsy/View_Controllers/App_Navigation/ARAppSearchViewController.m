@@ -108,11 +108,8 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     if (result.model == [Artwork class]) {
         controller = [[ARArtworkSetViewController alloc] initWithArtworkID:result.modelID];
     } else if (result.model == [Artist class]) {
-        if ([AROptions boolForOption:AROptionsEnableReactArtist]) {
-            controller = (UIViewController *)[[ARArtistComponentViewController alloc] initWithArtistID:result.modelID];
-        } else {
-            controller = [[ARArtistViewController alloc] initWithArtistID:result.modelID];
-        }
+        NSString *path = NSStringWithFormat(@"/artist/%@", result.modelID);
+        controller = [[ARSwitchBoard sharedInstance] loadPath:path];
     } else if (result.model == [Gene class]) {
         controller = [[ARGeneViewController alloc] initWithGeneID:result.modelID];
     } else if (result.model == [Profile class]) {
