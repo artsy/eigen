@@ -28,6 +28,7 @@ protocol LiveAuctionStateReconcilerType {
     func processCurrentLotUpdate(update: AnyObject)
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
+    var debugAllEventsSignal: Observable<[LiveEvent]> { get }
 }
 
 class LiveAuctionStateReconciler: NSObject {
@@ -41,6 +42,8 @@ class LiveAuctionStateReconciler: NSObject {
     }
 
     private let _currentLotSignal = Observable<LiveAuctionLotViewModel?>(nil)
+    private let _debugAllEventsSignal = Observable<[LiveEvent]>(options: [])
+
     private var _currentLotID: String?
 }
 
@@ -90,6 +93,10 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
         return _currentLotSignal.map { $0 as LiveAuctionLotViewModelType? }
     }
+
+    var debugAllEventsSignal: Observable<[LiveEvent]> {
+        return _debugAllEventsSignal
+    }
 }
 
 
@@ -115,7 +122,6 @@ private extension PrivateFunctions {
         }
     }
 
-
     func updateLotWithEvents(lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]], fullEventOrder: [String]? = nil) {
         // TODO: fullEventOrder, if specified, yields the _exact_ history and order of events. We need to remove any local events not present in fullEventOrder in case they were undo'd by the operator.
 
@@ -123,7 +129,9 @@ private extension PrivateFunctions {
         let newEvents = lotEvents.filter { existingEventIds.contains($0["eventId"] as? String ?? "") == false }
 
         // TODO: is this a good idea? This will remove events we don't know yet
-        lot.addEvents( newEvents.flatMap { LiveEvent(JSON: $0) } )
+        let events = newEvents.flatMap { LiveEvent(JSON: $0) }
+        lot.addEvents(events)
+        _debugAllEventsSignal.update(events)
     }
 
     func updateCurrentLotWithIDIfNecessary(newCurrentLotID: LotID?) {

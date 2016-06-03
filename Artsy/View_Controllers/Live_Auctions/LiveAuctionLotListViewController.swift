@@ -79,6 +79,18 @@ class LiveAuctionLotListViewController: UICollectionViewController {
             title = salesPerson.liveSaleName
             navController?.hideCloseButton = true
         }
+
+        if (ARAppStatus.isBetaDevOrAdmin()) {
+            let image = UIImage(named: "MapAnnotation_Artsy")
+            let button = ARSerifToolbarButtonItem(image: image)
+            button.button.addTarget(self, action: #selector(showAdminMenu), forControlEvents: .TouchUpInside)
+            self.navigationItem.rightBarButtonItems = [button]
+        }
+    }
+
+    func showAdminMenu(button: UIButton) {
+        let adminVC = LiveAuctionsAdminViewController(salesPerson: salesPerson)
+        self.navigationController?.pushViewController(adminVC, animated: true)
     }
 
     func unsubscribeCurrentLotState() {

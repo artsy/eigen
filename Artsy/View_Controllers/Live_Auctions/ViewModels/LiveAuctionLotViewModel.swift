@@ -260,6 +260,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         model.addEvents(events.map { $0.eventID })
         let newEvents = events.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
         self.events += newEvents
+
+        // TODO: Temp
+        self.derivedEvents = self.events
         
         newEvents.forEach { event in
             newEventSignal.update(event)

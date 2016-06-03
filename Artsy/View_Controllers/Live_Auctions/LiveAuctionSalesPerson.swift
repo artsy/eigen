@@ -21,6 +21,10 @@ protocol LiveAuctionsSalesPersonType {
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
+
+    /// Lets a client hook in to listen to all events
+    /// shoud not be used outside of developer tools.
+    var debugAllEventsSignal: Observable<[LiveEvent]> { get }
 }
 
 class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
@@ -72,6 +76,10 @@ extension ComputedProperties {
 
     var liveSaleName: String {
         return sale.name
+    }
+
+    var debugAllEventsSignal: Observable<[LiveEvent]> {
+        return stateManager.debugAllEventsSignal
     }
 }
 

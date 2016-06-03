@@ -4,13 +4,15 @@ import UIKit
 
 class LiveAuctionsAdminViewController: UIViewController {
 
-    let viewModel: LiveAuctionLotViewModel
+    let salesPerson: LiveAuctionsSalesPersonType
     var textView: UITextView?
+    var rawEvents = [LiveEvent]()
 
-    init(viewModel: LiveAuctionLotViewModel) {
-        self.viewModel = viewModel
+    init(salesPerson: LiveAuctionsSalesPersonType) {
+        self.salesPerson = salesPerson
 
         super.init(nibName: nil, bundle: nil)
+        self.title = "[Live] Admin Interface"
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -21,21 +23,27 @@ class LiveAuctionsAdminViewController: UIViewController {
         super.viewDidLoad()
 
         let text = UITextView()
+        text.font = UIFont(name: "Menlo-Regular=", size: 14)
+        text.editable = false
         view.addSubview(text)
         text.alignToView(view)
         textView = text
 
-        viewModel.endEventUpdatesSignal.subscribe { _ in
+        salesPerson.debugAllEventsSignal.subscribe { events in
+            self.rawEvents.appendContentsOf(events)
             self.reloadData()
-            return
         }
     }
 
     func reloadData() {
-        var text = "Events: "
-        for index in 0 ..< viewModel.numberOfEvents {
-            let event = viewModel.eventAtIndex(index)
-            text += "\(event.event.debugDescription)\n"
+        var texts = [String]()
+        texts.append("Bidder Status: \(salesPerson.bidderStatus)")
+
+        for event in rawEvents {
+            texts.append("\(event.debugDescription)")
         }
+
+        guard let textView = textView else { return }
+        textView.text = texts.joinWithSeparator("\n")
     }
 }

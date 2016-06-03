@@ -68,6 +68,7 @@
 
 @end
 
+
 @implementation LiveEventLotOpen
 - (LiveEventType)eventType { return LiveEventTypeLotOpen; }
 @end
@@ -78,7 +79,7 @@
 
 - (NSString *)debugDescription
 {
-    return [NSString stringWithFormat:@"%@ - %@ \n > %@, %@", NSStringFromClass(self.class), self.type, @(self.amountCents), self.bidder.bidderID];
+    return [NSString stringWithFormat:@"%@ - %@ \n > %@, %@", NSStringFromClass(self.class), self.type, @(self.amountCents), self.sourceOrDefaultString];
 }
 
 - (NSString *)sourceOrDefaultString
@@ -107,6 +108,7 @@
 - (LiveEventType)eventType { return LiveEventTypeClosed; }
 @end
 
+
 @implementation LiveEventBidComposite
 - (LiveEventType)eventType { return LiveEventTypeBidComposite; }
 
@@ -116,6 +118,7 @@
 }
 
 @end
+
 
 @implementation LiveEventUndo
 - (LiveEventType)eventType { return LiveEventTypeUndo; }
