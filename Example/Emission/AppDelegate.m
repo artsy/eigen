@@ -10,7 +10,7 @@
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
 
-#define ARTIST @"luis-enrique-toledo-del-rio"
+#define ARTIST @"alex-katz"
 
 #if TARGET_OS_SIMULATOR
 #define ENABLE_DEV_MODE
