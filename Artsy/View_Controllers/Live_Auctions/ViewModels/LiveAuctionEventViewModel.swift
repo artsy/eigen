@@ -49,13 +49,13 @@ class LiveAuctionEventViewModel : NSObject {
         switch event.eventType() {
         case .Bid:
             guard let event = event as? LiveEventBid else { return attributify("?", .blackColor()) }
-            let display = event.bidder?.bidderID ?? event.sourceOrDefaultString()
+            let display = event.displayString()
             let color = event.cancelled ? UIColor.artsyGrayMedium() : .blackColor()
             return attributify(display.uppercaseString, color, strike: event.cancelled)
 
-        case .Closed: return  attributify("CLOSED", .blackColor())
-        case .Warning: return attributify("WARNING", yellow())
-        case .FinalCall: return attributify("FINAL CALL", orange())
+        case .Closed: return  attributify("CLOSED", .blackColor(), strike: event.cancelled)
+        case .Warning: return attributify("WARNING", yellow(), strike: event.cancelled)
+        case .FinalCall: return attributify("FINAL CALL", orange(), strike: event.cancelled)
         // TODO: "LOT [number] OPEN FOR BIDDING
         case .LotOpen:
             guard let event = event as? LiveEventLotOpen else { return attributify("", .blackColor())  }

@@ -80,16 +80,15 @@
 
 - (NSString *)debugDescription
 {
-    return [NSString stringWithFormat:@"%@ - %@ \n > %@, %@", NSStringFromClass(self.class), self.type, @(self.amountCents), self.sourceOrDefaultString];
+    return [NSString stringWithFormat:@"%@ - %@ \n > %@, %@", NSStringFromClass(self.class), self.type, @(self.amountCents), self.displayString];
 }
 
-- (NSString *)sourceOrDefaultString
+- (NSString *)displayString
 {
     if (self.bidder == nil) {
         return @"Bid";
-    } else {
-        return self.bidder.bidderDisplayType;
     }
+    return self.bidder.bidderDisplayType;
 }
 
 @end

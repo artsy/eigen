@@ -254,22 +254,22 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         let newEvents = events.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
 
         self.events += newEvents
-        derivedEvents = derivedEvents(self.events)
+
+        updateExistingEvents(self.events)
+        derivedEvents = self.events.filter { $0.isUserFacing }
 
         newEvents.forEach { event in
             newEventSignal.update(event)
         }
     }
 
-    func derivedEvents(events:[LiveAuctionEventViewModel]) -> [LiveAuctionEventViewModel] {
+    func updateExistingEvents(events:[LiveAuctionEventViewModel]) {
         for undoEvent in events.filter({ $0.isUndo }) {
             guard let
                 referenceEventID = undoEvent.undoLiveEventID,
                 eventToUndo = eventWithID(referenceEventID) else { continue }
             eventToUndo.cancel()
         }
-
-        return events.filter { $0.isUserFacing }
     }
 }
 

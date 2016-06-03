@@ -19,7 +19,7 @@ State update includes:
   a. Update reserve status
   b. Insert new events
   c. Update next bid amount
-l
+
 */
 
 typealias LotEventJSON = [[String: AnyObject]]

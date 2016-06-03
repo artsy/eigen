@@ -15,8 +15,6 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
     LiveEventTypeUnknown
 };
 
-@class LiveEvent;
-
 
 @interface LiveEvent : MTLModel <MTLJSONSerializing>
 
@@ -52,7 +50,7 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 
 
 @interface LiveEventBid : LiveEvent
-- (NSString *)sourceOrDefaultString;
+- (NSString *)displayString;
 @end
 
 

@@ -30,10 +30,20 @@ class LiveAuctionsAdminViewController: UIViewController {
         text.alignToView(view)
         textView = text
 
+        let image = UIImage(named: "navigation_more_arrow_vertical@2x")
+        let button = ARSerifToolbarButtonItem(image: image)
+        button.button.addTarget(self, action: #selector(scrolltoBottom), forControlEvents: .TouchUpInside)
+        self.navigationItem.rightBarButtonItems = [button]
+
         salesPerson.debugAllEventsSignal.subscribe { events in
             self.rawEvents.appendContentsOf(events.reverse())
             self.reloadData()
         }
+    }
+
+    func scrolltoBottom() {
+        guard let textView = textView else { return }
+        textView.scrollRangeToVisible(NSRange(location: textView.text.characters.count - 2, length: 1))
     }
 
     func reloadData() {
@@ -48,7 +58,6 @@ class LiveAuctionsAdminViewController: UIViewController {
         }
 
         texts.append("\n ---- EVENTS\n")
-
         for event in rawEvents {
             texts.append("\(event.debugDescription)\n\n")
         }

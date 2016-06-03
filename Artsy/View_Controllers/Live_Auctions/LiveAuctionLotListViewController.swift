@@ -72,7 +72,8 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
         // On iPhone, show "lots" since we're taking up the full screen.
         // Otherwise, on iPad, show the sale name (since users can see the lot list and the live interface).
-        if UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact {
+        let isCompact = (UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact)
+        if isCompact {
             title = "Lots"
             navController?.hideCloseButton = false
         } else {
@@ -81,11 +82,27 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         }
 
         if (ARAppStatus.isBetaDevOrAdmin()) {
-            let image = UIImage(named: "MapAnnotation_Artsy")
-            let button = ARSerifToolbarButtonItem(image: image)
-            button.button.addTarget(self, action: #selector(showAdminMenu), forControlEvents: .TouchUpInside)
+            setupAdminTools(isCompact, navController: navController)
+        }
+    }
+
+    func setupAdminTools(isCompact: Bool, navController: ARSerifNavigationViewController?) {
+
+        navController?.hideCloseButton = false
+
+        let image = UIImage(named: "MapAnnotation_Artsy")
+        let button = ARSerifToolbarButtonItem(image: image)
+        button.button.addTarget(self, action: #selector(showAdminMenu), forControlEvents: .TouchUpInside)
+
+        if isCompact {
+            self.navigationItem.rightBarButtonItems = [button, button]
+        } else {
             self.navigationItem.rightBarButtonItems = [button]
         }
+    }
+
+    func closeLotModal(button: UIButton) {
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 
     func showAdminMenu(button: UIButton) {
