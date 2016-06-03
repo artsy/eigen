@@ -6,7 +6,6 @@ NSString *const AROptionsSettingsMenu = @"Enable user settings";
 NSString *const AROptionsTappingPartnerSendsToPartner = @"Partner name in feed goes to partner";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsEnableNativeLiveAuctions = @"Enable native live auctions";
-NSString *const AROptionsEnableReactArtist = @"Enable React Artist view";
 
 
 @implementation AROptions
@@ -18,7 +17,6 @@ NSString *const AROptionsEnableReactArtist = @"Enable React Artist view";
         AROptionsSettingsMenu,
         AROptionsTappingPartnerSendsToPartner,
         AROptionsEnableNativeLiveAuctions,
-        AROptionsEnableReactArtist,
     ];
 }
 
@@ -26,7 +24,6 @@ NSString *const AROptionsEnableReactArtist = @"Enable React Artist view";
 {
     return @[
          AROptionsEnableNativeLiveAuctions,
-         AROptionsEnableReactArtist,
     ];
 }
 

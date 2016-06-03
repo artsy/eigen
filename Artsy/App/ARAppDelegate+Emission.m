@@ -11,6 +11,7 @@
 #import "ARAppConstants.h"
 #import "ARMenuAwareViewController.h"
 
+#import <Aerodramus/Aerodramus.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
@@ -56,6 +57,7 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
 
 - (void)setupEmission;
 {
+
     AREmission *emission = [AREmission sharedInstance];
     emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
         // Leave the view state ‘unselected’ if there’s no signed-in user.

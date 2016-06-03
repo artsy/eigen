@@ -135,9 +135,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [[ARLogger sharedLogger] startLogging];
     [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
 
-    if ([AROptions boolForOption:AROptionsEnableReactArtist]) {
-        [self setupEmission];
-    }
+    [self setupEmission];
 
     // This has to be checked *before* creating the first Xapp token.
     BOOL showOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
