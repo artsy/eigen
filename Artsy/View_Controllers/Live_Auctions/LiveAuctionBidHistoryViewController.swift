@@ -79,7 +79,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         // We may be _re_appearing, so scroll to top if we have any cells.
-        if lotViewModel.numberOfEvents > 0 {
+        if lotViewModel.numberOfDerivedEvents > 0 {
             tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: false)
         }
     }
@@ -91,7 +91,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lotViewModel.numberOfEvents
+        return lotViewModel.numberOfDerivedEvents
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -101,7 +101,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         guard let cell = cell as? LiveAuctionHistoryCell else { return }
 
-        let event = lotViewModel.eventAtPresentationIndex(indexPath.row)
+        let event = lotViewModel.derivedEventAtPresentationIndex(indexPath.row)
         cell.updateWithEventViewModel(event)
     }
 }

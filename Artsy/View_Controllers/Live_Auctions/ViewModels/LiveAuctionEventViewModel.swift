@@ -26,7 +26,7 @@ class LiveAuctionEventViewModel : NSObject {
         case .Bid:
 
             guard let event = event as? LiveEventBid else { return attributify("BID", .blackColor())  }
-            let display = event.bidder?.bidderID ?? event.sourceOrDefaultString
+            let display = event.bidder?.bidderID ?? event.sourceOrDefaultString()
             return attributify(display.uppercaseString, .blackColor())
 
         case .Closed: return  attributify("CLOSED", .blackColor())
@@ -34,7 +34,10 @@ class LiveAuctionEventViewModel : NSObject {
         case .FinalCall: return attributify("FINAL CALL", orange())
         case .LotOpen: return attributify("LOT OPEN FOR BIDDING", purple())
 
-        case .Unknown: return attributify("", orange())
+        /// Ideal world, none of these would happen
+        case .Unknown: return NSAttributedString()
+        case .BidComposite: return NSAttributedString()
+        case .Undo: return NSAttributedString()
         }
     }
 
@@ -51,7 +54,10 @@ class LiveAuctionEventViewModel : NSObject {
         case .FinalCall: return attributifyImage("live_auction_bid_warning_orange")
         case .LotOpen: return attributifyImage("live_auction_bid_hammer")
 
+        /// Ideal world, none of these would happen
         case .Unknown: return NSAttributedString()
+        case .BidComposite: return NSAttributedString()
+        case .Undo: return NSAttributedString()
         }
     }
 
@@ -65,7 +71,7 @@ class LiveAuctionEventViewModel : NSObject {
         return NSAttributedString(attachment: textAttachment)
     }
 
-    // HACK: Temporary
+    // HACK: Temporary?
 
     func yellow() -> UIColor {
         return UIColor(red:0.909804, green:0.701961, blue:0.0, alpha:1.0)

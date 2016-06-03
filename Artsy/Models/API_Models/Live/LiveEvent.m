@@ -21,7 +21,7 @@
     if ([type isEqualToString:@"BiddingOpened"]) {
         klass = LiveEventLotOpen.class;
 
-    } else if ([type isEqualToString:@"FirstPriceBidPlaced"] || [type isEqualToString:@"SecondPriceBidPlaced"] || [type isEqualToString:@"CompositeOnlineBidConfirmed"]) {
+    } else if ([type isEqualToString:@"FirstPriceBidPlaced"] || [type isEqualToString:@"SecondPriceBidPlaced"]) {
         klass = LiveEventBid.class;
 
     } else if ([type isEqualToString:@"FairWarning"]) {
@@ -60,6 +60,27 @@
 
 - (LiveEventType)eventType { return LiveEventTypeUnknown; }
 
+
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"%@ - %@", NSStringFromClass(self.class), self.type];
+}
+
+@end
+
+@implementation LiveEventLotOpen
+- (LiveEventType)eventType { return LiveEventTypeLotOpen; }
+@end
+
+
+@implementation LiveEventBid
+- (LiveEventType)eventType { return LiveEventTypeBid; }
+
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"%@ - %@ \n > %@, %@", NSStringFromClass(self.class), self.type, @(self.amountCents), self.bidder.bidderID];
+}
+
 - (NSString *)sourceOrDefaultString
 {
     if (self.bidder == nil) {
@@ -69,16 +90,6 @@
     }
 }
 
-@end
-
-
-@implementation LiveEventLotOpen
-- (LiveEventType)eventType { return LiveEventTypeLotOpen; }
-@end
-
-
-@implementation LiveEventBid
-- (LiveEventType)eventType { return LiveEventTypeBid; }
 @end
 
 
@@ -94,4 +105,18 @@
 
 @implementation LiveEventClosed
 - (LiveEventType)eventType { return LiveEventTypeClosed; }
+@end
+
+@implementation LiveEventBidComposite
+- (LiveEventType)eventType { return LiveEventTypeBidComposite; }
+
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"%@ - %@ \n > %@, %@", NSStringFromClass(self.class), self.type, @(self.amountCents), self.bidder.bidderID];
+}
+
+@end
+
+@implementation LiveEventUndo
+- (LiveEventType)eventType { return LiveEventTypeUndo; }
 @end
