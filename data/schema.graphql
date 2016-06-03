@@ -67,6 +67,7 @@ type ArtistCounts {
   follows(format: String): FormattedNumber
   auction_lots(format: String): FormattedNumber
   for_sale_artworks(format: String): FormattedNumber
+  partner_shows(format: String): FormattedNumber
 }
 
 type ArtistItem {
