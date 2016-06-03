@@ -15,6 +15,8 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
     LiveEventTypeUnknown
 };
 
+@class LiveEvent;
+
 
 @interface LiveEvent : MTLModel <MTLJSONSerializing>
 
@@ -34,6 +36,13 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 
 @property (nonatomic, assign, readonly) UInt64 amountCents;
 @property (nonatomic, strong, readonly) LiveBidder *_Nullable bidder;
+
+/// Used only by `LiveEventUndo`
+@property (nonatomic, copy, readonly) NSString *undoLiveEventID;
+
+// In theory only LiveEventBid, LiveEventLotOpen
+// LiveEventClosed, LiveEventBidComposite
+@property (nonatomic, assign) BOOL cancelled;
 
 @end
 
@@ -58,8 +67,10 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 @interface LiveEventClosed : LiveEvent
 @end
 
+
 @interface LiveEventBidComposite : LiveEvent
 @end
+
 
 @interface LiveEventUndo : LiveEvent
 @end

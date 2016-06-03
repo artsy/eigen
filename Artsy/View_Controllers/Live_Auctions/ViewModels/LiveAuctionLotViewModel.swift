@@ -10,9 +10,6 @@ enum LotState {
 }
 
 protocol LiveAuctionLotViewModelType: class {
-    var numberOfEvents: Int { get }
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel
-
 
     var numberOfDerivedEvents: Int { get }
     func derivedEventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel
@@ -197,12 +194,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.eventIDs
     }
 
-    var numberOfEvents: Int {
-        return events.count
-    }
-
-    func eventAtIndex(index: Int) -> LiveAuctionEventViewModel {
-        return events[numberOfDerivedEvents - index - 1]
+    func eventWithID(string: String) -> LiveAuctionEventViewModel? {
+        return events.filter { $0.event.eventID == string }.first
     }
 
     var numberOfDerivedEvents: Int {
@@ -259,15 +252,24 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
         model.addEvents(events.map { $0.eventID })
         let newEvents = events.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
-        self.events += newEvents
 
-        // TODO: Temp
-        self.derivedEvents = self.events
-        
+        self.events += newEvents
+        derivedEvents = derivedEvents(self.events)
+
         newEvents.forEach { event in
             newEventSignal.update(event)
         }
+    }
 
+    func derivedEvents(events:[LiveAuctionEventViewModel]) -> [LiveAuctionEventViewModel] {
+        for undoEvent in events.filter({ $0.isUndo }) {
+            guard let
+                referenceEventID = undoEvent.undoLiveEventID,
+                eventToUndo = eventWithID(referenceEventID) else { continue }
+            eventToUndo.cancel()
+        }
+
+        return events.filter { $0.isUserFacing }
     }
 }
 

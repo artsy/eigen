@@ -137,7 +137,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func setupToolbar() {
-        let close = ARSerifToolbarButtonItem(image: UIImage(asset: .Close_Icon) )
+        let close = ARSerifToolbarButtonItem(image: UIImage(named: "serif_modal_close"))
         close.accessibilityLabel = "Exit Live Bidding"
         close.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.dismissModal), forControlEvents: .TouchUpInside)
 

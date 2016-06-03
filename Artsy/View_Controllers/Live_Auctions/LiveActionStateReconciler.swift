@@ -128,6 +128,12 @@ private extension PrivateFunctions {
         let existingEventIds = Set(lot.eventIDs)
         let newEvents = lotEvents.filter { existingEventIds.contains($0["eventId"] as? String ?? "") == false }
 
+        if (ARDeveloperOptions.keyExists("log_live_events")) {
+            for event in newEvents {
+                print("Event: \(event)\n\n")
+            }
+        }
+
         // TODO: is this a good idea? This will remove events we don't know yet
         let events = newEvents.flatMap { LiveEvent(JSON: $0) }
         lot.addEvents(events)

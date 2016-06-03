@@ -13,8 +13,6 @@
     /*
      We need to support the following event types:
      - ReservePriceChanged
-     - CompositeOnlineBidConfirmed
-     - BidCancelled
     */
     NSString *type = [dictionaryValue valueForKeyPath:@"type"];
     Class klass;
@@ -33,13 +31,15 @@
     } else if ([type isEqualToString:@"BiddingClosed"]) {
         klass = LiveEventClosed.class;
 
+    } else if ([type isEqualToString:@"CompositeOnlineBidConfirmed"]) {
+        klass = LiveEventBidComposite.class;
+
+    } else if ([type isEqualToString:@"LiveOperatorEventUndone"]) {
+        klass = LiveEventUndo.class;
+
     } else {
         ARErrorLog(@"Error! Ignoring unknown event type '%@'\nEvent: %@", type, dictionaryValue);
         return nil;
-    }
-
-    if ([ARDeveloperOptions options][@"log_live_events"]) {
-        NSLog(@"Live Event: %@", dictionaryValue);
     }
 
     return [[klass alloc] initWithDictionary:dictionaryValue error:error];
@@ -50,6 +50,7 @@
     return @{
         ar_keypath(LiveEvent.new, eventID) : @"eventId",
         ar_keypath(LiveEvent.new, createdAtString) : @"createdAt",
+        ar_keypath(LiveEvent.new, undoLiveEventID) : @"event.eventId",
     };
 }
 

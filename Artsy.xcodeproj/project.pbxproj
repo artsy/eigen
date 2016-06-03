@@ -3353,7 +3353,6 @@
 			children = (
 				6021A4D91CEB6761007760C6 /* Storyboards */,
 				60ED31231C8F76550071DD89 /* View Models */,
-				601E31AD1C80E32B00D09F73 /* Models */,
 				601E31A91C80A53400D09F73 /* Resources */,
 				6019A90A1C7F976700E292FA /* Communications */,
 				6019A9091C7F975F00E292FA /* Views */,
@@ -3455,6 +3454,7 @@
 		6021A4D91CEB6761007760C6 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				601E31AD1C80E32B00D09F73 /* Models */,
 				602F03461CB2912D008A999D /* LiveAuctions.storyboard */,
 			);
 			name = Storyboards;
