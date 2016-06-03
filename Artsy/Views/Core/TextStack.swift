@@ -61,8 +61,17 @@ class TextStack: ORStackView {
 
     func addBodyMarkdown(string: MarkdownString, topMargin: String = "20", sideMargin: String = "0") -> ARTextView {
         let text = ARTextView()
+        text.plainLinks = true
         text.setMarkdownString(string)
         addSubview(text, withTopMargin: topMargin, sideMargin: sideMargin)
         return text
     }
+
+    func addLinkedBodyMarkdown(string: MarkdownString, topMargin: String = "20", sideMargin: String = "0") -> ARTextView {
+        let text = ARTextView()
+        text.setMarkdownString(string)
+        addSubview(text, withTopMargin: topMargin, sideMargin: sideMargin)
+        return text
+    }
+
 }
