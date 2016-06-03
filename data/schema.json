@@ -4489,6 +4489,18 @@
               "deprecationReason": null
             },
             {
+              "name": "has_metadata",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "deathday",
               "description": null,
               "args": [],
@@ -5097,6 +5109,52 @@
             },
             {
               "name": "partner_shows",
+              "description": null,
+              "args": [
+                {
+                  "name": "format",
+                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "FormattedNumber",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "articles",
+              "description": null,
+              "args": [
+                {
+                  "name": "format",
+                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "FormattedNumber",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "related_artists",
               "description": null,
               "args": [
                 {

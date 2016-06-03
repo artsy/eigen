@@ -35,6 +35,7 @@ type Artist {
   nationality: String
   birthday: String
   deathday: String
+  has_metadata: Boolean
   alternate_names: [String]
   meta: ArtistMeta
   blurb(format: Format): String
@@ -68,6 +69,8 @@ type ArtistCounts {
   auction_lots(format: String): FormattedNumber
   for_sale_artworks(format: String): FormattedNumber
   partner_shows(format: String): FormattedNumber
+  articles(format: String) : FormattedNumber
+  related_artists(format: String) : FormattedNumber
 }
 
 type ArtistItem {
