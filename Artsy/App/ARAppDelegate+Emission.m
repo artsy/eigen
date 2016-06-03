@@ -9,12 +9,16 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
 #import "ARAppConstants.h"
+#import "ARMenuAwareViewController.h"
 
 #import <Emission/AREmission.h>
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
+#import <Emission/ARArtistComponentViewController.h>
 
 #import <React/RCTUtils.h>
+
+#import <objc/runtime.h>
 
 static void
 ArtistFollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
@@ -87,6 +91,51 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
                                                                  animated:ARPerformWorkAsynchronously
                                                                completion:nil];
     };
+}
+
+@end
+
+#pragma mark - ARMenuAwareViewController additions
+
+@interface ARArtistComponentViewController (ARMenuAwareViewController) <ARMenuAwareViewController>
+@end
+
+@implementation ARArtistComponentViewController (ARMenuAwareViewController)
+
+static UIScrollView *
+FindFirstScrollView(UIView *view) {
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:UIScrollView.class]) {
+            return (UIScrollView *)subview;
+        }
+    }
+    for (UIView *subview in view.subviews) {
+        UIScrollView *result = FindFirstScrollView(subview);
+        if (result) return result;
+    }
+    return nil;
+}
+
+- (void)viewDidLayoutSubviews;
+{
+    [super viewDidLayoutSubviews];
+    self.menuAwareScrollView = FindFirstScrollView(self.view);
+}
+
+static char menuAwareScrollViewKey;
+
+- (void)setMenuAwareScrollView:(UIScrollView *)scrollView;
+{
+    if (scrollView != self.menuAwareScrollView) {
+        [self willChangeValueForKey:@"menuAwareScrollView"];
+        objc_setAssociatedObject(self, &menuAwareScrollViewKey, scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        [self didChangeValueForKey:@"menuAwareScrollView"];
+    }
+}
+
+- (UIScrollView *)menuAwareScrollView;
+{
+    return objc_getAssociatedObject(self, &menuAwareScrollViewKey);
 }
 
 @end
