@@ -45,6 +45,7 @@ upcoming:
       - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
       - Updates for Xcode 7.3. - ash
       - QuickSilver now supports direct URLs. - ash
+      - Allow menu aware view controllers to specify what scrollview should report to the chief. - alloy
     
     gmv:
       - Removed artwork auction results - sarah
