@@ -36,6 +36,7 @@ upcoming:
       - Placing bids / setting max bids is functional. - ash
       - Removes current lot CTA when there is no current lot. - ash
       - Adds websocket versioning. - ash
+      - Handle undo events. - orta
       - Adds collection view image layout to iPad. - ash
       
     infra:
