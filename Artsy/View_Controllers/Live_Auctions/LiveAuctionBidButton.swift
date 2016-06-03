@@ -117,12 +117,15 @@ class LiveAuctionBidButton : ARFlatButton {
     }
 
     private func setupUI(title: String, background: UIColor = .blackColor(), border: UIColor? = nil, textColor: UIColor = UIColor.whiteColor() ) {
-        setTitle(title.uppercaseString, forState: .Normal)
-        setTitleColor(textColor, forState: .Normal)
+        [UIControlState.Normal, .Disabled].forEach { state in
+            setTitle(title.uppercaseString, forState: state)
+            setTitleColor(textColor, forState: state)
 
-        let borderColor = border ?? background
-        setBorderColor(borderColor, forState: .Normal, animated: false)
-        setBackgroundColor(background, forState: .Normal)
+            let borderColor = border ?? background
+            setBorderColor(borderColor, forState: state, animated: false)
+            setBackgroundColor(background, forState: state)
+        }
+
     }
 
     override func intrinsicContentSize() -> CGSize {

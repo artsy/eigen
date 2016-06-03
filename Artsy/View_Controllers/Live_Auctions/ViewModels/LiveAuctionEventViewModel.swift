@@ -8,6 +8,10 @@ class LiveAuctionEventViewModel : NSObject {
         return event.eventType() == .Bid
     }
 
+    var isArtsyBidder: Bool {
+        return event.bidder?.bidderID != nil
+    }
+
     var isLotOpening: Bool {
         return event.eventType() == .LotOpen
     }
@@ -39,9 +43,7 @@ class LiveAuctionEventViewModel : NSObject {
         return bidder.bidderID == bidderID
     }
 
-    ///TODO: Talk to Ash about this, VMs shouldn't write to objects I expect_??
     func cancel() {
-        print("undoing -> \(event.eventID) ( \(event.eventType().rawValue ) ) ")
         event.cancelled = true
     }
 

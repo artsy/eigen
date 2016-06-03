@@ -13,11 +13,13 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     private let _lotStateSubscription: ObserverToken<LotState>
     private let _askingPriceSubscription: ObserverToken<UInt64>
     private let _currentLotSubscription: ObserverToken<LiveAuctionLotViewModelType?>
+    private let _newLotEventSubscription: ObserverToken<LiveAuctionEventViewModel>
 
     // Copies of observables that will be deallocated when we are.
     private let _lotState = Observable<LotState>()
     private let _askingPrice = Observable<UInt64>()
     private let _currentLot = Observable<LiveAuctionLotViewModelType?>()
+    private let _newLotEventSignal = Observable<LiveAuctionEventViewModel>()
 
 
     init(currencySymbol: String, lotViewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType) {
@@ -26,13 +28,15 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
         self._lotStateSubscription = lotViewModel.lotStateSignal.subscribe(_lotState.update)
         self._askingPriceSubscription = lotViewModel.askingPriceSignal.subscribe(_askingPrice.update)
         self._currentLotSubscription = auctionViewModel.currentLotSignal.subscribe(_currentLot.update)
+        self._newLotEventSubscription = lotViewModel.newEventSignal.subscribe(_newLotEventSignal.update)
 
         progressSignal = _lotState
             .merge(_askingPrice)
             .merge(_currentLot)
+            .merge(_newLotEventSignal)
             .map { tuple -> (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?) in
                 // Merging more than two Observables in Interstellar gets really messy, we're mapping from that mess into a nice tuple with named elements.
-                return (lotState: tuple.0.0, askingPrice: tuple.0.1, currentLot: tuple.1)
+                return (lotState: tuple.0.0.0, askingPrice: tuple.0.0.1, currentLot: tuple.0.1)
             }
             .map(LiveAuctionBiddingViewModel.stateToBidButtonState(currencySymbol, lotID: lotViewModel.lotID, bidderStatus: auctionViewModel.bidderStatus))
     }

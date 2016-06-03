@@ -37,6 +37,7 @@ upcoming:
       - Removes current lot CTA when there is no current lot. - ash
       - Adds websocket versioning. - ash
       - Adds collection view image layout to iPad. - ash
+      - Highest bidder status on bid button works. - ash / orta
       
     infra:
       - CocoaPods now is v1. - alloy
