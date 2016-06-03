@@ -83,9 +83,8 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
             derivedLotState = json["derivedLotState"] as? [String: AnyObject],
             fullEventOrder = json["fullEventOrder"] as? [String] else { return }
 
-
-        updateLotDerivedState(lot, derivedState: derivedLotState)
         updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
+        updateLotDerivedState(lot, derivedState: derivedLotState)
     }
 
     func processCurrentLotUpdate(update: AnyObject) {

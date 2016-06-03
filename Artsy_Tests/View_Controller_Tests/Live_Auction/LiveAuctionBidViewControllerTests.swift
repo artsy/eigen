@@ -79,13 +79,13 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
 
         describe("networking") {
 
-            let examples:[String: LiveAuctionBiddingProgressState] = [
-                "in progress": .BiddingInProgress,
-                "is max bidder": .BidSuccess(isMaxBidder: true),
-                "not max bidder": .BidSuccess(isMaxBidder: false),
-                "network issues": .BidNetworkFail,
-                "waiting": .LotWaitingToOpen,
-                "sold": .LotSold,
+            let examples:[String: [LiveAuctionBiddingProgressState]] = [
+                "in progress": [.BiddingInProgress],
+                "is max bidder": [.BidSuccess],
+//                "not max bidder": [.BidSuccess, .Biddable(askingPrice: 1_000_00, currencySymbol: "¥")],
+                "network issues": [.BidNetworkFail],
+                "waiting": [.LotWaitingToOpen],
+                "sold": [.LotSold],
             ]
 
             for (_, tuple) in examples.enumerate() {
@@ -95,10 +95,10 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
                     let lotVM = Test_LiveAuctionLotViewModel()
                     subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson: stub_auctionSalesPerson())
                     cacheColoredImageForURL(lotVM.urlForProfile)
-
                     subject.loadViewProgrammatically()
 
-                    subject.biddingProgressSignal.update(tuple.1)
+                    tuple.1.forEach { subject.biddingProgressSignal.update($0) }
+
                     expect(subject) == snapshot()
                 }
             }
