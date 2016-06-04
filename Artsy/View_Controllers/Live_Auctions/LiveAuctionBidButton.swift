@@ -163,7 +163,7 @@ class LiveAuctionBidButton : ARFlatButton {
             case .LiveLot: break // Should never happen, as it'd be handled above
             case .UpcomingLot:
                 enabled = true
-                setupUI("Set Max Bid")
+                setupUI("Bid")
             }
         }
     }
