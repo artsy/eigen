@@ -20,6 +20,7 @@
 #import "ARFairArtistViewController.h"
 #import "ARFairGuideContainerViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
+#import <Emission/ARArtistComponentViewController.h>
 
 
 @interface ARSwitchBoard (Tests)

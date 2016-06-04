@@ -44,7 +44,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
             viewModel.progressSignal.update(.Active(biddingState: .Biddable(askingPrice: 1000, currencySymbol: "")))
             viewModel.progressSignal.update(.InActive(lotState: .ClosedLot))
 
-            NSRunLoop.currentRunLoop().runUntilDate(NSDate().dateByAddingTimeInterval(0.06))
+            NSRunLoop.currentRunLoop().runUntilDate(NSDate().dateByAddingTimeInterval(0.1))
 
             subject.frame = CGRect(x:0, y:0, width:260, height: 60)
             expect(subject) == snapshot()
