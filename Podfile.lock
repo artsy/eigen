@@ -335,10 +335,10 @@ CHECKOUT OPTIONS:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   Emission:
-    :commit: ef82c679f4376400eace4cbd131e2626aaca738d
+    :commit: b26097bea8f8432035ef32074280017cd7e57519
     :git: https://github.com/artsy/emission.git
   Extraction:
-    :commit: 7312df7c9c005c196705cc9da7c5d53cde404854
+    :commit: dbd754486d5d0d212cd3f42a69c6a747336c244c
     :git: https://github.com/artsy/extraction.git
   FBSnapshotTestCase:
     :commit: 6b3e8978084388f9aae392fd1e0e21b1ddb88ae3
