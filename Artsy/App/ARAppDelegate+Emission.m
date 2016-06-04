@@ -15,11 +15,12 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
+#import <Emission/AREventsModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 
 #import <React/RCTUtils.h>
-
 #import <objc/runtime.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 static void
 ArtistFollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
@@ -92,6 +93,12 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         [[ARTopMenuViewController sharedController] presentViewController:viewController
                                                                  animated:ARPerformWorkAsynchronously
                                                                completion:nil];
+    };
+  
+    emission.eventsModule.eventOccurred = ^(UIViewController * _Nonnull fromViewController, NSDictionary * _Nonnull info) {
+        NSMutableDictionary *properties = [info mutableCopy];
+        [properties removeObjectForKey:@"name"];
+        [ARAnalytics event:info[@"name"] withProperties:[properties copy]];
     };
 }
 

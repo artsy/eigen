@@ -65,6 +65,7 @@ upcoming:
       - Moved ARSwitchView and ARSpinner into new Extraction pod. - alloy
       - Buyer's Premiunm is shown on AuctionInformationViewControllers - orta
       - Update Emission since first QA. - alloy
+      - Integrate Emission analytics. - alloy
 
   user_facing:
     - Fixes long auction names falling off right edge. - ash
