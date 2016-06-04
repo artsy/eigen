@@ -1,0 +1,13 @@
+disabled_rules:
+  - line_length
+
+excluded: 
+  - Pods
+  - iOSInjectionProject
+  - Artsy_WatchKit_App
+  - Artsy_WatchKit_Extension
+
+force_cast: warning
+file_length:
+  warning: 400
+  error: 600

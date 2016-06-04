@@ -4827,6 +4827,7 @@
 				5150685F1BCC176300018352 /* Generate Compilation DB */,
 				D094149C23FE012B198AF725 /* 📦 Embed Pods Frameworks */,
 				4F59D9726E617D9849261C9C /* 📦 Copy Pods Resources */,
+				5E38181E1D0338DE00FA56C0 /* Swift Lint */,
 			);
 			buildRules = (
 			);
@@ -5181,6 +5182,20 @@
 			shellPath = /bin/sh;
 			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi";
 			showEnvVarsInLog = 0;
+		};
+		5E38181E1D0338DE00FA56C0 /* Swift Lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Lint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		63B07CC4F2ED22DBB2DD6BB9 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
