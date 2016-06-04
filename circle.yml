@@ -34,7 +34,7 @@ dependencies:
   override:
     - git submodule update --init
     - bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
-    - bundle exec pod check || bundle exec pod install --verbose
+    - bundle exec pod install --verbose
 
 test:
   pre:
