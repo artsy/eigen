@@ -49,6 +49,7 @@ artsy:
 	git submodule update --init
 	config/spacecommander/setup-repo.sh
 	brew install swiftgen
+	brew install swiftlint
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
 
 certs:
