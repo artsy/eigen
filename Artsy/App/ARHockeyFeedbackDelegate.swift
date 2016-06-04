@@ -16,7 +16,7 @@ class ARHockeyFeedbackDelegate: NSObject {
         }
     }
 
-    func showFeedback(image:UIImage? = nil) {
+    func showFeedback(image: UIImage? = nil) {
         let hockeyProvider = ARAnalytics.providerInstanceOfClass(HockeyAppProvider.self)
         var analyticsLog: BITHockeyAttachment?
 
@@ -35,7 +35,7 @@ class ARHockeyFeedbackDelegate: NSObject {
         }
 
         // Create an array of optionals, then flatmap them to be only real values
-        let items = ([initialMessage, image, analyticsLog] as [AnyObject?]).flatMap{ $0 }
+        let items = ([initialMessage, image, analyticsLog] as [AnyObject?]).flatMap { $0 }
 
         let vc = BITHockeyManager.sharedHockeyManager().feedbackManager
         vc.showFeedbackComposeViewWithPreparedItems(items)

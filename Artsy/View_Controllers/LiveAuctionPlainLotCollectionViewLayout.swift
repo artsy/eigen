@@ -14,7 +14,7 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         scrollDirection = .Horizontal
         minimumLineSpacing = 0
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         return nil
     }
@@ -54,7 +54,7 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         guard let copy = layoutAttributes.copy() as? LiveAuctionLotCollectionViewLayoutAttributes else { return layoutAttributes }
 
         copy.size.width -= 80 // For side margins, done upfront so we can rely on copy.size for the remainder of the function.
-        
+
         let index: RelativeIndex = copy.indexPath.item
         let aspectRatio = delegate.aspectRatioForIndex(index)
         let isWide = (aspectRatio > itemSize.width / maxHeight)
@@ -68,9 +68,9 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         }
 
         // Center the item vertically, minus repulsion
-        copy.center.y = CGRectGetMidY(collectionView?.frame ?? CGRect.zero) - (repulsionConstant / 2)
+        copy.center.y = (collectionView?.frame.midY ?? 0) - (repulsionConstant / 2)
         // Center horizontally according to current contentSize (which is the bounds size in all scroll views)
-        copy.center.x = CGRectGetMidX(collectionView?.bounds ?? CGRect.zero)
+        copy.center.x = collectionView?.bounds.midX ?? 0
 
         copy.url = delegate.thumbnailURLForIndex(index)
 

@@ -59,7 +59,7 @@ extension AuctionRefineSettings: RefinableType {
 
 extension AuctionRefineSettings: Equatable {}
 
-func ==(lhs: AuctionRefineSettings, rhs: AuctionRefineSettings) -> Bool {
+func == (lhs: AuctionRefineSettings, rhs: AuctionRefineSettings) -> Bool {
     guard lhs.ordering == rhs.ordering else { return false }
 
     if let lhsRange = lhs.priceRange, rhsRange = rhs.priceRange {

@@ -82,7 +82,7 @@ extension AuctionBannerView {
                         $0.targetDate = model.closingDate
                         $0.heading = "Closing In"
                     }
-                    
+
                 default: break // shouldn't happen
                 }
 

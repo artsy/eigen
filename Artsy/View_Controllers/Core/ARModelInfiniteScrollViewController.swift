@@ -14,7 +14,7 @@ import ORStackView
 
 class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegate {
 
-    var headerStackView: ORStackView!  {
+    var headerStackView: ORStackView! {
         didSet {
             modelViewController.headerView = headerStackView
             invalidateHeaderHeight() // trigger the height being set
@@ -28,7 +28,7 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
         }
     }
 
-    private var modelViewController : AREmbeddedModelsViewController!
+    private var modelViewController: AREmbeddedModelsViewController!
 
     override func viewDidLoad() {
         let controller = defaultScrollingViewController()
@@ -70,7 +70,7 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     // This class can handle dealing with UIActivities for you
     // in order to use it, set the spotlight entity and when it has full
     // metadata, call `ar_setDataLoaded()` on this VC. This should be set
-    // before presenting the view controller. 
+    // before presenting the view controller.
 
     var spotlightEntity: ARSpotlightMetadataProvider?
 
@@ -104,7 +104,7 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
         viewDidLayoutSubviews()
     }
 
-    // Handle changing the height of the header stackview on 
+    // Handle changing the height of the header stackview on
     // orientation changes, or when the view has been invalidated
     override func viewDidLayoutSubviews() {
         let headerHeight = headerStackView.bounds.height

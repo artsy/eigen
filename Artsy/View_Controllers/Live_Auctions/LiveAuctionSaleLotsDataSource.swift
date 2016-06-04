@@ -4,7 +4,7 @@ protocol LiveAuctionSaleLotsDataSourceScrollableDelgate: class {
     func registerForScrollingState(viewController: LiveAuctionLotViewController)
 }
 
-class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
+class LiveAuctionSaleLotsDataSource: NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPersonType!
     weak var scrollingDelegate: LiveAuctionSaleLotsDataSourceScrollableDelgate?
 
@@ -28,7 +28,7 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
 
         guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
         var newIndex = viewController.index - 1
-        if (newIndex < 0) { newIndex = salesPerson.lotCount - 1 }
+        if newIndex < 0 { newIndex = salesPerson.lotCount - 1 }
         return liveAuctionPreviewViewControllerForIndex(newIndex)
     }
 
@@ -36,7 +36,7 @@ class LiveAuctionSaleLotsDataSource : NSObject, UIPageViewControllerDataSource {
         if salesPerson.lotCount == 1 { return nil }
 
         guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
-        let newIndex = (viewController.index + 1) % salesPerson.lotCount;
+        let newIndex = (viewController.index + 1) % salesPerson.lotCount
         return liveAuctionPreviewViewControllerForIndex(newIndex)
     }
 }

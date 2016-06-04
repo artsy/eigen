@@ -20,7 +20,7 @@ struct AuctionInformation {
     }
 }
 
-class AuctionInformationViewController : UIViewController {
+class AuctionInformationViewController: UIViewController {
     var titleViewDelegate: AuctionTitleViewDelegate?
     var saleViewModel: SaleViewModel
 
@@ -31,7 +31,7 @@ class AuctionInformationViewController : UIViewController {
 
     init(saleViewModel: SaleViewModel) {
         self.scrollView = ORStackScrollView()
-        self.saleViewModel = saleViewModel;
+        self.saleViewModel = saleViewModel
 
         self.FAQEntries = [
             AuctionInformation.FAQEntry(name: "Bidding", slug:"how-auctions-work-bidding"),
@@ -48,10 +48,10 @@ class AuctionInformationViewController : UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError()
     }
-  
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if (navigationController?.topViewController == self) {
+        if navigationController?.topViewController == self {
           ARAnalytics.pageView("Sale Information", withProperties: [
               "auction_slug": saleViewModel.saleID,
               "slug": NSString(format: "/auction/%@/info", saleViewModel.saleID)
@@ -61,14 +61,14 @@ class AuctionInformationViewController : UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+
         view.backgroundColor = UIColor.whiteColor()
         view.addSubview(scrollView)
-        
+
         scrollView.constrainTopSpaceToView(flk_topLayoutGuide(), predicate: "0")
         scrollView.alignLeading("0", trailing: "0", toView: view)
         scrollView.constrainBottomSpaceToView(flk_bottomLayoutGuide(), predicate: "0")
-        
+
         let stackView = scrollView.stackView
 
         if let thumbnail = saleViewModel.profileImageURL {
@@ -82,17 +82,17 @@ class AuctionInformationViewController : UIViewController {
 
         let auctionTitleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: registrationStatus, delegate: titleViewDelegate, fullWidth: true, showAdditionalInformation: false)
         stackView.addSubview(auctionTitleView, withTopMargin: "20", sideMargin: "40")
-        
+
         let auctionDescriptionView = ARTextView()
         auctionDescriptionView.useSemiBold = true
         auctionDescriptionView.setMarkdownString(saleViewModel.saleDescription)
         stackView.addSubview(auctionDescriptionView, withTopMargin: "10", sideMargin: "40")
-        
+
         let auctionBeginsHeaderLabel = UILabel()
         auctionBeginsHeaderLabel.font = UIFont.sansSerifFontWithSize(12)
         auctionBeginsHeaderLabel.text = "AUCTION BEGINS"
         stackView.addSubview(auctionBeginsHeaderLabel, withTopMargin: "0", sideMargin: "40")
-        
+
         let auctionBeginsLabel = UILabel()
         auctionBeginsLabel.font = UIFont.serifFontWithSize(16)
         let formatter = NSDateFormatter()
@@ -100,7 +100,7 @@ class AuctionInformationViewController : UIViewController {
         formatter.timeStyle = .LongStyle
         auctionBeginsLabel.text = formatter.stringFromDate(saleViewModel.startDate)
         stackView.addSubview(auctionBeginsLabel, withTopMargin: "10", sideMargin: "40")
-        
+
         let faqButtonDescription = NavigationButton(
             buttonClass: ARNavigationButton.self,
             properties: ["title": "AUCTIONS FAQ"],
@@ -127,7 +127,7 @@ class AuctionInformationViewController : UIViewController {
 
         stackView.addViewController(buttonsViewController, toParent: self, withTopMargin: "20", sideMargin: "40")
     }
-    
+
     func showFAQ(animated: Bool) -> FAQViewController {
         let controller = FAQViewController(entries: FAQEntries)
         navigationController?.pushViewController(controller, animated: animated)
@@ -141,7 +141,7 @@ class AuctionInformationViewController : UIViewController {
             "context_type": navigationController?.topViewController == self ? "sale" : "sale information"
         ])
 
-        if (MFMailComposeViewController.canSendMail()) {
+        if MFMailComposeViewController.canSendMail() {
             let controller = MFMailComposeViewController()
             controller.mailComposeDelegate = self
             controller.setToRecipients(["inquiries@artsy.net"])
@@ -190,42 +190,42 @@ extension MailCompositionCallbacks: MFMailComposeViewControllerDelegate {
 }
 
 extension AuctionInformationViewController {
-    class FAQViewController : UIViewController, ARTextViewDelegate {
+    class FAQViewController: UIViewController, ARTextViewDelegate {
         var entries: [AuctionInformation.FAQEntry]
         var stackView: ORStackView
         var currentlyExpandedEntryView: EntryView?
-        
+
         var entryViews: [EntryView] {
-            return self.stackView.subviews as! [EntryView]
+            return self.stackView.subviews.flatMap { $0 as? EntryView }
         }
-        
+
         required init(entries: [AuctionInformation.FAQEntry]) {
-            self.entries = entries;
+            self.entries = entries
             self.stackView = ORStackView()
             super.init(nibName: nil, bundle: nil)
             self.title = "Auction FAQ"
         }
-        
+
         required init?(coder aDecoder: NSCoder) {
             fatalError()
         }
-        
+
         override func viewDidLoad() {
             super.viewDidLoad()
-            
+
             self.view.backgroundColor = UIColor.whiteColor()
             self.view.addSubview(self.stackView)
-            
+
             self.stackView.constrainTopSpaceToView(self.flk_topLayoutGuide(), predicate: "0")
             self.stackView.alignLeading("0", trailing: "0", toView: self.view)
             self.stackView.constrainBottomSpaceToView(self.flk_bottomLayoutGuide(), predicate: "-40")
-            
+
             for (index, entry) in self.entries.enumerate() {
                 let entryView = EntryView(entry: entry, textDelegate: self) { [unowned self] in self.expandView($0) }
                 entryView.tag = index
                 self.stackView.addSubview(entryView, withTopMargin: "0", sideMargin: "0")
             }
-            
+
             self.currentlyExpandedEntryView = self.entryViews.first
             self.currentlyExpandedEntryView!.expand()
         }
@@ -233,12 +233,12 @@ extension AuctionInformationViewController {
         func textView(textView: ARTextView!, shouldOpenViewController viewController: UIViewController!) {
             self.navigationController?.pushViewController(viewController, animated: true)
         }
-        
+
         func expandView(viewToExpand: EntryView) {
-            if (self.currentlyExpandedEntryView != viewToExpand) {
+            if self.currentlyExpandedEntryView != viewToExpand {
                 let previouslyExpandedEntryView = self.currentlyExpandedEntryView
                 self.currentlyExpandedEntryView = viewToExpand
-                
+
                 UIView.animateIf(Bool(ARPerformWorkAsynchronously), duration: 0.25) {
                     // Do it in this order, otherwise we’d get unsatisfiable constraints.
                     self.currentlyExpandedEntryView!.expand()
@@ -247,94 +247,94 @@ extension AuctionInformationViewController {
                 }
             }
         }
+    }
 
-        class EntryView : UIView {
-            var tapHandler: (EntryView) -> Void
-            var contentHeightConstraint: NSLayoutConstraint
-            var tapDirection: UIImageView
-            
-            required init(entry: AuctionInformation.FAQEntry, textDelegate: ARTextViewDelegate, tapHandler: (EntryView) -> Void) {
-                self.tapHandler = tapHandler
-                
-                let topBorder = UIView()
-                topBorder.backgroundColor = .artsyGrayRegular()
-                
-                let titleButton = UIButton(type: .Custom)
-                
-                let titleLabel = UILabel()
-                titleLabel.text = entry.name.uppercaseString
-                titleLabel.numberOfLines = 1
-                titleLabel.backgroundColor = UIColor.clearColor()
-                titleLabel.font = UIFont.sansSerifFontWithSize(12)
+    class EntryView: UIView {
+        var tapHandler: (EntryView) -> Void
+        var contentHeightConstraint: NSLayoutConstraint
+        var tapDirection: UIImageView
 
-                let arrowIndicator = UIImageView(image: UIImage(named:"navigation_more_arrow_vertical"))
-                self.tapDirection = arrowIndicator
-                
-                let contentView = ARTextView()
-                contentView.scrollEnabled = true
-                contentView.useSemiBold = true
+        required init(entry: AuctionInformation.FAQEntry, textDelegate: ARTextViewDelegate, tapHandler: (EntryView) -> Void) {
+            self.tapHandler = tapHandler
 
-                entry.downloadContent()
-                entry.markdownSignal.subscribe { string in
-                    /// The API comes with headers we should remove
-                    let content = string.stringByRemovingLinesMatching { $0.hasPrefix("# ") }
-                    contentView.setMarkdownString(content)
-                }
+            let topBorder = UIView()
+            topBorder.backgroundColor = .artsyGrayRegular()
 
-                contentView.viewControllerDelegate = textDelegate
-                
-                self.contentHeightConstraint = contentView.constrainHeight("0")
-                
-                super.init(frame: CGRectZero)
-                
-                titleButton.addTarget(self, action: #selector(EntryView.didTap), forControlEvents: .TouchUpInside)
-                
-                addSubview(topBorder)
-                addSubview(titleButton)
-                titleButton.addSubview(titleLabel)
-                titleButton.addSubview(arrowIndicator)
-                addSubview(contentView)
-                
-                topBorder.constrainHeight("1")
-                topBorder.alignTopEdgeWithView(self, predicate: "0")
-                topBorder.alignLeading("0", trailing: "0", toView: self)
-                
-                titleLabel.alignTop("0", bottom: "0", toView: titleButton)
-                titleLabel.alignLeading("20", trailing: "-20", toView: titleButton)
-                
-                titleButton.constrainHeight("50")
-                titleButton.constrainTopSpaceToView(topBorder, predicate: "0")
-                titleButton.alignLeading("0", trailing: "0", toView: self)
+            let titleButton = UIButton(type: .Custom)
 
-                arrowIndicator.alignTrailingEdgeWithView(titleButton, predicate: "-20")
-                arrowIndicator.constrainTopSpaceToView(topBorder, predicate: "22")
+            let titleLabel = UILabel()
+            titleLabel.text = entry.name.uppercaseString
+            titleLabel.numberOfLines = 1
+            titleLabel.backgroundColor = UIColor.clearColor()
+            titleLabel.font = UIFont.sansSerifFontWithSize(12)
 
-                contentView.constrainTopSpaceToView(titleButton, predicate: "0")
-                // Inset the text with text container insets, instead of leading/traling constraints, so that the
-                // text view’s scroll bar is all the way the side of the entry view.
-                contentView.textContainerInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-                contentView.alignLeading("0", trailing: "0", toView: self)
-                
-                self.alignBottomEdgeWithView(contentView, predicate: "0")
+            let arrowIndicator = UIImageView(image: UIImage(named:"navigation_more_arrow_vertical"))
+            self.tapDirection = arrowIndicator
+
+            let contentView = ARTextView()
+            contentView.scrollEnabled = true
+            contentView.useSemiBold = true
+
+            entry.downloadContent()
+            entry.markdownSignal.subscribe { string in
+                /// The API comes with headers we should remove
+                let content = string.stringByRemovingLinesMatching { $0.hasPrefix("# ") }
+                contentView.setMarkdownString(content)
             }
-            
-            required init?(coder aDecoder: NSCoder) {
-                fatalError()
-            }
-            
-            func expand() {
-                contentHeightConstraint.active = false
-                tapDirection.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
-            }
-            
-            func collapse() {
-                contentHeightConstraint.active = true
-                tapDirection.transform = CGAffineTransformIdentity
-            }
-            
-            func didTap() {
-                tapHandler(self)
-            }
+
+            contentView.viewControllerDelegate = textDelegate
+
+            self.contentHeightConstraint = contentView.constrainHeight("0")
+
+            super.init(frame: CGRect.zero)
+
+            titleButton.addTarget(self, action: #selector(EntryView.didTap), forControlEvents: .TouchUpInside)
+
+            addSubview(topBorder)
+            addSubview(titleButton)
+            titleButton.addSubview(titleLabel)
+            titleButton.addSubview(arrowIndicator)
+            addSubview(contentView)
+
+            topBorder.constrainHeight("1")
+            topBorder.alignTopEdgeWithView(self, predicate: "0")
+            topBorder.alignLeading("0", trailing: "0", toView: self)
+
+            titleLabel.alignTop("0", bottom: "0", toView: titleButton)
+            titleLabel.alignLeading("20", trailing: "-20", toView: titleButton)
+
+            titleButton.constrainHeight("50")
+            titleButton.constrainTopSpaceToView(topBorder, predicate: "0")
+            titleButton.alignLeading("0", trailing: "0", toView: self)
+
+            arrowIndicator.alignTrailingEdgeWithView(titleButton, predicate: "-20")
+            arrowIndicator.constrainTopSpaceToView(topBorder, predicate: "22")
+
+            contentView.constrainTopSpaceToView(titleButton, predicate: "0")
+            // Inset the text with text container insets, instead of leading/traling constraints, so that the
+            // text view’s scroll bar is all the way the side of the entry view.
+            contentView.textContainerInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            contentView.alignLeading("0", trailing: "0", toView: self)
+
+            self.alignBottomEdgeWithView(contentView, predicate: "0")
+        }
+
+        required init?(coder aDecoder: NSCoder) {
+            fatalError()
+        }
+
+        func expand() {
+            contentHeightConstraint.active = false
+            tapDirection.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+        }
+
+        func collapse() {
+            contentHeightConstraint.active = true
+            tapDirection.transform = CGAffineTransformIdentity
+        }
+
+        func didTap() {
+            tapHandler(self)
         }
     }
 }

@@ -57,13 +57,13 @@ class LiveAuctionCurrentLotView: UIButton {
 
         viewModel.subscribe { vm in
             guard let vm = vm else { return }
-            
+
             artistNameLabel.text = vm.lotArtist
             biddingPriceLabel.text = vm.currentLotValueString
             thumbnailView.ar_setImageWithURL(vm.urlForThumbnail)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

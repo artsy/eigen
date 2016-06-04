@@ -197,7 +197,7 @@ enum SliderPriorities: String {
     case StayCenteredOverThumb = "425"
 }
 
-class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate  {
+class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
     let numberOfSections: Int
     let numberOfRowsInSection: Int -> Int
     let titleForRowAtIndexPath: NSIndexPath -> String
@@ -245,7 +245,7 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
+
         let oldCheckedCellIndices = selectedRowsInSection(indexPath.section)
 
         if allowsMultipleSelectionInSection(indexPath.section) {
@@ -256,10 +256,10 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
                 let formerlySelected = tableView.cellForRowAtIndexPath(oldCheckedCellIndex)
                 formerlySelected?.checked = false
             }
-            
+
             // Change setting.
             changeSettingsClosure(indexPath)
-            
+
             // Check newly selected cell.
             let selectedCell = tableView.cellForRowAtIndexPath(indexPath)
             selectedCell?.checked = true

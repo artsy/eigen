@@ -78,7 +78,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
         }
 
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         return nil
     }

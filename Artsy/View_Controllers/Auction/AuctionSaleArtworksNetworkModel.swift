@@ -56,4 +56,3 @@ private func fetchPage(page: Int, forSaleID saleID: String, alreadyFetched: [Sal
         }
     )
 }
-

@@ -124,7 +124,7 @@ private extension SocketSetup {
         case "LotUpdateBroadcast":
             lotUpdateBroadcasts.update(json)
 
-        case "OperationFailedEvent": break;
+        case "OperationFailedEvent": break
             // TODO: Handle op failure
 
         case "PostEventResponse":
@@ -133,11 +133,11 @@ private extension SocketSetup {
         case "SaleLotChangeBroadcast":
             currentLotUpdate.update(json)
 
-        case "SaleNotFound": break;
+        case "SaleNotFound": break
             // TODO: Handle this (?)
 
         case "PostEventFailedUnauthorized": fallthrough
-        case "ConnectionUnauthorized": break;
+        case "ConnectionUnauthorized": break
             // TODO: handle auth error.
 
         default:

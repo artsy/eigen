@@ -2,7 +2,7 @@ import UIKit
 import Interstellar
 import FLKAutoLayout
 
-class LiveAuctionToolbarView : UIView {
+class LiveAuctionToolbarView: UIView {
 
     var lotViewModel: LiveAuctionLotViewModelType!
     var auctionViewModel: LiveAuctionViewModelType!
@@ -87,7 +87,7 @@ class LiveAuctionToolbarView : UIView {
             ]
         }
 
-        let views:[UIView] = viewStructure.map { dict in
+        let views: [UIView] = viewStructure.map { dict in
             let key = dict.keys.first!
             let thumbnail = UIImage(named: "lot_\(key)_info")
 
@@ -150,7 +150,7 @@ class LiveAuctionToolbarView : UIView {
 
             spacerView2.alignAttribute(.Leading, toAttribute: .Trailing, ofView: middleLeft, predicate: "0")
             spacerView2.alignAttribute(.Trailing, toAttribute: .Leading, ofView: middleRight, predicate: "0")
-            
+
             spacerView3.alignAttribute(.Leading, toAttribute: .Trailing, ofView: middleRight, predicate: "0")
             spacerView3.alignAttribute(.Trailing, toAttribute: .Leading, ofView: last, predicate: "0")
         }

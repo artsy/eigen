@@ -4,11 +4,11 @@ import Interstellar
 protocol AuctionNetworkModelType {
     func fetch() -> Observable<Result<SaleViewModel>>
     func fetchRegistrationStatus() -> Observable<Result<ArtsyAPISaleRegistrationStatus>>
-    
+
     var registrationStatus: ArtsyAPISaleRegistrationStatus? { get }
 }
 
-/// Network model for everything auction-related. 
+/// Network model for everything auction-related.
 /// It delegates out to other network models and doesn't itself perform any networking.
 class AuctionNetworkModel {
 

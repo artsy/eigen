@@ -4,7 +4,7 @@ import UIKit
 /// Layout for display previous/next lot images on the sides while showing the main lot in the centre, larger.
 ///
 /// This layout is more aware of the _data_ being display by the cells than is typical. The reason is that the
-/// layout is aware of how far we have scrolled in either direction, and due to the private nature of 
+/// layout is aware of how far we have scrolled in either direction, and due to the private nature of
 /// UIPageViewController, the datasource cannot know. See the PrivateFunctions discussions for more info.
 class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveAuctionLotCollectionViewLayoutType {
 
@@ -36,7 +36,7 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
             maxOffscreenWidth = maxCurrentWidth
             maxOffscrenHeight = maxCurrentHeight
         }
-        
+
         super.init()
 
         itemSize = CGSize(width: maxCurrentWidth, height: maxCurrentHeight)
@@ -70,7 +70,7 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
 
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         // Regardless of the rect, we always return the three layout attributes
-        return [0,1,2].flatMap { layoutAttributesForItemAtIndexPath(NSIndexPath(forItem: $0, inSection: 0)) }
+        return [0, 1, 2].flatMap { layoutAttributesForItemAtIndexPath(NSIndexPath(forItem: $0, inSection: 0)) }
     }
 
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
@@ -113,12 +113,12 @@ private extension PrivateFunctions {
     //
     // Our collection view has up to _three_ on screen at once. To jive with UIPVC, we're going to assume that if the user has
     // scrolled more than halfway off the screen in either direction, the previous (or next) lot images are no longer visible.
-    // Thus, they're available to be used as the "next" (or "previous") faux lots until the UIPVC resets to display a new view 
+    // Thus, they're available to be used as the "next" (or "previous") faux lots until the UIPVC resets to display a new view
     // controller. Consequently, this layout is more aware of the data displayed in cells than is typical.
 
     /// Computed variable for the collection view's width, or zero if nil.
     var collectionViewWidth: CGFloat {
-        return CGRectGetWidth(collectionView?.frame ?? CGRect.zero)
+        return collectionView?.frame.width ?? 0
     }
 
     /// Computed variable for the amount the user has dragged. Has a range of (-1...0...1).
@@ -146,15 +146,15 @@ private extension PrivateFunctions {
             applyFancyLayoutToAttributes(&copy, position: .PreviousUnderflow)
         case 2:
             applyFancyLayoutToAttributes(&copy, position: .Next)
-        default: break;
+        default: break
         }
 
         return copy
     }
 
     /// Interpolates linearly from two float values based on the _absolute value_ of the ratio parameter.
-    func interpolateFrom(lhs: CGFloat, to rhs: CGFloat, ratio: CGFloat) -> CGFloat {
-        return lhs + abs(ratio) * (rhs - lhs)
+    func interpolateFrom(a: CGFloat, to b: CGFloat, ratio: CGFloat) -> CGFloat {
+        return a + abs(ratio) * (b - a)
     }
 
     /// Calculates and applies fancy layout to a set of attributes, given a specified position.
@@ -175,14 +175,14 @@ private extension PrivateFunctions {
 
         // Apply the centers and metrics to the layout attributes.
         layoutAttributes.center.x = interpolateFrom(centers.restingCenterX, to: centers.targetCenterX, ratio: ratioDragged)
-        layoutAttributes.center.y = CGRectGetMidY(collectionView?.frame ?? CGRectZero) - (repulsionConstant / 2)
+        layoutAttributes.center.y = (collectionView?.frame.midY ?? 0) - (repulsionConstant / 2)
         layoutAttributes.size.height = interpolateFrom(metrics.restingHeight, to: metrics.targetHeight, ratio: ratioDragged)
         layoutAttributes.size.width = interpolateFrom(metrics.restingWidth, to: metrics.targetWidth, ratio: ratioDragged)
     }
 
     /// This calculates the width and height of an attribute "at rest" and "at its target."
     /// It relies solely on the position and desired aspect ratio of the cell, and not on any
-    /// calculated state from the collection view. 
+    /// calculated state from the collection view.
     /// Note: This function would be a good candidate to cache values if scrolling performance is an issue.
     func layoutMetricsForPosition(position: CellPosition, aspectRatio: CGFloat) -> LayoutMetrics {
         let restingWidth: CGFloat
@@ -237,7 +237,7 @@ private extension PrivateFunctions {
         switch position {
         // Current is easy, the at-rest center is the middle of the collection view and the target depends on scroll direction
         case .Current:
-            restingCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth
+            restingCenterX = (collectionView?.frame.midX ?? 0) + collectionViewWidth
             if userScrollDirection == .Next {
                 let targetRightEdge = visiblePrevNextSliceSize
                 let computedLeftEdge = targetRightEdge - metrics.targetWidth
@@ -261,7 +261,7 @@ private extension PrivateFunctions {
             if position.isUnderOverflow || userScrollDirection == .Previous {
                 targetCenterX = restingCenterX
             } else {
-                targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero) + collectionViewWidth * 2
+                targetCenterX = (collectionView?.frame.midX ?? 0) + collectionViewWidth * 2
             }
         // Previous is like next, but in reverse. The resting centerX is just off the left side of the screen, and the target
         // centerX depends on the scroll direction and on if we are underflowing.
@@ -276,7 +276,7 @@ private extension PrivateFunctions {
             if position.isUnderOverflow || userScrollDirection == .Next {
                 targetCenterX = restingCenterX
             } else {
-                targetCenterX = CGRectGetMidX(collectionView?.frame ?? CGRect.zero)
+                targetCenterX = collectionView?.frame.midX ?? 0
             }
         }
 

@@ -27,7 +27,7 @@ protocol LiveAuctionsSalesPersonType {
     var debugAllEventsSignal: Observable<LotEventJSON> { get }
 }
 
-class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
+class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
     typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderID: String?) -> LiveAuctionStateManager
 
     let sale: LiveSale

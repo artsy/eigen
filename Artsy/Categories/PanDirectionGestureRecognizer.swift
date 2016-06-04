@@ -16,7 +16,7 @@ class PanDirectionGestureRecognizer: UIPanGestureRecognizer {
         case Horizontal
     }
 
-    let direction : PanDirection
+    let direction: PanDirection
 
     init(direction: PanDirection, target: AnyObject, action: Selector) {
         self.direction = direction
@@ -38,4 +38,3 @@ class PanDirectionGestureRecognizer: UIPanGestureRecognizer {
         }
     }
 }
-
