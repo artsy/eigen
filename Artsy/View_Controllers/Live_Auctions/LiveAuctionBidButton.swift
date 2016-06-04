@@ -24,6 +24,7 @@ func ==(lhs: LiveAuctionBidButtonState, rhs: LiveAuctionBidButtonState) -> Bool 
 class LiveAuctionBidButton : ARFlatButton {
     var viewModel: LiveAuctionBiddingViewModelType
     var outbidNoticeDuration: NSTimeInterval = 1
+    var outbidNoticeAnimationComplete: () -> Void = {}
     
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
 
@@ -187,6 +188,7 @@ class LiveAuctionBidButton : ARFlatButton {
                         self?.enabled = true
                         self?._outbidAnimationIsInProgress = false
                         self?.attemptSetupWithState(buttonState) // Once the animation is complete, try to re-apply our original button state.
+                        self?.outbidNoticeAnimationComplete()
                     })
             })
         } else {

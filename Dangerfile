@@ -37,7 +37,7 @@ end
 begin
   readme_yaml = File.read "CHANGELOG.yml"
   readme_data = YAML.load readme_yaml
-rescue e
+rescue StandardError
   fail("CHANGELOG isn't legit YAML")
 end
 
