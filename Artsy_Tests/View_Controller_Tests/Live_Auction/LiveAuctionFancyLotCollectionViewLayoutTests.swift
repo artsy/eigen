@@ -89,6 +89,6 @@ class LiveAuctionFancyLotCollectionViewLayoutTests: QuickSpec {
                 expect(container) == snapshot()
             }
         }
-        
+
     }
 }

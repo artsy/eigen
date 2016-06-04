@@ -86,7 +86,7 @@ class Test_CollectionViewCell: UICollectionViewCell {
         contentView.addSubview(label)
         label.alignToView(contentView)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         return nil
     }

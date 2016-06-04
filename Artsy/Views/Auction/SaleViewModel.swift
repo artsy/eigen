@@ -113,9 +113,11 @@ extension SaleViewModel {
             subtitle += "・\(refineSettings.ordering.rawValue)"
         }
 
-        if refineSettings.priceRange?.min != defaultRefineSettings.priceRange?.min ||
-            refineSettings.priceRange?.max != defaultRefineSettings.priceRange?.max {
-            subtitle += formattedStringForPriceRange(refineSettings.priceRange!)
+        if let priceRange = refineSettings.priceRange,
+            defaultPriceRange = defaultRefineSettings.priceRange where
+            priceRange.min != defaultPriceRange.min ||
+            priceRange.max != defaultPriceRange.max {
+            subtitle += formattedStringForPriceRange(priceRange)
         }
 
         return subtitle
@@ -177,9 +179,9 @@ private extension SaleArtwork {
     class func includedInRefineSettings(refineSettings: AuctionRefineSettings) -> SaleArtwork -> Bool {
         return { saleArtwork in
             // Includes iff the sale artwork's low estimate is within the range, inclusive.
-            let (min, max) = (refineSettings.priceRange?.min, refineSettings.priceRange?.max)
+            let (min, max) = (refineSettings.priceRange?.min ?? 0, refineSettings.priceRange?.max ?? 0)
 
-            return (min!...max!) ~= (saleArtwork.lowEstimateCents as? Int ?? 0)
+            return (min...max) ~= (saleArtwork.lowEstimateCents as? Int ?? 0)
         }
     }
 }

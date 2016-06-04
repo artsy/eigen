@@ -338,7 +338,7 @@ class AuctionViewControllerTests: QuickSpec {
             subject.allowAnimations = false
             subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
             subject.saleViewModel = saleViewModel
-            
+
             expect(subject.defaultRefineSettings().numberOfRowsInSection(0)).to(equal(2))
         }
 
@@ -353,12 +353,12 @@ class AuctionViewControllerTests: QuickSpec {
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end], error: Void())
                 saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [])
-                
+
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
                 subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
                 subject.saleViewModel = saleViewModel
-                
+
                 expect(subject.defaultRefineSettings().numberOfRowsInSection(0)).to(equal(6))
             }
         }

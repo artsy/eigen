@@ -157,7 +157,7 @@ class Test_AuctionRegistrationStatusNetworkModel: AuctionRegistrationStatusNetwo
     init(result: Result<ArtsyAPISaleRegistrationStatus>) {
         self.result = result
     }
-    
+
     func fetchRegistrationStatus(saleID: String) -> Observable<Result<ArtsyAPISaleRegistrationStatus>> {
         called = true
         return Observable(result)

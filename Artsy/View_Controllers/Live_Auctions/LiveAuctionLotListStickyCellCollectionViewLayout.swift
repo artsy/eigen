@@ -66,7 +66,7 @@ extension Overrides {
 
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let superAttributesArray = super.layoutAttributesForElementsInRect(rect) else { return nil }
-        guard superAttributesArray.count > 0 else { return [] }
+        guard superAttributesArray.isNotEmpty else { return [] }
 
         var attributesArray = superAttributesArray.flatMap { $0 }
 

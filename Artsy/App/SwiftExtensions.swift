@@ -34,3 +34,9 @@ extension CGFloat {
         }
     }
 }
+
+extension CollectionType {
+    var isNotEmpty: Bool {
+        return isEmpty == false
+    }
+}

@@ -97,7 +97,7 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var startDate = NSDate().dateByAddingTimeInterval(-3600)
     var liveAuctionStartDate = NSDate().dateByAddingTimeInterval(-3600)
     var lotCount = 3
-    var saleAvailabilitySignal:Observable<SaleAvailabilityState> = Observable()
+    var saleAvailabilitySignal: Observable<SaleAvailabilityState> = Observable()
     var currentLotSignal = Observable<LiveAuctionLotViewModelType?>(Test_LiveAuctionLotViewModel(lotID: "active-lot"))
     var bidderStatus: ArtsyAPISaleRegistrationStatus = .Registered
 
@@ -162,4 +162,3 @@ let liveEventJSON = [
     "type": "FirstPriceBidPlaced",
     "bidder": ["type":"ArtsyBidder", "bidderId": "LmnBN-aFci" ]
 ]
-

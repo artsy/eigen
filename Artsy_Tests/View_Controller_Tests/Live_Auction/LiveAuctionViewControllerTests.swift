@@ -41,7 +41,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
             subject.view.frame = CGRect(x: 0, y: 0, width: 320, height: 480)
             subject.endAppearanceTransition()
 
-            let result:StaticSaleResult = Result.Error(LiveAuctionStaticDataFetcher.Error.JSONParsing)
+            let result: StaticSaleResult = Result.Error(LiveAuctionStaticDataFetcher.Error.JSONParsing)
             fakeStatic.fakeObserver.update(result)
 
             expect(subject) == snapshot()
