@@ -153,8 +153,8 @@ private extension PrivateFunctions {
     }
 
     /// Interpolates linearly from two float values based on the _absolute value_ of the ratio parameter.
-    func interpolateFrom(a: CGFloat, to b: CGFloat, ratio: CGFloat) -> CGFloat {
-        return a + abs(ratio) * (b - a)
+    func interpolateFrom(lhs: CGFloat, to rhs: CGFloat, ratio: CGFloat) -> CGFloat {
+        return lhs + abs(ratio) * (rhs - lhs)
     }
 
     /// Calculates and applies fancy layout to a set of attributes, given a specified position.

@@ -1,11 +1,17 @@
 disabled_rules:
   - line_length
+  - type_name
+
+opt_int_rules:
+  - empty_count
+  - force_unwrapping
 
 excluded: 
   - Pods
   - iOSInjectionProject
   - Artsy_WatchKit_App
   - Artsy_WatchKit_Extension
+  - Artsy_Tests
 
 force_cast: warning
 file_length:

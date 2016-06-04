@@ -217,10 +217,10 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
     }
 }
 
-func loadJSON(filename: String) -> AnyObject {
+func loadJSON(filename: String) -> AnyObject! {
     let jsonPath = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
     let jsonData = NSData(contentsOfFile: jsonPath!)!
-    let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
+    let json = try? NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
 
     return json
     }

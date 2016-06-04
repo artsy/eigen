@@ -6,7 +6,7 @@ import Then
 import MARKRangeSlider
 import ARAnalytics
 
-private let CellIdentifier = "Cell"
+private let cellIdentifier = "Cell"
 
 extension RefinementOptionsViewController {
     func setupViews() {
@@ -76,7 +76,7 @@ private extension RefinementOptionsViewController {
             changeSettingsClosure: { [unowned self] indexPath in self.currentSettings = self.currentSettings.refineSettingsWithSelectedIndexPath(indexPath) })
 
         let tableView = UITableView().then {
-            $0.registerClass(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+            $0.registerClass(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
             $0.scrollEnabled = false
             $0.separatorColor = .artsyGrayRegular()
             $0.separatorInset = UIEdgeInsetsZero
@@ -229,7 +229,7 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
 
         cell.textLabel?.text = titleForRowAtIndexPath(indexPath)
 
