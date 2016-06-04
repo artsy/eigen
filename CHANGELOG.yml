@@ -1,6 +1,10 @@
 upcoming:
-  version: 2.4.2
+  version: 2.5.1
   details: Onboarding / New Gene VC / Live
+
+releases:
+  version: 2.5.0
+  details: New Artist View
 
   dev:
     live_actions:
@@ -79,9 +83,6 @@ upcoming:
     - Auctions page now show the info about live auctions - orta
     - Integrate the new artist view. - alloy
     - Status bars on Auction info and live pages are black - orta
-
-
-releases:
 
   - version: 2.4.1
     details: Analytics improvements
