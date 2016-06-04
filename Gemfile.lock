@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/danger/danger/
-  revision: dfa3fe611ef331955a2cf7a2ab9b8a99981fbcf0
+  revision: d07286d9345a551643ab17b78b61f766b22676dc
   branch: master
   specs:
-    danger (0.7.4)
+    danger (0.8.1)
       claide
       colored (~> 1.2)
       faraday
