@@ -25,6 +25,9 @@ class LiveBidProgressOverlayView: UIView {
         case .LotSold:
             setupProgressUI("Sold", subtitle:"The Lot has finished", textColor: red, image: .LiveAuctionOutbidWarningIcon)
 
+        case .BidOutbid:
+            setupProgressUI("", textColor: red, image: .LiveAuctionOutbidWarningIcon)
+
         case .LotWaitingToOpen:
             // Hrm, is this a possible state for it to get to?
             setupProgressUI("Lot waiting to Open", textColor: purple, image: .LiveAuctionSpinner)
@@ -32,12 +35,15 @@ class LiveBidProgressOverlayView: UIView {
         case .BiddingInProgress:
             setupProgressUI("Placing Bid", textColor: purple, image: .LiveAuctionSpinner, spinImage: true)
 
-        case .BidSuccess:
+        case .BidConfirmed:
             // TODO: this needs to keep track of the previous bidding state
             setupProgressUI("Bid Placed", textColor: green, image: .LiveAuctionMaxBidIcon)
 
         case .BidNetworkFail:
             setupProgressUI("Connection Issues", subtitle: "Please check your signal strength", textColor: red, image: .LiveAuctionOutbidWarningIcon)
+
+        case .BidBecameMaxBidder:
+            setupProgressUI("", textColor: green, image: .LiveAuctionMaxBidIcon)
         }
     }
 

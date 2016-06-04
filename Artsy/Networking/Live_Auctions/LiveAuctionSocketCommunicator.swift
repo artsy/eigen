@@ -127,7 +127,8 @@ private extension SocketSetup {
         case "OperationFailedEvent": break;
             // TODO: Handle op failure
 
-        case "PostEventResponse":
+
+        case "CommandSuccessful", "CommandFailed", "PostEventResponse":
             postEventResponses.update(json)
 
         case "SaleLotChangeBroadcast":

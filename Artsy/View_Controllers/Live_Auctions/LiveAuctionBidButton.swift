@@ -24,7 +24,11 @@ func ==(lhs: LiveAuctionBidButtonState, rhs: LiveAuctionBidButtonState) -> Bool 
 class LiveAuctionBidButton : ARFlatButton {
     var viewModel: LiveAuctionBiddingViewModelType
     var outbidNoticeDuration: NSTimeInterval = 1
-    
+
+    // On the lotVC we want to indicate being outbid
+    // but on the max-bid modal we don't.
+    var flashOutbidOnBiddableStateChanges = true
+
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
 
     init(viewModel: LiveAuctionBiddingViewModelType) {
@@ -49,6 +53,7 @@ class LiveAuctionBidButton : ARFlatButton {
         setContentCompressionResistancePriority(1000, forAxis: .Vertical)
         addTarget(self, action: #selector(tappedBidButton), forControlEvents: .TouchUpInside)
         viewModel.progressSignal.subscribe(attemptSetupWithState)
+        viewModel.bidPendingSignal.subscribe(updateForBidProgress)
     }
 
     func tappedBidButton() {
@@ -123,7 +128,6 @@ class LiveAuctionBidButton : ARFlatButton {
             setBorderColor(borderColor, forState: state, animated: false)
             setBackgroundColor(background, forState: state)
         }
-
     }
 
     private func setupWithState(buttonState: LiveAuctionBidButtonState) {
@@ -144,13 +148,17 @@ class LiveAuctionBidButton : ARFlatButton {
                 let formattedPrice = price.convertToDollarString(currencySymbol)
                 handleBiddable(buttonState, formattedPrice: formattedPrice)
 
-            case .BiddingInProgress:
+            case .BiddingInProgress, .BidConfirmed:
                 setupUI("Bidding...", background: purple)
-            case .BidSuccess:
+
+            case .BidBecameMaxBidder:
                 setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
 
             case .BidNetworkFail:
                 setupUI("Network Failed", background: .whiteColor(), border: red, textColor: red)
+
+            case .BidOutbid:
+                self.setupUI("Outbid", background: red)
             }
 
 
@@ -171,15 +179,17 @@ class LiveAuctionBidButton : ARFlatButton {
     private func handleBiddable(buttonState: LiveAuctionBidButtonState, formattedPrice: String) {
         // First we check to see if our previous button state was "I'm the highest bidder" and now 
         // our state is "I'm Biddable", then we infer the user got outbid. Let's present a nice animation.
-        if let previousButtonState = _previousButtonState,
+        if  let previousButtonState = _previousButtonState,
             case .Active(let previousState) = previousButtonState,
-            case .BidSuccess = previousState {
+            case .BidBecameMaxBidder = previousState {
+            if !flashOutbidOnBiddableStateChanges { return }
+
             // User was previously the highest bidder but has been outbid
 
             _outbidAnimationIsInProgress = true
             enabled = false
             UIView.animateIf(Bool(ARPerformWorkAsynchronously), duration: ARAnimationQuickDuration, {
-                self.setupUI("Outbid", background: red)
+                    self.setupWithState(.Active(biddingState: .BidOutbid))
                 }, completion: { _ in
                     // Note: we're not using ar_dispatch_after because if the completion and dispatch_after blocks are run synchronously, we'll get a stack overflow 😬
                     let time = dispatch_time(DISPATCH_TIME_NOW, Int64(self.outbidNoticeDuration * Double(NSEC_PER_SEC)))
@@ -193,6 +203,10 @@ class LiveAuctionBidButton : ARFlatButton {
             setupUI("Bid \(formattedPrice)")
             enabled = true
         }
+    }
+
+    private func updateForBidProgress(state: LiveAuctionBiddingProgressState) {
+        setupWithState(.Active(biddingState: state))
     }
 }
 

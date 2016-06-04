@@ -67,7 +67,30 @@ class LiveAuctionStateManager: NSObject {
             let json = JSON(response)
             let bidUUID = json["key"].stringValue
             let biddingViewModel = self?.biddingStates.removeValueForKey(bidUUID)
-            biddingViewModel?.bidPendingSignal.update(false)
+            let eventJSON = json["event"].dictionaryObject
+
+            let liveEvent = LiveEvent(JSON: eventJSON)
+            // TODO: What to do with the Error?
+//            let status = BidProgressStatus.Completed(success: true, event:liveEvent, error: nil)
+//            private func updateForBidProgress(state: BidProgressStatus) {
+//                switch state {
+//                case .Started:
+//                    setupWithState(.Active(biddingState: .BiddingInProgress))
+//
+//                case.Completed(let success, let event, let error):
+//                    if (error != nil) {
+//                        setupWithState(.Active(biddingState: .BidNetworkFail))
+//                    } else {
+//
+//                        if success {
+//                            setupWithState(.Active(biddingState: .BidSuccess))
+//                        } else {
+//                            self.setupUI("Outbid", background: red)
+//                        }
+//                    }
+//                }
+            let confirmed = LiveAuctionBiddingProgressState.BidConfirmed
+            biddingViewModel?.bidPendingSignal.update(confirmed)
         }
     }
 }
@@ -80,7 +103,7 @@ extension PublicFunctions {
             return print("Tried to bid without a bidder ID on account")
         }
         
-        biddingViewModel.bidPendingSignal.update(true)
+        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
@@ -91,7 +114,7 @@ extension PublicFunctions {
             return print("Tried to leave a max bid without a bidder ID on account")
         }
 
-        biddingViewModel.bidPendingSignal.update(true)
+        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
