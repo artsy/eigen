@@ -67,8 +67,10 @@ class LiveAuctionToolbarView: UIView {
             clockClosure = { [unowned self] label in
                 self.formatter.dateFormat = "mm:ss"
                 self.timeSinceLotOpenedLabel = label
-                self.timeSinceLotOpenedTimer =  NSTimer.scheduledTimerWithTimeInterval(0.9, target: self, selector: #selector(self.updateTimerLabel), userInfo: nil, repeats: true)
-                self.updateTimerLabel(self.timeSinceLotOpenedTimer!)
+                self.timeSinceLotOpenedTimer = NSTimer.scheduledTimerWithTimeInterval(0.9, target: self, selector: #selector(self.updateTimerLabel), userInfo: nil, repeats: true)
+                if let timeSinceLotOpenedTimer = self.timeSinceLotOpenedTimer {
+                    self.updateTimerLabel(timeSinceLotOpenedTimer)
+                }
             }
 
         case .UpcomingLot:
@@ -87,6 +89,7 @@ class LiveAuctionToolbarView: UIView {
             ]
         }
 
+        // swiftlint:disable force_unwrapping
         let views: [UIView] = viewStructure.map { dict in
             let key = dict.keys.first!
             let thumbnail = UIImage(named: "lot_\(key)_info")
@@ -154,6 +157,8 @@ class LiveAuctionToolbarView: UIView {
             spacerView3.alignAttribute(.Leading, toAttribute: .Trailing, ofView: middleRight, predicate: "0")
             spacerView3.alignAttribute(.Trailing, toAttribute: .Leading, ofView: last, predicate: "0")
         }
+
+        // swiftlint:enable force_unwrapping
     }
 
     private lazy var formatter = NSDateFormatter()

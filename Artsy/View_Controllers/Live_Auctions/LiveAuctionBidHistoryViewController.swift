@@ -109,7 +109,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCellWithIdentifier("live")!
+        return tableView.dequeueReusableCellWithIdentifier("live", forIndexPath: indexPath)
     }
 
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {

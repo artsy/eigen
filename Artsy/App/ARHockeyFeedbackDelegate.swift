@@ -23,7 +23,7 @@ class ARHockeyFeedbackDelegate: NSObject {
         let processID = NSProcessInfo.processInfo().processIdentifier
         if let messages = hockeyProvider.messagesForProcessID(UInt(processID)) as? [String] {
             let message = messages.joinWithSeparator("\n")
-            let data = message.dataUsingEncoding(NSUTF8StringEncoding)!
+            let data = message.dataUsingEncoding(NSUTF8StringEncoding)
             analyticsLog = BITHockeyAttachment(filename: "analytics_log.txt", hockeyAttachmentData: data, contentType: "text")
         }
 

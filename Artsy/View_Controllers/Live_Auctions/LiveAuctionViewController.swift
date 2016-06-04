@@ -202,6 +202,8 @@ extension LiveAuctionViewController: LiveAuctionLotListViewControllerDelegate {
     }
 }
 
+// swiftlint:disable force_unwrapping
+
 class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
     func fetchStaticData() -> Observable<StaticSaleResult> {
         let signal = Observable<StaticSaleResult>()

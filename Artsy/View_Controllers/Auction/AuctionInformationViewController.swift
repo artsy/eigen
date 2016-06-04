@@ -227,7 +227,7 @@ extension AuctionInformationViewController {
             }
 
             self.currentlyExpandedEntryView = self.entryViews.first
-            self.currentlyExpandedEntryView!.expand()
+            self.currentlyExpandedEntryView?.expand()
         }
 
         func textView(textView: ARTextView!, shouldOpenViewController viewController: UIViewController!) {
@@ -241,8 +241,8 @@ extension AuctionInformationViewController {
 
                 UIView.animateIf(Bool(ARPerformWorkAsynchronously), duration: 0.25) {
                     // Do it in this order, otherwise we’d get unsatisfiable constraints.
-                    self.currentlyExpandedEntryView!.expand()
-                    previouslyExpandedEntryView!.collapse()
+                    self.currentlyExpandedEntryView?.expand()
+                    previouslyExpandedEntryView?.collapse()
                     self.stackView.layoutIfNeeded()
                 }
             }

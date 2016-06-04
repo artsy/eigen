@@ -26,7 +26,7 @@ class SimpleProgressView: UIView {
 
     override func drawRect(rect: CGRect) {
         let bg = UIBezierPath(rect: bounds)
-        backgroundColor!.set()
+        backgroundColor?.set()
         bg.fill()
 
         let progressRect = CGRect(x: 0, y: 0, width: Int(bounds.width * progress), height: Int(bounds.height))

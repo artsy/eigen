@@ -225,7 +225,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func jumpToLotAtIndex(index: Int, animated: Bool) {
-        let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index)
+        guard let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index) else { return }
 
         // This logic won't do, lot at index 10 is not classed as being -1 from current index
         // perhaps it needs to see within a wrapping range of 0 to 10, which direction is it less steps
@@ -238,7 +238,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         lotImageCollectionView.reloadData()
         // TODO: Animations are disabled for now because it's unclear how to reload the collection view. Unlike the UIPVC,
         //       the collection view shows previous and next images, and can't be scrolled to the current lot image without flickering.
-        pageController.setViewControllers([currentLotVC!], direction: .Forward, animated: false, completion: nil)
+        pageController.setViewControllers([currentLotVC], direction: .Forward, animated: false, completion: nil)
     }
 
     func jumpToLiveLot() {
