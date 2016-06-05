@@ -23,6 +23,7 @@ class LiveAuctionStateManager: NSObject {
     let sale: LiveSale
     let bidderID: String?
 
+
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
     private var biddingStates = [String: LiveAuctionBiddingViewModelType]()
@@ -33,6 +34,10 @@ class LiveAuctionStateManager: NSObject {
 
         if !loggedIn { return .NotLoggedIn }
         return hasBidder ? .Registered : .NotRegistered
+    }
+
+    var socketConnectionSignal: Observable<Bool> {
+        return socketCommunicator.socketConnectionSignal
     }
 
     init(host: String,
@@ -142,6 +147,7 @@ private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let lotUpdateBroadcasts = Observable<AnyObject>()
     let currentLotUpdate = Observable<AnyObject>()
     let postEventResponses = Observable<AnyObject>()
+    let socketConnectionSignal = Observable<Bool>()
 
     init (state: AnyObject) {
         updatedAuctionState = Observable(state)

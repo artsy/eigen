@@ -3,36 +3,49 @@ import Nimble
 import Nimble_Snapshots
 import UIKit
 import Interstellar
+import Forgeries
 
 @testable
 import Artsy
 
 class LiveAuctionViewControllerTests: QuickSpec {
 
+
     override func spec() {
         var subject: LiveAuctionViewController!
 
-        beforeEach {
-            let fake = stub_auctionSalesPerson()
+        func setupViewControllerForPhone(singleLayout: Bool) {
 
             subject = LiveAuctionViewController(saleSlugOrID: "sale-id")
-            subject.salesPersonCreator = { _ in return fake }
+            subject.staticDataFetcher = Stubbed_StaticDataFetcher()
+            subject.useSingleLayout = singleLayout
+        }
 
+        beforeEach {
+            OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
+
+            let fake = stub_auctionSalesPerson()
             for i in 0..<fake.lotCount {
                 let lot = fake.lotViewModelForIndex(i)
                 cacheColoredImageForURL(lot.urlForThumbnail)
             }
         }
 
-        pending("looks good by default") {
-            OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
+        it("looks good by default") {
+            setupViewControllerForPhone(true)
+            expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
+        }
 
-            subject.useSingleLayout = false
-            expect(subject) == snapshot()
+        it("handles splitting in an iPad") {
+            setupViewControllerForPhone(false)
+            subject.stubHorizontalSizeClass(.Regular)
+            subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
+
+            expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
 
         it("shows an error screen when static data fails") {
-            subject.useSingleLayout = false
+            setupViewControllerForPhone(true)
 
             let fakeStatic = FakeStaticFetcher()
             subject.staticDataFetcher = fakeStatic
@@ -44,17 +57,31 @@ class LiveAuctionViewControllerTests: QuickSpec {
             let result: StaticSaleResult = Result.Error(LiveAuctionStaticDataFetcher.Error.JSONParsing)
             fakeStatic.fakeObserver.update(result)
 
-            expect(subject) == snapshot()
+            expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
 
+        it("shows a socket disconnect screen when socket fails") {
+            setupViewControllerForPhone(true)
+            let fakeSalesPerson = stub_auctionSalesPerson()
+            subject.salesPersonCreator = { _ in
+                return fakeSalesPerson
+            }
 
-        pending("handles splitting in an iPad") {
-            subject.useSingleLayout = false
-            subject.beginAppearanceTransition(true, animated: false)
-            subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
-            subject.endAppearanceTransition()
+            fakeSalesPerson.socketConnectionSignal.update(false)
+            expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
+        }
 
-            expect(subject).toEventually(haveValidSnapshot())
+        it("shows a removes disconnected screen when socket reconnects") {
+            setupViewControllerForPhone(true)
+            let fakeSalesPerson = stub_auctionSalesPerson()
+            subject.salesPersonCreator = { _ in
+                return fakeSalesPerson
+            }
+
+            fakeSalesPerson.socketConnectionSignal.update(false)
+            // Adds everything synchronously, which is the test above
+            fakeSalesPerson.socketConnectionSignal.update(true)
+            expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
     }
 }
