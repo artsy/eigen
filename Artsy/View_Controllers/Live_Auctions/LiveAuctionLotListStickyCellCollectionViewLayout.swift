@@ -42,7 +42,7 @@ extension PrivateFunctions {
         if attributes.frame.minY < contentOffset {
             // Attributes want to be above the visible rect, so let's stick it to the top.
             attributes.frame.origin.y = contentOffset
-        } else if attributes.frame.maxX > collectionView.frame.height + contentOffset {
+        } else if attributes.frame.maxY > collectionView.frame.height + contentOffset {
             // Attributes want to be below the visible rect, so let's stick it to the bottom (height + contentOffset - height of attributes)
             attributes.frame.origin.y = collectionView.frame.height + contentOffset - attributes.frame.height
         }
