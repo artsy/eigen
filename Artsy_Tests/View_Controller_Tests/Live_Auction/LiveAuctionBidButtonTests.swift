@@ -11,7 +11,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
 
     override func spec() {
 
-        let examples:[String: [LiveAuctionBidButtonState]] = [
+        let examples: [String: [LiveAuctionBidButtonState]] = [
             "trial": [.Active(biddingState: .TrialUser)],
             "biddable": [.Active(biddingState: .Biddable(askingPrice: 45_000_00, currencySymbol: "$"))],
             "in progress": [.Active(biddingState: .BiddingInProgress )],
@@ -23,7 +23,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
             "closed": [.InActive(lotState: .ClosedLot)],
             "upcoming": [.InActive(lotState: .UpcomingLot)],
         ]
- 
+
         for (_, tuple) in examples.enumerate() {
 
             it("has valid snapshot \(tuple.0)") {

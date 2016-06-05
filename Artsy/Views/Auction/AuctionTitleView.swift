@@ -196,14 +196,14 @@ private extension AuctionTitleView {
         } else {
             let leftRule = ARSeparatorView()
             container.addSubview(leftRule)
-            
+
             leftRule.alignLeadingEdgeWithView(container, predicate: "0")
             leftRule.constrainTrailingSpaceToView(registerButton, predicate: "-16")
             leftRule.alignCenterYWithView(registerButton, predicate: "0")
-            
+
             let rightRule = ARSeparatorView()
             container.addSubview(rightRule)
-            
+
             rightRule.constrainLeadingSpaceToView(registerButton, predicate: "16")
             rightRule.alignTrailingEdgeWithView(container, predicate: "0")
             rightRule.alignCenterYWithView(registerButton, predicate: "0")

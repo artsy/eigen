@@ -12,7 +12,7 @@ class LiveAuctionLotListStickyCellCollectionViewLayout: UICollectionViewFlowLayo
         self.sectionInset = UIEdgeInsets(top: 1, left: 0, bottom: 40, right: 0)
         // itemSize must be set in prepareLayout
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         return nil
     }
@@ -39,14 +39,14 @@ extension PrivateFunctions {
 
         let contentOffset = collectionView.contentOffset.y
 
-        if CGRectGetMinY(attributes.frame) < contentOffset {
+        if attributes.frame.minY < contentOffset {
             // Attributes want to be above the visible rect, so let's stick it to the top.
             attributes.frame.origin.y = contentOffset
-        } else if CGRectGetMaxY(attributes.frame) > CGRectGetHeight(collectionView.frame) + contentOffset {
+        } else if attributes.frame.maxY > collectionView.frame.height + contentOffset {
             // Attributes want to be below the visible rect, so let's stick it to the bottom (height + contentOffset - height of attributes)
-            attributes.frame.origin.y = CGRectGetHeight(collectionView.frame) + contentOffset - CGRectGetHeight(attributes.frame)
+            attributes.frame.origin.y = collectionView.frame.height + contentOffset - attributes.frame.height
         }
-        
+
         attributes.zIndex = 1
     }
 }
@@ -66,8 +66,8 @@ extension Overrides {
 
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let superAttributesArray = super.layoutAttributesForElementsInRect(rect) else { return nil }
-        guard superAttributesArray.count > 0 else { return [] }
-        
+        guard superAttributesArray.isNotEmpty else { return [] }
+
         var attributesArray = superAttributesArray.flatMap { $0 }
 
         // Guarantee any selected cell is presented, regardless of the rect.

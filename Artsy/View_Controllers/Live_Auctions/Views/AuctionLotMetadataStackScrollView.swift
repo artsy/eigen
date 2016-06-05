@@ -95,7 +95,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
     }
 
     @objc private func toggleTapped(button: UIButton) {
-        if (aboveFoldHeightConstraint.active) {
+        if aboveFoldHeightConstraint.active {
             showAdditionalInformation?()
         } else {
             hideAdditionalInformation?()
@@ -142,7 +142,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         aboveFoldHeightConstraint.active = true
 
         UIView.animateSpringIf(animated, duration: ARAnimationDuration, delay: 0, damping: 0.9, velocity: 3.5) {
-            self.contentOffset = CGPointZero
+            self.contentOffset = CGPoint.zero
             self.superview?.layoutIfNeeded()
         }
     }

@@ -36,7 +36,7 @@ This will set you up on our staging server, you will have a running version of t
 
 ### Work at Artsy?
 
-Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander). Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be true too.
+Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander) and [SwiftLint](https://github.com/realm/SwiftLint). Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be true too.
 
 ### Thanks
 

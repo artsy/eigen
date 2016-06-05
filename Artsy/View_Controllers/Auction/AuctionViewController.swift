@@ -186,7 +186,7 @@ extension AuctionViewController {
                 self.dismissViewControllerAnimated(animated, completion: nil)},
             userDidApplyClosure: { (settings: AuctionRefineSettings) in
                 self.refineSettings = settings
-                
+
                 self.displayCurrentItems()
                 self.dismissViewControllerAnimated(animated, completion: nil)
         })
@@ -197,16 +197,16 @@ extension AuctionViewController {
             "context_type": "sale",
             "slug": NSString(format:"/auction/%@/refine", saleViewModel.saleID)
         ])
-        
+
         refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: [ "context": "auction", "slug": "/auction/\(saleViewModel.saleID)/refine"])
         refineViewController.changeStatusBar = self.traitCollection.horizontalSizeClass == .Compact
         presentViewController(refineViewController, animated: animated, completion: nil)
     }
-    
+
     func showRefineTapped() {
         self.showRefineTappedAnimated(true)
     }
-    
+
     var sideSpacing: CGFloat {
         let compactSize = traitCollection.horizontalSizeClass == .Compact
         return compactSize ? 40 : 80
@@ -280,7 +280,7 @@ extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
         navigationController?.pushViewController(viewController, animated: true)
     }
-    
+
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, stickyHeaderDidChangeStickyness isAttatchedToLeadingEdge: Bool) {
         stickyHeader.stickyHeaderHeight.constant = isAttatchedToLeadingEdge ? 120 : 60
         stickyHeader.toggleAttatched(isAttatchedToLeadingEdge, animated: true)

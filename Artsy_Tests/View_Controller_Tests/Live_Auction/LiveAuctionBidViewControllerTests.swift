@@ -16,7 +16,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
         }
 
         it("looks right on phones") {
-            let devices:[ARDeviceType] = [.Phone4, .Phone6]
+            let devices: [ARDeviceType] = [.Phone4, .Phone6]
             for device in devices {
                 ARTestContext.useDevice(device) {
                     subject = StoryboardScene.LiveAuctions.instantiateBid()
@@ -52,7 +52,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
             }
 
             it("ensures the bid is moved above the current max bid") {
-                
+
                 expect(subject.bidViewModel.currentBid) == 5_500_00
 
                 lotVM.currentLotValue = 6_000_00
@@ -79,7 +79,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
 
         describe("networking") {
 
-            let examples:[String: [LiveAuctionBiddingProgressState]] = [
+            let examples: [String: [LiveAuctionBiddingProgressState]] = [
                 "in progress": [.BiddingInProgress],
                 "is max bidder": [.BidSuccess],
 //                "not max bidder": [.BidSuccess, .Biddable(askingPrice: 1_000_00, currencySymbol: "¥")],

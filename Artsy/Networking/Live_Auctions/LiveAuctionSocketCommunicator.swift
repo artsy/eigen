@@ -61,7 +61,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     class func defaultSocketCreator() -> SocketCreator {
         return { host, saleID in
             let url = NSURL(string: "\(host)/socket?saleId=\(saleID)")
-            let websocket = WebSocket(url: url!)
+            let websocket = WebSocket(url: url!) // swiftlint:disable:this force_unwrapping
             websocket.origin = nil
             return websocket
         }
@@ -124,7 +124,7 @@ private extension SocketSetup {
         case "LotUpdateBroadcast":
             lotUpdateBroadcasts.update(json)
 
-        case "OperationFailedEvent": break;
+        case "OperationFailedEvent": break
             // TODO: Handle op failure
 
         case "PostEventResponse":
@@ -133,11 +133,11 @@ private extension SocketSetup {
         case "SaleLotChangeBroadcast":
             currentLotUpdate.update(json)
 
-        case "SaleNotFound": break;
+        case "SaleNotFound": break
             // TODO: Handle this (?)
 
         case "PostEventFailedUnauthorized": fallthrough
-        case "ConnectionUnauthorized": break;
+        case "ConnectionUnauthorized": break
             // TODO: handle auth error.
 
         default:

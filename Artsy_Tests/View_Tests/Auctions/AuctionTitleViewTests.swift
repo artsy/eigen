@@ -12,7 +12,7 @@ class AuctionTitleViewSpec: QuickSpec {
     override func spec() {
         let sale = try! Sale(dictionary: ["name": "The 🎉 Sale"], error: Void())
         let viewModel = SaleViewModel(sale: sale, saleArtworks: [])
-        
+
         let delegate = Test_AuctionTitleViewDelegate()
         var fullWidth: Bool!
 
@@ -45,11 +45,11 @@ class AuctionTitleViewSpec: QuickSpec {
 
                 expect(subject).to( haveValidSnapshot() )
             }
-            
+
             it("looks good without a info button") {
                 let subject = AuctionTitleView(viewModel: viewModel, registrationStatus: .Registered, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: false)
                 subject.bounds.size.width = 400
-                
+
                 expect(subject).to( haveValidSnapshot() )
             }
         }

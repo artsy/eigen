@@ -37,7 +37,7 @@ class SaleArtworkViewModelTests: QuickSpec {
                     "symbol": "$"
                 ]
             )
-            
+
             subject = SaleArtworkViewModel(saleArtwork: saleArtwork)
         }
 

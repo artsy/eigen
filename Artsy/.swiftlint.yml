@@ -1,0 +1,32 @@
+disabled_rules:
+  - line_length
+  - type_name
+  - todo
+  - valid_docs
+  - function_parameter_count
+  - cyclomatic_complexity
+  - function_body_length
+  - conditional_binding_cascade
+
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+
+excluded: 
+  - Pods
+  - iOSInjectionProject
+  - Artsy_WatchKit_App
+  - Artsy_WatchKit_Extension
+  - Artsy_Tests
+  - Artsy/Tooling
+
+force_cast: warning
+file_length:
+  warning: 400
+  error: 600
+
+variable_name:
+  max_length: 100
+  excluded:
+  - a
+  - b

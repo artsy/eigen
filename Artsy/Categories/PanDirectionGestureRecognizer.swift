@@ -16,7 +16,7 @@ class PanDirectionGestureRecognizer: UIPanGestureRecognizer {
         case Horizontal
     }
 
-    let direction : PanDirection
+    let direction: PanDirection
 
     init(direction: PanDirection, target: AnyObject, action: Selector) {
         self.direction = direction
@@ -25,8 +25,10 @@ class PanDirectionGestureRecognizer: UIPanGestureRecognizer {
 
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
         super.touchesMoved(touches, withEvent: event)
+        guard let view = self.view else { return }
+
         if state == .Began {
-            let velocity = velocityInView(self.view!)
+            let velocity = velocityInView(view)
             switch direction {
             case .Horizontal where fabs(velocity.y) > fabs(velocity.x):
                 state = .Cancelled
@@ -38,4 +40,3 @@ class PanDirectionGestureRecognizer: UIPanGestureRecognizer {
         }
     }
 }
-

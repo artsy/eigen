@@ -20,7 +20,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
 
         var navigationController: ARSerifNavigationViewController!
         var informationController: AuctionInformationViewController!
-        
+
         beforeEach {
             informationController = AuctionInformationViewController(saleViewModel: saleViewModel)
             navigationController = ARSerifNavigationViewController(rootViewController: informationController)
@@ -29,7 +29,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
                 OHHTTPStubs.stubJSONResponseAtPath("/api/v1/page/\(entry.slug)", withResponse:["published":true, "content": markdown])
             }
         }
-        
+
         ["iPhone": ARDeviceType.Phone6.rawValue, "iPad": ARDeviceType.Pad.rawValue].forEach { (deviceName, deviceType) in
             it("has a root view that shows information about the auction and looks good on \(deviceName)") {
                 ARTestContext.useDevice(ARDeviceType(rawValue: deviceType)!) {
@@ -37,7 +37,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
                 }
             }
         }
-        
+
         it("has a FAQ view that answers questions about the auction") {
             let FAQController = informationController.showFAQ(false)
             expect(navigationController).to( haveValidSnapshot(named: "FAQ Initial Entry", usesDrawRect: true) )

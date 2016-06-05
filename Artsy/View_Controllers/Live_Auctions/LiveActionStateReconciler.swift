@@ -130,7 +130,7 @@ private extension PrivateFunctions {
         let existingEventIds = Set(lot.eventIDs)
         let newEvents = lotEvents.filter { existingEventIds.contains($0["eventId"] as? String ?? "") == false }
 
-        if (ARDeveloperOptions.keyExists("log_live_events")) {
+        if ARDeveloperOptions.keyExists("log_live_events") {
             for event in newEvents {
                 print("Event: \(event)\n\n")
             }

@@ -172,7 +172,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     private var _dateLotOpened: NSDate?
 
     var dateLotOpened: NSDate? {
-        if (_dateLotOpened != nil) { return _dateLotOpened }
+        guard _dateLotOpened == nil else { return _dateLotOpened }
         guard let opening = events.filter({ $0.isLotOpening }).first else { return nil }
         _dateLotOpened = opening.dateEventCreated
         return _dateLotOpened
@@ -201,7 +201,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     var numberOfDerivedEvents: Int {
         return derivedEvents.count
     }
-    
+
     func derivedEventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
         // Events are ordered FIFO, need to inverse for presentation
         return derivedEvents[numberOfDerivedEvents - index - 1]
@@ -224,7 +224,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     func updateReserveStatus(reserveStatusString: String) {
         let updated = model.updateReserveStatusWithString(reserveStatusString)
-        
+
         if updated {
             reserveStatusSignal.update(model.reserveStatus)
         }
@@ -263,7 +263,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
     }
 
-    func updateExistingEvents(events:[LiveAuctionEventViewModel]) {
+    func updateExistingEvents(events: [LiveAuctionEventViewModel]) {
         for undoEvent in events.filter({ $0.isUndo }) {
             guard let
                 referenceEventID = undoEvent.undoLiveEventID,
@@ -272,4 +272,3 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
     }
 }
-

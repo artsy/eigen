@@ -8,8 +8,8 @@ enum SaleAvailabilityState {
 
 extension SaleAvailabilityState: Equatable {}
 
-func ==(l: SaleAvailabilityState, r: SaleAvailabilityState) -> Bool {
-    switch (l, r) {
+func == (lhs: SaleAvailabilityState, rhs: SaleAvailabilityState) -> Bool {
+    switch (lhs, rhs) {
     case (.NotYetOpen, .NotYetOpen): return true
     case (.Closed, .Closed): return true
     case (.Active(let x), .Active(let y)) where x == y: return true

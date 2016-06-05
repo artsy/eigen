@@ -5,5 +5,5 @@ func cacheColoredImageForURL(url: NSURL?, color: UIColor = UIColor.debugColourPu
     precondition(url != nil)
 
     let image = UIImage(fromColor: color, withSize: CGSize(width: 500, height: 500))
-    SDWebImageManager.sharedManager().saveImageToCache(image, forURL:url!)
+    SDWebImageManager.sharedManager().saveImageToCache(image, forURL: url!)
 }

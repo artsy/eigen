@@ -79,7 +79,7 @@ extension PublicFunctions {
         guard let bidderID = bidderID else {
             return print("Tried to bid without a bidder ID on account")
         }
-        
+
         biddingViewModel.bidPendingSignal.update(true)
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel

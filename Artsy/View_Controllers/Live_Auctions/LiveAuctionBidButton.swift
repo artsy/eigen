@@ -7,7 +7,7 @@ enum LiveAuctionBidButtonState: Equatable {
     case InActive(lotState: LotState)
 }
 
-func ==(lhs: LiveAuctionBidButtonState, rhs: LiveAuctionBidButtonState) -> Bool {
+func == (lhs: LiveAuctionBidButtonState, rhs: LiveAuctionBidButtonState) -> Bool {
     switch (lhs, rhs) {
     case (.Active(let lhsBiddingState), .Active(let rhsBiddingState)) where lhsBiddingState == rhsBiddingState: return true
     case (.InActive(let lhsLotState), .InActive(let rhsLotState)) where lhsLotState == rhsLotState: return true
@@ -21,11 +21,10 @@ func ==(lhs: LiveAuctionBidButtonState, rhs: LiveAuctionBidButtonState) -> Bool 
     optional func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton)
 }
 
-class LiveAuctionBidButton : ARFlatButton {
+class LiveAuctionBidButton: ARFlatButton {
     var viewModel: LiveAuctionBiddingViewModelType
     var outbidNoticeDuration: NSTimeInterval = 1
     var outbidNoticeAnimationComplete: () -> Void = {}
-    
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
 
     init(viewModel: LiveAuctionBiddingViewModelType) {
@@ -33,7 +32,7 @@ class LiveAuctionBidButton : ARFlatButton {
 
         super.init(frame: CGRect.zero)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         // This is an acceptable default, it can be replaced before added to a view and setup() getting called.
         viewModel = LiveAuctionLeaveMaxBidButtonViewModel()
@@ -41,7 +40,7 @@ class LiveAuctionBidButton : ARFlatButton {
     }
 
     override func intrinsicContentSize() -> CGSize {
-        return CGSize(width: 48, height: 40);
+        return CGSize(width: 48, height: 40)
     }
 
     override func setup() {
@@ -91,18 +90,18 @@ class LiveAuctionBidButton : ARFlatButton {
                 _previousButtonState = buttonState
             case .Some(let previousButtonState) where previousButtonState != buttonState:
                 _previousButtonState = buttonState
-            default: break;
+            default: break
             }
         }
 
-        // If our outbid animation is in progress, we want to skip the new update, but keep track 
+        // If our outbid animation is in progress, we want to skip the new update, but keep track
         // of the button state so we can use it after the animation completes.
         guard _outbidAnimationIsInProgress == false else {
             _mostRecentlyReceivedButtonStateDuringAnimation = buttonState
             return
         }
 
-        // If, during our outbid animation, we received a buttonState, we're going to use _that_ state 
+        // If, during our outbid animation, we received a buttonState, we're going to use _that_ state
         // instead of the state we had when we started the animation.
         // Example: User is highest bidder, then gets sniped. During the outbid animation, the lot closes (improbable, but possible!).
         //          This would keep track of the .InActive button state and use that when the animation is completed.
@@ -170,11 +169,11 @@ class LiveAuctionBidButton : ARFlatButton {
     }
 
     private func handleBiddable(buttonState: LiveAuctionBidButtonState, formattedPrice: String) {
-        // First we check to see if our previous button state was "I'm the highest bidder" and now 
+        // First we check to see if our previous button state was "I'm the highest bidder" and now
         // our state is "I'm Biddable", then we infer the user got outbid. Let's present a nice animation.
         if let previousButtonState = _previousButtonState,
             case .Active(let previousState) = previousButtonState,
-            case .BidSuccess = previousState {
+                 case .BidSuccess = previousState {
             // User was previously the highest bidder but has been outbid
 
             _outbidAnimationIsInProgress = true

@@ -10,7 +10,7 @@ extension WebSocket: SocketType {
     }
 
     func writePing() {
-        writePing("2".dataUsingEncoding(NSUTF8StringEncoding)!)
+        writePing("2".dataUsingEncoding(NSUTF8StringEncoding)!) // swiftlint:disable:this force_unwrapping
     }
 
     func writeData(data: NSData) {
