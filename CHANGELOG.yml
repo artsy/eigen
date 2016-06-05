@@ -2,6 +2,10 @@ upcoming:
   version: 2.5.1
   details: Onboarding / New Gene VC / Live
 
+  dev:
+    infra:
+      - Adds SwiftLint. - ash
+
 releases:
   - version: 2.5.0
     details: New Artist View
