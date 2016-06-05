@@ -19,7 +19,7 @@ class LiveAuctionLotImageCollectionViewCell: UICollectionViewCell {
             url = castLayoutAttributes.url
             else { return }
 
-        // To avoid superfluously re-setting the URL on the image view, check that we actually need to update it. 
+        // To avoid superfluously re-setting the URL on the image view, check that we actually need to update it.
         if lastUpdatedIndex != layoutAttributes.indexPath.item {
             lastUpdatedIndex = layoutAttributes.indexPath.item
 
@@ -50,5 +50,5 @@ extension PublicFunctions {
 
         lotImageView.ar_setImageWithURL(lot.urlForThumbnail)
     }
-    
+
 }

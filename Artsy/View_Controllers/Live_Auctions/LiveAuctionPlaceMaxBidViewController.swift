@@ -13,7 +13,7 @@ enum LiveAuctionBiddingProgressState {
     case LotSold
 }
 
-func ==(lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressState) -> Bool {
+func == (lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressState) -> Bool {
     switch (lhs, rhs) {
     case (.TrialUser, .TrialUser): return true
     case (.Biddable(let lhsState), .Biddable(let rhsState)) where lhsState.askingPrice == rhsState.askingPrice && lhsState.currencySymbol == rhsState.currencySymbol: return true
@@ -183,7 +183,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
     // Incase you're new to storyboards, these views are on an associated
     // view ( its on the top bar for the scene. ) which can be hidden
     // https://blog.curtisherbert.com/secondary-views/ for info
-    
+
     @IBOutlet var bidProgressOverlayView: LiveBidProgressOverlayView!
 
     private func biddingProgressUpdated(state: LiveAuctionBiddingProgressState) {

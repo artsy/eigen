@@ -102,8 +102,13 @@ extension PublicFunctions {
         guard let bidderID = bidderID else {
             return print("Tried to bid without a bidder ID on account")
         }
+<<<<<<< HEAD
         
         biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
+=======
+
+        biddingViewModel.bidPendingSignal.update(true)
+>>>>>>> 79ab52e470186c7264d071727d41716831824d68
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)

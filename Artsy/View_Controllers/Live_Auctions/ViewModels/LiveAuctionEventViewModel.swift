@@ -1,6 +1,6 @@
 import Foundation
 
-class LiveAuctionEventViewModel : NSObject {
+class LiveAuctionEventViewModel: NSObject {
     let event: LiveEvent
     let currencySymbol: String
 
@@ -91,7 +91,7 @@ class LiveAuctionEventViewModel : NSObject {
     }
 
     func attributify(string: String, _ color: UIColor, strike: Bool = false) -> NSAttributedString {
-        var attributes:[String:AnyObject] = [NSForegroundColorAttributeName : color]
+        var attributes: [String:AnyObject] = [NSForegroundColorAttributeName : color]
         if strike { attributes[NSStrikethroughStyleAttributeName] = NSUnderlineStyle.StyleSingle.rawValue }
         return NSAttributedString(string: string, attributes:attributes)
     }
@@ -129,7 +129,7 @@ class LiveAuctionEventViewModel : NSObject {
     }
 
 
-    init(event:LiveEvent, currencySymbol: String) {
+    init(event: LiveEvent, currencySymbol: String) {
         self.event = event
         self.currencySymbol = currencySymbol
     }

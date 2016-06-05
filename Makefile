@@ -49,7 +49,9 @@ artsy:
 	git submodule update --init
 	config/spacecommander/setup-repo.sh
 	brew install swiftgen
+	brew install swiftlint
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
+	config/setup_swiftlint_precommit_hook.rb
 
 certs:
 	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."

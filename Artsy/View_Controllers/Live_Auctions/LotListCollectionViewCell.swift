@@ -56,7 +56,7 @@ extension PublicFunctions {
             lotImageView.contentMode = .ScaleAspectFill
             lotImageView.clipsToBounds = true
         }
-        
+
         resetViewHierarchy()
 
         isNotTopCell = (indexPath.item > 0)

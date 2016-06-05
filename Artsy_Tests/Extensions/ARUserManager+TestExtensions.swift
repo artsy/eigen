@@ -5,7 +5,7 @@ extension ARUserManager {
     /// Supports a block like logged in closure
     class func asLoggedInUser(closure: () -> ()) {
         self.stubAndLoginWithUsername()
-        closure();
+        closure()
         self.clearUserData()
     }
 }

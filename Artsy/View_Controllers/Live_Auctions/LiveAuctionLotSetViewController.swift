@@ -33,7 +33,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         let collectionViewLayout: UICollectionViewLayout
 
         if traitCollection .horizontalSizeClass != .Regular {
-            let screenWidthIsLarge = CGRectGetWidth(UIScreen.mainScreen().applicationFrame) > 320
+            let screenWidthIsLarge = UIScreen.mainScreen().applicationFrame.width > 320
             let size: LiveAuctionFancyLotCollectionViewLayout.Size = screenWidthIsLarge ? .Normal : .Compact
 
             let layout = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: size)
@@ -119,10 +119,10 @@ class LiveAuctionLotSetViewController: UIViewController {
         // The collection view "rests" at a non-zero index. We need to set it, but doing so immediately is too soon, so we dispatch to the next runloop invocation.
         ar_dispatch_main_queue {
             let initialRect = CGRect(
-                x: CGRectGetWidth(self.view.frame),
+                x: self.view.frame.width,
                 y: 0,
-                width: CGRectGetWidth(self.lotImageCollectionView.frame),
-                height: CGRectGetHeight(self.lotImageCollectionView.frame)
+                width: self.lotImageCollectionView.frame.width,
+                height: self.lotImageCollectionView.frame.height
             )
             self.lotImageCollectionView.scrollRectToVisible(initialRect, animated: false)
             self.lotImageCollectionView.reloadData()
@@ -152,7 +152,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         lots.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.showLots), forControlEvents: .TouchUpInside)
 
         let phone = traitCollection.userInterfaceIdiom == .Phone
-        let items:[UIBarButtonItem] = phone ? [close, lots, info] : [close, info]
+        let items: [UIBarButtonItem] = phone ? [close, lots, info] : [close, info]
 
         navigationItem.rightBarButtonItems = items
     }
@@ -225,7 +225,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func jumpToLotAtIndex(index: Int, animated: Bool) {
-        let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index)
+        guard let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index) else { return }
 
         // This logic won't do, lot at index 10 is not classed as being -1 from current index
         // perhaps it needs to see within a wrapping range of 0 to 10, which direction is it less steps
@@ -238,7 +238,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         lotImageCollectionView.reloadData()
         // TODO: Animations are disabled for now because it's unclear how to reload the collection view. Unlike the UIPVC,
         //       the collection view shows previous and next images, and can't be scrolled to the current lot image without flickering.
-        pageController.setViewControllers([currentLotVC!], direction: .Forward, animated: false, completion: nil)
+        pageController.setViewControllers([currentLotVC], direction: .Forward, animated: false, completion: nil)
     }
 
     func jumpToLiveLot() {
@@ -289,7 +289,7 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
 
     // The idea is to match the page view controller's scrollview's content offset to that of our collection view.
     // The collection view data source mimics the page view controller's three-at-a-time display strategy.
-    // Our job here is to keep the two in sync, using their contentOffset. 
+    // Our job here is to keep the two in sync, using their contentOffset.
     // The SalesPerson needs to update the currentFocuedLotIndex to match a change in the page view controller's internal layout.
 
     // When the user scrolls.
@@ -329,7 +329,7 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
             self?.progressBarBottomConstraint?.constant = (self?.progressBarBottomConstraintAtRestConstant ?? 0) + update.delta
 
             if update.animating {
-                self?.lotImageCollectionView.performBatchUpdates( {
+                self?.lotImageCollectionView.performBatchUpdates({
                     self?.lotCollectionViewLayout.repulsionConstant = abs(update.delta)
                     }, completion: nil)
             } else {

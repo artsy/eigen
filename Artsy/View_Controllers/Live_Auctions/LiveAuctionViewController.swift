@@ -47,9 +47,9 @@ class LiveAuctionViewController: UISplitViewController {
         super.viewWillAppear(animated)
         if delegate != nil { return }
 
-        preferredDisplayMode = .AllVisible;
-        preferredPrimaryColumnWidthFraction = 0.4;
-        delegate = self;
+        preferredDisplayMode = .AllVisible
+        preferredPrimaryColumnWidthFraction = 0.4
+        delegate = self
 
         statusMaintainer.viewWillAppear(animated, app: app)
 
@@ -81,7 +81,7 @@ class LiveAuctionViewController: UISplitViewController {
         // Stop the spinner to indicate that it's
         // tried and failed to do it
 
-        if (offlineView != nil) {
+        guard offlineView == nil else {
             offlineView?.refreshFailed()
             return
         }
@@ -178,7 +178,7 @@ extension PrivateFunctions {
         } else {
             lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
             lotListController.delegate = self
-            
+
             let lotListNav = ARSerifNavigationViewController(rootViewController: lotListController)
 
             viewControllers = [lotListNav, lotsSetNavigationController]
@@ -202,6 +202,8 @@ extension LiveAuctionViewController: LiveAuctionLotListViewControllerDelegate {
     }
 }
 
+// swiftlint:disable force_unwrapping
+
 class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
     func fetchStaticData() -> Observable<StaticSaleResult> {
         let signal = Observable<StaticSaleResult>()
@@ -217,10 +219,10 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
     }
 }
 
-func loadJSON(filename: String) -> AnyObject {
+func loadJSON(filename: String) -> AnyObject! {
     let jsonPath = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
     let jsonData = NSData(contentsOfFile: jsonPath!)!
-    let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
+    let json = try? NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
 
     return json
     }

@@ -141,7 +141,7 @@ class Test_StateRecociler: LiveAuctionStateReconcilerType {
     func processCurrentLotUpdate(update: AnyObject) {
         mostRecentCurrentLotUpdate = update
     }
-    
+
     var newLotsSignal: Observable<[LiveAuctionLotViewModelType]> { return Observable() }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { return Observable() }
     var saleSignal: Observable<LiveAuctionViewModelType> { return Observable() }

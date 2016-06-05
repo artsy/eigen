@@ -1,0 +1,23 @@
+disabled_rules:
+  - force_try
+  - force_cast
+  - force_unwrapping
+  - line_length
+  - type_name
+  - todo
+  - valid_docs
+  - function_parameter_count
+  - cyclomatic_complexity
+  - function_body_length
+  - conditional_binding_cascade
+  - file_length
+  - type_body_length
+
+opt_in_rules:
+  - empty_count
+
+included: Artsy_Tests
+
+variable_name:
+  min_length: 1
+  max_length: 100

@@ -48,7 +48,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                     "type" : "FirstPriceBidPlaced",
                     "id" : "ok",
                     "amountCents" : 555_000,
-                    "bidder" : ["type": "ArtsyBidder","bidderId": "LmnBN-aEci"]
+                    "bidder" : ["type": "ArtsyBidder", "bidderId": "LmnBN-aEci"]
                 ])
 
                 subject = self.setupCellWithEvent(event)
@@ -60,7 +60,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                     "type" : "FirstPriceBidPlaced",
                     "id" : "ok",
                     "amountCents" : 555_000,
-                    "bidder" : ["type": "OfflineBidder",]
+                    "bidder" : ["type": "OfflineBidder"]
                     ])
 
                 subject = self.setupCellWithEvent(event)
@@ -74,7 +74,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                     "id" : "ok",
                     "cancelled" : true,
                     "amountCents" : 555_000,
-                    "bidder" : ["type": "OfflineBidder",]
+                    "bidder" : ["type": "OfflineBidder"]
                     ])
 
                 subject = self.setupCellWithEvent(event)
@@ -82,14 +82,14 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             }
 
             it("looks right for final call") {
-                let event = LiveEvent(JSON: ["type" : "FinalCall", "id" : "ok",])
+                let event = LiveEvent(JSON: ["type" : "FinalCall", "id" : "ok"])
 
                 subject = self.setupCellWithEvent(event)
                 expect(subject) == snapshot()
             }
 
             it("looks right for fair warning") {
-                let event = LiveEvent(JSON: ["type" : "FairWarning", "id" : "ok",])
+                let event = LiveEvent(JSON: ["type" : "FairWarning", "id" : "ok"])
 
                 subject = self.setupCellWithEvent(event)
                 expect(subject) == snapshot()

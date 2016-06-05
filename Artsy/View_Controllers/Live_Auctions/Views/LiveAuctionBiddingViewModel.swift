@@ -25,7 +25,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     private let _askingPrice = Observable<UInt64>()
     private let _currentLot = Observable<LiveAuctionLotViewModelType?>()
     private let _newLotEventSignal = Observable<LiveAuctionEventViewModel>(LiveAuctionEventViewModel(event: LiveEvent(), currencySymbol: ""))
-    // _newLotEventSignal is different; every lot has a state asking price, and there's a default nil current lot. But not every lot has an event yet, 
+    // _newLotEventSignal is different; every lot has a state asking price, and there's a default nil current lot. But not every lot has an event yet,
     // so we need to "prime" the _newLotEventSignal with a dummy lot event (the values from _newLotEventSignal are completely ignored anyway).
 
 
@@ -98,4 +98,3 @@ class LiveAuctionLeaveMaxBidButtonViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal = Observable<LiveAuctionBidButtonState>()
     let bidPendingSignal = Observable<LiveAuctionBiddingProgressState>()
 }
-

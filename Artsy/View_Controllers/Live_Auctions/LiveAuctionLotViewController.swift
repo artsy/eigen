@@ -35,7 +35,7 @@ class LiveAuctionLotViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         return nil
     }
@@ -144,7 +144,7 @@ class LiveAuctionLotViewController: UIViewController {
         // Subscribe to updates from our bidding view model, telling us what state the lot's bid status is in.
         biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak lotMetadataStack, weak historyViewController, weak self] bidState in
 
-            let noCurrentLotExists:Bool
+            let noCurrentLotExists: Bool
 
             switch self?.salesPerson.auctionViewModel.currentLotSignal.peek() {
             case .None: fallthrough
@@ -327,7 +327,7 @@ extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
     func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton) {
         let bidVC = StoryboardScene.LiveAuctions.instantiateBid()
         bidVC.bidViewModel = LiveAuctionBidViewModel(lotVM: lotViewModel, salesPerson: salesPerson)
-        
+
         let nav = ARSerifNavigationViewController(rootViewController: bidVC)
         guard let pageVC = parentViewController else { return }
         guard let auctionVC = pageVC.parentViewController else { return }

@@ -49,10 +49,10 @@ class LiveAuctionLotListViewController: UICollectionViewController {
                 let activeIndex: Int? = (lotState == .LiveLot ? lot.lotIndex : nil)
                 self?.stickyCollectionViewLayout.setActiveIndex(activeIndex)
             }
-            
+
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         return nil
     }
@@ -64,7 +64,7 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         collectionView?.backgroundColor = .whiteColor()
         collectionView?.registerClass(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
 
@@ -81,7 +81,7 @@ class LiveAuctionLotListViewController: UICollectionViewController {
             navController?.hideCloseButton = true
         }
 
-        if (ARAppStatus.isBetaDevOrAdmin()) {
+        if ARAppStatus.isBetaDevOrAdmin() {
             setupAdminTools(isCompact, navController: navController)
         }
     }
@@ -145,5 +145,3 @@ extension CollectionView {
         delegate?.didSelectLotAtIndex(indexPath.item, forLotListViewController: self)
     }
 }
-
-

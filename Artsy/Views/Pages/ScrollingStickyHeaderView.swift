@@ -24,7 +24,7 @@ class ScrollingStickyHeaderView: UIView {
             $0.titleLabel?.font = UIFont.sansSerifFontWithSize(12)
             $0.setBorderColor(.artsyGrayRegular(), forState: .Normal)
             $0.setBorderColor(UIColor.artsyGrayRegular().colorWithAlphaComponent(0.5), forState: .Disabled)
-            $0.layer.borderWidth = 1;
+            $0.layer.borderWidth = 1
         }
 
         subtitleLabel = ARItalicsSerifLabel()
@@ -32,7 +32,7 @@ class ScrollingStickyHeaderView: UIView {
         topSeparator = ARSeparatorView()
         bottomSeparator = ARSeparatorView()
 
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
         stickyHeaderHeight = constrainHeight("60")
         backgroundColor = .whiteColor()
@@ -83,7 +83,7 @@ class ScrollingStickyHeaderView: UIView {
         leadingConstraints?.constant = margin
     }
 
-    func toggleAttatched(atTop:Bool, animated: Bool) {
+    func toggleAttatched(atTop: Bool, animated: Bool) {
         UIView.animateIf(animated, duration: 0.2) {
             self.titleLabel.alpha = atTop ? 1 : 0
             self.topSeparator.alpha = atTop ? 1 : 0

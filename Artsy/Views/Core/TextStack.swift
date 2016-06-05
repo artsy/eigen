@@ -11,7 +11,7 @@ class TextStack: ORStackView {
         return artistNameLabel
     }
 
-    func addArtworkName(string: String, date: String?) -> ARArtworkTitleLabel  {
+    func addArtworkName(string: String, date: String?) -> ARArtworkTitleLabel {
         let title = ARArtworkTitleLabel()
         title.setTitle(string, date: date)
         addSubview(title, withTopMargin: "4", sideMargin: "0")

@@ -32,17 +32,17 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
 
 
 /// Number of sale artworks to fetch at once.
-private let PageSize = 100
+private let pageSize = 100
 
 /// Recursively calls itself with page+1 until the count of the returned array is < pageSize.
 private func fetchPage(page: Int, forSaleID saleID: String, alreadyFetched: [SaleArtwork], callback: Result<[SaleArtwork]> -> Void) {
     ArtsyAPI.getSaleArtworksWithSale(saleID,
         page: page,
-        pageSize: PageSize,
+        pageSize: pageSize,
         success: { saleArtworks in
             let totalFetchedSoFar = alreadyFetched + saleArtworks
 
-            if saleArtworks.count < PageSize {
+            if saleArtworks.count < pageSize {
                 // We have reached the end of the sale artworks, stop recursing.
                 callback(.Success(totalFetchedSoFar))
             } else {
@@ -56,4 +56,3 @@ private func fetchPage(page: Int, forSaleID saleID: String, alreadyFetched: [Sal
         }
     )
 }
-
