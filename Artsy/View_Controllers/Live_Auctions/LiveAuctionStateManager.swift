@@ -13,6 +13,7 @@ Based on socket events:
 - # of watchers
 - next bid amount $
 - bid history
+- bid request (command) success/failure
 */
 
 class LiveAuctionStateManager: NSObject {
@@ -67,29 +68,10 @@ class LiveAuctionStateManager: NSObject {
             let json = JSON(response)
             let bidUUID = json["key"].stringValue
             let biddingViewModel = self?.biddingStates.removeValueForKey(bidUUID)
-            let eventJSON = json["event"].dictionaryObject
-
-            let liveEvent = LiveEvent(JSON: eventJSON)
-            // TODO: What to do with the Error?
-//            let status = BidProgressStatus.Completed(success: true, event:liveEvent, error: nil)
-//            private func updateForBidProgress(state: BidProgressStatus) {
-//                switch state {
-//                case .Started:
-//                    setupWithState(.Active(biddingState: .BiddingInProgress))
-//
-//                case.Completed(let success, let event, let error):
-//                    if (error != nil) {
-//                        setupWithState(.Active(biddingState: .BidNetworkFail))
-//                    } else {
-//
-//                        if success {
-//                            setupWithState(.Active(biddingState: .BidSuccess))
-//                        } else {
-//                            self.setupUI("Outbid", background: red)
-//                        }
-//                    }
-//                }
-            let confirmed = LiveAuctionBiddingProgressState.BidConfirmed
+//            So far this event isn't needed anywhere, but keeping for prosperities sake
+//            let eventJSON = json["event"].dictionaryObject
+//            let liveEvent = LiveEvent(JSON: eventJSON)
+            let confirmed = LiveAuctionBiddingProgressState.BidAcknowledged
             biddingViewModel?.bidPendingSignal.update(confirmed)
         }
     }
@@ -102,13 +84,9 @@ extension PublicFunctions {
         guard let bidderID = bidderID else {
             return print("Tried to bid without a bidder ID on account")
         }
-<<<<<<< HEAD
-        
-        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
-=======
 
-        biddingViewModel.bidPendingSignal.update(true)
->>>>>>> 79ab52e470186c7264d071727d41716831824d68
+        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
+
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)

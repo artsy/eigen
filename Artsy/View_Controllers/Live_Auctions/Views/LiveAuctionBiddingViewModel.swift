@@ -81,7 +81,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                     let isHighestBiddder = state.currentLot?.userIsHighestBidder ?? false
 
                     if isHighestBiddder {
-                        biddingState = .BidConfirmed
+                        biddingState = .BidAcknowledged
                     } else {
                         biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
                     }

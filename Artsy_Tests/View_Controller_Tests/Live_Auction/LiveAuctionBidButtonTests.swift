@@ -16,8 +16,8 @@ class LiveAuctionBidButtonTests: QuickSpec {
             "biddable": [.Active(biddingState: .Biddable(askingPrice: 45_000_00, currencySymbol: "$"))],
             "in progress": [.Active(biddingState: .BiddingInProgress )],
             "failed": [.Active(biddingState: .BidNetworkFail)],
-            "max bidder": [.Active(biddingState: .BidSuccess)],
-            "not max bidder": [.Active(biddingState: .BidSuccess), .Active(biddingState: .Biddable(askingPrice: 1000, currencySymbol: ""))],
+            "max bidder": [.Active(biddingState: .BidBecameMaxBidder)],
+            "not max bidder": [.Active(biddingState: .BidBecameMaxBidder), .Active(biddingState: .Biddable(askingPrice: 1000, currencySymbol: ""))],
             "waiting": [.Active(biddingState: .LotWaitingToOpen)],
             "sold": [.Active(biddingState: .LotSold)],
             "closed": [.InActive(lotState: .ClosedLot)],
@@ -43,7 +43,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
 
             waitUntil { done in
                 subject.outbidNoticeAnimationComplete = done
-                viewModel.progressSignal.update(.Active(biddingState: .BidSuccess))
+                viewModel.progressSignal.update(.Active(biddingState: .BidBecameMaxBidder))
                 viewModel.progressSignal.update(.Active(biddingState: .Biddable(askingPrice: 1000, currencySymbol: "")))
                 viewModel.progressSignal.update(.InActive(lotState: .ClosedLot))
             }
@@ -56,5 +56,5 @@ class LiveAuctionBidButtonTests: QuickSpec {
 
 class Test_BiddingViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal = Observable<LiveAuctionBidButtonState>()
-    let bidPendingSignal = Observable<Bool>()
+    let bidPendingSignal = Observable<LiveAuctionBiddingProgressState>()
 }

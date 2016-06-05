@@ -35,7 +35,7 @@ class LiveBidProgressOverlayView: UIView {
         case .BiddingInProgress:
             setupProgressUI("Placing Bid", textColor: purple, image: .LiveAuctionSpinner, spinImage: true)
 
-        case .BidConfirmed:
+        case .BidAcknowledged:
             // TODO: this needs to keep track of the previous bidding state
             setupProgressUI("Bid Placed", textColor: green, image: .LiveAuctionMaxBidIcon)
 

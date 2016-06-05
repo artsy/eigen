@@ -5,7 +5,7 @@ enum LiveAuctionBiddingProgressState {
     case TrialUser
     case Biddable(askingPrice: UInt64, currencySymbol: String)
     case BiddingInProgress
-    case BidConfirmed
+    case BidAcknowledged
     case BidBecameMaxBidder
     case BidOutbid
     case BidNetworkFail
@@ -19,7 +19,7 @@ func == (lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressSt
     case (.Biddable(let lhsState), .Biddable(let rhsState)) where lhsState.askingPrice == rhsState.askingPrice && lhsState.currencySymbol == rhsState.currencySymbol: return true
     case (.BiddingInProgress, .BiddingInProgress): return true
     case (.BidBecameMaxBidder, .BidBecameMaxBidder): return true
-    case (.BidConfirmed, .BidConfirmed): return true
+    case (.BidAcknowledged, .BidAcknowledged): return true
     case (.BidNetworkFail, .BidNetworkFail): return true
     case (.LotWaitingToOpen, .LotWaitingToOpen): return true
     case (.LotSold, .LotSold): return true
@@ -197,7 +197,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
     private func handleProgressViewVisibility(state: LiveAuctionBiddingProgressState) {
         let shouldShowBidProgressView: Bool
         switch state {
-        case .BidConfirmed, .BiddingInProgress: shouldShowBidProgressView = true
+        case .BidAcknowledged, .BiddingInProgress: shouldShowBidProgressView = true
         default: shouldShowBidProgressView = false
         }
 

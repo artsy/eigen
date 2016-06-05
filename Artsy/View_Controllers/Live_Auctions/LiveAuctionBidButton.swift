@@ -23,12 +23,15 @@ func == (lhs: LiveAuctionBidButtonState, rhs: LiveAuctionBidButtonState) -> Bool
 
 class LiveAuctionBidButton: ARFlatButton {
     var viewModel: LiveAuctionBiddingViewModelType
-    var outbidNoticeDuration: NSTimeInterval = 1
-    
+
     // On the lotVC we want to indicate being outbid
     // but on the max-bid modal we don't.
     var flashOutbidOnBiddableStateChanges = true
+
+    // Used almost exclusively in testing
     var outbidNoticeAnimationComplete: () -> Void = {}
+    var outbidNoticeDuration: NSTimeInterval = 1
+
 
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
 
@@ -149,7 +152,7 @@ class LiveAuctionBidButton: ARFlatButton {
                 let formattedPrice = price.convertToDollarString(currencySymbol)
                 handleBiddable(buttonState, formattedPrice: formattedPrice)
 
-            case .BiddingInProgress, .BidConfirmed:
+            case .BiddingInProgress, .BidAcknowledged:
                 setupUI("Bidding...", background: purple)
 
             case .BidBecameMaxBidder:
