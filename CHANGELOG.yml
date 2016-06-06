@@ -8,6 +8,7 @@ upcoming:
     live_actions:
       - Adds visual feedback to placing a max bid - orta
       - Adds a disconnection overlay for the socket - orta
+      - Pre-cache the lot thumbnails after 2 seconds of being connected -  orta
   user_facing:
       - Allows max bids on live auctions - orta
 
