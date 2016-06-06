@@ -2,8 +2,50 @@ import Foundation
 import Interstellar
 import SwiftyJSON
 
+enum CausalityRole {
+    case Bidder
+    case Observer
+}
 
-typealias JWT = String
+class JWT {
+    let string: String
+    private let rawData: JSON
+
+    init?(jwtString: String) {
+        let components = jwtString.componentsSeparatedByString(".")
+        if components.count != 3 { return nil }
+
+        let body = components[1]
+
+        // From our side, this is more complex than you'd hope WRT base64 decoding a string
+        // for the full details: http://stackoverflow.com/a/21407393/385754
+
+        let paddedLength = body.characters.count + (4 - (body.characters.count % 4));
+        let correctBase64String = body.stringByPaddingToLength(paddedLength, withString:"=", startingAtIndex:0)
+
+        guard let decodedData = NSData(base64EncodedString: correctBase64String, options:[.IgnoreUnknownCharacters]),
+              let json = try? NSJSONSerialization.JSONObjectWithData(decodedData, options: [])
+              else { return nil}
+
+        rawData = JSON(json)
+        string = jwtString
+    }
+
+    var userID: String? {
+        return rawData["userId"].string
+    }
+
+    var role: CausalityRole {
+        switch rawData["role"].stringValue {
+        case "bidder":
+            return .Bidder
+        // Fallback for unknown roles
+        default:
+            return .Observer
+        }
+    }
+}
+
 typealias StaticSaleResult = Result<(sale: LiveSale, jwt: JWT, bidderID: String?)>
 
 
@@ -34,8 +76,8 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
                     return signal.update(.Error(Error.JSONParsing))
                 }
 
-                guard let
-                    jwt = self.parseJWT(json) else {
+                guard
+                    let jwt = self.parseJWT(json) else {
                     return signal.update(.Error(Error.NoJWTCredentials))
                 }
 
@@ -61,7 +103,7 @@ extension LiveAuctionStaticDataFetcherType {
     }
 
     func parseJWT(json: JSON) -> JWT? {
-        return json["data"]["causality_jwt"].string
+        return  JWT(jwtString: json["data"]["causality_jwt"].stringValue)
     }
 
     func parseBidderID(json: JSON) -> String? {
