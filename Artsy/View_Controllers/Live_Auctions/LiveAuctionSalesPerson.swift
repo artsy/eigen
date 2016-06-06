@@ -22,6 +22,9 @@ protocol LiveAuctionsSalesPersonType {
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
 
+    // When we connect/disconnect true/false is sent down
+    var socketConnectionSignal: Observable<Bool> { get }
+
     /// Lets a client hook in to listen to all events
     /// shoud not be used outside of developer tools.
     var debugAllEventsSignal: Observable<LotEventJSON> { get }
@@ -38,6 +41,10 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
     var bidderStatus: ArtsyAPISaleRegistrationStatus {
         return stateManager.bidderStatus
+    }
+
+    var socketConnectionSignal: Observable<Bool> {
+        return stateManager.socketConnectionSignal
     }
 
     private let stateManager: LiveAuctionStateManager
