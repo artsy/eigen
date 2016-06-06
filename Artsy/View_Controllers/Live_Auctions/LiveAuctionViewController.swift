@@ -107,72 +107,15 @@ class LiveAuctionViewController: UISplitViewController {
         }
     }
 
-    var disconnectedView: UIView?
-
     func actuallyShowDisconnectedOverlay(show: Bool) {
         if !show {
-            guard let disconnectedView = disconnectedView else { return }
-            disconnectedView.removeFromSuperview()
-            self.disconnectedView = nil
-            UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
-            return
+            ar_removeBlurredOverlayWithTitle()
+        } else {
+            let title = NSLocalizedString("Artsy has lost contact with the auction house.", comment: "Live websocket disconnect title")
+            let subtitle = NSLocalizedString("Attempting to reconnect now", comment: "Live websocket disconnect subtitle")
+            let menuButton = BlurredStatusOverlayViewCloseButtonState.Show(target: self, selector: #selector(dismissLiveAuctionsModal))
+            ar_presentBlurredOverlayWithTitle(title, subtitle: subtitle, buttonState:menuButton)
         }
-
-        if let _ = disconnectedView where show { return }
-
-        ar_dispatch_async {
-            UIGraphicsBeginImageContext(self.view.bounds.size);
-            self.view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates:false)
-
-            let viewImage = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-
-            let blurredImage = viewImage.blurredImageWithRadius(12, iterations: 2, tintColor: UIColor.blackColor())
-
-            ar_dispatch_main_queue {
-                let imageView = UIImageView(frame: self.view.bounds)
-                imageView.image = blurredImage
-                self.view.addSubview(imageView)
-                let darkOverlay = UIView(frame: imageView.bounds)
-                darkOverlay.backgroundColor = UIColor(white: 0, alpha: 0.75)
-                imageView.addSubview(darkOverlay)
-                self.disconnectedView = imageView
-
-                UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
-
-                let dimension = 40
-                let closeButton = ARMenuButton()
-                closeButton.setBorderColor(.whiteColor(), forState: .Normal, animated: false)
-                closeButton.setBackgroundColor(.clearColor(), forState: .Normal, animated: false)
-                let cross = UIImage(named:"serif_modal_close")?.imageWithRenderingMode(.AlwaysTemplate)
-                closeButton.setImage(cross, forState: .Normal)
-                closeButton.alpha = 0.5
-                closeButton.tintColor = .whiteColor()
-                closeButton.addTarget(self, action: #selector(self.dismissLiveAuctionsModal), forControlEvents: .TouchUpInside)
-
-                imageView.addSubview(closeButton)
-                closeButton.alignTrailingEdgeWithView(imageView, predicate: "-20")
-                closeButton.alignTopEdgeWithView(imageView, predicate: "20")
-                closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
-
-                let infoStack = ORStackView()
-                let title = NSLocalizedString("Artsy has lost contact with the auction house.", comment: "Live websocket disconnect title")
-                let subtitle = NSLocalizedString("Attempting to reconnect now", comment: "Live websocket disconnect subtitle")
-
-                infoStack.addSerifPageTitle(title, subtitle: subtitle)
-                infoStack.subviews.forEach {
-                    guard let label = $0 as? UILabel else { return }
-                    label.textColor = .whiteColor()
-                    label.backgroundColor = .clearColor()
-                }
-                imageView.addSubview(infoStack)
-                infoStack.constrainWidthToView(imageView, predicate: "-40")
-                infoStack.alignCenterWithView(imageView)
-            }
-        }
-
-        disconnectedView = AROfflineView()
-
     }
 
     /// This is the offline view when we cannot fetch metaphysics static data
