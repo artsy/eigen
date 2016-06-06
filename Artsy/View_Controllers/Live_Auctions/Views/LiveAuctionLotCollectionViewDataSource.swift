@@ -1,4 +1,5 @@
 import UIKit
+import SDWebImage
 
 class LiveAuctionLotCollectionViewDataSource: NSObject {
 
@@ -7,9 +8,20 @@ class LiveAuctionLotCollectionViewDataSource: NSObject {
     static let CellClass = LiveAuctionLotImageCollectionViewCell.self
 
     let salesPerson: LiveAuctionsSalesPersonType
+    let imagePrefetcher = SDWebImagePrefetcher.sharedImagePrefetcher()
 
     init(salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
+        super.init()
+
+        ar_dispatch_after(2) { [weak self] in
+            self?.beginThumnailPrecache()
+        }
+    }
+
+    func beginThumnailPrecache() {
+        let thumnailURLs = (1..<salesPerson.lotCount).map { return salesPerson.lotViewModelForIndex($0).urlForThumbnail }
+        imagePrefetcher.prefetchURLs(thumnailURLs)
     }
 
     private func offsetForIndex(index: Int) -> Int {

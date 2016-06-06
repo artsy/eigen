@@ -72,6 +72,7 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
     var currentLotSignal = Observable<LiveAuctionLotViewModelType?>()
     var currentFocusedLotIndex = Observable(0)
     var debugAllEventsSignal = Observable<LotEventJSON>()
+    var socketConnectionSignal = Observable<Bool>()
 
     var auctionViewModel: LiveAuctionViewModelType
     var lotCount: Int { return auctionViewModel.lotCount }

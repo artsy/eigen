@@ -94,7 +94,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
 
         // We may be _re_appearing, so scroll to top if we have any cells.
         if lotViewModel.numberOfDerivedEvents > 0 {
-            tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: false)
+//            tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: false)
         }
     }
 
