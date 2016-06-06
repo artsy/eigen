@@ -1,14 +1,19 @@
 import Foundation
 import Interstellar
 
+enum BidProgressStatus {
+    case Started
+    case Completed(success: Bool, event: LiveEvent, error: ErrorType?)
+}
+
 protocol LiveAuctionBiddingViewModelType {
     var progressSignal: Observable<LiveAuctionBidButtonState> { get }
-    var bidPendingSignal: Observable<Bool> { get }
+    var bidPendingSignal: Observable<LiveAuctionBiddingProgressState> { get }
 }
 
 class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal: Observable<LiveAuctionBidButtonState>
-    let bidPendingSignal = Observable<Bool>()
+    let bidPendingSignal = Observable<LiveAuctionBiddingProgressState>()
 
     private let _lotStateSubscription: ObserverToken<LotState>
     private let _askingPriceSubscription: ObserverToken<UInt64>
@@ -76,7 +81,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                     let isHighestBiddder = state.currentLot?.userIsHighestBidder ?? false
 
                     if isHighestBiddder {
-                        biddingState = .BidSuccess
+                        biddingState = .BidAcknowledged
                     } else {
                         biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
                     }
@@ -91,5 +96,5 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
 
 class LiveAuctionLeaveMaxBidButtonViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal = Observable<LiveAuctionBidButtonState>()
-    let bidPendingSignal = Observable<Bool>()
+    let bidPendingSignal = Observable<LiveAuctionBiddingProgressState>()
 }

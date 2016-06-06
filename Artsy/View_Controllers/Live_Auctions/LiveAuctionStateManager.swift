@@ -13,6 +13,7 @@ Based on socket events:
 - # of watchers
 - next bid amount $
 - bid history
+- bid request (command) success/failure
 */
 
 class LiveAuctionStateManager: NSObject {
@@ -67,7 +68,11 @@ class LiveAuctionStateManager: NSObject {
             let json = JSON(response)
             let bidUUID = json["key"].stringValue
             let biddingViewModel = self?.biddingStates.removeValueForKey(bidUUID)
-            biddingViewModel?.bidPendingSignal.update(false)
+//            So far this event isn't needed anywhere, but keeping for prosperities sake
+//            let eventJSON = json["event"].dictionaryObject
+//            let liveEvent = LiveEvent(JSON: eventJSON)
+            let confirmed = LiveAuctionBiddingProgressState.BidAcknowledged
+            biddingViewModel?.bidPendingSignal.update(confirmed)
         }
     }
 }
@@ -80,7 +85,8 @@ extension PublicFunctions {
             return print("Tried to bid without a bidder ID on account")
         }
 
-        biddingViewModel.bidPendingSignal.update(true)
+        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
+
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)
@@ -91,7 +97,7 @@ extension PublicFunctions {
             return print("Tried to leave a max bid without a bidder ID on account")
         }
 
-        biddingViewModel.bidPendingSignal.update(true)
+        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
         let bidID = NSUUID().UUIDString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderID: bidderID, bidUUID: bidID)

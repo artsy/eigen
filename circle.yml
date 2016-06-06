@@ -32,7 +32,7 @@ machine:
 
 dependencies:
   override:
-    - git submodule update --init
+    - if [ ! -d "Pods" ]; then git submodule update --init; fi; 
     - bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
     - bundle exec pod install --verbose
 

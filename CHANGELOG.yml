@@ -5,6 +5,8 @@ upcoming:
   dev:
     infra:
       - Adds SwiftLint. - ash
+    live_actions:
+      - Adds visual feedback to placing a max bid - orta
 
 releases:
   - version: 2.5.0

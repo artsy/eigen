@@ -5,7 +5,9 @@ enum LiveAuctionBiddingProgressState {
     case TrialUser
     case Biddable(askingPrice: UInt64, currencySymbol: String)
     case BiddingInProgress
-    case BidSuccess
+    case BidAcknowledged
+    case BidBecameMaxBidder
+    case BidOutbid
     case BidNetworkFail
     case LotWaitingToOpen
     case LotSold
@@ -16,10 +18,12 @@ func == (lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressSt
     case (.TrialUser, .TrialUser): return true
     case (.Biddable(let lhsState), .Biddable(let rhsState)) where lhsState.askingPrice == rhsState.askingPrice && lhsState.currencySymbol == rhsState.currencySymbol: return true
     case (.BiddingInProgress, .BiddingInProgress): return true
-    case (.BidSuccess, .BidSuccess): return true
+    case (.BidBecameMaxBidder, .BidBecameMaxBidder): return true
+    case (.BidAcknowledged, .BidAcknowledged): return true
     case (.BidNetworkFail, .BidNetworkFail): return true
     case (.LotWaitingToOpen, .LotWaitingToOpen): return true
     case (.LotSold, .LotSold): return true
+    case (.BidOutbid, .BidOutbid): return true
 
     default: return false
     }
@@ -98,7 +102,6 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
     var bidButtonViewModel: LiveAuctionBiddingViewModelType!
     var biddingProgressSignal = Observable<LiveAuctionBiddingProgressState>()
 
-
     @IBOutlet weak var lowerBiddingSeparatorView: UIView!
     @IBOutlet weak var bidButton: LiveAuctionBidButton!
 
@@ -107,6 +110,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
         bidButtonViewModel = bidButton.viewModel
         bidButton.delegate  = self
+        bidButton.flashOutbidOnBiddableStateChanges = false
 
         updateLotInformation()
         updateCurrentBidInformation(NSDate())
@@ -114,6 +118,8 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
         bidViewModel.lotViewModel.endEventUpdatesSignal.subscribe(updateCurrentBidInformation)
         biddingProgressSignal.subscribe(biddingProgressUpdated)
+
+        bidButtonViewModel.bidPendingSignal.subscribe(biddingProgressUpdated)
 
         view.layoutIfNeeded()
         let bottomSeparatorOverlapsBidButton = bidButton.center.y < lowerBiddingSeparatorView.center.y
@@ -143,6 +149,8 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         // New bids can come in while we are on this screen
         bidViewModel.currentBid = max(bidViewModel.currentBid, bidViewModel.currentLotValue)
         updateBiddingControls(bidViewModel.currentBid)
+
+        shouldShowBiddingOverlay(false, maxBidder: bidViewModel.lotViewModel.userIsHighestBidder)
     }
 
     @IBOutlet weak var decreaseBidButton: UIButton!
@@ -187,16 +195,20 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
     }
 
     private func handleProgressViewVisibility(state: LiveAuctionBiddingProgressState) {
-        let showingBidProgressView = bidProgressOverlayView.superview != nil
         let shouldShowBidProgressView: Bool
-
         switch state {
-        case .Biddable, .TrialUser: shouldShowBidProgressView = false
-        default: shouldShowBidProgressView = true
+        case .BidAcknowledged, .BiddingInProgress: shouldShowBidProgressView = true
+        default: shouldShowBidProgressView = false
         }
 
-        let addBidProgressView = !showingBidProgressView && shouldShowBidProgressView
-        let removeBidProgressView = showingBidProgressView && !shouldShowBidProgressView
+        shouldShowBiddingOverlay(shouldShowBidProgressView, maxBidder: nil)
+    }
+
+    private func shouldShowBiddingOverlay(show: Bool, maxBidder: Bool?) {
+        let showingBidProgressView = bidProgressOverlayView.superview != nil
+
+        let addBidProgressView = !showingBidProgressView && show
+        let removeBidProgressView = showingBidProgressView && !show
 
         if addBidProgressView {
             view.addSubview(bidProgressOverlayView)
@@ -206,8 +218,19 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         }
 
         if removeBidProgressView {
-            bidProgressOverlayView.removeFromSuperview()
+            // We get a normal event for the outbid notification
+            // which we can use to infer whether we won or not.
+
+            guard let maxBidder = maxBidder else { return }
+            let score:LiveAuctionBiddingProgressState =  maxBidder ? .BidBecameMaxBidder : .BidOutbid
+            bidProgressOverlayView.biddingProgressSignal.update(score)
+            bidButtonViewModel.progressSignal.update(.Active(biddingState:  score))
+
+            ar_dispatch_after(2) {
+                self.bidProgressOverlayView.removeFromSuperview()
+            }
         }
+
     }
 }
 
