@@ -62,7 +62,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
             }
         }
 
-        it("hides the progressview when state is made to be biddable again") {
+        it("hides the progressview after recieving a lot event after the progress has shown") {
             subject = StoryboardScene.LiveAuctions.instantiateBid()
             let lotVM = Test_LiveAuctionLotViewModel()
             subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson:  stub_auctionSalesPerson())
@@ -72,8 +72,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
 
             expect(subject.bidProgressOverlayView.superview) != nil
 
-            let start = LiveAuctionBiddingProgressState.Biddable(askingPrice: 5_000_00, currencySymbol: "$")
-            subject.biddingProgressSignal.update(start)
+            subject.bidViewModel.lotViewModel.endEventUpdatesSignal.update(NSDate())
             expect(subject.bidProgressOverlayView.superview).to( beNil() )
         }
 
@@ -81,8 +80,8 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
 
             let examples: [String: [LiveAuctionBiddingProgressState]] = [
                 "in progress": [.BiddingInProgress],
-                "is max bidder": [.BidSuccess],
-//                "not max bidder": [.BidSuccess, .Biddable(askingPrice: 1_000_00, currencySymbol: "¥")],
+                "is max bidder": [.BidBecameMaxBidder],
+                "not max bidder": [.BidOutbid],
                 "network issues": [.BidNetworkFail],
                 "waiting": [.LotWaitingToOpen],
                 "sold": [.LotSold],

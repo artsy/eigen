@@ -19,6 +19,7 @@ protocol LiveAuctionSocketCommunicatorType {
     var lotUpdateBroadcasts: Observable<AnyObject> { get }
     var currentLotUpdate: Observable<AnyObject> { get }
     var postEventResponses: Observable<AnyObject> { get }
+    var socketConnectionSignal: Observable<Bool> { get }
 
     func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String)
     func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String)
@@ -34,6 +35,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     let lotUpdateBroadcasts = Observable<AnyObject>()
     let currentLotUpdate = Observable<AnyObject>()
     let postEventResponses = Observable<AnyObject>()
+    let socketConnectionSignal = Observable<Bool>()
 
     let jwt: JWT
 
@@ -91,12 +93,17 @@ private extension SocketSetup {
     func socketConnected() {
         print ("Socket connected")
         socket.writeString("{\"type\":\"Authorize\",\"jwt\":\"\(jwt)\"}")
+        socketConnectionSignal.update(true)
     }
 
     func socketDisconnected(error: NSError?) {
         print ("Socket disconnected: \(error)")
-        // TODO: Handle error condition?
-        socket.connect()
+        socketConnectionSignal.update(false)
+
+        // Give it half a second to re-connect
+        ar_dispatch_after(0.5) {
+            self.socket.connect()
+        }
     }
 
     func pingSocket() {
@@ -127,7 +134,8 @@ private extension SocketSetup {
         case "OperationFailedEvent": break
             // TODO: Handle op failure
 
-        case "PostEventResponse":
+
+        case "CommandSuccessful", "CommandFailed", "PostEventResponse":
             postEventResponses.update(json)
 
         case "SaleLotChangeBroadcast":

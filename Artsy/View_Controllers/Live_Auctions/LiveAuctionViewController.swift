@@ -3,6 +3,8 @@ import Artsy_UIButtons
 import Interstellar
 import UICKeyChainStore
 import SwiftyJSON
+import FXBlurView
+import ORStackView
 
 class LiveAuctionViewController: UISplitViewController {
     let saleSlugOrID: String
@@ -15,15 +17,13 @@ class LiveAuctionViewController: UISplitViewController {
         return LiveAuctionStaticDataFetcher(saleSlugOrID: self.saleSlugOrID)
     }()
 
-    lazy var salesPersonCreator: (LiveSale, JWT, String) -> LiveAuctionsSalesPersonType = self.salesPerson
+    lazy var salesPersonCreator: (LiveSale, JWT, String?) -> LiveAuctionsSalesPersonType = self.salesPerson
 
     var lotSetController: LiveAuctionLotSetViewController!
     var lotsSetNavigationController: ARSerifNavigationViewController!
     var lotListController: LiveAuctionLotListViewController!
 
     var sale: LiveSale?
-
-    var offlineView: AROfflineView?
 
     private var statusMaintainer = ARSerifStatusMaintainer()
     lazy var app = UIApplication.sharedApplication()
@@ -43,6 +43,11 @@ class LiveAuctionViewController: UISplitViewController {
             .addObserver(self, selector: #selector(userHasChangedRegistrationStatus), name: ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ar_presentIndeterminateLoadingIndicatorAnimated(true)
+    }
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if delegate != nil { return }
@@ -52,8 +57,6 @@ class LiveAuctionViewController: UISplitViewController {
         delegate = self
 
         statusMaintainer.viewWillAppear(animated, app: app)
-
-        ar_presentIndeterminateLoadingIndicatorAnimated(true)
         connectToNetwork()
 
         UIApplication.sharedApplication().idleTimerDisabled = true
@@ -61,7 +64,7 @@ class LiveAuctionViewController: UISplitViewController {
 
     func connectToNetwork() {
         staticDataFetcher.fetchStaticData().subscribe { [weak self] result in
-            defer { self?.ar_removeIndeterminateLoadingIndicatorAnimated(true) }
+            self?.ar_removeIndeterminateLoadingIndicatorAnimated(Bool(ARPerformWorkAsynchronously))
 
             switch result {
             case .Success(let (sale, jwt, bidderID)):
@@ -76,6 +79,105 @@ class LiveAuctionViewController: UISplitViewController {
             }
         }
     }
+
+    /// We want to offer ~1 second of delay to allow
+    /// the socket to reconnect before we show the disconnect warning
+    /// This is mainly to ensure it doesn't consistently flicker on/off
+    /// with unpredictable connections
+
+    var showSocketDisconnectWarning = false
+    var waitingToShowDisconnect = false
+
+    /// param is hide because it recieves a "connected" signal
+    func showSocketDisconnectedOverlay(hide: Bool) {
+        if hide { actuallyShowDisconnectedOverlay(false) }
+        let show = !hide
+        showSocketDisconnectWarning = show
+
+        if waitingToShowDisconnect { return }
+        if show {
+            waitingToShowDisconnect = true
+
+            ar_dispatch_after(1.1) {
+                self.waitingToShowDisconnect = false
+                if self.showSocketDisconnectWarning == true {
+                    self.actuallyShowDisconnectedOverlay(true)
+                }
+            }
+        }
+    }
+
+    var disconnectedView: UIView?
+
+    func actuallyShowDisconnectedOverlay(show: Bool) {
+        if !show {
+            guard let disconnectedView = disconnectedView else { return }
+            disconnectedView.removeFromSuperview()
+            self.disconnectedView = nil
+            UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
+            return
+        }
+
+        if let _ = disconnectedView where show { return }
+
+        ar_dispatch_async {
+            UIGraphicsBeginImageContext(self.view.bounds.size);
+            self.view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates:false)
+
+            let viewImage = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+
+            let blurredImage = viewImage.blurredImageWithRadius(12, iterations: 2, tintColor: UIColor.blackColor())
+
+            ar_dispatch_main_queue {
+                let imageView = UIImageView(frame: self.view.bounds)
+                imageView.image = blurredImage
+                self.view.addSubview(imageView)
+                let darkOverlay = UIView(frame: imageView.bounds)
+                darkOverlay.backgroundColor = UIColor(white: 0, alpha: 0.75)
+                imageView.addSubview(darkOverlay)
+                self.disconnectedView = imageView
+
+                UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+
+                let dimension = 40
+                let closeButton = ARMenuButton()
+                closeButton.setBorderColor(.whiteColor(), forState: .Normal, animated: false)
+                closeButton.setBackgroundColor(.clearColor(), forState: .Normal, animated: false)
+                let cross = UIImage(named:"serif_modal_close")?.imageWithRenderingMode(.AlwaysTemplate)
+                closeButton.setImage(cross, forState: .Normal)
+                closeButton.alpha = 0.5
+                closeButton.tintColor = .whiteColor()
+                closeButton.addTarget(self, action: #selector(self.dismissLiveAuctionsModal), forControlEvents: .TouchUpInside)
+
+                imageView.addSubview(closeButton)
+                closeButton.alignTrailingEdgeWithView(imageView, predicate: "-20")
+                closeButton.alignTopEdgeWithView(imageView, predicate: "20")
+                closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
+
+                let infoStack = ORStackView()
+                let title = NSLocalizedString("Artsy has lost contact with the auction house.", comment: "Live websocket disconnect title")
+                let subtitle = NSLocalizedString("Attempting to reconnect now", comment: "Live websocket disconnect subtitle")
+
+                infoStack.addSerifPageTitle(title, subtitle: subtitle)
+                infoStack.subviews.forEach {
+                    guard let label = $0 as? UILabel else { return }
+                    label.textColor = .whiteColor()
+                    label.backgroundColor = .clearColor()
+                }
+                imageView.addSubview(infoStack)
+                infoStack.constrainWidthToView(imageView, predicate: "-40")
+                infoStack.alignCenterWithView(imageView)
+            }
+        }
+
+        disconnectedView = AROfflineView()
+
+    }
+
+    /// This is the offline view when we cannot fetch metaphysics static data
+    /// which means we can't connect to the server for JSON data
+    var offlineView: AROfflineView?
 
     func showOfflineView() {
         // Stop the spinner to indicate that it's
@@ -167,7 +269,8 @@ private typealias PrivateFunctions = LiveAuctionViewController
 extension PrivateFunctions {
 
     func setupWithSale(sale: LiveSale, jwt: JWT, bidderID: String?) {
-        let salesPerson = self.salesPerson(sale, jwt: jwt, bidderID: bidderID)
+        let salesPerson = self.salesPersonCreator(sale, jwt, bidderID)
+        salesPerson.socketConnectionSignal.subscribe(showSocketDisconnectedOverlay)
 
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, traitCollection: view.traitCollection)
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
