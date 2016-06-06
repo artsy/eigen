@@ -12,22 +12,18 @@
    * `$ brew install pcre`
    * `$ brew link pcre`
    * `$ brew install watchman --HEAD`
+3. Install NPM modules: `$ npm install`
+4. Install Pods: `cd Example && pod install`
 
 ### Development
 
-1. If this is the first time you clone this repo, you will have to install a dependency that we cannot include in this
-   repository, which are the fonts that the example app needs. Run `$ cd Example && pod install`.
-
-2. Run `$ npm start` from the top directory, which will:
+1. Run `$ npm start` from the top directory, which will:
    - Clean the example app’s Xcode build dir.
-   - Clean the emission package from the example app’s `node_modules` dir.
-   - Clear the example app’s React Native packager cache.
-   - Start syncing the emission package to the example app’s `node_modules` dir.
    - Start the example app’s React Native packager.
 
-3. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
+2. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
 
-4. We vendor some data from other repositories that you will sometimes need to update. You can either update all of them
+3. We vendor some data from other repositories that you will sometimes need to update. You can either update all of them
    with `$ npm run sync-externals` or individually:
    - The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ npm run sync-schema`
    - The colors defined in Artsy’s style-guide: `$ npm run sync-colors`
