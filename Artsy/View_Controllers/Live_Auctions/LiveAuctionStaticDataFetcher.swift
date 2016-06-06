@@ -26,7 +26,7 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
     func fetchStaticData() -> Observable<StaticSaleResult> {
         let signal = Observable<StaticSaleResult>()
         let loggedIn = User.currentUser() != nil
-        let role = loggedIn ? "participant" : "observer"
+        let role: String? = loggedIn ? "participant" : nil
         ArtsyAPI.getLiveSaleStaticDataWithSaleID(saleSlugOrID, role:role,
             success: { data in
                 let json = JSON(data)
