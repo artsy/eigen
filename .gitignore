@@ -32,6 +32,6 @@ playground.xcworkspace
 # Custom
 
 .DS_Store
-Example/node_modules/emission
-Example/Pods/Artsy+UIFonts
+node_modules
+Example/Pods
 Example/compile_commands.json
