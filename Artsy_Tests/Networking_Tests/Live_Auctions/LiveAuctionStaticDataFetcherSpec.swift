@@ -36,7 +36,7 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
             }
 
             it("fetches a jwt") {
-                expect(receivedState.peekValue()?.jwt) == jwt
+                expect(receivedState.peekValue()?.jwt.string) == jwt
             }
 
             it("fetches a bidderId") {

@@ -144,32 +144,22 @@ class LiveAuctionLotViewController: UIViewController {
         // Subscribe to updates from our bidding view model, telling us what state the lot's bid status is in.
         biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak lotMetadataStack, weak historyViewController, weak self] bidState in
 
-            let noCurrentLotExists: Bool
-
-            switch self?.salesPerson.auctionViewModel.currentLotSignal.peek() {
-            case .None: fallthrough
-            case .Some(nil): noCurrentLotExists = true
-            case .Some(_): noCurrentLotExists = false
-            }
-
             let hideCurrentLotCTA: Bool
             let hideBidHistory: Bool
 
-            switch bidState {
-            case .Active:
-                hideBidHistory = false
+            switch self?.salesPerson.auctionViewModel.currentLotSignal.peek() {
+            case .Some(let .Some(lot)):
+                let myLotID = self?.lotViewModel.lotID
+                hideCurrentLotCTA = (lot.lotID == myLotID)
+                hideBidHistory = !hideCurrentLotCTA
+
+            default: // a nil anywhere
                 hideCurrentLotCTA = true
-            case .InActive where noCurrentLotExists:
                 hideBidHistory = true
-                hideCurrentLotCTA = true
-            case .InActive:
-                hideBidHistory = true
-                hideCurrentLotCTA = false
             }
 
             currentLotView?.hidden = hideCurrentLotCTA
 
-            // Not sure this should stay this way, but things will have to change once we support dragging up the bid history anyway
             historyViewController?.view.hidden = hideBidHistory
             historyViewController?.tableView.scrollEnabled = hideBidHistory
             pan.enabled = !hideBidHistory

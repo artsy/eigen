@@ -129,11 +129,10 @@ private extension SocketSetup {
             updatedAuctionState.update(json)
 
         case "LotUpdateBroadcast":
-            lotUpdateBroadcasts.update(json)
+            lotUpdateBroadcasts.update(json)    
 
         case "OperationFailedEvent": break
             // TODO: Handle op failure
-
 
         case "CommandSuccessful", "CommandFailed", "PostEventResponse":
             postEventResponses.update(json)
