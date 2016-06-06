@@ -1002,14 +1002,18 @@ static NSString *hostFromString(NSString *string)
 {
     // Note that we're relying on the host to specify the domain for the request.
     NSString *url = [self baseMetaphysicsApiURLString];
+
+    NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
+    NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
+
     // Ending spaces are to avoid stripping newlines characters later on.
     NSString *query = [NSString stringWithFormat:@"\
 {\
-  causality_jwt(role: %1$@, sale_id: \"%2$@\")\
+  %@\
   me {\
     paddle_number\
   }\
-  sale(id: \"%2$@\") {\
+  sale(id: \"%@\") {\
     _id\
     id\
     start_at\
@@ -1046,8 +1050,7 @@ static NSString *hostFromString(NSString *string)
       }\
     }\
   }\
-}",
-                                                 [role uppercaseString], saleID];
+}", causalityRole, saleID];
 
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
 

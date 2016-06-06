@@ -21,7 +21,6 @@ protocol LiveAuctionLotViewModelType: class {
     var lotArtworkDimensions: String? { get }
 
     var estimateString: String { get }
-    var lotPremium: String { get }
     var lotName: String { get }
     var lotID: String { get }
     var lotArtworkCreationDate: String? { get }
@@ -143,10 +142,6 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.artistBlurb
     }
 
-    var lotPremium: String {
-        return "Premium: WIP"
-    }
-
     var lotIndex: Int {
         return model.position - 1
     }
@@ -161,9 +156,13 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return LiveAuctionBidViewModel.nextBidCents(model.askingPriceCents)
     }
 
+    var topBidEvent: LiveAuctionEventViewModel? {
+        return events.filter({ $0.isBid }).last
+    }
+
     var userIsHighestBidder: Bool {
         guard let bidderID = bidderID else { return false }
-        guard let top = events.filter({ $0.isBid }).last else { return false }
+        guard let top = topBidEvent else { return false }
         return top.isTopBidderID(bidderID)
     }
 

@@ -5,6 +5,13 @@ upcoming:
   dev:
     infra:
       - Adds SwiftLint. - ash
+    live_actions:
+      - Adds visual feedback to placing a max bid - orta
+      - Adds a disconnection overlay for the socket - orta
+      - Pre-cache the lot thumbnails after 2 seconds of being connected -  orta
+      - Logging in as an observer works - orta
+  user_facing:
+      - Allows max bids on live auctions - orta
 
 releases:
   - version: 2.5.0
