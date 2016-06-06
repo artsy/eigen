@@ -3,7 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'Emission' do
   pod 'Emission', :path => '../'
-  pod 'React', :path => './node_modules/react-native',
+  pod 'React', :path => '../node_modules/react-native',
                :subspecs => %w( RCTWebSocket ),
                :inhibit_warnings => true
 
@@ -23,7 +23,7 @@ target 'Emission' do
   target 'EmissionTests' do
     inherit! :search_paths
 
-    pod 'React', :path => './node_modules/react-native',
+    pod 'React', :path => '../node_modules/react-native',
                 :subspecs => %w( RCTTest ),
                 :inhibit_warnings => true
 

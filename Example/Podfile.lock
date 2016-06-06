@@ -61,21 +61,21 @@ DEPENDENCIES:
   - Emission (from `../`)
   - Extraction (from `https://github.com/artsy/extraction.git`)
   - FLKAutoLayout (from `https://github.com/floriankugler/FLKAutoLayout.git`)
-  - React/RCTTest (from `./node_modules/react-native`)
-  - React/RCTWebSocket (from `./node_modules/react-native`)
+  - React/RCTTest (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
   - Specta
 
 EXTERNAL SOURCES:
   Artsy+UIFonts:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
-    :path: ../
+    :path: "../"
   Extraction:
     :git: https://github.com/artsy/extraction.git
   FLKAutoLayout:
     :git: https://github.com/floriankugler/FLKAutoLayout.git
   React:
-    :path: ./node_modules/react-native
+    :path: "../node_modules/react-native"
 
 CHECKOUT OPTIONS:
   Artsy+UIFonts:
@@ -99,6 +99,6 @@ SPEC CHECKSUMS:
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: c9977fd39d780ec4b0f48f10daa745cb2269f721
+PODFILE CHECKSUM: 4398d30e721906f1ccd81c8d9c75a7cc5d740b76
 
 COCOAPODS: 1.0.0
