@@ -4,6 +4,7 @@ upcoming:
 
   dev:
     infra:
+      - Logging in as an observer works - orta
       - Adds SwiftLint. - ash
 
 releases:
