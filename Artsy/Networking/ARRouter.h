@@ -156,7 +156,10 @@
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID;
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize;
 + (NSURLRequest *)liveSaleStateRequest:(NSString *)saleID host:(NSString *)host;
+
+// Send in role as nil for when a user is logged out
 + (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role;
+
 + (NSURLRequest *)biddersRequest;
 + (NSURLRequest *)biddersRequestForSale:(NSString *)saleID;
 + (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents;
