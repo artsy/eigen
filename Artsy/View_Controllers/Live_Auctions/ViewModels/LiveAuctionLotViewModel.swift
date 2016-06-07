@@ -41,9 +41,7 @@ protocol LiveAuctionLotViewModelType: class {
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
     var askingPriceSignal: Observable<UInt64> { get }
-    var startEventUpdatesSignal: Observable<NSDate> { get }
-    var endEventUpdatesSignal: Observable<NSDate> { get }
-    var newEventSignal: Observable<LiveAuctionEventViewModel> { get }
+    var newEventsSignal: Observable<[LiveAuctionEventViewModel]> { get }
 }
 
 extension LiveAuctionLotViewModelType {
@@ -58,10 +56,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     private let bidderID: String?
 
     // This is the full event stream
-    private var events = [LiveAuctionEventViewModel]()
+    private var fullEventList = [LiveAuctionEventViewModel]()
 
     // This is the event stream once undos, and composite bids have
-    // done their worn on the events
+    // done their work on the events
     private var derivedEvents = [LiveAuctionEventViewModel]()
 
     private let biddingStatusSignal = Observable<ARLiveBiddingStatus>()
@@ -70,9 +68,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     let lotStateSignal: Observable<LotState>
     let askingPriceSignal = Observable<UInt64>()
 
-    let startEventUpdatesSignal = Observable<NSDate>()
-    let endEventUpdatesSignal = Observable<NSDate>()
-    let newEventSignal = Observable<LiveAuctionEventViewModel>()
+    let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
     init(lot: LiveAuctionLot, bidderID: String?) {
         self.model = lot
@@ -107,7 +103,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var numberOfBids: Int {
-        return events.filter { $0.isBid }.count
+        return fullEventList.filter { $0.isBid }.count
     }
 
     var urlForThumbnail: NSURL {
@@ -157,7 +153,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var topBidEvent: LiveAuctionEventViewModel? {
-        return events.filter({ $0.isBid }).last
+        return fullEventList.filter({ $0.isBid }).last
     }
 
     var userIsHighestBidder: Bool {
@@ -172,7 +168,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var dateLotOpened: NSDate? {
         guard _dateLotOpened == nil else { return _dateLotOpened }
-        guard let opening = events.filter({ $0.isLotOpening }).first else { return nil }
+        guard let opening = fullEventList.filter({ $0.isLotOpening }).first else { return nil }
         _dateLotOpened = opening.dateEventCreated
         return _dateLotOpened
     }
@@ -194,7 +190,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     func eventWithID(string: String) -> LiveAuctionEventViewModel? {
-        return events.filter { $0.event.eventID == string }.first
+        return fullEventList.filter { $0.event.eventID == string }.first
     }
 
     var numberOfDerivedEvents: Int {
@@ -245,24 +241,22 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
     }
 
-    func addEvents(events: [LiveEvent]) {
-        startEventUpdatesSignal.update(NSDate())
-        defer { endEventUpdatesSignal.update(NSDate()) }
+    func addEvents(newEvents: [LiveEvent]) {
 
-        model.addEvents(events.map { $0.eventID })
-        let newEvents = events.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
+        model.addEvents(newEvents.map { $0.eventID })
+        let newEventViewModels = newEvents.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
 
-        self.events += newEvents
+        self.fullEventList += newEventViewModels
 
-        updateExistingEvents(self.events)
-        derivedEvents = self.events.filter { $0.isUserFacing }
+        updateExistingEvents(self.fullEventList)
+        derivedEvents = self.fullEventList.filter { $0.isUserFacing }
 
-        newEvents.forEach { event in
-            newEventSignal.update(event)
-        }
+        let newDerivedEvents = newEventViewModels.filter { $0.isUserFacing }
+        newEventsSignal.update(newDerivedEvents)
     }
 
-    func updateExistingEvents(events: [LiveAuctionEventViewModel]) {
+    // Checks if any of our existing events have been cancelled.
+    private func updateExistingEvents(events: [LiveAuctionEventViewModel]) {
         for undoEvent in events.filter({ $0.isUndo }) {
             guard let
                 referenceEventID = undoEvent.undoLiveEventID,

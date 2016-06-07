@@ -26,11 +26,8 @@ class LiveAuctionHistoryCell: UITableViewCell {
 class LiveAuctionBidHistoryViewController: UITableViewController {
 
     let lotViewModel: LiveAuctionLotViewModelType
-    var nextInsertIndex = 0
 
-    var newEventsBeganSubscription: ObserverToken<NSDate>!
-    var newEventsEndedSubscription: ObserverToken<NSDate>!
-    var newEventsSubscription: ObserverToken<LiveAuctionEventViewModel>!
+    var newEventsSubscription: ObserverToken<[LiveAuctionEventViewModel]>!
 
     init(lotViewModel: LiveAuctionLotViewModelType) {
         self.lotViewModel = lotViewModel
@@ -39,42 +36,22 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
 
         tableView.allowsSelection = false
         tableView.showsVerticalScrollIndicator = false
-//
-//        newEventsBeganSubscription = lotViewModel.startEventUpdatesSignal.subscribe { [weak self] _ in
-//            // We want to skip any initial first values that are cached by the observables, we can do this by making sure we have a window (since cached values are immediately sent, before the initializer is completed).
-//            guard let _ = self?.view.window else { return }
-//
-//            self?.nextInsertIndex = 0
-//            self?.tableView.beginUpdates()
-//        }
-//
-//        newEventsEndedSubscription = lotViewModel.endEventUpdatesSignal.subscribe { [weak self] _ in
-//            // We comment in startEventUpdatesSignal subscription.
-//            guard let _ = self?.view.window else { return }
-//
-//            self?.tableView.endUpdates()
-//        }
-//
-//        newEventsSubscription = lotViewModel.newEventSignal.subscribe { [weak self] event in
-//            // We comment in startEventUpdatesSignal subscription.
-//            guard let _ = self?.view.window else { return }
-//
-//            let indexPath = NSIndexPath(forRow: self?.nextInsertIndex ?? 0, inSection: 0)
-//            self?.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-//            self?.nextInsertIndex += 1
-//        }
 
-        newEventsEndedSubscription = lotViewModel.endEventUpdatesSignal.subscribe { [weak self] _ in
-        }
-
-        newEventsSubscription = lotViewModel.newEventSignal.subscribe { [weak self] event in
-        }
-
-        newEventsEndedSubscription = lotViewModel.endEventUpdatesSignal.subscribe { [weak self] _ in
-            // We comment in startEventUpdatesSignal subscription.
+        newEventsSubscription = lotViewModel.newEventsSignal.subscribe { [weak self] newEvents in
+            // We want to skip any initial first values that are cached by the observables, we can do this by making sure we have a window (since cached values are immediately sent, before the initializer is completed).
             guard let _ = self?.view.window else { return }
+            guard let `self` = self else { return }
 
-            self?.tableView.reloadData()
+            let currentCellCount = self.tableView.numberOfRowsInSection(0)
+            guard newEvents.reloadCondition(currentCellCount, lotViewModel: self.lotViewModel) == .Update else {
+                return self.tableView.reloadData()
+            }
+
+            let newIndexPaths = newEvents.enumerate().map { (index, _) -> NSIndexPath in
+                return NSIndexPath(forRow: index, inSection: 0)
+            }
+
+            self.tableView.insertRowsAtIndexPaths(newIndexPaths, withRowAnimation: self.appDependentRowAnimationStyle)
         }
 
     }
@@ -84,8 +61,6 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     }
 
     deinit {
-        newEventsBeganSubscription.unsubscribe()
-        newEventsEndedSubscription.unsubscribe()
         newEventsSubscription.unsubscribe()
     }
 
@@ -117,5 +92,23 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
 
         let event = lotViewModel.derivedEventAtPresentationIndex(indexPath.row)
         cell.updateWithEventViewModel(event)
+    }
+}
+
+
+enum TableViewUpdateCondition {
+    case Reload
+    case Update
+}
+
+extension Array where Element: LiveAuctionEventViewModelType {
+
+    // If an event was removed from the derived list (maybe it was cancelled) then we can't rely
+    // on insertRowsAtIndexPaths(), we need to reload. Alternatively, sending in _empty_
+    // new events indicates that a previously user-facing event has been modified.
+    func reloadCondition(currentlyDisplayedCellCount: Int, lotViewModel: LiveAuctionLotViewModelType) -> TableViewUpdateCondition {
+        if isEmpty { return .Reload }
+        if currentlyDisplayedCellCount + count != lotViewModel.numberOfDerivedEvents { return .Reload }
+        return .Update
     }
 }

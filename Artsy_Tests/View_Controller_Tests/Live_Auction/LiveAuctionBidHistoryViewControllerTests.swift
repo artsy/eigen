@@ -19,6 +19,53 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
     }
 
     override func spec() {
+        describe("view controller") {
+
+
+            var lotViewModel: Test_LiveAuctionLotViewModel!
+            var subject: LiveAuctionBidHistoryViewController!
+
+            beforeEach {
+                lotViewModel = Test_LiveAuctionLotViewModel()
+                subject = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
+            }
+
+            it("looks good by default") {
+                expect(subject) == snapshot()
+            }
+
+            describe("after loading") {
+
+                beforeEach {
+                    subject.loadViewProgrammatically()
+                }
+
+                it("handles new event updates") {
+                    lotViewModel.numberOfDerivedEvents = 2
+                    lotViewModel.newEventsSignal.update([lotViewModel.derivedEventAtPresentationIndex(2)])
+                    
+
+                    expect(subject) == snapshot()
+                }
+
+                it("handles new event updates with mismatched counts") {
+                    lotViewModel.newEventsSignal.update([lotViewModel.derivedEventAtPresentationIndex(2)])
+
+                    expect(subject) == snapshot()
+                }
+
+                it("handles new event updates with empty new events") {
+                    lotViewModel.numberOfDerivedEvents = 2
+                    lotViewModel.cancelEvents = true
+
+                    lotViewModel.newEventsSignal.update([])
+                    
+                    expect(subject) == snapshot()
+                }
+            }
+
+        }
+
         describe("cells") {
             var subject: LiveAuctionHistoryCell!
 
