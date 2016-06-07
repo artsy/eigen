@@ -9,6 +9,8 @@ enum LotState {
     case ClosedLot
 }
 
+typealias CurrentBid = (bid: String, reserve: String?)
+
 protocol LiveAuctionLotViewModelType: class {
 
     var numberOfDerivedEvents: Int { get }
@@ -41,12 +43,31 @@ protocol LiveAuctionLotViewModelType: class {
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
     var askingPriceSignal: Observable<UInt64> { get }
+    var currentBidSignal: Observable<CurrentBid> { get }
     var newEventsSignal: Observable<[LiveAuctionEventViewModel]> { get }
 }
 
 extension LiveAuctionLotViewModelType {
     var lotIndexDisplayString: String {
         return "Lot \(lotIndex + 1)"
+    }
+
+    var currentBidSignal: Observable<CurrentBid> {
+        let currencySymbol = self.currencySymbol
+        return askingPriceSignal.merge(reserveStatusSignal).map { (askingPrice, reserveStatus) -> CurrentBid in
+            let reserveString: String?
+
+            switch reserveStatus {
+            case .NoReserve: reserveString = nil
+            case .ReserveMet: reserveString = "(Reserve met)"
+            case .ReserveNotMet: reserveString = "(Reserve not met)"
+            }
+
+            return (
+                bid: "Current Bid: \(askingPrice.convertToDollarString(currencySymbol))",
+                reserve: reserveString
+            )
+        }
     }
 }
 
