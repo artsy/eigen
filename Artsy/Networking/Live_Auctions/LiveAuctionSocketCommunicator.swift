@@ -136,7 +136,7 @@ private extension SocketSetup {
         case "OperationFailedEvent": break
             // TODO: Handle op failure
 
-        case "OperatorConnectedBrodcast":
+        case "OperatorConnectedBroadcast":
             operatorConnectedSignal.update(json)
 
         case "CommandSuccessful", "CommandFailed", "PostEventResponse":
