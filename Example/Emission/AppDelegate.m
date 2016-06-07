@@ -28,7 +28,7 @@ randomBOOL(void)
 {
   AREmission *emission = nil;
 #ifdef ENABLE_DEV_MODE
-  NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Emission/index.ios.bundle?platform=ios&dev=true"];
+  NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
   emission = [[AREmission alloc] initWithPackagerURL:packagerURL];
   [AREmission setSharedInstance:emission];
 #else
