@@ -157,7 +157,7 @@ describe(@"ARSwitchboard", ^{
             NSURL *internalButUnpredictableURL = [[NSURL alloc] initWithString:@"https://live-staging.artsy.net/54c7e8fa7261692b5acd0600"];
             id viewController = [switchboard loadURL:internalButUnpredictableURL];
 
-            expect(viewController).to.beKindOf(ARSerifNavigationViewController.class);
+            expect(viewController).to.beKindOf(SerifModalWebNavigationController.class);
             expect([viewController topViewController]).to.beKindOf(ARInternalMobileWebViewController.class);
         });
 

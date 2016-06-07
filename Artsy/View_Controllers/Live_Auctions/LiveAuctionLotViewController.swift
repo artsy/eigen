@@ -309,7 +309,7 @@ extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
         ARTrialController.presentTrialIfNecessaryWithContext(.AuctionRegistration) { created in
             let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
             let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
-            let serifNav = ARSerifNavigationViewController(rootViewController: viewController)
+            let serifNav = SerifModalWebNavigationController(rootViewController: viewController)
             self.navigationController?.presentViewController(serifNav, animated: true) {}
         }
 
