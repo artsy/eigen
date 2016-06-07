@@ -1,9 +1,40 @@
 import Foundation
 import Interstellar
 import SwiftyJSON
+import JWTDecode
 
+enum CausalityRole {
+    case Bidder
+    case Observer
+}
 
-typealias JWT = String
+class JWT {
+    let string: String
+    let rawData: JSON
+
+    init?(jwtString: String) {
+
+        guard let jwt = try? decode(jwtString) else { return nil }
+
+        rawData = JSON(jwt.body)
+        string = jwtString
+    }
+
+    var userID: String? {
+        return rawData["userId"].string
+    }
+
+    var role: CausalityRole {
+        switch rawData["role"].stringValue {
+        case "bidder":
+            return .Bidder
+        // Fallback for unknown roles
+        default:
+            return .Observer
+        }
+    }
+}
+
 typealias StaticSaleResult = Result<(sale: LiveSale, jwt: JWT, bidderID: String?)>
 
 
@@ -34,8 +65,8 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
                     return signal.update(.Error(Error.JSONParsing))
                 }
 
-                guard let
-                    jwt = self.parseJWT(json) else {
+                guard
+                    let jwt = self.parseJWT(json) else {
                     return signal.update(.Error(Error.NoJWTCredentials))
                 }
 
@@ -61,7 +92,7 @@ extension LiveAuctionStaticDataFetcherType {
     }
 
     func parseJWT(json: JSON) -> JWT? {
-        return json["data"]["causality_jwt"].string
+        return  JWT(jwtString: json["data"]["causality_jwt"].stringValue)
     }
 
     func parseBidderID(json: JSON) -> String? {

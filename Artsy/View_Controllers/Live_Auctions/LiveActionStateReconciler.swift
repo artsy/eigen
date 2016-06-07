@@ -65,8 +65,8 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
             guard let derivedLotState = json["derivedLotState"] as? [String: AnyObject] else { continue }
             guard let eventHistory = json["eventHistory"] as? [[String: AnyObject]] else { continue } // TODO move to events
 
-            updateLotDerivedState(lot, derivedState: derivedLotState)
             updateLotWithEvents(lot, lotEvents: eventHistory)
+            updateLotDerivedState(lot, derivedState: derivedLotState)
         }
 
         // TODO: This is always nil for some reason, but regardless, the UI looks terrible if it is nil. It will be nil sometimes in production, so we should operate without it!

@@ -114,6 +114,9 @@ target 'Artsy' do
   pod 'Starscream'
   pod 'SwiftyJSON'
 
+  # Used in Live Auctions to hold user-state 
+  pod 'JWTDecode'
+
   target 'Artsy Tests' do
       inherit! :search_paths
 

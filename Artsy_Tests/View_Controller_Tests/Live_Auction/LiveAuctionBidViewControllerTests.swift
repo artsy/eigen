@@ -46,7 +46,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
                 expect(subject.priceOfCurrentBidsLabel.text) == "$Value"
 
                 lotVM.currentLotValueString = "£200"
-                lotVM.endEventUpdatesSignal.update(NSDate())
+                lotVM.newEventsSignal.update([])
 
                 expect(subject.priceOfCurrentBidsLabel.text) == "£200"
             }
@@ -56,7 +56,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
                 expect(subject.bidViewModel.currentBid) == 5_500_00
 
                 lotVM.currentLotValue = 6_000_00
-                lotVM.endEventUpdatesSignal.update(NSDate())
+                lotVM.newEventsSignal.update([])
 
                 expect(subject.bidViewModel.currentBid) == 6_000_00
             }
@@ -72,7 +72,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
 
             expect(subject.bidProgressOverlayView.superview) != nil
 
-            subject.bidViewModel.lotViewModel.endEventUpdatesSignal.update(NSDate())
+            subject.bidViewModel.lotViewModel.newEventsSignal.update([])
             expect(subject.bidProgressOverlayView.superview).to( beNil() )
         }
 

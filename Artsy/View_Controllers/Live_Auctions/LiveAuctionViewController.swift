@@ -23,6 +23,8 @@ class LiveAuctionViewController: UISplitViewController {
     var lotsSetNavigationController: ARSerifNavigationViewController!
     var lotListController: LiveAuctionLotListViewController!
 
+    var overlaySubscription: ObserverToken<Bool>?
+
     var sale: LiveSale?
 
     private var statusMaintainer = ARSerifStatusMaintainer()
@@ -186,6 +188,8 @@ class LiveAuctionViewController: UISplitViewController {
         viewControllers.forEach { vc in
             vc.endAppearanceTransition()
         }
+
+        overlaySubscription?.unsubscribe()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -213,7 +217,12 @@ extension PrivateFunctions {
 
     func setupWithSale(sale: LiveSale, jwt: JWT, bidderID: String?) {
         let salesPerson = self.salesPersonCreator(sale, jwt, bidderID)
-        salesPerson.socketConnectionSignal.subscribe(showSocketDisconnectedOverlay)
+
+        overlaySubscription?.unsubscribe()
+        salesPerson.socketConnectionSignal
+            .merge(salesPerson.operatorConnectedSignal)
+            .map { return $0.0 && $0.1 } // We are connected iff the socket is connected and the operator is connected.
+            .subscribe(showSocketDisconnectedOverlay)
 
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, traitCollection: view.traitCollection)
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
@@ -258,7 +267,8 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
         let sale = self.parseSale(JSON(json))!
         let bidderID: String? = "awesome-bidder-id-aw-yeah"
 
-        let s = (sale: sale, jwt: "", bidderID: bidderID)
+        let stubbedJWT = JWT(jwtString: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWN0aW9ucyIsInJvbGUiOiJvYnNlcnZlciIsInVzZXJJZCI6bnVsbCwic2FsZUlkIjoiNTRjN2U4ZmE3MjYxNjkyYjVhY2QwNjAwIiwiYmlkZGVySWQiOm51bGwsImlhdCI6MTQ2NTIzNDI2NDI2N30.2q3bh1E897walHdSXIocGKElbxOhCGmCCsL8Bf-UWNA")!
+        let s = (sale: sale, jwt: stubbedJWT, bidderID: bidderID)
         signal.update(Result.Success(s))
 
         return signal

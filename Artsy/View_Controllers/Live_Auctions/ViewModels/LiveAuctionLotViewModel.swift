@@ -41,9 +41,7 @@ protocol LiveAuctionLotViewModelType: class {
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
     var askingPriceSignal: Observable<UInt64> { get }
-    var startEventUpdatesSignal: Observable<NSDate> { get }
-    var endEventUpdatesSignal: Observable<NSDate> { get }
-    var newEventSignal: Observable<LiveAuctionEventViewModel> { get }
+    var newEventsSignal: Observable<[LiveAuctionEventViewModel]> { get }
 }
 
 extension LiveAuctionLotViewModelType {
@@ -58,10 +56,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     private let bidderID: String?
 
     // This is the full event stream
-    private var events = [LiveAuctionEventViewModel]()
+    private var fullEventList = [LiveAuctionEventViewModel]()
 
     // This is the event stream once undos, and composite bids have
-    // done their worn on the events
+    // done their work on the events
     private var derivedEvents = [LiveAuctionEventViewModel]()
 
     private let biddingStatusSignal = Observable<ARLiveBiddingStatus>()
@@ -70,9 +68,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     let lotStateSignal: Observable<LotState>
     let askingPriceSignal = Observable<UInt64>()
 
-    let startEventUpdatesSignal = Observable<NSDate>()
-    let endEventUpdatesSignal = Observable<NSDate>()
-    let newEventSignal = Observable<LiveAuctionEventViewModel>()
+    let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
     init(lot: LiveAuctionLot, bidderID: String?) {
         self.model = lot
@@ -107,7 +103,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var numberOfBids: Int {
-        return events.filter { $0.isBid }.count
+        return fullEventList.filter { $0.isBid }.count
     }
 
     var urlForThumbnail: NSURL {
@@ -119,7 +115,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var imageAspectRatio: CGFloat {
-        return model.imageAspectRatio()
+        return model.imageAspectRatio() ?? 1
     }
 
     var lotName: String {
@@ -157,13 +153,17 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var topBidEvent: LiveAuctionEventViewModel? {
-        return events.filter({ $0.isBid }).last
+        return fullEventList.filter({ $0.isBid }).last
     }
 
     var userIsHighestBidder: Bool {
         guard let bidderID = bidderID else { return false }
         guard let top = topBidEvent else { return false }
-        return top.isTopBidderID(bidderID)
+        return top.hasBidderID(bidderID)
+    }
+
+    func findBidWithValue(amountCents: UInt64) -> LiveAuctionEventViewModel? {
+        return fullEventList.filter({ $0.isBid && $0.hasAmountCents(amountCents) }).first
     }
 
     // Want to avoid array searching + string->date processing every in timer loops
@@ -172,7 +172,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var dateLotOpened: NSDate? {
         guard _dateLotOpened == nil else { return _dateLotOpened }
-        guard let opening = events.filter({ $0.isLotOpening }).first else { return nil }
+        guard let opening = fullEventList.filter({ $0.isLotOpening }).first else { return nil }
         _dateLotOpened = opening.dateEventCreated
         return _dateLotOpened
     }
@@ -194,7 +194,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     func eventWithID(string: String) -> LiveAuctionEventViewModel? {
-        return events.filter { $0.event.eventID == string }.first
+        return fullEventList.filter { $0.event.eventID == string }.first
     }
 
     var numberOfDerivedEvents: Int {
@@ -245,29 +245,64 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
     }
 
-    func addEvents(events: [LiveEvent]) {
-        startEventUpdatesSignal.update(NSDate())
-        defer { endEventUpdatesSignal.update(NSDate()) }
+    func addEvents(newEvents: [LiveEvent]) {
 
-        model.addEvents(events.map { $0.eventID })
-        let newEvents = events.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
+        model.addEvents(newEvents.map { $0.eventID })
+        let newEventViewModels = newEvents.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
 
-        self.events += newEvents
+        fullEventList += newEventViewModels
 
-        updateExistingEvents(self.events)
-        derivedEvents = self.events.filter { $0.isUserFacing }
+        updateExistingEventsWithLotState(fullEventList)
+        derivedEvents = fullEventList.filter { $0.isUserFacing }
 
-        newEvents.forEach { event in
-            newEventSignal.update(event)
-        }
+        let newDerivedEvents = newEventViewModels.filter { $0.isUserFacing }
+        newEventsSignal.update(newDerivedEvents)
     }
 
-    func updateExistingEvents(events: [LiveAuctionEventViewModel]) {
+
+    /// This isn't really very efficient, lots of loops to do lookups, maybe n^n?
+
+    private func updateExistingEventsWithLotState(events: [LiveAuctionEventViewModel]) {
+        // Undoes need applying
         for undoEvent in events.filter({ $0.isUndo }) {
             guard let
                 referenceEventID = undoEvent.undoLiveEventID,
                 eventToUndo = eventWithID(referenceEventID) else { continue }
             eventToUndo.cancel()
         }
+
+        /// Setup Pending
+        for bidEvent in events.filter({ $0.isBidConfirmation }) {
+            guard let
+                amount = bidEvent.bidAmount,
+                eventToConfirm = findBidWithValue(amount) else { continue }
+            eventToConfirm.confirm()
+        }
+
+        /// Setup bidStatus, so an EventVM knows if it's top/owner by the user etc
+        let topBid = topBidEvent
+        for bidEvent in events.filter({ $0.isBid }) {
+
+            let isTopBid = (bidEvent == topBid)
+            let isUser: Bool
+            if let bidderID = bidderID {
+                isUser = bidEvent.hasBidderID(bidderID)
+            } else {
+                isUser = false
+            }
+
+            let status: BidEventBidStatus
+            if bidEvent.isFloorBidder {
+                status = .Bid(isMine: isUser, isTop: isTopBid)
+
+            } else if bidEvent.isArtsyBidder && bidEvent.event.confirmed {
+                status = .Bid(isMine: isUser, isTop: isTopBid)
+
+            } else {
+                status = .PendingBid(isMine: isUser)
+            }
+            bidEvent.bidStatus = status
+        }
+
     }
 }

@@ -8,6 +8,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
     override func spec() {
         var subject: LiveAuctionStateManager!
         var sale: LiveSale!
+        let stubbedJWT = ArtsyAPISaleRegistrationStatus.Registered.jwt
 
         beforeEach {
             OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
@@ -15,7 +16,8 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
             sale = testLiveSale()
 
-            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: "abcdefg", bidderID: "bidder-id", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+
+            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: stubbedJWT, bidderID: "bidder-id", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
         it("sets its saleID upon initialization") {
@@ -24,7 +26,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
         it("creates an appropriate socket communicator") {
             expect(mostRecentSocketCommunicator?.host) == "http://localhost"
-            expect(mostRecentSocketCommunicator?.accessToken) == "abcdefg"
+            expect(mostRecentSocketCommunicator?.jwt.string) == stubbedJWT.string
             expect(mostRecentSocketCommunicator?.causalitySaleID) == "some-random-string-of-nc72bjzj7"
         }
 
@@ -52,24 +54,29 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         describe("bidderStatus") {
 
             it("handles being logged out") {
-                ARUserManager.clearUserData()
+                let jwt = ArtsyAPISaleRegistrationStatus.NotLoggedIn.jwt
+
+                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderID: "asdasd", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+
                 expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.NotLoggedIn
             }
 
-            it("handles being logged in and registered") {
-                ARUserManager.asLoggedInUser {
+            it("handles being logged in and not registered") {
 
-                    let bidderID: String? = nil
-                    subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: "abcdefg", bidderID: bidderID, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+                let jwt = ArtsyAPISaleRegistrationStatus.NotRegistered.jwt
 
-                    expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.NotRegistered
-                }
+                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderID: "asdasd", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+
+                expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.NotRegistered
+
             }
 
             it("handles being logged in and register") {
-                ARUserManager.asLoggedInUser {
-                    expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.Registered
-                }
+                let jwt = ArtsyAPISaleRegistrationStatus.Registered.jwt
+
+                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderID: nil, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+
+                expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.Registered
             }
         }
     }
@@ -77,8 +84,8 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
 
 func test_socketCommunicatorCreator() -> LiveAuctionStateManager.SocketCommunicatorCreator {
-    return { host, saleID, accessToken in
-        return Test_SocketCommunicator(host: host, causalitySaleID: saleID, accessToken: accessToken)
+    return { host, saleID, jwt in
+        return Test_SocketCommunicator(host: host, causalitySaleID: saleID, jwt: jwt)
     }
 }
 
@@ -94,12 +101,12 @@ class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
 
     let host: String
     let causalitySaleID: String
-    let accessToken: String
+    let jwt: JWT
 
-    init(host: String, causalitySaleID: String, accessToken: String) {
+    init(host: String, causalitySaleID: String, jwt: JWT) {
         self.host = host
         self.causalitySaleID = causalitySaleID
-        self.accessToken = accessToken
+        self.jwt = jwt
 
         mostRecentSocketCommunicator = self
     }
@@ -109,6 +116,7 @@ class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let currentLotUpdate = Observable<AnyObject>()
     let postEventResponses = Observable<AnyObject>()
     let socketConnectionSignal = Observable<Bool>()
+    let operatorConnectedSignal = Observable<AnyObject>()
     func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) { }
     func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) { }
 }
@@ -141,7 +149,7 @@ class Test_StateRecociler: LiveAuctionStateReconcilerType {
     func processCurrentLotUpdate(update: AnyObject) {
         mostRecentCurrentLotUpdate = update
     }
-
+    
     var newLotsSignal: Observable<[LiveAuctionLotViewModelType]> { return Observable() }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { return Observable() }
     var saleSignal: Observable<LiveAuctionViewModelType> { return Observable() }

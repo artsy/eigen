@@ -14,6 +14,14 @@ func applyUnowned<Type: AnyObject, Parameters, ReturnValue>(instance: Type, _ fu
     }
 }
 
+// Applies an instance method to the instance with a weak reference. If the instance is nil, the function is not invoked.
+func applyWeakly<Type: AnyObject, Parameters>(instance: Type, _ function: (Type -> Parameters -> Void)) -> (Parameters -> Void) {
+    return { [weak instance] parameters in
+        guard let instance = instance else { return }
+        function(instance)(parameters)
+    }
+}
+
 // "Adds" two dictionaries of corresponding types. Duplicated keys result in rhs taking priority.
 func +<K, V>(lhs: Dictionary<K, V>, rhs: Dictionary<K, V>) -> Dictionary<K, V> {
     // This is possible using reduce, but the imperative method is a lot more readable.

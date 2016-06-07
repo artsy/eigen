@@ -13,9 +13,11 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
     override func spec() {
         describe("snapshots") {
 
+            // TODO: Lots on inconsistent state in here.
             var subject: LiveAuctionLotViewController!
             var auctionViewModel: Test_LiveAuctionViewModel!
             var lotViewModel: Test_LiveAuctionLotViewModel!
+            var salesPerson: LiveAuctionsSalesPersonType!
 
             beforeEach {
                 freezeTime()
@@ -23,8 +25,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 auctionViewModel = Test_LiveAuctionViewModel()
                 auctionViewModel.saleAvailabilitySignal.update( .Active(liveAuctionDate: nil) )
                 lotViewModel = Test_LiveAuctionLotViewModel()
-
-                let salesPerson = stub_auctionSalesPerson()
+                salesPerson = stub_auctionSalesPerson()
 
                 subject = LiveAuctionLotViewController(index: 1, lotViewModel: lotViewModel, salesPerson: salesPerson)
 
@@ -42,6 +43,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
 
             it("looks good for live lots") {
+                salesPerson.auctionViewModel.currentLotSignal.update(lotViewModel)
                 lotViewModel.lotStateSignal.update(.LiveLot)
                 expect(subject) == snapshot()
             }
@@ -57,12 +59,6 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
                 expect(subject) == snapshot()
             }
-
-            it("looks good when its lot becomes the current lot") {
-                lotViewModel.lotStateSignal.update(.LiveLot)
-                auctionViewModel.currentLotSignal.update(lotViewModel)
-                expect(subject) == snapshot()
-            }
         }
     }
 
@@ -73,6 +69,7 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
     var currentFocusedLotIndex = Observable(0)
     var debugAllEventsSignal = Observable<LotEventJSON>()
     var socketConnectionSignal = Observable<Bool>()
+    var operatorConnectedSignal = Observable<Bool>()
 
     var auctionViewModel: LiveAuctionViewModelType
     var lotCount: Int { return auctionViewModel.lotCount }
@@ -133,8 +130,15 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var dateLotOpened: NSDate?
     var userIsHighestBidder: Bool = false
 
+    // Whether or not (all) events returned from this test VM should be cancelled.
+    var cancelEvents = false
+
     func derivedEventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
-        return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON), currencySymbol: "$")
+        let event = LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON), currencySymbol: "$")
+        event.confirm()
+        event.bidStatus = .Bid(isMine: false, isTop: false)
+        if cancelEvents { event.cancel() }
+        return event
     }
 
     var lotStateSignal = Observable(LotState.UpcomingLot)
@@ -144,9 +148,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
 
     let askingPriceSignal = Observable<UInt64>(5_000_00)
     let reserveStatusSignal = Observable<ARReserveStatus>()
-    let startEventUpdatesSignal = Observable<NSDate>()
-    let endEventUpdatesSignal = Observable<NSDate>()
-    let newEventSignal = Observable<LiveAuctionEventViewModel>()
+    let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
     init(lotID: String) {
         self.lotID = lotID

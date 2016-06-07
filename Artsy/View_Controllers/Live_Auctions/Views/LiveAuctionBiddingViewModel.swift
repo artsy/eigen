@@ -18,13 +18,13 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     private let _lotStateSubscription: ObserverToken<LotState>
     private let _askingPriceSubscription: ObserverToken<UInt64>
     private let _currentLotSubscription: ObserverToken<LiveAuctionLotViewModelType?>
-    private let _newLotEventSubscription: ObserverToken<LiveAuctionEventViewModel>
+    private let _newLotEventsSubscription: ObserverToken<[LiveAuctionEventViewModel]>
 
     // Copies of observables that will be deallocated when we are.
     private let _lotState = Observable<LotState>()
     private let _askingPrice = Observable<UInt64>()
     private let _currentLot = Observable<LiveAuctionLotViewModelType?>()
-    private let _newLotEventSignal = Observable<LiveAuctionEventViewModel>(LiveAuctionEventViewModel(event: LiveEvent(), currencySymbol: ""))
+    private let _newLotEventsSignal = Observable<[LiveAuctionEventViewModel]>([LiveAuctionEventViewModel(event: LiveEvent(), currencySymbol: "")])
     // _newLotEventSignal is different; every lot has a state asking price, and there's a default nil current lot. But not every lot has an event yet,
     // so we need to "prime" the _newLotEventSignal with a dummy lot event (the values from _newLotEventSignal are completely ignored anyway).
 
@@ -35,12 +35,12 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
         self._lotStateSubscription = lotViewModel.lotStateSignal.subscribe(_lotState.update)
         self._askingPriceSubscription = lotViewModel.askingPriceSignal.subscribe(_askingPrice.update)
         self._currentLotSubscription = auctionViewModel.currentLotSignal.subscribe(_currentLot.update)
-        self._newLotEventSubscription = lotViewModel.newEventSignal.subscribe(_newLotEventSignal.update)
+        self._newLotEventsSubscription = lotViewModel.newEventsSignal.subscribe(_newLotEventsSignal.update)
 
         progressSignal = _lotState
             .merge(_askingPrice)
             .merge(_currentLot)
-            .merge(_newLotEventSignal)
+            .merge(_newLotEventsSignal)
             .map { tuple -> (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?) in
                 // Merging more than two Observables in Interstellar gets really messy, we're mapping from that mess into a nice tuple with named elements.
                 return (lotState: tuple.0.0.0, askingPrice: tuple.0.0.1, currentLot: tuple.0.1)
@@ -64,8 +64,10 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
             case .UpcomingLot:
                 if lotID == state.currentLot?.lotID {
                     return .Active(biddingState: .LotWaitingToOpen)
-                } else {
+                } else if bidderStatus == .Registered {
                     return .InActive(lotState: state.lotState)
+                } else {
+                    return .Active(biddingState: .TrialUser)
                 }
 
             case .LiveLot:

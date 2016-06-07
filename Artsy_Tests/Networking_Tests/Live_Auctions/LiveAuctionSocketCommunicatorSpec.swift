@@ -9,7 +9,9 @@ var socket: Test_Socket!
 class LiveAuctionSocketCommunicatorSpec: QuickSpec {
     override func spec() {
         let host = "squiggly host"
-        let jwt = "123456"
+        let jwt = ArtsyAPISaleRegistrationStatus.Registered.jwt
+
+
         let saleID = "honest ed's bargain basement"
 
         beforeEach {
@@ -43,7 +45,7 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
 
             socket.onConnect?()
 
-            let authCalls = socket.writes.filter { $0 == "{\"type\":\"Authorize\",\"jwt\":\"\(jwt)\"}" }
+            let authCalls = socket.writes.filter { $0 == "{\"type\":\"Authorize\",\"jwt\":\"\(jwt.string)\"}" }
             expect(authCalls).to( haveCount(1) )
 
             _ = subject // Keep a reference around until after expect()

@@ -35,12 +35,15 @@ typedef NS_ENUM(NSInteger, LiveEventType) {
 @property (nonatomic, assign, readonly) UInt64 amountCents;
 @property (nonatomic, strong, readonly) LiveBidder *_Nullable bidder;
 
-/// Used only by `LiveEventUndo`
-@property (nonatomic, copy, readonly) NSString *undoLiveEventID;
+/// Used by `LiveEventUndo` and `LiveEventBidComposite`
+@property (nonatomic, copy, readonly) NSString *hostedEventID;
 
 // In theory only LiveEventBid, LiveEventLotOpen
 // LiveEventClosed, LiveEventBidComposite
 @property (nonatomic, assign) BOOL cancelled;
+
+// Used by only LiveEventBid
+@property (nonatomic, assign) BOOL confirmed;
 
 @end
 

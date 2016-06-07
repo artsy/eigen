@@ -50,7 +50,7 @@
     return @{
         ar_keypath(LiveEvent.new, eventID) : @"eventId",
         ar_keypath(LiveEvent.new, createdAtString) : @"createdAt",
-        ar_keypath(LiveEvent.new, undoLiveEventID) : @"event.eventId",
+        ar_keypath(LiveEvent.new, hostedEventID) : @"event.eventId",
     };
 }
 

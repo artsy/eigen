@@ -113,10 +113,10 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         bidButton.flashOutbidOnBiddableStateChanges = false
 
         updateLotInformation()
-        updateCurrentBidInformation(NSDate())
+        updateCurrentBidInformation([])
         updateBiddingControls(bidViewModel.currentBid)
 
-        bidViewModel.lotViewModel.endEventUpdatesSignal.subscribe(updateCurrentBidInformation)
+        bidViewModel.lotViewModel.newEventsSignal.subscribe(updateCurrentBidInformation)
         biddingProgressSignal.subscribe(biddingProgressUpdated)
 
         bidButtonViewModel.bidPendingSignal.subscribe(biddingProgressUpdated)
@@ -142,7 +142,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
     @IBOutlet weak var numberOfCurrentBidsLabel: UILabel!
     @IBOutlet weak var priceOfCurrentBidsLabel: UILabel!
 
-    private func updateCurrentBidInformation(_: NSDate) {
+    private func updateCurrentBidInformation(_: [LiveAuctionEventViewModel]) {
         numberOfCurrentBidsLabel.text = bidViewModel.currentBidsAndReserve
         priceOfCurrentBidsLabel.text = bidViewModel.currentLotValueString
 
