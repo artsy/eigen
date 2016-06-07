@@ -1,6 +1,7 @@
 import Foundation
 import Interstellar
 import SwiftyJSON
+import JWTDecode
 
 enum CausalityRole {
     case Bidder
@@ -9,25 +10,13 @@ enum CausalityRole {
 
 class JWT {
     let string: String
-    private let rawData: JSON
+    let rawData: JSON
 
     init?(jwtString: String) {
-        let components = jwtString.componentsSeparatedByString(".")
-        if components.count != 3 { return nil }
 
-        let body = components[1]
+        guard let jwt = try? decode(jwtString) else { return nil }
 
-        // From our side, this is more complex than you'd hope WRT base64 decoding a string
-        // for the full details: http://stackoverflow.com/a/21407393/385754
-
-        let paddedLength = body.characters.count + (4 - (body.characters.count % 4));
-        let correctBase64String = body.stringByPaddingToLength(paddedLength, withString:"=", startingAtIndex:0)
-
-        guard let decodedData = NSData(base64EncodedString: correctBase64String, options:[.IgnoreUnknownCharacters]),
-              let json = try? NSJSONSerialization.JSONObjectWithData(decodedData, options: [])
-              else { return nil}
-
-        rawData = JSON(json)
+        rawData = JSON(jwt.body)
         string = jwtString
     }
 

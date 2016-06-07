@@ -142,6 +142,7 @@ PODS:
   - JLRoutes (2.0.0)
   - JSBadgeView (1.4.1)
   - JSDecoupledAppDelegate (1.2.0)
+  - JWTDecode (1.0.0)
   - Keys (1.0.0)
   - KSDeferred (0.2.0)
   - Mantle (1.5.6):
@@ -232,6 +233,7 @@ DEPENDENCIES:
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
   - JSBadgeView
   - JSDecoupledAppDelegate
+  - JWTDecode
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
   - Mantle (~> 1.5.6)
@@ -404,6 +406,7 @@ SPEC CHECKSUMS:
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
+  JWTDecode: d172edcb1607cc15aed85d58eceedcbb675a4534
   Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
@@ -434,6 +437,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 58391d0b2d165078be41384ad1794d6970d45a4a
+PODFILE CHECKSUM: 98dcb1605b8df91386c465cb07b86a2b0a210f59
 
 COCOAPODS: 1.0.0

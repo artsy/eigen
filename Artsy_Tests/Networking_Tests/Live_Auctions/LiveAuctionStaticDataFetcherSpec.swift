@@ -9,7 +9,8 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
     override func spec() {
 
         let saleID = "the-id"
-        let jwt = "random-byyyyyytes"
+
+        let jwt = ArtsyAPISaleRegistrationStatus.NotRegistered.jwt.string
         let bidderID = "000000"
         let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"], "causality_jwt": jwt, "me": ["paddle_number": bidderID]]]
 
