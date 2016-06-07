@@ -92,7 +92,7 @@ private extension SocketSetup {
 
     func socketConnected() {
         print ("Socket connected")
-        socket.writeString("{\"type\":\"Authorize\",\"jwt\":\"\(jwt)\"}")
+        socket.writeString("{\"type\":\"Authorize\",\"jwt\":\"\(jwt.string)\"}")
         socketConnectionSignal.update(true)
     }
 
@@ -129,11 +129,10 @@ private extension SocketSetup {
             updatedAuctionState.update(json)
 
         case "LotUpdateBroadcast":
-            lotUpdateBroadcasts.update(json)
+            lotUpdateBroadcasts.update(json)    
 
         case "OperationFailedEvent": break
             // TODO: Handle op failure
-
 
         case "CommandSuccessful", "CommandFailed", "PostEventResponse":
             postEventResponses.update(json)

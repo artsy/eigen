@@ -258,7 +258,8 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
         let sale = self.parseSale(JSON(json))!
         let bidderID: String? = "awesome-bidder-id-aw-yeah"
 
-        let s = (sale: sale, jwt: "", bidderID: bidderID)
+        let stubbedJWT = JWT(jwtString: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWN0aW9ucyIsInJvbGUiOiJvYnNlcnZlciIsInVzZXJJZCI6bnVsbCwic2FsZUlkIjoiNTRjN2U4ZmE3MjYxNjkyYjVhY2QwNjAwIiwiYmlkZGVySWQiOm51bGwsImlhdCI6MTQ2NTIzNDI2NDI2N30.2q3bh1E897walHdSXIocGKElbxOhCGmCCsL8Bf-UWNA")!
+        let s = (sale: sale, jwt: stubbedJWT, bidderID: bidderID)
         signal.update(Result.Success(s))
 
         return signal

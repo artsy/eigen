@@ -22,19 +22,11 @@ class LiveAuctionStateManager: NSObject {
 
     let sale: LiveSale
     let bidderID: String?
-
+    let bidderStatus: ArtsyAPISaleRegistrationStatus
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
     private var biddingStates = [String: LiveAuctionBiddingViewModelType]()
-
-    var bidderStatus: ArtsyAPISaleRegistrationStatus {
-        let loggedIn = User.currentUser() != nil
-        let hasBidder = bidderID != nil
-
-        if !loggedIn { return .NotLoggedIn }
-        return hasBidder ? .Registered : .NotRegistered
-    }
 
     var socketConnectionSignal: Observable<Bool> {
         return socketCommunicator.socketConnectionSignal
@@ -52,6 +44,8 @@ class LiveAuctionStateManager: NSObject {
         self.bidderID = bidderID
         self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, jwt: jwt)
         self.stateReconciler = stateReconcilerCreator(saleArtworks: saleArtworks)
+
+        self.bidderStatus = LiveAuctionStateManager.registrationStatusFromJWT(jwt)
 
         super.init()
 
@@ -78,6 +72,16 @@ class LiveAuctionStateManager: NSObject {
 //            let liveEvent = LiveEvent(JSON: eventJSON)
             let confirmed = LiveAuctionBiddingProgressState.BidAcknowledged
             biddingViewModel?.bidPendingSignal.update(confirmed)
+        }
+    }
+
+    private class func registrationStatusFromJWT(jwt: JWT) -> ArtsyAPISaleRegistrationStatus {
+        guard let _ = jwt.userID  else { return .NotLoggedIn }
+        switch jwt.role {
+        case .Bidder:
+            return .Registered
+        default:
+            return .NotRegistered
         }
     }
 }

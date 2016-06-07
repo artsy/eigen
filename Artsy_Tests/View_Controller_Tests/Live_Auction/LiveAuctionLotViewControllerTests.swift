@@ -13,9 +13,11 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
     override func spec() {
         describe("snapshots") {
 
+            // TODO: Lots on inconsistent state in here.
             var subject: LiveAuctionLotViewController!
             var auctionViewModel: Test_LiveAuctionViewModel!
             var lotViewModel: Test_LiveAuctionLotViewModel!
+            var salesPerson: LiveAuctionsSalesPersonType!
 
             beforeEach {
                 freezeTime()
@@ -23,8 +25,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 auctionViewModel = Test_LiveAuctionViewModel()
                 auctionViewModel.saleAvailabilitySignal.update( .Active(liveAuctionDate: nil) )
                 lotViewModel = Test_LiveAuctionLotViewModel()
-
-                let salesPerson = stub_auctionSalesPerson()
+                salesPerson = stub_auctionSalesPerson()
 
                 subject = LiveAuctionLotViewController(index: 1, lotViewModel: lotViewModel, salesPerson: salesPerson)
 
@@ -42,6 +43,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
 
             it("looks good for live lots") {
+                salesPerson.auctionViewModel.currentLotSignal.update(lotViewModel)
                 lotViewModel.lotStateSignal.update(.LiveLot)
                 expect(subject) == snapshot()
             }
@@ -55,12 +57,6 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             it("doesnt show a live auction call to action when auction is closed") {
                 lotViewModel.lotStateSignal.update(.ClosedLot)
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
-                expect(subject) == snapshot()
-            }
-
-            it("looks good when its lot becomes the current lot") {
-                lotViewModel.lotStateSignal.update(.LiveLot)
-                auctionViewModel.currentLotSignal.update(lotViewModel)
                 expect(subject) == snapshot()
             }
         }

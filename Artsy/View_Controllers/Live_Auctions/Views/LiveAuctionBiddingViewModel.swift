@@ -64,8 +64,10 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
             case .UpcomingLot:
                 if lotID == state.currentLot?.lotID {
                     return .Active(biddingState: .LotWaitingToOpen)
-                } else {
+                } else if bidderStatus == .Registered {
                     return .InActive(lotState: state.lotState)
+                } else {
+                    return .Active(biddingState: .TrialUser)
                 }
 
             case .LiveLot:
