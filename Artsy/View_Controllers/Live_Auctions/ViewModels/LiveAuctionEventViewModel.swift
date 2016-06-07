@@ -1,6 +1,10 @@
 import Foundation
 
-class LiveAuctionEventViewModel: NSObject {
+protocol LiveAuctionEventViewModelType {
+    // Empty for now, most of our code deals with the actual class directly.
+}
+
+class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
     let event: LiveEvent
     let currencySymbol: String
 

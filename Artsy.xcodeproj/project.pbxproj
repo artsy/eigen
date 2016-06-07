@@ -335,6 +335,7 @@
 		5EB33E74197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB33E73197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m */; };
 		5EB33E77197EBFEB00706EB1 /* wide.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5EB33E75197EBFEB00706EB1 /* wide.jpg */; };
 		5EB33E78197EBFEB00706EB1 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EB33E76197EBFEB00706EB1 /* square.png */; };
+		5EBD44E01D07325300C60F9F /* UITableViewController+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBD44DF1D07325300C60F9F /* UITableViewController+Animations.swift */; };
 		5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */; };
 		5EBDC95119794D840082C514 /* ARSearchFieldButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC95019794D840082C514 /* ARSearchFieldButtonTests.m */; };
 		5EBDC95319794DF10082C514 /* ARPendingOperationViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC95219794DF10082C514 /* ARPendingOperationViewControllerTests.m */; };
@@ -1299,6 +1300,7 @@
 		5EB33E73197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARParallaxHeaderViewControllerTests.m; sourceTree = "<group>"; };
 		5EB33E75197EBFEB00706EB1 /* wide.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wide.jpg; sourceTree = "<group>"; };
 		5EB33E76197EBFEB00706EB1 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
+		5EBD44DF1D07325300C60F9F /* UITableViewController+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Animations.swift"; sourceTree = "<group>"; };
 		5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationControllerTests.m; sourceTree = "<group>"; };
 		5EBDC95019794D840082C514 /* ARSearchFieldButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSearchFieldButtonTests.m; sourceTree = "<group>"; };
 		5EBDC95219794DF10082C514 /* ARPendingOperationViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPendingOperationViewControllerTests.m; sourceTree = "<group>"; };
@@ -2256,6 +2258,7 @@
 				3CF144A218E3727F00B1A764 /* UIViewController+ScreenSize.h */,
 				3CF144A318E3727F00B1A764 /* UIViewController+ScreenSize.m */,
 				5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */,
+				5EBD44DF1D07325300C60F9F /* UITableViewController+Animations.swift */,
 				516CDA671BB55B54001C02B2 /* UIViewController+WithLoadedData.h */,
 				516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */,
 				516CDA6A1BB56611001C02B2 /* UIViewController+ARUserActivity.h */,
@@ -5519,6 +5522,7 @@
 				609F98571AC0F5B90079FE21 /* ArtsyWatchAPI.m in Sources */,
 				064330E5170F526300FF6C41 /* ARArtistViewController.m in Sources */,
 				5102616F1BBE8324002AB8BB /* ARAuctionWebViewController.m in Sources */,
+				5EBD44E01D07325300C60F9F /* UITableViewController+Animations.swift in Sources */,
 				49A76D0817592C96001D4B81 /* SearchResult.m in Sources */,
 				513483551AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m in Sources */,
 				5E1DDF1D1CE24FBF00DFEE2A /* LiveAuctionBiddingViewModel.swift in Sources */,
