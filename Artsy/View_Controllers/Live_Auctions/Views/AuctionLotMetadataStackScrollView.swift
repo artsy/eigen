@@ -77,13 +77,16 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
             stack.addBodyMarkdown(blurb, sideMargin: sideMargin)
         }
 
-        let currencySymbol = viewModel.currencySymbol
-
         name.text = viewModel.lotArtist
         title.setTitle(viewModel.lotName, date: viewModel.lotArtworkCreationDate)
         estimate.text = viewModel.estimateString
-        viewModel.askingPriceSignal.subscribe { askingPrice in // TODO: Unsubscribe from this.
-            currentBid.text = "Current Bid: \(askingPrice.convertToDollarString(currencySymbol))"
+        viewModel.currentBidSignal.subscribe { newCurrentBid in
+            if let reserve = newCurrentBid.reserve {
+                currentBid.text = "\(newCurrentBid.bid) \(reserve)"
+                currentBid.makeSubstringFaint(reserve)
+            } else {
+                currentBid.text = newCurrentBid.bid
+            }
         }
 
         scrollEnabled = false
