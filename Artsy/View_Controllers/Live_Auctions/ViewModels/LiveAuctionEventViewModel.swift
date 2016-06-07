@@ -5,7 +5,11 @@ enum BidEventBidStatus {
     case PendingBid(isMine: Bool)
 }
 
-class LiveAuctionEventViewModel: NSObject {
+protocol LiveAuctionEventViewModelType {
+    // Empty for now, most of our code deals with the actual class directly.
+}
+
+class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
     let event: LiveEvent
     let currencySymbol: String
 
@@ -25,7 +29,11 @@ class LiveAuctionEventViewModel: NSObject {
     }
 
     var isArtsyBidder: Bool {
-        return event.bidder?.bidderID != nil
+        return event.bidder?.type == "ArtsyBidder"
+    }
+
+    var isFloorBidder: Bool {
+        return event.bidder?.type == "OfflineBidder"
     }
 
     var isLotOpening: Bool {
@@ -59,6 +67,15 @@ class LiveAuctionEventViewModel: NSObject {
         return bidder.bidderID == bidderID
     }
 
+    var bidAmount: UInt64? {
+        if !isBidConfirmation { return nil }
+        return event.amountCents
+    }
+    
+    func hasAmountCents(amount: UInt64 ) -> Bool {
+        return event.amountCents == amount
+    }
+
     func cancel() {
         event.cancelled = true
     }
@@ -81,11 +98,10 @@ class LiveAuctionEventViewModel: NSObject {
 
             // Override color when an unconfirmed Artsy Bidder
             let isUnConfirmedArtsyBidder = isArtsyBidder && !event.confirmed
-            color = isUnConfirmedArtsyBidder ? color : .artsyGrayMedium()
+            color = isUnConfirmedArtsyBidder ? .artsyGrayMedium() : color
 
             // Override color when cancelled
             color = event.cancelled ? .artsyGrayMedium() : color
-
             return color
 
         case .PendingBid:
@@ -108,8 +124,7 @@ class LiveAuctionEventViewModel: NSObject {
 
             case .PendingBid(let isMine):
                 let display = isMine ? "Your Bid" : event.displayString()
-                let color = colorForBidStatus(status)
-                return attributify(display.uppercaseString, color, strike: event.cancelled)
+                return attributify(display.uppercaseString, .artsyGrayMedium(), strike: event.cancelled)
             }
 
         case .Closed: return  attributify("CLOSED", .blackColor(), strike: event.cancelled)

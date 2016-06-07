@@ -15,6 +15,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
         lotVM.addEvents([event])
 
         let eventVM = lotVM.eventWithID(event.eventID)
+        eventVM?.confirm()
 
         let subject = LiveAuctionHistoryCell(style: .Value1, reuseIdentifier: "")
         subject.frame = CGRect(x: 0, y: 0, width: 320, height: 50)
@@ -24,6 +25,52 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
     }
 
     override func spec() {
+        describe("view controller") {
+
+            var lotViewModel: Test_LiveAuctionLotViewModel!
+            var subject: LiveAuctionBidHistoryViewController!
+
+            beforeEach {
+                lotViewModel = Test_LiveAuctionLotViewModel()
+                subject = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
+            }
+
+            it("looks good by default") {
+                expect(subject) == snapshot()
+            }
+
+            describe("after loading") {
+
+                beforeEach {
+                    subject.loadViewProgrammatically()
+                }
+
+                it("handles new event updates") {
+                    lotViewModel.numberOfDerivedEvents = 2
+                    lotViewModel.newEventsSignal.update([lotViewModel.derivedEventAtPresentationIndex(2)])
+                    
+
+                    expect(subject) == snapshot()
+                }
+
+                it("handles new event updates with mismatched counts") {
+                    lotViewModel.newEventsSignal.update([lotViewModel.derivedEventAtPresentationIndex(2)])
+
+                    expect(subject) == snapshot()
+                }
+
+                it("handles new event updates with empty new events") {
+                    lotViewModel.numberOfDerivedEvents = 2
+                    lotViewModel.cancelEvents = true
+
+                    lotViewModel.newEventsSignal.update([])
+                    
+                    expect(subject) == snapshot()
+                }
+            }
+
+        }
+
         describe("cells") {
             var subject: LiveAuctionHistoryCell!
 
@@ -111,10 +158,10 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
 
         func confirm(event: LiveEvent, lotID: String) -> LiveEvent {
             return LiveEvent(JSON: [
-                "amountCents": 230000,
+                "amountCents": Int(event.amountCents),
                 "createdAt": "2016-06-05T20:14:15.070Z",
                 "eventId": event.eventID,
-                "lotId": lotID,
+                "lotId": NSUUID().UUIDString,
                 "type": "CompositeOnlineBidConfirmed"
             ])
         }

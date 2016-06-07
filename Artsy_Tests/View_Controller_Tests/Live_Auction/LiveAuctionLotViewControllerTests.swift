@@ -129,8 +129,15 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var dateLotOpened: NSDate?
     var userIsHighestBidder: Bool = false
 
+    // Whether or not (all) events returned from this test VM should be cancelled.
+    var cancelEvents = false
+
     func derivedEventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
-        return LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON), currencySymbol: "$")
+        let event = LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON), currencySymbol: "$")
+        event.confirm()
+        event.bidStatus = .Bid(isMine: false, isTop: false)
+        if cancelEvents { event.cancel() }
+        return event
     }
 
     var lotStateSignal = Observable(LotState.UpcomingLot)
@@ -140,9 +147,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
 
     let askingPriceSignal = Observable<UInt64>(5_000_00)
     let reserveStatusSignal = Observable<ARReserveStatus>()
-    let startEventUpdatesSignal = Observable<NSDate>()
-    let endEventUpdatesSignal = Observable<NSDate>()
-    let newEventSignal = Observable<LiveAuctionEventViewModel>()
+    let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
     init(lotID: String) {
         self.lotID = lotID

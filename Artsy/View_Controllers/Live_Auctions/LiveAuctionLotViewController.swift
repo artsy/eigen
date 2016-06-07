@@ -116,7 +116,7 @@ class LiveAuctionLotViewController: UIViewController {
         view.addGestureRecognizer(pan)
 
         // Bid button setup.
-        let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel)
+        let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel, currentlyBiddingTitle: .BidSent)
         bidButton.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "0", sideMargin: sideMargin)
