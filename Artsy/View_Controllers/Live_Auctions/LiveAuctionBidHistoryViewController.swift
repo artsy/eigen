@@ -53,7 +53,6 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
 
             self.tableView.insertRowsAtIndexPaths(newIndexPaths, withRowAnimation: self.appDependentRowAnimationStyle)
         }
-
     }
 
     required init?(coder aDecoder: NSCoder) {

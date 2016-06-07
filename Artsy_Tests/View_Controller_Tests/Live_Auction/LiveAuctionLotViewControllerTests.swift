@@ -134,6 +134,8 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
 
     func derivedEventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
         let event = LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON), currencySymbol: "$")
+        event.confirm()
+        event.bidStatus = .Bid(isMine: false, isTop: false)
         if cancelEvents { event.cancel() }
         return event
     }

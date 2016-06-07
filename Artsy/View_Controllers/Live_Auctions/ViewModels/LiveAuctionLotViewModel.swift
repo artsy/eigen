@@ -115,7 +115,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var imageAspectRatio: CGFloat {
-        return model.imageAspectRatio()
+        return model.imageAspectRatio() ?? 1
     }
 
     var lotName: String {
@@ -159,7 +159,11 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     var userIsHighestBidder: Bool {
         guard let bidderID = bidderID else { return false }
         guard let top = topBidEvent else { return false }
-        return top.isTopBidderID(bidderID)
+        return top.hasBidderID(bidderID)
+    }
+
+    func findBidWithValue(amountCents: UInt64) -> LiveAuctionEventViewModel? {
+        return fullEventList.filter({ $0.isBid && $0.hasAmountCents(amountCents) }).first
     }
 
     // Want to avoid array searching + string->date processing every in timer loops
@@ -246,22 +250,59 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         model.addEvents(newEvents.map { $0.eventID })
         let newEventViewModels = newEvents.map { LiveAuctionEventViewModel(event: $0, currencySymbol: model.currencySymbol) }
 
-        self.fullEventList += newEventViewModels
+        fullEventList += newEventViewModels
 
-        updateExistingEvents(self.fullEventList)
-        derivedEvents = self.fullEventList.filter { $0.isUserFacing }
+        updateExistingEventsWithLotState(fullEventList)
+        derivedEvents = fullEventList.filter { $0.isUserFacing }
 
         let newDerivedEvents = newEventViewModels.filter { $0.isUserFacing }
         newEventsSignal.update(newDerivedEvents)
     }
 
-    // Checks if any of our existing events have been cancelled.
-    private func updateExistingEvents(events: [LiveAuctionEventViewModel]) {
+
+    /// This isn't really very efficient, lots of loops to do lookups, maybe n^n?
+
+    private func updateExistingEventsWithLotState(events: [LiveAuctionEventViewModel]) {
+        // Undoes need applying
         for undoEvent in events.filter({ $0.isUndo }) {
             guard let
                 referenceEventID = undoEvent.undoLiveEventID,
                 eventToUndo = eventWithID(referenceEventID) else { continue }
             eventToUndo.cancel()
         }
+
+        /// Setup Pending
+        for bidEvent in events.filter({ $0.isBidConfirmation }) {
+            guard let
+                amount = bidEvent.bidAmount,
+                eventToConfirm = findBidWithValue(amount) else { continue }
+            eventToConfirm.confirm()
+        }
+
+        /// Setup bidStatus, so an EventVM knows if it's top/owner by the user etc
+        let topBid = topBidEvent
+        for bidEvent in events.filter({ $0.isBid }) {
+
+            let isTopBid = (bidEvent == topBid)
+            let isUser: Bool
+            if let bidderID = bidderID {
+                isUser = bidEvent.hasBidderID(bidderID)
+            } else {
+                isUser = false
+            }
+
+            let status: BidEventBidStatus
+            if bidEvent.isFloorBidder {
+                status = .Bid(isMine: isUser, isTop: isTopBid)
+
+            } else if bidEvent.isArtsyBidder && bidEvent.event.confirmed {
+                status = .Bid(isMine: isUser, isTop: isTopBid)
+
+            } else {
+                status = .PendingBid(isMine: isUser)
+            }
+            bidEvent.bidStatus = status
+        }
+
     }
 }
