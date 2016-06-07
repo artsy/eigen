@@ -23,6 +23,7 @@ class LiveAuctionStateManager: NSObject {
     let sale: LiveSale
     let bidderID: String?
     let bidderStatus: ArtsyAPISaleRegistrationStatus
+    let operatorConnectedSignal = Observable<Bool>()
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
@@ -51,6 +52,7 @@ class LiveAuctionStateManager: NSObject {
 
         socketCommunicator.updatedAuctionState.subscribe { [weak self] state in
             self?.stateReconciler.updateState(state)
+            self?.handleOperatorConnectedState(state)
         }
 
         socketCommunicator.lotUpdateBroadcasts.subscribe { [weak self] broadcast in
@@ -73,6 +75,8 @@ class LiveAuctionStateManager: NSObject {
             let confirmed = LiveAuctionBiddingProgressState.BidAcknowledged
             biddingViewModel?.bidPendingSignal.update(confirmed)
         }
+
+        socketCommunicator.operatorConnectedSignal.subscribe(applyWeakly(self, LiveAuctionStateManager.handleOperatorConnectedState))
     }
 
     private class func registrationStatusFromJWT(jwt: JWT) -> ArtsyAPISaleRegistrationStatus {
@@ -124,6 +128,15 @@ extension ComputedProperties {
     }
 }
 
+private typealias PrivateFunctions = LiveAuctionStateManager
+private extension PrivateFunctions {
+    func handleOperatorConnectedState(state: AnyObject) {
+        let json = JSON(state)
+        let operatorConnected = json["operatorConnected"].bool ?? true // Defaulting to true in case the value isn't specified, we don't want to obstruct the user.
+        self.operatorConnectedSignal.update(operatorConnected)
+    }
+}
+
 
 private typealias DefaultCreators = LiveAuctionStateManager
 extension DefaultCreators {
@@ -151,7 +164,8 @@ private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let lotUpdateBroadcasts = Observable<AnyObject>()
     let currentLotUpdate = Observable<AnyObject>()
     let postEventResponses = Observable<AnyObject>()
-    let socketConnectionSignal = Observable<Bool>()
+    let socketConnectionSignal = Observable<Bool>(true) // We're conencted by default.
+    let operatorConnectedSignal = Observable<AnyObject>()
 
     init (state: AnyObject) {
         updatedAuctionState = Observable(state)

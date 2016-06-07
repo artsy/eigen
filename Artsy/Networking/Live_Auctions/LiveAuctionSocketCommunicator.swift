@@ -20,6 +20,7 @@ protocol LiveAuctionSocketCommunicatorType {
     var currentLotUpdate: Observable<AnyObject> { get }
     var postEventResponses: Observable<AnyObject> { get }
     var socketConnectionSignal: Observable<Bool> { get }
+    var operatorConnectedSignal: Observable<AnyObject> { get }
 
     func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String)
     func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String)
@@ -36,6 +37,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     let currentLotUpdate = Observable<AnyObject>()
     let postEventResponses = Observable<AnyObject>()
     let socketConnectionSignal = Observable<Bool>()
+    let operatorConnectedSignal = Observable<AnyObject>()
 
     let jwt: JWT
 
@@ -133,6 +135,9 @@ private extension SocketSetup {
 
         case "OperationFailedEvent": break
             // TODO: Handle op failure
+
+        case "OperatorConnectedBroadcast":
+            operatorConnectedSignal.update(json)
 
         case "CommandSuccessful", "CommandFailed", "PostEventResponse":
             postEventResponses.update(json)

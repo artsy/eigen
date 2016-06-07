@@ -24,6 +24,7 @@ protocol LiveAuctionsSalesPersonType {
 
     // When we connect/disconnect true/false is sent down
     var socketConnectionSignal: Observable<Bool> { get }
+    var operatorConnectedSignal: Observable<Bool> { get }
 
     /// Lets a client hook in to listen to all events
     /// shoud not be used outside of developer tools.
@@ -87,6 +88,10 @@ extension ComputedProperties {
 
     var debugAllEventsSignal: Observable<LotEventJSON> {
         return stateManager.debugAllEventsSignal
+    }
+
+    var operatorConnectedSignal: Observable<Bool> {
+        return stateManager.operatorConnectedSignal
     }
 }
 

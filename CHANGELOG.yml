@@ -11,6 +11,8 @@ upcoming:
       - Pre-cache the lot thumbnails after 2 seconds of being connected -  orta
       - Logging in as an observer works - orta
       - Fixes duplicated events in event history, supports changes in # of user-visible events. - ash
+      - Adds overlay for oeprator disconnects - ash
+      - Adds overlay for operator disconnects - ash
   user_facing:
       - Allows max bids on live auctions - orta
 
