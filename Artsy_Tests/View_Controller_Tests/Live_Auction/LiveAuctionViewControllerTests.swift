@@ -83,6 +83,32 @@ class LiveAuctionViewControllerTests: QuickSpec {
             fakeSalesPerson.socketConnectionSignal.update(true)
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
+
+
+
+        it("shows an operator disconnect screen when operator disconnects") {
+            setupViewControllerForPhone(true)
+            let fakeSalesPerson = stub_auctionSalesPerson()
+            subject.salesPersonCreator = { _ in
+                return fakeSalesPerson
+            }
+
+            fakeSalesPerson.operatorConnectedSignal.update(false)
+            expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
+        }
+
+        it("shows an operator disconnected screen when operator reconnects") {
+            setupViewControllerForPhone(true)
+            let fakeSalesPerson = stub_auctionSalesPerson()
+            subject.salesPersonCreator = { _ in
+                return fakeSalesPerson
+            }
+
+            fakeSalesPerson.operatorConnectedSignal.update(false)
+            // Adds everything synchronously, which is the test above
+            fakeSalesPerson.operatorConnectedSignal.update(true)
+            expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
+        }
     }
 }
 
