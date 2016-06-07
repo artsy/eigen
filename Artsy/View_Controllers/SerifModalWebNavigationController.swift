@@ -8,6 +8,19 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
         return UIApplication.sharedApplication()
     }()
 
+    override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
+        (rootViewController as? ARExternalWebBrowserViewController)?.ignoreStatusBar = true
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -44,11 +57,20 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
         self.delegate = self
     }
 
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return traitDependentSupportedInterfaceOrientations 
+    }
+
+    override func shouldAutorotate() -> Bool {
+        return traitDependentAutorotateSupport
+    }
+
     func dismiss() {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         viewController.automaticallyAdjustsScrollViewInsets = false
+        (viewController as? ARExternalWebBrowserViewController)?.ignoreStatusBar = true
     }
 }
