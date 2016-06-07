@@ -52,7 +52,11 @@
 
 - (CGFloat)imageAspectRatio
 {
-    return [self.imageDictionary[@"aspect_ratio"] floatValue];
+    NSNumber *imageRatio = self.imageDictionary[@"aspect_ratio"];
+    if ([imageRatio isEqual:[NSNull null]]) {
+        imageRatio = @(1);
+    }
+    return [imageRatio floatValue];
 }
 
 + (NSValueTransformer *)reserveStatusJSONTransformer

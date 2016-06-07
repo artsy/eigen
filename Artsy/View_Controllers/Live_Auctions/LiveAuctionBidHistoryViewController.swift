@@ -64,7 +64,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
 //            self?.nextInsertIndex += 1
 //        }
 
-        newEventsEndedSubscription = lotViewModel.endEventUpdatesSignal.subscribe { [weak self] _ in
+        newEventsBeganSubscription = lotViewModel.startEventUpdatesSignal.subscribe { [weak self] _ in
         }
 
         newEventsSubscription = lotViewModel.newEventSignal.subscribe { [weak self] event in
@@ -76,7 +76,6 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
 
             self?.tableView.reloadData()
         }
-
     }
 
     required init?(coder aDecoder: NSCoder) {

@@ -119,7 +119,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var imageAspectRatio: CGFloat {
-        return model.imageAspectRatio()
+        return model.imageAspectRatio() ?? 1
     }
 
     var lotName: String {
@@ -163,7 +163,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     var userIsHighestBidder: Bool {
         guard let bidderID = bidderID else { return false }
         guard let top = topBidEvent else { return false }
-        return top.isTopBidderID(bidderID)
+        return top.hasBidderID(bidderID)
     }
 
     // Want to avoid array searching + string->date processing every in timer loops
@@ -254,7 +254,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
         self.events += newEvents
 
-        updateExistingEvents(self.events)
+        updateExistingEventsWithLotState(self.events)
         derivedEvents = self.events.filter { $0.isUserFacing }
 
         newEvents.forEach { event in
@@ -262,12 +262,39 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
     }
 
-    func updateExistingEvents(events: [LiveAuctionEventViewModel]) {
+    /// This isn't really very efficient, lots of loops to do lookups, maybe n^n?
+
+    func updateExistingEventsWithLotState(events: [LiveAuctionEventViewModel]) {
+        // Undoes need applying
         for undoEvent in events.filter({ $0.isUndo }) {
             guard let
                 referenceEventID = undoEvent.undoLiveEventID,
                 eventToUndo = eventWithID(referenceEventID) else { continue }
             eventToUndo.cancel()
         }
+
+        /// Setup Pending
+        for bidEvent in events.filter({ $0.isBidConfirmation }) {
+            guard let
+                referenceEventID = bidEvent.bidConfirmationEventID,
+                eventToConfirm = eventWithID(referenceEventID) else { continue }
+            eventToConfirm.confirm()
+        }
+
+        /// Setup bidStatus, so an EventVM knows if it's top/owner by the user etc
+        let topBid = topBidEvent
+        for bidEvent in events.filter({ $0.isBid }) {
+
+            let isTopBid = (bidEvent == topBid)
+            let isUser: Bool
+            if let bidderID = bidderID {
+                isUser = bidEvent.hasBidderID(bidderID)
+            } else {
+                isUser = false
+            }
+
+            bidEvent.bidStatus = BidEventBidStatus.Bid(isMine: isUser, isTop: isTopBid)
+        }
+
     }
 }
