@@ -164,7 +164,7 @@ private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let lotUpdateBroadcasts = Observable<AnyObject>()
     let currentLotUpdate = Observable<AnyObject>()
     let postEventResponses = Observable<AnyObject>()
-    let socketConnectionSignal = Observable<Bool>()
+    let socketConnectionSignal = Observable<Bool>(true) // We're conencted by default.
     let operatorConnectedSignal = Observable<AnyObject>()
 
     init (state: AnyObject) {

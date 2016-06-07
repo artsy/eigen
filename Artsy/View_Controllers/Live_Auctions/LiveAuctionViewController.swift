@@ -23,7 +23,7 @@ class LiveAuctionViewController: UISplitViewController {
     var lotsSetNavigationController: ARSerifNavigationViewController!
     var lotListController: LiveAuctionLotListViewController!
 
-    var overlaySubscriptions: [ObserverToken<Bool>]?
+    var overlaySubscription: ObserverToken<Bool>?
 
     var sale: LiveSale?
 
@@ -189,7 +189,7 @@ class LiveAuctionViewController: UISplitViewController {
             vc.endAppearanceTransition()
         }
 
-        overlaySubscriptions?.forEach { $0.unsubscribe() }
+        overlaySubscription?.unsubscribe()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -216,12 +216,13 @@ private typealias PrivateFunctions = LiveAuctionViewController
 extension PrivateFunctions {
 
     func setupWithSale(sale: LiveSale, jwt: JWT, bidderID: String?) {
-        overlaySubscriptions?.forEach { $0.unsubscribe() }
         let salesPerson = self.salesPersonCreator(sale, jwt, bidderID)
-        overlaySubscriptions = [
-            salesPerson.socketConnectionSignal.subscribe(showSocketDisconnectedOverlay),
-            salesPerson.operatorConnectedSignal.subscribe(showSocketDisconnectedOverlay)
-        ]
+
+        overlaySubscription?.unsubscribe()
+        salesPerson.socketConnectionSignal
+            .merge(salesPerson.operatorConnectedSignal)
+            .map { return $0.0 && $0.1 } // We are connected iff the socket is connected and the operator is connected.
+            .subscribe(showSocketDisconnectedOverlay)
 
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, traitCollection: view.traitCollection)
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
