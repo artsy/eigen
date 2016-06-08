@@ -253,7 +253,7 @@ extension LiveAuctionViewController: UISplitViewControllerDelegate {
 
 extension LiveAuctionViewController: LiveAuctionLotListViewControllerDelegate {
     func didSelectLotAtIndex(index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController) {
-        lotSetController.jumpToLotAtIndex(index, animated: false)
+        lotSetController.jumpToLotAtIndex(index)
     }
 }
 

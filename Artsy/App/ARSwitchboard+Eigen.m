@@ -68,7 +68,7 @@
     BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
     NSString *echoDomainKey = useStaging ? @"ARLiveAuctionsStagingURLDomain" : @"ARLiveAuctionsURLDomain";
     NSString *domain = self.echo.routes[echoDomainKey].path;
-    NSURL *liveAuctionsURL = [NSURL URLWithString:domain];
+    NSURL *liveAuctionsURL = [NSURL URLWithString:[@"https://" stringByAppendingString:domain]];
     return [self loadURL:[liveAuctionsURL URLByAppendingPathComponent:auctionID]];
 }
 

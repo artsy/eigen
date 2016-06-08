@@ -12,6 +12,7 @@ upcoming:
       - Logging in as an observer works - orta
       - Fixes duplicated events in event history, supports changes in # of user-visible events. - ash
       - Adds overlay for oeprator disconnects - ash
+      - Fixes redirect to live in Auctions pages - orta
       - Registration is cancellable. - ash
   user_facing:
       - Allows max bids on live auctions - orta
