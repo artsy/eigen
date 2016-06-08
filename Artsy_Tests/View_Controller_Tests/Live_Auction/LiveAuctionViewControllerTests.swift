@@ -23,12 +23,6 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         beforeEach {
             OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
-
-            let fake = stub_auctionSalesPerson()
-            for i in 0..<fake.lotCount {
-                let lot = fake.lotViewModelForIndex(i)
-                cacheColoredImageForURL(lot.urlForThumbnail)
-            }
         }
 
         it("looks good by default") {

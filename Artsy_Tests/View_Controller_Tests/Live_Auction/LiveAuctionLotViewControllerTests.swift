@@ -11,9 +11,14 @@ import Artsy
 
 class LiveAuctionLotViewControllerTests: QuickSpec {
     override func spec() {
+
+        // This is test target-wide.
+        beforeSuite {
+            cacheColoredImageForURL(Test_LiveAuctionLotViewModel().urlForProfile)
+        }
+
         describe("snapshots") {
 
-            // TODO: Lots on inconsistent state in here.
             var subject: LiveAuctionLotViewController!
             var auctionViewModel: Test_LiveAuctionViewModel!
             var lotViewModel: Test_LiveAuctionLotViewModel!
@@ -25,7 +30,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 auctionViewModel = Test_LiveAuctionViewModel()
                 auctionViewModel.saleAvailabilitySignal.update( .Active(liveAuctionDate: nil) )
                 lotViewModel = Test_LiveAuctionLotViewModel()
-                salesPerson = stub_auctionSalesPerson()
+                salesPerson = stub_auctionSalesPerson(auctionViewModel)
 
                 subject = LiveAuctionLotViewController(index: 1, lotViewModel: lotViewModel, salesPerson: salesPerson)
 
@@ -43,7 +48,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
 
             it("looks good for live lots") {
-                salesPerson.auctionViewModel.currentLotSignal.update(lotViewModel)
+                auctionViewModel.currentLotSignal.update(lotViewModel)
                 lotViewModel.lotStateSignal.update(.LiveLot)
                 expect(subject) == snapshot()
             }
@@ -73,6 +78,11 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
             it("looks good for lots with a (not yet met) reserve") {
                 lotViewModel.reserveStatusSignal.update(.ReserveNotMet)
+                expect(subject) == snapshot()
+            }
+
+            it("looks good for out-of-order lots") {
+                auctionViewModel.distance = -1
                 expect(subject) == snapshot()
             }
         }
