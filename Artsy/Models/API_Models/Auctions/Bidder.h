@@ -6,4 +6,6 @@
 @property (nonatomic, strong) NSString *bidderID;
 @property (nonatomic, strong) NSString *saleID;
 
+@property (nonatomic, assign) BOOL qualifiedForBidding;
+@property (nonatomic, assign) BOOL saleRequiresBidderApproval;
 @end

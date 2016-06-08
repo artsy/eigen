@@ -10,4 +10,5 @@ extern NSString *const ARBidButtonBiddingClosedStateTitle;
 
 @interface ARBidButton : ARFlatButton
 - (void)setAuctionState:(ARAuctionState)state;
+- (void)setAuctionState:(ARAuctionState)state animated:(BOOL)animated;
 @end
