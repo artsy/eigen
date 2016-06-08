@@ -71,8 +71,6 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                 }
 
             case .LiveLot:
-                // TODO: This is sufficient for now, but will need to handle state _while_ bidding once that's in. That can go in another observable.
-
                 let biddingState: LiveAuctionBiddingProgressState
 
                 switch  bidderStatus {
@@ -81,9 +79,10 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
 
                 case .Registered:
                     let isHighestBiddder = state.currentLot?.userIsHighestBidder ?? false
+                    let isSellingToMe = state.currentLot?.userIsBeingSoldTo ?? false
 
-                    if isHighestBiddder {
-                        biddingState = .BidAcknowledged
+                    if isHighestBiddder && isSellingToMe {
+                        biddingState = .BidBecameMaxBidder
                     } else {
                         biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
                     }
