@@ -16,8 +16,8 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
             sale = testLiveSale()
 
-
-            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: stubbedJWT, bidderID: "bidder-id", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+            let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: stubbedJWT, bidderCredentials: creds, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
         it("sets its saleID upon initialization") {
@@ -56,7 +56,9 @@ class LiveAuctionStateManagerSpec: QuickSpec {
             it("handles being logged out") {
                 let jwt = ArtsyAPISaleRegistrationStatus.NotLoggedIn.jwt
 
-                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderID: "asdasd", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+                let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+
+                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderCredentials: creds, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
 
                 expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.NotLoggedIn
             }
@@ -64,8 +66,9 @@ class LiveAuctionStateManagerSpec: QuickSpec {
             it("handles being logged in and not registered") {
 
                 let jwt = ArtsyAPISaleRegistrationStatus.NotRegistered.jwt
+                let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
 
-                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderID: "asdasd", socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderCredentials: creds, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
 
                 expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.NotRegistered
 
@@ -74,7 +77,8 @@ class LiveAuctionStateManagerSpec: QuickSpec {
             it("handles being logged in and register") {
                 let jwt = ArtsyAPISaleRegistrationStatus.Registered.jwt
 
-                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderID: nil, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+                let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderCredentials: creds, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
 
                 expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.Registered
             }

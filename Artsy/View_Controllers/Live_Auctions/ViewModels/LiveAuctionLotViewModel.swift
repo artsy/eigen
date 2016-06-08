@@ -75,7 +75,7 @@ extension LiveAuctionLotViewModelType {
 class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     private let model: LiveAuctionLot
-    private let bidderID: String?
+    private let bidderCredentials: BiddingCredentials
 
     // This is the full event stream
     private var fullEventList = [LiveAuctionEventViewModel]()
@@ -94,9 +94,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var sellingToBidderID: String? = nil
 
-    init(lot: LiveAuctionLot, bidderID: String?) {
+    init(lot: LiveAuctionLot, bidderCredentials: BiddingCredentials) {
         self.model = lot
-        self.bidderID = bidderID
+        self.bidderCredentials = bidderCredentials
 
         reserveStatusSignal.update(lot.reserveStatus)
         askingPriceSignal.update(lot.askingPriceCents)
@@ -182,14 +182,14 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var userIsHighestBidder: Bool {
         guard let
-            bidderID = bidderID,
+            bidderID = bidderCredentials.paddleNumber,
             top = topBidEvent else { return false }
         return top.hasBidderID(bidderID)
     }
 
     var userIsBeingSoldTo: Bool {
         guard let
-            bidderID = bidderID,
+            bidderID = bidderCredentials.paddleNumber,
             sellingToBidderID = sellingToBidderID else { return false }
         return bidderID == sellingToBidderID
     }
@@ -321,7 +321,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
             let isTopBid = (bidEvent == topBid)
             let isUser: Bool
-            if let bidderID = bidderID {
+            if let bidderID = bidderCredentials.paddleNumber {
                 isUser = bidEvent.hasBidderID(bidderID)
             } else {
                 isUser = false

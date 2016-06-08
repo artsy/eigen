@@ -35,7 +35,22 @@ class JWT {
     }
 }
 
-typealias StaticSaleResult = Result<(sale: LiveSale, jwt: JWT, bidderID: String?)>
+
+class BiddingCredentials {
+    let bidderID: String?
+    let paddleNumber: String?
+
+    var canBid: Bool {
+        return bidderID != nil
+    }
+
+    init(bidderID: String?, paddleNumber: String?) {
+        self.bidderID = bidderID
+        self.paddleNumber = paddleNumber
+    }
+}
+
+typealias StaticSaleResult = Result<(sale: LiveSale, jwt: JWT, bidderCredentials: BiddingCredentials)>
 
 
 protocol LiveAuctionStaticDataFetcherType {
@@ -70,8 +85,8 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
                     return signal.update(.Error(Error.NoJWTCredentials))
                 }
 
-                let bidderID = self.parseBidderID(json)
-                signal.update(.Success((sale: sale, jwt: jwt, bidderID: bidderID)))
+                let bidderCredentials = self.createBidderCredentials(json)
+                signal.update(.Success((sale: sale, jwt: jwt, bidderCredentials: bidderCredentials)))
 
             }, failure: { error in
                 signal.update(.Error(error as ErrorType))
@@ -79,24 +94,24 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
         return signal
     }
-
 }
 
 extension LiveAuctionStaticDataFetcherType {
 
     func parseSale(json: JSON) -> LiveSale? {
         guard let saleJSON = json["data"]["sale"].dictionaryObject else { return nil }
-        let sale = LiveSale(JSON: saleJSON)
-
-        return sale
+        return LiveSale(JSON: saleJSON)
     }
 
     func parseJWT(json: JSON) -> JWT? {
         return  JWT(jwtString: json["data"]["causality_jwt"].stringValue)
     }
 
-    func parseBidderID(json: JSON) -> String? {
-        return json["data"]["me"]["paddle_number"].string
+    func createBidderCredentials(json: JSON) -> BiddingCredentials {
+        let paddleNumber = json["data"]["me"]["paddle_number"].string
+        // TODO: look for a qualified bidder?
+        let bidderID = json["data"]["me"]["bidders"][0]["id"].string
+        return BiddingCredentials(bidderID: bidderID, paddleNumber: paddleNumber)
     }
 
 }

@@ -9,7 +9,9 @@ func stub_auctionSale() -> LiveSale {
 
 func stub_auctionSalesPerson() -> LiveAuctionsSalesPersonType {
     let sale = stub_auctionSale()
-    return LiveAuctionsSalesPerson(sale: sale, jwt: ArtsyAPISaleRegistrationStatus.Registered.jwt , bidderID: "bidder-id", stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
+    let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+
+    return LiveAuctionsSalesPerson(sale: sale, jwt: ArtsyAPISaleRegistrationStatus.Registered.jwt , bidderCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
 }
 
 extension ArtsyAPISaleRegistrationStatus {

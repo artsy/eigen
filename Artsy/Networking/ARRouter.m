@@ -1012,6 +1012,9 @@ static NSString *hostFromString(NSString *string)
   %@\
   me {\
     paddle_number\
+    bidders(sale_id: \"%@\") {\
+      id\
+    }\
   }\
   sale(id: \"%@\") {\
     _id\
@@ -1050,7 +1053,7 @@ static NSString *hostFromString(NSString *string)
       }\
     }\
   }\
-}", causalityRole, saleID];
+}", causalityRole, saleID, saleID];
 
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
 

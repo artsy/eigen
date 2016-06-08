@@ -11,7 +11,9 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
 
     func setupCellWithEvent(event: LiveEvent) -> LiveAuctionHistoryCell {
         let lot = LiveAuctionLot(JSON: ["id": "", "symbol": "$" ])
-        let lotVM = LiveAuctionLotViewModel(lot: lot, bidderID: nil)
+        let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+
+        let lotVM = LiveAuctionLotViewModel(lot: lot, bidderCredentials: creds)
         lotVM.addEvents([event])
 
         let eventVM = lotVM.eventWithID(event.eventID)
@@ -185,7 +187,8 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             let lotID = NSUUID().UUIDString
 
             let lot = LiveAuctionLot(JSON: ["id": lotID])
-            let lotVM = LiveAuctionLotViewModel(lot: lot, bidderID: myBidderID)
+            let creds = BiddingCredentials(bidderID: myBidderID, paddleNumber: myBidderID)
+            let lotVM = LiveAuctionLotViewModel(lot: lot, bidderCredentials: creds)
 
             let e1 = LiveEvent(JSON: ["type" : "BiddingOpened", "id" : lotID])
             let e2 = bid(10000, bidder: ["type" : "OfflineBidder"])

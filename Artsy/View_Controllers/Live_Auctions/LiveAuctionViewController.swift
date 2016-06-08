@@ -17,7 +17,7 @@ class LiveAuctionViewController: UISplitViewController {
         return LiveAuctionStaticDataFetcher(saleSlugOrID: self.saleSlugOrID)
     }()
 
-    lazy var salesPersonCreator: (LiveSale, JWT, String?) -> LiveAuctionsSalesPersonType = self.salesPerson
+    lazy var salesPersonCreator: (LiveSale, JWT, BiddingCredentials) -> LiveAuctionsSalesPersonType = self.salesPerson
 
     var lotSetController: LiveAuctionLotSetViewController!
     var lotsSetNavigationController: ARSerifNavigationViewController!
@@ -69,10 +69,10 @@ class LiveAuctionViewController: UISplitViewController {
             self?.ar_removeIndeterminateLoadingIndicatorAnimated(Bool(ARPerformWorkAsynchronously))
 
             switch result {
-            case .Success(let (sale, jwt, bidderID)):
+            case .Success(let (sale, jwt, bidderCredentials)):
                 self?.offlineView?.removeFromSuperview()
                 self?.sale = sale
-                self?.setupWithSale(sale, jwt: jwt, bidderID: bidderID)
+                self?.setupWithSale(sale, jwt: jwt, bidderCredentials: bidderCredentials)
 
             case .Error(let error):
                 print("Error pulling down sale data for \(self?.saleSlugOrID)")
@@ -215,8 +215,8 @@ extension LiveAuctionViewController: AROfflineViewDelegate {
 private typealias PrivateFunctions = LiveAuctionViewController
 extension PrivateFunctions {
 
-    func setupWithSale(sale: LiveSale, jwt: JWT, bidderID: String?) {
-        let salesPerson = self.salesPersonCreator(sale, jwt, bidderID)
+    func setupWithSale(sale: LiveSale, jwt: JWT, bidderCredentials: BiddingCredentials) {
+        let salesPerson = self.salesPersonCreator(sale, jwt, bidderCredentials)
 
         overlaySubscription?.unsubscribe()
         salesPerson.socketConnectionSignal
@@ -240,8 +240,8 @@ extension PrivateFunctions {
         }
     }
 
-    func salesPerson(sale: LiveSale, jwt: JWT, bidderID: String?) -> LiveAuctionsSalesPersonType {
-        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, bidderID: bidderID)
+    func salesPerson(sale: LiveSale, jwt: JWT, bidderCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
+        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, bidderCredentials: bidderCredentials)
      }
 }
 
@@ -265,10 +265,10 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
         let json = loadJSON("live_auctions_static")
         let sale = self.parseSale(JSON(json))!
-        let bidderID: String? = "awesome-bidder-id-aw-yeah"
+        let bidderCredentials = BiddingCredentials(bidderID: "bidder-id", paddleNumber: "paddle-number")
 
         let stubbedJWT = JWT(jwtString: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWN0aW9ucyIsInJvbGUiOiJvYnNlcnZlciIsInVzZXJJZCI6bnVsbCwic2FsZUlkIjoiNTRjN2U4ZmE3MjYxNjkyYjVhY2QwNjAwIiwiYmlkZGVySWQiOm51bGwsImlhdCI6MTQ2NTIzNDI2NDI2N30.2q3bh1E897walHdSXIocGKElbxOhCGmCCsL8Bf-UWNA")!
-        let s = (sale: sale, jwt: stubbedJWT, bidderID: bidderID)
+        let s = (sale: sale, jwt: stubbedJWT, bidderCredentials: bidderCredentials)
         signal.update(Result.Success(s))
 
         return signal
