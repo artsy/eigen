@@ -75,10 +75,9 @@ class LiveAuctionToolbarView: UIView {
 
         case .UpcomingLot:
             let lotString: String
-            if let distance = auctionViewModel.distanceFromCurrentLot(lotViewModel) {
-                let normalizedDifference = abs(distance)
-                let lots = normalizedDifference == 1 ? "lot" : "lots"
-                lotString = "\(normalizedDifference) \(lots) away"
+            if let distance = auctionViewModel.distanceFromCurrentLot(lotViewModel) where distance > 0{
+                let lots = distance == 1 ? "lot" : "lots"
+                lotString = "\(distance) \(lots) away"
             } else {
                 lotString = "Upcoming"
             }
