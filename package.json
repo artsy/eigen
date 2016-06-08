@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Artsy React(Native) components.",
   "main": "index.ios.js",
   "scripts": {
