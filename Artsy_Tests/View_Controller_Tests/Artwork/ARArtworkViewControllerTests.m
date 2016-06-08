@@ -199,6 +199,61 @@ describe(@"at a closed auction", ^{
     });
 });
 
+
+describe(@"at an auction requireing registration", ^{
+    before(^{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
+            @{
+            @"id": @"some-auction",
+            @"name": @"Some Auction",
+            @"is_auction": @YES,
+            @"start_at": @"2000-04-07T16:00:00.000+00:00",
+            @"end_at": @"2020-04-17T03:59:00.000+00:00",
+            @"auction_state": @"open",
+            @"published": @YES,
+        }]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidder_positions" withParams:@{
+            @"artwork_id":@"some-artwork",
+            @"sale_id":@"some-auction"
+        } withResponse:@[]];
+
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidders" withResponse:@[
+@{
+             @"qualified_for_bidding": @NO,
+             @"id":@"asdada",
+             @"sale": @{ @"id" : @"some-auction", @"require_bidder_approval": @YES },
+        }]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artworks" withResponse:@[]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artwork/some-artwork" withResponse:@{
+            @"id": @"some-artwork",
+            @"sale_id": @"some-auction",
+            @"bidder_positions_count": @(1),
+            @"opening_bid_cents": @(1700000),
+            @"highest_bid_amount_cents": @(2200000),
+            @"minimum_next_bid_cents": @(2400000),
+            @"highest_bid": @{
+                @"id": @"highest-bid-id",
+                @"amount_cents": @(2200000),
+            }
+        }];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork"
+            withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
+    });
+
+    it(@"displays artwork on iPhone", ^{
+        [ARTestContext useDevice:ARDeviceTypePhone6 :^{
+
+            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+            [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+            [vc setHasFinishedScrolling];
+
+            [vc.view snapshotViewAfterScreenUpdates:YES];
+            expect(vc.view).to.haveValidSnapshot();
+        }];
+    });
+});
+
 it(@"creates an NSUserActivity", ^{
     
     vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];

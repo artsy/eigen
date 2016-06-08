@@ -7,7 +7,8 @@
 {
     return @{
         @"bidderID" : @"id",
-        @"saleID" : @"sale.id"
+        @"saleID" : @"sale.id",
+        @"saleRequiresBidderApproval" : @"sale.require_bidder_approval"
     };
 }
 

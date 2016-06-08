@@ -14,12 +14,15 @@
 @property (nonatomic, strong, readonly) NSDate *liveAuctionStartDate;
 @property (nonatomic, strong, readonly) NSDate *startDate;
 @property (nonatomic, strong, readonly) NSDate *endDate;
+@property (nonatomic, strong, readonly) NSDate *registrationEndsAtDate;
 
 @property (nonatomic, strong, readonly) BuyersPremium *buyersPremium;
 
 @property (nonatomic, strong) Profile *profile;
 
 @property (nonatomic, readonly) BOOL isAuction;
+@property (nonatomic, readonly) BOOL requireBidderApproval;
+
 
 - (NSString *)bannerImageURLString;
 - (BOOL)isCurrentlyActive;
