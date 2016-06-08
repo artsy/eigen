@@ -218,7 +218,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 1;
             presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
             {
                 ARInternalMobileWebViewController *auctionWebViewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
-                return [[ARSerifNavigationViewController alloc] initWithRootViewController:auctionWebViewController];
+                return [[SerifModalWebNavigationController alloc] initWithRootViewController:auctionWebViewController];
             };
         }
 
