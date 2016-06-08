@@ -8,13 +8,6 @@ import Artsy
 
 class LiveAuctionLotListViewControllerTests: QuickSpec {
     override func spec() {
-        beforeEach {
-            let fake = stub_auctionSalesPerson()
-            for i in 0..<fake.lotCount {
-                let lot = fake.lotViewModelForIndex(i)
-                cacheColoredImageForURL(lot.urlForThumbnail)
-            }
-        }
 
         it("looks good by default") {
             let fake = stub_auctionSalesPerson()

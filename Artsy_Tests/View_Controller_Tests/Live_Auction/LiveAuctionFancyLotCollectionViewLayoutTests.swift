@@ -10,7 +10,7 @@ import Artsy
 class LiveAuctionFancyLotCollectionViewLayoutTests: QuickSpec {
     override func spec() {
         
-        // This is test target-wide
+        // This is test target-wide.
         beforeSuite {
             let fake = stub_auctionSalesPerson()
             for i in 0..<fake.lotCount {

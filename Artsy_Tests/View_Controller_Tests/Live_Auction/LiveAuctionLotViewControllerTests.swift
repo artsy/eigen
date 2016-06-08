@@ -11,6 +11,12 @@ import Artsy
 
 class LiveAuctionLotViewControllerTests: QuickSpec {
     override func spec() {
+
+        // This is test target-wide.
+        beforeSuite {
+            cacheColoredImageForURL(Test_LiveAuctionLotViewModel().urlForProfile)
+        }
+
         describe("snapshots") {
 
             var subject: LiveAuctionLotViewController!
