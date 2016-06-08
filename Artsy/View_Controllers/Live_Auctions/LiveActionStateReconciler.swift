@@ -122,6 +122,10 @@ private extension PrivateFunctions {
         if let biddingStatus = derivedState["biddingStatus"] as? String {
             lot.updateBiddingStatus(biddingStatus)
         }
+
+        if let biddingStatus = derivedState["sellingToBidder"] as? [String: AnyObject] {
+            lot.updateSellingToBidder(biddingStatus)
+        }
     }
 
     func updateLotWithEvents(lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]], fullEventOrder: [String]? = nil) {
