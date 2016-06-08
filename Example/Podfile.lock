@@ -1,31 +1,31 @@
 PODS:
   - Artsy+UIColors (3.0.1)
   - Artsy+UIFonts (1.1.0)
-  - Emission (0.1.0):
-    - Emission/All (= 0.1.0)
-  - Emission/All (0.1.0):
+  - Emission (1.0.0):
+    - Emission/All (= 1.0.0)
+  - Emission/All (1.0.0):
     - Emission/Core
     - Emission/OpaqueImageViewComponent
     - Emission/SpinnerComponent
     - Emission/SwitchViewComponent
     - Emission/TemporaryAPI
     - Emission/ViewControllers
-  - Emission/Core (0.1.0):
+  - Emission/Core (1.0.0):
     - Artsy+UIFonts (>= 1.1.0)
-    - React/Core (= 0.25.1)
-    - React/RCTNetwork (= 0.25.1)
-    - React/RCTText (= 0.25.1)
-  - Emission/OpaqueImageViewComponent (0.1.0):
+    - React/Core (= 0.27.1)
+    - React/RCTNetwork (= 0.27.1)
+    - React/RCTText (= 0.27.1)
+  - Emission/OpaqueImageViewComponent (1.0.0):
     - SDWebImage (>= 3.7.2)
-  - Emission/SpinnerComponent (0.1.0):
+  - Emission/SpinnerComponent (1.0.0):
     - Emission/Core
     - Extraction/ARSpinner
-  - Emission/SwitchViewComponent (0.1.0):
+  - Emission/SwitchViewComponent (1.0.0):
     - Emission/Core
     - Extraction/ARSwitchView
-  - Emission/TemporaryAPI (0.1.0):
+  - Emission/TemporaryAPI (1.0.0):
     - Emission/Core
-  - Emission/ViewControllers (0.1.0):
+  - Emission/ViewControllers (1.0.0):
     - Emission/Core
   - Extraction (0.1.0):
     - Extraction/ARSpinner (= 0.1.0)
@@ -41,14 +41,14 @@ PODS:
     - UIView+BooleanAnimations
   - Extraction/UIView+ARSpinner (0.1.0)
   - FLKAutoLayout (1.0.0)
-  - React/Core (0.25.1)
-  - React/RCTNetwork (0.25.1):
+  - React/Core (0.27.1)
+  - React/RCTNetwork (0.27.1):
     - React/Core
-  - React/RCTTest (0.25.1):
+  - React/RCTTest (0.27.1):
     - React/Core
-  - React/RCTText (0.25.1):
+  - React/RCTText (0.27.1):
     - React/Core
-  - React/RCTWebSocket (0.25.1):
+  - React/RCTWebSocket (0.27.1):
     - React/Core
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
@@ -60,7 +60,6 @@ DEPENDENCIES:
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
   - Extraction (from `https://github.com/artsy/extraction.git`)
-  - FLKAutoLayout (from `https://github.com/floriankugler/FLKAutoLayout.git`)
   - React/RCTTest (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - Specta
@@ -69,13 +68,11 @@ EXTERNAL SOURCES:
   Artsy+UIFonts:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
-    :path: "../"
+    :path: ../
   Extraction:
     :git: https://github.com/artsy/extraction.git
-  FLKAutoLayout:
-    :git: https://github.com/floriankugler/FLKAutoLayout.git
   React:
-    :path: "../node_modules/react-native"
+    :path: ../node_modules/react-native
 
 CHECKOUT OPTIONS:
   Artsy+UIFonts:
@@ -84,21 +81,18 @@ CHECKOUT OPTIONS:
   Extraction:
     :commit: dbd754486d5d0d212cd3f42a69c6a747336c244c
     :git: https://github.com/artsy/extraction.git
-  FLKAutoLayout:
-    :commit: 8cb911654b3538c0ce514701db041d32964ea17c
-    :git: https://github.com/floriankugler/FLKAutoLayout.git
 
 SPEC CHECKSUMS:
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Emission: 126248958638362ff14dec59c61000bbb71313a5
+  Emission: f757f56e5a4b5035d1e1e1314b7efc4f67f153b0
   Extraction: 30a669899836cbe9c31bbc0e86918cd7a2dab463
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
-  React: b35b2b2e07273da1f7266ab2975e0d1033bd913d
+  React: 36037bee3d492dd404501c83f7059630786c62c2
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: 4398d30e721906f1ccd81c8d9c75a7cc5d740b76
+PODFILE CHECKSUM: 98fc0535ec33cfd0203dc53fe742079e3be9c5dc
 
 COCOAPODS: 1.0.0

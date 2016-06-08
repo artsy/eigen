@@ -1,11 +1,17 @@
+require 'json'
+
+npm_package = JSON.load(File.read(File.expand_path('../package.json', __FILE__)))
+
 Pod::Spec.new do |s|
-  s.name         = "Emission"
-  s.version      = "0.1.0"
-  s.summary      = "React Native Components used by Eigen."
-  s.homepage     = "https://github.com/artsy/emission"
+  s.name         = 'Emission'
+  s.version      = npm_package['version']
+  s.summary      = 'React Native Components used by Eigen.'
+  s.homepage     = 'https://github.com/artsy/emission'
   s.license      = 'MIT'
-  s.author       = { "Eloy Durán" => "eloy.de.enige@gmail.com" }
-  s.source       = { :git => "https://github.com/artsy/emission.git", :tag => s.version.to_s }
+  s.author       = { 'Eloy Durán' => 'eloy@artsy.net',
+                     'Maxim Cramer' => 'maxim@artsy.net',
+                     'Sarah Scott' => 'sarah.scott@artsy.net' }
+  s.source       = { :git => 'https://github.com/artsy/emission.git', :tag => s.version.to_s }
   s.platform     = :ios, '8.0'
   s.requires_arc = true
 
@@ -25,10 +31,10 @@ Pod::Spec.new do |s|
     ss.resource = 'Pod/Assets/Emission.jsbundle'
     ss.dependency 'Artsy+UIFonts', '>= 1.1.0'
 
-    react_version = '= 0.25.1'
-    ss.dependency 'React/Core', react_version
-    ss.dependency 'React/RCTText', react_version
-    ss.dependency 'React/RCTNetwork', react_version
+    react_native_version = npm_package['dependencies']['react-native']
+    ss.dependency 'React/Core', react_native_version
+    ss.dependency 'React/RCTText', react_native_version
+    ss.dependency 'React/RCTNetwork', react_native_version
   end
 
   s.subspec 'TemporaryAPI' do |ss|
