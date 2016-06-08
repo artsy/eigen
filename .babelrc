@@ -1,4 +1,4 @@
 {
-  "plugins": ["babel-relay-plugin-loader"],
+  "plugins": ["./data/schema"],
   "presets": ["react-native"]
 }
