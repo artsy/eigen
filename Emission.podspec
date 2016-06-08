@@ -1,3 +1,8 @@
+require 'json'
+
+npm_package = JSON.load(File.read(File.expand_path('../package.json', __FILE__)))
+react_native_version = npm_package['dependencies']['react-native']
+
 Pod::Spec.new do |s|
   s.name         = "Emission"
   s.version      = "0.1.0"
@@ -25,10 +30,9 @@ Pod::Spec.new do |s|
     ss.resource = 'Pod/Assets/Emission.jsbundle'
     ss.dependency 'Artsy+UIFonts', '>= 1.1.0'
 
-    react_version = '= 0.28.0-rc.0'
-    ss.dependency 'React/Core', react_version
-    ss.dependency 'React/RCTText', react_version
-    ss.dependency 'React/RCTNetwork', react_version
+    ss.dependency 'React/Core', react_native_version
+    ss.dependency 'React/RCTText', react_native_version
+    ss.dependency 'React/RCTNetwork', react_native_version
   end
 
   s.subspec 'TemporaryAPI' do |ss|
