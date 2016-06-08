@@ -227,7 +227,11 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
             bidButtonViewModel.progressSignal.update(.Active(biddingState:  score))
 
             ar_dispatch_after(2) {
-                self.bidProgressOverlayView.removeFromSuperview()
+                if maxBidder {
+                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    self.bidProgressOverlayView.removeFromSuperview()
+                }
             }
         }
 
