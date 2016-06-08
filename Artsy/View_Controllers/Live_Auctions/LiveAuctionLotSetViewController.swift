@@ -71,7 +71,6 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupKeyboardShortcuts()
 
         // Our view setup.
         view.backgroundColor = .whiteColor()
@@ -157,19 +156,6 @@ class LiveAuctionLotSetViewController: UIViewController {
         navigationItem.rightBarButtonItems = items
     }
 
-    func setupKeyboardShortcuts() {
-        if ARAppStatus.isOSNineOrGreater() {
-            if #available(iOS 9.0, *) {
-
-                let previous = UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: #selector(LiveAuctionLotSetViewController.previousLot), discoverabilityTitle: "Previous Lot")
-                addKeyCommand(previous)
-
-                let next = UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: #selector(LiveAuctionLotSetViewController.nextLot), discoverabilityTitle: "Next Lot")
-                addKeyCommand(next)
-            }
-        }
-    }
-
     func dismissModal() {
         guard let presentor = splitViewController?.presentingViewController else { return }
         presentor.dismissViewControllerAnimated(true, completion: nil)
@@ -224,20 +210,11 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
     }
 
-    func jumpToLotAtIndex(index: Int, animated: Bool) {
+    func jumpToLotAtIndex(index: Int) {
         guard let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index) else { return }
-
-        // This logic won't do, lot at index 10 is not classed as being -1 from current index
-        // perhaps it needs to see within a wrapping range of 0 to 10, which direction is it less steps
-        // to get to my index
-
-//        guard let viewController = pageController.viewControllers?.first as? LiveAuctionLotViewController else { return }
-//        let direction: UIPageViewControllerNavigationDirection = viewController.index > index ? .Forward : .Reverse
 
         salesPerson.currentFocusedLotIndex.update(index)
         lotImageCollectionView.reloadData()
-        // TODO: Animations are disabled for now because it's unclear how to reload the collection view. Unlike the UIPVC,
-        //       the collection view shows previous and next images, and can't be scrolled to the current lot image without flickering.
         pageController.setViewControllers([currentLotVC], direction: .Forward, animated: false, completion: nil)
     }
 
@@ -245,7 +222,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         guard let currentLot = salesPerson.currentLotSignal.peek() else { return }
         guard let focusedIndex = currentLot?.lotIndex else { return }
 
-        jumpToLotAtIndex(focusedIndex, animated: true)
+        jumpToLotAtIndex(focusedIndex)
     }
 
     func nextLot() {
@@ -264,7 +241,7 @@ private typealias LotListDelegate = LiveAuctionLotSetViewController
 extension LotListDelegate: LiveAuctionLotListViewControllerDelegate {
 
     func didSelectLotAtIndex(index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController) {
-        jumpToLotAtIndex(index, animated: false)
+        jumpToLotAtIndex(index)
         dismissViewControllerAnimated(true, completion: nil)
     }
 
