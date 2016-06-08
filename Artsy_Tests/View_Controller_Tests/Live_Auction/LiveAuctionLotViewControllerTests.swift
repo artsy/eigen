@@ -59,6 +59,22 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
                 expect(subject) == snapshot()
             }
+
+            it("looks good when its lot becomes the current lot") {
+                lotViewModel.lotStateSignal.update(.LiveLot)
+                auctionViewModel.currentLotSignal.update(lotViewModel)
+                expect(subject) == snapshot()
+            }
+
+            it("looks good for lots with a met reserve") {
+                lotViewModel.reserveStatusSignal.update(.ReserveMet)
+                expect(subject) == snapshot()
+            }
+
+            it("looks good for lots with a (not yet met) reserve") {
+                lotViewModel.reserveStatusSignal.update(.ReserveNotMet)
+                expect(subject) == snapshot()
+            }
         }
     }
 
@@ -147,7 +163,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     }
 
     let askingPriceSignal = Observable<UInt64>(5_000_00)
-    let reserveStatusSignal = Observable<ARReserveStatus>()
+    let reserveStatusSignal = Observable<ARReserveStatus>(.NoReserve)
     let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
     init(lotID: String) {

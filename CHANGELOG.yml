@@ -16,6 +16,7 @@ upcoming:
       - Registration is cancellable. - ash
   user_facing:
       - Allows max bids on live auctions - orta
+      - Shows reserve status for live auctions. - ash
 
 releases:
   - version: 2.5.0

@@ -337,6 +337,7 @@
 		5EB33E77197EBFEB00706EB1 /* wide.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5EB33E75197EBFEB00706EB1 /* wide.jpg */; };
 		5EB33E78197EBFEB00706EB1 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EB33E76197EBFEB00706EB1 /* square.png */; };
 		5EBD44E01D07325300C60F9F /* UITableViewController+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBD44DF1D07325300C60F9F /* UITableViewController+Animations.swift */; };
+		5EBD44E21D074A7300C60F9F /* UILabel+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBD44E11D074A7300C60F9F /* UILabel+Styling.swift */; };
 		5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */; };
 		5EBDC95119794D840082C514 /* ARSearchFieldButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC95019794D840082C514 /* ARSearchFieldButtonTests.m */; };
 		5EBDC95319794DF10082C514 /* ARPendingOperationViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC95219794DF10082C514 /* ARPendingOperationViewControllerTests.m */; };
@@ -1303,6 +1304,7 @@
 		5EB33E75197EBFEB00706EB1 /* wide.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wide.jpg; sourceTree = "<group>"; };
 		5EB33E76197EBFEB00706EB1 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
 		5EBD44DF1D07325300C60F9F /* UITableViewController+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Animations.swift"; sourceTree = "<group>"; };
+		5EBD44E11D074A7300C60F9F /* UILabel+Styling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Styling.swift"; sourceTree = "<group>"; };
 		5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationControllerTests.m; sourceTree = "<group>"; };
 		5EBDC95019794D840082C514 /* ARSearchFieldButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSearchFieldButtonTests.m; sourceTree = "<group>"; };
 		5EBDC95219794DF10082C514 /* ARPendingOperationViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPendingOperationViewControllerTests.m; sourceTree = "<group>"; };
@@ -2261,6 +2263,7 @@
 				3CF144A318E3727F00B1A764 /* UIViewController+ScreenSize.m */,
 				5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */,
 				5EBD44DF1D07325300C60F9F /* UITableViewController+Animations.swift */,
+				5EBD44E11D074A7300C60F9F /* UILabel+Styling.swift */,
 				516CDA671BB55B54001C02B2 /* UIViewController+WithLoadedData.h */,
 				516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */,
 				516CDA6A1BB56611001C02B2 /* UIViewController+ARUserActivity.h */,
@@ -5582,6 +5585,7 @@
 				5E5F495E1D00BC7700E7CD6E /* LiveAuctionLotCollectionViewLayoutType.swift in Sources */,
 				511287FD1C90970100936CBC /* ARAnalyticsPapertrail.m in Sources */,
 				609F98611AC106030079FE21 /* WatchBiddingDetails.m in Sources */,
+				5EBD44E21D074A7300C60F9F /* UILabel+Styling.swift in Sources */,
 				609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */,
 				6021D1B81CB7C6F800C475C1 /* TextStack.swift in Sources */,
 				605B11B217CFD78400334196 /* AROnboardingWebViewController.m in Sources */,
