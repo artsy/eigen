@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
     ss.resource = 'Pod/Assets/Emission.jsbundle'
     ss.dependency 'Artsy+UIFonts', '>= 1.1.0'
 
-    react_version = '= 0.25.1'
+    react_version = '= 0.28.0-rc.0'
     ss.dependency 'React/Core', react_version
     ss.dependency 'React/RCTText', react_version
     ss.dependency 'React/RCTNetwork', react_version
