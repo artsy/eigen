@@ -53,6 +53,7 @@ static NSNumberFormatter *currencyFormatter;
     BOOL hasStarted = [self.auction.startDate compare:now] == NSOrderedAscending;
     BOOL hasFinished = [self.auction.endDate compare:now] == NSOrderedAscending;
     BOOL notYetStarted = [self.auction.startDate compare:now] == NSOrderedDescending;
+    BOOL regstrationClosed = self.auction.registrationEndsAtDate && [self.auction.registrationEndsAtDate compare:now] == NSOrderedAscending;
 
     if (notYetStarted) {
         state |= ARAuctionStateShowingPreview;
@@ -67,7 +68,15 @@ static NSNumberFormatter *currencyFormatter;
     }
 
     if (self.bidder) {
-        state |= ARAuctionStateUserIsRegistered;
+        if (self.bidder.saleRequiresBidderApproval && !self.bidder.qualifiedForBidding) {
+            state |= ARAuctionStateUserPendingRegistration;
+        } else {
+            state |= ARAuctionStateUserIsRegistered;
+        }
+    } else {
+        if (regstrationClosed) {
+            state |= ARAuctionStateUserRegistrationClosed;
+        }
     }
 
     if (self.saleHighestBid) {

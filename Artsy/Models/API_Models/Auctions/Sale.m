@@ -28,6 +28,7 @@
         ar_keypath(Sale.new, startDate) : @"start_at",
         ar_keypath(Sale.new, endDate) : @"end_at",
         ar_keypath(Sale.new, liveAuctionStartDate) : @"live_start_at",
+        ar_keypath(Sale.new, registrationEndsAtDate) : @"registration_ends_at",
         ar_keypath(Sale.new, buyersPremium) : @"buyers_premium",
         ar_keypath(Sale.new, imageURLs) : @"image_urls",
         ar_keypath(Sale.new, saleDescription) : @"description",
@@ -40,6 +41,11 @@
 }
 
 + (NSValueTransformer *)startDateJSONTransformer
+{
+    return [ARStandardDateFormatter sharedFormatter].stringTransformer;
+}
+
++ (NSValueTransformer *)registrationEndsAtDateJSONTransformer
 {
     return [ARStandardDateFormatter sharedFormatter].stringTransformer;
 }
