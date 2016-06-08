@@ -157,6 +157,11 @@ post_install do |installer|
     end
   end
 
+  react = installer.pods_project.targets.find { |target| target.name == 'React' }
+  react.build_configurations.each do |config|
+    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = "$(inherited) RCT_DEV=0"
+  end
+
   # TODO:
   # * ORStackView: Move Laura's changes into master and update
   # * Send PRs for the rest
