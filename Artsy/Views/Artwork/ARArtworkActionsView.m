@@ -119,6 +119,7 @@
 
     if ([self showAuctionControls]) {
         ARAuctionState state = self.saleArtwork.auctionState;
+
         if (state & (ARAuctionStateUserIsHighBidder | ARAuctionStateUserIsBidder)) {
             self.bidderStatusLabel = [[ARAuctionBidderStateLabel alloc] init];
             [self.bidderStatusLabel updateWithSaleArtwork:self.saleArtwork];
@@ -132,7 +133,7 @@
         }
 
         ARBidButton *bidButton = [[ARBidButton alloc] init];
-        bidButton.auctionState = self.saleArtwork.auctionState;
+        bidButton.auctionState = state;
         [self addSubview:bidButton withTopMargin:@"30" sideMargin:@"0"];
         [bidButton addTarget:self action:@selector(tappedBidButton:) forControlEvents:UIControlEventTouchUpInside];
         self.bidButton = bidButton;

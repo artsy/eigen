@@ -83,7 +83,7 @@ target 'Artsy' do
   # TODO Actually release to our spec repo.
   pod 'Extraction', :git => 'https://github.com/artsy/extraction.git'
   pod 'Emission', :git => 'https://github.com/artsy/emission.git'
-  pod 'React/Core', :git => 'https://github.com/facebook/react-native.git', :tag => 'v0.25.1'
+  pod 'React/Core', :git => 'https://github.com/facebook/react-native.git', :tag => 'v0.27.1'
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"

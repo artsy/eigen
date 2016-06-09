@@ -7,11 +7,17 @@ func stub_auctionSale() -> LiveSale {
     return stateFetcher.fetchStaticData().peekValue()!.sale
 }
 
-func stub_auctionSalesPerson() -> LiveAuctionsSalesPersonType {
+func stub_auctionSalesPerson(auctionViewModel: LiveAuctionViewModelType? = nil) -> LiveAuctionsSalesPersonType {
     let sale = stub_auctionSale()
-    let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+    let creds = BiddingCredentials(bidderID: "1234", paddleNumber: "4444")
 
-    return LiveAuctionsSalesPerson(sale: sale, jwt: ArtsyAPISaleRegistrationStatus.Registered.jwt , bidderCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator())
+    let auctionViewModelCreator: LiveAuctionsSalesPerson.AuctionViewModelCreator
+    if let auctionViewModel = auctionViewModel {
+        auctionViewModelCreator = { _ in return auctionViewModel }
+    } else {
+        auctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()
+    }
+    return LiveAuctionsSalesPerson(sale: sale, jwt: ArtsyAPISaleRegistrationStatus.Registered.jwt , bidderCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
 }
 
 extension ArtsyAPISaleRegistrationStatus {

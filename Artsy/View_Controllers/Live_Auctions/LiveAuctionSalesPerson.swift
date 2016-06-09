@@ -32,7 +32,9 @@ protocol LiveAuctionsSalesPersonType {
 }
 
 class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
+
     typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderCredentials: BiddingCredentials) -> LiveAuctionStateManager
+    typealias AuctionViewModelCreator = (sale: LiveSale, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, bidderStatus: ArtsyAPISaleRegistrationStatus) -> LiveAuctionViewModelType
 
     let sale: LiveSale
     let lots: [LiveAuctionLotViewModel]
@@ -57,14 +59,16 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
          jwt: JWT,
          bidderCredentials: BiddingCredentials,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
-         stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
+         stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator(),
+         auctionViewModelCreator: AuctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()) {
 
         self.sale = sale
         self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderCredentials: bidderCredentials) }
 
         let host = ARRouter.baseCausalitySocketURLString()
+
         self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: bidderCredentials)
-        self.auctionViewModel = LiveAuctionViewModel(sale: sale, currentLotSignal: stateManager.currentLotSignal, bidderStatus: stateManager.bidderStatus)
+        self.auctionViewModel = auctionViewModelCreator(sale: sale, currentLotSignal: stateManager.currentLotSignal, bidderStatus: stateManager.bidderStatus)
     }
 }
 
@@ -146,6 +150,12 @@ extension ClassMethods {
     class func stubbedStateManagerCreator() -> StateManagerCreator {
         return { host, sale, saleArtworks, jwt, bidderCredentials in
             LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderCredentials: bidderCredentials, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
+        }
+    }
+
+    class func defaultAuctionViewModelCreator() -> AuctionViewModelCreator {
+        return { sale, currentLotSignal, bidderStatus in
+            return LiveAuctionViewModel(sale: sale, currentLotSignal: currentLotSignal, bidderStatus: bidderStatus)
         }
     }
 

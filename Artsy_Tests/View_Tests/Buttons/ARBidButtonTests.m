@@ -28,4 +28,15 @@ it(@"bidding closed", ^{
     expect(_button).will.haveValidSnapshotNamed(@"testBiddingClosedState");
 });
 
+it(@"bidding registration pending", ^{
+    [_button setAuctionState:ARAuctionStateUserPendingRegistration animated:NO];
+    expect(_button).will.haveValidSnapshotNamed(@"testBiddingRegistrationPending");
+});
+
+it(@"bidding registration closed", ^{
+    [_button setAuctionState:ARAuctionStateUserRegistrationClosed animated:NO];
+    expect(_button).will.haveValidSnapshotNamed(@"testBiddingRegistrationClosed");
+});
+
+
 SpecEnd;
