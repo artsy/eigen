@@ -126,6 +126,15 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         lowerBiddingSeparatorView.hidden = bottomSeparatorOverlapsBidButton
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if bidViewModel.lotViewModel.userIsHighestBidder {
+            // User is already the highest bidder, tell them so and Dismiss.
+            showHighestBidderStatusAndDismiss()
+        }
+    }
+
     @IBOutlet weak var lotNumberLabel: UILabel!
     @IBOutlet weak var lotArtistLabel: UILabel!
     @IBOutlet weak var lotNameLabel: UILabel!
@@ -201,10 +210,10 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         default: shouldShowBidProgressView = false
         }
 
-        shouldShowBiddingOverlay(shouldShowBidProgressView, maxBidder: nil)
+        shouldShowBiddingOverlay(shouldShowBidProgressView)
     }
 
-    private func shouldShowBiddingOverlay(show: Bool, maxBidder: Bool?) {
+    private func shouldShowBiddingOverlay(show: Bool, maxBidder: Bool = false) {
         let showingBidProgressView = bidProgressOverlayView.superview != nil
 
         let addBidProgressView = !showingBidProgressView && show
@@ -221,16 +230,29 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
             // We get a normal event for the outbid notification
             // which we can use to infer whether we won or not.
 
-            guard let maxBidder = maxBidder else { return }
             let score:LiveAuctionBiddingProgressState =  maxBidder ? .BidBecameMaxBidder : .BidOutbid
             bidProgressOverlayView.biddingProgressSignal.update(score)
             bidButtonViewModel.progressSignal.update(.Active(biddingState:  score))
 
             ar_dispatch_after(2) {
-                self.bidProgressOverlayView.removeFromSuperview()
+                // maxBidder case handled independently, below.
+                if maxBidder {
+                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    self.bidProgressOverlayView.removeFromSuperview()
+                }
             }
         }
+    }
 
+    private func showHighestBidderStatusAndDismiss() {
+        bidProgressOverlayView.biddingProgressSignal.update(.BidBecameMaxBidder)
+        bidButtonViewModel.progressSignal.update(.Active(biddingState: .BidBecameMaxBidder))
+        shouldShowBiddingOverlay(true, maxBidder: true)
+
+        ar_dispatch_after(2) {
+            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
 }
 
