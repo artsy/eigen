@@ -44,8 +44,7 @@ class BiddingCredentials {
     }
 
     var bidderID: String? {
-        // TODO: pick a bidder, return id
-        return ""
+        return bidders.bestBidder?.bidderID
     }
 
     init(bidders: [Bidder], paddleNumber: String?) {

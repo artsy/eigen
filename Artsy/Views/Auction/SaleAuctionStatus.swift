@@ -30,9 +30,7 @@ extension SaleAuctionStatusType {
             state.insert(.Ended)
         }
 
-        // TODO: Get better criteria for choosing a bidder, similar to https://github.com/artsy/eigen/pull/1661/files#diff-6d73ebd58fdd2d00c32813f60608fbd1R111
-        // TODO: This could go in an Array extension.
-        if let bidder = bidders.first {
+        if let bidder = bidders.bestBidder {
             if bidder.saleRequiresBidderApproval && !bidder.qualifiedForBidding {
                 state.insert(.UserPendingRegistration)
             } else {
@@ -43,5 +41,22 @@ extension SaleAuctionStatusType {
         }
         
         return state
+    }
+}
+
+protocol BidderType {
+    var qualifiedForBidding: Bool { get }
+}
+
+extension Bidder: BidderType { }
+
+extension Array where Element: BidderType {
+    var bestBidder: Element? {
+        // If we contain a bidder that is qualified, return it.
+        if let qualifiedBidder = filter({ $0.qualifiedForBidding }).first {
+            return qualifiedBidder
+        }
+        // Otherwise, just return our first bidder.
+        return first
     }
 }
