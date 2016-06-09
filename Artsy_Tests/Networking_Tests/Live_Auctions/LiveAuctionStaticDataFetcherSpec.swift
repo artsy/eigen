@@ -12,7 +12,8 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
 
         let jwt = ArtsyAPISaleRegistrationStatus.NotRegistered.jwt.string
         let bidderID = "000000"
-        let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"], "causality_jwt": jwt, "me": ["paddle_number": bidderID]]]
+        let paddleNumber = "1234"
+        let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"], "causality_jwt": jwt, "me": ["paddle_number": paddleNumber, "bidders": [["id": bidderID]]]]]
 
         var subject: LiveAuctionStaticDataFetcher!
 
@@ -41,8 +42,13 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
             }
 
             it("fetches a bidderId") {
-                expect(receivedState.peekValue()?.bidderID) == bidderID
+                expect(receivedState.peekValue()?.bidderCredentials.bidderID) == bidderID
             }
+
+            it("fetches a paddleNumber") {
+                expect(receivedState.peekValue()?.bidderCredentials.paddleNumber) == paddleNumber
+            }
+
         }
     }
 }

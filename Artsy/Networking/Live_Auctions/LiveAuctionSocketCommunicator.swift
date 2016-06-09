@@ -22,8 +22,8 @@ protocol LiveAuctionSocketCommunicatorType {
     var socketConnectionSignal: Observable<Bool> { get }
     var operatorConnectedSignal: Observable<AnyObject> { get }
 
-    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String)
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String)
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String)
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String)
 }
 
 class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
@@ -162,7 +162,8 @@ private extension SocketSetup {
 
 private typealias PublicFunctions = LiveAuctionSocketCommunicator
 extension PublicFunctions {
-    func bidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) {
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
+        guard let bidderID = bidderCredentials.bidderID, paddleNumber = bidderCredentials.paddleNumber else { return }
         writeJSON([
             "key": bidUUID,
             "type": "PostEvent",
@@ -170,12 +171,14 @@ extension PublicFunctions {
                 "type": "FirstPriceBidPlaced",
                 "lotId": lotID,
                 "amountCents": NSNumber(unsignedLongLong: amountCents),
-                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID]
+                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber]
             ]
         ])
     }
 
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderID: String, bidUUID: String) {
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
+        guard let bidderID = bidderCredentials.bidderID, paddleNumber = bidderCredentials.paddleNumber else { return }
+
         writeJSON([
             "key": bidUUID,
             "type": "PostEvent",
@@ -183,13 +186,14 @@ extension PublicFunctions {
                 "type": "SecondPriceBidPlaced",
                 "lotId": lotID,
                 "amountCents": NSNumber(unsignedLongLong: amountCents),
-                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID]
+                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber]
             ]
         ])
     }
 
     func writeJSON(json: NSObject) {
         do {
+            print(try json.stringify())
             socket.writeString(try json.stringify())
         } catch {
             print("Error creating JSON string of socket event")

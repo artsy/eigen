@@ -32,7 +32,8 @@ protocol LiveAuctionsSalesPersonType {
 }
 
 class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderID: String?) -> LiveAuctionStateManager
+
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderCredentials: BiddingCredentials) -> LiveAuctionStateManager
     typealias AuctionViewModelCreator = (sale: LiveSale, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, bidderStatus: ArtsyAPISaleRegistrationStatus) -> LiveAuctionViewModelType
 
     let sale: LiveSale
@@ -56,16 +57,17 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
     init(sale: LiveSale,
          jwt: JWT,
-         bidderID: String?,
+         bidderCredentials: BiddingCredentials,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator(),
          auctionViewModelCreator: AuctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()) {
 
         self.sale = sale
-        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderID: bidderID) }
+        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderCredentials: bidderCredentials) }
 
         let host = ARRouter.baseCausalitySocketURLString()
-        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderID: bidderID)
+
+        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: bidderCredentials)
         self.auctionViewModel = auctionViewModelCreator(sale: sale, currentLotSignal: stateManager.currentLotSignal, bidderStatus: stateManager.bidderStatus)
     }
 }
@@ -140,14 +142,14 @@ private typealias ClassMethods = LiveAuctionsSalesPerson
 extension ClassMethods {
 
     class func defaultStateManagerCreator() -> StateManagerCreator {
-        return { host, sale, saleArtworks, jwt, bidderID in
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderID: bidderID)
+        return { host, sale, saleArtworks, jwt, bidderCredentials in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderCredentials: bidderCredentials)
         }
     }
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
-        return { host, sale, saleArtworks, jwt, bidderID in
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderID: bidderID, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
+        return { host, sale, saleArtworks, jwt, bidderCredentials in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderCredentials: bidderCredentials, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
         }
     }
 

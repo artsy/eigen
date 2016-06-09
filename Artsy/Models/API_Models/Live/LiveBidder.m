@@ -16,7 +16,7 @@
     if ([self.type isEqualToString:@"OfflineBidder"]) {
         return @"Floor";
     } else {
-        return self.bidderID;
+        return self.paddleNumber.length ? self.paddleNumber : self.bidderID;
     }
 }
 

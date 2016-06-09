@@ -9,13 +9,15 @@ func stub_auctionSale() -> LiveSale {
 
 func stub_auctionSalesPerson(auctionViewModel: LiveAuctionViewModelType? = nil) -> LiveAuctionsSalesPersonType {
     let sale = stub_auctionSale()
+    let creds = BiddingCredentials(bidderID: "1234", paddleNumber: "4444")
+
     let auctionViewModelCreator: LiveAuctionsSalesPerson.AuctionViewModelCreator
     if let auctionViewModel = auctionViewModel {
         auctionViewModelCreator = { _ in return auctionViewModel }
     } else {
         auctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()
     }
-    return LiveAuctionsSalesPerson(sale: sale, jwt: ArtsyAPISaleRegistrationStatus.Registered.jwt , bidderID: "bidder-id", stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
+    return LiveAuctionsSalesPerson(sale: sale, jwt: ArtsyAPISaleRegistrationStatus.Registered.jwt , bidderCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
 }
 
 extension ArtsyAPISaleRegistrationStatus {
