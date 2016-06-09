@@ -59,7 +59,6 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                 -> (state: (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?))
                 -> LiveAuctionBidButtonState {
         return { state in
-            // TODO: Double-check
             let userIsRegistered = auctionViewModel.auctionState.contains(.UserIsRegistered)
             let userRegistrationPending = auctionViewModel.auctionState.contains(.UserPendingRegistration)
             let registrationIsClosed = auctionViewModel.auctionState.contains(.UserRegistrationClosed)
