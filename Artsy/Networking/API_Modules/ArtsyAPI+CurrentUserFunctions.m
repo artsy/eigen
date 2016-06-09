@@ -21,7 +21,7 @@
 + (void)getCurrentUserBiddersForSale:(NSString *)saleID success:(void (^)(NSArray<Bidder *> *))success failure:(void (^)(NSError *error))failure
 {
     if ([[ARUserManager sharedManager] currentUser] == nil) {
-        success(ArtsyAPISaleRegistrationStatusNotLoggedIn);
+        success(@[]);
         return;
     }
 

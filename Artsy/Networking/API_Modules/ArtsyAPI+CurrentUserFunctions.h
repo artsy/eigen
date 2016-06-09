@@ -2,12 +2,6 @@
 
 @class User, Bidder;
 
-typedef NS_ENUM(NSUInteger, ArtsyAPISaleRegistrationStatus) {
-    ArtsyAPISaleRegistrationStatusNotLoggedIn,
-    ArtsyAPISaleRegistrationStatusNotRegistered,
-    ArtsyAPISaleRegistrationStatusRegistered,
-};
-
 
 @interface ArtsyAPI (CurrentUserFunctions)
 
