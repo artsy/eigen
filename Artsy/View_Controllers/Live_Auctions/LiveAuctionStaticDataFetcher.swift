@@ -35,7 +35,6 @@ class JWT {
     }
 }
 
-
 class BiddingCredentials {
     let bidderID: String?
     let paddleNumber: String?
