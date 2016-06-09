@@ -40,6 +40,7 @@ protocol LiveAuctionLotViewModelType: class {
 
     var userIsHighestBidder: Bool { get }
     var userIsBeingSoldTo: Bool { get }
+    var isBeingSold: Bool { get }
 
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
@@ -185,6 +186,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
             bidderID = bidderCredentials.paddleNumber,
             top = topBidEvent else { return false }
         return top.hasBidderID(bidderID)
+    }
+
+    var isBeingSold: Bool {
+        return sellingToBidderID != nil
     }
 
     var userIsBeingSoldTo: Bool {

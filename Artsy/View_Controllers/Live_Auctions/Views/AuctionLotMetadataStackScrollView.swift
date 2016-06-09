@@ -86,16 +86,20 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
                 return
             }
             switch state {
-                case .LiveLot:
+                case .LiveLot, .UpcomingLot:
                     if let reserve = newCurrentBid.reserve {
                         currentBid.text = "\(newCurrentBid.bid) \(reserve)"
                         currentBid.makeSubstringFaint(reserve)
                     } else {
                         currentBid.text = newCurrentBid.bid
                 }
-            default: break
+            default:
+                if viewModel.isBeingSold {
+                    currentBid.text = "Went for: \(viewModel.currentLotValueString)"
+                } else {
+                    currentBid.text = ""
+                }
             }
-
         }
 
         scrollEnabled = false
