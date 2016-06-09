@@ -5,9 +5,12 @@ class SaleViewModel: NSObject {
     private let sale: Sale
     private let saleArtworks: [SaleArtwork]
 
-    init(sale: Sale, saleArtworks: [SaleArtwork]) {
+    var bidders: [Bidder]
+
+    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder]) {
         self.sale = sale
         self.saleArtworks = saleArtworks
+        self.bidders = bidders
     }
 }
 
@@ -18,6 +21,41 @@ extension SaleViewModel {
         case .Closed: return true
         default: return false
         }
+    }
+
+    var auctionState: ARAuctionState {
+        var state: ARAuctionState = [.Default]
+        let now = ARSystemTime.date()
+
+        let hasStarted = sale.startDate.compare(now) == .OrderedAscending
+        let hasFinished = sale.endDate.compare(now) == .OrderedAscending
+        let notYetStarted = sale.startDate.compare(now) == .OrderedDescending
+        let registrationClosed = (sale.registrationEndsAtDate != nil && sale.registrationEndsAtDate.compare(now) == .OrderedAscending)
+
+        if notYetStarted {
+            state.insert(.ShowingPreview)
+        }
+
+        if hasStarted && !hasFinished {
+            state.insert(.Started)
+        }
+
+        if hasFinished {
+            state.insert(.Ended)
+        }
+
+        // TODO: Get better criteria for choosing a bidder, similar to https://github.com/artsy/eigen/pull/1661/files#diff-6d73ebd58fdd2d00c32813f60608fbd1R111
+        if let bidder = bidders.first {
+            if bidder.saleRequiresBidderApproval && !bidder.qualifiedForBidding {
+                state.insert(.UserPendingRegistration)
+            } else {
+                state.insert(.UserIsRegistered)
+            }
+        } else if registrationClosed {
+            state.insert(.UserRegistrationClosed)
+        }
+
+        return state
     }
 
     var backgroundImageURL: NSURL? {

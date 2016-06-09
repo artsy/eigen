@@ -103,7 +103,7 @@ extension LiveAuctionStaticDataFetcherType {
     }
 
     func parseJWT(json: JSON) -> JWT? {
-        return  JWT(jwtString: json["data"]["causality_jwt"].stringValue)
+        return JWT(jwtString: json["data"]["causality_jwt"].stringValue)
     }
 
     func createBidderCredentials(json: JSON) -> BiddingCredentials {
