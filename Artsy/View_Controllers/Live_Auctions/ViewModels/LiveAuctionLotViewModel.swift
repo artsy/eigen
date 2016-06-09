@@ -321,7 +321,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
             let isTopBid = (bidEvent == topBid)
             let isUser: Bool
-            if let bidderID = bidderCredentials.bidderID {
+            if let bidderID = bidderCredentials.bidderID where bidderCredentials.canBid {
                 isUser = bidEvent.hasBidderID(bidderID)
             } else {
                 isUser = false

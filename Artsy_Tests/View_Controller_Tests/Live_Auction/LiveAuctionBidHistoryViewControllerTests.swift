@@ -11,7 +11,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
 
     func setupCellWithEvent(event: LiveEvent) -> LiveAuctionHistoryCell {
         let lot = LiveAuctionLot(JSON: ["id": "", "symbol": "$" ])
-        let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+        let creds = BiddingCredentials(bidderID: "213123", paddleNumber: "123213")
 
         let lotVM = LiveAuctionLotViewModel(lot: lot, bidderCredentials: creds)
         lotVM.addEvents([event])

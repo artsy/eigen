@@ -10,7 +10,9 @@ class LiveAuctionLotViewModelSpec: QuickSpec {
 
         it("handles cancelling an existing bid") {
             let lot = LiveAuctionLot(JSON: [:])
-            let subject = LiveAuctionLotViewModel(lot: lot, bidderID: nil)
+            let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+
+            let subject = LiveAuctionLotViewModel(lot: lot, bidderCredentials: creds)
             let event = LiveEvent(JSON: ["type": "FirstPriceBidPlaced", "eventId": "1234"])
             subject.addEvents([event])
 
@@ -24,7 +26,8 @@ class LiveAuctionLotViewModelSpec: QuickSpec {
 
         it("exposes user facing events only via the eventCount") {
             let lot = LiveAuctionLot(JSON: [:])
-            let subject = LiveAuctionLotViewModel(lot: lot, bidderID: nil)
+            let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+            let subject = LiveAuctionLotViewModel(lot: lot, bidderCredentials: creds)
             let event = LiveEvent(JSON: ["type": "FirstPriceBidPlaced", "eventId": "1234"])
             subject.addEvents([event])
 
