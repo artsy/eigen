@@ -27,7 +27,6 @@ class AuctionInformationViewController: UIViewController {
     let FAQEntries: [AuctionInformation.FAQEntry]
 
     var scrollView: ORStackScrollView
-    var registrationStatus: ArtsyAPISaleRegistrationStatus?
 
     init(saleViewModel: SaleViewModel) {
         self.scrollView = ORStackScrollView()

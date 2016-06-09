@@ -32,7 +32,7 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
 
     func fetchBidders() -> Observable<Result<[Bidder]>> {
         let signal = Observable(saleID)
-        return signal.flatMap(bidderNetworkModel.fetchRegistrationStatus)
+        return signal.flatMap(bidderNetworkModel.fetchBiddersForSale)
     }
 
     func fetch() -> Observable<Result<SaleViewModel>> {

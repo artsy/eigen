@@ -2,7 +2,7 @@ import Foundation
 import Interstellar
 
 protocol AuctionBiddersNetworkModelType {
-    func fetchRegistrationStatus(saleID: String) -> Observable<Result<[Bidder]>>
+    func fetchBiddersForSale(saleID: String) -> Observable<Result<[Bidder]>>
     var bidders: [Bidder] { get }
 }
 
@@ -11,7 +11,7 @@ class AuctionBiddersNetworkModel: AuctionBiddersNetworkModelType {
 
     private(set) var bidders: [Bidder] = []
 
-    func fetchRegistrationStatus(saleID: String) -> Observable<Result<[Bidder]>> {
+    func fetchBiddersForSale(saleID: String) -> Observable<Result<[Bidder]>> {
         let observable = Observable<Result<[Bidder]>>()
 
         // Based on the saleID signal, fetch the sale registration status.

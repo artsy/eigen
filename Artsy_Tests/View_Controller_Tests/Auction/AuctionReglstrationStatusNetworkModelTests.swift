@@ -23,7 +23,7 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
 
             var registrationStatus: ArtsyAPISaleRegistrationStatus?
             waitUntil { done in
-                subject.fetchRegistrationStatus("whatever").subscribe { result in
+                subject.fetchBiddersForSale("whatever").subscribe { result in
                     if case .Success(let r) = result {
                         registrationStatus = r
                     }
@@ -42,7 +42,7 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
 
             var registrationStatus: ArtsyAPISaleRegistrationStatus?
             waitUntil { done in
-                subject.fetchRegistrationStatus("whatever").subscribe { result in
+                subject.fetchBiddersForSale("whatever").subscribe { result in
                     if case .Success(let r) = result {
                         registrationStatus = r
                     }
@@ -58,7 +58,7 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
 
             var registrationStatus: ArtsyAPISaleRegistrationStatus?
             waitUntil { done in
-                subject.fetchRegistrationStatus("whatever").subscribe { result in
+                subject.fetchBiddersForSale("whatever").subscribe { result in
                     if case .Success(let r) = result {
                         registrationStatus = r
                     }
@@ -83,7 +83,7 @@ class AuctionRegistrationStatusNetworkModelSpec: QuickSpec {
                 }
             }
 
-            expect(subject.registrationStatus) == .Registered
+            expect(subject.fetchBiddersForSale) == .Registered
         }
     }
 }

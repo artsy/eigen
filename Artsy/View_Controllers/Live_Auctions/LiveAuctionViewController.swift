@@ -240,9 +240,9 @@ extension PrivateFunctions {
         }
     }
 
-    func salesPerson(sale: LiveSale, jwt: JWT, bidderCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
-        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, bidderCredentials: bidderCredentials)
-     }
+    func salesPerson(sale: LiveSale, jwt: JWT, biddingCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
+        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, biddingCredentials: biddingCredentials)
+    }
 }
 
 extension LiveAuctionViewController: UISplitViewControllerDelegate {
@@ -265,7 +265,8 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
         let json = loadJSON("live_auctions_static")
         let sale = self.parseSale(JSON(json))!
-        let bidderCredentials = BiddingCredentials(bidderID: "bidder-id", paddleNumber: "paddle-number")
+        // TODO: Add bidder for stubbed use.
+        let bidderCredentials = BiddingCredentials(bidders: [], paddleNumber: "paddle-number")
 
         let stubbedJWT = JWT(jwtString: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWN0aW9ucyIsInJvbGUiOiJvYnNlcnZlciIsInVzZXJJZCI6bnVsbCwic2FsZUlkIjoiNTRjN2U4ZmE3MjYxNjkyYjVhY2QwNjAwIiwiYmlkZGVySWQiOm51bGwsImlhdCI6MTQ2NTIzNDI2NDI2N30.2q3bh1E897walHdSXIocGKElbxOhCGmCCsL8Bf-UWNA")!
         let s = (sale: sale, jwt: stubbedJWT, bidderCredentials: bidderCredentials)

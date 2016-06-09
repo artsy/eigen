@@ -22,7 +22,6 @@ class LiveAuctionStateManager: NSObject {
 
     let sale: LiveSale
     let bidderCredentials: BiddingCredentials
-    let bidderStatus: ArtsyAPISaleRegistrationStatus
     let operatorConnectedSignal = Observable<Bool>()
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
@@ -45,8 +44,6 @@ class LiveAuctionStateManager: NSObject {
         self.bidderCredentials = bidderCredentials
         self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, jwt: jwt)
         self.stateReconciler = stateReconcilerCreator(saleArtworks: saleArtworks)
-
-        self.bidderStatus = LiveAuctionStateManager.registrationStatusFromJWT(jwt)
 
         super.init()
 
@@ -77,16 +74,6 @@ class LiveAuctionStateManager: NSObject {
         }
 
         socketCommunicator.operatorConnectedSignal.subscribe(applyWeakly(self, LiveAuctionStateManager.handleOperatorConnectedState))
-    }
-
-    private class func registrationStatusFromJWT(jwt: JWT) -> ArtsyAPISaleRegistrationStatus {
-        guard let _ = jwt.userID  else { return .NotLoggedIn }
-        switch jwt.role {
-        case .Bidder:
-            return .Registered
-        default:
-            return .NotRegistered
-        }
     }
 }
 

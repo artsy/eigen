@@ -425,7 +425,7 @@ class Test_AuctionNetworkModel: AuctionNetworkModelType {
         return Observable(.Success(saleViewModel))
     }
 
-    func fetchRegistrationStatus() -> Observable<Result<ArtsyAPISaleRegistrationStatus>> {
+    func fetchBiddersForSale() -> Observable<Result<ArtsyAPISaleRegistrationStatus>> {
         return Observable(.Success(registrationStatus ?? .NotLoggedIn))
     }
 }

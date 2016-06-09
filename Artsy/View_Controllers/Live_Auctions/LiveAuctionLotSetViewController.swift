@@ -22,7 +22,8 @@ class LiveAuctionLotSetViewController: UIViewController {
     private var pageViewScrollView: UIScrollView?
     private let progressBarBottomConstraintAtRestConstant: CGFloat = -165
     private var progressBarBottomConstraint: NSLayoutConstraint?
-    private var saleNetworkModel = AuctionSaleNetworkModel()
+    private let saleNetworkModel = AuctionSaleNetworkModel()
+    private let biddersNetworkModel = AuctionBiddersNetworkModel()
 
     init(salesPerson: LiveAuctionsSalesPersonType, traitCollection: UITraitCollection) {
         self.salesPerson = salesPerson
@@ -144,7 +145,9 @@ class LiveAuctionLotSetViewController: UIViewController {
         info.accessibilityLabel = "More Information"
         info.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.moreInfo), forControlEvents: .TouchUpInside)
         info.enabled = false
-        saleNetworkModel.fetchSale(salesPerson.liveSaleID).subscribe { _ in info.enabled = true }
+        saleNetworkModel.fetchSale(salesPerson.liveSaleID)
+            .merge(biddersNetworkModel.fetchBiddersForSale(salesPerson.liveSaleID))
+            .subscribe { _ in info.enabled = true }
 
         let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))
         lots.accessibilityLabel = "Show all Lots"
@@ -163,12 +166,11 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     func moreInfo() {
         guard let sale = saleNetworkModel.sale else { return }
-        // TOOD: We need to pass in the bidders
-        let saleVM = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
+
+        let saleVM = SaleViewModel(sale: sale, saleArtworks: [], bidders: biddersNetworkModel.bidders)
 
         let saleInfoVC = AuctionInformationViewController(saleViewModel: saleVM)
         saleInfoVC.titleViewDelegate = self
-        saleInfoVC.registrationStatus = self.salesPerson.bidderStatus
         let nav = ARSerifNavigationViewController(rootViewController: saleInfoVC)
         self.navigationController?.presentViewController(nav, animated: true, completion: nil)
     }
