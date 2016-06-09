@@ -101,7 +101,6 @@ class Test_SalesPerson: LiveAuctionsSalesPersonType {
     var lotCount: Int { return auctionViewModel.lotCount }
     var liveSaleID: String = "seriously-folks-its-the-best-sale-ever"
     var liveSaleName: String = "The Best Sale"
-    var bidderStatus: ArtsyAPISaleRegistrationStatus = .NotRegistered
 
     var lots: [LiveAuctionLotViewModelType]
 
@@ -123,7 +122,8 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
     var lotCount = 3
     var saleAvailabilitySignal: Observable<SaleAvailabilityState> = Observable()
     var currentLotSignal = Observable<LiveAuctionLotViewModelType?>(Test_LiveAuctionLotViewModel(lotID: "active-lot"))
-    var bidderStatus: ArtsyAPISaleRegistrationStatus = .Registered
+    var auctionState: ARAuctionState = .Default
+
 
     var distance: Int?
     func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int? {

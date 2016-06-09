@@ -5,7 +5,7 @@ protocol AuctionNetworkModelType {
     func fetch() -> Observable<Result<SaleViewModel>>
     func fetchBidders() -> Observable<Result<[Bidder]>>
 
-    var bidders: [Bidder]? { get }
+    var bidders: [Bidder] { get }
 }
 
 /// Network model for everything auction-related.
@@ -26,8 +26,8 @@ class AuctionNetworkModel {
 }
 
 extension AuctionNetworkModel: AuctionNetworkModelType {
-    var bidders: [Bidder]? {
-        return self.bidders
+    var bidders: [Bidder] {
+        return bidderNetworkModel.bidders
     }
 
     func fetchBidders() -> Observable<Result<[Bidder]>> {

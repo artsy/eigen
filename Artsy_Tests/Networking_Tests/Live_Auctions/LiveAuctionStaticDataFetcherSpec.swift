@@ -10,7 +10,7 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
 
         let saleID = "the-id"
 
-        let jwt = ArtsyAPISaleRegistrationStatus.NotRegistered.jwt.string
+        let jwt = StubbedCredentials.NotRegistered.jwt.string
         let bidderID = "000000"
         let paddleNumber = "1234"
         let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"], "causality_jwt": jwt, "me": ["paddle_number": paddleNumber, "bidders": [["id": bidderID]]]]]

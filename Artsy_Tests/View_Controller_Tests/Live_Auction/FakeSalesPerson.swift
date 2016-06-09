@@ -9,7 +9,7 @@ func stub_auctionSale() -> LiveSale {
 
 func stub_auctionSalesPerson(auctionViewModel: LiveAuctionViewModelType? = nil) -> LiveAuctionsSalesPersonType {
     let sale = stub_auctionSale()
-    let creds = BiddingCredentials(bidderID: "1234", paddleNumber: "4444")
+    let creds = BiddingCredentials(bidders: [], paddleNumber: "4444")
 
     let auctionViewModelCreator: LiveAuctionsSalesPerson.AuctionViewModelCreator
     if let auctionViewModel = auctionViewModel {
@@ -17,10 +17,14 @@ func stub_auctionSalesPerson(auctionViewModel: LiveAuctionViewModelType? = nil) 
     } else {
         auctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()
     }
-    return LiveAuctionsSalesPerson(sale: sale, jwt: ArtsyAPISaleRegistrationStatus.Registered.jwt , bidderCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
+    return LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.Registered.jwt , biddingCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
 }
 
-extension ArtsyAPISaleRegistrationStatus {
+enum StubbedCredentials {
+    case Registered, NotRegistered, NotLoggedIn
+}
+
+extension StubbedCredentials {
     var jwt: JWT {
         switch self {   
         case .Registered:

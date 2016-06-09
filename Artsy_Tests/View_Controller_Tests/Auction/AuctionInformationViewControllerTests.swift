@@ -14,7 +14,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
         let end = ISO8601DateFormatter().dateFromString("2025-02-18T23:59:00+00:00")!
         let description = "On Thursday, November 12, Swiss Institute will host their Annual Benefit Dinner & Auction–the most important fundraising event of the year–with proceeds going directly towards supporting their innovative exhibitions and programs. Since 1986, Swiss Institute has been dedicated to promoting forward-thinking and experimental art."
         let sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": start, "endDate": end ], error: Void())
-        let saleViewModel = SaleViewModel(sale: sale, saleArtworks: [])
+        let saleViewModel = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
         let markdown = "# Other Requests\n## Can you tell me the worth of my artwork?\n\nArtsy does not provide appraisal or authentication services for individual sellers. We recommend reaching out to professional dealers, galleries, and auction houses for assistance.\n\nFor any further questions, please contact [support@artsy.net](mailto:support@artsy.net)."
 
@@ -51,7 +51,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
 
         it("shows a button for buyer's premium when needed") {
             let sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": start, "endDate": end, "buyersPremium" : [] ], error: Void())
-            let saleViewModel = SaleViewModel(sale: sale, saleArtworks: [])
+            let saleViewModel = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
             informationController = AuctionInformationViewController(saleViewModel: saleViewModel)
             navigationController = ARSerifNavigationViewController(rootViewController: informationController)
             for entry in informationController.FAQEntries {

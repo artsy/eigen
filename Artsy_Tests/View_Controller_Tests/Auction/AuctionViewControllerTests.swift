@@ -45,7 +45,7 @@ class AuctionViewControllerTests: QuickSpec {
                 dateMock = ARTestContext.freezeTime(now)
 
                 sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "The 🎉 Sale", "endDate": endTime], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
                 horizontalSizeClass = UIUserInterfaceSizeClass(rawValue: context()["horizontalSizeClass"] as! Int)
                 device = ARDeviceType(rawValue: context()["device"] as! Int)
@@ -58,7 +58,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good without a registration status") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
@@ -69,7 +69,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when registration status changes") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                let networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+                let networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
                 subject.networkModel = networkModel
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
@@ -77,7 +77,7 @@ class AuctionViewControllerTests: QuickSpec {
                     // Must load view within context of device, since the iPad-specific layout will cause a throw exception on iPhone.
                     subject.loadViewProgrammatically()
 
-                    networkModel.registrationStatus = .Registered
+//                    networkModel.registrationStatus = .Registered
                     NSNotificationCenter.defaultCenter().postNotificationName(ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
 
                     expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
@@ -87,7 +87,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when registereed") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .Registered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
@@ -98,7 +98,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when not logged in") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .NotLoggedIn)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
@@ -109,7 +109,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when not registered") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .NotRegistered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
@@ -120,7 +120,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when sorting by Artist A-Z") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .Registered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
 
                 // Need to use the device when stubbing to use proper screen size.
                 ARTestContext.useDevice(device) {
@@ -135,7 +135,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when filtering based on price") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .Registered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
 
                 // Need to use the device when stubbing to use proper screen size.
                 ARTestContext.useDevice(device) {
@@ -150,7 +150,7 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when sorting by Artist A-Z and filtering based on price") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .Registered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
 
                 // Need to use the device when stubbing to use proper screen size.
                 ARTestContext.useDevice(device) {
@@ -171,11 +171,11 @@ class AuctionViewControllerTests: QuickSpec {
                         test_saleArtworkWithLotNumber(3, artistName: "Sarah", bidCount: 2, highestBidCents: 50_00),
                         test_saleArtworkWithLotNumber(4, artistName: "Eloy", bidCount: 17, highestBidCents: 1000_000_00),
                         test_saleArtworkWithLotNumber(5, artistName: "Maxim", bidCount: 6, highestBidCents: 5011_00),
-                    ])
+                    ], bidders: [])
 
                     subject = AuctionViewController(saleID: sale.saleID)
                     subject.allowAnimations = false
-                    subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: .Registered)
+                    subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
                 }
 
 
@@ -275,11 +275,11 @@ class AuctionViewControllerTests: QuickSpec {
                     "saleID": "the-tada-sale", "name": "The 🎉 Sale",
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
 
                 expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
             }
@@ -295,11 +295,11 @@ class AuctionViewControllerTests: QuickSpec {
                     "saleID": "the-tada-sale", "name": "The Sale With The Really Really Looooong Name",
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
 
                 expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
             }
@@ -314,11 +314,11 @@ class AuctionViewControllerTests: QuickSpec {
                 "saleID": "the-tada-sale", "name": "The 🎉 Sale",
                 "saleDescription": "This is a description",
                 "startDate": start, "endDate": end], error: Void())
-            saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [])
+            saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
             let subject = AuctionViewController(saleID: sale.saleID)
             subject.allowAnimations = false
-            subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+            subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
 
             expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
         }
@@ -332,11 +332,11 @@ class AuctionViewControllerTests: QuickSpec {
                 "saleID": "the-tada-sale", "name": "The 🎉 Sale",
                 "saleDescription": "This is a description",
                 "startDate": start, "endDate": end], error: Void())
-            saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [])
+            saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
             let subject = AuctionViewController(saleID: sale.saleID)
             subject.allowAnimations = false
-            subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+            subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
             subject.saleViewModel = saleViewModel
 
             expect(subject.defaultRefineSettings().numberOfRowsInSection(0)).to(equal(2))
@@ -352,11 +352,11 @@ class AuctionViewControllerTests: QuickSpec {
                     "saleID": "the-tada-sale", "name": "The 🎉 Sale",
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
                 subject.saleViewModel = saleViewModel
 
                 expect(subject.defaultRefineSettings().numberOfRowsInSection(0)).to(equal(6))
@@ -374,11 +374,11 @@ class AuctionViewControllerTests: QuickSpec {
                     "saleID": "the-tada-sale", "name": "The 🎉 Sale",
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end, "liveAuctionStartDate": liveStart], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
 
                 expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
             }
@@ -395,12 +395,12 @@ class AuctionViewControllerTests: QuickSpec {
                     "name": "Ash Furrow Auctions: Nerds Collect Art",
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.stubHorizontalSizeClass(.Compact)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, registrationStatus: nil)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
 
                 expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
             }
@@ -414,19 +414,19 @@ class Test_SaleViewModel: SaleViewModel {
 
 class Test_AuctionNetworkModel: AuctionNetworkModelType {
     let saleViewModel: SaleViewModel
-    var registrationStatus: ArtsyAPISaleRegistrationStatus?
+    let bidders: [Bidder]
 
-    init(saleViewModel: SaleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatus?) {
+    init(saleViewModel: SaleViewModel, bidders: [Bidder] = []) {
         self.saleViewModel = saleViewModel
-        self.registrationStatus = registrationStatus
+        self.bidders = bidders
     }
 
     func fetch() -> Observable<Result<SaleViewModel>> {
         return Observable(.Success(saleViewModel))
     }
 
-    func fetchBiddersForSale() -> Observable<Result<ArtsyAPISaleRegistrationStatus>> {
-        return Observable(.Success(registrationStatus ?? .NotLoggedIn))
+    func fetchBidders() -> Observable<Result<[Bidder]>> {
+        return Observable(.Success(bidders))
     }
 }
 
