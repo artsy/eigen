@@ -22,7 +22,7 @@ protocol LiveAuctionLotViewModelType: class {
     var lotArtworkMedium: String? { get }
     var lotArtworkDimensions: String? { get }
 
-    var estimateString: String { get }
+    var estimateString: String? { get }
     var lotName: String { get }
     var lotID: String { get }
     var lotArtworkCreationDate: String? { get }
@@ -217,7 +217,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.currencySymbol
     }
 
-    var estimateString: String {
+    var estimateString: String? {
         return model.estimate
     }
 

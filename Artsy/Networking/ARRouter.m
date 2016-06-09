@@ -1033,6 +1033,7 @@ static NSString *hostFromString(NSString *string)
       low_estimate_cents\
       high_estimate_cents\
       currency\
+      estimate\
       artwork {\
         title\
         blurb: description\
