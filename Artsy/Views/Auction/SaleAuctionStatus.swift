@@ -13,9 +13,10 @@ extension SaleAuctionStatusType {
         var state: ARAuctionState = [.Default]
         let now = ARSystemTime.date()
 
-        let hasStarted = startDate.compare(now) == .OrderedAscending
-        let hasFinished = endDate.compare(now) == .OrderedAscending
-        let notYetStarted = startDate.compare(now) == .OrderedDescending
+        // These have a habit of being nil, so let's be _extra_ careful.
+        let hasStarted = (startDate != nil && startDate.compare(now) == .OrderedAscending)
+        let hasFinished = (endDate != nil && endDate.compare(now) == .OrderedAscending)
+        let notYetStarted = (startDate != nil && startDate.compare(now) == .OrderedDescending)
         let registrationClosed = (registrationEndsAtDate != nil && registrationEndsAtDate.compare(now) == .OrderedAscending)
 
         if notYetStarted {
