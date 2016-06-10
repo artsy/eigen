@@ -21,12 +21,12 @@ class LiveAuctionLotSetViewControllerSpec: QuickSpec {
             }
 
             it("looks good by default") {
-                let fakeSalesPerson = stub_auctionSalesPerson(Test_LiveAuctionViewModel())
-                let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson, traitCollection: UITraitCollection.init(horizontalSizeClass: horizontalSizeClass))
-
-                subject.stubTraitCollection(UITraitCollection(horizontalSizeClass: horizontalSizeClass))
 
                 ARTestContext.useDevice(device) {
+                    let fakeSalesPerson = stub_auctionSalesPerson(Test_LiveAuctionViewModel())
+                    let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson, traitCollection: UITraitCollection.init(horizontalSizeClass: horizontalSizeClass))
+
+                    subject.stubTraitCollection(UITraitCollection(horizontalSizeClass: horizontalSizeClass))
                     expect(subject).to( haveValidSnapshot() )
                 }
             }
@@ -41,6 +41,12 @@ class LiveAuctionLotSetViewControllerSpec: QuickSpec {
         describe("compact horizontal size class") {
             itBehavesLike("live auctions lot set") {
                 return ["horizontalSizeClass": UIUserInterfaceSizeClass.Compact.rawValue, "device": ARDeviceType.Phone6.rawValue] as NSDictionary
+            }
+        }
+
+        describe("really compact horizontal size class") {
+            itBehavesLike("live auctions lot set") {
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.Compact.rawValue, "device": ARDeviceType.Phone4.rawValue] as NSDictionary
             }
         }
     }

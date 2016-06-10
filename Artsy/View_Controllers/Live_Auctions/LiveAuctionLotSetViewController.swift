@@ -34,14 +34,12 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         let collectionViewLayout: UICollectionViewLayout
 
+        let adjustConstraintsForLargeScreens: Bool
+
         if traitCollection .horizontalSizeClass != .Regular {
             let screenWidthIsLarge = UIScreen.mainScreen().applicationFrame.width > 320
             let size: LiveAuctionFancyLotCollectionViewLayout.Size = screenWidthIsLarge ? .Normal : .Compact
-            if size == .Normal {
-                progressBarBottomConstraintAtRestConstant -= 40
-                collectionViewBottomConstraint -= 40
-            }
-
+            adjustConstraintsForLargeScreens = (size == .Normal)
 
             let layout = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: size)
             collectionViewLayout = layout
@@ -50,6 +48,12 @@ class LiveAuctionLotSetViewController: UIViewController {
             let layout = LiveAuctionPlainLotCollectionViewLayout(delegate: dataSource)
             collectionViewLayout = layout
             lotCollectionViewLayout = layout
+            adjustConstraintsForLargeScreens = true
+        }
+
+        if adjustConstraintsForLargeScreens {
+            self.progressBarBottomConstraintAtRestConstant -= 40
+            self.collectionViewBottomConstraint -= 40
         }
 
         lotImageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout).then {
