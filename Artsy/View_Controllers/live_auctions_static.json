@@ -1,5 +1,18 @@
 {
   "data": {
+    "me": {
+      "paddle_number": "123456",
+      "bidders": [
+        {
+          "id" : "123456",
+          "sale" : {
+            "id" : "54c7e8fa7261692b5acd0600",
+            "require_bidder_approval": true
+          },
+          "qualified_for_bidding" : true
+        }
+      ]
+    },
     "sale": {
       "_id": "54c7e8fa7261692b5acd0600",
       "id": "los-angeles-modern-auctions-march-2015",

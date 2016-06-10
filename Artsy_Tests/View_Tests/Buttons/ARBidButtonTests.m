@@ -19,7 +19,7 @@ it(@"registered", ^{
 });
 
 it(@"bidding open", ^{
-    _button.auctionState = ARAuctionStateStarted;
+    _button.auctionState = ARAuctionStateStarted | ARAuctionStateUserIsRegistered;
     expect(_button).will.haveValidSnapshotNamed(@"testBiddingOpenState");
 });
 

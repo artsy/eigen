@@ -81,7 +81,8 @@ class AuctionViewController: UIViewController {
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        guard saleViewModel != nil else {
+        // titleView being nil indicates this is an upcoming sale with no lots, so we shouldn't displayCurrentItems()
+        guard saleViewModel != nil && titleView != nil else {
             // We can't set up our current saleArtworksViewController if it has no models.
             return
         }
@@ -115,6 +116,7 @@ extension AuctionViewController {
 
     func setupForUpcomingSale(saleViewModel: SaleViewModel) {
 
+        self.saleViewModel = saleViewModel
         let auctionInfoVC = AuctionInformationViewController(saleViewModel: saleViewModel)
 
         auctionInfoVC.titleViewDelegate = self

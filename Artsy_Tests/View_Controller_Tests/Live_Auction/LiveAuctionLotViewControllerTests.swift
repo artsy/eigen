@@ -28,6 +28,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 freezeTime()
 
                 auctionViewModel = Test_LiveAuctionViewModel()
+                auctionViewModel.auctionState.insert(.UserIsRegistered)
                 auctionViewModel.saleAvailabilitySignal.update( .Active(liveAuctionDate: nil) )
                 lotViewModel = Test_LiveAuctionLotViewModel()
                 salesPerson = stub_auctionSalesPerson(auctionViewModel)
@@ -88,32 +89,6 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
         }
     }
 
-}
-
-class Test_SalesPerson: LiveAuctionsSalesPersonType {
-    var currentLotSignal = Observable<LiveAuctionLotViewModelType?>()
-    var currentFocusedLotIndex = Observable(0)
-    var debugAllEventsSignal = Observable<LotEventJSON>()
-    var socketConnectionSignal = Observable<Bool>()
-    var operatorConnectedSignal = Observable<Bool>()
-
-    var auctionViewModel: LiveAuctionViewModelType
-    var lotCount: Int { return auctionViewModel.lotCount }
-    var liveSaleID: String = "seriously-folks-its-the-best-sale-ever"
-    var liveSaleName: String = "The Best Sale"
-
-    var lots: [LiveAuctionLotViewModelType]
-
-    init(lots: [LiveAuctionLotViewModelType], auctionViewModel: LiveAuctionViewModelType) {
-        self.lots = lots
-        self.auctionViewModel = auctionViewModel
-    }
-
-    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType { return lots[index] }
-    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType { return lots[0] }
-
-    func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) { }
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) { }
 }
 
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {

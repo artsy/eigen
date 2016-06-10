@@ -10,6 +10,11 @@ import ISO8601DateFormatter
 @testable
 import Artsy
 
+
+let pendingBidder = try! Bidder(dictionary: ["qualifiedForBidding": false, "saleRequiresBidderApproval": true, "bidderID": "123456"], error: Void())
+let qualifiedBidder = try! Bidder(dictionary: ["qualifiedForBidding": true, "saleRequiresBidderApproval": true, "bidderID": "123456"], error: Void())
+
+
 var dateMock: AnyObject?
 var systemDateMock: AnyObject?
 
@@ -32,7 +37,7 @@ func unfreezeTime() {
 class AuctionViewControllerTests: QuickSpec {
     override func spec() {
         var sale: Sale!
-        var saleViewModel: SaleViewModel!
+        var saleViewModel: Test_SaleViewModel!
         var dateMock: OCMockObject!
 
         sharedExamples("auctions view controller registration status") { (context: SharedExampleContext) in
@@ -71,24 +76,24 @@ class AuctionViewControllerTests: QuickSpec {
                 subject.allowAnimations = false
                 let networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
                 subject.networkModel = networkModel
-                subject.stubHorizontalSizeClass(horizontalSizeClass)
 
-                // TODO: Crashing.
-//                ARTestContext.useDevice(device) {
-//                    // Must load view within context of device, since the iPad-specific layout will cause a throw exception on iPhone.
-//                    subject.loadViewProgrammatically()
-//
-////                    networkModel.registrationStatus = .Registered
-//                    NSNotificationCenter.defaultCenter().postNotificationName(ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
-//
-//                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
-//                }
+                ARTestContext.useDevice(device) {
+                    // Must load view within context of device, since the iPad-specific layout will cause a throw exception on iPhone.
+                    subject.stubHorizontalSizeClass(horizontalSizeClass)
+                    subject.loadViewProgrammatically()
+
+                    saleViewModel.stubbedAuctionState.insert(.UserIsRegistered)
+                    NSNotificationCenter.defaultCenter().postNotificationName(ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
+
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
+                }
             }
 
             it("looks good when registereed") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, bidders: [qualifiedBidder])
+                saleViewModel.stubbedAuctionState.insert(.UserIsRegistered)
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
 
                 ARTestContext.useDevice(device) {
@@ -121,7 +126,8 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when sorting by Artist A-Z") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
+                saleViewModel.stubbedAuctionState.insert(.UserIsRegistered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, bidders: [qualifiedBidder])
 
                 // Need to use the device when stubbing to use proper screen size.
                 ARTestContext.useDevice(device) {
@@ -136,7 +142,8 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when filtering based on price") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
+                saleViewModel.stubbedAuctionState.insert(.UserIsRegistered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, bidders: [qualifiedBidder])
 
                 // Need to use the device when stubbing to use proper screen size.
                 ARTestContext.useDevice(device) {
@@ -151,7 +158,8 @@ class AuctionViewControllerTests: QuickSpec {
             it("looks good when sorting by Artist A-Z and filtering based on price") {
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
-                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
+                saleViewModel.stubbedAuctionState.insert(.UserIsRegistered)
+                subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, bidders: [qualifiedBidder])
 
                 // Need to use the device when stubbing to use proper screen size.
                 ARTestContext.useDevice(device) {
@@ -172,11 +180,12 @@ class AuctionViewControllerTests: QuickSpec {
                         test_saleArtworkWithLotNumber(3, artistName: "Sarah", bidCount: 2, highestBidCents: 50_00),
                         test_saleArtworkWithLotNumber(4, artistName: "Eloy", bidCount: 17, highestBidCents: 1000_000_00),
                         test_saleArtworkWithLotNumber(5, artistName: "Maxim", bidCount: 6, highestBidCents: 5011_00),
-                    ], bidders: [])
+                    ], bidders: [qualifiedBidder])
+                    saleViewModel.stubbedAuctionState.insert(.UserIsRegistered)
 
                     subject = AuctionViewController(saleID: sale.saleID)
                     subject.allowAnimations = false
-                    subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
+                    subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, bidders: [qualifiedBidder])
                 }
 
 
@@ -410,12 +419,14 @@ class AuctionViewControllerTests: QuickSpec {
 }
 
 class Test_SaleViewModel: SaleViewModel {
+    var stubbedAuctionState: ARAuctionState = .Default
     override var currencySymbol: String { return "$" }
+    override var auctionState: ARAuctionState { return stubbedAuctionState }
 }
 
 class Test_AuctionNetworkModel: AuctionNetworkModelType {
     let saleViewModel: SaleViewModel
-    let bidders: [Bidder]
+    var bidders: [Bidder]
 
     init(saleViewModel: SaleViewModel, bidders: [Bidder] = []) {
         self.saleViewModel = saleViewModel

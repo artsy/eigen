@@ -187,7 +187,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             let lotID = NSUUID().UUIDString
 
             let lot = LiveAuctionLot(JSON: ["id": lotID])
-            let creds = BiddingCredentials(bidders: [], paddleNumber: myBidderID)
+            let creds = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: myBidderID)
             let lotVM = LiveAuctionLotViewModel(lot: lot, bidderCredentials: creds)
 
             let e1 = LiveEvent(JSON: ["type" : "BiddingOpened", "id" : lotID])

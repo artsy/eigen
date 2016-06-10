@@ -167,7 +167,7 @@ private extension AuctionTitleView {
         let registerButton = ARBidButton().then {
             $0.setTitle("Register to Bid", forState: .Normal)
             $0.addTarget(self, action: #selector(AuctionTitleView.userDidPressRegister), forControlEvents: .TouchUpInside)
-            $0.setAuctionState(viewModel.auctionState)
+            $0.setAuctionState(viewModel.auctionState, animated: false)
         }
         container.addSubview(registerButton)
 
