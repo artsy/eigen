@@ -8,7 +8,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
     override func spec() {
         var subject: LiveAuctionStateManager!
         var sale: LiveSale!
-        let stubbedJWT = ArtsyAPISaleRegistrationStatus.Registered.jwt
+        let stubbedJWT = StubbedCredentials.Registered.jwt
 
         beforeEach {
             OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
@@ -16,11 +16,12 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
             sale = testLiveSale()
 
-            let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+            let creds = BiddingCredentials(bidders: [], paddleNumber: "")
             subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: stubbedJWT, bidderCredentials: creds, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
-        it("sets its saleID upon initialization") {
+        it("sets its saleID and bidders upon initialization") {
+            expect(subject.bidderCredentials.bidders).to( beEmpty() )
             expect(subject.sale) === sale
         }
 
@@ -49,39 +50,6 @@ class LiveAuctionStateManagerSpec: QuickSpec {
             mostRecentSocketCommunicator?.lotUpdateBroadcasts.update(lotEvent)
 
             expect(mostRecentStateReconciler?.mostRecentEventBroadcast as? [String]) == lotEvent
-        }
-
-        describe("bidderStatus") {
-
-            it("handles being logged out") {
-                let jwt = ArtsyAPISaleRegistrationStatus.NotLoggedIn.jwt
-
-                let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
-
-                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderCredentials: creds, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
-
-                expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.NotLoggedIn
-            }
-
-            it("handles being logged in and not registered") {
-
-                let jwt = ArtsyAPISaleRegistrationStatus.NotRegistered.jwt
-                let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
-
-                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderCredentials: creds, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
-
-                expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.NotRegistered
-
-            }
-
-            it("handles being logged in and register") {
-                let jwt = ArtsyAPISaleRegistrationStatus.Registered.jwt
-
-                let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
-                subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: jwt, bidderCredentials: creds, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
-
-                expect(subject.bidderStatus) == ArtsyAPISaleRegistrationStatus.Registered
-            }
         }
     }
 }

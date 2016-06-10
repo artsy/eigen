@@ -2,7 +2,9 @@ import UIKit
 import Interstellar
 
 enum LiveAuctionBiddingProgressState {
-    case TrialUser
+    case UserRegistrationRequired
+    case UserRegistrationPending
+    case UserRegistrationClosed
     case Biddable(askingPrice: UInt64, currencySymbol: String)
     case BiddingInProgress
     case BidAcknowledged
@@ -15,7 +17,9 @@ enum LiveAuctionBiddingProgressState {
 
 func == (lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressState) -> Bool {
     switch (lhs, rhs) {
-    case (.TrialUser, .TrialUser): return true
+    case (.UserRegistrationRequired, .UserRegistrationRequired): return true
+    case (.UserRegistrationPending, .UserRegistrationPending): return true
+    case (.UserRegistrationClosed, .UserRegistrationClosed): return true
     case (.Biddable(let lhsState), .Biddable(let rhsState)) where lhsState.askingPrice == rhsState.askingPrice && lhsState.currencySymbol == rhsState.currencySymbol: return true
     case (.BiddingInProgress, .BiddingInProgress): return true
     case (.BidBecameMaxBidder, .BidBecameMaxBidder): return true
@@ -232,7 +236,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
             let score:LiveAuctionBiddingProgressState =  maxBidder ? .BidBecameMaxBidder : .BidOutbid
             bidProgressOverlayView.biddingProgressSignal.update(score)
-            bidButtonViewModel.progressSignal.update(.Active(biddingState:  score))
+            bidButtonViewModel.progressSignal.update(.Active(biddingState: score))
 
             ar_dispatch_after(2) {
                 // maxBidder case handled independently, below.

@@ -242,9 +242,9 @@ extension PrivateFunctions {
         }
     }
 
-    func salesPerson(sale: LiveSale, jwt: JWT, bidderCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
-        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, bidderCredentials: bidderCredentials)
-     }
+    func salesPerson(sale: LiveSale, jwt: JWT, biddingCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
+        return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, biddingCredentials: biddingCredentials)
+    }
 }
 
 extension LiveAuctionViewController: UISplitViewControllerDelegate {
@@ -262,12 +262,22 @@ extension LiveAuctionViewController: LiveAuctionLotListViewControllerDelegate {
 // swiftlint:disable force_unwrapping
 
 class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
+
+    var bidders: [Bidder] = []
+    var paddleNumber: String = "123456"
+
+    init() {
+        if let bidder = try? Bidder(dictionary: ["qualifiedForBidding": true, "saleRequiresBidderApproval": true, "bidderID": "123456"], error: Void()) {
+            bidders = [bidder]
+        }
+    }
+
     func fetchStaticData() -> Observable<StaticSaleResult> {
         let signal = Observable<StaticSaleResult>()
 
         let json = loadJSON("live_auctions_static")
         let sale = self.parseSale(JSON(json))!
-        let bidderCredentials = BiddingCredentials(bidderID: "bidder-id", paddleNumber: "paddle-number")
+        let bidderCredentials = BiddingCredentials(bidders: bidders, paddleNumber: paddleNumber)
 
         let stubbedJWT = JWT(jwtString: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWN0aW9ucyIsInJvbGUiOiJvYnNlcnZlciIsInVzZXJJZCI6bnVsbCwic2FsZUlkIjoiNTRjN2U4ZmE3MjYxNjkyYjVhY2QwNjAwIiwiYmlkZGVySWQiOm51bGwsImlhdCI6MTQ2NTIzNDI2NDI2N30.2q3bh1E897walHdSXIocGKElbxOhCGmCCsL8Bf-UWNA")!
         let s = (sale: sale, jwt: stubbedJWT, bidderCredentials: bidderCredentials)

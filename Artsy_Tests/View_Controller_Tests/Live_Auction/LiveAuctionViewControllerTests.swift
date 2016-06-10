@@ -58,7 +58,8 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("shows a socket disconnect screen when socket fails") {
             setupViewControllerForPhone(true)
-            let fakeSalesPerson = stub_auctionSalesPerson()
+            let auctionViewModel = Test_LiveAuctionViewModel()
+            let fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
             subject.salesPersonCreator = { _ in
                 return fakeSalesPerson
             }
@@ -69,7 +70,8 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("shows a removes disconnected screen when socket reconnects") {
             setupViewControllerForPhone(true)
-            let fakeSalesPerson = stub_auctionSalesPerson()
+            let auctionViewModel = Test_LiveAuctionViewModel()
+            let fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
             subject.salesPersonCreator = { _ in
                 return fakeSalesPerson
             }
@@ -84,7 +86,8 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("shows an operator disconnect screen when operator disconnects") {
             setupViewControllerForPhone(true)
-            let fakeSalesPerson = stub_auctionSalesPerson()
+            let auctionViewModel = Test_LiveAuctionViewModel()
+            let fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
             subject.salesPersonCreator = { _ in
                 return fakeSalesPerson
             }
@@ -95,7 +98,8 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("shows an operator disconnected screen when operator reconnects") {
             setupViewControllerForPhone(true)
-            let fakeSalesPerson = stub_auctionSalesPerson()
+            let auctionViewModel = Test_LiveAuctionViewModel()
+            let fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
             subject.salesPersonCreator = { _ in
                 return fakeSalesPerson
             }

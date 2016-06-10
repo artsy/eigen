@@ -21,11 +21,15 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
     self.titleLabel.font = [UIFont sansSerifFontWithSize:15];
     [self setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+    [self setBackgroundColor:[UIColor blackColor] forState:UIControlStateNormal animated:NO];
+
+    self.shouldDimWhenDisabled = NO;
 }
 
 - (CGSize)intrinsicContentSize
 {
-    return (CGSize){UIViewNoIntrinsicMetric, 46};
+    return (CGSize){280, 46};
 }
 
 - (void)setAuctionState:(ARAuctionState)state animated:(BOOL)animated
@@ -44,6 +48,8 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
     } else if (state & ARAuctionStateUserRegistrationClosed) {
         title = ARBidButtonRegistionClosedStateTitle;
         enabled = NO;
+    } else if (state & ARAuctionStateStarted && state & ARAuctionStateUserIsRegistered) {
+        title = ARBidButtonBiddingOpenStateTitle;
     } else if (state & ARAuctionStateUserIsRegistered) {
         title = ARBidButtonRegisteredStateTitle;
         // TODO: replace with a standard artsy color
@@ -51,9 +57,6 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
         // don't want the 'disabled' flavor of the green color
         enabled = YES;
         interactionEnabled = NO;
-
-    } else if (state & ARAuctionStateStarted) {
-        title = ARBidButtonBiddingOpenStateTitle;
 
     } else {
         title = ARBidButtonRegisterStateTitle;

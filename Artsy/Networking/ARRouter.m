@@ -79,13 +79,23 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
-+ (NSString *)baseCausalitySocketURLString
++ (NSString *)baseObserverCausalitySocketURLString
+{
+    return [self causalitySocketURLStringWithProduction:ARCausalityObserverSocketURL];
+}
+
++ (NSString *)baseBidderCausalitySocketURLString
+{
+    return [self causalitySocketURLStringWithProduction:ARCausalityBidderSocketURL];
+}
+
++ (NSString *)causalitySocketURLStringWithProduction:(NSString *)productionURL;
 {
     if ([AROptions boolForOption:ARUseStagingDefault]) {
         NSString *stagingSocketURLString = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingLiveAuctionSocketURLDefault];
         return stagingSocketURLString;
     } else {
-        return ARCausalitySocketURL;
+        return productionURL;
     }
 }
 
@@ -1021,10 +1031,11 @@ static NSString *hostFromString(NSString *string)
     id\
     start_at\
     end_at\
+    registration_ends_at\
     name\
     is_with_buyers_premium\
     description\
-    sale_artworks {\
+    sale_artworks(all: true) {\
       _id\
       position\
       currency\
@@ -1054,7 +1065,8 @@ static NSString *hostFromString(NSString *string)
       }\
     }\
   }\
-}", causalityRole, saleID, saleID];
+}",
+                                                 causalityRole, saleID, saleID];
 
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
 

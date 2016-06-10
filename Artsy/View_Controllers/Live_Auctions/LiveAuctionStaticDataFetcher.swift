@@ -36,15 +36,19 @@ class JWT {
 }
 
 class BiddingCredentials {
-    let bidderID: String?
+    let bidders: [Bidder]
     let paddleNumber: String?
 
     var canBid: Bool {
-        return bidderID != nil
+        return bidders.isNotEmpty
     }
 
-    init(bidderID: String?, paddleNumber: String?) {
-        self.bidderID = bidderID
+    var bidderID: String? {
+        return bidders.bestBidder?.bidderID
+    }
+
+    init(bidders: [Bidder], paddleNumber: String?) {
+        self.bidders = bidders
         self.paddleNumber = paddleNumber
     }
 }
@@ -84,7 +88,7 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
                     return signal.update(.Error(Error.NoJWTCredentials))
                 }
 
-                let bidderCredentials = self.createBidderCredentials(json)
+                let bidderCredentials = self.parseBidderCredentials(json)
                 signal.update(.Success((sale: sale, jwt: jwt, bidderCredentials: bidderCredentials)))
 
             }, failure: { error in
@@ -103,14 +107,15 @@ extension LiveAuctionStaticDataFetcherType {
     }
 
     func parseJWT(json: JSON) -> JWT? {
-        return  JWT(jwtString: json["data"]["causality_jwt"].stringValue)
+        return JWT(jwtString: json["data"]["causality_jwt"].stringValue)
     }
 
-    func createBidderCredentials(json: JSON) -> BiddingCredentials {
+    func parseBidderCredentials(json: JSON) -> BiddingCredentials {
         let paddleNumber = json["data"]["me"]["paddle_number"].string
-        // TODO: look for a qualified bidder?
-        let bidderID = json["data"]["me"]["bidders"][0]["id"].string
-        return BiddingCredentials(bidderID: bidderID, paddleNumber: paddleNumber)
+        let bidders = json["data"]["me"]["bidders"].arrayValue.flatMap { bidder in
+            return Bidder(JSON: bidder.dictionaryObject)
+        }
+        return BiddingCredentials(bidders: bidders, paddleNumber: paddleNumber)
     }
 
 }

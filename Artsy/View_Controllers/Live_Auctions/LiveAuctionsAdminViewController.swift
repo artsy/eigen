@@ -48,13 +48,14 @@ class LiveAuctionsAdminViewController: UIViewController {
 
     func reloadData() {
         var texts = [String]()
-        switch salesPerson.bidderStatus {
-        case .NotLoggedIn:
-            texts.append("Bidder Status: Not Logged In")
-        case .NotRegistered:
-            texts.append("Bidder Status: Not registered for sale")
-        case .Registered:
+
+        switch salesPerson.auctionViewModel.auctionState {
+        case ARAuctionState.UserPendingRegistration:
+            texts.append("Bidder Status: Registration pending")
+        case ARAuctionState.UserIsRegistered:
             texts.append("Bidder Status: Registered for sale")
+        default:
+            texts.append("Bidder Status: Not registered for sale")
         }
 
         texts.append("\n ---- EVENTS\n")

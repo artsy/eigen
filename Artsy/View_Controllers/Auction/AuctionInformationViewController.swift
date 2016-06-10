@@ -27,7 +27,6 @@ class AuctionInformationViewController: UIViewController {
     let FAQEntries: [AuctionInformation.FAQEntry]
 
     var scrollView: ORStackScrollView
-    var registrationStatus: ArtsyAPISaleRegistrationStatus?
 
     init(saleViewModel: SaleViewModel) {
         self.scrollView = ORStackScrollView()
@@ -80,7 +79,7 @@ class AuctionInformationViewController: UIViewController {
             partnerNameThumbnail.constrainHeight("50")
         }
 
-        let auctionTitleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: registrationStatus, delegate: titleViewDelegate, fullWidth: true, showAdditionalInformation: false)
+        let auctionTitleView = AuctionTitleView(viewModel: saleViewModel, delegate: titleViewDelegate, fullWidth: true, showAdditionalInformation: false)
         stackView.addSubview(auctionTitleView, withTopMargin: "20", sideMargin: "40")
 
         let auctionDescriptionView = ARTextView()

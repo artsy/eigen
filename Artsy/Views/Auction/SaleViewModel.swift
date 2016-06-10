@@ -5,9 +5,12 @@ class SaleViewModel: NSObject {
     private let sale: Sale
     private let saleArtworks: [SaleArtwork]
 
-    init(sale: Sale, saleArtworks: [SaleArtwork]) {
+    var bidders: [Bidder]
+
+    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder]) {
         self.sale = sale
         self.saleArtworks = saleArtworks
+        self.bidders = bidders
     }
 }
 
@@ -18,6 +21,10 @@ extension SaleViewModel {
         case .Closed: return true
         default: return false
         }
+    }
+
+    var auctionState: ARAuctionState {
+        return sale.auctionStateWithBidders(bidders)
     }
 
     var backgroundImageURL: NSURL? {
@@ -155,6 +162,8 @@ extension SaleArtwork: AuctionOrderable {
         return saleHighestBid.cents as Int
     }
 }
+
+extension Sale: SaleAuctionStatusType { }
 
 /// Private helpers for SaleViewModel
 

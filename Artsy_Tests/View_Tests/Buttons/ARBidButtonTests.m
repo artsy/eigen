@@ -9,33 +9,42 @@ beforeEach(^{
 });
 
 it(@"register", ^{
-    _button.auctionState = ARAuctionStateDefault;
-    expect(_button).will.haveValidSnapshotNamed(@"testRegisterState");
+    [_button setAuctionState:ARAuctionStateDefault animated:NO];
+
+    expect(_button).to.haveValidSnapshotNamed(@"testRegisterState");
 });
 
 it(@"registered", ^{
-    _button.auctionState = ARAuctionStateUserIsRegistered;
-    expect(_button).will.haveValidSnapshotNamed(@"testRegisteredState");
+    [_button setAuctionState:ARAuctionStateUserIsRegistered animated:NO];
+    expect(_button).to.haveValidSnapshotNamed(@"testRegisteredState");
+});
+
+it(@"an open aution takes priority over registered bidding", ^{
+    ARAuctionState state = ARAuctionStateDefault;
+    state |= ARAuctionStateUserIsRegistered;
+    state |= ARAuctionStateStarted;
+    [_button setAuctionState:state animated:NO];
+    expect(_button).to.haveValidSnapshot();
 });
 
 it(@"bidding open", ^{
-    _button.auctionState = ARAuctionStateStarted;
-    expect(_button).will.haveValidSnapshotNamed(@"testBiddingOpenState");
+    [_button setAuctionState:(ARAuctionStateStarted | ARAuctionStateUserIsRegistered) animated:NO];
+    expect(_button).to.haveValidSnapshotNamed(@"testBiddingOpenState");
 });
 
 it(@"bidding closed", ^{
-    _button.auctionState = ARAuctionStateEnded;
-    expect(_button).will.haveValidSnapshotNamed(@"testBiddingClosedState");
+    [_button setAuctionState:ARAuctionStateEnded animated:NO];
+    expect(_button).to.haveValidSnapshotNamed(@"testBiddingClosedState");
 });
 
 it(@"bidding registration pending", ^{
     [_button setAuctionState:ARAuctionStateUserPendingRegistration animated:NO];
-    expect(_button).will.haveValidSnapshotNamed(@"testBiddingRegistrationPending");
+    expect(_button).to.haveValidSnapshotNamed(@"testBiddingRegistrationPending");
 });
 
 it(@"bidding registration closed", ^{
     [_button setAuctionState:ARAuctionStateUserRegistrationClosed animated:NO];
-    expect(_button).will.haveValidSnapshotNamed(@"testBiddingRegistrationClosed");
+    expect(_button).to.haveValidSnapshotNamed(@"testBiddingRegistrationClosed");
 });
 
 

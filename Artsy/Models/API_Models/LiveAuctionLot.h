@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) UInt64 lowEstimateCents;
 @property (nonatomic, assign, readonly) UInt64 highEstimateCents;
-@property (nonatomic, copy, readonly) NSString * _Nullable estimate;
+@property (nonatomic, copy, readonly) NSString *_Nullable estimate;
 @property (nonatomic, assign, readonly) UInt64 askingPriceCents;
 
 - (BOOL)updateReserveStatusWithString:(NSString *)reserveStatusString;

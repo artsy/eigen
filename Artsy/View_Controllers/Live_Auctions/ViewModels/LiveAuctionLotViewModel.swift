@@ -183,7 +183,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var userIsHighestBidder: Bool {
         guard let
-            bidderID = bidderCredentials.paddleNumber,
+            bidderID = bidderCredentials.bidderID,
             top = topBidEvent else { return false }
         return top.hasBidderID(bidderID)
     }
@@ -194,7 +194,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var userIsBeingSoldTo: Bool {
         guard let
-            bidderID = bidderCredentials.paddleNumber,
+            bidderID = bidderCredentials.bidderID,
             sellingToBidderID = sellingToBidderID else { return false }
         return bidderID == sellingToBidderID
     }

@@ -23,14 +23,6 @@ func == (lhs: LiveAuctionBidButtonState, rhs: LiveAuctionBidButtonState) -> Bool
 
 class LiveAuctionBidButton: ARFlatButton {
     var viewModel: LiveAuctionBiddingViewModelType
-    var currentlyBiddingTitle: CurrentlyBiddingTitle
-
-    enum CurrentlyBiddingTitle: String {
-        case BidSent = "Bid Sent"
-        case Bidding = "Bidding..."
-
-        static let defaultCase: CurrentlyBiddingTitle = .Bidding
-    }
 
     // On the lotVC we want to indicate being outbid
     // but on the max-bid modal we don't.
@@ -43,9 +35,8 @@ class LiveAuctionBidButton: ARFlatButton {
 
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
 
-    init(viewModel: LiveAuctionBiddingViewModelType, currentlyBiddingTitle: CurrentlyBiddingTitle = .defaultCase) {
+    init(viewModel: LiveAuctionBiddingViewModelType) {
         self.viewModel = viewModel
-        self.currentlyBiddingTitle = currentlyBiddingTitle
 
         super.init(frame: CGRect.zero)
     }
@@ -53,7 +44,6 @@ class LiveAuctionBidButton: ARFlatButton {
     required init?(coder aDecoder: NSCoder) {
         // This is an acceptable default, it can be replaced before added to a view and setup() getting called.
         viewModel = LiveAuctionLeaveMaxBidButtonViewModel()
-        currentlyBiddingTitle = .defaultCase
         super.init(coder: aDecoder)
     }
 
@@ -76,7 +66,7 @@ class LiveAuctionBidButton: ARFlatButton {
         case .Active(let bidState):
             switch bidState {
 
-            case .TrialUser:
+            case .UserRegistrationRequired:
                 delegate?.bidButtonRequestedRegisterToBid?(self)
             case .Biddable:
                 delegate?.bidButtonRequestedBid?(self)
@@ -150,9 +140,18 @@ class LiveAuctionBidButton: ARFlatButton {
         // When the lot is live
         case .Active(let state):
             switch state {
-            case .TrialUser:
+            case .UserRegistrationRequired:
                 setupUI("Register To Bid")
                 enabled = true
+
+            case .UserRegistrationPending:
+                setupUI("Registration Pending")
+                enabled = false
+
+            case .UserRegistrationClosed:
+                setupUI("Registration Closed")
+                enabled = false
+
             case .LotSold:
                 setupUI("Sold", background: .whiteColor(), border: purple, textColor: purple)
             case .LotWaitingToOpen:
@@ -163,7 +162,7 @@ class LiveAuctionBidButton: ARFlatButton {
                 handleBiddable(buttonState, formattedPrice: formattedPrice)
 
             case .BiddingInProgress, .BidAcknowledged:
-                setupUI(currentlyBiddingTitle.rawValue, background: purple)
+                setupUI("Bidding...", background: purple)
 
             case .BidBecameMaxBidder:
                 setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)

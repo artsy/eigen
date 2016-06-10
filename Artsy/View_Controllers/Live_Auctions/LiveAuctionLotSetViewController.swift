@@ -20,9 +20,11 @@ class LiveAuctionLotSetViewController: UIViewController {
     private var hasBeenSetup = false
     private var firstAppearance = true
     private var pageViewScrollView: UIScrollView?
-    private let progressBarBottomConstraintAtRestConstant: CGFloat = -165
+    private var progressBarBottomConstraintAtRestConstant: CGFloat = -165
+    private var collectionViewBottomConstraint: CGFloat = -288
     private var progressBarBottomConstraint: NSLayoutConstraint?
-    private var saleNetworkModel = AuctionSaleNetworkModel()
+    private let saleNetworkModel = AuctionSaleNetworkModel()
+    private let biddersNetworkModel = AuctionBiddersNetworkModel()
 
     init(salesPerson: LiveAuctionsSalesPersonType, traitCollection: UITraitCollection) {
         self.salesPerson = salesPerson
@@ -32,9 +34,12 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         let collectionViewLayout: UICollectionViewLayout
 
+        let adjustConstraintsForLargeScreens: Bool
+
         if traitCollection .horizontalSizeClass != .Regular {
             let screenWidthIsLarge = UIScreen.mainScreen().applicationFrame.width > 320
             let size: LiveAuctionFancyLotCollectionViewLayout.Size = screenWidthIsLarge ? .Normal : .Compact
+            adjustConstraintsForLargeScreens = (size == .Normal)
 
             let layout = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: size)
             collectionViewLayout = layout
@@ -43,6 +48,12 @@ class LiveAuctionLotSetViewController: UIViewController {
             let layout = LiveAuctionPlainLotCollectionViewLayout(delegate: dataSource)
             collectionViewLayout = layout
             lotCollectionViewLayout = layout
+            adjustConstraintsForLargeScreens = true
+        }
+
+        if adjustConstraintsForLargeScreens {
+            self.progressBarBottomConstraintAtRestConstant -= 40
+            self.collectionViewBottomConstraint -= 40
         }
 
         lotImageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout).then {
@@ -107,7 +118,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // Lot collection view setup.
         view.addSubview(lotImageCollectionView)
-        lotImageCollectionView.alignTop("0", leading: "0", bottom: "-288", trailing: "0", toView: view)
+        lotImageCollectionView.alignTop("0", leading: "0", bottom: "\(collectionViewBottomConstraint)", trailing: "0", toView: view)
 
         // Page view controller setup.
         ar_addModernChildViewController(pageController)
@@ -174,7 +185,9 @@ class LiveAuctionLotSetViewController: UIViewController {
         info.accessibilityLabel = "More Information"
         info.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.moreInfo), forControlEvents: .TouchUpInside)
         info.enabled = false
-        saleNetworkModel.fetchSale(salesPerson.liveSaleID).subscribe { _ in info.enabled = true }
+        saleNetworkModel.fetchSale(salesPerson.liveSaleID)
+            .merge(biddersNetworkModel.fetchBiddersForSale(salesPerson.liveSaleID))
+            .subscribe { _ in info.enabled = true }
 
         let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))
         lots.accessibilityLabel = "Show all Lots"
@@ -193,11 +206,11 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     func moreInfo() {
         guard let sale = saleNetworkModel.sale else { return }
-        let saleVM = SaleViewModel(sale: sale, saleArtworks: [])
+
+        let saleVM = SaleViewModel(sale: sale, saleArtworks: [], bidders: biddersNetworkModel.bidders)
 
         let saleInfoVC = AuctionInformationViewController(saleViewModel: saleVM)
         saleInfoVC.titleViewDelegate = self
-        saleInfoVC.registrationStatus = self.salesPerson.bidderStatus
         let nav = ARSerifNavigationViewController(rootViewController: saleInfoVC)
         self.navigationController?.presentViewController(nav, animated: true, completion: nil)
     }

@@ -14,7 +14,6 @@ protocol LiveAuctionsSalesPersonType {
     var lotCount: Int { get }
     var liveSaleID: String { get }
     var liveSaleName: String { get }
-    var bidderStatus: ArtsyAPISaleRegistrationStatus { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType
@@ -34,7 +33,7 @@ protocol LiveAuctionsSalesPersonType {
 class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
     typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderCredentials: BiddingCredentials) -> LiveAuctionStateManager
-    typealias AuctionViewModelCreator = (sale: LiveSale, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, bidderStatus: ArtsyAPISaleRegistrationStatus) -> LiveAuctionViewModelType
+    typealias AuctionViewModelCreator = (sale: LiveSale, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, biddingCredentials: BiddingCredentials) -> LiveAuctionViewModelType
 
     let sale: LiveSale
     let lots: [LiveAuctionLotViewModel]
@@ -42,33 +41,32 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
     let dataReadyForInitialDisplay = Observable<Void>()
     let auctionViewModel: LiveAuctionViewModelType
 
-    var bidderStatus: ArtsyAPISaleRegistrationStatus {
-        return stateManager.bidderStatus
-    }
-
     var socketConnectionSignal: Observable<Bool> {
         return stateManager.socketConnectionSignal
     }
 
     private let stateManager: LiveAuctionStateManager
+    private let bidderCredentials: BiddingCredentials
 
     // Lot currently being looked at by the user. Defaults to zero, the first lot in a sale.
     var currentFocusedLotIndex = Observable(0)
 
     init(sale: LiveSale,
          jwt: JWT,
-         bidderCredentials: BiddingCredentials,
+         biddingCredentials: BiddingCredentials,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator(),
          auctionViewModelCreator: AuctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()) {
 
         self.sale = sale
-        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderCredentials: bidderCredentials) }
+        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderCredentials: biddingCredentials) }
+        self.bidderCredentials = biddingCredentials
 
-        let host = ARRouter.baseCausalitySocketURLString()
+        let useBidderServer = (jwt.role == .Bidder)
+        let host = useBidderServer ? ARRouter.baseBidderCausalitySocketURLString() : ARRouter.baseObserverCausalitySocketURLString()
 
-        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: bidderCredentials)
-        self.auctionViewModel = auctionViewModelCreator(sale: sale, currentLotSignal: stateManager.currentLotSignal, bidderStatus: stateManager.bidderStatus)
+        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: biddingCredentials)
+        self.auctionViewModel = auctionViewModelCreator(sale: sale, currentLotSignal: stateManager.currentLotSignal, biddingCredentials: biddingCredentials)
     }
 }
 
@@ -154,8 +152,8 @@ extension ClassMethods {
     }
 
     class func defaultAuctionViewModelCreator() -> AuctionViewModelCreator {
-        return { sale, currentLotSignal, bidderStatus in
-            return LiveAuctionViewModel(sale: sale, currentLotSignal: currentLotSignal, bidderStatus: bidderStatus)
+        return { sale, currentLotSignal, biddingCredentials in
+            return LiveAuctionViewModel(sale: sale, currentLotSignal: currentLotSignal, biddingCredentials: biddingCredentials)
         }
     }
 
