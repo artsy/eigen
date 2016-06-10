@@ -21,6 +21,7 @@ upcoming:
   user_facing:
       - Allows max bids on live auctions - orta
       - Shows reserve status for live auctions. - ash
+      - Live Auction are now native by default - orta/ash
 
 releases:
   - version: 2.5.0
