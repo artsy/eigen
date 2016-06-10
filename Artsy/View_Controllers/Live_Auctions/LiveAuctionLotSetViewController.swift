@@ -314,7 +314,7 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
 
     func registerForScrollingState(viewController: LiveAuctionLotViewController) {
         viewController.bidHistoryState.subscribe { [weak self] state in
-            self?.pageViewScrollView?.scrollEnabled = (state == .Closed)
+            self?.pageViewScrollView?.scrollEnabled = (state == .Closed && self?.view.traitCollection.horizontalSizeClass == .Compact)
             return
         }
 

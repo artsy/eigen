@@ -33,6 +33,11 @@
     return [ARStandardDateFormatter sharedFormatter].stringTransformer;
 }
 
++ (NSValueTransformer *)registrationEndsAtDateJSONTransformer
+{
+    return [ARStandardDateFormatter sharedFormatter].stringTransformer;
+}
+
 + (NSValueTransformer *)saleArtworksJSONTransformer
 {
     return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[LiveAuctionLot class]];

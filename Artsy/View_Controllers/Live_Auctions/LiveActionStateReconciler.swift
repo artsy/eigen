@@ -106,6 +106,14 @@ private typealias PrivateFunctions = LiveAuctionStateReconciler
 private extension PrivateFunctions {
 
     func updateLotDerivedState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
+        let bidder = derivedState["sellingToBidder"] as? [String: AnyObject]
+        let bidderID = bidder?["bidderId"] as? String
+        lot.updateSellingToBidder(bidderID)
+
+        let winningBiddder = derivedState["winningBidder"] as? [String: AnyObject]
+        let winningBiddderID = winningBiddder?["bidderId"] as? String
+        lot.updateWinningBidder(winningBiddderID)
+
         if let reserveStatusString = derivedState["reserveStatus"] as? String {
             lot.updateReserveStatus(reserveStatusString)
         }
@@ -121,10 +129,6 @@ private extension PrivateFunctions {
 
         if let biddingStatus = derivedState["biddingStatus"] as? String {
             lot.updateBiddingStatus(biddingStatus)
-        }
-
-        if let biddingStatus = derivedState["sellingToBidder"] as? [String: AnyObject] {
-            lot.updateSellingToBidder(biddingStatus)
         }
     }
 

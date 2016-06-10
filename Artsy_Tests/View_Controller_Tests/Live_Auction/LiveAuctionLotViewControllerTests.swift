@@ -131,6 +131,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var dateLotOpened: NSDate?
     var userIsHighestBidder: Bool = false
     var userIsBeingSoldTo: Bool = false
+    var userIsWinning: Bool = false
     var isBeingSold: Bool = false
     // Whether or not (all) events returned from this test VM should be cancelled.
     var cancelEvents = false
