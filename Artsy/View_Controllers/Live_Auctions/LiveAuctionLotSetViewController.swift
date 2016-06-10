@@ -54,6 +54,25 @@ class LiveAuctionLotSetViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    /// When the lot has changed, we wait a second to see if you are still on the previous lot,
+    /// if you are, we'll move you on to the next lot.
+
+    func hasChangedLot(lot: LiveAuctionLotViewModelType?) {
+        guard let
+            focusedLotIndex = salesPerson.currentFocusedLotIndex.peek(),
+            newLot = lot else { return }
+
+        if focusedLotIndex == newLot.lotIndex - 1 {
+            ar_dispatch_after(1) {
+                guard let focusedLotAfterDelayIndex = self.salesPerson.currentFocusedLotIndex.peek() where focusedLotAfterDelayIndex == focusedLotIndex else { return }
+
+                guard let currentLotVC = self.auctionDataSource.liveAuctionPreviewViewControllerForIndex(newLot.lotIndex) else { return }
+                self.pageController.setViewControllers([currentLotVC], direction: .Forward, animated: true) { _ in
+                    self.pageViewController(self.pageController, didFinishAnimating: true, previousViewControllers: [], transitionCompleted: true)
+                }
+            }
+        }
+    }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -208,14 +227,17 @@ class LiveAuctionLotSetViewController: UIViewController {
                 let total = self?.salesPerson.auctionViewModel.lotCount ?? 1 // We're dividing by the total, it should not be zero 😬
                 self?.progressBar.progress = CGFloat(currentLot.lotIndex) / CGFloat(total)
         }
+
+        // To make sure we can handle transitioning to the next live auction
+        salesPerson.currentLotSignal.subscribe(hasChangedLot)
     }
 
-    func jumpToLotAtIndex(index: Int) {
+    func jumpToLotAtIndex(index: Int, animated: Bool = false) {
         guard let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index) else { return }
 
         salesPerson.currentFocusedLotIndex.update(index)
         lotImageCollectionView.reloadData()
-        pageController.setViewControllers([currentLotVC], direction: .Forward, animated: false, completion: nil)
+        pageController.setViewControllers([currentLotVC], direction: .Forward, animated: animated, completion: nil)
     }
 
     func jumpToLiveLot() {
