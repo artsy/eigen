@@ -29,6 +29,7 @@ class LiveAuctionViewController: UISplitViewController {
 
     private var statusMaintainer = ARSerifStatusMaintainer()
     lazy var app = UIApplication.sharedApplication()
+    var suppressJumpingToOpenLots = false
 
     init(saleSlugOrID: String) {
         self.saleSlugOrID = saleSlugOrID
@@ -225,6 +226,7 @@ extension PrivateFunctions {
             .subscribe(showSocketDisconnectedOverlay)
 
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, traitCollection: view.traitCollection)
+        lotSetController.suppressJumpingToOpenLots = suppressJumpingToOpenLots
         lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
 
         if useSingleLayout {
