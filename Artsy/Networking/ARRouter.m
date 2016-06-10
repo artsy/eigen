@@ -1035,7 +1035,7 @@ static NSString *hostFromString(NSString *string)
     name\
     is_with_buyers_premium\
     description\
-    sale_artworks {\
+    sale_artworks(all: true) {\
       _id\
       position\
       currency\
