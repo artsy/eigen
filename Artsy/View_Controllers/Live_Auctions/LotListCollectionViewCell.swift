@@ -11,6 +11,7 @@ class LotListCollectionViewCell: UICollectionViewCell {
     let lotImageView = UIImageView()
     let hammerImageView = UIImageView(image: UIImage(asset: .Lot_bidder_hammer_white))
     let labelContainerView = LotListCollectionViewCell._labelContainerView()
+    let closedLabel = LotListCollectionViewCell._closedLabel()
     let currentLotIndicatorImageView = UIImageView()
     let lotNumberLabel = LotListCollectionViewCell._lotNumberLabel()
     let artistsNamesLabel = LotListCollectionViewCell._artistNamesLabel()

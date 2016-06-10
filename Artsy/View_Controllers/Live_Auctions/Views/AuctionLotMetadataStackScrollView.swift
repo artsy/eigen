@@ -29,6 +29,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         // Sets up the above the fold stack
         let name = aboveFoldStack.addArtistName("")
         let title = aboveFoldStack.addArtworkName("", date: nil)
+        title.numberOfLines = 1
         let estimate = aboveFoldStack.addBodyText("", topMargin: "4")
         let currentBid = aboveFoldStack.addBodyText("", topMargin: "4")
 
