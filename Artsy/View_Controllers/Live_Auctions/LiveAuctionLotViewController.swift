@@ -27,6 +27,8 @@ class LiveAuctionLotViewController: UIViewController {
 
     private var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
 
+    var biddingHistoryHeightOffset = 0
+
     init(index: Int, lotViewModel: LiveAuctionLotViewModelType, salesPerson: LiveAuctionsSalesPersonType) {
         self.index = index
         self.lotViewModel = lotViewModel
@@ -125,7 +127,9 @@ class LiveAuctionLotViewController: UIViewController {
         let historyViewController = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
         bidHistoryViewController = historyViewController
         metadataStack.addViewController(historyViewController, toParent: self, withTopMargin: "10", sideMargin: sideMargin)
-        lotHistoryHeightConstraint = historyViewController.view.constrainHeight("70")
+
+        let screenWidthIsLarge = UIScreen.mainScreen().applicationFrame.width > 320
+        lotHistoryHeightConstraint = historyViewController.view.constrainHeight(screenWidthIsLarge ? "110" : "70")
 
         // Setup for "current lot" purple view at the bottom of the view.
         let currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal)
