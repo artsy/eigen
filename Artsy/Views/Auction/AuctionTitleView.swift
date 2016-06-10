@@ -15,20 +15,17 @@ class AuctionTitleView: UIView {
     let viewModel: SaleViewModel
     let showAdditionalInformation: Bool
 
-    var registrationStatus: ArtsyAPISaleRegistrationStatus? {
-        didSet {
-            // Based on new registration status, we'll reconstruct our whole hierarchy from scratch to reflect the new status.
-            self.setupViews()
-        }
+    func updateRegistrationStatus() {
+        // Based on new registration status, we'll reconstruct our whole hierarchy from scratch to reflect the new status.
+        self.setupViews()
     }
 
     var registrationButton: UIButton!
     var fullWidth: Bool
 
-    init(viewModel: SaleViewModel, registrationStatus: ArtsyAPISaleRegistrationStatus?, delegate: AuctionTitleViewDelegate?, fullWidth: Bool, showAdditionalInformation: Bool) {
+    init(viewModel: SaleViewModel, delegate: AuctionTitleViewDelegate?, fullWidth: Bool, showAdditionalInformation: Bool) {
         self.viewModel = viewModel
         self.delegate = delegate
-        self.registrationStatus = registrationStatus
         self.fullWidth = fullWidth
         self.showAdditionalInformation = showAdditionalInformation
 
@@ -140,17 +137,9 @@ private extension AuctionTitleView {
         }
 
         // We're assuming a missing registration status means that the user isn't registered. We'll let our delegate handle the interaction for that.
-        let needsToRegister = (registrationStatus ?? .NotRegistered) != .Registered
-
         // For registered users, we display the "Approved to bid"
-        // For all other cases (not logged in / not registered), we show the "Register" button
-        if needsToRegister {
-            let registerView = self.registerView()
-            container.addSubview(registerView)
-
-            // The design calls for an extra 10pt on top of the register button, but not just the label.
-            registerView.alignTop("10", leading: "0", bottom: "0", trailing: "0", toView: container)
-        } else {
+        // For all other cases (not logged in / not registered), we show the "Register" button, which shows an apporpriate CTA.
+        if viewModel.auctionState.contains(.UserIsRegistered) {
             let registeredToBidLabel = ARSerifLabel().then {
                 $0.text = "Approved to Bid"
                 $0.font = UIFont.serifFontWithSize(16)
@@ -161,6 +150,12 @@ private extension AuctionTitleView {
             container.addSubview(registeredToBidLabel)
 
             registeredToBidLabel.alignToView(container)
+        } else {
+            let registerView = self.registerView()
+            container.addSubview(registerView)
+
+            // The design calls for an extra 10pt on top of the register button, but not just the label.
+            registerView.alignTop("10", leading: "0", bottom: "0", trailing: "0", toView: container)
         }
 
         return container
@@ -169,9 +164,10 @@ private extension AuctionTitleView {
     func registerView() -> UIView {
         let container = UIView()
 
-        let registerButton = ARBlackFlatButton().then {
+        let registerButton = ARBidButton().then {
             $0.setTitle("Register to Bid", forState: .Normal)
             $0.addTarget(self, action: #selector(AuctionTitleView.userDidPressRegister), forControlEvents: .TouchUpInside)
+            $0.setAuctionState(viewModel.auctionState, animated: false)
         }
         container.addSubview(registerButton)
 

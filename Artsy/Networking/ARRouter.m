@@ -1031,6 +1031,7 @@ static NSString *hostFromString(NSString *string)
     id\
     start_at\
     end_at\
+    registration_ends_at\
     name\
     is_with_buyers_premium\
     description\
@@ -1064,7 +1065,8 @@ static NSString *hostFromString(NSString *string)
       }\
     }\
   }\
-}", causalityRole, saleID, saleID];
+}",
+                                                 causalityRole, saleID, saleID];
 
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
 

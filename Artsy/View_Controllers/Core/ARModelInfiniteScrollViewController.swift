@@ -22,6 +22,9 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     }
 
     var stickyHeaderView: UIView? {
+        willSet {
+            stickyHeaderView?.removeFromSuperview()
+        }
         didSet {
             modelViewController.stickyHeaderView = stickyHeaderView
             invalidateHeaderHeight()

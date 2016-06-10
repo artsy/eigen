@@ -12,7 +12,7 @@ class LiveAuctionStateReconcilerSpec: QuickSpec {
         var state: NSMutableDictionary!
         var subject: LiveAuctionStateReconciler!
         let sale = stub_auctionSale()
-        let creds = BiddingCredentials(bidderID: "", paddleNumber: "")
+        let creds = BiddingCredentials(bidders: [], paddleNumber: "")
         let lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderCredentials: creds) }
 
         beforeEach {

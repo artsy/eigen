@@ -81,7 +81,8 @@ class AuctionViewController: UIViewController {
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        guard saleViewModel != nil else {
+        // titleView being nil indicates this is an upcoming sale with no lots, so we shouldn't displayCurrentItems()
+        guard saleViewModel != nil && titleView != nil else {
             // We can't set up our current saleArtworksViewController if it has no models.
             return
         }
@@ -115,6 +116,7 @@ extension AuctionViewController {
 
     func setupForUpcomingSale(saleViewModel: SaleViewModel) {
 
+        self.saleViewModel = saleViewModel
         let auctionInfoVC = AuctionInformationViewController(saleViewModel: saleViewModel)
 
         auctionInfoVC.titleViewDelegate = self
@@ -149,7 +151,7 @@ extension AuctionViewController {
         let compactSize = traitCollection.horizontalSizeClass == .Compact
         let topSpacing = compactSize ? 20 : 30
         let sideSpacing = compactSize ? 40 : 80
-        let titleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self, fullWidth: compactSize, showAdditionalInformation: true)
+        let titleView = AuctionTitleView(viewModel: saleViewModel, delegate: self, fullWidth: compactSize, showAdditionalInformation: true)
         titleView.tag = ViewTags.Title.rawValue
         headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
         self.titleView = titleView
@@ -237,8 +239,9 @@ extension AuctionViewController {
 private typealias NotificationCenterObservers = AuctionViewController
 extension NotificationCenterObservers {
     func registrationUpdated(notification: NSNotification) {
-        networkModel.fetchRegistrationStatus().next { [weak self] registrationStatus in
-            self?.titleView?.registrationStatus = registrationStatus
+        networkModel.fetchBidders().next { [weak self] bidders in
+            self?.saleViewModel.bidders = bidders
+            self?.titleView?.updateRegistrationStatus()
         }
     }
 }

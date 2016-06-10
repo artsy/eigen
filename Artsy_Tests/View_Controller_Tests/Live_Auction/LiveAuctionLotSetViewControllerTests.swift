@@ -21,7 +21,7 @@ class LiveAuctionLotSetViewControllerSpec: QuickSpec {
             }
 
             it("looks good by default") {
-                let fakeSalesPerson = stub_auctionSalesPerson()
+                let fakeSalesPerson = stub_auctionSalesPerson(Test_LiveAuctionViewModel())
                 let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson, traitCollection: UITraitCollection.init(horizontalSizeClass: horizontalSizeClass))
 
                 subject.stubTraitCollection(UITraitCollection(horizontalSizeClass: horizontalSizeClass))

@@ -45,7 +45,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                 // Merging more than two Observables in Interstellar gets really messy, we're mapping from that mess into a nice tuple with named elements.
                 return (lotState: tuple.0.0.0, askingPrice: tuple.0.0.1, currentLot: tuple.0.1)
             }
-            .map(LiveAuctionBiddingViewModel.stateToBidButtonState(currencySymbol, lotID: lotViewModel.lotID, bidderStatus: auctionViewModel.bidderStatus))
+            .map(LiveAuctionBiddingViewModel.stateToBidButtonState(currencySymbol, lotID: lotViewModel.lotID, auctionViewModel: auctionViewModel))
     }
 
     deinit {
@@ -55,40 +55,54 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     }
 
     // This is extracted into its own method because it's messy. It's curried to have access to the lotID.
-    class func stateToBidButtonState(currencySymbol: String, lotID: String, bidderStatus: ArtsyAPISaleRegistrationStatus)
+    class func stateToBidButtonState(currencySymbol: String, lotID: String, auctionViewModel: LiveAuctionViewModelType)
                 -> (state: (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?))
                 -> LiveAuctionBidButtonState {
         return { state in
+            let userIsRegistered = auctionViewModel.auctionState.contains(.UserIsRegistered)
+            let userRegistrationPending = auctionViewModel.auctionState.contains(.UserPendingRegistration)
+            let registrationIsClosed = auctionViewModel.auctionState.contains(.UserRegistrationClosed)
+
+            // This switch represents a priority of what states matter more than others.
+            // For example: a closed lot is always shown as closed, regardless of bidder registration.
+            // And if a registration is pending, we show that, etc.
             switch state.lotState {
-            case .ClosedLot: return .InActive(lotState: state.lotState)
+            case .ClosedLot:
+                return .InActive(lotState: .ClosedLot)
+
+            case _ where !userIsRegistered && registrationIsClosed:
+                return .Active(biddingState: LiveAuctionBiddingProgressState.UserRegistrationClosed)
+
+            case _ where userRegistrationPending:
+                return .Active(biddingState: LiveAuctionBiddingProgressState.UserRegistrationPending)
+
+            case _ where !userIsRegistered:
+                return .Active(biddingState: LiveAuctionBiddingProgressState.UserRegistrationRequired)
+
             case .UpcomingLot:
                 if lotID == state.currentLot?.lotID {
                     return .Active(biddingState: .LotWaitingToOpen)
-                } else if bidderStatus == .Registered {
-                    return .InActive(lotState: state.lotState)
                 } else {
-                    return .Active(biddingState: .TrialUser)
+                    return .InActive(lotState: state.lotState)
                 }
 
             case .LiveLot:
                 let biddingState: LiveAuctionBiddingProgressState
 
-                switch  bidderStatus {
-                case .NotLoggedIn, .NotRegistered:
-                    biddingState = .TrialUser
-
-                case .Registered:
-                    let isHighestBiddder = state.currentLot?.userIsHighestBidder ?? false
-                    let isSellingToMe = state.currentLot?.userIsBeingSoldTo ?? false
-
-                    if isHighestBiddder && isSellingToMe {
-                        biddingState = .BidBecameMaxBidder
-                    } else {
-                        biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
-                    }
+                let isHighestBiddder = state.currentLot?.userIsHighestBidder ?? false
+                let isSellingToMe = state.currentLot?.userIsBeingSoldTo ?? false
+                
+                if isHighestBiddder && isSellingToMe {
+                    biddingState = .BidBecameMaxBidder
+                } else {
+                    biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
                 }
 
                 return .Active(biddingState: biddingState)
+            default:
+                // The Swift compiler is not yet smart enough to know that this _is_ an exhaustive swift statement.
+                // So we need a default to satisfy the compiler, even though it's impossible to reach.
+                return .InActive(lotState: .ClosedLot)
             }
         }
     }
@@ -98,4 +112,5 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
 class LiveAuctionLeaveMaxBidButtonViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal = Observable<LiveAuctionBidButtonState>()
     let bidPendingSignal = Observable<LiveAuctionBiddingProgressState>()
+    var auctionState: ARAuctionState = []
 }

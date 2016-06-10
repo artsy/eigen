@@ -3,9 +3,9 @@ import Interstellar
 
 protocol AuctionNetworkModelType {
     func fetch() -> Observable<Result<SaleViewModel>>
-    func fetchRegistrationStatus() -> Observable<Result<ArtsyAPISaleRegistrationStatus>>
+    func fetchBidders() -> Observable<Result<[Bidder]>>
 
-    var registrationStatus: ArtsyAPISaleRegistrationStatus? { get }
+    var bidders: [Bidder] { get }
 }
 
 /// Network model for everything auction-related.
@@ -18,7 +18,7 @@ class AuctionNetworkModel {
     // Each one of these network models performs their request to fetch exactly one thing, and then store it locally.
     lazy var saleNetworkModel: AuctionSaleNetworkModelType = AuctionSaleNetworkModel()
     lazy var saleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType = AuctionSaleArtworksNetworkModel()
-    lazy var registrationStatusNetworkModel: AuctionRegistrationStatusNetworkModelType = AuctionRegistrationStatusNetworkModel()
+    lazy var bidderNetworkModel: AuctionBiddersNetworkModelType = AuctionBiddersNetworkModel()
 
     init(saleID: String) {
         self.saleID = saleID
@@ -26,22 +26,37 @@ class AuctionNetworkModel {
 }
 
 extension AuctionNetworkModel: AuctionNetworkModelType {
-    var registrationStatus: ArtsyAPISaleRegistrationStatus? {
-        return self.registrationStatusNetworkModel.registrationStatus
+    var bidders: [Bidder] {
+        return bidderNetworkModel.bidders
     }
 
-    func fetchRegistrationStatus() -> Observable<Result<ArtsyAPISaleRegistrationStatus>> {
+    func fetchBidders() -> Observable<Result<[Bidder]>> {
         let signal = Observable(saleID)
-        return signal.flatMap(registrationStatusNetworkModel.fetchRegistrationStatus)
+        return signal.flatMap(bidderNetworkModel.fetchBiddersForSale)
     }
 
     func fetch() -> Observable<Result<SaleViewModel>> {
+
+        return fetchBidders().flatMap { (bidders: Result<[Bidder]>) -> Observable<Result<SaleViewModel>> in
+            switch bidders {
+            case .Success(let bidders):
+                return self.createViewModel(bidders)
+            case .Error(let error):
+                return Observable(.Error(error))
+            }
+            }.next { saleViewModel in
+                // Store the SaleViewModel
+                self.saleViewModel = saleViewModel
+        }
+    }
+
+    func createViewModel(bidders: [Bidder]) -> Observable<Result<SaleViewModel>> {
         let signal = Observable(saleID)
 
         let fetchSale = signal.flatMap(saleNetworkModel.fetchSale)
         let fetchSaleArtworks = signal.flatMap(saleArtworksNetworkModel.fetchSaleArtworks)
 
-        let createViewModel = fetchSale.merge(fetchSaleArtworks)
+        return fetchSale.merge(fetchSaleArtworks)
             .map { tuple -> Result<SaleViewModel> in
 
                 // Tuple has the Sale and [SaleArtwork] from previous network requests.
@@ -49,27 +64,18 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 switch tuple {
                 case (.Success(let sale), .Success(let saleArtworks)):
                     saleArtworks.forEach { $0.auction = sale }
-                    return .Success(SaleViewModel(sale: sale, saleArtworks: saleArtworks))
+                    return .Success(SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: bidders))
 
                 case (.Error(let error), .Error):
                     return .Error(error) // Need to pick one error, might as well go with the first.
 
                 case (.Error(let error), .Success):
                     return .Error(error)
-
+                    
                 case (.Success, .Error(let error)):
                     return .Error(error)
                 }
-
-            }
-            .next { saleViewModel in
-                // Store the SaleViewModel
-                self.saleViewModel = saleViewModel
-            }
-
-        return fetchRegistrationStatus().flatMap { _ in
-            // Note we discard the status, we don't care we just need it to be fetched first.
-            return createViewModel
+                
         }
     }
 }

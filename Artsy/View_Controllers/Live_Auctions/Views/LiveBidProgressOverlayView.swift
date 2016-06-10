@@ -21,7 +21,7 @@ class LiveBidProgressOverlayView: UIView {
         let red = UIColor.artsyRedRegular()
 
         switch state {
-        case .Biddable, .TrialUser: break
+        case .Biddable, .UserRegistrationRequired, .UserRegistrationClosed, .UserRegistrationPending: break
         case .LotSold:
             setupProgressUI("Sold", subtitle:"The Lot has finished", textColor: red, image: .LiveAuctionOutbidWarningIcon)
 

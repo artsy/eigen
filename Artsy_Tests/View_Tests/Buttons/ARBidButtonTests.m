@@ -28,7 +28,7 @@ it(@"an open aution takes priority over registered bidding", ^{
 });
 
 it(@"bidding open", ^{
-    [_button setAuctionState:ARAuctionStateStarted animated:NO];
+    [_button setAuctionState:(ARAuctionStateStarted | ARAuctionStateUserIsRegistered) animated:NO];
     expect(_button).to.haveValidSnapshotNamed(@"testBiddingOpenState");
 });
 

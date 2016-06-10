@@ -6,10 +6,11 @@ import Interstellar
 protocol LiveAuctionViewModelType: class {
     var startDate: NSDate { get }
     var lotCount: Int { get }
-    var bidderStatus: ArtsyAPISaleRegistrationStatus { get }
 
     var saleAvailabilitySignal: Observable<SaleAvailabilityState> { get }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
+    var auctionState: ARAuctionState { get }
+    
     func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int?
 }
 
@@ -22,14 +23,14 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
     let currentLotSignal: Observable<LiveAuctionLotViewModelType?>
 
     // When the bidder status changes, we get a full object refresh
-    let bidderStatus: ArtsyAPISaleRegistrationStatus
+    let biddingCredentials: BiddingCredentials
 
-    init(sale: LiveSale, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, bidderStatus: ArtsyAPISaleRegistrationStatus) {
+    init(sale: LiveSale, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, biddingCredentials: BiddingCredentials) {
         self.sale = sale
         self.lastUpdatedSaleAvailability = sale.saleAvailability
         saleAvailabilitySignal.update(lastUpdatedSaleAvailability)
         self.currentLotSignal = currentLotSignal
-        self.bidderStatus = bidderStatus
+        self.biddingCredentials = biddingCredentials
     }
 
     var startDate: NSDate {
@@ -38,6 +39,10 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
     var lotCount: Int {
         return sale.saleArtworks.count
+    }
+
+    var auctionState: ARAuctionState {
+        return sale.auctionStateWithBidders(biddingCredentials.bidders)
     }
 
     /// A distance relative to the current lot, -x being that it precedded the current
@@ -55,3 +60,5 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
         return (current - lot) * -1
     }
 }
+
+extension LiveSale: SaleAuctionStatusType { }

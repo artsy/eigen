@@ -14,9 +14,10 @@
     return @{
         ar_keypath(LiveSale.new, liveSaleID) : @"id",
         ar_keypath(LiveSale.new, causalitySaleID) : @"_id",
-        ar_keypath(LiveSale.new, startDate) : @"startAt",
-        ar_keypath(LiveSale.new, endDate) : @"endAt",
+        ar_keypath(LiveSale.new, startDate) : @"start_at",
+        ar_keypath(LiveSale.new, endDate) : @"end_at",
         ar_keypath(LiveSale.new, liveAuctionStartDate) : @"live_start_at",
+        ar_keypath(LiveSale.new, registrationEndsAtDate) : @"registration_ends_at",
         ar_keypath(LiveSale.new, saleDescription) : @"description",
         ar_keypath(LiveSale.new, saleArtworks) : @"sale_artworks",
     };
