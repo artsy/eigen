@@ -14,7 +14,8 @@
     ARUserSettingsViewController,
     ARAuctionWebViewController,
     ARFairGuideContainerViewController,
-    AuctionViewController;
+    AuctionViewController,
+    ARMutableLinkViewController;
 
 // Eigen model object forward decs
 @class ARPostFeedItem,
@@ -54,7 +55,7 @@
 - (UIViewController *)loadPartnerWithID:(NSString *)partnerID;
 
 /// Load a Profile. Used to separate profiles with a fair from regular profiles.
-- (UIViewController *)routeProfileWithID:(NSString *)profileID;
+- (UIViewController *)loadProfileWithID:(NSString *)profileID;
 
 /// Load a Gene
 - (ARGeneViewController *)loadGene:(Gene *)gene;
@@ -69,4 +70,6 @@
 /// Buy artwork
 - (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken;
 
+/// Crazy Artsy redirect things
+- (ARMutableLinkViewController *)loadUnknownPathWithID:(NSString *)path;
 @end

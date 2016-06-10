@@ -388,7 +388,7 @@ describe(@"ARSwitchboard", ^{
 
     });
 
-    describe(@"routeProfileWithID", ^{
+    describe(@"loadProfileWithIDileWithID", ^{
         __block id mockProfileVC;
 
         before(^{
@@ -408,12 +408,12 @@ describe(@"ARSwitchboard", ^{
 
             it(@"internally does not load martsy", ^{
                 [[mockProfileVC reject] showViewController:[OCMArg checkForClass:[ARInternalMobileWebViewController class]]];
-                [switchboard routeProfileWithID:@"myfairprofile"];
+                [switchboard loadProfileWithIDileWithID:@"myfairprofile"];
             });
 
             it(@"routes fair profiles specially", ^{
                 [[mockProfileVC expect] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
-                [switchboard routeProfileWithID:@"myfairprofile"];
+                [switchboard loadProfileWithIDileWithID:@"myfairprofile"];
             });
         });
     });

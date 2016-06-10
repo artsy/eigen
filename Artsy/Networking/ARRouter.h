@@ -199,4 +199,9 @@
 
 + (NSURLRequest *)newRequestForPageContent:(NSString *)slug;
 
+
+#pragma mark - Misc
+
++ (NSURLRequest *)newHEADRequestForPath:(NSString *)path;
+
 @end

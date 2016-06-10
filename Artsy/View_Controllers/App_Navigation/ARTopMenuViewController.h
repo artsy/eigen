@@ -65,6 +65,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Update the badge number on the data source for the navigation root view controller at the specified tab index.
 - (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
 
+/// Not all view controllers should be presented as a push, use this to determine whether the topVC will present modally or push.
++ (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

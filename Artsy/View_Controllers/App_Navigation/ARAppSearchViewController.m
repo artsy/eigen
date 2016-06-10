@@ -113,7 +113,7 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     } else if (result.model == [Gene class]) {
         controller = [[ARGeneViewController alloc] initWithGeneID:result.modelID];
     } else if (result.model == [Profile class]) {
-        controller = [ARSwitchBoard.sharedInstance routeProfileWithID:result.modelID];
+        controller = [ARSwitchBoard.sharedInstance loadProfileWithID:result.modelID];
     } else if (result.model == [SiteFeature class]) {
         NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
         controller = [ARSwitchBoard.sharedInstance loadPath:path];

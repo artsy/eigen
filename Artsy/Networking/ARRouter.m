@@ -1181,4 +1181,9 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:url parameters:nil];
 }
 
++ (NSURLRequest *)newHEADRequestForPath:(NSString *)path
+{
+    return [self requestWithMethod:@"HEAD" path:path parameters:nil];
+}
+
 @end

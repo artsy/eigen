@@ -239,7 +239,7 @@
 {
     Fair *fair = self.fair ?: self.artwork.fair;
     NSString *fairID = fair.defaultProfileID ?: fair.organizer.profileID;
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance routeProfileWithID:fairID];
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadProfileWithID:fairID];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
