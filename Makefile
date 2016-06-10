@@ -10,7 +10,7 @@ GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
 GIT_REMOTE_ORIGIN_URL = $(shell git config --get remote.origin.url)
 
 DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
-DATE_VERSION = $(shell date "+%Y.%m.%d")
+DATE_VERSION = $(shell date "+%Y.%m.%d.%H")
 
 CHANGELOG = CHANGELOG.md
 
