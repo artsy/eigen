@@ -79,13 +79,23 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
         name.text = viewModel.lotArtist
         title.setTitle(viewModel.lotName, date: viewModel.lotArtworkCreationDate)
-        estimate.text = viewModel.estimateString
+        estimate.text = "Estimate: \(viewModel.estimateString ?? "")"
         viewModel.currentBidSignal.subscribe { newCurrentBid in
-            if let reserve = newCurrentBid.reserve {
-                currentBid.text = "\(newCurrentBid.bid) \(reserve)"
-                currentBid.makeSubstringFaint(reserve)
-            } else {
-                currentBid.text = newCurrentBid.bid
+            guard let state = viewModel.lotStateSignal.peek() else { return currentBid.text = "" }
+            switch state {
+            case .LiveLot, .UpcomingLot:
+                if let reserve = newCurrentBid.reserve {
+                    currentBid.text = "\(newCurrentBid.bid) \(reserve)"
+                    currentBid.makeSubstringFaint(reserve)
+                } else {
+                    currentBid.text = newCurrentBid.bid
+            }
+            case .ClosedLot:
+                if viewModel.isBeingSold && viewModel.userIsBeingSoldTo {
+                    currentBid.text = "Sold to you for: \(viewModel.currentLotValueString)"
+                } else {
+                    currentBid.text = ""
+                }
             }
         }
 

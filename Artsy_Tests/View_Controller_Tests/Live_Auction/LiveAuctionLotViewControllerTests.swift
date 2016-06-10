@@ -112,7 +112,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var lotArtworkDescription: String? = "Ipsum lorem whatever."
     var lotArtworkMedium: String? = "Star stuff"
     var lotArtworkDimensions: String? = "140 x 420 cm"
-    var estimateString = "$Estimate"
+    var estimateString: String? = "$Estimate"
     var lotName = "Lot Name"
     var lotID = "lot-id"
     var lotPremium = "Lot Premium"
@@ -131,6 +131,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var dateLotOpened: NSDate?
     var userIsHighestBidder: Bool = false
     var userIsBeingSoldTo: Bool = false
+    var isBeingSold: Bool = false
     // Whether or not (all) events returned from this test VM should be cancelled.
     var cancelEvents = false
 

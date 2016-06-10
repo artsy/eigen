@@ -79,13 +79,23 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
-+ (NSString *)baseCausalitySocketURLString
++ (NSString *)baseObserverCausalitySocketURLString
+{
+    return [self causalitySocketURLStringWithProduction:ARCausalityObserverSocketURL];
+}
+
++ (NSString *)baseBidderCausalitySocketURLString
+{
+    return [self causalitySocketURLStringWithProduction:ARCausalityBidderSocketURL];
+}
+
++ (NSString *)causalitySocketURLStringWithProduction:(NSString *)productionURL;
 {
     if ([AROptions boolForOption:ARUseStagingDefault]) {
         NSString *stagingSocketURLString = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingLiveAuctionSocketURLDefault];
         return stagingSocketURLString;
     } else {
-        return ARCausalitySocketURL;
+        return productionURL;
     }
 }
 
@@ -1034,6 +1044,7 @@ static NSString *hostFromString(NSString *string)
       low_estimate_cents\
       high_estimate_cents\
       currency\
+      estimate\
       artwork {\
         title\
         blurb: description\

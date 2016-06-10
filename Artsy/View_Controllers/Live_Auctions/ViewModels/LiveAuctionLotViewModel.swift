@@ -22,7 +22,7 @@ protocol LiveAuctionLotViewModelType: class {
     var lotArtworkMedium: String? { get }
     var lotArtworkDimensions: String? { get }
 
-    var estimateString: String { get }
+    var estimateString: String? { get }
     var lotName: String { get }
     var lotID: String { get }
     var lotArtworkCreationDate: String? { get }
@@ -40,6 +40,7 @@ protocol LiveAuctionLotViewModelType: class {
 
     var userIsHighestBidder: Bool { get }
     var userIsBeingSoldTo: Bool { get }
+    var isBeingSold: Bool { get }
 
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
@@ -187,6 +188,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return top.hasBidderID(bidderID)
     }
 
+    var isBeingSold: Bool {
+        return sellingToBidderID != nil
+    }
+
     var userIsBeingSoldTo: Bool {
         guard let
             bidderID = bidderCredentials.paddleNumber,
@@ -217,7 +222,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.currencySymbol
     }
 
-    var estimateString: String {
+    var estimateString: String? {
         return model.estimate
     }
 

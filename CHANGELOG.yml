@@ -17,6 +17,7 @@ upcoming:
       - Differentiate between a max bid, and a winning bid. - orta
       - Entering max bid VC will dismiss when the user is already the highest bidder. - ash
       - User registration pending states. - ash
+      - Hide bid history whena  lot closes - orta
   user_facing:
       - Allows max bids on live auctions - orta
       - Shows reserve status for live auctions. - ash

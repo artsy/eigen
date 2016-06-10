@@ -164,6 +164,14 @@ class LiveAuctionLotViewController: UIViewController {
             historyViewController?.tableView.scrollEnabled = hideBidHistory
             pan.enabled = !hideBidHistory
 
+            if hideBidHistory && self?._bidHistoryState == .Open {
+                UIView.animateWithDuration(ARAnimationQuickDuration, animations: { 
+                    self?.shrinkBidHistory()
+                }, completion: { _ in
+                    self?.shrinkBidHistoryCompleted()
+                })
+            }
+
             // We need to align the bottom of the lot image to the lot metadata
             lotMetadataStack?.layoutIfNeeded()
         }
@@ -195,18 +203,25 @@ class LiveAuctionLotViewController: UIViewController {
 
         // This closes the bid history, typically on rotation. We animate alongside the rotation animation for a smooooth user experience.
         coordinator.animateAlongsideTransition({ context in
-            self.alignMetadataToTopConstraint?.constant = self.openedMetadataPosition ?? 0 // Reset this to stick to the top, we'll set its active status below.
-            self.alignMetadataToTopConstraint?.active = false
-            self.lotHistoryHeightConstraint?.active = true
-
-            self.bidHistoryDelta.update((delta: 0, animating: true))
-
+            self.shrinkBidHistory()
         }, completion: { _ in
-            self._bidHistoryState = .Closed
-            self.lotMetadataStack?.setShowInfoButtonEnabled(true)
-            self.atRestMetadataPosition = nil
-            self.view.setNeedsLayout() // Triggers a re-set of atRestMetadataPosition
+            self.shrinkBidHistoryCompleted()
         })
+    }
+
+    private func shrinkBidHistory() {
+        alignMetadataToTopConstraint?.constant = openedMetadataPosition ?? 0 // Reset this to stick to the top, we'll set its active status below.
+        alignMetadataToTopConstraint?.active = false
+        lotHistoryHeightConstraint?.active = true
+
+        bidHistoryDelta.update((delta: 0, animating: true))
+    }
+
+    private func shrinkBidHistoryCompleted() {
+        _bidHistoryState = .Closed
+        lotMetadataStack?.setShowInfoButtonEnabled(true)
+        atRestMetadataPosition = nil
+        view.setNeedsLayout() // Triggers a re-set of atRestMetadataPosition
     }
 
     private var lotHistoryHeightConstraint: NSLayoutConstraint?
