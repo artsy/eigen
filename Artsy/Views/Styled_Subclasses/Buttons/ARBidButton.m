@@ -44,6 +44,8 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
     } else if (state & ARAuctionStateUserRegistrationClosed) {
         title = ARBidButtonRegistionClosedStateTitle;
         enabled = NO;
+    } else if (state & ARAuctionStateStarted) {
+        title = ARBidButtonBiddingOpenStateTitle;
     } else if (state & ARAuctionStateUserIsRegistered) {
         title = ARBidButtonRegisteredStateTitle;
         // TODO: replace with a standard artsy color
@@ -51,9 +53,6 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
         // don't want the 'disabled' flavor of the green color
         enabled = YES;
         interactionEnabled = NO;
-
-    } else if (state & ARAuctionStateStarted) {
-        title = ARBidButtonBiddingOpenStateTitle;
 
     } else {
         title = ARBidButtonRegisterStateTitle;
