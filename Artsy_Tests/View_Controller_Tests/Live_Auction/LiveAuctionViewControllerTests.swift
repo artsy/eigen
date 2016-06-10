@@ -17,8 +17,10 @@ class LiveAuctionViewControllerTests: QuickSpec {
         func setupViewControllerForPhone(singleLayout: Bool) {
 
             subject = LiveAuctionViewController(saleSlugOrID: "sale-id")
+
             subject.staticDataFetcher = Stubbed_StaticDataFetcher()
             subject.useSingleLayout = singleLayout
+            subject.suppressJumpingToOpenLots = true
         }
 
         beforeEach {

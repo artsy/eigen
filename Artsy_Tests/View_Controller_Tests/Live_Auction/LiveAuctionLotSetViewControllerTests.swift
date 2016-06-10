@@ -23,6 +23,7 @@ class LiveAuctionLotSetViewControllerSpec: QuickSpec {
             it("looks good by default") {
                 let fakeSalesPerson = stub_auctionSalesPerson()
                 let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson, traitCollection: UITraitCollection.init(horizontalSizeClass: horizontalSizeClass))
+                subject.suppressJumpingToOpenLots = true
 
                 subject.stubTraitCollection(UITraitCollection(horizontalSizeClass: horizontalSizeClass))
 

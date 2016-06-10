@@ -54,13 +54,24 @@ class LiveAuctionLotSetViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    /// When the lot has changed, we wait a second to see if you are still on the previous lot,
-    /// if you are, we'll move you on to the next lot.
+    var hasJumpedToOpenLotAtLaunch = false
+    var suppressJumpingToOpenLots = false
 
     func hasChangedLot(lot: LiveAuctionLotViewModelType?) {
-        guard let
-            focusedLotIndex = salesPerson.currentFocusedLotIndex.peek(),
-            newLot = lot else { return }
+        guard let newLot = lot where !suppressJumpingToOpenLots else { return }
+
+        /// Support jumping directly to the live lot when we load
+
+        guard hasJumpedToOpenLotAtLaunch else {
+            hasJumpedToOpenLotAtLaunch = true
+            jumpToLotAtIndex(newLot.lotIndex)
+            return
+        }
+
+        /// When the lot has changed, we wait a second to see if you are still on the previous lot,
+        /// if you are, we'll move you on to the next lot.
+
+        guard let focusedLotIndex = salesPerson.currentFocusedLotIndex.peek() else { return }
 
         if focusedLotIndex == newLot.lotIndex - 1 {
             ar_dispatch_after(1) {
@@ -232,12 +243,12 @@ class LiveAuctionLotSetViewController: UIViewController {
         salesPerson.currentLotSignal.subscribe(hasChangedLot)
     }
 
-    func jumpToLotAtIndex(index: Int, animated: Bool = false) {
+    func jumpToLotAtIndex(index: Int) {
         guard let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index) else { return }
 
         salesPerson.currentFocusedLotIndex.update(index)
         lotImageCollectionView.reloadData()
-        pageController.setViewControllers([currentLotVC], direction: .Forward, animated: animated, completion: nil)
+        pageController.setViewControllers([currentLotVC], direction: .Forward, animated: false, completion: nil)
     }
 
     func jumpToLiveLot() {
