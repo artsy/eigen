@@ -125,7 +125,7 @@ class LiveAuctionLotViewController: UIViewController {
         let historyViewController = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
         bidHistoryViewController = historyViewController
         metadataStack.addViewController(historyViewController, toParent: self, withTopMargin: "10", sideMargin: sideMargin)
-        lotHistoryHeightConstraint = historyViewController.view.constrainHeight("70")
+        lotHistoryHeightConstraint = historyViewController.view.constrainHeight("110")
 
         // Setup for "current lot" purple view at the bottom of the view.
         let currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal)

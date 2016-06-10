@@ -26,9 +26,9 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         case .Normal:
             self.visiblePrevNextSliceSize = 20
             maxCurrentWidth = 300
-            maxCurrentHeight = 300
+            maxCurrentHeight = 300 - 40
             maxOffscreenWidth = 200
-            maxOffscrenHeight = 200
+            maxOffscrenHeight = 200 - 40
         case .Compact:
             self.visiblePrevNextSliceSize = 0
             maxCurrentWidth = 280

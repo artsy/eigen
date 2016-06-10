@@ -20,7 +20,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     private var hasBeenSetup = false
     private var firstAppearance = true
     private var pageViewScrollView: UIScrollView?
-    private let progressBarBottomConstraintAtRestConstant: CGFloat = -165
+    private let progressBarBottomConstraintAtRestConstant: CGFloat = -205
     private var progressBarBottomConstraint: NSLayoutConstraint?
     private let saleNetworkModel = AuctionSaleNetworkModel()
     private let biddersNetworkModel = AuctionBiddersNetworkModel()
@@ -78,7 +78,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // Lot collection view setup.
         view.addSubview(lotImageCollectionView)
-        lotImageCollectionView.alignTop("0", leading: "0", bottom: "-288", trailing: "0", toView: view)
+        lotImageCollectionView.alignTop("0", leading: "0", bottom: "-328", trailing: "0", toView: view)
 
         // Page view controller setup.
         ar_addModernChildViewController(pageController)
