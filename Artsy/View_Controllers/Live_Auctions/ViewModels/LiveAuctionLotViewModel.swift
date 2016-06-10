@@ -41,6 +41,7 @@ protocol LiveAuctionLotViewModelType: class {
     var userIsHighestBidder: Bool { get }
     var userIsBeingSoldTo: Bool { get }
     var isBeingSold: Bool { get }
+    var userIsWinning: Bool { get }
 
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
@@ -94,6 +95,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
     var sellingToBidderID: String? = nil
+    var winningBidderID: String? = nil
 
     init(lot: LiveAuctionLot, bidderCredentials: BiddingCredentials) {
         self.model = lot
@@ -199,6 +201,13 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return bidderID == sellingToBidderID
     }
 
+    var userIsWinning: Bool {
+        guard let
+            bidderID = bidderCredentials.bidderID,
+            winningBidderID = winningBidderID else { return false }
+        return bidderID == winningBidderID
+    }
+
     func findBidWithValue(amountCents: UInt64) -> LiveAuctionEventViewModel? {
         return fullEventList.filter({ $0.isBid && $0.hasAmountCents(amountCents) }).first
     }
@@ -282,8 +291,12 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
     }
 
-    func updateSellingToBidder(sellingToBidder: [String: AnyObject]) {
-        sellingToBidderID = sellingToBidder["bidderId"] as? String
+    func updateSellingToBidder(sellingToBidderID: String?) {
+        self.sellingToBidderID = sellingToBidderID
+    }
+
+    func updateWinningBidder(winningBidderID: String?) {
+        self.winningBidderID = winningBidderID
     }
 
     func addEvents(newEvents: [LiveEvent]) {

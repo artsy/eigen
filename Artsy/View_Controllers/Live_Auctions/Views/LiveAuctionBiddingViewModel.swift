@@ -89,10 +89,9 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
             case .LiveLot:
                 let biddingState: LiveAuctionBiddingProgressState
 
-                let isHighestBiddder = state.currentLot?.userIsHighestBidder ?? false
                 let isSellingToMe = state.currentLot?.userIsBeingSoldTo ?? false
                 
-                if isHighestBiddder && isSellingToMe {
+                if isSellingToMe {
                     biddingState = .BidBecameMaxBidder
                 } else {
                     biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
