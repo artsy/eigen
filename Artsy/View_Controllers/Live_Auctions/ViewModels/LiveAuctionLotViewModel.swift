@@ -95,7 +95,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
     var sellingToBidderID: String? = nil
-    var winningBidEventId: String? = nil
+    var winningBidEventID: String? = nil
 
     init(lot: LiveAuctionLot, bidderCredentials: BiddingCredentials) {
         self.model = lot
@@ -180,7 +180,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var winningBidEvent: LiveAuctionEventViewModel? {
-        return fullEventList.filter({ $0.eventID == winningBidEventId }).last
+        return fullEventList.filter({ $0.eventID == winningBidEventID }).last
     }
 
     // Used for placing max bids.
@@ -297,7 +297,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     func updateWinningBidEventID(winningBidEventId: String?) {
-        self.winningBidEventId = winningBidEventId
+        self.winningBidEventID = winningBidEventId
     }
 
     func addEvents(newEvents: [LiveEvent]) {
@@ -308,7 +308,11 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         fullEventList += newEventViewModels
 
         updateExistingEventsWithLotState()
-        derivedEvents = fullEventList.filter { $0.isUserFacing }
+        if let winningBidEvent = fullEventList.remove({ $0.eventID == winningBidEventID }) {
+            derivedEvents = fullEventList.filter { $0.isUserFacing } + [winningBidEvent]
+        } else {
+            derivedEvents = fullEventList.filter { $0.isUserFacing }
+        }
 
         let newDerivedEvents = newEventViewModels.filter { $0.isUserFacing }
         newEventsSignal.update(newDerivedEvents)

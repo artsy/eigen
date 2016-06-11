@@ -19,6 +19,7 @@ upcoming:
       - User registration pending states. - ash
       - Hide bid history whena  lot closes - orta
       - Updates to bid-handling in history. - ash
+      - Fixes jump bid ordering. - ash
   user_facing:
       - Allows max bids on live auctions - orta
       - Shows reserve status for live auctions. - ash
