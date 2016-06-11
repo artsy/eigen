@@ -163,7 +163,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         bidViewModel.currentBid = max(bidViewModel.currentBid, bidViewModel.currentLotValue)
         updateBiddingControls(bidViewModel.currentBid)
 
-        shouldShowBiddingOverlay(false, maxBidder: bidViewModel.lotViewModel.userIsHighestBidder)
+        shouldShowBiddingOverlay(false, maxBidder: bidViewModel.lotViewModel.userIsBeingSoldTo)
     }
 
     @IBOutlet weak var decreaseBidButton: UIButton!
@@ -234,7 +234,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
             // We get a normal event for the outbid notification
             // which we can use to infer whether we won or not.
 
-            let score:LiveAuctionBiddingProgressState =  maxBidder ? .BidBecameMaxBidder : .BidOutbid
+            let score: LiveAuctionBiddingProgressState =  maxBidder ? .BidBecameMaxBidder : .BidOutbid
             bidProgressOverlayView.biddingProgressSignal.update(score)
             bidButtonViewModel.progressSignal.update(.Active(biddingState: score))
 
