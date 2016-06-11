@@ -162,11 +162,11 @@ class LiveAuctionBidButton: ARFlatButton {
                 let formattedPrice = price.convertToDollarString(currencySymbol)
                 handleBiddable(buttonState, formattedPrice: formattedPrice)
 
-            case .BiddingInProgress, .BidAcknowledged:
+            case .BiddingInProgress:
                 setupUI("Bidding...", background: purple)
 
-            case .BidBecameMaxBidder:
-                // TODO: Called before I am the top bidder.
+            case .BidBecameMaxBidder, .BidAcknowledged:
+                // If the bid has been acknowledged, we'll bee the max bidder until the next Biddable state, even if that's directly following this one.
                 setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
 
             case .BidNetworkFail:

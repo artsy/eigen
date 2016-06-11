@@ -23,6 +23,5 @@ extension ARTopMenuViewController {
 
     func runSwiftDeveloperExtras() {
         // run swift code here at startup
-        presentViewController(LiveAuctionViewController(saleSlugOrID: "phillips-design-demo"), animated: false, completion: nil)
     }
 }

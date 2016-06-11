@@ -104,10 +104,6 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
                 color = .blackColor()
             }
 
-            // Override color when an unconfirmed Artsy Bidder
-            let isUnConfirmedArtsyBidder = isArtsyBidder && !event.confirmed
-            color = isUnConfirmedArtsyBidder ? .artsyGrayMedium() : color
-
             // Override color when cancelled
             color = event.cancelled ? .artsyGrayMedium() : color
             return color

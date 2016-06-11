@@ -206,7 +206,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         guard let
             bidderID = bidderCredentials.bidderID,
             winningBidEvent = winningBidEvent else { return false }
-        return (winningBidEvent.hasBidderID(bidderID) && winningBidEvent.confirmed)
+        return winningBidEvent.hasBidderID(bidderID)
     }
 
     func findBidWithValue(amountCents: UInt64) -> LiveAuctionEventViewModel? {
@@ -349,11 +349,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
             if bidEvent.isFloorBidder {
                 status = .Bid(isMine: isUser, isTop: isTopBid)
 
-            } else if bidEvent.isArtsyBidder && bidEvent.event.confirmed {
+            } else { // if bidEvent.isArtsyBidder {
                 status = .Bid(isMine: isUser, isTop: isTopBid)
-
-            } else {
-                status = .PendingBid(isMine: isUser)
             }
             bidEvent.bidStatus = status
         }
