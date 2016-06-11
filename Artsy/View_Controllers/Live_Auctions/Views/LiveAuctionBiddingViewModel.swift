@@ -90,7 +90,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
             case .LiveLot:
                 let biddingState: LiveAuctionBiddingProgressState
 
-                let isSellingToMe = state.currentLot?.userIsWinning ?? false
+                let isSellingToMe = state.currentLot?.userIsBeingSoldTo ?? false
                 
                 if isSellingToMe {
                     biddingState = .BidBecameMaxBidder

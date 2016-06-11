@@ -38,7 +38,6 @@ protocol LiveAuctionLotViewModelType: class {
     var reserveStatusString: String { get }
     var dateLotOpened: NSDate? { get }
 
-    var userIsHighestBidder: Bool { get }
     var userIsBeingSoldTo: Bool { get }
     var isBeingSold: Bool { get }
     var userIsWinning: Bool { get }
@@ -181,14 +180,6 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var winningBidEvent: LiveAuctionEventViewModel? {
         return fullEventList.filter({ $0.eventID == winningBidEventID }).last
-    }
-
-    // Used for placing max bids.
-    var userIsHighestBidder: Bool {
-        guard let
-            bidderID = bidderCredentials.bidderID,
-            winningBidEvent = winningBidEvent else { return false }
-        return winningBidEvent.hasBidderID(bidderID)
     }
 
     var isBeingSold: Bool {

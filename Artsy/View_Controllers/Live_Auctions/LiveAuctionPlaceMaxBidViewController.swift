@@ -133,7 +133,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        if bidViewModel.lotViewModel.userIsHighestBidder {
+        if bidViewModel.lotViewModel.userIsBeingSoldTo {
             // User is already the highest bidder, tell them so and Dismiss.
             showHighestBidderStatusAndDismiss()
         }
