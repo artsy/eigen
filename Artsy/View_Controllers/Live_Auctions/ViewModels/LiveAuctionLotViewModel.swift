@@ -94,9 +94,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
-    // TODO: Are all these used?
     var sellingToBidderID: String? = nil
-    var winningBidderID: String? = nil
     var winningBidEventId: String? = nil
 
     init(lot: LiveAuctionLot, bidderCredentials: BiddingCredentials) {
@@ -296,10 +294,6 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     func updateSellingToBidder(sellingToBidderID: String?) {
         self.sellingToBidderID = sellingToBidderID
-    }
-
-    func updateWinningBidder(winningBidderID: String?) {
-        self.winningBidderID = winningBidderID
     }
 
     func updateWinningBidEventID(winningBidEventId: String?) {

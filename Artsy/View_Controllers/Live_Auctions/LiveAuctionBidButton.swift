@@ -136,8 +136,6 @@ class LiveAuctionBidButton: ARFlatButton {
 
     private func setupWithState(buttonState: LiveAuctionBidButtonState) {
 
-        print("new button state:", buttonState)
-
         switch buttonState {
 
         // When the lot is live

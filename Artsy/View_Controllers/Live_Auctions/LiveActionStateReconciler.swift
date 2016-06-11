@@ -115,10 +115,6 @@ private extension PrivateFunctions {
         let bidder = derivedState["sellingToBidder"] as? [String: AnyObject]
         let bidderID = bidder?["bidderId"] as? String
         lot.updateSellingToBidder(bidderID)
-
-        let winningBiddder = derivedState["winningBidder"] as? [String: AnyObject]
-        let winningBiddderID = winningBiddder?["bidderId"] as? String
-        lot.updateWinningBidder(winningBiddderID)
     }
 
     func updateLotDerivedState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
