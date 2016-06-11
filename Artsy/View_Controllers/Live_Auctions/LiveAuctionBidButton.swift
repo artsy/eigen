@@ -135,6 +135,9 @@ class LiveAuctionBidButton: ARFlatButton {
     }
 
     private func setupWithState(buttonState: LiveAuctionBidButtonState) {
+
+        print("new button state:", buttonState)
+
         switch buttonState {
 
         // When the lot is live
@@ -165,6 +168,7 @@ class LiveAuctionBidButton: ARFlatButton {
                 setupUI("Bidding...", background: purple)
 
             case .BidBecameMaxBidder:
+                // TODO: Called before I am the top bidder.
                 setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
 
             case .BidNetworkFail:

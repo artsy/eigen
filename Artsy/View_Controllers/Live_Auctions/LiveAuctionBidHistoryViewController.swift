@@ -42,16 +42,18 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
             guard let _ = self?.view.window else { return }
             guard let `self` = self else { return }
 
-            let currentCellCount = self.tableView.numberOfRowsInSection(0)
-            guard newEvents.reloadCondition(currentCellCount, lotViewModel: self.lotViewModel) == .Update else {
-                return self.tableView.reloadData()
-            }
-
-            let newIndexPaths = newEvents.enumerate().map { (index, _) -> NSIndexPath in
-                return NSIndexPath(forRow: index, inSection: 0)
-            }
-
-            self.tableView.insertRowsAtIndexPaths(newIndexPaths, withRowAnimation: self.appDependentRowAnimationStyle)
+            self.tableView.reloadData()
+//
+//            let currentCellCount = self.tableView.numberOfRowsInSection(0)
+//            guard newEvents.reloadCondition(currentCellCount, lotViewModel: self.lotViewModel) == .Update else {
+//                return self.tableView.reloadData()
+//            }
+//
+//            let newIndexPaths = newEvents.enumerate().map { (index, _) -> NSIndexPath in
+//                return NSIndexPath(forRow: index, inSection: 0)
+//            }
+//
+//            self.tableView.insertRowsAtIndexPaths(newIndexPaths, withRowAnimation: self.appDependentRowAnimationStyle)
         }
     }
 
