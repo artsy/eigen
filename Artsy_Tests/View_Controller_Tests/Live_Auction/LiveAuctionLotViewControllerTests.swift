@@ -135,6 +135,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var isBeingSold: Bool = false
     // Whether or not (all) events returned from this test VM should be cancelled.
     var cancelEvents = false
+    var topBidEvent: LiveAuctionEventViewModel? = nil
 
     func derivedEventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
         let event = LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON), currencySymbol: "$")

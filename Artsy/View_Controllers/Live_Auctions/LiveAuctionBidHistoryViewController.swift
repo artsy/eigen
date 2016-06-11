@@ -38,20 +38,21 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
         tableView.showsVerticalScrollIndicator = false
 
         newEventsSubscription = lotViewModel.newEventsSignal.subscribe { [weak self] newEvents in
-            // We want to skip any initial first values that are cached by the observables, we can do this by making sure we have a window (since cached values are immediately sent, before the initializer is completed).
-            guard let _ = self?.view.window else { return }
-            guard let `self` = self else { return }
-
-            let currentCellCount = self.tableView.numberOfRowsInSection(0)
-            guard newEvents.reloadCondition(currentCellCount, lotViewModel: self.lotViewModel) == .Update else {
-                return self.tableView.reloadData()
-            }
-
-            let newIndexPaths = newEvents.enumerate().map { (index, _) -> NSIndexPath in
-                return NSIndexPath(forRow: index, inSection: 0)
-            }
-
-            self.tableView.insertRowsAtIndexPaths(newIndexPaths, withRowAnimation: self.appDependentRowAnimationStyle)
+//            // We want to skip any initial first values that are cached by the observables, we can do this by making sure we have a window (since cached values are immediately sent, before the initializer is completed).
+//            guard let _ = self?.view.window else { return }
+//            guard let `self` = self else { return }
+//
+//            let currentCellCount = self.tableView.numberOfRowsInSection(0)
+//            guard newEvents.reloadCondition(currentCellCount, lotViewModel: self.lotViewModel) == .Update else {
+//                return self.tableView.reloadData()
+//            }
+//
+//            let newIndexPaths = newEvents.enumerate().map { (index, _) -> NSIndexPath in
+//                return NSIndexPath(forRow: index, inSection: 0)
+//            }
+//
+//            self.tableView.insertRowsAtIndexPaths(newIndexPaths, withRowAnimation: self.appDependentRowAnimationStyle)
+            self?.tableView.reloadData()
         }
     }
 
@@ -78,8 +79,18 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
         tableView.backgroundColor = .clearColor()
     }
 
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
+    }
+
+    private let topBidderSection = 0
+
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lotViewModel.numberOfDerivedEvents
+        if section == topBidderSection {
+            return (lotViewModel.topBidEvent != nil) ? 1 : 0
+        } else {
+            return lotViewModel.numberOfDerivedEvents
+        }
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -89,11 +100,22 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         guard let cell = cell as? LiveAuctionHistoryCell else { return }
 
-        let event = lotViewModel.derivedEventAtPresentationIndex(indexPath.row)
+        let event: LiveAuctionEventViewModel
+        if indexPath.section == topBidderSection {
+            guard let topEvent = lotViewModel.topBidEvent else { return }
+            event = topEvent
+        } else {
+            event = lotViewModel.derivedEventAtPresentationIndex(indexPath.row)
+        }
+
         cell.updateWithEventViewModel(event)
     }
 }
 
+enum BidHistorySection : Int {
+    case TopBidder = 0
+    case PastBids = 1
+}
 
 enum TableViewUpdateCondition {
     case Reload

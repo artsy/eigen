@@ -43,6 +43,8 @@ protocol LiveAuctionLotViewModelType: class {
     var isBeingSold: Bool { get }
     var userIsWinning: Bool { get }
 
+    var topBidEvent: LiveAuctionEventViewModel? { get }
+
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
     var askingPriceSignal: Observable<UInt64> { get }
@@ -179,8 +181,12 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return LiveAuctionBidViewModel.nextBidCents(model.askingPriceCents)
     }
 
-    var topBidEvent: LiveAuctionEventViewModel? {
-        return fullEventList.filter({ $0.isBid }).last
+    var topBidEvent: LiveAuctionEventViewModel? = nil
+    func getTopBidEvent() -> LiveAuctionEventViewModel? {
+        let sorted = fullEventList.filter({ $0.isBid })
+                             .sort({ $0.bidAmountCents < $1.bidAmountCents })
+        print("sorted:", sorted.map{ $0.bidAmountCents })
+        return sorted.last
     }
 
     var userIsHighestBidder: Bool {
@@ -306,13 +312,13 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
         fullEventList += newEventViewModels
 
+        topBidEvent = getTopBidEvent()
         updateExistingEventsWithLotState(fullEventList)
-        derivedEvents = fullEventList.filter { $0.isUserFacing }
+        derivedEvents = fullEventList.filter { $0.isUserFacing && $0 != topBidEvent }
 
         let newDerivedEvents = newEventViewModels.filter { $0.isUserFacing }
         newEventsSignal.update(newDerivedEvents)
     }
-
 
     /// This isn't really very efficient, lots of loops to do lookups, maybe n^n?
 
@@ -328,16 +334,15 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         /// Setup Pending
         for bidEvent in events.filter({ $0.isBidConfirmation }) {
             guard let
-                amount = bidEvent.bidAmount,
+                amount = bidEvent.bidConfirmationAmount,
                 eventToConfirm = findBidWithValue(amount) else { continue }
             eventToConfirm.confirm()
         }
 
         /// Setup bidStatus, so an EventVM knows if it's top/owner by the user etc
-        let topBid = topBidEvent
         for bidEvent in events.filter({ $0.isBid }) {
 
-            let isTopBid = (bidEvent == topBid)
+            let isTopBid = (bidEvent == topBidEvent)
             let isUser: Bool
             if let bidderID = bidderCredentials.bidderID where bidderCredentials.canBid {
                 isUser = bidEvent.hasBidderID(bidderID)

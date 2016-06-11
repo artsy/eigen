@@ -210,5 +210,35 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             expect(subject) == snapshot()
         }
 
+
+        it("handles an out of order top bid event") {
+            // See:
+            // e1   Lot Open
+            // e2   Floor Bid - 10k
+            // e3   Online Bid 23653 -  15k
+            // e4   Confirmed
+            // e5   Floor Bid - 14k
+
+            // Online bid should show at the top
+
+            let myBidderID = "123456"
+            let lotID = NSUUID().UUIDString
+
+            let lot = LiveAuctionLot(JSON: ["id": lotID])
+            let creds = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: myBidderID)
+            let lotVM = LiveAuctionLotViewModel(lot: lot, bidderCredentials: creds)
+
+            let e1 = LiveEvent(JSON: ["type" : "BiddingOpened", "id" : lotID])
+            let e2 = bid(10000, bidder: ["type" : "OfflineBidder"])
+            let e3 = bid(15000, bidder: ["type": "ArtsyBidder", "bidderId": "23653"])
+            let e4 = confirm(e3, lotID: lotID)
+            let e5 = bid(14000, bidder: ["type": "OfflineBidder"])
+
+            let subject = LiveAuctionBidHistoryViewController(lotViewModel: lotVM)
+            let events = [e1, e2, e3, e4, e5]
+            lotVM.addEvents(events as! [LiveEvent])
+
+            expect(subject) == snapshot()
+        }
     }
 }
