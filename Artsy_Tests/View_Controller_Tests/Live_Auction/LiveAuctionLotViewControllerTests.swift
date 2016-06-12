@@ -86,6 +86,16 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 auctionViewModel.distance = -1
                 expect(subject) == snapshot()
             }
+
+            it("handles updates to number of bids") {
+                lotViewModel.numberOfBids = 1
+                subject.loadViewProgrammatically()
+
+                lotViewModel.numberOfBids = 2
+                lotViewModel.newEventsSignal.update([])
+
+                expect(subject) == snapshot()
+            }
         }
     }
 
