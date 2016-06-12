@@ -62,7 +62,7 @@ class LiveAuctionViewController: UISplitViewController {
         statusMaintainer.viewWillAppear(animated, app: app)
         connectToNetwork()
 
-        UIApplication.sharedApplication().idleTimerDisabled = true
+        app.idleTimerDisabled = true
     }
 
     func connectToNetwork() {
@@ -220,7 +220,7 @@ extension PrivateFunctions {
         let salesPerson = self.salesPersonCreator(sale, jwt, bidderCredentials)
 
         overlaySubscription?.unsubscribe()
-        salesPerson.socketConnectionSignal
+        overlaySubscription = salesPerson.socketConnectionSignal
             .merge(salesPerson.operatorConnectedSignal)
             .map { return $0.0 && $0.1 } // We are connected iff the socket is connected and the operator is connected.
             .subscribe(showSocketDisconnectedOverlay)
