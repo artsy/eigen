@@ -61,7 +61,6 @@ class LiveAuctionStateManager: NSObject {
         }
 
         socketCommunicator.postEventResponses.subscribe { [weak self] response in
-            print("ws response: \(response)")
 
             let json = JSON(response)
             let bidUUID = json["key"].stringValue

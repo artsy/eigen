@@ -58,6 +58,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     class func stateToBidButtonState(currencySymbol: String, lotID: String, auctionViewModel: LiveAuctionViewModelType)
                 -> (state: (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?))
                 -> LiveAuctionBidButtonState {
+
         return { state in
             let userIsRegistered = auctionViewModel.auctionState.contains(.UserIsRegistered)
             let userRegistrationPending = auctionViewModel.auctionState.contains(.UserPendingRegistration)

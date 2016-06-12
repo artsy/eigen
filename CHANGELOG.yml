@@ -18,6 +18,8 @@ upcoming:
       - Entering max bid VC will dismiss when the user is already the highest bidder. - ash
       - User registration pending states. - ash
       - Hide bid history whena  lot closes - orta
+      - Updates to bid-handling in history. - ash
+      - Fixes jump bid ordering. - ash
   user_facing:
       - Allows max bids on live auctions - orta
       - Shows reserve status for live auctions. - ash

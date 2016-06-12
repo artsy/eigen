@@ -151,7 +151,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
         func bid(amount: Int, bidder: [String: AnyObject]) -> LiveEvent {
             return LiveEvent(JSON: [
                 "type" : "FirstPriceBidPlaced",
-                "id" : NSUUID().UUIDString,
+                "eventId" : NSUUID().UUIDString,
                 "cancelled" : false,
                 "amountCents" : amount * 100,
                 "bidder" : bidder
@@ -162,10 +162,10 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             return LiveEvent(JSON: [
                 "amountCents": Int(event.amountCents),
                 "createdAt": "2016-06-05T20:14:15.070Z",
-                "eventId": event.eventID,
+                "event": ["eventId": event.eventID],
                 "lotId": NSUUID().UUIDString,
                 "type": "CompositeOnlineBidConfirmed"
-            ])
+                ])
         }
 
         it("looks right on a comprehensive set of events") {
@@ -205,6 +205,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
 
             let subject = LiveAuctionBidHistoryViewController(lotViewModel: lotVM)
             let events = [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12]
+            lotVM.updateWinningBidEventID(e11.eventID)
             lotVM.addEvents(events as! [LiveEvent])
 
             expect(subject) == snapshot()

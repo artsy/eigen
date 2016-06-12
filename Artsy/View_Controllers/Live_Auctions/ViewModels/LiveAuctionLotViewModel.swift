@@ -38,7 +38,6 @@ protocol LiveAuctionLotViewModelType: class {
     var reserveStatusString: String { get }
     var dateLotOpened: NSDate? { get }
 
-    var userIsHighestBidder: Bool { get }
     var userIsBeingSoldTo: Bool { get }
     var isBeingSold: Bool { get }
     var userIsWinning: Bool { get }
@@ -95,7 +94,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
     var sellingToBidderID: String? = nil
-    var winningBidderID: String? = nil
+    var winningBidEventID: String? = nil
 
     init(lot: LiveAuctionLot, bidderCredentials: BiddingCredentials) {
         self.model = lot
@@ -179,15 +178,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return LiveAuctionBidViewModel.nextBidCents(model.askingPriceCents)
     }
 
-    var topBidEvent: LiveAuctionEventViewModel? {
-        return fullEventList.filter({ $0.isBid }).last
-    }
-
-    var userIsHighestBidder: Bool {
-        guard let
-            bidderID = bidderCredentials.bidderID,
-            top = topBidEvent else { return false }
-        return top.hasBidderID(bidderID)
+    var winningBidEvent: LiveAuctionEventViewModel? {
+        return fullEventList.filter({ $0.eventID == winningBidEventID }).last
     }
 
     var isBeingSold: Bool {
@@ -204,8 +196,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     var userIsWinning: Bool {
         guard let
             bidderID = bidderCredentials.bidderID,
-            winningBidderID = winningBidderID else { return false }
-        return bidderID == winningBidderID
+            winningBidEvent = winningBidEvent else { return false }
+        return winningBidEvent.hasBidderID(bidderID)
     }
 
     func findBidWithValue(amountCents: UInt64) -> LiveAuctionEventViewModel? {
@@ -295,8 +287,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         self.sellingToBidderID = sellingToBidderID
     }
 
-    func updateWinningBidder(winningBidderID: String?) {
-        self.winningBidderID = winningBidderID
+    func updateWinningBidEventID(winningBidEventId: String?) {
+        self.winningBidEventID = winningBidEventId
     }
 
     func addEvents(newEvents: [LiveEvent]) {
@@ -306,8 +298,12 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
         fullEventList += newEventViewModels
 
-        updateExistingEventsWithLotState(fullEventList)
-        derivedEvents = fullEventList.filter { $0.isUserFacing }
+        updateExistingEventsWithLotState()
+        if let winningBidEvent = fullEventList.remove({ $0.eventID == winningBidEventID }) {
+            derivedEvents = fullEventList.filter { $0.isUserFacing } + [winningBidEvent]
+        } else {
+            derivedEvents = fullEventList.filter { $0.isUserFacing }
+        }
 
         let newDerivedEvents = newEventViewModels.filter { $0.isUserFacing }
         newEventsSignal.update(newDerivedEvents)
@@ -316,9 +312,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     /// This isn't really very efficient, lots of loops to do lookups, maybe n^n?
 
-    private func updateExistingEventsWithLotState(events: [LiveAuctionEventViewModel]) {
+    private func updateExistingEventsWithLotState() {
         // Undoes need applying
-        for undoEvent in events.filter({ $0.isUndo }) {
+        for undoEvent in fullEventList.filter({ $0.isUndo }) {
             guard let
                 referenceEventID = undoEvent.undoLiveEventID,
                 eventToUndo = eventWithID(referenceEventID) else { continue }
@@ -326,7 +322,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
 
         /// Setup Pending
-        for bidEvent in events.filter({ $0.isBidConfirmation }) {
+        for bidEvent in fullEventList.filter({ $0.isBidConfirmation }) {
             guard let
                 amount = bidEvent.bidAmount,
                 eventToConfirm = findBidWithValue(amount) else { continue }
@@ -334,10 +330,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
 
         /// Setup bidStatus, so an EventVM knows if it's top/owner by the user etc
-        let topBid = topBidEvent
-        for bidEvent in events.filter({ $0.isBid }) {
+        for bidEvent in fullEventList.filter({ $0.isBid }) {
 
-            let isTopBid = (bidEvent == topBid)
+            let isTopBid = (bidEvent.eventID == winningBidEvent?.eventID)
             let isUser: Bool
             if let bidderID = bidderCredentials.bidderID where bidderCredentials.canBid {
                 isUser = bidEvent.hasBidderID(bidderID)
@@ -349,11 +344,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
             if bidEvent.isFloorBidder {
                 status = .Bid(isMine: isUser, isTop: isTopBid)
 
-            } else if bidEvent.isArtsyBidder && bidEvent.event.confirmed {
+            } else { // if bidEvent.isArtsyBidder {
                 status = .Bid(isMine: isUser, isTop: isTopBid)
-
-            } else {
-                status = .PendingBid(isMine: isUser)
             }
             bidEvent.bidStatus = status
         }

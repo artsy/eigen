@@ -65,6 +65,7 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
             guard let derivedLotState = json["derivedLotState"] as? [String: AnyObject] else { continue }
             guard let eventHistory = json["eventHistory"] as? [[String: AnyObject]] else { continue } // TODO move to events
 
+            updateUserSpecificLotState(lot, derivedState: derivedLotState)
             updateLotWithEvents(lot, lotEvents: eventHistory)
             updateLotDerivedState(lot, derivedState: derivedLotState)
         }
@@ -83,6 +84,7 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
             derivedLotState = json["derivedLotState"] as? [String: AnyObject],
             fullEventOrder = json["fullEventOrder"] as? [String] else { return }
 
+        updateUserSpecificLotState(lot, derivedState: derivedLotState)
         updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
         updateLotDerivedState(lot, derivedState: derivedLotState)
     }
@@ -105,14 +107,17 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
 private typealias PrivateFunctions = LiveAuctionStateReconciler
 private extension PrivateFunctions {
 
-    func updateLotDerivedState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
+    func updateUserSpecificLotState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
+
+        let winningBidEventID = derivedState["winningBidEventId"] as? String
+        lot.updateWinningBidEventID(winningBidEventID)
+
         let bidder = derivedState["sellingToBidder"] as? [String: AnyObject]
         let bidderID = bidder?["bidderId"] as? String
         lot.updateSellingToBidder(bidderID)
+    }
 
-        let winningBiddder = derivedState["winningBidder"] as? [String: AnyObject]
-        let winningBiddderID = winningBiddder?["bidderId"] as? String
-        lot.updateWinningBidder(winningBiddderID)
+    func updateLotDerivedState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
 
         if let reserveStatusString = derivedState["reserveStatus"] as? String {
             lot.updateReserveStatus(reserveStatusString)

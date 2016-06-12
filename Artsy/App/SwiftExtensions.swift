@@ -48,3 +48,11 @@ extension CollectionType {
         return isEmpty == false
     }
 }
+
+extension Array {
+    mutating func remove(@noescape closure: (Element -> Bool)) -> Element? {
+        return enumerate().reduce(nil) { (memo, e) in
+            return memo ?? (closure(e.element) ? removeAtIndex(e.index) : nil)
+        }
+    }
+}
