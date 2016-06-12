@@ -184,11 +184,19 @@ class LiveAuctionViewController: UISplitViewController {
         internalPopover.dismissPopoverAnimated(false)
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        UIApplication.sharedApplication().idleTimerDisabled = true
+    }
+
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         viewControllers.forEach { vc in
             vc.endAppearanceTransition()
         }
+
+        UIApplication.sharedApplication().idleTimerDisabled = false
 
         overlaySubscription?.unsubscribe()
     }
