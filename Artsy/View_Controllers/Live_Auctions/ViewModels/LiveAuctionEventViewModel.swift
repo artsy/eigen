@@ -75,11 +75,16 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
         return bidder.bidderID == bidderID
     }
 
-    var bidAmount: UInt64? {
+    var bidConfirmationAmount: UInt64? {
         if !isBidConfirmation { return nil }
         return event.amountCents
     }
     
+    var bidAmountCents: UInt64? {
+        if !isBid { return nil}
+        return event.amountCents
+    }
+
     func hasAmountCents(amount: UInt64 ) -> Bool {
         return event.amountCents == amount
     }
