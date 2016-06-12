@@ -299,10 +299,12 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         fullEventList += newEventViewModels
 
         updateExistingEventsWithLotState()
-        if let winningBidEvent = fullEventList.remove({ $0.eventID == winningBidEventID }) {
-            derivedEvents = fullEventList.filter { $0.isUserFacing } + [winningBidEvent]
+
+        var allUserFacingEvents = fullEventList.filter { $0.isUserFacing }
+        if let winningBidEvent = allUserFacingEvents.remove({ $0.eventID == winningBidEventID }) {
+            derivedEvents = allUserFacingEvents + [winningBidEvent]
         } else {
-            derivedEvents = fullEventList.filter { $0.isUserFacing }
+            derivedEvents = allUserFacingEvents
         }
 
         let newDerivedEvents = newEventViewModels.filter { $0.isUserFacing }
