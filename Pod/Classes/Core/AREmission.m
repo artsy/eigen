@@ -36,7 +36,7 @@ static AREmission *_sharedInstance = nil;
     _eventsModule = [AREventsModule new];
     _switchBoardModule = [ARSwitchBoardModule new];
     _APIModule = [ARTemporaryAPIModule new];
-    
+
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return @[_eventsModule, _switchBoardModule, _APIModule]; }
                                      launchOptions:nil];
@@ -46,7 +46,7 @@ static AREmission *_sharedInstance = nil;
 
 - (NSURL *)releaseBundleURL;
 {
-  return [[NSBundle bundleForClass:self.class] URLForResource:@"Emission" withExtension:@"jsbundle"];
+  return [[NSBundle bundleForClass:self.class] URLForResource:@"Emission" withExtension:@"js"];
 }
 
 @end

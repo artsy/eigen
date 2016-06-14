@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '8.0'
   s.requires_arc = true
   s.source_files = 'Pod/Classes/**/*.{h,m}'
-  s.resource     = 'Pod/Assets/Emission.jsbundle'
+  s.resource     = 'Pod/Assets/Emission.js'
 
   # Artsy pods
   s.dependency 'Artsy+UIFonts', '>= 1.1.0'
