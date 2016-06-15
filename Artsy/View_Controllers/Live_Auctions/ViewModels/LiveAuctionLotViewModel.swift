@@ -326,7 +326,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         /// Setup Pending
         for bidEvent in fullEventList.filter({ $0.isBidConfirmation }) {
             guard let
-                amount = bidEvent.bidAmount,
+                amount = bidEvent.bidConfirmationAmount,
                 eventToConfirm = findBidWithValue(amount) else { continue }
             eventToConfirm.confirm()
         }
