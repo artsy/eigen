@@ -2,7 +2,7 @@
 
 #import "ARAppConstants.h"
 
-@class LiveAuctionLot;
+@class LiveAuctionLot, BidIncrementStrategy;
 
 
 @interface LiveSale : MTLModel <MTLJSONSerializing>
@@ -13,6 +13,7 @@
 @property (nonatomic, copy, readonly) NSString *saleDescription;
 
 @property (nonatomic, copy, readonly) NSArray<LiveAuctionLot *> *saleArtworks;
+@property (nonatomic, copy, readonly) NSArray<BidIncrementStrategy *> *bidIncrementStrategy;
 
 @property (nonatomic, strong, readonly) NSDate *startDate;
 @property (nonatomic, strong, readonly) NSDate *endDate;

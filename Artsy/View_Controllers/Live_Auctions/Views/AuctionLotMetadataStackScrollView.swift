@@ -15,7 +15,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
     var aboveFoldHeightConstraint: NSLayoutConstraint!
 
-    required init(viewModel: LiveAuctionLotViewModelType, sideMargin: String) {
+    required init(viewModel: LiveAuctionLotViewModelType, salesPerson: LiveAuctionsSalesPersonType, sideMargin: String) {
         super.init(stackViewClass: TextStack.self)
 
         scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 2)
@@ -93,7 +93,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
             }
             case .ClosedLot:
                 if viewModel.isBeingSold && viewModel.userIsBeingSoldTo {
-                    currentBid.text = "Sold to you for: \(viewModel.currentLotValueString)"
+                    currentBid.text = "Sold to you for: \(salesPerson.currentLotValueString(viewModel))"
                 } else {
                     currentBid.text = ""
                 }

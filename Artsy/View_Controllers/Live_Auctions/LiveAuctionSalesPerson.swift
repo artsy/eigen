@@ -17,6 +17,8 @@ protocol LiveAuctionsSalesPersonType {
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType
+    func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64
+    func currentLotValueString(lot: LiveAuctionLotViewModelType) -> String
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
@@ -133,6 +135,14 @@ extension LiveAuctionsSalesPerson {
 
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
         stateManager.leaveMaxBidOnLot(lot.lotID, amountCents: amountCents, biddingViewModel: biddingViewModel)
+    }
+
+    func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64 {
+        return sale.bidIncrementStrategy.minimumNextBidCentsIncrement(lot.askingPrice)
+    }
+
+    func currentLotValueString(lot: LiveAuctionLotViewModelType) -> String {
+        return currentLotValue(lot).convertToDollarString(lot.currencySymbol)
     }
 }
 

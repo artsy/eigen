@@ -1,105 +1,6 @@
 import UIKit
 import Interstellar
 
-enum LiveAuctionBiddingProgressState {
-    case UserRegistrationRequired
-    case UserRegistrationPending
-    case UserRegistrationClosed
-    case Biddable(askingPrice: UInt64, currencySymbol: String)
-    case BiddingInProgress
-    case BidAcknowledged
-    case BidBecameMaxBidder
-    case BidOutbid
-    case BidNetworkFail
-    case LotWaitingToOpen
-    case LotSold
-}
-
-func == (lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressState) -> Bool {
-    switch (lhs, rhs) {
-    case (.UserRegistrationRequired, .UserRegistrationRequired): return true
-    case (.UserRegistrationPending, .UserRegistrationPending): return true
-    case (.UserRegistrationClosed, .UserRegistrationClosed): return true
-    case (.Biddable(let lhsState), .Biddable(let rhsState)) where lhsState.askingPrice == rhsState.askingPrice && lhsState.currencySymbol == rhsState.currencySymbol: return true
-    case (.BiddingInProgress, .BiddingInProgress): return true
-    case (.BidBecameMaxBidder, .BidBecameMaxBidder): return true
-    case (.BidAcknowledged, .BidAcknowledged): return true
-    case (.BidNetworkFail, .BidNetworkFail): return true
-    case (.LotWaitingToOpen, .LotWaitingToOpen): return true
-    case (.LotSold, .LotSold): return true
-    case (.BidOutbid, .BidOutbid): return true
-
-    default: return false
-    }
-}
-
-class LiveAuctionBidViewModel: NSObject {
-    let lotViewModel: LiveAuctionLotViewModelType
-    let salesPerson: LiveAuctionsSalesPersonType
-    let lotBidDetailsUpdateSignal = Observable<Int>()
-
-    // This mutates as someone increments/decrements
-    var currentBid: UInt64
-
-    init(lotVM: LiveAuctionLotViewModelType, salesPerson: LiveAuctionsSalesPersonType) {
-        self.lotViewModel = lotVM
-        self.salesPerson = salesPerson
-
-        let startingPrice = lotViewModel.askingPriceSignal.peek() ?? UInt64(0)
-        currentBid = LiveAuctionBidViewModel.nextBidCents(startingPrice)
-    }
-
-    var currentLotValue: UInt64 {
-        return lotViewModel.currentLotValue
-    }
-
-    var currentLotValueString: String {
-        return lotViewModel.currentLotValueString
-    }
-
-    var currentBidDollars: String {
-        return currentBid.convertToDollarString(lotViewModel.currencySymbol)
-    }
-
-    var nextBidIncrementDollars: String {
-        let bidIncrementCents = LiveAuctionBidViewModel.minimumNextBidCentsIncrement(currentBid)
-        return bidIncrementCents.convertToDollarString(lotViewModel.currencySymbol)
-    }
-
-    var currentBidsAndReserve: String {
-        let bids = lotViewModel.numberOfBids
-        let bidString = bids == 1 ? "\(bids) bid" : "\(bids) bids"
-        return "(\(bidString) \(lotViewModel.reserveStatusString))"
-    }
-
-    var canMakeLowerBids: Bool {
-        return currentBid - LiveAuctionBidViewModel.minimumNextBidCentsIncrement(currentBid)  >= currentLotValue
-    }
-
-    // See: https://github.com/artsy/gravity/blob/master/app/models/bidding/increment_strategy/default.rb
-    class func minimumNextBidCentsIncrement(bid: UInt64) -> UInt64 {
-        switch bid {
-        case 0...999_99: return 50_00
-        case 100_000...199_999: return 100_00
-        case 200_000...499_999: return 250_00
-        case 500_000...999_999: return 500_00
-        case 10_000_00...19_999_99: return 100_000
-        case 20_000_00...49_999_99: return 200_000
-        case 50_000_00...99_999_99: return 500_000
-        case 100_000_00...1_000_000_000_00: return 10_000_00
-        default: return bid
-        }
-    }
-
-    class func nextBidCents(bid: UInt64) -> UInt64 {
-        return bid + minimumNextBidCentsIncrement(bid)
-    }
-
-    class func previousBidCents(bid: UInt64) -> UInt64 {
-        return bid - minimumNextBidCentsIncrement(bid)
-    }
-}
-
 class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
     var bidViewModel: LiveAuctionBidViewModel!
@@ -184,12 +85,12 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
     }
 
     @IBAction func incrementBid(sender: AnyObject) {
-        bidViewModel.currentBid = LiveAuctionBidViewModel.nextBidCents(bidViewModel.currentBid)
+        bidViewModel.currentBid = bidViewModel.nextBidCents(bidViewModel.currentBid)
         updateBiddingControls(bidViewModel.currentBid)
     }
 
     @IBAction func decrementBid(sender: AnyObject) {
-        bidViewModel.currentBid = LiveAuctionBidViewModel.previousBidCents(bidViewModel.currentBid)
+        bidViewModel.currentBid = bidViewModel.previousBidCents(bidViewModel.currentBid)
         updateBiddingControls(bidViewModel.currentBid)
     }
 
