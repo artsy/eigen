@@ -20,6 +20,7 @@ upcoming:
       - Hide bid history whena  lot closes - orta
       - Updates to bid-handling in history. - ash
       - Fixes jump bid ordering. - ash
+      - Parnter name shows on iPhone. - ash
   user_facing:
       - Allows max bids on live auctions - orta
       - Shows reserve status for live auctions. - ash

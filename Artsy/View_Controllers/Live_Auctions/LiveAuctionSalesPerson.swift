@@ -85,7 +85,16 @@ extension ComputedProperties {
     }
 
     var liveSaleName: String {
-        return sale.name
+        let saleName = sale.name
+        // Bit of a hack until we have our server-side stuff figured out. If the sale name has a :, it's likely
+        // "Partner Name: The Awesome Sale", and we want just "Partner Name"
+        let colonRange = saleName.rangeOfString(":", options: [], range: nil, locale: nil)
+
+        if let colonRange = colonRange {
+            return saleName.substringToIndex(colonRange.startIndex)
+        } else {
+            return saleName
+        }
     }
 
     var debugAllEventsSignal: Observable<LotEventJSON> {
