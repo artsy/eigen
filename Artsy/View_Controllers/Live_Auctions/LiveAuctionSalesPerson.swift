@@ -77,6 +77,14 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         guard let bidIncrements = self.sale.bidIncrementStrategy else { return [] }
         return bidIncrements.sort()
     }()
+
+    func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64 {
+        return sale.bidIncrementStrategy.minimumNextBidCentsIncrement(lot.askingPrice)
+    }
+
+    func currentLotValueString(lot: LiveAuctionLotViewModelType) -> String {
+        return currentLotValue(lot).convertToDollarString(lot.currencySymbol)
+    }
 }
 
 private typealias ComputedProperties = LiveAuctionsSalesPerson
@@ -142,14 +150,6 @@ extension LiveAuctionsSalesPerson {
 
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
         stateManager.leaveMaxBidOnLot(lot.lotID, amountCents: amountCents, biddingViewModel: biddingViewModel)
-    }
-
-    func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64 {
-        return sale.bidIncrementStrategy.minimumNextBidCentsIncrement(lot.askingPrice)
-    }
-
-    func currentLotValueString(lot: LiveAuctionLotViewModelType) -> String {
-        return currentLotValue(lot).convertToDollarString(lot.currencySymbol)
     }
 }
 

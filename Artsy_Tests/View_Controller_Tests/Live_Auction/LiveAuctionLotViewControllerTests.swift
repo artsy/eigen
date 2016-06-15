@@ -134,8 +134,6 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var lotIndex = 1
     var numberOfBids = 1
     var currencySymbol = "$"
-    var currentLotValue = UInt64(1234)
-    var currentLotValueString = "$Value"
     var imageAspectRatio: CGFloat = 1
     var liveAuctionLotID = "lotID"
     var dateLotOpened: NSDate?
@@ -159,6 +157,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
         return lotStateSignal
     }
 
+    let askingPrice: UInt64 = 5_000_00
     let askingPriceSignal = Observable<UInt64>(5_000_00)
     let reserveStatusSignal = Observable<ARReserveStatus>(.NoReserve)
     let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
