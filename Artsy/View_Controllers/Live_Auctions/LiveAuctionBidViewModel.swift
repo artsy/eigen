@@ -110,7 +110,7 @@ public func ==<T: BidIncrementStrategyType>(lhs: T, rhs: T) -> Bool {
 
 extension Array where Element: BidIncrementStrategyType {
     func minimumNextBidCentsIncrement(bid: UInt64) -> UInt64 {
-        let matchingIncrement = self.sort().reduce(nil, combine: { (memo, e) -> Element? in
+        let matchingIncrement = self.reduce(nil, combine: { (memo, e) -> Element? in
             // We want to find the first increment whose from exceed bid, and return memo (the increment before it).
             if e.from.unsignedLongLongValue > bid {
                 return memo
