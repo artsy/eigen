@@ -6,7 +6,6 @@ import Interstellar
 protocol LiveAuctionViewModelType: class {
     var startDate: NSDate { get }
     var lotCount: Int { get }
-    var bidIncrements: [BidIncrementStrategy] { get }
 
     var saleAvailabilitySignal: Observable<SaleAvailabilityState> { get }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
@@ -44,10 +43,6 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
     var auctionState: ARAuctionState {
         return sale.auctionStateWithBidders(biddingCredentials.bidders)
-    }
-
-    var bidIncrements: [BidIncrementStrategy] {
-        return sale.bidIncrementStrategy
     }
 
     /// A distance relative to the current lot, -x being that it precedded the current

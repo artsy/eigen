@@ -36,7 +36,6 @@ func == (lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressSt
 class LiveAuctionBidViewModel: NSObject {
     let lotViewModel: LiveAuctionLotViewModelType
     let salesPerson: LiveAuctionsSalesPersonType
-    let increments: [BidIncrementStrategy]
     
     let lotBidDetailsUpdateSignal = Observable<Int>()
 
@@ -46,12 +45,15 @@ class LiveAuctionBidViewModel: NSObject {
     init(lotVM: LiveAuctionLotViewModelType, salesPerson: LiveAuctionsSalesPersonType) {
         self.lotViewModel = lotVM
         self.salesPerson = salesPerson
-        self.increments = salesPerson.auctionViewModel.bidIncrements
 
         super.init()
 
         let startingPrice = lotViewModel.askingPriceSignal.peek() ?? UInt64(0)
         currentBid = nextBidCents(startingPrice)
+    }
+
+    var increments: [BidIncrementStrategy] {
+        return salesPerson.bidIncrements
     }
 
     var currentLotValue: UInt64 {

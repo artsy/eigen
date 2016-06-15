@@ -14,6 +14,7 @@ protocol LiveAuctionsSalesPersonType {
     var lotCount: Int { get }
     var liveSaleID: String { get }
     var liveSaleName: String { get }
+    var bidIncrements: [BidIncrementStrategy] { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType
@@ -70,6 +71,12 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: biddingCredentials)
         self.auctionViewModel = auctionViewModelCreator(sale: sale, currentLotSignal: stateManager.currentLotSignal, biddingCredentials: biddingCredentials)
     }
+
+    lazy var bidIncrements: [BidIncrementStrategy] = {
+        // It's very unikely the API would fail to send us bid increments, but just in case, let's avoid a crash.
+        guard let bidIncrements = self.sale.bidIncrementStrategy else { return [] }
+        return bidIncrements.sort()
+    }()
 }
 
 private typealias ComputedProperties = LiveAuctionsSalesPerson
