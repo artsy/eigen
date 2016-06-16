@@ -36,11 +36,13 @@ func == (lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressSt
 class LiveAuctionBidViewModel: NSObject {
     let lotViewModel: LiveAuctionLotViewModelType
     let salesPerson: LiveAuctionsSalesPersonType
-    
-    let lotBidDetailsUpdateSignal = Observable<Int>()
 
     // This mutates as someone increments/decrements, first set in the initializer.
     var currentBid: UInt64 = 0
+
+    // For a stepper UI, a better data structure would be a doubly-linked list.
+    // But we're switching to a UI that will be best with an array: https://github.com/artsy/eigen/issues/1579
+    private var bidIncrements: [UInt64] = []
 
     init(lotVM: LiveAuctionLotViewModelType, salesPerson: LiveAuctionsSalesPersonType) {
         self.lotViewModel = lotVM
@@ -48,12 +50,17 @@ class LiveAuctionBidViewModel: NSObject {
 
         super.init()
 
-        let startingPrice = lotViewModel.askingPriceSignal.peek() ?? UInt64(0)
-        currentBid = nextBidCents(startingPrice)
-    }
+        let askingPrice = lotViewModel.askingPriceSignal.peek() ?? UInt64(0)
+        currentBid = salesPerson.bidIncrements.minimumNextBidCentsIncrement(askingPrice)
 
-    var increments: [BidIncrementStrategy] {
-        return salesPerson.bidIncrements
+        bidIncrements = [currentBid]
+
+        var i = 0
+        repeat {
+            let nextBid = salesPerson.bidIncrements.minimumNextBidCentsIncrement(bidIncrements[i])
+            bidIncrements += [nextBid]
+            i += 1
+        } while bidIncrements[i] < (3 * max(lotVM.askingPrice, lotVM.highEstimateCents))
     }
 
     var currentLotValue: UInt64 {
@@ -69,7 +76,7 @@ class LiveAuctionBidViewModel: NSObject {
     }
 
     var nextBidIncrementDollars: String {
-        let bidIncrementCents = increments.minimumNextBidCentsIncrement(currentBid)
+        let bidIncrementCents = nextBidCents(currentBid) - currentBid
         return bidIncrementCents.convertToDollarString(lotViewModel.currencySymbol)
     }
 
@@ -80,15 +87,15 @@ class LiveAuctionBidViewModel: NSObject {
     }
 
     var canMakeLowerBids: Bool {
-        return currentBid - increments.minimumNextBidCentsIncrement(currentBid)  >= currentLotValue
+        return currentBid > bidIncrements.first
     }
 
     func nextBidCents(bid: UInt64) -> UInt64 {
-        return bid + increments.minimumNextBidCentsIncrement(bid)
+        return bidIncrements.first { $0 > bid } ?? bid
     }
 
     func previousBidCents(bid: UInt64) -> UInt64 {
-        return bid - increments.minimumNextBidCentsIncrement(bid)
+        return bidIncrements.last { $0 < bid } ?? bid
     }
 }
 
@@ -118,7 +125,8 @@ extension Array where Element: BidIncrementStrategyType {
                 // If we haven't surpassed the bid yet, return the next "previous value"
                 return e
             }
-        })
-        return matchingIncrement?.amount.unsignedLongLongValue ?? bid // Default to satisfy compiler, or an empty strategy from the API (unlikely)
+        }) ?? last // If we exhausted the list, use the last, largest element.
+
+        return bid + (matchingIncrement?.amount.unsignedLongLongValue ?? bid) // Default to satisfy compiler, or an empty strategy from the API (unlikely)
     }
 }
