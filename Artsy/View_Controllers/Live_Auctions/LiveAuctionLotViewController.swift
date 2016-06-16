@@ -68,7 +68,7 @@ class LiveAuctionLotViewController: UIViewController {
         let metadataStack = ORStackView()
 
         /// The metadata that can jump over the artwork image
-        let lotMetadataStack = AuctionLotMetadataStackScrollView(viewModel: lotViewModel, sideMargin: sideMargin)
+        let lotMetadataStack = AuctionLotMetadataStackScrollView(viewModel: lotViewModel, salesPerson: salesPerson, sideMargin: sideMargin)
         self.lotMetadataStack = lotMetadataStack
         view.addSubview(lotMetadataStack)
         lotMetadataStack.constrainWidthToView(view, predicate: "0")
@@ -132,7 +132,7 @@ class LiveAuctionLotViewController: UIViewController {
         lotHistoryHeightConstraint = historyViewController.view.constrainHeight(screenWidthIsLarge ? "110" : "70")
 
         // Setup for "current lot" purple view at the bottom of the view.
-        let currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal)
+        let currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal, salesPerson: salesPerson)
         currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
         view.addSubview(currentLotView)
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
@@ -321,7 +321,7 @@ class LiveAuctionLotViewController: UIViewController {
 extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
 
     func bidButtonRequestedBid(button: LiveAuctionBidButton) {
-        salesPerson.bidOnLot(lotViewModel, amountCents: lotViewModel.currentLotValue, biddingViewModel: biddingViewModel)
+        salesPerson.bidOnLot(lotViewModel, amountCents: salesPerson.currentLotValue(lotViewModel), biddingViewModel: biddingViewModel)
     }
 
     func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton) {

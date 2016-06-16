@@ -23,14 +23,14 @@ protocol LiveAuctionLotViewModelType: class {
     var lotArtworkDimensions: String? { get }
 
     var estimateString: String? { get }
+    var highEstimateCents: UInt64 { get }
     var lotName: String { get }
     var lotID: String { get }
     var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: NSURL { get }
     var urlForProfile: NSURL { get }
     var lotIndex: Int { get }
-    var currentLotValue: UInt64 { get }
-    var currentLotValueString: String { get }
+    var askingPrice: UInt64 { get }
     var currencySymbol: String { get }
     var numberOfBids: Int { get }
     var imageAspectRatio: CGFloat { get }
@@ -128,6 +128,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.artwork.dimensionsCM
     }
 
+    var askingPrice: UInt64 {
+        return model.askingPriceCents
+    }
+
     var numberOfBids: Int {
         return fullEventList.filter { $0.isBid }.count
     }
@@ -172,12 +176,6 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.liveAuctionLotID
     }
 
-    var currentLotValue: UInt64 {
-        // TODO: is askingPriceCents correct? not sure from JSON
-        //       maybe we need to look through the events for the last bid?
-        return LiveAuctionBidViewModel.nextBidCents(model.askingPriceCents)
-    }
-
     var winningBidEvent: LiveAuctionEventViewModel? {
         return fullEventList.filter({ $0.eventID == winningBidEventID }).last
     }
@@ -215,16 +213,16 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return _dateLotOpened
     }
 
-    var currentLotValueString: String {
-        return currentLotValue.convertToDollarString(model.currencySymbol)
-    }
-
     var currencySymbol: String {
         return model.currencySymbol
     }
 
     var estimateString: String? {
         return model.estimate
+    }
+
+    var highEstimateCents: UInt64 {
+        return model.highEstimateCents
     }
 
     var eventIDs: [String] {

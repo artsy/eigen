@@ -21,6 +21,40 @@
       "name": "Los Angeles Modern Auctions - March 2015",
       "is_with_buyers_premium": true,
       "description": "",
+      "bid_increments": [
+        {
+          "from": 0,
+          "amount": 5000
+        },
+        {
+          "from": 100000,
+          "amount": 10000
+        },
+        {
+          "from": 200000,
+          "amount": 25000
+        },
+        {
+          "from": 500000,
+          "amount": 50000
+        },
+        {
+          "from": 1000000,
+          "amount": 100000
+        },
+        {
+          "from": 2000000,
+          "amount": 200000
+        },
+        {
+          "from": 5000000,
+          "amount": 500000
+        },
+        {
+          "from": 10000000,
+          "amount": 1000000
+        }
+      ],
       "sale_artworks": [
         {
           "_id": "54c7ecc27261692b5e420600",

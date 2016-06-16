@@ -18,6 +18,7 @@ upcoming:
       - Entering max bid VC will dismiss when the user is already the highest bidder. - ash
       - User registration pending states. - ash
       - Hide bid history whena  lot closes - orta
+      - Uses server-defined increment strategy. - ash
       - Updates to bid-handling in history. - ash
       - Fixes jump bid ordering. - ash
       - Parnter name shows on iPhone. - ash
