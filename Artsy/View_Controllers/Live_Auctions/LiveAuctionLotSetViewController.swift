@@ -99,11 +99,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        // On iPhone, show the sale name, since we're taking up the full screen.
-        // Otherwise, on iPad, show nothing (sale name is shown in the lot list).
-        if UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact {
-            title = salesPerson.liveSaleName
-        }
+        updateTitle()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -152,6 +148,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         super.viewWillAppear(animated)
         // TODO: handle changing trait collections, need to re-set the collection view layout.
         setupToolbar()
+        updateTitle()
 
         guard firstAppearance else { return }
         firstAppearance = true
@@ -174,6 +171,14 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // Disable page view scrolling on iPad.
         pageViewScrollView?.scrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .Compact)
+    }
+
+    func updateTitle() {
+        // On iPhone, show the sale name, since we're taking up the full screen.
+        // Otherwise, on iPad, show nothing (sale name is shown in the lot list).
+        if traitCollection.horizontalSizeClass == .Compact {
+            title = salesPerson.liveSaleName
+        }
     }
 
     func setupToolbar() {
