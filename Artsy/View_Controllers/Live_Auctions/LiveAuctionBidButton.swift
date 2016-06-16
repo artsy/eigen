@@ -1,6 +1,7 @@
 import QuartzCore
 import Interstellar
 import Artsy_UIButtons
+import Extraction
 
 enum LiveAuctionBidButtonState: Equatable {
     case Active(biddingState: LiveAuctionBiddingProgressState)
@@ -31,6 +32,7 @@ class LiveAuctionBidButton: ARFlatButton {
     // Used almost exclusively in testing
     var outbidNoticeAnimationComplete: () -> Void = {}
     var outbidNoticeDuration: NSTimeInterval = 1
+    let spinner = ARSpinner()
 
 
     @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
@@ -58,6 +60,9 @@ class LiveAuctionBidButton: ARFlatButton {
         addTarget(self, action: #selector(tappedBidButton), forControlEvents: .TouchUpInside)
         viewModel.progressSignal.subscribe(attemptSetupWithState)
         viewModel.bidPendingSignal.subscribe(updateForBidProgress)
+
+        spinner.frame.size = CGSize(width: 44, height: 44)
+        spinner.spinnerColor = .whiteColor()
     }
 
     func tappedBidButton() {
@@ -123,7 +128,7 @@ class LiveAuctionBidButton: ARFlatButton {
         setupWithState(buttonState)
     }
 
-    private func setupUI(title: String, background: UIColor = .blackColor(), border: UIColor? = nil, textColor: UIColor = UIColor.whiteColor() ) {
+    private func setupUI(title: String, background: UIColor = .blackColor(), border: UIColor? = nil, textColor: UIColor = UIColor.whiteColor(), applySpinAnimation: Bool = false) {
         [UIControlState.Normal, .Disabled].forEach { state in
             setTitle(title.uppercaseString, forState: state)
             setTitleColor(textColor, forState: state)
@@ -132,10 +137,17 @@ class LiveAuctionBidButton: ARFlatButton {
             setBorderColor(borderColor, forState: state, animated: false)
             setBackgroundColor(background, forState: state)
         }
+
+        if applySpinAnimation {
+            addSubview(spinner)
+            spinner.alignCenterWithView(self)
+            spinner.fadeInAnimated(false)
+        } else {
+            self.spinner.removeFromSuperview()
+        }
     }
 
     private func setupWithState(buttonState: LiveAuctionBidButtonState) {
-
         let highestBidderSetup = {
             self.setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
         }
@@ -167,7 +179,7 @@ class LiveAuctionBidButton: ARFlatButton {
                 handleBiddable(buttonState, formattedPrice: formattedPrice)
 
             case .BiddingInProgress:
-                setupUI("Bidding...", background: purple)
+                setupUI("", background: purple, applySpinAnimation: true)
 
             case .BidBecameMaxBidder, .BidAcknowledged:
                 // If the bid has been acknowledged, we'll bee the max bidder until the next Biddable state, even if that's directly following this one.
