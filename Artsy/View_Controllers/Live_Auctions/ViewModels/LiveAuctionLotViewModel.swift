@@ -6,7 +6,16 @@ import Interstellar
 enum LotState {
     case UpcomingLot
     case LiveLot
-    case ClosedLot
+    case ClosedLot(wasPassed: Bool)
+}
+
+func == (lhs: LotState, rhs: LotState) -> Bool {
+    switch (lhs, rhs) {
+    case (.UpcomingLot, .UpcomingLot): return true
+    case (.LiveLot, .LiveLot): return true
+    case let (.ClosedLot(lhsClosed), .ClosedLot(rhsClosed)) where lhsClosed == rhsClosed: return true
+    default: return false
+    }
 }
 
 typealias CurrentBid = (bid: String, reserve: String?)
@@ -85,7 +94,9 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     // done their work on the events
     private var derivedEvents = [LiveAuctionEventViewModel]()
 
-    private let biddingStatusSignal = Observable<ARLiveBiddingStatus>()
+    private let biddingStatusSignal = Observable<(ARLiveBiddingStatus, Bool)>()
+
+    private var soldStatus: String?
 
     let reserveStatusSignal = Observable<ARReserveStatus>()
     let lotStateSignal: Observable<LotState>
@@ -103,7 +114,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         reserveStatusSignal.update(lot.reserveStatus)
         askingPriceSignal.update(lot.askingPriceCents)
 
-        lotStateSignal = biddingStatusSignal.map { biddingStatus -> LotState in
+        lotStateSignal = biddingStatusSignal.map { (biddingStatus, passed) -> LotState in
             switch biddingStatus {
             case .Upcoming: fallthrough // Case that sale is not yet open
             case .Open:                 // Case that lot is open to leave max bids
@@ -111,7 +122,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
             case .OnBlock:              // Currently on the block
                 return .LiveLot
             case .Complete:             // Closed
-                return .ClosedLot
+                return .ClosedLot(wasPassed: passed)
             }
         }
     }
@@ -273,11 +284,11 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
     }
 
-    func updateBiddingStatus(biddingStatus: String) {
+    func updateBiddingStatus(biddingStatus: String, passed: Bool) {
         let updated = model.updateBiddingStatusWithString(biddingStatus)
 
         if updated {
-            biddingStatusSignal.update(model.biddingStatus)
+            biddingStatusSignal.update((model.biddingStatus, passed))
         }
     }
 
