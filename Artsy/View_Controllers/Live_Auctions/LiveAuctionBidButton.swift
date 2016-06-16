@@ -182,7 +182,7 @@ class LiveAuctionBidButton: ARFlatButton {
             switch state {
             case .ClosedLot(let wasPassed):
                 if wasPassed {
-                    setupUI("Lot Closed", background: .whiteColor(), border: grey, textColor: grey)
+                    setupUI("Lot Closed", background: .whiteColor(), border: passedGrey, textColor: passedGrey)
                 } else {
                     setupUI("Sold", background: .whiteColor(), border: purple, textColor: purple)
                 }
@@ -236,3 +236,4 @@ private let purple = UIColor.artsyPurpleRegular()
 private let green = UIColor.artsyGreenRegular()
 private let red = UIColor.artsyRedRegular()
 private let grey = UIColor.artsyGrayRegular()
+private let passedGrey = UIColor(white: 0, alpha: 0.5)

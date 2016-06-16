@@ -43,8 +43,13 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
 
             // The indices are known to be the closed/live/upcoming states respectively
-            it("looks good for closed lots") {
-                lotViewModel.lotStateSignal.update(.ClosedLot)
+            it("looks good for sold lots") {
+                lotViewModel.lotStateSignal.update(.ClosedLot(wasPassed: false))
+                expect(subject) == snapshot()
+            }
+
+            it("looks good for passed lots") {
+                lotViewModel.lotStateSignal.update(.ClosedLot(wasPassed: true))
                 expect(subject) == snapshot()
             }
 
@@ -61,7 +66,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
 
             it("doesnt show a live auction call to action when auction is closed") {
-                lotViewModel.lotStateSignal.update(.ClosedLot)
+                lotViewModel.lotStateSignal.update(.ClosedLot(wasPassed: false))
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
                 expect(subject) == snapshot()
             }
