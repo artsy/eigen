@@ -61,7 +61,13 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
             it("looks good for upcoming lots") {
                 auctionViewModel.distance = 1
-                lotViewModel.lotStateSignal.update(.UpcomingLot)
+                lotViewModel.lotStateSignal.update(.UpcomingLot(isHighestBidder: false))
+                expect(subject) == snapshot()
+            }
+
+            it("looks good for upcoming lots that the user is winning") {
+                auctionViewModel.distance = 1
+                lotViewModel.lotStateSignal.update(.UpcomingLot(isHighestBidder: true))
                 expect(subject) == snapshot()
             }
 
@@ -158,7 +164,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
         return event
     }
 
-    var lotStateSignal = Observable(LotState.UpcomingLot)
+    var lotStateSignal: Observable<LotState> = Observable(LotState.UpcomingLot(isHighestBidder: false))
     func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
         return lotStateSignal
     }

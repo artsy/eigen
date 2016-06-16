@@ -136,7 +136,7 @@ private extension PrivateFunctions {
             let soldStatus = derivedState["soldStatus"] as? String
             let passed = soldStatus == "Passed"
             
-            lot.updateBiddingStatus(biddingStatus, passed: passed)
+            lot.updateBiddingStatus(biddingStatus, wasPassed: passed)
         }
     }
 

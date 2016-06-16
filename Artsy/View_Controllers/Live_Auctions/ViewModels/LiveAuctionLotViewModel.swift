@@ -4,7 +4,7 @@ import Interstellar
 // Represents a single lot view
 
 enum LotState {
-    case UpcomingLot
+    case UpcomingLot(isHighestBidder: Bool)
     case LiveLot
     case ClosedLot(wasPassed: Bool)
 }
@@ -94,7 +94,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     // done their work on the events
     private var derivedEvents = [LiveAuctionEventViewModel]()
 
-    private let biddingStatusSignal = Observable<(ARLiveBiddingStatus, Bool)>()
+    private typealias BiddingStatus = (status: ARLiveBiddingStatus, wasPassed: Bool, isHighestBidder: Bool)
+    private let biddingStatusSignal = Observable<BiddingStatus>()
 
     private var soldStatus: String?
 
@@ -114,11 +115,11 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         reserveStatusSignal.update(lot.reserveStatus)
         askingPriceSignal.update(lot.askingPriceCents)
 
-        lotStateSignal = biddingStatusSignal.map { (biddingStatus, passed) -> LotState in
+        lotStateSignal = biddingStatusSignal.map { (biddingStatus, passed, isHighestBidder) -> LotState in
             switch biddingStatus {
             case .Upcoming: fallthrough // Case that sale is not yet open
             case .Open:                 // Case that lot is open to leave max bids
-                return .UpcomingLot
+                return .UpcomingLot(isHighestBidder: isHighestBidder)
             case .OnBlock:              // Currently on the block
                 return .LiveLot
             case .Complete:             // Closed
@@ -284,11 +285,11 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
     }
 
-    func updateBiddingStatus(biddingStatus: String, passed: Bool) {
+    func updateBiddingStatus(biddingStatus: String, wasPassed: Bool) {
         let updated = model.updateBiddingStatusWithString(biddingStatus)
 
         if updated {
-            biddingStatusSignal.update((model.biddingStatus, passed))
+            biddingStatusSignal.update((status: model.biddingStatus, wasPassed: wasPassed, isHighestBidder: self.userIsWinning))
         }
     }
 

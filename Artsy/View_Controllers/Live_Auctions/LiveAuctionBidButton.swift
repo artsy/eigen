@@ -136,6 +136,10 @@ class LiveAuctionBidButton: ARFlatButton {
 
     private func setupWithState(buttonState: LiveAuctionBidButtonState) {
 
+        let highestBidderSetup = {
+            self.setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
+        }
+
         switch buttonState {
 
         // When the lot is live
@@ -167,7 +171,7 @@ class LiveAuctionBidButton: ARFlatButton {
 
             case .BidBecameMaxBidder, .BidAcknowledged:
                 // If the bid has been acknowledged, we'll bee the max bidder until the next Biddable state, even if that's directly following this one.
-                setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
+                highestBidderSetup()
 
             case .BidNetworkFail:
                 setupUI("Network Failed", background: .whiteColor(), border: red, textColor: red)
@@ -188,9 +192,13 @@ class LiveAuctionBidButton: ARFlatButton {
                 }
                 enabled = false
             case .LiveLot: break // Should never happen, as it'd be handled above
-            case .UpcomingLot:
+            case .UpcomingLot(let isHighestBidder):
                 enabled = true
-                setupUI("Bid")
+                if isHighestBidder {
+                    highestBidderSetup()
+                } else {
+                    setupUI("Bid")
+                }
             }
         }
     }

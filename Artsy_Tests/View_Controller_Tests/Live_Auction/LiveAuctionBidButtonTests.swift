@@ -24,7 +24,8 @@ class LiveAuctionBidButtonTests: QuickSpec {
             "sold": [.Active(biddingState: .LotSold)],
             "closed": [.InActive(lotState: .ClosedLot(wasPassed: false))],
             "passed": [.InActive(lotState: .ClosedLot(wasPassed: true))],
-            "upcoming": [.InActive(lotState: .UpcomingLot)],
+            "upcoming": [.InActive(lotState: .UpcomingLot(isHighestBidder: false))],
+            "highest bidder": [.InActive(lotState: .UpcomingLot(isHighestBidder: true))],
         ]
 
         for (_, tuple) in examples.enumerate() {
