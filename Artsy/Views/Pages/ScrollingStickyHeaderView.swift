@@ -65,13 +65,14 @@ class ScrollingStickyHeaderView: UIView {
             $0.showsHorizontalScrollIndicator = false
             self.addSubview($0)
             $0.alignTop("0", bottom: "0", toView: self)
-            $0.alignLeadingEdgeWithView(self, predicate: "20")
+            leadingConstraints = $0.alignLeadingEdgeWithView(self, predicate: "20")
             $0.constrainTrailingSpaceToView(button, predicate: "-10")
         }
 
         subtitleLabel.then {
             subtitleScrollView.addSubview($0)
-            $0.frame = CGRectMake(0, 18, 0, 0)
+            $0.alignLeading("0", trailing: "0", toView: subtitleScrollView)
+            $0.alignBaselineWithView(button, predicate: "0")
             $0.numberOfLines = 1
         }
 
@@ -102,12 +103,6 @@ class ScrollingStickyHeaderView: UIView {
             self.topSeparator.alpha = atTop ? 1 : 0
             self.bottomSeparator.alpha = atTop ? 1 : 0
         }
-    }
-    
-    func setSubtitleText(text: String) {
-        subtitleLabel.text = text
-        subtitleLabel.sizeToFit()
-        subtitleScrollView.contentSize = CGSizeMake(subtitleLabel.bounds.width, subtitleScrollView.bounds.height)
     }
 
     required init?(coder aDecoder: NSCoder) {

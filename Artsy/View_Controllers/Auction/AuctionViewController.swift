@@ -232,7 +232,7 @@ extension AuctionViewController {
         activeModule = newModule as? ARSaleArtworkItemWidthDependentModule // Conditional cast always succeeds, but the compiler will complain otherwise.
 
         saleArtworksViewController.items = items
-        stickyHeader.setSubtitleText(saleViewModel.subtitleForRefineSettings(refineSettings, defaultRefineSettings: defaultRefineSettings()))
+        stickyHeader.subtitleLabel.text = saleViewModel.subtitleForRefineSettings(refineSettings, defaultRefineSettings: defaultRefineSettings())
     }
 }
 
