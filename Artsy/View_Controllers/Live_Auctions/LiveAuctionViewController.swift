@@ -22,6 +22,7 @@ class LiveAuctionViewController: UISplitViewController {
     var lotSetController: LiveAuctionLotSetViewController!
     var lotsSetNavigationController: ARSerifNavigationViewController!
     var lotListController: LiveAuctionLotListViewController!
+    var loadingView: LiveAuctionLoadingView?
 
     var overlaySubscription: ObserverToken<Bool>?
 
@@ -46,11 +47,6 @@ class LiveAuctionViewController: UISplitViewController {
             .addObserver(self, selector: #selector(userHasChangedRegistrationStatus), name: ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        ar_presentIndeterminateLoadingIndicatorAnimated(true)
-    }
-
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if delegate != nil { return }
@@ -63,6 +59,14 @@ class LiveAuctionViewController: UISplitViewController {
         connectToNetwork()
 
         app.idleTimerDisabled = true
+
+        if waitingForInitialLoad {
+            loadingView = LiveAuctionLoadingView().then {
+                $0.operation = applyWeakly(self, LiveAuctionViewController.dismissLiveAuctionsModal)
+                view.addSubview($0)
+                $0.alignToView(view)
+            }
+        }
     }
 
     func connectToNetwork() {
@@ -71,7 +75,6 @@ class LiveAuctionViewController: UISplitViewController {
 
             switch result {
             case .Success(let (sale, jwt, bidderCredentials)):
-                self?.offlineView?.removeFromSuperview()
                 self?.sale = sale
                 self?.setupWithSale(sale, jwt: jwt, bidderCredentials: bidderCredentials)
 
@@ -90,6 +93,7 @@ class LiveAuctionViewController: UISplitViewController {
 
     var showSocketDisconnectWarning = false
     var waitingToShowDisconnect = false
+    var waitingForInitialLoad = true
 
     /// param is hide because it recieves a "connected" signal
     func showSocketDisconnectedOverlay(hide: Bool) {
@@ -231,7 +235,6 @@ extension PrivateFunctions {
 
         if useSingleLayout {
             viewControllers = [lotsSetNavigationController]
-
         } else {
             lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
             lotListController.delegate = self
@@ -239,6 +242,12 @@ extension PrivateFunctions {
             let lotListNav = ARSerifNavigationViewController(rootViewController: lotListController)
 
             viewControllers = [lotListNav, lotsSetNavigationController]
+        }
+
+        salesPerson.initialStateLoadedSignal.subscribe { [weak self] _ in
+            self?.waitingForInitialLoad = false
+            self?.loadingView?.removeFromSuperview()
+            self?.loadingView = nil
         }
     }
 

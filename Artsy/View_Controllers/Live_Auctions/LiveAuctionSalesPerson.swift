@@ -6,6 +6,7 @@ import Interstellar
 
 protocol LiveAuctionsSalesPersonType {
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
+    var initialStateLoadedSignal: Observable<Void> { get }
 
     /// Current lot "in focus" based on the page view controller.
     var currentFocusedLotIndex: Observable<Int> { get }
@@ -53,6 +54,9 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
     // Lot currently being looked at by the user. Defaults to zero, the first lot in a sale.
     var currentFocusedLotIndex = Observable(0)
+    var initialStateLoadedSignal: Observable<Void> {
+        return stateManager.initialStateLoadedSignal
+    }
 
     init(sale: LiveSale,
          jwt: JWT,

@@ -19,7 +19,14 @@ func stub_auctionSalesPerson(auctionViewModel: LiveAuctionViewModelType? = nil, 
     return Stub_LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.Registered.jwt , biddingCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
 }
 
+
 class Stub_LiveAuctionsSalesPerson: LiveAuctionsSalesPerson {
+    // This has an initial value, so we're "connected" right away.
+    var _initialStateLoadedSignal = Observable<Void>(Void())
+    override var initialStateLoadedSignal: Observable<Void> {
+        return _initialStateLoadedSignal
+    }
+
     var currentLotValue: UInt64 = 1234
     override func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64 {
         return currentLotValue
