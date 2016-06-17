@@ -43,8 +43,13 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
 
             // The indices are known to be the closed/live/upcoming states respectively
-            it("looks good for closed lots") {
-                lotViewModel.lotStateSignal.update(.ClosedLot)
+            it("looks good for sold lots") {
+                lotViewModel.lotStateSignal.update(.ClosedLot(wasPassed: false))
+                expect(subject) == snapshot()
+            }
+
+            it("looks good for passed lots") {
+                lotViewModel.lotStateSignal.update(.ClosedLot(wasPassed: true))
                 expect(subject) == snapshot()
             }
 
@@ -56,12 +61,18 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
             it("looks good for upcoming lots") {
                 auctionViewModel.distance = 1
-                lotViewModel.lotStateSignal.update(.UpcomingLot)
+                lotViewModel.lotStateSignal.update(.UpcomingLot(isHighestBidder: false))
+                expect(subject) == snapshot()
+            }
+
+            it("looks good for upcoming lots that the user is winning") {
+                auctionViewModel.distance = 1
+                lotViewModel.lotStateSignal.update(.UpcomingLot(isHighestBidder: true))
                 expect(subject) == snapshot()
             }
 
             it("doesnt show a live auction call to action when auction is closed") {
-                lotViewModel.lotStateSignal.update(.ClosedLot)
+                lotViewModel.lotStateSignal.update(.ClosedLot(wasPassed: false))
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
                 expect(subject) == snapshot()
             }
@@ -153,7 +164,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
         return event
     }
 
-    var lotStateSignal = Observable(LotState.UpcomingLot)
+    var lotStateSignal: Observable<LotState> = Observable(LotState.UpcomingLot(isHighestBidder: false))
     func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
         return lotStateSignal
     }

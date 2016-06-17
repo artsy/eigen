@@ -22,8 +22,10 @@ class LiveAuctionBidButtonTests: QuickSpec {
             "not max bidder": [.Active(biddingState: .BidBecameMaxBidder), .Active(biddingState: .Biddable(askingPrice: 1000, currencySymbol: ""))],
             "waiting": [.Active(biddingState: .LotWaitingToOpen)],
             "sold": [.Active(biddingState: .LotSold)],
-            "closed": [.InActive(lotState: .ClosedLot)],
-            "upcoming": [.InActive(lotState: .UpcomingLot)],
+            "closed": [.InActive(lotState: .ClosedLot(wasPassed: false))],
+            "passed": [.InActive(lotState: .ClosedLot(wasPassed: true))],
+            "upcoming": [.InActive(lotState: .UpcomingLot(isHighestBidder: false))],
+            "highest bidder": [.InActive(lotState: .UpcomingLot(isHighestBidder: true))],
         ]
 
         for (_, tuple) in examples.enumerate() {
@@ -47,7 +49,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
                 subject.outbidNoticeAnimationComplete = done
                 viewModel.progressSignal.update(.Active(biddingState: .BidBecameMaxBidder))
                 viewModel.progressSignal.update(.Active(biddingState: .Biddable(askingPrice: 1000, currencySymbol: "")))
-                viewModel.progressSignal.update(.InActive(lotState: .ClosedLot))
+                viewModel.progressSignal.update(.InActive(lotState: .ClosedLot(wasPassed: false)))
             }
 
             subject.frame = CGRect(x:0, y:0, width:260, height: 60)

@@ -133,7 +133,10 @@ private extension PrivateFunctions {
         }
 
         if let biddingStatus = derivedState["biddingStatus"] as? String {
-            lot.updateBiddingStatus(biddingStatus)
+            let soldStatus = derivedState["soldStatus"] as? String
+            let passed = soldStatus == "Passed"
+            
+            lot.updateBiddingStatus(biddingStatus, wasPassed: passed)
         }
     }
 

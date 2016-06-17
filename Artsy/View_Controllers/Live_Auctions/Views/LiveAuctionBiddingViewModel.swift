@@ -69,7 +69,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
             // And if a registration is pending, we show that, etc.
             switch state.lotState {
             case .ClosedLot:
-                return .InActive(lotState: .ClosedLot)
+                return .InActive(lotState: state.lotState)
 
             case _ where !userIsRegistered && registrationIsClosed:
                 return .Active(biddingState: LiveAuctionBiddingProgressState.UserRegistrationClosed)
@@ -102,7 +102,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
             default:
                 // The Swift compiler is not yet smart enough to know that this _is_ an exhaustive swift statement.
                 // So we need a default to satisfy the compiler, even though it's impossible to reach.
-                return .InActive(lotState: .ClosedLot)
+                return .InActive(lotState: state.lotState)
             }
         }
     }
