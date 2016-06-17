@@ -8,6 +8,8 @@ upcoming:
       - Parnter name shows on iPhone. - ash
       - New loading indicator. - ash
   user_facing:
+    live_actions:
+      - Fade truncated parts of current refine settings on auction view. - alloy
 
 
 releases:
