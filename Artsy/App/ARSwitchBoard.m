@@ -41,7 +41,7 @@
 NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
 
 /// To be kept in lock-step with the corresponding echo value, and updated when there is a breaking causality change.
-NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 1;
+NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 2;
 
 
 @interface ARSwitchBoardDomain : NSObject
