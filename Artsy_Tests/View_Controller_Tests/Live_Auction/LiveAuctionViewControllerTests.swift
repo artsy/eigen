@@ -14,6 +14,16 @@ class LiveAuctionViewControllerTests: QuickSpec {
     override func spec() {
         var subject: LiveAuctionViewController!
 
+        var auctionViewModel: Test_LiveAuctionViewModel!
+        var fakeSalesPerson: Stub_LiveAuctionsSalesPerson!
+
+        beforeEach {
+            OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
+
+            auctionViewModel = Test_LiveAuctionViewModel()
+            fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
+        }
+
         func setupViewControllerForPhone(singleLayout: Bool) {
 
             subject = LiveAuctionViewController(saleSlugOrID: "sale-id")
@@ -21,10 +31,10 @@ class LiveAuctionViewControllerTests: QuickSpec {
             subject.staticDataFetcher = Stubbed_StaticDataFetcher()
             subject.useSingleLayout = singleLayout
             subject.suppressJumpingToOpenLots = true
-        }
 
-        beforeEach {
-            OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
+            subject.salesPersonCreator = { _ in
+                return fakeSalesPerson
+            }
         }
 
         it("looks good by default") {
@@ -58,27 +68,19 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("shows a socket disconnect screen when socket fails") {
             setupViewControllerForPhone(true)
-            let auctionViewModel = Test_LiveAuctionViewModel()
-            let fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
-            subject.salesPersonCreator = { _ in
-                return fakeSalesPerson
-            }
 
             fakeSalesPerson.socketConnectionSignal.update(false)
+
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
 
         it("shows a removes disconnected screen when socket reconnects") {
             setupViewControllerForPhone(true)
-            let auctionViewModel = Test_LiveAuctionViewModel()
-            let fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
-            subject.salesPersonCreator = { _ in
-                return fakeSalesPerson
-            }
 
             fakeSalesPerson.socketConnectionSignal.update(false)
             // Adds everything synchronously, which is the test above
             fakeSalesPerson.socketConnectionSignal.update(true)
+
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
 
@@ -86,27 +88,19 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("shows an operator disconnect screen when operator disconnects") {
             setupViewControllerForPhone(true)
-            let auctionViewModel = Test_LiveAuctionViewModel()
-            let fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
-            subject.salesPersonCreator = { _ in
-                return fakeSalesPerson
-            }
 
             fakeSalesPerson.operatorConnectedSignal.update(false)
+
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
 
         it("shows an operator disconnected screen when operator reconnects") {
             setupViewControllerForPhone(true)
-            let auctionViewModel = Test_LiveAuctionViewModel()
-            let fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
-            subject.salesPersonCreator = { _ in
-                return fakeSalesPerson
-            }
 
             fakeSalesPerson.operatorConnectedSignal.update(false)
             // Adds everything synchronously, which is the test above
             fakeSalesPerson.operatorConnectedSignal.update(true)
+
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
     }
