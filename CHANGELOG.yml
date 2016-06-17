@@ -1,37 +1,49 @@
 upcoming:
-  version: 2.6.0
-  details: Live Auctions / Artist Profile polish
+  version: 2.6.1
+  details: Live Auctions Polish
 
   dev:
-    infra:
-      - Adds SwiftLint. - ash
     live_actions:
-      - Adds visual feedback to placing a max bid - orta
-      - Adds a disconnection overlay for the socket - orta
-      - Pre-cache the lot thumbnails after 2 seconds of being connected -  orta
-      - Logging in as an observer works - orta
-      - Fixes duplicated events in event history, supports changes in # of user-visible events. - ash
-      - Adds overlay for oeprator disconnects - ash
-      - Fixes redirect to live in Auctions pages - orta
-      - Registration is cancellable. - ash
-      - Differentiate between a max bid, and a winning bid. - orta
-      - Entering max bid VC will dismiss when the user is already the highest bidder. - ash
-      - User registration pending states. - ash
-      - Hide bid history whena  lot closes - orta
       - Uses server-defined increment strategy. - ash
-      - Updates to bid-handling in history. - ash
-      - Fixes jump bid ordering. - ash
       - Parnter name shows on iPhone. - ash
       - New loading indicator. - ash
   user_facing:
-      - Allows max bids on live auctions - orta
-      - Shows reserve status for live auctions. - ash
-      - Live Auction are now native by default - orta/ash
-      - Number of bids updates. - ash
-      - UI polish and some bug fixes on the Artist Profile view. - alloy/maxim/sarah
 
 
 releases:
+
+  - version: 2.6.0
+    details: Live Auctions / Artist Profile polish
+
+    dev:
+      infra:
+        - Adds SwiftLint. - ash
+      live_actions:
+        - Adds visual feedback to placing a max bid - orta
+        - Adds a disconnection overlay for the socket - orta
+        - Pre-cache the lot thumbnails after 2 seconds of being connected -  orta
+        - Logging in as an observer works - orta
+        - Fixes duplicated events in event history, supports changes in # of user-visible events. - ash
+        - Adds overlay for oeprator disconnects - ash
+        - Fixes redirect to live in Auctions pages - orta
+        - Registration is cancellable. - ash
+        - Differentiate between a max bid, and a winning bid. - orta
+        - Entering max bid VC will dismiss when the user is already the highest bidder. - ash
+        - User registration pending states. - ash
+        - Hide bid history whena  lot closes - orta
+        - Uses server-defined increment strategy. - ash
+        - Updates to bid-handling in history. - ash
+        - Fixes jump bid ordering. - ash
+        - Parnter name shows on iPhone. - ash
+        - New loading indicator. - ash
+        - Improved bid button interaction. - ash
+    user_facing:
+        - Allows max bids on live auctions - orta
+        - Shows reserve status for live auctions. - ash
+        - Live Auction are now native by default - orta/ash
+        - Number of bids updates. - ash
+        - UI polish and some bug fixes on the Artist Profile view. - alloy/maxim/sarah
+
   - version: 2.5.0
     details: New Artist View
 
