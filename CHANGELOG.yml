@@ -9,6 +9,8 @@ upcoming:
       - New loading indicator. - ash
       - Improved bid button interaction. - ash
   user_facing:
+    live_actions:
+      - Fade truncated parts of current refine settings on auction view. - alloy
 
 
 releases:
