@@ -3,14 +3,13 @@ upcoming:
   details: Live Auctions Polish
 
   dev:
-    live_actions:
+    live_auctions:
       - Uses server-defined increment strategy. - ash
       - Parnter name shows on iPhone. - ash
       - New loading indicator. - ash
       - Improved bid button interaction. - ash
   user_facing:
-    live_actions:
-      - Fade truncated parts of current refine settings on auction view. - alloy
+    - Fade truncated parts of current refine settings on auction view. - alloy
 
 
 releases:
