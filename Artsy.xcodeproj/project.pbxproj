@@ -1529,8 +1529,8 @@
 		60838EAE17728C5D00869F6E /* ARHeartButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHeartButton.m; sourceTree = "<group>"; };
 		60838EB31773547700869F6E /* ARViewInRoomTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewInRoomTransition.h; sourceTree = "<group>"; };
 		60838EB41773547700869F6E /* ARViewInRoomTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewInRoomTransition.m; sourceTree = "<group>"; };
-		60863E421D0B48B00053B51C /* ARMutableLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMutableLinkViewController.h; sourceTree = "<group>"; };
-		60863E431D0B48B00053B51C /* ARMutableLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMutableLinkViewController.m; sourceTree = "<group>"; };
+		60863E421D0B48B00053B51C /* ARMutableLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARMutableLinkViewController.h; path = ../ARMutableLinkViewController.h; sourceTree = "<group>"; };
+		60863E431D0B48B00053B51C /* ARMutableLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARMutableLinkViewController.m; path = ../ARMutableLinkViewController.m; sourceTree = "<group>"; };
 		60863E451D0B49AE0053B51C /* ArtsyAPI+HEAD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ArtsyAPI+HEAD.h"; path = "API_Modules/ArtsyAPI+HEAD.h"; sourceTree = "<group>"; };
 		60863E461D0B49AE0053B51C /* ArtsyAPI+HEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ArtsyAPI+HEAD.m"; path = "API_Modules/ArtsyAPI+HEAD.m"; sourceTree = "<group>"; };
 		60889872175DEBC2008C9319 /* ARFeedSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedSubclasses.h; sourceTree = "<group>"; };
@@ -3111,6 +3111,8 @@
 		600249F0166CFCCE007E6E9A /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				60863E421D0B48B00053B51C /* ARMutableLinkViewController.h */,
+				60863E431D0B48B00053B51C /* ARMutableLinkViewController.m */,
 				CB2C960217D3B4B500B36B44 /* ARFeedLinkUnitViewController.h */,
 				CB2C960317D3B4B500B36B44 /* ARFeedLinkUnitViewController.m */,
 				064330E3170F526200FF6C41 /* ARArtistViewController.h */,
@@ -3779,8 +3781,6 @@
 				60B9D00F17834A35006E498A /* Web Browsing */,
 				600249F0166CFCCE007E6E9A /* Core */,
 				5E4386171D0764ED0034E671 /* SerifModalWebNavigationController.swift */,
-				60863E421D0B48B00053B51C /* ARMutableLinkViewController.h */,
-				60863E431D0B48B00053B51C /* ARMutableLinkViewController.m */,
 			);
 			name = "View Controllers";
 			path = View_Controllers;

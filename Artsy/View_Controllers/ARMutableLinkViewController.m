@@ -11,7 +11,7 @@
 
 
 @interface ARMutableLinkViewController ()
-
+@property (nonatomic, strong, readonly) NSString *originalPath;
 @end
 
 
