@@ -40,7 +40,7 @@
 NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
 
 /// To be kept in lock-step with the corresponding echo value, and updated when there is a breaking causality change.
-NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 1;
+NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 2;
 
 
 @interface ARSwitchBoardDomain : NSObject
@@ -206,18 +206,18 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 1;
     Route *route = self.echo.routes[@"ARLiveAuctionsURLDomain"];
     if (route) {
         id _Nullable (^presentNativeAuctionsViewControllerBlock)(NSURL *_Nonnull);
-        if ([AROptions boolForOption:AROptionsEnableNativeLiveAuctions] && [self requiresUpdateForWebSocketVersionUpdate] == NO) {
+        if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [self requiresUpdateForWebSocketVersionUpdate]) {
+            presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
+            {
+                ARInternalMobileWebViewController *auctionWebViewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+                return [[SerifModalWebNavigationController alloc] initWithRootViewController:auctionWebViewController];
+            };
+        } else {
             presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
             {
                 NSString *path = url.path;
                 NSString *slug = [[path split:@"/"] lastObject];
                 return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
-            };
-        } else {
-            presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
-            {
-                ARInternalMobileWebViewController *auctionWebViewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
-                return [[SerifModalWebNavigationController alloc] initWithRootViewController:auctionWebViewController];
             };
         }
 

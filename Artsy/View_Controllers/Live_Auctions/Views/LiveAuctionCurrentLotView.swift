@@ -6,7 +6,7 @@ class LiveAuctionCurrentLotView: UIButton {
 
     let viewModel: Observable<LiveAuctionLotViewModelType?>
 
-    init(viewModel: Observable<LiveAuctionLotViewModelType?>) {
+    init(viewModel: Observable<LiveAuctionLotViewModelType?>, salesPerson: LiveAuctionsSalesPersonType) {
         self.viewModel = viewModel
 
         super.init(frame: CGRect.zero)
@@ -59,7 +59,7 @@ class LiveAuctionCurrentLotView: UIButton {
             guard let vm = vm else { return }
 
             artistNameLabel.text = vm.lotArtist
-            biddingPriceLabel.text = vm.currentLotValueString
+            biddingPriceLabel.text = salesPerson.currentLotValueString(vm)
             thumbnailView.ar_setImageWithURL(vm.urlForThumbnail)
         }
     }

@@ -35,6 +35,8 @@
         ar_keypath(LiveAuctionLot.new, artwork) : @"artwork",
         ar_keypath(LiveAuctionLot.new, artistName) : @"artwork.artist.name",
         ar_keypath(LiveAuctionLot.new, artistBlurb) : @"artwork.artist.blurb",
+        ar_keypath(LiveAuctionLot.new, highEstimateCents) : @"high_estimate_cents",
+        ar_keypath(LiveAuctionLot.new, lowEstimateCents) : @"low_estimate_cents",
         ar_keypath(LiveAuctionLot.new, imageDictionary) : @"artwork.image",
         ar_keypath(LiveAuctionLot.new, currencySymbol) : @"symbol",
     };

@@ -155,11 +155,9 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"loads internal webviews for trusted but unpredictable hosts", ^{
-            NSURL *internalButUnpredictableURL = [[NSURL alloc] initWithString:@"https://live-staging.artsy.net/54c7e8fa7261692b5acd0600"];
+            NSURL *internalButUnpredictableURL = [[NSURL alloc] initWithString:@"https://asdasdasdasdas-staging.artsy.net/54c7e8fa7261692b5acd0600"];
             id viewController = [switchboard loadURL:internalButUnpredictableURL];
-
-            expect(viewController).to.beKindOf(SerifModalWebNavigationController.class);
-            expect([viewController topViewController]).to.beKindOf(ARInternalMobileWebViewController.class);
+            expect(viewController).to.beKindOf(ARInternalMobileWebViewController.class);
         });
 
         it(@"loads web view for external urls", ^{
@@ -167,7 +165,6 @@ describe(@"ARSwitchboard", ^{
                 NSURL *externalURL = [[NSURL alloc] initWithString:@"http://google.com"];
                 id viewController = [switchboard loadURL:externalURL];
                 expect([viewController isKindOfClass:[ARExternalWebBrowserViewController class]]).to.beTruthy();
-
             });
 
             it(@"does not route url", ^{
@@ -341,7 +338,6 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"routes live auctions", ^{
-            [AROptions setBool:YES forOption:AROptionsEnableNativeLiveAuctions];
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
 
@@ -349,6 +345,19 @@ describe(@"ARSwitchboard", ^{
             NSString *classString = NSStringFromClass([subject class]);
             expect(classString).to.contain(@"LiveAuctionViewController");
         });
+
+        it(@"routes live auctions to web when disabled live is set", ^{
+            [AROptions setBool:YES forOption:AROptionsDisableNativeLiveAuctions];
+
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+
+            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"SerifModalWeb");
+
+        });
+
 
         it(@"falls back to web views when websocket becomes outdated", ^{
             switchboard = [[ARSwitchBoard alloc] init];

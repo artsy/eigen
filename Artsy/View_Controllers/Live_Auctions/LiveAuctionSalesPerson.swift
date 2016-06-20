@@ -6,6 +6,7 @@ import Interstellar
 
 protocol LiveAuctionsSalesPersonType {
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
+    var initialStateLoadedSignal: Observable<Void> { get }
 
     /// Current lot "in focus" based on the page view controller.
     var currentFocusedLotIndex: Observable<Int> { get }
@@ -14,9 +15,12 @@ protocol LiveAuctionsSalesPersonType {
     var lotCount: Int { get }
     var liveSaleID: String { get }
     var liveSaleName: String { get }
+    var bidIncrements: [BidIncrementStrategy] { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType
+    func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64
+    func currentLotValueString(lot: LiveAuctionLotViewModelType) -> String
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
@@ -50,6 +54,9 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
     // Lot currently being looked at by the user. Defaults to zero, the first lot in a sale.
     var currentFocusedLotIndex = Observable(0)
+    var initialStateLoadedSignal: Observable<Void> {
+        return stateManager.initialStateLoadedSignal
+    }
 
     init(sale: LiveSale,
          jwt: JWT,
@@ -68,6 +75,20 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: biddingCredentials)
         self.auctionViewModel = auctionViewModelCreator(sale: sale, currentLotSignal: stateManager.currentLotSignal, biddingCredentials: biddingCredentials)
     }
+
+    lazy var bidIncrements: [BidIncrementStrategy] = {
+        // It's very unikely the API would fail to send us bid increments, but just in case, let's avoid a crash.
+        guard let bidIncrements = self.sale.bidIncrementStrategy else { return [] }
+        return bidIncrements.sort()
+    }()
+
+    func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64 {
+        return sale.bidIncrementStrategy.minimumNextBidCentsIncrement(lot.askingPrice)
+    }
+
+    func currentLotValueString(lot: LiveAuctionLotViewModelType) -> String {
+        return currentLotValue(lot).convertToDollarString(lot.currencySymbol)
+    }
 }
 
 private typealias ComputedProperties = LiveAuctionsSalesPerson
@@ -85,7 +106,16 @@ extension ComputedProperties {
     }
 
     var liveSaleName: String {
-        return sale.name
+        let saleName = sale.name
+        // Bit of a hack until we have our server-side stuff figured out. If the sale name has a :, it's likely
+        // "Partner Name: The Awesome Sale", and we want just "Partner Name"
+        let colonRange = saleName.rangeOfString(":", options: [], range: nil, locale: nil)
+
+        if let colonRange = colonRange {
+            return saleName.substringToIndex(colonRange.startIndex)
+        } else {
+            return saleName
+        }
     }
 
     var debugAllEventsSignal: Observable<LotEventJSON> {

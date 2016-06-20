@@ -2,6 +2,8 @@ import Artsy_UILabels
 import Artsy_UIButtons
 import UIView_BooleanAnimations
 
+import SSFadingScrollView
+
 /// Provides a ScrollingStickyHeaderView which can switch between two sizes
 /// depending on whether it is stuck to the top of the screen
 
@@ -10,6 +12,7 @@ class ScrollingStickyHeaderView: UIView {
     let button: UIButton
     let titleLabel: UILabel
     let subtitleLabel: UILabel
+    let subtitleScrollView: SSFadingScrollView
 
     private let topSeparator: ARSeparatorView
     private let bottomSeparator: ARSeparatorView
@@ -27,6 +30,7 @@ class ScrollingStickyHeaderView: UIView {
             $0.layer.borderWidth = 1
         }
 
+        subtitleScrollView = SSFadingScrollView()
         subtitleLabel = ARItalicsSerifLabel()
         titleLabel = ARSansSerifLabel()
         topSeparator = ARSeparatorView()
@@ -56,10 +60,20 @@ class ScrollingStickyHeaderView: UIView {
             $0.constrainHeight("60")
         }
 
-        subtitleLabel.then {
+        subtitleScrollView.then {
+            $0.fadeAxis = .Horizontal
+            $0.showsHorizontalScrollIndicator = false
             self.addSubview($0)
-            self.leadingConstraints = $0.alignLeadingEdgeWithView(self, predicate: "20")
-            $0.alignBottomEdgeWithView(self, predicate: "-18")
+            $0.alignTop("0", bottom: "0", toView: self)
+            leadingConstraints = $0.alignLeadingEdgeWithView(self, predicate: "20")
+            $0.constrainTrailingSpaceToView(button, predicate: "-10")
+        }
+
+        subtitleLabel.then {
+            subtitleScrollView.addSubview($0)
+            $0.alignLeading("0", trailing: "0", toView: subtitleScrollView)
+            $0.alignBaselineWithView(button, predicate: "0")
+            $0.numberOfLines = 1
         }
 
         topSeparator.then {

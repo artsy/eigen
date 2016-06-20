@@ -7,7 +7,7 @@ func stub_auctionSale() -> LiveSale {
     return stateFetcher.fetchStaticData().peekValue()!.sale
 }
 
-func stub_auctionSalesPerson(auctionViewModel: LiveAuctionViewModelType? = nil, creds: BiddingCredentials = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: "123456")) -> LiveAuctionsSalesPersonType {
+func stub_auctionSalesPerson(auctionViewModel: LiveAuctionViewModelType? = nil, creds: BiddingCredentials = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: "123456")) -> Stub_LiveAuctionsSalesPerson {
     let sale = stub_auctionSale()
 
     let auctionViewModelCreator: LiveAuctionsSalesPerson.AuctionViewModelCreator
@@ -16,7 +16,26 @@ func stub_auctionSalesPerson(auctionViewModel: LiveAuctionViewModelType? = nil, 
     } else {
         auctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()
     }
-    return LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.Registered.jwt , biddingCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
+    return Stub_LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.Registered.jwt , biddingCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
+}
+
+
+class Stub_LiveAuctionsSalesPerson: LiveAuctionsSalesPerson {
+    // This has an initial value, so we're "connected" right away.
+    var _initialStateLoadedSignal = Observable<Void>(Void())
+    override var initialStateLoadedSignal: Observable<Void> {
+        return _initialStateLoadedSignal
+    }
+
+    var currentLotValue: UInt64 = 1234
+    override func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64 {
+        return currentLotValue
+    }
+
+    var currentLotValueString: String = "$Value"
+    override func currentLotValueString(lot: LiveAuctionLotViewModelType) -> String {
+        return currentLotValueString
+    }
 }
 
 enum StubbedCredentials {

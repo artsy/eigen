@@ -15,8 +15,16 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
 
     var bidStatus: BidEventBidStatus?
 
+    var eventID: String {
+        return event.eventID
+    }
+
     var isBid: Bool {
         return event.eventType() == .Bid
+    }
+
+    var confirmed: Bool {
+        return event.confirmed
     }
 
     var isBidConfirmation: Bool {
@@ -67,11 +75,16 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
         return bidder.bidderID == bidderID
     }
 
-    var bidAmount: UInt64? {
+    var bidConfirmationAmount: UInt64? {
         if !isBidConfirmation { return nil }
         return event.amountCents
     }
     
+    var bidAmountCents: UInt64? {
+        if !isBid { return nil}
+        return event.amountCents
+    }
+
     func hasAmountCents(amount: UInt64 ) -> Bool {
         return event.amountCents == amount
     }
@@ -95,10 +108,6 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
             } else {
                 color = .blackColor()
             }
-
-            // Override color when an unconfirmed Artsy Bidder
-            let isUnConfirmedArtsyBidder = isArtsyBidder && !event.confirmed
-            color = isUnConfirmedArtsyBidder ? .artsyGrayMedium() : color
 
             // Override color when cancelled
             color = event.cancelled ? .artsyGrayMedium() : color

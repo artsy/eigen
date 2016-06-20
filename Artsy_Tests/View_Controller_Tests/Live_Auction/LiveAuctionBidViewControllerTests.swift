@@ -34,18 +34,20 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
 
         describe("updating") {
             var lotVM: Test_LiveAuctionLotViewModel!
+            var salesPerson: Stub_LiveAuctionsSalesPerson!
 
             beforeEach {
                 subject = StoryboardScene.LiveAuctions.instantiateBid()
                 lotVM = Test_LiveAuctionLotViewModel()
-                subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson: stub_auctionSalesPerson())
+                salesPerson = stub_auctionSalesPerson()
+                subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson: salesPerson)
                 subject.loadViewProgrammatically()
             }
 
             it("updates when new events come in") {
                 expect(subject.priceOfCurrentBidsLabel.text) == "$Value"
 
-                lotVM.currentLotValueString = "£200"
+                salesPerson.currentLotValueString = "£200"
                 lotVM.newEventsSignal.update([])
 
                 expect(subject.priceOfCurrentBidsLabel.text) == "£200"
@@ -55,7 +57,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
 
                 expect(subject.bidViewModel.currentBid) == 5_500_00
 
-                lotVM.currentLotValue = 6_000_00
+                salesPerson.currentLotValue = 6_000_00
                 lotVM.newEventsSignal.update([])
 
                 expect(subject.bidViewModel.currentBid) == 6_000_00

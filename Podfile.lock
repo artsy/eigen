@@ -76,50 +76,34 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (1.0.0)
-  - Emission (1.0.0):
-    - Emission/All (= 1.0.0)
-  - Emission/All (1.0.0):
-    - Emission/Core
-    - Emission/OpaqueImageViewComponent
-    - Emission/SpinnerComponent
-    - Emission/SwitchViewComponent
-    - Emission/TemporaryAPI
-    - Emission/ViewControllers
-  - Emission/Core (1.0.0):
+  - Emission (1.0.1):
     - Artsy+UIFonts (>= 1.1.0)
+    - Extraction
     - React/Core (= 0.27.1)
     - React/RCTNetwork (= 0.27.1)
     - React/RCTText (= 0.27.1)
-  - Emission/OpaqueImageViewComponent (1.0.0):
     - SDWebImage (>= 3.7.2)
-  - Emission/SpinnerComponent (1.0.0):
-    - Emission/Core
-    - Extraction/ARSpinner
-  - Emission/SwitchViewComponent (1.0.0):
-    - Emission/Core
-    - Extraction/ARSwitchView
-  - Emission/TemporaryAPI (1.0.0):
-    - Emission/Core
-  - Emission/ViewControllers (1.0.0):
-    - Emission/Core
   - Expecta (1.0.5)
   - Expecta+Snapshots (3.0.0):
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0)
     - Specta (~> 1.0)
-  - Extraction (0.1.0):
-    - Extraction/ARSpinner (= 0.1.0)
-    - Extraction/ARSwitchView (= 0.1.0)
-    - Extraction/UIView+ARSpinner (= 0.1.0)
-  - Extraction/ARSpinner (0.1.0):
+  - Extraction (1.1.0):
+    - Extraction/ARAnimationContinuation (= 1.1.0)
+    - Extraction/ARSpinner (= 1.1.0)
+    - Extraction/ARSwitchView (= 1.1.0)
+    - Extraction/UIView+ARSpinner (= 1.1.0)
+  - Extraction/ARAnimationContinuation (1.1.0)
+  - Extraction/ARSpinner (1.1.0):
     - Extraction/UIView+ARSpinner
     - UIView+BooleanAnimations
-  - Extraction/ARSwitchView (0.1.0):
+  - Extraction/ARSwitchView (1.1.0):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 1.1.0)
     - FLKAutoLayout
     - UIView+BooleanAnimations
-  - Extraction/UIView+ARSpinner (0.1.0)
+  - Extraction/UIView+ARSpinner (1.1.0):
+    - Extraction/ARAnimationContinuation
   - FBSDKCoreKit (4.10.1):
     - Bolts (~> 1.5)
   - FBSDKLoginKit (4.10.1):
@@ -184,6 +168,7 @@ PODS:
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
   - Specta (1.0.5)
+  - SSFadingScrollView (1.1.0)
   - Starscream (1.1.3)
   - SwiftyJSON (2.3.2)
   - Then (1.0.0)
@@ -217,10 +202,10 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DRKonamiCode
   - EDColor
-  - Emission (from `https://github.com/artsy/emission.git`)
+  - Emission
   - Expecta
   - Expecta+Snapshots
-  - Extraction (from `https://github.com/artsy/extraction.git`)
+  - Extraction
   - FBSDKCoreKit (~> 4.9)
   - FBSDKLoginKit (~> 4.9)
   - FBSnapshotTestCase (from `https://github.com/orta/ios-snapshot-test-case.git`)
@@ -250,10 +235,10 @@ DEPENDENCIES:
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
   - Quick
-  - React/Core (from `https://github.com/facebook/react-native.git`, tag `v0.27.1`)
   - ReactiveCocoa
   - SDWebImage (>= 3.7.2)
   - Specta
+  - SSFadingScrollView (from `https://github.com/alloy/SSFadingScrollView.git`, branch `add-axial-support`)
   - Starscream
   - SwiftyJSON
   - Then
@@ -284,10 +269,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
-  Emission:
-    :git: https://github.com/artsy/emission.git
-  Extraction:
-    :git: https://github.com/artsy/extraction.git
   FBSnapshotTestCase:
     :git: https://github.com/orta/ios-snapshot-test-case.git
   FLKAutoLayout:
@@ -307,9 +288,9 @@ EXTERNAL SOURCES:
     :path: Pods/CocoaPodsKeys
   NAMapKit:
     :git: https://github.com/neilang/NAMapKit
-  React:
-    :git: https://github.com/facebook/react-native.git
-    :tag: v0.27.1
+  SSFadingScrollView:
+    :branch: add-axial-support
+    :git: https://github.com/alloy/SSFadingScrollView.git
 
 CHECKOUT OPTIONS:
   Aerodramus:
@@ -336,12 +317,6 @@ CHECKOUT OPTIONS:
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
-  Emission:
-    :commit: 2139b621ddbcb7bac8cd3e38effc09626761bf44
-    :git: https://github.com/artsy/emission.git
-  Extraction:
-    :commit: dbd754486d5d0d212cd3f42a69c6a747336c244c
-    :git: https://github.com/artsy/extraction.git
   FBSnapshotTestCase:
     :commit: 6b3e8978084388f9aae392fd1e0e21b1ddb88ae3
     :git: https://github.com/orta/ios-snapshot-test-case.git
@@ -363,9 +338,9 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
-  React:
-    :git: https://github.com/facebook/react-native.git
-    :tag: v0.27.1
+  SSFadingScrollView:
+    :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
+    :git: https://github.com/alloy/SSFadingScrollView.git
 
 SPEC CHECKSUMS:
   Adjust: 297176446c127f1232b9591b2b37cdc4796850b8
@@ -389,10 +364,10 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: f757f56e5a4b5035d1e1e1314b7efc4f67f153b0
+  Emission: 44e48f8f6365254e8ea9df69f80f5c5200695c6e
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
-  Extraction: 30a669899836cbe9c31bbc0e86918cd7a2dab463
+  Extraction: c0b413dc7d379f2a2e54f242e81d21c88fe3115a
   FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
   FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
   FBSnapshotTestCase: 68c3221ddd3bf5bbe783c1015f8acc12c3768a4d
@@ -428,6 +403,7 @@ SPEC CHECKSUMS:
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
+  SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
   Starscream: d662732354b40dd19ed1ece3e3c44c80b536b83c
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   Then: 291c4c489fb76349a987c0f1769a30b3551d091e
@@ -437,6 +413,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 06d8703653ab89a0d189548b182b32424bbcece1
+PODFILE CHECKSUM: 45ae960492b6789135b90a6a22be9449f97bae07
 
 COCOAPODS: 1.0.0

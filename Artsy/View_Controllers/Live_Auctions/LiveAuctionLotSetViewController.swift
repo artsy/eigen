@@ -65,15 +65,41 @@ class LiveAuctionLotSetViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    var hasJumpedToOpenLotAtLaunch = false
+    var suppressJumpingToOpenLots = false
+
+    func hasChangedLot(lot: LiveAuctionLotViewModelType?) {
+        guard let newLot = lot where !suppressJumpingToOpenLots else { return }
+
+        /// Support jumping directly to the live lot when we load
+
+        guard hasJumpedToOpenLotAtLaunch else {
+            hasJumpedToOpenLotAtLaunch = true
+            jumpToLotAtIndex(newLot.lotIndex)
+            return
+        }
+
+        /// When the lot has changed, we wait a second to see if you are still on the previous lot,
+        /// if you are, we'll move you on to the next lot.
+
+        guard let focusedLotIndex = salesPerson.currentFocusedLotIndex.peek() else { return }
+
+        if focusedLotIndex == newLot.lotIndex - 1 {
+            ar_dispatch_after(1) {
+                guard let focusedLotAfterDelayIndex = self.salesPerson.currentFocusedLotIndex.peek() where focusedLotAfterDelayIndex == focusedLotIndex else { return }
+
+                guard let currentLotVC = self.auctionDataSource.liveAuctionPreviewViewControllerForIndex(newLot.lotIndex) else { return }
+                self.pageController.setViewControllers([currentLotVC], direction: .Forward, animated: true) { _ in
+                    self.pageViewController(self.pageController, didFinishAnimating: true, previousViewControllers: [], transitionCompleted: true)
+                }
+            }
+        }
+    }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        // On iPhone, show the sale name, since we're taking up the full screen.
-        // Otherwise, on iPad, show nothing (sale name is shown in the lot list).
-        if UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact {
-            title = salesPerson.liveSaleName
-        }
+        updateTitle()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -122,6 +148,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         super.viewWillAppear(animated)
         // TODO: handle changing trait collections, need to re-set the collection view layout.
         setupToolbar()
+        updateTitle()
 
         guard firstAppearance else { return }
         firstAppearance = true
@@ -144,6 +171,14 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // Disable page view scrolling on iPad.
         pageViewScrollView?.scrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .Compact)
+    }
+
+    func updateTitle() {
+        // On iPhone, show the sale name, since we're taking up the full screen.
+        // Otherwise, on iPad, show nothing (sale name is shown in the lot list).
+        if traitCollection.horizontalSizeClass == .Compact {
+            title = salesPerson.liveSaleName
+        }
     }
 
     func setupToolbar() {
@@ -221,6 +256,9 @@ class LiveAuctionLotSetViewController: UIViewController {
                 let total = self?.salesPerson.auctionViewModel.lotCount ?? 1 // We're dividing by the total, it should not be zero 😬
                 self?.progressBar.progress = CGFloat(currentLot.lotIndex) / CGFloat(total)
         }
+
+        // To make sure we can handle transitioning to the next live auction
+        salesPerson.currentLotSignal.subscribe(hasChangedLot)
     }
 
     func jumpToLotAtIndex(index: Int) {
@@ -314,7 +352,7 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
 
     func registerForScrollingState(viewController: LiveAuctionLotViewController) {
         viewController.bidHistoryState.subscribe { [weak self] state in
-            self?.pageViewScrollView?.scrollEnabled = (state == .Closed)
+            self?.pageViewScrollView?.scrollEnabled = (state == .Closed && self?.view.traitCollection.horizontalSizeClass == .Compact)
             return
         }
 

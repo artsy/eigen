@@ -43,8 +43,13 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
 
             // The indices are known to be the closed/live/upcoming states respectively
-            it("looks good for closed lots") {
-                lotViewModel.lotStateSignal.update(.ClosedLot)
+            it("looks good for sold lots") {
+                lotViewModel.lotStateSignal.update(.ClosedLot(wasPassed: false))
+                expect(subject) == snapshot()
+            }
+
+            it("looks good for passed lots") {
+                lotViewModel.lotStateSignal.update(.ClosedLot(wasPassed: true))
                 expect(subject) == snapshot()
             }
 
@@ -56,12 +61,18 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
             it("looks good for upcoming lots") {
                 auctionViewModel.distance = 1
-                lotViewModel.lotStateSignal.update(.UpcomingLot)
+                lotViewModel.lotStateSignal.update(.UpcomingLot(isHighestBidder: false))
+                expect(subject) == snapshot()
+            }
+
+            it("looks good for upcoming lots that the user is winning") {
+                auctionViewModel.distance = 1
+                lotViewModel.lotStateSignal.update(.UpcomingLot(isHighestBidder: true))
                 expect(subject) == snapshot()
             }
 
             it("doesnt show a live auction call to action when auction is closed") {
-                lotViewModel.lotStateSignal.update(.ClosedLot)
+                lotViewModel.lotStateSignal.update(.ClosedLot(wasPassed: false))
                 auctionViewModel.saleAvailabilitySignal.update(.Closed)
                 expect(subject) == snapshot()
             }
@@ -84,6 +95,16 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 
             it("looks good for out-of-order lots") {
                 auctionViewModel.distance = -1
+                expect(subject) == snapshot()
+            }
+
+            it("handles updates to number of bids") {
+                lotViewModel.numberOfBids = 1
+                subject.loadViewProgrammatically()
+
+                lotViewModel.numberOfBids = 2
+                lotViewModel.newEventsSignal.update([])
+
                 expect(subject) == snapshot()
             }
         }
@@ -122,15 +143,15 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var reserveStatusString = "is testing reserve"
     var numberOfDerivedEvents = 1
     var lotIndex = 1
+    var highEstimateCents: UInt64 = 2_000_00
     var numberOfBids = 1
     var currencySymbol = "$"
-    var currentLotValue = UInt64(1234)
-    var currentLotValueString = "$Value"
     var imageAspectRatio: CGFloat = 1
     var liveAuctionLotID = "lotID"
     var dateLotOpened: NSDate?
     var userIsHighestBidder: Bool = false
     var userIsBeingSoldTo: Bool = false
+    var userIsWinning: Bool = false
     var isBeingSold: Bool = false
     // Whether or not (all) events returned from this test VM should be cancelled.
     var cancelEvents = false
@@ -143,11 +164,12 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
         return event
     }
 
-    var lotStateSignal = Observable(LotState.UpcomingLot)
+    var lotStateSignal: Observable<LotState> = Observable(LotState.UpcomingLot(isHighestBidder: false))
     func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
         return lotStateSignal
     }
 
+    let askingPrice: UInt64 = 5_000_00
     let askingPriceSignal = Observable<UInt64>(5_000_00)
     let reserveStatusSignal = Observable<ARReserveStatus>(.NoReserve)
     let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()

@@ -35,6 +35,7 @@
 #import "Artist.h"
 #import "Profile.h"
 #import "User.h"
+#import "BidIncrementStrategy.h"
 
 #import "LiveAuctionLot.h"
 #import "LiveSale.h"

@@ -1030,6 +1030,10 @@ static NSString *hostFromString(NSString *string)
     _id\
     id\
     start_at\
+    bid_increments {\
+      from\
+      amount\
+    }\
     end_at\
     registration_ends_at\
     name\

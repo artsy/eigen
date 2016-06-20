@@ -165,7 +165,7 @@ class AuctionViewControllerTests: QuickSpec {
                 ARTestContext.useDevice(device) {
                     subject.stubHorizontalSizeClass(horizontalSizeClass)
                     subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
-                    subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithSelectedIndexPath(NSIndexPath(forRow: 1, inSection: 0)).refineSettingsWithPriceRange((min: 1000, max: 1000_000))
+                    subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithSelectedIndexPath(NSIndexPath(forRow: 1, inSection: 0)).refineSettingsWithPriceRange((min: 1000_000, max: 1000_000_000_000))
                     expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
             }

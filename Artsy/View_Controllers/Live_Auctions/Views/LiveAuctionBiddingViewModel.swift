@@ -58,6 +58,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     class func stateToBidButtonState(currencySymbol: String, lotID: String, auctionViewModel: LiveAuctionViewModelType)
                 -> (state: (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?))
                 -> LiveAuctionBidButtonState {
+
         return { state in
             let userIsRegistered = auctionViewModel.auctionState.contains(.UserIsRegistered)
             let userRegistrationPending = auctionViewModel.auctionState.contains(.UserPendingRegistration)
@@ -68,7 +69,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
             // And if a registration is pending, we show that, etc.
             switch state.lotState {
             case .ClosedLot:
-                return .InActive(lotState: .ClosedLot)
+                return .InActive(lotState: state.lotState)
 
             case _ where !userIsRegistered && registrationIsClosed:
                 return .Active(biddingState: LiveAuctionBiddingProgressState.UserRegistrationClosed)
@@ -89,10 +90,9 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
             case .LiveLot:
                 let biddingState: LiveAuctionBiddingProgressState
 
-                let isHighestBiddder = state.currentLot?.userIsHighestBidder ?? false
                 let isSellingToMe = state.currentLot?.userIsBeingSoldTo ?? false
                 
-                if isHighestBiddder && isSellingToMe {
+                if isSellingToMe {
                     biddingState = .BidBecameMaxBidder
                 } else {
                     biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
@@ -102,7 +102,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
             default:
                 // The Swift compiler is not yet smart enough to know that this _is_ an exhaustive swift statement.
                 // So we need a default to satisfy the compiler, even though it's impossible to reach.
-                return .InActive(lotState: .ClosedLot)
+                return .InActive(lotState: state.lotState)
             }
         }
     }

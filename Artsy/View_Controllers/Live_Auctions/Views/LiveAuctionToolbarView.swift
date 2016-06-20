@@ -8,9 +8,11 @@ class LiveAuctionToolbarView: UIView {
     var auctionViewModel: LiveAuctionViewModelType!
 
     var lotStateObserver: ObserverToken<LotState>?
+    var numberOfBidsObserver: ObserverToken<Int>?
 
     deinit {
         lotStateObserver?.unsubscribe()
+        numberOfBidsObserver?.unsubscribe()
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -47,6 +49,7 @@ class LiveAuctionToolbarView: UIView {
     func setupUsingState(lotState: LotState) {
         let viewStructure: [[String: NSAttributedString]]
         var clockClosure: ((UILabel) -> ())?
+        var numberOfBidsClosure: ((UILabel) -> Void)?
 
         switch lotState {
 
@@ -63,6 +66,16 @@ class LiveAuctionToolbarView: UIView {
                 ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]
 
+            numberOfBidsClosure = { [unowned self] label in
+                guard self.numberOfBidsObserver == nil else { return }
+
+                self.numberOfBidsObserver = self.lotViewModel
+                    .newEventsSignal
+                    .map { [unowned self] _ in self.lotViewModel.numberOfBids }
+                    .subscribe { numberOfBids in
+                        label.attributedText = self.attributify(String(numberOfBids))
+                }
+            }
 
             clockClosure = { [unowned self] label in
                 self.formatter.dateFormat = "mm:ss"
@@ -104,8 +117,12 @@ class LiveAuctionToolbarView: UIView {
 
             label.attributedText = dict.values.first!
 
-            if key == "time" && clockClosure != nil {
+            if key == "time" {
                 clockClosure?(label)
+            }
+
+            if key == "bidders" {
+                numberOfBidsClosure?(label)
             }
 
             view.constrainHeight("14")
