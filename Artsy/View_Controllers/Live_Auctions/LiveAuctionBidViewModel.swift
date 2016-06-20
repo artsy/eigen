@@ -63,6 +63,19 @@ class LiveAuctionBidViewModel: NSObject {
         } while bidIncrements[i] < (3 * max(lotVM.askingPrice, lotVM.highEstimateCents))
     }
 
+    var availableIncrements: Int {
+        return bidIncrements.count
+    }
+
+    func bidIncrementValueAtIndex(index: Int) -> UInt64 {
+        return bidIncrements[index]
+    }
+
+    func bidIncrementStringAtIndex(index: Int) -> String {
+        let value = bidIncrements[index]
+        return value.convertToDollarString(lotViewModel.currencySymbol)
+    }
+
     var currentLotValue: UInt64 {
         return salesPerson.currentLotValue(lotViewModel)
     }
