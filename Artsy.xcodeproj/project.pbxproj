@@ -470,6 +470,8 @@
 		6082B2051B46ADDE00953BC8 /* stubbed_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082B2041B46ADDE00953BC8 /* stubbed_image.png */; };
 		60838EAF17728C5D00869F6E /* ARHeartButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 60838EAE17728C5D00869F6E /* ARHeartButton.m */; };
 		60838EB51773547700869F6E /* ARViewInRoomTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 60838EB41773547700869F6E /* ARViewInRoomTransition.m */; };
+		60863E441D0B48B00053B51C /* ARMutableLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60863E431D0B48B00053B51C /* ARMutableLinkViewController.m */; };
+		60863E471D0B49AE0053B51C /* ArtsyAPI+HEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 60863E461D0B49AE0053B51C /* ArtsyAPI+HEAD.m */; };
 		60889874175DEBC2008C9319 /* ARFeedSubclasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 60889873175DEBC2008C9319 /* ARFeedSubclasses.m */; };
 		6088B75417D1DBAC00E4BB67 /* ARAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */; };
 		6088B75917D20A0A00E4BB67 /* ARSlideshowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0C67E17B972F200721244 /* ARSlideshowView.m */; };
@@ -1540,6 +1542,10 @@
 		60838EAE17728C5D00869F6E /* ARHeartButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHeartButton.m; sourceTree = "<group>"; };
 		60838EB31773547700869F6E /* ARViewInRoomTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewInRoomTransition.h; sourceTree = "<group>"; };
 		60838EB41773547700869F6E /* ARViewInRoomTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewInRoomTransition.m; sourceTree = "<group>"; };
+		60863E421D0B48B00053B51C /* ARMutableLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARMutableLinkViewController.h; path = ../ARMutableLinkViewController.h; sourceTree = "<group>"; };
+		60863E431D0B48B00053B51C /* ARMutableLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARMutableLinkViewController.m; path = ../ARMutableLinkViewController.m; sourceTree = "<group>"; };
+		60863E451D0B49AE0053B51C /* ArtsyAPI+HEAD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ArtsyAPI+HEAD.h"; path = "API_Modules/ArtsyAPI+HEAD.h"; sourceTree = "<group>"; };
+		60863E461D0B49AE0053B51C /* ArtsyAPI+HEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ArtsyAPI+HEAD.m"; path = "API_Modules/ArtsyAPI+HEAD.m"; sourceTree = "<group>"; };
 		60889872175DEBC2008C9319 /* ARFeedSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedSubclasses.h; sourceTree = "<group>"; };
 		60889873175DEBC2008C9319 /* ARFeedSubclasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeedSubclasses.m; sourceTree = "<group>"; };
 		6088B75217D1DBAC00E4BB67 /* ARAnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsConstants.h; sourceTree = "<group>"; };
@@ -3118,6 +3124,8 @@
 		600249F0166CFCCE007E6E9A /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				60863E421D0B48B00053B51C /* ARMutableLinkViewController.h */,
+				60863E431D0B48B00053B51C /* ARMutableLinkViewController.m */,
 				CB2C960217D3B4B500B36B44 /* ARFeedLinkUnitViewController.h */,
 				CB2C960317D3B4B500B36B44 /* ARFeedLinkUnitViewController.m */,
 				064330E3170F526200FF6C41 /* ARArtistViewController.h */,
@@ -4542,6 +4550,8 @@
 				342F93BE04F58F4AD75A8FDD /* Mantle_Extensions */,
 				3CF144B218E47F9F00B1A764 /* ARSystemTime.h */,
 				3CF144B318E47F9F00B1A764 /* ARSystemTime.m */,
+				60863E451D0B49AE0053B51C /* ArtsyAPI+HEAD.h */,
+				60863E461D0B49AE0053B51C /* ArtsyAPI+HEAD.m */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -5345,6 +5355,7 @@
 				4191F43F1C8745D90054F823 /* ARAnalyticsVisualizer.m in Sources */,
 				3C7880BC18B9081C00595E30 /* ARNotificationView.m in Sources */,
 				B3DDE9C118313C7C0012819F /* ARArtworkAuctionPriceView.m in Sources */,
+				60863E471D0B49AE0053B51C /* ArtsyAPI+HEAD.m in Sources */,
 				54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */,
 				5EA7BC3F1C612577009C52C9 /* AuctionNetworkModel.swift in Sources */,
 				60647C751A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m in Sources */,
@@ -5354,6 +5365,7 @@
 				5EF8407E1CECDFFD006248D7 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */,
 				49EC62181778AF100020D648 /* PartnerShow.m in Sources */,
 				5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */,
+				60863E441D0B48B00053B51C /* ARMutableLinkViewController.m in Sources */,
 				E61446AF195A1CDC00BFB7C3 /* ARFairFavoritesNetworkModel.m in Sources */,
 				5174A03B1A859E2C006CD337 /* ARFairMapView.m in Sources */,
 				51DCC6C81C60E26800455309 /* AuctionInformationViewController.swift in Sources */,

@@ -25,9 +25,8 @@
 #import "ARAuctionWebViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARFairMapViewController.h"
-#import "ARProfileViewController.h"
 #import "ARTopMenuViewController.h"
-
+#import "ARMutableLinkViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 
 #import "Artsy-Swift.h"
@@ -230,9 +229,9 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 2;
 
     // This route will match any single path component and thus should be added last.
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
-    [self.routes addRoute:@"/:profile_id" priority:0 handler:JLRouteParams {
+    [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        return [sself routeProfileWithID: parameters[@"profile_id"]];
+        return [sself loadUnknownPathWithID:parameters[@"slug"]];
     }];
 
     // The menu items' paths are added in ARTopMenuViewController
@@ -261,7 +260,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 2;
 - (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
 {
     // By putting the priority at 1, it is higher than
-    // - "JLRoute /:profile_id (0)",
+    // - "JLRoute /:slug (0)",
     // which globs all root level paths
     [self.routes addRoute:path priority:1 handler:callback];
 }

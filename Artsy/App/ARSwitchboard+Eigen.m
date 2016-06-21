@@ -13,6 +13,7 @@
 #import "ARFavoritesViewController.h"
 #import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
+#import "ARMutableLinkViewController.h"
 
 #import <Emission/ARArtistComponentViewController.h>
 #import "ARArtistViewController.h"
@@ -177,8 +178,12 @@
     return (ARFairArtistViewController *)[self loadArtistWithID:artistID inFair:fair];
 }
 
+- (ARMutableLinkViewController *)loadUnknownPathWithID:(NSString *)path
+{
+    return [[ARMutableLinkViewController alloc] initWithPath:path];
+}
 
-- (ARProfileViewController *)routeProfileWithID:(NSString *)profileID
+- (ARProfileViewController *)loadProfileWithID:(NSString *)profileID
 {
     return [[ARProfileViewController alloc] initWithProfileID:profileID];
 }

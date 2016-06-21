@@ -354,16 +354,24 @@ static const CGFloat ARMenuButtonDimension = 46;
     [self pushViewController:viewController animated:animated completion:nil];
 }
 
++ (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController
+{
+    NSArray *modalClasses = @[ UINavigationController.class, UISplitViewController.class ];
+    for (Class klass in modalClasses) {
+        if ([viewController isKindOfClass:klass]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
 
-    NSArray *modalClasses = @[ UINavigationController.class, UISplitViewController.class ];
-    for (Class klass in modalClasses) {
-        if ([viewController isKindOfClass:klass]) {
-            [self presentViewController:viewController animated:animated completion:completion];
-            return;
-        }
+    if ([self.class shouldPresentViewControllerAsModal:viewController]) {
+        [self presentViewController:viewController animated:animated completion:completion];
+        return;
     }
 
     NSInteger index = [self indexOfRootViewController:viewController];

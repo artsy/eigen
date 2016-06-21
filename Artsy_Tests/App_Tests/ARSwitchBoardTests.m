@@ -20,6 +20,7 @@
 #import "ARFairArtistViewController.h"
 #import "ARFairGuideContainerViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
+#import "ARMutableLinkViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
 
 
@@ -181,7 +182,7 @@ describe(@"ARSwitchboard", ^{
             id subject = [switchboard loadPath:@"thingy"];
             // Yeah, so, we have this awkward catch-all profile class for any route
             // thus if the route isn't registered, it'll go to that
-            expect(subject).to.beAKindOf(ARProfileViewController.class);
+            expect(subject).to.beAKindOf(ARMutableLinkViewController.class);
             [switchboard registerPathCallbackAtPath:@"/thingy" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
                 return newVC;
             }];
@@ -212,13 +213,12 @@ describe(@"ARSwitchboard", ^{
         });
     });
 
-
     describe(@"routeInternalURL", ^{
         it(@"routes profiles", ^{
             // See aditional tests for profile routing below.
             NSURL *profileURL = [[NSURL alloc] initWithString:@"http://artsy.net/myprofile"];
             id subject = [switchboard routeInternalURL:profileURL fair:nil];
-            expect(subject).to.beKindOf(ARProfileViewController.class);
+            expect(subject).to.beKindOf(ARMutableLinkViewController.class);
 
         });
 
@@ -397,7 +397,7 @@ describe(@"ARSwitchboard", ^{
 
     });
 
-    describe(@"routeProfileWithID", ^{
+    describe(@"loadProfileWithIDileWithID", ^{
         __block id mockProfileVC;
 
         before(^{
@@ -417,12 +417,12 @@ describe(@"ARSwitchboard", ^{
 
             it(@"internally does not load martsy", ^{
                 [[mockProfileVC reject] showViewController:[OCMArg checkForClass:[ARInternalMobileWebViewController class]]];
-                [switchboard routeProfileWithID:@"myfairprofile"];
+                [switchboard loadPartnerWithID:@"myfairprofile"];
             });
 
             it(@"routes fair profiles specially", ^{
                 [[mockProfileVC expect] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
-                [switchboard routeProfileWithID:@"myfairprofile"];
+                [switchboard loadPartnerWithID:@"myfairprofile"];
             });
         });
     });

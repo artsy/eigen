@@ -368,7 +368,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (void)openShowFair:(id)sender
 {
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance routeProfileWithID:self.show.fair.organizer.profileID];
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadProfileWithID:self.show.fair.organizer.profileID];
     [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 

@@ -3,6 +3,8 @@ upcoming:
   details: Live Auctions Polish
 
   dev:
+    infrastructure: 
+      - Correctly handle routing to modals via paths - orta
     live_auctions:
       - Uses server-defined increment strategy. - ash
       - Parnter name shows on iPhone. - ash
