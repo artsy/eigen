@@ -40,7 +40,7 @@ releases:
         - Uses server-defined increment strategy. - ash
         - Updates to bid-handling in history. - ash
         - Fixes jump bid ordering. - ash
-        - Parnter name shows on iPhone. - ash
+        - Partner name shows on iPhone. - ash
         - New loading indicator. - ash
         - Improved bid button interaction. - ash
     user_facing:
