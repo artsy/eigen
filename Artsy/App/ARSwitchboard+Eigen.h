@@ -70,6 +70,6 @@
 /// Buy artwork
 - (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken;
 
-/// Crazy Artsy redirect things
+/// Handle unknown redirects (normally special featured links)
 - (ARMutableLinkViewController *)loadUnknownPathWithID:(NSString *)path;
 @end

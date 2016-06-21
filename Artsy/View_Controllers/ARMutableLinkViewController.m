@@ -48,7 +48,7 @@
 
         if ([ARTopMenuViewController shouldPresentViewControllerAsModal:internalViewController]) {
             [[ARTopMenuViewController sharedController] pushViewController:internalViewController animated:ARPerformWorkAsynchronously completion:^{
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:NO];
             }];
             return;
         }
