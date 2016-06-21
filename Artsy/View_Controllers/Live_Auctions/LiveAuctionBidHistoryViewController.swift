@@ -7,7 +7,6 @@ class LiveAuctionHistoryCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Value1, reuseIdentifier: reuseIdentifier)
         backgroundColor = .whiteColor()
-        drawBottomDottedBorder()
 
         textLabel?.font = .sansSerifFontWithSize(14)
         detailTextLabel?.font = .sansSerifFontWithSize(14)
@@ -36,6 +35,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
 
         tableView.allowsSelection = false
         tableView.showsVerticalScrollIndicator = false
+        tableView.separatorColor = .clearColor()
 
         newEventsSubscription = lotViewModel.newEventsSignal.subscribe { [weak self] newEvents in
             // We want to skip any initial first values that are cached by the observables, we can do this by making sure we have a window (since cached values are immediately sent, before the initializer is completed).
@@ -93,6 +93,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
 
         let event = lotViewModel.derivedEventAtPresentationIndex(indexPath.row)
         cell.updateWithEventViewModel(event)
+        cell.drawBottomDottedBorderWithColor(UIColor.artsyGrayMedium())
     }
 }
 
