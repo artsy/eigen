@@ -5,6 +5,7 @@ upcoming:
   dev:
     infrastructure: 
       - Correctly handle routing to modals via paths - orta
+      - WIP support for iOS10 at runtime - orta
     live_auctions:
       - Uses server-defined increment strategy. - ash
       - Parnter name shows on iPhone. - ash
