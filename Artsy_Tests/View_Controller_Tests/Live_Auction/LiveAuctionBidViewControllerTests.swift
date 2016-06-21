@@ -27,7 +27,8 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
                     cacheColoredImageForURL(lotVM.urlForProfile)
                     subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson: fakeSalesPerson)
 
-                    expect(subject) == snapshot("bidding_on_\(device.rawValue)")
+                    expect(subject).to (haveValidSnapshot(named: "bidding_on_\(device.rawValue)", usesDrawRect: true))
+
                 }
             }
         }
@@ -100,7 +101,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
 
                     tuple.1.forEach { subject.biddingProgressSignal.update($0) }
 
-                    expect(subject) == snapshot()
+                    expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
                 }
             }
         }
