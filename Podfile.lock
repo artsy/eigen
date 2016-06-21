@@ -76,7 +76,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (1.0.0)
-  - Emission (1.0.1):
+  - Emission (1.0.2):
     - Artsy+UIFonts (>= 1.1.0)
     - Extraction
     - React/Core (= 0.27.1)
@@ -364,7 +364,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 44e48f8f6365254e8ea9df69f80f5c5200695c6e
+  Emission: f5c6b9bb1ba30b460d96545ddc516644a80d39c7
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: c0b413dc7d379f2a2e54f242e81d21c88fe3115a
