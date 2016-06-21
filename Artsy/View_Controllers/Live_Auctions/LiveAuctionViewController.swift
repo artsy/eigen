@@ -169,6 +169,7 @@ class LiveAuctionViewController: UISplitViewController {
     }
 
     func dismissLiveAuctionsModal() {
+        overlaySubscription?.unsubscribe()
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -190,11 +191,10 @@ class LiveAuctionViewController: UISplitViewController {
 
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+
         viewControllers.forEach { vc in
             vc.endAppearanceTransition()
         }
-
-        overlaySubscription?.unsubscribe()
     }
 
     required init?(coder aDecoder: NSCoder) {
