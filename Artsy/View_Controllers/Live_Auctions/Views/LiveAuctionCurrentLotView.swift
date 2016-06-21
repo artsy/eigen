@@ -22,6 +22,8 @@ class LiveAuctionCurrentLotView: UIButton {
 
         let biddingPriceLabel = ARSansSerifLabel()
         biddingPriceLabel.font = .sansSerifFontWithSize(16)
+        biddingPriceLabel.textAlignment = .Right
+        biddingPriceLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Horizontal)
 
         let hammerView = UIImageView(image: UIImage(asset: .Lot_bidder_hammer_white))
         let thumbnailView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -42,9 +44,11 @@ class LiveAuctionCurrentLotView: UIButton {
 
         liveLotLabel.constrainLeadingSpaceToView(thumbnailView, predicate: "10")
         liveLotLabel.alignTopEdgeWithView(self, predicate: "10")
+        liveLotLabel.constrainTrailingSpaceToView(biddingPriceLabel, predicate: "-10")
 
         artistNameLabel.constrainLeadingSpaceToView(thumbnailView, predicate: "10")
         artistNameLabel.alignBottomEdgeWithView(self, predicate: "-10")
+        artistNameLabel.constrainTrailingSpaceToView(biddingPriceLabel, predicate: "-10")
 
         // Right side
 

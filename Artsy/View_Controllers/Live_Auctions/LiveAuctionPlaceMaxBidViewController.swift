@@ -9,6 +9,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
     @IBOutlet weak var lowerBiddingSeparatorView: UIView!
     @IBOutlet weak var bidButton: LiveAuctionBidButton!
+    @IBOutlet weak var bidPicker: UIPickerView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,12 +28,23 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         bidButtonViewModel.bidPendingSignal.subscribe(biddingProgressUpdated)
 
         view.layoutIfNeeded()
+
         let bottomSeparatorOverlapsBidButton = bidButton.center.y < lowerBiddingSeparatorView.center.y
         lowerBiddingSeparatorView.hidden = bottomSeparatorOverlapsBidButton
+
+        // Remove the two bars that denote the selection
+        bidPicker.subviews.forEach { $0.hidden = $0.frame.height == 0.5 }
     }
+
+    @IBOutlet weak var setYourMaxBidLabel: UILabel!
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+
+        let tinyScreen = view.bounds.height ?? 0 == 420
+        if tinyScreen {
+            setYourMaxBidLabel.font = UIFont.serifFontWithSize(16)
+        }
 
         if bidViewModel.lotViewModel.userIsBeingSoldTo {
             // User is already the highest bidder, tell them so and Dismiss.
@@ -67,31 +79,11 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         shouldShowBiddingOverlay(false, maxBidder: bidViewModel.lotViewModel.userIsBeingSoldTo)
     }
 
-    @IBOutlet weak var decreaseBidButton: UIButton!
-    @IBOutlet weak var increaseBidButton: UIButton!
-    @IBOutlet weak var currentBidLabel: UILabel!
-    @IBOutlet weak var currentIncrementLabel: UILabel!
-
     private func updateBiddingControls(bid: UInt64) {
-        decreaseBidButton.enabled = bidViewModel.canMakeLowerBids
-
-        currentIncrementLabel.text = "Increments of \(bidViewModel.nextBidIncrementDollars)"
-        currentBidLabel.text = bidViewModel.currentBidDollars
-
-        /// TODO: Determine if bidding before updating the button?
+        // TODO: Determine if bidding before updating the button?
         let bidProgress = LiveAuctionBiddingProgressState.Biddable(askingPrice: bid, currencySymbol: bidViewModel.lotViewModel.currencySymbol)
         let bidState = LiveAuctionBidButtonState.Active(biddingState: bidProgress)
         bidButtonViewModel.progressSignal.update(bidState)
-    }
-
-    @IBAction func incrementBid(sender: AnyObject) {
-        bidViewModel.currentBid = bidViewModel.nextBidCents(bidViewModel.currentBid)
-        updateBiddingControls(bidViewModel.currentBid)
-    }
-
-    @IBAction func decrementBid(sender: AnyObject) {
-        bidViewModel.currentBid = bidViewModel.previousBidCents(bidViewModel.currentBid)
-        updateBiddingControls(bidViewModel.currentBid)
     }
 
     // Incase you're new to storyboards, these views are on an associated
@@ -155,11 +147,53 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         bidButtonViewModel.progressSignal.update(.Active(biddingState: .BidBecameMaxBidder))
         shouldShowBiddingOverlay(true, maxBidder: true)
 
+        let exitButton = self.navigationItem.rightBarButtonItem?.customView as? UIButton
+        exitButton?.enabled = false
+
         ar_dispatch_after(2) {
             self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         }
     }
 }
+
+extension LiveAuctionPlaceMaxBidViewController: UIPickerViewDataSource {
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return self.bidViewModel.availableIncrements
+    }
+}
+
+extension LiveAuctionPlaceMaxBidViewController: UIPickerViewDelegate {
+
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+        let title = bidViewModel.bidIncrementStringAtIndex(row)
+        if let titleLabel = view as? UILabel {
+            titleLabel.text = title
+            return titleLabel
+        } else {
+            let titleLabel = UILabel()
+            titleLabel.font = .sansSerifFontWithSize(30)
+            titleLabel.textColor = .blackColor()
+            titleLabel.text = title
+            titleLabel.textAlignment = .Center
+            return titleLabel
+        }
+    }
+
+    func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 40
+    }
+
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let bidAmount = bidViewModel.bidIncrementValueAtIndex(row)
+        bidViewModel.currentBid = bidAmount
+        updateBiddingControls(bidAmount)
+    }
+}
+
 
 extension LiveAuctionPlaceMaxBidViewController: LiveAuctionBidButtonDelegate {
 

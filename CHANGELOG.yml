@@ -8,6 +8,7 @@ upcoming:
       - Parnter name shows on iPhone. - ash
       - New loading indicator. - ash
       - Improved bid button interaction. - ash
+      - Use a spinner UI for the Max Bid - orta/ash
   user_facing:
     - Fade truncated parts of current refine settings on auction view. - alloy
 

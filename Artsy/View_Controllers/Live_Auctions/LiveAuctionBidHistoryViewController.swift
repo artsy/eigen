@@ -32,7 +32,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     init(lotViewModel: LiveAuctionLotViewModelType) {
         self.lotViewModel = lotViewModel
 
-        super.init(style: .Plain)
+        super.init(nibName: nil, bundle: nil)
 
         tableView.allowsSelection = false
         tableView.showsVerticalScrollIndicator = false
