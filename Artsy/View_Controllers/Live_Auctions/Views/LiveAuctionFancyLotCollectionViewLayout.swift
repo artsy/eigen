@@ -303,7 +303,7 @@ private extension PrivateFunctions {
     func applyRepulsionToCenters(centers: CenterXPositions, atPosition position: CellPosition) -> CenterXPositions {
         // TODO: There's a problem with next/previous cells dis/appearing without animation if they're in/visible at the beginning or end of animation.
         // This hack keeps them "close enough" to visible most of the time to work, but a better solution would be to implement initialLayoutAttributesForAppearingItemAtIndexPath and finalLayoutAttributesForDisappearingItemAtIndexPath
-        let diff = min(repulsionConstant/8, visiblePrevNextSliceSize)
+        let diff = min(repulsionConstant/4, visiblePrevNextSliceSize)
         switch position {
         case .Current:
             return centers
