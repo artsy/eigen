@@ -179,7 +179,7 @@ class LiveAuctionBidButton: ARFlatButton {
                 handleBiddable(buttonState, formattedPrice: formattedPrice)
 
             case .BiddingInProgress:
-                setupUI("", background: purple, applySpinAnimation: true)
+                setupUI("", background: purple, applySpinAnimation: Bool(ARPerformWorkAsynchronously))
 
             case .BidBecameMaxBidder, .BidAcknowledged:
                 // If the bid has been acknowledged, we'll bee the max bidder until the next Biddable state, even if that's directly following this one.
