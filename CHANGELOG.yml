@@ -1,22 +1,27 @@
 upcoming:
-  version: 2.6.1
+- version: 2.6.1
   details: Live Auctions Polish
 
   dev:
     infrastructure: 
       - Correctly handle routing to modals via paths - orta
-    live_auctions:
-      - Uses server-defined increment strategy. - ash
-      - Parnter name shows on iPhone. - ash
-      - New loading indicator. - ash
-      - Improved bid button interaction. - ash
-      - Use a spinner UI for the Max Bid - orta/ash
-      - Better bid history cell separators. - ash
-  user_facing:
-    - Fade truncated parts of current refine settings on auction view. - alloy
-
+      - Fixes various memory leaks in live. - ash
 
 releases:
+
+  - version: 2.6.1
+    details: Live Auctions Polish
+
+    dev:
+      live_auctions:
+        - Uses server-defined increment strategy. - ash
+        - Parnter name shows on iPhone. - ash
+        - New loading indicator. - ash
+        - Improved bid button interaction. - ash
+        - Use a spinner UI for the Max Bid - orta/ash
+        - Better bid history cell separators. - ash
+    user_facing:
+      - Fade truncated parts of current refine settings on auction view. - alloy
 
   - version: 2.6.0
     details: Live Auctions / Artist Profile polish
