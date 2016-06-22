@@ -59,12 +59,12 @@ class LiveAuctionCurrentLotView: UIButton {
         biddingPriceLabel.alignAttribute(.Trailing, toAttribute: .Leading, ofView: hammerView, predicate: "-12")
         biddingPriceLabel.alignCenterYWithView(self, predicate: "0")
 
-        viewModel.subscribe { vm in
+        viewModel.subscribe { [weak artistNameLabel, weak biddingPriceLabel, weak thumbnailView, weak salesPerson] vm in
             guard let vm = vm else { return }
 
-            artistNameLabel.text = vm.lotArtist
-            biddingPriceLabel.text = salesPerson.currentLotValueString(vm)
-            thumbnailView.ar_setImageWithURL(vm.urlForThumbnail)
+            artistNameLabel?.text = vm.lotArtist
+            biddingPriceLabel?.text = salesPerson?.currentLotValueString(vm) ?? ""
+            thumbnailView?.ar_setImageWithURL(vm.urlForThumbnail)
         }
     }
 

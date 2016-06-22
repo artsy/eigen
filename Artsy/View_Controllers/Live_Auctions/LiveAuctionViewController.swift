@@ -9,15 +9,15 @@ import ORStackView
 class LiveAuctionViewController: UISplitViewController {
     let saleSlugOrID: String
 
-    lazy var useSingleLayout: Bool = {
-        return self.traitCollection.horizontalSizeClass == .Compact
+    lazy var useSingleLayout: Bool = { [weak self] in
+        return self?.traitCollection.horizontalSizeClass == .Compact
     }()
 
-    lazy var staticDataFetcher: LiveAuctionStaticDataFetcherType = {
-        return LiveAuctionStaticDataFetcher(saleSlugOrID: self.saleSlugOrID)
+    lazy var staticDataFetcher: LiveAuctionStaticDataFetcherType = { [weak self] in
+        return LiveAuctionStaticDataFetcher(saleSlugOrID: self?.saleSlugOrID ?? "")
     }()
 
-    lazy var salesPersonCreator: (LiveSale, JWT, BiddingCredentials) -> LiveAuctionsSalesPersonType = self.salesPerson
+    lazy var salesPersonCreator: (LiveSale, JWT, BiddingCredentials) -> LiveAuctionsSalesPersonType = LiveAuctionViewController.salesPerson
 
     var lotSetController: LiveAuctionLotSetViewController!
     var lotsSetNavigationController: ARSerifNavigationViewController!
@@ -251,7 +251,7 @@ extension PrivateFunctions {
         }
     }
 
-    func salesPerson(sale: LiveSale, jwt: JWT, biddingCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
+    class func salesPerson(sale: LiveSale, jwt: JWT, biddingCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
         return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, biddingCredentials: biddingCredentials)
     }
 }

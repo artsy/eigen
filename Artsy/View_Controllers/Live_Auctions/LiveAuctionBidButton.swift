@@ -35,7 +35,7 @@ class LiveAuctionBidButton: ARFlatButton {
     let spinner = ARSpinner()
 
 
-    @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
+    @IBOutlet weak var delegate: LiveAuctionBidButtonDelegate?
 
     init(viewModel: LiveAuctionBiddingViewModelType) {
         self.viewModel = viewModel

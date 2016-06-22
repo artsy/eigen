@@ -15,12 +15,12 @@ class AuctionSaleNetworkModel: AuctionSaleNetworkModelType {
 
         // Based on the saleID signal, fetch the sale
         ArtsyAPI.getSaleWithID(saleID,
-            success: { sale in
-                self.sale = sale
-                observable.update(.Success(sale))
+            success: { [weak self, weak observable] sale in
+                self?.sale = sale
+                observable?.update(.Success(sale))
             },
-            failure: { error in
-                observable.update(.Error(error as ErrorType))
+            failure: { [weak observable] error in
+                observable?.update(.Error(error as ErrorType))
             })
 
         return observable

@@ -19,11 +19,11 @@ class LiveAuctionLotViewController: UIViewController {
     let bidHistoryState = Observable<BidHistoryState>(.Closed)
     let bidHistoryDelta = Observable<(delta: CGFloat, animating: Bool)>((delta: 0, animating: false))
 
-    private var bidHistoryViewController: LiveAuctionBidHistoryViewController?
+    private weak var bidHistoryViewController: LiveAuctionBidHistoryViewController?
     private let biddingViewModel: LiveAuctionBiddingViewModelType
 
     private var imageBottomConstraint: NSLayoutConstraint?
-    private var lotMetadataStack: AuctionLotMetadataStackScrollView?
+    private weak var lotMetadataStack: AuctionLotMetadataStackScrollView?
 
     private var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
 
@@ -102,16 +102,16 @@ class LiveAuctionLotViewController: UIViewController {
         infoToolbar.constrainHeight("38")
 
         /// Toggles the top constraint, and tells the stack to re-layout
-        lotMetadataStack.showAdditionalInformation = {
-            topMetadataStackConstraint.active = true
-            metadataStack.updateTopMargin("10", forView: infoToolbar)
-            lotMetadataStack.showFullMetadata(true)
+        lotMetadataStack.showAdditionalInformation = { [weak lotMetadataStack, weak topMetadataStackConstraint, weak metadataStack, weak infoToolbar] in
+            topMetadataStackConstraint?.active = true
+            metadataStack?.updateTopMargin("10", forView: infoToolbar)
+            lotMetadataStack?.showFullMetadata(true)
         }
 
-        lotMetadataStack.hideAdditionalInformation = {
-            topMetadataStackConstraint.active = false
-            metadataStack.updateTopMargin("28", forView: infoToolbar)
-            lotMetadataStack.hideFullMetadata(true)
+        lotMetadataStack.hideAdditionalInformation = { [weak lotMetadataStack, weak topMetadataStackConstraint, weak metadataStack, weak infoToolbar] in
+            topMetadataStackConstraint?.active = false
+            metadataStack?.updateTopMargin("28", forView: infoToolbar)
+            lotMetadataStack?.hideFullMetadata(true)
         }
 
         let pan = PanDirectionGestureRecognizer(direction: .Vertical, target: self, action: #selector(userDidDragToolbar))
