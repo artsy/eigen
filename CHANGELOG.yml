@@ -1,11 +1,14 @@
 upcoming:
-- version: 2.6.1
+  version: 2.6.2
   details: Live Auctions Polish
 
   dev:
     infrastructure: 
       - Correctly handle routing to modals via paths - orta
       - Fixes various memory leaks in live. - ash
+      - WIP support for iOS10 at runtime - orta
+  user_facing:
+
 
 releases:
 

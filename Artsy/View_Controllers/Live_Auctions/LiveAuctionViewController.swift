@@ -184,9 +184,12 @@ class LiveAuctionViewController: UISplitViewController {
         viewControllers.forEach { vc in
             vc.beginAppearanceTransition(false, animated: animated)
         }
-
-        guard let internalPopover = self.valueForKey("_hidden" + "PopoverController") as? UIPopoverController else { return }
-        internalPopover.dismissPopoverAnimated(false)
+        
+        // This crashes on iOS 10
+        if #available(iOS 10, *) {} else {
+            guard let internalPopover = valueForKey("_hidden" + "PopoverController") as? UIPopoverController else { return }
+            internalPopover.dismissPopoverAnimated(false)
+        }
     }
 
     override func viewDidDisappear(animated: Bool) {
