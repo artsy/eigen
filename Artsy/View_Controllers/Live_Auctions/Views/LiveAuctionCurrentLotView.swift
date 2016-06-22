@@ -5,9 +5,11 @@ import Interstellar
 class LiveAuctionCurrentLotView: UIButton {
 
     let viewModel: Observable<LiveAuctionLotViewModelType?>
+    let salesPerson: LiveAuctionsSalesPersonType
 
     init(viewModel: Observable<LiveAuctionLotViewModelType?>, salesPerson: LiveAuctionsSalesPersonType) {
         self.viewModel = viewModel
+        self.salesPerson = salesPerson
 
         super.init(frame: CGRect.zero)
 
@@ -59,11 +61,11 @@ class LiveAuctionCurrentLotView: UIButton {
         biddingPriceLabel.alignAttribute(.Trailing, toAttribute: .Leading, ofView: hammerView, predicate: "-12")
         biddingPriceLabel.alignCenterYWithView(self, predicate: "0")
 
-        viewModel.subscribe { [weak artistNameLabel, weak biddingPriceLabel, weak thumbnailView, weak salesPerson] vm in
+        viewModel.subscribe { [weak artistNameLabel, weak biddingPriceLabel, weak thumbnailView, weak self] vm in
             guard let vm = vm else { return }
 
             artistNameLabel?.text = vm.lotArtist
-            biddingPriceLabel?.text = salesPerson?.currentLotValueString(vm) ?? ""
+            biddingPriceLabel?.text = self?.salesPerson.currentLotValueString(vm) ?? ""
             thumbnailView?.ar_setImageWithURL(vm.urlForThumbnail)
         }
     }
