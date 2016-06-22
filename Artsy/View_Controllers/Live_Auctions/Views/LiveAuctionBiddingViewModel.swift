@@ -28,7 +28,6 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     // _newLotEventSignal is different; every lot has a state asking price, and there's a default nil current lot. But not every lot has an event yet,
     // so we need to "prime" the _newLotEventSignal with a dummy lot event (the values from _newLotEventSignal are completely ignored anyway).
 
-    private let intermediateMergeResults: [AnyObject]
 
     init(currencySymbol: String, lotViewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType) {
         // Okay, so what's all this then?? Well, we need to merge several signals together, but due to Interstellar's garbage collection model of unsubscribing, we can't unsubscribe from a merged signal.
@@ -38,15 +37,10 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
         self._currentLotSubscription = auctionViewModel.currentLotSignal.subscribe(_currentLot.update)
         self._newLotEventsSubscription = lotViewModel.newEventsSignal.subscribe(_newLotEventsSignal.update)
 
-        // The result of merge() must be stored strongy throughout our lifetime, so we store the intermediate results
-        // of the merges in an array.
-        let a = _lotState.merge(_askingPrice)
-        let b = a.merge(_currentLot)
-        let c = b.merge(_newLotEventsSignal)
-
-        intermediateMergeResults = [a, b, c]
-
-        progressSignal = c
+        progressSignal = _lotState
+            .merge(_askingPrice)
+            .merge(_currentLot)
+            .merge(_newLotEventsSignal)
             .map { tuple -> (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?) in
                 // Merging more than two Observables in Interstellar gets really messy, we're mapping from that mess into a nice tuple with named elements.
                 return (lotState: tuple.0.0.0, askingPrice: tuple.0.0.1, currentLot: tuple.0.1)
