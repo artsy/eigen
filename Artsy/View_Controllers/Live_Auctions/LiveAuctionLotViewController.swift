@@ -146,7 +146,7 @@ class LiveAuctionLotViewController: UIViewController {
 
 
         // Subscribe to updates from our bidding view model, telling us what state the lot's bid status is in.
-        biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak lotMetadataStack, weak historyViewController, weak self] bidState in
+        biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak self] bidState in
 
             let hideCurrentLotCTA: Bool
             let hideBidHistory: Bool
@@ -164,8 +164,8 @@ class LiveAuctionLotViewController: UIViewController {
 
             currentLotView?.hidden = hideCurrentLotCTA
 
-            historyViewController?.view.hidden = hideBidHistory
-            historyViewController?.tableView.scrollEnabled = hideBidHistory
+            self?.bidHistoryViewController?.view.hidden = hideBidHistory
+            self?.bidHistoryViewController?.tableView.scrollEnabled = hideBidHistory
             pan.enabled = !hideBidHistory
 
             if hideBidHistory && self?._bidHistoryState == .Open {
@@ -177,7 +177,7 @@ class LiveAuctionLotViewController: UIViewController {
             }
 
             // We need to align the bottom of the lot image to the lot metadata
-            lotMetadataStack?.layoutIfNeeded()
+            self?.lotMetadataStack?.layoutIfNeeded()
         }
 
         // TODO: is this required? A closed sale would imply all lots are closed, and the currentLotView would be hidden in the above subscription ^
