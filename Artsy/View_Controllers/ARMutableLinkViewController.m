@@ -53,6 +53,8 @@
             return;
         }
 
+        // We need to call begin/endAppearanceTransition manually, because at this point, our view controller
+        // has already appeared (so newly added children won't receive viewWill/DidAppear callbacks automatically).
         [internalViewController beginAppearanceTransition:true animated:false];
         [self ar_addAlignedModernChildViewController:internalViewController];
         [internalViewController endAppearanceTransition];
