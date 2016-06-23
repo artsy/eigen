@@ -7,8 +7,8 @@
 + (void)getHTTPRedirectForRequest:(NSURLRequest *)request completion:(void (^)(NSString *_Nullable redirectLocation, NSError *_Nullable error))completion
 {
     [self performRequest:request fullSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        BOOL redirects = request.URL != response.URL;
-        if (redirects) {
+        BOOL redirected = ([request.URL isEqual:response.URL] == NO);
+        if (redirected) {
             completion(response.URL.absoluteString, nil);
         } else {
             completion(nil, nil);
