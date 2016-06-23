@@ -231,7 +231,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 2;
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
     [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        return [sself loadUnknownPathWithID:parameters[@"slug"]];
+        return [sself loadProfileWithID: parameters[@"slug"]];
     }];
 
     // The menu items' paths are added in ARTopMenuViewController
