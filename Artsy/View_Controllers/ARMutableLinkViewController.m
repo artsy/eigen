@@ -35,13 +35,13 @@
     [self ar_presentIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 
     NSURLRequest *headRequest = [ARRouter newHEADRequestForPath:self.originalPath];
-    [ArtsyAPI getHTTPResponseHeadersForRequest:headRequest completion:^(NSInteger responseCode, NSDictionary *_Nonnull headers, NSError *_Nullable error) {
+    [ArtsyAPI getHTTPRedirectForRequest:headRequest completion:^(NSString *_Nullable redirectLocation, NSError *_Nullable error) {
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
 
         UIViewController *internalViewController;
 
-        if (responseCode == 302 && headers[@"Location"]) {
-            internalViewController = [ARSwitchBoard.sharedInstance loadPath:headers[@"Location"]];
+        if (redirectLocation) {
+            internalViewController = [ARSwitchBoard.sharedInstance loadPath:redirectLocation];
         } else {
             internalViewController = [ARSwitchBoard.sharedInstance loadProfileWithID:self.originalPath];
         }

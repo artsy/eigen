@@ -1187,7 +1187,8 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newHEADRequestForPath:(NSString *)path
 {
-    return [self requestWithMethod:@"HEAD" path:path parameters:nil];
+    NSString *fullPath = [[NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]] absoluteString];
+    return [self requestWithMethod:@"HEAD" URLString:fullPath parameters:nil];
 }
 
 @end

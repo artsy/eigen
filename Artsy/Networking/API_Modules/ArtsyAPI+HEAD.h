@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ArtsyAPI (HEAD)
 
-+ (void)getHTTPResponseHeadersForRequest:(NSURLRequest *)request completion:(void (^)(NSInteger responseCode, NSDictionary *headers, NSError *_Nullable error))completion;
++ (void)getHTTPRedirectForRequest:(NSURLRequest *)request completion:(void (^)(NSString *_Nullable redirectLocation, NSError *_Nullable error))completion;
 
 @end
 
