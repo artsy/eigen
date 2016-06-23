@@ -53,7 +53,9 @@
             return;
         }
 
+        [internalViewController beginAppearanceTransition:true animated:false];
         [self ar_addAlignedModernChildViewController:internalViewController];
+        [internalViewController endAppearanceTransition];
     }];
 }
 
