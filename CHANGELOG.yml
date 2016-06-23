@@ -1,9 +1,10 @@
 upcoming:
-  - version: 2.6.2
+    version: 2.6.2
     details: Bug fix around re-directs
 
     dev:
-      - Bug fix around redirection view controllers - sarah
+    user_facing:
+      - Fixes bug where a black screen would appear instead of the intended view. - ash
 
 releases:
   - version: 2.6.1
@@ -22,7 +23,6 @@ releases:
         - Better bid history cell separators. - ash
     user_facing:
       - Fade truncated parts of current refine settings on auction view. - alloy
-
 
   - version: 2.6.0
     details: Live Auctions / Artist Profile polish

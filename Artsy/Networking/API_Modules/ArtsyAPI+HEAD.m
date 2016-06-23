@@ -4,12 +4,17 @@
 
 @implementation ArtsyAPI (HEAD)
 
-+ (void)getHTTPResponseHeadersForRequest:(NSURLRequest *)request completion:(void (^)(NSInteger responseCode, NSDictionary *headers, NSError *_Nullable error))completion
++ (void)getHTTPRedirectForRequest:(NSURLRequest *)request completion:(void (^)(NSString *_Nullable redirectLocation, NSError *_Nullable error))completion
 {
     [self performRequest:request fullSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        completion(response.statusCode, response.allHeaderFields, nil);
+        BOOL redirected = ([request.URL isEqual:response.URL] == NO);
+        if (redirected) {
+            completion(response.URL.absoluteString, nil);
+        } else {
+            completion(nil, nil);
+        }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        completion(response.statusCode, response.allHeaderFields, error);
+        completion(nil, error);
     }];
 }
 @end
