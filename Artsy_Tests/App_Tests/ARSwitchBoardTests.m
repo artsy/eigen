@@ -177,17 +177,17 @@ describe(@"ARSwitchboard", ^{
     });
 
     describe(@"adding a new route", ^{
-//        it(@"supports adding via the register method", ^{
-//            UIViewController *newVC = [[UIViewController alloc] init];
-//            id subject = [switchboard loadPath:@"thingy"];
-//            // Yeah, so, we have this awkward catch-all profile class for any route
-//            // thus if the route isn't registered, it'll go to that
-//            expect(subject).to.beAKindOf(ARMutableLinkViewController.class);
-//            [switchboard registerPathCallbackAtPath:@"/thingy" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
-//                return newVC;
-//            }];
-//            expect([switchboard loadPath:@"thingy"]).to.equal(newVC);
-//        });
+        it(@"supports adding via the register method", ^{
+            UIViewController *newVC = [[UIViewController alloc] init];
+            id subject = [switchboard loadPath:@"thingy"];
+            // Yeah, so, we have this awkward catch-all profile class for any route
+            // thus if the route isn't registered, it'll go to that
+            expect(subject).to.beAKindOf(ARMutableLinkViewController.class);
+            [switchboard registerPathCallbackAtPath:@"/thingy" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
+                return newVC;
+            }];
+            expect([switchboard loadPath:@"thingy"]).to.equal(newVC);
+        });
     });
 
     describe(@"adding a new domain", ^{
@@ -214,13 +214,13 @@ describe(@"ARSwitchboard", ^{
     });
 
     describe(@"routeInternalURL", ^{
-//        it(@"routes profiles", ^{
-//            // See aditional tests for profile routing below.
-//            NSURL *profileURL = [[NSURL alloc] initWithString:@"http://artsy.net/myprofile"];
-//            id subject = [switchboard routeInternalURL:profileURL fair:nil];
-//            expect(subject).to.beKindOf(ARMutableLinkViewController.class);
-//
-//        });
+        it(@"routes profiles", ^{
+            // See aditional tests for profile routing below.
+            NSURL *profileURL = [[NSURL alloc] initWithString:@"http://artsy.net/myprofile"];
+            id subject = [switchboard routeInternalURL:profileURL fair:nil];
+            expect(subject).to.beKindOf(ARMutableLinkViewController.class);
+
+        });
 
         it(@"routes artists", ^{
             id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artist/artistname"] fair:nil];
