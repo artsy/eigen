@@ -1,23 +1,28 @@
 upcoming:
-  version: 2.6.1
-  details: Live Auctions Polish
+  - version: 2.6.2
+    details: Bug fix around re-directs
 
-  dev:
-    infrastructure: 
-      - Correctly handle routing to modals via paths - orta
-      - WIP support for iOS10 at runtime - orta
-    live_auctions:
-      - Uses server-defined increment strategy. - ash
-      - Parnter name shows on iPhone. - ash
-      - New loading indicator. - ash
-      - Improved bid button interaction. - ash
-      - Use a spinner UI for the Max Bid - orta/ash
-      - Better bid history cell separators. - ash
-  user_facing:
-    - Fade truncated parts of current refine settings on auction view. - alloy
-
+    dev:
+      - Bug fix around redirection view controllers - sarah
 
 releases:
+  - version: 2.6.1
+    details: Live Auctions Polish
+
+    dev:
+      infrastructure: 
+        - Correctly handle routing to modals via paths - orta
+        - WIP support for iOS10 at runtime - orta
+      live_auctions:
+        - Uses server-defined increment strategy. - ash
+        - Parnter name shows on iPhone. - ash
+        - New loading indicator. - ash
+        - Improved bid button interaction. - ash
+        - Use a spinner UI for the Max Bid - orta/ash
+        - Better bid history cell separators. - ash
+    user_facing:
+      - Fade truncated parts of current refine settings on auction view. - alloy
+
 
   - version: 2.6.0
     details: Live Auctions / Artist Profile polish
