@@ -1,12 +1,20 @@
 upcoming:
-    version: 2.6.2
+    version: 2.6.3
+    details: Bug fixes in Artist profile view
+
+    dev:
+    user_facing:
+      - Fixes various nullability issues. - sarah
+      - Fixes iOS 8 by not using new JS API. - sarah & alloy
+
+releases:
+  - version: 2.6.2
     details: Bug fix around re-directs
 
     dev:
     user_facing:
       - Fixes bug where a black screen would appear instead of the intended view. - ash
 
-releases:
   - version: 2.6.1
     details: Live Auctions Polish
 
