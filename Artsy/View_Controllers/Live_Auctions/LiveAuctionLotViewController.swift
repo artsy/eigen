@@ -19,11 +19,11 @@ class LiveAuctionLotViewController: UIViewController {
     let bidHistoryState = Observable<BidHistoryState>(.Closed)
     let bidHistoryDelta = Observable<(delta: CGFloat, animating: Bool)>((delta: 0, animating: false))
 
-    private var bidHistoryViewController: LiveAuctionBidHistoryViewController?
+    private weak var bidHistoryViewController: LiveAuctionBidHistoryViewController?
     private let biddingViewModel: LiveAuctionBiddingViewModelType
 
     private var imageBottomConstraint: NSLayoutConstraint?
-    private var lotMetadataStack: AuctionLotMetadataStackScrollView?
+    private weak var lotMetadataStack: AuctionLotMetadataStackScrollView?
 
     private var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
 
@@ -102,16 +102,16 @@ class LiveAuctionLotViewController: UIViewController {
         infoToolbar.constrainHeight("38")
 
         /// Toggles the top constraint, and tells the stack to re-layout
-        lotMetadataStack.showAdditionalInformation = {
-            topMetadataStackConstraint.active = true
-            metadataStack.updateTopMargin("10", forView: infoToolbar)
-            lotMetadataStack.showFullMetadata(true)
+        lotMetadataStack.showAdditionalInformation = { [weak lotMetadataStack, weak topMetadataStackConstraint, weak metadataStack, weak infoToolbar] in
+            topMetadataStackConstraint?.active = true
+            metadataStack?.updateTopMargin("10", forView: infoToolbar)
+            lotMetadataStack?.showFullMetadata(true)
         }
 
-        lotMetadataStack.hideAdditionalInformation = {
-            topMetadataStackConstraint.active = false
-            metadataStack.updateTopMargin("28", forView: infoToolbar)
-            lotMetadataStack.hideFullMetadata(true)
+        lotMetadataStack.hideAdditionalInformation = { [weak lotMetadataStack, weak topMetadataStackConstraint, weak metadataStack, weak infoToolbar] in
+            topMetadataStackConstraint?.active = false
+            metadataStack?.updateTopMargin("28", forView: infoToolbar)
+            lotMetadataStack?.hideFullMetadata(true)
         }
 
         let pan = PanDirectionGestureRecognizer(direction: .Vertical, target: self, action: #selector(userDidDragToolbar))
@@ -146,7 +146,7 @@ class LiveAuctionLotViewController: UIViewController {
 
 
         // Subscribe to updates from our bidding view model, telling us what state the lot's bid status is in.
-        biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak lotMetadataStack, weak historyViewController, weak self] bidState in
+        biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak self] bidState in
 
             let hideCurrentLotCTA: Bool
             let hideBidHistory: Bool
@@ -164,8 +164,8 @@ class LiveAuctionLotViewController: UIViewController {
 
             currentLotView?.hidden = hideCurrentLotCTA
 
-            historyViewController?.view.hidden = hideBidHistory
-            historyViewController?.tableView.scrollEnabled = hideBidHistory
+            self?.bidHistoryViewController?.view.hidden = hideBidHistory
+            self?.bidHistoryViewController?.tableView.scrollEnabled = hideBidHistory
             pan.enabled = !hideBidHistory
 
             if hideBidHistory && self?._bidHistoryState == .Open {
@@ -177,7 +177,7 @@ class LiveAuctionLotViewController: UIViewController {
             }
 
             // We need to align the bottom of the lot image to the lot metadata
-            lotMetadataStack?.layoutIfNeeded()
+            self?.lotMetadataStack?.layoutIfNeeded()
         }
 
         // TODO: is this required? A closed sale would imply all lots are closed, and the currentLotView would be hidden in the above subscription ^

@@ -21,7 +21,7 @@ struct AuctionInformation {
 }
 
 class AuctionInformationViewController: UIViewController {
-    var titleViewDelegate: AuctionTitleViewDelegate?
+    weak var titleViewDelegate: AuctionTitleViewDelegate?
     var saleViewModel: SaleViewModel
 
     let FAQEntries: [AuctionInformation.FAQEntry]

@@ -4,7 +4,7 @@ import Interstellar
 /// Something to pretend to either be a network model or whatever
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
-protocol LiveAuctionsSalesPersonType {
+protocol LiveAuctionsSalesPersonType: class {
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
     var initialStateLoadedSignal: Observable<Void> { get }
 
@@ -76,9 +76,9 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         self.auctionViewModel = auctionViewModelCreator(sale: sale, currentLotSignal: stateManager.currentLotSignal, biddingCredentials: biddingCredentials)
     }
 
-    lazy var bidIncrements: [BidIncrementStrategy] = {
+    lazy var bidIncrements: [BidIncrementStrategy] = { [weak self] in
         // It's very unikely the API would fail to send us bid increments, but just in case, let's avoid a crash.
-        guard let bidIncrements = self.sale.bidIncrementStrategy else { return [] }
+        guard let bidIncrements = self?.sale.bidIncrementStrategy else { return [] }
         return bidIncrements.sort()
     }()
 

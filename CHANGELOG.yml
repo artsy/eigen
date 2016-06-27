@@ -3,6 +3,8 @@ upcoming:
     details: Bug fixes in Artist profile view
 
     dev:
+      infrastructure:
+        - Fixes various memory leaks in live. - ash
     user_facing:
       - Fixes various nullability issues. - sarah
       - Fixes iOS 8 by not using new JS API. - sarah & alloy
@@ -19,7 +21,7 @@ releases:
     details: Live Auctions Polish
 
     dev:
-      infrastructure: 
+      infrastructure:
         - Correctly handle routing to modals via paths - orta
         - WIP support for iOS10 at runtime - orta
       live_auctions:
