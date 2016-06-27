@@ -104,17 +104,17 @@ describe(@"initWithURL", ^{
 
         it(@"rewrites the scheme", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://m-staging.artsy.net/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"http://m-staging.artsy.net/foo/bar");
+            expect([controller currentURL].absoluteString).to.equal(@"https://m-staging.artsy.net/foo/bar");
         });
 
         it(@"with an artsy.net url", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://staging.artsy.net/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"http://m-staging.artsy.net/foo/bar");
+            expect([controller currentURL].absoluteString).to.equal(@"https://m-staging.artsy.net/foo/bar");
         });
 
         it(@"with a relative url", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"http://m-staging.artsy.net/foo/bar");
+            expect([controller currentURL].absoluteString).to.equal(@"https://m-staging.artsy.net/foo/bar");
         });
 
         it(@"with an external artsy.net url", ^{
