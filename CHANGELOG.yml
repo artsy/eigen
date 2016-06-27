@@ -10,6 +10,7 @@ upcoming:
 releases:
   - version: 2.6.2
     details: Bug fix around re-directs
+    date: Jun 23, 2016
 
     dev:
     user_facing:
@@ -17,6 +18,7 @@ releases:
 
   - version: 2.6.1
     details: Live Auctions Polish
+    date: Jun 22, 2016
 
     dev:
       infrastructure: 
@@ -34,7 +36,7 @@ releases:
 
   - version: 2.6.0
     details: Live Auctions / Artist Profile polish
-
+    date: Jun 14, 2016
     dev:
       infra:
         - Adds SwiftLint. - ash
@@ -66,6 +68,7 @@ releases:
 
   - version: 2.5.0
     details: New Artist View
+    date: Jun 5, 2016
 
     dev:
       live_actions:
@@ -147,6 +150,7 @@ releases:
 
   - version: 2.4.1
     details: Analytics improvements
+    date: March 25, 2016
 
     dev:
       - Added a max height for single images in WorksForYouVC - sarah
@@ -184,6 +188,7 @@ releases:
 
   - version: 2.4.0
     details: Auctions Overview + For You Native Views
+    date: March 15, 2016
 
     dev:
       - Made a class for notification item views and added tests for WorksForYouVC - sarah
@@ -237,6 +242,7 @@ releases:
 
   - version: 2.3.5
     details: Ideally a small release for iOS8 + Push fixes.
+    date: "Was not submitted to the app store"
     dev:
       - Updated Danger - orta
       - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger - orta
