@@ -37,6 +37,13 @@ end
 begin
   readme_yaml = File.read "CHANGELOG.yml"
   readme_data = YAML.load readme_yaml
+  # Common error when making a new version
+  fail "Upcoming is an array, it should be an object" if readme_data["upcoming"].is_a? Array  
+  # Tie all releases to a date
+  for release in readme_data["releases"]
+    fail "Release #{release["version"]} does not have a date" unless release["date"]
+  end 
+
 rescue StandardError
   fail("CHANGELOG isn't legit YAML")
 end
