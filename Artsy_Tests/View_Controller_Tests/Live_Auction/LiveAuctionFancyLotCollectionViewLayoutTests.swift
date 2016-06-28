@@ -9,7 +9,7 @@ import Artsy
 
 class LiveAuctionFancyLotCollectionViewLayoutTests: QuickSpec {
     override func spec() {
-        
+
         // This is test target-wide.
         beforeSuite {
             let fake = stub_auctionSalesPerson()

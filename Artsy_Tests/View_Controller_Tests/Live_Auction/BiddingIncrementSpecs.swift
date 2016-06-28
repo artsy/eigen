@@ -50,4 +50,3 @@ class BiddingIncrementSpecs: QuickSpec {
         }
     }
 }
-

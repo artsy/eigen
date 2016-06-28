@@ -91,7 +91,7 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                 let biddingState: LiveAuctionBiddingProgressState
 
                 let isSellingToMe = state.currentLot?.userIsBeingSoldTo ?? false
-                
+
                 if isSellingToMe {
                     biddingState = .BidBecameMaxBidder
                 } else {

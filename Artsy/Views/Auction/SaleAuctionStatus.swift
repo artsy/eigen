@@ -40,7 +40,7 @@ extension SaleAuctionStatusType {
         } else if registrationClosed {
             state.insert(.UserRegistrationClosed)
         }
-        
+
         return state
     }
 }

@@ -16,7 +16,7 @@ class AuctionTitleViewSpec: QuickSpec {
         let delegate = Test_AuctionTitleViewDelegate()
         var fullWidth: Bool!
 
-        beforeEach { 
+        beforeEach {
             viewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [qualifiedBidder])
         }
 

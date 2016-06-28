@@ -2,12 +2,27 @@
 
 PRECOMMIT_HOOK_FILENAME = '.git/hooks/pre-commit'
 PRECOMMIT_HOOK = <<-EOS
+# Modified from https://github.com/realm/SwiftLint/issues/413#issuecomment-184077062
+run_swiftlint() {
+    local filename="${1}"
+    if [[ "${filename##*.}" == "swift" ]]; then
+      # Tests and prod code have different configs, use the proper one.
+      if [[ $filename == Artsy_Tests* ]]; then
+        swiftlint lint --quiet --config Artsy_Tests/.swiftlint.yml --path "${filename}"
+      else
+        swiftlint lint --quiet --config Artsy/.swiftlint.yml --path "${filename}"
+      fi
+    fi
+}
+
 if which swiftlint >/dev/null; then
-  swiftlint lint --quiet --config Artsy/.swiftlint.yml
-  swiftlint lint --quiet --config Artsy_Tests/.swiftlint.yml 
+  echo "SwiftLint version: $(swiftlint version)"
+  git diff --name-only | while read filename; do run_swiftlint "${filename}"; done
+  git diff --cached --name-only | while read filename; do run_swiftlint "${filename}"; done
 else
   echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
 fi
+
 EOS
 
 def write_precommit_hook

@@ -169,7 +169,7 @@ class LiveAuctionLotViewController: UIViewController {
             pan.enabled = !hideBidHistory
 
             if hideBidHistory && self?._bidHistoryState == .Open {
-                UIView.animateWithDuration(ARAnimationQuickDuration, animations: { 
+                UIView.animateWithDuration(ARAnimationQuickDuration, animations: {
                     self?.shrinkBidHistory()
                 }, completion: { _ in
                     self?.shrinkBidHistoryCompleted()

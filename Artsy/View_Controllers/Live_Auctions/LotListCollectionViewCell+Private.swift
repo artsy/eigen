@@ -51,7 +51,7 @@ extension PrivateFunctions {
         closedLabel.alignTrailingEdgeWithView(contentView, predicate: "-20")
         closedLabel.alignCenterYWithView(lotImageView, predicate: "0")
         closedLabel.constrainLeadingSpaceToView(labelContainerView, predicate: ">= 10")
-        
+
         // Hammer image view.
         contentView.addSubview(hammerImageView)
         hammerImageView.alignCenterYWithView(contentView, predicate: "0")

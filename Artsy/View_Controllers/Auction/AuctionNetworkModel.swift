@@ -74,11 +74,11 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
 
                 case (.Error(let error), .Success):
                     return .Error(error)
-                    
+
                 case (.Success, .Error(let error)):
                     return .Error(error)
                 }
-                
+
         }
     }
 }
