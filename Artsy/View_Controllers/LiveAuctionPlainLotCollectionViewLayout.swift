@@ -4,8 +4,6 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
 
     unowned let delegate: LiveAuctionLotCollectionViewDelegateLayout
 
-    private let maxHeight: CGFloat = 360
-
     init(delegate: LiveAuctionLotCollectionViewDelegateLayout) {
         self.delegate = delegate
 
@@ -23,6 +21,11 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         didSet {
             invalidateLayout()
         }
+    }
+
+    private var maxHeight: CGFloat {
+        guard let height = collectionView?.bounds.height else { return 0 }
+        return height - 40
     }
 
     class override func layoutAttributesClass() -> AnyClass {

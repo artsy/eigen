@@ -1,7 +1,18 @@
 upcoming:
-    version: 2.6.3
-    details: Bug fixes in Artist profile view
+    version: 2.6.4
+    details: Auctions Fixes?
 
+    dev:
+      infrastructure:
+        - Fixes various memory leaks in live. - ash
+        - Fixes problems that arose from fixing memory leaks. - ash
+    user_facing:
+      - iPad Pro gets full screen lot thumbnails during Live Auctions - orta
+
+releases:
+  - version: 2.6.3
+    details: Bug fixes in Artist profile view
+    date: Not released yet
     dev:
       infrastructure:
         - Fixes various memory leaks in live. - ash
@@ -10,7 +21,6 @@ upcoming:
       - Fixes various nullability issues. - sarah
       - Fixes iOS 8 by not using new JS API. - sarah & alloy
 
-releases:
   - version: 2.6.2
     details: Bug fix around re-directs
     date: Jun 23, 2016
