@@ -50,7 +50,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                 it("handles new event updates") {
                     lotViewModel.numberOfDerivedEvents = 2
                     lotViewModel.newEventsSignal.update([lotViewModel.derivedEventAtPresentationIndex(2)])
-                    
+
 
                     expect(subject) == snapshot()
                 }
@@ -66,7 +66,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                     lotViewModel.cancelEvents = true
 
                     lotViewModel.newEventsSignal.update([])
-                    
+
                     expect(subject) == snapshot()
                 }
             }
@@ -218,7 +218,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             let events = [e1, e2, e3, e4, e5]
             lotVM.updateWinningBidEventID(e3.eventID)
             lotVM.addEvents(events as! [LiveEvent])
-            
+
             expect(subject) == snapshot()
         }
 

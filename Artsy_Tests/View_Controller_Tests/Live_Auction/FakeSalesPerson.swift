@@ -16,7 +16,7 @@ func stub_auctionSalesPerson(auctionViewModel: LiveAuctionViewModelType? = nil, 
     } else {
         auctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()
     }
-    return Stub_LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.Registered.jwt , biddingCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
+    return Stub_LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.Registered.jwt, biddingCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
 }
 
 
@@ -44,7 +44,7 @@ enum StubbedCredentials {
 
 extension StubbedCredentials {
     var jwt: JWT {
-        switch self {   
+        switch self {
         case .Registered:
             let loggedInRegistered = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWN0aW9ucyIsInJvbGUiOiJiaWRkZXIiLCJ1c2VySWQiOiI0ZWM5MmNjYjU2YWU4ODAwMDEwMDAzOGUiLCJzYWxlSWQiOiI1NzU1YjA3YzVmOWY4ZjVjYjYwMDAwMDIiLCJiaWRkZXJJZCI6Ijk0MDIxNiIsImlhdCI6MTQ2NTI0MzkxMzIxMX0.K3XuQ8n60Y5Co5YTxeY2VgqDhM3M_OIoUhGqrLlKbDw"
             return JWT(jwtString: loggedInRegistered)!

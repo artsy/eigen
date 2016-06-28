@@ -12,12 +12,9 @@ disabled_rules:
   - conditional_binding_cascade
   - file_length
   - type_body_length
+  - variable_name
 
 opt_in_rules:
   - empty_count
 
 included: Artsy_Tests
-
-variable_name:
-  min_length: 1
-  max_length: 100
