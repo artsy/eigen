@@ -7,7 +7,7 @@ let stringData = string.dataUsingEncoding(NSUTF8StringEncoding)
 //let decodedData = NSData(base64EncodedString: string, options:[.IgnoreUnknownCharacters])
 //let decodedData = NSData(base64EncodedData:stringData!, options:[.IgnoreUnknownCharacters])
 
-let paddedLength = string.characters.count + (4 - (string.characters.count % 4));
+let paddedLength = string.characters.count + (4 - (string.characters.count % 4))
 let correctBase64String = string.stringByPaddingToLength(paddedLength, withString:"=", startingAtIndex:0)
 
 

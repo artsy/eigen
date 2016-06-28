@@ -30,10 +30,10 @@ extension UIViewController {
 
         ar_dispatch_async {
 
-            UIGraphicsBeginImageContext(self.view.bounds.size);
+            UIGraphicsBeginImageContext(self.view.bounds.size)
             self.view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates:false)
-            let viewImage = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
+            let viewImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
 
             let blurredImage = viewImage.blurredImageWithRadius(12, iterations: 2, tintColor: UIColor.blackColor())
 
@@ -55,7 +55,7 @@ extension UIViewController {
                 darkOverlay.alignToView(imageView)
 
                 // As the BG will be dark, we need to set the status bar to be white
-                // this should not affect the presentation, so if it's not showing, 
+                // this should not affect the presentation, so if it's not showing,
                 // it's not going to show it.
                 let app = UIApplication.sharedApplication()
                 statusViewPreviousStatusBarStyle = app.statusBarStyle

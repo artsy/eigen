@@ -12,7 +12,7 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
         super.init(rootViewController: rootViewController)
         (rootViewController as? ARExternalWebBrowserViewController)?.ignoreStatusBar = true
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -58,7 +58,7 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
     }
 
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return traitDependentSupportedInterfaceOrientations 
+        return traitDependentSupportedInterfaceOrientations
     }
 
     override func shouldAutorotate() -> Bool {

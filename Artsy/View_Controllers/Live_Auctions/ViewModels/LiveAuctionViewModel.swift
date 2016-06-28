@@ -10,7 +10,7 @@ protocol LiveAuctionViewModelType: class {
     var saleAvailabilitySignal: Observable<SaleAvailabilityState> { get }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
     var auctionState: ARAuctionState { get }
-    
+
     func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int?
 }
 

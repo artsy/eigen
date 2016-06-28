@@ -5,7 +5,7 @@ extension UILabel {
 
     func makeSubstringFaint(substring: String) {
         guard let
-            attributedText = self.attributedText!.mutableCopy() as? NSMutableAttributedString,
+            attributedText = self.attributedText?.mutableCopy() as? NSMutableAttributedString,
             text: NSString = self.text
             else { return }
 

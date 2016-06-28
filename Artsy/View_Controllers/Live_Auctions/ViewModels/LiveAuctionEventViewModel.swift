@@ -79,7 +79,7 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
         if !isBidConfirmation { return nil }
         return event.amountCents
     }
-    
+
     var bidAmountCents: UInt64? {
         if !isBid { return nil}
         return event.amountCents
