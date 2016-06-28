@@ -16,13 +16,13 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
 
         /// Fetches all the sale artworks associated with the sale.
         /// This serves as a trampoline for the actual recursive call.
-        fetchPage(1, forSaleID: saleID, alreadyFetched: []) { [weak self, weak observable]  result in
+        fetchPage(1, forSaleID: saleID, alreadyFetched: []) { [weak self] result in
             switch result {
             case .Success(let saleArtworks):
                 self?.saleArtworks = saleArtworks
-                observable?.update(.Success(saleArtworks))
+                observable.update(.Success(saleArtworks))
             case .Error(let error):
-                observable?.update(.Error(error))
+                observable.update(.Error(error))
             }
         }
 

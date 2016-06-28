@@ -5,6 +5,7 @@ upcoming:
     dev:
       infrastructure:
         - Fixes various memory leaks in live. - ash
+        - Fixes problems that arose from fixing memory leaks. - ash
     user_facing:
       - Fixes various nullability issues. - sarah
       - Fixes iOS 8 by not using new JS API. - sarah & alloy

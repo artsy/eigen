@@ -38,7 +38,7 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
     func fetch() -> Observable<Result<SaleViewModel>> {
 
         return fetchBidders()
-            .flatMap { [weak self]  (bidders: Result<[Bidder]>) -> Observable<Result<SaleViewModel>> in
+            .flatMap { [weak self] (bidders: Result<[Bidder]>) -> Observable<Result<SaleViewModel>> in
                 guard let `self` = self else { return Observable() }
 
                 switch bidders {
@@ -47,9 +47,9 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 case .Error(let error):
                     return Observable(.Error(error))
                 }
-            }.next { [weak self] saleViewModel in
+            }.next { saleViewModel in
                 // Store the SaleViewModel
-                self?.saleViewModel = saleViewModel
+                self.saleViewModel = saleViewModel
             }
     }
 
