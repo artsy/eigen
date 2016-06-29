@@ -95,3 +95,8 @@ if outliers.any?
   markdown(([headings] + warnings).join)
 end
 
+swiftlint.config_file = 'Artsy/.swiftlint.yml'
+swiftlint.lint_files
+
+swiftlint.config_file = 'Artsy_Tests/.swiftlint.yml'
+swiftlint.lint_files
