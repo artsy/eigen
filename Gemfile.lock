@@ -8,14 +8,15 @@ GIT
 
 GIT
   remote: https://github.com/danger/danger/
-  revision: f71d86a81a3f31427d25f77958e83c6fef013d35
+  revision: 254b78975417fd3d2a03e87d956c1e20e7d61a7f
   branch: master
   specs:
-    danger (0.8.2)
-      claide
+    danger (0.8.3)
+      claide (~> 1.0)
       colored (~> 1.2)
-      faraday
-      git
+      cork (~> 0.1)
+      faraday (~> 0)
+      git (~> 1)
       octokit (~> 4.2)
       redcarpet (~> 3.3)
       terminal-table (~> 1)
@@ -95,6 +96,8 @@ GEM
       netrc (= 0.7.8)
     cocoapods-try (1.0.0)
     colored (1.2)
+    cork (0.1.0)
+      colored (~> 1.2)
     dotenv (2.1.1)
     escape (0.0.4)
     faraday (0.9.2)
