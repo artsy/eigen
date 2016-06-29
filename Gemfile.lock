@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ashfurrow/danger-swiftlint/
-  revision: 0b47c10d4b1b808ebbb3201b6dbc7b793ec55157
+  revision: 9bfd468128022aac4fd76ce93f5b09414c6ee552
   branch: master
   specs:
     danger-swiftlint (0.0.1)
@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: https://github.com/danger/danger/
-  revision: 254b78975417fd3d2a03e87d956c1e20e7d61a7f
+  revision: f895ac3be3c1fc2c30062d2ca71598f076a3e0b9
   branch: master
   specs:
     danger (0.8.3)
