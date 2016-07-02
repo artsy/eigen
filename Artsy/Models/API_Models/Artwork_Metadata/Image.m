@@ -67,16 +67,42 @@ static NSInteger ARTiledZoomMinLevel = 11;
 
 - (NSURL *)imageURLWithFormatName:(NSString *)formatName
 {
-    if (self.imageVersions && [self.imageVersions containsObject:formatName]) {
+    NSURL *URL = nil;
+    if (self.imageVersions) {
+        URL = [self _imageURLWithFormatName:formatName];
+        if (URL == nil) {
+            NSArray *allVersions = @[@"medium", @"tall", @"large", @"larger"];
+            NSInteger index = [allVersions indexOfObject:formatName];
+            if (index != NSNotFound) {
+                // First try to use the next available higher resolution version.
+                if (index < (allVersions.count - 1)) {
+                    for (NSInteger i = index; URL == nil && i < allVersions.count; i++) {
+                        URL = [self _imageURLWithFormatName:allVersions[i]];
+                    }
+                }
+                // Otherwise use the next available lower resolution version.
+                if (URL == nil) {
+                    for (NSInteger i = index; URL == nil && i >= 0; i--) {
+                        URL = [self _imageURLWithFormatName:allVersions[i]];
+                    }
+                }
+            }
+        }
+    }
+    return URL;
+}
+
+- (NSURL *)_imageURLWithFormatName:(NSString *)formatName;
+{
+    if ([self.imageVersions containsObject:formatName]) {
         NSString *url = [self.url stringByReplacingOccurrencesOfString:@":version" withString:formatName];
         if ([self.url hasPrefix:@"http"]) {
             return [NSURL URLWithString:url];
         } else {
             return [NSURL fileURLWithPath:url];
         }
-    } else {
-        return nil;
     }
+    return nil;
 }
 
 - (NSURL *)urlTileForLevel:(NSInteger)level atX:(NSInteger)x andY:(NSInteger)y
