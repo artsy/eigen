@@ -4,8 +4,9 @@ type AggregationCount {
   count: Int
 }
 
-type Article {
+type Article implements Node {
   cached: Int
+  __id: ID!
   id: String
   title: String
   published_at(format: String): String
@@ -23,8 +24,9 @@ enum ArticleSorts {
   PUBLISHED_AT_DESC
 }
 
-type Artist {
+type Artist implements Node {
   cached: Int
+  __id: ID!
   _id: String
   id: String
   href: String
@@ -89,8 +91,9 @@ type ArtistCounts {
   articles(format: String, label: String): FormattedNumber
 }
 
-type ArtistItem {
+type ArtistItem implements Node {
   cached: Int
+  __id: ID!
   _id: String
   id: String
   href: String
@@ -137,8 +140,9 @@ type ArtistMeta {
   description: String
 }
 
-type ArtistSearchEntity {
+type ArtistSearchEntity implements Node {
   cached: Int
+  __id: ID!
   _id: String
   id: String
   href: String
@@ -197,8 +201,9 @@ type ArtistStatuses {
   biography: Boolean
 }
 
-type Artwork {
+type Artwork implements Node {
   cached: Int
+  __id: ID!
   id: String
   _id: String
   to_s: String
@@ -327,8 +332,9 @@ type ArtworkContextFair {
   organizer: organizer
 }
 
-type ArtworkContextPartnerShow {
+type ArtworkContextPartnerShow implements Node {
   cached: Int
+  __id: ID!
   _id: String
   id: String
   href: String
@@ -409,8 +415,9 @@ type ArtworksAggregationResults {
   counts: [AggregationCount]
 }
 
-type ArtworkSearchEntity {
+type ArtworkSearchEntity implements Node {
   cached: Int
+  __id: ID!
   id: String
   _id: String
   to_s: String
@@ -715,8 +722,9 @@ type HighestBid {
 
 union Highlighted = HighlightedShow | HighlightedArticle
 
-type HighlightedArticle {
+type HighlightedArticle implements Node {
   cached: Int
+  __id: ID!
   id: String
   title: String
   published_at(format: String): String
@@ -729,8 +737,9 @@ type HighlightedArticle {
   href: String
 }
 
-type HighlightedShow {
+type HighlightedShow implements Node {
   cached: Int
+  __id: ID!
   _id: String
   id: String
   href: String
@@ -910,6 +919,10 @@ input Near {
   max_distance: Float
 }
 
+interface Node {
+  __id: ID!
+}
+
 type OrderedSet {
   cached: Int
   id: String
@@ -991,8 +1004,9 @@ type PartnersAggregationResults {
   counts: [AggregationCount]
 }
 
-type PartnerShow {
+type PartnerShow implements Node {
   cached: Int
+  __id: ID!
   _id: String
   id: String
   href: String
@@ -1034,8 +1048,9 @@ type PartnerShowEventType {
   end_at(format: String): String
 }
 
-type PartnerShowSearchEntity {
+type PartnerShowSearchEntity implements Node {
   cached: Int
+  __id: ID!
   _id: String
   id: String
   href: String
@@ -1134,6 +1149,7 @@ enum Role {
 }
 
 type RootQueryType {
+  node(__id: ID!): Node
   status: Status
   article(id: String!): Article
   articles(show_id: String, sort: ArticleSorts, published: Boolean = true): [Article]
