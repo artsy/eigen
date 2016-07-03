@@ -43,6 +43,8 @@
 #import "LiveBidder.h"
 
 #import "Artwork.h"
+#import "Gene.h"
+
 #import "AREmbeddedModelsViewController.h"
 #import "ARArtworkMasonryModule.h"
 #import "ARSaleArtworkItemFlowModule.h"

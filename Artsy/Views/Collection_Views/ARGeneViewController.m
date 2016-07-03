@@ -18,6 +18,7 @@
 #import "ARNetworkErrorManager.h"
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
+#import "Artsy-Swift.h"
 
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
@@ -38,6 +39,7 @@
 @property (nonatomic, strong) UIView *titleSeparator;
 @property (nonatomic, strong) ARTextView *descriptionTextView;
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksViewController;
+@property (nonatomic, strong) GeneViewModel *viewModel;
 @end
 
 
@@ -55,6 +57,7 @@
 
     _gene = gene;
     _artworkCollection = [[ARGeneArtworksNetworkModel alloc] initWithGene:gene];
+    _viewModel = [[GeneViewModel alloc] initWithGene:gene];
     return self;
 }
 
@@ -128,10 +131,10 @@
         [sself updateBody];
         [sself ar_setDataLoaded];
 
-        if (sself.gene.geneDescription.length == 0) {
-            [sself.headerContainerView removeSubview:sself.descriptionTextView];
-        } else {
+        if (sself.viewModel.geneHasDescription) {
             [sself.headerContainerView removeSubview:sself.titleSeparator];
+        } else {
+            [sself.headerContainerView removeSubview:sself.descriptionTextView];
         }
 
         [sself.view setNeedsLayout];
@@ -150,6 +153,7 @@
     [favoriteButton addTarget:self action:@selector(toggleFollowingGene:) forControlEvents:UIControlEventTouchUpInside];
     [actionsWrapper addSubview:favoriteButton];
 
+    // should be moved to network or view model
     [self.gene getFollowState:^(ARHeartStatus status) {
         [favoriteButton setStatus:status animated:ARPerformWorkAsynchronously];
     } failure:^(NSError *error) {
@@ -216,11 +220,11 @@
 
 - (void)updateBody
 {
-    [self.titleLabel setText:self.gene.name.uppercaseString withLetterSpacing:0.5];
+    [self.titleLabel setText:self.viewModel.displayName.uppercaseString withLetterSpacing:0.5];
 
     // For now we're doing the simplest model possible
 
-    if (self.gene.geneDescription.length) {
+    if (self.viewModel.geneHasDescription) {
         [self.descriptionTextView setMarkdownString:self.gene.geneDescription];
     }
     self.artworksViewController.collectionView.scrollsToTop = YES;

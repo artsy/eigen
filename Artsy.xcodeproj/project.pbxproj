@@ -654,6 +654,7 @@
 		83665E091C84A7B300FA5D77 /* ARWorksForYouNotificationItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83665E081C84A7B300FA5D77 /* ARWorksForYouNotificationItemViewController.m */; };
 		837CEC811C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC801C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m */; };
 		837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
+		838FC9401CC05C5E006DFEC2 /* GeneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838FC93F1CC05C5E006DFEC2 /* GeneViewModel.swift */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		83FF73B41CB87A74002B53FA /* RefinableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B31CB87A74002B53FA /* RefinableType.swift */; };
 		83FF73B91CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */; };
@@ -1832,6 +1833,7 @@
 		837CEC801C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouViewControllerTests.m; sourceTree = "<group>"; };
 		837CEC821C876B7C00A7E0E1 /* ArtsyAPI+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Notifications.h"; sourceTree = "<group>"; };
 		837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Notifications.m"; sourceTree = "<group>"; };
+		838FC93F1CC05C5E006DFEC2 /* GeneViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GeneViewModel.swift; path = Artsy/Views/Collection_Views/GeneViewModel.swift; sourceTree = "<group>"; };
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		83FF73B31CB87A74002B53FA /* RefinableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinableType.swift; path = ../Views/RefinableType.swift; sourceTree = "<group>"; };
@@ -2865,6 +2867,7 @@
 		49BA7DF41655ABE600C06572 = {
 			isa = PBXGroup;
 			children = (
+				838FC93F1CC05C5E006DFEC2 /* GeneViewModel.swift */,
 				60FFE3D5188E916C0012B485 /* Documentation */,
 				49BA7E091655ABE600C06572 /* Artsy */,
 				B3ECE82B1819D1E6009F5C5B /* Artsy Tests */,
@@ -5382,6 +5385,7 @@
 				60D90A0817C2182F0073D5B9 /* ARExternalWebBrowserViewController.m in Sources */,
 				5EC8C6801CA5C5FC00571B21 /* LiveActionStateReconciler.swift in Sources */,
 				E61B703919904D9F00260D29 /* ARTopTapThroughTableView.m in Sources */,
+				838FC9401CC05C5E006DFEC2 /* GeneViewModel.swift in Sources */,
 				499A587B166561E9004B0E2F /* ARFeedConstants.m in Sources */,
 				5E4962441CA1C7E800E77DD5 /* NSAttributedString+Additions.swift in Sources */,
 				CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */,
