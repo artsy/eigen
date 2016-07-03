@@ -38,10 +38,11 @@
   ],
   "dependencies": {
     "lodash": "3.10.1",
+    "remove-markdown": "0.1.0",
     "react": "^15.1.0",
     "react-native": "0.27.1",
-    "react-relay": "^0.9.0",
-    "remove-markdown": "0.1.0"
+    "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.2-alpha.1/react-relay-0.9.1.tgz",
+    "babel-relay-plugin": "https://github.com/alloy/relay/releases/download/v0.9.2-alpha.1/babel-relay-plugin-0.9.1.tgz"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",
