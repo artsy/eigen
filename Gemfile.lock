@@ -6,21 +6,6 @@ GIT
     danger-swiftlint (0.0.1)
       danger
 
-GIT
-  remote: https://github.com/danger/danger/
-  revision: f895ac3be3c1fc2c30062d2ca71598f076a3e0b9
-  branch: master
-  specs:
-    danger (0.8.3)
-      claide (~> 1.0)
-      colored (~> 1.2)
-      cork (~> 0.1)
-      faraday (~> 0)
-      git (~> 1)
-      octokit (~> 4.2)
-      redcarpet (~> 3.3)
-      terminal-table (~> 1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -98,6 +83,15 @@ GEM
     colored (1.2)
     cork (0.1.0)
       colored (~> 1.2)
+    danger (0.8.5)
+      claide (~> 1.0)
+      colored (~> 1.2)
+      cork (~> 0.1)
+      faraday (~> 0)
+      git (~> 1)
+      octokit (~> 4.2)
+      redcarpet (~> 3.3)
+      terminal-table (~> 1)
     dotenv (2.1.1)
     escape (0.0.4)
     faraday (0.9.2)
@@ -154,7 +148,7 @@ DEPENDENCIES
   cocoapods (>= 1.0.0)
   cocoapods-check
   cocoapods-keys
-  danger!
+  danger
   danger-swiftlint!
   lowdown
   nokogiri (>= 1.6.7)
