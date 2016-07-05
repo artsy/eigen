@@ -2,16 +2,15 @@
 
 @implementation ARHomeComponentViewController
 
-- (instancetype)init
+- (instancetype)init;
 {
-    return [self initWithEmission:nil moduleName:nil initialProperties:nil];
+    return [self initWithEmission:nil];
 }
 
-- (instancetype)initWithEmission:(AREmission *)emission
-                      moduleName:(NSString *)moduleName
-               initialProperties:(NSDictionary *)initialProperties
+- (instancetype)initWithEmission:(AREmission *)emission;
 {
-    self = [super initWithEmission:emission moduleName:@"Home" initialProperties:nil];
+    if ((self = [super initWithEmission:emission moduleName:@"Home" initialProperties:nil])) {
+    }
     return self;
 }
 

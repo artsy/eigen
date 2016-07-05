@@ -5,10 +5,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ARHomeComponentViewController : ARComponentViewController
 
 - (instancetype)init;
+- (instancetype)initWithEmission:(AREmission *)emission NS_DESIGNATED_INITIALIZER;
 
-- (instancetype)initWithEmission:(AREmission *)emission
+- (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName
-               initialProperties:(NSDictionary *)initialProperties;
+               initialProperties:(nullable NSDictionary *)initialProperties NS_UNAVAILABLE;
 
 @end
 

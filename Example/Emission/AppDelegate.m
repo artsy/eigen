@@ -86,9 +86,9 @@ randomBOOL(void)
     NSLog(@"[Event] %@ - %@", fromViewController.class, info);
   };
 
-  ARArtistComponentViewController *artistViewController = [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
+//  ARArtistComponentViewController *artistViewController = [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
     
-    ARHomeComponentViewController *homeViewController = [[ARHomeComponentViewController alloc] init];
+  ARHomeComponentViewController *homeViewController = [[ARHomeComponentViewController alloc] init];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];

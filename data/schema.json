@@ -389,6 +389,18 @@
               "deprecationReason": null
             },
             {
+              "name": "home_page",
+              "description": "Home screen content",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "HomePage",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "home_page_modules",
               "description": "Modules to show on the home screen",
               "args": [
@@ -6714,7 +6726,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "BidIncrements",
+                  "name": "BidIncrement",
                   "ofType": null
                 }
               },
@@ -7635,7 +7647,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "BidIncrements",
+                  "name": "BidIncrement",
                   "ofType": null
                 }
               },
@@ -7666,7 +7678,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "BidIncrements",
+          "name": "BidIncrement",
           "description": null,
           "fields": [
             {
@@ -9091,7 +9103,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "BidIncrements",
+                  "name": "BidIncrement",
                   "ofType": null
                 }
               },
@@ -12309,6 +12321,77 @@
         },
         {
           "kind": "OBJECT",
+          "name": "HomePage",
+          "description": null,
+          "fields": [
+            {
+              "name": "modules",
+              "description": "Modules to show on the home screen",
+              "args": [
+                {
+                  "name": "max_rails",
+                  "description": "Maximum number of modules to return",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": "8"
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "HomePageModules",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "module",
+              "description": "Single module to show on the home screen",
+              "args": [
+                {
+                  "name": "key",
+                  "description": "Module key",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "id",
+                  "description": "ID of generic gene rail to target",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "HomePageModules",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "HomePageModules",
           "description": null,
           "fields": [
@@ -13248,7 +13331,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "BidIncrements",
+                  "name": "BidIncrement",
                   "ofType": null
                 }
               },
