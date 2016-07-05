@@ -3,6 +3,7 @@
 
 #import <Emission/AREmission.h>
 #import <Emission/ARArtistComponentViewController.h>
+#import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
@@ -86,10 +87,12 @@ randomBOOL(void)
   };
 
   ARArtistComponentViewController *artistViewController = [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
+    
+    ARHomeComponentViewController *homeViewController = [[ARHomeComponentViewController alloc] init];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
-  self.window.rootViewController = [[RotationNavigationController alloc] initWithRootViewController:artistViewController];
+  self.window.rootViewController = [[RotationNavigationController alloc] initWithRootViewController:homeViewController];
   [self.window makeKeyAndVisible];
   
   return YES;
