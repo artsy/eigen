@@ -29,6 +29,7 @@
 - (NSURL *)urlForThumbnailImage;
 - (NSURL *)urlForDetailImage;
 - (NSURL *)urlForSquareImage;
+- (NSURL *)imageURLWithFormatName:(NSString *)formatName;
 
 - (NSURL *)urlTileForLevel:(NSInteger)level atX:(NSInteger)x andY:(NSInteger)y;
 - (NSURL *)urlTileWithFormatName:(NSString *)formatName;

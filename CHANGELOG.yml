@@ -8,6 +8,7 @@ upcoming:
         - Fixes problems that arose from fixing memory leaks. - ash
     user_facing:
       - iPad Pro gets full screen lot thumbnails during Live Auctions - orta
+      - Fallback to higher or lower available artwork image. - alloy
 
 releases:
   - version: 2.6.3
