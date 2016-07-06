@@ -23,9 +23,33 @@ randomBOOL(void)
   return rand() % 2 == 1;
 }
 
+@interface AppDelegate () <UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, strong) UINavigationController *navigationController;
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
+{
+  [self setupEmission];
+  
+  UITableViewController *tableViewController = [UITableViewController new];
+  tableViewController.tableView.dataSource = self;
+  tableViewController.tableView.delegate = self;
+
+  self.navigationController = [[RotationNavigationController alloc] initWithRootViewController:tableViewController];
+  
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  self.window.backgroundColor = [UIColor whiteColor];
+  self.window.rootViewController = self.navigationController;
+  [self.window makeKeyAndVisible];
+  
+  return YES;
+}
+
+#pragma mark - Emission
+
+- (void)setupEmission;
 {
   AREmission *emission = nil;
 #ifdef ENABLE_DEV_MODE
@@ -35,18 +59,7 @@ randomBOOL(void)
 #else
   emission = [AREmission sharedInstance];
 #endif
-  
-//  self.emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block){
-//    [ArtsyAPI checkFavoriteStatusForArtist:[[Artist alloc] initWithArtistID:artistID]
-//                                   success:^(BOOL following) { block(@[[NSNull null], @(following)]); }
-//                                   failure:^(NSError *error) { block(@[RCTJSErrorFromNSError(error), [NSNull null]]); }];
-//  };
-//  self.emission.APIModule.artistFollowStatusAssigner = ^(NSString *artistID, BOOL following, RCTResponseSenderBlock block) {
-//    [ArtsyAPI setFavoriteStatus:following
-//                      forArtist:[[Artist alloc] initWithArtistID:artistID]
-//                        success:^(id response)    { block(@[[NSNull null], @(following)]); }
-//                        failure:^(NSError *error) { block(@[RCTJSErrorFromNSError(error), @(!following)]); }];
-//  };
+
   emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
     NSNumber *following = @(randomBOOL());
     NSLog(@"Artist(%@).follow => %@", artistID, following);
@@ -65,13 +78,13 @@ randomBOOL(void)
       }
     });
   };
-
+  
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
     [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route]
                                                        animated:YES];
   };
-
+  
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
                                                             NSString * _Nonnull route) {
     UIViewController *viewController = [self viewControllerForRoute:route];
@@ -81,21 +94,10 @@ randomBOOL(void)
                                                                                                     action:@selector(dismissModalViewController)];
     [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
   };
-    
+  
   emission.eventsModule.eventOccurred = ^(UIViewController * _Nonnull fromViewController, NSDictionary * _Nonnull info) {
     NSLog(@"[Event] %@ - %@", fromViewController.class, info);
   };
-
-//  ARArtistComponentViewController *artistViewController = [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
-    
-  ARHomeComponentViewController *homeViewController = [[ARHomeComponentViewController alloc] init];
-
-  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  self.window.backgroundColor = [UIColor whiteColor];
-  self.window.rootViewController = [[RotationNavigationController alloc] initWithRootViewController:homeViewController];
-  [self.window makeKeyAndVisible];
-  
-  return YES;
 }
 
 - (UIViewController *)viewControllerForRoute:(NSString *)route;
@@ -122,6 +124,40 @@ randomBOOL(void)
 {
   UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
   [navigationController.visibleViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Example selection tableview
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+{
+  return 2;
+}
+
+// Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
+// Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+  static NSString *cellIdentifier = @"example cell";
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+  if (cell == nil) {
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  }
+
+  cell.textLabel.text = indexPath.row == 0 ? @"Home" : @"Artist";
+  return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+  ARComponentViewController *viewController = nil;
+  if (indexPath.row == 0) {
+    viewController = [[ARHomeComponentViewController alloc] init];
+  } else {
+    viewController = [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
+  }
+  [self.navigationController pushViewController:viewController animated:YES];
 }
 
 @end
