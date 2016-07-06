@@ -311,7 +311,7 @@ type ArtworkContextAuction {
   cover_image: Image
   sale_artwork(id: ID!): SaleArtwork
   profile: Profile
-  bid_increments: [BidIncrements]
+  bid_increments: [BidIncrement]
   buyers_premium: [BuyersPremium]
 }
 
@@ -395,7 +395,7 @@ type ArtworkContextSale {
   cover_image: Image
   sale_artwork(id: ID!): SaleArtwork
   profile: Profile
-  bid_increments: [BidIncrements]
+  bid_increments: [BidIncrement]
   buyers_premium: [BuyersPremium]
 }
 
@@ -556,7 +556,7 @@ type BidderStatus {
   most_recent_bid: BidderPosition
 }
 
-type BidIncrements {
+type BidIncrement {
   from: Int
   to: Int
   amount: Int
@@ -784,6 +784,11 @@ type HighlightedShow implements Node {
   images(size: Int, default: Boolean, page: Int): [Image]
 }
 
+type HomePage {
+  modules(max_rails: Int = 8): [HomePageModules]
+  module(key: String, id: ID): HomePageModules
+}
+
 union HomePageModuleContext = HomePageModuleContextFair | HomePageModuleContextSale | HomePageModuleContextGene | HomePageModuleContextTrending | HomePageModuleContextFollowArtists | HomePageModuleContextRelatedArtist
 
 type HomePageModuleContextFair {
@@ -856,7 +861,7 @@ type HomePageModuleContextSale {
   cover_image: Image
   sale_artwork(id: ID!): SaleArtwork
   profile: Profile
-  bid_increments: [BidIncrements]
+  bid_increments: [BidIncrement]
   buyers_premium: [BuyersPremium]
 }
 
@@ -1188,6 +1193,7 @@ type RootQueryType {
   fair(id: ID!): Fair
   fairs(size: Int, page: Int, sort: FairSorts, status: EventStatus, fair_organizer_id: String, near: Near, has_full_feature: Boolean): [Fair]
   gene(id: ID!): Gene
+  home_page: HomePage
   home_page_modules(max_rails: Int = 8): [HomePageModules]
   home_page_module(key: String, id: ID): HomePageModules
   profile(id: ID!): Profile
@@ -1237,7 +1243,7 @@ type Sale {
   cover_image: Image
   sale_artwork(id: ID!): SaleArtwork
   profile: Profile
-  bid_increments: [BidIncrements]
+  bid_increments: [BidIncrement]
   buyers_premium: [BuyersPremium]
 }
 
