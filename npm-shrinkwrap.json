@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "dependencies": {
     "abab": {
       "version": "1.0.3",
@@ -642,9 +642,9 @@
       }
     },
     "babel-relay-plugin": {
-      "version": "0.9.0",
-      "from": "babel-relay-plugin@0.9.0",
-      "resolved": "https://registry.npmjs.org/babel-relay-plugin/-/babel-relay-plugin-0.9.0.tgz"
+      "version": "0.9.1",
+      "from": "https://github.com/alloy/relay/releases/download/v0.9.1-alpha.2/babel-relay-plugin-0.9.1.tgz",
+      "resolved": "https://github.com/alloy/relay/releases/download/v0.9.1-alpha.2/babel-relay-plugin-0.9.1.tgz"
     },
     "babel-runtime": {
       "version": "6.9.2",
@@ -4391,9 +4391,9 @@
       }
     },
     "react-relay": {
-      "version": "0.9.0",
-      "from": "react-relay@0.9.0",
-      "resolved": "https://registry.npmjs.org/react-relay/-/react-relay-0.9.0.tgz"
+      "version": "0.9.1",
+      "from": "https://github.com/alloy/relay/releases/download/v0.9.1-alpha.2/react-relay-0.9.1.tgz",
+      "resolved": "https://github.com/alloy/relay/releases/download/v0.9.1-alpha.2/react-relay-0.9.1.tgz"
     },
     "react-static-container": {
       "version": "1.0.1",

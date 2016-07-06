@@ -1,24 +1,35 @@
 type AggregationCount {
-  id: String
+  __id: ID!
+  id: ID!
   name: String
   count: Int
 }
 
-type Article {
+type Article implements Node {
+  __id: ID!
+  id: ID!
   cached: Int
-  id: String
   title: String
+  published_at(format: String): String
+  updated_at(format: String): String
   thumbnail_title: String
+  thumbnail_teaser: String
   author: Author
   thumbnail_image: Image
   slug: String
   href: String
 }
 
-type Artist {
+enum ArticleSorts {
+  PUBLISHED_AT_ASC
+  PUBLISHED_AT_DESC
+}
+
+type Artist implements Node {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   href: String
   sortable_id: String
   name: String
@@ -29,16 +40,19 @@ type Artist {
   is_consignable: Boolean
   public: Boolean
   consignable: Boolean
+  is_display_auction_link: Boolean
   display_auction_link: Boolean
+  has_metadata: Boolean
   hometown: String
   location: String
   nationality: String
   birthday: String
   deathday: String
-  has_metadata: Boolean
+  biography: Article
   alternate_names: [String]
   meta: ArtistMeta
   blurb(format: Format): String
+  biography_blurb(format: Format): ArtistBlurb
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
@@ -50,8 +64,9 @@ type Artist {
   statuses: ArtistStatuses
   exhibition_highlights(size: Int = 5): [PartnerShow]
   partner_shows(at_a_fair: Boolean, active: Boolean, status: String, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  partner_artists(size: Int): [PartnerArtist]
   sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
-  articles: [Article]
+  articles(sort: ArticleSorts, limit: Int): [Article]
 }
 
 enum ArtistArtworksFilters {
@@ -59,24 +74,29 @@ enum ArtistArtworksFilters {
   IS_NOT_FOR_SALE
 }
 
+type ArtistBlurb {
+  text: String
+  credit: String
+}
+
 type ArtistCarousel {
   images: [Image]
 }
 
 type ArtistCounts {
-  artworks(format: String): FormattedNumber
-  follows(format: String): FormattedNumber
-  auction_lots(format: String): FormattedNumber
-  for_sale_artworks(format: String): FormattedNumber
-  partner_shows(format: String): FormattedNumber
-  articles(format: String) : FormattedNumber
-  related_artists(format: String) : FormattedNumber
+  artworks(format: String, label: String): FormattedNumber
+  follows(format: String, label: String): FormattedNumber
+  for_sale_artworks(format: String, label: String): FormattedNumber
+  partner_shows(format: String, label: String): FormattedNumber
+  related_artists(format: String, label: String): FormattedNumber
+  articles(format: String, label: String): FormattedNumber
 }
 
-type ArtistItem {
+type ArtistItem implements Node {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   href: String
   sortable_id: String
   name: String
@@ -87,15 +107,19 @@ type ArtistItem {
   is_consignable: Boolean
   public: Boolean
   consignable: Boolean
+  is_display_auction_link: Boolean
   display_auction_link: Boolean
+  has_metadata: Boolean
   hometown: String
   location: String
   nationality: String
   birthday: String
   deathday: String
+  biography: Article
   alternate_names: [String]
   meta: ArtistMeta
   blurb(format: Format): String
+  biography_blurb(format: Format): ArtistBlurb
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
@@ -107,18 +131,21 @@ type ArtistItem {
   statuses: ArtistStatuses
   exhibition_highlights(size: Int = 5): [PartnerShow]
   partner_shows(at_a_fair: Boolean, active: Boolean, status: String, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  partner_artists(size: Int): [PartnerArtist]
   sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
-  articles: [Article]
+  articles(sort: ArticleSorts, limit: Int): [Article]
 }
 
 type ArtistMeta {
   title: String
+  description: String
 }
 
-type ArtistSearchEntity {
+type ArtistSearchEntity implements Node {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   href: String
   sortable_id: String
   name: String
@@ -129,15 +156,19 @@ type ArtistSearchEntity {
   is_consignable: Boolean
   public: Boolean
   consignable: Boolean
+  is_display_auction_link: Boolean
   display_auction_link: Boolean
+  has_metadata: Boolean
   hometown: String
   location: String
   nationality: String
   birthday: String
   deathday: String
+  biography: Article
   alternate_names: [String]
   meta: ArtistMeta
   blurb(format: Format): String
+  biography_blurb(format: Format): ArtistBlurb
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
@@ -149,8 +180,9 @@ type ArtistSearchEntity {
   statuses: ArtistStatuses
   exhibition_highlights(size: Int = 5): [PartnerShow]
   partner_shows(at_a_fair: Boolean, active: Boolean, status: String, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  partner_artists(size: Int): [PartnerArtist]
   sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
-  articles: [Article]
+  articles(sort: ArticleSorts, limit: Int): [Article]
 }
 
 enum ArtistSorts {
@@ -162,6 +194,7 @@ enum ArtistSorts {
 type ArtistStatuses {
   artworks: Boolean
   shows: Boolean
+  cv: Boolean
   artists: Boolean
   contemporary: Boolean
   articles: Boolean
@@ -169,10 +202,11 @@ type ArtistStatuses {
   biography: Boolean
 }
 
-type Artwork {
+type Artwork implements Node {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  id: String
-  _id: String
   to_s: String
   href: String
   title: String
@@ -183,7 +217,9 @@ type Artwork {
   website: String
   collecting_institution: String
   partner(shallow: Boolean): Partner
+  embed(width: Int = 853, height: Int = 450, autoplay: Boolean = false): String
   can_share_image: Boolean
+  is_embeddable_video: Boolean
   is_shareable: Boolean
   is_hangable: Boolean
   is_inquireable: Boolean
@@ -211,7 +247,9 @@ type Artwork {
   context: ArtworkContext
   highlights: [Highlighted]
   articles(size: Int): [Article]
-  shows(size: Int = 1, active: Boolean = true): [PartnerShow]
+  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
+  sale_artwork: SaleArtwork
   sale: Sale
   fair: Fair
   edition_of: String
@@ -226,7 +264,7 @@ type Artwork {
   manufacturer(format: Format): String
   series(format: Format): String
   meta: ArtworkMeta
-  layer(id: String!): ArtworkLayer
+  layer(id: ID): ArtworkLayer
   layers: [ArtworkLayer]
 }
 
@@ -235,18 +273,53 @@ enum ArtworkAggregation {
   DIMENSION_RANGE
   COLOR
   PERIOD
+  MAJOR_PERIOD
+  PARTNER_CITY
   MEDIUM
   GALLERY
   INSTITUTION
   TOTAL
 }
 
-union ArtworkContext = ArtworkContextFair | ArtworkContextSale | ArtworkContextPartnerShow
+union ArtworkContext = ArtworkContextAuction | ArtworkContextSale | ArtworkContextFair | ArtworkContextPartnerShow
+
+type ArtworkContextAuction {
+  __id: ID!
+  id: ID!
+  _id: ID!
+  cached: Int
+  name: String
+  href: String
+  description: String
+  sale_type: String
+  is_auction: Boolean
+  is_auction_promo: Boolean
+  is_preview: Boolean
+  is_open: Boolean
+  is_live_open: Boolean
+  is_closed: Boolean
+  is_with_buyers_premium: Boolean
+  auction_state: String
+  status: String
+  registration_ends_at(format: String): String
+  start_at(format: String): String
+  end_at(format: String): String
+  live_start_at(format: String): String
+  currency: String
+  sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
+  cover_image: Image
+  sale_artwork(id: ID!): SaleArtwork
+  profile: Profile
+  bid_increments: [BidIncrements]
+  buyers_premium: [BuyersPremium]
+}
 
 type ArtworkContextFair {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   banner_size: String
   profile: Profile
   has_full_feature: Boolean
@@ -256,20 +329,26 @@ type ArtworkContextFair {
   start_at(format: String): String
   end_at(format: String): String
   name: String
+  tagline: String
   published: Boolean
   is_published: Boolean
   organizer: organizer
 }
 
-type ArtworkContextPartnerShow {
+type ArtworkContextPartnerShow implements Node {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   href: String
   kind: String
   name: String
   description: String
+  type: String
   displayable: Boolean
+  is_active: Boolean
+  is_displayable: Boolean
+  is_fair_booth: Boolean
   press_release(format: Format): String
   start_at(format: String): String
   end_at(format: String): String
@@ -289,9 +368,10 @@ type ArtworkContextPartnerShow {
 }
 
 type ArtworkContextSale {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  id: String
-  _id: String
   name: String
   href: String
   description: String
@@ -300,21 +380,28 @@ type ArtworkContextSale {
   is_auction_promo: Boolean
   is_preview: Boolean
   is_open: Boolean
+  is_live_open: Boolean
   is_closed: Boolean
   is_with_buyers_premium: Boolean
   auction_state: String
+  status: String
+  registration_ends_at(format: String): String
   start_at(format: String): String
   end_at(format: String): String
+  live_start_at(format: String): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [Artwork]
+  artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
   cover_image: Image
-  sale_artwork(id: String!): SaleArtwork
+  sale_artwork(id: ID!): SaleArtwork
   profile: Profile
+  bid_increments: [BidIncrements]
+  buyers_premium: [BuyersPremium]
 }
 
 type ArtworkLayer {
-  id: String
+  __id: ID!
+  id: ID!
   type: String
   name: String
   href: String
@@ -333,10 +420,11 @@ type ArtworksAggregationResults {
   counts: [AggregationCount]
 }
 
-type ArtworkSearchEntity {
+type ArtworkSearchEntity implements Node {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  id: String
-  _id: String
   to_s: String
   href: String
   title: String
@@ -347,7 +435,9 @@ type ArtworkSearchEntity {
   website: String
   collecting_institution: String
   partner(shallow: Boolean): Partner
+  embed(width: Int = 853, height: Int = 450, autoplay: Boolean = false): String
   can_share_image: Boolean
+  is_embeddable_video: Boolean
   is_shareable: Boolean
   is_hangable: Boolean
   is_inquireable: Boolean
@@ -375,7 +465,9 @@ type ArtworkSearchEntity {
   context: ArtworkContext
   highlights: [Highlighted]
   articles(size: Int): [Article]
-  shows(size: Int = 1, active: Boolean = true): [PartnerShow]
+  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
+  sale_artwork: SaleArtwork
   sale: Sale
   fair: Fair
   edition_of: String
@@ -390,7 +482,7 @@ type ArtworkSearchEntity {
   manufacturer(format: Format): String
   series(format: Format): String
   meta: ArtworkMeta
-  layer(id: String!): ArtworkLayer
+  layer(id: ID): ArtworkLayer
   layers: [ArtworkLayer]
 }
 
@@ -399,29 +491,36 @@ enum ArtworkSorts {
   title_desc
   created_at_asc
   created_at_desc
+  deleted_at_asc
+  deleted_at_desc
   iconicity_desc
   merchandisability_desc
   published_at_asc
   published_at_desc
   partner_updated_at_desc
+  availability_desc
 }
 
 type Author {
-  id: String
+  __id: ID!
+  id: ID!
   name: String
   profile_handle: String
   href: String
 }
 
 type Bidder {
-  id: String
+  __id: ID!
+  id: ID!
   created_at(format: String): String
   pin: String
   sale: Sale
+  qualified_for_bidding: Boolean
 }
 
 type BidderPosition {
-  id: String
+  __id: ID!
+  id: ID!
   created_at(format: String): String
   updated_at(format: String): String
   processed_at(format: String): String
@@ -441,11 +540,13 @@ type BidderPosition {
 
 type BidderPositionMaxBid {
   cents: Int
+  display: String
   amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
 }
 
 type BidderPositionSuggestedNextBid {
   cents: Int
+  display: String
   amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
 }
 
@@ -453,6 +554,18 @@ type BidderStatus {
   is_highest_bidder: Boolean
   active_bid: BidderPosition
   most_recent_bid: BidderPosition
+}
+
+type BidIncrements {
+  from: Int
+  to: Int
+  amount: Int
+}
+
+type BuyersPremium {
+  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+  cents: Int
+  percent: Float
 }
 
 enum CategoryType {
@@ -501,7 +614,8 @@ type dimensions {
 }
 
 type EditionSet {
-  id: String
+  __id: ID!
+  id: ID!
   dimensions: dimensions
   edition_of: String
   is_acquireable: Boolean
@@ -518,9 +632,10 @@ enum EventStatus {
 }
 
 type Fair {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   banner_size: String
   profile: Profile
   has_full_feature: Boolean
@@ -530,6 +645,7 @@ type Fair {
   start_at(format: String): String
   end_at(format: String): String
   name: String
+  tagline: String
   published: Boolean
   is_published: Boolean
   organizer: organizer
@@ -565,6 +681,15 @@ type FilterPartners {
   aggregations: [PartnersAggregationResults]
 }
 
+type FollowArtistCounts {
+  artists: Int
+}
+
+type FollowArtists {
+  artists: [Artist]
+  counts: FollowArtistCounts
+}
+
 enum Format {
   HTML
   PLAIN
@@ -574,8 +699,10 @@ enum Format {
 scalar FormattedNumber
 
 type Gene {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  id: String
   href: String
   name: String
   image: Image
@@ -584,8 +711,10 @@ type Gene {
 }
 
 type GeneItem {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  id: String
   href: String
   name: String
   image: Image
@@ -594,38 +723,49 @@ type GeneItem {
 }
 
 type HighestBid {
-  id: String
+  __id: ID!
+  id: ID!
   created_at(format: String): String
   number: Int
   is_cancelled: Boolean
   amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
   cents: Int
+  display: String
   amount_cents: Int
   display_amount_dollars: String
 }
 
 union Highlighted = HighlightedShow | HighlightedArticle
 
-type HighlightedArticle {
+type HighlightedArticle implements Node {
+  __id: ID!
+  id: ID!
   cached: Int
-  id: String
   title: String
+  published_at(format: String): String
+  updated_at(format: String): String
   thumbnail_title: String
+  thumbnail_teaser: String
   author: Author
   thumbnail_image: Image
   slug: String
   href: String
 }
 
-type HighlightedShow {
+type HighlightedShow implements Node {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   href: String
   kind: String
   name: String
   description: String
+  type: String
   displayable: Boolean
+  is_active: Boolean
+  is_displayable: Boolean
+  is_fair_booth: Boolean
   press_release(format: Format): String
   start_at(format: String): String
   end_at(format: String): String
@@ -644,12 +784,13 @@ type HighlightedShow {
   images(size: Int, default: Boolean, page: Int): [Image]
 }
 
-union HomePageModuleContext = HomePageModuleContextFair | HomePageModuleContextSale | HomePageModuleContextGene
+union HomePageModuleContext = HomePageModuleContextFair | HomePageModuleContextSale | HomePageModuleContextGene | HomePageModuleContextTrending | HomePageModuleContextFollowArtists | HomePageModuleContextRelatedArtist
 
 type HomePageModuleContextFair {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   banner_size: String
   profile: Profile
   has_full_feature: Boolean
@@ -659,14 +800,22 @@ type HomePageModuleContextFair {
   start_at(format: String): String
   end_at(format: String): String
   name: String
+  tagline: String
   published: Boolean
   is_published: Boolean
   organizer: organizer
 }
 
+type HomePageModuleContextFollowArtists {
+  artists: [Artist]
+  counts: FollowArtistCounts
+}
+
 type HomePageModuleContextGene {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  id: String
   href: String
   name: String
   image: Image
@@ -674,10 +823,16 @@ type HomePageModuleContextGene {
   trending_artists(sample: Int): [Artist]
 }
 
+type HomePageModuleContextRelatedArtist {
+  artist: Artist
+  based_on: Artist
+}
+
 type HomePageModuleContextSale {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  id: String
-  _id: String
   name: String
   href: String
   description: String
@@ -686,29 +841,49 @@ type HomePageModuleContextSale {
   is_auction_promo: Boolean
   is_preview: Boolean
   is_open: Boolean
+  is_live_open: Boolean
   is_closed: Boolean
   is_with_buyers_premium: Boolean
   auction_state: String
+  status: String
+  registration_ends_at(format: String): String
   start_at(format: String): String
   end_at(format: String): String
+  live_start_at(format: String): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [Artwork]
+  artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
   cover_image: Image
-  sale_artwork(id: String!): SaleArtwork
+  sale_artwork(id: ID!): SaleArtwork
   profile: Profile
+  bid_increments: [BidIncrements]
+  buyers_premium: [BuyersPremium]
+}
+
+type HomePageModuleContextTrending {
+  artists: [Artist]
 }
 
 type HomePageModules {
   key: String
   display: String
+  is_displayable: Boolean
+  params: HomePageModulesParams
   context: HomePageModuleContext
   title: String
   results: [Artwork]
 }
 
+type HomePageModulesParams {
+  gene_id: String
+  medium: String
+  price_range: String
+  id: ID
+}
+
 type Image {
-  id: String
+  __id: ID!
+  id: ID!
   href: String
   title: String
   width: Int
@@ -730,8 +905,9 @@ type Image {
 union Item = ArtistItem | FeaturedLinkItem | GeneItem
 
 type Location {
+  __id: ID!
+  id: ID!
   cached: Int
-  id: String
   city: String
   country: String
   coordinates: coordinates
@@ -745,7 +921,8 @@ type Location {
 }
 
 type Me {
-  id: String
+  __id: ID!
+  id: ID!
   type: String
   created_at(format: String): String
   email: String
@@ -753,8 +930,9 @@ type Me {
   paddle_number: String
   bidders(sale_id: String): [Bidder]
   bidder_status(sale_id: String!, artwork_id: String!): BidderStatus
-  bidder_positions(current: Boolean, artwork_id: String): [BidderPosition]
+  bidder_positions(current: Boolean, artwork_id: String, sale_id: String): [BidderPosition]
   sale_registrations(size: Int, is_auction: Boolean = true, published: Boolean = true, live: Boolean = true, sort: SaleSorts): [SaleRegistration]
+  follow_artists(size: Int, page: Int): FollowArtists
 }
 
 input Near {
@@ -763,9 +941,14 @@ input Near {
   max_distance: Float
 }
 
+interface Node {
+  __id: ID!
+}
+
 type OrderedSet {
+  __id: ID!
+  id: ID!
   cached: Int
-  id: String
   key: String
   name: String
   description: String
@@ -774,15 +957,17 @@ type OrderedSet {
 }
 
 type organizer {
-  profile_id: String
+  profile_id: ID
 }
 
-type Partner {
+type Partner implements Node {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   name: String
   collecting_institution: String
+  is_default_profile_public: Boolean
   type: String
   href: String
   is_linkable: Boolean
@@ -792,13 +977,32 @@ type Partner {
   default_profile_id: String
   profile: Profile
   shows(size: Int, sort: PartnerShowSorts, status: EventStatus, fair_id: String, near: Near, displayable: Boolean = true, featured: Boolean, at_a_fair: Boolean): [PartnerShow]
-  locations(size: Int): [Location]
+  locations(size: Int = 25): [Location]
   contact_message: String
 }
 
+type PartnerArtist {
+  __id: ID!
+  id: ID!
+  counts: PartnerArtistCounts
+  is_display_on_partner_profile: Boolean
+  is_represented_by: Boolean
+  sortable_id: String
+  is_use_default_biography: Boolean
+  biography: String
+  partner: Partner
+  artist: Artist
+}
+
+type PartnerArtistCounts {
+  artworks(format: String, label: String): FormattedNumber
+  for_sale_artworks(format: String, label: String): FormattedNumber
+}
+
 type PartnerCategory {
+  __id: ID!
+  id: ID!
   cached: Int
-  id: String
   name: String
   category_type: CategoryType
   partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String): [Partner]
@@ -826,15 +1030,20 @@ type PartnersAggregationResults {
   counts: [AggregationCount]
 }
 
-type PartnerShow {
+type PartnerShow implements Node {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   href: String
   kind: String
   name: String
   description: String
+  type: String
   displayable: Boolean
+  is_active: Boolean
+  is_displayable: Boolean
+  is_fair_booth: Boolean
   press_release(format: Format): String
   start_at(format: String): String
   end_at(format: String): String
@@ -865,15 +1074,20 @@ type PartnerShowEventType {
   end_at(format: String): String
 }
 
-type PartnerShowSearchEntity {
+type PartnerShowSearchEntity implements Node {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   href: String
   kind: String
   name: String
   description: String
+  type: String
   displayable: Boolean
+  is_active: Boolean
+  is_displayable: Boolean
+  is_fair_booth: Boolean
   press_release(format: Format): String
   start_at(format: String): String
   end_at(format: String): String
@@ -916,14 +1130,11 @@ enum PartnersSortType {
   RANDOM_SCORE_DESC
 }
 
-type Ping {
-  ping: String
-}
-
 type Profile {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   name: String
   image: Image
   initials(length: Int = 3): String
@@ -935,13 +1146,14 @@ type Profile {
 }
 
 type ProfileCounts {
-  follows: Int
+  follows(format: String, label: String): FormattedNumber
 }
 
 type ProfileSearchEntity {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   name: String
   image: Image
   initials(length: Int = 3): String
@@ -960,34 +1172,37 @@ type ResizedImageUrl {
 }
 
 enum Role {
-  BIDDER
+  PARTICIPANT
   OPERATOR
 }
 
 type RootQueryType {
-  ping: Ping
-  article(id: String!): Article
-  articles(show_id: String, published: Boolean = true): [Article]
-  artwork(id: String!): Artwork
-  artist(id: String!): Artist
+  node(__id: ID!): Node
+  status: Status
+  article(id: ID!): Article
+  articles(show_id: String, sort: ArticleSorts, published: Boolean = true): [Article]
+  artwork(id: ID!): Artwork
+  artworks(ids: [String]): [Artwork]
+  artist(id: ID!): Artist
   artists(size: Int, sort: ArtistSorts): [Artist]
-  fair(id: String!): Fair
+  fair(id: ID!): Fair
   fairs(size: Int, page: Int, sort: FairSorts, status: EventStatus, fair_organizer_id: String, near: Near, has_full_feature: Boolean): [Fair]
-  gene(id: String!): Gene
-  home_page_modules(include_keys: [String] = false): [HomePageModules]
-  profile(id: String!): Profile
+  gene(id: ID!): Gene
+  home_page_modules(max_rails: Int = 8): [HomePageModules]
+  home_page_module(key: String, id: ID): HomePageModules
+  profile(id: ID!): Profile
   ordered_sets(key: String!, public: Boolean = true): [OrderedSet]
-  partner(id: String!): Partner
+  partner(id: ID!): Partner
   partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String): [Partner]
   filter_partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String, aggregations: [PartnersAggregation]!): FilterPartners
-  filter_artworks(aggregations: [ArtworkAggregation], artist_id: Int, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, price_range: String, page: Int, size: Int, sort: String): FilterArtworks
-  partner_category(id: String!): PartnerCategory
+  filter_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: Int, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
+  partner_category(id: ID!): PartnerCategory
   partner_categories(size: Int, category_type: CategoryType, internal: Boolean = false): [PartnerCategory]
-  partner_show(id: String!): PartnerShow
+  partner_show(id: ID!): PartnerShow
   partner_shows(size: Int, sort: PartnerShowSorts, status: EventStatus, fair_id: String, partner_id: String, near: Near, displayable: Boolean = true, featured: Boolean, at_a_fair: Boolean): [PartnerShow]
-  sale(id: String!): Sale
+  sale(id: ID!): Sale
   sales(size: Int, is_auction: Boolean = true, published: Boolean = true, live: Boolean = true, sort: SaleSorts): [Sale]
-  sale_artwork(id: String!): SaleArtwork
+  sale_artwork(id: ID!): SaleArtwork
   search(term: String!): Search
   trending_artists(method: String = "fetch", name: TrendingMetrics!, size: Int = 40, double_time_period: Boolean = false): TrendingArtists
   me: Me
@@ -995,9 +1210,10 @@ type RootQueryType {
 }
 
 type Sale {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  id: String
-  _id: String
   name: String
   href: String
   description: String
@@ -1006,24 +1222,32 @@ type Sale {
   is_auction_promo: Boolean
   is_preview: Boolean
   is_open: Boolean
+  is_live_open: Boolean
   is_closed: Boolean
   is_with_buyers_premium: Boolean
   auction_state: String
+  status: String
+  registration_ends_at(format: String): String
   start_at(format: String): String
   end_at(format: String): String
+  live_start_at(format: String): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [Artwork]
+  artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
   cover_image: Image
-  sale_artwork(id: String!): SaleArtwork
+  sale_artwork(id: ID!): SaleArtwork
   profile: Profile
+  bid_increments: [BidIncrements]
+  buyers_premium: [BuyersPremium]
 }
 
 type SaleArtwork {
+  __id: ID!
+  id: ID!
+  _id: ID!
   cached: Int
-  _id: String
-  id: String
   sale_id: String
+  sale: Sale
   position: Int
   lot_number: String
   currency: String
@@ -1031,6 +1255,7 @@ type SaleArtwork {
   reserve_status: String
   is_with_reserve: Boolean
   is_bid_on: Boolean
+  is_biddable: Boolean
   reserve_message: String
   reserve: SaleArtworkReserve
   low_estimate: SaleArtworkLowEstimate
@@ -1047,48 +1272,56 @@ type SaleArtwork {
   opening_bid_cents: Int
   minimum_next_bid_cents: Int
   bidder_positions_count: Int
+  bid_increments: [Int]
 }
 
 type SaleArtworkCounts {
-  bidder_positions: Int
+  bidder_positions(format: String, label: String): FormattedNumber
 }
 
 type SaleArtworkCurrentBid {
   cents: Int
+  display: String
   amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
 }
 
 type SaleArtworkHighestBid {
-  id: String
+  id: ID
   created_at(format: String): String
   is_cancelled: Boolean
   amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
   cents: Int
+  display: String
   amount_cents: Int
 }
 
 type SaleArtworkHighEstimate {
   cents: Int
+  display: String
   amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
 }
 
 type SaleArtworkLowEstimate {
   cents: Int
+  display: String
   amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
 }
 
 type SaleArtworkMinimumNextBid {
   cents: Int
+  display: String
   amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
 }
 
 type SaleArtworkOpeningBid {
   cents: Int
+  display: String
   amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
 }
 
 type SaleArtworkReserve {
   cents: Int
+  display: String
   amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
 }
 
@@ -1122,13 +1355,22 @@ type Search {
 union SearchEntity = ArtistSearchEntity | ArtworkSearchEntity | ProfileSearchEntity | PartnerShowSearchEntity
 
 type SearchResult {
-  id: String
+  id: ID
   title: String
   href: String
   snippet: String
   image: Image
   type: String
   entity: SearchEntity
+}
+
+type Status {
+  gravity: StatusGravity
+  ping: Boolean
+}
+
+type StatusGravity {
+  ping: Boolean
 }
 
 type TrendingArtists {

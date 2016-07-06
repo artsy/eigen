@@ -37,10 +37,11 @@
     "lib"
   ],
   "dependencies": {
+    "babel-relay-plugin": "https://github.com/alloy/relay/releases/download/v0.9.1-alpha.2/babel-relay-plugin-0.9.1.tgz",
     "lodash": "3.10.1",
     "react": "^15.1.0",
     "react-native": "0.27.1",
-    "react-relay": "^0.9.0",
+    "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.1-alpha.2/react-relay-0.9.1.tgz",
     "remove-markdown": "0.1.0"
   },
   "devDependencies": {
