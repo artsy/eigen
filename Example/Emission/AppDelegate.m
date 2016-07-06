@@ -1,6 +1,8 @@
 #import "AppDelegate.h"
 #import "RotationNavigationController.h"
 
+#import "Configuration.h"
+
 #import <Emission/AREmission.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
@@ -54,11 +56,11 @@ randomBOOL(void)
   AREmission *emission = nil;
 #ifdef ENABLE_DEV_MODE
   NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
-  emission = [[AREmission alloc] initWithPackagerURL:packagerURL];
-  [AREmission setSharedInstance:emission];
+  emission = [[AREmission alloc] initWithAuthenticationToken:OAUTH_TOKEN packagerURL:packagerURL];
 #else
-  emission = [AREmission sharedInstance];
+  emission = [[AREmission alloc] initWithAuthenticationToken:OAUTH_TOKEN];
 #endif
+  [AREmission setSharedInstance:emission];
 
   emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
     NSNumber *following = @(randomBOOL());

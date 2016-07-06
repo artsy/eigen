@@ -4,6 +4,28 @@
 #import "ARTemporaryAPIModule.h"
 
 #import <React/RCTBridge.h>
+#import <React/RCTBridgeModule.h>
+
+
+@interface AREmissionConfiguration : NSObject <RCTBridgeModule>
+@property (nonatomic, strong, readwrite) NSString *authenticationToken;
+@end
+
+@implementation AREmissionConfiguration
+
+RCT_EXPORT_MODULE(Emission);
+
+- (NSDictionary *)constantsToExport
+{
+  return @{ @"authenticationToken": self.authenticationToken };
+}
+
+@end
+
+
+@interface AREmission ()
+@property (nonatomic, strong, readwrite) AREmissionConfiguration *configurationModule;
+@end
 
 @implementation AREmission
 
@@ -16,29 +38,29 @@ static AREmission *_sharedInstance = nil;
 
 + (instancetype)sharedInstance;
 {
-  if (_sharedInstance == nil) {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-      _sharedInstance = [self new];
-    });
-  }
+  NSParameterAssert(_sharedInstance);
   return _sharedInstance;
 }
 
-- (instancetype)init;
+- (instancetype)initWithAuthenticationToken:(NSString *)authenticationToken;
 {
-  return [self initWithPackagerURL:nil];
+  return [self initWithAuthenticationToken:authenticationToken packagerURL:nil];
 }
 
-- (instancetype)initWithPackagerURL:(NSURL *)packagerURL;
+- (instancetype)initWithAuthenticationToken:(NSString *)authenticationToken packagerURL:(NSURL *)packagerURL;
 {
   if ((self = [super init])) {
     _eventsModule = [AREventsModule new];
     _switchBoardModule = [ARSwitchBoardModule new];
     _APIModule = [ARTemporaryAPIModule new];
+    
+    _configurationModule = [AREmissionConfiguration new];
+    _configurationModule.authenticationToken = authenticationToken;
+
+    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule];
 
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
-                                    moduleProvider:^{ return @[_eventsModule, _switchBoardModule, _APIModule]; }
+                                    moduleProvider:^{ return modules; }
                                      launchOptions:nil];
   }
   return self;

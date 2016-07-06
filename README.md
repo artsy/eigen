@@ -13,20 +13,23 @@
    * `$ brew link pcre`
    * `$ brew install watchman --HEAD`
 3. Install NPM modules: `$ npm install`
-4. Install Pods: `cd Example && pod install`
+4. Install Pods: `$ cd Example && pod install`
+5. Configure secrets:
+   * Copy configuration file: `$ cd Example/Emission && cp Configuration.h.sample Configuration.h`
+   * Edit the configuration file as per the instructions inside.
 
 ### Development
 
 1. Run `$ npm start` from the top directory, which will:
-   - Clean the example app’s Xcode build dir.
-   - Start the example app’s React Native packager.
+   * Clean the example app’s Xcode build dir.
+   * Start the example app’s React Native packager.
 
 2. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
 
 3. We vendor some data from other repositories that you will sometimes need to update. You can either update all of them
    with `$ npm run sync-externals` or individually:
-   - The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ npm run sync-schema`
-   - The colors defined in Artsy’s style-guide: `$ npm run sync-colors`
+   * The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ npm run sync-schema`
+   * The colors defined in Artsy’s style-guide: `$ npm run sync-colors`
 
 ### Using Relay
 
