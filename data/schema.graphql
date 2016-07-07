@@ -1,13 +1,13 @@
 type AggregationCount {
   __id: ID!
-  id: ID!
+  id: String!
   name: String
   count: Int
 }
 
 type Article implements Node {
   __id: ID!
-  id: ID!
+  id: String!
   cached: Int
   title: String
   published_at(format: String): String
@@ -27,8 +27,8 @@ enum ArticleSorts {
 
 type Artist implements Node {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   href: String
   sortable_id: String
@@ -94,8 +94,8 @@ type ArtistCounts {
 
 type ArtistItem implements Node {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   href: String
   sortable_id: String
@@ -143,8 +143,8 @@ type ArtistMeta {
 
 type ArtistSearchEntity implements Node {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   href: String
   sortable_id: String
@@ -204,8 +204,8 @@ type ArtistStatuses {
 
 type Artwork implements Node {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   to_s: String
   href: String
@@ -285,8 +285,8 @@ union ArtworkContext = ArtworkContextAuction | ArtworkContextSale | ArtworkConte
 
 type ArtworkContextAuction {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   name: String
   href: String
@@ -309,7 +309,7 @@ type ArtworkContextAuction {
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
   cover_image: Image
-  sale_artwork(id: ID!): SaleArtwork
+  sale_artwork(id: String!): SaleArtwork
   profile: Profile
   bid_increments: [BidIncrement]
   buyers_premium: [BuyersPremium]
@@ -317,8 +317,8 @@ type ArtworkContextAuction {
 
 type ArtworkContextFair {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   banner_size: String
   profile: Profile
@@ -337,8 +337,8 @@ type ArtworkContextFair {
 
 type ArtworkContextPartnerShow implements Node {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   href: String
   kind: String
@@ -369,8 +369,8 @@ type ArtworkContextPartnerShow implements Node {
 
 type ArtworkContextSale {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   name: String
   href: String
@@ -393,7 +393,7 @@ type ArtworkContextSale {
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
   cover_image: Image
-  sale_artwork(id: ID!): SaleArtwork
+  sale_artwork(id: String!): SaleArtwork
   profile: Profile
   bid_increments: [BidIncrement]
   buyers_premium: [BuyersPremium]
@@ -401,7 +401,7 @@ type ArtworkContextSale {
 
 type ArtworkLayer {
   __id: ID!
-  id: ID!
+  id: String!
   type: String
   name: String
   href: String
@@ -422,8 +422,8 @@ type ArtworksAggregationResults {
 
 type ArtworkSearchEntity implements Node {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   to_s: String
   href: String
@@ -503,7 +503,7 @@ enum ArtworkSorts {
 
 type Author {
   __id: ID!
-  id: ID!
+  id: String!
   name: String
   profile_handle: String
   href: String
@@ -511,7 +511,7 @@ type Author {
 
 type Bidder {
   __id: ID!
-  id: ID!
+  id: String!
   created_at(format: String): String
   pin: String
   sale: Sale
@@ -520,7 +520,7 @@ type Bidder {
 
 type BidderPosition {
   __id: ID!
-  id: ID!
+  id: String!
   created_at(format: String): String
   updated_at(format: String): String
   processed_at(format: String): String
@@ -615,7 +615,7 @@ type dimensions {
 
 type EditionSet {
   __id: ID!
-  id: ID!
+  id: String!
   dimensions: dimensions
   edition_of: String
   is_acquireable: Boolean
@@ -633,8 +633,8 @@ enum EventStatus {
 
 type Fair {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   banner_size: String
   profile: Profile
@@ -700,8 +700,8 @@ scalar FormattedNumber
 
 type Gene {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   href: String
   name: String
@@ -712,8 +712,8 @@ type Gene {
 
 type GeneItem {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   href: String
   name: String
@@ -724,7 +724,7 @@ type GeneItem {
 
 type HighestBid {
   __id: ID!
-  id: ID!
+  id: String!
   created_at(format: String): String
   number: Int
   is_cancelled: Boolean
@@ -739,7 +739,7 @@ union Highlighted = HighlightedShow | HighlightedArticle
 
 type HighlightedArticle implements Node {
   __id: ID!
-  id: ID!
+  id: String!
   cached: Int
   title: String
   published_at(format: String): String
@@ -754,8 +754,8 @@ type HighlightedArticle implements Node {
 
 type HighlightedShow implements Node {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   href: String
   kind: String
@@ -793,8 +793,8 @@ union HomePageModuleContext = HomePageModuleContextFair | HomePageModuleContextS
 
 type HomePageModuleContextFair {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   banner_size: String
   profile: Profile
@@ -818,8 +818,8 @@ type HomePageModuleContextFollowArtists {
 
 type HomePageModuleContextGene {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   href: String
   name: String
@@ -835,8 +835,8 @@ type HomePageModuleContextRelatedArtist {
 
 type HomePageModuleContextSale {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   name: String
   href: String
@@ -859,7 +859,7 @@ type HomePageModuleContextSale {
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
   cover_image: Image
-  sale_artwork(id: ID!): SaleArtwork
+  sale_artwork(id: String!): SaleArtwork
   profile: Profile
   bid_increments: [BidIncrement]
   buyers_premium: [BuyersPremium]
@@ -888,7 +888,7 @@ type HomePageModulesParams {
 
 type Image {
   __id: ID!
-  id: ID!
+  id: String!
   href: String
   title: String
   width: Int
@@ -911,7 +911,7 @@ union Item = ArtistItem | FeaturedLinkItem | GeneItem
 
 type Location {
   __id: ID!
-  id: ID!
+  id: String!
   cached: Int
   city: String
   country: String
@@ -927,7 +927,7 @@ type Location {
 
 type Me {
   __id: ID!
-  id: ID!
+  id: String!
   type: String
   created_at(format: String): String
   email: String
@@ -952,7 +952,7 @@ interface Node {
 
 type OrderedSet {
   __id: ID!
-  id: ID!
+  id: String!
   cached: Int
   key: String
   name: String
@@ -967,8 +967,8 @@ type organizer {
 
 type Partner implements Node {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   name: String
   collecting_institution: String
@@ -988,7 +988,7 @@ type Partner implements Node {
 
 type PartnerArtist {
   __id: ID!
-  id: ID!
+  id: String!
   counts: PartnerArtistCounts
   is_display_on_partner_profile: Boolean
   is_represented_by: Boolean
@@ -1006,7 +1006,7 @@ type PartnerArtistCounts {
 
 type PartnerCategory {
   __id: ID!
-  id: ID!
+  id: String!
   cached: Int
   name: String
   category_type: CategoryType
@@ -1037,8 +1037,8 @@ type PartnersAggregationResults {
 
 type PartnerShow implements Node {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   href: String
   kind: String
@@ -1081,8 +1081,8 @@ type PartnerShowEventType {
 
 type PartnerShowSearchEntity implements Node {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   href: String
   kind: String
@@ -1137,8 +1137,8 @@ enum PartnersSortType {
 
 type Profile {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   name: String
   image: Image
@@ -1156,8 +1156,8 @@ type ProfileCounts {
 
 type ProfileSearchEntity {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   name: String
   image: Image
@@ -1184,31 +1184,31 @@ enum Role {
 type RootQueryType {
   node(__id: ID!): Node
   status: Status
-  article(id: ID!): Article
+  article(id: String!): Article
   articles(show_id: String, sort: ArticleSorts, published: Boolean = true): [Article]
-  artwork(id: ID!): Artwork
+  artwork(id: String!): Artwork
   artworks(ids: [String]): [Artwork]
-  artist(id: ID!): Artist
+  artist(id: String!): Artist
   artists(size: Int, sort: ArtistSorts): [Artist]
-  fair(id: ID!): Fair
+  fair(id: String!): Fair
   fairs(size: Int, page: Int, sort: FairSorts, status: EventStatus, fair_organizer_id: String, near: Near, has_full_feature: Boolean): [Fair]
-  gene(id: ID!): Gene
+  gene(id: String!): Gene
   home_page: HomePage
   home_page_modules(max_rails: Int = 8): [HomePageModules]
   home_page_module(key: String, id: ID): HomePageModules
-  profile(id: ID!): Profile
+  profile(id: String!): Profile
   ordered_sets(key: String!, public: Boolean = true): [OrderedSet]
-  partner(id: ID!): Partner
+  partner(id: String!): Partner
   partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String): [Partner]
   filter_partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String, aggregations: [PartnersAggregation]!): FilterPartners
   filter_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: Int, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
-  partner_category(id: ID!): PartnerCategory
+  partner_category(id: String!): PartnerCategory
   partner_categories(size: Int, category_type: CategoryType, internal: Boolean = false): [PartnerCategory]
-  partner_show(id: ID!): PartnerShow
+  partner_show(id: String!): PartnerShow
   partner_shows(size: Int, sort: PartnerShowSorts, status: EventStatus, fair_id: String, partner_id: String, near: Near, displayable: Boolean = true, featured: Boolean, at_a_fair: Boolean): [PartnerShow]
-  sale(id: ID!): Sale
+  sale(id: String!): Sale
   sales(size: Int, is_auction: Boolean = true, published: Boolean = true, live: Boolean = true, sort: SaleSorts): [Sale]
-  sale_artwork(id: ID!): SaleArtwork
+  sale_artwork(id: String!): SaleArtwork
   search(term: String!): Search
   trending_artists(method: String = "fetch", name: TrendingMetrics!, size: Int = 40, double_time_period: Boolean = false): TrendingArtists
   me: Me
@@ -1217,8 +1217,8 @@ type RootQueryType {
 
 type Sale {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   name: String
   href: String
@@ -1241,7 +1241,7 @@ type Sale {
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
   cover_image: Image
-  sale_artwork(id: ID!): SaleArtwork
+  sale_artwork(id: String!): SaleArtwork
   profile: Profile
   bid_increments: [BidIncrement]
   buyers_premium: [BuyersPremium]
@@ -1249,8 +1249,8 @@ type Sale {
 
 type SaleArtwork {
   __id: ID!
-  id: ID!
-  _id: ID!
+  id: String!
+  _id: String!
   cached: Int
   sale_id: String
   sale: Sale

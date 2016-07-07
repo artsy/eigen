@@ -1,0 +1,8 @@
+// As per the Artsy API docs at https://developers.artsy.net/docs/authentication, generate a OAuth token for your user
+// account with the following command:
+//
+// $ curl -X POST "https://api.artsy.net/oauth2/access_token?client_id=e750db60ac506978fc70&client_secret=3a33d2085cbd1176153f99781bbce7c6&grant_type=credentials&scope=offline_access&email=...&password=..."
+//
+// (The client ID & secret are of Eigen OSS: https://github.com/artsy/eigen/blob/0e193d1b/Makefile#L36-L37)
+
+#define OAUTH_TOKEN @"token goes here"
