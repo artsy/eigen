@@ -14,7 +14,8 @@
     "start-packager": "cd node_modules/react-native && npm start -- --reset-cache",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "start": "npm run clean-example && npm run start-packager",
-    "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map"
+    "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map",
+    "release": "node scripts/release.js"
   },
   "repository": {
     "type": "git",
