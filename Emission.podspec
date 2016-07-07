@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.author       = { 'Eloy Durán' => 'eloy@artsy.net',
                      'Maxim Cramer' => 'maxim@artsy.net',
                      'Sarah Scott' => 'sarah.scott@artsy.net' }
-  s.source       = { :git => 'https://github.com/artsy/emission.git', :tag => s.version.to_s }
+  s.source       = { :git => 'https://github.com/artsy/emission.git', :tag => "v#{s.version}" }
   s.platform     = :ios, '8.0'
   s.requires_arc = true
   s.source_files = 'Pod/Classes/**/*.{h,m}'
