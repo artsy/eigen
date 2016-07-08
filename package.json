@@ -9,7 +9,7 @@
     "test": "env NODE_ENV=test NODE_PATH=./lib mocha --recursive ./test",
     "ci": "npm run-script lint && npm run-script flow && npm test",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
-    "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && npm install && npm run dump-schema -- ../../data",
+    "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && npm install && npm run dump-schema -- ../../data && rm -rf node_modules",
     "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "start-packager": "cd node_modules/react-native && npm start -- --reset-cache",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",

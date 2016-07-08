@@ -264,7 +264,7 @@ type Artwork implements Node {
   manufacturer(format: Format): String
   series(format: Format): String
   meta: ArtworkMeta
-  layer(id: ID): ArtworkLayer
+  layer(id: String): ArtworkLayer
   layers: [ArtworkLayer]
 }
 
@@ -482,7 +482,7 @@ type ArtworkSearchEntity implements Node {
   manufacturer(format: Format): String
   series(format: Format): String
   meta: ArtworkMeta
-  layer(id: ID): ArtworkLayer
+  layer(id: String): ArtworkLayer
   layers: [ArtworkLayer]
 }
 
@@ -888,7 +888,7 @@ type HomePageModulesParams {
 
 type Image {
   __id: ID!
-  id: String!
+  id: String
   href: String
   title: String
   width: Int
