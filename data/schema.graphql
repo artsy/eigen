@@ -48,6 +48,7 @@ type Artist implements Node {
   nationality: String
   birthday: String
   deathday: String
+  formatted_nationality_and_birthday: String
   biography: Article
   alternate_names: [String]
   meta: ArtistMeta
@@ -57,6 +58,7 @@ type Artist implements Node {
   bio: String
   counts: ArtistCounts
   artworks(size: Int, page: Int, sort: ArtworkSorts, published: Boolean = true, filter: [ArtistArtworksFilters], exclude: [String]): [Artwork]
+  formatted_artworks_count: String
   image: Image
   artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
   contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
@@ -115,6 +117,7 @@ type ArtistItem implements Node {
   nationality: String
   birthday: String
   deathday: String
+  formatted_nationality_and_birthday: String
   biography: Article
   alternate_names: [String]
   meta: ArtistMeta
@@ -124,6 +127,7 @@ type ArtistItem implements Node {
   bio: String
   counts: ArtistCounts
   artworks(size: Int, page: Int, sort: ArtworkSorts, published: Boolean = true, filter: [ArtistArtworksFilters], exclude: [String]): [Artwork]
+  formatted_artworks_count: String
   image: Image
   artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
   contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
@@ -164,6 +168,7 @@ type ArtistSearchEntity implements Node {
   nationality: String
   birthday: String
   deathday: String
+  formatted_nationality_and_birthday: String
   biography: Article
   alternate_names: [String]
   meta: ArtistMeta
@@ -173,6 +178,7 @@ type ArtistSearchEntity implements Node {
   bio: String
   counts: ArtistCounts
   artworks(size: Int, page: Int, sort: ArtworkSorts, published: Boolean = true, filter: [ArtistArtworksFilters], exclude: [String]): [Artwork]
+  formatted_artworks_count: String
   image: Image
   artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
   contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
@@ -786,7 +792,7 @@ type HighlightedShow implements Node {
 
 type HomePage {
   modules(max_rails: Int = 8): [HomePageModules]
-  module(key: String, id: ID): HomePageModules
+  module(key: String, id: String): HomePageModules
 }
 
 union HomePageModuleContext = HomePageModuleContextFair | HomePageModuleContextSale | HomePageModuleContextGene | HomePageModuleContextTrending | HomePageModuleContextFollowArtists | HomePageModuleContextRelatedArtist
@@ -1195,7 +1201,7 @@ type RootQueryType {
   gene(id: String!): Gene
   home_page: HomePage
   home_page_modules(max_rails: Int = 8): [HomePageModules]
-  home_page_module(key: String, id: ID): HomePageModules
+  home_page_module(key: String, id: String): HomePageModules
   profile(id: String!): Profile
   ordered_sets(key: String!, public: Boolean = true): [OrderedSet]
   partner(id: String!): Partner

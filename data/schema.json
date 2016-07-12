@@ -446,7 +446,7 @@
                   "description": "ID of generic gene rail to target",
                   "type": {
                     "kind": "SCALAR",
-                    "name": "ID",
+                    "name": "String",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -4124,6 +4124,18 @@
               "deprecationReason": null
             },
             {
+              "name": "formatted_nationality_and_birthday",
+              "description": "A string of the form \"Nationality, Birthday\"",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "biography",
               "description": "The Artist biography article written by Artsy",
               "args": [],
@@ -4326,6 +4338,18 @@
                   "name": "Artwork",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "formatted_artworks_count",
+              "description": "A string showing the total number of works and those for sale",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -7726,7 +7750,7 @@
           "fields": [
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
@@ -7824,7 +7848,7 @@
           "fields": [
             {
               "name": "cents",
-              "description": null,
+              "description": "An amount of money expressed in cents.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -7836,7 +7860,7 @@
             },
             {
               "name": "display",
-              "description": null,
+              "description": "A pre-formatted price.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -7848,7 +7872,7 @@
             },
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
@@ -7922,7 +7946,7 @@
           "fields": [
             {
               "name": "cents",
-              "description": null,
+              "description": "An amount of money expressed in cents.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -7934,7 +7958,7 @@
             },
             {
               "name": "display",
-              "description": null,
+              "description": "A pre-formatted price.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -7946,7 +7970,7 @@
             },
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
@@ -8020,7 +8044,7 @@
           "fields": [
             {
               "name": "cents",
-              "description": null,
+              "description": "An amount of money expressed in cents.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8032,7 +8056,7 @@
             },
             {
               "name": "display",
-              "description": null,
+              "description": "A pre-formatted price.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8044,7 +8068,7 @@
             },
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
@@ -8118,7 +8142,7 @@
           "fields": [
             {
               "name": "cents",
-              "description": null,
+              "description": "An amount of money expressed in cents.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8130,7 +8154,7 @@
             },
             {
               "name": "display",
-              "description": null,
+              "description": "A pre-formatted price.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8142,7 +8166,7 @@
             },
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
@@ -8216,7 +8240,7 @@
           "fields": [
             {
               "name": "cents",
-              "description": null,
+              "description": "An amount of money expressed in cents.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8228,7 +8252,7 @@
             },
             {
               "name": "display",
-              "description": null,
+              "description": "A pre-formatted price.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8240,7 +8264,7 @@
             },
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
@@ -8314,7 +8338,7 @@
           "fields": [
             {
               "name": "cents",
-              "description": null,
+              "description": "An amount of money expressed in cents.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8326,7 +8350,7 @@
             },
             {
               "name": "display",
-              "description": null,
+              "description": "A pre-formatted price.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8338,7 +8362,7 @@
             },
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
@@ -8459,7 +8483,7 @@
             },
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
@@ -12366,7 +12390,7 @@
                   "description": "ID of generic gene rail to target",
                   "type": {
                     "kind": "SCALAR",
-                    "name": "ID",
+                    "name": "String",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -14068,6 +14092,18 @@
               "deprecationReason": null
             },
             {
+              "name": "formatted_nationality_and_birthday",
+              "description": "A string of the form \"Nationality, Birthday\"",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "biography",
               "description": "The Artist biography article written by Artsy",
               "args": [],
@@ -14270,6 +14306,18 @@
                   "name": "Artwork",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "formatted_artworks_count",
+              "description": "A string showing the total number of works and those for sale",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -16075,6 +16123,18 @@
               "deprecationReason": null
             },
             {
+              "name": "formatted_nationality_and_birthday",
+              "description": "A string of the form \"Nationality, Birthday\"",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "biography",
               "description": "The Artist biography article written by Artsy",
               "args": [],
@@ -16277,6 +16337,18 @@
                   "name": "Artwork",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "formatted_artworks_count",
+              "description": "A string showing the total number of works and those for sale",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -19245,7 +19317,7 @@
           "fields": [
             {
               "name": "cents",
-              "description": null,
+              "description": "An amount of money expressed in cents.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -19257,7 +19329,7 @@
             },
             {
               "name": "display",
-              "description": null,
+              "description": "A pre-formatted price.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -19269,7 +19341,7 @@
             },
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
@@ -19343,7 +19415,7 @@
           "fields": [
             {
               "name": "cents",
-              "description": null,
+              "description": "An amount of money expressed in cents.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -19355,7 +19427,7 @@
             },
             {
               "name": "display",
-              "description": null,
+              "description": "A pre-formatted price.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -19367,7 +19439,7 @@
             },
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
@@ -19520,7 +19592,7 @@
             },
             {
               "name": "amount",
-              "description": null,
+              "description": "A formatted price with various currency formatting options.",
               "args": [
                 {
                   "name": "symbol",
