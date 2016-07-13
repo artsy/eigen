@@ -898,7 +898,6 @@ type HomePageModulesParams {
 }
 
 type Image {
-  __id: ID!
   id: String
   href: String
   title: String
