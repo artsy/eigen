@@ -285,6 +285,7 @@ enum ArtworkAggregation {
   GALLERY
   INSTITUTION
   TOTAL
+  FOLLOWED_ARTISTS
 }
 
 union ArtworkContext = ArtworkContextAuction | ArtworkContextSale | ArtworkContextFair | ArtworkContextPartnerShow
@@ -678,6 +679,7 @@ type FeaturedLinkItem {
 type FilterArtworks {
   hits: [Artwork]
   total: Int
+  followed_artists_total: Int
   aggregations: [ArtworksAggregationResults]
 }
 
@@ -875,7 +877,8 @@ type HomePageModuleContextTrending {
   artists: [Artist]
 }
 
-type HomePageModules {
+type HomePageModules implements Node {
+  __id: ID!
   key: String
   display: String
   is_displayable: Boolean
@@ -1207,7 +1210,7 @@ type RootQueryType {
   partner(id: String!): Partner
   partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String): [Partner]
   filter_partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String, aggregations: [PartnersAggregation]!): FilterPartners
-  filter_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: Int, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
+  filter_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: Int, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], include_artworks_by_followed_artists: Boolean, for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
   partner_category(id: String!): PartnerCategory
   partner_categories(size: Int, category_type: CategoryType, internal: Boolean = false): [PartnerCategory]
   partner_show(id: String!): PartnerShow
