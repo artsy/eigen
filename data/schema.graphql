@@ -233,6 +233,7 @@ type Artwork implements Node {
   is_in_auction: Boolean
   is_in_show: Boolean
   is_for_sale: Boolean
+  is_biddable: Boolean
   is_unique: Boolean
   is_sold: Boolean
   is_ecommerce: Boolean
@@ -452,6 +453,7 @@ type ArtworkSearchEntity implements Node {
   is_in_auction: Boolean
   is_in_show: Boolean
   is_for_sale: Boolean
+  is_biddable: Boolean
   is_unique: Boolean
   is_sold: Boolean
   is_ecommerce: Boolean
@@ -793,8 +795,19 @@ type HighlightedShow implements Node {
 }
 
 type HomePage {
-  modules(max_rails: Int = 8): [HomePageModules]
-  module(key: String, id: String): HomePageModules
+  modules(max_rails: Int = 8): [HomePageModule]
+  module(key: String, id: String): HomePageModule
+}
+
+type HomePageModule implements Node {
+  __id: ID!
+  key: String
+  display: String
+  is_displayable: Boolean
+  params: HomePageModulesParams
+  context: HomePageModuleContext
+  title: String
+  results: [Artwork]
 }
 
 union HomePageModuleContext = HomePageModuleContextFair | HomePageModuleContextSale | HomePageModuleContextGene | HomePageModuleContextTrending | HomePageModuleContextFollowArtists | HomePageModuleContextRelatedArtist
@@ -875,17 +888,6 @@ type HomePageModuleContextSale {
 
 type HomePageModuleContextTrending {
   artists: [Artist]
-}
-
-type HomePageModules implements Node {
-  __id: ID!
-  key: String
-  display: String
-  is_displayable: Boolean
-  params: HomePageModulesParams
-  context: HomePageModuleContext
-  title: String
-  results: [Artwork]
 }
 
 type HomePageModulesParams {
@@ -1203,8 +1205,8 @@ type RootQueryType {
   fairs(size: Int, page: Int, sort: FairSorts, status: EventStatus, fair_organizer_id: String, near: Near, has_full_feature: Boolean): [Fair]
   gene(id: String!): Gene
   home_page: HomePage
-  home_page_modules(max_rails: Int = 8): [HomePageModules]
-  home_page_module(key: String, id: String): HomePageModules
+  home_page_modules(max_rails: Int = 8): [HomePageModule]
+  home_page_module(key: String, id: String): HomePageModule
   profile(id: String!): Profile
   ordered_sets(key: String!, public: Boolean = true): [OrderedSet]
   partner(id: String!): Partner

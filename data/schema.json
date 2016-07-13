@@ -420,7 +420,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "HomePageModules",
+                  "name": "HomePageModule",
                   "ofType": null
                 }
               },
@@ -454,7 +454,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "HomePageModules",
+                "name": "HomePageModule",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1661,7 +1661,7 @@
             },
             {
               "kind": "OBJECT",
-              "name": "HomePageModules",
+              "name": "HomePageModule",
               "ofType": null
             }
           ]
@@ -5449,6 +5449,18 @@
             {
               "name": "is_for_sale",
               "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_biddable",
+              "description": "Is this artwork part of an auction that is currently running?",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -12072,7 +12084,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "HomePageModules",
+          "name": "HomePageModule",
           "description": null,
           "fields": [
             {
@@ -13645,7 +13657,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "HomePageModules",
+                  "name": "HomePageModule",
                   "ofType": null
                 }
               },
@@ -13679,7 +13691,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "HomePageModules",
+                "name": "HomePageModule",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -17103,6 +17115,18 @@
             {
               "name": "is_for_sale",
               "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_biddable",
+              "description": "Is this artwork part of an auction that is currently running?",
               "args": [],
               "type": {
                 "kind": "SCALAR",
