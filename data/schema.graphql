@@ -795,8 +795,15 @@ type HighlightedShow implements Node {
 }
 
 type HomePage {
-  modules(max_rails: Int = 8): [HomePageModule]
-  module(key: String, id: String): HomePageModule
+  artwork_module(key: String, id: String): HomePageModule
+  artwork_modules(max_rails: Int = 8): [HomePageModule]
+  artist_module(key: String): HomePageArtistModule
+  artist_modules: [HomePageArtistModule]
+}
+
+type HomePageArtistModule {
+  key: String
+  results: [Artist]
 }
 
 type HomePageModule implements Node {
