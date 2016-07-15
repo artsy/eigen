@@ -53,12 +53,15 @@ randomBOOL(void)
 
 - (void)setupEmission;
 {
+  NSAssert(![USER_ID isEqualToString:@"USER ID GOES HERE"], @"Specify your user ID in Configuration.h");
+  NSAssert(![OAUTH_TOKEN isEqualToString:@"TOKEN GOES HERE"], @"Specify your access token in Configuration.h");
+  
   AREmission *emission = nil;
 #ifdef ENABLE_DEV_MODE
   NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
-  emission = [[AREmission alloc] initWithAuthenticationToken:OAUTH_TOKEN packagerURL:packagerURL];
+  emission = [[AREmission alloc] initWithUserID:USER_ID authenticationToken:OAUTH_TOKEN packagerURL:packagerURL];
 #else
-  emission = [[AREmission alloc] initWithAuthenticationToken:OAUTH_TOKEN];
+  emission = [[AREmission alloc] initWithUserID:USER_ID authenticationToken:OAUTH_TOKEN];
 #endif
   [AREmission setSharedInstance:emission];
 
