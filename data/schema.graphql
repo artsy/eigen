@@ -797,8 +797,8 @@ type HighlightedShow implements Node {
 }
 
 type HomePage {
-  artwork_module(key: String, id: String): HomePageModule
-  artwork_modules(max_rails: Int = 8): [HomePageModule]
+  artwork_module(key: String, id: String): HomePageArtworkModule
+  artwork_modules(max_rails: Int = 8): [HomePageArtworkModule]
   artist_module(key: String): HomePageArtistModule
   artist_modules: [HomePageArtistModule]
 }
@@ -807,6 +807,17 @@ type HomePageArtistModule implements Node {
   __id: ID!
   key: String
   results: [Artist]
+}
+
+type HomePageArtworkModule implements Node {
+  __id: ID!
+  key: String
+  display: String
+  is_displayable: Boolean
+  params: HomePageModulesParams
+  context: HomePageModuleContext
+  title: String
+  results: [Artwork]
 }
 
 type HomePageModule implements Node {

@@ -402,7 +402,7 @@
             },
             {
               "name": "home_page_modules",
-              "description": "Modules to show on the home screen",
+              "description": "Artwork modules to show on the home screen",
               "args": [
                 {
                   "name": "max_rails",
@@ -429,7 +429,7 @@
             },
             {
               "name": "home_page_module",
-              "description": "Single module to show on the home screen",
+              "description": "Single artwork module to show on the home screen",
               "args": [
                 {
                   "name": "key",
@@ -1671,12 +1671,17 @@
             },
             {
               "kind": "OBJECT",
-              "name": "HomePageModule",
+              "name": "HomePageArtworkModule",
               "ofType": null
             },
             {
               "kind": "OBJECT",
               "name": "HomePageArtistModule",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "HomePageModule",
               "ofType": null
             }
           ]
@@ -12531,7 +12536,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "HomePageModule",
+          "name": "HomePageArtworkModule",
           "description": null,
           "fields": [
             {
@@ -13858,6 +13863,127 @@
         },
         {
           "kind": "OBJECT",
+          "name": "HomePageModule",
+          "description": null,
+          "fields": [
+            {
+              "name": "__id",
+              "description": "A globally unique ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "key",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "display",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Favor `is_`-prefixed Booleans (*and* this should be a Boolean)"
+            },
+            {
+              "name": "is_displayable",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "params",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "HomePageModulesParams",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "context",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "UNION",
+                "name": "HomePageModuleContext",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "title",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "results",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Artwork",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "Status",
           "description": null,
           "fields": [
@@ -14147,7 +14273,7 @@
           "fields": [
             {
               "name": "artwork_module",
-              "description": "Single module to show on the home screen",
+              "description": "Single artwork module to show on the home screen",
               "args": [
                 {
                   "name": "key",
@@ -14172,7 +14298,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "HomePageModule",
+                "name": "HomePageArtworkModule",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -14180,7 +14306,7 @@
             },
             {
               "name": "artwork_modules",
-              "description": "Modules to show on the home screen",
+              "description": "Artwork modules to show on the home screen",
               "args": [
                 {
                   "name": "max_rails",
@@ -14198,7 +14324,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "HomePageModule",
+                  "name": "HomePageArtworkModule",
                   "ofType": null
                 }
               },
@@ -14207,7 +14333,7 @@
             },
             {
               "name": "artist_module",
-              "description": null,
+              "description": "Single artist module to show on the home screen",
               "args": [
                 {
                   "name": "key",
@@ -14230,7 +14356,7 @@
             },
             {
               "name": "artist_modules",
-              "description": "Modules to show on the home screen",
+              "description": "Artist modules to show on the home screen",
               "args": [],
               "type": {
                 "kind": "LIST",
