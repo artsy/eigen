@@ -8,6 +8,7 @@
 
 
 @interface AREmissionConfiguration : NSObject <RCTBridgeModule>
+@property (nonatomic, strong, readwrite) NSString *userID;
 @property (nonatomic, strong, readwrite) NSString *authenticationToken;
 @end
 
@@ -17,7 +18,10 @@ RCT_EXPORT_MODULE(Emission);
 
 - (NSDictionary *)constantsToExport
 {
-  return @{ @"authenticationToken": self.authenticationToken };
+  return @{
+    @"userID": self.userID,
+    @"authenticationToken": self.authenticationToken,
+  };
 }
 
 @end
@@ -42,12 +46,15 @@ static AREmission *_sharedInstance = nil;
   return _sharedInstance;
 }
 
-- (instancetype)initWithAuthenticationToken:(NSString *)authenticationToken;
+- (instancetype)initWithUserID:(NSString *)userID
+           authenticationToken:(NSString *)authenticationToken;
 {
-  return [self initWithAuthenticationToken:authenticationToken packagerURL:nil];
+  return [self initWithUserID:userID authenticationToken:authenticationToken packagerURL:nil];
 }
 
-- (instancetype)initWithAuthenticationToken:(NSString *)authenticationToken packagerURL:(NSURL *)packagerURL;
+- (instancetype)initWithUserID:(NSString *)userID
+           authenticationToken:(NSString *)authenticationToken
+                   packagerURL:(nullable NSURL *)packagerURL;
 {
   if ((self = [super init])) {
     _eventsModule = [AREventsModule new];
@@ -55,6 +62,7 @@ static AREmission *_sharedInstance = nil;
     _APIModule = [ARTemporaryAPIModule new];
     
     _configurationModule = [AREmissionConfiguration new];
+    _configurationModule.userID = userID;
     _configurationModule.authenticationToken = authenticationToken;
 
     NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule];

@@ -14,8 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedInstance;
 + (void)setSharedInstance:(AREmission *)instance;
 
-- (instancetype)initWithAuthenticationToken:(NSString *)authenticationToken;
-- (instancetype)initWithAuthenticationToken:(NSString *)authenticationToken packagerURL:(nullable NSURL *)packagerURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithUserID:(NSString *)userID
+           authenticationToken:(NSString *)authenticationToken;
+- (instancetype)initWithUserID:(NSString *)userID
+           authenticationToken:(NSString *)authenticationToken
+                   packagerURL:(nullable NSURL *)packagerURL NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 
