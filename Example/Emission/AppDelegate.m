@@ -36,18 +36,18 @@ randomBOOL(void)
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 {
   [self setupEmission];
-  
+
   UITableViewController *tableViewController = [UITableViewController new];
   tableViewController.tableView.dataSource = self;
   tableViewController.tableView.delegate = self;
 
   self.navigationController = [[RotationNavigationController alloc] initWithRootViewController:tableViewController];
-  
+
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
-  
+
   return YES;
 }
 
@@ -57,7 +57,7 @@ randomBOOL(void)
 {
   NSAssert(![USER_ID isEqualToString:@"USER ID GOES HERE"], @"Specify your user ID in Configuration.h");
   NSAssert(![OAUTH_TOKEN isEqualToString:@"TOKEN GOES HERE"], @"Specify your access token in Configuration.h");
-  
+
   AREmission *emission = nil;
 #ifdef ENABLE_DEV_MODE
   NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
@@ -85,23 +85,23 @@ randomBOOL(void)
       }
     });
   };
-  
+
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
     [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route]
                                                        animated:YES];
   };
-  
+
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
                                                             NSString * _Nonnull route) {
-    UIViewController *viewController = [self  viewControllerForRoute:route];
+    UIViewController *viewController = [self viewControllerForRoute:route];
     UINavigationController *navigationController = [[RotationNavigationController alloc] initWithRootViewController:viewController];
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                     target:self
                                                                                                     action:@selector(dismissModalViewController)];
     [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
   };
-  
+
   emission.eventsModule.eventOccurred = ^(UIViewController * _Nonnull fromViewController, NSDictionary * _Nonnull info) {
     NSLog(@"[Event] %@ - %@", fromViewController.class, info);
   };
@@ -123,7 +123,7 @@ randomBOOL(void)
     [viewController.view addSubview:label];
     label.center = viewController.view.center;
   }
-  
+
   return viewController;
 }
 
