@@ -92,7 +92,7 @@ randomBOOL(void)
   
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
                                                             NSString * _Nonnull route) {
-    UIViewController *viewController = [self viewControllerForRoute:route];
+    UIViewController *viewController = [self  viewControllerForRoute:route];
     UINavigationController *navigationController = [[RotationNavigationController alloc] initWithRootViewController:viewController];
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                     target:self
@@ -108,7 +108,7 @@ randomBOOL(void)
 - (UIViewController *)viewControllerForRoute:(NSString *)route;
 {
   UIViewController *viewController = nil;
-  
+
   if ([route hasPrefix:@"/artist/"]) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
@@ -131,6 +131,30 @@ randomBOOL(void)
   [navigationController.visibleViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+static NSArray *routingMap;
+
+- (NSArray *)routingMap
+{
+    if (!routingMap) {
+      routingMap = @[
+        @{
+           @"name" : @"Home",
+           @"router" : ^() {
+             return [[ARHomeComponentViewController alloc] init];
+           }
+        },
+        @{
+          @"name" : @"Artist",
+          @"router" : ^() {
+            return [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
+          }
+        },
+      ];
+    }
+
+    return routingMap;
+}
+
 #pragma mark - Example selection tableview
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
@@ -150,18 +174,18 @@ randomBOOL(void)
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   }
 
-  cell.textLabel.text = indexPath.row == 0 ? @"Home" : @"Artist";
+  NSDictionary *route = self.routingMap[indexPath.row];
+  cell.textLabel.text = route[@"name"];
   return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-  ARComponentViewController *viewController = nil;
-  if (indexPath.row == 0) {
-    viewController = [[ARHomeComponentViewController alloc] init];
-  } else {
-    viewController = [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
-  }
+  NSDictionary *route = self.routingMap[indexPath.row];
+  typedef ARComponentViewController * (^ARRouterMethod)();
+
+  ARRouterMethod routeGenerator = route[@"router"];
+  ARComponentViewController *viewController = routeGenerator();
   [self.navigationController pushViewController:viewController animated:YES];
 }
 
