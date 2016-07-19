@@ -1,13 +1,13 @@
 // As per the Artsy API docs at https://developers.artsy.net/docs/authentication, generate a OAuth token for your user
 // account with the following command:
 //
-//   $ curl -s -X POST "https://api.artsy.net/oauth2/access_token?client_id=e750db60ac506978fc70&client_secret=3a33d2085cbd1176153f99781bbce7c6&grant_type=credentials&scope=offline_access&email=[EMAIL]&password=[PASSWORD]" | ruby -r json -e 'puts JSON.parse(ARGF.read)["access_token"]' | tee /dev/tty | pbcopy
+//   $ curl -s -X POST "https://stagingapi.artsy.net/oauth2/access_token?client_id=e750db60ac506978fc70&client_secret=3a33d2085cbd1176153f99781bbce7c6&grant_type=credentials&scope=offline_access&email=[EMAIL]&password=[PASSWORD]" | ruby -r json -e 'puts JSON.parse(ARGF.read)["access_token"]' | tee /dev/tty | pbcopy
 //
 // The token will also be placed on your pasteboard, so you can directly paste it below in the `OAUTH_TOKEN` macro.
 //
 // You will also need to get your user ID, which you can do with the following command, using the token you just retrieved:
 //
-//   $ curl -s -H 'x-access-token: [OAUTH_TOKEN]' "https://api.artsy.net/api/v1/me" | ruby -r json -e 'puts JSON.parse(ARGF.read)["_id"]' | tee /dev/tty | pbcopy
+//   $ curl -s -H 'x-access-token: [OAUTH_TOKEN]' "https://stagingapi.artsy.net/api/v1/me" | ruby -r json -e 'puts JSON.parse(ARGF.read)["_id"]' | tee /dev/tty | pbcopy
 //
 // Again, your user ID will be placed on your pasteboard, so you can directly paste it below in the `USER_ID` macro.
 //
