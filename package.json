@@ -4,17 +4,18 @@
   "description": "Artsy React(Native) components.",
   "main": "index.ios.js",
   "scripts": {
+    "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map",
+    "ci": "npm run-script lint && npm run-script flow && npm test",
+    "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "flow": "flow",
     "lint": "eslint ./lib ./test",
-    "test": "env NODE_ENV=test NODE_PATH=./lib mocha --recursive ./test",
-    "ci": "npm run-script lint && npm run-script flow && npm test",
+    "start": "npm run clean-example && npm run start-packager",
+    "start-packager": "cd node_modules/react-native && npm start -- --reset-cache",
+    "storybook": "storybook start -p 9001",
+    "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && npm install && npm run dump-schema -- ../../data && rm -rf node_modules",
-    "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
-    "start-packager": "cd node_modules/react-native && npm start -- --reset-cache",
-    "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
-    "start": "npm run clean-example && npm run start-packager",
-    "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map"
+    "test": "env NODE_ENV=test NODE_PATH=./lib mocha --recursive ./test"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "remove-markdown": "0.1.0"
   },
   "devDependencies": {
+    "@kadira/react-native-storybook": "^1.11.3",
     "babel-eslint": "^6.0.0",
     "babel-relay-plugin": "^0.9.0",
     "chai": "^3.5.0",

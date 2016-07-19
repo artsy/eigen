@@ -10,6 +10,8 @@
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
 
+#import "ARStorybookComponentViewController.h"
+
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
 
@@ -131,12 +133,18 @@ randomBOOL(void)
   [navigationController.visibleViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-static NSArray *routingMap;
+static NSArray *sharedRoutingMap;
 
 - (NSArray *)routingMap
 {
-    if (!routingMap) {
-      routingMap = @[
+    if (!sharedRoutingMap) {
+      sharedRoutingMap = @[
+        @{
+          @"name" : @"Storybook",
+          @"router" : ^() {
+            return [[ARStorybookComponentViewController alloc] init];
+          }
+        },
         @{
            @"name" : @"Home",
            @"router" : ^() {
@@ -152,18 +160,15 @@ static NSArray *routingMap;
       ];
     }
 
-    return routingMap;
+    return sharedRoutingMap;
 }
 
 #pragma mark - Example selection tableview
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-  return 2;
+  return self.routingMap.count;
 }
-
-// Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
-// Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
