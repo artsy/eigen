@@ -60,7 +60,7 @@ randomBOOL(void)
 
   AREmission *emission = nil;
 #ifdef ENABLE_DEV_MODE
-  NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+  NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
   emission = [[AREmission alloc] initWithUserID:USER_ID authenticationToken:OAUTH_TOKEN packagerURL:packagerURL];
 #else
   emission = [[AREmission alloc] initWithUserID:USER_ID authenticationToken:OAUTH_TOKEN];
