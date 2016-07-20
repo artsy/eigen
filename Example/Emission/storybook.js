@@ -7,7 +7,7 @@ import { getStorybookUI, configure } from '@kadira/react-native-storybook';
 
 // Import your stories
 configure(() => {
-  require('../../stories/artist_component');
+  require('../../stories/artist_component_story');
   require('../../stories/artist_header_story');
 }, module);
 
