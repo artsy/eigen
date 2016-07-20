@@ -201,7 +201,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 510DCB3E1CCA69ED0075E8CB /* Build configuration list for PBXNativeTarget "Emission" */;
 			buildPhases = (
-				066CBB311B245F3ADDA883CB /* 📦 Check Pods Manifest.lock */,
+				066CBB311B245F3ADDA883CB /* [CP] Check Pods Manifest.lock */,
 				921B840AC340AE7E64EC1E6E /* [CP] Check Pods Manifest.lock */,
 				510DCB0A1CCA69EC0075E8CB /* Sources */,
 				510DCB0B1CCA69EC0075E8CB /* Frameworks */,
@@ -225,7 +225,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 510DCB3F1CCA69ED0075E8CB /* Build configuration list for PBXNativeTarget "EmissionTests" */;
 			buildPhases = (
-				20B6FFACE9798C3F6AEDEF21 /* 📦 Check Pods Manifest.lock */,
+				20B6FFACE9798C3F6AEDEF21 /* [CP] Check Pods Manifest.lock */,
 				3D02CA631569DFCF8EBC8358 /* [CP] Check Pods Manifest.lock */,
 				510DCB221CCA69EC0075E8CB /* Sources */,
 				510DCB231CCA69EC0075E8CB /* Frameworks */,
@@ -334,14 +334,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		066CBB311B245F3ADDA883CB /* 📦 Check Pods Manifest.lock */ = {
+		066CBB311B245F3ADDA883CB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,14 +379,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Emission/Pods-Emission-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		20B6FFACE9798C3F6AEDEF21 /* 📦 Check Pods Manifest.lock */ = {
+		20B6FFACE9798C3F6AEDEF21 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
