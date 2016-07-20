@@ -2,4 +2,5 @@
 'use strict';
 
 import 'emission';
-require('./storybook');
+import './storybook';
+
