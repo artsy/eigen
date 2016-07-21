@@ -8,7 +8,7 @@ import { RootContainer } from 'react-relay';
 
 import ArtistHeader from '../lib/components/artist/header';
 import Routes from '../lib/relay/routes';
-import StubContainer from "../Example/Emission/stub_container"
+import StubContainer from "../Example/Emission/stub_container";
 
 storiesOf('Artist Header')
   .addDecorator((story) => (
@@ -22,7 +22,7 @@ storiesOf('Artist Header')
     const artistRoute = new Routes.Artist({ artistID: 'leda-catunda' });
     return <RootContainer Component={ArtistHeader} route={artistRoute}/>;
   })
-  .add('No Brithday', () => {
+  .add('No Birthday', () => {
     const props = {
       artist: {
         name : 'Example Data',
@@ -30,8 +30,7 @@ storiesOf('Artist Header')
         counts : { follows: 12 }
       }
     };
-    const state = {following: false};
-
+    const state = {following: false, followersCount: 999 };
     return <StubContainer Component={ArtistHeader} props={props} state={state}/>;
   })
   .add('Full Data', () => {
@@ -43,7 +42,7 @@ storiesOf('Artist Header')
         counts : { follows: 12 }
       }
     };
-    const state = {following: false};
+    const state = {following: false, followersCount: 999 };
     return <StubContainer Component={ArtistHeader} props={api} state= {state}/>;
   });
 

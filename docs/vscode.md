@@ -4,7 +4,7 @@
 
 1. [Install VS Code](https://code.visualstudio.com).
 1. Install the [React Native Extension](https://github.com/Microsoft/vscode-react-native)
-1. Next install these extensions: ESLint, View Node Package, Flow Language.
+1. Next install these extensions: ESLint, View Node Package, Flow Language, Spelling and Grammar Checker.
 1. Install the command line tools via the command: "Install 'code' command in PATH"/
 
 Note, if you are using [nvm](https://github.com/creationix/nvm), I strongly recommend always opening VS code from the terminal to ensure all the environment variables are correct.
