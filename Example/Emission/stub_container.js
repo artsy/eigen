@@ -21,9 +21,15 @@ export default class StubbedContainer extends React.Component {
     };
   }
 
+  componentDidMount() {
+    React.Children.forEach(this.props.children, (child) => {
+      child.setState(this.props.state);
+    });
+  }
+
   // Directly render the child, and add the data
   render() {
-    return <this.props.Component {...this.props.data} />;
+    return <this.props.Component {...this.props.props} />;
   }
 
   // Needed to pass the isRelayContainer validation step

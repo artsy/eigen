@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug iOS",
+      "program": "${workspaceRoot}/.vscode/launchReactNative.js",
+      "type": "reactnative",
+      "request": "launch",
+      "platform": "ios",
+      "iosRelativeProjectPath": "Example",
+      "target": "iPhone 5s",
+      "internalDebuggerPort": 9090,
+      "sourceMaps": true,
+      "outDir": "${workspaceRoot}/.vscode/.react"
+    }
+  ]
+}

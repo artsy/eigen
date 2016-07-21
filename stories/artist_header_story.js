@@ -23,17 +23,19 @@ storiesOf('Artist Header')
     return <RootContainer Component={ArtistHeader} route={artistRoute}/>;
   })
   .add('No Brithday', () => {
-    let data = {
+    const props = {
       artist: {
         name : 'Example Data',
         nationality: 'UK',
         counts : { follows: 12 }
       }
     };
-    return <StubContainer Component={ArtistHeader} data={data}/>
+    const state = {following: false};
+
+    return <StubContainer Component={ArtistHeader} props={props} state={state}/>;
   })
   .add('Full Data', () => {
-    let data = {
+    let api = {
       artist: {
         name : 'Another Exmaple',
         nationality: 'OK',
@@ -41,6 +43,7 @@ storiesOf('Artist Header')
         counts : { follows: 12 }
       }
     };
-    return <StubContainer Component={ArtistHeader} data={data}/>
+    const state = {following: false};
+    return <StubContainer Component={ArtistHeader} props={api} state= {state}/>;
   });
 
