@@ -31,7 +31,10 @@ export default class StubbedContainer extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = this.props.state;
+
+    if (this.props.state) {
+      this.state = this.props.state;
+    }
   }
 
   // Directly render the child, and add the data
