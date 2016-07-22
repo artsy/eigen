@@ -79,4 +79,13 @@ static AREmission *_sharedInstance = nil;
   return [[NSBundle bundleForClass:self.class] URLForResource:@"Emission" withExtension:@"js"];
 }
 
+- (void)log:(NSString *)format, ... {
+    va_list args;
+    va_start(args, format);
+    NSString *message = [NSString stringWithFormat:format, args];
+    [self.bridge enqueueJSCall:@"console.log" args:@[message]];
+    va_end(args);
+}
+
+
 @end

@@ -59,6 +59,7 @@ randomBOOL(void)
   NSAssert(![OAUTH_TOKEN isEqualToString:@"TOKEN GOES HERE"], @"Specify your access token in Configuration.h");
 
   AREmission *emission = nil;
+
 #ifdef ENABLE_DEV_MODE
   NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
   emission = [[AREmission alloc] initWithUserID:USER_ID authenticationToken:OAUTH_TOKEN packagerURL:packagerURL];
@@ -66,6 +67,7 @@ randomBOOL(void)
   emission = [[AREmission alloc] initWithUserID:USER_ID authenticationToken:OAUTH_TOKEN];
 #endif
   [AREmission setSharedInstance:emission];
+
 
   emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
     NSNumber *following = @(randomBOOL());
@@ -88,12 +90,20 @@ randomBOOL(void)
 
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
+    if (self.isShowingStorybook) {
+      NSLog(@"Route push - %@", route);
+      return;
+    }
     [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route]
                                                        animated:YES];
   };
 
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
                                                             NSString * _Nonnull route) {
+    if (self.isShowingStorybook) {
+      NSLog(@"Route modal - %@", route);
+      return;
+    }
     UIViewController *viewController = [self viewControllerForRoute:route];
     UINavigationController *navigationController = [[RotationNavigationController alloc] initWithRootViewController:viewController];
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -105,6 +115,11 @@ randomBOOL(void)
   emission.eventsModule.eventOccurred = ^(UIViewController * _Nonnull fromViewController, NSDictionary * _Nonnull info) {
     NSLog(@"[Event] %@ - %@", fromViewController.class, info);
   };
+}
+
+- (BOOL)isShowingStorybook
+{
+  return [self.navigationController.topViewController isKindOfClass:ARStorybookComponentViewController.class];
 }
 
 - (UIViewController *)viewControllerForRoute:(NSString *)route;
