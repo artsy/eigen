@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0",
+  "command": "npm",
+  "isShellCommand": true,
+  "showOutput": "always",
+  "suppressTaskName": true,
+  "tasks": [
+    {
+      "taskName": "Start Storybook Server",
+      "args": ["run", "storybook"]
+    },
+  ]
+}

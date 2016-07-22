@@ -10,6 +10,8 @@
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
 
+#import "ARStorybookComponentViewController.h"
+
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
 
@@ -34,18 +36,18 @@ randomBOOL(void)
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 {
   [self setupEmission];
-  
+
   UITableViewController *tableViewController = [UITableViewController new];
   tableViewController.tableView.dataSource = self;
   tableViewController.tableView.delegate = self;
 
   self.navigationController = [[RotationNavigationController alloc] initWithRootViewController:tableViewController];
-  
+
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
-  
+
   return YES;
 }
 
@@ -55,10 +57,10 @@ randomBOOL(void)
 {
   NSAssert(![USER_ID isEqualToString:@"USER ID GOES HERE"], @"Specify your user ID in Configuration.h");
   NSAssert(![OAUTH_TOKEN isEqualToString:@"TOKEN GOES HERE"], @"Specify your access token in Configuration.h");
-  
+
   AREmission *emission = nil;
 #ifdef ENABLE_DEV_MODE
-  NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+  NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
   emission = [[AREmission alloc] initWithUserID:USER_ID authenticationToken:OAUTH_TOKEN packagerURL:packagerURL];
 #else
   emission = [[AREmission alloc] initWithUserID:USER_ID authenticationToken:OAUTH_TOKEN];
@@ -83,13 +85,13 @@ randomBOOL(void)
       }
     });
   };
-  
+
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
     [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route]
                                                        animated:YES];
   };
-  
+
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
                                                             NSString * _Nonnull route) {
     UIViewController *viewController = [self viewControllerForRoute:route];
@@ -99,7 +101,7 @@ randomBOOL(void)
                                                                                                     action:@selector(dismissModalViewController)];
     [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
   };
-  
+
   emission.eventsModule.eventOccurred = ^(UIViewController * _Nonnull fromViewController, NSDictionary * _Nonnull info) {
     NSLog(@"[Event] %@ - %@", fromViewController.class, info);
   };
@@ -108,7 +110,7 @@ randomBOOL(void)
 - (UIViewController *)viewControllerForRoute:(NSString *)route;
 {
   UIViewController *viewController = nil;
-  
+
   if ([route hasPrefix:@"/artist/"]) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
@@ -121,7 +123,7 @@ randomBOOL(void)
     [viewController.view addSubview:label];
     label.center = viewController.view.center;
   }
-  
+
   return viewController;
 }
 
@@ -131,15 +133,42 @@ randomBOOL(void)
   [navigationController.visibleViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+static NSArray *sharedRoutingMap;
+
+- (NSArray *)routingMap
+{
+    if (!sharedRoutingMap) {
+      sharedRoutingMap = @[
+        @{
+          @"name" : @"Storybook",
+          @"router" : ^() {
+            return [[ARStorybookComponentViewController alloc] init];
+          }
+        },
+        @{
+           @"name" : @"Home",
+           @"router" : ^() {
+             return [[ARHomeComponentViewController alloc] init];
+           }
+        },
+        @{
+          @"name" : @"Artist",
+          @"router" : ^() {
+            return [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
+          }
+        },
+      ];
+    }
+
+    return sharedRoutingMap;
+}
+
 #pragma mark - Example selection tableview
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-  return 2;
+  return self.routingMap.count;
 }
-
-// Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
-// Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
@@ -150,18 +179,18 @@ randomBOOL(void)
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   }
 
-  cell.textLabel.text = indexPath.row == 0 ? @"Home" : @"Artist";
+  NSDictionary *route = self.routingMap[indexPath.row];
+  cell.textLabel.text = route[@"name"];
   return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-  ARComponentViewController *viewController = nil;
-  if (indexPath.row == 0) {
-    viewController = [[ARHomeComponentViewController alloc] init];
-  } else {
-    viewController = [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
-  }
+  NSDictionary *route = self.routingMap[indexPath.row];
+  typedef ARComponentViewController * (^ARRouterMethod)();
+
+  ARRouterMethod routeGenerator = route[@"router"];
+  ARComponentViewController *viewController = routeGenerator();
   [self.navigationController pushViewController:viewController animated:YES];
 }
 

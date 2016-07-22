@@ -20,13 +20,23 @@
 
 ### Development
 
+### Using VS Code as an IDE
+
+There is a full document covering [our setup here](docs/vscode.md).
+
+### Vanilla Commands
+
 1. Run `$ npm start` from the top directory, which will:
    * Clean the example app’s Xcode build dir.
    * Start the example app’s React Native packager.
 
-2. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
+2. Run `$ npm run storybook` from the top directory, to get [react-native-storybooks](https://github.com/kadirahq/react-native-storybook) running.
 
-3. We vendor some data from other repositories that you will sometimes need to update. You can either update all of them
+3. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
+
+### Updating Dependencies
+
+1. We vendor some data from other repositories that you will sometimes need to update. You can either update all of them
    with `$ npm run sync-externals` or individually:
    * The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ npm run sync-schema`
    * The colors defined in Artsy’s style-guide: `$ npm run sync-colors`
@@ -92,3 +102,7 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 * Flexbox:
   - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
   - http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
+
+* React Native Storybooks
+  - https://github.com/kadirahq/react-native-storybook
+  - https://github.com/kadirahq/react-storybook
