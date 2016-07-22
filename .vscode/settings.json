@@ -4,6 +4,7 @@
         "*.podspec": "ruby",
         "Podfile": "ruby",
         "*.h": "objective-c",
+        "*.js": "flow"
     },
     "files.trimTrailingWhitespace": true,
 

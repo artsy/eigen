@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "allowJs": true
+    },
+    "exclude": [
+        "node_modules",
+        "Pod/Assets",
+        "Example/Build"
+    ]
+}
