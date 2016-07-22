@@ -57,7 +57,7 @@
     "eslint": "^2.5.3",
     "eslint-plugin-flow-vars": "^0.2.1",
     "eslint-plugin-react": "^4.2.1",
-    "flow-bin": "0.22.0",
+    "flow-bin": "0.29.0",
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",

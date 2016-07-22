@@ -11,5 +11,7 @@
     "editor.rulers": [120],
     "editor.tabSize": 2,
 
+    // Because we use Flow - see https://github.com/flowtype/flow-for-vscode#setup
+    "javascript.validate.enable": false,
     "clang.compilationDatabase": "${workspaceRoot}/Example/compile_commands.json",
 }
