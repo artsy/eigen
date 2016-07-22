@@ -22,6 +22,9 @@ storiesOf('Artist Header')
     const artistRoute = new Routes.Artist({ artistID: 'leda-catunda' });
     return <RootContainer Component={ArtistHeader} route={artistRoute}/>;
   })
+  // Note that for these two, the follow button / count will remain the
+  // same as it was from one of the above artists. Once they are in relay/graphQL
+  // stubbing that data can be a possiblity
   .add('No Birthday', () => {
     const props = {
       artist: {
@@ -30,8 +33,7 @@ storiesOf('Artist Header')
         counts : { follows: 12 }
       }
     };
-    const state = {following: false, followersCount: 999 };
-    return <StubContainer Component={ArtistHeader} props={props} state={state}/>;
+    return <StubContainer Component={ArtistHeader} props={props}/>;
   })
   .add('Full Data', () => {
     let api = {
@@ -42,7 +44,6 @@ storiesOf('Artist Header')
         counts : { follows: 12 }
       }
     };
-    const state = {following: false, followersCount: 999 };
-    return <StubContainer Component={ArtistHeader} props={api} state= {state}/>;
+    return <StubContainer Component={ArtistHeader} props={api}/>;
   });
 

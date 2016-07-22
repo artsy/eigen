@@ -21,25 +21,9 @@ export default class StubbedContainer extends React.Component {
     };
   }
 
-  // TODO: Improve handling state, currently this works only when you full re-render the whole virtual view tree
-  // e.g. jumping between two stories of the same component will not trigger state changes. I gave a
-  // considerable amount of time, then noticed we _don't_ use too much state inside our components
-  // and have made the time tradeoff to say it's not worth it for now.
-
-  // If you are using state in a component, where you would normally set the default, you should check props first
-  // e.g. `this.state = this.props.state || { following: false, followersCount: props.artist.counts.follows };`
-
-  constructor(props) {
-    super(props);
-
-    if (this.props.state) {
-      this.state = this.props.state;
-    }
-  }
-
   // Directly render the child, and add the data
   render() {
-    return <this.props.Component {...this.props.props} {...this.props.state} />;
+    return <this.props.Component {...this.props.props} />;
   }
 
   // Needed to pass the isRelayContainer validation step
