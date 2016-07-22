@@ -21,7 +21,7 @@ A task is a customizable command that is set up per-project.
 
 The default theme for VS Code is pretty intense, if you're a light theme kind of person. I would recommend switching to "Light (Visual Studio)", via the "Change Theme" command.
 
-!(choose-theme.png)[choose-theme.png]
+![https://github.com/artsy/emission/blob/master/docs/choose-theme.png?raw=true](https://github.com/artsy/emission/master/flow/docs/choose-theme.png?raw=true)
 
 This screenshot also includes a code font with JS ligatures, called [Fira Code](https://github.com/tonsky/FiraCode).
 
@@ -69,13 +69,19 @@ And write it as:
 function foo(one: any, two: number, three?): string {}
 ```
 
-This can improve VS Code's autocompletion and ability to jump between objects quickly. As well as offer useful insight about accidental type coercion and nullability through static analysis. Most of the time the types can be inferred completely automatically, but I'd strongly recommend doing it for all function parameters.
+This can improve VS Code's autocompletion and ability to jump between objects quickly. As well as offer useful insight about accidental type coercion and nullability through static analysis. Most of the time the types can be inferred completely automatically, however sometimes you may need to [do it yourself](https://github.com/artsy/emission/commit/e5135618b0c8d10d23e64ea0a6ce5d35c0e4af95#diff-2f5aa3c37ef9f2653a0096c9f8344357R45).
+
+One of the interesting things about types in Flow, are that like Objective-C there are literal and reference types. Think `NSInteger` vs `NSNumber`. So you should be writing `string` not `String`, as the lowercase variant is the value and `String` is a specific type of class. For details there, [see the guide on built-in types](https://flowtype.org/docs/builtins.html).
+
+The most notable thing you will spot using Flow is that you have to declare what your `state` looks like, [see an example](https://github.com/artsy/emission/commit/e5135618b0c8d10d23e64ea0a6ce5d35c0e4af95#diff-84358beb6307a90d292cb841ec4ad693R30).  Flow also enforces string enums, so if an API says that it only supports a few string values, you will see errors there. This is covered well in the [React section of the Flow guides](https://flowtype.org/docs/react.html).
 
 _Note:_ React Native decides what part of what languages are exposed to us. This list you can find the [raw values here](https://github.com/facebook/react-native/blob/master/babel-preset/configs/main.js#L13). A human-readable version [is here](http://facebook.github.io/react-native/docs/javascript-environment.html). If you want the TLDR, you should use types as much as possible from Flow. React-Native [strips](http://babeljs.io/docs/plugins/transform-flow-strip-types/) those during transpliation.
 
 ### Jump to Symbols
 
-VS Code uses Typescript under the hood to figure out all of the symbols
+VS Code uses Typescript under the hood to figure out all of the symbols.
+
+TODO: Decide re:typings.
 
 ```sh
 npm install typings --global
