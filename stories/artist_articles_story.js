@@ -4,7 +4,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { storiesOf } from '@kadira/react-native-storybook';
-import StubContainer from "../Example/Emission/stub_container";
+import StubContainer from "react-storybooks-relay-container";
 
 import ArtistArticles from '../lib/components/artist/articles';
 import Routes from '../lib/relay/routes';

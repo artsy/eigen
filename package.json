@@ -61,6 +61,7 @@
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-storybooks-relay-container": "^1.0.0",
     "sinon": "^1.17.3"
   },
   "peerDependencies": {

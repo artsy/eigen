@@ -73,6 +73,13 @@ This can improve VS Code's autocompletion and ability to jump between objects qu
 
 _Note:_ React Native decides what part of what languages are exposed to us. This list you can find the [raw values here](https://github.com/facebook/react-native/blob/master/babel-preset/configs/main.js#L13). A human-readable version [is here](http://facebook.github.io/react-native/docs/javascript-environment.html). If you want the TLDR, you should use types as much as possible from Flow. React-Native [strips](http://babeljs.io/docs/plugins/transform-flow-strip-types/) those during transpliation.
 
+### Jump to Symbols
+
+VS Code uses Typescript under the hood to figure out all of the symbols
+
+```sh
+npm install typings --global
+```
 
 ### Recommended Changes for Keyboard Shortcuts
 
