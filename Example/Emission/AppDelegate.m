@@ -90,7 +90,7 @@ randomBOOL(void)
 
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
-    if (self.isShowingStorybook) {
+    if ([fromViewController isKindOfClass:ARStorybookComponentViewController.class]) {
       NSLog(@"Route push - %@", route);
       return;
     }
@@ -100,7 +100,7 @@ randomBOOL(void)
 
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
                                                             NSString * _Nonnull route) {
-    if (self.isShowingStorybook) {
+    if ([fromViewController isKindOfClass:ARStorybookComponentViewController.class]) {
       NSLog(@"Route modal - %@", route);
       return;
     }
@@ -117,10 +117,6 @@ randomBOOL(void)
   };
 }
 
-- (BOOL)isShowingStorybook
-{
-  return [self.navigationController.topViewController isKindOfClass:ARStorybookComponentViewController.class];
-}
 
 - (UIViewController *)viewControllerForRoute:(NSString *)route;
 {
