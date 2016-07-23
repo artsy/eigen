@@ -105,13 +105,11 @@
 				51E682F51D2DAE24008BC152 /* Configuration.h */,
 				510DCB131CCA69EC0075E8CB /* AppDelegate.h */,
 				510DCB141CCA69EC0075E8CB /* AppDelegate.m */,
+				60D3D56D1D42532600A15671 /* Navigation */,
+				60D3D56C1D42531200A15671 /* Storybooks */,
 				510DCB1C1CCA69EC0075E8CB /* Assets.xcassets */,
 				510DCB211CCA69EC0075E8CB /* Info.plist */,
 				510DCB101CCA69EC0075E8CB /* Supporting Files */,
-				51F3E9A21CF3B8A4004A2013 /* RotationNavigationController.h */,
-				51F3E9A31CF3B8A4004A2013 /* RotationNavigationController.m */,
-				60B743B51D3EB12600E6B2A3 /* ARStorybookComponentViewController.h */,
-				60B743B61D3EB12600E6B2A3 /* ARStorybookComponentViewController.m */,
 			);
 			path = Emission;
 			sourceTree = "<group>";
@@ -177,6 +175,24 @@
 				DB1BB078CB1708CE8106DA15 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		60D3D56C1D42531200A15671 /* Storybooks */ = {
+			isa = PBXGroup;
+			children = (
+				60B743B51D3EB12600E6B2A3 /* ARStorybookComponentViewController.h */,
+				60B743B61D3EB12600E6B2A3 /* ARStorybookComponentViewController.m */,
+			);
+			name = Storybooks;
+			sourceTree = "<group>";
+		};
+		60D3D56D1D42532600A15671 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				51F3E9A21CF3B8A4004A2013 /* RotationNavigationController.h */,
+				51F3E9A31CF3B8A4004A2013 /* RotationNavigationController.m */,
+			);
+			name = Navigation;
 			sourceTree = "<group>";
 		};
 		A8456AA0E39F581C091B5C1D /* Frameworks */ = {

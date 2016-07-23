@@ -1,5 +1,5 @@
 import common from '../../support/common';
-const { React, expect, MockComponents } = common;
+const { expect, MockComponents } = common;
 const { Text } = MockComponents;
 
 import { shallow } from 'enzyme';

@@ -11,7 +11,9 @@
   },
 
   "plugins": [
-    "react"
+    "react",
+    "flow-vars",
+    "flowtype"
   ],
 
   // Map from global var to bool specifying if it can be redefined
@@ -232,6 +234,11 @@
     "react/prop-types": 0,
     "react/react-in-jsx-scope": 0,
     "react/self-closing-comp": 1,
-    "react/wrap-multilines": 0
+    "react/wrap-multilines": 0,
+
+    // Flow
+    "flow-vars/define-flow-type": 1,
+    "flow-vars/use-flow-type": 1
+
   }
 }

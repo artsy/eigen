@@ -8,7 +8,7 @@ import { RootContainer } from 'react-relay';
 
 import ArtistHeader from '../lib/components/artist/header';
 import Routes from '../lib/relay/routes';
-import StubContainer from "../Example/Emission/stub_container";
+import StubContainer from "react-storybooks-relay-container";
 
 storiesOf('Artist Header')
   .addDecorator((story) => (
@@ -31,6 +31,7 @@ storiesOf('Artist Header')
         name : 'Example Data',
         nationality: 'UK',
         counts : { follows: 12 }
+
       }
     };
     return <StubContainer Component={ArtistHeader} props={props}/>;

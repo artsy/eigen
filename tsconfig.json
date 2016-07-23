@@ -3,6 +3,8 @@
         "allowJs": true
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "Pod/Assets",
+        "Example/Build"
     ]
 }
