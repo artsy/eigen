@@ -1,11 +1,3 @@
-GIT
-  remote: https://github.com/ashfurrow/danger-swiftlint/
-  revision: 9bfd468128022aac4fd76ce93f5b09414c6ee552
-  branch: master
-  specs:
-    danger-swiftlint (0.0.1)
-      danger
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -158,7 +150,6 @@ DEPENDENCIES
   cocoapods-check
   cocoapods-keys
   danger
-  danger-swiftlint!
   lowdown
   nokogiri (>= 1.6.7)
   second_curtain

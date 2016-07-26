@@ -17,5 +17,4 @@ group :test do
   gem 'xcpretty'
   gem 'second_curtain'
   gem 'danger'
-  gem 'danger-swiftlint', :git => "https://github.com/ashfurrow/danger-swiftlint/", :branch => "master"
 end
