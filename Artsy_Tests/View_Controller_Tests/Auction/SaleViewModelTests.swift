@@ -109,15 +109,26 @@ class SaleViewModelTests: QuickSpec {
             expect(subject.saleAvailability).to( equal( SaleAvailabilityState.Active(liveAuctionDate: soon) ) )
         }
 
-        it("lets uesr know the live auction is happening") {
+        it("lets user know the live auction is happening") {
             let before = NSDate().dateByAddingTimeInterval(-1650.9)
 
-            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture(), "liveAuctionStartDate": before ], error: Void())
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture(), "liveAuctionStartDate": before], error: Void())
 
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
             expect(subject.isRunningALiveAuction) == true
-            expect(subject.liveAuctionHasStarted) == true
+            expect(subject.shouldShowLiveInterface) == true
+        }
+
+        it("lets doesn't direct the user to the live interface for completed sales.") {
+            let before = NSDate().dateByAddingTimeInterval(-1650.9)
+            let end = NSDate().dateByAddingTimeInterval(-100)
+
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": end, "liveAuctionStartDate": before], error: Void())
+
+            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
+
+            expect(subject.shouldShowLiveInterface) == false
         }
     }
 }

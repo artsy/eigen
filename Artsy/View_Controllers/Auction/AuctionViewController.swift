@@ -53,7 +53,7 @@ class AuctionViewController: UIViewController {
 
         self.networkModel.fetch().next { [weak self] saleViewModel in
 
-            if saleViewModel.liveAuctionHasStarted {
+            if saleViewModel.shouldShowLiveInterface {
                 let liveCV = ARSwitchBoard.sharedInstance().loadLiveAuction(self?.saleID)
                 ARTopMenuViewController.sharedController().pushViewController(liveCV, animated: true) {
                     self?.navigationController?.popViewControllerAnimated(false)
