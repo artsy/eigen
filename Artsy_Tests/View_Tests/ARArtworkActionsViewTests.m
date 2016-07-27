@@ -412,7 +412,7 @@ describe(@"mocked artwork promises", ^{
         id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
         view.delegate = mockDelegate;
 
-        [[mockDelegate expect] tappedBidButton];
+        [[mockDelegate expect] tappedBidButton:nil];
         [view tappedBidButton:nil];
 
         [mockDelegate verify];
@@ -422,7 +422,7 @@ describe(@"mocked artwork promises", ^{
         id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
         view.delegate = mockDelegate;
 
-        [[mockDelegate expect] tappedBuyersPremium];
+        [[mockDelegate expect] tappedBuyersPremium:nil];
         [view tappedBuyersPremium:nil];
 
         [mockDelegate verify];

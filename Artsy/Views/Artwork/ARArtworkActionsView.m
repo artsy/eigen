@@ -272,17 +272,17 @@
 
 - (void)tappedBidButton:(id)sender
 {
-    [self.delegate tappedBidButton];
+    [self.delegate tappedBidButton:sender];
 }
 
 - (void)tappedLiveSaleButton:(id)sender
 {
-    [self.delegate tappedLiveSaleButton];
+    [self.delegate tappedLiveSaleButton:sender];
 }
 
 - (void)tappedBuyersPremium:(id)sender
 {
-    [self.delegate tappedBuyersPremium];
+    [self.delegate tappedBuyersPremium:sender];
 }
 
 - (void)tappedBuyButton:(id)sender
