@@ -71,6 +71,13 @@ extension SaleViewModel {
         return (liveStartDate < now) == (now < endDate)
     }
 
+    var timeToLiveStart: NSTimeInterval? {
+        guard let liveStartDate = sale.liveAuctionStartDate else { return nil }
+
+        let now = ARSystemTime.date()
+        return liveStartDate.timeIntervalSinceDate(now)
+    }
+
     var saleID: NSString {
         return sale.saleID
     }
