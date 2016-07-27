@@ -72,7 +72,7 @@ extension SaleViewModel {
     }
 
     var timeToLiveStart: NSTimeInterval? {
-        guard let liveStartDate = sale.liveAuctionStartDate else { return nil }
+        guard let liveStartDate = sale.liveAuctionStartDate where shouldShowLiveInterface else { return nil }
 
         let now = ARSystemTime.date()
         return liveStartDate.timeIntervalSinceDate(now)
